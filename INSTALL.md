@@ -13,7 +13,7 @@ Additionally, PlayRho provides some demo/test applications which may provide ext
 ## Prerequisite Tasks
 
 1. Make sure you have the tools that will be needed.
-  - **CMake**: If you don't already have CMake installed on your system, it can be obtained from https://cmake.org/.
+  - **CMake**: If you don't have version 3.16 or higher of CMake installed on your system, the latest releases of CMake can be obtained from https://cmake.org/.
   - **A C++17 compiler suite**: That could be Microsoft's Visual C++, GNU's GCC, or LLVM's Clang. On Microsoft Windows platforms, you can get a complete C++17 compiler suite by getting Microsoft's Visual Studio 2017 from https://www.visualstudio.com/downloads/.
   - **git**: Needed only if you want to do development work. If you don't already have Git installed but you want to install it, you can get it from: https://git-scm.com/downloads.
 2. Decide where you want to put the source code.
@@ -42,29 +42,32 @@ From a command prompt like a Bash Shell, enter code such as the following where 
 
 This should download the sources into the `${YOUR_CHOSEN_PATH}` directory under the sub-directory of `PlayRho`.
 
-## Building On Linux Systems
-
-### Using CMake
+## Building From A Bash Shell Using CMake and Make
 
 This folder contains a CMake configuration file `CMakeLists.txt`. It can be used by `cmake` to build the library and all of the application targets on Linux platforms with either GCC C++ or Clang C++. This is the currently suggested way to build things for Linux. Simply run `cmake . && make`. To install the built targets, then run `make install`. This may require a tool like `sudo` to escalate your privileges in order to be able to install into the established folders. The CMake configuration file has a few options that can be modified to build different targets.
 
 Note: if you have trouble building with these instructions, you can also see how PlayRho gets built on the [Travis](https://travis-ci.org) Continuous Integration (CI) system, by looking at the [`.travis.yml`](.travis.yml) file's `script` definition.
 
-## Building On Mac OS X
-
-### Using Xcode
+## Building On Mac OS X Using Xcode
 
 The [`Build/xcode5`](Build/xcode5) folder contains project files for Xcode. The Xcode project file can be used to build the library and all of the application targets on and for the Mac OS X platform.
 
-### Using CMake
-
-Instructions coming.
-
-## Building On Windows
-
-### Using CMake
+## Building On Windows Using CMake-GUI and Visual Studio
 
 Start CMake up with the location of the source code identified for it. By default, only `PLAYRHO_BUILD_STATIC` has a defined value and that should be all that's necessary for simply building the library itself.
+Other `PLAYRHO_BUILD_*` CMake variables can be used to build additional things like the `UnitTest` or `Testbed` applications.
+Press *Configure* or *Generate*.
+If you haven't run CMake before for this project, CMake won't already have a cache of settings,
+and will ask you some additional information like which generator to use.
+Select Visual Studio 15 2017 or newer to generate the project and solution files for that version of Visual Studio and to invoke that version whenever you press the *Open Project* button.
+If you want 64-bit support, you'll need to choose the optional platform generator for your system - that would be `x64` to build for 64-bit Intel X64 platforms.
+Use the default native compilers.
+Then press the *Finish* button.
+CMake may create new variables or need your help especially if you want to also build an optional application like the `Testbed`.
+If you change any CMake variables, be sure to press the Generate button.
+Finally, press the *Open Project* button. This will open up Visual Studio.
+
+From within Visual Studio, select "Release" and initiate a build.
 
 Note: if you have trouble building with these instructions, you can also see how PlayRho gets built on the [AppVeyor](https://ci.appveyor.com/) Continuous Integration (CI) system, by looking at the [`appveyor.yml`](appveyor.yml) file's `build_script` definition.
 
@@ -101,17 +104,3 @@ where this file is located):
 
 You might want to add `-DCMAKE_INSTALL_PREFIX=/opt/PlayRho` or similar to the cmake call to change
 the installation location. make install might need sudo.
-
-### No Longer Supported: premake
-
-For other platforms you may be able to run `premake` in this directory.
-Premake can be obtained from:
-http://industriousone.com/premake
-
-For example, on Linux, you would type:
-
-    premake4 gmake
-
-This will create a gmake folder in the Build directory. From there you can run:
-
-    make config="debug"

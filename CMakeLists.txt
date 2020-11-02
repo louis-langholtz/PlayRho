@@ -2,8 +2,8 @@
 # Top level docs for 3.1.3 at: https://cmake.org/cmake/help/v3.1/
 # Commands herein described at: https://cmake.org/cmake/help/v3.1/manual/cmake-commands.7.html
 
-# Minimally require CMake version 3.1...
-cmake_minimum_required(VERSION 3.1)
+# Minimally require CMake version 3.16...
+cmake_minimum_required(VERSION 3.16)
 
 # Require C++17...
 set(CMAKE_CXX_STANDARD 17)
