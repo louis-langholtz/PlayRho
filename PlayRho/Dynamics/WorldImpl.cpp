@@ -2024,8 +2024,8 @@ ContactCounter WorldImpl::FindNewContacts()
     {
         Add(key);
     });
+    m_islandedContacts.resize(size(m_contactBuffer));
     const auto numContactsAfter = size(m_contacts);
-    m_islandedContacts.resize(numContactsAfter);
     return static_cast<ContactCounter>(numContactsAfter - numContactsBefore);
 }
 
