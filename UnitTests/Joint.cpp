@@ -169,13 +169,13 @@ TEST(Joint, TypeCast)
         const auto joint = Joint{};
         auto value = static_cast<const int*>(nullptr);
         EXPECT_NO_THROW(value = TypeCast<const int>(&joint));
-        EXPECT_EQ(value, nullptr);
+        EXPECT_TRUE(value == nullptr);
     }
     {
         auto joint = Joint{};
         auto value = static_cast<int*>(nullptr);
         EXPECT_NO_THROW(value = TypeCast<int>(&joint));
-        EXPECT_EQ(value, nullptr);
+        EXPECT_TRUE(value == nullptr);
     }
     {
         const auto joint = Joint{};

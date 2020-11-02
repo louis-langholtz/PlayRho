@@ -59,7 +59,7 @@ TEST(BlockAllocator, Allocate_and_Clear)
 
     auto ptr = allocator.Allocate(1);
     EXPECT_EQ(allocator.GetChunkCount(), decltype(allocator.GetChunkCount()){1});
-    EXPECT_NE(ptr, nullptr);
+    EXPECT_TRUE(ptr != nullptr);
     
     *static_cast<char*>(ptr) = 'B';
     
@@ -102,7 +102,7 @@ TEST(BlockAllocator, AllocateReturnsNullForZero)
 {
     BlockAllocator foo;
     ASSERT_EQ(foo.GetChunkCount(), BlockAllocator::size_type{0});
-    EXPECT_EQ(foo.Allocate(0), nullptr);
+    EXPECT_TRUE(foo.Allocate(0) == nullptr);
     EXPECT_EQ(foo.GetChunkCount(), BlockAllocator::size_type{0});
 }
 
@@ -110,7 +110,7 @@ TEST(BlockAllocator, AllocateArrayReturnsNullForZero)
 {
     BlockAllocator foo;
     ASSERT_EQ(foo.GetChunkCount(), BlockAllocator::size_type{0});
-    EXPECT_EQ(foo.AllocateArray<int>(0), nullptr);
+    EXPECT_TRUE(foo.AllocateArray<int>(0) == nullptr);
     EXPECT_EQ(foo.GetChunkCount(), BlockAllocator::size_type{0});
 }
 
@@ -119,7 +119,7 @@ TEST(BlockAllocator, AllocateNonNullForOverMaxBlockSize)
     BlockAllocator foo;
     ASSERT_EQ(foo.GetChunkCount(), BlockAllocator::size_type{0});
     const auto mem = foo.Allocate(BlockAllocator::GetMaxBlockSize() * 2);
-    EXPECT_NE(mem, nullptr);
+    EXPECT_TRUE(mem != nullptr);
     EXPECT_EQ(foo.GetChunkCount(), BlockAllocator::size_type{0});
     foo.Free(mem, BlockAllocator::GetMaxBlockSize() * 2);
 }
@@ -132,11 +132,11 @@ TEST(BlockAllocator, KeepsAllocatingAfterIncrement)
         for (auto times = BlockAllocator::ChunkSize/ BlockAllocator::GetMaxBlockSize(); times != 0; --times)
         {
             const auto mem = foo.Allocate(BlockAllocator::GetMaxBlockSize());
-            ASSERT_NE(mem, nullptr);
+            ASSERT_TRUE(mem != nullptr);
         }
     }
     EXPECT_EQ(foo.GetChunkCount(), BlockAllocator::GetChunkArrayIncrement());
     const auto mem = foo.Allocate(BlockAllocator::GetMaxBlockSize());
-    EXPECT_NE(mem, nullptr);
+    EXPECT_TRUE(mem != nullptr);
     EXPECT_EQ(foo.GetChunkCount(), BlockAllocator::GetChunkArrayIncrement() + 1);
 }

@@ -96,7 +96,7 @@ TEST(StackAllocator, uses_malloc_when_full)
     const auto preallocated_size = foo.GetPreallocatedSize();
     const auto p = foo.Allocate(preallocated_size);
     
-    EXPECT_NE(p, nullptr);
+    EXPECT_TRUE(p != nullptr);
     EXPECT_EQ(foo.GetEntryCount(), decltype(foo.GetEntryCount()){1});
     EXPECT_EQ(foo.GetIndex(), preallocated_size);
     EXPECT_EQ(foo.GetAllocation(), preallocated_size);
