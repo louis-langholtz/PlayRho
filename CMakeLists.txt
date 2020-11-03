@@ -46,7 +46,7 @@ option(PLAYRHO_BUILD_BENCHMARK "Build PlayRho Benchmark console application." OF
 option(PLAYRHO_BUILD_TESTBED "Build PlayRho Testbed GUI application." OFF)
 option(PLAYRHO_ENABLE_COVERAGE "Enable code coverage generation." OFF)
 
-set(PLAYRHO_VERSION 0.9.0)
+set(PLAYRHO_VERSION 0.12.0)
 set(LIB_INSTALL_DIR lib${LIB_SUFFIX})
 
 # Tell Microsoft Visual C (MSVC) to enable unwind semantics since it doesn't by default.
