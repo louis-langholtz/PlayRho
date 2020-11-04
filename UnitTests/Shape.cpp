@@ -19,12 +19,15 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
+
+#include <any>
 #include <chrono>
 
 using namespace playrho;
@@ -132,6 +135,34 @@ TEST(Shape, TypeCast)
 {
     const auto shape = Shape{};
     EXPECT_THROW(TypeCast<int>(shape), std::bad_cast);
+}
+
+TEST(Shape, ForConstantDataTypeCastIsLikeAnyCast)
+{
+    const auto foo = Shape{DiskShapeConf{1_m}};
+    const auto bar = std::any{DiskShapeConf{1_m}};
+    EXPECT_TRUE(TypeCast<const DiskShapeConf*>(&foo) == nullptr);
+    EXPECT_TRUE(std::any_cast<const DiskShapeConf*>(&bar) == nullptr);
+    EXPECT_TRUE(TypeCast<DiskShapeConf*>(&foo) == nullptr);
+    EXPECT_TRUE(std::any_cast<DiskShapeConf*>(&bar) == nullptr);
+    EXPECT_TRUE(TypeCast<const DiskShapeConf>(&foo) != nullptr);
+    EXPECT_TRUE(std::any_cast<const DiskShapeConf>(&bar) != nullptr);
+    EXPECT_TRUE(TypeCast<DiskShapeConf>(&foo) != nullptr);
+    EXPECT_TRUE(std::any_cast<DiskShapeConf>(&bar) != nullptr);
+}
+
+TEST(Shape, ForMutableDataTypeCastIsLikeAnyCast)
+{
+    auto foo = Shape{DiskShapeConf{1_m}};
+    auto bar = std::any{DiskShapeConf{1_m}};
+    EXPECT_TRUE(TypeCast<const DiskShapeConf*>(&foo) == nullptr);
+    EXPECT_TRUE(std::any_cast<const DiskShapeConf*>(&bar) == nullptr);
+    EXPECT_TRUE(TypeCast<DiskShapeConf*>(&foo) == nullptr);
+    EXPECT_TRUE(std::any_cast<DiskShapeConf*>(&bar) == nullptr);
+    EXPECT_TRUE(TypeCast<const DiskShapeConf>(&foo) != nullptr);
+    EXPECT_TRUE(std::any_cast<const DiskShapeConf>(&bar) != nullptr);
+    EXPECT_TRUE(TypeCast<DiskShapeConf>(&foo) != nullptr);
+    EXPECT_TRUE(std::any_cast<DiskShapeConf>(&bar) != nullptr);
 }
 
 TEST(Shape, types)

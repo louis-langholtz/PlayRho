@@ -204,3 +204,31 @@ TEST(Joint, TypeCast)
         EXPECT_EQ(TypeCast<const JointTester>(joint).number, 4);
     }
 }
+
+TEST(Joint, ForConstantDataTypeCastIsLikeAnyCast)
+{
+    const auto foo = Joint{JointTester{1}};
+    const auto bar = std::any{JointTester{1}};
+    EXPECT_TRUE(TypeCast<const JointTester*>(&foo) == nullptr);
+    EXPECT_TRUE(std::any_cast<const JointTester*>(&bar) == nullptr);
+    EXPECT_TRUE(TypeCast<JointTester*>(&foo) == nullptr);
+    EXPECT_TRUE(std::any_cast<JointTester*>(&bar) == nullptr);
+    EXPECT_TRUE(TypeCast<const JointTester>(&foo) != nullptr);
+    EXPECT_TRUE(std::any_cast<const JointTester>(&bar) != nullptr);
+    EXPECT_TRUE(TypeCast<JointTester>(&foo) != nullptr);
+    EXPECT_TRUE(std::any_cast<JointTester>(&bar) != nullptr);
+}
+
+TEST(Joint, ForMutableDataTypeCastIsLikeAnyCast)
+{
+    auto foo = Joint{JointTester{1}};
+    auto bar = std::any{JointTester{1}};
+    EXPECT_TRUE(TypeCast<const JointTester*>(&foo) == nullptr);
+    EXPECT_TRUE(std::any_cast<const JointTester*>(&bar) == nullptr);
+    EXPECT_TRUE(TypeCast<JointTester*>(&foo) == nullptr);
+    EXPECT_TRUE(std::any_cast<JointTester*>(&bar) == nullptr);
+    EXPECT_TRUE(TypeCast<const JointTester>(&foo) != nullptr);
+    EXPECT_TRUE(std::any_cast<const JointTester>(&bar) != nullptr);
+    EXPECT_TRUE(TypeCast<JointTester>(&foo) != nullptr);
+    EXPECT_TRUE(std::any_cast<JointTester>(&bar) != nullptr);
+}

@@ -44,6 +44,11 @@ namespace d2 {
 class Joint;
 class BodyConstraint;
 
+// Forward declare functions.
+// Note that these may be friend functions but that declaring these within the class that
+// they're to be friends of, doesn't also insure that they're found within the namespace
+// in terms of lookup.
+
 /// @brief Gets the identifier of the type of data this can be casted to.
 JointType GetType(const Joint& object) noexcept;
 
@@ -51,6 +56,7 @@ JointType GetType(const Joint& object) noexcept;
 /// @note The design for this was based off the design of the C++17 <code>std::any</code>
 ///   class and its associated <code>std::any_cast</code> function. The code for this is based
 ///   off of the <code>std::any</code> code from the LLVM Project.
+/// @see https://llvm.org/
 template <typename T>
 std::add_pointer_t<std::add_const_t<T>> TypeCast(const Joint* value) noexcept;
 
@@ -58,6 +64,7 @@ std::add_pointer_t<std::add_const_t<T>> TypeCast(const Joint* value) noexcept;
 /// @note The design for this was based off the design of the C++17 <code>std::any</code>
 ///   class and its associated <code>std::any_cast</code> function. The code for this is based
 ///   off of the <code>std::any</code> implementation from the LLVM Project.
+/// @see https://llvm.org/
 template <typename T>
 std::add_pointer_t<T> TypeCast(Joint* value) noexcept;
 
@@ -373,6 +380,7 @@ BodyConstraint& At(std::vector<BodyConstraint>& container, BodyID key);
 ///   off of the <code>std::any</code> implementation from the LLVM Project.
 /// @throws std::bad_cast If the given template parameter type isn't the type of this
 ///   joint's configuration value.
+/// @see https://llvm.org/
 /// @relatedalso Joint
 template <typename T>
 inline T TypeCast(const Joint& value)
@@ -391,6 +399,8 @@ inline T TypeCast(const Joint& value)
 /// @note The design for this was based off the design of the C++17 <code>std::any</code>
 ///   class and its associated <code>std::any_cast</code> function. The code for this is based
 ///   off of the <code>std::any</code> implementation from the LLVM Project.
+/// @see https://llvm.org/
+/// @relatedalso Joint
 template <typename T>
 inline T TypeCast(Joint& value)
 {
@@ -408,6 +418,8 @@ inline T TypeCast(Joint& value)
 /// @note The design for this was based off the design of the C++17 <code>std::any</code>
 ///   class and its associated <code>std::any_cast</code> function. The code for this is based
 ///   off of the <code>std::any</code> implementation from the LLVM Project.
+/// @see https://llvm.org/
+/// @relatedalso Joint
 template <typename T>
 inline T TypeCast(Joint&& value)
 {
@@ -421,10 +433,6 @@ inline T TypeCast(Joint&& value)
     return static_cast<T>(std::move(*tmp));
 }
 
-/// @brief Converts the given joint into its current configuration value.
-/// @note The design for this was based off the design of the C++17 <code>std::any</code>
-///   class and its associated <code>std::any_cast</code> function. The code for this is based
-///   off of the <code>std::any</code> implementation from the LLVM Project.
 template <typename T>
 inline std::add_pointer_t<std::add_const_t<T>> TypeCast(const Joint* value) noexcept
 {
@@ -432,10 +440,6 @@ inline std::add_pointer_t<std::add_const_t<T>> TypeCast(const Joint* value) noex
     return ::playrho::d2::TypeCast<T>(const_cast<Joint*>(value));
 }
 
-/// @brief Converts the given joint into its current configuration value.
-/// @note The design for this was based off the design of the C++17 <code>std::any</code>
-///   class and its associated <code>std::any_cast</code> function. The code for this is based
-///   off of the <code>std::any</code> implementation from the LLVM Project.
 template <typename T>
 inline std::add_pointer_t<T> TypeCast(Joint* value) noexcept
 {
