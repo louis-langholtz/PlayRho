@@ -244,20 +244,20 @@ TEST(World, Clear)
     EXPECT_LE(f2, f1);
 }
 
-TEST(World, SetSubStepping)
+TEST(World, SetSubSteppingFreeFunction)
 {
     World world;
-    ASSERT_FALSE(world.GetSubStepping());
-    world.SetSubStepping(true);
-    EXPECT_TRUE(world.GetSubStepping());
-    world.SetSubStepping(false);
-    EXPECT_FALSE(world.GetSubStepping());
-    world.SetSubStepping(true);
-    EXPECT_TRUE(world.GetSubStepping());
+    ASSERT_FALSE(GetSubStepping(world));
+    EXPECT_NO_THROW(SetSubStepping(world, true));
+    EXPECT_TRUE(GetSubStepping(world));
+    EXPECT_NO_THROW(SetSubStepping(world, false));
+    EXPECT_FALSE(GetSubStepping(world));
+    EXPECT_NO_THROW(SetSubStepping(world, true));
+    EXPECT_TRUE(GetSubStepping(world));
     auto stepConf = StepConf{};
     stepConf.deltaTime = Real(1) / 100_Hz;
-    world.Step(stepConf);
-    EXPECT_TRUE(world.GetSubStepping());
+    EXPECT_NO_THROW(Step(world, stepConf));
+    EXPECT_TRUE(GetSubStepping(world));
 }
 
 TEST(World, IsStepComplete)
@@ -1209,7 +1209,7 @@ TEST(World, GetTouchingCountFreeFunction)
     }
 }
 
-TEST(World, ShiftOrigin)
+TEST(World, ShiftOriginFreeFunction)
 {
     const auto origin = Length2{0_m, 0_m};
     const auto location = Length2{1_m, 1_m};
@@ -1217,14 +1217,14 @@ TEST(World, ShiftOrigin)
     ASSERT_NE(origin, location);
 
     World world;
-    EXPECT_NO_THROW(world.ShiftOrigin(origin));
+    EXPECT_NO_THROW(ShiftOrigin(world, origin));
     
     auto bodyConf = BodyConf{};
     bodyConf.UseLocation(location);
-    const auto body = world.CreateBody(bodyConf);
+    const auto body = CreateBody(world, bodyConf);
     EXPECT_EQ(GetLocation(world, body), location);
 
-    EXPECT_NO_THROW(world.ShiftOrigin(location));
+    EXPECT_NO_THROW(ShiftOrigin(world, location));
     EXPECT_EQ(GetLocation(world, body), origin);
 }
 
@@ -1559,6 +1559,7 @@ struct MyContactListener
         body_b[0] = GetLocation(world, bB);
         
         EXPECT_THROW(world.CreateBody(), WrongState);
+        EXPECT_THROW(world.SetJoint(InvalidJointID, Joint{}), WrongState);
         const auto typeA = GetType(world, bA);
         if (typeA != BodyType::Kinematic)
         {

@@ -703,3 +703,15 @@ TEST(WorldImpl, SetTypeBody)
     EXPECT_EQ(GetType(world.GetBody(body)), BodyType::Dynamic);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 1u);
 }
+
+TEST(WorldImpl, ThrowsLengthErrorOnMaxFitures)
+{
+    auto world = WorldImpl{};
+    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto shape = Shape{DiskShapeConf{}};
+    const auto conf = FixtureConf{}.UseBody(body).UseShape(shape);
+    for (auto i = FixtureCounter{0u}; i < MaxFixtures; ++i) {
+        EXPECT_NO_THROW(world.CreateFixture(conf));
+    }
+    EXPECT_THROW(world.CreateFixture(conf), LengthError);
+}
