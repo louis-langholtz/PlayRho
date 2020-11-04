@@ -197,7 +197,6 @@ var hierarchy =
     [ "playrho::NoOpChecker< T >", "structplayrho_1_1NoOpChecker.html", null ],
     [ "std::not_equal_to<::playrho::propagate_const< T > >", "structstd_1_1not__equal__to_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html", null ],
     [ "std::numeric_limits< playrho::Fixed< BT, FB > >", "classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html", null ],
-    [ "playrho::OptionalValue< T >", "classplayrho_1_1OptionalValue.html", null ],
     [ "playrho::d2::Manifold::Point", "structplayrho_1_1d2_1_1Manifold_1_1Point.html", null ],
     [ "playrho::d2::VelocityConstraint::Point", "structplayrho_1_1d2_1_1VelocityConstraint_1_1Point.html", null ],
     [ "playrho::d2::Manifold::PointArray", "structplayrho_1_1d2_1_1Manifold_1_1PointArray.html", null ],

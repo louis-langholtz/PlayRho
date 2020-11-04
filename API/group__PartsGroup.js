@@ -85,7 +85,7 @@ var group__PartsGroup =
     [ "Shape", "classplayrho_1_1d2_1_1Shape.html", [
       [ "Concept", "structplayrho_1_1d2_1_1Shape_1_1Concept.html", [
         [ "~Concept", "structplayrho_1_1d2_1_1Shape_1_1Concept.html#a6c13ebcbf99211b0fa3411d9ef499ac6", null ],
-        [ "Clone", "structplayrho_1_1d2_1_1Shape_1_1Concept.html#adc2db77c430b1e5946cc8ab7b6be1a95", null ],
+        [ "Clone_", "structplayrho_1_1d2_1_1Shape_1_1Concept.html#a6c43f482245b56de3d68bbaa14e89a18", null ],
         [ "GetChild_", "structplayrho_1_1d2_1_1Shape_1_1Concept.html#a56e8193cb70e927c06e8c0d452b03791", null ],
         [ "GetChildCount_", "structplayrho_1_1d2_1_1Shape_1_1Concept.html#a660fac4e9cf65aa5d96295c54f42713d", null ],
         [ "GetData_", "structplayrho_1_1d2_1_1Shape_1_1Concept.html#ab527f70b26af44030cace857f6e522ff", null ],
@@ -103,7 +103,7 @@ var group__PartsGroup =
       [ "Model", "structplayrho_1_1d2_1_1Shape_1_1Model.html", [
         [ "data_type", "structplayrho_1_1d2_1_1Shape_1_1Model.html#a02d91452eb5cb1b556aff30c934aceea", null ],
         [ "Model", "structplayrho_1_1d2_1_1Shape_1_1Model.html#ae8b7e23f17e4e19eefe90eed03068519", null ],
-        [ "Clone", "structplayrho_1_1d2_1_1Shape_1_1Model.html#aa1682065af401bde88baa2de1dc16b8f", null ],
+        [ "Clone_", "structplayrho_1_1d2_1_1Shape_1_1Model.html#adced4b89c79f938286ece46243937d30", null ],
         [ "GetChild_", "structplayrho_1_1d2_1_1Shape_1_1Model.html#a8dfe5bc2e335cd35c9ea5f5d32dfcc9c", null ],
         [ "GetChildCount_", "structplayrho_1_1d2_1_1Shape_1_1Model.html#a44e7fc4b6dd5660bcfb11414f288c94f", null ],
         [ "GetData_", "structplayrho_1_1d2_1_1Shape_1_1Model.html#acdb83b02edddc59a919e7231fe6818b4", null ],
@@ -140,7 +140,8 @@ var group__PartsGroup =
       [ "RayCast", "group__RayCastGroup.html#gaada5f6c5635166baaf1bc81636d8b93a", null ],
       [ "TestPoint", "group__TestPointGroup.html#gafcfbf811dc989043838f0a4c7c64b59b", null ],
       [ "Transform", "classplayrho_1_1d2_1_1Shape.html#a5affc9e0eb1efb455e629467b34f12fd", null ],
-      [ "TypeCast", "classplayrho_1_1d2_1_1Shape.html#ab5cc2677acebab1f72a7ad5f1f136e2b", null ],
+      [ "TypeCast", "classplayrho_1_1d2_1_1Shape.html#a2552f9d7b9b8d2c5cf4b5ef71140b709", null ],
+      [ "TypeCast", "classplayrho_1_1d2_1_1Shape.html#a26f0e014fb16e6493ff6fb297d6a726a", null ],
       [ "m_self", "classplayrho_1_1d2_1_1Shape.html#aed8187741a62d95d0d6e0ab657fed045", null ]
     ] ]
 ];

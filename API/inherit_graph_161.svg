@@ -12,10 +12,10 @@
 <!-- Node0 -->
 <g id="node1" class="node">
 <title>Node0</title>
-<g id="a_node1"><a xlink:href="structplayrho_1_1TypeInfo_3_01Fixed32_01_4.html" target="_top" xlink:title="Type info specialization for Fixed32.">
+<g id="a_node1"><a xlink:href="structplayrho_1_1TypeInfo_3_01float_01_4.html" target="_top" xlink:title="Type info specialization for float.">
 <polygon fill="white" stroke="black" points="0,-0.5 0,-30.5 98,-30.5 98,-0.5 0,-0.5"/>
 <text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::TypeInfo&lt;</text>
-<text text-anchor="middle" x="49" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00"> Fixed32 &gt;</text>
+<text text-anchor="middle" x="49" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00"> float &gt;</text>
 </a>
 </g>
 </g>

@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.11.0</span>
+   &#160;<span id="projectnumber">0.12.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -269,9 +269,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ae40d0b25bdf854ee96e3e58acc700699"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ae40d0b25bdf854ee96e3e58acc700699">GetInvDeltaTime</a> () const noexcept</td></tr>
 <tr class="memdesc:ae40d0b25bdf854ee96e3e58acc700699"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the inverse delta time.  <a href="classplayrho_1_1d2_1_1WorldImpl.html#ae40d0b25bdf854ee96e3e58acc700699">More...</a><br /></td></tr>
 <tr class="separator:ae40d0b25bdf854ee96e3e58acc700699"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14e00b761ef7c1275bf5596a48f4b3b0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a15fb4e1b050424d59666b3b2b7b6c935">FixtureCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a14e00b761ef7c1275bf5596a48f4b3b0">GetShapeCount</a> () const noexcept</td></tr>
-<tr class="memdesc:a14e00b761ef7c1275bf5596a48f4b3b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the shape count.  <a href="classplayrho_1_1d2_1_1WorldImpl.html#a14e00b761ef7c1275bf5596a48f4b3b0">More...</a><br /></td></tr>
-<tr class="separator:a14e00b761ef7c1275bf5596a48f4b3b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b18a1dac9b57e31b5d495a2a0a7793d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a81c223170ec9f76d22ac728a3f81926f">Proxies</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a4b18a1dac9b57e31b5d495a2a0a7793d">GetProxies</a> () const noexcept</td></tr>
 <tr class="memdesc:a4b18a1dac9b57e31b5d495a2a0a7793d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the dynamic tree leaves queued for finding new contacts.  <a href="classplayrho_1_1d2_1_1WorldImpl.html#a4b18a1dac9b57e31b5d495a2a0a7793d">More...</a><br /></td></tr>
 <tr class="separator:a4b18a1dac9b57e31b5d495a2a0a7793d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -719,53 +716,58 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a04becf4f4af1f6e8b8c5ba66f200dffc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a post-solve contact event listener. <br /></td></tr>
 <tr class="separator:a04becf4f4af1f6e8b8c5ba66f200dffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa25253387bf26e86389e48ae89e2f0d8"><td class="memItemLeft" align="right" valign="top"><a id="aa25253387bf26e86389e48ae89e2f0d8"></a>
-<a class="el" href="structplayrho_1_1StepStats.html">StepStats</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Step</b> (<a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world, const <a class="el" href="structplayrho_1_1StepConf.html">StepConf</a> &amp;conf)</td></tr>
+<a class="el" href="structplayrho_1_1StepStats.html">StepStats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aa25253387bf26e86389e48ae89e2f0d8">Step</a> (<a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world, const <a class="el" href="structplayrho_1_1StepConf.html">StepConf</a> &amp;conf)</td></tr>
+<tr class="memdesc:aa25253387bf26e86389e48ae89e2f0d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Steps the given world the specified amount. <br /></td></tr>
 <tr class="separator:aa25253387bf26e86389e48ae89e2f0d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af96a54f5afb3a967e0ef397c0beceba8"><td class="memItemLeft" align="right" valign="top"><a id="af96a54f5afb3a967e0ef397c0beceba8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ShiftOrigin</b> (<a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world, <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> newOrigin)</td></tr>
+<tr class="memitem:af96a54f5afb3a967e0ef397c0beceba8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#af96a54f5afb3a967e0ef397c0beceba8">ShiftOrigin</a> (<a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world, <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> newOrigin)</td></tr>
+<tr class="memdesc:af96a54f5afb3a967e0ef397c0beceba8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shifts the world origin.  <a href="classplayrho_1_1d2_1_1WorldImpl.html#af96a54f5afb3a967e0ef397c0beceba8">More...</a><br /></td></tr>
 <tr class="separator:af96a54f5afb3a967e0ef397c0beceba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3011d97673613dced0ff483a59cbdde9"><td class="memItemLeft" align="right" valign="top"><a id="a3011d97673613dced0ff483a59cbdde9"></a>
-<a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; std::vector&lt; <a class="el" href="namespaceplayrho.html#a7eca3bae90f8196745191dc0e4c78480">BodyID</a> &gt;::const_iterator &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetBodies</b> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; std::vector&lt; <a class="el" href="namespaceplayrho.html#a7eca3bae90f8196745191dc0e4c78480">BodyID</a> &gt;::const_iterator &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a3011d97673613dced0ff483a59cbdde9">GetBodies</a> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<tr class="memdesc:a3011d97673613dced0ff483a59cbdde9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the bodies of the specified world. <br /></td></tr>
 <tr class="separator:a3011d97673613dced0ff483a59cbdde9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0d6997a55f534b37394b53bbecd8b91"><td class="memItemLeft" align="right" valign="top"><a id="ad0d6997a55f534b37394b53bbecd8b91"></a>
-<a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; std::vector&lt; <a class="el" href="namespaceplayrho.html#a7eca3bae90f8196745191dc0e4c78480">BodyID</a> &gt;::const_iterator &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetBodiesForProxies</b> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<tr class="memitem:ad0d6997a55f534b37394b53bbecd8b91"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; std::vector&lt; <a class="el" href="namespaceplayrho.html#a7eca3bae90f8196745191dc0e4c78480">BodyID</a> &gt;::const_iterator &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ad0d6997a55f534b37394b53bbecd8b91">GetBodiesForProxies</a> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<tr class="memdesc:ad0d6997a55f534b37394b53bbecd8b91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the bodies-for-proxies range for this world.  <a href="classplayrho_1_1d2_1_1WorldImpl.html#ad0d6997a55f534b37394b53bbecd8b91">More...</a><br /></td></tr>
 <tr class="separator:ad0d6997a55f534b37394b53bbecd8b91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0548905239581e1b5de261dc7e3dbeb"><td class="memItemLeft" align="right" valign="top"><a id="ae0548905239581e1b5de261dc7e3dbeb"></a>
-<a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; std::vector&lt; <a class="el" href="namespaceplayrho.html#aed10ace7e6267068035ed85c63b8a70a">FixtureID</a> &gt;::const_iterator &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetFixturesForProxies</b> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<tr class="memitem:ae0548905239581e1b5de261dc7e3dbeb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; std::vector&lt; <a class="el" href="namespaceplayrho.html#aed10ace7e6267068035ed85c63b8a70a">FixtureID</a> &gt;::const_iterator &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ae0548905239581e1b5de261dc7e3dbeb">GetFixturesForProxies</a> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<tr class="memdesc:ae0548905239581e1b5de261dc7e3dbeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the fixtures-for-proxies range for this world.  <a href="classplayrho_1_1d2_1_1WorldImpl.html#ae0548905239581e1b5de261dc7e3dbeb">More...</a><br /></td></tr>
 <tr class="separator:ae0548905239581e1b5de261dc7e3dbeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae575bb139a5db8094e954d44ebe26648"><td class="memItemLeft" align="right" valign="top"><a id="ae575bb139a5db8094e954d44ebe26648"></a>
-<a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; std::vector&lt; <a class="el" href="namespaceplayrho.html#a429482b9caddf0eca0531edcf62deb34">JointID</a> &gt;::const_iterator &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetJoints</b> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; std::vector&lt; <a class="el" href="namespaceplayrho.html#a429482b9caddf0eca0531edcf62deb34">JointID</a> &gt;::const_iterator &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ae575bb139a5db8094e954d44ebe26648">GetJoints</a> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<tr class="memdesc:ae575bb139a5db8094e954d44ebe26648"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the joints of the specified world. <br /></td></tr>
 <tr class="separator:ae575bb139a5db8094e954d44ebe26648"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab22950c2b077f1dcb8ca254111757a0"><td class="memItemLeft" align="right" valign="top"><a id="aab22950c2b077f1dcb8ca254111757a0"></a>
-<a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; std::vector&lt; <a class="el" href="namespaceplayrho_1_1d2.html#acd3332ed6985dc65c60e8e6ea41c898b">KeyedContactPtr</a> &gt;::const_iterator &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetContacts</b> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; std::vector&lt; <a class="el" href="namespaceplayrho_1_1d2.html#acd3332ed6985dc65c60e8e6ea41c898b">KeyedContactPtr</a> &gt;::const_iterator &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aab22950c2b077f1dcb8ca254111757a0">GetContacts</a> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<tr class="memdesc:aab22950c2b077f1dcb8ca254111757a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the contacts of the specified world. <br /></td></tr>
 <tr class="separator:aab22950c2b077f1dcb8ca254111757a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f6e06ae5d756249d2d948e3a11d4d20"><td class="memItemLeft" align="right" valign="top"><a id="a9f6e06ae5d756249d2d948e3a11d4d20"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsLocked</b> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a9f6e06ae5d756249d2d948e3a11d4d20">IsLocked</a> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<tr class="memdesc:a9f6e06ae5d756249d2d948e3a11d4d20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the world locked (in the middle of a time step). <br /></td></tr>
 <tr class="separator:a9f6e06ae5d756249d2d948e3a11d4d20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29d79bc60866034a46ee93cef089306d"><td class="memItemLeft" align="right" valign="top"><a id="a29d79bc60866034a46ee93cef089306d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsStepComplete</b> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<tr class="memitem:a29d79bc60866034a46ee93cef089306d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a29d79bc60866034a46ee93cef089306d">IsStepComplete</a> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<tr class="memdesc:a29d79bc60866034a46ee93cef089306d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not "step" is complete.  <a href="classplayrho_1_1d2_1_1WorldImpl.html#a29d79bc60866034a46ee93cef089306d">More...</a><br /></td></tr>
 <tr class="separator:a29d79bc60866034a46ee93cef089306d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab956952cfa59979aef58175119efc46b"><td class="memItemLeft" align="right" valign="top"><a id="ab956952cfa59979aef58175119efc46b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetSubStepping</b> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<tr class="memitem:ab956952cfa59979aef58175119efc46b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ab956952cfa59979aef58175119efc46b">GetSubStepping</a> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<tr class="memdesc:ab956952cfa59979aef58175119efc46b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether or not sub-stepping is enabled.  <a href="classplayrho_1_1d2_1_1WorldImpl.html#ab956952cfa59979aef58175119efc46b">More...</a><br /></td></tr>
 <tr class="separator:ab956952cfa59979aef58175119efc46b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2e1393346f2feb9e6cd1261194cd52a"><td class="memItemLeft" align="right" valign="top"><a id="ae2e1393346f2feb9e6cd1261194cd52a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSubStepping</b> (<a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world, bool value) noexcept</td></tr>
+<tr class="memitem:ae2e1393346f2feb9e6cd1261194cd52a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ae2e1393346f2feb9e6cd1261194cd52a">SetSubStepping</a> (<a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world, bool value) noexcept</td></tr>
+<tr class="memdesc:ae2e1393346f2feb9e6cd1261194cd52a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables single stepped continuous physics.  <a href="classplayrho_1_1d2_1_1WorldImpl.html#ae2e1393346f2feb9e6cd1261194cd52a">More...</a><br /></td></tr>
 <tr class="separator:ae2e1393346f2feb9e6cd1261194cd52a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3dc85a3fd79661b17f225819fc61ca0c"><td class="memItemLeft" align="right" valign="top"><a id="a3dc85a3fd79661b17f225819fc61ca0c"></a>
-<a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetMinVertexRadius</b> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a3dc85a3fd79661b17f225819fc61ca0c">GetMinVertexRadius</a> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<tr class="memdesc:a3dc85a3fd79661b17f225819fc61ca0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the minimum vertex radius that shapes in this world can be. <br /></td></tr>
 <tr class="separator:a3dc85a3fd79661b17f225819fc61ca0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85a5c5aa03607543a1d1dea2a31520af"><td class="memItemLeft" align="right" valign="top"><a id="a85a5c5aa03607543a1d1dea2a31520af"></a>
-<a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetMaxVertexRadius</b> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a85a5c5aa03607543a1d1dea2a31520af">GetMaxVertexRadius</a> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<tr class="memdesc:a85a5c5aa03607543a1d1dea2a31520af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the maximum vertex radius that shapes in this world can be. <br /></td></tr>
 <tr class="separator:a85a5c5aa03607543a1d1dea2a31520af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21dff1f3172e2ee11f203920bf62ba28"><td class="memItemLeft" align="right" valign="top"><a id="a21dff1f3172e2ee11f203920bf62ba28"></a>
-<a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetInvDeltaTime</b> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<tr class="memitem:a21dff1f3172e2ee11f203920bf62ba28"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a21dff1f3172e2ee11f203920bf62ba28">GetInvDeltaTime</a> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<tr class="memdesc:a21dff1f3172e2ee11f203920bf62ba28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the inverse delta time.  <a href="classplayrho_1_1d2_1_1WorldImpl.html#a21dff1f3172e2ee11f203920bf62ba28">More...</a><br /></td></tr>
 <tr class="separator:a21dff1f3172e2ee11f203920bf62ba28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74860eba448f1106cdc81246a25d29fe"><td class="memItemLeft" align="right" valign="top"><a id="a74860eba448f1106cdc81246a25d29fe"></a>
-const <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html">DynamicTree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetTree</b> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+const <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html">DynamicTree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a74860eba448f1106cdc81246a25d29fe">GetTree</a> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
+<tr class="memdesc:a74860eba448f1106cdc81246a25d29fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets access to the broad-phase dynamic tree information. <br /></td></tr>
 <tr class="separator:a74860eba448f1106cdc81246a25d29fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3b84d96d20489bd64dc43380537110d"><td class="memItemLeft" align="right" valign="top"><a id="ac3b84d96d20489bd64dc43380537110d"></a>
-<a class="el" href="namespaceplayrho.html#a15fb4e1b050424d59666b3b2b7b6c935">FixtureCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetShapeCount</b> (const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;world) noexcept</td></tr>
-<tr class="separator:ac3b84d96d20489bd64dc43380537110d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Definition of a "world" implementation. </p>
@@ -1461,6 +1463,8 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
 <p>Gets a range enumerating the bodies currently existing within this world. These are the bodies that had been created from previous calls to the <code><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a56f095fe60a50b47f9aa2f3d6664e3f2" title="Creates a rigid body with the given configuration.">CreateBody(const BodyConf&amp;)</a></code> method that haven't yet been destroyed. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World.">Body</a> range that can be iterated over using its begin and end methods or using ranged-based for-loops. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a56f095fe60a50b47f9aa2f3d6664e3f2" title="Creates a rigid body with the given configuration.">CreateBody(const BodyConf&amp;)</a>. </dd></dl>
 
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a3011d97673613dced0ff483a59cbdde9">playrho::d2::GetBodies()</a>.</p>
+
 </div>
 </div>
 <a id="a8567fde7dfecd3161c7a1d15dd1a6d1e"></a>
@@ -1488,6 +1492,8 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
 
 <p>Gets the bodies-for-proxies range for this world. </p>
 <p>Provides insight on what bodies have been queued for proxy processing during the next call to the world step method. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a221c003be264927ac01d690712b4551b" title="Steps the world simulation according to the given configuration.">Step</a>. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#ad0d6997a55f534b37394b53bbecd8b91">playrho::d2::GetBodiesForProxies()</a>.</p>
 
 </div>
 </div>
@@ -1687,6 +1693,8 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
 <p>Gets the fixtures-for-proxies range for this world. </p>
 <p>Provides insight on what fixtures have been queued for proxy processing during the next call to the world step method. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a221c003be264927ac01d690712b4551b" title="Steps the world simulation according to the given configuration.">Step</a>. </dd></dl>
 
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#ae0548905239581e1b5de261dc7e3dbeb">playrho::d2::GetFixturesForProxies()</a>.</p>
+
 </div>
 </div>
 <a id="ae40d0b25bdf854ee96e3e58acc700699"></a>
@@ -1714,6 +1722,8 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
 
 <p>Gets the inverse delta time. </p>
 <p>Gets the inverse delta time that was set on construction or assignment, and updated on every call to the <code><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a221c003be264927ac01d690712b4551b" title="Steps the world simulation according to the given configuration.">Step()</a></code> method having a non-zero delta-time. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a221c003be264927ac01d690712b4551b" title="Steps the world simulation according to the given configuration.">Step</a>. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a21dff1f3172e2ee11f203920bf62ba28">playrho::d2::GetInvDeltaTime()</a>.</p>
 
 </div>
 </div>
@@ -1884,34 +1894,6 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
 
 </div>
 </div>
-<a id="a14e00b761ef7c1275bf5596a48f4b3b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14e00b761ef7c1275bf5596a48f4b3b0">&#9670;&nbsp;</a></span>GetShapeCount()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespaceplayrho.html#a15fb4e1b050424d59666b3b2b7b6c935">FixtureCounter</a> playrho::d2::WorldImpl::GetShapeCount </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets the shape count. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Consider removing this function. </dd></dl>
-
-</div>
-</div>
 <a id="a94672b3b074267dea80f38ea49cba7e2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a94672b3b074267dea80f38ea49cba7e2">&#9670;&nbsp;</a></span>GetSoonestContact()</h2>
 
@@ -1977,6 +1959,8 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
 <p>Gets whether or not sub-stepping is enabled. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a700e5bd0048377abd5302b6008bfe8fa" title="Enables/disables single stepped continuous physics.">SetSubStepping</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a742823558ff8293abee726b329ccfacf" title="Whether or not &quot;step&quot; is complete.">IsStepComplete</a>. </dd></dl>
 
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#ab956952cfa59979aef58175119efc46b">playrho::d2::GetSubStepping()</a>.</p>
+
 </div>
 </div>
 <a id="a742823558ff8293abee726b329ccfacf"></a>
@@ -2005,6 +1989,8 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
 <p>Whether or not "step" is complete. </p>
 <p>The "step" is completed when there are no more TOI events for the current time step. </p><dl class="section return"><dt>Returns</dt><dd><code>true</code> unless sub-stepping is enabled and the step method returned without finishing all of its sub-steps. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aea1de488b1ed5f632f987a1c4b3013f0" title="Gets whether or not sub-stepping is enabled.">GetSubStepping</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a700e5bd0048377abd5302b6008bfe8fa" title="Enables/disables single stepped continuous physics.">SetSubStepping</a>. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a29d79bc60866034a46ee93cef089306d">playrho::d2::IsStepComplete()</a>.</p>
 
 </div>
 </div>
@@ -2316,6 +2302,8 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
 <dl class="section post"><dt>Postcondition</dt><dd>The <code><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aea1de488b1ed5f632f987a1c4b3013f0" title="Gets whether or not sub-stepping is enabled.">GetSubStepping()</a></code> method will return the value this method was called with. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a742823558ff8293abee726b329ccfacf" title="Whether or not &quot;step&quot; is complete.">IsStepComplete</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aea1de488b1ed5f632f987a1c4b3013f0" title="Gets whether or not sub-stepping is enabled.">GetSubStepping</a>. </dd></dl>
 
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#ae2e1393346f2feb9e6cd1261194cd52a">playrho::d2::SetSubStepping()</a>.</p>
+
 </div>
 </div>
 <a id="a1d280b15a6d77c374c2515363c16cf28"></a>
@@ -2351,6 +2339,8 @@ The body shift formula is: <code>position -= newOrigin</code>. </dd></dl>
   </table>
   </dd>
 </dl>
+
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#af96a54f5afb3a967e0ef397c0beceba8">playrho::d2::ShiftOrigin()</a>.</p>
 
 </div>
 </div>
@@ -2630,6 +2620,8 @@ The fixtures for proxies queue will be empty.</dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a8567fde7dfecd3161c7a1d15dd1a6d1e" title="Gets the bodies-for-proxies range for this world.">GetBodiesForProxies</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a4a983b70cb0418c8484c695503003158" title="Gets the fixtures-for-proxies range for this world.">GetFixturesForProxies</a>. </dd></dl>
 
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#aa25253387bf26e86389e48ae89e2f0d8">playrho::d2::Step()</a>.</p>
+
 </div>
 </div>
 <a id="a61684b789cd63a2f0293c9caae9db832"></a>
@@ -2792,6 +2784,35 @@ Touching related state depends on the following data:<ul>
 </div>
 </div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="ad0d6997a55f534b37394b53bbecd8b91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0d6997a55f534b37394b53bbecd8b91">&#9670;&nbsp;</a></span>GetBodiesForProxies()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; std::vector&lt; <a class="el" href="namespaceplayrho.html#a7eca3bae90f8196745191dc0e4c78480">BodyID</a> &gt;::const_iterator &gt; GetBodiesForProxies </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the bodies-for-proxies range for this world. </p>
+<p>Provides insight on what bodies have been queued for proxy processing during the next call to the world step method. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a221c003be264927ac01d690712b4551b" title="Steps the world simulation according to the given configuration.">WorldImpl::Step</a>. </dd></dl>
+
+</div>
+</div>
 <a id="a0d08d623ac10313556747b49a49dbb4a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0d08d623ac10313556747b49a49dbb4a">&#9670;&nbsp;</a></span>GetBody()</h2>
 
@@ -3044,6 +3065,64 @@ Touching related state depends on the following data:<ul>
 
 </div>
 </div>
+<a id="ae0548905239581e1b5de261dc7e3dbeb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0548905239581e1b5de261dc7e3dbeb">&#9670;&nbsp;</a></span>GetFixturesForProxies()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; std::vector&lt; <a class="el" href="namespaceplayrho.html#aed10ace7e6267068035ed85c63b8a70a">FixtureID</a> &gt;::const_iterator &gt; GetFixturesForProxies </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the fixtures-for-proxies range for this world. </p>
+<p>Provides insight on what fixtures have been queued for proxy processing during the next call to the world step method. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a221c003be264927ac01d690712b4551b" title="Steps the world simulation according to the given configuration.">Step</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a21dff1f3172e2ee11f203920bf62ba28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21dff1f3172e2ee11f203920bf62ba28">&#9670;&nbsp;</a></span>GetInvDeltaTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> GetInvDeltaTime </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the inverse delta time. </p>
+<p>Gets the inverse delta time that was set on construction or assignment, and updated on every call to the <code><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a221c003be264927ac01d690712b4551b" title="Steps the world simulation according to the given configuration.">Step()</a></code> method having a non-zero delta-time. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a221c003be264927ac01d690712b4551b" title="Steps the world simulation according to the given configuration.">Step</a>. </dd></dl>
+
+</div>
+</div>
 <a id="a2a1806882b555f6b9573b9c812f5a149"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2a1806882b555f6b9573b9c812f5a149">&#9670;&nbsp;</a></span>GetJoints()</h2>
 
@@ -3085,6 +3164,65 @@ Touching related state depends on the following data:<ul>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ab956952cfa59979aef58175119efc46b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab956952cfa59979aef58175119efc46b">&#9670;&nbsp;</a></span>GetSubStepping()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GetSubStepping </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets whether or not sub-stepping is enabled. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a700e5bd0048377abd5302b6008bfe8fa" title="Enables/disables single stepped continuous physics.">SetSubStepping</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a742823558ff8293abee726b329ccfacf" title="Whether or not &quot;step&quot; is complete.">IsStepComplete</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a29d79bc60866034a46ee93cef089306d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29d79bc60866034a46ee93cef089306d">&#9670;&nbsp;</a></span>IsStepComplete()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool IsStepComplete </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not "step" is complete. </p>
+<p>The "step" is completed when there are no more TOI events for the current time step. </p><dl class="section return"><dt>Returns</dt><dd><code>true</code> unless sub-stepping is enabled and the step method returned without finishing all of its sub-steps. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aea1de488b1ed5f632f987a1c4b3013f0" title="Gets whether or not sub-stepping is enabled.">GetSubStepping</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a700e5bd0048377abd5302b6008bfe8fa" title="Enables/disables single stepped continuous physics.">SetSubStepping</a>. </dd></dl>
 
 </div>
 </div>
@@ -3238,6 +3376,102 @@ Touching related state depends on the following data:<ul>
 
 </div>
 </div>
+<a id="ae2e1393346f2feb9e6cd1261194cd52a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2e1393346f2feb9e6cd1261194cd52a">&#9670;&nbsp;</a></span>SetSubStepping()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SetSubStepping </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enables/disables single stepped continuous physics. </p>
+<dl class="section note"><dt>Note</dt><dd>This is not normally used. Enabling sub-stepping is meant for testing. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>The <code><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aea1de488b1ed5f632f987a1c4b3013f0" title="Gets whether or not sub-stepping is enabled.">GetSubStepping()</a></code> method will return the value this method was called with. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a742823558ff8293abee726b329ccfacf" title="Whether or not &quot;step&quot; is complete.">IsStepComplete</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aea1de488b1ed5f632f987a1c4b3013f0" title="Gets whether or not sub-stepping is enabled.">GetSubStepping</a>. </dd></dl>
+
+</div>
+</div>
+<a id="af96a54f5afb3a967e0ef397c0beceba8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af96a54f5afb3a967e0ef397c0beceba8">&#9670;&nbsp;</a></span>ShiftOrigin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ShiftOrigin </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td>
+          <td class="paramname"><em>newOrigin</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Shifts the world origin. </p>
+<dl class="section note"><dt>Note</dt><dd>Useful for large worlds. </dd>
+<dd>
+The body shift formula is: <code>position -= newOrigin</code>. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>The "origin" of this world's bodies, joints, and the board-phase dynamic tree have been translated per the shift amount and direction. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">world</td><td>The world whose origin should be shifted. </td></tr>
+    <tr><td class="paramname">newOrigin</td><td>the new origin with respect to the old origin </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1WrongState.html" title="Wrong state logic error.">WrongState</a></td><td>if this method is called while the world is locked. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a388cda0fac67167420bff3741c320bb7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a388cda0fac67167420bff3741c320bb7">&#9670;&nbsp;</a></span>m_bodyFixtures</h2>
@@ -3260,7 +3494,7 @@ Touching related state depends on the following data:<ul>
 </div><div class="memdoc">
 
 <p>Cache of fixtures associated with body. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>Consider eliminating this variable since calling <code><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a042ecf583acbbc7911f6cc6cbc73dab3" title="Gets the range of all constant fixtures attached to this body.">GetFixtures()</a></code> isn't done within the <code><a class="el" href="classplayrho_1_1d2_1_1World.html#aa6773aff74b9341a9eb58c7bca925cda" title="Steps the world simulation according to the given configuration.">World::Step</a></code> except by <code>World::Synchronize</code> which may be replacable with iterating over the entire fixture array. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Consider eliminating this variable since calling <code><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a042ecf583acbbc7911f6cc6cbc73dab3" title="Gets the range of all constant fixtures attached to this body.">GetFixtures()</a></code> isn't done within the <code><a class="el" href="classplayrho_1_1d2_1_1World.html#aa6773aff74b9341a9eb58c7bca925cda" title="Steps the world simulation according to the given configuration.">World::Step</a></code> except by <code>World::Synchronize</code> which may be replacable with iterating over the entire fixture array. </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a45766f0643fca6561f909b896f02822e">Clear()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a56f095fe60a50b47f9aa2f3d6664e3f2">CreateBody()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a497b22f2480ab65cf01ad56a76143721">Destroy()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ad713a4babfc5defee138076b69dc372d">SolveReg()</a>.</p>
 
@@ -3363,7 +3597,7 @@ Touching related state depends on the following data:<ul>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html">WorldImpl</a></li>
-    <li class="footer">Generated on Sat Oct 31 2020 21:08:05 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Wed Nov 4 2020 14:45:06 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

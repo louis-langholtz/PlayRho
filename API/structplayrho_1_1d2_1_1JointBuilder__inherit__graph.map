@@ -20,7 +20,7 @@
 <area shape="rect" id="node14" href="$structplayrho_1_1d2_1_1WeldJointConf.html" title="Weld joint definition." alt="" coords="813,339,992,366"/>
 <area shape="rect" id="node16" href="$structplayrho_1_1d2_1_1RevoluteJointConf.html" title="Revolute joint definition." alt="" coords="801,405,1004,431"/>
 <area shape="rect" id="node18" href="$structplayrho_1_1d2_1_1RopeJointConf.html" title="Rope joint definition." alt="" coords="812,470,993,497"/>
-<area shape="rect" id="node20" href="$structplayrho_1_1d2_1_1WheelJointConf.html" title="Wheel joint definition." alt="" coords="809,535,996,562"/>
-<area shape="rect" id="node22" href="$structplayrho_1_1d2_1_1MotorJointConf.html" title="Motor joint definition." alt="" coords="811,601,994,627"/>
+<area shape="rect" id="node20" href="$structplayrho_1_1d2_1_1MotorJointConf.html" title="Motor joint definition." alt="" coords="811,535,994,562"/>
+<area shape="rect" id="node22" href="$structplayrho_1_1d2_1_1WheelJointConf.html" title="Wheel joint definition." alt="" coords="809,601,996,627"/>
 <area shape="rect" id="node24" href="$structplayrho_1_1d2_1_1TargetJointConf.html" title="Target joint definition." alt="" coords="809,666,996,693"/>
 </map>

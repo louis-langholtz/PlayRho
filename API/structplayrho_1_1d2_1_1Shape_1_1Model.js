@@ -2,7 +2,7 @@ var structplayrho_1_1d2_1_1Shape_1_1Model =
 [
     [ "data_type", "structplayrho_1_1d2_1_1Shape_1_1Model.html#a02d91452eb5cb1b556aff30c934aceea", null ],
     [ "Model", "structplayrho_1_1d2_1_1Shape_1_1Model.html#ae8b7e23f17e4e19eefe90eed03068519", null ],
-    [ "Clone", "structplayrho_1_1d2_1_1Shape_1_1Model.html#aa1682065af401bde88baa2de1dc16b8f", null ],
+    [ "Clone_", "structplayrho_1_1d2_1_1Shape_1_1Model.html#adced4b89c79f938286ece46243937d30", null ],
     [ "GetChild_", "structplayrho_1_1d2_1_1Shape_1_1Model.html#a8dfe5bc2e335cd35c9ea5f5d32dfcc9c", null ],
     [ "GetChildCount_", "structplayrho_1_1d2_1_1Shape_1_1Model.html#a44e7fc4b6dd5660bcfb11414f288c94f", null ],
     [ "GetData_", "structplayrho_1_1d2_1_1Shape_1_1Model.html#acdb83b02edddc59a919e7231fe6818b4", null ],

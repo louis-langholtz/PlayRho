@@ -362,6 +362,8 @@ var group__PhysicalEntities =
       [ "SolveVelocity", "classplayrho_1_1d2_1_1Joint.html#a1d169bb471d249df8a59a40f281419e0", null ],
       [ "TypeCast", "classplayrho_1_1d2_1_1Joint.html#af04a40472f1b7576171f3132305ce7a2", null ],
       [ "TypeCast", "classplayrho_1_1d2_1_1Joint.html#afbe06ff8376003dcba368f69191b97fd", null ],
+      [ "TypeCast", "classplayrho_1_1d2_1_1Joint.html#a3a5b4ab06d5e078ef5aa2e67b56c5dcc", null ],
+      [ "TypeCast", "classplayrho_1_1d2_1_1Joint.html#ac91cb4dc6cbce2a3d54364794b1f1887", null ],
       [ "TypeCast", "classplayrho_1_1d2_1_1Joint.html#acd73f8a32384e237c826c5d2f7c60cce", null ],
       [ "m_self", "classplayrho_1_1d2_1_1Joint.html#a82f04fcd5147affc2cdd86604c3c7758", null ]
     ] ]

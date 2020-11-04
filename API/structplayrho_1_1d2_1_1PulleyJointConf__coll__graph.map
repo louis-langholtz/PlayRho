@@ -1,5 +1,5 @@
 <map id="playrho::d2::PulleyJointConf" name="playrho::d2::PulleyJointConf">
-<area shape="rect" id="node1" title="Pulley joint definition." alt="" coords="1648,359,1835,385"/>
+<area shape="rect" id="node1" title="Pulley joint definition." alt="" coords="1648,344,1835,371"/>
 <area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1JointBuilder.html" title=" " alt="" coords="1339,42,1501,83"/>
 <area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1JointConf.html" title="Abstract base joint definition class." alt="" coords="769,65,920,92"/>
 <area shape="rect" id="node9" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="Joint builder definition structure." alt="" coords="969,89,1164,116"/>
@@ -11,9 +11,9 @@
 <area shape="rect" id="node8" title=" " alt="" coords="517,5,564,32"/>
 <area shape="rect" id="node10" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="1333,253,1507,280"/>
 <area shape="rect" id="node11" title=" " alt="" coords="1036,253,1097,280"/>
-<area shape="rect" id="node13" title=" " alt="" coords="1389,331,1451,357"/>
-<area shape="rect" id="node14" title=" " alt="" coords="1391,381,1449,408"/>
-<area shape="rect" id="node15" title=" " alt="" coords="1043,461,1090,488"/>
-<area shape="rect" id="node16" href="$classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector." alt="" coords="1349,433,1491,460"/>
-<area shape="rect" id="node17" title=" " alt="" coords="1375,547,1465,573"/>
+<area shape="rect" id="node13" title=" " alt="" coords="1389,316,1451,343"/>
+<area shape="rect" id="node14" title=" " alt="" coords="1391,367,1449,393"/>
+<area shape="rect" id="node15" title=" " alt="" coords="1043,447,1090,473"/>
+<area shape="rect" id="node16" href="$classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector." alt="" coords="1349,419,1491,445"/>
+<area shape="rect" id="node17" title=" " alt="" coords="1375,532,1465,559"/>
 </map>

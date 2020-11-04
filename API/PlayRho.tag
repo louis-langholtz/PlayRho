@@ -6986,9 +6986,9 @@
     <filename>structplayrho_1_1d2_1_1Shape_1_1Concept.html</filename>
     <member kind="function" virtualness="pure">
       <type>virtual std::unique_ptr&lt; Concept &gt;</type>
-      <name>Clone</name>
+      <name>Clone_</name>
       <anchorfile>structplayrho_1_1d2_1_1Shape_1_1Concept.html</anchorfile>
-      <anchor>adc2db77c430b1e5946cc8ab7b6be1a95</anchor>
+      <anchor>a6c43f482245b56de3d68bbaa14e89a18</anchor>
       <arglist>() const =0</arglist>
     </member>
     <member kind="function" virtualness="pure">
@@ -11958,6 +11958,20 @@
       <arglist>(const Joint &amp;value)</arglist>
     </member>
     <member kind="function">
+      <type>T</type>
+      <name>TypeCast</name>
+      <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
+      <anchor>ac91cb4dc6cbce2a3d54364794b1f1887</anchor>
+      <arglist>(Joint &amp;value)</arglist>
+    </member>
+    <member kind="function">
+      <type>T</type>
+      <name>TypeCast</name>
+      <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
+      <anchor>a3a5b4ab06d5e078ef5aa2e67b56c5dcc</anchor>
+      <arglist>(Joint &amp;&amp;value)</arglist>
+    </member>
+    <member kind="function">
       <type>Length2</type>
       <name>GetLocalAnchorA</name>
       <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
@@ -13482,9 +13496,9 @@
     </member>
     <member kind="function">
       <type>std::unique_ptr&lt; Concept &gt;</type>
-      <name>Clone</name>
+      <name>Clone_</name>
       <anchorfile>structplayrho_1_1d2_1_1Shape_1_1Model.html</anchorfile>
-      <anchor>aa1682065af401bde88baa2de1dc16b8f</anchor>
+      <anchor>adced4b89c79f938286ece46243937d30</anchor>
       <arglist>() const override</arglist>
     </member>
     <member kind="function">
@@ -14374,144 +14388,6 @@
       <name>round_style</name>
       <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
       <anchor>a60f373787d57addea18463ca7856401d</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="class">
-    <name>playrho::OptionalValue</name>
-    <filename>classplayrho_1_1OptionalValue.html</filename>
-    <templarg></templarg>
-    <member kind="typedef">
-      <type>T</type>
-      <name>value_type</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>aa47474e3410a8bb405046cd6054a0ed3</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>OptionalValue</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>a0aebd725a9f6ac2a24858c11462c7eeb</anchor>
-      <arglist>(const OptionalValue &amp;other)=default</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>OptionalValue</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>ad21d38d850aaa989ed3bc711f75370d6</anchor>
-      <arglist>(OptionalValue &amp;&amp;other) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>OptionalValue</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>a9d56e38cae37dba061d15107d1a99843</anchor>
-      <arglist>(T v)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr const T &amp;</type>
-      <name>operator*</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>a85f2b90b8500433aec494bd1ca94bc93</anchor>
-      <arglist>() const</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr T &amp;</type>
-      <name>operator*</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>ae249bfcf473480a5a7e412706a12e797</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr const T *</type>
-      <name>operator-&gt;</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>af05da1a44cfacaffcbadfb3732df3338</anchor>
-      <arglist>() const</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr T *</type>
-      <name>operator-&gt;</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>a6ed5de0a73711a080f310778ac7bde7f</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>operator bool</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>a55dd00c633efbc101da5289f530d7baa</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>has_value</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>ad76bbf666ea6e9aec5e9a8a3188f154d</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>OptionalValue &amp;</type>
-      <name>operator=</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>a6fb2468b7cebcb512239348dc49a9bbe</anchor>
-      <arglist>(const OptionalValue &amp;other)=default</arglist>
-    </member>
-    <member kind="function">
-      <type>OptionalValue &amp;</type>
-      <name>operator=</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>a379368ae4e2b7e08706b4a40de5d2194</anchor>
-      <arglist>(OptionalValue &amp;&amp;other) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>OptionalValue &amp;</type>
-      <name>operator=</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>a3629c06e8ae4d8bc2402ee2a9ae98f0c</anchor>
-      <arglist>(T v)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr T &amp;</type>
-      <name>value</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>ae3db1d9604a0626c1d6c0a59545872d3</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr const T &amp;</type>
-      <name>value</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>a9f505b84935dce0801c5e0a00f84f403</anchor>
-      <arglist>() const</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr T</type>
-      <name>value_or</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>aff28b5c0e06460d988723473c6a36233</anchor>
-      <arglist>(const T &amp;alt) const</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>reset</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>ac46d94797fff49c032d74111c3ee54a2</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="variable" protection="private">
-      <type>value_type</type>
-      <name>m_value</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>a56c2ce3d594f94083cc245068565afdb</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" protection="private">
-      <type>bool</type>
-      <name>m_set</name>
-      <anchorfile>classplayrho_1_1OptionalValue.html</anchorfile>
-      <anchor>a694a5555aeb74e9246dab6c907ea8a0c</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -16237,13 +16113,6 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>Length</type>
-      <name>constant</name>
-      <anchorfile>structplayrho_1_1d2_1_1PulleyJointConf.html</anchorfile>
-      <anchor>ace4b0ffe39abae6d8d4aa4f9441f72f8</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
       <type>Momentum</type>
       <name>impulse</name>
       <anchorfile>structplayrho_1_1d2_1_1PulleyJointConf.html</anchorfile>
@@ -16368,6 +16237,13 @@
       <anchorfile>structplayrho_1_1d2_1_1PulleyJointConf.html</anchorfile>
       <anchor>aac6b715e0df3e5be4be5ccae4ac4fa36</anchor>
       <arglist>(const PulleyJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetRatio</name>
+      <anchorfile>structplayrho_1_1d2_1_1PulleyJointConf.html</anchorfile>
+      <anchor>abe7de7c24d8d14d4dd2a34e2ecc386b3</anchor>
+      <arglist>(PulleyJointConf &amp;object, Real value) noexcept</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -17201,10 +17077,10 @@
       <arglist>(const Shape &amp;shape) noexcept</arglist>
     </member>
     <member kind="friend">
-      <type>friend auto</type>
+      <type>friend std::add_pointer_t&lt; std::add_const_t&lt; T &gt; &gt;</type>
       <name>TypeCast</name>
       <anchorfile>classplayrho_1_1d2_1_1Shape.html</anchorfile>
-      <anchor>ab5cc2677acebab1f72a7ad5f1f136e2b</anchor>
+      <anchor>a26f0e014fb16e6493ff6fb297d6a726a</anchor>
       <arglist>(const Shape *value) noexcept</arglist>
     </member>
     <member kind="friend">
@@ -17241,6 +17117,13 @@
       <anchorfile>group__TestPointGroup.html</anchorfile>
       <anchor>gafcfbf811dc989043838f0a4c7c64b59b</anchor>
       <arglist>(const Shape &amp;shape, Length2 point) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>T</type>
+      <name>TypeCast</name>
+      <anchorfile>classplayrho_1_1d2_1_1Shape.html</anchorfile>
+      <anchor>a2552f9d7b9b8d2c5cf4b5ef71140b709</anchor>
+      <arglist>(const Shape &amp;value)</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -24840,13 +24723,6 @@
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>FixtureCounter</type>
-      <name>GetShapeCount</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aae9025373446bef79628f537e41cc5dd</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>BodyCounter</type>
       <name>GetBodyRange</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
@@ -26604,6 +26480,13 @@
       <arglist>(World &amp;world, std::function&lt; void(ContactID, const ContactImpulsesList &amp;, unsigned)&gt; listener) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>void</type>
+      <name>Clear</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>a8811dc9edaaa6fa9aa10dc843bf4bb9a</anchor>
+      <arglist>(World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>StepStats</type>
       <name>Step</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
@@ -26616,6 +26499,20 @@
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
       <anchor>a035ee60a3274619546a2cee7b982b894</anchor>
       <arglist>(World &amp;world, Time delta, TimestepIters velocityIterations=8, TimestepIters positionIterations=3)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>GetSubStepping</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>ab8d7ece82bb9a60db3d1f1d98ac80b98</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetSubStepping</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>abd11a65631c7b9dd009090492fe98874</anchor>
+      <arglist>(World &amp;world, bool flag) noexcept</arglist>
     </member>
     <member kind="function">
       <type>const DynamicTree &amp;</type>
@@ -26644,6 +26541,13 @@
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
       <anchor>a33c81759b720514f3666528e7d9f2688</anchor>
       <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>a262c7508b542fccad3e066c166a69ad2</anchor>
+      <arglist>(World &amp;world, Length2 newOrigin)</arglist>
     </member>
     <member kind="function">
       <type></type>
@@ -26790,13 +26694,6 @@
       <name>GetInvDeltaTime</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
       <anchor>ae9a06df8bd96d7d7ade817dffff67351</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>FixtureCounter</type>
-      <name>GetShapeCount</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aae9025373446bef79628f537e41cc5dd</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -27252,13 +27149,6 @@
       <name>GetInvDeltaTime</name>
       <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
       <anchor>ae40d0b25bdf854ee96e3e58acc700699</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>FixtureCounter</type>
-      <name>GetShapeCount</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a14e00b761ef7c1275bf5596a48f4b3b0</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -28045,6 +27935,111 @@
       <arglist>(WorldImpl &amp;world, std::function&lt; void(ContactID, const ContactImpulsesList &amp;, unsigned)&gt; listener) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>StepStats</type>
+      <name>Step</name>
+      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
+      <anchor>aa25253387bf26e86389e48ae89e2f0d8</anchor>
+      <arglist>(WorldImpl &amp;world, const StepConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
+      <anchor>af96a54f5afb3a967e0ef397c0beceba8</anchor>
+      <arglist>(WorldImpl &amp;world, Length2 newOrigin)</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; BodyID &gt;::const_iterator &gt;</type>
+      <name>GetBodies</name>
+      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
+      <anchor>a3011d97673613dced0ff483a59cbdde9</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; BodyID &gt;::const_iterator &gt;</type>
+      <name>GetBodiesForProxies</name>
+      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
+      <anchor>ad0d6997a55f534b37394b53bbecd8b91</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; FixtureID &gt;::const_iterator &gt;</type>
+      <name>GetFixturesForProxies</name>
+      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
+      <anchor>ae0548905239581e1b5de261dc7e3dbeb</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; JointID &gt;::const_iterator &gt;</type>
+      <name>GetJoints</name>
+      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
+      <anchor>ae575bb139a5db8094e954d44ebe26648</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; KeyedContactPtr &gt;::const_iterator &gt;</type>
+      <name>GetContacts</name>
+      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
+      <anchor>aab22950c2b077f1dcb8ca254111757a0</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsLocked</name>
+      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
+      <anchor>a9f6e06ae5d756249d2d948e3a11d4d20</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsStepComplete</name>
+      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
+      <anchor>a29d79bc60866034a46ee93cef089306d</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>GetSubStepping</name>
+      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
+      <anchor>ab956952cfa59979aef58175119efc46b</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetSubStepping</name>
+      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
+      <anchor>ae2e1393346f2feb9e6cd1261194cd52a</anchor>
+      <arglist>(WorldImpl &amp;world, bool value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Length</type>
+      <name>GetMinVertexRadius</name>
+      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
+      <anchor>a3dc85a3fd79661b17f225819fc61ca0c</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Length</type>
+      <name>GetMaxVertexRadius</name>
+      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
+      <anchor>a85a5c5aa03607543a1d1dea2a31520af</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Frequency</type>
+      <name>GetInvDeltaTime</name>
+      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
+      <anchor>a21dff1f3172e2ee11f203920bf62ba28</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const DynamicTree &amp;</type>
+      <name>GetTree</name>
+      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
+      <anchor>a74860eba448f1106cdc81246a25d29fe</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type></type>
       <name>WorldImpl</name>
       <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
@@ -28189,13 +28184,6 @@
       <name>GetInvDeltaTime</name>
       <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
       <anchor>ae40d0b25bdf854ee96e3e58acc700699</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>FixtureCounter</type>
-      <name>GetShapeCount</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a14e00b761ef7c1275bf5596a48f4b3b0</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -28560,7 +28548,6 @@
     <class kind="struct">playrho::NonPositiveChecker</class>
     <class kind="struct">playrho::NonZeroChecker</class>
     <class kind="struct">playrho::NoOpChecker</class>
-    <class kind="class">playrho::OptionalValue</class>
     <class kind="struct">playrho::PointStates</class>
     <class kind="struct">playrho::PositiveChecker</class>
     <class kind="struct">playrho::PreStepStats</class>
@@ -28742,13 +28729,6 @@
       <name>NonNull</name>
       <anchorfile>group__CheckedValues.html</anchorfile>
       <anchor>ga6765653a298365f410348651dff5b088</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>OptionalValue&lt; T &gt;</type>
-      <name>Optional</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>acbc56513bd325732410bc4dbb3261299</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -31897,10 +31877,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>Optional&lt; RayCastHit &gt;</type>
+      <type>std::optional&lt; RayCastHit &gt;</type>
       <name>RayCastOutput</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a2e8717982c2c73b571dfe16d45a38ecf</anchor>
+      <anchor>a44ee8d7d4fd7ea935b7d952f7834027f</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -32841,6 +32821,13 @@
       <arglist>(const Shape &amp;shape) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>std::add_pointer_t&lt; std::add_const_t&lt; T &gt; &gt;</type>
+      <name>TypeCast</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a732fa5d1da2c5d3292bdbcfaab4f971d</anchor>
+      <arglist>(const Shape *value) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>bool</type>
       <name>operator==</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -32855,11 +32842,11 @@
       <arglist>(const Shape &amp;lhs, const Shape &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>auto</type>
+      <type>T</type>
       <name>TypeCast</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a07f3cfad8a6375f46c6be2851b998480</anchor>
-      <arglist>(const Shape &amp;shape)</arglist>
+      <anchor>a2552f9d7b9b8d2c5cf4b5ef71140b709</anchor>
+      <arglist>(const Shape &amp;value)</arglist>
     </member>
     <member kind="function">
       <type>constexpr NonNegative&lt; AreaDensity &gt;</type>
@@ -35238,14 +35225,14 @@
       <type>T</type>
       <name>TypeCast</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a253da41bc149baeee0712fa9c9d10174</anchor>
+      <anchor>ac91cb4dc6cbce2a3d54364794b1f1887</anchor>
       <arglist>(Joint &amp;value)</arglist>
     </member>
     <member kind="function">
       <type>T</type>
       <name>TypeCast</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a91bf76f292cea3eb9a3c7c221647c86f</anchor>
+      <anchor>a3a5b4ab06d5e078ef5aa2e67b56c5dcc</anchor>
       <arglist>(Joint &amp;&amp;value)</arglist>
     </member>
     <member kind="function">
@@ -35611,6 +35598,13 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>aac6b715e0df3e5be4be5ccae4ac4fa36</anchor>
       <arglist>(const PulleyJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetRatio</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>abe7de7c24d8d14d4dd2a34e2ecc386b3</anchor>
+      <arglist>(PulleyJointConf &amp;object, Real value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>RevoluteJointConf</type>
@@ -37237,6 +37231,111 @@
       <arglist>(WorldImpl &amp;world, std::function&lt; void(ContactID, const ContactImpulsesList &amp;, unsigned)&gt; listener) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>StepStats</type>
+      <name>Step</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa25253387bf26e86389e48ae89e2f0d8</anchor>
+      <arglist>(WorldImpl &amp;world, const StepConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af96a54f5afb3a967e0ef397c0beceba8</anchor>
+      <arglist>(WorldImpl &amp;world, Length2 newOrigin)</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; BodyID &gt;::const_iterator &gt;</type>
+      <name>GetBodies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a3011d97673613dced0ff483a59cbdde9</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; BodyID &gt;::const_iterator &gt;</type>
+      <name>GetBodiesForProxies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ad0d6997a55f534b37394b53bbecd8b91</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; JointID &gt;::const_iterator &gt;</type>
+      <name>GetJoints</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae575bb139a5db8094e954d44ebe26648</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; KeyedContactPtr &gt;::const_iterator &gt;</type>
+      <name>GetContacts</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aab22950c2b077f1dcb8ca254111757a0</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsLocked</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a9f6e06ae5d756249d2d948e3a11d4d20</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsStepComplete</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a29d79bc60866034a46ee93cef089306d</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>GetSubStepping</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab956952cfa59979aef58175119efc46b</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetSubStepping</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae2e1393346f2feb9e6cd1261194cd52a</anchor>
+      <arglist>(WorldImpl &amp;world, bool value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Length</type>
+      <name>GetMinVertexRadius</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a3dc85a3fd79661b17f225819fc61ca0c</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Length</type>
+      <name>GetMaxVertexRadius</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a85a5c5aa03607543a1d1dea2a31520af</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Frequency</type>
+      <name>GetInvDeltaTime</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a21dff1f3172e2ee11f203920bf62ba28</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const DynamicTree &amp;</type>
+      <name>GetTree</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a74860eba448f1106cdc81246a25d29fe</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; FixtureID &gt;::const_iterator &gt;</type>
+      <name>GetFixturesForProxies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae0548905239581e1b5de261dc7e3dbeb</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>SizedRange&lt; std::vector&lt; JointID &gt;::const_iterator &gt;</type>
       <name>GetJoints</name>
       <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
@@ -37688,7 +37787,7 @@
       <type>void</type>
       <name>Clear</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae87aedd0a1a4a5077df893173042fc4c</anchor>
+      <anchor>a8811dc9edaaa6fa9aa10dc843bf4bb9a</anchor>
       <arglist>(World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
@@ -37723,14 +37822,14 @@
       <type>bool</type>
       <name>GetSubStepping</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aefd48d7d94be6707b5915991eeb10bd4</anchor>
+      <anchor>ab8d7ece82bb9a60db3d1f1d98ac80b98</anchor>
       <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetSubStepping</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af9f3ac5da2b016acb04d3e73419b08d9</anchor>
+      <anchor>abd11a65631c7b9dd009090492fe98874</anchor>
       <arglist>(World &amp;world, bool flag) noexcept</arglist>
     </member>
     <member kind="function">
@@ -37751,7 +37850,7 @@
       <type>void</type>
       <name>ShiftOrigin</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a51c153ab7b3636491af501cbef31aad0</anchor>
+      <anchor>a262c7508b542fccad3e066c166a69ad2</anchor>
       <arglist>(World &amp;world, Length2 newOrigin)</arglist>
     </member>
     <member kind="variable">
@@ -38047,6 +38146,13 @@
       <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
       <anchor>aa36e925a21b13b0e209f0d29e350ac83</anchor>
       <arglist>(T &amp;v)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static constexpr const char *</type>
+      <name>GetNameForTypeInfo</name>
+      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
+      <anchor>a25d05ab7f476ecba879ae99a7d3e50bc</anchor>
+      <arglist>() noexcept</arglist>
     </member>
     <member kind="variable">
       <type>constexpr auto</type>

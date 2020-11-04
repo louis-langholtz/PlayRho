@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.11.0</span>
+   &#160;<span id="projectnumber">0.12.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -114,7 +114,7 @@ Collaboration diagram for playrho::TypeInfo&lt; T &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a4c186756c991fffde3ba0e7b22d3efb5"><td class="memItemLeft" align="right" valign="top">static constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1TypeInfo.html#a4c186756c991fffde3ba0e7b22d3efb5">name</a> = nullptr</td></tr>
+<tr class="memitem:a4c186756c991fffde3ba0e7b22d3efb5"><td class="memItemLeft" align="right" valign="top">static constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1TypeInfo.html#a4c186756c991fffde3ba0e7b22d3efb5">name</a> = <a class="el" href="namespaceplayrho_1_1detail.html#a25d05ab7f476ecba879ae99a7d3e50bc">detail::GetNameForTypeInfo</a>&lt;T&gt;()</td></tr>
 <tr class="memdesc:a4c186756c991fffde3ba0e7b22d3efb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the templated type.  <a href="structplayrho_1_1TypeInfo.html#a4c186756c991fffde3ba0e7b22d3efb5">More...</a><br /></td></tr>
 <tr class="separator:a4c186756c991fffde3ba0e7b22d3efb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -137,7 +137,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr const char* <a class="el" href="structplayrho_1_1TypeInfo.html">playrho::TypeInfo</a>&lt; T &gt;::name = nullptr</td>
+          <td class="memname">constexpr const char* <a class="el" href="structplayrho_1_1TypeInfo.html">playrho::TypeInfo</a>&lt; T &gt;::name = <a class="el" href="namespaceplayrho_1_1detail.html#a25d05ab7f476ecba879ae99a7d3e50bc">detail::GetNameForTypeInfo</a>&lt;T&gt;()</td>
         </tr>
       </table>
   </td>
@@ -148,7 +148,10 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>The name of the templated type. </p>
-<dl class="section note"><dt>Note</dt><dd>This is also a static member providing a unique ID, via its address, for the type T without resorting to using C++ run-time type information (RTTI). </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This is also a static member providing a unique ID, via its address, for the type T without resorting to using C++ run-time type information (RTTI). </dd>
+<dd>
+Setting this to a null-terminated byte string that's unique to at least the template's type <code>T</code> prevents issue #370. Credit for this technique goes to Li Jin (github user pigpigyyy). </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://github.com/louis-langholtz/PlayRho/issues/370">https://github.com/louis-langholtz/PlayRho/issues/370</a> </dd></dl>
 
 </div>
 </div>
@@ -161,7 +164,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="structplayrho_1_1TypeInfo.html">TypeInfo</a></li>
-    <li class="footer">Generated on Sat Oct 31 2020 21:08:04 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Wed Nov 4 2020 14:45:05 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

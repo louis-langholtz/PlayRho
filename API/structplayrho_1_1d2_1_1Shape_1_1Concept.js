@@ -1,7 +1,7 @@
 var structplayrho_1_1d2_1_1Shape_1_1Concept =
 [
     [ "~Concept", "structplayrho_1_1d2_1_1Shape_1_1Concept.html#a6c13ebcbf99211b0fa3411d9ef499ac6", null ],
-    [ "Clone", "structplayrho_1_1d2_1_1Shape_1_1Concept.html#adc2db77c430b1e5946cc8ab7b6be1a95", null ],
+    [ "Clone_", "structplayrho_1_1d2_1_1Shape_1_1Concept.html#a6c43f482245b56de3d68bbaa14e89a18", null ],
     [ "GetChild_", "structplayrho_1_1d2_1_1Shape_1_1Concept.html#a56e8193cb70e927c06e8c0d452b03791", null ],
     [ "GetChildCount_", "structplayrho_1_1d2_1_1Shape_1_1Concept.html#a660fac4e9cf65aa5d96295c54f42713d", null ],
     [ "GetData_", "structplayrho_1_1d2_1_1Shape_1_1Concept.html#ab527f70b26af44030cace857f6e522ff", null ],

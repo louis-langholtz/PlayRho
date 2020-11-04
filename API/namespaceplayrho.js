@@ -58,7 +58,6 @@ var namespaceplayrho =
     [ "NonPositiveChecker", "structplayrho_1_1NonPositiveChecker.html", "structplayrho_1_1NonPositiveChecker" ],
     [ "NonZeroChecker", "structplayrho_1_1NonZeroChecker.html", "structplayrho_1_1NonZeroChecker" ],
     [ "NoOpChecker", "structplayrho_1_1NoOpChecker.html", "structplayrho_1_1NoOpChecker" ],
-    [ "OptionalValue", "classplayrho_1_1OptionalValue.html", "classplayrho_1_1OptionalValue" ],
     [ "PointStates", "structplayrho_1_1PointStates.html", "structplayrho_1_1PointStates" ],
     [ "PositiveChecker", "structplayrho_1_1PositiveChecker.html", "structplayrho_1_1PositiveChecker" ],
     [ "PreStepStats", "structplayrho_1_1PreStepStats.html", "structplayrho_1_1PreStepStats" ],

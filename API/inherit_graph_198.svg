@@ -12,9 +12,9 @@
 <!-- Node0 -->
 <g id="node1" class="node">
 <title>Node0</title>
-<g id="a_node1"><a xlink:href="structstd_1_1less_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html" target="_top" xlink:title="Support for less than operations.">
+<g id="a_node1"><a xlink:href="structstd_1_1less__equal_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html" target="_top" xlink:title="Support for less than or equal operations.">
 <polygon fill="white" stroke="black" points="0,-0.5 0,-30.5 128,-30.5 128,-0.5 0,-0.5"/>
-<text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">std::less&lt;::playrho</text>
+<text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">std::less_equal&lt;::playrho</text>
 <text text-anchor="middle" x="64" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">::propagate_const&lt; T &gt; &gt;</text>
 </a>
 </g>

@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.11.0</span>
+   &#160;<span id="projectnumber">0.12.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -1706,7 +1706,7 @@ Non-zero impulses wakes up the body. </dd></dl>
 
 <p>Gets the body's angle. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World.">Body</a>'s angle relative to its <a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;.">World</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a174">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a178">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -1871,7 +1871,7 @@ Non-zero impulses wakes up the body. </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the linear velocity of the center of mass. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a162">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a166">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2123,7 +2123,7 @@ Non-zero impulses wakes up the body. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#afc2d114f23cc621756f6e9363bc74f2a" title="Get the angle.">GetAngle</a>. </dd></dl>
 </li>
 </ol>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a161">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a165">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2156,7 +2156,7 @@ Non-zero impulses wakes up the body. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This may be the total calculated mass or it may be the set mass of the body. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Value of zero or more representing the body's mass. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a479319dda79903324ef520ae21c7ca56" title="Gets the inverse total mass of the body.">GetInvMass</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#aa406549b09f4fc750af6b7d5667ec91a" title="Sets the inverse mass.">SetInvMass</a> </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a197">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a203">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2222,7 +2222,7 @@ Non-zero impulses wakes up the body. </dd></dl>
 
 <p>Gets the type of this body. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea" title="Sets the type of this body.">SetType</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a167">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a171">World.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a41cc43a409194b7cbab845f8bae69f95">playrho::d2::WorldImpl::SetBody()</a>.</p>
@@ -2393,7 +2393,7 @@ Non-zero impulses wakes up the body. </dd></dl>
 
 <p>Is "accelerable". </p>
 <p>Indicates whether this body is accelerable, i.e. whether it is effected by forces. Only Dynamic bodies are accelerable. </p><dl class="section return"><dt>Returns</dt><dd>true if the body is accelerable, false otherwise. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a195">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a201">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2487,7 +2487,7 @@ Non-zero impulses wakes up the body. </dd></dl>
 
 <p>Is "speedable". </p>
 <p>Is this body able to have a non-zero speed associated with it. Kinematic and Dynamic bodies are speedable. Static bodies are not. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a194">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a200">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2623,7 +2623,7 @@ A non-zero acceleration will also awaken the body. </dd></dl>
 <p>Sets this body to awake and resets its under-active time if it's a "speedable" body. This method has no effect otherwise. </p><dl class="section post"><dt>Postcondition</dt><dd>If this body is a "speedable" body, then this body's <code>IsAwake</code> method returns true. </dd>
 <dd>
 If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</code> method returns zero. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a244">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a250">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2820,7 +2820,7 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 <dd>
 A non-zero velocity will awaken this body. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a794c4c1b8c24aedb959c5031a5ecde69" title="Awakens this body.">SetAwake</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a0a6f3e57e6a9b132f30f3d3f85ca5802" title="Sets the &quot;under-active&quot; time to the given value.">SetUnderActiveTime</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a233">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a239">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -3162,7 +3162,7 @@ This body's <code>GetVelocity</code> method returns zero linear and zero angular
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a></li>
-    <li class="footer">Generated on Sat Oct 31 2020 21:08:05 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Wed Nov 4 2020 14:45:06 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

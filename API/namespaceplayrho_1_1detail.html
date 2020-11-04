@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.11.0</span>
+   &#160;<span id="projectnumber">0.12.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -322,6 +322,10 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aa36e925a21b13b0e209f0d29e350ac83"><td class="memTemplItemLeft" align="right" valign="top">static auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#aa36e925a21b13b0e209f0d29e350ac83">Size</a> (T &amp;v)</td></tr>
 <tr class="memdesc:aa36e925a21b13b0e209f0d29e350ac83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal helper template function to avoid confusion for use within classes that define their own <code><a class="el" href="namespaceplayrho.html#af33cf35b33c93168aedcbf5a986a3472" title="Gets the dynamic size of the given collection of index pairs.">size()</a></code> method. <br /></td></tr>
 <tr class="separator:aa36e925a21b13b0e209f0d29e350ac83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25d05ab7f476ecba879ae99a7d3e50bc"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a25d05ab7f476ecba879ae99a7d3e50bc"><td class="memTemplItemLeft" align="right" valign="top">static constexpr const char *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a25d05ab7f476ecba879ae99a7d3e50bc">GetNameForTypeInfo</a> () noexcept</td></tr>
+<tr class="memdesc:a25d05ab7f476ecba879ae99a7d3e50bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a null-terminated byte string identifying this function.  <a href="namespaceplayrho_1_1detail.html#a25d05ab7f476ecba879ae99a7d3e50bc">More...</a><br /></td></tr>
+<tr class="separator:a25d05ab7f476ecba879ae99a7d3e50bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -514,6 +518,37 @@ template&lt;typename BT , unsigned int FB, int N = 6&gt; </div>
 <a href="https://en.wikipedia.org/wiki/Exponentiation">https://en.wikipedia.org/wiki/Exponentiation</a> </dd>
 <dd>
 <a href="https://en.wikipedia.org/wiki/Exponential_function">https://en.wikipedia.org/wiki/Exponential_function</a> </dd></dl>
+
+</div>
+</div>
+<a id="a25d05ab7f476ecba879ae99a7d3e50bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25d05ab7f476ecba879ae99a7d3e50bc">&#9670;&nbsp;</a></span>GetNameForTypeInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static constexpr const char* playrho::detail::GetNameForTypeInfo </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets a null-terminated byte string identifying this function. </p>
+<dl class="section note"><dt>Note</dt><dd>Intended for use by <code><a class="el" href="structplayrho_1_1TypeInfo.html" title="Type information.">TypeInfo</a></code> to set the value of its <code>name</code> variable to something dependent on the type and avoid issues like <code><a class="el" href="structplayrho_1_1TypeInfo.html#a4c186756c991fffde3ba0e7b22d3efb5" title="The name of the templated type.">TypeInfo::name</a></code> being a non-unique address like happens on MSVC when whole program is turned on. Such an issue is documented in Issue #370. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://github.com/louis-langholtz/PlayRho/issues/370">https://github.com/louis-langholtz/PlayRho/issues/370</a> </dd></dl>
 
 </div>
 </div>
@@ -746,7 +781,7 @@ template&lt;std::size_t N&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Sat Oct 31 2020 21:08:05 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Wed Nov 4 2020 14:45:06 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

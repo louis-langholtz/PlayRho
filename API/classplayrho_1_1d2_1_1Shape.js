@@ -25,6 +25,7 @@ var classplayrho_1_1d2_1_1Shape =
     [ "RayCast", "group__RayCastGroup.html#gaada5f6c5635166baaf1bc81636d8b93a", null ],
     [ "TestPoint", "group__TestPointGroup.html#gafcfbf811dc989043838f0a4c7c64b59b", null ],
     [ "Transform", "classplayrho_1_1d2_1_1Shape.html#a5affc9e0eb1efb455e629467b34f12fd", null ],
-    [ "TypeCast", "classplayrho_1_1d2_1_1Shape.html#ab5cc2677acebab1f72a7ad5f1f136e2b", null ],
+    [ "TypeCast", "classplayrho_1_1d2_1_1Shape.html#a2552f9d7b9b8d2c5cf4b5ef71140b709", null ],
+    [ "TypeCast", "classplayrho_1_1d2_1_1Shape.html#a26f0e014fb16e6493ff6fb297d6a726a", null ],
     [ "m_self", "classplayrho_1_1d2_1_1Shape.html#aed8187741a62d95d0d6e0ab657fed045", null ]
 ];

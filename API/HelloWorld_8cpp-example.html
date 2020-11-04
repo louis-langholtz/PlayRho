@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.11.0</span>
+   &#160;<span id="projectnumber">0.12.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -167,15 +167,15 @@ $(document).ready(function(){initNavTree('HelloWorld_8cpp-example.html',''); ini
 <div class="line">        <span class="comment">// Typically code uses a time step of 1/60 of a second (60Hz). The defaults</span></div>
 <div class="line">        <span class="comment">// are setup for that and to generally provide a high enough quality simulation</span></div>
 <div class="line">        <span class="comment">// in most scenarios.</span></div>
-<div class="line">        Step(world);</div>
+<div class="line">        <a name="a15"></a><a class="code" href="namespaceplayrho_1_1d2.html#aa25253387bf26e86389e48ae89e2f0d8">Step</a>(world);</div>
 <div class="line"> </div>
-<div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> transformation = <a name="a15"></a><a class="code" href="namespaceplayrho_1_1d2.html#a7470c7f509ec02d51adcc2e96a37d2fe">GetTransformation</a>(world, ball);</div>
-<div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> location = <a name="a16"></a><a class="code" href="namespaceplayrho_1_1d2.html#ad3978702132a5caf87ad3cbec808b116">GetLocation</a>(transformation);</div>
-<div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> angle = <a name="a17"></a><a class="code" href="namespaceplayrho_1_1d2.html#ade290c2d810216ce9b13924b10e748cd">GetAngle</a>(transformation);</div>
+<div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> transformation = <a name="a16"></a><a class="code" href="namespaceplayrho_1_1d2.html#a7470c7f509ec02d51adcc2e96a37d2fe">GetTransformation</a>(world, ball);</div>
+<div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> location = <a name="a17"></a><a class="code" href="namespaceplayrho_1_1d2.html#ad3978702132a5caf87ad3cbec808b116">GetLocation</a>(transformation);</div>
+<div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> angle = <a name="a18"></a><a class="code" href="namespaceplayrho_1_1d2.html#ade290c2d810216ce9b13924b10e748cd">GetAngle</a>(transformation);</div>
 <div class="line"> </div>
 <div class="line">        <span class="comment">// Now print the location and angle of the body.</span></div>
-<div class="line">        std::cout &lt;&lt; std::setw(5) &lt;&lt; <a name="a18"></a><a class="code" href="namespaceplayrho.html#a8fd37c6d7e9a46ee2138492ccd17165e">GetX</a>(location);</div>
-<div class="line">        std::cout &lt;&lt; std::setw(5) &lt;&lt; <a name="a19"></a><a class="code" href="namespaceplayrho.html#af29239cb64970d1f73cd92e104940e7e">GetY</a>(location);</div>
+<div class="line">        std::cout &lt;&lt; std::setw(5) &lt;&lt; <a name="a19"></a><a class="code" href="namespaceplayrho.html#a8fd37c6d7e9a46ee2138492ccd17165e">GetX</a>(location);</div>
+<div class="line">        std::cout &lt;&lt; std::setw(5) &lt;&lt; <a name="a20"></a><a class="code" href="namespaceplayrho.html#af29239cb64970d1f73cd92e104940e7e">GetY</a>(location);</div>
 <div class="line">        std::cout &lt;&lt; std::setw(5) &lt;&lt; angle;</div>
 <div class="line">        std::cout &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line">    }</div>
@@ -203,13 +203,14 @@ $(document).ready(function(){initNavTree('HelloWorld_8cpp-example.html',''); ini
 <div class="ttc" id="agroup__WorldFixtureFreeFunctions_html_ga96ffed101b6adaeaf51d57ee17323c95"><div class="ttname"><a href="group__WorldFixtureFreeFunctions.html#ga96ffed101b6adaeaf51d57ee17323c95">playrho::d2::CreateFixture</a></div><div class="ttdeci">FixtureID CreateFixture(World &amp;world, FixtureConf def, bool resetMassData)</div><div class="ttdoc">Creates a fixture within the specified world.</div><div class="ttdef"><b>Definition:</b> WorldFixture.cpp:43</div></div>
 <div class="ttc" id="astructplayrho_1_1Vector_html"><div class="ttname"><a href="structplayrho_1_1Vector.html">playrho::Vector</a></div><div class="ttdoc">Vector.</div><div class="ttdef"><b>Definition:</b> Vector.hpp:49</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a7470c7f509ec02d51adcc2e96a37d2fe"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a7470c7f509ec02d51adcc2e96a37d2fe">playrho::d2::GetTransformation</a></div><div class="ttdeci">constexpr Transformation GetTransformation(const Length2 ctr, const UnitVec rot, const Length2 localCtr) noexcept</div><div class="ttdoc">Gets the transformation for the given values.</div><div class="ttdef"><b>Definition:</b> Math.hpp:862</div></div>
-<div class="ttc" id="aclassplayrho_1_1d2_1_1Shape_html"><div class="ttname"><a href="classplayrho_1_1d2_1_1Shape.html">playrho::d2::Shape</a></div><div class="ttdoc">Shape.</div><div class="ttdef"><b>Definition:</b> Shape.hpp:155</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1Shape_html"><div class="ttname"><a href="classplayrho_1_1d2_1_1Shape.html">playrho::d2::Shape</a></div><div class="ttdoc">Shape.</div><div class="ttdef"><b>Definition:</b> Shape.hpp:168</div></div>
 <div class="ttc" id="anamespaceplayrho_html_af29239cb64970d1f73cd92e104940e7e"><div class="ttname"><a href="namespaceplayrho.html#af29239cb64970d1f73cd92e104940e7e">playrho::GetY</a></div><div class="ttdeci">constexpr auto &amp; GetY(T &amp;value)</div><div class="ttdoc">Gets the &quot;Y&quot; element of the given value - i.e. the second element.</div><div class="ttdef"><b>Definition:</b> Math.hpp:73</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_aa25253387bf26e86389e48ae89e2f0d8"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#aa25253387bf26e86389e48ae89e2f0d8">playrho::d2::Step</a></div><div class="ttdeci">StepStats Step(WorldImpl &amp;world, const StepConf &amp;conf)</div><div class="ttdoc">Steps the given world the specified amount.</div><div class="ttdef"><b>Definition:</b> WorldImplMisc.cpp:85</div></div>
 <div class="ttc" id="astructplayrho_1_1d2_1_1DiskShapeConf_html"><div class="ttname"><a href="structplayrho_1_1d2_1_1DiskShapeConf.html">playrho::d2::DiskShapeConf</a></div><div class="ttdoc">Disk shape configuration.</div><div class="ttdef"><b>Definition:</b> DiskShapeConf.hpp:42</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Oct 31 2020 21:08:03 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Wed Nov 4 2020 14:45:03 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

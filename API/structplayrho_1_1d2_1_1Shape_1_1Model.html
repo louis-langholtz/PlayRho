@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.11.0</span>
+   &#160;<span id="projectnumber">0.12.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -131,9 +131,9 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html#ae8b7e23f17e4e19eefe90eed03068519">Model</a> (T arg)</td></tr>
 <tr class="memdesc:ae8b7e23f17e4e19eefe90eed03068519"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor. <br /></td></tr>
 <tr class="separator:ae8b7e23f17e4e19eefe90eed03068519"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1682065af401bde88baa2de1dc16b8f"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html">Concept</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html#aa1682065af401bde88baa2de1dc16b8f">Clone</a> () const override</td></tr>
-<tr class="memdesc:aa1682065af401bde88baa2de1dc16b8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clones this concept and returns a pointer to a mutable copy.  <a href="structplayrho_1_1d2_1_1Shape_1_1Model.html#aa1682065af401bde88baa2de1dc16b8f">More...</a><br /></td></tr>
-<tr class="separator:aa1682065af401bde88baa2de1dc16b8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adced4b89c79f938286ece46243937d30"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html">Concept</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html#adced4b89c79f938286ece46243937d30">Clone_</a> () const override</td></tr>
+<tr class="memdesc:adced4b89c79f938286ece46243937d30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clones this concept and returns a pointer to a mutable copy.  <a href="structplayrho_1_1d2_1_1Shape_1_1Model.html#adced4b89c79f938286ece46243937d30">More...</a><br /></td></tr>
+<tr class="separator:adced4b89c79f938286ece46243937d30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44e7fc4b6dd5660bcfb11414f288c94f"><td class="memItemLeft" align="right" valign="top"><a id="a44e7fc4b6dd5660bcfb11414f288c94f"></a>
 <a class="el" href="namespaceplayrho.html#aed352724e203ca09595faf0dc6a76e5c">ChildCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html#a44e7fc4b6dd5660bcfb11414f288c94f">GetChildCount_</a> () const noexcept override</td></tr>
 <tr class="memdesc:a44e7fc4b6dd5660bcfb11414f288c94f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the "child" count. <br /></td></tr>
@@ -190,8 +190,8 @@ struct playrho::d2::Shape::Model&lt; T &gt;</h3>
 <p>Internal model configuration concept. </p>
 <dl class="section note"><dt>Note</dt><dd>Provides an implementation for runtime polymorphism for shape configuration. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa1682065af401bde88baa2de1dc16b8f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1682065af401bde88baa2de1dc16b8f">&#9670;&nbsp;</a></span>Clone()</h2>
+<a id="adced4b89c79f938286ece46243937d30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adced4b89c79f938286ece46243937d30">&#9670;&nbsp;</a></span>Clone_()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -202,7 +202,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::unique_ptr&lt;<a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html">Concept</a>&gt; <a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html">playrho::d2::Shape::Model</a>&lt; T &gt;::Clone </td>
+          <td class="memname">std::unique_ptr&lt;<a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html">Concept</a>&gt; <a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html">playrho::d2::Shape::Model</a>&lt; T &gt;::Clone_ </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -224,7 +224,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#adc2db77c430b1e5946cc8ab7b6be1a95">playrho::d2::Shape::Concept</a>.</p>
+<p>Implements <a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#a6c43f482245b56de3d68bbaa14e89a18">playrho::d2::Shape::Concept</a>.</p>
 
 </div>
 </div>
@@ -342,7 +342,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Shape.html">Shape</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html">Model</a></li>
-    <li class="footer">Generated on Sat Oct 31 2020 21:08:05 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Wed Nov 4 2020 14:45:06 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

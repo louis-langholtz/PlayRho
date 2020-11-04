@@ -206,7 +206,7 @@ var sectionId = 'dynsection-0';
 <g id="a_node19"><a xlink:href="structplayrho_1_1d2_1_1JointBuilder.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="black" points="437,-98.5 437,-128.5 559,-128.5 559,-98.5 437,-98.5"/>
 <text text-anchor="start" x="445" y="-116.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::JointBuilder</text>
-<text text-anchor="middle" x="498" y="-105.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; WheelJointConf &gt;</text>
+<text text-anchor="middle" x="498" y="-105.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; MotorJointConf &gt;</text>
 </a>
 </g>
 </g>
@@ -215,7 +215,7 @@ var sectionId = 'dynsection-0';
 <title>Node1&#45;&gt;Node19</title>
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M236.29,-242.55C251.9,-221.1 280.84,-185.58 314,-165.5 351.57,-142.74 399.5,-129.59 436.88,-122.22"/>
 <polygon fill="orange" stroke="orange" points="233.37,-240.62 230.44,-250.8 239.08,-244.67 233.37,-240.62"/>
-<text text-anchor="middle" x="366.5" y="-168.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; WheelJointConf &gt;</text>
+<text text-anchor="middle" x="366.5" y="-168.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; MotorJointConf &gt;</text>
 </g>
 <!-- Node21 -->
 <g id="node21" class="node">
@@ -223,7 +223,7 @@ var sectionId = 'dynsection-0';
 <g id="a_node21"><a xlink:href="structplayrho_1_1d2_1_1JointBuilder.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="black" points="437,-49.5 437,-79.5 559,-79.5 559,-49.5 437,-49.5"/>
 <text text-anchor="start" x="445" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::JointBuilder</text>
-<text text-anchor="middle" x="498" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; MotorJointConf &gt;</text>
+<text text-anchor="middle" x="498" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; WheelJointConf &gt;</text>
 </a>
 </g>
 </g>
@@ -232,7 +232,7 @@ var sectionId = 'dynsection-0';
 <title>Node1&#45;&gt;Node21</title>
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M230.29,-241.3C241.71,-209.5 268.94,-146.08 314,-112.5 349.55,-86 398.5,-74.1 436.83,-68.77"/>
 <polygon fill="orange" stroke="orange" points="226.97,-240.19 227.02,-250.78 233.58,-242.47 226.97,-240.19"/>
-<text text-anchor="middle" x="366.5" y="-115.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; MotorJointConf &gt;</text>
+<text text-anchor="middle" x="366.5" y="-115.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; WheelJointConf &gt;</text>
 </g>
 <!-- Node23 -->
 <g id="node23" class="node">
@@ -389,31 +389,31 @@ var sectionId = 'dynsection-0';
 <!-- Node20 -->
 <g id="node20" class="node">
 <title>Node20</title>
-<g id="a_node20"><a xlink:href="structplayrho_1_1d2_1_1WheelJointConf.html" target="_top" xlink:title="Wheel joint definition.">
-<polygon fill="white" stroke="black" points="603,-104 603,-123 743,-123 743,-104 603,-104"/>
-<text text-anchor="middle" x="673" y="-111" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::WheelJointConf</text>
+<g id="a_node20"><a xlink:href="structplayrho_1_1d2_1_1MotorJointConf.html" target="_top" xlink:title="Motor joint definition.">
+<polygon fill="white" stroke="black" points="604.5,-104 604.5,-123 741.5,-123 741.5,-104 604.5,-104"/>
+<text text-anchor="middle" x="673" y="-111" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::MotorJointConf</text>
 </a>
 </g>
 </g>
 <!-- Node19&#45;&gt;Node20 -->
 <g id="edge19" class="edge">
 <title>Node19&#45;&gt;Node20</title>
-<path fill="none" stroke="midnightblue" d="M569.12,-113.5C580.26,-113.5 591.77,-113.5 602.88,-113.5"/>
+<path fill="none" stroke="midnightblue" d="M569.12,-113.5C580.76,-113.5 592.81,-113.5 604.38,-113.5"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="569.02,-110 559.02,-113.5 569.02,-117 569.02,-110"/>
 </g>
 <!-- Node22 -->
 <g id="node22" class="node">
 <title>Node22</title>
-<g id="a_node22"><a xlink:href="structplayrho_1_1d2_1_1MotorJointConf.html" target="_top" xlink:title="Motor joint definition.">
-<polygon fill="white" stroke="black" points="604.5,-55 604.5,-74 741.5,-74 741.5,-55 604.5,-55"/>
-<text text-anchor="middle" x="673" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::MotorJointConf</text>
+<g id="a_node22"><a xlink:href="structplayrho_1_1d2_1_1WheelJointConf.html" target="_top" xlink:title="Wheel joint definition.">
+<polygon fill="white" stroke="black" points="603,-55 603,-74 743,-74 743,-55 603,-55"/>
+<text text-anchor="middle" x="673" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::WheelJointConf</text>
 </a>
 </g>
 </g>
 <!-- Node21&#45;&gt;Node22 -->
 <g id="edge21" class="edge">
 <title>Node21&#45;&gt;Node22</title>
-<path fill="none" stroke="midnightblue" d="M569.12,-64.5C580.76,-64.5 592.81,-64.5 604.38,-64.5"/>
+<path fill="none" stroke="midnightblue" d="M569.12,-64.5C580.26,-64.5 591.77,-64.5 602.88,-64.5"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="569.02,-61 559.02,-64.5 569.02,-68 569.02,-61"/>
 </g>
 <!-- Node24 -->
