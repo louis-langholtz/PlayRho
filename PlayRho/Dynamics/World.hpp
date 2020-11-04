@@ -231,7 +231,7 @@ public:
     /// @warning Varying the step time delta may lead to non-physical behaviors.
     ///
     /// @note Calling this with a zero step time delta results only in fixtures and bodies
-    ///   registered for proxy handling being processed. No physics is performed.
+    ///   registered for special handling being processed. No physics is performed.
     /// @note If the given velocity and position iterations are zero, this method doesn't
     ///   do velocity or position resolutions respectively of the contacting bodies.
     /// @note While body velocities are updated accordingly (per the sum of forces acting on them),
@@ -247,8 +247,6 @@ public:
     /// @post Dynamic bodies are moved based on their previous velocities, gravity, applied
     ///   forces, applied impulses, masses, damping, and the restitution and friction values
     ///   of their fixtures when they experience collisions.
-    /// @post The bodies for proxies queue will be empty.
-    /// @post The fixtures for proxies queue will be empty.
     ///
     /// @param conf Configuration for the simulation step.
     ///
@@ -303,10 +301,6 @@ public:
     ///   updated on every call to the <code>Step()</code> method having a non-zero delta-time.
     /// @see Step.
     Frequency GetInvDeltaTime() const noexcept;
-
-    /// @brief Gets the shape count.
-    /// @todo Consider removing this function.
-    FixtureCounter GetShapeCount() const noexcept;
 
     /// @}
 
@@ -368,8 +362,6 @@ public:
     /// @note This function is locked during callbacks.
     /// @post The destroyed body will no longer be present in the range returned from the
     ///   <code>GetBodies()</code> method.
-    /// @post None of the body's fixtures will be present in the fixtures-for-proxies
-    ///   collection.
     /// @param id Body to destroy that had been created by this world.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws std::out_of_range If given an invalid body identifier.

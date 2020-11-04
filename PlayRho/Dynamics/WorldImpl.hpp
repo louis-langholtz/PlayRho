@@ -257,10 +257,6 @@ public:
     /// @see Step.
     Frequency GetInvDeltaTime() const noexcept;
 
-    /// @brief Gets the shape count.
-    /// @todo Consider removing this function.
-    FixtureCounter GetShapeCount() const noexcept;
-
     /// @brief Gets the dynamic tree leaves queued for finding new contacts.
     /// @see FindNewContacts, AddProxies.
     const Proxies& GetProxies() const noexcept;

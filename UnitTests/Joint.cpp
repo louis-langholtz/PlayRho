@@ -169,13 +169,13 @@ TEST(Joint, TypeCast)
         const auto joint = Joint{};
         auto value = static_cast<const int*>(nullptr);
         EXPECT_NO_THROW(value = TypeCast<const int>(&joint));
-        EXPECT_EQ(value, nullptr);
+        EXPECT_TRUE(value == nullptr);
     }
     {
         auto joint = Joint{};
         auto value = static_cast<int*>(nullptr);
         EXPECT_NO_THROW(value = TypeCast<int>(&joint));
-        EXPECT_EQ(value, nullptr);
+        EXPECT_TRUE(value == nullptr);
     }
     {
         const auto joint = Joint{};
@@ -203,4 +203,32 @@ TEST(Joint, TypeCast)
         EXPECT_NO_THROW(TypeCast<JointTester>(&joint)->number = 4);
         EXPECT_EQ(TypeCast<const JointTester>(joint).number, 4);
     }
+}
+
+TEST(Joint, ForConstantDataTypeCastIsLikeAnyCast)
+{
+    const auto foo = Joint{JointTester{1}};
+    const auto bar = std::any{JointTester{1}};
+    EXPECT_TRUE(TypeCast<const JointTester*>(&foo) == nullptr);
+    EXPECT_TRUE(std::any_cast<const JointTester*>(&bar) == nullptr);
+    EXPECT_TRUE(TypeCast<JointTester*>(&foo) == nullptr);
+    EXPECT_TRUE(std::any_cast<JointTester*>(&bar) == nullptr);
+    EXPECT_TRUE(TypeCast<const JointTester>(&foo) != nullptr);
+    EXPECT_TRUE(std::any_cast<const JointTester>(&bar) != nullptr);
+    EXPECT_TRUE(TypeCast<JointTester>(&foo) != nullptr);
+    EXPECT_TRUE(std::any_cast<JointTester>(&bar) != nullptr);
+}
+
+TEST(Joint, ForMutableDataTypeCastIsLikeAnyCast)
+{
+    auto foo = Joint{JointTester{1}};
+    auto bar = std::any{JointTester{1}};
+    EXPECT_TRUE(TypeCast<const JointTester*>(&foo) == nullptr);
+    EXPECT_TRUE(std::any_cast<const JointTester*>(&bar) == nullptr);
+    EXPECT_TRUE(TypeCast<JointTester*>(&foo) == nullptr);
+    EXPECT_TRUE(std::any_cast<JointTester*>(&bar) == nullptr);
+    EXPECT_TRUE(TypeCast<const JointTester>(&foo) != nullptr);
+    EXPECT_TRUE(std::any_cast<const JointTester>(&bar) != nullptr);
+    EXPECT_TRUE(TypeCast<JointTester>(&foo) != nullptr);
+    EXPECT_TRUE(std::any_cast<JointTester>(&bar) != nullptr);
 }

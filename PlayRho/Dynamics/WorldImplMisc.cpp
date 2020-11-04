@@ -154,11 +154,6 @@ const DynamicTree& GetTree(const WorldImpl& world) noexcept
     return world.GetTree();
 }
 
-FixtureCounter GetShapeCount(const WorldImpl& world) noexcept
-{
-    return world.GetShapeCount();
-}
-
 SizedRange<std::vector<FixtureID>::const_iterator>
 GetFixturesForProxies(const WorldImpl& world) noexcept
 {

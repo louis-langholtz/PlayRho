@@ -23,6 +23,8 @@
 
 #include "../Framework/Test.hpp"
 
+#include <optional>
+
 namespace testbed {
 
 /// @brief Bag of disks test.
@@ -73,7 +75,7 @@ public:
         const auto shape = Shape(conf);
         auto prevBody = InvalidBodyID;
         auto firstBody = InvalidBodyID;
-        auto prevVertex = Optional<Length2>{};
+        auto prevVertex = std::optional<Length2>{};
         for (const auto& vertex: vertices)
         {
             if (prevVertex.has_value())
@@ -101,7 +103,7 @@ public:
             prevVertex = vertex;
         }
         CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), prevBody, firstBody,
-                                                  vertices[0] + vertexOffset));
+                                                     vertices[0] + vertexOffset));
 
         const auto diskRadius = 0.15_m;
         const auto diskShape = Shape(DiskShapeConf{}.UseRadius(diskRadius).UseDensity(10_kgpm2).UseFriction(0));

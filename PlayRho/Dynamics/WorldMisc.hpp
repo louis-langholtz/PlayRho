@@ -73,6 +73,7 @@ void SetPostSolveContactListener(World& world,
 ///   before clearing anything.
 /// @post The contents of this world have all been destroyed and this world's internal
 ///   state is reset as though it had just been constructed.
+/// @relatedalso World
 void Clear(World& world) noexcept;
 
 /// @brief Steps the given world the specified amount.
@@ -116,6 +117,7 @@ StepStats Step(World& world, Time delta,
 
 /// @brief Gets whether or not sub-stepping is enabled.
 /// @see SetSubStepping, IsStepComplete.
+/// @relatedalso World
 bool GetSubStepping(const World& world) noexcept;
 
 /// @brief Enables/disables single stepped continuous physics.
@@ -123,6 +125,7 @@ bool GetSubStepping(const World& world) noexcept;
 /// @post The <code>GetSubStepping()</code> method will return the value this method was
 ///   called with.
 /// @see IsStepComplete, GetSubStepping.
+/// @relatedalso World
 void SetSubStepping(World& world, bool flag) noexcept;
 
 /// @brief Gets the dynamic tree of the given world.
@@ -149,6 +152,7 @@ Length GetMaxVertexRadius(const World& world) noexcept;
 /// @param world The world whose origin should be shifted.
 /// @param newOrigin the new origin with respect to the old origin
 /// @throws WrongState if this method is called while the world is locked.
+/// @relatedalso World
 void ShiftOrigin(World& world, Length2 newOrigin);
 
 } // namespace d2

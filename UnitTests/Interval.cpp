@@ -20,7 +20,6 @@
 
 #include "UnitTests.hpp"
 #include <PlayRho/Common/Interval.hpp>
-#include <PlayRho/Common/OptionalValue.hpp>
 #include <limits>
 
 class Interval: public ::testing::Test

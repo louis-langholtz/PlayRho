@@ -28,15 +28,15 @@ TEST(DynamicMemory, Alloc)
 {
     auto ptr = static_cast<void *>(nullptr);
     EXPECT_NO_THROW(ptr = Alloc(0));
-    EXPECT_EQ(ptr, nullptr);
+    EXPECT_TRUE(ptr == nullptr);
     EXPECT_NO_THROW(ptr = Alloc(1));
-    EXPECT_NE(ptr, nullptr);
+    EXPECT_TRUE(ptr != nullptr);
     ASSERT_NO_THROW(Free(ptr));
 
     // Presumably no system can allocate max size.
     ptr = nullptr;
     EXPECT_THROW(ptr = Alloc(std::numeric_limits<std::size_t>::max()), std::bad_alloc);
-    EXPECT_EQ(ptr, nullptr);
+    EXPECT_TRUE(ptr == nullptr);
     ASSERT_NO_THROW(Free(ptr));
 }
 
@@ -46,15 +46,15 @@ TEST(DynamicMemory, AllocArray)
 
     auto ptr = static_cast<ElementType*>(nullptr);
     EXPECT_NO_THROW(ptr = AllocArray<ElementType>(0));
-    EXPECT_EQ(ptr, nullptr);
+    EXPECT_TRUE(ptr == nullptr);
     EXPECT_NO_THROW(ptr = AllocArray<ElementType>(1));
-    EXPECT_NE(ptr, nullptr);
+    EXPECT_TRUE(ptr != nullptr);
     ASSERT_NO_THROW(Free(ptr));
 
     // Presumably no system can allocate max size.
     ptr = nullptr;
     EXPECT_THROW(ptr = AllocArray<ElementType>(std::numeric_limits<std::size_t>::max()), std::bad_alloc);
-    EXPECT_EQ(ptr, nullptr);
+    EXPECT_TRUE(ptr == nullptr);
     ASSERT_NO_THROW(Free(ptr));
 }
 
@@ -62,19 +62,19 @@ TEST(DynamicMemory, Realloc)
 {
     auto ptr = static_cast<void *>(nullptr);
     EXPECT_NO_THROW(ptr = Realloc(nullptr, 0));
-    EXPECT_EQ(ptr, nullptr);
+    EXPECT_TRUE(ptr == nullptr);
     EXPECT_NO_THROW(ptr = Realloc(nullptr, 1));
-    EXPECT_NE(ptr, nullptr);
+    EXPECT_TRUE(ptr != nullptr);
     EXPECT_NO_THROW(ptr = Realloc(ptr, 1));
-    EXPECT_NE(ptr, nullptr);
+    EXPECT_TRUE(ptr != nullptr);
     EXPECT_NO_THROW(ptr = Realloc(ptr, 0));
-    EXPECT_EQ(ptr, nullptr);
+    EXPECT_TRUE(ptr == nullptr);
     ASSERT_NO_THROW(Free(ptr));
 
     // Presumably no system can allocate max size.
     ptr = nullptr;
     EXPECT_THROW(ptr = Realloc(ptr, std::numeric_limits<std::size_t>::max()), std::bad_alloc);
-    EXPECT_EQ(ptr, nullptr);
+    EXPECT_TRUE(ptr == nullptr);
     ASSERT_NO_THROW(Free(ptr));
 }
 
@@ -84,22 +84,22 @@ TEST(DynamicMemory, ReallocArray)
 
     auto ptr = static_cast<ElementType *>(nullptr);
     EXPECT_NO_THROW(ptr = ReallocArray<ElementType>(nullptr, 0));
-    EXPECT_EQ(ptr, nullptr);
+    EXPECT_TRUE(ptr == nullptr);
     EXPECT_NO_THROW(ptr = ReallocArray<ElementType>(nullptr, 1));
-    EXPECT_NE(ptr, nullptr);
+    EXPECT_TRUE(ptr != nullptr);
     EXPECT_NO_THROW(ptr = ReallocArray<ElementType>(ptr, 1));
-    EXPECT_NE(ptr, nullptr);
+    EXPECT_TRUE(ptr != nullptr);
     EXPECT_NO_THROW(ptr = ReallocArray<ElementType>(ptr, 0));
-    EXPECT_EQ(ptr, nullptr);
+    EXPECT_TRUE(ptr == nullptr);
     ASSERT_NO_THROW(Free(ptr));
 
     ptr = nullptr;
     EXPECT_THROW(ptr = ReallocArray<ElementType>(ptr, std::numeric_limits<std::size_t>::max()), std::bad_array_new_length);
-    EXPECT_EQ(ptr, nullptr);
+    EXPECT_TRUE(ptr == nullptr);
 
     // Presumably no system can allocate max size.
     ptr = nullptr;
     EXPECT_THROW(ptr = ReallocArray<ElementType>(ptr, std::numeric_limits<std::size_t>::max()/sizeof(ElementType)), std::bad_alloc);
-    EXPECT_EQ(ptr, nullptr);
+    EXPECT_TRUE(ptr == nullptr);
     ASSERT_NO_THROW(Free(ptr));
 }

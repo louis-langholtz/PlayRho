@@ -109,7 +109,7 @@ TEST(DiskShapeConf, TypeInfo)
     const auto shape = Shape(foo);
     EXPECT_EQ(GetType(shape), GetTypeID<DiskShapeConf>());
     auto copy = DiskShapeConf{};
-    EXPECT_NE(TypeCast<const DiskShapeConf*>(&shape), nullptr);
+    EXPECT_TRUE(TypeCast<DiskShapeConf>(&shape) != nullptr);
     EXPECT_NO_THROW(copy = TypeCast<DiskShapeConf>(shape));
     EXPECT_THROW(TypeCast<int>(shape), std::bad_cast);
 }

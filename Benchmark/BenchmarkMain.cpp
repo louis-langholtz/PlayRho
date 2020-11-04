@@ -44,6 +44,7 @@
 #include <atomic>
 #include <ctime>
 #include <map>
+#include <optional>
 #include <type_traits>
 #include <functional>
 
@@ -54,7 +55,6 @@
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Intervals.hpp>
-#include <PlayRho/Common/OptionalValue.hpp> // for Optional
 
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp> // for GetAwakeCount
@@ -693,7 +693,7 @@ public:
     }
     
 private:
-    playrho::Optional<T> m_element;
+    std::optional<T> m_element;
     std::mutex m_mutex;
     std::condition_variable m_cond;
 };

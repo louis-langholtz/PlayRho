@@ -2,8 +2,11 @@
 # Top level docs for 3.1.3 at: https://cmake.org/cmake/help/v3.1/
 # Commands herein described at: https://cmake.org/cmake/help/v3.1/manual/cmake-commands.7.html
 
-# Minimally require CMake version 3.1...
-cmake_minimum_required(VERSION 3.1)
+# Minimally require a CMake version that can handle what's necessary...
+# According to the following link, support for cxx_std_17 first became available in CMake 3.8.
+# https://github.com/Kitware/CMake/blob/07cfb18f9d29cfc0588ede928846a03ec5599c48/Help/release/3.8.rst
+# It's not clear that CMake 3.8 is enough though. So 3.10 is picked in hopes that dust settled then.
+cmake_minimum_required(VERSION 3.10)
 
 # Require C++17...
 set(CMAKE_CXX_STANDARD 17)
@@ -46,7 +49,7 @@ option(PLAYRHO_BUILD_BENCHMARK "Build PlayRho Benchmark console application." OF
 option(PLAYRHO_BUILD_TESTBED "Build PlayRho Testbed GUI application." OFF)
 option(PLAYRHO_ENABLE_COVERAGE "Enable code coverage generation." OFF)
 
-set(PLAYRHO_VERSION 0.9.0)
+set(PLAYRHO_VERSION 0.12.0)
 set(LIB_INSTALL_DIR lib${LIB_SUFFIX})
 
 # Tell Microsoft Visual C (MSVC) to enable unwind semantics since it doesn't by default.

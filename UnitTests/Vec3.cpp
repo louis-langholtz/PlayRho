@@ -77,7 +77,7 @@ TEST(Vec3, ZeroInitialization)
     {
         Vec3 src{Real{-1.2f}, Real{42.5f}, Real{-91.2f}};
         Vec3* foo = new (&src) Vec3;
-        ASSERT_NE(foo, nullptr);
+        ASSERT_TRUE(foo != nullptr);
         ASSERT_EQ(foo->max_size(), std::size_t(3));
         ASSERT_EQ(foo->size(), std::size_t(3));
         ASSERT_NE(*foo, (Vec3{Real{0}, Real{0}, Real{0}}));
@@ -88,7 +88,7 @@ TEST(Vec3, ZeroInitialization)
     {
         Vec3 src{Real{-1.2f}, Real{42.5f}, Real{-91.2f}};
         Vec3* foo = new (&src) Vec3;
-        ASSERT_NE(foo, nullptr);
+        ASSERT_TRUE(foo != nullptr);
         ASSERT_EQ(foo->max_size(), std::size_t(3));
         ASSERT_EQ(foo->size(), std::size_t(3));
         ASSERT_NE(*foo, (Vec3{Real{0}, Real{0}, Real{0}}));
