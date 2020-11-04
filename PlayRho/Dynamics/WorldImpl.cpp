@@ -2391,18 +2391,6 @@ ContactCounter WorldImpl::Synchronize(const Fixtures& fixtures,
     return updatedCount;
 }
 
-FixtureCounter WorldImpl::GetShapeCount() const noexcept
-{
-    auto shapes = std::set<const void*>();
-    for_each(cbegin(m_bodies), cend(m_bodies), [&](const auto& b) {
-        const auto& fixtures = m_bodyFixtures[UnderlyingValue(b)];
-        for_each(cbegin(fixtures), cend(fixtures), [&](const auto& f) {
-            shapes.insert(GetData(GetShape(m_fixtureBuffer[UnderlyingValue(f)])));
-        });
-    });
-    return static_cast<FixtureCounter>(size(shapes));
-}
-
 void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
 {
     auto& c = m_contactBuffer[UnderlyingValue(contactID)];

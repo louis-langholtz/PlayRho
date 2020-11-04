@@ -128,11 +128,6 @@ Frequency World::GetInvDeltaTime() const noexcept
     return ::playrho::d2::GetInvDeltaTime(*m_impl);
 }
 
-FixtureCounter World::GetShapeCount() const noexcept
-{
-    return ::playrho::d2::GetShapeCount(*m_impl);
-}
-
 BodyCounter World::GetBodyRange() const noexcept
 {
     return ::playrho::d2::GetBodyRange(*m_impl);
