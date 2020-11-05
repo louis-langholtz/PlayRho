@@ -80,7 +80,8 @@ class DynamicTree;
 /// @code{.cpp}
 /// auto world = World{};
 /// const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-/// const auto fixture = world.CreateFixture(body, Shape{DiskShapeConf{1_m}});
+/// const auto fixture = world.CreateFixture(
+///     FixtureConf{}.UseBody(body).UseShape(DiskShapeConf{1_m}));
 /// @endcode
 ///
 /// @see World.
@@ -116,7 +117,8 @@ class DynamicTree;
 /// @code{.cpp}
 /// auto world = World{};
 /// const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-/// const auto fixture = world.CreateFixture(body, Shape{DiskShapeConf{1_m}});
+/// const auto fixture = world.CreateFixture(
+///     FixtureConf{}.UseBody(body).UseShape(DiskShapeConf{1_m}));
 /// @endcode
 ///
 /// @see BodyID, ContactID, FixtureID, JointID, PhysicalEntities.
