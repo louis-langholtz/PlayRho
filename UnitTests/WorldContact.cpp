@@ -173,6 +173,7 @@ TEST(WorldContact, WorldManifoldAndMore)
     ASSERT_NO_THROW(Step(world, StepConf{}));
     const auto contacts = GetContacts(world);
     ASSERT_EQ(contacts.size(), ContactCounter(1));
+    EXPECT_EQ(GetContactRange(world), 1u);
 
     const auto c = contacts.begin()->second;
     {

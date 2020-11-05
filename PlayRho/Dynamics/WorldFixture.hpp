@@ -68,6 +68,12 @@ class World;
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 /// @{
 
+/// @brief Gets the extent of the currently valid fixture range.
+/// @note This is one higher than the maxium <code>FixtureID</code> that is in range
+///   for fixture related functions.
+/// @relatedalso World
+FixtureCounter GetFixtureRange(const World& world) noexcept;
+
 /// @brief Gets the count of fixtures in the given world.
 /// @throws WrongState if called while the world is "locked".
 /// @relatedalso World

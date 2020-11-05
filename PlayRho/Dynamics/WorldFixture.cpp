@@ -30,6 +30,11 @@ namespace d2 {
 
 using playrho::size;
 
+FixtureCounter GetFixtureRange(const World& world) noexcept
+{
+    return world.GetFixtureRange();
+}
+
 FixtureCounter GetFixtureCount(const World& world) noexcept
 {
     auto sum = FixtureCounter{0};

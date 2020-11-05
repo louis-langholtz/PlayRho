@@ -40,6 +40,11 @@
 namespace playrho {
 namespace d2 {
 
+JointCounter GetJointRange(const WorldImpl& world) noexcept
+{
+    return world.GetJointRange();
+}
+
 JointID CreateJoint(WorldImpl& world, const Joint& def)
 {
     return world.CreateJoint(def);

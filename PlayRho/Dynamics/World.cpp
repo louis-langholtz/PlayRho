@@ -133,6 +133,21 @@ BodyCounter World::GetBodyRange() const noexcept
     return ::playrho::d2::GetBodyRange(*m_impl);
 }
 
+FixtureCounter World::GetFixtureRange() const noexcept
+{
+    return ::playrho::d2::GetFixtureRange(*m_impl);
+}
+
+JointCounter World::GetJointRange() const noexcept
+{
+    return ::playrho::d2::GetJointRange(*m_impl);
+}
+
+ContactCounter World::GetContactRange() const noexcept
+{
+    return ::playrho::d2::GetContactRange(*m_impl);
+}
+
 SizedRange<World::Bodies::const_iterator> World::GetBodies() const noexcept
 {
     return ::playrho::d2::GetBodies(*m_impl);

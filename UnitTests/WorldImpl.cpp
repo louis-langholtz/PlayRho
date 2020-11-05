@@ -190,14 +190,19 @@ TEST(WorldImpl, Clear)
 
     const auto j0 = world.CreateJoint(Joint{DistanceJointConf{b0, b1}});
     ASSERT_NE(j0, InvalidJointID);
+    ASSERT_EQ(j0, JointID{0u});
+    ASSERT_FALSE(world.IsDestroyed(JointID{0u}));
 
     ASSERT_EQ(world.GetBodies().size(), std::size_t(2));
     ASSERT_EQ(world.GetJoints().size(), std::size_t(1));
+    ASSERT_EQ(world.GetJointRange(), 1u);
 
     EXPECT_NO_THROW(world.Clear());
 
     EXPECT_EQ(world.GetBodies().size(), std::size_t(0));
     EXPECT_EQ(world.GetJoints().size(), std::size_t(0));
+    EXPECT_EQ(world.GetJointRange(), 0u);
+    EXPECT_FALSE(world.IsDestroyed(JointID{0u})); // out-of-range so not destroyed
 
     ASSERT_EQ(fixtureListener.ids.size(), std::size_t(2));
     EXPECT_EQ(fixtureListener.ids.at(0), f0);
@@ -413,10 +418,13 @@ TEST(WorldImpl, CreateDestroyContactingBodies)
                   static_cast<decltype(contacts.begin()->first.GetMin())>(0));
         EXPECT_EQ(contacts.begin()->first.GetMax(),
                   static_cast<decltype(contacts.begin()->first.GetMax())>(1));
+        EXPECT_EQ(contacts.begin()->second.get(), 0u);
         EXPECT_EQ(GetFixtureA(world.GetContact(contacts.begin()->second)),
                   *GetFixtures(world, body1).begin());
         EXPECT_EQ(GetFixtureB(world.GetContact(contacts.begin()->second)),
                   *GetFixtures(world, body2).begin());
+        EXPECT_EQ(world.GetContactRange(), 1u);
+        EXPECT_FALSE(world.IsDestroyed(ContactID{0u}));
     }
 
     world.Destroy(body1);
@@ -432,6 +440,7 @@ TEST(WorldImpl, CreateDestroyContactingBodies)
     contacts = world.GetContacts();
     EXPECT_TRUE(contacts.empty());
     EXPECT_EQ(contacts.size(), ContactCounter(0));
+    EXPECT_TRUE(world.IsDestroyed(ContactID{0u}));
 
     world.Destroy(body2);
     EXPECT_EQ(world.GetBodies().size(), BodyCounter(0));
@@ -714,4 +723,107 @@ TEST(WorldImpl, ThrowsLengthErrorOnMaxFitures)
         EXPECT_NO_THROW(world.CreateFixture(conf));
     }
     EXPECT_THROW(world.CreateFixture(conf), LengthError);
+}
+
+TEST(WorldImpl, GetBodyRange)
+{
+    auto world = WorldImpl{};
+    EXPECT_EQ(world.GetBodyRange(), BodyCounter{0u});
+    EXPECT_EQ(world.GetBodies().size(), 0u);
+    EXPECT_NO_THROW(CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
+    EXPECT_EQ(world.GetBodyRange(), BodyCounter{1u});
+    EXPECT_EQ(world.GetBodies().size(), 1u);
+    EXPECT_NO_THROW(CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
+    EXPECT_EQ(world.GetBodyRange(), BodyCounter{2u});
+    EXPECT_EQ(world.GetBodies().size(), 2u);
+    EXPECT_NO_THROW(CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
+    EXPECT_EQ(world.GetBodyRange(), BodyCounter{3u});
+    EXPECT_EQ(world.GetBodies().size(), 3u);
+    EXPECT_NO_THROW(Destroy(world, BodyID{0u}));
+    EXPECT_EQ(world.GetBodyRange(), BodyCounter{3u});
+    EXPECT_EQ(world.GetBodies().size(), 2u);
+    EXPECT_NO_THROW(Destroy(world, BodyID{1u}));
+    EXPECT_EQ(world.GetBodyRange(), BodyCounter{3u});
+    EXPECT_EQ(world.GetBodies().size(), 1u);
+}
+
+TEST(WorldImpl, GetFixtureRange)
+{
+    const auto shape = Shape{DiskShapeConf{}};
+    auto world = WorldImpl{};
+    EXPECT_EQ(world.GetFixtureRange(), FixtureCounter{0u});
+    EXPECT_NO_THROW(CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
+    EXPECT_EQ(world.GetFixtures(BodyID{0u}).size(), 0u);
+    EXPECT_NO_THROW(CreateFixture(world, FixtureConf{}.UseBody(BodyID{0u}).UseShape(shape)));
+    EXPECT_EQ(world.GetFixtureRange(), FixtureCounter{1u});
+    EXPECT_EQ(world.GetFixtures(BodyID{0u}).size(), 1u);
+    EXPECT_NO_THROW(CreateFixture(world, FixtureConf{}.UseBody(BodyID{0u}).UseShape(shape)));
+    EXPECT_EQ(world.GetFixtureRange(), FixtureCounter{2u});
+    EXPECT_EQ(world.GetFixtures(BodyID{0u}).size(), 2u);
+    EXPECT_NO_THROW(Destroy(world, FixtureID{0u}));
+    EXPECT_EQ(world.GetFixtureRange(), FixtureCounter{2u});
+    EXPECT_EQ(world.GetFixtures(BodyID{0u}).size(), 1u);
+    EXPECT_NO_THROW(Destroy(world, FixtureID{1u}));
+    EXPECT_EQ(world.GetFixtureRange(), FixtureCounter{2u});
+    EXPECT_EQ(world.GetFixtures(BodyID{0u}).size(), 0u);
+}
+
+TEST(WorldImpl, GetJointRange)
+{
+    auto world = WorldImpl{};
+    EXPECT_EQ(world.GetJointRange(), JointCounter{0u});
+}
+
+TEST(WorldImpl, GetContactRange)
+{
+    auto world = WorldImpl{};
+    EXPECT_EQ(world.GetContactRange(), ContactCounter{0u});
+}
+
+TEST(WorldImpl, IsDestroyedBody)
+{
+    auto world = WorldImpl{};
+    ASSERT_EQ(world.GetBodies().size(), 0u);
+    EXPECT_FALSE(world.IsDestroyed(BodyID{0u}));
+
+    auto id = InvalidBodyID;
+    ASSERT_NO_THROW(id = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
+    ASSERT_EQ(id.get(), 0u);
+    ASSERT_EQ(world.GetBodies().size(), 1u);
+    EXPECT_FALSE(world.IsDestroyed(id));
+
+    ASSERT_NO_THROW(id = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
+    ASSERT_EQ(id.get(), 1u);
+    ASSERT_EQ(world.GetBodies().size(), 2u);
+    EXPECT_FALSE(world.IsDestroyed(id));
+
+    ASSERT_NO_THROW(Destroy(world, BodyID{0u}));
+    EXPECT_TRUE(world.IsDestroyed(BodyID{0u}));
+    EXPECT_FALSE(world.IsDestroyed(BodyID{1u}));
+    ASSERT_NO_THROW(Destroy(world, BodyID{1u}));
+    EXPECT_TRUE(world.IsDestroyed(BodyID{0u}));
+    EXPECT_TRUE(world.IsDestroyed(BodyID{1u}));
+}
+
+TEST(WorldImpl, IsDestroyedFixture)
+{
+    const auto shape = Shape{DiskShapeConf{}};
+    auto world = WorldImpl{};
+    auto id = InvalidFixtureID;
+    ASSERT_NO_THROW(CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
+    ASSERT_NO_THROW(id = CreateFixture(world, FixtureConf{}.UseBody(BodyID{0u}).UseShape(shape)));
+    ASSERT_EQ(id.get(), 0u);
+    EXPECT_FALSE(world.IsDestroyed(FixtureID{0u}));
+
+    ASSERT_NO_THROW(id = CreateFixture(world, FixtureConf{}.UseBody(BodyID{0u}).UseShape(shape)));
+    ASSERT_EQ(id.get(), 1u);
+    EXPECT_FALSE(world.IsDestroyed(FixtureID{1u}));
+
+    ASSERT_NO_THROW(Destroy(world, FixtureID{0u}));
+    EXPECT_TRUE(world.IsDestroyed(FixtureID{0u}));
+    EXPECT_FALSE(world.IsDestroyed(FixtureID{1u}));
+
+    ASSERT_NO_THROW(Destroy(world, FixtureID{1u}));
+    EXPECT_TRUE(world.IsDestroyed(FixtureID{0u}));
+    EXPECT_TRUE(world.IsDestroyed(FixtureID{1u}));
 }
