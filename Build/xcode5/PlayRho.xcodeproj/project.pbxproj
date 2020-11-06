@@ -396,6 +396,8 @@
 		4706451C25336237006E69AA /* LimitState.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LimitState.hpp; sourceTree = "<group>"; };
 		4706451E25336323006E69AA /* LimitState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LimitState.cpp; sourceTree = "<group>"; };
 		470ADAAB25546D2700EEE99D /* ArrayAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayAllocator.cpp; sourceTree = "<group>"; };
+		470ADAB82555E05100EEE99D /* Defines.hpp.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Defines.hpp.in; sourceTree = "<group>"; };
+		470ADAB92555F72B00EEE99D /* Real.hpp.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Real.hpp.in; sourceTree = "<group>"; };
 		470D533C1E82364F00E96896 /* SpinningCircle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SpinningCircle.hpp; sourceTree = "<group>"; };
 		470F94A51EC4C79B00AA3C82 /* BodyConf.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyConf.hpp; sourceTree = "<group>"; };
 		470F94AB1EC4CAE600AA3C82 /* FixtureConf.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureConf.hpp; sourceTree = "<group>"; };
@@ -637,7 +639,6 @@
 		47B58F5F1F5B791500354C34 /* FlagGuard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FlagGuard.cpp; sourceTree = "<group>"; };
 		47B58F621F64C19600354C34 /* RealConstants.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RealConstants.hpp; sourceTree = "<group>"; };
 		47B58F651F64D2B500354C34 /* Real.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Real.hpp; sourceTree = "<group>"; };
-		47B58F671F64D2D200354C34 /* Real.hpp.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Real.hpp.in; sourceTree = "<group>"; };
 		47BE7FE125390E8F00CF0F22 /* BodyType.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BodyType.cpp; sourceTree = "<group>"; };
 		47C85D091EFA251B00F70C56 /* WheelJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WheelJoint.cpp; sourceTree = "<group>"; };
 		47C85D0B1EFA2C1C00F70C56 /* Version.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Version.cpp; sourceTree = "<group>"; };
@@ -943,6 +944,7 @@
 			children = (
 				80BB8923141C3E5900F1753A /* PlayRho.hpp */,
 				47327E7D1EA585790048FCD8 /* Defines.hpp */,
+				470ADAB82555E05100EEE99D /* Defines.hpp.in */,
 				80BB8926141C3E5900F1753A /* Collision */,
 				80BB893E141C3E5900F1753A /* Common */,
 				80BB894C141C3E5900F1753A /* Dynamics */,
@@ -1045,7 +1047,7 @@
 				4764085E2507FBFF0090F711 /* propagate_const.hpp */,
 				470F94E01ECBB3A100AA3C82 /* Range.hpp */,
 				47B58F651F64D2B500354C34 /* Real.hpp */,
-				47B58F671F64D2D200354C34 /* Real.hpp.in */,
+				470ADAB92555F72B00EEE99D /* Real.hpp.in */,
 				47B58F621F64C19600354C34 /* RealConstants.hpp */,
 				80BB8947141C3E5900F1753A /* Settings.hpp */,
 				4734B21E1DC1340500F15E29 /* Span.hpp */,

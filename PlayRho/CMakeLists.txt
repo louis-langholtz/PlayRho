@@ -3,8 +3,28 @@ if(NOT PLAYRHO_REAL_TYPE)
 endif()
 message(STATUS "PLAYRHO_REAL_TYPE=${PLAYRHO_REAL_TYPE}")
 
-file(REMOVE "Common/Real.hpp")
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Common/Real.hpp.in" "${CMAKE_CURRENT_SOURCE_DIR}/Common/Real.hpp")
+message(STATUS "PROJECT_VERSION=${PROJECT_VERSION}")
+if(NOT PlayRho_VERSION_MAJOR)
+	set(PlayRho_VERSION_MAJOR 0)
+endif()
+if(NOT PlayRho_VERSION_MINOR)
+	set(PlayRho_VERSION_MINOR 0)
+endif()
+if(NOT PlayRho_VERSION_PATCH)
+	set(PlayRho_VERSION_PATCH 0)
+endif()
+message(STATUS "PlayRho_VERSION=${PlayRho_VERSION}")
+message(STATUS "PlayRho_VERSION_MAJOR=${PlayRho_VERSION_MAJOR}")
+message(STATUS "PlayRho_VERSION_MINOR=${PlayRho_VERSION_MINOR}")
+message(STATUS "PlayRho_VERSION_PATCH=${PlayRho_VERSION_PATCH}")
+add_compile_definitions(PLAYRHO_VERSION_MAJOR=${PlayRho_VERSION_MAJOR})
+add_compile_definitions(PLAYRHO_VERSION_MINOR=${PlayRho_VERSION_MINOR})
+add_compile_definitions(PLAYRHO_VERSION_PATCH=${PlayRho_VERSION_PATCH})
+
+configure_file("Defines.hpp.in" "Defines.hpp" @ONLY)
+# file(REMOVE "Common/Real.hpp")
+# configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Common/Real.hpp.in" "${CMAKE_CURRENT_SOURCE_DIR}/Common/Real.hpp")
+configure_file("Common/Real.hpp.in" "Common/Real.hpp" @ONLY)
 
 file(GLOB PLAYRHO_Collision_SRCS
 	"Collision/*.cpp"
@@ -46,7 +66,6 @@ file(GLOB PLAYRHO_General_HDRS
 	"*.hpp"
 )
 include_directories( ../ )
-
 
 if (${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	message(STATUS "lib: Adding definitions for coverage analysis.")

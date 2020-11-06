@@ -25,11 +25,9 @@ using namespace playrho;
 
 TEST(Version, GetVersion)
 {
-    const auto version = Version{0, 12, 0};
-    EXPECT_EQ(GetVersion().major, version.major);
-    EXPECT_EQ(GetVersion().minor, version.minor);
-    EXPECT_EQ(GetVersion().revision, version.revision);
-    EXPECT_EQ(GetVersion(), version);
+    EXPECT_EQ(GetVersion().major, PLAYRHO_VERSION_MAJOR);
+    EXPECT_EQ(GetVersion().minor, PLAYRHO_VERSION_MINOR);
+    EXPECT_EQ(GetVersion().revision, PLAYRHO_VERSION_PATCH);
 }
 
 TEST(Version, GetBuildDetails)
