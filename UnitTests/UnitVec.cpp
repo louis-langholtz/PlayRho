@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -267,4 +267,15 @@ TEST(UnitVec, StreamOut)
         os << UnitVec::GetBottom();
         EXPECT_STREQ(os.str().c_str(), "UnitVec(0,-1)");
     }
+}
+
+TEST(UnitVec, BeginEnd)
+{
+    const auto uv = UnitVec::GetLeft();
+    EXPECT_EQ(uv.begin(), uv.data());
+    EXPECT_NE(uv.begin(), uv.end());
+    EXPECT_LT(uv.begin(), uv.end());
+    EXPECT_EQ(uv.begin(), uv.cbegin());
+    EXPECT_EQ(uv.end(), uv.cend());
+    EXPECT_EQ(uv.begin() + 2, uv.end());
 }

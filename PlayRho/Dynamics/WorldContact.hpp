@@ -65,6 +65,12 @@ class Manifold;
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 /// @{
 
+/// @brief Gets the extent of the currently valid contact range.
+/// @note This is one higher than the maxium <code>ContactID</code> that is in range
+///   for contact related functions.
+/// @relatedalso World
+ContactCounter GetContactRange(const World& world) noexcept;
+
 /// @brief Gets the contacts recognized within the given world.
 /// @relatedalso World
 SizedRange<std::vector<KeyedContactPtr>::const_iterator>

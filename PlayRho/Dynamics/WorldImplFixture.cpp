@@ -28,6 +28,11 @@
 namespace playrho {
 namespace d2 {
 
+FixtureCounter GetFixtureRange(const WorldImpl& world) noexcept
+{
+    return world.GetFixtureRange();
+}
+
 FixtureID CreateFixture(WorldImpl& world, const FixtureConf& def)
 {
     return world.CreateFixture(def);

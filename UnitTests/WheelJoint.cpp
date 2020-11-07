@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -31,6 +31,8 @@
 #include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+
+#include <cstring> // for std::memcmp
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -71,14 +73,14 @@ TEST(WheelJointConf, DefaultConstruction)
     EXPECT_EQ(def.dampingRatio, Real(0.7f));
 }
 
-TEST(WheelJoint, Traits)
+TEST(WheelJointConf, Traits)
 {
     EXPECT_FALSE((IsIterable<WheelJointConf>::value));
     EXPECT_FALSE((IsAddable<WheelJointConf>::value));
     EXPECT_FALSE((IsAddable<WheelJointConf,WheelJointConf>::value));
 }
 
-TEST(WheelJoint, Construction)
+TEST(WheelJointConf, Construction)
 {
     WheelJointConf def;
     Joint joint{def};
@@ -101,7 +103,7 @@ TEST(WheelJoint, Construction)
     EXPECT_EQ(GetMotorTorque(joint, 1_Hz), 0 * NewtonMeter);
 }
 
-TEST(WheelJoint, EnableMotor)
+TEST(WheelJointConf, EnableMotor)
 {
     World world;
     const auto b0 = CreateBody(world);
@@ -121,7 +123,7 @@ TEST(WheelJoint, EnableMotor)
     EXPECT_TRUE(IsMotorEnabled(joint));
 }
 
-TEST(WheelJoint, MotorSpeed)
+TEST(WheelJointConf, MotorSpeed)
 {
     World world;
     const auto b0 = CreateBody(world);
@@ -141,7 +143,7 @@ TEST(WheelJoint, MotorSpeed)
     EXPECT_EQ(GetMotorSpeed(joint), newValue);
 }
 
-TEST(WheelJoint, MaxMotorTorque)
+TEST(WheelJointConf, MaxMotorTorque)
 {
     World world;
     const auto b0 = CreateBody(world);
@@ -161,7 +163,7 @@ TEST(WheelJoint, MaxMotorTorque)
     EXPECT_EQ(GetMaxMotorTorque(joint), newValue);
 }
 
-TEST(WheelJoint, GetAnchorAandB)
+TEST(WheelJointConf, GetAnchorAandB)
 {
     World world;
     
@@ -184,7 +186,7 @@ TEST(WheelJoint, GetAnchorAandB)
     EXPECT_EQ(GetAnchorB(world, joint), loc1 + jd.localAnchorB);
 }
 
-TEST(WheelJoint, GetJointTranslation)
+TEST(WheelJointConf, GetJointTranslation)
 {
     World world;
     
@@ -204,7 +206,7 @@ TEST(WheelJoint, GetJointTranslation)
     EXPECT_EQ(GetJointTranslation(world, joint), Length(2_m));
 }
 
-TEST(WheelJoint, GetWheelJointConf)
+TEST(WheelJointConf, GetWheelJointConf)
 {
     WheelJointConf def;
     Joint joint{def};
@@ -238,7 +240,7 @@ TEST(WheelJoint, GetWheelJointConf)
     EXPECT_EQ(cdef.dampingRatio, Real(0.7f));
 }
 
-TEST(WheelJoint, WithDynamicCircles)
+TEST(WheelJointConf, WithDynamicCircles)
 {
     const auto circle = DiskShapeConf{}.UseRadius(2_m).UseDensity(10_kgpm2);
     auto world = World{};
@@ -289,4 +291,12 @@ TEST(WheelJoint, WithDynamicCircles)
     EXPECT_EQ(GetAngularVelocity(world, joint), 0 * RadianPerSecond);
     EXPECT_NEAR(static_cast<double>(StripUnit(GetAngularMass(world, joint))),
                 125.66370391845703, 0.1);
+}
+
+TEST(WheelJointConf, ShiftOrigin)
+{
+    auto jd = WheelJointConf{BodyID(0u), BodyID(1u)};
+    const auto copy = jd;
+    EXPECT_FALSE(ShiftOrigin(jd, Length2{0_m, 0_m}));
+    EXPECT_TRUE(std::memcmp(&jd, &copy, sizeof(WheelJointConf)) == 0);
 }

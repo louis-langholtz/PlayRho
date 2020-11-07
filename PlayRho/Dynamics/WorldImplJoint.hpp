@@ -39,6 +39,12 @@ namespace d2 {
 class WorldImpl;
 class Joint;
 
+/// @brief Gets the extent of the currently valid joint range.
+/// @note This is one higher than the maxium <code>JointID</code> that is in range
+///   for joint related functions.
+/// @relatedalso WorldImpl
+JointCounter GetJointRange(const WorldImpl& world) noexcept;
+
 /// @brief Creates a new joint.
 /// @relatedalso WorldImpl
 JointID CreateJoint(WorldImpl& world, const Joint& def);

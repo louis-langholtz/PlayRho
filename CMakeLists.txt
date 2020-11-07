@@ -1,12 +1,44 @@
 # This is a configuration file for CMake.
-# Top level docs for 3.1.3 at: https://cmake.org/cmake/help/v3.1/
-# Commands herein described at: https://cmake.org/cmake/help/v3.1/manual/cmake-commands.7.html
+# Commands herein described at: https://cmake.org/cmake/help/latest/manual/cmake-commands.7.html
 
 # Minimally require a CMake version that can handle what's necessary...
 # According to the following link, support for cxx_std_17 first became available in CMake 3.8.
 # https://github.com/Kitware/CMake/blob/07cfb18f9d29cfc0588ede928846a03ec5599c48/Help/release/3.8.rst
-# It's not clear that CMake 3.8 is enough though. So 3.10 is picked in hopes that dust settled then.
-cmake_minimum_required(VERSION 3.10)
+# Availability of CMAKE_PROJECT_VERSION first appeared in CMake 3.12
+cmake_minimum_required(VERSION 3.12)
+
+foreach(p
+    CMP0048 # OK to clear PROJECT_VERSION on project()
+    CMP0054 # CMake 3.1
+    CMP0056 # export EXE_LINKER_FLAGS to try_run
+    CMP0057 # Support no if() IN_LIST operator
+    CMP0063 # Honor visibility properties for all targets
+    CMP0077 # Allow option() overrides in importing projects
+    )
+  if(POLICY ${p})
+    cmake_policy(SET ${p} NEW)
+  endif()
+endforeach()
+
+# Set name for entire project. This establishes the project name in <PROJECT_NAME>_* variables.
+# Details at: https://cmake.org/cmake/help/latest/command/project.html#command:project
+project(PlayRho VERSION 0.12.1)
+# Now PlayRho_VERSION set to version above.
+# PlayRho_VERSION_MAJOR set to first component.
+# PlayRho_VERSION_MINOR set to second component.
+# PlayRho_VERSION_PATCH set to third component.
+set(PLAYRHO_VERSION PlayRho_VERSION)
+
+# Make sure we can import our CMake functions
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+# Read the git tags to determine the project version
+include(GetGitVersion)
+get_git_version(GIT_VERSION)
+
+# Tell the user what versions we are using
+string(REGEX MATCH "[0-9]+\\.[0-9]+\\.[0-9]+" VERSION ${GIT_VERSION})
+message(STATUS "Version: ${VERSION}")
 
 # Require C++17...
 set(CMAKE_CXX_STANDARD 17)
@@ -21,10 +53,6 @@ endif()
 # supports Debug, Release, MinSizeRel, and RelWithDebInfo, anything
 # else will be ignored. PlayRho only supports Debug and Release
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;" CACHE STRING "Semicolon separated list of supported configuration types. PlayRho only supports Debug and Release configurations.")
-
-# Set name for entire project.
-# Details at: https://cmake.org/cmake/help/v3.1/command/project.html
-project(PlayRho)
 
 # Tell C++ compiler to optimize release builds for speed.
 # In clang++, the optimize for speed flag is '-Ot'. This option isn't supported on g++
@@ -49,7 +77,6 @@ option(PLAYRHO_BUILD_BENCHMARK "Build PlayRho Benchmark console application." OF
 option(PLAYRHO_BUILD_TESTBED "Build PlayRho Testbed GUI application." OFF)
 option(PLAYRHO_ENABLE_COVERAGE "Enable code coverage generation." OFF)
 
-set(PLAYRHO_VERSION 0.12.0)
 set(LIB_INSTALL_DIR lib${LIB_SUFFIX})
 
 # Tell Microsoft Visual C (MSVC) to enable unwind semantics since it doesn't by default.
@@ -94,5 +121,8 @@ if(PLAYRHO_BUILD_BENCHMARK)
 endif(PLAYRHO_BUILD_BENCHMARK)
 
 if(PLAYRHO_INSTALL_DOC)
-  install(DIRECTORY Documentation DESTINATION share/doc/PlayRho PATTERN ".svn" EXCLUDE)
+  find_package(Doxygen)
+  if (DOXYGEN_FOUND)
+    add_subdirectory(Documentation)
+  endif()
 endif(PLAYRHO_INSTALL_DOC)

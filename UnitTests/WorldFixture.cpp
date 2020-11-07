@@ -35,6 +35,7 @@ using namespace playrho::d2;
 TEST(WorldFixture, CreateDestroy)
 {
     auto world = World{};
+    EXPECT_EQ(GetFixtureRange(world), 0u);
     EXPECT_THROW(CreateFixture(world, BodyID(0u), Shape{DiskShapeConf{}}), std::out_of_range);
     EXPECT_THROW(Destroy(world, FixtureID(0u)), std::out_of_range);
     const auto body = CreateBody(world);
@@ -44,6 +45,7 @@ TEST(WorldFixture, CreateDestroy)
     using ValueType = std::remove_cv_t<std::remove_reference_t<decltype(GetFixtures(world, body))>>;
     auto fixturesRange = ValueType();
     EXPECT_NO_THROW(fixturesRange = GetFixtures(world, body));
+    EXPECT_EQ(GetFixtureRange(world), 1u);
     ASSERT_EQ(size(fixturesRange), 1u);
     EXPECT_EQ(*begin(fixturesRange), fixture);
     EXPECT_NO_THROW(Destroy(world, fixture));

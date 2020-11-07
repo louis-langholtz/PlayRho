@@ -80,7 +80,8 @@ class DynamicTree;
 /// @code{.cpp}
 /// auto world = World{};
 /// const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-/// const auto fixture = world.CreateFixture(body, Shape{DiskShapeConf{1_m}});
+/// const auto fixture = world.CreateFixture(
+///     FixtureConf{}.UseBody(body).UseShape(DiskShapeConf{1_m}));
 /// @endcode
 ///
 /// @see World.
@@ -116,7 +117,8 @@ class DynamicTree;
 /// @code{.cpp}
 /// auto world = World{};
 /// const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-/// const auto fixture = world.CreateFixture(body, Shape{DiskShapeConf{1_m}});
+/// const auto fixture = world.CreateFixture(
+///     FixtureConf{}.UseBody(body).UseShape(DiskShapeConf{1_m}));
 /// @endcode
 ///
 /// @see BodyID, ContactID, FixtureID, JointID, PhysicalEntities.
@@ -309,8 +311,8 @@ public:
     /// @{
 
     /// @brief Gets the extent of the currently valid body range.
-    /// @note This is one higher than the maxium BodyID that is in range for body related
-    ///   functions.
+    /// @note This is one higher than the maxium <code>BodyID</code> that is in range
+    ///   for body related functions.
     BodyCounter GetBodyRange() const noexcept;
 
     /// @brief Gets the world body range for this constant world.
@@ -389,6 +391,11 @@ public:
     /// Member functions relating to fixtures.
     /// @{
 
+    /// @brief Gets the extent of the currently valid fixture range.
+    /// @note This is one higher than the maxium <code>FixtureID</code> that is in range
+    ///   for fixture related functions.
+    FixtureCounter GetFixtureRange() const noexcept;
+
     /// @brief Creates a fixture and attaches it to the given body.
     /// @details Creates a fixture for attaching a shape and other characteristics to this
     ///   body. Fixtures automatically go away when this body is destroyed. Fixtures can
@@ -458,6 +465,11 @@ public:
     /// Member functions relating to joints.
     /// @{
 
+    /// @brief Gets the extent of the currently valid joint range.
+    /// @note This is one higher than the maxium <code>JointID</code> that is in range
+    ///   for joint related functions.
+    JointCounter GetJointRange() const noexcept;
+
     /// @brief Gets the world joint range.
     /// @details Gets a range enumerating the joints currently existing within this world.
     ///   These are the joints that had been created from previous calls to the
@@ -505,6 +517,11 @@ public:
     /// @name Contact Member Functions
     /// Member functions relating to contacts.
     /// @{
+
+    /// @brief Gets the extent of the currently valid contact range.
+    /// @note This is one higher than the maxium <code>ContactID</code> that is in range
+    ///   for contact related functions.
+    ContactCounter GetContactRange() const noexcept;
 
     /// @brief Gets the world contact range.
     /// @warning contacts are created and destroyed in the middle of a time step.

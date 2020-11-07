@@ -29,6 +29,11 @@
 namespace playrho {
 namespace d2 {
 
+ContactCounter GetContactRange(const WorldImpl& world) noexcept
+{
+    return world.GetContactRange();
+}
+
 const Contact& GetContact(const WorldImpl& world, ContactID id)
 {
     return world.GetContact(id);

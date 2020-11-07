@@ -300,3 +300,6 @@ __pycache__/
 
 # Imgui ini  file
 **/imgui.ini
+
+# Xcode files
+**/OptimizationProfiles/

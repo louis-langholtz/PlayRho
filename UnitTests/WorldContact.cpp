@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -173,6 +173,7 @@ TEST(WorldContact, WorldManifoldAndMore)
     ASSERT_NO_THROW(Step(world, StepConf{}));
     const auto contacts = GetContacts(world);
     ASSERT_EQ(contacts.size(), ContactCounter(1));
+    EXPECT_EQ(GetContactRange(world), 1u);
 
     const auto c = contacts.begin()->second;
     {

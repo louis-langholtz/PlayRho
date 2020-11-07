@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -204,6 +204,7 @@ TEST(World, Clear)
     auto world = World{};
     ASSERT_EQ(world.GetBodies().size(), std::size_t(0));
     ASSERT_EQ(world.GetJoints().size(), std::size_t(0));
+    ASSERT_EQ(GetJointRange(world), 0u);
 
     world.SetJointDestructionListener(std::ref(jointListener));
     world.SetFixtureDestructionListener(std::ref(fixtureListener));
@@ -225,6 +226,7 @@ TEST(World, Clear)
 
     ASSERT_EQ(world.GetBodies().size(), std::size_t(2));
     ASSERT_EQ(world.GetJoints().size(), std::size_t(1));
+    ASSERT_EQ(GetJointRange(world), 1u);
 
     EXPECT_NO_THROW(world.Clear());
 

@@ -1,6 +1,6 @@
 /*
  * Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
- * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -622,6 +622,21 @@ BodyCounter WorldImpl::GetBodyRange() const noexcept
     return static_cast<BodyCounter>(m_bodyBuffer.size());
 }
 
+FixtureCounter WorldImpl::GetFixtureRange() const noexcept
+{
+    return static_cast<FixtureCounter>(m_fixtureBuffer.size());
+}
+
+JointCounter WorldImpl::GetJointRange() const noexcept
+{
+    return static_cast<JointCounter>(m_jointBuffer.size());
+}
+
+ContactCounter WorldImpl::GetContactRange() const noexcept
+{
+    return static_cast<ContactCounter>(m_contactBuffer.size());
+}
+
 BodyID WorldImpl::CreateBody(const BodyConf& def)
 {
     if (IsLocked()) {
@@ -696,6 +711,11 @@ void WorldImpl::Destroy(BodyID id)
     m_bodyFixtures[id.get()].clear();
 
     Remove(id);
+}
+
+bool WorldImpl::IsDestroyed(BodyID id) const noexcept
+{
+    return m_bodyBuffer.FindFree(id.get());
 }
 
 void WorldImpl::SetJoint(JointID id, const Joint& def)
@@ -794,6 +814,11 @@ void WorldImpl::Destroy(JointID id)
         m_joints.erase(iter);
         m_jointBuffer.Free(UnderlyingValue(id));
     }
+}
+
+bool WorldImpl::IsDestroyed(JointID id) const noexcept
+{
+    return m_jointBuffer.FindFree(id.get());
 }
 
 void WorldImpl::AddToIsland(Island& island, BodyID seedID,
@@ -1835,6 +1860,11 @@ void WorldImpl::Destroy(ContactID contactID, const Body* from)
     InternalDestroy(contactID, from);
 }
 
+bool WorldImpl::IsDestroyed(ContactID id) const noexcept
+{
+    return m_contactBuffer.FindFree(id.get());
+}
+
 WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(Contacts& contacts)
 {
     const auto beforeSize = size(contacts);
@@ -2362,6 +2392,11 @@ bool WorldImpl::Destroy(FixtureID id)
     m_fixtureProxies.Free(UnderlyingValue(id));
     body.SetMassDataDirty();
     return true;
+}
+
+bool WorldImpl::IsDestroyed(FixtureID id) const noexcept
+{
+    return m_fixtureBuffer.FindFree(id.get());
 }
 
 ContactCounter WorldImpl::Synchronize(const Fixtures& fixtures,

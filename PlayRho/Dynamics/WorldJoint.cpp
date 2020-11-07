@@ -31,6 +31,11 @@
 namespace playrho {
 namespace d2 {
 
+JointCounter GetJointRange(const World& world) noexcept
+{
+    return world.GetJointRange();
+}
+
 SizedRange<std::vector<JointID>::const_iterator> GetJoints(const World& world) noexcept
 {
     return world.GetJoints();

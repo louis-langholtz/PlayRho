@@ -59,6 +59,12 @@ struct JointConf;
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 /// @{
 
+/// @brief Gets the extent of the currently valid joint range.
+/// @note This is one higher than the maxium <code>JointID</code> that is in range
+///   for joint related functions.
+/// @relatedalso World
+JointCounter GetJointRange(const World& world) noexcept;
+
 /// @brief Gets the joints of the specified world.
 /// @relatedalso World
 SizedRange<std::vector<JointID>::const_iterator> GetJoints(const World& world) noexcept;

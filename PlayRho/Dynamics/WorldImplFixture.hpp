@@ -44,6 +44,12 @@ namespace d2 {
 class WorldImpl;
 struct FixtureConf; // for CreateFixture
 
+/// @brief Gets the extent of the currently valid fixture range.
+/// @note This is one higher than the maxium <code>FixtureID</code> that is in range
+///   for fixture related functions.
+/// @relatedalso WorldImpl
+FixtureCounter GetFixtureRange(const WorldImpl& world) noexcept;
+
 /// @relatedalso WorldImpl
 FixtureID CreateFixture(WorldImpl& world, const FixtureConf& def);
 

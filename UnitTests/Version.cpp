@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -19,17 +19,18 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Common/Version.hpp>
+
+#include <PlayRho/Defines.hpp> // for PLAYRHO_VERSION_*
 
 using namespace playrho;
 
 TEST(Version, GetVersion)
 {
-    const auto version = Version{0, 12, 0};
-    EXPECT_EQ(GetVersion().major, version.major);
-    EXPECT_EQ(GetVersion().minor, version.minor);
-    EXPECT_EQ(GetVersion().revision, version.revision);
-    EXPECT_EQ(GetVersion(), version);
+    EXPECT_EQ(GetVersion().major, PLAYRHO_VERSION_MAJOR);
+    EXPECT_EQ(GetVersion().minor, PLAYRHO_VERSION_MINOR);
+    EXPECT_EQ(GetVersion().revision, PLAYRHO_VERSION_PATCH);
 }
 
 TEST(Version, GetBuildDetails)
@@ -38,4 +39,30 @@ TEST(Version, GetBuildDetails)
     const auto result = GetBuildDetails();
     EXPECT_NE(result.find_first_of("asserts="), result.npos);
     EXPECT_NE(result.find_first_of("Real="), result.npos);
+}
+
+TEST(Version, EqualsOperator)
+{
+    // Uses double parenthesis to avoid macro expansion issue with aggragate initializations...
+    const Version version{1, 2, 3};
+    EXPECT_TRUE(version == version);
+    EXPECT_TRUE((Version{1, 2, 3} == version));
+    EXPECT_TRUE((version == Version{1, 2, 3}));
+    EXPECT_TRUE((Version{2, 1, 3} == Version{2, 1, 3}));
+    EXPECT_FALSE((Version{2, 1, 3} == Version{3, 2, 1}));
+    EXPECT_FALSE((Version{2, 1, 3} == Version{2, 3, 1}));
+    EXPECT_FALSE((Version{2, 1, 3} == Version{3, 1, 2}));
+}
+
+TEST(Version, NotEqualsOperator)
+{
+    // Uses double parenthesis to avoid macro expansion issue with aggragate initializations...
+    const Version version{1, 2, 3};
+    EXPECT_FALSE(version != version);
+    EXPECT_FALSE((Version{1, 2, 3} != version));
+    EXPECT_FALSE((version != Version{1, 2, 3}));
+    EXPECT_FALSE((Version{2, 1, 3} != Version{2, 1, 3}));
+    EXPECT_TRUE((Version{2, 1, 3} != Version{3, 2, 1}));
+    EXPECT_TRUE((Version{2, 1, 3} != Version{2, 3, 1}));
+    EXPECT_TRUE((Version{2, 1, 3} != Version{3, 1, 2}));
 }
