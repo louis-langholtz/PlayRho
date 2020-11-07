@@ -268,3 +268,14 @@ TEST(UnitVec, StreamOut)
         EXPECT_STREQ(os.str().c_str(), "UnitVec(0,-1)");
     }
 }
+
+TEST(UnitVec, BeginEnd)
+{
+    const auto uv = UnitVec::GetLeft();
+    EXPECT_EQ(uv.begin(), uv.data());
+    EXPECT_NE(uv.begin(), uv.end());
+    EXPECT_LT(uv.begin(), uv.end());
+    EXPECT_EQ(uv.begin(), uv.cbegin());
+    EXPECT_EQ(uv.end(), uv.cend());
+    EXPECT_EQ(uv.begin() + 2, uv.end());
+}

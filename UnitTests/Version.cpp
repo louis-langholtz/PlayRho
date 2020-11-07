@@ -37,3 +37,29 @@ TEST(Version, GetBuildDetails)
     EXPECT_NE(result.find_first_of("asserts="), result.npos);
     EXPECT_NE(result.find_first_of("Real="), result.npos);
 }
+
+TEST(Version, EqualsOperator)
+{
+    // Uses double parenthesis to avoid macro expansion issue with aggragate initializations...
+    const Version version{1, 2, 3};
+    EXPECT_TRUE(version == version);
+    EXPECT_TRUE((Version{1, 2, 3} == version));
+    EXPECT_TRUE((version == Version{1, 2, 3}));
+    EXPECT_TRUE((Version{2, 1, 3} == Version{2, 1, 3}));
+    EXPECT_FALSE((Version{2, 1, 3} == Version{3, 2, 1}));
+    EXPECT_FALSE((Version{2, 1, 3} == Version{2, 3, 1}));
+    EXPECT_FALSE((Version{2, 1, 3} == Version{3, 1, 2}));
+}
+
+TEST(Version, NotEqualsOperator)
+{
+    // Uses double parenthesis to avoid macro expansion issue with aggragate initializations...
+    const Version version{1, 2, 3};
+    EXPECT_FALSE(version != version);
+    EXPECT_FALSE((Version{1, 2, 3} != version));
+    EXPECT_FALSE((version != Version{1, 2, 3}));
+    EXPECT_FALSE((Version{2, 1, 3} != Version{2, 1, 3}));
+    EXPECT_TRUE((Version{2, 1, 3} != Version{3, 2, 1}));
+    EXPECT_TRUE((Version{2, 1, 3} != Version{2, 3, 1}));
+    EXPECT_TRUE((Version{2, 1, 3} != Version{3, 1, 2}));
+}

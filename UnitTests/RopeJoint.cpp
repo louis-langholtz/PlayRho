@@ -21,8 +21,8 @@
 #include "UnitTests.hpp"
 
 #include <PlayRho/Dynamics/Joints/RopeJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
 
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
@@ -31,6 +31,8 @@
 #include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+
+#include <cstring> // for std::memcmp
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -65,7 +67,7 @@ TEST(RopeJointConf, DefaultConstruction)
     EXPECT_EQ(def.maxLength, 0_m);
 }
 
-TEST(RopeJoint, Construction)
+TEST(RopeJointConf, Construction)
 {
     World world;
     const auto b0 = CreateBody(world);
@@ -91,7 +93,7 @@ TEST(RopeJoint, Construction)
     EXPECT_EQ(GetMaxLength(conf), def.maxLength);
 }
 
-TEST(RopeJoint, GetRopeJointConf)
+TEST(RopeJointConf, GetRopeJointConf)
 {
     auto world = World{};
     const auto bodyA = CreateBody(world);
@@ -123,7 +125,7 @@ TEST(RopeJoint, GetRopeJointConf)
     EXPECT_EQ(cdef.maxLength, 0_m);
 }
 
-TEST(RopeJoint, WithDynamicCircles)
+TEST(RopeJointConf, WithDynamicCircles)
 {
     const auto circle = Shape{DiskShapeConf{}.UseRadius(0.2_m)};
     auto world = World{};
@@ -165,4 +167,12 @@ TEST(RopeJoint, WithDynamicCircles)
     EXPECT_EQ(GetY(GetLocation(world, b2)), 0_m);
     EXPECT_EQ(GetAngle(world, b1), 0_deg);
     EXPECT_EQ(GetAngle(world, b2), 0_deg);
+}
+
+TEST(RopeJointConf, ShiftOrigin)
+{
+    auto jd = RopeJointConf{BodyID(0u), BodyID(1u)};
+    const auto copy = jd;
+    EXPECT_FALSE(ShiftOrigin(jd, Length2{0_m, 0_m}));
+    EXPECT_TRUE(std::memcmp(&jd, &copy, sizeof(RopeJointConf)) == 0);
 }
