@@ -2,6 +2,23 @@
 # Top level docs for 3.1.3 at: https://cmake.org/cmake/help/v3.1/
 # Commands herein described at: https://cmake.org/cmake/help/v3.1/manual/cmake-commands.7.html
 
+message(STATUS "PROJECT_VERSION=${PROJECT_VERSION}")
+if(NOT PlayRho_VERSION_MAJOR)
+	set(PlayRho_VERSION_MAJOR 0)
+endif()
+if(NOT PlayRho_VERSION_MINOR)
+	set(PlayRho_VERSION_MINOR 0)
+endif()
+if(NOT PlayRho_VERSION_PATCH)
+	set(PlayRho_VERSION_PATCH 0)
+endif()
+message(STATUS "UnitTests PlayRho_VERSION_MAJOR=${PlayRho_VERSION_MAJOR}")
+message(STATUS "UnitTests PlayRho_VERSION_MINOR=${PlayRho_VERSION_MINOR}")
+message(STATUS "UnitTests PlayRho_VERSION_PATCH=${PlayRho_VERSION_PATCH}")
+add_compile_definitions(PLAYRHO_VERSION_MAJOR=${PlayRho_VERSION_MAJOR})
+add_compile_definitions(PLAYRHO_VERSION_MINOR=${PlayRho_VERSION_MINOR})
+add_compile_definitions(PLAYRHO_VERSION_PATCH=${PlayRho_VERSION_PATCH})
+
 # Hides options.
 mark_as_advanced(FORCE BUILD_GMOCK BUILD_GTEST BUILD_SHARED_LIBS)
 mark_as_advanced(FORCE INSTALL_GMOCK INSTALL_GTEST)

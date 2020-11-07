@@ -19,7 +19,10 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Common/Version.hpp>
+
+#include <PlayRho/Defines.hpp> // for PLAYRHO_VERSION_*
 
 using namespace playrho;
 
