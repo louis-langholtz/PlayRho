@@ -32,6 +32,8 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
+#include <cstring> // for std::memcmp
+
 using namespace playrho;
 using namespace playrho::d2;
 
