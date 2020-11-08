@@ -17,18 +17,55 @@
  */
 
 #include "UnitTests.hpp"
+
+#include <PlayRho/Common/Velocity.hpp>
 #include <PlayRho/Common/Math.hpp>
+
+#include <PlayRho/Dynamics/MovementConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;
 
 TEST(Velocity, ByteSize)
 {
-    switch (sizeof(Real))
-    {
-        case  4: EXPECT_EQ(sizeof(Velocity), std::size_t(12)); break;
-        case  8: EXPECT_EQ(sizeof(Velocity), std::size_t(24)); break;
-        case 16: EXPECT_EQ(sizeof(Velocity), std::size_t(48)); break;
-        default: FAIL(); break;
+    switch (sizeof(Real)) {
+    case 4:
+        EXPECT_EQ(sizeof(Velocity), std::size_t(12));
+        break;
+    case 8:
+        EXPECT_EQ(sizeof(Velocity), std::size_t(24));
+        break;
+    case 16:
+        EXPECT_EQ(sizeof(Velocity), std::size_t(48));
+        break;
+    default:
+        FAIL();
+        break;
     }
+}
+
+TEST(Velocity, CapZeroTimeNoCapStaysSame)
+{
+    EXPECT_EQ(Cap(Velocity{LinearVelocity2{}, 0_rpm}, 0_s, MovementConf{}).linear,
+              (LinearVelocity2{}));
+    EXPECT_EQ(Cap(Velocity{LinearVelocity2{}, 0_rpm}, 0_s, MovementConf{}).angular, 0_rpm);
+    EXPECT_EQ(Cap(Velocity{LinearVelocity2{+1_mps, +2_mps}, +3_rpm}, 0_s, MovementConf{}).linear,
+              (LinearVelocity2{+1_mps, +2_mps}));
+    EXPECT_EQ(Cap(Velocity{LinearVelocity2{+1_mps, +2_mps}, +3_rpm}, 0_s, MovementConf{}).angular,
+              +3_rpm);
+    EXPECT_EQ(Cap(Velocity{LinearVelocity2{-1_mps, -2_mps}, -3_rpm}, 0_s, MovementConf{}).linear,
+              (LinearVelocity2{-1_mps, -2_mps}));
+    EXPECT_EQ(Cap(Velocity{LinearVelocity2{-1_mps, -2_mps}, -3_rpm}, 0_s, MovementConf{}).angular,
+              -3_rpm);
+}
+
+TEST(Velocity, CapZeroConfNonZeroTimeGoesToZero)
+{
+    EXPECT_EQ(Cap(Velocity{LinearVelocity2{}, 0_rpm}, 1_s, MovementConf{}).linear,
+              (LinearVelocity2{}));
+    EXPECT_EQ(Cap(Velocity{LinearVelocity2{}, 0_rpm}, 1_s, MovementConf{}).angular, 0_rpm);
+    EXPECT_EQ(Cap(Velocity{LinearVelocity2{10_mps, 20_mps}, 10_rpm}, 1_s, MovementConf{}).linear,
+              (LinearVelocity2{0_mps, 0_mps}));
+    EXPECT_EQ(Cap(Velocity{LinearVelocity2{10_mps, 20_mps}, 10_rpm}, 1_s, MovementConf{}).angular,
+              0_rpm);
 }
