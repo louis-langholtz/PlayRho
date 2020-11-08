@@ -363,7 +363,7 @@ public:
     /// @param value Valid new time factor in [0,1) to advance the sweep to.
     void Advance(Real value) noexcept
     {
-        //assert(m_sweep.GetAlpha0() <= alpha);
+        // assert(m_sweep.GetAlpha0() <= alpha);
         assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
 
         // Advance to the new safe time. This doesn't sync the broad-phase.
@@ -379,8 +379,7 @@ private:
 
     /// @brief Flag enumeration.
     /// @note For internal use. Made public to facilitate unit testing.
-    enum Flag: FlagsType
-    {
+    enum Flag : FlagsType {
         /// @brief Awake flag.
         e_awakeFlag = FlagsType(0x0002),
 
@@ -404,8 +403,8 @@ private:
         e_velocityFlag = FlagsType(0x0080),
 
         /// @brief Acceleration flag.
-        /// @details Set this to enable changes in velocity due to physical properties (like forces).
-        /// Bodies with this set are "accelerable" - dynamic bodies.
+        /// @details Set this to enable changes in velocity due to physical properties (like
+        /// forces). Bodies with this set are "accelerable" - dynamic bodies.
         e_accelerationFlag = FlagsType(0x0100),
 
         /// @brief Mass Data Dirty Flag.
@@ -581,8 +580,7 @@ inline Time Body::GetUnderActiveTime() const noexcept
 
 inline void Body::SetUnderActiveTime(Time value) noexcept
 {
-    if ((value == 0_s) || IsAccelerable())
-    {
+    if ((value == 0_s) || IsAccelerable()) {
         m_underActiveTime = value;
     }
 }
@@ -619,12 +617,10 @@ inline bool Body::IsSleepingAllowed() const noexcept
 
 inline void Body::SetSleepingAllowed(bool flag) noexcept
 {
-    if (flag)
-    {
+    if (flag) {
         m_flags |= e_autoSleepFlag;
     }
-    else if (IsSpeedable())
-    {
+    else if (IsSpeedable()) {
         m_flags &= ~e_autoSleepFlag;
         SetAwakeFlag();
         ResetUnderActiveTime();
@@ -922,8 +918,7 @@ inline AngularAcceleration GetAngularAcceleration(const Body& body) noexcept
 /// @relatedalso Body
 inline bool Awaken(Body& body) noexcept
 {
-    if (!body.IsAwake() && body.IsSpeedable())
-    {
+    if (!body.IsAwake() && body.IsSpeedable()) {
         body.SetAwake();
         return true;
     }
@@ -934,8 +929,7 @@ inline bool Awaken(Body& body) noexcept
 /// @relatedalso Body
 inline bool Unawaken(Body& body) noexcept
 {
-    if (body.IsAwake() && body.IsSleepingAllowed())
-    {
+    if (body.IsAwake() && body.IsSleepingAllowed()) {
         body.UnsetAwake();
         return true;
     }
@@ -957,7 +951,7 @@ inline Position GetPosition1(const Body& body) noexcept
 inline Mass GetMass(const Body& body) noexcept
 {
     const auto invMass = body.GetInvMass();
-    return (invMass != InvMass{0})? Mass{Real{1} / invMass}: 0_kg;
+    return (invMass != InvMass{0}) ? Mass{Real{1} / invMass} : 0_kg;
 }
 
 /// @brief Sets the linear and rotational accelerations on this body.
@@ -967,7 +961,8 @@ inline Mass GetMass(const Body& body) noexcept
 /// @param linear Linear acceleration.
 /// @param angular Angular acceleration.
 /// @relatedalso Body
-inline void SetAcceleration(Body& body, LinearAcceleration2 linear, AngularAcceleration angular) noexcept
+inline void SetAcceleration(Body& body, LinearAcceleration2 linear,
+                            AngularAcceleration angular) noexcept
 {
     body.SetAcceleration(linear, angular);
 }
@@ -1031,8 +1026,8 @@ inline RotInertia GetRotInertia(const Body& body) noexcept
 /// @relatedalso Body
 inline RotInertia GetLocalRotInertia(const Body& body) noexcept
 {
-    return GetRotInertia(body)
-         + GetMass(body) * GetMagnitudeSquared(body.GetLocalCenter()) / SquareRadian;
+    return GetRotInertia(body) +
+           GetMass(body) * GetMagnitudeSquared(body.GetLocalCenter()) / SquareRadian;
 }
 
 /// @brief Gets the velocity.
@@ -1141,7 +1136,7 @@ inline UnitVec GetLocalVector(const Body& body, const UnitVec uv) noexcept
 /// @return the world velocity of a point.
 /// @relatedalso Body
 inline LinearVelocity2 GetLinearVelocityFromWorldPoint(const Body& body,
-                                                        const Length2 worldPoint) noexcept
+                                                       const Length2 worldPoint) noexcept
 {
     const auto velocity = body.GetVelocity();
     const auto worldCtr = body.GetWorldCenter();
@@ -1156,7 +1151,7 @@ inline LinearVelocity2 GetLinearVelocityFromWorldPoint(const Body& body,
 /// @return the world velocity of a point.
 /// @relatedalso Body
 inline LinearVelocity2 GetLinearVelocityFromLocalPoint(const Body& body,
-                                                        const Length2 localPoint) noexcept
+                                                       const Length2 localPoint) noexcept
 {
     return GetLinearVelocityFromWorldPoint(body, GetWorldPoint(body, localPoint));
 }

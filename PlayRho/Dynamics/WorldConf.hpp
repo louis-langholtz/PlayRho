@@ -30,8 +30,7 @@ namespace playrho {
 namespace d2 {
 
 /// @brief World configuration data.
-struct WorldConf
-{
+struct WorldConf {
     /// @brief Uses the given min vertex radius value.
     constexpr WorldConf& UseMinVertexRadius(Positive<Length> value) noexcept;
 
