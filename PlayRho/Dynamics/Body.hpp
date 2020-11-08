@@ -66,6 +66,50 @@ class Shape;
 class Body
 {
 public:
+    /// @brief Flags type.
+    /// @note For internal use. Made public to facilitate unit testing.
+    using FlagsType = std::uint16_t;
+
+    /// @brief Flag enumeration.
+    /// @note For internal use. Made public to facilitate unit testing.
+    enum Flag : FlagsType {
+        /// @brief Awake flag.
+        e_awakeFlag = FlagsType(0x0002),
+
+        /// @brief Auto sleep flag.
+        e_autoSleepFlag = FlagsType(0x0004),
+
+        /// @brief Impenetrable flag.
+        /// @details Indicates whether CCD should be done for this body.
+        /// All static and kinematic bodies have this flag enabled.
+        e_impenetrableFlag = FlagsType(0x0008),
+
+        /// @brief Fixed rotation flag.
+        e_fixedRotationFlag = FlagsType(0x0010),
+
+        /// @brief Enabled flag.
+        e_enabledFlag = FlagsType(0x0020),
+
+        /// @brief Velocity flag.
+        /// @details Set this to enable changes in position due to velocity.
+        /// Bodies with this set are "speedable" - either kinematic or dynamic bodies.
+        e_velocityFlag = FlagsType(0x0080),
+
+        /// @brief Acceleration flag.
+        /// @details Set this to enable changes in velocity due to physical properties (like
+        /// forces). Bodies with this set are "accelerable" - dynamic bodies.
+        e_accelerationFlag = FlagsType(0x0100),
+
+        /// @brief Mass Data Dirty Flag.
+        e_massDataDirtyFlag = FlagsType(0x0200),
+    };
+
+    /// @brief Gets the flags for the given value.
+    static FlagsType GetFlags(BodyType type) noexcept;
+
+    /// @brief Gets the flags for the given value.
+    static FlagsType GetFlags(const BodyConf& bd) noexcept;
+
     /// @brief Initializing constructor.
     explicit Body(const BodyConf& bd = GetDefaultBodyConf()) noexcept;
 
@@ -373,50 +417,6 @@ public:
     }
 
 private:
-    /// @brief Flags type.
-    /// @note For internal use. Made public to facilitate unit testing.
-    using FlagsType = std::uint16_t;
-
-    /// @brief Flag enumeration.
-    /// @note For internal use. Made public to facilitate unit testing.
-    enum Flag : FlagsType {
-        /// @brief Awake flag.
-        e_awakeFlag = FlagsType(0x0002),
-
-        /// @brief Auto sleep flag.
-        e_autoSleepFlag = FlagsType(0x0004),
-
-        /// @brief Impenetrable flag.
-        /// @details Indicates whether CCD should be done for this body.
-        /// All static and kinematic bodies have this flag enabled.
-        e_impenetrableFlag = FlagsType(0x0008),
-
-        /// @brief Fixed rotation flag.
-        e_fixedRotationFlag = FlagsType(0x0010),
-
-        /// @brief Enabled flag.
-        e_enabledFlag = FlagsType(0x0020),
-
-        /// @brief Velocity flag.
-        /// @details Set this to enable changes in position due to velocity.
-        /// Bodies with this set are "speedable" - either kinematic or dynamic bodies.
-        e_velocityFlag = FlagsType(0x0080),
-
-        /// @brief Acceleration flag.
-        /// @details Set this to enable changes in velocity due to physical properties (like
-        /// forces). Bodies with this set are "accelerable" - dynamic bodies.
-        e_accelerationFlag = FlagsType(0x0100),
-
-        /// @brief Mass Data Dirty Flag.
-        e_massDataDirtyFlag = FlagsType(0x0200),
-    };
-
-    /// @brief Gets the flags for the given value.
-    static FlagsType GetFlags(BodyType type) noexcept;
-
-    /// @brief Gets the flags for the given value.
-    static FlagsType GetFlags(const BodyConf& bd) noexcept;
-
     //
     // Member variables. Try to keep total size small.
     //
