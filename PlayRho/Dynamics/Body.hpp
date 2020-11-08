@@ -1170,14 +1170,6 @@ inline Torque GetTorque(const Body& body) noexcept
     return body.GetAngularAcceleration() * GetRotInertia(body);
 }
 
-/// @brief Caps velocity.
-/// @details Enforces maximums on the given velocity.
-/// @param velocity Velocity to cap. Behavior is undefined if this value is invalid.
-/// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
-/// @param conf Movement configuration. This defines caps on linear and angular speeds.
-/// @relatedalso Velocity
-Velocity Cap(Velocity velocity, Time h, MovementConf conf) noexcept;
-
 /// @brief Gets the velocity of the body after the given time accounting for the body's
 ///   acceleration and capped by the given configuration.
 /// @warning Behavior is undefined if the given elapsed time is an invalid value (like NaN).
