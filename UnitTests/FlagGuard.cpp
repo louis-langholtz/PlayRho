@@ -27,6 +27,8 @@ using namespace playrho;
 
 TEST(FlagGuard, ByteSizeOverhead)
 {
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
     EXPECT_EQ(sizeof(FlagGuard<std::uint8_t>), sizeof(std::uint8_t*) * 2);
     EXPECT_EQ(sizeof(FlagGuard<std::uint16_t>), sizeof(std::uint16_t*) * 2);
     EXPECT_EQ(sizeof(FlagGuard<std::uint32_t>), sizeof(std::uint32_t*) * 2);

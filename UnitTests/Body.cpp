@@ -27,6 +27,9 @@ using namespace playrho::d2;
 
 TEST(Body, ByteSize)
 {
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
+
     // architecture dependent...
     switch (sizeof(Real)) {
     case 4:

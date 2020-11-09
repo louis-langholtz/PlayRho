@@ -21,8 +21,10 @@
 
 using namespace playrho;
 
-TEST(Mat22, ByteSizeIs_16_32_or_64)
+TEST(Mat22, ByteSize)
 {
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
     switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(Mat22), std::size_t(16)); break;

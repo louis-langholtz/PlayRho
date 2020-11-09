@@ -25,6 +25,8 @@ using namespace playrho::d2;
 
 TEST(IslandBodyContainer, BytesSize)
 {
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
 #if defined(_WIN64)
 #if !defined(NDEBUG)
     EXPECT_EQ(sizeof(Island::Bodies), std::size_t(32));

@@ -26,8 +26,10 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(Vec2, ByteSizeIs_8_or_16)
+TEST(Vec2, ByteSize)
 {
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
     switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(Vec2), std::size_t(8)); break;

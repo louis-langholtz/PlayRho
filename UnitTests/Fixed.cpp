@@ -26,6 +26,8 @@ using namespace playrho;
 
 TEST(Fixed32, ByteSizeIs4)
 {
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
     EXPECT_EQ(sizeof(Fixed32), std::size_t(4));
 }
 

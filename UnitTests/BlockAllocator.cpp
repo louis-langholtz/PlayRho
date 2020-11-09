@@ -23,6 +23,8 @@ using namespace playrho;
 
 TEST(BlockAllocator, ByteSize)
 {
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
 #if defined(__x86_64__) || defined(_M_X64)
     EXPECT_EQ(sizeof(BlockAllocator), std::size_t(136));
 #elif defined(__i386) || defined(_M_IX86)

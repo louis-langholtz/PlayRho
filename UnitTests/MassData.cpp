@@ -27,6 +27,8 @@ using namespace playrho::d2;
 
 TEST(MassData, ByteSize)
 {
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
     switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(MassData), std::size_t(16)); break;
