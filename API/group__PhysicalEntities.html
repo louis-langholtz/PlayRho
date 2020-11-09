@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.12.0</span>
+   &#160;<span id="projectnumber">0.13.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -129,26 +129,27 @@ Classes</h2></td></tr>
 <p>Concepts and types of creatable and destroyable instances that associate physical properties to simulations. These instances are typically created via a method whose name begins with the prefix of <code>Create</code>. Similarly, these instances are typically destroyed using a method whose name begins with the prefix of <code>Destroy</code>.</p>
 <dl class="section note"><dt>Note</dt><dd>For example, the following could be used to create a dynamic body having a one meter radius disk shape: <div class="fragment"><div class="line"><span class="keyword">auto</span> world = World{};</div>
 <div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> body = world.CreateBody(BodyConf{}.UseType(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Dynamic</a>));</div>
-<div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> fixture = world.CreateFixture(body, Shape{DiskShapeConf{1_m}});</div>
+<div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> fixture = world.CreateFixture(</div>
+<div class="line">    FixtureConf{}.UseBody(body).UseShape(DiskShapeConf{1_m}));</div>
 </div><!-- fragment --></dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;.">World</a>. </dd>
 <dd>
-<a class="el" href="namespaceplayrho.html#a7eca3bae90f8196745191dc0e4c78480" title="Body identifier.">BodyID</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a06a02a3c719ec0f20c5d2c43f5894bd9" title="Creates a rigid body with the given configuration.">World::CreateBody</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a093fe75c15777dfd466fc98f7496ef4a" title="Destroys the given body.">World::Destroy(BodyID)</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a27ef923d7f9f12cbede89dfd4c956847" title="Gets the world body range for this constant world.">World::GetBodies()</a>. </dd>
+<a class="el" href="namespaceplayrho.html#a7eca3bae90f8196745191dc0e4c78480" title="Identifier for bodies.">BodyID</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a06a02a3c719ec0f20c5d2c43f5894bd9" title="Creates a rigid body with the given configuration.">World::CreateBody</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a093fe75c15777dfd466fc98f7496ef4a" title="Destroys the identified body.">World::Destroy(BodyID)</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a27ef923d7f9f12cbede89dfd4c956847" title="Gets the world body range for this constant world.">World::GetBodies()</a>. </dd>
 <dd>
-<a class="el" href="namespaceplayrho.html#aed10ace7e6267068035ed85c63b8a70a" title="Fixture identifier.">FixtureID</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a393eb225bc5bc87c1538d894843855c2" title="Creates a fixture and attaches it to the given body.">World::CreateFixture</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ade8aa516e6338f48963952312e38397f" title="Destroys the identified fixture.">World::Destroy(FixtureID)</a>. </dd>
+<a class="el" href="namespaceplayrho.html#aed10ace7e6267068035ed85c63b8a70a" title="Fixture identifier.">FixtureID</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a393eb225bc5bc87c1538d894843855c2" title="Creates a fixture and attaches it to the identified body.">World::CreateFixture</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ade8aa516e6338f48963952312e38397f" title="Destroys the identified fixture.">World::Destroy(FixtureID)</a>. </dd>
 <dd>
-<a class="el" href="namespaceplayrho.html#a429482b9caddf0eca0531edcf62deb34" title="Joint identifier.">JointID</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a88b81cc647667c20613706d08ef3f213" title="Creates a joint to constrain one or more bodies.">World::CreateJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aa8bb1c42524152358896de8eb2a89cb2" title="Destroys the identified joint.">World::Destroy(JointID)</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae84632604a8a5712afeaec510ebeb1ca" title="Gets the range of all joints attached to this body.">World::GetJoints()</a>. </dd>
+<a class="el" href="namespaceplayrho.html#a429482b9caddf0eca0531edcf62deb34" title="Joint identifier.">JointID</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a88b81cc647667c20613706d08ef3f213" title="Creates a joint to constrain one or more bodies.">World::CreateJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aa8bb1c42524152358896de8eb2a89cb2" title="Destroys the identified joint.">World::Destroy(JointID)</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae84632604a8a5712afeaec510ebeb1ca" title="Gets the range of joints attached to the identified body.">World::GetJoints()</a>. </dd>
 <dd>
-<a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d" title="Contact identifier.">ContactID</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae4666f5e4af331e62731cf71d91a0b4e" title="Gets the container of all contacts attached to the body.">World::GetContacts()</a>. </dd>
+<a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d" title="Contact identifier.">ContactID</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae4666f5e4af331e62731cf71d91a0b4e" title="Gets the container of contacts attached to the identified body.">World::GetContacts()</a>. </dd>
 <dd>
-<a class="el" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7" title="Body Type.">BodyType</a>, <a class="el" href="classplayrho_1_1d2_1_1Shape.html" title="Shape.">Shape</a>, <a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html" title="Disk shape configuration.">DiskShapeConf</a>. </dd></dl>
+<a class="el" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7" title="Type of body.">BodyType</a>, <a class="el" href="classplayrho_1_1d2_1_1Shape.html" title="Shape.">Shape</a>, <a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html" title="Disk shape configuration.">DiskShapeConf</a>. </dd></dl>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="anamespaceplayrho_html_a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16"><div class="ttname"><a href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">playrho::BodyType::Static</a></div><div class="ttdeci">@ Static</div><div class="ttdoc">Static body type.</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 4 2020 14:45:05 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sun Nov 8 2020 19:02:17 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

@@ -13,10 +13,6 @@ var modules =
     [ "Physical Constants", "group__UnitConstants.html", "group__UnitConstants" ],
     [ "Vector Traits", "group__VectorTraitsGroup.html", "group__VectorTraitsGroup" ],
     [ "Physical Entities", "group__PhysicalEntities.html", "group__PhysicalEntities" ],
-    [ "World Body Related Free Functions", "group__WorldBodyFreeFunctions.html", "group__WorldBodyFreeFunctions" ],
-    [ "World Contacts Related Free Functions", "group__WorldContactFreeFunctions.html", "group__WorldContactFreeFunctions" ],
-    [ "World Fixture Related Free Functions", "group__WorldFixtureFreeFunctions.html", "group__WorldFixtureFreeFunctions" ],
-    [ "World Joint Related Free Functions", "group__WorldJointFreeFunctions.html", "group__WorldJointFreeFunctions" ],
     [ "Point Containment Test Functions", "group__TestPointGroup.html", "group__TestPointGroup" ],
     [ "Library Defined Exceptions", "group__ExceptionsGroup.html", "group__ExceptionsGroup" ],
     [ "Library Defined Constraints", "group__ConstraintsGroup.html", "group__ConstraintsGroup" ]

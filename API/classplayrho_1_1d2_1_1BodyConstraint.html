@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.12.0</span>
+   &#160;<span id="projectnumber">0.13.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('classplayrho_1_1d2_1_1BodyConstraint.h
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World.">Body</a> Constraint.  
+<p>Constraint for a body.  
  <a href="classplayrho_1_1d2_1_1BodyConstraint.html#details">More...</a></p>
 
 <p><code>#include &lt;BodyConstraint.hpp&gt;</code></p>
@@ -148,11 +148,11 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 Private Attributes</h2></td></tr>
 <tr class="memitem:a12eec259ac541a9ec0ad95fc841a4a69"><td class="memItemLeft" align="right" valign="top"><a id="a12eec259ac541a9ec0ad95fc841a4a69"></a>
 <a class="el" href="structplayrho_1_1d2_1_1Position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html#a12eec259ac541a9ec0ad95fc841a4a69">m_position</a></td></tr>
-<tr class="memdesc:a12eec259ac541a9ec0ad95fc841a4a69"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World.">Body</a> position data. <br /></td></tr>
+<tr class="memdesc:a12eec259ac541a9ec0ad95fc841a4a69"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1d2_1_1Position.html" title="2-D positional data structure.">Position</a> data of body. <br /></td></tr>
 <tr class="separator:a12eec259ac541a9ec0ad95fc841a4a69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10352e3e5b2a6efcfcfaa5d7299e3982"><td class="memItemLeft" align="right" valign="top"><a id="a10352e3e5b2a6efcfcfaa5d7299e3982"></a>
 <a class="el" href="structplayrho_1_1d2_1_1Velocity.html">Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html#a10352e3e5b2a6efcfcfaa5d7299e3982">m_velocity</a></td></tr>
-<tr class="memdesc:a10352e3e5b2a6efcfcfaa5d7299e3982"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World.">Body</a> velocity data. <br /></td></tr>
+<tr class="memdesc:a10352e3e5b2a6efcfcfaa5d7299e3982"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1d2_1_1Velocity.html" title="2-D velocity related data structure.">Velocity</a> data of body. <br /></td></tr>
 <tr class="separator:a10352e3e5b2a6efcfcfaa5d7299e3982"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8038573a0d1cb008503ff5245b404a0c"><td class="memItemLeft" align="right" valign="top"><a id="a8038573a0d1cb008503ff5245b404a0c"></a>
 <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html#a8038573a0d1cb008503ff5245b404a0c">m_localCenter</a></td></tr>
@@ -168,8 +168,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:ad6a3458bfb9d2ab3968ccc82a8f9489c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World.">Body</a> Constraint. </p>
-<p><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World.">Body</a> data related to constraint processing. </p><dl class="section note"><dt>Note</dt><dd>Only position and velocity is independently changeable after construction. </dd>
+<div class="textblock"><p>Constraint for a body. </p>
+<p>Data related to body constraint processing. </p><dl class="section note"><dt>Note</dt><dd>Only position and velocity is independently changeable after construction. </dd>
 <dd>
 This data structure is 40-bytes large (with 4-byte Real on at least one 64-bit platform). </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
@@ -310,7 +310,7 @@ This data structure is 40-bytes large (with 4-byte Real on at least one 64-bit p
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html">BodyConstraint</a></li>
-    <li class="footer">Generated on Wed Nov 4 2020 14:45:06 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sun Nov 8 2020 19:02:18 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

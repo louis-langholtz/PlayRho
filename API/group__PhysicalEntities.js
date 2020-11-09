@@ -52,7 +52,7 @@ var group__PhysicalEntities =
       [ "SetFixedRotation", "classplayrho_1_1d2_1_1Body.html#ad73e9bd7dbdeaaaa4618cbb06559dd34", null ],
       [ "SetImpenetrable", "classplayrho_1_1d2_1_1Body.html#a50b9cf4b6ab620a4442cf19a4ee39923", null ],
       [ "SetInvMass", "classplayrho_1_1d2_1_1Body.html#aa406549b09f4fc750af6b7d5667ec91a", null ],
-      [ "SetInvRotI", "classplayrho_1_1d2_1_1Body.html#a05e6b63238fde68c2ca037bb3861f421", null ],
+      [ "SetInvRotInertia", "classplayrho_1_1d2_1_1Body.html#a27c4a9a666012c7788c88eab983d7f1f", null ],
       [ "SetLinearDamping", "classplayrho_1_1d2_1_1Body.html#acd5523b855b544fe285d0fa5a23c3398", null ],
       [ "SetMassDataDirty", "classplayrho_1_1d2_1_1Body.html#a690931872492c253f8e09cabc5922950", null ],
       [ "SetPosition0", "classplayrho_1_1d2_1_1Body.html#acfb1bae5be9d852331ba9177950c46b1", null ],

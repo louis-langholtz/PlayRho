@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.12.0</span>
+   &#160;<span id="projectnumber">0.13.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -180,23 +180,23 @@ constexpr <a class="el" href="structplayrho_1_1d2_1_1Velocity.html">Velocity</a>
 constexpr <a class="el" href="structplayrho_1_1d2_1_1Velocity.html">Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Velocity.html#aec5f4967a3c7e58ccf6c9fb4aafa90a1">operator/</a> (const <a class="el" href="structplayrho_1_1d2_1_1Velocity.html">Velocity</a> &amp;lhs, const <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> rhs)</td></tr>
 <tr class="memdesc:aec5f4967a3c7e58ccf6c9fb4aafa90a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Division operator. <br /></td></tr>
 <tr class="separator:aec5f4967a3c7e58ccf6c9fb4aafa90a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d2551fe26d1aa448d4d4b337e5aa66c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1d2_1_1Velocity.html">Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Velocity.html#a3d2551fe26d1aa448d4d4b337e5aa66c">Cap</a> (<a class="el" href="structplayrho_1_1d2_1_1Velocity.html">Velocity</a> velocity, <a class="el" href="group__PhysicalQuantities.html#ga250898c9929b0e6eaf56a1967c568888">Time</a> h, const <a class="el" href="structplayrho_1_1MovementConf.html">MovementConf</a> &amp;conf) noexcept</td></tr>
+<tr class="memdesc:a3d2551fe26d1aa448d4d4b337e5aa66c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Caps velocity.  <a href="structplayrho_1_1d2_1_1Velocity.html#a3d2551fe26d1aa448d4d4b337e5aa66c">More...</a><br /></td></tr>
+<tr class="separator:a3d2551fe26d1aa448d4d4b337e5aa66c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1735a28e0a25cc77e59fafe1d840c242"><td class="memItemLeft" align="right" valign="top"><a id="a1735a28e0a25cc77e59fafe1d840c242"></a>
 template&lt;&gt; </td></tr>
 <tr class="memitem:a1735a28e0a25cc77e59fafe1d840c242"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Velocity.html#a1735a28e0a25cc77e59fafe1d840c242">IsValid</a> (const <a class="el" href="structplayrho_1_1d2_1_1Velocity.html">d2::Velocity</a> &amp;value) noexcept</td></tr>
 <tr class="memdesc:a1735a28e0a25cc77e59fafe1d840c242"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given value is valid. <br /></td></tr>
 <tr class="separator:a1735a28e0a25cc77e59fafe1d840c242"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d42f6f1b9cc7b4c13cb4a9b7f656f8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1d2_1_1Velocity.html">Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Velocity.html#a9d42f6f1b9cc7b4c13cb4a9b7f656f8e">Cap</a> (<a class="el" href="structplayrho_1_1d2_1_1Velocity.html">Velocity</a> velocity, <a class="el" href="group__PhysicalQuantities.html#ga250898c9929b0e6eaf56a1967c568888">Time</a> h, <a class="el" href="structplayrho_1_1MovementConf.html">MovementConf</a> conf) noexcept</td></tr>
-<tr class="memdesc:a9d42f6f1b9cc7b4c13cb4a9b7f656f8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Caps velocity.  <a href="structplayrho_1_1d2_1_1Velocity.html#a9d42f6f1b9cc7b4c13cb4a9b7f656f8e">More...</a><br /></td></tr>
-<tr class="separator:a9d42f6f1b9cc7b4c13cb4a9b7f656f8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>2-D velocity related data structure. </p>
 <dl class="section note"><dt>Note</dt><dd>This data structure is 12-bytes (with 4-byte Real on at least one 64-bit platform). </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#_a240">World.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#_a14">WorldBody.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#_a22">Body.cpp</a>, <a class="el" href="World_8cpp-example.html#_a214">World.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#_a14">WorldBody.cpp</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a id="a9d42f6f1b9cc7b4c13cb4a9b7f656f8e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d42f6f1b9cc7b4c13cb4a9b7f656f8e">&#9670;&nbsp;</a></span>Cap()</h2>
+<a id="a3d2551fe26d1aa448d4d4b337e5aa66c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d2551fe26d1aa448d4d4b337e5aa66c">&#9670;&nbsp;</a></span>Cap()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -219,7 +219,7 @@ template&lt;&gt; </td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structplayrho_1_1MovementConf.html">MovementConf</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1MovementConf.html">MovementConf</a> &amp;&#160;</td>
           <td class="paramname"><em>conf</em>&#160;</td>
         </tr>
         <tr>
@@ -247,9 +247,8 @@ template&lt;&gt; </td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following files:<ul>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>Velocity.hpp</li>
-<li>Body.hpp</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -257,7 +256,7 @@ template&lt;&gt; </td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1Velocity.html">Velocity</a></li>
-    <li class="footer">Generated on Wed Nov 4 2020 14:45:06 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sun Nov 8 2020 19:02:18 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

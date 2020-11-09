@@ -3,7 +3,7 @@
 <area shape="rect" id="node2" href="$classplayrho_1_1d2_1_1Manifold.html" title="A collision response oriented description of the intersection of two convex shapes." alt="" coords="1457,165,1600,192"/>
 <area shape="rect" id="node3" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="488,293,661,320"/>
 <area shape="rect" id="node9" href="$structplayrho_1_1d2_1_1Manifold_1_1Point.html" title="Data for a point of collision in a Manifold." alt="" coords="843,43,985,85"/>
-<area shape="rect" id="node17" href="$classplayrho_1_1d2_1_1BodyConstraint.html" title="Body Constraint." alt="" coords="1133,383,1317,409"/>
+<area shape="rect" id="node17" href="$classplayrho_1_1d2_1_1BodyConstraint.html" title="Constraint for a body." alt="" coords="1133,383,1317,409"/>
 <area shape="rect" id="node22" href="$structplayrho_1_1d2_1_1Position.html" title="2&#45;D positional data structure." alt="" coords="843,355,985,381"/>
 <area shape="rect" id="node4" title=" " alt="" coords="198,293,259,320"/>
 <area shape="rect" id="node5" href="$structplayrho_1_1Vector.html" title="Vector." alt="" coords="149,364,308,391"/>

@@ -1,5 +1,5 @@
 <map id="playrho::d2::BodyConf" name="playrho::d2::BodyConf">
-<area shape="rect" id="node1" title="Body configuration." alt="" coords="976,263,1128,289"/>
+<area shape="rect" id="node1" title="Configuration for a body." alt="" coords="976,263,1128,289"/>
 <area shape="rect" id="node2" title=" " alt="" coords="616,15,761,41"/>
 <area shape="rect" id="node3" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="602,65,775,92"/>
 <area shape="rect" id="node4" title=" " alt="" coords="258,23,319,49"/>

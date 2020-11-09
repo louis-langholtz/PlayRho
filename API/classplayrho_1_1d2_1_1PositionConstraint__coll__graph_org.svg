@@ -70,7 +70,7 @@
 <!-- Node17 -->
 <g id="node17" class="node">
 <title>Node17</title>
-<g id="a_node17"><a xlink:href="classplayrho_1_1d2_1_1BodyConstraint.html" target="_top" xlink:title="Body Constraint.">
+<g id="a_node17"><a xlink:href="classplayrho_1_1d2_1_1BodyConstraint.html" target="_top" xlink:title="Constraint for a body.">
 <polygon fill="white" stroke="black" points="846,-93.5 846,-112.5 984,-112.5 984,-93.5 846,-93.5"/>
 <text text-anchor="middle" x="915" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::BodyConstraint</text>
 </a>

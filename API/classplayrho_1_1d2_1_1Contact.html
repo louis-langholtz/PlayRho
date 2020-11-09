@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.12.0</span>
+   &#160;<span id="projectnumber">0.13.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -300,10 +300,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a8ac89b7ca1117f6f50a466380260a0b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a7eca3bae90f8196745191dc0e4c78480">BodyID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Contact.html#a8ac89b7ca1117f6f50a466380260a0b9">m_bodyA</a> = <a class="el" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a></td></tr>
-<tr class="memdesc:a8ac89b7ca1117f6f50a466380260a0b9"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World.">Body</a> A.  <a href="classplayrho_1_1d2_1_1Contact.html#a8ac89b7ca1117f6f50a466380260a0b9">More...</a><br /></td></tr>
+<tr class="memdesc:a8ac89b7ca1117f6f50a466380260a0b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identifier of body A.  <a href="classplayrho_1_1d2_1_1Contact.html#a8ac89b7ca1117f6f50a466380260a0b9">More...</a><br /></td></tr>
 <tr class="separator:a8ac89b7ca1117f6f50a466380260a0b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb8ee591e8f9e392a73c3d4e02a53b17"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a7eca3bae90f8196745191dc0e4c78480">BodyID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Contact.html#acb8ee591e8f9e392a73c3d4e02a53b17">m_bodyB</a> = <a class="el" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a></td></tr>
-<tr class="memdesc:acb8ee591e8f9e392a73c3d4e02a53b17"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World.">Body</a> B.  <a href="classplayrho_1_1d2_1_1Contact.html#acb8ee591e8f9e392a73c3d4e02a53b17">More...</a><br /></td></tr>
+<tr class="memdesc:acb8ee591e8f9e392a73c3d4e02a53b17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identifier of body B.  <a href="classplayrho_1_1d2_1_1Contact.html#acb8ee591e8f9e392a73c3d4e02a53b17">More...</a><br /></td></tr>
 <tr class="separator:acb8ee591e8f9e392a73c3d4e02a53b17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac59624002c224b67e2b046016b49daea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#aed10ace7e6267068035ed85c63b8a70a">FixtureID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Contact.html#ac59624002c224b67e2b046016b49daea">m_fixtureA</a> = <a class="el" href="namespaceplayrho.html#ad7fdab88f7f4e1fdf64360e3d9501fa1">InvalidFixtureID</a></td></tr>
 <tr class="memdesc:ac59624002c224b67e2b046016b49daea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identifier of fixture A.  <a href="classplayrho_1_1d2_1_1Contact.html#ac59624002c224b67e2b046016b49daea">More...</a><br /></td></tr>
@@ -435,7 +435,7 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A potential contact between the children of two Fixture objects. </p>
 <p>The class manages contact between two shapes. A contact exists for each overlapping AABB in the broad-phase (except if filtered). Therefore a contact object may exist that has no actual contact points. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#_a261">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#_a235">World.cpp</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a270eaabc254f04e8793c446be3966e75"></a>
@@ -524,10 +524,10 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Initializing constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">bA</td><td>Body-A identifier. </td></tr>
+    <tr><td class="paramname">bA</td><td>Identifier of body-A. </td></tr>
     <tr><td class="paramname">fA</td><td>Non-invalid identifier to fixture A that must have a shape and may not be the same or have the same body as the other fixture. </td></tr>
     <tr><td class="paramname">iA</td><td>Child index A. </td></tr>
-    <tr><td class="paramname">bB</td><td>Body-B identifier. </td></tr>
+    <tr><td class="paramname">bB</td><td>Identifier of body-B. </td></tr>
     <tr><td class="paramname">fB</td><td>Non-invalid identifier to fixture B that must have a shape and may not be the same or have the same body as the other fixture. </td></tr>
     <tr><td class="paramname">iB</td><td>Child index B.</td></tr>
   </table>
@@ -1268,7 +1268,7 @@ The value persists until you set or reset. </dd></dl>
 
 <p>Gets whether a TOI is set. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Contact.html#ae1a23d2f5c34d9eff2afa6f435c90311" title="Gets the time of impact (TOI) as a fraction.">GetToi</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a253">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a227">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -1441,7 +1441,7 @@ The value persists until you set or reset. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World.">Body</a> A. </p>
+<p>Identifier of body A. </p>
 <dl class="section note"><dt>Note</dt><dd>Field is 2-bytes. </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Should only be body of fixture A. </dd></dl>
 
@@ -1469,7 +1469,7 @@ The value persists until you set or reset. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World.">Body</a> B. </p>
+<p>Identifier of body B. </p>
 <dl class="section note"><dt>Note</dt><dd>Field is 2-bytes. </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Should only be body of fixture B. </dd></dl>
 
@@ -1655,7 +1655,7 @@ Only valid if <code>m_flags &amp; e_toiFlag</code>. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Contact.html">Contact</a></li>
-    <li class="footer">Generated on Wed Nov 4 2020 14:45:06 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sun Nov 8 2020 19:02:18 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

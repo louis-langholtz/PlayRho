@@ -58,7 +58,7 @@ var sectionId = 'dynsection-0';
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title="Body configuration.">
+<g id="a_node1"><a xlink:title="Configuration for a body.">
 <polygon fill="#bfbfbf" stroke="black" points="728,-223 728,-242 842,-242 842,-223 728,-223"/>
 <text text-anchor="middle" x="785" y="-230" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::BodyConf</text>
 </a>

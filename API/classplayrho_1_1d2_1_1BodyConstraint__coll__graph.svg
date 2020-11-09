@@ -58,7 +58,7 @@ var sectionId = 'dynsection-0';
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title="Body Constraint.">
+<g id="a_node1"><a xlink:title="Constraint for a body.">
 <polygon fill="#bfbfbf" stroke="black" points="806,-76.5 806,-95.5 944,-95.5 944,-76.5 806,-76.5"/>
 <text text-anchor="middle" x="875" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::BodyConstraint</text>
 </a>

@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.12.0</span>
+   &#160;<span id="projectnumber">0.13.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -145,7 +145,7 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a6db711336e93f9aa8b45da7739175779"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9ba0438da3d5d1a1f4d2d5cb7c73168"><td class="memItemLeft" align="right" valign="top"><a id="af9ba0438da3d5d1a1f4d2d5cb7c73168"></a>
 <a class="el" href="namespaceplayrho.html#a7eca3bae90f8196745191dc0e4c78480">BodyID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1FixtureConf.html#af9ba0438da3d5d1a1f4d2d5cb7c73168">body</a> = <a class="el" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a></td></tr>
-<tr class="memdesc:af9ba0438da3d5d1a1f4d2d5cb7c73168"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World.">Body</a> to associate the fixture with. <br /></td></tr>
+<tr class="memdesc:af9ba0438da3d5d1a1f4d2d5cb7c73168"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identifier of body to associate the fixture with. <br /></td></tr>
 <tr class="separator:af9ba0438da3d5d1a1f4d2d5cb7c73168"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ee27d488bf91f504acadd259fa36798"><td class="memItemLeft" align="right" valign="top"><a id="a6ee27d488bf91f504acadd259fa36798"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1FixtureConf.html#a6ee27d488bf91f504acadd259fa36798">isSensor</a> = false</td></tr>
@@ -207,8 +207,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Fixture definition. </p>
 <p>A fixture is used to attach a shape to a body for collision detection. A fixture inherits its transform from its body. Fixtures hold additional non-geometric data such as collision filters, etc.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html#a393eb225bc5bc87c1538d894843855c2" title="Creates a fixture and attaches it to the given body.">World::CreateFixture</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a36e0a722a350bb050fb1fbaf4a240a19" title="Gets the identified fixture state.">World::GetFixture</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a2ca6f693c3bfd5ead732c14c3e07d048" title="Sets the identified fixture&#39;s state.">World::SetFixture</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a093fe75c15777dfd466fc98f7496ef4a" title="Destroys the given body.">World::Destroy</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="HelloWorld_8cpp-example.html#_a9">HelloWorld.cpp</a>, <a class="el" href="World_8cpp-example.html#_a206">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#_a24">WorldBody.cpp</a>, and <a class="el" href="WorldFixture_8cpp-example.html#_a17">WorldFixture.cpp</a>.</dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html#a393eb225bc5bc87c1538d894843855c2" title="Creates a fixture and attaches it to the identified body.">World::CreateFixture</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a36e0a722a350bb050fb1fbaf4a240a19" title="Gets the identified fixture state.">World::GetFixture</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a2ca6f693c3bfd5ead732c14c3e07d048" title="Sets the identified fixture&#39;s state.">World::SetFixture</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a093fe75c15777dfd466fc98f7496ef4a" title="Destroys the identified body.">World::Destroy</a>. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="HelloWorld_8cpp-example.html#_a9">HelloWorld.cpp</a>, <a class="el" href="World_8cpp-example.html#_a180">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#_a24">WorldBody.cpp</a>, and <a class="el" href="WorldFixture_8cpp-example.html#_a18">WorldFixture.cpp</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Friends And Related Function Documentation</h2>
 <a id="aab1cd6287bdc232e5d97c01a12b71c3c"></a>
@@ -259,7 +259,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1FixtureConf.html">FixtureConf</a></li>
-    <li class="footer">Generated on Wed Nov 4 2020 14:45:06 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sun Nov 8 2020 19:02:18 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

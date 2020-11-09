@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.12.0</span>
+   &#160;<span id="projectnumber">0.13.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -118,6 +118,9 @@ $(document).ready(function(){initNavTree('functions_vars_m.html',''); initResiza
 <li>m_begin
 : <a class="el" href="classplayrho_1_1Range.html#afe994ccbc4fce4d74a4a4006e11ba5ae">playrho::Range&lt; IT &gt;</a>
 </li>
+<li>m_beginContactListener
+: <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aa870d3acab74d901ee2cf9a6636f7dae">playrho::d2::WorldImpl</a>
+</li>
 <li>m_bodies
 : <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a8fcf6c398ce36be9dbba79194de118a0">playrho::d2::WorldImpl</a>
 </li>
@@ -139,6 +142,9 @@ $(document).ready(function(){initNavTree('functions_vars_m.html',''); initResiza
 : <a class="el" href="classplayrho_1_1d2_1_1Contact.html#acb8ee591e8f9e392a73c3d4e02a53b17">playrho::d2::Contact</a>
 , <a class="el" href="classplayrho_1_1d2_1_1PositionConstraint.html#ab4f524d0867017fe9327c988c00e8193">playrho::d2::PositionConstraint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a94e82e178f9e89153d90345a27549f58">playrho::d2::VelocityConstraint</a>
+</li>
+<li>m_bodyBuffer
+: <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a34b4dd064dd1b448b7a834d6a5a593bb">playrho::d2::WorldImpl</a>
 </li>
 <li>m_bodyContacts
 : <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#af88d27e01cbbd344eeceee3a90cfc0e2">playrho::d2::WorldImpl</a>
@@ -164,6 +170,9 @@ $(document).ready(function(){initNavTree('functions_vars_m.html',''); initResiza
 <li>m_chunkSpace
 : <a class="el" href="classplayrho_1_1BlockAllocator.html#a04d6e24e6afbd2be6455d120eb1e671a">playrho::BlockAllocator</a>
 </li>
+<li>m_contactBuffer
+: <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ae9764640271cdc798e6e95aea8d18c4a">playrho::d2::WorldImpl</a>
+</li>
 <li>m_contacts
 : <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#af5965e05342bfdb48a9a417b99103c3a">playrho::d2::WorldImpl</a>
 </li>
@@ -188,6 +197,9 @@ $(document).ready(function(){initNavTree('functions_vars_m.html',''); initResiza
 <li>m_end
 : <a class="el" href="classplayrho_1_1Range.html#ab6a658a01b5850892838f5a9b5860c7c">playrho::Range&lt; IT &gt;</a>
 </li>
+<li>m_endContactListener
+: <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ae42d7bfa6d434a7e87cf4817bc6a2c7f">playrho::d2::WorldImpl</a>
+</li>
 <li>m_entries
 : <a class="el" href="classplayrho_1_1StackAllocator.html#acab9e8a35f7776ae7f93b8db8672c61f">playrho::StackAllocator</a>
 </li>
@@ -199,6 +211,15 @@ $(document).ready(function(){initNavTree('functions_vars_m.html',''); initResiza
 </li>
 <li>m_fixtureB
 : <a class="el" href="classplayrho_1_1d2_1_1Contact.html#aa7d49040920fe60910a31c28adb76f05">playrho::d2::Contact</a>
+</li>
+<li>m_fixtureBuffer
+: <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a5d24441f604998e08b4373c6dd4ebfd3">playrho::d2::WorldImpl</a>
+</li>
+<li>m_fixtureDestructionListener
+: <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aa61ea985837ff1692ddcbf5a266de765">playrho::d2::WorldImpl</a>
+</li>
+<li>m_fixtureProxies
+: <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a67848aec74587572edb8a10f1cbcefce">playrho::d2::WorldImpl</a>
 </li>
 <li>m_fixturesForProxies
 : <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ae2589a588a3fcba0f9f4dfb4cca9632a">playrho::d2::WorldImpl</a>
@@ -262,6 +283,21 @@ $(document).ready(function(){initNavTree('functions_vars_m.html',''); initResiza
 <li>m_island
 : <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ae2409b1374bfe483344522467dd2e564">playrho::d2::WorldImpl</a>
 </li>
+<li>m_islandedBodies
+: <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a24fe6ed7edd493857c2a928aa53917bd">playrho::d2::WorldImpl</a>
+</li>
+<li>m_islandedContacts
+: <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a5f14c8e23b60422358b2afa9759fc9d1">playrho::d2::WorldImpl</a>
+</li>
+<li>m_islandedJoints
+: <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ac7238ab18b77f9306e97f300aa833635">playrho::d2::WorldImpl</a>
+</li>
+<li>m_jointBuffer
+: <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ac90ea3d482f4c35fba781b083c1fe185">playrho::d2::WorldImpl</a>
+</li>
+<li>m_jointDestructionListener
+: <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a2b503294f65a3d3eb8aad75b96bf437e">playrho::d2::WorldImpl</a>
+</li>
 <li>m_joints
 : <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a89560ceee4d1af67c4797bd7065ceffa">playrho::d2::WorldImpl</a>
 </li>
@@ -288,6 +324,9 @@ $(document).ready(function(){initNavTree('functions_vars_m.html',''); initResiza
 </li>
 <li>m_localPoint
 : <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#abe18d8326aceefbd87404342717688e2">playrho::d2::Manifold</a>
+</li>
+<li>m_manifoldBuffer
+: <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ad0a65b14e827e9f796907d9a2e309019">playrho::d2::WorldImpl</a>
 </li>
 <li>m_max
 : <a class="el" href="classplayrho_1_1Interval.html#ac1383ef6c4c0bdfae5593f1675fecb04">playrho::Interval&lt; T &gt;</a>
@@ -356,6 +395,12 @@ $(document).ready(function(){initNavTree('functions_vars_m.html',''); initResiza
 </li>
 <li>m_position
 : <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html#a12eec259ac541a9ec0ad95fc841a4a69">playrho::d2::BodyConstraint</a>
+</li>
+<li>m_postSolveContactListener
+: <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ac7cb17fe8baf9ad8d88dacc85a0c1b9a">playrho::d2::WorldImpl</a>
+</li>
+<li>m_preSolveContactListener
+: <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a1d68e62cdbe6dc273148b5977b13ca80">playrho::d2::WorldImpl</a>
 </li>
 <li>m_proxies
 : <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a3bade38d4ea70716e9fbb89dd5642252">playrho::d2::WorldImpl</a>
@@ -606,7 +651,7 @@ $(document).ready(function(){initNavTree('functions_vars_m.html',''); initResiza
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 4 2020 14:45:07 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sun Nov 8 2020 19:02:19 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>
