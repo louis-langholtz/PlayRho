@@ -134,13 +134,13 @@ std::add_pointer_t<T> TypeCast(Shape* value) noexcept;
 #endif
 
 /// @brief Equality operator for shape to shape comparisons.
-bool operator== (const Shape& lhs, const Shape& rhs) noexcept;
+bool operator==(const Shape& lhs, const Shape& rhs) noexcept;
 
 /// @brief Inequality operator for shape to shape comparisons.
-bool operator!= (const Shape& lhs, const Shape& rhs) noexcept;
+bool operator!=(const Shape& lhs, const Shape& rhs) noexcept;
 
 // Now define the shape class...
-    
+
 /// @defgroup PartsGroup Shape Classes
 /// @brief Classes for configuring shapes with material properties.
 /// @details These are classes that specify physical characteristics of: shape,
@@ -184,7 +184,8 @@ public:
     /// @see GetRestitution
     /// @throws std::bad_alloc if there's a failure allocating storage.
     template <typename T>
-    Shape(T arg): m_self{
+    Shape(T arg) : m_self
+    {
 #if SHAPE_USES_UNIQUE_PTR
         std::make_unique<Model<T>>(std::move(arg))
 #else
@@ -197,7 +198,7 @@ public:
 
 #if SHAPE_USES_UNIQUE_PTR
     /// @brief Copy constructor.
-    Shape(const Shape& other): m_self{other.m_self? other.m_self->Clone_(): nullptr}
+    Shape(const Shape& other) : m_self{other.m_self ? other.m_self->Clone_() : nullptr}
     {
         // Intentionally empty.
     }
@@ -211,26 +212,24 @@ public:
 
 #if SHAPE_USES_UNIQUE_PTR
     /// @brief Copy assignment.
-    Shape& operator= (const Shape& other)
+    Shape& operator=(const Shape& other)
     {
-        m_self = other.m_self? other.m_self->Clone_(): nullptr;
+        m_self = other.m_self ? other.m_self->Clone_() : nullptr;
         return *this;
     }
 #else
     /// @brief Copy assignment operator.
-    Shape& operator= (const Shape& other) = default;
+    Shape& operator=(const Shape& other) = default;
 #endif
 
     /// @brief Move assignment operator.
-    Shape& operator= (Shape&& other) = default;
+    Shape& operator=(Shape&& other) = default;
 
     /// @brief Move assignment operator.
     template <typename T, typename Tp = std::decay_t<T>,
-        typename = std::enable_if_t<
-            !std::is_same<Tp, Shape>::value && std::is_copy_constructible<Tp>::value
-        >
-    >
-    Shape& operator= (T&& other)
+              typename = std::enable_if_t<!std::is_same<Tp, Shape>::value &&
+                                          std::is_copy_constructible<Tp>::value>>
+    Shape& operator=(T&& other)
     {
         Shape(std::forward<T>(other)).swap(*this);
         return *this;
@@ -244,7 +243,7 @@ public:
 
     friend ChildCounter GetChildCount(const Shape& shape) noexcept
     {
-        return shape.m_self? shape.m_self->GetChildCount_(): static_cast<ChildCounter>(0);
+        return shape.m_self ? shape.m_self->GetChildCount_() : static_cast<ChildCounter>(0);
     }
 
     friend DistanceProxy GetChild(const Shape& shape, ChildCounter index)
@@ -257,7 +256,7 @@ public:
 
     friend MassData GetMassData(const Shape& shape) noexcept
     {
-        return shape.m_self? shape.m_self->GetMassData_(): MassData{};
+        return shape.m_self ? shape.m_self->GetMassData_() : MassData{};
     }
 
     friend NonNegative<Length> GetVertexRadius(const Shape& shape, ChildCounter idx)
@@ -270,17 +269,17 @@ public:
 
     friend Real GetFriction(const Shape& shape) noexcept
     {
-        return shape.m_self? shape.m_self->GetFriction_(): Real(0);
+        return shape.m_self ? shape.m_self->GetFriction_() : Real(0);
     }
 
     friend Real GetRestitution(const Shape& shape) noexcept
     {
-        return shape.m_self? shape.m_self->GetRestitution_(): Real(0);
+        return shape.m_self ? shape.m_self->GetRestitution_() : Real(0);
     }
 
     friend NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept
     {
-        return shape.m_self? shape.m_self->GetDensity_(): NonNegative<AreaDensity>{0_kgpm2};
+        return shape.m_self ? shape.m_self->GetDensity_() : NonNegative<AreaDensity>{0_kgpm2};
     }
 
     friend void Transform(Shape& shape, const Mat22& m)
@@ -300,12 +299,12 @@ public:
 
     friend const void* GetData(const Shape& shape) noexcept
     {
-        return shape.m_self? shape.m_self->GetData_(): nullptr;
+        return shape.m_self ? shape.m_self->GetData_() : nullptr;
     }
 
     friend TypeID GetType(const Shape& shape) noexcept
     {
-        return shape.m_self? shape.m_self->GetType_(): GetTypeID<void>();
+        return shape.m_self ? shape.m_self->GetType_() : GetTypeID<void>();
     }
 
     template <typename T>
@@ -316,13 +315,13 @@ public:
     friend std::add_pointer_t<T> TypeCast(Shape* value) noexcept;
 #endif
 
-    friend bool operator== (const Shape& lhs, const Shape& rhs) noexcept
+    friend bool operator==(const Shape& lhs, const Shape& rhs) noexcept
     {
         return (lhs.m_self == rhs.m_self) ||
-            ((lhs.m_self && rhs.m_self) && (*lhs.m_self == *rhs.m_self));
+               ((lhs.m_self && rhs.m_self) && (*lhs.m_self == *rhs.m_self));
     }
 
-    friend bool operator!= (const Shape& lhs, const Shape& rhs) noexcept
+    friend bool operator!=(const Shape& lhs, const Shape& rhs) noexcept
     {
         return !(lhs == rhs);
     }
@@ -330,8 +329,7 @@ public:
 private:
     /// @brief Internal configuration concept.
     /// @note Provides the interface for runtime value polymorphism.
-    struct Concept
-    {
+    struct Concept {
         virtual ~Concept() = default;
 
         /// @brief Clones this concept and returns a pointer to a mutable copy.
@@ -339,16 +337,16 @@ private:
         ///   by the constructor for the model's underlying data type.
         /// @throws std::bad_alloc if there's a failure allocating storage.
         virtual std::unique_ptr<Concept> Clone_() const = 0;
-        
+
         /// @brief Gets the "child" count.
         virtual ChildCounter GetChildCount_() const noexcept = 0;
-        
+
         /// @brief Gets the "child" specified by the given index.
         virtual DistanceProxy GetChild_(ChildCounter index) const = 0;
-        
+
         /// @brief Gets the mass data.
         virtual MassData GetMassData_() const noexcept = 0;
-        
+
         /// @brief Gets the vertex radius.
         /// @param idx Child index to get vertex radius for.
         virtual NonNegative<Length> GetVertexRadius_(ChildCounter idx) const = 0;
@@ -358,21 +356,21 @@ private:
 
         /// @brief Gets the friction.
         virtual Real GetFriction_() const noexcept = 0;
-        
+
         /// @brief Gets the restitution.
         virtual Real GetRestitution_() const noexcept = 0;
-        
+
         /// @brief Transforms all of the shape's vertices by the given transformation matrix.
         /// @see https://en.wikipedia.org/wiki/Transformation_matrix
         virtual void Transform_(const Mat22& m) = 0;
-        
+
         /// @brief Equality checking method.
         virtual bool IsEqual_(const Concept& other) const noexcept = 0;
-        
+
         /// @brief Gets the use type information.
         /// @return Type info of the underlying value's type.
         virtual TypeID GetType_() const noexcept = 0;
-        
+
         /// @brief Gets the data for the underlying configuration.
         virtual const void* GetData_() const noexcept = 0;
 
@@ -382,13 +380,13 @@ private:
 #endif
 
         /// @brief Equality operator.
-        friend bool operator== (const Concept& lhs, const Concept &rhs) noexcept
+        friend bool operator==(const Concept& lhs, const Concept& rhs) noexcept
         {
             return &lhs == &rhs || lhs.IsEqual_(rhs);
         }
-        
+
         /// @brief Inequality operator.
-        friend bool operator!= (const Concept& lhs, const Concept &rhs) noexcept
+        friend bool operator!=(const Concept& lhs, const Concept& rhs) noexcept
         {
             return !(lhs == rhs);
         }
@@ -397,14 +395,13 @@ private:
     /// @brief Internal model configuration concept.
     /// @note Provides an implementation for runtime polymorphism for shape configuration.
     template <typename T>
-    struct Model final: Concept
-    {
+    struct Model final : Concept {
         /// @brief Type alias for the type of the data held.
         using data_type = T;
 
         /// @brief Initializing constructor.
-        Model(T arg): data{std::move(arg)} {}
-        
+        Model(T arg) : data{std::move(arg)} {}
+
         std::unique_ptr<Concept> Clone_() const override
         {
             return std::make_unique<Model>(data);
@@ -424,27 +421,27 @@ private:
         {
             return GetMassData(data);
         }
-        
+
         NonNegative<Length> GetVertexRadius_(ChildCounter idx) const override
         {
             return GetVertexRadius(data, idx);
         }
-        
+
         NonNegative<AreaDensity> GetDensity_() const noexcept override
         {
             return GetDensity(data);
         }
-        
+
         Real GetFriction_() const noexcept override
         {
             return GetFriction(data);
         }
-        
+
         Real GetRestitution_() const noexcept override
         {
             return GetRestitution(data);
         }
-        
+
         void Transform_(const Mat22& m) override
         {
             Transform(data, m);
@@ -455,7 +452,7 @@ private:
             // Would be preferable to do this without using any kind of RTTI system.
             // But how would that be done?
             return (GetType_() == other.GetType_()) &&
-                (data == *static_cast<const T*>(other.GetData_()));
+                   (data == *static_cast<const T*>(other.GetData_()));
         }
 
         TypeID GetType_() const noexcept override
@@ -509,7 +506,7 @@ template <typename T>
 inline T TypeCast(const Shape& value)
 {
     using RawType = std::remove_cv_t<std::remove_reference_t<T>>;
-    static_assert(std::is_constructible<T, RawType const &>::value,
+    static_assert(std::is_constructible<T, RawType const&>::value,
                   "T is required to be a const lvalue reference "
                   "or a CopyConstructible type");
     auto tmp = ::playrho::d2::TypeCast<std::add_const_t<RawType>>(&value);
@@ -530,7 +527,7 @@ template <typename T>
 inline T TypeCast(Shape& value)
 {
     using RawType = std::remove_cv_t<std::remove_reference_t<T>>;
-    static_assert(std::is_constructible<T, RawType &>::value,
+    static_assert(std::is_constructible<T, RawType&>::value,
                   "T is required to be a const lvalue reference "
                   "or a CopyConstructible type");
     auto tmp = ::playrho::d2::TypeCast<RawType>(&value);

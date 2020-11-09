@@ -87,16 +87,14 @@ bool ShiftOrigin(Joint& object, Length2 value) noexcept;
 /// @brief Initializes velocity constraint data based on the given solver data.
 /// @note This MUST be called prior to calling <code>SolveVelocity</code>.
 /// @see SolveVelocity.
-void InitVelocity(Joint& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
+void InitVelocity(Joint& object, std::vector<BodyConstraint>& bodies, const StepConf& step,
                   const ConstraintSolverConf& conf);
 
 /// @brief Solves velocity constraint.
 /// @pre <code>InitVelocity</code> has been called.
 /// @see InitVelocity.
 /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
-bool SolveVelocity(Joint& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf& step);
+bool SolveVelocity(Joint& object, std::vector<BodyConstraint>& bodies, const StepConf& step);
 
 /// @brief Solves the position constraint.
 /// @return <code>true</code> if the position errors are within tolerance.
@@ -130,32 +128,32 @@ public:
 
     /// @brief Initializing constructor.
     template <typename T>
-    Joint(T arg): m_self{std::make_unique<Model<T>>(std::move(arg))}
+    Joint(T arg) : m_self{std::make_unique<Model<T>>(std::move(arg))}
     {
         // Intentionally empty.
     }
 
     /// @brief Copy constructor.
-    Joint(const Joint& other): m_self{other.m_self? other.m_self->Clone_(): nullptr}
+    Joint(const Joint& other) : m_self{other.m_self ? other.m_self->Clone_() : nullptr}
     {
         // Intentionally empty.
     }
 
     /// @brief Move constructor.
-    Joint(Joint&& other) noexcept: m_self{std::move(other.m_self)}
+    Joint(Joint&& other) noexcept : m_self{std::move(other.m_self)}
     {
         // Intentionally empty.
     }
 
     /// @brief Copy assignment.
-    Joint& operator= (const Joint& other)
+    Joint& operator=(const Joint& other)
     {
-        m_self = other.m_self? other.m_self->Clone_(): nullptr;
+        m_self = other.m_self ? other.m_self->Clone_() : nullptr;
         return *this;
     }
 
     /// @brief Move assignment.
-    Joint& operator= (Joint&& other) noexcept
+    Joint& operator=(Joint&& other) noexcept
     {
         m_self = std::move(other.m_self);
         return *this;
@@ -163,11 +161,9 @@ public:
 
     /// @brief Move assignment support for any valid underlying configuration.
     template <typename T, typename Tp = std::decay_t<T>,
-        typename = std::enable_if_t<
-            !std::is_same<Tp, Joint>::value && std::is_copy_constructible<Tp>::value
-        >
-    >
-    Joint& operator= (T&& other) noexcept
+              typename = std::enable_if_t<!std::is_same<Tp, Joint>::value &&
+                                          std::is_copy_constructible<Tp>::value>>
+    Joint& operator=(T&& other) noexcept
     {
         Joint(std::forward<T>(other)).swap(*this);
         return *this;
@@ -181,7 +177,7 @@ public:
 
     friend JointType GetType(const Joint& object) noexcept
     {
-        return object.m_self? object.m_self->GetType_(): GetTypeID<void>();
+        return object.m_self ? object.m_self->GetType_() : GetTypeID<void>();
     }
 
     template <typename T>
@@ -192,48 +188,47 @@ public:
 
     friend BodyID GetBodyA(const Joint& object) noexcept
     {
-        return object.m_self? object.m_self->GetBodyA_(): InvalidBodyID;
+        return object.m_self ? object.m_self->GetBodyA_() : InvalidBodyID;
     }
 
     friend BodyID GetBodyB(const Joint& object) noexcept
     {
-        return object.m_self? object.m_self->GetBodyB_(): InvalidBodyID;
+        return object.m_self ? object.m_self->GetBodyB_() : InvalidBodyID;
     }
 
     friend bool GetCollideConnected(const Joint& object) noexcept
     {
-        return object.m_self? object.m_self->GetCollideConnected_(): false;
+        return object.m_self ? object.m_self->GetCollideConnected_() : false;
     }
 
     friend bool ShiftOrigin(Joint& object, Length2 value) noexcept
     {
-        return object.m_self? object.m_self->ShiftOrigin_(value): false;
+        return object.m_self ? object.m_self->ShiftOrigin_(value) : false;
     }
 
     friend void InitVelocity(Joint& object, std::vector<BodyConstraint>& bodies,
-                             const playrho::StepConf& step,
-                             const ConstraintSolverConf& conf)
+                             const playrho::StepConf& step, const ConstraintSolverConf& conf)
     {
-        if (object.m_self) object.m_self->InitVelocity_(bodies, step, conf);
+        if (object.m_self)
+            object.m_self->InitVelocity_(bodies, step, conf);
     }
 
     friend bool SolveVelocity(Joint& object, std::vector<BodyConstraint>& bodies,
                               const playrho::StepConf& step)
     {
-        return object.m_self? object.m_self->SolveVelocity_(bodies, step): false;
+        return object.m_self ? object.m_self->SolveVelocity_(bodies, step) : false;
     }
 
     friend bool SolvePosition(const Joint& object, std::vector<BodyConstraint>& bodies,
                               const ConstraintSolverConf& conf)
     {
-        return object.m_self? object.m_self->SolvePosition_(bodies, conf): false;
+        return object.m_self ? object.m_self->SolvePosition_(bodies, conf) : false;
     }
 
 private:
     /// @brief Internal configuration concept.
     /// @note Provides the interface for runtime value polymorphism.
-    struct Concept
-    {
+    struct Concept {
         /// @brief Explicitly declared virtual destructor.
         virtual ~Concept() = default;
 
@@ -266,13 +261,11 @@ private:
         virtual bool ShiftOrigin_(Length2 value) noexcept = 0;
 
         /// @brief Initializes the velocities for this joint.
-        virtual void InitVelocity_(BodyConstraintsMap& bodies,
-                                   const playrho::StepConf& step,
+        virtual void InitVelocity_(BodyConstraintsMap& bodies, const playrho::StepConf& step,
                                    const ConstraintSolverConf& conf) = 0;
 
         /// @brief Solves the velocities for this joint.
-        virtual bool SolveVelocity_(BodyConstraintsMap& bodies,
-                                    const playrho::StepConf& step) = 0;
+        virtual bool SolveVelocity_(BodyConstraintsMap& bodies, const playrho::StepConf& step) = 0;
 
         /// @brief Solves the positions for this joint.
         virtual bool SolvePosition_(BodyConstraintsMap& bodies,
@@ -282,13 +275,12 @@ private:
     /// @brief Internal model configuration concept.
     /// @note Provides the implementation for runtime value polymorphism.
     template <typename T>
-    struct Model final: Concept
-    {
+    struct Model final : Concept {
         /// @brief Type alias for the type of the data held.
         using data_type = T;
 
         /// @brief Initializing constructor.
-        Model(T arg): data{std::move(arg)} {}
+        Model(T arg) : data{std::move(arg)} {}
 
         /// @copydoc Concept::Clone_
         std::unique_ptr<Concept> Clone_() const override
@@ -343,16 +335,14 @@ private:
         }
 
         /// @copydoc Concept::InitVelocity_
-        void InitVelocity_(BodyConstraintsMap& bodies,
-                           const playrho::StepConf& step,
+        void InitVelocity_(BodyConstraintsMap& bodies, const playrho::StepConf& step,
                            const ConstraintSolverConf& conf) override
         {
             InitVelocity(data, bodies, step, conf);
         }
 
         /// @copydoc Concept::SolveVelocity_
-        bool SolveVelocity_(BodyConstraintsMap& bodies,
-                            const playrho::StepConf& step) override
+        bool SolveVelocity_(BodyConstraintsMap& bodies, const playrho::StepConf& step) override
         {
             return SolveVelocity(data, bodies, step);
         }
@@ -387,7 +377,7 @@ template <typename T>
 inline T TypeCast(const Joint& value)
 {
     using RawType = std::remove_cv_t<std::remove_reference_t<T>>;
-    static_assert(std::is_constructible<T, RawType const &>::value,
+    static_assert(std::is_constructible<T, RawType const&>::value,
                   "T is required to be a const lvalue reference "
                   "or a CopyConstructible type");
     auto tmp = ::playrho::d2::TypeCast<std::add_const_t<RawType>>(&value);
@@ -406,7 +396,7 @@ template <typename T>
 inline T TypeCast(Joint& value)
 {
     using RawType = std::remove_cv_t<std::remove_reference_t<T>>;
-    static_assert(std::is_constructible<T, RawType &>::value,
+    static_assert(std::is_constructible<T, RawType&>::value,
                   "T is required to be a const lvalue reference "
                   "or a CopyConstructible type");
     auto tmp = ::playrho::d2::TypeCast<RawType>(&value);
