@@ -20,6 +20,8 @@
 
 #include <PlayRho/Common/CodeDumper.hpp>
 
+#ifdef CODE_DUMPER_IS_READY
+
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 
@@ -416,3 +418,5 @@ void Dump(const WheelJointConf& joint, std::size_t index, const World& world)
 
 } // namespace d2
 } // namespace playrho
+
+#endif // CODE_DUMPER_IS_READY

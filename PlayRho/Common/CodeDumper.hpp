@@ -21,6 +21,8 @@
 #ifndef PLAYRHO_COMMON_CODEDUMPER_HPP
 #define PLAYRHO_COMMON_CODEDUMPER_HPP
 
+#ifdef CODE_DUMPER_IS_READY
+
 #include <PlayRho/Common/Settings.hpp>
 
 namespace playrho {
@@ -90,5 +92,7 @@ void Dump(const WheelJointConf& joint, std::size_t index, const World& world);
 
 } // namespace d2
 } // namespace playrho
+
+#endif // CODE_DUMPER_IS_READY
 
 #endif // PLAYRHO_COMMON_CODEDUMPER_HPP
