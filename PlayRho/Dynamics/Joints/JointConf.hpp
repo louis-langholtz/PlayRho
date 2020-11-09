@@ -59,6 +59,7 @@ constexpr BodyID GetBodyB(const JointConf& object) noexcept
     return object.bodyB;
 }
 
+/// @brief Gets whether attached bodies should collide or not.
 constexpr bool GetCollideConnected(const JointConf& object) noexcept
 {
     return object.collideConnected;
