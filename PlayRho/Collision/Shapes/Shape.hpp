@@ -148,6 +148,10 @@ bool operator!=(const Shape& lhs, const Shape& rhs) noexcept;
 ///   but are now &mdash; with the other properties like friction and density having been
 ///   moved into them &mdash; maybe better thought of as "parts".
 
+/// @example Shape.cpp
+/// This is the <code>googletest</code> based unit testing file for the interfaces to
+///   <code>playrho::d2::Shape</code>.
+
 /// @brief Shape.
 /// @details A shape is used for collision detection. You can create a shape from any
 ///   supporting type. Shapes are conceptually made up of zero or more convex child shapes
