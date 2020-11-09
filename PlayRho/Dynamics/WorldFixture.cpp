@@ -23,7 +23,7 @@
 
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/Body.hpp> // for GetBody
 
 namespace playrho {
 namespace d2 {

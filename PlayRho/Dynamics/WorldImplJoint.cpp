@@ -22,7 +22,6 @@
 #include <PlayRho/Dynamics/WorldImplJoint.hpp>
 
 #include <PlayRho/Dynamics/WorldImpl.hpp>
-#include <PlayRho/Dynamics/Body.hpp> // for use of GetBody(BodyID)
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>

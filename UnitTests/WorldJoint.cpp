@@ -18,34 +18,33 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_BODYID_HPP
-#define PLAYRHO_DYNAMICS_BODYID_HPP
+#include "UnitTests.hpp"
 
-#include <PlayRho/Common/StrongType.hpp>
-#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Dynamics/WorldJoint.hpp>
 
-namespace playrho {
+#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-/// @brief Identifier for bodies.
-using BodyID = strongtype::IndexingNamedType<BodyCounter, struct BodyIdentifier>;
+using namespace playrho;
+using namespace playrho::d2;
 
-/// @brief Invalid body ID value.
-constexpr auto InvalidBodyID = static_cast<BodyID>(static_cast<BodyID::underlying_type>(-1));
-
-/// @brief Gets an invalid value for the BodyID type.
-template <>
-constexpr BodyID GetInvalid() noexcept
+TEST(WorldJoint, GetSetMotorSpeed)
 {
-    return InvalidBodyID;
+    World world;
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+
+    auto jd = RevoluteJointConf{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2(4_m, 5_m);
+    jd.localAnchorB = Length2(6_m, 7_m);
+
+    const auto newValue = Real(5) * RadianPerSecond;
+    const auto id = CreateJoint(world, jd);
+    ASSERT_NE(GetMotorSpeed(world, id), newValue);
+    EXPECT_EQ(GetMotorSpeed(world, id), jd.motorSpeed);
+    EXPECT_NO_THROW(SetMotorSpeed(world, id, newValue));
+    EXPECT_EQ(GetMotorSpeed(world, id), newValue);
 }
-
-/// @brief Determines if the given value is valid.
-template <>
-constexpr bool IsValid(const BodyID& value) noexcept
-{
-    return value != GetInvalid<BodyID>();
-}
-
-} // namespace playrho
-
-#endif // PLAYRHO_DYNAMICS_BODYID_HPP

@@ -67,11 +67,11 @@ private:
         // Intentionally empty.
     }
 
-    /// @brief Body 1.
+    /// @brief Identifier of body 1.
     /// @details This is the body with the lower-than or equal-to address.
     BodyID m_body1;
 
-    /// @brief Body 2.
+    /// @brief Identifier of body 2.
     /// @details This is the body with the higher-than or equal-to address.
     BodyID m_body2;
 };

@@ -42,6 +42,10 @@ namespace d2 {
 struct FixtureConf;
 class Shape;
 
+/// @example Body.cpp
+/// This is the <code>googletest</code> based unit testing file for the interfaces to
+///   <code>playrho::d2::Body</code>.
+
 /// @brief Physical entity that exists within a World.
 ///
 /// @details A rigid body entity created or destroyed through a World instance. These have
@@ -66,321 +70,13 @@ class Shape;
 class Body
 {
 public:
-    /// @brief Initializing constructor.
-    explicit Body(const BodyConf& bd = GetDefaultBodyConf()) noexcept;
-
-    /// @brief Gets the body transform for the body's origin.
-    /// @return the world transform of the body's origin.
-    /// @see GetLocation, Body::SetTransformation.
-    Transformation GetTransformation() const noexcept;
-
-    /// @brief Sets the body's transformation.
-    /// @note This sets what <code>Body::GetLocation</code> returns.
-    /// @note <code>SetSweep</code> may also need to be called.
-    /// @post <code>GetTransformation</code> will return the value set.
-    /// @see Body::GetLocation, Body::GetTransformation, SetSweep
-    void SetTransformation(Transformation value) noexcept;
-
-    /// @brief Gets the world body origin location.
-    /// @details This is the location of the body's origin relative to its world.
-    /// The location of the body after stepping the world's physics simulations is dependent on
-    /// a number of factors:
-    ///   1. Location at the last time step.
-    ///   2. Forces acting on the body (gravity, applied force, applied impulse).
-    ///   3. The mass data of the body.
-    ///   4. Damping of the body.
-    ///   5. Restitution and friction values of the body's fixtures when they experience collisions.
-    /// @return World location of the body's origin.
-    /// @see GetTransformation.
-    Length2 GetLocation() const noexcept;
-
-    /// @brief Gets the body's sweep.
-    const Sweep& GetSweep() const noexcept;
-
-    /// @brief Get the angle.
-    /// @return the current world rotation angle.
-    Angle GetAngle() const noexcept;
-
-    /// @brief Get the world position of the center of mass.
-    Length2 GetWorldCenter() const noexcept;
-
-    /// @brief Gets the local position of the center of mass.
-    Length2 GetLocalCenter() const noexcept;
-
-    /// @brief Gets the velocity.
-    Velocity GetVelocity() const noexcept;
-
-    /// @brief Sets the body's velocity (linear and angular velocity).
-    /// @note This method does nothing if this body is not speedable.
-    /// @note A non-zero velocity will awaken this body.
-    /// @see SetAwake, SetUnderActiveTime.
-    void SetVelocity(const Velocity& velocity) noexcept;
-
-    /// Sets the body's velocity.
-    /// @note This sets what <code>Body::GetVelocity</code> returns.
-    /// @see Body::GetVelocity
-    void JustSetVelocity(Velocity value) noexcept
-    {
-        m_linearVelocity = value.linear;
-        m_angularVelocity = value.angular;
-    }
-
-    /// @brief Sets the linear and rotational accelerations on this body.
-    /// @note This has no effect on non-accelerable bodies.
-    /// @note A non-zero acceleration will also awaken the body.
-    /// @param linear Linear acceleration.
-    /// @param angular Angular acceleration.
-    void SetAcceleration(LinearAcceleration2 linear, AngularAcceleration angular) noexcept;
-
-    /// @brief Gets this body's linear acceleration.
-    LinearAcceleration2 GetLinearAcceleration() const noexcept;
-
-    /// @brief Gets this body's angular acceleration.
-    AngularAcceleration GetAngularAcceleration() const noexcept;
-
-    /// @brief Gets the inverse total mass of the body.
-    /// @details This is the cached result of dividing 1 by the body's mass.
-    /// Often floating division is much slower than multiplication.
-    /// As such, it's likely faster to multiply values by this inverse value than to redivide
-    /// them all the time by the mass.
-    /// @return Value of zero or more representing the body's inverse mass (in 1/kg).
-    /// @see SetInvMass.
-    InvMass GetInvMass() const noexcept;
-
-    /// @brief Gets the inverse rotational inertia of the body.
-    /// @details This is the cached result of dividing 1 by the body's rotational inertia.
-    /// Often floating division is much slower than multiplication.
-    /// As such, it's likely faster to multiply values by this inverse value than to redivide
-    /// them all the time by the rotational inertia.
-    /// @return Inverse rotational inertia (in 1/kg-m^2).
-    InvRotInertia GetInvRotInertia() const noexcept;
-
-    /// @brief Gets the linear damping of the body.
-    Frequency GetLinearDamping() const noexcept;
-
-    /// @brief Sets the linear damping of the body.
-    void SetLinearDamping(NonNegative<Frequency> linearDamping) noexcept;
-
-    /// @brief Gets the angular damping of the body.
-    Frequency GetAngularDamping() const noexcept;
-
-    /// @brief Sets the angular damping of the body.
-    void SetAngularDamping(NonNegative<Frequency> angularDamping) noexcept;
-
-    /// @brief Gets the type of this body.
-    /// @see SetType.
-    BodyType GetType() const noexcept;
-
-    /// @brief Sets the type of this body.
-    /// @see GetType.
-    void SetType(BodyType value) noexcept;
-
-    /// @brief Is "speedable".
-    /// @details Is this body able to have a non-zero speed associated with it.
-    /// Kinematic and Dynamic bodies are speedable. Static bodies are not.
-    bool IsSpeedable() const noexcept;
-
-    /// @brief Is "accelerable".
-    /// @details Indicates whether this body is accelerable, i.e. whether it is effected by
-    ///   forces. Only Dynamic bodies are accelerable.
-    /// @return true if the body is accelerable, false otherwise.
-    bool IsAccelerable() const noexcept;
-
-    /// @brief Is this body treated like a bullet for continuous collision detection?
-    bool IsImpenetrable() const noexcept;
-
-    /// @brief Sets the impenetrable status of this body.
-    /// @details Sets whether or not this body should be treated like a bullet for continuous
-    ///   collision detection.
-    void SetImpenetrable() noexcept;
-
-    /// @brief Unsets the impenetrable status of this body.
-    /// @details Sets whether or not this body should be treated like a bullet for continuous
-    ///   collision detection.
-    void UnsetImpenetrable() noexcept;
-
-    /// @brief Gets whether or not this body allowed to sleep
-    bool IsSleepingAllowed() const noexcept;
-
-    /// You can disable sleeping on this body. If you disable sleeping, the
-    /// body will be woken.
-    void SetSleepingAllowed(bool flag) noexcept;
-
-    /// @brief Gets the awake/asleep state of this body.
-    /// @warning Being awake may or may not imply being speedable.
-    /// @return true if the body is awake.
-    bool IsAwake() const noexcept;
-
-    /// @brief Awakens this body.
-    ///
-    /// @details Sets this body to awake and resets its under-active time if it's a "speedable"
-    ///   body. This method has no effect otherwise.
-    ///
-    /// @post If this body is a "speedable" body, then this body's <code>IsAwake</code> method
-    ///   returns true.
-    /// @post If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</code>
-    ///   method returns zero.
-    ///
-    void SetAwake() noexcept;
-
-    /// @brief Sets this body to asleep if sleeping is allowed.
-    ///
-    /// @details If this body is allowed to sleep, this: sets the sleep state of the body to
-    /// asleep, resets this body's under active time, and resets this body's velocity (linear
-    /// and angular).
-    ///
-    /// @post This body's <code>IsAwake</code> method returns false.
-    /// @post This body's <code>GetUnderActiveTime</code> method returns zero.
-    /// @post This body's <code>GetVelocity</code> method returns zero linear and zero angular
-    ///   speed.
-    ///
-    void UnsetAwake() noexcept;
-
-    /// @brief Gets this body's under-active time value.
-    /// @return Zero or more time in seconds (of step time) that this body has been
-    ///   "under-active" for.
-    Time GetUnderActiveTime() const noexcept;
-
-    /// @brief Sets the "under-active" time to the given value.
-    ///
-    /// @details Sets the "under-active" time to a value of zero or a non-zero value if the
-    ///   body is "accelerable". Otherwise it does nothing.
-    ///
-    /// @warning Behavior is undefined for negative values.
-    /// @note A non-zero time is only valid for an "accelerable" body.
-    ///
-    void SetUnderActiveTime(Time value) noexcept;
-
-    /// @brief Resets the under-active time for this body.
-    /// @note This has performance degrading potential and is best not called unless the
-    ///   caller is certain that it should be.
-    void ResetUnderActiveTime() noexcept;
-
-    /// @brief Gets the enabled/disabled state of the body.
-    /// @see SetEnabled.
-    bool IsEnabled() const noexcept;
-
-    /// @brief Does this body have fixed rotation?
-    bool IsFixedRotation() const noexcept;
-
-    /// @brief Sets this body to have fixed rotation.
-    /// @note This causes the mass to be reset.
-    void SetFixedRotation(bool flag);
-
-    /// @brief Gets whether the mass data for this body is "dirty".
-    bool IsMassDataDirty() const noexcept;
-
-    /// @brief Sets the body's awake flag.
-    /// @details This is done unconditionally.
-    /// @note This should **not** be called unless the body is "speedable".
-    /// @warning Behavior is undefined if called for a body that is not "speedable".
-    void SetAwakeFlag() noexcept;
-
-    /// @brief Unsets the body's awake flag.
-    void UnsetAwakeFlag() noexcept;
-
-    /// @brief Sets this body to have the mass data dirty state.
-    void SetMassDataDirty() noexcept;
-
-    /// @brief Unsets the body from being in the mass data dirty state.
-    void UnsetMassDataDirty() noexcept;
-
-    /// @brief Sets the enabled state.
-    void SetEnabled() noexcept;
-
-    /// @brief Unsets the enabled flag.
-    void UnsetEnabled() noexcept;
-
-    /// @brief Sets the inverse rotational inertia.
-    void SetInvRotI(InvRotInertia v) noexcept
-    {
-        m_invRotI = v;
-    }
-
-    /// @brief Sets the inverse mass.
-    /// @see GetInvMass
-    void SetInvMass(InvMass v) noexcept
-    {
-        m_invMass = v;
-    }
-
-    /// @brief Sets the "position 0" value of the body to the given position.
-    void SetPosition0(const Position value) noexcept
-    {
-        assert(IsSpeedable() || m_sweep.pos0 == value);
-        m_sweep.pos0 = value;
-    }
-
-    /// @brief Sets the body sweep's "position 1" value.
-    /// @note This sets what <code>Body::GetWorldCenter</code> returns.
-    /// @see Body::GetWorldCenter
-    void SetPosition1(const Position value) noexcept
-    {
-        assert(IsSpeedable() || m_sweep.pos1 == value);
-        m_sweep.pos1 = value;
-    }
-
-    /// @brief Resets the given body's "alpha-0" value.
-    void ResetAlpha0() noexcept
-    {
-        m_sweep.ResetAlpha0();
-    }
-
-    /// @brief Sets the sweep value of the given body.
-    void SetSweep(const Sweep value) noexcept
-    {
-        assert(IsSpeedable() || value.pos0 == value.pos1);
-        m_sweep = value;
-    }
-
-    /// @brief Restores the given body's sweep to the given sweep value.
-    void Restore(const Sweep& value) noexcept
-    {
-        SetSweep(value);
-        SetTransformation(GetTransform1(value));
-    }
-
-    /// @brief Calls the body sweep's <code>Advance0</code> method to advance to
-    ///    the given value.
-    void Advance0(Real value) noexcept
-    {
-        // Note: Static bodies must **never** have different sweep position values.
-
-        // Confirm bodies don't have different sweep positions to begin with...
-        assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
-
-        m_sweep.Advance0(value);
-
-        // Confirm bodies don't have different sweep positions to end with...
-        assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
-    }
-
-    /// Advances the body by a given time ratio.
-    /// @details This method:
-    ///    1. advances the body's sweep to the given time ratio;
-    ///    2. updates the body's sweep positions (linear and angular) to the advanced ones; and
-    ///    3. updates the body's transform to the new sweep one settings.
-    /// @param value Valid new time factor in [0,1) to advance the sweep to.
-    void Advance(Real value) noexcept
-    {
-        //assert(m_sweep.GetAlpha0() <= alpha);
-        assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
-
-        // Advance to the new safe time. This doesn't sync the broad-phase.
-        m_sweep.Advance0(value);
-        m_sweep.pos1 = m_sweep.pos0;
-        m_xf = GetTransform1(m_sweep);
-    }
-
-private:
     /// @brief Flags type.
     /// @note For internal use. Made public to facilitate unit testing.
     using FlagsType = std::uint16_t;
 
     /// @brief Flag enumeration.
     /// @note For internal use. Made public to facilitate unit testing.
-    enum Flag: FlagsType
-    {
+    enum Flag : FlagsType {
         /// @brief Awake flag.
         e_awakeFlag = FlagsType(0x0002),
 
@@ -404,8 +100,8 @@ private:
         e_velocityFlag = FlagsType(0x0080),
 
         /// @brief Acceleration flag.
-        /// @details Set this to enable changes in velocity due to physical properties (like forces).
-        /// Bodies with this set are "accelerable" - dynamic bodies.
+        /// @details Set this to enable changes in velocity due to physical properties (like
+        /// forces). Bodies with this set are "accelerable" - dynamic bodies.
         e_accelerationFlag = FlagsType(0x0100),
 
         /// @brief Mass Data Dirty Flag.
@@ -416,8 +112,370 @@ private:
     static FlagsType GetFlags(BodyType type) noexcept;
 
     /// @brief Gets the flags for the given value.
+    /// @return Value formed in part from calling <code>GetFlags(bd.type)</code>.
+    /// @see GetFlags(BodyType).
     static FlagsType GetFlags(const BodyConf& bd) noexcept;
 
+    /// @brief Initializing constructor.
+    /// @note To create a body within a world, use <code>World::CreateBody</code>.
+    /// @param bd Configuration data for the body to construct.
+    /// @post The internal <code>m_flags</code> state will be set to the value of
+    ///  <code>GetFlags(const BodyConf&)</code> given @a bd.
+    /// @post <code>GetLinearDamping()</code> will return the value of @a bd.linearDamping.
+    /// @post <code>GetAngularDamping()</code> will return the value of @a bd.angularDamping.
+    /// @post <code>GetInvMass()</code> will return <code>Real(0)/Kilogram</code> if
+    ///   <code>bd.type != BodyType::Dynamic</code>, otherwise it will return
+    ///   <code>Real(1)/Kilogram</code>.
+    /// @post <code>GetTransformation()</code> will return the value of
+    ///   <code>::playrho::d2::GetTransformation(const BodyConf&)</code> given @a bd.
+    /// @post <code>GetVelocity()</code> will return the value as if
+    ///   <code>SetVelocity(const Velocity&)</code> had been called with the values of
+    ///   @a bd.linearVelocity and @a bd.angularVelocity as the velocity.
+    /// @post <code>GetAcceleration()</code> will return the value as if
+    ///   <code>SetAcceleration(LinearAcceleration2, AngularAcceleration)</code> had been called
+    ///   with the values of @a bd.linearAcceleration and @a bd.angularAcceleration.
+    /// @see GetFlags(const BodyConf&).
+    /// @see GetLinearDamping, GetAngularDamping, GetInvMass, GetTransformation, GetVelocity,
+    ///   GetAcceleration.
+    /// @see World::CreateBody.
+    explicit Body(const BodyConf& bd = GetDefaultBodyConf()) noexcept;
+
+    /// @brief Gets the body transform for the body's origin.
+    /// @return the world transform of the body's origin.
+    /// @see GetLocation, SetTransformation.
+    Transformation GetTransformation() const noexcept;
+
+    /// @brief Sets the body's transformation.
+    /// @note <code>SetSweep</code> may also need to be called.
+    /// @post <code>GetTransformation</code> will return the value set.
+    /// @post <code>GetLocation</code> will return the translational portion of the value set.
+    /// @see GetLocation, GetTransformation, SetSweep.
+    void SetTransformation(Transformation value) noexcept;
+
+    /// @brief Gets the world body origin location.
+    /// @details This is the location of the body's origin relative to its world.
+    /// The location of the body after stepping the world's physics simulations is dependent on
+    /// a number of factors:
+    ///   1. Location at the last time step.
+    ///   2. Forces acting on the body (gravity, applied force, applied impulse).
+    ///   3. The mass data of the body.
+    ///   4. Damping of the body.
+    ///   5. Restitution and friction values of the body's fixtures when they experience collisions.
+    /// @return Location of the body's origin in world coordinates.
+    /// @see GetTransformation.
+    Length2 GetLocation() const noexcept;
+
+    /// @brief Gets the body's sweep.
+    /// @see SetSweep.
+    const Sweep& GetSweep() const noexcept;
+
+    /// @brief Gets the angle.
+    /// @return the current world rotation angle.
+    /// @see GetSweep, GetTransformation.
+    Angle GetAngle() const noexcept;
+
+    /// @brief Gets the world position of the center of mass.
+    Length2 GetWorldCenter() const noexcept;
+
+    /// @brief Gets the local position of the center of mass.
+    Length2 GetLocalCenter() const noexcept;
+
+    /// @brief Gets the velocity.
+    /// @see SetVelocity.
+    Velocity GetVelocity() const noexcept;
+
+    /// @brief Sets the body's velocity (linear and angular velocity).
+    /// @note This method does nothing if this body is not speedable.
+    /// @note A non-zero velocity will awaken this body.
+    /// @see SetAwake, SetUnderActiveTime, GetVelocity.
+    void SetVelocity(const Velocity& velocity) noexcept;
+
+    /// Sets the body's velocity.
+    /// @note This sets what <code>GetVelocity()</code> returns.
+    /// @see GetVelocity.
+    void JustSetVelocity(Velocity value) noexcept
+    {
+        m_linearVelocity = value.linear;
+        m_angularVelocity = value.angular;
+    }
+
+    /// @brief Sets the linear and rotational accelerations on this body.
+    /// @note This has no effect on non-accelerable bodies.
+    /// @note A non-zero acceleration will also awaken the body.
+    /// @param linear Linear acceleration.
+    /// @param angular Angular acceleration.
+    /// @see GetLinearAcceleration, GetAngularAcceleration.
+    void SetAcceleration(LinearAcceleration2 linear, AngularAcceleration angular) noexcept;
+
+    /// @brief Gets this body's linear acceleration.
+    /// @see SetAcceleration.
+    LinearAcceleration2 GetLinearAcceleration() const noexcept;
+
+    /// @brief Gets this body's angular acceleration.
+    /// @see SetAcceleration.
+    AngularAcceleration GetAngularAcceleration() const noexcept;
+
+    /// @brief Gets the inverse total mass of the body.
+    /// @details This is the cached result of dividing 1 by the body's mass.
+    /// Often floating division is much slower than multiplication.
+    /// As such, it's likely faster to multiply values by this inverse value than to redivide
+    /// them all the time by the mass.
+    /// @return Value of zero or more representing the body's inverse mass (in 1/kg).
+    /// @see SetInvMass.
+    InvMass GetInvMass() const noexcept;
+
+    /// @brief Sets the inverse mass.
+    /// @see GetInvMass
+    void SetInvMass(InvMass v) noexcept
+    {
+        m_invMass = v;
+    }
+
+    /// @brief Gets the inverse rotational inertia of the body.
+    /// @details This is the cached result of dividing 1 by the body's rotational inertia.
+    /// Often floating division is much slower than multiplication.
+    /// As such, it's likely faster to multiply values by this inverse value than to redivide
+    /// them all the time by the rotational inertia.
+    /// @return Inverse rotational inertia (in 1/kg-m^2).
+    /// @see SetInvRotInertia.
+    InvRotInertia GetInvRotInertia() const noexcept;
+
+    /// @brief Sets the inverse rotational inertia.
+    /// @see GetInvRotInertia.
+    void SetInvRotInertia(InvRotInertia v) noexcept
+    {
+        m_invRotI = v;
+    }
+
+    /// @brief Gets the linear damping of the body.
+    /// @see SetLinearDamping.
+    Frequency GetLinearDamping() const noexcept;
+
+    /// @brief Sets the linear damping of the body.
+    /// @see GetLinearDamping.
+    void SetLinearDamping(NonNegative<Frequency> linearDamping) noexcept;
+
+    /// @brief Gets the angular damping of the body.
+    /// @see SetAngularDamping.
+    Frequency GetAngularDamping() const noexcept;
+
+    /// @brief Sets the angular damping of the body.
+    /// @see GetAngularDamping.
+    void SetAngularDamping(NonNegative<Frequency> angularDamping) noexcept;
+
+    /// @brief Gets the type of this body.
+    /// @see SetType.
+    BodyType GetType() const noexcept;
+
+    /// @brief Sets the type of this body.
+    /// @see GetType.
+    void SetType(BodyType value) noexcept;
+
+    /// @brief Is "speedable".
+    /// @details Is this body able to have a non-zero speed associated with it.
+    /// Kinematic and Dynamic bodies are speedable. Static bodies are not.
+    /// @see GetType, SetType.
+    bool IsSpeedable() const noexcept;
+
+    /// @brief Is "accelerable".
+    /// @details Indicates whether this body is accelerable, i.e. whether it is effected by
+    ///   forces. Only Dynamic bodies are accelerable.
+    /// @return true if the body is accelerable, false otherwise.
+    /// @see GetType, SetType.
+    bool IsAccelerable() const noexcept;
+
+    /// @brief Is this body treated like a bullet for continuous collision detection?
+    /// @see GetType, SetType, SetImpenetrable, UnsetImpenetrable.
+    bool IsImpenetrable() const noexcept;
+
+    /// @brief Sets the impenetrable status of this body.
+    /// @details Sets whether or not this body should be treated like a bullet for continuous
+    ///   collision detection.
+    /// @see IsImpenetrable, GetType, SetType.
+    void SetImpenetrable() noexcept;
+
+    /// @brief Unsets the impenetrable status of this body.
+    /// @details Sets whether or not this body should be treated like a bullet for continuous
+    ///   collision detection.
+    /// @see IsImpenetrable, GetType, SetType.
+    void UnsetImpenetrable() noexcept;
+
+    /// @brief Gets whether or not this body allowed to sleep.
+    /// @see SetSleepingAllowed.
+    bool IsSleepingAllowed() const noexcept;
+
+    /// @brief Sets whether or not this body is allowed to sleep.
+    /// @details Use to enable/disable sleeping on this body. If you disable sleeping, the
+    /// body will be woken.
+    /// @see IsSleepingAllowed.
+    void SetSleepingAllowed(bool flag) noexcept;
+
+    /// @brief Gets the awake/asleep state of this body.
+    /// @warning Being awake may or may not imply being speedable.
+    /// @return true if the body is awake.
+    /// @see SetAwake.
+    bool IsAwake() const noexcept;
+
+    /// @brief Awakens this body.
+    /// @details Sets this body to awake and resets its under-active time if it's a "speedable"
+    ///   body. This method has no effect otherwise.
+    /// @post If this body is a "speedable" body, then this body's <code>IsAwake</code> method
+    ///   returns true.
+    /// @post If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</code>
+    ///   method returns zero.
+    /// @see IsAwake.
+    void SetAwake() noexcept;
+
+    /// @brief Sets this body to asleep if sleeping is allowed.
+    /// @details If this body is allowed to sleep, this: sets the sleep state of the body to
+    ///   asleep, resets this body's under active time, and resets this body's velocity (linear
+    ///   and angular).
+    /// @post This body's <code>IsAwake</code> method returns false.
+    /// @post This body's <code>GetUnderActiveTime</code> method returns zero.
+    /// @post This body's <code>GetVelocity</code> method returns zero linear and zero angular
+    ///   speed.
+    /// @see IsAwake.
+    void UnsetAwake() noexcept;
+
+    /// @brief Gets this body's under-active time value.
+    /// @return Zero or more time in seconds (of step time) that this body has been
+    ///   "under-active" for.
+    /// @see SetUnderActiveTime, ResetUnderActiveTime.
+    Time GetUnderActiveTime() const noexcept;
+
+    /// @brief Sets the "under-active" time to the given value.
+    /// @details Sets the "under-active" time to a value of zero or a non-zero value if the
+    ///   body is "accelerable". Otherwise it does nothing.
+    /// @warning Behavior is undefined for negative values.
+    /// @note A non-zero time is only valid for an "accelerable" body.
+    /// @see GetUnderActiveTime.
+    void SetUnderActiveTime(Time value) noexcept;
+
+    /// @brief Resets the under-active time for this body.
+    /// @note This has performance degrading potential and is best not called unless the
+    ///   caller is certain that it should be.
+    /// @see GetUnderActiveTime.
+    void ResetUnderActiveTime() noexcept;
+
+    /// @brief Does this body have fixed rotation?
+    /// @see SetFixedRotation.
+    bool IsFixedRotation() const noexcept;
+
+    /// @brief Sets this body to have fixed rotation.
+    /// @note This causes the mass to be reset.
+    /// @see IsFixedRotation.
+    void SetFixedRotation(bool flag);
+
+    /// @brief Sets the body's awake flag.
+    /// @details This is done unconditionally.
+    /// @note This should **not** be called unless the body is "speedable".
+    /// @warning Behavior is undefined if called for a body that is not "speedable".
+    /// @see UnsetAwakeFlag.
+    void SetAwakeFlag() noexcept;
+
+    /// @brief Unsets the body's awake flag.
+    /// @see SetAwakeFlag.
+    void UnsetAwakeFlag() noexcept;
+
+    /// @brief Gets whether the mass data for this body is "dirty".
+    /// @see SetMassDataDirty, UnsetMassDataDirty.
+    bool IsMassDataDirty() const noexcept;
+
+    /// @brief Sets this body to have the mass data dirty state.
+    /// @see IsMassDataDirty.
+    void SetMassDataDirty() noexcept;
+
+    /// @brief Unsets the body from being in the mass data dirty state.
+    /// @see IsMassDataDirty.
+    void UnsetMassDataDirty() noexcept;
+
+    /// @brief Gets the enabled/disabled state of the body.
+    /// @see SetEnabled, UnsetEnabled.
+    bool IsEnabled() const noexcept;
+
+    /// @brief Sets the enabled state.
+    /// @see IsEnabled.
+    void SetEnabled() noexcept;
+
+    /// @brief Unsets the enabled flag.
+    /// @see IsEnabled.
+    void UnsetEnabled() noexcept;
+
+    /// @brief Sets the "position 0" value of the body to the given position.
+    /// @see GetSweep.
+    void SetPosition0(const Position value) noexcept
+    {
+        assert(IsSpeedable() || m_sweep.pos0 == value);
+        m_sweep.pos0 = value;
+    }
+
+    /// @brief Sets the body sweep's "position 1" value.
+    /// @note This sets what <code>GetWorldCenter()</code> returns.
+    /// @see GetSweep, GetWorldCenter.
+    void SetPosition1(const Position value) noexcept
+    {
+        assert(IsSpeedable() || m_sweep.pos1 == value);
+        m_sweep.pos1 = value;
+    }
+
+    /// @brief Resets the given body's "alpha-0" value.
+    /// @see GetSweep.
+    void ResetAlpha0() noexcept
+    {
+        m_sweep.ResetAlpha0();
+    }
+
+    /// @brief Sets the sweep value of the given body.
+    /// @see GetSweep.
+    void SetSweep(const Sweep value) noexcept
+    {
+        assert(IsSpeedable() || value.pos0 == value.pos1);
+        m_sweep = value;
+    }
+
+    /// @brief Restores the given body's sweep to the given sweep value.
+    /// @see GetSweep.
+    void Restore(const Sweep& value) noexcept
+    {
+        SetSweep(value);
+        SetTransformation(GetTransform1(value));
+    }
+
+    /// @brief Calls the body sweep's <code>Advance0</code> method to advance to
+    ///    the given value.
+    /// @see GetSweep.
+    void Advance0(Real value) noexcept
+    {
+        // Note: Static bodies must **never** have different sweep position values.
+
+        // Confirm bodies don't have different sweep positions to begin with...
+        assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
+
+        m_sweep.Advance0(value);
+
+        // Confirm bodies don't have different sweep positions to end with...
+        assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
+    }
+
+    /// Advances the body by a given time ratio.
+    /// @details This method:
+    ///    1. advances the body's sweep to the given time ratio;
+    ///    2. updates the body's sweep positions (linear and angular) to the advanced ones; and
+    ///    3. updates the body's transform to the new sweep one settings.
+    /// @param value Valid new time factor in [0,1) to advance the sweep to.
+    /// @see GetSweep.
+    void Advance(Real value) noexcept
+    {
+        // assert(m_sweep.GetAlpha0() <= alpha);
+        assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
+
+        // Advance to the new safe time. This doesn't sync the broad-phase.
+        m_sweep.Advance0(value);
+        m_sweep.pos1 = m_sweep.pos0;
+        m_xf = GetTransform1(m_sweep);
+    }
+
+private:
     //
     // Member variables. Try to keep total size small.
     //
@@ -581,8 +639,7 @@ inline Time Body::GetUnderActiveTime() const noexcept
 
 inline void Body::SetUnderActiveTime(Time value) noexcept
 {
-    if ((value == 0_s) || IsAccelerable())
-    {
+    if ((value == 0_s) || IsAccelerable()) {
         m_underActiveTime = value;
     }
 }
@@ -619,12 +676,10 @@ inline bool Body::IsSleepingAllowed() const noexcept
 
 inline void Body::SetSleepingAllowed(bool flag) noexcept
 {
-    if (flag)
-    {
+    if (flag) {
         m_flags |= e_autoSleepFlag;
     }
-    else if (IsSpeedable())
-    {
+    else if (IsSpeedable()) {
         m_flags &= ~e_autoSleepFlag;
         SetAwakeFlag();
         ResetUnderActiveTime();
@@ -669,7 +724,7 @@ inline void Body::UnsetEnabled() noexcept
 // Free functions...
 
 /// @brief Gets the type of this body.
-/// @see SetType.
+/// @see SetType(Body&,BodyType).
 /// @relatedalso Body
 inline BodyType GetType(const Body& body) noexcept
 {
@@ -677,6 +732,7 @@ inline BodyType GetType(const Body& body) noexcept
 }
 
 /// @brief Sets the type of this body.
+/// @see GetType(const Body&).
 /// @relatedalso Body
 inline void SetType(Body& body, BodyType value) noexcept
 {
@@ -703,6 +759,7 @@ inline bool IsAccelerable(const Body& body) noexcept
 }
 
 /// @brief Is this body treated like a bullet for continuous collision detection?
+/// @see SetImpenetrable(Body&).
 /// @relatedalso Body
 inline bool IsImpenetrable(const Body& body) noexcept
 {
@@ -712,6 +769,7 @@ inline bool IsImpenetrable(const Body& body) noexcept
 /// @brief Sets the impenetrable status of this body.
 /// @details Sets whether or not this body should be treated like a bullet for continuous
 ///   collision detection.
+/// @see IsImpenetrable(const Body&), UnsetImpenetrable(Body&).
 /// @relatedalso Body
 inline void SetImpenetrable(Body& body) noexcept
 {
@@ -721,13 +779,15 @@ inline void SetImpenetrable(Body& body) noexcept
 /// @brief Unsets the impenetrable status of this body.
 /// @details Sets whether or not this body should be treated like a bullet for continuous
 ///   collision detection.
+/// @see IsImpenetrable(const Body&), SetImpenetrable(Body&).
 /// @relatedalso Body
 inline void UnsetImpenetrable(Body& body) noexcept
 {
     body.UnsetImpenetrable();
 }
 
-/// @brief Gets whether or not this body allowed to sleep
+/// @brief Gets whether or not this body allowed to sleep.
+/// @see SetSleepingAllowed(Body&).
 /// @relatedalso Body
 inline bool IsSleepingAllowed(const Body& body) noexcept
 {
@@ -736,6 +796,7 @@ inline bool IsSleepingAllowed(const Body& body) noexcept
 
 /// You can disable sleeping on this body. If you disable sleeping, the
 /// body will be woken.
+/// @see IsSleepingAllowed(const Body&).
 /// @relatedalso Body
 inline void SetSleepingAllowed(Body& body, bool value) noexcept
 {
@@ -743,7 +804,7 @@ inline void SetSleepingAllowed(Body& body, bool value) noexcept
 }
 
 /// @brief Gets the enabled/disabled state of the body.
-/// @see SetEnabled.
+/// @see SetEnabled(Body&), UnsetEnabled(Body&).
 /// @relatedalso Body
 inline bool IsEnabled(const Body& body) noexcept
 {
@@ -751,6 +812,7 @@ inline bool IsEnabled(const Body& body) noexcept
 }
 
 /// @brief Sets the enabled state.
+/// @see IsEnabled(const Body&), UnsetEnabled(Body&).
 /// @relatedalso Body
 inline void SetEnabled(Body& body) noexcept
 {
@@ -758,6 +820,7 @@ inline void SetEnabled(Body& body) noexcept
 }
 
 /// @brief Unsets the enabled state.
+/// @see IsEnabled(const Body&), SetEnabled(Body&).
 /// @relatedalso Body
 inline void UnsetEnabled(Body& body) noexcept
 {
@@ -765,6 +828,7 @@ inline void UnsetEnabled(Body& body) noexcept
 }
 
 /// @brief Sets the enabled state to the given value.
+/// @see IsEnabled(const Body&), SetEnabled(Body&), UnsetEnabled(Body&).
 /// @relatedalso Body
 inline void SetEnabled(Body& body, bool value) noexcept
 {
@@ -777,6 +841,7 @@ inline void SetEnabled(Body& body, bool value) noexcept
 /// @brief Gets the awake/asleep state of this body.
 /// @warning Being awake may or may not imply being speedable.
 /// @return true if the body is awake.
+/// @see SetAwake(Body&), UnsetAwake(Body&).
 /// @relatedalso Body
 inline bool IsAwake(const Body& body) noexcept
 {
@@ -790,6 +855,7 @@ inline bool IsAwake(const Body& body) noexcept
 ///   returns true.
 /// @post If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</code>
 ///   method returns zero.
+/// @see IsAwake(const Body&), UnsetAwake(Body&).
 /// @relatedalso Body
 inline void SetAwake(Body& body) noexcept
 {
@@ -804,6 +870,7 @@ inline void SetAwake(Body& body) noexcept
 /// @post This body's <code>GetUnderActiveTime</code> method returns zero.
 /// @post This body's <code>GetVelocity</code> method returns zero linear and zero angular
 ///   speed.
+/// @see IsAwake(const Body&), SetAwake(Body&).
 /// @relatedalso Body
 inline void UnsetAwake(Body& body) noexcept
 {
@@ -811,6 +878,7 @@ inline void UnsetAwake(Body& body) noexcept
 }
 
 /// @brief Does this body have fixed rotation?
+/// @see SetFixedRotation(Body&, bool).
 /// @relatedalso Body
 inline bool IsFixedRotation(const Body& body) noexcept
 {
@@ -819,6 +887,7 @@ inline bool IsFixedRotation(const Body& body) noexcept
 
 /// @brief Sets this body to have fixed rotation.
 /// @note This causes the mass to be reset.
+/// @see IsFixedRotation(const Body&).
 /// @relatedalso Body
 inline void SetFixedRotation(Body& body, bool value)
 {
@@ -858,6 +927,7 @@ inline InvRotInertia GetInvRotInertia(const Body& body) noexcept
 }
 
 /// @brief Gets the linear damping of the body.
+/// @see SetLinearDamping(Body& body, NonNegative<Frequency> value).
 /// @relatedalso Body
 inline Frequency GetLinearDamping(const Body& body) noexcept
 {
@@ -865,6 +935,7 @@ inline Frequency GetLinearDamping(const Body& body) noexcept
 }
 
 /// @brief Sets the linear damping of the body.
+/// @see GetLinearDamping(const Body& body).
 /// @relatedalso Body
 inline void SetLinearDamping(Body& body, NonNegative<Frequency> value) noexcept
 {
@@ -872,6 +943,7 @@ inline void SetLinearDamping(Body& body, NonNegative<Frequency> value) noexcept
 }
 
 /// @brief Gets the angular damping of the body.
+/// @see SetAngularDamping(Body& body, NonNegative<Frequency> value).
 /// @relatedalso Body
 inline Frequency GetAngularDamping(const Body& body) noexcept
 {
@@ -879,6 +951,7 @@ inline Frequency GetAngularDamping(const Body& body) noexcept
 }
 
 /// @brief Sets the angular damping of the body.
+/// @see GetAngularDamping(const Body& body).
 /// @relatedalso Body
 inline void SetAngularDamping(Body& body, NonNegative<Frequency> value) noexcept
 {
@@ -887,6 +960,7 @@ inline void SetAngularDamping(Body& body, NonNegative<Frequency> value) noexcept
 
 /// @brief Gets the given body's acceleration.
 /// @param body Body whose acceleration should be returned.
+/// @see SetAcceleration(Body& body, Acceleration value).
 /// @relatedalso Body
 inline Acceleration GetAcceleration(const Body& body) noexcept
 {
@@ -898,6 +972,7 @@ inline Acceleration GetAcceleration(const Body& body) noexcept
 /// @note A non-zero acceleration will also awaken the body.
 /// @param body Body whose acceleration should be set.
 /// @param value Acceleration value to set.
+/// @see GetAcceleration(const Body& body).
 /// @relatedalso Body
 inline void SetAcceleration(Body& body, Acceleration value) noexcept
 {
@@ -905,6 +980,7 @@ inline void SetAcceleration(Body& body, Acceleration value) noexcept
 }
 
 /// @brief Gets this body's linear acceleration.
+/// @see SetAcceleration(Body& body, Acceleration value), GetAngularAcceleration(const Body& body).
 /// @relatedalso Body
 inline LinearAcceleration2 GetLinearAcceleration(const Body& body) noexcept
 {
@@ -912,6 +988,7 @@ inline LinearAcceleration2 GetLinearAcceleration(const Body& body) noexcept
 }
 
 /// @brief Gets this body's angular acceleration.
+/// @see SetAcceleration(Body& body, Acceleration value), GetLinearAcceleration(const Body& body).
 /// @relatedalso Body
 inline AngularAcceleration GetAngularAcceleration(const Body& body) noexcept
 {
@@ -919,11 +996,11 @@ inline AngularAcceleration GetAngularAcceleration(const Body& body) noexcept
 }
 
 /// @brief Awakens the body if it's asleep.
+/// @see Unawaken(Body& body).
 /// @relatedalso Body
 inline bool Awaken(Body& body) noexcept
 {
-    if (!body.IsAwake() && body.IsSpeedable())
-    {
+    if (!body.IsAwake() && body.IsSpeedable()) {
         body.SetAwake();
         return true;
     }
@@ -931,11 +1008,11 @@ inline bool Awaken(Body& body) noexcept
 }
 
 /// @brief Puts the body to sleep if it's awake.
+/// @see Awaken(Body& body).
 /// @relatedalso Body
 inline bool Unawaken(Body& body) noexcept
 {
-    if (body.IsAwake() && body.IsSleepingAllowed())
-    {
+    if (body.IsAwake() && body.IsSleepingAllowed()) {
         body.UnsetAwake();
         return true;
     }
@@ -957,7 +1034,7 @@ inline Position GetPosition1(const Body& body) noexcept
 inline Mass GetMass(const Body& body) noexcept
 {
     const auto invMass = body.GetInvMass();
-    return (invMass != InvMass{0})? Mass{Real{1} / invMass}: 0_kg;
+    return (invMass != InvMass{0}) ? Mass{Real{1} / invMass} : 0_kg;
 }
 
 /// @brief Sets the linear and rotational accelerations on this body.
@@ -966,13 +1043,16 @@ inline Mass GetMass(const Body& body) noexcept
 /// @param body Body to set the acceleration of.
 /// @param linear Linear acceleration.
 /// @param angular Angular acceleration.
+/// @see GetAcceleration(const Body& body).
 /// @relatedalso Body
-inline void SetAcceleration(Body& body, LinearAcceleration2 linear, AngularAcceleration angular) noexcept
+inline void SetAcceleration(Body& body, LinearAcceleration2 linear,
+                            AngularAcceleration angular) noexcept
 {
     body.SetAcceleration(linear, angular);
 }
 
 /// @brief Sets the given linear acceleration of the given body.
+/// @see GetAcceleration(const Body& body).
 /// @relatedalso Body
 inline void SetAcceleration(Body& body, LinearAcceleration2 value) noexcept
 {
@@ -980,6 +1060,7 @@ inline void SetAcceleration(Body& body, LinearAcceleration2 value) noexcept
 }
 
 /// @brief Sets the given angular acceleration of the given body.
+/// @see GetAcceleration(const Body& body).
 /// @relatedalso Body
 inline void SetAcceleration(Body& body, AngularAcceleration value) noexcept
 {
@@ -1020,6 +1101,7 @@ inline void ApplyAngularImpulse(Body& body, AngularMomentum impulse) noexcept
 /// @brief Gets the rotational inertia of the body.
 /// @param body Body to get the rotational inertia for.
 /// @return the rotational inertia.
+/// @see Body::GetInvRotInertia, Body::SetInvRotInertia.
 /// @relatedalso Body
 inline RotInertia GetRotInertia(const Body& body) noexcept
 {
@@ -1028,14 +1110,16 @@ inline RotInertia GetRotInertia(const Body& body) noexcept
 
 /// @brief Gets the rotational inertia of the body about the local origin.
 /// @return the rotational inertia.
+/// @see Body::GetInvRotInertia, Body::SetInvRotInertia.
 /// @relatedalso Body
 inline RotInertia GetLocalRotInertia(const Body& body) noexcept
 {
-    return GetRotInertia(body)
-         + GetMass(body) * GetMagnitudeSquared(body.GetLocalCenter()) / SquareRadian;
+    return GetRotInertia(body) +
+           GetMass(body) * GetMagnitudeSquared(body.GetLocalCenter()) / SquareRadian;
 }
 
 /// @brief Gets the velocity.
+/// @see SetVelocity(Body& body, const Velocity& value).
 /// @relatedalso Body
 inline Velocity GetVelocity(const Body& body) noexcept
 {
@@ -1045,7 +1129,7 @@ inline Velocity GetVelocity(const Body& body) noexcept
 /// @brief Sets the body's velocity (linear and angular velocity).
 /// @note This method does nothing if this body is not speedable.
 /// @note A non-zero velocity will awaken this body.
-/// @see SetAwake, SetUnderActiveTime.
+/// @see GetVelocity(const Body& body), SetAwake, SetUnderActiveTime.
 /// @relatedalso Body
 inline void SetVelocity(Body& body, const Velocity& value) noexcept
 {
@@ -1055,6 +1139,7 @@ inline void SetVelocity(Body& body, const Velocity& value) noexcept
 /// @brief Gets the linear velocity of the center of mass.
 /// @param body Body to get the linear velocity for.
 /// @return the linear velocity of the center of mass.
+/// @see GetVelocity(const Body& body).
 /// @relatedalso Body
 inline LinearVelocity2 GetLinearVelocity(const Body& body) noexcept
 {
@@ -1064,6 +1149,7 @@ inline LinearVelocity2 GetLinearVelocity(const Body& body) noexcept
 /// @brief Gets the angular velocity.
 /// @param body Body to get the angular velocity for.
 /// @return the angular velocity.
+/// @see GetVelocity(const Body& body).
 /// @relatedalso Body
 inline AngularVelocity GetAngularVelocity(const Body& body) noexcept
 {
@@ -1073,6 +1159,7 @@ inline AngularVelocity GetAngularVelocity(const Body& body) noexcept
 /// @brief Sets the linear velocity of the center of mass.
 /// @param body Body to set the linear velocity of.
 /// @param value the new linear velocity of the center of mass.
+/// @see GetLinearVelocity(const Body& body).
 /// @relatedalso Body
 inline void SetVelocity(Body& body, LinearVelocity2 value) noexcept
 {
@@ -1082,6 +1169,7 @@ inline void SetVelocity(Body& body, LinearVelocity2 value) noexcept
 /// @brief Sets the angular velocity.
 /// @param body Body to set the angular velocity of.
 /// @param value the new angular velocity.
+/// @see GetAngularVelocity(const Body& body).
 /// @relatedalso Body
 inline void SetVelocity(Body& body, AngularVelocity value) noexcept
 {
@@ -1141,7 +1229,7 @@ inline UnitVec GetLocalVector(const Body& body, const UnitVec uv) noexcept
 /// @return the world velocity of a point.
 /// @relatedalso Body
 inline LinearVelocity2 GetLinearVelocityFromWorldPoint(const Body& body,
-                                                        const Length2 worldPoint) noexcept
+                                                       const Length2 worldPoint) noexcept
 {
     const auto velocity = body.GetVelocity();
     const auto worldCtr = body.GetWorldCenter();
@@ -1156,7 +1244,7 @@ inline LinearVelocity2 GetLinearVelocityFromWorldPoint(const Body& body,
 /// @return the world velocity of a point.
 /// @relatedalso Body
 inline LinearVelocity2 GetLinearVelocityFromLocalPoint(const Body& body,
-                                                        const Length2 localPoint) noexcept
+                                                       const Length2 localPoint) noexcept
 {
     return GetLinearVelocityFromWorldPoint(body, GetWorldPoint(body, localPoint));
 }
@@ -1174,14 +1262,6 @@ inline Torque GetTorque(const Body& body) noexcept
 {
     return body.GetAngularAcceleration() * GetRotInertia(body);
 }
-
-/// @brief Caps velocity.
-/// @details Enforces maximums on the given velocity.
-/// @param velocity Velocity to cap. Behavior is undefined if this value is invalid.
-/// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
-/// @param conf Movement configuration. This defines caps on linear and angular speeds.
-/// @relatedalso Velocity
-Velocity Cap(Velocity velocity, Time h, MovementConf conf) noexcept;
 
 /// @brief Gets the velocity of the body after the given time accounting for the body's
 ///   acceleration and capped by the given configuration.
@@ -1209,6 +1289,7 @@ inline Length2 GetLocation(const Body& body) noexcept
 }
 
 /// @brief Gets the body's sweep.
+/// @see SetSweep(Body& body, const Sweep& value).
 /// @relatedalso Body
 inline const Sweep& GetSweep(const Body& body) noexcept
 {
@@ -1216,6 +1297,7 @@ inline const Sweep& GetSweep(const Body& body) noexcept
 }
 
 /// @brief Sets the sweep value of the given body.
+/// @see GetSweep(const Body& body).
 /// @relatedalso Body
 inline void SetSweep(Body& body, const Sweep& value) noexcept
 {
@@ -1243,6 +1325,7 @@ inline Length2 GetLocalCenter(const Body& body) noexcept
 }
 
 /// @brief Gets the body's transformation.
+/// @see SetTransformation(Body& body, Transformation value).
 /// @relatedalso Body
 inline Transformation GetTransformation(const Body& body) noexcept
 {
@@ -1251,7 +1334,7 @@ inline Transformation GetTransformation(const Body& body) noexcept
 
 /// Sets the body's transformation.
 /// @note This sets what <code>GetLocation</code> returns.
-/// @see GetTransformation.
+/// @see GetTransformation(const Body& body).
 /// @relatedalso Body
 inline void SetTransformation(Body& body, Transformation value) noexcept
 {

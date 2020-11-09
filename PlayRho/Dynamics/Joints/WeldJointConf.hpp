@@ -55,9 +55,9 @@ struct WeldJointConf : public JointBuilder<WeldJointConf>
     /// @brief Initializing constructor.
     /// @details Initializes the bodies, anchors, and reference angle using a world
     ///   anchor point.
-    /// @param bodyA Body A.
+    /// @param bodyA Identifier of body A.
     /// @param laA Local anchor A location in world coordinates.
-    /// @param bodyB Body B.
+    /// @param bodyB Identifier of body B.
     /// @param laB Local anchor B location in world coordinates.
     /// @param ra Reference angle.
     WeldJointConf(BodyID bodyA, BodyID bodyB,

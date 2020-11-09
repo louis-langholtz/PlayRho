@@ -24,6 +24,19 @@
 
 /// @file
 /// Declarations of free functions of World for joints identified by <code>JointID</code>.
+/// @details This is a collection of non-member non-friend functions - also called "free"
+///   functions - that are related to joints within an instance of a <code>World</code>.
+///   Many are just "wrappers" to similarly named member functions but some are additional
+///   functionality built on those member functions. A benefit to using free functions that
+///   are now just wrappers, is that of helping to isolate your code from future changes that
+///   might occur to the underlying <code>World</code> member functions. Free functions in
+///   this sense are "cheap" abstractions. While using these incurs extra run-time overhead
+///   when compiled without any compiler optimizations enabled, enabling optimizations
+///   should entirely eliminate that overhead.
+/// @note The four basic categories of these functions are "CRUD": create, read, update,
+///   and delete.
+/// @see World, JointID.
+/// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Range.hpp> // for SizedRange
@@ -41,23 +54,6 @@ namespace d2 {
 class World;
 class Joint;
 struct JointConf;
-
-/// @defgroup WorldJointFreeFunctions World Joint Related Free Functions
-/// @brief Collection of "free" functions related to joints within a <code>World</code>.
-/// @details This is a collection of non-member non-friend functions - also called "free"
-///   functions - that are related to joints within an instance of a <code>World</code>.
-///   Many are just "wrappers" to similarly named member functions but some are additional
-///   functionality built on those member functions. A benefit to using free functions that
-///   are now just wrappers, is that of helping to isolate your code from future changes that
-///   might occur to the underlying <code>World</code> member functions. Free functions in
-///   this sense are "cheap" abstractions. While using these incurs extra run-time overhead
-///   when compiled without any compiler optimizations enabled, enabling optimizations
-///   should entirely eliminate that overhead.
-/// @note The four basic categories of these functions are "CRUD": create, read, update,
-///   and delete.
-/// @see World, JointID.
-/// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
-/// @{
 
 /// @brief Gets the extent of the currently valid joint range.
 /// @note This is one higher than the maxium <code>JointID</code> that is in range
@@ -371,8 +367,6 @@ inline JointCounter GetJointCount(const World& world) noexcept
     using std::size;
     return static_cast<JointCounter>(size(GetJoints(world)));
 }
-
-/// @}
 
 } // namespace d2
 } // namespace playrho

@@ -63,9 +63,9 @@ public:
     }
 
 private:
-    BodyConstraint* m_bodyA; ///< Body A data (8-bytes).
+    BodyConstraint* m_bodyA; ///< Data for body-A (8-bytes).
 
-    BodyConstraint* m_bodyB; ///< Body B data (8-bytes).
+    BodyConstraint* m_bodyB; ///< Data for body-B (8-bytes).
 
     /// @brief Total "Radius" distance of the associated shapes of fixture A and fixture B.
     /// @note 0 or greater.

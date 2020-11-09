@@ -22,8 +22,6 @@
 #include <PlayRho/Dynamics/WorldImplFixture.hpp>
 
 #include <PlayRho/Dynamics/WorldImpl.hpp>
-#include <PlayRho/Dynamics/Body.hpp> // for use of WorldImpl::GetBody
-#include <PlayRho/Dynamics/Contacts/Contact.hpp> // for use of WorldImpl::GetBody
 
 namespace playrho {
 namespace d2 {

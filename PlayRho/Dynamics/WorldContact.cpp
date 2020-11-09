@@ -23,7 +23,7 @@
 
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/Body.hpp> // for GetBody
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 
 #include <PlayRho/Collision/Manifold.hpp>

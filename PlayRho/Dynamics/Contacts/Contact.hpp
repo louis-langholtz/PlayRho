@@ -83,11 +83,11 @@ public:
 
     /// @brief Initializing constructor.
     ///
-    /// @param bA Body-A identifier.
+    /// @param bA Identifier of body-A.
     /// @param fA Non-invalid identifier to fixture A that must have a shape
     ///   and may not be the same or have the same body as the other fixture.
     /// @param iA Child index A.
-    /// @param bB Body-B identifier.
+    /// @param bB Identifier of body-B.
     /// @param fB Non-invalid identifier to fixture B that must have a shape
     ///   and may not be the same or have the same body as the other fixture.
     /// @param iB Child index B.
@@ -306,12 +306,12 @@ private:
     // info then minimally only those two indexes are needed. That may be sub-optimal
     // however depending the speed of cache and memory access.
 
-    /// Body A.
+    /// Identifier of body A.
     /// @note Field is 2-bytes.
     /// @warning Should only be body of fixture A.
     BodyID m_bodyA = InvalidBodyID;
 
-    /// Body B.
+    /// Identifier of body B.
     /// @note Field is 2-bytes.
     /// @warning Should only be body of fixture B.
     BodyID m_bodyB = InvalidBodyID;

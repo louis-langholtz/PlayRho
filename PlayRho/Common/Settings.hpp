@@ -203,7 +203,7 @@ constexpr auto DefaultToiMinMomentum = Momentum{0_Ns / 100};
 constexpr auto MaxFixtures = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
                                                         std::uint16_t{1u});
 
-/// @brief Fixture count type.
+/// @brief Counter type for fixtures.
 /// @note This type must always be able to contain the <code>MaxFixtures</code> value.
 using FixtureCounter = std::remove_const<decltype(MaxFixtures)>::type;
 
@@ -212,11 +212,11 @@ using FixtureCounter = std::remove_const<decltype(MaxFixtures)>::type;
 constexpr auto MaxBodies = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
                                                       std::uint16_t{1});
 
-/// @brief Body count type.
+/// @brief Count type for bodies.
 /// @note This type must always be able to contain the <code>MaxBodies</code> value.
 using BodyCounter = std::remove_const<decltype(MaxBodies)>::type;
 
-/// @brief Contact count type.
+/// @brief Count type for contacts.
 /// @note This type must be able to contain the squared value of <code>BodyCounter</code>.
 using ContactCounter = Wider<BodyCounter>::type;
 
@@ -234,7 +234,7 @@ constexpr auto MaxContacts = ContactCounter{MaxBodies} * ContactCounter{MaxBodie
 constexpr auto MaxJoints = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
                                                       std::uint16_t{1});
 
-/// @brief Joint count type.
+/// @brief Counter type for joints.
 /// @note This type must be able to contain the <code>MaxJoints</code> value.
 using JointCounter = std::remove_const<decltype(MaxJoints)>::type;
 

@@ -27,8 +27,8 @@
 namespace playrho {
 namespace d2 {
 
-/// @brief Body Constraint.
-/// @details Body data related to constraint processing.
+/// @brief Constraint for a body.
+/// @details Data related to body constraint processing.
 /// @note Only position and velocity is independently changeable after construction.
 /// @note This data structure is 40-bytes large (with 4-byte Real on at least one
 ///   64-bit platform).
@@ -84,8 +84,8 @@ public:
     BodyConstraint& SetVelocity(Velocity value) noexcept;
 
 private:
-    Position m_position; ///< Body position data.
-    Velocity m_velocity; ///< Body velocity data.
+    Position m_position; ///< Position data of body.
+    Velocity m_velocity; ///< Velocity data of body.
     Length2 m_localCenter; ///< Local center of the associated body's sweep.
     InvMass m_invMass; ///< Inverse mass of associated body (a non-negative value).
 
