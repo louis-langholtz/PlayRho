@@ -35,6 +35,10 @@ namespace d2 {
 
 class BodyConstraint;
 
+/// @example TargetJoint.cpp
+/// This is the <code>googletest</code> based unit testing file for the interfaces to
+///   <code>playrho::d2::TargetJointConf</code>.
+
 /// @brief Target joint definition.
 /// @details A target joint is used to make a point on a body track a specified world point.
 ///   This a soft constraint with a maximum force. This allows the constraint to stretch and

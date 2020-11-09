@@ -37,6 +37,10 @@ class Joint;
 class World;
 class BodyConstraint;
 
+/// @example PulleyJoint.cpp
+/// This is the <code>googletest</code> based unit testing file for the interfaces to
+///   <code>playrho::d2::PulleyJointConf</code>.
+
 /// @brief Pulley joint definition.
 /// @details The pulley joint is connected to two bodies and two fixed ground points.
 ///   The pulley supports a ratio such that: <code>length1 + ratio * length2 <= constant</code>.

@@ -101,6 +101,10 @@ bool SolveVelocity(Joint& object, std::vector<BodyConstraint>& bodies, const Ste
 bool SolvePosition(const Joint& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @example Joint.cpp
+/// This is the <code>googletest</code> based unit testing file for the interfaces to
+///   <code>playrho::d2::Joint</code>.
+
 /// @defgroup JointsGroup Joint Classes
 /// @brief The user creatable classes that specify constraints on one or more body instances.
 /// @ingroup ConstraintsGroup
@@ -115,6 +119,7 @@ bool SolvePosition(const Joint& object, std::vector<BodyConstraint>& bodies,
 ///   Polymorphism".
 /// @ingroup JointsGroup
 /// @ingroup PhysicalEntities
+/// @see JointsGroup, PhysicalEntities.
 /// @see https://youtu.be/QGcVXgEVMJg
 /// @see https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Polymorphic_Value_Types
 class Joint

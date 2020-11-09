@@ -38,6 +38,10 @@ class Joint;
 class World;
 class BodyConstraint;
 
+/// @example RopeJoint.cpp
+/// This is the <code>googletest</code> based unit testing file for the interfaces to
+///   <code>playrho::d2::RopeJointConf</code>.
+
 /// @brief Rope joint definition.
 /// @details A rope joint enforces a maximum distance between two points on two bodies.
 ///   It has no other effect. This requires two body anchor points and a maximum lengths.

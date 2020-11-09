@@ -38,6 +38,10 @@ class Joint;
 class World;
 class BodyConstraint;
 
+/// @example GearJoint.cpp
+/// This is the <code>googletest</code> based unit testing file for the interfaces to
+///   <code>playrho::d2::GearJointConf</code>.
+
 /// @brief Gear joint definition.
 /// @details A gear joint is used to connect two joints together. Either joint can be
 ///   a revolute or prismatic joint. You specify a gear ratio to bind the motions together:

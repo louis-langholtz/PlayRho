@@ -65,7 +65,7 @@ class Shape;
 ///
 /// @ingroup PhysicalEntities
 ///
-/// @see World, Fixture
+/// @see World, BodyConf.
 ///
 class Body
 {
