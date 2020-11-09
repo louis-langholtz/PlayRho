@@ -305,3 +305,18 @@ TEST(Shape, Inequality)
 
     EXPECT_TRUE(Shape(DiskShapeConf()) != Shape(EdgeShapeConf()));
 }
+
+TEST(Shape, Transform)
+{
+    const auto oldConf = DiskShapeConf{}.UseRadius(1_m).UseLocation(Length2{2_m, 0_m});
+    auto newConf = DiskShapeConf{};
+    auto shape = Shape(oldConf);
+
+    EXPECT_NO_THROW(Transform(shape, GetIdentity<Mat22>()));
+    newConf = TypeCast<DiskShapeConf>(shape);
+    EXPECT_EQ(oldConf.GetLocation(), newConf.GetLocation());
+
+    EXPECT_NO_THROW(Transform(shape, Mat22{Vec2{Real(2), Real(0)}, Vec2{Real(0), Real(2)}}));
+    newConf = TypeCast<DiskShapeConf>(shape);
+    EXPECT_EQ(Length2(4_m, 0_m), newConf.GetLocation());
+}
