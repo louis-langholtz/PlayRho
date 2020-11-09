@@ -43,11 +43,7 @@ TEST(RevoluteJointConf, ByteSize)
     switch (sizeof(Real))
     {
         case  4:
-#if defined(_WIN32) && !defined(_WIN64)
             EXPECT_EQ(sizeof(RevoluteJointConf), std::size_t(128));
-#else
-            EXPECT_EQ(sizeof(RevoluteJointConf), std::size_t(128));
-#endif
             break;
         case  8: EXPECT_EQ(sizeof(RevoluteJointConf), std::size_t(248)); break;
         case 16: EXPECT_EQ(sizeof(RevoluteJointConf), std::size_t(496)); break;

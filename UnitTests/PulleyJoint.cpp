@@ -134,14 +134,12 @@ TEST(PulleyJointConf, UseRatio)
 
 TEST(PulleyJointConf, ByteSize)
 {
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
     switch (sizeof(Real))
     {
         case  4:
-#if defined(_WIN32) && !defined(_WIN64)
             EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(92));
-#else
-            EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(92));
-#endif
             break;
         case  8: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(176)); break;
         case 16: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(352)); break;
