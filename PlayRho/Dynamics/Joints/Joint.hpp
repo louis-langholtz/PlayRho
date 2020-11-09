@@ -1,7 +1,8 @@
 /*
- * Original work Copyright (c) 2006-2007 Erin Catto http://www.box2d.org
- * Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
- * TypeCast code derived from the LLVM Project https://llvm.org/LICENSE.txt
+ * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ *
+ * Erin Catto's http://www.box2d.org was the origin for this software.
+ * TypeCast code originated from the LLVM Project https://llvm.org/LICENSE.txt.
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
