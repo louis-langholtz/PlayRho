@@ -34,14 +34,13 @@ namespace d2 {
 /// @details Joint definitions are used to construct joints.
 /// @note This class is not meant to be directly instantiated; it is meant
 ///   to be inherited from.
-struct JointConf
-{
+struct JointConf {
     /// @brief 1st attached body.
     BodyID bodyA = InvalidBodyID;
-    
+
     /// @brief 2nd attached body.
     BodyID bodyB = InvalidBodyID;
-    
+
     /// @brief Collide connected.
     /// @details Set this flag to true if the attached bodies should collide.
     bool collideConnected = false;
@@ -73,8 +72,7 @@ constexpr bool GetCollideConnected(const JointConf& object) noexcept
 ///   via static polymorphism.
 /// @see https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern
 template <class T>
-struct JointBuilder : JointConf
-{
+struct JointBuilder : JointConf {
     /// @brief Value type.
     using value_type = T;
 
@@ -87,7 +85,7 @@ struct JointBuilder : JointConf
         bodyA = b;
         return static_cast<reference>(*this);
     }
-    
+
     /// @brief Use value for body B setting.
     constexpr reference UseBodyB(BodyID b) noexcept
     {
@@ -116,8 +114,8 @@ constexpr auto IsLimitEnabled(const T& conf) noexcept -> decltype(std::declval<T
 }
 
 template <typename T>
-constexpr auto EnableLimit(T& conf, bool v) noexcept ->
-    decltype(std::declval<T>().UseEnableLimit(bool{}))
+constexpr auto EnableLimit(T& conf, bool v) noexcept
+    -> decltype(std::declval<T>().UseEnableLimit(bool{}))
 {
     return conf.UseEnableLimit(v);
 }
@@ -153,13 +151,15 @@ constexpr auto GetDampingRatio(const T& conf) noexcept -> decltype(std::declval<
 }
 
 template <typename T>
-constexpr auto GetReferenceAngle(const T& conf) noexcept -> decltype(std::declval<T>().referenceAngle)
+constexpr auto GetReferenceAngle(const T& conf) noexcept
+    -> decltype(std::declval<T>().referenceAngle)
 {
     return conf.referenceAngle;
 }
 
 template <typename T>
-constexpr auto GetLinearReaction(const T& conf) noexcept -> decltype(std::declval<T>().linearImpulse)
+constexpr auto GetLinearReaction(const T& conf) noexcept
+    -> decltype(std::declval<T>().linearImpulse)
 {
     return conf.linearImpulse;
 }
@@ -225,8 +225,8 @@ constexpr auto IsMotorEnabled(const T& conf) noexcept -> decltype(std::declval<T
 }
 
 template <typename T>
-constexpr auto EnableMotor(T& conf, bool v) noexcept ->
-decltype(std::declval<T>().UseEnableMotor(bool{}))
+constexpr auto EnableMotor(T& conf, bool v) noexcept
+    -> decltype(std::declval<T>().UseEnableMotor(bool{}))
 {
     return conf.UseEnableMotor(v);
 }
@@ -238,14 +238,15 @@ constexpr auto GetMotorSpeed(const T& conf) noexcept -> decltype(std::declval<T>
 }
 
 template <typename T>
-constexpr auto SetMotorSpeed(T& conf, AngularVelocity v) noexcept ->
-decltype(std::declval<T>().UseMotorSpeed(AngularVelocity{}))
+constexpr auto SetMotorSpeed(T& conf, AngularVelocity v) noexcept
+    -> decltype(std::declval<T>().UseMotorSpeed(AngularVelocity{}))
 {
     return conf.UseMotorSpeed(v);
 }
 
 template <typename T>
-constexpr auto GetLinearMotorImpulse(const T& conf) noexcept -> decltype(std::declval<T>().motorImpulse)
+constexpr auto GetLinearMotorImpulse(const T& conf) noexcept
+    -> decltype(std::declval<T>().motorImpulse)
 {
     return conf.motorImpulse;
 }
@@ -257,7 +258,8 @@ constexpr auto GetMaxMotorForce(const T& conf) noexcept -> decltype(std::declval
 }
 
 template <typename T>
-constexpr auto GetMaxMotorTorque(const T& conf) noexcept -> decltype(std::declval<T>().maxMotorTorque)
+constexpr auto GetMaxMotorTorque(const T& conf) noexcept
+    -> decltype(std::declval<T>().maxMotorTorque)
 {
     return conf.maxMotorTorque;
 }
@@ -269,7 +271,8 @@ constexpr auto GetAngularOffset(const T& conf) noexcept -> decltype(std::declval
 }
 
 template <typename T>
-constexpr auto GetAngularReaction(const T& conf) noexcept -> decltype(std::declval<T>().angularImpulse)
+constexpr auto GetAngularReaction(const T& conf) noexcept
+    -> decltype(std::declval<T>().angularImpulse)
 {
     return conf.angularImpulse;
 }
@@ -281,8 +284,8 @@ constexpr auto GetAngularMass(const T& conf) noexcept -> decltype(std::declval<T
 }
 
 template <typename T>
-constexpr auto GetAngularMotorImpulse(const T& conf) noexcept ->
-    decltype(std::declval<T>().angularMotorImpulse)
+constexpr auto GetAngularMotorImpulse(const T& conf) noexcept
+    -> decltype(std::declval<T>().angularMotorImpulse)
 {
     return conf.angularMotorImpulse;
 }
