@@ -77,7 +77,7 @@ struct FixtureConf {
     /// Contact filtering data.
     Filter filter;
 
-    /// @brief Body to associate the fixture with.
+    /// @brief Identifier of body to associate the fixture with.
     BodyID body = InvalidBodyID;
 
     /// A sensor shape collects contact information but never generates a collision

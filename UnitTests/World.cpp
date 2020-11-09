@@ -2382,11 +2382,11 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
         ASSERT_NE(GetLocation(world, body1), lastpos1);
         ASSERT_NE(GetLocation(world, body2), lastpos2);
         
-        // Body 1 moves right only.
+        // The body 1 moves right only.
         EXPECT_GT(GetX(GetLocation(world, body1)), GetX(lastpos1));
         EXPECT_TRUE(AlmostEqual(Real{GetY(GetLocation(world, body1)) / Meter}, Real{GetY(lastpos1) / Meter}));
 
-        // Body 2 moves left only.
+        // The body 2 moves left only.
         EXPECT_LT(GetX(GetLocation(world, body2)), GetX(lastpos2));
         EXPECT_TRUE(AlmostEqual(Real{GetY(GetLocation(world, body2)) / Meter}, Real{GetY(lastpos2) / Meter}));
 
@@ -3203,7 +3203,8 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
                 {
                     if (!TestOverlap(container_aabb, ComputeAABB(world, body)))
                     {
-                        // Body out of bounds and no longer even overlapping container!
+                        // Check if body gets out of bounds and no longer even overlapping
+                        // container!
                         EXPECT_LT(GetX(GetLocation(world, body)), right_edge_x * Meter);
                         EXPECT_LT(GetY(GetLocation(world, body)), top_edge_y * Meter);
                         EXPECT_GT(GetX(GetLocation(world, body)), left_edge_x * Meter);

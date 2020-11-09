@@ -296,7 +296,13 @@ TEST(WheelJointConf, WithDynamicCircles)
 TEST(WheelJointConf, ShiftOrigin)
 {
     auto jd = WheelJointConf{BodyID(0u), BodyID(1u)};
-    const auto copy = jd;
+    auto copy = WheelJointConf{};
+
+    // Do copy = jd without missing padding so memcmp works
+    std::memcpy(&copy, &jd, sizeof(WheelJointConf));
+
     EXPECT_FALSE(ShiftOrigin(jd, Length2{0_m, 0_m}));
+
+    // Use memcmp since easier than writing full == suport pre C++20.
     EXPECT_TRUE(std::memcmp(&jd, &copy, sizeof(WheelJointConf)) == 0);
 }

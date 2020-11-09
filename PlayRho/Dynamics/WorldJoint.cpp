@@ -22,7 +22,7 @@
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 
 #include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/Body.hpp> // for GetBody
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 

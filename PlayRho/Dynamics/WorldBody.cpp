@@ -370,7 +370,7 @@ void SetMassData(World& world, BodyID id, const MassData& massData)
 
     if (!body.IsAccelerable()) {
         body.SetInvMass(InvMass{});
-        body.SetInvRotI(InvRotInertia{});
+        body.SetInvRotInertia(InvRotInertia{});
         body.SetSweep(Sweep{Position{body.GetLocation(), body.GetAngle()}});
         body.UnsetMassDataDirty();
         world.SetBody(id, body);
@@ -384,10 +384,10 @@ void SetMassData(World& world, BodyID id, const MassData& massData)
         // L^2 M QP^-2
         const auto I = RotInertia{massData.I} - RotInertia{(mass * lengthSquared) / SquareRadian};
         assert(I > RotInertia{0});
-        body.SetInvRotI(Real{1} / I);
+        body.SetInvRotInertia(Real{1} / I);
     }
     else {
-        body.SetInvRotI(0);
+        body.SetInvRotInertia(0);
     }
     // Move center of mass.
     const auto oldCenter = body.GetWorldCenter();

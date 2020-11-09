@@ -831,7 +831,7 @@ private:
 
     /******** Member variables. ********/
 
-    ArrayAllocator<Body> m_bodyBuffer;
+    ArrayAllocator<Body> m_bodyBuffer; ///< Array of body data both used and freed.
     ArrayAllocator<Contacts> m_bodyContacts; ///< Cache of contacts associated with body.
     ArrayAllocator<BodyJoints> m_bodyJoints; ///< Cache of joints associated with body.
 
@@ -842,11 +842,11 @@ private:
     ///   entire fixture array.
     ArrayAllocator<Fixtures> m_bodyFixtures;
 
-    ArrayAllocator<FixtureConf> m_fixtureBuffer;
-    ArrayAllocator<Proxies> m_fixtureProxies;
-    ArrayAllocator<Joint> m_jointBuffer;
-    ArrayAllocator<Contact> m_contactBuffer;
-    ArrayAllocator<Manifold> m_manifoldBuffer;
+    ArrayAllocator<FixtureConf> m_fixtureBuffer; ///< Array of fixture data both used and freed.
+    ArrayAllocator<Proxies> m_fixtureProxies; ///< Array of arrays of dynamic tree leaves.
+    ArrayAllocator<Joint> m_jointBuffer; ///< Array of joint data both used and freed.
+    ArrayAllocator<Contact> m_contactBuffer; ///< Array of contact data both used and freed.
+    ArrayAllocator<Manifold> m_manifoldBuffer; ///< Array of manifold data both used and freed.
 
     DynamicTree m_tree; ///< Dynamic tree.
 
@@ -865,16 +865,16 @@ private:
     Contacts m_contacts;
 
     Island m_island; ///< Island buffer.
-    std::vector<bool> m_islandedBodies;
-    std::vector<bool> m_islandedContacts;
-    std::vector<bool> m_islandedJoints;
+    std::vector<bool> m_islandedBodies; ///< Per body boolean on whether body islanded.
+    std::vector<bool> m_islandedContacts; ///< Per contact boolean on whether contact islanded.
+    std::vector<bool> m_islandedJoints; ///< Per joint boolean on whether joint islanded.
 
-    FixtureListener m_fixtureDestructionListener;
-    JointListener m_jointDestructionListener;
-    ContactListener m_beginContactListener;
-    ContactListener m_endContactListener;
-    ManifoldContactListener m_preSolveContactListener;
-    ImpulsesContactListener m_postSolveContactListener;
+    FixtureListener m_fixtureDestructionListener; ///< Listener for fixture destruction.
+    JointListener m_jointDestructionListener; ///< Listener for joint destruction.
+    ContactListener m_beginContactListener; ///< Listener for beginning contact events.
+    ContactListener m_endContactListener; ///< Listener for ending contact events.
+    ManifoldContactListener m_preSolveContactListener; ///< Listener for pre-solving contacts.
+    ImpulsesContactListener m_postSolveContactListener; ///< Listener for post-solving contacts.
 
     FlagsType m_flags = e_stepComplete; ///< Flags.
     

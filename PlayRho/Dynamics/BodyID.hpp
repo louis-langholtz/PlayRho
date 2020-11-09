@@ -26,7 +26,7 @@
 
 namespace playrho {
 
-/// @brief Body identifier.
+/// @brief Identifier for bodies.
 using BodyID = strongtype::IndexingNamedType<BodyCounter, struct BodyIdentifier>;
 
 /// @brief Invalid body ID value.

@@ -276,8 +276,8 @@ private:
     /// @note This field is 12-bytes (on at least one 64-bit platform).
     Mass3 m_normalMass = Mass3{};
     
-    BodyConstraint* m_bodyA = nullptr; ///< Body A contact velocity constraint data.
-    BodyConstraint* m_bodyB = nullptr; ///< Body B contact velocity constraint data.
+    BodyConstraint* m_bodyA = nullptr; ///< Constraint data for body-A.
+    BodyConstraint* m_bodyB = nullptr; ///< Constraint data for body-B.
     
     UnitVec m_normal = GetInvalid<UnitVec>(); ///< Normal of the world manifold. 8-bytes.
     

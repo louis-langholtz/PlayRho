@@ -35,7 +35,7 @@ namespace d2 {
 
 class Body;
 
-/// @brief Body configuration.
+/// @brief Configuration for a body.
 ///
 /// @details A body configuration holds all the data needed to construct a rigid body.
 ///   You can safely re-use body configurations.

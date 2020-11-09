@@ -22,10 +22,6 @@
 
 using namespace playrho;
 
-namespace playrho {
-class Body;
-}
-
 TEST(StackAllocator, ByteSizeIs64)
 {
 #if defined(_WIN32) && !defined(_WIN64)

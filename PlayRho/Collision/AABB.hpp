@@ -404,8 +404,6 @@ inline ::std::ostream& operator<< (::std::ostream& os, const AABB<N>& value)
 namespace d2 {
 
 class Shape;
-class Fixture;
-class Body;
 class Contact;
 class DistanceProxy;
 struct Transformation;

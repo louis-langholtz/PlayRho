@@ -38,18 +38,18 @@ namespace d2 {
 /// @note This data structure is 72-bytes large (on at least one 64-bit platform).
 struct Island
 {   
-    /// @brief Body container type.
+    /// @brief Container type for body identifiers.
     using Bodies = std::vector<BodyID>;
 
-    /// @brief Contact container type.
+    /// @brief Container type for contact identifiers.
     using Contacts = std::vector<ContactID>;
 
-    /// @brief Joint container type.
+    /// @brief Container type for joint identifiers.
     using Joints = std::vector<JointID>;
 
-    Bodies bodies; ///< Body container.
-    Contacts contacts; ///< Contact container.
-    Joints joints; ///< Joint container.
+    Bodies bodies; ///< Container of body identifiers.
+    Contacts contacts; ///< Container of contact identifiers.
+    Joints joints; ///< Container of joint identifiers.
 };
 
 /// @brief Reserves space ahead of time.

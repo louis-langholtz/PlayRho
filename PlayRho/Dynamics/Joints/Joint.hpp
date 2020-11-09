@@ -121,7 +121,7 @@ bool SolvePosition(const Joint& object, std::vector<BodyConstraint>& bodies,
 class Joint
 {
 public:
-    /// @brief Body constraints map type alias.
+    /// @brief Type alias for body constraints mapping.
     using BodyConstraintsMap = std::vector<BodyConstraint>;
 
     /// @brief Default constructor.

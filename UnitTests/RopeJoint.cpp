@@ -172,7 +172,13 @@ TEST(RopeJointConf, WithDynamicCircles)
 TEST(RopeJointConf, ShiftOrigin)
 {
     auto jd = RopeJointConf{BodyID(0u), BodyID(1u)};
-    const auto copy = jd;
+    auto copy = RopeJointConf{};
+
+    // Do copy = jd without missing padding so memcmp works
+    std::memcpy(&copy, &jd, sizeof(RopeJointConf));
+
     EXPECT_FALSE(ShiftOrigin(jd, Length2{0_m, 0_m}));
+
+    // Use memcmp since easier than writing full == suport pre C++20.
     EXPECT_TRUE(std::memcmp(&jd, &copy, sizeof(RopeJointConf)) == 0);
 }
