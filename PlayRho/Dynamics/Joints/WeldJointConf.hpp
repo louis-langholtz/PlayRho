@@ -109,6 +109,26 @@ struct WeldJointConf : public JointBuilder<WeldJointConf> {
     Mat33 mass = {}; ///< Mass.
 };
 
+/// @brief Equality operator.
+constexpr bool operator==(const WeldJointConf& lhs, const WeldJointConf& rhs) noexcept
+{
+    return // First check base...
+        (lhs.bodyA == rhs.bodyA) && (lhs.bodyB == rhs.bodyB) &&
+        (lhs.collideConnected == rhs.collideConnected)
+        // Now check rest...
+        && (lhs.localAnchorA == rhs.localAnchorA) && (lhs.localAnchorB == rhs.localAnchorB) &&
+        (lhs.referenceAngle == rhs.referenceAngle) && (lhs.frequency == rhs.frequency) &&
+        (lhs.dampingRatio == rhs.dampingRatio) && (lhs.impulse == rhs.impulse) &&
+        (lhs.gamma == rhs.gamma) && (lhs.bias == rhs.bias) && (lhs.rA == rhs.rA) &&
+        (lhs.rB == rhs.rB) && (lhs.mass == rhs.mass);
+}
+
+/// @brief Inequality operator.
+constexpr bool operator!=(const WeldJointConf& lhs, const WeldJointConf& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
 WeldJointConf GetWeldJointConf(const Joint& joint);

@@ -95,6 +95,25 @@ struct RopeJointConf : public JointBuilder<RopeJointConf> {
     LimitState limitState = LimitState::e_inactiveLimit; ///< Limit state.
 };
 
+/// @brief Equality operator.
+constexpr bool operator==(const RopeJointConf& lhs, const RopeJointConf& rhs) noexcept
+{
+    return // First check base...
+        (lhs.bodyA == rhs.bodyA) && (lhs.bodyB == rhs.bodyB) &&
+        (lhs.collideConnected == rhs.collideConnected)
+        // Now check rest...
+        && (lhs.localAnchorA == rhs.localAnchorA) && (lhs.localAnchorB == rhs.localAnchorB) &&
+        (lhs.maxLength == rhs.maxLength) && (lhs.impulse == rhs.impulse) && (lhs.u == rhs.u) &&
+        (lhs.rA == rhs.rA) && (lhs.rB == rhs.rB) && (lhs.mass == rhs.mass) &&
+        (lhs.limitState == rhs.limitState);
+}
+
+/// @brief Inequality operator.
+constexpr bool operator!=(const RopeJointConf& lhs, const RopeJointConf& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
 RopeJointConf GetRopeJointConf(const Joint& joint) noexcept;

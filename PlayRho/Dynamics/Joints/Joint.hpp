@@ -69,6 +69,12 @@ std::add_pointer_t<std::add_const_t<T>> TypeCast(const Joint* value) noexcept;
 template <typename T>
 std::add_pointer_t<T> TypeCast(Joint* value) noexcept;
 
+/// @brief Equality operator for joint comparisons.
+bool operator==(const Joint& lhs, const Joint& rhs) noexcept;
+
+/// @brief Inequality operator for joint comparisons.
+bool operator!=(const Joint& lhs, const Joint& rhs) noexcept;
+
 /// @brief Gets the first body attached to this joint.
 BodyID GetBodyA(const Joint& object) noexcept;
 
@@ -191,6 +197,17 @@ public:
     template <typename T>
     friend std::add_pointer_t<T> TypeCast(Joint* value) noexcept;
 
+    friend bool operator==(const Joint& lhs, const Joint& rhs) noexcept
+    {
+        return (lhs.m_self == rhs.m_self) ||
+               ((lhs.m_self && rhs.m_self) && (lhs.m_self->IsEqual_(*rhs.m_self)));
+    }
+
+    friend bool operator!=(const Joint& lhs, const Joint& rhs) noexcept
+    {
+        return !(lhs == rhs);
+    }
+
     friend BodyID GetBodyA(const Joint& object) noexcept
     {
         return object.m_self ? object.m_self->GetBodyA_() : InvalidBodyID;
@@ -253,6 +270,9 @@ private:
         /// @brief Gets the data for the underlying configuration.
         virtual void* GetData_() noexcept = 0;
 
+        /// @brief Equality checking method.
+        virtual bool IsEqual_(const Concept& other) const noexcept = 0;
+
         /// @brief Gets the ID of body-A.
         virtual BodyID GetBodyA_() const noexcept = 0;
 
@@ -313,6 +333,14 @@ private:
             // Note address of "data" not necessarily same as address of "this" since
             // base class is virtual.
             return &data;
+        }
+
+        bool IsEqual_(const Concept& other) const noexcept override
+        {
+            // Would be preferable to do this without using any kind of RTTI system.
+            // But how would that be done?
+            return (GetType_() == other.GetType_()) &&
+                   (data == *static_cast<const T*>(other.GetData_()));
         }
 
         /// @copydoc Concept::GetBodyA_

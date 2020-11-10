@@ -122,6 +122,33 @@ struct DistanceJointConf : public JointBuilder<DistanceJointConf> {
     Mass mass = 0_kg; ///< Mass. 4-bytes (with 4-byte Real).
 };
 
+/// @brief Equality operator.
+constexpr bool operator==(const DistanceJointConf& lhs, const DistanceJointConf& rhs) noexcept
+{
+    return // First check base...
+        (lhs.bodyA == rhs.bodyA) && (lhs.bodyB == rhs.bodyB) &&
+        (lhs.collideConnected == rhs.collideConnected)
+        // Now check rest...
+        && (lhs.localAnchorA == rhs.localAnchorA) // line break
+        && (lhs.localAnchorB == rhs.localAnchorB) // line break
+        && (lhs.length == rhs.length) // line break
+        && (lhs.frequency == rhs.frequency) // line break
+        && (lhs.dampingRatio == rhs.dampingRatio) // line break
+        && (lhs.impulse == rhs.impulse) // line break
+        && (lhs.u == rhs.u) // line break
+        && (lhs.rA == rhs.rA) // line break
+        && (lhs.rB == rhs.rB) // line break
+        && (lhs.invGamma == rhs.invGamma) // line break
+        && (lhs.bias == rhs.bias) // line break
+        && (lhs.mass == rhs.mass);
+}
+
+/// @brief Inequality operator.
+constexpr bool operator!=(const DistanceJointConf& lhs, const DistanceJointConf& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
 DistanceJointConf GetDistanceJointConf(const Joint& joint) noexcept;

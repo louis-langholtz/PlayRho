@@ -118,6 +118,32 @@ struct MotorJointConf : public JointBuilder<MotorJointConf> {
     RotInertia angularMass = {}; ///< Angular mass.
 };
 
+/// @brief Equality operator.
+constexpr bool operator==(const MotorJointConf& lhs, const MotorJointConf& rhs) noexcept
+{
+    return // First check base...
+        (lhs.bodyA == rhs.bodyA) && (lhs.bodyB == rhs.bodyB) &&
+        (lhs.collideConnected == rhs.collideConnected)
+        // Now check rest...
+        && (lhs.linearOffset == rhs.linearOffset) // line break
+        && (lhs.angularOffset == rhs.angularOffset) // line break
+        && (lhs.maxForce == rhs.maxForce) // line break
+        && (lhs.maxTorque == rhs.maxTorque) // line break
+        && (lhs.correctionFactor == rhs.correctionFactor) // line break
+        && (lhs.rA == rhs.rA) // line break
+        && (lhs.rB == rhs.rB) // line break
+        && (lhs.linearError == rhs.linearError) // line break
+        && (lhs.angularError == rhs.angularError) // line break
+        && (lhs.linearMass == rhs.linearMass) // line break
+        && (lhs.angularMass == rhs.angularMass);
+}
+
+/// @brief Inequality operator.
+constexpr bool operator!=(const MotorJointConf& lhs, const MotorJointConf& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
 MotorJointConf GetMotorJointConf(const Joint& joint) noexcept;

@@ -130,6 +130,26 @@ struct TargetJointConf : public JointBuilder<TargetJointConf> {
     LinearVelocity2 C = {}; ///< Velocity constant.
 };
 
+/// @brief Equality operator.
+constexpr bool operator==(const TargetJointConf& lhs, const TargetJointConf& rhs) noexcept
+{
+    return // First check base...
+        (lhs.bodyA == rhs.bodyA) && (lhs.bodyB == rhs.bodyB) &&
+        (lhs.collideConnected == rhs.collideConnected)
+        // Now check rest...
+        && (lhs.target == rhs.target) && (lhs.localAnchorB == rhs.localAnchorB) &&
+        (lhs.maxForce == rhs.maxForce) && (lhs.frequency == rhs.frequency) &&
+        (lhs.dampingRatio == rhs.dampingRatio) && (lhs.gamma == rhs.gamma) &&
+        (lhs.impulse == rhs.impulse) && (lhs.rB == rhs.rB) && (lhs.mass == rhs.mass) &&
+        (lhs.C == rhs.C);
+}
+
+/// @brief Inequality operator.
+constexpr bool operator!=(const TargetJointConf& lhs, const TargetJointConf& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
 TargetJointConf GetTargetJointConf(const Joint& joint);

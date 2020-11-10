@@ -158,6 +158,29 @@ struct RevoluteJointConf : public JointBuilder<RevoluteJointConf> {
     LimitState limitState = LimitState::e_inactiveLimit; ///< Limit state.
 };
 
+/// @brief Equality operator.
+constexpr bool operator==(const RevoluteJointConf& lhs, const RevoluteJointConf& rhs) noexcept
+{
+    return // First check base...
+        (lhs.bodyA == rhs.bodyA) && (lhs.bodyB == rhs.bodyB) &&
+        (lhs.collideConnected == rhs.collideConnected)
+        // Now check rest...
+        && (lhs.localAnchorA == rhs.localAnchorA) && (lhs.localAnchorB == rhs.localAnchorB) &&
+        (lhs.impulse == rhs.impulse) && (lhs.angularMotorImpulse == rhs.angularMotorImpulse) &&
+        (lhs.referenceAngle == rhs.referenceAngle) && (lhs.enableLimit == rhs.enableLimit) &&
+        (lhs.lowerAngle == rhs.lowerAngle) && (lhs.upperAngle == rhs.upperAngle) &&
+        (lhs.enableMotor == rhs.enableMotor) && (lhs.motorSpeed == rhs.motorSpeed) &&
+        (lhs.maxMotorTorque == rhs.maxMotorTorque) && (lhs.rA == rhs.rA) && (lhs.rB == rhs.rB) &&
+        (lhs.mass == rhs.mass) && (lhs.angularMass == rhs.angularMass) &&
+        (lhs.limitState == rhs.limitState);
+}
+
+/// @brief Inequality operator.
+constexpr bool operator!=(const RevoluteJointConf& lhs, const RevoluteJointConf& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
 RevoluteJointConf GetRevoluteJointConf(const Joint& joint);

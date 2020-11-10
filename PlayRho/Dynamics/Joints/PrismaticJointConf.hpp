@@ -162,6 +162,43 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf> {
     Mass motorMass = 0_kg; ///< Motor mass.
 };
 
+/// @brief Equality operator.
+constexpr bool operator==(const PrismaticJointConf& lhs, const PrismaticJointConf& rhs) noexcept
+{
+    return // First check base...
+        (lhs.bodyA == rhs.bodyA) && (lhs.bodyB == rhs.bodyB) &&
+        (lhs.collideConnected == rhs.collideConnected)
+        // Now check rest...
+        && (lhs.localAnchorA == rhs.localAnchorA) // line break
+        && (lhs.localAnchorB == rhs.localAnchorB) // line break
+        && (lhs.localXAxisA == rhs.localXAxisA) // line break
+        && (lhs.localYAxisA == rhs.localYAxisA) // line break
+        && (lhs.referenceAngle == rhs.referenceAngle) // line break
+        && (lhs.impulse == rhs.impulse) // line break
+        && (lhs.motorImpulse == rhs.motorImpulse) // line break
+        && (lhs.enableLimit == rhs.enableLimit) // line break
+        && (lhs.lowerTranslation == rhs.lowerTranslation) // line break
+        && (lhs.upperTranslation == rhs.upperTranslation) // line break
+        && (lhs.enableMotor == rhs.enableMotor) // line break
+        && (lhs.maxMotorForce == rhs.maxMotorForce) // line break
+        && (lhs.motorSpeed == rhs.motorSpeed) // line break
+        && (lhs.limitState == rhs.limitState) // line break
+        && (lhs.axis == rhs.axis) // line break
+        && (lhs.perp == rhs.perp) // line break
+        && (lhs.s1 == rhs.s1) // line break
+        && (lhs.s2 == rhs.s2) // line break
+        && (lhs.a1 == rhs.a1) // line break
+        && (lhs.a2 == rhs.a2) // line break
+        && (lhs.K == rhs.K) // line break
+        && (lhs.motorMass == rhs.motorMass);
+}
+
+/// @brief Inequality operator.
+constexpr bool operator!=(const PrismaticJointConf& lhs, const PrismaticJointConf& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
 PrismaticJointConf GetPrismaticJointConf(const Joint& joint);

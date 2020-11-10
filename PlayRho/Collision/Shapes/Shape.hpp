@@ -386,7 +386,7 @@ private:
         /// @brief Equality operator.
         friend bool operator==(const Concept& lhs, const Concept& rhs) noexcept
         {
-            return &lhs == &rhs || lhs.IsEqual_(rhs);
+            return lhs.IsEqual_(rhs);
         }
 
         /// @brief Inequality operator.

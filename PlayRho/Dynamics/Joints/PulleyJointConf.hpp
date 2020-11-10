@@ -116,6 +116,34 @@ struct PulleyJointConf : public JointBuilder<PulleyJointConf> {
     Mass mass = 0_kg; ///< Mass.
 };
 
+/// @brief Equality operator.
+constexpr bool operator==(const PulleyJointConf& lhs, const PulleyJointConf& rhs) noexcept
+{
+    return // First check base...
+        (lhs.bodyA == rhs.bodyA) && (lhs.bodyB == rhs.bodyB) &&
+        (lhs.collideConnected == rhs.collideConnected)
+        // Now check rest...
+        && (lhs.groundAnchorA == rhs.groundAnchorA) // line break
+        && (lhs.groundAnchorB == rhs.groundAnchorB) // line break
+        && (lhs.localAnchorA == rhs.localAnchorA) // line break
+        && (lhs.localAnchorB == rhs.localAnchorB) // line break
+        && (lhs.lengthA == rhs.lengthA) // line break
+        && (lhs.lengthB == rhs.lengthB) // line break
+        && (lhs.ratio == rhs.ratio) // line break
+        && (lhs.impulse == rhs.impulse) // line break
+        && (lhs.uA == rhs.uA) // line break
+        && (lhs.uB == rhs.uB) // line break
+        && (lhs.rA == rhs.rA) // line break
+        && (lhs.rB == rhs.rB) // line break
+        && (lhs.mass == rhs.mass);
+}
+
+/// @brief Inequality operator.
+constexpr bool operator!=(const PulleyJointConf& lhs, const PulleyJointConf& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
 PulleyJointConf GetPulleyJointConf(const Joint& joint);

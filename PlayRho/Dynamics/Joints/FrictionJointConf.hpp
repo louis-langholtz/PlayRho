@@ -96,6 +96,31 @@ struct FrictionJointConf : public JointBuilder<FrictionJointConf> {
     RotInertia angularMass = {}; ///< Angular mass.
 };
 
+/// @brief Equality operator.
+constexpr bool operator==(const FrictionJointConf& lhs, const FrictionJointConf& rhs) noexcept
+{
+    return // First check base...
+        (lhs.bodyA == rhs.bodyA) && (lhs.bodyB == rhs.bodyB) &&
+        (lhs.collideConnected == rhs.collideConnected)
+        // Now check rest...
+        && (lhs.localAnchorA == rhs.localAnchorA) // line break
+        && (lhs.localAnchorB == rhs.localAnchorB) // line break
+        && (lhs.maxForce == rhs.maxForce) // line break
+        && (lhs.maxTorque == rhs.maxTorque) // line break
+        && (lhs.linearImpulse == rhs.linearImpulse) // line break
+        && (lhs.angularImpulse == rhs.angularImpulse) // line break
+        && (lhs.rA == rhs.rA) // line break
+        && (lhs.rB == rhs.rB) // line break
+        && (lhs.linearMass == rhs.linearMass) // line break
+        && (lhs.angularMass == rhs.angularMass);
+}
+
+/// @brief Inequality operator.
+constexpr bool operator!=(const FrictionJointConf& lhs, const FrictionJointConf& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
 FrictionJointConf GetFrictionJointConf(const Joint& joint) noexcept;

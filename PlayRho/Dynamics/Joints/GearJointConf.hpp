@@ -113,6 +113,43 @@ struct GearJointConf : public JointBuilder<GearJointConf> {
     Real mass = 0; ///< Either linear mass or angular mass.
 };
 
+/// @brief Equality operator.
+constexpr bool operator==(const GearJointConf& lhs, const GearJointConf& rhs) noexcept
+{
+    return // First check base...
+        (lhs.bodyA == rhs.bodyA) && (lhs.bodyB == rhs.bodyB) &&
+        (lhs.collideConnected == rhs.collideConnected)
+        // Now check rest...
+        && (lhs.bodyC == rhs.bodyC) // line break
+        && (lhs.bodyD == rhs.bodyD) // line break
+        && (lhs.type1 == rhs.type1) // line break
+        && (lhs.type2 == rhs.type2) // line break
+        && (lhs.localAnchorA == rhs.localAnchorA) // line break
+        && (lhs.localAnchorB == rhs.localAnchorB) // line break
+        && (lhs.localAnchorC == rhs.localAnchorC) // line break
+        && (lhs.localAnchorD == rhs.localAnchorD) // line break
+        && (lhs.localAxis1 == rhs.localAxis1) // line break
+        && (lhs.localAxis2 == rhs.localAxis2) // line break
+        && (lhs.referenceAngle1 == rhs.referenceAngle1) // line break
+        && (lhs.referenceAngle2 == rhs.referenceAngle2) // line break
+        && (lhs.ratio == rhs.ratio) // line break
+        && (lhs.constant == rhs.constant) // line break
+        && (lhs.impulse == rhs.impulse) // line break
+        && (lhs.JvAC == rhs.JvAC) // line break
+        && (lhs.JvBD == rhs.JvBD) // line break
+        && (lhs.JwA == rhs.JwA) // line break
+        && (lhs.JwB == rhs.JwB) // line break
+        && (lhs.JwC == rhs.JwC) // line break
+        && (lhs.JwD == rhs.JwD) // line break
+        && (lhs.mass == rhs.mass);
+}
+
+/// @brief Inequality operator.
+constexpr bool operator!=(const GearJointConf& lhs, const GearJointConf& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
 GearJointConf GetGearJointConf(const Joint& joint) noexcept;
