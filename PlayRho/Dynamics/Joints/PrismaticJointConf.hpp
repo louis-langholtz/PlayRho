@@ -54,8 +54,7 @@ class BodyConstraint;
 /// @image html prismaticJoint.gif
 /// @see https://en.wikipedia.org/wiki/Prismatic_joint
 /// @see Joint, World::CreateJoint
-struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
-{
+struct PrismaticJointConf : public JointBuilder<PrismaticJointConf> {
     /// @brief Super type.
     using super = JointBuilder<PrismaticJointConf>;
 
@@ -68,8 +67,7 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
     /// @brief Initializing constructor.
     /// @details Initializes the bodies, anchors, axis, and reference angle using the world
     ///   anchor and unit world axis.
-    PrismaticJointConf(BodyID bA, BodyID bB,
-                       Length2 laA = Length2{}, Length2 laB = Length2{},
+    PrismaticJointConf(BodyID bA, BodyID bB, Length2 laA = Length2{}, Length2 laB = Length2{},
                        UnitVec axisA = UnitVec::GetRight(), Angle angle = 0_deg) noexcept;
 
     /// @brief Uses the given enable limit state value.
@@ -170,10 +168,8 @@ PrismaticJointConf GetPrismaticJointConf(const Joint& joint);
 
 /// @brief Gets the configuration for the given parameters.
 /// @relatedalso World
-PrismaticJointConf GetPrismaticJointConf(const World& world,
-                                         BodyID bA, BodyID bB,
-                                         const Length2 anchor,
-                                         const UnitVec axis);
+PrismaticJointConf GetPrismaticJointConf(const World& world, BodyID bA, BodyID bB,
+                                         const Length2 anchor, const UnitVec axis);
 
 /// @brief Gets the current linear velocity of the given configuration.
 /// @relatedalso World
@@ -220,8 +216,7 @@ AngularMomentum GetAngularReaction(const PrismaticJointConf& conf);
 /// @see SolveVelocityConstraints.
 /// @relatedalso PrismaticJointConf
 void InitVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf& conf);
+                  const StepConf& step, const ConstraintSolverConf& conf);
 
 /// @brief Solves velocity constraint.
 /// @pre <code>InitVelocity</code> has been called.
@@ -248,8 +243,7 @@ constexpr void SetMaxMotorForce(PrismaticJointConf& object, Force value)
 
 /// @brief Type info specialization for <code>d2::PrismaticJointConf</code>.
 template <>
-struct TypeInfo<d2::PrismaticJointConf>
-{
+struct TypeInfo<d2::PrismaticJointConf> {
     /// @brief Provides a null-terminated string name for the type.
     static constexpr const char* name = "d2::PrismaticJointConf";
 };

@@ -52,8 +52,7 @@ class BodyConstraint;
 /// @ingroup JointsGroup
 /// @image html WheelJoint.png
 /// @see Joint, World::CreateJoint
-struct WheelJointConf : public JointBuilder<WheelJointConf>
-{
+struct WheelJointConf : public JointBuilder<WheelJointConf> {
     /// @brief Super type.
     using super = JointBuilder<WheelJointConf>;
 
@@ -62,8 +61,7 @@ struct WheelJointConf : public JointBuilder<WheelJointConf>
 
     /// Initialize the bodies, anchors, axis, and reference angle using the world
     /// anchor and world axis.
-    WheelJointConf(BodyID bA, BodyID bB,
-                   Length2 laA = Length2{}, Length2 laB = Length2{},
+    WheelJointConf(BodyID bA, BodyID bB, Length2 laA = Length2{}, Length2 laB = Length2{},
                    UnitVec axis = UnitVec::GetRight()) noexcept;
 
     /// @brief Uses the given enable motor state value.
@@ -154,8 +152,8 @@ WheelJointConf GetWheelJointConf(const Joint& joint);
 
 /// @brief Gets the definition data for the given parameters.
 /// @relatedalso World
-WheelJointConf GetWheelJointConf(const World& world, BodyID bodyA, BodyID bodyB,
-                                 Length2 anchor, UnitVec axis = UnitVec::GetRight());
+WheelJointConf GetWheelJointConf(const World& world, BodyID bodyA, BodyID bodyB, Length2 anchor,
+                                 UnitVec axis = UnitVec::GetRight());
 
 /// @brief Gets the angular velocity for the given configuration within the specified world.
 /// @relatedalso World
@@ -179,8 +177,7 @@ constexpr auto ShiftOrigin(WheelJointConf&, Length2)
 /// @note This MUST be called prior to calling <code>SolveVelocity</code>.
 /// @see SolveVelocity.
 /// @relatedalso WheelJointConf
-void InitVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
+void InitVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies, const StepConf& step,
                   const ConstraintSolverConf& conf);
 
 /// @brief Solves velocity constraint.
@@ -222,8 +219,7 @@ constexpr void SetDampingRatio(WheelJointConf& object, Real value) noexcept
 
 /// @brief Type info specialization for <code>d2::WheelJointConf</code>.
 template <>
-struct TypeInfo<d2::WheelJointConf>
-{
+struct TypeInfo<d2::WheelJointConf> {
     /// @brief Provides a null-terminated string name for the type.
     static constexpr const char* name = "d2::WheelJointConf";
 };

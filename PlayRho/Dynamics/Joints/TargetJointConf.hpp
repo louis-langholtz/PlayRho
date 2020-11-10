@@ -45,8 +45,7 @@ class BodyConstraint;
 ///   without applying huge forces.
 /// @ingroup JointsGroup
 /// @see Joint, World::CreateJoint
-struct TargetJointConf : public JointBuilder<TargetJointConf>
-{
+struct TargetJointConf : public JointBuilder<TargetJointConf> {
     /// @brief Super type.
     using super = JointBuilder<TargetJointConf>;
 
@@ -54,8 +53,7 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
     constexpr TargetJointConf() = default;
 
     /// @brief Initializing constructor.
-    constexpr TargetJointConf(BodyID b) noexcept:
-        super{super{}.UseBodyB(b)}
+    constexpr TargetJointConf(BodyID b) noexcept : super{super{}.UseBodyB(b)}
     {
         // Intentionally empty.
     }
@@ -113,12 +111,12 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
     /// as some multiple of the weight (multiplier * mass * gravity).
     /// @note This may not be negative.
     NonNegative<Force> maxForce{}; // 0_N
-    
+
     /// Frequency.
     /// @details The has to do with the response speed.
     /// @note This value may not be negative.
     NonNegative<Frequency> frequency = NonNegative<Frequency>(5_Hz);
-    
+
     /// The damping ratio. 0 = no damping, 1 = critical damping.
     NonNegative<Real> dampingRatio = NonNegative<Real>(0.7f);
 
@@ -181,8 +179,7 @@ Mass22 GetEffectiveMassMatrix(const TargetJointConf& object, const BodyConstrain
 /// @see SolveVelocity.
 /// @relatedalso TargetJointConf
 void InitVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf& conf);
+                  const StepConf& step, const ConstraintSolverConf& conf);
 
 /// @brief Solves velocity constraint.
 /// @pre <code>InitVelocity</code> has been called.
@@ -237,8 +234,7 @@ constexpr void SetDampingRatio(TargetJointConf& object, Real value) noexcept
 
 /// @brief Type info specialization for <code>d2::TargetJointConf</code>.
 template <>
-struct TypeInfo<d2::TargetJointConf>
-{
+struct TypeInfo<d2::TargetJointConf> {
     /// @brief Provides a null-terminated string name for the type.
     static constexpr const char* name = "d2::TargetJointConf";
 };

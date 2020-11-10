@@ -52,8 +52,7 @@ class BodyConstraint;
 /// @ingroup JointsGroup
 /// @image html pulleyJoint.gif
 /// @see Joint, World::CreateJoint
-struct PulleyJointConf : public JointBuilder<PulleyJointConf>
-{
+struct PulleyJointConf : public JointBuilder<PulleyJointConf> {
     /// @brief Super type.
     using super = JointBuilder<PulleyJointConf>;
 
@@ -70,14 +69,12 @@ struct PulleyJointConf : public JointBuilder<PulleyJointConf>
     static constexpr Length2 DefaultLocalAnchorB = Length2{+1_m, 0_m};
 
     /// @brief Default constructor.
-    PulleyJointConf() noexcept: super{super{}.UseCollideConnected(true)} {}
+    PulleyJointConf() noexcept : super{super{}.UseCollideConnected(true)} {}
 
     /// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
-    PulleyJointConf(BodyID bodyA, BodyID bodyB,
-                    Length2 groundAnchorA = DefaultGroundAnchorA,
+    PulleyJointConf(BodyID bodyA, BodyID bodyB, Length2 groundAnchorA = DefaultGroundAnchorA,
                     Length2 groundAnchorB = DefaultGroundAnchorB,
-                    Length2 anchorA = DefaultLocalAnchorA,
-                    Length2 anchorB = DefaultLocalAnchorB,
+                    Length2 anchorA = DefaultLocalAnchorA, Length2 anchorB = DefaultLocalAnchorB,
                     Length lA = 0_m, Length lB = 0_m);
 
     /// @brief Uses the given ratio value.
@@ -125,10 +122,8 @@ PulleyJointConf GetPulleyJointConf(const Joint& joint);
 
 /// @brief Gets the configuration for the given parameters.
 /// @relatedalso World
-PulleyJointConf GetPulleyJointConf(const World& world,
-                                   BodyID bA, BodyID bB,
-                                   Length2 groundA, Length2 groundB,
-                                   Length2 anchorA, Length2 anchorB);
+PulleyJointConf GetPulleyJointConf(const World& world, BodyID bA, BodyID bB, Length2 groundA,
+                                   Length2 groundB, Length2 anchorA, Length2 anchorB);
 
 /// @brief Gets the current linear reaction of the given configuration.
 /// @relatedalso PulleyJointConf
@@ -153,8 +148,7 @@ bool ShiftOrigin(PulleyJointConf& object, Length2 newOrigin) noexcept;
 /// @see SolveVelocity.
 /// @relatedalso PulleyJointConf
 void InitVelocity(PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf& conf);
+                  const StepConf& step, const ConstraintSolverConf& conf);
 
 /// @brief Solves velocity constraint.
 /// @pre <code>InitVelocity</code> has been called.
@@ -195,8 +189,7 @@ constexpr auto SetRatio(PulleyJointConf& object, Real value) noexcept
 
 /// @brief Type info specialization for <code>d2::PulleyJointConf</code>.
 template <>
-struct TypeInfo<d2::PulleyJointConf>
-{
+struct TypeInfo<d2::PulleyJointConf> {
     /// @brief Provides a null-terminated string name for the type.
     static constexpr const char* name = "d2::PulleyJointConf";
 };

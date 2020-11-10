@@ -52,8 +52,7 @@ class BodyConstraint;
 /// @see Joint, World::CreateJoint
 /// @ingroup JointsGroup
 /// @image html gearJoint.gif
-struct GearJointConf : public JointBuilder<GearJointConf>
-{
+struct GearJointConf : public JointBuilder<GearJointConf> {
     /// @brief Super type.
     using super = JointBuilder<GearJointConf>;
 
@@ -87,7 +86,7 @@ struct GearJointConf : public JointBuilder<GearJointConf>
     Length2 localAnchorB{}; ///< Local anchor B.
     Length2 localAnchorC{}; ///< Local anchor C.
     Length2 localAnchorD{}; ///< Local anchor D.
-    
+
     UnitVec localAxis1; ///< Local axis 1. Used when type1 is not Revolute.
     UnitVec localAxis2; ///< Local axis 2. Used when type2 is not Revolute.
 
@@ -147,8 +146,7 @@ constexpr bool ShiftOrigin(GearJointConf&, Length2) noexcept
 /// @note This MUST be called prior to calling <code>SolveVelocity</code>.
 /// @see SolveVelocity.
 /// @relatedalso GearJointConf
-void InitVelocity(GearJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
+void InitVelocity(GearJointConf& object, std::vector<BodyConstraint>& bodies, const StepConf& step,
                   const ConstraintSolverConf& conf);
 
 /// @brief Solves velocity constraint.
@@ -204,8 +202,7 @@ constexpr auto GetType2(const GearJointConf& object) noexcept
 
 /// @brief Type info specialization for <code>d2::GearJointConf</code>.
 template <>
-struct TypeInfo<d2::GearJointConf>
-{
+struct TypeInfo<d2::GearJointConf> {
     /// @brief Provides a null-terminated string name for the type.
     static constexpr const char* name = "d2::GearJointConf";
 };
