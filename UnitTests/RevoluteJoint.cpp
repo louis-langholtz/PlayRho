@@ -33,6 +33,8 @@
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 
+#include <cstring> // for std::memcmp
+
 using namespace playrho;
 using namespace playrho::d2;
 
@@ -540,4 +542,57 @@ TEST(RevoluteJointConf, GetAngularVelocity)
     EXPECT_NO_THROW(angularVelocity = GetAngularVelocity(world, conf));
     EXPECT_EQ(angularVelocity, 0_rpm);
     // TODO: add tests for angularVelocity other than 0 rpm
+}
+
+TEST(RevoluteJointConf, ShiftOrigin)
+{
+    auto jd = RevoluteJointConf{BodyID(0u), BodyID(1u)};
+    auto copy = RevoluteJointConf{};
+
+    // Do copy = jd without missing padding so memcmp works
+    std::memcpy(&copy, &jd, sizeof(RevoluteJointConf));
+
+    EXPECT_FALSE(ShiftOrigin(jd, Length2{0_m, 0_m}));
+
+    // Use memcmp since easier than writing full == suport pre C++20.
+    EXPECT_TRUE(std::memcmp(&jd, &copy, sizeof(RevoluteJointConf)) == 0);
+}
+
+TEST(RevoluteJointConf, GetAngularMass)
+{
+    auto conf = RevoluteJointConf{};
+    conf.angularMass = RotInertia{2_m2 * 3_kg / SquareRadian}; // L^2 M QP^-2
+    auto rotInertia = RotInertia{};
+    EXPECT_NO_THROW(rotInertia = GetAngularMass(Joint{conf}));
+    EXPECT_EQ(conf.angularMass, rotInertia);
+}
+
+TEST(RevoluteJointConf, GetLocalXAxisAThrowsInvalidArgument)
+{
+    EXPECT_THROW(GetLocalXAxisA(RevoluteJointConf{}), std::invalid_argument);
+}
+
+TEST(RevoluteJointConf, GetLocalYAxisAThrowsInvalidArgument)
+{
+    EXPECT_THROW(GetLocalYAxisA(Joint{RevoluteJointConf{}}), std::invalid_argument);
+}
+
+TEST(RevoluteJointConf, GetMaxMotorForceThrowsInvalidArgument)
+{
+    EXPECT_THROW(GetMaxMotorForce(Joint{RevoluteJointConf{}}), std::invalid_argument);
+}
+
+TEST(RevoluteJointConf, GetLinearLowerLimitThrowsInvalidArgument)
+{
+    EXPECT_THROW(GetLinearLowerLimit(Joint{RevoluteJointConf{}}), std::invalid_argument);
+}
+
+TEST(RevoluteJointConf, GetLinearUpperLimitThrowsInvalidArgument)
+{
+    EXPECT_THROW(GetLinearUpperLimit(Joint{RevoluteJointConf{}}), std::invalid_argument);
+}
+
+TEST(RevoluteJointConf, GetLinearMotorImpulseThrowsInvalidArgument)
+{
+    EXPECT_THROW(GetLinearMotorImpulse(Joint{RevoluteJointConf{}}), std::invalid_argument);
 }
