@@ -23,8 +23,6 @@
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/WorldJoint.hpp>
 
 #include <type_traits>
 #include <any>
@@ -57,17 +55,21 @@ TEST(JointBuilder, UseCollideConnected)
 {
     const auto value = true;
     EXPECT_NE(JointBuilder<JointConf>{}.collideConnected, value);
-    EXPECT_EQ(JointBuilder<JointConf>{}.UseCollideConnected(value).collideConnected,
-              value);
+    EXPECT_EQ(JointBuilder<JointConf>{}.UseCollideConnected(value).collideConnected, value);
 }
 
 TEST(Joint, ByteSize)
 {
-    switch (sizeof(void*))
-    {
-        case 4: break;
-        case 8: EXPECT_EQ(sizeof(Joint), std::size_t(8)); break;
-        default: break;
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
+    switch (sizeof(void*)) {
+    case 4:
+        break;
+    case 8:
+        EXPECT_EQ(sizeof(Joint), std::size_t(8));
+        break;
+    default:
+        break;
     }
 }
 
@@ -75,7 +77,7 @@ TEST(Joint, Traits)
 {
     EXPECT_FALSE(IsIterable<Joint>::value);
     EXPECT_FALSE((IsAddable<Joint>::value));
-    EXPECT_FALSE((IsAddable<Joint,Joint>::value));
+    EXPECT_FALSE((IsAddable<Joint, Joint>::value));
 
     EXPECT_TRUE(std::is_default_constructible<Joint>::value);
     EXPECT_TRUE(std::is_nothrow_default_constructible<Joint>::value);
@@ -84,11 +86,11 @@ TEST(Joint, Traits)
     EXPECT_TRUE(std::is_copy_constructible<Joint>::value);
     EXPECT_FALSE(std::is_nothrow_copy_constructible<Joint>::value);
     EXPECT_FALSE(std::is_trivially_copy_constructible<Joint>::value);
-    
+
     EXPECT_TRUE(std::is_copy_assignable<Joint>::value);
     EXPECT_FALSE(std::is_nothrow_copy_assignable<Joint>::value);
     EXPECT_FALSE(std::is_trivially_copy_assignable<Joint>::value);
-    
+
     EXPECT_TRUE(std::is_destructible<Joint>::value);
     EXPECT_TRUE(std::is_nothrow_destructible<Joint>::value);
     EXPECT_FALSE(std::is_trivially_destructible<Joint>::value);
@@ -109,19 +111,13 @@ TEST(Joint, StaticIsOkay)
 }
 #endif
 
-TEST(WorldJoint, GetWorldIndexFreeFunction)
-{
-    World world;
-    EXPECT_EQ(GetWorldIndex(world, InvalidJointID), JointCounter(-1));
-}
-
 TEST(Joint, LimitStateToStringFF)
 {
     const auto equalLimitsString = std::string(ToString(LimitState::e_equalLimits));
     const auto inactiveLimitString = std::string(ToString(LimitState::e_inactiveLimit));
     const auto upperLimitsString = std::string(ToString(LimitState::e_atUpperLimit));
     const auto lowerLimitsString = std::string(ToString(LimitState::e_atLowerLimit));
-    
+
     EXPECT_FALSE(equalLimitsString.empty());
     EXPECT_FALSE(inactiveLimitString.empty());
     EXPECT_FALSE(upperLimitsString.empty());

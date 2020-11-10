@@ -37,20 +37,21 @@ using namespace playrho::d2;
 
 TEST(FrictionJointConf, ByteSize)
 {
-    switch (sizeof(Real))
-    {
-        case  4:
-#if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(80));
-#elif defined(_WIN64)
-            EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(80));
-#else
-            EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(80));
-#endif
-            break;
-        case  8: EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(152)); break;
-        case 16: EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(304)); break;
-        default: FAIL(); break;
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
+    switch (sizeof(Real)) {
+    case 4:
+        EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(80));
+        break;
+    case 8:
+        EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(152));
+        break;
+    case 16:
+        EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(304));
+        break;
+    default:
+        FAIL();
+        break;
     }
 }
 
@@ -98,7 +99,7 @@ TEST(FrictionJoint, Construction)
     EXPECT_EQ(GetCollideConnected(joint), def.collideConnected);
     EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
     EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
-    
+
     EXPECT_EQ(GetLocalAnchorA(joint), def.localAnchorA);
     EXPECT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
     EXPECT_EQ(GetMaxForce(joint), def.maxForce);
@@ -150,7 +151,7 @@ TEST(FrictionJoint, WithDynamicCircles)
     jd.bodyB = b2;
     ASSERT_NE(CreateJoint(world, Joint{jd}), InvalidJointID);
     auto stepConf = StepConf{};
- 
+
     stepConf.doWarmStart = true;
     Step(world, stepConf);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / 1_m}), -1.0, 0.001);
@@ -183,9 +184,7 @@ TEST(FrictionJointConf, ShiftOrigin)
     def.angularImpulse = AngularMomentum{};
     def.rA = Length2{3_m, 22_m};
     def.rB = Length2{2_m, 22_m};
-    def.linearMass = Mass22{
-        Vector2<Mass>{1_kg, 2_kg},
-        Vector2<Mass>{3_kg, 4_kg}};
+    def.linearMass = Mass22{Vector2<Mass>{1_kg, 2_kg}, Vector2<Mass>{3_kg, 4_kg}};
     def.angularMass = RotInertia{};
 
     const auto copy = def;

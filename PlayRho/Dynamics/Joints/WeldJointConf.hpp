@@ -36,6 +36,10 @@ namespace d2 {
 class World;
 class BodyConstraint;
 
+/// @example WeldJoint.cpp
+/// This is the <code>googletest</code> based unit testing file for the interfaces to
+///   <code>playrho::d2::WeldJointConf</code>.
+
 /// @brief Weld joint definition.
 /// @note A weld joint essentially glues two bodies together. A weld joint may
 ///   distort somewhat because the island constraint solver is approximate.

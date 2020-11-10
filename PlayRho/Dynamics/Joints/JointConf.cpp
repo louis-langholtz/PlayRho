@@ -29,8 +29,7 @@ static_assert(std::is_default_constructible<JointConf>::value,
               "JointConf should be default constructible!");
 static_assert(std::is_copy_constructible<JointConf>::value,
               "JointConf should be copy constructible!");
-static_assert(std::is_copy_assignable<JointConf>::value,
-              "JointConf should be copy assignable!");
+static_assert(std::is_copy_assignable<JointConf>::value, "JointConf should be copy assignable!");
 static_assert(std::is_nothrow_move_constructible<JointConf>::value,
               "JointConf should be nothrow move constructible!");
 static_assert(std::is_nothrow_move_assignable<JointConf>::value,

@@ -37,6 +37,10 @@ namespace d2 {
 class World;
 class BodyConstraint;
 
+/// @example PrismaticJoint.cpp
+/// This is the <code>googletest</code> based unit testing file for the interfaces to
+///   <code>playrho::d2::PrismaticJointConf</code>.
+
 /// @brief Prismatic joint definition.
 /// @details This joint provides one degree of freedom: translation along an axis fixed in
 ///   body-A. Relative rotation is prevented. This requires defining a line of motion using

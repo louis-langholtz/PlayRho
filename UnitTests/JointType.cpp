@@ -45,6 +45,8 @@ const char* name2 = "name2";
 
 TEST(JointType, ByteSize)
 {
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
     EXPECT_EQ(sizeof(JointType::underlying_type), sizeof(void*));
     EXPECT_EQ(sizeof(JointType), sizeof(void*));
 }

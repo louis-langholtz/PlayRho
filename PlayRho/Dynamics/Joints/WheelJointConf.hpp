@@ -36,6 +36,10 @@ namespace d2 {
 class World;
 class BodyConstraint;
 
+/// @example WheelJoint.cpp
+/// This is the <code>googletest</code> based unit testing file for the interfaces to
+///   <code>playrho::d2::WheelJointConf</code>.
+
 /// @brief Wheel joint definition.
 /// @details This joint provides two degrees of freedom: translation along an axis fixed
 ///   in body A and rotation in the plane. In other words, it is a point to line constraint

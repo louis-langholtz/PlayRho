@@ -17,6 +17,9 @@
  */
 
 #include "UnitTests.hpp"
+
+#ifdef CODE_DUMPER_IS_READY
+
 #include <PlayRho/PlayRho.hpp>
 #include <PlayRho/Common/CodeDumper.hpp>
 
@@ -137,3 +140,5 @@ TEST(Dump, OneBodyWorld)
 }
 
 #endif
+
+#endif // CODE_DUMPER_IS_READY

@@ -34,6 +34,8 @@ using namespace playrho::d2;
 
 TEST(RayCastOutput, ByteSize)
 {
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
     switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(RayCastOutput), std::size_t(16)); break;
@@ -188,6 +190,8 @@ TEST(RayCastOutput, RayCastShapeFF)
 
 TEST(RayCastHit, ByteSize)
 {
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
     switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(RayCastHit), std::size_t(12)); break;

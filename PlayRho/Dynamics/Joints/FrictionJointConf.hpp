@@ -37,6 +37,10 @@ namespace d2 {
 class World;
 class BodyConstraint;
 
+/// @example FrictionJoint.cpp
+/// This is the <code>googletest</code> based unit testing file for the interfaces to
+///   <code>playrho::d2::FrictionJointConf</code>.
+
 /// @brief Friction joint definition.
 /// @details This is used for top-down friction. It provides 2-D translational friction
 ///   and angular friction.

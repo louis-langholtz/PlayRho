@@ -37,6 +37,10 @@ namespace d2 {
 class World;
 class BodyConstraint;
 
+/// @example MotorJoint.cpp
+/// This is the <code>googletest</code> based unit testing file for the interfaces to
+///   <code>playrho::d2::MotorJointConf</code>.
+
 /// @brief Motor joint definition.
 /// @details A motor joint is used to control the relative motion between two bodies. A
 ///   typical usage is to control the movement of a dynamic body with respect to the ground.

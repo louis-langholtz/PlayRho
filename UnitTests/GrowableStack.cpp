@@ -26,6 +26,8 @@ using namespace playrho;
 
 TEST(GrowableStack, ByteSize)
 {
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
     using T = GrowableStack<std::int32_t, 64>;
 #if defined(_WIN32) && !defined(_WIN64)
     EXPECT_EQ(sizeof(T), sizeof(T::ElementType) * T::GetInitialCapacity() + std::size_t(12));

@@ -24,6 +24,8 @@ using namespace playrho;
 
 TEST(ContactFeature, ByteSizeIs4)
 {
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
     EXPECT_EQ(sizeof(ContactFeature), std::size_t(4));
 }
 

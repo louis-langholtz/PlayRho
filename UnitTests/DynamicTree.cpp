@@ -29,6 +29,8 @@ using namespace playrho::d2;
 
 TEST(DynamicTree, ByteSize)
 {
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
 #if defined(_WIN64)
     EXPECT_EQ(alignof(DynamicTree), 8u);
     EXPECT_EQ(sizeof(DynamicTree), std::size_t(32));

@@ -37,6 +37,10 @@ namespace d2 {
 class World;
 class BodyConstraint;
 
+/// @example RevoluteJoint.cpp
+/// This is the <code>googletest</code> based unit testing file for the interfaces to
+///   <code>playrho::d2::RevoluteJointConf</code>.
+
 /// @brief Revolute joint definition.
 /// @details A revolute joint constrains two bodies to share a common point while they
 ///   are free to rotate about the point. The relative rotation about the shared point

@@ -95,6 +95,8 @@ void SetType(WorldImpl& world, BodyID id, BodyType value)
 
 TEST(WorldImpl, ByteSize)
 {
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
     EXPECT_NE(sizeof(WorldImpl), sizeof(void*));
     // It's 944 bytes on at least one 64-but platform.
 }
