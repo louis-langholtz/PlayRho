@@ -23,8 +23,6 @@
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/WorldJoint.hpp>
 
 #include <type_traits>
 #include <any>
@@ -112,12 +110,6 @@ TEST(Joint, StaticIsOkay)
     EXPECT_TRUE(Joint::IsOkay(Builder{JointType::Friction}.UseBodyB(b2)));
 }
 #endif
-
-TEST(WorldJoint, GetWorldIndexFreeFunction)
-{
-    World world;
-    EXPECT_EQ(GetWorldIndex(world, InvalidJointID), JointCounter(-1));
-}
 
 TEST(Joint, LimitStateToStringFF)
 {

@@ -48,3 +48,9 @@ TEST(WorldJoint, GetSetMotorSpeed)
     EXPECT_NO_THROW(SetMotorSpeed(world, id, newValue));
     EXPECT_EQ(GetMotorSpeed(world, id), newValue);
 }
+
+TEST(WorldJoint, GetWorldIndexFreeFunction)
+{
+    World world;
+    EXPECT_EQ(GetWorldIndex(world, InvalidJointID), JointCounter(-1));
+}
