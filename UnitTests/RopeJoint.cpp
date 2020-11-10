@@ -41,14 +41,19 @@ TEST(RopeJointConf, ByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real))
-    {
-        case  4:
-            EXPECT_EQ(sizeof(RopeJointConf), std::size_t(68));
-            break;
-        case  8: EXPECT_EQ(sizeof(RopeJointConf), std::size_t(128)); break;
-        case 16: EXPECT_EQ(sizeof(RopeJointConf), std::size_t(256)); break;
-        default: FAIL(); break;
+    switch (sizeof(Real)) {
+    case 4:
+        EXPECT_EQ(sizeof(RopeJointConf), std::size_t(68));
+        break;
+    case 8:
+        EXPECT_EQ(sizeof(RopeJointConf), std::size_t(128));
+        break;
+    case 16:
+        EXPECT_EQ(sizeof(RopeJointConf), std::size_t(256));
+        break;
+    default:
+        FAIL();
+        break;
     }
 }
 
@@ -102,22 +107,22 @@ TEST(RopeJointConf, GetRopeJointConf)
     def.localAnchorA = localAnchorA;
     def.localAnchorB = localAnchorB;
     const auto joint = Joint{def};
-    
+
     ASSERT_EQ(GetType(joint), GetTypeID<RopeJointConf>());
     ASSERT_EQ(GetBodyA(joint), def.bodyA);
     ASSERT_EQ(GetBodyB(joint), def.bodyB);
     ASSERT_EQ(GetCollideConnected(joint), def.collideConnected);
-    
+
     ASSERT_EQ(GetLocalAnchorA(joint), def.localAnchorA);
     ASSERT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
     const auto conf = TypeCast<RopeJointConf>(joint);
     ASSERT_EQ(GetMaxLength(conf), def.maxLength);
-    
+
     const auto cdef = GetRopeJointConf(joint);
     EXPECT_EQ(cdef.bodyA, bodyA);
     EXPECT_EQ(cdef.bodyB, bodyB);
     EXPECT_EQ(cdef.collideConnected, false);
-    
+
     EXPECT_EQ(cdef.localAnchorA, localAnchorA);
     EXPECT_EQ(cdef.localAnchorB, localAnchorB);
     EXPECT_EQ(cdef.maxLength, 0_m);
@@ -146,7 +151,7 @@ TEST(RopeJointConf, WithDynamicCircles)
     EXPECT_EQ(GetY(GetLocation(world, b2)), 0_m);
     EXPECT_EQ(GetAngle(world, b1), 0_deg);
     EXPECT_EQ(GetAngle(world, b2), 0_deg);
-    
+
     stepConf.doWarmStart = false;
     Step(world, stepConf);
     EXPECT_GT(GetX(GetLocation(world, b1)), -1_m);
@@ -155,7 +160,7 @@ TEST(RopeJointConf, WithDynamicCircles)
     EXPECT_EQ(GetY(GetLocation(world, b2)), 0_m);
     EXPECT_EQ(GetAngle(world, b1), 0_deg);
     EXPECT_EQ(GetAngle(world, b2), 0_deg);
-    
+
     stepConf.doWarmStart = true;
     stepConf.linearSlop = 10_m;
     Step(world, stepConf);

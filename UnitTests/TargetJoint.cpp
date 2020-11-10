@@ -64,14 +64,19 @@ TEST(TargetJointConf, ByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real))
-    {
-        case  4:
-            EXPECT_EQ(sizeof(TargetJointConf), std::size_t(80));
-            break;
-        case  8: EXPECT_EQ(sizeof(TargetJointConf), std::size_t(152)); break;
-        case 16: EXPECT_EQ(sizeof(TargetJointConf), std::size_t(304)); break;
-        default: FAIL(); break;
+    switch (sizeof(Real)) {
+    case 4:
+        EXPECT_EQ(sizeof(TargetJointConf), std::size_t(80));
+        break;
+    case 8:
+        EXPECT_EQ(sizeof(TargetJointConf), std::size_t(152));
+        break;
+    case 16:
+        EXPECT_EQ(sizeof(TargetJointConf), std::size_t(304));
+        break;
+    default:
+        FAIL();
+        break;
     }
 }
 
@@ -101,11 +106,11 @@ TEST(TargetJoint, DefaultInitialized)
     EXPECT_EQ(GetBodyA(joint), def.bodyA);
     EXPECT_EQ(GetBodyB(joint), def.bodyB);
     EXPECT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
-    //EXPECT_FALSE(IsValid(joint.GetAnchorB()));
+    // EXPECT_FALSE(IsValid(joint.GetAnchorB()));
     EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
     EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
     EXPECT_FALSE(GetCollideConnected(joint));
-    //EXPECT_FALSE(IsValid(GetLocalAnchorB(joint)));
+    // EXPECT_FALSE(IsValid(GetLocalAnchorB(joint)));
     EXPECT_EQ(GetMaxForce(joint), def.maxForce);
     EXPECT_EQ(GetFrequency(joint), def.frequency);
     EXPECT_EQ(GetDampingRatio(joint), def.dampingRatio);
@@ -118,7 +123,7 @@ TEST(TargetJoint, GetLocalAnchorB)
     const auto bB = world.CreateBody();
     ASSERT_NE(bA, InvalidBodyID);
     ASSERT_NE(bB, InvalidBodyID);
-    
+
     auto def = TargetJointConf{};
     def.bodyA = bA;
     def.bodyB = bB;
@@ -126,7 +131,7 @@ TEST(TargetJoint, GetLocalAnchorB)
     def.maxForce = 3_N;
     def.frequency = 67_Hz;
     def.dampingRatio = Real(0.8);
-    
+
     const auto joint = Joint{def};
     EXPECT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
 }
@@ -138,7 +143,7 @@ TEST(TargetJoint, GetAnchorB)
     const auto bB = world.CreateBody();
     ASSERT_NE(bA, InvalidBodyID);
     ASSERT_NE(bB, InvalidBodyID);
-    
+
     auto def = TargetJointConf{};
     def.bodyA = bA;
     def.bodyB = bB;
@@ -146,7 +151,7 @@ TEST(TargetJoint, GetAnchorB)
     def.maxForce = 3_N;
     def.frequency = 67_Hz;
     def.dampingRatio = Real(0.8);
-    
+
     const auto joint = Joint{def};
     ASSERT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
 }
@@ -172,7 +177,7 @@ TEST(TargetJoint, ShiftOrigin)
 TEST(TargetJointConf, GetTargetJointDefFreeFunction)
 {
     World world;
-    
+
     const auto bA = world.CreateBody();
     ASSERT_NE(bA, InvalidBodyID);
     const auto bB = world.CreateBody();

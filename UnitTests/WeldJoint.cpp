@@ -39,28 +39,33 @@ TEST(WeldJoint, Traits)
 {
     EXPECT_FALSE((IsIterable<WeldJointConf>::value));
     EXPECT_FALSE((IsAddable<WeldJointConf>::value));
-    EXPECT_FALSE((IsAddable<WeldJointConf,WeldJointConf>::value));
+    EXPECT_FALSE((IsAddable<WeldJointConf, WeldJointConf>::value));
 }
 
 TEST(WeldJointConf, ByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real))
-    {
-        case  4:
-            EXPECT_EQ(sizeof(WeldJointConf), std::size_t(108));
-            break;
-        case  8: EXPECT_EQ(sizeof(WeldJointConf), std::size_t(208)); break;
-        case 16: EXPECT_EQ(sizeof(WeldJointConf), std::size_t(416)); break;
-        default: FAIL(); break;
+    switch (sizeof(Real)) {
+    case 4:
+        EXPECT_EQ(sizeof(WeldJointConf), std::size_t(108));
+        break;
+    case 8:
+        EXPECT_EQ(sizeof(WeldJointConf), std::size_t(208));
+        break;
+    case 16:
+        EXPECT_EQ(sizeof(WeldJointConf), std::size_t(416));
+        break;
+    default:
+        FAIL();
+        break;
     }
 }
 
 TEST(WeldJointConf, DefaultConstruction)
 {
     WeldJointConf def{};
-    
+
     EXPECT_EQ(def.bodyA, InvalidBodyID);
     EXPECT_EQ(def.bodyB, InvalidBodyID);
     EXPECT_EQ(def.collideConnected, false);
@@ -104,18 +109,18 @@ TEST(WeldJoint, GetWeldJointConf)
     ASSERT_EQ(GetBodyA(joint), def.bodyA);
     ASSERT_EQ(GetBodyB(joint), def.bodyB);
     ASSERT_EQ(GetCollideConnected(joint), def.collideConnected);
-    
+
     ASSERT_EQ(GetLocalAnchorA(joint), def.localAnchorA);
     ASSERT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
     ASSERT_EQ(GetReferenceAngle(joint), def.referenceAngle);
     ASSERT_EQ(GetFrequency(joint), def.frequency);
     ASSERT_EQ(GetDampingRatio(joint), def.dampingRatio);
-    
+
     const auto cdef = GetWeldJointConf(joint);
     EXPECT_EQ(cdef.bodyA, bodyA);
     EXPECT_EQ(cdef.bodyB, bodyB);
     EXPECT_EQ(cdef.collideConnected, false);
-    
+
     EXPECT_EQ(cdef.localAnchorA, anchor);
     EXPECT_EQ(cdef.localAnchorB, anchor);
     EXPECT_EQ(def.referenceAngle, 0_deg);
@@ -220,10 +225,8 @@ TEST(WeldJointConf, ShiftOrigin)
     def.bias = 2_rpm;
     def.rA = Length2{3_m, 22_m};
     def.rB = Length2{2_m, 22_m};
-    def.mass = Mat33{
-        Vec3{Real(1), Real(2), Real(3)},
-        Vec3{Real(4), Real(5), Real(6)},
-        Vec3{Real(7), Real(8), Real(9)}};
+    def.mass = Mat33{Vec3{Real(1), Real(2), Real(3)}, Vec3{Real(4), Real(5), Real(6)},
+                     Vec3{Real(7), Real(8), Real(9)}};
     const auto amount = Length2{1_m, 2_m};
     const auto copy = def;
     EXPECT_FALSE(ShiftOrigin(def, amount));

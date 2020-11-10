@@ -39,11 +39,11 @@ using namespace playrho::d2;
 TEST(PulleyJointConf, DefaultConstruction)
 {
     PulleyJointConf def;
-    
+
     EXPECT_EQ(def.bodyA, InvalidBodyID);
     EXPECT_EQ(def.bodyB, InvalidBodyID);
     EXPECT_EQ(def.collideConnected, true);
-    
+
     EXPECT_EQ(def.groundAnchorA, PulleyJointConf::DefaultGroundAnchorA);
     EXPECT_EQ(def.groundAnchorB, PulleyJointConf::DefaultGroundAnchorB);
     EXPECT_EQ(def.localAnchorA, PulleyJointConf::DefaultLocalAnchorA);
@@ -99,8 +99,8 @@ TEST(PulleyJointConf, GetPulleyJointConfForWorld)
     EXPECT_EQ(conf.groundAnchorB, gB);
     EXPECT_EQ(conf.localAnchorA, aA - posA);
     EXPECT_EQ(conf.localAnchorB, aB - posB);
-    EXPECT_NEAR(static_cast<double>(Real(conf.lengthA/1_m)), 10.4805, 0.0001);
-    EXPECT_NEAR(static_cast<double>(Real(conf.lengthB/1_m)), 12.7279, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real(conf.lengthA / 1_m)), 10.4805, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real(conf.lengthB / 1_m)), 12.7279, 0.0001);
 }
 
 TEST(PulleyJointConf, GetPulleyJointConfForJoint)
@@ -136,14 +136,19 @@ TEST(PulleyJointConf, ByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real))
-    {
-        case  4:
-            EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(92));
-            break;
-        case  8: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(176)); break;
-        case 16: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(352)); break;
-        default: FAIL(); break;
+    switch (sizeof(Real)) {
+    case 4:
+        EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(92));
+        break;
+    case 8:
+        EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(176));
+        break;
+    case 16:
+        EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(352));
+        break;
+    default:
+        FAIL();
+        break;
     }
 }
 
@@ -173,19 +178,19 @@ TEST(PulleyJoint, Construction)
 TEST(PulleyJoint, GetAnchorAandB)
 {
     auto world = World{};
-    
+
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{-2_m, Real(+1.2f) * Meter};
-    
+
     const auto b0 = world.CreateBody(BodyConf{}.UseLocation(loc0));
     const auto b1 = world.CreateBody(BodyConf{}.UseLocation(loc1));
-    
+
     auto jd = PulleyJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
-    
+
     auto joint = Joint{jd};
     ASSERT_EQ(GetLocalAnchorA(joint), jd.localAnchorA);
     ASSERT_EQ(GetLocalAnchorB(joint), jd.localAnchorB);
@@ -199,10 +204,10 @@ TEST(PulleyJoint, ShiftOrigin)
 {
     PulleyJointConf def;
     Joint joint{def};
-    
+
     ASSERT_EQ(GetGroundAnchorA(joint), def.groundAnchorA);
     ASSERT_EQ(GetGroundAnchorB(joint), def.groundAnchorB);
-    
+
     const auto newOrigin = Length2{1_m, 1_m};
 
     EXPECT_TRUE(ShiftOrigin(joint, newOrigin));
@@ -232,10 +237,10 @@ TEST(PulleyJoint, GetCurrentLength)
     ASSERT_EQ(GetGroundAnchorA(joint), jd.groundAnchorA);
     ASSERT_EQ(GetGroundAnchorB(joint), jd.groundAnchorB);
 
-    const auto lenA = GetMagnitude(GetWorldPoint(world, GetBodyA(joint),
-                                                 jd.localAnchorA - jd.groundAnchorA));
-    const auto lenB = GetMagnitude(GetWorldPoint(world, GetBodyB(joint),
-                                                 jd.localAnchorB - jd.groundAnchorB));
+    const auto lenA =
+        GetMagnitude(GetWorldPoint(world, GetBodyA(joint), jd.localAnchorA - jd.groundAnchorA));
+    const auto lenB =
+        GetMagnitude(GetWorldPoint(world, GetBodyB(joint), jd.localAnchorB - jd.groundAnchorB));
     const auto id = CreateJoint(world, joint);
     EXPECT_EQ(GetCurrentLengthA(world, id), lenA);
     EXPECT_EQ(GetCurrentLengthB(world, id), lenB);
@@ -247,8 +252,7 @@ TEST(PulleyJointConf, InitVelocityThrowsOutOfRange)
     jd.bodyA = BodyID(0u);
     jd.bodyB = BodyID(0u);
     std::vector<BodyConstraint> bodies;
-    EXPECT_THROW(InitVelocity(jd, bodies, StepConf{}, ConstraintSolverConf{}),
-                 std::out_of_range);
+    EXPECT_THROW(InitVelocity(jd, bodies, StepConf{}, ConstraintSolverConf{}), std::out_of_range);
     bodies.push_back(BodyConstraint{});
     EXPECT_NO_THROW(InitVelocity(jd, bodies, StepConf{}, ConstraintSolverConf{}));
 }
@@ -340,12 +344,10 @@ TEST(PulleyJointConf, InitVelocitySetsMass)
     jd.bodyA = BodyID(0u);
     jd.bodyB = BodyID(1u);
     std::vector<BodyConstraint> bodies;
-    bodies.push_back(BodyConstraint{
-        Real(1)/4_kg, InvRotInertia{}, Length2{}, Position{}, Velocity{}
-    });
-    bodies.push_back(BodyConstraint{
-        Real(1)/4_kg, InvRotInertia{}, Length2{}, Position{}, Velocity{}
-    });
+    bodies.push_back(
+        BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, Position{}, Velocity{}});
+    bodies.push_back(
+        BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, Position{}, Velocity{}});
     stepConf.dtRatio = Real(1);
     stepConf.doWarmStart = false;
     ASSERT_EQ(jd.mass, 0_kg);
@@ -389,8 +391,8 @@ TEST(PulleyJointConf, SolvePosition)
     jd.groundAnchorB = posB.linear + Length2{0_m, 8_m};
     jd.bodyA = BodyID(0u);
     jd.bodyB = BodyID(1u);
-    bodies.push_back(BodyConstraint{Real(1)/4_kg, InvRotInertia{}, Length2{}, posA, Velocity{}});
-    bodies.push_back(BodyConstraint{Real(1)/4_kg, InvRotInertia{}, Length2{}, posB, Velocity{}});
+    bodies.push_back(BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, posA, Velocity{}});
+    bodies.push_back(BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, posB, Velocity{}});
 
     auto solved = false;
     jd.ratio = Real(1);

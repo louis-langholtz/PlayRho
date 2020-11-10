@@ -39,20 +39,19 @@ TEST(DistanceJointConf, ByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real))
-    {
-        case  4:
-            EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(76));
-            break;
-        case  8:
-            EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(144));
-            break;
-        case 16:
-            EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(288));
-            break;
-        default:
-            FAIL();
-            break;
+    switch (sizeof(Real)) {
+    case 4:
+        EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(76));
+        break;
+    case 8:
+        EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(144));
+        break;
+    case 16:
+        EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(288));
+        break;
+    default:
+        FAIL();
+        break;
     }
 }
 
@@ -136,19 +135,21 @@ TEST(DistanceJoint, ShiftOrigin)
 TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 {
     auto world = World{};
-    
+
     const auto shape = Shape{DiskShapeConf{}.UseRadius(0.2_m)};
-    
+
     const auto location1 = Length2{-1_m, 0_m};
-    const auto body1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location1));
+    const auto body1 =
+        CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location1));
     ASSERT_EQ(GetLocation(world, body1), location1);
     ASSERT_NE(CreateFixture(world, body1, shape), InvalidFixtureID);
-    
+
     const auto location2 = Length2{+1_m, 0_m};
-    const auto body2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location2));
+    const auto body2 =
+        CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location2));
     ASSERT_EQ(GetLocation(world, body2), location2);
     ASSERT_NE(CreateFixture(world, body2, shape), InvalidFixtureID);
-    
+
     auto jointdef = DistanceJointConf{};
     jointdef.bodyA = body1;
     jointdef.bodyB = body2;
@@ -159,28 +160,24 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
     jointdef.frequency = 0_Hz;
     jointdef.dampingRatio = 0;
     EXPECT_NE(CreateJoint(world, Joint{jointdef}), InvalidJointID);
-    
+
     auto oldDistance = GetMagnitude(GetLocation(world, body1) - GetLocation(world, body2));
-    
+
     auto distanceMet = 0u;
     auto stepConf = StepConf{};
-    for (auto i = 0u; !distanceMet || i < distanceMet + 100; ++i)
-    {
+    for (auto i = 0u; !distanceMet || i < distanceMet + 100; ++i) {
         Step(world, stepConf);
 
-        const auto newDistance = GetMagnitude(GetLocation(world, body1) - GetLocation(world, body2));
-        if (distanceMet)
-        {
-            EXPECT_NEAR(double(Real{newDistance / Meter}),
-                        double(Real{oldDistance / Meter}), 0.01);
+        const auto newDistance =
+            GetMagnitude(GetLocation(world, body1) - GetLocation(world, body2));
+        if (distanceMet) {
+            EXPECT_NEAR(double(Real{newDistance / Meter}), double(Real{oldDistance / Meter}), 0.01);
         }
-        else
-        {
+        else {
             EXPECT_GE(newDistance, oldDistance);
         }
-        
-        if (!distanceMet && (abs(newDistance - jointdef.length) < 0.01_m))
-        {
+
+        if (!distanceMet && (abs(newDistance - jointdef.length) < 0.01_m)) {
             distanceMet = i;
         }
         oldDistance = newDistance;
@@ -190,18 +187,20 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 {
     auto world = World{};
-    
+
     const auto shape = Shape{DiskShapeConf{}.UseRadius(0.2_m).UseDensity(1_kgpm2)};
     const auto location1 = Length2{-10_m, 10_m};
-    const auto body1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location1));
+    const auto body1 =
+        CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location1));
     ASSERT_EQ(GetLocation(world, body1), location1);
     ASSERT_NE(CreateFixture(world, body1, shape), InvalidFixtureID);
-    
+
     const auto location2 = Length2{+10_m, -10_m};
-    const auto body2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location2));
+    const auto body2 =
+        CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location2));
     ASSERT_EQ(GetLocation(world, body2), location2);
     ASSERT_NE(CreateFixture(world, body2, shape), InvalidFixtureID);
-    
+
     auto jointdef = DistanceJointConf{};
     jointdef.bodyA = body1;
     jointdef.bodyB = body2;
@@ -212,38 +211,32 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
     jointdef.frequency = 60_Hz;
     jointdef.dampingRatio = 0;
     EXPECT_NE(CreateJoint(world, Joint{jointdef}), InvalidJointID);
-    
+
     auto oldDistance = GetMagnitude(GetLocation(world, body1) - GetLocation(world, body2));
-    
+
     auto distanceMet = 0u;
     auto stepConf = StepConf{};
-    SetAccelerations(world, Acceleration{
-        LinearAcceleration2{0, 10 * MeterPerSquareSecond}, 0 * RadianPerSquareSecond
-    });
-    for (auto i = 0u; !distanceMet || i < distanceMet + 1000; ++i)
-    {
+    SetAccelerations(world, Acceleration{LinearAcceleration2{0, 10 * MeterPerSquareSecond},
+                                         0 * RadianPerSquareSecond});
+    for (auto i = 0u; !distanceMet || i < distanceMet + 1000; ++i) {
         Step(world, stepConf);
-        
-        const auto newDistance = GetMagnitude(GetLocation(world, body1) - GetLocation(world, body2));
-        if (!distanceMet && (newDistance - oldDistance) >= 0_m)
-        {
+
+        const auto newDistance =
+            GetMagnitude(GetLocation(world, body1) - GetLocation(world, body2));
+        if (!distanceMet && (newDistance - oldDistance) >= 0_m) {
             distanceMet = i;
         }
-        if (distanceMet)
-        {
-            EXPECT_NEAR(double(Real{newDistance / Meter}),
-                        double(Real{oldDistance / Meter}), 2.5);
+        if (distanceMet) {
+            EXPECT_NEAR(double(Real{newDistance / Meter}), double(Real{oldDistance / Meter}), 2.5);
         }
-        else
-        {
+        else {
             EXPECT_LE(newDistance, oldDistance);
         }
-        
+
         oldDistance = newDistance;
     }
-    
-    EXPECT_NEAR(double(Real{oldDistance / Meter}),
-                double(Real{jointdef.length / Meter}), 0.1);
+
+    EXPECT_NEAR(double(Real{oldDistance / Meter}), double(Real{jointdef.length / Meter}), 0.1);
 }
 
 TEST(DistanceJointConf, GetDistanceJointDefFreeFunction)

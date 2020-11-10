@@ -42,28 +42,27 @@ TEST(GearJointConf, ByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real))
-    {
-        case  4:
+    switch (sizeof(Real)) {
+    case 4:
 #if defined(_WIN32)
 #if defined(_WIN64)
-            EXPECT_EQ(sizeof(GearJointConf), std::size_t(136));
+        EXPECT_EQ(sizeof(GearJointConf), std::size_t(136));
 #else
-            EXPECT_EQ(sizeof(GearJointConf), std::size_t(124));
+        EXPECT_EQ(sizeof(GearJointConf), std::size_t(124));
 #endif
 #else
-            EXPECT_EQ(sizeof(GearJointConf), std::size_t(136));
+        EXPECT_EQ(sizeof(GearJointConf), std::size_t(136));
 #endif
-            break;
-        case  8:
-            EXPECT_EQ(sizeof(GearJointConf), std::size_t(240));
-            break;
-        case 16:
-            EXPECT_EQ(sizeof(GearJointConf), std::size_t(448));
-            break;
-        default:
-            FAIL();
-            break;
+        break;
+    case 8:
+        EXPECT_EQ(sizeof(GearJointConf), std::size_t(240));
+        break;
+    case 16:
+        EXPECT_EQ(sizeof(GearJointConf), std::size_t(448));
+        break;
+    default:
+        FAIL();
+        break;
     }
 }
 
@@ -111,11 +110,11 @@ TEST(GearJoint, Creation)
     EXPECT_EQ(GetCollideConnected(world, joint), def.collideConnected);
     EXPECT_EQ(GetLinearReaction(world, joint), Momentum2{});
     EXPECT_EQ(GetAngularReaction(world, joint), AngularMomentum{0});
-    
+
     EXPECT_EQ(GetLocalAnchorA(world, joint), GetLocalAnchorB(world, revJoint1));
     EXPECT_EQ(GetLocalAnchorB(world, joint), GetLocalAnchorB(world, revJoint2));
     EXPECT_EQ(GetRatio(world, joint), def.ratio);
-    
+
     const auto djoint = CreateJoint(world, DistanceJointConf{body0, body1});
     EXPECT_THROW(CreateJoint(world, GetGearJointConf(world, djoint, revJoint2)), InvalidArgument);
 }
@@ -176,19 +175,19 @@ TEST(GearJoint, GetGearJointConf)
     ASSERT_EQ(GetBodyA(world, joint), def.bodyA);
     ASSERT_EQ(GetBodyB(world, joint), def.bodyB);
     ASSERT_EQ(GetCollideConnected(world, joint), def.collideConnected);
-    
+
     ASSERT_EQ(GetLocalAnchorA(world, joint), GetLocalAnchorB(world, revJoint1));
     ASSERT_EQ(GetLocalAnchorB(world, joint), GetLocalAnchorB(world, revJoint2));
     auto conf = TypeCast<GearJointConf>(GetJoint(world, joint));
     ASSERT_EQ(GetType1(conf), GetTypeID<decltype(rdef1)>());
     ASSERT_EQ(GetType2(conf), GetTypeID<decltype(rdef2)>());
     ASSERT_EQ(GetRatio(world, joint), def.ratio);
-    
+
     const auto cdef = GetGearJointConf(GetJoint(world, joint));
     EXPECT_EQ(cdef.bodyA, def.bodyA);
     EXPECT_EQ(cdef.bodyB, def.bodyB);
     EXPECT_EQ(cdef.collideConnected, false);
-    
+
     EXPECT_EQ(cdef.type1, GetTypeID<decltype(rdef1)>());
     EXPECT_EQ(cdef.type2, GetTypeID<decltype(rdef2)>());
     EXPECT_EQ(cdef.ratio, Real(1));
@@ -208,9 +207,9 @@ TEST(GearJoint, WithDynamicCirclesAndRevoluteJoints)
     const auto b4 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p4));
     CreateFixture(world, b1, circle);
     CreateFixture(world, b2, circle);
-    const auto def = GetGearJointConf(world,
-                                      CreateJoint(world, GetRevoluteJointConf(world, b1, b2, Length2{})),
-                                      CreateJoint(world, GetRevoluteJointConf(world, b4, b3, Length2{})));
+    const auto def =
+        GetGearJointConf(world, CreateJoint(world, GetRevoluteJointConf(world, b1, b2, Length2{})),
+                         CreateJoint(world, GetRevoluteJointConf(world, b4, b3, Length2{})));
     const auto joint = CreateJoint(world, def);
     ASSERT_NE(joint, InvalidJointID);
     Step(world, 1_s);
@@ -236,10 +235,10 @@ TEST(GearJoint, WithDynamicCirclesAndPrismaticJoints)
     const auto b4 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p4));
     CreateFixture(world, b1, circle);
     CreateFixture(world, b2, circle);
-    const auto def = GetGearJointConf(world,
+    const auto def = GetGearJointConf(
+        world,
         CreateJoint(world, GetPrismaticJointConf(world, b1, b2, Length2{}, UnitVec::GetTop())),
-        CreateJoint(world, GetPrismaticJointConf(world, b4, b3, Length2{}, UnitVec::GetTop()))
-    );
+        CreateJoint(world, GetPrismaticJointConf(world, b4, b3, Length2{}, UnitVec::GetTop())));
     const auto joint = CreateJoint(world, def);
     ASSERT_NE(joint, InvalidJointID);
     Step(world, 1_s);
@@ -265,15 +264,16 @@ TEST(GearJoint, GetAnchorAandB)
     const auto b4 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p4));
     CreateFixture(world, b1, circle);
     CreateFixture(world, b2, circle);
-    const auto def = GetGearJointConf(world,
-        CreateJoint(world, GetRevoluteJointConf(world, b1, b2, Length2{})),
-        CreateJoint(world, GetRevoluteJointConf(world, b4, b3, Length2{}))
-    );
+    const auto def =
+        GetGearJointConf(world, CreateJoint(world, GetRevoluteJointConf(world, b1, b2, Length2{})),
+                         CreateJoint(world, GetRevoluteJointConf(world, b4, b3, Length2{})));
     const auto joint = CreateJoint(world, def);
     ASSERT_NE(joint, InvalidJointID);
-    
-    const auto anchorA = GetWorldPoint(world, GetBodyA(world, joint), GetLocalAnchorA(world, joint));
-    const auto anchorB = GetWorldPoint(world, GetBodyB(world, joint), GetLocalAnchorB(world, joint));
+
+    const auto anchorA =
+        GetWorldPoint(world, GetBodyA(world, joint), GetLocalAnchorA(world, joint));
+    const auto anchorB =
+        GetWorldPoint(world, GetBodyB(world, joint), GetLocalAnchorB(world, joint));
     EXPECT_EQ(GetAnchorA(world, joint), anchorA);
     EXPECT_EQ(GetAnchorB(world, joint), anchorB);
 }

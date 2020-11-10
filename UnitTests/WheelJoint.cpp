@@ -41,21 +41,26 @@ TEST(WheelJointConf, ByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real))
-    {
-        case  4:
-            EXPECT_EQ(sizeof(WheelJointConf), std::size_t(124));
-            break;
-        case  8: EXPECT_EQ(sizeof(WheelJointConf), std::size_t(240)); break;
-        case 16: EXPECT_EQ(sizeof(WheelJointConf), std::size_t(480)); break;
-        default: FAIL(); break;
+    switch (sizeof(Real)) {
+    case 4:
+        EXPECT_EQ(sizeof(WheelJointConf), std::size_t(124));
+        break;
+    case 8:
+        EXPECT_EQ(sizeof(WheelJointConf), std::size_t(240));
+        break;
+    case 16:
+        EXPECT_EQ(sizeof(WheelJointConf), std::size_t(480));
+        break;
+    default:
+        FAIL();
+        break;
     }
 }
 
 TEST(WheelJointConf, DefaultConstruction)
 {
     WheelJointConf def{};
-    
+
     EXPECT_EQ(def.bodyA, InvalidBodyID);
     EXPECT_EQ(def.bodyB, InvalidBodyID);
     EXPECT_EQ(def.collideConnected, false);
@@ -75,7 +80,7 @@ TEST(WheelJointConf, Traits)
 {
     EXPECT_FALSE((IsIterable<WheelJointConf>::value));
     EXPECT_FALSE((IsAddable<WheelJointConf>::value));
-    EXPECT_FALSE((IsAddable<WheelJointConf,WheelJointConf>::value));
+    EXPECT_FALSE((IsAddable<WheelJointConf, WheelJointConf>::value));
 }
 
 TEST(WheelJointConf, Construction)
@@ -106,13 +111,13 @@ TEST(WheelJointConf, EnableMotor)
     World world;
     const auto b0 = CreateBody(world);
     const auto b1 = CreateBody(world);
-    
+
     auto jd = WheelJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
-    
+
     auto joint = Joint{jd};
     EXPECT_FALSE(IsMotorEnabled(joint));
     EnableMotor(joint, false);
@@ -126,13 +131,13 @@ TEST(WheelJointConf, MotorSpeed)
     World world;
     const auto b0 = CreateBody(world);
     const auto b1 = CreateBody(world);
-    
+
     auto jd = WheelJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
-    
+
     const auto newValue = 5_rad / 1_s;
     auto joint = Joint{jd};
     ASSERT_NE(GetMotorSpeed(joint), newValue);
@@ -146,13 +151,13 @@ TEST(WheelJointConf, MaxMotorTorque)
     World world;
     const auto b0 = CreateBody(world);
     const auto b1 = CreateBody(world);
-    
+
     auto jd = WheelJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
-    
+
     const auto newValue = 5_Nm;
     auto joint = Joint{jd};
     ASSERT_NE(GetMaxMotorTorque(joint), newValue);
@@ -164,19 +169,19 @@ TEST(WheelJointConf, MaxMotorTorque)
 TEST(WheelJointConf, GetAnchorAandB)
 {
     World world;
-    
+
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{-2_m, Real(+1.2f) * Meter};
-    
+
     const auto b0 = CreateBody(world, BodyConf{}.UseLocation(loc0));
     const auto b1 = CreateBody(world, BodyConf{}.UseLocation(loc1));
-    
+
     auto jd = WheelJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
-    
+
     auto joint = CreateJoint(world, Joint{jd});
     ASSERT_EQ(GetLocalAnchorA(world, joint), jd.localAnchorA);
     ASSERT_EQ(GetLocalAnchorB(world, joint), jd.localAnchorB);
@@ -187,19 +192,19 @@ TEST(WheelJointConf, GetAnchorAandB)
 TEST(WheelJointConf, GetJointTranslation)
 {
     World world;
-    
+
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{+1_m, +3_m};
-    
+
     const auto b0 = CreateBody(world, BodyConf{}.UseLocation(loc0));
     const auto b1 = CreateBody(world, BodyConf{}.UseLocation(loc1));
-    
+
     auto jd = WheelJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(-1_m, 5_m);
     jd.localAnchorB = Length2(+1_m, 5_m);
-    
+
     auto joint = CreateJoint(world, Joint{jd});
     EXPECT_EQ(GetJointTranslation(world, joint), Length(2_m));
 }
@@ -253,7 +258,7 @@ TEST(WheelJointConf, WithDynamicCircles)
     const auto joint = CreateJoint(world, Joint{jd});
     ASSERT_NE(joint, InvalidJointID);
     auto stepConf = StepConf{};
-    
+
     stepConf.doWarmStart = true;
     Step(world, stepConf);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
@@ -264,7 +269,7 @@ TEST(WheelJointConf, WithDynamicCircles)
     EXPECT_EQ(GetAngle(world, b2), 0_deg);
     EXPECT_EQ(GetAngularVelocity(world, joint), 0 * RadianPerSecond);
     EXPECT_EQ(GetAngularMass(world, joint), RotInertia(0));
-    
+
     SetFrequency(world, joint, 0_Hz);
     Step(world, stepConf);
     EXPECT_FALSE(IsMotorEnabled(world, joint));
@@ -275,9 +280,9 @@ TEST(WheelJointConf, WithDynamicCircles)
     EnableMotor(world, joint, true);
     EXPECT_TRUE(IsMotorEnabled(world, joint));
     Step(world, stepConf);
-    EXPECT_NEAR(static_cast<double>(StripUnit(GetAngularMass(world, joint))),
-                125.66370391845703, 0.1);
-    
+    EXPECT_NEAR(static_cast<double>(StripUnit(GetAngularMass(world, joint))), 125.66370391845703,
+                0.1);
+
     stepConf.doWarmStart = false;
     Step(world, stepConf);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
@@ -287,8 +292,8 @@ TEST(WheelJointConf, WithDynamicCircles)
     EXPECT_EQ(GetAngle(world, b1), 0_deg);
     EXPECT_EQ(GetAngle(world, b2), 0_deg);
     EXPECT_EQ(GetAngularVelocity(world, joint), 0 * RadianPerSecond);
-    EXPECT_NEAR(static_cast<double>(StripUnit(GetAngularMass(world, joint))),
-                125.66370391845703, 0.1);
+    EXPECT_NEAR(static_cast<double>(StripUnit(GetAngularMass(world, joint))), 125.66370391845703,
+                0.1);
 }
 
 TEST(WheelJointConf, ShiftOrigin)

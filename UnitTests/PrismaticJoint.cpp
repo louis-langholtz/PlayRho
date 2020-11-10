@@ -35,14 +35,19 @@ TEST(PrismaticJointConf, ByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real))
-    {
-        case  4:
-            EXPECT_EQ(sizeof(PrismaticJointConf), std::size_t(160));
-            break;
-        case  8: EXPECT_EQ(sizeof(PrismaticJointConf), std::size_t(312)); break;
-        case 16: EXPECT_EQ(sizeof(PrismaticJointConf), std::size_t(624)); break;
-        default: FAIL(); break;
+    switch (sizeof(Real)) {
+    case 4:
+        EXPECT_EQ(sizeof(PrismaticJointConf), std::size_t(160));
+        break;
+    case 8:
+        EXPECT_EQ(sizeof(PrismaticJointConf), std::size_t(312));
+        break;
+    case 16:
+        EXPECT_EQ(sizeof(PrismaticJointConf), std::size_t(624));
+        break;
+    default:
+        FAIL();
+        break;
     }
 }
 
@@ -51,13 +56,13 @@ TEST(PrismaticJointConf, Construction)
     auto world = World{};
     const auto b0 = CreateBody(world);
     const auto b1 = CreateBody(world);
-    
+
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
-    
+
     auto joint = Joint{jd};
     EXPECT_EQ(GetBodyA(joint), b0);
     EXPECT_EQ(GetBodyB(joint), b1);
@@ -96,13 +101,13 @@ TEST(PrismaticJointConf, EnableLimit)
     auto world = World{};
     const auto b0 = CreateBody(world);
     const auto b1 = CreateBody(world);
-    
+
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
-    
+
     auto joint = Joint{jd};
     EXPECT_FALSE(IsLimitEnabled(joint));
     EnableLimit(joint, false);
@@ -120,13 +125,13 @@ TEST(PrismaticJointConf, ShiftOrigin)
     auto world = World{};
     const auto b0 = CreateBody(world);
     const auto b1 = CreateBody(world);
-    
+
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
-    
+
     auto joint = Joint{jd};
 
     const auto newOrigin = Length2{1_m, 1_m};
@@ -138,13 +143,13 @@ TEST(PrismaticJointConf, EnableMotor)
     World world;
     const auto b0 = CreateBody(world);
     const auto b1 = CreateBody(world);
-    
+
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
-    
+
     auto joint = Joint{jd};
     EXPECT_FALSE(IsMotorEnabled(joint));
     EnableMotor(joint, false);
@@ -158,13 +163,13 @@ TEST(PrismaticJointConf, SetMaxMotorForce)
     World world;
     const auto b0 = CreateBody(world);
     const auto b1 = CreateBody(world);
-    
+
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
-    
+
     auto joint = Joint{jd};
     ASSERT_EQ(GetMaxMotorForce(joint), 0_N);
     SetMaxMotorForce(joint, 2_N);
@@ -176,13 +181,13 @@ TEST(PrismaticJointConf, MotorSpeed)
     World world;
     const auto b0 = CreateBody(world);
     const auto b1 = CreateBody(world);
-    
+
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
-    
+
     const auto newValue = Real(5) * RadianPerSecond;
     auto joint = Joint{jd};
     ASSERT_NE(GetMotorSpeed(joint), newValue);
@@ -196,13 +201,13 @@ TEST(PrismaticJointConf, SetLinearLimits)
     World world;
     const auto b0 = CreateBody(world);
     const auto b1 = CreateBody(world);
-    
+
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
-    
+
     const auto upperValue = +5_m;
     const auto lowerValue = -8_m;
     auto joint = Joint{jd};
@@ -216,19 +221,19 @@ TEST(PrismaticJointConf, SetLinearLimits)
 TEST(PrismaticJointConf, GetAnchorAandB)
 {
     World world;
-    
+
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{-2_m, Real(+1.2f) * Meter};
 
     const auto b0 = CreateBody(world, BodyConf{}.UseLocation(loc0));
     const auto b1 = CreateBody(world, BodyConf{}.UseLocation(loc1));
-    
+
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
-    
+
     auto joint = CreateJoint(world, Joint{jd});
     ASSERT_EQ(GetLocalAnchorA(world, joint), jd.localAnchorA);
     ASSERT_EQ(GetLocalAnchorB(world, joint), jd.localAnchorB);
@@ -239,19 +244,19 @@ TEST(PrismaticJointConf, GetAnchorAandB)
 TEST(PrismaticJointConf, GetJointTranslation)
 {
     World world;
-    
+
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{+1_m, +3_m};
-    
+
     const auto b0 = CreateBody(world, BodyConf{}.UseLocation(loc0));
     const auto b1 = CreateBody(world, BodyConf{}.UseLocation(loc1));
-    
+
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(-1_m, 5_m);
     jd.localAnchorB = Length2(+1_m, 5_m);
-    
+
     auto joint = CreateJoint(world, Joint{jd});
     EXPECT_EQ(GetJointTranslation(world, joint), Length(2_m));
 }
@@ -259,19 +264,19 @@ TEST(PrismaticJointConf, GetJointTranslation)
 TEST(PrismaticJointConf, GetLinearVelocity)
 {
     World world;
-    
+
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{+1_m, +3_m};
-    
+
     const auto b0 = CreateBody(world, BodyConf{}.UseLocation(loc0));
     const auto b1 = CreateBody(world, BodyConf{}.UseLocation(loc1));
-    
+
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(-1_m, 5_m);
     jd.localAnchorB = Length2(+1_m, 5_m);
-    
+
     EXPECT_EQ(GetLinearVelocity(world, jd), LinearVelocity(0));
 }
 
@@ -286,7 +291,8 @@ TEST(PrismaticJointConf, WithDynamicCirclesAndLimitEnabled)
     CreateFixture(world, b1, Shape{circle});
     CreateFixture(world, b2, Shape{circle});
     const auto anchor = Length2(2_m, 1_m);
-    const auto jd = GetPrismaticJointConf(world, b1, b2, anchor, UnitVec::GetRight()).UseEnableLimit(true);
+    const auto jd =
+        GetPrismaticJointConf(world, b1, b2, anchor, UnitVec::GetRight()).UseEnableLimit(true);
     const auto joint = CreateJoint(world, Joint{jd});
     ASSERT_NE(joint, InvalidJointID);
     {
