@@ -469,3 +469,57 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
         EXPECT_EQ(GetAngle(world, b2), 0_deg);
     }
 }
+
+TEST(RevoluteJointConf, GetRevoluteJointConfFromJoint)
+{
+    auto conf = RevoluteJointConf{BodyID(0u), BodyID(1u)};
+    conf.UseCollideConnected(true);
+    conf.impulse = Vec3{Real(3), Real(4), Real(5)};
+    conf.angularMotorImpulse = AngularMomentum{Real(2) * NewtonMeterSecond};
+    conf.referenceAngle = 20_deg;
+    conf.enableLimit = true;
+    conf.lowerAngle = 10_deg;
+    conf.upperAngle = 30_deg;
+    conf.enableMotor = true;
+    conf.motorSpeed = 3_rpm;
+    conf.maxMotorTorque = Torque{Real(2.1) * NewtonMeter};
+    auto result = RevoluteJointConf{};
+    EXPECT_NO_THROW(result = GetRevoluteJointConf(conf));
+    EXPECT_EQ(result.bodyA, conf.bodyA);
+    EXPECT_EQ(result.bodyB, conf.bodyB);
+    EXPECT_EQ(result.collideConnected, conf.collideConnected);
+    EXPECT_EQ(result.localAnchorA, conf.localAnchorA);
+    EXPECT_EQ(result.localAnchorB, conf.localAnchorB);
+    EXPECT_EQ(result.impulse, conf.impulse);
+    EXPECT_EQ(result.angularMotorImpulse, conf.angularMotorImpulse);
+    EXPECT_EQ(result.referenceAngle, conf.referenceAngle);
+    EXPECT_EQ(result.enableLimit, conf.enableLimit);
+    EXPECT_EQ(result.lowerAngle, conf.lowerAngle);
+    EXPECT_EQ(result.upperAngle, conf.upperAngle);
+    EXPECT_EQ(result.enableMotor, conf.enableMotor);
+    EXPECT_EQ(result.motorSpeed, conf.motorSpeed);
+}
+
+TEST(RevoluteJointConf, GetAngle)
+{
+    auto world = World{};
+    const auto bodyA = world.CreateBody();
+    const auto bodyB = world.CreateBody();
+    auto conf = RevoluteJointConf{bodyA, bodyB};
+    auto angle = Angle{};
+    EXPECT_NO_THROW(angle = GetAngle(world, conf));
+    EXPECT_EQ(angle, 0_deg);
+    // TODO: add tests for angles other than 0 degrees
+}
+
+TEST(RevoluteJointConf, GetAngularVelocity)
+{
+    auto world = World{};
+    const auto bodyA = world.CreateBody();
+    const auto bodyB = world.CreateBody();
+    auto conf = RevoluteJointConf{bodyA, bodyB};
+    auto angularVelocity = AngularVelocity{};
+    EXPECT_NO_THROW(angularVelocity = GetAngularVelocity(world, conf));
+    EXPECT_EQ(angularVelocity, 0_rpm);
+    // TODO: add tests for angularVelocity other than 0 rpm
+}
