@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.13.0</span>
+   &#160;<span id="projectnumber">0.13.1</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -578,8 +578,8 @@ Destroy these using the <code><a class="el" href="classplayrho_1_1d2_1_1World.ht
 From a memory management perspective, bodies own Fixture instances. </dd>
 <dd>
 On a 64-bit architecture with 4-byte Real, this data structure is at least 192-bytes large.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;.">World</a>, Fixture </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#_a0">Body.cpp</a>.</dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;.">World</a>, <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html" title="Configuration for a body.">BodyConf</a>. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#_a0">Body.cpp</a>, and <a class="el" href="Joint_8cpp-example.html#_a11">Joint.cpp</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a14412adef525843359094736776c0cc1"></a>
@@ -789,8 +789,6 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 <dl class="section return"><dt>Returns</dt><dd>the current world rotation angle. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a100b4822505143079cde749303494809" title="Gets the body&#39;s sweep.">GetSweep</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a6831cb0077f88907a3c4c28ae398515d" title="Gets the body transform for the body&#39;s origin.">GetTransformation</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#adaf7c703a4ec7a32807da277c8b57a63">playrho::d2::Dump()</a>.</p>
-
 </div>
 </div>
 <a id="a6d1817724aad0e2655c16c4721a75d48"></a>
@@ -846,8 +844,6 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 
 <p>Gets the angular damping of the body. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a85169a6266e1ecfa2e25ecc12175218a" title="Sets the angular damping of the body.">SetAngularDamping</a>. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#adaf7c703a4ec7a32807da277c8b57a63">playrho::d2::Dump()</a>.</p>
 
 </div>
 </div>
@@ -993,8 +989,6 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 <p>Gets the linear damping of the body. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#acd5523b855b544fe285d0fa5a23c3398" title="Sets the linear damping of the body.">SetLinearDamping</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#adaf7c703a4ec7a32807da277c8b57a63">playrho::d2::Dump()</a>.</p>
-
 </div>
 </div>
 <a id="a63db5146e976e495518b850c37be060d"></a>
@@ -1030,8 +1024,6 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a6831cb0077f88907a3c4c28ae398515d" title="Gets the body transform for the body&#39;s origin.">GetTransformation</a>. </dd></dl>
 </li>
 </ol>
-
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#adaf7c703a4ec7a32807da277c8b57a63">playrho::d2::Dump()</a>.</p>
 
 </div>
 </div>
@@ -1122,7 +1114,7 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 <p>Gets the type of this body. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea" title="Sets the type of this body.">SetType</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#adaf7c703a4ec7a32807da277c8b57a63">playrho::d2::Dump()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a41cc43a409194b7cbab845f8bae69f95">playrho::d2::WorldImpl::SetBody()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a41cc43a409194b7cbab845f8bae69f95">playrho::d2::WorldImpl::SetBody()</a>.</p>
 
 </div>
 </div>
@@ -1180,8 +1172,6 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 
 <p>Gets the velocity. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a6c21c223175b12cd68cea10484996fb1" title="Sets the body&#39;s velocity (linear and angular velocity).">SetVelocity</a>. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#adaf7c703a4ec7a32807da277c8b57a63">playrho::d2::Dump()</a>.</p>
 
 </div>
 </div>
@@ -1242,8 +1232,6 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 <dl class="section return"><dt>Returns</dt><dd>true if the body is awake. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a794c4c1b8c24aedb959c5031a5ecde69" title="Awakens this body.">SetAwake</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#adaf7c703a4ec7a32807da277c8b57a63">playrho::d2::Dump()</a>.</p>
-
 </div>
 </div>
 <a id="ae12e0fe1aeb00907e47aba6d4edd0746"></a>
@@ -1271,8 +1259,6 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 
 <p>Gets the enabled/disabled state of the body. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a2f3382a712a5573c2a476050d60513a3" title="Sets the enabled state.">SetEnabled</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a0caf1447c287fcfa4833726acd263439" title="Unsets the enabled flag.">UnsetEnabled</a>. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#adaf7c703a4ec7a32807da277c8b57a63">playrho::d2::Dump()</a>.</p>
 
 </div>
 </div>
@@ -1302,8 +1288,6 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 <p>Does this body have fixed rotation? </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#ad73e9bd7dbdeaaaa4618cbb06559dd34" title="Sets this body to have fixed rotation.">SetFixedRotation</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#adaf7c703a4ec7a32807da277c8b57a63">playrho::d2::Dump()</a>.</p>
-
 </div>
 </div>
 <a id="a43a08c5977e1a5a0ebfb823dcf1615bd"></a>
@@ -1331,8 +1315,6 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 
 <p>Is this body treated like a bullet for continuous collision detection? </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a91f44b797b80539941b65a15c2ffee5d" title="Gets the type of this body.">GetType</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea" title="Sets the type of this body.">SetType</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a50b9cf4b6ab620a4442cf19a4ee39923" title="Sets the impenetrable status of this body.">SetImpenetrable</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ac0a4e7da62712ec6e5c10f8637b59eca" title="Unsets the impenetrable status of this body.">UnsetImpenetrable</a>. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#adaf7c703a4ec7a32807da277c8b57a63">playrho::d2::Dump()</a>.</p>
 
 </div>
 </div>
@@ -1390,7 +1372,7 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 <p>Gets whether or not this body allowed to sleep. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a96bfa8ab63b3246ed714573661ea3618" title="Sets whether or not this body is allowed to sleep.">SetSleepingAllowed</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#adaf7c703a4ec7a32807da277c8b57a63">playrho::d2::Dump()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7821d9464b36b49ddb893ef9c2c262fb">UnsetAwake()</a>, and <a class="el" href="classplayrho_1_1d2_1_1Body.html#a93a71d2a1b85e02d33548c6672437599">UnsetAwakeFlag()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7821d9464b36b49ddb893ef9c2c262fb">UnsetAwake()</a>, and <a class="el" href="classplayrho_1_1d2_1_1Body.html#a93a71d2a1b85e02d33548c6672437599">UnsetAwakeFlag()</a>.</p>
 
 </div>
 </div>
@@ -4635,7 +4617,7 @@ This body's <code>GetVelocity</code> method returns zero linear and zero angular
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a></li>
-    <li class="footer">Generated on Sun Nov 8 2020 19:02:18 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Tue Nov 10 2020 12:40:28 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.13.0</span>
+   &#160;<span id="projectnumber">0.13.1</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -161,7 +161,7 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memdesc:a1b06f0e9027ce164fc6dd50d050c7a7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment. <br /></td></tr>
 <tr class="separator:a1b06f0e9027ce164fc6dd50d050c7a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79d292f30f9366f3928e02ddec0b5e94"><td class="memTemplParams" colspan="2"><a id="a79d292f30f9366f3928e02ddec0b5e94"></a>
-template&lt;typename T , typename Tp  = std::decay_t&lt;T&gt;, typename  = std::enable_if_t&lt;            !std::is_same&lt;Tp, Joint&gt;::value &amp;&amp; std::is_copy_constructible&lt;Tp&gt;::value        &gt;&gt; </td></tr>
+template&lt;typename T , typename Tp  = std::decay_t&lt;T&gt;, typename  = std::enable_if_t&lt;!std::is_same&lt;Tp, Joint&gt;::value &amp;&amp;                                          std::is_copy_constructible&lt;Tp&gt;::value&gt;&gt; </td></tr>
 <tr class="memitem:a79d292f30f9366f3928e02ddec0b5e94"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#a79d292f30f9366f3928e02ddec0b5e94">operator=</a> (T &amp;&amp;other) noexcept</td></tr>
 <tr class="memdesc:a79d292f30f9366f3928e02ddec0b5e94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment support for any valid underlying configuration. <br /></td></tr>
 <tr class="separator:a79d292f30f9366f3928e02ddec0b5e94"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -409,10 +409,12 @@ Related Functions</h2></td></tr>
 <div class="textblock"><p><a class="el" href="classplayrho_1_1d2_1_1Joint.html" title="Joint class.">Joint</a> class. </p>
 <p>This is a concrete manifestation of the joint concept. Joints are constraints that are used to constrain one or more bodies in various fashions. Some joints also feature limits and motors. </p><dl class="section note"><dt>Note</dt><dd>This class's design provides a "polymorphic value type" offering polymorphism without public inheritance. This is based on a technique that's described by Sean Parent in his January 2017 Norwegian Developers Conference London talk "Better Code: Runtime
   Polymorphism".</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a href="https://youtu.be/QGcVXgEVMJg">https://youtu.be/QGcVXgEVMJg</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__JointsGroup.html" title="The user creatable classes that specify constraints on one or more body instances.">Joint Classes</a>, <a class="el" href="group__PhysicalEntities.html" title="Concepts and types associated with physical entities within a world.">Physical Entities</a>. </dd>
+<dd>
+<a href="https://youtu.be/QGcVXgEVMJg">https://youtu.be/QGcVXgEVMJg</a> </dd>
 <dd>
 <a href="https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Polymorphic_Value_Types">https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Polymorphic_Value_Types</a> </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#_a50">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="DistanceJoint_8cpp-example.html#_a12">DistanceJoint.cpp</a>, <a class="el" href="FrictionJoint_8cpp-example.html#_a10">FrictionJoint.cpp</a>, <a class="el" href="Joint_8cpp-example.html#_a9">Joint.cpp</a>, <a class="el" href="PrismaticJoint_8cpp-example.html#_a5">PrismaticJoint.cpp</a>, <a class="el" href="PulleyJoint_8cpp-example.html#_a33">PulleyJoint.cpp</a>, <a class="el" href="RevoluteJoint_8cpp-example.html#_a6">RevoluteJoint.cpp</a>, <a class="el" href="RopeJoint_8cpp-example.html#_a5">RopeJoint.cpp</a>, <a class="el" href="TargetJoint_8cpp-example.html#_a15">TargetJoint.cpp</a>, <a class="el" href="WeldJoint_8cpp-example.html#_a4">WeldJoint.cpp</a>, <a class="el" href="WheelJoint_8cpp-example.html#_a6">WheelJoint.cpp</a>, and <a class="el" href="World_8cpp-example.html#_a50">World.cpp</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Friends And Related Function Documentation</h2>
 <a id="a8736e94424a5e0f88a983a4d39097e4d"></a>
@@ -2279,7 +2281,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a></li>
-    <li class="footer">Generated on Sun Nov 8 2020 19:02:18 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Tue Nov 10 2020 12:40:28 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

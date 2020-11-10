@@ -63,19 +63,19 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "Body_8cpp-example.html",
-"classplayrho_1_1Interval.html#a4baf1dd76711ae5151d0ee07a8b345d0",
-"classplayrho_1_1d2_1_1ChainShapeConf.html#a0beaec4204c1bbce524ed5d27cff04fc",
-"classplayrho_1_1d2_1_1DynamicTree.html#a3e47af4d29d32f41e00a90d854a73adb",
-"classplayrho_1_1d2_1_1Manifold.html#a05380ac6609b4f7b27e4c1ae9e9e7535",
-"classplayrho_1_1d2_1_1VertexSet.html#ad36911307335afc1a9b4e6ddcc33a29a",
-"classplayrho_1_1d2_1_1World.html#adca4e4bff8f8c98a0247a10e9551edca",
-"classplayrho_1_1propagate__const.html",
-"group__Math.html#ga52a7716aaab729705e73d4d533e81672",
-"structplayrho_1_1ContactFeature.html#a874b42008ce4794858edc982ba13534a",
-"structplayrho_1_1TypeInfo_3_01d2_1_1DistanceJointConf_01_4.html#afc1c45b4860df2eab4e95808d828b6a7",
-"structplayrho_1_1d2_1_1FixtureConf.html#ad42511ad03df6a3efd57b4b957e11c52",
-"structplayrho_1_1d2_1_1PrismaticJointConf.html#a354d65b6b0cac0916b4788e0ce1a5470",
-"structplayrho_1_1d2_1_1WeldJointConf.html#a1ca7cf4000562ae2b92cce70e2446dce"
+"classplayrho_1_1Interval.html",
+"classplayrho_1_1d2_1_1BodyConstraint.html#a31da1c05473e3f5dc3d03a4dee43b1ea",
+"classplayrho_1_1d2_1_1DistanceProxy.html#ac546ae436486377126a13b246ed97d55",
+"classplayrho_1_1d2_1_1Joint.html#afbe06ff8376003dcba368f69191b97fd",
+"classplayrho_1_1d2_1_1VelocityConstraint.html#aed8f9f12932d039a598e993d6633c6ec",
+"classplayrho_1_1d2_1_1World.html#ad432f7c9779ee902b41cdfab944c8885",
+"classplayrho_1_1d2_1_1WorldManifold.html#a1d62b3f2bbc2d918985cc5c4fc6e96a0",
+"group__Math.html#ga07dcf271b85b501cd2d7188902066e55",
+"structplayrho_1_1ConstraintSolverConf.html#a1573412c0fb655a80e4059287620123f",
+"structplayrho_1_1ToiStepStats.html#ac02dc191dbd8b62af27ee8a8756b6950",
+"structplayrho_1_1d2_1_1FixtureConf.html#a4b0e7e9ddc794a1f751d36fcfe355062",
+"structplayrho_1_1d2_1_1PrismaticJointConf.html",
+"structplayrho_1_1d2_1_1VelocityConstraint_1_1Conf.html#a318e6cdd10c95ad32829125160a8950a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

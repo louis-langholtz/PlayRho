@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.13.0</span>
+   &#160;<span id="projectnumber">0.13.1</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -2189,7 +2189,7 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 <p>Child counter type. </p>
 <p>Relating to "children" of shape where each child is a convex shape possibly comprising a concave shape. </p><dl class="section note"><dt>Note</dt><dd>This type must always be able to contain the <code>MaxChildCount</code> value. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a31">World.cpp</a>, and <a class="el" href="WorldContact_8cpp-example.html#a36">WorldContact.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Shape_8cpp-example.html#a11">Shape.cpp</a>, <a class="el" href="World_8cpp-example.html#a31">World.cpp</a>, and <a class="el" href="WorldContact_8cpp-example.html#a36">WorldContact.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2382,7 +2382,7 @@ This data type is 6-bytes large (on at least one 64-bit platform). </dd></dl>
 
 <p>2-element vector of Length quantities. </p>
 <dl class="section note"><dt>Note</dt><dd>Often used as a 2-dimensional distance or location vector. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a32">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#a97">WorldBody.cpp</a>, and <a class="el" href="WorldFixture_8cpp-example.html#a27">WorldFixture.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="DistanceJoint_8cpp-example.html#a49">DistanceJoint.cpp</a>, <a class="el" href="PrismaticJoint_8cpp-example.html#a4">PrismaticJoint.cpp</a>, <a class="el" href="PulleyJoint_8cpp-example.html#a48">PulleyJoint.cpp</a>, <a class="el" href="RevoluteJoint_8cpp-example.html#a4">RevoluteJoint.cpp</a>, <a class="el" href="RopeJoint_8cpp-example.html#a16">RopeJoint.cpp</a>, <a class="el" href="Shape_8cpp-example.html#a29">Shape.cpp</a>, <a class="el" href="TargetJoint_8cpp-example.html#a1">TargetJoint.cpp</a>, <a class="el" href="WeldJoint_8cpp-example.html#a27">WeldJoint.cpp</a>, <a class="el" href="WheelJoint_8cpp-example.html#a37">WheelJoint.cpp</a>, <a class="el" href="World_8cpp-example.html#a32">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#a97">WorldBody.cpp</a>, and <a class="el" href="WorldFixture_8cpp-example.html#a27">WorldFixture.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2516,7 +2516,7 @@ The note regarding division applies even more so when using a fixed-point type (
 <a href="https://en.cppreference.com/w/cpp/types/is_floating_point">https://en.cppreference.com/w/cpp/types/is_floating_point</a> </dd>
 <dd>
 <a href="https://en.cppreference.com/w/cpp/named_req/LiteralType">https://en.cppreference.com/w/cpp/named_req/LiteralType</a> </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a17">Body.cpp</a>, <a class="el" href="World_8cpp-example.html#a4">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#a16">WorldBody.cpp</a>, <a class="el" href="WorldContact_8cpp-example.html#a19">WorldContact.cpp</a>, and <a class="el" href="WorldFixture_8cpp-example.html#a14">WorldFixture.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a17">Body.cpp</a>, <a class="el" href="DistanceJoint_8cpp-example.html#a8">DistanceJoint.cpp</a>, <a class="el" href="GearJoint_8cpp-example.html#a20">GearJoint.cpp</a>, <a class="el" href="MotorJoint_8cpp-example.html#a4">MotorJoint.cpp</a>, <a class="el" href="PrismaticJoint_8cpp-example.html#a50">PrismaticJoint.cpp</a>, <a class="el" href="PulleyJoint_8cpp-example.html#a31">PulleyJoint.cpp</a>, <a class="el" href="RevoluteJoint_8cpp-example.html#a51">RevoluteJoint.cpp</a>, <a class="el" href="Shape_8cpp-example.html#a5">Shape.cpp</a>, <a class="el" href="TargetJoint_8cpp-example.html#a9">TargetJoint.cpp</a>, <a class="el" href="WeldJoint_8cpp-example.html#a46">WeldJoint.cpp</a>, <a class="el" href="WheelJoint_8cpp-example.html#a40">WheelJoint.cpp</a>, <a class="el" href="World_8cpp-example.html#a4">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#a16">WorldBody.cpp</a>, <a class="el" href="WorldContact_8cpp-example.html#a19">WorldContact.cpp</a>, and <a class="el" href="WorldFixture_8cpp-example.html#a14">WorldFixture.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -3103,6 +3103,8 @@ template&lt;&gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Specialize this function for the types which have an invalid value concept. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#ab903c93dd80fcff6148a66dbc7c89687" title="Gets whether the given manifold is valid.">IsValid</a>. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="TargetJoint_8cpp-example.html#a14">TargetJoint.cpp</a>.</dd>
+</dl>
 
 </div>
 </div>
@@ -6088,7 +6090,7 @@ template&lt;typename T &gt; </div>
 <div class="line">    <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceplayrho.html#aed10ace7e6267068035ed85c63b8a70a">FixtureID</a><span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span>FixtureID::underlying_type<span class="keyword">&gt;</span>(-1))</div>
 </div><!-- fragment -->
 <p>Invalid fixture ID value. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a47">World.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a25">WorldBody.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="DistanceJoint_8cpp-example.html#a36">DistanceJoint.cpp</a>, <a class="el" href="World_8cpp-example.html#a47">World.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a25">WorldBody.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -6474,7 +6476,7 @@ Any narrowing is intentional.</dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li>
-    <li class="footer">Generated on Sun Nov 8 2020 19:02:17 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Tue Nov 10 2020 12:40:28 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

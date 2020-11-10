@@ -33430,111 +33430,6 @@
       <arglist>(const Acceleration &amp;lhs, const Real rhs)</arglist>
     </member>
     <member kind="function">
-      <type>void</type>
-      <name>Dump</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a3e54c1c3ec6046814745a707a6ab5c20</anchor>
-      <arglist>(const World &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Dump</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>adaf7c703a4ec7a32807da277c8b57a63</anchor>
-      <arglist>(const Body &amp;body, std::size_t bodyIndex)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Dump</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0edcee4d69e5ef22235779d88a410a62</anchor>
-      <arglist>(const Joint &amp;joint, std::size_t index, const World &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Dump</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a97399068d6d8f0c7f7a0b8a64046b2e0</anchor>
-      <arglist>(const DistanceJointConf &amp;joint, std::size_t index, const World &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Dump</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aade2ddd66ed8d1fafcf5c75264edc45d</anchor>
-      <arglist>(const FrictionJointConf &amp;joint, std::size_t index, const World &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Dump</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6939486745339cce9ad925c666c5f7b9</anchor>
-      <arglist>(const GearJointConf &amp;joint, std::size_t index, const World &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Dump</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa19ee8108bf1028b3c4a363ac3389932</anchor>
-      <arglist>(const MotorJointConf &amp;joint, std::size_t index, const World &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Dump</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a48d2939c5182af21254159de98616df7</anchor>
-      <arglist>(const TargetJointConf &amp;joint, std::size_t index, const World &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Dump</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a3205ca6bde4a8e18f0ebb1aafee1c959</anchor>
-      <arglist>(const PrismaticJointConf &amp;joint, std::size_t index, const World &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Dump</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a2a523c727a059dca9137e2babb350a64</anchor>
-      <arglist>(const PulleyJointConf &amp;joint, std::size_t index, const World &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Dump</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab94ff1e6437081bc6e44d8fd37a3e53a</anchor>
-      <arglist>(const RevoluteJointConf &amp;joint, std::size_t index, const World &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Dump</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a65b43f4340d529e13d2d1608109d3302</anchor>
-      <arglist>(const RopeJointConf &amp;joint, std::size_t index, const World &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Dump</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7274a297d43b60bf5528e71797ac42a0</anchor>
-      <arglist>(const WeldJointConf &amp;joint, std::size_t index, const World &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Dump</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a93b367b7d94608305a5723f00d6e9fc4</anchor>
-      <arglist>(const WheelJointConf &amp;joint, std::size_t index, const World &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Dump</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af26a4091d87146921b05bfdd000f09de</anchor>
-      <arglist>(const Fixture &amp;fixture, std::size_t bodyIndex)</arglist>
-    </member>
-    <member kind="function">
       <type>LinearVelocity2</type>
       <name>GetContactRelVelocity</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -35632,6 +35527,13 @@
       <name>GetBodyB</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>ad93f572c35fb47bafd90668d4be3a9fd</anchor>
+      <arglist>(const JointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>GetCollideConnected</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae4acb95cd2fdc94eb04c04ed03a6dd77</anchor>
       <arglist>(const JointConf &amp;object) noexcept</arglist>
     </member>
     <member kind="function">
@@ -39993,6 +39895,7 @@
     <title>Physical Entities</title>
     <filename>group__PhysicalEntities.html</filename>
     <class kind="class">playrho::d2::Body</class>
+    <class kind="struct">playrho::d2::BodyConf</class>
     <class kind="class">playrho::d2::Contact</class>
     <class kind="struct">playrho::d2::FixtureConf</class>
     <class kind="class">playrho::d2::Joint</class>
