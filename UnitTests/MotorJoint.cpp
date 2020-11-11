@@ -124,6 +124,8 @@ TEST(MotorJoint, Construction)
     EXPECT_EQ(GetMaxForce(conf), def.maxForce);
     EXPECT_EQ(GetMaxTorque(conf), def.maxTorque);
     EXPECT_EQ(GetCorrectionFactor(conf), def.correctionFactor);
+    EXPECT_EQ(GetMaxForce(Joint{conf}), def.maxForce);
+    EXPECT_EQ(GetMaxTorque(Joint{conf}), def.maxTorque);
 }
 
 TEST(MotorJoint, ShiftOrigin)
@@ -273,6 +275,15 @@ TEST(MotorJoint, SetAngularOffset)
     ASSERT_EQ(GetAngularOffset(world, joint), 0_deg);
     SetAngularOffset(world, joint, 45_deg);
     EXPECT_EQ(GetAngularOffset(world, joint), 45_deg);
+}
+
+TEST(MotorJointConf, GetAngularMass)
+{
+    auto conf = MotorJointConf{};
+    conf.angularMass = RotInertia{2_m2 * 3_kg / SquareRadian}; // L^2 M QP^-2
+    auto rotInertia = RotInertia{};
+    EXPECT_NO_THROW(rotInertia = GetAngularMass(Joint{conf}));
+    EXPECT_EQ(conf.angularMass, rotInertia);
 }
 
 TEST(MotorJointConf, EqualsOperator)

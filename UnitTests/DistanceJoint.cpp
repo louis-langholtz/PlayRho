@@ -291,22 +291,14 @@ TEST(DistanceJointConf, GetReferenceAngleThrows)
 
 TEST(DistanceJointConf, GetMotorSpeedThrows)
 {
-    auto world = World{};
-    const auto bA = CreateBody(world);
-    ASSERT_NE(bA, InvalidBodyID);
-    const auto bB = CreateBody(world);
-    ASSERT_NE(bB, InvalidBodyID);
-    auto def = DistanceJointConf{};
-    def.bodyA = bA;
-    def.bodyB = bB;
-    def.collideConnected = false;
-    def.localAnchorA = Length2(21_m, -2_m);
-    def.localAnchorB = Length2(13_m, 12_m);
-    def.length = 5_m;
-    def.frequency = 67_Hz;
-    def.dampingRatio = Real(0.8);
-    const auto joint = CreateJoint(world, def);
-    EXPECT_THROW(GetMotorSpeed(GetJoint(world, joint)), std::invalid_argument);
+    const auto joint = Joint{DistanceJointConf{}};
+    EXPECT_THROW(GetMotorSpeed(joint), std::invalid_argument);
+}
+
+TEST(DistanceJointConf, SetMotorSpeedThrows)
+{
+    auto joint = Joint{DistanceJointConf{}};
+    EXPECT_THROW(SetMotorSpeed(joint, 1_rpm), std::invalid_argument);
 }
 
 TEST(DistanceJointConf, SetFrequencyFreeFunction)

@@ -222,6 +222,7 @@ TEST(WheelJointConf, GetWheelJointConf)
     ASSERT_EQ(GetLocalAnchorA(joint), def.localAnchorA);
     ASSERT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
     ASSERT_EQ(GetLocalXAxisA(joint), def.localXAxisA);
+    ASSERT_EQ(GetLocalYAxisA(joint), def.localYAxisA);
     ASSERT_EQ(IsMotorEnabled(joint), def.enableMotor);
     ASSERT_EQ(GetMaxMotorTorque(joint), def.maxMotorTorque);
     ASSERT_EQ(GetMotorSpeed(joint), def.motorSpeed);

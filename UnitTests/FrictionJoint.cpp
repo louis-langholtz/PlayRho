@@ -205,6 +205,27 @@ TEST(FrictionJointConf, ShiftOrigin)
     EXPECT_EQ(def.angularMass, copy.angularMass);
 }
 
+TEST(FrictionJointConf, GetMotorSpeedThrows)
+{
+    const auto joint = Joint{FrictionJointConf{}};
+    EXPECT_THROW(GetMotorSpeed(joint), std::invalid_argument);
+}
+
+TEST(FrictionJointConf, SetMotorSpeedThrows)
+{
+    auto joint = Joint{FrictionJointConf{}};
+    EXPECT_THROW(SetMotorSpeed(joint, 1_rpm), std::invalid_argument);
+}
+
+TEST(FrictionJointConf, GetAngularMass)
+{
+    auto conf = FrictionJointConf{};
+    conf.angularMass = RotInertia{2_m2 * 3_kg / SquareRadian}; // L^2 M QP^-2
+    auto rotInertia = RotInertia{};
+    EXPECT_NO_THROW(rotInertia = GetAngularMass(Joint{conf}));
+    EXPECT_EQ(conf.angularMass, rotInertia);
+}
+
 TEST(FrictionJointConf, EqualsOperator)
 {
     EXPECT_TRUE(FrictionJointConf() == FrictionJointConf());
