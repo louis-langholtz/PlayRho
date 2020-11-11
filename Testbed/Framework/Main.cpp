@@ -332,7 +332,7 @@ static const char* ToString(BodyType type) noexcept
     return "Unknown"; // should not be reached
 }
 
-static const char* ToName(JointType type) noexcept
+static const char* ToName(TypeID type) noexcept
 {
     if (type == GetTypeID<RevoluteJointConf>()) return "Revolute";
     if (type == GetTypeID<PrismaticJointConf>()) return "Prismatic";

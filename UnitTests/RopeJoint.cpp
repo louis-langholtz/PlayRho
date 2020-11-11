@@ -221,3 +221,8 @@ TEST(RopeJointConf, NotEqualsOperator)
     }
     // TODO: test remaining fields.
 }
+
+TEST(RopeJointConf, GetName)
+{
+    EXPECT_STREQ(GetName(GetTypeID<RopeJointConf>()), "d2::RopeJointConf");
+}

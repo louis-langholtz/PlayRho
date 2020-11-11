@@ -632,3 +632,8 @@ TEST(RevoluteJointConf, NotEqualsOperator)
     }
     // TODO: test remaining fields.
 }
+
+TEST(RevoluteJointConf, GetName)
+{
+    EXPECT_STREQ(GetName(GetTypeID<RevoluteJointConf>()), "d2::RevoluteJointConf");
+}

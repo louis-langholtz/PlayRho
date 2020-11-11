@@ -61,7 +61,7 @@ void SetJoint(World& world, JointID id, const Joint& def)
     world.SetJoint(id, def);
 }
 
-JointType GetType(const World& world, JointID id)
+TypeID GetType(const World& world, JointID id)
 {
     return GetType(world.GetJoint(id));
 }

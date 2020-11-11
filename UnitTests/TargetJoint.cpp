@@ -306,3 +306,8 @@ TEST(TargetJointConf, NotEqualsOperator)
     }
     // TODO: test remaining fields.
 }
+
+TEST(TargetJointConf, GetName)
+{
+    EXPECT_STREQ(GetName(GetTypeID<TargetJointConf>()), "d2::TargetJointConf");
+}

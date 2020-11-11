@@ -373,3 +373,8 @@ TEST(PrismaticJointConf, NotEqualsOperator)
     }
     // TODO: test remaining fields.
 }
+
+TEST(PrismaticJointConf, GetName)
+{
+    EXPECT_STREQ(GetName(GetTypeID<PrismaticJointConf>()), "d2::PrismaticJointConf");
+}

@@ -67,17 +67,6 @@ TEST(JointType, NotEqualsOperator)
     EXPECT_TRUE(JointType(&name2) != JointType(&name1));
 }
 
-TEST(JointType, ToString)
+TEST(JointType, GetName)
 {
-    EXPECT_STREQ(ToString(GetTypeID<RevoluteJointConf>()), "d2::RevoluteJointConf");
-    EXPECT_STREQ(ToString(GetTypeID<PrismaticJointConf>()), "d2::PrismaticJointConf");
-    EXPECT_STREQ(ToString(GetTypeID<DistanceJointConf>()), "d2::DistanceJointConf");
-    EXPECT_STREQ(ToString(GetTypeID<PulleyJointConf>()), "d2::PulleyJointConf");
-    EXPECT_STREQ(ToString(GetTypeID<TargetJointConf>()), "d2::TargetJointConf");
-    EXPECT_STREQ(ToString(GetTypeID<GearJointConf>()), "d2::GearJointConf");
-    EXPECT_STREQ(ToString(GetTypeID<WheelJointConf>()), "d2::WheelJointConf");
-    EXPECT_STREQ(ToString(GetTypeID<WeldJointConf>()), "d2::WeldJointConf");
-    EXPECT_STREQ(ToString(GetTypeID<FrictionJointConf>()), "d2::FrictionJointConf");
-    EXPECT_STREQ(ToString(GetTypeID<RopeJointConf>()), "d2::RopeJointConf");
-    EXPECT_STREQ(ToString(GetTypeID<MotorJointConf>()), "d2::MotorJointConf");
 }

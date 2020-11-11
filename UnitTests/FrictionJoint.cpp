@@ -246,3 +246,8 @@ TEST(FrictionJointConf, NotEqualsOperator)
     }
     // TODO: test remaining fields.
 }
+
+TEST(FrictionJointConf, GetName)
+{
+    EXPECT_STREQ(GetName(GetTypeID<FrictionJointConf>()), "d2::FrictionJointConf");
+}

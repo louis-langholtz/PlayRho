@@ -319,3 +319,8 @@ TEST(GearJointConf, NotEqualsOperator)
     }
     // TODO: test remaining fields.
 }
+
+TEST(GearJointConf, GetName)
+{
+    EXPECT_STREQ(GetName(GetTypeID<GearJointConf>()), "d2::GearJointConf");
+}

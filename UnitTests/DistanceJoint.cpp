@@ -372,3 +372,8 @@ TEST(DistanceJointConf, NotEqualsOperator)
     }
     // TODO: test remaining fields.
 }
+
+TEST(DistanceJointConf, GetName)
+{
+    EXPECT_STREQ(GetName(GetTypeID<DistanceJointConf>()), "d2::DistanceJointConf");
+}

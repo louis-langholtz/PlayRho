@@ -281,3 +281,8 @@ TEST(WeldJointConf, NotEqualsOperator)
     }
     // TODO: test remaining fields.
 }
+
+TEST(WeldJointConf, GetName)
+{
+    EXPECT_STREQ(GetName(GetTypeID<WeldJointConf>()), "d2::WeldJointConf");
+}

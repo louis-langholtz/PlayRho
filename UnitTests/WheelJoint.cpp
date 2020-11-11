@@ -345,3 +345,8 @@ TEST(WheelJointConf, NotEqualsOperator)
     }
     // TODO: test remaining fields.
 }
+
+TEST(WheelJointConf, GetName)
+{
+    EXPECT_STREQ(GetName(GetTypeID<WheelJointConf>()), "d2::WheelJointConf");
+}

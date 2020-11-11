@@ -26,7 +26,6 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-#include <PlayRho/Dynamics/Joints/JointType.hpp>
 #include <PlayRho/Dynamics/Joints/LimitState.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 
@@ -51,7 +50,7 @@ class BodyConstraint;
 // in terms of lookup.
 
 /// @brief Gets the identifier of the type of data this can be casted to.
-JointType GetType(const Joint& object) noexcept;
+TypeID GetType(const Joint& object) noexcept;
 
 /// @brief Converts the given joint into its current configuration value.
 /// @note The design for this was based off the design of the C++17 <code>std::any</code>
@@ -186,7 +185,7 @@ public:
         std::swap(m_self, other.m_self);
     }
 
-    friend JointType GetType(const Joint& object) noexcept
+    friend TypeID GetType(const Joint& object) noexcept
     {
         return object.m_self ? object.m_self->GetType_() : GetTypeID<void>();
     }

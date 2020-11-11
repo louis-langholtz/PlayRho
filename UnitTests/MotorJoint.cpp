@@ -316,3 +316,8 @@ TEST(MotorJointConf, NotEqualsOperator)
     }
     // TODO: test remaining fields.
 }
+
+TEST(MotorJointConf, GetName)
+{
+    EXPECT_STREQ(GetName(GetTypeID<MotorJointConf>()), "d2::MotorJointConf");
+}

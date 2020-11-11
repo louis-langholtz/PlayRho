@@ -451,3 +451,8 @@ TEST(PulleyJointConf, NotEqualsOperator)
     }
     // TODO: test remaining fields.
 }
+
+TEST(PulleyJointConf, GetName)
+{
+    EXPECT_STREQ(GetName(GetTypeID<PulleyJointConf>()), "d2::PulleyJointConf");
+}

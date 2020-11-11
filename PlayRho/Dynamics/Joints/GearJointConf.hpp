@@ -76,10 +76,10 @@ struct GearJointConf : public JointBuilder<GearJointConf> {
     BodyID bodyD = InvalidBodyID;
 
     /// @brief Type of the first joint.
-    JointType type1 = GetTypeID<void>();
+    TypeID type1 = GetTypeID<void>();
 
     /// @brief Type of the second joint.
-    JointType type2 = GetTypeID<void>();
+    TypeID type2 = GetTypeID<void>();
 
     // Used when not Revolute...
     Length2 localAnchorA{}; ///< Local anchor A.
