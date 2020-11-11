@@ -274,3 +274,45 @@ TEST(MotorJoint, SetAngularOffset)
     SetAngularOffset(world, joint, 45_deg);
     EXPECT_EQ(GetAngularOffset(world, joint), 45_deg);
 }
+
+TEST(MotorJointConf, EqualsOperator)
+{
+    EXPECT_TRUE(MotorJointConf() == MotorJointConf());
+    {
+        auto conf = MotorJointConf{};
+        conf.linearOffset = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(MotorJointConf() == conf);
+    }
+    {
+        auto conf = MotorJointConf{};
+        conf.angularOffset = 33_deg;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(MotorJointConf() == conf);
+    }
+    {
+        auto conf = MotorJointConf{};
+        conf.correctionFactor = Real(3.4);
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(MotorJointConf() == conf);
+    }
+    {
+        auto conf = MotorJointConf{};
+        conf.angularError = 19_deg;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(MotorJointConf() == conf);
+    }
+    // TODO: test remaining fields.
+}
+
+TEST(MotorJointConf, NotEqualsOperator)
+{
+    EXPECT_FALSE(MotorJointConf() != MotorJointConf());
+    {
+        auto conf = MotorJointConf{};
+        conf.maxForce = 2.5_N;
+        EXPECT_FALSE(conf != conf);
+        EXPECT_TRUE(MotorJointConf() != conf);
+    }
+    // TODO: test remaining fields.
+}

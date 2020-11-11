@@ -270,3 +270,39 @@ TEST(TargetJointConf, SolvePositionThrows)
     EXPECT_NO_THROW(result = SolvePosition(def, bodies, conf));
     EXPECT_EQ(result, true);
 }
+
+TEST(TargetJointConf, EqualsOperator)
+{
+    EXPECT_TRUE(TargetJointConf() == TargetJointConf());
+    {
+        auto conf = TargetJointConf{};
+        conf.target = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(TargetJointConf() == conf);
+    }
+    {
+        auto conf = TargetJointConf{};
+        conf.localAnchorB = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(TargetJointConf() == conf);
+    }
+    {
+        auto conf = TargetJointConf{};
+        conf.maxForce = 12_N;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(TargetJointConf() == conf);
+    }
+    // TODO: test remaining fields.
+}
+
+TEST(TargetJointConf, NotEqualsOperator)
+{
+    EXPECT_FALSE(TargetJointConf() != TargetJointConf());
+    {
+        auto conf = TargetJointConf{};
+        conf.frequency = 13_Hz;
+        EXPECT_FALSE(conf != conf);
+        EXPECT_TRUE(TargetJointConf() != conf);
+    }
+    // TODO: test remaining fields.
+}

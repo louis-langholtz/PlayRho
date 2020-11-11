@@ -204,3 +204,45 @@ TEST(FrictionJointConf, ShiftOrigin)
     EXPECT_EQ(def.linearMass, copy.linearMass);
     EXPECT_EQ(def.angularMass, copy.angularMass);
 }
+
+TEST(FrictionJointConf, EqualsOperator)
+{
+    EXPECT_TRUE(FrictionJointConf() == FrictionJointConf());
+    {
+        auto conf = FrictionJointConf{};
+        conf.localAnchorA = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(FrictionJointConf() == conf);
+    }
+    {
+        auto conf = FrictionJointConf{};
+        conf.localAnchorB = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(FrictionJointConf() == conf);
+    }
+    {
+        auto conf = FrictionJointConf{};
+        conf.maxForce = 2.4_N;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(FrictionJointConf() == conf);
+    }
+    {
+        auto conf = FrictionJointConf{};
+        conf.maxTorque = 1.5_Nm;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(FrictionJointConf() == conf);
+    }
+    // TODO: test remaining fields.
+}
+
+TEST(FrictionJointConf, NotEqualsOperator)
+{
+    EXPECT_FALSE(FrictionJointConf() != FrictionJointConf());
+    {
+        auto conf = FrictionJointConf{};
+        conf.rB = Length2{-1_m, 0.4_m};
+        EXPECT_FALSE(conf != conf);
+        EXPECT_TRUE(FrictionJointConf() != conf);
+    }
+    // TODO: test remaining fields.
+}

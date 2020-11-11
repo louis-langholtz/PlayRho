@@ -23,6 +23,7 @@
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
+#include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
 
 #include <type_traits>
 #include <any>
@@ -227,4 +228,40 @@ TEST(Joint, ForMutableDataTypeCastIsLikeAnyCast)
     EXPECT_TRUE(std::any_cast<const JointTester>(&bar) != nullptr);
     EXPECT_TRUE(TypeCast<JointTester>(&foo) != nullptr);
     EXPECT_TRUE(std::any_cast<JointTester>(&bar) != nullptr);
+}
+
+TEST(Joint, EqualsOperator)
+{
+    EXPECT_TRUE(Joint(WheelJointConf()) == Joint(WheelJointConf()));
+    {
+        auto conf = WheelJointConf{};
+        conf.localAnchorA = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(Joint(conf) == Joint(conf));
+        EXPECT_FALSE(Joint(WheelJointConf()) == Joint(conf));
+    }
+    {
+        auto conf = WheelJointConf{};
+        conf.localAnchorB = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(Joint(conf) == Joint(conf));
+        EXPECT_FALSE(Joint(WheelJointConf()) == Joint(conf));
+    }
+    {
+        auto conf = WheelJointConf{};
+        conf.motorSpeed = 0.12_rpm;
+        EXPECT_TRUE(Joint(conf) == Joint(conf));
+        EXPECT_FALSE(Joint(WheelJointConf()) == Joint(conf));
+    }
+    // TODO: test remaining fields.
+}
+
+TEST(Joint, NotEqualsOperator)
+{
+    EXPECT_FALSE(Joint(WheelJointConf()) != Joint(WheelJointConf()));
+    {
+        auto conf = WheelJointConf{};
+        conf.frequency = 13_Hz;
+        EXPECT_FALSE(Joint(conf) != Joint(conf));
+        EXPECT_TRUE(Joint(WheelJointConf()) != Joint(conf));
+    }
+    // TODO: test remaining fields.
 }

@@ -330,3 +330,45 @@ TEST(DistanceJointConf, SetFrequencyFreeFunction)
     EXPECT_NO_THROW(SetFrequency(joint, 2_Hz));
     EXPECT_EQ(GetFrequency(joint), 2_Hz);
 }
+
+TEST(DistanceJointConf, EqualsOperator)
+{
+    EXPECT_TRUE(DistanceJointConf() == DistanceJointConf());
+    {
+        auto conf = DistanceJointConf{};
+        conf.localAnchorA = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(DistanceJointConf() == conf);
+    }
+    {
+        auto conf = DistanceJointConf{};
+        conf.localAnchorB = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(DistanceJointConf() == conf);
+    }
+    {
+        auto conf = DistanceJointConf{};
+        conf.length = 2.4_m;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(DistanceJointConf() == conf);
+    }
+    {
+        auto conf = DistanceJointConf{};
+        conf.bias = 1.5_mps;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(DistanceJointConf() == conf);
+    }
+    // TODO: test remaining fields.
+}
+
+TEST(DistanceJointConf, NotEqualsOperator)
+{
+    EXPECT_FALSE(DistanceJointConf() != DistanceJointConf());
+    {
+        auto conf = DistanceJointConf{};
+        conf.dampingRatio = Real(2.3);
+        EXPECT_FALSE(conf != conf);
+        EXPECT_TRUE(DistanceJointConf() != conf);
+    }
+    // TODO: test remaining fields.
+}

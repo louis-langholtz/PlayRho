@@ -277,3 +277,45 @@ TEST(GearJoint, GetAnchorAandB)
     EXPECT_EQ(GetAnchorA(world, joint), anchorA);
     EXPECT_EQ(GetAnchorB(world, joint), anchorB);
 }
+
+TEST(GearJointConf, EqualsOperator)
+{
+    EXPECT_TRUE(GearJointConf() == GearJointConf());
+    {
+        auto conf = GearJointConf{};
+        conf.localAnchorA = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(GearJointConf() == conf);
+    }
+    {
+        auto conf = GearJointConf{};
+        conf.localAnchorB = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(GearJointConf() == conf);
+    }
+    {
+        auto conf = GearJointConf{};
+        conf.referenceAngle1 = 23_deg;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(GearJointConf() == conf);
+    }
+    {
+        auto conf = GearJointConf{};
+        conf.referenceAngle2 = 19_deg;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(GearJointConf() == conf);
+    }
+    // TODO: test remaining fields.
+}
+
+TEST(GearJointConf, NotEqualsOperator)
+{
+    EXPECT_FALSE(GearJointConf() != GearJointConf());
+    {
+        auto conf = GearJointConf{};
+        conf.mass = Real(3.4);
+        EXPECT_FALSE(conf != conf);
+        EXPECT_TRUE(GearJointConf() != conf);
+    }
+    // TODO: test remaining fields.
+}

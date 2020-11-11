@@ -415,3 +415,39 @@ TEST(PulleyJointConf, SolvePosition)
     EXPECT_EQ(GetY(bodies[1].GetPosition().linear), GetY(posB.linear) + 8_m);
     EXPECT_EQ(bodies[1].GetPosition().angular, posB.angular);
 }
+
+TEST(PulleyJointConf, EqualsOperator)
+{
+    EXPECT_TRUE(PulleyJointConf() == PulleyJointConf());
+    {
+        auto conf = PulleyJointConf{};
+        conf.localAnchorA = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(PulleyJointConf() == conf);
+    }
+    {
+        auto conf = PulleyJointConf{};
+        conf.localAnchorB = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(PulleyJointConf() == conf);
+    }
+    {
+        auto conf = PulleyJointConf{};
+        conf.lengthA = 12_m;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(PulleyJointConf() == conf);
+    }
+    // TODO: test remaining fields.
+}
+
+TEST(PulleyJointConf, NotEqualsOperator)
+{
+    EXPECT_FALSE(PulleyJointConf() != PulleyJointConf());
+    {
+        auto conf = PulleyJointConf{};
+        conf.lengthB = 1.9_m;
+        EXPECT_FALSE(conf != conf);
+        EXPECT_TRUE(PulleyJointConf() != conf);
+    }
+    // TODO: test remaining fields.
+}

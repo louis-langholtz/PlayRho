@@ -337,3 +337,39 @@ TEST(PrismaticJointConf, WithDynamicCirclesAndLimitEnabled)
     EXPECT_NO_THROW(Step(world, 1_s));
     EXPECT_EQ(GetLinearMotorImpulse(world, joint), Momentum(0));
 }
+
+TEST(PrismaticJointConf, EqualsOperator)
+{
+    EXPECT_TRUE(PrismaticJointConf() == PrismaticJointConf());
+    {
+        auto conf = PrismaticJointConf{};
+        conf.localAnchorA = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(PrismaticJointConf() == conf);
+    }
+    {
+        auto conf = PrismaticJointConf{};
+        conf.localAnchorB = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(PrismaticJointConf() == conf);
+    }
+    {
+        auto conf = PrismaticJointConf{};
+        conf.referenceAngle = 33_deg;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(PrismaticJointConf() == conf);
+    }
+    // TODO: test remaining fields.
+}
+
+TEST(PrismaticJointConf, NotEqualsOperator)
+{
+    EXPECT_FALSE(PrismaticJointConf() != PrismaticJointConf());
+    {
+        auto conf = PrismaticJointConf{};
+        conf.enableLimit = !PrismaticJointConf{}.enableLimit;
+        EXPECT_FALSE(conf != conf);
+        EXPECT_TRUE(PrismaticJointConf() != conf);
+    }
+    // TODO: test remaining fields.
+}

@@ -596,3 +596,39 @@ TEST(RevoluteJointConf, GetLinearMotorImpulseThrowsInvalidArgument)
 {
     EXPECT_THROW(GetLinearMotorImpulse(Joint{RevoluteJointConf{}}), std::invalid_argument);
 }
+
+TEST(RevoluteJointConf, EqualsOperator)
+{
+    EXPECT_TRUE(RevoluteJointConf() == RevoluteJointConf());
+    {
+        auto conf = RevoluteJointConf{};
+        conf.localAnchorA = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(RevoluteJointConf() == conf);
+    }
+    {
+        auto conf = RevoluteJointConf{};
+        conf.localAnchorB = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(RevoluteJointConf() == conf);
+    }
+    {
+        auto conf = RevoluteJointConf{};
+        conf.referenceAngle = 12_deg;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(RevoluteJointConf() == conf);
+    }
+    // TODO: test remaining fields.
+}
+
+TEST(RevoluteJointConf, NotEqualsOperator)
+{
+    EXPECT_FALSE(RevoluteJointConf() != RevoluteJointConf());
+    {
+        auto conf = RevoluteJointConf{};
+        conf.enableMotor = !RevoluteJointConf{}.enableMotor;
+        EXPECT_FALSE(conf != conf);
+        EXPECT_TRUE(RevoluteJointConf() != conf);
+    }
+    // TODO: test remaining fields.
+}

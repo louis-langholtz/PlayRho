@@ -309,3 +309,39 @@ TEST(WheelJointConf, ShiftOrigin)
     // Use memcmp since easier than writing full == suport pre C++20.
     EXPECT_TRUE(std::memcmp(&jd, &copy, sizeof(WheelJointConf)) == 0);
 }
+
+TEST(WheelJointConf, EqualsOperator)
+{
+    EXPECT_TRUE(WheelJointConf() == WheelJointConf());
+    {
+        auto conf = WheelJointConf{};
+        conf.localAnchorA = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(WheelJointConf() == conf);
+    }
+    {
+        auto conf = WheelJointConf{};
+        conf.localAnchorB = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(WheelJointConf() == conf);
+    }
+    {
+        auto conf = WheelJointConf{};
+        conf.motorSpeed = 0.12_rpm;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(WheelJointConf() == conf);
+    }
+    // TODO: test remaining fields.
+}
+
+TEST(WheelJointConf, NotEqualsOperator)
+{
+    EXPECT_FALSE(WheelJointConf() != WheelJointConf());
+    {
+        auto conf = WheelJointConf{};
+        conf.frequency = 13_Hz;
+        EXPECT_FALSE(conf != conf);
+        EXPECT_TRUE(WheelJointConf() != conf);
+    }
+    // TODO: test remaining fields.
+}

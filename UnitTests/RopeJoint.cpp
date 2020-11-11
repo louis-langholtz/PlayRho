@@ -185,3 +185,39 @@ TEST(RopeJointConf, ShiftOrigin)
     // Use memcmp since easier than writing full == suport pre C++20.
     EXPECT_TRUE(std::memcmp(&jd, &copy, sizeof(RopeJointConf)) == 0);
 }
+
+TEST(RopeJointConf, EqualsOperator)
+{
+    EXPECT_TRUE(RopeJointConf() == RopeJointConf());
+    {
+        auto conf = RopeJointConf{};
+        conf.localAnchorA = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(RopeJointConf() == conf);
+    }
+    {
+        auto conf = RopeJointConf{};
+        conf.localAnchorB = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(RopeJointConf() == conf);
+    }
+    {
+        auto conf = RopeJointConf{};
+        conf.maxLength = 12_m;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(RopeJointConf() == conf);
+    }
+    // TODO: test remaining fields.
+}
+
+TEST(RopeJointConf, NotEqualsOperator)
+{
+    EXPECT_FALSE(RopeJointConf() != RopeJointConf());
+    {
+        auto conf = RopeJointConf{};
+        conf.mass = 13_kg;
+        EXPECT_FALSE(conf != conf);
+        EXPECT_TRUE(RopeJointConf() != conf);
+    }
+    // TODO: test remaining fields.
+}
