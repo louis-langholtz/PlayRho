@@ -21,7 +21,7 @@
 #include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-#include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
+#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 #include <PlayRho/Dynamics/StepConf.hpp>

@@ -27,6 +27,7 @@
 namespace playrho {
 
 struct StepConf;
+struct ConstraintSolverConf;
 
 namespace d2 {
 
@@ -63,108 +64,6 @@ inline PositionSolution operator- (PositionSolution lhs, PositionSolution rhs)
 }
 
 } // namespace d2
-
-/// Constraint solver configuration data.
-/// @details
-/// Defines how a constraint solver should resolve a given constraint.
-/// @see SolvePositionConstraint.
-struct ConstraintSolverConf
-{
-    /// @brief Uses the given resolution rate.
-    ConstraintSolverConf& UseResolutionRate(Real value) noexcept;
-    
-    /// @brief Uses the given linear slop.
-    ConstraintSolverConf& UseLinearSlop(Length value) noexcept;
-    
-    /// @brief Uses the given angular slop.
-    ConstraintSolverConf& UseAngularSlop(Angle value) noexcept;
-    
-    /// @brief Uses the given max linear correction.
-    ConstraintSolverConf& UseMaxLinearCorrection(Length value) noexcept;
-    
-    /// @brief Uses the given max angular correction.
-    ConstraintSolverConf& UseMaxAngularCorrection(Angle value) noexcept;
-    
-    /// Resolution rate.
-    /// @details
-    /// Defines the percentage of the overlap that should get resolved in a single solver call.
-    /// Value greater than zero and less than or equal to one.
-    /// Ideally this would be 1 so that overlap is removed in one time step.
-    /// However using values close to 1 often leads to overshoot.
-    /// @note Recommended values are: <code>0.2</code> for solving regular constraints
-    ///   or <code>0.75</code> for solving TOI constraints.
-    Real resolutionRate = Real(0.2);
-    
-    /// Linear slop.
-    /// @note The negative of this amount is the maximum amount of separation to create.
-    /// @note Recommended value: <code>DefaultLinearSlop</code>.
-    Length linearSlop = DefaultLinearSlop;
-    
-    /// Angular slop.
-    /// @note Recommended value: <code>DefaultAngularSlop</code>.
-    Angle angularSlop = DefaultAngularSlop;
-    
-    /// Maximum linear correction.
-    /// @details
-    /// Maximum amount of overlap to resolve in a single solver call. Helps prevent overshoot.
-    /// @note Recommended value: <code>linearSlop * 40</code>.
-    Length maxLinearCorrection = DefaultLinearSlop * Real{20};
-    
-    /// Maximum angular correction.
-    /// @details Maximum angular position correction used when solving constraints.
-    /// Helps to prevent overshoot.
-    /// @note Recommended value: <code>angularSlop * 4</code>.
-    Angle maxAngularCorrection = DefaultAngularSlop * Real{4};
-};
-
-inline ConstraintSolverConf& ConstraintSolverConf::UseResolutionRate(Real value) noexcept
-{
-    resolutionRate = value;
-    return *this;
-}
-
-inline ConstraintSolverConf& ConstraintSolverConf::UseLinearSlop(Length value) noexcept
-{
-    linearSlop = value;
-    return *this;
-}
-
-inline ConstraintSolverConf& ConstraintSolverConf::UseAngularSlop(Angle value) noexcept
-{
-    angularSlop = value;
-    return *this;
-}
-
-inline ConstraintSolverConf& ConstraintSolverConf::UseMaxLinearCorrection(Length value) noexcept
-{
-    maxLinearCorrection = value;
-    return *this;
-}
-
-inline ConstraintSolverConf& ConstraintSolverConf::UseMaxAngularCorrection(Angle value) noexcept
-{
-    maxAngularCorrection = value;
-    return *this;
-}
-
-/// @brief Gets the default position solver configuration.
-inline ConstraintSolverConf GetDefaultPositionSolverConf()
-{
-    return ConstraintSolverConf{}.UseResolutionRate(Real(0.2));
-}
-
-/// @brief Gets the default TOI position solver configuration.
-inline ConstraintSolverConf GetDefaultToiPositionSolverConf()
-{
-    // For solving TOI events, use a faster/higher resolution rate than normally used.
-    return ConstraintSolverConf{}.UseResolutionRate(Real(0.75));
-}
-
-/// @brief Gets the regular phase constraint solver configuration for the given step configuration.
-ConstraintSolverConf GetRegConstraintSolverConf(const StepConf& conf) noexcept;
-
-/// @brief Gets the TOI phase constraint solver configuration for the given step configuration.
-ConstraintSolverConf GetToiConstraintSolverConf(const StepConf& conf) noexcept;
 
 namespace GaussSeidel {
 

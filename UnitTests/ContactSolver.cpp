@@ -17,7 +17,10 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
+
+#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
 #include <PlayRho/Dynamics/Contacts/PositionConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
