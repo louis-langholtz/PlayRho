@@ -33,20 +33,40 @@ struct StepConf;
 struct ConstraintSolverConf
 {
     /// @brief Uses the given resolution rate.
-    ConstraintSolverConf& UseResolutionRate(Real value) noexcept;
+    constexpr ConstraintSolverConf& UseResolutionRate(Real value) noexcept
+    {
+        resolutionRate = value;
+        return *this;
+    }
     
     /// @brief Uses the given linear slop.
-    ConstraintSolverConf& UseLinearSlop(Length value) noexcept;
-    
+    constexpr ConstraintSolverConf& UseLinearSlop(Length value) noexcept
+    {
+        linearSlop = value;
+        return *this;
+    }
+
     /// @brief Uses the given angular slop.
-    ConstraintSolverConf& UseAngularSlop(Angle value) noexcept;
+    constexpr ConstraintSolverConf& UseAngularSlop(Angle value) noexcept
+    {
+        angularSlop = value;
+        return *this;
+    }
     
     /// @brief Uses the given max linear correction.
-    ConstraintSolverConf& UseMaxLinearCorrection(Length value) noexcept;
-    
+    constexpr ConstraintSolverConf& UseMaxLinearCorrection(Length value) noexcept
+    {
+        maxLinearCorrection = value;
+        return *this;
+    }
+
     /// @brief Uses the given max angular correction.
-    ConstraintSolverConf& UseMaxAngularCorrection(Angle value) noexcept;
-    
+    constexpr ConstraintSolverConf& UseMaxAngularCorrection(Angle value) noexcept
+    {
+        maxAngularCorrection = value;
+        return *this;
+    }
+
     /// Resolution rate.
     /// @details
     /// Defines the percentage of the overlap that should get resolved in a single solver call.
@@ -79,44 +99,14 @@ struct ConstraintSolverConf
     Angle maxAngularCorrection = DefaultAngularSlop * Real{4};
 };
 
-inline ConstraintSolverConf& ConstraintSolverConf::UseResolutionRate(Real value) noexcept
-{
-    resolutionRate = value;
-    return *this;
-}
-
-inline ConstraintSolverConf& ConstraintSolverConf::UseLinearSlop(Length value) noexcept
-{
-    linearSlop = value;
-    return *this;
-}
-
-inline ConstraintSolverConf& ConstraintSolverConf::UseAngularSlop(Angle value) noexcept
-{
-    angularSlop = value;
-    return *this;
-}
-
-inline ConstraintSolverConf& ConstraintSolverConf::UseMaxLinearCorrection(Length value) noexcept
-{
-    maxLinearCorrection = value;
-    return *this;
-}
-
-inline ConstraintSolverConf& ConstraintSolverConf::UseMaxAngularCorrection(Angle value) noexcept
-{
-    maxAngularCorrection = value;
-    return *this;
-}
-
 /// @brief Gets the default position solver configuration.
-inline ConstraintSolverConf GetDefaultPositionSolverConf()
+constexpr ConstraintSolverConf GetDefaultPositionSolverConf() noexcept
 {
     return ConstraintSolverConf{}.UseResolutionRate(Real(0.2));
 }
 
 /// @brief Gets the default TOI position solver configuration.
-inline ConstraintSolverConf GetDefaultToiPositionSolverConf()
+constexpr ConstraintSolverConf GetDefaultToiPositionSolverConf() noexcept
 {
     // For solving TOI events, use a faster/higher resolution rate than normally used.
     return ConstraintSolverConf{}.UseResolutionRate(Real(0.75));
