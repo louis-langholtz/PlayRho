@@ -46,18 +46,16 @@ class BodyConstraint;
 ///   typical usage is to control the movement of a dynamic body with respect to the ground.
 /// @see Joint, World::CreateJoint
 /// @ingroup JointsGroup
-struct MotorJointConf : public JointBuilder<MotorJointConf>
-{
+struct MotorJointConf : public JointBuilder<MotorJointConf> {
     /// @brief Super type.
     using super = JointBuilder<MotorJointConf>;
 
     /// @brief Default constructor.
     constexpr MotorJointConf() = default;
-    
+
     /// @brief Initialize the bodies and offsets using the current transforms.
-    MotorJointConf(BodyID bA, BodyID bB,
-                   Length2 lo = Length2{}, Angle ao = 0_deg) noexcept;
-    
+    MotorJointConf(BodyID bA, BodyID bB, Length2 lo = Length2{}, Angle ao = 0_deg) noexcept;
+
     /// @brief Uses the given linear offset value.
     constexpr auto& UseLinearOffset(Length2 v) noexcept
     {
@@ -104,10 +102,10 @@ struct MotorJointConf : public JointBuilder<MotorJointConf>
 
     /// @brief Maximum motor force.
     NonNegative<Force> maxForce = NonNegative<Force>(1_N);
-    
+
     /// @brief Maximum motor torque.
     NonNegative<Torque> maxTorque = NonNegative<Torque>(1_Nm);
-    
+
     /// @brief Position correction factor in the range [0,1].
     Real correctionFactor = Real(0.3);
 
@@ -119,6 +117,32 @@ struct MotorJointConf : public JointBuilder<MotorJointConf>
     Mass22 linearMass = {}; ///< 2-by-2 linear mass matrix in kilograms.
     RotInertia angularMass = {}; ///< Angular mass.
 };
+
+/// @brief Equality operator.
+constexpr bool operator==(const MotorJointConf& lhs, const MotorJointConf& rhs) noexcept
+{
+    return // First check base...
+        (lhs.bodyA == rhs.bodyA) && (lhs.bodyB == rhs.bodyB) &&
+        (lhs.collideConnected == rhs.collideConnected)
+        // Now check rest...
+        && (lhs.linearOffset == rhs.linearOffset) // line break
+        && (lhs.angularOffset == rhs.angularOffset) // line break
+        && (lhs.maxForce == rhs.maxForce) // line break
+        && (lhs.maxTorque == rhs.maxTorque) // line break
+        && (lhs.correctionFactor == rhs.correctionFactor) // line break
+        && (lhs.rA == rhs.rA) // line break
+        && (lhs.rB == rhs.rB) // line break
+        && (lhs.linearError == rhs.linearError) // line break
+        && (lhs.angularError == rhs.angularError) // line break
+        && (lhs.linearMass == rhs.linearMass) // line break
+        && (lhs.angularMass == rhs.angularMass);
+}
+
+/// @brief Inequality operator.
+constexpr bool operator!=(const MotorJointConf& lhs, const MotorJointConf& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
 
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
@@ -153,8 +177,7 @@ constexpr auto ShiftOrigin(MotorJointConf&, Length2) noexcept
 /// @note This MUST be called prior to calling <code>SolveVelocity</code>.
 /// @see SolveVelocity.
 /// @relatedalso MotorJointConf
-void InitVelocity(MotorJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
+void InitVelocity(MotorJointConf& object, std::vector<BodyConstraint>& bodies, const StepConf& step,
                   const ConstraintSolverConf& conf);
 
 /// @brief Solves velocity constraint.
@@ -259,8 +282,7 @@ constexpr auto SetCorrectionFactor(MotorJointConf& object, Real value) noexcept
 
 /// @brief Type info specialization for <code>d2::MotorJointConf</code>.
 template <>
-struct TypeInfo<d2::MotorJointConf>
-{
+struct TypeInfo<d2::MotorJointConf> {
     /// @brief Provides a null-terminated string name for the type.
     static constexpr const char* name = "d2::MotorJointConf";
 };

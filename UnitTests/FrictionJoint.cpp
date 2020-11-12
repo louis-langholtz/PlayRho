@@ -204,3 +204,71 @@ TEST(FrictionJointConf, ShiftOrigin)
     EXPECT_EQ(def.linearMass, copy.linearMass);
     EXPECT_EQ(def.angularMass, copy.angularMass);
 }
+
+TEST(FrictionJointConf, GetMotorSpeedThrows)
+{
+    const auto joint = Joint{FrictionJointConf{}};
+    EXPECT_THROW(GetMotorSpeed(joint), std::invalid_argument);
+}
+
+TEST(FrictionJointConf, SetMotorSpeedThrows)
+{
+    auto joint = Joint{FrictionJointConf{}};
+    EXPECT_THROW(SetMotorSpeed(joint, 1_rpm), std::invalid_argument);
+}
+
+TEST(FrictionJointConf, GetAngularMass)
+{
+    auto conf = FrictionJointConf{};
+    conf.angularMass = RotInertia{2_m2 * 3_kg / SquareRadian}; // L^2 M QP^-2
+    auto rotInertia = RotInertia{};
+    EXPECT_NO_THROW(rotInertia = GetAngularMass(Joint{conf}));
+    EXPECT_EQ(conf.angularMass, rotInertia);
+}
+
+TEST(FrictionJointConf, EqualsOperator)
+{
+    EXPECT_TRUE(FrictionJointConf() == FrictionJointConf());
+    {
+        auto conf = FrictionJointConf{};
+        conf.localAnchorA = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(FrictionJointConf() == conf);
+    }
+    {
+        auto conf = FrictionJointConf{};
+        conf.localAnchorB = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(FrictionJointConf() == conf);
+    }
+    {
+        auto conf = FrictionJointConf{};
+        conf.maxForce = 2.4_N;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(FrictionJointConf() == conf);
+    }
+    {
+        auto conf = FrictionJointConf{};
+        conf.maxTorque = 1.5_Nm;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(FrictionJointConf() == conf);
+    }
+    // TODO: test remaining fields.
+}
+
+TEST(FrictionJointConf, NotEqualsOperator)
+{
+    EXPECT_FALSE(FrictionJointConf() != FrictionJointConf());
+    {
+        auto conf = FrictionJointConf{};
+        conf.rB = Length2{-1_m, 0.4_m};
+        EXPECT_FALSE(conf != conf);
+        EXPECT_TRUE(FrictionJointConf() != conf);
+    }
+    // TODO: test remaining fields.
+}
+
+TEST(FrictionJointConf, GetName)
+{
+    EXPECT_STREQ(GetName(GetTypeID<FrictionJointConf>()), "d2::FrictionJointConf");
+}

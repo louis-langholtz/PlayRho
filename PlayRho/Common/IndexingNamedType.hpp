@@ -27,7 +27,7 @@
 #include <type_traits> // for std::is_nothrow_default_constructible
 
 namespace playrho {
-namespace strongtype {
+namespace detail {
 
 /// @brief An indexable, hashable, named "strong type" template class.
 /// @details A template class for wrapping types into more special-purposed types. Wrapping
@@ -157,20 +157,20 @@ constexpr const T& UnderlyingValue(const IndexingNamedType<T, Tag>& o) noexcept
     return static_cast<const T&>(o);
 }
 
-} // namespace strongtype
+} // namespace detail
 } // namespace playrho
 
 namespace std {
 
 /// @brief Custom specialization of std::hash for
-///   <code>::playrho::strongtype::IndexingNamedType</code>.
+///   <code>::playrho::detail::IndexingNamedType</code>.
 template <typename T, typename Tag>
-struct hash<::playrho::strongtype::IndexingNamedType<T, Tag>>
+struct hash<::playrho::detail::IndexingNamedType<T, Tag>>
 {
     /// @brief Hashing functor operator.
-    ::std::size_t operator()(const ::playrho::strongtype::IndexingNamedType<T, Tag>& v) const noexcept
+    ::std::size_t operator()(const ::playrho::detail::IndexingNamedType<T, Tag>& v) const noexcept
     {
-        using type = ::playrho::strongtype::UnderlyingType<::playrho::strongtype::IndexingNamedType<T, Tag>>;
+        using type = ::playrho::detail::UnderlyingType<::playrho::detail::IndexingNamedType<T, Tag>>;
         return ::std::hash<type>()(v.get());;
     }
 };

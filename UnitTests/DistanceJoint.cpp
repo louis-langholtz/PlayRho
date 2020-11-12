@@ -291,22 +291,14 @@ TEST(DistanceJointConf, GetReferenceAngleThrows)
 
 TEST(DistanceJointConf, GetMotorSpeedThrows)
 {
-    auto world = World{};
-    const auto bA = CreateBody(world);
-    ASSERT_NE(bA, InvalidBodyID);
-    const auto bB = CreateBody(world);
-    ASSERT_NE(bB, InvalidBodyID);
-    auto def = DistanceJointConf{};
-    def.bodyA = bA;
-    def.bodyB = bB;
-    def.collideConnected = false;
-    def.localAnchorA = Length2(21_m, -2_m);
-    def.localAnchorB = Length2(13_m, 12_m);
-    def.length = 5_m;
-    def.frequency = 67_Hz;
-    def.dampingRatio = Real(0.8);
-    const auto joint = CreateJoint(world, def);
-    EXPECT_THROW(GetMotorSpeed(GetJoint(world, joint)), std::invalid_argument);
+    const auto joint = Joint{DistanceJointConf{}};
+    EXPECT_THROW(GetMotorSpeed(joint), std::invalid_argument);
+}
+
+TEST(DistanceJointConf, SetMotorSpeedThrows)
+{
+    auto joint = Joint{DistanceJointConf{}};
+    EXPECT_THROW(SetMotorSpeed(joint, 1_rpm), std::invalid_argument);
 }
 
 TEST(DistanceJointConf, SetFrequencyFreeFunction)
@@ -329,4 +321,51 @@ TEST(DistanceJointConf, SetFrequencyFreeFunction)
     EXPECT_EQ(GetFrequency(joint), 67_Hz);
     EXPECT_NO_THROW(SetFrequency(joint, 2_Hz));
     EXPECT_EQ(GetFrequency(joint), 2_Hz);
+}
+
+TEST(DistanceJointConf, EqualsOperator)
+{
+    EXPECT_TRUE(DistanceJointConf() == DistanceJointConf());
+    {
+        auto conf = DistanceJointConf{};
+        conf.localAnchorA = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(DistanceJointConf() == conf);
+    }
+    {
+        auto conf = DistanceJointConf{};
+        conf.localAnchorB = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(DistanceJointConf() == conf);
+    }
+    {
+        auto conf = DistanceJointConf{};
+        conf.length = 2.4_m;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(DistanceJointConf() == conf);
+    }
+    {
+        auto conf = DistanceJointConf{};
+        conf.bias = 1.5_mps;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(DistanceJointConf() == conf);
+    }
+    // TODO: test remaining fields.
+}
+
+TEST(DistanceJointConf, NotEqualsOperator)
+{
+    EXPECT_FALSE(DistanceJointConf() != DistanceJointConf());
+    {
+        auto conf = DistanceJointConf{};
+        conf.dampingRatio = Real(2.3);
+        EXPECT_FALSE(conf != conf);
+        EXPECT_TRUE(DistanceJointConf() != conf);
+    }
+    // TODO: test remaining fields.
+}
+
+TEST(DistanceJointConf, GetName)
+{
+    EXPECT_STREQ(GetName(GetTypeID<DistanceJointConf>()), "d2::DistanceJointConf");
 }

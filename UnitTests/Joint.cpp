@@ -23,9 +23,11 @@
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
+#include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
 
-#include <type_traits>
 #include <any>
+#include <stdexcept> // for std::invalid_argument
+#include <type_traits>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -95,21 +97,6 @@ TEST(Joint, Traits)
     EXPECT_TRUE(std::is_nothrow_destructible<Joint>::value);
     EXPECT_FALSE(std::is_trivially_destructible<Joint>::value);
 }
-
-#if 0
-TEST(Joint, StaticIsOkay)
-{
-    using Builder = JointBuilder<JointConf>;
-    EXPECT_FALSE(Joint::IsOkay(Builder{JointType::Unknown}));
-    EXPECT_FALSE(Joint::IsOkay(Builder{JointType::Friction}));
-    const auto b1 = reinterpret_cast<Body*>(0x1);
-    const auto b2 = reinterpret_cast<Body*>(0x2);
-    EXPECT_TRUE(Joint::IsOkay(Builder{JointType::Friction}.UseBodyA(b1)));
-    EXPECT_TRUE(Joint::IsOkay(Builder{JointType::Friction}.UseBodyA(b2)));
-    EXPECT_TRUE(Joint::IsOkay(Builder{JointType::Friction}.UseBodyB(b1)));
-    EXPECT_TRUE(Joint::IsOkay(Builder{JointType::Friction}.UseBodyB(b2)));
-}
-#endif
 
 TEST(Joint, LimitStateToStringFF)
 {
@@ -227,4 +214,116 @@ TEST(Joint, ForMutableDataTypeCastIsLikeAnyCast)
     EXPECT_TRUE(std::any_cast<const JointTester>(&bar) != nullptr);
     EXPECT_TRUE(TypeCast<JointTester>(&foo) != nullptr);
     EXPECT_TRUE(std::any_cast<JointTester>(&bar) != nullptr);
+}
+
+TEST(Joint, GetLinearReaction)
+{
+    auto result = Momentum2{};
+    EXPECT_NO_THROW(result = GetLinearReaction(Joint{}));
+    EXPECT_EQ(result, Momentum2());
+}
+
+TEST(Joint, GetAngularReaction)
+{
+    auto result = AngularMomentum{};
+    EXPECT_NO_THROW(result = GetAngularReaction(Joint{}));
+    EXPECT_EQ(result, AngularMomentum());
+}
+
+TEST(Joint, SetMotorSpeedThrows)
+{
+    auto joint = Joint{};
+    EXPECT_THROW(SetMotorSpeed(joint, 1_rpm), std::invalid_argument);
+}
+
+TEST(Joint, SetMaxMotorForceThrows)
+{
+    auto joint = Joint{};
+    EXPECT_THROW(SetMaxMotorForce(joint, 2_N), std::invalid_argument);
+}
+
+TEST(Joint, SetMaxMotorTorqueThrows)
+{
+    auto joint = Joint{};
+    EXPECT_THROW(SetMaxMotorTorque(joint, 2_Nm), std::invalid_argument);
+}
+
+TEST(Joint, SetLinearLimitsThrows)
+{
+    auto joint = Joint{};
+    EXPECT_THROW(SetLinearLimits(joint, 2_m, 4_m), std::invalid_argument);
+}
+
+TEST(Joint, SetAngularLimitsThrows)
+{
+    auto joint = Joint{};
+    EXPECT_THROW(SetAngularLimits(joint, 2_deg, 4_deg), std::invalid_argument);
+}
+
+TEST(Joint, IsLimitEnabledThrows)
+{
+    auto joint = Joint{};
+    EXPECT_THROW(IsLimitEnabled(joint), std::invalid_argument);
+}
+
+TEST(Joint, EnableLimitThrows)
+{
+    auto joint = Joint{};
+    EXPECT_THROW(EnableLimit(joint, true), std::invalid_argument);
+    EXPECT_THROW(EnableLimit(joint, false), std::invalid_argument);
+}
+
+TEST(Joint, IsMotorEnabledThrows)
+{
+    auto joint = Joint{};
+    EXPECT_THROW(IsMotorEnabled(joint), std::invalid_argument);
+}
+
+TEST(Joint, EnableMotorThrows)
+{
+    auto joint = Joint{};
+    EXPECT_THROW(EnableMotor(joint, true), std::invalid_argument);
+    EXPECT_THROW(EnableMotor(joint, false), std::invalid_argument);
+}
+
+TEST(Joint, GetLimitStateThrows)
+{
+    auto joint = Joint{};
+    EXPECT_THROW(GetLimitState(joint), std::invalid_argument);
+}
+
+TEST(Joint, EqualsOperator)
+{
+    EXPECT_TRUE(Joint(WheelJointConf()) == Joint(WheelJointConf()));
+    {
+        auto conf = WheelJointConf{};
+        conf.localAnchorA = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(Joint(conf) == Joint(conf));
+        EXPECT_FALSE(Joint(WheelJointConf()) == Joint(conf));
+    }
+    {
+        auto conf = WheelJointConf{};
+        conf.localAnchorB = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(Joint(conf) == Joint(conf));
+        EXPECT_FALSE(Joint(WheelJointConf()) == Joint(conf));
+    }
+    {
+        auto conf = WheelJointConf{};
+        conf.motorSpeed = 0.12_rpm;
+        EXPECT_TRUE(Joint(conf) == Joint(conf));
+        EXPECT_FALSE(Joint(WheelJointConf()) == Joint(conf));
+    }
+    // TODO: test remaining fields.
+}
+
+TEST(Joint, NotEqualsOperator)
+{
+    EXPECT_FALSE(Joint(WheelJointConf()) != Joint(WheelJointConf()));
+    {
+        auto conf = WheelJointConf{};
+        conf.frequency = 13_Hz;
+        EXPECT_FALSE(Joint(conf) != Joint(conf));
+        EXPECT_TRUE(Joint(WheelJointConf()) != Joint(conf));
+    }
+    // TODO: test remaining fields.
 }

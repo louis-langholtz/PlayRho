@@ -41,6 +41,7 @@
 #include <PlayRho/Dynamics/Joints/RopeJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/MotorJointConf.hpp>
 
+#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
@@ -145,7 +146,8 @@ inline void AssignImpulses(Manifold& var, const VelocityConstraint& vc)
     assert(var.GetPointCount() >= vc.GetPointCount());
     
     auto assignProc = [&](VelocityConstraint::size_type i) {
-        var.SetPointImpulses(i, GetNormalImpulseAtPoint(vc, i), GetTangentImpulseAtPoint(vc, i));
+        const auto& point = vc.GetPointAt(i);
+        var.SetPointImpulses(i, point.normalImpulse, point.tangentImpulse);
     };
 #if 0
     // Branch free assignment causes problems in TilesComeToRest test.
@@ -160,13 +162,48 @@ inline void AssignImpulses(Manifold& var, const VelocityConstraint& vc)
 #endif
 }
 
-inline void WarmStartVelocities(const VelocityConstraints& velConstraints)
+/// @brief Calculates the "warm start" velocity deltas for the given velocity constraint.
+VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc,
+                                         const std::vector<BodyConstraint>& bodies)
 {
-    for_each(cbegin(velConstraints), cend(velConstraints),
-                  [&](const VelocityConstraint& vc) {
-        const auto vp = CalcWarmStartVelocityDeltas(vc);
-        const auto bodyA = vc.GetBodyA();
-        const auto bodyB = vc.GetBodyB();
+    auto vp = VelocityPair{Velocity{LinearVelocity2{}, 0_rpm}, Velocity{LinearVelocity2{}, 0_rpm}};
+
+    const auto normal = vc.GetNormal();
+    const auto tangent = vc.GetTangent();
+    const auto pointCount = vc.GetPointCount();
+    const auto bodyA = &bodies[vc.GetBodyA().get()];
+    const auto bodyB = &bodies[vc.GetBodyB().get()];
+
+    const auto invMassA = bodyA->GetInvMass();
+    const auto invRotInertiaA = bodyA->GetInvRotInertia();
+
+    const auto invMassB = bodyB->GetInvMass();
+    const auto invRotInertiaB = bodyB->GetInvRotInertia();
+
+    for (auto j = decltype(pointCount){0}; j < pointCount; ++j) {
+        // inverse moment of inertia : L^-2 M^-1 QP^2
+        // P is M L T^-2
+        // GetPointRelPosA() is Length2
+        // Cross(Length2, P) is: M L^2 T^-2
+        // L^-2 M^-1 QP^2 M L^2 T^-2 is: QP^2 T^-2
+        const auto& vcp = vc.GetPointAt(j);
+        const auto P = vcp.normalImpulse * normal + vcp.tangentImpulse * tangent;
+        const auto LA = Cross(vcp.relA, P) / Radian;
+        const auto LB = Cross(vcp.relB, P) / Radian;
+        std::get<0>(vp) -= Velocity{invMassA * P, invRotInertiaA * LA};
+        std::get<1>(vp) += Velocity{invMassB * P, invRotInertiaB * LB};
+    }
+
+    return vp;
+}
+
+void WarmStartVelocities(const VelocityConstraints& velConstraints,
+                         std::vector<BodyConstraint>& bodies)
+{
+    for_each(cbegin(velConstraints), cend(velConstraints), [&](const VelocityConstraint& vc) {
+        const auto vp = CalcWarmStartVelocityDeltas(vc, bodies);
+        const auto bodyA = &bodies[vc.GetBodyA().get()];
+        const auto bodyB = &bodies[vc.GetBodyB().get()];
         bodyA->SetVelocity(bodyA->GetVelocity() + std::get<0>(vp));
         bodyB->SetVelocity(bodyB->GetVelocity() + std::get<1>(vp));
     });
@@ -189,30 +226,23 @@ BodyConstraints GetBodyConstraints(const Island::Bodies& bodies,
 PositionConstraints GetPositionConstraints(const Island::Contacts& contacts,
                                            const ArrayAllocator<FixtureConf>& fixtureBuffer,
                                            const ArrayAllocator<Contact>& contactBuffer,
-                                           const ArrayAllocator<Manifold>& manifoldBuffer,
-                                           BodyConstraints& bodies)
+                                           const ArrayAllocator<Manifold>& manifoldBuffer)
 {
     auto constraints = PositionConstraints{};
     constraints.reserve(size(contacts));
     transform(cbegin(contacts), cend(contacts), back_inserter(constraints),
               [&](const auto& contactID) {
         const auto& contact = contactBuffer[UnderlyingValue(contactID)];
-        const auto& manifold = manifoldBuffer[UnderlyingValue(contactID)];
         const auto fixtureA = GetFixtureA(contact);
         const auto fixtureB = GetFixtureB(contact);
         const auto indexA = GetChildIndexA(contact);
         const auto indexB = GetChildIndexB(contact);
         const auto bodyA = GetBodyA(contact);
         const auto bodyB = GetBodyB(contact);
-        const auto shapeA = GetShape(fixtureBuffer[UnderlyingValue(fixtureA)]);
-        const auto shapeB = GetShape(fixtureBuffer[UnderlyingValue(fixtureB)]);
-        auto& bodyConstraintA = bodies[UnderlyingValue(bodyA)];
-        auto& bodyConstraintB = bodies[UnderlyingValue(bodyB)];
-        const auto radiusA = GetVertexRadius(shapeA, indexA);
-        const auto radiusB = GetVertexRadius(shapeB, indexB);
-        return PositionConstraint{
-            manifold, bodyConstraintA, bodyConstraintB, radiusA + radiusB
-        };
+        const auto radiusA = GetVertexRadius(GetShape(fixtureBuffer[fixtureA.get()]), indexA);
+        const auto radiusB = GetVertexRadius(GetShape(fixtureBuffer[fixtureB.get()]), indexB);
+        const auto& manifold = manifoldBuffer[UnderlyingValue(contactID)];
+        return PositionConstraint{manifold, bodyA, bodyB, radiusA + radiusB};
     });
     return constraints;
 }
@@ -236,29 +266,29 @@ VelocityConstraints GetVelocityConstraints(const Island::Contacts& contacts,
     transform(cbegin(contacts), cend(contacts), back_inserter(velConstraints),
               [&](const auto& contactID) {
         const auto& contact = contactBuffer[UnderlyingValue(contactID)];
-        const auto& manifold = manifoldBuffer[UnderlyingValue(contactID)];
-        const auto fixtureA = contact.GetFixtureA();
-        const auto fixtureB = contact.GetFixtureB();
-        const auto friction = contact.GetFriction();
-        const auto restitution = contact.GetRestitution();
-        const auto tangentSpeed = contact.GetTangentSpeed();
+        const auto bodyA = GetBodyA(contact);
+        const auto bodyB = GetBodyB(contact);
+        const auto fixtureA = GetFixtureA(contact);
+        const auto fixtureB = GetFixtureB(contact);
         const auto indexA = GetChildIndexA(contact);
         const auto indexB = GetChildIndexB(contact);
-        const auto bodyA = GetBody(fixtureBuffer[UnderlyingValue(fixtureA)]);
-        const auto shapeA = GetShape(fixtureBuffer[UnderlyingValue(fixtureA)]);
-        const auto bodyB = GetBody(fixtureBuffer[UnderlyingValue(fixtureB)]);
-        const auto shapeB = GetShape(fixtureBuffer[UnderlyingValue(fixtureB)]);
-        auto& bodyConstraintA = bodies[UnderlyingValue(bodyA)];
-        auto& bodyConstraintB = bodies[UnderlyingValue(bodyB)];
+        const auto friction = GetFriction(contact);
+        const auto restitution = GetRestitution(contact);
+        const auto tangentSpeed = GetTangentSpeed(contact);
+        const auto& shapeA = GetShape(fixtureBuffer[UnderlyingValue(fixtureA)]);
+        const auto& shapeB = GetShape(fixtureBuffer[UnderlyingValue(fixtureB)]);
+        const auto& bodyConstraintA = bodies[UnderlyingValue(bodyA)];
+        const auto& bodyConstraintB = bodies[UnderlyingValue(bodyB)];
         const auto radiusA = GetVertexRadius(shapeA, indexA);
         const auto radiusB = GetVertexRadius(shapeB, indexB);
         const auto xfA = GetTransformation(bodyConstraintA.GetPosition(),
                                            bodyConstraintA.GetLocalCenter());
         const auto xfB = GetTransformation(bodyConstraintB.GetPosition(),
                                            bodyConstraintB.GetLocalCenter());
+        const auto& manifold = manifoldBuffer[contactID.get()];
         const auto worldManifold = GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
         return VelocityConstraint{friction, restitution, tangentSpeed, worldManifold,
-            bodyConstraintA, bodyConstraintB, conf};
+            bodyA, bodyB, bodies, conf};
     });
     return velConstraints;
 }
@@ -268,12 +298,12 @@ VelocityConstraints GetVelocityConstraints(const Island::Contacts& contacts,
 /// @pre <code>UpdateVelocityConstraints</code> has been called on the velocity constraints.
 /// @return Maximum momentum used for solving both the tangential and normal portions of
 ///   the velocity constraints.
-Momentum SolveVelocityConstraintsViaGS(VelocityConstraints& velConstraints)
+Momentum SolveVelocityConstraintsViaGS(VelocityConstraints& velConstraints, BodyConstraints& bodies)
 {
     auto maxIncImpulse = 0_Ns;
     for_each(begin(velConstraints), end(velConstraints), [&](VelocityConstraint& vc)
     {
-        maxIncImpulse = std::max(maxIncImpulse, GaussSeidel::SolveVelocityConstraint(vc));
+        maxIncImpulse = std::max(maxIncImpulse, GaussSeidel::SolveVelocityConstraint(vc, bodies));
     });
     return maxIncImpulse;
 }
@@ -285,57 +315,21 @@ Momentum SolveVelocityConstraintsViaGS(VelocityConstraints& velConstraints)
 ///   amount to begin with.
 /// @return Minimum separation.
 Length SolvePositionConstraintsViaGS(PositionConstraints& posConstraints,
-                                     ConstraintSolverConf conf)
+                                     BodyConstraints& bodies,
+                                     const ConstraintSolverConf& conf)
 {
     auto minSeparation = std::numeric_limits<Length>::infinity();
     
     for_each(begin(posConstraints), end(posConstraints), [&](PositionConstraint &pc) {
         assert(pc.GetBodyA() != pc.GetBodyB()); // Confirms ContactManager::Add() did its job.
-        const auto res = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
-        pc.GetBodyA()->SetPosition(res.pos_a);
-        pc.GetBodyB()->SetPosition(res.pos_b);
+        const auto res = GaussSeidel::SolvePositionConstraint(pc, true, true, bodies, conf);
+        bodies[pc.GetBodyA().get()].SetPosition(res.pos_a);
+        bodies[pc.GetBodyB().get()].SetPosition(res.pos_b);
         minSeparation = std::min(minSeparation, res.min_separation);
     });
     
     return minSeparation;
 }
-
-#if 0
-/// Solves the given position constraints.
-///
-/// @details This updates positions (and nothing else) for the two bodies identified by the
-///   given indexes by calling the position constraint solving function.
-///
-/// @note Can't expect the returned minimum separation to be greater than or equal to
-///  <code>ConstraintSolverConf.max_separation</code> because code won't push the separation
-///   above this amount to begin with.
-///
-/// @param positionConstraints Positions constraints.
-/// @param bodyConstraintA Pointer to body constraint for body A.
-/// @param bodyConstraintB Pointer to body constraint for body B.
-/// @param conf Configuration for solving the constraint.
-///
-/// @return Minimum separation (which is the same as the max amount of penetration/overlap).
-///
-Length SolvePositionConstraints(PositionConstraints& posConstraints,
-                                const BodyConstraint* bodyConstraintA,
-                                const BodyConstraint* bodyConstraintB,
-                                ConstraintSolverConf conf)
-{
-    auto minSeparation = std::numeric_limits<Length>::infinity();
-
-    for_each(begin(posConstraints), end(posConstraints), [&](PositionConstraint &pc) {
-        const auto moveA = (pc.GetBodyA() == bodyConstraintA) || (pc.GetBodyA() == bodyConstraintB);
-        const auto moveB = (pc.GetBodyB() == bodyConstraintA) || (pc.GetBodyB() == bodyConstraintB);
-        const auto res = SolvePositionConstraint(pc, moveA, moveB, conf);
-        pc.GetBodyA()->SetPosition(res.pos_a);
-        pc.GetBodyB()->SetPosition(res.pos_b);
-        minSeparation = std::min(minSeparation, res.min_separation);
-    });
-
-    return minSeparation;
-}
-#endif
 
 inline Time GetUnderActiveTime(const Body& b, const StepConf& conf) noexcept
 {
@@ -1011,7 +1005,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
     for (const auto& b: m_bodies) {
         if (m_islandedBodies[UnderlyingValue(b)]) {
             // A non-static body that was in an island may have moved.
-            auto& body = m_bodyBuffer[UnderlyingValue(b)];
+            const auto& body = m_bodyBuffer[UnderlyingValue(b)];
             if (body.IsSpeedable()) {
                 // Update fixtures (for broad-phase).
                 stats.proxiesMoved += Synchronize(m_bodyFixtures[b.get()],
@@ -1045,24 +1039,15 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     // Copy bodies' pos1 and velocity data into local arrays.
     auto bodyConstraints = GetBodyConstraints(island.bodies, m_bodyBuffer, h, GetMovementConf(conf));
     auto posConstraints = GetPositionConstraints(island.contacts,
-                                                 m_fixtureBuffer, m_contactBuffer, m_manifoldBuffer,
-                                                 bodyConstraints);
+                                                 m_fixtureBuffer, m_contactBuffer,
+                                                 m_manifoldBuffer);
     auto velConstraints = GetVelocityConstraints(island.contacts,
                                                  m_fixtureBuffer, m_contactBuffer, m_manifoldBuffer,
                                                  bodyConstraints,
                                                  GetRegVelocityConstraintConf(conf));
-#if 0
-    auto constraints = std::vector<BodyConstraint*>{};
-    for_each(cbegin(island.m_joints), cend(island.m_joints), [&](const auto& id) {
-        auto& joint = m_jointBuffer[UnderlyingValue(id)];
-        for (const auto& body : joint.GetBodies()) {
-            constraints.push_back(bodyConstraintsMap[body]);
-        }
-    });
-#endif
     if (conf.doWarmStart)
     {
-        WarmStartVelocities(velConstraints);
+        WarmStartVelocities(velConstraints, bodyConstraints);
     }
 
     const auto psConf = GetRegConstraintSolverConf(conf);
@@ -1083,7 +1068,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
 
         // Note that the new incremental impulse can potentially be orders of magnitude
         // greater than the last incremental impulse used in this loop.
-        const auto newIncImpulse = SolveVelocityConstraintsViaGS(velConstraints);
+        const auto newIncImpulse = SolveVelocityConstraintsViaGS(velConstraints, bodyConstraints);
         results.maxIncImpulse = std::max(results.maxIncImpulse, newIncImpulse);
 
         if (jointsOkay && (newIncImpulse <= conf.regMinMomentum))
@@ -1104,7 +1089,8 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     // Solve position constraints
     for (auto i = decltype(conf.regPositionIterations){0}; i < conf.regPositionIterations; ++i)
     {
-        const auto minSeparation = SolvePositionConstraintsViaGS(posConstraints, psConf);
+        const auto minSeparation = SolvePositionConstraintsViaGS(posConstraints, bodyConstraints,
+                                                                 psConf);
         results.minSeparation = std::min(results.minSeparation, minSeparation);
         const auto contactsOkay = (minSeparation >= conf.regMinSeparation);
 
@@ -1126,8 +1112,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     // Update normal and tangent impulses of contacts' manifold points
     for_each(cbegin(velConstraints), cend(velConstraints), [&](const VelocityConstraint& vc) {
         const auto i = static_cast<VelocityConstraints::size_type>(&vc - data(velConstraints));
-        auto& manifold = m_manifoldBuffer[UnderlyingValue(island.contacts[i])];
-        AssignImpulses(manifold, vc);
+        AssignImpulses(m_manifoldBuffer[island.contacts[i].get()], vc);
     });
 
     for (const auto& id: island.bodies) {
@@ -1549,8 +1534,8 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
 #endif
 
     auto posConstraints = GetPositionConstraints(island.contacts,
-                                                 m_fixtureBuffer, m_contactBuffer, m_manifoldBuffer,
-                                                 bodyConstraints);
+                                                 m_fixtureBuffer, m_contactBuffer,
+                                                 m_manifoldBuffer);
 
     // Solve TOI-based position constraints.
     assert(results.minSeparation == std::numeric_limits<Length>::infinity());
@@ -1571,7 +1556,8 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
             //   have more that it will do). Assuming that slower is preferable to tunnelling,
             //   then the non-selective function is the one to be calling here.
             //
-            const auto minSeparation = SolvePositionConstraintsViaGS(posConstraints, psConf);
+            const auto minSeparation = SolvePositionConstraintsViaGS(posConstraints,
+                                                                     bodyConstraints, psConf);
             results.minSeparation = std::min(results.minSeparation, minSeparation);
             if (minSeparation >= conf.toiMinSeparation) {
                 // Reached tolerance, early out...
@@ -1603,7 +1589,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
     assert(results.maxIncImpulse == 0_Ns);
     results.velocityIterations = conf.toiVelocityIterations;
     for (auto i = decltype(conf.toiVelocityIterations){0}; i < conf.toiVelocityIterations; ++i) {
-        const auto newIncImpulse = SolveVelocityConstraintsViaGS(velConstraints);
+        const auto newIncImpulse = SolveVelocityConstraintsViaGS(velConstraints, bodyConstraints);
         if (newIncImpulse <= conf.toiMinMomentum) {
             // No body related velocity constraints were out of tolerance.
             // There does not appear to be any benefit to doing more loops now.

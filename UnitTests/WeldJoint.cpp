@@ -245,3 +245,44 @@ TEST(WeldJointConf, ShiftOrigin)
     EXPECT_EQ(def.rB, copy.rB);
     EXPECT_EQ(def.mass, copy.mass);
 }
+
+TEST(WeldJointConf, EqualsOperator)
+{
+    EXPECT_TRUE(WeldJointConf() == WeldJointConf());
+    {
+        auto conf = WeldJointConf{};
+        conf.localAnchorA = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(WeldJointConf() == conf);
+    }
+    {
+        auto conf = WeldJointConf{};
+        conf.localAnchorB = Length2{1.2_m, -3_m};
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(WeldJointConf() == conf);
+    }
+    {
+        auto conf = WeldJointConf{};
+        conf.referenceAngle = 12.4_deg;
+        EXPECT_TRUE(conf == conf);
+        EXPECT_FALSE(WeldJointConf() == conf);
+    }
+    // TODO: test remaining fields.
+}
+
+TEST(WeldJointConf, NotEqualsOperator)
+{
+    EXPECT_FALSE(WeldJointConf() != WeldJointConf());
+    {
+        auto conf = WeldJointConf{};
+        conf.frequency = 13_Hz;
+        EXPECT_FALSE(conf != conf);
+        EXPECT_TRUE(WeldJointConf() != conf);
+    }
+    // TODO: test remaining fields.
+}
+
+TEST(WeldJointConf, GetName)
+{
+    EXPECT_STREQ(GetName(GetTypeID<WeldJointConf>()), "d2::WeldJointConf");
+}

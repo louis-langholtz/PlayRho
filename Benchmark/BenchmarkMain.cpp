@@ -1796,14 +1796,17 @@ static void ConstructAndAssignVC(benchmark::State& state)
         playrho::LinearVelocity2{playrho::Real(+0.5) * playrho::MeterPerSecond, playrho::Real(0) * playrho::MeterPerSecond},
         playrho::AngularVelocity{playrho::Real(0) * playrho::RadianPerSecond}
     };
-    
-    auto bcA = playrho::d2::BodyConstraint{invMass, invRotI, locA, posA, velA};
-    auto bcB = playrho::d2::BodyConstraint{invMass, invRotI, locB, posB, velB};
-    
+
+    const auto bodyConstraints = std::vector<playrho::d2::BodyConstraint>{
+        playrho::d2::BodyConstraint{invMass, invRotI, locA, posA, velA},
+        playrho::d2::BodyConstraint{invMass, invRotI, locB, posB, velB}
+    };
     auto vc = playrho::d2::VelocityConstraint{};
     for (auto _: state)
     {
-        benchmark::DoNotOptimize(vc = playrho::d2::VelocityConstraint{friction, restitution, tangentSpeed, worldManifold, bcA, bcB});
+        benchmark::DoNotOptimize(vc = playrho::d2::VelocityConstraint{friction, restitution,
+            tangentSpeed, worldManifold, playrho::BodyID(0u), playrho::BodyID(1u),
+            bodyConstraints});
     }
 }
 
@@ -1878,13 +1881,15 @@ static void SolveVC(benchmark::State& state)
         playrho::AngularVelocity{playrho::Real(0) * playrho::RadianPerSecond}
     };
 
-    auto bcA = playrho::d2::BodyConstraint{invMass, invRotI, locA, posA, velA};
-    auto bcB = playrho::d2::BodyConstraint{invMass, invRotI, locB, posB, velB};
-
-    auto vc = playrho::d2::VelocityConstraint{friction, restitution, tangentSpeed, worldManifold, bcA, bcB};
+    auto bodyConstraints = std::vector<playrho::d2::BodyConstraint>{
+        playrho::d2::BodyConstraint{invMass, invRotI, locA, posA, velA},
+        playrho::d2::BodyConstraint{invMass, invRotI, locB, posB, velB}
+    };
+    auto vc = playrho::d2::VelocityConstraint{friction, restitution, tangentSpeed, worldManifold,
+        playrho::BodyID(0u), playrho::BodyID(1u), bodyConstraints};
     for (auto _: state)
     {
-        benchmark::DoNotOptimize(playrho::GaussSeidel::SolveVelocityConstraint(vc));
+        benchmark::DoNotOptimize(playrho::GaussSeidel::SolveVelocityConstraint(vc, bodyConstraints));
         benchmark::ClobberMemory();
     }
 }

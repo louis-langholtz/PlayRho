@@ -44,7 +44,6 @@
 #include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
 #include <PlayRho/Dynamics/WorldConf.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
-#include <PlayRho/Dynamics/Joints/JointType.hpp>
 #include <PlayRho/Dynamics/IslandStats.hpp>
 
 #include <iterator>

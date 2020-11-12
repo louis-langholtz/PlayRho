@@ -23,15 +23,15 @@
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Vector2.hpp>
+
 #include <utility>
+#include <vector>
 
 namespace playrho {
 
 struct MovementConf;
 
 namespace d2 {
-
-class VelocityConstraint;
 
 /// @brief 2-D velocity related data structure.
 /// @note This data structure is 12-bytes (with 4-byte Real on at least one 64-bit platform).
@@ -142,9 +142,6 @@ constexpr Velocity operator/(const Velocity& lhs, const Real rhs)
 
 /// @brief Velocity pair.
 using VelocityPair = std::pair<Velocity, Velocity>;
-
-/// @brief Calculates the "warm start" velocity deltas for the given velocity constraint.
-VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc);
 
 /// @brief Caps velocity.
 /// @details Enforces maximums on the given velocity.

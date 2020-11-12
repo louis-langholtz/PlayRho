@@ -26,32 +26,31 @@
 namespace playrho {
 namespace d2 {
 
-/// Contact Position Constraint.
-/// @note This structure is 88-bytes large on at least one 64-bit platform.
+/// @brief The per-contact position constraint data structure.
 class PositionConstraint
 {
 public:
     PositionConstraint() = default;
 
     /// @brief Initializing constructor.
-    PositionConstraint(const Manifold& m, BodyConstraint& bA, BodyConstraint& bB, Length radius)
-        : manifold{m}, m_bodyA{&bA}, m_bodyB{&bB}, m_totalRadius{radius}
+    PositionConstraint(const Manifold& m, BodyID bA, BodyID bB, Length radius)
+        : manifold{m}, m_bodyA{bA}, m_bodyB{bB}, m_totalRadius{radius}
     {
         assert(m.GetPointCount() > 0);
-        assert(&bA != &bB);
+        assert(bA != bB);
         assert(radius >= 0_m);
     }
 
     Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points (64-bytes).
 
     /// @brief Gets body A.
-    BodyConstraint* GetBodyA() const noexcept
+    BodyID GetBodyA() const noexcept
     {
         return m_bodyA;
     }
 
     /// @brief Gets body B.
-    BodyConstraint* GetBodyB() const noexcept
+    BodyID GetBodyB() const noexcept
     {
         return m_bodyB;
     }
@@ -63,9 +62,9 @@ public:
     }
 
 private:
-    BodyConstraint* m_bodyA; ///< Data for body-A (8-bytes).
+    BodyID m_bodyA; ///< Identifier for body-A.
 
-    BodyConstraint* m_bodyB; ///< Data for body-B (8-bytes).
+    BodyID m_bodyB; ///< Identifier for body-B.
 
     /// @brief Total "Radius" distance of the associated shapes of fixture A and fixture B.
     /// @note 0 or greater.

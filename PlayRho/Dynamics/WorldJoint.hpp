@@ -43,7 +43,6 @@
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
-#include <PlayRho/Dynamics/Joints/JointType.hpp>
 #include <PlayRho/Dynamics/Joints/LimitState.hpp>
 
 #include <vector>
@@ -77,7 +76,7 @@ void Destroy(World& world, JointID id);
 /// @brief Gets the type of the joint.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-JointType GetType(const World& world, JointID id);
+TypeID GetType(const World& world, JointID id);
 
 /// @brief Gets the value of the identified joint.
 /// @throws std::out_of_range If given an invalid joint identifier.

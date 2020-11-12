@@ -31,7 +31,6 @@
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
-#include <PlayRho/Dynamics/Joints/JointType.hpp>
 
 namespace playrho {
 namespace d2 {

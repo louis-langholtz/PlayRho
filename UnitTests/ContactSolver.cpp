@@ -17,7 +17,10 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
+
+#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
 #include <PlayRho/Dynamics/Contacts/PositionConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
@@ -46,20 +49,21 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 
     const auto lcA = Length2{};
     const auto lcB = Length2{};
-    auto bA = BodyConstraint{
-        Real(1) / 1_kg,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
-        lcA, old_pA, old_vA}
-    ;
-    auto bB = BodyConstraint{
-        Real(1) / 1_kg,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
-        lcB, old_pB, old_vB
+    auto bodies = std::vector<BodyConstraint>{
+        BodyConstraint{
+            Real(1) / 1_kg,
+            InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
+            lcA, old_pA, old_vA},
+        BodyConstraint{
+            Real(1) / 1_kg,
+            InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
+            lcB, old_pB, old_vB
+        }
     };
-    const auto pc = PositionConstraint{manifold, bA, bB, 0_m};
+    const auto pc = PositionConstraint{manifold, BodyID(0u), BodyID(1u), 0_m};
     
     const auto conf = ConstraintSolverConf{};
-    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
+    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, bodies, conf);
     
     EXPECT_EQ(solution.min_separation, 0_m);
     
@@ -89,20 +93,22 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
     
     const auto lcA = Length2{};
     const auto lcB = Length2{};
-    auto bA = BodyConstraint{
-        Real(1) / 1_kg,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
-        lcA, old_pA, old_vA
+    auto bodies = std::vector<BodyConstraint>{
+        BodyConstraint{
+            Real(1) / 1_kg,
+            InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
+            lcA, old_pA, old_vA
+        },
+        BodyConstraint{
+            Real(1) / 1_kg,
+            InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
+            lcB, old_pB, old_vB
+        }
     };
-    auto bB = BodyConstraint{
-        Real(1) / 1_kg,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
-        lcB, old_pB, old_vB
-    };
-    const auto pc = PositionConstraint{manifold, bA, bB, 0_m};
+    const auto pc = PositionConstraint{manifold, BodyID(0u), BodyID(1u), 0_m};
     
     const auto conf = ConstraintSolverConf{};
-    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
+    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, bodies, conf);
     
     EXPECT_EQ(solution.min_separation, 0_m);
     
@@ -131,21 +137,22 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
     const auto old_pB = Position{Length2{}, 0_deg};
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
-    auto bA = BodyConstraint{
-        Real(1) / 1_kg,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
-        lcA, old_pA, old_vA
+    auto bodies = std::vector<BodyConstraint>{
+        BodyConstraint{
+            Real(1) / 1_kg,
+            InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
+            lcA, old_pA, old_vA
+        }, BodyConstraint{
+            Real(1) / 1_kg,
+            InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
+            lcB, old_pB, old_vB
+        }
     };
-    auto bB = BodyConstraint{
-        Real(1) / 1_kg,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
-        lcB, old_pB, old_vB
-    };
-    const auto pc = PositionConstraint{manifold, bA, bB, 0_m};
+    const auto pc = PositionConstraint{manifold, BodyID(0u), BodyID(1u), 0_m};
 
     const auto maxLinearCorrection = std::numeric_limits<Real>::infinity() * Meter;
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(0).UseMaxLinearCorrection(maxLinearCorrection);
-    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
+    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, bodies, conf);
 
     EXPECT_NEAR(static_cast<double>(Real{solution.min_separation / Meter}),
                 static_cast<double>(Real{-2 * dim / Meter}),
@@ -186,21 +193,23 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
     
     const auto lcA = Length2{};
     const auto lcB = Length2{};
-    auto bA = BodyConstraint{
-        Real(1) / 1_kg,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
-        lcA, old_pA, old_vA
+    auto bodies = std::vector<BodyConstraint>{
+        BodyConstraint{
+            Real(1) / 1_kg,
+            InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
+            lcA, old_pA, old_vA
+        },
+        BodyConstraint{
+            Real(1) / 1_kg,
+            InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
+            lcB, old_pB, old_vB
+        }
     };
-    auto bB = BodyConstraint{
-        Real(1) / 1_kg,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
-        lcB, old_pB, old_vB
-    };
-    const auto pc = PositionConstraint{manifold, bA, bB, 0_m};
+    const auto pc = PositionConstraint{manifold, BodyID(0u), BodyID(1u), 0_m};
     
     const auto maxLinearCorrection = std::numeric_limits<Real>::infinity() * Meter;
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
-    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
+    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, bodies, conf);
     
     EXPECT_TRUE(AlmostEqual(Real{solution.min_separation / Meter}, Real(-2))); // -2.002398
         
@@ -240,21 +249,23 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
     
     const auto lcA = Length2{};
     const auto lcB = Length2{};
-    auto bA = BodyConstraint{
-        Real(1) / 1_kg,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
-        lcA, old_pA, old_vA
+    auto bodies = std::vector<BodyConstraint>{
+        BodyConstraint{
+            Real(1) / 1_kg,
+            InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
+            lcA, old_pA, old_vA
+        },
+        BodyConstraint{
+            Real(1) / 1_kg,
+            InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
+            lcB, old_pB, old_vB
+        }
     };
-    auto bB = BodyConstraint{
-        Real(1) / 1_kg,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
-        lcB, old_pB, old_vB
-    };
-    const auto pc = PositionConstraint{manifold, bA, bB, 0_m};
+    const auto pc = PositionConstraint{manifold, BodyID(0u), BodyID(1u), 0_m};
     
     const auto maxLinearCorrection = std::numeric_limits<Real>::infinity() * Meter;
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
-    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
+    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, bodies, conf);
     
     EXPECT_TRUE(AlmostEqual(Real{solution.min_separation / Meter}, Real(-2))); // -2.002398
     
@@ -294,21 +305,23 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
     
     const auto lcA = Length2{};
     const auto lcB = Length2{};
-    auto bA = BodyConstraint{
-        Real(1) / 1_kg,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
-        lcA, old_pA, old_vA
+    auto bodies = std::vector<BodyConstraint>{
+        BodyConstraint{
+            Real(1) / 1_kg,
+            InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
+            lcA, old_pA, old_vA
+        },
+        BodyConstraint{
+            Real(1) / 1_kg,
+            InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
+            lcB, old_pB, old_vB
+        }
     };
-    auto bB = BodyConstraint{
-        Real(1) / 1_kg,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
-        lcB, old_pB, old_vB
-    };
-    const auto pc = PositionConstraint{manifold, bA, bB, 0_m};
+    const auto pc = PositionConstraint{manifold, BodyID(0u), BodyID(1u), 0_m};
     
     const auto maxLinearCorrection = std::numeric_limits<Real>::infinity() * Meter;
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
-    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
+    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, bodies, conf);
     
     EXPECT_TRUE(AlmostEqual(Real{solution.min_separation / Meter}, Real(-2))); // -2.002398
     
@@ -361,21 +374,23 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
     
     const auto lcA = Length2{};
     const auto lcB = Length2{};
-    auto bA = BodyConstraint{
-        Real(1) / 1_kg,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
-        lcA, old_pA, old_vA
+    auto bodies = std::vector<BodyConstraint>{
+        BodyConstraint{
+            Real(1) / 1_kg,
+            InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
+            lcA, old_pA, old_vA
+        },
+        BodyConstraint{
+            Real(1) / 1_kg,
+            InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
+            lcB, old_pB, old_vB
+        }
     };
-    auto bB = BodyConstraint{
-        Real(1) / 1_kg,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
-        lcB, old_pB, old_vB
-    };
-    const auto pc = PositionConstraint{manifold, bA, bB, 0_m};
+    const auto pc = PositionConstraint{manifold, BodyID(0u), BodyID(1u), 0_m};
 
     const auto maxLinearCorrection = std::numeric_limits<Real>::infinity() * Meter;
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
-    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
+    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, bodies, conf);
     
     EXPECT_TRUE(AlmostEqual(Real{solution.min_separation / Meter}, Real(-2))); // -2.002398
     
@@ -419,21 +434,23 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 
     const auto lcA = Length2{};
     const auto lcB = Length2{};
-    auto bA = BodyConstraint{
-        Real(1) / 1_kg,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
-        lcA, old_pA, old_vA
+    auto bodies = std::vector<BodyConstraint>{
+        BodyConstraint{
+            Real(1) / 1_kg,
+            InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
+            lcA, old_pA, old_vA
+        },
+        BodyConstraint{
+            Real(1) / 1_kg,
+            InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
+            lcB, old_pB, old_vB
+        }
     };
-    auto bB = BodyConstraint{
-        Real(1) / 1_kg,
-        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
-        lcB, old_pB, old_vB
-    };
-    const auto pc = PositionConstraint{manifold, bA, bB,
+    const auto pc = PositionConstraint{manifold, BodyID(0u), BodyID(1u),
         GetVertexRadius(shape) + GetVertexRadius(shape)};
     
     const auto conf = ConstraintSolverConf{};
-    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
+    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, bodies, conf);
     
     EXPECT_LT(solution.min_separation, -conf.linearSlop);
     

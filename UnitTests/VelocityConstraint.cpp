@@ -31,13 +31,9 @@ TEST(VelocityConstraint, ByteSize)
     switch (sizeof(Real))
     {
         case  4:
-#if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(VelocityConstraint), std::size_t(128));
-#else
-            EXPECT_EQ(sizeof(VelocityConstraint), std::size_t(136));
-#endif
+            EXPECT_EQ(sizeof(VelocityConstraint), std::size_t(124));
             break;
-        case  8: EXPECT_EQ(sizeof(VelocityConstraint), std::size_t(256)); break;
+        case  8: EXPECT_EQ(sizeof(VelocityConstraint), std::size_t(248)); break;
         case 16: EXPECT_EQ(sizeof(VelocityConstraint), std::size_t(496)); break;
         default: FAIL(); break;
     }
