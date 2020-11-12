@@ -27,7 +27,7 @@
 namespace playrho {
 
 /// @brief Fixture identifier.
-using FixtureID = strongtype::IndexingNamedType<FixtureCounter, struct FixtureIdentifier>;
+using FixtureID = detail::IndexingNamedType<FixtureCounter, struct FixtureIdentifier>;
 
 /// @brief Invalid fixture ID value.
 constexpr auto InvalidFixtureID =

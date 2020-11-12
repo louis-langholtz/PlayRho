@@ -27,7 +27,7 @@
 namespace playrho {
 
 /// @brief Joint identifier.
-using JointID = strongtype::IndexingNamedType<JointCounter, struct JointIdentifier>;
+using JointID = detail::IndexingNamedType<JointCounter, struct JointIdentifier>;
 
 /// @brief Invalid joint ID value.
 constexpr auto InvalidJointID = static_cast<JointID>(static_cast<JointID::underlying_type>(-1));

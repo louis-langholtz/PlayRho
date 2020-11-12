@@ -27,7 +27,7 @@
 namespace playrho {
 
 /// @brief Contact identifier.
-using ContactID = strongtype::IndexingNamedType<ContactCounter, struct ContactIdentifier>;
+using ContactID = detail::IndexingNamedType<ContactCounter, struct ContactIdentifier>;
 
 /// @brief Invalid contact ID value.
 constexpr auto InvalidContactID =
