@@ -25,15 +25,16 @@
 namespace playrho {
 namespace d2 {
 
-VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
+VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc,
+                                         const std::vector<BodyConstraint>& bodies)
 {
     auto vp = VelocityPair{Velocity{LinearVelocity2{}, 0_rpm}, Velocity{LinearVelocity2{}, 0_rpm}};
 
     const auto normal = vc.GetNormal();
     const auto tangent = vc.GetTangent();
     const auto pointCount = vc.GetPointCount();
-    const auto bodyA = vc.GetBodyA();
-    const auto bodyB = vc.GetBodyB();
+    const auto bodyA = &bodies[vc.GetBodyA().get()];
+    const auto bodyB = &bodies[vc.GetBodyB().get()];
 
     const auto invMassA = bodyA->GetInvMass();
     const auto invRotInertiaA = bodyA->GetInvRotInertia();

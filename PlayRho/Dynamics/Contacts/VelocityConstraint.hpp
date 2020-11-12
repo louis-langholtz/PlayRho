@@ -78,8 +78,9 @@ public:
     /// @brief Initializing constructor.
     VelocityConstraint(Real friction, Real restitution, LinearVelocity tangentSpeed,
                        const WorldManifold& worldManifold,
-                       BodyConstraint& bA,
-                       BodyConstraint& bB,
+                       BodyID bA,
+                       BodyID bB,
+                       const std::vector<BodyConstraint>& bodies,
                        Conf conf = GetDefaultConf());
     
     /// Gets the normal of the contact in world coordinates.
@@ -116,11 +117,11 @@ public:
     /// Gets the tangent speed of the associated contact.
     LinearVelocity GetTangentSpeed() const noexcept { return m_tangentSpeed; }
     
-    /// @brief Gets body A.
-    BodyConstraint* GetBodyA() const noexcept { return m_bodyA; }
+    /// @brief Gets identifier of body A.
+    BodyID GetBodyA() const noexcept { return m_bodyA; }
     
-    /// @brief Gets body B.
-    BodyConstraint* GetBodyB() const noexcept { return m_bodyB; }
+    /// @brief Gets identifier of body B.
+    BodyID GetBodyB() const noexcept { return m_bodyB; }
     
     /// Gets the normal impulse at the given point.
     /// @note Call the <code>AddPoint</code> or <code>SetNormalImpulseAtPoint</code> method
@@ -236,14 +237,16 @@ private:
     ///   <code>MaxManifoldPoints</code> points.
     /// @see GetPointCount().
     void AddPoint(Momentum normalImpulse, Momentum tangentImpulse,
-                  Length2 relA, Length2 relB, Conf conf);
+                  Length2 relA, Length2 relB, const std::vector<BodyConstraint>& bodies,
+                  Conf conf);
     
     /// Removes the last point added.
     void RemovePoint() noexcept;
     
     /// @brief Gets a point instance for the given parameters.
     Point GetPoint(Momentum normalImpulse, Momentum tangentImpulse,
-                   Length2 relA, Length2 relB, Conf conf) const noexcept;
+                   Length2 relA, Length2 relB, const std::vector<BodyConstraint>& bodies,
+                   Conf conf) const noexcept;
     
     /// Accesses the point identified by the given index.
     /// @warning Behavior is undefined if given index is not less than
@@ -276,8 +279,8 @@ private:
     /// @note This field is 12-bytes (on at least one 64-bit platform).
     Mass3 m_normalMass = Mass3{};
     
-    BodyConstraint* m_bodyA = nullptr; ///< Constraint data for body-A.
-    BodyConstraint* m_bodyB = nullptr; ///< Constraint data for body-B.
+    BodyID m_bodyA = InvalidBodyID; ///< Identifier for body-A.
+    BodyID m_bodyB = InvalidBodyID; ///< Identifier for body-B.
     
     UnitVec m_normal = GetInvalid<UnitVec>(); ///< Normal of the world manifold. 8-bytes.
     
@@ -382,12 +385,6 @@ inline UnitVec GetNormal(const VelocityConstraint& vc) noexcept
 inline UnitVec GetTangent(const VelocityConstraint& vc) noexcept
 {
     return vc.GetTangent();
-}
-
-/// @brief Gets the inverse mass from the given velocity constraint data.
-inline InvMass GetInvMass(const VelocityConstraint& vc) noexcept
-{
-    return vc.GetBodyA()->GetInvMass() + vc.GetBodyB()->GetInvMass();
 }
 
 /// @brief Gets the point relative position A data.

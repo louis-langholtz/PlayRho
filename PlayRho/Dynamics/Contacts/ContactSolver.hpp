@@ -22,6 +22,8 @@
 
 #include <PlayRho/Common/Math.hpp>
 
+#include <vector>
+
 namespace playrho {
 
 struct StepConf;
@@ -181,7 +183,8 @@ namespace GaussSeidel {
 /// @pre The velocity constraint must have a valid normal, a valid tangent,
 ///   valid point relative positions, and valid velocity biases.
 ///
-Momentum SolveVelocityConstraint(d2::VelocityConstraint& vc);
+Momentum SolveVelocityConstraint(d2::VelocityConstraint& vc,
+                                 std::vector<d2::BodyConstraint>& bodies);
 
 /// Solves the given position constraint.
 /// @details
@@ -191,8 +194,9 @@ Momentum SolveVelocityConstraint(d2::VelocityConstraint& vc);
 /// @return Minimum separation distance of the position constraint's manifold points
 ///   (prior to "solving").
 d2::PositionSolution SolvePositionConstraint(const d2::PositionConstraint& pc,
-                                     const bool moveA, const bool moveB,
-                                     ConstraintSolverConf conf);
+                                             const bool moveA, const bool moveB,
+                                             const std::vector<d2::BodyConstraint>& bodies,
+                                             ConstraintSolverConf conf);
 
 } // namespace GaussSidel
 

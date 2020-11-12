@@ -34,7 +34,7 @@ TEST(VelocityConstraint, ByteSize)
 #if defined(_WIN32) && !defined(_WIN64)
             EXPECT_EQ(sizeof(VelocityConstraint), std::size_t(128));
 #else
-            EXPECT_EQ(sizeof(VelocityConstraint), std::size_t(136));
+            EXPECT_EQ(sizeof(VelocityConstraint), std::size_t(124));
 #endif
             break;
         case  8: EXPECT_EQ(sizeof(VelocityConstraint), std::size_t(256)); break;
