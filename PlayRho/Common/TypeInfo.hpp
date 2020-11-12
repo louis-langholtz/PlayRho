@@ -21,7 +21,7 @@
 #ifndef PLAYRHO_COMMON_TYPEID_HPP
 #define PLAYRHO_COMMON_TYPEID_HPP
 
-#include <PlayRho/Common/StrongType.hpp>
+#include <PlayRho/Common/IndexingNamedType.hpp>
 #include <PlayRho/Common/Templates.hpp> // for GetInvalid, IsValid
 
 namespace playrho {

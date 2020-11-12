@@ -142,7 +142,7 @@
 		4764085F2507FC000090F711 /* propagate_const.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764085E2507FBFF0090F711 /* propagate_const.hpp */; };
 		47640862250807720090F711 /* WorldImpl.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47640860250807720090F711 /* WorldImpl.hpp */; };
 		47640863250807720090F711 /* WorldImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47640861250807720090F711 /* WorldImpl.cpp */; };
-		47640867250C855D0090F711 /* StrongType.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47640866250C855D0090F711 /* StrongType.hpp */; };
+		47640867250C855D0090F711 /* IndexingNamedType.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47640866250C855D0090F711 /* IndexingNamedType.hpp */; };
 		4764086B250C86640090F711 /* BodyID.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47640869250C86640090F711 /* BodyID.hpp */; };
 		4764086D250E9E2B0090F711 /* FixtureID.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764086C250E9E2B0090F711 /* FixtureID.hpp */; };
 		4764086F250EA5DE0090F711 /* ArrayAllocator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764086E250EA5DE0090F711 /* ArrayAllocator.hpp */; };
@@ -541,7 +541,7 @@
 		4764085E2507FBFF0090F711 /* propagate_const.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = propagate_const.hpp; sourceTree = "<group>"; };
 		47640860250807720090F711 /* WorldImpl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldImpl.hpp; sourceTree = "<group>"; };
 		47640861250807720090F711 /* WorldImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldImpl.cpp; sourceTree = "<group>"; };
-		47640866250C855D0090F711 /* StrongType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StrongType.hpp; sourceTree = "<group>"; };
+		47640866250C855D0090F711 /* IndexingNamedType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexingNamedType.hpp; sourceTree = "<group>"; };
 		47640869250C86640090F711 /* BodyID.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BodyID.hpp; sourceTree = "<group>"; };
 		4764086C250E9E2B0090F711 /* FixtureID.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureID.hpp; sourceTree = "<group>"; };
 		4764086E250EA5DE0090F711 /* ArrayAllocator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArrayAllocator.hpp; sourceTree = "<group>"; };
@@ -1031,6 +1031,7 @@
 				47E36F521FE8534500C10B79 /* FixedMath.hpp */,
 				47B58F5C1F5B314400354C34 /* FlagGuard.hpp */,
 				80BB8943141C3E5900F1753A /* GrowableStack.hpp */,
+				47640866250C855D0090F711 /* IndexingNamedType.hpp */,
 				47D28D9F1F72B9340094C032 /* Interval.hpp */,
 				472D35361F98C56200574B73 /* Intervals.hpp */,
 				470F9B3A1EE63515007EF7B6 /* InvalidArgument.hpp */,
@@ -1053,7 +1054,6 @@
 				4734B21E1DC1340500F15E29 /* Span.hpp */,
 				80BB8948141C3E5900F1753A /* StackAllocator.cpp */,
 				80BB8949141C3E5900F1753A /* StackAllocator.hpp */,
-				47640866250C855D0090F711 /* StrongType.hpp */,
 				470F9B1B1EDF2B8A007EF7B6 /* Sweep.hpp */,
 				47C85D1E1F0DA14500F70C56 /* Templates.hpp */,
 				470F9B151EDF2959007EF7B6 /* Transformation.hpp */,
@@ -1465,7 +1465,7 @@
 				4787D6DF1F2ED2D6008C115E /* RopeJointConf.hpp in Headers */,
 				474FFC3C1F2CEE6C0037CCE0 /* Vector.hpp in Headers */,
 				4731DE441DE2570900E7F931 /* Collision.hpp in Headers */,
-				47640867250C855D0090F711 /* StrongType.hpp in Headers */,
+				47640867250C855D0090F711 /* IndexingNamedType.hpp in Headers */,
 				4764085125042BD10090F711 /* NonNegative.hpp in Headers */,
 				47B490D7201E6C3000AB07A0 /* IslandStats.hpp in Headers */,
 				4787D6DB1F2ECFFB008C115E /* RevoluteJointConf.hpp in Headers */,

@@ -21,7 +21,7 @@
 #ifndef PLAYRHO_DYNAMICS_BODYID_HPP
 #define PLAYRHO_DYNAMICS_BODYID_HPP
 
-#include <PlayRho/Common/StrongType.hpp>
+#include <PlayRho/Common/IndexingNamedType.hpp>
 #include <PlayRho/Common/Settings.hpp>
 
 namespace playrho {
