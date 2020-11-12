@@ -33,9 +33,6 @@ struct MovementConf;
 
 namespace d2 {
 
-class BodyConstraint;
-class VelocityConstraint;
-
 /// @brief 2-D velocity related data structure.
 /// @note This data structure is 12-bytes (with 4-byte Real on at least one 64-bit platform).
 struct Velocity {
@@ -145,10 +142,6 @@ constexpr Velocity operator/(const Velocity& lhs, const Real rhs)
 
 /// @brief Velocity pair.
 using VelocityPair = std::pair<Velocity, Velocity>;
-
-/// @brief Calculates the "warm start" velocity deltas for the given velocity constraint.
-VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc,
-                                         const std::vector<BodyConstraint>& bodies);
 
 /// @brief Caps velocity.
 /// @details Enforces maximums on the given velocity.

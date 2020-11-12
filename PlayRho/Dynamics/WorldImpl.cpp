@@ -161,11 +161,45 @@ inline void AssignImpulses(Manifold& var, const VelocityConstraint& vc)
 #endif
 }
 
-inline void WarmStartVelocities(const VelocityConstraints& velConstraints,
-                                std::vector<BodyConstraint>& bodies)
+/// @brief Calculates the "warm start" velocity deltas for the given velocity constraint.
+VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc,
+                                         const std::vector<BodyConstraint>& bodies)
 {
-    for_each(cbegin(velConstraints), cend(velConstraints),
-                  [&](const VelocityConstraint& vc) {
+    auto vp = VelocityPair{Velocity{LinearVelocity2{}, 0_rpm}, Velocity{LinearVelocity2{}, 0_rpm}};
+
+    const auto normal = vc.GetNormal();
+    const auto tangent = vc.GetTangent();
+    const auto pointCount = vc.GetPointCount();
+    const auto bodyA = &bodies[vc.GetBodyA().get()];
+    const auto bodyB = &bodies[vc.GetBodyB().get()];
+
+    const auto invMassA = bodyA->GetInvMass();
+    const auto invRotInertiaA = bodyA->GetInvRotInertia();
+
+    const auto invMassB = bodyB->GetInvMass();
+    const auto invRotInertiaB = bodyB->GetInvRotInertia();
+
+    for (auto j = decltype(pointCount){0}; j < pointCount; ++j) {
+        // inverse moment of inertia : L^-2 M^-1 QP^2
+        // P is M L T^-2
+        // GetPointRelPosA() is Length2
+        // Cross(Length2, P) is: M L^2 T^-2
+        // L^-2 M^-1 QP^2 M L^2 T^-2 is: QP^2 T^-2
+        const auto& vcp = vc.GetPointAt(j);
+        const auto P = vcp.normalImpulse * normal + vcp.tangentImpulse * tangent;
+        const auto LA = Cross(vcp.relA, P) / Radian;
+        const auto LB = Cross(vcp.relB, P) / Radian;
+        std::get<0>(vp) -= Velocity{invMassA * P, invRotInertiaA * LA};
+        std::get<1>(vp) += Velocity{invMassB * P, invRotInertiaB * LB};
+    }
+
+    return vp;
+}
+
+void WarmStartVelocities(const VelocityConstraints& velConstraints,
+                         std::vector<BodyConstraint>& bodies)
+{
+    for_each(cbegin(velConstraints), cend(velConstraints), [&](const VelocityConstraint& vc) {
         const auto vp = CalcWarmStartVelocityDeltas(vc, bodies);
         const auto bodyA = &bodies[vc.GetBodyA().get()];
         const auto bodyB = &bodies[vc.GetBodyB().get()];
