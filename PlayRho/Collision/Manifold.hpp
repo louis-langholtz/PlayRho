@@ -54,9 +54,6 @@ struct Transformation;
 ///   the documentation associated with the different manifold types.
 /// @note Every point adds computational overhead to the collision response calculation - so
 ///   express collision manifolds with one point if possible instead of two.
-/// @note While this data structure is at least 58-bytes large (60-bytes on one 64-bit
-///   platform), it is intentionally 64-byte aligned making it 64-byte large (on 64-bit
-///   platforms with 4-byte Real).
 ///
 /// @image html manifolds.png
 ///
@@ -64,7 +61,7 @@ struct Transformation;
 /// @see https://en.wikipedia.org/wiki/Convex_set
 /// @see http://box2d.org/files/GDC2007/GDC2007_Catto_Erin_Physics2.ppt
 ///
-class alignas(64) Manifold
+class Manifold
 {
 public:
     

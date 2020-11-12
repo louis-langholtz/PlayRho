@@ -78,7 +78,7 @@ VelocityConstraint::VelocityConstraint(Real friction, Real restitution,
                                        BodyID bA,
                                        BodyID bB,
                                        const std::vector<BodyConstraint>& bodies,
-                                       Conf conf):
+                                       const Conf& conf):
     m_bodyA{bA}, m_bodyB{bB},
     m_normal{worldManifold.GetNormal()},
     m_friction{friction}, m_restitution{restitution}, m_tangentSpeed{tangentSpeed}

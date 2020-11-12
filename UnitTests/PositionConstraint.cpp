@@ -28,9 +28,9 @@ TEST(PositionConstraint, ByteSize)
     // builds and to report actual size rather than just reporting that expected size is wrong.
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(PositionConstraint), std::size_t(128)); break;
-        case  8: EXPECT_EQ(sizeof(PositionConstraint), std::size_t(192)); break;
-        case 16: EXPECT_EQ(sizeof(PositionConstraint), std::size_t(320)); break;
+        case  4: EXPECT_EQ(sizeof(PositionConstraint), std::size_t(68)); break;
+        case  8: EXPECT_EQ(sizeof(PositionConstraint), std::size_t(136)); break;
+        case 16: EXPECT_EQ(sizeof(PositionConstraint), std::size_t(272)); break;
         default: FAIL(); break;
     }
 }

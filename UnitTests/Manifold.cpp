@@ -28,9 +28,9 @@ TEST(Manifold, ByteSize)
     // builds and to report actual size rather than just reporting that expected size is wrong.
     switch (sizeof(Real))
     {
-        case  4:  EXPECT_EQ(sizeof(Manifold), std::size_t(64)); break;
-        case  8: EXPECT_EQ(sizeof(Manifold), std::size_t(128)); break;
-        case 16: EXPECT_EQ(sizeof(Manifold), std::size_t(256)); break;
+        case  4: EXPECT_EQ(sizeof(Manifold), std::size_t(60)); break;
+        case  8: EXPECT_EQ(sizeof(Manifold), std::size_t(120)); break;
+        case 16: EXPECT_EQ(sizeof(Manifold), std::size_t(240)); break;
         default: FAIL(); break;
     }
 }

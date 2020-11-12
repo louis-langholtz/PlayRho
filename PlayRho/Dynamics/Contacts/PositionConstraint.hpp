@@ -26,8 +26,7 @@
 namespace playrho {
 namespace d2 {
 
-/// Contact Position Constraint.
-/// @note This structure is 88-bytes large on at least one 64-bit platform.
+/// @brief The per-contact position constraint data structure.
 class PositionConstraint
 {
 public:

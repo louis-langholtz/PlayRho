@@ -233,17 +233,15 @@ PositionConstraints GetPositionConstraints(const Island::Contacts& contacts,
     transform(cbegin(contacts), cend(contacts), back_inserter(constraints),
               [&](const auto& contactID) {
         const auto& contact = contactBuffer[UnderlyingValue(contactID)];
-        const auto& manifold = manifoldBuffer[UnderlyingValue(contactID)];
         const auto fixtureA = GetFixtureA(contact);
         const auto fixtureB = GetFixtureB(contact);
         const auto indexA = GetChildIndexA(contact);
         const auto indexB = GetChildIndexB(contact);
         const auto bodyA = GetBodyA(contact);
         const auto bodyB = GetBodyB(contact);
-        const auto& shapeA = GetShape(fixtureBuffer[UnderlyingValue(fixtureA)]);
-        const auto& shapeB = GetShape(fixtureBuffer[UnderlyingValue(fixtureB)]);
-        const auto radiusA = GetVertexRadius(shapeA, indexA);
-        const auto radiusB = GetVertexRadius(shapeB, indexB);
+        const auto radiusA = GetVertexRadius(GetShape(fixtureBuffer[fixtureA.get()]), indexA);
+        const auto radiusB = GetVertexRadius(GetShape(fixtureBuffer[fixtureB.get()]), indexB);
+        const auto& manifold = manifoldBuffer[UnderlyingValue(contactID)];
         return PositionConstraint{manifold, bodyA, bodyB, radiusA + radiusB};
     });
     return constraints;
@@ -268,26 +266,26 @@ VelocityConstraints GetVelocityConstraints(const Island::Contacts& contacts,
     transform(cbegin(contacts), cend(contacts), back_inserter(velConstraints),
               [&](const auto& contactID) {
         const auto& contact = contactBuffer[UnderlyingValue(contactID)];
-        const auto& manifold = manifoldBuffer[UnderlyingValue(contactID)];
-        const auto fixtureA = contact.GetFixtureA();
-        const auto fixtureB = contact.GetFixtureB();
-        const auto friction = contact.GetFriction();
-        const auto restitution = contact.GetRestitution();
-        const auto tangentSpeed = contact.GetTangentSpeed();
+        const auto bodyA = GetBodyA(contact);
+        const auto bodyB = GetBodyB(contact);
+        const auto fixtureA = GetFixtureA(contact);
+        const auto fixtureB = GetFixtureB(contact);
         const auto indexA = GetChildIndexA(contact);
         const auto indexB = GetChildIndexB(contact);
-        const auto bodyA = GetBody(fixtureBuffer[UnderlyingValue(fixtureA)]);
+        const auto friction = GetFriction(contact);
+        const auto restitution = GetRestitution(contact);
+        const auto tangentSpeed = GetTangentSpeed(contact);
         const auto& shapeA = GetShape(fixtureBuffer[UnderlyingValue(fixtureA)]);
-        const auto bodyB = GetBody(fixtureBuffer[UnderlyingValue(fixtureB)]);
         const auto& shapeB = GetShape(fixtureBuffer[UnderlyingValue(fixtureB)]);
-        auto& bodyConstraintA = bodies[UnderlyingValue(bodyA)];
-        auto& bodyConstraintB = bodies[UnderlyingValue(bodyB)];
+        const auto& bodyConstraintA = bodies[UnderlyingValue(bodyA)];
+        const auto& bodyConstraintB = bodies[UnderlyingValue(bodyB)];
         const auto radiusA = GetVertexRadius(shapeA, indexA);
         const auto radiusB = GetVertexRadius(shapeB, indexB);
         const auto xfA = GetTransformation(bodyConstraintA.GetPosition(),
                                            bodyConstraintA.GetLocalCenter());
         const auto xfB = GetTransformation(bodyConstraintB.GetPosition(),
                                            bodyConstraintB.GetLocalCenter());
+        const auto& manifold = manifoldBuffer[contactID.get()];
         const auto worldManifold = GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
         return VelocityConstraint{friction, restitution, tangentSpeed, worldManifold,
             bodyA, bodyB, bodies, conf};

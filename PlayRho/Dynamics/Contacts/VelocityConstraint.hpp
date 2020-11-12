@@ -31,7 +31,7 @@ namespace d2 {
 
 class WorldManifold;
 
-/// Contact velocity constraint.
+/// @brief The per-contact velocity constraint data structure.
 ///
 /// @note A valid contact velocity constraint must have a point count of either 1 or 2.
 /// @note This data structure is 136-bytes large (on at least one 64-bit platform).
@@ -45,10 +45,9 @@ class WorldManifold;
 class VelocityConstraint
 {
 public:
-    
     /// @brief Size type.
     using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
-    
+
     /// @brief Configuration data for velocity constraints.
     struct Conf
     {
@@ -56,7 +55,7 @@ public:
         LinearVelocity velocityThreshold = DefaultVelocityThreshold; ///< Velocity threshold.
         bool blockSolve = true; ///< Whether to block solve.
     };
-    
+
     /// @brief Gets the default configuration for a <code>VelocityConstraint</code>.
     static constexpr Conf GetDefaultConf() noexcept
     {
@@ -68,20 +67,20 @@ public:
     /// Initializes object with: a zero point count, an invalid K, an invalid normal mass,
     /// an invalid normal, invalid friction, invalid restitution, an invalid tangent speed.
     VelocityConstraint() = default;
-    
+
     /// @brief Copy constructor.
     VelocityConstraint(const VelocityConstraint& copy) = default;
-    
+
     /// @brief Assignment operator.
     VelocityConstraint& operator= (const VelocityConstraint& copy) = default;
-    
+
     /// @brief Initializing constructor.
     VelocityConstraint(Real friction, Real restitution, LinearVelocity tangentSpeed,
                        const WorldManifold& worldManifold,
                        BodyID bA,
                        BodyID bB,
                        const std::vector<BodyConstraint>& bodies,
-                       Conf conf = GetDefaultConf());
+                       const Conf& conf = GetDefaultConf());
     
     /// Gets the normal of the contact in world coordinates.
     /// @note This value is set on construction.
