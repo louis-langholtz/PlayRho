@@ -194,9 +194,9 @@ Momentum SolveVelocityConstraint(d2::VelocityConstraint& vc,
 /// @return Minimum separation distance of the position constraint's manifold points
 ///   (prior to "solving").
 d2::PositionSolution SolvePositionConstraint(const d2::PositionConstraint& pc,
-                                             const bool moveA, const bool moveB,
+                                             bool moveA, bool moveB,
                                              const std::vector<d2::BodyConstraint>& bodies,
-                                             ConstraintSolverConf conf);
+                                             const ConstraintSolverConf& conf);
 
 } // namespace GaussSidel
 

@@ -118,8 +118,7 @@ std::optional<Momentum> BlockSolveNormalCase1(VelocityConstraint& vc,
     //
     // x = -inv(A) * b'
     //
-    const auto normalMass = vc.GetNormalMass();
-    const auto newImpulses = -Transform(b_prime, normalMass);
+    const auto newImpulses = -Transform(b_prime, vc.GetNormalMass());
     if ((newImpulses[0] >= 0_Ns) && (newImpulses[1] >= 0_Ns))
     {
         const auto max = BlockSolveUpdate(vc, newImpulses, bodies);
@@ -509,9 +508,9 @@ Momentum SolveVelocityConstraint(d2::VelocityConstraint& vc,
 }
 
 d2::PositionSolution SolvePositionConstraint(const d2::PositionConstraint& pc,
-                                             const bool moveA, const bool moveB,
+                                             bool moveA, bool moveB,
                                              const std::vector<d2::BodyConstraint>& bodies,
-                                             ConstraintSolverConf conf)
+                                             const ConstraintSolverConf& conf)
 {
     assert(IsValid(conf.resolutionRate));
     assert(IsValid(conf.linearSlop));

@@ -317,7 +317,7 @@ Momentum SolveVelocityConstraintsViaGS(VelocityConstraints& velConstraints, Body
 /// @return Minimum separation.
 Length SolvePositionConstraintsViaGS(PositionConstraints& posConstraints,
                                      BodyConstraints& bodies,
-                                     ConstraintSolverConf conf)
+                                     const ConstraintSolverConf& conf)
 {
     auto minSeparation = std::numeric_limits<Length>::infinity();
     
@@ -352,7 +352,7 @@ Length SolvePositionConstraintsViaGS(PositionConstraints& posConstraints,
 Length SolvePositionConstraints(PositionConstraints& posConstraints,
                                 const BodyConstraint* bodyConstraintA,
                                 const BodyConstraint* bodyConstraintB,
-                                ConstraintSolverConf conf)
+                                const ConstraintSolverConf& conf)
 {
     auto minSeparation = std::numeric_limits<Length>::infinity();
 
