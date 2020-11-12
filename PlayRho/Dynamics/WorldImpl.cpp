@@ -331,43 +331,6 @@ Length SolvePositionConstraintsViaGS(PositionConstraints& posConstraints,
     return minSeparation;
 }
 
-#if 0
-/// Solves the given position constraints.
-///
-/// @details This updates positions (and nothing else) for the two bodies identified by the
-///   given indexes by calling the position constraint solving function.
-///
-/// @note Can't expect the returned minimum separation to be greater than or equal to
-///  <code>ConstraintSolverConf.max_separation</code> because code won't push the separation
-///   above this amount to begin with.
-///
-/// @param positionConstraints Positions constraints.
-/// @param bodyConstraintA Pointer to body constraint for body A.
-/// @param bodyConstraintB Pointer to body constraint for body B.
-/// @param conf Configuration for solving the constraint.
-///
-/// @return Minimum separation (which is the same as the max amount of penetration/overlap).
-///
-Length SolvePositionConstraints(PositionConstraints& posConstraints,
-                                const BodyConstraint* bodyConstraintA,
-                                const BodyConstraint* bodyConstraintB,
-                                const ConstraintSolverConf& conf)
-{
-    auto minSeparation = std::numeric_limits<Length>::infinity();
-
-    for_each(begin(posConstraints), end(posConstraints), [&](PositionConstraint &pc) {
-        const auto moveA = (pc.GetBodyA() == bodyConstraintA) || (pc.GetBodyA() == bodyConstraintB);
-        const auto moveB = (pc.GetBodyB() == bodyConstraintA) || (pc.GetBodyB() == bodyConstraintB);
-        const auto res = SolvePositionConstraint(pc, moveA, moveB, conf);
-        pc.GetBodyA()->SetPosition(res.pos_a);
-        pc.GetBodyB()->SetPosition(res.pos_b);
-        minSeparation = std::min(minSeparation, res.min_separation);
-    });
-
-    return minSeparation;
-}
-#endif
-
 inline Time GetUnderActiveTime(const Body& b, const StepConf& conf) noexcept
 {
     const auto underactive = IsUnderActive(b.GetVelocity(), conf.linearSleepTolerance,
@@ -1082,15 +1045,6 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
                                                  m_fixtureBuffer, m_contactBuffer, m_manifoldBuffer,
                                                  bodyConstraints,
                                                  GetRegVelocityConstraintConf(conf));
-#if 0
-    auto constraints = std::vector<BodyConstraint*>{};
-    for_each(cbegin(island.m_joints), cend(island.m_joints), [&](const auto& id) {
-        auto& joint = m_jointBuffer[UnderlyingValue(id)];
-        for (const auto& body : joint.GetBodies()) {
-            constraints.push_back(bodyConstraintsMap[body]);
-        }
-    });
-#endif
     if (conf.doWarmStart)
     {
         WarmStartVelocities(velConstraints, bodyConstraints);
