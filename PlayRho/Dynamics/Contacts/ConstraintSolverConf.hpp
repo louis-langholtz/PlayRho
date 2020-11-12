@@ -30,15 +30,14 @@ struct StepConf;
 /// @brief Constraint solver configuration data.
 /// @details Defines how a constraint solver should resolve a given constraint.
 /// @see SolvePositionConstraint.
-struct ConstraintSolverConf
-{
+struct ConstraintSolverConf {
     /// @brief Uses the given resolution rate.
     constexpr ConstraintSolverConf& UseResolutionRate(Real value) noexcept
     {
         resolutionRate = value;
         return *this;
     }
-    
+
     /// @brief Uses the given linear slop.
     constexpr ConstraintSolverConf& UseLinearSlop(Length value) noexcept
     {
@@ -52,7 +51,7 @@ struct ConstraintSolverConf
         angularSlop = value;
         return *this;
     }
-    
+
     /// @brief Uses the given max linear correction.
     constexpr ConstraintSolverConf& UseMaxLinearCorrection(Length value) noexcept
     {
@@ -76,22 +75,22 @@ struct ConstraintSolverConf
     /// @note Recommended values are: <code>0.2</code> for solving regular constraints
     ///   or <code>0.75</code> for solving TOI constraints.
     Real resolutionRate = Real(0.2);
-    
+
     /// Linear slop.
     /// @note The negative of this amount is the maximum amount of separation to create.
     /// @note Recommended value: <code>DefaultLinearSlop</code>.
     Length linearSlop = DefaultLinearSlop;
-    
+
     /// Angular slop.
     /// @note Recommended value: <code>DefaultAngularSlop</code>.
     Angle angularSlop = DefaultAngularSlop;
-    
+
     /// Maximum linear correction.
     /// @details
     /// Maximum amount of overlap to resolve in a single solver call. Helps prevent overshoot.
     /// @note Recommended value: <code>linearSlop * 40</code>.
     Length maxLinearCorrection = DefaultLinearSlop * Real{20};
-    
+
     /// Maximum angular correction.
     /// @details Maximum angular position correction used when solving constraints.
     /// Helps to prevent overshoot.
@@ -121,4 +120,3 @@ ConstraintSolverConf GetToiConstraintSolverConf(const StepConf& conf) noexcept;
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_CONTACTS_CONSTRAINTSOLVERCONF_HPP
-

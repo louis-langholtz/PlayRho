@@ -31,20 +31,16 @@ namespace d2 {
 
 static_assert(std::is_default_constructible<Contact>::value,
               "Contact must be default constructible!");
-static_assert(std::is_copy_constructible<Contact>::value,
-              "Contact must be copy constructible!");
-static_assert(std::is_move_constructible<Contact>::value,
-              "Contact must be move constructible!");
-static_assert(std::is_copy_assignable<Contact>::value,
-              "Contact must be copy assignable!");
-static_assert(std::is_move_assignable<Contact>::value,
-              "Contact must be move assignable!");
+static_assert(std::is_copy_constructible<Contact>::value, "Contact must be copy constructible!");
+static_assert(std::is_move_constructible<Contact>::value, "Contact must be move constructible!");
+static_assert(std::is_copy_assignable<Contact>::value, "Contact must be copy assignable!");
+static_assert(std::is_move_assignable<Contact>::value, "Contact must be move assignable!");
 static_assert(std::is_nothrow_destructible<Contact>::value,
               "Contact must be nothrow destructible!");
 
-Contact::Contact(BodyID bA, FixtureID fA, ChildCounter iA,
-                 BodyID bB, FixtureID fB, ChildCounter iB) noexcept:
-    m_bodyA{bA}, m_bodyB{bB}, m_fixtureA{fA}, m_fixtureB{fB}, m_indexA{iA}, m_indexB{iB}
+Contact::Contact(BodyID bA, FixtureID fA, ChildCounter iA, BodyID bB, FixtureID fB,
+                 ChildCounter iB) noexcept
+    : m_bodyA{bA}, m_bodyB{bB}, m_fixtureA{fA}, m_fixtureB{fB}, m_indexA{iA}, m_indexB{iB}
 {
     assert(bA != bB);
     assert(fA != fB);
