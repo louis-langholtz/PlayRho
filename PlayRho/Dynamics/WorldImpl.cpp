@@ -1499,7 +1499,7 @@ bool WorldImpl::UpdateBody(Body& body, const Position& pos)
     assert(IsValid(pos));
     body.SetPosition1(pos);
     const auto oldXfm = GetTransformation(body);
-    const auto newXfm = GetTransformation(GetPosition1(body), body.GetLocalCenter());
+    const auto newXfm = GetTransformation(GetPosition1(body), GetLocalCenter(body));
     if (newXfm != oldXfm) {
         body.SetTransformation(newXfm);
         return true;

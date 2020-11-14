@@ -141,44 +141,27 @@ public:
     explicit Body(const BodyConf& bd = GetDefaultBodyConf()) noexcept;
 
     /// @brief Gets the body transform for the body's origin.
+    /// @detail This gets the translation/location and rotation/direction of the body relative to
+    ///   its world. The location and direction of the body after stepping the world's physics
+    ///   simulations is dependent on a number of factors:
+    ///   1. Location and direction at the last time step.
+    ///   2. Forces and torques acting on the body (applied force, applied impulse, etc.).
+    ///   3. The mass and rotational inertia of the body.
+    ///   4. Damping of the body.
+    ///   5. Restitution and friction values of the body's fixtures when they experience collisions.
     /// @return the world transform of the body's origin.
-    /// @see GetLocation, SetTransformation.
-    Transformation GetTransformation() const noexcept;
+    /// @see SetTransformation.
+    const Transformation& GetTransformation() const noexcept;
 
     /// @brief Sets the body's transformation.
     /// @note <code>SetSweep</code> may also need to be called.
-    /// @post <code>GetTransformation</code> will return the value set.
-    /// @post <code>GetLocation</code> will return the translational portion of the value set.
-    /// @see GetLocation, GetTransformation, SetSweep.
-    void SetTransformation(Transformation value) noexcept;
-
-    /// @brief Gets the world body origin location.
-    /// @details This is the location of the body's origin relative to its world.
-    /// The location of the body after stepping the world's physics simulations is dependent on
-    /// a number of factors:
-    ///   1. Location at the last time step.
-    ///   2. Forces acting on the body (gravity, applied force, applied impulse).
-    ///   3. The mass data of the body.
-    ///   4. Damping of the body.
-    ///   5. Restitution and friction values of the body's fixtures when they experience collisions.
-    /// @return Location of the body's origin in world coordinates.
-    /// @see GetTransformation.
-    Length2 GetLocation() const noexcept;
+    /// @post <code>GetTransformation()</code> will return the value set.
+    /// @see GetTransformation, GetSweep, SetSweep.
+    void SetTransformation(const Transformation& value) noexcept;
 
     /// @brief Gets the body's sweep.
     /// @see SetSweep.
     const Sweep& GetSweep() const noexcept;
-
-    /// @brief Gets the angle.
-    /// @return the current world rotation angle.
-    /// @see GetSweep, GetTransformation.
-    Angle GetAngle() const noexcept;
-
-    /// @brief Gets the world position of the center of mass.
-    Length2 GetWorldCenter() const noexcept;
-
-    /// @brief Gets the local position of the center of mass.
-    Length2 GetLocalCenter() const noexcept;
 
     /// @brief Gets the velocity.
     /// @see SetVelocity.
@@ -401,8 +384,16 @@ public:
     /// @see IsEnabled.
     void UnsetEnabled() noexcept;
 
-    /// @brief Sets the "position 0" value of the body to the given position.
+    /// @brief Sets the sweep value of the given body.
     /// @see GetSweep.
+    void SetSweep(const Sweep& value) noexcept
+    {
+        assert(IsSpeedable() || value.pos0 == value.pos1);
+        m_sweep = value;
+    }
+
+    /// @brief Sets the "position 0" value of the body to the given position.
+    /// @see GetSweep, SetSweep.
     void SetPosition0(const Position value) noexcept
     {
         assert(IsSpeedable() || m_sweep.pos0 == value);
@@ -410,8 +401,7 @@ public:
     }
 
     /// @brief Sets the body sweep's "position 1" value.
-    /// @note This sets what <code>GetWorldCenter()</code> returns.
-    /// @see GetSweep, GetWorldCenter.
+    /// @see GetSweep, SetSweep.
     void SetPosition1(const Position value) noexcept
     {
         assert(IsSpeedable() || m_sweep.pos1 == value);
@@ -425,16 +415,8 @@ public:
         m_sweep.ResetAlpha0();
     }
 
-    /// @brief Sets the sweep value of the given body.
-    /// @see GetSweep.
-    void SetSweep(const Sweep value) noexcept
-    {
-        assert(IsSpeedable() || value.pos0 == value.pos1);
-        m_sweep = value;
-    }
-
     /// @brief Restores the given body's sweep to the given sweep value.
-    /// @see GetSweep.
+    /// @see GetSweep, SetSweep.
     void Restore(const Sweep& value) noexcept
     {
         SetSweep(value);
@@ -463,7 +445,7 @@ public:
     ///    2. updates the body's sweep positions (linear and angular) to the advanced ones; and
     ///    3. updates the body's transform to the new sweep one settings.
     /// @param value Valid new time factor in [0,1) to advance the sweep to.
-    /// @see GetSweep.
+    /// @see GetSweep, SetSweep, GetTransofmration, SetTransformation.
     void Advance(Real value) noexcept
     {
         // assert(m_sweep.GetAlpha0() <= alpha);
@@ -485,7 +467,10 @@ private:
     /// @note 16-bytes.
     Transformation m_xf;
 
-    Sweep m_sweep; ///< Sweep motion for CCD. 36-bytes.
+    /// @brief Sweep motion for CCD. 36-bytes.
+    /// @note This is something of a non-essential part.
+    /// @todo Consider refactoring this data out of this class and into the world implementation.
+    Sweep m_sweep;
 
     FlagsType m_flags = 0; ///< Flags. 2-bytes.
 
@@ -526,42 +511,19 @@ private:
     Time m_underActiveTime = 0;
 };
 
-inline Transformation Body::GetTransformation() const noexcept
+inline const Transformation& Body::GetTransformation() const noexcept
 {
     return m_xf;
 }
 
-inline void Body::SetTransformation(Transformation value) noexcept
+inline void Body::SetTransformation(const Transformation& value) noexcept
 {
     m_xf = value;
-}
-
-inline Length2 Body::GetLocation() const noexcept
-{
-    return GetTransformation().p;
 }
 
 inline const Sweep& Body::GetSweep() const noexcept
 {
     return m_sweep;
-}
-
-inline Angle Body::GetAngle() const noexcept
-{
-    // Angle could also come from the body's transformation but that requires converting
-    // from its unit vector to an angle while that angle is already cached in position 1 of
-    // the sweep.
-    return GetSweep().pos1.angular;
-}
-
-inline Length2 Body::GetWorldCenter() const noexcept
-{
-    return GetSweep().pos1.linear;
-}
-
-inline Length2 Body::GetLocalCenter() const noexcept
-{
-    return GetSweep().GetLocalCenter();
 }
 
 inline Velocity Body::GetVelocity() const noexcept
@@ -877,6 +839,99 @@ inline void UnsetAwake(Body& body) noexcept
     body.UnsetAwake();
 }
 
+/// @brief Gets the body's transformation.
+/// @see SetTransformation(Body& body, Transformation value).
+/// @relatedalso Body
+inline Transformation GetTransformation(const Body& body) noexcept
+{
+    return body.GetTransformation();
+}
+
+/// Sets the body's transformation.
+/// @note This sets what <code>GetLocation</code> returns.
+/// @see GetTransformation(const Body& body).
+/// @relatedalso Body
+inline void SetTransformation(Body& body, Transformation value) noexcept
+{
+    body.SetTransformation(value);
+}
+
+/// @brief Gets the body's origin location.
+/// @details This is the location of the body's origin relative to its world.
+/// The location of the body after stepping the world's physics simulations is dependent on
+/// a number of factors:
+///   1. Location at the last time step.
+///   2. Forces acting on the body (gravity, applied force, applied impulse).
+///   3. The mass data of the body.
+///   4. Damping of the body.
+///   5. Restitution and friction values of the body's fixtures when they experience collisions.
+/// @return World location of the body's origin.
+/// @see GetAngle.
+/// @relatedalso Body
+inline Length2 GetLocation(const Body& body) noexcept
+{
+    return GetLocation(body.GetTransformation());
+}
+
+/// @brief Gets the body's sweep.
+/// @see SetSweep(Body& body, const Sweep& value).
+/// @relatedalso Body
+inline const Sweep& GetSweep(const Body& body) noexcept
+{
+    return body.GetSweep();
+}
+
+/// @brief Sets the sweep value of the given body.
+/// @see GetSweep(const Body& body).
+/// @relatedalso Body
+inline void SetSweep(Body& body, const Sweep& value) noexcept
+{
+    body.SetSweep(value);
+}
+
+/// @brief Gets the "position 1" Position information for the given body.
+/// @relatedalso Body
+inline Position GetPosition1(const Body& body) noexcept
+{
+    return body.GetSweep().pos1;
+}
+
+/// @brief Gets the body's angle.
+/// @return Body's angle relative to its World.
+/// @relatedalso Body
+inline Angle GetAngle(const Body& body) noexcept
+{
+    return body.GetSweep().pos1.angular;
+}
+
+/// @brief Get the world position of the center of mass.
+inline Length2 GetWorldCenter(const Body& body) noexcept
+{
+    return body.GetSweep().pos1.linear;
+}
+
+/// @brief Gets the local position of the center of mass.
+inline Length2 GetLocalCenter(const Body& body) noexcept
+{
+    return body.GetSweep().GetLocalCenter();
+}
+
+/// @brief Gets the body's position.
+/// @relatedalso Body
+inline Position GetPosition(const Body& body) noexcept
+{
+    return Position{GetLocation(body), GetAngle(body)};
+}
+
+/// @brief Gets the given body's under-active time.
+/// @return Zero or more time in seconds (of step time) that this body has been
+///   "under-active" for.
+/// @relatedalso Body
+inline Time GetUnderActiveTime(const Body& body) noexcept
+{
+    return body.GetUnderActiveTime();
+}
+
 /// @brief Does this body have fixed rotation?
 /// @see SetFixedRotation(Body&, bool).
 /// @relatedalso Body
@@ -1019,13 +1074,6 @@ inline bool Unawaken(Body& body) noexcept
     return false;
 }
 
-/// @brief Gets the "position 1" Position information for the given body.
-/// @relatedalso Body
-inline Position GetPosition1(const Body& body) noexcept
-{
-    return body.GetSweep().pos1;
-}
-
 /// @brief Gets the mass of the body.
 /// @note This may be the total calculated mass or it may be the set mass of the body.
 /// @return Value of zero or more representing the body's mass.
@@ -1067,37 +1115,6 @@ inline void SetAcceleration(Body& body, AngularAcceleration value) noexcept
     body.SetAcceleration(body.GetLinearAcceleration(), value);
 }
 
-/// @brief Applies an impulse at a point.
-/// @note This immediately modifies the velocity.
-/// @note This also modifies the angular velocity if the point of application
-///   is not at the center of mass.
-/// @note Non-zero impulses wakes up the body.
-/// @param body Body to apply the impulse to.
-/// @param impulse the world impulse vector.
-/// @param point the world position of the point of application.
-/// @relatedalso Body
-inline void ApplyLinearImpulse(Body& body, Momentum2 impulse, Length2 point) noexcept
-{
-    auto velocity = body.GetVelocity();
-    velocity.linear += body.GetInvMass() * impulse;
-    const auto invRotI = body.GetInvRotInertia();
-    const auto dp = point - body.GetWorldCenter();
-    velocity.angular += AngularVelocity{invRotI * Cross(dp, impulse) / Radian};
-    body.SetVelocity(velocity);
-}
-
-/// @brief Applies an angular impulse.
-/// @param body Body to apply the angular impulse to.
-/// @param impulse Angular impulse to be applied.
-/// @relatedalso Body
-inline void ApplyAngularImpulse(Body& body, AngularMomentum impulse) noexcept
-{
-    auto velocity = body.GetVelocity();
-    const auto invRotI = body.GetInvRotInertia();
-    velocity.angular += AngularVelocity{invRotI * impulse};
-    body.SetVelocity(velocity);
-}
-
 /// @brief Gets the rotational inertia of the body.
 /// @param body Body to get the rotational inertia for.
 /// @return the rotational inertia.
@@ -1115,7 +1132,7 @@ inline RotInertia GetRotInertia(const Body& body) noexcept
 inline RotInertia GetLocalRotInertia(const Body& body) noexcept
 {
     return GetRotInertia(body) +
-           GetMass(body) * GetMagnitudeSquared(body.GetLocalCenter()) / SquareRadian;
+           GetMass(body) * GetMagnitudeSquared(GetLocalCenter(body)) / SquareRadian;
 }
 
 /// @brief Gets the velocity.
@@ -1232,7 +1249,7 @@ inline LinearVelocity2 GetLinearVelocityFromWorldPoint(const Body& body,
                                                        const Length2 worldPoint) noexcept
 {
     const auto velocity = body.GetVelocity();
-    const auto worldCtr = body.GetWorldCenter();
+    const auto worldCtr = GetWorldCenter(body);
     const auto dp = Length2{worldPoint - worldCtr};
     const auto rlv = LinearVelocity2{GetRevPerpendicular(dp) * (velocity.angular / Radian)};
     return velocity.linear + rlv;
@@ -1271,82 +1288,22 @@ inline Torque GetTorque(const Body& body) noexcept
 /// @relatedalso Body
 Velocity GetVelocity(const Body& body, Time h) noexcept;
 
-/// @brief Gets the body's origin location.
-/// @details This is the location of the body's origin relative to its world.
-/// The location of the body after stepping the world's physics simulations is dependent on
-/// a number of factors:
-///   1. Location at the last time step.
-///   2. Forces acting on the body (gravity, applied force, applied impulse).
-///   3. The mass data of the body.
-///   4. Damping of the body.
-///   5. Restitution and friction values of the body's fixtures when they experience collisions.
-/// @return World location of the body's origin.
-/// @see GetAngle.
+/// @brief Applies an impulse at a point.
+/// @note This immediately modifies the velocity.
+/// @note This also modifies the angular velocity if the point of application
+///   is not at the center of mass.
+/// @note Non-zero impulses wakes up the body.
+/// @param body Body to apply the impulse to.
+/// @param impulse the world impulse vector.
+/// @param point the world position of the point of application.
 /// @relatedalso Body
-inline Length2 GetLocation(const Body& body) noexcept
-{
-    return GetLocation(body.GetTransformation());
-}
+void ApplyLinearImpulse(Body& body, Momentum2 impulse, Length2 point) noexcept;
 
-/// @brief Gets the body's sweep.
-/// @see SetSweep(Body& body, const Sweep& value).
+/// @brief Applies an angular impulse.
+/// @param body Body to apply the angular impulse to.
+/// @param impulse Angular impulse to be applied.
 /// @relatedalso Body
-inline const Sweep& GetSweep(const Body& body) noexcept
-{
-    return body.GetSweep();
-}
-
-/// @brief Sets the sweep value of the given body.
-/// @see GetSweep(const Body& body).
-/// @relatedalso Body
-inline void SetSweep(Body& body, const Sweep& value) noexcept
-{
-    body.SetSweep(value);
-}
-
-/// @brief Gets the body's angle.
-/// @return Body's angle relative to its World.
-/// @relatedalso Body
-inline Angle GetAngle(const Body& body) noexcept
-{
-    return body.GetSweep().pos1.angular;
-}
-
-/// @brief Get the world position of the center of mass.
-inline Length2 GetWorldCenter(const Body& body) noexcept
-{
-    return body.GetWorldCenter();
-}
-
-/// @brief Gets the local position of the center of mass.
-inline Length2 GetLocalCenter(const Body& body) noexcept
-{
-    return body.GetLocalCenter();
-}
-
-/// @brief Gets the body's transformation.
-/// @see SetTransformation(Body& body, Transformation value).
-/// @relatedalso Body
-inline Transformation GetTransformation(const Body& body) noexcept
-{
-    return body.GetTransformation();
-}
-
-/// Sets the body's transformation.
-/// @note This sets what <code>GetLocation</code> returns.
-/// @see GetTransformation(const Body& body).
-/// @relatedalso Body
-inline void SetTransformation(Body& body, Transformation value) noexcept
-{
-    body.SetTransformation(value);
-}
-
-/// @brief Gets the body's position.
-/// @relatedalso Body
-inline Position GetPosition(const Body& body) noexcept
-{
-    return Position{body.GetLocation(), body.GetAngle()};
-}
+void ApplyAngularImpulse(Body& body, AngularMomentum impulse) noexcept;
 
 } // namespace d2
 } // namespace playrho

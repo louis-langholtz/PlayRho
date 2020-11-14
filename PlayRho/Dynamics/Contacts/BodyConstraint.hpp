@@ -140,7 +140,7 @@ inline BodyConstraint GetBodyConstraint(const Body& body, Time time,
     return BodyConstraint{
         body.GetInvMass(),
         body.GetInvRotInertia(),
-        body.GetLocalCenter(),
+        GetLocalCenter(body),
         GetPosition1(body),
         Cap(GetVelocity(body, time), time, conf)
     };

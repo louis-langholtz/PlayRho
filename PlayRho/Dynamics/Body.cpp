@@ -236,8 +236,25 @@ Velocity GetVelocity(const Body& body, Time h) noexcept
         velocity.linear /= Real{1 + h * body.GetLinearDamping()};
         velocity.angular /= Real{1 + h * body.GetAngularDamping()};
     }
-
     return velocity;
+}
+
+void ApplyLinearImpulse(Body& body, Momentum2 impulse, Length2 point) noexcept
+{
+    auto velocity = body.GetVelocity();
+    velocity.linear += body.GetInvMass() * impulse;
+    const auto invRotI = body.GetInvRotInertia();
+    const auto dp = point - GetWorldCenter(body);
+    velocity.angular += AngularVelocity{invRotI * Cross(dp, impulse) / Radian};
+    body.SetVelocity(velocity);
+}
+
+void ApplyAngularImpulse(Body& body, AngularMomentum impulse) noexcept
+{
+    auto velocity = body.GetVelocity();
+    const auto invRotI = body.GetInvRotInertia();
+    velocity.angular += AngularVelocity{invRotI * impulse};
+    body.SetVelocity(velocity);
 }
 
 } // namespace d2

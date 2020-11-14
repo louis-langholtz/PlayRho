@@ -130,10 +130,8 @@ void SetTransformation(World& world, BodyID id, Transformation value)
 {
     auto body = GetBody(world, id);
     SetTransformation(body, value);
-    SetSweep(body, Sweep{
-        Position{Transform(body.GetLocalCenter(), value), GetAngle(value.q)},
-        body.GetLocalCenter()
-    });
+    const auto localCenter = GetLocalCenter(body);
+    SetSweep(body, Sweep{Position{Transform(localCenter, value), GetAngle(value.q)}, localCenter});
     world.SetBody(id, body);
 }
 
@@ -371,7 +369,7 @@ void SetMassData(World& world, BodyID id, const MassData& massData)
     if (!body.IsAccelerable()) {
         body.SetInvMass(InvMass{});
         body.SetInvRotInertia(InvRotInertia{});
-        body.SetSweep(Sweep{Position{body.GetLocation(), body.GetAngle()}});
+        body.SetSweep(Sweep{Position{GetLocation(body), GetAngle(body)}});
         body.UnsetMassDataDirty();
         world.SetBody(id, body);
         return;
@@ -390,13 +388,13 @@ void SetMassData(World& world, BodyID id, const MassData& massData)
         body.SetInvRotInertia(0);
     }
     // Move center of mass.
-    const auto oldCenter = body.GetWorldCenter();
+    const auto oldCenter = GetWorldCenter(body);
     body.SetSweep(Sweep{
-        Position{Transform(massData.center, GetTransformation(body)), body.GetAngle()},
+        Position{Transform(massData.center, GetTransformation(body)), GetAngle(body)},
         massData.center
     });
     // Update center of mass velocity.
-    const auto newCenter = body.GetWorldCenter();
+    const auto newCenter = GetWorldCenter(body);
     const auto deltaCenter = newCenter - oldCenter;
     auto newVelocity = body.GetVelocity();
     newVelocity.linear += GetRevPerpendicular(deltaCenter) * (newVelocity.angular / Radian);
