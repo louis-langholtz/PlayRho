@@ -138,8 +138,8 @@ inline BodyConstraint GetBodyConstraint(const Body& body, Time time,
                                         MovementConf conf) noexcept
 {
     return BodyConstraint{
-        body.GetInvMass(),
-        body.GetInvRotInertia(),
+        GetInvMass(body),
+        GetInvRotInertia(body),
         GetLocalCenter(body),
         GetPosition1(body),
         Cap(GetVelocity(body, time), time, conf)
