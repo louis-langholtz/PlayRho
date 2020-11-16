@@ -484,9 +484,9 @@ private:
     };
 
 #if SHAPE_USES_UNIQUE_PTR
-    std::unique_ptr<Concept> m_self; ///< Self shared pointer.
+    std::unique_ptr<Concept> m_self; ///< Self pointer.
 #else
-    std::shared_ptr<const Concept> m_self; ///< Self shared pointer.
+    std::shared_ptr<const Concept> m_self; ///< Self pointer.
 #endif
 };
 
