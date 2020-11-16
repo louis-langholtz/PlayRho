@@ -180,8 +180,8 @@ void InitVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodie
     object.a1 = Cross(d + rA, object.axis); // Length
     object.a2 = Cross(rB, object.axis); // Length
 
-    const auto invRotMassA = InvMass{invRotInertiaA * object.a1 * object.a1 / SquareRadian};
-    const auto invRotMassB = InvMass{invRotInertiaB * object.a2 * object.a2 / SquareRadian};
+    const auto invRotMassA = InvMass{invRotInertiaA * Square(object.a1) / SquareRadian};
+    const auto invRotMassB = InvMass{invRotInertiaB * Square(object.a2) / SquareRadian};
     const auto totalInvMass = invMassA + invMassB + invRotMassA + invRotMassB;
     object.motorMass = (totalInvMass > InvMass{0}) ? Real{1} / totalInvMass : 0_kg;
 
@@ -192,8 +192,8 @@ void InitVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodie
         object.s1 = Cross(d + rA, object.perp);
         object.s2 = Cross(rB, object.perp);
 
-        const auto invRotMassA2 = InvMass{invRotInertiaA * object.s1 * object.s1 / SquareRadian};
-        const auto invRotMassB2 = InvMass{invRotInertiaB * object.s2 * object.s2 / SquareRadian};
+        const auto invRotMassA2 = InvMass{invRotInertiaA * Square(object.s1) / SquareRadian};
+        const auto invRotMassB2 = InvMass{invRotInertiaB * Square(object.s2) / SquareRadian};
         const auto k11 = StripUnit(invMassA + invMassB + invRotMassA2 + invRotMassB2);
 
         // L^-2 M^-1 QP^2 * L is: L^-1 M^-1 QP^2.
@@ -462,8 +462,8 @@ bool SolvePosition(const PrismaticJointConf& object, std::vector<BodyConstraint>
 
     Vec3 impulse;
     if (active) {
-        const auto k11 = StripUnit(InvMass{invMassA + invRotInertiaA * s1 * s1 / SquareRadian +
-                                           invMassB + invRotInertiaB * s2 * s2 / SquareRadian});
+        const auto k11 = StripUnit(InvMass{invMassA + invRotInertiaA * Square(s1) / SquareRadian +
+                                           invMassB + invRotInertiaB * Square(s2) / SquareRadian});
         const auto k12 = StripUnit(InvMass{invRotInertiaA * s1 * Meter / SquareRadian +
                                            invRotInertiaB * s2 * Meter / SquareRadian});
         const auto k13 = StripUnit(InvMass{invRotInertiaA * s1 * a1 / SquareRadian +
