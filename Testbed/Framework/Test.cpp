@@ -319,17 +319,20 @@ void ShowStats(const StepConf& stepConf, UiState& ui, const World& world, const 
             ImGui::SetTooltip("Counts of shapes over fixtures.");
         }
         ImGui::NextColumn();
-        ImGui::Text("Contacts: %u/%u", touchingCount, stats.m_numContacts);
+        ImGui::Value("Joints", jointCount);
+        ImGui::NextColumn();
+        ImGui::Text("Contacts: %u/%u(%u/%u)", touchingCount, stats.m_numContacts,
+                    stats.m_maxTouching, stats.m_maxContacts);
         if (ImGui::IsItemHovered())
         {
-            ImGui::SetTooltip("Counts of touching contacts over total contacts. Click to toggle histogram.");
+            ImGui::SetTooltip("Counts of contacts touching over total"
+                              " (and max touching over max total)."
+                              " Click to toggle histogram.");
         }
         if (ImGui::IsItemClicked())
         {
             ui.showContactsHistory = !ui.showContactsHistory;
         }
-        ImGui::NextColumn();
-        ImGui::Value("Joints", jointCount);
         ImGui::NextColumn();
     }
 
