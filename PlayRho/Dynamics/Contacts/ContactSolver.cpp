@@ -526,16 +526,9 @@ d2::PositionSolution SolvePositionConstraint(const d2::PositionConstraint& pc,
         const auto rA = Length2{psm.m_point - pA};
         const auto rB = Length2{psm.m_point - pB};
         
-        // Compute the effective mass.
-        const auto K = InvMass{[&]() {
-            const auto rnA = Length{Cross(rA, psm.m_normal)} / Radian;
-            const auto rnB = Length{Cross(rB, psm.m_normal)} / Radian;
-            // InvRotInertia is L^-2 M^-1 QP^2
-            // L^-2 M^-1 QP^2 * L^2 is: M^-1 QP^2
-            const auto invRotMassA = InvMass{invRotInertiaA * Square(rnA)};
-            const auto invRotMassB = InvMass{invRotInertiaB * Square(rnB)};
-            return invMassTotal + invRotMassA + invRotMassB;
-        }()};
+        // Compute the total effective inverse mass.
+        const auto K = invMassTotal + GetEffectiveInvMass(invRotInertiaA, rA, psm.m_normal) +
+            GetEffectiveInvMass(invRotInertiaB, rB, psm.m_normal);
         
         assert(K >= InvMass{0});
         

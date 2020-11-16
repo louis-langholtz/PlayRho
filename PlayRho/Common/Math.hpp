@@ -930,6 +930,13 @@ inline bool IsUnderActive(Velocity velocity,
     return (angVelSquared <= Square(angSleepTol)) && (linVelSquared <= Square(linSleepTol));
 }
 
+/// @brief Gets the "effective" inverse mass.
+inline InvMass GetEffectiveInvMass(const InvRotInertia invRotI, const Length2 p, const UnitVec q)
+{
+    // InvRotInertia is L^-2 M^-1 QP^2. Therefore (L^-2 M^-1 QP^2) * (L^2 / QP^2) gives M^-1.
+    return invRotI * Square(Length{Cross(p, q)} / Radian);
+}
+
 /// @brief Gets the reflection matrix for the given unit vector that defines the normal of
 ///   the line through the origin that points should be reflected against.
 /// @see https://en.wikipedia.org/wiki/Transformation_matrix
