@@ -141,7 +141,7 @@ public:
     explicit Body(const BodyConf& bd = GetDefaultBodyConf()) noexcept;
 
     /// @brief Gets the body transform for the body's origin.
-    /// @detail This gets the translation/location and rotation/direction of the body relative to
+    /// @details This gets the translation/location and rotation/direction of the body relative to
     ///   its world. The location and direction of the body after stepping the world's physics
     ///   simulations is dependent on a number of factors:
     ///   1. Location and direction at the last time step.
