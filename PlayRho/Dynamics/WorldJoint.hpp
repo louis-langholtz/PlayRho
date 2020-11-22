@@ -64,9 +64,18 @@ JointCounter GetJointRange(const World& world) noexcept;
 /// @relatedalso World
 SizedRange<std::vector<JointID>::const_iterator> GetJoints(const World& world) noexcept;
 
-/// @brief Create a new joint.
+/// @brief Creates a new joint within the given world.
 /// @relatedalso World
 JointID CreateJoint(World& world, const Joint& def);
+
+/// @brief Creates a new joint from a configuration.
+/// @details This is a convenience function for allowing limited implicit conversions to joints.
+/// @relatedalso World
+template <typename T>
+JointID CreateJoint(World& world, const T& value)
+{
+    return CreateJoint(world, Joint(value));
+}
 
 /// @brief Destroys the identified joint.
 /// @throws std::out_of_range If given an invalid joint identifier.
@@ -87,6 +96,15 @@ const Joint& GetJoint(const World& world, JointID id);
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
 void SetJoint(World& world, JointID id, const Joint& def);
+
+/// @brief Sets a joint's value from a configuration.
+/// @details This is a convenience function for allowing limited implicit conversions to joints.
+/// @relatedalso World
+template <typename T>
+void SetJoint(World& world, JointID id, const T& value)
+{
+    return SetJoint(world, id, Joint(value));
+}
 
 /// @brief Gets collide connected for the specified joint.
 /// @note Modifying the collide connect flag won't work correctly because

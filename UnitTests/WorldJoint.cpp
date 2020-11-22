@@ -35,16 +35,18 @@ TEST(WorldJoint, GetSetMotorSpeed)
     const auto b0 = world.CreateBody();
     const auto b1 = world.CreateBody();
 
+    const auto motorSpeed = 4_rpm;
     auto jd = RevoluteJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
+    jd.motorSpeed = motorSpeed;
 
     const auto newValue = Real(5) * RadianPerSecond;
     const auto id = CreateJoint(world, jd);
     ASSERT_NE(GetMotorSpeed(world, id), newValue);
-    EXPECT_EQ(GetMotorSpeed(world, id), jd.motorSpeed);
+    EXPECT_EQ(GetMotorSpeed(world, id), motorSpeed);
     EXPECT_NO_THROW(SetMotorSpeed(world, id, newValue));
     EXPECT_EQ(GetMotorSpeed(world, id), newValue);
 }

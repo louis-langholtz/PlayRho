@@ -113,7 +113,7 @@ TEST(PulleyJointConf, GetPulleyJointConfForJoint)
     const auto locB = Length2{-1.4_m, +2.9_m};
     const auto lenA = 2.2_m;
     const auto lenB = 0.24_m;
-    const auto joint = PulleyJointConf(bA, bB, gndA, gndB, locA, locB, lenA, lenB);
+    const auto joint = Joint{PulleyJointConf{bA, bB, gndA, gndB, locA, locB, lenA, lenB}};
     const auto conf = GetPulleyJointConf(joint);
     EXPECT_EQ(conf.bodyA, bA);
     EXPECT_EQ(conf.bodyB, bB);
