@@ -42,6 +42,7 @@
 #include <PlayRho/Common/Range.hpp> // for SizedRange
 
 #include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 #include <PlayRho/Dynamics/Joints/LimitState.hpp>
 
@@ -51,7 +52,6 @@ namespace playrho {
 namespace d2 {
 
 class World;
-class Joint;
 struct JointConf;
 
 /// @brief Gets the extent of the currently valid joint range.
@@ -74,7 +74,7 @@ JointID CreateJoint(World& world, const Joint& def);
 template <typename T>
 JointID CreateJoint(World& world, const T& value)
 {
-    return CreateJoint(world, Joint(value));
+    return CreateJoint(world, Joint{value});
 }
 
 /// @brief Destroys the identified joint.
@@ -103,7 +103,7 @@ void SetJoint(World& world, JointID id, const Joint& def);
 template <typename T>
 void SetJoint(World& world, JointID id, const T& value)
 {
-    return SetJoint(world, id, Joint(value));
+    return SetJoint(world, id, Joint{value});
 }
 
 /// @brief Gets collide connected for the specified joint.
