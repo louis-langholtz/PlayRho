@@ -521,20 +521,16 @@ void ApplyTorque(World& world, BodyID id, Torque torque)
 
 void ApplyLinearImpulse(World& world, BodyID id, Momentum2 impulse, Length2 point)
 {
-    auto velocity = GetVelocity(world, id);
-    velocity.linear += GetInvMass(world, id) * impulse;
-    const auto invRotI = GetInvRotInertia(world, id);
-    const auto dp = point - GetWorldCenter(world, id);
-    velocity.angular += AngularVelocity{invRotI * Cross(dp, impulse) / Radian};
-    SetVelocity(world, id, velocity);
+    auto body = GetBody(world, id);
+    ApplyLinearImpulse(body, impulse, point);
+    SetBody(world, id, body);
 }
 
 void ApplyAngularImpulse(World& world, BodyID id, AngularMomentum impulse)
 {
-    auto velocity = GetVelocity(world, id);
-    const auto invRotI = GetInvRotInertia(world, id);
-    velocity.angular += AngularVelocity{invRotI * impulse};
-    SetVelocity(world, id, velocity);
+    auto body = GetBody(world, id);
+    ApplyAngularImpulse(body, impulse);
+    SetBody(world, id, body);
 }
 
 BodyCounter GetAwakeCount(const World& world) noexcept
