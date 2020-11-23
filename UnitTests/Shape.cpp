@@ -47,6 +47,8 @@ TEST(Shape, ByteSize)
 
 TEST(Shape, Traits)
 {
+    // NOTE: Double parenthesis needed sometimes for proper macro expansion.
+
     EXPECT_TRUE(std::is_default_constructible<Shape>::value);
     EXPECT_TRUE(std::is_nothrow_default_constructible<Shape>::value);
     EXPECT_FALSE(std::is_trivially_default_constructible<Shape>::value);
@@ -61,7 +63,7 @@ TEST(Shape, Traits)
     EXPECT_FALSE((std::is_constructible<Shape, X, X>::value));
     EXPECT_FALSE((std::is_nothrow_constructible<Shape, X, X>::value));
     EXPECT_FALSE((std::is_trivially_constructible<Shape, X, X>::value));
-    
+
     EXPECT_TRUE(std::is_copy_constructible<Shape>::value);
     EXPECT_TRUE(std::is_nothrow_copy_constructible<Shape>::value);
     EXPECT_FALSE(std::is_trivially_copy_constructible<Shape>::value);
@@ -81,11 +83,16 @@ TEST(Shape, Traits)
     EXPECT_TRUE(std::is_destructible<Shape>::value);
     EXPECT_TRUE(std::is_nothrow_destructible<Shape>::value);
     EXPECT_FALSE(std::is_trivially_destructible<Shape>::value);
+
+    // The value initializing constructor resolves for ineligible types but preferably any such
+    // instantiation will not actually compile.
+    EXPECT_TRUE((std::is_constructible<Shape, int>::value));
 }
 
 TEST(Shape, DefaultConstruction)
 {
     const auto s = Shape{};
+    EXPECT_FALSE(s.has_value());
     EXPECT_EQ(GetMassData(s), MassData());
     EXPECT_EQ(GetFriction(s), Real(0));
     EXPECT_EQ(GetRestitution(s), Real(0));
@@ -98,6 +105,34 @@ TEST(Shape, DefaultConstruction)
     EXPECT_TRUE(s == t);
     EXPECT_NO_THROW(Transform(t, Mat22{}));
     EXPECT_EQ(GetType(s), GetTypeID<void>());
+}
+
+namespace sans_some {
+namespace {
+
+struct ShapeTest {
+    int number;
+};
+
+[[maybe_unused]] void Transform(ShapeTest&, const Mat22&)
+{
+}
+
+} // namespace
+} // namespace sans_none
+
+static_assert(!IsValidShapeType<::sans_some::ShapeTest>::value);
+
+TEST(Shape, InitializingConstructor)
+{
+    EXPECT_TRUE((std::is_constructible<Shape, ::sans_some::ShapeTest>::value));
+    EXPECT_FALSE(IsValidShapeType<::sans_some::ShapeTest>::value);
+    EXPECT_TRUE((std::is_constructible<Shape, DiskShapeConf>::value));
+    EXPECT_TRUE(IsValidShapeType<DiskShapeConf>::value);
+    auto conf = DiskShapeConf{};
+    auto s = Shape{conf};
+    EXPECT_TRUE(s.has_value());
+    EXPECT_EQ(GetChildCount(s), ChildCounter(1));
 }
 
 TEST(Shape, Assignment)

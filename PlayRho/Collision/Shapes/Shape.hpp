@@ -164,7 +164,17 @@ bool operator!=(const Shape& lhs, const Shape& rhs) noexcept;
 ///   instances of this class with the different types that provide the required support.
 ///   Different shapes of a given type meanwhile are had by providing different values for the
 ///   type.
-/// @note This data structure is 32-bytes large (on at least one 64-bit platform).
+/// @note A shape can be constructor from or have its value set to any value whose type
+///   <code>T</code> has at least the following function definitions available for it:
+///   - <code>bool operator==(const T& lhs, const T& rhs) noexcept;</code>
+///   - <code>ChildCounter GetChildCount(const T&) noexcept;</code>
+///   - <code>DistanceProxy GetChild(const T&, ChildCounter index);</code>
+///   - <code>MassData GetMassData(const T&) noexcept;</code>
+///   - <code>NonNegative<Length> GetVertexRadius(const T&, ChildCounter idx);</code>
+///   - <code>NonNegative<AreaDensity> GetDensity(const T&) noexcept;</code>
+///   - <code>Real GetFriction(const T&) noexcept;</code>
+///   - <code>Real GetRestitution(const T&) noexcept;</code>
+///   - <code>void Transform(T&, const Mat22& value);</code>
 /// @ingroup PartsGroup
 /// @see FixtureConf
 /// @see https://youtu.be/QGcVXgEVMJg
@@ -173,32 +183,8 @@ class Shape
 {
 public:
     /// @brief Default constructor.
+    /// @post <code>has_value()</code> returns false.
     Shape() noexcept = default;
-
-    /// @brief Initializing constructor.
-    /// @param arg Configuration value to construct a shape instance for.
-    /// @note Only usable with types of values that have all of the support functions required
-    ///   by this class. The compiler emits errors if the given type doesn't.
-    /// @see GetChildCount
-    /// @see GetChild
-    /// @see GetMassData
-    /// @see GetVertexRadius
-    /// @see GetDensity
-    /// @see GetFriction
-    /// @see GetRestitution
-    /// @throws std::bad_alloc if there's a failure allocating storage.
-    template <typename T>
-    Shape(T arg) : m_self
-    {
-#if SHAPE_USES_UNIQUE_PTR
-        std::make_unique<Model<T>>(std::move(arg))
-#else
-        std::make_shared<Model<T>>(std::move(arg))
-#endif
-    }
-    {
-        // Intentionally empty.
-    }
 
 #if SHAPE_USES_UNIQUE_PTR
     /// @brief Copy constructor.
@@ -212,7 +198,28 @@ public:
 #endif
 
     /// @brief Move constructor.
-    Shape(Shape&& other) = default;
+    Shape(Shape&& other) noexcept = default;
+
+    /// @brief Initializing constructor.
+    /// @param arg Configuration value to construct a shape instance for.
+    /// @note See the class notes section for an explanation of requirements on a type
+    ///   <code>T</code> for its values to be valid candidates for this function.
+    /// @post <code>has_value()</code> returns true.
+    /// @throws std::bad_alloc if there's a failure allocating storage.
+    template <typename T, typename Tp = std::decay_t<T>,
+              typename = std::enable_if_t<!std::is_same<Tp, Shape>::value &&
+                                          std::is_copy_constructible<Tp>::value>>
+    explicit Shape(T&& arg) : m_self
+    {
+#if SHAPE_USES_UNIQUE_PTR
+        std::make_unique<Model<Tp>>(std::forward<T>(arg))
+#else
+        std::make_shared<Model<Tp>>(std::forward<T>(arg))
+#endif
+    }
+    {
+        // Intentionally empty.
+    }
 
 #if SHAPE_USES_UNIQUE_PTR
     /// @brief Copy assignment.
@@ -230,6 +237,7 @@ public:
     Shape& operator=(Shape&& other) = default;
 
     /// @brief Move assignment operator.
+    /// @post <code>has_value()</code> returns true.
     template <typename T, typename Tp = std::decay_t<T>,
               typename = std::enable_if_t<!std::is_same<Tp, Shape>::value &&
                                           std::is_copy_constructible<Tp>::value>>
@@ -243,6 +251,12 @@ public:
     void swap(Shape& other) noexcept
     {
         std::swap(m_self, other.m_self);
+    }
+
+    /// @brief Checks whether this instance contains a value.
+    bool has_value() const noexcept
+    {
+        return static_cast<bool>(m_self);
     }
 
     friend ChildCounter GetChildCount(const Shape& shape) noexcept
@@ -488,6 +502,31 @@ private:
 #else
     std::shared_ptr<const Concept> m_self; ///< Self pointer.
 #endif
+};
+
+// Traits...
+
+/// @brief An "is valid shape type" trait.
+/// @note This is the general false template type.
+template <typename T, class = void>
+struct IsValidShapeType : std::false_type {
+};
+
+/// @brief An "is valid shape type" trait.
+/// @note This is the specialized true template type.
+template <typename T>
+struct IsValidShapeType<
+    T,
+    std::void_t<decltype(GetChildCount(std::declval<T>())), //
+                decltype(GetChild(std::declval<T>(), std::declval<ChildCounter>())), //
+                decltype(GetMassData(std::declval<T>())), //
+                decltype(GetVertexRadius(std::declval<T>(), std::declval<ChildCounter>())), //
+                decltype(GetDensity(std::declval<T>())), //
+                decltype(GetFriction(std::declval<T>())), //
+                decltype(GetRestitution(std::declval<T>())), //
+                decltype(Transform(std::declval<T&>(), std::declval<Mat22>())), //
+                decltype(std::declval<T>() == std::declval<T>()), //
+                decltype(Shape{std::declval<T>()})>> : std::true_type {
 };
 
 // Related free functions...

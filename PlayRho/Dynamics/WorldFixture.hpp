@@ -95,6 +95,20 @@ FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
                         FixtureConf def = FixtureConf{},
                         bool resetMassData = true);
 
+/// @brief Creates a fixture within the specified world using a configuration of a shape.
+/// @details This is a convenience function for allowing limited implicit conversions to shapes.
+/// @throws WrongState if called while the world is "locked".
+/// @throws std::out_of_range If given an invalid body identifier.
+/// @see CreateFixture(World& world, FixtureConf def).
+/// @relatedalso World
+template <typename T>
+FixtureID CreateFixture(World& world, BodyID id, const T& shapeConf,
+                        FixtureConf def = FixtureConf{},
+                        bool resetMassData = true)
+{
+    return CreateFixture(world, id, Shape{shapeConf}, def, resetMassData);
+}
+
 /// @brief Destroys the identified fixture.
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid fixture identifier.
