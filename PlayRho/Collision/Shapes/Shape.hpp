@@ -181,6 +181,14 @@ bool operator!=(const Shape& lhs, const Shape& rhs) noexcept;
 /// @see https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Polymorphic_Value_Types
 class Shape
 {
+    /// @brief Decayed type if not same as this class.
+    /// @note This is done separately from other checks to ensure order of compiler's SFINAE
+    ///   processing and to ensure elimination of self class before attempting to process other
+    ///   checks like is_copy_constructible. This prevents a compiler error that started showing
+    ///   up in gcc-9.
+    template <typename Type, typename DecayedType = std::decay_t<Type>>
+    using DecayedTypeIfNotSelf = std::enable_if_t<!std::is_same_v<DecayedType, Shape>, DecayedType>;
+
 public:
     /// @brief Default constructor.
     /// @post <code>has_value()</code> returns false.
@@ -206,9 +214,8 @@ public:
     ///   <code>T</code> for its values to be valid candidates for this function.
     /// @post <code>has_value()</code> returns true.
     /// @throws std::bad_alloc if there's a failure allocating storage.
-    template <typename T, typename Tp = std::decay_t<T>,
-              typename = std::enable_if_t<!std::is_same<Tp, Shape>::value &&
-                                          std::is_copy_constructible<Tp>::value>>
+    template <typename T, typename Tp = DecayedTypeIfNotSelf<T>,
+              typename = std::enable_if_t<std::is_copy_constructible<Tp>::value>>
     explicit Shape(T&& arg) : m_self
     {
 #if SHAPE_USES_UNIQUE_PTR
@@ -238,9 +245,8 @@ public:
 
     /// @brief Move assignment operator.
     /// @post <code>has_value()</code> returns true.
-    template <typename T, typename Tp = std::decay_t<T>,
-              typename = std::enable_if_t<!std::is_same<Tp, Shape>::value &&
-                                          std::is_copy_constructible<Tp>::value>>
+    template <typename T, typename Tp = DecayedTypeIfNotSelf<T>,
+              typename = std::enable_if_t<std::is_copy_constructible<Tp>::value>>
     Shape& operator=(T&& other)
     {
         Shape(std::forward<T>(other)).swap(*this);

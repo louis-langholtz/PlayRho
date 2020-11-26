@@ -142,6 +142,14 @@ bool SolvePosition(const Joint& object, std::vector<BodyConstraint>& bodies,
 /// @see https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Polymorphic_Value_Types
 class Joint
 {
+    /// @brief Decayed type if not same as this class.
+    /// @note This is done separately from other checks to ensure order of compiler's SFINAE
+    ///   processing and to ensure elimination of self class before attempting to process other
+    ///   checks like is_copy_constructible. This prevents a compiler error that started showing
+    ///   up in gcc-9.
+    template <typename Type, typename DecayedType = std::decay_t<Type>>
+    using DecayedTypeIfNotSelf = std::enable_if_t<!std::is_same_v<DecayedType, Joint>, DecayedType>;
+
 public:
     /// @brief Type alias for body constraints mapping.
     using BodyConstraintsMap = std::vector<BodyConstraint>;
@@ -202,9 +210,8 @@ public:
     /// @endcode
     /// @post <code>has_value()</code> returns true.
     /// @see https://foonathan.net/2015/10/overload-resolution-1/
-    template <typename T, typename Tp = std::decay_t<T>,
-              typename = std::enable_if_t<!std::is_same<Tp, Joint>::value &&
-                                          std::is_copy_constructible<Tp>::value>>
+    template <typename T, typename Tp = DecayedTypeIfNotSelf<T>,
+              typename = std::enable_if_t<std::is_copy_constructible<Tp>::value>>
     explicit Joint(T&& arg) : m_self{std::make_unique<Model<Tp>>(std::forward<T>(arg))}
     {
         // Intentionally empty.
@@ -231,9 +238,8 @@ public:
     /// @note See the class notes section for an explanation of requirements on a type
     ///   <code>T</code> for its values to be valid candidates for this function.
     /// @post <code>has_value()</code> returns true.
-    template <typename T, typename Tp = std::decay_t<T>,
-              typename = std::enable_if_t<!std::is_same<Tp, Joint>::value &&
-                                          std::is_copy_constructible<Tp>::value>>
+    template <typename T, typename Tp = DecayedTypeIfNotSelf<T>,
+              typename = std::enable_if_t<std::is_copy_constructible<Tp>::value>>
     Joint& operator=(T&& other) noexcept
     {
         Joint(std::forward<T>(other)).swap(*this);
