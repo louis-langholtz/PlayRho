@@ -26,12 +26,19 @@ TEST(Transformation, ByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real))
-    {
-        case  4: EXPECT_EQ(sizeof(Transformation), std::size_t(16)); break;
-        case  8: EXPECT_EQ(sizeof(Transformation), std::size_t(32)); break;
-        case 16: EXPECT_EQ(sizeof(Transformation), std::size_t(64)); break;
-        default: FAIL(); break;
+    switch (sizeof(Real)) {
+    case 4:
+        EXPECT_EQ(sizeof(Transformation), std::size_t(16));
+        break;
+    case 8:
+        EXPECT_EQ(sizeof(Transformation), std::size_t(32));
+        break;
+    case 16:
+        EXPECT_EQ(sizeof(Transformation), std::size_t(64));
+        break;
+    default:
+        FAIL();
+        break;
     }
 }
 
@@ -88,7 +95,7 @@ TEST(Transformation, Mul)
     const auto newP = Ap + Rotate(Bp, xfm.q);
     EXPECT_EQ(GetX(xfm2.p), GetX(newP));
     EXPECT_EQ(GetY(xfm2.p), GetY(newP));
-    
+
     EXPECT_NEAR(double(GetX(xfm2.q)), double(GetX(rotation2)), 0.0001);
     EXPECT_NEAR(double(GetY(xfm2.q)), double(GetY(rotation2)), 0.0001);
 }
@@ -107,4 +114,19 @@ TEST(Transformation, MulSameAsTransformTwice)
                 static_cast<double>(Real{GetX(location2) / Meter}), 0.0001);
     EXPECT_NEAR(static_cast<double>(Real{GetY(twice) / Meter}),
                 static_cast<double>(Real{GetY(location2) / Meter}), 0.0001);
+}
+
+TEST(Transformation, GetLocationFF)
+{
+    EXPECT_EQ(GetLocation(Transformation{Length2{}, UnitVec::GetLeft()}), (Length2{}));
+    EXPECT_EQ(GetLocation(Transformation{Length2{1.2_m, 3.5_m}, UnitVec::GetLeft()}),
+              (Length2{1.2_m, 3.5_m}));
+}
+
+TEST(Transformation, GetDirectionFF)
+{
+    EXPECT_EQ(GetDirection(Transformation{Length2{}, UnitVec::GetLeft()}), UnitVec::GetLeft());
+    EXPECT_EQ(GetDirection(Transformation{Length2{}, UnitVec::GetRight()}), UnitVec::GetRight());
+    EXPECT_EQ(GetDirection(Transformation{Length2{}, UnitVec::GetTopRight()}),
+              UnitVec::GetTopRight());
 }

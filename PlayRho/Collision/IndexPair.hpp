@@ -141,10 +141,10 @@ struct LengthIndexPair
 namespace d2 {
 
 /// @brief Length and vertex counter array of indices for 2-D space.
-using LengthIndices = detail::LengthIndices<2>;
+using LengthIndices = ::playrho::detail::LengthIndices<2>;
 
 /// @brief Separation information alias for 2-D space.
-using SeparationInfo = detail::SeparationInfo<2>;
+using SeparationInfo = ::playrho::detail::SeparationInfo<2>;
 
 } // namespace 2d
 } // namespace playrho

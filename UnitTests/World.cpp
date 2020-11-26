@@ -341,19 +341,19 @@ TEST(World, CopyConstruction)
     const auto b5 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     CreateFixture(world, b5, shape);
 
-    const auto rj1 = world.CreateJoint(RevoluteJointConf{b1, b2});
-    const auto rj2 = world.CreateJoint(RevoluteJointConf{b3, b4});
-    world.CreateJoint(PrismaticJointConf{b1, b2});
-    world.CreateJoint(GetPulleyJointConf(world, b1, b2, Length2{}, Length2{},
-        Length2{}, Length2{}).UseRatio(Real(1)));
-    world.CreateJoint(DistanceJointConf{b4, b5});
-    world.CreateJoint(GetWeldJointConf(world, b4, b5));
-    world.CreateJoint(FrictionJointConf{b4, b5});
-    world.CreateJoint(RopeJointConf{b4, b5});
-    world.CreateJoint(GetMotorJointConf(world, b4, b5));
-    world.CreateJoint(WheelJointConf{b4, b5});
-    world.CreateJoint(TargetJointConf{b4});
-    world.CreateJoint(GetGearJointConf(world, rj1, rj2));
+    const auto rj1 = world.CreateJoint(Joint{RevoluteJointConf{b1, b2}});
+    const auto rj2 = world.CreateJoint(Joint{RevoluteJointConf{b3, b4}});
+    world.CreateJoint(Joint{PrismaticJointConf{b1, b2}});
+    world.CreateJoint(Joint{GetPulleyJointConf(world, b1, b2, Length2{}, Length2{},
+                                               Length2{}, Length2{}).UseRatio(Real(1))});
+    world.CreateJoint(Joint{DistanceJointConf{b4, b5}});
+    world.CreateJoint(Joint{GetWeldJointConf(world, b4, b5)});
+    world.CreateJoint(Joint{FrictionJointConf{b4, b5}});
+    world.CreateJoint(Joint{RopeJointConf{b4, b5}});
+    world.CreateJoint(Joint{GetMotorJointConf(world, b4, b5)});
+    world.CreateJoint(Joint{WheelJointConf{b4, b5}});
+    world.CreateJoint(Joint{TargetJointConf{b4}});
+    world.CreateJoint(Joint{GetGearJointConf(world, rj1, rj2)});
 
     auto stepConf = StepConf{};
     world.Step(stepConf);
@@ -404,10 +404,10 @@ TEST(World, CopyAssignment)
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     CreateFixture(world, b2, shape);
 
-    world.CreateJoint(RevoluteJointConf{b1, b2, Length2{}});
-    world.CreateJoint(GetPrismaticJointConf(world, b1, b2, Length2{}, UnitVec::GetRight()));
-    world.CreateJoint(GetPulleyJointConf(world, b1, b2, Length2{}, Length2{},
-        Length2{}, Length2{}).UseRatio(Real(1)));
+    world.CreateJoint(Joint{RevoluteJointConf{b1, b2, Length2{}}});
+    world.CreateJoint(Joint{GetPrismaticJointConf(world, b1, b2, Length2{}, UnitVec::GetRight())});
+    world.CreateJoint(Joint{GetPulleyJointConf(world, b1, b2, Length2{}, Length2{},
+                                               Length2{}, Length2{}).UseRatio(Real(1))});
 
     auto stepConf = StepConf{};
     world.Step(stepConf);

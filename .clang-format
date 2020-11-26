@@ -32,6 +32,7 @@ AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: Yes
 BinPackArguments: true
 BinPackParameters: true
+BasedOnStyle: LLVM
 BraceWrapping:
   AfterCaseLabel: false
   AfterClass:      true

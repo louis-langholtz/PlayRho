@@ -22,6 +22,7 @@
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
+#include <PlayRho/Common/Templates.hpp>
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
 #include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
 
@@ -31,6 +32,228 @@
 
 using namespace playrho;
 using namespace playrho::d2;
+
+// Macros for testing eligibility of types for construction with or assignment to Joint instances.
+#define DEFINE_GETBODYA                                                                            \
+    [[maybe_unused]] BodyID GetBodyA(const JointTester&) noexcept                                  \
+    {                                                                                              \
+        return InvalidBodyID;                                                                      \
+    }
+#define DEFINE_GETBODYB                                                                            \
+    [[maybe_unused]] BodyID GetBodyB(const JointTester&) noexcept                                  \
+    {                                                                                              \
+        return InvalidBodyID;                                                                      \
+    }
+#define DEFINE_GETCOLLIDECONNECTED                                                                 \
+    [[maybe_unused]] bool GetCollideConnected(const JointTester&) noexcept                         \
+    {                                                                                              \
+        return false;                                                                              \
+    }
+#define DEFINE_SHIFTORIGIN                                                                         \
+    [[maybe_unused]] bool ShiftOrigin(JointTester&, Length2) noexcept                              \
+    {                                                                                              \
+        return false;                                                                              \
+    }
+#define DEFINE_INITVELOCITY                                                                        \
+    [[maybe_unused]] void InitVelocity(JointTester&, std::vector<BodyConstraint>&,                 \
+                                       const StepConf&, const ConstraintSolverConf&)               \
+    {                                                                                              \
+    }
+#define DEFINE_SOLVEVELOCITY                                                                       \
+    [[maybe_unused]] bool SolveVelocity(JointTester&, std::vector<BodyConstraint>&,                \
+                                        const StepConf&)                                           \
+    {                                                                                              \
+        return true;                                                                               \
+    }
+#define DEFINE_SOLVEPOSITION                                                                       \
+    [[maybe_unused]] bool SolvePosition(const JointTester&, std::vector<BodyConstraint>&,          \
+                                        const ConstraintSolverConf&)                               \
+    {                                                                                              \
+        return true;                                                                               \
+    }
+#define DEFINE_EQUALS                                                                              \
+    [[maybe_unused]] bool operator==(const JointTester& lhs, const JointTester& rhs) noexcept      \
+    {                                                                                              \
+        return lhs.number == rhs.number;                                                           \
+    }
+
+namespace test {
+
+// Namespace of type eligible for use with Joint.
+namespace sans_none {
+namespace {
+struct JointTester {
+    int number = 0;
+};
+DEFINE_GETBODYA;
+DEFINE_GETBODYB;
+DEFINE_GETCOLLIDECONNECTED;
+DEFINE_SHIFTORIGIN;
+DEFINE_INITVELOCITY;
+DEFINE_SOLVEVELOCITY;
+DEFINE_SOLVEPOSITION;
+DEFINE_EQUALS;
+} // namespace
+} // namespace sans_none
+
+// Namespace of type ineligible for use with Joint because missing GetBodyA.
+namespace sans_getbodya {
+namespace {
+struct JointTester {
+    int number = 0;
+};
+// DEFINE_GETBODYA;
+DEFINE_GETBODYB;
+DEFINE_GETCOLLIDECONNECTED;
+DEFINE_SHIFTORIGIN;
+DEFINE_INITVELOCITY;
+DEFINE_SOLVEVELOCITY;
+DEFINE_SOLVEPOSITION;
+DEFINE_EQUALS;
+} // namespace
+} // namespace sans_getbodya
+
+// Namespace of type ineligible for use with Joint because missing GetBodyB.
+namespace sans_getbodyb {
+namespace {
+struct JointTester {
+    int number = 0;
+};
+DEFINE_GETBODYA;
+// DEFINE_GETBODYB;
+DEFINE_GETCOLLIDECONNECTED;
+DEFINE_SHIFTORIGIN;
+DEFINE_INITVELOCITY;
+DEFINE_SOLVEVELOCITY;
+DEFINE_SOLVEPOSITION;
+DEFINE_EQUALS;
+} // namespace
+} // namespace sans_getbodyb
+
+// Namespace of type ineligible for use with Joint because missing GetCollideConnected.
+namespace sans_getcollideconnected {
+namespace {
+struct JointTester {
+    int number = 0;
+};
+DEFINE_GETBODYA;
+DEFINE_GETBODYB;
+// DEFINE_GETCOLLIDECONNECTED;
+DEFINE_SHIFTORIGIN;
+DEFINE_INITVELOCITY;
+DEFINE_SOLVEVELOCITY;
+DEFINE_SOLVEPOSITION;
+DEFINE_EQUALS;
+} // namespace
+} // namespace sans_getcollideconnected
+
+// Namespace of type ineligible for use with Joint because missing ShiftOrigin.
+namespace sans_shiftorigin {
+namespace {
+struct JointTester {
+    int number = 0;
+};
+DEFINE_GETBODYA;
+DEFINE_GETBODYB;
+DEFINE_GETCOLLIDECONNECTED;
+// DEFINE_SHIFTORIGIN;
+DEFINE_INITVELOCITY;
+DEFINE_SOLVEVELOCITY;
+DEFINE_SOLVEPOSITION;
+DEFINE_EQUALS;
+} // namespace
+} // namespace sans_shiftorigin
+
+// Namespace of type ineligible for use with Joint because missing InitVelocity.
+namespace sans_initvelocity {
+namespace {
+struct JointTester {
+    int number = 0;
+};
+DEFINE_GETBODYA;
+DEFINE_GETBODYB;
+DEFINE_GETCOLLIDECONNECTED;
+DEFINE_SHIFTORIGIN;
+// DEFINE_INITVELOCITY;
+DEFINE_SOLVEVELOCITY;
+DEFINE_SOLVEPOSITION;
+DEFINE_EQUALS;
+} // namespace
+} // namespace sans_initvelocity
+
+// Namespace of type ineligible for use with Joint because missing SolveVelocity.
+namespace sans_solvevelocity {
+namespace {
+struct JointTester {
+    int number = 0;
+};
+DEFINE_GETBODYA;
+DEFINE_GETBODYB;
+DEFINE_GETCOLLIDECONNECTED;
+DEFINE_SHIFTORIGIN;
+DEFINE_INITVELOCITY;
+// DEFINE_SOLVEVELOCITY;
+DEFINE_SOLVEPOSITION;
+DEFINE_EQUALS;
+} // namespace
+} // namespace sans_solvevelocity
+
+// Namespace of type ineligible for use with Joint because missing SolvePosition.
+namespace sans_solveposition {
+namespace {
+struct JointTester {
+    int number = 0;
+};
+DEFINE_GETBODYA;
+DEFINE_GETBODYB;
+DEFINE_GETCOLLIDECONNECTED;
+DEFINE_SHIFTORIGIN;
+DEFINE_INITVELOCITY;
+DEFINE_SOLVEVELOCITY;
+// DEFINE_SOLVEPOSITION;
+DEFINE_EQUALS;
+} // namespace
+} // namespace sans_solveposition
+
+// Namespace of type ineligible for use with Joint because missing equals operator.
+namespace sans_equals {
+namespace {
+struct JointTester {
+    int number = 0;
+};
+DEFINE_GETBODYA;
+DEFINE_GETBODYB;
+DEFINE_GETCOLLIDECONNECTED;
+DEFINE_SHIFTORIGIN;
+DEFINE_INITVELOCITY;
+DEFINE_SOLVEVELOCITY;
+DEFINE_SOLVEPOSITION;
+// DEFINE_EQUALS;
+} // namespace
+} // namespace sans_equals
+
+// Namespace of type ineligible for use with Joint because missing all required functions.
+namespace sans_all {
+namespace {
+struct JointTester {
+    int number = 0;
+};
+} // namespace
+} // namespace sans_all
+
+// Compile-time test the different combos defined above...
+static_assert(IsValidJointType<sans_none::JointTester>::value);
+static_assert(!IsValidJointType<sans_getbodya::JointTester>::value);
+static_assert(!IsValidJointType<sans_getbodyb::JointTester>::value);
+static_assert(!IsValidJointType<sans_getcollideconnected::JointTester>::value);
+static_assert(!IsValidJointType<sans_shiftorigin::JointTester>::value);
+static_assert(!IsValidJointType<sans_initvelocity::JointTester>::value);
+static_assert(!IsValidJointType<sans_solvevelocity::JointTester>::value);
+static_assert(!IsValidJointType<sans_solveposition::JointTester>::value);
+static_assert(!IsValidJointType<sans_equals::JointTester>::value);
+static_assert(!IsValidJointType<sans_all::JointTester>::value);
+
+} // namespace test
 
 TEST(JointBuilder, Construction)
 {
@@ -96,6 +319,22 @@ TEST(Joint, Traits)
     EXPECT_TRUE(std::is_destructible<Joint>::value);
     EXPECT_TRUE(std::is_nothrow_destructible<Joint>::value);
     EXPECT_FALSE(std::is_trivially_destructible<Joint>::value);
+
+    // Double parenthesis needed for proper macro expansion.
+    EXPECT_TRUE((std::is_constructible<Joint, int>::value));
+    EXPECT_TRUE((std::is_constructible<Joint, char*>::value));
+    EXPECT_TRUE((std::is_constructible<Joint, test::sans_none::JointTester>::value));
+}
+
+TEST(Joint, DefaultConstructor)
+{
+    const Joint joint;
+    EXPECT_TRUE(joint == joint);
+    EXPECT_FALSE(joint != joint);
+    EXPECT_EQ(GetBodyA(joint), InvalidBodyID);
+    EXPECT_EQ(GetBodyB(joint), InvalidBodyID);
+    EXPECT_FALSE(GetCollideConnected(joint));
+    EXPECT_FALSE(joint.has_value());
 }
 
 TEST(Joint, LimitStateToStringFF)
@@ -117,37 +356,13 @@ TEST(Joint, LimitStateToStringFF)
     EXPECT_EQ(names.size(), decltype(names.size()){4});
 }
 
-namespace {
-
-struct JointTester {
-    int number = 0;
-};
-
-bool ShiftOrigin(JointTester&, Length2) noexcept
-{
-    return false;
-}
-
-void InitVelocity(JointTester&, std::vector<BodyConstraint>&, const StepConf&,
-                  const ConstraintSolverConf&)
-{
-}
-
-bool SolveVelocity(JointTester&, std::vector<BodyConstraint>&, const StepConf&)
-{
-    return true;
-}
-
-bool SolvePosition(const JointTester&, std::vector<BodyConstraint>&, const ConstraintSolverConf&)
-{
-    return true;
-}
-
-} // namespace
-
 TEST(Joint, TypeCast)
 {
-    std::any test;
+    int foo = 5;
+    std::any test{foo};
+    std::string roo = "wow";
+    test = roo;
+    test = std::any{foo};
     {
         const auto joint = Joint{};
         auto value = static_cast<const int*>(nullptr);
@@ -172,48 +387,54 @@ TEST(Joint, TypeCast)
     }
     {
         auto number = 10;
-        const auto original = JointTester{number};
+        const auto original = test::sans_none::JointTester{number};
         EXPECT_EQ(original.number, number);
         auto joint = Joint{original};
+        EXPECT_TRUE(joint.has_value());
         EXPECT_THROW(TypeCast<int>(joint), std::bad_cast);
-        auto value = JointTester{};
-        EXPECT_NO_THROW(value = TypeCast<JointTester>(joint));
+        auto value = test::sans_none::JointTester{};
+        EXPECT_NO_THROW(value = TypeCast<test::sans_none::JointTester>(joint));
         EXPECT_EQ(value.number, number);
-        EXPECT_NO_THROW(TypeCast<JointTester&>(joint).number = 3);
-        EXPECT_EQ(TypeCast<const JointTester&>(joint).number, 3);
-        EXPECT_NO_THROW(value = TypeCast<JointTester>(joint));
+        EXPECT_NO_THROW(TypeCast<test::sans_none::JointTester&>(joint).number = 3);
+        EXPECT_EQ(TypeCast<const test::sans_none::JointTester&>(joint).number, 3);
+        EXPECT_NO_THROW(value = TypeCast<test::sans_none::JointTester>(joint));
         EXPECT_EQ(value.number, 3);
-        EXPECT_NO_THROW(TypeCast<JointTester>(&joint)->number = 4);
-        EXPECT_EQ(TypeCast<const JointTester>(joint).number, 4);
+        EXPECT_NO_THROW(TypeCast<test::sans_none::JointTester>(&joint)->number = 4);
+        EXPECT_EQ(TypeCast<const test::sans_none::JointTester>(joint).number, 4);
+        EXPECT_TRUE(joint == joint);
+        EXPECT_FALSE(joint != joint);
+        EXPECT_EQ(GetBodyA(joint), InvalidBodyID);
+        EXPECT_EQ(GetBodyB(joint), InvalidBodyID);
+        EXPECT_FALSE(GetCollideConnected(joint));
     }
 }
 
 TEST(Joint, ForConstantDataTypeCastIsLikeAnyCast)
 {
-    const auto foo = Joint{JointTester{1}};
-    const auto bar = std::any{JointTester{1}};
-    EXPECT_TRUE(TypeCast<const JointTester*>(&foo) == nullptr);
-    EXPECT_TRUE(std::any_cast<const JointTester*>(&bar) == nullptr);
-    EXPECT_TRUE(TypeCast<JointTester*>(&foo) == nullptr);
-    EXPECT_TRUE(std::any_cast<JointTester*>(&bar) == nullptr);
-    EXPECT_TRUE(TypeCast<const JointTester>(&foo) != nullptr);
-    EXPECT_TRUE(std::any_cast<const JointTester>(&bar) != nullptr);
-    EXPECT_TRUE(TypeCast<JointTester>(&foo) != nullptr);
-    EXPECT_TRUE(std::any_cast<JointTester>(&bar) != nullptr);
+    const auto foo = Joint{test::sans_none::JointTester{1}};
+    const auto bar = std::any{test::sans_none::JointTester{1}};
+    EXPECT_TRUE(TypeCast<const test::sans_none::JointTester*>(&foo) == nullptr);
+    EXPECT_TRUE(std::any_cast<const test::sans_none::JointTester*>(&bar) == nullptr);
+    EXPECT_TRUE(TypeCast<test::sans_none::JointTester*>(&foo) == nullptr);
+    EXPECT_TRUE(std::any_cast<test::sans_none::JointTester*>(&bar) == nullptr);
+    EXPECT_TRUE(TypeCast<const test::sans_none::JointTester>(&foo) != nullptr);
+    EXPECT_TRUE(std::any_cast<const test::sans_none::JointTester>(&bar) != nullptr);
+    EXPECT_TRUE(TypeCast<test::sans_none::JointTester>(&foo) != nullptr);
+    EXPECT_TRUE(std::any_cast<test::sans_none::JointTester>(&bar) != nullptr);
 }
 
 TEST(Joint, ForMutableDataTypeCastIsLikeAnyCast)
 {
-    auto foo = Joint{JointTester{1}};
-    auto bar = std::any{JointTester{1}};
-    EXPECT_TRUE(TypeCast<const JointTester*>(&foo) == nullptr);
-    EXPECT_TRUE(std::any_cast<const JointTester*>(&bar) == nullptr);
-    EXPECT_TRUE(TypeCast<JointTester*>(&foo) == nullptr);
-    EXPECT_TRUE(std::any_cast<JointTester*>(&bar) == nullptr);
-    EXPECT_TRUE(TypeCast<const JointTester>(&foo) != nullptr);
-    EXPECT_TRUE(std::any_cast<const JointTester>(&bar) != nullptr);
-    EXPECT_TRUE(TypeCast<JointTester>(&foo) != nullptr);
-    EXPECT_TRUE(std::any_cast<JointTester>(&bar) != nullptr);
+    auto foo = Joint{test::sans_none::JointTester{1}};
+    auto bar = std::any{test::sans_none::JointTester{1}};
+    EXPECT_TRUE(TypeCast<const test::sans_none::JointTester*>(&foo) == nullptr);
+    EXPECT_TRUE(std::any_cast<const test::sans_none::JointTester*>(&bar) == nullptr);
+    EXPECT_TRUE(TypeCast<test::sans_none::JointTester*>(&foo) == nullptr);
+    EXPECT_TRUE(std::any_cast<test::sans_none::JointTester*>(&bar) == nullptr);
+    EXPECT_TRUE(TypeCast<const test::sans_none::JointTester>(&foo) != nullptr);
+    EXPECT_TRUE(std::any_cast<const test::sans_none::JointTester>(&bar) != nullptr);
+    EXPECT_TRUE(TypeCast<test::sans_none::JointTester>(&foo) != nullptr);
+    EXPECT_TRUE(std::any_cast<test::sans_none::JointTester>(&bar) != nullptr);
 }
 
 TEST(Joint, GetLinearReaction)
@@ -262,8 +483,7 @@ TEST(Joint, SetAngularLimitsThrows)
 
 TEST(Joint, IsLimitEnabledThrows)
 {
-    auto joint = Joint{};
-    EXPECT_THROW(IsLimitEnabled(joint), std::invalid_argument);
+    EXPECT_THROW(IsLimitEnabled(Joint{}), std::invalid_argument);
 }
 
 TEST(Joint, EnableLimitThrows)
@@ -294,36 +514,42 @@ TEST(Joint, GetLimitStateThrows)
 
 TEST(Joint, EqualsOperator)
 {
-    EXPECT_TRUE(Joint(WheelJointConf()) == Joint(WheelJointConf()));
+    const auto j0 = Joint(WheelJointConf());
+    EXPECT_TRUE(j0 == j0);
     {
         auto conf = WheelJointConf{};
         conf.localAnchorA = Length2{1.2_m, -3_m};
-        EXPECT_TRUE(Joint(conf) == Joint(conf));
-        EXPECT_FALSE(Joint(WheelJointConf()) == Joint(conf));
+        const auto j1 = Joint(conf);
+        EXPECT_TRUE(j1 == j1);
+        EXPECT_FALSE(j0 == j1);
     }
     {
         auto conf = WheelJointConf{};
         conf.localAnchorB = Length2{1.2_m, -3_m};
-        EXPECT_TRUE(Joint(conf) == Joint(conf));
-        EXPECT_FALSE(Joint(WheelJointConf()) == Joint(conf));
+        const auto j1 = Joint(conf);
+        EXPECT_TRUE(j1 == j1);
+        EXPECT_FALSE(j0 == j1);
     }
     {
         auto conf = WheelJointConf{};
         conf.motorSpeed = 0.12_rpm;
-        EXPECT_TRUE(Joint(conf) == Joint(conf));
-        EXPECT_FALSE(Joint(WheelJointConf()) == Joint(conf));
+        const auto j1 = Joint(conf);
+        EXPECT_TRUE(j1 == j1);
+        EXPECT_FALSE(j0 == j1);
     }
     // TODO: test remaining fields.
 }
 
 TEST(Joint, NotEqualsOperator)
 {
-    EXPECT_FALSE(Joint(WheelJointConf()) != Joint(WheelJointConf()));
+    const auto j0 = Joint(WheelJointConf());
+    EXPECT_FALSE(j0 != j0);
     {
         auto conf = WheelJointConf{};
         conf.frequency = 13_Hz;
-        EXPECT_FALSE(Joint(conf) != Joint(conf));
-        EXPECT_TRUE(Joint(WheelJointConf()) != Joint(conf));
+        const auto j1 = Joint(conf);
+        EXPECT_FALSE(j1 != j1);
+        EXPECT_TRUE(j0 != j1);
     }
     // TODO: test remaining fields.
 }

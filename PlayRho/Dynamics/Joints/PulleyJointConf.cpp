@@ -212,10 +212,10 @@ bool SolvePosition(const PulleyJointConf& object, std::vector<BodyConstraint>& b
     const auto ruA = Length{Cross(rA, uA)};
     const auto ruB = Length{Cross(rB, uB)};
 
-    const auto totalInvMassA = invMassA + invRotInertiaA * ruA * ruA / SquareRadian;
-    const auto totalInvMassB = invMassB + invRotInertiaB * ruB * ruB / SquareRadian;
+    const auto totalInvMassA = invMassA + invRotInertiaA * Square(ruA) / SquareRadian;
+    const auto totalInvMassB = invMassB + invRotInertiaB * Square(ruB) / SquareRadian;
 
-    const auto totalInvMass = totalInvMassA + object.ratio * object.ratio * totalInvMassB;
+    const auto totalInvMass = totalInvMassA + Square(object.ratio) * totalInvMassB;
     const auto mass = (totalInvMass > InvMass{0}) ? Real{1} / totalInvMass : 0_kg;
 
     const auto srcLengthRatio = object.lengthA + object.ratio * object.lengthB; // constant C0

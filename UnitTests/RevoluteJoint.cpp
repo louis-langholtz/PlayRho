@@ -504,7 +504,7 @@ TEST(RevoluteJointConf, GetRevoluteJointConfFromJoint)
     conf.motorSpeed = 3_rpm;
     conf.maxMotorTorque = Torque{Real(2.1) * NewtonMeter};
     auto result = RevoluteJointConf{};
-    EXPECT_NO_THROW(result = GetRevoluteJointConf(conf));
+    EXPECT_NO_THROW(result = GetRevoluteJointConf(Joint{conf}));
     EXPECT_EQ(result.bodyA, conf.bodyA);
     EXPECT_EQ(result.bodyB, conf.bodyB);
     EXPECT_EQ(result.collideConnected, conf.collideConnected);
@@ -569,7 +569,7 @@ TEST(RevoluteJointConf, GetAngularMass)
 
 TEST(RevoluteJointConf, GetLocalXAxisAThrowsInvalidArgument)
 {
-    EXPECT_THROW(GetLocalXAxisA(RevoluteJointConf{}), std::invalid_argument);
+    EXPECT_THROW(GetLocalXAxisA(Joint{RevoluteJointConf{}}), std::invalid_argument);
 }
 
 TEST(RevoluteJointConf, GetLocalYAxisAThrowsInvalidArgument)

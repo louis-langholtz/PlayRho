@@ -565,6 +565,7 @@ TEST(Math, NextPowerOfTwo)
         const auto next = std::pow(2, std::ceil(std::log(i + 1)/std::log(2)));
         EXPECT_EQ(NextPowerOfTwo(i), next);
     }
+    EXPECT_EQ(NextPowerOfTwo(static_cast<std::uint64_t>(-1)), 0u);
 }
 
 TEST(Math, Subtracting2UlpAlmostEqualNumbersNotAlmostZero)

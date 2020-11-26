@@ -409,12 +409,12 @@ class DistanceProxy;
 struct Transformation;
 class World;
 
-using detail::TestOverlap;
-using detail::Contains;
+using ::playrho::detail::TestOverlap;
+using ::playrho::detail::Contains;
 
 /// @brief 2-Dimensional Axis Aligned Bounding Box.
 /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
-using AABB = detail::AABB<2>;
+using AABB = ::playrho::detail::AABB<2>;
 
 /// @brief Gets the perimeter length of the 2-dimensional AABB.
 /// @warning Behavior is undefined for an invalid AABB.

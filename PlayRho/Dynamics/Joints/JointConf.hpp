@@ -29,10 +29,8 @@
 namespace playrho {
 namespace d2 {
 
-/// @brief Abstract base joint definition class.
+/// @brief Base joint definition class.
 /// @details Joint definitions are used to construct joints.
-/// @note This class is not meant to be directly instantiated; it is meant
-///   to be inherited from.
 struct JointConf {
     /// @brief 1st attached body.
     BodyID bodyA = InvalidBodyID;
