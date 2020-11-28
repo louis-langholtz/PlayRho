@@ -103,9 +103,12 @@ constexpr auto GetZ(const T& value)
     return get<2>(value);
 }
 
-/// @brief Makes the given value into an unsigned value.
+/// @brief Makes the given **value** into an **unsigned value**.
 /// @note If the given value is negative, this will result in an unsigned value which is the
 ///   two's complement modulo-wrapped value.
+/// @note This is different from <code>std::make_unsigned</code> in that this changes the **value**
+///   to the value in the type that's the unsigned type equivalent of the input value.
+///   <code>std::make_unsigned</code> merely provides the unsigned **type** equivalent.
 template <typename T>
 constexpr std::enable_if_t<std::is_signed<T>::value, std::make_unsigned_t<T>>
 MakeUnsigned(const T& arg) noexcept
