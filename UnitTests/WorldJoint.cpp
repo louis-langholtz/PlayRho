@@ -49,6 +49,8 @@ TEST(WorldJoint, GetSetMotorSpeed)
     EXPECT_EQ(GetMotorSpeed(world, id), motorSpeed);
     EXPECT_NO_THROW(SetMotorSpeed(world, id, newValue));
     EXPECT_EQ(GetMotorSpeed(world, id), newValue);
+    EXPECT_THROW(GetLocalXAxisA(world, id), std::invalid_argument);
+    EXPECT_THROW(GetLocalYAxisA(world, id), std::invalid_argument);
 }
 
 TEST(WorldJoint, GetWorldIndexFreeFunction)
