@@ -303,14 +303,7 @@ TEST(DistanceJointConf, SetMotorSpeedThrows)
 
 TEST(DistanceJointConf, SetFrequencyFreeFunction)
 {
-    auto world = World{};
-    const auto bA = CreateBody(world);
-    ASSERT_NE(bA, InvalidBodyID);
-    const auto bB = CreateBody(world);
-    ASSERT_NE(bB, InvalidBodyID);
     auto def = DistanceJointConf{};
-    def.bodyA = bA;
-    def.bodyB = bB;
     def.collideConnected = false;
     def.localAnchorA = Length2(21_m, -2_m);
     def.localAnchorB = Length2(13_m, 12_m);

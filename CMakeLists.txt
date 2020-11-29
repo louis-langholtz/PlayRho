@@ -22,7 +22,7 @@ endforeach()
 
 # Set name for entire project. This establishes the project name in <PROJECT_NAME>_* variables.
 # Details at: https://cmake.org/cmake/help/latest/command/project.html#command:project
-project(PlayRho VERSION 0.13.1)
+project(PlayRho VERSION 0.14.0)
 # Now PlayRho_VERSION set to version above.
 # PlayRho_VERSION_MAJOR set to first component.
 # PlayRho_VERSION_MINOR set to second component.

@@ -117,8 +117,7 @@ RayCastOutput RayCast(Length radius, Length2 location, const RayCastInput& input
 /// @brief Cast a ray against the given AABB.
 /// @param aabb Axis Aligned Bounding Box.
 /// @param input the ray-cast input parameters.
-RayCastOutput RayCast(const ::playrho::detail::AABB<2>& aabb,
-                      const RayCastInput& input) noexcept;
+RayCastOutput RayCast(const ::playrho::detail::AABB<2>& aabb, const RayCastInput& input) noexcept;
 
 /// @brief Cast a ray against the distance proxy.
 /// @param proxy Distance-proxy object (in local coordinates).

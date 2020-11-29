@@ -311,3 +311,15 @@ TEST(TargetJointConf, GetName)
 {
     EXPECT_STREQ(GetName(GetTypeID<TargetJointConf>()), "d2::TargetJointConf");
 }
+
+TEST(TargetJointConf, SetFrequencyFreeFunction)
+{
+    auto def = TargetJointConf{};
+    const auto frequencyA = 67_Hz;
+    const auto frequencyB = 2_Hz;
+    def.frequency = frequencyA;
+    auto joint = Joint(def);
+    EXPECT_EQ(GetFrequency(joint), frequencyA);
+    EXPECT_NO_THROW(SetFrequency(joint, frequencyB));
+    EXPECT_EQ(GetFrequency(joint), frequencyB);
+}
