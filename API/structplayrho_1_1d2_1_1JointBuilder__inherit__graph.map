@@ -11,7 +11,7 @@
 <area shape="rect" id="node19" href="$structplayrho_1_1d2_1_1JointBuilder.html" title=" " alt="" coords="588,528,751,569"/>
 <area shape="rect" id="node21" href="$structplayrho_1_1d2_1_1JointBuilder.html" title=" " alt="" coords="588,593,751,635"/>
 <area shape="rect" id="node23" href="$structplayrho_1_1d2_1_1JointBuilder.html" title=" " alt="" coords="588,659,751,700"/>
-<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1JointConf.html" title="Abstract base joint definition class." alt="" coords="5,339,156,366"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1JointConf.html" title="Base joint definition class." alt="" coords="5,339,156,366"/>
 <area shape="rect" id="node4" href="$structplayrho_1_1d2_1_1FrictionJointConf.html" title="Friction joint definition." alt="" coords="806,13,999,39"/>
 <area shape="rect" id="node6" href="$structplayrho_1_1d2_1_1DistanceJointConf.html" title="Distance joint definition." alt="" coords="801,78,1004,105"/>
 <area shape="rect" id="node8" href="$structplayrho_1_1d2_1_1GearJointConf.html" title="Gear joint definition." alt="" coords="813,143,992,170"/>

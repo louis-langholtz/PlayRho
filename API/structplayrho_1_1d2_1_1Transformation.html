@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.13.1</span>
+   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -117,11 +117,11 @@ Collaboration diagram for playrho::d2::Transformation:</div>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ab2b20471f74fef015279a0bb396210e1"><td class="memItemLeft" align="right" valign="top"><a id="ab2b20471f74fef015279a0bb396210e1"></a>
 <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Transformation.html#ab2b20471f74fef015279a0bb396210e1">p</a> = <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{}</td></tr>
-<tr class="memdesc:ab2b20471f74fef015279a0bb396210e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translational portion of the transformation. 8-bytes. <br /></td></tr>
+<tr class="memdesc:ab2b20471f74fef015279a0bb396210e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translational portion of the transformation. <br /></td></tr>
 <tr class="separator:ab2b20471f74fef015279a0bb396210e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f21f610db905ad56edc7720dd8598f4"><td class="memItemLeft" align="right" valign="top"><a id="a1f21f610db905ad56edc7720dd8598f4"></a>
 <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Transformation.html#a1f21f610db905ad56edc7720dd8598f4">q</a> = <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html#a989ef293213c6b3a4d1901533445cd85">UnitVec::GetRight</a>()</td></tr>
-<tr class="memdesc:a1f21f610db905ad56edc7720dd8598f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotational portion of the transformation. 8-bytes. <br /></td></tr>
+<tr class="memdesc:a1f21f610db905ad56edc7720dd8598f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotational/directional portion of the transformation. <br /></td></tr>
 <tr class="separator:a1f21f610db905ad56edc7720dd8598f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
@@ -133,14 +133,14 @@ template&lt;&gt; </td></tr>
 <tr class="memitem:afce9c1dea61c4ba26d5785f2f20c3bff"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Transformation.html#afce9c1dea61c4ba26d5785f2f20c3bff">IsValid</a> (const <a class="el" href="classplayrho_1_1d2_1_1Sweep.html">d2::Sweep</a> &amp;value) noexcept</td></tr>
 <tr class="memdesc:afce9c1dea61c4ba26d5785f2f20c3bff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given value is valid. <br /></td></tr>
 <tr class="separator:afce9c1dea61c4ba26d5785f2f20c3bff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98138b591523c0bfa434bc09afb5c1e9"><td class="memItemLeft" align="right" valign="top"><a id="a98138b591523c0bfa434bc09afb5c1e9"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Transformation.html#a98138b591523c0bfa434bc09afb5c1e9">operator==</a> (<a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a> lhs, <a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a> rhs) noexcept</td></tr>
-<tr class="memdesc:a98138b591523c0bfa434bc09afb5c1e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator. <br /></td></tr>
-<tr class="separator:a98138b591523c0bfa434bc09afb5c1e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afefbadf338e9e296f967a0dfac3fa914"><td class="memItemLeft" align="right" valign="top"><a id="afefbadf338e9e296f967a0dfac3fa914"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Transformation.html#afefbadf338e9e296f967a0dfac3fa914">operator!=</a> (<a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a> lhs, <a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a> rhs) noexcept</td></tr>
-<tr class="memdesc:afefbadf338e9e296f967a0dfac3fa914"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator. <br /></td></tr>
-<tr class="separator:afefbadf338e9e296f967a0dfac3fa914"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f366fc4f9a298d3dded719b628a9933"><td class="memItemLeft" align="right" valign="top"><a id="a9f366fc4f9a298d3dded719b628a9933"></a>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Transformation.html#a9f366fc4f9a298d3dded719b628a9933">operator==</a> (const <a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a> &amp;lhs, const <a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a> &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a9f366fc4f9a298d3dded719b628a9933"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator. <br /></td></tr>
+<tr class="separator:a9f366fc4f9a298d3dded719b628a9933"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac100cc2e77031bd058367006ddd2ebe1"><td class="memItemLeft" align="right" valign="top"><a id="ac100cc2e77031bd058367006ddd2ebe1"></a>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Transformation.html#ac100cc2e77031bd058367006ddd2ebe1">operator!=</a> (const <a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a> &amp;lhs, const <a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a> &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:ac100cc2e77031bd058367006ddd2ebe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator. <br /></td></tr>
+<tr class="separator:ac100cc2e77031bd058367006ddd2ebe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af76924a9aee97c42840a3867b3cb612c"><td class="memItemLeft" align="right" valign="top"><a id="af76924a9aee97c42840a3867b3cb612c"></a>
 template&lt;&gt; </td></tr>
 <tr class="memitem:af76924a9aee97c42840a3867b3cb612c"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Transformation.html#af76924a9aee97c42840a3867b3cb612c">IsValid</a> (const <a class="el" href="structplayrho_1_1d2_1_1Transformation.html">d2::Transformation</a> &amp;value) noexcept</td></tr>
@@ -149,10 +149,10 @@ template&lt;&gt; </td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Describes a geometric transformation. </p>
-<p>A transform contains translation and rotation. It is used to represent the position and orientation of rigid frames. </p><dl class="section note"><dt>Note</dt><dd>The default transformation is the identity transformation - the transformation which neither translates nor rotates a location. </dd>
+<p>A transformation contains translation and rotation. It's used to represent the location and direction of things like bodies. </p><dl class="section note"><dt>Note</dt><dd>The default transformation is the identity transformation - the transformation which neither translates nor rotates a location. </dd>
 <dd>
 This data structure is 16-bytes large (on at least one 64-bit platform). </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Shape_8cpp-example.html#_a22">Shape.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#_a59">WorldBody.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Shape_8cpp-example.html#_a23">Shape.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#_a59">WorldBody.cpp</a>.</dd>
 </dl>
 </div><hr/>The documentation for this struct was generated from the following files:<ul>
 <li>Transformation.hpp</li>
@@ -164,7 +164,7 @@ This data structure is 16-bytes large (on at least one 64-bit platform). </dd></
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a></li>
-    <li class="footer">Generated on Tue Nov 10 2020 12:40:29 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Mon Nov 30 2020 00:11:01 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

@@ -1,13 +1,13 @@
 <map id="playrho::d2::FixtureConf" name="playrho::d2::FixtureConf">
-<area shape="rect" id="node1" title="Fixture definition." alt="" coords="744,192,907,219"/>
-<area shape="rect" id="node2" href="$classplayrho_1_1strongtype_1_1IndexingNamedType.html" title=" " alt="" coords="489,49,640,119"/>
+<area shape="rect" id="node1" title="Fixture definition." alt="" coords="776,179,939,205"/>
+<area shape="rect" id="node2" href="$classplayrho_1_1detail_1_1IndexingNamedType.html" title=" " alt="" coords="489,51,672,107"/>
 <area shape="rect" id="node3" title=" " alt="" coords="172,5,271,32"/>
-<area shape="rect" id="node4" href="$classplayrho_1_1strongtype_1_1IndexingNamedType.html" title="An indexable, hashable, named &quot;strong type&quot; template class." alt="" coords="147,56,296,112"/>
-<area shape="rect" id="node5" title=" " alt="" coords="5,71,44,97"/>
-<area shape="rect" id="node6" href="$structplayrho_1_1Filter.html" title="A holder for contact filtering data." alt="" coords="514,165,615,192"/>
-<area shape="rect" id="node7" title=" " alt="" coords="187,136,255,163"/>
-<area shape="rect" id="node8" title=" " alt="" coords="191,187,252,213"/>
-<area shape="rect" id="node9" href="$classplayrho_1_1d2_1_1Shape.html" title="Shape." alt="" coords="499,216,630,243"/>
-<area shape="rect" id="node10" title=" " alt="" coords="135,238,308,279"/>
-<area shape="rect" id="node11" title=" " alt="" coords="541,267,588,293"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1detail_1_1IndexingNamedType.html" title="An indexable, hashable, named &quot;strong type&quot; template class." alt="" coords="141,58,301,99"/>
+<area shape="rect" id="node5" title=" " alt="" coords="5,65,44,92"/>
+<area shape="rect" id="node6" href="$structplayrho_1_1Filter.html" title="A holder for contact filtering data." alt="" coords="530,152,631,179"/>
+<area shape="rect" id="node7" title=" " alt="" coords="187,124,255,151"/>
+<area shape="rect" id="node8" title=" " alt="" coords="191,175,252,201"/>
+<area shape="rect" id="node9" href="$classplayrho_1_1d2_1_1Shape.html" title="Shape." alt="" coords="515,203,646,229"/>
+<area shape="rect" id="node10" title=" " alt="" coords="135,226,308,267"/>
+<area shape="rect" id="node11" title=" " alt="" coords="557,253,604,280"/>
 </map>

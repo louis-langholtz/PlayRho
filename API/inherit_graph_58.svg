@@ -12,10 +12,10 @@
 <!-- Node0 -->
 <g id="node1" class="node">
 <title>Node0</title>
-<g id="a_node1"><a xlink:href="structplayrho_1_1d2_1_1Manifold_1_1PointArray.html" target="_top" xlink:title="Point array structure.">
+<g id="a_node1"><a xlink:href="structplayrho_1_1d2_1_1Manifold_1_1Conf.html" target="_top" xlink:title="Configuration data for manifold calculation.">
 <polygon fill="white" stroke="black" points="0,-0.5 0,-30.5 107,-30.5 107,-0.5 0,-0.5"/>
 <text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::Manifold</text>
-<text text-anchor="middle" x="53.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">::PointArray</text>
+<text text-anchor="middle" x="53.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">::Conf</text>
 </a>
 </g>
 </g>

@@ -1,6 +1,6 @@
 <map id="playrho::d2::PulleyJointConf" name="playrho::d2::PulleyJointConf">
 <area shape="rect" id="node1" title="Pulley joint definition." alt="" coords="5,261,192,288"/>
 <area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1JointBuilder.html" title=" " alt="" coords="17,171,180,212"/>
-<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1JointConf.html" title="Abstract base joint definition class." alt="" coords="18,5,169,32"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1JointConf.html" title="Base joint definition class." alt="" coords="18,5,169,32"/>
 <area shape="rect" id="node4" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="Joint builder definition structure." alt="" coords="115,81,309,108"/>
 </map>

@@ -208,7 +208,7 @@
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="structplayrho_1_1d2_1_1JointConf.html" target="_top" xlink:title="Abstract base joint definition class.">
+<g id="a_node2"><a xlink:href="structplayrho_1_1d2_1_1JointConf.html" target="_top" xlink:title="Base joint definition class.">
 <polygon fill="white" stroke="black" points="0,-251 0,-270 113,-270 113,-251 0,-251"/>
 <text text-anchor="middle" x="56.5" y="-258" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::JointConf</text>
 </a>

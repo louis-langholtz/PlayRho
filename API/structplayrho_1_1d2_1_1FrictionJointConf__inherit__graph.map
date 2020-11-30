@@ -1,6 +1,6 @@
 <map id="playrho::d2::FrictionJointConf" name="playrho::d2::FrictionJointConf">
 <area shape="rect" id="node1" title="Friction joint definition." alt="" coords="5,261,199,288"/>
 <area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1JointBuilder.html" title=" " alt="" coords="21,171,183,212"/>
-<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1JointConf.html" title="Abstract base joint definition class." alt="" coords="21,5,172,32"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1JointConf.html" title="Base joint definition class." alt="" coords="21,5,172,32"/>
 <area shape="rect" id="node4" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="Joint builder definition structure." alt="" coords="118,81,313,108"/>
 </map>

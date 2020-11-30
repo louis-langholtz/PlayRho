@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.13.1</span>
+   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -109,8 +109,8 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 , <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html#aef1ad009c9795d9efa1ab947ff9beeaa">playrho::d2::UnitVec</a>
 </li>
 <li>get()
-: <a class="el" href="classplayrho_1_1propagate__const.html#a47e14f0db5b8e2e2b611aec69f5240d3">playrho::propagate_const&lt; T &gt;</a>
-, <a class="el" href="classplayrho_1_1strongtype_1_1IndexingNamedType.html#abbde78f1cdd8d98414bc3132f3e4de69">playrho::strongtype::IndexingNamedType&lt; T, Tag &gt;</a>
+: <a class="el" href="classplayrho_1_1detail_1_1IndexingNamedType.html#aed65976407ff62b11d16b009db270c1d">playrho::detail::IndexingNamedType&lt; T, Tag &gt;</a>
+, <a class="el" href="classplayrho_1_1propagate__const.html#a47e14f0db5b8e2e2b611aec69f5240d3">playrho::propagate_const&lt; T &gt;</a>
 , <a class="el" href="structplayrho_1_1Vector.html#aa10d9373a7aa5e3492fee0877900f738">playrho::Vector&lt; T, N &gt;</a>
 </li>
 <li>get_pointer()
@@ -138,7 +138,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 : <a class="el" href="classplayrho_1_1d2_1_1World.html#aa88982e1bd4c8bafe0160cdad5a68a71">playrho::d2::World</a>
 </li>
 <li>GetAngle()
-: <a class="el" href="classplayrho_1_1d2_1_1Body.html#afc2d114f23cc621756f6e9363bc74f2a">playrho::d2::Body</a>
+: <a class="el" href="classplayrho_1_1d2_1_1Body.html#a93f21ae0c92245d912cb91a99e756946">playrho::d2::Body</a>
 , <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#aad6493c0704a18da5f611717a6aff844">playrho::d2::BodyConf</a>
 , <a class="el" href="classplayrho_1_1d2_1_1World.html#ab6330d5a0349c5c78357355a05815694">playrho::d2::World</a>
 </li>
@@ -217,8 +217,8 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 </li>
 <li>GetBodyA()
 : <a class="el" href="classplayrho_1_1d2_1_1Contact.html#a50060b759bffd416a32957a49934611e">playrho::d2::Contact</a>
-, <a class="el" href="classplayrho_1_1d2_1_1PositionConstraint.html#af08bd511f62aa56ade87fc6190177d1f">playrho::d2::PositionConstraint</a>
-, <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a2110b3f686b74dff6e54af024f8717bc">playrho::d2::VelocityConstraint</a>
+, <a class="el" href="classplayrho_1_1d2_1_1PositionConstraint.html#a703910aec91fac2f608c3dc4ad03000c">playrho::d2::PositionConstraint</a>
+, <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#aeb754b07cd2f58c4eafcbd741c12a707">playrho::d2::VelocityConstraint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1World.html#aa8c24669bbb9850b21ef17c5217f0a45">playrho::d2::World</a>
 </li>
 <li>GetBodyA_()
@@ -227,8 +227,8 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 </li>
 <li>GetBodyB()
 : <a class="el" href="classplayrho_1_1d2_1_1Contact.html#a7bb0a44199b27491f5a4ae501e320a8c">playrho::d2::Contact</a>
-, <a class="el" href="classplayrho_1_1d2_1_1PositionConstraint.html#a2d2ff7f03b3ac20606c9656e16d94254">playrho::d2::PositionConstraint</a>
-, <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a6e5dac8eb9c4cef57b7e0aa119e896bf">playrho::d2::VelocityConstraint</a>
+, <a class="el" href="classplayrho_1_1d2_1_1PositionConstraint.html#af0ac77b62a91c99a9f5b0763f083b41e">playrho::d2::PositionConstraint</a>
+, <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a1ccc0122d9b8ecaee49b5b3920d8a6ee">playrho::d2::VelocityConstraint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1World.html#a379c87f1276cec0f81e35942dc144b27">playrho::d2::World</a>
 </li>
 <li>GetBodyB_()
@@ -371,9 +371,6 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 <li>GetDefaultFriction()
 : <a class="el" href="structplayrho_1_1d2_1_1FixtureConf.html#a6e6f412c2af9722fd3bc32527459feba">playrho::d2::FixtureConf</a>
 , <a class="el" href="classplayrho_1_1d2_1_1World.html#ad4c197be0402b89a41342cfe51523d45">playrho::d2::World</a>
-</li>
-<li>GetDefaultInitialNodeCapacity()
-: <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a0e6e62f054df4d233e965776af212cef">playrho::d2::DynamicTree</a>
 </li>
 <li>GetDefaultManifoldConf()
 : <a class="el" href="structplayrho_1_1d2_1_1Manifold_1_1Conf.html#acaf37db0f0fc4d474c6a447b1032d73f">playrho::d2::Manifold::Conf</a>
@@ -614,8 +611,8 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 , <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a8958c1124daec4ebfb790c97dac143d3">playrho::d2::WorldImpl</a>
 </li>
 <li>GetJoints()
-: <a class="el" href="classplayrho_1_1d2_1_1World.html#acd41faec72cca3f9225fb389123d6801">playrho::d2::World</a>
-, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a84704041d895884748cb013aa32c73c5">playrho::d2::WorldImpl</a>
+: <a class="el" href="classplayrho_1_1d2_1_1World.html#ae84632604a8a5712afeaec510ebeb1ca">playrho::d2::World</a>
+, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ae575bb139a5db8094e954d44ebe26648">playrho::d2::WorldImpl</a>
 </li>
 <li>GetJointTranslation()
 : <a class="el" href="classplayrho_1_1d2_1_1World.html#a0469ef558d7b14efb4792c7f24084d7e">playrho::d2::World</a>
@@ -648,7 +645,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 , <a class="el" href="classplayrho_1_1d2_1_1World.html#af0dcaa1775e96d5b8014493d6e3dbc7d">playrho::d2::World</a>
 </li>
 <li>GetLinearAcceleration()
-: <a class="el" href="classplayrho_1_1d2_1_1Body.html#aef76fc5d7813af886e28e8033e9d019d">playrho::d2::Body</a>
+: <a class="el" href="classplayrho_1_1d2_1_1Body.html#ad408734219c952c485b18375b26365aa">playrho::d2::Body</a>
 , <a class="el" href="classplayrho_1_1d2_1_1World.html#ae8ca55fff3e787fcbc3d30fc8f39f49c">playrho::d2::World</a>
 </li>
 <li>GetLinearDamping()
@@ -695,7 +692,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 </li>
 <li>GetLinearVelocity()
 : <a class="el" href="classplayrho_1_1d2_1_1Body.html#a3802163b90f631b001eaa0201be419c9">playrho::d2::Body</a>
-, <a class="el" href="classplayrho_1_1d2_1_1World.html#ab7b59db43cee6a26c0433b69476b0c9b">playrho::d2::World</a>
+, <a class="el" href="classplayrho_1_1d2_1_1World.html#afb257e46e441021d64884e95c400fa0f">playrho::d2::World</a>
 </li>
 <li>GetLinearVelocityFromLocalPoint()
 : <a class="el" href="classplayrho_1_1d2_1_1Body.html#a47196aab3f4386da954b565a6a0fce7c">playrho::d2::Body</a>
@@ -715,8 +712,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 , <a class="el" href="classplayrho_1_1d2_1_1World.html#a1aebe08694e219bf5032c3c44c5cc5ab">playrho::d2::World</a>
 </li>
 <li>GetLocalCenter()
-: <a class="el" href="classplayrho_1_1d2_1_1Body.html#a3e7c5b97ecef8fa4e8ee2bcb0d7aad13">playrho::d2::Body</a>
-, <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html#a31da1c05473e3f5dc3d03a4dee43b1ea">playrho::d2::BodyConstraint</a>
+: <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html#a31da1c05473e3f5dc3d03a4dee43b1ea">playrho::d2::BodyConstraint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1Sweep.html#abd3fb7d9c09928fe51e69a769de06de0">playrho::d2::Sweep</a>
 , <a class="el" href="classplayrho_1_1d2_1_1World.html#a0d96416fb8a1165678be1c50fce12cc6">playrho::d2::World</a>
 </li>
@@ -745,7 +741,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 , <a class="el" href="classplayrho_1_1d2_1_1World.html#af6865d25a20091233c0f8b104c658df2">playrho::d2::World</a>
 </li>
 <li>GetLocation()
-: <a class="el" href="classplayrho_1_1d2_1_1Body.html#a63db5146e976e495518b850c37be060d">playrho::d2::Body</a>
+: <a class="el" href="classplayrho_1_1d2_1_1Body.html#a8a6f694cab71d0db91049dc0908de63f">playrho::d2::Body</a>
 , <a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html#a80722e9c17a546a9d2cecd9545654a04">playrho::d2::DiskShapeConf</a>
 , <a class="el" href="classplayrho_1_1d2_1_1World.html#aabf27f5cfd9092be041a781d24cfa9a1">playrho::d2::World</a>
 </li>
@@ -818,7 +814,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 </li>
 <li>GetMaxVertexRadius()
 : <a class="el" href="classplayrho_1_1d2_1_1World.html#a887bfd8eb8cbe735a9830c8a5aec2bce">playrho::d2::World</a>
-, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a7d0caff04631b8d5c03c876911a83366">playrho::d2::WorldImpl</a>
+, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a85a5c5aa03607543a1d1dea2a31520af">playrho::d2::WorldImpl</a>
 , <a class="el" href="structplayrho_1_1detail_1_1Defaults.html#a1d49ce1c8a6c8db49591f048aba79939">playrho::detail::Defaults&lt; T &gt;</a>
 , <a class="el" href="structplayrho_1_1detail_1_1Defaults_3_01Fixed_3_01std_1_1int32__t_00_01FRACTION__BITS_01_4_01_4.html#ac2eee4337f77c98b9d34127ae52a4b72">playrho::detail::Defaults&lt; Fixed&lt; std::int32_t, FRACTION_BITS &gt; &gt;</a>
 </li>
@@ -831,7 +827,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 : <a class="el" href="classplayrho_1_1d2_1_1VertexSet.html#aab2c23f7f7344bc31409837dbd1946c3">playrho::d2::VertexSet</a>
 </li>
 <li>GetMinVertexRadius()
-: <a class="el" href="classplayrho_1_1d2_1_1World.html#a37fe6b5dbdfa9f4e5b7a09bdcbd4485d">playrho::d2::World</a>
+: <a class="el" href="classplayrho_1_1d2_1_1World.html#a95453e9c6c17e66fbb7e96256b2ca071">playrho::d2::World</a>
 , <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a3dc85a3fd79661b17f225819fc61ca0c">playrho::d2::WorldImpl</a>
 </li>
 <li>GetMotorForce()
@@ -905,7 +901,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 </li>
 <li>GetPoint()
 : <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#afc69f25e15e201ca7db3fd75e9c04ac3">playrho::d2::Manifold</a>
-, <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a1b9c651f93348723973bb0e08c4bc9ac">playrho::d2::VelocityConstraint</a>
+, <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#aeafd25182ffe4017f95e6098afc59528">playrho::d2::VelocityConstraint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1WorldManifold.html#a4872f3b8f5ec291a4e2d8324829f82b6">playrho::d2::WorldManifold</a>
 </li>
 <li>GetPointA()
@@ -969,10 +965,10 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 , <a class="el" href="classplayrho_1_1d2_1_1World.html#a902c4e2db9331be98f4150759ed738bd">playrho::d2::World</a>
 </li>
 <li>GetRestitution()
-: <a class="el" href="classplayrho_1_1d2_1_1Contact.html#ab4d6887a07e00b6854f0cc3d1a137dd6">playrho::d2::Contact</a>
+: <a class="el" href="classplayrho_1_1d2_1_1Contact.html#ac09b3622eb7578b84fed79b5c60a8963">playrho::d2::Contact</a>
 , <a class="el" href="structplayrho_1_1d2_1_1FixtureConf.html#a5f4b19f147e62dd01f2f2cd6bc201df0">playrho::d2::FixtureConf</a>
 , <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a2cb4f41d6a645fabcf4e69b298547100">playrho::d2::VelocityConstraint</a>
-, <a class="el" href="classplayrho_1_1d2_1_1World.html#a7fe43c7b209c1aca69358206e4a7a9fa">playrho::d2::World</a>
+, <a class="el" href="classplayrho_1_1d2_1_1World.html#ada6f0319b80bd4a62673f539e41d0b86">playrho::d2::World</a>
 </li>
 <li>GetRestitution_()
 : <a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#a235ce655f2541326811ea782625d1240">playrho::d2::Shape::Concept</a>
@@ -1018,7 +1014,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 : <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a94672b3b074267dea80f38ea49cba7e2">playrho::d2::WorldImpl</a>
 </li>
 <li>GetSubStepping()
-: <a class="el" href="classplayrho_1_1d2_1_1World.html#a8799d82838efa9277f588dc0819c51dd">playrho::d2::World</a>
+: <a class="el" href="classplayrho_1_1d2_1_1World.html#ab8d7ece82bb9a60db3d1f1d98ac80b98">playrho::d2::World</a>
 , <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aea1de488b1ed5f632f987a1c4b3013f0">playrho::d2::WorldImpl</a>
 </li>
 <li>GetSupportIndex()
@@ -1037,7 +1033,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 : <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a5f65c818d7969342f30b4fab4c5e6f56">playrho::d2::VelocityConstraint</a>
 </li>
 <li>GetTangentSpeed()
-: <a class="el" href="classplayrho_1_1d2_1_1Contact.html#a992dda5a24ab09ad4f58e854e96eff16">playrho::d2::Contact</a>
+: <a class="el" href="classplayrho_1_1d2_1_1Contact.html#a174961238838f3c3fa6bebee50bf655e">playrho::d2::Contact</a>
 , <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#aa68c6da65b556cc282a0ec4455eddd1b">playrho::d2::VelocityConstraint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1World.html#a2a314b9568d6553aaac1df1a0054250e">playrho::d2::World</a>
 </li>
@@ -1050,7 +1046,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 : <a class="el" href="classplayrho_1_1d2_1_1Joint.html#a61f1607657e41b75797c28649e818f8e">playrho::d2::Joint</a>
 </li>
 <li>GetToi()
-: <a class="el" href="classplayrho_1_1d2_1_1Contact.html#ae1a23d2f5c34d9eff2afa6f435c90311">playrho::d2::Contact</a>
+: <a class="el" href="classplayrho_1_1d2_1_1Contact.html#a81d39ed1266907d4ef7cb7ebff3fd83b">playrho::d2::Contact</a>
 , <a class="el" href="classplayrho_1_1d2_1_1World.html#ac62d6b0d4985566ff6e1ca9d3f1fa1e6">playrho::d2::World</a>
 </li>
 <li>GetToiCount()
@@ -1076,18 +1072,18 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 : <a class="el" href="classplayrho_1_1d2_1_1World.html#af8aabfb6390fed1c549e81700b0cd80e">playrho::d2::World</a>
 </li>
 <li>GetTransformation()
-: <a class="el" href="classplayrho_1_1d2_1_1Body.html#a6831cb0077f88907a3c4c28ae398515d">playrho::d2::Body</a>
+: <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7987170b5f0cd8224735b960f06fcf59">playrho::d2::Body</a>
 , <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#a178733ef87c116856614750d49785cd5">playrho::d2::BodyConf</a>
-, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae851807b71a13326be2635fb8af75ab6">playrho::d2::World</a>
+, <a class="el" href="classplayrho_1_1d2_1_1World.html#acdfa023334becda826867586a581979d">playrho::d2::World</a>
 </li>
 <li>GetTree()
-: <a class="el" href="classplayrho_1_1d2_1_1World.html#ab314146b43aa31bdc72e5795b5f44659">playrho::d2::World</a>
-, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aba21c1f96e9194e6c57b41ff2aee047c">playrho::d2::WorldImpl</a>
+: <a class="el" href="classplayrho_1_1d2_1_1World.html#a9e88ff1fed5897d1f35bdca45b0d3769">playrho::d2::World</a>
+, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a74860eba448f1106cdc81246a25d29fe">playrho::d2::WorldImpl</a>
 </li>
 <li>GetType()
-: <a class="el" href="classplayrho_1_1d2_1_1Body.html#a421d2110404320428fd02b2d0b70a062">playrho::d2::Body</a>
+: <a class="el" href="classplayrho_1_1d2_1_1Body.html#a91f44b797b80539941b65a15c2ffee5d">playrho::d2::Body</a>
 , <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a39775ff69570500f48db1f298c24dee1">playrho::d2::Manifold</a>
-, <a class="el" href="classplayrho_1_1d2_1_1World.html#a7a5f508e72fff8e0844aff436989a175">playrho::d2::World</a>
+, <a class="el" href="classplayrho_1_1d2_1_1World.html#a27fd66901457a53162b0e900ca1b46a9">playrho::d2::World</a>
 </li>
 <li>GetType1()
 : <a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html#ae6d9a2fadb19711e6a7dba77fc7c1b6d">playrho::d2::GearJointConf</a>
@@ -1102,13 +1098,13 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 , <a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html#aa907f27217583221569c5faf0516a983">playrho::d2::Shape::Model&lt; T &gt;</a>
 </li>
 <li>GetUnderActiveTime()
-: <a class="el" href="classplayrho_1_1d2_1_1Body.html#abc897bc2cda122d02fccdb3c5c11049d">playrho::d2::Body</a>
+: <a class="el" href="classplayrho_1_1d2_1_1Body.html#a1192c89bb1512e70b1fb878c1b29a452">playrho::d2::Body</a>
 </li>
 <li>GetUpperBound()
 : <a class="el" href="structplayrho_1_1detail_1_1AABB.html#a98a4a10ae8cc38664e56b99a5ef40ba6">playrho::detail::AABB&lt; N &gt;</a>
 </li>
 <li>GetVelocity()
-: <a class="el" href="classplayrho_1_1d2_1_1Body.html#a60d609b9f5c0a1d568b3fc42d169c428">playrho::d2::Body</a>
+: <a class="el" href="classplayrho_1_1d2_1_1Body.html#ab873f18f1e540da43881e7f2dadeb7b1">playrho::d2::Body</a>
 , <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html#ac67a11b5d917548f54bbf08935f0506c">playrho::d2::BodyConstraint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1World.html#acc05b211fd414f80784e7250c1f0b173">playrho::d2::World</a>
 </li>
@@ -1158,11 +1154,10 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 , <a class="el" href="classplayrho_1_1d2_1_1World.html#afe5cfdb1c7cdce8f51cd5b5932d9059a">playrho::d2::World</a>
 </li>
 <li>GetWorldCenter()
-: <a class="el" href="classplayrho_1_1d2_1_1Body.html#a58fff0c0e51774a2fecec8a6f2bb9e9d">playrho::d2::Body</a>
-, <a class="el" href="classplayrho_1_1d2_1_1World.html#a32537729a6c93bba8c9ea99a3bcd737f">playrho::d2::World</a>
+: <a class="el" href="classplayrho_1_1d2_1_1World.html#a32537729a6c93bba8c9ea99a3bcd737f">playrho::d2::World</a>
 </li>
 <li>GetWorldIndex()
-: <a class="el" href="classplayrho_1_1d2_1_1World.html#a96cce8e8cf11bdfcb2d834f999744dd3">playrho::d2::World</a>
+: <a class="el" href="classplayrho_1_1d2_1_1World.html#ae1416ad660edc4914c490c7ea156ab93">playrho::d2::World</a>
 </li>
 <li>GetWorldManifold()
 : <a class="el" href="classplayrho_1_1d2_1_1Contact.html#a53c028875bbee1fffcd3fc497bee2dc5">playrho::d2::Contact</a>
@@ -1174,7 +1169,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 , <a class="el" href="classplayrho_1_1d2_1_1World.html#ad52c5cffc4cd82e4cf533db1afcedc93">playrho::d2::World</a>
 </li>
 <li>GetWorldVector()
-: <a class="el" href="classplayrho_1_1d2_1_1Body.html#a0ccc8fe53ed54beba80db7046ab8ddf0">playrho::d2::Body</a>
+: <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7544d24c890820e7f5a6d355c0ad4406">playrho::d2::Body</a>
 , <a class="el" href="classplayrho_1_1d2_1_1World.html#afb57be7efe663810331859b5e0c9a253">playrho::d2::World</a>
 </li>
 <li>GetX()
@@ -1192,7 +1187,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Nov 10 2020 12:40:29 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Mon Nov 30 2020 00:11:01 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

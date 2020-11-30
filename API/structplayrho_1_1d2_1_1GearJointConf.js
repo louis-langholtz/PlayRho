@@ -35,6 +35,6 @@ var structplayrho_1_1d2_1_1GearJointConf =
     [ "ratio", "structplayrho_1_1d2_1_1GearJointConf.html#a738bfaf044a89d5ceaeefaad4930deeb", null ],
     [ "referenceAngle1", "structplayrho_1_1d2_1_1GearJointConf.html#a81c0eee92bc3dd5369c6236638f98d60", null ],
     [ "referenceAngle2", "structplayrho_1_1d2_1_1GearJointConf.html#ab627e79702faf12413009807c33f849b", null ],
-    [ "type1", "structplayrho_1_1d2_1_1GearJointConf.html#a6cde514684bf9e81106db1afc274e5ef", null ],
-    [ "type2", "structplayrho_1_1d2_1_1GearJointConf.html#a3e8b80f3c5fc6cfab56ae7cf3e8be8bc", null ]
+    [ "type1", "structplayrho_1_1d2_1_1GearJointConf.html#a33d2c8c5c412cbdc8de0c9830969c7d0", null ],
+    [ "type2", "structplayrho_1_1d2_1_1GearJointConf.html#acb8c14edf7fe93f1b94fdb2510390e1c", null ]
 ];

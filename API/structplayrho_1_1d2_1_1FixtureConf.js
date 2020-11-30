@@ -4,6 +4,7 @@ var structplayrho_1_1d2_1_1FixtureConf =
     [ "UseFilter", "structplayrho_1_1d2_1_1FixtureConf.html#a4b0e7e9ddc794a1f751d36fcfe355062", null ],
     [ "UseIsSensor", "structplayrho_1_1d2_1_1FixtureConf.html#aebd7788b1d56c1da1a66986c2f13091c", null ],
     [ "UseShape", "structplayrho_1_1d2_1_1FixtureConf.html#a7567d61a39e8a99eb048d99eb8f2f010", null ],
+    [ "UseShape", "structplayrho_1_1d2_1_1FixtureConf.html#a95e40312747c6290d11482631033956f", null ],
     [ "GetBody", "structplayrho_1_1d2_1_1FixtureConf.html#ae05325dba34e8b95a635dce75de1f384", null ],
     [ "GetDefaultFriction", "structplayrho_1_1d2_1_1FixtureConf.html#a6e6f412c2af9722fd3bc32527459feba", null ],
     [ "GetDefaultRestitution", "structplayrho_1_1d2_1_1FixtureConf.html#ab39f3148c511e1a82d6d23701423da43", null ],

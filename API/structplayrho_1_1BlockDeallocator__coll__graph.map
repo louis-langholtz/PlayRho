@@ -1,9 +1,9 @@
 <map id="playrho::BlockDeallocator" name="playrho::BlockDeallocator">
-<area shape="rect" id="node1" title="Block deallocator." alt="" coords="801,165,972,191"/>
-<area shape="rect" id="node2" href="$classplayrho_1_1BlockAllocator.html" title="Block allocator." alt="" coords="544,137,700,163"/>
+<area shape="rect" id="node1" title="Block deallocator." alt="" coords="801,203,972,230"/>
+<area shape="rect" id="node2" href="$classplayrho_1_1BlockAllocator.html" title="Block allocator." alt="" coords="544,175,700,202"/>
 <area shape="rect" id="node3" href="$structplayrho_1_1BlockAllocator_1_1Block.html" title="Block." alt="" coords="5,44,161,85"/>
-<area shape="rect" id="node5" href="$structplayrho_1_1BlockAllocator_1_1Chunk.html" title="Chunk." alt="" coords="271,84,427,125"/>
-<area shape="rect" id="node4" title=" " alt="" coords="277,227,421,254"/>
-<area shape="rect" id="node6" title=" " alt="" coords="55,125,112,151"/>
-<area shape="rect" id="node7" title=" " alt="" coords="583,187,661,214"/>
+<area shape="rect" id="node5" href="$structplayrho_1_1BlockAllocator_1_1Chunk.html" title="Chunk." alt="" coords="271,93,427,135"/>
+<area shape="rect" id="node4" title=" " alt="" coords="277,299,421,326"/>
+<area shape="rect" id="node6" title=" " alt="" coords="55,175,112,202"/>
+<area shape="rect" id="node7" title=" " alt="" coords="583,226,661,253"/>
 </map>

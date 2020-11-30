@@ -16,6 +16,7 @@ var classplayrho_1_1BlockAllocator =
     [ "GetMaxBlockSize", "classplayrho_1_1BlockAllocator.html#a5aa7655c98fb927d7bc7a2fc936ec6cc", null ],
     [ "operator=", "classplayrho_1_1BlockAllocator.html#a2f4069da97f35158e2a2dff6e59b5088", null ],
     [ "operator=", "classplayrho_1_1BlockAllocator.html#a4c1a78be162d81d5a915d33fffd4bd99", null ],
+    [ "AllocatorBlockSizes", "classplayrho_1_1BlockAllocator.html#a30d1ffdd655947d098207ef826e44e8f", null ],
     [ "ChunkSize", "classplayrho_1_1BlockAllocator.html#a81416ab2b8d29effab799523726c9cef", null ],
     [ "m_chunkCount", "classplayrho_1_1BlockAllocator.html#a2c3bc3655496cb673ca4ffe39ea98239", null ],
     [ "m_chunks", "classplayrho_1_1BlockAllocator.html#a1d7d83a13903d6163fb3a544f1c290b8", null ],

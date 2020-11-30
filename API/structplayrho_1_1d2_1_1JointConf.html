@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.13.1</span>
+   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('structplayrho_1_1d2_1_1JointConf.html'
 </div><!--header-->
 <div class="contents">
 
-<p>Abstract base joint definition class.  
+<p>Base joint definition class.  
  <a href="structplayrho_1_1d2_1_1JointConf.html#details">More...</a></p>
 
 <p><code>#include &lt;JointConf.hpp&gt;</code></p>
@@ -115,18 +115,18 @@ Inheritance diagram for playrho::d2::JointConf:</div>
 <div class="dynheader">
 Collaboration diagram for playrho::d2::JointConf:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structplayrho_1_1d2_1_1JointConf__coll__graph.svg" width="307" height="408"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structplayrho_1_1d2_1_1JointConf__coll__graph.svg" width="332" height="379"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a9363d310f4854dcac38ad3849cbcc58b"><td class="memItemLeft" align="right" valign="top"><a id="a9363d310f4854dcac38ad3849cbcc58b"></a>
-<a class="el" href="namespaceplayrho.html#a7eca3bae90f8196745191dc0e4c78480">BodyID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1JointConf.html#a9363d310f4854dcac38ad3849cbcc58b">bodyA</a> = <a class="el" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a></td></tr>
+<a class="el" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92">BodyID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1JointConf.html#a9363d310f4854dcac38ad3849cbcc58b">bodyA</a> = <a class="el" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a></td></tr>
 <tr class="memdesc:a9363d310f4854dcac38ad3849cbcc58b"><td class="mdescLeft">&#160;</td><td class="mdescRight">1st attached body. <br /></td></tr>
 <tr class="separator:a9363d310f4854dcac38ad3849cbcc58b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa97b967e6f53d41ea52b1af0631e6ea4"><td class="memItemLeft" align="right" valign="top"><a id="aa97b967e6f53d41ea52b1af0631e6ea4"></a>
-<a class="el" href="namespaceplayrho.html#a7eca3bae90f8196745191dc0e4c78480">BodyID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1JointConf.html#aa97b967e6f53d41ea52b1af0631e6ea4">bodyB</a> = <a class="el" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a></td></tr>
+<a class="el" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92">BodyID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1JointConf.html#aa97b967e6f53d41ea52b1af0631e6ea4">bodyB</a> = <a class="el" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a></td></tr>
 <tr class="memdesc:aa97b967e6f53d41ea52b1af0631e6ea4"><td class="mdescLeft">&#160;</td><td class="mdescRight">2nd attached body. <br /></td></tr>
 <tr class="separator:aa97b967e6f53d41ea52b1af0631e6ea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa7f7c919649416cb14a4abb8deacc33"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1JointConf.html#aaa7f7c919649416cb14a4abb8deacc33">collideConnected</a> = false</td></tr>
@@ -143,8 +143,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <tr class="separator:aaae24e0e3eadefda8d4145490e1c49ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Abstract base joint definition class. </p>
-<p><a class="el" href="classplayrho_1_1d2_1_1Joint.html" title="Joint class.">Joint</a> definitions are used to construct joints. </p><dl class="section note"><dt>Note</dt><dd>This class is not meant to be directly instantiated; it is meant to be inherited from. </dd></dl>
+<div class="textblock"><p>Base joint definition class. </p>
+<p><a class="el" href="classplayrho_1_1d2_1_1Joint.html" title="A joint-like constraint on one or more bodies.">Joint</a> definitions are used to construct joints. </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="aaa7f7c919649416cb14a4abb8deacc33"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaa7f7c919649416cb14a4abb8deacc33">&#9670;&nbsp;</a></span>collideConnected</h2>
@@ -160,7 +160,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 
 <p>Collide connected. </p>
 <p>Set this flag to true if the attached bodies should collide. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Joint_8cpp-example.html#a4">Joint.cpp</a>, <a class="el" href="PulleyJoint_8cpp-example.html#a4">PulleyJoint.cpp</a>, <a class="el" href="WeldJoint_8cpp-example.html#a11">WeldJoint.cpp</a>, and <a class="el" href="WheelJoint_8cpp-example.html#a13">WheelJoint.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="DistanceJoint_8cpp-example.html#a55">DistanceJoint.cpp</a>, <a class="el" href="Joint_8cpp-example.html#a5">Joint.cpp</a>, <a class="el" href="PulleyJoint_8cpp-example.html#a4">PulleyJoint.cpp</a>, <a class="el" href="WeldJoint_8cpp-example.html#a11">WeldJoint.cpp</a>, and <a class="el" href="WheelJoint_8cpp-example.html#a13">WheelJoint.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="structplayrho_1_1d2_1_1JointBuilder.html#a3df0b0d793cf72b42fdefae06f5f22ef">playrho::d2::JointBuilder&lt; TargetJointConf &gt;::UseCollideConnected()</a>.</p>
@@ -176,7 +176,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1JointConf.html">JointConf</a></li>
-    <li class="footer">Generated on Tue Nov 10 2020 12:40:28 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Mon Nov 30 2020 00:11:00 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

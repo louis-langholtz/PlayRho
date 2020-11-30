@@ -1,14 +1,14 @@
 <map id="playrho::d2::DynamicTree::VariantData" name="playrho::d2::DynamicTree::VariantData">
-<area shape="rect" id="node1" title="Variant data." alt="" coords="1013,113,1185,154"/>
-<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1DynamicTree_1_1BranchData.html" title="Branch data of a tree node." alt="" coords="747,18,919,59"/>
-<area shape="rect" id="node3" title=" " alt="" coords="497,17,612,44"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1d2_1_1DynamicTree_1_1LeafData.html" title="Leaf data of a tree node." alt="" coords="747,113,919,154"/>
-<area shape="rect" id="node5" href="$classplayrho_1_1strongtype_1_1IndexingNamedType.html" title=" " alt="" coords="475,119,635,190"/>
-<area shape="rect" id="node6" title=" " alt="" coords="155,99,263,125"/>
-<area shape="rect" id="node7" href="$classplayrho_1_1strongtype_1_1IndexingNamedType.html" title="An indexable, hashable, named &quot;strong type&quot; template class." alt="" coords="135,167,284,223"/>
-<area shape="rect" id="node9" href="$classplayrho_1_1strongtype_1_1IndexingNamedType.html" title=" " alt="" coords="479,214,630,285"/>
-<area shape="rect" id="node8" title=" " alt="" coords="5,181,44,208"/>
-<area shape="rect" id="node10" title=" " alt="" coords="160,264,259,291"/>
-<area shape="rect" id="node11" title=" " alt="" coords="531,68,578,95"/>
-<area shape="rect" id="node12" href="$structplayrho_1_1d2_1_1DynamicTree_1_1UnusedData.html" title="Unused data of a tree node." alt="" coords="747,178,919,219"/>
+<area shape="rect" id="node1" title="Variant data." alt="" coords="1057,107,1229,149"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1DynamicTree_1_1BranchData.html" title="Branch data of a tree node." alt="" coords="791,17,963,58"/>
+<area shape="rect" id="node3" title=" " alt="" coords="525,17,639,44"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1d2_1_1DynamicTree_1_1LeafData.html" title="Leaf data of a tree node." alt="" coords="791,107,963,149"/>
+<area shape="rect" id="node5" href="$classplayrho_1_1detail_1_1IndexingNamedType.html" title=" " alt="" coords="485,119,679,175"/>
+<area shape="rect" id="node6" title=" " alt="" coords="161,83,269,109"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1detail_1_1IndexingNamedType.html" title="An indexable, hashable, named &quot;strong type&quot; template class." alt="" coords="135,158,295,199"/>
+<area shape="rect" id="node9" href="$classplayrho_1_1detail_1_1IndexingNamedType.html" title=" " alt="" coords="491,199,673,255"/>
+<area shape="rect" id="node8" title=" " alt="" coords="5,165,44,192"/>
+<area shape="rect" id="node10" title=" " alt="" coords="165,248,264,275"/>
+<area shape="rect" id="node11" title=" " alt="" coords="559,68,605,95"/>
+<area shape="rect" id="node12" href="$structplayrho_1_1d2_1_1DynamicTree_1_1UnusedData.html" title="Unused data of a tree node." alt="" coords="791,173,963,214"/>
 </map>

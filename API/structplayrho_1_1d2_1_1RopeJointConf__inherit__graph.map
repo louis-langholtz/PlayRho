@@ -1,6 +1,6 @@
 <map id="playrho::d2::RopeJointConf" name="playrho::d2::RopeJointConf">
 <area shape="rect" id="node1" title="Rope joint definition." alt="" coords="5,261,187,288"/>
 <area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1JointBuilder.html" title=" " alt="" coords="15,171,177,212"/>
-<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1JointConf.html" title="Abstract base joint definition class." alt="" coords="15,5,166,32"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1JointConf.html" title="Base joint definition class." alt="" coords="15,5,166,32"/>
 <area shape="rect" id="node4" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="Joint builder definition structure." alt="" coords="112,81,307,108"/>
 </map>

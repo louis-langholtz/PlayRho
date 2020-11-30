@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.13.1</span>
+   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -259,7 +259,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <dd>
 This data structure is 104-bytes large (with 4-byte Real on at least one 64-bit platform). </dd></dl>
 <dl class="section see"><dt>See also</dt><dd>World::Step. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="DistanceJoint_8cpp-example.html#_a40">DistanceJoint.cpp</a>, <a class="el" href="FrictionJoint_8cpp-example.html#_a28">FrictionJoint.cpp</a>, <a class="el" href="Joint_8cpp-example.html#_a17">Joint.cpp</a>, <a class="el" href="MotorJoint_8cpp-example.html#_a38">MotorJoint.cpp</a>, <a class="el" href="PulleyJoint_8cpp-example.html#_a56">PulleyJoint.cpp</a>, <a class="el" href="RevoluteJoint_8cpp-example.html#_a47">RevoluteJoint.cpp</a>, <a class="el" href="RopeJoint_8cpp-example.html#_a30">RopeJoint.cpp</a>, <a class="el" href="TargetJoint_8cpp-example.html#_a37">TargetJoint.cpp</a>, <a class="el" href="WeldJoint_8cpp-example.html#_a44">WeldJoint.cpp</a>, <a class="el" href="WheelJoint_8cpp-example.html#_a58">WheelJoint.cpp</a>, <a class="el" href="World_8cpp-example.html#_a3">World.cpp</a>, and <a class="el" href="WorldContact_8cpp-example.html#_a12">WorldContact.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="DistanceJoint_8cpp-example.html#_a40">DistanceJoint.cpp</a>, <a class="el" href="FrictionJoint_8cpp-example.html#_a28">FrictionJoint.cpp</a>, <a class="el" href="MotorJoint_8cpp-example.html#_a39">MotorJoint.cpp</a>, <a class="el" href="PulleyJoint_8cpp-example.html#_a56">PulleyJoint.cpp</a>, <a class="el" href="RevoluteJoint_8cpp-example.html#_a47">RevoluteJoint.cpp</a>, <a class="el" href="RopeJoint_8cpp-example.html#_a30">RopeJoint.cpp</a>, <a class="el" href="TargetJoint_8cpp-example.html#_a37">TargetJoint.cpp</a>, <a class="el" href="WeldJoint_8cpp-example.html#_a44">WeldJoint.cpp</a>, <a class="el" href="WheelJoint_8cpp-example.html#_a60">WheelJoint.cpp</a>, <a class="el" href="World_8cpp-example.html#_a3">World.cpp</a>, and <a class="el" href="WorldContact_8cpp-example.html#_a12">WorldContact.cpp</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a8e5a2fa02589f5bdd860ce232242cdc5"></a>
@@ -421,10 +421,10 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
 
 <p>Do warm start. </p>
 <p>Whether or not to perform warm starting (in the regular phase). </p><dl class="section note"><dt>Note</dt><dd>Used in the regular phase of step processing. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="FrictionJoint_8cpp-example.html#a29">FrictionJoint.cpp</a>, <a class="el" href="RopeJoint_8cpp-example.html#a31">RopeJoint.cpp</a>, <a class="el" href="WeldJoint_8cpp-example.html#a45">WeldJoint.cpp</a>, and <a class="el" href="WheelJoint_8cpp-example.html#a59">WheelJoint.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="FrictionJoint_8cpp-example.html#a29">FrictionJoint.cpp</a>, <a class="el" href="RopeJoint_8cpp-example.html#a31">RopeJoint.cpp</a>, <a class="el" href="WeldJoint_8cpp-example.html#a45">WeldJoint.cpp</a>, and <a class="el" href="WheelJoint_8cpp-example.html#a61">WheelJoint.cpp</a>.</dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#af55559c8bf6c930582040cf3321b691f">playrho::d2::InitVelocity()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#af55559c8bf6c930582040cf3321b691f">playrho::d2::InitVelocity()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a78cad5bc045344c27000a93663cf36ae">playrho::d2::WorldImpl::SolveRegIslandViaGS()</a>.</p>
 
 </div>
 </div>
@@ -684,6 +684,8 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
 <dd>
 Used in the regular phase processing of the step. </dd></dl>
 
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a78cad5bc045344c27000a93663cf36ae">playrho::d2::WorldImpl::SolveRegIslandViaGS()</a>.</p>
+
 </div>
 </div>
 <a id="a7b18d37a3c6cd9b55ea0d17cbda2ec11"></a>
@@ -703,6 +705,8 @@ Used in the regular phase processing of the step. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structplayrho_1_1StepConf.html#a03001af44bdce6e20979ccc98db4506b" title="Regular position iterations.">regPositionIterations</a>. </dd></dl>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a199">World.cpp</a>.</dd>
 </dl>
+
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a78cad5bc045344c27000a93663cf36ae">playrho::d2::WorldImpl::SolveRegIslandViaGS()</a>.</p>
 
 </div>
 </div>
@@ -760,7 +764,7 @@ Used in the regular phase of step processing. </dd></dl>
 <p>Regular velocity iterations. </p>
 <p>The number of iterations of velocity resolution that will be done in the step. </p><dl class="section note"><dt>Note</dt><dd>Used in the regular phase of step processing. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a035ee60a3274619546a2cee7b982b894">playrho::d2::Step()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a78cad5bc045344c27000a93663cf36ae">playrho::d2::WorldImpl::SolveRegIslandViaGS()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#a035ee60a3274619546a2cee7b982b894">playrho::d2::Step()</a>.</p>
 
 </div>
 </div>
@@ -919,7 +923,7 @@ Used in the TOI phase of step processing. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="structplayrho_1_1StepConf.html">StepConf</a></li>
-    <li class="footer">Generated on Tue Nov 10 2020 12:40:28 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Mon Nov 30 2020 00:11:00 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

@@ -34,7 +34,7 @@ var group__Math =
     [ "ModuloViaFmod", "group__Math.html#ga25b52facf9e28f05e5e41f4e7b7ff54e", null ],
     [ "ModuloViaTrunc", "group__Math.html#ga84e7cb2a415fcb956202c8d7e1b1d200", null ],
     [ "MulT", "group__Math.html#gab471bae6413067374ab8d8262533e402", null ],
-    [ "NextPowerOfTwo", "group__Math.html#ga0ad2d1e2b11362e91193d313ee00e78c", null ],
+    [ "NextPowerOfTwo", "group__Math.html#ga2e157fe9f9288debcd4be111a2485991", null ],
     [ "Normalize", "group__Math.html#ga0c7d2525a406c1f83c0574e46a2cee32", null ],
     [ "RoundOff", "group__Math.html#gab8f24574b8a0ca458ec2fe9d691364ff", null ],
     [ "RoundOff", "group__Math.html#ga812ea5eaf66fb9d1bffa799886b2eee3", null ],

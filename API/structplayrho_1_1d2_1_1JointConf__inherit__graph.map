@@ -1,5 +1,5 @@
 <map id="playrho::d2::JointConf" name="playrho::d2::JointConf">
-<area shape="rect" id="node1" title="Abstract base joint definition class." alt="" coords="5,440,156,466"/>
+<area shape="rect" id="node1" title="Base joint definition class." alt="" coords="5,440,156,466"/>
 <area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1JointBuilder.html" title=" " alt="" coords="588,246,751,287"/>
 <area shape="rect" id="node4" href="$structplayrho_1_1d2_1_1JointBuilder.html" title=" " alt="" coords="588,311,751,352"/>
 <area shape="rect" id="node6" href="$structplayrho_1_1d2_1_1JointBuilder.html" title=" " alt="" coords="588,43,751,84"/>

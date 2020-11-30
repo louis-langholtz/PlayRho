@@ -1,14 +1,14 @@
 <map id="playrho::d2::Contact" name="playrho::d2::Contact">
-<area shape="rect" id="node1" title="A potential contact between the children of two Fixture objects." alt="" coords="785,223,925,249"/>
-<area shape="rect" id="node2" title=" " alt="" coords="503,5,606,32"/>
-<area shape="rect" id="node3" href="$classplayrho_1_1strongtype_1_1IndexingNamedType.html" title=" " alt="" coords="475,57,635,127"/>
-<area shape="rect" id="node4" title=" " alt="" coords="155,36,263,63"/>
-<area shape="rect" id="node5" href="$classplayrho_1_1strongtype_1_1IndexingNamedType.html" title="An indexable, hashable, named &quot;strong type&quot; template class." alt="" coords="135,104,284,160"/>
-<area shape="rect" id="node7" href="$classplayrho_1_1strongtype_1_1IndexingNamedType.html" title=" " alt="" coords="479,151,630,222"/>
-<area shape="rect" id="node6" title=" " alt="" coords="5,119,44,145"/>
-<area shape="rect" id="node8" title=" " alt="" coords="160,201,259,228"/>
-<area shape="rect" id="node9" title=" " alt="" coords="524,247,585,273"/>
-<area shape="rect" id="node10" title=" " alt="" coords="531,297,578,324"/>
-<area shape="rect" id="node11" title=" " alt="" coords="531,357,578,384"/>
-<area shape="rect" id="node12" title=" " alt="" coords="519,408,590,435"/>
+<area shape="rect" id="node1" title="A potential contact between the children of two Fixture objects." alt="" coords="829,196,969,223"/>
+<area shape="rect" id="node2" title=" " alt="" coords="531,5,633,32"/>
+<area shape="rect" id="node3" href="$classplayrho_1_1detail_1_1IndexingNamedType.html" title=" " alt="" coords="485,56,679,112"/>
+<area shape="rect" id="node4" title=" " alt="" coords="161,21,269,48"/>
+<area shape="rect" id="node5" href="$classplayrho_1_1detail_1_1IndexingNamedType.html" title="An indexable, hashable, named &quot;strong type&quot; template class." alt="" coords="135,97,295,138"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1detail_1_1IndexingNamedType.html" title=" " alt="" coords="491,136,673,192"/>
+<area shape="rect" id="node6" title=" " alt="" coords="5,104,44,131"/>
+<area shape="rect" id="node8" title=" " alt="" coords="165,187,264,213"/>
+<area shape="rect" id="node9" title=" " alt="" coords="551,216,613,243"/>
+<area shape="rect" id="node10" title=" " alt="" coords="559,271,605,297"/>
+<area shape="rect" id="node11" title=" " alt="" coords="559,331,605,357"/>
+<area shape="rect" id="node12" title=" " alt="" coords="547,381,617,408"/>
 </map>

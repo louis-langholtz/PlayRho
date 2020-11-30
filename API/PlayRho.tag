@@ -2480,6 +2480,13 @@
       <arglist>() noexcept</arglist>
     </member>
     <member kind="variable" static="yes">
+      <type>static constexpr std::size_t</type>
+      <name>AllocatorBlockSizes</name>
+      <anchorfile>classplayrho_1_1BlockAllocator.html</anchorfile>
+      <anchor>a30d1ffdd655947d098207ef826e44e8f</anchor>
+      <arglist>[]</arglist>
+    </member>
+    <member kind="variable" static="yes">
       <type>static constexpr auto</type>
       <name>ChunkSize</name>
       <anchorfile>classplayrho_1_1BlockAllocator.html</anchorfile>
@@ -2675,52 +2682,24 @@
       <arglist>(const BodyConf &amp;bd=GetDefaultBodyConf()) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>Transformation</type>
+      <type>const Transformation &amp;</type>
       <name>GetTransformation</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a6831cb0077f88907a3c4c28ae398515d</anchor>
+      <anchor>a7987170b5f0cd8224735b960f06fcf59</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetTransformation</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a7c2bb05f34ad19f785a9cf88d5920b77</anchor>
-      <arglist>(Transformation value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Length2</type>
-      <name>GetLocation</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a63db5146e976e495518b850c37be060d</anchor>
-      <arglist>() const noexcept</arglist>
+      <anchor>a08663554d88fc00b0ba6e9f974d63e52</anchor>
+      <arglist>(const Transformation &amp;value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>const Sweep &amp;</type>
       <name>GetSweep</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
       <anchor>a100b4822505143079cde749303494809</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Angle</type>
-      <name>GetAngle</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>afc2d114f23cc621756f6e9363bc74f2a</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Length2</type>
-      <name>GetWorldCenter</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a58fff0c0e51774a2fecec8a6f2bb9e9d</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Length2</type>
-      <name>GetLocalCenter</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a3e7c5b97ecef8fa4e8ee2bcb0d7aad13</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -2998,6 +2977,13 @@
     </member>
     <member kind="function">
       <type>void</type>
+      <name>SetSweep</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>aff436223b960a71937476dea03117d9c</anchor>
+      <arglist>(const Sweep &amp;value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
       <name>SetPosition0</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
       <anchor>acfb1bae5be9d852331ba9177950c46b1</anchor>
@@ -3016,13 +3002,6 @@
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
       <anchor>a5eb5335800a6e5b0b37e946f0d011fd2</anchor>
       <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetSweep</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>ac645b1b0083f9e8da4898492bfd476d9</anchor>
-      <arglist>(const Sweep value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -3256,6 +3235,69 @@
       <arglist>(Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>Transformation</type>
+      <name>GetTransformation</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>a6a06b90c7f93f0e33be41db39562af4d</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetTransformation</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>af681bc41595979454a24df12369e97a9</anchor>
+      <arglist>(Body &amp;body, Transformation value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLocation</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>a8a6f694cab71d0db91049dc0908de63f</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const Sweep &amp;</type>
+      <name>GetSweep</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>a83c03ab97ee5e1a0cdb1a41a62050ccc</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetSweep</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>a1f30cb6266cb2f950ea5fdb5aae58d1b</anchor>
+      <arglist>(Body &amp;body, const Sweep &amp;value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Position</type>
+      <name>GetPosition1</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>a77de45b3fab735d0f87a0978a622a9c0</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetAngle</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>a93f21ae0c92245d912cb91a99e756946</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Position</type>
+      <name>GetPosition</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>a1ee2be09f607ec37050c91dc3a5d0f92</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Time</type>
+      <name>GetUnderActiveTime</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>a1192c89bb1512e70b1fb878c1b29a452</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>bool</type>
       <name>IsFixedRotation</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
@@ -3361,13 +3403,6 @@
       <arglist>(Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>Position</type>
-      <name>GetPosition1</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a77de45b3fab735d0f87a0978a622a9c0</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>Mass</type>
       <name>GetMass</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
@@ -3394,20 +3429,6 @@
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
       <anchor>a5907db10db49a1e6d7f8b8bc59dfa8e8</anchor>
       <arglist>(Body &amp;body, AngularAcceleration value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>ApplyLinearImpulse</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a07f50b8133debf454d50f491d196dc24</anchor>
-      <arglist>(Body &amp;body, Momentum2 impulse, Length2 point) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>ApplyAngularImpulse</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a5d1467095e23488ca1344a26336aae8f</anchor>
-      <arglist>(Body &amp;body, AngularMomentum impulse) noexcept</arglist>
     </member>
     <member kind="function">
       <type>RotInertia</type>
@@ -3536,53 +3557,18 @@
       <arglist>(const Body &amp;body, Time h) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>Length2</type>
-      <name>GetLocation</name>
+      <type>void</type>
+      <name>ApplyLinearImpulse</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a8a6f694cab71d0db91049dc0908de63f</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const Sweep &amp;</type>
-      <name>GetSweep</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a83c03ab97ee5e1a0cdb1a41a62050ccc</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
+      <anchor>a07f50b8133debf454d50f491d196dc24</anchor>
+      <arglist>(Body &amp;body, Momentum2 impulse, Length2 point) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
-      <name>SetSweep</name>
+      <name>ApplyAngularImpulse</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a1f30cb6266cb2f950ea5fdb5aae58d1b</anchor>
-      <arglist>(Body &amp;body, const Sweep &amp;value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Angle</type>
-      <name>GetAngle</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a93f21ae0c92245d912cb91a99e756946</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Transformation</type>
-      <name>GetTransformation</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a6a06b90c7f93f0e33be41db39562af4d</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetTransformation</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af681bc41595979454a24df12369e97a9</anchor>
-      <arglist>(Body &amp;body, Transformation value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Position</type>
-      <name>GetPosition</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a1ee2be09f607ec37050c91dc3a5d0f92</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
+      <anchor>a5d1467095e23488ca1344a26336aae8f</anchor>
+      <arglist>(Body &amp;body, AngularMomentum impulse) noexcept</arglist>
     </member>
     <member kind="function">
       <type>BodyConf</type>
@@ -7192,6 +7178,13 @@
       <arglist>() noexcept=0</arglist>
     </member>
     <member kind="function" virtualness="pure">
+      <type>virtual bool</type>
+      <name>IsEqual_</name>
+      <anchorfile>structplayrho_1_1d2_1_1Joint_1_1Concept.html</anchorfile>
+      <anchor>a5a1d30c7df906057a5bf53aa25272476</anchor>
+      <arglist>(const Concept &amp;other) const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
       <type>virtual BodyID</type>
       <name>GetBodyA_</name>
       <anchorfile>structplayrho_1_1d2_1_1Joint_1_1Concept.html</anchorfile>
@@ -7334,38 +7327,38 @@
     <name>playrho::ConstraintSolverConf</name>
     <filename>structplayrho_1_1ConstraintSolverConf.html</filename>
     <member kind="function">
-      <type>ConstraintSolverConf &amp;</type>
+      <type>constexpr ConstraintSolverConf &amp;</type>
       <name>UseResolutionRate</name>
       <anchorfile>structplayrho_1_1ConstraintSolverConf.html</anchorfile>
-      <anchor>af0ab56ff6f2b7658a698c4f27e32c664</anchor>
+      <anchor>af05fd8b0c75bce6d598c8f221d42c988</anchor>
       <arglist>(Real value) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>ConstraintSolverConf &amp;</type>
+      <type>constexpr ConstraintSolverConf &amp;</type>
       <name>UseLinearSlop</name>
       <anchorfile>structplayrho_1_1ConstraintSolverConf.html</anchorfile>
-      <anchor>a1573412c0fb655a80e4059287620123f</anchor>
+      <anchor>a41f56fac5e8c601d4acb47db3c0a4bc6</anchor>
       <arglist>(Length value) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>ConstraintSolverConf &amp;</type>
+      <type>constexpr ConstraintSolverConf &amp;</type>
       <name>UseAngularSlop</name>
       <anchorfile>structplayrho_1_1ConstraintSolverConf.html</anchorfile>
-      <anchor>aecf3571ff5c379cb036e400a95f15d09</anchor>
+      <anchor>af44f65605899416fc5ae7940e6574454</anchor>
       <arglist>(Angle value) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>ConstraintSolverConf &amp;</type>
+      <type>constexpr ConstraintSolverConf &amp;</type>
       <name>UseMaxLinearCorrection</name>
       <anchorfile>structplayrho_1_1ConstraintSolverConf.html</anchorfile>
-      <anchor>a20989cd4529ce402e81f0c8a4260630f</anchor>
+      <anchor>a14974ecb3d62147f64f5ceee83e625fb</anchor>
       <arglist>(Length value) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>ConstraintSolverConf &amp;</type>
+      <type>constexpr ConstraintSolverConf &amp;</type>
       <name>UseMaxAngularCorrection</name>
       <anchorfile>structplayrho_1_1ConstraintSolverConf.html</anchorfile>
-      <anchor>a7a0fb6ef120b1e740655219cec24cfb0</anchor>
+      <anchor>a45ced71eb3cdf8f2afa9d2802fef0849</anchor>
       <arglist>(Angle value) noexcept</arglist>
     </member>
     <member kind="variable">
@@ -8966,13 +8959,6 @@
     </member>
     <member kind="function">
       <type></type>
-      <name>~DynamicTree</name>
-      <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
-      <anchor>ad81a322bcd52726dba15394783eea8fb</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
       <name>DynamicTree</name>
       <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
       <anchor>af2d9142c669aec29bb9916a8501f4879</anchor>
@@ -8984,6 +8970,13 @@
       <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
       <anchor>a3cd15bb0281c6ab6191e51b26f1d8c8b</anchor>
       <arglist>(DynamicTree &amp;&amp;other) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>~DynamicTree</name>
+      <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
+      <anchor>ad81a322bcd52726dba15394783eea8fb</anchor>
+      <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
       <type>DynamicTree &amp;</type>
@@ -9087,8 +9080,8 @@
       <type>void</type>
       <name>ShiftOrigin</name>
       <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
-      <anchor>a48f9f9a84abaab41224a79cfb8bfd5ba</anchor>
-      <arglist>(Length2 newOrigin)</arglist>
+      <anchor>a69057dc79224305372bbccac53c11bc6</anchor>
+      <arglist>(Length2 newOrigin) noexcept</arglist>
     </member>
     <member kind="function">
       <type>Size</type>
@@ -9096,6 +9089,13 @@
       <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
       <anchor>a6d5405cac98b2f35be80869c23abfe5a</anchor>
       <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Reserve</name>
+      <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
+      <anchor>ad1fa3e1b69c47356cee7809d9137d7a0</anchor>
+      <arglist>(Size value)</arglist>
     </member>
     <member kind="function">
       <type>Size</type>
@@ -9153,13 +9153,6 @@
       <anchor>a76d618b561088968b813f343d71803b0</anchor>
       <arglist>(Height value) noexcept</arglist>
     </member>
-    <member kind="function" static="yes">
-      <type>static constexpr Size</type>
-      <name>GetDefaultInitialNodeCapacity</name>
-      <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
-      <anchor>a0e6e62f054df4d233e965776af212cef</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
     <member kind="variable" static="yes">
       <type>static constexpr auto</type>
       <name>InvalidHeight</name>
@@ -9168,32 +9161,11 @@
       <arglist></arglist>
     </member>
     <member kind="function" protection="private">
-      <type>void</type>
-      <name>SetNodeCapacity</name>
-      <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
-      <anchor>a5b342e2c0bde9a7fdd8f3b2746c29706</anchor>
-      <arglist>(Size value)</arglist>
-    </member>
-    <member kind="function" protection="private">
       <type>Size</type>
       <name>AllocateNode</name>
       <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
-      <anchor>adf1282c3fdc863af84918f501dc0b474</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function" protection="private">
-      <type>Size</type>
-      <name>AllocateNode</name>
-      <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
-      <anchor>ad9b64cad322dc400727f08c1e9b301f1</anchor>
-      <arglist>(const LeafData &amp;data, AABB aabb)</arglist>
-    </member>
-    <member kind="function" protection="private">
-      <type>Size</type>
-      <name>AllocateNode</name>
-      <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
-      <anchor>a5e85f83aa7c742af3ed3128df1a0372a</anchor>
-      <arglist>(const BranchData &amp;data, AABB aabb, Height height, Size parent=GetInvalidSize())</arglist>
+      <anchor>aaa3bf83c3373a8e75c56bb30089718d1</anchor>
+      <arglist>() noexcept</arglist>
     </member>
     <member kind="function" protection="private">
       <type>void</type>
@@ -9203,10 +9175,17 @@
       <arglist>(Size index) noexcept</arglist>
     </member>
     <member kind="variable" protection="private">
-      <type>TreeNode *</type>
-      <name>m_nodes</name>
+      <type>Size</type>
+      <name>m_nodeCount</name>
       <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
-      <anchor>a66e4219e9308b8a127bf47eae8b2c91c</anchor>
+      <anchor>a61e49f54d4e65e71602be43a6a43ebf5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="private">
+      <type>Size</type>
+      <name>m_leafCount</name>
+      <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
+      <anchor>a760c2ad855912c572c3ca2212ebaa076</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
@@ -9225,23 +9204,16 @@
     </member>
     <member kind="variable" protection="private">
       <type>Size</type>
-      <name>m_nodeCount</name>
-      <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
-      <anchor>a61e49f54d4e65e71602be43a6a43ebf5</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" protection="private">
-      <type>Size</type>
       <name>m_nodeCapacity</name>
       <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
       <anchor>a0f8c401e9877c5ee05fc3e375cd178da</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
-      <type>Size</type>
-      <name>m_leafCount</name>
+      <type>TreeNode *</type>
+      <name>m_nodes</name>
       <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
-      <anchor>a760c2ad855912c572c3ca2212ebaa076</anchor>
+      <anchor>a66e4219e9308b8a127bf47eae8b2c91c</anchor>
       <arglist></arglist>
     </member>
     <member kind="friend">
@@ -9900,6 +9872,13 @@
     </member>
     <member kind="function">
       <type>FixtureConf &amp;</type>
+      <name>UseShape</name>
+      <anchorfile>structplayrho_1_1d2_1_1FixtureConf.html</anchorfile>
+      <anchor>a95e40312747c6290d11482631033956f</anchor>
+      <arglist>(T &amp;&amp;value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>FixtureConf &amp;</type>
       <name>UseBody</name>
       <anchorfile>structplayrho_1_1d2_1_1FixtureConf.html</anchorfile>
       <anchor>ad42511ad03df6a3efd57b4b957e11c52</anchor>
@@ -10320,17 +10299,17 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>JointType</type>
+      <type>TypeID</type>
       <name>type1</name>
       <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
-      <anchor>a6cde514684bf9e81106db1afc274e5ef</anchor>
+      <anchor>a33d2c8c5c412cbdc8de0c9830969c7d0</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>JointType</type>
+      <type>TypeID</type>
       <name>type2</name>
       <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
-      <anchor>a3e8b80f3c5fc6cfab56ae7cf3e8be8bc</anchor>
+      <anchor>acb8c14edf7fe93f1b94fdb2510390e1c</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -10760,6 +10739,19 @@
     </member>
   </compound>
   <compound kind="struct">
+    <name>std::hash&lt;::playrho::detail::IndexingNamedType&lt; T, Tag &gt; &gt;</name>
+    <filename>structstd_1_1hash_3_1_1playrho_1_1detail_1_1IndexingNamedType_3_01T_00_01Tag_01_4_01_4.html</filename>
+    <templarg></templarg>
+    <templarg></templarg>
+    <member kind="function">
+      <type>::std::size_t</type>
+      <name>operator()</name>
+      <anchorfile>structstd_1_1hash_3_1_1playrho_1_1detail_1_1IndexingNamedType_3_01T_00_01Tag_01_4_01_4.html</anchorfile>
+      <anchor>aa13ca1029751c40580cb84fb502a3905</anchor>
+      <arglist>(const ::playrho::detail::IndexingNamedType&lt; T, Tag &gt; &amp;v) const noexcept</arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
     <name>std::hash&lt;::playrho::propagate_const&lt; T &gt; &gt;</name>
     <filename>structstd_1_1hash_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</filename>
     <templarg></templarg>
@@ -10783,19 +10775,6 @@
       <anchorfile>structstd_1_1hash_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
       <anchor>ac3df24e63aac45530fae299ce15d905d</anchor>
       <arglist>(const ::playrho::propagate_const&lt; T &gt; &amp;pc) const</arglist>
-    </member>
-  </compound>
-  <compound kind="struct">
-    <name>std::hash&lt;::playrho::strongtype::IndexingNamedType&lt; T, Tag &gt; &gt;</name>
-    <filename>structstd_1_1hash_3_1_1playrho_1_1strongtype_1_1IndexingNamedType_3_01T_00_01Tag_01_4_01_4.html</filename>
-    <templarg></templarg>
-    <templarg></templarg>
-    <member kind="function">
-      <type>::std::size_t</type>
-      <name>operator()</name>
-      <anchorfile>structstd_1_1hash_3_1_1playrho_1_1strongtype_1_1IndexingNamedType_3_01T_00_01Tag_01_4_01_4.html</anchorfile>
-      <anchor>a44b39ede674901579833a4eb4c359e7d</anchor>
-      <arglist>(const ::playrho::strongtype::IndexingNamedType&lt; T, Tag &gt; &amp;v) const noexcept</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -10828,495 +10807,618 @@
     <templarg></templarg>
   </compound>
   <compound kind="class">
-    <name>playrho::strongtype::IndexingNamedType</name>
-    <filename>classplayrho_1_1strongtype_1_1IndexingNamedType.html</filename>
+    <name>playrho::detail::IndexingNamedType</name>
+    <filename>classplayrho_1_1detail_1_1IndexingNamedType.html</filename>
     <templarg></templarg>
     <templarg></templarg>
     <member kind="typedef">
       <type>T</type>
       <name>underlying_type</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a26c321e7af854d857b43b4e4a2cd1a5f</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a2ed01bf69779b0880b5092c6bbad560b</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>IndexingNamedType</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>ab72ba0ad7645d875708e7d451dcbcbff</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a892cfd05d866e1abb9af247c65ebb6df</anchor>
       <arglist>() noexcept(std::is_nothrow_default_constructible&lt; underlying_type &gt;::value)</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>IndexingNamedType</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a6d21c18c6b896e9cee080e56ade5e156</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a3a345acf416a0b32e28a87ee929b65f1</anchor>
       <arglist>(const underlying_type &amp;value) noexcept(std::is_nothrow_copy_constructible&lt; underlying_type &gt;::value)</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>IndexingNamedType</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a5ae5a928a34a579146331f4eaaec492f</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a3d2b448e6586f75c688e887340a8eedd</anchor>
       <arglist>(underlying_type &amp;&amp;value) noexcept(std::is_nothrow_move_constructible&lt; underlying_type &gt;::value)</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>operator underlying_type &amp;</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a2ac7efdb96fe3061cd47f90ac32c1e4e</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>af542614fbc4afa44a04a94ae6a5b7702</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>operator const underlying_type &amp;</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a03c09e2265cfa5d63c135d3fdcaa3be8</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a3bf3196bd10d8150d943e66b7d8fa91c</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr underlying_type &amp;</type>
       <name>get</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>abbde78f1cdd8d98414bc3132f3e4de69</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>aed65976407ff62b11d16b009db270c1d</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr underlying_type const  &amp;</type>
       <name>get</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>af5aa79c3b42493d099acf9f601257f13</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a0b2a72d277c5b898b05b1afd5621ecca</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="variable" protection="private">
       <type>underlying_type</type>
       <name>value_</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>aa5933a250eeeb701ad5216be8f5883e4</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a100463230cc387293d8b93ea869038bb</anchor>
       <arglist></arglist>
     </member>
     <member kind="friend">
       <type>friend void</type>
       <name>swap</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a2e21d574919f686373b0b82f9d35ef98</anchor>
       <arglist>(IndexingNamedType &amp;a, IndexingNamedType &amp;b) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator==</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a1110c36b661a413db786630b5a227aa3</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator!=</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a244171e28eaad9254155129b7a6165ac</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator&lt;</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a232b179c6990665f378e72f07d60fa56</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator&gt;</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>ad6395f2e2c4d40b86cb779785af8db65</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator&lt;=</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a3027e696fb2524a81e9b017125095131</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator&gt;=</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>ad61ded65d54e459fd000aba775fbd30c</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>friend ::std::size_t</type>
       <name>hash</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>abc4075e5b137da9e3c8be4500f8be64c</anchor>
       <arglist>(const IndexingNamedType &amp;v) noexcept</arglist>
     </member>
   </compound>
   <compound kind="class">
     <name>IndexingNamedType&lt; BodyCounter, struct BodyIdentifier &gt;</name>
-    <filename>classplayrho_1_1strongtype_1_1IndexingNamedType.html</filename>
+    <filename>classplayrho_1_1detail_1_1IndexingNamedType.html</filename>
     <member kind="typedef">
       <type>BodyCounter</type>
       <name>underlying_type</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a26c321e7af854d857b43b4e4a2cd1a5f</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a2ed01bf69779b0880b5092c6bbad560b</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>IndexingNamedType</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>ab72ba0ad7645d875708e7d451dcbcbff</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a892cfd05d866e1abb9af247c65ebb6df</anchor>
       <arglist>() noexcept(std::is_nothrow_default_constructible&lt; underlying_type &gt;::value)</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>IndexingNamedType</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a6d21c18c6b896e9cee080e56ade5e156</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a3a345acf416a0b32e28a87ee929b65f1</anchor>
       <arglist>(const underlying_type &amp;value) noexcept(std::is_nothrow_copy_constructible&lt; underlying_type &gt;::value)</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>IndexingNamedType</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a5ae5a928a34a579146331f4eaaec492f</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a3d2b448e6586f75c688e887340a8eedd</anchor>
       <arglist>(underlying_type &amp;&amp;value) noexcept(std::is_nothrow_move_constructible&lt; underlying_type &gt;::value)</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>operator underlying_type &amp;</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a2ac7efdb96fe3061cd47f90ac32c1e4e</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>af542614fbc4afa44a04a94ae6a5b7702</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>operator const underlying_type &amp;</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a03c09e2265cfa5d63c135d3fdcaa3be8</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a3bf3196bd10d8150d943e66b7d8fa91c</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr underlying_type &amp;</type>
       <name>get</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>abbde78f1cdd8d98414bc3132f3e4de69</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>aed65976407ff62b11d16b009db270c1d</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr underlying_type const &amp;</type>
       <name>get</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>af5aa79c3b42493d099acf9f601257f13</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a0b2a72d277c5b898b05b1afd5621ecca</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="variable" protection="private">
       <type>underlying_type</type>
       <name>value_</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>aa5933a250eeeb701ad5216be8f5883e4</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a100463230cc387293d8b93ea869038bb</anchor>
       <arglist></arglist>
     </member>
     <member kind="friend">
       <type>friend void</type>
       <name>swap</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a2e21d574919f686373b0b82f9d35ef98</anchor>
       <arglist>(IndexingNamedType &amp;a, IndexingNamedType &amp;b) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator==</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a1110c36b661a413db786630b5a227aa3</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator!=</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a244171e28eaad9254155129b7a6165ac</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator&lt;</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a232b179c6990665f378e72f07d60fa56</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator&gt;</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>ad6395f2e2c4d40b86cb779785af8db65</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator&lt;=</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a3027e696fb2524a81e9b017125095131</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator&gt;=</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>ad61ded65d54e459fd000aba775fbd30c</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>friend ::std::size_t</type>
       <name>hash</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>abc4075e5b137da9e3c8be4500f8be64c</anchor>
+      <arglist>(const IndexingNamedType &amp;v) noexcept</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>IndexingNamedType&lt; const char *const *, struct TypeIdentifier &gt;</name>
+    <filename>classplayrho_1_1detail_1_1IndexingNamedType.html</filename>
+    <member kind="typedef">
+      <type>const char *const *</type>
+      <name>underlying_type</name>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a2ed01bf69779b0880b5092c6bbad560b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>IndexingNamedType</name>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a892cfd05d866e1abb9af247c65ebb6df</anchor>
+      <arglist>() noexcept(std::is_nothrow_default_constructible&lt; underlying_type &gt;::value)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>IndexingNamedType</name>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a3a345acf416a0b32e28a87ee929b65f1</anchor>
+      <arglist>(const underlying_type &amp;value) noexcept(std::is_nothrow_copy_constructible&lt; underlying_type &gt;::value)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>IndexingNamedType</name>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a3d2b448e6586f75c688e887340a8eedd</anchor>
+      <arglist>(underlying_type &amp;&amp;value) noexcept(std::is_nothrow_move_constructible&lt; underlying_type &gt;::value)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>operator underlying_type &amp;</name>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>af542614fbc4afa44a04a94ae6a5b7702</anchor>
+      <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>operator const underlying_type &amp;</name>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a3bf3196bd10d8150d943e66b7d8fa91c</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr underlying_type &amp;</type>
+      <name>get</name>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>aed65976407ff62b11d16b009db270c1d</anchor>
+      <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr underlying_type const &amp;</type>
+      <name>get</name>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a0b2a72d277c5b898b05b1afd5621ecca</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="variable" protection="private">
+      <type>underlying_type</type>
+      <name>value_</name>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a100463230cc387293d8b93ea869038bb</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>swap</name>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a2e21d574919f686373b0b82f9d35ef98</anchor>
+      <arglist>(IndexingNamedType &amp;a, IndexingNamedType &amp;b) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>constexpr friend bool</type>
+      <name>operator==</name>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a1110c36b661a413db786630b5a227aa3</anchor>
+      <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
+    </member>
+    <member kind="friend">
+      <type>constexpr friend bool</type>
+      <name>operator!=</name>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a244171e28eaad9254155129b7a6165ac</anchor>
+      <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
+    </member>
+    <member kind="friend">
+      <type>constexpr friend bool</type>
+      <name>operator&lt;</name>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a232b179c6990665f378e72f07d60fa56</anchor>
+      <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
+    </member>
+    <member kind="friend">
+      <type>constexpr friend bool</type>
+      <name>operator&gt;</name>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>ad6395f2e2c4d40b86cb779785af8db65</anchor>
+      <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
+    </member>
+    <member kind="friend">
+      <type>constexpr friend bool</type>
+      <name>operator&lt;=</name>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a3027e696fb2524a81e9b017125095131</anchor>
+      <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
+    </member>
+    <member kind="friend">
+      <type>constexpr friend bool</type>
+      <name>operator&gt;=</name>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>ad61ded65d54e459fd000aba775fbd30c</anchor>
+      <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend ::std::size_t</type>
+      <name>hash</name>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>abc4075e5b137da9e3c8be4500f8be64c</anchor>
       <arglist>(const IndexingNamedType &amp;v) noexcept</arglist>
     </member>
   </compound>
   <compound kind="class">
     <name>IndexingNamedType&lt; ContactCounter, struct ContactIdentifier &gt;</name>
-    <filename>classplayrho_1_1strongtype_1_1IndexingNamedType.html</filename>
+    <filename>classplayrho_1_1detail_1_1IndexingNamedType.html</filename>
     <member kind="typedef">
       <type>ContactCounter</type>
       <name>underlying_type</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a26c321e7af854d857b43b4e4a2cd1a5f</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a2ed01bf69779b0880b5092c6bbad560b</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>IndexingNamedType</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>ab72ba0ad7645d875708e7d451dcbcbff</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a892cfd05d866e1abb9af247c65ebb6df</anchor>
       <arglist>() noexcept(std::is_nothrow_default_constructible&lt; underlying_type &gt;::value)</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>IndexingNamedType</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a6d21c18c6b896e9cee080e56ade5e156</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a3a345acf416a0b32e28a87ee929b65f1</anchor>
       <arglist>(const underlying_type &amp;value) noexcept(std::is_nothrow_copy_constructible&lt; underlying_type &gt;::value)</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>IndexingNamedType</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a5ae5a928a34a579146331f4eaaec492f</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a3d2b448e6586f75c688e887340a8eedd</anchor>
       <arglist>(underlying_type &amp;&amp;value) noexcept(std::is_nothrow_move_constructible&lt; underlying_type &gt;::value)</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>operator underlying_type &amp;</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a2ac7efdb96fe3061cd47f90ac32c1e4e</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>af542614fbc4afa44a04a94ae6a5b7702</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>operator const underlying_type &amp;</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a03c09e2265cfa5d63c135d3fdcaa3be8</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a3bf3196bd10d8150d943e66b7d8fa91c</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr underlying_type &amp;</type>
       <name>get</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>abbde78f1cdd8d98414bc3132f3e4de69</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>aed65976407ff62b11d16b009db270c1d</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr underlying_type const &amp;</type>
       <name>get</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>af5aa79c3b42493d099acf9f601257f13</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a0b2a72d277c5b898b05b1afd5621ecca</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="variable" protection="private">
       <type>underlying_type</type>
       <name>value_</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>aa5933a250eeeb701ad5216be8f5883e4</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a100463230cc387293d8b93ea869038bb</anchor>
       <arglist></arglist>
     </member>
     <member kind="friend">
       <type>friend void</type>
       <name>swap</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a2e21d574919f686373b0b82f9d35ef98</anchor>
       <arglist>(IndexingNamedType &amp;a, IndexingNamedType &amp;b) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator==</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a1110c36b661a413db786630b5a227aa3</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator!=</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a244171e28eaad9254155129b7a6165ac</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator&lt;</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a232b179c6990665f378e72f07d60fa56</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator&gt;</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>ad6395f2e2c4d40b86cb779785af8db65</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator&lt;=</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a3027e696fb2524a81e9b017125095131</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator&gt;=</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>ad61ded65d54e459fd000aba775fbd30c</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>friend ::std::size_t</type>
       <name>hash</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>abc4075e5b137da9e3c8be4500f8be64c</anchor>
       <arglist>(const IndexingNamedType &amp;v) noexcept</arglist>
     </member>
   </compound>
   <compound kind="class">
     <name>IndexingNamedType&lt; FixtureCounter, struct FixtureIdentifier &gt;</name>
-    <filename>classplayrho_1_1strongtype_1_1IndexingNamedType.html</filename>
+    <filename>classplayrho_1_1detail_1_1IndexingNamedType.html</filename>
     <member kind="typedef">
       <type>FixtureCounter</type>
       <name>underlying_type</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a26c321e7af854d857b43b4e4a2cd1a5f</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a2ed01bf69779b0880b5092c6bbad560b</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>IndexingNamedType</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>ab72ba0ad7645d875708e7d451dcbcbff</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a892cfd05d866e1abb9af247c65ebb6df</anchor>
       <arglist>() noexcept(std::is_nothrow_default_constructible&lt; underlying_type &gt;::value)</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>IndexingNamedType</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a6d21c18c6b896e9cee080e56ade5e156</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a3a345acf416a0b32e28a87ee929b65f1</anchor>
       <arglist>(const underlying_type &amp;value) noexcept(std::is_nothrow_copy_constructible&lt; underlying_type &gt;::value)</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>IndexingNamedType</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a5ae5a928a34a579146331f4eaaec492f</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a3d2b448e6586f75c688e887340a8eedd</anchor>
       <arglist>(underlying_type &amp;&amp;value) noexcept(std::is_nothrow_move_constructible&lt; underlying_type &gt;::value)</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>operator underlying_type &amp;</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a2ac7efdb96fe3061cd47f90ac32c1e4e</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>af542614fbc4afa44a04a94ae6a5b7702</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>operator const underlying_type &amp;</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>a03c09e2265cfa5d63c135d3fdcaa3be8</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a3bf3196bd10d8150d943e66b7d8fa91c</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr underlying_type &amp;</type>
       <name>get</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>abbde78f1cdd8d98414bc3132f3e4de69</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>aed65976407ff62b11d16b009db270c1d</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr underlying_type const &amp;</type>
       <name>get</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>af5aa79c3b42493d099acf9f601257f13</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a0b2a72d277c5b898b05b1afd5621ecca</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="variable" protection="private">
       <type>underlying_type</type>
       <name>value_</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
-      <anchor>aa5933a250eeeb701ad5216be8f5883e4</anchor>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
+      <anchor>a100463230cc387293d8b93ea869038bb</anchor>
       <arglist></arglist>
     </member>
     <member kind="friend">
       <type>friend void</type>
       <name>swap</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a2e21d574919f686373b0b82f9d35ef98</anchor>
       <arglist>(IndexingNamedType &amp;a, IndexingNamedType &amp;b) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator==</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a1110c36b661a413db786630b5a227aa3</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator!=</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a244171e28eaad9254155129b7a6165ac</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator&lt;</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a232b179c6990665f378e72f07d60fa56</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator&gt;</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>ad6395f2e2c4d40b86cb779785af8db65</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator&lt;=</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>a3027e696fb2524a81e9b017125095131</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>constexpr friend bool</type>
       <name>operator&gt;=</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>ad61ded65d54e459fd000aba775fbd30c</anchor>
       <arglist>(const IndexingNamedType &amp;lhs, const IndexingNamedType &amp;rhs)</arglist>
     </member>
     <member kind="friend">
       <type>friend ::std::size_t</type>
       <name>hash</name>
-      <anchorfile>classplayrho_1_1strongtype_1_1IndexingNamedType.html</anchorfile>
+      <anchorfile>classplayrho_1_1detail_1_1IndexingNamedType.html</anchorfile>
       <anchor>abc4075e5b137da9e3c8be4500f8be64c</anchor>
       <arglist>(const IndexingNamedType &amp;v) noexcept</arglist>
     </member>
@@ -11586,8 +11688,8 @@
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::IsAddable&lt; T1, T2, detail::VoidT&lt; decltype(T1{}+T2{})&gt; &gt;</name>
-    <filename>structplayrho_1_1IsAddable_3_01T1_00_01T2_00_01detail_1_1VoidT_3_01decltype_07T1_02_03_09T2_02_03_08_4_01_4.html</filename>
+    <name>playrho::IsAddable&lt; T1, T2, std::void_t&lt; decltype(T1{}+T2{})&gt; &gt;</name>
+    <filename>structplayrho_1_1IsAddable_3_01T1_00_01T2_00_01std_1_1void__t_3_01decltype_07T1_02_03_09T2_02_03_08_4_01_4.html</filename>
     <templarg></templarg>
     <templarg></templarg>
   </compound>
@@ -11598,8 +11700,8 @@
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::IsArithmetic&lt; T, detail::VoidT&lt; decltype(T{}+T{}), decltype(T{} - T{}), decltype(T{} *T{}), decltype(T{}/T{})&gt; &gt;</name>
-    <filename>structplayrho_1_1IsArithmetic_3_01T_00_01detail_1_1VoidT_3_01decltype_07T_02_03_09T_02_03_08_00_b814cc2528bb42392f7873932bc0c2c9.html</filename>
+    <name>playrho::IsArithmetic&lt; T, std::void_t&lt; decltype(T{}+T{}), decltype(T{} - T{}), decltype(T{} *T{}), decltype(T{}/T{})&gt; &gt;</name>
+    <filename>structplayrho_1_1IsArithmetic_3_01T_00_01std_1_1void__t_3_01decltype_07T_02_03_09T_02_03_08_00_0e30487095fcbd3150b7b99d467763a14.html</filename>
     <templarg></templarg>
   </compound>
   <compound kind="struct">
@@ -11610,8 +11712,8 @@
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::IsDivisable&lt; T1, T2, detail::VoidT&lt; decltype(T1{}/T2{})&gt; &gt;</name>
-    <filename>structplayrho_1_1IsDivisable_3_01T1_00_01T2_00_01detail_1_1VoidT_3_01decltype_07T1_02_03_2T2_02_03_08_4_01_4.html</filename>
+    <name>playrho::IsDivisable&lt; T1, T2, std::void_t&lt; decltype(T1{}/T2{})&gt; &gt;</name>
+    <filename>structplayrho_1_1IsDivisable_3_01T1_00_01T2_00_01std_1_1void__t_3_01decltype_07T1_02_03_2T2_02_03_08_4_01_4.html</filename>
     <templarg></templarg>
     <templarg></templarg>
   </compound>
@@ -11623,8 +11725,8 @@
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::IsEqualityComparable&lt; T1, T2, detail::VoidT&lt; decltype(T1{}==T2{})&gt; &gt;</name>
-    <filename>structplayrho_1_1IsEqualityComparable_3_01T1_00_01T2_00_01detail_1_1VoidT_3_01decltype_07T1_02_03_0a_0aT2_02_03_08_4_01_4.html</filename>
+    <name>playrho::IsEqualityComparable&lt; T1, T2, std::void_t&lt; decltype(T1{}==T2{})&gt; &gt;</name>
+    <filename>structplayrho_1_1IsEqualityComparable_3_01T1_00_01T2_00_01std_1_1void__t_3_01decltype_07T1_02_03_0a_0aT2_02_03_08_4_01_4.html</filename>
     <templarg></templarg>
     <templarg></templarg>
   </compound>
@@ -11636,8 +11738,8 @@
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::IsInequalityComparable&lt; T1, T2, detail::VoidT&lt; decltype(T1{} !=T2{})&gt; &gt;</name>
-    <filename>structplayrho_1_1IsInequalityComparable_3_01T1_00_01T2_00_01detail_1_1VoidT_3_01decltype_07T1_02_03_01_9_0aT2_02_03_08_4_01_4.html</filename>
+    <name>playrho::IsInequalityComparable&lt; T1, T2, std::void_t&lt; decltype(T1{} !=T2{})&gt; &gt;</name>
+    <filename>structplayrho_1_1IsInequalityComparable_3_01T1_00_01T2_00_01std_1_1void__t_3_01decltype_07T1_02_03_01_9_0aT2_02_03_08_4_01_4.html</filename>
     <templarg></templarg>
     <templarg></templarg>
   </compound>
@@ -11648,8 +11750,8 @@
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::detail::IsIterableImpl&lt; T, VoidT&lt; decltype(begin(std::declval&lt; T &gt;())), decltype(end(std::declval&lt; T &gt;())), decltype(++std::declval&lt; decltype(begin(std::declval&lt; T &amp; &gt;()))&amp; &gt;()), decltype(*begin(std::declval&lt; T &gt;())) &gt; &gt;</name>
-    <filename>structplayrho_1_1detail_1_1IsIterableImpl_3_01T_00_01VoidT_3_01decltype_07begin_07std_1_1declval03f33fab2e1cfd99f2050523d9c757b5.html</filename>
+    <name>playrho::detail::IsIterableImpl&lt; T, std::void_t&lt; decltype(begin(std::declval&lt; T &gt;())), decltype(end(std::declval&lt; T &gt;())), decltype(++std::declval&lt; decltype(begin(std::declval&lt; T &amp; &gt;()))&amp; &gt;()), decltype(*begin(std::declval&lt; T &gt;())) &gt; &gt;</name>
+    <filename>structplayrho_1_1detail_1_1IsIterableImpl_3_01T_00_01std_1_1void__t_3_01decltype_07begin_07std_13619530b21097a509a6589d454070d72.html</filename>
     <templarg></templarg>
   </compound>
   <compound kind="struct">
@@ -11827,8 +11929,8 @@
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::IsMultipliable&lt; T1, T2, detail::VoidT&lt; decltype(T1{} *T2{})&gt; &gt;</name>
-    <filename>structplayrho_1_1IsMultipliable_3_01T1_00_01T2_00_01detail_1_1VoidT_3_01decltype_07T1_02_03_01_5T2_02_03_08_4_01_4.html</filename>
+    <name>playrho::IsMultipliable&lt; T1, T2, std::void_t&lt; decltype(T1{} *T2{})&gt; &gt;</name>
+    <filename>structplayrho_1_1IsMultipliable_3_01T1_00_01T2_00_01std_1_1void__t_3_01decltype_07T1_02_03_01_5T2_02_03_08_4_01_4.html</filename>
     <templarg></templarg>
     <templarg></templarg>
   </compound>
@@ -11842,6 +11944,28 @@
     <filename>structplayrho_1_1IsSquareMatrix_3_01Vector_3_01Vector_3_01T_00_01M_01_4_00_01M_01_4_01_4.html</filename>
     <templarg></templarg>
     <templarg>M</templarg>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::d2::IsValidJointType</name>
+    <filename>structplayrho_1_1d2_1_1IsValidJointType.html</filename>
+    <templarg></templarg>
+    <templarg></templarg>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::d2::IsValidJointType&lt; T, std::void_t&lt; decltype(GetBodyA(std::declval&lt; T &gt;())), decltype(GetBodyB(std::declval&lt; T &gt;())), decltype(GetCollideConnected(std::declval&lt; T &gt;())), decltype(ShiftOrigin(std::declval&lt; T &amp; &gt;(), std::declval&lt; Length2 &gt;())), decltype(InitVelocity(std::declval&lt; T &amp; &gt;(), std::declval&lt; std::vector&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; StepConf &gt;(), std::declval&lt; ConstraintSolverConf &gt;())), decltype(SolveVelocity(std::declval&lt; T &amp; &gt;(), std::declval&lt; std::vector&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; StepConf &gt;())), decltype(SolvePosition(std::declval&lt; T &gt;(), std::declval&lt; std::vector&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; ConstraintSolverConf &gt;())), decltype(std::declval&lt; T &gt;()==std::declval&lt; T &gt;()), decltype(Joint{std::declval&lt; T &gt;()})&gt; &gt;</name>
+    <filename>structplayrho_1_1d2_1_1IsValidJointType_3_01T_00_01std_1_1void__t_3_01decltype_07GetBodyA_07std_f46b9ec9d43482967902ab937217ed36.html</filename>
+    <templarg></templarg>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::d2::IsValidShapeType</name>
+    <filename>structplayrho_1_1d2_1_1IsValidShapeType.html</filename>
+    <templarg></templarg>
+    <templarg></templarg>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::d2::IsValidShapeType&lt; T, std::void_t&lt; decltype(GetChildCount(std::declval&lt; T &gt;())), decltype(GetChild(std::declval&lt; T &gt;(), std::declval&lt; ChildCounter &gt;())), decltype(GetMassData(std::declval&lt; T &gt;())), decltype(GetVertexRadius(std::declval&lt; T &gt;(), std::declval&lt; ChildCounter &gt;())), decltype(GetDensity(std::declval&lt; T &gt;())), decltype(GetFriction(std::declval&lt; T &gt;())), decltype(GetRestitution(std::declval&lt; T &gt;())), decltype(Transform(std::declval&lt; T &amp; &gt;(), std::declval&lt; Mat22 &gt;())), decltype(std::declval&lt; T &gt;()==std::declval&lt; T &gt;()), decltype(Shape{std::declval&lt; T &gt;()})&gt; &gt;</name>
+    <filename>structplayrho_1_1d2_1_1IsValidShapeType_3_01T_00_01std_1_1void__t_3_01decltype_07GetChildCount_0d6dff8bc9a2931522642c5eb50f9e01f.html</filename>
+    <templarg></templarg>
   </compound>
   <compound kind="struct">
     <name>playrho::IsVector</name>
@@ -11877,13 +12001,6 @@
       <type></type>
       <name>Joint</name>
       <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
-      <anchor>a811a89730dc9e587dac821c78ba1afea</anchor>
-      <arglist>(T arg)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>Joint</name>
-      <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
       <anchor>ab064da54849fb5adaac0866cc6dea9c5</anchor>
       <arglist>(const Joint &amp;other)</arglist>
     </member>
@@ -11893,6 +12010,13 @@
       <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
       <anchor>afe6ebeb9d617e7abb955eb4977dc1451</anchor>
       <arglist>(Joint &amp;&amp;other) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>Joint</name>
+      <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
+      <anchor>a1f0d73ef9cb8983e0eb288ff682c1783</anchor>
+      <arglist>(T &amp;&amp;arg)</arglist>
     </member>
     <member kind="function">
       <type>Joint &amp;</type>
@@ -11922,6 +12046,20 @@
       <anchor>a686ecf9d5b134af67040d2167eaaacbc</anchor>
       <arglist>(Joint &amp;other) noexcept</arglist>
     </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>has_value</name>
+      <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
+      <anchor>ad463d7b16f9fe80ab5f3368734bf75db</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="typedef" protection="private">
+      <type>std::enable_if_t&lt;!std::is_same_v&lt; DecayedType, Joint &gt;, DecayedType &gt;</type>
+      <name>DecayedTypeIfNotSelf</name>
+      <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
+      <anchor>a0f9a7c973d3f6801f6a7837acd952cc1</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="variable" protection="private">
       <type>std::unique_ptr&lt; Concept &gt;</type>
       <name>m_self</name>
@@ -11930,10 +12068,10 @@
       <arglist></arglist>
     </member>
     <member kind="friend">
-      <type>friend JointType</type>
+      <type>friend TypeID</type>
       <name>GetType</name>
       <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
-      <anchor>a212ab3b036926dc191721116ad3cdb11</anchor>
+      <anchor>a2ca986bd855aa5470a1ba1cd44f27f7b</anchor>
       <arglist>(const Joint &amp;object) noexcept</arglist>
     </member>
     <member kind="friend">
@@ -11949,6 +12087,20 @@
       <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
       <anchor>acd73f8a32384e237c826c5d2f7c60cce</anchor>
       <arglist>(Joint *value) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend bool</type>
+      <name>operator==</name>
+      <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
+      <anchor>a236b60d14dce843e92ca4e9ddeecc6b2</anchor>
+      <arglist>(const Joint &amp;lhs, const Joint &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend bool</type>
+      <name>operator!=</name>
+      <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
+      <anchor>a77c7fac4adcbb85f9cfc10e1c59a0694</anchor>
+      <arglist>(const Joint &amp;lhs, const Joint &amp;rhs) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend BodyID</type>
@@ -13672,8 +13824,15 @@
       <type></type>
       <name>Model</name>
       <anchorfile>structplayrho_1_1d2_1_1Joint_1_1Model.html</anchorfile>
-      <anchor>aa495c648eee01892b35a57df1985b4cb</anchor>
-      <arglist>(T arg)</arglist>
+      <anchor>a5e373f0d7b3a6ca09f701acd2772549e</anchor>
+      <arglist>(const T &amp;arg) noexcept(std::is_nothrow_copy_constructible_v&lt; T &gt;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>Model</name>
+      <anchorfile>structplayrho_1_1d2_1_1Joint_1_1Model.html</anchorfile>
+      <anchor>ac4a57239e420e8d147d3699285ab2a07</anchor>
+      <arglist>(T &amp;&amp;arg) noexcept(std::is_nothrow_move_constructible_v&lt; T &gt;)</arglist>
     </member>
     <member kind="function">
       <type>std::unique_ptr&lt; Concept &gt;</type>
@@ -13702,6 +13861,13 @@
       <anchorfile>structplayrho_1_1d2_1_1Joint_1_1Model.html</anchorfile>
       <anchor>aa86e32ce29035b1bd241f52b5be968a8</anchor>
       <arglist>() noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsEqual_</name>
+      <anchorfile>structplayrho_1_1d2_1_1Joint_1_1Model.html</anchorfile>
+      <anchor>ab9ef9905ed72f66e42b9d4f6d0be40fc</anchor>
+      <arglist>(const Concept &amp;other) const noexcept override</arglist>
     </member>
     <member kind="function">
       <type>BodyID</type>
@@ -14910,21 +15076,21 @@
       <type></type>
       <name>PositionConstraint</name>
       <anchorfile>classplayrho_1_1d2_1_1PositionConstraint.html</anchorfile>
-      <anchor>a171e961a39407be7fc97d144eaaa8200</anchor>
-      <arglist>(const Manifold &amp;m, BodyConstraint &amp;bA, BodyConstraint &amp;bB, Length radius)</arglist>
+      <anchor>ac271b2f95cdfa54b71cd45733765f288</anchor>
+      <arglist>(const Manifold &amp;m, BodyID bA, BodyID bB, Length radius)</arglist>
     </member>
     <member kind="function">
-      <type>BodyConstraint *</type>
+      <type>BodyID</type>
       <name>GetBodyA</name>
       <anchorfile>classplayrho_1_1d2_1_1PositionConstraint.html</anchorfile>
-      <anchor>af08bd511f62aa56ade87fc6190177d1f</anchor>
+      <anchor>a703910aec91fac2f608c3dc4ad03000c</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>BodyConstraint *</type>
+      <type>BodyID</type>
       <name>GetBodyB</name>
       <anchorfile>classplayrho_1_1d2_1_1PositionConstraint.html</anchorfile>
-      <anchor>a2d2ff7f03b3ac20606c9656e16d94254</anchor>
+      <anchor>af0ac77b62a91c99a9f5b0763f083b41e</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -14942,17 +15108,17 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
-      <type>BodyConstraint *</type>
+      <type>BodyID</type>
       <name>m_bodyA</name>
       <anchorfile>classplayrho_1_1d2_1_1PositionConstraint.html</anchorfile>
-      <anchor>a9993bd15b772bb83d0922507f9c0ec4a</anchor>
+      <anchor>ab3bc98bbae1011daa7510eefd1b34867</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
-      <type>BodyConstraint *</type>
+      <type>BodyID</type>
       <name>m_bodyB</name>
       <anchorfile>classplayrho_1_1d2_1_1PositionConstraint.html</anchorfile>
-      <anchor>ab4f524d0867017fe9327c988c00e8193</anchor>
+      <anchor>a1a6dd844c41e9c0242721eea119a52ab</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
@@ -17024,13 +17190,6 @@
       <type></type>
       <name>Shape</name>
       <anchorfile>classplayrho_1_1d2_1_1Shape.html</anchorfile>
-      <anchor>a49064658ede9605c072768f4087dc119</anchor>
-      <arglist>(T arg)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>Shape</name>
-      <anchorfile>classplayrho_1_1d2_1_1Shape.html</anchorfile>
       <anchor>a4115a5df86a7d55dd2bc6b2a550ade6b</anchor>
       <arglist>(const Shape &amp;other)=default</arglist>
     </member>
@@ -17038,8 +17197,15 @@
       <type></type>
       <name>Shape</name>
       <anchorfile>classplayrho_1_1d2_1_1Shape.html</anchorfile>
-      <anchor>a9fd20e087fafb0576d6b4fb2919fa39a</anchor>
-      <arglist>(Shape &amp;&amp;other)=default</arglist>
+      <anchor>a3b3e2bdf92a75c20cd217306b8eca737</anchor>
+      <arglist>(Shape &amp;&amp;other) noexcept=default</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>Shape</name>
+      <anchorfile>classplayrho_1_1d2_1_1Shape.html</anchorfile>
+      <anchor>a62f403b88ce9b5418b70a1cafd83f327</anchor>
+      <arglist>(T &amp;&amp;arg)</arglist>
     </member>
     <member kind="function">
       <type>Shape &amp;</type>
@@ -17068,6 +17234,20 @@
       <anchorfile>classplayrho_1_1d2_1_1Shape.html</anchorfile>
       <anchor>a63cf8a6770b252e74335895bc5e2cdcc</anchor>
       <arglist>(Shape &amp;other) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>has_value</name>
+      <anchorfile>classplayrho_1_1d2_1_1Shape.html</anchorfile>
+      <anchor>aca717d0407529c53735c9b71df6a3b87</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="typedef" protection="private">
+      <type>std::enable_if_t&lt;!std::is_same_v&lt; DecayedType, Shape &gt;, DecayedType &gt;</type>
+      <name>DecayedTypeIfNotSelf</name>
+      <anchorfile>classplayrho_1_1d2_1_1Shape.html</anchorfile>
+      <anchor>af291fdd001874a50febb300fcbed228f</anchor>
+      <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
       <type>std::shared_ptr&lt; const Concept &gt;</type>
@@ -19211,15 +19391,15 @@
       <type>constexpr bool</type>
       <name>operator==</name>
       <anchorfile>structplayrho_1_1d2_1_1Transformation.html</anchorfile>
-      <anchor>a98138b591523c0bfa434bc09afb5c1e9</anchor>
-      <arglist>(Transformation lhs, Transformation rhs) noexcept</arglist>
+      <anchor>a9f366fc4f9a298d3dded719b628a9933</anchor>
+      <arglist>(const Transformation &amp;lhs, const Transformation &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
       <name>operator!=</name>
       <anchorfile>structplayrho_1_1d2_1_1Transformation.html</anchorfile>
-      <anchor>afefbadf338e9e296f967a0dfac3fa914</anchor>
-      <arglist>(Transformation lhs, Transformation rhs) noexcept</arglist>
+      <anchor>ac100cc2e77031bd058367006ddd2ebe1</anchor>
+      <arglist>(const Transformation &amp;lhs, const Transformation &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -23617,8 +23797,8 @@
       <type></type>
       <name>VelocityConstraint</name>
       <anchorfile>classplayrho_1_1d2_1_1VelocityConstraint.html</anchorfile>
-      <anchor>a4aca9c21d5dde076106d9ca1d81a3443</anchor>
-      <arglist>(Real friction, Real restitution, LinearVelocity tangentSpeed, const WorldManifold &amp;worldManifold, BodyConstraint &amp;bA, BodyConstraint &amp;bB, Conf conf=GetDefaultConf())</arglist>
+      <anchor>acfe608b30b624ca60b7198725f566b31</anchor>
+      <arglist>(Real friction, Real restitution, LinearVelocity tangentSpeed, const WorldManifold &amp;worldManifold, BodyID bA, BodyID bB, const std::vector&lt; BodyConstraint &gt; &amp;bodies, const Conf &amp;conf=GetDefaultConf())</arglist>
     </member>
     <member kind="function">
       <type>UnitVec</type>
@@ -23677,17 +23857,17 @@
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>BodyConstraint *</type>
+      <type>BodyID</type>
       <name>GetBodyA</name>
       <anchorfile>classplayrho_1_1d2_1_1VelocityConstraint.html</anchorfile>
-      <anchor>a2110b3f686b74dff6e54af024f8717bc</anchor>
+      <anchor>aeb754b07cd2f58c4eafcbd741c12a707</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>BodyConstraint *</type>
+      <type>BodyID</type>
       <name>GetBodyB</name>
       <anchorfile>classplayrho_1_1d2_1_1VelocityConstraint.html</anchorfile>
-      <anchor>a6e5dac8eb9c4cef57b7e0aa119e896bf</anchor>
+      <anchor>a1ccc0122d9b8ecaee49b5b3920d8a6ee</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -23771,8 +23951,8 @@
       <type>void</type>
       <name>AddPoint</name>
       <anchorfile>classplayrho_1_1d2_1_1VelocityConstraint.html</anchorfile>
-      <anchor>a149f6f811476b024dca1245f57c5aa75</anchor>
-      <arglist>(Momentum normalImpulse, Momentum tangentImpulse, Length2 relA, Length2 relB, Conf conf)</arglist>
+      <anchor>ab527a8be9240a5b922a87e4b3ebf91c3</anchor>
+      <arglist>(Momentum normalImpulse, Momentum tangentImpulse, Length2 relA, Length2 relB, const std::vector&lt; BodyConstraint &gt; &amp;bodies, Conf conf)</arglist>
     </member>
     <member kind="function" protection="private">
       <type>void</type>
@@ -23785,8 +23965,8 @@
       <type>Point</type>
       <name>GetPoint</name>
       <anchorfile>classplayrho_1_1d2_1_1VelocityConstraint.html</anchorfile>
-      <anchor>a1b9c651f93348723973bb0e08c4bc9ac</anchor>
-      <arglist>(Momentum normalImpulse, Momentum tangentImpulse, Length2 relA, Length2 relB, Conf conf) const noexcept</arglist>
+      <anchor>aeafd25182ffe4017f95e6098afc59528</anchor>
+      <arglist>(Momentum normalImpulse, Momentum tangentImpulse, Length2 relA, Length2 relB, const std::vector&lt; BodyConstraint &gt; &amp;bodies, Conf conf) const noexcept</arglist>
     </member>
     <member kind="function" protection="private">
       <type>Point &amp;</type>
@@ -23817,17 +23997,17 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
-      <type>BodyConstraint *</type>
+      <type>BodyID</type>
       <name>m_bodyA</name>
       <anchorfile>classplayrho_1_1d2_1_1VelocityConstraint.html</anchorfile>
-      <anchor>a314bd35b41cbb21c1694fc625b18888f</anchor>
+      <anchor>aeb3c604841e018f6317bd4a18f5557cb</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
-      <type>BodyConstraint *</type>
+      <type>BodyID</type>
       <name>m_bodyB</name>
       <anchorfile>classplayrho_1_1d2_1_1VelocityConstraint.html</anchorfile>
-      <anchor>a94e82e178f9e89153d90345a27549f58</anchor>
+      <anchor>a05c10ea3661a695f7fb024ffe761260d</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
@@ -23997,18 +24177,6 @@
       <name>m_minSepSquared</name>
       <anchorfile>classplayrho_1_1d2_1_1VertexSet.html</anchorfile>
       <anchor>a14bb49edbcbc761587341bad45ea6804</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::detail::Voidify</name>
-    <filename>structplayrho_1_1detail_1_1Voidify.html</filename>
-    <templarg></templarg>
-    <member kind="typedef">
-      <type>void</type>
-      <name>type</name>
-      <anchorfile>structplayrho_1_1detail_1_1Voidify.html</anchorfile>
-      <anchor>a5d105bce2ba36bcc2c769ee7603abc66</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -26032,6 +26200,13 @@
       <arglist>(World &amp;world, BodyID id, const Shape &amp;shape, FixtureConf def=FixtureConf{}, bool resetMassData=true)</arglist>
     </member>
     <member kind="function">
+      <type>FixtureID</type>
+      <name>CreateFixture</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>acb365337e5b85b3b86f24d214eeb5840</anchor>
+      <arglist>(World &amp;world, BodyID id, const T &amp;shapeConf, FixtureConf def=FixtureConf{}, bool resetMassData=true)</arglist>
+    </member>
+    <member kind="function">
       <type>bool</type>
       <name>Destroy</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
@@ -26144,6 +26319,13 @@
       <arglist>(World &amp;world, const Joint &amp;def)</arglist>
     </member>
     <member kind="function">
+      <type>JointID</type>
+      <name>CreateJoint</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>ae2daf9b23558da46e3662b2405f97156</anchor>
+      <arglist>(World &amp;world, const T &amp;value)</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>Destroy</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
@@ -26151,10 +26333,10 @@
       <arglist>(World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
-      <type>JointType</type>
+      <type>TypeID</type>
       <name>GetType</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a7a5f508e72fff8e0844aff436989a175</anchor>
+      <anchor>a27fd66901457a53162b0e900ca1b46a9</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
@@ -26170,6 +26352,13 @@
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
       <anchor>ac4b3a69acd5e4d6ccceda622fd2a3e9a</anchor>
       <arglist>(World &amp;world, JointID id, const Joint &amp;def)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetJoint</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>ac07ce291e8ce59c988ee4bafca890059</anchor>
+      <arglist>(World &amp;world, JointID id, const T &amp;value)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
@@ -28889,20 +29078,20 @@
     <class kind="class">playrho::Interval</class>
     <class kind="class">playrho::InvalidArgument</class>
     <class kind="struct">playrho::IsAddable</class>
-    <class kind="struct">playrho::IsAddable&lt; T1, T2, detail::VoidT&lt; decltype(T1{}+T2{})&gt; &gt;</class>
+    <class kind="struct">playrho::IsAddable&lt; T1, T2, std::void_t&lt; decltype(T1{}+T2{})&gt; &gt;</class>
     <class kind="struct">playrho::IsArithmetic</class>
-    <class kind="struct">playrho::IsArithmetic&lt; T, detail::VoidT&lt; decltype(T{}+T{}), decltype(T{} - T{}), decltype(T{} *T{}), decltype(T{}/T{})&gt; &gt;</class>
+    <class kind="struct">playrho::IsArithmetic&lt; T, std::void_t&lt; decltype(T{}+T{}), decltype(T{} - T{}), decltype(T{} *T{}), decltype(T{}/T{})&gt; &gt;</class>
     <class kind="struct">playrho::IsDivisable</class>
-    <class kind="struct">playrho::IsDivisable&lt; T1, T2, detail::VoidT&lt; decltype(T1{}/T2{})&gt; &gt;</class>
+    <class kind="struct">playrho::IsDivisable&lt; T1, T2, std::void_t&lt; decltype(T1{}/T2{})&gt; &gt;</class>
     <class kind="struct">playrho::IsEqualityComparable</class>
-    <class kind="struct">playrho::IsEqualityComparable&lt; T1, T2, detail::VoidT&lt; decltype(T1{}==T2{})&gt; &gt;</class>
+    <class kind="struct">playrho::IsEqualityComparable&lt; T1, T2, std::void_t&lt; decltype(T1{}==T2{})&gt; &gt;</class>
     <class kind="struct">playrho::IsInequalityComparable</class>
-    <class kind="struct">playrho::IsInequalityComparable&lt; T1, T2, detail::VoidT&lt; decltype(T1{} !=T2{})&gt; &gt;</class>
+    <class kind="struct">playrho::IsInequalityComparable&lt; T1, T2, std::void_t&lt; decltype(T1{} !=T2{})&gt; &gt;</class>
     <class kind="struct">playrho::IslandStats</class>
     <class kind="struct">playrho::IsMatrix</class>
     <class kind="struct">playrho::IsMatrix&lt; Vector&lt; Vector&lt; T, N &gt;, M &gt; &gt;</class>
     <class kind="struct">playrho::IsMultipliable</class>
-    <class kind="struct">playrho::IsMultipliable&lt; T1, T2, detail::VoidT&lt; decltype(T1{} *T2{})&gt; &gt;</class>
+    <class kind="struct">playrho::IsMultipliable&lt; T1, T2, std::void_t&lt; decltype(T1{} *T2{})&gt; &gt;</class>
     <class kind="struct">playrho::IsSquareMatrix</class>
     <class kind="struct">playrho::IsSquareMatrix&lt; Vector&lt; Vector&lt; T, M &gt;, M &gt; &gt;</class>
     <class kind="struct">playrho::IsVector</class>
@@ -29194,10 +29383,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>strongtype::IndexingNamedType&lt; const char *const *, struct TypeIdentifier &gt;</type>
+      <type>detail::IndexingNamedType&lt; const char *const *, struct TypeIdentifier &gt;</type>
       <name>TypeID</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aaf1da887137ee44e568f98dbc3944fdb</anchor>
+      <anchor>a922c3472852863ed46d7551b1dd8ba9d</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -29432,31 +29621,31 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>strongtype::IndexingNamedType&lt; BodyCounter, struct BodyIdentifier &gt;</type>
+      <type>detail::IndexingNamedType&lt; BodyCounter, struct BodyIdentifier &gt;</type>
       <name>BodyID</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a7eca3bae90f8196745191dc0e4c78480</anchor>
+      <anchor>a9d094e8b19ea714a079a48c336abad92</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>strongtype::IndexingNamedType&lt; ContactCounter, struct ContactIdentifier &gt;</type>
+      <type>detail::IndexingNamedType&lt; ContactCounter, struct ContactIdentifier &gt;</type>
       <name>ContactID</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a336c4ca7544bb36a0d3fe8eed609dd0d</anchor>
+      <anchor>abe7a48a3a0e57fa1a9dd9e396b6b24f7</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>strongtype::IndexingNamedType&lt; FixtureCounter, struct FixtureIdentifier &gt;</type>
+      <type>detail::IndexingNamedType&lt; FixtureCounter, struct FixtureIdentifier &gt;</type>
       <name>FixtureID</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aed10ace7e6267068035ed85c63b8a70a</anchor>
+      <anchor>aeb0ae1f76104ef8214134a5be96027f6</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>strongtype::IndexingNamedType&lt; JointCounter, struct JointIdentifier &gt;</type>
+      <type>detail::IndexingNamedType&lt; JointCounter, struct JointIdentifier &gt;</type>
       <name>JointID</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a429482b9caddf0eca0531edcf62deb34</anchor>
+      <anchor>a8e3114be8fb50493389d7991db4f2b3d</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
@@ -29658,13 +29847,6 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a2410eb16decdbb7ed8ce34c06327161b</anchor>
       <arglist>(ArrayList&lt; T, S &gt; lhs, const typename ArrayList&lt; T, S &gt;::data_type &amp;rhs)</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static std::uint8_t</type>
-      <name>GetBlockSizeIndex</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a8d45df992becf6fd54bb224344dcfd82</anchor>
-      <arglist>(std::size_t n)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -30675,11 +30857,11 @@
       <arglist>(const Mat22 &amp;A)</arglist>
     </member>
     <member kind="function">
-      <type>std::uint64_t</type>
+      <type>constexpr T</type>
       <name>NextPowerOfTwo</name>
       <anchorfile>group__Math.html</anchorfile>
-      <anchor>ga0ad2d1e2b11362e91193d313ee00e78c</anchor>
-      <arglist>(std::uint64_t x)</arglist>
+      <anchor>ga2e157fe9f9288debcd4be111a2485991</anchor>
+      <arglist>(T x)</arglist>
     </member>
     <member kind="function">
       <type>Real</type>
@@ -31438,6 +31620,34 @@
       <arglist>(BodyType type)</arglist>
     </member>
     <member kind="function">
+      <type>ConstraintSolverConf</type>
+      <name>GetRegConstraintSolverConf</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>aacaf6573afe5f3fb0803faa353dc9c65</anchor>
+      <arglist>(const StepConf &amp;conf) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>ConstraintSolverConf</type>
+      <name>GetToiConstraintSolverConf</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>afdb8daa84d36ac948934ee05eb4cb242</anchor>
+      <arglist>(const StepConf &amp;conf) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr ConstraintSolverConf</type>
+      <name>GetDefaultPositionSolverConf</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a081dbfc95d4d3139eb2817a1f11a5af3</anchor>
+      <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr ConstraintSolverConf</type>
+      <name>GetDefaultToiPositionSolverConf</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a56b5137ea90045d15dfb2279d5773b46</anchor>
+      <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>Real</type>
       <name>MixFriction</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -31499,34 +31709,6 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>ae75f2a5fe81c028b473be52b47b7c7e9</anchor>
       <arglist>(const ContactKey lhs, const ContactKey rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>ConstraintSolverConf</type>
-      <name>GetRegConstraintSolverConf</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aacaf6573afe5f3fb0803faa353dc9c65</anchor>
-      <arglist>(const StepConf &amp;conf) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>ConstraintSolverConf</type>
-      <name>GetToiConstraintSolverConf</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>afdb8daa84d36ac948934ee05eb4cb242</anchor>
-      <arglist>(const StepConf &amp;conf) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>ConstraintSolverConf</type>
-      <name>GetDefaultPositionSolverConf</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a0c5bfe19319bd53279df8e97a75c1aee</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>ConstraintSolverConf</type>
-      <name>GetDefaultToiPositionSolverConf</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a0ede85de958ca0b1409f86e95843b578</anchor>
-      <arglist>()</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -31604,20 +31786,6 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>ae6388dedf49acce87859ad2e9bd3e2cc</anchor>
       <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr std::uint8_t</type>
-      <name>s_blockSizeLookup</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a33aec6a4f345d4339dcad5a1bf267268</anchor>
-      <arglist>[BlockAllocator::GetMaxBlockSize()+1]</arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr std::size_t</type>
-      <name>AllocatorBlockSizes</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a2c19872bd72b12b5b9d7708c58e7da16</anchor>
-      <arglist>[]</arglist>
     </member>
     <member kind="variable">
       <type>constexpr auto</type>
@@ -32155,6 +32323,10 @@
     <class kind="struct">playrho::d2::FrictionJointConf</class>
     <class kind="struct">playrho::d2::GearJointConf</class>
     <class kind="struct">playrho::d2::Island</class>
+    <class kind="struct">playrho::d2::IsValidJointType</class>
+    <class kind="struct">playrho::d2::IsValidJointType&lt; T, std::void_t&lt; decltype(GetBodyA(std::declval&lt; T &gt;())), decltype(GetBodyB(std::declval&lt; T &gt;())), decltype(GetCollideConnected(std::declval&lt; T &gt;())), decltype(ShiftOrigin(std::declval&lt; T &amp; &gt;(), std::declval&lt; Length2 &gt;())), decltype(InitVelocity(std::declval&lt; T &amp; &gt;(), std::declval&lt; std::vector&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; StepConf &gt;(), std::declval&lt; ConstraintSolverConf &gt;())), decltype(SolveVelocity(std::declval&lt; T &amp; &gt;(), std::declval&lt; std::vector&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; StepConf &gt;())), decltype(SolvePosition(std::declval&lt; T &gt;(), std::declval&lt; std::vector&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; ConstraintSolverConf &gt;())), decltype(std::declval&lt; T &gt;()==std::declval&lt; T &gt;()), decltype(Joint{std::declval&lt; T &gt;()})&gt; &gt;</class>
+    <class kind="struct">playrho::d2::IsValidShapeType</class>
+    <class kind="struct">playrho::d2::IsValidShapeType&lt; T, std::void_t&lt; decltype(GetChildCount(std::declval&lt; T &gt;())), decltype(GetChild(std::declval&lt; T &gt;(), std::declval&lt; ChildCounter &gt;())), decltype(GetMassData(std::declval&lt; T &gt;())), decltype(GetVertexRadius(std::declval&lt; T &gt;(), std::declval&lt; ChildCounter &gt;())), decltype(GetDensity(std::declval&lt; T &gt;())), decltype(GetFriction(std::declval&lt; T &gt;())), decltype(GetRestitution(std::declval&lt; T &gt;())), decltype(Transform(std::declval&lt; T &amp; &gt;(), std::declval&lt; Mat22 &gt;())), decltype(std::declval&lt; T &gt;()==std::declval&lt; T &gt;()), decltype(Shape{std::declval&lt; T &gt;()})&gt; &gt;</class>
     <class kind="class">playrho::d2::Joint</class>
     <class kind="struct">playrho::d2::JointBuilder</class>
     <class kind="struct">playrho::d2::JointConf</class>
@@ -32192,10 +32364,10 @@
     <class kind="class">playrho::d2::WorldImpl</class>
     <class kind="class">playrho::d2::WorldManifold</class>
     <member kind="typedef">
-      <type>detail::AABB&lt; 2 &gt;</type>
+      <type>::playrho::detail::AABB&lt; 2 &gt;</type>
       <name>AABB</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a03a4588e961b6a369745c9c5b68b9868</anchor>
+      <anchor>abfb3031d97cbdac7eb72cccf26e3c694</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -32220,24 +32392,24 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>detail::LengthIndices&lt; 2 &gt;</type>
+      <type>::playrho::detail::LengthIndices&lt; 2 &gt;</type>
       <name>LengthIndices</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a9c0b82fe1a1d0add572e3829a4c9f61c</anchor>
+      <anchor>a71fc9bb2c15145fe17188b4bc918cf2c</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>detail::SeparationInfo&lt; 2 &gt;</type>
+      <type>::playrho::detail::SeparationInfo&lt; 2 &gt;</type>
       <name>SeparationInfo</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af40ce5c2de24f7a8612c7d00a487724e</anchor>
+      <anchor>a92b6287401a1537b2a61ccf00ef46fc5</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>detail::MassData&lt; 2 &gt;</type>
+      <type>::playrho::detail::MassData&lt; 2 &gt;</type>
       <name>MassData</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a412a6773b79a31e621b01c04c3d2645e</anchor>
+      <anchor>a1afff43f96a91b8c26b8f0de7b9a71da</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -32287,13 +32459,6 @@
       <name>KeyedContactPtr</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>acd3332ed6985dc65c60e8e6ea41c898b</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>TypeID</type>
-      <name>JointType</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a8cae6324b65f4e37feb72a496827c985</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -32768,8 +32933,8 @@
       <type>RayCastOutput</type>
       <name>RayCast</name>
       <anchorfile>group__RayCastGroup.html</anchorfile>
-      <anchor>ga4ad7d3ebcceb46993d721c836ba13ae2</anchor>
-      <arglist>(const detail::AABB&lt; 2 &gt; &amp;aabb, const RayCastInput &amp;input) noexcept</arglist>
+      <anchor>ga425e9dc1c0e263bf7484ef6ef2cde86b</anchor>
+      <arglist>(const ::playrho::detail::AABB&lt; 2 &gt; &amp;aabb, const RayCastInput &amp;input) noexcept</arglist>
     </member>
     <member kind="function">
       <type>RayCastOutput</type>
@@ -33598,6 +33763,13 @@
       <arglist>(Velocity velocity, LinearVelocity linSleepTol, AngularVelocity angSleepTol) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>InvMass</type>
+      <name>GetEffectiveInvMass</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ac9b46924bad23425a7abd1eb39f28451</anchor>
+      <arglist>(const InvRotInertia invRotI, const Length2 p, const UnitVec q)</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr auto</type>
       <name>GetReflectionMatrix</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -33685,21 +33857,28 @@
       <type>constexpr bool</type>
       <name>operator==</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a98138b591523c0bfa434bc09afb5c1e9</anchor>
-      <arglist>(Transformation lhs, Transformation rhs) noexcept</arglist>
+      <anchor>a9f366fc4f9a298d3dded719b628a9933</anchor>
+      <arglist>(const Transformation &amp;lhs, const Transformation &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
       <name>operator!=</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afefbadf338e9e296f967a0dfac3fa914</anchor>
-      <arglist>(Transformation lhs, Transformation rhs) noexcept</arglist>
+      <anchor>ac100cc2e77031bd058367006ddd2ebe1</anchor>
+      <arglist>(const Transformation &amp;lhs, const Transformation &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr Length2</type>
       <name>GetLocation</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>ad3978702132a5caf87ad3cbec808b116</anchor>
+      <arglist>(const Transformation &amp;value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr UnitVec</type>
+      <name>GetDirection</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a850723b278d7e003b0be5f2c0f7435f1</anchor>
       <arglist>(const Transformation &amp;value) noexcept</arglist>
     </member>
     <member kind="function">
@@ -33785,13 +33964,6 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a4f49bd881fdc6418565529a072b91d54</anchor>
       <arglist>(::std::ostream &amp;os, const UnitVec &amp;value)</arglist>
-    </member>
-    <member kind="function">
-      <type>VelocityPair</type>
-      <name>CalcWarmStartVelocityDeltas</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab3163942ed703060f3d647328b5e3770</anchor>
-      <arglist>(const VelocityConstraint &amp;vc)</arglist>
     </member>
     <member kind="function">
       <type>Velocity</type>
@@ -33897,6 +34069,20 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>ab873f18f1e540da43881e7f2dadeb7b1</anchor>
       <arglist>(const Body &amp;body, Time h) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ApplyLinearImpulse</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a07f50b8133debf454d50f491d196dc24</anchor>
+      <arglist>(Body &amp;body, Momentum2 impulse, Length2 point) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ApplyAngularImpulse</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a5d1467095e23488ca1344a26336aae8f</anchor>
+      <arglist>(Body &amp;body, AngularMomentum impulse) noexcept</arglist>
     </member>
     <member kind="function">
       <type>BodyType</type>
@@ -34011,6 +34197,83 @@
       <arglist>(Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>Transformation</type>
+      <name>GetTransformation</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a6a06b90c7f93f0e33be41db39562af4d</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetTransformation</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af681bc41595979454a24df12369e97a9</anchor>
+      <arglist>(Body &amp;body, Transformation value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLocation</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a8a6f694cab71d0db91049dc0908de63f</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const Sweep &amp;</type>
+      <name>GetSweep</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a83c03ab97ee5e1a0cdb1a41a62050ccc</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetSweep</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a1f30cb6266cb2f950ea5fdb5aae58d1b</anchor>
+      <arglist>(Body &amp;body, const Sweep &amp;value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Position</type>
+      <name>GetPosition1</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a77de45b3fab735d0f87a0978a622a9c0</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetAngle</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a93f21ae0c92245d912cb91a99e756946</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetWorldCenter</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a1d38f917cdf715b50222fe39fe1a22c3</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLocalCenter</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a8d99adba0a8c68b083bb765ef9f1c1f0</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Position</type>
+      <name>GetPosition</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a1ee2be09f607ec37050c91dc3a5d0f92</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Time</type>
+      <name>GetUnderActiveTime</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a1192c89bb1512e70b1fb878c1b29a452</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>bool</type>
       <name>IsFixedRotation</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -34116,13 +34379,6 @@
       <arglist>(Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>Position</type>
-      <name>GetPosition1</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a77de45b3fab735d0f87a0978a622a9c0</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>Mass</type>
       <name>GetMass</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -34149,20 +34405,6 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a5907db10db49a1e6d7f8b8bc59dfa8e8</anchor>
       <arglist>(Body &amp;body, AngularAcceleration value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>ApplyLinearImpulse</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a07f50b8133debf454d50f491d196dc24</anchor>
-      <arglist>(Body &amp;body, Momentum2 impulse, Length2 point) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>ApplyAngularImpulse</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a5d1467095e23488ca1344a26336aae8f</anchor>
-      <arglist>(Body &amp;body, AngularMomentum impulse) noexcept</arglist>
     </member>
     <member kind="function">
       <type>RotInertia</type>
@@ -34281,69 +34523,6 @@
       <name>GetTorque</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a18e2ece8e057b22c240cf681aca400b5</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Length2</type>
-      <name>GetLocation</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a8a6f694cab71d0db91049dc0908de63f</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const Sweep &amp;</type>
-      <name>GetSweep</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a83c03ab97ee5e1a0cdb1a41a62050ccc</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetSweep</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1f30cb6266cb2f950ea5fdb5aae58d1b</anchor>
-      <arglist>(Body &amp;body, const Sweep &amp;value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Angle</type>
-      <name>GetAngle</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a93f21ae0c92245d912cb91a99e756946</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Length2</type>
-      <name>GetWorldCenter</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1d38f917cdf715b50222fe39fe1a22c3</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Length2</type>
-      <name>GetLocalCenter</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a8d99adba0a8c68b083bb765ef9f1c1f0</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Transformation</type>
-      <name>GetTransformation</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6a06b90c7f93f0e33be41db39562af4d</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetTransformation</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af681bc41595979454a24df12369e97a9</anchor>
-      <arglist>(Body &amp;body, Transformation value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Position</type>
-      <name>GetPosition</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1ee2be09f607ec37050c91dc3a5d0f92</anchor>
       <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
@@ -34620,13 +34799,6 @@
       <arglist>(const VelocityConstraint &amp;vc) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>InvMass</type>
-      <name>GetInvMass</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af73eb5649a2cf524f0a144d10eaab015</anchor>
-      <arglist>(const VelocityConstraint &amp;vc) noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>Length2</type>
       <name>GetPointRelPosA</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -34886,6 +35058,20 @@
       <arglist>(const DistanceJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a35315499cf67026c7d8d7613477023cd</anchor>
+      <arglist>(const DistanceJointConf &amp;lhs, const DistanceJointConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae758c3a2894c69fe0dc10e62d6b50c16</anchor>
+      <arglist>(const DistanceJointConf &amp;lhs, const DistanceJointConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr Momentum2</type>
       <name>GetLinearReaction</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -34970,6 +35156,20 @@
       <arglist>(const FrictionJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a194fd21d14647aedddc772f5871295ae</anchor>
+      <arglist>(const FrictionJointConf &amp;lhs, const FrictionJointConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a45ea8b96cd57e4d21f2191d6a832f814</anchor>
+      <arglist>(const FrictionJointConf &amp;lhs, const FrictionJointConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr Momentum2</type>
       <name>GetLinearReaction</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -35052,6 +35252,20 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a5e4a317737862143d7fe7cb241f4a213</anchor>
       <arglist>(const GearJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>abf8d004c9a5fca4f9d757e31164db5f0</anchor>
+      <arglist>(const GearJointConf &amp;lhs, const GearJointConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae908913a1c7e55a8431fa73b79c03ff5</anchor>
+      <arglist>(const GearJointConf &amp;lhs, const GearJointConf &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr Momentum2</type>
@@ -35411,10 +35625,10 @@
       <arglist>(const Joint &amp;object)</arglist>
     </member>
     <member kind="function">
-      <type>JointType</type>
+      <type>TypeID</type>
       <name>GetType</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae0b955a2cd64187819ed665e5e317ed9</anchor>
+      <anchor>a14ed64f17ea64f51257b1adca6e385a7</anchor>
       <arglist>(const Joint &amp;object) noexcept</arglist>
     </member>
     <member kind="function">
@@ -35430,6 +35644,20 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>aa592a3a7994d2f355a6d2a2235f24c60</anchor>
       <arglist>(Joint *value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa22000a029fd294dace37815f6141a83</anchor>
+      <arglist>(const Joint &amp;lhs, const Joint &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a195b40b377eb99929c3033c990c43d00</anchor>
+      <arglist>(const Joint &amp;lhs, const Joint &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>BodyID</type>
@@ -35561,13 +35789,6 @@
       <type>const char *</type>
       <name>ToString</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af84e52fdf9a9b10e6363886f26235828</anchor>
-      <arglist>(JointType type) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const char *</type>
-      <name>ToString</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a365dbc3fb240ef6055a4e52d2c36c577</anchor>
       <arglist>(LimitState val) noexcept</arglist>
     </member>
@@ -35605,6 +35826,20 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>ac8c6b476d51a5fcd897ca16754a841ba</anchor>
       <arglist>(const MotorJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a1b19f08799b5719ae26c054a7d6f2da5</anchor>
+      <arglist>(const MotorJointConf &amp;lhs, const MotorJointConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>adb73921dd33efab19ea30f62abca8839</anchor>
+      <arglist>(const MotorJointConf &amp;lhs, const MotorJointConf &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -35768,6 +36003,20 @@
       <arglist>(const World &amp;world, const PrismaticJointConf &amp;joint) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af90207a13837614365ee1b1f331ccb34</anchor>
+      <arglist>(const PrismaticJointConf &amp;lhs, const PrismaticJointConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>adeb8e9c029b86567348620b30e693bc7</anchor>
+      <arglist>(const PrismaticJointConf &amp;lhs, const PrismaticJointConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr auto</type>
       <name>GetLinearLowerLimit</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -35843,6 +36092,20 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a900c2f617828c3a70f6b988ac4419b55</anchor>
       <arglist>(PulleyJointConf &amp;object, Length2 newOrigin) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a4085412245af82c9b4fec44a41132496</anchor>
+      <arglist>(const PulleyJointConf &amp;lhs, const PulleyJointConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a3ae2ced4c2ea4e92078eb0f6277007e9</anchor>
+      <arglist>(const PulleyJointConf &amp;lhs, const PulleyJointConf &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr Momentum2</type>
@@ -35929,6 +36192,20 @@
       <arglist>(const RevoluteJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a79d7e1a69ae37d6ab92378ebac7fb2c7</anchor>
+      <arglist>(const RevoluteJointConf &amp;lhs, const RevoluteJointConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a1f1939c47dfdcf306663d56d87a9afd2</anchor>
+      <arglist>(const RevoluteJointConf &amp;lhs, const RevoluteJointConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr auto</type>
       <name>ShiftOrigin</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -36006,6 +36283,20 @@
       <arglist>(const RopeJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a0d485fc6df03e3052d96da519f35585d</anchor>
+      <arglist>(const RopeJointConf &amp;lhs, const RopeJointConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af88a635d83573cbd0ec11f17f4526778</anchor>
+      <arglist>(const RopeJointConf &amp;lhs, const RopeJointConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr Momentum2</type>
       <name>GetLinearReaction</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -36074,6 +36365,20 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a04c5b600eda74e0641524a3001e33888</anchor>
       <arglist>(const TargetJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a29e3173ac86b6e5186a733708f38a42d</anchor>
+      <arglist>(const TargetJointConf &amp;lhs, const TargetJointConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a2264176e0da3eefdb8e592dd1f931355</anchor>
+      <arglist>(const TargetJointConf &amp;lhs, const TargetJointConf &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -36181,6 +36486,20 @@
       <arglist>(const WeldJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ade363e29ce1af1766680bde06e5a8d5c</anchor>
+      <arglist>(const WeldJointConf &amp;lhs, const WeldJointConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a3c84131d3c779d955813d70eface1bd9</anchor>
+      <arglist>(const WeldJointConf &amp;lhs, const WeldJointConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr Momentum2</type>
       <name>GetLinearReaction</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -36256,6 +36575,20 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a71acdf32b41c7fa92c981ca8dd2db6c6</anchor>
       <arglist>(const WheelJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a749db75cd678bd280e02f2d382bbce2a</anchor>
+      <arglist>(const WheelJointConf &amp;lhs, const WheelJointConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a378a180b24295fc6b58fa5385792b26b</anchor>
+      <arglist>(const WheelJointConf &amp;lhs, const WheelJointConf &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr Momentum2</type>
@@ -37287,6 +37620,13 @@
       <arglist>(const World &amp;world, FixtureID id, Length2 p)</arglist>
     </member>
     <member kind="function">
+      <type>FixtureID</type>
+      <name>CreateFixture</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>acb365337e5b85b3b86f24d214eeb5840</anchor>
+      <arglist>(World &amp;world, BodyID id, const T &amp;shapeConf, FixtureConf def=FixtureConf{}, bool resetMassData=true)</arglist>
+    </member>
+    <member kind="function">
       <type>Real</type>
       <name>GetFriction</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -37693,10 +38033,10 @@
       <arglist>(World &amp;world, JointID id, const Joint &amp;def)</arglist>
     </member>
     <member kind="function">
-      <type>JointType</type>
+      <type>TypeID</type>
       <name>GetType</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7a5f508e72fff8e0844aff436989a175</anchor>
+      <anchor>a27fd66901457a53162b0e900ca1b46a9</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
@@ -38043,6 +38383,20 @@
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
+      <type>JointID</type>
+      <name>CreateJoint</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae2daf9b23558da46e3662b2405f97156</anchor>
+      <arglist>(World &amp;world, const T &amp;value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetJoint</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ac07ce291e8ce59c988ee4bafca890059</anchor>
+      <arglist>(World &amp;world, JointID id, const T &amp;value)</arglist>
+    </member>
+    <member kind="function">
       <type>Force</type>
       <name>GetMotorForce</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -38196,20 +38550,13 @@
     <class kind="struct">playrho::detail::AABB</class>
     <class kind="struct">playrho::detail::Defaults</class>
     <class kind="struct">playrho::detail::Defaults&lt; Fixed&lt; std::int32_t, FRACTION_BITS &gt; &gt;</class>
+    <class kind="class">playrho::detail::IndexingNamedType</class>
     <class kind="struct">playrho::detail::IsIterableImpl</class>
-    <class kind="struct">playrho::detail::IsIterableImpl&lt; T, VoidT&lt; decltype(begin(std::declval&lt; T &gt;())), decltype(end(std::declval&lt; T &gt;())), decltype(++std::declval&lt; decltype(begin(std::declval&lt; T &amp; &gt;()))&amp; &gt;()), decltype(*begin(std::declval&lt; T &gt;())) &gt; &gt;</class>
+    <class kind="struct">playrho::detail::IsIterableImpl&lt; T, std::void_t&lt; decltype(begin(std::declval&lt; T &gt;())), decltype(end(std::declval&lt; T &gt;())), decltype(++std::declval&lt; decltype(begin(std::declval&lt; T &amp; &gt;()))&amp; &gt;()), decltype(*begin(std::declval&lt; T &gt;())) &gt; &gt;</class>
     <class kind="struct">playrho::detail::LengthIndices</class>
     <class kind="struct">playrho::detail::MassData</class>
     <class kind="struct">playrho::detail::RayCastInput</class>
     <class kind="struct">playrho::detail::SeparationInfo</class>
-    <class kind="struct">playrho::detail::Voidify</class>
-    <member kind="typedef">
-      <type>typename Voidify&lt; Ts... &gt;::type</type>
-      <name>VoidT</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>ac796d93526955086be33030a4dac3ab1</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="function">
       <type>constexpr bool</type>
       <name>operator==</name>
@@ -38442,6 +38789,20 @@
       <arglist>(Fixed&lt; BT, FB &gt; angleInRadians)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr T &amp;</type>
+      <name>UnderlyingValue</name>
+      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
+      <anchor>a7b860a55d7e9a0e7c05b37787f138f0a</anchor>
+      <arglist>(IndexingNamedType&lt; T, Tag &gt; &amp;o) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr const T &amp;</type>
+      <name>UnderlyingValue</name>
+      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
+      <anchor>ad04160d5c1648ce7423d94accd7f7268</anchor>
+      <arglist>(const IndexingNamedType&lt; T, Tag &gt; &amp;o) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr auto</type>
       <name>max_size</name>
       <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
@@ -38492,8 +38853,8 @@
     <class kind="struct">std::greater&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
     <class kind="struct">std::greater_equal&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
     <class kind="struct">std::hash&lt; playrho::ContactKey &gt;</class>
+    <class kind="struct">std::hash&lt;::playrho::detail::IndexingNamedType&lt; T, Tag &gt; &gt;</class>
     <class kind="struct">std::hash&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
-    <class kind="struct">std::hash&lt;::playrho::strongtype::IndexingNamedType&lt; T, Tag &gt; &gt;</class>
     <class kind="struct">std::less&lt; playrho::d2::JointKey &gt;</class>
     <class kind="struct">std::less&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
     <class kind="struct">std::less_equal&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
@@ -38520,8 +38881,8 @@
       <type>RayCastOutput</type>
       <name>RayCast</name>
       <anchorfile>group__RayCastGroup.html</anchorfile>
-      <anchor>ga4ad7d3ebcceb46993d721c836ba13ae2</anchor>
-      <arglist>(const detail::AABB&lt; 2 &gt; &amp;aabb, const RayCastInput &amp;input) noexcept</arglist>
+      <anchor>ga425e9dc1c0e263bf7484ef6ef2cde86b</anchor>
+      <arglist>(const ::playrho::detail::AABB&lt; 2 &gt; &amp;aabb, const RayCastInput &amp;input) noexcept</arglist>
     </member>
     <member kind="function">
       <type>RayCastOutput</type>
@@ -39027,11 +39388,11 @@
       <arglist>(const Mat22 &amp;A)</arglist>
     </member>
     <member kind="function">
-      <type>std::uint64_t</type>
+      <type>constexpr T</type>
       <name>NextPowerOfTwo</name>
       <anchorfile>group__Math.html</anchorfile>
-      <anchor>ga0ad2d1e2b11362e91193d313ee00e78c</anchor>
-      <arglist>(std::uint64_t x)</arglist>
+      <anchor>ga2e157fe9f9288debcd4be111a2485991</anchor>
+      <arglist>(T x)</arglist>
     </member>
     <member kind="function">
       <type>Real</type>

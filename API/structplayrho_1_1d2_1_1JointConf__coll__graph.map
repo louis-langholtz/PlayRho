@@ -1,8 +1,8 @@
 <map id="playrho::d2::JointConf" name="playrho::d2::JointConf">
-<area shape="rect" id="node1" title="Abstract base joint definition class." alt="" coords="102,376,253,403"/>
-<area shape="rect" id="node2" href="$classplayrho_1_1strongtype_1_1IndexingNamedType.html" title=" " alt="" coords="15,228,166,299"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,109,104,136"/>
-<area shape="rect" id="node4" href="$classplayrho_1_1strongtype_1_1IndexingNamedType.html" title="An indexable, hashable, named &quot;strong type&quot; template class." alt="" coords="128,95,277,151"/>
-<area shape="rect" id="node5" title=" " alt="" coords="183,5,222,32"/>
-<area shape="rect" id="node6" title=" " alt="" coords="190,250,237,277"/>
+<area shape="rect" id="node1" title="Base joint definition class." alt="" coords="124,347,275,373"/>
+<area shape="rect" id="node2" href="$classplayrho_1_1detail_1_1IndexingNamedType.html" title=" " alt="" coords="5,213,188,269"/>
+<area shape="rect" id="node3" title=" " alt="" coords="11,102,110,129"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1detail_1_1IndexingNamedType.html" title="An indexable, hashable, named &quot;strong type&quot; template class." alt="" coords="134,95,294,136"/>
+<area shape="rect" id="node5" title=" " alt="" coords="195,5,233,32"/>
+<area shape="rect" id="node6" title=" " alt="" coords="212,228,259,255"/>
 </map>

@@ -1,4 +1,0 @@
-<map id="playrho::IsEqualityComparable&lt; T1, T2, detail::VoidT&lt; decltype(T1{}==T2{})&gt; &gt;" name="playrho::IsEqualityComparable&lt; T1, T2, detail::VoidT&lt; decltype(T1{}==T2{})&gt; &gt;">
-<area shape="rect" id="node1" title="Template specialization for equality comparable types." alt="" coords="5,80,205,136"/>
-<area shape="rect" id="node2" title=" " alt="" coords="67,5,143,32"/>
-</map>

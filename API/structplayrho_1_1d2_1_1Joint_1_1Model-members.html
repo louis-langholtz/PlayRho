@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.13.1</span>
+   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -110,7 +110,9 @@ $(document).ready(function(){initNavTree('structplayrho_1_1d2_1_1Joint_1_1Model.
   <tr><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html#aa86e32ce29035b1bd241f52b5be968a8">GetData_</a>() noexcept override</td><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html">playrho::d2::Joint::Model&lt; T &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html#a2e625884f5d79423a66bdde8d92e6a22">GetType_</a>() const noexcept override</td><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html">playrho::d2::Joint::Model&lt; T &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html#afc05c90150269264477f915b28698482">InitVelocity_</a>(BodyConstraintsMap &amp;bodies, const playrho::StepConf &amp;step, const ConstraintSolverConf &amp;conf) override</td><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html">playrho::d2::Joint::Model&lt; T &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html#aa495c648eee01892b35a57df1985b4cb">Model</a>(T arg)</td><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html">playrho::d2::Joint::Model&lt; T &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html#ab9ef9905ed72f66e42b9d4f6d0be40fc">IsEqual_</a>(const Concept &amp;other) const noexcept override</td><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html">playrho::d2::Joint::Model&lt; T &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html#a5e373f0d7b3a6ca09f701acd2772549e">Model</a>(const T &amp;arg) noexcept(std::is_nothrow_copy_constructible_v&lt; T &gt;)</td><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html">playrho::d2::Joint::Model&lt; T &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">explicit</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html#ac4a57239e420e8d147d3699285ab2a07">Model</a>(T &amp;&amp;arg) noexcept(std::is_nothrow_move_constructible_v&lt; T &gt;)</td><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html">playrho::d2::Joint::Model&lt; T &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">explicit</span></td></tr>
   <tr><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html#afc132f0ed4b9742e35ff784d60a2bf82">ShiftOrigin_</a>(Length2 value) noexcept override</td><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html">playrho::d2::Joint::Model&lt; T &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html#a0161d4a1c8ddb22dff00f0d349b6fa9d">SolvePosition_</a>(BodyConstraintsMap &amp;bodies, const ConstraintSolverConf &amp;conf) const override</td><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html">playrho::d2::Joint::Model&lt; T &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html#ac2dacee0484554a039ffadaa85213c72">SolveVelocity_</a>(BodyConstraintsMap &amp;bodies, const playrho::StepConf &amp;step) override</td><td class="entry"><a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html">playrho::d2::Joint::Model&lt; T &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
@@ -120,7 +122,7 @@ $(document).ready(function(){initNavTree('structplayrho_1_1d2_1_1Joint_1_1Model.
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Nov 10 2020 12:40:28 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Mon Nov 30 2020 00:11:00 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

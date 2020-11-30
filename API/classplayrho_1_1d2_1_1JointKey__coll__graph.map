@@ -1,7 +1,7 @@
 <map id="playrho::d2::JointKey" name="playrho::d2::JointKey">
-<area shape="rect" id="node1" title="Joint key." alt="" coords="37,376,182,403"/>
-<area shape="rect" id="node2" href="$classplayrho_1_1strongtype_1_1IndexingNamedType.html" title=" " alt="" coords="34,228,185,299"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,109,104,136"/>
-<area shape="rect" id="node4" href="$classplayrho_1_1strongtype_1_1IndexingNamedType.html" title="An indexable, hashable, named &quot;strong type&quot; template class." alt="" coords="128,95,277,151"/>
-<area shape="rect" id="node5" title=" " alt="" coords="183,5,222,32"/>
+<area shape="rect" id="node1" title="Joint key." alt="" coords="38,347,183,373"/>
+<area shape="rect" id="node2" href="$classplayrho_1_1detail_1_1IndexingNamedType.html" title=" " alt="" coords="19,213,202,269"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,102,104,129"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1detail_1_1IndexingNamedType.html" title="An indexable, hashable, named &quot;strong type&quot; template class." alt="" coords="128,95,288,136"/>
+<area shape="rect" id="node5" title=" " alt="" coords="189,5,227,32"/>
 </map>

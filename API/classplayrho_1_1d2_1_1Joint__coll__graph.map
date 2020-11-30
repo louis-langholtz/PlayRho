@@ -1,4 +1,4 @@
 <map id="playrho::d2::Joint" name="playrho::d2::Joint">
-<area shape="rect" id="node1" title="Joint class." alt="" coords="19,109,141,136"/>
+<area shape="rect" id="node1" title="A joint&#45;like constraint on one or more bodies." alt="" coords="19,109,141,136"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,5,155,47"/>
 </map>

@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.13.1</span>
+   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -95,7 +95,6 @@ $(document).ready(function(){initNavTree('namespaceplayrho_1_1detail.html',''); 
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
@@ -117,11 +116,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1Defaults_3_01Fixed_3_01std_1_1int32__t_00_01FRACTION__BITS_01_4_01_4.html">Defaults&lt; Fixed&lt; std::int32_t, FRACTION_BITS &gt; &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialization of defaults object for fixed point types.  <a href="structplayrho_1_1detail_1_1Defaults_3_01Fixed_3_01std_1_1int32__t_00_01FRACTION__BITS_01_4_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1IndexingNamedType.html">IndexingNamedType</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An indexable, hashable, named "strong type" template class.  <a href="classplayrho_1_1detail_1_1IndexingNamedType.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1IsIterableImpl.html">IsIterableImpl</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Low-level implementation of the is-iterable default value trait.  <a href="structplayrho_1_1detail_1_1IsIterableImpl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1IsIterableImpl_3_01T_00_01VoidT_3_01decltype_07begin_07std_1_1declval03f33fab2e1cfd99f2050523d9c757b5.html">IsIterableImpl&lt; T, VoidT&lt; decltype(begin(std::declval&lt; T &gt;())), decltype(end(std::declval&lt; T &gt;())), decltype(++std::declval&lt; decltype(begin(std::declval&lt; T &amp; &gt;()))&amp; &gt;()), decltype(*begin(std::declval&lt; T &gt;())) &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Low-level implementation of the is-iterable true value trait.  <a href="structplayrho_1_1detail_1_1IsIterableImpl_3_01T_00_01VoidT_3_01decltype_07begin_07std_1_1declval03f33fab2e1cfd99f2050523d9c757b5.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1IsIterableImpl_3_01T_00_01std_1_1void__t_3_01decltype_07begin_07std_13619530b21097a509a6589d454070d72.html">IsIterableImpl&lt; T, std::void_t&lt; decltype(begin(std::declval&lt; T &gt;())), decltype(end(std::declval&lt; T &gt;())), decltype(++std::declval&lt; decltype(begin(std::declval&lt; T &amp; &gt;()))&amp; &gt;()), decltype(*begin(std::declval&lt; T &gt;())) &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Low-level implementation of the is-iterable true value trait.  <a href="structplayrho_1_1detail_1_1IsIterableImpl_3_01T_00_01std_1_1void__t_3_01decltype_07begin_07std_13619530b21097a509a6589d454070d72.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1LengthIndices.html">LengthIndices</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Length and vertex counter array of indices.  <a href="structplayrho_1_1detail_1_1LengthIndices.html#details">More...</a><br /></td></tr>
@@ -135,17 +137,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1SeparationInfo.html">SeparationInfo</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Separation information.  <a href="structplayrho_1_1detail_1_1SeparationInfo.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1Voidify.html">Voidify</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Voiding template class.  <a href="structplayrho_1_1detail_1_1Voidify.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ac796d93526955086be33030a4dac3ab1"><td class="memTemplParams" colspan="2"><a id="ac796d93526955086be33030a4dac3ab1"></a>
-template&lt;class... Ts&gt; </td></tr>
-<tr class="memitem:ac796d93526955086be33030a4dac3ab1"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#ac796d93526955086be33030a4dac3ab1">VoidT</a> = typename <a class="el" href="structplayrho_1_1detail_1_1Voidify.html">Voidify</a>&lt; Ts... &gt;::type</td></tr>
-<tr class="memdesc:ac796d93526955086be33030a4dac3ab1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Void type templated alias. <br /></td></tr>
-<tr class="separator:ac796d93526955086be33030a4dac3ab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -302,6 +293,16 @@ template&lt;typename BT , unsigned int FB&gt; </td></tr>
 <tr class="memitem:a027dccab6934b3c157ef2dc01ef3ccc0"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a027dccab6934b3c157ef2dc01ef3ccc0">AngularNormalize</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; angleInRadians)</td></tr>
 <tr class="memdesc:a027dccab6934b3c157ef2dc01ef3ccc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normalizes the given angular argument. <br /></td></tr>
 <tr class="separator:a027dccab6934b3c157ef2dc01ef3ccc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b860a55d7e9a0e7c05b37787f138f0a"><td class="memTemplParams" colspan="2"><a id="a7b860a55d7e9a0e7c05b37787f138f0a"></a>
+template&lt;typename T , typename Tag &gt; </td></tr>
+<tr class="memitem:a7b860a55d7e9a0e7c05b37787f138f0a"><td class="memTemplItemLeft" align="right" valign="top">constexpr T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a7b860a55d7e9a0e7c05b37787f138f0a">UnderlyingValue</a> (<a class="el" href="classplayrho_1_1detail_1_1IndexingNamedType.html">IndexingNamedType</a>&lt; T, Tag &gt; &amp;o) noexcept</td></tr>
+<tr class="memdesc:a7b860a55d7e9a0e7c05b37787f138f0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the underlying value. <br /></td></tr>
+<tr class="separator:a7b860a55d7e9a0e7c05b37787f138f0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad04160d5c1648ce7423d94accd7f7268"><td class="memTemplParams" colspan="2"><a id="ad04160d5c1648ce7423d94accd7f7268"></a>
+template&lt;typename T , typename Tag &gt; </td></tr>
+<tr class="memitem:ad04160d5c1648ce7423d94accd7f7268"><td class="memTemplItemLeft" align="right" valign="top">constexpr const T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#ad04160d5c1648ce7423d94accd7f7268">UnderlyingValue</a> (const <a class="el" href="classplayrho_1_1detail_1_1IndexingNamedType.html">IndexingNamedType</a>&lt; T, Tag &gt; &amp;o) noexcept</td></tr>
+<tr class="memdesc:ad04160d5c1648ce7423d94accd7f7268"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the underlying value. <br /></td></tr>
+<tr class="separator:ad04160d5c1648ce7423d94accd7f7268"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa616ce7863431ef4a242233299ac2e3"><td class="memTemplParams" colspan="2"><a id="aaa616ce7863431ef4a242233299ac2e3"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:aaa616ce7863431ef4a242233299ac2e3"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#aaa616ce7863431ef4a242233299ac2e3">max_size</a> (const T &amp;arg) -&gt; decltype(arg.max_size())</td></tr>
@@ -781,7 +782,7 @@ template&lt;std::size_t N&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Tue Nov 10 2020 12:40:29 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Mon Nov 30 2020 00:11:01 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

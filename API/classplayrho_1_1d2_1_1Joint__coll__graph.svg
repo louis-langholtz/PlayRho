@@ -12,7 +12,7 @@
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title="Joint class.">
+<g id="a_node1"><a xlink:title="A joint&#45;like constraint on one or more bodies.">
 <polygon fill="#bfbfbf" stroke="black" points="10,-0.5 10,-19.5 102,-19.5 102,-0.5 10,-0.5"/>
 <text text-anchor="middle" x="56" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::Joint</text>
 </a>

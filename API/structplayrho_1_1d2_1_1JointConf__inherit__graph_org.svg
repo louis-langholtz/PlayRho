@@ -12,7 +12,7 @@
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title="Abstract base joint definition class.">
+<g id="a_node1"><a xlink:title="Base joint definition class.">
 <polygon fill="#bfbfbf" stroke="black" points="0,-293.35 0,-312.35 113,-312.35 113,-293.35 0,-293.35"/>
 <text text-anchor="middle" x="56.5" y="-300.35" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::JointConf</text>
 </a>

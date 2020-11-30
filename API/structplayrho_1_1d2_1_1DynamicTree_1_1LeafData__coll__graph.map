@@ -1,10 +1,10 @@
 <map id="playrho::d2::DynamicTree::LeafData" name="playrho::d2::DynamicTree::LeafData">
-<area shape="rect" id="node1" title="Leaf data of a tree node." alt="" coords="747,135,919,177"/>
-<area shape="rect" id="node2" href="$classplayrho_1_1strongtype_1_1IndexingNamedType.html" title=" " alt="" coords="475,26,635,97"/>
-<area shape="rect" id="node3" title=" " alt="" coords="155,5,263,32"/>
-<area shape="rect" id="node4" href="$classplayrho_1_1strongtype_1_1IndexingNamedType.html" title="An indexable, hashable, named &quot;strong type&quot; template class." alt="" coords="135,73,284,129"/>
-<area shape="rect" id="node6" href="$classplayrho_1_1strongtype_1_1IndexingNamedType.html" title=" " alt="" coords="479,121,630,191"/>
+<area shape="rect" id="node1" title="Leaf data of a tree node." alt="" coords="791,129,963,170"/>
+<area shape="rect" id="node2" href="$classplayrho_1_1detail_1_1IndexingNamedType.html" title=" " alt="" coords="485,41,679,97"/>
+<area shape="rect" id="node3" title=" " alt="" coords="161,5,269,32"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1detail_1_1IndexingNamedType.html" title="An indexable, hashable, named &quot;strong type&quot; template class." alt="" coords="135,81,295,122"/>
+<area shape="rect" id="node6" href="$classplayrho_1_1detail_1_1IndexingNamedType.html" title=" " alt="" coords="491,121,673,177"/>
 <area shape="rect" id="node5" title=" " alt="" coords="5,88,44,115"/>
-<area shape="rect" id="node7" title=" " alt="" coords="160,171,259,197"/>
-<area shape="rect" id="node8" title=" " alt="" coords="531,216,578,243"/>
+<area shape="rect" id="node7" title=" " alt="" coords="165,171,264,197"/>
+<area shape="rect" id="node8" title=" " alt="" coords="559,201,605,228"/>
 </map>

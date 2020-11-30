@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.13.1</span>
+   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('Joint_8cpp-example.html',''); initResi
 <div class="title">Joint.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<p>This is the <code>googletest</code> based unit testing file for the interfaces to <code><a class="el" href="classplayrho_1_1d2_1_1Joint.html" title="Joint class.">playrho::d2::Joint</a></code>.</p>
+<p>This is the <code>googletest</code> based unit testing file for the interfaces to <code><a class="el" href="classplayrho_1_1d2_1_1Joint.html" title="A joint-like constraint on one or more bodies.">playrho::d2::Joint</a></code>.</p>
 <div class="fragment"><div class="line"><span class="comment">/*</span></div>
 <div class="line"><span class="comment"> * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho</span></div>
 <div class="line"><span class="comment"> *</span></div>
@@ -122,43 +122,268 @@ $(document).ready(function(){initNavTree('Joint_8cpp-example.html',''); initResi
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#include &lt;PlayRho/Dynamics/Joints/Joint.hpp&gt;</span></div>
 <div class="line"> </div>
+<div class="line"><span class="preprocessor">#include &lt;PlayRho/Common/Templates.hpp&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;PlayRho/Dynamics/Joints/JointConf.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;PlayRho/Dynamics/Joints/WheelJointConf.hpp&gt;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="preprocessor">#include &lt;type_traits&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;any&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;stdexcept&gt;</span> <span class="comment">// for std::invalid_argument</span></div>
+<div class="line"><span class="preprocessor">#include &lt;type_traits&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">using namespace </span><a class="code" href="namespaceplayrho.html">playrho</a>;</div>
 <div class="line"><span class="keyword">using namespace </span><a class="code" href="namespaceplayrho_1_1d2.html">playrho::d2</a>;</div>
 <div class="line"> </div>
-<div class="line">TEST(<a name="_a0"></a><a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder</a>, Construction)</div>
+<div class="line"><span class="comment">// Macros for testing eligibility of types for construction with or assignment to Joint instances.</span></div>
+<div class="line"><span class="preprocessor">#define DEFINE_GETBODYA                                                                            \</span></div>
+<div class="line"><span class="preprocessor">    [[maybe_unused]] BodyID GetBodyA(const JointTester&amp;) noexcept                                  \</span></div>
+<div class="line"><span class="preprocessor">    {                                                                                              \</span></div>
+<div class="line"><span class="preprocessor">        return InvalidBodyID;                                                                      \</span></div>
+<div class="line"><span class="preprocessor">    }</span></div>
+<div class="line"><span class="preprocessor">#define DEFINE_GETBODYB                                                                            \</span></div>
+<div class="line"><span class="preprocessor">    [[maybe_unused]] BodyID GetBodyB(const JointTester&amp;) noexcept                                  \</span></div>
+<div class="line"><span class="preprocessor">    {                                                                                              \</span></div>
+<div class="line"><span class="preprocessor">        return InvalidBodyID;                                                                      \</span></div>
+<div class="line"><span class="preprocessor">    }</span></div>
+<div class="line"><span class="preprocessor">#define DEFINE_GETCOLLIDECONNECTED                                                                 \</span></div>
+<div class="line"><span class="preprocessor">    [[maybe_unused]] bool GetCollideConnected(const JointTester&amp;) noexcept                         \</span></div>
+<div class="line"><span class="preprocessor">    {                                                                                              \</span></div>
+<div class="line"><span class="preprocessor">        return false;                                                                              \</span></div>
+<div class="line"><span class="preprocessor">    }</span></div>
+<div class="line"><span class="preprocessor">#define DEFINE_SHIFTORIGIN                                                                         \</span></div>
+<div class="line"><span class="preprocessor">    [[maybe_unused]] bool ShiftOrigin(JointTester&amp;, Length2) noexcept                              \</span></div>
+<div class="line"><span class="preprocessor">    {                                                                                              \</span></div>
+<div class="line"><span class="preprocessor">        return false;                                                                              \</span></div>
+<div class="line"><span class="preprocessor">    }</span></div>
+<div class="line"><span class="preprocessor">#define DEFINE_INITVELOCITY                                                                        \</span></div>
+<div class="line"><span class="preprocessor">    [[maybe_unused]] void InitVelocity(JointTester&amp;, std::vector&lt;BodyConstraint&gt;&amp;,                 \</span></div>
+<div class="line"><span class="preprocessor">                                       const StepConf&amp;, const ConstraintSolverConf&amp;)               \</span></div>
+<div class="line"><span class="preprocessor">    {                                                                                              \</span></div>
+<div class="line"><span class="preprocessor">    }</span></div>
+<div class="line"><span class="preprocessor">#define DEFINE_SOLVEVELOCITY                                                                       \</span></div>
+<div class="line"><span class="preprocessor">    [[maybe_unused]] bool SolveVelocity(JointTester&amp;, std::vector&lt;BodyConstraint&gt;&amp;,                \</span></div>
+<div class="line"><span class="preprocessor">                                        const StepConf&amp;)                                           \</span></div>
+<div class="line"><span class="preprocessor">    {                                                                                              \</span></div>
+<div class="line"><span class="preprocessor">        return true;                                                                               \</span></div>
+<div class="line"><span class="preprocessor">    }</span></div>
+<div class="line"><span class="preprocessor">#define DEFINE_SOLVEPOSITION                                                                       \</span></div>
+<div class="line"><span class="preprocessor">    [[maybe_unused]] bool SolvePosition(const JointTester&amp;, std::vector&lt;BodyConstraint&gt;&amp;,          \</span></div>
+<div class="line"><span class="preprocessor">                                        const ConstraintSolverConf&amp;)                               \</span></div>
+<div class="line"><span class="preprocessor">    {                                                                                              \</span></div>
+<div class="line"><span class="preprocessor">        return true;                                                                               \</span></div>
+<div class="line"><span class="preprocessor">    }</span></div>
+<div class="line"><span class="preprocessor">#define DEFINE_EQUALS                                                                              \</span></div>
+<div class="line"><span class="preprocessor">    [[maybe_unused]] bool operator==(const JointTester&amp; lhs, const JointTester&amp; rhs) noexcept      \</span></div>
+<div class="line"><span class="preprocessor">    {                                                                                              \</span></div>
+<div class="line"><span class="preprocessor">        return lhs.number == rhs.number;                                                           \</span></div>
+<div class="line"><span class="preprocessor">    }</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">namespace </span>test {</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Namespace of type eligible for use with Joint.</span></div>
+<div class="line"><span class="keyword">namespace </span>sans_none {</div>
+<div class="line"><span class="keyword">namespace </span>{</div>
+<div class="line"><span class="keyword">struct </span>JointTester {</div>
+<div class="line">    <span class="keywordtype">int</span> number = 0;</div>
+<div class="line">};</div>
+<div class="line">DEFINE_GETBODYA;</div>
+<div class="line">DEFINE_GETBODYB;</div>
+<div class="line">DEFINE_GETCOLLIDECONNECTED;</div>
+<div class="line">DEFINE_SHIFTORIGIN;</div>
+<div class="line">DEFINE_INITVELOCITY;</div>
+<div class="line">DEFINE_SOLVEVELOCITY;</div>
+<div class="line">DEFINE_SOLVEPOSITION;</div>
+<div class="line">DEFINE_EQUALS;</div>
+<div class="line">} <span class="comment">// namespace</span></div>
+<div class="line">} <span class="comment">// namespace sans_none</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Namespace of type ineligible for use with Joint because missing GetBodyA.</span></div>
+<div class="line"><span class="keyword">namespace </span>sans_getbodya {</div>
+<div class="line"><span class="keyword">namespace </span>{</div>
+<div class="line"><span class="keyword">struct </span>JointTester {</div>
+<div class="line">    <span class="keywordtype">int</span> number = 0;</div>
+<div class="line">};</div>
+<div class="line"><span class="comment">// DEFINE_GETBODYA;</span></div>
+<div class="line">DEFINE_GETBODYB;</div>
+<div class="line">DEFINE_GETCOLLIDECONNECTED;</div>
+<div class="line">DEFINE_SHIFTORIGIN;</div>
+<div class="line">DEFINE_INITVELOCITY;</div>
+<div class="line">DEFINE_SOLVEVELOCITY;</div>
+<div class="line">DEFINE_SOLVEPOSITION;</div>
+<div class="line">DEFINE_EQUALS;</div>
+<div class="line">} <span class="comment">// namespace</span></div>
+<div class="line">} <span class="comment">// namespace sans_getbodya</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Namespace of type ineligible for use with Joint because missing GetBodyB.</span></div>
+<div class="line"><span class="keyword">namespace </span>sans_getbodyb {</div>
+<div class="line"><span class="keyword">namespace </span>{</div>
+<div class="line"><span class="keyword">struct </span>JointTester {</div>
+<div class="line">    <span class="keywordtype">int</span> number = 0;</div>
+<div class="line">};</div>
+<div class="line">DEFINE_GETBODYA;</div>
+<div class="line"><span class="comment">// DEFINE_GETBODYB;</span></div>
+<div class="line">DEFINE_GETCOLLIDECONNECTED;</div>
+<div class="line">DEFINE_SHIFTORIGIN;</div>
+<div class="line">DEFINE_INITVELOCITY;</div>
+<div class="line">DEFINE_SOLVEVELOCITY;</div>
+<div class="line">DEFINE_SOLVEPOSITION;</div>
+<div class="line">DEFINE_EQUALS;</div>
+<div class="line">} <span class="comment">// namespace</span></div>
+<div class="line">} <span class="comment">// namespace sans_getbodyb</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Namespace of type ineligible for use with Joint because missing GetCollideConnected.</span></div>
+<div class="line"><span class="keyword">namespace </span>sans_getcollideconnected {</div>
+<div class="line"><span class="keyword">namespace </span>{</div>
+<div class="line"><span class="keyword">struct </span>JointTester {</div>
+<div class="line">    <span class="keywordtype">int</span> number = 0;</div>
+<div class="line">};</div>
+<div class="line">DEFINE_GETBODYA;</div>
+<div class="line">DEFINE_GETBODYB;</div>
+<div class="line"><span class="comment">// DEFINE_GETCOLLIDECONNECTED;</span></div>
+<div class="line">DEFINE_SHIFTORIGIN;</div>
+<div class="line">DEFINE_INITVELOCITY;</div>
+<div class="line">DEFINE_SOLVEVELOCITY;</div>
+<div class="line">DEFINE_SOLVEPOSITION;</div>
+<div class="line">DEFINE_EQUALS;</div>
+<div class="line">} <span class="comment">// namespace</span></div>
+<div class="line">} <span class="comment">// namespace sans_getcollideconnected</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Namespace of type ineligible for use with Joint because missing ShiftOrigin.</span></div>
+<div class="line"><span class="keyword">namespace </span>sans_shiftorigin {</div>
+<div class="line"><span class="keyword">namespace </span>{</div>
+<div class="line"><span class="keyword">struct </span>JointTester {</div>
+<div class="line">    <span class="keywordtype">int</span> number = 0;</div>
+<div class="line">};</div>
+<div class="line">DEFINE_GETBODYA;</div>
+<div class="line">DEFINE_GETBODYB;</div>
+<div class="line">DEFINE_GETCOLLIDECONNECTED;</div>
+<div class="line"><span class="comment">// DEFINE_SHIFTORIGIN;</span></div>
+<div class="line">DEFINE_INITVELOCITY;</div>
+<div class="line">DEFINE_SOLVEVELOCITY;</div>
+<div class="line">DEFINE_SOLVEPOSITION;</div>
+<div class="line">DEFINE_EQUALS;</div>
+<div class="line">} <span class="comment">// namespace</span></div>
+<div class="line">} <span class="comment">// namespace sans_shiftorigin</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Namespace of type ineligible for use with Joint because missing InitVelocity.</span></div>
+<div class="line"><span class="keyword">namespace </span>sans_initvelocity {</div>
+<div class="line"><span class="keyword">namespace </span>{</div>
+<div class="line"><span class="keyword">struct </span>JointTester {</div>
+<div class="line">    <span class="keywordtype">int</span> number = 0;</div>
+<div class="line">};</div>
+<div class="line">DEFINE_GETBODYA;</div>
+<div class="line">DEFINE_GETBODYB;</div>
+<div class="line">DEFINE_GETCOLLIDECONNECTED;</div>
+<div class="line">DEFINE_SHIFTORIGIN;</div>
+<div class="line"><span class="comment">// DEFINE_INITVELOCITY;</span></div>
+<div class="line">DEFINE_SOLVEVELOCITY;</div>
+<div class="line">DEFINE_SOLVEPOSITION;</div>
+<div class="line">DEFINE_EQUALS;</div>
+<div class="line">} <span class="comment">// namespace</span></div>
+<div class="line">} <span class="comment">// namespace sans_initvelocity</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Namespace of type ineligible for use with Joint because missing SolveVelocity.</span></div>
+<div class="line"><span class="keyword">namespace </span>sans_solvevelocity {</div>
+<div class="line"><span class="keyword">namespace </span>{</div>
+<div class="line"><span class="keyword">struct </span>JointTester {</div>
+<div class="line">    <span class="keywordtype">int</span> number = 0;</div>
+<div class="line">};</div>
+<div class="line">DEFINE_GETBODYA;</div>
+<div class="line">DEFINE_GETBODYB;</div>
+<div class="line">DEFINE_GETCOLLIDECONNECTED;</div>
+<div class="line">DEFINE_SHIFTORIGIN;</div>
+<div class="line">DEFINE_INITVELOCITY;</div>
+<div class="line"><span class="comment">// DEFINE_SOLVEVELOCITY;</span></div>
+<div class="line">DEFINE_SOLVEPOSITION;</div>
+<div class="line">DEFINE_EQUALS;</div>
+<div class="line">} <span class="comment">// namespace</span></div>
+<div class="line">} <span class="comment">// namespace sans_solvevelocity</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Namespace of type ineligible for use with Joint because missing SolvePosition.</span></div>
+<div class="line"><span class="keyword">namespace </span>sans_solveposition {</div>
+<div class="line"><span class="keyword">namespace </span>{</div>
+<div class="line"><span class="keyword">struct </span>JointTester {</div>
+<div class="line">    <span class="keywordtype">int</span> number = 0;</div>
+<div class="line">};</div>
+<div class="line">DEFINE_GETBODYA;</div>
+<div class="line">DEFINE_GETBODYB;</div>
+<div class="line">DEFINE_GETCOLLIDECONNECTED;</div>
+<div class="line">DEFINE_SHIFTORIGIN;</div>
+<div class="line">DEFINE_INITVELOCITY;</div>
+<div class="line">DEFINE_SOLVEVELOCITY;</div>
+<div class="line"><span class="comment">// DEFINE_SOLVEPOSITION;</span></div>
+<div class="line">DEFINE_EQUALS;</div>
+<div class="line">} <span class="comment">// namespace</span></div>
+<div class="line">} <span class="comment">// namespace sans_solveposition</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Namespace of type ineligible for use with Joint because missing equals operator.</span></div>
+<div class="line"><span class="keyword">namespace </span>sans_equals {</div>
+<div class="line"><span class="keyword">namespace </span>{</div>
+<div class="line"><span class="keyword">struct </span>JointTester {</div>
+<div class="line">    <span class="keywordtype">int</span> number = 0;</div>
+<div class="line">};</div>
+<div class="line">DEFINE_GETBODYA;</div>
+<div class="line">DEFINE_GETBODYB;</div>
+<div class="line">DEFINE_GETCOLLIDECONNECTED;</div>
+<div class="line">DEFINE_SHIFTORIGIN;</div>
+<div class="line">DEFINE_INITVELOCITY;</div>
+<div class="line">DEFINE_SOLVEVELOCITY;</div>
+<div class="line">DEFINE_SOLVEPOSITION;</div>
+<div class="line"><span class="comment">// DEFINE_EQUALS;</span></div>
+<div class="line">} <span class="comment">// namespace</span></div>
+<div class="line">} <span class="comment">// namespace sans_equals</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Namespace of type ineligible for use with Joint because missing all required functions.</span></div>
+<div class="line"><span class="keyword">namespace </span>sans_all {</div>
+<div class="line"><span class="keyword">namespace </span>{</div>
+<div class="line"><span class="keyword">struct </span>JointTester {</div>
+<div class="line">    <span class="keywordtype">int</span> number = 0;</div>
+<div class="line">};</div>
+<div class="line">} <span class="comment">// namespace</span></div>
+<div class="line">} <span class="comment">// namespace sans_all</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Compile-time test the different combos defined above...</span></div>
+<div class="line">static_assert(<a name="_a0"></a><a class="code" href="structplayrho_1_1d2_1_1IsValidJointType.html">IsValidJointType&lt;sans_none::JointTester&gt;::value</a>);</div>
+<div class="line">static_assert(!<a class="code" href="structplayrho_1_1d2_1_1IsValidJointType.html">IsValidJointType&lt;sans_getbodya::JointTester&gt;::value</a>);</div>
+<div class="line">static_assert(!<a class="code" href="structplayrho_1_1d2_1_1IsValidJointType.html">IsValidJointType&lt;sans_getbodyb::JointTester&gt;::value</a>);</div>
+<div class="line">static_assert(!<a class="code" href="structplayrho_1_1d2_1_1IsValidJointType.html">IsValidJointType&lt;sans_getcollideconnected::JointTester&gt;::value</a>);</div>
+<div class="line">static_assert(!<a class="code" href="structplayrho_1_1d2_1_1IsValidJointType.html">IsValidJointType&lt;sans_shiftorigin::JointTester&gt;::value</a>);</div>
+<div class="line">static_assert(!<a class="code" href="structplayrho_1_1d2_1_1IsValidJointType.html">IsValidJointType&lt;sans_initvelocity::JointTester&gt;::value</a>);</div>
+<div class="line">static_assert(!<a class="code" href="structplayrho_1_1d2_1_1IsValidJointType.html">IsValidJointType&lt;sans_solvevelocity::JointTester&gt;::value</a>);</div>
+<div class="line">static_assert(!<a class="code" href="structplayrho_1_1d2_1_1IsValidJointType.html">IsValidJointType&lt;sans_solveposition::JointTester&gt;::value</a>);</div>
+<div class="line">static_assert(!<a class="code" href="structplayrho_1_1d2_1_1IsValidJointType.html">IsValidJointType&lt;sans_equals::JointTester&gt;::value</a>);</div>
+<div class="line">static_assert(!<a class="code" href="structplayrho_1_1d2_1_1IsValidJointType.html">IsValidJointType&lt;sans_all::JointTester&gt;::value</a>);</div>
+<div class="line"> </div>
+<div class="line">} <span class="comment">// namespace test</span></div>
+<div class="line"> </div>
+<div class="line">TEST(<a name="_a1"></a><a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder</a>, Construction)</div>
 <div class="line">{</div>
-<div class="line">    EXPECT_EQ(<a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder&lt;JointConf&gt;</a>{}.<a name="a1"></a><a class="code" href="structplayrho_1_1d2_1_1JointConf.html#a9363d310f4854dcac38ad3849cbcc58b">bodyA</a>, <a name="a2"></a><a class="code" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a>);</div>
-<div class="line">    EXPECT_EQ(<a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder&lt;JointConf&gt;</a>{}.<a name="a3"></a><a class="code" href="structplayrho_1_1d2_1_1JointConf.html#aa97b967e6f53d41ea52b1af0631e6ea4">bodyB</a>, <a class="code" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a>);</div>
-<div class="line">    EXPECT_EQ(<a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder&lt;JointConf&gt;</a>{}.<a name="a4"></a><a class="code" href="structplayrho_1_1d2_1_1JointConf.html#aaa7f7c919649416cb14a4abb8deacc33">collideConnected</a>, <span class="keyword">false</span>);</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder&lt;JointConf&gt;</a>{}.<a name="a2"></a><a class="code" href="structplayrho_1_1d2_1_1JointConf.html#a9363d310f4854dcac38ad3849cbcc58b">bodyA</a>, <a name="a3"></a><a class="code" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a>);</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder&lt;JointConf&gt;</a>{}.<a name="a4"></a><a class="code" href="structplayrho_1_1d2_1_1JointConf.html#aa97b967e6f53d41ea52b1af0631e6ea4">bodyB</a>, <a class="code" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a>);</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder&lt;JointConf&gt;</a>{}.<a name="a5"></a><a class="code" href="structplayrho_1_1d2_1_1JointConf.html#aaa7f7c919649416cb14a4abb8deacc33">collideConnected</a>, <span class="keyword">false</span>);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line">TEST(<a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder</a>, UseBodyA)</div>
 <div class="line">{</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> b = <span class="keyword">static_cast&lt;</span><a name="_a5"></a><a class="code" href="classplayrho_1_1strongtype_1_1IndexingNamedType.html">BodyID</a><span class="keyword">&gt;</span>(2);</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> b = <span class="keyword">static_cast&lt;</span><a name="_a6"></a><a class="code" href="classplayrho_1_1detail_1_1IndexingNamedType.html">BodyID</a><span class="keyword">&gt;</span>(2);</div>
 <div class="line">    EXPECT_NE(<a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder&lt;JointConf&gt;</a>{}.<a class="code" href="structplayrho_1_1d2_1_1JointConf.html#a9363d310f4854dcac38ad3849cbcc58b">bodyA</a>, b);</div>
-<div class="line">    EXPECT_EQ(<a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder&lt;JointConf&gt;</a>{}.<a name="a6"></a><a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html#a30d41149145a1adea49f497e169a8e20">UseBodyA</a>(b).bodyA, b);</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder&lt;JointConf&gt;</a>{}.<a name="a7"></a><a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html#a30d41149145a1adea49f497e169a8e20">UseBodyA</a>(b).bodyA, b);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line">TEST(<a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder</a>, UseBodyB)</div>
 <div class="line">{</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> b = <span class="keyword">static_cast&lt;</span><a class="code" href="classplayrho_1_1strongtype_1_1IndexingNamedType.html">BodyID</a><span class="keyword">&gt;</span>(77);</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> b = <span class="keyword">static_cast&lt;</span><a class="code" href="classplayrho_1_1detail_1_1IndexingNamedType.html">BodyID</a><span class="keyword">&gt;</span>(77);</div>
 <div class="line">    EXPECT_NE(<a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder&lt;JointConf&gt;</a>{}.<a class="code" href="structplayrho_1_1d2_1_1JointConf.html#aa97b967e6f53d41ea52b1af0631e6ea4">bodyB</a>, b);</div>
-<div class="line">    EXPECT_EQ(<a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder&lt;JointConf&gt;</a>{}.<a name="a7"></a><a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html#a7485835c7c2b8833eee260621680e0b3">UseBodyB</a>(b).bodyB, b);</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder&lt;JointConf&gt;</a>{}.<a name="a8"></a><a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html#a7485835c7c2b8833eee260621680e0b3">UseBodyB</a>(b).bodyB, b);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line">TEST(<a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder</a>, UseCollideConnected)</div>
 <div class="line">{</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> value = <span class="keyword">true</span>;</div>
 <div class="line">    EXPECT_NE(<a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder&lt;JointConf&gt;</a>{}.<a class="code" href="structplayrho_1_1d2_1_1JointConf.html#aaa7f7c919649416cb14a4abb8deacc33">collideConnected</a>, value);</div>
-<div class="line">    EXPECT_EQ(<a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder&lt;JointConf&gt;</a>{}.<a name="a8"></a><a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html#a3df0b0d793cf72b42fdefae06f5f22ef">UseCollideConnected</a>(value).collideConnected, value);</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder&lt;JointConf&gt;</a>{}.<a name="a9"></a><a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html#a3df0b0d793cf72b42fdefae06f5f22ef">UseCollideConnected</a>(value).collideConnected, value);</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line">TEST(<a name="_a9"></a><a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, ByteSize)</div>
+<div class="line">TEST(<a name="_a10"></a><a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, ByteSize)</div>
 <div class="line">{</div>
 <div class="line">    <span class="comment">// Check size at test runtime instead of compile-time via static_assert to avoid stopping</span></div>
 <div class="line">    <span class="comment">// builds and to report actual size rather than just reporting that expected size is wrong.</span></div>
@@ -176,7 +401,7 @@ $(document).ready(function(){initNavTree('Joint_8cpp-example.html',''); initResi
 <div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, Traits)</div>
 <div class="line">{</div>
 <div class="line">    EXPECT_FALSE(<a class="code" href="namespaceplayrho.html#a4708d38a866c6ebc70da3939d5edc8dc">IsIterable&lt;Joint&gt;::value</a>);</div>
-<div class="line">    EXPECT_FALSE((<a name="_a10"></a><a class="code" href="structplayrho_1_1IsAddable.html">IsAddable&lt;Joint&gt;::value</a>));</div>
+<div class="line">    EXPECT_FALSE((<a name="_a11"></a><a class="code" href="structplayrho_1_1IsAddable.html">IsAddable&lt;Joint&gt;::value</a>));</div>
 <div class="line">    EXPECT_FALSE((<a class="code" href="structplayrho_1_1IsAddable.html">IsAddable&lt;Joint, Joint&gt;::value</a>));</div>
 <div class="line"> </div>
 <div class="line">    EXPECT_TRUE(std::is_default_constructible&lt;Joint&gt;::value);</div>
@@ -194,29 +419,30 @@ $(document).ready(function(){initNavTree('Joint_8cpp-example.html',''); initResi
 <div class="line">    EXPECT_TRUE(std::is_destructible&lt;Joint&gt;::value);</div>
 <div class="line">    EXPECT_TRUE(std::is_nothrow_destructible&lt;Joint&gt;::value);</div>
 <div class="line">    EXPECT_FALSE(std::is_trivially_destructible&lt;Joint&gt;::value);</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// Double parenthesis needed for proper macro expansion.</span></div>
+<div class="line">    EXPECT_TRUE((std::is_constructible&lt;Joint, int&gt;::value));</div>
+<div class="line">    EXPECT_TRUE((std::is_constructible&lt;Joint, char*&gt;::value));</div>
+<div class="line">    EXPECT_TRUE((std::is_constructible&lt;Joint, test::sans_none::JointTester&gt;::value));</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="preprocessor">#if 0</span></div>
-<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, StaticIsOkay)</div>
+<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, DefaultConstructor)</div>
 <div class="line">{</div>
-<div class="line">    <span class="keyword">using</span> Builder = <a class="code" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder&lt;JointConf&gt;</a>;</div>
-<div class="line">    EXPECT_FALSE(Joint::IsOkay(Builder{JointType::Unknown}));</div>
-<div class="line">    EXPECT_FALSE(Joint::IsOkay(Builder{JointType::Friction}));</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> b1 = <span class="keyword">reinterpret_cast&lt;</span><a name="_a11"></a><a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>*<span class="keyword">&gt;</span>(0x1);</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> b2 = <span class="keyword">reinterpret_cast&lt;</span><a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>*<span class="keyword">&gt;</span>(0x2);</div>
-<div class="line">    EXPECT_TRUE(Joint::IsOkay(Builder{JointType::Friction}.UseBodyA(b1)));</div>
-<div class="line">    EXPECT_TRUE(Joint::IsOkay(Builder{JointType::Friction}.UseBodyA(b2)));</div>
-<div class="line">    EXPECT_TRUE(Joint::IsOkay(Builder{JointType::Friction}.UseBodyB(b1)));</div>
-<div class="line">    EXPECT_TRUE(Joint::IsOkay(Builder{JointType::Friction}.UseBodyB(b2)));</div>
+<div class="line">    <span class="keyword">const</span> <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> joint;</div>
+<div class="line">    EXPECT_TRUE(joint == joint);</div>
+<div class="line">    EXPECT_FALSE(joint != joint);</div>
+<div class="line">    EXPECT_EQ(<a name="a12"></a><a class="code" href="namespaceplayrho_1_1d2.html#a22da41d3ff9c82d608633673612b8821">GetBodyA</a>(joint), <a class="code" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a>);</div>
+<div class="line">    EXPECT_EQ(<a name="a13"></a><a class="code" href="namespaceplayrho_1_1d2.html#a232909af8c24e7a01804a0278c6cfef0">GetBodyB</a>(joint), <a class="code" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a>);</div>
+<div class="line">    EXPECT_FALSE(<a name="a14"></a><a class="code" href="namespaceplayrho_1_1d2.html#ad982ed0433982ac18703569f42f4037c">GetCollideConnected</a>(joint));</div>
+<div class="line">    EXPECT_FALSE(joint.<a name="a15"></a><a class="code" href="classplayrho_1_1d2_1_1Joint.html#ad463d7b16f9fe80ab5f3368734bf75db">has_value</a>());</div>
 <div class="line">}</div>
-<div class="line"><span class="preprocessor">#endif</span></div>
 <div class="line"> </div>
 <div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, LimitStateToStringFF)</div>
 <div class="line">{</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> equalLimitsString = std::string(<a name="a12"></a><a class="code" href="namespaceplayrho_1_1d2.html#af84e52fdf9a9b10e6363886f26235828">ToString</a>(<a name="a13"></a><a class="code" href="namespaceplayrho_1_1d2.html#ab84776203d1fea7dff2004752c36d5fca1f7b8a0fe66401e83219c7a6b7271e77">LimitState::e_equalLimits</a>));</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> inactiveLimitString = std::string(<a class="code" href="namespaceplayrho_1_1d2.html#af84e52fdf9a9b10e6363886f26235828">ToString</a>(LimitState::e_inactiveLimit));</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> upperLimitsString = std::string(<a class="code" href="namespaceplayrho_1_1d2.html#af84e52fdf9a9b10e6363886f26235828">ToString</a>(LimitState::e_atUpperLimit));</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> lowerLimitsString = std::string(<a class="code" href="namespaceplayrho_1_1d2.html#af84e52fdf9a9b10e6363886f26235828">ToString</a>(LimitState::e_atLowerLimit));</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> equalLimitsString = std::string(<a name="a16"></a><a class="code" href="namespaceplayrho_1_1d2.html#a365dbc3fb240ef6055a4e52d2c36c577">ToString</a>(<a name="a17"></a><a class="code" href="namespaceplayrho_1_1d2.html#ab84776203d1fea7dff2004752c36d5fca1f7b8a0fe66401e83219c7a6b7271e77">LimitState::e_equalLimits</a>));</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> inactiveLimitString = std::string(<a class="code" href="namespaceplayrho_1_1d2.html#a365dbc3fb240ef6055a4e52d2c36c577">ToString</a>(LimitState::e_inactiveLimit));</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> upperLimitsString = std::string(<a class="code" href="namespaceplayrho_1_1d2.html#a365dbc3fb240ef6055a4e52d2c36c577">ToString</a>(LimitState::e_atUpperLimit));</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> lowerLimitsString = std::string(<a class="code" href="namespaceplayrho_1_1d2.html#a365dbc3fb240ef6055a4e52d2c36c577">ToString</a>(LimitState::e_atLowerLimit));</div>
 <div class="line"> </div>
 <div class="line">    EXPECT_FALSE(equalLimitsString.empty());</div>
 <div class="line">    EXPECT_FALSE(inactiveLimitString.empty());</div>
@@ -230,37 +456,13 @@ $(document).ready(function(){initNavTree('Joint_8cpp-example.html',''); initResi
 <div class="line">    EXPECT_EQ(names.size(), decltype(names.size()){4});</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">namespace </span>{</div>
-<div class="line"> </div>
-<div class="line"><span class="keyword">struct </span>JointTester {</div>
-<div class="line">    <span class="keywordtype">int</span> number = 0;</div>
-<div class="line">};</div>
-<div class="line"> </div>
-<div class="line"><span class="keywordtype">bool</span> <a name="a14"></a><a class="code" href="namespaceplayrho_1_1d2.html#a1086ac024e4e129259c3c1b4f7c5a6c4">ShiftOrigin</a>(JointTester&amp;, <a name="_a15"></a><a class="code" href="structplayrho_1_1Vector.html">Length2</a>) noexcept</div>
+<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, <a name="a18"></a><a class="code" href="namespaceplayrho_1_1d2.html#a732fa5d1da2c5d3292bdbcfaab4f971d">TypeCast</a>)</div>
 <div class="line">{</div>
-<div class="line">    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line">}</div>
-<div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> <a name="a16"></a><a class="code" href="namespaceplayrho_1_1d2.html#af55559c8bf6c930582040cf3321b691f">InitVelocity</a>(JointTester&amp;, std::vector&lt;BodyConstraint&gt;&amp;, <span class="keyword">const</span> <a name="_a17"></a><a class="code" href="structplayrho_1_1StepConf.html">StepConf</a>&amp;,</div>
-<div class="line">                  <span class="keyword">const</span> <a name="_a18"></a><a class="code" href="structplayrho_1_1ConstraintSolverConf.html">ConstraintSolverConf</a>&amp;)</div>
-<div class="line">{</div>
-<div class="line">}</div>
-<div class="line"> </div>
-<div class="line"><span class="keywordtype">bool</span> <a name="a19"></a><a class="code" href="namespaceplayrho_1_1d2.html#a657f69a1e69282dd357d92926b766211">SolveVelocity</a>(JointTester&amp;, std::vector&lt;BodyConstraint&gt;&amp;, <span class="keyword">const</span> <a class="code" href="structplayrho_1_1StepConf.html">StepConf</a>&amp;)</div>
-<div class="line">{</div>
-<div class="line">    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line">}</div>
-<div class="line"> </div>
-<div class="line"><span class="keywordtype">bool</span> <a name="a20"></a><a class="code" href="namespaceplayrho_1_1d2.html#a2c85157ff9400e7126ef9959f062b347">SolvePosition</a>(<span class="keyword">const</span> JointTester&amp;, std::vector&lt;BodyConstraint&gt;&amp;, <span class="keyword">const</span> <a class="code" href="structplayrho_1_1ConstraintSolverConf.html">ConstraintSolverConf</a>&amp;)</div>
-<div class="line">{</div>
-<div class="line">    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line">}</div>
-<div class="line"> </div>
-<div class="line">} <span class="comment">// namespace</span></div>
-<div class="line"> </div>
-<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, <a name="a21"></a><a class="code" href="namespaceplayrho_1_1d2.html#a732fa5d1da2c5d3292bdbcfaab4f971d">TypeCast</a>)</div>
-<div class="line">{</div>
-<div class="line">    std::any test;</div>
+<div class="line">    <span class="keywordtype">int</span> foo = 5;</div>
+<div class="line">    std::any test{foo};</div>
+<div class="line">    std::string roo = <span class="stringliteral">&quot;wow&quot;</span>;</div>
+<div class="line">    test = roo;</div>
+<div class="line">    test = std::any{foo};</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> joint = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>{};</div>
 <div class="line">        <span class="keyword">auto</span> value = <span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">int</span>*<span class="keyword">&gt;</span>(<span class="keyword">nullptr</span>);</div>
@@ -285,80 +487,220 @@ $(document).ready(function(){initNavTree('Joint_8cpp-example.html',''); initResi
 <div class="line">    }</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keyword">auto</span> number = 10;</div>
-<div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> original = JointTester{number};</div>
+<div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> original = test::sans_none::JointTester{number};</div>
 <div class="line">        EXPECT_EQ(original.number, number);</div>
 <div class="line">        <span class="keyword">auto</span> joint = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>{original};</div>
+<div class="line">        EXPECT_TRUE(joint.<a class="code" href="classplayrho_1_1d2_1_1Joint.html#ad463d7b16f9fe80ab5f3368734bf75db">has_value</a>());</div>
 <div class="line">        EXPECT_THROW(TypeCast&lt;int&gt;(joint), std::bad_cast);</div>
-<div class="line">        <span class="keyword">auto</span> value = JointTester{};</div>
-<div class="line">        EXPECT_NO_THROW(value = TypeCast&lt;JointTester&gt;(joint));</div>
+<div class="line">        <span class="keyword">auto</span> value = test::sans_none::JointTester{};</div>
+<div class="line">        EXPECT_NO_THROW(value = TypeCast&lt;test::sans_none::JointTester&gt;(joint));</div>
 <div class="line">        EXPECT_EQ(value.number, number);</div>
-<div class="line">        EXPECT_NO_THROW(TypeCast&lt;JointTester&amp;&gt;(joint).number = 3);</div>
-<div class="line">        EXPECT_EQ(TypeCast&lt;const JointTester&amp;&gt;(joint).number, 3);</div>
-<div class="line">        EXPECT_NO_THROW(value = TypeCast&lt;JointTester&gt;(joint));</div>
+<div class="line">        EXPECT_NO_THROW(TypeCast&lt;test::sans_none::JointTester&amp;&gt;(joint).number = 3);</div>
+<div class="line">        EXPECT_EQ(TypeCast&lt;const test::sans_none::JointTester&amp;&gt;(joint).number, 3);</div>
+<div class="line">        EXPECT_NO_THROW(value = TypeCast&lt;test::sans_none::JointTester&gt;(joint));</div>
 <div class="line">        EXPECT_EQ(value.number, 3);</div>
-<div class="line">        EXPECT_NO_THROW(TypeCast&lt;JointTester&gt;(&amp;joint)-&gt;number = 4);</div>
-<div class="line">        EXPECT_EQ(TypeCast&lt;const JointTester&gt;(joint).number, 4);</div>
+<div class="line">        EXPECT_NO_THROW(TypeCast&lt;test::sans_none::JointTester&gt;(&amp;joint)-&gt;number = 4);</div>
+<div class="line">        EXPECT_EQ(TypeCast&lt;const test::sans_none::JointTester&gt;(joint).number, 4);</div>
+<div class="line">        EXPECT_TRUE(joint == joint);</div>
+<div class="line">        EXPECT_FALSE(joint != joint);</div>
+<div class="line">        EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a22da41d3ff9c82d608633673612b8821">GetBodyA</a>(joint), <a class="code" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a>);</div>
+<div class="line">        EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a232909af8c24e7a01804a0278c6cfef0">GetBodyB</a>(joint), <a class="code" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a>);</div>
+<div class="line">        EXPECT_FALSE(<a class="code" href="namespaceplayrho_1_1d2.html#ad982ed0433982ac18703569f42f4037c">GetCollideConnected</a>(joint));</div>
 <div class="line">    }</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, ForConstantDataTypeCastIsLikeAnyCast)</div>
 <div class="line">{</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> foo = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>{JointTester{1}};</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> bar = std::any{JointTester{1}};</div>
-<div class="line">    EXPECT_TRUE(TypeCast&lt;const JointTester*&gt;(&amp;foo) == <span class="keyword">nullptr</span>);</div>
-<div class="line">    EXPECT_TRUE(std::any_cast&lt;const JointTester*&gt;(&amp;bar) == <span class="keyword">nullptr</span>);</div>
-<div class="line">    EXPECT_TRUE(TypeCast&lt;JointTester*&gt;(&amp;foo) == <span class="keyword">nullptr</span>);</div>
-<div class="line">    EXPECT_TRUE(std::any_cast&lt;JointTester*&gt;(&amp;bar) == <span class="keyword">nullptr</span>);</div>
-<div class="line">    EXPECT_TRUE(TypeCast&lt;const JointTester&gt;(&amp;foo) != <span class="keyword">nullptr</span>);</div>
-<div class="line">    EXPECT_TRUE(std::any_cast&lt;const JointTester&gt;(&amp;bar) != <span class="keyword">nullptr</span>);</div>
-<div class="line">    EXPECT_TRUE(TypeCast&lt;JointTester&gt;(&amp;foo) != <span class="keyword">nullptr</span>);</div>
-<div class="line">    EXPECT_TRUE(std::any_cast&lt;JointTester&gt;(&amp;bar) != <span class="keyword">nullptr</span>);</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> foo = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>{test::sans_none::JointTester{1}};</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> bar = std::any{test::sans_none::JointTester{1}};</div>
+<div class="line">    EXPECT_TRUE(TypeCast&lt;const test::sans_none::JointTester*&gt;(&amp;foo) == <span class="keyword">nullptr</span>);</div>
+<div class="line">    EXPECT_TRUE(std::any_cast&lt;const test::sans_none::JointTester*&gt;(&amp;bar) == <span class="keyword">nullptr</span>);</div>
+<div class="line">    EXPECT_TRUE(TypeCast&lt;test::sans_none::JointTester*&gt;(&amp;foo) == <span class="keyword">nullptr</span>);</div>
+<div class="line">    EXPECT_TRUE(std::any_cast&lt;test::sans_none::JointTester*&gt;(&amp;bar) == <span class="keyword">nullptr</span>);</div>
+<div class="line">    EXPECT_TRUE(TypeCast&lt;const test::sans_none::JointTester&gt;(&amp;foo) != <span class="keyword">nullptr</span>);</div>
+<div class="line">    EXPECT_TRUE(std::any_cast&lt;const test::sans_none::JointTester&gt;(&amp;bar) != <span class="keyword">nullptr</span>);</div>
+<div class="line">    EXPECT_TRUE(TypeCast&lt;test::sans_none::JointTester&gt;(&amp;foo) != <span class="keyword">nullptr</span>);</div>
+<div class="line">    EXPECT_TRUE(std::any_cast&lt;test::sans_none::JointTester&gt;(&amp;bar) != <span class="keyword">nullptr</span>);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, ForMutableDataTypeCastIsLikeAnyCast)</div>
 <div class="line">{</div>
-<div class="line">    <span class="keyword">auto</span> foo = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>{JointTester{1}};</div>
-<div class="line">    <span class="keyword">auto</span> bar = std::any{JointTester{1}};</div>
-<div class="line">    EXPECT_TRUE(TypeCast&lt;const JointTester*&gt;(&amp;foo) == <span class="keyword">nullptr</span>);</div>
-<div class="line">    EXPECT_TRUE(std::any_cast&lt;const JointTester*&gt;(&amp;bar) == <span class="keyword">nullptr</span>);</div>
-<div class="line">    EXPECT_TRUE(TypeCast&lt;JointTester*&gt;(&amp;foo) == <span class="keyword">nullptr</span>);</div>
-<div class="line">    EXPECT_TRUE(std::any_cast&lt;JointTester*&gt;(&amp;bar) == <span class="keyword">nullptr</span>);</div>
-<div class="line">    EXPECT_TRUE(TypeCast&lt;const JointTester&gt;(&amp;foo) != <span class="keyword">nullptr</span>);</div>
-<div class="line">    EXPECT_TRUE(std::any_cast&lt;const JointTester&gt;(&amp;bar) != <span class="keyword">nullptr</span>);</div>
-<div class="line">    EXPECT_TRUE(TypeCast&lt;JointTester&gt;(&amp;foo) != <span class="keyword">nullptr</span>);</div>
-<div class="line">    EXPECT_TRUE(std::any_cast&lt;JointTester&gt;(&amp;bar) != <span class="keyword">nullptr</span>);</div>
+<div class="line">    <span class="keyword">auto</span> foo = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>{test::sans_none::JointTester{1}};</div>
+<div class="line">    <span class="keyword">auto</span> bar = std::any{test::sans_none::JointTester{1}};</div>
+<div class="line">    EXPECT_TRUE(TypeCast&lt;const test::sans_none::JointTester*&gt;(&amp;foo) == <span class="keyword">nullptr</span>);</div>
+<div class="line">    EXPECT_TRUE(std::any_cast&lt;const test::sans_none::JointTester*&gt;(&amp;bar) == <span class="keyword">nullptr</span>);</div>
+<div class="line">    EXPECT_TRUE(TypeCast&lt;test::sans_none::JointTester*&gt;(&amp;foo) == <span class="keyword">nullptr</span>);</div>
+<div class="line">    EXPECT_TRUE(std::any_cast&lt;test::sans_none::JointTester*&gt;(&amp;bar) == <span class="keyword">nullptr</span>);</div>
+<div class="line">    EXPECT_TRUE(TypeCast&lt;const test::sans_none::JointTester&gt;(&amp;foo) != <span class="keyword">nullptr</span>);</div>
+<div class="line">    EXPECT_TRUE(std::any_cast&lt;const test::sans_none::JointTester&gt;(&amp;bar) != <span class="keyword">nullptr</span>);</div>
+<div class="line">    EXPECT_TRUE(TypeCast&lt;test::sans_none::JointTester&gt;(&amp;foo) != <span class="keyword">nullptr</span>);</div>
+<div class="line">    EXPECT_TRUE(std::any_cast&lt;test::sans_none::JointTester&gt;(&amp;bar) != <span class="keyword">nullptr</span>);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, <a name="a19"></a><a class="code" href="namespaceplayrho_1_1d2.html#a262919449fdc976d24c1b57d5f764610">GetLinearReaction</a>)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keyword">auto</span> result = <a name="_a20"></a><a class="code" href="structplayrho_1_1Vector.html">Momentum2</a>{};</div>
+<div class="line">    EXPECT_NO_THROW(result = <a class="code" href="namespaceplayrho_1_1d2.html#a262919449fdc976d24c1b57d5f764610">GetLinearReaction</a>(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>{}));</div>
+<div class="line">    EXPECT_EQ(result, <a name="a21"></a><a class="code" href="namespaceplayrho.html#a1fa6ffb2e67c2e2f620eed088412b146">Momentum2</a>());</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, <a name="a22"></a><a class="code" href="namespaceplayrho_1_1d2.html#af7938377c565a183168613b640e651e8">GetAngularReaction</a>)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keyword">auto</span> result = <a class="code" href="group__PhysicalQuantities.html#ga3537d441743bb2f96c612296424f1e43">AngularMomentum</a>{};</div>
+<div class="line">    EXPECT_NO_THROW(result = <a class="code" href="namespaceplayrho_1_1d2.html#af7938377c565a183168613b640e651e8">GetAngularReaction</a>(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>{}));</div>
+<div class="line">    EXPECT_EQ(result, <a name="a23"></a><a class="code" href="group__PhysicalQuantities.html#ga3537d441743bb2f96c612296424f1e43">AngularMomentum</a>());</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, SetMotorSpeedThrows)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keyword">auto</span> joint = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>{};</div>
+<div class="line">    EXPECT_THROW(<a name="a24"></a><a class="code" href="namespaceplayrho_1_1d2.html#a7baeaf66a5496fad0d16eb1b28823f47">SetMotorSpeed</a>(joint, 1_rpm), std::invalid_argument);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, SetMaxMotorForceThrows)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keyword">auto</span> joint = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>{};</div>
+<div class="line">    EXPECT_THROW(<a name="a25"></a><a class="code" href="namespaceplayrho_1_1d2.html#ae9cea0c1cb352dc91e0f77e3b4202d5f">SetMaxMotorForce</a>(joint, 2_N), std::invalid_argument);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, SetMaxMotorTorqueThrows)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keyword">auto</span> joint = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>{};</div>
+<div class="line">    EXPECT_THROW(<a name="a26"></a><a class="code" href="namespaceplayrho_1_1d2.html#ac17a5d01b67c5e42c42cb0b3c2e01905">SetMaxMotorTorque</a>(joint, 2_Nm), std::invalid_argument);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, SetLinearLimitsThrows)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keyword">auto</span> joint = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>{};</div>
+<div class="line">    EXPECT_THROW(<a name="a27"></a><a class="code" href="namespaceplayrho_1_1d2.html#a0c848f01e3faf56ecccc16c8819290ad">SetLinearLimits</a>(joint, 2_m, 4_m), std::invalid_argument);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, SetAngularLimitsThrows)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keyword">auto</span> joint = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>{};</div>
+<div class="line">    EXPECT_THROW(<a name="a28"></a><a class="code" href="namespaceplayrho_1_1d2.html#a054f7637a988ddb54b4dd83ba320a172">SetAngularLimits</a>(joint, 2_deg, 4_deg), std::invalid_argument);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, IsLimitEnabledThrows)</div>
+<div class="line">{</div>
+<div class="line">    EXPECT_THROW(<a name="a29"></a><a class="code" href="namespaceplayrho_1_1d2.html#a38af51869b6c1d87b93123a4a790f874">IsLimitEnabled</a>(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>{}), std::invalid_argument);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, EnableLimitThrows)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keyword">auto</span> joint = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>{};</div>
+<div class="line">    EXPECT_THROW(<a name="a30"></a><a class="code" href="namespaceplayrho_1_1d2.html#a8736e94424a5e0f88a983a4d39097e4d">EnableLimit</a>(joint, <span class="keyword">true</span>), std::invalid_argument);</div>
+<div class="line">    EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a8736e94424a5e0f88a983a4d39097e4d">EnableLimit</a>(joint, <span class="keyword">false</span>), std::invalid_argument);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, IsMotorEnabledThrows)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keyword">auto</span> joint = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>{};</div>
+<div class="line">    EXPECT_THROW(<a name="a31"></a><a class="code" href="namespaceplayrho_1_1d2.html#ad5b4dd16b94cfe0d1f5ce07a01cc598d">IsMotorEnabled</a>(joint), std::invalid_argument);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, EnableMotorThrows)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keyword">auto</span> joint = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>{};</div>
+<div class="line">    EXPECT_THROW(<a name="a32"></a><a class="code" href="namespaceplayrho_1_1d2.html#a07028eef8277c8ce9f1e6a0004d19638">EnableMotor</a>(joint, <span class="keyword">true</span>), std::invalid_argument);</div>
+<div class="line">    EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a07028eef8277c8ce9f1e6a0004d19638">EnableMotor</a>(joint, <span class="keyword">false</span>), std::invalid_argument);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, GetLimitStateThrows)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keyword">auto</span> joint = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>{};</div>
+<div class="line">    EXPECT_THROW(<a name="a33"></a><a class="code" href="namespaceplayrho_1_1d2.html#a96e6945a982e424009580a3275d9aa45">GetLimitState</a>(joint), std::invalid_argument);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, EqualsOperator)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> j0 = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>(<a name="_a34"></a><a class="code" href="structplayrho_1_1d2_1_1WheelJointConf.html">WheelJointConf</a>());</div>
+<div class="line">    EXPECT_TRUE(j0 == j0);</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> conf = <a class="code" href="structplayrho_1_1d2_1_1WheelJointConf.html">WheelJointConf</a>{};</div>
+<div class="line">        conf.<a name="a35"></a><a class="code" href="structplayrho_1_1d2_1_1WheelJointConf.html#a4dc88db92528abe99f69a29a8eb8f827">localAnchorA</a> = <a class="code" href="structplayrho_1_1Vector.html">Length2</a>{1.2_m, -3_m};</div>
+<div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> j1 = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>(conf);</div>
+<div class="line">        EXPECT_TRUE(j1 == j1);</div>
+<div class="line">        EXPECT_FALSE(j0 == j1);</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> conf = <a class="code" href="structplayrho_1_1d2_1_1WheelJointConf.html">WheelJointConf</a>{};</div>
+<div class="line">        conf.<a name="a36"></a><a class="code" href="structplayrho_1_1d2_1_1WheelJointConf.html#a8bcbb0908f80409feaa1ee94834f0204">localAnchorB</a> = <a class="code" href="structplayrho_1_1Vector.html">Length2</a>{1.2_m, -3_m};</div>
+<div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> j1 = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>(conf);</div>
+<div class="line">        EXPECT_TRUE(j1 == j1);</div>
+<div class="line">        EXPECT_FALSE(j0 == j1);</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> conf = <a class="code" href="structplayrho_1_1d2_1_1WheelJointConf.html">WheelJointConf</a>{};</div>
+<div class="line">        conf.<a name="a37"></a><a class="code" href="structplayrho_1_1d2_1_1WheelJointConf.html#a754cc95814f79f32891079314488da37">motorSpeed</a> = 0.12_rpm;</div>
+<div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> j1 = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>(conf);</div>
+<div class="line">        EXPECT_TRUE(j1 == j1);</div>
+<div class="line">        EXPECT_FALSE(j0 == j1);</div>
+<div class="line">    }</div>
+<div class="line">    <span class="comment">// TODO: test remaining fields.</span></div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>, NotEqualsOperator)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> j0 = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>(<a class="code" href="structplayrho_1_1d2_1_1WheelJointConf.html">WheelJointConf</a>());</div>
+<div class="line">    EXPECT_FALSE(j0 != j0);</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> conf = <a class="code" href="structplayrho_1_1d2_1_1WheelJointConf.html">WheelJointConf</a>{};</div>
+<div class="line">        conf.<a name="a38"></a><a class="code" href="structplayrho_1_1d2_1_1WheelJointConf.html#ac121e206ac0a526e5712f10f90cc5abb">frequency</a> = 13_Hz;</div>
+<div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> j1 = <a class="code" href="classplayrho_1_1d2_1_1Joint.html">Joint</a>(conf);</div>
+<div class="line">        EXPECT_FALSE(j1 != j1);</div>
+<div class="line">        EXPECT_TRUE(j0 != j1);</div>
+<div class="line">    }</div>
+<div class="line">    <span class="comment">// TODO: test remaining fields.</span></div>
 <div class="line">}</div>
 </div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="astructplayrho_1_1d2_1_1JointBuilder_html_a30d41149145a1adea49f497e169a8e20"><div class="ttname"><a href="structplayrho_1_1d2_1_1JointBuilder.html#a30d41149145a1adea49f497e169a8e20">playrho::d2::JointBuilder::UseBodyA</a></div><div class="ttdeci">constexpr reference UseBodyA(BodyID b) noexcept</div><div class="ttdoc">Use value for body A setting.</div><div class="ttdef"><b>Definition:</b> JointConf.hpp:83</div></div>
+<div class="ttc" id="astructplayrho_1_1d2_1_1JointBuilder_html_a30d41149145a1adea49f497e169a8e20"><div class="ttname"><a href="structplayrho_1_1d2_1_1JointBuilder.html#a30d41149145a1adea49f497e169a8e20">playrho::d2::JointBuilder::UseBodyA</a></div><div class="ttdeci">constexpr reference UseBodyA(BodyID b) noexcept</div><div class="ttdoc">Use value for body A setting.</div><div class="ttdef"><b>Definition:</b> JointConf.hpp:80</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html"><div class="ttname"><a href="namespaceplayrho_1_1d2.html">playrho::d2</a></div><div class="ttdoc">Name space for 2-dimensionally related PlayRho names.</div><div class="ttdef"><b>Definition:</b> AABB.cpp:34</div></div>
-<div class="ttc" id="astructplayrho_1_1d2_1_1JointConf_html_a9363d310f4854dcac38ad3849cbcc58b"><div class="ttname"><a href="structplayrho_1_1d2_1_1JointConf.html#a9363d310f4854dcac38ad3849cbcc58b">playrho::d2::JointConf::bodyA</a></div><div class="ttdeci">BodyID bodyA</div><div class="ttdoc">1st attached body.</div><div class="ttdef"><b>Definition:</b> JointConf.hpp:39</div></div>
-<div class="ttc" id="astructplayrho_1_1d2_1_1JointBuilder_html_a3df0b0d793cf72b42fdefae06f5f22ef"><div class="ttname"><a href="structplayrho_1_1d2_1_1JointBuilder.html#a3df0b0d793cf72b42fdefae06f5f22ef">playrho::d2::JointBuilder::UseCollideConnected</a></div><div class="ttdeci">constexpr reference UseCollideConnected(bool v) noexcept</div><div class="ttdoc">Use value for collide connected setting.</div><div class="ttdef"><b>Definition:</b> JointConf.hpp:97</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a2c85157ff9400e7126ef9959f062b347"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a2c85157ff9400e7126ef9959f062b347">playrho::d2::SolvePosition</a></div><div class="ttdeci">bool SolvePosition(const DistanceJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</div><div class="ttdoc">Solves the position constraint.</div><div class="ttdef"><b>Definition:</b> DistanceJointConf.cpp:204</div></div>
+<div class="ttc" id="astructplayrho_1_1d2_1_1JointConf_html_a9363d310f4854dcac38ad3849cbcc58b"><div class="ttname"><a href="structplayrho_1_1d2_1_1JointConf.html#a9363d310f4854dcac38ad3849cbcc58b">playrho::d2::JointConf::bodyA</a></div><div class="ttdeci">BodyID bodyA</div><div class="ttdoc">1st attached body.</div><div class="ttdef"><b>Definition:</b> JointConf.hpp:36</div></div>
+<div class="ttc" id="astructplayrho_1_1d2_1_1JointBuilder_html_a3df0b0d793cf72b42fdefae06f5f22ef"><div class="ttname"><a href="structplayrho_1_1d2_1_1JointBuilder.html#a3df0b0d793cf72b42fdefae06f5f22ef">playrho::d2::JointBuilder::UseCollideConnected</a></div><div class="ttdeci">constexpr reference UseCollideConnected(bool v) noexcept</div><div class="ttdoc">Use value for collide connected setting.</div><div class="ttdef"><b>Definition:</b> JointConf.hpp:94</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a38af51869b6c1d87b93123a4a790f874"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a38af51869b6c1d87b93123a4a790f874">playrho::d2::IsLimitEnabled</a></div><div class="ttdeci">bool IsLimitEnabled(const Joint &amp;object)</div><div class="ttdoc">Gets the specified joint's limit property if it supports one.</div><div class="ttdef"><b>Definition:</b> Joint.cpp:534</div></div>
 <div class="ttc" id="anamespaceplayrho_html"><div class="ttname"><a href="namespaceplayrho.html">playrho</a></div><div class="ttdoc">Name space for all PlayRho related names.</div><div class="ttdef"><b>Definition:</b> AABB.cpp:33</div></div>
-<div class="ttc" id="astructplayrho_1_1ConstraintSolverConf_html"><div class="ttname"><a href="structplayrho_1_1ConstraintSolverConf.html">playrho::ConstraintSolverConf</a></div><div class="ttdoc">Constraint solver configuration data.</div><div class="ttdef"><b>Definition:</b> ContactSolver.hpp:70</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a1086ac024e4e129259c3c1b4f7c5a6c4"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a1086ac024e4e129259c3c1b4f7c5a6c4">playrho::d2::ShiftOrigin</a></div><div class="ttdeci">constexpr bool ShiftOrigin(DistanceJointConf &amp;, Length2) noexcept</div><div class="ttdoc">Shifts the origin notion of the given configuration.</div><div class="ttdef"><b>Definition:</b> DistanceJointConf.hpp:151</div></div>
-<div class="ttc" id="aclassplayrho_1_1d2_1_1Body_html"><div class="ttname"><a href="classplayrho_1_1d2_1_1Body.html">playrho::d2::Body</a></div><div class="ttdoc">Physical entity that exists within a World.</div><div class="ttdef"><b>Definition:</b> Body.hpp:71</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a657f69a1e69282dd357d92926b766211"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a657f69a1e69282dd357d92926b766211">playrho::d2::SolveVelocity</a></div><div class="ttdeci">bool SolveVelocity(DistanceJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const StepConf &amp;)</div><div class="ttdoc">Solves velocity constraint.</div><div class="ttdef"><b>Definition:</b> DistanceJointConf.cpp:174</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a732fa5d1da2c5d3292bdbcfaab4f971d"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a732fa5d1da2c5d3292bdbcfaab4f971d">playrho::d2::TypeCast</a></div><div class="ttdeci">std::add_pointer_t&lt; std::add_const_t&lt; T &gt; &gt; TypeCast(const Shape *value) noexcept</div><div class="ttdoc">Converts the given shape into its current configuration value.</div><div class="ttdef"><b>Definition:</b> Shape.hpp:565</div></div>
-<div class="ttc" id="astructplayrho_1_1IsAddable_html"><div class="ttname"><a href="structplayrho_1_1IsAddable.html">playrho::IsAddable</a></div><div class="ttdoc">Template for determining if the given types are addable.</div><div class="ttdef"><b>Definition:</b> Templates.hpp:198</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_ac17a5d01b67c5e42c42cb0b3c2e01905"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ac17a5d01b67c5e42c42cb0b3c2e01905">playrho::d2::SetMaxMotorTorque</a></div><div class="ttdeci">void SetMaxMotorTorque(Joint &amp;object, Torque value)</div><div class="ttdoc">Sets the given joint's max motor torque if its type supports that.</div><div class="ttdef"><b>Definition:</b> Joint.cpp:363</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a07028eef8277c8ce9f1e6a0004d19638"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a07028eef8277c8ce9f1e6a0004d19638">playrho::d2::EnableMotor</a></div><div class="ttdeci">void EnableMotor(Joint &amp;object, bool value)</div><div class="ttdoc">Enables the specified joint's motor property if it supports one.</div><div class="ttdef"><b>Definition:</b> Joint.cpp:575</div></div>
+<div class="ttc" id="anamespaceplayrho_html_a1fa6ffb2e67c2e2f620eed088412b146"><div class="ttname"><a href="namespaceplayrho.html#a1fa6ffb2e67c2e2f620eed088412b146">playrho::Momentum2</a></div><div class="ttdeci">Vector2&lt; Momentum &gt; Momentum2</div><div class="ttdoc">2-element vector of Momentum quantities.</div><div class="ttdef"><b>Definition:</b> Vector2.hpp:65</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a232909af8c24e7a01804a0278c6cfef0"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a232909af8c24e7a01804a0278c6cfef0">playrho::d2::GetBodyB</a></div><div class="ttdeci">BodyID GetBodyB(const Contact &amp;contact) noexcept</div><div class="ttdoc">Gets the body B ID of the given contact.</div><div class="ttdef"><b>Definition:</b> Contact.hpp:588</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_ae9cea0c1cb352dc91e0f77e3b4202d5f"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ae9cea0c1cb352dc91e0f77e3b4202d5f">playrho::d2::SetMaxMotorForce</a></div><div class="ttdeci">void SetMaxMotorForce(Joint &amp;object, Force value)</div><div class="ttdoc">Sets the given joint's max motor force if its type supports that.</div><div class="ttdef"><b>Definition:</b> Joint.cpp:341</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_ad982ed0433982ac18703569f42f4037c"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ad982ed0433982ac18703569f42f4037c">playrho::d2::GetCollideConnected</a></div><div class="ttdeci">bool GetCollideConnected(const Joint &amp;object) noexcept</div><div class="ttdoc">Gets collide connected.</div><div class="ttdef"><b>Definition:</b> Joint.hpp:293</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a22da41d3ff9c82d608633673612b8821"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a22da41d3ff9c82d608633673612b8821">playrho::d2::GetBodyA</a></div><div class="ttdeci">BodyID GetBodyA(const Contact &amp;contact) noexcept</div><div class="ttdoc">Gets the body A ID of the given contact.</div><div class="ttdef"><b>Definition:</b> Contact.hpp:581</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a96e6945a982e424009580a3275d9aa45"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a96e6945a982e424009580a3275d9aa45">playrho::d2::GetLimitState</a></div><div class="ttdeci">LimitState GetLimitState(const Joint &amp;object)</div><div class="ttdef"><b>Definition:</b> Joint.cpp:631</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_ad5b4dd16b94cfe0d1f5ce07a01cc598d"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ad5b4dd16b94cfe0d1f5ce07a01cc598d">playrho::d2::IsMotorEnabled</a></div><div class="ttdeci">bool IsMotorEnabled(const Joint &amp;object)</div><div class="ttdoc">Gets the specified joint's motor property value if it supports one.</div><div class="ttdef"><b>Definition:</b> Joint.cpp:560</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1Joint_html_ad463d7b16f9fe80ab5f3368734bf75db"><div class="ttname"><a href="classplayrho_1_1d2_1_1Joint.html#ad463d7b16f9fe80ab5f3368734bf75db">playrho::d2::Joint::has_value</a></div><div class="ttdeci">bool has_value() const noexcept</div><div class="ttdoc">Checks whether this instance contains a value.</div><div class="ttdef"><b>Definition:</b> Joint.hpp:256</div></div>
+<div class="ttc" id="astructplayrho_1_1d2_1_1WheelJointConf_html_a8bcbb0908f80409feaa1ee94834f0204"><div class="ttname"><a href="structplayrho_1_1d2_1_1WheelJointConf.html#a8bcbb0908f80409feaa1ee94834f0204">playrho::d2::WheelJointConf::localAnchorB</a></div><div class="ttdeci">Length2 localAnchorB</div><div class="ttdoc">The local anchor point relative to body B's origin.</div><div class="ttdef"><b>Definition:</b> WheelJointConf.hpp:106</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a0c848f01e3faf56ecccc16c8819290ad"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a0c848f01e3faf56ecccc16c8819290ad">playrho::d2::SetLinearLimits</a></div><div class="ttdeci">void SetLinearLimits(Joint &amp;object, Length lower, Length upper)</div><div class="ttdoc">Sets the joint limits.</div><div class="ttdef"><b>Definition:</b> Joint.cpp:496</div></div>
+<div class="ttc" id="astructplayrho_1_1d2_1_1IsValidJointType_html"><div class="ttname"><a href="structplayrho_1_1d2_1_1IsValidJointType.html">playrho::d2::IsValidJointType</a></div><div class="ttdoc">An &quot;is valid joint type&quot; trait.</div><div class="ttdef"><b>Definition:</b> Joint.hpp:481</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a732fa5d1da2c5d3292bdbcfaab4f971d"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a732fa5d1da2c5d3292bdbcfaab4f971d">playrho::d2::TypeCast</a></div><div class="ttdeci">std::add_pointer_t&lt; std::add_const_t&lt; T &gt; &gt; TypeCast(const Shape *value) noexcept</div><div class="ttdoc">Converts the given shape into its current configuration value.</div><div class="ttdef"><b>Definition:</b> Shape.hpp:610</div></div>
+<div class="ttc" id="astructplayrho_1_1IsAddable_html"><div class="ttname"><a href="structplayrho_1_1IsAddable.html">playrho::IsAddable</a></div><div class="ttdoc">Template for determining if the given types are addable.</div><div class="ttdef"><b>Definition:</b> Templates.hpp:189</div></div>
+<div class="ttc" id="astructplayrho_1_1d2_1_1WheelJointConf_html"><div class="ttname"><a href="structplayrho_1_1d2_1_1WheelJointConf.html">playrho::d2::WheelJointConf</a></div><div class="ttdoc">Wheel joint definition.</div><div class="ttdef"><b>Definition:</b> WheelJointConf.hpp:55</div></div>
 <div class="ttc" id="anamespaceplayrho_html_a38fa6c4a45ec8fd218dc962396685c3f"><div class="ttname"><a href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">playrho::InvalidBodyID</a></div><div class="ttdeci">constexpr auto InvalidBodyID</div><div class="ttdoc">Invalid body ID value.</div><div class="ttdef"><b>Definition:</b> BodyID.hpp:33</div></div>
-<div class="ttc" id="astructplayrho_1_1StepConf_html"><div class="ttname"><a href="structplayrho_1_1StepConf.html">playrho::StepConf</a></div><div class="ttdoc">Step configuration.</div><div class="ttdef"><b>Definition:</b> StepConf.hpp:42</div></div>
-<div class="ttc" id="aclassplayrho_1_1strongtype_1_1IndexingNamedType_html"><div class="ttname"><a href="classplayrho_1_1strongtype_1_1IndexingNamedType.html">playrho::strongtype::IndexingNamedType&lt; BodyCounter, struct BodyIdentifier &gt;</a></div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_af84e52fdf9a9b10e6363886f26235828"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#af84e52fdf9a9b10e6363886f26235828">playrho::d2::ToString</a></div><div class="ttdeci">const char * ToString(JointType type) noexcept</div><div class="ttdoc">Provides a C-style (null-terminated) string name for given joint type.</div><div class="ttdef"><b>Definition:</b> JointType.cpp:27</div></div>
+<div class="ttc" id="agroup__PhysicalQuantities_html_ga3537d441743bb2f96c612296424f1e43"><div class="ttname"><a href="group__PhysicalQuantities.html#ga3537d441743bb2f96c612296424f1e43">playrho::AngularMomentum</a></div><div class="ttdeci">PLAYRHO_QUANTITY(boost::units::si::angular_momentum) AngularMomentum</div><div class="ttdoc">Angular momentum quantity.</div><div class="ttdef"><b>Definition:</b> Units.hpp:267</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a054f7637a988ddb54b4dd83ba320a172"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a054f7637a988ddb54b4dd83ba320a172">playrho::d2::SetAngularLimits</a></div><div class="ttdeci">void SetAngularLimits(Joint &amp;object, Angle lower, Angle upper)</div><div class="ttdoc">Sets the joint limits.</div><div class="ttdef"><b>Definition:</b> Joint.cpp:524</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_af7938377c565a183168613b640e651e8"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#af7938377c565a183168613b640e651e8">playrho::d2::GetAngularReaction</a></div><div class="ttdeci">constexpr AngularMomentum GetAngularReaction(const DistanceJointConf &amp;) noexcept</div><div class="ttdoc">Gets the current angular reaction for the given configuration.</div><div class="ttdef"><b>Definition:</b> DistanceJointConf.hpp:170</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a365dbc3fb240ef6055a4e52d2c36c577"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a365dbc3fb240ef6055a4e52d2c36c577">playrho::d2::ToString</a></div><div class="ttdeci">const char * ToString(LimitState val) noexcept</div><div class="ttdoc">Provides a human readable C-style string uniquely identifying the given limit state.</div><div class="ttdef"><b>Definition:</b> LimitState.cpp:29</div></div>
+<div class="ttc" id="astructplayrho_1_1d2_1_1WheelJointConf_html_a4dc88db92528abe99f69a29a8eb8f827"><div class="ttname"><a href="structplayrho_1_1d2_1_1WheelJointConf.html#a4dc88db92528abe99f69a29a8eb8f827">playrho::d2::WheelJointConf::localAnchorA</a></div><div class="ttdeci">Length2 localAnchorA</div><div class="ttdoc">The local anchor point relative to body A's origin.</div><div class="ttdef"><b>Definition:</b> WheelJointConf.hpp:103</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a7baeaf66a5496fad0d16eb1b28823f47"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a7baeaf66a5496fad0d16eb1b28823f47">playrho::d2::SetMotorSpeed</a></div><div class="ttdeci">void SetMotorSpeed(Joint &amp;object, AngularVelocity value)</div><div class="ttdoc">Sets the given joint's motor speed if its type supports that.</div><div class="ttdef"><b>Definition:</b> Joint.cpp:269</div></div>
 <div class="ttc" id="astructplayrho_1_1Vector_html"><div class="ttname"><a href="structplayrho_1_1Vector.html">playrho::Vector</a></div><div class="ttdoc">Vector.</div><div class="ttdef"><b>Definition:</b> Vector.hpp:49</div></div>
-<div class="ttc" id="anamespaceplayrho_html_a4708d38a866c6ebc70da3939d5edc8dc"><div class="ttname"><a href="namespaceplayrho.html#a4708d38a866c6ebc70da3939d5edc8dc">playrho::IsIterable</a></div><div class="ttdeci">typename detail::IsIterableImpl&lt; T &gt; IsIterable</div><div class="ttdoc">Determines whether the given type is an iterable type.</div><div class="ttdef"><b>Definition:</b> Templates.hpp:234</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_af55559c8bf6c930582040cf3321b691f"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#af55559c8bf6c930582040cf3321b691f">playrho::d2::InitVelocity</a></div><div class="ttdeci">void InitVelocity(DistanceJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const StepConf &amp;step, const ConstraintSolverConf &amp;)</div><div class="ttdoc">Initializes velocity constraint data based on the given solver data.</div><div class="ttdef"><b>Definition:</b> DistanceJointConf.cpp:85</div></div>
-<div class="ttc" id="astructplayrho_1_1d2_1_1JointBuilder_html"><div class="ttname"><a href="structplayrho_1_1d2_1_1JointBuilder.html">playrho::d2::JointBuilder</a></div><div class="ttdoc">Joint builder definition structure.</div><div class="ttdef"><b>Definition:</b> JointConf.hpp:75</div></div>
-<div class="ttc" id="astructplayrho_1_1d2_1_1JointBuilder_html_a7485835c7c2b8833eee260621680e0b3"><div class="ttname"><a href="structplayrho_1_1d2_1_1JointBuilder.html#a7485835c7c2b8833eee260621680e0b3">playrho::d2::JointBuilder::UseBodyB</a></div><div class="ttdeci">constexpr reference UseBodyB(BodyID b) noexcept</div><div class="ttdoc">Use value for body B setting.</div><div class="ttdef"><b>Definition:</b> JointConf.hpp:90</div></div>
-<div class="ttc" id="aclassplayrho_1_1d2_1_1Joint_html"><div class="ttname"><a href="classplayrho_1_1d2_1_1Joint.html">playrho::d2::Joint</a></div><div class="ttdoc">Joint class.</div><div class="ttdef"><b>Definition:</b> Joint.hpp:126</div></div>
-<div class="ttc" id="astructplayrho_1_1d2_1_1JointConf_html_aa97b967e6f53d41ea52b1af0631e6ea4"><div class="ttname"><a href="structplayrho_1_1d2_1_1JointConf.html#aa97b967e6f53d41ea52b1af0631e6ea4">playrho::d2::JointConf::bodyB</a></div><div class="ttdeci">BodyID bodyB</div><div class="ttdoc">2nd attached body.</div><div class="ttdef"><b>Definition:</b> JointConf.hpp:42</div></div>
-<div class="ttc" id="astructplayrho_1_1d2_1_1JointConf_html_aaa7f7c919649416cb14a4abb8deacc33"><div class="ttname"><a href="structplayrho_1_1d2_1_1JointConf.html#aaa7f7c919649416cb14a4abb8deacc33">playrho::d2::JointConf::collideConnected</a></div><div class="ttdeci">bool collideConnected</div><div class="ttdoc">Collide connected.</div><div class="ttdef"><b>Definition:</b> JointConf.hpp:46</div></div>
+<div class="ttc" id="anamespaceplayrho_html_a4708d38a866c6ebc70da3939d5edc8dc"><div class="ttname"><a href="namespaceplayrho.html#a4708d38a866c6ebc70da3939d5edc8dc">playrho::IsIterable</a></div><div class="ttdeci">typename detail::IsIterableImpl&lt; T &gt; IsIterable</div><div class="ttdoc">Determines whether the given type is an iterable type.</div><div class="ttdef"><b>Definition:</b> Templates.hpp:225</div></div>
+<div class="ttc" id="astructplayrho_1_1d2_1_1JointBuilder_html"><div class="ttname"><a href="structplayrho_1_1d2_1_1JointBuilder.html">playrho::d2::JointBuilder</a></div><div class="ttdoc">Joint builder definition structure.</div><div class="ttdef"><b>Definition:</b> JointConf.hpp:72</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a262919449fdc976d24c1b57d5f764610"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a262919449fdc976d24c1b57d5f764610">playrho::d2::GetLinearReaction</a></div><div class="ttdeci">constexpr Momentum2 GetLinearReaction(const DistanceJointConf &amp;object) noexcept</div><div class="ttdoc">Gets the current linear reaction for the given configuration.</div><div class="ttdef"><b>Definition:</b> DistanceJointConf.hpp:163</div></div>
+<div class="ttc" id="astructplayrho_1_1d2_1_1WheelJointConf_html_a754cc95814f79f32891079314488da37"><div class="ttname"><a href="structplayrho_1_1d2_1_1WheelJointConf.html#a754cc95814f79f32891079314488da37">playrho::d2::WheelJointConf::motorSpeed</a></div><div class="ttdeci">AngularVelocity motorSpeed</div><div class="ttdoc">The desired angular motor speed.</div><div class="ttdef"><b>Definition:</b> WheelJointConf.hpp:121</div></div>
+<div class="ttc" id="aclassplayrho_1_1detail_1_1IndexingNamedType_html"><div class="ttname"><a href="classplayrho_1_1detail_1_1IndexingNamedType.html">playrho::detail::IndexingNamedType&lt; BodyCounter, struct BodyIdentifier &gt;</a></div></div>
+<div class="ttc" id="astructplayrho_1_1d2_1_1JointBuilder_html_a7485835c7c2b8833eee260621680e0b3"><div class="ttname"><a href="structplayrho_1_1d2_1_1JointBuilder.html#a7485835c7c2b8833eee260621680e0b3">playrho::d2::JointBuilder::UseBodyB</a></div><div class="ttdeci">constexpr reference UseBodyB(BodyID b) noexcept</div><div class="ttdoc">Use value for body B setting.</div><div class="ttdef"><b>Definition:</b> JointConf.hpp:87</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1Joint_html"><div class="ttname"><a href="classplayrho_1_1d2_1_1Joint.html">playrho::d2::Joint</a></div><div class="ttdoc">A joint-like constraint on one or more bodies.</div><div class="ttdef"><b>Definition:</b> Joint.hpp:144</div></div>
+<div class="ttc" id="astructplayrho_1_1d2_1_1JointConf_html_aa97b967e6f53d41ea52b1af0631e6ea4"><div class="ttname"><a href="structplayrho_1_1d2_1_1JointConf.html#aa97b967e6f53d41ea52b1af0631e6ea4">playrho::d2::JointConf::bodyB</a></div><div class="ttdeci">BodyID bodyB</div><div class="ttdoc">2nd attached body.</div><div class="ttdef"><b>Definition:</b> JointConf.hpp:39</div></div>
+<div class="ttc" id="astructplayrho_1_1d2_1_1WheelJointConf_html_ac121e206ac0a526e5712f10f90cc5abb"><div class="ttname"><a href="structplayrho_1_1d2_1_1WheelJointConf.html#ac121e206ac0a526e5712f10f90cc5abb">playrho::d2::WheelJointConf::frequency</a></div><div class="ttdeci">NonNegative&lt; Frequency &gt; frequency</div><div class="ttdoc">Suspension frequency, zero indicates no suspension.</div><div class="ttdef"><b>Definition:</b> WheelJointConf.hpp:124</div></div>
+<div class="ttc" id="astructplayrho_1_1d2_1_1JointConf_html_aaa7f7c919649416cb14a4abb8deacc33"><div class="ttname"><a href="structplayrho_1_1d2_1_1JointConf.html#aaa7f7c919649416cb14a4abb8deacc33">playrho::d2::JointConf::collideConnected</a></div><div class="ttdeci">bool collideConnected</div><div class="ttdoc">Collide connected.</div><div class="ttdef"><b>Definition:</b> JointConf.hpp:43</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a8736e94424a5e0f88a983a4d39097e4d"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a8736e94424a5e0f88a983a4d39097e4d">playrho::d2::EnableLimit</a></div><div class="ttdeci">void EnableLimit(Joint &amp;object, bool value)</div><div class="ttdoc">Enables the specified joint's limit property if it supports one.</div><div class="ttdef"><b>Definition:</b> Joint.cpp:546</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_ab84776203d1fea7dff2004752c36d5fca1f7b8a0fe66401e83219c7a6b7271e77"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ab84776203d1fea7dff2004752c36d5fca1f7b8a0fe66401e83219c7a6b7271e77">playrho::d2::LimitState::e_inactiveLimit</a></div><div class="ttdeci">@ e_inactiveLimit</div><div class="ttdoc">Inactive limit.</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Nov 10 2020 12:40:26 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Mon Nov 30 2020 00:10:58 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>
