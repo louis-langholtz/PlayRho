@@ -378,3 +378,21 @@ TEST(PrismaticJointConf, GetName)
 {
     EXPECT_STREQ(GetName(GetTypeID<PrismaticJointConf>()), "d2::PrismaticJointConf");
 }
+
+TEST(PrismaticJointConf, GetPrismaticJointConf)
+{
+    auto conf = PrismaticJointConf{};
+    conf.bodyA = BodyID{21u};
+    conf.bodyB = BodyID{39u};
+    conf.localAnchorA = Length2(4_m, 5_m);
+    conf.localAnchorB = Length2(6_m, 7_m);
+    conf.enableLimit = true;
+    conf.lowerTranslation = 3_m;
+    conf.upperTranslation = 44_m;
+    auto result = PrismaticJointConf{};
+    EXPECT_NO_THROW(result = GetPrismaticJointConf(Joint{conf}));
+    EXPECT_EQ(conf.bodyA, result.bodyA);
+    EXPECT_EQ(conf.bodyB, result.bodyB);
+    EXPECT_EQ(conf.collideConnected, result.collideConnected);
+    EXPECT_EQ(conf.enableLimit, result.enableLimit);
+}
