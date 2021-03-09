@@ -74,12 +74,10 @@
 // Define quantity and unit related macros to abstract away C-preprocessor definitions
 #if defined(USE_BOOST_UNITS)
 #define PLAYRHO_QUANTITY(BoostDimension) boost::units::quantity<BoostDimension, Real>
-#define PLAYRHO_UNIT(Quantity, BoostUnit) Quantity{BoostUnit * Real{1}}
-#define PLAYRHO_DERIVED_UNIT(Quantity, BoostUnit, Ratio) Quantity{BoostUnit * Real{Ratio}}
+#define PLAYRHO_UNIT(Quantity, BoostUnit) Quantity((BoostUnit) * Real(1))
 #else // defined(USE_BOOST_UNITS)
 #define PLAYRHO_QUANTITY(BoostDimension) Real
-#define PLAYRHO_UNIT(Quantity, BoostUnit) Real{1}
-#define PLAYRHO_DERIVED_UNIT(Quantity, BoostUnit, Ratio) Real{Ratio}}
+#define PLAYRHO_UNIT(Quantity, BoostUnit) Real(1)
 #endif // defined(USE_BOOST_UNITS)
 
 namespace playrho
