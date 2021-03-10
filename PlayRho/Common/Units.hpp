@@ -56,19 +56,40 @@
 #include <boost/units/systems/si/velocity.hpp>
 #include <boost/units/systems/si/mass.hpp>
 #include <boost/units/systems/si/momentum.hpp>
-#include <boost/units/systems/si/inverse_mass.hpp>
 #include <boost/units/systems/si/area.hpp>
 #include <boost/units/systems/si/plane_angle.hpp>
 #include <boost/units/systems/si/angular_momentum.hpp>
 #include <boost/units/systems/si/angular_velocity.hpp>
 #include <boost/units/systems/si/angular_acceleration.hpp>
-#include <boost/units/systems/si/second_moment_of_area.hpp>
 #include <boost/units/systems/si/surface_density.hpp>
 #include <boost/units/systems/si/moment_of_inertia.hpp>
-#include <boost/units/systems/si/inverse_moment_of_inertia.hpp>
 #include <boost/units/systems/si/force.hpp>
 #include <boost/units/systems/si/torque.hpp>
 #include <boost/units/systems/angle/degrees.hpp>
+
+namespace boost::units {
+
+/// derived dimension for inverse mass : M^-1
+using inverse_mass_dimension = derived_dimension<mass_base_dimension,-1>::type;
+
+/// derived dimension for area : L^4
+using second_moment_of_area_dimension = derived_dimension<length_base_dimension,4>::type;
+
+/// derived dimension for inverse moment of inertia : L^-2 M^-1 QP^2
+using inverse_moment_of_inertia_dimension = derived_dimension<length_base_dimension,-2,
+                          mass_base_dimension,-1,
+                          plane_angle_base_dimension,2>::type;
+
+} // namespace boost::units
+
+namespace boost::units::si {
+
+using inverse_mass = unit<inverse_mass_dimension,si::system>;
+using second_moment_of_area = unit<second_moment_of_area_dimension,si::system>;
+using inverse_moment_of_inertia = unit<inverse_moment_of_inertia_dimension,si::system>;
+
+} // namespace boost::units::si
+
 #endif // defined(USE_BOOST_UNITS)
 
 // Define quantity and unit related macros to abstract away C-preprocessor definitions
@@ -81,6 +102,7 @@
 #endif // defined(USE_BOOST_UNITS)
 
 namespace playrho {
+
 /// @defgroup PhysicalQuantities Physical Quantity Types
 /// @brief Types for physical quantities.
 /// @details These are the type aliases for physical quantities like time and length
