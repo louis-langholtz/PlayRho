@@ -67,28 +67,46 @@
 #include <boost/units/systems/si/torque.hpp>
 #include <boost/units/systems/angle/degrees.hpp>
 
-namespace boost::units {
+/// Name space for PlayRho declarations and definitions of units.
+/// @note This serves as a safer, less-invasive alternative to extending the
+///   <code>boost::units</code> name space.
+namespace playrho::units {
 
-/// derived dimension for inverse mass : M^-1
-using inverse_mass_dimension = derived_dimension<mass_base_dimension,-1>::type;
+/// Derived dimension for inverse mass : M^-1
+using inverse_mass_dimension =
+    boost::units::derived_dimension<boost::units::mass_base_dimension, -1>::type;
 
-/// derived dimension for area : L^4
-using second_moment_of_area_dimension = derived_dimension<length_base_dimension,4>::type;
+/// Derived dimension for area : L^4
+using second_moment_of_area_dimension =
+    boost::units::derived_dimension<boost::units::length_base_dimension, 4>::type;
 
-/// derived dimension for inverse moment of inertia : L^-2 M^-1 QP^2
-using inverse_moment_of_inertia_dimension = derived_dimension<length_base_dimension,-2,
-                          mass_base_dimension,-1,
-                          plane_angle_base_dimension,2>::type;
+/// Derived dimension for inverse moment of inertia : L^-2 M^-1 QP^2
+using inverse_moment_of_inertia_dimension =
+    boost::units::derived_dimension<boost::units::length_base_dimension, -2,
+                                    boost::units::mass_base_dimension, -1,
+                                    boost::units::plane_angle_base_dimension, 2>::type;
 
-} // namespace boost::units
+} // namespace playrho::units
 
-namespace boost::units::si {
+/// Name space for PlayRho declarations and definitions for the International System of Units.
+/// @note This serves as a safer, less-invasive alternative to extending the
+///   <code>boost::units::si</code> name space.
+namespace playrho::units::si {
 
-using inverse_mass = unit<inverse_mass_dimension,si::system>;
-using second_moment_of_area = unit<second_moment_of_area_dimension,si::system>;
-using inverse_moment_of_inertia = unit<inverse_moment_of_inertia_dimension,si::system>;
+/// Inverse mass.
+using inverse_mass =
+    boost::units::unit<playrho::units::inverse_mass_dimension, boost::units::si::system>;
 
-} // namespace boost::units::si
+/// Second moment of area.
+using second_moment_of_area =
+    boost::units::unit<playrho::units::second_moment_of_area_dimension, boost::units::si::system>;
+
+/// Inverse moment of inertia.
+using inverse_moment_of_inertia =
+    boost::units::unit<playrho::units::inverse_moment_of_inertia_dimension,
+                       boost::units::si::system>;
+
+} // namespace playrho::units::si
 
 #endif // defined(USE_BOOST_UNITS)
 
@@ -170,7 +188,7 @@ using Mass = PLAYRHO_QUANTITY(boost::units::si::mass);
 ///   that's the inverse of mass.
 /// @note This quantity's dimension is: inverse mass (<code>M^-1</code>).
 /// @see Mass.
-using InvMass = PLAYRHO_QUANTITY(boost::units::si::inverse_mass);
+using InvMass = PLAYRHO_QUANTITY(playrho::units::si::inverse_mass);
 
 /// @brief Area quantity.
 /// @details This is the type alias for the area quantity. It's a derived quantity.
@@ -242,7 +260,7 @@ using Torque = PLAYRHO_QUANTITY(boost::units::si::torque);
 /// @note This quantity's dimensions are: length-squared-squared (<code>L^4</code>).
 /// @see Length.
 /// @see https://en.wikipedia.org/wiki/Second_moment_of_area
-using SecondMomentOfArea = PLAYRHO_QUANTITY(boost::units::si::second_moment_of_area);
+using SecondMomentOfArea = PLAYRHO_QUANTITY(playrho::units::si::second_moment_of_area);
 
 /// @brief Rotational inertia quantity.
 /// @details This is the type alias for the rotational inertia quantity. It's a
@@ -261,7 +279,7 @@ using RotInertia = PLAYRHO_QUANTITY(boost::units::si::moment_of_inertia);
 /// @note This quantity's dimensions are: angle-squared per length-squared per mass
 ///    (<code>L^-2 M^-1 QP^2</code>).
 /// @see Length, Mass, Angle, RotInertia.
-using InvRotInertia = PLAYRHO_QUANTITY(boost::units::si::inverse_moment_of_inertia);
+using InvRotInertia = PLAYRHO_QUANTITY(playrho::units::si::inverse_moment_of_inertia);
 
 /// @brief Momentum quantity.
 /// @details This is the type alias for the momentum quantity. It's a derived quantity.
