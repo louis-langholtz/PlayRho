@@ -114,3 +114,49 @@ TEST(BodyConf, GetBodyConf2)
     SCOPED_TRACE("checking");
     EXPECT_NO_THROW(IsSame(conf, GetBodyConf(Body(conf))));
 }
+
+TEST(BodyConf, EqualsOperator)
+{
+    EXPECT_TRUE(BodyConf() == BodyConf());
+    EXPECT_FALSE(BodyConf().UseType(BodyType::Dynamic) == BodyConf());
+    EXPECT_FALSE(BodyConf().UseLocation(Length2(2_m, 3_m)) == BodyConf());
+    EXPECT_FALSE(BodyConf().UseAngle(15_deg) == BodyConf());
+    EXPECT_FALSE(BodyConf().UseLinearVelocity(LinearVelocity2{2_mps, 3_mps}) == BodyConf());
+    EXPECT_FALSE(BodyConf().UseAngularVelocity(3_rpm) == BodyConf());
+    EXPECT_FALSE(BodyConf().Use(Position{Length2(2_m, 3_m), 3_deg}) == BodyConf());
+    EXPECT_FALSE(BodyConf().Use(Velocity{LinearVelocity2{2_mps, 3_mps}, 3_rpm}) == BodyConf());
+    EXPECT_FALSE(BodyConf().UseLinearAcceleration(LinearAcceleration2{3_mps2, 0_mps2}) ==
+                 BodyConf());
+    EXPECT_FALSE(BodyConf().UseAngularAcceleration(Real(2) * RadianPerSquareSecond) == BodyConf());
+    EXPECT_FALSE(BodyConf().UseLinearDamping(1_Hz) == BodyConf());
+    EXPECT_FALSE(BodyConf().UseAngularDamping(1_Hz) == BodyConf());
+    EXPECT_FALSE(BodyConf().UseUnderActiveTime(1_s) == BodyConf());
+    EXPECT_FALSE(BodyConf().UseAllowSleep(!BodyConf{}.allowSleep) == BodyConf());
+    EXPECT_FALSE(BodyConf().UseAwake(!BodyConf{}.awake) == BodyConf());
+    EXPECT_FALSE(BodyConf().UseFixedRotation(!BodyConf{}.fixedRotation) == BodyConf());
+    EXPECT_FALSE(BodyConf().UseBullet(!BodyConf{}.bullet) == BodyConf());
+    EXPECT_FALSE(BodyConf().UseEnabled(!BodyConf{}.enabled) == BodyConf());
+}
+
+TEST(BodyConf, NotEqualsOperator)
+{
+    EXPECT_FALSE(BodyConf() != BodyConf());
+    EXPECT_TRUE(BodyConf().UseType(BodyType::Dynamic) != BodyConf());
+    EXPECT_TRUE(BodyConf().UseLocation(Length2(2_m, 3_m)) != BodyConf());
+    EXPECT_TRUE(BodyConf().UseAngle(15_deg) != BodyConf());
+    EXPECT_TRUE(BodyConf().UseLinearVelocity(LinearVelocity2{2_mps, 3_mps}) != BodyConf());
+    EXPECT_TRUE(BodyConf().UseAngularVelocity(3_rpm) != BodyConf());
+    EXPECT_TRUE(BodyConf().Use(Position{Length2(2_m, 3_m), 3_deg}) != BodyConf());
+    EXPECT_TRUE(BodyConf().Use(Velocity{LinearVelocity2{2_mps, 3_mps}, 3_rpm}) != BodyConf());
+    EXPECT_TRUE(BodyConf().UseLinearAcceleration(LinearAcceleration2{3_mps2, 0_mps2}) !=
+                 BodyConf());
+    EXPECT_TRUE(BodyConf().UseAngularAcceleration(Real(2) * RadianPerSquareSecond) != BodyConf());
+    EXPECT_TRUE(BodyConf().UseLinearDamping(1_Hz) != BodyConf());
+    EXPECT_TRUE(BodyConf().UseAngularDamping(1_Hz) != BodyConf());
+    EXPECT_TRUE(BodyConf().UseUnderActiveTime(1_s) != BodyConf());
+    EXPECT_TRUE(BodyConf().UseAllowSleep(!BodyConf{}.allowSleep) != BodyConf());
+    EXPECT_TRUE(BodyConf().UseAwake(!BodyConf{}.awake) != BodyConf());
+    EXPECT_TRUE(BodyConf().UseFixedRotation(!BodyConf{}.fixedRotation) != BodyConf());
+    EXPECT_TRUE(BodyConf().UseBullet(!BodyConf{}.bullet) != BodyConf());
+    EXPECT_TRUE(BodyConf().UseEnabled(!BodyConf{}.enabled) != BodyConf());
+}

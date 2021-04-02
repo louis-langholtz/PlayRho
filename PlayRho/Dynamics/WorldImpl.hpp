@@ -831,10 +831,10 @@ private:
     /******** Member variables. ********/
 
     ArrayAllocator<Body> m_bodyBuffer; ///< Array of body data both used and freed.
-    ArrayAllocator<Contacts> m_bodyContacts; ///< Cache of contacts associated with body.
-    ArrayAllocator<BodyJoints> m_bodyJoints; ///< Cache of joints associated with body.
+    ArrayAllocator<Contacts> m_bodyContacts; ///< Cache of contacts associated with bodies.
+    ArrayAllocator<BodyJoints> m_bodyJoints; ///< Cache of joints associated with bodies.
 
-    /// Cache of fixtures associated with body.
+    /// Cache of fixtures associated with bodies.
     /// @todo Consider eliminating this variable since calling <code>GetFixtures()</code>
     ///   isn't done within the <code>World::Step</code> except by
     ///   <code>World::Synchronize</code> which may be replacable with iterating over the

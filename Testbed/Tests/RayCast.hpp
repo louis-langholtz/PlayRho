@@ -50,7 +50,7 @@ public:
     {
         // Ground body
         CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
-        
+
         auto conf = PolygonShapeConf{};
         conf.UseFriction(Real(0.3));
         conf.Set({
@@ -202,7 +202,7 @@ public:
             d2::RayCast(GetWorld(), RayCastInput{point1, point2, Real{1}},
                         [&](BodyID b, FixtureID, ChildCounter, const Length2& p, const UnitVec& n)
             {
-                const auto type = m_userData[b.get()];
+                const auto type = (b.get() < m_userData.size())? m_userData[b.get()]: 0;
                 if (type == 0) {
                     // Instruct the calling code to ignore this fixture and
                     // continue the ray-cast to the next fixture.
@@ -240,7 +240,7 @@ public:
             d2::RayCast(GetWorld(), RayCastInput{point1, point2, Real{1}},
                         [&](BodyID b, FixtureID, ChildCounter, const Length2& p, const UnitVec& n)
             {
-                const auto type = m_userData[b.get()];
+                const auto type = (b.get() < m_userData.size())? m_userData[b.get()]: 0;
                 if (type == 0) {
                     // Instruct the calling code to ignore this fixture and
                     // continue the ray-cast to the next fixture.
@@ -276,7 +276,7 @@ public:
             d2::RayCast(GetWorld(), RayCastInput{point1, point2, Real{1}},
                         [&](BodyID b, FixtureID, ChildCounter, const Length2& p, const UnitVec& n)
             {
-                const auto type = m_userData[b.get()];
+                const auto type = (b.get() < m_userData.size())? m_userData[b.get()]: 0;
                 if (type == 0) {
                     // Instruct the calling code to ignore this fixture
                     // and continue the ray-cast to the next fixture.
