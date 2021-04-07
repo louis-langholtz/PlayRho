@@ -291,6 +291,7 @@ constexpr Angle GetAngle(const BodyConf& conf) noexcept
 }
 
 /// @brief Operator equals.
+/// @relatedalso BodyConf
 constexpr bool operator==(const BodyConf& lhs, const BodyConf& rhs) noexcept
 {
     return lhs.type == rhs.type && //
@@ -311,6 +312,7 @@ constexpr bool operator==(const BodyConf& lhs, const BodyConf& rhs) noexcept
 }
 
 /// @brief Operator not-equals.
+/// @relatedalso BodyConf
 constexpr bool operator!=(const BodyConf& lhs, const BodyConf& rhs) noexcept
 {
     return !(lhs == rhs);

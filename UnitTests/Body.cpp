@@ -139,3 +139,147 @@ TEST(Body, AccelerationOnConstruction)
                   .GetAngularAcceleration(),
               body.GetAngularAcceleration());
 }
+
+TEST(Body, EqualsOperator)
+{
+    EXPECT_TRUE(Body() == Body());
+    {
+        auto body = Body{};
+        EXPECT_TRUE(body == Body());
+    }
+    {
+        auto body1 = Body{};
+        body1.SetType(BodyType::Dynamic);
+        auto body2 = Body{};
+        body2.SetType(BodyType::Dynamic);
+        EXPECT_TRUE(body1 == body2);
+    }
+    {
+        auto body = Body{};
+        body.SetTransformation(Transformation{Length2{2_m, 0_m}, UnitVec{}});
+        EXPECT_FALSE(body == Body());
+    }
+    {
+        auto body = Body{};
+        body.SetSweep(Sweep{Position{Length2{}, 2_deg}});
+        EXPECT_FALSE(body == Body());
+    }
+    {
+        auto body = Body{};
+        body.SetType(BodyType::Kinematic);
+        EXPECT_FALSE(body == Body());
+    }
+    {
+        auto body = Body{};
+        body.JustSetVelocity(Velocity{LinearVelocity2{}, 2_rpm});
+        EXPECT_FALSE(body == Body());
+    }
+    {
+        auto body1 = Body{};
+        body1.SetType(BodyType::Dynamic);
+        body1.SetAcceleration(LinearAcceleration2{}, Real(2) * RadianPerSquareSecond);
+        auto body2 = Body{};
+        body2.SetType(BodyType::Dynamic);
+        EXPECT_FALSE(body1 == body2);
+    }
+    {
+        auto body = Body{};
+        SetMass(body, 3.2_kg);
+        EXPECT_FALSE(body == Body());
+    }
+    {
+        auto body = Body{};
+        body.SetInvRotInertia((Real(2) * SquareRadian) / (2_m2 * 1.2_kg));
+        EXPECT_FALSE(body == Body());
+    }
+    {
+        auto body = Body{};
+        SetLinearDamping(body, 2_Hz);
+        EXPECT_FALSE(body == Body());
+    }
+    {
+        auto body = Body{};
+        SetAngularDamping(body, 2_Hz);
+        EXPECT_FALSE(body == Body());
+    }
+    {
+        auto body1 = Body{};
+        body1.SetType(BodyType::Dynamic);
+        body1.SetUnderActiveTime(2_s);
+        auto body2 = Body{};
+        body2.SetType(BodyType::Dynamic);
+        EXPECT_FALSE(body1 == body2);
+    }
+}
+
+TEST(Body, NotEqualsOperator)
+{
+    EXPECT_FALSE(Body() != Body());
+    {
+        auto body = Body{};
+        EXPECT_FALSE(body != Body());
+    }
+    {
+        auto body1 = Body{};
+        body1.SetType(BodyType::Dynamic);
+        auto body2 = Body{};
+        body2.SetType(BodyType::Dynamic);
+        EXPECT_FALSE(body1 != body2);
+    }
+    {
+        auto body = Body{};
+        body.SetTransformation(Transformation{Length2{2_m, 0_m}, UnitVec{}});
+        EXPECT_TRUE(body != Body());
+    }
+    {
+        auto body = Body{};
+        body.SetSweep(Sweep{Position{Length2{}, 2_deg}});
+        EXPECT_TRUE(body != Body());
+    }
+    {
+        auto body = Body{};
+        body.SetType(BodyType::Kinematic);
+        EXPECT_TRUE(body != Body());
+    }
+    {
+        auto body = Body{};
+        body.JustSetVelocity(Velocity{LinearVelocity2{}, 2_rpm});
+        EXPECT_TRUE(body != Body());
+    }
+    {
+        auto body1 = Body{};
+        body1.SetType(BodyType::Dynamic);
+        body1.SetAcceleration(LinearAcceleration2{}, Real(2) * RadianPerSquareSecond);
+        auto body2 = Body{};
+        body2.SetType(BodyType::Dynamic);
+        EXPECT_TRUE(body1 != body2);
+    }
+    {
+        auto body = Body{};
+        SetMass(body, 3.2_kg);
+        EXPECT_TRUE(body != Body());
+    }
+    {
+        auto body = Body{};
+        body.SetInvRotInertia((Real(2) * SquareRadian) / (2_m2 * 1.2_kg));
+        EXPECT_TRUE(body != Body());
+    }
+    {
+        auto body = Body{};
+        SetLinearDamping(body, 2_Hz);
+        EXPECT_TRUE(body != Body());
+    }
+    {
+        auto body = Body{};
+        SetAngularDamping(body, 2_Hz);
+        EXPECT_TRUE(body != Body());
+    }
+    {
+        auto body1 = Body{};
+        body1.SetType(BodyType::Dynamic);
+        body1.SetUnderActiveTime(2_s);
+        auto body2 = Body{};
+        body2.SetType(BodyType::Dynamic);
+        EXPECT_TRUE(body1 != body2);
+    }
+}

@@ -53,3 +53,22 @@ TEST(Acceleration, Subtraction)
               (Acceleration{LinearAcceleration2{0_mps2, 0_mps2}, 0 * RadianPerSquareSecond}));
 }
 
+TEST(Acceleration, EqualsOperator)
+{
+    const auto zero = Acceleration{};
+    EXPECT_TRUE(zero == zero);
+    EXPECT_TRUE((Acceleration{LinearAcceleration2{}, AngularAcceleration{}} == zero));
+    EXPECT_FALSE((Acceleration{LinearAcceleration2{2_mps2, 0_mps2}, AngularAcceleration{}} == zero));
+    EXPECT_FALSE((Acceleration{LinearAcceleration2{0_mps2, 2_mps2}, AngularAcceleration{}} == zero));
+    EXPECT_FALSE((Acceleration{LinearAcceleration2{}, Real(2) * RadianPerSquareSecond} == zero));
+}
+
+TEST(Acceleration, NotEqualsOperator)
+{
+    const auto zero = Acceleration{};
+    EXPECT_FALSE(zero != zero);
+    EXPECT_FALSE((Acceleration{LinearAcceleration2{}, AngularAcceleration{}} != zero));
+    EXPECT_TRUE((Acceleration{LinearAcceleration2{2_mps2, 0_mps2}, AngularAcceleration{}} != zero));
+    EXPECT_TRUE((Acceleration{LinearAcceleration2{0_mps2, 2_mps2}, AngularAcceleration{}} != zero));
+    EXPECT_TRUE((Acceleration{LinearAcceleration2{}, Real(2) * RadianPerSquareSecond} != zero));
+}
