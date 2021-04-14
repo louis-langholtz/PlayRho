@@ -2050,10 +2050,10 @@ bool WorldImpl::Add(ContactKey key)
     const auto minKeyLeafData = m_tree.GetLeafData(key.GetMin());
     const auto maxKeyLeafData = m_tree.GetLeafData(key.GetMax());
 
-    const auto bodyIdA = minKeyLeafData.body; // fixtureA->GetBody();
+    const auto bodyIdA = minKeyLeafData.body;
     const auto fixtureIdA = minKeyLeafData.fixture;
     const auto indexA = minKeyLeafData.childIndex;
-    const auto bodyIdB = maxKeyLeafData.body; // fixtureB->GetBody();
+    const auto bodyIdB = maxKeyLeafData.body;
     const auto fixtureIdB = maxKeyLeafData.fixture;
     const auto indexB = maxKeyLeafData.childIndex;
 
