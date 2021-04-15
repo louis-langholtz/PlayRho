@@ -147,7 +147,7 @@ struct BodyConf {
     /// this increases CPU usage.
     bool allowSleep = true;
 
-    /// Is this body initially awake or sleeping?
+    /// Is the body awake or sleeping?
     bool awake = true;
 
     /// Should this body be prevented from rotating? Useful for characters.
@@ -159,7 +159,7 @@ struct BodyConf {
     /// @note Use this flag sparingly since it increases processing time.
     bool bullet = false;
 
-    /// Does this body start out enabled?
+    /// Whether or not the body is enabled.
     bool enabled = true;
 };
 
