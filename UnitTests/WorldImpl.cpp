@@ -420,7 +420,7 @@ TEST(WorldImpl, CreateDestroyContactingBodies)
                   static_cast<decltype(contacts.begin()->first.GetMin())>(0));
         EXPECT_EQ(contacts.begin()->first.GetMax(),
                   static_cast<decltype(contacts.begin()->first.GetMax())>(1));
-        EXPECT_EQ(contacts.begin()->second.get(), 0u);
+        EXPECT_EQ(to_underlying(contacts.begin()->second), 0u);
         EXPECT_EQ(GetFixtureA(world.GetContact(contacts.begin()->second)),
                   *GetFixtures(world, body1).begin());
         EXPECT_EQ(GetFixtureB(world.GetContact(contacts.begin()->second)),
@@ -790,12 +790,12 @@ TEST(WorldImpl, IsDestroyedBody)
 
     auto id = InvalidBodyID;
     ASSERT_NO_THROW(id = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
-    ASSERT_EQ(id.get(), 0u);
+    ASSERT_EQ(to_underlying(id), 0u);
     ASSERT_EQ(world.GetBodies().size(), 1u);
     EXPECT_FALSE(world.IsDestroyed(id));
 
     ASSERT_NO_THROW(id = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
-    ASSERT_EQ(id.get(), 1u);
+    ASSERT_EQ(to_underlying(id), 1u);
     ASSERT_EQ(world.GetBodies().size(), 2u);
     EXPECT_FALSE(world.IsDestroyed(id));
 
@@ -814,11 +814,11 @@ TEST(WorldImpl, IsDestroyedFixture)
     auto id = InvalidFixtureID;
     ASSERT_NO_THROW(CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
     ASSERT_NO_THROW(id = CreateFixture(world, FixtureConf{}.UseBody(BodyID{0u}).UseShape(shape)));
-    ASSERT_EQ(id.get(), 0u);
+    ASSERT_EQ(to_underlying(id), 0u);
     EXPECT_FALSE(world.IsDestroyed(FixtureID{0u}));
 
     ASSERT_NO_THROW(id = CreateFixture(world, FixtureConf{}.UseBody(BodyID{0u}).UseShape(shape)));
-    ASSERT_EQ(id.get(), 1u);
+    ASSERT_EQ(to_underlying(id), 1u);
     EXPECT_FALSE(world.IsDestroyed(FixtureID{1u}));
 
     ASSERT_NO_THROW(Destroy(world, FixtureID{0u}));

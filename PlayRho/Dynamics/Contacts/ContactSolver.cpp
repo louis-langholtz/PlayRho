@@ -69,8 +69,8 @@ VelocityPair GetVelocityDelta(const VelocityConstraint& vc, const Momentum2 impu
 {
     assert(IsValid(impulses));
 
-    const auto bodyA = &bodies[vc.GetBodyA().get()];
-    const auto bodyB = &bodies[vc.GetBodyB().get()];
+    const auto bodyA = &bodies[to_underlying(vc.GetBodyA())];
+    const auto bodyB = &bodies[to_underlying(vc.GetBodyB())];
     const auto normal = vc.GetNormal();
 
     const auto invRotInertiaA = bodyA->GetInvRotInertia();
@@ -99,8 +99,8 @@ Momentum BlockSolveUpdate(VelocityConstraint& vc, const Momentum2 newImpulses,
                           std::vector<BodyConstraint>& bodies)
 {
     const auto delta_v = GetVelocityDelta(vc, newImpulses - GetNormalImpulses(vc), bodies);
-    const auto bodyA = &bodies[vc.GetBodyA().get()];
-    const auto bodyB = &bodies[vc.GetBodyB().get()];
+    const auto bodyA = &bodies[to_underlying(vc.GetBodyA())];
+    const auto bodyB = &bodies[to_underlying(vc.GetBodyB())];
     bodyA->SetVelocity(bodyA->GetVelocity() + std::get<0>(delta_v));
     bodyB->SetVelocity(bodyB->GetVelocity() + std::get<1>(delta_v));
     SetNormalImpulses(vc, newImpulses);
@@ -280,8 +280,8 @@ inline Momentum BlockSolveNormalConstraint(VelocityConstraint& vc,
     const auto b_prime = [&bodies,&vc]() {
         const auto normal = vc.GetNormal();
         
-        const auto velA = bodies[vc.GetBodyA().get()].GetVelocity();
-        const auto velB = bodies[vc.GetBodyB().get()].GetVelocity();
+        const auto velA = bodies[to_underlying(vc.GetBodyA())].GetVelocity();
+        const auto velB = bodies[to_underlying(vc.GetBodyB())].GetVelocity();
         const auto ra0 = vc.GetPointRelPosA(0);
         const auto rb0 = vc.GetPointRelPosB(0);
         const auto ra1 = vc.GetPointRelPosA(1);
@@ -338,8 +338,8 @@ inline Momentum SeqSolveNormalConstraint(VelocityConstraint& vc,
     
     const auto direction = vc.GetNormal();
     const auto count = vc.GetPointCount();
-    const auto bodyA = &bodies[vc.GetBodyA().get()];
-    const auto bodyB = &bodies[vc.GetBodyB().get()];
+    const auto bodyA = &bodies[to_underlying(vc.GetBodyA())];
+    const auto bodyB = &bodies[to_underlying(vc.GetBodyB())];
     
     const auto invRotInertiaA = bodyA->GetInvRotInertia();
     const auto invMassA = bodyA->GetInvMass();
@@ -398,8 +398,8 @@ inline Momentum SolveTangentConstraint(VelocityConstraint& vc,
     const auto friction = vc.GetFriction();
     const auto tangentSpeed = vc.GetTangentSpeed();
     const auto count = vc.GetPointCount();
-    const auto bodyA = &bodies[vc.GetBodyA().get()];
-    const auto bodyB = &bodies[vc.GetBodyB().get()];
+    const auto bodyA = &bodies[to_underlying(vc.GetBodyA())];
+    const auto bodyB = &bodies[to_underlying(vc.GetBodyB())];
     
     const auto invRotInertiaA = bodyA->GetInvRotInertia();
     const auto invMassA = bodyA->GetInvMass();
@@ -498,8 +498,8 @@ d2::PositionSolution SolvePositionConstraint(const d2::PositionConstraint& pc,
     assert(IsValid(conf.linearSlop));
     assert(IsValid(conf.maxLinearCorrection));
     
-    const auto bodyA = &bodies[pc.GetBodyA().get()];
-    const auto bodyB = &bodies[pc.GetBodyB().get()];
+    const auto bodyA = &bodies[to_underlying(pc.GetBodyA())];
+    const auto bodyB = &bodies[to_underlying(pc.GetBodyB())];
     
     const auto invMassA = moveA? bodyA->GetInvMass(): InvMass{0};
     const auto invRotInertiaA = moveA? bodyA->GetInvRotInertia(): InvRotInertia{0};

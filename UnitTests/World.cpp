@@ -3234,12 +3234,12 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
                 std::cout << " bodyA=(" << GetX(GetLocation(world, body_a)) << "," << GetY(GetLocation(world, body_a)) << ")";
                 if (body_a == ball_body) std::cout << " ball";
                 if (!IsSpeedable(world, body_a)) std::cout << " wall";
-                std::cout << " " << UnderlyingValue(body_a);
+                std::cout << " " << to_underlying(body_a);
                 std::cout << std::endl;
                 std::cout << " bodyB=(" << GetX(GetLocation(world, body_b)) << "," << GetY(GetLocation(world, body_b)) << ")";
                 if (body_b == ball_body) std::cout << " ball";
                 if (!IsSpeedable(world, body_b)) std::cout << " wall";
-                std::cout << " " << UnderlyingValue(body_b);
+                std::cout << " " << to_underlying(body_b);
                 std::cout << std::endl;
 
                 //GTEST_FATAL_FAILURE_("");                
@@ -3273,7 +3273,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
                 }
                 if (GetY(GetLocation(world, body)) <= btm_edge_y * Meter)
                 {
-                    escaped = true;                    
+                    escaped = true;
                 }
             }
             if (escaped && !IsTouching(world, contact))
@@ -3281,8 +3281,8 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
                 std::cout << "Escaped at EndContact[" << &contact << "]:";
                 std::cout << " toiSteps=" << static_cast<unsigned>(GetToiCount(world, contact));
                 std::cout << " toiValid=" << HasValidToi(world, contact);
-                std::cout << " a[" << UnderlyingValue(body_a) << "]@(" << GetX(GetLocation(world, body_a)) << "," << GetY(GetLocation(world, body_a)) << ")";
-                std::cout << " b[" << UnderlyingValue(body_b) << "]@(" << GetX(GetLocation(world, body_b)) << "," << GetY(GetLocation(world, body_b)) << ")";
+                std::cout << " a[" << to_underlying(body_a) << "]@(" << GetX(GetLocation(world, body_a)) << "," << GetY(GetLocation(world, body_a)) << ")";
+                std::cout << " b[" << to_underlying(body_b) << "]@(" << GetX(GetLocation(world, body_b)) << "," << GetY(GetLocation(world, body_b)) << ")";
                 std::cout << std::endl;
                 //exit(1);
             }
