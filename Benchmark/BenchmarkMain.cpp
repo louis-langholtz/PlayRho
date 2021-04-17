@@ -58,6 +58,7 @@
 
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp> // for GetAwakeCount
+#include <PlayRho/Dynamics/WorldFixture.hpp> // for CreateFixture
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
@@ -1945,6 +1946,7 @@ static void DropDisks(benchmark::State& state)
     const auto diskRadius = 0.5f * playrho::Meter;
     const auto diskConf = playrho::d2::DiskShapeConf{}.UseRadius(diskRadius);
     const auto shape = playrho::d2::Shape{diskConf};
+    const auto shapeId = world.CreateShape(shape);
     const auto numDisks = state.range();
     for (auto i = decltype(numDisks){0}; i < numDisks; ++i)
     {
@@ -1954,7 +1956,7 @@ static void DropDisks(benchmark::State& state)
                                            .UseType(playrho::BodyType::Dynamic)
                                            .UseLocation(location)
                                            .UseLinearAcceleration(playrho::d2::EarthlyGravity));
-        world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(body).UseShape(shape));
+        world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(body).UseShape(shapeId));
     }
 
     const auto stepConf = playrho::StepConf{};
@@ -2010,16 +2012,18 @@ static void AddPairStressTestPlayRho(benchmark::State& state, int count)
     {
         state.PauseTiming();
         auto world = playrho::d2::World{worldConf};
+        const auto diskShapeId = world.CreateShape(diskShape);
+        const auto rectShapeId = world.CreateShape(rectShape);
         {
             for (auto i = 0; i < count; ++i) {
                 const auto location = playrho::Vec2(Rand(minX, maxX), Rand(minY, maxY)) * playrho::Meter;
                 // Uses parenthesis here to work around Visual C++'s const propagating of the copy.
                 const auto body = world.CreateBody(playrho::d2::BodyConf(bd).UseLocation(location));
-                world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(body).UseShape(diskShape));
+                world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(body).UseShape(diskShapeId));
             }
         }
         const auto rectBody = world.CreateBody(rectBodyConf);
-        world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(rectBody).UseShape(rectShape));
+        world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(rectBody).UseShape(rectShapeId));
         for (auto i = 0; i < state.range(); ++i)
         {
             world.Step(stepConf);
@@ -2114,7 +2118,7 @@ static void DropTilesPlayRho(int count)
             for (auto i = 0; i < N; ++i)
             {
                 conf.SetAsBox(a * playrho::Meter, a * playrho::Meter, position, playrho::Angle{0});
-                world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(ground).UseShape(conf));
+                CreateFixture(world, ground, conf);
                 GetX(position) += 2.0f * a * playrho::Meter;
             }
             GetY(position) -= 2.0f * a * playrho::Meter;
@@ -2126,6 +2130,7 @@ static void DropTilesPlayRho(int count)
         conf.SetAsBox(a * playrho::Meter, a * playrho::Meter);
         conf.UseDensity(5.0f * playrho::KilogramPerSquareMeter);
         const auto shape = playrho::d2::Shape(conf);
+        const auto shapeId = world.CreateShape(shape);
         
         playrho::Length2 x(-7.0f * playrho::Meter, 0.75f * playrho::Meter);
         playrho::Length2 y;
@@ -2142,7 +2147,7 @@ static void DropTilesPlayRho(int count)
                                                    .UseType(playrho::BodyType::Dynamic)
                                                    .UseLocation(y)
                                                    .UseLinearAcceleration(gravity));
-                world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(body).UseShape(shape));
+                world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(body).UseShape(shapeId));
                 y += deltaY;
             }
             
@@ -2288,6 +2293,7 @@ private:
     playrho::d2::Shape m_square = playrho::d2::Shape{
         playrho::d2::PolygonShapeConf(m_squareLen, m_squareLen)
     };
+    playrho::ShapeID m_squareId = m_world.CreateShape(m_square);
 };
 
 Tumbler::Tumbler()
@@ -2306,16 +2312,17 @@ playrho::BodyID Tumbler::CreateEnclosure(playrho::d2::World& world)
     shape.UseDensity(5 * playrho::KilogramPerSquareMeter);
     shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter,
                    playrho::Vec2( 10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
-    world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(shape));
+    const auto shapeId = world.CreateShape(playrho::d2::Shape(shape));
+    world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(shapeId));
     shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter,
                    playrho::Vec2(-10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
-    world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(shape));
+    world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(shapeId));
     shape.SetAsBox(10.0f * playrho::Meter, 0.5f * playrho::Meter,
                    playrho::Vec2(0.0f, 10.0f) * playrho::Meter, playrho::Angle{0});
-    world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(shape));
+    world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(shapeId));
     shape.SetAsBox(10.0f * playrho::Meter, 0.5f * playrho::Meter,
                    playrho::Vec2(0.0f, -10.0f) * playrho::Meter, playrho::Angle{0});
-    world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(shape));
+    world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(shapeId));
     return b;
 }
 
@@ -2349,7 +2356,7 @@ void Tumbler::AddSquare()
                                       .UseType(playrho::BodyType::Dynamic)
                                       .UseLocation(playrho::Vec2(0, 10) * playrho::Meter)
                                       .UseLinearAcceleration(playrho::d2::EarthlyGravity));
-    m_world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(m_square));
+    m_world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(m_squareId));
 }
 
 bool Tumbler::IsWithin(const playrho::d2::AABB& aabb) const
