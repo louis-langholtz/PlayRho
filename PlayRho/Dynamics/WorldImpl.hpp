@@ -45,6 +45,7 @@
 #include <PlayRho/Dynamics/WorldConf.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 #include <PlayRho/Dynamics/IslandStats.hpp>
+#include <PlayRho/Collision/Shapes/ShapeID.hpp>
 
 #include <iterator>
 #include <vector>
@@ -480,6 +481,15 @@ public:
 
     /// @}
 
+    /// @name Shape Member Functions
+    /// Member functions relating to shapes.
+    /// @{
+
+    ShapeID CreateShape(const Shape& def);
+    const Shape& GetShape(ShapeID id) const;
+
+    /// @}
+
     /// @name Contact Member Functions
     /// Member functions relating to contacts.
     /// @{
@@ -744,10 +754,7 @@ private:
     };
 
     /// @brief Updates the contact times of impact.
-    static UpdateContactsData UpdateContactTOIs(ArrayAllocator<Contact>& contactBuffer,
-                                                ArrayAllocator<Body>& bodyBuffer,
-                                                const ArrayAllocator<FixtureConf>& fixtureBuffer,
-                                                const Contacts& contacts, const StepConf& conf);
+    UpdateContactsData UpdateContactTOIs(const StepConf& conf);
 
     /// @brief Gets the soonest contact.
     /// @details This finds the contact with the lowest (soonest) time of impact.
@@ -846,6 +853,7 @@ private:
     ArrayAllocator<Joint> m_jointBuffer; ///< Array of joint data both used and freed.
     ArrayAllocator<Contact> m_contactBuffer; ///< Array of contact data both used and freed.
     ArrayAllocator<Manifold> m_manifoldBuffer; ///< Array of manifold data both used and freed.
+    ArrayAllocator<Shape> m_shapeBuffer;
 
     DynamicTree m_tree; ///< Dynamic tree.
 

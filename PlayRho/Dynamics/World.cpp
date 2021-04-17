@@ -25,6 +25,7 @@
 #include <PlayRho/Dynamics/WorldImplContact.hpp>
 #include <PlayRho/Dynamics/WorldImplFixture.hpp>
 #include <PlayRho/Dynamics/WorldImplJoint.hpp>
+#include <PlayRho/Dynamics/WorldImplShape.hpp>
 #include <PlayRho/Dynamics/WorldImplMisc.hpp>
 
 #include <PlayRho/Dynamics/BodyConf.hpp>
@@ -236,6 +237,16 @@ void World::SetJoint(JointID id, const Joint& def)
 void World::Destroy(JointID id)
 {
     ::playrho::d2::Destroy(*m_impl, id);
+}
+
+ShapeID World::CreateShape(const Shape& def)
+{
+    return ::playrho::d2::CreateShape(*m_impl, def);
+}
+
+const Shape& World::GetShape(ShapeID id) const
+{
+    return ::playrho::d2::GetShape(*m_impl, id);
 }
 
 SizedRange<World::Contacts::const_iterator> World::GetContacts() const noexcept

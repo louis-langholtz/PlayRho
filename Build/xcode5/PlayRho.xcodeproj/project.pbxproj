@@ -221,6 +221,9 @@
 		47928F371E66539000EE6E9E /* FrictionJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F361E66539000EE6E9E /* FrictionJoint.cpp */; };
 		47928F391E66586400EE6E9E /* DistanceJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F381E66586400EE6E9E /* DistanceJoint.cpp */; };
 		47928F5D200ABCAE00A5DD5B /* double.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F5C200ABCAE00A5DD5B /* double.cpp */; };
+		4795B61D262B557100FB3EC6 /* ShapeID.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4795B61C262B557100FB3EC6 /* ShapeID.hpp */; };
+		4795B62F262B72BB00FB3EC6 /* WorldImplShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4795B62D262B72BB00FB3EC6 /* WorldImplShape.cpp */; };
+		4795B630262B72BB00FB3EC6 /* WorldImplShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4795B62E262B72BB00FB3EC6 /* WorldImplShape.hpp */; };
 		479B63C31ED9CAC300D49BC7 /* CheckedValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 479B63C21ED9CAC300D49BC7 /* CheckedValue.cpp */; };
 		47AB01BA1D6FA40C0084D721 /* Dump.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AB01B91D6FA40C0084D721 /* Dump.cpp */; };
 		47ABB0BE2546309400E5F37B /* WorldImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47ABB0BD2546309400E5F37B /* WorldImpl.cpp */; };
@@ -626,6 +629,9 @@
 		47928F381E66586400EE6E9E /* DistanceJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceJoint.cpp; sourceTree = "<group>"; };
 		47928F5A2009E83500A5DD5B /* UnitTests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UnitTests.hpp; sourceTree = "<group>"; };
 		47928F5C200ABCAE00A5DD5B /* double.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = double.cpp; sourceTree = "<group>"; };
+		4795B61C262B557100FB3EC6 /* ShapeID.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShapeID.hpp; sourceTree = "<group>"; };
+		4795B62D262B72BB00FB3EC6 /* WorldImplShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldImplShape.cpp; sourceTree = "<group>"; };
+		4795B62E262B72BB00FB3EC6 /* WorldImplShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldImplShape.hpp; sourceTree = "<group>"; };
 		479B63C21ED9CAC300D49BC7 /* CheckedValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CheckedValue.cpp; sourceTree = "<group>"; };
 		47AB01B91D6FA40C0084D721 /* Dump.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dump.cpp; sourceTree = "<group>"; };
 		47ABB0BD2546309400E5F37B /* WorldImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldImpl.cpp; sourceTree = "<group>"; };
@@ -1006,6 +1012,7 @@
 				80BB893C141C3E5900F1753A /* PolygonShapeConf.hpp */,
 				470F9B051EDB8F62007EF7B6 /* Shape.cpp */,
 				80BB893D141C3E5900F1753A /* Shape.hpp */,
+				4795B61C262B557100FB3EC6 /* ShapeID.hpp */,
 				473E019C1F80ACBE00D58CC8 /* ShapeConf.hpp */,
 			);
 			path = Shapes;
@@ -1127,6 +1134,8 @@
 				47640876251EA80B0090F711 /* WorldImplJoint.hpp */,
 				47640884251F11620090F711 /* WorldImplMisc.cpp */,
 				4764087E251EB90E0090F711 /* WorldImplMisc.hpp */,
+				4795B62D262B72BB00FB3EC6 /* WorldImplShape.cpp */,
+				4795B62E262B72BB00FB3EC6 /* WorldImplShape.hpp */,
 				476408A0252391730090F711 /* WorldSpecial.cpp */,
 			);
 			path = Dynamics;
@@ -1455,6 +1464,7 @@
 				473E019E1F80ACBE00D58CC8 /* ShapeConf.hpp in Headers */,
 				47CF984D1DF9C4A30077F5F2 /* ShapeSeparation.hpp in Headers */,
 				4764087F251EB90E0090F711 /* WorldImplMisc.hpp in Headers */,
+				4795B630262B72BB00FB3EC6 /* WorldImplShape.hpp in Headers */,
 				470F9B121EDF2890007EF7B6 /* Position.hpp in Headers */,
 				4726DD2C1D31B4090012A882 /* AABB.hpp in Headers */,
 				478E67CD1E777A43009B9AD5 /* StepStats.hpp in Headers */,
@@ -1463,6 +1473,7 @@
 				47B58F561F570E2C00354C34 /* DynamicMemory.hpp in Headers */,
 				476408752511A5CC0090F711 /* KeyedContactID.hpp in Headers */,
 				4787D6DF1F2ED2D6008C115E /* RopeJointConf.hpp in Headers */,
+				4795B61D262B557100FB3EC6 /* ShapeID.hpp in Headers */,
 				474FFC3C1F2CEE6C0037CCE0 /* Vector.hpp in Headers */,
 				4731DE441DE2570900E7F931 /* Collision.hpp in Headers */,
 				47640867250C855D0090F711 /* IndexingNamedType.hpp in Headers */,
@@ -1778,6 +1789,7 @@
 				47363E8620027FE2005912B1 /* ContactImpulsesList.cpp in Sources */,
 				80BB89A7141C3E5900F1753A /* StackAllocator.cpp in Sources */,
 				80BB89AB141C3E5900F1753A /* Body.cpp in Sources */,
+				4795B62F262B72BB00FB3EC6 /* WorldImplShape.cpp in Sources */,
 				4787D6BE1F2E968E008C115E /* JointConf.cpp in Sources */,
 				4731DE671DF0A73000E7F931 /* Manifold.cpp in Sources */,
 				47E841721DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */,

@@ -84,7 +84,7 @@ FixtureCounter GetFixtureCount(const World& world) noexcept;
 /// @throws std::out_of_range If given an invalid body identifier in the configuration.
 /// @see CreateFixture(World&, BodyID, const Shape&,FixtureConf,bool).
 /// @relatedalso World
-FixtureID CreateFixture(World& world, FixtureConf def = FixtureConf{}, bool resetMassData = true);
+FixtureID CreateFixture(World& world, const FixtureConf& def = FixtureConf{}, bool resetMassData = true);
 
 /// @brief Creates a fixture within the specified world.
 /// @throws WrongState if called while the world is "locked".
@@ -199,6 +199,20 @@ inline MassData GetMassData(const World& world, FixtureID id)
 /// @relatedalso World
 /// @ingroup TestPointGroup
 bool TestPoint(const World& world, FixtureID id, Length2 p);
+
+/// @brief Gets the density of the given configuration.
+/// @relatedalso World
+NonNegative<AreaDensity> GetDensity(const World& world, const FixtureConf& conf);
+
+/// @brief Gets the default friction amount for the given fixtures.
+/// @relatedalso FixtureConf
+Real GetDefaultFriction(const World& world,
+                        const FixtureConf& fixtureA, const FixtureConf& fixtureB);
+
+/// @brief Gets the default restitution amount for the given fixtures.
+/// @relatedalso FixtureConf
+Real GetDefaultRestitution(const World& world,
+                           const FixtureConf& fixtureA, const FixtureConf& fixtureB);
 
 } // namespace d2
 } // namespace playrho

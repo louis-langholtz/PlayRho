@@ -127,7 +127,7 @@ FixtureCounter GetShapeCount(const World& world) noexcept
     auto shapes = std::set<const void*>();
     for (const auto& bodyID: world.GetBodies()) {
         for (const auto& fixtureID: world.GetFixtures(bodyID)) {
-            shapes.insert(GetData(GetShape(world.GetFixture(fixtureID))));
+            shapes.insert(GetData(world.GetShape(GetShape(world.GetFixture(fixtureID)))));
         }
     }
     return static_cast<FixtureCounter>(size(shapes));

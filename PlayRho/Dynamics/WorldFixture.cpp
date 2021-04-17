@@ -24,6 +24,7 @@
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/Body.hpp> // for GetBody
+#include <PlayRho/Dynamics/Contacts/Contact.hpp> // for MixFriction
 
 namespace playrho {
 namespace d2 {
@@ -45,7 +46,7 @@ FixtureCounter GetFixtureCount(const World& world) noexcept
     return sum;
 }
 
-FixtureID CreateFixture(World& world, FixtureConf def, bool resetMassData)
+FixtureID CreateFixture(World& world, const FixtureConf& def, bool resetMassData)
 {
     const auto result = world.CreateFixture(def);
     if (resetMassData) {
@@ -58,7 +59,7 @@ FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
                         FixtureConf def, bool resetMassData)
 {
     def.body = id;
-    def.shape = shape;
+    def.shape = world.CreateShape(shape);
     return CreateFixture(world, def, resetMassData);
 }
 
@@ -96,7 +97,7 @@ Transformation GetTransformation(const World& world, FixtureID id)
 
 const Shape& GetShape(const World& world, FixtureID id)
 {
-    return GetShape(world.GetFixture(id));
+    return world.GetShape(GetShape(world.GetFixture(id)));
 }
 
 bool IsSensor(const World& world, FixtureID id)
@@ -113,12 +114,31 @@ void SetSensor(World& world, FixtureID id, bool value)
 
 AreaDensity GetDensity(const World& world, FixtureID id)
 {
-    return GetDensity(world.GetFixture(id));
+    return GetDensity(world, world.GetFixture(id));
 }
 
 bool TestPoint(const World& world, FixtureID id, Length2 p)
 {
     return TestPoint(GetShape(world, id), InverseTransform(p, GetTransformation(world, id)));
+}
+
+NonNegative<AreaDensity> GetDensity(const World& world, const FixtureConf& conf)
+{
+    return GetDensity(world.GetShape(GetShape(conf)));
+}
+
+Real GetDefaultFriction(const World& world,
+                        const FixtureConf& fixtureA, const FixtureConf& fixtureB)
+{
+    return MixFriction(GetFriction(world.GetShape(GetShape(fixtureA))),
+                       GetFriction(world.GetShape(GetShape(fixtureB))));
+}
+
+Real GetDefaultRestitution(const World& world,
+                           const FixtureConf& fixtureA, const FixtureConf& fixtureB)
+{
+    return MixRestitution(GetRestitution(world.GetShape(GetShape(fixtureA))),
+                          GetRestitution(world.GetShape(GetShape(fixtureB))));
 }
 
 } // namespace d2

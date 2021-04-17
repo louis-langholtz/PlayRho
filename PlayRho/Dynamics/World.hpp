@@ -31,6 +31,7 @@
 
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Collision/Shapes/ShapeID.hpp>
 
 #include <PlayRho/Dynamics/BodyConf.hpp> // for GetDefaultBodyConf
 #include <PlayRho/Dynamics/BodyID.hpp>
@@ -519,6 +520,15 @@ public:
     /// @see CreateJoint(const Joint&), GetJoints, GetJointRange.
     /// @see PhysicalEntities.
     void Destroy(JointID id);
+
+    /// @}
+
+    /// @name Shape Member Functions
+    /// Member functions relating to shapes.
+    /// @{
+
+    ShapeID CreateShape(const Shape& def);
+    const Shape& GetShape(ShapeID id) const;
 
     /// @}
 

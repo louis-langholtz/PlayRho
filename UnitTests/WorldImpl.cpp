@@ -176,16 +176,17 @@ TEST(WorldImpl, Clear)
     world.SetJointDestructionListener(std::ref(jointListener));
     world.SetFixtureDestructionListener(std::ref(fixtureListener));
 
+    const auto shapeId0 = world.CreateShape(Shape(DiskShapeConf{}));
     const auto b0 = world.CreateBody();
     ASSERT_NE(b0, InvalidBodyID);
-    const auto fixtureConf0 = FixtureConf{}.UseBody(b0).UseShape(DiskShapeConf{});
+    const auto fixtureConf0 = FixtureConf{}.UseBody(b0).UseShape(shapeId0);
     const auto f0 = world.CreateFixture(fixtureConf0);
     ASSERT_NE(f0, InvalidFixtureID);
     ASSERT_EQ(GetFixtures(world, b0).size(), std::size_t(1));;
 
     const auto b1 = world.CreateBody();
     ASSERT_NE(b1, InvalidBodyID);
-    const auto fixtureConf1 = FixtureConf{}.UseBody(b1).UseShape(DiskShapeConf{});
+    const auto fixtureConf1 = FixtureConf{}.UseBody(b1).UseShape(shapeId0);
     const auto f1 = CreateFixture(world, fixtureConf1);
     ASSERT_NE(f1, InvalidFixtureID);
     ASSERT_EQ(GetFixtures(world, b1).size(), std::size_t(1));;
@@ -213,9 +214,10 @@ TEST(WorldImpl, Clear)
     ASSERT_EQ(jointListener.ids.size(), std::size_t(1));
     EXPECT_EQ(jointListener.ids.at(0), j0);
 
+    const auto shapeId1 = world.CreateShape(Shape(DiskShapeConf{}));
     const auto b2 = world.CreateBody();
     EXPECT_LE(b2, b1);
-    const auto fixtureConf2 = FixtureConf{}.UseBody(b2).UseShape(DiskShapeConf{});
+    const auto fixtureConf2 = FixtureConf{}.UseBody(b2).UseShape(shapeId1);
     const auto f2 = CreateFixture(world, fixtureConf2);
     EXPECT_LE(f2, f1);
 }
@@ -318,7 +320,8 @@ TEST(WorldImpl, CreateDestroyDynamicBodyAndFixture)
     EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
     EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
 
-    const auto fixtureConf = FixtureConf{}.UseBody(bodyID).UseShape(DiskShapeConf{1_m});
+    const auto shapeId = world.CreateShape(Shape(DiskShapeConf{1_m}));
+    const auto fixtureConf = FixtureConf{}.UseBody(bodyID).UseShape(shapeId);
     const auto fixture = CreateFixture(world, fixtureConf);
     ASSERT_NE(fixture, InvalidFixtureID);
     
@@ -361,10 +364,9 @@ TEST(WorldImpl, CreateDestroyContactingBodies)
     EXPECT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(0));
     EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(0));
 
-    EXPECT_NE(world.CreateFixture(FixtureConf{}.UseBody(body1).UseShape(DiskShapeConf{1_m}.UseDensity(1_kgpm2))),
-              InvalidFixtureID);
-    EXPECT_NE(world.CreateFixture(FixtureConf{}.UseBody(body2).UseShape(DiskShapeConf{1_m}.UseDensity(1_kgpm2))),
-              InvalidFixtureID);
+    const auto shapeId = world.CreateShape(Shape(DiskShapeConf{1_m}.UseDensity(1_kgpm2)));
+    EXPECT_NE(world.CreateFixture(FixtureConf{}.UseBody(body1).UseShape(shapeId)), InvalidFixtureID);
+    EXPECT_NE(world.CreateFixture(FixtureConf{}.UseBody(body2).UseShape(shapeId)), InvalidFixtureID);
     EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
     EXPECT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(2));
     EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(0));
@@ -480,16 +482,17 @@ TEST(WorldImpl, Proxies)
         };
 
         auto world = WorldImpl{};
+        const auto shapeId = world.CreateShape(shape);
         const auto body = CreateBody(world);
-        const auto def = FixtureConf{}.UseBody(body).UseShape(shape).UseIsSensor(isSensor);
+        const auto def = FixtureConf{}.UseBody(body).UseShape(shapeId).UseIsSensor(isSensor);
         const auto fixtureID = CreateFixture(world, def);
         const auto& fixture = world.GetFixture(fixtureID);
 
         ASSERT_EQ(GetBody(fixture), body);
-        ASSERT_EQ(GetShape(fixture), shape);
-        ASSERT_EQ(GetDensity(fixture), density);
-        ASSERT_EQ(GetFriction(fixture), friction);
-        ASSERT_EQ(GetRestitution(fixture), restitution);
+        ASSERT_EQ(GetShape(fixture), shapeId);
+        ASSERT_EQ(GetDensity(shape), density);
+        ASSERT_EQ(GetFriction(shape), friction);
+        ASSERT_EQ(GetRestitution(shape), restitution);
         ASSERT_EQ(IsSensor(fixture), isSensor);
         ASSERT_EQ(world.GetProxies(fixtureID).size(), ChildCounter{0});
 
@@ -505,13 +508,14 @@ TEST(WorldImpl, Proxies)
         };
 
         auto world = WorldImpl{};
+        const auto shapeId = world.CreateShape(shape);
         const auto body = CreateBody(world);
-        const auto def = FixtureConf{}.UseBody(body).UseShape(shape).UseIsSensor(isSensor);
+        const auto def = FixtureConf{}.UseBody(body).UseShape(shapeId).UseIsSensor(isSensor);
         const auto fixtureID = CreateFixture(world, def);
         const auto& fixture = world.GetFixture(fixtureID);
 
         ASSERT_EQ(GetBody(fixture), body);
-        ASSERT_EQ(GetShape(fixture), shape);
+        ASSERT_EQ(GetShape(fixture), shapeId);
         ASSERT_EQ(IsSensor(fixture), isSensor);
         ASSERT_EQ(GetProxyCount(world, fixtureID), ChildCounter{0});
 
@@ -529,13 +533,14 @@ TEST(WorldImpl, Proxies)
         };
 
         auto world = WorldImpl{};
+        const auto shapeId = world.CreateShape(shape);
         const auto body = CreateBody(world);
-        const auto def = FixtureConf{}.UseBody(body).UseShape(shape).UseIsSensor(isSensor);
+        const auto def = FixtureConf{}.UseBody(body).UseShape(shapeId).UseIsSensor(isSensor);
         const auto fixtureID = CreateFixture(world, def);
         const auto& fixture = world.GetFixture(fixtureID);
 
         ASSERT_EQ(GetBody(fixture), body);
-        ASSERT_EQ(GetShape(fixture), shape);
+        ASSERT_EQ(GetShape(fixture), shapeId);
         ASSERT_EQ(IsSensor(fixture), isSensor);
         ASSERT_EQ(GetProxyCount(world, fixtureID), ChildCounter{0});
 
@@ -560,9 +565,10 @@ TEST(WorldImpl, SetEnabledBody)
     const auto body0 = CreateBody(world);
     const auto body1 = CreateBody(world);
     const auto valid_shape = Shape{DiskShapeConf(1_m)};
+    const auto shapeId = world.CreateShape(valid_shape);
 
-    const auto fixture0 = CreateFixture(world, FixtureConf{}.UseBody(body0).UseShape(valid_shape));
-    const auto fixture1 = CreateFixture(world, FixtureConf{}.UseBody(body1).UseShape(valid_shape));
+    const auto fixture0 = CreateFixture(world, FixtureConf{}.UseBody(body0).UseShape(shapeId));
+    const auto fixture1 = CreateFixture(world, FixtureConf{}.UseBody(body1).UseShape(shapeId));
     ASSERT_NE(fixture0, InvalidFixtureID);
     ASSERT_NE(fixture1, InvalidFixtureID);
 
@@ -647,10 +653,11 @@ TEST(WorldImpl, CreateAndDestroyFixture)
     conf.location = Vec2{1.912f, -77.31f} * 1_m;
     conf.density = 1_kgpm2;
     const auto shape = Shape(conf);
+    const auto shapeId = world.CreateShape(shape);
 
     {
-        auto fixture = CreateFixture(world, FixtureConf{}.UseBody(body).UseShape(shape));
-        const auto fshape = GetShape(world.GetFixture(fixture));
+        auto fixture = CreateFixture(world, FixtureConf{}.UseBody(body).UseShape(shapeId));
+        const auto& fshape = world.GetShape(GetShape(world.GetFixture(fixture)));
         EXPECT_EQ(GetVertexRadius(fshape, 0), GetVertexRadius(shape, 0));
         EXPECT_EQ(TypeCast<DiskShapeConf>(fshape).GetLocation(), conf.GetLocation());
         EXPECT_FALSE(GetFixtures(world, body).empty());
@@ -675,8 +682,8 @@ TEST(WorldImpl, CreateAndDestroyFixture)
         EXPECT_EQ(GetFixturesForProxies(world).size(), std::size_t(0));
     }
     {
-        auto fixture = CreateFixture(world, FixtureConf{}.UseBody(body).UseShape(shape));
-        const auto fshape = GetShape(world.GetFixture(fixture));
+        auto fixture = CreateFixture(world, FixtureConf{}.UseBody(body).UseShape(shapeId));
+        const auto& fshape = world.GetShape(GetShape(world.GetFixture(fixture)));
         EXPECT_EQ(GetVertexRadius(fshape, 0), GetVertexRadius(shape, 0));
         EXPECT_EQ(TypeCast<DiskShapeConf>(fshape).GetLocation(), conf.GetLocation());
         EXPECT_FALSE(GetFixtures(world, body).empty());
@@ -720,7 +727,8 @@ TEST(WorldImpl, ThrowsLengthErrorOnMaxFitures)
     auto world = WorldImpl{};
     const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     const auto shape = Shape{DiskShapeConf{}};
-    const auto conf = FixtureConf{}.UseBody(body).UseShape(shape);
+    const auto shapeId = world.CreateShape(shape);
+    const auto conf = FixtureConf{}.UseBody(body).UseShape(shapeId);
     for (auto i = FixtureCounter{0u}; i < MaxFixtures; ++i) {
         EXPECT_NO_THROW(world.CreateFixture(conf));
     }
@@ -753,13 +761,14 @@ TEST(WorldImpl, GetFixtureRange)
 {
     const auto shape = Shape{DiskShapeConf{}};
     auto world = WorldImpl{};
+    const auto shapeId = world.CreateShape(shape);
     EXPECT_EQ(world.GetFixtureRange(), FixtureCounter{0u});
     EXPECT_NO_THROW(CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
     EXPECT_EQ(world.GetFixtures(BodyID{0u}).size(), 0u);
-    EXPECT_NO_THROW(CreateFixture(world, FixtureConf{}.UseBody(BodyID{0u}).UseShape(shape)));
+    EXPECT_NO_THROW(CreateFixture(world, FixtureConf{}.UseBody(BodyID{0u}).UseShape(shapeId)));
     EXPECT_EQ(world.GetFixtureRange(), FixtureCounter{1u});
     EXPECT_EQ(world.GetFixtures(BodyID{0u}).size(), 1u);
-    EXPECT_NO_THROW(CreateFixture(world, FixtureConf{}.UseBody(BodyID{0u}).UseShape(shape)));
+    EXPECT_NO_THROW(CreateFixture(world, FixtureConf{}.UseBody(BodyID{0u}).UseShape(shapeId)));
     EXPECT_EQ(world.GetFixtureRange(), FixtureCounter{2u});
     EXPECT_EQ(world.GetFixtures(BodyID{0u}).size(), 2u);
     EXPECT_NO_THROW(Destroy(world, FixtureID{0u}));
@@ -811,13 +820,14 @@ TEST(WorldImpl, IsDestroyedFixture)
 {
     const auto shape = Shape{DiskShapeConf{}};
     auto world = WorldImpl{};
+    const auto shapeId = world.CreateShape(shape);
     auto id = InvalidFixtureID;
     ASSERT_NO_THROW(CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
-    ASSERT_NO_THROW(id = CreateFixture(world, FixtureConf{}.UseBody(BodyID{0u}).UseShape(shape)));
+    ASSERT_NO_THROW(id = CreateFixture(world, FixtureConf{}.UseBody(BodyID{0u}).UseShape(shapeId)));
     ASSERT_EQ(to_underlying(id), 0u);
     EXPECT_FALSE(world.IsDestroyed(FixtureID{0u}));
 
-    ASSERT_NO_THROW(id = CreateFixture(world, FixtureConf{}.UseBody(BodyID{0u}).UseShape(shape)));
+    ASSERT_NO_THROW(id = CreateFixture(world, FixtureConf{}.UseBody(BodyID{0u}).UseShape(shapeId)));
     ASSERT_EQ(to_underlying(id), 1u);
     EXPECT_FALSE(world.IsDestroyed(FixtureID{1u}));
 

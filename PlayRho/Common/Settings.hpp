@@ -238,6 +238,15 @@ constexpr auto MaxJoints = static_cast<std::uint16_t>(std::numeric_limits<std::u
 /// @note This type must be able to contain the <code>MaxJoints</code> value.
 using JointCounter = std::remove_const<decltype(MaxJoints)>::type;
 
+/// @brief Maximum number of shapes in a world.
+/// @note This is 65534 based off <code>std::uint16_t</code> and eliminating one value for invalid.
+constexpr auto MaxShapes = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
+                                                      std::uint16_t{1});
+
+/// @brief Count type for shapes.
+/// @note This type must always be able to contain the <code>MaxShapes</code> value.
+using ShapeCounter = std::remove_const_t<decltype(MaxShapes)>;
+
 /// @brief Default step time.
 constexpr auto DefaultStepTime = Time{1_s / 60};
 

@@ -351,8 +351,9 @@ MassData ComputeMassData(const World& world, BodyID id)
     auto weightedCenter = Length2{};
     for (const auto& f: world.GetFixtures(id)) {
         const auto& fixture = world.GetFixture(f);
-        if (GetDensity(fixture) > 0_kgpm2) {
-            const auto massData = GetMassData(GetShape(fixture));
+        const auto& shape = world.GetShape(GetShape(fixture));
+        if (GetDensity(shape) > 0_kgpm2) {
+            const auto massData = GetMassData(shape);
             mass += Mass{massData.mass};
             weightedCenter += Real{massData.mass / Kilogram} * massData.center;
             I += RotInertia{massData.I};

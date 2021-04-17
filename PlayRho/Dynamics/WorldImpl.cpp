@@ -226,7 +226,8 @@ BodyConstraints GetBodyConstraints(const Island::Bodies& bodies,
 PositionConstraints GetPositionConstraints(const Island::Contacts& contacts,
                                            const ArrayAllocator<FixtureConf>& fixtureBuffer,
                                            const ArrayAllocator<Contact>& contactBuffer,
-                                           const ArrayAllocator<Manifold>& manifoldBuffer)
+                                           const ArrayAllocator<Manifold>& manifoldBuffer,
+                                           const ArrayAllocator<Shape>& shapeBuffer)
 {
     auto constraints = PositionConstraints{};
     constraints.reserve(size(contacts));
@@ -239,8 +240,8 @@ PositionConstraints GetPositionConstraints(const Island::Contacts& contacts,
         const auto indexB = GetChildIndexB(contact);
         const auto bodyA = GetBodyA(contact);
         const auto bodyB = GetBodyB(contact);
-        const auto radiusA = GetVertexRadius(GetShape(fixtureBuffer[to_underlying(fixtureA)]), indexA);
-        const auto radiusB = GetVertexRadius(GetShape(fixtureBuffer[to_underlying(fixtureB)]), indexB);
+        const auto radiusA = GetVertexRadius(shapeBuffer[to_underlying(GetShape(fixtureBuffer[to_underlying(fixtureA)]))], indexA);
+        const auto radiusB = GetVertexRadius(shapeBuffer[to_underlying(GetShape(fixtureBuffer[to_underlying(fixtureB)]))], indexB);
         const auto& manifold = manifoldBuffer[to_underlying(contactID)];
         return PositionConstraint{manifold, bodyA, bodyB, radiusA + radiusB};
     });
@@ -258,6 +259,7 @@ VelocityConstraints GetVelocityConstraints(const Island::Contacts& contacts,
                                            const ArrayAllocator<FixtureConf>& fixtureBuffer,
                                            const ArrayAllocator<Contact>& contactBuffer,
                                            const ArrayAllocator<Manifold>& manifoldBuffer,
+                                           const ArrayAllocator<Shape>& shapeBuffer,
                                            BodyConstraints& bodies,
                                            const VelocityConstraint::Conf conf)
 {
@@ -275,8 +277,8 @@ VelocityConstraints GetVelocityConstraints(const Island::Contacts& contacts,
         const auto friction = GetFriction(contact);
         const auto restitution = GetRestitution(contact);
         const auto tangentSpeed = GetTangentSpeed(contact);
-        const auto& shapeA = GetShape(fixtureBuffer[to_underlying(fixtureA)]);
-        const auto& shapeB = GetShape(fixtureBuffer[to_underlying(fixtureB)]);
+        const auto& shapeA = shapeBuffer[to_underlying(GetShape(fixtureBuffer[to_underlying(fixtureA)]))];
+        const auto& shapeB = shapeBuffer[to_underlying(GetShape(fixtureBuffer[to_underlying(fixtureB)]))];
         const auto& bodyConstraintA = bodies[to_underlying(bodyA)];
         const auto& bodyConstraintB = bodies[to_underlying(bodyB)];
         const auto radiusA = GetVertexRadius(shapeA, indexA);
@@ -815,6 +817,22 @@ bool WorldImpl::IsDestroyed(JointID id) const noexcept
     return m_jointBuffer.FindFree(to_underlying(id));
 }
 
+ShapeID WorldImpl::CreateShape(const Shape& def)
+{
+    if (IsLocked()) {
+        throw WrongState("CreateShape: world is locked");
+    }
+    if (size(m_shapeBuffer) >= MaxShapes) {
+        throw LengthError("CreateShape: operation would exceed MaxShapes");
+    }
+    return static_cast<ShapeID>(static_cast<ShapeID::underlying_type>(m_shapeBuffer.Allocate(def)));
+}
+
+const Shape& WorldImpl::GetShape(ShapeID id) const
+{
+    return m_shapeBuffer.at(to_underlying(id));
+}
+
 void WorldImpl::AddToIsland(Island& island, BodyID seedID,
                             BodyCounter& remNumBodies,
                             ContactCounter& remNumContacts,
@@ -1040,9 +1058,9 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     auto bodyConstraints = GetBodyConstraints(island.bodies, m_bodyBuffer, h, GetMovementConf(conf));
     auto posConstraints = GetPositionConstraints(island.contacts,
                                                  m_fixtureBuffer, m_contactBuffer,
-                                                 m_manifoldBuffer);
+                                                 m_manifoldBuffer, m_shapeBuffer);
     auto velConstraints = GetVelocityConstraints(island.contacts,
-                                                 m_fixtureBuffer, m_contactBuffer, m_manifoldBuffer,
+                                                 m_fixtureBuffer, m_contactBuffer, m_manifoldBuffer, m_shapeBuffer,
                                                  bodyConstraints,
                                                  GetRegVelocityConstraintConf(conf));
     if (conf.doWarmStart)
@@ -1147,17 +1165,14 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
 }
 
 WorldImpl::UpdateContactsData
-WorldImpl::UpdateContactTOIs(ArrayAllocator<Contact>& contactBuffer,
-                             ArrayAllocator<Body>& bodyBuffer,
-                             const ArrayAllocator<FixtureConf>& fixtureBuffer,
-                             const Contacts& contacts, const StepConf& conf)
+WorldImpl::UpdateContactTOIs(const StepConf& conf)
 {
     auto results = UpdateContactsData{};
 
     const auto toiConf = GetToiConf(conf);
-    for (const auto& contact: contacts)
+    for (const auto& contact: m_contacts)
     {
-        auto& c = contactBuffer[to_underlying(std::get<ContactID>(contact))];
+        auto& c = m_contactBuffer[to_underlying(std::get<ContactID>(contact))];
         if (c.HasValidToi())
         {
             ++results.numValidTOI;
@@ -1177,8 +1192,8 @@ WorldImpl::UpdateContactTOIs(ArrayAllocator<Contact>& contactBuffer,
             continue;
         }
 
-        auto& bA = bodyBuffer[to_underlying(c.GetBodyA())];
-        auto& bB = bodyBuffer[to_underlying(c.GetBodyB())];
+        auto& bA = m_bodyBuffer[to_underlying(c.GetBodyA())];
+        auto& bB = m_bodyBuffer[to_underlying(c.GetBodyB())];
 
         /*
          * Put the sweeps onto the same time interval.
@@ -1193,9 +1208,9 @@ WorldImpl::UpdateContactTOIs(ArrayAllocator<Contact>& contactBuffer,
 
         // Compute the TOI for this contact (one or both bodies are active and impenetrable).
         // Computes the time of impact in interval [0, 1]
-        const auto proxyA = GetChild(GetShape(fixtureBuffer[to_underlying(c.GetFixtureA())]),
+        const auto proxyA = GetChild(GetShape(::playrho::d2::GetShape(m_fixtureBuffer[to_underlying(c.GetFixtureA())])),
                                      c.GetChildIndexA());
-        const auto proxyB = GetChild(GetShape(fixtureBuffer[to_underlying(c.GetFixtureB())]),
+        const auto proxyB = GetChild(GetShape(::playrho::d2::GetShape(m_fixtureBuffer[to_underlying(c.GetFixtureB())])),
                                      c.GetChildIndexB());
 
         // Large rotations can make the root finder of TimeOfImpact fail, so normalize sweep angles.
@@ -1269,8 +1284,7 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
     // Find TOI events and solve them.
     for (;;)
     {
-        const auto updateData = UpdateContactTOIs(m_contactBuffer, m_bodyBuffer, m_fixtureBuffer,
-                                                  m_contacts, conf);
+        const auto updateData = UpdateContactTOIs(conf);
         stats.contactsAtMaxSubSteps += updateData.numAtMaxSubSteps;
         stats.contactsUpdatedToi += updateData.numUpdatedTOI;
         stats.maxDistIters = std::max(stats.maxDistIters, updateData.maxDistIters);
@@ -1535,7 +1549,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
 
     auto posConstraints = GetPositionConstraints(island.contacts,
                                                  m_fixtureBuffer, m_contactBuffer,
-                                                 m_manifoldBuffer);
+                                                 m_manifoldBuffer, m_shapeBuffer);
 
     // Solve TOI-based position constraints.
     assert(results.minSeparation == std::numeric_limits<Length>::infinity());
@@ -1578,7 +1592,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
     }
 
     auto velConstraints = GetVelocityConstraints(island.contacts,
-                                                 m_fixtureBuffer, m_contactBuffer, m_manifoldBuffer,
+                                                 m_fixtureBuffer, m_contactBuffer, m_manifoldBuffer, m_shapeBuffer,
                                                  bodyConstraints,
                                                  GetToiVelocityConstraintConf(conf));
 
@@ -2141,8 +2155,10 @@ bool WorldImpl::Add(ContactKey key)
     if (IsSensor(fixtureA) || IsSensor(fixtureB)) {
         contact.SetIsSensor();
     }
-    contact.SetFriction(GetDefaultFriction(fixtureA, fixtureB));
-    contact.SetRestitution(GetDefaultRestitution(fixtureA, fixtureB));
+    const auto& shapeA = GetShape(::playrho::d2::GetShape(fixtureA));
+    const auto& shapeB = GetShape(::playrho::d2::GetShape(fixtureB));
+    contact.SetFriction(MixFriction(GetFriction(shapeA), GetFriction(shapeB)));
+    contact.SetRestitution(MixRestitution(GetRestitution(shapeA), GetRestitution(shapeB)));
 
     // Insert into the contacts container.
     //
@@ -2184,7 +2200,7 @@ void WorldImpl::CreateAndDestroyProxies(Length extension)
         if (fixtureProxies.empty()) {
             if (enabled) {
                 CreateProxies(m_tree, fixtureProxies,
-                              bodyID, fixtureID, GetShape(fixture),
+                              bodyID, fixtureID, GetShape(::playrho::d2::GetShape(fixture)),
                               GetTransformation(body), extension);
                 AddProxies(fixtureProxies);
             }
@@ -2229,12 +2245,13 @@ const WorldImpl::Proxies& WorldImpl::GetProxies(FixtureID id) const
 
 FixtureID WorldImpl::CreateFixture(const FixtureConf& def)
 {
+    const auto& shape = GetShape(def.shape);
     {
-        const auto childCount = GetChildCount(def.shape);
+        const auto childCount = GetChildCount(shape);
         const auto minVertexRadius = GetMinVertexRadius();
         const auto maxVertexRadius = GetMaxVertexRadius();
         for (auto i = ChildCounter{0}; i < childCount; ++i) {
-            const auto vr = GetVertexRadius(def.shape, i);
+            const auto vr = GetVertexRadius(shape, i);
             if (!(vr >= minVertexRadius)) {
                 throw InvalidArgument("CreateFixture: vertex radius < min");
             }
@@ -2259,7 +2276,7 @@ FixtureID WorldImpl::CreateFixture(const FixtureConf& def)
         m_fixturesForProxies.push_back(fixtureID);
     }
     // Adjust mass properties if needed.
-    if (GetDensity(m_fixtureBuffer[to_underlying(fixtureID)]) > 0_kgpm2) {
+    if (GetDensity(shape) > 0_kgpm2) {
         body.SetMassDataDirty();
     }
     // Let the world know we have a new fixture. This will cause new contacts
@@ -2272,7 +2289,7 @@ void WorldImpl::SetFixture(FixtureID id, const FixtureConf& value)
 {
     auto& variable = m_fixtureBuffer.at(to_underlying(id));
     if ((::playrho::d2::GetBody(variable) != ::playrho::d2::GetBody(value)) ||
-        (GetShape(variable) != GetShape(value))) {
+        (::playrho::d2::GetShape(variable) != ::playrho::d2::GetShape(value))) {
         if (to_underlying(::playrho::d2::GetBody(value)) >= m_bodyBuffer.size()) {
             throw std::invalid_argument("body for fixture does not exist!");
         }
@@ -2394,7 +2411,7 @@ ContactCounter WorldImpl::Synchronize(const Fixtures& fixtures,
     assert(::playrho::IsValid(xfm2));
     const auto displacement = multiplier * (xfm2.p - xfm1.p);
     for_each(cbegin(fixtures), cend(fixtures), [&](const auto& fixtureID) {
-        const auto& shape = GetShape(m_fixtureBuffer[to_underlying(fixtureID)]);
+        const auto& shape = GetShape(::playrho::d2::GetShape(m_fixtureBuffer[to_underlying(fixtureID)]));
         auto childIndex = ChildCounter{0};
         for (const auto& treeId: m_fixtureProxies[to_underlying(fixtureID)]) {
             // Compute an AABB that covers the swept shape (may miss some rotation effect).
@@ -2430,11 +2447,11 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
     const auto indexB = c.GetChildIndexB();
     const auto& fixtureA = m_fixtureBuffer[to_underlying(fixtureIdA)];
     const auto& fixtureB = m_fixtureBuffer[to_underlying(fixtureIdB)];
-    const auto& shapeA = GetShape(fixtureA);
+    const auto& shapeA = GetShape(::playrho::d2::GetShape(fixtureA));
     const auto& bodyA = m_bodyBuffer[to_underlying(bodyIdA)];
     const auto& bodyB = m_bodyBuffer[to_underlying(bodyIdB)];
     const auto xfA = GetTransformation(bodyA);
-    const auto& shapeB = GetShape(fixtureB);
+    const auto& shapeB = GetShape(::playrho::d2::GetShape(fixtureB));
     const auto xfB = GetTransformation(bodyB);
     const auto childA = GetChild(shapeA, indexA);
     const auto childB = GetChild(shapeB, indexB);

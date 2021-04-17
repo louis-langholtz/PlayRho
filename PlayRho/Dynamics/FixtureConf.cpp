@@ -38,15 +38,5 @@ static_assert(std::is_move_assignable<FixtureConf>::value, "FixtureConf must be 
 static_assert(std::is_nothrow_destructible<FixtureConf>::value,
               "FixtureConf must be nothrow destructible!");
 
-Real GetDefaultFriction(const FixtureConf& fixtureA, const FixtureConf& fixtureB)
-{
-    return MixFriction(GetFriction(fixtureA), GetFriction(fixtureB));
-}
-
-Real GetDefaultRestitution(const FixtureConf& fixtureA, const FixtureConf& fixtureB)
-{
-    return MixRestitution(GetRestitution(fixtureA), GetRestitution(fixtureB));
-}
-
 } // namespace d2
 } // namespace playrho
