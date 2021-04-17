@@ -40,9 +40,13 @@ TEST(Shape, ByteSize)
 #if defined(_WIN32) && !defined(_WIN64)
     EXPECT_EQ(sizeof(Shape), std::size_t(8));
 #else
-    EXPECT_EQ(sizeof(Shape), std::size_t(16));
+    EXPECT_EQ(sizeof(Shape), std::size_t(8));
 #endif
+#if SHAPE_USES_UNIQUE_PTR
+    EXPECT_EQ(sizeof(Shape), sizeof(std::unique_ptr<int>));
+#else
     EXPECT_EQ(sizeof(Shape), sizeof(std::shared_ptr<int>));
+#endif
 }
 
 TEST(Shape, Traits)
@@ -65,7 +69,11 @@ TEST(Shape, Traits)
     EXPECT_FALSE((std::is_trivially_constructible<Shape, X, X>::value));
 
     EXPECT_TRUE(std::is_copy_constructible<Shape>::value);
+#if SHAPE_USES_UNIQUE_PTR
+    EXPECT_FALSE(std::is_nothrow_copy_constructible<Shape>::value);
+#else
     EXPECT_TRUE(std::is_nothrow_copy_constructible<Shape>::value);
+#endif
     EXPECT_FALSE(std::is_trivially_copy_constructible<Shape>::value);
     
     EXPECT_TRUE(std::is_move_constructible<Shape>::value);
@@ -73,7 +81,11 @@ TEST(Shape, Traits)
     EXPECT_FALSE(std::is_trivially_move_constructible<Shape>::value);
     
     EXPECT_TRUE(std::is_copy_assignable<Shape>::value);
+#if SHAPE_USES_UNIQUE_PTR
+    EXPECT_FALSE(std::is_nothrow_copy_assignable<Shape>::value);
+#else
     EXPECT_TRUE(std::is_nothrow_copy_assignable<Shape>::value);
+#endif
     EXPECT_FALSE(std::is_trivially_copy_assignable<Shape>::value);
     
     EXPECT_TRUE(std::is_move_assignable<Shape>::value);

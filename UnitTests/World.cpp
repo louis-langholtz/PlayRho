@@ -1108,12 +1108,13 @@ TEST(World, GetShapeCountFreeFunction)
     const auto shapeConf = EdgeShapeConf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2);
 
     const auto shape1 = Shape{shapeConf};
+    const auto shapeId1 = world.CreateShape(shape1);
     
-    const auto fixture1 = CreateFixture(world, body, shape1);
+    const auto fixture1 = CreateFixture(world, FixtureConf{}.UseBody(body).UseShape(shapeId1));
     ASSERT_NE(fixture1, InvalidFixtureID);
     EXPECT_EQ(GetShapeCount(world), std::size_t(1));
 
-    const auto fixture2 = CreateFixture(world, body, shape1);
+    const auto fixture2 = CreateFixture(world, FixtureConf{}.UseBody(body).UseShape(shapeId1));
     ASSERT_NE(fixture2, InvalidFixtureID);
     EXPECT_EQ(GetShapeCount(world), std::size_t(1));
     
@@ -2593,13 +2594,13 @@ TEST(World_Longer, TilesComesToRest)
         const auto a = Real{0.5f};
         conf.UseDensity(5_kgpm2);
         conf.SetAsBox(a * Meter, a * Meter);
-        const auto shape = Shape(conf);
-        
+        const auto shapeId = world->CreateShape(Shape(conf));
+
         Length2 x(-7.0_m, 0.75_m);
         Length2 y;
         const auto deltaX = Length2(0.5625_m, 1.25_m);
         const auto deltaY = Length2(1.125_m, 0.0_m);
-        
+
         for (auto i = 0; i < e_count; ++i)
         {
             y = x;
@@ -2607,7 +2608,7 @@ TEST(World_Longer, TilesComesToRest)
             for (auto j = i; j < e_count; ++j)
             {
                 const auto body = world->CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(y).UseLinearAcceleration(EarthlyGravity));
-                CreateFixture(*world, body, shape);
+                CreateFixture(*world, FixtureConf{}.UseBody(body).UseShape(shapeId));
                 y += deltaY;
             }
             

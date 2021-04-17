@@ -38,10 +38,8 @@
 #include <stdexcept>
 #include <type_traits> // for std::add_pointer_t, std::add_const_t
 
-// Set this to 1 to use std::unique_ptr instead of std::shared_ptr.
-// Note that using std::shared_ptr is nearly twice as fast as using std::unique_ptr
-// (at least in the World_Longer.TilesComesToRest unit test)!
-#define SHAPE_USES_UNIQUE_PTR 0
+// Set this to 1 to use std::unique_ptr or to 0 to use std::shared_ptr.
+#define SHAPE_USES_UNIQUE_PTR 1
 
 namespace playrho {
 namespace d2 {
