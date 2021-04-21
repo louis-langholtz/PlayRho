@@ -1926,8 +1926,8 @@ TEST(World, HeavyOnLight)
         const auto lowerBody = world.CreateBody(lowerBodyConf);
         ASSERT_LT(GetY(GetLocation(world, lowerBody)), GetY(GetLocation(world, upperBody)));
         
-        CreateFixture(world, lowerBody, Shape(smallerDiskConf), FixtureConf{}.UseIsSensor(true));
-        CreateFixture(world, upperBody, Shape(biggerDiskConf), FixtureConf{}.UseIsSensor(true));
+        CreateFixture(world, lowerBody, Shape(DiskShapeConf{smallerDiskConf}.UseIsSensor(true)), FixtureConf{});
+        CreateFixture(world, upperBody, Shape(DiskShapeConf{biggerDiskConf}.UseIsSensor(true)), FixtureConf{});
         ASSERT_LT(GetMass(world, lowerBody), GetMass(world, upperBody));
 
         EXPECT_EQ(GetAwakeCount(world), BodyCounter(2));

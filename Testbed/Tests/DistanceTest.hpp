@@ -318,6 +318,7 @@ public:
         if (AlmostEqual(static_cast<double>(Real{maxIndicesAB.distance / 1_m}),
                          static_cast<double>(Real{maxIndicesBA.distance / 1_m})))
         {
+#ifndef NDEBUG
             const auto childA = GetChild(shapeA, 0);
             const auto childB = GetChild(shapeB, 0);
             //assert(maxIndicesAB.index1 == maxIndicesBA.index2);
@@ -340,6 +341,7 @@ public:
                 // shapeA face maxIndicesAB.index1 is coplanar to shapeB face i1, and
                 // nearest shapeB vertex maxIndicesAB.index2
                 i1;
+#endif
 #endif
         }
         else if (maxIndicesAB.distance > maxIndicesBA.distance)

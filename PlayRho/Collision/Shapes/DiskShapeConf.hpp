@@ -112,6 +112,7 @@ inline bool operator== (const DiskShapeConf& lhs, const DiskShapeConf& rhs) noex
 {
     return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction
         && lhs.restitution == rhs.restitution && lhs.density == rhs.density
+        && lhs.filter == rhs.filter && lhs.isSensor == rhs.isSensor
         && lhs.location == rhs.location;
 }
 

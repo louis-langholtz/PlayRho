@@ -59,7 +59,8 @@ public:
                 auto conf = DiskShapeConf{};
                 conf.vertexRadius = 5_m;
                 conf.location = Vec2(0.0f, 10.0f) * 1_m;
-                m_sensor = CreateFixture(GetWorld(), ground, Shape(conf), FixtureConf{}.UseIsSensor(true));
+                conf.isSensor = true;
+                m_sensor = CreateFixture(GetWorld(), ground, Shape(conf));
             }
 #endif
         }

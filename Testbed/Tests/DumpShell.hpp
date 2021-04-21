@@ -73,13 +73,9 @@ public:
                 shape.UseFriction(Real(2.000000029802322e-01f));
                 shape.UseRestitution(Real(0.000000000000000e+00f));
                 shape.UseDensity(Real{1.000000000000000e+00f} * 1_kgpm2);
-                FixtureConf fd;
-                fd.isSensor = bool(0);
-                fd.filter.categoryBits = Filter::bits_type(1);
-                fd.filter.maskBits = Filter::bits_type(65535);
-                fd.filter.groupIndex = Filter::index_type(0);
-
-                CreateFixture(GetWorld(), bodies[0], Shape(shape), fd);
+                shape.UseIsSensor(false);
+                shape.UseFilter(Filter{Filter::bits_type(1), Filter::bits_type(65535), Filter::index_type(0)});
+                CreateFixture(GetWorld(), bodies[0], Shape(shape));
             }
         }
         {
@@ -111,12 +107,9 @@ public:
                 shape.UseFriction(Real(5.000000000000000e-01f));
                 shape.UseRestitution(Real(0.000000000000000e+00f));
                 shape.UseDensity(Real{5.000000000000000e+00f} * 1_kgpm2);
-                FixtureConf fd;
-                fd.isSensor = bool(0);
-                fd.filter.categoryBits = Filter::bits_type(1);
-                fd.filter.maskBits = Filter::bits_type(65535);
-                fd.filter.groupIndex = Filter::index_type(0);
-                CreateFixture(GetWorld(), bodies[1], Shape(shape), fd);
+                shape.UseIsSensor(false);
+                shape.UseFilter(Filter{Filter::bits_type(1), Filter::bits_type(65535), Filter::index_type(0)});
+                CreateFixture(GetWorld(), bodies[1], Shape(shape));
             }
         }
         {
@@ -145,12 +138,9 @@ public:
                 shape.UseFriction(Real(9.499999880790710e-01f));
                 shape.UseRestitution(Real(0.000000000000000e+00f));
                 shape.UseDensity(Real{1.000000000000000e+01f} * 1_kgpm2);
-                FixtureConf fd;
-                fd.isSensor = bool(0);
-                fd.filter.categoryBits = Filter::bits_type(1);
-                fd.filter.maskBits = Filter::bits_type(65535);
-                fd.filter.groupIndex = Filter::index_type(-3);
-                CreateFixture(GetWorld(), bodies[2], Shape(shape), fd);
+                shape.UseIsSensor(false);
+                shape.UseFilter(Filter{Filter::bits_type(1), Filter::bits_type(65535), Filter::index_type(-3)});
+                CreateFixture(GetWorld(), bodies[2], Shape(shape));
             }
         }
 

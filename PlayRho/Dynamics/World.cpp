@@ -249,6 +249,16 @@ const Shape& World::GetShape(ShapeID id) const
     return ::playrho::d2::GetShape(*m_impl, id);
 }
 
+void World::SetShape(ShapeID id, const Shape& def)
+{
+    ::playrho::d2::SetShape(*m_impl, id, def);
+}
+
+void World::Destroy(ShapeID id)
+{
+    ::playrho::d2::Destroy(*m_impl, id);
+}
+
 SizedRange<World::Contacts::const_iterator> World::GetContacts() const noexcept
 {
     return ::playrho::d2::GetContacts(*m_impl);

@@ -411,13 +411,6 @@ WorldImpl::ContactUpdateConf GetUpdateConf(const StepConf& conf) noexcept
     return WorldImpl::ContactUpdateConf{GetDistanceConf(conf), GetManifoldConf(conf)};
 }
 
-[[maybe_unused]]
-bool HasSensor(const ArrayAllocator<FixtureConf>& fixtures, const Contact& c)
-{
-    return IsSensor(fixtures[to_underlying(c.GetFixtureA())])
-        || IsSensor(fixtures[to_underlying(c.GetFixtureB())]);
-}
-
 template <typename T>
 void FlagForUpdating(ArrayAllocator<Contact>& contactsBuffer, const T& contacts) noexcept
 {
@@ -831,6 +824,46 @@ ShapeID WorldImpl::CreateShape(const Shape& def)
 const Shape& WorldImpl::GetShape(ShapeID id) const
 {
     return m_shapeBuffer.at(to_underlying(id));
+}
+
+void WorldImpl::SetShape(ShapeID id, const Shape& def)
+{
+    if (IsLocked()) {
+        throw WrongState("SetShape: world is locked");
+    }
+    auto& shape = m_shapeBuffer.at(to_underlying(id));
+    if (GetFilter(shape) != GetFilter(def)) {
+        for (auto& c: m_contactBuffer) {
+            const auto shapeIdA = ::playrho::d2::GetShape(m_fixtureBuffer[to_underlying(GetFixtureA(c))]);
+            const auto shapeIdB = ::playrho::d2::GetShape(m_fixtureBuffer[to_underlying(GetFixtureB(c))]);
+            if (shapeIdA == id || shapeIdB == id) {
+                c.FlagForFiltering();
+            }
+        }
+        for (auto& f: m_fixtureBuffer) {
+            if (f.shape == id) {
+                const auto index = static_cast<std::size_t>(&f - &(*m_fixtureBuffer.begin()));
+                AddProxies(m_fixtureProxies[index]);
+            }
+        }
+    }
+    if (IsSensor(shape) != IsSensor(def)) {
+        for (auto& f: m_fixtureBuffer) {
+            if (f.shape == id) {
+                FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(f.body)]);
+            }
+        }
+    }
+    shape = def;
+    // TODO: anything else that needs doing?
+}
+
+void WorldImpl::Destroy(ShapeID id)
+{
+    if (IsLocked()) {
+        throw WrongState("Destroy: world is locked");
+    }
+    m_shapeBuffer.Free(to_underlying(id));
 }
 
 void WorldImpl::AddToIsland(Island& island, BodyID seedID,
@@ -1306,17 +1339,6 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
         stats.contactsFound += ncount;
         auto islandsFound = 0u;
         if (!m_islandedContacts[to_underlying(contactID)]) {
-#ifndef NDEBUG
-            auto& contact = m_contactBuffer[to_underlying(contactID)];
-            /*
-             * Confirm that contact is as it's supposed to be according to contract of the
-             * GetSoonestContact method from which this contact was obtained.
-             */
-            assert(contact.IsEnabled());
-            assert(!HasSensor(m_fixtureBuffer, contact));
-            assert(IsActive(contact));
-            assert(IsImpenetrable(contact));
-#endif
             const auto solverResults = SolveToi(contactID, conf);
             stats.minSeparation = std::min(stats.minSeparation, solverResults.minSeparation);
             stats.maxIncImpulse = std::max(stats.maxIncImpulse, solverResults.maxIncImpulse);
@@ -1381,7 +1403,7 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
      * GetSoonestContacts method from which this contact should have been obtained.
      */
     assert(contact.IsEnabled());
-    assert(!HasSensor(m_fixtureBuffer, contact));
+    assert(!IsSensor(contact));
     assert(IsActive(contact));
     assert(IsImpenetrable(contact));
     assert(!m_islandedContacts[to_underlying(contactID)]);
@@ -1890,9 +1912,11 @@ WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(Contacts& contacts)
             const auto& bodyB = m_bodyBuffer[to_underlying(bodyIdB)];
             const auto& fixtureA = m_fixtureBuffer[to_underlying(contact.GetFixtureA())];
             const auto& fixtureB = m_fixtureBuffer[to_underlying(contact.GetFixtureB())];
+            const auto& shapeA = m_shapeBuffer[to_underlying(::playrho::d2::GetShape(fixtureA))];
+            const auto& shapeB = m_shapeBuffer[to_underlying(::playrho::d2::GetShape(fixtureB))];
             if (!EitherIsAccelerable(bodyA, bodyB) ||
                 !ShouldCollide(m_jointBuffer, m_bodyJoints, bodyIdA, bodyIdB) ||
-                !ShouldCollide(fixtureA, fixtureB))
+                !ShouldCollide(shapeA, shapeB))
             {
                 InternalDestroy(contactID);
                 return true;
@@ -2084,13 +2108,15 @@ bool WorldImpl::Add(ContactKey key)
 
     auto& bodyA = m_bodyBuffer[to_underlying(bodyIdA)];
     auto& bodyB = m_bodyBuffer[to_underlying(bodyIdB)];
-    auto& fixtureA = m_fixtureBuffer[to_underlying(fixtureIdA)];
-    auto& fixtureB = m_fixtureBuffer[to_underlying(fixtureIdB)];
+    const auto& fixtureA = m_fixtureBuffer[to_underlying(fixtureIdA)];
+    const auto& fixtureB = m_fixtureBuffer[to_underlying(fixtureIdB)];
+    const auto& shapeA = m_shapeBuffer[to_underlying(::playrho::d2::GetShape(fixtureA))];
+    const auto& shapeB = m_shapeBuffer[to_underlying(::playrho::d2::GetShape(fixtureB))];
 
     // Does a joint override collision? Is at least one body dynamic?
     if (!EitherIsAccelerable(bodyA, bodyB) ||
         !ShouldCollide(m_jointBuffer, m_bodyJoints, bodyIdA, bodyIdB) ||
-        !ShouldCollide(fixtureA, fixtureB))
+        !ShouldCollide(shapeA, shapeB))
     {
         return false;
     }
@@ -2152,11 +2178,9 @@ bool WorldImpl::Add(ContactKey key)
     if (bodyA.IsAwake() || bodyB.IsAwake()) {
         contact.SetIsActive();
     }
-    if (IsSensor(fixtureA) || IsSensor(fixtureB)) {
-        contact.SetIsSensor();
+    if (IsSensor(shapeA) || IsSensor(shapeB)) {
+        contact.SetSensor();
     }
-    const auto& shapeA = GetShape(::playrho::d2::GetShape(fixtureA));
-    const auto& shapeB = GetShape(::playrho::d2::GetShape(fixtureB));
     contact.SetFriction(MixFriction(GetFriction(shapeA), GetFriction(shapeB)));
     contact.SetRestitution(MixRestitution(GetRestitution(shapeA), GetRestitution(shapeB)));
 
@@ -2301,13 +2325,6 @@ void WorldImpl::SetFixture(FixtureID id, const FixtureConf& value)
     const auto bodyID = ::playrho::d2::GetBody(value);
     assert(bodyID == ::playrho::d2::GetBody(variable));
     m_bodyBuffer[to_underlying(bodyID)].SetAwake();
-    if (GetFilterData(variable) != GetFilterData(value)) {
-        FlagForFiltering(m_contactBuffer, m_bodyContacts[to_underlying(bodyID)], id);
-        AddProxies(m_fixtureProxies[to_underlying(id)]); // not end of world if this throws
-    }
-    if (IsSensor(variable) != IsSensor(value)) {
-        FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(bodyID)]);
-    }
     variable = value;
 }
 
@@ -2447,11 +2464,11 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
     const auto indexB = c.GetChildIndexB();
     const auto& fixtureA = m_fixtureBuffer[to_underlying(fixtureIdA)];
     const auto& fixtureB = m_fixtureBuffer[to_underlying(fixtureIdB)];
-    const auto& shapeA = GetShape(::playrho::d2::GetShape(fixtureA));
+    const auto& shapeA = m_shapeBuffer[to_underlying(::playrho::d2::GetShape(fixtureA))];
+    const auto& shapeB = m_shapeBuffer[to_underlying(::playrho::d2::GetShape(fixtureB))];
     const auto& bodyA = m_bodyBuffer[to_underlying(bodyIdA)];
     const auto& bodyB = m_bodyBuffer[to_underlying(bodyIdB)];
     const auto xfA = GetTransformation(bodyA);
-    const auto& shapeB = GetShape(::playrho::d2::GetShape(fixtureB));
     const auto xfB = GetTransformation(bodyB);
     const auto childA = GetChild(shapeA, indexA);
     const auto childB = GetChild(shapeB, indexB);
@@ -2462,7 +2479,7 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
     //   approaches zero.
 #define OVERLAP_TOLERANCE (SquareMeter / Real(20))
 
-    const auto sensor = IsSensor(fixtureA) || IsSensor(fixtureB);
+    const auto sensor = IsSensor(shapeA) || IsSensor(shapeB);
     if (sensor)
     {
         const auto overlapping = TestOverlap(childA, xfA, childB, xfB, conf.distance);

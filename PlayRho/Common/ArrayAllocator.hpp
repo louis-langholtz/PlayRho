@@ -183,6 +183,16 @@ public:
         m_free.clear();
     }
 
+    typename std::vector<value_type>::iterator begin() noexcept
+    {
+        return m_data.begin();
+    }
+
+    typename std::vector<value_type>::iterator end() noexcept
+    {
+        return m_data.end();
+    }
+
 private:
     std::vector<value_type> m_data; ///< Array data (both used & free).
     std::vector<size_type> m_free; ///< Indices of free elements.

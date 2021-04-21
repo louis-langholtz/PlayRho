@@ -64,7 +64,7 @@ public:
         }
     }
 
-    void PreSolve(ContactID contact, const Manifold& oldManifold)
+    void PreSolve(ContactID contact, const Manifold& /*oldManifold*/)
     {
         const auto fixtureA = GetFixtureA(GetWorld(), contact);
         const auto fixtureB = GetFixtureB(GetWorld(), contact);

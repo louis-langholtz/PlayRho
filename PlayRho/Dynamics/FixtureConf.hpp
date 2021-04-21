@@ -58,32 +58,11 @@ struct FixtureConf {
         return *this;
     }
 
-    /// @brief Uses the given sensor state value.
-    FixtureConf& UseIsSensor(bool value) noexcept
-    {
-        isSensor = value;
-        return *this;
-    }
-
-    /// @brief Uses the given filter value.
-    FixtureConf& UseFilter(Filter value) noexcept
-    {
-        filter = value;
-        return *this;
-    }
-
     /// @brief Identifier of shape to associate the fixture with.
     ShapeID shape = InvalidShapeID;
 
     /// @brief Identifier of body to associate the fixture with.
     BodyID body = InvalidBodyID;
-
-    /// Contact filtering data.
-    Filter filter;
-
-    /// A sensor shape collects contact information but never generates a collision
-    /// response.
-    bool isSensor = false;
 };
 
 /// @brief Operator equals.
@@ -91,9 +70,7 @@ struct FixtureConf {
 inline bool operator==(const FixtureConf& lhs, const FixtureConf& rhs)
 {
     return lhs.shape == rhs.shape && //
-           lhs.filter == rhs.filter && //
-           lhs.body == rhs.body && //
-           lhs.isSensor == rhs.isSensor;
+           lhs.body == rhs.body;
 }
 
 /// @brief Operator not-equals.
@@ -115,43 +92,6 @@ inline BodyID GetBody(const FixtureConf& conf) noexcept
 inline ShapeID GetShape(const FixtureConf& conf) noexcept
 {
     return conf.shape;
-}
-
-/// @brief Gets whether or not the given configuration is a sensor.
-/// @relatedalso FixtureConf
-inline bool IsSensor(const FixtureConf& conf) noexcept
-{
-    return conf.isSensor;
-}
-
-/// @brief Sets whether or not the given configuration is a sensor.
-/// @relatedalso FixtureConf
-inline void SetSensor(FixtureConf& conf, bool value) noexcept
-{
-    conf.isSensor = value;
-}
-
-/// @brief Gets the filter-data of the given configuration.
-/// @relatedalso FixtureConf
-inline Filter GetFilterData(const FixtureConf& conf) noexcept
-{
-    return conf.filter;
-}
-
-/// @brief Sets the filter-data of the given configuration.
-/// @relatedalso FixtureConf
-inline void SetFilterData(FixtureConf& conf, Filter value) noexcept
-{
-    conf.filter = value;
-}
-
-/// @brief Whether contact calculations should be performed between the two fixtures.
-/// @return <code>true</code> if contact calculations should be performed between these
-///   two fixtures; <code>false</code> otherwise.
-/// @relatedalso FixtureConf
-inline bool ShouldCollide(const FixtureConf& fixtureA, const FixtureConf& fixtureB) noexcept
-{
-    return ShouldCollide(GetFilterData(fixtureA), GetFilterData(fixtureB));
 }
 
 } // namespace d2

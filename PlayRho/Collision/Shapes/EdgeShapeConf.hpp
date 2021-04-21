@@ -117,6 +117,7 @@ inline bool operator== (const EdgeShapeConf& lhs, const EdgeShapeConf& rhs) noex
 {
     return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction
         && lhs.restitution == rhs.restitution && lhs.density == rhs.density
+        && lhs.filter == rhs.filter && lhs.isSensor == rhs.isSensor
         && lhs.GetVertexA() == rhs.GetVertexA() && lhs.GetVertexB() == rhs.GetVertexB();
 }
 

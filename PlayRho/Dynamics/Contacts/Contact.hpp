@@ -215,7 +215,7 @@ public:
 
     /// @brief Sets the sensor state of this contact.
     /// @attention Call this if fixture A or fixture B is a sensor.
-    void SetIsSensor() noexcept;
+    void SetSensor() noexcept;
 
     /// @brief Unsets the sensor state of this contact.
     void UnsetIsSensor() noexcept;
@@ -529,7 +529,7 @@ inline bool Contact::IsSensor() const noexcept
     return m_flags & e_sensorFlag;
 }
 
-inline void Contact::SetIsSensor() noexcept
+inline void Contact::SetSensor() noexcept
 {
     m_flags |= e_sensorFlag;
 }

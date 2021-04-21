@@ -47,6 +47,7 @@
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/WorldFixture.hpp>
+#include <PlayRho/Dynamics/WorldShape.hpp>
 
 #include "Drawer.hpp"
 #include "UiState.hpp"

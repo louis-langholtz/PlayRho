@@ -23,6 +23,7 @@
 
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldShape.hpp>
 #include <PlayRho/Dynamics/Body.hpp> // for GetBody
 #include <PlayRho/Dynamics/Contacts/Contact.hpp> // for MixFriction
 
@@ -75,14 +76,13 @@ bool Destroy(World& world, FixtureID id, bool resetMassData)
 
 Filter GetFilterData(const World& world, FixtureID id)
 {
-    return GetFilterData(world.GetFixture(id));
+    return GetFilter(world.GetShape(GetShape(world.GetFixture(id))));
 }
 
 void SetFilterData(World& world, FixtureID id, const Filter& value)
 {
-    auto fixture = world.GetFixture(id);
-    SetFilterData(fixture, value);
-    world.SetFixture(id, fixture);
+    const auto shapeId = GetShape(world.GetFixture(id));
+    SetFilterData(world, shapeId, value);
 }
 
 BodyID GetBody(const World& world, FixtureID id)
@@ -102,14 +102,13 @@ const Shape& GetShape(const World& world, FixtureID id)
 
 bool IsSensor(const World& world, FixtureID id)
 {
-    return IsSensor(world.GetFixture(id));
+    return IsSensor(world.GetShape(GetShape(world.GetFixture(id))));
 }
 
 void SetSensor(World& world, FixtureID id, bool value)
 {
-    auto fixture = world.GetFixture(id);
-    SetSensor(fixture, value);
-    world.SetFixture(id, fixture);
+    const auto shapeId = GetShape(world.GetFixture(id));
+    SetSensor(world, shapeId, value);
 }
 
 AreaDensity GetDensity(const World& world, FixtureID id)

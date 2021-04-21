@@ -18,31 +18,53 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/WorldImplShape.hpp>
+#include <PlayRho/Dynamics/WorldShape.hpp>
 
-#include <PlayRho/Dynamics/WorldImpl.hpp>
+#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/Contacts/Contact.hpp> // for MixFriction
 
 namespace playrho {
 namespace d2 {
 
-ShapeID CreateShape(WorldImpl& world, const Shape& def)
+using playrho::size;
+
+ShapeID CreateShape(World& world, const Shape& def)
 {
     return world.CreateShape(def);
 }
 
-const Shape& GetShape(const WorldImpl& world, ShapeID id)
+void Destroy(World& world, ShapeID id)
+{
+    world.Destroy(id);
+}
+
+void SetFilterData(World& world, ShapeID id, const Filter& value)
+{
+    auto object = world.GetShape(id);
+    SetFilter(object, value);
+    world.SetShape(id, object);
+}
+
+const Shape& GetShape(const World& world, ShapeID id)
 {
     return world.GetShape(id);
 }
 
-void SetShape(WorldImpl& world, ShapeID id, const Shape& def)
+void SetSensor(World& world, ShapeID id, bool value)
 {
-    world.SetShape(id, def);
+    auto object = world.GetShape(id);
+    SetSensor(object, value);
+    world.SetShape(id, object);
 }
 
-void Destroy(WorldImpl& world, ShapeID id)
+Real GetDefaultFriction(const Shape& a, const Shape& b)
 {
-    world.Destroy(id);
+    return MixFriction(GetFriction(a), GetFriction(b));
+}
+
+Real GetDefaultRestitution(const Shape& a, const Shape& b)
+{
+    return MixRestitution(GetRestitution(a), GetRestitution(b));
 }
 
 } // namespace d2

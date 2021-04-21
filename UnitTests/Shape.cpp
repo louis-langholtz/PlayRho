@@ -145,6 +145,13 @@ TEST(Shape, InitializingConstructor)
     auto s = Shape{conf};
     EXPECT_TRUE(s.has_value());
     EXPECT_EQ(GetChildCount(s), ChildCounter(1));
+    EXPECT_EQ(GetFilter(s).categoryBits, Filter{}.categoryBits);
+    EXPECT_EQ(GetFilter(s).maskBits, Filter{}.maskBits);
+    EXPECT_EQ(GetFilter(s).groupIndex, Filter{}.groupIndex);
+    EXPECT_EQ(IsSensor(s), false);
+    conf.UseIsSensor(true);
+    s = Shape{conf};
+    EXPECT_EQ(IsSensor(s), true);
 }
 
 TEST(Shape, Assignment)
@@ -328,23 +335,24 @@ TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
 TEST(Shape, Equality)
 {
     EXPECT_TRUE(Shape(EdgeShapeConf()) == Shape(EdgeShapeConf()));
-
     const auto shapeA = Shape(DiskShapeConf{}.UseRadius(100_m));
     const auto shapeB = Shape(DiskShapeConf{}.UseRadius(100_m));
     EXPECT_TRUE(shapeA == shapeB);
-    
     EXPECT_FALSE(Shape(DiskShapeConf()) == Shape(EdgeShapeConf()));
+    EXPECT_FALSE(Shape(EdgeShapeConf()) == Shape(EdgeShapeConf().UseIsSensor(true)));
+    const auto filter = Filter{0x2u, 0x8, 0x1};
+    EXPECT_FALSE(Shape(EdgeShapeConf()) == Shape(EdgeShapeConf().UseFilter(filter)));
 }
 
 TEST(Shape, Inequality)
 {
     EXPECT_FALSE(Shape(EdgeShapeConf()) != Shape(EdgeShapeConf()));
-    
     const auto shapeA = Shape(DiskShapeConf{}.UseRadius(100_m));
     const auto shapeB = Shape(DiskShapeConf{}.UseRadius(100_m));
     EXPECT_FALSE(shapeA != shapeB);
-
     EXPECT_TRUE(Shape(DiskShapeConf()) != Shape(EdgeShapeConf()));
+    const auto filter = Filter{0x2u, 0x8, 0x1};
+    EXPECT_TRUE(Shape(EdgeShapeConf()) != Shape(EdgeShapeConf().UseFilter(filter)));
 }
 
 TEST(Shape, Transform)

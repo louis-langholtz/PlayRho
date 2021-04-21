@@ -30,69 +30,35 @@ using namespace playrho::d2;
 
 TEST(FixtureConf, ByteSize)
 {
-    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
-    // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real)) {
-    case 4:
-#if defined(_WIN32) && !defined(_WIN64)
-        EXPECT_EQ(sizeof(FixtureConf), std::size_t(12));
-#else
-        EXPECT_EQ(sizeof(FixtureConf), std::size_t(12));
-#endif
-        break;
-    case 8:
-        EXPECT_EQ(sizeof(FixtureConf), std::size_t(32));
-        break;
-    case 16:
-        EXPECT_EQ(sizeof(FixtureConf), std::size_t(32));
-        break;
-    default:
-        FAIL();
-        break;
-    }
+    EXPECT_EQ(sizeof(FixtureConf), std::size_t(4));
 }
 
 TEST(FixtureConf, DefaultConstructor)
 {
     const auto fixture = FixtureConf{};
     EXPECT_EQ(GetBody(fixture), InvalidBodyID);
-    EXPECT_EQ(GetFilterData(fixture).categoryBits, Filter{}.categoryBits);
-    EXPECT_EQ(GetFilterData(fixture).maskBits, Filter{}.maskBits);
-    EXPECT_EQ(GetFilterData(fixture).groupIndex, Filter{}.groupIndex);
-    EXPECT_EQ(IsSensor(fixture), false);
+    EXPECT_EQ(GetShape(fixture), InvalidShapeID);
 }
 
 TEST(FixtureConf, InitializingConstructor)
 {
     const auto body = BodyID(23u);
     const auto shape = ShapeID(0);
-    const auto filter = Filter{};
-    const auto isSensor = true;
-    const auto fixture =
-        FixtureConf{}.UseIsSensor(isSensor).UseFilter(filter).UseBody(body).UseShape(shape);
+    const auto fixture = FixtureConf{}.UseBody(body).UseShape(shape);
     EXPECT_EQ(GetBody(fixture), body);
-    EXPECT_EQ(GetFilterData(fixture).categoryBits, filter.categoryBits);
-    EXPECT_EQ(GetFilterData(fixture).maskBits, filter.maskBits);
-    EXPECT_EQ(GetFilterData(fixture).groupIndex, Filter{}.groupIndex);
-    EXPECT_EQ(IsSensor(fixture), isSensor);
+    EXPECT_EQ(GetShape(fixture), shape);
 }
 
 TEST(FixtureConf, EqualsOperator)
 {
-    constexpr auto filter = Filter{0x2u, 0x8, 0x1};
     EXPECT_TRUE(FixtureConf() == FixtureConf());
     EXPECT_FALSE(FixtureConf().UseShape(ShapeID(0)) == FixtureConf());
-    EXPECT_FALSE(FixtureConf().UseFilter(filter) == FixtureConf());
     EXPECT_FALSE(FixtureConf().UseBody(BodyID(1u)) == FixtureConf());
-    EXPECT_FALSE(FixtureConf().UseIsSensor(true) == FixtureConf());
 }
 
 TEST(FixtureConf, NotEqualsOperator)
 {
-    constexpr auto filter = Filter{0x2u, 0x8, 0x1};
     EXPECT_FALSE(FixtureConf() != FixtureConf());
     EXPECT_TRUE(FixtureConf().UseShape(ShapeID(0)) != FixtureConf());
-    EXPECT_TRUE(FixtureConf().UseFilter(filter) != FixtureConf());
     EXPECT_TRUE(FixtureConf().UseBody(BodyID(1u)) != FixtureConf());
-    EXPECT_TRUE(FixtureConf().UseIsSensor(true) != FixtureConf());
 }

@@ -36,6 +36,10 @@ ShapeID CreateShape(WorldImpl& world, const Shape& def);
 
 const Shape& GetShape(const WorldImpl& world, ShapeID id);
 
+void SetShape(WorldImpl& world, ShapeID id, const Shape& def);
+
+void Destroy(WorldImpl& world, ShapeID id);
+
 } // namespace d2
 } // namespace playrho
 

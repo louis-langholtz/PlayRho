@@ -31,6 +31,7 @@
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Common/NonNegative.hpp>
 #include <PlayRho/Common/InvalidArgument.hpp>
+#include <PlayRho/Dynamics/Filter.hpp>
 
 #include <memory>
 #include <functional>
@@ -94,6 +95,12 @@ NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept;
 /// @see UseVertexRadius
 /// @throws InvalidArgument if the child index is not less than the child count.
 NonNegative<Length> GetVertexRadius(const Shape& shape, ChildCounter idx);
+
+Filter GetFilter(const Shape& shape) noexcept;
+void SetFilter(Shape& shape, Filter value);
+
+bool IsSensor(const Shape& shape) noexcept;
+void SetSensor(Shape& shape, bool value);
 
 /// @brief Transforms all of the given shape's vertices by the given transformation matrix.
 /// @see https://en.wikipedia.org/wiki/Transformation_matrix
@@ -304,6 +311,36 @@ public:
         return shape.m_self ? shape.m_self->GetDensity_() : NonNegative<AreaDensity>{0_kgpm2};
     }
 
+    friend Filter GetFilter(const Shape& shape) noexcept
+    {
+        return shape.m_self ? shape.m_self->GetFilter_(): Filter{};
+    }
+
+    friend void SetFilter(Shape& shape, Filter value)
+    {
+#if SHAPE_USES_UNIQUE_PTR
+        if (shape.m_self) {
+            shape.m_self->SetFilter_(value);
+        }
+#else
+#endif
+    }
+
+    friend bool IsSensor(const Shape& shape) noexcept
+    {
+        return shape.m_self ? shape.m_self->IsSensor_(): false;
+    }
+
+    friend void SetSensor(Shape& shape, bool value)
+    {
+#if SHAPE_USES_UNIQUE_PTR
+        if (shape.m_self) {
+            shape.m_self->SetSensor_(value);
+        }
+#else
+#endif
+    }
+
     friend void Transform(Shape& shape, const Mat22& m)
     {
 #if SHAPE_USES_UNIQUE_PTR
@@ -381,6 +418,14 @@ private:
 
         /// @brief Gets the restitution.
         virtual Real GetRestitution_() const noexcept = 0;
+
+        virtual Filter GetFilter_() const noexcept = 0;
+
+        virtual void SetFilter_(Filter value) = 0;
+
+        virtual bool IsSensor_() const noexcept = 0;
+
+        virtual void SetSensor_(bool value) = 0;
 
         /// @brief Transforms all of the shape's vertices by the given transformation matrix.
         /// @see https://en.wikipedia.org/wiki/Transformation_matrix
@@ -462,6 +507,26 @@ private:
         Real GetRestitution_() const noexcept override
         {
             return GetRestitution(data);
+        }
+
+        Filter GetFilter_() const noexcept override
+        {
+            return GetFilter(data);
+        }
+
+        void SetFilter_(Filter value) override
+        {
+            SetFilter(data, value);
+        }
+
+        bool IsSensor_() const noexcept override
+        {
+            return IsSensor(data);
+        }
+
+        void SetSensor_(bool value) override
+        {
+            SetSensor(data, value);
         }
 
         void Transform_(const Mat22& m) override
@@ -631,6 +696,15 @@ inline std::add_pointer_t<T> TypeCast(Shape* value) noexcept
     return nullptr;
 }
 #endif
+
+/// @brief Whether contact calculations should be performed between the two instances.
+/// @return <code>true</code> if contact calculations should be performed between these
+///   two instances; <code>false</code> otherwise.
+/// @relatedalso Shape
+inline bool ShouldCollide(const Shape& a, const Shape& b) noexcept
+{
+    return ShouldCollide(GetFilter(a), GetFilter(b));
+}
 
 } // namespace d2
 } // namespace playrho

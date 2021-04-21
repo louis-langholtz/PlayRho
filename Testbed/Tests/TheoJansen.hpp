@@ -52,13 +52,13 @@ public:
             poly1.Set({p1, p3, p2});
             poly2.Set({Length2{}, p6 - p4, p5 - p4});
         }
+        Filter filter;
+        filter.groupIndex = -1;
         poly1.UseDensity(1_kgpm2);
+        poly1.UseFilter(filter);
         poly2.UseDensity(1_kgpm2);
+        poly2.UseFilter(filter);
 
-        FixtureConf fd1, fd2;
-        fd1.filter.groupIndex = -1;
-        fd2.filter.groupIndex = -1;
-        
         BodyConf bd1, bd2;
         bd1.type = BodyType::Dynamic;
         bd2.type = BodyType::Dynamic;
@@ -71,8 +71,8 @@ public:
         const auto body1 = CreateBody(GetWorld(), bd1);
         const auto body2 = CreateBody(GetWorld(), bd2);
 
-        CreateFixture(GetWorld(), body1, Shape(poly1), fd1);
-        CreateFixture(GetWorld(), body2, Shape(poly2), fd2);
+        CreateFixture(GetWorld(), body1, Shape(poly1));
+        CreateFixture(GetWorld(), body2, Shape(poly2));
 
         // Using a soft distance constraint can reduce some jitter.
         // It also makes the structure seem a bit more fluid by
@@ -135,19 +135,20 @@ public:
 
         // Chassis
         {
-            FixtureConf sd;
-            sd.filter.groupIndex = -1;
+            Filter filter;
+            filter.groupIndex = -1;
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = pivot + m_offset;
             m_chassis = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), m_chassis,
-                          Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(2.5_m, 1_m)}, sd);
+            auto conf = PolygonShapeConf{};
+            conf.density = 1_kgpm2;
+            conf.filter.groupIndex = -1;
+            conf.SetAsBox(2.5_m, 1_m);
+            CreateFixture(GetWorld(), m_chassis, Shape{conf});
         }
 
         {
-            FixtureConf sd;
-            sd.filter.groupIndex = -1;
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = pivot + m_offset;
@@ -155,7 +156,8 @@ public:
             auto conf = DiskShapeConf{};
             conf.vertexRadius = 1.6_m;
             conf.density = 1_kgpm2;
-            CreateFixture(GetWorld(), m_wheel, Shape(conf), sd);
+            conf.filter.groupIndex = -1;
+            CreateFixture(GetWorld(), m_wheel, Shape(conf));
         }
 
         {

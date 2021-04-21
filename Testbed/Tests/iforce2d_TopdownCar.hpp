@@ -198,19 +198,16 @@ public:
             FixtureID groundAreaFixture;
             BodyConf bodyConf;
             m_groundBody = CreateBody(GetWorld(), bodyConf);
-            
             auto polygonShape = PolygonShapeConf{};
-            FixtureConf fixtureConf;
-            fixtureConf.isSensor = true;
-            
+            polygonShape.isSensor = true;
             polygonShape.SetAsBox(9_m, 7_m, Vec2(-10,15) * 1_m, 20_deg );
             groundAreaFixture = CreateFixture(GetWorld(), m_groundBody,
-                                              Shape(polygonShape), fixtureConf);
+                                              Shape(polygonShape));
             m_fixtureData.resize(groundAreaFixture.get() + 1u);
             m_fixtureData[groundAreaFixture.get()] = new GroundAreaFUD(0.5f, false);
             polygonShape.SetAsBox(9_m, 5_m, Vec2(5,20) * 1_m, -40_deg );
             groundAreaFixture = CreateFixture(GetWorld(), m_groundBody,
-                                              Shape(polygonShape), fixtureConf);
+                                              Shape(polygonShape));
             m_fixtureData.resize(groundAreaFixture.get() + 1u);
             m_fixtureData[groundAreaFixture.get()] = new GroundAreaFUD(0.2f, false);
         }

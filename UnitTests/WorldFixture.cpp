@@ -73,10 +73,9 @@ TEST(WorldFixture, CreateMatchesConf)
     const auto friction = Real(0.5);
     const auto restitution = Real(0.4);
     const auto isSensor = true;
-    const auto conf = DiskShapeConf{}.UseFriction(friction).UseRestitution(restitution).UseDensity(density);
+    const auto conf = DiskShapeConf{}.UseFriction(friction).UseRestitution(restitution).UseDensity(density).UseIsSensor(isSensor);
     const auto shapeA = Shape(conf);
     auto def = FixtureConf{};
-    def.isSensor = isSensor;
 
     World world;
     const auto body = CreateBody(world);

@@ -25,6 +25,7 @@
 #include <PlayRho/Common/Units.hpp>
 #include <PlayRho/Common/Finite.hpp>
 #include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Dynamics/Filter.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -56,6 +57,12 @@ struct BaseShapeConf
     /// @note Use 0 to indicate that the shape's associated mass should be 0.
     ///
     NonNegative<AreaDensity> density = NonNegative<AreaDensity>{0_kgpm2};
+
+    /// Contact filtering data.
+    Filter filter;
+
+    /// A sensor shape collects contact information but never generates a collision response.
+    bool isSensor = false;
 };
 
 /// @brief Builder configuration structure.
@@ -88,6 +95,12 @@ struct ShapeBuilder: BaseShapeConf
     
     /// @brief Uses the given density.
     constexpr ConcreteConf& UseDensity(NonNegative<AreaDensity> value) noexcept;
+
+    /// @brief Uses the given filter.
+    constexpr ConcreteConf& UseFilter(Filter value) noexcept;
+
+    /// @brief Uses the given is-sensor value.
+    constexpr ConcreteConf& UseIsSensor(bool value) noexcept;
 };
 
 template <typename ConcreteConf>
@@ -114,6 +127,22 @@ ShapeBuilder<ConcreteConf>::UseDensity(NonNegative<AreaDensity> value) noexcept
     return static_cast<ConcreteConf&>(*this);
 }
 
+template <typename ConcreteConf>
+constexpr ConcreteConf&
+ShapeBuilder<ConcreteConf>::UseFilter(Filter value) noexcept
+{
+    filter = value;
+    return static_cast<ConcreteConf&>(*this);
+}
+
+template <typename ConcreteConf>
+constexpr ConcreteConf&
+ShapeBuilder<ConcreteConf>::UseIsSensor(bool value) noexcept
+{
+    isSensor = value;
+    return static_cast<ConcreteConf&>(*this);
+}
+
 /// @brief Shape configuration structure.
 struct ShapeConf: public ShapeBuilder<ShapeConf>
 {
@@ -123,21 +152,50 @@ struct ShapeConf: public ShapeBuilder<ShapeConf>
 // Free functions...
 
 /// @brief Gets the density of the given shape configuration.
+/// @relatedalso BaseShapeConf
 constexpr NonNegative<AreaDensity> GetDensity(const BaseShapeConf& arg) noexcept
 {
     return arg.density;
 }
 
 /// @brief Gets the restitution of the given shape configuration.
+/// @relatedalso BaseShapeConf
 constexpr Finite<Real> GetRestitution(const BaseShapeConf& arg) noexcept
 {
     return arg.restitution;
 }
 
 /// @brief Gets the friction of the given shape configuration.
+/// @relatedalso BaseShapeConf
 constexpr NonNegative<Real> GetFriction(const BaseShapeConf& arg) noexcept
 {
     return arg.friction;
+}
+
+/// @brief Gets the filter of the given shape configuration.
+/// @relatedalso BaseShapeConf
+constexpr Filter GetFilter(const BaseShapeConf& arg) noexcept
+{
+    return arg.filter;
+}
+
+/// @relatedalso BaseShapeConf
+inline void SetFilter(BaseShapeConf& arg, Filter value)
+{
+    arg.filter = value;
+}
+
+/// @brief Gets the is-sensor state of the given shape configuration.
+/// @relatedalso BaseShapeConf
+constexpr bool IsSensor(const BaseShapeConf& arg) noexcept
+{
+    return arg.isSensor;
+}
+
+/// @relatedalso BaseShapeConf
+inline void SetSensor(BaseShapeConf& arg, bool value)
+{
+    arg.isSensor = value;
 }
 
 } // namespace d2

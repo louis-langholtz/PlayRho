@@ -88,6 +88,15 @@ FixtureID CreateFixture(World& world, const FixtureConf& def = FixtureConf{}, bo
 
 /// @brief Creates a fixture within the specified world.
 /// @throws WrongState if called while the world is "locked".
+/// @throws std::out_of_range If given an invalid body or shape identifier.
+inline FixtureID CreateFixture(World& world, BodyID bodyId, ShapeID shapeId,
+                        bool resetMassData = true)
+{
+    return CreateFixture(world, FixtureConf{shapeId, bodyId}, resetMassData);
+}
+
+/// @brief Creates a fixture within the specified world.
+/// @throws WrongState if called while the world is "locked".
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see CreateFixture(World& world, FixtureConf def).
 /// @relatedalso World

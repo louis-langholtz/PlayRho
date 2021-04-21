@@ -478,13 +478,13 @@ TEST(WorldImpl, Proxies)
 
     {
         const auto shape = Shape{
-            DiskShapeConf{}.UseFriction(friction).UseRestitution(restitution).UseDensity(density)
+            DiskShapeConf{}.UseFriction(friction).UseRestitution(restitution).UseDensity(density).UseIsSensor(isSensor)
         };
 
         auto world = WorldImpl{};
         const auto shapeId = world.CreateShape(shape);
         const auto body = CreateBody(world);
-        const auto def = FixtureConf{}.UseBody(body).UseShape(shapeId).UseIsSensor(isSensor);
+        const auto def = FixtureConf{}.UseBody(body).UseShape(shapeId);
         const auto fixtureID = CreateFixture(world, def);
         const auto& fixture = world.GetFixture(fixtureID);
 
@@ -493,7 +493,7 @@ TEST(WorldImpl, Proxies)
         ASSERT_EQ(GetDensity(shape), density);
         ASSERT_EQ(GetFriction(shape), friction);
         ASSERT_EQ(GetRestitution(shape), restitution);
-        ASSERT_EQ(IsSensor(fixture), isSensor);
+        ASSERT_EQ(IsSensor(shape), isSensor);
         ASSERT_EQ(world.GetProxies(fixtureID).size(), ChildCounter{0});
 
         const auto stepConf = StepConf{};
@@ -504,19 +504,19 @@ TEST(WorldImpl, Proxies)
 
     {
         const auto shape = Shape{
-            ChainShapeConf{}.Add(Length2{-2_m, -3_m}).Add(Length2{-2_m, 0_m}).Add(Length2{0_m, 0_m})
+            ChainShapeConf{}.UseIsSensor(isSensor).Add(Length2{-2_m, -3_m}).Add(Length2{-2_m, 0_m}).Add(Length2{0_m, 0_m})
         };
 
         auto world = WorldImpl{};
         const auto shapeId = world.CreateShape(shape);
         const auto body = CreateBody(world);
-        const auto def = FixtureConf{}.UseBody(body).UseShape(shapeId).UseIsSensor(isSensor);
+        const auto def = FixtureConf{}.UseBody(body).UseShape(shapeId);
         const auto fixtureID = CreateFixture(world, def);
         const auto& fixture = world.GetFixture(fixtureID);
 
         ASSERT_EQ(GetBody(fixture), body);
         ASSERT_EQ(GetShape(fixture), shapeId);
-        ASSERT_EQ(IsSensor(fixture), isSensor);
+        ASSERT_EQ(IsSensor(shape), isSensor);
         ASSERT_EQ(GetProxyCount(world, fixtureID), ChildCounter{0});
 
         const auto stepConf = StepConf{};
@@ -528,20 +528,20 @@ TEST(WorldImpl, Proxies)
 
     {
         const auto shape = Shape{
-            ChainShapeConf{}.Add(Length2{-2_m, -3_m}).Add(Length2{-2_m, 0_m}).Add(Length2{0_m, 0_m})
+            ChainShapeConf{}.UseIsSensor(isSensor).Add(Length2{-2_m, -3_m}).Add(Length2{-2_m, 0_m}).Add(Length2{0_m, 0_m})
             .Add(Length2{0_m, +2_m}).Add(Length2{2_m, 2_m})
         };
 
         auto world = WorldImpl{};
         const auto shapeId = world.CreateShape(shape);
         const auto body = CreateBody(world);
-        const auto def = FixtureConf{}.UseBody(body).UseShape(shapeId).UseIsSensor(isSensor);
+        const auto def = FixtureConf{}.UseBody(body).UseShape(shapeId);
         const auto fixtureID = CreateFixture(world, def);
         const auto& fixture = world.GetFixture(fixtureID);
 
         ASSERT_EQ(GetBody(fixture), body);
         ASSERT_EQ(GetShape(fixture), shapeId);
-        ASSERT_EQ(IsSensor(fixture), isSensor);
+        ASSERT_EQ(IsSensor(shape), isSensor);
         ASSERT_EQ(GetProxyCount(world, fixtureID), ChildCounter{0});
 
         const auto stepConf = StepConf{};

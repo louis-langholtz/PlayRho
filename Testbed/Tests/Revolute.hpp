@@ -65,14 +65,12 @@ public:
             circle_bd.type = BodyType::Dynamic;
             circle_bd.location = Vec2(5.0f, 30.0f) * 1_m;
 
-            FixtureConf fd;
-            fd.filter.maskBits = 1;
-
             m_ball = CreateBody(GetWorld(), circle_bd);
             auto circleConf = DiskShapeConf{};
             circleConf.vertexRadius = 3_m;
             circleConf.density = 5_kgpm2;
-            CreateFixture(GetWorld(), m_ball, Shape(circleConf), fd);
+            circleConf.filter.maskBits = 1;
+            CreateFixture(GetWorld(), m_ball, Shape(circleConf));
 
             auto polygon_shape = PolygonShapeConf{};
             polygon_shape.SetAsBox(10_m, 0.2_m, Vec2(-10.0f, 0.0f) * 1_m, 0_rad);

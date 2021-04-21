@@ -112,6 +112,7 @@ public:
         // Don't need to check normals since normals based on vertices.
         return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction
             && lhs.restitution == rhs.restitution && lhs.density == rhs.density
+            && lhs.filter == rhs.filter && lhs.isSensor == rhs.isSensor
             && lhs.m_vertices == rhs.m_vertices;
     }
     

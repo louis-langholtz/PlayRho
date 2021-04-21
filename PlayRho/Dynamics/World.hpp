@@ -529,6 +529,8 @@ public:
 
     ShapeID CreateShape(const Shape& def);
     const Shape& GetShape(ShapeID id) const;
+    void SetShape(ShapeID, const Shape& def);
+    void Destroy(ShapeID id);
 
     /// @}
 

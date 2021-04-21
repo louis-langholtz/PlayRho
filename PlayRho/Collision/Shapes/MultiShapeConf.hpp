@@ -149,7 +149,9 @@ struct MultiShapeConf: public ShapeBuilder<MultiShapeConf>
 inline bool operator== (const MultiShapeConf& lhs, const MultiShapeConf& rhs) noexcept
 {
     return lhs.friction == rhs.friction && lhs.restitution == rhs.restitution
-        && lhs.density == rhs.density && lhs.children == rhs.children;
+        && lhs.density == rhs.density
+        && lhs.filter == rhs.filter && lhs.isSensor == rhs.isSensor
+        && lhs.children == rhs.children;
 }
 
 /// @brief Inequality operator.
