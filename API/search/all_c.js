@@ -43,7 +43,7 @@ var searchData=
   ['m_5ffixturesforproxies_1031',['m_fixturesForProxies',['../classplayrho_1_1d2_1_1WorldImpl.html#ae2589a588a3fcba0f9f4dfb4cca9632a',1,'playrho::d2::WorldImpl']]],
   ['m_5fflag_1032',['m_flag',['../classplayrho_1_1FlagGuard.html#a6684aaa2fe044fec208be083b0364edd',1,'playrho::FlagGuard']]],
   ['m_5fflags_1033',['m_flags',['../classplayrho_1_1d2_1_1Body.html#a66cc09962068902b6d5b021f9f5a7d07',1,'playrho::d2::Body::m_flags()'],['../classplayrho_1_1d2_1_1Contact.html#a49b82f8b253db4cac91ae7e7432c463c',1,'playrho::d2::Contact::m_flags()'],['../classplayrho_1_1d2_1_1WorldImpl.html#a3e7baaa45caf6816e329ee6c9ec9dd5a',1,'playrho::d2::WorldImpl::m_flags()']]],
-  ['m_5ffree_1034',['m_free',['../classplayrho_1_1ArrayAllocator.html#a3ea4ce0060947b97f607ed72452ee527',1,'playrho::ArrayAllocator']]],
+  ['m_5ffree_1034',['m_free',['../classplayrho_1_1ArrayAllocator.html#a326254ccc6621b73957924d5af2ae67f',1,'playrho::ArrayAllocator']]],
   ['m_5ffreeindex_1035',['m_freeIndex',['../classplayrho_1_1d2_1_1DynamicTree.html#a3e89800a96b86c86d36af48b82637b42',1,'playrho::d2::DynamicTree']]],
   ['m_5ffreelists_1036',['m_freeLists',['../classplayrho_1_1BlockAllocator.html#a6206a7d536569a226006f128088af808',1,'playrho::BlockAllocator']]],
   ['m_5ffriction_1037',['m_friction',['../classplayrho_1_1d2_1_1Contact.html#ac099ea8211101456e70c51c30f74f4c2',1,'playrho::d2::Contact::m_friction()'],['../classplayrho_1_1d2_1_1VelocityConstraint.html#a829378345ea11577308fb0825acb6a11',1,'playrho::d2::VelocityConstraint::m_friction()']]],

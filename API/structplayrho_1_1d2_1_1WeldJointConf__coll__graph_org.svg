@@ -281,33 +281,33 @@
 <g id="node16" class="node">
 <title>Node16</title>
 <g id="a_node16"><a xlink:title=" ">
-<polygon fill="white" stroke="#bfbfbf" points="1094,-104.5 1094,-123.5 1165,-123.5 1165,-104.5 1094,-104.5"/>
-<text text-anchor="middle" x="1129.5" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">plane_angle)</text>
+<polygon fill="white" stroke="#bfbfbf" points="1061,-104.5 1061,-123.5 1198,-123.5 1198,-104.5 1061,-104.5"/>
+<text text-anchor="middle" x="1129.5" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">inverse_moment_of_inertia)</text>
 </a>
 </g>
 </g>
 <!-- Node16&#45;&gt;Node1 -->
 <g id="edge19" class="edge">
 <title>Node16&#45;&gt;Node1</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1175.28,-121.21C1206.35,-126.65 1248.52,-134.88 1285,-145 1305.59,-150.71 1328.39,-158.98 1345.04,-165.39"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="1175.65,-117.73 1165.2,-119.48 1174.46,-124.62 1175.65,-117.73"/>
-<text text-anchor="middle" x="1250.5" y="-148" font-family="Helvetica,sans-Serif" font-size="10.00"> referenceAngle</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1198.38,-125.42C1225.52,-130.55 1256.95,-137.22 1285,-145 1305.59,-150.71 1328.39,-158.98 1345.04,-165.39"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1198.67,-121.91 1188.2,-123.52 1197.39,-128.79 1198.67,-121.91"/>
+<text text-anchor="middle" x="1250.5" y="-148" font-family="Helvetica,sans-Serif" font-size="10.00"> gamma</text>
 </g>
 <!-- Node17 -->
 <g id="node17" class="node">
 <title>Node17</title>
 <g id="a_node17"><a xlink:title=" ">
-<polygon fill="white" stroke="#bfbfbf" points="1061,-66.5 1061,-85.5 1198,-85.5 1198,-66.5 1061,-66.5"/>
-<text text-anchor="middle" x="1129.5" y="-73.5" font-family="Helvetica,sans-Serif" font-size="10.00">inverse_moment_of_inertia)</text>
+<polygon fill="white" stroke="#bfbfbf" points="1094,-66.5 1094,-85.5 1165,-85.5 1165,-66.5 1094,-66.5"/>
+<text text-anchor="middle" x="1129.5" y="-73.5" font-family="Helvetica,sans-Serif" font-size="10.00">plane_angle)</text>
 </a>
 </g>
 </g>
 <!-- Node17&#45;&gt;Node1 -->
 <g id="edge20" class="edge">
 <title>Node17&#45;&gt;Node1</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1202.55,-87.68C1229.23,-93.55 1259.23,-102.04 1285,-114 1314.26,-127.58 1343.67,-152 1358.72,-165.45"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="1203.01,-84.2 1192.51,-85.56 1201.57,-91.05 1203.01,-84.2"/>
-<text text-anchor="middle" x="1250.5" y="-117" font-family="Helvetica,sans-Serif" font-size="10.00"> gamma</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1175.1,-82.27C1206.81,-87.83 1249.85,-97.68 1285,-114 1314.26,-127.58 1343.67,-152 1358.72,-165.45"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1175.67,-78.81 1165.23,-80.61 1174.51,-85.72 1175.67,-78.81"/>
+<text text-anchor="middle" x="1250.5" y="-117" font-family="Helvetica,sans-Serif" font-size="10.00"> referenceAngle</text>
 </g>
 <!-- Node18 -->
 <g id="node18" class="node">

@@ -59,8 +59,8 @@ var sectionId = 'dynsection-1';
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="Distance joint definition.">
-<polygon fill="#bfbfbf" stroke="black" points="1299,-207.5 1299,-226.5 1451,-226.5 1451,-207.5 1299,-207.5"/>
-<text text-anchor="middle" x="1375" y="-214.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::DistanceJointConf</text>
+<polygon fill="#bfbfbf" stroke="black" points="1299,-210.5 1299,-229.5 1451,-229.5 1451,-210.5 1299,-210.5"/>
+<text text-anchor="middle" x="1375" y="-217.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::DistanceJointConf</text>
 </a>
 </g>
 </g>
@@ -77,7 +77,7 @@ var sectionId = 'dynsection-1';
 <!-- Node2&#45;&gt;Node1 -->
 <g id="edge1" class="edge">
 <title>Node2&#45;&gt;Node1</title>
-<path fill="none" stroke="midnightblue" d="M1197.51,-338.05C1202.4,-336.01 1207.31,-333.96 1212,-332 1242.69,-319.16 1253.03,-321.01 1281,-303 1316.13,-280.38 1350.34,-243.96 1365.65,-226.69"/>
+<path fill="none" stroke="midnightblue" d="M1197.51,-338.05C1202.4,-336.01 1207.31,-333.96 1212,-332 1242.69,-319.16 1252.87,-320.76 1281,-303 1315.58,-281.16 1349.79,-246.33 1365.33,-229.59"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1196.06,-334.87 1188.18,-341.95 1198.75,-341.33 1196.06,-334.87"/>
 </g>
 <!-- Node3 -->
@@ -230,7 +230,7 @@ var sectionId = 'dynsection-1';
 <!-- Node10&#45;&gt;Node1 -->
 <g id="edge10" class="edge">
 <title>Node10&#45;&gt;Node1</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M507.73,-403C554.68,-403 616.64,-403 671.5,-403 671.5,-403 671.5,-403 1152,-403 1262.87,-403 1347.45,-265.01 1368.77,-226.74"/>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M507.73,-403C554.68,-403 616.64,-403 671.5,-403 671.5,-403 671.5,-403 1152,-403 1262.14,-403 1347.24,-267.23 1368.73,-229.58"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="507.64,-399.5 497.64,-403 507.64,-406.5 507.64,-399.5"/>
 <text text-anchor="middle" x="878" y="-439" font-family="Helvetica,sans-Serif" font-size="10.00"> localAnchorA</text>
 <text text-anchor="middle" x="878" y="-428" font-family="Helvetica,sans-Serif" font-size="10.00">localAnchorB</text>
@@ -272,8 +272,8 @@ var sectionId = 'dynsection-1';
 <!-- Node13&#45;&gt;Node1 -->
 <g id="edge14" class="edge">
 <title>Node13&#45;&gt;Node1</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1184.04,-302.95C1193.09,-300.09 1202.94,-296.94 1212,-294 1242.74,-284.01 1251.54,-284.3 1281,-271 1310.1,-257.87 1341.82,-238.19 1359.67,-226.56"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="1182.73,-299.69 1174.25,-306.04 1184.84,-306.37 1182.73,-299.69"/>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1184.02,-302.87C1193.07,-300.01 1202.92,-296.88 1212,-294 1242.68,-284.25 1251.47,-284.81 1281,-272 1309.68,-259.56 1341.02,-240.88 1359.02,-229.62"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1182.71,-299.62 1174.23,-305.97 1184.82,-306.29 1182.71,-299.62"/>
 <text text-anchor="middle" x="1255.5" y="-291" font-family="Helvetica,sans-Serif" font-size="10.00"> length</text>
 </g>
 <!-- Node14 -->
@@ -288,80 +288,80 @@ var sectionId = 'dynsection-1';
 <!-- Node14&#45;&gt;Node1 -->
 <g id="edge15" class="edge">
 <title>Node14&#45;&gt;Node1</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1183.17,-267.94C1209.36,-261.91 1247.73,-252.82 1281,-244 1301.48,-238.57 1324.33,-231.94 1342.25,-226.62"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="1182.04,-264.61 1173.08,-270.25 1183.61,-271.43 1182.04,-264.61"/>
-<text text-anchor="middle" x="1255.5" y="-259" font-family="Helvetica,sans-Serif" font-size="10.00"> mass</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1183.17,-268.46C1209.36,-262.86 1247.74,-254.38 1281,-246 1301.16,-240.92 1323.61,-234.66 1341.4,-229.56"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1182.13,-265.11 1173.08,-270.61 1183.59,-271.95 1182.13,-265.11"/>
+<text text-anchor="middle" x="1255.5" y="-260" font-family="Helvetica,sans-Serif" font-size="10.00"> mass</text>
 </g>
 <!-- Node15 -->
 <g id="node15" class="node">
 <title>Node15</title>
 <g id="a_node15"><a xlink:title=" ">
-<polygon fill="white" stroke="#bfbfbf" points="860.5,-206.5 860.5,-225.5 895.5,-225.5 895.5,-206.5 860.5,-206.5"/>
-<text text-anchor="middle" x="878" y="-213.5" font-family="Helvetica,sans-Serif" font-size="10.00">float</text>
+<polygon fill="white" stroke="#bfbfbf" points="1111,-227.5 1111,-246.5 1191,-246.5 1191,-227.5 1111,-227.5"/>
+<text text-anchor="middle" x="1151" y="-234.5" font-family="Helvetica,sans-Serif" font-size="10.00">inverse_mass)</text>
 </a>
 </g>
 </g>
 <!-- Node15&#45;&gt;Node1 -->
 <g id="edge16" class="edge">
 <title>Node15&#45;&gt;Node1</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M905.87,-214.22C962.49,-210.7 1098.19,-203.49 1212,-207 1240.31,-207.87 1271.35,-209.6 1298.63,-211.38"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="905.39,-210.74 895.63,-214.87 905.83,-217.73 905.39,-210.74"/>
-<text text-anchor="middle" x="1151" y="-210" font-family="Helvetica,sans-Serif" font-size="10.00"> dampingRatio</text>
-</g>
-<!-- Node18 -->
-<g id="node18" class="node">
-<title>Node18</title>
-<g id="a_node18"><a xlink:href="classplayrho_1_1d2_1_1UnitVec.html" target="_top" xlink:title="2&#45;D unit vector.">
-<polygon fill="white" stroke="black" points="1098,-227.5 1098,-246.5 1204,-246.5 1204,-227.5 1098,-227.5"/>
-<text text-anchor="middle" x="1151" y="-234.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::UnitVec</text>
-</a>
-</g>
-</g>
-<!-- Node15&#45;&gt;Node18 -->
-<g id="edge20" class="edge">
-<title>Node15&#45;&gt;Node18</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M905.56,-218.06C950,-221.5 1040.21,-228.49 1097.74,-232.95"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="905.78,-214.57 895.54,-217.28 905.24,-221.54 905.78,-214.57"/>
-<text text-anchor="middle" x="1020.5" y="-233" font-family="Helvetica,sans-Serif" font-size="10.00"> m_elems</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1201.35,-233.22C1230.01,-231.03 1266.69,-228.22 1298.87,-225.75"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1200.88,-229.75 1191.18,-234 1201.42,-236.73 1200.88,-229.75"/>
+<text text-anchor="middle" x="1255.5" y="-234" font-family="Helvetica,sans-Serif" font-size="10.00"> invGamma</text>
 </g>
 <!-- Node16 -->
 <g id="node16" class="node">
 <title>Node16</title>
 <g id="a_node16"><a xlink:title=" ">
-<polygon fill="white" stroke="#bfbfbf" points="1124.5,-142.5 1124.5,-161.5 1177.5,-161.5 1177.5,-142.5 1124.5,-142.5"/>
-<text text-anchor="middle" x="1151" y="-149.5" font-family="Helvetica,sans-Serif" font-size="10.00">velocity)</text>
+<polygon fill="white" stroke="#bfbfbf" points="860.5,-168.5 860.5,-187.5 895.5,-187.5 895.5,-168.5 860.5,-168.5"/>
+<text text-anchor="middle" x="878" y="-175.5" font-family="Helvetica,sans-Serif" font-size="10.00">float</text>
 </a>
 </g>
 </g>
 <!-- Node16&#45;&gt;Node1 -->
 <g id="edge17" class="edge">
 <title>Node16&#45;&gt;Node1</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1187.93,-155.12C1214.16,-158.05 1250.34,-163.46 1281,-173 1308.97,-181.7 1339.27,-197.31 1357.44,-207.41"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="1188.01,-151.61 1177.7,-154.05 1187.28,-158.57 1188.01,-151.61"/>
-<text text-anchor="middle" x="1255.5" y="-176" font-family="Helvetica,sans-Serif" font-size="10.00"> bias</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M905.72,-174.06C962.5,-166.39 1099.23,-151.67 1212,-169 1263.29,-176.88 1320.63,-198.03 1351.45,-210.48"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="905.19,-170.6 895.76,-175.45 906.15,-177.54 905.19,-170.6"/>
+<text text-anchor="middle" x="1151" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00"> dampingRatio</text>
+</g>
+<!-- Node18 -->
+<g id="node18" class="node">
+<title>Node18</title>
+<g id="a_node18"><a xlink:href="classplayrho_1_1d2_1_1UnitVec.html" target="_top" xlink:title="2&#45;D unit vector.">
+<polygon fill="white" stroke="black" points="1098,-189.5 1098,-208.5 1204,-208.5 1204,-189.5 1098,-189.5"/>
+<text text-anchor="middle" x="1151" y="-196.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::UnitVec</text>
+</a>
+</g>
+</g>
+<!-- Node16&#45;&gt;Node18 -->
+<g id="edge20" class="edge">
+<title>Node16&#45;&gt;Node18</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M905.56,-180.06C950,-183.5 1040.21,-190.49 1097.74,-194.95"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="905.78,-176.57 895.54,-179.28 905.24,-183.54 905.78,-176.57"/>
+<text text-anchor="middle" x="1020.5" y="-195" font-family="Helvetica,sans-Serif" font-size="10.00"> m_elems</text>
 </g>
 <!-- Node17 -->
 <g id="node17" class="node">
 <title>Node17</title>
 <g id="a_node17"><a xlink:title=" ">
-<polygon fill="white" stroke="#bfbfbf" points="1111,-104.5 1111,-123.5 1191,-123.5 1191,-104.5 1111,-104.5"/>
-<text text-anchor="middle" x="1151" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">inverse_mass)</text>
+<polygon fill="white" stroke="#bfbfbf" points="1124.5,-104.5 1124.5,-123.5 1177.5,-123.5 1177.5,-104.5 1124.5,-104.5"/>
+<text text-anchor="middle" x="1151" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">velocity)</text>
 </a>
 </g>
 </g>
 <!-- Node17&#45;&gt;Node1 -->
 <g id="edge18" class="edge">
 <title>Node17&#45;&gt;Node1</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1201.15,-121.3C1225.93,-126.18 1255.95,-133.97 1281,-146 1314.88,-162.26 1348.36,-192.1 1364.32,-207.4"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="1201.71,-117.84 1191.23,-119.45 1200.42,-124.73 1201.71,-117.84"/>
-<text text-anchor="middle" x="1255.5" y="-149" font-family="Helvetica,sans-Serif" font-size="10.00"> invGamma</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1187.64,-114.37C1214.5,-115.9 1251.61,-120.77 1281,-135 1319,-153.4 1352.56,-192.37 1366.78,-210.43"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1187.67,-110.87 1177.52,-113.92 1187.36,-117.86 1187.67,-110.87"/>
+<text text-anchor="middle" x="1255.5" y="-138" font-family="Helvetica,sans-Serif" font-size="10.00"> bias</text>
 </g>
 <!-- Node18&#45;&gt;Node1 -->
 <g id="edge19" class="edge">
 <title>Node18&#45;&gt;Node1</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1214.24,-231.39C1240.47,-229.03 1271.24,-226.26 1298.73,-223.78"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="1213.69,-227.93 1204.05,-232.31 1214.32,-234.9 1213.69,-227.93"/>
-<text text-anchor="middle" x="1255.5" y="-232" font-family="Helvetica,sans-Serif" font-size="10.00"> u</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1214.24,-204.89C1240.47,-207.37 1271.24,-210.28 1298.73,-212.88"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1214.33,-201.38 1204.05,-203.92 1213.68,-208.35 1214.33,-201.38"/>
+<text text-anchor="middle" x="1255.5" y="-213" font-family="Helvetica,sans-Serif" font-size="10.00"> u</text>
 </g>
 <!-- Node19 -->
 <g id="node19" class="node">
@@ -375,9 +375,9 @@ var sectionId = 'dynsection-1';
 <!-- Node19&#45;&gt;Node1 -->
 <g id="edge21" class="edge">
 <title>Node19&#45;&gt;Node1</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1195.15,-82.13C1221.47,-87.33 1254.95,-96.66 1281,-113 1321.63,-138.49 1355.04,-186.76 1368.1,-207.33"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="1195.55,-78.65 1185.08,-80.27 1194.28,-85.53 1195.55,-78.65"/>
-<text text-anchor="middle" x="1255.5" y="-116" font-family="Helvetica,sans-Serif" font-size="10.00"> impulse</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1195.12,-78.11C1221.57,-81.08 1255.2,-88.02 1281,-104 1325.33,-131.45 1357.61,-187.8 1369.25,-210.36"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1195.29,-74.61 1185,-77.12 1194.61,-81.57 1195.29,-74.61"/>
+<text text-anchor="middle" x="1255.5" y="-107" font-family="Helvetica,sans-Serif" font-size="10.00"> impulse</text>
 </g>
 <!-- Node20 -->
 <g id="node20" class="node">
@@ -392,9 +392,9 @@ var sectionId = 'dynsection-1';
 <!-- Node20&#45;&gt;Node1 -->
 <g id="edge22" class="edge">
 <title>Node20&#45;&gt;Node1</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1219.24,-45.83C1240.48,-52.48 1263.06,-62.13 1281,-76 1328.79,-112.95 1359.89,-181.73 1370.21,-207.19"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="1220.18,-42.46 1209.6,-42.98 1218.2,-49.17 1220.18,-42.46"/>
-<text text-anchor="middle" x="1255.5" y="-79" font-family="Helvetica,sans-Serif" font-size="10.00"> frequency</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1219.71,-41.55C1240.87,-47.01 1263.29,-55.57 1281,-69 1332.02,-107.71 1361.53,-183.2 1370.8,-210.15"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1220.31,-38.1 1209.77,-39.19 1218.69,-44.91 1220.31,-38.1"/>
+<text text-anchor="middle" x="1255.5" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00"> frequency</text>
 </g>
 <!-- Node21 -->
 <g id="node21" class="node">

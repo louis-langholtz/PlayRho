@@ -14,6 +14,8 @@ var structplayrho_1_1d2_1_1FixtureConf =
     [ "GetRestitution", "structplayrho_1_1d2_1_1FixtureConf.html#a5f4b19f147e62dd01f2f2cd6bc201df0", null ],
     [ "GetShape", "structplayrho_1_1d2_1_1FixtureConf.html#a219930e7c3bdda61101c8dfaef585df9", null ],
     [ "IsSensor", "structplayrho_1_1d2_1_1FixtureConf.html#a6831c65fd153acc5c4938f9249537126", null ],
+    [ "operator!=", "structplayrho_1_1d2_1_1FixtureConf.html#aef63403acbb62366a22771e25f15a449", null ],
+    [ "operator==", "structplayrho_1_1d2_1_1FixtureConf.html#aa2bccb8a9f96f9ef20bfc0c27cd12a25", null ],
     [ "SetFilterData", "structplayrho_1_1d2_1_1FixtureConf.html#a6915c94247e90e0fb4ec9948ab979851", null ],
     [ "SetSensor", "structplayrho_1_1d2_1_1FixtureConf.html#a65d348a372259f54db6e183244fdf6b2", null ],
     [ "ShouldCollide", "structplayrho_1_1d2_1_1FixtureConf.html#aab1cd6287bdc232e5d97c01a12b71c3c", null ],

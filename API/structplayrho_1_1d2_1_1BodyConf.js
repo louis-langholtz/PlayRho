@@ -20,6 +20,8 @@ var structplayrho_1_1d2_1_1BodyConf =
     [ "GetAngle", "structplayrho_1_1d2_1_1BodyConf.html#aad6493c0704a18da5f611717a6aff844", null ],
     [ "GetDefaultBodyConf", "structplayrho_1_1d2_1_1BodyConf.html#af6c1034a2366e6ef466253aea8a13829", null ],
     [ "GetTransformation", "structplayrho_1_1d2_1_1BodyConf.html#a178733ef87c116856614750d49785cd5", null ],
+    [ "operator!=", "structplayrho_1_1d2_1_1BodyConf.html#a50e186f203ad0d5f7c851058802978fd", null ],
+    [ "operator==", "structplayrho_1_1d2_1_1BodyConf.html#a0106f5ff990330d8e8afcd906cefa75a", null ],
     [ "allowSleep", "structplayrho_1_1d2_1_1BodyConf.html#a9ff6df501796f81620a27a612c9cfa8b", null ],
     [ "angle", "structplayrho_1_1d2_1_1BodyConf.html#a3a3fe86a4a6bb6e255dd0c20bd527a57", null ],
     [ "angularAcceleration", "structplayrho_1_1d2_1_1BodyConf.html#a79881dcf474db656032f5834391c1e32", null ],

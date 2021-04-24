@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">1.0.0</span>
+   &#160;<span id="projectnumber">1.1.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -111,8 +111,7 @@ $(document).ready(function(){initNavTree('classplayrho_1_1d2_1_1Sweep.html','');
 <div class="dynheader">
 Collaboration diagram for playrho::d2::Sweep:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1d2_1_1Sweep__coll__graph.svg" width="375" height="410"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1d2_1_1Sweep__coll__graph.svg" width="375" height="410"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -173,11 +172,26 @@ Related Functions</h2></td></tr>
 <tr class="memitem:a09b21383c1a73afea37f11e0ba906a76"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1d2_1_1Sweep.html">Sweep</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Sweep.html#a09b21383c1a73afea37f11e0ba906a76">GetNormalized</a> (<a class="el" href="classplayrho_1_1d2_1_1Sweep.html">Sweep</a> sweep) noexcept</td></tr>
 <tr class="memdesc:a09b21383c1a73afea37f11e0ba906a76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a sweep with the given sweep's angles normalized.  <a href="classplayrho_1_1d2_1_1Sweep.html#a09b21383c1a73afea37f11e0ba906a76">More...</a><br /></td></tr>
 <tr class="separator:a09b21383c1a73afea37f11e0ba906a76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af317b3462727e3832e11d157b7e0b7b4"><td class="memItemLeft" align="right" valign="top"><a id="af317b3462727e3832e11d157b7e0b7b4"></a>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Sweep.html#af317b3462727e3832e11d157b7e0b7b4">operator==</a> (const <a class="el" href="classplayrho_1_1d2_1_1Sweep.html">Sweep</a> &amp;lhs, const <a class="el" href="classplayrho_1_1d2_1_1Sweep.html">Sweep</a> &amp;rhs)</td></tr>
+<tr class="memdesc:af317b3462727e3832e11d157b7e0b7b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equals operator. <br /></td></tr>
+<tr class="separator:af317b3462727e3832e11d157b7e0b7b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0f08a3cbef074f5f78272c205967888"><td class="memItemLeft" align="right" valign="top"><a id="af0f08a3cbef074f5f78272c205967888"></a>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Sweep.html#af0f08a3cbef074f5f78272c205967888">operator!=</a> (const <a class="el" href="classplayrho_1_1d2_1_1Sweep.html">Sweep</a> &amp;lhs, const <a class="el" href="classplayrho_1_1d2_1_1Sweep.html">Sweep</a> &amp;rhs)</td></tr>
+<tr class="memdesc:af0f08a3cbef074f5f78272c205967888"><td class="mdescLeft">&#160;</td><td class="mdescRight">Not-equals operator. <br /></td></tr>
+<tr class="separator:af0f08a3cbef074f5f78272c205967888"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afce9c1dea61c4ba26d5785f2f20c3bff"><td class="memItemLeft" align="right" valign="top"><a id="afce9c1dea61c4ba26d5785f2f20c3bff"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:afce9c1dea61c4ba26d5785f2f20c3bff"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Sweep.html#afce9c1dea61c4ba26d5785f2f20c3bff">IsValid</a> (const <a class="el" href="classplayrho_1_1d2_1_1Sweep.html">d2::Sweep</a> &amp;value) noexcept</td></tr>
+<tr class="memdesc:afce9c1dea61c4ba26d5785f2f20c3bff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given value is valid. <br /></td></tr>
+<tr class="separator:afce9c1dea61c4ba26d5785f2f20c3bff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Description of a "sweep" of motion in 2-D space. </p>
 <p>This describes the motion of a body/shape for TOI computation. Shapes are defined with respect to the body origin, which may not coincide with the center of mass. However, to support dynamics we must interpolate the center of mass position.</p>
 <dl class="section note"><dt>Note</dt><dd>This data structure is likely 36-bytes (at least on 64-bit platforms). </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#_a37">Body.cpp</a>.</dd>
+</dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a3597bd76c2b89f3b7f217692071fde47"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3597bd76c2b89f3b7f217692071fde47">&#9670;&nbsp;</a></span>Advance0()</h2>
@@ -242,7 +256,7 @@ Related Functions</h2></td></tr>
 <p>Gets the alpha 0 for this sweep. </p>
 <dl class="section return"><dt>Returns</dt><dd>Value between 0 and less than 1. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#ad3851d0c3b764c9fe4dbaad8268ea201">playrho::d2::GetToiViaSat()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#ad3851d0c3b764c9fe4dbaad8268ea201">playrho::d2::GetToiViaSat()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#af317b3462727e3832e11d157b7e0b7b4">playrho::d2::operator==()</a>.</p>
 
 </div>
 </div>
@@ -271,6 +285,8 @@ Related Functions</h2></td></tr>
 
 <p>Gets the local center of mass position. </p>
 <dl class="section note"><dt>Note</dt><dd>This value can only be set via a sweep constructed using an initializing constructor. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#af317b3462727e3832e11d157b7e0b7b4">playrho::d2::operator==()</a>.</p>
 
 </div>
 </div>
@@ -407,7 +423,7 @@ Related Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Sweep.html">Sweep</a></li>
-    <li class="footer">Generated on Mon Nov 30 2020 00:11:01 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sat Apr 24 2021 12:19:36 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

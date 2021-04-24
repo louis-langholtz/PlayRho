@@ -938,10 +938,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
-      <type>std::vector&lt; typename std::vector&lt; value_type &gt;::size_type &gt;</type>
+      <type>std::vector&lt; size_type &gt;</type>
       <name>m_free</name>
       <anchorfile>classplayrho_1_1ArrayAllocator.html</anchorfile>
-      <anchor>a3ea4ce0060947b97f607ed72452ee527</anchor>
+      <anchor>a326254ccc6621b73957924d5af2ae67f</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -1082,10 +1082,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
-      <type>std::vector&lt; typename std::vector&lt; value_type &gt;::size_type &gt;</type>
+      <type>std::vector&lt; size_type &gt;</type>
       <name>m_free</name>
       <anchorfile>classplayrho_1_1ArrayAllocator.html</anchorfile>
-      <anchor>a3ea4ce0060947b97f607ed72452ee527</anchor>
+      <anchor>a326254ccc6621b73957924d5af2ae67f</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -1226,10 +1226,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
-      <type>std::vector&lt; typename std::vector&lt; value_type &gt;::size_type &gt;</type>
+      <type>std::vector&lt; size_type &gt;</type>
       <name>m_free</name>
       <anchorfile>classplayrho_1_1ArrayAllocator.html</anchorfile>
-      <anchor>a3ea4ce0060947b97f607ed72452ee527</anchor>
+      <anchor>a326254ccc6621b73957924d5af2ae67f</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -1370,10 +1370,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
-      <type>std::vector&lt; typename std::vector&lt; value_type &gt;::size_type &gt;</type>
+      <type>std::vector&lt; size_type &gt;</type>
       <name>m_free</name>
       <anchorfile>classplayrho_1_1ArrayAllocator.html</anchorfile>
-      <anchor>a3ea4ce0060947b97f607ed72452ee527</anchor>
+      <anchor>a326254ccc6621b73957924d5af2ae67f</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -1514,10 +1514,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
-      <type>std::vector&lt; typename std::vector&lt; value_type &gt;::size_type &gt;</type>
+      <type>std::vector&lt; size_type &gt;</type>
       <name>m_free</name>
       <anchorfile>classplayrho_1_1ArrayAllocator.html</anchorfile>
-      <anchor>a3ea4ce0060947b97f607ed72452ee527</anchor>
+      <anchor>a326254ccc6621b73957924d5af2ae67f</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -1658,10 +1658,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
-      <type>std::vector&lt; typename std::vector&lt; value_type &gt;::size_type &gt;</type>
+      <type>std::vector&lt; size_type &gt;</type>
       <name>m_free</name>
       <anchorfile>classplayrho_1_1ArrayAllocator.html</anchorfile>
-      <anchor>a3ea4ce0060947b97f607ed72452ee527</anchor>
+      <anchor>a326254ccc6621b73957924d5af2ae67f</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -1802,10 +1802,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
-      <type>std::vector&lt; typename std::vector&lt; value_type &gt;::size_type &gt;</type>
+      <type>std::vector&lt; size_type &gt;</type>
       <name>m_free</name>
       <anchorfile>classplayrho_1_1ArrayAllocator.html</anchorfile>
-      <anchor>a3ea4ce0060947b97f607ed72452ee527</anchor>
+      <anchor>a326254ccc6621b73957924d5af2ae67f</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -1946,10 +1946,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
-      <type>std::vector&lt; typename std::vector&lt; value_type &gt;::size_type &gt;</type>
+      <type>std::vector&lt; size_type &gt;</type>
       <name>m_free</name>
       <anchorfile>classplayrho_1_1ArrayAllocator.html</anchorfile>
-      <anchor>a3ea4ce0060947b97f607ed72452ee527</anchor>
+      <anchor>a326254ccc6621b73957924d5af2ae67f</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -2090,10 +2090,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
-      <type>std::vector&lt; typename std::vector&lt; value_type &gt;::size_type &gt;</type>
+      <type>std::vector&lt; size_type &gt;</type>
       <name>m_free</name>
       <anchorfile>classplayrho_1_1ArrayAllocator.html</anchorfile>
-      <anchor>a3ea4ce0060947b97f607ed72452ee527</anchor>
+      <anchor>a326254ccc6621b73957924d5af2ae67f</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -2234,10 +2234,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="private">
-      <type>std::vector&lt; typename std::vector&lt; value_type &gt;::size_type &gt;</type>
+      <type>std::vector&lt; size_type &gt;</type>
       <name>m_free</name>
       <anchorfile>classplayrho_1_1ArrayAllocator.html</anchorfile>
-      <anchor>a3ea4ce0060947b97f607ed72452ee527</anchor>
+      <anchor>a326254ccc6621b73957924d5af2ae67f</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -3411,6 +3411,13 @@
     </member>
     <member kind="function">
       <type>void</type>
+      <name>SetMass</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>af26ae548ac842dfc9c1da2230b224870</anchor>
+      <arglist>(Body &amp;body, Mass mass)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
       <name>SetAcceleration</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
       <anchor>aeb983c0ee834bdbf4f969e6bd23be27e</anchor>
@@ -3569,6 +3576,20 @@
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
       <anchor>a5d1467095e23488ca1344a26336aae8f</anchor>
       <arglist>(Body &amp;body, AngularMomentum impulse) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>operator==</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>a2e61d578b8ec391d98178299024b5c4f</anchor>
+      <arglist>(const Body &amp;lhs, const Body &amp;rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>operator!=</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>ad57faa5642b6526d57f2f066cb74c3a9</anchor>
+      <arglist>(const Body &amp;lhs, const Body &amp;rhs)</arglist>
     </member>
     <member kind="function">
       <type>BodyConf</type>
@@ -3825,6 +3846,20 @@
       <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
       <anchor>aad6493c0704a18da5f611717a6aff844</anchor>
       <arglist>(const BodyConf &amp;conf) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator==</name>
+      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
+      <anchor>a0106f5ff990330d8e8afcd906cefa75a</anchor>
+      <arglist>(const BodyConf &amp;lhs, const BodyConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator!=</name>
+      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
+      <anchor>a50e186f203ad0d5f7c851058802978fd</anchor>
+      <arglist>(const BodyConf &amp;lhs, const BodyConf &amp;rhs) noexcept</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -9925,6 +9960,20 @@
       <anchorfile>structplayrho_1_1d2_1_1FixtureConf.html</anchorfile>
       <anchor>a6ee27d488bf91f504acadd259fa36798</anchor>
       <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>operator==</name>
+      <anchorfile>structplayrho_1_1d2_1_1FixtureConf.html</anchorfile>
+      <anchor>aa2bccb8a9f96f9ef20bfc0c27cd12a25</anchor>
+      <arglist>(const FixtureConf &amp;lhs, const FixtureConf &amp;rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>operator!=</name>
+      <anchorfile>structplayrho_1_1d2_1_1FixtureConf.html</anchorfile>
+      <anchor>aef63403acbb62366a22771e25f15a449</anchor>
+      <arglist>(const FixtureConf &amp;lhs, const FixtureConf &amp;rhs)</arglist>
     </member>
     <member kind="function">
       <type>BodyID</type>
@@ -18704,6 +18753,27 @@
       <anchor>a09b21383c1a73afea37f11e0ba906a76</anchor>
       <arglist>(Sweep sweep) noexcept</arglist>
     </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator==</name>
+      <anchorfile>classplayrho_1_1d2_1_1Sweep.html</anchorfile>
+      <anchor>af317b3462727e3832e11d157b7e0b7b4</anchor>
+      <arglist>(const Sweep &amp;lhs, const Sweep &amp;rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator!=</name>
+      <anchorfile>classplayrho_1_1d2_1_1Sweep.html</anchorfile>
+      <anchor>af0f08a3cbef074f5f78272c205967888</anchor>
+      <arglist>(const Sweep &amp;lhs, const Sweep &amp;rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>IsValid</name>
+      <anchorfile>classplayrho_1_1d2_1_1Sweep.html</anchorfile>
+      <anchor>afce9c1dea61c4ba26d5785f2f20c3bff</anchor>
+      <arglist>(const d2::Sweep &amp;value) noexcept</arglist>
+    </member>
   </compound>
   <compound kind="struct">
     <name>playrho::d2::TargetJointConf</name>
@@ -19382,13 +19452,6 @@
     </member>
     <member kind="function">
       <type>constexpr bool</type>
-      <name>IsValid</name>
-      <anchorfile>structplayrho_1_1d2_1_1Transformation.html</anchorfile>
-      <anchor>afce9c1dea61c4ba26d5785f2f20c3bff</anchor>
-      <arglist>(const d2::Sweep &amp;value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
       <name>operator==</name>
       <anchorfile>structplayrho_1_1d2_1_1Transformation.html</anchorfile>
       <anchor>a9f366fc4f9a298d3dded719b628a9933</anchor>
@@ -19835,6 +19898,23 @@
       <anchor>a64a905a09d36e67c6a264439d7833da8</anchor>
       <arglist></arglist>
     </member>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::underlying_type</name>
+    <filename>structplayrho_1_1underlying__type.html</filename>
+    <templarg></templarg>
+    <templarg></templarg>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::underlying_type&lt; detail::IndexingNamedType&lt; T, Tag &gt; &gt;</name>
+    <filename>structplayrho_1_1underlying__type_3_01detail_1_1IndexingNamedType_3_01T_00_01Tag_01_4_01_4.html</filename>
+    <templarg></templarg>
+    <templarg></templarg>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::underlying_type&lt; T, std::enable_if_t&lt; std::is_enum_v&lt; T &gt; &gt; &gt;</name>
+    <filename>structplayrho_1_1underlying__type_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__enum__v_3_01T_01_4_01_4_01_4.html</filename>
+    <templarg></templarg>
   </compound>
   <compound kind="struct">
     <name>playrho::UnitIntervalChecker</name>
@@ -29138,6 +29218,9 @@
     <class kind="struct">playrho::TypeInfo&lt; Fixed32 &gt;</class>
     <class kind="struct">playrho::TypeInfo&lt; float &gt;</class>
     <class kind="struct">playrho::TypeInfo&lt; long double &gt;</class>
+    <class kind="struct">playrho::underlying_type</class>
+    <class kind="struct">playrho::underlying_type&lt; detail::IndexingNamedType&lt; T, Tag &gt; &gt;</class>
+    <class kind="struct">playrho::underlying_type&lt; T, std::enable_if_t&lt; std::is_enum_v&lt; T &gt; &gt; &gt;</class>
     <class kind="struct">playrho::UnitIntervalChecker</class>
     <class kind="struct">playrho::Vector</class>
     <class kind="struct">playrho::Version</class>
@@ -29205,6 +29288,13 @@
       <name>Fixed32</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a51e61fee8a0be399ed24773ebc3135f8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>typename underlying_type&lt; T &gt;::type</type>
+      <name>underlying_type_t</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a79f10d34cd7e0d7f7cbbafb638373818</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -29439,10 +29529,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>PLAYRHO_QUANTITY(boost::units::si::inverse_mass)</type>
+      <type>PLAYRHO_QUANTITY(playrho::units::si::inverse_mass)</type>
       <name>InvMass</name>
       <anchorfile>group__PhysicalQuantities.html</anchorfile>
-      <anchor>ga370c2a37515b6a8e79468113554f8ba9</anchor>
+      <anchor>ga9b387148008099ec9d37dbcf1f1a1571</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -29495,10 +29585,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>PLAYRHO_QUANTITY(boost::units::si::second_moment_of_area)</type>
+      <type>PLAYRHO_QUANTITY(playrho::units::si::second_moment_of_area)</type>
       <name>SecondMomentOfArea</name>
       <anchorfile>group__PhysicalQuantities.html</anchorfile>
-      <anchor>ga84a494e0a8763db409c32bde53324b06</anchor>
+      <anchor>ga9ded7e1044d55beb1ca2957d671ece44</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -29509,10 +29599,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>PLAYRHO_QUANTITY(boost::units::si::inverse_moment_of_inertia)</type>
+      <type>PLAYRHO_QUANTITY(playrho::units::si::inverse_moment_of_inertia)</type>
       <name>InvRotInertia</name>
       <anchorfile>group__PhysicalQuantities.html</anchorfile>
-      <anchor>gafa6edf71110d3eef58f39dcbb8067ef4</anchor>
+      <anchor>gad5941a3d5c4b22ba991887772a3744de</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -30428,6 +30518,13 @@
       <anchorfile>group__FixedMath.html</anchorfile>
       <anchor>gab8fa73692143466ca4d584aacf5749f1</anchor>
       <arglist>(Fixed&lt; BT, FB &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>to_underlying</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>abcf5bea73a392ad1b2be520e79fb9b4a</anchor>
+      <arglist>(T value) noexcept -&gt; underlying_type_t&lt; T &gt;</arglist>
     </member>
     <member kind="function">
       <type>constexpr T</type>
@@ -33857,6 +33954,20 @@
       <type>constexpr bool</type>
       <name>operator==</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af317b3462727e3832e11d157b7e0b7b4</anchor>
+      <arglist>(const Sweep &amp;lhs, const Sweep &amp;rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af0f08a3cbef074f5f78272c205967888</anchor>
+      <arglist>(const Sweep &amp;lhs, const Sweep &amp;rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a9f366fc4f9a298d3dded719b628a9933</anchor>
       <arglist>(const Transformation &amp;lhs, const Transformation &amp;rhs) noexcept</arglist>
     </member>
@@ -34083,6 +34194,13 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a5d1467095e23488ca1344a26336aae8f</anchor>
       <arglist>(Body &amp;body, AngularMomentum impulse) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a2e61d578b8ec391d98178299024b5c4f</anchor>
+      <arglist>(const Body &amp;lhs, const Body &amp;rhs)</arglist>
     </member>
     <member kind="function">
       <type>BodyType</type>
@@ -34387,6 +34505,13 @@
     </member>
     <member kind="function">
       <type>void</type>
+      <name>SetMass</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af26ae548ac842dfc9c1da2230b224870</anchor>
+      <arglist>(Body &amp;body, Mass mass)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
       <name>SetAcceleration</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>aeb983c0ee834bdbf4f969e6bd23be27e</anchor>
@@ -34526,6 +34651,13 @@
       <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>bool</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ad57faa5642b6526d57f2f066cb74c3a9</anchor>
+      <arglist>(const Body &amp;lhs, const Body &amp;rhs)</arglist>
+    </member>
+    <member kind="function">
       <type>BodyConf</type>
       <name>GetBodyConf</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -34552,6 +34684,20 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>aad6493c0704a18da5f611717a6aff844</anchor>
       <arglist>(const BodyConf &amp;conf) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a0106f5ff990330d8e8afcd906cefa75a</anchor>
+      <arglist>(const BodyConf &amp;lhs, const BodyConf &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a50e186f203ad0d5f7c851058802978fd</anchor>
+      <arglist>(const BodyConf &amp;lhs, const BodyConf &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>ContactImpulsesList</type>
@@ -34902,6 +35048,20 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>ab39f3148c511e1a82d6d23701423da43</anchor>
       <arglist>(const FixtureConf &amp;fixtureA, const FixtureConf &amp;fixtureB)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa2bccb8a9f96f9ef20bfc0c27cd12a25</anchor>
+      <arglist>(const FixtureConf &amp;lhs, const FixtureConf &amp;rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aef63403acbb62366a22771e25f15a449</anchor>
+      <arglist>(const FixtureConf &amp;lhs, const FixtureConf &amp;rhs)</arglist>
     </member>
     <member kind="function">
       <type>BodyID</type>
@@ -39589,10 +39749,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>PLAYRHO_QUANTITY(boost::units::si::inverse_mass)</type>
+      <type>PLAYRHO_QUANTITY(playrho::units::si::inverse_mass)</type>
       <name>InvMass</name>
       <anchorfile>group__PhysicalQuantities.html</anchorfile>
-      <anchor>ga370c2a37515b6a8e79468113554f8ba9</anchor>
+      <anchor>ga9b387148008099ec9d37dbcf1f1a1571</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -39645,10 +39805,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>PLAYRHO_QUANTITY(boost::units::si::second_moment_of_area)</type>
+      <type>PLAYRHO_QUANTITY(playrho::units::si::second_moment_of_area)</type>
       <name>SecondMomentOfArea</name>
       <anchorfile>group__PhysicalQuantities.html</anchorfile>
-      <anchor>ga84a494e0a8763db409c32bde53324b06</anchor>
+      <anchor>ga9ded7e1044d55beb1ca2957d671ece44</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -39659,10 +39819,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>PLAYRHO_QUANTITY(boost::units::si::inverse_moment_of_inertia)</type>
+      <type>PLAYRHO_QUANTITY(playrho::units::si::inverse_moment_of_inertia)</type>
       <name>InvRotInertia</name>
       <anchorfile>group__PhysicalQuantities.html</anchorfile>
-      <anchor>gafa6edf71110d3eef58f39dcbb8067ef4</anchor>
+      <anchor>gad5941a3d5c4b22ba991887772a3744de</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">

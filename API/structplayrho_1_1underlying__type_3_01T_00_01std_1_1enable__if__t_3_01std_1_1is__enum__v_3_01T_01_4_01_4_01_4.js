@@ -1,0 +1,4 @@
+var structplayrho_1_1underlying__type_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__enum__v_3_01T_01_4_01_4_01_4 =
+[
+    [ "type", "structplayrho_1_1underlying__type_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__enum__v_3_01T_01_4_01_4_01_4.html#ae3fedbc7555bd89559da1270f9aebf08", null ]
+];

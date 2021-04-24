@@ -1,5 +1,5 @@
 <map id="playrho::d2::DistanceJointConf" name="playrho::d2::DistanceJointConf">
-<area shape="rect" id="node1" title="Distance joint definition." alt="" coords="1737,299,1940,325"/>
+<area shape="rect" id="node1" title="Distance joint definition." alt="" coords="1737,295,1940,321"/>
 <area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1JointBuilder.html" title=" " alt="" coords="1459,105,1621,146"/>
 <area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1JointConf.html" title="Base joint definition class." alt="" coords="827,135,977,161"/>
 <area shape="rect" id="node9" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="Joint builder definition structure." alt="" coords="1079,163,1273,189"/>
@@ -13,10 +13,10 @@
 <area shape="rect" id="node11" title=" " alt="" coords="199,64,260,91"/>
 <area shape="rect" id="node13" title=" " alt="" coords="1509,171,1571,197"/>
 <area shape="rect" id="node14" title=" " alt="" coords="1511,221,1569,248"/>
-<area shape="rect" id="node15" title=" " alt="" coords="1153,300,1199,327"/>
-<area shape="rect" id="node18" href="$classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector." alt="" coords="1469,272,1611,299"/>
-<area shape="rect" id="node16" title=" " alt="" coords="1505,385,1575,412"/>
-<area shape="rect" id="node17" title=" " alt="" coords="1487,436,1593,463"/>
+<area shape="rect" id="node15" title=" " alt="" coords="1487,272,1593,299"/>
+<area shape="rect" id="node16" title=" " alt="" coords="1153,351,1199,377"/>
+<area shape="rect" id="node18" href="$classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector." alt="" coords="1469,323,1611,349"/>
+<area shape="rect" id="node17" title=" " alt="" coords="1505,436,1575,463"/>
 <area shape="rect" id="node19" title=" " alt="" coords="1495,487,1585,513"/>
 <area shape="rect" id="node20" href="$classplayrho_1_1CheckedValue.html" title=" " alt="" coords="1462,538,1618,579"/>
 <area shape="rect" id="node21" title=" " alt="" coords="1135,575,1217,601"/>

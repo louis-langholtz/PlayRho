@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">1.0.0</span>
+   &#160;<span id="projectnumber">1.1.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -152,11 +152,15 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 : <a class="el" href="classplayrho_1_1CheckedValue.html#a0878dcd8f25150f77ebea43e908e3023">playrho::CheckedValue&lt; ValueType, CheckerType &gt;</a>
 , <a class="el" href="structplayrho_1_1ContactFeature.html#a9bcf95269c48c96b8af0854d24894e3d">playrho::ContactFeature</a>
 , <a class="el" href="structplayrho_1_1d2_1_1Acceleration.html#a4442cd95fcdc4e62463d3e294fc7a303">playrho::d2::Acceleration</a>
+, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ad57faa5642b6526d57f2f066cb74c3a9">playrho::d2::Body</a>
+, <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#a50e186f203ad0d5f7c851058802978fd">playrho::d2::BodyConf</a>
 , <a class="el" href="classplayrho_1_1d2_1_1DistanceProxy.html#a1c65d94d98dea8f68c3dd32e90b888bb">playrho::d2::DistanceProxy</a>
 , <a class="el" href="structplayrho_1_1d2_1_1DynamicTree_1_1LeafData.html#ae1ed888f691a2a52ae7a8a2b09f31652">playrho::d2::DynamicTree::LeafData</a>
+, <a class="el" href="structplayrho_1_1d2_1_1FixtureConf.html#aef63403acbb62366a22771e25f15a449">playrho::d2::FixtureConf</a>
 , <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ab7261adb2e0ccb0b3db58fc194d50614">playrho::d2::Manifold</a>
 , <a class="el" href="structplayrho_1_1d2_1_1Manifold_1_1Point.html#a72a1cdedaec111016d79f96aa4970cef">playrho::d2::Manifold::Point</a>
 , <a class="el" href="structplayrho_1_1d2_1_1Position.html#a920e4ebf45a599f01060d56b280adc74">playrho::d2::Position</a>
+, <a class="el" href="classplayrho_1_1d2_1_1Sweep.html#af0f08a3cbef074f5f78272c205967888">playrho::d2::Sweep</a>
 , <a class="el" href="structplayrho_1_1d2_1_1Transformation.html#ac100cc2e77031bd058367006ddd2ebe1">playrho::d2::Transformation</a>
 , <a class="el" href="structplayrho_1_1d2_1_1Velocity.html#a50aa6c2021393ced745d056c34b3bc07">playrho::d2::Velocity</a>
 , <a class="el" href="structplayrho_1_1detail_1_1AABB.html#abe2471568df9b5635f92209b8d25be38">playrho::detail::AABB&lt; N &gt;</a>
@@ -228,11 +232,11 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 <li>operator-()
 : <a class="el" href="classplayrho_1_1CheckedValue.html#aa918349e3179ab2f97d04b41085d0a48">playrho::CheckedValue&lt; ValueType, CheckerType &gt;</a>
 , <a class="el" href="structplayrho_1_1d2_1_1Acceleration.html#af4082a55e3d2a0600855a5b626f19f41">playrho::d2::Acceleration</a>
-, <a class="el" href="structplayrho_1_1d2_1_1Position.html#ab4a62d780748e8a22c6fe64234f6d121">playrho::d2::Position</a>
+, <a class="el" href="structplayrho_1_1d2_1_1Position.html#acf4c47e7d8cba3a76dcdc9fa4b79d242">playrho::d2::Position</a>
 , <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html#a897c2964930d475d582c5ccfd8cee10f">playrho::d2::UnitVec</a>
 , <a class="el" href="structplayrho_1_1d2_1_1Velocity.html#ab2f3370383aaf9a8443cacef7841c5a0">playrho::d2::Velocity</a>
 , <a class="el" href="classplayrho_1_1Fixed.html#a75b6c941518b707b47d7402c8c5a46c8">playrho::Fixed&lt; BASE_TYPE, FRACTION_BITS &gt;</a>
-, <a class="el" href="structplayrho_1_1Vector.html#a581f6521190fcbbfc1aa0813a6f33c04">playrho::Vector&lt; T, N &gt;</a>
+, <a class="el" href="structplayrho_1_1Vector.html#a75d04501374b86e6de10706672bdc38d">playrho::Vector&lt; T, N &gt;</a>
 </li>
 <li>operator-=()
 : <a class="el" href="structplayrho_1_1d2_1_1Acceleration.html#a66e903f6e66753963a1bd82295759ddb">playrho::d2::Acceleration</a>
@@ -246,7 +250,7 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 , <a class="el" href="classplayrho_1_1propagate__const.html#adfe9add4a4a00f5eb5605150734820fe">playrho::propagate_const&lt; T &gt;</a>
 </li>
 <li>operator/()
-: <a class="el" href="classplayrho_1_1CheckedValue.html#a740ddde1b6038fc20e0e763e0eabac6a">playrho::CheckedValue&lt; ValueType, CheckerType &gt;</a>
+: <a class="el" href="classplayrho_1_1CheckedValue.html#a5a5b28003deb87e06a3c9e51f44fb096">playrho::CheckedValue&lt; ValueType, CheckerType &gt;</a>
 , <a class="el" href="structplayrho_1_1d2_1_1Acceleration.html#a9b895b5b826bc5349fbd007bd6e9683b">playrho::d2::Acceleration</a>
 , <a class="el" href="structplayrho_1_1d2_1_1Velocity.html#aec5f4967a3c7e58ccf6c9fb4aafa90a1">playrho::d2::Velocity</a>
 , <a class="el" href="structplayrho_1_1Vector.html#ab846bf628e71b3aeea2fc26d282143eb">playrho::Vector&lt; T, N &gt;</a>
@@ -267,7 +271,7 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 , <a class="el" href="structplayrho_1_1Vector.html#af157a36bb1282e34b967881c199d15fa">playrho::Vector&lt; T, N &gt;</a>
 </li>
 <li>operator&lt;=()
-: <a class="el" href="classplayrho_1_1CheckedValue.html#a3e696d4bb8a0294762be3428301ebbec">playrho::CheckedValue&lt; ValueType, CheckerType &gt;</a>
+: <a class="el" href="classplayrho_1_1CheckedValue.html#a55fa5e47ada221e269711dbbf90eedd7">playrho::CheckedValue&lt; ValueType, CheckerType &gt;</a>
 , <a class="el" href="structplayrho_1_1detail_1_1AABB.html#aa3edeccc850d69e6165e5a5523e5b406">playrho::detail::AABB&lt; N &gt;</a>
 , <a class="el" href="classplayrho_1_1Interval.html#adbf50e7e086182f69dc09e011aef6345">playrho::Interval&lt; T &gt;</a>
 </li>
@@ -275,24 +279,28 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 : <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a2fafb37e54884438b868f3cb18714730">playrho::d2::DynamicTree</a>
 , <a class="el" href="classplayrho_1_1d2_1_1DynamicTree_1_1TreeNode.html#a31bdee8b0731760ab5754a994675d309">playrho::d2::DynamicTree::TreeNode</a>
 , <a class="el" href="classplayrho_1_1d2_1_1Joint.html#ac016a97cb182a1122528839ff5d432ba">playrho::d2::Joint</a>
-, <a class="el" href="classplayrho_1_1d2_1_1Shape.html#a08a076ce927458c2b43f6c3b21706cf3">playrho::d2::Shape</a>
+, <a class="el" href="classplayrho_1_1d2_1_1Shape.html#acbee1b56e39a192551950a196bb8b6be">playrho::d2::Shape</a>
 , <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a41f32b7118af764c0e2f4b10007b3812">playrho::d2::VelocityConstraint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1World.html#a4b2d37998661b12ac6ef32c46b59d81e">playrho::d2::World</a>
 , <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a168226503ad3736a83a08da5cd5fa625">playrho::d2::WorldImpl</a>
-, <a class="el" href="classplayrho_1_1FlagGuard.html#a2566ed27d453c2f37e08a855df5133c6">playrho::FlagGuard&lt; T &gt;</a>
+, <a class="el" href="classplayrho_1_1FlagGuard.html#a8524fe292f8940fefc250c5df2276535">playrho::FlagGuard&lt; T &gt;</a>
 , <a class="el" href="classplayrho_1_1Interval.html#a296371ae35bc96229e72601b59469620">playrho::Interval&lt; T &gt;</a>
-, <a class="el" href="classplayrho_1_1propagate__const.html#ae685ddb2bcf070e4d71a3ef3a160f144">playrho::propagate_const&lt; T &gt;</a>
+, <a class="el" href="classplayrho_1_1propagate__const.html#a1f2601d2359c2a1733c362c9c37d8046">playrho::propagate_const&lt; T &gt;</a>
 , <a class="el" href="classplayrho_1_1StackAllocator.html#a8a48daabf0a431c13a008db54879b7cc">playrho::StackAllocator</a>
 </li>
 <li>operator==()
 : <a class="el" href="classplayrho_1_1CheckedValue.html#adafba64613de79315803f30e1c800aad">playrho::CheckedValue&lt; ValueType, CheckerType &gt;</a>
 , <a class="el" href="structplayrho_1_1ContactFeature.html#ac19a825ed22691eab1981a616b6bf539">playrho::ContactFeature</a>
 , <a class="el" href="structplayrho_1_1d2_1_1Acceleration.html#a4e08ccbbdba321adad44c940d95c52fb">playrho::d2::Acceleration</a>
+, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a2e61d578b8ec391d98178299024b5c4f">playrho::d2::Body</a>
+, <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#a0106f5ff990330d8e8afcd906cefa75a">playrho::d2::BodyConf</a>
 , <a class="el" href="classplayrho_1_1d2_1_1DistanceProxy.html#a1311c8979a6d955fa240491cbf239e99">playrho::d2::DistanceProxy</a>
 , <a class="el" href="structplayrho_1_1d2_1_1DynamicTree_1_1LeafData.html#a8f179e80df6ce247f31faeeacb45de79">playrho::d2::DynamicTree::LeafData</a>
+, <a class="el" href="structplayrho_1_1d2_1_1FixtureConf.html#aa2bccb8a9f96f9ef20bfc0c27cd12a25">playrho::d2::FixtureConf</a>
 , <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a18bbc8e12d21c4ae260d0bb333e0eed5">playrho::d2::Manifold</a>
 , <a class="el" href="structplayrho_1_1d2_1_1Manifold_1_1Point.html#a30d3152820c6a35af37c2139d316d1da">playrho::d2::Manifold::Point</a>
 , <a class="el" href="structplayrho_1_1d2_1_1Position.html#a5e0589100dc43e1301d6b8b945ccb37c">playrho::d2::Position</a>
+, <a class="el" href="classplayrho_1_1d2_1_1Sweep.html#af317b3462727e3832e11d157b7e0b7b4">playrho::d2::Sweep</a>
 , <a class="el" href="structplayrho_1_1d2_1_1Transformation.html#a9f366fc4f9a298d3dded719b628a9933">playrho::d2::Transformation</a>
 , <a class="el" href="structplayrho_1_1d2_1_1Velocity.html#afe4f2bcd98877c4562293dfe2dbcfa8b">playrho::d2::Velocity</a>
 , <a class="el" href="structplayrho_1_1detail_1_1AABB.html#ae9459aea2a9cd94f8089837a09f41003">playrho::detail::AABB&lt; N &gt;</a>
@@ -302,12 +310,12 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 , <a class="el" href="structplayrho_1_1Vector.html#ab0d92fceef8d7757ae713bd166391c21">playrho::Vector&lt; T, N &gt;</a>
 </li>
 <li>operator&gt;()
-: <a class="el" href="classplayrho_1_1CheckedValue.html#a6ea68ce25d18cda2a9a333fa224f0558">playrho::CheckedValue&lt; ValueType, CheckerType &gt;</a>
+: <a class="el" href="classplayrho_1_1CheckedValue.html#aab6a70eaafe3d414d9ebb561150a5ae0">playrho::CheckedValue&lt; ValueType, CheckerType &gt;</a>
 , <a class="el" href="structplayrho_1_1detail_1_1AABB.html#a76b557d909c21ff5256aeb1a9d3b8c05">playrho::detail::AABB&lt; N &gt;</a>
 , <a class="el" href="classplayrho_1_1Interval.html#acc58a55aab3f8bdd7ea411a6b2a4ddfb">playrho::Interval&lt; T &gt;</a>
 </li>
 <li>operator&gt;=()
-: <a class="el" href="classplayrho_1_1CheckedValue.html#a5c18729fd53f4bb5275874c8cd1eb644">playrho::CheckedValue&lt; ValueType, CheckerType &gt;</a>
+: <a class="el" href="classplayrho_1_1CheckedValue.html#abcb14439b5fd9f3daf2b518c786865b7">playrho::CheckedValue&lt; ValueType, CheckerType &gt;</a>
 , <a class="el" href="structplayrho_1_1detail_1_1AABB.html#a48d06003e414f652104fd195b308d296">playrho::detail::AABB&lt; N &gt;</a>
 , <a class="el" href="classplayrho_1_1Interval.html#acca7f35c089808652f6c5d6c06a85ae7">playrho::Interval&lt; T &gt;</a>
 </li>
@@ -318,7 +326,7 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 , <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html#a1e6755e80f6737ff7823b135a1f47318">playrho::d2::UnitVec</a>
 , <a class="el" href="classplayrho_1_1d2_1_1VertexSet.html#a6cd15a8277866afd8e620c0df9a2fc8d">playrho::d2::VertexSet</a>
 , <a class="el" href="classplayrho_1_1Span.html#ac2bf69dc112d83f536622d2b0aa0294f">playrho::Span&lt; T &gt;</a>
-, <a class="el" href="structplayrho_1_1Vector.html#a4cf7068d7d3c4ea1a2c6859ffd7e749b">playrho::Vector&lt; T, N &gt;</a>
+, <a class="el" href="structplayrho_1_1Vector.html#aa90e470ba330d396ba83db1dc29b9522">playrho::Vector&lt; T, N &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -326,7 +334,7 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Nov 30 2020 00:11:01 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sat Apr 24 2021 12:19:37 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

@@ -1,5 +1,5 @@
 <map id="playrho::d2::WheelJointConf" name="playrho::d2::WheelJointConf">
-<area shape="rect" id="node1" title="Wheel joint definition." alt="" coords="1755,493,1941,520"/>
+<area shape="rect" id="node1" title="Wheel joint definition." alt="" coords="1755,460,1941,487"/>
 <area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1JointBuilder.html" title=" " alt="" coords="1443,43,1605,85"/>
 <area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1JointConf.html" title="Base joint definition class." alt="" coords="827,39,977,65"/>
 <area shape="rect" id="node9" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="Joint builder definition structure." alt="" coords="1079,5,1273,32"/>
@@ -13,17 +13,17 @@
 <area shape="rect" id="node11" title=" " alt="" coords="199,188,260,215"/>
 <area shape="rect" id="node13" title=" " alt="" coords="1493,260,1555,287"/>
 <area shape="rect" id="node14" title=" " alt="" coords="1457,311,1591,337"/>
-<area shape="rect" id="node15" title=" " alt="" coords="1495,363,1553,389"/>
-<area shape="rect" id="node16" title=" " alt="" coords="1153,432,1199,459"/>
-<area shape="rect" id="node22" href="$classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector." alt="" coords="1453,476,1595,503"/>
-<area shape="rect" id="node17" title=" " alt="" coords="1493,528,1555,555"/>
-<area shape="rect" id="node18" title=" " alt="" coords="1489,579,1559,605"/>
-<area shape="rect" id="node19" title=" " alt="" coords="1471,629,1577,656"/>
-<area shape="rect" id="node20" title=" " alt="" coords="1454,680,1594,707"/>
-<area shape="rect" id="node21" title=" " alt="" coords="1464,731,1584,757"/>
-<area shape="rect" id="node23" title=" " alt="" coords="1479,783,1569,809"/>
-<area shape="rect" id="node24" href="$classplayrho_1_1CheckedValue.html" title=" " alt="" coords="1446,834,1602,875"/>
-<area shape="rect" id="node25" title=" " alt="" coords="1135,815,1217,841"/>
-<area shape="rect" id="node26" href="$classplayrho_1_1CheckedValue.html" title="Checked value." alt="" coords="1081,866,1271,907"/>
-<area shape="rect" id="node27" title=" " alt="" coords="861,873,943,900"/>
+<area shape="rect" id="node15" title=" " alt="" coords="1471,361,1577,388"/>
+<area shape="rect" id="node16" title=" " alt="" coords="1495,412,1553,439"/>
+<area shape="rect" id="node17" title=" " alt="" coords="1153,481,1199,508"/>
+<area shape="rect" id="node22" href="$classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector." alt="" coords="1453,525,1595,552"/>
+<area shape="rect" id="node18" title=" " alt="" coords="1493,577,1555,604"/>
+<area shape="rect" id="node19" title=" " alt="" coords="1489,628,1559,655"/>
+<area shape="rect" id="node20" title=" " alt="" coords="1454,679,1594,705"/>
+<area shape="rect" id="node21" title=" " alt="" coords="1464,729,1584,756"/>
+<area shape="rect" id="node23" title=" " alt="" coords="1479,780,1569,807"/>
+<area shape="rect" id="node24" href="$classplayrho_1_1CheckedValue.html" title=" " alt="" coords="1446,831,1602,873"/>
+<area shape="rect" id="node25" title=" " alt="" coords="1135,812,1217,839"/>
+<area shape="rect" id="node26" href="$classplayrho_1_1CheckedValue.html" title="Checked value." alt="" coords="1081,863,1271,905"/>
+<area shape="rect" id="node27" title=" " alt="" coords="861,871,943,897"/>
 </map>

@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">1.0.0</span>
+   &#160;<span id="projectnumber">1.1.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -110,14 +110,12 @@ $(document).ready(function(){initNavTree('classplayrho_1_1ArrayAllocator.html','
 <div class="dynheader">
 Inheritance diagram for playrho::ArrayAllocator&lt; T &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1ArrayAllocator__inherit__graph.svg" width="602" height="575"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1ArrayAllocator__inherit__graph.svg" width="602" height="575"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for playrho::ArrayAllocator&lt; T &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1ArrayAllocator__coll__graph.svg" width="331" height="156"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1ArrayAllocator__coll__graph.svg" width="320" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
@@ -195,10 +193,10 @@ Private Attributes</h2></td></tr>
 std::vector&lt; <a class="el" href="classplayrho_1_1ArrayAllocator.html#aafb7e2bccd27d04b9343ee24f3d2efea">value_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayAllocator.html#a9464007a8e0743172290208c64abff94">m_data</a></td></tr>
 <tr class="memdesc:a9464007a8e0743172290208c64abff94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array data (both used &amp; free). <br /></td></tr>
 <tr class="separator:a9464007a8e0743172290208c64abff94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ea4ce0060947b97f607ed72452ee527"><td class="memItemLeft" align="right" valign="top"><a id="a3ea4ce0060947b97f607ed72452ee527"></a>
-std::vector&lt; typename std::vector&lt; <a class="el" href="classplayrho_1_1ArrayAllocator.html#aafb7e2bccd27d04b9343ee24f3d2efea">value_type</a> &gt;::<a class="el" href="classplayrho_1_1ArrayAllocator.html#a2c4ace224e62d268f9e3eaadb271d7e5">size_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayAllocator.html#a3ea4ce0060947b97f607ed72452ee527">m_free</a></td></tr>
-<tr class="memdesc:a3ea4ce0060947b97f607ed72452ee527"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indices of free elements. <br /></td></tr>
-<tr class="separator:a3ea4ce0060947b97f607ed72452ee527"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a326254ccc6621b73957924d5af2ae67f"><td class="memItemLeft" align="right" valign="top"><a id="a326254ccc6621b73957924d5af2ae67f"></a>
+std::vector&lt; <a class="el" href="classplayrho_1_1ArrayAllocator.html#a2c4ace224e62d268f9e3eaadb271d7e5">size_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayAllocator.html#a326254ccc6621b73957924d5af2ae67f">m_free</a></td></tr>
+<tr class="memdesc:a326254ccc6621b73957924d5af2ae67f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indices of free elements. <br /></td></tr>
+<tr class="separator:a326254ccc6621b73957924d5af2ae67f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T&gt;<br />
@@ -239,7 +237,7 @@ template&lt;class... Args&gt; </div>
 <dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1ArrayAllocator.html#a8bfd5e4aa22b0b3438fcb61e4ad5caba" title="Gets the size of this instance in number of elements.">size()</a> - <a class="el" href="classplayrho_1_1ArrayAllocator.html#a5818cc1c42df03e4130104e90717a9b2" title="Gets the number of elements currently free.">free_size()</a></code> will return a value one less than before. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1ArrayAllocator.html#ab4740267ab2704193a2b9119f2609930" title="Frees the previously-allocated index entry.">Free</a>, <a class="el" href="classplayrho_1_1ArrayAllocator.html#a8bfd5e4aa22b0b3438fcb61e4ad5caba" title="Gets the size of this instance in number of elements.">size</a>, <a class="el" href="classplayrho_1_1ArrayAllocator.html#a5818cc1c42df03e4130104e90717a9b2" title="Gets the number of elements currently free.">free_size</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a56f095fe60a50b47f9aa2f3d6664e3f2">playrho::d2::WorldImpl::CreateBody()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a56f095fe60a50b47f9aa2f3d6664e3f2">playrho::d2::WorldImpl::CreateBody()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a5c2c258e0632e2daa11c2f5e042eaa99">playrho::d2::WorldImpl::CreateFixture()</a>.</p>
 
 </div>
 </div>
@@ -548,7 +546,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="classplayrho_1_1ArrayAllocator.html">ArrayAllocator</a></li>
-    <li class="footer">Generated on Mon Nov 30 2020 00:11:00 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sat Apr 24 2021 12:19:35 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

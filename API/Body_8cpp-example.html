@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">1.0.0</span>
+   &#160;<span id="projectnumber">1.1.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -239,20 +239,168 @@ $(document).ready(function(){initNavTree('Body_8cpp-example.html',''); initResiz
 <div class="line">                  .<a name="a31"></a><a class="code" href="namespaceplayrho_1_1d2.html#a986b11edba421b23879fa363c557f1e5">GetAngularAcceleration</a>(),</div>
 <div class="line">              body.GetAngularAcceleration());</div>
 <div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>, EqualsOperator)</div>
+<div class="line">{</div>
+<div class="line">    EXPECT_TRUE(<a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>() == <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        EXPECT_TRUE(body == <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body1 = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body1.<a name="a32"></a><a class="code" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea">SetType</a>(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Dynamic</a>);</div>
+<div class="line">        <span class="keyword">auto</span> body2 = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body2.<a class="code" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea">SetType</a>(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Dynamic</a>);</div>
+<div class="line">        EXPECT_TRUE(body1 == body2);</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body.<a name="a33"></a><a class="code" href="classplayrho_1_1d2_1_1Body.html#a08663554d88fc00b0ba6e9f974d63e52">SetTransformation</a>(<a name="_a34"></a><a class="code" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a>{<a class="code" href="structplayrho_1_1Vector.html">Length2</a>{2_m, 0_m}, <a name="_a35"></a><a class="code" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a>{}});</div>
+<div class="line">        EXPECT_FALSE(body == <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body.<a name="a36"></a><a class="code" href="classplayrho_1_1d2_1_1Body.html#aff436223b960a71937476dea03117d9c">SetSweep</a>(<a name="_a37"></a><a class="code" href="classplayrho_1_1d2_1_1Sweep.html">Sweep</a>{<a name="_a38"></a><a class="code" href="structplayrho_1_1d2_1_1Position.html">Position</a>{<a class="code" href="structplayrho_1_1Vector.html">Length2</a>{}, 2_deg}});</div>
+<div class="line">        EXPECT_FALSE(body == <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body.<a class="code" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea">SetType</a>(BodyType::Kinematic);</div>
+<div class="line">        EXPECT_FALSE(body == <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body.<a name="a39"></a><a class="code" href="classplayrho_1_1d2_1_1Body.html#a00314ef442a112b29a7030087a14ee82">JustSetVelocity</a>(<a class="code" href="structplayrho_1_1d2_1_1Velocity.html">Velocity</a>{<a class="code" href="structplayrho_1_1Vector.html">LinearVelocity2</a>{}, 2_rpm});</div>
+<div class="line">        EXPECT_FALSE(body == <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body1 = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body1.<a class="code" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea">SetType</a>(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Dynamic</a>);</div>
+<div class="line">        body1.SetAcceleration(<a class="code" href="structplayrho_1_1Vector.html">LinearAcceleration2</a>{}, <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(2) * <a class="code" href="group__PhysicalUnits.html#ga0da7c45fe3ebc86d397e684154033742">RadianPerSquareSecond</a>);</div>
+<div class="line">        <span class="keyword">auto</span> body2 = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body2.<a class="code" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea">SetType</a>(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Dynamic</a>);</div>
+<div class="line">        EXPECT_FALSE(body1 == body2);</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        <a name="a40"></a><a class="code" href="namespaceplayrho_1_1d2.html#af26ae548ac842dfc9c1da2230b224870">SetMass</a>(body, 3.2_kg);</div>
+<div class="line">        EXPECT_FALSE(body == <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body.<a name="a41"></a><a class="code" href="classplayrho_1_1d2_1_1Body.html#a27c4a9a666012c7788c88eab983d7f1f">SetInvRotInertia</a>((<a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(2) * <a name="a42"></a><a class="code" href="group__PhysicalUnits.html#ga941b3913fd0dd86a33e695cd9b73318f">SquareRadian</a>) / (2_m2 * 1.2_kg));</div>
+<div class="line">        EXPECT_FALSE(body == <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        <a name="a43"></a><a class="code" href="namespaceplayrho_1_1d2.html#a9901b5b3ddb898a60f216007adace0de">SetLinearDamping</a>(body, 2_Hz);</div>
+<div class="line">        EXPECT_FALSE(body == <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        <a name="a44"></a><a class="code" href="namespaceplayrho_1_1d2.html#a344a9753e8cd6fb046a57e82d2206d60">SetAngularDamping</a>(body, 2_Hz);</div>
+<div class="line">        EXPECT_FALSE(body == <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body1 = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body1.<a class="code" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea">SetType</a>(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Dynamic</a>);</div>
+<div class="line">        body1.SetUnderActiveTime(2_s);</div>
+<div class="line">        <span class="keyword">auto</span> body2 = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body2.<a class="code" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea">SetType</a>(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Dynamic</a>);</div>
+<div class="line">        EXPECT_FALSE(body1 == body2);</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TEST(<a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>, NotEqualsOperator)</div>
+<div class="line">{</div>
+<div class="line">    EXPECT_FALSE(<a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>() != <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        EXPECT_FALSE(body != <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body1 = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body1.<a class="code" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea">SetType</a>(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Dynamic</a>);</div>
+<div class="line">        <span class="keyword">auto</span> body2 = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body2.<a class="code" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea">SetType</a>(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Dynamic</a>);</div>
+<div class="line">        EXPECT_FALSE(body1 != body2);</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body.<a class="code" href="classplayrho_1_1d2_1_1Body.html#a08663554d88fc00b0ba6e9f974d63e52">SetTransformation</a>(<a class="code" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a>{<a class="code" href="structplayrho_1_1Vector.html">Length2</a>{2_m, 0_m}, <a class="code" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a>{}});</div>
+<div class="line">        EXPECT_TRUE(body != <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body.<a class="code" href="classplayrho_1_1d2_1_1Body.html#aff436223b960a71937476dea03117d9c">SetSweep</a>(<a class="code" href="classplayrho_1_1d2_1_1Sweep.html">Sweep</a>{<a class="code" href="structplayrho_1_1d2_1_1Position.html">Position</a>{<a class="code" href="structplayrho_1_1Vector.html">Length2</a>{}, 2_deg}});</div>
+<div class="line">        EXPECT_TRUE(body != <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body.<a class="code" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea">SetType</a>(BodyType::Kinematic);</div>
+<div class="line">        EXPECT_TRUE(body != <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body.<a class="code" href="classplayrho_1_1d2_1_1Body.html#a00314ef442a112b29a7030087a14ee82">JustSetVelocity</a>(<a class="code" href="structplayrho_1_1d2_1_1Velocity.html">Velocity</a>{<a class="code" href="structplayrho_1_1Vector.html">LinearVelocity2</a>{}, 2_rpm});</div>
+<div class="line">        EXPECT_TRUE(body != <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body1 = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body1.<a class="code" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea">SetType</a>(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Dynamic</a>);</div>
+<div class="line">        body1.SetAcceleration(<a class="code" href="structplayrho_1_1Vector.html">LinearAcceleration2</a>{}, <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(2) * <a class="code" href="group__PhysicalUnits.html#ga0da7c45fe3ebc86d397e684154033742">RadianPerSquareSecond</a>);</div>
+<div class="line">        <span class="keyword">auto</span> body2 = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body2.<a class="code" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea">SetType</a>(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Dynamic</a>);</div>
+<div class="line">        EXPECT_TRUE(body1 != body2);</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        <a class="code" href="namespaceplayrho_1_1d2.html#af26ae548ac842dfc9c1da2230b224870">SetMass</a>(body, 3.2_kg);</div>
+<div class="line">        EXPECT_TRUE(body != <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body.<a class="code" href="classplayrho_1_1d2_1_1Body.html#a27c4a9a666012c7788c88eab983d7f1f">SetInvRotInertia</a>((<a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(2) * <a class="code" href="group__PhysicalUnits.html#ga941b3913fd0dd86a33e695cd9b73318f">SquareRadian</a>) / (2_m2 * 1.2_kg));</div>
+<div class="line">        EXPECT_TRUE(body != <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        <a class="code" href="namespaceplayrho_1_1d2.html#a9901b5b3ddb898a60f216007adace0de">SetLinearDamping</a>(body, 2_Hz);</div>
+<div class="line">        EXPECT_TRUE(body != <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        <a class="code" href="namespaceplayrho_1_1d2.html#a344a9753e8cd6fb046a57e82d2206d60">SetAngularDamping</a>(body, 2_Hz);</div>
+<div class="line">        EXPECT_TRUE(body != <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>());</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> body1 = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body1.<a class="code" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea">SetType</a>(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Dynamic</a>);</div>
+<div class="line">        body1.SetUnderActiveTime(2_s);</div>
+<div class="line">        <span class="keyword">auto</span> body2 = <a class="code" href="classplayrho_1_1d2_1_1Body.html">Body</a>{};</div>
+<div class="line">        body2.<a class="code" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea">SetType</a>(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Dynamic</a>);</div>
+<div class="line">        EXPECT_TRUE(body1 != body2);</div>
+<div class="line">    }</div>
+<div class="line">}</div>
 </div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="anamespaceplayrho_html_a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16"><div class="ttname"><a href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">playrho::BodyType::Static</a></div><div class="ttdeci">@ Static</div><div class="ttdoc">Static body type.</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1Body_html_af4715bc702e6250f6c2b8a748df751b1a029de9b5dc46e0aeafb5d4a1d07de68c"><div class="ttname"><a href="classplayrho_1_1d2_1_1Body.html#af4715bc702e6250f6c2b8a748df751b1a029de9b5dc46e0aeafb5d4a1d07de68c">playrho::d2::Body::e_accelerationFlag</a></div><div class="ttdeci">@ e_accelerationFlag</div><div class="ttdoc">Acceleration flag.</div><div class="ttdef"><b>Definition:</b> Body.hpp:105</div></div>
-<div class="ttc" id="agroup__PhysicalUnits_html_ga0da7c45fe3ebc86d397e684154033742"><div class="ttname"><a href="group__PhysicalUnits.html#ga0da7c45fe3ebc86d397e684154033742">playrho::RadianPerSquareSecond</a></div><div class="ttdeci">constexpr auto RadianPerSquareSecond</div><div class="ttdoc">Radian per square second unit of angular acceleration.</div><div class="ttdef"><b>Definition:</b> Units.hpp:359</div></div>
+<div class="ttc" id="agroup__PhysicalUnits_html_ga0da7c45fe3ebc86d397e684154033742"><div class="ttname"><a href="group__PhysicalUnits.html#ga0da7c45fe3ebc86d397e684154033742">playrho::RadianPerSquareSecond</a></div><div class="ttdeci">constexpr auto RadianPerSquareSecond</div><div class="ttdoc">Radian per square second unit of angular acceleration.</div><div class="ttdef"><b>Definition:</b> Units.hpp:394</div></div>
 <div class="ttc" id="astructplayrho_1_1d2_1_1BodyConf_html_a49ce681752862a2f5466df143cd8a0f0"><div class="ttname"><a href="structplayrho_1_1d2_1_1BodyConf.html#a49ce681752862a2f5466df143cd8a0f0">playrho::d2::BodyConf::UseType</a></div><div class="ttdeci">constexpr BodyConf &amp; UseType(BodyType t) noexcept</div><div class="ttdoc">Use the given type.</div><div class="ttdef"><b>Definition:</b> BodyConf.hpp:166</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html"><div class="ttname"><a href="namespaceplayrho_1_1d2.html">playrho::d2</a></div><div class="ttdoc">Name space for 2-dimensionally related PlayRho names.</div><div class="ttdef"><b>Definition:</b> AABB.cpp:34</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1UnitVec_html"><div class="ttname"><a href="classplayrho_1_1d2_1_1UnitVec.html">playrho::d2::UnitVec</a></div><div class="ttdoc">2-D unit vector.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:50</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1Body_html_af4715bc702e6250f6c2b8a748df751b1a9636c5bffb473d210e5b096dba69d13b"><div class="ttname"><a href="classplayrho_1_1d2_1_1Body.html#af4715bc702e6250f6c2b8a748df751b1a9636c5bffb473d210e5b096dba69d13b">playrho::d2::Body::e_impenetrableFlag</a></div><div class="ttdeci">@ e_impenetrableFlag</div><div class="ttdoc">Impenetrable flag.</div><div class="ttdef"><b>Definition:</b> Body.hpp:89</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1Body_html_a18dac43bb044e0d0f5b5dc461a7b9bea"><div class="ttname"><a href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea">playrho::d2::Body::SetType</a></div><div class="ttdeci">void SetType(BodyType value) noexcept</div><div class="ttdoc">Sets the type of this body.</div><div class="ttdef"><b>Definition:</b> Body.cpp:124</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1Body_html_a27c4a9a666012c7788c88eab983d7f1f"><div class="ttname"><a href="classplayrho_1_1d2_1_1Body.html#a27c4a9a666012c7788c88eab983d7f1f">playrho::d2::Body::SetInvRotInertia</a></div><div class="ttdeci">void SetInvRotInertia(InvRotInertia v) noexcept</div><div class="ttdoc">Sets the inverse rotational inertia.</div><div class="ttdef"><b>Definition:</b> Body.hpp:228</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1Body_html_a6c21c223175b12cd68cea10484996fb1"><div class="ttname"><a href="classplayrho_1_1d2_1_1Body.html#a6c21c223175b12cd68cea10484996fb1">playrho::d2::Body::SetVelocity</a></div><div class="ttdeci">void SetVelocity(const Velocity &amp;velocity) noexcept</div><div class="ttdoc">Sets the body's velocity (linear and angular velocity).</div><div class="ttdef"><b>Definition:</b> Body.cpp:165</div></div>
 <div class="ttc" id="astructplayrho_1_1d2_1_1BodyConf_html_a72f8c52f313ac9373bedaf389c36e5f4"><div class="ttname"><a href="structplayrho_1_1d2_1_1BodyConf.html#a72f8c52f313ac9373bedaf389c36e5f4">playrho::d2::BodyConf::UseAwake</a></div><div class="ttdeci">constexpr BodyConf &amp; UseAwake(bool value) noexcept</div><div class="ttdoc">Use the given awake value.</div><div class="ttdef"><b>Definition:</b> BodyConf.hpp:246</div></div>
 <div class="ttc" id="anamespaceplayrho_html"><div class="ttname"><a href="namespaceplayrho.html">playrho</a></div><div class="ttdoc">Name space for all PlayRho related names.</div><div class="ttdef"><b>Definition:</b> AABB.cpp:33</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1Body_html_a137e2e62f0ad8b1b21695955fd3b900e"><div class="ttname"><a href="classplayrho_1_1d2_1_1Body.html#a137e2e62f0ad8b1b21695955fd3b900e">playrho::d2::Body::GetFlags</a></div><div class="ttdeci">static FlagsType GetFlags(BodyType type) noexcept</div><div class="ttdoc">Gets the flags for the given value.</div><div class="ttdef"><b>Definition:</b> Body.cpp:41</div></div>
 <div class="ttc" id="astructplayrho_1_1d2_1_1BodyConf_html_ae1537c26b15e8c24b3ce6ec3a43b40fa"><div class="ttname"><a href="structplayrho_1_1d2_1_1BodyConf.html#ae1537c26b15e8c24b3ce6ec3a43b40fa">playrho::d2::BodyConf::UseFixedRotation</a></div><div class="ttdeci">constexpr BodyConf &amp; UseFixedRotation(bool value) noexcept</div><div class="ttdoc">Use the given fixed rotation state.</div><div class="ttdef"><b>Definition:</b> BodyConf.hpp:252</div></div>
 <div class="ttc" id="astructplayrho_1_1d2_1_1Velocity_html_accc1d801801fb20a83fb5451ad8dd46d"><div class="ttname"><a href="structplayrho_1_1d2_1_1Velocity.html#accc1d801801fb20a83fb5451ad8dd46d">playrho::d2::Velocity::angular</a></div><div class="ttdeci">AngularVelocity angular</div><div class="ttdoc">Angular velocity.</div><div class="ttdef"><b>Definition:</b> Velocity.hpp:40</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_af26ae548ac842dfc9c1da2230b224870"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#af26ae548ac842dfc9c1da2230b224870">playrho::d2::SetMass</a></div><div class="ttdeci">void SetMass(Body &amp;body, Mass mass)</div><div class="ttdoc">Sets the mass of the given body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1090</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1Body_html"><div class="ttname"><a href="classplayrho_1_1d2_1_1Body.html">playrho::d2::Body</a></div><div class="ttdoc">Physical entity that exists within a World.</div><div class="ttdef"><b>Definition:</b> Body.hpp:71</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_aada2f9ed5beeb4a88ec917bf1c7d70df"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#aada2f9ed5beeb4a88ec917bf1c7d70df">playrho::d2::GetLinearDamping</a></div><div class="ttdeci">Frequency GetLinearDamping(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the linear damping of the body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:987</div></div>
 <div class="ttc" id="astructplayrho_1_1d2_1_1BodyConf_html_a48b490e84f9bdc3158ebd1dbb4100cdb"><div class="ttname"><a href="structplayrho_1_1d2_1_1BodyConf.html#a48b490e84f9bdc3158ebd1dbb4100cdb">playrho::d2::BodyConf::UseLocation</a></div><div class="ttdeci">constexpr BodyConf &amp; UseLocation(Length2 l) noexcept</div><div class="ttdoc">Use the given location.</div><div class="ttdef"><b>Definition:</b> BodyConf.hpp:172</div></div>
@@ -260,25 +408,34 @@ $(document).ready(function(){initNavTree('Body_8cpp-example.html',''); initResiz
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_abf0e49b67ddcd89f15a4224e0acf10a3"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#abf0e49b67ddcd89f15a4224e0acf10a3">playrho::d2::GetAngularDamping</a></div><div class="ttdeci">Frequency GetAngularDamping(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the angular damping of the body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1003</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1Body_html_ae216d87f0c3ab4660646133f58f3fb30"><div class="ttname"><a href="classplayrho_1_1d2_1_1Body.html#ae216d87f0c3ab4660646133f58f3fb30">playrho::d2::Body::SetAcceleration</a></div><div class="ttdeci">void SetAcceleration(LinearAcceleration2 linear, AngularAcceleration angular) noexcept</div><div class="ttdoc">Sets the linear and rotational accelerations on this body.</div><div class="ttdef"><b>Definition:</b> Body.cpp:177</div></div>
 <div class="ttc" id="astructplayrho_1_1d2_1_1Velocity_html_afc8399d7200b4299a0e21cc184db0f0e"><div class="ttname"><a href="structplayrho_1_1d2_1_1Velocity.html#afc8399d7200b4299a0e21cc184db0f0e">playrho::d2::Velocity::linear</a></div><div class="ttdeci">LinearVelocity2 linear</div><div class="ttdoc">Linear velocity.</div><div class="ttdef"><b>Definition:</b> Velocity.hpp:39</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1Sweep_html"><div class="ttname"><a href="classplayrho_1_1d2_1_1Sweep.html">playrho::d2::Sweep</a></div><div class="ttdoc">Description of a &quot;sweep&quot; of motion in 2-D space.</div><div class="ttdef"><b>Definition:</b> Sweep.hpp:42</div></div>
 <div class="ttc" id="anamespaceplayrho_html_a1fc125070a08100d083a1360f7167f87"><div class="ttname"><a href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">playrho::Real</a></div><div class="ttdeci">float Real</div><div class="ttdoc">Real-number type.</div><div class="ttdef"><b>Definition:</b> Real.hpp:69</div></div>
 <div class="ttc" id="astructplayrho_1_1d2_1_1BodyConf_html"><div class="ttname"><a href="structplayrho_1_1d2_1_1BodyConf.html">playrho::d2::BodyConf</a></div><div class="ttdoc">Configuration for a body.</div><div class="ttdef"><b>Definition:</b> BodyConf.hpp:50</div></div>
 <div class="ttc" id="astructplayrho_1_1d2_1_1Velocity_html"><div class="ttname"><a href="structplayrho_1_1d2_1_1Velocity.html">playrho::d2::Velocity</a></div><div class="ttdoc">2-D velocity related data structure.</div><div class="ttdef"><b>Definition:</b> Velocity.hpp:38</div></div>
 <div class="ttc" id="astructplayrho_1_1d2_1_1BodyConf_html_a396cdc82c429d6e63c4d22bf8051bc64"><div class="ttname"><a href="structplayrho_1_1d2_1_1BodyConf.html#a396cdc82c429d6e63c4d22bf8051bc64">playrho::d2::BodyConf::UseAngularDamping</a></div><div class="ttdeci">constexpr BodyConf &amp; UseAngularDamping(NonNegative&lt; Frequency &gt; v) noexcept</div><div class="ttdoc">Use the given angular damping.</div><div class="ttdef"><b>Definition:</b> BodyConf.hpp:228</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1Body_html_af4715bc702e6250f6c2b8a748df751b1a1c6a6996666ee68cb63f0a5574632b25"><div class="ttname"><a href="classplayrho_1_1d2_1_1Body.html#af4715bc702e6250f6c2b8a748df751b1a1c6a6996666ee68cb63f0a5574632b25">playrho::d2::Body::e_velocityFlag</a></div><div class="ttdeci">@ e_velocityFlag</div><div class="ttdoc">Velocity flag.</div><div class="ttdef"><b>Definition:</b> Body.hpp:100</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1Body_html_a08663554d88fc00b0ba6e9f974d63e52"><div class="ttname"><a href="classplayrho_1_1d2_1_1Body.html#a08663554d88fc00b0ba6e9f974d63e52">playrho::d2::Body::SetTransformation</a></div><div class="ttdeci">void SetTransformation(const Transformation &amp;value) noexcept</div><div class="ttdoc">Sets the body's transformation.</div><div class="ttdef"><b>Definition:</b> Body.hpp:519</div></div>
+<div class="ttc" id="agroup__PhysicalUnits_html_ga941b3913fd0dd86a33e695cd9b73318f"><div class="ttname"><a href="group__PhysicalUnits.html#ga941b3913fd0dd86a33e695cd9b73318f">playrho::SquareRadian</a></div><div class="ttdeci">constexpr auto SquareRadian</div><div class="ttdoc">Square radian unit type.</div><div class="ttdef"><b>Definition:</b> Units.hpp:379</div></div>
+<div class="ttc" id="astructplayrho_1_1d2_1_1Position_html"><div class="ttname"><a href="structplayrho_1_1d2_1_1Position.html">playrho::d2::Position</a></div><div class="ttdoc">2-D positional data structure.</div><div class="ttdef"><b>Definition:</b> Position.hpp:37</div></div>
 <div class="ttc" id="astructplayrho_1_1Vector_html"><div class="ttname"><a href="structplayrho_1_1Vector.html">playrho::Vector</a></div><div class="ttdoc">Vector.</div><div class="ttdef"><b>Definition:</b> Vector.hpp:49</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1Body_html_aff436223b960a71937476dea03117d9c"><div class="ttname"><a href="classplayrho_1_1d2_1_1Body.html#aff436223b960a71937476dea03117d9c">playrho::d2::Body::SetSweep</a></div><div class="ttdeci">void SetSweep(const Sweep &amp;value) noexcept</div><div class="ttdoc">Sets the sweep value of the given body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:389</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a986b11edba421b23879fa363c557f1e5"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a986b11edba421b23879fa363c557f1e5">playrho::d2::GetAngularAcceleration</a></div><div class="ttdeci">AngularAcceleration GetAngularAcceleration(const Body &amp;body) noexcept</div><div class="ttdoc">Gets this body's angular acceleration.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1048</div></div>
+<div class="ttc" id="astructplayrho_1_1d2_1_1Transformation_html"><div class="ttname"><a href="structplayrho_1_1d2_1_1Transformation.html">playrho::d2::Transformation</a></div><div class="ttdoc">Describes a geometric transformation.</div><div class="ttdef"><b>Definition:</b> Transformation.hpp:44</div></div>
 <div class="ttc" id="astructplayrho_1_1d2_1_1BodyConf_html_ad8882d0f19417ff4ac9f039ce31e75ce"><div class="ttname"><a href="structplayrho_1_1d2_1_1BodyConf.html#ad8882d0f19417ff4ac9f039ce31e75ce">playrho::d2::BodyConf::Use</a></div><div class="ttdeci">constexpr BodyConf &amp; Use(Position v) noexcept</div><div class="ttdoc">Use the given position for the linear and angular positions.</div><div class="ttdef"><b>Definition:</b> BodyConf.hpp:184</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a7470c7f509ec02d51adcc2e96a37d2fe"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a7470c7f509ec02d51adcc2e96a37d2fe">playrho::d2::GetTransformation</a></div><div class="ttdeci">constexpr Transformation GetTransformation(const Length2 ctr, const UnitVec rot, const Length2 localCtr) noexcept</div><div class="ttdoc">Gets the transformation for the given values.</div><div class="ttdef"><b>Definition:</b> Math.hpp:875</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a628126b03bd99f5df5f08a047692b9da"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a628126b03bd99f5df5f08a047692b9da">playrho::d2::GetInvMass</a></div><div class="ttdeci">InvMass GetInvMass(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the inverse total mass of the body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:967</div></div>
 <div class="ttc" id="astructplayrho_1_1d2_1_1BodyConf_html_a62abc258fbb6ae02e04a34bbee355684"><div class="ttname"><a href="structplayrho_1_1d2_1_1BodyConf.html#a62abc258fbb6ae02e04a34bbee355684">playrho::d2::BodyConf::UseLinearDamping</a></div><div class="ttdeci">constexpr BodyConf &amp; UseLinearDamping(NonNegative&lt; Frequency &gt; v) noexcept</div><div class="ttdoc">Use the given linear damping.</div><div class="ttdef"><b>Definition:</b> BodyConf.hpp:222</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1Body_html_af4715bc702e6250f6c2b8a748df751b1a221d6e987279b06446f29148ea305584"><div class="ttname"><a href="classplayrho_1_1d2_1_1Body.html#af4715bc702e6250f6c2b8a748df751b1a221d6e987279b06446f29148ea305584">playrho::d2::Body::e_fixedRotationFlag</a></div><div class="ttdeci">@ e_fixedRotationFlag</div><div class="ttdoc">Fixed rotation flag.</div><div class="ttdef"><b>Definition:</b> Body.hpp:92</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a9901b5b3ddb898a60f216007adace0de"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a9901b5b3ddb898a60f216007adace0de">playrho::d2::SetLinearDamping</a></div><div class="ttdeci">void SetLinearDamping(Body &amp;body, NonNegative&lt; Frequency &gt; value) noexcept</div><div class="ttdoc">Sets the linear damping of the body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:995</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_ab873f18f1e540da43881e7f2dadeb7b1"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ab873f18f1e540da43881e7f2dadeb7b1">playrho::d2::GetVelocity</a></div><div class="ttdeci">Velocity GetVelocity(const Body &amp;body, Time h) noexcept</div><div class="ttdoc">Gets the velocity of the body after the given time accounting for the body's acceleration and capped ...</div><div class="ttdef"><b>Definition:</b> Body.cpp:221</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1Body_html_a00314ef442a112b29a7030087a14ee82"><div class="ttname"><a href="classplayrho_1_1d2_1_1Body.html#a00314ef442a112b29a7030087a14ee82">playrho::d2::Body::JustSetVelocity</a></div><div class="ttdeci">void JustSetVelocity(Velocity value) noexcept</div><div class="ttdoc">Sets the body's velocity.</div><div class="ttdef"><b>Definition:</b> Body.hpp:179</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_aef76fc5d7813af886e28e8033e9d019d"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#aef76fc5d7813af886e28e8033e9d019d">playrho::d2::GetLinearAcceleration</a></div><div class="ttdeci">LinearAcceleration2 GetLinearAcceleration(const Body &amp;body) noexcept</div><div class="ttdoc">Gets this body's linear acceleration.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1040</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1Body_html_af4715bc702e6250f6c2b8a748df751b1a2d0838d2a70832764fca9f12290e316e"><div class="ttname"><a href="classplayrho_1_1d2_1_1Body.html#af4715bc702e6250f6c2b8a748df751b1a2d0838d2a70832764fca9f12290e316e">playrho::d2::Body::e_awakeFlag</a></div><div class="ttdeci">@ e_awakeFlag</div><div class="ttdoc">Awake flag.</div><div class="ttdef"><b>Definition:</b> Body.hpp:81</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a344a9753e8cd6fb046a57e82d2206d60"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a344a9753e8cd6fb046a57e82d2206d60">playrho::d2::SetAngularDamping</a></div><div class="ttdeci">void SetAngularDamping(Body &amp;body, NonNegative&lt; Frequency &gt; value) noexcept</div><div class="ttdoc">Sets the angular damping of the body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1011</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Nov 30 2020 00:10:58 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sat Apr 24 2021 12:19:34 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>
