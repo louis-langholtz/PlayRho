@@ -23,7 +23,6 @@
 #include <PlayRho/Dynamics/BodyType.hpp>
 
 using namespace playrho;
-using namespace playrho::d2;
 
 TEST(BodyType, IsSpeedable)
 {
