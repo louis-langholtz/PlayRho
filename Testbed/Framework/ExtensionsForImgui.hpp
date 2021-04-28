@@ -23,12 +23,13 @@ public:
         Begin(name, p_open, flags);
     }
 
-    WindowContext(const char* name, bool* p_open, const ImVec2& size_on_first_use, float bg_alpha = -1.0f, ImGuiWindowFlags flags = 0)
+    WindowContext(const char* name, bool* p_open, const ImVec2& size_first_use, float bg_alpha = -1.0f, ImGuiWindowFlags flags = 0)
     {
-        SetNextWindowSize(size_on_first_use, ImGuiCond_FirstUseEver);
-        SetNextWindowBgAlpha(bg_alpha);
+        if (size_first_use.x != 0.0f || size_first_use.y != 0.0f)
+            SetNextWindowSize(size_first_use, ImGuiCond_FirstUseEver);
+        if (bg_alpha >= 0.0f)
+            SetNextWindowBgAlpha(bg_alpha);
         Begin(name, p_open, flags);
-        // Begin(name, p_open, size_on_first_use, bg_alpha, flags);
     }
 
     ~WindowContext()
