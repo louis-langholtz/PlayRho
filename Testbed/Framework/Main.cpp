@@ -29,6 +29,7 @@
 #endif
 
 #include "imgui.h"
+#include "ExtensionsForImgui.hpp"
 #include "imgui_impl_glfw_gl3.h"
 #include "DebugDraw.hpp"
 #include "Test.hpp"

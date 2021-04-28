@@ -221,6 +221,7 @@
 		47928F371E66539000EE6E9E /* FrictionJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F361E66539000EE6E9E /* FrictionJoint.cpp */; };
 		47928F391E66586400EE6E9E /* DistanceJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F381E66586400EE6E9E /* DistanceJoint.cpp */; };
 		47928F5D200ABCAE00A5DD5B /* double.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F5C200ABCAE00A5DD5B /* double.cpp */; };
+		4795B6B12638C8E000FB3EC6 /* ExtensionsForImgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4795B6AF2638C8E000FB3EC6 /* ExtensionsForImgui.cpp */; };
 		479B63C31ED9CAC300D49BC7 /* CheckedValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 479B63C21ED9CAC300D49BC7 /* CheckedValue.cpp */; };
 		47AB01BA1D6FA40C0084D721 /* Dump.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AB01B91D6FA40C0084D721 /* Dump.cpp */; };
 		47ABB0BE2546309400E5F37B /* WorldImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47ABB0BD2546309400E5F37B /* WorldImpl.cpp */; };
@@ -626,6 +627,8 @@
 		47928F381E66586400EE6E9E /* DistanceJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceJoint.cpp; sourceTree = "<group>"; };
 		47928F5A2009E83500A5DD5B /* UnitTests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UnitTests.hpp; sourceTree = "<group>"; };
 		47928F5C200ABCAE00A5DD5B /* double.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = double.cpp; sourceTree = "<group>"; };
+		4795B6AF2638C8E000FB3EC6 /* ExtensionsForImgui.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ExtensionsForImgui.cpp; sourceTree = "<group>"; };
+		4795B6B02638C8E000FB3EC6 /* ExtensionsForImgui.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ExtensionsForImgui.hpp; sourceTree = "<group>"; };
 		479B63C21ED9CAC300D49BC7 /* CheckedValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CheckedValue.cpp; sourceTree = "<group>"; };
 		47AB01B91D6FA40C0084D721 /* Dump.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dump.cpp; sourceTree = "<group>"; };
 		47ABB0BD2546309400E5F37B /* WorldImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldImpl.cpp; sourceTree = "<group>"; };
@@ -1236,6 +1239,8 @@
 				474AFBFD1EBA35A2002AA6C8 /* TestEntry.hpp */,
 				474AFBFF1EBA40FA002AA6C8 /* TestEntry.cpp */,
 				472D35331F968FB100574B73 /* UiState.hpp */,
+				4795B6AF2638C8E000FB3EC6 /* ExtensionsForImgui.cpp */,
+				4795B6B02638C8E000FB3EC6 /* ExtensionsForImgui.hpp */,
 			);
 			path = Framework;
 			sourceTree = "<group>";
@@ -1733,6 +1738,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				80BB8A6B141C3E8600F1753A /* Main.cpp in Sources */,
+				4795B6B12638C8E000FB3EC6 /* ExtensionsForImgui.cpp in Sources */,
 				80BB8A6D141C3E8600F1753A /* Test.cpp in Sources */,
 				473971B01DA6C8DE00F7137F /* Drawer.cpp in Sources */,
 				805900B1184EEE0F00C8ECA3 /* DebugDraw.cpp in Sources */,

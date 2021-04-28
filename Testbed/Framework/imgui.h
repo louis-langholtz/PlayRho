@@ -15,8 +15,6 @@
 #include <stdarg.h>         // va_list
 #include <stddef.h>         // ptrdiff_t, NULL
 #include <string.h>         // memset, memmove, memcpy, strlen, strchr, strcpy, strcmp
-#include <string>
-#include <initializer_list>
 
 #define IMGUI_VERSION       "1.52 WIP"
 
@@ -136,25 +134,6 @@ namespace ImGui
     IMGUI_API bool          Begin(const char* name, bool* p_open = NULL, ImGuiWindowFlags flags = 0);                                                   // push window to the stack and start appending to it. see .cpp for details. return false when window is collapsed, so you can early out in your code. 'bool* p_open' creates a widget on the upper-right to close the window (which sets your bool to false).
     IMGUI_API bool          Begin(const char* name, bool* p_open, const ImVec2& size_on_first_use, float bg_alpha = -1.0f, ImGuiWindowFlags flags = 0); // OBSOLETE. this is the older/longer API. the extra parameters aren't very relevant. call SetNextWindowSize() instead if you want to set a window size. For regular windows, 'size_on_first_use' only applies to the first time EVER the window is created and probably not what you want! might obsolete this API eventually.
     IMGUI_API void          End();                                                                                                                      // finish appending to current window, pop it off the window stack.
-    
-    struct WindowContext
-    {
-    public:
-        WindowContext(const char* name, bool* p_open = NULL, ImGuiWindowFlags flags = 0)
-        {
-            Begin(name, p_open, flags);
-        }
-
-        WindowContext(const char* name, bool* p_open, const ImVec2& size_on_first_use, float bg_alpha = -1.0f, ImGuiWindowFlags flags = 0)
-        {
-            Begin(name, p_open, size_on_first_use, bg_alpha, flags);
-        }
-
-        ~WindowContext()
-        {
-            End();
-        }
-    };
 
     IMGUI_API bool          BeginChild(const char* str_id, const ImVec2& size = ImVec2(0,0), bool border = false, ImGuiWindowFlags extra_flags = 0);    // begin a scrolling region. size==0.0f: use remaining window size, size<0.0f: use remaining window size minus abs(size). size>0.0f: fixed size. each axis can use a different mode, e.g. ImVec2(0,400).
     IMGUI_API bool          BeginChild(ImGuiID id, const ImVec2& size = ImVec2(0,0), bool border = false, ImGuiWindowFlags extra_flags = 0);            // "
@@ -243,18 +222,6 @@ namespace ImGui
     IMGUI_API void          PushButtonRepeat(bool repeat);                                      // in 'repeat' mode, Button*() functions return repeated true in a typematic manner (using io.KeyRepeatDelay/io.KeyRepeatRate setting). Note that you can call IsItemActive() after any Button() to tell if the button is held in the current frame.
     IMGUI_API void          PopButtonRepeat();
 
-    struct TextWrapPosContext
-    {
-        TextWrapPosContext(float wrap_pos_x = 0.0f)
-        {
-            PushTextWrapPos(wrap_pos_x);
-        }
-        ~TextWrapPosContext()
-        {
-            PopTextWrapPos();
-        }
-    };
-    
     // Cursor / Layout
     IMGUI_API void          Separator();                                                        // separator, generally horizontal. inside a menu bar or in horizontal layout mode, this becomes a vertical separator.
     IMGUI_API void          SameLine(float pos_x = 0.0f, float spacing_w = -1.0f);              // call between widgets or groups to layout them horizontally
@@ -266,12 +233,7 @@ namespace ImGui
     
     IMGUI_API void          BeginGroup();                                                       // lock horizontal starting position + capture group bounding box into one "item" (so you can use IsItemHovered() or layout primitives such as SameLine() on whole group, etc.)
     IMGUI_API void          EndGroup();
-    struct GroupContext
-    {
-        GroupContext() { BeginGroup(); }
-        ~GroupContext() { EndGroup(); }
-    };
-    
+
     IMGUI_API ImVec2        GetCursorPos();                                                     // cursor position is relative to window position
     IMGUI_API float         GetCursorPosX();                                                    // "
     IMGUI_API float         GetCursorPosY();                                                    // "
@@ -296,24 +258,6 @@ namespace ImGui
     IMGUI_API float         GetColumnOffset(int column_index = -1);                             // get position of column line (in pixels, from the left side of the contents region). pass -1 to use current column, otherwise 0..GetColumnsCount() inclusive. column 0 is typically 0.0f
     IMGUI_API void          SetColumnOffset(int column_index, float offset_x);                  // set position of column line (in pixels, from the left side of the contents region). pass -1 to use current column
     IMGUI_API int           GetColumnsCount();
-    
-    void SetColumnWidths(float remainingWidth, std::initializer_list<float> widths);
-
-    class ColumnsContext
-    {
-    public:
-        ColumnsContext(int count = 1, const char* id = NULL, bool border = true):
-            m_before_count(GetColumnsCount())
-        {
-            Columns(count, id, border);
-        }
-        ~ColumnsContext()
-        {
-            Columns(m_before_count);
-        }
-    private:
-        int m_before_count;
-    };
 
     // ID scopes
     // If you are creating widgets in a loop you most likely want to push a unique identifier (e.g. object pointer, loop index) so ImGui can differentiate them.
@@ -326,15 +270,6 @@ namespace ImGui
     IMGUI_API ImGuiID       GetID(const char* str_id);                                          // calculate unique ID (hash of whole ID stack + given parameter). e.g. if you want to query into ImGuiStorage yourself
     IMGUI_API ImGuiID       GetID(const char* str_id_begin, const char* str_id_end);
     IMGUI_API ImGuiID       GetID(const void* ptr_id);
-
-    struct IdContext
-    {
-        IdContext(const char* key) { PushID(key); }
-        IdContext(const char* key_begin, const char* key_end) { PushID(key_begin, key_end); }
-        IdContext(const void* key) { PushID(key); }
-        IdContext(int key) { PushID(key); }
-        ~IdContext() { PopID(); }
-    };
 
     // Widgets: Text
     IMGUI_API void          TextUnformatted(const char* text, const char* text_end = NULL);               // doesn't require null terminated string if 'text_end' is specified. no copy done, no limits, recommended for long chunks of text
@@ -370,17 +305,6 @@ namespace ImGui
     IMGUI_API void          PlotHistogram(const char* label, const float* values, int values_count, int values_offset = 0, const char* overlay_text = NULL, float scale_min = FLT_MAX, float scale_max = FLT_MAX, ImVec2 graph_size = ImVec2(0,0), int stride = sizeof(float));
     IMGUI_API void          PlotHistogram(const char* label, float (*values_getter)(void* data, int idx), void* data, int values_count, int values_offset = 0, const char* overlay_text = NULL, float scale_min = FLT_MAX, float scale_max = FLT_MAX, ImVec2 graph_size = ImVec2(0,0));
     IMGUI_API void          ProgressBar(float fraction, const ImVec2& size_arg = ImVec2(-1,0), const char* overlay = NULL);
-    
-    inline void TextUnformatted(const std::string& str)
-    {
-        ImGui::TextUnformatted(str.c_str(), str.c_str() + str.length());
-    }
-    
-    inline void TextWrappedUnformatted(const std::string& str)
-    {
-        ImGui::TextWrapPosContext ctxt;
-        ImGui::TextUnformatted(str.c_str(), str.c_str() + str.length());
-    }
 
     // Widgets: Drags (tip: ctrl+click on a drag box to input with keyboard. manually input values aren't clamped, can go off-bounds)
     // For all the Float2/Float3/Float4/Int2/Int3/Int4 versions of every functions, note that a 'float v[X]' function argument is the same as 'float* v', the array syntax is just a way to document the number of elements that are expected to be accessible. You can pass address of your first element out of a contiguous set, e.g. &myvector.x
@@ -462,34 +386,13 @@ namespace ImGui
     IMGUI_API void          Value(const char* prefix, bool b);
     IMGUI_API void          Value(const char* prefix, int v);
     IMGUI_API void          Value(const char* prefix, unsigned int v);
-    IMGUI_API void          Value(const char* prefix, unsigned long v);
-    IMGUI_API void          Value(const char* prefix, double v, const char* float_format = NULL);
+    IMGUI_API void          Value(const char* prefix, float v, const char* float_format);
 
     // Tooltips
     IMGUI_API void          SetTooltip(const char* fmt, ...) IM_FMTARGS(1);                     // set text tooltip under mouse-cursor, typically use with ImGui::IsItemHovered(). overidde any previous call to SetTooltip().
     IMGUI_API void          SetTooltipV(const char* fmt, va_list args) IM_FMTLIST(1);
     IMGUI_API void          BeginTooltip();                                                     // begin/append a tooltip window. to create full-featured tooltip (with any kind of contents).
     IMGUI_API void          EndTooltip();
-
-    struct TooltipContext
-    {
-        TooltipContext()
-        {
-            BeginTooltip();
-        }
-        
-        ~TooltipContext()
-        {
-            EndTooltip();
-        }
-    };
-    
-    inline void ShowTooltip(const std::string& str, float wrap_pos_x = 0.0f)
-    {
-        TooltipContext ctx;
-        TextWrapPosContext twpc(wrap_pos_x);
-        TextUnformatted(str);
-    }
 
     // Menus
     IMGUI_API bool          BeginMainMenuBar();                                                 // create and append to a full screen menu-bar. only call EndMainMenuBar() if this returns true!
