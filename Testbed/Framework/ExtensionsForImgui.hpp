@@ -18,14 +18,17 @@ namespace ImGui {
 struct WindowContext
 {
 public:
-    WindowContext(const char* name, bool* p_open = NULL, ImGuiWindowFlags flags = 0)
+    WindowContext(const char* name, bool* p_open = nullptr, ImGuiWindowFlags flags = 0)
     {
         Begin(name, p_open, flags);
     }
 
     WindowContext(const char* name, bool* p_open, const ImVec2& size_on_first_use, float bg_alpha = -1.0f, ImGuiWindowFlags flags = 0)
     {
-        Begin(name, p_open, size_on_first_use, bg_alpha, flags);
+        SetNextWindowSize(size_on_first_use, ImGuiCond_FirstUseEver);
+        SetNextWindowBgAlpha(bg_alpha);
+        Begin(name, p_open, flags);
+        // Begin(name, p_open, size_on_first_use, bg_alpha, flags);
     }
 
     ~WindowContext()
@@ -37,7 +40,7 @@ public:
 class ColumnsContext
 {
 public:
-    ColumnsContext(int count = 1, const char* id = NULL, bool border = true):
+    ColumnsContext(int count = 1, const char* id = nullptr, bool border = true):
     m_before_count(GetColumnsCount())
     {
         Columns(count, id, border);
@@ -84,6 +87,18 @@ struct IdContext
     ~IdContext() { PopID(); }
 };
 
+struct ItemWidthContext
+{
+    ItemWidthContext(float item_width)
+    {
+        PushItemWidth(item_width);
+    }
+    ~ItemWidthContext()
+    {
+        PopItemWidth();
+    }
+};
+
 struct GroupContext
 {
     GroupContext() { BeginGroup(); }
@@ -91,7 +106,7 @@ struct GroupContext
 };
 
 IMGUI_API void          Value(const char* prefix, unsigned long v);
-IMGUI_API void          Value(const char* prefix, double v, const char* float_format = NULL);
+IMGUI_API void          Value(const char* prefix, double v, const char* float_format = nullptr);
 
 void SetColumnWidths(float remainingWidth, std::initializer_list<float> widths);
 
