@@ -10163,24 +10163,6 @@ int ImGui::GetColumnsCount()
     return window->DC.ColumnsCount;
 }
 
-void ImGui::SetColumnWidths(float remainingWidth, std::initializer_list<float> widths)
-{
-    const auto numColumns = GetColumnsCount();
-    auto column = decltype(numColumns){0};
-    for (auto width: widths)
-    {
-        SetColumnWidth(column, width);
-        remainingWidth -= width;
-        ++column;
-    }
-    const auto remainingColumns = numColumns - column;
-    const auto widthPerRemainingColumn = remainingWidth / remainingColumns;
-    for (auto i = column; i < numColumns; ++i)
-    {
-        SetColumnWidth(i, widthPerRemainingColumn);
-    }
-}
-
 static float OffsetNormToPixels(ImGuiWindow* window, float offset_norm)
 {
     return offset_norm * (window->DC.ColumnsMaxX - window->DC.ColumnsMinX);
@@ -10479,12 +10461,7 @@ void ImGui::Value(const char* prefix, unsigned int v)
     Text("%s: %u", prefix, v);
 }
 
-void ImGui::Value(const char* prefix, unsigned long v)
-{
-    Text("%s: %lu", prefix, v);
-}
-
-void ImGui::Value(const char* prefix, double v, const char* float_format)
+void ImGui::Value(const char* prefix, float v, const char* float_format)
 {
     if (float_format)
     {
