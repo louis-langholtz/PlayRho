@@ -1215,7 +1215,7 @@ static bool MenuUI()
 
 static void EntityUI(World& world, BodyID b)
 {
-    ImGui::IdContext idCtx(UnderlyingValue(b));
+    ImGui::IdContext idCtx(to_underlying(b));
     {
         const auto location = GetLocation(world, b);
         float vals[2];
@@ -1386,7 +1386,7 @@ static void EntityUI(const Shape& shape)
 
 static void EntityUI(World& world, FixtureID fixture)
 {
-    ImGui::IdContext idCtx(UnderlyingValue(fixture));
+    ImGui::IdContext idCtx(to_underlying(fixture));
 
     ImGui::Spacing();
 
@@ -1634,14 +1634,14 @@ static void EntityUI(RevoluteJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1699,14 +1699,14 @@ static void EntityUI(PrismaticJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1739,14 +1739,14 @@ static void EntityUI(DistanceJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1765,14 +1765,14 @@ static void EntityUI(PulleyJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1817,7 +1817,7 @@ static void EntityUI(TargetJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1838,14 +1838,14 @@ static void EntityUI(GearJointConf& conf, BodyCounter bodyRange)
     ImGui::LabelText("Type 1", "%s", ToName(GetType1(conf)));
     ImGui::LabelText("Type 2", "%s", ToName(GetType2(conf)));
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1891,14 +1891,14 @@ static void EntityUI(WheelJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1925,14 +1925,14 @@ static void EntityUI(WeldJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1957,14 +1957,14 @@ static void EntityUI(FrictionJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1983,14 +1983,14 @@ static void EntityUI(RopeJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -2051,14 +2051,14 @@ static void EntityUI(MotorJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -2143,7 +2143,7 @@ static void EntityUI(World& world, JointID e)
 
 static void EntityUI(World& world, ContactID c)
 {
-    ImGui::IdContext idCtx(static_cast<int>(UnderlyingValue(c)));
+    ImGui::IdContext idCtx(static_cast<int>(to_underlying(c)));
     ImGui::ItemWidthContext itemWidthCtx(50);
     {
         auto v = IsEnabled(world, c);
@@ -2221,7 +2221,7 @@ static void CollectionUI(World& world, const JointsRange& joints)
     ImGui::IdContext idCtx("Joints");
     for (const auto& jointID: joints)
     {
-        ImGui::IdContext ctx(UnderlyingValue(jointID));
+        ImGui::IdContext ctx(to_underlying(jointID));
         const auto flags = 0;
         if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(jointID.get()), flags,
                               "Joint %u (Type=%s)",
@@ -2242,14 +2242,14 @@ static void CollectionUI(const BodyJointsRange& joints)
         const auto bodyID = std::get<BodyID>(e);
         const auto jointID = std::get<JointID>(e);
         if (bodyID != InvalidBodyID) {
-            ImGui::Text("Joint %u (Other-body=%u)", UnderlyingValue(jointID), UnderlyingValue(bodyID));
+            ImGui::Text("Joint %u (Other-body=%u)", to_underlying(jointID), to_underlying(bodyID));
             if (ImGui::IsItemHovered())
             {
                 ImGui::SetTooltip("World ID of joint and world ID of other associated body.");
             }
         }
         else {
-            ImGui::Text("Joint %u", UnderlyingValue(jointID));
+            ImGui::Text("Joint %u", to_underlying(jointID));
             if (ImGui::IsItemHovered())
             {
                 ImGui::SetTooltip("World ID of joint.");
