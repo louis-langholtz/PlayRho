@@ -30,7 +30,9 @@
 #include <sstream>
 #include <chrono>
 #include <utility>
+
 #include "imgui.h"
+#include "ExtensionsForImgui.hpp"
 
 using namespace playrho;
 using namespace playrho::d2;

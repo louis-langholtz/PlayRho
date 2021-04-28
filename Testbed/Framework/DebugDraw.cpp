@@ -18,6 +18,7 @@
 */
 
 #include "DebugDraw.hpp"
+#include "ExtensionsForImgui.hpp"
 
 #if defined(__APPLE_CC__)
 #define GL_SILENCE_DEPRECATION
