@@ -2400,6 +2400,32 @@ static void ShowFrameInfo(double frameTime, double fps)
     ImGui::TextUnformatted(stream.str());
 }
 
+static std::string InitializeOpenglLoader()
+{
+#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
+    return std::string(gl3wInit()? "gl3wInit": "");
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
+    return [](){
+        const auto result = glewInit();
+        return (result != GLEW_OK)? std::string(reinterpret_cast<const char*>(glewGetErrorString(result))): std::string{};
+    }();
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
+    return std::string(gladLoadGL() == 0? "gladLoadGL": "");
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD2)
+    // glad2 recommend using the windowing library loader instead of the (optionally) bundled one.
+    return std::string(gladLoadGL(glfwGetProcAddress) == 0? "gladLoadGL(glfwGetProcAddress)": "");
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLBINDING2)
+    glbinding::Binding::initialize();
+    return std::string{};
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLBINDING3)
+    glbinding::initialize([](const char* name) { return (glbinding::ProcAddress)glfwGetProcAddress(name); });
+    return std::string{};
+#else
+    // If you use IMGUI_IMPL_OPENGL_LOADER_CUSTOM, your loader is likely to requires some form of initialization.
+    return std::string{};
+#endif
+}
+
 int main()
 {
 #if defined(_WIN32)
@@ -2479,31 +2505,9 @@ int main()
     glfwSetScrollCallback(mainWindow, ScrollCallback);
     glfwSetCharCallback(mainWindow, ImGui_ImplGlfw_CharCallback);
 
-    // Initialize OpenGL loader
-#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
-    const auto err = std::string(gl3wInit()? "gl3wInit": "");
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
-    const auto err = [](){
-        const auto result = glewInit();
-        return (result != GLEW_OK)? std::string(reinterpret_cast<const char*>(glewGetErrorString(result))): std::string{};
-    }();
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
-    const auto err = std::string(gladLoadGL() == 0? "gladLoadGL": "");
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD2)
-    // glad2 recommend using the windowing library loader instead of the (optionally) bundled one.
-    const auto err = std::string(gladLoadGL(glfwGetProcAddress) == 0? "gladLoadGL(glfwGetProcAddress)": "");
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLBINDING2)
-    const auto err = std::string{};
-    glbinding::Binding::initialize();
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLBINDING3)
-    const auto err = std::string{};
-    glbinding::initialize([](const char* name) { return (glbinding::ProcAddress)glfwGetProcAddress(name); });
-#else
-    // If you use IMGUI_IMPL_OPENGL_LOADER_CUSTOM, your loader is likely to requires some form of initialization.
-    const auto err = std::string{};
-#endif
+    const auto err = InitializeOpenglLoader();
     if (!err.empty()) {
-        std::fprintf(stderr, "OpenGL loader \"%s\" failed to initialize!\n", err.c_str());
+        std::fprintf(stderr, "OpenGL loader failed to initialize (%s)!\n", err.c_str());
         return EXIT_FAILURE;
     }
 
