@@ -37,7 +37,6 @@ public:
     {
         Generate();
         m_auto = false;
-        
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Toggle Auto Generation", [&](KeyActionMods) {
             m_auto = !m_auto;
         });
@@ -70,20 +69,16 @@ public:
     void PostStep(const Settings&, Drawer& drawer) override
     {
         const auto shape = PolygonShapeConf{}.Set(m_points);
-
         drawer.DrawPolygon(begin(shape.GetVertices()), shape.GetVertexCount(), Color(0.9f, 0.9f, 0.9f));
-
         for (auto i = std::size_t{0}; i < size(m_points); ++i)
         {
             drawer.DrawPoint(m_points[i], 3.0f, Color(0.3f, 0.9f, 0.3f));
             drawer.DrawString(m_points[i] + Vec2(0.05f, 0.05f) * 1_m, Drawer::Left, "%d", i);
         }
-
         if (!Validate(shape.GetVertices()))
         {
             SetStatus("Note: Invalid convex hull");
         }
-
         if (m_auto)
         {
             Generate();
