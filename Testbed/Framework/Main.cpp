@@ -2530,8 +2530,12 @@ int main()
         DebugDraw drawer(g_camera);
         while (!glfwWindowShouldClose(mainWindow))
         {
+            glfwPollEvents();
             glViewport(0, 0, g_camera.m_width, g_camera.m_height);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glDisable(GL_DEPTH_TEST);
 
             // Start the Dear ImGui frame
             ImGui_ImplOpenGL3_NewFrame();
@@ -2551,17 +2555,12 @@ int main()
             fps = 0.99 * fps + (1.0 - 0.99) / timeElapsed;
             time1 = time2;
             ShowFrameInfo(frameTime, fps);
-            
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glDisable(GL_DEPTH_TEST);
 
             ImGui::Render();
 
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
             glfwMakeContextCurrent(mainWindow);
             glfwSwapBuffers(mainWindow);
-            glfwPollEvents();
         }
     }
 
