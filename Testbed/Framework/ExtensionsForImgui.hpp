@@ -29,6 +29,8 @@ public:
             SetNextWindowSize(size_first_use, ImGuiCond_FirstUseEver);
         if (bg_alpha >= 0.0f)
             SetNextWindowBgAlpha(bg_alpha);
+        if (bg_alpha == 0)
+            flags |= ImGuiWindowFlags_NoBackground;
         Begin(name, p_open, flags);
     }
 
