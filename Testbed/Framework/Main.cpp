@@ -22,8 +22,8 @@
 #include <PlayRho/Common/Version.hpp>
 
 #include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
 #include "ExtensionsForImgui.hpp"
 
 // From imgui example code:

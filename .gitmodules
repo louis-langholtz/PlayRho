@@ -4,3 +4,6 @@
 [submodule "Benchmark/benchmark"]
 	path = Benchmark/benchmark
 	url = https://github.com/google/benchmark
+[submodule "Testbed/Framework/imgui"]
+	path = Testbed/Framework/imgui
+	url = https://github.com/ocornut/imgui.git
