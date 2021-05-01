@@ -23,18 +23,4 @@
 
 #include "gtest/gtest.h"
 
-#include <PlayRho/Common/Templates.hpp>
-
-namespace playrho {
-namespace d2 {
-
-struct DiskShapeConf;
-class EdgeShapeConf;
-class PolygonShapeConf;
-class ChainShapeConf;
-struct MultiShapeConf;
-
-} // namespace d2
-} // namespace playrho
-
 #endif /* UnitTests_hpp */
