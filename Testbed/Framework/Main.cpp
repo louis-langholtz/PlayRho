@@ -21,15 +21,49 @@
 
 #include <PlayRho/Common/Version.hpp>
 
+#include "imgui.h"
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
+#include "ExtensionsForImgui.hpp"
+
+// From imgui example code:
+//  "About Desktop OpenGL function loaders:
+//   Modern desktop OpenGL doesn't have a standard portable header file to load OpenGL function
+//   pointers. Helper libraries are often used for this purpose! Here we are supporting a few
+//   common ones (gl3w, glew, glad). You may use another loader/header of your choice (glext,
+//   glLoadGen, etc.), or chose to manually implement your own."
+#if defined(IMGUI_IMPL_OPENGL_ES2)
+#include <GLES2/gl2.h>
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
+#include <GL/gl3w.h>            // Initialize with gl3wInit()
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
+#include <GL/glew.h>            // Initialize with glewInit()
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
+#include <glad/glad.h>          // Initialize with gladLoadGL()
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD2)
+#include <glad/gl.h>            // Initialize with gladLoadGL(...) or gladLoaderLoadGL()
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLBINDING2)
+#define GLFW_INCLUDE_NONE       // GLFW including OpenGL headers causes ambiguity or multiple definition errors.
+#include <glbinding/Binding.h>  // Initialize with glbinding::Binding::initialize()
+#include <glbinding/gl/gl.h>
+using namespace gl;
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLBINDING3)
+#define GLFW_INCLUDE_NONE       // GLFW including OpenGL headers causes ambiguity or multiple definition errors.
+#include <glbinding/glbinding.h>// Initialize with glbinding::initialize()
+#include <glbinding/gl/gl.h>
+using namespace gl;
+#else
+#include IMGUI_IMPL_OPENGL_LOADER_CUSTOM
+#endif
+
 #if defined(__APPLE__)
-#define GL_SILENCE_DEPRECATION
-#include <OpenGL/gl3.h>
+//#define GL_SILENCE_DEPRECATION
+//#include <OpenGL/gl3.h>
+#include <GL/gl3w.h>
 #else
 #include <GL/glew.h>
 #endif
 
-#include "imgui.h"
-#include "imgui_impl_glfw_gl3.h"
 #include "DebugDraw.hpp"
 #include "Test.hpp"
 #include "TestEntry.hpp"
@@ -243,30 +277,40 @@ static auto GetCwd()
 static void CreateUI(GLFWwindow* window)
 {
     // Init UI
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsClassic();
+
+    // Setup Platform/Renderer backends
+    if (!ImGui_ImplGlfw_InitForOpenGL(window, false))
+    {
+        std::fprintf(stderr, "Could not init GUI renderer.\n");
+        assert(false);
+        return;
+    }
+    ImGui_ImplOpenGL3_Init();
+
 #ifdef DONT_EMBED_FONT_DATA
     const char* fontPaths[] = {
         // Path if Testbed app running from Testbed folder
         "Data/DroidSans.ttf",
-        
+
         // This is the original path...
         "../Data/DroidSans.ttf",
 
         // Path if Testbed running from MSVS or Xcode Build folder.
         "../../Testbed/Data/DroidSans.ttf",
-        
+
         // Possibly a relative path for windows...
         "../../../../Data/DroidSans.ttf",
-        
+
         // Try the current working directory...
         "./DroidSans.ttf",
     };
-
     const auto cwd = GetCwd();
     if (empty(cwd))
     {
         std::perror("GetCwd");
     }
-
     auto fontLoaded = false;
     for (auto&& fontPath: fontPaths)
     {
@@ -303,14 +347,6 @@ static void CreateUI(GLFWwindow* window)
         std::fprintf(stderr, "Unable to use embedded font. GUI text support disabled.\n");
     }
 #endif
-
-    if (!ImGui_ImplGlfwGL3_Init(window, false))
-    {
-        std::fprintf(stderr, "Could not init GUI renderer.\n");
-        assert(false);
-        return;
-    }
-
     ImGuiStyle& style = ImGui::GetStyle();
     style.FrameRounding = style.GrabRounding = style.ScrollbarRounding = 2.0f;
     style.FramePadding = ImVec2(4, 2);
@@ -370,7 +406,7 @@ static void ResizeWindow(GLFWwindow*, int width, int height)
 
 static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    ImGui_ImplGlfwGL3_KeyCallback(window, key, scancode, action, mods);
+    ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
     const auto keys_for_ui = ImGui::GetIO().WantCaptureKeyboard;
     if (keys_for_ui)
         return;
@@ -495,7 +531,7 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
 
 static void MouseButton(GLFWwindow* window, const int button, const int action, const int mods)
 {
-    ImGui_ImplGlfwGL3_MouseButtonCallback(window, button, action, mods);
+    ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
     const auto mouseForUI = ImGui::GetIO().WantCaptureMouse;
     //const auto forMenu = (mouseScreen.x >= menuX);
 
@@ -573,7 +609,7 @@ static void MouseMotion(GLFWwindow*, double xd, double yd)
 
 static void ScrollCallback(GLFWwindow* window, double dx, double dy)
 {
-    ImGui_ImplGlfwGL3_ScrollCallback(window, dx, dy);
+    ImGui_ImplGlfw_ScrollCallback(window, dx, dy);
     const auto mouseForUI = ImGui::GetIO().WantCaptureMouse;
     if (!mouseForUI)
     {
@@ -1179,13 +1215,13 @@ static bool MenuUI()
 
 static void EntityUI(World& world, BodyID b)
 {
-    ImGui::IdContext idCtx(UnderlyingValue(b));
+    ImGui::IdContext idCtx(to_underlying(b));
     {
         const auto location = GetLocation(world, b);
         float vals[2];
         vals[0] = static_cast<float>(Real{GetX(location) / Meter});
         vals[1] = static_cast<float>(Real{GetY(location) / Meter});
-        if (ImGui::InputFloat2("Lin. Pos.", vals, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+        if (ImGui::InputFloat2("Lin. Pos.", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue))
         {
             SetLocation(world, b, Length2{vals[0] * 1_m, vals[1] * 1_m});
         }
@@ -1195,7 +1231,7 @@ static void EntityUI(World& world, BodyID b)
         }
         const auto angle = GetAngle(world, b);
         auto val = static_cast<float>(Real{angle / Degree});
-        if (ImGui::InputFloat("Ang. Pos.", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+        if (ImGui::InputFloat("Ang. Pos.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue))
         {
             SetAngle(world, b, val * Degree);
         }
@@ -1209,7 +1245,7 @@ static void EntityUI(World& world, BodyID b)
         float vals[2];
         vals[0] = static_cast<float>(Real{GetX(velocity.linear) / MeterPerSecond});
         vals[1] = static_cast<float>(Real{GetY(velocity.linear) / MeterPerSecond});
-        if (ImGui::InputFloat2("Lin. Vel.", vals, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+        if (ImGui::InputFloat2("Lin. Vel.", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue))
         {
             SetVelocity(world, b, LinearVelocity2{vals[0] * 1_mps, vals[1] * 1_mps});
         }
@@ -1218,7 +1254,7 @@ static void EntityUI(World& world, BodyID b)
             ImGui::ShowTooltip("Linear velocity in meters/second.", tooltipWrapWidth);
         }
         auto val = static_cast<float>(Real{velocity.angular / DegreePerSecond});
-        if (ImGui::InputFloat("Ang. Vel.", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+        if (ImGui::InputFloat("Ang. Vel.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue))
         {
             SetVelocity(world, b, val * DegreePerSecond);
         }
@@ -1232,7 +1268,7 @@ static void EntityUI(World& world, BodyID b)
         float vals[2];
         vals[0] = static_cast<float>(Real{GetX(acceleration.linear) / MeterPerSquareSecond});
         vals[1] = static_cast<float>(Real{GetY(acceleration.linear) / MeterPerSquareSecond});
-        if (ImGui::InputFloat2("Lin. Acc.", vals, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+        if (ImGui::InputFloat2("Lin. Acc.", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue))
         {
             SetAcceleration(world, b, LinearAcceleration2{vals[0] * 1_mps2, vals[1] * 1_mps2});
         }
@@ -1241,7 +1277,7 @@ static void EntityUI(World& world, BodyID b)
             ImGui::ShowTooltip("Linear acceleration in meters/second².", tooltipWrapWidth);
         }
         auto val = static_cast<float>(Real{acceleration.angular / DegreePerSquareSecond});
-        if (ImGui::InputFloat("Ang. Acc.", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+        if (ImGui::InputFloat("Ang. Acc.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue))
         {
             SetAcceleration(world, b, val * DegreePerSquareSecond);
         }
@@ -1350,7 +1386,7 @@ static void EntityUI(const Shape& shape)
 
 static void EntityUI(World& world, FixtureID fixture)
 {
-    ImGui::IdContext idCtx(UnderlyingValue(fixture));
+    ImGui::IdContext idCtx(to_underlying(fixture));
 
     ImGui::Spacing();
 
@@ -1564,14 +1600,14 @@ static void EntityUI(RevoluteJointConf& conf, BodyCounter bodyRange)
     }
     {
         auto v = static_cast<float>(Real{GetAngularLowerLimit(conf) / Degree});
-        if (ImGui::InputFloat("Lower Limit (°)", &v, 0, 0, 2))
+        if (ImGui::InputFloat("Lower Limit (°)", &v, 0, 0, "%.2f"))
         {
             SetAngularLimits(conf, v * Degree, GetAngularUpperLimit(conf));
         }
     }
     {
         auto v = static_cast<float>(Real{GetAngularUpperLimit(conf) / Degree});
-        if (ImGui::InputFloat("Upper Limit (°)", &v, 0, 0, 2))
+        if (ImGui::InputFloat("Upper Limit (°)", &v, 0, 0, "%.2f"))
         {
             SetAngularLimits(conf, GetAngularLowerLimit(conf), v * Degree);
         }
@@ -1585,7 +1621,7 @@ static void EntityUI(RevoluteJointConf& conf, BodyCounter bodyRange)
     }
     {
         auto v = static_cast<float>(Real{GetMotorSpeed(conf) / DegreePerSecond});
-        if (ImGui::InputFloat("Motor Speed (°/sec)", &v, 0, 0, 2))
+        if (ImGui::InputFloat("Motor Speed (°/sec)", &v, 0, 0, "%.2f"))
         {
             SetMotorSpeed(conf, v * DegreePerSecond);
         }
@@ -1598,14 +1634,14 @@ static void EntityUI(RevoluteJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1629,14 +1665,14 @@ static void EntityUI(PrismaticJointConf& conf, BodyCounter bodyRange)
     }
     {
         auto v = static_cast<float>(Real{GetLinearLowerLimit(conf) / Meter});
-        if (ImGui::InputFloat("Lower Limit (m)", &v, 0, 0, 2))
+        if (ImGui::InputFloat("Lower Limit (m)", &v, 0, 0, "%.2f"))
         {
             SetLinearLimits(conf, v * Meter, GetLinearUpperLimit(conf));
         }
     }
     {
         auto v = static_cast<float>(Real{GetLinearUpperLimit(conf) / Meter});
-        if (ImGui::InputFloat("Upper Limit (m)", &v, 0, 0, 2))
+        if (ImGui::InputFloat("Upper Limit (m)", &v, 0, 0, "%.2f"))
         {
             SetLinearLimits(conf, GetLinearLowerLimit(conf), v * Meter);
         }
@@ -1663,14 +1699,14 @@ static void EntityUI(PrismaticJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1703,14 +1739,14 @@ static void EntityUI(DistanceJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1729,14 +1765,14 @@ static void EntityUI(PulleyJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1781,7 +1817,7 @@ static void EntityUI(TargetJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1802,14 +1838,14 @@ static void EntityUI(GearJointConf& conf, BodyCounter bodyRange)
     ImGui::LabelText("Type 1", "%s", ToName(GetType1(conf)));
     ImGui::LabelText("Type 2", "%s", ToName(GetType2(conf)));
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1855,14 +1891,14 @@ static void EntityUI(WheelJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1889,14 +1925,14 @@ static void EntityUI(WeldJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1921,14 +1957,14 @@ static void EntityUI(FrictionJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1947,14 +1983,14 @@ static void EntityUI(RopeJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -1988,7 +2024,7 @@ static void EntityUI(MotorJointConf& conf, BodyCounter bodyRange)
     }
     {
         auto v = static_cast<float>(Real{GetAngularOffset(conf) / Degree});
-        if (ImGui::InputFloat("Ang. Offset (°)", &v, 0, 0, 2))
+        if (ImGui::InputFloat("Ang. Offset (°)", &v, 0, 0, "%.2f"))
         {
             SetAngularOffset(conf, v * Degree);
         }
@@ -2015,14 +2051,14 @@ static void EntityUI(MotorJointConf& conf, BodyCounter bodyRange)
         }
     }
     {
-        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
         if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
             conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
         ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
         if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
             conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
@@ -2107,7 +2143,7 @@ static void EntityUI(World& world, JointID e)
 
 static void EntityUI(World& world, ContactID c)
 {
-    ImGui::IdContext idCtx(static_cast<int>(UnderlyingValue(c)));
+    ImGui::IdContext idCtx(static_cast<int>(to_underlying(c)));
     ImGui::ItemWidthContext itemWidthCtx(50);
     {
         auto v = IsEnabled(world, c);
@@ -2125,21 +2161,21 @@ static void EntityUI(World& world, ContactID c)
     }
     {
         auto val = static_cast<float>(GetRestitution(world, c));
-        if (ImGui::InputFloat("Restitution", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+        if (ImGui::InputFloat("Restitution", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue))
         {
             SetRestitution(world, c, val);
         }
     }
     {
         auto val = static_cast<float>(GetFriction(world, c));
-        if (ImGui::InputFloat("Friction", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+        if (ImGui::InputFloat("Friction", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue))
         {
             SetFriction(world, c, val);
         }
     }
     {
         auto val = static_cast<float>(Real{GetTangentSpeed(world, c) / MeterPerSecond});
-        if (ImGui::InputFloat("Belt Speed", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+        if (ImGui::InputFloat("Belt Speed", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue))
         {
             SetTangentSpeed(world, c, val * MeterPerSecond);
         }
@@ -2185,7 +2221,7 @@ static void CollectionUI(World& world, const JointsRange& joints)
     ImGui::IdContext idCtx("Joints");
     for (const auto& jointID: joints)
     {
-        ImGui::IdContext ctx(UnderlyingValue(jointID));
+        ImGui::IdContext ctx(to_underlying(jointID));
         const auto flags = 0;
         if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(jointID.get()), flags,
                               "Joint %u (Type=%s)",
@@ -2206,14 +2242,14 @@ static void CollectionUI(const BodyJointsRange& joints)
         const auto bodyID = std::get<BodyID>(e);
         const auto jointID = std::get<JointID>(e);
         if (bodyID != InvalidBodyID) {
-            ImGui::Text("Joint %u (Other-body=%u)", UnderlyingValue(jointID), UnderlyingValue(bodyID));
+            ImGui::Text("Joint %u (Other-body=%u)", to_underlying(jointID), to_underlying(bodyID));
             if (ImGui::IsItemHovered())
             {
                 ImGui::SetTooltip("World ID of joint and world ID of other associated body.");
             }
         }
         else {
-            ImGui::Text("Joint %u", UnderlyingValue(jointID));
+            ImGui::Text("Joint %u", to_underlying(jointID));
             if (ImGui::IsItemHovered())
             {
                 ImGui::SetTooltip("World ID of joint.");
@@ -2364,6 +2400,32 @@ static void ShowFrameInfo(double frameTime, double fps)
     ImGui::TextUnformatted(stream.str());
 }
 
+static std::string InitializeOpenglLoader()
+{
+#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
+    return std::string(gl3wInit()? "gl3wInit": "");
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
+    return [](){
+        const auto result = glewInit();
+        return (result != GLEW_OK)? std::string(reinterpret_cast<const char*>(glewGetErrorString(result))): std::string{};
+    }();
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
+    return std::string(gladLoadGL() == 0? "gladLoadGL": "");
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD2)
+    // glad2 recommend using the windowing library loader instead of the (optionally) bundled one.
+    return std::string(gladLoadGL(glfwGetProcAddress) == 0? "gladLoadGL(glfwGetProcAddress)": "");
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLBINDING2)
+    glbinding::Binding::initialize();
+    return std::string{};
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLBINDING3)
+    glbinding::initialize([](const char* name) { return (glbinding::ProcAddress)glfwGetProcAddress(name); });
+    return std::string{};
+#else
+    // If you use IMGUI_IMPL_OPENGL_LOADER_CUSTOM, your loader is likely to requires some form of initialization.
+    return std::string{};
+#endif
+}
+
 int main()
 {
 #if defined(_WIN32)
@@ -2390,7 +2452,7 @@ int main()
     if (glfwInit() == 0)
     {
         std::fprintf(stderr, "Failed to initialize GLFW\n");
-        return -1;
+        return EXIT_FAILURE;
     }
 
     const auto buildVersion = GetVersion();
@@ -2400,31 +2462,40 @@ int main()
     std::sprintf(title, "PlayRho Testbed Version %d.%d.%d",
                  buildVersion.major, buildVersion.minor, buildVersion.revision);
 
+    // Decide GL+GLSL versions
+#if defined(IMGUI_IMPL_OPENGL_ES2)
+    // GL ES 2.0
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+#elif defined(__APPLE__)
+    // GL 3.2
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
+#else
+    // GL 3.0
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
+    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
+#endif
+
     const auto mainWindow = glfwCreateWindow(g_camera.m_width, g_camera.m_height, title,
                                              nullptr, nullptr);
-    if (!mainWindow)
-    {
+    if (!mainWindow) {
         std::fprintf(stderr, "Failed to open GLFW main window.\n");
         glfwTerminate();
-        return -1;
+        return EXIT_FAILURE;
     }
 
     glfwMakeContextCurrent(mainWindow);
-    std::printf("PlayRho %d.%d.%d (%s), OpenGL %s, GLSL %s\n",
-                buildVersion.major, buildVersion.minor, buildVersion.revision, buildDetails.c_str(),
-                glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
-
     glfwSwapInterval(1); // Control the frame rate. One draw per monitor refresh.
 
     const auto monitor = glfwGetPrimaryMonitor();
     const auto vidmode = monitor? glfwGetVideoMode(monitor): static_cast<const GLFWvidmode*>(nullptr);
     refreshRate = vidmode? vidmode->refreshRate: decltype(vidmode->refreshRate){0};
-    std::printf("Primary monitor refresh rate: %d Hz\n", refreshRate);
 
     glfwSetScrollCallback(mainWindow, ScrollCallback);
     glfwSetWindowSizeCallback(mainWindow, ResizeWindow);
@@ -2432,18 +2503,21 @@ int main()
     glfwSetMouseButtonCallback(mainWindow, MouseButton);
     glfwSetCursorPosCallback(mainWindow, MouseMotion);
     glfwSetScrollCallback(mainWindow, ScrollCallback);
-    glfwSetCharCallback(mainWindow, ImGui_ImplGlfwGL3_CharCallback);
+    glfwSetCharCallback(mainWindow, ImGui_ImplGlfw_CharCallback);
 
-#if !defined(__APPLE__)
-    //glewExperimental = GL_TRUE;
-    GLenum err = glewInit();
-    if (GLEW_OK != err)
-    {
-        std::fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
-        exit(EXIT_FAILURE);
+    const auto err = InitializeOpenglLoader();
+    if (!err.empty()) {
+        std::fprintf(stderr, "OpenGL loader failed to initialize (%s)!\n", err.c_str());
+        return EXIT_FAILURE;
     }
-#endif
 
+    std::printf("PlayRho %d.%d.%d (%s), OpenGL %s, GLSL %s\n",
+                buildVersion.major, buildVersion.minor, buildVersion.revision, buildDetails.c_str(),
+                glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
+    std::printf("Primary monitor refresh rate: %d Hz\n", refreshRate);
+
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
     const auto imguiContext = ImGui::CreateContext();
     CreateUI(mainWindow);
     
@@ -2456,10 +2530,17 @@ int main()
         DebugDraw drawer(g_camera);
         while (!glfwWindowShouldClose(mainWindow))
         {
+            glfwPollEvents();
             glViewport(0, 0, g_camera.m_width, g_camera.m_height);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glDisable(GL_DEPTH_TEST);
 
-            ImGui_ImplGlfwGL3_NewFrame();
+            // Start the Dear ImGui frame
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
 
             if (!UserInterface())
 	            glfwSetWindowShouldClose(mainWindow, GL_TRUE);
@@ -2474,21 +2555,21 @@ int main()
             fps = 0.99 * fps + (1.0 - 0.99) / timeElapsed;
             time1 = time2;
             ShowFrameInfo(frameTime, fps);
-            
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glDisable(GL_DEPTH_TEST);
 
             ImGui::Render();
 
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+            glfwMakeContextCurrent(mainWindow);
             glfwSwapBuffers(mainWindow);
-            glfwPollEvents();
         }
     }
 
-    ImGui_ImplGlfwGL3_Shutdown();
+    // Cleanup
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext(imguiContext);
 
+    glfwDestroyWindow(mainWindow);
     glfwTerminate();
 
     return 0;
