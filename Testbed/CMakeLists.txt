@@ -1,5 +1,7 @@
 find_package(OpenGL REQUIRED)
+if(NOT APPLE)
 find_package(GLEW REQUIRED)
+endif()
 
 if(GLFW_INCLUDE_DIRS AND GLFW_LIBRARY_DIRS AND GLFW_STATIC_LIBRARIES AND OPENGL_INCLUDE_DIR)
 	set(GLFW_TARGET OFF)
@@ -28,12 +30,23 @@ else()
 endif()
 
 # Some flags for Freeglut and GLUI.
+if(APPLE)
+add_definitions( -DIMGUI_IMPL_OPENGL_LOADER_GL3W )
+else()
 add_definitions( -DGLEW_STATIC -D_CRT_SECURE_NO_WARNINGS )
+endif()
 
 # Define the framework files.
 file(GLOB Testbed_Framework_SRCS
 	"Framework/*.cpp"
 	"Framework/*.hpp"
+	"Framework/imgui/imgui.cpp"
+	"Framework/imgui/imgui_tables.cpp"
+	"Framework/imgui/imgui_widgets.cpp"
+	"Framework/imgui/imgui_draw.cpp"
+	"Framework/imgui/backends/imgui_impl_opengl3.cpp"
+	"Framework/imgui/backends/imgui_impl_glfw.cpp"
+	"Framework/imgui/examples/libs/gl3w/GL/gl3w.c"
 )
 
 # define the test files.
@@ -47,10 +60,9 @@ source_group(Framework FILES ${Testbed_Framework_SRCS})
 source_group(Tests FILES ${Testbed_Tests_SRCS})
 
 if(APPLE)
-	# We are not using the Apple's framework version, but X11's
-	include_directories( /usr/X11/include )
-	link_directories( /usr/X11/lib )
-	set (OPENGL_LIBRARIES GL GLU X11)
+	find_library(COREFOUNDATION_LIBRARY CoreFoundation)
+	mark_as_advanced(COREFOUNDATION_LIBRARY)
+	set(ADDITIONAL_LIBRARIES ${COREFOUNDATION_LIBRARY})
 elseif(WIN32)
 	set (ADDITIONAL_LIBRARIES winmm)
 endif()
@@ -62,6 +74,8 @@ endif()
 
 message(STATUS "Including header directories")
 include_directories(
+	Framework/imgui
+	Framework/imgui/examples/libs/gl3w
 	${OPENGL_INCLUDE_DIR}
 	${GLEW_INCLUDE_DIRS}
 	${GLFW_INCLUDE_DIRS}
