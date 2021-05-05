@@ -21,7 +21,10 @@
 #include <PlayRho/Dynamics/WorldShape.hpp>
 
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/Contacts/Contact.hpp> // for MixFriction
+
+#include <set>
 
 namespace playrho {
 namespace d2 {
@@ -38,6 +41,37 @@ void Destroy(World& world, ShapeID id)
     world.Destroy(id);
 }
 
+const Shape& GetShape(const World& world, ShapeID id)
+{
+    return world.GetShape(id);
+}
+
+void SetShape(World& world, ShapeID id, const Shape& def)
+{
+    world.SetShape(id, def);
+}
+
+ShapeCounter GetAssociationCount(const World& world) noexcept
+{
+    auto sum = ShapeCounter{0};
+    const auto bodies = world.GetBodies();
+    for_each(begin(bodies), end(bodies), [&world,&sum](const auto &b) {
+        sum += static_cast<ShapeCounter>(size(world.GetShapes(b)));
+    });
+    return sum;
+}
+
+ShapeCounter GetUsedShapesCount(const World& world) noexcept
+{
+    auto ids = std::set<ShapeID>{};
+    for (auto&& bodyId: world.GetBodies()) {
+        for (auto&& shapeId: world.GetShapes(bodyId)) {
+            ids.insert(shapeId);
+        }
+    }
+    return static_cast<ShapeCounter>(std::size(ids));
+}
+
 void SetFilterData(World& world, ShapeID id, const Filter& value)
 {
     auto object = world.GetShape(id);
@@ -45,16 +79,16 @@ void SetFilterData(World& world, ShapeID id, const Filter& value)
     world.SetShape(id, object);
 }
 
-const Shape& GetShape(const World& world, ShapeID id)
-{
-    return world.GetShape(id);
-}
-
 void SetSensor(World& world, ShapeID id, bool value)
 {
     auto object = world.GetShape(id);
     SetSensor(object, value);
     world.SetShape(id, object);
+}
+
+bool TestPoint(const World& world, BodyID bodyId, ShapeID shapeId, Length2 p)
+{
+    return TestPoint(GetShape(world, shapeId), InverseTransform(p, GetTransformation(world, bodyId)));
 }
 
 Real GetDefaultFriction(const Shape& a, const Shape& b)

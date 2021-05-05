@@ -30,6 +30,7 @@
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldFixture.hpp>
+#include <PlayRho/Dynamics/WorldShape.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
@@ -430,30 +431,32 @@ TEST(AABB, StreamOutputOperator)
     EXPECT_STREQ(aabbStream.str().c_str(), comp.c_str());
 }
 
-TEST(AABB, ComputeAabbForFixtureAtBodyOrigin)
+TEST(AABB, ComputeAabbForShapeAtBodyOrigin)
 {
     const auto shape = DiskShapeConf{};
     const auto shapeAabb = ComputeAABB(Shape(shape), Transformation{});
     World world;
+    const auto shapeId = CreateShape(world, shape);
     const auto body = CreateBody(world);
-    const auto fixture = CreateFixture(world, body, Shape{shape});
-    const auto fixtureAabb = ComputeAABB(world, fixture);
+    Attach(world, body, shapeId);
+    const auto bodyAabb = ComputeAABB(world, body);
     ASSERT_NE(shapeAabb, AABB{});
-    EXPECT_EQ(shapeAabb, fixtureAabb);
+    EXPECT_EQ(shapeAabb, bodyAabb);
 }
 
-TEST(AABB, ComputeAabbForFixtureOffFromBodyOrigin)
+TEST(AABB, ComputeAabbForShapeOffFromBodyOrigin)
 {
     const auto shape = DiskShapeConf{};
     const auto shapeAabb = ComputeAABB(Shape{shape}, Transformation{});
     const auto bodyLocation = Length2{2_m, 3_m};
     World world;
+    const auto shapeId = CreateShape(world, shape);
     const auto body = CreateBody(world, BodyConf{}.UseLocation(bodyLocation));
-    const auto fixture = CreateFixture(world, body, Shape{shape});
-    const auto fixtureAabb = ComputeAABB(world, fixture);
+    Attach(world, body, shapeId);
+    const auto bodyAabb = ComputeAABB(world, body);
     ASSERT_NE(shapeAabb, AABB{});
-    ASSERT_NE(shapeAabb, fixtureAabb);
-    EXPECT_EQ(GetMovedAABB(shapeAabb, bodyLocation), fixtureAabb);
+    ASSERT_NE(shapeAabb, bodyAabb);
+    EXPECT_EQ(GetMovedAABB(shapeAabb, bodyLocation), bodyAabb);
 }
 
 TEST(AABB, ComputeIntersectingAABBForSameFixture)
@@ -462,12 +465,13 @@ TEST(AABB, ComputeIntersectingAABBForSameFixture)
     const auto shapeAabb = ComputeAABB(Shape{shape}, Transformation{});
     World world;
     const auto body = CreateBody(world);
-    const auto fixture = CreateFixture(world, body, Shape{shape});
-    const auto fixtureAabb = ComputeAABB(world, fixture);
-    const auto intersectingAabb = ComputeIntersectingAABB(world, fixture, 0, fixture, 0);
+    const auto shapeId = CreateShape(world, Shape{shape});
+    Attach(world, body, shapeId);
+    const auto attachedAabb = ComputeAABB(world, body, shapeId);
+    const auto intersectingAabb = ComputeIntersectingAABB(world, body, shapeId, 0, body, shapeId, 0);
     ASSERT_NE(shapeAabb, AABB{});
-    ASSERT_EQ(shapeAabb, fixtureAabb);
-    EXPECT_EQ(fixtureAabb, intersectingAabb);
+    ASSERT_EQ(shapeAabb, attachedAabb);
+    EXPECT_EQ(attachedAabb, intersectingAabb);
 }
 
 TEST(AABB, ComputeIntersectingAABBForTwoFixtures)
@@ -481,15 +485,17 @@ TEST(AABB, ComputeIntersectingAABBForTwoFixtures)
     const auto bodyLocation1 = Length2{-1_m, 0_m};
 
     World world;
+    const auto s0 = CreateShape(world, shape);
+    const auto s1 = CreateShape(world, shape);
     const auto body0 = CreateBody(world, BodyConf{}.UseLocation(bodyLocation0));
     const auto body1 = CreateBody(world, BodyConf{}.UseLocation(bodyLocation1));
-    const auto fixture0 = CreateFixture(world, body0, Shape{shape});
-    const auto fixture1 = CreateFixture(world, body1, Shape{shape});
+    Attach(world, body0, s0);
+    Attach(world, body1, s1);
 
-    const auto fixtureAabb0 = ComputeAABB(world, fixture0);
-    const auto fixtureAabb1 = ComputeAABB(world, fixture1);
+    const auto fixtureAabb0 = ComputeAABB(world, body0, s0);
+    const auto fixtureAabb1 = ComputeAABB(world, body1, s1);
 
-    const auto intersectingAabb = ComputeIntersectingAABB(world, fixture0, 0, fixture1, 0);
+    const auto intersectingAabb = ComputeIntersectingAABB(world, body0, s0, 0, body1, s1, 0);
     const auto intersectInterval = LengthInterval{-1_m, +1_m};
 
     ASSERT_NE(shapeAabb, fixtureAabb0);
@@ -510,21 +516,22 @@ TEST(AABB, ComputeIntersectingAABBForContact)
     World world;
     const auto body0 = CreateBody(world, BodyConf{}.UseLocation(bodyLocation0));
     const auto body1 = CreateBody(world, BodyConf{}.UseLocation(bodyLocation1));
+    const auto shapeId0 = CreateShape(world, shape);
+    const auto shapeId1 = CreateShape(world, shape);
+    Attach(world, body0, shapeId0);
+    Attach(world, body1, shapeId1);
 
-    const auto fixture0 = CreateFixture(world, body0, Shape{shape});
-    const auto fixture1 = CreateFixture(world, body1, Shape{shape});
+    const auto fixtureAabb0 = ComputeAABB(world, body0, shapeId0);
+    const auto fixtureAabb1 = ComputeAABB(world, body1, shapeId1);
 
-    const auto fixtureAabb0 = ComputeAABB(world, fixture0);
-    const auto fixtureAabb1 = ComputeAABB(world, fixture1);
-
-    const auto intersectingAabb = ComputeIntersectingAABB(world, fixture0, 0, fixture1, 0);
+    const auto intersectingAabb = ComputeIntersectingAABB(world, body0, shapeId0, 0, body1, shapeId1, 0);
     const auto intersectInterval = LengthInterval{-1_m, +1_m};
 
     ASSERT_NE(shapeAabb, fixtureAabb0);
     ASSERT_NE(shapeAabb, fixtureAabb1);
     ASSERT_EQ(intersectingAabb, (AABB{intersectInterval, shapeInterval}));
 
-    const auto contact = Contact{body0, fixture0, 0, body1, fixture1, 0};
+    const auto contact = Contact{body0, shapeId0, 0, body1, shapeId1, 0};
     const auto contactAabb = ComputeIntersectingAABB(world, contact);
 
     EXPECT_EQ(contactAabb, intersectingAabb);

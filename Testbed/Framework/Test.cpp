@@ -47,8 +47,7 @@ void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, Color c
 {
     const auto angleDiff = GetRevRotationalAngle(a0, a1);
     auto lastAngle = 0_deg;
-    for (auto angle = 5_deg; angle < angleDiff; angle += 5_deg)
-    {
+    for (auto angle = 5_deg; angle < angleDiff; angle += 5_deg) {
         const auto c0 = p + r * UnitVec::Get(a0 + lastAngle);
         const auto c1 = p + r * UnitVec::Get(a0 + angle);
         drawer.DrawSegment(c0, c1, color);
@@ -65,16 +64,14 @@ void Draw(Drawer& drawer, const DistanceProxy& shape, Color color, bool skins, T
 {
     const auto vertexCount = shape.GetVertexCount();
     auto vertices = std::vector<Length2>(vertexCount);
-    for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-    {
+    for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i) {
         vertices[i] = Transform(shape.GetVertex(i), xf);
     }
     const auto fillColor = Color{0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f};
     drawer.DrawSolidPolygon(&vertices[0], vertexCount, fillColor);
     drawer.DrawPolygon(&vertices[0], vertexCount, color);
 
-    if (!skins)
-    {
+    if (!skins) {
         return;
     }
 
@@ -164,15 +161,13 @@ bool Draw(Drawer& drawer, const World& world, BodyID body,
     const auto bodyColor = GetColor(world, body);
     const auto selectedColor = Brighten(bodyColor, 1.3f);
     const auto xf = GetTransformation(world, body);
-    for (const auto& fixtureID: GetFixtures(world, body))
-    {
+    for (const auto& shapeID: GetShapes(world, body)) {
         auto color = bodyColor;
-        if (Test::Contains(selected, fixtureID))
-        {
+        if (Test::Contains(selected, std::make_pair(body, shapeID))) {
             color = selectedColor;
             found = true;
         }
-        Draw(drawer, GetShape(world, fixtureID), color, skins, xf);
+        Draw(drawer, GetShape(world, shapeID), color, skins, xf);
     }
     return found;
 }
@@ -235,12 +230,11 @@ inline bool ShouldDrawSkins(const Test::NeededSettings& needed,
 }
 
 template <class T>
-std::set<BodyID> GetBodySetFromFixtures(const World& world, const T& fixtures)
+std::set<BodyID> GetBodySetFromFixtures(const T& fixtures)
 {
     auto collection = std::set<BodyID>();
-    for (const auto& f: fixtures)
-    {
-        collection.insert(GetBody(world, f));
+    for (const auto& f: fixtures) {
+        collection.insert(f.first);
     }
     return collection;
 }
@@ -263,8 +257,8 @@ void ShowStats(const StepConf& stepConf, UiState& ui, const World& world, const 
     const auto awakeCount = GetAwakeCount(world);
     const auto sleepCount = bodyCount - awakeCount;
     const auto jointCount = GetJointCount(world);
-    const auto fixtureCount = GetFixtureCount(world);
-    const auto shapeCount = GetShapeCount(world);
+    const auto attachmentCount = GetAssociationCount(world);
+    const auto shapeCount = GetAssociationCount(world);
     const auto touchingCount = GetTouchingCount(world);
 
     const ImGuiStyle& style = ImGui::GetStyle();
@@ -315,7 +309,7 @@ void ShowStats(const StepConf& stepConf, UiState& ui, const World& world, const 
             ImGui::SetTooltip("Counts of awake bodies over total bodies.");
         }
         ImGui::NextColumn();
-        ImGui::Text("Fixtures: %u/%u", shapeCount, fixtureCount);
+        ImGui::Text("Attachments: %u/%u", shapeCount, attachmentCount);
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Counts of shapes over fixtures.");
@@ -814,7 +808,7 @@ const LinearAcceleration2 Test::Gravity = LinearAcceleration2{
     -Real(10.0f) * MeterPerSquareSecond
 };
 
-bool Test::Contains(const FixtureSet& fixtures, FixtureID f) noexcept
+bool Test::Contains(const FixtureSet& fixtures, const std::pair<BodyID, ShapeID>& f) noexcept
 {
     return fixtures.find(f) != std::end(fixtures);
 }
@@ -842,7 +836,7 @@ Test::Test(Conf conf):
     m_numTouchingPerStep(m_maxHistory, 0u)
 {
     m_destructionListener.test = this;
-    SetFixtureDestructionListener(m_world, [this](FixtureID id){
+    SetShapeDestructionListener(m_world, [this](ShapeID id){
         m_destructionListener.SayGoodbye(id);
     });
     SetJointDestructionListener(m_world, [this](JointID id){
@@ -890,14 +884,17 @@ void Test::ResetWorld(const World &saved)
     }
 }
 
-void Test::PreSolve(ContactID contact, const Manifold& oldManifold)
+void Test::PreSolve(ContactID contactId, const Manifold& oldManifold)
 {
-    const auto pointStates = GetPointStates(oldManifold, GetManifold(m_world, contact));
-    const auto worldManifold = GetWorldManifold(m_world, contact);
+    const auto pointStates = GetPointStates(oldManifold, GetManifold(m_world, contactId));
+    const auto worldManifold = GetWorldManifold(m_world, contactId);
 
     ContactPoint cp;
-    cp.fixtureA = GetFixtureA(m_world, contact);
-    cp.fixtureB = GetFixtureB(m_world, contact);
+    const auto& contact = GetContact(m_world, contactId);
+    cp.bodyIdA = GetBodyA(contact);
+    cp.shapeIdA = GetShapeA(contact);
+    cp.bodyIdB = GetBodyB(contact);
+    cp.shapeIdB = GetShapeB(contact);
     cp.normal = worldManifold.GetNormal();
 
     const auto count = worldManifold.GetPointCount();
@@ -916,7 +913,7 @@ void Test::PreSolve(ContactID contact, const Manifold& oldManifold)
 void Test::SetSelectedFixtures(FixtureSet value) noexcept
 {
     m_selectedFixtures = value;
-    m_selectedBodies = GetBodySetFromFixtures(m_world, value);
+    m_selectedBodies = GetBodySetFromFixtures(value);
 }
 
 void Test::MouseDown(const Length2& p)
@@ -933,20 +930,17 @@ void Test::MouseDown(const Length2& p)
 
     // Query the world for overlapping shapes.
     auto fixtures = FixtureSet{};
-    Query(aabb, [this,&p,&fixtures](FixtureID f, const ChildCounter) {
-        if (TestPoint(m_world, f, p))
-        {
-            fixtures.insert(f);
+    Query(aabb, [this,&p,&fixtures](BodyID b, ShapeID f, const ChildCounter) {
+        if (TestPoint(m_world, b, f, p)) {
+            fixtures.insert(std::make_pair(b, f));
         }
         return true; // Continue the query.
     });
 
     SetSelectedFixtures(fixtures);
-    if (size(fixtures) == 1)
-    {
-        const auto body = GetBody(m_world, *(begin(fixtures)));
-        if (GetType(m_world, body) == BodyType::Dynamic)
-        {
+    if (size(fixtures) == 1) {
+        const auto body = begin(fixtures)->first;
+        if (GetType(m_world, body) == BodyType::Dynamic) {
             auto md = TargetJointConf{};
             md.bodyB = body;
             md.target = p;
@@ -1031,9 +1025,12 @@ void Test::LaunchBomb()
 
 void Test::LaunchBomb(const Length2& at, const LinearVelocity2 v)
 {
-    if (m_bomb != InvalidBodyID)
-    {
+    if (m_bomb != InvalidBodyID) {
+        const auto shapes = GetShapes(m_world, m_bomb); // copy shape identifiers
         Destroy(m_world, m_bomb);
+        for (auto& shape: shapes) {
+            Destroy(m_world, shape);
+        }
     }
 
     m_bomb = CreateBody(m_world, BodyConf{}.UseType(BodyType::Dynamic).UseBullet(true)
@@ -1044,7 +1041,7 @@ void Test::LaunchBomb(const Length2& at, const LinearVelocity2 v)
     conf.vertexRadius = m_bombRadius;
     conf.density = m_bombDensity;
     conf.restitution = 0.0f;
-    CreateFixture(m_world, m_bomb, Shape{conf});
+    Attach(m_world, m_bomb, CreateShape(m_world, conf));
 }
 
 void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
@@ -1268,7 +1265,7 @@ void Test::RegisterForKey(KeyID key, KeyAction action, KeyMods mods, KeyHandlerI
     m_handledKeys.push_back(std::make_pair(KeyActionMods{key, action, mods}, id));
 }
 
-void Test::Query(const AABB& aabb, QueryFixtureCallback callback)
+void Test::Query(const AABB& aabb, QueryShapeCallback callback)
 {
     ::playrho::d2::Query(GetTree(m_world), aabb, callback);
 }
@@ -1377,8 +1374,8 @@ bool HasFixture(const Test::ContactPoint& cp, const Test::FixtureSet& fixtures) 
 {
     for (auto fixture: fixtures)
     {
-        if (fixture == cp.fixtureA || fixture == cp.fixtureB)
-        {
+        if (fixture == std::make_pair(cp.bodyIdA, cp.shapeIdA) ||
+            fixture == std::make_pair(cp.bodyIdB, cp.shapeIdB)) {
             return true;
         }
     }

@@ -36,6 +36,7 @@
 
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>
+#include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
@@ -212,13 +213,15 @@ public:
 
     using KeyHandlers = std::vector<std::pair<std::string, KeyHandler>>;
     using HandledKeys = std::vector<std::pair<KeyActionMods, KeyHandlerID>>;
-    using FixtureSet = std::set<FixtureID>;
+    using FixtureSet = std::set<std::pair<BodyID, ShapeID>>;
     using BodySet = std::set<BodyID>;
 
     struct ContactPoint
     {
-        FixtureID fixtureA;
-        FixtureID fixtureB;
+        BodyID bodyIdA;
+        ShapeID shapeIdA;
+        BodyID bodyIdB;
+        ShapeID shapeIdB;
         UnitVec normal;
         Length2 position;
         PointState state;
@@ -273,7 +276,7 @@ public:
     // Callbacks for derived classes.
     void PreSolve(ContactID contact, const Manifold& oldManifold);
 
-    static bool Contains(const FixtureSet& fixtures, FixtureID f) noexcept;
+    static bool Contains(const FixtureSet& fixtures, const std::pair<BodyID, ShapeID>& f) noexcept;
 
     const std::string& GetDescription() const noexcept { return m_description; }
     NeededSettings GetNeededSettings() const noexcept { return m_neededSettings; }
@@ -304,10 +307,10 @@ public:
         return m_world;
     }
 
-    using QueryFixtureCallback = std::function<bool(FixtureID fixture, ChildCounter child)>;
+    using QueryShapeCallback = std::function<bool(BodyID body, ShapeID shape, ChildCounter child)>;
 
     /// @brief Queries the world for all fixtures that potentially overlap the provided AABB.
-    void Query(const AABB& aabb, QueryFixtureCallback callback);
+    void Query(const AABB& aabb, QueryShapeCallback callback);
 
 protected:
     EdgeShapeConf GetGroundEdgeConf() const noexcept
@@ -353,9 +356,11 @@ protected:
     {
     public:
         virtual ~DestructionListenerImpl() = default;
-        virtual void SayGoodbye(const FixtureID fixture) noexcept { NOT_USED(fixture); }
-        virtual void SayGoodbye(const JointID joint) noexcept;
-        
+        virtual void SayGoodbye(ShapeID shape) noexcept { NOT_USED(shape); }
+        virtual void SayGoodbye(BodyID body, ShapeID shape) noexcept {
+            NOT_USED(body); NOT_USED(shape);
+        }
+        virtual void SayGoodbye(JointID joint) noexcept;
         Test* test;
     };
     

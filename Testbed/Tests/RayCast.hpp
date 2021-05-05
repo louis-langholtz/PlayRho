@@ -48,8 +48,12 @@ public:
 
     RayCast()
     {
+        m_edge = CreateShape(GetWorld(),
+                             EdgeShapeConf{Vec2(-1.0f, 0.0f) * 1_m, Vec2(1.0f, 0.0f) * 1_m}.UseFriction(Real(0.3)));
+        m_circle = CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(0.5_m).UseFriction(Real(0.3)));
+
         // Ground body
-        CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        Attach(GetWorld(), CreateBody(GetWorld()), Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         auto conf = PolygonShapeConf{};
         conf.UseFriction(Real(0.3));
@@ -58,13 +62,13 @@ public:
             Vec2(0.5f, 0.0f) * 1_m,
             Vec2(0.0f, 1.5f) * 1_m
         });
-        m_polygons[0] = Shape(conf);
+        m_polygons[0] = CreateShape(GetWorld(), conf);
         conf.Set({
             Vec2(-0.1f, 0.0f) * 1_m,
             Vec2(0.1f, 0.0f) * 1_m,
             Vec2(0.0f, 1.5f) * 1_m
         });
-        m_polygons[1] = Shape(conf);
+        m_polygons[1] = CreateShape(GetWorld(), conf);
         {
             const auto w = 1.0f;
             const auto b = w / (2.0f + sqrt(2.0f));
@@ -80,9 +84,9 @@ public:
                 Vec2(-0.5f * s, 0.0f) * 1_m
             });
         }
-        m_polygons[2] = Shape(conf);
+        m_polygons[2] = CreateShape(GetWorld(), conf);
         conf.SetAsBox(0.5_m, 0.5_m);
-        m_polygons[3] = Shape(conf);
+        m_polygons[3] = CreateShape(GetWorld(), conf);
         std::fill(std::begin(m_bodies), std::end(m_bodies), InvalidBodyID);
         
         RegisterForKey(GLFW_KEY_1, GLFW_PRESS, 0, "drop triangles that should be ignored by the ray.", [&](KeyActionMods kam) {
@@ -143,15 +147,15 @@ public:
         m_userData[m_bodies[m_bodyIndex].get()] = type;
         if (type < 4)
         {
-            CreateFixture(GetWorld(), m_bodies[m_bodyIndex], m_polygons[type]);
+            Attach(GetWorld(), m_bodies[m_bodyIndex], m_polygons[type]);
         }
         else if (type < 5)
         {
-            CreateFixture(GetWorld(), m_bodies[m_bodyIndex], m_circle);
+            Attach(GetWorld(), m_bodies[m_bodyIndex], m_circle);
         }
         else
         {
-            CreateFixture(GetWorld(), m_bodies[m_bodyIndex], m_edge);
+            Attach(GetWorld(), m_bodies[m_bodyIndex], m_edge);
         }
         m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
     }
@@ -200,7 +204,7 @@ public:
             UnitVec normal;
 
             d2::RayCast(GetWorld(), RayCastInput{point1, point2, Real{1}},
-                        [&](BodyID b, FixtureID, ChildCounter, const Length2& p, const UnitVec& n)
+                        [&](BodyID b, ShapeID, ChildCounter, const Length2& p, const UnitVec& n)
             {
                 const auto type = (b.get() < m_userData.size())? m_userData[b.get()]: 0;
                 if (type == 0) {
@@ -238,7 +242,7 @@ public:
             // This callback finds any hit. Polygon 0 is filtered. For this type of query we are
             // just checking for obstruction, so the actual fixture and hit point are irrelevant.
             d2::RayCast(GetWorld(), RayCastInput{point1, point2, Real{1}},
-                        [&](BodyID b, FixtureID, ChildCounter, const Length2& p, const UnitVec& n)
+                        [&](BodyID b, ShapeID, ChildCounter, const Length2& p, const UnitVec& n)
             {
                 const auto type = (b.get() < m_userData.size())? m_userData[b.get()]: 0;
                 if (type == 0) {
@@ -274,7 +278,7 @@ public:
             // The fixtures are not necessary reported in order, so we might not capture
             // the closest fixture.
             d2::RayCast(GetWorld(), RayCastInput{point1, point2, Real{1}},
-                        [&](BodyID b, FixtureID, ChildCounter, const Length2& p, const UnitVec& n)
+                        [&](BodyID b, ShapeID, ChildCounter, const Length2& p, const UnitVec& n)
             {
                 const auto type = (b.get() < m_userData.size())? m_userData[b.get()]: 0;
                 if (type == 0) {
@@ -341,12 +345,9 @@ public:
     int m_bodyIndex = 0;
     BodyID m_bodies[e_maxBodies];
     std::vector<int> m_userData;
-    Shape m_polygons[4] = {
-        Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}},
-        Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}}
-    };
-    Shape m_circle = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseFriction(Real(0.3))};
-    Shape m_edge = Shape{EdgeShapeConf{Vec2(-1.0f, 0.0f) * 1_m, Vec2(1.0f, 0.0f) * 1_m}.UseFriction(Real(0.3))};
+    ShapeID m_polygons[4] = { InvalidShapeID, InvalidShapeID, InvalidShapeID, InvalidShapeID };
+    ShapeID m_circle = InvalidShapeID;
+    ShapeID m_edge = InvalidShapeID;
     Real m_angle = 0.0f;
     Mode m_mode = Mode::e_closest;
 };

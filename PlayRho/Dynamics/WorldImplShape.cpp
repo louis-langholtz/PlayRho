@@ -25,6 +25,11 @@
 namespace playrho {
 namespace d2 {
 
+ShapeCounter GetShapeRange(const WorldImpl& world) noexcept
+{
+    return world.GetShapeRange();
+}
+
 ShapeID CreateShape(WorldImpl& world, const Shape& def)
 {
     return world.CreateShape(def);

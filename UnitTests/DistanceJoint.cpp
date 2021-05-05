@@ -26,6 +26,7 @@
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/WorldFixture.hpp>
+#include <PlayRho/Dynamics/WorldShape.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
@@ -136,19 +137,19 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 {
     auto world = World{};
 
-    const auto shape = Shape{DiskShapeConf{}.UseRadius(0.2_m)};
+    const auto shape = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m));
 
     const auto location1 = Length2{-1_m, 0_m};
     const auto body1 =
         CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location1));
     ASSERT_EQ(GetLocation(world, body1), location1);
-    ASSERT_NE(CreateFixture(world, body1, shape), InvalidFixtureID);
+    ASSERT_NO_THROW(Attach(world, body1, shape));
 
     const auto location2 = Length2{+1_m, 0_m};
     const auto body2 =
         CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location2));
     ASSERT_EQ(GetLocation(world, body2), location2);
-    ASSERT_NE(CreateFixture(world, body2, shape), InvalidFixtureID);
+    ASSERT_NO_THROW(Attach(world, body2, shape));
 
     auto jointdef = DistanceJointConf{};
     jointdef.bodyA = body1;
@@ -188,18 +189,18 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 {
     auto world = World{};
 
-    const auto shape = Shape{DiskShapeConf{}.UseRadius(0.2_m).UseDensity(1_kgpm2)};
+    const auto shape = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m).UseDensity(1_kgpm2));
     const auto location1 = Length2{-10_m, 10_m};
     const auto body1 =
         CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location1));
     ASSERT_EQ(GetLocation(world, body1), location1);
-    ASSERT_NE(CreateFixture(world, body1, shape), InvalidFixtureID);
+    ASSERT_NO_THROW(Attach(world, body1, shape));
 
     const auto location2 = Length2{+10_m, -10_m};
     const auto body2 =
         CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location2));
     ASSERT_EQ(GetLocation(world, body2), location2);
-    ASSERT_NE(CreateFixture(world, body2, shape), InvalidFixtureID);
+    ASSERT_NO_THROW(Attach(world, body2, shape));
 
     auto jointdef = DistanceJointConf{};
     jointdef.bodyA = body1;

@@ -30,24 +30,22 @@ public:
 
     VaryingFriction()
     {
-        CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape(GetGroundEdgeConf()));
-
-        const auto sliderPlank = Shape{PolygonShapeConf{}.SetAsBox(13_m, 0.25_m)};
-        const auto sliderWall = Shape{PolygonShapeConf{}.SetAsBox(0.25_m, 1_m)};
-
-        CreateFixture(GetWorld(),
+        Attach(GetWorld(), CreateBody(GetWorld()), CreateShape(GetWorld(), GetGroundEdgeConf()));
+        const auto sliderPlank = CreateShape(GetWorld(), PolygonShapeConf{}.SetAsBox(13_m, 0.25_m));
+        const auto sliderWall = CreateShape(GetWorld(), PolygonShapeConf{}.SetAsBox(0.25_m, 1_m));
+        Attach(GetWorld(),
                       CreateBody(GetWorld(), BodyConf{}.UseLocation(Vec2(-4, 22) * 1_m).UseAngle(-0.25_rad)),
                       sliderPlank);
-        CreateFixture(GetWorld(),
+        Attach(GetWorld(),
                       CreateBody(GetWorld(), BodyConf{}.UseLocation(Vec2(10.5f, 19) * 1_m)),
                       sliderWall);
-        CreateFixture(GetWorld(),
+        Attach(GetWorld(),
                       CreateBody(GetWorld(), BodyConf{}.UseLocation(Vec2(4, 14) * 1_m).UseAngle(0.25_rad)),
                       sliderPlank);
-        CreateFixture(GetWorld(),
+        Attach(GetWorld(),
                       CreateBody(GetWorld(), BodyConf{}.UseLocation(Vec2(-10.5f, 11) * 1_m)),
                       sliderWall);
-        CreateFixture(GetWorld(),
+        Attach(GetWorld(),
                       CreateBody(GetWorld(), BodyConf{}.UseLocation(Vec2(-4, 6) * 1_m).UseAngle(-0.25_rad)),
                       sliderPlank);
 
@@ -61,7 +59,7 @@ public:
             bd.location = Vec2(-15.0f + 4.0f * i, 28.0f) * 1_m;
             const auto body = CreateBody(GetWorld(), bd);
             shape.UseFriction(friction[i]);
-            CreateFixture(GetWorld(), body, Shape(shape));
+            Attach(GetWorld(), body, CreateShape(GetWorld(), shape));
         }
     }
 };

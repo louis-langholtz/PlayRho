@@ -104,7 +104,7 @@ For a more elaborate example, that's of an entire application, see
 // world member functions, may help isolate your code from changes to the World class.
 #include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/WorldFixture.hpp>
+#include <PlayRho/Dynamics/WorldShape.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Dynamics/WorldContact.hpp>
 

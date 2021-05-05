@@ -16,9 +16,10 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "UnitTests.hpp"
 #include <PlayRho/Common/StackAllocator.hpp>
 #include <chrono>
+
+#include "UnitTests.hpp"
 
 using namespace playrho;
 

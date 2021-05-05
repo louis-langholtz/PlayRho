@@ -165,7 +165,7 @@ public:
     
     /// @brief Gets the centroid.
     Length2 GetCentroid() const noexcept { return m_centroid; }
-    
+
     /// @brief Vertex radius.
     ///
     /// @details This is the radius from the vertex that the shape's "skin" should
@@ -178,7 +178,7 @@ public:
     /// @note This should be a non-negative value.
     ///
     NonNegative<Length> vertexRadius = GetDefaultVertexRadius();
-    
+
 private:
     /// @brief Array of vertices.
     /// @details Consecutive vertices constitute "edges" of the polygon.

@@ -58,7 +58,7 @@
 
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp> // for GetAwakeCount
-#include <PlayRho/Dynamics/WorldFixture.hpp> // for CreateFixture
+#include <PlayRho/Dynamics/WorldShape.hpp> // for CreateShape
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
@@ -73,7 +73,7 @@
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
-// #define BENCHMARK_BOX2D
+#define BENCHMARK_BOX2D
 #ifdef BENCHMARK_BOX2D
 #include <Box2D/Box2D.h>
 #endif // BENCHMARK_BOX2D
@@ -1956,7 +1956,7 @@ static void DropDisks(benchmark::State& state)
                                            .UseType(playrho::BodyType::Dynamic)
                                            .UseLocation(location)
                                            .UseLinearAcceleration(playrho::d2::EarthlyGravity));
-        world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(body).UseShape(shapeId));
+        Attach(world, body, shapeId);
     }
 
     const auto stepConf = playrho::StepConf{};
@@ -1987,7 +1987,7 @@ static void AddPairStressTestPlayRho(benchmark::State& state, int count)
     constexpr auto linearSlop = 0.005f * playrho::Meter;
     constexpr auto angularSlop = (2.0f / 180.0f * playrho::Pi) * playrho::Radian;
 
-    const auto worldConf = playrho::d2::WorldConf{/* zero G */}.UseInitialTreeSize(8192);
+    const auto worldConf = playrho::d2::WorldConf{/* zero G */}.UseTreeCapacity(8192);
     auto stepConf = playrho::StepConf{};
     stepConf.deltaTime = playrho::Second / 60;
     stepConf.linearSlop = linearSlop;
@@ -2008,8 +2008,7 @@ static void AddPairStressTestPlayRho(benchmark::State& state, int count)
     const auto minY = 4.0f;
     const auto maxY = 6.0f;
     const auto bd = playrho::d2::BodyConf{}.UseType(playrho::BodyType::Dynamic);
-    for (auto _: state)
-    {
+    for (auto _: state) {
         state.PauseTiming();
         auto world = playrho::d2::World{worldConf};
         const auto diskShapeId = world.CreateShape(diskShape);
@@ -2019,13 +2018,12 @@ static void AddPairStressTestPlayRho(benchmark::State& state, int count)
                 const auto location = playrho::Vec2(Rand(minX, maxX), Rand(minY, maxY)) * playrho::Meter;
                 // Uses parenthesis here to work around Visual C++'s const propagating of the copy.
                 const auto body = world.CreateBody(playrho::d2::BodyConf(bd).UseLocation(location));
-                world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(body).UseShape(diskShapeId));
+                Attach(world, body, diskShapeId);
             }
         }
         const auto rectBody = world.CreateBody(rectBodyConf);
-        world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(rectBody).UseShape(rectShapeId));
-        for (auto i = 0; i < state.range(); ++i)
-        {
+        Attach(world, rectBody, rectShapeId);
+        for (auto i = 0; i < state.range(); ++i) {
             world.Step(stepConf);
         }
         state.ResumeTiming();
@@ -2090,7 +2088,7 @@ static void AddPairStressTestBox2D400(benchmark::State& state)
 }
 #endif // BENCHMARK_BOX2D
 
-static void DropTilesPlayRho(int count)
+static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
 {
     constexpr auto linearSlop = 0.005f * playrho::Meter;
     constexpr auto angularSlop = (2.0f / 180.0f * playrho::Pi) * playrho::Radian;
@@ -2100,28 +2098,32 @@ static void DropTilesPlayRho(int count)
     };
     auto conf = playrho::d2::PolygonShapeConf{}.UseVertexRadius(vertexRadius);
     auto world = playrho::d2::World{
-        playrho::d2::WorldConf{}.UseMinVertexRadius(vertexRadius).UseInitialTreeSize(8192)
+        playrho::d2::WorldConf{}.UseMinVertexRadius(vertexRadius).UseTreeCapacity(8192)
     };
     
     {
         constexpr auto a = 0.5f;
         const auto ground = world.CreateBody(playrho::d2::BodyConf{}
                                              .UseLocation(playrho::Length2{0, -a * playrho::Meter}));
-        
         constexpr auto N = 200;
         constexpr auto M = 10;
-        playrho::Length2 position;
-        GetY(position) = 0.0f * playrho::Meter;
-        for (auto j = 0; j < M; ++j)
-        {
-            GetX(position) = -N * a * playrho::Meter;
-            for (auto i = 0; i < N; ++i)
-            {
-                conf.SetAsBox(a * playrho::Meter, a * playrho::Meter, position, playrho::Angle{0});
-                CreateFixture(world, ground, conf);
-                GetX(position) += 2.0f * a * playrho::Meter;
+        playrho::Length2 position{};
+        if (groundIsComboShape) {
+            GetY(position) = 0.0f * playrho::Meter;
+            for (auto j = 0; j < M; ++j) {
+                GetX(position) = -N * a * playrho::Meter;
+                for (auto i = 0; i < N; ++i) {
+                    conf.SetAsBox(a * playrho::Meter, a * playrho::Meter, position, playrho::Angle{0});
+                    Attach(world, ground, CreateShape(world, conf), false);
+                    GetX(position) += 2.0f * a * playrho::Meter;
+                }
+                GetY(position) -= 2.0f * a * playrho::Meter;
             }
-            GetY(position) -= 2.0f * a * playrho::Meter;
+            ResetMassData(world, ground);
+        } else {
+            GetY(position) = -9.5f * playrho::Meter;
+            conf.SetAsBox(a * playrho::Meter * N, a * playrho::Meter * M, position, playrho::Angle{0});
+            Attach(world, ground, CreateShape(world, conf));
         }
     }
     
@@ -2137,20 +2139,16 @@ static void DropTilesPlayRho(int count)
         constexpr auto deltaX = playrho::Length2(0.5625f * playrho::Meter, 1.25f * playrho::Meter);
         constexpr auto deltaY = playrho::Length2(1.125f * playrho::Meter, 0.0f * playrho::Meter);
         
-        for (auto i = 0; i < count; ++i)
-        {
+        for (auto i = 0; i < count; ++i) {
             y = x;
-            
-            for (auto j = i; j < count; ++j)
-            {
+            for (auto j = i; j < count; ++j) {
                 const auto body = world.CreateBody(playrho::d2::BodyConf{}
                                                    .UseType(playrho::BodyType::Dynamic)
                                                    .UseLocation(y)
                                                    .UseLinearAcceleration(gravity));
-                world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(body).UseShape(shapeId));
+                Attach(world, body, shapeId);
                 y += deltaY;
             }
-            
             x += deltaX;
         }
     }
@@ -2170,8 +2168,7 @@ static void DropTilesPlayRho(int count)
     step.velocityThreshold = 1.0f * playrho::MeterPerSecond;
     step.maxSubSteps = std::uint8_t{8};
 
-    while (GetAwakeCount(world) > 0)
-    {
+    while (GetAwakeCount(world) > 0) {
         world.Step(step);
     }
 }
@@ -2203,11 +2200,9 @@ static void DropTilesBox2D(int count)
         const auto M = 10;
         b2Vec2 position;
         position.y = 0.0f;
-        for (auto j = 0; j < M; ++j)
-        {
+        for (auto j = 0; j < M; ++j) {
             position.x = -N * a;
-            for (auto i = 0; i < N; ++i)
-            {
+            for (auto i = 0; i < N; ++i) {
                 b2PolygonShape shape;
                 shape.SetAsBox(a, a, position, 0.0f);
                 ground->CreateFixture(&shape, 0.0f);
@@ -2227,12 +2222,9 @@ static void DropTilesBox2D(int count)
         b2Vec2 deltaX(0.5625f, 1.25f);
         b2Vec2 deltaY(1.125f, 0.0f);
         
-        for (auto i = 0; i < count; ++i)
-        {
+        for (auto i = 0; i < count; ++i) {
             y = x;
-
-            for (auto j = i; j < count; ++j)
-            {
+            for (auto j = i; j < count; ++j) {
                 b2BodyDef bd;
                 bd.type = b2_dynamicBody;
                 bd.position = y;
@@ -2240,25 +2232,32 @@ static void DropTilesBox2D(int count)
                 body->CreateFixture(&shape, 5.0f);
                 y += deltaY;
             }
-            
             x += deltaX;
         }
     }
 
     auto awake = 0u;
-    while ((awake = GetAwakeCount(world)) > 0)
-    {
+    while ((awake = GetAwakeCount(world)) > 0) {
         world.Step(1.0f/60, 8, 3);
     }
 }
 #endif // BENCHMARK_BOX2D
 
-static void TilesRestPlayRho(benchmark::State& state)
+static void TilesRestComboGroundPlayRho(benchmark::State& state)
 {
     const auto range = state.range();
     for (auto _: state)
     {
         DropTilesPlayRho(range);
+    }
+}
+
+static void TilesRestOneGroundPlayRho(benchmark::State& state)
+{
+    const auto range = state.range();
+    for (auto _: state)
+    {
+        DropTilesPlayRho(range, false);
     }
 }
 
@@ -2312,17 +2311,16 @@ playrho::BodyID Tumbler::CreateEnclosure(playrho::d2::World& world)
     shape.UseDensity(5 * playrho::KilogramPerSquareMeter);
     shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter,
                    playrho::Vec2( 10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
-    const auto shapeId = world.CreateShape(playrho::d2::Shape(shape));
-    world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(shapeId));
+    Attach(world, b, world.CreateShape(playrho::d2::Shape(shape)));
     shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter,
                    playrho::Vec2(-10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
-    world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(shapeId));
+    Attach(world, b, world.CreateShape(playrho::d2::Shape(shape)));
     shape.SetAsBox(10.0f * playrho::Meter, 0.5f * playrho::Meter,
                    playrho::Vec2(0.0f, 10.0f) * playrho::Meter, playrho::Angle{0});
-    world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(shapeId));
+    Attach(world, b, world.CreateShape(playrho::d2::Shape(shape)));
     shape.SetAsBox(10.0f * playrho::Meter, 0.5f * playrho::Meter,
                    playrho::Vec2(0.0f, -10.0f) * playrho::Meter, playrho::Angle{0});
-    world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(shapeId));
+    Attach(world, b, world.CreateShape(playrho::d2::Shape(shape)));
     return b;
 }
 
@@ -2356,7 +2354,7 @@ void Tumbler::AddSquare()
                                       .UseType(playrho::BodyType::Dynamic)
                                       .UseLocation(playrho::Vec2(0, 10) * playrho::Meter)
                                       .UseLinearAcceleration(playrho::d2::EarthlyGravity));
-    m_world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(m_squareId));
+    Attach(m_world, b, m_squareId);
 }
 
 bool Tumbler::IsWithin(const playrho::d2::AABB& aabb) const
@@ -2520,7 +2518,9 @@ BENCHMARK(AddPairStressTestPlayRho400)->Arg(0)->Arg(10)->Arg(15)->Arg(16)->Arg(1
 BENCHMARK(AddPairStressTestBox2D400)->Arg(0)->Arg(10)->Arg(15)->Arg(16)->Arg(17)->Arg(18)->Arg(19)->Arg(20)->Arg(30);
 #endif // BENCHMARK_BOX2D
 
-BENCHMARK(TilesRestPlayRho)->Arg(12)->Arg(20)->Arg(36);
+BENCHMARK(TilesRestComboGroundPlayRho)->Arg(12)->Arg(20)->Arg(36);
+BENCHMARK(TilesRestOneGroundPlayRho)->Arg(12)->Arg(20)->Arg(36);
+
 #ifdef BENCHMARK_BOX2D
 BENCHMARK(TilesRestBox2D)->Arg(12)->Arg(20)->Arg(36);
 #endif // BENCHMARK_BOX2D

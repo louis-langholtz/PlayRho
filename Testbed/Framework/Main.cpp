@@ -108,7 +108,6 @@ using BodiesRange = SizedRange<World::Bodies::const_iterator>;
 using JointsRange = SizedRange<World::Joints::const_iterator>;
 using BodyJointsRange = SizedRange<std::vector<std::pair<BodyID, JointID>>::const_iterator>;
 using ContactsRange = SizedRange<World::Contacts::const_iterator>;
-using FixturesRange = SizedRange<World::Fixtures::const_iterator>;
 using FixtureSet = Test::FixtureSet;
 using BodySet = Test::BodySet;
 
@@ -1384,18 +1383,18 @@ static void EntityUI(const Shape& shape)
     //ImGui::LabelText("Vertex Radius (m)", "%.2e", static_cast<double>(Real{vertexRadius / Meter}));
 }
 
-static void EntityUI(World& world, FixtureID fixture)
+static void EntityUI(World& world, ShapeID shapeId)
 {
-    ImGui::IdContext idCtx(to_underlying(fixture));
+    ImGui::IdContext idCtx(to_underlying(shapeId));
 
     ImGui::Spacing();
 
     {
-        auto v = IsSensor(world, fixture);
+        auto v = IsSensor(world, shapeId);
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
         if (ImGui::Checkbox("Sensor", &v))
         {
-            SetSensor(world, fixture, v);
+            SetSensor(world, shapeId, v);
         }
         ImGui::PopStyleVar();
     }
@@ -1405,7 +1404,7 @@ static void EntityUI(World& world, FixtureID fixture)
 
     {
         using CheckboxFlagType = unsigned int;
-        const auto oldFilterData = GetFilterData(world, fixture);
+        const auto oldFilterData = GetFilterData(world, shapeId);
         auto cateBits = CheckboxFlagType{oldFilterData.categoryBits};
         auto maskBits = CheckboxFlagType{oldFilterData.maskBits};
         
@@ -1458,7 +1457,7 @@ static void EntityUI(World& world, FixtureID fixture)
         };
         if (newFilterData != oldFilterData)
         {
-            SetFilterData(world, fixture, newFilterData);
+            SetFilterData(world, shapeId, newFilterData);
         }
     }
     
@@ -1466,23 +1465,13 @@ static void EntityUI(World& world, FixtureID fixture)
     ImGui::Spacing();
     
     {
-        const auto& shape = GetShape(world, fixture);
+        const auto& shape = GetShape(world, shapeId);
         if (ImGui::TreeNodeEx(&shape, 0, "Shape/Part"))
         {
             EntityUI(shape);
             ImGui::TreePop();
         }
     }
-#if 0
-    {
-        const auto proxies = GetProxies(world, fixture);
-        if (ImGui::TreeNodeEx("Proxies", 0, "Proxies (%lu)", size(proxies)))
-        {
-            CollectionUI(world, proxies);
-            ImGui::TreePop();
-        }
-    }
-#endif
 }
 
 static void EntityUI(const Manifold& m)
@@ -1541,13 +1530,14 @@ static void EntityUI(const Manifold& m)
 }
 
 static void CollectionUI(World& world,
-                         const FixturesRange& fixtures, const FixtureSet& selectedFixtures)
+                         BodyID bodyId,
+                         const std::vector<ShapeID>& shapes, const FixtureSet& selectedFixtures)
 {
-    ImGui::IdContext idCtx("Fixtures");
-    for (const auto& f: fixtures)
+    ImGui::IdContext idCtx("Shapes");
+    for (const auto& f: shapes)
     {
-        const auto flags = IsWithin(selectedFixtures, f)? ImGuiTreeNodeFlags_DefaultOpen: 0;
-        if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(f.get()), flags, "Fixture %u", f.get()))
+        const auto flags = IsWithin(selectedFixtures, std::make_pair(bodyId, f))? ImGuiTreeNodeFlags_DefaultOpen: 0;
+        if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(f.get()), flags, "Shape %u", f.get()))
         {
             EntityUI(world, f);
             ImGui::TreePop();
@@ -1560,9 +1550,9 @@ static void EntityUI(World& world, BodyID b, const FixtureSet& selectedFixtures)
     ImGui::ItemWidthContext itemWidthCtx(100);
     EntityUI(world, b);
     {
-        const auto fixtures = GetFixtures(world, b);
-        if (ImGui::TreeNodeEx("Fixtures", 0, "Fixtures (%lu)", size(fixtures))) {
-            CollectionUI(world, fixtures, selectedFixtures);
+        const auto shapes = GetShapes(world, b);
+        if (ImGui::TreeNodeEx("Shapes", 0, "Shapes (%lu)", size(shapes))) {
+            CollectionUI(world, b, shapes, selectedFixtures);
             ImGui::TreePop();
         }
     }
@@ -2147,55 +2137,46 @@ static void EntityUI(World& world, ContactID c)
     ImGui::ItemWidthContext itemWidthCtx(50);
     {
         auto v = IsEnabled(world, c);
-        if (ImGui::Checkbox("Enabled", &v))
-        {
-            if (v)
-            {
+        if (ImGui::Checkbox("Enabled", &v)) {
+            if (v) {
                 SetEnabled(world, c);
             }
-            else
-            {
+            else {
                 UnsetEnabled(world, c);
             }
         }
     }
     {
         auto val = static_cast<float>(GetRestitution(world, c));
-        if (ImGui::InputFloat("Restitution", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue))
-        {
+        if (ImGui::InputFloat("Restitution", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
             SetRestitution(world, c, val);
         }
     }
     {
         auto val = static_cast<float>(GetFriction(world, c));
-        if (ImGui::InputFloat("Friction", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue))
-        {
+        if (ImGui::InputFloat("Friction", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
             SetFriction(world, c, val);
         }
     }
     {
         auto val = static_cast<float>(Real{GetTangentSpeed(world, c) / MeterPerSecond});
-        if (ImGui::InputFloat("Belt Speed", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue))
-        {
+        if (ImGui::InputFloat("Belt Speed", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
             SetTangentSpeed(world, c, val * MeterPerSecond);
         }
     }
-    if (HasValidToi(world, c))
-    {
+    if (HasValidToi(world, c)) {
         ImGui::LabelText("TOI", "%f", static_cast<double>(GetToi(world, c)));
     }
     ImGui::LabelText("TOI Count", "%d", GetToiCount(world, c));
 
-    if (IsTouching(world, c))
-    {
+    if (IsTouching(world, c)) {
         EntityUI(GetManifold(world, c));
     }
 
     ImGui::LabelText("Body A", "%u", GetBodyA(world, c).get());
     ImGui::LabelText("Body B", "%u", GetBodyB(world, c).get());
-
-    ImGui::LabelText("Fixture A", "%u", GetFixtureA(world, c).get());
-    ImGui::LabelText("Fixture B", "%u", GetFixtureB(world, c).get());
+    ImGui::LabelText("Shape A", "%u", to_underlying(GetShapeA(world, c)));
+    ImGui::LabelText("Shape B", "%u", to_underlying(GetShapeB(world, c)));
 }
 
 static void CollectionUI(World& world, const BodiesRange& bodies,

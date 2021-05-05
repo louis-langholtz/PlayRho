@@ -29,7 +29,6 @@
 #include <PlayRho/Common/NonNegative.hpp>
 
 #include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/FixtureID.hpp>
 
 namespace playrho {
 namespace detail {

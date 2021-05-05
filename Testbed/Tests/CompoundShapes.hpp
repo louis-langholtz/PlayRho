@@ -30,17 +30,16 @@ class CompoundShapes : public Test
 public:
     CompoundShapes()
     {
-        CreateFixture(GetWorld(), CreateBody(GetWorld()),
-                              Shape{EdgeShapeConf{Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m}});
-        
+        Attach(GetWorld(), CreateBody(GetWorld()),
+               CreateShape(GetWorld(), EdgeShapeConf{Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m}));
         {
             auto conf = DiskShapeConf{};
             conf.vertexRadius = 0.5_m;
             
             conf.location = Vec2{-0.5f, 0.5f} * 1_m;
-            const auto circle1 = Shape{DiskShapeConf(conf).UseDensity(2_kgpm2)};
+            const auto circle1 = CreateShape(GetWorld(), DiskShapeConf(conf).UseDensity(2_kgpm2));
             conf.location = Vec2{0.5f, 0.5f} * 1_m;
-            const auto circle2 = Shape(conf);
+            const auto circle2 = CreateShape(GetWorld(), conf);
             for (auto i = 0; i < 10; ++i)
             {
                 const auto x = RandomFloat(-0.1f, 0.1f);
@@ -49,8 +48,8 @@ public:
                 bd.location = Vec2(x + 5.0f, 1.05f + 2.5f * i) * 1_m;
                 bd.angle = 1_rad * RandomFloat(-Pi, Pi);
                 const auto body = CreateBody(GetWorld(), bd);
-                CreateFixture(GetWorld(), body, circle1);
-                CreateFixture(GetWorld(), body, circle2);
+                Attach(GetWorld(), body, circle1);
+                Attach(GetWorld(), body, circle2);
             }
         }
 
@@ -58,10 +57,10 @@ public:
             auto conf = PolygonShapeConf{};
             conf.UseDensity(2_kgpm2);
             conf.SetAsBox(0.25_m, 0.5_m);
-            const auto polygon1 = Shape{conf};
+            const auto polygon1 = CreateShape(GetWorld(), conf);
             conf.UseDensity(2_kgpm2);
             conf.SetAsBox(0.25_m, 0.5_m, Vec2(0.0f, -0.5f) * 1_m, 0.5_rad * Pi);
-            const auto polygon2 = Shape{conf};
+            const auto polygon2 = CreateShape(GetWorld(), conf);
             for (int i = 0; i < 10; ++i)
             {
                 const auto x = RandomFloat(-0.1f, 0.1f);
@@ -70,8 +69,8 @@ public:
                 bd.location = Vec2(x - 5.0f, 1.05f + 2.5f * i) * 1_m;
                 bd.angle = 1_rad * RandomFloat(-Pi, Pi);
                 const auto body = CreateBody(GetWorld(), bd);
-                CreateFixture(GetWorld(), body, polygon1);
-                CreateFixture(GetWorld(), body, polygon2);
+                Attach(GetWorld(), body, polygon1);
+                Attach(GetWorld(), body, polygon2);
             }
         }
 
@@ -87,7 +86,7 @@ public:
                 Transform(Vec2(0.0f, 0.5f) * 1_m, xf1)
             });
             triangleConf1.UseDensity(2_kgpm2);
-            const auto triangle1 = Shape(triangleConf1);
+            const auto triangle1 = CreateShape(GetWorld(), triangleConf1);
 
             Transformation xf2;
             xf2.q = UnitVec::Get(-0.3524_rad * Pi);
@@ -100,7 +99,7 @@ public:
                 Transform(Vec2(0.0f, 0.5f) * 1_m, xf2)
             });
             trianglConf2.UseDensity(2_kgpm2);
-            const auto triangle2 = Shape(trianglConf2);
+            const auto triangle2 = CreateShape(GetWorld(), trianglConf2);
 
             for (auto i = 0; i < 10; ++i)
             {
@@ -110,8 +109,8 @@ public:
                 bd.location = Vec2(x, 2.05f + 2.5f * i) * 1_m;
                 bd.angle = 0_rad;
                 const auto body = CreateBody(GetWorld(), bd);
-                CreateFixture(GetWorld(), body, triangle1);
-                CreateFixture(GetWorld(), body, triangle2);
+                Attach(GetWorld(), body, triangle1);
+                Attach(GetWorld(), body, triangle2);
             }
         }
 
@@ -119,20 +118,20 @@ public:
             auto conf = PolygonShapeConf{};
             conf.UseDensity(4_kgpm2);
             conf.SetAsBox(1.5_m, 0.15_m);
-            const auto bottom = Shape{conf};
+            const auto bottom = CreateShape(GetWorld(), conf);
             conf.SetAsBox(0.15_m, 2.7_m, Vec2(-1.45f, 2.35f) * 1_m, +0.2_rad);
-            const auto left = Shape{conf};
+            const auto left = CreateShape(GetWorld(), conf);
             conf.UseDensity(4_kgpm2);
             conf.SetAsBox(0.15_m, 2.7_m, Vec2(1.45f, 2.35f) * 1_m, -0.2_rad);
-            const auto right = Shape{conf};
+            const auto right = CreateShape(GetWorld(), conf);
 
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2( 0.0f, 2.0f ) * 1_m;
             const auto body = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), body, bottom);
-            CreateFixture(GetWorld(), body, left);
-            CreateFixture(GetWorld(), body, right);
+            Attach(GetWorld(), body, bottom);
+            Attach(GetWorld(), body, left);
+            Attach(GetWorld(), body, right);
         }
         
         SetAccelerations(GetWorld(), GetGravity());

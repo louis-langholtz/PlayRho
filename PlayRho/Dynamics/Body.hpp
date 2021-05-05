@@ -26,11 +26,9 @@
 /// Declarations of the Body class, and free functions associated with it.
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Range.hpp>
 #include <PlayRho/Dynamics/BodyType.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/MovementConf.hpp>
 #include <PlayRho/Collision/MassData.hpp>
 
 #include <cassert>
@@ -38,9 +36,6 @@
 
 namespace playrho {
 namespace d2 {
-
-struct FixtureConf;
-class Shape;
 
 /// @example Body.cpp
 /// This is the <code>googletest</code> based unit testing file for the interfaces to

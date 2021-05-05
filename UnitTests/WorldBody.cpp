@@ -26,6 +26,7 @@
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/WorldFixture.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
+#include <PlayRho/Dynamics/WorldShape.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
@@ -39,48 +40,16 @@ using namespace playrho::d2;
 TEST(WorldBody, WorldCreated)
 {
     auto world = World{};
-
     const auto body = CreateBody(world);
     ASSERT_NE(body, InvalidBodyID);
-
     EXPECT_TRUE(IsEnabled(world, body));
     EXPECT_FALSE(IsAwake(world, body));
     EXPECT_FALSE(IsSpeedable(world, body));
     EXPECT_FALSE(IsAccelerable(world, body));
     EXPECT_FALSE(Awaken(world, body));
-
-    EXPECT_TRUE(GetFixtures(world, body).empty());
-    {
-        auto i = 0;
-        for (auto&& fixture: GetFixtures(world, body))
-        {
-            EXPECT_EQ(GetBody(world, fixture), body);
-            ++i;
-        }
-        EXPECT_EQ(i, 0);
-    }
-
+    EXPECT_TRUE(GetShapes(world, body).empty());
     EXPECT_TRUE(GetJoints(world, body).empty());
-    {
-        auto i = 0;
-        for (auto&& joint: GetJoints(world, body))
-        {
-            NOT_USED(joint);
-            ++i;
-        }
-        EXPECT_EQ(i, 0);        
-    }
-
     EXPECT_TRUE(GetContacts(world, body).empty());
-    {
-        auto i = 0;
-        for (auto&& ce: GetContacts(world, body))
-        {
-            NOT_USED(ce);
-            ++i;
-        }
-        EXPECT_EQ(i, 0);        
-    }
 }
 
 TEST(WorldBody, SetVelocityDoesNothingToStatic)
@@ -108,23 +77,22 @@ TEST(WorldBody, SetVelocityDoesNothingToStatic)
     EXPECT_EQ(GetVelocity(world, body), zeroVelocity);
 }
 
-TEST(WorldBody, CreateFixture)
+TEST(WorldBody, CreateAttachShape)
 {
     auto world = World{};
     const auto body = CreateBody(world);
-    EXPECT_EQ(GetFixtureCount(world, body), std::size_t(0));
+    EXPECT_EQ(size(GetShapes(world, body)), std::size_t(0));
 
-    const auto valid_shape = Shape{DiskShapeConf(1_m)};
-    EXPECT_NE(CreateFixture(world, body, valid_shape, FixtureConf{}), InvalidFixtureID);
-
-    EXPECT_EQ(GetFixtureCount(world, body), std::size_t(1));
+    const auto valid_shape = CreateShape(world, DiskShapeConf(1_m));
+    ASSERT_NE(valid_shape, InvalidShapeID);
+    EXPECT_NO_THROW(Attach(world, body, valid_shape));
+    EXPECT_EQ(size(GetShapes(world, body)), std::size_t(1));
 
     const auto minRadius = GetMinVertexRadius(world);
-    EXPECT_THROW(CreateFixture(world, body, Shape{DiskShapeConf{minRadius / 2}}), InvalidArgument);
+    EXPECT_THROW(CreateShape(world, DiskShapeConf{minRadius / 2}), InvalidArgument);
 
     const auto maxRadius = GetMaxVertexRadius(world);
-    EXPECT_THROW(CreateFixture(world, body, Shape{DiskShapeConf{maxRadius + maxRadius / 10}}),
-                 InvalidArgument);
+    EXPECT_THROW(CreateShape(world, DiskShapeConf{maxRadius + maxRadius / 10}), InvalidArgument);
 }
 
 TEST(WorldBody, Destroy)
@@ -140,15 +108,15 @@ TEST(WorldBody, Destroy)
     const auto bodyA = CreateBody(world);
     const auto bodyB = CreateBody(world);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
-    ASSERT_EQ(GetFixtureCount(world, bodyA), std::size_t(0));
-    ASSERT_EQ(GetFixtureCount(world, bodyB), std::size_t(0));
+    ASSERT_EQ(GetShapeCount(world, bodyA), std::size_t(0));
+    ASSERT_EQ(GetShapeCount(world, bodyB), std::size_t(0));
 
-    const auto fixtureA = CreateFixture(world, bodyA, Shape{DiskShapeConf(1_m)}, FixtureConf{});
-    ASSERT_NE(fixtureA, InvalidFixtureID);
-    ASSERT_EQ(GetFixtureCount(world, bodyA), std::size_t(1));
-
-    EXPECT_TRUE(Destroy(world, fixtureA));
-    EXPECT_EQ(GetFixtureCount(world, bodyA), std::size_t(0));
+    const auto shapeId = CreateShape(world, Shape{DiskShapeConf(1_m)});
+    ASSERT_NE(shapeId, InvalidShapeID);
+    ASSERT_NO_THROW(Attach(world, bodyA, shapeId));
+    ASSERT_EQ(GetShapeCount(world, bodyA), std::size_t(1));
+    ASSERT_TRUE(Detach(world, bodyA, shapeId));
+    EXPECT_EQ(GetShapeCount(world, bodyA), std::size_t(0));
 }
 
 TEST(WorldBody, SetEnabledCausesIsEnabled)
@@ -172,9 +140,9 @@ TEST(WorldBody, SetFixedRotation)
 {
     auto world = World{};
     const auto body = CreateBody(world);
-    const auto valid_shape = Shape{DiskShapeConf(1_m)};
+    const auto valid_shape = CreateShape(world, DiskShapeConf(1_m));
 
-    ASSERT_NE(CreateFixture(world, body, valid_shape, FixtureConf{}), InvalidFixtureID);
+    ASSERT_NO_THROW(Attach(world, body, valid_shape));
     ASSERT_FALSE(IsFixedRotation(world, body));
 
     // Test that set fixed rotation to flag already set is not a toggle
@@ -191,10 +159,10 @@ TEST(WorldBody, CreateAndDestroyFixture)
 {
     auto world = World{};
 
-    auto body = CreateBody(world);
-    ASSERT_NE(body, InvalidBodyID);
-    EXPECT_TRUE(GetFixtures(world, body).empty());
-    EXPECT_FALSE(IsMassDataDirty(world, body));
+    auto bodyId = CreateBody(world);
+    ASSERT_NE(bodyId, InvalidBodyID);
+    EXPECT_TRUE(GetShapes(world, bodyId).empty());
+    EXPECT_FALSE(IsMassDataDirty(world, bodyId));
 
     auto conf = DiskShapeConf{};
     conf.vertexRadius = 2.871_m;
@@ -203,57 +171,58 @@ TEST(WorldBody, CreateAndDestroyFixture)
     const auto shape = Shape(conf);
     
     {
-        auto fixture = CreateFixture(world, body, shape, FixtureConf{}, false);
-        const auto fshape = GetShape(world, fixture);
+        auto shapeId = CreateShape(world, shape);
+        Attach(world, bodyId, shapeId, false);
+        const auto fshape = GetShape(world, shapeId);
         EXPECT_EQ(GetVertexRadius(fshape, 0), GetVertexRadius(shape, 0));
         EXPECT_EQ(TypeCast<DiskShapeConf>(fshape).GetLocation(), conf.GetLocation());
-        EXPECT_FALSE(GetFixtures(world, body).empty());
+        EXPECT_FALSE(GetShapes(world, bodyId).empty());
         {
             auto i = 0;
-            for (const auto& f: GetFixtures(world, body))
+            for (const auto& f: GetShapes(world, bodyId))
             {
-                EXPECT_EQ(f, fixture);
+                EXPECT_EQ(f, shapeId);
                 ++i;
             }
             EXPECT_EQ(i, 1);
         }
-        EXPECT_TRUE(IsMassDataDirty(world, body));
-        ResetMassData(world, body);
-        EXPECT_FALSE(IsMassDataDirty(world, body));
+        EXPECT_TRUE(IsMassDataDirty(world, bodyId));
+        ResetMassData(world, bodyId);
+        EXPECT_FALSE(IsMassDataDirty(world, bodyId));
 
-        EXPECT_TRUE(world.Destroy(fixture));
-        EXPECT_TRUE(GetFixtures(world, body).empty());
-        EXPECT_TRUE(IsMassDataDirty(world, body));
+        EXPECT_NO_THROW(world.Destroy(shapeId));
+        EXPECT_TRUE(GetShapes(world, bodyId).empty());
+        EXPECT_TRUE(IsMassDataDirty(world, bodyId));
 
-        ResetMassData(world, body);
-        EXPECT_FALSE(IsMassDataDirty(world, body));
+        ResetMassData(world, bodyId);
+        EXPECT_FALSE(IsMassDataDirty(world, bodyId));
 
-        DestroyFixtures(world, body);
-        EXPECT_TRUE(GetFixtures(world, body).empty());
+        Detach(world, bodyId);
+        EXPECT_TRUE(GetShapes(world, bodyId).empty());
     }
     {
-        auto fixture = CreateFixture(world, body, shape, FixtureConf{}, false);
-        const auto fshape = GetShape(world, fixture);
+        auto shapeId = CreateShape(world, shape);
+        Attach(world, bodyId, shapeId, false);
+        const auto fshape = GetShape(world, shapeId);
         EXPECT_EQ(GetVertexRadius(fshape, 0), GetVertexRadius(shape, 0));
         EXPECT_EQ(TypeCast<DiskShapeConf>(fshape).GetLocation(), conf.GetLocation());
-        EXPECT_FALSE(GetFixtures(world, body).empty());
+        EXPECT_FALSE(GetShapes(world, bodyId).empty());
         {
             auto i = 0;
-            for (const auto& f: GetFixtures(world, body))
-            {
-                EXPECT_EQ(f, fixture);
+            for (const auto& f: GetShapes(world, bodyId)) {
+                EXPECT_EQ(f, shapeId);
                 ++i;
             }
             EXPECT_EQ(i, 1);
         }
-        EXPECT_TRUE(IsMassDataDirty(world, body));
-        ResetMassData(world, body);
-        EXPECT_FALSE(IsMassDataDirty(world, body));
-        EXPECT_FALSE(GetFixtures(world, body).empty());
+        EXPECT_TRUE(IsMassDataDirty(world, bodyId));
+        ResetMassData(world, bodyId);
+        EXPECT_FALSE(IsMassDataDirty(world, bodyId));
+        EXPECT_FALSE(GetShapes(world, bodyId).empty());
         
-        DestroyFixtures(world, body);
-        EXPECT_TRUE(GetFixtures(world, body).empty());
-        EXPECT_FALSE(IsMassDataDirty(world, body));
+        Detach(world, bodyId);
+        EXPECT_TRUE(GetShapes(world, bodyId).empty());
+        EXPECT_FALSE(IsMassDataDirty(world, bodyId));
     }
 }
 
@@ -531,8 +500,9 @@ TEST(WorldBody, SetAngularVelocity)
 TEST(WorldBody, ApplyForce)
 {
     auto world = World{};
+    const auto shapeId = CreateShape(world, PolygonShapeConf(1_m, 1_m).UseDensity(1_kgpm2));
     const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    CreateFixture(world, body, Shape{PolygonShapeConf(1_m, 1_m).UseDensity(1_kgpm2)}, FixtureConf{});
+    Attach(world, body, shapeId);
     ASSERT_EQ(GetMass(world, body), 4_kg);
     auto value = Force2{};
     value = Force2{4_N, 4_N};
@@ -545,8 +515,9 @@ TEST(WorldBody, ApplyForce)
 TEST(WorldBody, ApplyTorque)
 {
     auto world = World{};
+    const auto shapeId = CreateShape(world, PolygonShapeConf(1_m, 1_m).UseDensity(1_kgpm2));
     const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    CreateFixture(world, body, Shape{PolygonShapeConf(1_m, 1_m).UseDensity(1_kgpm2)}, FixtureConf{});
+    Attach(world, body, shapeId);
     ASSERT_EQ(GetMass(world, body), 4_kg);
     auto value = Torque{};
     value = 4_kg * SquareMeter / SquareSecond / Radian;
@@ -560,8 +531,9 @@ TEST(WorldBody, ApplyTorque)
 TEST(WorldBody, ApplyLinearImpulse)
 {
     auto world = World{};
+    const auto shapeId = CreateShape(world, PolygonShapeConf(1_m, 1_m).UseDensity(1_kgpm2));
     const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    CreateFixture(world, body, Shape{PolygonShapeConf(1_m, 1_m).UseDensity(1_kgpm2)}, FixtureConf{});
+    Attach(world, body, shapeId);
     ASSERT_EQ(GetMass(world, body), 4_kg);
     auto value = Momentum2{40_Ns, 0_Ns};
     EXPECT_NO_THROW(ApplyLinearImpulse(world, body, value, GetWorldCenter(world, body)));
@@ -573,8 +545,9 @@ TEST(WorldBody, ApplyLinearImpulse)
 TEST(WorldBody, ApplyAngularImpulse)
 {
     auto world = World{};
+    const auto shapeId = CreateShape(world, PolygonShapeConf(1_m, 1_m).UseDensity(1_kgpm2));
     const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    CreateFixture(world, body, Shape{PolygonShapeConf(1_m, 1_m).UseDensity(1_kgpm2)}, FixtureConf{});
+    Attach(world, body, shapeId);
     ASSERT_EQ(GetMass(world, body), 4_kg);
     auto value = AngularMomentum{Real(8) * NewtonMeterSecond};
     EXPECT_NO_THROW(ApplyAngularImpulse(world, body, value));
@@ -599,21 +572,21 @@ TEST(WorldBody, CreateLotsOfFixtures)
     {
         auto world = World{};
 
+        const auto shapeId = CreateShape(world, shape);
         auto body = CreateBody(world, bd);
         ASSERT_NE(body, InvalidBodyID);
-        EXPECT_TRUE(GetFixtures(world, body).empty());
+        EXPECT_TRUE(GetShapes(world, body).empty());
         
         for (auto i = decltype(num){0}; i < num; ++i)
         {
-            auto fixture = CreateFixture(world, body, shape, FixtureConf{}, false);
-            ASSERT_NE(fixture, InvalidFixtureID);
+            ASSERT_NO_THROW(Attach(world, body, shapeId, false));
         }
         ResetMassData(world, body);
         
-        EXPECT_FALSE(GetFixtures(world, body).empty());
+        EXPECT_FALSE(GetShapes(world, body).empty());
         {
             int i = decltype(num){0};
-            for (auto&& f: GetFixtures(world, body))
+            for (auto&& f: GetShapes(world, body))
             {
                 NOT_USED(f);
                 ++i;
@@ -628,20 +601,20 @@ TEST(WorldBody, CreateLotsOfFixtures)
     {
         auto world = World{};
         
+        const auto shapeId = CreateShape(world, shape);
         auto body = CreateBody(world, bd);
         ASSERT_NE(body, InvalidBodyID);
-        EXPECT_TRUE(GetFixtures(world, body).empty());
+        EXPECT_TRUE(GetShapes(world, body).empty());
         
         for (auto i = decltype(num){0}; i < num; ++i)
         {
-            auto fixture = CreateFixture(world, body, shape, FixtureConf{}, true);
-            ASSERT_NE(fixture, InvalidFixtureID);
+            ASSERT_NO_THROW(Attach(world, body, shapeId, true));
         }
         
-        EXPECT_FALSE(GetFixtures(world, body).empty());
+        EXPECT_FALSE(GetShapes(world, body).empty());
         {
             auto i = decltype(num){0};
-            for (auto&& f: GetFixtures(world, body))
+            for (auto&& f: GetShapes(world, body))
             {
                 NOT_USED(f);
                 ++i;
@@ -726,15 +699,15 @@ TEST(WorldBody, CalcGravitationalAcceleration)
     const auto l1 = Length2{-8_m, 0_m};
     const auto l2 = Length2{+8_m, 0_m};
     const auto l3 = Length2{+16_m, 0_m};
-    const auto shape = Shape{DiskShapeConf{}.UseRadius(2_m).UseDensity(1e10_kgpm2)};
+    const auto shapeId = CreateShape(world, DiskShapeConf{}.UseRadius(2_m).UseDensity(1e10_kgpm2));
     
     const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l1));
-    CreateFixture(world, b1, shape);
+    Attach(world, b1, shapeId);
     EXPECT_EQ(CalcGravitationalAcceleration(world, b1).linear, LinearAcceleration2());
     EXPECT_EQ(CalcGravitationalAcceleration(world, b1).angular, AngularAcceleration());
 
     const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l2));
-    CreateFixture(world, b2, shape);
+    Attach(world, b2, shapeId);
     const auto accel = CalcGravitationalAcceleration(world, b1);
     EXPECT_NEAR(static_cast<double>(Real(GetX(accel.linear)/MeterPerSquareSecond)),
                 0.032761313021183014, 0.032761313021183014/100);
@@ -774,8 +747,8 @@ TEST(WorldBody, GetCentripetalForce)
     const auto l1 = Length2{-8_m, 0_m};
     auto world = World{};
     const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l1));
-    const auto shape = Shape{DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2)};
-    CreateFixture(world, body, shape);
+    const auto shapeId = CreateShape(world, DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2));
+    Attach(world, body, shapeId);
     SetVelocity(world, body, LinearVelocity2{2_mps, 3_mps});
     EXPECT_EQ(GetLinearVelocity(world, body), LinearVelocity2(2_mps, 3_mps));
 

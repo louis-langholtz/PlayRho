@@ -39,7 +39,8 @@ public:
         const auto a = 0.5_m;
         const auto h = Length2{0_m, a};
         const auto root = AddNode(ground, Length2{}, 0, 3.0f, a,
-                                  Shape{PolygonShapeConf{}.UseDensity(density).SetAsBox(a / 4, a)});
+                                  CreateShape(GetWorld(),
+                                              PolygonShapeConf{}.UseDensity(density).SetAsBox(a / 4, a)));
 
         auto jointConf = RevoluteJointConf{};
         jointConf.bodyA = ground;
@@ -50,7 +51,7 @@ public:
     }
 
     BodyID AddNode(const BodyID parent, const Length2 localAnchor, const int depth,
-                  const Real offset, const Length a, Shape shape)
+                  const Real offset, const Length a, ShapeID shape)
     {
         const auto h = Length2{0_m, a};
         const auto p = GetLocation(GetWorld(), parent) + localAnchor - h;
@@ -61,7 +62,7 @@ public:
         bodyConf.location = p;
         const auto body = CreateBody(GetWorld(), bodyConf);
 
-        CreateFixture(GetWorld(), body, shape);
+        Attach(GetWorld(), body, shape);
 
         if (depth == MaxDepth)
         {
@@ -71,7 +72,7 @@ public:
         auto shape2 = PolygonShapeConf{};
         shape2.UseDensity(density);
         shape2.SetAsBox(offset * 1_m, a / 4, Length2{0_m, -a}, 0_rad);
-        CreateFixture(GetWorld(), body, Shape(shape2));
+        Attach(GetWorld(), body, CreateShape(GetWorld(), shape2));
 
         const auto a1 = Length2{offset * 1_m, -a};
         const auto a2 = Length2{-offset * 1_m, -a};

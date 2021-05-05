@@ -51,7 +51,7 @@ public:
         const auto groundShapeId = CreateShape(GetWorld(), EdgeShapeConf{}
                                     .UseFriction(Real(0.3))
                                     .Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
-        CreateFixture(GetWorld(), CreateBody(GetWorld()), groundShapeId);
+        Attach(GetWorld(), CreateBody(GetWorld()), groundShapeId);
         
         // Small triangle
         Length2 vertices[3];
@@ -72,7 +72,7 @@ public:
         triangleBodyConf.location = Vec2(-5.0f, 2.0f) * 1_m;
 
         const auto body1 = CreateBody(GetWorld(), triangleBodyConf);
-        CreateFixture(GetWorld(), body1, CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(triangleFilter)));
+        Attach(GetWorld(), body1, CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(triangleFilter)));
 
         // Large triangle (recycle definitions)
         vertices[0] *= 2.0f;
@@ -84,14 +84,14 @@ public:
         triangleBodyConf.fixedRotation = true; // look at me!
 
         const auto body2 = CreateBody(GetWorld(), triangleBodyConf);
-        CreateFixture(GetWorld(), body2, CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(triangleFilter)));
+        Attach(GetWorld(), body2, CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(triangleFilter)));
 
         {
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-5.0f, 10.0f) * 1_m;
             const auto body = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), body, Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 1_m)});
+            Attach(GetWorld(), body, CreateShape(GetWorld(), PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 1_m)));
 
             auto jd = PrismaticJointConf{};
             jd.bodyA = body2;
@@ -121,7 +121,7 @@ public:
         boxBodyConf.location = Vec2(0.0f, 2.0f) * 1_m;
 
         const auto body3 = CreateBody(GetWorld(), boxBodyConf);
-        CreateFixture(GetWorld(), body3, CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(boxShapeFilter)));
+        Attach(GetWorld(), body3, CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(boxShapeFilter)));
 
         // Large box (recycle definitions)
         polygon.SetAsBox(2_m, 1_m);
@@ -129,7 +129,7 @@ public:
         boxBodyConf.location = Vec2(0.0f, 6.0f) * 1_m;
 
         const auto body4 = CreateBody(GetWorld(), boxBodyConf);
-        CreateFixture(GetWorld(), body4, CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(boxShapeFilter)));
+        Attach(GetWorld(), body4, CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(boxShapeFilter)));
 
         // Small circle
         auto circleConf = DiskShapeConf{};
@@ -146,7 +146,7 @@ public:
         
         const auto body5 = CreateBody(GetWorld(), circleBodyConf);
         circleConf.vertexRadius = 1_m;
-        CreateFixture(GetWorld(), body5, CreateShape(GetWorld(), DiskShapeConf{circleConf}.UseFilter(circleShapeFilter)));
+        Attach(GetWorld(), body5, CreateShape(GetWorld(), DiskShapeConf{circleConf}.UseFilter(circleShapeFilter)));
 
         // Large circle
         circleShapeFilter.groupIndex = k_largeGroup;
@@ -154,7 +154,7 @@ public:
 
         const auto body6 = CreateBody(GetWorld(), circleBodyConf);
         circleConf.vertexRadius = circleConf.vertexRadius * 2;
-        CreateFixture(GetWorld(), body6, CreateShape(GetWorld(), DiskShapeConf{circleConf}.UseFilter(circleShapeFilter)));
+        Attach(GetWorld(), body6, CreateShape(GetWorld(), DiskShapeConf{circleConf}.UseFilter(circleShapeFilter)));
         
         SetAccelerations(GetWorld(), GetGravity());
     }

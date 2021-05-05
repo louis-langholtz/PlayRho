@@ -75,7 +75,7 @@ public:
                 shape.UseDensity(Real{1.000000000000000e+00f} * 1_kgpm2);
                 shape.UseIsSensor(false);
                 shape.UseFilter(Filter{Filter::bits_type(1), Filter::bits_type(65535), Filter::index_type(0)});
-                CreateFixture(GetWorld(), bodies[0], Shape(shape));
+                Attach(GetWorld(), bodies[0], CreateShape(GetWorld(), shape));
             }
         }
         {
@@ -109,7 +109,7 @@ public:
                 shape.UseDensity(Real{5.000000000000000e+00f} * 1_kgpm2);
                 shape.UseIsSensor(false);
                 shape.UseFilter(Filter{Filter::bits_type(1), Filter::bits_type(65535), Filter::index_type(0)});
-                CreateFixture(GetWorld(), bodies[1], Shape(shape));
+                Attach(GetWorld(), bodies[1], CreateShape(GetWorld(), shape));
             }
         }
         {
@@ -140,7 +140,7 @@ public:
                 shape.UseDensity(Real{1.000000000000000e+01f} * 1_kgpm2);
                 shape.UseIsSensor(false);
                 shape.UseFilter(Filter{Filter::bits_type(1), Filter::bits_type(65535), Filter::index_type(-3)});
-                CreateFixture(GetWorld(), bodies[2], Shape(shape));
+                Attach(GetWorld(), bodies[2], CreateShape(GetWorld(), shape));
             }
         }
 

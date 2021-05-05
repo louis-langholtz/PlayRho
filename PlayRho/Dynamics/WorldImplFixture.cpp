@@ -26,40 +26,5 @@
 namespace playrho {
 namespace d2 {
 
-FixtureCounter GetFixtureRange(const WorldImpl& world) noexcept
-{
-    return world.GetFixtureRange();
-}
-
-FixtureID CreateFixture(WorldImpl& world, const FixtureConf& def)
-{
-    return world.CreateFixture(def);
-}
-
-const FixtureConf& GetFixture(const WorldImpl& world, FixtureID id)
-{
-    return world.GetFixture(id);
-}
-
-void SetFixture(WorldImpl& world, FixtureID id, const FixtureConf& value)
-{
-    world.SetFixture(id, value);
-}
-
-bool Destroy(WorldImpl& world, FixtureID id)
-{
-    return world.Destroy(id);
-}
-
-const std::vector<ContactCounter>& GetProxies(const WorldImpl& world, FixtureID id)
-{
-    return world.GetProxies(id);
-}
-
-ContactCounter GetProxy(const WorldImpl& world, FixtureID id, ChildCounter child)
-{
-    return GetProxies(world, id).at(child);
-}
-
 } // namespace d2
 } // namespace playrho

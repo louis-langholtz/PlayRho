@@ -26,9 +26,9 @@
 #include <PlayRho/Dynamics/WorldFixture.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
+#include <PlayRho/Dynamics/WorldShape.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
-#include <PlayRho/Dynamics/FixtureConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 using namespace playrho;
@@ -36,20 +36,21 @@ using namespace playrho::d2;
 
 TEST(WorldContact, SetAwake)
 {
-    const auto shape = DiskShapeConf{};
     auto world = World{};
+    const auto s1 = CreateShape(world, DiskShapeConf{});
+    const auto s2 = CreateShape(world, DiskShapeConf{});
     const auto bA = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     const auto bB = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    const auto fA = CreateFixture(world, bA, Shape{shape});
-    const auto fB = CreateFixture(world, bB, Shape{shape});
+    Attach(world, bA, s1);
+    Attach(world, bB, s2);
 
     ASSERT_TRUE(GetContacts(world).empty());
     Step(world, StepConf{});
     const auto contacts = GetContacts(world);
     ASSERT_EQ(contacts.size(), ContactCounter(1));
     const auto c = contacts.begin()->second;
-    ASSERT_EQ(GetFixtureA(world, c), fA);
-    ASSERT_EQ(GetFixtureB(world, c), fB);
+    ASSERT_EQ(GetShapeA(world, c), s1);
+    ASSERT_EQ(GetShapeB(world, c), s2);
     ASSERT_TRUE(IsAwake(world, c));
 
     ASSERT_NO_THROW(UnsetAwake(world, bA));
@@ -68,18 +69,20 @@ TEST(WorldContact, ResetFriction)
 {
     const auto shape = DiskShapeConf{};
     auto world = World{};
+    const auto sA = CreateShape(world, Shape{shape});
+    const auto sB = CreateShape(world, Shape{shape});
     const auto bA = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     const auto bB = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    const auto fA = CreateFixture(world, bA, Shape{shape});
-    const auto fB = CreateFixture(world, bB, Shape{shape});
+    Attach(world, bA, sA);
+    Attach(world, bB, sB);
 
     ASSERT_TRUE(GetContacts(world).empty());
     Step(world, StepConf{});
     const auto contacts = GetContacts(world);
     ASSERT_EQ(contacts.size(), ContactCounter(1));
     const auto c = contacts.begin()->second;
-    ASSERT_EQ(GetFixtureA(world, c), fA);
-    ASSERT_EQ(GetFixtureB(world, c), fB);
+    ASSERT_EQ(GetShapeA(world, c), sA);
+    ASSERT_EQ(GetShapeB(world, c), sB);
 
     ASSERT_GT(GetFriction(shape), Real(0));
     ASSERT_NEAR(static_cast<double>(GetFriction(world, c)),
@@ -97,18 +100,20 @@ TEST(WorldContact, ResetRestitution)
 {
     const auto shape = DiskShapeConf{};
     auto world = World{};
+    const auto sA = CreateShape(world, Shape{shape});
+    const auto sB = CreateShape(world, Shape{shape});
     const auto bA = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     const auto bB = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    const auto fA = CreateFixture(world, bA, Shape{shape});
-    const auto fB = CreateFixture(world, bB, Shape{shape});
+    Attach(world, bA, sA);
+    Attach(world, bB, sB);
 
     ASSERT_TRUE(GetContacts(world).empty());
     Step(world, StepConf{});
     const auto contacts = GetContacts(world);
     ASSERT_EQ(contacts.size(), ContactCounter(1));
     const auto c = contacts.begin()->second;
-    ASSERT_EQ(GetFixtureA(world, c), fA);
-    ASSERT_EQ(GetFixtureB(world, c), fB);
+    ASSERT_EQ(GetShapeA(world, c), sA);
+    ASSERT_EQ(GetShapeB(world, c), sB);
 
     ASSERT_EQ(GetRestitution(shape), Real(0));
     ASSERT_EQ(GetRestitution(world, c), GetRestitution(shape));
@@ -120,12 +125,12 @@ TEST(WorldContact, ResetRestitution)
 
 TEST(WorldContact, SetUnsetEnabled)
 {
-    const auto shape = DiskShapeConf{};
     auto world = World{};
+    const auto shapeId = CreateShape(world, DiskShapeConf{});
     const auto bA = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     const auto bB = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    CreateFixture(world, bA, Shape{shape});
-    CreateFixture(world, bB, Shape{shape});
+    Attach(world, bA, shapeId);
+    Attach(world, bB, shapeId);
     ASSERT_NO_THROW(Step(world, StepConf{}));
     const auto contacts = GetContacts(world);
     ASSERT_EQ(contacts.size(), ContactCounter(1));
@@ -140,12 +145,12 @@ TEST(WorldContact, SetUnsetEnabled)
 
 TEST(WorldContact, SetTangentSpeed)
 {
-    const auto shape = DiskShapeConf{};
     auto world = World{};
+    const auto shapeId = CreateShape(world, DiskShapeConf{});
     const auto bA = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     const auto bB = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    CreateFixture(world, bA, Shape{shape});
-    CreateFixture(world, bB, Shape{shape});
+    Attach(world, bA, shapeId);
+    Attach(world, bB, shapeId);
     ASSERT_NO_THROW(Step(world, StepConf{}));
     const auto contacts = GetContacts(world);
     ASSERT_EQ(contacts.size(), ContactCounter(1));
@@ -164,12 +169,12 @@ TEST(WorldContact, SetTangentSpeed)
 
 TEST(WorldContact, WorldManifoldAndMore)
 {
-    const auto shape = DiskShapeConf{};
     auto world = World{};
+    const auto shapeId = CreateShape(world, DiskShapeConf{});
     const auto bA = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     const auto bB = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    CreateFixture(world, bA, Shape{shape});
-    CreateFixture(world, bB, Shape{shape});
+    Attach(world, bA, shapeId);
+    Attach(world, bB, shapeId);
     ASSERT_NO_THROW(Step(world, StepConf{}));
     const auto contacts = GetContacts(world);
     ASSERT_EQ(contacts.size(), ContactCounter(1));

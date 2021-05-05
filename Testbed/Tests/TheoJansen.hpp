@@ -71,8 +71,8 @@ public:
         const auto body1 = CreateBody(GetWorld(), bd1);
         const auto body2 = CreateBody(GetWorld(), bd2);
 
-        CreateFixture(GetWorld(), body1, Shape(poly1));
-        CreateFixture(GetWorld(), body2, Shape(poly2));
+        Attach(GetWorld(), body1, CreateShape(GetWorld(), poly1));
+        Attach(GetWorld(), body2, CreateShape(GetWorld(), poly2));
 
         // Using a soft distance constraint can reduce some jitter.
         // It also makes the structure seem a bit more fluid by
@@ -109,20 +109,20 @@ public:
             auto conf = EdgeShapeConf{};
  
             conf.Set(Vec2(-50.0f, 0.0f) * 1_m, Vec2(50.0f, 0.0f) * 1_m);
-            CreateFixture(GetWorld(), ground, Shape(conf));
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf));
 
             conf.Set(Vec2(-50.0f, 0.0f) * 1_m, Vec2(-50.0f, 10.0f) * 1_m);
-            CreateFixture(GetWorld(), ground, Shape(conf));
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf));
 
             conf.Set(Vec2(50.0f, 0.0f) * 1_m, Vec2(50.0f, 10.0f) * 1_m);
-            CreateFixture(GetWorld(), ground, Shape(conf));
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf));
         }
 
         // Balls
         auto circleConf = DiskShapeConf{};
         circleConf.vertexRadius = 0.25_m;
         circleConf.density = 1_kgpm2;
-        const auto circle = Shape(circleConf);
+        const auto circle = CreateShape(GetWorld(), circleConf);
         for (auto i = 0; i < 40; ++i)
         {
             BodyConf bd;
@@ -130,13 +130,11 @@ public:
             bd.location = Vec2(-40.0f + 2.0f * i, 0.5f) * 1_m;
 
             const auto body = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), body, circle);
+            Attach(GetWorld(), body, circle);
         }
 
         // Chassis
         {
-            Filter filter;
-            filter.groupIndex = -1;
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = pivot + m_offset;
@@ -145,7 +143,7 @@ public:
             conf.density = 1_kgpm2;
             conf.filter.groupIndex = -1;
             conf.SetAsBox(2.5_m, 1_m);
-            CreateFixture(GetWorld(), m_chassis, Shape{conf});
+            Attach(GetWorld(), m_chassis, CreateShape(GetWorld(), conf));
         }
 
         {
@@ -157,7 +155,7 @@ public:
             conf.vertexRadius = 1.6_m;
             conf.density = 1_kgpm2;
             conf.filter.groupIndex = -1;
-            CreateFixture(GetWorld(), m_wheel, Shape(conf));
+            Attach(GetWorld(), m_wheel, CreateShape(GetWorld(), conf));
         }
 
         {

@@ -32,6 +32,11 @@ namespace d2 {
 class WorldImpl;
 class Shape;
 
+/// @brief Gets the extent of the currently valid shape range.
+/// @note This is one higher than the maxium <code>ShapeID</code> that is in range
+///   for shape related functions.
+ShapeCounter GetShapeRange(const WorldImpl& world) noexcept;
+
 ShapeID CreateShape(WorldImpl& world, const Shape& def);
 
 const Shape& GetShape(const WorldImpl& world, ShapeID id);

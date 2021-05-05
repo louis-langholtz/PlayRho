@@ -28,9 +28,9 @@
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldShape.hpp>
 #include <PlayRho/Dynamics/WorldFixture.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
-#include <PlayRho/Dynamics/FixtureConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -173,9 +173,8 @@ TEST(WorldManifold, GetForContact)
     auto world = World{};
     const auto bA = CreateBody(world);
     const auto bB = CreateBody(world);
-    const auto fA = CreateFixture(world, bA, shape);
-    const auto fB = CreateFixture(world, bB, shape);
-    const auto c = Contact{bA, fA, 0u, bB, fB, 0u};
+    const auto shapeId = CreateShape(world, shape);
+    const auto c = Contact{bA, shapeId, 0u, bB, shapeId, 0u};
     const auto wm = GetWorldManifold(world, c, Manifold{});
     EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){0});
     EXPECT_FALSE(IsValid(wm.GetNormal()));

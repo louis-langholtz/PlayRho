@@ -37,13 +37,13 @@ namespace testbed {
             bd.type = BodyType::Static;
             bd.location = m_center;
             const auto ctrBody = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), ctrBody, Shape{DiskShapeConf{}.UseRadius(3_m)});
+            Attach(GetWorld(), ctrBody, CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(3_m)));
 
             bd.type = BodyType::Dynamic;
             bd.location = Length2{GetX(m_center), GetY(m_center) + radius * 1_m};
             m_orbiter = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), m_orbiter,
-                          Shape{DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2)});
+            Attach(GetWorld(), m_orbiter,
+                   CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2)));
             
             const auto velocity = Velocity{
                 Vec2{Pi * radius / 2, 0} * 1_mps,
@@ -55,13 +55,12 @@ namespace testbed {
             conf.Set(GetCircleVertices(20_m, 180));
             conf.UseVertexRadius(0.1_m);
             conf.UseDensity(1_kgpm2);
-            const auto outerCicle = Shape(conf);
 
             bd.type = BodyType::Dynamic;
             bd.location = m_center;
             bd.bullet = true;
             const auto dysonSphere = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), dysonSphere, outerCicle);
+            Attach(GetWorld(), dysonSphere, CreateShape(GetWorld(), conf));
         }
         
         void PreStep(const Settings&, Drawer&) override
@@ -75,7 +74,6 @@ namespace testbed {
     private:
         BodyID m_orbiter = InvalidBodyID;
         Length2 const m_center = Vec2{0, 20} * 1_m;
-
     };
     
 }

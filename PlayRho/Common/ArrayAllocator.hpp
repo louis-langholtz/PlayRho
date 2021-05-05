@@ -193,6 +193,21 @@ public:
         return m_data.end();
     }
 
+    typename std::vector<value_type>::const_iterator begin() const noexcept
+    {
+        return m_data.begin();
+    }
+
+    typename std::vector<value_type>::const_iterator end() const noexcept
+    {
+        return m_data.end();
+    }
+
+    const value_type* data() const noexcept
+    {
+        return m_data.data();
+    }
+
 private:
     std::vector<value_type> m_data; ///< Array data (both used & free).
     std::vector<size_type> m_free; ///< Indices of free elements.

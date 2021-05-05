@@ -38,11 +38,12 @@ public:
     Web(): Test(GetTestConf())
     {
         const auto ground = CreateBody(GetWorld());
-        CreateFixture(GetWorld(), ground,
-                      EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m});
+        Attach(GetWorld(), ground,
+               Shape(EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));
 
         {
-            const auto shape = Shape{PolygonShapeConf{}.UseDensity(5_kgpm2).SetAsBox(0.5_m, 0.5_m)};
+            const auto shape = CreateShape(GetWorld(),
+                                           PolygonShapeConf{}.UseDensity(5_kgpm2).SetAsBox(0.5_m, 0.5_m));
 
             BodyConf bd;
             bd.type = BodyType::Dynamic;
@@ -50,19 +51,19 @@ public:
 
             bd.location = Vec2(-5.0f, 5.0f) * 1_m;
             m_bodies[0] = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), m_bodies[0], shape);
+            Attach(GetWorld(), m_bodies[0], shape);
 
             bd.location = Vec2(5.0f, 5.0f) * 1_m;
             m_bodies[1] = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), m_bodies[1], shape);
+            Attach(GetWorld(), m_bodies[1], shape);
 
             bd.location = Vec2(5.0f, 15.0f) * 1_m;
             m_bodies[2] = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), m_bodies[2], shape);
+            Attach(GetWorld(), m_bodies[2], shape);
 
             bd.location = Vec2(-5.0f, 15.0f) * 1_m;
             m_bodies[3] = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), m_bodies[3], shape);
+            Attach(GetWorld(), m_bodies[3], shape);
 
             DistanceJointConf jd;
             Length2 p1, p2, d;

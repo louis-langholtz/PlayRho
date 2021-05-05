@@ -33,10 +33,8 @@ public:
     CollisionProcessing()
     {
         // Ground body
-        {
-            const auto ground = CreateBody(GetWorld());
-            CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{Vec2(-50, 0) * 1_m, Vec2(50, 0) * 1_m}});
-        }
+        Attach(GetWorld(), CreateBody(GetWorld()),
+               CreateShape(GetWorld(), EdgeShapeConf{Vec2(-50, 0) * 1_m, Vec2(50, 0) * 1_m}));
 
         auto xLo = -5.0f, xHi = 5.0f;
         auto yLo = 2.0f, yHi = 35.0f;
@@ -56,7 +54,7 @@ public:
         triangleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
         const auto body1 = CreateBody(GetWorld(), triangleBodyConf);
-        CreateFixture(GetWorld(), body1, Shape(polygon));
+        Attach(GetWorld(), body1, CreateShape(GetWorld(), polygon));
 
         // Large triangle (recycle definitions)
         vertices[0] *= 2.0f;
@@ -67,7 +65,7 @@ public:
         triangleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
         const auto body2 = CreateBody(GetWorld(), triangleBodyConf);
-        CreateFixture(GetWorld(), body2, Shape(polygon));
+        Attach(GetWorld(), body2, CreateShape(GetWorld(), polygon));
         
         // Small box
         polygon.SetAsBox(1_m, 0.5_m);
@@ -77,14 +75,14 @@ public:
         boxBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
         const auto body3 = CreateBody(GetWorld(), boxBodyConf);
-        CreateFixture(GetWorld(), body3, Shape(polygon));
+        Attach(GetWorld(), body3, CreateShape(GetWorld(), polygon));
 
         // Large box (recycle definitions)
         polygon.SetAsBox(2_m, 1_m);
         boxBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
         const auto body4 = CreateBody(GetWorld(), boxBodyConf);
-        CreateFixture(GetWorld(), body4, Shape(polygon));
+        Attach(GetWorld(), body4, CreateShape(GetWorld(), polygon));
 
         BodyConf circleBodyConf;
         circleBodyConf.type = BodyType::Dynamic;
@@ -92,12 +90,12 @@ public:
         // Small circle
         circleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
         const auto body5 = CreateBody(GetWorld(), circleBodyConf);
-        CreateFixture(GetWorld(), body5, Shape(DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2)));
+        Attach(GetWorld(), body5, CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2)));
 
         // Large circle
         circleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
         const auto body6 = CreateBody(GetWorld(), circleBodyConf);
-        CreateFixture(GetWorld(), body6, Shape(DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2)));
+        Attach(GetWorld(), body6, CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2)));
         
         SetAccelerations(GetWorld(), GetGravity());
     }
@@ -113,26 +111,19 @@ public:
 
         // Traverse the contact results. Destroy bodies that
         // are touching heavier bodies.
-        for (auto& point: GetPoints())
-        {
-            const auto body1 = GetBody(GetWorld(), point.fixtureA);
-            const auto body2 = GetBody(GetWorld(), point.fixtureB);
+        for (auto& point: GetPoints()) {
+            const auto body1 = point.bodyIdA;
+            const auto body2 = point.bodyIdB;
             const auto mass1 = GetMass(GetWorld(), body1);
             const auto mass2 = GetMass(GetWorld(), body2);
-
-            if (mass1 > 0_kg && mass2 > 0_kg)
-            {
-                if (mass2 > mass1)
-                {
+            if (mass1 > 0_kg && mass2 > 0_kg) {
+                if (mass2 > mass1) {
                     nuke[nukeCount++] = body1;
                 }
-                else
-                {
+                else {
                     nuke[nukeCount++] = body2;
                 }
-
-                if (nukeCount == k_maxNuke)
-                {
+                if (nukeCount == k_maxNuke) {
                     break;
                 }
             }

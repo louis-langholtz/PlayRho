@@ -28,6 +28,7 @@
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/WorldFixture.hpp>
+#include <PlayRho/Dynamics/WorldShape.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
@@ -167,9 +168,9 @@ TEST(RevoluteJoint, EnableMotorInWorld)
     EXPECT_EQ(GetMaxMotorTorque(world, id), newValue);
     EXPECT_EQ(GetAngularMotorImpulse(world, id), AngularMomentum(0));
 
-    const auto shape = Shape(DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2));
-    CreateFixture(world, b0, shape);
-    CreateFixture(world, b1, shape);
+    const auto shape = CreateShape(world, DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2));
+    Attach(world, b0, shape);
+    Attach(world, b1, shape);
     ASSERT_NE(GetInvRotInertia(world, b0), InvRotInertia(0));
     ASSERT_NE(GetInvRotInertia(world, b1), InvRotInertia(0));
 
@@ -259,9 +260,9 @@ TEST(RevoluteJoint, EnableLimit)
     // since b0 & b1 inv rot inertia 0
     EXPECT_EQ(GetLimitState(world, joint), LimitState::e_inactiveLimit);
 
-    const auto shape = Shape(DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2));
-    CreateFixture(world, b0, shape);
-    CreateFixture(world, b1, shape);
+    const auto shape = CreateShape(world, DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2));
+    Attach(world, b0, shape);
+    Attach(world, b1, shape);
     ASSERT_NE(GetInvRotInertia(world, b0), InvRotInertia(0));
     ASSERT_NE(GetInvRotInertia(world, b1), InvRotInertia(0));
 
@@ -324,9 +325,9 @@ TEST(RevoluteJoint, MaxMotorTorque)
     EXPECT_EQ(GetMaxMotorTorque(world, joint), newValue);
     EXPECT_EQ(GetAngularMotorImpulse(world, joint), AngularMomentum(0));
 
-    const auto shape = Shape(DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2));
-    CreateFixture(world, b0, shape);
-    CreateFixture(world, b1, shape);
+    const auto shape = CreateShape(world, DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2));
+    Attach(world, b0, shape);
+    Attach(world, b1, shape);
     ASSERT_NE(GetInvRotInertia(world, b0), InvRotInertia(0));
     ASSERT_NE(GetInvRotInertia(world, b1), InvRotInertia(0));
 
@@ -340,7 +341,6 @@ TEST(RevoluteJoint, MaxMotorTorque)
 
 TEST(RevoluteJoint, MovesDynamicCircles)
 {
-    const auto circle = Shape{DiskShapeConf{}.UseRadius(0.2_m)};
     World world;
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
@@ -352,8 +352,9 @@ TEST(RevoluteJoint, MovesDynamicCircles)
                                          .UseType(BodyType::Dynamic)
                                          .UseLocation(p2)
                                          .UseLinearAcceleration(EarthlyGravity));
-    CreateFixture(world, b1, circle);
-    CreateFixture(world, b2, circle);
+    const auto circle = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m));
+    Attach(world, b1, circle);
+    Attach(world, b2, circle);
     auto jd = RevoluteJointConf{};
     jd.bodyA = b1;
     jd.bodyB = b2;
@@ -374,8 +375,6 @@ TEST(RevoluteJoint, MovesDynamicCircles)
 
 TEST(RevoluteJoint, LimitEnabledDynamicCircles)
 {
-    const auto circle = Shape{DiskShapeConf{}.UseRadius(0.2_m).UseDensity(1_kgpm2)};
-
     World world;
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
@@ -387,8 +386,9 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
                                          .UseType(BodyType::Dynamic)
                                          .UseLocation(p2)
                                          .UseLinearAcceleration(EarthlyGravity));
-    CreateFixture(world, b1, circle);
-    CreateFixture(world, b2, circle);
+    const auto circle = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m).UseDensity(1_kgpm2));
+    Attach(world, b1, circle);
+    Attach(world, b2, circle);
     auto jd = RevoluteJointConf{b1, b2, Length2{}};
     jd.enableLimit = true;
     ASSERT_EQ(jd.lowerAngle, 0_deg);
@@ -461,11 +461,11 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Static).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
 
-    const auto shape1 = Shape{PolygonShapeConf{}.SetAsBox(1_m, 1_m)};
-    CreateFixture(world, b1, shape1);
+    const auto shape1 = CreateShape(world, PolygonShapeConf{}.SetAsBox(1_m, 1_m));
+    Attach(world, b1, shape1);
 
-    const auto shape2 = Shape{PolygonShapeConf{}.SetAsBox(0.5_m, 0.5_m).UseDensity(1_kgpm2)};
-    CreateFixture(world, b2, shape2);
+    const auto shape2 = CreateShape(world, PolygonShapeConf{}.SetAsBox(0.5_m, 0.5_m).UseDensity(1_kgpm2));
+    Attach(world, b2, shape2);
 
     auto jd = GetRevoluteJointConf(world, b1, b2, Length2{});
     const auto joint = CreateJoint(world, Joint{jd});

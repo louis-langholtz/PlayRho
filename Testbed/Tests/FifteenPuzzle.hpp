@@ -46,7 +46,7 @@ namespace testbed {
             auto conf = GetChainShapeConf(16_m + 2 * GetVertexRadius());
             conf.UseVertexRadius(GetVertexRadius());
             const auto enclosure = CreateBody(GetWorld());
-            CreateFixture(GetWorld(), enclosure, Shape{conf});
+            Attach(GetWorld(), enclosure, CreateShape(GetWorld(), conf));
             SetLocation(GetWorld(), enclosure, GetCenter());
             for (auto i = 0; i < 15; ++i)
             {
@@ -84,7 +84,7 @@ namespace testbed {
             bd.location = GetCenter() + relPos + Length2{sideLength / 2, sideLength / 2};
             bd.linearDamping = 20_Hz;
             const auto body = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), body, Shape{conf});
+            Attach(GetWorld(), body, CreateShape(GetWorld(), conf));
             
             return body;
         }

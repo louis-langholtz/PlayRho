@@ -230,6 +230,7 @@
 		4795B94A263C98F600FB3EC6 /* imgui_impl_opengl3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4795B949263C98F600FB3EC6 /* imgui_impl_opengl3.cpp */; };
 		4795B951263C990700FB3EC6 /* imgui_impl_glfw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4795B950263C990700FB3EC6 /* imgui_impl_glfw.cpp */; };
 		4795B95D263C996200FB3EC6 /* gl3w.c in Sources */ = {isa = PBXBuildFile; fileRef = 4795B95C263C996200FB3EC6 /* gl3w.c */; };
+		4795B9E62643425300FB3EC6 /* WorldShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4795B9E52643425300FB3EC6 /* WorldShape.cpp */; };
 		479B63C31ED9CAC300D49BC7 /* CheckedValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 479B63C21ED9CAC300D49BC7 /* CheckedValue.cpp */; };
 		47AB01BA1D6FA40C0084D721 /* Dump.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AB01B91D6FA40C0084D721 /* Dump.cpp */; };
 		47ABB0BE2546309400E5F37B /* WorldImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47ABB0BD2546309400E5F37B /* WorldImpl.cpp */; };
@@ -643,6 +644,7 @@
 		4795B949263C98F600FB3EC6 /* imgui_impl_opengl3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_impl_opengl3.cpp; path = imgui/backends/imgui_impl_opengl3.cpp; sourceTree = "<group>"; };
 		4795B950263C990700FB3EC6 /* imgui_impl_glfw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_impl_glfw.cpp; path = imgui/backends/imgui_impl_glfw.cpp; sourceTree = "<group>"; };
 		4795B95C263C996200FB3EC6 /* gl3w.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gl3w.c; path = imgui/examples/libs/gl3w/GL/gl3w.c; sourceTree = "<group>"; };
+		4795B9E52643425300FB3EC6 /* WorldShape.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WorldShape.cpp; sourceTree = "<group>"; };
 		479B63C21ED9CAC300D49BC7 /* CheckedValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CheckedValue.cpp; sourceTree = "<group>"; };
 		47AB01B91D6FA40C0084D721 /* Dump.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dump.cpp; sourceTree = "<group>"; };
 		47ABB0BD2546309400E5F37B /* WorldImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldImpl.cpp; sourceTree = "<group>"; };
@@ -931,6 +933,7 @@
 				470ADAD82558C52300EEE99D /* WorldJoint.cpp */,
 				47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */,
 				47ABB0BD2546309400E5F37B /* WorldImpl.cpp */,
+				4795B9E52643425300FB3EC6 /* WorldShape.cpp */,
 			);
 			name = UnitTests;
 			path = ../../UnitTests;
@@ -1654,6 +1657,7 @@
 				474BC4301D413DC200447DCD /* DistanceProxy.cpp in Sources */,
 				47C85D0A1EFA251B00F70C56 /* WheelJoint.cpp in Sources */,
 				475A945D1D959537000CA9A8 /* Joint.cpp in Sources */,
+				4795B9E62643425300FB3EC6 /* WorldShape.cpp in Sources */,
 				47C96C571FA6815F00A6C587 /* Acceleration.cpp in Sources */,
 				47C96C511FA24BC100A6C587 /* Units.cpp in Sources */,
 				47D28D951F6E32720094C032 /* PulleyJoint.cpp in Sources */,
@@ -2075,7 +2079,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_GENERATE_MAP_FILE = YES;
 				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/llvm/12.0.0/Toolchains/LLVM12.0.0.xctoolchain/usr/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-nostdinc++",
@@ -2152,7 +2156,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_GENERATE_MAP_FILE = YES;
 				LLVM_LTO = NO;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				SDKROOT = macosx;

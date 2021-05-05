@@ -44,9 +44,14 @@ static_assert(std::is_nothrow_destructible<World>::value, "World must be nothrow
 // Special member functions are off in their own .cpp file to avoid their
 // necessary includes being in this file!!
 
-void World::SetFixtureDestructionListener(const FixtureListener& listener) noexcept
+void World::SetShapeDestructionListener(ShapeListener listener) noexcept
 {
-    ::playrho::d2::SetFixtureDestructionListener(*m_impl, listener);
+    ::playrho::d2::SetShapeDestructionListener(*m_impl, listener);
+}
+
+void World::SetDetachListener(AssociationListener listener) noexcept
+{
+    ::playrho::d2::SetDetachListener(*m_impl, listener);
 }
 
 void World::SetJointDestructionListener(const JointListener& listener) noexcept
@@ -134,11 +139,6 @@ BodyCounter World::GetBodyRange() const noexcept
     return ::playrho::d2::GetBodyRange(*m_impl);
 }
 
-FixtureCounter World::GetFixtureRange() const noexcept
-{
-    return ::playrho::d2::GetFixtureRange(*m_impl);
-}
-
 JointCounter World::GetJointRange() const noexcept
 {
     return ::playrho::d2::GetJointRange(*m_impl);
@@ -179,9 +179,19 @@ void World::Destroy(BodyID id)
     ::playrho::d2::Destroy(*m_impl, id);
 }
 
-SizedRange<World::Fixtures::const_iterator> World::GetFixtures(BodyID id) const
+void World::Attach(BodyID id, ShapeID shapeID)
 {
-    return ::playrho::d2::GetFixtures(*m_impl, id);
+    ::playrho::d2::Attach(*m_impl, id, shapeID);
+}
+
+bool World::Detach(BodyID id, ShapeID shapeID)
+{
+    return ::playrho::d2::Detach(*m_impl, id, shapeID);
+}
+
+const std::vector<ShapeID>& World::GetShapes(BodyID id) const
+{
+    return ::playrho::d2::GetShapes(*m_impl, id);
 }
 
 SizedRange<World::BodyJoints::const_iterator> World::GetJoints(BodyID id) const
@@ -192,26 +202,6 @@ SizedRange<World::BodyJoints::const_iterator> World::GetJoints(BodyID id) const
 SizedRange<World::Contacts::const_iterator> World::GetContacts(BodyID id) const
 {
     return ::playrho::d2::GetContacts(*m_impl, id);
-}
-
-FixtureID World::CreateFixture(const FixtureConf& def)
-{
-    return ::playrho::d2::CreateFixture(*m_impl, def);
-}
-
-const FixtureConf& World::GetFixture(FixtureID id) const
-{
-    return ::playrho::d2::GetFixture(*m_impl, id);
-}
-
-void World::SetFixture(FixtureID id, const FixtureConf& value)
-{
-    ::playrho::d2::SetFixture(*m_impl, id, value);
-}
-
-bool World::Destroy(FixtureID id)
-{
-    return ::playrho::d2::Destroy(*m_impl, id);
 }
 
 SizedRange<World::Joints::const_iterator> World::GetJoints() const noexcept
@@ -237,6 +227,11 @@ void World::SetJoint(JointID id, const Joint& def)
 void World::Destroy(JointID id)
 {
     ::playrho::d2::Destroy(*m_impl, id);
+}
+
+ShapeCounter World::GetShapeRange() const noexcept
+{
+    return ::playrho::d2::GetShapeRange(*m_impl);
 }
 
 ShapeID World::CreateShape(const Shape& def)

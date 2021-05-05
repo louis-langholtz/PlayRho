@@ -39,8 +39,11 @@ public:
 
     PolyShapes()
     {
+        m_circle = CreateShape(GetWorld(), DiskShapeConf{}
+            .UseRadius(0.5_m).UseDensity(1_kgpm2).UseFriction(Real(0.3)));
+
         // Ground body
-        CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape{
+        Attach(GetWorld(), CreateBody(GetWorld()), Shape{
             EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}
         });
 
@@ -48,9 +51,9 @@ public:
         conf.UseDensity(1_kgpm2);
         conf.UseFriction(Real(0.3f));
         conf.Set({Vec2(-0.5f, 0.0f) * 1_m, Vec2(0.5f, 0.0f) * 1_m, Vec2(0.0f, 1.5f) * 1_m});
-        m_polygons[0] = Shape(conf);
+        m_polygons[0] = CreateShape(GetWorld(), conf);
         conf.Set({Vec2(-0.1f, 0.0f) * 1_m, Vec2(0.1f, 0.0f) * 1_m, Vec2(0.0f, 1.5f) * 1_m});
-        m_polygons[1] = Shape(conf);
+        m_polygons[1] = CreateShape(GetWorld(), conf);
         {
             const auto w = Real(1);
             const auto b = w / (2.0f + sqrt(2.0f));
@@ -66,10 +69,10 @@ public:
                 Vec2(-0.5f * w, b) * 1_m,
                 Vec2(-0.5f * s, 0.0f) * 1_m
             });
-            m_polygons[2] = Shape(conf);
+            m_polygons[2] = CreateShape(GetWorld(), conf);
         }
         conf.SetAsBox(0.5_m, 0.5_m);
-        m_polygons[3] = Shape(conf);
+        m_polygons[3] = CreateShape(GetWorld(), conf);
 
         m_bodyIndex = 0;
         std::memset(m_bodies, 0, sizeof(m_bodies));
@@ -129,11 +132,11 @@ public:
 
         if (index < 4)
         {
-            CreateFixture(GetWorld(), m_bodies[m_bodyIndex], m_polygons[index]);
+            Attach(GetWorld(), m_bodies[m_bodyIndex], m_polygons[index]);
         }
         else
         {
-            CreateFixture(GetWorld(), m_bodies[m_bodyIndex], m_circle);
+            Attach(GetWorld(), m_bodies[m_bodyIndex], m_circle);
         }
 
         m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
@@ -166,10 +169,10 @@ public:
         // Finds all the fixtures that overlap an AABB. Of those, we use TestOverlap to
         // determine which fixtures overlap a circle. Up to 4 overlapped fixtures will be
         // highlighted with a yellow border.
-        Query(aabb, [&](FixtureID f, ChildCounter) {
+        Query(aabb, [&](BodyID b, ShapeID f, ChildCounter) {
             if (count < e_maxCount)
             {
-                const auto xfm = GetTransformation(GetWorld(), f);
+                const auto xfm = GetTransformation(GetWorld(), b);
                 const auto shape = GetShape(GetWorld(), f);
                 const auto overlap = TestOverlap(GetChild(shape, 0), xfm, circleChild, transform);
                 if (overlap >= 0_m2)
@@ -177,7 +180,7 @@ public:
                     ++count;
                     const auto overlapColor = Color(0.95f, 0.95f, 0.6f);
                     const auto type = GetType(shape);
-                    const auto body = GetBody(GetWorld(), f);
+                    const auto body = b;
                     if (type == GetTypeID<DiskShapeConf>()) {
                         const auto conf = TypeCast<DiskShapeConf>(shape);
                         const auto center = Transform(GetLocation(GetWorld(), body), xfm);
@@ -205,12 +208,10 @@ public:
 
     int m_bodyIndex;
     BodyID m_bodies[e_maxBodies];
-    Shape m_polygons[4] = {
-        Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}},
-        Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}}
+    ShapeID m_polygons[4] = {
+        InvalidShapeID, InvalidShapeID, InvalidShapeID, InvalidShapeID
     };
-    Shape m_circle = Shape{DiskShapeConf{}
-        .UseRadius(0.5_m).UseDensity(1_kgpm2).UseFriction(Real(0.3))};
+    ShapeID m_circle = InvalidShapeID;
 };
 
 } // namespace testbed

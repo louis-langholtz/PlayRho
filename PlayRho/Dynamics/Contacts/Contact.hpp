@@ -27,15 +27,15 @@
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Collision/Shapes/ShapeID.hpp>
 
 #include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/FixtureID.hpp>
 
 namespace playrho {
 
 /// @brief Mixes friction.
 ///
-/// @details Friction mixing formula. The idea is to allow either fixture to drive the
+/// @details Friction mixing formula. The idea is to allow either value to drive the
 ///   resulting friction to zero. For example, anything slides on ice.
 ///
 /// @warning Behavior is undefined if either friction values is less than zero.
@@ -63,7 +63,7 @@ struct ToiConf;
 
 namespace d2 {
 
-/// @brief A potential contact between the children of two Fixture objects.
+/// @brief A potential contact between the children of two body associated shapes.
 ///
 /// @details The class manages contact between two shapes. A contact exists for each overlapping
 ///   AABB in the broad-phase (except if filtered). Therefore a contact object may exist
@@ -84,21 +84,19 @@ public:
     /// @brief Initializing constructor.
     ///
     /// @param bA Identifier of body-A.
-    /// @param fA Non-invalid identifier to fixture A that must have a shape
-    ///   and may not be the same or have the same body as the other fixture.
+    /// @param fA Non-invalid identifier to shape A.
     /// @param iA Child index A.
     /// @param bB Identifier of body-B.
-    /// @param fB Non-invalid identifier to fixture B that must have a shape
-    ///   and may not be the same or have the same body as the other fixture.
+    /// @param fB Non-invalid identifier to shape B.
     /// @param iB Child index B.
     ///
     /// @note This need never be called directly by a user.
     /// @warning Behavior is undefined if <code>fA</code> is null.
     /// @warning Behavior is undefined if <code>fB</code> is null.
     /// @warning Behavior is undefined if <code>fA == fB</code>.
-    /// @warning Behavior is undefined if both fixture's have the same body.
+    /// @warning Behavior is undefined if both shape's have the same body.
     ///
-    Contact(BodyID bA, FixtureID fA, ChildCounter iA, BodyID bB, FixtureID fB,
+    Contact(BodyID bA, ShapeID fA, ChildCounter iA, BodyID bB, ShapeID fB,
             ChildCounter iB) noexcept;
 
     /// @brief Is this contact touching?
@@ -138,19 +136,19 @@ public:
     /// @brief Gets the body-A identifier.
     BodyID GetBodyA() const noexcept;
 
-    /// @brief Gets fixture A in this contact.
-    FixtureID GetFixtureA() const noexcept;
+    /// @brief Gets shape A in this contact.
+    ShapeID GetShapeA() const noexcept;
 
-    /// @brief Get the child primitive index for fixture A.
+    /// @brief Get the child primitive index for shape A.
     ChildCounter GetChildIndexA() const noexcept;
 
     /// @brief Gets the body-B identifier.
     BodyID GetBodyB() const noexcept;
 
-    /// @brief Gets fixture B in this contact.
-    FixtureID GetFixtureB() const noexcept;
+    /// @brief Gets shape B in this contact.
+    ShapeID GetShapeB() const noexcept;
 
-    /// @brief Get the child primitive index for fixture B.
+    /// @brief Get the child primitive index for shape B.
     ChildCounter GetChildIndexB() const noexcept;
 
     /// @brief Sets the friction value for this contact.
@@ -163,7 +161,7 @@ public:
     void SetFriction(Real friction) noexcept;
 
     /// @brief Gets the coefficient of friction.
-    /// @details Gets the combined friction of the two fixtures associated with this contact.
+    /// @details Gets the combined friction of the two shapes associated with this contact.
     /// @return Value of 0 or higher.
     /// @see SetFriction.
     Real GetFriction() const noexcept;
@@ -210,11 +208,11 @@ public:
     bool NeedsUpdating() const noexcept;
 
     /// @brief Whether or not this contact is a "sensor".
-    /// @note This should be true whenever fixture A or fixture B is a sensor.
+    /// @note This should be true whenever shape A or shape B is a sensor.
     bool IsSensor() const noexcept;
 
     /// @brief Sets the sensor state of this contact.
-    /// @attention Call this if fixture A or fixture B is a sensor.
+    /// @attention Call this if shape A or shape B is a sensor.
     void SetSensor() noexcept;
 
     /// @brief Unsets the sensor state of this contact.
@@ -254,7 +252,7 @@ public:
         // This contact can be disabled (by user)
         e_enabledFlag = 0x02,
 
-        // This contact needs filtering because a fixture filter was changed.
+        // This contact needs filtering because a shape filter was changed.
         e_filterFlag = 0x04,
 
         // This contact has a valid TOI in m_toi
@@ -300,30 +298,23 @@ public:
     void IncrementToiCount() noexcept;
 
 private:
-    // Need to be able to identify two different fixtures, the child shape per fixture,
-    // and the two different bodies that each fixture is associated with. This could be
-    // done by storing whatever information is needed to lookup this information. For
-    // instance, if the dynamic tree's two leaf nodes for this contact contained this
-    // info then minimally only those two indexes are needed. That may be sub-optimal
-    // however depending the speed of cache and memory access.
-
     /// Identifier of body A.
     /// @note Field is 2-bytes.
-    /// @warning Should only be body of fixture A.
+    /// @warning Should only be body associated with shape A.
     BodyID m_bodyA = InvalidBodyID;
 
     /// Identifier of body B.
     /// @note Field is 2-bytes.
-    /// @warning Should only be body of fixture B.
+    /// @warning Should only be body associated with shape B.
     BodyID m_bodyB = InvalidBodyID;
 
-    /// Identifier of fixture A.
+    /// Identifier of shape A.
     /// @note Field is 2-bytes.
-    FixtureID m_fixtureA = InvalidFixtureID;
+    ShapeID m_shapeA = InvalidShapeID;
 
-    /// Identifier of fixture B.
+    /// Identifier of shape B.
     /// @note Field is 2-bytes.
-    FixtureID m_fixtureB = InvalidFixtureID;
+    ShapeID m_shapeB = InvalidShapeID;
 
     ChildCounter m_indexA; ///< Index A. 4-bytes.
 
@@ -331,12 +322,12 @@ private:
 
     // initialized on construction (construction-time depedent)
 
-    /// Mix of frictions of associated fixtures.
+    /// Mix of frictions of associated shapes.
     /// @note Field is 4-bytes (with 4-byte Real).
     /// @see MixFriction.
     Real m_friction = 0;
 
-    /// Mix of restitutions of associated fixtures.
+    /// Mix of restitutions of associated shapes.
     /// @note Field is 4-bytes (with 4-byte Real).
     /// @see MixRestitution.
     Real m_restitution = 0;
@@ -410,14 +401,14 @@ inline BodyID Contact::GetBodyB() const noexcept
     return m_bodyB;
 }
 
-inline FixtureID Contact::GetFixtureA() const noexcept
+inline ShapeID Contact::GetShapeA() const noexcept
 {
-    return m_fixtureA;
+    return m_shapeA;
 }
 
-inline FixtureID Contact::GetFixtureB() const noexcept
+inline ShapeID Contact::GetShapeB() const noexcept
 {
-    return m_fixtureB;
+    return m_shapeB;
 }
 
 inline void Contact::FlagForFiltering() noexcept
@@ -590,18 +581,18 @@ inline BodyID GetBodyB(const Contact& contact) noexcept
     return contact.GetBodyB();
 }
 
-/// @brief Gets the fixture A associated with the given contact.
+/// @brief Gets the shape A associated with the given contact.
 /// @relatedalso Contact
-inline FixtureID GetFixtureA(const Contact& contact) noexcept
+inline ShapeID GetShapeA(const Contact& contact) noexcept
 {
-    return contact.GetFixtureA();
+    return contact.GetShapeA();
 }
 
-/// @brief Gets the fixture B associated with the given contact.
+/// @brief Gets the shape B associated with the given contact.
 /// @relatedalso Contact
-inline FixtureID GetFixtureB(const Contact& contact) noexcept
+inline ShapeID GetShapeB(const Contact& contact) noexcept
 {
-    return contact.GetFixtureB();
+    return contact.GetShapeB();
 }
 
 /// @brief Gets the child index A of the given contact.

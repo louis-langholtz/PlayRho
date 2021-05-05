@@ -20,6 +20,7 @@
  */
 
 #include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldShape.hpp>
 
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
@@ -75,10 +76,45 @@ void Destroy(World& world, BodyID id)
     world.Destroy(id);
 }
 
-SizedRange<std::vector<FixtureID>::const_iterator>
-GetFixtures(const World& world, BodyID id)
+void Attach(World& world, BodyID id, ShapeID shapeID, bool resetMassData)
 {
-    return world.GetFixtures(id);
+    world.Attach(id, shapeID);
+    if (resetMassData) {
+        SetMassData(world, id, ComputeMassData(world, id));
+    }
+}
+
+void Attach(World& world, BodyID id, const Shape& shape, bool resetMassData)
+{
+    Attach(world, id, CreateShape(world, shape), resetMassData);
+}
+
+bool Detach(World& world, BodyID id, ShapeID shapeID, bool resetMassData)
+{
+    if (world.Detach(id, shapeID)) {
+        if (resetMassData) {
+            SetMassData(world, id, ComputeMassData(world, id));
+        }
+        return true;
+    }
+    return false;
+}
+
+bool Detach(World& world, BodyID id, bool resetMassData)
+{
+    auto anyDetached = false;
+    while (!GetShapes(world, id).empty()) {
+        anyDetached |= Detach(world, id, GetShapes(world, id).back());
+    }
+    if (anyDetached && resetMassData) {
+        SetMassData(world, id, ComputeMassData(world, id));
+    }
+    return anyDetached;
+}
+
+const std::vector<ShapeID>& GetShapes(const World& world, BodyID id)
+{
+    return world.GetShapes(id);
 }
 
 LinearAcceleration2 GetLinearAcceleration(const World& world, BodyID id)
@@ -263,16 +299,6 @@ void SetVelocity(World& world, BodyID id, AngularVelocity value)
     world.SetBody(id, body);
 }
 
-void DestroyFixtures(World& world, BodyID id, bool resetMassData)
-{
-    while (!empty(GetFixtures(world, id))) {
-        world.Destroy(*GetFixtures(world, id).begin());
-    }
-    if (resetMassData) {
-        SetMassData(world, id, ComputeMassData(world, id));
-    }
-}
-
 bool IsEnabled(const World& world, BodyID id)
 {
     return IsEnabled(GetBody(world, id));
@@ -349,9 +375,8 @@ MassData ComputeMassData(const World& world, BodyID id)
     auto mass = 0_kg;
     auto I = RotInertia{0};
     auto weightedCenter = Length2{};
-    for (const auto& f: world.GetFixtures(id)) {
-        const auto& fixture = world.GetFixture(f);
-        const auto& shape = world.GetShape(GetShape(fixture));
+    for (const auto& shapeId: world.GetShapes(id)) {
+        const auto& shape = world.GetShape(shapeId);
         if (GetDensity(shape) > 0_kgpm2) {
             const auto massData = GetMassData(shape);
             mass += Mass{massData.mass};

@@ -30,18 +30,19 @@ public:
     Chain()
     {
         const auto ground = CreateBody(GetWorld());
-        CreateFixture(GetWorld(), ground, Shape(GetGroundEdgeConf()));
-        const auto shape = Shape{PolygonShapeConf{}.UseDensity(20_kgpm2).UseFriction(Real(0.2)).SetAsBox(0.6_m, 0.125_m)};
+        Attach(GetWorld(), ground, CreateShape(GetWorld(), GetGroundEdgeConf()));
+        const auto shape = CreateShape(GetWorld(),
+                                       PolygonShapeConf{}.UseDensity(20_kgpm2)
+                                       .UseFriction(Real(0.2)).SetAsBox(0.6_m, 0.125_m));
         const auto y = 25.0f;
         auto prevBody = ground;
-        for (auto i = 0; i < 30; ++i)
-        {
+        for (auto i = 0; i < 30; ++i) {
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = GetGravity();
             bd.location = Vec2(0.5f + i, y) * 1_m;
             const auto body = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), body, shape);
+            Attach(GetWorld(), body, shape);
             CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), prevBody, body,
                                                       Vec2(Real(i), y) * 1_m));
             prevBody = body;

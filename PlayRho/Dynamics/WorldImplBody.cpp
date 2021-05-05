@@ -73,9 +73,19 @@ GetJoints(const WorldImpl& world, BodyID id)
     return world.GetJoints(id);
 }
 
-SizedRange<WorldImpl::Fixtures::const_iterator> GetFixtures(const WorldImpl& world, BodyID id)
+void Attach(WorldImpl& world, BodyID id, ShapeID shapeID)
 {
-    return world.GetFixtures(id);
+    world.Attach(id, shapeID);
+}
+
+bool Detach(WorldImpl& world, BodyID id, ShapeID shapeID)
+{
+    return world.Detach(id, shapeID);
+}
+
+const std::vector<ShapeID>& GetShapes(const WorldImpl& world, BodyID id)
+{
+    return world.GetShapes(id);
 }
 
 SizedRange<std::vector<KeyedContactPtr>::const_iterator>

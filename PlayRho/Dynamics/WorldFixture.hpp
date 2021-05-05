@@ -67,62 +67,8 @@ class World;
 /// @brief Gets the extent of the currently valid fixture range.
 /// @note This is one higher than the maxium <code>FixtureID</code> that is in range
 ///   for fixture related functions.
-/// @see CreateFixture(World& world, FixtureConf).
 /// @relatedalso World
 FixtureCounter GetFixtureRange(const World& world) noexcept;
-
-/// @brief Gets the count of fixtures in the given world.
-/// @return Value that's less than or equal to what's returned by
-///   <code>GetFixtureRange(const World& world)</code>.
-/// @throws WrongState if called while the world is "locked".
-/// @see GetFixtureRange(const World& world).
-/// @relatedalso World
-FixtureCounter GetFixtureCount(const World& world) noexcept;
-
-/// @brief Creates a fixture within the specified world.
-/// @throws WrongState if called while the world is "locked".
-/// @throws std::out_of_range If given an invalid body identifier in the configuration.
-/// @see CreateFixture(World&, BodyID, const Shape&,FixtureConf,bool).
-/// @relatedalso World
-FixtureID CreateFixture(World& world, const FixtureConf& def = FixtureConf{}, bool resetMassData = true);
-
-/// @brief Creates a fixture within the specified world.
-/// @throws WrongState if called while the world is "locked".
-/// @throws std::out_of_range If given an invalid body or shape identifier.
-inline FixtureID CreateFixture(World& world, BodyID bodyId, ShapeID shapeId,
-                        bool resetMassData = true)
-{
-    return CreateFixture(world, FixtureConf{shapeId, bodyId}, resetMassData);
-}
-
-/// @brief Creates a fixture within the specified world.
-/// @throws WrongState if called while the world is "locked".
-/// @throws std::out_of_range If given an invalid body identifier.
-/// @see CreateFixture(World& world, FixtureConf def).
-/// @relatedalso World
-FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
-                        FixtureConf def = FixtureConf{},
-                        bool resetMassData = true);
-
-/// @brief Creates a fixture within the specified world using a configuration of a shape.
-/// @details This is a convenience function for allowing limited implicit conversions to shapes.
-/// @throws WrongState if called while the world is "locked".
-/// @throws std::out_of_range If given an invalid body identifier.
-/// @see CreateFixture(World& world, FixtureConf def).
-/// @relatedalso World
-template <typename T>
-FixtureID CreateFixture(World& world, BodyID id, const T& shapeConf,
-                        FixtureConf def = FixtureConf{},
-                        bool resetMassData = true)
-{
-    return CreateFixture(world, id, Shape{shapeConf}, def, resetMassData);
-}
-
-/// @brief Destroys the identified fixture.
-/// @throws WrongState if this function is called while the world is locked.
-/// @throws std::out_of_range If given an invalid fixture identifier.
-/// @relatedalso World
-bool Destroy(World& world, FixtureID id, bool resetMassData = true);
 
 /// @brief Gets the filter data for the identified fixture.
 /// @throws std::out_of_range If given an invalid fixture identifier.

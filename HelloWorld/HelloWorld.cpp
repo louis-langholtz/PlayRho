@@ -43,10 +43,10 @@ int main()
 
     // Define the ground shape. Use a polygon configured as a box for this.
     // The extents are the half-width and half-height of the box.
-    const auto box = Shape{PolygonShapeConf{}.SetAsBox(50_m, 10_m)};
+    const auto box = CreateShape(world, PolygonShapeConf{}.SetAsBox(50_m, 10_m));
 
-    // Add the box shape to the ground body.
-    CreateFixture(world, ground, box);
+    // Attach the box shape to the ground body.
+    Attach(world, ground, box);
 
     // Define location above ground for a "dynamic" body & create this body within world.
     const auto ball = CreateBody(world, BodyConf{}
@@ -54,8 +54,9 @@ int main()
                                         .UseType(BodyType::Dynamic)
                                         .UseLinearAcceleration(EarthlyGravity));
 
-    // Define a disk shape for the ball body and create a fixture to add it.
-    CreateFixture(world, ball, Shape(DiskShapeConf{}.UseRadius(1_m)));
+    // Define a disk shape for the ball body and attach it to the ball.
+    const auto diskShape = CreateShape(world, DiskShapeConf{}.UseRadius(1_m));
+    Attach(world, ball, diskShape);
 
     // Setup the C++ stream output format.
     std::cout << std::fixed << std::setprecision(2);

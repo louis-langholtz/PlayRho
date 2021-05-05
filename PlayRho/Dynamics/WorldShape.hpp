@@ -71,7 +71,8 @@ ShapeID CreateShape(World& world, const Shape& def);
 /// @see CreateShape(World& world, const Shape& def).
 /// @relatedalso World
 template <typename T>
-ShapeID CreateShape(World& world, const T& shapeConf)
+auto CreateShape(World& world, const T& shapeConf) ->
+    decltype(CreateShape(world, Shape{shapeConf}))
 {
     return CreateShape(world, Shape{shapeConf});
 }
@@ -86,6 +87,20 @@ void Destroy(World& world, ShapeID id);
 /// @throws std::out_of_range If given an invalid identifier.
 /// @relatedalso World
 const Shape& GetShape(const World& world, ShapeID id);
+
+/// @brief Sets the identified shape to the new value.
+/// @throws std::out_of_range If given an invalid shape identifier.
+/// @see CreateShape.
+void SetShape(World& world, ShapeID, const Shape& def);
+
+/// @brief Gets the count of body-shape associations in the given world.
+/// @relatedalso World
+ShapeCounter GetAssociationCount(const World& world) noexcept;
+
+/// @brief Gets the count of uniquely identified shapes that are in use -
+///   i.e. that are attached to bodies.
+/// @relatedalso World
+ShapeCounter GetUsedShapesCount(const World& world) noexcept;
 
 /// @brief Gets the filter data for the identified shape.
 /// @throws std::out_of_range If given an invalid identifier.
@@ -154,6 +169,16 @@ inline MassData GetMassData(const World& world, ShapeID id)
 {
     return GetMassData(GetShape(world, id));
 }
+
+/// @brief Tests a point for containment in a shape associated with a body.
+/// @param world The world that the given shape ID exists within.
+/// @param bodyId Body to use for test.
+/// @param shapeId Shape to use for test.
+/// @param p Point in world coordinates.
+/// @throws std::out_of_range If given an invalid body or shape identifier.
+/// @relatedalso World
+/// @ingroup TestPointGroup
+bool TestPoint(const World& world, BodyID bodyId, ShapeID shapeId, Length2 p);
 
 /// @brief Gets the default friction amount for the given shapes.
 /// @relatedalso Shape

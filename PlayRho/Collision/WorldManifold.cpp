@@ -21,7 +21,8 @@
 
 #include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
-#include <PlayRho/Dynamics/WorldFixture.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldShape.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -125,15 +126,17 @@ WorldManifold GetWorldManifold(const Manifold& manifold,
 
 WorldManifold GetWorldManifold(const World& world, const Contact& contact, const Manifold& manifold)
 {
-    const auto fA = contact.GetFixtureA();
+    const auto bA = contact.GetBodyA();
+    const auto sA = contact.GetShapeA();
     const auto iA = contact.GetChildIndexA();
-    const auto xfA = GetTransformation(world, fA);
-    const auto radiusA = GetVertexRadius(GetShape(world, fA), iA);
+    const auto xfA = GetTransformation(world, bA);
+    const auto radiusA = GetVertexRadius(GetShape(world, sA), iA);
 
-    const auto fB = contact.GetFixtureB();
+    const auto bB = contact.GetBodyB();
+    const auto sB = contact.GetShapeB();
     const auto iB = contact.GetChildIndexB();
-    const auto xfB = GetTransformation(world, fB);
-    const auto radiusB = GetVertexRadius(GetShape(world, fB), iB);
+    const auto xfB = GetTransformation(world, bB);
+    const auto radiusB = GetVertexRadius(GetShape(world, sB), iB);
 
     return GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
 }

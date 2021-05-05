@@ -181,7 +181,6 @@ bool operator!=(const Shape& lhs, const Shape& rhs) noexcept;
 ///   - <code>Real GetRestitution(const T&) noexcept;</code>
 ///   - <code>void Transform(T&, const Mat22& value);</code>
 /// @ingroup PartsGroup
-/// @see FixtureConf
 /// @see https://youtu.be/QGcVXgEVMJg
 /// @see https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Polymorphic_Value_Types
 class Shape

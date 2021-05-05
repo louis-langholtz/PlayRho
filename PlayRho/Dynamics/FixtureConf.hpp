@@ -42,7 +42,7 @@ class Fixture;
 ///   inherits its transform from its body. Fixtures hold additional non-geometric data
 ///   such as collision filters, etc.
 /// @ingroup PhysicalEntities
-/// @see World::CreateFixture, World::GetFixture, World::SetFixture, World::Destroy.
+/// @see World::GetFixture.
 struct FixtureConf {
     /// @brief Uses the given value for the shape member variable.
     FixtureConf& UseShape(ShapeID value) noexcept

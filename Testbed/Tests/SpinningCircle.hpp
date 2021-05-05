@@ -35,38 +35,30 @@ namespace testbed {
         SpinningCircle()
         {
             SetGravity(LinearAcceleration2{});
-
             auto bodyConf = BodyConf{};
             bodyConf.type = BodyType::Dynamic;
             bodyConf.angularVelocity = 45_deg / 1_s;
             bodyConf.linearVelocity = LinearVelocity2{};
             bodyConf.linearDamping = 0.8_Hz;
             bodyConf.bullet = true;
-
             bodyConf.location = Vec2{0, 26} * 1_m;
             const auto body1 = CreateBody(GetWorld(), bodyConf);
             bodyConf.location = Vec2{0, 14} * 1_m;
             const auto body2 = CreateBody(GetWorld(), bodyConf);
-            
             auto shapeConf = DiskShapeConf{};
             shapeConf.density = 10_kgpm2;
-
             shapeConf.vertexRadius = 2_m;
             shapeConf.location = Length2{};
-            auto circle = Shape(shapeConf);
-
             shapeConf.vertexRadius = 1.5_m;
             shapeConf.location = Vec2{0,  3} * 1_m;
-            auto circleA = Shape(shapeConf);
+            auto circleA = CreateShape(GetWorld(), shapeConf);
             shapeConf.vertexRadius = 1.5_m;
             shapeConf.location = Vec2{0, -3} * 1_m;
-            auto circleB = Shape(shapeConf);
-            
-            CreateFixture(GetWorld(), body1, circleA);
-            CreateFixture(GetWorld(), body1, circleB);
-            
-            CreateFixture(GetWorld(), body2, circleA);
-            CreateFixture(GetWorld(), body2, circleB);
+            auto circleB = CreateShape(GetWorld(), shapeConf);
+            Attach(GetWorld(), body1, circleA);
+            Attach(GetWorld(), body1, circleB);
+            Attach(GetWorld(), body2, circleA);
+            Attach(GetWorld(), body2, circleB);
         }
     };
     

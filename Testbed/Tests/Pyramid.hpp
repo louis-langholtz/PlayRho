@@ -34,11 +34,11 @@ public:
 
     Pyramid()
     {
-        const auto ground = CreateBody(GetWorld());
-        CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        Attach(GetWorld(), CreateBody(GetWorld()),
+               CreateShape(GetWorld(), EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));
 
         const auto a = 0.5_m;
-        const auto shape = Shape{PolygonShapeConf{}.SetAsBox(a, a).UseDensity(5_kgpm2)};
+        const auto shape = CreateShape(GetWorld(), PolygonShapeConf{}.SetAsBox(a, a).UseDensity(5_kgpm2));
         auto x = Vec2(-7.0f, 0.75f);
         const auto deltaX = Vec2(0.5625f, 1.25f);
         const auto deltaY = Vec2(1.125f, 0.0f);
@@ -52,8 +52,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.linearAcceleration = GetGravity();
                 bd.location = y * 1_m;
-                const auto body = CreateBody(GetWorld(), bd);
-                CreateFixture(GetWorld(), body, shape);
+                Attach(GetWorld(), CreateBody(GetWorld(), bd), shape);
                 y += deltaY;
             }
             x += deltaX;

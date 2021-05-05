@@ -34,8 +34,8 @@ public:
             BodyConf bd;
             bd.location = Length2{};
             const auto body = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), body, Shape(EdgeShapeConf{Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m}));
-            CreateFixture(GetWorld(), body, Shape{PolygonShapeConf{}.SetAsBox(0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad)});
+            Attach(GetWorld(), body, CreateShape(GetWorld(), EdgeShapeConf{Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m}));
+            Attach(GetWorld(), body, CreateShape(GetWorld(), PolygonShapeConf{}.SetAsBox(0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad)));
         }
 
         {
@@ -49,7 +49,7 @@ public:
             conf.SetAsBox(2_m, 0.1_m);
 
             m_body = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), m_body, Shape{conf});
+            Attach(GetWorld(), m_body, CreateShape(GetWorld(), conf));
 
             conf.UseDensity(100_kgpm2);
             conf.SetAsBox(0.25_m, 0.25_m);
@@ -60,7 +60,7 @@ public:
             bd.bullet = true;
 
             m_bullet = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), m_bullet, Shape{conf});
+            Attach(GetWorld(), m_bullet, CreateShape(GetWorld(), conf));
 
             SetVelocity(GetWorld(), m_bullet, Velocity{Vec2{0.0f, -50.0f} * 1_mps, 0_rpm});
         }

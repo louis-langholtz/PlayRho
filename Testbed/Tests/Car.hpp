@@ -67,28 +67,28 @@ public:
             auto y1 = Real{0.0f};
             const auto dx = decltype(x){5.0f};
             auto conf = EdgeShapeConf{}.UseDensity(0_kgpm2).UseFriction(Real(0.6));
-            CreateFixture(GetWorld(), ground, Shape{conf.Set(Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m)});
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf.Set(Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m)));
             for (const auto y2: hs)
             {
-                CreateFixture(GetWorld(), ground, Shape{conf.Set(Vec2(x, y1) * 1_m, Vec2(x + dx, y2) * 1_m)});
+                Attach(GetWorld(), ground, CreateShape(GetWorld(), conf.Set(Vec2(x, y1) * 1_m, Vec2(x + dx, y2) * 1_m)));
                 y1 = y2;
                 x += dx;
             }
             for (const auto y2: hs)
             {
-                CreateFixture(GetWorld(), ground, Shape{conf.Set(Vec2(x, y1) * 1_m, Vec2(x + dx, y2) * 1_m)});
+                Attach(GetWorld(), ground, CreateShape(GetWorld(), conf.Set(Vec2(x, y1) * 1_m, Vec2(x + dx, y2) * 1_m)));
                 y1 = y2;
                 x += dx;
             }
-            CreateFixture(GetWorld(), ground, Shape{conf.Set(Vec2(x, 0) * 1_m, Vec2(x + 40, 0) * 1_m)});
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf.Set(Vec2(x, 0) * 1_m, Vec2(x + 40, 0) * 1_m)));
             x += 80.0f;
-            CreateFixture(GetWorld(), ground, Shape{conf.Set(Vec2(x, 0) * 1_m, Vec2(x + 40, 0) * 1_m)});
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf.Set(Vec2(x, 0) * 1_m, Vec2(x + 40, 0) * 1_m)));
             x += 40.0f;
-            CreateFixture(GetWorld(), ground, Shape{conf.Set(Vec2(x, 0) * 1_m, Vec2(x + 10, 5) * 1_m)});
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf.Set(Vec2(x, 0) * 1_m, Vec2(x + 10, 5) * 1_m)));
             x += 20.0f;
-            CreateFixture(GetWorld(), ground, Shape{conf.Set(Vec2(x, 0) * 1_m, Vec2(x + 40, 0) * 1_m)});
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf.Set(Vec2(x, 0) * 1_m, Vec2(x + 40, 0) * 1_m)));
             x += 40.0f;
-            CreateFixture(GetWorld(), ground, Shape{conf.Set(Vec2(x, 0) * 1_m, Vec2(x, 20) * 1_m)});
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf.Set(Vec2(x, 0) * 1_m, Vec2(x, 20) * 1_m)));
         }
 
         // Teeter
@@ -97,7 +97,7 @@ public:
             bd.location = Vec2(140.0f, 1.0f) * 1_m;
             bd.type = BodyType::Dynamic;
             const auto body = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), body, Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(10_m, 0.25_m)});
+            Attach(GetWorld(), body, CreateShape(GetWorld(), PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(10_m, 0.25_m)));
 
             auto jd = GetRevoluteJointConf(GetWorld(), ground, body, GetLocation(GetWorld(), body));
             jd.lowerAngle = -8_deg;
@@ -112,16 +112,16 @@ public:
         // Bridge
         {
             const auto N = 20;
-            const auto shape = Shape{
+            const auto shape = CreateShape(GetWorld(),
                 PolygonShapeConf{}.UseDensity(1_kgpm2).UseFriction(Real(0.6)).SetAsBox(1_m, 0.125_m)
-            };
+            );
             auto prevBody = ground;
             for (auto i = 0; i < N; ++i)
             {
                 auto bd = BodyConf{}.UseType(BodyType::Dynamic);
                 bd.location = Vec2(161 + 2 * i, -0.125f) * 1_m;
                 const auto body = CreateBody(GetWorld(), bd);
-                CreateFixture(GetWorld(), body, shape);
+                Attach(GetWorld(), body, shape);
                 CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), prevBody, body,
                                                           Vec2(160 + 2 * i, -0.125f) * 1_m));
                 prevBody = body;
@@ -132,13 +132,13 @@ public:
 
         // Boxes
         {
-            const auto box = Shape{PolygonShapeConf{}.UseDensity(0.5_kgpm2).SetAsBox(0.5_m, 0.5_m)};
+            const auto box = CreateShape(GetWorld(), PolygonShapeConf{}.UseDensity(0.5_kgpm2).SetAsBox(0.5_m, 0.5_m));
             auto bd = BodyConf{}.UseType(BodyType::Dynamic);
-            CreateFixture(GetWorld(), CreateBody(GetWorld(), bd.UseLocation(Vec2(230, 0.5f) * 1_m)), box);
-            CreateFixture(GetWorld(), CreateBody(GetWorld(), bd.UseLocation(Vec2(230, 1.5f) * 1_m)), box);
-            CreateFixture(GetWorld(), CreateBody(GetWorld(), bd.UseLocation(Vec2(230, 2.5f) * 1_m)), box);
-            CreateFixture(GetWorld(), CreateBody(GetWorld(), bd.UseLocation(Vec2(230, 3.5f) * 1_m)), box);
-            CreateFixture(GetWorld(), CreateBody(GetWorld(), bd.UseLocation(Vec2(230, 4.5f) * 1_m)), box);
+            Attach(GetWorld(), CreateBody(GetWorld(), bd.UseLocation(Vec2(230, 0.5f) * 1_m)), box);
+            Attach(GetWorld(), CreateBody(GetWorld(), bd.UseLocation(Vec2(230, 1.5f) * 1_m)), box);
+            Attach(GetWorld(), CreateBody(GetWorld(), bd.UseLocation(Vec2(230, 2.5f) * 1_m)), box);
+            Attach(GetWorld(), CreateBody(GetWorld(), bd.UseLocation(Vec2(230, 3.5f) * 1_m)), box);
+            Attach(GetWorld(), CreateBody(GetWorld(), bd.UseLocation(Vec2(230, 4.5f) * 1_m)), box);
         }
 
         CreateCar();
@@ -168,16 +168,16 @@ public:
 
         auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(GetGravity());
         m_car = CreateBody(GetWorld(), bd.Use(carPosition).Use(carVelocity));
-        CreateFixture(GetWorld(), m_car, Shape{carShapeConf});
+        Attach(GetWorld(), m_car, CreateShape(GetWorld(), carShapeConf));
         
-        const auto wheelShape = Shape{
+        const auto wheelShape = CreateShape(GetWorld(),
             DiskShapeConf{}.UseRadius(0.4_m).UseDensity(1_kgpm2).UseFriction(Real(0.9))
-        };
+        );
         {
             // setup back wheel
             const auto location = carPosition.linear + Rotate(transmat * Length2{-1_m, -0.65_m}, UnitVec::Get(carPosition.angular));
             const auto wheel = CreateBody(GetWorld(), bd.UseLocation(location));
-            CreateFixture(GetWorld(), wheel, wheelShape);
+            Attach(GetWorld(), wheel, wheelShape);
             auto jd = GetWheelJointConf(GetWorld(), m_car, wheel, GetLocation(GetWorld(), wheel),
                                         UnitVec::GetTop());
             jd.maxMotorTorque = 20_Nm;
@@ -190,7 +190,7 @@ public:
             // setup front wheel
             const auto location = carPosition.linear + Rotate(transmat * Length2{+1_m, -0.6_m}, UnitVec::Get(carPosition.angular));
             const auto wheel = CreateBody(GetWorld(), bd.UseLocation(location));
-            CreateFixture(GetWorld(), wheel, wheelShape);
+            Attach(GetWorld(), wheel, wheelShape);
             auto jd = GetWheelJointConf(GetWorld(), m_car, wheel, GetLocation(GetWorld(), wheel),
                                         UnitVec::GetTop());
             jd.maxMotorTorque = 10_Nm;

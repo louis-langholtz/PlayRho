@@ -52,9 +52,8 @@ TEST(Contact, Enabled)
 {
     const auto bA = BodyID(0u);
     const auto bB = BodyID(1u);
-    const auto fA = FixtureID(0u);
-    const auto fB = FixtureID(1u);
-    auto c = Contact{bA, fA, 0u, bB, fB, 0u};
+    const auto shapeId = ShapeID(0u);
+    auto c = Contact{bA, shapeId, 0u, bB, shapeId, 0u};
     EXPECT_TRUE(c.IsEnabled());
     c.UnsetEnabled();
     EXPECT_FALSE(c.IsEnabled());

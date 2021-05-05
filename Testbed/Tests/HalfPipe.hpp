@@ -22,29 +22,29 @@
 #include "../Framework/Test.hpp"
 
 namespace testbed {
-    
-    class HalfPipe : public Test
+
+class HalfPipe : public Test
+{
+public:
+    HalfPipe()
     {
-    public:
-        HalfPipe()
+        const auto pipeBody = CreateBody(GetWorld(), BodyConf{}.UseLocation(Vec2(0, 20) * 1_m));
         {
-            const auto pipeBody = CreateBody(GetWorld(), BodyConf{}.UseLocation(Vec2(0, 20) * 1_m));
-            {
-                auto conf = ChainShapeConf{};
-                conf.UseFriction(Real(1));
-                conf.Set(GetCircleVertices(20_m, 90, 180_deg, Real(0.5f)));
-                CreateFixture(GetWorld(), pipeBody, Shape{conf});
-            }
-            const auto ballBody = CreateBody(GetWorld(), BodyConf{}
-                                                      .UseType(BodyType::Dynamic)
-                                                      .UseLocation(Vec2(-19, 28) * 1_m)
-                                                     .UseLinearAcceleration(GetGravity()));
-            CreateFixture(GetWorld(), ballBody, Shape{
-                DiskShapeConf{}.UseDensity(0.01_kgpm2).UseRadius(1_m).UseFriction(Real(1))
-            });
+            auto conf = ChainShapeConf{};
+            conf.UseFriction(Real(1));
+            conf.Set(GetCircleVertices(20_m, 90, 180_deg, Real(0.5f)));
+            Attach(GetWorld(), pipeBody, CreateShape(GetWorld(), conf));
         }
-    };
-    
+        const auto ballBody = CreateBody(GetWorld(), BodyConf{}
+                                         .UseType(BodyType::Dynamic)
+                                         .UseLocation(Vec2(-19, 28) * 1_m)
+                                         .UseLinearAcceleration(GetGravity()));
+        Attach(GetWorld(), ballBody, CreateShape(GetWorld(),
+                                                 DiskShapeConf{}
+                                                 .UseDensity(0.01_kgpm2)
+                                                 .UseRadius(1_m).UseFriction(Real(1))));
+    }
+};
 }
 
 #endif /* PLAYRHO_HALF_PIPE_HPP */

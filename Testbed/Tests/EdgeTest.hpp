@@ -43,17 +43,17 @@ public:
 
             auto conf = EdgeShapeConf{};
             conf.Set(v1, v2);
-            CreateFixture(GetWorld(), ground, Shape(conf));
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf));
             conf.Set(v2, v3);
-            CreateFixture(GetWorld(), ground, Shape(conf));
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf));
             conf.Set(v3, v4);
-            CreateFixture(GetWorld(), ground, Shape(conf));
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf));
             conf.Set(v4, v5);
-            CreateFixture(GetWorld(), ground, Shape(conf));
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf));
             conf.Set(v5, v6);
-            CreateFixture(GetWorld(), ground, Shape(conf));
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf));
             conf.Set(v6, v7);
-            CreateFixture(GetWorld(), ground, Shape(conf));
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf));
         }
 
         {
@@ -66,7 +66,7 @@ public:
             auto conf = DiskShapeConf{};
             conf.density = 1_kgpm2;
             conf.vertexRadius = 0.5_m;
-            CreateFixture(GetWorld(), body, Shape(conf));
+            Attach(GetWorld(), body, CreateShape(GetWorld(), conf));
         }
 
         {
@@ -80,7 +80,7 @@ public:
             shape.UseVertexRadius(1_m);
             shape.SetAsBox(0.5_m, 0.5_m);
             shape.UseDensity(1_kgpm2);
-            CreateFixture(GetWorld(), body, Shape(shape));
+            Attach(GetWorld(), body, CreateShape(GetWorld(), shape));
         }
         
         SetAccelerations(GetWorld(), GetGravity());

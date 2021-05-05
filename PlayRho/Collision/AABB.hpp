@@ -30,7 +30,7 @@
 #include <PlayRho/Common/Settings.hpp> // for ChildCounter, etc.
 #include <PlayRho/Common/Templates.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/FixtureID.hpp>
+#include <PlayRho/Collision/Shapes/ShapeID.hpp>
 
 #include <algorithm> // for std::mismatch, lexicographical_compare, etc
 #include <utility> // for std::get
@@ -452,21 +452,19 @@ AABB ComputeAABB(const DistanceProxy& proxy,
 /// @relatedalso Shape
 AABB ComputeAABB(const Shape& shape, const Transformation& xf) noexcept;
 
-/// @brief Computes the AABB for the identified fixture within the given world.
-/// @relatedalso World
-AABB ComputeAABB(const World& world, FixtureID id);
+AABB ComputeAABB(const World& world, BodyID bodyID, ShapeID shapeID);
 
 /// @brief Computes the AABB for the identified body within the given world.
 /// @relatedalso World
 AABB ComputeAABB(const World& world, BodyID id);
 
-/// @brief Computes the intersecting AABB for the given pair of fixtures and indexes.
-/// @details The intersecting AABB for the given pair of fixtures is the intersection
-///   of the AABB for child A of the shape of fixture A with the AABB for child B of
-///   the shape of fixture B.
+/// @brief Computes the intersecting AABB for the given pair of body-shape-index values.
+/// @details The intersecting AABB for the given pair of body-shape-index values is the intersection
+///   of the AABB for child A of shape A of body A with the AABB for child B of
+///   shape B of body B.
 AABB ComputeIntersectingAABB(const World& world,
-                             FixtureID fA, ChildCounter iA,
-                             FixtureID fB, ChildCounter iB) noexcept;
+                             BodyID bA, ShapeID sA, ChildCounter iA,
+                             BodyID bB, ShapeID sB, ChildCounter iB) noexcept;
 
 /// @brief Computes the intersecting AABB for the given contact.
 /// @relatedalso Contact

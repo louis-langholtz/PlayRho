@@ -30,7 +30,7 @@ public:
     BodyTypes()
     {
         const auto ground = CreateBody(GetWorld());
-        CreateFixture(GetWorld(), ground, Shape(EdgeShapeConf{}.Set(Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m)));
+        Attach(GetWorld(), ground, CreateShape(GetWorld(), EdgeShapeConf{}.Set(Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m)));
 
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Dynamic", [&](KeyActionMods) {
             SetType(GetWorld(), m_platform, BodyType::Dynamic);
@@ -48,7 +48,7 @@ public:
             const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 3) * 1_m).UseLinearAcceleration(GetGravity());
             m_attachment = CreateBody(GetWorld(), bd);
             const auto conf = PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 2_m);
-            CreateFixture(GetWorld(), m_attachment, Shape(conf));
+            Attach(GetWorld(), m_attachment, CreateShape(GetWorld(), conf));
         }
 
         // Define platform
@@ -58,7 +58,7 @@ public:
 
             const auto conf = PolygonShapeConf{}.UseFriction(Real(0.6)).UseDensity(2_kgpm2)
                 .SetAsBox(0.5_m, 4_m, Vec2(4, 0) * 1_m, Pi * 0.5_rad);
-            CreateFixture(GetWorld(), m_platform, Shape{conf});
+            Attach(GetWorld(), m_platform, CreateShape(GetWorld(), conf));
 
             auto rjd = GetRevoluteJointConf(GetWorld(), m_attachment, m_platform, Vec2(0, 5) * 1_m);
             rjd.maxMotorTorque = 50_Nm;
@@ -82,7 +82,7 @@ public:
             const auto body = CreateBody(GetWorld(), bd);
 
             const auto conf = PolygonShapeConf{}.UseFriction(Real(0.6)).UseDensity(2_kgpm2).SetAsBox(0.75_m, 0.75_m);
-            CreateFixture(GetWorld(), body, Shape(conf));
+            Attach(GetWorld(), body, CreateShape(GetWorld(), conf));
         }
     }
 

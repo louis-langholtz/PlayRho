@@ -33,6 +33,10 @@ public:
     
     Tumbler()
     {
+        m_square = CreateShape(GetWorld(), PolygonShapeConf{}.SetAsBox(0.125_m, 0.125_m).UseDensity(1_kgpm2));
+        m_disk = CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(0.125_m).UseFriction(0).UseDensity(0.1_kgpm2));
+        m_shape = m_square;
+
         SetupTumblers(1);
         RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "Speed up rotation.", [&](KeyActionMods) {
             for (const auto& id: GetJoints(GetWorld())) {
@@ -102,13 +106,13 @@ public:
                                           .UseLinearAcceleration(GetGravity()));
         auto shape = PolygonShapeConf{}.UseDensity(5_kgpm2);
         shape.SetAsBox(0.5_m, 10_m, Vec2( 10,   0) * 1_m, 0_rad);
-        CreateFixture(GetWorld(), b, Shape(shape));
+        Attach(GetWorld(), b, CreateShape(GetWorld(), shape));
         shape.SetAsBox(0.5_m, 10_m, Vec2(-10,   0) * 1_m, 0_rad);
-        CreateFixture(GetWorld(), b, Shape(shape));
+        Attach(GetWorld(), b, CreateShape(GetWorld(), shape));
         shape.SetAsBox(10_m, 0.5_m, Vec2(  0,  10) * 1_m, 0_rad);
-        CreateFixture(GetWorld(), b, Shape(shape));
+        Attach(GetWorld(), b, CreateShape(GetWorld(), shape));
         shape.SetAsBox(10_m, 0.5_m, Vec2(  0, -10) * 1_m, 0_rad);
-        CreateFixture(GetWorld(), b, Shape(shape));
+        Attach(GetWorld(), b, CreateShape(GetWorld(), shape));
         return b;
     }
 
@@ -130,7 +134,7 @@ public:
                                           .UseLinearAcceleration(GetGravity()));
         m_tumblee.resize(b.get() + 1u);
         m_tumblee[b.get()] = true;
-        CreateFixture(GetWorld(), b, m_shape);
+        Attach(GetWorld(), b, m_shape);
     }
 
     void PostStep(const Settings& settings, Drawer&) override
@@ -148,10 +152,10 @@ public:
     }
 
     const AngularVelocity MotorInc = 0.5_rpm;
-    const Shape m_square = Shape{PolygonShapeConf{}.SetAsBox(0.125_m, 0.125_m).UseDensity(1_kgpm2)};
-    const Shape m_disk = Shape{DiskShapeConf{}.UseRadius(0.125_m).UseFriction(0).UseDensity(0.1_kgpm2)};
+    ShapeID m_square = InvalidShapeID;
+    ShapeID m_disk = InvalidShapeID;
+    ShapeID m_shape = InvalidShapeID;
     int m_count = 0;
-    Shape m_shape = m_square;
     std::vector<bool> m_tumblee;
 };
 

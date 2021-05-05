@@ -24,6 +24,7 @@
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldFixture.hpp>
+#include <PlayRho/Dynamics/WorldShape.hpp>
 #include <PlayRho/Dynamics/Body.hpp> // for GetBody
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 
@@ -80,14 +81,14 @@ ChildCounter GetChildIndexB(const World& world, ContactID id)
     return GetChildIndexB(GetContact(world, id));
 }
 
-FixtureID GetFixtureA(const World& world, ContactID id)
+ShapeID GetShapeA(const World& world, ContactID id)
 {
-    return GetFixtureA(GetContact(world, id));
+    return GetShapeA(GetContact(world, id));
 }
 
-FixtureID GetFixtureB(const World& world, ContactID id)
+ShapeID GetShapeB(const World& world, ContactID id)
 {
-    return GetFixtureB(GetContact(world, id));
+    return GetShapeB(GetContact(world, id));
 }
 
 BodyID GetBodyA(const World& world, ContactID id)
@@ -187,33 +188,29 @@ void UnsetEnabled(World& world, ContactID id)
 
 Real GetDefaultFriction(const World& world, ContactID id)
 {
-    const auto& contact = world.GetContact(id);
-    return GetDefaultFriction(world,
-                              world.GetFixture(GetFixtureA(contact)),
-                              world.GetFixture(GetFixtureB(contact)));
+    const auto& c = world.GetContact(id);
+    return GetDefaultFriction(world.GetShape(GetShapeA(c)), world.GetShape(GetShapeB(c)));
 }
 
 Real GetDefaultRestitution(const World& world, ContactID id)
 {
-    const auto& contact = world.GetContact(id);
-    return GetDefaultRestitution(world,
-                                 world.GetFixture(GetFixtureA(contact)),
-                                 world.GetFixture(GetFixtureB(contact)));
+    const auto& c = world.GetContact(id);
+    return GetDefaultRestitution(world.GetShape(GetShapeA(c)), world.GetShape(GetShapeB(c)));
 }
 
 WorldManifold GetWorldManifold(const World& world, ContactID id)
 {
     const auto bA = GetBodyA(world, id);
-    const auto fA = GetFixtureA(world, id);
+    const auto fA = GetShapeA(world, id);
     const auto iA = GetChildIndexA(world, id);
     const auto bB = GetBodyB(world, id);
-    const auto fB = GetFixtureB(world, id);
+    const auto fB = GetShapeB(world, id);
     const auto iB = GetChildIndexB(world, id);
     const auto manifold = GetManifold(world, id);
     const auto xfA = GetTransformation(world.GetBody(bA));
-    const auto radiusA = GetVertexRadius(world.GetShape(GetShape(world.GetFixture(fA))), iA);
+    const auto radiusA = GetVertexRadius(world.GetShape(fA), iA);
     const auto xfB = GetTransformation(world.GetBody(bB));
-    const auto radiusB = GetVertexRadius(world.GetShape(GetShape(world.GetFixture(fB))), iB);
+    const auto radiusB = GetVertexRadius(world.GetShape(fB), iB);
     return GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
 }
 

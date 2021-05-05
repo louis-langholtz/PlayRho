@@ -32,7 +32,7 @@
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
-#include <PlayRho/Dynamics/FixtureID.hpp>
+#include <PlayRho/Collision/Shapes/ShapeID.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>
 #include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
@@ -64,10 +64,11 @@ std::unique_ptr<WorldImpl> CreateWorldImpl(const WorldImpl& other);
 /// @relatedalso WorldImpl
 void Clear(WorldImpl& world) noexcept;
 
-/// @brief Registers a destruction listener for fixtures.
-/// @relatedalso WorldImpl
-void SetFixtureDestructionListener(WorldImpl& world,
-                                   std::function<void(FixtureID)> listener) noexcept;
+/// @brief Registers a destruction listener for shapes.
+void SetShapeDestructionListener(WorldImpl& world, std::function<void(ShapeID)> listener) noexcept;
+
+/// @brief Registers a detach listener for shapes detaching from bodies.
+void SetDetachListener(WorldImpl& world, std::function<void(std::pair<BodyID, ShapeID>)> listener) noexcept;
 
 /// @brief Registers a destruction listener for joints.
 /// @relatedalso WorldImpl
@@ -124,7 +125,7 @@ GetBodiesForProxies(const WorldImpl& world) noexcept;
 ///   during the next call to the world step method.
 /// @see Step.
 /// @relatedalso WorldImpl
-SizedRange<std::vector<FixtureID>::const_iterator>
+SizedRange<std::vector<std::pair<BodyID, ShapeID>>::const_iterator>
 GetFixturesForProxies(const WorldImpl& world) noexcept;
 
 /// @brief Gets the joints of the specified world.

@@ -39,14 +39,14 @@ public:
             auto conf = DiskShapeConf{};
             conf.vertexRadius = 2_m;
             conf.location = Vec2(-10.0f, y + b + L) * 1_m;
-            CreateFixture(GetWorld(), ground, Shape(conf));
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf));
             conf.location = Vec2(+10.0f, y + b + L) * 1_m;
-            CreateFixture(GetWorld(), ground, Shape(conf));
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf));
         }
 
         {
-            const auto shape = Shape{
-                PolygonShapeConf{}.SetAsBox(a * 1_m, b * 1_m).UseDensity(5_kgpm2)};
+            const auto shape = CreateShape(GetWorld(),
+                PolygonShapeConf{}.SetAsBox(a * 1_m, b * 1_m).UseDensity(5_kgpm2));
 
             BodyConf bd;
             bd.type = BodyType::Dynamic;
@@ -55,11 +55,11 @@ public:
             //bd.fixedRotation = true;
             bd.location = Vec2(-10.0f, y) * 1_m;
             const auto body1 = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), body1, shape);
+            Attach(GetWorld(), body1, shape);
 
             bd.location = Vec2(10.0f, y) * 1_m;
             const auto body2 = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), body2, shape);
+            Attach(GetWorld(), body2, shape);
 
             const auto anchor1 = Vec2(-10.0f, y + b) * 1_m;
             const auto anchor2 = Vec2(10.0f, y + b) * 1_m;

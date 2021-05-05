@@ -48,10 +48,14 @@ void Clear(WorldImpl& world) noexcept
     world.Clear();
 }
 
-void SetFixtureDestructionListener(WorldImpl& world,
-                                   std::function<void(FixtureID)> listener) noexcept
+void SetShapeDestructionListener(WorldImpl& world, std::function<void(ShapeID)> listener) noexcept
 {
-    world.SetFixtureDestructionListener(listener);
+    world.SetShapeDestructionListener(listener);
+}
+
+void SetDetachListener(WorldImpl& world, std::function<void(std::pair<BodyID, ShapeID>)> listener) noexcept
+{
+    world.SetDetachListener(listener);
 }
 
 void SetJointDestructionListener(WorldImpl& world,
@@ -154,7 +158,7 @@ const DynamicTree& GetTree(const WorldImpl& world) noexcept
     return world.GetTree();
 }
 
-SizedRange<std::vector<FixtureID>::const_iterator>
+SizedRange<std::vector<std::pair<BodyID, ShapeID>>::const_iterator>
 GetFixturesForProxies(const WorldImpl& world) noexcept
 {
     return world.GetFixturesForProxies();

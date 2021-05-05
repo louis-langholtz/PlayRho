@@ -42,10 +42,9 @@
 #include <PlayRho/Common/Range.hpp> // for SizedRange
 
 #include <PlayRho/Collision/MassData.hpp>
+#include <PlayRho/Collision/Shapes/ShapeID.hpp>
 
 #include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/FixtureID.hpp>
-#include <PlayRho/Dynamics/FixtureConf.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp> // for GetDefaultBodyConf
 #include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
@@ -117,19 +116,46 @@ void SetBody(World& world, BodyID id, const Body& body);
 /// @relatedalso World
 void Destroy(World& world, BodyID id);
 
-/// @brief Gets the range of all constant fixtures attached to the given body.
-/// @throws std::out_of_range If given an invalid body identifier.
-/// @relatedalso World
-SizedRange<std::vector<FixtureID>::const_iterator> GetFixtures(const World& world, BodyID id);
+/// @brief Associates a validly identified shape with the validly identified body.
+/// @throws std::out_of_range If given an invalid body or shape identifier.
+/// @throws WrongState if this method is called while the world is locked.
+/// @see GetShapes.
+/// @relatedalso World, ResetMassData
+void Attach(World& world, BodyID id, ShapeID shapeID, bool resetMassData = true);
 
-/// @brief Gets the count of fixtures associated with the identified body.
+/// @brief Creates the shape within the world and then associates it with the validly
+///   identified body.
+/// @throws std::out_of_range If given an invalid body.
+/// @throws WrongState if this method is called while the world is locked.
+/// @relatedalso World, ResetMassData
+void Attach(World& world, BodyID id, const Shape& shape, bool resetMassData = true);
+
+/// @brief Disassociates a validly identified shape from the validly identified body.
+/// @throws std::out_of_range If given an invalid body or shape identifier.
+/// @throws WrongState if this method is called while the world is locked.
+/// @relatedalso World, ResetMassData
+bool Detach(World& world, BodyID id, ShapeID shapeID, bool resetMassData = true);
+
+/// @brief Disassociates all of the associated shape from the validly identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
-/// @see GetFixtures(const World& world, BodyID id).
+/// @throws WrongState if this method is called while the world is locked.
+/// @relatedalso World, ResetMassData
+bool Detach(World& world, BodyID id, bool resetMassData = true);
+
+/// @brief Gets the identities of the shapes associated with the identified body.
+/// @throws std::out_of_range If given an invalid body identifier.
+/// @see Attach, Detach.
 /// @relatedalso World
-inline FixtureCounter GetFixtureCount(const World& world, BodyID id)
+const std::vector<ShapeID>& GetShapes(const World& world, BodyID id);
+
+/// @brief Gets the count of shapes associated with the identified body.
+/// @throws std::out_of_range If given an invalid body identifier.
+/// @see GetShapes(const World& world, BodyID id).
+/// @relatedalso World
+inline ShapeCounter GetShapeCount(const World& world, BodyID id)
 {
     using std::size;
-    return static_cast<FixtureCounter>(size(GetFixtures(world, id)));
+    return static_cast<ShapeCounter>(size(GetShapes(world, id)));
 }
 
 /// @brief Gets this body's linear acceleration.
@@ -430,18 +456,6 @@ void SetVelocity(World& world, BodyID id, const LinearVelocity2& value);
 /// @relatedalso World
 void SetVelocity(World& world, BodyID id, AngularVelocity value);
 
-/// @brief Destroys fixtures of the identified body.
-/// @details Destroys all of the fixtures previously created for this body by the
-///   <code>CreateFixture(const Shape&, const FixtureConf&, bool)</code> method.
-/// @note This may call the <code>ResetMassData()</code> method.
-/// @post After this call, no fixtures will show up in the fixture enumeration
-///   returned by the <code>GetFixtures()</code> methods.
-/// @throws std::out_of_range If given an invalid body identifier.
-/// @see CreateFixture, GetFixtures, ResetMassData.
-/// @see PhysicalEntities
-/// @relatedalso World
-void DestroyFixtures(World& world, BodyID id, bool resetMassData = true);
-
 /// @brief Gets the enabled/disabled state of the body.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see SetEnabled.
@@ -603,10 +617,10 @@ void SetMassData(World& world, BodyID id, const MassData& massData);
 
 /// @brief Resets the mass data properties.
 /// @details This resets the mass data to the sum of the mass properties of the fixtures.
-/// @note This method must be called after calling <code>CreateFixture</code> to update the
+/// @note This method must be called after associating new shapes to the body to update the
 ///   body mass data properties unless <code>SetMassData</code> is used.
 /// @throws std::out_of_range If given an invalid body identifier.
-/// @see SetMassData.
+/// @see SetMassData, Attach, Detach.
 /// @relatedalso World
 inline void ResetMassData(World& world, BodyID id)
 {

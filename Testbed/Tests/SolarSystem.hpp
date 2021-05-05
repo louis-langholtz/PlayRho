@@ -114,8 +114,7 @@ public:
         SetBombRadius(100_km);
         SetBombDensity(2e12_kgpm2);
         const auto DynamicBD = BodyConf{}.UseType(BodyType::Dynamic).UseBullet(true);
-        for (auto& sso: SolarSystemBodies)
-        {
+        for (auto& sso: SolarSystemBodies) {
             const auto p = sso.orbitalPeriod;
             const auto c = sso.aveDist * Pi * 2;
             const auto n = &sso - SolarSystemBodies;
@@ -128,8 +127,7 @@ public:
             SetVelocity(GetWorld(), b, Velocity{LinearVelocity2{0_mps, v}, a});
             const auto d = sso.mass / (Pi * Square(sso.radius));
             const auto sconf = DiskShapeConf{}.UseRadius(sso.radius).UseDensity(d);
-            const auto shape = Shape(sconf);
-            CreateFixture(GetWorld(), b, shape);
+            Attach(GetWorld(), b, CreateShape(GetWorld(), sconf));
         }
         RegisterForKey(GLFW_KEY_EQUAL, GLFW_PRESS, 0,
                        "Locks camera to following planet nearest mouse.",

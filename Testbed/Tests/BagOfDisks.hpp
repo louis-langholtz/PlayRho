@@ -61,7 +61,7 @@ public:
         boundaryConf.Add(Vec2(-12,  +0) * 1_m);
         boundaryConf.Add(Vec2(+12,  +0) * 1_m);
         boundaryConf.Add(Vec2(+12, +20) * 1_m);
-        CreateFixture(GetWorld(), m_ground, Shape(boundaryConf));
+        Attach(GetWorld(), m_ground, CreateShape(GetWorld(), boundaryConf));
         
         const auto vertices = GetCircleVertices(10_m, 90);
         const auto halfSegmentLength = GetMagnitude(vertices[1] - vertices[0]) / 2;
@@ -72,7 +72,7 @@ public:
         conf.friction = 0.2f;
         conf.Set(Length2{-halfSegmentLength, 0_m}, Length2{+halfSegmentLength, 0_m});
         const auto vertexOffset = Vec2(0, 14) * 1_m;
-        const auto shape = Shape(conf);
+        const auto shape = CreateShape(GetWorld(), conf);
         auto prevBody = InvalidBodyID;
         auto firstBody = InvalidBodyID;
         auto prevVertex = std::optional<Length2>{};
@@ -88,7 +88,7 @@ public:
                                                      .UseLocation(midPoint + vertexOffset)
                                                      .UseAngle(angle)
                                                      .UseLinearAcceleration(GetGravity()));
-                CreateFixture(GetWorld(), body, shape);
+                Attach(GetWorld(), body, shape);
                 if (prevBody != InvalidBodyID)
                 {
                     CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), body,
@@ -106,7 +106,7 @@ public:
                                                      vertices[0] + vertexOffset));
 
         const auto diskRadius = 0.15_m;
-        const auto diskShape = Shape(DiskShapeConf{}.UseRadius(diskRadius).UseDensity(10_kgpm2).UseFriction(0));
+        const auto diskShape = CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(diskRadius).UseDensity(10_kgpm2).UseFriction(0));
         auto angleIncrement = 90_deg;
         auto angle = 0_deg;
         const auto alpha = diskRadius;
@@ -120,7 +120,7 @@ public:
                                                  .UseType(BodyType::Dynamic)
                                                  .UseLocation(location + vertexOffset)
                                                  .UseLinearAcceleration(GetGravity()));
-            CreateFixture(GetWorld(), body, diskShape);
+            Attach(GetWorld(), body, diskShape);
             angle += angleIncrement;
             angleIncrement *= 0.999f;
         }

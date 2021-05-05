@@ -38,18 +38,19 @@ public:
     RopeJointTest()
     {
         const auto ground = CreateBody(GetWorld());
-        CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        Attach(GetWorld(), ground,
+               CreateShape(GetWorld(), EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));
         {
             Filter filter;
             filter.categoryBits = 0x0001;
             filter.maskBits = 0xFFFF & ~0x0002;
-            const auto rectangle = Shape{
+            const auto rectangle = CreateShape(GetWorld(),
                 PolygonShapeConf{}.UseDensity(20_kgpm2).UseFriction(Real(0.2)).UseFilter(filter).SetAsBox(0.5_m, 0.125_m)
-            };
+            );
             filter.categoryBits = 0x0002;
-            const auto square = Shape{
+            const auto square = CreateShape(GetWorld(),
                 PolygonShapeConf{}.UseDensity(100_kgpm2).UseFriction(Real(0.2)).UseFilter(filter).SetAsBox(1.5_m, 1.5_m)
-            };
+            );
             const auto N = 10;
             const auto y = 15.0f;
             m_ropeConf.localAnchorA = Vec2(0.0f, y) * 1_m;
@@ -68,7 +69,7 @@ public:
                     bd.angularDamping = 0.4_Hz;
                 }
                 const auto body = CreateBody(GetWorld(), bd);
-                CreateFixture(GetWorld(), body, shape);
+                Attach(GetWorld(), body, shape);
                 CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), prevBody, body,
                                                           Vec2(Real(i), y) * 1_m));
                 prevBody = body;

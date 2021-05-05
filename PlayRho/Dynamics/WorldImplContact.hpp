@@ -28,7 +28,6 @@
 #include <PlayRho/Common/Real.hpp>
 
 #include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>
 
 namespace playrho {
