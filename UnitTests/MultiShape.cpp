@@ -50,7 +50,7 @@ TEST(MultiShapeConf, ByteSize)
             EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(48));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(48)); break;
+        case  8: EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(56)); break;
         case 16: EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(80)); break;
         default: FAIL(); break;
     }
