@@ -2474,7 +2474,7 @@ TEST(World, CollidingDynamicBodies)
     EXPECT_LT(elapsed_time, 600_s);
     EXPECT_TRUE(listener.contacting);
     
-    // Call SetSensor to add some unit test coverage of these Fixture methods.
+    // Call SetSensor to add some unit test coverage of these methods.
     EXPECT_FALSE(GetContacts(world, body_a).empty());
     for (const auto& ci: GetContacts(world, body_a))
     {

@@ -54,7 +54,6 @@ namespace d2 {
 ///
 /// @note Create these using the <code>World::CreateBody</code> method.
 /// @note Destroy these using the <code>World::Destroy(BodyID)</code> method.
-/// @note From a memory management perspective, bodies own Fixture instances.
 /// @note On a 64-bit architecture with 4-byte Real, this data structure is at least
 ///   192-bytes large.
 ///

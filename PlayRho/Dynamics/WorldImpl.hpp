@@ -274,6 +274,12 @@ public:
     /// @see GetProxies.
     ContactCounter FindNewContacts();
 
+    /// @brief Gets the fixtures-for-proxies range for this world.
+    /// @details Provides insight on what fixtures have been queued for proxy processing
+    ///   during the next call to the world step method.
+    /// @see Step.
+    SizedRange<std::vector<std::pair<BodyID, ShapeID>>::const_iterator> GetFixturesForProxies() const noexcept;
+
     /// @}
 
     /// @name Body Member Functions
@@ -372,18 +378,6 @@ public:
 
     /// @throws std::out_of_range if given an invalid id.
     SizedRange<WorldImpl::BodyJoints::const_iterator> GetJoints(BodyID id) const;
-
-    /// @}
-
-    /// @name Fixture Member Functions
-    /// Member functions relating to fixtures.
-    /// @{
-
-    /// @brief Gets the fixtures-for-proxies range for this world.
-    /// @details Provides insight on what fixtures have been queued for proxy processing
-    ///   during the next call to the world step method.
-    /// @see Step.
-    SizedRange<std::vector<std::pair<BodyID, ShapeID>>::const_iterator> GetFixturesForProxies() const noexcept;
 
     /// @}
 

@@ -23,7 +23,6 @@
 
 #include <PlayRho/Dynamics/WorldImplBody.hpp>
 #include <PlayRho/Dynamics/WorldImplContact.hpp>
-#include <PlayRho/Dynamics/WorldImplFixture.hpp>
 #include <PlayRho/Dynamics/WorldImplJoint.hpp>
 #include <PlayRho/Dynamics/WorldImplShape.hpp>
 #include <PlayRho/Dynamics/WorldImplMisc.hpp>

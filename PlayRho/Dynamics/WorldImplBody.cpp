@@ -22,7 +22,6 @@
 #include <PlayRho/Dynamics/WorldImplBody.hpp>
 
 #include <PlayRho/Dynamics/WorldImpl.hpp>
-#include <PlayRho/Dynamics/WorldImplFixture.hpp> // for GetDensity, GetMassData
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
