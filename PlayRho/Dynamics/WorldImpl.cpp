@@ -2386,12 +2386,10 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
     //   approaches zero.
 #define OVERLAP_TOLERANCE (SquareMeter / Real(20))
 
-    const auto sensor = IsSensor(shapeA) || IsSensor(shapeB);
-    if (sensor)
-    {
+    const auto sensor = c.IsSensor();
+    if (sensor) {
         const auto overlapping = TestOverlap(childA, xfA, childB, xfB, conf.distance);
         newTouching = (overlapping >= 0_m2);
-
 #ifdef OVERLAP_TOLERANCE
 #ifndef NDEBUG
         const auto tolerance = OVERLAP_TOLERANCE;
@@ -2400,19 +2398,14 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
                abs(overlapping) < tolerance);
 #endif
 #endif
-
         // Sensors don't generate manifolds.
         manifold = Manifold{};
     }
-    else
-    {
+    else {
         auto newManifold = CollideShapes(childA, xfA, childB, xfB, conf.manifold);
-
         const auto old_point_count = oldManifold.GetPointCount();
         const auto new_point_count = newManifold.GetPointCount();
-
         newTouching = new_point_count > 0;
-
 #ifdef OVERLAP_TOLERANCE
 #ifndef NDEBUG
         const auto tolerance = OVERLAP_TOLERANCE;
@@ -2425,13 +2418,10 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
         // start the solver. Note: missing any opportunities to warm start the solver
         // results in squishier stacking and less stable simulations.
         bool found[2] = {false, new_point_count < 2};
-        for (auto i = decltype(new_point_count){0}; i < new_point_count; ++i)
-        {
+        for (auto i = decltype(new_point_count){0}; i < new_point_count; ++i) {
             const auto new_cf = newManifold.GetContactFeature(i);
-            for (auto j = decltype(old_point_count){0}; j < old_point_count; ++j)
-            {
-                if (new_cf == oldManifold.GetContactFeature(j))
-                {
+            for (auto j = decltype(old_point_count){0}; j < old_point_count; ++j) {
+                if (new_cf == oldManifold.GetContactFeature(j)) {
                     found[i] = true;
                     newManifold.SetContactImpulses(i, oldManifold.GetContactImpulses(j));
                     break;
@@ -2441,18 +2431,14 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
         // If warm starting data wasn't found for a manifold point via contact feature
         // matching, it's better to just set the data to whatever old point is closest
         // to the new one.
-        for (auto i = decltype(new_point_count){0}; i < new_point_count; ++i)
-        {
-            if (!found[i])
-            {
+        for (auto i = decltype(new_point_count){0}; i < new_point_count; ++i) {
+            if (!found[i]) {
                 auto leastSquareDiff = std::numeric_limits<Area>::infinity();
                 const auto newPt = newManifold.GetPoint(i);
-                for (auto j = decltype(old_point_count){0}; j < old_point_count; ++j)
-                {
+                for (auto j = decltype(old_point_count){0}; j < old_point_count; ++j) {
                     const auto oldPt = oldManifold.GetPoint(j);
                     const auto squareDiff = GetMagnitudeSquared(oldPt.localPoint - newPt.localPoint);
-                    if (leastSquareDiff > squareDiff)
-                    {
+                    if (leastSquareDiff > squareDiff) {
                         leastSquareDiff = squareDiff;
                         newManifold.SetContactImpulses(i, oldManifold.GetContactImpulses(j));
                     }
@@ -2474,8 +2460,7 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
          * Lastly, without this code, the step-statistics show a world getting to sleep in
          * less TOI position iterations.
          */
-        if (newTouching != oldTouching)
-        {
+        if (newTouching != oldTouching) {
             bodyA.SetAwake();
             bodyB.SetAwake();
         }
@@ -2484,27 +2469,21 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
 
     c.UnflagForUpdating();
 
-    if (!oldTouching && newTouching)
-    {
+    if (!oldTouching && newTouching) {
         c.SetTouching();
-        if (m_beginContactListener)
-        {
+        if (m_beginContactListener) {
             m_beginContactListener(contactID);
         }
     }
-    else if (oldTouching && !newTouching)
-    {
+    else if (oldTouching && !newTouching) {
         c.UnsetTouching();
-        if (m_endContactListener)
-        {
+        if (m_endContactListener) {
             m_endContactListener(contactID);
         }
     }
 
-    if (!sensor && newTouching)
-    {
-        if (m_preSolveContactListener)
-        {
+    if (!sensor && newTouching) {
+        if (m_preSolveContactListener) {
             m_preSolveContactListener(contactID, oldManifold);
         }
     }
