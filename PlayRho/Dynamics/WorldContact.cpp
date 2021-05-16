@@ -28,6 +28,7 @@
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 
 #include <PlayRho/Collision/Manifold.hpp>
+#include <PlayRho/Collision/WorldManifold.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -199,18 +200,7 @@ Real GetDefaultRestitution(const World& world, ContactID id)
 
 WorldManifold GetWorldManifold(const World& world, ContactID id)
 {
-    const auto bA = GetBodyA(world, id);
-    const auto fA = GetShapeA(world, id);
-    const auto iA = GetChildIndexA(world, id);
-    const auto bB = GetBodyB(world, id);
-    const auto fB = GetShapeB(world, id);
-    const auto iB = GetChildIndexB(world, id);
-    const auto manifold = GetManifold(world, id);
-    const auto xfA = GetTransformation(world.GetBody(bA));
-    const auto radiusA = GetVertexRadius(world.GetShape(fA), iA);
-    const auto xfB = GetTransformation(world.GetBody(bB));
-    const auto radiusB = GetVertexRadius(world.GetShape(fB), iB);
-    return GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
+    return GetWorldManifold(world, GetContact(world, id), GetManifold(world, id));
 }
 
 ContactCounter GetTouchingCount(const World& world) noexcept

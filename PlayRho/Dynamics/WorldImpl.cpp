@@ -1299,8 +1299,8 @@ WorldImpl::UpdateContactTOIs(const StepConf& conf)
 
         // Compute the TOI for this contact (one or both bodies are active and impenetrable).
         // Computes the time of impact in interval [0, 1]
-        const auto proxyA = GetChild(GetShape(c.GetShapeA()), c.GetChildIndexA());
-        const auto proxyB = GetChild(GetShape(c.GetShapeB()), c.GetChildIndexB());
+        const auto proxyA = GetChild(m_shapeBuffer[to_underlying(c.GetShapeA())], c.GetChildIndexA());
+        const auto proxyB = GetChild(m_shapeBuffer[to_underlying(c.GetShapeB())], c.GetChildIndexB());
 
         // Large rotations can make the root finder of TimeOfImpact fail, so normalize sweep angles.
         const auto sweepA = GetNormalized(bA.GetSweep());
@@ -2410,8 +2410,7 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
 #ifndef NDEBUG
         const auto tolerance = OVERLAP_TOLERANCE;
         const auto overlapping = TestOverlap(childA, xfA, childB, xfB, conf.distance);
-        assert(newTouching == (overlapping >= 0_m2) ||
-               abs(overlapping) < tolerance);
+        assert(newTouching == (overlapping >= 0_m2) || abs(overlapping) < tolerance);
 #endif
 #endif
         // Match old contact ids to new contact ids and copy the stored impulses to warm
