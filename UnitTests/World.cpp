@@ -2634,7 +2634,11 @@ TEST(World_Longer, TilesComesToRest)
         sumToiVelIters += stats.toi.sumVelIters;
         ++numSteps;
     }
+#if defined(__core2__)
     EXPECT_EQ(world->GetContactRange(), 1447u);
+#else
+    EXPECT_EQ(world->GetContactRange(), 1449u); // on amd64
+#endif
     ASSERT_LT(numSteps, 3000ul);
     //const auto end_time = std::chrono::high_resolution_clock::now();
     
