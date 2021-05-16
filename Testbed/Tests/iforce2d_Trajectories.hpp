@@ -42,7 +42,6 @@ public:
     iforce2d_Trajectories(): Test(GetTestConf()), m_groundBody{CreateBody(GetWorld())}
     {
         //add four walls to the ground body
-        FixtureConf myFixtureConf;
         auto polygonShape = PolygonShapeConf{};
         polygonShape.SetAsBox(20_m, 1_m); //ground
         Attach(GetWorld(), m_groundBody, CreateShape(GetWorld(), polygonShape));

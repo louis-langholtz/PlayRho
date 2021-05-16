@@ -75,7 +75,7 @@
 
 #define BENCHMARK_BOX2D
 #ifdef BENCHMARK_BOX2D
-#include <Box2D/Box2D.h>
+#include <box2d/box2d.h>
 #endif // BENCHMARK_BOX2D
 
 template <typename T>
