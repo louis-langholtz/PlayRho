@@ -49,7 +49,7 @@ TEST(PolygonShapeConf, ByteSize)
 #endif
             break;
         case  8: EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(104)); break;
-        case 16: EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(144)); break;
+        case 16: EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(160)); break;
         default: FAIL(); break;
     }
 }
