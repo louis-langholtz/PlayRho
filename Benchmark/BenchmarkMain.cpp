@@ -2109,6 +2109,7 @@ static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
         constexpr auto M = 10;
         playrho::Length2 position{};
         if (groundIsComboShape) {
+            // y max = 0.5_m, y min = -9.5_m, y/2 = -4.5_m
             GetY(position) = 0.0f * playrho::Meter;
             for (auto j = 0; j < M; ++j) {
                 GetX(position) = -N * a * playrho::Meter;
@@ -2121,7 +2122,7 @@ static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
             }
             ResetMassData(world, ground);
         } else {
-            GetY(position) = -9.5f * playrho::Meter;
+            GetY(position) = -4.5f * playrho::Meter;
             conf.SetAsBox(a * playrho::Meter * N, a * playrho::Meter * M, position, playrho::Angle{0});
             Attach(world, ground, CreateShape(world, conf));
         }
