@@ -2459,12 +2459,12 @@ TEST(World, CollidingDynamicBodies)
     EXPECT_EQ(GetX(GetLinearVelocity(world, body_b)), -x * 1_mps);
     EXPECT_EQ(GetY(GetLinearVelocity(world, body_b)), 0_mps);
     
-    const auto time_collision = Real(1.0099994); // only valid for x >= around 4.214
-    const auto time_inc = Real(.01);
+    const auto time_collision = 1.0099994_s; // only valid for x >= around 4.214
+    const auto time_inc = 0.01_s;
     
-    auto elapsed_time = Real(0);
+    auto elapsed_time = 0_s;
     for (;;) {
-        Step(world, 1_s * time_inc);
+        Step(world, time_inc);
         elapsed_time += time_inc;
         if (listener.contacting || elapsed_time >= 600_s) {
             break;
@@ -2498,7 +2498,7 @@ TEST(World, CollidingDynamicBodies)
     const auto time_contacting = elapsed_time;
 
     EXPECT_TRUE(listener.touching);
-    EXPECT_NEAR(double(time_contacting), double(time_collision), 0.02);
+    EXPECT_NEAR(double(time_contacting / 1_s), double(time_collision / 1_s), 0.02);
     EXPECT_EQ(GetY(GetLocation(world, body_a)), 0_m);
     EXPECT_EQ(GetY(GetLocation(world, body_b)), 0_m);
 
@@ -2521,7 +2521,7 @@ TEST(World, CollidingDynamicBodies)
 
     for (;;)
     {
-        Step(world, 1_s * time_inc);
+        Step(world, time_inc);
         elapsed_time += time_inc;
         if (!listener.contacting && !listener.touching)
         {
@@ -2530,7 +2530,7 @@ TEST(World, CollidingDynamicBodies)
     }
     EXPECT_FALSE(listener.touching);
 
-    EXPECT_TRUE(AlmostEqual(elapsed_time, time_contacting + time_inc));
+    EXPECT_TRUE(AlmostEqual(double(elapsed_time / 1_s), double((time_contacting + time_inc) / 1_s)));
 
     // collision should be fully resolved now...
     EXPECT_LT(GetX(GetLocation(world, body_a)), -1_m);
@@ -2635,11 +2635,18 @@ TEST(World_Longer, TilesComesToRest)
         lastStats = stats;
         ++numSteps;
     }
+    switch (sizeof(Real)) {
+    case 4u:
 #if defined(__core2__)
-    EXPECT_EQ(world->GetContactRange(), 1447u);
+        EXPECT_EQ(world->GetContactRange(), 1447u);
 #else
-    EXPECT_EQ(world->GetContactRange(), 1449u); // on amd64
+        EXPECT_EQ(world->GetContactRange(), 1449u); // on amd64
 #endif
+        break;
+    case 8u:
+        EXPECT_EQ(world->GetContactRange(), 1447u);
+        break;
+    }
     ASSERT_LT(numSteps, 3000ul);
     //const auto end_time = std::chrono::high_resolution_clock::now();
     
