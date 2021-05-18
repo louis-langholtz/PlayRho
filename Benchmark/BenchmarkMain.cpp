@@ -2189,7 +2189,7 @@ static unsigned GetAwakeCount(const b2World& world)
     return count;
 }
 
-static void DropTilesBox2D(int count)
+static void DropTilesBox2D(int count, bool groundIsComboShape = true)
 {
     b2Vec2 gravity;
     gravity.Set(0.0f, -10.0f);
@@ -2202,17 +2202,24 @@ static void DropTilesBox2D(int count)
         
         const auto N = 200;
         const auto M = 10;
-        b2Vec2 position;
-        position.y = 0.0f;
-        for (auto j = 0; j < M; ++j) {
-            position.x = -N * a;
-            for (auto i = 0; i < N; ++i) {
-                b2PolygonShape shape;
-                shape.SetAsBox(a, a, position, 0.0f);
-                ground->CreateFixture(&shape, 0.0f);
-                position.x += 2.0f * a;
+        auto position = b2Vec2(0.0f, 0.0f);
+        if (groundIsComboShape) {
+            for (auto j = 0; j < M; ++j) {
+                position.x = -N * a;
+                for (auto i = 0; i < N; ++i) {
+                    b2PolygonShape shape;
+                    shape.SetAsBox(a, a, position, 0.0f);
+                    ground->CreateFixture(&shape, 0.0f);
+                    position.x += 2.0f * a;
+                }
+                position.y -= 2.0f * a;
             }
-            position.y -= 2.0f * a;
+        }
+        else {
+            position.y = -4.5f;
+            b2PolygonShape shape;
+            shape.SetAsBox(a * playrho::Meter * N, a * playrho::Meter * M, position, playrho::Angle{0});
+            ground->CreateFixture(&shape, 0.0f);
         }
     }
 
@@ -2249,8 +2256,7 @@ static void DropTilesBox2D(int count)
 static void TilesRestComboGroundPlayRho(benchmark::State& state)
 {
     const auto range = state.range();
-    for (auto _: state)
-    {
+    for (auto _: state) {
         DropTilesPlayRho(range);
     }
 }
@@ -2258,19 +2264,25 @@ static void TilesRestComboGroundPlayRho(benchmark::State& state)
 static void TilesRestOneGroundPlayRho(benchmark::State& state)
 {
     const auto range = state.range();
-    for (auto _: state)
-    {
+    for (auto _: state) {
         DropTilesPlayRho(range, false);
     }
 }
 
 #ifdef BENCHMARK_BOX2D
-static void TilesRestBox2D(benchmark::State& state)
+static void TilesRestComboGroundBox2D(benchmark::State& state)
 {
     const auto range = state.range();
-    for (auto _: state)
-    {
+    for (auto _: state) {
         DropTilesBox2D(range);
+    }
+}
+
+static void TilesRestOneGroundBox2D(benchmark::State& state)
+{
+    const auto range = state.range();
+    for (auto _: state) {
+        DropTilesBox2D(range, false);
     }
 }
 #endif // BENCHMARK_BOX2D
@@ -2525,7 +2537,8 @@ BENCHMARK(TilesRestComboGroundPlayRho)->Arg(12)->Arg(20)->Arg(36);
 BENCHMARK(TilesRestOneGroundPlayRho)->Arg(12)->Arg(20)->Arg(36);
 
 #ifdef BENCHMARK_BOX2D
-BENCHMARK(TilesRestBox2D)->Arg(12)->Arg(20)->Arg(36);
+BENCHMARK(TilesRestComboGroundBox2D)->Arg(12)->Arg(20)->Arg(36);
+BENCHMARK(TilesRestOneGroundBox2D)->Arg(12)->Arg(20)->Arg(36);
 #endif // BENCHMARK_BOX2D
 
 // BENCHMARK_MAIN()
