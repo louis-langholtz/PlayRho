@@ -2131,8 +2131,7 @@ static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
         constexpr auto a = 0.5f;
         conf.SetAsBox(a * playrho::Meter, a * playrho::Meter);
         conf.UseDensity(5.0f * playrho::KilogramPerSquareMeter);
-        const auto shape = playrho::d2::Shape(conf);
-        const auto shapeId = world.CreateShape(shape);
+        const auto shapeId = world.CreateShape(playrho::d2::Shape(conf));
         
         playrho::Length2 x(-7.0f * playrho::Meter, 0.75f * playrho::Meter);
         playrho::Length2 y;
@@ -2164,9 +2163,13 @@ static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
     step.maxLinearCorrection = 0.2f * playrho::Meter;
     step.maxAngularCorrection = (8.0f / 180.0f * playrho::Pi) * playrho::Radian;
     step.aabbExtension = 0.1f * playrho::Meter;
+    step.displaceMultiplier = 4.0f;
     step.maxTranslation = 2.0f * playrho::Meter;
+    step.maxRotation = playrho::Pi * playrho::Real(0.5f) * playrho::Radian;
     step.velocityThreshold = 1.0f * playrho::MeterPerSecond;
     step.maxSubSteps = std::uint8_t{8};
+    step.regPositionIterations = 3;
+    step.toiVelocityIterations = 8;
 
     while (GetAwakeCount(world) > 0) {
         world.Step(step);
@@ -2236,8 +2239,7 @@ static void DropTilesBox2D(int count)
         }
     }
 
-    auto awake = 0u;
-    while ((awake = GetAwakeCount(world)) > 0) {
+    while (GetAwakeCount(world) > 0) {
         world.Step(1.0f/60, 8, 3);
     }
 }
