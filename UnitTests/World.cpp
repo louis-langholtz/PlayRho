@@ -2625,12 +2625,14 @@ TEST(World_Longer, TilesComesToRest)
     auto sumToiPosIters = 0ul;
     auto sumToiVelIters = 0ul;
     //const auto start_time = std::chrono::high_resolution_clock::now();
+    auto lastStats = StepStats{};
     while (GetAwakeCount(*world) > 0 && numSteps < 3000ul) {
         const auto stats = world->Step(step);
         sumRegPosIters += stats.reg.sumPosIters;
         sumRegVelIters += stats.reg.sumVelIters;
         sumToiPosIters += stats.toi.sumPosIters;
         sumToiVelIters += stats.toi.sumVelIters;
+        lastStats = stats;
         ++numSteps;
     }
 #if defined(__core2__)
@@ -2648,20 +2650,22 @@ TEST(World_Longer, TilesComesToRest)
     //   6.45222s with Real=float and NDEBUG not defined.
     //   0.456306s with Real=double and NDEBUG defined.
     //   6.74324s with Real=double and NDEBUG not defined.
-    
     // seeing e_count=24 times around:
     //   0.956078s with Real=float and NDEBUG defined.
     //   0.989387s with Real=double and NDEBUG defined.
-    
     // seeing e_count=30 times around:
     //   2.35464s with Real=float and NDEBUG defined.
     //   2.51661s with Real=double and NDEBUG defined.
-    
     // seeing e_count=36 times around:
     //   4.163s with Real=float and NDEBUG defined.
     //   5.374s with Real=double and NDEBUG defined.
-    
-    EXPECT_EQ(GetAwakeCount(*world), 0u);
+
+    const auto awakeCount = GetAwakeCount(*world);
+    EXPECT_EQ(awakeCount, 0u);
+    if (awakeCount == 0u) {
+        EXPECT_EQ(lastStats.reg.proxiesMoved, 0u);
+        EXPECT_EQ(lastStats.toi.proxiesMoved, 0u);
+    }
 
     // The final stats seem dependent on the host the test is run on.
     // Presume that this is most closely associated with the actual CPU/FPU.
