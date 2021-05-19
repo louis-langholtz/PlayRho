@@ -477,14 +477,15 @@ TEST(World, CreateDestroyDynamicBodyAndFixture)
     
     auto world = World{};
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
-    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    ASSERT_NE(body, InvalidBodyID);
+    const auto bodyId = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    ASSERT_NE(bodyId, InvalidBodyID);
     
-    EXPECT_EQ(GetType(world, body), BodyType::Dynamic);
-    EXPECT_TRUE(IsSpeedable(world, body));
-    EXPECT_TRUE(IsAccelerable(world, body));
-    EXPECT_FALSE(IsImpenetrable(world, body));
-    EXPECT_EQ(GetShapes(world, body).size(), std::size_t{0});
+    EXPECT_EQ(GetType(world, bodyId), BodyType::Dynamic);
+    EXPECT_TRUE(IsAwake(world, bodyId));
+    EXPECT_TRUE(IsSpeedable(world, bodyId));
+    EXPECT_TRUE(IsAccelerable(world, bodyId));
+    EXPECT_FALSE(IsImpenetrable(world, bodyId));
+    EXPECT_EQ(GetShapes(world, bodyId).size(), std::size_t{0});
 
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
     const auto bodies1 = world.GetBodies();
@@ -492,15 +493,18 @@ TEST(World, CreateDestroyDynamicBodyAndFixture)
     EXPECT_EQ(bodies1.size(), BodyCounter(1));
     EXPECT_NE(bodies1.begin(), bodies1.end());
     const auto first = bodies1.begin();
-    EXPECT_EQ(body, *first);
+    EXPECT_EQ(bodyId, *first);
 
-    Attach(world, body, CreateShape(world, DiskShapeConf{1_m}));
+    Attach(world, bodyId, CreateShape(world, DiskShapeConf{1_m}));
     
     EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
-    EXPECT_EQ(GetShapes(world, body).size(), std::size_t{1});
+    EXPECT_EQ(GetShapes(world, bodyId).size(), std::size_t{1});
 
-    world.Destroy(body); // should clear fixtures for proxies!
-    
+    world.Destroy(bodyId); // should clear fixtures for proxies!
+    EXPECT_EQ(GetType(world, bodyId), BodyType::Static);
+    EXPECT_FALSE(IsAwake(world, bodyId));
+    EXPECT_FALSE(IsSpeedable(world, bodyId));
+
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
     const auto& bodies2 = world.GetBodies();
     EXPECT_TRUE(bodies2.empty());
@@ -2562,10 +2566,12 @@ TEST(World_Longer, TilesComesToRest)
     const auto world = std::make_unique<World>(WorldConf{}.UseMinVertexRadius(VertexRadius));
     
     constexpr auto e_count = 36;
+    auto createdBodyCount = 0ul;
     
     {
         const auto a = Real{0.5f};
         const auto ground = world->CreateBody(BodyConf{}.UseLocation(Length2{0, -a * Meter}));
+        ++createdBodyCount;
         
         const auto N = 200;
         const auto M = 10;
@@ -2598,13 +2604,17 @@ TEST(World_Longer, TilesComesToRest)
             y = x;
             for (auto j = i; j < e_count; ++j) {
                 const auto body = world->CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(y).UseLinearAcceleration(EarthlyGravity));
+                ++createdBodyCount;
                 Attach(*world, body, shapeId);
                 y += deltaY;
             }
             x += deltaX;
         }
     }
-    
+
+    EXPECT_EQ(createdBodyCount, 667u);
+    EXPECT_EQ(GetBodyCount(*world), 667u);
+
     StepConf step;
     step.deltaTime = 1_s / 60;
     step.linearSlop = LinearSlop;
@@ -2626,15 +2636,24 @@ TEST(World_Longer, TilesComesToRest)
     auto sumToiVelIters = 0ul;
     //const auto start_time = std::chrono::high_resolution_clock::now();
     auto lastStats = StepStats{};
-    while (GetAwakeCount(*world) > 0 && numSteps < 3000ul) {
+    auto firstStepWithZeroMoved = std::optional<unsigned long>{};
+    auto totalBodiesSlept = 0ul;
+    auto awakeCount = 0ul;
+    while ((awakeCount = GetAwakeCount(*world)) > 0 && numSteps < 3000ul) {
         const auto stats = world->Step(step);
         sumRegPosIters += stats.reg.sumPosIters;
         sumRegVelIters += stats.reg.sumVelIters;
         sumToiPosIters += stats.toi.sumPosIters;
         sumToiVelIters += stats.toi.sumVelIters;
         lastStats = stats;
+        if (stats.reg.proxiesMoved == 0u && stats.toi.proxiesMoved == 0u) {
+            firstStepWithZeroMoved = numSteps;
+        }
+        EXPECT_GT(stats.reg.islandsFound, 0u);
+        totalBodiesSlept += stats.reg.bodiesSlept;
         ++numSteps;
     }
+    EXPECT_EQ(totalBodiesSlept, createdBodyCount + 3u);
     switch (sizeof(Real)) {
     case 4u:
 #if defined(__core2__)
@@ -2647,6 +2666,7 @@ TEST(World_Longer, TilesComesToRest)
         EXPECT_EQ(world->GetContactRange(), 1447u);
         break;
     }
+    EXPECT_EQ(world->GetTree().GetNodeCount(), 5331u);
     ASSERT_LT(numSteps, 3000ul);
     //const auto end_time = std::chrono::high_resolution_clock::now();
     
@@ -2667,11 +2687,13 @@ TEST(World_Longer, TilesComesToRest)
     //   4.163s with Real=float and NDEBUG defined.
     //   5.374s with Real=double and NDEBUG defined.
 
-    const auto awakeCount = GetAwakeCount(*world);
     EXPECT_EQ(awakeCount, 0u);
     if (awakeCount == 0u) {
         EXPECT_EQ(lastStats.reg.proxiesMoved, 0u);
         EXPECT_EQ(lastStats.toi.proxiesMoved, 0u);
+    }
+    if (firstStepWithZeroMoved.has_value()) {
+        EXPECT_EQ(*firstStepWithZeroMoved, 1799u);
     }
 
     // The final stats seem dependent on the host the test is run on.
