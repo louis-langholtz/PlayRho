@@ -127,17 +127,6 @@ TypeID GetType(const Shape& shape) noexcept;
 template <typename T>
 std::add_pointer_t<std::add_const_t<T>> TypeCast(const Shape* value) noexcept;
 
-#if SHAPE_USES_UNIQUE_PTR
-/// @brief Converts the given shape into its current configuration value.
-/// @note The design for this was based off the design of the C++17 <code>std::any</code>
-///   class and its associated <code>std::any_cast</code> function. The code for this is based
-///   off of the <code>std::any</code> implementation from the LLVM Project.
-/// @see https://llvm.org/
-/// @see GetType(const Shape&)
-template <typename T>
-std::add_pointer_t<T> TypeCast(Shape* value) noexcept;
-#endif
-
 /// @brief Equality operator for shape to shape comparisons.
 bool operator==(const Shape& lhs, const Shape& rhs) noexcept;
 
@@ -317,12 +306,11 @@ public:
 
     friend void SetFilter(Shape& shape, Filter value)
     {
-#if SHAPE_USES_UNIQUE_PTR
         if (shape.m_self) {
-            shape.m_self->SetFilter_(value);
+            auto copy = shape.m_self->Clone_();
+            copy->SetFilter_(value);
+            shape.m_self = std::move(copy);
         }
-#else
-#endif
     }
 
     friend bool IsSensor(const Shape& shape) noexcept
@@ -332,27 +320,20 @@ public:
 
     friend void SetSensor(Shape& shape, bool value)
     {
-#if SHAPE_USES_UNIQUE_PTR
         if (shape.m_self) {
-            shape.m_self->SetSensor_(value);
+            auto copy = shape.m_self->Clone_();
+            copy->SetSensor_(value);
+            shape.m_self = std::move(copy);
         }
-#else
-#endif
     }
 
     friend void Transform(Shape& shape, const Mat22& m)
     {
-#if SHAPE_USES_UNIQUE_PTR
-        if (shape.m_self) {
-            shape.m_self->Transform_(m);
-        }
-#else
         if (shape.m_self) {
             auto copy = shape.m_self->Clone_();
             copy->Transform_(m);
             shape.m_self = std::unique_ptr<decltype(shape.m_self)::element_type>{std::move(copy)};
         }
-#endif
     }
 
     friend const void* GetData(const Shape& shape) noexcept
@@ -367,11 +348,6 @@ public:
 
     template <typename T>
     friend std::add_pointer_t<std::add_const_t<T>> TypeCast(const Shape* value) noexcept;
-
-#if SHAPE_USES_UNIQUE_PTR
-    template <typename T>
-    friend std::add_pointer_t<T> TypeCast(Shape* value) noexcept;
-#endif
 
     friend bool operator==(const Shape& lhs, const Shape& rhs) noexcept
     {
@@ -439,11 +415,6 @@ private:
 
         /// @brief Gets the data for the underlying configuration.
         virtual const void* GetData_() const noexcept = 0;
-
-#if SHAPE_USES_UNIQUE_PTR
-        /// @brief Gets the data for the underlying configuration.
-        virtual void* GetData_() noexcept = 0;
-#endif
 
         /// @brief Equality operator.
         friend bool operator==(const Concept& lhs, const Concept& rhs) noexcept
@@ -553,20 +524,11 @@ private:
             return &data;
         }
 
-#if SHAPE_USES_UNIQUE_PTR
-        void* GetData_() noexcept override
-        {
-            // Note address of "data" not necessarily same as address of "this" since
-            // base class is virtual.
-            return &data;
-        }
-#endif
-
         data_type data; ///< Data.
     };
 
 #if SHAPE_USES_UNIQUE_PTR
-    std::unique_ptr<Concept> m_self; ///< Self pointer.
+    std::unique_ptr<const Concept> m_self; ///< Self pointer.
 #else
     std::shared_ptr<const Concept> m_self; ///< Self pointer.
 #endif
@@ -626,75 +588,16 @@ inline T TypeCast(const Shape& value)
     return static_cast<T>(*tmp);
 }
 
-#if SHAPE_USES_UNIQUE_PTR
-/// @brief Converts the given shape into its current configuration value.
-/// @note The design for this was based off the design of the C++17 <code>std::any</code>
-///   class and its associated <code>std::any_cast</code> function. The code for this is based
-///   off of the <code>std::any</code> implementation from the LLVM Project.
-/// @see https://llvm.org/
-/// @see GetType(const Shape&)
-/// @relatedalso Shape
-template <typename T>
-inline T TypeCast(Shape& value)
-{
-    using RawType = std::remove_cv_t<std::remove_reference_t<T>>;
-    static_assert(std::is_constructible<T, RawType&>::value,
-                  "T is required to be a const lvalue reference "
-                  "or a CopyConstructible type");
-    auto tmp = ::playrho::d2::TypeCast<RawType>(&value);
-    if (tmp == nullptr)
-        throw std::bad_cast();
-    return static_cast<T>(*tmp);
-}
-
-/// @brief Converts the given shape into its current configuration value.
-/// @note The design for this was based off the design of the C++17 <code>std::any</code>
-///   class and its associated <code>std::any_cast</code> function. The code for this is based
-///   off of the <code>std::any</code> implementation from the LLVM Project.
-/// @see https://llvm.org/
-/// @see GetType(const Shape&)
-/// @relatedalso Shape
-template <typename T>
-inline T TypeCast(Shape&& value)
-{
-    using RawType = std::remove_cv_t<std::remove_reference_t<T>>;
-    static_assert(std::is_constructible<T, RawType>::value,
-                  "T is required to be a const lvalue reference "
-                  "or a CopyConstructible type");
-    auto tmp = ::playrho::d2::TypeCast<RawType>(&value);
-    if (tmp == nullptr)
-        throw std::bad_cast();
-    return static_cast<T>(std::move(*tmp));
-}
-#endif
-
 template <typename T>
 inline std::add_pointer_t<std::add_const_t<T>> TypeCast(const Shape* value) noexcept
 {
     static_assert(!std::is_reference<T>::value, "T may not be a reference.");
-#if SHAPE_USES_UNIQUE_PTR
-    return ::playrho::d2::TypeCast<T>(const_cast<Shape*>(value));
-#else
     using ReturnType = std::add_pointer_t<std::add_const_t<T>>;
     if (value && value->m_self && (GetType(*value) == GetTypeID<T>())) {
         return static_cast<ReturnType>(value->m_self->GetData_());
     }
     return nullptr;
-#endif
 }
-
-#if SHAPE_USES_UNIQUE_PTR
-template <typename T>
-inline std::add_pointer_t<T> TypeCast(Shape* value) noexcept
-{
-    static_assert(!std::is_reference<T>::value, "T may not be a reference.");
-    using ReturnType = std::add_pointer_t<T>;
-    if (value && value->m_self && (GetType(*value) == GetTypeID<T>())) {
-        return static_cast<ReturnType>(value->m_self->GetData_());
-    }
-    return nullptr;
-}
-#endif
 
 /// @brief Whether contact calculations should be performed between the two instances.
 /// @return <code>true</code> if contact calculations should be performed between these
