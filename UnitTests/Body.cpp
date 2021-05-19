@@ -63,6 +63,14 @@ TEST(Body, ByteSize)
     }
 }
 
+TEST(Body, DefaultConstruction)
+{
+    EXPECT_EQ(Body().GetType(), BodyType::Static);
+    EXPECT_TRUE(Body().IsEnabled());
+    EXPECT_FALSE(Body().IsAwake());
+    EXPECT_FALSE(Body().IsSpeedable());
+}
+
 TEST(Body, GetFlagsForBodyType)
 {
     EXPECT_EQ(Body::GetFlags(BodyType::Static), (Body::e_impenetrableFlag));
