@@ -1238,16 +1238,14 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
 
     // XXX: Should contacts needing updating be updated now??
 
-    if (m_postSolveContactListener)
-    {
+    if (m_postSolveContactListener) {
         Report(m_postSolveContactListener, island.contacts, velConstraints,
                results.solved? results.positionIterations - 1: StepConf::InvalidIteration);
     }
     
     results.bodiesSlept = BodyCounter{0};
     const auto minUnderActiveTime = UpdateUnderActiveTimes(island.bodies, m_bodyBuffer, conf);
-    if ((minUnderActiveTime >= conf.minStillTimeToSleep) && results.solved)
-    {
+    if ((minUnderActiveTime >= conf.minStillTimeToSleep) && results.solved) {
         results.bodiesSlept = static_cast<decltype(results.bodiesSlept)>(Sleepem(island.bodies,
                                                                                  m_bodyBuffer));
     }
