@@ -72,6 +72,7 @@
 #include <PlayRho/Collision/ShapeSeparation.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/Rectangle.hpp>
 
 #define BENCHMARK_BOX2D
 #ifdef BENCHMARK_BOX2D
@@ -2088,13 +2089,23 @@ static void AddPairStressTestBox2D400(benchmark::State& state)
 }
 #endif // BENCHMARK_BOX2D
 
+constexpr auto DeltaXx = 0.5625f;
+constexpr auto DeltaXy = 1.25f;
+constexpr auto DeltaYx = 1.125f;
+constexpr auto DeltaYy = 0.0f;
+constexpr auto TilesWidth = 200;
+constexpr auto TilesHeight = 10;
+constexpr auto TilesGravityX = 0.0f;
+constexpr auto TilesGravityY = -10.0f;
+
 static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
 {
     constexpr auto linearSlop = 0.005f * playrho::Meter;
     constexpr auto angularSlop = (2.0f / 180.0f * playrho::Pi) * playrho::Radian;
     constexpr auto vertexRadius = linearSlop * 2;
     constexpr auto gravity = playrho::LinearAcceleration2{
-        0.0f * playrho::MeterPerSquareSecond, -10.0f * playrho::MeterPerSquareSecond
+        TilesGravityX * playrho::MeterPerSquareSecond,
+        TilesGravityY * playrho::MeterPerSquareSecond
     };
     auto conf = playrho::d2::PolygonShapeConf{}.UseVertexRadius(vertexRadius);
     auto world = playrho::d2::World{
@@ -2105,8 +2116,8 @@ static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
         constexpr auto a = 0.5f;
         const auto ground = world.CreateBody(playrho::d2::BodyConf{}
                                              .UseLocation(playrho::Length2{0, -a * playrho::Meter}));
-        constexpr auto N = 200;
-        constexpr auto M = 10;
+        constexpr auto N = TilesWidth;
+        constexpr auto M = TilesHeight;
         playrho::Length2 position{};
         if (groundIsComboShape) {
             // y max = 0.5_m, y min = -9.5_m, y/2 = -4.5_m
@@ -2129,15 +2140,12 @@ static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
     }
     
     {
-        constexpr auto a = 0.5f;
-        conf.SetAsBox(a * playrho::Meter, a * playrho::Meter);
-        conf.UseDensity(5.0f * playrho::KilogramPerSquareMeter);
-        const auto shapeId = world.CreateShape(playrho::d2::Shape(conf));
+        const auto shapeId = world.CreateShape(playrho::d2::Shape(playrho::d2::Rectangle<1, 1, 5>{}));
         
         playrho::Length2 x(-7.0f * playrho::Meter, 0.75f * playrho::Meter);
         playrho::Length2 y;
-        constexpr auto deltaX = playrho::Length2(0.5625f * playrho::Meter, 1.25f * playrho::Meter);
-        constexpr auto deltaY = playrho::Length2(1.125f * playrho::Meter, 0.0f * playrho::Meter);
+        constexpr auto deltaX = playrho::Length2(DeltaXx * playrho::Meter, DeltaXy * playrho::Meter);
+        constexpr auto deltaY = playrho::Length2(DeltaYx * playrho::Meter, DeltaYy * playrho::Meter);
         
         for (auto i = 0; i < count; ++i) {
             y = x;
@@ -2192,7 +2200,7 @@ static unsigned GetAwakeCount(const b2World& world)
 static void DropTilesBox2D(int count, bool groundIsComboShape = true)
 {
     b2Vec2 gravity;
-    gravity.Set(0.0f, -10.0f);
+    gravity.Set(TilesGravityX, TilesGravityY);
     b2World world(gravity);
     {
         const auto a = 0.5f;
@@ -2200,8 +2208,8 @@ static void DropTilesBox2D(int count, bool groundIsComboShape = true)
         bodyConf.position = b2Vec2{0, -a};
         const auto ground = world.CreateBody(&bodyConf);
         
-        const auto N = 200;
-        const auto M = 10;
+        const auto N = TilesWidth;
+        const auto M = TilesHeight;
         auto position = b2Vec2(0.0f, 0.0f);
         if (groundIsComboShape) {
             for (auto j = 0; j < M; ++j) {
@@ -2230,8 +2238,8 @@ static void DropTilesBox2D(int count, bool groundIsComboShape = true)
         
         b2Vec2 x(-7.0f, 0.75f);
         b2Vec2 y;
-        b2Vec2 deltaX(0.5625f, 1.25f);
-        b2Vec2 deltaY(1.125f, 0.0f);
+        b2Vec2 deltaX(DeltaXx, DeltaXy);
+        b2Vec2 deltaY(DeltaYx, DeltaYy);
         
         for (auto i = 0; i < count; ++i) {
             y = x;
