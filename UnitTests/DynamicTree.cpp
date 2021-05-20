@@ -1049,3 +1049,16 @@ TEST(DynamicTree, QueryFF)
     });
     EXPECT_EQ(ncalls, 2);
 }
+
+TEST(DynamicTree, LeafDataEquality)
+{
+    EXPECT_TRUE(DynamicTree::LeafData() == DynamicTree::LeafData());
+    EXPECT_TRUE((DynamicTree::LeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
+                 DynamicTree::LeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)}));
+    EXPECT_FALSE((DynamicTree::LeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
+                  DynamicTree::LeafData{BodyID(1u), ShapeID(0u), ChildCounter(0u)}));
+    EXPECT_FALSE((DynamicTree::LeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
+                  DynamicTree::LeafData{BodyID(0u), ShapeID(1u), ChildCounter(0u)}));
+    EXPECT_FALSE((DynamicTree::LeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
+                  DynamicTree::LeafData{BodyID(0u), ShapeID(0u), ChildCounter(1u)}));
+}

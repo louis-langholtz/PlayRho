@@ -346,7 +346,7 @@ struct DynamicTree::LeafData
 constexpr bool operator== (const DynamicTree::LeafData& lhs,
                            const DynamicTree::LeafData& rhs) noexcept
 {
-    return lhs.shape == rhs.shape && lhs.childIndex == rhs.childIndex;
+    return lhs.body == rhs.body && lhs.shape == rhs.shape && lhs.childIndex == rhs.childIndex;
 }
 
 /// @brief Inequality operator.
