@@ -38,11 +38,6 @@ TEST(Shape, ByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
-#if defined(_WIN32) && !defined(_WIN64)
-    EXPECT_EQ(sizeof(Shape), std::size_t(8));
-#else
-    EXPECT_EQ(sizeof(Shape), std::size_t(8));
-#endif
 #if SHAPE_USES_UNIQUE_PTR
     EXPECT_EQ(sizeof(Shape), sizeof(std::unique_ptr<int>));
 #else
