@@ -2653,7 +2653,11 @@ TEST(World_Longer, TilesComesToRest)
         totalBodiesSlept += stats.reg.bodiesSlept;
         ++numSteps;
     }
+#if defined(__core2__)
     EXPECT_EQ(totalBodiesSlept, createdBodyCount + 3u);
+#else
+    EXPECT_EQ(totalBodiesSlept, createdBodyCount);
+#endif
     switch (sizeof(Real)) {
     case 4u:
 #if defined(__core2__)
@@ -2693,7 +2697,18 @@ TEST(World_Longer, TilesComesToRest)
         EXPECT_EQ(lastStats.toi.proxiesMoved, 0u);
     }
     if (firstStepWithZeroMoved.has_value()) {
-        EXPECT_EQ(*firstStepWithZeroMoved, 1799u);
+#if defined(__core2__)
+        switch (sizeof(Real)) {
+        case 4:
+            EXPECT_EQ(*firstStepWithZeroMoved, 1799u);
+            break;
+        case 8:
+            EXPECT_EQ(*firstStepWithZeroMoved, 1827u);
+            break;
+        }
+#else
+        EXPECT_EQ(*firstStepWithZeroMoved, 1792u);
+#endif
     }
 
     // The final stats seem dependent on the host the test is run on.
