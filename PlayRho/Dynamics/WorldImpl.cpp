@@ -507,9 +507,11 @@ void CreateProxies(DynamicTree& tree,
 template <typename Element, typename Value>
 auto FindTypeValue(const std::vector<Element>& container, const Value& value)
 {
-    return std::find_if(begin(container), end(container), [value](const auto& elem) {
+    const auto last = end(container);
+    auto it = std::find_if(begin(container), last, [value](const auto& elem) {
         return std::get<Value>(elem) == value;
     });
+    return (it != last)? std::optional<decltype(it)>{it}: std::optional<decltype(it)>{};
 }
 
 void Erase(std::vector<KeyedContactPtr>& contacts, const std::function<bool(ContactID)>& callback)
@@ -814,20 +816,20 @@ void WorldImpl::Remove(JointID id) noexcept
         auto& bodyA = m_bodyBuffer[to_underlying(bodyIdA)];
         bodyA.SetAwake();
         auto& bodyJoints = m_bodyJoints[to_underlying(bodyIdA)];
-        const auto it = FindTypeValue(bodyJoints, id);
-        assert(it != end(bodyJoints));
-        if (it != end(bodyJoints)) {
-            bodyJoints.erase(it);
+        const auto found = FindTypeValue(bodyJoints, id);
+        assert(found);
+        if (found) {
+            bodyJoints.erase(*found);
         }
     }
     if (bodyIdB != InvalidBodyID) {
         auto& bodyB = m_bodyBuffer[to_underlying(bodyIdB)];
         bodyB.SetAwake();
         auto& bodyJoints = m_bodyJoints[to_underlying(bodyIdB)];
-        const auto it = FindTypeValue(bodyJoints, id);
-        assert(it != end(bodyJoints));
-        if (it != end(bodyJoints)) {
-            bodyJoints.erase(it);
+        const auto found = FindTypeValue(bodyJoints, id);
+        assert(found);
+        if (found) {
+            bodyJoints.erase(*found);
         }
     }
 }
@@ -1475,8 +1477,8 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
         // Advance the bodies to the TOI.
         assert(toi != 0 || (bA.GetSweep().GetAlpha0() == 0 && bB.GetSweep().GetAlpha0() == 0));
         bA.Advance(toi);
-        FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(bodyIdA)]);
         bB.Advance(toi);
+        FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(bodyIdA)]);
         FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(bodyIdB)]);
 
         // The TOI contact likely has some new contact points.
@@ -1504,7 +1506,6 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
         //      was failing to see 2 clip points after GetClipPoints was called.
         if (!contact.IsEnabled() || !contact.IsTouching())
         {
-            // assert(!contact.IsEnabled() || contact.IsTouching());
             contact.UnsetEnabled();
             bA.Restore(backupA);
             bB.Restore(backupB);
@@ -1898,16 +1899,14 @@ void WorldImpl::InternalDestroy(ContactID contactID, const Body* from)
     const auto bodyB = &m_bodyBuffer[to_underlying(bodyIdB)];
     if (bodyA != from) {
         auto& bodyContacts = m_bodyContacts[to_underlying(bodyIdA)];
-        const auto it = FindTypeValue(bodyContacts, contactID);
-        if (it != end(bodyContacts)) {
-            bodyContacts.erase(it);
+        if (const auto found = FindTypeValue(bodyContacts, contactID)) {
+            bodyContacts.erase(*found);
         }
     }
     if (bodyB != from) {
         auto& bodyContacts = m_bodyContacts[to_underlying(bodyIdB)];
-        const auto it = FindTypeValue(bodyContacts, contactID);
-        if (it != end(bodyContacts)) {
-            bodyContacts.erase(it);
+        if (const auto found = FindTypeValue(bodyContacts, contactID)) {
+            bodyContacts.erase(*found);
         }
     }
     auto& manifold = m_manifoldBuffer[to_underlying(contactID)];
@@ -1924,9 +1923,8 @@ void WorldImpl::InternalDestroy(ContactID contactID, const Body* from)
 void WorldImpl::Destroy(ContactID contactID, const Body* from)
 {
     assert(contactID != InvalidContactID);
-    const auto it = FindTypeValue(m_contacts, contactID);
-    if (it != cend(m_contacts)) {
-        m_contacts.erase(it);
+    if (const auto found = FindTypeValue(m_contacts, contactID)) {
+        m_contacts.erase(*found);
     }
     InternalDestroy(contactID, from);
 }
@@ -2140,14 +2138,6 @@ bool WorldImpl::Add(ContactKey key)
     const auto shapeIdB = maxKeyLeafData.shape;
     const auto indexB = maxKeyLeafData.childIndex;
 
-#if 0
-    // Are the fixtures on the same body? They can be, and they often are.
-    // Don't need nor want a contact for these fixtures if they are on the same body.
-    if (bodyIdA == bodyIdB)
-    {
-        return false;
-    }
-#endif
     assert(bodyIdA != bodyIdB);
 
     auto& bodyA = m_bodyBuffer[to_underlying(bodyIdA)];
@@ -2199,9 +2189,7 @@ bool WorldImpl::Add(ContactKey key)
     //     set, map.
     auto& contactsA = m_bodyContacts[to_underlying(bodyIdA)];
     auto& contactsB = m_bodyContacts[to_underlying(bodyIdB)];
-    const auto& bodyContacts = (size(contactsA) < size(contactsB))? contactsA: contactsB;
-    const auto it = FindTypeValue(bodyContacts, key);
-    if (it != cend(bodyContacts)) {
+    if (FindTypeValue((size(contactsA) < size(contactsB))? contactsA: contactsB, key)) {
         return false;
     }
 
