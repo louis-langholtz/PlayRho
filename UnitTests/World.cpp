@@ -2726,7 +2726,7 @@ TEST(World_Longer, TilesComesToRest)
     // Note about commit 04f9188c47961cafe76c55eb6b766a608593ee08:
     //   Changed the way velocity constraint resolution was done. Added a check
     //   to see if any changes to velocity were introduced. If not, new code
-    //   does an early exit from its velocityIterations looping.
+    //   does an early exit from its velocityIters looping.
     
     // Note about commit d361c51d6aca13079e9d44b701715e62cec18a63:
     //   Changes were introduced that modified the way manifold calculations are done.

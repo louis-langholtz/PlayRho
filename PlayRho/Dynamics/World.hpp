@@ -278,6 +278,8 @@ public:
     void SetSubStepping(bool flag) noexcept;
 
     /// @brief Gets access to the broad-phase dynamic tree information.
+    /// @todo Consider removing this function. This function exposes the implementation detail
+    ///   of the broad-phase contact detection system.
     const DynamicTree& GetTree() const noexcept;
 
     /// @brief Is the world locked (in the middle of a time step).

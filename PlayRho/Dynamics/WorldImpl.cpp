@@ -1139,7 +1139,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     assert(!empty(island.bodies) || !empty(island.contacts) || !empty(island.joints));
     
     auto results = IslandStats{};
-    results.positionIterations = conf.regPositionIterations;
+    results.positionIters = conf.regPositionIterations;
     const auto h = conf.deltaTime; ///< Time step.
 
     // Update bodies' pos0 values.
@@ -1168,7 +1168,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
         InitVelocity(joint, bodyConstraints, conf, psConf);
     });
     
-    results.velocityIterations = conf.regVelocityIterations;
+    results.velocityIters = conf.regVelocityIterations;
     for (auto i = decltype(conf.regVelocityIterations){0}; i < conf.regVelocityIterations; ++i)
     {
         auto jointsOkay = true;
@@ -1189,7 +1189,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
             // There does not appear to be any benefit to doing more loops now.
             // XXX: Is it really safe to bail now? Not certain of that.
             // Bail now assuming that this is helpful to do...
-            results.velocityIterations = i + 1;
+            results.velocityIters = i + 1;
             break;
         }
     }
@@ -1214,7 +1214,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
         if (contactsOkay && jointsOkay)
         {
             // Reached tolerance, early out...
-            results.positionIterations = i + 1;
+            results.positionIters = i + 1;
             results.solved = true;
             break;
         }
@@ -1242,7 +1242,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
 
     if (m_postSolveContactListener) {
         Report(m_postSolveContactListener, island.contacts, velConstraints,
-               results.solved? results.positionIterations - 1: StepConf::InvalidIteration);
+               results.solved? results.positionIters - 1: StepConf::InvalidIteration);
     }
     
     results.bodiesSlept = BodyCounter{0};
@@ -1396,9 +1396,9 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
             stats.minSeparation = std::min(stats.minSeparation, solverResults.minSeparation);
             stats.maxIncImpulse = std::max(stats.maxIncImpulse, solverResults.maxIncImpulse);
             stats.islandsSolved += solverResults.solved;
-            stats.sumPosIters += solverResults.positionIterations;
-            stats.sumVelIters += solverResults.velocityIterations;
-            if ((solverResults.positionIterations > 0) || (solverResults.velocityIterations > 0))
+            stats.sumPosIters += solverResults.positionIters;
+            stats.sumVelIters += solverResults.velocityIters;
+            if ((solverResults.positionIters > 0) || (solverResults.velocityIters > 0))
             {
                 ++islandsFound;
             }
@@ -1411,7 +1411,7 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
         for (const auto& b: m_bodies) {
             if (m_islandedBodies[to_underlying(b)]) {
                 m_islandedBodies[to_underlying(b)] = false;
-                auto& body = m_bodyBuffer[to_underlying(b)];
+                const auto& body = m_bodyBuffer[to_underlying(b)];
                 if (body.IsAccelerable()) {
                     stats.proxiesMoved += Synchronize(b,
                                                       GetTransform0(body.GetSweep()),
@@ -1455,7 +1455,7 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
      * Confirm that contact is as it's supposed to be according to contract of the
      * GetSoonestContacts method from which this contact should have been obtained.
      */
-    assert(contact.IsEnabled());
+    assert(IsEnabled(contact));
     assert(!IsSensor(contact));
     assert(IsActive(contact));
     assert(IsImpenetrable(contact));
@@ -1467,9 +1467,6 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
     auto& bA = m_bodyBuffer[to_underlying(bodyIdA)];
     auto& bB = m_bodyBuffer[to_underlying(bodyIdB)];
 
-    /* XXX: if (toi != 0)? */
-    /* if (bA->GetSweep().GetAlpha0() != toi || bB->GetSweep().GetAlpha0() != toi) */
-    // Seems contact manifold needs updating regardless.
     {
         const auto backupA = bA.GetSweep();
         const auto backupB = bB.GetSweep();
@@ -1483,15 +1480,10 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
 
         // The TOI contact likely has some new contact points.
         contact.SetEnabled();
-        if (contact.NeedsUpdating())
-        {
-            Update(contactID, GetUpdateConf(conf));
-            ++contactsUpdated;
-        }
-        else
-        {
-            ++contactsSkipped;
-        }
+        assert(contact.NeedsUpdating());
+        Update(contactID, GetUpdateConf(conf));
+        ++contactsUpdated;
+
         contact.UnsetToi();
         contact.IncrementToiCount();
 
@@ -1504,9 +1496,10 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
         //      contact situation where the polygon had a larger than default
         //      vertex radius. CollideShapes had called GetManifoldFaceB which
         //      was failing to see 2 clip points after GetClipPoints was called.
+        //assert(contact.IsEnabled() && contact.IsTouching());
         if (!contact.IsEnabled() || !contact.IsTouching())
         {
-            contact.UnsetEnabled();
+            //contact.UnsetEnabled();
             bA.Restore(backupA);
             bB.Restore(backupB);
             auto results = IslandStats{};
@@ -1515,14 +1508,6 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
             return results;
         }
     }
-#if 0
-    else if (!contact.IsTouching())
-    {
-        const auto newManifold = contact.Evaluate();
-        assert(contact.IsTouching());
-        return IslandSolverResults{};
-    }
-#endif
     if (bA.IsSpeedable())
     {
         bA.SetAwakeFlag();
@@ -1615,7 +1600,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
     // Solve TOI-based position constraints.
     assert(results.minSeparation == std::numeric_limits<Length>::infinity());
     assert(results.solved == false);
-    results.positionIterations = conf.toiPositionIterations;
+    results.positionIters = conf.toiPositionIterations;
     {
         const auto psConf = GetToiConstraintSolverConf(conf);
 
@@ -1636,7 +1621,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
             results.minSeparation = std::min(results.minSeparation, minSeparation);
             if (minSeparation >= conf.toiMinSeparation) {
                 // Reached tolerance, early out...
-                results.positionIterations = i + 1;
+                results.positionIters = i + 1;
                 results.solved = true;
                 break;
             }
@@ -1662,7 +1647,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
 
     // Solve velocity constraints.
     assert(results.maxIncImpulse == 0_Ns);
-    results.velocityIterations = conf.toiVelocityIterations;
+    results.velocityIters = conf.toiVelocityIterations;
     for (auto i = decltype(conf.toiVelocityIterations){0}; i < conf.toiVelocityIterations; ++i) {
         const auto newIncImpulse = SolveVelocityConstraintsViaGS(velConstraints, bodyConstraints);
         if (newIncImpulse <= conf.toiMinMomentum) {
@@ -1670,7 +1655,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
             // There does not appear to be any benefit to doing more loops now.
             // XXX: Is it really safe to bail now? Not certain of that.
             // Bail now assuming that this is helpful to do...
-            results.velocityIterations = i + 1;
+            results.velocityIters = i + 1;
             break;
         }
         results.maxIncImpulse = std::max(results.maxIncImpulse, newIncImpulse);
@@ -1691,7 +1676,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
     }
 
     if (m_postSolveContactListener) {
-        Report(m_postSolveContactListener, island.contacts, velConstraints, results.positionIterations);
+        Report(m_postSolveContactListener, island.contacts, velConstraints, results.positionIters);
     }
 
     return results;
