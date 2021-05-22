@@ -60,3 +60,54 @@ TEST(Contact, Enabled)
     c.SetEnabled();
     EXPECT_TRUE(c.IsEnabled());
 }
+
+TEST(Contact, DefaultConstruction)
+{
+    EXPECT_EQ(Contact().GetBodyA(), InvalidBodyID);
+    EXPECT_EQ(Contact().GetBodyB(), InvalidBodyID);
+    EXPECT_EQ(Contact().GetShapeA(), InvalidShapeID);
+    EXPECT_EQ(Contact().GetShapeB(), InvalidShapeID);
+    EXPECT_EQ(Contact().GetChildIndexA(), 0u);
+    EXPECT_EQ(Contact().GetChildIndexB(), 0u);
+    EXPECT_EQ(Contact().GetFriction(), Real(0));
+    EXPECT_EQ(Contact().GetRestitution(), Real(0));
+    EXPECT_EQ(Contact().GetTangentSpeed(), LinearVelocity());
+    EXPECT_EQ(Contact().GetToiCount(), Contact::substep_type(0));
+    EXPECT_FALSE(Contact().IsEnabled());
+    EXPECT_FALSE(Contact().NeedsUpdating());
+    EXPECT_FALSE(Contact().IsTouching());
+    EXPECT_FALSE(Contact().HasValidToi());
+    EXPECT_FALSE(Contact().NeedsFiltering());
+    EXPECT_FALSE(Contact().IsSensor());
+    EXPECT_FALSE(Contact().IsImpenetrable());
+    EXPECT_FALSE(Contact().IsActive());
+}
+
+TEST(Contact, InitializingConstructor)
+{
+    const auto bodyIdA = BodyID(1u);
+    const auto shapeIdA = ShapeID(2u);
+    const auto childIndexA = ChildCounter(3u);
+    const auto bodyIdB = BodyID(4u);
+    const auto shapeIdB = ShapeID(5u);
+    const auto childIndexB = ChildCounter(6u);
+    const auto contact = Contact(bodyIdA, shapeIdA, childIndexA, bodyIdB, shapeIdB, childIndexB);
+    EXPECT_EQ(contact.GetBodyA(), bodyIdA);
+    EXPECT_EQ(contact.GetBodyB(), bodyIdB);
+    EXPECT_EQ(contact.GetShapeA(), shapeIdA);
+    EXPECT_EQ(contact.GetShapeB(), shapeIdB);
+    EXPECT_EQ(contact.GetChildIndexA(), childIndexA);
+    EXPECT_EQ(contact.GetChildIndexB(), childIndexB);
+    EXPECT_EQ(Contact().GetFriction(), Real(0));
+    EXPECT_EQ(Contact().GetRestitution(), Real(0));
+    EXPECT_EQ(Contact().GetTangentSpeed(), LinearVelocity());
+    EXPECT_EQ(Contact().GetToiCount(), Contact::substep_type(0));
+    EXPECT_TRUE(contact.IsEnabled());
+    EXPECT_TRUE(contact.NeedsUpdating());
+    EXPECT_FALSE(Contact().IsTouching());
+    EXPECT_FALSE(Contact().HasValidToi());
+    EXPECT_FALSE(Contact().NeedsFiltering());
+    EXPECT_FALSE(Contact().IsSensor());
+    EXPECT_FALSE(Contact().IsImpenetrable());
+    EXPECT_FALSE(Contact().IsActive());
+}

@@ -40,7 +40,8 @@ static_assert(std::is_nothrow_destructible<Contact>::value,
 
 Contact::Contact(BodyID bA, ShapeID sA, ChildCounter iA, // explicit line break
                  BodyID bB, ShapeID sB, ChildCounter iB) noexcept
-    : m_bodyA{bA}, m_bodyB{bB}, m_shapeA{sA}, m_shapeB{sB}, m_indexA{iA}, m_indexB{iB}
+    : m_bodyA{bA}, m_bodyB{bB}, m_shapeA{sA}, m_shapeB{sB}, m_indexA{iA}, m_indexB{iB},
+      m_flags{e_enabledFlag | e_dirtyFlag}
 {
     assert(bA != bB);
 }

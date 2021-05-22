@@ -78,7 +78,7 @@ public:
     /// @brief Substep type.
     using substep_type = TimestepIters;
 
-    /// @brief Default construction not allowed.
+    /// @brief Default constructor.
     Contact() noexcept = default;
 
     /// @brief Initializing constructor.
@@ -96,8 +96,8 @@ public:
     /// @warning Behavior is undefined if <code>fA == fB</code>.
     /// @warning Behavior is undefined if both shape's have the same body.
     ///
-    Contact(BodyID bA, ShapeID fA, ChildCounter iA, BodyID bB, ShapeID fB,
-            ChildCounter iB) noexcept;
+    Contact(BodyID bA, ShapeID sA, ChildCounter iA, // forced-linebreak
+            BodyID bB, ShapeID sB, ChildCounter iB) noexcept;
 
     /// @brief Is this contact touching?
     /// @details
@@ -316,9 +316,9 @@ private:
     /// @note Field is 2-bytes.
     ShapeID m_shapeB = InvalidShapeID;
 
-    ChildCounter m_indexA; ///< Index A. 4-bytes.
+    ChildCounter m_indexA = 0; ///< Index A. 4-bytes.
 
-    ChildCounter m_indexB; ///< Index B. 4-bytes.
+    ChildCounter m_indexB = 0; ///< Index B. 4-bytes.
 
     // initialized on construction (construction-time depedent)
 
@@ -346,7 +346,7 @@ private:
     /// Count of TOI calculations contact has gone through since last reset.
     substep_type m_toiCount = 0;
 
-    FlagsType m_flags = e_enabledFlag | e_dirtyFlag; ///< Flags.
+    FlagsType m_flags = 0; ///< Flags.
 };
 
 inline void Contact::SetEnabled(bool flag) noexcept
