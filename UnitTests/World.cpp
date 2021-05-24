@@ -21,6 +21,7 @@
 #include "UnitTests.hpp"
 
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldShape.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
@@ -2130,6 +2131,56 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
     EXPECT_NE(listener.post_solves, 0u);
 }
 
+TEST(World, DropDisks)
+{
+    const auto diskRadius = 0.5_m;
+    const auto numDisks = static_cast<std::uint16_t>(10000u);
+    auto world = World{};
+    auto shapeId = InvalidShapeID;
+    ASSERT_NO_THROW(shapeId = world.CreateShape(Shape{DiskShapeConf{}.UseRadius(diskRadius)}));
+    for (auto i = decltype(numDisks){0}; i < numDisks; ++i) {
+        const auto x = i * diskRadius * 4;
+        const auto location = Length2{x, 0_m};
+        const auto body = world.CreateBody(playrho::d2::BodyConf{}
+                                           .UseType(playrho::BodyType::Dynamic)
+                                           .UseLocation(location)
+                                           .UseLinearAcceleration(playrho::d2::EarthlyGravity));
+        ASSERT_NO_THROW(Attach(world, body, shapeId));
+    }
+    ASSERT_EQ(size(world.GetBodies()), numDisks);
+
+    const auto stepConf = playrho::StepConf{};
+    auto stats = StepStats{};
+    ASSERT_NO_THROW(stats = world.Step(stepConf));
+
+    EXPECT_EQ(stats.reg.islandsFound, numDisks);
+    EXPECT_EQ(stats.reg.islandsSolved, numDisks);
+    EXPECT_EQ(stats.reg.maxIslandBodies, 1u);
+    EXPECT_EQ(stats.reg.proxiesMoved, 0u);
+    EXPECT_EQ(stats.reg.contactsAdded, 0u);
+    EXPECT_EQ(stats.reg.maxIncImpulse, Momentum(0));
+    EXPECT_EQ(stats.reg.minSeparation, std::numeric_limits<Length>::infinity());
+    EXPECT_EQ(stats.reg.bodiesSlept, 0u);
+    EXPECT_EQ(stats.reg.sumPosIters, numDisks);
+    EXPECT_EQ(stats.reg.sumVelIters, numDisks);
+
+    EXPECT_EQ(stats.toi.minSeparation, std::numeric_limits<Length>::infinity());
+    EXPECT_EQ(stats.toi.maxIncImpulse, Momentum(0));
+    EXPECT_EQ(stats.toi.islandsFound, 0u);
+    EXPECT_EQ(stats.toi.islandsSolved, 0u);
+    EXPECT_EQ(stats.toi.contactsFound, 0u);
+    EXPECT_EQ(stats.toi.contactsAdded, 0u);
+    EXPECT_EQ(stats.toi.proxiesMoved, 0u);
+    EXPECT_EQ(stats.toi.sumPosIters, 0u);
+    EXPECT_EQ(stats.toi.sumVelIters, 0u);
+
+    for (auto i = decltype(numDisks){0}; i < numDisks; ++i) {
+        const auto& body = world.GetBody(BodyID(i));
+        EXPECT_EQ(GetX(body.GetVelocity().linear), 0_mps);
+        EXPECT_LT(GetY(body.GetVelocity().linear), 0_mps);
+    }
+}
+
 TEST(World, PartiallyOverlappedSameCirclesSeparate)
 {
     const auto radius = Real(1);
@@ -2653,21 +2704,30 @@ TEST(World_Longer, TilesComesToRest)
         totalBodiesSlept += stats.reg.bodiesSlept;
         ++numSteps;
     }
-#if defined(__core2__)
-    EXPECT_EQ(totalBodiesSlept, createdBodyCount + 3u);
-#else
-    EXPECT_EQ(totalBodiesSlept, createdBodyCount);
-#endif
     switch (sizeof(Real)) {
     case 4u:
 #if defined(__core2__)
         EXPECT_EQ(world->GetContactRange(), 1447u);
+        EXPECT_EQ(totalBodiesSlept, createdBodyCount + 3u);
+        EXPECT_TRUE(firstStepWithZeroMoved && (*firstStepWithZeroMoved == 1799u));
 #else
         EXPECT_EQ(world->GetContactRange(), 1449u); // on amd64
+        EXPECT_EQ(totalBodiesSlept, createdBodyCount);
+        EXPECT_TRUE(firstStepWithZeroMoved && (*firstStepWithZeroMoved == 1792u));
 #endif
         break;
     case 8u:
         EXPECT_EQ(world->GetContactRange(), 1447u);
+#if defined(__GNUC__) && defined(__clang__) && !defined(__core2__)
+        EXPECT_EQ(totalBodiesSlept, createdBodyCount);
+#else
+        EXPECT_EQ(totalBodiesSlept, createdBodyCount + 3u);
+#endif
+#if defined(__core2__) || (defined(__GNUC__) && !defined(__clang__))
+        EXPECT_TRUE(firstStepWithZeroMoved && (*firstStepWithZeroMoved == 1827u));
+#else
+        EXPECT_TRUE(firstStepWithZeroMoved && (*firstStepWithZeroMoved == 1792u));
+#endif
         break;
     }
     EXPECT_EQ(world->GetTree().GetNodeCount(), 5331u);
@@ -2695,20 +2755,6 @@ TEST(World_Longer, TilesComesToRest)
     if (awakeCount == 0u) {
         EXPECT_EQ(lastStats.reg.proxiesMoved, 0u);
         EXPECT_EQ(lastStats.toi.proxiesMoved, 0u);
-    }
-    if (firstStepWithZeroMoved.has_value()) {
-#if defined(__core2__)
-        switch (sizeof(Real)) {
-        case 4:
-            EXPECT_EQ(*firstStepWithZeroMoved, 1799u);
-            break;
-        case 8:
-            EXPECT_EQ(*firstStepWithZeroMoved, 1827u);
-            break;
-        }
-#else
-        EXPECT_EQ(*firstStepWithZeroMoved, 1792u);
-#endif
     }
 
     // The final stats seem dependent on the host the test is run on.

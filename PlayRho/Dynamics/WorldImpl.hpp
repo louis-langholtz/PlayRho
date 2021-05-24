@@ -38,6 +38,7 @@
 #include <PlayRho/Dynamics/Island.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp> // for GetDefaultBodyConf
 #include <PlayRho/Dynamics/StepStats.hpp>
+#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
 #include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
 #include <PlayRho/Dynamics/WorldConf.hpp>
@@ -831,6 +832,7 @@ private:
     ContactKeyQueue m_proxyKeys; ///< Proxy keys.
     Proxies m_proxiesForContacts; ///< Proxies queue.
     std::vector<std::pair<BodyID, ShapeID>> m_fixturesForProxies; ///< Fixtures for proxies queue.
+    std::vector<BodyConstraint> m_bodyConstraints;
     Bodies m_bodiesForSync; ///< Bodies for proxies queue.
 
     Bodies m_bodies; ///< Body collection.
