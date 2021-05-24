@@ -1153,8 +1153,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
                                                  m_contactBuffer, m_manifoldBuffer, m_shapeBuffer,
                                                  m_bodyConstraints,
                                                  GetRegVelocityConstraintConf(conf));
-    if (conf.doWarmStart)
-    {
+    if (conf.doWarmStart) {
         WarmStartVelocities(velConstraints, m_bodyConstraints);
     }
 
@@ -1166,21 +1165,17 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     });
     
     results.velocityIters = conf.regVelocityIters;
-    for (auto i = decltype(conf.regVelocityIters){0}; i < conf.regVelocityIters; ++i)
-    {
+    for (auto i = decltype(conf.regVelocityIters){0}; i < conf.regVelocityIters; ++i) {
         auto jointsOkay = true;
         for_each(cbegin(island.joints), cend(island.joints), [&](const auto& id) {
             auto& joint = m_jointBuffer[to_underlying(id)];
             jointsOkay &= SolveVelocity(joint, m_bodyConstraints, conf);
         });
-
         // Note that the new incremental impulse can potentially be orders of magnitude
         // greater than the last incremental impulse used in this loop.
         const auto newIncImpulse = SolveVelocityConstraintsViaGS(velConstraints, m_bodyConstraints);
         results.maxIncImpulse = std::max(results.maxIncImpulse, newIncImpulse);
-
-        if (jointsOkay && (newIncImpulse <= conf.regMinMomentum))
-        {
+        if (jointsOkay && (newIncImpulse <= conf.regMinMomentum)) {
             // No joint related velocity constraints were out of tolerance.
             // No body related velocity constraints were out of tolerance.
             // There does not appear to be any benefit to doing more loops now.
@@ -1195,21 +1190,17 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     IntegratePositions(m_bodyConstraints, h);
     
     // Solve position constraints
-    for (auto i = decltype(conf.regPositionIters){0}; i < conf.regPositionIters; ++i)
-    {
+    for (auto i = decltype(conf.regPositionIters){0}; i < conf.regPositionIters; ++i) {
         const auto minSeparation = SolvePositionConstraintsViaGS(posConstraints, m_bodyConstraints,
                                                                  psConf);
         results.minSeparation = std::min(results.minSeparation, minSeparation);
         const auto contactsOkay = (minSeparation >= conf.regMinSeparation);
-
         auto jointsOkay = true;
         for_each(cbegin(island.joints), cend(island.joints), [&](const auto& id) {
             auto& joint = m_jointBuffer[to_underlying(id)];
             jointsOkay &= SolvePosition(joint, m_bodyConstraints, psConf);
         });
-
-        if (contactsOkay && jointsOkay)
-        {
+        if (contactsOkay && jointsOkay) {
             // Reached tolerance, early out...
             results.positionIters = i + 1;
             results.solved = true;
@@ -1494,8 +1485,7 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
         //      vertex radius. CollideShapes had called GetManifoldFaceB which
         //      was failing to see 2 clip points after GetClipPoints was called.
         //assert(contact.IsEnabled() && contact.IsTouching());
-        if (!contact.IsEnabled() || !contact.IsTouching())
-        {
+        if (!contact.IsEnabled() || !contact.IsTouching()) {
             //contact.UnsetEnabled();
             bA.Restore(backupA);
             bB.Restore(backupB);
@@ -1505,15 +1495,13 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
             return results;
         }
     }
-    if (bA.IsSpeedable())
-    {
+    if (bA.IsSpeedable()) {
         bA.SetAwakeFlag();
         // XXX should the body's under-active time be reset here?
         //   Erin's code does for here but not in b2World::Solve(const b2TimeStep& step).
         //   Calling Body::ResetUnderActiveTime() has performance implications.
     }
-    if (bB.IsSpeedable())
-    {
+    if (bB.IsSpeedable()) {
         bB.SetAwakeFlag();
         // XXX should the body's under-active time be reset here?
         //   Erin's code does for here but not in b2World::Solve(const b2TimeStep& step).
@@ -1540,14 +1528,12 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
     // Process the contacts of the two bodies, adding appropriate ones to the island,
     // adding appropriate other bodies of added contacts, and advancing those other
     // bodies sweeps and transforms to the minimum contact's TOI.
-    if (bA.IsAccelerable())
-    {
+    if (bA.IsAccelerable()) {
         const auto procOut = ProcessContactsForTOI(bodyIdA, m_island, toi, conf);
         contactsUpdated += procOut.contactsUpdated;
         contactsSkipped += procOut.contactsSkipped;
     }
-    if (bB.IsAccelerable())
-    {
+    if (bB.IsAccelerable()) {
         const auto procOut = ProcessContactsForTOI(bodyIdB, m_island, toi, conf);
         contactsUpdated += procOut.contactsUpdated;
         contactsSkipped += procOut.contactsSkipped;
@@ -1600,9 +1586,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
     results.positionIters = conf.toiPositionIters;
     {
         const auto psConf = GetToiConstraintSolverConf(conf);
-
-        for (auto i = decltype(conf.toiPositionIters){0}; i < conf.toiPositionIters; ++i)
-        {
+        for (auto i = decltype(conf.toiPositionIters){0}; i < conf.toiPositionIters; ++i) {
             //
             // Note: There are two flavors of the SolvePositionConstraints function.
             //   One takes an extra two arguments that are the indexes of two bodies that are
@@ -1661,14 +1645,13 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
     // Don't store TOI contact forces for warm starting because they can be quite large.
 
     IntegratePositions(m_bodyConstraints, conf.deltaTime);
-
     for (const auto& id: island.bodies) {
         const auto i = to_underlying(id);
         auto& body = m_bodyBuffer[i];
         auto& bc = m_bodyConstraints[i];
         body.JustSetVelocity(bc.GetVelocity());
         if (UpdateBody(body, bc.GetPosition())) {
-            FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(id)]);
+            FlagForUpdating(m_contactBuffer, m_bodyContacts[i]);
         }
     }
 
