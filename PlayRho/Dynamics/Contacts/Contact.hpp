@@ -84,10 +84,10 @@ public:
     /// @brief Initializing constructor.
     ///
     /// @param bA Identifier of body-A.
-    /// @param fA Non-invalid identifier to shape A.
+    /// @param sA Non-invalid identifier to shape A.
     /// @param iA Child index A.
     /// @param bB Identifier of body-B.
-    /// @param fB Non-invalid identifier to shape B.
+    /// @param sB Non-invalid identifier to shape B.
     /// @param iB Child index B.
     ///
     /// @note This need never be called directly by a user.

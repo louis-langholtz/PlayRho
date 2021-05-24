@@ -112,7 +112,7 @@ StepStats Step(World& world, const StepConf& conf = StepConf{});
 ///
 /// @param world World to step.
 /// @param delta Time to simulate as a delta from the current state. This should not vary.
-/// @param velocityIters Number of iterations for the velocity constraint solver.
+/// @param velocityIterations Number of iterations for the velocity constraint solver.
 /// @param positionIterations Number of iterations for the position constraint solver.
 ///   The position constraint solver resolves the positions of bodies that overlap.
 ///
