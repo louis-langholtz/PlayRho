@@ -2226,8 +2226,8 @@ static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
     step.maxRotation = playrho::Pi * playrho::Real(0.5f) * playrho::Radian;
     step.velocityThreshold = 1.0f * playrho::MeterPerSecond;
     step.maxSubSteps = std::uint8_t{8};
-    step.regPositionIterations = 3;
-    step.toiVelocityIterations = 8;
+    step.regPositionIters = 3;
+    step.toiVelocityIters = 8;
 
     while (GetAwakeCount(world) > 0) {
         world.Step(step);

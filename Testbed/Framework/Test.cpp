@@ -1076,10 +1076,10 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
 
     stepConf.deltaTime = settings.dt * Second;
 
-    stepConf.regVelocityIterations = static_cast<StepConf::iteration_type>(settings.regVelocityIterations);
-    stepConf.regPositionIterations = static_cast<StepConf::iteration_type>(settings.regPositionIterations);
-    stepConf.toiVelocityIterations = static_cast<StepConf::iteration_type>(settings.toiVelocityIterations);
-    stepConf.toiPositionIterations = static_cast<StepConf::iteration_type>(settings.toiPositionIterations);
+    stepConf.regVelocityIters = static_cast<StepConf::iteration_type>(settings.regVelocityIterations);
+    stepConf.regPositionIters = static_cast<StepConf::iteration_type>(settings.regPositionIterations);
+    stepConf.toiVelocityIters = static_cast<StepConf::iteration_type>(settings.toiVelocityIterations);
+    stepConf.toiPositionIters = static_cast<StepConf::iteration_type>(settings.toiPositionIterations);
 
     stepConf.maxSubSteps = static_cast<StepConf::iteration_type>(settings.maxSubSteps);
     stepConf.maxToiRootIters = static_cast<StepConf::iteration_type>(settings.maxToiRootIters);

@@ -1551,10 +1551,10 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
     auto stepConf = StepConf{};
     stepConf.deltaTime = time_inc;
     stepConf.dtRatio = -1;
-    stepConf.regPositionIterations = 0;
-    stepConf.regVelocityIterations = 0;
-    stepConf.toiPositionIterations = 0;
-    stepConf.toiVelocityIterations = 0;
+    stepConf.regPositionIters = 0;
+    stepConf.regVelocityIters = 0;
+    stepConf.toiPositionIters = 0;
+    stepConf.toiVelocityIters = 0;
     
     auto pos = GetLocation(world, body);
     auto vel = GetLinearVelocity(world, body);
@@ -1725,10 +1725,10 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 
     auto conf = StepConf{};
     conf.deltaTime = time_inc;
-    conf.regPositionIterations = 0;
-    conf.regVelocityIterations = 0;
-    conf.toiPositionIterations = 0;
-    conf.toiVelocityIterations = 0;
+    conf.regPositionIters = 0;
+    conf.regVelocityIters = 0;
+    conf.toiPositionIters = 0;
+    conf.toiVelocityIters = 0;
     conf.tolerance = nextafter(StripUnit(conf.targetDepth), Real{0}) * Meter;
 
     auto steps = unsigned{0};

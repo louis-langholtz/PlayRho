@@ -1136,7 +1136,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     assert(!empty(island.bodies) || !empty(island.contacts) || !empty(island.joints));
     
     auto results = IslandStats{};
-    results.positionIters = conf.regPositionIterations;
+    results.positionIters = conf.regPositionIters;
     const auto h = conf.deltaTime; ///< Time step.
 
     // Update bodies' pos0 values.
@@ -1165,8 +1165,8 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
         InitVelocity(joint, m_bodyConstraints, conf, psConf);
     });
     
-    results.velocityIters = conf.regVelocityIterations;
-    for (auto i = decltype(conf.regVelocityIterations){0}; i < conf.regVelocityIterations; ++i)
+    results.velocityIters = conf.regVelocityIters;
+    for (auto i = decltype(conf.regVelocityIters){0}; i < conf.regVelocityIters; ++i)
     {
         auto jointsOkay = true;
         for_each(cbegin(island.joints), cend(island.joints), [&](const auto& id) {
@@ -1195,7 +1195,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     IntegratePositions(m_bodyConstraints, h);
     
     // Solve position constraints
-    for (auto i = decltype(conf.regPositionIterations){0}; i < conf.regPositionIterations; ++i)
+    for (auto i = decltype(conf.regPositionIters){0}; i < conf.regPositionIters; ++i)
     {
         const auto minSeparation = SolvePositionConstraintsViaGS(posConstraints, m_bodyConstraints,
                                                                  psConf);
@@ -1597,11 +1597,11 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
     // Solve TOI-based position constraints.
     assert(results.minSeparation == std::numeric_limits<Length>::infinity());
     assert(results.solved == false);
-    results.positionIters = conf.toiPositionIterations;
+    results.positionIters = conf.toiPositionIters;
     {
         const auto psConf = GetToiConstraintSolverConf(conf);
 
-        for (auto i = decltype(conf.toiPositionIterations){0}; i < conf.toiPositionIterations; ++i)
+        for (auto i = decltype(conf.toiPositionIters){0}; i < conf.toiPositionIters; ++i)
         {
             //
             // Note: There are two flavors of the SolvePositionConstraints function.
@@ -1644,8 +1644,8 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
 
     // Solve velocity constraints.
     assert(results.maxIncImpulse == 0_Ns);
-    results.velocityIters = conf.toiVelocityIterations;
-    for (auto i = decltype(conf.toiVelocityIterations){0}; i < conf.toiVelocityIterations; ++i) {
+    results.velocityIters = conf.toiVelocityIters;
+    for (auto i = decltype(conf.toiVelocityIters){0}; i < conf.toiVelocityIters; ++i) {
         const auto newIncImpulse = SolveVelocityConstraintsViaGS(velConstraints, m_bodyConstraints);
         if (newIncImpulse <= conf.toiMinMomentum) {
             // No body related velocity constraints were out of tolerance.

@@ -100,12 +100,12 @@ StepStats Step(World& world, Time delta, TimestepIters velocityIterations,
 {
     StepConf conf;
     conf.deltaTime = delta;
-    conf.regVelocityIterations = velocityIterations;
-    conf.regPositionIterations = positionIterations;
-    conf.toiVelocityIterations = velocityIterations;
+    conf.regVelocityIters = velocityIterations;
+    conf.regPositionIters = positionIterations;
+    conf.toiVelocityIters = velocityIterations;
     if (positionIterations == 0)
     {
-        conf.toiPositionIterations = 0;
+        conf.toiPositionIters = 0;
     }
     conf.dtRatio = delta * world.GetInvDeltaTime();
     return world.Step(conf);
