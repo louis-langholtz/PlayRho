@@ -1896,31 +1896,57 @@ static void SolveVC(benchmark::State& state)
     }
 }
 
-static void WorldStep(benchmark::State& state)
+static void WorldStepPlayRho(benchmark::State& state)
 {
-    auto world = playrho::d2::World{playrho::d2::WorldConf{/* zero G */}};
     const auto stepConf = playrho::StepConf{};
-    for (auto _: state)
-    {
-        benchmark::DoNotOptimize(world.Step(stepConf));
+    auto world = playrho::d2::World{playrho::d2::WorldConf{}.UseTreeCapacity(0).UseContactCapacity(0u)};
+    for (auto _: state) {
+        world.Step(stepConf);
     }
 }
 
-static void WorldStepWithStatsStatic(benchmark::State& state)
+#ifdef BENCHMARK_BOX2D
+static void WorldStepBox2D(benchmark::State& state)
 {
-    auto world = playrho::d2::World{playrho::d2::WorldConf{/* zero G */}};
+    const auto gravity = b2Vec2(0.0f, 0.0f);
+    b2World world(gravity);
+    for (auto _: state) {
+        world.Step(1.0f/60, 8, 3);
+    }
+}
+#endif
+
+static void WorldStepWithStatsStaticPlayRho(benchmark::State& state)
+{
     const auto stepConf = playrho::StepConf{};
     auto stepStats = playrho::StepStats{};
     const auto numBodies = state.range();
-    for (auto i = decltype(numBodies){0}; i < numBodies; ++i)
-    {
+    auto world = playrho::d2::World{playrho::d2::WorldConf{/* zero G */}};
+    for (auto i = decltype(numBodies){0}; i < numBodies; ++i) {
         world.CreateBody(playrho::d2::BodyConf{}.UseType(playrho::BodyType::Static));
     }
-    for (auto _: state)
-    {
+    for (auto _: state) {
         benchmark::DoNotOptimize(stepStats = world.Step(stepConf));
     }
 }
+
+#ifdef BENCHMARK_BOX2D
+static void WorldStepWithStatsStaticBox2D(benchmark::State& state)
+{
+    const auto numBodies = state.range();
+    const auto gravity = b2Vec2(0.0f, 0.0f);
+    b2World world(gravity);
+    b2BodyDef bd;
+    bd.type = b2_staticBody;
+    bd.position = b2Vec2(0.0f, 0.0f);
+    for (auto i = decltype(numBodies){0}; i < numBodies; ++i) {
+        world.CreateBody(&bd);
+    }
+    for (auto _: state) {
+        world.Step(1.0f/60, 8, 3);
+    }
+}
+#endif
 
 #if 0
 static void WorldStepWithStatsDynamicBodies(benchmark::State& state)
@@ -1940,32 +1966,55 @@ static void WorldStepWithStatsDynamicBodies(benchmark::State& state)
 }
 #endif
 
-static void DropDisks(benchmark::State& state)
+static void DropDisksPlayRho(benchmark::State& state)
 {
-    auto world = playrho::d2::World{};
-
-    const auto diskRadius = 0.5f * playrho::Meter;
-    const auto diskConf = playrho::d2::DiskShapeConf{}.UseRadius(diskRadius);
-    const auto shape = playrho::d2::Shape{diskConf};
-    const auto shapeId = world.CreateShape(shape);
     const auto numDisks = state.range();
-    for (auto i = decltype(numDisks){0}; i < numDisks; ++i)
-    {
-        const auto x = i * diskRadius * 4;
-        const auto location = playrho::Length2{x, 0 * playrho::Meter};
-        const auto body = world.CreateBody(playrho::d2::BodyConf{}
-                                           .UseType(playrho::BodyType::Dynamic)
-                                           .UseLocation(location)
-                                           .UseLinearAcceleration(playrho::d2::EarthlyGravity));
-        Attach(world, body, shapeId);
-    }
-
-    const auto stepConf = playrho::StepConf{};
-    for (auto _ : state)
-    {
-        benchmark::DoNotOptimize(world.Step(stepConf));
+    for (auto _ : state) {
+        state.PauseTiming();
+        auto world = playrho::d2::World{};
+        const auto diskRadius = 0.5f * playrho::Meter;
+        const auto diskConf = playrho::d2::DiskShapeConf{}.UseRadius(diskRadius);
+        const auto shapeId = world.CreateShape(playrho::d2::Shape{diskConf});
+        for (auto i = decltype(numDisks){0}; i < numDisks; ++i) {
+            const auto x = i * diskRadius * 4;
+            const auto location = playrho::Length2{x, 0 * playrho::Meter};
+            const auto body = world.CreateBody(playrho::d2::BodyConf{}
+                                               .UseType(playrho::BodyType::Dynamic)
+                                               .UseLocation(location)
+                                               .UseLinearAcceleration(playrho::d2::EarthlyGravity));
+            Attach(world, body, shapeId);
+        }
+        const auto stepConf = playrho::StepConf{};
+        state.ResumeTiming();
+        world.Step(stepConf);
     }
 }
+
+#ifdef BENCHMARK_BOX2D
+static void DropDisksBox2D(benchmark::State& state)
+{
+    const auto numDisks = state.range();
+    const auto gravity = b2Vec2(0.0f, static_cast<float>(playrho::EarthlyLinearAcceleration / playrho::MeterPerSquareSecond));
+    for (auto _ : state) {
+        state.PauseTiming();
+        b2World world(gravity);
+        const auto diskRadius = 0.5f;
+        b2CircleShape circle;
+        circle.m_p.SetZero();
+        circle.m_radius = diskRadius;
+        for (auto i = decltype(numDisks){0}; i < numDisks; ++i) {
+            const auto x = i * diskRadius * 4;
+            b2BodyDef bd;
+            bd.type = b2_dynamicBody;
+            bd.position = b2Vec2(x, 0.0f);
+            const auto body = world.CreateBody(&bd);
+            body->CreateFixture(&circle, 0.01f);
+        }
+        state.ResumeTiming();
+        world.Step(1.0f/60, 8, 3);
+    }
+}
+#endif
 
 static void AddPairStressTestPlayRho(benchmark::State& state, int count)
 {
@@ -2523,13 +2572,22 @@ BENCHMARK(MultiThreadQDE);
 BENCHMARK(MultiThreadQDA);
 BENCHMARK(MultiThreadQDAQ);
 
-BENCHMARK(WorldStep);
+BENCHMARK(WorldStepPlayRho);
+#ifdef BENCHMARK_BOX2D
+BENCHMARK(WorldStepBox2D);
+#endif
 
 // Next two benchmarks can have a stddev time of some 20% between repeats.
-BENCHMARK(WorldStepWithStatsStatic)->Arg(0)->Arg(1)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
+BENCHMARK(WorldStepWithStatsStaticPlayRho)->Arg(0)->Arg(1)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
 //BENCHMARK(WorldStepWithStatsDynamicBodies)->Arg(0)->Arg(1)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000)->Repetitions(4);
+#ifdef BENCHMARK_BOX2D
+BENCHMARK(WorldStepWithStatsStaticBox2D)->Arg(0)->Arg(1)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
+#endif
 
-BENCHMARK(DropDisks)->Arg(0)->Arg(1)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
+BENCHMARK(DropDisksPlayRho)->Arg(0)->Arg(1)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
+#ifdef BENCHMARK_BOX2D
+BENCHMARK(DropDisksBox2D)->Arg(0)->Arg(1)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
+#endif
 
 // BENCHMARK(random_malloc_free_100);
 
