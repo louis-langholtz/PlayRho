@@ -1969,23 +1969,21 @@ static void WorldStepWithStatsDynamicBodies(benchmark::State& state)
 static void DropDisksPlayRho(benchmark::State& state)
 {
     const auto numDisks = state.range();
+    auto world = playrho::d2::World{};
+    const auto diskRadius = 0.5f * playrho::Meter;
+    const auto diskConf = playrho::d2::DiskShapeConf{}.UseRadius(diskRadius);
+    const auto shapeId = world.CreateShape(playrho::d2::Shape{diskConf});
+    for (auto i = decltype(numDisks){0}; i < numDisks; ++i) {
+        const auto x = i * diskRadius * 4;
+        const auto location = playrho::Length2{x, 0 * playrho::Meter};
+        const auto body = world.CreateBody(playrho::d2::BodyConf{}
+                                           .UseType(playrho::BodyType::Dynamic)
+                                           .UseLocation(location)
+                                           .UseLinearAcceleration(playrho::d2::EarthlyGravity));
+        Attach(world, body, shapeId);
+    }
+    const auto stepConf = playrho::StepConf{};
     for (auto _ : state) {
-        state.PauseTiming();
-        auto world = playrho::d2::World{};
-        const auto diskRadius = 0.5f * playrho::Meter;
-        const auto diskConf = playrho::d2::DiskShapeConf{}.UseRadius(diskRadius);
-        const auto shapeId = world.CreateShape(playrho::d2::Shape{diskConf});
-        for (auto i = decltype(numDisks){0}; i < numDisks; ++i) {
-            const auto x = i * diskRadius * 4;
-            const auto location = playrho::Length2{x, 0 * playrho::Meter};
-            const auto body = world.CreateBody(playrho::d2::BodyConf{}
-                                               .UseType(playrho::BodyType::Dynamic)
-                                               .UseLocation(location)
-                                               .UseLinearAcceleration(playrho::d2::EarthlyGravity));
-            Attach(world, body, shapeId);
-        }
-        const auto stepConf = playrho::StepConf{};
-        state.ResumeTiming();
         world.Step(stepConf);
     }
 }
@@ -1995,22 +1993,20 @@ static void DropDisksBox2D(benchmark::State& state)
 {
     const auto numDisks = state.range();
     const auto gravity = b2Vec2(0.0f, static_cast<float>(playrho::EarthlyLinearAcceleration / playrho::MeterPerSquareSecond));
+    b2World world(gravity);
+    const auto diskRadius = 0.5f;
+    b2CircleShape circle;
+    circle.m_p.SetZero();
+    circle.m_radius = diskRadius;
+    for (auto i = decltype(numDisks){0}; i < numDisks; ++i) {
+        const auto x = i * diskRadius * 4;
+        b2BodyDef bd;
+        bd.type = b2_dynamicBody;
+        bd.position = b2Vec2(x, 0.0f);
+        const auto body = world.CreateBody(&bd);
+        body->CreateFixture(&circle, 0.01f);
+    }
     for (auto _ : state) {
-        state.PauseTiming();
-        b2World world(gravity);
-        const auto diskRadius = 0.5f;
-        b2CircleShape circle;
-        circle.m_p.SetZero();
-        circle.m_radius = diskRadius;
-        for (auto i = decltype(numDisks){0}; i < numDisks; ++i) {
-            const auto x = i * diskRadius * 4;
-            b2BodyDef bd;
-            bd.type = b2_dynamicBody;
-            bd.position = b2Vec2(x, 0.0f);
-            const auto body = world.CreateBody(&bd);
-            body->CreateFixture(&circle, 0.01f);
-        }
-        state.ResumeTiming();
         world.Step(1.0f/60, 8, 3);
     }
 }
