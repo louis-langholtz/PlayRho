@@ -2148,10 +2148,15 @@ TEST(World, DropDisks)
         ASSERT_NO_THROW(Attach(world, body, shapeId));
     }
     ASSERT_EQ(size(world.GetBodies()), numDisks);
+    ASSERT_EQ(world.GetTree().GetNodeCount(), 0u);
+    ASSERT_EQ(world.GetTree().GetNodeCapacity(), 4096u);
 
     const auto stepConf = playrho::StepConf{};
     auto stats = StepStats{};
     ASSERT_NO_THROW(stats = world.Step(stepConf));
+
+    EXPECT_EQ(world.GetTree().GetNodeCount(), 19999u);
+    EXPECT_EQ(world.GetTree().GetNodeCapacity(), 32768u);
 
     EXPECT_EQ(stats.reg.islandsFound, numDisks);
     EXPECT_EQ(stats.reg.islandsSolved, numDisks);
@@ -2179,6 +2184,25 @@ TEST(World, DropDisks)
         EXPECT_EQ(GetX(body.GetVelocity().linear), 0_mps);
         EXPECT_LT(GetY(body.GetVelocity().linear), 0_mps);
     }
+
+    for (auto i = 1; i < 8; ++i) {
+        EXPECT_NO_THROW(stats = world.Step(stepConf));
+        SCOPED_TRACE(std::string("#-steps is ") + std::to_string(i));
+        EXPECT_EQ(stats.reg.proxiesMoved, 0u);
+    }
+
+    EXPECT_NO_THROW(stats = world.Step(stepConf));
+    EXPECT_EQ(stats.reg.proxiesMoved, numDisks);
+    EXPECT_EQ(stats.toi.islandsFound, 0u);
+    EXPECT_EQ(stats.toi.islandsSolved, 0u);
+    EXPECT_EQ(stats.toi.contactsFound, 0u);
+    EXPECT_EQ(stats.toi.contactsAdded, 0u);
+    EXPECT_EQ(stats.toi.proxiesMoved, 0u);
+    EXPECT_EQ(stats.toi.sumPosIters, 0u);
+    EXPECT_EQ(stats.toi.sumVelIters, 0u);
+
+    EXPECT_EQ(world.GetTree().GetNodeCount(), 19999u);
+    EXPECT_EQ(world.GetTree().GetNodeCapacity(), 32768u);
 }
 
 TEST(World, PartiallyOverlappedSameCirclesSeparate)
