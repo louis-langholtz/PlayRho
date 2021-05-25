@@ -112,10 +112,11 @@ struct WorldImpl::ContactUpdateConf
 
 namespace {
 
-inline void IntegratePositions(BodyConstraints& bodies, Time h)
+inline void IntegratePositions(const Island::Bodies& bodies, BodyConstraints& constraints, Time h)
 {
     assert(IsValid(h));
-    for_each(begin(bodies), end(bodies), [&](BodyConstraint& bc) {
+    for_each(cbegin(bodies), cend(bodies), [&](const auto& id) {
+        auto& bc = constraints[to_underlying(id)];
         const auto velocity = bc.GetVelocity();
         const auto translation = h * velocity.linear;
         const auto rotation = h * velocity.angular;
@@ -212,7 +213,7 @@ void WarmStartVelocities(const VelocityConstraints& velConstraints,
 void GetBodyConstraints(std::vector<BodyConstraint>& constraints, const Island::Bodies& bodies,
                         const ArrayAllocator<Body>& bodyBuffer, Time h, MovementConf conf)
 {
-    constraints.resize(size(bodyBuffer));
+    assert(size(constraints) == size(bodyBuffer));
     for (const auto& id: bodies) {
         constraints[to_underlying(id)] = GetBodyConstraint(bodyBuffer[to_underlying(id)], h, conf);
     }
@@ -674,6 +675,7 @@ BodyID WorldImpl::CreateBody(const BodyConf& def)
     m_bodyShapes.Allocate();
     m_bodyProxies.Allocate();
     m_bodies.push_back(id);
+    m_bodyConstraints.resize(size(m_bodyContacts));
     return id;
 }
 
@@ -690,6 +692,7 @@ void WorldImpl::Remove(BodyID id) noexcept
         m_bodyJoints.Free(to_underlying(id));
         m_bodyContacts.Free(to_underlying(id));
         m_bodyBuffer.Free(to_underlying(id));
+        m_bodyConstraints.resize(size(m_bodyContacts));
     }
 }
 
@@ -1187,7 +1190,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     }
     
     // updates array of tentative new body positions per the velocities as if there were no obstacles...
-    IntegratePositions(m_bodyConstraints, h);
+    IntegratePositions(island.bodies, m_bodyConstraints, h);
     
     // Solve position constraints
     for (auto i = decltype(conf.regPositionIters){0}; i < conf.regPositionIters; ++i) {
@@ -1386,8 +1389,7 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
             stats.islandsSolved += solverResults.solved;
             stats.sumPosIters += solverResults.positionIters;
             stats.sumVelIters += solverResults.velocityIters;
-            if ((solverResults.positionIters > 0) || (solverResults.velocityIters > 0))
-            {
+            if ((solverResults.positionIters > 0) || (solverResults.velocityIters > 0)) {
                 ++islandsFound;
             }
             stats.contactsUpdatedTouching += solverResults.contactsUpdated;
@@ -1416,8 +1418,7 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
         // Also, some contacts can be destroyed.
         stats.contactsAdded += FindNewContacts();
 
-        if (subStepping)
-        {
+        if (subStepping) {
             SetStepComplete(false);
             break;
         }
@@ -1644,7 +1645,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
 
     // Don't store TOI contact forces for warm starting because they can be quite large.
 
-    IntegratePositions(m_bodyConstraints, conf.deltaTime);
+    IntegratePositions(island.bodies, m_bodyConstraints, conf.deltaTime);
     for (const auto& id: island.bodies) {
         const auto i = to_underlying(id);
         auto& body = m_bodyBuffer[i];
