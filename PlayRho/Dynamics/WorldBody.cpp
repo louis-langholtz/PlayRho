@@ -393,26 +393,23 @@ void SetMassData(World& world, BodyID id, const MassData& massData)
     auto body = GetBody(world, id);
 
     if (!body.IsAccelerable()) {
-        body.SetInvMass(InvMass{});
-        body.SetInvRotInertia(InvRotInertia{});
+        body.SetInvMassRotInertia(InvMass{}, InvRotInertia{});
         body.SetSweep(Sweep{Position{GetLocation(body), GetAngle(body)}});
-        body.UnsetMassDataDirty();
         world.SetBody(id, body);
         return;
     }
 
     const auto mass = (massData.mass > 0_kg)? Mass{massData.mass}: 1_kg;
-    body.SetInvMass(Real{1} / mass);
+    const auto invMass = Real{1} / mass;
+    auto invRotInertia = Real(0) / (1_m2 * 1_kg / SquareRadian);
     if ((massData.I > RotInertia{0}) && (!body.IsFixedRotation())) {
         const auto lengthSquared = GetMagnitudeSquared(massData.center);
         // L^2 M QP^-2
         const auto I = RotInertia{massData.I} - RotInertia{(mass * lengthSquared) / SquareRadian};
         assert(I > RotInertia{0});
-        body.SetInvRotInertia(Real{1} / I);
+        invRotInertia = Real{1} / I;
     }
-    else {
-        body.SetInvRotInertia(0);
-    }
+    body.SetInvMassRotInertia(invMass, invRotInertia);
     // Move center of mass.
     const auto oldCenter = GetWorldCenter(body);
     body.SetSweep(Sweep{
@@ -425,7 +422,6 @@ void SetMassData(World& world, BodyID id, const MassData& massData)
     auto newVelocity = body.GetVelocity();
     newVelocity.linear += GetRevPerpendicular(deltaCenter) * (newVelocity.angular / Radian);
     body.JustSetVelocity(newVelocity);
-    body.UnsetMassDataDirty();
     world.SetBody(id, body);
 }
 

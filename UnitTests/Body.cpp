@@ -197,7 +197,7 @@ TEST(Body, EqualsOperator)
     }
     {
         auto body = Body{};
-        body.SetInvRotInertia((Real(2) * SquareRadian) / (2_m2 * 1.2_kg));
+        body.SetInvMassRotInertia(body.GetInvMass(), (Real(2) * SquareRadian) / (2_m2 * 1.2_kg));
         EXPECT_FALSE(body == Body());
     }
     {
@@ -269,7 +269,7 @@ TEST(Body, NotEqualsOperator)
     }
     {
         auto body = Body{};
-        body.SetInvRotInertia((Real(2) * SquareRadian) / (2_m2 * 1.2_kg));
+        body.SetInvMassRotInertia(body.GetInvMass(), (Real(2) * SquareRadian) / (2_m2 * 1.2_kg));
         EXPECT_TRUE(body != Body());
     }
     {

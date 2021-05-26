@@ -198,15 +198,8 @@ public:
     /// As such, it's likely faster to multiply values by this inverse value than to redivide
     /// them all the time by the mass.
     /// @return Value of zero or more representing the body's inverse mass (in 1/kg).
-    /// @see SetInvMass.
+    /// @see SetInvMassRotInertia.
     InvMass GetInvMass() const noexcept;
-
-    /// @brief Sets the inverse mass.
-    /// @see GetInvMass
-    void SetInvMass(InvMass v) noexcept
-    {
-        m_invMass = v;
-    }
 
     /// @brief Gets the inverse rotational inertia of the body.
     /// @details This is the cached result of dividing 1 by the body's rotational inertia.
@@ -214,14 +207,17 @@ public:
     /// As such, it's likely faster to multiply values by this inverse value than to redivide
     /// them all the time by the rotational inertia.
     /// @return Inverse rotational inertia (in 1/kg-m^2).
-    /// @see SetInvRotInertia.
+    /// @see SetInvMassRotInertia.
     InvRotInertia GetInvRotInertia() const noexcept;
 
-    /// @brief Sets the inverse rotational inertia.
-    /// @see GetInvRotInertia.
-    void SetInvRotInertia(InvRotInertia v) noexcept
+    /// @brief Sets the inverse mass and inverse rotational inertia and clears the mass-data-dirty
+    ///   flag.
+    /// @see GetInvMass, GetInvRotInertia, IsMassDataDirty.
+    void SetInvMassRotInertia(InvMass invMass, InvRotInertia invRotI) noexcept
     {
-        m_invRotI = v;
+        m_invMass = invMass;
+        m_invRotI = invRotI;
+        UnsetMassDataDirty();
     }
 
     /// @brief Gets the linear damping of the body.
@@ -956,7 +952,7 @@ inline bool IsMassDataDirty(const Body& body) noexcept
 /// As such, it's likely faster to multiply values by this inverse value than to redivide
 /// them all the time by the mass.
 /// @return Value of zero or more representing the body's inverse mass (in 1/kg).
-/// @see SetInvMass.
+/// @see SetInvMassRotInertia.
 /// @relatedalso Body
 inline InvMass GetInvMass(const Body& body) noexcept
 {
@@ -1071,7 +1067,7 @@ inline bool Unawaken(Body& body) noexcept
 /// @brief Gets the mass of the body.
 /// @note This may be the total calculated mass or it may be the set mass of the body.
 /// @return Value of zero or more representing the body's mass.
-/// @see GetInvMass, SetInvMass
+/// @see GetInvMass, SetInvMassRotInertia
 /// @relatedalso Body
 inline Mass GetMass(const Body& body) noexcept
 {
@@ -1083,7 +1079,7 @@ inline Mass GetMass(const Body& body) noexcept
 /// @relatedalso Body
 inline void SetMass(Body& body, Mass mass)
 {
-    body.SetInvMass(InvMass{Real(1) / mass});
+    body.SetInvMassRotInertia(InvMass{Real(1) / mass}, body.GetInvRotInertia());
 }
 
 /// @brief Sets the linear and rotational accelerations on this body.
@@ -1119,7 +1115,7 @@ inline void SetAcceleration(Body& body, AngularAcceleration value) noexcept
 /// @brief Gets the rotational inertia of the body.
 /// @param body Body to get the rotational inertia for.
 /// @return the rotational inertia.
-/// @see Body::GetInvRotInertia, Body::SetInvRotInertia.
+/// @see Body::GetInvRotInertia, Body::SetInvMassRotInertia.
 /// @relatedalso Body
 inline RotInertia GetRotInertia(const Body& body) noexcept
 {
@@ -1128,7 +1124,7 @@ inline RotInertia GetRotInertia(const Body& body) noexcept
 
 /// @brief Gets the rotational inertia of the body about the local origin.
 /// @return the rotational inertia.
-/// @see Body::GetInvRotInertia, Body::SetInvRotInertia.
+/// @see Body::GetInvRotInertia, Body::SetInvMassRotInertia.
 /// @relatedalso Body
 inline RotInertia GetLocalRotInertia(const Body& body) noexcept
 {
