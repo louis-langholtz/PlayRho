@@ -26,6 +26,7 @@
 
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
 #include <stdexcept>
 
@@ -119,8 +120,8 @@ TEST(TargetJoint, DefaultInitialized)
 TEST(TargetJoint, GetLocalAnchorB)
 {
     auto world = World{};
-    const auto bA = world.CreateBody();
-    const auto bB = world.CreateBody();
+    const auto bA = CreateBody(world);
+    const auto bB = CreateBody(world);
     ASSERT_NE(bA, InvalidBodyID);
     ASSERT_NE(bB, InvalidBodyID);
 
@@ -139,8 +140,8 @@ TEST(TargetJoint, GetLocalAnchorB)
 TEST(TargetJoint, GetAnchorB)
 {
     auto world = World{};
-    const auto bA = world.CreateBody();
-    const auto bB = world.CreateBody();
+    const auto bA = CreateBody(world);
+    const auto bB = CreateBody(world);
     ASSERT_NE(bA, InvalidBodyID);
     ASSERT_NE(bB, InvalidBodyID);
 
@@ -159,8 +160,8 @@ TEST(TargetJoint, GetAnchorB)
 TEST(TargetJoint, ShiftOrigin)
 {
     auto world = World{};
-    const auto bA = world.CreateBody(BodyConf{}.UseLocation(Length2(-1.4_m, -2_m)));
-    const auto bB = world.CreateBody();
+    const auto bA = CreateBody(world, BodyConf{}.UseLocation(Length2(-1.4_m, -2_m)));
+    const auto bB = CreateBody(world);
     ASSERT_NE(bA, InvalidBodyID);
     ASSERT_NE(bB, InvalidBodyID);
     auto def = TargetJointConf{};
@@ -178,9 +179,9 @@ TEST(TargetJointConf, GetTargetJointDefFreeFunction)
 {
     World world;
 
-    const auto bA = world.CreateBody();
+    const auto bA = CreateBody(world);
     ASSERT_NE(bA, InvalidBodyID);
-    const auto bB = world.CreateBody();
+    const auto bB = CreateBody(world);
     ASSERT_NE(bB, InvalidBodyID);
 
     auto def = TargetJointConf{};

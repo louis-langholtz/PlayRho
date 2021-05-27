@@ -300,8 +300,8 @@ TEST(WheelJointConf, WithDynamicCircles)
 TEST(WheelJointConf, GetAngularVelocity)
 {
     auto world = World{};
-    const auto bodyA = world.CreateBody();
-    const auto bodyB = world.CreateBody();
+    const auto bodyA = CreateBody(world);
+    const auto bodyB = CreateBody(world);
     auto conf = WheelJointConf{bodyA, bodyB};
     auto angularVelocity = AngularVelocity{};
     EXPECT_NO_THROW(angularVelocity = GetAngularVelocity(world, conf));

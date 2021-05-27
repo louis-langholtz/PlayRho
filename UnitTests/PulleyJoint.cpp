@@ -182,8 +182,8 @@ TEST(PulleyJoint, GetAnchorAandB)
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{-2_m, Real(+1.2f) * Meter};
 
-    const auto b0 = world.CreateBody(BodyConf{}.UseLocation(loc0));
-    const auto b1 = world.CreateBody(BodyConf{}.UseLocation(loc1));
+    const auto b0 = CreateBody(world, BodyConf{}.UseLocation(loc0));
+    const auto b1 = CreateBody(world, BodyConf{}.UseLocation(loc1));
 
     auto jd = PulleyJointConf{};
     jd.bodyA = b0;
@@ -222,8 +222,8 @@ TEST(PulleyJoint, GetCurrentLength)
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{-2_m, Real(+1.2f) * Meter};
 
-    const auto b0 = world.CreateBody(BodyConf{}.UseLocation(loc0));
-    const auto b1 = world.CreateBody(BodyConf{}.UseLocation(loc1));
+    const auto b0 = CreateBody(world, BodyConf{}.UseLocation(loc0));
+    const auto b1 = CreateBody(world, BodyConf{}.UseLocation(loc1));
 
     auto jd = PulleyJointConf{};
     jd.bodyA = b0;

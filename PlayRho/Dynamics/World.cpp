@@ -158,10 +158,17 @@ SizedRange<World::Bodies::const_iterator> World::GetBodiesForProxies() const noe
     return ::playrho::d2::GetBodiesForProxies(*m_impl);
 }
 
+BodyID World::CreateBody(const Body& body)
+{
+    return ::playrho::d2::CreateBody(*m_impl, body);
+}
+
+/*
 BodyID World::CreateBody(const BodyConf& def)
 {
-    return ::playrho::d2::CreateBody(*m_impl, def);
+    return CreateBody(Body{def});
 }
+ */
 
 const Body& World::GetBody(BodyID id) const
 {

@@ -23,6 +23,7 @@
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
@@ -32,8 +33,8 @@ using namespace playrho::d2;
 TEST(WorldJoint, GetSetMotorSpeed)
 {
     World world;
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
 
     const auto motorSpeed = 4_rpm;
     auto jd = RevoluteJointConf{};

@@ -186,14 +186,14 @@ TEST(WorldBody, CreateAndDestroyFixture)
             EXPECT_EQ(i, 1);
         }
         EXPECT_TRUE(IsMassDataDirty(world, bodyId));
-        ResetMassData(world, bodyId);
+        EXPECT_NO_THROW(ResetMassData(world, bodyId));
         EXPECT_FALSE(IsMassDataDirty(world, bodyId));
 
         EXPECT_NO_THROW(world.Destroy(shapeId));
         EXPECT_TRUE(GetShapes(world, bodyId).empty());
         EXPECT_TRUE(IsMassDataDirty(world, bodyId));
 
-        ResetMassData(world, bodyId);
+        EXPECT_NO_THROW(ResetMassData(world, bodyId));
         EXPECT_FALSE(IsMassDataDirty(world, bodyId));
 
         Detach(world, bodyId);
@@ -215,7 +215,7 @@ TEST(WorldBody, CreateAndDestroyFixture)
             EXPECT_EQ(i, 1);
         }
         EXPECT_TRUE(IsMassDataDirty(world, bodyId));
-        ResetMassData(world, bodyId);
+        EXPECT_NO_THROW(ResetMassData(world, bodyId));
         EXPECT_FALSE(IsMassDataDirty(world, bodyId));
         EXPECT_FALSE(GetShapes(world, bodyId).empty());
         
@@ -580,7 +580,7 @@ TEST(WorldBody, CreateLotsOfFixtures)
         {
             ASSERT_NO_THROW(Attach(world, body, shapeId, false));
         }
-        ResetMassData(world, body);
+        EXPECT_NO_THROW(ResetMassData(world, body));
         
         EXPECT_FALSE(GetShapes(world, body).empty());
         {

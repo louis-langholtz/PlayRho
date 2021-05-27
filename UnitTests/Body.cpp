@@ -48,7 +48,7 @@ TEST(Body, ByteSize)
         EXPECT_EQ(sizeof(Body), std::size_t(100));
 #endif
 #else
-        EXPECT_EQ(sizeof(Body), std::size_t(100));
+        EXPECT_EQ(sizeof(Body), std::size_t(128));
 #endif
         break;
     case 8:
@@ -197,7 +197,7 @@ TEST(Body, EqualsOperator)
     }
     {
         auto body = Body{};
-        body.SetInvMassRotInertia(body.GetInvMass(), (Real(2) * SquareRadian) / (2_m2 * 1.2_kg));
+        body.SetInvMassData(body.GetInvMass(), (Real(2) * SquareRadian) / (2_m2 * 1.2_kg));
         EXPECT_FALSE(body == Body());
     }
     {
@@ -269,7 +269,7 @@ TEST(Body, NotEqualsOperator)
     }
     {
         auto body = Body{};
-        body.SetInvMassRotInertia(body.GetInvMass(), (Real(2) * SquareRadian) / (2_m2 * 1.2_kg));
+        body.SetInvMassData(body.GetInvMass(), (Real(2) * SquareRadian) / (2_m2 * 1.2_kg));
         EXPECT_TRUE(body != Body());
     }
     {

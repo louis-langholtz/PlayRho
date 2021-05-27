@@ -46,9 +46,14 @@ BodyCounter GetBodyRange(const WorldImpl& world) noexcept
     return world.GetBodyRange();
 }
 
+BodyID CreateBody(WorldImpl& world, const Body& body)
+{
+    return world.CreateBody(body);
+}
+
 BodyID CreateBody(WorldImpl& world, const BodyConf& def)
 {
-    return world.CreateBody(def);
+    return CreateBody(world, Body{def});
 }
 
 const Body& GetBody(const WorldImpl& world, BodyID id)
@@ -74,17 +79,24 @@ GetJoints(const WorldImpl& world, BodyID id)
 
 void Attach(WorldImpl& world, BodyID id, ShapeID shapeID)
 {
-    world.Attach(id, shapeID);
+    auto body = GetBody(world, id);
+    body.Attach(shapeID);
+    SetBody(world, id, body);
 }
 
 bool Detach(WorldImpl& world, BodyID id, ShapeID shapeID)
 {
-    return world.Detach(id, shapeID);
+    auto body = GetBody(world, id);
+    if (body.Detach(shapeID)) {
+        SetBody(world, id, body);
+        return true;
+    }
+    return false;
 }
 
 const std::vector<ShapeID>& GetShapes(const WorldImpl& world, BodyID id)
 {
-    return world.GetShapes(id);
+    return world.GetBody(id).GetShapes();
 }
 
 SizedRange<std::vector<KeyedContactPtr>::const_iterator>

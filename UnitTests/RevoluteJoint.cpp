@@ -61,8 +61,8 @@ TEST(RevoluteJointConf, ByteSize)
 TEST(RevoluteJoint, Construction)
 {
     World world;
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
 
     auto jd = RevoluteJointConf{};
 
@@ -111,9 +111,9 @@ TEST(RevoluteJoint, Construction)
 TEST(RevoluteJoint, EnableMotor)
 {
     World world;
-    const auto b0 = world.CreateBody(
+    const auto b0 = CreateBody(world,
         BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
-    const auto b1 = world.CreateBody(
+    const auto b1 = CreateBody(world,
         BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
     ASSERT_EQ(GetVelocity(world, b0), Velocity{});
     ASSERT_EQ(GetVelocity(world, b1), Velocity{});
@@ -137,9 +137,9 @@ TEST(RevoluteJoint, EnableMotor)
 TEST(RevoluteJoint, EnableMotorInWorld)
 {
     World world;
-    const auto b0 = world.CreateBody(
+    const auto b0 = CreateBody(world,
         BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
-    const auto b1 = world.CreateBody(
+    const auto b1 = CreateBody(world,
         BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
     ASSERT_EQ(GetVelocity(world, b0), Velocity{});
     ASSERT_EQ(GetVelocity(world, b1), Velocity{});
@@ -210,8 +210,8 @@ TEST(RevoluteJoint, EnableMotorInWorld)
 TEST(RevoluteJoint, MotorSpeed)
 {
     World world;
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
 
     auto jd = RevoluteJointConf{};
     jd.bodyA = b0;
@@ -230,8 +230,8 @@ TEST(RevoluteJoint, MotorSpeed)
 TEST(RevoluteJoint, EnableLimit)
 {
     auto world = World{};
-    const auto b0 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    const auto b0 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     ASSERT_EQ(GetInvRotInertia(world, b0), InvRotInertia(0));
     ASSERT_EQ(GetInvRotInertia(world, b1), InvRotInertia(0));
 
@@ -283,8 +283,8 @@ TEST(RevoluteJoint, EnableLimit)
 TEST(RevoluteJoint, SetAngularLimits)
 {
     World world;
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
 
     auto jd = RevoluteJointConf{};
     jd.bodyA = b0;
@@ -305,8 +305,8 @@ TEST(RevoluteJoint, SetAngularLimits)
 TEST(RevoluteJoint, MaxMotorTorque)
 {
     World world;
-    const auto b0 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    const auto b0 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
 
     auto jd = RevoluteJointConf{};
     jd.bodyA = b0;
@@ -343,11 +343,11 @@ TEST(RevoluteJoint, MovesDynamicCircles)
     World world;
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyConf{}
+    const auto b1 = CreateBody(world, BodyConf{}
                                          .UseType(BodyType::Dynamic)
                                          .UseLocation(p1)
                                          .UseLinearAcceleration(EarthlyGravity));
-    const auto b2 = world.CreateBody(BodyConf{}
+    const auto b2 = CreateBody(world, BodyConf{}
                                          .UseType(BodyType::Dynamic)
                                          .UseLocation(p2)
                                          .UseLinearAcceleration(EarthlyGravity));
@@ -377,11 +377,11 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     World world;
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyConf{}
+    const auto b1 = CreateBody(world, BodyConf{}
                                          .UseType(BodyType::Dynamic)
                                          .UseLocation(p1)
                                          .UseLinearAcceleration(EarthlyGravity));
-    const auto b2 = world.CreateBody(BodyConf{}
+    const auto b2 = CreateBody(world, BodyConf{}
                                          .UseType(BodyType::Dynamic)
                                          .UseLocation(p2)
                                          .UseLinearAcceleration(EarthlyGravity));
@@ -457,8 +457,8 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
 
     const auto p1 = Length2{0_m, 4_m}; // Vec2{-1, 0};
     const auto p2 = Length2{0_m, -2_m}; // Vec2{+1, 0};
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Static).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Static).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
 
     const auto shape1 = CreateShape(world, PolygonShapeConf{}.SetAsBox(1_m, 1_m));
     Attach(world, b1, shape1);
@@ -522,8 +522,8 @@ TEST(RevoluteJointConf, GetRevoluteJointConfFromJoint)
 TEST(RevoluteJointConf, GetAngle)
 {
     auto world = World{};
-    const auto bodyA = world.CreateBody();
-    const auto bodyB = world.CreateBody();
+    const auto bodyA = CreateBody(world);
+    const auto bodyB = CreateBody(world);
     auto conf = RevoluteJointConf{bodyA, bodyB};
     auto angle = Angle{};
     EXPECT_NO_THROW(angle = GetAngle(world, conf));
@@ -534,8 +534,8 @@ TEST(RevoluteJointConf, GetAngle)
 TEST(RevoluteJointConf, GetAngularVelocity)
 {
     auto world = World{};
-    const auto bodyA = world.CreateBody();
-    const auto bodyB = world.CreateBody();
+    const auto bodyA = CreateBody(world);
+    const auto bodyB = CreateBody(world);
     auto conf = RevoluteJointConf{bodyA, bodyB};
     auto angularVelocity = AngularVelocity{};
     EXPECT_NO_THROW(angularVelocity = GetAngularVelocity(world, conf));

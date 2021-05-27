@@ -335,20 +335,21 @@ public:
     /// @todo Remove this function from this class - access from implementation instead.
     SizedRange<Bodies::const_iterator> GetBodiesForProxies() const noexcept;
 
-    /// @brief Creates a rigid body with the given configuration.
+    /// @brief Creates a rigid body that's a copy of the given one.
     /// @warning This function should not be used while the world is locked &mdash; as it is
     ///   during callbacks. If it is, it will throw an exception or abort your program.
     /// @note No references to the configuration are retained. Its value is copied.
     /// @post The created body will be present in the range returned from the
     ///   <code>GetBodies()</code> method.
-    /// @param def A customized body configuration or its default value.
+    /// @param body A customized body or its default value.
     /// @return Identifier of the newly created body which can later be destroyed by calling
     ///   the <code>Destroy(BodyID)</code> method.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
+    /// @throws std::out_of_range if the given body references any invalid shape identifiers.
     /// @see Destroy(BodyID), GetBodies.
     /// @see PhysicalEntities.
-    BodyID CreateBody(const BodyConf& def = GetDefaultBodyConf());
+    BodyID CreateBody(const Body& body);
 
     /// @brief Gets the state of the identified body.
     /// @throws std::out_of_range If given an invalid body identifier.
@@ -356,7 +357,8 @@ public:
     const Body& GetBody(BodyID id) const;
 
     /// @brief Sets the state of the identified body.
-    /// @throws std::out_of_range If given an invalid body identifier.
+    /// @throws std::out_of_range if given an invalid id of if the given body references any
+    ///   invalid shape identifiers.
     /// @see GetBody, GetBodyRange.
     void SetBody(BodyID id, const Body& value);
 

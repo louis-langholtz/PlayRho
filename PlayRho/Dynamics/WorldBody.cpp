@@ -56,9 +56,13 @@ GetBodiesForProxies(const World& world) noexcept
     return world.GetBodiesForProxies();
 }
 
-BodyID CreateBody(World& world, const BodyConf& def)
+BodyID CreateBody(World& world, const Body& body, bool resetMassData)
 {
-    return world.CreateBody(def);
+    const auto id = world.CreateBody(body);
+    if (resetMassData) {
+        ResetMassData(world, id);
+    }
+    return id;
 }
 
 const Body& GetBody(const World& world, BodyID id)
@@ -80,7 +84,7 @@ void Attach(World& world, BodyID id, ShapeID shapeID, bool resetMassData)
 {
     world.Attach(id, shapeID);
     if (resetMassData) {
-        SetMassData(world, id, ComputeMassData(world, id));
+        ResetMassData(world, id);
     }
 }
 
@@ -93,7 +97,7 @@ bool Detach(World& world, BodyID id, ShapeID shapeID, bool resetMassData)
 {
     if (world.Detach(id, shapeID)) {
         if (resetMassData) {
-            SetMassData(world, id, ComputeMassData(world, id));
+            ResetMassData(world, id);
         }
         return true;
     }
@@ -107,7 +111,7 @@ bool Detach(World& world, BodyID id, bool resetMassData)
         anyDetached |= Detach(world, id, GetShapes(world, id).back());
     }
     if (anyDetached && resetMassData) {
-        SetMassData(world, id, ComputeMassData(world, id));
+        ResetMassData(world, id);
     }
     return anyDetached;
 }
@@ -258,7 +262,7 @@ void SetType(World& world, BodyID id, BodyType value, bool resetMassData)
         SetType(body, value);
         world.SetBody(id, body);
         if (resetMassData) {
-            SetMassData(world, id, ComputeMassData(world, id));
+            ResetMassData(world, id);
         }
     }
 }
@@ -375,8 +379,8 @@ MassData ComputeMassData(const World& world, BodyID id)
     auto mass = 0_kg;
     auto I = RotInertia{0};
     auto weightedCenter = Length2{};
-    for (const auto& shapeId: world.GetShapes(id)) {
-        const auto& shape = world.GetShape(shapeId);
+    for (const auto& shapeId: GetShapes(world, id)) {
+        const auto& shape = GetShape(world, shapeId);
         if (GetDensity(shape) > 0_kgpm2) {
             const auto massData = GetMassData(shape);
             mass += Mass{massData.mass};
@@ -393,7 +397,7 @@ void SetMassData(World& world, BodyID id, const MassData& massData)
     auto body = GetBody(world, id);
 
     if (!body.IsAccelerable()) {
-        body.SetInvMassRotInertia(InvMass{}, InvRotInertia{});
+        body.SetInvMassData(InvMass{}, InvRotInertia{});
         body.SetSweep(Sweep{Position{GetLocation(body), GetAngle(body)}});
         world.SetBody(id, body);
         return;
@@ -409,7 +413,7 @@ void SetMassData(World& world, BodyID id, const MassData& massData)
         assert(I > RotInertia{0});
         invRotInertia = Real{1} / I;
     }
-    body.SetInvMassRotInertia(invMass, invRotInertia);
+    body.SetInvMassData(invMass, invRotInertia);
     // Move center of mass.
     const auto oldCenter = GetWorldCenter(body);
     body.SetSweep(Sweep{

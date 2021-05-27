@@ -30,6 +30,7 @@
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Collision/MassData.hpp>
+#include <PlayRho/Collision/Shapes/ShapeID.hpp>
 
 #include <cassert>
 #include <utility>
@@ -198,7 +199,7 @@ public:
     /// As such, it's likely faster to multiply values by this inverse value than to redivide
     /// them all the time by the mass.
     /// @return Value of zero or more representing the body's inverse mass (in 1/kg).
-    /// @see SetInvMassRotInertia.
+    /// @see SetInvMassData.
     InvMass GetInvMass() const noexcept;
 
     /// @brief Gets the inverse rotational inertia of the body.
@@ -207,13 +208,13 @@ public:
     /// As such, it's likely faster to multiply values by this inverse value than to redivide
     /// them all the time by the rotational inertia.
     /// @return Inverse rotational inertia (in 1/kg-m^2).
-    /// @see SetInvMassRotInertia.
+    /// @see SetInvMassData.
     InvRotInertia GetInvRotInertia() const noexcept;
 
-    /// @brief Sets the inverse mass and inverse rotational inertia and clears the mass-data-dirty
-    ///   flag.
+    /// @brief Sets the inverse mass data and clears the mass-data-dirty flag.
+    /// @note This calls <code>UnsetMassDataDirty</code>.
     /// @see GetInvMass, GetInvRotInertia, IsMassDataDirty.
-    void SetInvMassRotInertia(InvMass invMass, InvRotInertia invRotI) noexcept
+    void SetInvMassData(InvMass invMass, InvRotInertia invRotI) noexcept
     {
         m_invMass = invMass;
         m_invRotI = invRotI;
@@ -447,6 +448,32 @@ public:
         m_xf = GetTransform1(m_sweep);
     }
 
+    /// @brief Gets the identifiers of the shapes attached to this body.
+    /// @see SetShapes, Attach, Detach.
+    const std::vector<ShapeID>& GetShapes() const noexcept
+    {
+        return m_shapes;
+    }
+
+    /// @brief Sets the identifiers of the shapes attached to this body.
+    /// @note This also sets the mass-data-dirty flag.
+    /// @see GetShapes, Attach, Detach.
+    void SetShapes(std::vector<ShapeID> value)
+    {
+        m_shapes = std::move(value);
+        SetMassDataDirty();
+    }
+
+    /// @brief Adds the given shape identifier to the identifiers associated with this body.
+    /// @note This also sets the mass-data-dirty flag. Call <code>SetInvMassData</code> to clear it.
+    /// @see GetShapes, SetShapes, Detach, SetInvMassData.
+    void Attach(ShapeID shapeId);
+
+    /// @brief Removes the given shape identifier from the identifiers associated with this body.
+    /// @note This also sets the mass-data-dirty flag. Call <code>SetInvMassData</code> to clear it.
+    /// @see GetShapes, SetShapes, Attach, SetInvMassData.
+    bool Detach(ShapeID shapeId);
+
 private:
     //
     // Member variables. Try to keep total size small.
@@ -499,6 +526,9 @@ private:
     ///   I.e. if a body is under-active for long enough, it should go to sleep.
     /// @note 4-bytes.
     Time m_underActiveTime = 0;
+
+    /// @brief Identifiers of shapes attached/associated with this body.
+    std::vector<ShapeID> m_shapes;
 };
 
 inline const Transformation& Body::GetTransformation() const noexcept
@@ -952,7 +982,7 @@ inline bool IsMassDataDirty(const Body& body) noexcept
 /// As such, it's likely faster to multiply values by this inverse value than to redivide
 /// them all the time by the mass.
 /// @return Value of zero or more representing the body's inverse mass (in 1/kg).
-/// @see SetInvMassRotInertia.
+/// @see SetInvMassData.
 /// @relatedalso Body
 inline InvMass GetInvMass(const Body& body) noexcept
 {
@@ -1067,7 +1097,7 @@ inline bool Unawaken(Body& body) noexcept
 /// @brief Gets the mass of the body.
 /// @note This may be the total calculated mass or it may be the set mass of the body.
 /// @return Value of zero or more representing the body's mass.
-/// @see GetInvMass, SetInvMassRotInertia
+/// @see GetInvMass, SetInvMassData
 /// @relatedalso Body
 inline Mass GetMass(const Body& body) noexcept
 {
@@ -1079,7 +1109,7 @@ inline Mass GetMass(const Body& body) noexcept
 /// @relatedalso Body
 inline void SetMass(Body& body, Mass mass)
 {
-    body.SetInvMassRotInertia(InvMass{Real(1) / mass}, body.GetInvRotInertia());
+    body.SetInvMassData(InvMass{Real(1) / mass}, body.GetInvRotInertia());
 }
 
 /// @brief Sets the linear and rotational accelerations on this body.
@@ -1115,7 +1145,7 @@ inline void SetAcceleration(Body& body, AngularAcceleration value) noexcept
 /// @brief Gets the rotational inertia of the body.
 /// @param body Body to get the rotational inertia for.
 /// @return the rotational inertia.
-/// @see Body::GetInvRotInertia, Body::SetInvMassRotInertia.
+/// @see Body::GetInvRotInertia, Body::SetInvMassData.
 /// @relatedalso Body
 inline RotInertia GetRotInertia(const Body& body) noexcept
 {
@@ -1124,7 +1154,7 @@ inline RotInertia GetRotInertia(const Body& body) noexcept
 
 /// @brief Gets the rotational inertia of the body about the local origin.
 /// @return the rotational inertia.
-/// @see Body::GetInvRotInertia, Body::SetInvMassRotInertia.
+/// @see Body::GetInvRotInertia, Body::SetInvMassData.
 /// @relatedalso Body
 inline RotInertia GetLocalRotInertia(const Body& body) noexcept
 {
@@ -1301,6 +1331,12 @@ void ApplyLinearImpulse(Body& body, Momentum2 impulse, Length2 point) noexcept;
 /// @param impulse Angular impulse to be applied.
 /// @relatedalso Body
 void ApplyAngularImpulse(Body& body, AngularMomentum impulse) noexcept;
+
+/// @brief Gets the identifiers of the shapes attached to the body.
+/// @relatedalso Body
+inline const std::vector<ShapeID>& GetShapes(const Body& body) noexcept {
+    return body.GetShapes();
+}
 
 /// @brief Equals operator.
 /// @relatedalso Body

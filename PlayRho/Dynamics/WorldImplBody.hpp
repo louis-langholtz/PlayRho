@@ -32,9 +32,9 @@
 #include <PlayRho/Common/Velocity.hpp>
 #include <PlayRho/Common/Vector2.hpp> // for Length2, LinearAcceleration2
 
+#include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/BodyType.hpp>
-#include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 
@@ -47,7 +47,7 @@ namespace playrho {
 namespace d2 {
 
 class WorldImpl;
-class Body;
+struct BodyConf;
 
 /// @brief Gets the extent of the currently valid body range.
 /// @note This is one higher than the maxium BodyID that is in range for body related
@@ -55,9 +55,13 @@ class Body;
 /// @relatedalso WorldImpl
 BodyCounter GetBodyRange(const WorldImpl& world) noexcept;
 
-/// @brief Creates a body with the given configuration within the given world.
+/// @brief Creates a body within the world that's a copy of the given one.
 /// @relatedalso WorldImpl
-BodyID CreateBody(WorldImpl& world, const BodyConf& def = GetDefaultBodyConf());
+BodyID CreateBody(WorldImpl& world, const Body& body = Body{});
+
+/// @brief Creates a body within the world that's a copy of the given one.
+/// @relatedalso WorldImpl
+BodyID CreateBody(WorldImpl& world, const BodyConf& def);
 
 /// @brief Gets the body configuration for the identified body.
 /// @throws std::out_of_range If given an invalid body identifier.

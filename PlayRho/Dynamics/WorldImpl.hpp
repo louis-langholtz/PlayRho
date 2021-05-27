@@ -36,7 +36,6 @@
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/Filter.hpp>
 #include <PlayRho/Dynamics/Island.hpp>
-#include <PlayRho/Dynamics/BodyConf.hpp> // for GetDefaultBodyConf
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
@@ -61,7 +60,6 @@ enum class BodyType;
 
 namespace d2 {
 
-struct JointConf;
 class Body;
 class Contact;
 class Joint;
@@ -295,10 +293,10 @@ public:
     /// @brief Gets the world body range for this constant world.
     /// @details Gets a range enumerating the bodies currently existing within this world.
     ///   These are the bodies that had been created from previous calls to the
-    ///   <code>CreateBody(const BodyConf&)</code> method that haven't yet been destroyed.
+    ///   <code>CreateBody(const Body&)</code> method that haven't yet been destroyed.
     /// @return Body range that can be iterated over using its begin and end methods
     ///   or using ranged-based for-loops.
-    /// @see CreateBody(const BodyConf&).
+    /// @see CreateBody(const Body&).
     SizedRange<Bodies::const_iterator> GetBodies() const noexcept;
 
     /// @brief Gets the bodies-for-proxies range for this world.
@@ -307,32 +305,36 @@ public:
     /// @see Step.
     SizedRange<Bodies::const_iterator> GetBodiesForProxies() const noexcept;
 
-    /// @brief Creates a rigid body with the given configuration.
+    /// @brief Creates a rigid body that's a copy of the given one.
     /// @warning This function should not be used while the world is locked &mdash; as it is
     ///   during callbacks. If it is, it will throw an exception or abort your program.
     /// @note No references to the configuration are retained. Its value is copied.
     /// @post The created body will be present in the range returned from the
     ///   <code>GetBodies()</code> method.
-    /// @param def A customized body configuration or its default value.
+    /// @param body A customized body or its default value.
     /// @return Identifier of the newly created body which can later be destroyed by calling
     ///   the <code>Destroy(BodyID)</code> method.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
+    /// @throws std::out_of_range if the given body references any invalid shape identifiers.
     /// @see Destroy(BodyID), GetBodies.
     /// @see PhysicalEntities.
-    BodyID CreateBody(const BodyConf& def = GetDefaultBodyConf());
+    BodyID CreateBody(const Body& body);
 
     /// @brief Gets the identified body.
     /// @throws std::out_of_range if given an invalid id.
+    /// @see SetBody, GetBodyRange.
     const Body& GetBody(BodyID id) const;
 
     /// @brief Sets the identified body.
-    /// @throws std::out_of_range if given an invalid id.
+    /// @throws std::out_of_range if given an invalid id of if the given body references any
+    ///   invalid shape identifiers.
+    /// @see GetBody, GetBodyRange.
     void SetBody(BodyID id, const Body& value);
 
-    /// @brief Destroys the given body.
+    /// @brief Destroys the identified body.
     /// @details Destroys a given body that had previously been created by a call to this
-    ///   world's <code>CreateBody(const BodyConf&)</code> method.
+    ///   world's <code>CreateBody(const Body&)</code> method.
     /// @warning This automatically deletes all associated shapes and joints.
     /// @warning This function is locked during callbacks.
     /// @warning Behavior is undefined if given a null body.
@@ -344,30 +346,14 @@ public:
     ///   collection.
     /// @param id Body to destroy that had been created by this world.
     /// @throws WrongState if this method is called while the world is locked.
-    /// @see CreateBody(const BodyConf&), GetBodies, GetFixturesForProxies.
+    /// @throws std::out_of_range If given an invalid body identifier.
+    /// @see CreateBody(const Body&), GetBodies, GetFixturesForProxies.
     /// @see PhysicalEntities.
     void Destroy(BodyID id);
 
     /// @brief Gets whether the given identifier is to a body that's been destroyed.
     /// @note Complexity is at most O(n) where n is the number of elements free.
     bool IsDestroyed(BodyID id) const noexcept;
-
-    /// @brief Associates a validly identified shape with the validly identified body.
-    /// @throws std::out_of_range If given an invalid body or shape identifier.
-    /// @throws WrongState if called while the world is "locked".
-    /// @see GetShapes.
-    void Attach(BodyID bodyID, ShapeID shapeID);
-
-    /// @brief Disassociates a validly identified shape from the validly identified body.
-    /// @throws std::out_of_range If given an invalid body or shape identifier.
-    /// @throws WrongState if called while the world is "locked".
-    /// @see GetShapes.
-    bool Detach(BodyID bodyID, ShapeID shapeID);
-
-    /// @brief Gets the identities of the shapes associated with the identified body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    /// @see Attach, Detach.
-    const std::vector<ShapeID>& GetShapes(BodyID id) const;
 
     /// @brief Gets the proxies for the identified body.
     /// @throws std::out_of_range If given an invalid identifier.
@@ -394,9 +380,9 @@ public:
     /// @brief Gets the world joint range.
     /// @details Gets a range enumerating the joints currently existing within this world.
     ///   These are the joints that had been created from previous calls to the
-    ///   <code>CreateJoint(const JointConf&)</code> method that haven't yet been destroyed.
+    ///   <code>CreateJoint(const Joint&)</code> method that haven't yet been destroyed.
     /// @return World joints sized-range.
-    /// @see CreateJoint(const JointConf&).
+    /// @see CreateJoint(const Joint&).
     SizedRange<Joints::const_iterator> GetJoints() const noexcept;
 
     /// @brief Creates a joint to constrain one or more bodies.
@@ -409,21 +395,23 @@ public:
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxJoints</code>.
     /// @throws InvalidArgument if the given definition is not allowed.
+    /// @throws std::out_of_range if the given joint references any invalid body id.
     /// @see PhysicalEntities.
     /// @see Destroy(JointID), GetJoints.
     JointID CreateJoint(const Joint& def);
 
     /// @brief Gets the identified joint.
-    /// @throws std::invalid_argument If given an invalid identifier.
+    /// @throws std::out_of_range if given an invalid id.
     const Joint& GetJoint(JointID id) const;
 
     /// @brief Sets the identified joint.
-    /// @throws std::invalid_argument If given an invalid identifier.
+    /// @throws std::out_of_range if given an invalid id or the given joint references any
+    ///    invalid body id.
     void SetJoint(JointID id, const Joint& def);
 
     /// @brief Destroys a joint.
     /// @details Destroys a given joint that had previously been created by a call to this
-    ///   world's <code>CreateJoint(const JointConf&)</code> method.
+    ///   world's <code>CreateJoint(const Joint&)</code> method.
     /// @warning This function is locked during callbacks.
     /// @warning Behavior is undefined if the passed joint was not created by this world.
     /// @note This may cause the connected bodies to begin colliding.
@@ -431,8 +419,7 @@ public:
     ///   <code>GetJoints()</code> method.
     /// @param joint Joint to destroy that had been created by this world.
     /// @throws WrongState if this method is called while the world is locked.
-    /// @throws std::invalid_argument If given an invalid identifier.
-    /// @see CreateJoint(const JointConf&), GetJoints.
+    /// @see CreateJoint(const Joint&), GetJoints.
     /// @see PhysicalEntities.
     void Destroy(JointID joint);
 
@@ -466,7 +453,7 @@ public:
     /// @warning This function is locked during callbacks.
     /// @note This function does not reset the mass data of any effected bodies.
     /// @throws WrongState if this method is called while the world is locked.
-    /// @throws std::out_of_range If given an invalid shape identifier.
+    /// @throws std::out_of_range If given an invalid identifier.
     /// @see CreateShape.
     void SetShape(ShapeID id, const Shape& def);
 
@@ -827,7 +814,6 @@ private:
     ArrayAllocator<Contacts> m_bodyContacts; ///< Cache of contacts associated with bodies.
     ArrayAllocator<BodyJoints> m_bodyJoints; ///< Cache of joints associated with bodies.
     ArrayAllocator<Proxies> m_bodyProxies; ///< Cache of proxies associated with bodies.
-    ArrayAllocator<std::vector<ShapeID>> m_bodyShapes; ///< Shapes associated with bodies.
 
     ContactKeyQueue m_proxyKeys; ///< Proxy keys.
     Proxies m_proxiesForContacts; ///< Proxies queue.

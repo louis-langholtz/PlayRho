@@ -45,7 +45,7 @@
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>
 
 #include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/BodyConf.hpp> // for GetDefaultBodyConf
+#include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 
@@ -56,9 +56,9 @@
 namespace playrho {
 namespace d2 {
 
+struct BodyConf;
 class World;
 class Shape;
-class Body;
 
 /// @example WorldBody.cpp
 /// This is the <code>googletest</code> based unit testing file for the free function
@@ -80,6 +80,23 @@ SizedRange<std::vector<BodyID>::const_iterator> GetBodies(const World& world) no
 SizedRange<std::vector<BodyID>::const_iterator>
 GetBodiesForProxies(const World& world) noexcept;
 
+/// @brief Creates a rigid body within the world that's a copy of the given one.
+/// @warning This function should not be used while the world is locked &mdash; as it is
+///   during callbacks. If it is, it will throw an exception or abort your program.
+/// @note No references to the configuration are retained. Its value is copied.
+/// @post The created body will be present in the range returned from the
+///   <code>GetBodies(const World&)</code> method.
+/// @param world The world within which to create the body.
+/// @param body A customized body or its default value that is to be copied into the world.
+/// @return Identifier of the newly created body which can later be destroyed by calling
+///   the <code>Destroy(World&, BodyID)</code> method.
+/// @throws WrongState if this method is called while the world is locked.
+/// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
+/// @see Destroy(World& world, BodyID), GetBodies(const World&), ResetMassData.
+/// @see PhysicalEntities.
+/// @relatedalso World
+BodyID CreateBody(World& world, const Body& body = Body{}, bool resetMassData = true);
+
 /// @brief Creates a rigid body with the given configuration.
 /// @warning This function should not be used while the world is locked &mdash; as it is
 ///   during callbacks. If it is, it will throw an exception or abort your program.
@@ -92,10 +109,13 @@ GetBodiesForProxies(const World& world) noexcept;
 ///   the <code>Destroy(World&, BodyID)</code> method.
 /// @throws WrongState if this method is called while the world is locked.
 /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
-/// @see Destroy(World& world, BodyID), GetBodies(const World&).
+/// @see Destroy(World& world, BodyID), GetBodies(const World&), ResetMassData.
 /// @see PhysicalEntities.
 /// @relatedalso World
-BodyID CreateBody(World& world, const BodyConf& def = GetDefaultBodyConf());
+inline BodyID CreateBody(World& world, const BodyConf& def, bool resetMassData = true)
+{
+    return CreateBody(world, Body{def}, resetMassData);
+}
 
 /// @brief Gets the body configuration for the identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
@@ -119,27 +139,30 @@ void Destroy(World& world, BodyID id);
 /// @brief Associates a validly identified shape with the validly identified body.
 /// @throws std::out_of_range If given an invalid body or shape identifier.
 /// @throws WrongState if this method is called while the world is locked.
-/// @see GetShapes.
-/// @relatedalso World, ResetMassData
+/// @see GetShapes, ResetMassData.
+/// @relatedalso World
 void Attach(World& world, BodyID id, ShapeID shapeID, bool resetMassData = true);
 
 /// @brief Creates the shape within the world and then associates it with the validly
 ///   identified body.
 /// @throws std::out_of_range If given an invalid body.
 /// @throws WrongState if this method is called while the world is locked.
-/// @relatedalso World, ResetMassData
+/// @see ResetMassData.
+/// @relatedalso World
 void Attach(World& world, BodyID id, const Shape& shape, bool resetMassData = true);
 
 /// @brief Disassociates a validly identified shape from the validly identified body.
 /// @throws std::out_of_range If given an invalid body or shape identifier.
 /// @throws WrongState if this method is called while the world is locked.
-/// @relatedalso World, ResetMassData
+/// @see ResetMassData.
+/// @relatedalso World
 bool Detach(World& world, BodyID id, ShapeID shapeID, bool resetMassData = true);
 
 /// @brief Disassociates all of the associated shape from the validly identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @throws WrongState if this method is called while the world is locked.
-/// @relatedalso World, ResetMassData
+/// @see ResetMassData.
+/// @relatedalso World
 bool Detach(World& world, BodyID id, bool resetMassData = true);
 
 /// @brief Gets the identities of the shapes associated with the identified body.
@@ -310,7 +333,7 @@ BodyType GetType(const World& world, BodyID id);
 /// @note This may alter the body's mass and velocity.
 /// @throws WrongState if this method is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
-/// @see GetType(const World& world, BodyID id)
+/// @see GetType(const World& world, BodyID id), ResetMassData.
 /// @relatedalso World
 void SetType(World& world, BodyID id, BodyType value, bool resetMassData = true);
 

@@ -216,6 +216,24 @@ void Body::SetFixedRotation(bool flag)
     m_angularVelocity = 0_rpm;
 }
 
+void Body::Attach(ShapeID shapeId)
+{
+    m_shapes.push_back(shapeId);
+    SetMassDataDirty();
+}
+
+bool Body::Detach(ShapeID shapeId)
+{
+    const auto endIt = end(m_shapes);
+    const auto it = find(begin(m_shapes), endIt, shapeId);
+    if (it != endIt) {
+        m_shapes.erase(it);
+        SetMassDataDirty();
+        return true;
+    }
+    return false;
+}
+
 // Free functions...
 
 Velocity GetVelocity(const Body& body, Time h) noexcept
@@ -268,7 +286,8 @@ bool operator==(const Body& lhs, const Body& rhs)
            GetInvRotInertia(lhs) == GetInvRotInertia(rhs) && //
            GetLinearDamping(lhs) == GetLinearDamping(rhs) && //
            GetAngularDamping(lhs) == GetAngularDamping(rhs) && //
-           GetUnderActiveTime(lhs) == GetUnderActiveTime(rhs);
+           GetUnderActiveTime(lhs) == GetUnderActiveTime(rhs) && //
+           GetShapes(lhs) == GetShapes(rhs);
 }
 
 } // namespace d2
