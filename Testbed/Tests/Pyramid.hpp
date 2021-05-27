@@ -34,8 +34,10 @@ public:
 
     Pyramid()
     {
-        Attach(GetWorld(), CreateBody(GetWorld()),
-               CreateShape(GetWorld(), EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));
+        auto ground = Body{};
+        ground.Attach(CreateShape(GetWorld(),
+                                  EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));
+        CreateBody(GetWorld(), ground);
 
         const auto a = 0.5_m;
         const auto shape = CreateShape(GetWorld(), PolygonShapeConf{}.SetAsBox(a, a).UseDensity(5_kgpm2));
@@ -43,16 +45,16 @@ public:
         const auto deltaX = Vec2(0.5625f, 1.25f);
         const auto deltaY = Vec2(1.125f, 0.0f);
         Vec2 y;
-        for (auto i = 0; i < e_count; ++i)
-        {
+        for (auto i = 0; i < e_count; ++i) {
             y = x;
-            for (auto j = i; j < e_count; ++j)
-            {
+            for (auto j = i; j < e_count; ++j) {
                 BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.linearAcceleration = GetGravity();
                 bd.location = y * 1_m;
-                Attach(GetWorld(), CreateBody(GetWorld(), bd), shape);
+                auto body = Body{bd};
+                body.Attach(shape);
+                CreateBody(GetWorld(), body);
                 y += deltaY;
             }
             x += deltaX;
