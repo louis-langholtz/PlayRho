@@ -367,3 +367,140 @@ TEST(Shape, Transform)
     newConf = TypeCast<DiskShapeConf>(shape);
     EXPECT_EQ(Length2(4_m, 0_m), newConf.GetLocation());
 }
+
+#if 0
+#include <variant>
+
+class Foo {
+    struct Concept {
+        virtual ~Concept() = default;
+        virtual std::unique_ptr<Concept> Clone_() const = 0;
+        virtual Real GetFriction_() const noexcept = 0;
+    };
+
+    template <typename T>
+    struct Model final : Concept {
+        using data_type = T;
+
+        /// @brief Initializing constructor.
+        Model(T arg) : data{std::move(arg)} {}
+
+        std::unique_ptr<Concept> Clone_() const override
+        {
+            return std::make_unique<Model>(data);
+        }
+
+        Real GetFriction_() const noexcept override
+        {
+            return GetFriction(data);
+        }
+
+        data_type data; ///< Data.
+    };
+
+#if 0
+    union {
+        std::aligned_storage_t<48u> m_buffer;
+        std::unique_ptr<const Concept> m_pointer;
+    };
+    enum class union_type: std::uint8_t {none, buffer, pointer};
+    union_type m_type = union_type::none;
+#else
+    using pointer = std::unique_ptr<const Concept>;
+    using buffer = std::aligned_storage_t<48u>;
+    std::variant<pointer, buffer> m_data;
+#endif
+
+public:
+    Foo() noexcept {}
+
+    ~Foo() noexcept
+    {
+        if (std::holds_alternative<buffer>(m_data)) {
+            reinterpret_cast<const Concept*>(&std::get<buffer>(m_data))->~Concept();
+        }
+#if 0
+        switch (m_data.index()) {
+        case 1:
+            //reinterpret_cast<const Concept*>(&m_buffer)->~Concept();
+            break;
+        default:
+            break;
+        case union_type::pointer:
+            m_pointer.~unique_ptr<const Concept>();
+            break;
+        }
+#endif
+    }
+
+    template <class T>
+    Foo(T&& arg)
+    {
+#if 0
+        static_assert(alignof(Model<T>) <= alignof(decltype(m_buffer)), "bad alignment");
+        if (sizeof(Model<T>) > sizeof(m_buffer)) {
+            new (&m_pointer) std::unique_ptr<const Concept>{std::make_unique<Model<T>>(std::forward<T>(arg))};
+            m_type = union_type::pointer;
+        }
+        else {
+            new (&m_buffer) Model<T>(std::move(arg));
+            m_type = union_type::buffer;
+        }
+#else
+        if (sizeof(Model<T>) > sizeof(buffer)) {
+            m_data = std::unique_ptr<const Concept>{std::make_unique<Model<T>>(std::forward<T>(arg))};
+        }
+        else {
+            buffer b;
+            new (&b) Model<T>(std::move(arg));
+            m_data = b;
+        }
+#endif
+    }
+
+    Foo(const Foo& other)
+    {
+        if (std::holds_alternative<buffer>(other.m_data)) {
+            buffer b;
+            new (&b) Model<T>(*reinterpret_cast<const Concept*>(&std::get<buffer>(other.m_data)));
+            m_data = b;
+        }
+        else {
+            m_data = std::get<pointer>(other.m_data)->Clone_();
+        }
+    }
+
+    bool has_value() const noexcept
+    {
+        //return m_type != union_type::none;
+        return !std::holds_alternative<pointer>(m_data) || std::get<pointer>(m_data);
+    }
+
+    friend Real GetFriction(const Foo& foo) noexcept
+    {
+        //return foo.has_value()? reinterpret_cast<const Concept*>(&foo.m_buffer)->GetFriction_() : Real(0);
+        return std::holds_alternative<buffer>(foo.m_data)?
+        reinterpret_cast<const Concept*>(&std::get<buffer>(foo.m_data))->GetFriction_():
+        std::get<pointer>(foo.m_data)? std::get<pointer>(foo.m_data)->GetFriction_(): Real(0);
+    }
+};
+
+// static_assert(sizeof(Foo) == 64u, "");
+
+struct Foobar {
+    Real f;
+};
+
+static Real GetFriction(const Foobar& value)
+{
+    return value.f;
+}
+
+TEST(Shape, TestFoo)
+{
+    EXPECT_EQ(sizeof(Foo), 64u);
+    EXPECT_FALSE(Foo().has_value());
+    EXPECT_TRUE(Foo(Foobar{3.0f}).has_value());
+    EXPECT_EQ(GetFriction(Foo(Foobar{3.0f})), 3.0f);
+}
+#endif
