@@ -937,7 +937,8 @@ TEST(WorldImpl, SetBodyWithShapeID)
     ASSERT_EQ(size(body.GetShapes()), 1u);
     EXPECT_NO_THROW(world.SetBody(bodyId, body));
     EXPECT_EQ(size(world.GetBody(bodyId).GetShapes()), 1u);
-    EXPECT_EQ(size(world.GetFixturesForProxies()), 1u);
+    // Detaching the shape currently gets rid of all attachments to the body of that shape...
+    EXPECT_EQ(size(world.GetFixturesForProxies()), 0u);
 }
 
 TEST(WorldImpl, CreateJointThrowsWithOutOfRangeBodyID)
