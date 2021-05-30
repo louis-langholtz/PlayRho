@@ -1393,6 +1393,39 @@ static void ChildrenUI(Shape &shape)
 
 static void EntityUI(Shape &shape)
 {
+    {
+        ImGui::ItemWidthContext itemWidthCtx(60);
+        //const auto vertexRadius = GetVertexRadius(shape);
+        ImGui::LabelText("Density (kg/m²)", "%.2e",
+                         static_cast<double>(Real{GetDensity(shape) * SquareMeter / Kilogram}));
+        ImGui::LabelText("Mass (kg)", "%.2e",
+                         static_cast<double>(Real{GetMassData(shape).mass / 1_kg}));
+        {
+            auto val = static_cast<float>(GetFriction(shape));
+            if (ImGui::InputFloat("Friction", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+                try {
+                    SetFriction(shape, val);
+                } catch (const std::invalid_argument& ex) {
+                    ui->message = ex.what();
+                }
+            }
+            if (ImGui::IsItemHovered()) {
+                ImGui::ShowTooltip("Friction for the shape. Value must be non-negative!",
+                                   tooltipWrapWidth);
+            }
+        }
+        {
+            auto val = static_cast<float>(GetRestitution(shape));
+            if (ImGui::InputFloat("Restitution", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+                try {
+                    SetRestitution(shape, val);
+                } catch (const std::invalid_argument& ex) {
+                    ui->message = ex.what();
+                }
+            }
+        }
+    }
+
     ImGui::Spacing();
 
     {
@@ -1408,7 +1441,6 @@ static void EntityUI(Shape &shape)
         ImGui::PopStyleVar();
     }
 
-    ImGui::Spacing();
     ImGui::Spacing();
 
     {
@@ -1472,41 +1504,10 @@ static void EntityUI(Shape &shape)
     }
 
     ImGui::Spacing();
-    ImGui::Spacing();
 
-    {
-        ImGui::ItemWidthContext itemWidthCtx(60);
-        //const auto vertexRadius = GetVertexRadius(shape);
-        ImGui::LabelText("Density (kg/m²)", "%.2e",
-                         static_cast<double>(Real{GetDensity(shape) * SquareMeter / Kilogram}));
-        {
-            auto val = static_cast<float>(GetFriction(shape));
-            if (ImGui::InputFloat("Friction", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-                try {
-                    SetFriction(shape, val);
-                } catch (const std::invalid_argument& ex) {
-                    ui->message = ex.what();
-                }
-            }
-            if (ImGui::IsItemHovered()) {
-                ImGui::ShowTooltip("Friction for the shape. Value must be non-negative!",
-                                   tooltipWrapWidth);
-            }
-        }
-        {
-            auto val = static_cast<float>(GetRestitution(shape));
-            if (ImGui::InputFloat("Restitution", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-                try {
-                    SetRestitution(shape, val);
-                } catch (const std::invalid_argument& ex) {
-                    ui->message = ex.what();
-                }
-            }
-        }
-        if (ImGui::TreeNodeEx("ShapeChildren", 0, "Children (%u)", GetChildCount(shape))) {
-            ChildrenUI(shape);
-            ImGui::TreePop();
-        }
+    if (ImGui::TreeNodeEx("ShapeChildren", 0, "Children (%u)", GetChildCount(shape))) {
+        ChildrenUI(shape);
+        ImGui::TreePop();
     }
 
     if (!ui->message.empty()) {
