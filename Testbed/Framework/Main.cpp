@@ -85,6 +85,7 @@ using namespace gl;
 #include <cctype>
 #include <map>
 #include <set>
+#include <stdarg.h> // for va_list
 
 #include <GLFW/glfw3.h>
 #include <cstdio>
@@ -121,19 +122,18 @@ namespace
 {
     TestSuite *g_testSuite = nullptr;
     Selection *g_selection = nullptr;
-        
-    UiState ui;
-    
+    UiState *ui = nullptr;
+
     Test::NeededSettings neededSettings = 0u;
     Settings testSettings;
     Settings settings; ///< User settings.
     auto rightMouseDown = false;
     auto leftMouseDown = false;
     Length2 lastp;
-    
+
     Coord2D mouseScreen = Coord2D{0.0, 0.0};
     Length2 mouseWorld = Length2{};
-    
+
     const auto menuWidth = 200;
     const auto tooltipWrapWidth = 400.0f;
     auto menuX = 0;
@@ -410,10 +410,8 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
     if (keys_for_ui)
         return;
 
-    if (action == GLFW_PRESS)
-    {
-        switch (key)
-        {
+    if (action == GLFW_PRESS) {
+        switch (key) {
         case GLFW_KEY_ESCAPE:
             // Quit
             glfwSetWindowShouldClose(window, GL_TRUE);
@@ -421,48 +419,40 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
 
         case GLFW_KEY_LEFT:
             // Pan left
-            if (mods == GLFW_MOD_CONTROL)
-            {
+            if (mods == GLFW_MOD_CONTROL) {
                 g_testSuite->GetTest()->ShiftOrigin(Length2(2_m, 0_m));
             }
-            else
-            {
+            else {
                 g_camera.m_center.x -= 0.5f;
             }
             break;
 
         case GLFW_KEY_RIGHT:
             // Pan right
-            if (mods == GLFW_MOD_CONTROL)
-            {
+            if (mods == GLFW_MOD_CONTROL) {
                 g_testSuite->GetTest()->ShiftOrigin(Length2(-2_m, 0_m));
             }
-            else
-            {
+            else {
                 g_camera.m_center.x += 0.5f;
             }
             break;
 
         case GLFW_KEY_DOWN:
             // Pan down
-            if (mods == GLFW_MOD_CONTROL)
-            {
+            if (mods == GLFW_MOD_CONTROL) {
                 g_testSuite->GetTest()->ShiftOrigin(Length2(0_m, 2_m));
             }
-            else
-            {
+            else {
                 g_camera.m_center.y -= 0.5f;
             }
             break;
 
         case GLFW_KEY_UP:
             // Pan up
-            if (mods == GLFW_MOD_CONTROL)
-            {
+            if (mods == GLFW_MOD_CONTROL) {
                 g_testSuite->GetTest()->ShiftOrigin(Length2(0_m, -2_m));
             }
-            else
-            {
+            else {
                 g_camera.m_center.y += 0.5f;
             }
             break;
@@ -490,8 +480,7 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
 
         case GLFW_KEY_SPACE:
             // Launch a bomb.
-            if (g_testSuite->GetTest())
-            {
+            if (g_testSuite->GetTest()) {
                 g_testSuite->GetTest()->LaunchBomb();
             }
             break;
@@ -512,17 +501,17 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
             break;
 
         case GLFW_KEY_TAB:
-            ui.showMenu = !ui.showMenu;
+            ui->showMenu = !ui->showMenu;
+            break;
 
         default:
-            if (g_testSuite->GetTest())
-            {
+            if (g_testSuite->GetTest()) {
                 g_testSuite->GetTest()->KeyboardHandler(key, action, mods);
             }
+            break;
         }
     }
-    else if (action == GLFW_RELEASE)
-    {
+    else if (action == GLFW_RELEASE) {
         g_testSuite->GetTest()->KeyboardHandler(key, action, mods);
     }
     // else GLFW_REPEAT
@@ -656,7 +645,7 @@ static void Simulate(Drawer& drawer)
                 mergedSettings.dt = 0.0f;
             }
         }
-        g_testSuite->GetTest()->Step(mergedSettings, drawer, ui);
+        g_testSuite->GetTest()->Step(mergedSettings, drawer, *ui);
     }
 
     glDisable(GL_DEPTH_TEST);
@@ -1167,9 +1156,9 @@ static bool MenuUI()
     
     if (ImGui::CollapsingHeader("Windows", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        ImGui::Checkbox("About Test", &ui.showAboutTest);
-        ImGui::Checkbox("Step Statistics", &ui.showStats);
-        ImGui::Checkbox("Entity Editor", &ui.showEntities);
+        ImGui::Checkbox("About Test", &ui->showAboutTest);
+        ImGui::Checkbox("Step Statistics", &ui->showStats);
+        ImGui::Checkbox("Entity Editor", &ui->showEntities);
     }
     
     ImGui::Spacing();
@@ -1365,36 +1354,56 @@ static void EntityUI(World& world, BodyID b)
     }
 }
 
-static void EntityUI(const Shape& shape)
+static bool AlertUser(const std::string& title, const char* fmt, ...)
 {
-    ImGui::ItemWidthContext itemWidthCtx(60);
-
-    const auto density = GetDensity(shape);
-    //const auto vertexRadius = GetVertexRadius(shape);
-    const auto friction = GetFriction(shape);
-    const auto restitution = GetRestitution(shape);
-    const auto childCount = GetChildCount(shape);
-
-    ImGui::LabelText("Density (kg/m²)", "%.2e",
-                     static_cast<double>(Real{density * SquareMeter / Kilogram}));
-    ImGui::LabelText("Friction", "%f", static_cast<double>(friction));
-    ImGui::LabelText("Restitution", "%f", static_cast<double>(restitution));
-    ImGui::LabelText("Child Count", "%u", childCount);
-    //ImGui::LabelText("Vertex Radius (m)", "%.2e", static_cast<double>(Real{vertexRadius / Meter}));
+    ImGui::OpenPopup(title.c_str());
+    if (const auto opened = ImGui::PopupModalContext(title.c_str())) {
+        va_list args;
+        va_start(args, fmt);
+        ImGui::TextWrappedV(fmt, args);
+        va_end(args);
+        if (ImGui::Button("Close")) {
+            ImGui::CloseCurrentPopup();
+            return true;
+        }
+    }
+    return false;
 }
 
-static void EntityUI(World& world, ShapeID shapeId)
+static void EntityUI(const Shape& shape, ChildCounter index)
 {
-    ImGui::IdContext idCtx(to_underlying(shapeId));
+    const auto child = GetChild(shape, index);
+    ImGui::ItemWidthContext itemWidthCtx(60);
+    ImGui::LabelText("Vertex radius (m)", "%.2e",
+                     static_cast<double>(Real{GetVertexRadius(shape, index) / 1_m}));
+    ImGui::LabelText("# Vertices", "%u", child.GetVertexCount());
+}
 
+static void ChildrenUI(Shape &shape)
+{
+    ImGui::IdContext idCtx("ShapeChildrenCtx");
+    const auto n = GetChildCount(shape);
+    for (auto i = ChildCounter(0); i < n; ++i) {
+        if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(i), 0, "Child %u", i)) {
+            EntityUI(shape, i);
+            ImGui::TreePop();
+        }
+    }
+}
+
+static void EntityUI(Shape &shape)
+{
     ImGui::Spacing();
 
     {
-        auto v = IsSensor(world, shapeId);
+        auto v = IsSensor(shape);
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-        if (ImGui::Checkbox("Sensor", &v))
-        {
-            SetSensor(world, shapeId, v);
+        if (ImGui::Checkbox("Sensor", &v)) {
+            try {
+                SetSensor(shape, v);
+            } catch (const std::invalid_argument& ex) {
+                ui->message = ex.what();
+            }
         }
         ImGui::PopStyleVar();
     }
@@ -1404,15 +1413,14 @@ static void EntityUI(World& world, ShapeID shapeId)
 
     {
         using CheckboxFlagType = unsigned int;
-        const auto oldFilterData = GetFilterData(world, shapeId);
+        const auto oldFilterData = GetFilter(shape);
         auto cateBits = CheckboxFlagType{oldFilterData.categoryBits};
         auto maskBits = CheckboxFlagType{oldFilterData.maskBits};
-        
+
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0,0));
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(-2.5f,-2.5f));
         auto cateChanged = false;
-        for (auto bit = 15u; bit < 16u; --bit)
-        {
+        for (auto bit = 15u; bit < 16u; --bit) {
             ImGui::IdContext subIdCtx(static_cast<int>(bit));
             auto flags = (0x1u << bit);
             cateChanged |= ImGui::CheckboxFlags("##catebits", &cateBits, flags);
@@ -1427,8 +1435,7 @@ static void EntityUI(World& world, ShapeID shapeId)
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0,0));
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(-2.5f,-2.5f));
         auto maskChanged = false;
-        for (auto bit = 15u; bit < 16u; --bit)
-        {
+        for (auto bit = 15u; bit < 16u; --bit) {
             ImGui::IdContext subIdCtx(static_cast<int>(bit));
             auto flags = (0x1u << bit);
             maskChanged |= ImGui::CheckboxFlags("##maskbits", &maskBits, flags);
@@ -1455,22 +1462,67 @@ static void EntityUI(World& world, ShapeID shapeId)
             static_cast<Filter::bits_type>(maskBits),
             static_cast<Filter::index_type>(groupIndex)
         };
-        if (newFilterData != oldFilterData)
-        {
-            SetFilterData(world, shapeId, newFilterData);
+        if (newFilterData != oldFilterData) {
+            try {
+                SetFilter(shape, newFilterData);
+            } catch (const std::invalid_argument& ex) {
+                ui->message = ex.what();
+            }
         }
     }
-    
+
     ImGui::Spacing();
     ImGui::Spacing();
-    
+
     {
-        const auto& shape = GetShape(world, shapeId);
-        if (ImGui::TreeNodeEx(&shape, 0, "Shape/Part"))
+        ImGui::ItemWidthContext itemWidthCtx(60);
+        //const auto vertexRadius = GetVertexRadius(shape);
+        ImGui::LabelText("Density (kg/m²)", "%.2e",
+                         static_cast<double>(Real{GetDensity(shape) * SquareMeter / Kilogram}));
         {
-            EntityUI(shape);
+            auto val = static_cast<float>(GetFriction(shape));
+            if (ImGui::InputFloat("Friction", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+                try {
+                    SetFriction(shape, val);
+                } catch (const std::invalid_argument& ex) {
+                    ui->message = ex.what();
+                }
+            }
+            if (ImGui::IsItemHovered()) {
+                ImGui::ShowTooltip("Friction for the shape. Value must be non-negative!",
+                                   tooltipWrapWidth);
+            }
+        }
+        {
+            auto val = static_cast<float>(GetRestitution(shape));
+            if (ImGui::InputFloat("Restitution", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+                try {
+                    SetRestitution(shape, val);
+                } catch (const std::invalid_argument& ex) {
+                    ui->message = ex.what();
+                }
+            }
+        }
+        if (ImGui::TreeNodeEx("ShapeChildren", 0, "Children (%u)", GetChildCount(shape))) {
+            ChildrenUI(shape);
             ImGui::TreePop();
         }
+    }
+
+    if (!ui->message.empty()) {
+        if (AlertUser("Alert!", "New value rejected.\n\nReason: %s.\n\n", ui->message.c_str())) {
+            ui->message = std::string{};
+        }
+    }
+}
+
+static void EntityUI(World& world, ShapeID shapeId)
+{
+    ImGui::IdContext idCtx(to_underlying(shapeId));
+    auto shape = GetShape(world, shapeId);
+    EntityUI(shape);
+    if (shape != GetShape(world, shapeId)) {
+        SetShape(world, shapeId, shape);
     }
 }
 
@@ -1529,43 +1581,52 @@ static void EntityUI(const Manifold& m)
     ImGui::TextWrappedUnformatted(stream.str());
 }
 
-static void CollectionUI(World& world,
-                         BodyID bodyId,
-                         const std::vector<ShapeID>& shapes, const FixtureSet& selectedFixtures)
+static void ShapesUI(World& world)
 {
-    ImGui::IdContext idCtx("Shapes");
-    for (const auto& f: shapes)
-    {
-        const auto flags = IsWithin(selectedFixtures, std::make_pair(bodyId, f))? ImGuiTreeNodeFlags_DefaultOpen: 0;
-        if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(f.get()), flags, "Shape %u", f.get()))
-        {
-            EntityUI(world, f);
+    ImGui::IdContext idCtx("WorldShapes");
+    const auto numShapes = world.GetShapeRange();
+    for (auto i = static_cast<ShapeCounter>(0); i < numShapes; ++i) {
+        const auto shapeId = ShapeID(i);
+        if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(to_underlying(shapeId)), 0,
+                              "Shape %u", shapeId.get())) {
+            EntityUI(world, shapeId);
             ImGui::TreePop();
         }
     }
 }
 
-static void EntityUI(World& world, BodyID b, const FixtureSet& selectedFixtures)
+static void CollectionUI(const std::vector<ShapeID>& shapeIds, BodyID bodyId,
+                         const FixtureSet& selectedFixtures)
+{
+    ImGui::IdContext idCtx("BodyShapesCtx");
+    for (const auto& shapeId: shapeIds) {
+        ImGui::Text("Shape %u (%s)", to_underlying(shapeId),
+                    (IsWithin(selectedFixtures, std::make_pair(bodyId, shapeId))?
+                     "selected": "not-selected"));
+    }
+}
+
+static void EntityUI(World& world, BodyID bodyId, const FixtureSet& selectedFixtures)
 {
     ImGui::ItemWidthContext itemWidthCtx(100);
-    EntityUI(world, b);
+    EntityUI(world, bodyId);
     {
-        const auto shapes = GetShapes(world, b);
-        if (ImGui::TreeNodeEx("Shapes", 0, "Shapes (%lu)", size(shapes))) {
-            CollectionUI(world, b, shapes, selectedFixtures);
+        const auto shapes = GetShapes(world, bodyId);
+        if (ImGui::TreeNodeEx("BodyShapes", 0, "Shapes (%lu)", size(shapes))) {
+            CollectionUI(shapes, bodyId, selectedFixtures);
             ImGui::TreePop();
         }
     }
     {
-        const auto joints = GetJoints(world, b);
-        if (ImGui::TreeNodeEx("Joints", 0, "Joints (%lu)", size(joints))) {
+        const auto joints = GetJoints(world, bodyId);
+        if (ImGui::TreeNodeEx("BodyJoints", 0, "Joints (%lu)", size(joints))) {
             CollectionUI(joints);
             ImGui::TreePop();
         }
     }
     {
-        const auto contacts = GetContacts(world, b);
-        if (ImGui::TreeNodeEx("Contacts", 0, "Contacts (%lu)", size(contacts))) {
+        const auto contacts = GetContacts(world, bodyId);
+        if (ImGui::TreeNodeEx("BodyContacts", 0, "Contacts (%lu)", size(contacts))) {
             CollectionUI(world, contacts, false);
             ImGui::TreePop();
         }
@@ -2218,8 +2279,7 @@ static void CollectionUI(const BodyJointsRange& joints)
 {
     ImGui::IdContext idCtx("BodyJointsRange");
     ImGui::ItemWidthContext itemWidthCtx(130);
-    for (const auto& e: joints)
-    {
+    for (const auto& e: joints) {
         const auto bodyID = std::get<BodyID>(e);
         const auto jointID = std::get<JointID>(e);
         if (bodyID != InvalidBodyID) {
@@ -2280,8 +2340,17 @@ static void ModelEntitiesUI()
     const auto selBodies = !empty(selectedFixtures);
     const auto selJoints = false;
     const auto selContacts = false;
+    const auto selShapes = false;
 
     ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, ImGui::GetFontSize()*1);
+    {
+        if (ImGui::TreeNodeEx("Shapes", selShapes? ImGuiTreeNodeFlags_DefaultOpen: 0,
+                              "Shapes (%hu)", test->GetWorld().GetShapeRange()))
+        {
+            ShapesUI(test->GetWorld());
+            ImGui::TreePop();
+        }
+    }
     {
         const auto bodies = GetBodies(test->GetWorld());
         if (ImGui::TreeNodeEx("Bodies", selBodies? ImGuiTreeNodeFlags_DefaultOpen: 0,
@@ -2316,8 +2385,7 @@ static bool UserInterface()
 {
     auto shouldQuit = false;
     
-    if (ui.showAboutTest)
-    {
+    if (ui->showAboutTest) {
         // Note: Use ImGuiCond_Appearing to set the position on first appearance of Test
         //   About info and allow later relocation by user. This is preferred over using
         //   another condition like ImGuiCond_Once, since user could move this window out
@@ -2327,25 +2395,23 @@ static bool UserInterface()
         
         // Note: without ImGuiWindowFlags_AlwaysAutoResize, ImGui adds a handle icon
         //   which allows manual resizing but stops automatic resizing.
-        ImGui::WindowContext window("About This Test", &ui.showAboutTest,
+        ImGui::WindowContext window("About This Test", &ui->showAboutTest,
                                     ImGuiWindowFlags_NoCollapse|ImGuiWindowFlags_AlwaysAutoResize);
         AboutTestUI();
     }
 
-    if (ui.showMenu)
-    {
+    if (ui->showMenu) {
         ImGui::SetNextWindowPos(ImVec2(float(g_camera.m_width - menuWidth - 10), 10));
         ImGui::SetNextWindowSize(ImVec2(float(menuWidth), float(g_camera.m_height - 20)));
-        ImGui::WindowContext window("Testbed Controls", &ui.showMenu,
+        ImGui::WindowContext window("Testbed Controls", &ui->showMenu,
                                     ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoCollapse);
         shouldQuit = MenuUI();
     }
     
-    if (ui.showEntities)
-    {
+    if (ui->showEntities) {
         ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_FirstUseEver);
         ImGui::SetNextWindowSize(ImVec2(240, 700), ImGuiCond_FirstUseEver);
-        ImGui::WindowContext window("Entity Editor", &ui.showEntities,
+        ImGui::WindowContext window("Entity Editor", &ui->showEntities,
                                     ImGuiWindowFlags_HorizontalScrollbar|ImGuiWindowFlags_NoCollapse);
         ModelEntitiesUI();
     }
@@ -2471,6 +2537,9 @@ int main()
         return EXIT_FAILURE;
     }
 
+    UiState userInterface;
+    ::ui = &userInterface;
+
     glfwMakeContextCurrent(mainWindow);
     glfwSwapInterval(1); // Control the frame rate. One draw per monitor refresh.
 
@@ -2505,7 +2574,7 @@ int main()
     auto time1 = glfwGetTime();
     auto frameTime = 0.0;
     auto fps = 0.0;
-    
+
     glClearColor(0.3f, 0.3f, 0.3f, 1.f);
     {
         DebugDraw drawer(g_camera);

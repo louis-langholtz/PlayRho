@@ -108,6 +108,28 @@ struct GroupContext
     ~GroupContext() { EndGroup(); }
 };
 
+struct PopupModalContext
+{
+    bool is_open = false;
+
+    PopupModalContext(const char* name, bool* p_open = nullptr)
+    {
+        is_open = BeginPopupModal(name, p_open);
+    }
+
+    ~PopupModalContext()
+    {
+        if (is_open) {
+            EndPopup();
+        }
+    }
+
+    explicit operator bool() const noexcept
+    {
+        return is_open;
+    }
+};
+
 IMGUI_API void          Value(const char* prefix, unsigned long v);
 IMGUI_API void          Value(const char* prefix, double v, const char* float_format = nullptr);
 

@@ -158,18 +158,32 @@ constexpr NonNegative<AreaDensity> GetDensity(const BaseShapeConf& arg) noexcept
     return arg.density;
 }
 
-/// @brief Gets the restitution of the given shape configuration.
+/// @brief Gets the restitution of the given shape.
 /// @relatedalso BaseShapeConf
 constexpr Finite<Real> GetRestitution(const BaseShapeConf& arg) noexcept
 {
     return arg.restitution;
 }
 
-/// @brief Gets the friction of the given shape configuration.
+/// @brief Sets the restitution of the given shape.
+/// @relatedalso BaseShapeConf
+inline void SetRestitution(BaseShapeConf& arg, Real value) noexcept
+{
+    arg.restitution = value;
+}
+
+/// @brief Gets the friction of the given shape.
 /// @relatedalso BaseShapeConf
 constexpr NonNegative<Real> GetFriction(const BaseShapeConf& arg) noexcept
 {
     return arg.friction;
+}
+
+/// @brief Sets the friction of the given shape.
+/// @relatedalso BaseShapeConf
+inline void SetFriction(BaseShapeConf& arg, Real value)
+{
+    arg.friction = value;
 }
 
 /// @brief Gets the filter of the given shape configuration.

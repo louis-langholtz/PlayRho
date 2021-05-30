@@ -953,14 +953,19 @@ void WorldImpl::SetShape(ShapeID id, const Shape& def)
             const auto shapeIdB = GetShapeB(c);
             if (shapeIdA == id || shapeIdB == id) {
                 c.FlagForFiltering();
+                m_bodyBuffer[to_underlying(c.GetBodyA())].SetAwake();
+                m_bodyBuffer[to_underlying(c.GetBodyB())].SetAwake();
             }
         }
         AddProxies(FindProxies(m_tree, id));
     }
-    if (IsSensor(shape) != IsSensor(def)) {
+    if ((IsSensor(shape) != IsSensor(def)) || (GetFriction(shape) != GetFriction(def)) ||
+        (GetRestitution(shape) != GetRestitution(def))) {
         for (auto&& c: m_contactBuffer) {
             if (c.GetShapeA() == id || c.GetShapeB() == id) {
                 c.FlagForUpdating();
+                m_bodyBuffer[to_underlying(c.GetBodyA())].SetAwake();
+                m_bodyBuffer[to_underlying(c.GetBodyB())].SetAwake();
             }
         }
     }

@@ -1,6 +1,5 @@
 /*
- * Original work Copyright (c) 2006-2013 Erin Catto http://www.box2d.org
- * Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2021 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -22,6 +21,8 @@
 #ifndef UiState_hpp
 #define UiState_hpp
 
+#include <string>
+
 struct UiState
 {
     bool showMenu = true;
@@ -29,6 +30,7 @@ struct UiState
     bool showStats = false;
     bool showContactsHistory = false;
     bool showEntities = false;
+    std::string message;
 };
 
 #endif /* UiState_hpp */

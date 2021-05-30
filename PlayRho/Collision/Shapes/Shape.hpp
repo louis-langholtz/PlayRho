@@ -73,8 +73,12 @@ MassData GetMassData(const Shape& shape) noexcept;
 /// @return Value of 0 or higher.
 Real GetFriction(const Shape& shape) noexcept;
 
+void SetFriction(Shape& shape, Real value);
+
 /// @brief Gets the coefficient of restitution value of the given shape.
 Real GetRestitution(const Shape& shape) noexcept;
+
+void SetRestitution(Shape& shape, Real value);
 
 /// @brief Gets the density of the given shape.
 /// @return Non-negative density (in mass per area).
@@ -167,7 +171,9 @@ bool operator!=(const Shape& lhs, const Shape& rhs) noexcept;
 ///   - <code>NonNegative<Length> GetVertexRadius(const T&, ChildCounter idx);</code>
 ///   - <code>NonNegative<AreaDensity> GetDensity(const T&) noexcept;</code>
 ///   - <code>Real GetFriction(const T&) noexcept;</code>
+///   - <code>void SetFriction(T&, Real);</code>
 ///   - <code>Real GetRestitution(const T&) noexcept;</code>
+///   - <code>void SetRestitution(T&, Real);</code>
 ///   - <code>void Transform(T&, const Mat22& value);</code>
 /// @ingroup PartsGroup
 /// @see https://youtu.be/QGcVXgEVMJg
@@ -289,9 +295,27 @@ public:
         return shape.m_self ? shape.m_self->GetFriction_() : Real(0);
     }
 
+    friend void SetFriction(Shape& shape, Real value)
+    {
+        if (shape.m_self) {
+            auto copy = shape.m_self->Clone_();
+            copy->SetFriction_(value);
+            shape.m_self = std::move(copy);
+        }
+    }
+
     friend Real GetRestitution(const Shape& shape) noexcept
     {
         return shape.m_self ? shape.m_self->GetRestitution_() : Real(0);
+    }
+
+    friend void SetRestitution(Shape& shape, Real value)
+    {
+        if (shape.m_self) {
+            auto copy = shape.m_self->Clone_();
+            copy->SetRestitution_(value);
+            shape.m_self = std::move(copy);
+        }
     }
 
     friend NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept
@@ -391,11 +415,21 @@ private:
         /// @brief Gets the friction.
         virtual Real GetFriction_() const noexcept = 0;
 
+        /// @brief Sets the friction.
+        virtual void SetFriction_(Real value) = 0;
+
         /// @brief Gets the restitution.
         virtual Real GetRestitution_() const noexcept = 0;
 
+        /// @brief Sets the restitution.
+        virtual void SetRestitution_(Real value) = 0;
+
+        /// @brief Gets the filter.
+        /// @see SetFilter_.
         virtual Filter GetFilter_() const noexcept = 0;
 
+        /// @brief Sets the filter.
+        /// @see GetFilter_.
         virtual void SetFilter_(Filter value) = 0;
 
         virtual bool IsSensor_() const noexcept = 0;
@@ -474,9 +508,19 @@ private:
             return GetFriction(data);
         }
 
+        void SetFriction_(Real value) override
+        {
+            SetFriction(data, value);
+        }
+
         Real GetRestitution_() const noexcept override
         {
             return GetRestitution(data);
+        }
+
+        void SetRestitution_(Real value) override
+        {
+            SetRestitution(data, value);
         }
 
         Filter GetFilter_() const noexcept override
@@ -553,7 +597,9 @@ struct IsValidShapeType<
                 decltype(GetVertexRadius(std::declval<T>(), std::declval<ChildCounter>())), //
                 decltype(GetDensity(std::declval<T>())), //
                 decltype(GetFriction(std::declval<T>())), //
+                decltype(SetFriction(std::declval<T&>(), std::declval<Real>())),
                 decltype(GetRestitution(std::declval<T>())), //
+                decltype(SetRestitution(std::declval<T&>(), std::declval<Real>())), //
                 decltype(Transform(std::declval<T&>(), std::declval<Mat22>())), //
                 decltype(std::declval<T>() == std::declval<T>()), //
                 decltype(Shape{std::declval<T>()})>> : std::true_type {

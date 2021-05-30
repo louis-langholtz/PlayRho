@@ -185,6 +185,24 @@ void SetSensor(Rectangle<W, H, D, F, R>& arg, bool value)
     }
 }
 
+/// @relatedalso Rectangle
+template <int W, int H, int D, int F, int R>
+void SetFriction(Rectangle<W, H, D, F, R>& arg, Real value)
+{
+    if (value != GetFriction(arg)) {
+        throw InvalidArgument("SetFriction by non-equivalent value not supported");
+    }
+}
+
+/// @relatedalso Rectangle
+template <int W, int H, int D, int F, int R>
+void SetRestitution(Rectangle<W, H, D, F, R>& arg, Real value)
+{
+    if (value != GetRestitution(arg)) {
+        throw InvalidArgument("SetRestitution by non-equivalent value not supported");
+    }
+}
+
 /// @brief Equality operator.
 template <int W1, int H1, int D1, int F1, int R1, int W2, int H2, int D2, int F2, int R2>
 bool operator== (const Rectangle<W1, H1, D1, F1, R1>&,
