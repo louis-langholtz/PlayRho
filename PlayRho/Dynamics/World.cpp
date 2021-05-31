@@ -185,16 +185,6 @@ void World::Destroy(BodyID id)
     ::playrho::d2::Destroy(*m_impl, id);
 }
 
-void World::Attach(BodyID id, ShapeID shapeID)
-{
-    ::playrho::d2::Attach(*m_impl, id, shapeID);
-}
-
-bool World::Detach(BodyID id, ShapeID shapeID)
-{
-    return ::playrho::d2::Detach(*m_impl, id, shapeID);
-}
-
 const std::vector<ShapeID>& World::GetShapes(BodyID id) const
 {
     return ::playrho::d2::GetShapes(*m_impl, id);

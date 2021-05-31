@@ -37,16 +37,19 @@ int main()
     // Construct a world object which will hold and simulate bodies.
     auto world = World{};
 
-    // Call world's body creation method which allocates memory for ground body and
-    // adds it to the world.
-    const auto ground = CreateBody(world, BodyConf{}.UseLocation(Length2{0_m, -10_m}));
-
     // Define the ground shape. Use a polygon configured as a box for this.
     // The extents are the half-width and half-height of the box.
     const auto box = CreateShape(world, PolygonShapeConf{}.SetAsBox(50_m, 10_m));
 
+    // Call world's body creation method which allocates memory for ground body and
+    // adds it to the world.
+    const auto ground = CreateBody(world, BodyConf{}.UseLocation(Length2{0_m, -10_m}));
+
     // Attach the box shape to the ground body.
     Attach(world, ground, box);
+
+    // Defines a disk shape to associate with a ball body.
+    const auto diskShape = CreateShape(world, DiskShapeConf{}.UseRadius(1_m));
 
     // Define location above ground for a "dynamic" body & create this body within world.
     const auto ball = CreateBody(world, BodyConf{}
@@ -54,8 +57,7 @@ int main()
                                         .UseType(BodyType::Dynamic)
                                         .UseLinearAcceleration(EarthlyGravity));
 
-    // Define a disk shape for the ball body and attach it to the ball.
-    const auto diskShape = CreateShape(world, DiskShapeConf{}.UseRadius(1_m));
+    // Attaches the disk shape with the ball body.
     Attach(world, ball, diskShape);
 
     // Setup the C++ stream output format.

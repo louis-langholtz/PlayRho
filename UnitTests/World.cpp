@@ -1611,9 +1611,9 @@ struct MyContactListener
         EXPECT_THROW(world.Step(stepConf), WrongState);
         EXPECT_THROW(world.ShiftOrigin(Length2{}), WrongState);
         EXPECT_THROW(world.CreateShape(Shape{DiskShapeConf{}}), WrongState);
-        EXPECT_THROW(world.Attach(bA, sA), WrongState);
-        EXPECT_THROW(world.Detach(bA, sA), WrongState);
-        EXPECT_THROW(world.Detach(bB, sB), WrongState);
+        EXPECT_THROW(Attach(world, bA, sA), WrongState);
+        EXPECT_THROW(Detach(world, bA, sA), WrongState);
+        EXPECT_THROW(Detach(world, bB, sB), WrongState);
     }
 
     void EndContact(ContactID contact)

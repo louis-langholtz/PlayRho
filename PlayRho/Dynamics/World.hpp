@@ -390,27 +390,9 @@ public:
     /// @see GetBodyRange.
     SizedRange<World::Contacts::const_iterator> GetContacts(BodyID id) const;
 
-    /// @brief Associates a validly identified shape with the validly identified body.
-    /// @details Associates a shape to the given body. These associations automatically go
-    ///   away when the body is destroyed. Associations can also be manually removed using the
-    ///   <code>Detach(BodyID, ShapeID)</code> method.
-    /// @note This function should not be called if the world is locked.
-    /// @note This function does not reset the body's mass data.
-    /// @warning This function is locked during callbacks.
-    /// @throws std::out_of_range If given an invalid body or shape identifier.
-    /// @throws WrongState if called while the world is "locked".
-    /// @see GetShapes, GetBodyRange.
-    void Attach(BodyID id, ShapeID shapeID);
-
-    /// @brief Disassociates a validly identified shape from the validly identified body.
-    /// @throws std::out_of_range If given an invalid body or shape identifier.
-    /// @throws WrongState if called while the world is "locked".
-    /// @see GetShapes, GetBodyRange.
-    bool Detach(BodyID id, ShapeID shapeID);
-
     /// @brief Gets the identities of the shapes associated with the identified body.
     /// @throws std::out_of_range If given an invalid body identifier.
-    /// @see Attach, Detach, GetBodyRange.
+    /// @see GetBodyRange, CreateBody, SetBody.
     const std::vector<ShapeID>& GetShapes(BodyID id) const;
 
     /// @}

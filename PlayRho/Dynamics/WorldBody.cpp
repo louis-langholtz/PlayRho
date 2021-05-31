@@ -82,7 +82,9 @@ void Destroy(World& world, BodyID id)
 
 void Attach(World& world, BodyID id, ShapeID shapeID, bool resetMassData)
 {
-    world.Attach(id, shapeID);
+    auto body = GetBody(world, id);
+    body.Attach(shapeID);
+    SetBody(world, id, body);
     if (resetMassData) {
         ResetMassData(world, id);
     }
@@ -95,7 +97,9 @@ void Attach(World& world, BodyID id, const Shape& shape, bool resetMassData)
 
 bool Detach(World& world, BodyID id, ShapeID shapeID, bool resetMassData)
 {
-    if (world.Detach(id, shapeID)) {
+    auto body = GetBody(world, id);
+    if (body.Detach(shapeID)) {
+        SetBody(world, id, body);
         if (resetMassData) {
             ResetMassData(world, id);
         }
