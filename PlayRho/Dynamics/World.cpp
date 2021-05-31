@@ -163,13 +163,6 @@ BodyID World::CreateBody(const Body& body)
     return ::playrho::d2::CreateBody(*m_impl, body);
 }
 
-/*
-BodyID World::CreateBody(const BodyConf& def)
-{
-    return CreateBody(Body{def});
-}
- */
-
 const Body& World::GetBody(BodyID id) const
 {
     return ::playrho::d2::GetBody(*m_impl, id);
