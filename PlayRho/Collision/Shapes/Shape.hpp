@@ -616,6 +616,13 @@ struct IsValidShapeType<
 /// @ingroup TestPointGroup
 bool TestPoint(const Shape& shape, Length2 point) noexcept;
 
+/// @brief Gets the vertex count for the specified child of the given shape.
+/// @relatedalso Shape
+inline VertexCounter GetVertexCount(const Shape& shape, ChildCounter index)
+{
+    return GetChild(shape, index).GetVertexCount();
+}
+
 /// @brief Casts the specified instance into the template specified type.
 /// @throws std::bad_cast If the template specified type is not the type of data underlying
 ///   the given instance.
