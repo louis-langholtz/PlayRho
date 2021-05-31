@@ -1372,11 +1372,10 @@ static bool AlertUser(const std::string& title, const char* fmt, ...)
 
 static void EntityUI(const Shape& shape, ChildCounter index)
 {
-    const auto child = GetChild(shape, index);
     ImGui::ItemWidthContext itemWidthCtx(60);
     ImGui::LabelText("Vertex radius (m)", "%.2e",
                      static_cast<double>(Real{GetVertexRadius(shape, index) / 1_m}));
-    ImGui::LabelText("# Vertices", "%u", child.GetVertexCount());
+    ImGui::LabelText("# Vertices", "%u", GetVertexCount(shape, index));
 }
 
 static void ChildrenUI(Shape &shape)
@@ -1517,16 +1516,6 @@ static void EntityUI(Shape &shape)
     }
 }
 
-static void EntityUI(World& world, ShapeID shapeId)
-{
-    ImGui::IdContext idCtx(to_underlying(shapeId));
-    auto shape = GetShape(world, shapeId);
-    EntityUI(shape);
-    if (shape != GetShape(world, shapeId)) {
-        SetShape(world, shapeId, shape);
-    }
-}
-
 static void EntityUI(const Manifold& m)
 {
     std::ostringstream stream;
@@ -1588,10 +1577,20 @@ static void ShapesUI(World& world)
     const auto numShapes = world.GetShapeRange();
     for (auto i = static_cast<ShapeCounter>(0); i < numShapes; ++i) {
         const auto shapeId = ShapeID(i);
-        if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(to_underlying(shapeId)), 0,
-                              "Shape %u", shapeId.get())) {
-            EntityUI(world, shapeId);
-            ImGui::TreePop();
+        auto shape = GetShape(world, shapeId);
+        if (shape.has_value()) {
+            if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(to_underlying(shapeId)), 0,
+                                  "Shape %u", shapeId.get())) {
+                ImGui::IdContext shapeIdCtx(to_underlying(shapeId));
+                EntityUI(shape);
+                if (shape != GetShape(world, shapeId)) {
+                    SetShape(world, shapeId, shape);
+                }
+                ImGui::TreePop();
+            }
+        }
+        else {
+            ImGui::Text("Shape %u (empty)", to_underlying(shapeId));
         }
     }
 }

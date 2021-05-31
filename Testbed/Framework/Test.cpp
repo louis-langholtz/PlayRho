@@ -77,10 +77,8 @@ void Draw(Drawer& drawer, const DistanceProxy& shape, Color color, bool skins, T
 
     const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
     const auto r = GetVertexRadius(shape);
-    for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-    {
-        if (i > 0)
-        {
+    for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i) {
+        if (i > 0) {
             const auto worldNormal0 = Rotate(shape.GetNormal(i - 1), xf.q);
             const auto p0 = vertices[i-1] + worldNormal0 * r;
             const auto p1 = vertices[i] + worldNormal0 * r;
@@ -92,8 +90,7 @@ void Draw(Drawer& drawer, const DistanceProxy& shape, Color color, bool skins, T
             DrawCorner(drawer, vertices[i], r, angle0, angle1, skinColor);
         }
     }
-    if (vertexCount > 1)
-    {
+    if (vertexCount > 1) {
         const auto worldNormal0 = Rotate(shape.GetNormal(vertexCount - 1), xf.q);
         drawer.DrawSegment(vertices[vertexCount - 1] + worldNormal0 * r, vertices[0] + worldNormal0 * r, skinColor);
         const auto worldNormal1 = Rotate(shape.GetNormal(0), xf.q);
@@ -101,8 +98,7 @@ void Draw(Drawer& drawer, const DistanceProxy& shape, Color color, bool skins, T
         const auto angle1 = GetAngle(worldNormal1);
         DrawCorner(drawer, vertices[0], r, angle0, angle1, skinColor);
     }
-    else if (vertexCount == 1)
-    {
+    else if (vertexCount == 1) {
         DrawCorner(drawer, vertices[0], r, 0_deg, 360_deg, skinColor);
     }
 }
@@ -1364,16 +1360,14 @@ void Draw(Drawer& drawer, const MultiShapeConf& shape, Color color, bool skins,
           const Transformation& xf)
 {
     const auto count = GetChildCount(shape);
-    for (auto i = decltype(count){0}; i < count; ++i)
-    {
+    for (auto i = decltype(count){0}; i < count; ++i) {
         Draw(drawer, GetChild(shape, i), color, skins, xf);
     }
 }
 
 bool HasFixture(const Test::ContactPoint& cp, const Test::FixtureSet& fixtures) noexcept
 {
-    for (auto fixture: fixtures)
-    {
+    for (auto fixture: fixtures) {
         if (fixture == std::make_pair(cp.bodyIdA, cp.shapeIdA) ||
             fixture == std::make_pair(cp.bodyIdB, cp.shapeIdB)) {
             return true;
