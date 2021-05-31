@@ -114,7 +114,6 @@ public:
             const auto fixtures = GetSelectedFixtures();
             const auto fixture = (size(fixtures) == 1)? *(begin(fixtures)): invalidFixture;
             if (fixture != invalidFixture) {
-                const auto body = fixture.first;
                 const auto polygon = TypeCast<PolygonShapeConf>(GetShape(GetWorld(), fixture.second));
                 auto conf = PolygonShapeConf{};
                 conf.Set(polygon.GetVertices());
@@ -125,7 +124,6 @@ public:
         RegisterForKey(GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, 0, "decrease vertex radius of selected shape", [&](KeyActionMods) {
             const auto fixtures = GetSelectedFixtures();
             const auto fixture = (size(fixtures) == 1)? *(begin(fixtures)): invalidFixture;
-            const auto body = fixture.first;
             if (fixture != invalidFixture) {
                 const auto shape = GetShape(GetWorld(), fixture.second);
                 const auto lastLegitVertexRadius = GetVertexRadius(shape, 0);
