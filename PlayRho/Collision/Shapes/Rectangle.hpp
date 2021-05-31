@@ -38,7 +38,7 @@
 namespace playrho::d2 {
 
 /// @brief Experimental rectangle shape configuration.
-/// @todo Consider using template mixins.
+/// @todo Consider using template mixins for density, friction, and restitution.
 template <int W, int H, int D, int F = 2, int R = 0>
 struct Rectangle
 {
