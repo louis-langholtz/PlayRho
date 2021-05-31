@@ -193,6 +193,7 @@ constexpr Filter GetFilter(const BaseShapeConf& arg) noexcept
     return arg.filter;
 }
 
+/// @brief Sets the filter of the given shape configuration.
 /// @relatedalso BaseShapeConf
 inline void SetFilter(BaseShapeConf& arg, Filter value)
 {
@@ -206,6 +207,7 @@ constexpr bool IsSensor(const BaseShapeConf& arg) noexcept
     return arg.isSensor;
 }
 
+/// @brief Sets the is-sensor state of the given shape configuration.
 /// @relatedalso BaseShapeConf
 inline void SetSensor(BaseShapeConf& arg, bool value)
 {

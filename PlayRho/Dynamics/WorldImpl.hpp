@@ -818,7 +818,7 @@ private:
     ContactKeyQueue m_proxyKeys; ///< Proxy keys.
     Proxies m_proxiesForContacts; ///< Proxies queue.
     std::vector<std::pair<BodyID, ShapeID>> m_fixturesForProxies; ///< Fixtures for proxies queue.
-    std::vector<BodyConstraint> m_bodyConstraints;
+    std::vector<BodyConstraint> m_bodyConstraints; ///< Cache of constraints associated with bodies.
     Bodies m_bodiesForSync; ///< Bodies for proxies queue.
 
     Bodies m_bodies; ///< Body collection.

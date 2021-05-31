@@ -71,13 +71,19 @@ MassData GetMassData(const Shape& shape) noexcept;
 
 /// @brief Gets the coefficient of friction.
 /// @return Value of 0 or higher.
+/// @see SetFriction(Shape& shape, Real value).
 Real GetFriction(const Shape& shape) noexcept;
 
+/// @brief Sets the coefficient of friction.
+/// @see GetFriction(const Shape& shape).
 void SetFriction(Shape& shape, Real value);
 
 /// @brief Gets the coefficient of restitution value of the given shape.
+/// @see SetRestitution(Shape& shape, Real value).
 Real GetRestitution(const Shape& shape) noexcept;
 
+/// @brief Sets the coefficient of restitution value of the given shape.
+/// @see GetRestitution(const Shape& shape).
 void SetRestitution(Shape& shape, Real value);
 
 /// @brief Gets the density of the given shape.
@@ -100,10 +106,21 @@ NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept;
 /// @throws InvalidArgument if the child index is not less than the child count.
 NonNegative<Length> GetVertexRadius(const Shape& shape, ChildCounter idx);
 
+/// @brief Gets the filter value for the given shape.
+/// @return Filter for the given shape or the default filter is the shape has no value.
+/// @see GetFilter.
 Filter GetFilter(const Shape& shape) noexcept;
+
+/// @brief Sets the filter value for the given shape.
+/// @see SetFilter.
 void SetFilter(Shape& shape, Filter value);
 
+/// @brief Gets whether or not the given shape is a sensor.
+/// @see SetSensor.
 bool IsSensor(const Shape& shape) noexcept;
+
+/// @brief Sets whether or not the given shape is a sensor.
+/// @see IsSensor.
 void SetSensor(Shape& shape, bool value);
 
 /// @brief Transforms all of the given shape's vertices by the given transformation matrix.
@@ -432,8 +449,12 @@ private:
         /// @see GetFilter_.
         virtual void SetFilter_(Filter value) = 0;
 
+        /// @brief Gets whether or not this shape is a sensor.
+        /// @see SetSensor_.
         virtual bool IsSensor_() const noexcept = 0;
 
+        /// @brief Sets whether or not this shape is a sensor.
+        /// @see IsSensor_.
         virtual void SetSensor_(bool value) = 0;
 
         /// @brief Transforms all of the shape's vertices by the given transformation matrix.

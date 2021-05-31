@@ -88,6 +88,7 @@ GetBodiesForProxies(const World& world) noexcept;
 ///   <code>GetBodies(const World&)</code> method.
 /// @param world The world within which to create the body.
 /// @param body A customized body or its default value that is to be copied into the world.
+/// @param resetMassData Whether or not the mass data of the body should be reset.
 /// @return Identifier of the newly created body which can later be destroyed by calling
 ///   the <code>Destroy(World&, BodyID)</code> method.
 /// @throws WrongState if this method is called while the world is locked.
@@ -105,6 +106,7 @@ BodyID CreateBody(World& world, const Body& body = Body{}, bool resetMassData = 
 ///   <code>GetBodies(const World&)</code> method.
 /// @param world The world within which to create the body.
 /// @param def A customized body configuration or its default value.
+/// @param resetMassData Whether or not the mass data of the body should be reset.
 /// @return Identifier of the newly created body which can later be destroyed by calling
 ///   the <code>Destroy(World&, BodyID)</code> method.
 /// @throws WrongState if this method is called while the world is locked.
@@ -137,6 +139,7 @@ void SetBody(World& world, BodyID id, const Body& body);
 void Destroy(World& world, BodyID id);
 
 /// @brief Associates a validly identified shape with the validly identified body.
+/// @note This function should not be called if the world is locked.
 /// @throws std::out_of_range If given an invalid body or shape identifier.
 /// @throws WrongState if this method is called while the world is locked.
 /// @see GetShapes, ResetMassData.
@@ -147,7 +150,7 @@ void Attach(World& world, BodyID id, ShapeID shapeID, bool resetMassData = true)
 ///   identified body.
 /// @throws std::out_of_range If given an invalid body.
 /// @throws WrongState if this method is called while the world is locked.
-/// @see ResetMassData.
+/// @see GetShapes, ResetMassData.
 /// @relatedalso World
 void Attach(World& world, BodyID id, const Shape& shape, bool resetMassData = true);
 
@@ -161,7 +164,7 @@ bool Detach(World& world, BodyID id, ShapeID shapeID, bool resetMassData = true)
 /// @brief Disassociates all of the associated shape from the validly identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @throws WrongState if this method is called while the world is locked.
-/// @see ResetMassData.
+/// @see Attach, ResetMassData.
 /// @relatedalso World
 bool Detach(World& world, BodyID id, bool resetMassData = true);
 

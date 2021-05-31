@@ -42,6 +42,7 @@ struct SeparationScenario
         e_faceB,
     };
 
+    /// @brief Gets the type of the given value.
     static constexpr Type GetType(IndexPair3 indices)
     {
         return (GetNumValidIndices(indices) == 1u)

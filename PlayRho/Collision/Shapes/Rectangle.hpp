@@ -42,19 +42,26 @@ namespace playrho::d2 {
 template <int W, int H, int D, int F = 2, int R = 0>
 struct Rectangle
 {
+    /// @brief Density of the shape.
     static constexpr auto density = NonNegative<AreaDensity>{
         D * KilogramPerSquareMeter};
 
+    /// @brief Friction of the shape.
     static constexpr auto friction = NonNegative<Real>{Real(F) / Real{10}};
 
+    /// @brief Restitution of the shape.
     static inline const auto restitution = Finite<Real>(R);
 
+    /// @brief Width of the rectangle.
     static constexpr auto width = W * Meter;
 
+    /// @brief Height of the rectangle.
     static constexpr auto height = H * Meter;
 
+    /// @brief Vertex radius of the shape.
     static constexpr auto vertexRadius = DefaultLinearSlop * 2;
 
+    /// @brief Normals of the rectangle.
     static constexpr auto normals = std::array<UnitVec, 4u>{
         UnitVec::GetRight(),
         UnitVec::GetTop(),
@@ -62,6 +69,7 @@ struct Rectangle
         UnitVec::GetBottom()
     };
 
+    /// @brief Vertices of the rectangle.
     static constexpr auto vertices = std::array<Length2, 4u>{
         Length2{+width/2, -height/2},
         Length2{+width/2, +height/2},
@@ -132,6 +140,7 @@ constexpr bool IsSensor(const Rectangle<W, H, D, F, R>&) noexcept
     return false;
 }
 
+/// @brief Gets the vertex radius of the given shape configuration.
 /// @relatedalso Rectangle
 template <int W, int H, int D, int F, int R>
 constexpr NonNegative<Length> GetVertexRadius(const Rectangle<W, H, D, F, R>& arg) noexcept
@@ -167,6 +176,7 @@ void Transform(Rectangle<W, H, D, F, R>&, const Mat22& m)
     }
 }
 
+/// @brief Filter setter that throws unless given the same value as current.
 /// @relatedalso Rectangle
 template <int W, int H, int D, int F, int R>
 void SetFilter(Rectangle<W, H, D, F, R>& arg, Filter value)
@@ -176,6 +186,7 @@ void SetFilter(Rectangle<W, H, D, F, R>& arg, Filter value)
     }
 }
 
+/// @brief Sensor setter that throws unless given the same value as current.
 /// @relatedalso Rectangle
 template <int W, int H, int D, int F, int R>
 void SetSensor(Rectangle<W, H, D, F, R>& arg, bool value)
@@ -185,6 +196,7 @@ void SetSensor(Rectangle<W, H, D, F, R>& arg, bool value)
     }
 }
 
+/// @brief Friction setter that throws unless given the same value as current.
 /// @relatedalso Rectangle
 template <int W, int H, int D, int F, int R>
 void SetFriction(Rectangle<W, H, D, F, R>& arg, Real value)
@@ -194,6 +206,7 @@ void SetFriction(Rectangle<W, H, D, F, R>& arg, Real value)
     }
 }
 
+/// @brief Restitution setter that throws unless given the same value as current.
 /// @relatedalso Rectangle
 template <int W, int H, int D, int F, int R>
 void SetRestitution(Rectangle<W, H, D, F, R>& arg, Real value)
