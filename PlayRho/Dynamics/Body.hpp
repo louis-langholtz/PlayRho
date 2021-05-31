@@ -467,7 +467,7 @@ public:
     /// @brief Adds the given shape identifier to the identifiers associated with this body.
     /// @note This also sets the mass-data-dirty flag. Call <code>SetInvMassData</code> to clear it.
     /// @see GetShapes, SetShapes, Detach, SetInvMassData.
-    void Attach(ShapeID shapeId);
+    Body& Attach(ShapeID shapeId);
 
     /// @brief Removes the given shape identifier from the identifiers associated with this body.
     /// @note This also sets the mass-data-dirty flag. Call <code>SetInvMassData</code> to clear it.

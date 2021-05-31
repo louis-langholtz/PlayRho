@@ -106,6 +106,9 @@ Body::Body(const BodyConf& bd) noexcept
     SetVelocity(Velocity{bd.linearVelocity, bd.angularVelocity});
     SetAcceleration(bd.linearAcceleration, bd.angularAcceleration);
     SetUnderActiveTime(bd.underActiveTime);
+    if (bd.shape != InvalidShapeID) {
+        m_shapes.push_back(bd.shape);
+    }
 }
 
 BodyType Body::GetType() const noexcept
@@ -216,10 +219,11 @@ void Body::SetFixedRotation(bool flag)
     m_angularVelocity = 0_rpm;
 }
 
-void Body::Attach(ShapeID shapeId)
+Body& Body::Attach(ShapeID shapeId)
 {
     m_shapes.push_back(shapeId);
     SetMassDataDirty();
+    return *this;
 }
 
 bool Body::Detach(ShapeID shapeId)

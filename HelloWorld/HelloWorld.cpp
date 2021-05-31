@@ -30,35 +30,29 @@
 // to be used with the rendering engine of your game engine.
 int main()
 {
-    // Bring used namespaces into global namespace to simplify this source code.
+    // Brings used namespaces into global namespace to simplify this source code.
     using namespace playrho;
     using namespace playrho::d2;
 
-    // Construct a world object which will hold and simulate bodies.
+    // Constructs a world object which will hold and simulate bodies.
     auto world = World{};
 
-    // Define the ground shape. Use a polygon configured as a box for this.
+    // Creates a shape within the world that's to act like the ground.
+    // Uses a polygon configured as a box for this.
     // The extents are the half-width and half-height of the box.
     const auto box = CreateShape(world, PolygonShapeConf{}.SetAsBox(50_m, 10_m));
 
-    // Call world's body creation method which allocates memory for ground body and
-    // adds it to the world.
-    const auto ground = CreateBody(world, BodyConf{}.UseLocation(Length2{0_m, -10_m}));
+    // Creates a body within the world that's attached to the ground-like box shape
+    // and that's centered 10 meters below the origin.
+    CreateBody(world, BodyConf{}.Use(box).UseLocation(Length2{0_m, -10_m}));
 
-    // Attach the box shape to the ground body.
-    Attach(world, ground, box);
-
-    // Defines a disk shape to associate with a ball body.
+    // Creats a 1 meter radius, ball-like, disk shape within the world.
     const auto diskShape = CreateShape(world, DiskShapeConf{}.UseRadius(1_m));
 
-    // Define location above ground for a "dynamic" body & create this body within world.
-    const auto ball = CreateBody(world, BodyConf{}
+    // Creates a "dynamic" body having the disk shape that will fall to the ground within world.
+    const auto ball = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).Use(diskShape)
                                         .UseLocation(Length2{0_m, 4_m})
-                                        .UseType(BodyType::Dynamic)
                                         .UseLinearAcceleration(EarthlyGravity));
-
-    // Attaches the disk shape with the ball body.
-    Attach(world, ball, diskShape);
 
     // Setup the C++ stream output format.
     std::cout << std::fixed << std::setprecision(2);
@@ -77,6 +71,7 @@ int main()
         const auto angle = GetAngle(transformation);
 
         // Now print the location and angle of the body.
+        // The Y value will drop from 4.00 to 1.00 as the ball drops to the ground.
         std::cout << std::setw(5) << GetX(location);
         std::cout << std::setw(5) << GetY(location);
         std::cout << std::setw(5) << angle;
