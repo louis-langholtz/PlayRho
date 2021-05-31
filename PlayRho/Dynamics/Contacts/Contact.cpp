@@ -21,10 +21,7 @@
 
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 
-#include <PlayRho/Collision/Collision.hpp>
-#include <PlayRho/Collision/Distance.hpp>
-#include <PlayRho/Collision/DistanceProxy.hpp>
-#include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <type_traits> // for std::is_default_constructible etc.
 
 namespace playrho {
 namespace d2 {

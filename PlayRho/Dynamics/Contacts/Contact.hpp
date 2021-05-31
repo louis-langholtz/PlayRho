@@ -24,9 +24,6 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-#include <PlayRho/Collision/Distance.hpp>
-#include <PlayRho/Collision/TimeOfImpact.hpp>
-#include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>
 
 #include <PlayRho/Dynamics/BodyID.hpp>

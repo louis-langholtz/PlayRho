@@ -29,6 +29,7 @@
 #include <PlayRho/Dynamics/Joints/Joint.hpp> // for WorldImpl not being incomplete
 #include <PlayRho/Dynamics/Contacts/Contact.hpp> // for WorldImpl not being incomplete
 #include <PlayRho/Collision/Manifold.hpp> // for WorldImpl not being incomplete
+#include <PlayRho/Collision/Shapes/Shape.hpp> // for WorldImpl not being incomplete
 
 namespace playrho {
 namespace d2 {
