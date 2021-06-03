@@ -961,8 +961,21 @@ void WorldImpl::SetShape(ShapeID id, const Shape& def)
         }
         AddProxies(FindProxies(m_tree, id));
     }
+    auto layoutChanged = [&shape,&def](){
+        const auto numKids0 = GetChildCount(shape);
+        const auto numKids1 = GetChildCount(def);
+        if (numKids0 != numKids1) {
+            return true;
+        }
+        for (auto child = 0u; child < numKids1; ++child) {
+            if (GetVertexRadius(shape, child) != GetVertexRadius(def, child)) {
+                return true;
+            }
+        }
+        return false;
+    };
     if ((IsSensor(shape) != IsSensor(def)) || (GetFriction(shape) != GetFriction(def)) ||
-        (GetRestitution(shape) != GetRestitution(def))) {
+        (GetRestitution(shape) != GetRestitution(def)) || layoutChanged()) {
         for (auto&& c: m_contactBuffer) {
             if (c.GetShapeA() == id || c.GetShapeB() == id) {
                 c.FlagForUpdating();
