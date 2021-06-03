@@ -39,7 +39,8 @@ namespace playrho {
 
 namespace detail {
 
-template <std::size_t N> struct RayCastInput;
+template <std::size_t N>
+struct RayCastInput;
 
 /// @brief N-dimensional Axis Aligned Bounding Box.
 ///
@@ -57,8 +58,7 @@ template <std::size_t N> struct RayCastInput;
 /// @see https://en.cppreference.com/w/cpp/named_req
 ///
 template <std::size_t N>
-struct AABB
-{
+struct AABB {
     /// @brief Alias for the location type.
     using Location = Vector<Length, N>;
 
@@ -66,7 +66,7 @@ struct AABB
     /// @details Constructs an "unset" AABB.
     /// @note If an unset AABB is added to another AABB, the result will be the other AABB.
     constexpr AABB() = default;
-    
+
     /// @brief Initializing constructor.
     /// @details Initializing constructor supporting construction by the same number of elements
     ///   as this AABB template type is defined for.
@@ -74,10 +74,10 @@ struct AABB
     /// @code{.cpp}
     /// const auto aabb = AABB<2>{LengthInterval{1_m, 4_m}, LengthInterval{-3_m, 3_m}};
     /// @endcode
-    template<typename... Tail>
-    constexpr AABB(std::enable_if_t<sizeof...(Tail)+1 == N, LengthInterval> head,
-                                  Tail... tail) noexcept:
-        ranges{head, LengthInterval(tail)...}
+    template <typename... Tail>
+    constexpr AABB(std::enable_if_t<sizeof...(Tail) + 1 == N, LengthInterval> head,
+                   Tail... tail) noexcept
+        : ranges{head, LengthInterval(tail)...}
     {
         // Intentionally empty.
     }
@@ -90,8 +90,7 @@ struct AABB
     ///   given point's Y value.
     constexpr explicit AABB(const Location p) noexcept
     {
-        for (auto i = decltype(N){0}; i < N; ++i)
-        {
+        for (auto i = decltype(N){0}; i < N; ++i) {
             ranges[i] = LengthInterval{p[i]};
         }
     }
@@ -101,8 +100,7 @@ struct AABB
     /// @param b Point location "B" to initialize this AABB with.
     constexpr AABB(const Location a, const Location b) noexcept
     {
-        for (auto i = decltype(N){0}; i < N; ++i)
-        {
+        for (auto i = decltype(N){0}; i < N; ++i) {
             ranges[i] = LengthInterval{a[i], b[i]};
         }
     }
@@ -115,12 +113,10 @@ struct AABB
 /// @return <code>true</code> if the two values are equal, <code>false</code> otherwise.
 /// @relatedalso AABB
 template <std::size_t N>
-constexpr bool operator== (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
+constexpr bool operator==(const AABB<N>& lhs, const AABB<N>& rhs) noexcept
 {
-    for (auto i = decltype(N){0}; i < N; ++i)
-    {
-        if (lhs.ranges[i] != rhs.ranges[i])
-        {
+    for (auto i = decltype(N){0}; i < N; ++i) {
+        if (lhs.ranges[i] != rhs.ranges[i]) {
             return false;
         }
     }
@@ -131,7 +127,7 @@ constexpr bool operator== (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
 /// @return <code>true</code> if the two values are not equal, <code>false</code> otherwise.
 /// @relatedalso AABB
 template <std::size_t N>
-constexpr bool operator!= (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
+constexpr bool operator!=(const AABB<N>& lhs, const AABB<N>& rhs) noexcept
 {
     return !(lhs == rhs);
 }
@@ -139,44 +135,40 @@ constexpr bool operator!= (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
 /// @brief Less-than operator.
 /// @relatedalso AABB
 template <std::size_t N>
-inline bool operator< (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
+inline bool operator<(const AABB<N>& lhs, const AABB<N>& rhs) noexcept
 {
-    return std::lexicographical_compare(cbegin(lhs.ranges), cend(lhs.ranges),
-                                        cbegin(rhs.ranges), cend(rhs.ranges),
-                                        std::less<LengthInterval>{});
+    return std::lexicographical_compare(cbegin(lhs.ranges), cend(lhs.ranges), cbegin(rhs.ranges),
+                                        cend(rhs.ranges), std::less<LengthInterval>{});
 }
 
 /// @brief Less-than or equal-to operator.
 /// @relatedalso AABB
 template <std::size_t N>
-inline bool operator<= (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
+inline bool operator<=(const AABB<N>& lhs, const AABB<N>& rhs) noexcept
 {
     const auto lhsEnd = cend(lhs.ranges);
     const auto rhsEnd = cend(rhs.ranges);
-    const auto diff = std::mismatch(cbegin(lhs.ranges), lhsEnd,
-                                    cbegin(rhs.ranges), rhsEnd);
+    const auto diff = std::mismatch(cbegin(lhs.ranges), lhsEnd, cbegin(rhs.ranges), rhsEnd);
     return (std::get<0>(diff) == lhsEnd) || (*std::get<0>(diff) < *std::get<1>(diff));
 }
 
 /// @brief Greater-than operator.
 /// @relatedalso AABB
 template <std::size_t N>
-inline bool operator> (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
+inline bool operator>(const AABB<N>& lhs, const AABB<N>& rhs) noexcept
 {
-    return std::lexicographical_compare(cbegin(lhs.ranges), cend(lhs.ranges),
-                                        cbegin(rhs.ranges), cend(rhs.ranges),
-                                        std::greater<LengthInterval>{});
+    return std::lexicographical_compare(cbegin(lhs.ranges), cend(lhs.ranges), cbegin(rhs.ranges),
+                                        cend(rhs.ranges), std::greater<LengthInterval>{});
 }
 
 /// @brief Greater-than or equal-to operator.
 /// @relatedalso AABB
 template <std::size_t N>
-inline bool operator>= (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
+inline bool operator>=(const AABB<N>& lhs, const AABB<N>& rhs) noexcept
 {
     const auto lhsEnd = cend(lhs.ranges);
     const auto rhsEnd = cend(rhs.ranges);
-    const auto diff = std::mismatch(cbegin(lhs.ranges), lhsEnd,
-                                    cbegin(rhs.ranges), rhsEnd);
+    const auto diff = std::mismatch(cbegin(lhs.ranges), lhsEnd, cbegin(rhs.ranges), rhsEnd);
     return (std::get<0>(diff) == lhsEnd) || (*std::get<0>(diff) > *std::get<1>(diff));
 }
 
@@ -186,10 +178,8 @@ inline bool operator>= (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
 template <std::size_t N>
 constexpr bool TestOverlap(const AABB<N>& a, const AABB<N>& b) noexcept
 {
-    for (auto i = decltype(N){0}; i < N; ++i)
-    {
-        if (!IsIntersecting(a.ranges[i], b.ranges[i]))
-        {
+    for (auto i = decltype(N){0}; i < N; ++i) {
+        if (!IsIntersecting(a.ranges[i], b.ranges[i])) {
             return false;
         }
     }
@@ -201,8 +191,7 @@ template <std::size_t N>
 constexpr AABB<N> GetIntersectingAABB(const AABB<N>& a, const AABB<N>& b) noexcept
 {
     auto result = AABB<N>{};
-    for (auto i = decltype(N){0}; i < N; ++i)
-    {
+    for (auto i = decltype(N){0}; i < N; ++i) {
         result.ranges[i] = GetIntersection(a.ranges[i], b.ranges[i]);
     }
     return result;
@@ -214,8 +203,7 @@ template <std::size_t N>
 constexpr Vector<Length, N> GetCenter(const AABB<N>& aabb) noexcept
 {
     auto result = Vector<Length, N>{};
-    for (auto i = decltype(N){0}; i < N; ++i)
-    {
+    for (auto i = decltype(N){0}; i < N; ++i) {
         result[i] = GetCenter(aabb.ranges[i]);
     }
     return result;
@@ -227,8 +215,7 @@ template <std::size_t N>
 constexpr Vector<Length, N> GetDimensions(const AABB<N>& aabb) noexcept
 {
     auto result = Vector<Length, N>{};
-    for (auto i = decltype(N){0}; i < N; ++i)
-    {
+    for (auto i = decltype(N){0}; i < N; ++i) {
         result[i] = GetSize(aabb.ranges[i]);
     }
     return result;
@@ -254,10 +241,8 @@ constexpr Vector<Length, N> GetExtents(const AABB<N>& aabb) noexcept
 template <std::size_t N>
 constexpr bool Contains(const AABB<N>& a, const AABB<N>& b) noexcept
 {
-    for (auto i = decltype(N){0}; i < N; ++i)
-    {
-        if (!IsEntirelyEnclosing(a.ranges[i], b.ranges[i]))
-        {
+    for (auto i = decltype(N){0}; i < N; ++i) {
+        if (!IsEntirelyEnclosing(a.ranges[i], b.ranges[i])) {
             return false;
         }
     }
@@ -269,8 +254,7 @@ constexpr bool Contains(const AABB<N>& a, const AABB<N>& b) noexcept
 template <std::size_t N>
 constexpr AABB<N>& Include(AABB<N>& var, const Vector<Length, N>& value) noexcept
 {
-    for (auto i = decltype(N){0}; i < N; ++i)
-    {
+    for (auto i = decltype(N){0}; i < N; ++i) {
         var.ranges[i].Include(value[i]);
     }
     return var;
@@ -284,8 +268,7 @@ constexpr AABB<N>& Include(AABB<N>& var, const Vector<Length, N>& value) noexcep
 template <std::size_t N>
 constexpr AABB<N>& Include(AABB<N>& var, const AABB<N>& val) noexcept
 {
-    for (auto i = decltype(N){0}; i < N; ++i)
-    {
+    for (auto i = decltype(N){0}; i < N; ++i) {
         var.ranges[i].Include(val.ranges[i]);
     }
     return var;
@@ -295,8 +278,7 @@ constexpr AABB<N>& Include(AABB<N>& var, const AABB<N>& val) noexcept
 template <std::size_t N>
 constexpr AABB<N>& Move(AABB<N>& var, const Vector<Length, N> value) noexcept
 {
-    for (auto i = decltype(N){0}; i < N; ++i)
-    {
+    for (auto i = decltype(N){0}; i < N; ++i) {
         var.ranges[i].Move(value[i]);
     }
     return var;
@@ -307,8 +289,7 @@ constexpr AABB<N>& Move(AABB<N>& var, const Vector<Length, N> value) noexcept
 template <std::size_t N>
 constexpr AABB<N>& Fatten(AABB<N>& var, const NonNegative<Length> amount) noexcept
 {
-    for (auto i = decltype(N){0}; i < N; ++i)
-    {
+    for (auto i = decltype(N){0}; i < N; ++i) {
         var.ranges[i].ExpandEqually(amount);
     }
     return var;
@@ -320,8 +301,7 @@ constexpr AABB<N>& Fatten(AABB<N>& var, const NonNegative<Length> amount) noexce
 template <std::size_t N>
 constexpr AABB<N> GetDisplacedAABB(AABB<N> aabb, const Vector<Length, N> displacement)
 {
-    for (auto i = decltype(N){0}; i < N; ++i)
-    {
+    for (auto i = decltype(N){0}; i < N; ++i) {
         aabb.ranges[i].Expand(displacement[i]);
     }
     return aabb;
@@ -357,8 +337,7 @@ template <std::size_t N>
 constexpr Vector<Length, N> GetLowerBound(const AABB<N>& aabb) noexcept
 {
     auto result = Vector<Length, N>{};
-    for (auto i = decltype(N){0}; i < N; ++i)
-    {
+    for (auto i = decltype(N){0}; i < N; ++i) {
         result[i] = aabb.ranges[i].GetMin();
     }
     return result;
@@ -370,8 +349,7 @@ template <std::size_t N>
 constexpr Vector<Length, N> GetUpperBound(const AABB<N>& aabb) noexcept
 {
     auto result = Vector<Length, N>{};
-    for (auto i = decltype(N){0}; i < N; ++i)
-    {
+    for (auto i = decltype(N){0}; i < N; ++i) {
         result[i] = aabb.ranges[i].GetMax();
     }
     return result;
@@ -379,18 +357,15 @@ constexpr Vector<Length, N> GetUpperBound(const AABB<N>& aabb) noexcept
 
 /// @brief Output stream operator.
 template <std::size_t N>
-inline ::std::ostream& operator<< (::std::ostream& os, const AABB<N>& value)
+inline ::std::ostream& operator<<(::std::ostream& os, const AABB<N>& value)
 {
     os << "{";
     auto multiple = false;
-    for (const auto& range: value.ranges)
-    {
-        if (multiple)
-        {
+    for (const auto& range : value.ranges) {
+        if (multiple) {
             os << ',';
         }
-        else
-        {
+        else {
             multiple = true;
         }
         os << range;
@@ -409,8 +384,8 @@ class DistanceProxy;
 struct Transformation;
 class World;
 
-using ::playrho::detail::TestOverlap;
 using ::playrho::detail::Contains;
+using ::playrho::detail::TestOverlap;
 
 /// @brief 2-Dimensional Axis Aligned Bounding Box.
 /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
@@ -445,8 +420,8 @@ AABB ComputeAABB(const DistanceProxy& proxy, const Transformation& xf) noexcept;
 /// @param xfm1 World transform 1 of the shape.
 /// @return AABB for the proxy shape or the default AABB if the proxy has a zero vertex count.
 /// @relatedalso DistanceProxy
-AABB ComputeAABB(const DistanceProxy& proxy,
-                 const Transformation& xfm0, const Transformation& xfm1) noexcept;
+AABB ComputeAABB(const DistanceProxy& proxy, const Transformation& xfm0,
+                 const Transformation& xfm1) noexcept;
 
 /// @brief Computes the AABB for the given shape with the given transformation.
 /// @relatedalso Shape
@@ -466,14 +441,13 @@ AABB ComputeAABB(const World& world, BodyID id);
 ///   of the AABB for child A of shape A of body A with the AABB for child B of
 ///   shape B of body B.
 /// @relatedalso World
-AABB ComputeIntersectingAABB(const World& world,
-                             BodyID bA, ShapeID sA, ChildCounter iA,
-                             BodyID bB, ShapeID sB, ChildCounter iB) noexcept;
+AABB ComputeIntersectingAABB(const World& world, BodyID bA, ShapeID sA, ChildCounter iA, BodyID bB,
+                             ShapeID sB, ChildCounter iB) noexcept;
 
 /// @brief Computes the intersecting AABB for the given contact.
 /// @relatedalso World
 AABB ComputeIntersectingAABB(const World& world, const Contact& contact);
-    
+
 /// @brief Gets the AABB for the given ray cast input data.
 /// @relatedalso playrho::detail::RayCastInput<2>
 AABB GetAABB(const playrho::detail::RayCastInput<2>& input) noexcept;

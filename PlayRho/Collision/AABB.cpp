@@ -37,21 +37,19 @@ AABB ComputeAABB(const DistanceProxy& proxy, const Transformation& xf) noexcept
 {
     assert(IsValid(xf));
     auto result = AABB{};
-    for (const auto& vertex: proxy.GetVertices())
-    {
+    for (const auto& vertex : proxy.GetVertices()) {
         Include(result, Transform(vertex, xf));
     }
     return GetFattenedAABB(result, proxy.GetVertexRadius());
 }
 
-AABB ComputeAABB(const DistanceProxy& proxy,
-                 const Transformation& xfm0, const Transformation& xfm1) noexcept
+AABB ComputeAABB(const DistanceProxy& proxy, const Transformation& xfm0,
+                 const Transformation& xfm1) noexcept
 {
     assert(IsValid(xfm0));
     assert(IsValid(xfm1));
     auto result = AABB{};
-    for (const auto& vertex: proxy.GetVertices())
-    {
+    for (const auto& vertex : proxy.GetVertices()) {
         Include(result, Transform(vertex, xfm0));
         Include(result, Transform(vertex, xfm1));
     }
@@ -62,8 +60,7 @@ AABB ComputeAABB(const Shape& shape, const Transformation& xf) noexcept
 {
     auto sum = AABB{};
     const auto childCount = GetChildCount(shape);
-    for (auto i = decltype(childCount){0}; i < childCount; ++i)
-    {
+    for (auto i = decltype(childCount){0}; i < childCount; ++i) {
         Include(sum, ComputeAABB(GetChild(shape, i), xf));
     }
     return sum;
@@ -78,15 +75,14 @@ AABB ComputeAABB(const World& world, BodyID id)
 {
     auto sum = AABB{};
     const auto xf = GetTransformation(world, id);
-    for (const auto& shapeId: GetShapes(world, id)) {
+    for (const auto& shapeId : GetShapes(world, id)) {
         Include(sum, ComputeAABB(GetShape(world, shapeId), xf));
     }
     return sum;
 }
 
-AABB ComputeIntersectingAABB(const World& world,
-                             BodyID bA, ShapeID sA, ChildCounter iA,
-                             BodyID bB, ShapeID sB, ChildCounter iB) noexcept
+AABB ComputeIntersectingAABB(const World& world, BodyID bA, ShapeID sA, ChildCounter iA, BodyID bB,
+                             ShapeID sB, ChildCounter iB) noexcept
 {
     const auto xA = GetTransformation(world, bA);
     const auto xB = GetTransformation(world, bB);
@@ -99,8 +95,7 @@ AABB ComputeIntersectingAABB(const World& world,
 
 AABB ComputeIntersectingAABB(const World& world, const Contact& c)
 {
-    return ComputeIntersectingAABB(world,
-                                   c.GetBodyA(), c.GetShapeA(), c.GetChildIndexA(),
+    return ComputeIntersectingAABB(world, c.GetBodyA(), c.GetShapeA(), c.GetChildIndexA(),
                                    c.GetBodyB(), c.GetShapeB(), c.GetChildIndexB());
 }
 

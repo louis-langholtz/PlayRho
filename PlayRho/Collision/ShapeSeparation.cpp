@@ -44,18 +44,15 @@ LengthIndices GetMinSeparationInfo(Length2 origin, UnitVec direction,
     auto first = InvalidVertex;
     auto second = InvalidVertex;
     auto i = VertexCounter{0};
-    for (const auto& vertex: vertices)
-    {
+    for (const auto& vertex : vertices) {
         const auto s = Dot(direction, vertex - origin);
-        if (minSeparation > s)
-        {
+        if (minSeparation > s) {
             // most anti-parallel so far is a vertex
             minSeparation = s;
             first = i;
             second = InvalidVertex;
         }
-        else if (minSeparation == s)
-        {
+        else if (minSeparation == s) {
             // most anti-parallel so far is an edge
             second = i;
         }
@@ -86,8 +83,7 @@ SeparationInfo GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformation x
     const auto xf = MulT(xf2, xf1);
     const auto vertices = proxy2.GetVertices();
 #endif
-    for (auto i = VertexCounter{0}; i < VertexCounter{4}; ++i)
-    {
+    for (auto i = VertexCounter{0}; i < VertexCounter{4}; ++i) {
         // Get proxy1 normal and vertex relative to proxy2.
 #if 1
         const auto origin = proxy1.GetVertex(i);
@@ -98,8 +94,7 @@ SeparationInfo GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformation x
         const auto normal = Rotate(proxy1.GetNormal(i), xf.q);
         const auto ap = GetMinIndexSeparation(origin, normal, vertices);
 #endif
-        if (separation < ap.distance)
-        {
+        if (separation < ap.distance) {
             separation = ap.distance;
             secondIndices = ap.indices;
             firstIndex = i;
@@ -118,14 +113,12 @@ SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
     const auto count1 = proxy1.GetVertexCount();
     const auto xf = MulT(xf2, xf1);
     const auto proxy2vertices = proxy2.GetVertices();
-    for (auto i = VertexCounter{0}; i < count1; ++i)
-    {
+    for (auto i = VertexCounter{0}; i < count1; ++i) {
         // Get proxy1 normal and vertex relative to proxy2.
         const auto origin = Transform(proxy1.GetVertex(i), xf);
         const auto normal = Rotate(proxy1.GetNormal(i), xf.q);
         const auto ap = GetMinSeparationInfo(origin, normal, proxy2vertices);
-        if (separation < ap.distance)
-        {
+        if (separation < ap.distance) {
             separation = ap.distance;
             secondIndices = ap.indices;
             firstIndex = i;
@@ -135,8 +128,7 @@ SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
 }
 
 SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
-                                const DistanceProxy& proxy2, Transformation xf2,
-                                Length stop)
+                                const DistanceProxy& proxy2, Transformation xf2, Length stop)
 {
     // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
     auto separation = -std::numeric_limits<Length>::infinity();
@@ -144,18 +136,15 @@ SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
     auto secondIndices = VertexCounter2{{InvalidVertex, InvalidVertex}};
     const auto xf = MulT(xf2, xf1);
     const auto count1 = proxy1.GetVertexCount();
-    for (auto i = VertexCounter{0}; i < count1; ++i)
-    {
+    for (auto i = VertexCounter{0}; i < count1; ++i) {
         // Get proxy1 normal and vertex relative to proxy2.
         const auto origin = Transform(proxy1.GetVertex(i), xf);
         const auto normal = Rotate(proxy1.GetNormal(i), xf.q);
         const auto ap = GetMinSeparationInfo(origin, normal, proxy2.GetVertices());
-        if (stop < ap.distance)
-        {
+        if (stop < ap.distance) {
             return SeparationInfo{ap.distance, i, ap.indices};
         }
-        if (separation < ap.distance)
-        {
+        if (separation < ap.distance) {
             separation = ap.distance;
             secondIndices = ap.indices;
             firstIndex = i;
@@ -172,18 +161,15 @@ SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, const DistanceProxy
     auto firstIndex = InvalidVertex;
     auto secondIndices = VertexCounter2{{InvalidVertex, InvalidVertex}};
     const auto count1 = proxy1.GetVertexCount();
-    for (auto i = decltype(count1){0}; i < count1; ++i)
-    {
+    for (auto i = decltype(count1){0}; i < count1; ++i) {
         // Get proxy1 normal and vertex relative to proxy2.
         const auto origin = proxy1.GetVertex(i);
         const auto normal = proxy1.GetNormal(i);
         const auto ap = GetMinSeparationInfo(origin, normal, proxy2.GetVertices());
-        if (stop < ap.distance)
-        {
+        if (stop < ap.distance) {
             return SeparationInfo{ap.distance, i, ap.indices};
         }
-        if (separation < ap.distance)
-        {
+        if (separation < ap.distance) {
             separation = ap.distance;
             secondIndices = ap.indices;
             firstIndex = i;
@@ -191,6 +177,6 @@ SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, const DistanceProxy
     }
     return SeparationInfo{separation, firstIndex, secondIndices};
 }
-    
+
 } // namespace d2
 } // namespace playrho

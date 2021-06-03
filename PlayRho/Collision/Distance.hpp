@@ -48,8 +48,7 @@ constexpr Length2 GetDelta(PairLength2 arg) noexcept
 
 /// @brief Distance Configuration.
 /// @details Configuration information for calling the <code>Distance</code> function.
-struct DistanceConf
-{
+struct DistanceConf {
     /// @brief Iteration type.
     using iteration_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
 
@@ -66,11 +65,9 @@ DistanceConf GetDistanceConf(const ToiConf& conf) noexcept;
 DistanceConf GetDistanceConf(const StepConf& conf) noexcept;
 
 /// @brief Distance Output.
-struct DistanceOutput
-{
+struct DistanceOutput {
     /// @brief State of the distance output.
-    enum State: std::uint8_t
-    {
+    enum State : std::uint8_t {
         Unknown,
         MaxPoints,
         UnfitSearchDir,
