@@ -203,12 +203,14 @@ inline PolygonShapeConf& PolygonShapeConf::UseVertexRadius(NonNegative<Length> v
 
 /// @brief Gets the "child" count for the given shape configuration.
 /// @return 1.
+/// @relatedalso PolygonShapeConf
 constexpr ChildCounter GetChildCount(const PolygonShapeConf&) noexcept
 {
     return 1;
 }
 
 /// @brief Gets the "child" shape for the given shape configuration.
+/// @relatedalso PolygonShapeConf
 inline DistanceProxy GetChild(const PolygonShapeConf& arg, ChildCounter index)
 {
     if (index != 0)
@@ -220,18 +222,21 @@ inline DistanceProxy GetChild(const PolygonShapeConf& arg, ChildCounter index)
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
+/// @relatedalso PolygonShapeConf
 inline NonNegative<Length> GetVertexRadius(const PolygonShapeConf& arg) noexcept
 {
     return arg.vertexRadius;
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
+/// @relatedalso PolygonShapeConf
 inline NonNegative<Length> GetVertexRadius(const PolygonShapeConf& arg, ChildCounter) noexcept
 {
     return GetVertexRadius(arg);
 }
 
 /// @brief Gets the mass data for the given shape configuration.
+/// @relatedalso PolygonShapeConf
 inline MassData GetMassData(const PolygonShapeConf& arg) noexcept
 {
     return playrho::d2::GetMassData(arg.vertexRadius, arg.density, arg.GetVertices());
@@ -246,6 +251,7 @@ Length2 GetEdge(const PolygonShapeConf& shape, VertexCounter index);
 /// @brief Transforms the given polygon configuration's vertices by the given
 ///   transformation matrix.
 /// @see https://en.wikipedia.org/wiki/Transformation_matrix
+/// @relatedalso PolygonShapeConf
 inline void Transform(PolygonShapeConf& arg, const Mat22& m) noexcept
 {
     arg.Transform(m);
