@@ -369,12 +369,14 @@ TEST(Shape, Transform)
 }
 
 #if 0
+#include <cstddef> // for std::max_align_t
 #include <variant>
 
 class Foo {
     struct Concept {
         virtual ~Concept() = default;
         virtual std::unique_ptr<Concept> Clone_() const = 0;
+        virtual void NewTo_(void* buffer) const = 0;
         virtual Real GetFriction_() const noexcept = 0;
     };
 
@@ -390,6 +392,11 @@ class Foo {
             return std::make_unique<Model>(data);
         }
 
+        void NewTo_(void* buffer) const override
+        {
+            ::new (buffer) Model(data);
+        }
+
         Real GetFriction_() const noexcept override
         {
             return GetFriction(data);
@@ -398,39 +405,54 @@ class Foo {
         data_type data; ///< Data.
     };
 
-#if 0
+    const Concept* GetConcept() const
+    {
+        switch (m_type) {
+        case union_type::pointer:
+            return m_pointer.get();
+        case union_type::buffer:
+            return reinterpret_cast<const Concept*>(::std::addressof(m_buffer));
+        case union_type::none:
+            break;
+        }
+        return nullptr;
+    }
+
+public:
+
+#if 1
     union {
-        std::aligned_storage_t<48u> m_buffer;
         std::unique_ptr<const Concept> m_pointer;
+        alignas(std::max_align_t) std::byte m_buffer[alignof(std::max_align_t) * 3u];
     };
-    enum class union_type: std::uint8_t {none, buffer, pointer};
+    enum class union_type {none, pointer, buffer};
     union_type m_type = union_type::none;
 #else
     using pointer = std::unique_ptr<const Concept>;
-    using buffer = std::aligned_storage_t<48u>;
+    //using buffer = std::aligned_storage_t<16u>;
+    using buffer = std::byte[62u];
     std::variant<pointer, buffer> m_data;
 #endif
 
-public:
     Foo() noexcept {}
 
     ~Foo() noexcept
     {
+#if 0
         if (std::holds_alternative<buffer>(m_data)) {
             reinterpret_cast<const Concept*>(&std::get<buffer>(m_data))->~Concept();
         }
-#if 0
-        switch (m_data.index()) {
-        case 1:
-            //reinterpret_cast<const Concept*>(&m_buffer)->~Concept();
-            break;
-        default:
-            break;
+#endif
+        switch (m_type) {
         case union_type::pointer:
             m_pointer.~unique_ptr<const Concept>();
             break;
+        case union_type::buffer:
+            reinterpret_cast<const Concept*>(m_buffer)->~Concept();
+            break;
+        case union_type::none:
+            break;
         }
-#endif
     }
 
     template <class T>
@@ -447,41 +469,65 @@ public:
             m_type = union_type::buffer;
         }
 #else
+#if 0
         if (sizeof(Model<T>) > sizeof(buffer)) {
             m_data = std::unique_ptr<const Concept>{std::make_unique<Model<T>>(std::forward<T>(arg))};
         }
         else {
             buffer b;
-            new (&b) Model<T>(std::move(arg));
             m_data = b;
+            new (&std::get<buffer>(m_data)) Model<T>(std::move(arg));
         }
+#else
+        if (sizeof(Model<T>) > sizeof(m_buffer)) {
+            ::new ((void*)(::std::addressof(m_pointer))) std::unique_ptr<const Concept>{std::make_unique<Model<T>>(std::forward<T>(arg))};
+            m_type = union_type::pointer;
+        }
+        else {
+            ::new ((void*)(::std::addressof(m_buffer))) Model<T>(std::move(arg));
+            m_type = union_type::buffer;
+        }
+#endif
 #endif
     }
 
     Foo(const Foo& other)
     {
-        if (std::holds_alternative<buffer>(other.m_data)) {
-            buffer b;
-            new (&b) Model<T>(*reinterpret_cast<const Concept*>(&std::get<buffer>(other.m_data)));
-            m_data = b;
-        }
-        else {
-            m_data = std::get<pointer>(other.m_data)->Clone_();
+        switch (other.m_type) {
+        case union_type::buffer:
+            reinterpret_cast<const Concept*>(::std::addressof(other.m_buffer))->NewTo_(::std::addressof(m_buffer));
+            m_type = union_type::buffer;
+            break;
+        case union_type::pointer:
+            ::new ((void*)(::std::addressof(m_pointer))) std::unique_ptr<const Concept>{other.m_pointer->Clone_()};
+            m_type = union_type::pointer;
+            break;
+        case union_type::none:
+            break;
         }
     }
 
     bool has_value() const noexcept
     {
         //return m_type != union_type::none;
-        return !std::holds_alternative<pointer>(m_data) || std::get<pointer>(m_data);
+        //return !std::holds_alternative<pointer>(m_data) || std::get<pointer>(m_data);
+        return m_type == union_type::buffer || (m_type == union_type::pointer && m_pointer);
     }
 
     friend Real GetFriction(const Foo& foo) noexcept
     {
+#if 0
         //return foo.has_value()? reinterpret_cast<const Concept*>(&foo.m_buffer)->GetFriction_() : Real(0);
         return std::holds_alternative<buffer>(foo.m_data)?
         reinterpret_cast<const Concept*>(&std::get<buffer>(foo.m_data))->GetFriction_():
         std::get<pointer>(foo.m_data)? std::get<pointer>(foo.m_data)->GetFriction_(): Real(0);
+#else
+        const auto c = foo.GetConcept();
+        return c? c->GetFriction_(): Real(0);
+        //return (foo.m_type == union_type::buffer)?
+        //reinterpret_cast<const Concept*>(foo.m_buffer)->GetFriction_():
+        //(foo.m_type == union_type::pointer && foo.m_pointer)? foo.m_pointer->GetFriction_(): Real(0);
+#endif
     }
 };
 
@@ -503,4 +549,35 @@ TEST(Shape, TestFoo)
     EXPECT_TRUE(Foo(Foobar{3.0f}).has_value());
     EXPECT_EQ(GetFriction(Foo(Foobar{3.0f})), 3.0f);
 }
+
+class Concept {
+public:
+    virtual ~Concept() {};
+};
+
+struct storage {
+    union {
+        std::unique_ptr<const Concept> pointer;
+        alignas(std::max_align_t) std::byte buffer[alignof(std::max_align_t) * 3u];
+    };
+    enum class union_type {pointer, buffer};
+    union_type type = union_type::pointer;
+    storage(): pointer{} {}
+    ~storage() {
+        if (type == union_type::pointer) {
+            pointer.~unique_ptr<const Concept>();
+        }
+        else {
+            reinterpret_cast<const Concept*>(buffer)->~Concept();
+        }
+    }
+};
+
+TEST(Shape, TestStorage)
+{
+    storage data;
+    EXPECT_EQ(sizeof(data), 64u);
+    EXPECT_EQ(sizeof(data.buffer), 48u);
+}
+
 #endif
