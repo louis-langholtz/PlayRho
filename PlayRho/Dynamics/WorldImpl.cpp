@@ -949,6 +949,13 @@ void WorldImpl::SetShape(ShapeID id, const Shape& def)
         throw WrongState("SetShape: world is locked");
     }
     auto& shape = m_shapeBuffer.at(to_underlying(id));
+    for (auto&& b: m_bodyBuffer) {
+        for (const auto& shapeId: b.GetShapes()) {
+            if (shapeId == id) {
+                b.SetAwake();
+            }
+        }
+    }
     if (GetFilter(shape) != GetFilter(def)) {
         for (auto& c: m_contactBuffer) {
             const auto shapeIdA = GetShapeA(c);
