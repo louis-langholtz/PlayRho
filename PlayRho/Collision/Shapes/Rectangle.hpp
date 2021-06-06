@@ -217,21 +217,27 @@ struct Rectangle : shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Density, 
                    shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Filter, // force break
                    shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Sensor // force break
 {
-    /// @brief Width of the rectangle.
-    static constexpr auto width = W * Meter;
-
-    /// @brief Height of the rectangle.
-    static constexpr auto height = H * Meter;
-
     /// @brief Normals of the rectangle.
     static constexpr auto normals = std::array<UnitVec, 4u>{
         UnitVec::GetRight(), UnitVec::GetTop(), UnitVec::GetLeft(), UnitVec::GetBottom()};
 
     /// @brief Vertices of the rectangle.
     static constexpr auto vertices =
-        std::array<Length2, 4u>{Length2{+width / 2, -height / 2}, Length2{+width / 2, +height / 2},
-                                Length2{-width / 2, +height / 2}, Length2{-width / 2, -height / 2}};
+        std::array<Length2, 4u>{Length2{+(W * Meter) / 2, -(H * Meter) / 2}, Length2{+(W * Meter) / 2, +(H * Meter) / 2},
+                                Length2{-(W * Meter) / 2, +(H * Meter) / 2}, Length2{-(W * Meter) / 2, -(H * Meter) / 2}};
 };
+
+template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+constexpr Length GetWidth(const Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg)
+{
+    return GetX(arg.vertices[0]) - GetX(arg.vertices[2]);
+}
+
+template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+constexpr Length GetHeight(const Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg)
+{
+    return GetY(arg.vertices[2]) - GetY(arg.vertices[0]);
+}
 
 /// @brief Gets the "child" count for the given shape configuration.
 /// @return 1.
@@ -435,8 +441,8 @@ template <int W1, int H1, class P11, class P12, class P13, class P14, class P15,
 bool operator==(const Rectangle<W1, H1, P11, P12, P13, P14, P15, P16>& lhs,
                 const Rectangle<W2, H2, P21, P22, P23, P24, P25, P26>& rhs) noexcept
 {
-    return lhs.width == rhs.width && // force break
-           lhs.height == rhs.height && // force break
+    return GetWidth(lhs) == GetWidth(rhs) && // force break
+           GetHeight(lhs) == GetHeight(rhs) && // force break
            GetDensity(lhs) == GetDensity(rhs) && // force break
            GetFriction(lhs) == GetFriction(rhs) && // force break
            GetRestitution(lhs) == GetRestitution(rhs) && // force break
