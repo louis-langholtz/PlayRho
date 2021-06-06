@@ -114,11 +114,9 @@ public:
             const auto fixtures = GetSelectedFixtures();
             const auto fixture = (size(fixtures) == 1)? *(begin(fixtures)): invalidFixture;
             if (fixture != invalidFixture) {
-                const auto polygon = TypeCast<PolygonShapeConf>(GetShape(GetWorld(), fixture.second));
-                auto conf = PolygonShapeConf{};
-                conf.Set(polygon.GetVertices());
-                conf.UseVertexRadius(polygon.vertexRadius + RadiusIncrement);
-                GetWorld().SetShape(fixture.second, Shape(conf));
+                auto conf = TypeCast<PolygonShapeConf>(GetShape(GetWorld(), fixture.second));
+                conf.UseVertexRadius(conf.vertexRadius + RadiusIncrement);
+                SetShape(GetWorld(), fixture.second, Shape(conf));
             }
         });
         RegisterForKey(GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, 0, "decrease vertex radius of selected shape", [&](KeyActionMods) {
@@ -130,11 +128,9 @@ public:
                 const auto newVertexRadius = lastLegitVertexRadius - RadiusIncrement;
                 if (newVertexRadius >= 0_m)
                 {
-                    const auto polygon = TypeCast<PolygonShapeConf>(shape);
-                    auto conf = PolygonShapeConf{};
-                    conf.Set(polygon.GetVertices());
+                    auto conf = TypeCast<PolygonShapeConf>(shape);
                     conf.UseVertexRadius(newVertexRadius);
-                    GetWorld().SetShape(fixture.second, Shape(conf));
+                    SetShape(GetWorld(), fixture.second, Shape(conf));
                 }
             }
         });
