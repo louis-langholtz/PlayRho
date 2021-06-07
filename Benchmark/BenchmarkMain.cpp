@@ -70,7 +70,9 @@
 #include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Collision/WorldManifold.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
+#if 0
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
+#endif
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/Rectangle.hpp>
 
@@ -1457,8 +1459,8 @@ static TransformationPairs GetTransformationPairs(unsigned count)
 
 static void MaxSepBetweenRelSquaresNoStop(benchmark::State& state)
 {
-    const auto shape0 = playrho::d2::Rectangle<playrho::d2::Resizable::No, 4, 4>();
-    const auto shape1 = playrho::d2::Rectangle<playrho::d2::Resizable::No, 4, 4>();
+    const auto shape0 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
+    const auto shape1 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
 
     const auto child0 = GetChild(shape0, 0);
     const auto child1 = GetChild(shape1, 0);
@@ -1475,8 +1477,8 @@ static void MaxSepBetweenRelSquaresNoStop(benchmark::State& state)
 
 static void MaxSepBetweenRel4x4(benchmark::State& state)
 {
-    const auto shape0 = playrho::d2::Rectangle<playrho::d2::Resizable::No, 4, 4>();
-    const auto shape1 = playrho::d2::Rectangle<playrho::d2::Resizable::No, 4, 4>();
+    const auto shape0 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
+    const auto shape1 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
 
     const auto child0 = GetChild(shape0, 0);
     const auto child1 = GetChild(shape1, 0);
@@ -1493,8 +1495,8 @@ static void MaxSepBetweenRel4x4(benchmark::State& state)
 
 static void MaxSepBetweenRelSquares(benchmark::State& state)
 {
-    const auto shape0 = playrho::d2::Rectangle<playrho::d2::Resizable::No, 4, 4>();
-    const auto shape1 = playrho::d2::Rectangle<playrho::d2::Resizable::No, 4, 4>();
+    const auto shape0 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
+    const auto shape1 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
 
     const auto child0 = GetChild(shape0, 0);
     const auto child1 = GetChild(shape1, 0);
@@ -1557,7 +1559,7 @@ static void MaxSepBetweenAbsSquares(benchmark::State& state)
 static void ManifoldForTwoSquares1(benchmark::State& state)
 {
     // creates a square
-    const auto shape = playrho::d2::Rectangle<playrho::d2::Resizable::No, 4, 4>();
+    const auto shape = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
 
     const auto rot0 = playrho::Angle{playrho::Real{45.0f} * playrho::Degree};
     const auto xfm0 =
@@ -1598,10 +1600,10 @@ static void ManifoldForTwoSquares1(benchmark::State& state)
 static void ManifoldForTwoSquares2(benchmark::State& state)
 {
     // Shape A: square
-    const auto shape0 = playrho::d2::Rectangle<playrho::d2::Resizable::No, 4, 4>();
+    const auto shape0 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
 
     // Shape B: wide rectangle
-    const auto shape1 = playrho::d2::Rectangle<playrho::d2::Resizable::No, 6, 3>();
+    const auto shape1 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 6, 3>();
 
     const auto xfm0 =
         playrho::d2::Transformation{playrho::Vec2{-2, 0} * (playrho::Real(1) * playrho::Meter),
@@ -1787,7 +1789,7 @@ static void CreateBodyWithOneShapePlayRho(benchmark::State& state)
 {
     const auto numBodies = state.range();
     const auto shape =
-        playrho::d2::Shape(playrho::d2::Rectangle<playrho::d2::Resizable::No, 1, 1>{});
+        playrho::d2::Shape(playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 1, 1>{});
     for (auto _ : state) {
         state.PauseTiming();
         playrho::d2::World world{
@@ -1961,8 +1963,9 @@ static void AddPairStressTestPlayRho(benchmark::State& state, int count)
         DiskShapeConf{}.UseRadius(playrho::Meter / 10).UseDensity(0.01f * KilogramPerSquareMeter);
     const auto diskShape = Shape{diskConf};
 
-    const auto rectShape = Shape{
-        Rectangle<Resizable::No, 3, 3, shape_part::DensityIs<shape_part::StaticAreaDensity<1>>>()};
+    const auto rectShape =
+        Shape{Rectangle<Geometry::Constant, 3, 3,
+                        shape_part::DensityIs<shape_part::StaticAreaDensity<1>>>()};
 
     const auto rectBodyConf =
         playrho::d2::BodyConf{}
@@ -2094,7 +2097,7 @@ static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
         playrho::LinearAcceleration2{TilesGravityX * playrho::MeterPerSquareSecond,
                                      TilesGravityY * playrho::MeterPerSquareSecond};
     auto conf = playrho::d2::Rectangle<
-        playrho::d2::Resizable::Yes, 0, 0,
+        playrho::d2::Geometry::Mutable, 0, 0,
         playrho::shape_part::VertexRadiusIs<playrho::shape_part::DynamicVertexRadius<>>>{};
     conf.vertexRadius = vertexRadius;
     auto world = playrho::d2::World{
@@ -2133,7 +2136,7 @@ static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
     {
         const auto shapeId = world.CreateShape(playrho::d2::Shape(
             playrho::d2::Rectangle<
-                playrho::d2::Resizable::No, 1, 1,
+                playrho::d2::Geometry::Constant, 1, 1,
                 playrho::shape_part::DensityIs<playrho::shape_part::StaticAreaDensity<5>>>{}));
 
         playrho::Length2 x(-7.0f * playrho::Meter, 0.75f * playrho::Meter);
@@ -2304,14 +2307,12 @@ private:
     static playrho::BodyID CreateEnclosure(playrho::d2::World& world);
     static playrho::JointID CreateRevoluteJoint(playrho::d2::World& world, playrho::BodyID stable,
                                                 playrho::BodyID turn);
+    static playrho::ShapeID CreateSquareShape(playrho::d2::World& world, playrho::Length squareLen);
 
     playrho::d2::World m_world;
     playrho::StepConf m_stepConf;
     playrho::Length m_squareLen = 0.125f * playrho::Meter;
-    playrho::ShapeID m_squareId = CreateShape(
-        m_world,
-        playrho::d2::Shape{playrho::d2::PolygonShapeConf(m_squareLen, m_squareLen)
-                               .UseDensity(playrho::Real(0.1) * playrho::KilogramPerSquareMeter)});
+    playrho::ShapeID m_squareId = CreateSquareShape(m_world, m_squareLen);
 };
 
 Tumbler::Tumbler()
@@ -2327,21 +2328,32 @@ playrho::BodyID Tumbler::CreateEnclosure(playrho::d2::World& world)
                                    .UseType(playrho::BodyType::Dynamic)
                                    .UseLocation(playrho::Vec2(0, 10) * playrho::Meter)
                                    .UseAllowSleep(false)};
-    playrho::d2::PolygonShapeConf shape;
-    shape.UseDensity(5 * playrho::KilogramPerSquareMeter);
-    shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter,
-                   playrho::Vec2(10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
-    b.Attach(world.CreateShape(playrho::d2::Shape(shape)));
-    shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter,
-                   playrho::Vec2(-10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
-    b.Attach(world.CreateShape(playrho::d2::Shape(shape)));
-    shape.SetAsBox(10.0f * playrho::Meter, 0.5f * playrho::Meter,
-                   playrho::Vec2(0.0f, 10.0f) * playrho::Meter, playrho::Angle{0});
-    b.Attach(world.CreateShape(playrho::d2::Shape(shape)));
-    shape.SetAsBox(10.0f * playrho::Meter, 0.5f * playrho::Meter,
-                   playrho::Vec2(0.0f, -10.0f) * playrho::Meter, playrho::Angle{0});
-    b.Attach(world.CreateShape(playrho::d2::Shape(shape)));
+    auto conf = playrho::d2::Rectangle<
+        playrho::d2::Geometry::Mutable, 0, 0,
+        playrho::shape_part::DensityIs<playrho::shape_part::StaticAreaDensity<5>>>{};
+    SetDimensions(conf, playrho::Length2{1 * playrho::Meter, 20 * playrho::Meter});
+    SetOffset(conf, playrho::Vec2(10.0f, 0.0f) * playrho::Meter);
+    b.Attach(world.CreateShape(playrho::d2::Shape(conf)));
+    SetDimensions(conf, playrho::Length2{1 * playrho::Meter, 20 * playrho::Meter});
+    SetOffset(conf, playrho::Vec2(-10.0f, 0.0f) * playrho::Meter);
+    b.Attach(world.CreateShape(playrho::d2::Shape(conf)));
+    SetDimensions(conf, playrho::Length2{20 * playrho::Meter, 1 * playrho::Meter});
+    SetOffset(conf, playrho::Vec2(0.0f, 10.0f) * playrho::Meter);
+    b.Attach(world.CreateShape(playrho::d2::Shape(conf)));
+    SetDimensions(conf, playrho::Length2{20 * playrho::Meter, 1 * playrho::Meter});
+    SetOffset(conf, playrho::Vec2(0.0f, -10.0f) * playrho::Meter);
+    b.Attach(world.CreateShape(playrho::d2::Shape(conf)));
     return CreateBody(world, b);
+}
+
+playrho::ShapeID Tumbler::CreateSquareShape(playrho::d2::World& world, playrho::Length squareLen)
+{
+    auto conf = playrho::d2::Rectangle<
+        playrho::d2::Geometry::Mutable, 0, 0,
+        playrho::shape_part::DensityIs<playrho::shape_part::DynamicAreaDensity<>>>{};
+    conf.density = playrho::Real(0.1) * playrho::KilogramPerSquareMeter;
+    conf.SetDimensions(playrho::Length2{squareLen, squareLen});
+    return CreateShape(world, playrho::d2::Shape{conf});
 }
 
 playrho::JointID Tumbler::CreateRevoluteJoint(playrho::d2::World& world, playrho::BodyID stable,
