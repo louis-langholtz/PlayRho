@@ -29,89 +29,131 @@ using namespace playrho::d2;
 
 TEST(Rectangle, ByteSize)
 {
-    EXPECT_EQ(sizeof(Rectangle<1, 1>), 1u);
-    EXPECT_EQ(sizeof(Rectangle<1, 1, DensityIs<StaticAreaDensity<6>>>), 1u);
-    EXPECT_EQ(sizeof(Rectangle<1, 1, DensityIs<StaticAreaDensity<4>>,
+    EXPECT_EQ(sizeof(Rectangle<Resizable::No, 1, 1>), 1u);
+    EXPECT_EQ(sizeof(Rectangle<Resizable::Yes>), 32u);
+    EXPECT_EQ(sizeof(Rectangle<Resizable::No, 1, 1, DensityIs<StaticAreaDensity<6>>>), 1u);
+    EXPECT_EQ(sizeof(Rectangle<Resizable::No, 1, 1, DensityIs<StaticAreaDensity<4>>,
                                FrictionIs<StaticTenthsFriction<3>>>{}),
               1u);
-    EXPECT_EQ(sizeof(Rectangle<1, 2, FrictionIs<StaticFriction<>>>), 1u);
+    EXPECT_EQ(sizeof(Rectangle<Resizable::No, 1, 2, FrictionIs<StaticFriction<>>>), 1u);
     switch (sizeof(Real)) {
     case 4u:
+        EXPECT_EQ(sizeof(Rectangle<Resizable::No, 1, 1, DensityIs<StaticAreaDensity<4>>,
+                                   FrictionIs<DynamicFriction<4>>>{}),
+                  4u);
         EXPECT_EQ(
-            sizeof(
-                Rectangle<1, 1, DensityIs<StaticAreaDensity<4>>, FrictionIs<DynamicFriction<4>>>{}),
+            sizeof(Rectangle<Resizable::No, 1, 1, DensityIs<StaticAreaDensity<4>>,
+                             FrictionIs<StaticFriction<4>>, RestitutionIs<DynamicRestitution<>>>{}),
             4u);
-        EXPECT_EQ(
-            sizeof(Rectangle<1, 1, DensityIs<StaticAreaDensity<4>>, FrictionIs<StaticFriction<4>>,
-                             RestitutionIs<DynamicRestitution<>>>{}),
-            4u);
-        EXPECT_EQ(sizeof(Rectangle<1, 2, RestitutionIs<DynamicRestitution<>>>), 4u);
-        EXPECT_EQ(sizeof(Rectangle<1, 2, RestitutionIs<DynamicRestitution<>>,
+        EXPECT_EQ(sizeof(Rectangle<Resizable::No, 1, 2, RestitutionIs<DynamicRestitution<>>>), 4u);
+        EXPECT_EQ(sizeof(Rectangle<Resizable::No, 1, 2, RestitutionIs<DynamicRestitution<>>,
                                    FrictionIs<DynamicFriction<>>>),
                   8u);
         break;
     case 8u:
+        EXPECT_EQ(sizeof(Rectangle<Resizable::No, 1, 1, DensityIs<StaticAreaDensity<4>>,
+                                   FrictionIs<DynamicFriction<4>>>{}),
+                  8u);
         EXPECT_EQ(
-            sizeof(
-                Rectangle<1, 1, DensityIs<StaticAreaDensity<4>>, FrictionIs<DynamicFriction<4>>>{}),
+            sizeof(Rectangle<Resizable::No, 1, 1, DensityIs<StaticAreaDensity<4>>,
+                             FrictionIs<StaticFriction<4>>, RestitutionIs<DynamicRestitution<>>>{}),
             8u);
-        EXPECT_EQ(
-            sizeof(Rectangle<1, 1, DensityIs<StaticAreaDensity<4>>, FrictionIs<StaticFriction<4>>,
-                             RestitutionIs<DynamicRestitution<>>>{}),
-            8u);
-        EXPECT_EQ(sizeof(Rectangle<1, 2, RestitutionIs<DynamicRestitution<>>>), 8u);
-        EXPECT_EQ(sizeof(Rectangle<1, 2, RestitutionIs<DynamicRestitution<>>,
+        EXPECT_EQ(sizeof(Rectangle<Resizable::No, 1, 2, RestitutionIs<DynamicRestitution<>>>), 8u);
+        EXPECT_EQ(sizeof(Rectangle<Resizable::No, 1, 2, RestitutionIs<DynamicRestitution<>>,
                                    FrictionIs<DynamicFriction<>>>),
                   16u);
         break;
     }
 }
 
+TEST(Rectangle, GetDimensions)
+{
+    EXPECT_EQ(GetDimensions(Rectangle<Resizable::No, 1, 1>{}), Length2(1_m, 1_m));
+    EXPECT_EQ(GetDimensions(Rectangle<Resizable::Yes, 1, 1>{}), Length2(1_m, 1_m));
+    EXPECT_EQ(GetDimensions(Rectangle<Resizable::Yes, 1, 1>{2_m, 2_m}), Length2(2_m, 2_m));
+    {
+        auto rect = Rectangle<Resizable::Yes>{};
+        EXPECT_EQ(GetDimensions(rect), Length2(0_m, 0_m));
+        const auto value = Length2{4_m, 8_m};
+        EXPECT_NO_THROW(SetDimensions(rect, value));
+        EXPECT_EQ(GetDimensions(rect), value);
+    }
+}
+
+TEST(Rectangle, GetOffset)
+{
+    EXPECT_EQ(GetOffset(Rectangle<Resizable::No, 1, 1>{}), Length2(0_m, 0_m));
+    EXPECT_EQ(GetOffset(Rectangle<Resizable::Yes, 1, 1>{}), Length2(0_m, 0_m));
+    EXPECT_EQ(GetOffset(Rectangle<Resizable::Yes, 1, 1>{2_m, 2_m}), Length2(0_m, 0_m));
+    {
+        auto rect = Rectangle<Resizable::Yes>{4_m, 2_m};
+        EXPECT_EQ(GetOffset(rect), Length2(0_m, 0_m));
+        const auto value = Length2{4_m, 8_m};
+        EXPECT_NO_THROW(SetOffset(rect, value));
+        EXPECT_EQ(GetOffset(rect), value);
+    }
+}
+
 TEST(Rectangle, GetChildCount)
 {
-    EXPECT_EQ(GetChildCount(Rectangle<1, 1>{}), 1u);
-    EXPECT_EQ(GetChildCount(Rectangle<1, 1, StaticAreaDensity<6>>{}), 1u);
+    EXPECT_EQ(GetChildCount(Rectangle<Resizable::No, 1, 1>{}), 1u);
+    EXPECT_EQ(GetChildCount(Rectangle<Resizable::Yes>{}), 1u);
+    EXPECT_EQ(GetChildCount(Rectangle<Resizable::No, 1, 1, StaticAreaDensity<6>>{}), 1u);
+    EXPECT_EQ(GetChildCount(Rectangle<Resizable::Yes, 0, 0, StaticAreaDensity<6>>{}), 1u);
 }
 
 TEST(Rectangle, GetDensity)
 {
-    EXPECT_EQ(GetDensity(Rectangle<1, 1, DensityIs<StaticAreaDensity<4>>>{}), 4_kgpm2);
-    EXPECT_EQ(GetDensity(Rectangle<1, 1, DensityIs<StaticAreaDensity<5>>>{}), 5_kgpm2);
-    EXPECT_EQ(GetDensity(Rectangle<1, 1, DensityIs<DynamicAreaDensity<6>>>{}), 6_kgpm2);
-    EXPECT_EQ(GetDensity(Rectangle<1, 1, DensityIs<DynamicAreaDensity<6>>>{{2.4_kgpm2}}),
-              2.4_kgpm2);
+    EXPECT_EQ(GetDensity(Rectangle<Resizable::No, 1, 1, DensityIs<StaticAreaDensity<4>>>{}),
+              4_kgpm2);
+    EXPECT_EQ(GetDensity(Rectangle<Resizable::Yes, 1, 1, DensityIs<StaticAreaDensity<4>>>{}),
+              4_kgpm2);
+    EXPECT_EQ(GetDensity(Rectangle<Resizable::No, 1, 1, DensityIs<StaticAreaDensity<5>>>{}),
+              5_kgpm2);
+    EXPECT_EQ(GetDensity(Rectangle<Resizable::No, 1, 1, DensityIs<DynamicAreaDensity<6>>>{}),
+              6_kgpm2);
+    EXPECT_EQ(
+        GetDensity(Rectangle<Resizable::No, 1, 1, DensityIs<DynamicAreaDensity<6>>>{{2.4_kgpm2}}),
+        2.4_kgpm2);
 }
 
 TEST(Rectangle, GetFriction)
 {
-    EXPECT_EQ(GetFriction(Rectangle<1, 1>{}), Real(0.2));
-    EXPECT_EQ(GetFriction(Rectangle<1, 1, FrictionIs<StaticTenthsFriction<>>>{}), Real(0.2));
-    EXPECT_EQ(GetFriction(Rectangle<1, 1, FrictionIs<StaticTenthsFriction<3>>>{}), Real(0.3));
-    EXPECT_EQ(GetFriction(Rectangle<1, 1, FrictionIs<DynamicFriction<4>>>{}), Real(4));
-    EXPECT_EQ(GetFriction(Rectangle<1, 1, FrictionIs<DynamicFriction<4>>>{{}, {Real(0.5)}}),
+    EXPECT_EQ(GetFriction(Rectangle<Resizable::No, 1, 1>{}), Real(0.2));
+    EXPECT_EQ(GetFriction(Rectangle<Resizable::No, 1, 1, FrictionIs<StaticTenthsFriction<>>>{}),
+              Real(0.2));
+    EXPECT_EQ(GetFriction(Rectangle<Resizable::No, 1, 1, FrictionIs<StaticTenthsFriction<3>>>{}),
+              Real(0.3));
+    EXPECT_EQ(GetFriction(Rectangle<Resizable::No, 1, 1, FrictionIs<DynamicFriction<4>>>{}),
+              Real(4));
+    EXPECT_EQ(GetFriction(
+                  Rectangle<Resizable::No, 1, 1, FrictionIs<DynamicFriction<4>>>{{}, {Real(0.5)}}),
               Real(0.5));
 }
 
 TEST(Rectangle, GetRestitution)
 {
-    EXPECT_EQ(GetRestitution(Rectangle<1, 1>{}), Real(0));
-    EXPECT_EQ(GetRestitution(Rectangle<1, 1, RestitutionIs<StaticRestitution<1>>>{}), Real(1));
-    EXPECT_EQ(GetRestitution(Rectangle<1, 1, RestitutionIs<DynamicRestitution<8>>>{}), Real(8));
+    EXPECT_EQ(GetRestitution(Rectangle<Resizable::No, 1, 1>{}), Real(0));
+    EXPECT_EQ(GetRestitution(Rectangle<Resizable::No, 1, 1, RestitutionIs<StaticRestitution<1>>>{}),
+              Real(1));
     EXPECT_EQ(
-        GetRestitution(Rectangle<1, 1, RestitutionIs<DynamicRestitution<8>>>{{}, {}, {Real(1.2)}}),
-        Real(1.2));
+        GetRestitution(Rectangle<Resizable::No, 1, 1, RestitutionIs<DynamicRestitution<8>>>{}),
+        Real(8));
+    EXPECT_EQ(GetRestitution(Rectangle<Resizable::No, 1, 1, RestitutionIs<DynamicRestitution<8>>>{
+                  {}, {}, {Real(1.2)}}),
+              Real(1.2));
 }
 
 TEST(Rectangle, SetFriction)
 {
     {
-        auto rectangle = Rectangle<1, 1>{};
+        auto rectangle = Rectangle<Resizable::No, 1, 1>{};
         ASSERT_EQ(rectangle.friction, Real(0.2));
         EXPECT_THROW(SetFriction(rectangle, Real(3)), InvalidArgument);
         EXPECT_EQ(rectangle.friction, Real(0.2));
     }
     {
-        auto rectangle = Rectangle<1, 1, FrictionIs<DynamicFriction<>>>{};
+        auto rectangle = Rectangle<Resizable::No, 1, 1, FrictionIs<DynamicFriction<>>>{};
         ASSERT_EQ(rectangle.friction, Real(0));
         EXPECT_NO_THROW(SetFriction(rectangle, Real(3)));
         EXPECT_EQ(rectangle.friction, Real(3));
@@ -121,13 +163,13 @@ TEST(Rectangle, SetFriction)
 TEST(Rectangle, SetRestitution)
 {
     {
-        auto rectangle = Rectangle<1, 1>{};
+        auto rectangle = Rectangle<Resizable::No, 1, 1>{};
         ASSERT_EQ(rectangle.restitution, Real(0));
         EXPECT_THROW(SetRestitution(rectangle, Real(3)), InvalidArgument);
         EXPECT_EQ(rectangle.restitution, Real(0));
     }
     {
-        auto rectangle = Rectangle<1, 1, RestitutionIs<DynamicRestitution<>>>{};
+        auto rectangle = Rectangle<Resizable::No, 1, 1, RestitutionIs<DynamicRestitution<>>>{};
         ASSERT_EQ(rectangle.restitution, Real(0));
         EXPECT_NO_THROW(SetRestitution(rectangle, Real(3)));
         EXPECT_EQ(rectangle.restitution, Real(3));

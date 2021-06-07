@@ -1793,7 +1793,7 @@ static void WorldStepBox2D(benchmark::State& state)
 static void CreateBodyWithOneShapePlayRho(benchmark::State& state)
 {
     const auto numBodies = state.range();
-    const auto shape = playrho::d2::Shape(playrho::d2::Rectangle<1, 1>{});
+    const auto shape = playrho::d2::Shape(playrho::d2::Rectangle<playrho::d2::Resizable::No, 1, 1>{});
     for (auto _ : state) {
         state.PauseTiming();
         playrho::d2::World world{
@@ -2136,8 +2136,7 @@ static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
 
     {
         const auto shapeId = world.CreateShape(playrho::d2::Shape(
-            playrho::d2::Rectangle<
-                1, 1,
+            playrho::d2::Rectangle<playrho::d2::Resizable::No, 1, 1,
                 playrho::shape_part::DensityIs<playrho::shape_part::StaticAreaDensity<5>>>{}));
 
         playrho::Length2 x(-7.0f * playrho::Meter, 0.75f * playrho::Meter);

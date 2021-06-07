@@ -202,20 +202,30 @@ struct SensorIs : virtual DefaultPolicies {
 
 namespace playrho::d2 {
 
-/// @brief Rectangle shape taking zero or more policy classes.
-template <int W, int H, // force break
+/// @brief Whether or not an associated shape is resizable.
+enum class Resizable {
+    No,
+    Yes,
+};
+
+template <Resizable R, int W = 0, int H = 0, // force break
           class P1 = shape_part::DefaultPolicyArgs, // force break
           class P2 = shape_part::DefaultPolicyArgs, // force break
           class P3 = shape_part::DefaultPolicyArgs, // force break
           class P4 = shape_part::DefaultPolicyArgs, // force break
           class P5 = shape_part::DefaultPolicyArgs, // force break
           class P6 = shape_part::DefaultPolicyArgs>
-struct Rectangle : shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Density, // force break
-                   shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Friction, // force break
-                   shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Restitution, // force break
-                   shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::VertexRadius, // force break
-                   shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Filter, // force break
-                   shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Sensor // force break
+class Rectangle;
+
+/// @brief A statically sized rectangle shape taking zero or more policy classes.
+template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+class Rectangle<Resizable::No, W, H, P1, P2, P3, P4, P5, P6> // break
+    : public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Density, // break
+      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Friction, // break
+      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Restitution, // break
+      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::VertexRadius, // break
+      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Filter, // break
+      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Sensor // break
 {
     /// @brief Normals of the rectangle.
     static constexpr auto normals = std::array<UnitVec, 4u>{
@@ -223,97 +233,262 @@ struct Rectangle : shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Density, 
 
     /// @brief Vertices of the rectangle.
     static constexpr auto vertices =
-        std::array<Length2, 4u>{Length2{+(W * Meter) / 2, -(H * Meter) / 2}, Length2{+(W * Meter) / 2, +(H * Meter) / 2},
-                                Length2{-(W * Meter) / 2, +(H * Meter) / 2}, Length2{-(W * Meter) / 2, -(H * Meter) / 2}};
+        std::array<Length2, 4u>{Length2{+(W * Meter) / 2, -(H* Meter) / 2}, //
+                                Length2{+(W * Meter) / 2, +(H* Meter) / 2}, //
+                                Length2{-(W * Meter) / 2, +(H* Meter) / 2}, //
+                                Length2{-(W * Meter) / 2, -(H* Meter) / 2}};
+
+public:
+    /// @brief Gets the dimensions of this rectangle.
+    /// @see SetDimensions.
+    constexpr Length2 GetDimensions() const noexcept
+    {
+        return Length2{GetX(vertices[0]) - GetX(vertices[2]),
+                       GetY(vertices[2]) - GetY(vertices[0])};
+    }
+
+    /// @brief Sets the dimensions of this rectangle.
+    /// @throws InvalidArgument If called to change the dimensions.
+    /// @see GetDimensions.
+    void SetDimensions(Length2 val)
+    {
+        if (GetDimensions() != val) {
+            throw InvalidArgument("changing dimensions not supported");
+        }
+    }
+
+    /// @brief Gets the x and y offset of this rectangle.
+    /// @see SetOffset.
+    Length2 GetOffset() const noexcept
+    {
+        return Length2{(GetX(vertices[0]) + GetX(vertices[2])) / 2,
+                       (GetY(vertices[0]) + GetY(vertices[2])) / 2};
+    }
+
+    /// @brief Sets the x and y offset of this rectangle.
+    /// @throws InvalidArgument If called to change the offset.
+    /// @see GetOffset.
+    void SetOffset(Length2 val)
+    {
+        if (GetOffset() != val) {
+            throw InvalidArgument("changing offset not supported");
+        }
+    }
+
+    /// @brief Gets this rectangle's vertices.
+    /// @see GetNormals.
+    const std::array<Length2, 4u>& GetVertices() const noexcept
+    {
+        return vertices;
+    }
+
+    /// @brief Gets this rectangle's normals.
+    /// @see GetVertices.
+    const std::array<UnitVec, 4u>& GetNormals() const noexcept
+    {
+        return normals;
+    }
 };
 
+/// @brief A dynamically sized rectangle shape taking zero or more policy classes.
 template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-constexpr Length GetWidth(const Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg)
+class Rectangle<Resizable::Yes, W, H, P1, P2, P3, P4, P5, P6> // break
+    : public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Density, // break
+      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Friction, // break
+      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Restitution, // break
+      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::VertexRadius, // break
+      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Filter, // break
+      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Sensor // break
 {
-    return GetX(arg.vertices[0]) - GetX(arg.vertices[2]);
+    /// @brief Normals of the rectangle.
+    static constexpr auto normals = std::array<UnitVec, 4u>{
+        UnitVec::GetRight(), UnitVec::GetTop(), UnitVec::GetLeft(), UnitVec::GetBottom()};
+
+    /// @brief Vertices of the rectangle.
+    std::array<Length2, 4u> vertices =
+        std::array<Length2, 4u>{Length2{+(W * Meter) / 2, -(H* Meter) / 2}, //
+                                Length2{+(W * Meter) / 2, +(H* Meter) / 2}, //
+                                Length2{-(W * Meter) / 2, +(H* Meter) / 2}, //
+                                Length2{-(W * Meter) / 2, -(H* Meter) / 2}};
+
+public:
+    Rectangle() = default;
+
+    /// @brief Initializing constructor.
+    Rectangle(Length width, Length height, Length2 offset = Length2{})
+        : vertices{Length2{+width / 2, -height / 2} + offset, //
+                   Length2{+width / 2, +height / 2} + offset, //
+                   Length2{-width / 2, +height / 2} + offset, //
+                   Length2{-width / 2, -height / 2} + offset}
+    {
+        // Intentionally empty.
+    }
+
+    /// @brief Gets the dimensions of this rectangle.
+    /// @see SetDimensions.
+    Length2 GetDimensions() const noexcept
+    {
+        return Length2{GetX(vertices[0]) - GetX(vertices[2]),
+                       GetY(vertices[2]) - GetY(vertices[0])};
+    }
+
+    /// @brief Sets the dimensions of this rectangle.
+    /// @see GetDimensions.
+    void SetDimensions(Length2 val)
+    {
+        if (GetDimensions() != val) {
+            const auto offset = GetOffset();
+            vertices = {Length2{+GetX(val) / 2, -GetY(val) / 2} + offset, //
+                        Length2{+GetX(val) / 2, +GetY(val) / 2} + offset, //
+                        Length2{-GetX(val) / 2, +GetY(val) / 2} + offset, //
+                        Length2{-GetX(val) / 2, -GetY(val) / 2} + offset};
+        }
+    }
+
+    /// @brief Gets the x and y offset of this rectangle.
+    /// @see SetOffset.
+    Length2 GetOffset() const noexcept
+    {
+        return Length2{(GetX(vertices[0]) + GetX(vertices[2])) / 2,
+                       (GetY(vertices[0]) + GetY(vertices[2])) / 2};
+    }
+
+    /// @brief Sets the x and y offset of this rectangle.
+    /// @see GetOffset.
+    void SetOffset(Length2 val)
+    {
+        if (GetOffset() != val) {
+            const auto dims = GetDimensions();
+            vertices = {Length2{+GetX(dims) / 2, -GetY(dims) / 2} + val, //
+                        Length2{+GetX(dims) / 2, +GetY(dims) / 2} + val, //
+                        Length2{-GetX(dims) / 2, +GetY(dims) / 2} + val, //
+                        Length2{-GetX(dims) / 2, -GetY(dims) / 2} + val};
+        }
+    }
+    /// @brief Gets this rectangle's vertices.
+    /// @see GetNormals, SetDimensions, SetOffset.
+    const std::array<Length2, 4u>& GetVertices() const noexcept
+    {
+        return vertices;
+    }
+
+    /// @brief Gets this rectangle's normals.
+    /// @see GetVertices.
+    const std::array<UnitVec, 4u>& GetNormals() const noexcept
+    {
+        return normals;
+    }
+};
+
+/// @brief Gets the rectangle's width and height dimensions.
+/// @relatedalso Rectangle
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+constexpr Length2 GetDimensions(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
+{
+    return arg.GetDimensions();
 }
 
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-constexpr Length GetHeight(const Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg)
+/// @brief Sets the rectangle's width and height dimensions.
+/// @relatedalso Rectangle
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+void SetDimensions(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Length2 value)
 {
-    return GetY(arg.vertices[2]) - GetY(arg.vertices[0]);
+    arg.SetDimensions(value);
+}
+
+/// @brief Gets the rectangle's x and y offset.
+/// @relatedalso Rectangle
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+constexpr Length2 GetOffset(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
+{
+    return arg.GetOffset();
+}
+
+/// @brief Sets the rectangle's x and y offset.
+/// @relatedalso Rectangle
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+void SetOffset(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Length2 value)
+{
+    arg.SetOffset(value);
 }
 
 /// @brief Gets the "child" count for the given shape configuration.
 /// @return 1.
 /// @relatedalso Rectangle
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-constexpr ChildCounter GetChildCount(const Rectangle<W, H, P1, P2, P3, P4, P5, P6>&) noexcept
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+constexpr ChildCounter GetChildCount(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>&) noexcept
 {
     return 1;
 }
 
 /// @brief Gets the "child" shape for the given shape configuration.
 /// @relatedalso Rectangle
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-DistanceProxy GetChild(const Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg, ChildCounter index)
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+DistanceProxy GetChild(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, ChildCounter index)
 {
     if (index != 0) {
         throw InvalidArgument("only index of 0 is supported");
     }
-    return DistanceProxy{arg.vertexRadius, static_cast<VertexCounter>(size(arg.vertices)),
-                         data(arg.vertices), data(arg.normals)};
+    return DistanceProxy{arg.vertexRadius, static_cast<VertexCounter>(size(arg.GetVertices())),
+                         data(arg.GetVertices()), data(arg.GetNormals())};
 }
 
 /// @brief Gets the density of the given shape configuration.
 /// @relatedalso Rectangle
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
 constexpr NonNegative<AreaDensity>
-GetDensity(const Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
+GetDensity(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
 {
     return arg.density;
 }
 
 /// @brief Gets the restitution of the given shape configuration.
 /// @relatedalso Rectangle
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-constexpr Finite<Real> GetRestitution(const Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+constexpr Finite<Real>
+GetRestitution(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
 {
     return arg.restitution;
 }
 
 /// @brief Gets the friction of the given shape configuration.
 /// @relatedalso Rectangle
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-constexpr NonNegative<Real> GetFriction(const Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+constexpr NonNegative<Real>
+GetFriction(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
 {
     return arg.friction;
 }
 
 /// @brief Gets the filter of the given shape configuration.
 /// @relatedalso Rectangle
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-constexpr Filter GetFilter(const Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+constexpr Filter GetFilter(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
 {
     return arg.filter;
 }
 
 /// @brief Gets the is-sensor state of the given shape configuration.
 /// @relatedalso Rectangle
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-constexpr bool IsSensor(const Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+constexpr bool IsSensor(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
 {
     return arg.sensor;
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
 /// @relatedalso Rectangle
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
 constexpr NonNegative<Length>
-GetVertexRadius(const Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
+GetVertexRadius(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
 {
     return arg.vertexRadius;
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
 /// @relatedalso Rectangle
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-NonNegative<Length> GetVertexRadius(const Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg,
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+NonNegative<Length> GetVertexRadius(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg,
                                     ChildCounter) noexcept
 {
     return GetVertexRadius(arg);
@@ -321,19 +496,19 @@ NonNegative<Length> GetVertexRadius(const Rectangle<W, H, P1, P2, P3, P4, P5, P6
 
 /// @brief Gets the mass data for the given shape configuration.
 /// @relatedalso Rectangle
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-MassData GetMassData(const Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+MassData GetMassData(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
 {
     return playrho::d2::GetMassData(arg.vertexRadius, arg.density,
-                                    Span<const Length2>(arg.vertices));
+                                    Span<const Length2>(arg.GetVertices()));
 }
 
 /// @brief Transforms the given polygon configuration's vertices by the given
 ///   transformation matrix.
 /// @relatedalso Rectangle
 /// @see https://en.wikipedia.org/wiki/Transformation_matrix
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-void Transform(Rectangle<W, H, P1, P2, P3, P4, P5, P6>&, const Mat22& m)
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+void Transform(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>&, const Mat22& m)
 {
     if (m != GetIdentity<Mat22>()) {
         throw InvalidArgument("transformation by non-identity matrix not supported");
@@ -342,10 +517,11 @@ void Transform(Rectangle<W, H, P1, P2, P3, P4, P5, P6>&, const Mat22& m)
 
 /// @brief Filter setter that throws unless given the same value as current.
 /// @relatedalso Rectangle
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
 std::enable_if_t<
-    std::is_const_v<decltype(std::declval<Rectangle<W, H, P1, P2, P3, P4, P5, P6>>().filter)>, void>
-SetFilter(Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg, Filter value)
+    std::is_const_v<decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>().filter)>,
+    void>
+SetFilter(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Filter value)
 {
     if (value != GetFilter(arg)) {
         throw InvalidArgument("SetFilter by non-equivalent filter not supported");
@@ -354,21 +530,22 @@ SetFilter(Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg, Filter value)
 
 /// @brief Filter setter.
 /// @relatedalso Rectangle
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
 std::enable_if_t<
-    !std::is_const_v<decltype(std::declval<Rectangle<W, H, P1, P2, P3, P4, P5, P6>>().filter)>,
+    !std::is_const_v<decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>().filter)>,
     void>
-SetFilter(Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg, Filter value)
+SetFilter(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Filter value)
 {
     arg.filter = value;
 }
 
 /// @brief Sensor setter that throws unless given the same value as current.
 /// @relatedalso Rectangle
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
 std::enable_if_t<
-    std::is_const_v<decltype(std::declval<Rectangle<W, H, P1, P2, P3, P4, P5, P6>>().sensor)>, void>
-SetSensor(Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg, bool value)
+    std::is_const_v<decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>().sensor)>,
+    void>
+SetSensor(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, bool value)
 {
     if (value != IsSensor(arg)) {
         throw InvalidArgument("SetSensor by non-equivalent value not supported");
@@ -377,22 +554,22 @@ SetSensor(Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg, bool value)
 
 /// @brief Sensor setter.
 /// @relatedalso Rectangle
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
 std::enable_if_t<
-    !std::is_const_v<decltype(std::declval<Rectangle<W, H, P1, P2, P3, P4, P5, P6>>().sensor)>,
+    !std::is_const_v<decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>().sensor)>,
     void>
-SetSensor(Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg, bool value)
+SetSensor(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, bool value)
 {
     arg.sensor = value;
 }
 
 /// @brief Friction setter that throws unless given the same value as current.
 /// @relatedalso Rectangle
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
 std::enable_if_t<
-    std::is_const_v<decltype(std::declval<Rectangle<W, H, P1, P2, P3, P4, P5, P6>>().friction)>,
+    std::is_const_v<decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>().friction)>,
     void>
-SetFriction(Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg, Real value)
+SetFriction(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Real value)
 {
     if (value != GetFriction(arg)) {
         throw InvalidArgument("SetFriction by non-equivalent value not supported");
@@ -401,22 +578,22 @@ SetFriction(Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg, Real value)
 
 /// @brief Sets friction.
 /// @relatedalso Rectangle
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
 std::enable_if_t<
-    !std::is_const_v<decltype(std::declval<Rectangle<W, H, P1, P2, P3, P4, P5, P6>>().friction)>,
+    !std::is_const_v<decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>().friction)>,
     void>
-SetFriction(Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg, Real value)
+SetFriction(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Real value)
 {
     arg.friction = value;
 }
 
 /// @brief Restitution setter that throws unless given the same value as current.
 /// @relatedalso Rectangle
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-std::enable_if_t<
-    std::is_const_v<decltype(std::declval<Rectangle<W, H, P1, P2, P3, P4, P5, P6>>().restitution)>,
-    void>
-SetRestitution(Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg, Real value)
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+std::enable_if_t<std::is_const_v<decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>()
+                                              .restitution)>,
+                 void>
+SetRestitution(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Real value)
 {
     if (value != GetRestitution(arg)) {
         throw InvalidArgument("SetRestitution by non-equivalent value not supported");
@@ -425,24 +602,27 @@ SetRestitution(Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg, Real value)
 
 /// @brief Sets restitution.
 /// @relatedalso Rectangle
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+template <Resizable R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
 std::enable_if_t<
-    !std::is_const_v<decltype(std::declval<Rectangle<W, H, P1, P2, P3, P4, P5, P6>>().restitution)>,
+    !std::is_const_v<
+        decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>().restitution)>,
     void>
-SetRestitution(Rectangle<W, H, P1, P2, P3, P4, P5, P6>& arg, Real value)
+SetRestitution(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Real value)
 {
     arg.restitution = value;
 }
 
 /// @brief Equality operator.
 /// @relatedalso Rectangle
-template <int W1, int H1, class P11, class P12, class P13, class P14, class P15, class P16, //
-          int W2, int H2, class P21, class P22, class P23, class P24, class P25, class P26>
-bool operator==(const Rectangle<W1, H1, P11, P12, P13, P14, P15, P16>& lhs,
-                const Rectangle<W2, H2, P21, P22, P23, P24, P25, P26>& rhs) noexcept
+template <Resizable R1, int W1, int H1, //
+          class P11, class P12, class P13, class P14, class P15, class P16, //
+          Resizable R2, int W2, int H2, //
+          class P21, class P22, class P23, class P24, class P25, class P26>
+bool operator==(const Rectangle<R1, W1, H1, P11, P12, P13, P14, P15, P16>& lhs,
+                const Rectangle<R2, W2, H2, P21, P22, P23, P24, P25, P26>& rhs) noexcept
 {
-    return GetWidth(lhs) == GetWidth(rhs) && // force break
-           GetHeight(lhs) == GetHeight(rhs) && // force break
+    return GetDimensions(lhs) == GetDimensions(rhs) && // force break
+           GetOffset(lhs) == GetOffset(rhs) && // force break
            GetDensity(lhs) == GetDensity(rhs) && // force break
            GetFriction(lhs) == GetFriction(rhs) && // force break
            GetRestitution(lhs) == GetRestitution(rhs) && // force break
@@ -453,10 +633,12 @@ bool operator==(const Rectangle<W1, H1, P11, P12, P13, P14, P15, P16>& lhs,
 
 /// @brief Inequality operator.
 /// @relatedalso Rectangle
-template <int W1, int H1, class P11, class P12, class P13, class P14, class P15, class P16, //
-          int W2, int H2, class P21, class P22, class P23, class P24, class P25, class P26>
-bool operator!=(const Rectangle<W1, H1, P11, P12, P13, P14, P15>& lhs,
-                const Rectangle<W2, H2, P21, P22, P23, P24, P25>& rhs) noexcept
+template <Resizable R1, int W1, int H1, //
+          class P11, class P12, class P13, class P14, class P15, class P16, //
+          Resizable R2, int W2, int H2, //
+          class P21, class P22, class P23, class P24, class P25, class P26>
+bool operator!=(const Rectangle<R1, W1, H1, P11, P12, P13, P14, P15>& lhs,
+                const Rectangle<R2, W2, H2, P21, P22, P23, P24, P25>& rhs) noexcept
 {
     return !(lhs == rhs);
 }
