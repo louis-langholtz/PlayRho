@@ -95,6 +95,13 @@ struct StaticLinearSlopVertexRadius {
     static constexpr auto vertexRadius = DefaultLinearSlop * Real(V);
 };
 
+/// @brief Dynamic vertex radius policy class.
+template <int V = 2>
+struct DynamicVertexRadius {
+    /// @brief Vertex radius of the shape.
+    Length vertexRadius = DefaultLinearSlop * Real(V);
+};
+
 /// @brief Static filter policy class.
 template <Filter::bits_type CategoryBits = 1, Filter::bits_type MaskBits = 0xFFFF,
           Filter::index_type GroupIndex = 0>
