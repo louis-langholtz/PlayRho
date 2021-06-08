@@ -510,16 +510,19 @@ private:
     enum Flag: FlagsType
     {
         /// New fixture.
-        e_newFixture    = 0x0001,
+        e_newFixture = 0x0001,
 
         /// Locked.
-        e_locked        = 0x0002,
+        e_locked = 0x0002,
 
         /// Sub-stepping.
-        e_substepping   = 0x0020,
+        e_substepping = 0x0020,
 
         /// Step complete. @details Used for sub-stepping. @see e_substepping.
-        e_stepComplete  = 0x0040,
+        e_stepComplete = 0x0040,
+
+        /// Needs contact filtering.
+        e_needsContactFiltering = 0x0080,
     };
 
     /// @brief Contact key queue type alias.
@@ -692,8 +695,8 @@ private:
     /// @brief Destroy contacts statistics.
     struct DestroyContactsStats
     {
-        ContactCounter ignored = 0; ///< Ignored.
-        ContactCounter erased = 0; ///< Erased.
+        ContactCounter overlap = 0; ///< Erased by not overlapping.
+        ContactCounter filter = 0; ///< Erased due to filtering.
     };
 
     /// @brief Contact TOI data.

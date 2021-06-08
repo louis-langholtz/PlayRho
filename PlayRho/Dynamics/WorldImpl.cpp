@@ -77,6 +77,11 @@
 #include <future>
 #endif
 
+// Enable this macro to enable sorting ID lists like m_contacts. This results in more linearly
+// accessed memory. Benchmarking hasn't found a significant performance improvement however but
+// it does seem to decrease performance in smaller simulations.
+//#define DO_SORT_ID_LISTS
+
 using std::for_each;
 using std::remove;
 using std::sort;
@@ -373,10 +378,11 @@ inline bool IsValidForTime(TOIOutput::State state) noexcept
     return state == TOIOutput::e_touching;
 }
 
-void FlagForFiltering(ArrayAllocator<Contact>& contactBuffer, BodyID bodyA,
+bool FlagForFiltering(ArrayAllocator<Contact>& contactBuffer, BodyID bodyA,
                       const std::vector<KeyedContactPtr>& contactsBodyB,
                       BodyID bodyB) noexcept
 {
+    auto anyFlagged = false;
     for (const auto& ci: contactsBodyB) {
         auto& contact = contactBuffer[to_underlying(std::get<ContactID>(ci))];
         const auto bA = contact.GetBodyA();
@@ -386,8 +392,10 @@ void FlagForFiltering(ArrayAllocator<Contact>& contactBuffer, BodyID bodyA,
             // Flag the contact for filtering at the next time step (where either
             // body is awake).
             contact.FlagForFiltering();
+            anyFlagged = true;
         }
     }
+    return anyFlagged;
 }
 
 /// @brief Gets the update configuration from the given step configuration data.
@@ -831,7 +839,9 @@ void WorldImpl::Add(JointID id, bool flagForFiltering)
         m_bodyJoints[to_underlying(bodyB)].push_back(std::make_pair(bodyA, id));
     }
     if (flagForFiltering && (bodyA != InvalidBodyID) && (bodyB != InvalidBodyID)) {
-        FlagForFiltering(m_contactBuffer, bodyA, m_bodyContacts[to_underlying(bodyB)], bodyB);
+        if (FlagForFiltering(m_contactBuffer, bodyA, m_bodyContacts[to_underlying(bodyB)], bodyB)) {
+            m_flags |= e_needsContactFiltering;
+        }
     }
 }
 
@@ -845,7 +855,9 @@ void WorldImpl::Remove(JointID id) noexcept
 
     // If the joint prevented collisions, then flag any contacts for filtering.
     if ((!collideConnected) && (bodyIdA != InvalidBodyID) && (bodyIdB != InvalidBodyID)) {
-        FlagForFiltering(m_contactBuffer, bodyIdA, m_bodyContacts[to_underlying(bodyIdB)], bodyIdB);
+        if (FlagForFiltering(m_contactBuffer, bodyIdA, m_bodyContacts[to_underlying(bodyIdB)], bodyIdB)) {
+            m_flags |= e_needsContactFiltering;
+        }
     }
 
     // Wake up connected bodies.
@@ -957,6 +969,7 @@ void WorldImpl::SetShape(ShapeID id, const Shape& def)
         }
     }
     if (GetFilter(shape) != GetFilter(def)) {
+        auto anyNeedFiltering = false;
         for (auto& c: m_contactBuffer) {
             const auto shapeIdA = GetShapeA(c);
             const auto shapeIdB = GetShapeB(c);
@@ -964,7 +977,11 @@ void WorldImpl::SetShape(ShapeID id, const Shape& def)
                 c.FlagForFiltering();
                 m_bodyBuffer[to_underlying(c.GetBodyA())].SetAwake();
                 m_bodyBuffer[to_underlying(c.GetBodyB())].SetAwake();
+                anyNeedFiltering = true;
             }
+        }
+        if (anyNeedFiltering) {
+            m_flags |= e_needsContactFiltering;
         }
         AddProxies(FindProxies(m_tree, id));
     }
@@ -1017,6 +1034,9 @@ void WorldImpl::AddToIsland(Island& island, BodyID seedID,
     auto stack = BodyStack{std::move(bodies)};
     m_islandedBodies[to_underlying(seedID)] = true;
     AddToIsland(island, stack, remNumBodies, remNumContacts, remNumJoints);
+#if DO_SORT_ID_LISTS
+    Sort(island);
+#endif
 }
 
 void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
@@ -1024,8 +1044,7 @@ void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
                             ContactCounter& remNumContacts,
                             JointCounter& remNumJoints)
 {
-    while (!empty(stack))
-    {
+    while (!empty(stack)) {
         // Grab the next body off the stack and add it to the island.
         const auto bodyID = stack.top();
         stack.pop();
@@ -1039,8 +1058,7 @@ void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
 
         // Don't propagate islands across bodies that can't have a velocity (static bodies).
         // This keeps islands smaller and helps with isolating separable collision clusters.
-        if (!body.IsSpeedable())
-        {
+        if (!body.IsSpeedable()) {
             continue;
         }
 
@@ -1610,6 +1628,9 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
         contactsSkipped += procOut.contactsSkipped;
     }
 
+#if DO_SORT_ID_LISTS
+    Sort(m_island);
+#endif
     RemoveUnspeedablesFromIslanded(m_island.bodies, m_bodyBuffer, m_islandedBodies);
 
     // Now solve for remainder of time step.
@@ -1856,7 +1877,7 @@ StepStats WorldImpl::Step(const StepConf& conf)
         {
             // Note: this may update bodies (in addition to the contacts container).
             const auto destroyStats = DestroyContacts(m_contacts);
-            stepStats.pre.destroyed = destroyStats.erased;
+            stepStats.pre.destroyed = destroyStats.overlap + destroyStats.filter;
         }
 
         if (HasNewFixtures()) {
@@ -1970,46 +1991,44 @@ bool WorldImpl::IsDestroyed(ContactID id) const noexcept
 
 WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(Contacts& contacts)
 {
-    const auto beforeSize = size(contacts);
-    contacts.erase(std::remove_if(begin(contacts), end(contacts), [&](const auto& c)
-    {
+    auto stats = DestroyContactsStats{};
+    const auto beforeOverlapSize = size(contacts);
+    contacts.erase(std::remove_if(begin(contacts), end(contacts), [&](const auto& c){
         const auto key = std::get<ContactKey>(c);
-        const auto contactID = std::get<ContactID>(c);
-
-        if (!TestOverlap(m_tree, key.GetMin(), key.GetMax()))
-        {
+        if (!TestOverlap(m_tree, key.GetMin(), key.GetMax())) {
             // Destroy contacts that cease to overlap in the broad-phase.
-            InternalDestroy(contactID);
+            InternalDestroy(std::get<ContactID>(c));
             return true;
         }
-
-        // Is this contact flagged for filtering?
-        auto& contact = m_contactBuffer[to_underlying(contactID)];
-        if (contact.NeedsFiltering())
-        {
-            const auto bodyIdA = contact.GetBodyA();
-            const auto bodyIdB = contact.GetBodyB();
-            const auto& bodyA = m_bodyBuffer[to_underlying(bodyIdA)];
-            const auto& bodyB = m_bodyBuffer[to_underlying(bodyIdB)];
-            const auto& shapeA = m_shapeBuffer[to_underlying(contact.GetShapeA())];
-            const auto& shapeB = m_shapeBuffer[to_underlying(contact.GetShapeB())];
-            if (!EitherIsAccelerable(bodyA, bodyB) ||
-                !ShouldCollide(m_jointBuffer, m_bodyJoints, bodyIdA, bodyIdB) ||
-                !ShouldCollide(shapeA, shapeB))
-            {
-                InternalDestroy(contactID);
-                return true;
-            }
-            contact.UnflagForFiltering();
-        }
-
         return false;
     }), end(contacts));
-    const auto afterSize = size(contacts);
-
-    auto stats = DestroyContactsStats{};
-    stats.ignored = static_cast<ContactCounter>(afterSize);
-    stats.erased = static_cast<ContactCounter>(beforeSize - afterSize);
+    const auto afterOverlapSize = size(contacts);
+    stats.overlap = static_cast<ContactCounter>(beforeOverlapSize - afterOverlapSize);
+    if (m_flags & e_needsContactFiltering) {
+        contacts.erase(std::remove_if(begin(contacts), end(contacts), [&](const auto& c){
+            const auto contactID = std::get<ContactID>(c);
+            auto& contact = m_contactBuffer[to_underlying(contactID)];
+            if (contact.NeedsFiltering()) {
+                const auto bodyIdA = contact.GetBodyA();
+                const auto bodyIdB = contact.GetBodyB();
+                const auto& bodyA = m_bodyBuffer[to_underlying(bodyIdA)];
+                const auto& bodyB = m_bodyBuffer[to_underlying(bodyIdB)];
+                const auto& shapeA = m_shapeBuffer[to_underlying(contact.GetShapeA())];
+                const auto& shapeB = m_shapeBuffer[to_underlying(contact.GetShapeB())];
+                if (!EitherIsAccelerable(bodyA, bodyB) ||
+                    !ShouldCollide(m_jointBuffer, m_bodyJoints, bodyIdA, bodyIdB) ||
+                    !ShouldCollide(shapeA, shapeB)) {
+                    InternalDestroy(contactID);
+                    return true;
+                }
+                contact.UnflagForFiltering();
+            }
+            return false;
+        }), end(contacts));
+        const auto afterFilteringSize = size(contacts);
+        stats.filter = static_cast<ContactCounter>(afterOverlapSize - afterFilteringSize);
+        m_flags &= ~e_needsContactFiltering;
+    }
     return stats;
 }
 
@@ -2038,10 +2057,6 @@ WorldImpl::UpdateContactsStats WorldImpl::UpdateContacts(const StepConf& conf)
     for_each(/*execution::par_unseq,*/ begin(m_contacts), end(m_contacts), [&](const auto& c) {
         const auto contactID = std::get<ContactID>(c);
         auto& contact = m_contactBuffer[to_underlying(contactID)];
-#if 0
-        Update(contact, updateConf);
-        ++updated;
-#else
         const auto& bodyA = m_bodyBuffer[to_underlying(contact.GetBodyA())];
         const auto& bodyB = m_bodyBuffer[to_underlying(contact.GetBodyB())];
 
@@ -2049,8 +2064,7 @@ WorldImpl::UpdateContactsStats WorldImpl::UpdateContacts(const StepConf& conf)
         // At least one body must be collidable
         assert(!bodyA.IsAwake() || bodyA.IsSpeedable());
         assert(!bodyB.IsAwake() || bodyB.IsSpeedable());
-        if (!bodyA.IsAwake() && !bodyB.IsAwake())
-        {
+        if (!bodyA.IsAwake() && !bodyB.IsAwake()) {
             // This sometimes fails... is it important?
             //assert(!contact.HasValidToi());
             ++ignored;
@@ -2069,8 +2083,7 @@ WorldImpl::UpdateContactsStats WorldImpl::UpdateContacts(const StepConf& conf)
         //   - The "maxCirclesRatio" per-step configuration state if contact IS NOT for sensor.
         //   - The "maxDistanceIters" per-step configuration state if contact IS for sensor.
         //
-        if (contact.NeedsUpdating())
-        {
+        if (contact.NeedsUpdating()) {
             // The following may call listener but is otherwise thread-safe.
 #if defined(DO_THREADED)
             contactsNeedingUpdate.push_back(contactID);
@@ -2081,39 +2094,32 @@ WorldImpl::UpdateContactsStats WorldImpl::UpdateContacts(const StepConf& conf)
 #endif
         	++updated;
         }
-        else
-        {
+        else {
             ++skipped;
         }
-#endif
     });
     
 #if defined(DO_THREADED)
     auto numJobs = size(contactsNeedingUpdate);
     const auto jobsPerCore = numJobs / 4;
-    for (auto i = decltype(numJobs){0}; numJobs > 0 && i < 3; ++i)
-    {
+    for (auto i = decltype(numJobs){0}; numJobs > 0 && i < 3; ++i) {
         futures.push_back(std::async(std::launch::async, [=]{
             const auto offset = jobsPerCore * i;
-            for (auto j = decltype(jobsPerCore){0}; j < jobsPerCore; ++j)
-            {
+            for (auto j = decltype(jobsPerCore){0}; j < jobsPerCore; ++j) {
 	            Update(contactsNeedingUpdate[offset + j], updateConf);
             }
         }));
         numJobs -= jobsPerCore;
     }
-    if (numJobs > 0)
-    {
+    if (numJobs > 0) {
         futures.push_back(std::async(std::launch::async, [=]{
             const auto offset = jobsPerCore * 3;
-            for (auto j = decltype(numJobs){0}; j < numJobs; ++j)
-            {
+            for (auto j = decltype(numJobs){0}; j < numJobs; ++j) {
                 Update(contactsNeedingUpdate[offset + j], updateConf);
             }
         }));
     }
-    for (auto&& future: futures)
-    {
+    for (auto&& future: futures) {
         future.get();
     }
 #endif
@@ -2155,9 +2161,17 @@ ContactCounter WorldImpl::FindNewContacts()
     for_each(cbegin(m_proxyKeys), cend(m_proxyKeys), [&](ContactKey key) {
         Add(key);
     });
-    m_islandedContacts.resize(size(m_contactBuffer));
     const auto numContactsAfter = size(m_contacts);
-    return static_cast<ContactCounter>(numContactsAfter - numContactsBefore);
+    m_islandedContacts.resize(numContactsAfter);
+    const auto numContactsAdded = numContactsAfter - numContactsBefore;
+#if DO_SORT_ID_LISTS
+    if (numContactsAdded > 0u) {
+        sort(begin(m_contacts), end(m_contacts), [](const KeyedContactPtr& a, const KeyedContactPtr& b){
+            return std::get<ContactID>(a) < std::get<ContactID>(b);
+        });
+    }
+#endif
+    return static_cast<ContactCounter>(numContactsAdded);
 }
 
 bool WorldImpl::Add(ContactKey key)
