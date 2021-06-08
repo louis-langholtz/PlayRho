@@ -60,6 +60,21 @@ struct IsIterableImpl<T, std::void_t<
     std::true_type
 {};
 
+/// @brief Low-level implementation of the is-reverse-iterable default value trait.
+template<class T, class = void>
+struct IsReverseIterableImpl: std::false_type {};
+
+/// @brief Low-level implementation of the is-reverse-iterable true value trait.
+template<class T>
+struct IsReverseIterableImpl<T, std::void_t<
+    decltype(rbegin(std::declval<T>())),
+    decltype(rend(std::declval<T>())),
+    decltype(++std::declval<decltype(rbegin(std::declval<T&>()))&>()),
+    decltype(*rbegin(std::declval<T>()))
+    >>:
+    std::true_type
+{};
+
 /// @brief Gets the maximum size of the given container.
 template <class T>
 constexpr auto max_size(const T& arg) -> decltype(arg.max_size())
@@ -223,6 +238,40 @@ struct IsArithmetic<T, std::void_t<
 /// @brief Determines whether the given type is an iterable type.
 template<class T>
 using IsIterable = typename detail::IsIterableImpl<T>;
+
+/// @brief Determines whether the given type is a reverse iterable type.
+template<class T>
+using IsReverseIterable = typename detail::IsReverseIterableImpl<T>;
+
+/// @brief Wrapper for reversing ranged-for loop ordering.
+/// @warning This won't lifetime extend the iterable variable!
+/// @see https://stackoverflow.com/a/28139075/7410358
+template <typename T>
+struct ReversionWrapper {
+    T& iterable;
+};
+
+/// @brief Begin function for getting a reversed order iterator.
+template <typename T>
+auto begin(ReversionWrapper<T> w)
+{
+    return std::rbegin(w.iterable);
+}
+
+/// @brief End function for getting a reversed order iterator.
+template <typename T>
+auto end(ReversionWrapper<T> w)
+{
+    return std::rend(w.iterable);
+}
+
+/// @brief Gets a reversed order iterated wrapper.
+/// @see https://stackoverflow.com/a/28139075/7410358
+template <typename T>
+std::enable_if_t<IsReverseIterable<T>::value, ReversionWrapper<T>> Reverse(T&& iterable)
+{
+    return { iterable };
+}
 
 /// @brief Has-type trait template class.
 /// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
