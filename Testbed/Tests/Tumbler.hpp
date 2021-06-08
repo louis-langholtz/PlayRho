@@ -29,7 +29,7 @@ namespace testbed {
 class Tumbler : public Test
 {
 public:
-    static constexpr auto Count = 800;
+    static constexpr auto Count = 1600;
     
     Tumbler()
     {
@@ -71,12 +71,15 @@ public:
         });
         RegisterForKey(GLFW_KEY_C, GLFW_PRESS, 0, "Clear and re-emit shapes.", [&](KeyActionMods) {
             std::vector<BodyID> bodies;
-            for (const auto& b: GetBodies(GetWorld())) {
-                if ((b.get() < m_tumblee.size()) && m_tumblee[b.get()]) {
-                    bodies.push_back(b);
+            for (auto&& b: GetBodies(GetWorld())) {
+                const auto shapes = GetShapes(GetWorld(), b);
+                if (size(shapes) == 1u) {
+                    if (const auto shapeId = shapes.front(); shapeId == m_disk || shapeId == m_square) {
+                        bodies.push_back(b);
+                    }
                 }
             }
-            for (const auto& b: bodies) {
+            for (auto&& b: Reverse(bodies)) {
                 Destroy(GetWorld(), b);
             }
             m_count = 0;
@@ -132,8 +135,6 @@ public:
     {
         const auto b = CreateBody(GetWorld(), BodyConf{}.UseType(BodyType::Dynamic).UseLocation(at)
                                           .UseLinearAcceleration(GetGravity()));
-        m_tumblee.resize(b.get() + 1u);
-        m_tumblee[b.get()] = true;
         Attach(GetWorld(), b, m_shape);
     }
 
@@ -156,7 +157,6 @@ public:
     ShapeID m_disk = InvalidShapeID;
     ShapeID m_shape = InvalidShapeID;
     int m_count = 0;
-    std::vector<bool> m_tumblee;
 };
 
 } // namespace testbed
