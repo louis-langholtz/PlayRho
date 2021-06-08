@@ -60,6 +60,10 @@ void Reserve(Island& island, BodyCounter bodies, ContactCounter contacts, JointC
 /// @relatedalso Island
 void Clear(Island& island) noexcept;
 
+/// @brief Sorts the island containers.
+/// @relatedalso Island
+void Sort(Island& island) noexcept;
+
 /// @brief Determines whether the given island is full of bodies.
 /// @relatedalso Island
 inline bool IsFullOfBodies(const Island& island)
