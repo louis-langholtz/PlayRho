@@ -2309,7 +2309,7 @@ private:
                                                 playrho::BodyID turn);
     static playrho::ShapeID CreateSquareShape(playrho::d2::World& world, playrho::Length squareLen);
 
-    playrho::d2::World m_world{playrho::d2::WorldConf{}.UseContactCapacity(9600u)};
+    playrho::d2::World m_world{playrho::d2::WorldConf{}.UseContactCapacity(19200u /*9600u*/)};
     playrho::StepConf m_stepConf;
     playrho::Length m_squareLen = 0.25f * playrho::Meter; // full width & height unlike Box2D!!
     playrho::ShapeID m_squareId = CreateSquareShape(m_world, m_squareLen);
