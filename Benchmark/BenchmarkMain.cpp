@@ -47,6 +47,8 @@
 #include <optional>
 #include <type_traits>
 #include <functional>
+#include <chrono>
+#include <thread>
 
 // #define BENCHMARK_GCDISPATCH
 #ifdef BENCHMARK_GCDISPATCH
@@ -1591,7 +1593,6 @@ static void ManifoldForTwoSquares1(benchmark::State& state)
     //       +
 
     for (auto _ : state) {
-        // CollideShapes(GetChild(shape, 0), xfm0, GetChild(shape, 0), xfm1);
         benchmark::DoNotOptimize(
             playrho::d2::CollideShapes(GetChild(shape, 0), xfm0, GetChild(shape, 0), xfm1));
     }
@@ -1626,7 +1627,6 @@ static void ManifoldForTwoSquares2(benchmark::State& state)
     //   +-------2
     //
     for (auto _ : state) {
-        // CollideShapes(GetChild(shape0, 0), xfm0, GetChild(shape1, 0), xfm1);
         benchmark::DoNotOptimize(
             CollideShapes(GetChild(shape0, 0), xfm0, GetChild(shape1, 0), xfm1));
     }
@@ -2295,10 +2295,10 @@ static void TilesRestOneGroundBox2D(benchmark::State& state)
 }
 #endif // BENCHMARK_BOX2D
 
-class Tumbler
+class TumblerPlayRho
 {
 public:
-    Tumbler();
+    TumblerPlayRho();
     void Step();
     void AddSquare();
     bool IsWithin(const playrho::d2::AABB& aabb) const;
@@ -2309,20 +2309,43 @@ private:
                                                 playrho::BodyID turn);
     static playrho::ShapeID CreateSquareShape(playrho::d2::World& world, playrho::Length squareLen);
 
-    playrho::d2::World m_world;
+    playrho::d2::World m_world{playrho::d2::WorldConf{}.UseContactCapacity(9600u)};
     playrho::StepConf m_stepConf;
-    playrho::Length m_squareLen = 0.125f * playrho::Meter;
+    playrho::Length m_squareLen = 0.25f * playrho::Meter; // full width & height unlike Box2D!!
     playrho::ShapeID m_squareId = CreateSquareShape(m_world, m_squareLen);
 };
 
-Tumbler::Tumbler()
+TumblerPlayRho::TumblerPlayRho()
 {
     const auto g = CreateBody(m_world, playrho::d2::BodyConf{}.UseType(playrho::BodyType::Static));
     const auto b = CreateEnclosure(m_world);
     CreateRevoluteJoint(m_world, g, b);
+
+    constexpr auto linearSlop = 0.005f * playrho::Meter;
+    constexpr auto angularSlop = (2.0f / 180.0f * playrho::Pi) * playrho::Radian;
+
+    auto step = playrho::StepConf{};
+    step.deltaTime = playrho::Second / 60;
+    step.linearSlop = linearSlop;
+    step.angularSlop = angularSlop;
+    step.regMinSeparation = -linearSlop * 3;
+    step.toiMinSeparation = -linearSlop * 1.5f;
+    step.targetDepth = linearSlop * 3;
+    step.tolerance = linearSlop / 4;
+    step.maxLinearCorrection = 0.2f * playrho::Meter;
+    step.maxAngularCorrection = (8.0f / 180.0f * playrho::Pi) * playrho::Radian;
+    step.aabbExtension = 0.1f * playrho::Meter;
+    step.displaceMultiplier = 4.0f;
+    step.maxTranslation = 2.0f * playrho::Meter;
+    step.maxRotation = playrho::Pi * playrho::Real(0.5f) * playrho::Radian;
+    step.velocityThreshold = 1.0f * playrho::MeterPerSecond;
+    step.maxSubSteps = std::uint8_t{8};
+    step.regPositionIters = 3;
+    step.toiVelocityIters = 8;
+    m_stepConf = step;
 }
 
-playrho::BodyID Tumbler::CreateEnclosure(playrho::d2::World& world)
+playrho::BodyID TumblerPlayRho::CreateEnclosure(playrho::d2::World& world)
 {
     auto b = playrho::d2::Body{playrho::d2::BodyConf{}
                                    .UseType(playrho::BodyType::Dynamic)
@@ -2346,18 +2369,18 @@ playrho::BodyID Tumbler::CreateEnclosure(playrho::d2::World& world)
     return CreateBody(world, b);
 }
 
-playrho::ShapeID Tumbler::CreateSquareShape(playrho::d2::World& world, playrho::Length squareLen)
+playrho::ShapeID TumblerPlayRho::CreateSquareShape(playrho::d2::World& world,
+                                                   playrho::Length squareLen)
 {
     auto conf = playrho::d2::Rectangle<
         playrho::d2::Geometry::Mutable, 0, 0,
-        playrho::shape_part::DensityIs<playrho::shape_part::DynamicAreaDensity<>>>{};
-    conf.density = playrho::Real(0.1) * playrho::KilogramPerSquareMeter;
+        playrho::shape_part::DensityIs<playrho::shape_part::StaticAreaDensity<1>>>{};
     conf.SetDimensions(playrho::Length2{squareLen, squareLen});
     return CreateShape(world, playrho::d2::Shape{conf});
 }
 
-playrho::JointID Tumbler::CreateRevoluteJoint(playrho::d2::World& world, playrho::BodyID stable,
-                                              playrho::BodyID turn)
+playrho::JointID TumblerPlayRho::CreateRevoluteJoint(playrho::d2::World& world,
+                                                     playrho::BodyID stable, playrho::BodyID turn)
 {
     playrho::d2::RevoluteJointConf jd;
     jd.bodyA = stable;
@@ -2365,21 +2388,18 @@ playrho::JointID Tumbler::CreateRevoluteJoint(playrho::d2::World& world, playrho
     jd.localAnchorA = playrho::Vec2(0.0f, 10.0f) * playrho::Meter;
     jd.localAnchorB = playrho::Length2{};
     jd.referenceAngle = playrho::Angle{0};
-
-    // Make it turn 4 times faster than Testbed Tumbler demo
-    jd.motorSpeed = 0.2f * playrho::Pi * playrho::RadianPerSecond;
-
+    jd.motorSpeed = 0.05f * playrho::Pi * playrho::Radian / playrho::Second;
     jd.maxMotorTorque = 100000 * playrho::NewtonMeter; // 1e8f;
     jd.enableMotor = true;
     return world.CreateJoint(playrho::d2::Joint(jd));
 }
 
-void Tumbler::Step()
+void TumblerPlayRho::Step()
 {
     m_world.Step(m_stepConf);
 }
 
-void Tumbler::AddSquare()
+void TumblerPlayRho::AddSquare()
 {
     auto b = playrho::d2::Body{playrho::d2::BodyConf{}
                                    .UseType(playrho::BodyType::Dynamic)
@@ -2389,25 +2409,29 @@ void Tumbler::AddSquare()
     CreateBody(m_world, b);
 }
 
-bool Tumbler::IsWithin(const playrho::d2::AABB& aabb) const
+bool TumblerPlayRho::IsWithin(const playrho::d2::AABB& aabb) const
 {
     return playrho::d2::Contains(aabb, GetAABB(m_world.GetTree()));
 }
 
-static void TumblerAddSquaresForSteps(benchmark::State& state, int squareAddingSteps,
-                                      int additionalSteps)
+static void TumblerAddSquaresForStepsPlayRho(benchmark::State& state, int additionalSteps)
 {
+    using namespace std::chrono_literals;
     const auto rangeX =
         playrho::Interval<playrho::Length>{-15 * playrho::Meter, +15 * playrho::Meter};
     const auto rangeY =
         playrho::Interval<playrho::Length>{-5 * playrho::Meter, +25 * playrho::Meter};
     const auto aabb = playrho::d2::AABB{rangeX, rangeY};
+    const auto squareAddingSteps = state.range();
     for (auto _ : state) {
-        Tumbler tumbler;
+        state.PauseTiming();
+        TumblerPlayRho tumbler;
+        std::this_thread::sleep_for(2000ms);
         for (auto i = 0; i < squareAddingSteps; ++i) {
             tumbler.Step();
             tumbler.AddSquare();
         }
+        state.ResumeTiming();
         for (auto i = 0; i < additionalSteps; ++i) {
             tumbler.Step();
         }
@@ -2418,15 +2442,119 @@ static void TumblerAddSquaresForSteps(benchmark::State& state, int squareAddingS
     }
 }
 
-static void TumblerAdd100SquaresPlus100Steps(benchmark::State& state)
+static void TumblerAddSquaresPlus60StepsPlayRho(benchmark::State& state)
 {
-    TumblerAddSquaresForSteps(state, 100, 100);
+    TumblerAddSquaresForStepsPlayRho(state, 60);
 }
 
-static void TumblerAdd200SquaresPlus200Steps(benchmark::State& state)
+#ifdef BENCHMARK_BOX2D
+
+class TumblerBox2D
 {
-    TumblerAddSquaresForSteps(state, 200, 200);
+public:
+    TumblerBox2D();
+    void Step();
+    void AddSquare();
+    bool IsWithin(const b2AABB& aabb) const;
+
+private:
+    static b2Body* CreateEnclosure(b2World& world);
+    static b2RevoluteJoint* CreateRevoluteJoint(b2World& world, b2Body* stable, b2Body* turn);
+
+    b2World m_world{
+        b2Vec2(0.0f, playrho::EarthlyLinearAcceleration / playrho::MeterPerSquareSecond)};
+};
+
+TumblerBox2D::TumblerBox2D()
+{
+    b2BodyDef bd;
+    const auto ground = m_world.CreateBody(&bd);
+    const auto enclosure = CreateEnclosure(m_world);
+    CreateRevoluteJoint(m_world, ground, enclosure);
 }
+
+b2Body* TumblerBox2D::CreateEnclosure(b2World& world)
+{
+    b2BodyDef bd;
+    bd.type = b2_dynamicBody;
+    bd.allowSleep = false;
+    bd.position.Set(0.0f, 10.0f);
+    const auto body = world.CreateBody(&bd);
+    b2PolygonShape shape;
+    shape.SetAsBox(0.5f, 10.0f, b2Vec2(10.0f, 0.0f), 0.0);
+    body->CreateFixture(&shape, 5.0f);
+    shape.SetAsBox(0.5f, 10.0f, b2Vec2(-10.0f, 0.0f), 0.0);
+    body->CreateFixture(&shape, 5.0f);
+    shape.SetAsBox(10.0f, 0.5f, b2Vec2(0.0f, 10.0f), 0.0);
+    body->CreateFixture(&shape, 5.0f);
+    shape.SetAsBox(10.0f, 0.5f, b2Vec2(0.0f, -10.0f), 0.0);
+    body->CreateFixture(&shape, 5.0f);
+    return body;
+}
+
+b2RevoluteJoint* TumblerBox2D::CreateRevoluteJoint(b2World& world, b2Body* stable, b2Body* turn)
+{
+    b2RevoluteJointDef jd;
+    jd.bodyA = stable;
+    jd.bodyB = turn;
+    jd.localAnchorA.Set(0.0f, 10.0f);
+    jd.localAnchorB.Set(0.0f, 0.0f);
+    jd.referenceAngle = 0.0f;
+    jd.motorSpeed = 0.05f * b2_pi;
+    jd.maxMotorTorque = 1e8f;
+    jd.enableMotor = true;
+    return static_cast<b2RevoluteJoint*>(world.CreateJoint(&jd));
+}
+
+void TumblerBox2D::AddSquare()
+{
+    b2BodyDef bd;
+    bd.type = b2_dynamicBody;
+    bd.position.Set(0.0f, 10.0f);
+    const auto body = m_world.CreateBody(&bd);
+    b2PolygonShape shape;
+    shape.SetAsBox(0.125f, 0.125f); // Box2D treats these as half width & half height lengths!!
+    body->CreateFixture(&shape, 1.0f);
+}
+
+void TumblerBox2D::Step()
+{
+    m_world.Step(1.0f / 60.0f, 8, 3);
+}
+
+bool TumblerBox2D::IsWithin(const b2AABB&) const
+{
+    return true;
+}
+
+static void TumblerAddSquaresForStepsBox2D(benchmark::State& state, int additionalSteps)
+{
+    const auto squareAddingSteps = state.range();
+    const auto aabb = b2AABB{b2Vec2{-15.0f, -5.0f}, b2Vec2{15.0f, 25.0f}};
+    TumblerBox2D tumbler;
+    for (auto i = 0; i < squareAddingSteps; ++i) {
+        tumbler.Step();
+        tumbler.AddSquare();
+    }
+    for (auto _ : state) {
+        for (auto i = 0; i < additionalSteps; ++i) {
+            tumbler.Step();
+        }
+#if 0
+        if (!tumbler.IsWithin(aabb)) {
+            std::cout << "escaped!" << std::endl;
+            continue;
+        }
+#endif
+    }
+}
+
+static void TumblerAddSquaresPlus60StepsBox2D(benchmark::State& state)
+{
+    TumblerAddSquaresForStepsBox2D(state, 60);
+}
+
+#endif // BENCHMARK_BOX2D
 
 #if 0
 #define ADD_BM(n, f) BENCHMARK_PRIVATE_DECLARE(f) = benchmark::RegisterBenchmark(n, f);
@@ -2559,8 +2687,10 @@ BENCHMARK(DropDisksSixtyStepsBox2D)->Arg(0)->Arg(1)->Arg(10)->Arg(100)->Arg(1000
 
 // BENCHMARK(random_malloc_free_100);
 
-BENCHMARK(TumblerAdd100SquaresPlus100Steps);
-BENCHMARK(TumblerAdd200SquaresPlus200Steps);
+BENCHMARK(TumblerAddSquaresPlus60StepsPlayRho)->Arg(100)->Arg(200)->Arg(400)->Arg(800)->Arg(1600);
+#ifdef BENCHMARK_BOX2D
+BENCHMARK(TumblerAddSquaresPlus60StepsBox2D)->Arg(100)->Arg(200)->Arg(400)->Arg(800)->Arg(1600);
+#endif
 
 BENCHMARK(AddPairStressTestPlayRho400)
     ->Arg(0)
