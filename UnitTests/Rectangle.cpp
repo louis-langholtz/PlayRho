@@ -30,7 +30,6 @@ using namespace playrho::d2;
 TEST(Rectangle, ByteSize)
 {
     EXPECT_EQ(sizeof(Rectangle<Geometry::Constant, 1, 1>), 1u);
-    EXPECT_EQ(sizeof(Rectangle<Geometry::Mutable>), 32u);
     EXPECT_EQ(sizeof(Rectangle<Geometry::Constant, 1, 1, DensityIs<StaticAreaDensity<6>>>), 1u);
     EXPECT_EQ(sizeof(Rectangle<Geometry::Constant, 1, 1, DensityIs<StaticAreaDensity<4>>,
                                FrictionIs<StaticTenthsFriction<3>>>{}),
@@ -38,6 +37,7 @@ TEST(Rectangle, ByteSize)
     EXPECT_EQ(sizeof(Rectangle<Geometry::Constant, 1, 2, FrictionIs<StaticFriction<>>>), 1u);
     switch (sizeof(Real)) {
     case 4u:
+        EXPECT_EQ(sizeof(Rectangle<Geometry::Mutable>), 32u);
         EXPECT_EQ(sizeof(Rectangle<Geometry::Constant, 1, 1, DensityIs<StaticAreaDensity<4>>,
                                    FrictionIs<DynamicFriction<4>>>{}),
                   4u);
@@ -52,6 +52,7 @@ TEST(Rectangle, ByteSize)
                   8u);
         break;
     case 8u:
+        EXPECT_EQ(sizeof(Rectangle<Geometry::Mutable>), 64u);
         EXPECT_EQ(sizeof(Rectangle<Geometry::Constant, 1, 1, DensityIs<StaticAreaDensity<4>>,
                                    FrictionIs<DynamicFriction<4>>>{}),
                   8u);
