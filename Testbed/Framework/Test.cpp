@@ -935,11 +935,12 @@ void Test::MouseDown(const Length2& p)
 
     SetSelectedFixtures(fixtures);
     if (size(fixtures) == 1) {
-        const auto body = begin(fixtures)->first;
+        const auto body = std::get<BodyID>(*begin(fixtures));
         if (GetType(m_world, body) == BodyType::Dynamic) {
             auto md = TargetJointConf{};
             md.bodyB = body;
             md.target = p;
+            md.localAnchorB = GetLocalPoint(GetBody(m_world, body), p);
             md.maxForce = Real(10000) * GetMass(m_world, body) * MeterPerSquareSecond;
             m_targetJoint = CreateJoint(m_world, md);
             SetAwake(m_world, body);
