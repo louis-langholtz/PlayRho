@@ -31,7 +31,7 @@ public:
     static Test::Conf GetTestConf()
     {
         auto conf = Test::Conf{};
-        conf.description = "Demonstrates all of the different Joint subclasses "
+        conf.description = "Demonstrates all of the different Joint types "
             "offering a comparative overview of them all at once.";
         return conf;
     }

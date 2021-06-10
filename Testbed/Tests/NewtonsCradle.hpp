@@ -38,7 +38,9 @@ namespace testbed {
             auto conf = Test::Conf{};
             conf.description = "Demonstrates the physics engine's behavior in a simulation of "
                 "the classic Newton's cradle. "
-                "Drag a circle with mouse, then let go to see how the physics is simulated.";
+                "Drag a sphere with the mouse, then let go to see how the physics is simulated. "
+                "Can you tell that it doesn't always act like it does in reality?";
+            conf.seeAlso = "https://en.wikipedia.org/wiki/Newton%27s_cradle";
             return conf;
         }
 
