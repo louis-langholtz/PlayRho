@@ -83,8 +83,8 @@ struct DistanceOutput {
     State state = Unknown; ///< Termination state.
 };
 
-/// @brief Determines the closest points between two shapes.
-/// @note Supports any combination of shapes.
+/// @brief Determines the closest points between two shapes using an iterative method.
+/// @note Supports any combination of convex shapes.
 /// @note On the first call, the Simplex::Cache.count should be set to zero.
 /// @image html distance.png
 /// @param proxyA Proxy A.
@@ -93,9 +93,9 @@ struct DistanceOutput {
 /// @param transformB Transform of B.
 /// @param conf Configuration to use including the simplex cache for assisting the determination.
 /// @relatedalso DistanceConf
-/// @return Closest points between the two shapes and the count of iterations it took to
-///   determine them. The iteration count will always be greater than zero unless
-///   <code>DefaultMaxDistanceIters</code> is zero.
+/// @return Closest points between the two shapes, the count of iterations it took to determine
+///   them, and the reason iterations stopped. The iteration count will always be greater than zero
+///   unless <code>DefaultMaxDistanceIters</code> is zero.
 DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
                         const DistanceProxy& proxyB, const Transformation& transformB,
                         DistanceConf conf = DistanceConf{});
