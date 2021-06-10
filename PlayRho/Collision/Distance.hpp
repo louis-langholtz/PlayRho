@@ -94,7 +94,7 @@ struct DistanceOutput {
 /// @param proxyB Proxy B.
 /// @param transformB Transform of B.
 /// @param conf Configuration to use including the simplex cache for assisting the determination.
-/// @relatedalso DistanceConf
+/// @relatedalso DistanceProxy
 /// @return Closest points between the two shapes, the count of iterations it took to determine
 ///   them, and the reason iterations stopped. The iteration count will always be greater than zero
 ///   unless <code>DefaultMaxDistanceIters</code> is zero.
@@ -109,6 +109,8 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 /// @note The returned touching state information typically agrees with that returned from
 ///   the <code>CollideShapes</code> function. This is not always the case however
 ///   especially when the separation or overlap distance is closer to zero.
+///
+/// @relatedalso DistanceProxy
 ///
 Area TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
                  const DistanceProxy& proxyB, const Transformation& xfB,

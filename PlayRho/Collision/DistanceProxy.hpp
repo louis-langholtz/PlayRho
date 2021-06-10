@@ -31,16 +31,15 @@
 // easier though so a buffering code alternative is kept in the source code for now.
 // #define IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS
 
-namespace playrho {
-namespace d2 {
+namespace playrho::d2 {
 
 class Shape;
 
 /// @brief Distance Proxy.
 ///
-/// @details A distance proxy aggregates a convex set of vertices and a vertex radius of
-///   those vertices. This can be visualized as a convex N-sided polygon with rounded corners.
-///   It's meant to represent any single portion of a shape identified by its child-index.
+/// @details A distance proxy aggregates a convex set of vertices, their normals, and a vertex
+///   radius of those vertices. This can be visualized as a convex N-sided polygon with rounded
+///   corners. It's meant to represent any single portion of a shape identified by its child-index.
 ///
 /// @note This data structure is 24-bytes.
 ///
@@ -204,6 +203,7 @@ inline bool operator!=(const DistanceProxy& lhs, const DistanceProxy& rhs) noexc
 }
 
 /// @brief Gets the vertex radius property of a given distance proxy.
+/// @relatedalso DistanceProxy
 inline NonNegative<Length> GetVertexRadius(const DistanceProxy& arg) noexcept
 {
     return arg.GetVertexRadius();
@@ -224,7 +224,6 @@ inline VertexCounter GetSupportIndex(const DistanceProxy& proxy, T dir) noexcept
 {
     using VT = typename T::value_type;
     using OT = decltype(VT{} * 0_m);
-
     auto index = InvalidVertex; // Index of vertex that when dotted with dir has the max value.
     auto maxValue = -std::numeric_limits<OT>::infinity(); // Max dot value.
     auto i = VertexCounter{0};
@@ -239,12 +238,6 @@ inline VertexCounter GetSupportIndex(const DistanceProxy& proxy, T dir) noexcept
     return index;
 }
 
-/// @brief Finds the lowest right most vertex in the given collection.
-std::size_t FindLowestRightMostVertex(Span<const Length2> vertices);
-
-/// @brief Gets the convex hull for the given collection of vertices as a vector.
-std::vector<Length2> GetConvexHullAsVector(Span<const Length2> vertices);
-
 /// @brief Tests a point for containment in the given distance proxy.
 /// @param proxy Distance proxy to check if point is within.
 /// @param point Point in local coordinates.
@@ -253,7 +246,12 @@ std::vector<Length2> GetConvexHullAsVector(Span<const Length2> vertices);
 /// @ingroup TestPointGroup
 bool TestPoint(const DistanceProxy& proxy, Length2 point) noexcept;
 
-} // namespace d2
-} // namespace playrho
+/// @brief Finds the lowest right most vertex in the given collection.
+std::size_t FindLowestRightMostVertex(Span<const Length2> vertices);
+
+/// @brief Gets the convex hull for the given collection of vertices as a vector.
+std::vector<Length2> GetConvexHullAsVector(Span<const Length2> vertices);
+
+} // namespace playrho::d2
 
 #endif // PLAYRHO_COLLISION_DISTANCEPROXY_HPP
