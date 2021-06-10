@@ -71,20 +71,6 @@ inline SimplexEdges GetSimplexEdges(const IndexPair3 indexPairs, const DistanceP
 
 } // namespace
 
-DistanceConf GetDistanceConf(const ToiConf& conf) noexcept
-{
-    auto distanceConf = DistanceConf{};
-    distanceConf.maxIterations = conf.maxDistIters;
-    return distanceConf;
-}
-
-DistanceConf GetDistanceConf(const StepConf& conf) noexcept
-{
-    DistanceConf distanceConf;
-    distanceConf.maxIterations = conf.maxDistanceIters;
-    return distanceConf;
-}
-
 PairLength2 GetWitnessPoints(const Simplex& simplex) noexcept
 {
     auto pointA = Length2{};

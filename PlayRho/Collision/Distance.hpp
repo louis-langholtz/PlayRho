@@ -21,6 +21,8 @@
 #define PLAYRHO_COLLISION_DISTANCE_HPP
 
 #include <PlayRho/Common/Math.hpp>
+
+#include <PlayRho/Collision/DistanceConf.hpp>
 #include <PlayRho/Collision/Simplex.hpp>
 
 namespace playrho {
@@ -29,9 +31,6 @@ namespace playrho {
 /// @note Uses <code>std::pair</code> because this is a pair and also because
 ///   <code>std::pair</code> has more support for constant expressions.
 using PairLength2 = std::pair<Length2, Length2>;
-
-struct ToiConf;
-struct StepConf;
 
 namespace d2 {
 
@@ -45,24 +44,6 @@ constexpr Length2 GetDelta(PairLength2 arg) noexcept
 {
     return std::get<1>(arg) - std::get<0>(arg);
 }
-
-/// @brief Distance Configuration.
-/// @details Configuration information for calling the <code>Distance</code> function.
-struct DistanceConf {
-    /// @brief Iteration type.
-    using iteration_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
-
-    Simplex::Cache cache; ///< Cache.
-    iteration_type maxIterations = DefaultMaxDistanceIters; ///< Max iterations.
-};
-
-/// @brief Gets the distance configuration for the given time of impact configuration.
-/// @relatedalso DistanceConf
-DistanceConf GetDistanceConf(const ToiConf& conf) noexcept;
-
-/// @brief Gets the distance configuration for the given step configuration.
-/// @relatedalso DistanceConf
-DistanceConf GetDistanceConf(const StepConf& conf) noexcept;
 
 /// @brief Distance Output.
 struct DistanceOutput {
