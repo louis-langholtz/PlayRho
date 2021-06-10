@@ -39,9 +39,8 @@ IndexPair3 GetIndexPairs(const SimplexEdges& collection) noexcept
 Length2 CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept
 {
     switch (size(simplexEdges)) {
-    case 1: {
+    case 1:
         return -GetPointDelta(simplexEdges[0]);
-    }
     case 2: {
         const auto e12 = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
         const auto e0 = GetPointDelta(simplexEdges[0]);
