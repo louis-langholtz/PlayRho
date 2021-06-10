@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2006-2007 Erin Catto http://www.box2d.org
- * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Original work Copyright (c) 2007 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2021 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -50,16 +50,17 @@ int main()
     const auto diskShape = CreateShape(world, DiskShapeConf{}.UseRadius(1_m));
 
     // Creates a "dynamic" body having the disk shape that will fall to the ground within world.
-    const auto ball = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).Use(diskShape)
-                                        .UseLocation(Length2{0_m, 4_m})
-                                        .UseLinearAcceleration(EarthlyGravity));
+    const auto ball = CreateBody(world, BodyConf{}
+                                            .Use(BodyType::Dynamic)
+                                            .Use(diskShape)
+                                            .UseLocation(Length2{0_m, 4_m})
+                                            .UseLinearAcceleration(EarthlyGravity));
 
     // Setup the C++ stream output format.
     std::cout << std::fixed << std::setprecision(2);
 
     // A little game-like loop.
-    for (auto i = 0; i < 60; ++i)
-    {
+    for (auto i = 0; i < 60; ++i) {
         // Perform a step of the simulation. Keep the time step & iterations fixed.
         // Typically code uses a time step of 1/60 of a second (60Hz). The defaults
         // are setup for that and to generally provide a high enough quality simulation
