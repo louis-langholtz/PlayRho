@@ -729,14 +729,18 @@ void DebugDraw::DrawString(const Length2& pw, TextAlign align, const char *strin
     const auto textSize = ImGui::CalcTextSize(buffer);
     switch (align)
     {
-        case Left:
-            break;
-        case Right:
-            ps.x -= textSize.x;
-            break;
-        case Center:
-            ps.x -= textSize.x / 2;
-            break;
+    case Left:
+        break;
+    case Right:
+        ps.x -= textSize.x;
+        break;
+    case Center:
+        ps.x -= textSize.x / 2;
+        break;
+    case AboveCenter:
+        ps.x -= textSize.x / 2;
+        ps.y -= textSize.y;
+        break;
     }
 
     ImGui::SetNextWindowPos(ImVec2(0,0));
