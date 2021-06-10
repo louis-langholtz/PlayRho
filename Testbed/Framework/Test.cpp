@@ -799,6 +799,23 @@ bool DrawWorld(Drawer& drawer, const World& world, const Test::FixtureSet& selec
 
 } // namespace
 
+const char* Test::ToName(DistanceOutput::State value)
+{
+    switch (value) {
+    case DistanceOutput::MaxPoints:
+        return "MaxPoints";
+    case DistanceOutput::UnfitSearchDir:
+        return "UnfitSearchDir";
+    case DistanceOutput::DuplicateIndexPair:
+        return "DuplicateIndexPair";
+    case DistanceOutput::HitMaxIters:
+        return "HitMaxIters";
+    case DistanceOutput::Unknown:
+        break;
+    }
+    return "Unknown";
+}
+
 const LinearAcceleration2 Test::Gravity = LinearAcceleration2{
     Real(0.0f) * MeterPerSquareSecond,
     -Real(10.0f) * MeterPerSquareSecond

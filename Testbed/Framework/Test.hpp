@@ -231,6 +231,7 @@ public:
     using ContactPoints = std::vector<ContactPoint>;
 
     static const LinearAcceleration2 Gravity;
+    static const char* ToName(DistanceOutput::State value);
 
     virtual ~Test();
 
