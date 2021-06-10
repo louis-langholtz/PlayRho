@@ -270,8 +270,9 @@ public:
             adjustedDistance = 0;
         }
 
-        drawer.DrawString(xfmA.p, Drawer::Center, "Shape A");
-        drawer.DrawString(xfmB.p, Drawer::Center, "Shape B");
+        // Draw strings on top of the centers of mass of the shapes (not there origins)...
+        drawer.DrawString(GetWorldCenter(GetWorld(), m_bodyA), Drawer::Center, "Shape A");
+        drawer.DrawString(GetWorldCenter(GetWorld(), m_bodyB), Drawer::Center, "Shape B");
 
         std::stringstream os;
         os << "Vertex radii of shapes A & B are ";
@@ -372,8 +373,6 @@ public:
 #endif
 
         if (m_drawManifoldInfo) {
-            const auto pointCount = manifold.GetPointCount();
-
             switch (manifold.GetType()) {
             case Manifold::e_unset:
                 break;
@@ -382,27 +381,23 @@ public:
                 const auto pB = Transform(manifold.GetPoint(0).localPoint, xfmB);
                 drawer.DrawCircle(pA, rA / Real{2}, Color(1, 1, 1));
                 drawer.DrawCircle(pB, rB / Real{2}, Color(1, 1, 1));
-
                 const auto psm = GetPSM(manifold, 0, xfmA, xfmB);
                 const auto psm_separation = psm.m_separation - totalRadius;
                 drawer.DrawCircle(psm.m_point, psm_separation, psmPointColor);
-
                 drawer.DrawSegment(psm.m_point, psm.m_point + psm.m_normal * psm_separation,
                                    psmPointColor);
-
                 break;
             }
             case Manifold::e_faceA: {
                 const auto pA = Transform(manifold.GetLocalPoint(), xfmA);
                 drawer.DrawCircle(pA, rA / Real{2}, Color(1, 1, 1));
+                const auto pointCount = manifold.GetPointCount();
                 for (auto i = decltype(pointCount){0}; i < pointCount; ++i) {
                     const auto pB = Transform(manifold.GetOpposingPoint(i), xfmB);
                     drawer.DrawCircle(pB, rB / Real{2}, Color(1, 1, 1));
-
                     const auto psm = GetPSM(manifold, i, xfmA, xfmB);
                     const auto psm_separation = psm.m_separation - totalRadius;
                     drawer.DrawCircle(psm.m_point, psm_separation, psmPointColor);
-
                     drawer.DrawSegment(psm.m_point, psm.m_point + psm.m_normal * psm_separation,
                                        psmPointColor);
                 }
@@ -411,14 +406,13 @@ public:
             case Manifold::e_faceB: {
                 const auto pB = Transform(manifold.GetLocalPoint(), xfmB);
                 drawer.DrawCircle(pB, rB / Real{2}, Color(1, 1, 1));
+                const auto pointCount = manifold.GetPointCount();
                 for (auto i = decltype(pointCount){0}; i < pointCount; ++i) {
                     const auto pA = Transform(manifold.GetOpposingPoint(i), xfmA);
                     drawer.DrawCircle(pA, rA / Real{2}, Color(1, 1, 1));
-
                     const auto psm = GetPSM(manifold, i, xfmA, xfmB);
                     const auto psm_separation = psm.m_separation - totalRadius;
                     drawer.DrawCircle(psm.m_point, psm_separation, psmPointColor);
-
                     drawer.DrawSegment(psm.m_point, psm.m_point + psm.m_normal * psm_separation,
                                        psmPointColor);
                 }
@@ -457,9 +451,9 @@ public:
 private:
     const Length RadiusIncrement = 2_dm;
     const Color simplexSegmentColor = Color{0.0f, 0.5f, 0.5f}; // dark cyan
-    const Color simplexPointColor = Color{0, 1, 1, 0.6f}; // semi-transparent cyan
-    const Color witnessPointColor = Color{1, 1, 0, 0.5}; // semi-transparent yellow
-    const Color adjustedPointColor = Color{1, 0.5f, 0, 0.5f}; // semi-transparent light brown
+    const Color simplexPointColor = Color{0, 1, 1}; // non-transparent cyan
+    const Color witnessPointColor = Color{1, 1, 0}; // non-transparent yellow
+    const Color adjustedPointColor = Color{1, 0.5f, 0}; // non-transparent light brown
     const Color matchingPointColor = Color{1, 0, 0}; // red
     const Color psmPointColor = Color{0.5f, 1, 1};
 
