@@ -41,12 +41,8 @@ class Shape;
 /// @details A distance proxy aggregates a convex set of vertices and a vertex radius of
 ///   those vertices. This can be visualized as a convex N-sided polygon with rounded corners.
 ///   It's meant to represent any single portion of a shape identified by its child-index.
-///   These are used by the G.J.K. algorithm: "a method for determining the minimum distance
-///   between two convex sets".
 ///
 /// @note This data structure is 24-bytes.
-///
-/// @see https://en.wikipedia.org/wiki/Gilbert%2DJohnson%2DKeerthi_distance_algorithm
 ///
 class DistanceProxy
 {

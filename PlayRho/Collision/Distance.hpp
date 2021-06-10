@@ -84,9 +84,11 @@ struct DistanceOutput {
 };
 
 /// @brief Determines the closest points between two shapes using an iterative method.
-/// @note Supports any combination of convex shapes.
-/// @note On the first call, the Simplex::Cache.count should be set to zero.
 /// @image html distance.png
+/// @note Supports any combination of convex shapes.
+/// @note Uses the G.J.K. (GJK) algorithm: "a method for determining the minimum distance
+///   between two convex sets".
+/// @note On the first call, <code>size(conf.cache.indices)</code> should be zero.
 /// @param proxyA Proxy A.
 /// @param transformA Transform of A.
 /// @param proxyB Proxy B.
@@ -96,6 +98,7 @@ struct DistanceOutput {
 /// @return Closest points between the two shapes, the count of iterations it took to determine
 ///   them, and the reason iterations stopped. The iteration count will always be greater than zero
 ///   unless <code>DefaultMaxDistanceIters</code> is zero.
+/// @see https://en.wikipedia.org/wiki/Gilbert%2DJohnson%2DKeerthi_distance_algorithm
 DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
                         const DistanceProxy& proxyB, const Transformation& transformB,
                         DistanceConf conf = DistanceConf{});

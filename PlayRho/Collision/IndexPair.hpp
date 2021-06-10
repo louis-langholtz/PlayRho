@@ -47,6 +47,7 @@ constexpr auto InvalidIndexPair = IndexPair{
 using IndexPair3 = std::array<IndexPair, MaxSimplexEdges>;
 
 /// @brief Invalid array of three index-pair elements.
+/// @relatedalso IndexPair3
 constexpr auto InvalidIndexPair3 = IndexPair3{{
     InvalidIndexPair, InvalidIndexPair, InvalidIndexPair
 }};
@@ -57,6 +58,7 @@ static_assert(MaxSimplexEdges == 3, "Invalid assumption about size of MaxSimplex
 /// @note Any element with a value of <code>InvalidIndexPair</code> is interpreted
 ///   as being invalid in this context.
 /// @return Value between 0 and 3 inclusive.
+/// @relatedalso IndexPair3
 constexpr std::size_t GetNumValidIndices(IndexPair3 pairs) noexcept
 {
     return std::size_t{0}
@@ -66,6 +68,7 @@ constexpr std::size_t GetNumValidIndices(IndexPair3 pairs) noexcept
 }
 
 /// @brief Checks whether the given collection of index pairs is empty.
+/// @relatedalso IndexPair3
 constexpr bool empty(IndexPair3 pairs) noexcept
 {
     return GetNumValidIndices(pairs) == 0;
@@ -74,6 +77,7 @@ constexpr bool empty(IndexPair3 pairs) noexcept
 /// @brief Gets the dynamic size of the given collection of index pairs.
 /// @note This just calls <code>GetNumValidIndices</code>.
 /// @see GetNumValidIndices
+/// @relatedalso IndexPair3
 constexpr auto size(IndexPair3 pairs) -> decltype(GetNumValidIndices(pairs))
 {
     return GetNumValidIndices(pairs);
@@ -81,6 +85,7 @@ constexpr auto size(IndexPair3 pairs) -> decltype(GetNumValidIndices(pairs))
 
 /// @brief Gets the maximum size of the given container of index pairs.
 /// @return Always returns 3.
+/// @relatedalso IndexPair3
 constexpr auto max_size(IndexPair3 pairs) -> decltype(pairs.max_size())
 {
     return pairs.max_size();
