@@ -37,6 +37,7 @@ class DistanceProxy;
 /// @return Index of the vertex and normal from <code>proxy1</code>,
 ///   index of the vertex from <code>proxy2</code> (that had the maximum separation
 ///   distance from each other in the direction of that normal), and the maximal distance.
+/// @see Distance.
 SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
                                 const DistanceProxy& proxy2, Transformation xf2);
 
@@ -44,6 +45,7 @@ SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
 /// @return Index of the vertex and normal from <code>proxy1</code>,
 ///   index of the vertex from <code>proxy2</code> (that had the maximum separation
 ///   distance from each other in the direction of that normal), and the maximal distance.
+/// @see Distance.
 SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
                                 const DistanceProxy& proxy2, Transformation xf2, Length stop);
 
@@ -54,6 +56,7 @@ SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
 /// @return Index of the vertex and normal from <code>proxy1</code>,
 ///   index of the vertex from <code>proxy2</code> (that had the maximum separation
 ///   distance from each other in the direction of that normal), and the maximal distance.
+/// @see Distance.
 SeparationInfo GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformation xf1,
                                    const DistanceProxy& proxy2, Transformation xf2);
 
@@ -61,6 +64,7 @@ SeparationInfo GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformation x
 /// @return Index of the vertex and normal from <code>proxy1</code>,
 ///   index of the vertex from <code>proxy2</code> (that had the maximum separation
 ///   distance from each other in the direction of that normal), and the maximal distance.
+/// @see Distance.
 SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, const DistanceProxy& proxy2,
                                 Length stop = MaxFloat * Meter);
 

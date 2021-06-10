@@ -248,7 +248,7 @@ using IsReverseIterable = typename detail::IsReverseIterableImpl<T>;
 /// @see https://stackoverflow.com/a/28139075/7410358
 template <typename T>
 struct ReversionWrapper {
-    T& iterable;
+    T& iterable; ///< Reference to underlying iterable.
 };
 
 /// @brief Begin function for getting a reversed order iterator.

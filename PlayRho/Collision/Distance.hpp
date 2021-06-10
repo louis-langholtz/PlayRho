@@ -99,6 +99,7 @@ struct DistanceOutput {
 ///   them, and the reason iterations stopped. The iteration count will always be greater than zero
 ///   unless <code>DefaultMaxDistanceIters</code> is zero.
 /// @see https://en.wikipedia.org/wiki/Gilbert%2DJohnson%2DKeerthi_distance_algorithm
+/// @see GetMaxSeparation.
 DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
                         const DistanceProxy& proxyB, const Transformation& transformB,
                         DistanceConf conf = DistanceConf{});
