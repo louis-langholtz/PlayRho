@@ -94,15 +94,13 @@ PairLength2 GetWitnessPoints(const Simplex& simplex) noexcept
     for (auto i = decltype(numEdges){0}; i < numEdges; ++i) {
         const auto e = simplex.GetSimplexEdge(i);
         const auto c = simplex.GetCoefficient(i);
-
         pointA += e.GetPointA() * c;
         pointB += e.GetPointB() * c;
     }
 #if 0
     // In the 3-simplex case, pointA and pointB are usually equal.
     // XXX: Sometimes in the 3-simplex case, pointA is slightly different than pointB. Why??
-    if (size == 3 && pointA != pointB)
-    {
+    if (size == 3 && pointA != pointB) {
         std::cout << "odd: " << pointA << " != " << pointB;
         std::cout << std::endl;
     }
