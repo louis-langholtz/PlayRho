@@ -46,7 +46,7 @@ namespace d2 {
     ///
     /// @details An encapsulation of a point, line segment, or triangle.
     ///   These are defined respectively as: a 0-simplex, a 1-simplex, and a 2-simplex.
-    ///   Used in doing G.J.K. collision detection.
+    ///   Used in doing G.J.K. (GJK) collision detection.
     ///
     /// @note This data structure is 104-bytes large.
     ///
