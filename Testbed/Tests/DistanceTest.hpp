@@ -39,7 +39,7 @@ public:
             "Demonstrates the collision detection and response between a triangle (Shape A) and an "
             "edge (Shape B) with extra large vertex radii (\"skins\") to help visualize what "
             "happens. The closest points between the two shapes are referred to as \"witness "
-            "points\".";
+            "points\" and are shown in yellow.";
         return conf;
     }
 
@@ -270,8 +270,8 @@ public:
             adjustedDistance = 0;
         }
 
-        drawer.DrawString(xfmA.p, Drawer::Left, "Shape A");
-        drawer.DrawString(xfmB.p, Drawer::Left, "Shape B");
+        drawer.DrawString(xfmA.p, Drawer::Center, "Shape A");
+        drawer.DrawString(xfmB.p, Drawer::Center, "Shape B");
 
         std::stringstream os;
         os << "Vertex radii of shapes A & B are ";
@@ -442,14 +442,14 @@ public:
                 drawer.DrawPoint(std::get<0>(adjustedWitnessPoints), 4.0f, matchingPointColor);
             }
 
-            drawer.DrawPoint(std::get<0>(witnessPoints), 4.0f, witnessPointColor);
-            drawer.DrawPoint(std::get<1>(witnessPoints), 4.0f, witnessPointColor);
+            drawer.DrawPoint(std::get<0>(witnessPoints), 6.0f, witnessPointColor);
+            drawer.DrawPoint(std::get<1>(witnessPoints), 6.0f, witnessPointColor);
 
             for (auto&& edge : output.simplex.GetEdges()) {
-                drawer.DrawPoint(edge.GetPointA(), 6.0f, simplexPointColor);
-                drawer.DrawPoint(edge.GetPointB(), 6.0f, simplexPointColor);
-                drawer.DrawString(edge.GetPointA(), Drawer::Left, "%d", edge.GetIndexA());
-                drawer.DrawString(edge.GetPointB(), Drawer::Left, "%d", edge.GetIndexB());
+                drawer.DrawString(edge.GetPointA(), Drawer::AboveCenter, "Vertex %d", edge.GetIndexA());
+                drawer.DrawString(edge.GetPointB(), Drawer::AboveCenter, "Vertex %d", edge.GetIndexB());
+                drawer.DrawPoint(edge.GetPointA(), 8.0f, simplexPointColor);
+                drawer.DrawPoint(edge.GetPointB(), 8.0f, simplexPointColor);
             }
         }
     }
