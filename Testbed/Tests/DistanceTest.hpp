@@ -281,13 +281,14 @@ public:
         os << static_cast<double>(Real{rB / 1_m}) << "m";
         os << ".\n\n";
 
-        os << "Max separation:\n";
-        os << "  " << static_cast<double>(Real{maxIndicesAB.distance / 1_m});
-        os << " for a-face[" << unsigned{GetFirstShapeVertexIdx(maxIndicesAB)} << "]";
-        os << " b-vert[" << unsigned{GetSecondShapeVertexIdx<0>(maxIndicesAB)} << "].\n";
-        os << "  " << static_cast<double>(Real{maxIndicesBA.distance / 1_m});
-        os << " for b-face[" << unsigned{GetFirstShapeVertexIdx(maxIndicesBA)} << "]";
-        os << " a-vert[" << unsigned{GetSecondShapeVertexIdx<0>(maxIndicesBA)} << "].\n\n";
+        os << "Max separation...\n";
+        os << "  For A-face[" << unsigned{GetFirstShapeVertexIdx(maxIndicesAB)} << "]";
+        os << " B-vertex[" << unsigned{GetSecondShapeVertexIdx<0>(maxIndicesAB)} << "]: ";
+        os << static_cast<double>(Real{maxIndicesAB.distance / 1_m}) << "m.\n";
+        os << "  For B-face[" << unsigned{GetFirstShapeVertexIdx(maxIndicesBA)} << "]";
+        os << " A-vertex[" << unsigned{GetSecondShapeVertexIdx<0>(maxIndicesBA)} << "]: ";
+        os << static_cast<double>(Real{maxIndicesBA.distance / 1_m}) << "m.\n";
+        os << "\n";
 
         if (AlmostEqual(static_cast<double>(Real{maxIndicesAB.distance / 1_m}),
                         static_cast<double>(Real{maxIndicesBA.distance / 1_m}))) {
