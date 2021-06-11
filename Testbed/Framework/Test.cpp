@@ -30,6 +30,7 @@
 #include <sstream>
 #include <chrono>
 #include <utility>
+#include <stdarg.h> // for va_list
 
 #include "imgui.h"
 #include "ExtensionsForImgui.hpp"
@@ -684,7 +685,7 @@ void ShowStats(const StepConf& stepConf, UiState& ui, const World& world, const 
 
 void DrawContactInfo(Drawer& drawer, const Settings& settings,
                      const Test::FixtureSet& selectedFixtures,
-                     SizedRange<Test::ContactPoints::const_iterator> points)
+                     const Test::ContactPoints& points)
 {
     const auto k_impulseScale = 0.1_s / 1_kg;
     const auto k_axisScale = 0.3_m;
@@ -798,6 +799,22 @@ bool DrawWorld(Drawer& drawer, const World& world, const Test::FixtureSet& selec
 }
 
 } // namespace
+
+bool Test::AlertUser(const std::string& title, const char* fmt, ...)
+{
+    ImGui::OpenPopup(title.c_str());
+    if (const auto opened = ImGui::PopupModalContext(title.c_str())) {
+        va_list args;
+        va_start(args, fmt);
+        ImGui::TextWrappedV(fmt, args);
+        va_end(args);
+        if (ImGui::Button("Close")) {
+            ImGui::CloseCurrentPopup();
+            return true;
+        }
+    }
+    return false;
+}
 
 const char* Test::ToName(DistanceOutput::State value)
 {

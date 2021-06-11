@@ -85,7 +85,6 @@ using namespace gl;
 #include <cctype>
 #include <map>
 #include <set>
-#include <stdarg.h> // for va_list
 
 #include <GLFW/glfw3.h>
 #include <cstdio>
@@ -105,18 +104,14 @@ using namespace playrho::d2;
 class TestSuite;
 class Selection;
 
-using BodiesRange = SizedRange<World::Bodies::const_iterator>;
-using JointsRange = SizedRange<World::Joints::const_iterator>;
-using BodyJointsRange = SizedRange<std::vector<std::pair<BodyID, JointID>>::const_iterator>;
-using ContactsRange = SizedRange<World::Contacts::const_iterator>;
 using FixtureSet = Test::FixtureSet;
 using BodySet = Test::BodySet;
 
 static void EntityUI(World& world, ContactID contact);
 static void EntityUI(World& world, JointID e);
-static void CollectionUI(World& world, const ContactsRange& contacts, bool interactive = true);
-static void CollectionUI(World& world, const JointsRange& joints);
-static void CollectionUI(const BodyJointsRange& joints);
+static void CollectionUI(World& world, const World::Contacts& contacts, bool interactive = true);
+static void CollectionUI(World& world, const World::Joints& joints);
+static void CollectionUI(const World::BodyJoints& joints);
 
 namespace
 {
@@ -1209,22 +1204,18 @@ static void EntityUI(World& world, BodyID b)
         float vals[2];
         vals[0] = static_cast<float>(Real{GetX(location) / Meter});
         vals[1] = static_cast<float>(Real{GetY(location) / Meter});
-        if (ImGui::InputFloat2("Lin. Pos.", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue))
-        {
+        if (ImGui::InputFloat2("Lin. Pos.", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
             SetLocation(world, b, Length2{vals[0] * 1_m, vals[1] * 1_m});
         }
-        if (ImGui::IsItemHovered())
-        {
+        if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Linear position in meters.", tooltipWrapWidth);
         }
         const auto angle = GetAngle(world, b);
         auto val = static_cast<float>(Real{angle / Degree});
-        if (ImGui::InputFloat("Ang. Pos.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue))
-        {
+        if (ImGui::InputFloat("Ang. Pos.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
             SetAngle(world, b, val * Degree);
         }
-        if (ImGui::IsItemHovered())
-        {
+        if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Angular position in degrees.", tooltipWrapWidth);
         }
     }
@@ -1233,21 +1224,17 @@ static void EntityUI(World& world, BodyID b)
         float vals[2];
         vals[0] = static_cast<float>(Real{GetX(velocity.linear) / MeterPerSecond});
         vals[1] = static_cast<float>(Real{GetY(velocity.linear) / MeterPerSecond});
-        if (ImGui::InputFloat2("Lin. Vel.", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue))
-        {
+        if (ImGui::InputFloat2("Lin. Vel.", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
             SetVelocity(world, b, LinearVelocity2{vals[0] * 1_mps, vals[1] * 1_mps});
         }
-        if (ImGui::IsItemHovered())
-        {
+        if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Linear velocity in meters/second.", tooltipWrapWidth);
         }
         auto val = static_cast<float>(Real{velocity.angular / DegreePerSecond});
-        if (ImGui::InputFloat("Ang. Vel.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue))
-        {
+        if (ImGui::InputFloat("Ang. Vel.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
             SetVelocity(world, b, val * DegreePerSecond);
         }
-        if (ImGui::IsItemHovered())
-        {
+        if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Angular velocity in degrees/second.", tooltipWrapWidth);
         }
     }
@@ -1256,28 +1243,23 @@ static void EntityUI(World& world, BodyID b)
         float vals[2];
         vals[0] = static_cast<float>(Real{GetX(acceleration.linear) / MeterPerSquareSecond});
         vals[1] = static_cast<float>(Real{GetY(acceleration.linear) / MeterPerSquareSecond});
-        if (ImGui::InputFloat2("Lin. Acc.", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue))
-        {
+        if (ImGui::InputFloat2("Lin. Acc.", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
             SetAcceleration(world, b, LinearAcceleration2{vals[0] * 1_mps2, vals[1] * 1_mps2});
         }
-        if (ImGui::IsItemHovered())
-        {
+        if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Linear acceleration in meters/second².", tooltipWrapWidth);
         }
         auto val = static_cast<float>(Real{acceleration.angular / DegreePerSquareSecond});
-        if (ImGui::InputFloat("Ang. Acc.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue))
-        {
+        if (ImGui::InputFloat("Ang. Acc.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
             SetAcceleration(world, b, val * DegreePerSquareSecond);
         }
-        if (ImGui::IsItemHovered())
-        {
+        if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Angular acceleration in degrees/second².", tooltipWrapWidth);
         }
     }
     {
         auto v = IsImpenetrable(world, b);
-        if (ImGui::Checkbox("Bullet", &v))
-        {
+        if (ImGui::Checkbox("Bullet", &v)) {
             if (v)
                 SetImpenetrable(world, b);
             else
@@ -1287,29 +1269,24 @@ static void EntityUI(World& world, BodyID b)
     ImGui::SameLine();
     {
         auto v = !IsFixedRotation(world, b);
-        if (ImGui::Checkbox("Rotatable", &v))
-        {
+        if (ImGui::Checkbox("Rotatable", &v)) {
             SetFixedRotation(world, b, !v);
         }
     }
     {
         auto v = IsSleepingAllowed(world, b);
-        if (ImGui::Checkbox("Sleepable", &v))
-        {
+        if (ImGui::Checkbox("Sleepable", &v)) {
             SetSleepingAllowed(world, b, v);
         }
     }
     ImGui::SameLine();
     {
         auto v = IsAwake(world, b);
-        if (ImGui::Checkbox("Awake", &v))
-        {
-            if (v)
-            {
+        if (ImGui::Checkbox("Awake", &v)) {
+            if (v) {
                 SetAwake(world, b);
             }
-            else
-            {
+            else {
                 UnsetAwake(world, b);
             }
         }
@@ -1325,49 +1302,29 @@ static void EntityUI(World& world, BodyID b)
         ImGui::RadioButton("Dynam.", &v, 2);
         SetType(world, b, ToBodyType(v));
     }
-    if (ImGui::IsItemHovered())
-    {
+    if (ImGui::IsItemHovered()) {
         ImGui::ShowTooltip("Body type selection: either Static, Kinematic, or Dynamic.",
                            tooltipWrapWidth);
     }
     
     {
         auto v = IsEnabled(world, b);
-        if (ImGui::Checkbox("Enabled", &v))
-        {
+        if (ImGui::Checkbox("Enabled", &v)) {
             SetEnabled(world, b, v);
         }
     }
     
     ImGui::LabelText("Mass", "%.2e kg", static_cast<double>(Real{GetMass(world, b) / Kilogram}));
-    if (ImGui::IsItemHovered())
-    {
+    if (ImGui::IsItemHovered()) {
         ImGui::ShowTooltip("Mass of the body.", tooltipWrapWidth);
     }
     
     ImGui::LabelText("Rot. Inertia", "%.2e kg·m²",
                      static_cast<double>(Real{GetRotInertia(world, b) / (1_kg * 1_m2 / Square(1_rad))}));
-    if (ImGui::IsItemHovered())
-    {
+    if (ImGui::IsItemHovered()) {
         ImGui::ShowTooltip("Rotational inertia of the body. This may be the calculated value"
                            " or a set value.", tooltipWrapWidth);
     }
-}
-
-static bool AlertUser(const std::string& title, const char* fmt, ...)
-{
-    ImGui::OpenPopup(title.c_str());
-    if (const auto opened = ImGui::PopupModalContext(title.c_str())) {
-        va_list args;
-        va_start(args, fmt);
-        ImGui::TextWrappedV(fmt, args);
-        va_end(args);
-        if (ImGui::Button("Close")) {
-            ImGui::CloseCurrentPopup();
-            return true;
-        }
-    }
-    return false;
 }
 
 static void EntityUI(const Shape& shape, ChildCounter index)
@@ -1510,7 +1467,8 @@ static void EntityUI(Shape &shape)
     }
 
     if (!ui->message.empty()) {
-        if (AlertUser("Alert!", "New value rejected.\n\nReason: %s.\n\n", ui->message.c_str())) {
+        if (Test::AlertUser("Alert!", "New value rejected.\n\nReason: %s.\n\n",
+                            ui->message.c_str())) {
             ui->message = std::string{};
         }
     }
@@ -1586,6 +1544,9 @@ static void ShapesUI(World& world)
                 if (shape != GetShape(world, shapeId)) {
                     SetShape(world, shapeId, shape);
                 }
+                if (ImGui::Button("Destroy", ImVec2(-1, 0))) {
+                    Destroy(world, shapeId);
+                }
                 ImGui::TreePop();
             }
         }
@@ -1630,6 +1591,9 @@ static void EntityUI(World& world, BodyID bodyId, const FixtureSet& selectedFixt
             CollectionUI(world, contacts, false);
             ImGui::TreePop();
         }
+    }
+    if (ImGui::Button("Destroy", ImVec2(-1, 0))) {
+        Destroy(world, bodyId);
     }
 }
 
@@ -2190,6 +2154,9 @@ static void EntityUI(World& world, JointID e)
         EntityUI(conf, bodyRange);
         SetJoint(world, e, conf);
     }
+    if (ImGui::Button("Destroy", ImVec2(-1, 0))) {
+        Destroy(world, e);
+    }
 }
 
 static void EntityUI(World& world, ContactID c)
@@ -2240,42 +2207,38 @@ static void EntityUI(World& world, ContactID c)
     ImGui::LabelText("Shape B", "%u", to_underlying(GetShapeB(world, c)));
 }
 
-static void CollectionUI(World& world, const BodiesRange& bodies,
+static void CollectionUI(World& world, const World::Bodies& bodies,
                      const BodySet& selectedBodies,
                      const FixtureSet& selectedFixtures)
 {
     ImGui::IdContext idCtx("Bodies");
-    for (const auto& e: bodies)
-    {
+    for (const auto& e: bodies) {
         const auto typeName = ToString(GetType(world, e));
         const auto flags = IsWithin(selectedBodies, e)? ImGuiTreeNodeFlags_DefaultOpen: 0;
         if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(e.get()), flags,
-                              "Body %u (Type=%s)", e.get(), typeName))
-        {
+                              "Body %u (Type=%s)", e.get(), typeName)) {
             EntityUI(world, e, selectedFixtures);
             ImGui::TreePop();
         }
     }
 }
 
-static void CollectionUI(World& world, const JointsRange& joints)
+static void CollectionUI(World& world, const World::Joints& joints)
 {
     ImGui::IdContext idCtx("Joints");
-    for (const auto& jointID: joints)
-    {
+    for (const auto& jointID: joints) {
         ImGui::IdContext ctx(to_underlying(jointID));
         const auto flags = 0;
         if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(jointID.get()), flags,
                               "Joint %u (Type=%s)",
-                              jointID.get(), ToName(GetType(world, jointID))))
-        {
+                              jointID.get(), ToName(GetType(world, jointID)))) {
             EntityUI(world, jointID);
             ImGui::TreePop();
         }
     }
 }
 
-static void CollectionUI(const BodyJointsRange& joints)
+static void CollectionUI(const World::BodyJoints& joints)
 {
     ImGui::IdContext idCtx("BodyJointsRange");
     ImGui::ItemWidthContext itemWidthCtx(130);
@@ -2299,7 +2262,7 @@ static void CollectionUI(const BodyJointsRange& joints)
     }
 }
 
-static void CollectionUI(World& world, const ContactsRange& contacts, bool interactive)
+static void CollectionUI(World& world, const World::Contacts& contacts, bool interactive)
 {
     ImGui::IdContext idCtx("ContactsRange");
     if (interactive) {

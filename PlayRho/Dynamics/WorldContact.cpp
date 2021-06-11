@@ -38,8 +38,7 @@ ContactCounter GetContactRange(const World& world) noexcept
     return world.GetContactRange();
 }
 
-SizedRange<std::vector<KeyedContactPtr>::const_iterator>
-GetContacts(const World& world) noexcept
+std::vector<KeyedContactPtr> GetContacts(const World& world) noexcept
 {
     return world.GetContacts();
 }

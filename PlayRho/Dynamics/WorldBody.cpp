@@ -45,13 +45,12 @@ BodyCounter GetBodyRange(const World& world) noexcept
     return world.GetBodyRange();
 }
 
-SizedRange<std::vector<BodyID>::const_iterator> GetBodies(const World& world) noexcept
+std::vector<BodyID> GetBodies(const World& world) noexcept
 {
     return world.GetBodies();
 }
 
-SizedRange<std::vector<BodyID>::const_iterator>
-GetBodiesForProxies(const World& world) noexcept
+std::vector<BodyID> GetBodiesForProxies(const World& world) noexcept
 {
     return world.GetBodiesForProxies();
 }
@@ -245,13 +244,7 @@ Acceleration CalcGravitationalAcceleration(const World& world, BodyID body)
 
 BodyCounter GetWorldIndex(const World& world, BodyID id) noexcept
 {
-    const auto elems = world.GetBodies();
-    const auto it = std::find(cbegin(elems), cend(elems), id);
-    if (it != cend(elems))
-    {
-        return static_cast<BodyCounter>(std::distance(cbegin(elems), it));
-    }
-    return BodyCounter(-1);
+    return to_underlying(id);
 }
 
 BodyType GetType(const World& world, BodyID id)
@@ -433,8 +426,7 @@ void SetMassData(World& world, BodyID id, const MassData& massData)
     world.SetBody(id, body);
 }
 
-SizedRange<std::vector<std::pair<BodyID, JointID>>::const_iterator>
-GetJoints(const World& world, BodyID id)
+std::vector<std::pair<BodyID, JointID>> GetJoints(const World& world, BodyID id)
 {
     return world.GetJoints(id);
 }
@@ -504,8 +496,7 @@ void SetAngularDamping(World& world, BodyID id, NonNegative<Frequency> value)
     world.SetBody(id, body);
 }
 
-SizedRange<std::vector<KeyedContactPtr>::const_iterator>
-GetContacts(const World& world, BodyID id)
+std::vector<KeyedContactPtr> GetContacts(const World& world, BodyID id)
 {
     return world.GetContacts(id);
 }

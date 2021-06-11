@@ -39,7 +39,6 @@
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 
 #include <PlayRho/Common/Settings.hpp>
-#include <PlayRho/Common/Range.hpp> // for SizedRange
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>
@@ -69,8 +68,7 @@ ContactCounter GetContactRange(const World& world) noexcept;
 
 /// @brief Gets the contacts recognized within the given world.
 /// @relatedalso World
-SizedRange<std::vector<KeyedContactPtr>::const_iterator>
-GetContacts(const World& world) noexcept;
+std::vector<KeyedContactPtr> GetContacts(const World& world) noexcept;
 
 /// @brief Gets the identified contact.
 /// @throws std::out_of_range If given an invalid contact identifier.

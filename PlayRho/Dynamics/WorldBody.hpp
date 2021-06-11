@@ -39,7 +39,6 @@
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Range.hpp> // for SizedRange
 
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>
@@ -73,12 +72,11 @@ BodyCounter GetBodyRange(const World& world) noexcept;
 
 /// @brief Gets the bodies of the specified world.
 /// @relatedalso World
-SizedRange<std::vector<BodyID>::const_iterator> GetBodies(const World& world) noexcept;
+std::vector<BodyID> GetBodies(const World& world) noexcept;
 
 /// @brief Gets the bodies-for-proxies range for the given world.
 /// @relatedalso World
-SizedRange<std::vector<BodyID>::const_iterator>
-GetBodiesForProxies(const World& world) noexcept;
+std::vector<BodyID> GetBodiesForProxies(const World& world) noexcept;
 
 /// @brief Creates a rigid body within the world that's a copy of the given one.
 /// @warning This function should not be used while the world is locked &mdash; as it is
@@ -679,8 +677,7 @@ inline void ResetMassData(World& world, BodyID id)
 /// @brief Gets the range of all joints attached to the identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-SizedRange<std::vector<std::pair<BodyID, JointID>>::const_iterator>
-GetJoints(const World& world, BodyID id);
+std::vector<std::pair<BodyID, JointID>> GetJoints(const World& world, BodyID id);
 
 /// @brief Is identified body "speedable".
 /// @details Is the body able to have a non-zero speed associated with it.
@@ -744,8 +741,7 @@ void SetSleepingAllowed(World& world, BodyID, bool value);
 ///   miss some collisions if you don't use <code>ContactListener</code>.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-SizedRange<std::vector<KeyedContactPtr>::const_iterator>
-GetContacts(const World& world, BodyID id);
+std::vector<KeyedContactPtr> GetContacts(const World& world, BodyID id);
 
 /// @brief Gets the centripetal force necessary to put the body into an orbit having
 ///    the given radius.

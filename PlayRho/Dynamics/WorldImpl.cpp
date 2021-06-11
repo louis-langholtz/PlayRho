@@ -1917,8 +1917,7 @@ void WorldImpl::ShiftOrigin(Length2 newOrigin)
     }
 
     // Optimize for newOrigin being different than current...
-    const auto bodies = GetBodies();
-    for (const auto& body: bodies) {
+    for (const auto& body: m_bodies) {
         auto& b = m_bodyBuffer[to_underlying(body)];
         auto transformation = GetTransformation(b);
         transformation.p -= newOrigin;
@@ -2293,20 +2292,14 @@ const WorldImpl::Proxies& WorldImpl::GetProxies(BodyID id) const
     return m_bodyProxies.at(to_underlying(id));
 }
 
-SizedRange<WorldImpl::Contacts::const_iterator> WorldImpl::GetContacts(BodyID id) const
+WorldImpl::Contacts WorldImpl::GetContacts(BodyID id) const
 {
-    const auto& container =  m_bodyContacts.at(to_underlying(id));
-    return SizedRange<WorldImpl::Contacts::const_iterator>{
-        begin(container), end(container), size(container)
-    };
+    return m_bodyContacts.at(to_underlying(id));
 }
 
-SizedRange<WorldImpl::BodyJoints::const_iterator> WorldImpl::GetJoints(BodyID id) const
+WorldImpl::BodyJoints WorldImpl::GetJoints(BodyID id) const
 {
-    const auto& container = m_bodyJoints.at(to_underlying(id));
-    return SizedRange<WorldImpl::BodyJoints::const_iterator>{
-        begin(container), end(container), size(container)
-    };
+    return m_bodyJoints.at(to_underlying(id));
 }
 
 ContactCounter WorldImpl::Synchronize(BodyID bodyId,

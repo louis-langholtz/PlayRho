@@ -97,24 +97,22 @@ void ShiftOrigin(WorldImpl& world, Length2 newOrigin)
     world.ShiftOrigin(newOrigin);
 }
 
-SizedRange<std::vector<BodyID>::const_iterator> GetBodies(const WorldImpl& world) noexcept
+std::vector<BodyID> GetBodies(const WorldImpl& world) noexcept
 {
     return world.GetBodies();
 }
 
-SizedRange<std::vector<BodyID>::const_iterator>
-GetBodiesForProxies(const WorldImpl& world) noexcept
+std::vector<BodyID> GetBodiesForProxies(const WorldImpl& world) noexcept
 {
     return world.GetBodiesForProxies();
 }
 
-SizedRange<std::vector<JointID>::const_iterator> GetJoints(const WorldImpl& world) noexcept
+std::vector<JointID> GetJoints(const WorldImpl& world) noexcept
 {
     return world.GetJoints();
 }
 
-SizedRange<std::vector<KeyedContactPtr>::const_iterator>
-GetContacts(const WorldImpl& world) noexcept
+std::vector<KeyedContactPtr> GetContacts(const WorldImpl& world) noexcept
 {
     return world.GetContacts();
 }
@@ -159,8 +157,7 @@ const DynamicTree& GetTree(const WorldImpl& world) noexcept
     return world.GetTree();
 }
 
-SizedRange<std::vector<std::pair<BodyID, ShapeID>>::const_iterator>
-GetFixturesForProxies(const WorldImpl& world) noexcept
+std::vector<std::pair<BodyID, ShapeID>> GetFixturesForProxies(const WorldImpl& world) noexcept
 {
     return world.GetFixturesForProxies();
 }

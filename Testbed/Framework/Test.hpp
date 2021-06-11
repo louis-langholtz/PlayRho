@@ -25,7 +25,6 @@
 #include <PlayRho/PlayRho.hpp>
 
 #include <PlayRho/Common/Templates.hpp>
-#include <PlayRho/Common/Range.hpp>
 #include <PlayRho/Common/UnitVec.hpp>
 #include <PlayRho/Common/TypeInfo.hpp>
 
@@ -233,6 +232,8 @@ public:
     static const LinearAcceleration2 Gravity;
     static const char* ToName(DistanceOutput::State value);
 
+    static bool AlertUser(const std::string& title, const char* fmt, ...);
+
     virtual ~Test();
 
     /// @brief Steps this test's world forward and visualizes what's going on.
@@ -259,11 +260,9 @@ public:
         return std::get<0>(m_keyHandlers[id]);
     }
 
-    SizedRange<HandledKeys::const_iterator> GetHandledKeys() const
+    HandledKeys GetHandledKeys() const
     {
-        return SizedRange<HandledKeys::const_iterator>(cbegin(m_handledKeys),
-                                                       cend(m_handledKeys),
-                                                       size(m_handledKeys));
+        return m_handledKeys;
     }
 
     void MouseDown(const Length2& p);
@@ -287,11 +286,9 @@ public:
     FixtureSet GetSelectedFixtures() const noexcept { return m_selectedFixtures; }
     BodySet GetSelectedBodies() const noexcept { return m_selectedBodies; }
 
-    SizedRange<ContactPoints::const_iterator> GetPoints() const noexcept
+    ContactPoints GetPoints() const noexcept
     {
-        return SizedRange<ContactPoints::const_iterator>(cbegin(m_points),
-                                                         cend(m_points),
-                                                         size(m_points));
+        return m_points;
     }
 
     /// @brief Gets the world.
@@ -447,6 +444,7 @@ private:
     World m_world;
 
     std::string m_status;
+    std::string m_alertMessage;
     TextLinePos m_textLine = TextLinePos{30};
     AreaDensity m_bombDensity = 20_kgpm2;
     Length m_bombRadius = 0.3_m;

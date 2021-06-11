@@ -26,7 +26,6 @@
 /// Declarations of the WorldImpl class.
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Range.hpp> // for SizedRange
 #include <PlayRho/Common/Positive.hpp>
 #include <PlayRho/Common/ArrayAllocator.hpp>
 
@@ -277,7 +276,7 @@ public:
     /// @details Provides insight on what fixtures have been queued for proxy processing
     ///   during the next call to the world step method.
     /// @see Step.
-    SizedRange<std::vector<std::pair<BodyID, ShapeID>>::const_iterator> GetFixturesForProxies() const noexcept;
+    std::vector<std::pair<BodyID, ShapeID>> GetFixturesForProxies() const noexcept;
 
     /// @}
 
@@ -297,13 +296,13 @@ public:
     /// @return Body range that can be iterated over using its begin and end methods
     ///   or using ranged-based for-loops.
     /// @see CreateBody(const Body&).
-    SizedRange<Bodies::const_iterator> GetBodies() const noexcept;
+    Bodies GetBodies() const noexcept;
 
     /// @brief Gets the bodies-for-proxies range for this world.
     /// @details Provides insight on what bodies have been queued for proxy processing
     ///   during the next call to the world step method.
     /// @see Step.
-    SizedRange<Bodies::const_iterator> GetBodiesForProxies() const noexcept;
+    Bodies GetBodiesForProxies() const noexcept;
 
     /// @brief Creates a rigid body that's a copy of the given one.
     /// @warning This function should not be used while the world is locked &mdash; as it is
@@ -361,10 +360,10 @@ public:
 
     /// @brief Gets the contacts associated with the identified body.
     /// @throws std::out_of_range if given an invalid id.
-    SizedRange<WorldImpl::Contacts::const_iterator> GetContacts(BodyID id) const;
+    Contacts GetContacts(BodyID id) const;
 
     /// @throws std::out_of_range if given an invalid id.
-    SizedRange<WorldImpl::BodyJoints::const_iterator> GetJoints(BodyID id) const;
+    BodyJoints GetJoints(BodyID id) const;
 
     /// @}
 
@@ -383,7 +382,7 @@ public:
     ///   <code>CreateJoint(const Joint&)</code> method that haven't yet been destroyed.
     /// @return World joints sized-range.
     /// @see CreateJoint(const Joint&).
-    SizedRange<Joints::const_iterator> GetJoints() const noexcept;
+    Joints GetJoints() const noexcept;
 
     /// @brief Creates a joint to constrain one or more bodies.
     /// @warning This function is locked during callbacks.
@@ -480,7 +479,7 @@ public:
     /// @warning contacts are created and destroyed in the middle of a time step.
     /// Use <code>ContactListener</code> to avoid missing contacts.
     /// @return World contacts sized-range.
-    SizedRange<Contacts::const_iterator> GetContacts() const noexcept;
+    Contacts GetContacts() const noexcept;
 
     /// @brief Gets the identified contact.
     /// @throws std::out_of_range If given an invalid contact identifier.
@@ -878,29 +877,29 @@ inline void WorldImpl::AddProxies(const Proxies& proxies)
     m_proxiesForContacts.insert(end(m_proxiesForContacts), begin(proxies), end(proxies));
 }
 
-inline SizedRange<WorldImpl::Bodies::const_iterator> WorldImpl::GetBodies() const noexcept
+inline WorldImpl::Bodies WorldImpl::GetBodies() const noexcept
 {
-    return {begin(m_bodies), end(m_bodies), size(m_bodies)};
+    return m_bodies;
 }
 
-inline SizedRange<WorldImpl::Bodies::const_iterator> WorldImpl::GetBodiesForProxies() const noexcept
+inline WorldImpl::Bodies WorldImpl::GetBodiesForProxies() const noexcept
 {
-    return {cbegin(m_bodiesForSync), cend(m_bodiesForSync), size(m_bodiesForSync)};
+    return m_bodiesForSync;
 }
 
-inline SizedRange<std::vector<std::pair<BodyID, ShapeID>>::const_iterator> WorldImpl::GetFixturesForProxies() const noexcept
+inline std::vector<std::pair<BodyID, ShapeID>> WorldImpl::GetFixturesForProxies() const noexcept
 {
-    return {cbegin(m_fixturesForProxies), cend(m_fixturesForProxies), size(m_fixturesForProxies)};
+    return m_fixturesForProxies;
 }
 
-inline SizedRange<WorldImpl::Joints::const_iterator> WorldImpl::GetJoints() const noexcept
+inline WorldImpl::Joints WorldImpl::GetJoints() const noexcept
 {
-    return {begin(m_joints), end(m_joints), size(m_joints)};
+    return m_joints;
 }
 
-inline SizedRange<WorldImpl::Contacts::const_iterator> WorldImpl::GetContacts() const noexcept
+inline WorldImpl::Contacts WorldImpl::GetContacts() const noexcept
 {
-    return {begin(m_contacts), end(m_contacts), size(m_contacts)};
+    return m_contacts;
 }
 
 inline bool WorldImpl::IsLocked() const noexcept
@@ -915,12 +914,10 @@ inline bool WorldImpl::IsStepComplete() const noexcept
 
 inline void WorldImpl::SetStepComplete(bool value) noexcept
 {
-    if (value)
-    {
+    if (value) {
         m_flags |= e_stepComplete;
     }
-    else
-    {
+    else {
         m_flags &= ~e_stepComplete;        
     }
 }
@@ -932,12 +929,10 @@ inline bool WorldImpl::GetSubStepping() const noexcept
 
 inline void WorldImpl::SetSubStepping(bool flag) noexcept
 {
-    if (flag)
-    {
+    if (flag) {
         m_flags |= e_substepping;
     }
-    else
-    {
+    else {
         m_flags &= ~e_substepping;
     }
 }

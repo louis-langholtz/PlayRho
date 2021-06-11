@@ -26,7 +26,6 @@
 /// Declarations of the World class.
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Range.hpp> // for SizedRange
 #include <PlayRho/Common/propagate_const.hpp>
 
 #include <PlayRho/Collision/MassData.hpp>
@@ -321,17 +320,16 @@ public:
     /// @details Gets a range enumerating the bodies currently existing within this world.
     ///   These are the bodies that had been created from previous calls to the
     ///   <code>CreateBody(const BodyConf&)</code> method that haven't yet been destroyed.
-    /// @return Range of body identifiers that can be iterated over using its begin and end methods
-    ///   or using ranged-based for-loops.
+    /// @return An iterable of body identifiers.
     /// @see CreateBody(const BodyConf&).
-    SizedRange<Bodies::const_iterator> GetBodies() const noexcept;
+    Bodies GetBodies() const noexcept;
 
     /// @brief Gets the bodies-for-proxies range for this world.
     /// @details Provides insight on what bodies have been queued for proxy processing
     ///   during the next call to the world step method.
     /// @see Step.
     /// @todo Remove this function from this class - access from implementation instead.
-    SizedRange<Bodies::const_iterator> GetBodiesForProxies() const noexcept;
+    Bodies GetBodiesForProxies() const noexcept;
 
     /// @brief Creates a rigid body that's a copy of the given one.
     /// @warning This function should not be used while the world is locked &mdash; as it is
@@ -379,14 +377,14 @@ public:
     /// @brief Gets the range of joints attached to the identified body.
     /// @throws std::out_of_range If given an invalid body identifier.
     /// @see CreateJoint, GetBodyRange.
-    SizedRange<World::BodyJoints::const_iterator> GetJoints(BodyID id) const;
+    BodyJoints GetJoints(BodyID id) const;
 
     /// @brief Gets the container of contacts attached to the identified body.
     /// @warning This collection changes during the time step and you may
     ///   miss some collisions if you don't use <code>ContactListener</code>.
     /// @throws std::out_of_range If given an invalid body identifier.
     /// @see GetBodyRange.
-    SizedRange<World::Contacts::const_iterator> GetContacts(BodyID id) const;
+    Contacts GetContacts(BodyID id) const;
 
     /// @brief Gets the identities of the shapes associated with the identified body.
     /// @throws std::out_of_range If given an invalid body identifier.
@@ -410,7 +408,7 @@ public:
     ///   <code>CreateJoint</code> method that haven't yet been destroyed.
     /// @return World joints sized-range.
     /// @see CreateJoint.
-    SizedRange<Joints::const_iterator> GetJoints() const noexcept;
+    Joints GetJoints() const noexcept;
 
     /// @brief Creates a joint to constrain one or more bodies.
     /// @warning This function is locked during callbacks.
@@ -497,7 +495,7 @@ public:
     /// @warning contacts are created and destroyed in the middle of a time step.
     /// Use <code>ContactListener</code> to avoid missing contacts.
     /// @return World contacts sized-range.
-    SizedRange<Contacts::const_iterator> GetContacts() const noexcept;
+    Contacts GetContacts() const noexcept;
 
     /// @brief Gets the identified contact.
     /// @throws std::out_of_range If given an invalid contact identifier.

@@ -28,7 +28,6 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Units.hpp>
 #include <PlayRho/Common/Transformation.hpp>
-#include <PlayRho/Common/Range.hpp> // for SizedRange
 #include <PlayRho/Common/Velocity.hpp>
 #include <PlayRho/Common/Vector2.hpp> // for Length2, LinearAcceleration2
 
@@ -80,8 +79,7 @@ void Destroy(WorldImpl& world, BodyID id);
 /// @brief Gets the range of all joints attached to this body.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso WorldImpl
-SizedRange<std::vector<std::pair<BodyID, JointID>>::const_iterator>
-GetJoints(const WorldImpl& world, BodyID id);
+std::vector<std::pair<BodyID, JointID>> GetJoints(const WorldImpl& world, BodyID id);
 
 /// @brief Associates a validly identified shape with the validly identified body.
 /// @throws std::out_of_range If given an invalid body or shape identifier.
@@ -107,8 +105,7 @@ const std::vector<ShapeID>& GetShapes(const WorldImpl& world, BodyID id);
 ///   miss some collisions if you don't use <code>ContactListener</code>.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso WorldImpl
-SizedRange<std::vector<KeyedContactPtr>::const_iterator>
-GetContacts(const WorldImpl& world, BodyID id);
+std::vector<KeyedContactPtr> GetContacts(const WorldImpl& world, BodyID id);
 
 } // namespace d2
 } // namespace playrho

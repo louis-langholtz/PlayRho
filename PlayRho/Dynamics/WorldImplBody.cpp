@@ -71,8 +71,7 @@ void Destroy(WorldImpl& world, BodyID id)
     world.Destroy(id);
 }
 
-SizedRange<std::vector<std::pair<BodyID, JointID>>::const_iterator>
-GetJoints(const WorldImpl& world, BodyID id)
+std::vector<std::pair<BodyID, JointID>> GetJoints(const WorldImpl& world, BodyID id)
 {
     return world.GetJoints(id);
 }
@@ -99,8 +98,7 @@ const std::vector<ShapeID>& GetShapes(const WorldImpl& world, BodyID id)
     return world.GetBody(id).GetShapes();
 }
 
-SizedRange<std::vector<KeyedContactPtr>::const_iterator>
-GetContacts(const WorldImpl& world, BodyID id)
+std::vector<KeyedContactPtr> GetContacts(const WorldImpl& world, BodyID id)
 {
     return world.GetContacts(id);
 }

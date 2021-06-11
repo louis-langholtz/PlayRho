@@ -148,12 +148,12 @@ ContactCounter World::GetContactRange() const noexcept
     return ::playrho::d2::GetContactRange(*m_impl);
 }
 
-SizedRange<World::Bodies::const_iterator> World::GetBodies() const noexcept
+World::Bodies World::GetBodies() const noexcept
 {
     return ::playrho::d2::GetBodies(*m_impl);
 }
 
-SizedRange<World::Bodies::const_iterator> World::GetBodiesForProxies() const noexcept
+World::Bodies World::GetBodiesForProxies() const noexcept
 {
     return ::playrho::d2::GetBodiesForProxies(*m_impl);
 }
@@ -183,17 +183,17 @@ const std::vector<ShapeID>& World::GetShapes(BodyID id) const
     return ::playrho::d2::GetShapes(*m_impl, id);
 }
 
-SizedRange<World::BodyJoints::const_iterator> World::GetJoints(BodyID id) const
+World::BodyJoints World::GetJoints(BodyID id) const
 {
     return ::playrho::d2::GetJoints(*m_impl, id);
 }
 
-SizedRange<World::Contacts::const_iterator> World::GetContacts(BodyID id) const
+World::Contacts World::GetContacts(BodyID id) const
 {
     return ::playrho::d2::GetContacts(*m_impl, id);
 }
 
-SizedRange<World::Joints::const_iterator> World::GetJoints() const noexcept
+World::Joints World::GetJoints() const noexcept
 {
     return ::playrho::d2::GetJoints(*m_impl);
 }
@@ -243,7 +243,7 @@ void World::Destroy(ShapeID id)
     ::playrho::d2::Destroy(*m_impl, id);
 }
 
-SizedRange<World::Contacts::const_iterator> World::GetContacts() const noexcept
+World::Contacts World::GetContacts() const noexcept
 {
     return ::playrho::d2::GetContacts(*m_impl);
 }

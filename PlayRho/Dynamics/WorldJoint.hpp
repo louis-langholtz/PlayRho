@@ -39,7 +39,6 @@
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Range.hpp> // for SizedRange
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
@@ -62,7 +61,7 @@ JointCounter GetJointRange(const World& world) noexcept;
 
 /// @brief Gets the joints of the specified world.
 /// @relatedalso World
-SizedRange<std::vector<JointID>::const_iterator> GetJoints(const World& world) noexcept;
+std::vector<JointID> GetJoints(const World& world) noexcept;
 
 /// @brief Creates a new joint within the given world.
 /// @throws WrongState if this method is called while the world is locked.
