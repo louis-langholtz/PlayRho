@@ -358,8 +358,9 @@ Manifold GetManifold(Length2 locationA, const Transformation& xfA, Length2 locat
  * All CollideShapes functions return a Manifold object.
  */
 
-Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
-                       const DistanceProxy& shapeB, const Transformation& xfB, Manifold::Conf conf)
+Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA, //
+                       const DistanceProxy& shapeB, const Transformation& xfB, //
+                       Manifold::Conf conf)
 {
     // Assumes called after detecting AABB overlap.
     // Find edge normal of max separation on A - return if separating axis is found
