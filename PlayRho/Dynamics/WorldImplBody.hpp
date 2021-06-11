@@ -98,7 +98,7 @@ bool Detach(WorldImpl& world, BodyID id, ShapeID shapeID);
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @throws WrongState if this method is called while the world is locked.
 /// @relatedalso WorldImpl
-const std::vector<ShapeID>& GetShapes(const WorldImpl& world, BodyID id);
+std::vector<ShapeID> GetShapes(const WorldImpl& world, BodyID id);
 
 /// @brief Gets the container of all contacts attached to this body.
 /// @warning This collection changes during the time step and you may

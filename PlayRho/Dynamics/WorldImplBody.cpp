@@ -93,7 +93,7 @@ bool Detach(WorldImpl& world, BodyID id, ShapeID shapeID)
     return false;
 }
 
-const std::vector<ShapeID>& GetShapes(const WorldImpl& world, BodyID id)
+std::vector<ShapeID> GetShapes(const WorldImpl& world, BodyID id)
 {
     return world.GetBody(id).GetShapes();
 }

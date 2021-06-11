@@ -178,7 +178,7 @@ void World::Destroy(BodyID id)
     ::playrho::d2::Destroy(*m_impl, id);
 }
 
-const std::vector<ShapeID>& World::GetShapes(BodyID id) const
+World::Shapes World::GetShapes(BodyID id) const
 {
     return ::playrho::d2::GetShapes(*m_impl, id);
 }

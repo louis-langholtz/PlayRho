@@ -452,7 +452,7 @@ public:
 
     /// @brief Gets the identifiers of the shapes attached to this body.
     /// @see SetShapes, Attach, Detach.
-    const std::vector<ShapeID>& GetShapes() const noexcept
+    std::vector<ShapeID> GetShapes() const noexcept
     {
         return m_shapes;
     }

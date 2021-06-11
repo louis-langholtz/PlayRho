@@ -172,7 +172,7 @@ bool Detach(World& world, BodyID id, bool resetMassData = true);
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see Attach, Detach.
 /// @relatedalso World
-const std::vector<ShapeID>& GetShapes(const World& world, BodyID id);
+std::vector<ShapeID> GetShapes(const World& world, BodyID id);
 
 /// @brief Gets the count of shapes associated with the identified body.
 /// @throws std::out_of_range If given an invalid body identifier.

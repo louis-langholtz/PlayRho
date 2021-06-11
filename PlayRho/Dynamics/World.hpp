@@ -124,16 +124,19 @@ class DynamicTree;
 class World
 {
 public:
-    /// @brief Bodies container type.
+    /// @brief Container type for Shape identifiers.
+    using Shapes = std::vector<ShapeID>;
+
+    /// @brief Container type for Body identifiers.
     using Bodies = std::vector<BodyID>;
 
     /// @brief Container type for keyed contact identifiers.
     using Contacts = std::vector<KeyedContactPtr>;
 
-    /// @brief Container type for joint identifiers.
+    /// @brief Container type for Joint identifiers.
     using Joints = std::vector<JointID>;
 
-    /// @brief Container type for body associated joint identifiers.
+    /// @brief Container type for Body associated Joint identifiers.
     using BodyJoints = std::vector<std::pair<BodyID, JointID>>;
 
     /// @brief Shape listener.
@@ -389,7 +392,7 @@ public:
     /// @brief Gets the identities of the shapes associated with the identified body.
     /// @throws std::out_of_range If given an invalid body identifier.
     /// @see GetBodyRange, CreateBody, SetBody.
-    const std::vector<ShapeID>& GetShapes(BodyID id) const;
+    Shapes GetShapes(BodyID id) const;
 
     /// @}
 

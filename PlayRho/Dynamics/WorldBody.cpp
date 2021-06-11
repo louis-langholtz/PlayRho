@@ -119,7 +119,7 @@ bool Detach(World& world, BodyID id, bool resetMassData)
     return anyDetached;
 }
 
-const std::vector<ShapeID>& GetShapes(const World& world, BodyID id)
+std::vector<ShapeID> GetShapes(const World& world, BodyID id)
 {
     return world.GetShapes(id);
 }
