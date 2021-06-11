@@ -171,7 +171,7 @@ bool operator!=(const Shape& lhs, const Shape& rhs) noexcept;
 /// @details A shape is used for collision detection. You can create a shape from any
 ///   supporting type. Shapes are conceptually made up of zero or more convex child shapes
 ///   where each child shape is made up of zero or more vertices and an associated radius
-///   called its "vertex radius".
+///   called its "vertex radius" or "skin".
 /// @note This class's design provides a "polymorphic value type" offering polymorphism
 ///   without public inheritance. This is based on a technique that's described by Sean Parent
 ///   in his January 2017 Norwegian Developers Conference London talk "Better Code: Runtime
@@ -179,7 +179,7 @@ bool operator!=(const Shape& lhs, const Shape& rhs) noexcept;
 ///   instances of this class with the different types that provide the required support.
 ///   Different shapes of a given type meanwhile are had by providing different values for the
 ///   type.
-/// @note A shape can be constructor from or have its value set to any value whose type
+/// @note A shape can be constructed from or have its value set to any value whose type
 ///   <code>T</code> has at least the following function definitions available for it:
 ///   - <code>bool operator==(const T& lhs, const T& rhs) noexcept;</code>
 ///   - <code>ChildCounter GetChildCount(const T&) noexcept;</code>

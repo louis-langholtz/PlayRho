@@ -91,6 +91,7 @@ const Shape& GetShape(const World& world, ShapeID id);
 /// @brief Sets the identified shape to the new value.
 /// @throws std::out_of_range If given an invalid shape identifier.
 /// @see CreateShape.
+/// @relatedalso World
 void SetShape(World& world, ShapeID, const Shape& def);
 
 /// @brief Gets the count of body-shape associations in the given world.

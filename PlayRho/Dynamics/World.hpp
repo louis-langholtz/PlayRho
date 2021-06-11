@@ -430,6 +430,7 @@ public:
     const Joint& GetJoint(JointID id) const;
 
     /// @brief Sets the identified joint to the given value.
+    /// @throws WrongState if this method is called while the world is locked.
     /// @throws std::out_of_range If given an invalid joint identifier.
     /// @see GetJoint, GetJointRange.
     void SetJoint(JointID id, const Joint& def);
@@ -524,10 +525,6 @@ private:
 /// @example HelloWorld.cpp
 /// This is the source file for the <code>HelloWorld</code> application that demonstrates
 /// use of the <code>playrho::d2::World</code> class and more.
-/// After instantiating a world, the code creates a body and its fixture to act as the ground,
-/// creates another body and a fixture for it to act like a ball, then steps the world using
-/// the world <code>playrho::d2::World::Step(const StepConf&)</code> function which simulates
-/// a ball falling to the ground and outputs the position of the ball after each step.
 
 /// @example World.cpp
 /// This is the <code>googletest</code> based unit testing file for the

@@ -216,6 +216,8 @@ enum class Geometry {
     Mutable,
 };
 
+/// @brief Templated rectangular shape part.
+/// @ingroup PartsGroup
 template <Geometry R, int W = 0, int H = 0, // force break
           class P1 = shape_part::DefaultPolicyArgs, // force break
           class P2 = shape_part::DefaultPolicyArgs, // force break
@@ -225,7 +227,9 @@ template <Geometry R, int W = 0, int H = 0, // force break
           class P6 = shape_part::DefaultPolicyArgs>
 class Rectangle;
 
-/// @brief A statically sized rectangle shape taking zero or more policy classes.
+/// @brief A statically sized rectangle shape template specialization taking zero or more policy
+///   classes.
+/// @ingroup PartsGroup
 template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
 class Rectangle<Geometry::Constant, W, H, P1, P2, P3, P4, P5, P6> // break
     : public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Density, // break
@@ -298,7 +302,9 @@ public:
     }
 };
 
-/// @brief A dynamically sized rectangle shape taking zero or more policy classes.
+/// @brief A dynamically sized rectangle shape template specialization taking zero or more policy
+///   classes.
+/// @ingroup PartsGroup
 template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
 class Rectangle<Geometry::Mutable, W, H, P1, P2, P3, P4, P5, P6> // break
     : public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Density, // break

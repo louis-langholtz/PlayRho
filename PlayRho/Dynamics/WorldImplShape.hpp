@@ -35,14 +35,29 @@ class Shape;
 /// @brief Gets the extent of the currently valid shape range.
 /// @note This is one higher than the maxium <code>ShapeID</code> that is in range
 ///   for shape related functions.
+/// @relatedalso WorldImpl
 ShapeCounter GetShapeRange(const WorldImpl& world) noexcept;
 
+/// @brief Creates a shape within the specified world.
+/// @throws WrongState if called while the world is "locked".
+/// @relatedalso WorldImpl
 ShapeID CreateShape(WorldImpl& world, const Shape& def);
 
+/// @brief Gets the shape associated with the identifier.
+/// @throws std::out_of_range If given an invalid identifier.
+/// @relatedalso WorldImpl
 const Shape& GetShape(const WorldImpl& world, ShapeID id);
 
+/// @brief Sets the identified shape to the new value.
+/// @throws std::out_of_range If given an invalid shape identifier.
+/// @see CreateShape.
+/// @relatedalso WorldImpl
 void SetShape(WorldImpl& world, ShapeID id, const Shape& def);
 
+/// @brief Destroys the identified shape.
+/// @throws WrongState if this function is called while the world is locked.
+/// @throws std::out_of_range If given an invalid identifier.
+/// @relatedalso WorldImpl
 void Destroy(WorldImpl& world, ShapeID id);
 
 } // namespace d2

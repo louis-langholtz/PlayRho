@@ -26,9 +26,11 @@
 /// Declarations of the Body class, and free functions associated with it.
 
 #include <PlayRho/Common/Math.hpp>
+
 #include <PlayRho/Dynamics/BodyType.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
+
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>
 
