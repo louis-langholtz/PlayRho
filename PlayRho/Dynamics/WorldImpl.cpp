@@ -1387,7 +1387,6 @@ WorldImpl::UpdateContactTOIs(const StepConf& conf)
 
         // Compute the TOI for this contact (one or both bodies are active and impenetrable).
         // Computes the time of impact in interval [0, 1]
-        // Large rotations can make the root finder of TimeOfImpact fail, so normalize the sweep angles.
         const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, toiConf);
 
         // Use Min function to handle floating point imprecision which possibly otherwise
