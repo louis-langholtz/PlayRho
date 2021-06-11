@@ -50,10 +50,10 @@ struct DistanceOutput {
     /// @brief State of the distance output.
     enum State : std::uint8_t {
         Unknown,
-        MaxPoints,
         UnfitSearchDir,
+        HitMaxIters,
+        MaxPoints,
         DuplicateIndexPair,
-        HitMaxIters
     };
 
     /// @brief Iteration type.
