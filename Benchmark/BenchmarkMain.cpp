@@ -68,6 +68,7 @@
 #include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
 
 #include <PlayRho/Collision/AABB.hpp>
+#include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/DynamicTree.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Collision/WorldManifold.hpp>
@@ -1459,14 +1460,37 @@ static TransformationPairs GetTransformationPairs(unsigned count)
     return it->second;
 }
 
+static void DistanceBetweenRelSquares(benchmark::State& state)
+{
+    const auto shape0 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
+    const auto shape1 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
+    const auto child0 = GetChild(shape0, 0);
+    const auto child1 = GetChild(shape1, 0);
+    const auto vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
+    for (auto _ : state) {
+        for (const auto& val : vals) {
+            const auto xf0 = val.first;
+            const auto xf1 = val.second;
+            playrho::d2::DistanceOutput result;
+            benchmark::DoNotOptimize(result = playrho::d2::Distance(child0, xf0, child1, xf1));
+            switch (result.state) {
+            case playrho::d2::DistanceOutput::State::MaxPoints:
+            case playrho::d2::DistanceOutput::State::DuplicateIndexPair:
+                break;
+            default:
+                std::cout << "Distance returned " << unsigned(result.state) << std::endl;
+                break;
+            }
+        }
+    }
+}
+
 static void MaxSepBetweenRelSquaresNoStop(benchmark::State& state)
 {
     const auto shape0 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
     const auto shape1 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
-
     const auto child0 = GetChild(shape0, 0);
     const auto child1 = GetChild(shape1, 0);
-
     const auto vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
     for (auto _ : state) {
         for (const auto& val : vals) {
@@ -1481,10 +1505,8 @@ static void MaxSepBetweenRel4x4(benchmark::State& state)
 {
     const auto shape0 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
     const auto shape1 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
-
     const auto child0 = GetChild(shape0, 0);
     const auto child1 = GetChild(shape1, 0);
-
     const auto vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
     for (auto _ : state) {
         for (const auto& val : vals) {
@@ -1499,11 +1521,9 @@ static void MaxSepBetweenRelSquares(benchmark::State& state)
 {
     const auto shape0 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
     const auto shape1 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
-
     const auto child0 = GetChild(shape0, 0);
     const auto child1 = GetChild(shape1, 0);
     const auto totalRadius = child0.GetVertexRadius() + child1.GetVertexRadius();
-
     const auto vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
     for (auto _ : state) {
         for (const auto& val : vals) {
@@ -1600,18 +1620,9 @@ static void ManifoldForTwoSquares1(benchmark::State& state)
 
 static void ManifoldForTwoSquares2(benchmark::State& state)
 {
-    // Shape A: square
-    const auto shape0 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
-
-    // Shape B: wide rectangle
-    const auto shape1 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 6, 3>();
-
-    const auto xfm0 =
-        playrho::d2::Transformation{playrho::Vec2{-2, 0} * (playrho::Real(1) * playrho::Meter),
-                                    playrho::d2::UnitVec::GetRight()}; // left
-    const auto xfm1 =
-        playrho::d2::Transformation{playrho::Vec2{+2, 0} * (playrho::Real(1) * playrho::Meter),
-                                    playrho::d2::UnitVec::GetRight()}; // right
+    // Shape A is a square & shape B is a wide rectangle.
+    const auto shapeA = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
+    const auto shapeB = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 6, 3>();
 
     // Put square left, wide rectangle right.
     // In ASCII art terms:
@@ -1626,9 +1637,16 @@ static void ManifoldForTwoSquares2(benchmark::State& state)
     //   |     +-+---------+
     //   +-------2
     //
+    const auto xfmA = playrho::d2::Transformation{ //
+        playrho::Vec2{-2, 0} * (playrho::Real(1) * playrho::Meter), //
+        playrho::d2::UnitVec::GetRight()}; // left
+    const auto xfmB = playrho::d2::Transformation{ //
+        playrho::Vec2{+2, 0} * (playrho::Real(1) * playrho::Meter), //
+        playrho::d2::UnitVec::GetRight()}; // right
+
     for (auto _ : state) {
         benchmark::DoNotOptimize(
-            CollideShapes(GetChild(shape0, 0), xfm0, GetChild(shape1, 0), xfm1));
+            CollideShapes(GetChild(shapeA, 0), xfmA, GetChild(shapeB, 0), xfmB));
     }
 }
 
@@ -2631,6 +2649,7 @@ BENCHMARK(AABB)->Arg(1000);
 // BENCHMARK(malloc_free_random_size);
 
 // BENCHMARK(MaxSepBetweenAbsSquares);
+BENCHMARK(DistanceBetweenRelSquares)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
 BENCHMARK(MaxSepBetweenRel4x4)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
 BENCHMARK(MaxSepBetweenRelSquaresNoStop)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
 BENCHMARK(MaxSepBetweenRelSquares)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
