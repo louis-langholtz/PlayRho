@@ -140,8 +140,7 @@ public:
 
     void PostStep(const Settings& settings, Drawer&) override
     {
-        if ((!settings.pause || settings.singleStep) && (m_count < Count))
-        {
+        if ((!settings.pause || settings.singleStep) && (m_count < Count)) {
             for (const auto& id: GetJoints(GetWorld())) {
                 if (GetType(GetWorld(), id) == GetTypeID<RevoluteJointConf>()) {
                     CreateTumblee(GetLocation(GetWorld(), GetBodyB(GetWorld(), id)));
