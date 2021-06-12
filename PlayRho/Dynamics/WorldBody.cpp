@@ -242,7 +242,7 @@ Acceleration CalcGravitationalAcceleration(const World& world, BodyID body)
     return Acceleration{};
 }
 
-BodyCounter GetWorldIndex(const World& world, BodyID id) noexcept
+BodyCounter GetWorldIndex(const World&, BodyID id) noexcept
 {
     return to_underlying(id);
 }

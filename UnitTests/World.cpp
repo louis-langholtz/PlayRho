@@ -373,9 +373,11 @@ TEST(World, CopyConstruction)
         EXPECT_EQ(world.GetMaxVertexRadius(), copy.GetMaxVertexRadius());
         EXPECT_EQ(world.GetJoints().size(), copy.GetJoints().size());
         const auto minJoints = std::min(world.GetJoints().size(), copy.GetJoints().size());
-        
-        auto worldJointIter = world.GetJoints().begin();
-        auto copyJointIter = copy.GetJoints().begin();
+
+        const auto worldJoints = world.GetJoints();
+        const auto copyJoints = copy.GetJoints();
+        auto worldJointIter = worldJoints.begin();
+        auto copyJointIter = copyJoints.begin();
         for (auto i = decltype(minJoints){0}; i < minJoints; ++i)
         {
             EXPECT_EQ(GetType(world, *worldJointIter), GetType(copy, *copyJointIter));
@@ -426,8 +428,10 @@ TEST(World, CopyAssignment)
         EXPECT_EQ(world.GetMaxVertexRadius(), copy.GetMaxVertexRadius());
         EXPECT_EQ(world.GetJoints().size(), copy.GetJoints().size());
         const auto minJoints = std::min(world.GetJoints().size(), copy.GetJoints().size());
-        auto worldJointIter = world.GetJoints().begin();
-        auto copyJointIter = copy.GetJoints().begin();
+        const auto worldJoints = world.GetJoints();
+        const auto copyJoints = copy.GetJoints();
+        auto worldJointIter = worldJoints.begin();
+        auto copyJointIter = copyJoints.begin();
         for (auto i = decltype(minJoints){0}; i < minJoints; ++i)
         {
             EXPECT_EQ(GetType(world, *worldJointIter), GetType(copy, *copyJointIter));
@@ -553,7 +557,8 @@ TEST(World, CreateDestroyJoinedBodies)
     const auto contactBodyB = GetBodyB(world, contact0);
     EXPECT_EQ(contactBodyA, body1);
     EXPECT_EQ(contactBodyB, body2);
-    const auto c0 = world.GetContacts().begin();
+    const auto worldContacts = world.GetContacts();
+    const auto c0 = worldContacts.begin();
     EXPECT_FALSE(NeedsFiltering(world, c0->second));
 
     const auto joint = world.CreateJoint(Joint{DistanceJointConf{body1, body2}});

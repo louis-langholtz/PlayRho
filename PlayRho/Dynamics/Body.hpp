@@ -1336,7 +1336,7 @@ void ApplyAngularImpulse(Body& body, AngularMomentum impulse) noexcept;
 
 /// @brief Gets the identifiers of the shapes attached to the body.
 /// @relatedalso Body
-inline const std::vector<ShapeID>& GetShapes(const Body& body) noexcept
+inline std::vector<ShapeID> GetShapes(const Body& body) noexcept
 {
     return body.GetShapes();
 }
