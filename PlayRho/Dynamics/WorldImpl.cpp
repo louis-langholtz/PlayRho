@@ -2613,6 +2613,9 @@ void WorldImpl::SetContact(ContactID id, const Contact& value)
     if (contact.HasValidToi() && (contact.GetToi() != value.GetToi())) {
         throw InvalidArgument("user may not change the TOI");
     }
+    if (contact.GetToiCount() != value.GetToiCount()) {
+        throw InvalidArgument("user may not change the TOI count");
+    }
     contact = value;
 }
 
