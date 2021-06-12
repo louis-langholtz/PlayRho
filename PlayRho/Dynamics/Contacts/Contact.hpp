@@ -179,7 +179,15 @@ public:
     LinearVelocity GetTangentSpeed() const noexcept;
 
     /// @brief Gets the time of impact count.
+    /// @see SetToiCount.
     substep_type GetToiCount() const noexcept;
+
+    /// @brief Sets the TOI count to the given value.
+    /// @see GetToiCount.
+    void SetToiCount(substep_type value) noexcept;
+
+    /// @brief Increments the TOI count.
+    void IncrementToiCount() noexcept;
 
     /// @brief Gets whether a TOI is set.
     /// @return true if this object has a TOI set for it, false otherwise.
@@ -191,6 +199,19 @@ public:
     /// @return Time of impact fraction in the range of 0 to 1 if set (where 1
     ///   means no actual impact in current time slot), otherwise undefined.
     Real GetToi() const;
+
+    /// @brief Sets the time of impact (TOI).
+    /// @details After returning, this object will have a TOI that is set as indicated by
+    /// <code>HasValidToi()</code>.
+    /// @note Behavior is undefined if the value assigned is less than 0 or greater than 1.
+    /// @see Real GetToi() const.
+    /// @see HasValidToi.
+    /// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no actual impact
+    /// in the current time slot.
+    void SetToi(Real toi) noexcept;
+
+    /// @brief Unsets the TOI.
+    void UnsetToi() noexcept;
 
     /// @brief Whether or not the contact needs filtering.
     bool NeedsFiltering() const noexcept;
@@ -273,25 +294,6 @@ public:
         /// Indicates whether the contact is to be treated as between impenetrable bodies.
         e_impenetrableFlag = 0x80,
     };
-
-    /// @brief Sets the time of impact (TOI).
-    /// @details After returning, this object will have a TOI that is set as indicated by
-    /// <code>HasValidToi()</code>.
-    /// @note Behavior is undefined if the value assigned is less than 0 or greater than 1.
-    /// @see Real GetToi() const.
-    /// @see HasValidToi.
-    /// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no actual impact
-    /// in the current time slot.
-    void SetToi(Real toi) noexcept;
-
-    /// @brief Unsets the TOI.
-    void UnsetToi() noexcept;
-
-    /// @brief Sets the TOI count to the given value.
-    void SetToiCount(substep_type value) noexcept;
-
-    /// @brief Increments the TOI count.
-    void IncrementToiCount() noexcept;
 
 private:
     /// Identifier of body A.
@@ -735,10 +737,19 @@ inline void UnsetIsSensor(Contact& contact) noexcept
 }
 
 /// @brief Gets the time of impact count.
+/// @see SetToiCount.
 /// @relatedalso Contact
 inline auto GetToiCount(const Contact& contact) noexcept
 {
     return contact.GetToiCount();
+}
+
+/// @brief Sets the TOI count to the given value.
+/// @see GetToiCount.
+/// @relatedalso Contact
+inline void SetToiCount(Contact& contact, Contact::substep_type value) noexcept
+{
+    contact.SetToiCount(value);
 }
 
 /// @brief Whether or not the contact needs filtering.
