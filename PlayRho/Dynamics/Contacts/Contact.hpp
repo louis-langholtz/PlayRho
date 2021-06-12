@@ -192,17 +192,23 @@ public:
     ///   means no actual impact in current time slot), otherwise undefined.
     Real GetToi() const;
 
+    /// @brief Whether or not the contact needs filtering.
+    bool NeedsFiltering() const noexcept;
+
     /// @brief Flags the contact for filtering.
     void FlagForFiltering() noexcept;
 
-    /// @brief Whether or not the contact needs filtering.
-    bool NeedsFiltering() const noexcept;
+    /// @brief Unflags this contact for filtering.
+    void UnflagForFiltering() noexcept;
+
+    /// @brief Whether or not the contact needs updating.
+    bool NeedsUpdating() const noexcept;
 
     /// @brief Flags the contact for updating.
     void FlagForUpdating() noexcept;
 
-    /// @brief Whether or not the contact needs updating.
-    bool NeedsUpdating() const noexcept;
+    /// @brief Unflags this contact for updating.
+    void UnflagForUpdating() noexcept;
 
     /// @brief Whether or not this contact is a "sensor".
     /// @note This should be true whenever shape A or shape B is a sensor.
@@ -267,13 +273,6 @@ public:
         /// Indicates whether the contact is to be treated as between impenetrable bodies.
         e_impenetrableFlag = 0x80,
     };
-
-    /// @brief Flags this contact for filtering.
-    /// @note Filtering will occur the next time step.
-    void UnflagForFiltering() noexcept;
-
-    /// @brief Unflags this contact for updating.
-    void UnflagForUpdating() noexcept;
 
     /// @brief Sets the time of impact (TOI).
     /// @details After returning, this object will have a TOI that is set as indicated by
@@ -720,6 +719,21 @@ inline bool IsSensor(const Contact& contact) noexcept
     return contact.IsSensor();
 }
 
+/// @brief Sets the sensor state of the given contact.
+/// @attention Call this if shape A or shape B is a sensor.
+/// @relatedalso Contact
+inline void SetSensor(Contact& contact) noexcept
+{
+    contact.SetSensor();
+}
+
+/// @brief Unsets the sensor state of the given contact.
+/// @relatedalso Contact
+inline void UnsetIsSensor(Contact& contact) noexcept
+{
+    contact.UnsetIsSensor();
+}
+
 /// @brief Gets the time of impact count.
 /// @relatedalso Contact
 inline auto GetToiCount(const Contact& contact) noexcept
@@ -734,11 +748,39 @@ inline auto NeedsFiltering(const Contact& contact) noexcept
     return contact.NeedsFiltering();
 }
 
+/// @brief Flags the contact for filtering.
+/// @relatedalso Contact
+inline void FlagForFiltering(Contact& contact) noexcept
+{
+    contact.FlagForFiltering();
+}
+
+/// @brief Unflags this contact for filtering.
+/// @relatedalso Contact
+inline void UnflagForFiltering(Contact& contact) noexcept
+{
+    contact.UnflagForFiltering();
+}
+
 /// @brief Whether or not the contact needs updating.
 /// @relatedalso Contact
 inline auto NeedsUpdating(const Contact& contact) noexcept
 {
     return contact.NeedsUpdating();
+}
+
+/// @brief Flags the contact for updating.
+/// @relatedalso Contact
+inline void FlagForUpdating(Contact& contact) noexcept
+{
+    contact.FlagForUpdating();
+}
+
+/// @brief Unflags this contact for updating.
+/// @relatedalso Contact
+inline void UnflagForUpdating(Contact& contact) noexcept
+{
+    contact.UnflagForUpdating();
 }
 
 /// @brief Gets whether a TOI is set.

@@ -2607,6 +2607,12 @@ void WorldImpl::SetContact(ContactID id, const Contact& value)
     if (contact.IsSensor() != value.IsSensor()) {
         throw InvalidArgument("change shape A or B being a sensor to change sensor state");
     }
+    if (contact.HasValidToi() != value.HasValidToi()) {
+        throw InvalidArgument("user may not change whether contact has a valid TOI");
+    }
+    if (contact.HasValidToi() && (contact.GetToi() != value.GetToi())) {
+        throw InvalidArgument("user may not change the TOI");
+    }
     contact = value;
 }
 
