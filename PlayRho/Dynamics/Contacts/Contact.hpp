@@ -564,6 +564,38 @@ inline void Contact::IncrementToiCount() noexcept
 
 // Free functions...
 
+/// @brief Operator equals.
+/// @relatedalso Contact
+constexpr bool operator==(const Contact& lhs, const Contact& rhs) noexcept
+{
+    return lhs.GetBodyA() == rhs.GetBodyA() && //
+           lhs.GetBodyB() == rhs.GetBodyB() && //
+           lhs.GetShapeA() == rhs.GetShapeA() && //
+           lhs.GetShapeB() == rhs.GetShapeB() && //
+           lhs.GetChildIndexA() == rhs.GetChildIndexA() && //
+           lhs.GetChildIndexB() == rhs.GetChildIndexB() && //
+           lhs.GetFriction() == rhs.GetFriction() && //
+           lhs.GetRestitution() == rhs.GetRestitution() && //
+           lhs.GetTangentSpeed() == rhs.GetTangentSpeed() && //
+           lhs.GetToiCount() == rhs.GetToiCount() && //
+           lhs.IsTouching() == rhs.IsTouching() && //
+           lhs.IsEnabled() == rhs.IsEnabled() && //
+           lhs.NeedsFiltering() == rhs.NeedsFiltering() && //
+           lhs.HasValidToi() == rhs.HasValidToi() && //
+           lhs.NeedsUpdating() == rhs.NeedsUpdating() && //
+           lhs.IsSensor() == rhs.IsSensor() && //
+           lhs.IsActive() == rhs.IsActive() && //
+           lhs.IsImpenetrable() == rhs.IsImpenetrable() && //
+           (!lhs.HasValidToi() || !rhs.HasValidToi() || lhs.GetToi() == rhs.GetToi());
+}
+
+/// @brief Operator not-equals.
+/// @relatedalso Contact
+constexpr bool operator!=(const Contact& lhs, const Contact& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
 /// @brief Gets the body A ID of the given contact.
 /// @relatedalso Contact
 inline BodyID GetBodyA(const Contact& contact) noexcept
@@ -607,10 +639,27 @@ inline ChildCounter GetChildIndexB(const Contact& contact) noexcept
 }
 
 /// @brief Whether the given contact is "impenetrable".
+/// @note This should be true whenever body A or body B are impenetrable.
 /// @relatedalso Contact
 inline bool IsImpenetrable(const Contact& contact) noexcept
 {
     return contact.IsImpenetrable();
+}
+
+/// @brief Sets the impenetrability of the given contact.
+/// @attention Call this if body A or body B are impenetrable.
+/// @relatedalso Contact
+inline void SetImpenetrable(Contact& contact) noexcept
+{
+    contact.SetImpenetrable();
+}
+
+/// @brief Unsets the impenetrability of the given contact.
+/// @attention Call this if body A or body B are no longer impenetrable.
+/// @relatedalso Contact
+inline void UnsetImpenetrable(Contact& contact) noexcept
+{
+    contact.UnsetImpenetrable();
 }
 
 /// @brief Determines whether the given contact is "active".
@@ -618,6 +667,22 @@ inline bool IsImpenetrable(const Contact& contact) noexcept
 inline bool IsActive(const Contact& contact) noexcept
 {
     return contact.IsActive();
+}
+
+/// @brief Sets the active state of the given contact.
+/// @attention Call this if body A or body B are "awake".
+/// @relatedalso Contact
+inline void SetIsActive(Contact& contact) noexcept
+{
+    contact.SetIsActive();
+}
+
+/// @brief Unsets the active state of this contact.
+/// @attention Call this if neither body A nor body B are "awake".
+/// @relatedalso Contact
+inline void UnsetIsActive(Contact& contact) noexcept
+{
+    contact.UnsetIsActive();
 }
 
 /// @brief Gets whether the given contact is enabled or not.
@@ -694,6 +759,25 @@ inline auto HasValidToi(const Contact& contact) noexcept
 inline Real GetToi(const Contact& contact) noexcept
 {
     return contact.GetToi();
+}
+
+/// @brief Sets the time of impact (TOI).
+/// @note Behavior is undefined if the value assigned is less than 0 or greater than 1.
+/// @see Real GetToi() const.
+/// @see HasValidToi.
+/// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no actual impact
+///   in the current time slot.
+/// @relatedalso Contact
+inline void SetToi(Contact& contact, Real toi) noexcept
+{
+    contact.SetToi(toi);
+}
+
+/// @brief Unsets the TOI.
+/// @relatedalso Contact
+inline void UnsetToi(Contact& contact) noexcept
+{
+    contact.UnsetToi();
 }
 
 /// @brief Gets the coefficient of friction.
