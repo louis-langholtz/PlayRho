@@ -1529,30 +1529,34 @@ static void EntityUI(const Manifold& m)
     ImGui::TextWrappedUnformatted(stream.str());
 }
 
+static void EntityUI(World& world, ShapeID shapeId)
+{
+    auto shape = GetShape(world, shapeId);
+    if (shape.has_value()) {
+        if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(to_underlying(shapeId)), 0,
+                              "Shape %u", shapeId.get())) {
+            ImGui::IdContext shapeIdCtx(to_underlying(shapeId));
+            EntityUI(shape);
+            if (shape != GetShape(world, shapeId)) {
+                SetShape(world, shapeId, shape);
+            }
+            if (ImGui::Button("Destroy", ImVec2(-1, 0))) {
+                Destroy(world, shapeId);
+            }
+            ImGui::TreePop();
+        }
+    }
+    else {
+        ImGui::Text("Shape %u (empty)", to_underlying(shapeId));
+    }
+}
+
 static void ShapesUI(World& world)
 {
     ImGui::IdContext idCtx("WorldShapes");
     const auto numShapes = world.GetShapeRange();
     for (auto i = static_cast<ShapeCounter>(0); i < numShapes; ++i) {
-        const auto shapeId = ShapeID(i);
-        auto shape = GetShape(world, shapeId);
-        if (shape.has_value()) {
-            if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(to_underlying(shapeId)), 0,
-                                  "Shape %u", shapeId.get())) {
-                ImGui::IdContext shapeIdCtx(to_underlying(shapeId));
-                EntityUI(shape);
-                if (shape != GetShape(world, shapeId)) {
-                    SetShape(world, shapeId, shape);
-                }
-                if (ImGui::Button("Destroy", ImVec2(-1, 0))) {
-                    Destroy(world, shapeId);
-                }
-                ImGui::TreePop();
-            }
-        }
-        else {
-            ImGui::Text("Shape %u (empty)", to_underlying(shapeId));
-        }
+        EntityUI(world, ShapeID(i));
     }
 }
 
@@ -2308,8 +2312,7 @@ static void ModelEntitiesUI()
     ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, ImGui::GetFontSize()*1);
     {
         if (ImGui::TreeNodeEx("Shapes", selShapes? ImGuiTreeNodeFlags_DefaultOpen: 0,
-                              "Shapes (%hu)", test->GetWorld().GetShapeRange()))
-        {
+                              "Shapes (%hu)", test->GetWorld().GetShapeRange())) {
             ShapesUI(test->GetWorld());
             ImGui::TreePop();
         }
@@ -2317,8 +2320,7 @@ static void ModelEntitiesUI()
     {
         const auto bodies = GetBodies(test->GetWorld());
         if (ImGui::TreeNodeEx("Bodies", selBodies? ImGuiTreeNodeFlags_DefaultOpen: 0,
-                              "Bodies (%lu)", size(bodies)))
-        {
+                              "Bodies (%lu)", size(bodies))) {
             CollectionUI(test->GetWorld(), bodies, selectedBodies, selectedFixtures);
             ImGui::TreePop();
         }
@@ -2326,8 +2328,7 @@ static void ModelEntitiesUI()
     {
         const auto joints = GetJoints(test->GetWorld());
         if (ImGui::TreeNodeEx("Joints", selJoints? ImGuiTreeNodeFlags_DefaultOpen: 0,
-                              "Joints (%lu)", size(joints)))
-        {
+                              "Joints (%lu)", size(joints))) {
             CollectionUI(test->GetWorld(), joints);
             ImGui::TreePop();
         }
@@ -2335,8 +2336,7 @@ static void ModelEntitiesUI()
     {
         const auto contacts = GetContacts(test->GetWorld());
         if (ImGui::TreeNodeEx("Contacts", selContacts? ImGuiTreeNodeFlags_DefaultOpen: 0,
-                              "Contacts (%lu)", size(contacts)))
-        {
+                              "Contacts (%lu)", size(contacts))) {
             CollectionUI(test->GetWorld(), contacts);
             ImGui::TreePop();
         }
