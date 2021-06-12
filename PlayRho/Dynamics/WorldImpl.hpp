@@ -487,7 +487,13 @@ public:
     const Contact& GetContact(ContactID id) const;
 
     /// @brief Sets the identified contact's state.
-    /// @throws std::out_of_range If given an invalid contact identifier.
+    /// @note This will throw an exception to preserve invariants.
+    /// @invariant A contact may only be impenetrable if one or both bodies are.
+    /// @invariant A contact may only be active if one or both bodies are awake.
+    /// @invariant A contact may only be a sensor or one or both shapes are.
+    /// @throws InvalidArgument if a change would violate an invariant.
+    /// @throws std::out_of_range If given an invalid contact identifier or an invalid identifier
+    ///    in the new contact value.
     /// @see GetContact.
     void SetContact(ContactID id, const Contact& value);
 

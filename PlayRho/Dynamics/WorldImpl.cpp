@@ -362,12 +362,29 @@ inline Time UpdateUnderActiveTimes(const Island::Bodies& bodies,
 }
 
 inline BodyCounter Sleepem(const Island::Bodies& bodies,
-                           ArrayAllocator<Body>& bodyBuffer)
+                           ArrayAllocator<Body>& bodyBuffer,
+                           ArrayAllocator<WorldImpl::Contacts>& bodyContacts,
+                           ArrayAllocator<Contact>& contactBuffer)
 {
     auto unawoken = BodyCounter{0};
     for_each(cbegin(bodies), cend(bodies), [&](const auto& bodyID) {
         if (Unawaken(bodyBuffer[to_underlying(bodyID)])) {
             ++unawoken;
+            for (auto&& e: bodyContacts[to_underlying(bodyID)]) {
+                const auto contactId = std::get<ContactID>(e);
+                auto& contact = contactBuffer[to_underlying(contactId)];
+                if (contact.GetBodyA() == bodyID) {
+                    if (!bodyBuffer[to_underlying(contact.GetBodyB())].IsAwake()) {
+                        contact.UnsetIsActive();
+                    }
+                }
+                else {
+                    assert(contact.GetBodyB() == bodyID);
+                    if (!bodyBuffer[to_underlying(contact.GetBodyA())].IsAwake()) {
+                        contact.UnsetIsActive();
+                    }
+                }
+            }
         }
     });
     return unawoken;
@@ -1328,7 +1345,9 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     const auto minUnderActiveTime = UpdateUnderActiveTimes(island.bodies, m_bodyBuffer, conf);
     if ((minUnderActiveTime >= conf.minStillTimeToSleep) && results.solved) {
         results.bodiesSlept = static_cast<decltype(results.bodiesSlept)>(Sleepem(island.bodies,
-                                                                                 m_bodyBuffer));
+                                                                                 m_bodyBuffer,
+                                                                                 m_bodyContacts,
+                                                                                 m_contactBuffer));
     }
 
     return results;
@@ -2567,7 +2586,28 @@ void WorldImpl::SetBody(BodyID id, const Body& value)
 
 void WorldImpl::SetContact(ContactID id, const Contact& value)
 {
-    m_contactBuffer.at(to_underlying(id)) = value;
+    auto& contact = m_contactBuffer.at(to_underlying(id));
+
+    // Make sure body identifiers and shape identifiers are valid...
+    [[maybe_unused]] const auto& bodyA = m_bodyBuffer.at(to_underlying(value.GetBodyA()));
+    [[maybe_unused]] const auto& bodyB = m_bodyBuffer.at(to_underlying(value.GetBodyB()));
+    [[maybe_unused]] const auto& shapeA = m_shapeBuffer.at(to_underlying(value.GetShapeA()));
+    [[maybe_unused]] const auto& shapeB = m_shapeBuffer.at(to_underlying(value.GetShapeB()));
+
+    assert(IsActive(contact) == (IsAwake(bodyA) || IsAwake(bodyB)));
+    assert(IsImpenetrable(contact) == (IsImpenetrable(bodyA) || IsImpenetrable(bodyB)));
+    assert(IsSensor(contact) == (IsSensor(shapeA) || IsSensor(shapeB)));
+
+    if (contact.IsActive() != value.IsActive()) {
+        throw InvalidArgument("change body A or B being awake to change active state");
+    }
+    if (contact.IsImpenetrable() != value.IsImpenetrable()) {
+        throw InvalidArgument("change body A or B being impenetrable to change impenetrable state");
+    }
+    if (contact.IsSensor() != value.IsSensor()) {
+        throw InvalidArgument("change shape A or B being a sensor to change sensor state");
+    }
+    contact = value;
 }
 
 const Body& WorldImpl::GetBody(BodyID id) const

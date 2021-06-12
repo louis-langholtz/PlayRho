@@ -76,6 +76,10 @@ std::vector<KeyedContactPtr> GetContacts(const World& world) noexcept;
 const Contact& GetContact(const World& world, ContactID id);
 
 /// @brief Sets the identified contact's state.
+/// @note This may throw an exception or update associated entities to preserve invariants.
+/// @invariant A contact may only be impenetrable if one or both bodies are.
+/// @invariant A contact may only be active if one or both bodies are awake.
+/// @invariant A contact may only be a sensor or one or both shapes are.
 /// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 void SetContact(World& world, ContactID id, const Contact& value);
