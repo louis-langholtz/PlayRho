@@ -1465,13 +1465,6 @@ static void EntityUI(Shape &shape)
         ChildrenUI(shape);
         ImGui::TreePop();
     }
-
-    if (!ui->message.empty()) {
-        if (Test::AlertUser("Alert!", "New value rejected.\n\nReason: %s.\n\n",
-                            ui->message.c_str())) {
-            ui->message = std::string{};
-        }
-    }
 }
 
 static void EntityUI(const Manifold& m)
@@ -2163,80 +2156,123 @@ static void EntityUI(World& world, JointID e)
     }
 }
 
-static void EntityUI(World& world, ContactID c)
+static void EntityUI(Contact& contact)
 {
-    ImGui::IdContext idCtx(static_cast<int>(to_underlying(c)));
-    ImGui::ItemWidthContext itemWidthCtx(80); // 50
-
-    auto contact = GetContact(world, c);
+    ImGui::Columns(4, "BodyShapeChildColumns", false);
+    ImGui::SetColumnWidth(0, 30);
+    ImGui::SetColumnWidth(1, 40);
+    ImGui::SetColumnWidth(2, 40);
+    ImGui::SetColumnWidth(3, 40);
+    ImGui::TextUnformatted("Side");
+    ImGui::NextColumn();
+    ImGui::TextUnformatted("Body");
+    ImGui::NextColumn();
+    ImGui::TextUnformatted("Shape");
+    ImGui::NextColumn();
+    ImGui::TextUnformatted("Child");
+    ImGui::NextColumn();
+    ImGui::TextUnformatted("A");
+    ImGui::NextColumn();
+    ImGui::Text("%u", to_underlying(GetBodyA(contact)));
+    ImGui::NextColumn();
+    ImGui::Text("%u", to_underlying(GetShapeA(contact)));
+    ImGui::NextColumn();
+    ImGui::Text("%u", GetChildIndexA(contact));
+    ImGui::NextColumn();
+    ImGui::TextUnformatted("B");
+    ImGui::NextColumn();
+    ImGui::Text("%u", to_underlying(GetBodyB(contact)));
+    ImGui::NextColumn();
+    ImGui::Text("%u", to_underlying(GetShapeB(contact)));
+    ImGui::NextColumn();
+    ImGui::Text("%u", GetChildIndexB(contact));
+    ImGui::NextColumn();
+    ImGui::Columns(1);
     {
-        ImGui::Columns(4, "BodyShapeChildColumns", false);
-        ImGui::SetColumnWidth(0, 20);
-        ImGui::SetColumnWidth(1, 40);
-        ImGui::SetColumnWidth(2, 40);
-        ImGui::SetColumnWidth(3, 40);
-        ImGui::TextUnformatted("");
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("Body");
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("Shape");
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("Child");
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("A");
-        ImGui::NextColumn();
-        ImGui::Text("%u", to_underlying(GetBodyA(contact)));
-        ImGui::NextColumn();
-        ImGui::Text("%u", to_underlying(GetShapeA(contact)));
-        ImGui::NextColumn();
-        ImGui::Text("%u", GetChildIndexA(contact));
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("B");
-        ImGui::NextColumn();
-        ImGui::Text("%u", to_underlying(GetBodyB(contact)));
-        ImGui::NextColumn();
-        ImGui::Text("%u", to_underlying(GetShapeB(contact)));
-        ImGui::NextColumn();
-        ImGui::Text("%u", GetChildIndexB(contact));
-        ImGui::NextColumn();
-        ImGui::Columns(1);
-    }
-    {
-        auto v = IsEnabled(world, c);
+        auto v = IsEnabled(contact);
         if (ImGui::Checkbox("Enabled", &v)) {
             if (v) {
-                SetEnabled(world, c);
+                SetEnabled(contact);
             }
             else {
-                UnsetEnabled(world, c);
+                UnsetEnabled(contact);
             }
         }
     }
     {
-        auto val = static_cast<float>(GetRestitution(world, c));
+        auto v = IsImpenetrable(contact);
+        if (ImGui::Checkbox("Impenetrable", &v)) {
+            if (v) {
+                SetImpenetrable(contact);
+            }
+            else {
+                UnsetImpenetrable(contact);
+            }
+        }
+    }
+    {
+        auto v = IsActive(contact);
+        if (ImGui::Checkbox("Active", &v)) {
+            if (v) {
+                SetIsActive(contact);
+            }
+            else {
+                UnsetIsActive(contact);
+            }
+        }
+    }
+    {
+        auto val = static_cast<float>(GetRestitution(contact));
         if (ImGui::InputFloat("Restitution", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            SetRestitution(world, c, val);
+            SetRestitution(contact, val);
         }
     }
     {
-        auto val = static_cast<float>(GetFriction(world, c));
+        auto val = static_cast<float>(GetFriction(contact));
         if (ImGui::InputFloat("Friction", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            SetFriction(world, c, val);
+            SetFriction(contact, val);
         }
     }
     {
-        auto val = static_cast<float>(Real{GetTangentSpeed(world, c) / MeterPerSecond});
+        auto val = static_cast<float>(Real{GetTangentSpeed(contact) / MeterPerSecond});
         if (ImGui::InputFloat("Belt Speed", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            SetTangentSpeed(world, c, val * MeterPerSecond);
+            SetTangentSpeed(contact, val * MeterPerSecond);
         }
     }
-    if (HasValidToi(world, c)) {
-        ImGui::LabelText("TOI", "%f", static_cast<double>(GetToi(world, c)));
+    {
+        auto v = HasValidToi(contact)? GetToi(contact): std::numeric_limits<Real>::quiet_NaN();
+        if (ImGui::InputFloat("TOI", &v, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+            if (v >= 0 && v <= 1) {
+                SetToi(contact, v);
+            }
+            else {
+                UnsetToi(contact);
+            }
+        }
     }
-    ImGui::LabelText("TOI Count", "%d", GetToiCount(world, c));
+    ImGui::LabelText("TOI Count", "%d", GetToiCount(contact));
+}
 
-    if (IsTouching(world, c)) {
-        EntityUI(GetManifold(world, c));
+static void EntityUI(World& world, ContactID contactId)
+{
+    ImGui::IdContext idCtx(static_cast<int>(to_underlying(contactId)));
+    ImGui::ItemWidthContext itemWidthCtx(50); // 50
+
+    auto contact = GetContact(world, contactId);
+    EntityUI(contact);
+    if (GetContact(world, contactId) != contact) {
+        try {
+            SetContact(world, contactId, contact);
+        }
+        catch (const std::invalid_argument& ex) {
+            ui->message = std::string("Invalid setting: ") + ex.what();
+        }
+        catch (const std::out_of_range& ex) {
+            ui->message = std::string("Out of range: ") + ex.what();
+        }
+    }
+    if (IsTouching(world, contactId)) {
+        EntityUI(GetManifold(world, contactId));
     }
 }
 
@@ -2299,29 +2335,25 @@ static void CollectionUI(World& world, const World::Contacts& contacts, bool int
 {
     ImGui::IdContext idCtx("ContactsRange");
     if (interactive) {
-        for (const auto& ct: contacts)
-        {
+        for (const auto& ct: contacts) {
             const auto key = std::get<ContactKey>(ct);
             const auto contactID = std::get<ContactID>(ct);
             if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(contactID.get()), 0,
                                   "Contact %u (%u,%u%s)", contactID.get(),
                                   key.GetMin(), key.GetMax(),
-                                  (IsTouching(world, contactID)? ",touching": "")))
-            {
+                                  (IsTouching(world, contactID)? ",touching": ""))) {
                 EntityUI(world, contactID);
                 ImGui::TreePop();
             }
         }
     }
     else {
-        for (const auto& ct: contacts)
-        {
+        for (const auto& ct: contacts) {
             const auto key = std::get<ContactKey>(ct);
             const auto contactID = std::get<ContactID>(ct);
             ImGui::Text("Contact %u (%u,%u%s)", contactID.get(), key.GetMin(), key.GetMax(),
                         IsTouching(world, contactID)? ",touching": "");
-            if (ImGui::IsItemHovered())
-            {
+            if (ImGui::IsItemHovered()) {
                 ImGui::SetTooltip("World ID of contact (and associated min & max tree keys).");
             }
         }
@@ -2406,6 +2438,13 @@ static bool UserInterface()
         ImGui::WindowContext window("Entity Editor", &ui->showEntities,
                                     ImGuiWindowFlags_HorizontalScrollbar|ImGuiWindowFlags_NoCollapse);
         ModelEntitiesUI();
+    }
+
+    if (!ui->message.empty()) {
+        if (Test::AlertUser("Alert!", "Operation rejected.\n\nReason: %s.\n\n",
+                            ui->message.c_str())) {
+            ui->message = std::string{};
+        }
     }
 
     return !shouldQuit;
