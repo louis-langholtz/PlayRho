@@ -514,7 +514,7 @@ inline ChildCounter Contact::GetChildIndexB() const noexcept
 
 inline bool Contact::IsSensor() const noexcept
 {
-    return m_flags & e_sensorFlag;
+    return (m_flags & e_sensorFlag) != 0u;
 }
 
 inline void Contact::SetSensor() noexcept
@@ -529,7 +529,7 @@ inline void Contact::UnsetIsSensor() noexcept
 
 inline bool Contact::IsImpenetrable() const noexcept
 {
-    return m_flags & e_impenetrableFlag;
+    return (m_flags & e_impenetrableFlag) != 0u;
 }
 
 inline void Contact::SetImpenetrable() noexcept
@@ -544,7 +544,7 @@ inline void Contact::UnsetImpenetrable() noexcept
 
 inline bool Contact::IsActive() const noexcept
 {
-    return m_flags & e_activeFlag;
+    return (m_flags & e_activeFlag) != 0u;
 }
 
 inline void Contact::SetIsActive() noexcept
