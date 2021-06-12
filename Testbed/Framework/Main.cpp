@@ -2222,6 +2222,39 @@ static void EntityUI(Contact& contact)
         }
     }
     {
+        auto v = IsSensor(contact);
+        if (ImGui::Checkbox("Sensor", &v)) {
+            if (v) {
+                SetSensor(contact);
+            }
+            else {
+                UnsetIsSensor(contact);
+            }
+        }
+    }
+    {
+        auto v = NeedsFiltering(contact);
+        if (ImGui::Checkbox("Needs filtering", &v)) {
+            if (v) {
+                FlagForFiltering(contact);
+            }
+            else {
+                UnflagForFiltering(contact);
+            }
+        }
+    }
+    {
+        auto v = NeedsUpdating(contact);
+        if (ImGui::Checkbox("Needs updating", &v)) {
+            if (v) {
+                FlagForUpdating(contact);
+            }
+            else {
+                UnflagForUpdating(contact);
+            }
+        }
+    }
+    {
         auto val = static_cast<float>(GetRestitution(contact));
         if (ImGui::InputFloat("Restitution", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
             SetRestitution(contact, val);
@@ -2250,7 +2283,12 @@ static void EntityUI(Contact& contact)
             }
         }
     }
-    ImGui::LabelText("TOI Count", "%d", GetToiCount(contact));
+    {
+        auto val = static_cast<int>(GetToiCount(contact));
+        if (ImGui::InputInt("TOI Count", &val)) {
+            SetToiCount(contact, static_cast<Contact::substep_type>(val));
+        }
+    }
 }
 
 static void EntityUI(World& world, ContactID contactId)
