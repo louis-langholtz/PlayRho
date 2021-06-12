@@ -2166,7 +2166,41 @@ static void EntityUI(World& world, JointID e)
 static void EntityUI(World& world, ContactID c)
 {
     ImGui::IdContext idCtx(static_cast<int>(to_underlying(c)));
-    ImGui::ItemWidthContext itemWidthCtx(50);
+    ImGui::ItemWidthContext itemWidthCtx(80); // 50
+
+    auto contact = GetContact(world, c);
+    {
+        ImGui::Columns(4, "BodyShapeChildColumns", false);
+        ImGui::SetColumnWidth(0, 20);
+        ImGui::SetColumnWidth(1, 40);
+        ImGui::SetColumnWidth(2, 40);
+        ImGui::SetColumnWidth(3, 40);
+        ImGui::TextUnformatted("");
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("Body");
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("Shape");
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("Child");
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("A");
+        ImGui::NextColumn();
+        ImGui::Text("%u", to_underlying(GetBodyA(contact)));
+        ImGui::NextColumn();
+        ImGui::Text("%u", to_underlying(GetShapeA(contact)));
+        ImGui::NextColumn();
+        ImGui::Text("%u", GetChildIndexA(contact));
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("B");
+        ImGui::NextColumn();
+        ImGui::Text("%u", to_underlying(GetBodyB(contact)));
+        ImGui::NextColumn();
+        ImGui::Text("%u", to_underlying(GetShapeB(contact)));
+        ImGui::NextColumn();
+        ImGui::Text("%u", GetChildIndexB(contact));
+        ImGui::NextColumn();
+        ImGui::Columns(1);
+    }
     {
         auto v = IsEnabled(world, c);
         if (ImGui::Checkbox("Enabled", &v)) {
@@ -2204,11 +2238,6 @@ static void EntityUI(World& world, ContactID c)
     if (IsTouching(world, c)) {
         EntityUI(GetManifold(world, c));
     }
-
-    ImGui::LabelText("Body A", "%u", GetBodyA(world, c).get());
-    ImGui::LabelText("Body B", "%u", GetBodyB(world, c).get());
-    ImGui::LabelText("Shape A", "%u", to_underlying(GetShapeA(world, c)));
-    ImGui::LabelText("Shape B", "%u", to_underlying(GetShapeB(world, c)));
 }
 
 static void CollectionUI(World& world, const World::Bodies& bodies,
