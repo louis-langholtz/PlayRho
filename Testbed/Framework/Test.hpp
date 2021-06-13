@@ -308,6 +308,8 @@ public:
     /// @brief Queries the world for all fixtures that potentially overlap the provided AABB.
     void Query(const AABB& aabb, QueryShapeCallback callback);
 
+    void SetSelectedFixtures(const FixtureSet& value) noexcept;
+
 protected:
     EdgeShapeConf GetGroundEdgeConf() const noexcept
     {
@@ -337,8 +339,6 @@ protected:
 
     Test(Conf config = GetDefaultConf());
 
-    void SetSelectedFixtures(FixtureSet value) noexcept;
-    
     void ClearSelectedFixtures()
     {
         m_selectedFixtures.clear();

@@ -154,19 +154,23 @@ Color GetColor(const World& world, BodyID body)
 bool Draw(Drawer& drawer, const World& world, BodyID body,
           bool skins, const Test::FixtureSet& selected)
 {
-    auto found = false;
+    auto foundBody = false;
+    auto foundShape = false;
     const auto bodyColor = GetColor(world, body);
     const auto selectedColor = Brighten(bodyColor, 1.3f);
     const auto xf = GetTransformation(world, body);
+    if (Test::Contains(selected, std::make_pair(body, InvalidShapeID))) {
+        foundBody = true;
+    }
     for (const auto& shapeID: GetShapes(world, body)) {
         auto color = bodyColor;
-        if (Test::Contains(selected, std::make_pair(body, shapeID))) {
+        if (foundBody || Test::Contains(selected, std::make_pair(body, shapeID))) {
             color = selectedColor;
-            found = true;
+            foundShape = true;
         }
         Draw(drawer, GetShape(world, shapeID), color, skins, xf);
     }
-    return found;
+    return foundBody || foundShape;
 }
 
 void Draw(Drawer& drawer, const World& world, JointID id)
@@ -226,12 +230,11 @@ inline bool ShouldDrawSkins(const Test::NeededSettings& needed,
     return (needed & (1u << Test::NeedDrawSkinsField))? test.drawSkins: step.drawSkins;
 }
 
-template <class T>
-std::set<BodyID> GetBodySetFromFixtures(const T& fixtures)
+std::set<BodyID> GetBodySetFromFixtures(const Test::FixtureSet& fixtures)
 {
     auto collection = std::set<BodyID>();
     for (const auto& f: fixtures) {
-        collection.insert(f.first);
+        collection.insert(std::get<BodyID>(f));
     }
     return collection;
 }
@@ -940,7 +943,7 @@ void Test::PreSolve(ContactID contactId, const Manifold& oldManifold)
     }
 }
 
-void Test::SetSelectedFixtures(FixtureSet value) noexcept
+void Test::SetSelectedFixtures(const FixtureSet& value) noexcept
 {
     m_selectedFixtures = value;
     m_selectedBodies = GetBodySetFromFixtures(value);
@@ -950,8 +953,7 @@ void Test::MouseDown(const Length2& p)
 {
     m_mouseWorld = p;
 
-    if (m_targetJoint != InvalidJointID)
-    {
+    if (m_targetJoint != InvalidJointID) {
         return;
     }
 
