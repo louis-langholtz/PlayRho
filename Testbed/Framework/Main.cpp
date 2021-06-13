@@ -378,7 +378,16 @@ static const char* ToName(TypeID type) noexcept
     if (type == GetTypeID<FrictionJointConf>()) return "Friction";
     if (type == GetTypeID<RopeJointConf>()) return "Rope";
     if (type == GetTypeID<MotorJointConf>()) return "Motor";
-    return GetName(type);
+    if (type == GetTypeID<ChainShapeConf>()) return "Chain";
+    if (type == GetTypeID<DiskShapeConf>()) return "Disk";
+    if (type == GetTypeID<EdgeShapeConf>()) return "Edge";
+    if (type == GetTypeID<MultiShapeConf>()) return "MultiShape";
+    if (type == GetTypeID<PolygonShapeConf>()) return "Polygon";
+    const auto name = GetName(type);
+    if (std::strstr(name, "playrho::d2::Rectangle")) {
+        return "Rectangle";
+    }
+    return name;
 }
 
 static BodyType ToBodyType(int val)
@@ -1552,7 +1561,8 @@ static void EntityUI(World& world, ShapeID shapeId)
     auto shape = GetShape(world, shapeId);
     if (shape.has_value()) {
         if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(to_underlying(shapeId)), 0,
-                              "Shape %u", shapeId.get())) {
+                              "Shape %u (Type=%s)", to_underlying(shapeId),
+                              ToName(GetType(world, shapeId)))) {
             ImGui::IdContext shapeIdCtx(to_underlying(shapeId));
             EntityUI(shape);
             if (GetShape(world, shapeId) != shape) {
