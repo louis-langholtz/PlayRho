@@ -56,6 +56,11 @@ void SetShape(World& world, ShapeID id, const Shape& def)
     world.SetShape(id, def);
 }
 
+TypeID GetType(const World& world, ShapeID id)
+{
+    return GetType(GetShape(world, id));
+}
+
 ShapeCounter GetAssociationCount(const World& world) noexcept
 {
     auto sum = ShapeCounter{0};

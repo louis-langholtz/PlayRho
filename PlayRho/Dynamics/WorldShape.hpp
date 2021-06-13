@@ -99,6 +99,11 @@ const Shape& GetShape(const World& world, ShapeID id);
 /// @relatedalso World
 void SetShape(World& world, ShapeID, const Shape& def);
 
+/// @brief Gets the type of the shape.
+/// @throws std::out_of_range If given an invalid identifier.
+/// @relatedalso World
+TypeID GetType(const World& world, ShapeID id);
+
 /// @brief Gets the count of body-shape associations in the given world.
 /// @relatedalso World
 ShapeCounter GetAssociationCount(const World& world) noexcept;
