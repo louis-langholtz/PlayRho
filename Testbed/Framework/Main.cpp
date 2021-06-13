@@ -1354,8 +1354,16 @@ static void EntityUI(Shape &shape)
     {
         ImGui::ItemWidthContext itemWidthCtx(60);
         //const auto vertexRadius = GetVertexRadius(shape);
-        ImGui::LabelText("Density (kg/m²)", "%.2e",
-                         static_cast<double>(Real{GetDensity(shape) * SquareMeter / Kilogram}));
+        {
+            auto val = static_cast<float>(Real{GetDensity(shape) * SquareMeter / Kilogram});
+            if (ImGui::InputFloat("Density (kg/m²)", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+                try {
+                    SetDensity(shape, val * Kilogram / SquareMeter);
+                } catch (const std::invalid_argument& ex) {
+                    ui->message = ex.what();
+                }
+            }
+        }
         ImGui::LabelText("Mass (kg)", "%.2e",
                          static_cast<double>(Real{GetMassData(shape).mass / 1_kg}));
         {
@@ -1547,7 +1555,7 @@ static void EntityUI(World& world, ShapeID shapeId)
                               "Shape %u", shapeId.get())) {
             ImGui::IdContext shapeIdCtx(to_underlying(shapeId));
             EntityUI(shape);
-            if (shape != GetShape(world, shapeId)) {
+            if (GetShape(world, shapeId) != shape) {
                 SetShape(world, shapeId, shape);
             }
             if (ImGui::Button("Destroy", ImVec2(-1, 0))) {
