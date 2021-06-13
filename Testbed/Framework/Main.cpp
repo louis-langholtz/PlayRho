@@ -134,6 +134,9 @@ namespace
     auto menuX = 0;
     auto menuHeight = 0;
     auto refreshRate = 0;
+
+    auto shapeTransformationMatrix = GetIdentity<Mat22>();
+    constexpr char shapeTransformButtonName[] = "Transform";
 }
 
 class Selection
@@ -739,7 +742,6 @@ static void AboutTestUI()
             ImGui::Columns(3, "KeyColumns", false);
             ImGui::SetColumnWidth(0, 50);
             ImGui::SetColumnWidth(1, 50);
-            //ImGui::SetColumnWidth(2, 200);
             for (auto& handledKey: handledKeys)
             {
                 const auto keyActionMods = std::get<0>(handledKey);
@@ -1379,6 +1381,10 @@ static void EntityUI(Shape &shape)
                     ui->message = ex.what();
                 }
             }
+            if (ImGui::IsItemHovered()) {
+                ImGui::ShowTooltip("Restitution/bounciness for the shape. Value must be finite!",
+                                   tooltipWrapWidth);
+            }
         }
     }
 
@@ -1393,6 +1399,13 @@ static void EntityUI(Shape &shape)
             } catch (const std::invalid_argument& ex) {
                 ui->message = ex.what();
             }
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Whether or not this acts as a sensor."
+                               " Sensors detect collisions but don't participate"
+                               " in their resolution - i.e. bodies will pass right through"
+                               " bodies having just sensor shapes.",
+                               tooltipWrapWidth);
         }
         ImGui::PopStyleVar();
     }
@@ -1464,6 +1477,10 @@ static void EntityUI(Shape &shape)
     if (ImGui::TreeNodeEx("ShapeChildren", 0, "Children (%u)", GetChildCount(shape))) {
         ChildrenUI(shape);
         ImGui::TreePop();
+    }
+
+    if (ImGui::Button(shapeTransformButtonName, ImVec2(-1, 0))) {
+        Transform(shape, shapeTransformationMatrix);
     }
 }
 
@@ -1547,6 +1564,50 @@ static void EntityUI(World& world, ShapeID shapeId)
 static void ShapesUI(World& world)
 {
     ImGui::IdContext idCtx("WorldShapes");
+
+    const auto y = ImGui::GetCursorPosY();
+    {
+        const auto columnWidth = 40.0f;
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2,2));
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
+        ImGui::Columns(2, "TransformationMatrix", false);
+        ImGui::SetColumnWidth(0, columnWidth);
+        ImGui::SetColumnWidth(1, columnWidth);
+        {
+            ImGui::ItemWidthContext itemWidthCtx(columnWidth);
+            ImGui::InputFloat("##00", &shapeTransformationMatrix[0][0]);
+        }
+        ImGui::NextColumn();
+        {
+            ImGui::ItemWidthContext itemWidthCtx(columnWidth);
+            ImGui::InputFloat("##01", &shapeTransformationMatrix[0][1]);
+        }
+        ImGui::NextColumn();
+        {
+            ImGui::ItemWidthContext itemWidthCtx(columnWidth);
+            ImGui::InputFloat("##10", &shapeTransformationMatrix[1][0]);
+        }
+        ImGui::NextColumn();
+        {
+            ImGui::ItemWidthContext itemWidthCtx(columnWidth);
+            ImGui::InputFloat("##11", &shapeTransformationMatrix[1][1]);
+        }
+        ImGui::Columns(1);
+        ImGui::PopStyleVar();
+        ImGui::PopStyleVar();
+    }
+    ImGui::SameLine();
+    ImGui::SetCursorPosY(y + 3);
+    ImGui::TextUnformatted("Transformation\nMatrix");
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("Matrix that's applied on pressing a shape's transform button.",
+                           tooltipWrapWidth);
+    }
+    //ImGui::NewLine();
+
+    ImGui::Spacing();
+    ImGui::Spacing();
+
     const auto numShapes = world.GetShapeRange();
     for (auto i = static_cast<ShapeCounter>(0); i < numShapes; ++i) {
         EntityUI(world, ShapeID(i));
