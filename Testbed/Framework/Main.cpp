@@ -2314,11 +2314,24 @@ static void EntityUI(World& world, ContactID contactId)
     }
 }
 
+static void AddBodyUI(World& world)
+{
+    const auto button_sz = ImVec2(-1, 0);
+    if (ImGui::Button("Create", button_sz)) {
+        const auto id = CreateBody(world);
+        auto fixtures = FixtureSet{};
+        fixtures.insert(std::make_pair(id, InvalidShapeID));
+        g_testSuite->GetTest()->SetSelectedFixtures(fixtures);
+        const auto saved = g_testSuite->GetTest()->GetSelectedBodies();
+        saved.count(id);
+    }
+}
+
 static void CollectionUI(World& world, const World::Bodies& bodies,
-                     const BodySet& selectedBodies,
-                     const FixtureSet& selectedFixtures)
+                         const BodySet& selectedBodies, const FixtureSet& selectedFixtures)
 {
     ImGui::IdContext idCtx("Bodies");
+    AddBodyUI(world);
     for (const auto& e: bodies) {
         const auto typeName = ToString(GetType(world, e));
         const auto flags = IsWithin(selectedBodies, e)? ImGuiTreeNodeFlags_DefaultOpen: 0;
