@@ -34,13 +34,13 @@ public:
 
     Pyramid()
     {
+        using namespace playrho::shape_part;
         auto ground = Body{};
         ground.Attach(CreateShape(GetWorld(),
                                   EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));
         CreateBody(GetWorld(), ground);
-
-        const auto a = 0.5_m;
-        const auto shape = CreateShape(GetWorld(), PolygonShapeConf{}.SetAsBox(a, a).UseDensity(5_kgpm2));
+        const auto shape = CreateShape(GetWorld(), Rectangle<Geometry::Constant, 1, 1,
+                                       DensityIs<StaticAreaDensity<5>>>());
         auto x = Vec2(-7.0f, 0.75f);
         const auto deltaX = Vec2(0.5625f, 1.25f);
         const auto deltaY = Vec2(1.125f, 0.0f);
@@ -52,9 +52,8 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.linearAcceleration = GetGravity();
                 bd.location = y * 1_m;
-                auto body = Body{bd};
-                body.Attach(shape);
-                CreateBody(GetWorld(), body);
+                bd.Use(shape);
+                CreateBody(GetWorld(), Body{bd});
                 y += deltaY;
             }
             x += deltaX;
