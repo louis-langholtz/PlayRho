@@ -494,11 +494,7 @@ inline bool IsWithin(const Container& container, const T& element) noexcept
 void Draw(Drawer& drawer, const DiskShapeConf& shape, Color color, const Transformation& xf);
 void Draw(Drawer& drawer, const EdgeShapeConf& shape, Color color, bool skins,
           const Transformation& xf);
-void Draw(Drawer& drawer, const PolygonShapeConf& shape, Color color, bool skins,
-          const Transformation& xf);
 void Draw(Drawer& drawer, const ChainShapeConf& shape, Color color, bool skins,
-          const Transformation& xf);
-void Draw(Drawer& drawer, const MultiShapeConf& shape, Color color, bool skins,
           const Transformation& xf);
 
 bool HasFixture(const Test::ContactPoint& cp, const Test::FixtureSet& fixtures) noexcept;

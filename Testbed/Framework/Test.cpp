@@ -120,13 +120,9 @@ void Draw(Drawer& drawer, const Shape& shape, const Color& color, bool skins,
         Draw(drawer, TypeCast<EdgeShapeConf>(shape), color, skins, xf);
         return;
     }
-    if (type == GetTypeID<MultiShapeConf>()) {
-        Draw(drawer, TypeCast<MultiShapeConf>(shape), color, skins, xf);
-        return;
-    }
-    if (type == GetTypeID<PolygonShapeConf>()) {
-        Draw(drawer, TypeCast<PolygonShapeConf>(shape), color, skins, xf);
-        return;
+    const auto childCount = GetChildCount(shape);
+    for (auto i = static_cast<decltype(GetChildCount(shape))>(0); i < childCount; ++i) {
+        Draw(drawer, GetChild(shape, i), color, skins, xf);
     }
 }
 
@@ -1384,21 +1380,6 @@ void Draw(Drawer& drawer, const ChainShapeConf& shape, Color color, bool skins,
             DrawCorner(drawer, v1, r, angle1, angle0, skinColor);
         }
         v1 = v2;
-    }
-}
-
-void Draw(Drawer& drawer, const PolygonShapeConf& shape, Color color, bool skins,
-          const Transformation& xf)
-{
-    Draw(drawer, GetChild(shape, 0), color, skins, xf);
-}
-
-void Draw(Drawer& drawer, const MultiShapeConf& shape, Color color, bool skins,
-          const Transformation& xf)
-{
-    const auto count = GetChildCount(shape);
-    for (auto i = decltype(count){0}; i < count; ++i) {
-        Draw(drawer, GetChild(shape, i), color, skins, xf);
     }
 }
 
