@@ -1553,10 +1553,47 @@ static void ShapesUI(World& world)
     }
 }
 
-static void CollectionUI(const std::vector<ShapeID>& shapeIds, BodyID bodyId,
+static void AttachShapeUI(World& world, BodyID bodyId, const std::vector<ShapeID>& shapeIds)
+{
+    const auto shapeRange = GetShapeRange(world);
+    auto available = std::vector<decltype(GetShapeRange(world))>{};
+    for (auto i = static_cast<decltype(GetShapeRange(world))>(0); i < shapeRange; ++i) {
+        const auto shapeId = ShapeID(i);
+        const auto last = end(shapeIds);
+        if (find(begin(shapeIds), last, shapeId) == last) {
+            available.push_back(i);
+        }
+    }
+    if (empty(available)) return;
+
+    static auto itemCurrentIdx = 0u;
+    static auto flags = ImGuiComboFlags(0);
+    const auto comboLabel = std::to_string(available[itemCurrentIdx]);
+    if (ImGui::BeginCombo("##BodyShapeSelectionCombo", comboLabel.c_str(), flags)) {
+        for (const auto& i: available) {
+            const auto pos = static_cast<decltype(itemCurrentIdx)>(&i - available.data());
+            const bool isSelected = (itemCurrentIdx == pos);
+            const auto label = std::to_string(i);
+            if (ImGui::Selectable(label.c_str(), isSelected)) {
+                itemCurrentIdx = pos;
+            }
+            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+            if (isSelected)
+                ImGui::SetItemDefaultFocus();
+        }
+        ImGui::EndCombo();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Attach", ImVec2(-1, 0))) {
+        Attach(world, bodyId, ShapeID(available[itemCurrentIdx]));
+    }
+}
+
+static void CollectionUI(World& world, const std::vector<ShapeID>& shapeIds, BodyID bodyId,
                          const FixtureSet& selectedFixtures)
 {
     ImGui::IdContext idCtx("BodyShapesCtx");
+    AttachShapeUI(world, bodyId, shapeIds);
     for (const auto& shapeId: shapeIds) {
         ImGui::Text("Shape %u (%s)", to_underlying(shapeId),
                     (IsWithin(selectedFixtures, std::make_pair(bodyId, shapeId))?
@@ -1571,7 +1608,7 @@ static void EntityUI(World& world, BodyID bodyId, const FixtureSet& selectedFixt
     {
         const auto shapes = GetShapes(world, bodyId);
         if (ImGui::TreeNodeEx("BodyShapes", 0, "Shapes (%lu)", size(shapes))) {
-            CollectionUI(shapes, bodyId, selectedFixtures);
+            CollectionUI(world, shapes, bodyId, selectedFixtures);
             ImGui::TreePop();
         }
     }
