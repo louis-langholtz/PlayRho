@@ -171,6 +171,14 @@ inline void Transform(EdgeShapeConf& arg, const Mat22& m) noexcept
 }
 
 } // namespace d2
+
+/// @brief Type info specialization for <code>d2::EdgeShapeConf</code>.
+template <>
+struct TypeInfo<d2::EdgeShapeConf> {
+    /// @brief Provides a null-terminated string name for the type.
+    static constexpr const char* name = "d2::EdgeShapeConf";
+};
+
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_SHAPES_EDGESHAPECONF_HPP

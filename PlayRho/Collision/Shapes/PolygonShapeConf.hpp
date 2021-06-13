@@ -266,6 +266,14 @@ inline void Transform(PolygonShapeConf& arg, const Mat22& m) noexcept
 bool Validate(const Span<const Length2> verts);
 
 } // namespace d2
+
+/// @brief Type info specialization for <code>d2::PolygonShapeConf</code>.
+template <>
+struct TypeInfo<d2::PolygonShapeConf> {
+    /// @brief Provides a null-terminated string name for the type.
+    static constexpr const char* name = "d2::PolygonShapeConf";
+};
+
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_SHAPES_POLYGONSHAPECONF_HPP

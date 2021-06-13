@@ -198,6 +198,14 @@ inline void Transform(MultiShapeConf& arg, const Mat22& m) noexcept
 }
 
 } // namespace d2
+
+/// @brief Type info specialization for <code>d2::MultiShapeConf</code>.
+template <>
+struct TypeInfo<d2::MultiShapeConf> {
+    /// @brief Provides a null-terminated string name for the type.
+    static constexpr const char* name = "d2::MultiShapeConf";
+};
+
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_SHAPES_MULTISHAPECONF_HPP

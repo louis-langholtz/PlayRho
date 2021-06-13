@@ -214,6 +214,14 @@ inline ChainShapeConf GetChainShapeConf(Length dimension)
 ChainShapeConf GetChainShapeConf(const AABB& arg);
 
 } // namespace d2
+
+/// @brief Type info specialization for <code>d2::ChainShapeConf</code>.
+template <>
+struct TypeInfo<d2::ChainShapeConf> {
+    /// @brief Provides a null-terminated string name for the type.
+    static constexpr const char* name = "d2::ChainShapeConf";
+};
+
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_SHAPES_CHAINSHAPECONF_HPP
