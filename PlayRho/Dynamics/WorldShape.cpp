@@ -31,6 +31,11 @@ namespace d2 {
 
 using playrho::size;
 
+ShapeCounter GetShapeRange(const World& world) noexcept
+{
+    return world.GetShapeRange();
+}
+
 ShapeID CreateShape(World& world, const Shape& def)
 {
     return world.CreateShape(def);

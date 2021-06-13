@@ -59,6 +59,12 @@ class World;
 ///   interfaces to <code>playrho::d2::World</code> shape member functions and additional
 ///   functionality.
 
+/// @brief Gets the extent of the currently valid shape range.
+/// @note This is one higher than the maxium <code>ShapeID</code> that is in range
+///   for shape related functions.
+/// @relatedalso World
+ShapeCounter GetShapeRange(const World& world) noexcept;
+
 /// @brief Creates a shape within the specified world.
 /// @throws WrongState if called while the world is "locked".
 /// @relatedalso World
