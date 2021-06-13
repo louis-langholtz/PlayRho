@@ -158,6 +158,13 @@ constexpr NonNegative<AreaDensity> GetDensity(const BaseShapeConf& arg) noexcept
     return arg.density;
 }
 
+/// @brief Sets the density of the given shape configuration.
+/// @relatedalso BaseShapeConf
+inline void SetDensity(BaseShapeConf& arg, NonNegative<AreaDensity> value)
+{
+    arg.density = value;
+}
+
 /// @brief Gets the restitution of the given shape.
 /// @relatedalso BaseShapeConf
 constexpr Finite<Real> GetRestitution(const BaseShapeConf& arg) noexcept

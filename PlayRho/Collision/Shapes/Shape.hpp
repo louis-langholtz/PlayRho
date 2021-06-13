@@ -88,7 +88,12 @@ void SetRestitution(Shape& shape, Real value);
 
 /// @brief Gets the density of the given shape.
 /// @return Non-negative density (in mass per area).
+/// @see SetDensity(Shape& shape, NonNegative<AreaDensity> value).
 NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept;
+
+/// @brief Sets the density of the given shape.
+/// @see GetDensity.
+void SetDensity(Shape& shape, NonNegative<AreaDensity> value);
 
 /// @brief Gets the vertex radius of the indexed child of the given shape.
 /// @details This gets the radius from the vertex that the shape's "skin" should
@@ -108,19 +113,19 @@ NonNegative<Length> GetVertexRadius(const Shape& shape, ChildCounter idx);
 
 /// @brief Gets the filter value for the given shape.
 /// @return Filter for the given shape or the default filter is the shape has no value.
-/// @see GetFilter.
+/// @see SetFilter(Shape& shape, Filter value);.
 Filter GetFilter(const Shape& shape) noexcept;
 
 /// @brief Sets the filter value for the given shape.
-/// @see SetFilter.
+/// @see GetFilter(const Shape& shape).
 void SetFilter(Shape& shape, Filter value);
 
 /// @brief Gets whether or not the given shape is a sensor.
-/// @see SetSensor.
+/// @see SetSensor(Shape& shape, bool value).
 bool IsSensor(const Shape& shape) noexcept;
 
 /// @brief Sets whether or not the given shape is a sensor.
-/// @see IsSensor.
+/// @see IsSensor(const Shape& shape).
 void SetSensor(Shape& shape, bool value);
 
 /// @brief Transforms all of the given shape's vertices by the given transformation matrix.
@@ -340,9 +345,18 @@ public:
         return shape.m_self ? shape.m_self->GetDensity_() : NonNegative<AreaDensity>{0_kgpm2};
     }
 
+    friend void SetDensity(Shape& shape, NonNegative<AreaDensity> value)
+    {
+        if (shape.m_self) {
+            auto copy = shape.m_self->Clone_();
+            copy->SetDensity_(value);
+            shape.m_self = std::move(copy);
+        }
+    }
+
     friend Filter GetFilter(const Shape& shape) noexcept
     {
-        return shape.m_self ? shape.m_self->GetFilter_(): Filter{};
+        return shape.m_self ? shape.m_self->GetFilter_() : Filter{};
     }
 
     friend void SetFilter(Shape& shape, Filter value)
@@ -356,7 +370,7 @@ public:
 
     friend bool IsSensor(const Shape& shape) noexcept
     {
-        return shape.m_self ? shape.m_self->IsSensor_(): false;
+        return shape.m_self ? shape.m_self->IsSensor_() : false;
     }
 
     friend void SetSensor(Shape& shape, bool value)
@@ -428,6 +442,9 @@ private:
 
         /// @brief Gets the density.
         virtual NonNegative<AreaDensity> GetDensity_() const noexcept = 0;
+
+        /// @brief Sets the density.
+        virtual void SetDensity_(NonNegative<AreaDensity>) noexcept = 0;
 
         /// @brief Gets the friction.
         virtual Real GetFriction_() const noexcept = 0;
@@ -524,6 +541,11 @@ private:
             return GetDensity(data);
         }
 
+        void SetDensity_(NonNegative<AreaDensity> value) noexcept override
+        {
+            SetDensity(data, value);
+        }
+
         Real GetFriction_() const noexcept override
         {
             return GetFriction(data);
@@ -617,6 +639,8 @@ struct IsValidShapeType<
                 decltype(GetMassData(std::declval<T>())), //
                 decltype(GetVertexRadius(std::declval<T>(), std::declval<ChildCounter>())), //
                 decltype(GetDensity(std::declval<T>())), //
+                decltype(SetDensity(std::declval<T&>(),
+                                    std::declval<NonNegative<AreaDensity>>())), //
                 decltype(GetFriction(std::declval<T>())), //
                 decltype(SetFriction(std::declval<T&>(), std::declval<Real>())),
                 decltype(GetRestitution(std::declval<T>())), //

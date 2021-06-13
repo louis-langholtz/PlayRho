@@ -529,6 +529,30 @@ void Transform(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>&, const Mat22& m)
     }
 }
 
+/// @brief Density setter that throws unless given the same value as current.
+/// @relatedalso Rectangle
+template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+std::enable_if_t<
+    std::is_const_v<decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>().density)>,
+    void>
+SetDensity(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, NonNegative<AreaDensity> value)
+{
+    if (value != GetDensity(arg)) {
+        throw InvalidArgument("SetDensity by non-equivalent value not supported");
+    }
+}
+
+/// @brief Density setter.
+/// @relatedalso Rectangle
+template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+std::enable_if_t<
+    !std::is_const_v<decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>().density)>,
+    void>
+SetDensity(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, NonNegative<AreaDensity> value)
+{
+    arg.density = value;
+}
+
 /// @brief Filter setter that throws unless given the same value as current.
 /// @relatedalso Rectangle
 template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
