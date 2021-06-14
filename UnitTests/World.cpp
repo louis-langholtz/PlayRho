@@ -1844,9 +1844,9 @@ TEST(World, HeavyOnLight)
         // The least num steps is 145
         switch (sizeof(Real))
         {
-            case 4: EXPECT_EQ(numSteps, 175ul /* 145ul */); break; // TODO: figure out why changed
-            case 8: EXPECT_EQ(numSteps, 176ul); break;
-            case 16: EXPECT_EQ(numSteps, 175ul); break;
+            case 4: EXPECT_EQ(numSteps, 145ul); break; // Effected by Contact IsActive cache errs
+            case 8: EXPECT_EQ(numSteps, 145ul); break;
+            case 16: EXPECT_EQ(numSteps, 145ul); break;
         }
         EXPECT_NEAR(static_cast<double>(Real(upperBodysLowestPoint / Meter)), 5.9475154876708984, 0.001);
     }
@@ -1907,9 +1907,9 @@ TEST(World, HeavyOnLight)
         // XXX Is this a bug or did the algorithm just work least well here?
         switch (sizeof(Real))
         {
-            case 4: EXPECT_EQ(numSteps, 766ul /* 736ul */); break; // TODO: figure out why changed
-            case 8: EXPECT_EQ(numSteps, 767ul /* 736ul */); break; // TODO: figure out why changed
-            case 16: EXPECT_EQ(numSteps, 766ul); break;
+            case 4: EXPECT_EQ(numSteps, 736ul); break; // Effected by Contact IsActive cache errs
+            case 8: EXPECT_EQ(numSteps, 736ul); break;
+            case 16: EXPECT_EQ(numSteps, 736ul); break;
         }
 
         // Here we see that the upper body at some point sunk into most of the lower body.
@@ -2742,11 +2742,17 @@ TEST(World_Longer, TilesComesToRest)
 #if defined(__core2__)
         EXPECT_EQ(world->GetContactRange(), 1447u);
         EXPECT_EQ(totalBodiesSlept, createdBodyCount + 3u);
-        EXPECT_TRUE(firstStepWithZeroMoved && (*firstStepWithZeroMoved == 1799u));
+        EXPECT_TRUE(firstStepWithZeroMoved);
+        if (firstStepWithZeroMoved) {
+            EXPECT_EQ(*firstStepWithZeroMoved, 1811u);
+        }
 #else
         EXPECT_EQ(world->GetContactRange(), 1449u); // on amd64
         EXPECT_EQ(totalBodiesSlept, createdBodyCount);
-        EXPECT_TRUE(firstStepWithZeroMoved && (*firstStepWithZeroMoved == 1792u));
+        EXPECT_TRUE(firstStepWithZeroMoved);
+        if (firstStepWithZeroMoved) {
+            EXPECT_EQ(*firstStepWithZeroMoved, 1792u);
+        }
 #endif
         break;
     case 8u:
@@ -2825,11 +2831,11 @@ TEST(World_Longer, TilesComesToRest)
         case  4:
         {
 #ifndef __FAST_MATH__
-            EXPECT_EQ(numSteps, 1800ul);
-            EXPECT_EQ(sumRegPosIters, 36518ul);
-            EXPECT_EQ(sumRegVelIters, 46965ul);
-            EXPECT_EQ(sumToiPosIters, 44006ul);
-            EXPECT_EQ(sumToiVelIters, 113850ul);
+            EXPECT_EQ(numSteps, 1812ul);
+            EXPECT_EQ(sumRegPosIters, 36526ul);
+            EXPECT_EQ(sumRegVelIters, 47063ul);
+            EXPECT_EQ(sumToiPosIters, 44029ul);
+            EXPECT_EQ(sumToiVelIters, 114069ul);
 #else
             EXPECT_EQ(numSteps, 1003ul);
             EXPECT_EQ(sumRegPosIters, 52909ul);

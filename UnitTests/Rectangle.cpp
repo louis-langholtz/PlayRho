@@ -122,13 +122,13 @@ TEST(Rectangle, GetDensity)
 
 TEST(Rectangle, GetFriction)
 {
-    EXPECT_EQ(GetFriction(Rectangle<Geometry::Constant, 1, 1>{}), Real(0.2));
+    EXPECT_EQ(GetFriction(Rectangle<Geometry::Constant, 1, 1>{}), Real(2) / Real(10));
     EXPECT_EQ(
         GetFriction(Rectangle<Geometry::Constant, 1, 1, FrictionIs<StaticTenthsFriction<>>>{}),
-        Real(0.2));
+              Real(2) / Real(10));
     EXPECT_EQ(
         GetFriction(Rectangle<Geometry::Constant, 1, 1, FrictionIs<StaticTenthsFriction<3>>>{}),
-        Real(0.3));
+              Real(3) / Real(10));
     EXPECT_EQ(GetFriction(Rectangle<Geometry::Constant, 1, 1, FrictionIs<DynamicFriction<4>>>{}),
               Real(4));
     EXPECT_EQ(GetFriction(Rectangle<Geometry::Constant, 1, 1, FrictionIs<DynamicFriction<4>>>{
@@ -155,9 +155,9 @@ TEST(Rectangle, SetFriction)
 {
     {
         auto rectangle = Rectangle<Geometry::Constant, 1, 1>{};
-        ASSERT_EQ(rectangle.friction, Real(0.2));
+        ASSERT_EQ(rectangle.friction, Real(2)/Real(10));
         EXPECT_THROW(SetFriction(rectangle, Real(3)), InvalidArgument);
-        EXPECT_EQ(rectangle.friction, Real(0.2));
+        EXPECT_EQ(rectangle.friction, Real(2)/Real(10));
     }
     {
         auto rectangle = Rectangle<Geometry::Constant, 1, 1, FrictionIs<DynamicFriction<>>>{};
