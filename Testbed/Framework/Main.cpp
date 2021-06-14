@@ -137,6 +137,7 @@ namespace
 
     auto shapeTransformationMatrix = GetIdentity<Mat22>();
     constexpr char shapeTransformButtonName[] = "Transform";
+    constexpr char createJointButtonName[] = "Create Joint";
 }
 
 class Selection
@@ -1622,6 +1623,8 @@ static void ShapesUI(World& world)
 
 static void AttachShapeUI(World& world, BodyID bodyId, const std::vector<ShapeID>& shapeIds)
 {
+    static auto itemCurrentIdx = 0u;
+    static auto flags = ImGuiComboFlags(0);
     const auto shapeRange = GetShapeRange(world);
     auto available = std::vector<decltype(GetShapeRange(world))>{};
     for (auto i = static_cast<decltype(GetShapeRange(world))>(0); i < shapeRange; ++i) {
@@ -1632,9 +1635,7 @@ static void AttachShapeUI(World& world, BodyID bodyId, const std::vector<ShapeID
         }
     }
     if (empty(available)) return;
-
-    static auto itemCurrentIdx = 0u;
-    static auto flags = ImGuiComboFlags(0);
+    itemCurrentIdx = itemCurrentIdx % size(available);
     const auto comboLabel = std::to_string(available[itemCurrentIdx]);
     if (ImGui::BeginCombo("##BodyShapeSelectionCombo", comboLabel.c_str(), flags)) {
         for (const auto& i: available) {
@@ -2303,9 +2304,6 @@ static void ChangeTypeUI(Joint& joint)
 
 static void EntityUI(Joint& joint, BodyCounter bodyRange)
 {
-    ChangeTypeUI(joint);
-
-    ImGui::ItemWidthContext itemWidthCtx(100);
     ImGui::LabelText("Collide Connected", "%s", GetCollideConnected(joint)? "true": "false");
     {
         const auto linReact = GetLinearReaction(joint);
@@ -2378,8 +2376,15 @@ static void EntityUI(Joint& joint, BodyCounter bodyRange)
 static void EntityUI(World& world, JointID e)
 {
     ImGui::IdContext idCtx(static_cast<int>(e.get()));
+    ImGui::ItemWidthContext itemWidthCtx(70);
     const auto bodyRange = GetBodyRange(world);
     auto joint = GetJoint(world, e);
+    ChangeTypeUI(joint);
+    if (ImGui::IsItemHovered()) {
+        ImGui::SetTooltip("Shows joint's current type and changes it if new selection made.");
+    }
+    ImGui::SameLine();
+    ImGui::Text("Joint's type");
     EntityUI(joint, bodyRange);
     if (GetJoint(world, e) != joint) {
         SetJoint(world, e, joint);
@@ -2550,13 +2555,11 @@ static void EntityUI(World& world, ContactID contactId)
 static void AddBodyUI(World& world)
 {
     const auto button_sz = ImVec2(-1, 0);
-    if (ImGui::Button("Create", button_sz)) {
+    if (ImGui::Button("Create Body", button_sz)) {
         const auto id = CreateBody(world);
         auto fixtures = FixtureSet{};
         fixtures.insert(std::make_pair(id, InvalidShapeID));
         g_testSuite->GetTest()->SetSelectedFixtures(fixtures);
-        const auto saved = g_testSuite->GetTest()->GetSelectedBodies();
-        saved.count(id);
     }
 }
 
@@ -2564,7 +2567,6 @@ static void CollectionUI(World& world, const World::Bodies& bodies,
                          const BodySet& selectedBodies, const FixtureSet& selectedFixtures)
 {
     ImGui::IdContext idCtx("Bodies");
-    AddBodyUI(world);
     for (const auto& e: bodies) {
         const auto typeName = ToString(GetType(world, e));
         const auto flags = IsWithin(selectedBodies, e)? ImGuiTreeNodeFlags_DefaultOpen: 0;
@@ -2654,39 +2656,64 @@ static void ModelEntitiesUI()
     const auto selJoints = false;
     const auto selContacts = false;
     const auto selShapes = false;
+    auto& world = test->GetWorld();
 
     ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, ImGui::GetFontSize()*1);
+    ImGui::Spacing();
     {
         if (ImGui::TreeNodeEx("Shapes", selShapes? ImGuiTreeNodeFlags_DefaultOpen: 0,
-                              "Shapes (%hu)", test->GetWorld().GetShapeRange())) {
-            ShapesUI(test->GetWorld());
+                              "Shapes (%hu)", world.GetShapeRange())) {
+            ShapesUI(world);
             ImGui::TreePop();
         }
     }
+    ImGui::Spacing();
+    ImGui::Separator();
+    ImGui::Spacing();
     {
-        const auto bodies = GetBodies(test->GetWorld());
+        AddBodyUI(world);
+        const auto bodies = GetBodies(world);
         if (ImGui::TreeNodeEx("Bodies", selBodies? ImGuiTreeNodeFlags_DefaultOpen: 0,
                               "Bodies (%lu)", size(bodies))) {
-            CollectionUI(test->GetWorld(), bodies, selectedBodies, selectedFixtures);
+            CollectionUI(world, bodies, selectedBodies, selectedFixtures);
             ImGui::TreePop();
         }
     }
+    ImGui::Spacing();
+    ImGui::Separator();
+    ImGui::Spacing();
     {
-        const auto joints = GetJoints(test->GetWorld());
+        ImGui::ItemWidthContext itemWidthCtx(90);
+        static auto joint = Joint{RevoluteJointConf{}};
+        ChangeTypeUI(joint);
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Selects type of joint that's created on pressing the %s button.",
+                              createJointButtonName);
+        }
+        ImGui::SameLine();
+        const auto button_sz = ImVec2(-1, 0);
+        if (ImGui::Button(createJointButtonName, button_sz)) {
+            CreateJoint(world, joint);
+        }
+        const auto joints = GetJoints(world);
         if (ImGui::TreeNodeEx("Joints", selJoints? ImGuiTreeNodeFlags_DefaultOpen: 0,
                               "Joints (%lu)", size(joints))) {
-            CollectionUI(test->GetWorld(), joints);
+            CollectionUI(world, joints);
             ImGui::TreePop();
         }
     }
+    ImGui::Spacing();
+    ImGui::Separator();
+    ImGui::Spacing();
     {
-        const auto contacts = GetContacts(test->GetWorld());
+        const auto contacts = GetContacts(world);
         if (ImGui::TreeNodeEx("Contacts", selContacts? ImGuiTreeNodeFlags_DefaultOpen: 0,
                               "Contacts (%lu)", size(contacts))) {
-            CollectionUI(test->GetWorld(), contacts);
+            CollectionUI(world, contacts);
             ImGui::TreePop();
         }
     }
+    ImGui::Spacing();
     ImGui::PopStyleVar();
 }
 
