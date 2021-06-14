@@ -59,6 +59,7 @@
 #include <deque>
 #include <algorithm>
 #include <limits>
+#include <map>
 #include <set>
 #include <utility>
 
@@ -229,10 +230,11 @@ public:
 
     using ContactPoints = std::vector<ContactPoint>;
 
-    static const LinearAcceleration2 Gravity;
     static const char* ToName(DistanceOutput::State value);
-
+    static const char* ToName(TypeID type) noexcept;
     static bool AlertUser(const std::string& title, const char* fmt, ...);
+    static const LinearAcceleration2 Gravity;
+    static const std::map<TypeID, const char*> jointTypeToNameMap;
 
     virtual ~Test();
 

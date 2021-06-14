@@ -111,7 +111,7 @@ static void EntityUI(World& world, ContactID contact);
 static void EntityUI(World& world, JointID e);
 static void CollectionUI(World& world, const World::Contacts& contacts, bool interactive = true);
 static void CollectionUI(World& world, const World::Joints& joints);
-static void CollectionUI(const World::BodyJoints& joints);
+static void CollectionUI(World& world, const World::BodyJoints& joints);
 
 namespace
 {
@@ -363,31 +363,6 @@ static const char* ToString(BodyType type) noexcept
         case BodyType::Dynamic: return "Dynamic";
     }
     return "Unknown"; // should not be reached
-}
-
-static const char* ToName(TypeID type) noexcept
-{
-    if (type == GetTypeID<RevoluteJointConf>()) return "Revolute";
-    if (type == GetTypeID<PrismaticJointConf>()) return "Prismatic";
-    if (type == GetTypeID<DistanceJointConf>()) return "Distance";
-    if (type == GetTypeID<PulleyJointConf>()) return "Pulley";
-    if (type == GetTypeID<TargetJointConf>()) return "Target";
-    if (type == GetTypeID<GearJointConf>()) return "Gear";
-    if (type == GetTypeID<WheelJointConf>()) return "Wheel";
-    if (type == GetTypeID<WeldJointConf>()) return "Weld";
-    if (type == GetTypeID<FrictionJointConf>()) return "Friction";
-    if (type == GetTypeID<RopeJointConf>()) return "Rope";
-    if (type == GetTypeID<MotorJointConf>()) return "Motor";
-    if (type == GetTypeID<ChainShapeConf>()) return "Chain";
-    if (type == GetTypeID<DiskShapeConf>()) return "Disk";
-    if (type == GetTypeID<EdgeShapeConf>()) return "Edge";
-    if (type == GetTypeID<MultiShapeConf>()) return "MultiShape";
-    if (type == GetTypeID<PolygonShapeConf>()) return "Polygon";
-    const auto name = GetName(type);
-    if (std::strstr(name, "playrho::d2::Rectangle")) {
-        return "Rectangle";
-    }
-    return name;
 }
 
 static BodyType ToBodyType(int val)
@@ -1577,8 +1552,8 @@ static void EntityUI(World& world, ShapeID shapeId)
     auto shape = GetShape(world, shapeId);
     if (shape.has_value()) {
         if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(to_underlying(shapeId)), 0,
-                              "Shape %u (Type=%s)", to_underlying(shapeId),
-                              ToName(GetType(world, shapeId)))) {
+                              "Shape %u (%s)", to_underlying(shapeId),
+                              Test::ToName(GetType(shape)))) {
             ImGui::IdContext shapeIdCtx(to_underlying(shapeId));
             EntityUI(shape);
             if (GetShape(world, shapeId) != shape) {
@@ -1687,7 +1662,8 @@ static void CollectionUI(World& world, const std::vector<ShapeID>& shapeIds, Bod
     ImGui::IdContext idCtx("BodyShapesCtx");
     AttachShapeUI(world, bodyId, shapeIds);
     for (const auto& shapeId: shapeIds) {
-        ImGui::Text("Shape %u (%s)", to_underlying(shapeId),
+        ImGui::Text("Shape %u (%s %s)", to_underlying(shapeId),
+                    Test::ToName(GetType(world, shapeId)),
                     (IsWithin(selectedFixtures, std::make_pair(bodyId, shapeId))?
                      "selected": "not-selected"));
     }
@@ -1707,7 +1683,7 @@ static void EntityUI(World& world, BodyID bodyId, const FixtureSet& selectedFixt
     {
         const auto joints = GetJoints(world, bodyId);
         if (ImGui::TreeNodeEx("BodyJoints", 0, "Joints (%lu)", size(joints))) {
-            CollectionUI(joints);
+            CollectionUI(world, joints);
             ImGui::TreePop();
         }
     }
@@ -1976,8 +1952,10 @@ static void EntityUI(GearJointConf& conf, BodyCounter bodyRange)
             SetRatio(conf, static_cast<Real>(v));
         }
     }
-    ImGui::LabelText("Type 1", "%s", ToName(GetType1(conf)));
-    ImGui::LabelText("Type 2", "%s", ToName(GetType2(conf)));
+    const auto type1 = GetType1(conf);
+    const auto type2 = GetType2(conf);
+    ImGui::LabelText("Type 1", "%s", (type1 != GetTypeID<void>())? Test::ToName(type1): "unset");
+    ImGui::LabelText("Type 2", "%s", (type2 != GetTypeID<void>())? Test::ToName(type2): "unset");
     {
         auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
@@ -2207,16 +2185,130 @@ static void EntityUI(MotorJointConf& conf, BodyCounter bodyRange)
     }
 }
 
-static void EntityUI(World& world, JointID e)
+static bool ChangeType(Joint& joint, TypeID newType)
 {
-    ImGui::ItemWidthContext itemWidthCtx(100);
-    ImGui::IdContext idCtx(static_cast<int>(e.get()));
+    const auto oldType = GetType(joint);
+    if (oldType == newType) {
+        return true;
+    }
+    if (newType == GetTypeID<DistanceJointConf>()) {
+        auto conf = DistanceJointConf{};
+        conf.bodyA = GetBodyA(joint);
+        conf.bodyB = GetBodyB(joint);
+        joint = conf;
+        return true;
+    }
+    if (newType == GetTypeID<FrictionJointConf>()) {
+        auto conf = FrictionJointConf{};
+        conf.bodyA = GetBodyA(joint);
+        conf.bodyB = GetBodyB(joint);
+        joint = conf;
+        return true;
+    }
+    if (newType == GetTypeID<GearJointConf>()) {
+        auto conf = GearJointConf{};
+        conf.bodyA = GetBodyA(joint);
+        conf.bodyB = GetBodyB(joint);
+        joint = conf;
+        return true;
+    }
+    if (newType == GetTypeID<MotorJointConf>()) {
+        auto conf = MotorJointConf{};
+        conf.bodyA = GetBodyA(joint);
+        conf.bodyB = GetBodyB(joint);
+        joint = conf;
+        return true;
+    }
+    if (newType == GetTypeID<PrismaticJointConf>()) {
+        auto conf = PrismaticJointConf{};
+        conf.bodyA = GetBodyA(joint);
+        conf.bodyB = GetBodyB(joint);
+        joint = conf;
+        return true;
+    }
+    if (newType == GetTypeID<PulleyJointConf>()) {
+        auto conf = PulleyJointConf{};
+        conf.bodyA = GetBodyA(joint);
+        conf.bodyB = GetBodyB(joint);
+        joint = conf;
+        return true;
+    }
+    if (newType == GetTypeID<RevoluteJointConf>()) {
+        auto conf = RevoluteJointConf{};
+        conf.bodyA = GetBodyA(joint);
+        conf.bodyB = GetBodyB(joint);
+        joint = conf;
+        return true;
+    }
+    if (newType == GetTypeID<RopeJointConf>()) {
+        auto conf = RopeJointConf{};
+        conf.bodyA = GetBodyA(joint);
+        conf.bodyB = GetBodyB(joint);
+        joint = conf;
+        return true;
+    }
+    if (newType == GetTypeID<TargetJointConf>()) {
+        auto conf = TargetJointConf{};
+        conf.bodyA = GetBodyA(joint);
+        conf.bodyB = GetBodyB(joint);
+        joint = conf;
+        return true;
+    }
+    if (newType == GetTypeID<WheelJointConf>()) {
+        auto conf = WheelJointConf{};
+        conf.bodyA = GetBodyA(joint);
+        conf.bodyB = GetBodyB(joint);
+        joint = conf;
+        return true;
+    }
+    if (newType == GetTypeID<WeldJointConf>()) {
+        auto conf = WeldJointConf{};
+        conf.bodyA = GetBodyA(joint);
+        conf.bodyB = GetBodyB(joint);
+        joint = conf;
+        return true;
+    }
+    return false;
+}
 
-    const auto bodyRange = GetBodyRange(world);
-    const auto& joint = GetJoint(world, e);
+static void ChangeTypeUI(Joint& joint)
+{
+    const auto type = GetType(joint);
+    auto itemCurrentIdx = static_cast<std::ptrdiff_t>(size(Test::jointTypeToNameMap));
+    const auto found = Test::jointTypeToNameMap.find(type);
+    if (found != end(Test::jointTypeToNameMap)) {
+        itemCurrentIdx = std::distance(begin(Test::jointTypeToNameMap), found);
+    }
+    const auto typeName = Test::ToName(type);
+    static auto flags = ImGuiComboFlags(0);
+    if (ImGui::BeginCombo("##JointTypeSelectionCombo", typeName, flags)) {
+        const auto first = begin(Test::jointTypeToNameMap);
+        const auto last = end(Test::jointTypeToNameMap);
+        auto pos = static_cast<std::ptrdiff_t>(0);
+        for (auto iter = first; iter != last; ++iter) {
+            const bool isSelected = (itemCurrentIdx == pos);
+            const auto label = iter->second;
+            if (ImGui::Selectable(label, isSelected)) {
+                itemCurrentIdx = pos;
+                ChangeType(joint, iter->first);
+            }
+            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+            if (isSelected)
+                ImGui::SetItemDefaultFocus();
+            ++pos;
+        }
+        ImGui::EndCombo();
+    }
+}
+
+static void EntityUI(Joint& joint, BodyCounter bodyRange)
+{
+    ChangeTypeUI(joint);
+
+    ImGui::ItemWidthContext itemWidthCtx(100);
     ImGui::LabelText("Collide Connected", "%s", GetCollideConnected(joint)? "true": "false");
     {
-        const auto linReact = GetLinearReaction(world, e);
+        const auto linReact = GetLinearReaction(joint);
         ImGui::LabelText("Lin. Reaction X (N·s)", "%.2e",
                          static_cast<double>(Real{GetX(linReact) / NewtonSecond}));
         ImGui::LabelText("Lin. Reaction Y (N·s)", "%.2e",
@@ -2224,61 +2316,73 @@ static void EntityUI(World& world, JointID e)
     }
     ImGui::LabelText("Ang. Reaction (N·m·s)", "%.2e",
                      static_cast<double>(Real{GetAngularReaction(joint) / NewtonMeterSecond}));
-    const auto type = GetType(world, e);
+
+    const auto type = GetType(joint);
     if (type == GetTypeID<DistanceJointConf>()) {
         auto conf = TypeCast<DistanceJointConf>(joint);
         EntityUI(conf, bodyRange);
-        SetJoint(world, e, conf);
+        joint = conf;
     }
     else if (type == GetTypeID<FrictionJointConf>()) {
         auto conf = TypeCast<FrictionJointConf>(joint);
         EntityUI(conf, bodyRange);
-        SetJoint(world, e, conf);
+        joint = conf;
     }
     else if (type == GetTypeID<GearJointConf>()) {
         auto conf = TypeCast<GearJointConf>(joint);
         EntityUI(conf, bodyRange);
-        SetJoint(world, e, conf);
+        joint = conf;
     }
     else if (type == GetTypeID<MotorJointConf>()) {
         auto conf = TypeCast<MotorJointConf>(joint);
         EntityUI(conf, bodyRange);
-        SetJoint(world, e, conf);
+        joint = conf;
     }
     else if (type == GetTypeID<PrismaticJointConf>()) {
         auto conf = TypeCast<PrismaticJointConf>(joint);
         EntityUI(conf, bodyRange);
-        SetJoint(world, e, conf);
+        joint = conf;
     }
     else if (type == GetTypeID<PulleyJointConf>()) {
         auto conf = TypeCast<PulleyJointConf>(joint);
         EntityUI(conf, bodyRange);
-        SetJoint(world, e, conf);
+        joint = conf;
     }
     if (type == GetTypeID<RevoluteJointConf>()) {
         auto conf = TypeCast<RevoluteJointConf>(joint);
         EntityUI(conf, bodyRange);
-        SetJoint(world, e, conf);
+        joint = conf;
     }
     if (type == GetTypeID<RopeJointConf>()) {
         auto conf = TypeCast<RopeJointConf>(joint);
         EntityUI(conf, bodyRange);
-        SetJoint(world, e, conf);
+        joint = conf;
     }
     else if (type == GetTypeID<TargetJointConf>()) {
         auto conf = TypeCast<TargetJointConf>(joint);
         EntityUI(conf, bodyRange);
-        SetJoint(world, e, conf);
+        joint = conf;
     }
     else if (type == GetTypeID<WheelJointConf>()) {
         auto conf = TypeCast<WheelJointConf>(joint);
         EntityUI(conf, bodyRange);
-        SetJoint(world, e, conf);
+        joint = conf;
     }
     else if (type == GetTypeID<WeldJointConf>()) {
         auto conf = TypeCast<WeldJointConf>(joint);
         EntityUI(conf, bodyRange);
-        SetJoint(world, e, conf);
+        joint = conf;
+    }
+}
+
+static void EntityUI(World& world, JointID e)
+{
+    ImGui::IdContext idCtx(static_cast<int>(e.get()));
+    const auto bodyRange = GetBodyRange(world);
+    auto joint = GetJoint(world, e);
+    EntityUI(joint, bodyRange);
+    if (GetJoint(world, e) != joint) {
+        SetJoint(world, e, joint);
     }
     if (ImGui::Button("Destroy", ImVec2(-1, 0))) {
         Destroy(world, e);
@@ -2465,7 +2569,7 @@ static void CollectionUI(World& world, const World::Bodies& bodies,
         const auto typeName = ToString(GetType(world, e));
         const auto flags = IsWithin(selectedBodies, e)? ImGuiTreeNodeFlags_DefaultOpen: 0;
         if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(e.get()), flags,
-                              "Body %u (Type=%s)", e.get(), typeName)) {
+                              "Body %u (%s)", e.get(), typeName)) {
             EntityUI(world, e, selectedFixtures);
             ImGui::TreePop();
         }
@@ -2479,15 +2583,15 @@ static void CollectionUI(World& world, const World::Joints& joints)
         ImGui::IdContext ctx(to_underlying(jointID));
         const auto flags = 0;
         if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(jointID.get()), flags,
-                              "Joint %u (Type=%s)",
-                              jointID.get(), ToName(GetType(world, jointID)))) {
+                              "Joint %u (%s)",
+                              jointID.get(), Test::ToName(GetType(world, jointID)))) {
             EntityUI(world, jointID);
             ImGui::TreePop();
         }
     }
 }
 
-static void CollectionUI(const World::BodyJoints& joints)
+static void CollectionUI(World& world, const World::BodyJoints& joints)
 {
     ImGui::IdContext idCtx("BodyJointsRange");
     ImGui::ItemWidthContext itemWidthCtx(130);
@@ -2495,7 +2599,8 @@ static void CollectionUI(const World::BodyJoints& joints)
         const auto bodyID = std::get<BodyID>(e);
         const auto jointID = std::get<JointID>(e);
         if (bodyID != InvalidBodyID) {
-            ImGui::Text("Joint %u (Other-body=%u)", to_underlying(jointID), to_underlying(bodyID));
+            ImGui::Text("Joint %u (%s Other-body=%u)", to_underlying(jointID),
+                        Test::ToName(GetType(world, jointID)), to_underlying(bodyID));
             if (ImGui::IsItemHovered())
             {
                 ImGui::SetTooltip("World ID of joint and world ID of other associated body.");

@@ -194,13 +194,13 @@ void Draw(Drawer& drawer, const World& world, JointID id)
     else {
         const auto p1 = GetAnchorA(world, id);
         const auto p2 = GetAnchorB(world, id);
-        const auto bodyA = GetBodyA(joint);
-        const auto bodyB = GetBodyB(joint);
-        const auto x1 = GetTransformation(world, bodyA).p;
-        const auto x2 = GetTransformation(world, bodyB).p;
-        drawer.DrawSegment(x1, p1, color);
         drawer.DrawSegment(p1, p2, color);
-        drawer.DrawSegment(x2, p2, color);
+        if (const auto bodyId = GetBodyA(joint); bodyId != InvalidBodyID) {
+            drawer.DrawSegment(GetTransformation(world, bodyId).p, p1, color);
+        }
+        if (const auto bodyId = GetBodyB(joint); bodyId != InvalidBodyID) {
+            drawer.DrawSegment(GetTransformation(world, bodyId).p, p2, color);
+        }
     }
 }
 
@@ -798,6 +798,45 @@ bool DrawWorld(Drawer& drawer, const World& world, const Test::FixtureSet& selec
 }
 
 } // namespace
+
+const std::map<TypeID, const char*> Test::jointTypeToNameMap = {
+    std::make_pair(GetTypeID<RevoluteJointConf>(), "Revolute"),
+    std::make_pair(GetTypeID<PrismaticJointConf>(), "Prismatic"),
+    std::make_pair(GetTypeID<DistanceJointConf>(), "Distance"),
+    std::make_pair(GetTypeID<PulleyJointConf>(), "Pulley"),
+    std::make_pair(GetTypeID<TargetJointConf>(), "Target"),
+    std::make_pair(GetTypeID<GearJointConf>(), "Gear"),
+    std::make_pair(GetTypeID<WheelJointConf>(), "Wheel"),
+    std::make_pair(GetTypeID<WeldJointConf>(), "Weld"),
+    std::make_pair(GetTypeID<FrictionJointConf>(), "Friction"),
+    std::make_pair(GetTypeID<RopeJointConf>(), "Rope"),
+    std::make_pair(GetTypeID<MotorJointConf>(), "Motor"),
+};
+
+const char* Test::ToName(TypeID type) noexcept
+{
+    if (type == GetTypeID<RevoluteJointConf>()) return "Revolute";
+    if (type == GetTypeID<PrismaticJointConf>()) return "Prismatic";
+    if (type == GetTypeID<DistanceJointConf>()) return "Distance";
+    if (type == GetTypeID<PulleyJointConf>()) return "Pulley";
+    if (type == GetTypeID<TargetJointConf>()) return "Target";
+    if (type == GetTypeID<GearJointConf>()) return "Gear";
+    if (type == GetTypeID<WheelJointConf>()) return "Wheel";
+    if (type == GetTypeID<WeldJointConf>()) return "Weld";
+    if (type == GetTypeID<FrictionJointConf>()) return "Friction";
+    if (type == GetTypeID<RopeJointConf>()) return "Rope";
+    if (type == GetTypeID<MotorJointConf>()) return "Motor";
+    if (type == GetTypeID<ChainShapeConf>()) return "Chain";
+    if (type == GetTypeID<DiskShapeConf>()) return "Disk";
+    if (type == GetTypeID<EdgeShapeConf>()) return "Edge";
+    if (type == GetTypeID<MultiShapeConf>()) return "MultiShape";
+    if (type == GetTypeID<PolygonShapeConf>()) return "Polygon";
+    const auto name = GetName(type);
+    if (std::strstr(name, "playrho::d2::Rectangle")) {
+        return "Rectangle";
+    }
+    return name;
+}
 
 bool Test::AlertUser(const std::string& title, const char* fmt, ...)
 {
