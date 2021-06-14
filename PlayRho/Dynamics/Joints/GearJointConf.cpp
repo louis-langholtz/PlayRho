@@ -99,7 +99,7 @@ GearJointConf GetGearJointConf(const World& world, JointID id1, JointID id2, Rea
         scalar1 = Dot(pA - pC, def.localAxis1) / Meter;
     }
     else {
-        throw InvalidArgument("GetGearJointConf not supported for joint 1 type");
+        throw InvalidArgument("GetGearJointConf not supported for first joint's type");
     }
 
     auto scalar2 = Real{0};
@@ -120,7 +120,7 @@ GearJointConf GetGearJointConf(const World& world, JointID id1, JointID id2, Rea
         scalar2 = Dot(pB - pD, def.localAxis2) / Meter;
     }
     else {
-        throw InvalidArgument("GetGearJointConf not supported for joint 2 type");
+        throw InvalidArgument("GetGearJointConf not supported for second joint's type");
     }
 
     def.ratio = ratio;
@@ -131,6 +131,11 @@ GearJointConf GetGearJointConf(const World& world, JointID id1, JointID id2, Rea
 void InitVelocity(GearJointConf& object, std::vector<BodyConstraint>& bodies, const StepConf& step,
                   const ConstraintSolverConf&)
 {
+    if (object.bodyA == InvalidBodyID || object.bodyB == InvalidBodyID || //
+        object.bodyC == InvalidBodyID || object.bodyD == InvalidBodyID) {
+        return;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
     auto& bodyConstraintC = At(bodies, object.bodyC);
@@ -230,6 +235,11 @@ void InitVelocity(GearJointConf& object, std::vector<BodyConstraint>& bodies, co
 
 bool SolveVelocity(GearJointConf& object, std::vector<BodyConstraint>& bodies, const StepConf&)
 {
+    if (object.bodyA == InvalidBodyID || object.bodyB == InvalidBodyID || //
+        object.bodyC == InvalidBodyID || object.bodyD == InvalidBodyID) {
+        return true;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
     auto& bodyConstraintC = At(bodies, object.bodyC);
@@ -269,6 +279,11 @@ bool SolveVelocity(GearJointConf& object, std::vector<BodyConstraint>& bodies, c
 bool SolvePosition(const GearJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf)
 {
+    if (object.bodyA == InvalidBodyID || object.bodyB == InvalidBodyID || //
+        object.bodyC == InvalidBodyID || object.bodyD == InvalidBodyID) {
+        return true;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
     auto& bodyConstraintC = At(bodies, object.bodyC);
