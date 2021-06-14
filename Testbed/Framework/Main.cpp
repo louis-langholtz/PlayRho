@@ -748,7 +748,7 @@ static void AboutTestUI()
     {
         if (ImGui::CollapsingHeader("Key Controls", ImGuiTreeNodeFlags_DefaultOpen))
         {
-            ImGui::Columns(3, "KeyColumns", false);
+            ImGui::ColumnsContext cc(3, "KeyColumns", false);
             ImGui::SetColumnWidth(0, 50);
             ImGui::SetColumnWidth(1, 50);
             for (auto& handledKey: handledKeys)
@@ -780,7 +780,6 @@ static void AboutTestUI()
                 ImGui::TextWrapped("%s", info.c_str());
                 ImGui::NextColumn();
             }
-            ImGui::Columns(1);
         }
     }
     
@@ -1338,12 +1337,29 @@ static void EntityUI(World& world, BodyID b)
     }
 }
 
-static void EntityUI(const Shape& shape, ChildCounter index)
+static void EntityUI(const DistanceProxy& proxy)
 {
+    ImGui::IdContext idCtx("DistanceProxyCtx");
     ImGui::ItemWidthContext itemWidthCtx(60);
     ImGui::LabelText("Vertex radius (m)", "%.2e",
-                     static_cast<double>(Real{GetVertexRadius(shape, index) / 1_m}));
-    ImGui::LabelText("# Vertices", "%u", GetVertexCount(shape, index));
+                     static_cast<double>(Real{GetVertexRadius(proxy) / 1_m}));
+    const auto numVertices = proxy.GetVertexCount();
+    if (ImGui::TreeNodeEx("Vertices", 0, "Vertices (%u)", numVertices)) {
+        for (auto i = static_cast<VertexCounter>(0); i < numVertices; ++i) {
+            ImGui::ColumnsContext cc(3, "VertexColumns", false);
+            const auto vertex = proxy.GetVertex(i);
+            ImGui::SetColumnWidths(140, {15, 68, 68});
+            ImGui::Text("%u", i);
+            ImGui::NextColumn();
+            ImGui::Text(((GetX(vertex) >= 0_m)? "+%fm": "%fm"),
+                        static_cast<float>(Real{GetX(vertex)/1_m}));
+            ImGui::NextColumn();
+            ImGui::Text(((GetY(vertex) >= 0_m)? "+%fm": "%fm"),
+                        static_cast<float>(Real{GetY(vertex)/1_m}));
+            ImGui::NextColumn();
+        }
+        ImGui::TreePop();
+    }
 }
 
 static void ChildrenUI(Shape &shape)
@@ -1352,7 +1368,7 @@ static void ChildrenUI(Shape &shape)
     const auto n = GetChildCount(shape);
     for (auto i = ChildCounter(0); i < n; ++i) {
         if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(i), 0, "Child %u", i)) {
-            EntityUI(shape, i);
+            EntityUI(GetChild(shape, i));
             ImGui::TreePop();
         }
     }
@@ -1582,7 +1598,6 @@ static void EntityUI(World& world, ShapeID shapeId)
 static void ShapesUI(World& world)
 {
     ImGui::IdContext idCtx("WorldShapes");
-
     const auto y = ImGui::GetCursorPosY();
     {
         const auto columnWidth = 40.0f;
@@ -1622,10 +1637,8 @@ static void ShapesUI(World& world)
                            tooltipWrapWidth);
     }
     //ImGui::NewLine();
-
     ImGui::Spacing();
     ImGui::Spacing();
-
     const auto numShapes = world.GetShapeRange();
     for (auto i = static_cast<ShapeCounter>(0); i < numShapes; ++i) {
         EntityUI(world, ShapeID(i));
