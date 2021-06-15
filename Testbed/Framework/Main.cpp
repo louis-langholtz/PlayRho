@@ -137,6 +137,7 @@ namespace
 
     auto shapeTransformationMatrix = GetIdentity<Mat22>();
     constexpr char shapeTransformButtonName[] = "Transform";
+    constexpr char createShapeButtonName[] = "Create Shape";
     constexpr char createJointButtonName[] = "Create Joint";
 }
 
@@ -692,6 +693,210 @@ static const char* GetKeyLongName(int key)
         default: break;
     }
     return nullptr;
+}
+
+static bool ChangeType(Shape& object, TypeID newType)
+{
+    const auto oldType = GetType(object);
+    if (oldType == newType) {
+        return true;
+    }
+    // Try to copy as much data from the old type as possible...
+    if (newType == GetTypeID<ChainShapeConf>()) {
+        auto conf = ChainShapeConf{};
+        object = conf;
+        return true;
+    }
+    if (newType == GetTypeID<DiskShapeConf>()) {
+        auto conf = DiskShapeConf{};
+        if (const auto count = GetChildCount(object); count > 0) {
+            const auto proxy = GetChild(object, 0);
+            conf.vertexRadius = proxy.GetVertexRadius();
+        }
+        object = conf;
+        return true;
+    }
+    if (newType == GetTypeID<EdgeShapeConf>()) {
+        auto conf = EdgeShapeConf{};
+        if (const auto count = GetChildCount(object); count > 0) {
+            const auto proxy = GetChild(object, 0);
+            conf.vertexRadius = proxy.GetVertexRadius();
+        }
+        object = conf;
+        return true;
+    }
+    if (newType == GetTypeID<MultiShapeConf>()) {
+        auto conf = MultiShapeConf{};
+        const auto count = GetChildCount(object);
+        for (auto childIdx = static_cast<ChildCounter>(0); childIdx < count; ++childIdx) {
+            const auto proxy = GetChild(object, childIdx);
+            auto vertexSet = VertexSet{};
+            const auto vertexCount = proxy.GetVertexCount();
+            for (auto i = static_cast<decltype(vertexCount)>(0); i < vertexCount; ++i) {
+                vertexSet.add(proxy.GetVertex(i));
+            }
+            conf.children.push_back(ConvexHull::Get(vertexSet));
+        }
+        object = conf;
+        return true;
+    }
+    if (newType == GetTypeID<PolygonShapeConf>()) {
+        auto conf = PolygonShapeConf{};
+        if (const auto count = GetChildCount(object); count > 0) {
+            const auto proxy = GetChild(object, 0);
+            conf.vertexRadius = proxy.GetVertexRadius();
+            conf.Set(Span<const Length2>{proxy.GetVertices().begin(), proxy.GetVertexCount()});
+        }
+        object = conf;
+        return true;
+    }
+    return false;
+}
+
+static bool ChangeType(Joint& object, TypeID newType)
+{
+    const auto oldType = GetType(object);
+    if (oldType == newType) {
+        return true;
+    }
+    if (newType == GetTypeID<DistanceJointConf>()) {
+        auto conf = DistanceJointConf{};
+        conf.bodyA = GetBodyA(object);
+        conf.bodyB = GetBodyB(object);
+        object = conf;
+        return true;
+    }
+    if (newType == GetTypeID<FrictionJointConf>()) {
+        auto conf = FrictionJointConf{};
+        conf.bodyA = GetBodyA(object);
+        conf.bodyB = GetBodyB(object);
+        object = conf;
+        return true;
+    }
+    if (newType == GetTypeID<GearJointConf>()) {
+        auto conf = GearJointConf{};
+        conf.bodyA = GetBodyA(object);
+        conf.bodyB = GetBodyB(object);
+        object = conf;
+        return true;
+    }
+    if (newType == GetTypeID<MotorJointConf>()) {
+        auto conf = MotorJointConf{};
+        conf.bodyA = GetBodyA(object);
+        conf.bodyB = GetBodyB(object);
+        object = conf;
+        return true;
+    }
+    if (newType == GetTypeID<PrismaticJointConf>()) {
+        auto conf = PrismaticJointConf{};
+        conf.bodyA = GetBodyA(object);
+        conf.bodyB = GetBodyB(object);
+        object = conf;
+        return true;
+    }
+    if (newType == GetTypeID<PulleyJointConf>()) {
+        auto conf = PulleyJointConf{};
+        conf.bodyA = GetBodyA(object);
+        conf.bodyB = GetBodyB(object);
+        object = conf;
+        return true;
+    }
+    if (newType == GetTypeID<RevoluteJointConf>()) {
+        auto conf = RevoluteJointConf{};
+        conf.bodyA = GetBodyA(object);
+        conf.bodyB = GetBodyB(object);
+        object = conf;
+        return true;
+    }
+    if (newType == GetTypeID<RopeJointConf>()) {
+        auto conf = RopeJointConf{};
+        conf.bodyA = GetBodyA(object);
+        conf.bodyB = GetBodyB(object);
+        object = conf;
+        return true;
+    }
+    if (newType == GetTypeID<TargetJointConf>()) {
+        auto conf = TargetJointConf{};
+        conf.bodyA = GetBodyA(object);
+        conf.bodyB = GetBodyB(object);
+        object = conf;
+        return true;
+    }
+    if (newType == GetTypeID<WheelJointConf>()) {
+        auto conf = WheelJointConf{};
+        conf.bodyA = GetBodyA(object);
+        conf.bodyB = GetBodyB(object);
+        object = conf;
+        return true;
+    }
+    if (newType == GetTypeID<WeldJointConf>()) {
+        auto conf = WeldJointConf{};
+        conf.bodyA = GetBodyA(object);
+        conf.bodyB = GetBodyB(object);
+        object = conf;
+        return true;
+    }
+    return false;
+}
+
+static void ChangeTypeUI(Shape& object)
+{
+    const auto type = GetType(object);
+    auto itemCurrentIdx = static_cast<std::ptrdiff_t>(size(Test::shapeTypeToNameMap));
+    const auto found = Test::shapeTypeToNameMap.find(type);
+    if (found != end(Test::shapeTypeToNameMap)) {
+        itemCurrentIdx = std::distance(begin(Test::shapeTypeToNameMap), found);
+    }
+    const auto typeName = Test::ToName(type);
+    static auto flags = ImGuiComboFlags(0);
+    if (ImGui::BeginCombo("##ShapeTypeSelectionCombo", typeName, flags)) {
+        const auto first = begin(Test::shapeTypeToNameMap);
+        const auto last = end(Test::shapeTypeToNameMap);
+        auto pos = static_cast<std::ptrdiff_t>(0);
+        for (auto iter = first; iter != last; ++iter) {
+            const bool isSelected = (itemCurrentIdx == pos);
+            const auto label = iter->second;
+            if (ImGui::Selectable(label, isSelected)) {
+                itemCurrentIdx = pos;
+                ChangeType(object, iter->first);
+            }
+            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+            if (isSelected)
+                ImGui::SetItemDefaultFocus();
+            ++pos;
+        }
+        ImGui::EndCombo();
+    }
+}
+
+static void ChangeTypeUI(Joint& object)
+{
+    const auto type = GetType(object);
+    auto itemCurrentIdx = static_cast<std::ptrdiff_t>(size(Test::jointTypeToNameMap));
+    const auto found = Test::jointTypeToNameMap.find(type);
+    if (found != end(Test::jointTypeToNameMap)) {
+        itemCurrentIdx = std::distance(begin(Test::jointTypeToNameMap), found);
+    }
+    const auto typeName = Test::ToName(type);
+    static auto flags = ImGuiComboFlags(0);
+    if (ImGui::BeginCombo("##JointTypeSelectionCombo", typeName, flags)) {
+        const auto first = begin(Test::jointTypeToNameMap);
+        const auto last = end(Test::jointTypeToNameMap);
+        auto pos = static_cast<std::ptrdiff_t>(0);
+        for (auto iter = first; iter != last; ++iter) {
+            const bool isSelected = (itemCurrentIdx == pos);
+            const auto label = iter->second;
+            if (ImGui::Selectable(label, isSelected)) {
+                itemCurrentIdx = pos;
+                ChangeType(object, iter->first);
+            }
+            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+            if (isSelected)
+                ImGui::SetItemDefaultFocus();
+            ++pos;
+        }
+        ImGui::EndCombo();
+    }
 }
 
 static void AboutTestUI()
@@ -1338,159 +1543,271 @@ static void EntityUI(const DistanceProxy& proxy)
     }
 }
 
-static void ChildrenUI(Shape &shape)
+template <class T>
+static auto DensityUI(T& shape) -> decltype(SetDensity(shape, GetDensity(shape)))
 {
-    ImGui::IdContext idCtx("ShapeChildrenCtx");
-    const auto n = GetChildCount(shape);
-    for (auto i = ChildCounter(0); i < n; ++i) {
-        if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(i), 0, "Child %u", i)) {
-            EntityUI(GetChild(shape, i));
-            ImGui::TreePop();
+    auto val = static_cast<float>(Real{GetDensity(shape) * SquareMeter / Kilogram});
+    if (ImGui::InputFloat("Density (kg/m²)", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+        try {
+            SetDensity(shape, val * Kilogram / SquareMeter);
+        } catch (const std::invalid_argument& ex) {
+            ui->message = ex.what();
         }
     }
 }
 
-static void EntityUI(Shape &shape)
+template <class T>
+static auto FrictionUI(T& shape) -> decltype(SetFriction(shape, GetFriction(shape)))
+{
+    auto val = static_cast<float>(GetFriction(shape));
+    if (ImGui::InputFloat("Friction", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+        try {
+            SetFriction(shape, val);
+        } catch (const std::invalid_argument& ex) {
+            ui->message = ex.what();
+        }
+    }
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("Friction for the shape. Value must be non-negative!",
+                           tooltipWrapWidth);
+    }
+}
+
+template <class T>
+static auto RestitutionUI(T& shape) -> decltype(SetRestitution(shape, GetRestitution(shape)))
+{
+    auto val = static_cast<float>(GetRestitution(shape));
+    if (ImGui::InputFloat("Restitution", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+        try {
+            SetRestitution(shape, val);
+        } catch (const std::invalid_argument& ex) {
+            ui->message = ex.what();
+        }
+    }
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("Restitution/bounciness for the shape. Value must be finite!",
+                           tooltipWrapWidth);
+    }
+}
+
+template <class T>
+static auto SensorUI(T& shape) -> decltype(SetSensor(shape, IsSensor(shape)))
+{
+    auto v = IsSensor(shape);
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+    if (ImGui::Checkbox("Sensor", &v)) {
+        try {
+            SetSensor(shape, v);
+        } catch (const std::invalid_argument& ex) {
+            ui->message = ex.what();
+        }
+    }
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("Whether or not this acts as a sensor."
+                           " Sensors detect collisions but don't participate"
+                           " in their resolution - i.e. bodies will pass right through"
+                           " bodies having just sensor shapes.",
+                           tooltipWrapWidth);
+    }
+    ImGui::PopStyleVar();
+}
+
+template <class T>
+static auto FilterUI(T& shape) -> decltype(SetFilter(shape, GetFilter(shape)))
+{
+    using CheckboxFlagType = unsigned int;
+    const auto oldFilterData = GetFilter(shape);
+    auto cateBits = CheckboxFlagType{oldFilterData.categoryBits};
+    auto maskBits = CheckboxFlagType{oldFilterData.maskBits};
+
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0,0));
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(-2.5f,-2.5f));
+    auto cateChanged = false;
+    for (auto bit = 15u; bit < 16u; --bit) {
+        ImGui::IdContext subIdCtx(static_cast<int>(bit));
+        auto flags = (0x1u << bit);
+        cateChanged |= ImGui::CheckboxFlags("##catebits", &cateBits, flags);
+        if (bit > 0) ImGui::SameLine();
+    }
+    ImGui::PopStyleVar();
+    ImGui::PopStyleVar();
+    ImGui::SameLine(0, 4);
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 4);
+    ImGui::Text("Category");
+
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0,0));
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(-2.5f,-2.5f));
+    auto maskChanged = false;
+    for (auto bit = 15u; bit < 16u; --bit) {
+        ImGui::IdContext subIdCtx(static_cast<int>(bit));
+        auto flags = (0x1u << bit);
+        maskChanged |= ImGui::CheckboxFlags("##maskbits", &maskBits, flags);
+        if (bit > 0) ImGui::SameLine();
+    }
+    ImGui::PopStyleVar();
+    ImGui::PopStyleVar();
+    ImGui::SameLine(0, 4);
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 4);
+    ImGui::Text("Mask");
+
+    auto groupIndex = int{oldFilterData.groupIndex};
+    {
+        ImGui::ItemWidthContext itemWidthCtx(80);
+        //ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0,0));
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
+        ImGui::InputInt("Group Index", &groupIndex);
+        ImGui::PopStyleVar();
+        //ImGui::PopStyleVar();
+    }
+
+    const auto newFilterData = Filter{
+        static_cast<Filter::bits_type>(cateBits),
+        static_cast<Filter::bits_type>(maskBits),
+        static_cast<Filter::index_type>(groupIndex)
+    };
+    if (newFilterData != oldFilterData) {
+        try {
+            SetFilter(shape, newFilterData);
+        } catch (const std::invalid_argument& ex) {
+            ui->message = ex.what();
+        }
+    }
+}
+
+template <class T>
+static auto ChildrenUI(T& shape) -> decltype(GetChildCount(shape), EntityUI(GetChild(shape, ChildCounter{})))
+{
+    const auto childCount = GetChildCount(shape);
+    if (ImGui::TreeNodeEx("ShapeChildren", 0, "Children (%u)", childCount)) {
+        ImGui::IdContext idCtx("ShapeChildrenCtx");
+        for (auto i = ChildCounter(0); i < childCount; ++i) {
+            if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(i), 0, "Child %u", i)) {
+                EntityUI(GetChild(shape, i));
+                ImGui::TreePop();
+            }
+        }
+        ImGui::TreePop();
+    }
+}
+
+template <class T>
+static auto GeneralShapeUI(T& shape) ->
+decltype(DensityUI(shape), FrictionUI(shape), RestitutionUI(shape), SensorUI(shape),
+         FilterUI(shape), ChildrenUI(shape), Transform(shape, shapeTransformationMatrix))
 {
     {
         ImGui::ItemWidthContext itemWidthCtx(60);
         //const auto vertexRadius = GetVertexRadius(shape);
-        {
-            auto val = static_cast<float>(Real{GetDensity(shape) * SquareMeter / Kilogram});
-            if (ImGui::InputFloat("Density (kg/m²)", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-                try {
-                    SetDensity(shape, val * Kilogram / SquareMeter);
-                } catch (const std::invalid_argument& ex) {
-                    ui->message = ex.what();
-                }
-            }
-        }
+        DensityUI(shape);
         ImGui::LabelText("Mass (kg)", "%.2e",
                          static_cast<double>(Real{GetMassData(shape).mass / 1_kg}));
-        {
-            auto val = static_cast<float>(GetFriction(shape));
-            if (ImGui::InputFloat("Friction", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-                try {
-                    SetFriction(shape, val);
-                } catch (const std::invalid_argument& ex) {
-                    ui->message = ex.what();
-                }
-            }
-            if (ImGui::IsItemHovered()) {
-                ImGui::ShowTooltip("Friction for the shape. Value must be non-negative!",
-                                   tooltipWrapWidth);
-            }
-        }
-        {
-            auto val = static_cast<float>(GetRestitution(shape));
-            if (ImGui::InputFloat("Restitution", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-                try {
-                    SetRestitution(shape, val);
-                } catch (const std::invalid_argument& ex) {
-                    ui->message = ex.what();
-                }
-            }
-            if (ImGui::IsItemHovered()) {
-                ImGui::ShowTooltip("Restitution/bounciness for the shape. Value must be finite!",
-                                   tooltipWrapWidth);
-            }
-        }
+        FrictionUI(shape);
+        RestitutionUI(shape);
     }
-
     ImGui::Spacing();
-
-    {
-        auto v = IsSensor(shape);
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-        if (ImGui::Checkbox("Sensor", &v)) {
-            try {
-                SetSensor(shape, v);
-            } catch (const std::invalid_argument& ex) {
-                ui->message = ex.what();
-            }
-        }
-        if (ImGui::IsItemHovered()) {
-            ImGui::ShowTooltip("Whether or not this acts as a sensor."
-                               " Sensors detect collisions but don't participate"
-                               " in their resolution - i.e. bodies will pass right through"
-                               " bodies having just sensor shapes.",
-                               tooltipWrapWidth);
-        }
-        ImGui::PopStyleVar();
-    }
-
+    SensorUI(shape);
     ImGui::Spacing();
-
-    {
-        using CheckboxFlagType = unsigned int;
-        const auto oldFilterData = GetFilter(shape);
-        auto cateBits = CheckboxFlagType{oldFilterData.categoryBits};
-        auto maskBits = CheckboxFlagType{oldFilterData.maskBits};
-
-        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0,0));
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(-2.5f,-2.5f));
-        auto cateChanged = false;
-        for (auto bit = 15u; bit < 16u; --bit) {
-            ImGui::IdContext subIdCtx(static_cast<int>(bit));
-            auto flags = (0x1u << bit);
-            cateChanged |= ImGui::CheckboxFlags("##catebits", &cateBits, flags);
-            if (bit > 0) ImGui::SameLine();
-        }
-        ImGui::PopStyleVar();
-        ImGui::PopStyleVar();
-        ImGui::SameLine(0, 4);
-        ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 4);
-        ImGui::Text("Category");
-
-        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0,0));
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(-2.5f,-2.5f));
-        auto maskChanged = false;
-        for (auto bit = 15u; bit < 16u; --bit) {
-            ImGui::IdContext subIdCtx(static_cast<int>(bit));
-            auto flags = (0x1u << bit);
-            maskChanged |= ImGui::CheckboxFlags("##maskbits", &maskBits, flags);
-            if (bit > 0) ImGui::SameLine();
-        }
-        ImGui::PopStyleVar();
-        ImGui::PopStyleVar();
-        ImGui::SameLine(0, 4);
-        ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 4);
-        ImGui::Text("Mask");
-
-        auto groupIndex = int{oldFilterData.groupIndex};
-        {
-            ImGui::ItemWidthContext itemWidthCtx(80);
-            //ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0,0));
-            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
-            ImGui::InputInt("Group Index", &groupIndex);
-            ImGui::PopStyleVar();
-            //ImGui::PopStyleVar();
-        }
-
-        const auto newFilterData = Filter{
-            static_cast<Filter::bits_type>(cateBits),
-            static_cast<Filter::bits_type>(maskBits),
-            static_cast<Filter::index_type>(groupIndex)
-        };
-        if (newFilterData != oldFilterData) {
-            try {
-                SetFilter(shape, newFilterData);
-            } catch (const std::invalid_argument& ex) {
-                ui->message = ex.what();
-            }
-        }
-    }
-
+    FilterUI(shape);
     ImGui::Spacing();
-
-    if (ImGui::TreeNodeEx("ShapeChildren", 0, "Children (%u)", GetChildCount(shape))) {
-        ChildrenUI(shape);
-        ImGui::TreePop();
-    }
-
+    ChildrenUI(shape);
     if (ImGui::Button(shapeTransformButtonName, ImVec2(-1, 0))) {
         Transform(shape, shapeTransformationMatrix);
     }
+}
+
+static void EntityUI(DiskShapeConf& shape)
+{
+    {
+        const auto location = shape.location;
+        float vals[2];
+        vals[0] = static_cast<float>(Real{GetX(location) / Meter});
+        vals[1] = static_cast<float>(Real{GetY(location) / Meter});
+#if 1
+        ImGui::ItemWidthContext itemWidthCtx(100);
+        if (ImGui::InputFloat2("Location", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+            shape.location = Length2{vals[0] * 1_m, vals[1] * 1_m};
+        }
+#else
+        ImGui::ItemWidthContext itemWidthCtx(60);
+        if (ImGui::InputFloat("X-Axis Location (m)", &vals[0])) {
+            GetX(shape.location) = vals[0] * 1_m;
+        }
+        if (ImGui::InputFloat("Y-Axis Location (m)", &vals[1])) {
+            GetY(shape.location) = vals[1] * 1_m;
+        }
+#endif
+    }
+    {
+        ImGui::ItemWidthContext itemWidthCtx(60);
+        auto val = static_cast<float>(Real{shape.vertexRadius/1_m});
+        if (ImGui::InputFloat("Radius (m)", &val)) {
+            shape.vertexRadius = val * 1_m;
+        }
+    }
+}
+
+static void EntityUI(EdgeShapeConf& shape)
+{
+    {
+        ImGui::ItemWidthContext itemWidthCtx(60);
+        auto val = static_cast<float>(Real{shape.vertexRadius/1_m});
+        if (ImGui::InputFloat("Vertex Radius (m)", &val)) {
+            shape.vertexRadius = val * 1_m;
+        }
+    }
+    {
+        //ImGui::ItemWidthContext itemWidthCtx(60);
+        const auto location = shape.GetVertexA();
+        float vals[2];
+        vals[0] = static_cast<float>(Real{GetX(location) / Meter});
+        vals[1] = static_cast<float>(Real{GetY(location) / Meter});
+        ImGui::ItemWidthContext itemWidthCtx(100);
+        if (ImGui::InputFloat2("Vertex A", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+            shape.Set(Length2{vals[0] * 1_m, vals[1] * 1_m}, shape.GetVertexB());
+        }
+    }
+    {
+        const auto location = shape.GetVertexB();
+        float vals[2];
+        vals[0] = static_cast<float>(Real{GetX(location) / Meter});
+        vals[1] = static_cast<float>(Real{GetY(location) / Meter});
+        ImGui::ItemWidthContext itemWidthCtx(100);
+        if (ImGui::InputFloat2("Vertex B", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+            shape.Set(shape.GetVertexA(), Length2{vals[0] * 1_m, vals[1] * 1_m});
+        }
+    }
+}
+
+static void EntityUI(PolygonShapeConf& shape)
+{
+    {
+        ImGui::ItemWidthContext itemWidthCtx(60);
+        auto val = static_cast<float>(Real{shape.vertexRadius/1_m});
+        if (ImGui::InputFloat("Vertex Radius (m)", &val)) {
+            shape.vertexRadius = val * 1_m;
+        }
+    }
+}
+
+static void EntityUI(Shape& shape)
+{
+    const auto type = GetType(shape);
+    if (type == GetTypeID<PolygonShapeConf>()) {
+        auto conf = TypeCast<PolygonShapeConf>(shape);
+        EntityUI(conf);
+        shape = conf;
+    }
+    else if (type == GetTypeID<DiskShapeConf>()) {
+        auto conf = TypeCast<DiskShapeConf>(shape);
+        EntityUI(conf);
+        shape = conf;
+    }
+    else if (type == GetTypeID<EdgeShapeConf>()) {
+        auto conf = TypeCast<EdgeShapeConf>(shape);
+        EntityUI(conf);
+        shape = conf;
+    }
+    GeneralShapeUI(shape);
 }
 
 static void EntityUI(const Manifold& m)
@@ -1550,24 +1867,20 @@ static void EntityUI(const Manifold& m)
 
 static void EntityUI(World& world, ShapeID shapeId)
 {
+    ImGui::ItemWidthContext itemWidthCtx(70);
     auto shape = GetShape(world, shapeId);
-    if (shape.has_value()) {
-        if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(to_underlying(shapeId)), 0,
-                              "Shape %u (%s)", to_underlying(shapeId),
-                              Test::ToName(GetType(shape)))) {
-            ImGui::IdContext shapeIdCtx(to_underlying(shapeId));
-            EntityUI(shape);
-            if (GetShape(world, shapeId) != shape) {
-                SetShape(world, shapeId, shape);
-            }
-            if (ImGui::Button("Destroy", ImVec2(-1, 0))) {
-                Destroy(world, shapeId);
-            }
-            ImGui::TreePop();
-        }
+    ChangeTypeUI(shape);
+    if (ImGui::IsItemHovered()) {
+        ImGui::SetTooltip("Shows shape's current type and changes it if new selection made.");
     }
-    else {
-        ImGui::Text("Shape %u (empty)", to_underlying(shapeId));
+    ImGui::SameLine();
+    ImGui::Text("Shape's Type");
+    EntityUI(shape);
+    if (GetShape(world, shapeId) != shape) {
+        SetShape(world, shapeId, shape);
+    }
+    if (ImGui::Button("Destroy", ImVec2(-1, 0))) {
+        Destroy(world, shapeId);
     }
 }
 
@@ -1617,7 +1930,14 @@ static void ShapesUI(World& world)
     ImGui::Spacing();
     const auto numShapes = world.GetShapeRange();
     for (auto i = static_cast<ShapeCounter>(0); i < numShapes; ++i) {
-        EntityUI(world, ShapeID(i));
+        ImGui::IdContext ctx(i);
+        const auto shapeId = ShapeID(i);
+        if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(i), 0,
+                              "Shape %u (%s)", i,
+                              Test::ToName(GetType(world, shapeId)))) {
+            EntityUI(world, shapeId);
+            ImGui::TreePop();
+        }
     }
 }
 
@@ -2186,122 +2506,6 @@ static void EntityUI(MotorJointConf& conf, BodyCounter bodyRange)
     }
 }
 
-static bool ChangeType(Joint& joint, TypeID newType)
-{
-    const auto oldType = GetType(joint);
-    if (oldType == newType) {
-        return true;
-    }
-    if (newType == GetTypeID<DistanceJointConf>()) {
-        auto conf = DistanceJointConf{};
-        conf.bodyA = GetBodyA(joint);
-        conf.bodyB = GetBodyB(joint);
-        joint = conf;
-        return true;
-    }
-    if (newType == GetTypeID<FrictionJointConf>()) {
-        auto conf = FrictionJointConf{};
-        conf.bodyA = GetBodyA(joint);
-        conf.bodyB = GetBodyB(joint);
-        joint = conf;
-        return true;
-    }
-    if (newType == GetTypeID<GearJointConf>()) {
-        auto conf = GearJointConf{};
-        conf.bodyA = GetBodyA(joint);
-        conf.bodyB = GetBodyB(joint);
-        joint = conf;
-        return true;
-    }
-    if (newType == GetTypeID<MotorJointConf>()) {
-        auto conf = MotorJointConf{};
-        conf.bodyA = GetBodyA(joint);
-        conf.bodyB = GetBodyB(joint);
-        joint = conf;
-        return true;
-    }
-    if (newType == GetTypeID<PrismaticJointConf>()) {
-        auto conf = PrismaticJointConf{};
-        conf.bodyA = GetBodyA(joint);
-        conf.bodyB = GetBodyB(joint);
-        joint = conf;
-        return true;
-    }
-    if (newType == GetTypeID<PulleyJointConf>()) {
-        auto conf = PulleyJointConf{};
-        conf.bodyA = GetBodyA(joint);
-        conf.bodyB = GetBodyB(joint);
-        joint = conf;
-        return true;
-    }
-    if (newType == GetTypeID<RevoluteJointConf>()) {
-        auto conf = RevoluteJointConf{};
-        conf.bodyA = GetBodyA(joint);
-        conf.bodyB = GetBodyB(joint);
-        joint = conf;
-        return true;
-    }
-    if (newType == GetTypeID<RopeJointConf>()) {
-        auto conf = RopeJointConf{};
-        conf.bodyA = GetBodyA(joint);
-        conf.bodyB = GetBodyB(joint);
-        joint = conf;
-        return true;
-    }
-    if (newType == GetTypeID<TargetJointConf>()) {
-        auto conf = TargetJointConf{};
-        conf.bodyA = GetBodyA(joint);
-        conf.bodyB = GetBodyB(joint);
-        joint = conf;
-        return true;
-    }
-    if (newType == GetTypeID<WheelJointConf>()) {
-        auto conf = WheelJointConf{};
-        conf.bodyA = GetBodyA(joint);
-        conf.bodyB = GetBodyB(joint);
-        joint = conf;
-        return true;
-    }
-    if (newType == GetTypeID<WeldJointConf>()) {
-        auto conf = WeldJointConf{};
-        conf.bodyA = GetBodyA(joint);
-        conf.bodyB = GetBodyB(joint);
-        joint = conf;
-        return true;
-    }
-    return false;
-}
-
-static void ChangeTypeUI(Joint& joint)
-{
-    const auto type = GetType(joint);
-    auto itemCurrentIdx = static_cast<std::ptrdiff_t>(size(Test::jointTypeToNameMap));
-    const auto found = Test::jointTypeToNameMap.find(type);
-    if (found != end(Test::jointTypeToNameMap)) {
-        itemCurrentIdx = std::distance(begin(Test::jointTypeToNameMap), found);
-    }
-    const auto typeName = Test::ToName(type);
-    static auto flags = ImGuiComboFlags(0);
-    if (ImGui::BeginCombo("##JointTypeSelectionCombo", typeName, flags)) {
-        const auto first = begin(Test::jointTypeToNameMap);
-        const auto last = end(Test::jointTypeToNameMap);
-        auto pos = static_cast<std::ptrdiff_t>(0);
-        for (auto iter = first; iter != last; ++iter) {
-            const bool isSelected = (itemCurrentIdx == pos);
-            const auto label = iter->second;
-            if (ImGui::Selectable(label, isSelected)) {
-                itemCurrentIdx = pos;
-                ChangeType(joint, iter->first);
-            }
-            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-            if (isSelected)
-                ImGui::SetItemDefaultFocus();
-            ++pos;
-        }
-        ImGui::EndCombo();
-    }
-}
-
 static void EntityUI(Joint& joint, BodyCounter bodyRange)
 {
     ImGui::LabelText("Collide Connected", "%s", GetCollideConnected(joint)? "true": "false");
@@ -2384,7 +2588,7 @@ static void EntityUI(World& world, JointID e)
         ImGui::SetTooltip("Shows joint's current type and changes it if new selection made.");
     }
     ImGui::SameLine();
-    ImGui::Text("Joint's type");
+    ImGui::Text("Joint's Type");
     EntityUI(joint, bodyRange);
     if (GetJoint(world, e) != joint) {
         SetJoint(world, e, joint);
@@ -2661,6 +2865,18 @@ static void ModelEntitiesUI()
     ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, ImGui::GetFontSize()*1);
     ImGui::Spacing();
     {
+        static auto shape = Shape{PolygonShapeConf{}};
+        ImGui::ItemWidthContext itemWidthCtx(80);
+        ChangeTypeUI(shape);
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Selects type of shape that's created on pressing the %s button.",
+                              createShapeButtonName);
+        }
+        ImGui::SameLine();
+        const auto button_sz = ImVec2(-1, 0);
+        if (ImGui::Button(createShapeButtonName, button_sz)) {
+            CreateShape(world, shape);
+        }
         if (ImGui::TreeNodeEx("Shapes", selShapes? ImGuiTreeNodeFlags_DefaultOpen: 0,
                               "Shapes (%hu)", world.GetShapeRange())) {
             ShapesUI(world);
@@ -2683,8 +2899,8 @@ static void ModelEntitiesUI()
     ImGui::Separator();
     ImGui::Spacing();
     {
-        ImGui::ItemWidthContext itemWidthCtx(90);
         static auto joint = Joint{RevoluteJointConf{}};
+        ImGui::ItemWidthContext itemWidthCtx(80);
         ChangeTypeUI(joint);
         if (ImGui::IsItemHovered()) {
             ImGui::SetTooltip("Selects type of joint that's created on pressing the %s button.",
