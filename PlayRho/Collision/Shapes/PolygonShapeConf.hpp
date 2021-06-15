@@ -36,7 +36,6 @@ namespace d2 {
 ///   Polygons maximum number of vertices is defined by <code>MaxShapeVertices</code>.
 ///   In most cases you should not need many vertices for a convex polygon.
 /// @image html convex_concave.gif
-/// @note This data structure is 64-bytes large (with 4-byte Real).
 /// @ingroup PartsGroup
 class PolygonShapeConf : public ShapeBuilder<PolygonShapeConf>
 {
