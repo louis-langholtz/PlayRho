@@ -110,11 +110,26 @@ struct StaticFilter {
     static inline const auto filter = Filter{CategoryBits, MaskBits, GroupIndex};
 };
 
+/// @brief Dynamic filter policy class.
+template <Filter::bits_type CategoryBits = 1, Filter::bits_type MaskBits = 0xFFFF,
+          Filter::index_type GroupIndex = 0>
+struct DynamicFilter {
+    /// @brief The filter of the shape.
+    Filter filter = Filter{CategoryBits, MaskBits, GroupIndex};
+};
+
 /// @brief Static sensor policy class.
 template <bool V = false>
 struct StaticSensor {
     /// @brief Sensor property of the shape.
     static constexpr auto sensor = V;
+};
+
+/// @brief Dynamic sensor policy class.
+template <bool V = false>
+struct DynamicSensor {
+    /// @brief Sensor property of the shape.
+    bool sensor = V;
 };
 
 /// @brief "Discriminator" for named template arguments.

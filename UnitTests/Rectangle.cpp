@@ -50,6 +50,15 @@ TEST(Rectangle, ByteSize)
         EXPECT_EQ(sizeof(Rectangle<Geometry::Constant, 1, 2, RestitutionIs<DynamicRestitution<>>,
                                    FrictionIs<DynamicFriction<>>>),
                   8u);
+        EXPECT_EQ(sizeof(Rectangle<Geometry::Mutable, 1, 1, //
+                                   DensityIs<DynamicAreaDensity<1>>, //
+                                   RestitutionIs<DynamicRestitution<>>, //
+                                   FrictionIs<DynamicFriction<4>>, //
+                                   VertexRadiusIs<DynamicVertexRadius<>>, //
+                                   SensorIs<DynamicSensor<>>, //
+                                   FilterIs<DynamicFilter<>> //
+                                   >),
+                  56u);
         break;
     case 8u:
         EXPECT_EQ(sizeof(Rectangle<Geometry::Mutable>), 64u);
@@ -125,10 +134,10 @@ TEST(Rectangle, GetFriction)
     EXPECT_EQ(GetFriction(Rectangle<Geometry::Constant, 1, 1>{}), Real(2) / Real(10));
     EXPECT_EQ(
         GetFriction(Rectangle<Geometry::Constant, 1, 1, FrictionIs<StaticTenthsFriction<>>>{}),
-              Real(2) / Real(10));
+        Real(2) / Real(10));
     EXPECT_EQ(
         GetFriction(Rectangle<Geometry::Constant, 1, 1, FrictionIs<StaticTenthsFriction<3>>>{}),
-              Real(3) / Real(10));
+        Real(3) / Real(10));
     EXPECT_EQ(GetFriction(Rectangle<Geometry::Constant, 1, 1, FrictionIs<DynamicFriction<4>>>{}),
               Real(4));
     EXPECT_EQ(GetFriction(Rectangle<Geometry::Constant, 1, 1, FrictionIs<DynamicFriction<4>>>{
@@ -155,9 +164,9 @@ TEST(Rectangle, SetFriction)
 {
     {
         auto rectangle = Rectangle<Geometry::Constant, 1, 1>{};
-        ASSERT_EQ(rectangle.friction, Real(2)/Real(10));
+        ASSERT_EQ(rectangle.friction, Real(2) / Real(10));
         EXPECT_THROW(SetFriction(rectangle, Real(3)), InvalidArgument);
-        EXPECT_EQ(rectangle.friction, Real(2)/Real(10));
+        EXPECT_EQ(rectangle.friction, Real(2) / Real(10));
     }
     {
         auto rectangle = Rectangle<Geometry::Constant, 1, 1, FrictionIs<DynamicFriction<>>>{};
