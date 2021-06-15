@@ -799,6 +799,14 @@ bool DrawWorld(Drawer& drawer, const World& world, const Test::FixtureSet& selec
 
 } // namespace
 
+const std::map<TypeID, const char*> Test::shapeTypeToNameMap = {
+    std::make_pair(GetTypeID<ChainShapeConf>(), "Chain"),
+    std::make_pair(GetTypeID<DiskShapeConf>(), "Disk"),
+    std::make_pair(GetTypeID<EdgeShapeConf>(), "Edge"),
+    std::make_pair(GetTypeID<MultiShapeConf>(), "MultiShape"),
+    std::make_pair(GetTypeID<PolygonShapeConf>(), "Polygon"),
+};
+
 const std::map<TypeID, const char*> Test::jointTypeToNameMap = {
     std::make_pair(GetTypeID<RevoluteJointConf>(), "Revolute"),
     std::make_pair(GetTypeID<PrismaticJointConf>(), "Prismatic"),
@@ -815,22 +823,12 @@ const std::map<TypeID, const char*> Test::jointTypeToNameMap = {
 
 const char* Test::ToName(TypeID type) noexcept
 {
-    if (type == GetTypeID<RevoluteJointConf>()) return "Revolute";
-    if (type == GetTypeID<PrismaticJointConf>()) return "Prismatic";
-    if (type == GetTypeID<DistanceJointConf>()) return "Distance";
-    if (type == GetTypeID<PulleyJointConf>()) return "Pulley";
-    if (type == GetTypeID<TargetJointConf>()) return "Target";
-    if (type == GetTypeID<GearJointConf>()) return "Gear";
-    if (type == GetTypeID<WheelJointConf>()) return "Wheel";
-    if (type == GetTypeID<WeldJointConf>()) return "Weld";
-    if (type == GetTypeID<FrictionJointConf>()) return "Friction";
-    if (type == GetTypeID<RopeJointConf>()) return "Rope";
-    if (type == GetTypeID<MotorJointConf>()) return "Motor";
-    if (type == GetTypeID<ChainShapeConf>()) return "Chain";
-    if (type == GetTypeID<DiskShapeConf>()) return "Disk";
-    if (type == GetTypeID<EdgeShapeConf>()) return "Edge";
-    if (type == GetTypeID<MultiShapeConf>()) return "MultiShape";
-    if (type == GetTypeID<PolygonShapeConf>()) return "Polygon";
+    if (const auto found = jointTypeToNameMap.find(type); found != end(jointTypeToNameMap)) {
+        return found->second;
+    }
+    if (const auto found = shapeTypeToNameMap.find(type); found != end(shapeTypeToNameMap)) {
+        return found->second;
+    }
     const auto name = GetName(type);
     if (std::strstr(name, "playrho::d2::Rectangle")) {
         return "Rectangle";
