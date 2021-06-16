@@ -173,19 +173,21 @@ void SetTransformation(World& world, BodyID id, Transformation value)
 {
     auto body = GetBody(world, id);
     SetTransformation(body, value);
-    const auto localCenter = GetLocalCenter(body);
-    SetSweep(body, Sweep{Position{Transform(localCenter, value), GetAngle(value.q)}, localCenter});
     world.SetBody(id, body);
 }
 
-void SetLocation(World& world, BodyID body, Length2 value)
+void SetLocation(World& world, BodyID id, Length2 value)
 {
-    SetTransform(world, body, value, GetAngle(world, body));
+    auto body = GetBody(world, id);
+    SetLocation(body, value);
+    world.SetBody(id, body);
 }
 
-void SetAngle(World& world, BodyID body, Angle value)
+void SetAngle(World& world, BodyID id, Angle value)
 {
-    SetTransform(world, body, GetLocation(world, body), value);
+    auto body = GetBody(world, id);
+    SetAngle(body, value);
+    world.SetBody(id, body);
 }
 
 void RotateAboutWorldPoint(World& world, BodyID body, Angle amount, Length2 worldPoint)
@@ -395,7 +397,9 @@ void SetMassData(World& world, BodyID id, const MassData& massData)
 
     if (!body.IsAccelerable()) {
         body.SetInvMassData(InvMass{}, InvRotInertia{});
-        body.SetSweep(Sweep{Position{GetLocation(body), GetAngle(body)}});
+        if (!body.IsSpeedable()) {
+            body.SetSweep(Sweep{Position{GetLocation(body), GetAngle(body)}});
+        }
         world.SetBody(id, body);
         return;
     }
