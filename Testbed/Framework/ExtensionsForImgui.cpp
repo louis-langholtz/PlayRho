@@ -45,3 +45,8 @@ void ImGui::Value(const char* prefix, double v, const char* float_format)
         Text("%s: %.3f", prefix, v);
     }
 }
+
+bool ImGui::InputDouble2(const char* label, double v[2], const char* format, ImGuiInputTextFlags flags)
+{
+    return InputScalarN(label, ImGuiDataType_Double, v, 2, NULL, NULL, format, flags);
+}
