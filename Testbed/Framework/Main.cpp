@@ -1893,22 +1893,34 @@ static void ShapesUI(World& world)
         ImGui::SetColumnWidth(1, columnWidth);
         {
             ImGui::ItemWidthContext itemWidthCtx(columnWidth);
-            ImGui::InputFloat("##00", &shapeTransformationMatrix[0][0]);
+            auto val = static_cast<float>(shapeTransformationMatrix[0][0]);
+            if (ImGui::InputFloat("##00", &val)) {
+                shapeTransformationMatrix[0][0] = val;
+            }
         }
         ImGui::NextColumn();
         {
             ImGui::ItemWidthContext itemWidthCtx(columnWidth);
-            ImGui::InputFloat("##01", &shapeTransformationMatrix[0][1]);
+            auto val = static_cast<float>(shapeTransformationMatrix[0][1]);
+            if (ImGui::InputFloat("##01", &val)) {
+                shapeTransformationMatrix[0][1] = val;
+            }
         }
         ImGui::NextColumn();
         {
             ImGui::ItemWidthContext itemWidthCtx(columnWidth);
-            ImGui::InputFloat("##10", &shapeTransformationMatrix[1][0]);
+            auto val = static_cast<float>(shapeTransformationMatrix[1][0]);
+            if (ImGui::InputFloat("##10", &val)) {
+                shapeTransformationMatrix[1][0] = val;
+            }
         }
         ImGui::NextColumn();
         {
             ImGui::ItemWidthContext itemWidthCtx(columnWidth);
-            ImGui::InputFloat("##11", &shapeTransformationMatrix[1][1]);
+            auto val = static_cast<float>(shapeTransformationMatrix[1][1]);
+            if (ImGui::InputFloat("##11", &val)) {
+                shapeTransformationMatrix[1][1] = val;
+            }
         }
         ImGui::Columns(1);
         ImGui::PopStyleVar();
@@ -2731,10 +2743,10 @@ static void EntityUI(Contact& contact)
         }
     }
     {
-        auto v = HasValidToi(contact)? GetToi(contact): std::numeric_limits<Real>::quiet_NaN();
-        if (ImGui::InputFloat("TOI", &v, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+        auto v = HasValidToi(contact)? static_cast<double>(GetToi(contact)): std::numeric_limits<double>::quiet_NaN();
+        if (ImGui::InputDouble("TOI", &v, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
             if (v >= 0 && v <= 1) {
-                SetToi(contact, v);
+                SetToi(contact, static_cast<Real>(v));
             }
             else {
                 UnsetToi(contact);
