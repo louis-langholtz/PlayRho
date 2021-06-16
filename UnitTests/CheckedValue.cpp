@@ -273,27 +273,3 @@ TEST(CheckedValue, NonNull)
     (*boo).field1 = 44;
     EXPECT_EQ(b.field1, 44);
 }
-
-#if 0
-
-#include <PlayRho/Common/Fixed.hpp>
-
-namespace playrho
-{
-template <typename T>
-struct ValueCheckHelper<T, Fixed32>
-{
-    static constexpr bool has_one = true;
-    static constexpr T one() noexcept { return T(1); }
-};
-}
-
-TEST(CheckedValue, FixedUnitInterval)
-{
-    using fixed = Fixed32;
-    const auto zero = fixed{0};
-    EXPECT_EQ(fixed(UnitInterval<fixed>(zero)), zero);
-    
-    EXPECT_THROW(UnitInterval<float>(2.0f), UnitInterval<float>::checker_type::exception_type);
-}
-#endif
