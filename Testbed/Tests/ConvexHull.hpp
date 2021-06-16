@@ -29,6 +29,7 @@ class ConvexHullTest : public Test
 {
 public:
     enum : std::size_t { e_count = 16 };
+    static constexpr auto yOffset = 20.0f;
 
     ConvexHullTest()
     {
@@ -42,14 +43,12 @@ public:
 
     void Generate()
     {
-        const auto lowerBound = Vec2(-8.0f, -8.0f);
-        const auto upperBound = Vec2(8.0f, 8.0f);
-
+        const auto lowerBound = Vec2(-8.0f, -8.0f + yOffset);
+        const auto upperBound = Vec2(8.0f, 8.0f + yOffset);
         m_points.clear();
         for (auto i = std::size_t{0}; i < e_count; ++i) {
             const auto x = 10.0f * RandomFloat();
-            const auto y = 10.0f * RandomFloat();
-
+            const auto y = 10.0f * RandomFloat() + yOffset;
             // Clamp onto a square to help create collinearities.
             // This will stress the convex hull algorithm.
             const auto v = Vec2{std::clamp(x, GetX(lowerBound), GetX(upperBound)),
