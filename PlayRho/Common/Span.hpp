@@ -30,11 +30,13 @@
 
 namespace playrho {
 
-/// @brief A C++ encapsulation of an array and its size.
-///
-/// @note This is conceptually like the Guideline Support Library's span template class.
+/// @brief An encapsulation of an array and its size.
+/// @note This class is like the C++20 <code>std::span</code> class.
+/// @note This is also like the Guideline Support Library's span template class.
+/// @todo Consider replacing uses of this class with C++20 <code>std::span</code> if/when
+///   this project shifts to C++20.
+/// @see https://en.cppreference.com/w/cpp/container/span/span
 /// @see http://open-std.org/JTC1/SC22/WG21/docs/papers/2016/p0122r1.pdf
-///
 template <typename T>
 class Span
 {
