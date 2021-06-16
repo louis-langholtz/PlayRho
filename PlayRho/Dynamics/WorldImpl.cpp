@@ -2496,13 +2496,19 @@ void WorldImpl::SetBody(BodyID id, const Body& value)
             Destroy(contactID, &body);
             return true;
         });
-        if (value.GetType() == BodyType::Static) {
+        switch (value.GetType()) {
+        case BodyType::Static: {
 #ifndef NDEBUG
             const auto xfm1 = GetTransform0(value.GetSweep());
             const auto xfm2 = GetTransformation(value);
             assert(xfm1 == xfm2);
 #endif
             addToBodiesForSync = true;
+            break;
+        }
+        case BodyType::Kinematic:
+        case BodyType::Dynamic:
+            break;
         }
     }
     auto oldShapeIds = std::vector<ShapeID>{};
