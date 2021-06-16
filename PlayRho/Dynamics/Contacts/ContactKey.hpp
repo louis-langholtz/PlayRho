@@ -111,6 +111,7 @@ constexpr bool operator>=(const ContactKey lhs, const ContactKey rhs) noexcept
 } // namespace playrho
 
 namespace std {
+
 /// @brief Hash function object specialization for <code>ContactKey</code>.
 template <>
 struct hash<playrho::ContactKey> {
@@ -129,6 +130,7 @@ struct hash<playrho::ContactKey> {
         return a ^ b;
     }
 };
+
 } // namespace std
 
 #endif // PLAYRHO_DYNAMICS_CONTACTS_CONTACTKEY_HPP
