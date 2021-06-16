@@ -38,6 +38,7 @@ struct SolarSystemObject
     Time rotationalPeriod; ///< Rotational period.
 };
 
+// clang-format off
 static const SolarSystemObject SolarSystemBodies[] = {
     { "The Sun", 696342_km, 1988550000.0_Yg,     0.000_d,    0_Gm,   25.050_d },
     { "Mercury",   2439_km,        330.2_Yg,    87.969_d,   57_Gm,   58.646_d },
@@ -49,6 +50,7 @@ static const SolarSystemObject SolarSystemBodies[] = {
     { "Uranus",   25362_km,      86832.0_Yg, 30688.500_d, 2880_Gm,   -0.718_d },
     { "Neptune",  24622_km,     102430.0_Yg, 60182.000_d, 4500_Gm,    0.671_d },
 };
+// clang-format on
 
 class SolarSystem: public Test
 {
