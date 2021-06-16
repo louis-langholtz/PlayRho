@@ -129,17 +129,23 @@ void Body::SetType(BodyType value) noexcept
     m_flags &= ~(e_impenetrableFlag | e_velocityFlag | e_accelerationFlag);
     m_flags |= GetFlags(value);
     switch (value) {
-    case BodyType::Dynamic:
+    case BodyType::Dynamic: // IsSpeedable() && IsAccelerable()
         SetAwakeFlag();
         break;
-    case BodyType::Kinematic:
+    case BodyType::Kinematic: // IsSpeedable() && !IsAccelerable()
         SetAwakeFlag();
+        m_linearAcceleration = LinearAcceleration2{};
+        m_angularAcceleration = AngularAcceleration{};
+        SetInvMassData(InvMass{}, InvRotInertia{});
         break;
-    case BodyType::Static:
+    case BodyType::Static: // !IsSpeedable() && !IsAccelerable()
         UnsetAwakeFlag();
         m_linearVelocity = LinearVelocity2{};
         m_angularVelocity = 0_rpm;
         m_sweep.pos0 = m_sweep.pos1;
+        m_linearAcceleration = LinearAcceleration2{};
+        m_angularAcceleration = AngularAcceleration{};
+        SetInvMassData(InvMass{}, InvRotInertia{});
         break;
     }
     m_underActiveTime = 0;
@@ -239,6 +245,23 @@ bool Body::Detach(ShapeID shapeId)
 }
 
 // Free functions...
+
+void SetTransformation(Body& body, Transformation value) noexcept
+{
+    body.SetTransformation(value);
+    const auto localCenter = GetLocalCenter(body);
+    SetSweep(body, Sweep{Position{Transform(localCenter, value), GetAngle(value.q)}, localCenter});
+}
+
+void SetLocation(Body& body, Length2 value)
+{
+    SetTransformation(body, Transformation{value, UnitVec::Get(GetAngle(body))});
+}
+
+void SetAngle(Body& body, Angle value)
+{
+    SetTransformation(body, Transformation{GetLocation(body), UnitVec::Get(value)});
+}
 
 Velocity GetVelocity(const Body& body, Time h) noexcept
 {

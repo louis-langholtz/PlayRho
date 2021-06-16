@@ -873,10 +873,7 @@ inline Transformation GetTransformation(const Body& body) noexcept
 /// @note This sets what <code>GetLocation</code> returns.
 /// @see GetTransformation(const Body& body).
 /// @relatedalso Body
-inline void SetTransformation(Body& body, Transformation value) noexcept
-{
-    body.SetTransformation(value);
-}
+void SetTransformation(Body& body, Transformation value) noexcept;
 
 /// @brief Gets the body's origin location.
 /// @details This is the location of the body's origin relative to its world.
@@ -894,6 +891,15 @@ inline Length2 GetLocation(const Body& body) noexcept
 {
     return GetLocation(body.GetTransformation());
 }
+
+/// @brief Sets the body's location.
+/// @details This instantly adjusts the body to be at the new location.
+/// @warning Manipulating a body's location this way can cause non-physical behavior!
+/// @param value Valid world location of the body's local origin. Behavior is undefined
+///   if value is invalid.
+/// @see GetLocation(const Body& body).
+/// @relatedalso Body
+void SetLocation(Body& body, Length2 value);
 
 /// @brief Gets the body's sweep.
 /// @see SetSweep(Body& body, const Sweep& value).
@@ -925,6 +931,15 @@ inline Angle GetAngle(const Body& body) noexcept
 {
     return body.GetSweep().pos1.angular;
 }
+
+/// @brief Sets the body's angular orientation.
+/// @details This instantly adjusts the body to be at the new angular orientation.
+/// @warning Manipulating a body's angle this way can cause non-physical behavior!
+/// @param value Valid world angle of the body's local origin. Behavior is undefined
+///   if value is invalid.
+/// @see GetAngle(const Body& body).
+/// @relatedalso Body
+void SetAngle(Body& body, Angle value);
 
 /// @brief Get the world position of the center of mass.
 inline Length2 GetWorldCenter(const Body& body) noexcept
@@ -1104,7 +1119,7 @@ inline bool Unawaken(Body& body) noexcept
 inline Mass GetMass(const Body& body) noexcept
 {
     const auto invMass = body.GetInvMass();
-    return (invMass != InvMass{0}) ? Mass{Real{1} / invMass} : 0_kg;
+    return (invMass == InvMass{}) ? std::numeric_limits<Mass>::infinity() : Mass{Real{1} / invMass};
 }
 
 /// @brief Sets the mass of the given body.
@@ -1151,7 +1166,9 @@ inline void SetAcceleration(Body& body, AngularAcceleration value) noexcept
 /// @relatedalso Body
 inline RotInertia GetRotInertia(const Body& body) noexcept
 {
-    return Real{1} / body.GetInvRotInertia();
+    const auto invRotInertia = body.GetInvRotInertia();
+    return (invRotInertia == InvRotInertia{}) ? std::numeric_limits<RotInertia>::infinity()
+                                              : RotInertia{Real{1} / invRotInertia};
 }
 
 /// @brief Gets the rotational inertia of the body about the local origin.
