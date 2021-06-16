@@ -74,8 +74,7 @@ public:
         conf.SetAsBox(0.5_m, 0.5_m);
         m_polygons[3] = CreateShape(GetWorld(), conf);
 
-        m_bodyIndex = 0;
-        std::memset(m_bodies, 0, sizeof(m_bodies));
+        std::fill(begin(m_bodies), end(m_bodies), InvalidBodyID);
         
         RegisterForKey(GLFW_KEY_1, GLFW_PRESS, 0, "drop triangle", [&](KeyActionMods kam) {
             Create(kam.key - GLFW_KEY_1);
@@ -206,7 +205,7 @@ public:
         drawer.DrawCircle(circleConf.GetLocation(), circleConf.GetRadius(), color);
     }
 
-    int m_bodyIndex;
+    int m_bodyIndex = 0;
     BodyID m_bodies[e_maxBodies];
     ShapeID m_polygons[4] = {
         InvalidShapeID, InvalidShapeID, InvalidShapeID, InvalidShapeID
