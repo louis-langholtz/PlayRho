@@ -21,7 +21,7 @@
 #define PLAYRHO_COLLISION_DISTANCEPROXY_HPP
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Range.hpp>
+#include <PlayRho/Common/Span.hpp>
 #include <vector>
 #include <algorithm>
 
@@ -128,16 +128,16 @@ public:
         return m_vertexRadius;
     }
 
-    /// @brief Gets the range of vertices.
-    Range<ConstVertexIterator> GetVertices() const noexcept
+    /// @brief Gets the vertices.
+    Span<const Length2> GetVertices() const noexcept
     {
-        return {m_vertices, m_vertices + m_count};
+        return {m_vertices, m_count};
     }
 
-    /// @brief Gets the range of normal.
-    Range<ConstNormalIterator> GetNormals() const noexcept
+    /// @brief Gets the normals.
+    Span<const UnitVec> GetNormals() const noexcept
     {
-        return {m_normals, m_normals + m_count};
+        return {m_normals, m_count};
     }
 
     /// Gets the vertex count.

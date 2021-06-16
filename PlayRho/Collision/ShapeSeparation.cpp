@@ -21,6 +21,7 @@
 
 #include <PlayRho/Collision/ShapeSeparation.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
+
 #include <algorithm>
 
 namespace playrho {
@@ -35,8 +36,7 @@ namespace {
 /// @param vertices Vertices from second convex shape.
 /// @return Minimum separation and index or indices of the vertex or edge respectively
 ///   for which that's found.
-LengthIndices GetMinSeparationInfo(Length2 origin, UnitVec direction,
-                                   Range<DistanceProxy::ConstVertexIterator> vertices)
+LengthIndices GetMinSeparationInfo(Length2 origin, UnitVec direction, Span<const Length2> vertices)
 {
     // Search for vertices most anti-parallel to directional normal from origin.
     // See: https://en.wikipedia.org/wiki/Antiparallel_(mathematics)#Antiparallel_vectors
@@ -78,7 +78,7 @@ SeparationInfo GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformation x
         Transform(proxy2.GetVertex(2), xf),
         Transform(proxy2.GetVertex(3), xf),
     };
-    const auto vertices = Range<DistanceProxy::ConstVertexIterator>(p2vertices, p2vertices + 4);
+    const auto vertices = Span<const Length2>(p2vertices);
 #else
     const auto xf = MulT(xf2, xf1);
     const auto vertices = proxy2.GetVertices();
