@@ -22,10 +22,9 @@
 #define PLAYRHO_COMMON_WIDER_HPP
 
 #include <PlayRho/Defines.hpp>
+
 #include <cstdint>
 #include <type_traits>
-
-// clang-format off
 
 namespace playrho
 {
@@ -105,7 +104,5 @@ template <> struct make_unsigned<PLAYRHO_INT128> {
 #endif
 
 } // namespace std
-
-// clang-format on
 
 #endif // PLAYRHO_COMMON_WIDER_HPP
