@@ -138,6 +138,7 @@ namespace
     auto shapeTransformationMatrix = GetIdentity<Mat22>();
     constexpr char shapeTransformButtonName[] = "Transform";
     constexpr char createShapeButtonName[] = "Create Shape";
+    constexpr char createBodyButtonName[] = "Create Body";
     constexpr char createJointButtonName[] = "Create Joint";
 }
 
@@ -354,28 +355,6 @@ static void CreateUI(GLFWwindow* window)
 
     //ImGuiIO& io = ImGui::GetIO();
     //io.FontGlobalScale = 0.95f;
-}
-
-static const char* ToString(BodyType type) noexcept
-{
-    switch (type)
-    {
-        case BodyType::Static: return "Static";
-        case BodyType::Kinematic: return "Kinematic";
-        case BodyType::Dynamic: return "Dynamic";
-    }
-    return "Unknown"; // should not be reached
-}
-
-static BodyType ToBodyType(int val)
-{
-    switch (val)
-    {
-        case 0: return BodyType::Static;
-        case 1: return BodyType::Kinematic;
-        case 2: return BodyType::Dynamic;
-    }
-    return BodyType::Static; // should not be reached
 }
 
 static void ResizeWindow(GLFWwindow*, int width, int height)
@@ -753,6 +732,16 @@ static bool ChangeType(Shape& object, TypeID newType)
     return false;
 }
 
+static bool ChangeType(Body& object, BodyType newType)
+{
+    const auto oldType = GetType(object);
+    if (oldType == newType) {
+        return true;
+    }
+    SetType(object, newType);
+    return false;
+}
+
 static bool ChangeType(Joint& object, TypeID newType)
 {
     const auto oldType = GetType(object);
@@ -864,6 +853,29 @@ static void ChangeTypeUI(Shape& object)
             if (isSelected)
                 ImGui::SetItemDefaultFocus();
             ++pos;
+        }
+        ImGui::EndCombo();
+    }
+}
+
+static void ChangeTypeUI(Body& object)
+{
+    const auto type = GetType(object);
+    auto itemCurrentIdx = int(type);
+    const auto typeName = Test::ToName(type);
+    static auto flags = ImGuiComboFlags(0);
+    if (ImGui::BeginCombo("##BodyTypeSelectionCombo", typeName, flags)) {
+        for (auto i = 0; i < 3; ++i) {
+            const auto bodyType = BodyType(i);
+            const bool isSelected = (itemCurrentIdx == i);
+            const auto label = Test::ToName(bodyType);
+            if (ImGui::Selectable(label, isSelected)) {
+                itemCurrentIdx = i;
+                ChangeType(object, bodyType);
+            }
+            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+            if (isSelected)
+                ImGui::SetItemDefaultFocus();
         }
         ImGui::EndCombo();
     }
@@ -1387,131 +1399,115 @@ static bool MenuUI()
     return shouldQuit;
 }
 
-static void EntityUI(World& world, BodyID b)
+static void EntityUI(Body& body)
 {
-    ImGui::IdContext idCtx(to_underlying(b));
     {
-        const auto location = GetLocation(world, b);
+        const auto location = GetLocation(body);
         float vals[2];
         vals[0] = static_cast<float>(Real{GetX(location) / Meter});
         vals[1] = static_cast<float>(Real{GetY(location) / Meter});
         if (ImGui::InputFloat2("Lin. Pos.", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            SetLocation(world, b, Length2{vals[0] * 1_m, vals[1] * 1_m});
+            SetLocation(body, Length2{vals[0] * 1_m, vals[1] * 1_m});
         }
         if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Linear position in meters.", tooltipWrapWidth);
         }
-        const auto angle = GetAngle(world, b);
+        const auto angle = GetAngle(body);
         auto val = static_cast<float>(Real{angle / Degree});
         if (ImGui::InputFloat("Ang. Pos.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            SetAngle(world, b, val * Degree);
+            SetAngle(body, val * Degree);
         }
         if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Angular position in degrees.", tooltipWrapWidth);
         }
     }
     {
-        const auto velocity = GetVelocity(world, b);
+        const auto velocity = GetVelocity(body);
         float vals[2];
         vals[0] = static_cast<float>(Real{GetX(velocity.linear) / MeterPerSecond});
         vals[1] = static_cast<float>(Real{GetY(velocity.linear) / MeterPerSecond});
         if (ImGui::InputFloat2("Lin. Vel.", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            SetVelocity(world, b, LinearVelocity2{vals[0] * 1_mps, vals[1] * 1_mps});
+            SetVelocity(body, LinearVelocity2{vals[0] * 1_mps, vals[1] * 1_mps});
         }
         if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Linear velocity in meters/second.", tooltipWrapWidth);
         }
         auto val = static_cast<float>(Real{velocity.angular / DegreePerSecond});
         if (ImGui::InputFloat("Ang. Vel.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            SetVelocity(world, b, val * DegreePerSecond);
+            SetVelocity(body, val * DegreePerSecond);
         }
         if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Angular velocity in degrees/second.", tooltipWrapWidth);
         }
     }
     {
-        const auto acceleration = GetAcceleration(world, b);
+        const auto acceleration = GetAcceleration(body);
         float vals[2];
         vals[0] = static_cast<float>(Real{GetX(acceleration.linear) / MeterPerSquareSecond});
         vals[1] = static_cast<float>(Real{GetY(acceleration.linear) / MeterPerSquareSecond});
         if (ImGui::InputFloat2("Lin. Acc.", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            SetAcceleration(world, b, LinearAcceleration2{vals[0] * 1_mps2, vals[1] * 1_mps2});
+            SetAcceleration(body, LinearAcceleration2{vals[0] * 1_mps2, vals[1] * 1_mps2});
         }
         if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Linear acceleration in meters/second².", tooltipWrapWidth);
         }
         auto val = static_cast<float>(Real{acceleration.angular / DegreePerSquareSecond});
         if (ImGui::InputFloat("Ang. Acc.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            SetAcceleration(world, b, val * DegreePerSquareSecond);
+            SetAcceleration(body, val * DegreePerSquareSecond);
         }
         if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Angular acceleration in degrees/second².", tooltipWrapWidth);
         }
     }
     {
-        auto v = IsImpenetrable(world, b);
+        auto v = IsImpenetrable(body);
         if (ImGui::Checkbox("Bullet", &v)) {
             if (v)
-                SetImpenetrable(world, b);
+                SetImpenetrable(body);
             else
-                UnsetImpenetrable(world, b);
+                UnsetImpenetrable(body);
         }
     }
     ImGui::SameLine();
     {
-        auto v = !IsFixedRotation(world, b);
+        auto v = !IsFixedRotation(body);
         if (ImGui::Checkbox("Rotatable", &v)) {
-            SetFixedRotation(world, b, !v);
+            SetFixedRotation(body, !v);
         }
     }
     {
-        auto v = IsSleepingAllowed(world, b);
+        auto v = IsSleepingAllowed(body);
         if (ImGui::Checkbox("Sleepable", &v)) {
-            SetSleepingAllowed(world, b, v);
+            SetSleepingAllowed(body, v);
         }
     }
     ImGui::SameLine();
     {
-        auto v = IsAwake(world, b);
+        auto v = IsAwake(body);
         if (ImGui::Checkbox("Awake", &v)) {
             if (v) {
-                SetAwake(world, b);
+                SetAwake(body);
             }
             else {
-                UnsetAwake(world, b);
+                UnsetAwake(body);
             }
         }
     }
 
     {
-        ImGui::GroupContext grpCtx;
-        auto v = static_cast<int>(GetType(world, b));
-        ImGui::RadioButton("Static", &v, 0);
-        ImGui::SameLine();
-        ImGui::RadioButton("Kinem.", &v, 1);
-        ImGui::SameLine();
-        ImGui::RadioButton("Dynam.", &v, 2);
-        SetType(world, b, ToBodyType(v));
-    }
-    if (ImGui::IsItemHovered()) {
-        ImGui::ShowTooltip("Body type selection: either Static, Kinematic, or Dynamic.",
-                           tooltipWrapWidth);
-    }
-    
-    {
-        auto v = IsEnabled(world, b);
+        auto v = IsEnabled(body);
         if (ImGui::Checkbox("Enabled", &v)) {
-            SetEnabled(world, b, v);
+            SetEnabled(body, v);
         }
     }
     
-    ImGui::LabelText("Mass", "%.2e kg", static_cast<double>(Real{GetMass(world, b) / Kilogram}));
+    ImGui::LabelText("Mass", "%.2e kg", static_cast<double>(Real{GetMass(body) / Kilogram}));
     if (ImGui::IsItemHovered()) {
         ImGui::ShowTooltip("Mass of the body.", tooltipWrapWidth);
     }
     
     ImGui::LabelText("Rot. Inertia", "%.2e kg·m²",
-                     static_cast<double>(Real{GetRotInertia(world, b) / (1_kg * 1_m2 / Square(1_rad))}));
+                     static_cast<double>(Real{GetRotInertia(body) / (1_kg * 1_m2 / Square(1_rad))}));
     if (ImGui::IsItemHovered()) {
         ImGui::ShowTooltip("Rotational inertia of the body. This may be the calculated value"
                            " or a set value.", tooltipWrapWidth);
@@ -1992,8 +1988,28 @@ static void CollectionUI(World& world, const std::vector<ShapeID>& shapeIds, Bod
 
 static void EntityUI(World& world, BodyID bodyId, const FixtureSet& selectedFixtures)
 {
+    ImGui::IdContext idCtx(to_underlying(bodyId));
     ImGui::ItemWidthContext itemWidthCtx(100);
-    EntityUI(world, bodyId);
+    auto body = GetBody(world, bodyId);
+    ChangeTypeUI(body);
+    if (ImGui::IsItemHovered()) {
+        ImGui::SetTooltip("Shows body's current type and changes it if new selection made.");
+    }
+    ImGui::SameLine();
+    ImGui::Text("Body's Type");
+    EntityUI(body);
+    const auto& curBody = GetBody(world, bodyId);
+    if (curBody != body) {
+        const auto curType = GetType(curBody);
+        const auto newType = GetType(body);
+        const auto resetMassData = curType != newType && newType == BodyType::Dynamic && //
+                                   GetInvMass(body) == InvMass{} && //
+                                   GetInvRotInertia(body) == InvRotInertia{};
+        SetBody(world, bodyId, body);
+        if (resetMassData) {
+            ResetMassData(world, bodyId);
+        }
+    }
     {
         const auto shapes = GetShapes(world, bodyId);
         if (ImGui::TreeNodeEx("BodyShapes", 0, "Shapes (%lu)", size(shapes))) {
@@ -2756,23 +2772,12 @@ static void EntityUI(World& world, ContactID contactId)
     }
 }
 
-static void AddBodyUI(World& world)
-{
-    const auto button_sz = ImVec2(-1, 0);
-    if (ImGui::Button("Create Body", button_sz)) {
-        const auto id = CreateBody(world);
-        auto fixtures = FixtureSet{};
-        fixtures.insert(std::make_pair(id, InvalidShapeID));
-        g_testSuite->GetTest()->SetSelectedFixtures(fixtures);
-    }
-}
-
 static void CollectionUI(World& world, const World::Bodies& bodies,
                          const BodySet& selectedBodies, const FixtureSet& selectedFixtures)
 {
     ImGui::IdContext idCtx("Bodies");
     for (const auto& e: bodies) {
-        const auto typeName = ToString(GetType(world, e));
+        const auto typeName = Test::ToName(GetType(world, e));
         const auto flags = IsWithin(selectedBodies, e)? ImGuiTreeNodeFlags_DefaultOpen: 0;
         if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(e.get()), flags,
                               "Body %u (%s)", e.get(), typeName)) {
@@ -2887,7 +2892,20 @@ static void ModelEntitiesUI()
     ImGui::Separator();
     ImGui::Spacing();
     {
-        AddBodyUI(world);
+        static auto body = Body{};
+        ImGui::ItemWidthContext itemWidthCtx(80);
+        ChangeTypeUI(body);
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Selects type of body that's created on pressing the %s button.",
+                              createBodyButtonName);
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(createBodyButtonName, ImVec2(-1, 0))) {
+            const auto id = CreateBody(world, body);
+            const auto fixtures = FixtureSet{std::make_pair(id, InvalidShapeID)};
+            g_testSuite->GetTest()->SetSelectedFixtures(fixtures);
+
+        }
         const auto bodies = GetBodies(world);
         if (ImGui::TreeNodeEx("Bodies", selBodies? ImGuiTreeNodeFlags_DefaultOpen: 0,
                               "Bodies (%lu)", size(bodies))) {
@@ -2907,8 +2925,7 @@ static void ModelEntitiesUI()
                               createJointButtonName);
         }
         ImGui::SameLine();
-        const auto button_sz = ImVec2(-1, 0);
-        if (ImGui::Button(createJointButtonName, button_sz)) {
+        if (ImGui::Button(createJointButtonName, ImVec2(-1, 0))) {
             CreateJoint(world, joint);
         }
         const auto joints = GetJoints(world);
@@ -2922,6 +2939,7 @@ static void ModelEntitiesUI()
     ImGui::Separator();
     ImGui::Spacing();
     {
+        ImGui::TextWrapped("Contacts cannot be created nor destroyed by users.");
         const auto contacts = GetContacts(world);
         if (ImGui::TreeNodeEx("Contacts", selContacts? ImGuiTreeNodeFlags_DefaultOpen: 0,
                               "Contacts (%lu)", size(contacts))) {

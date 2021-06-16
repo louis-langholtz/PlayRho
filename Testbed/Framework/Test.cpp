@@ -25,12 +25,13 @@
 
 #include "DebugDraw.hpp"
 
-#include <stdio.h>
-#include <vector>
-#include <sstream>
 #include <chrono>
-#include <utility>
+#include <cstring> // for std::strstr
 #include <stdarg.h> // for va_list
+#include <sstream>
+#include <stdio.h>
+#include <utility>
+#include <vector>
 
 #include "imgui.h"
 #include "ExtensionsForImgui.hpp"
@@ -128,20 +129,16 @@ void Draw(Drawer& drawer, const Shape& shape, const Color& color, bool skins,
 
 Color GetColor(const World& world, BodyID body)
 {
-    if (!IsEnabled(world, body))
-    {
+    if (!IsEnabled(world, body)) {
         return Color{0.5f, 0.5f, 0.3f};
     }
-    if (GetType(world, body) == BodyType::Static)
-    {
+    if (GetType(world, body) == BodyType::Static) {
         return Color{0.5f, 0.9f, 0.5f};
     }
-    if (GetType(world, body) == BodyType::Kinematic)
-    {
+    if (GetType(world, body) == BodyType::Kinematic) {
         return Color{0.5f, 0.5f, 0.9f};
     }
-    if (!IsAwake(world, body))
-    {
+    if (!IsAwake(world, body)) {
         return Color{0.75f, 0.75f, 0.75f};
     }
     return Color{0.9f, 0.7f, 0.7f};
@@ -865,6 +862,16 @@ const char* Test::ToName(DistanceOutput::State value)
         return "HitMaxIters";
     case DistanceOutput::Unknown:
         break;
+    }
+    return "Unknown";
+}
+
+const char* Test::ToName(BodyType value) noexcept
+{
+    switch (value) {
+    case BodyType::Static: return "Static";
+    case BodyType::Kinematic: return "Kinematic";
+    case BodyType::Dynamic: return "Dynamic";
     }
     return "Unknown";
 }

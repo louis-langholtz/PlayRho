@@ -232,6 +232,7 @@ public:
 
     static const char* ToName(DistanceOutput::State value);
     static const char* ToName(TypeID type) noexcept;
+    static const char* ToName(BodyType value) noexcept;
     static bool AlertUser(const std::string& title, const char* fmt, ...);
     static const LinearAcceleration2 Gravity;
     static const std::map<TypeID, const char*> shapeTypeToNameMap;
