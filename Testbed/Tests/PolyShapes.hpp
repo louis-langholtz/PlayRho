@@ -179,10 +179,9 @@ public:
                     ++count;
                     const auto overlapColor = Color(0.95f, 0.95f, 0.6f);
                     const auto type = GetType(shape);
-                    const auto body = b;
                     if (type == GetTypeID<DiskShapeConf>()) {
                         const auto conf = TypeCast<DiskShapeConf>(shape);
-                        const auto center = Transform(GetLocation(GetWorld(), body), xfm);
+                        const auto center = Transform(conf.GetLocation(), xfm);
                         drawer.DrawCircle(center, conf.GetRadius(), overlapColor);
                     }
                     else if (type == GetTypeID<PolygonShapeConf>()) {
