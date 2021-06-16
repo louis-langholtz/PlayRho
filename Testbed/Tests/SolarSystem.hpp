@@ -147,9 +147,6 @@ public:
 
         std::ostringstream os;
         if (IsValid(m_focalBody)) {
-            const auto location = GetLocation(GetWorld(), m_focalBody);
-            drawer.SetTranslation(location);
-
             const auto index = GetWorldIndex(GetWorld(), m_focalBody);
             os << "Camera locked on body " << index << ": ";
             os << SolarSystemBodies[index].name;
@@ -161,6 +158,13 @@ public:
         os << " 'Bomb' size (radial) is now at " << Real{GetBombRadius() / 1_km} << "km.";
         os << " 'Bomb' density (areal) is now at " << Real{GetBombDensity() / 1_kgpm2} << "kg/m^2.";
         SetStatus(os.str());
+    }
+
+    void PostStep(const Settings&, Drawer& drawer) override
+    {
+        if (IsValid(m_focalBody)) {
+            drawer.SetTranslation(GetLocation(GetWorld(), m_focalBody));
+        }
     }
 
     BodyID m_focalBody = InvalidBodyID;
