@@ -1412,7 +1412,7 @@ static void EntityUI(Body& body)
         if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Linear position in meters.", tooltipWrapWidth);
         }
-        const auto angle = GetAngle(GetTransformation(body).q);
+        const auto angle = GetAngle(body);
         auto val = static_cast<float>(Real{angle / Degree});
         if (ImGui::InputFloat("Ang. Pos.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
             SetAngle(body, val * Degree);
