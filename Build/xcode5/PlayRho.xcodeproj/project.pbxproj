@@ -223,6 +223,8 @@
 		4795B95D263C996200FB3EC6 /* gl3w.c in Sources */ = {isa = PBXBuildFile; fileRef = 4795B95C263C996200FB3EC6 /* gl3w.c */; };
 		4795B9E62643425300FB3EC6 /* WorldShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4795B9E52643425300FB3EC6 /* WorldShape.cpp */; };
 		479B63C31ED9CAC300D49BC7 /* CheckedValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 479B63C21ED9CAC300D49BC7 /* CheckedValue.cpp */; };
+		479DEA50267AABBE0070497D /* imgui.h in Headers */ = {isa = PBXBuildFile; fileRef = 479DEA4F267AABBD0070497D /* imgui.h */; };
+		479DEA57267AB8730070497D /* Position.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 479DEA56267AB8730070497D /* Position.cpp */; };
 		47AB01BA1D6FA40C0084D721 /* Dump.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AB01B91D6FA40C0084D721 /* Dump.cpp */; };
 		47ABB0BE2546309400E5F37B /* WorldImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47ABB0BD2546309400E5F37B /* WorldImpl.cpp */; };
 		47AFC3051DAEBC120023E9D1 /* PositionSolverManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */; };
@@ -633,6 +635,8 @@
 		4795B95C263C996200FB3EC6 /* gl3w.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gl3w.c; path = imgui/examples/libs/gl3w/GL/gl3w.c; sourceTree = "<group>"; };
 		4795B9E52643425300FB3EC6 /* WorldShape.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WorldShape.cpp; sourceTree = "<group>"; };
 		479B63C21ED9CAC300D49BC7 /* CheckedValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CheckedValue.cpp; sourceTree = "<group>"; };
+		479DEA4F267AABBD0070497D /* imgui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imgui.h; path = imgui/imgui.h; sourceTree = "<group>"; };
+		479DEA56267AB8730070497D /* Position.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Position.cpp; sourceTree = "<group>"; };
 		47AB01B91D6FA40C0084D721 /* Dump.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dump.cpp; sourceTree = "<group>"; };
 		47ABB0BD2546309400E5F37B /* WorldImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldImpl.cpp; sourceTree = "<group>"; };
 		47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PositionSolverManifold.cpp; sourceTree = "<group>"; };
@@ -885,6 +889,7 @@
 				470F9B531EF9666B007EF7B6 /* MotorJoint.cpp */,
 				47D61F7B1F21112000E702BD /* MultiShape.cpp */,
 				474BC3FF1D41278800447DCD /* PolygonShape.cpp */,
+				479DEA56267AB8730070497D /* Position.cpp */,
 				47FFD0FC1DAC6235000D6D0E /* PositionConstraint.cpp */,
 				47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */,
 				4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */,
@@ -1232,6 +1237,7 @@
 				4795B93F263C98DF00FB3EC6 /* imgui_tables.cpp */,
 				4795B940263C98DF00FB3EC6 /* imgui_widgets.cpp */,
 				4795B936263C988600FB3EC6 /* imgui.cpp */,
+				479DEA4F267AABBD0070497D /* imgui.h */,
 				47D61F731F1F148500E702BD /* SilkscreenTtfData.h */,
 				47D61F751F1F1F2500E702BD /* DroidSansTtfData.h */,
 				805900AA184EEE0F00C8ECA3 /* DebugDraw.cpp */,
@@ -1417,6 +1423,7 @@
 				80BB89A4141C3E5900F1753A /* Math.hpp in Headers */,
 				47E36F501FE8477000C10B79 /* FixedLimits.hpp in Headers */,
 				47E36F541FE8534500C10B79 /* FixedMath.hpp in Headers */,
+				479DEA50267AABBE0070497D /* imgui.h in Headers */,
 				470F9B301EDF5165007EF7B6 /* Velocity.hpp in Headers */,
 				80BB89A6141C3E5900F1753A /* Settings.hpp in Headers */,
 				4764085D250484830090F711 /* Negative.hpp in Headers */,
@@ -1675,6 +1682,7 @@
 				475A94611D9996B6000CA9A8 /* WorldContact.cpp in Sources */,
 				474BC4361D413DC200447DCD /* PolygonShape.cpp in Sources */,
 				470F9B541EF9666B007EF7B6 /* MotorJoint.cpp in Sources */,
+				479DEA57267AB8730070497D /* Position.cpp in Sources */,
 				4736DE891DB7DB3B003993CB /* Vec3.cpp in Sources */,
 				474BC4371D413DC200447DCD /* Rot.cpp in Sources */,
 				47FFD0F91DABDC63000D6D0E /* Mat22.cpp in Sources */,
