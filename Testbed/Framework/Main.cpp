@@ -1399,10 +1399,89 @@ static bool MenuUI()
     return shouldQuit;
 }
 
+static void EntityUI(const Sweep& sweep)
+{
+    ImGui::TextUnformatted("Sweep Info...");
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("The sweep represents current and end positions of the body if "
+                           "unimpeded the remainder of the step, its local center of mass, and a "
+                           "factor of how far along it's been moved so far during the step.",
+                           tooltipWrapWidth);
+    }
+    const auto totalWidth = 180.0f;
+    const auto linPosColWidths = std::initializer_list<float>{54, 54};
+    const auto angPosColWidths = std::initializer_list<float>{108};
+    {
+        ImGui::ColumnsContext cc(3, "ColsLinPos0", false);
+        ImGui::SetColumnWidths(totalWidth, linPosColWidths);
+        ImGui::Text("%f", static_cast<float>(Real(GetX(sweep.pos0.linear)/1_m)));
+        ImGui::NextColumn();
+        ImGui::Text("%f", static_cast<float>(Real(GetY(sweep.pos0.linear)/1_m)));
+        ImGui::NextColumn();
+        ImGui::Text("Lin. Pos. 0");
+        ImGui::NextColumn();
+    }
+    {
+        ImGui::ColumnsContext cc(2, "ColsAngPos0", false);
+        ImGui::SetColumnWidths(totalWidth, angPosColWidths);
+        ImGui::Text("%f", static_cast<float>(Real(sweep.pos0.angular/1_deg)));
+        ImGui::NextColumn();
+        ImGui::Text("Ang. Pos. 0");
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Angular position 0 in degrees.", tooltipWrapWidth);
+        }
+        ImGui::NextColumn();
+    }
+    {
+        ImGui::ColumnsContext cc(3, "ColsLinPos1", false);
+        ImGui::SetColumnWidths(totalWidth, linPosColWidths);
+        ImGui::Text("%f", static_cast<float>(Real(GetX(sweep.pos1.linear)/1_m)));
+        ImGui::NextColumn();
+        ImGui::Text("%f", static_cast<float>(Real(GetY(sweep.pos1.linear)/1_m)));
+        ImGui::NextColumn();
+        ImGui::Text("Lin. Pos. 1");
+        ImGui::NextColumn();
+    }
+    {
+        ImGui::ColumnsContext cc(2, "ColsAngPos1", false);
+        ImGui::SetColumnWidths(totalWidth, angPosColWidths);
+        ImGui::Text("%f", static_cast<float>(Real(sweep.pos1.angular/1_deg)));
+        ImGui::NextColumn();
+        ImGui::Text("Ang. Pos. 1");
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Angular position 1 in degrees.", tooltipWrapWidth);
+        }
+        ImGui::NextColumn();
+    }
+    {
+        ImGui::ColumnsContext cc(3, "ColsLocalCtr", false);
+        ImGui::SetColumnWidths(totalWidth, linPosColWidths);
+        const auto massCenter = sweep.GetLocalCenter();
+        ImGui::Text("%f", static_cast<float>(Real(GetX(massCenter)/1_m)));
+        ImGui::NextColumn();
+        ImGui::Text("%f", static_cast<float>(Real(GetY(massCenter)/1_m)));
+        ImGui::NextColumn();
+        ImGui::Text("Loc. Mass Ctr.");
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Local center of mass in meters.", tooltipWrapWidth);
+        }
+        ImGui::NextColumn();
+    }
+    {
+        ImGui::ColumnsContext cc(2, "ColsAlpha0", false);
+        ImGui::SetColumnWidths(totalWidth, angPosColWidths);
+        ImGui::Text("%f", static_cast<float>(sweep.GetAlpha0()));
+        ImGui::NextColumn();
+        ImGui::Text("Alpha 0");
+        ImGui::NextColumn();
+    }
+}
+
 static void EntityUI(Body& body)
 {
     {
-        const auto location = GetLocation(body);
+        const auto transformation = GetTransformation(body);
+        const auto location = GetLocation(transformation);
         float vals[2];
         vals[0] = static_cast<float>(Real{GetX(location) / Meter});
         vals[1] = static_cast<float>(Real{GetY(location) / Meter});
@@ -1412,7 +1491,7 @@ static void EntityUI(Body& body)
         if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Linear position in meters.", tooltipWrapWidth);
         }
-        const auto angle = GetAngle(body);
+        const auto angle = GetAngle(GetDirection(transformation));
         auto val = static_cast<float>(Real{angle / Degree});
         if (ImGui::InputFloat("Ang. Pos.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
             SetAngle(body, val * Degree);
@@ -1459,6 +1538,9 @@ static void EntityUI(Body& body)
             ImGui::ShowTooltip("Angular acceleration in degrees/second².", tooltipWrapWidth);
         }
     }
+    ImGui::Spacing();
+    EntityUI(GetSweep(body));
+    ImGui::Spacing();
     {
         auto v = IsImpenetrable(body);
         if (ImGui::Checkbox("Bullet", &v)) {
@@ -1522,10 +1604,10 @@ static void EntityUI(const DistanceProxy& proxy)
                      static_cast<double>(Real{GetVertexRadius(proxy) / 1_m}));
     const auto numVertices = proxy.GetVertexCount();
     if (ImGui::TreeNodeEx("Vertices", 0, "Vertices (%u)", numVertices)) {
+        ImGui::ColumnsContext cc(3, "VertexColumns", false);
+        ImGui::SetColumnWidths(140, {15, 68, 68});
         for (auto i = static_cast<VertexCounter>(0); i < numVertices; ++i) {
-            ImGui::ColumnsContext cc(3, "VertexColumns", false);
             const auto vertex = proxy.GetVertex(i);
-            ImGui::SetColumnWidths(140, {15, 68, 68});
             ImGui::Text("%u", i);
             ImGui::NextColumn();
             ImGui::Text(((GetX(vertex) >= 0_m)? "+%fm": "%fm"),
