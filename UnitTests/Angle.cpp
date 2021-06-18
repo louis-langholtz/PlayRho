@@ -67,6 +67,10 @@ TEST(Angle, GetDelta)
     EXPECT_NEAR(static_cast<double>(Real{GetDelta(+80_deg, -80_deg)/1_deg}), -160.0, 0.0001);
     EXPECT_NEAR(static_cast<double>(Real{GetDelta(-90_deg, +90_deg)/1_deg}), +180.0, 0.0001);
     EXPECT_NEAR(static_cast<double>(Real{GetDelta(-80_deg, +80_deg)/1_deg}), +160.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real{GetDelta(+179_deg, -179_deg)/1_deg}), +2.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real{GetDelta(+179_deg, -179_deg - 360_deg)/1_deg}), +2.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real{GetDelta(-179_deg, +179_deg)/1_deg}), -2.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real{GetDelta(-179_deg, +179_deg + 360_deg)/1_deg}), -2.0, 0.0001);
     EXPECT_NEAR(double(Real{GetDelta(-Pi * Radian, +Pi * Radian) / Degree}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetDelta(+Pi * Radian, -Pi * Radian) / Degree}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetDelta(-2_deg, +3_deg) / Degree}), 5.0, 0.01);
@@ -98,6 +102,7 @@ TEST(Angle, GetNormalized)
     EXPECT_NEAR(double(Real(GetNormalized(   90.0_deg) / Degree)),   90.0, 0.01);
     EXPECT_NEAR(double(Real(GetNormalized(   93.2_deg) / Degree)),   93.2, 0.01);
     EXPECT_NEAR(double(Real(GetNormalized(  180.0_deg) / Degree)),  180.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  185.4_deg) / Degree)), -174.6, 0.01);
     EXPECT_NEAR(double(Real(GetNormalized(  190.0_deg) / Degree)), -170.0, 0.01);
     EXPECT_NEAR(double(Real(GetNormalized( -180.0_deg) / Degree)), -180.0, 0.01);
     EXPECT_NEAR(double(Real(GetNormalized(  Pi*Radian) / Degree)),  180.0, 0.01);
