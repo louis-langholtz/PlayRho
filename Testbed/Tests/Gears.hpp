@@ -114,19 +114,32 @@ public:
     void PostStep(const Settings&, Drawer&) override
     {
         std::stringstream stream;
-        {
+        try {
             const auto ratio = GetRatio(GetWorld(), m_joint4);
             const auto angle = GetAngle(GetWorld(), m_joint1) + ratio * GetAngle(GetWorld(), m_joint2);
             stream << "Theta1 + " << static_cast<double>(ratio);
             stream << " * theta2 = " << static_cast<double>(Real{angle / 1_rad});
             stream << " rad.\n";
+        } catch (const std::invalid_argument& ex) {
+            stream << "Unable to get ratio or angle data for joint ID ";
+            stream << to_underlying(m_joint4);
+            stream << " or ";
+            stream << to_underlying(m_joint1);
+            stream << ".\n";
         }
-        {
+        try {
             const auto ratio = GetRatio(GetWorld(), m_joint5);
             const auto value = ratio * GetJointTranslation(GetWorld(), m_joint3);
             stream << "Theta2 + " << static_cast<double>(ratio);
             stream << " * theta2 = " << static_cast<double>(Real{value / 1_m});
             stream << " m.";
+        }
+        catch (const std::invalid_argument& ex) {
+            stream << "Unable to get ratio or angle data for joint ID ";
+            stream << to_underlying(m_joint5);
+            stream << " or ";
+            stream << to_underlying(m_joint3);
+            stream << ".\n";
         }
         SetStatus(stream.str());
     }
