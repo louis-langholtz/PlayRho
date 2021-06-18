@@ -23,7 +23,7 @@
 
 namespace playrho {
 
-Angle GetDelta(Angle a1, Angle a2) noexcept
+Angle GetShortestDelta(Angle a1, Angle a2) noexcept
 {
     a1 = GetNormalized(a1);
     a2 = GetNormalized(a2);

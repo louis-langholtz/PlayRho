@@ -674,7 +674,7 @@ constexpr T GetModuloPrev(T value, T count) noexcept
 ///   least amount of rotation.
 /// @return Angle between -Pi and Pi radians inclusively.
 /// @see GetNormalized
-Angle GetDelta(Angle a1, Angle a2) noexcept;
+Angle GetShortestDelta(Angle a1, Angle a2) noexcept;
 
 /// Gets the reverse (counter) clockwise rotational angle to go from angle 1 to angle 2.
 /// @return Angular rotation in the counter clockwise direction to go from angle 1 to angle 2.
