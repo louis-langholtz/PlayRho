@@ -752,8 +752,7 @@ bool DrawWorld(Drawer& drawer, const World& world, const Test::FixtureSet& selec
             }
             if (drawLabels) {
                 // Use center of mass instead of body center since body center may not
-                drawer.DrawString(GetWorldCenter(world, b), Drawer::Center, "%d",
-                                  GetWorldIndex(world, b));
+                drawer.DrawString(GetWorldCenter(world, b), Drawer::Center, "%u", to_underlying(b));
             }
         }
     }
