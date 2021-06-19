@@ -636,6 +636,35 @@ GetOldAndNewShapeIDs(const Body& oldBody, const Body& newBody)
     return std::make_pair(oldShapeIds, newShapeIds);
 }
 
+void ValidateBodyFromUser(const Body& value)
+{
+    if (!IsAccelerable(value)) {
+        if (GetLinearAcceleration(value) != LinearAcceleration2{}) {
+            throw InvalidArgument("non accelerable body cannot have non-zero linear acceleration");
+        }
+        if (GetAngularAcceleration(value) != AngularAcceleration{}) {
+            throw InvalidArgument("non accelerable body cannot have non-zero angular acceleration");
+        }
+    }
+    if (!IsSpeedable(value)) {
+        if (GetLinearVelocity(value) != LinearVelocity2{}) {
+            throw InvalidArgument("non speedable body cannot have non-zero linear velocity");
+        }
+        if (GetAngularVelocity(value) != AngularVelocity{}) {
+            throw InvalidArgument("non speedable body cannot have non-zero angular velocity");
+        }
+        if (GetInvMass(value) != InvMass{}) {
+            throw InvalidArgument("non speedable body cannot have non-zero inverse mass");
+        }
+        if (GetInvRotInertia(value) != InvRotInertia{}) {
+            throw InvalidArgument("non speedable body cannot have non-zero inverse rot. inertia");
+        }
+        if (const auto sweep = GetSweep(value); sweep.pos0 != sweep.pos1) {
+            throw InvalidArgument("non speedable body cannot have different sweep positions");
+        }
+    }
+}
+
 } // anonymous namespace
 
 WorldImpl::WorldImpl(const WorldConf& def):
@@ -706,7 +735,7 @@ ContactCounter WorldImpl::GetContactRange() const noexcept
     return static_cast<ContactCounter>(m_contactBuffer.size());
 }
 
-BodyID WorldImpl::CreateBody(const Body& body)
+BodyID WorldImpl::CreateBody(Body body)
 {
     if (IsLocked()) {
         throw WrongState("CreateBody: world is locked");
@@ -718,6 +747,7 @@ BodyID WorldImpl::CreateBody(const Body& body)
     for (const auto& shapeId: body.GetShapes()) {
         m_shapeBuffer.at(to_underlying(shapeId));
     }
+    ValidateBodyFromUser(body);
     const auto id = static_cast<BodyID>(
         static_cast<BodyID::underlying_type>(m_bodyBuffer.Allocate(body)));
     m_bodyContacts.Allocate();
@@ -803,13 +833,13 @@ bool WorldImpl::IsDestroyed(BodyID id) const noexcept
     return m_bodyBuffer.FindFree(to_underlying(id));
 }
 
-void WorldImpl::SetJoint(JointID id, const Joint& def)
+void WorldImpl::SetJoint(JointID id, Joint def)
 {
     if (IsLocked()) {
         throw WrongState("SetJoint: world is locked");
     }
     // Validate the references...
-    auto& joint = m_jointBuffer.at(to_underlying(id));
+    m_jointBuffer.at(to_underlying(id));
     if (const auto bodyId = GetBodyA(def); bodyId != InvalidBodyID) {
         GetBody(bodyId);
     }
@@ -817,11 +847,11 @@ void WorldImpl::SetJoint(JointID id, const Joint& def)
         GetBody(bodyId);
     }
     Remove(id);
-    joint = def;
+    m_jointBuffer[to_underlying(id)] = def;
     Add(id, !GetCollideConnected(def));
 }
 
-JointID WorldImpl::CreateJoint(const Joint& def)
+JointID WorldImpl::CreateJoint(Joint def)
 {
     if (IsLocked()) {
         throw WrongState("CreateJoint: world is locked");
@@ -924,7 +954,7 @@ ShapeCounter WorldImpl::GetShapeRange() const noexcept
     return static_cast<ShapeCounter>(size(m_shapeBuffer));
 }
 
-ShapeID WorldImpl::CreateShape(const Shape& def)
+ShapeID WorldImpl::CreateShape(Shape def)
 {
     const auto minVertexRadius = GetMinVertexRadius();
     const auto maxVertexRadius = GetMaxVertexRadius();
@@ -944,7 +974,7 @@ ShapeID WorldImpl::CreateShape(const Shape& def)
     if (size(m_shapeBuffer) >= MaxShapes) {
         throw LengthError("CreateShape: operation would exceed MaxShapes");
     }
-    return static_cast<ShapeID>(static_cast<ShapeID::underlying_type>(m_shapeBuffer.Allocate(def)));
+    return static_cast<ShapeID>(static_cast<ShapeID::underlying_type>(m_shapeBuffer.Allocate(std::move(def))));
 }
 
 void WorldImpl::Destroy(ShapeID id)
@@ -972,12 +1002,12 @@ const Shape& WorldImpl::GetShape(ShapeID id) const
     return m_shapeBuffer.at(to_underlying(id));
 }
 
-void WorldImpl::SetShape(ShapeID id, const Shape& def)
+void WorldImpl::SetShape(ShapeID id, Shape def)
 {
     if (IsLocked()) {
         throw WrongState("SetShape: world is locked");
     }
-    auto& shape = m_shapeBuffer.at(to_underlying(id));
+    const auto& shape = m_shapeBuffer.at(to_underlying(id));
     for (auto&& b: m_bodyBuffer) {
         for (const auto& shapeId: b.GetShapes()) {
             if (shapeId == id) {
@@ -1025,7 +1055,7 @@ void WorldImpl::SetShape(ShapeID id, const Shape& def)
             }
         }
     }
-    shape = def;
+    m_shapeBuffer[to_underlying(id)] = std::move(def);
     // TODO: anything else that needs doing?
 }
 
@@ -1250,7 +1280,9 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     // Update bodies' pos0 values.
     for_each(cbegin(island.bodies), cend(island.bodies), [&](const auto& bodyID) {
         auto& body = m_bodyBuffer[to_underlying(bodyID)];
-        body.SetPosition0(GetPosition1(body)); // like Advance0(1) on the sweep.
+        SetPosition0(body, GetPosition1(body)); // like Advance0(1) on the sweep.
+        // XXX/TODO figure out why the following causes Gears Test to stutter!!!
+        // SetSweep(body, GetNormalized(GetSweep(body)));
     });
 
     // Copy bodies' pos1 and velocity data into local arrays.
@@ -1329,7 +1361,9 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
         // Could normalize position here to avoid unbounded angles but angular
         // normalization isn't handled correctly by joints that constrain rotation.
         body.JustSetVelocity(bc.GetVelocity());
-        if (UpdateBody(body, bc.GetPosition())) {
+        if (const auto pos = /*GetNormalized*/(bc.GetPosition()); GetPosition1(body) != pos) {
+            SetPosition1(body, pos);
+            SetTransformation(body, GetTransformation(pos, GetLocalCenter(body)));
             FlagForUpdating(m_contactBuffer, m_bodyContacts[i]);
         }
     }
@@ -1660,19 +1694,6 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
     return results;
 }
 
-bool WorldImpl::UpdateBody(Body& body, const Position& pos)
-{
-    assert(IsValid(pos));
-    body.SetPosition1(pos);
-    const auto oldXfm = GetTransformation(body);
-    const auto newXfm = GetTransformation(GetPosition1(body), GetLocalCenter(body));
-    if (newXfm != oldXfm) {
-        body.SetTransformation(newXfm);
-        return true;
-    }
-    return false;
-}
-
 IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
 {
     auto results = IslandStats{};
@@ -1725,7 +1746,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
     // Unclear whether rest of bodies should also be updated. No difference noticed.
     for (const auto& id: island.bodies) {
         const auto& bc = m_bodyConstraints[to_underlying(id)];
-        m_bodyBuffer[to_underlying(id)].SetPosition0(bc.GetPosition());
+        SetPosition0(m_bodyBuffer[to_underlying(id)], bc.GetPosition());
     }
 
     auto velConstraints = GetVelocityConstraints(island.contacts,
@@ -1760,7 +1781,9 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
         auto& body = m_bodyBuffer[i];
         auto& bc = m_bodyConstraints[i];
         body.JustSetVelocity(bc.GetVelocity());
-        if (UpdateBody(body, bc.GetPosition())) {
+        if (const auto pos = bc.GetPosition(); GetPosition1(body) != pos) {
+            SetPosition1(body, pos);
+            SetTransformation(body, GetTransformation(pos, GetLocalCenter(body)));
             FlagForUpdating(m_contactBuffer, m_bodyContacts[i]);
         }
     }
@@ -1940,12 +1963,12 @@ void WorldImpl::ShiftOrigin(Length2 newOrigin)
         auto& b = m_bodyBuffer[to_underlying(body)];
         auto transformation = GetTransformation(b);
         transformation.p -= newOrigin;
-        b.SetTransformation(transformation);
+        SetTransformation(b, transformation);
         FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(body)]);
-        auto sweep = b.GetSweep();
+        auto sweep = GetSweep(b);
         sweep.pos0.linear -= newOrigin;
         sweep.pos1.linear -= newOrigin;
-        b.SetSweep(sweep);
+        SetSweep(b, sweep);
     }
 
     for_each(begin(m_joints), end(m_joints), [&](const auto& joint) {
@@ -2478,16 +2501,25 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
     }
 }
 
-void WorldImpl::SetBody(BodyID id, const Body& value)
+void WorldImpl::SetBody(BodyID id, Body value)
 {
     if (IsLocked()) {
         throw WrongState("SetBody: world is locked");
     }
-    const auto& body = GetBody(id);
-    // confirm all shapeIds are valid...
+    // confirm id and all shapeIds are valid...
+    const auto& body = m_bodyBuffer.at(to_underlying(id));
     for (const auto& shapeId: value.GetShapes()) {
         m_shapeBuffer.at(to_underlying(shapeId));
     }
+    ValidateBodyFromUser(value);
+
+    {
+        // Silently set sweep positions to match body's transformation...
+        const auto localCenter = GetLocalCenter(value);
+        const auto xfm = GetTransformation(value);
+        SetSweep(value, Sweep{Position{Transform(localCenter, xfm), GetAngle(xfm.q)}, localCenter});
+    }
+
     auto addToBodiesForSync = false;
     // handle state changes that other data needs to stay in sync with
     if (GetType(body) != GetType(value)) {
@@ -2587,12 +2619,12 @@ void WorldImpl::SetBody(BodyID id, const Body& value)
     if (addToBodiesForSync) {
         m_bodiesForSync.push_back(id);
     }
-    m_bodyBuffer[to_underlying(id)] = value;
+    m_bodyBuffer[to_underlying(id)] = std::move(value);
 }
 
-void WorldImpl::SetContact(ContactID id, const Contact& value)
+void WorldImpl::SetContact(ContactID id, Contact value)
 {
-    auto& contact = m_contactBuffer.at(to_underlying(id));
+    const auto& contact = m_contactBuffer.at(to_underlying(id));
 
     // Make sure body identifiers and shape identifiers are valid...
     [[maybe_unused]] const auto& bodyA = m_bodyBuffer.at(to_underlying(value.GetBodyA()));
@@ -2622,7 +2654,8 @@ void WorldImpl::SetContact(ContactID id, const Contact& value)
     if (contact.GetToiCount() != value.GetToiCount()) {
         throw InvalidArgument("user may not change the TOI count");
     }
-    contact = value;
+
+    m_contactBuffer[to_underlying(id)] = value;
 }
 
 const Body& WorldImpl::GetBody(BodyID id) const

@@ -22,6 +22,8 @@
 
 #include <PlayRho/Dynamics/WorldImpl.hpp>
 
+#include <PlayRho/Collision/Shapes/Shape.hpp>
+
 namespace playrho {
 namespace d2 {
 

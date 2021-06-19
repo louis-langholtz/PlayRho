@@ -246,13 +246,6 @@ bool Body::Detach(ShapeID shapeId)
 
 // Free functions...
 
-void SetTransformation(Body& body, Transformation value) noexcept
-{
-    body.SetTransformation(value);
-    const auto localCenter = GetLocalCenter(body);
-    SetSweep(body, Sweep{Position{Transform(localCenter, value), GetAngle(value.q)}, localCenter});
-}
-
 void SetLocation(Body& body, Length2 value)
 {
     SetTransformation(body, Transformation{value, UnitVec::Get(GetAngle(body))});

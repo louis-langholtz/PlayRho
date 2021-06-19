@@ -873,7 +873,10 @@ inline Transformation GetTransformation(const Body& body) noexcept
 /// @note This sets what <code>GetLocation</code> returns.
 /// @see GetTransformation(const Body& body).
 /// @relatedalso Body
-void SetTransformation(Body& body, Transformation value) noexcept;
+inline void SetTransformation(Body& body, Transformation value) noexcept
+{
+    body.SetTransformation(value);
+}
 
 /// @brief Gets the body's origin location.
 /// @details This is the location of the body's origin relative to its world.
@@ -917,11 +920,32 @@ inline void SetSweep(Body& body, const Sweep& value) noexcept
     body.SetSweep(value);
 }
 
+/// @brief Gets the "position 0" Position information for the given body.
+/// @relatedalso Body
+inline Position GetPosition0(const Body& body) noexcept
+{
+    return body.GetSweep().pos0;
+}
+
 /// @brief Gets the "position 1" Position information for the given body.
 /// @relatedalso Body
 inline Position GetPosition1(const Body& body) noexcept
 {
     return body.GetSweep().pos1;
+}
+
+/// @brief Sets the "position 0" Position information for the given body.
+/// @relatedalso Body
+inline void SetPosition0(Body& body, Position value) noexcept
+{
+    body.SetPosition0(value);
+}
+
+/// @brief Sets the "position 1" Position information for the given body.
+/// @relatedalso Body
+inline void SetPosition1(Body& body, Position value) noexcept
+{
+    body.SetPosition1(value);
 }
 
 /// @brief Gets the body's angle.
