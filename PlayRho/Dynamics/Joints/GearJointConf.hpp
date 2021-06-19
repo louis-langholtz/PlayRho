@@ -58,15 +58,20 @@ struct GearJointConf : public JointBuilder<GearJointConf> {
     /// @brief Super type.
     using super = JointBuilder<GearJointConf>;
 
+    /// @brief Prismatic specific data.
     struct PrismaticData {
         Length2 localAnchorA{}; ///< Local anchor A.
         Length2 localAnchorB{}; ///< Local anchor B.
         UnitVec localAxis; ///< Local axis.
     };
 
+    /// @brief Revolute specific data.
     struct RevoluteData {
         Angle referenceAngle = 0_deg;
     };
+
+    /// @brief Type specific data type alias.
+    using TypeData = std::variant<std::monostate, PrismaticData, RevoluteData>;
 
     /// @brief Default constructor.
     constexpr GearJointConf() = default;
@@ -87,8 +92,8 @@ struct GearJointConf : public JointBuilder<GearJointConf> {
     /// @brief Identifier of body D.
     BodyID bodyD = InvalidBodyID;
 
-    std::variant<std::monostate, PrismaticData, RevoluteData> typeData1;
-    std::variant<std::monostate, PrismaticData, RevoluteData> typeData2;
+    TypeData typeData1;
+    TypeData typeData2;
 
     /// The gear ratio.
     /// @see constant, GearJoint.
@@ -101,12 +106,12 @@ struct GearJointConf : public JointBuilder<GearJointConf> {
     Momentum impulse = 0_Ns; ///< Impulse.
 
     // Solver temp
-    Vec2 JvAC = {}; ///< <code>AC Jv</code> data.
-    Vec2 JvBD = {}; ///< <code>BD Jv</code> data.
-    Length JwA = 0_m; ///< A <code>Jw</code> data.
-    Length JwB = 0_m; ///< B <code>Jw</code> data.
-    Length JwC = 0_m; ///< C <code>Jw</code> data.
-    Length JwD = 0_m; ///< D <code>Jw</code> data.
+    Vec2 JvAC = {}; ///< A-C directional data.
+    Vec2 JvBD = {}; ///< B-D directional data.
+    Length JwA = 0_m; ///< Data for calculating Body A velocity.
+    Length JwB = 0_m; ///< Data for calculating Body B velocity.
+    Length JwC = 0_m; ///< Data for calculating Body C velocity.
+    Length JwD = 0_m; ///< Data for calculating Body D velocity.
     Real mass = 0; ///< Either linear mass or angular mass.
 };
 

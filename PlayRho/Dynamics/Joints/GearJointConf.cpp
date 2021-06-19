@@ -148,12 +148,10 @@ void InitVelocity(GearJointConf& object, std::vector<BodyConstraint>& bodies, co
     auto velB = bodyConstraintB.GetVelocity();
     auto velC = bodyConstraintC.GetVelocity();
     auto velD = bodyConstraintD.GetVelocity();
-    const auto qA = UnitVec::Get(bodyConstraintA.GetPosition().angular);
-    const auto qB = UnitVec::Get(bodyConstraintB.GetPosition().angular);
-    const auto qC = UnitVec::Get(bodyConstraintC.GetPosition().angular);
-    const auto qD = UnitVec::Get(bodyConstraintD.GetPosition().angular);
     auto invMass = Real{0}; // Unitless to double for either linear mass or angular mass.
     if (std::holds_alternative<GearJointConf::PrismaticData>(object.typeData1)) {
+        const auto qA = UnitVec::Get(bodyConstraintA.GetPosition().angular);
+        const auto qC = UnitVec::Get(bodyConstraintC.GetPosition().angular);
         const auto& typeData = std::get<GearJointConf::PrismaticData>(object.typeData1);
         const auto u = Rotate(typeData.localAxis, qC);
         const auto rC =
@@ -180,6 +178,8 @@ void InitVelocity(GearJointConf& object, std::vector<BodyConstraint>& bodies, co
         invMass += StripUnit(invAngMass);
     }
     if (std::holds_alternative<GearJointConf::PrismaticData>(object.typeData2)) {
+        const auto qB = UnitVec::Get(bodyConstraintB.GetPosition().angular);
+        const auto qD = UnitVec::Get(bodyConstraintD.GetPosition().angular);
         const auto& typeData = std::get<GearJointConf::PrismaticData>(object.typeData2);
         const auto u = Rotate(typeData.localAxis, qD);
         const auto rD = Rotate(typeData.localAnchorA - bodyConstraintD.GetLocalCenter(), qD);
@@ -283,8 +283,12 @@ bool SolvePosition(const GearJointConf& object, std::vector<BodyConstraint>& bod
     const auto qD = UnitVec::Get(posD.angular);
     const auto linearError = 0_m;
 
-    Vec2 JvAC, JvBD;
-    Real JwA, JwB, JwC, JwD;
+    auto JvAC = Vec2{};
+    auto JvBD = Vec2{};
+    auto JwA = Real{};
+    auto JwB = Real{};
+    auto JwC = Real{};
+    auto JwD = Real{};
     auto coordinateA = Real{0}; // Angle or length.
     auto coordinateB = Real{0};
     auto invMass = Real{0}; // Inverse linear mass or inverse angular mass.
@@ -307,8 +311,7 @@ bool SolvePosition(const GearJointConf& object, std::vector<BodyConstraint>& bod
         const auto pA = InverseRotate(rA + (posA.linear - posC.linear), qC);
         coordinateA = Dot(pA - pC, typeData.localAxis) / 1_m;
     }
-    else {
-        assert(std::holds_alternative<GearJointConf::RevoluteData>(object.typeData1));
+    else if (std::holds_alternative<GearJointConf::RevoluteData>(object.typeData1)) {
         const auto& typeData = std::get<GearJointConf::RevoluteData>(object.typeData1);
         JvAC = Vec2{};
         JwA = 1;
@@ -339,8 +342,7 @@ bool SolvePosition(const GearJointConf& object, std::vector<BodyConstraint>& bod
         const auto pB = InverseRotate(rB + (posB.linear - posD.linear), qD);
         coordinateB = Dot(pB - pD, typeData.localAxis) / 1_m;
     }
-    else {
-        assert(std::holds_alternative<GearJointConf::RevoluteData>(object.typeData2));
+    else if (std::holds_alternative<GearJointConf::RevoluteData>(object.typeData2)) {
         const auto& typeData = std::get<GearJointConf::RevoluteData>(object.typeData2);
         JvBD = Vec2{};
         JwB = object.ratio;
