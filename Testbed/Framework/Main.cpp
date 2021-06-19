@@ -319,7 +319,8 @@ static void EntityUI(bool& variable, const char* title)
     ImGui::Checkbox(title, &variable);
 }
 
-static bool LengthUI(NonNegative<Length>& variable, const char* title)
+template <class T>
+static auto LengthUI(T& variable, const char* title) -> decltype(Real(variable / 1_m) == Real())
 {
     auto value = Real{variable / 1_m};
     if (InputReal(title, value)) {
@@ -825,6 +826,22 @@ static bool ChangeType(Body& object, BodyType newType)
     return false;
 }
 
+static bool ChangeType(GearJointConf::TypeData& object, int newType)
+{
+    switch (newType) {
+    case 1:
+        object = GearJointConf::PrismaticData{};
+        return true;
+    case 2:
+        object = GearJointConf::RevoluteData{};
+        return true;
+    case 0:
+        break;
+    }
+    object = std::monostate{};
+    return true;
+}
+
 static bool ChangeType(Joint& object, TypeID newType)
 {
     const auto oldType = GetType(object);
@@ -945,20 +962,18 @@ static void ChangeTypeUI(Body& object)
 {
     const auto type = GetType(object);
     auto itemCurrentIdx = int(type);
-    const auto typeName = Test::ToName(type);
-    static auto flags = ImGuiComboFlags(0);
-    if (ImGui::BeginCombo("##BodyTypeSelectionCombo", typeName, flags)) {
+    if (ImGui::BeginCombo("##BodyTypeSelectionCombo", Test::ToName(type), ImGuiComboFlags(0))) {
         for (auto i = 0; i < 3; ++i) {
             const auto bodyType = BodyType(i);
             const bool isSelected = (itemCurrentIdx == i);
-            const auto label = Test::ToName(bodyType);
-            if (ImGui::Selectable(label, isSelected)) {
+            if (ImGui::Selectable(Test::ToName(bodyType), isSelected)) {
                 itemCurrentIdx = i;
                 ChangeType(object, bodyType);
             }
             // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-            if (isSelected)
+            if (isSelected) {
                 ImGui::SetItemDefaultFocus();
+            }
         }
         ImGui::EndCombo();
     }
@@ -989,6 +1004,31 @@ static void ChangeTypeUI(Joint& object)
             if (isSelected)
                 ImGui::SetItemDefaultFocus();
             ++pos;
+        }
+        ImGui::EndCombo();
+    }
+}
+
+static void ChangeTypeUI(GearJointConf::TypeData& object)
+{
+    static const char* names[] = {
+        "unset", //
+        Test::ToName(GetTypeID<PrismaticJointConf>()), //
+        Test::ToName(GetTypeID<RevoluteJointConf>()),
+    };
+    auto itemCurrentIdx = object.index();
+    if (ImGui::BeginCombo("##GearJointTypeSelectionCombo", names[itemCurrentIdx],
+                          ImGuiComboFlags(0))) {
+        for (auto i = std::size_t{0}; i < size(names); ++i) {
+            const bool isSelected = (itemCurrentIdx == i);
+            if (ImGui::Selectable(names[i], isSelected)) {
+                itemCurrentIdx = i;
+                ChangeType(object, i);
+            }
+            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+            if (isSelected) {
+                ImGui::SetItemDefaultFocus();
+            }
         }
         ImGui::EndCombo();
     }
@@ -2363,40 +2403,75 @@ static void EntityUI(TargetJointConf& conf, BodyCounter bodyRange)
 static void EntityUI(GearJointConf& conf, BodyCounter bodyRange)
 {
     const auto type1 = GetType1(conf);
-    ImGui::LabelText("Type 1", "%s", (type1 != GetTypeID<void>())? Test::ToName(type1): "unset");
-    if (std::holds_alternative<GearJointConf::RevoluteData>(conf.typeData1)) {
-        auto& data = std::get<GearJointConf::RevoluteData>(conf.typeData1);
-        AngleUI(data.referenceAngle, "Ref. Angle 1 (°)");
-        if (ImGui::IsItemHovered()) {
-            ImGui::ShowTooltip("Reference angle 1 in degrees.", tooltipWrapWidth);
+    const auto type1name = (type1 != GetTypeID<void>())? Test::ToName(type1): "unset";
+    if (ImGui::TreeNodeEx("TypeData1", 0, "Type 1 Data (%s)", type1name)) {
+        ChangeTypeUI(conf.typeData1);
+        if (std::holds_alternative<GearJointConf::RevoluteData>(conf.typeData1)) {
+            auto& data = std::get<GearJointConf::RevoluteData>(conf.typeData1);
+            AngleUI(data.referenceAngle, "Ref. Angle 1 (°)");
+            if (ImGui::IsItemHovered()) {
+                ImGui::ShowTooltip("Reference angle 1 in degrees.", tooltipWrapWidth);
+            }
         }
+        if (std::holds_alternative<GearJointConf::PrismaticData>(conf.typeData1)) {
+            auto& data = std::get<GearJointConf::PrismaticData>(conf.typeData1);
+            LengthUI(data.localAnchorA, "Loc. Anchor C");
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("Anchor local to body C (%u).", to_underlying(conf.bodyC));
+            }
+            LengthUI(data.localAnchorB, "Loc. Anchor A");
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("Anchor local to body A (%u).", to_underlying(conf.bodyA));
+            }
+            EntityUI(data.localAxis, "Local Axis (°)");
+        }
+        ImGui::TreePop();
     }
-    if (std::holds_alternative<GearJointConf::PrismaticData>(conf.typeData1)) {
-        auto& data = std::get<GearJointConf::PrismaticData>(conf.typeData1);
-        LengthUI(data.localAnchorA, "Loc. Anchor A");
-        LengthUI(data.localAnchorB, "Loc. Anchor B");
-        EntityUI(data.localAxis, "Local Axis (°)");
+    if (ImGui::IsItemHovered()) {
+        ImGui::SetTooltip("Data for a %s joint between bodies A (%u) and C (%u).", type1name,
+                          to_underlying(conf.bodyA), to_underlying(conf.bodyC));
     }
 
     const auto type2 = GetType2(conf);
-    ImGui::LabelText("Type 2", "%s", (type2 != GetTypeID<void>())? Test::ToName(type2): "unset");
-    if (std::holds_alternative<GearJointConf::RevoluteData>(conf.typeData2)) {
-        auto& data = std::get<GearJointConf::RevoluteData>(conf.typeData2);
-        AngleUI(data.referenceAngle, "Ref. Angle 2 (°)");
-        if (ImGui::IsItemHovered()) {
-            ImGui::ShowTooltip("Reference angle 2 in degrees.", tooltipWrapWidth);
+    const auto type2name = (type2 != GetTypeID<void>())? Test::ToName(type2): "unset";
+    if (ImGui::TreeNodeEx("TypeData2", 0, "Type 2 Data (%s)", type2name)) {
+        ChangeTypeUI(conf.typeData2);
+        if (std::holds_alternative<GearJointConf::RevoluteData>(conf.typeData2)) {
+            auto& data = std::get<GearJointConf::RevoluteData>(conf.typeData2);
+            AngleUI(data.referenceAngle, "Ref. Angle 2 (°)");
+            if (ImGui::IsItemHovered()) {
+                ImGui::ShowTooltip("Reference angle 2 in degrees.", tooltipWrapWidth);
+            }
         }
+        if (std::holds_alternative<GearJointConf::PrismaticData>(conf.typeData2)) {
+            auto& data = std::get<GearJointConf::PrismaticData>(conf.typeData2);
+            LengthUI(data.localAnchorA, "Loc. Anchor D");
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("Anchor local to body D (%u).", to_underlying(conf.bodyD));
+            }
+            LengthUI(data.localAnchorB, "Loc. Anchor B");
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("Anchor local to body B (%u).", to_underlying(conf.bodyB));
+            }
+            EntityUI(data.localAxis, "Local Axis (°)");
+        }
+        ImGui::TreePop();
     }
-    if (std::holds_alternative<GearJointConf::PrismaticData>(conf.typeData2)) {
-        auto& data = std::get<GearJointConf::PrismaticData>(conf.typeData2);
-        LengthUI(data.localAnchorA, "Loc. Anchor A");
-        LengthUI(data.localAnchorB, "Loc. Anchor B");
-        EntityUI(data.localAxis, "Local Axis (°)");
+    if (ImGui::IsItemHovered()) {
+        ImGui::SetTooltip("Data for a %s joint between bodies B (%u) and D (%u).", type2name,
+                          to_underlying(conf.bodyB), to_underlying(conf.bodyD));
     }
 
     InputReal("Constant", conf.constant, 0, 0, "%.3f");
     InputReal("Ratio", conf.ratio, 0, 0, "%.3f");
     InputReal("\"Mass\"", conf.mass, 0, 0, "%.3f");
+
+    InputReals("JvAC", conf.JvAC);
+    InputReals("JvBD", conf.JvBD);
+    LengthUI(conf.JwA, "JwA (m)");
+    LengthUI(conf.JwB, "JwB (m)");
+    LengthUI(conf.JwC, "JwC (m)");
+    LengthUI(conf.JwD, "JwD (m)");
 
     EntityUI(conf.bodyA, bodyRange, "ID of Body A");
     EntityUI(conf.bodyB, bodyRange, "ID of Body B");
@@ -2631,7 +2706,7 @@ static void EntityUI(Joint& joint, BodyCounter bodyRange)
 static void EntityUI(World& world, JointID e)
 {
     ImGui::IdContext idCtx(static_cast<int>(e.get()));
-    ImGui::ItemWidthContext itemWidthCtx(70);
+    ImGui::ItemWidthContext itemWidthCtx(100);
     const auto bodyRange = GetBodyRange(world);
     auto joint = GetJoint(world, e);
     ChangeTypeUI(joint);
