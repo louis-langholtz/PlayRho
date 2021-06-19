@@ -51,14 +51,14 @@ TEST(GearJointConf, ByteSize)
         EXPECT_EQ(sizeof(GearJointConf), std::size_t(124));
 #endif
 #else
-        EXPECT_EQ(sizeof(GearJointConf), std::size_t(136));
+        EXPECT_EQ(sizeof(GearJointConf), std::size_t(116));
 #endif
         break;
     case 8:
-        EXPECT_EQ(sizeof(GearJointConf), std::size_t(240));
+        EXPECT_EQ(sizeof(GearJointConf), std::size_t(224));
         break;
     case 16:
-        EXPECT_EQ(sizeof(GearJointConf), std::size_t(448));
+        EXPECT_EQ(sizeof(GearJointConf), std::size_t(432));
         break;
     default:
         FAIL();
@@ -100,8 +100,8 @@ TEST(GearJoint, Creation)
     const auto revJoint1 = CreateJoint(world, rdef0);
     const auto revJoint2 = CreateJoint(world, rdef1);
     const auto def = GetGearJointConf(world, revJoint1, revJoint2);
-    ASSERT_EQ(def.type1, GetTypeID<RevoluteJointConf>());
-    ASSERT_EQ(def.type2, GetTypeID<RevoluteJointConf>());
+    ASSERT_EQ(GetType1(def), GetTypeID<RevoluteJointConf>());
+    ASSERT_EQ(GetType2(def), GetTypeID<RevoluteJointConf>());
 
     const auto joint = CreateJoint(world, def);
     EXPECT_EQ(GetType(world, joint), GetTypeID<GearJointConf>());
@@ -188,8 +188,8 @@ TEST(GearJoint, GetGearJointConf)
     EXPECT_EQ(cdef.bodyB, def.bodyB);
     EXPECT_EQ(cdef.collideConnected, false);
 
-    EXPECT_EQ(cdef.type1, GetTypeID<decltype(rdef1)>());
-    EXPECT_EQ(cdef.type2, GetTypeID<decltype(rdef2)>());
+    EXPECT_EQ(GetType1(cdef), GetTypeID<decltype(rdef1)>());
+    EXPECT_EQ(GetType2(cdef), GetTypeID<decltype(rdef2)>());
     EXPECT_EQ(cdef.ratio, Real(1));
 }
 
@@ -283,25 +283,25 @@ TEST(GearJointConf, EqualsOperator)
     EXPECT_TRUE(GearJointConf() == GearJointConf());
     {
         auto conf = GearJointConf{};
-        conf.localAnchorA = Length2{1.2_m, -3_m};
+        conf.typeData1 = GearJointConf::PrismaticData{Length2{1.2_m, -3_m}, Length2{}, UnitVec::GetTop()};
         EXPECT_TRUE(conf == conf);
         EXPECT_FALSE(GearJointConf() == conf);
     }
     {
         auto conf = GearJointConf{};
-        conf.localAnchorB = Length2{1.2_m, -3_m};
+        conf.typeData1 = GearJointConf::PrismaticData{Length2{}, Length2{1.2_m, -3_m}, UnitVec::GetTop()};
         EXPECT_TRUE(conf == conf);
         EXPECT_FALSE(GearJointConf() == conf);
     }
     {
         auto conf = GearJointConf{};
-        conf.referenceAngle1 = 23_deg;
+        conf.typeData1 = GearJointConf::RevoluteData{23_deg};
         EXPECT_TRUE(conf == conf);
         EXPECT_FALSE(GearJointConf() == conf);
     }
     {
         auto conf = GearJointConf{};
-        conf.referenceAngle2 = 19_deg;
+        conf.typeData2 = GearJointConf::RevoluteData{19_deg};
         EXPECT_TRUE(conf == conf);
         EXPECT_FALSE(GearJointConf() == conf);
     }

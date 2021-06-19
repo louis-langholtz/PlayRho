@@ -274,6 +274,89 @@ static auto GetCwd()
 }
 #endif
 
+static bool InputReal(const char* label, Real& var, Real step = 0, Real step_fast = 0,
+                      const char* format = "%.3f", ImGuiInputTextFlags flags = 0)
+{
+    if constexpr (sizeof(Real) <= sizeof(float)) {
+        auto val = static_cast<float>(var);
+        if (ImGui::InputFloat(label, &val, step, step_fast, format, flags)) {
+            var = static_cast<Real>(val);
+            return true;
+        }
+    }
+    else {
+        auto val = static_cast<double>(var);
+        if (ImGui::InputDouble(label, &val, step, step_fast, format, flags)) {
+            var = static_cast<Real>(val);
+            return true;
+        }
+    }
+    return false;
+}
+
+static bool InputReals(const char* label, Vec2& var, const char* format = "%.3f",
+                       ImGuiInputTextFlags flags = 0)
+{
+    if constexpr (sizeof(Real) <= sizeof(float)) {
+        float vals[2] = {static_cast<float>(var[0]), static_cast<float>(var[1])};
+        if (ImGui::InputFloat2(label, vals, format, flags)) {
+            var = Vec2{static_cast<Real>(vals[0]), static_cast<Real>(vals[1])};
+            return true;
+        }
+    }
+    else {
+        double vals[2] = {static_cast<double>(var[0]), static_cast<double>(var[1])};
+        if (ImGui::InputDouble2(label, vals, format, flags)) {
+            var = Vec2{static_cast<Real>(vals[0]), static_cast<Real>(vals[1])};
+            return true;
+        }
+    }
+    return false;
+}
+
+static void EntityUI(bool& variable, const char* title)
+{
+    ImGui::Checkbox(title, &variable);
+}
+
+static bool LengthUI(NonNegative<Length>& variable, const char* title)
+{
+    auto value = Real{variable / 1_m};
+    if (InputReal(title, value)) {
+        variable = value * 1_m;
+        return true;
+    }
+    return false;
+}
+
+static bool LengthUI(Length2& variable, const char* title, const char* fmt = "%f")
+{
+    auto vals = Vec2{Real{variable[0] / 1_m}, Real{variable[1] / 1_m}};
+    if (InputReals(title, vals, fmt)) {
+        variable = Length2{vals[0] * 1_m, vals[1] * 1_m};
+        return true;
+    }
+    return false;
+}
+
+static bool AngleUI(Angle& variable, const char* title, const char* fmt = "%f")
+{
+    auto v = Real{variable / 1_deg};
+    if (InputReal(title, v, 0, 0, fmt)) {
+        variable = v * 1_deg;
+        return true;
+    }
+    return false;
+}
+
+static void EntityUI(UnitVec& variable, const char* title, const char* fmt = "%f")
+{
+    auto val = GetAngle(variable);
+    if (AngleUI(val, title, fmt)) {
+        variable = UnitVec::Get(val);
+    }
+}
+
 static void CreateUI(GLFWwindow* window)
 {
     // Init UI
@@ -1399,6 +1482,15 @@ static bool MenuUI()
     return shouldQuit;
 }
 
+static void EntityUI(BodyID& id, BodyCounter bodyRange, const char* title)
+{
+    auto val = static_cast<int>(to_underlying(id));
+    ImGui::SliderInt(title, &val, 0, int(bodyRange) - 1);
+    if (val >= 0 && val < static_cast<int>(bodyRange)) {
+        id = BodyID(static_cast<BodyID::underlying_type>(val));
+    }
+}
+
 static void EntityUI(const Sweep& sweep)
 {
     ImGui::TextUnformatted("Sweep Info...");
@@ -1481,20 +1573,16 @@ static void EntityUI(Body& body)
 {
     {
         const auto transformation = GetTransformation(body);
-        const auto location = GetLocation(transformation);
-        float vals[2];
-        vals[0] = static_cast<float>(Real{GetX(location) / Meter});
-        vals[1] = static_cast<float>(Real{GetY(location) / Meter});
-        if (ImGui::InputFloat2("Lin. Pos.", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            SetLocation(body, Length2{vals[0] * 1_m, vals[1] * 1_m});
+        auto location = GetLocation(transformation);
+        if (LengthUI(location, "Lin. Pos.")) {
+            SetLocation(body, location);
         }
         if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Linear position in meters.", tooltipWrapWidth);
         }
-        const auto angle = GetAngle(GetDirection(transformation));
-        auto val = static_cast<float>(Real{angle / Degree});
-        if (ImGui::InputFloat("Ang. Pos.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            SetAngle(body, val * Degree);
+        auto angle = GetAngle(GetDirection(transformation));
+        if (AngleUI(angle, "Ang. Pos.", "%f")) {
+            SetAngle(body, angle);
         }
         if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Angular position in degrees.", tooltipWrapWidth);
@@ -1796,31 +1884,12 @@ decltype(DensityUI(shape), FrictionUI(shape), RestitutionUI(shape), SensorUI(sha
 static void EntityUI(DiskShapeConf& shape)
 {
     {
-        const auto location = shape.location;
-        float vals[2];
-        vals[0] = static_cast<float>(Real{GetX(location) / Meter});
-        vals[1] = static_cast<float>(Real{GetY(location) / Meter});
-#if 1
         ImGui::ItemWidthContext itemWidthCtx(100);
-        if (ImGui::InputFloat2("Location", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            shape.location = Length2{vals[0] * 1_m, vals[1] * 1_m};
-        }
-#else
-        ImGui::ItemWidthContext itemWidthCtx(60);
-        if (ImGui::InputFloat("X-Axis Location (m)", &vals[0])) {
-            GetX(shape.location) = vals[0] * 1_m;
-        }
-        if (ImGui::InputFloat("Y-Axis Location (m)", &vals[1])) {
-            GetY(shape.location) = vals[1] * 1_m;
-        }
-#endif
+        LengthUI(shape.location, "Location");
     }
     {
         ImGui::ItemWidthContext itemWidthCtx(60);
-        auto val = static_cast<float>(Real{shape.vertexRadius/1_m});
-        if (ImGui::InputFloat("Radius (m)", &val)) {
-            shape.vertexRadius = val * 1_m;
-        }
+        LengthUI(shape.vertexRadius, "Radius (m)");
     }
 }
 
@@ -1828,10 +1897,7 @@ static void EntityUI(EdgeShapeConf& shape)
 {
     {
         ImGui::ItemWidthContext itemWidthCtx(60);
-        auto val = static_cast<float>(Real{shape.vertexRadius/1_m});
-        if (ImGui::InputFloat("Vertex Radius (m)", &val)) {
-            shape.vertexRadius = val * 1_m;
-        }
+        LengthUI(shape.vertexRadius, "Vertex Radius (m)");
     }
     {
         //ImGui::ItemWidthContext itemWidthCtx(60);
@@ -1860,10 +1926,7 @@ static void EntityUI(PolygonShapeConf& shape)
 {
     {
         ImGui::ItemWidthContext itemWidthCtx(60);
-        auto val = static_cast<float>(Real{shape.vertexRadius/1_m});
-        if (ImGui::InputFloat("Vertex Radius (m)", &val)) {
-            shape.vertexRadius = val * 1_m;
-        }
+        LengthUI(shape.vertexRadius, "Vertex Radius (m)");
     }
 }
 
@@ -2139,62 +2202,39 @@ static void EntityUI(RevoluteJointConf& conf, BodyCounter bodyRange)
     ImGui::LabelText("Limit State", "%s", ToString(GetLimitState(conf)));
     ImGui::LabelText("Motor Impulse (N·m·s)", "%.1e",
                      static_cast<double>(Real{GetAngularMotorImpulse(conf) / NewtonMeterSecond}));
+    EntityUI(conf.enableLimit, "Enable Limit");
     {
-        auto v = IsLimitEnabled(conf);
-        if (ImGui::Checkbox("Enable Limit", &v))
-        {
-            EnableLimit(conf, v);
+        auto v = static_cast<float>(Real{GetAngularLowerLimit(conf) / 1_deg});
+        if (ImGui::InputFloat("Lower Limit (°)", &v, 0, 0, "%.2f")) {
+            SetAngularLimits(conf, v * 1_deg, GetAngularUpperLimit(conf));
         }
     }
     {
-        auto v = static_cast<float>(Real{GetAngularLowerLimit(conf) / Degree});
-        if (ImGui::InputFloat("Lower Limit (°)", &v, 0, 0, "%.2f"))
-        {
-            SetAngularLimits(conf, v * Degree, GetAngularUpperLimit(conf));
-        }
-    }
-    {
-        auto v = static_cast<float>(Real{GetAngularUpperLimit(conf) / Degree});
-        if (ImGui::InputFloat("Upper Limit (°)", &v, 0, 0, "%.2f"))
-        {
-            SetAngularLimits(conf, GetAngularLowerLimit(conf), v * Degree);
+        auto v = static_cast<float>(Real{GetAngularUpperLimit(conf) / 1_deg});
+        if (ImGui::InputFloat("Upper Limit (°)", &v, 0, 0, "%.2f")) {
+            SetAngularLimits(conf, GetAngularLowerLimit(conf), v * 1_deg);
         }
     }
     {
         auto v = IsMotorEnabled(conf);
-        if (ImGui::Checkbox("Enable Motor", &v))
-        {
+        if (ImGui::Checkbox("Enable Motor", &v)) {
             EnableMotor(conf, v);
         }
     }
     {
         auto v = static_cast<float>(Real{GetMotorSpeed(conf) / DegreePerSecond});
-        if (ImGui::InputFloat("Motor Speed (°/sec)", &v, 0, 0, "%.2f"))
-        {
+        if (ImGui::InputFloat("Motor Speed (°/sec)", &v, 0, 0, "%.2f")) {
             SetMotorSpeed(conf, v * DegreePerSecond);
         }
     }
     {
         auto v = static_cast<float>(Real{GetMaxMotorTorque(conf) / NewtonMeter});
-        if (ImGui::InputFloat("Max Mot. Torq. (N·m)", &v))
-        {
+        if (ImGui::InputFloat("Max Mot. Torq. (N·m)", &v)) {
             SetMaxMotorTorque(conf, v * NewtonMeter);
         }
     }
-    {
-        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
-        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
-        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
-            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
-        }
-    }
-    {
-        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
-        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
-        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
-            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
-        }
-    }
+    EntityUI(conf.bodyA, bodyRange, "ID of Body A");
+    EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
 
 static void EntityUI(PrismaticJointConf& conf, BodyCounter bodyRange)
@@ -2204,62 +2244,39 @@ static void EntityUI(PrismaticJointConf& conf, BodyCounter bodyRange)
                      static_cast<double>(Real{GetLinearMotorImpulse(conf) / NewtonSecond}));
     ImGui::LabelText("Ref. Angle (°)", "%.1e",
                      static_cast<double>(Real{GetReferenceAngle(conf) / Degree}));
-    {
-        auto v = IsLimitEnabled(conf);
-        if (ImGui::Checkbox("Enable Limit", &v))
-        {
-            EnableLimit(conf, v);
-        }
-    }
+    EntityUI(conf.enableLimit, "Enable Limit");
     {
         auto v = static_cast<float>(Real{GetLinearLowerLimit(conf) / Meter});
-        if (ImGui::InputFloat("Lower Limit (m)", &v, 0, 0, "%.2f"))
-        {
+        if (ImGui::InputFloat("Lower Limit (m)", &v, 0, 0, "%.2f")) {
             SetLinearLimits(conf, v * Meter, GetLinearUpperLimit(conf));
         }
     }
     {
         auto v = static_cast<float>(Real{GetLinearUpperLimit(conf) / Meter});
-        if (ImGui::InputFloat("Upper Limit (m)", &v, 0, 0, "%.2f"))
-        {
+        if (ImGui::InputFloat("Upper Limit (m)", &v, 0, 0, "%.2f")) {
             SetLinearLimits(conf, GetLinearLowerLimit(conf), v * Meter);
         }
     }
     {
         auto v = IsMotorEnabled(conf);
-        if (ImGui::Checkbox("Enable Motor", &v))
-        {
+        if (ImGui::Checkbox("Enable Motor", &v)) {
             EnableMotor(conf, v);
         }
     }
     {
         auto v = static_cast<float>(Real{GetMotorSpeed(conf) / DegreePerSecond});
-        if (ImGui::InputFloat("Motor Speed (°/sec)", &v))
-        {
+        if (ImGui::InputFloat("Motor Speed (°/sec)", &v)) {
             SetMotorSpeed(conf, v * DegreePerSecond);
         }
     }
     {
         auto v = static_cast<float>(Real{GetMaxMotorForce(conf) / Newton});
-        if (ImGui::InputFloat("Max. Motor Force (N)", &v))
-        {
+        if (ImGui::InputFloat("Max. Motor Force (N)", &v)) {
             SetMaxMotorForce(conf, v * Newton);
         }
     }
-    {
-        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
-        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
-        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
-            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
-        }
-    }
-    {
-        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
-        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
-        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
-            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
-        }
-    }
+    EntityUI(conf.bodyA, bodyRange, "ID of Body A");
+    EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
 
 static void EntityUI(DistanceJointConf& conf, BodyCounter bodyRange)
@@ -2286,20 +2303,8 @@ static void EntityUI(DistanceJointConf& conf, BodyCounter bodyRange)
             SetDampingRatio(conf, static_cast<Real>(v));
         }
     }
-    {
-        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
-        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
-        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
-            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
-        }
-    }
-    {
-        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
-        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
-        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
-            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
-        }
-    }
+    EntityUI(conf.bodyA, bodyRange, "ID of Body A");
+    EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
 
 static void EntityUI(PulleyJointConf& conf, BodyCounter bodyRange)
@@ -2312,20 +2317,8 @@ static void EntityUI(PulleyJointConf& conf, BodyCounter bodyRange)
             SetRatio(conf, static_cast<Real>(v));
         }
     }
-    {
-        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
-        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
-        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
-            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
-        }
-    }
-    {
-        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
-        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
-        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
-            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
-        }
-    }
+    EntityUI(conf.bodyA, bodyRange, "ID of Body A");
+    EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
 
 static void EntityUI(TargetJointConf& conf, BodyCounter bodyRange)
@@ -2364,43 +2357,51 @@ static void EntityUI(TargetJointConf& conf, BodyCounter bodyRange)
             SetDampingRatio(conf, static_cast<Real>(v));
         }
     }
-    {
-        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
-        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
-        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
-            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
-        }
-    }
+    EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
 
 static void EntityUI(GearJointConf& conf, BodyCounter bodyRange)
 {
-    ImGui::LabelText("Constant", "%.2e", static_cast<double>(GetConstant(conf)));
-    {
-        auto v = static_cast<float>(GetRatio(conf));
-        if (ImGui::InputFloat("Ratio", &v))
-        {
-            SetRatio(conf, static_cast<Real>(v));
-        }
-    }
     const auto type1 = GetType1(conf);
-    const auto type2 = GetType2(conf);
     ImGui::LabelText("Type 1", "%s", (type1 != GetTypeID<void>())? Test::ToName(type1): "unset");
+    if (std::holds_alternative<GearJointConf::RevoluteData>(conf.typeData1)) {
+        auto& data = std::get<GearJointConf::RevoluteData>(conf.typeData1);
+        AngleUI(data.referenceAngle, "Ref. Angle 1 (°)");
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Reference angle 1 in degrees.", tooltipWrapWidth);
+        }
+    }
+    if (std::holds_alternative<GearJointConf::PrismaticData>(conf.typeData1)) {
+        auto& data = std::get<GearJointConf::PrismaticData>(conf.typeData1);
+        LengthUI(data.localAnchorA, "Loc. Anchor A");
+        LengthUI(data.localAnchorB, "Loc. Anchor B");
+        EntityUI(data.localAxis, "Local Axis (°)");
+    }
+
+    const auto type2 = GetType2(conf);
     ImGui::LabelText("Type 2", "%s", (type2 != GetTypeID<void>())? Test::ToName(type2): "unset");
-    {
-        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
-        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
-        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
-            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
+    if (std::holds_alternative<GearJointConf::RevoluteData>(conf.typeData2)) {
+        auto& data = std::get<GearJointConf::RevoluteData>(conf.typeData2);
+        AngleUI(data.referenceAngle, "Ref. Angle 2 (°)");
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Reference angle 2 in degrees.", tooltipWrapWidth);
         }
     }
-    {
-        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
-        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
-        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
-            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
-        }
+    if (std::holds_alternative<GearJointConf::PrismaticData>(conf.typeData2)) {
+        auto& data = std::get<GearJointConf::PrismaticData>(conf.typeData2);
+        LengthUI(data.localAnchorA, "Loc. Anchor A");
+        LengthUI(data.localAnchorB, "Loc. Anchor B");
+        EntityUI(data.localAxis, "Local Axis (°)");
     }
+
+    InputReal("Constant", conf.constant, 0, 0, "%.3f");
+    InputReal("Ratio", conf.ratio, 0, 0, "%.3f");
+    InputReal("\"Mass\"", conf.mass, 0, 0, "%.3f");
+
+    EntityUI(conf.bodyA, bodyRange, "ID of Body A");
+    EntityUI(conf.bodyB, bodyRange, "ID of Body B");
+    EntityUI(conf.bodyC, bodyRange, "ID of Body C");
+    EntityUI(conf.bodyD, bodyRange, "ID of Body D");
 }
 
 static void EntityUI(WheelJointConf& conf, BodyCounter bodyRange)
@@ -2440,20 +2441,8 @@ static void EntityUI(WheelJointConf& conf, BodyCounter bodyRange)
             SetDampingRatio(conf, static_cast<Real>(v));
         }
     }
-    {
-        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
-        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
-        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
-            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
-        }
-    }
-    {
-        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
-        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
-        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
-            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
-        }
-    }
+    EntityUI(conf.bodyA, bodyRange, "ID of Body A");
+    EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
 
 static void EntityUI(WeldJointConf& conf, BodyCounter bodyRange)
@@ -2474,20 +2463,8 @@ static void EntityUI(WeldJointConf& conf, BodyCounter bodyRange)
             SetDampingRatio(conf, static_cast<Real>(v));
         }
     }
-    {
-        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
-        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
-        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
-            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
-        }
-    }
-    {
-        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
-        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
-        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
-            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
-        }
-    }
+    EntityUI(conf.bodyA, bodyRange, "ID of Body A");
+    EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
 
 static void EntityUI(FrictionJointConf& conf, BodyCounter bodyRange)
@@ -2506,20 +2483,8 @@ static void EntityUI(FrictionJointConf& conf, BodyCounter bodyRange)
             SetMaxTorque(conf, v * NewtonMeter);
         }
     }
-    {
-        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
-        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
-        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
-            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
-        }
-    }
-    {
-        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
-        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
-        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
-            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
-        }
-    }
+    EntityUI(conf.bodyA, bodyRange, "ID of Body A");
+    EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
 
 static void EntityUI(RopeJointConf& conf, BodyCounter bodyRange)
@@ -2532,20 +2497,8 @@ static void EntityUI(RopeJointConf& conf, BodyCounter bodyRange)
             SetMaxLength(conf, v * Meter);
         }
     }
-    {
-        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
-        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
-        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
-            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
-        }
-    }
-    {
-        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
-        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
-        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
-            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
-        }
-    }
+    EntityUI(conf.bodyA, bodyRange, "ID of Body A");
+    EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
 
 static void EntityUI(MotorJointConf& conf, BodyCounter bodyRange)
@@ -2600,20 +2553,8 @@ static void EntityUI(MotorJointConf& conf, BodyCounter bodyRange)
             SetCorrectionFactor(conf, static_cast<Real>(v));
         }
     }
-    {
-        auto bodyA = static_cast<int>(to_underlying(GetBodyA(conf)));
-        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
-        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
-            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
-        }
-    }
-    {
-        auto bodyB = static_cast<int>(to_underlying(GetBodyB(conf)));
-        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
-        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
-            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
-        }
-    }
+    EntityUI(conf.bodyA, bodyRange, "ID of Body A");
+    EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
 
 static void EntityUI(Joint& joint, BodyCounter bodyRange)
