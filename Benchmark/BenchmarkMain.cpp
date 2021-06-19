@@ -2243,8 +2243,7 @@ static void DropTilesBox2D(int count, bool groundIsComboShape = true)
         else {
             position.y = -4.5f;
             b2PolygonShape shape;
-            shape.SetAsBox(a * playrho::Meter * N, a * playrho::Meter * M, position,
-                           playrho::Angle{0});
+            shape.SetAsBox(a * N, a * M, position, 0.0f);
             ground->CreateFixture(&shape, 0.0f);
         }
     }
