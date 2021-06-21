@@ -1361,6 +1361,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
         // Could normalize position here to avoid unbounded angles but angular
         // normalization isn't handled correctly by joints that constrain rotation.
         body.JustSetVelocity(bc.GetVelocity());
+        // XXX/TODO figure out why calling GetNormalized here causes Gears Test to stutter!!!
         if (const auto pos = /*GetNormalized*/(bc.GetPosition()); GetPosition1(body) != pos) {
             SetPosition1(body, pos);
             SetTransformation(body, GetTransformation(pos, GetLocalCenter(body)));
