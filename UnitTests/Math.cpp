@@ -654,8 +654,8 @@ TEST(Math, nextafter2)
     EXPECT_EQ(b + subnormal, b);
 }
 
-template <class T, class F>
-static void TestModuloFunction(F f)
+template <class T>
+static void TestModuloFunction(std::function<T(T, T)> f)
 {
     constexpr auto abs_error = 1e-6;
     EXPECT_NEAR(static_cast<double>(f(static_cast<T>(+1.0), static_cast<T>(+1.0))), 0.0, abs_error);
