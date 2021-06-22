@@ -2741,10 +2741,10 @@ TEST(World_Longer, TilesComesToRest)
     case 4u:
 #if defined(__core2__)
         EXPECT_EQ(world->GetContactRange(), 1447u);
-        EXPECT_EQ(totalBodiesSlept, createdBodyCount + 3u);
+        EXPECT_EQ(totalBodiesSlept, createdBodyCount + 1u);
         EXPECT_TRUE(firstStepWithZeroMoved);
         if (firstStepWithZeroMoved) {
-            EXPECT_EQ(*firstStepWithZeroMoved, 1811u);
+            EXPECT_EQ(*firstStepWithZeroMoved, 1798u);
         }
 #else
         EXPECT_EQ(world->GetContactRange(), 1449u); // on amd64
@@ -2831,11 +2831,11 @@ TEST(World_Longer, TilesComesToRest)
         case  4:
         {
 #ifndef __FAST_MATH__
-            EXPECT_EQ(numSteps, 1812ul);
-            EXPECT_EQ(sumRegPosIters, 36526ul);
-            EXPECT_EQ(sumRegVelIters, 47063ul);
-            EXPECT_EQ(sumToiPosIters, 44029ul);
-            EXPECT_EQ(sumToiVelIters, 114069ul);
+            EXPECT_EQ(numSteps, 1799ul);
+            EXPECT_EQ(sumRegPosIters, 36515ul);
+            EXPECT_EQ(sumRegVelIters, 46956ul);
+            EXPECT_EQ(sumToiPosIters, 44131ul);
+            EXPECT_EQ(sumToiVelIters, 114088ul);
 #else
             EXPECT_EQ(numSteps, 1003ul);
             EXPECT_EQ(sumRegPosIters, 52909ul);
@@ -2851,7 +2851,7 @@ TEST(World_Longer, TilesComesToRest)
             EXPECT_EQ(sumRegPosIters,  36540ul);
             EXPECT_EQ(sumRegVelIters,  47173ul);
             EXPECT_EQ(sumToiPosIters,  44005ul);
-            EXPECT_EQ(sumToiVelIters, 114231ul);
+            EXPECT_EQ(sumToiVelIters, 114357ul);
             break;
         }
         case 16:

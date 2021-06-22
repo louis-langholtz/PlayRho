@@ -103,8 +103,8 @@ TEST(Sweep, GetNormalized)
     EXPECT_NEAR(double(Real{GetNormalized(sweep1).pos1.angular / Degree}), double(90), 0.03);
 
     const auto sweep2 = Sweep{Position{Length2{}, 180_deg}, Position{Length2{}, 180_deg}};
-    EXPECT_NEAR(double(Real{GetNormalized(sweep2).pos0.angular / Degree}), double(180), 0.03);
-    EXPECT_NEAR(double(Real{GetNormalized(sweep2).pos1.angular / Degree}), double(180), 0.03);
+    EXPECT_NEAR(double(Real{GetNormalized(sweep2).pos0.angular / Degree}), double(-180), 0.03);
+    EXPECT_NEAR(double(Real{GetNormalized(sweep2).pos1.angular / Degree}), double(-180), 0.03);
 
     const auto sweep3 = Sweep{Position{Length2{}, 270_deg}, Position{Length2{}, 270_deg}};
     EXPECT_NEAR(double(Real{GetNormalized(sweep3).pos0.angular / Degree}), -90.0, 0.03);

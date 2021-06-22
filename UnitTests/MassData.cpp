@@ -304,7 +304,7 @@ TEST(MassData, GetForCenteredEdge)
     
     const auto radiusSquared = Area{radius * radius};
     const auto circleArea = radiusSquared * Pi;
-    ASSERT_EQ(double(Real{circleArea / SquareMeter}), 0.5f * 0.5f * Pi);
+    ASSERT_NEAR(double(Real{circleArea / SquareMeter}), double(Real(0.5) * Real(0.5) * Pi), 1e-20);
     ASSERT_NEAR(static_cast<double>(Real{circleArea / SquareMeter}),
                 0.78539818525314331, 0.78539818525314331 / 1000000.0);
 

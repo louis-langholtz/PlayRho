@@ -925,6 +925,61 @@ static void AlmostEqual3(benchmark::State& state)
     }
 }
 
+template <class T>
+constexpr auto ctrunc(T v) noexcept
+{
+    return T(std::int64_t(v));
+}
+
+template <typename T>
+constexpr auto ModuloViaCTrunc1(T dividend, T divisor)
+{
+    const auto quotient = dividend / divisor;
+    return (quotient - static_cast<T>(ctrunc(quotient))) * divisor;
+}
+
+template <typename T>
+constexpr auto ModuloViaCTrunc2(T dividend, T divisor)
+{
+    return dividend - ctrunc(dividend / divisor) * divisor;
+}
+
+template <typename T>
+constexpr auto ModuloViaStdTrunc(T dividend, T divisor)
+{
+    return dividend - static_cast<T>(std::trunc(dividend / divisor)) * divisor;
+}
+
+static void ModuloViaCTrunc1(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _ : state) {
+        for (const auto& val : vals) {
+            benchmark::DoNotOptimize(ModuloViaCTrunc1(val.first, val.second));
+        }
+    }
+}
+
+static void ModuloViaCTrunc2(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _ : state) {
+        for (const auto& val : vals) {
+            benchmark::DoNotOptimize(ModuloViaCTrunc2(val.first, val.second));
+        }
+    }
+}
+
+static void ModuloViaStdTrunc(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _ : state) {
+        for (const auto& val : vals) {
+            benchmark::DoNotOptimize(ModuloViaStdTrunc(val.first, val.second));
+        }
+    }
+}
+
 static void ModuloViaTrunc(benchmark::State& state)
 {
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
@@ -1429,6 +1484,95 @@ static void AABB(benchmark::State& state)
             const auto aabb1 = playrho::d2::AABB{p2, p3};
             benchmark::DoNotOptimize(playrho::d2::TestOverlap(aabb0, aabb1));
             benchmark::DoNotOptimize(playrho::d2::Contains(aabb0, aabb1));
+        }
+    }
+}
+
+static playrho::Angle GetShortestDelta1(playrho::Angle a0, playrho::Angle a1) noexcept
+{
+    a0 = playrho::GetNormalized(a0);
+    a1 = playrho::GetNormalized(a1);
+    const auto a01 = a1 - a0;
+    if (a01 > playrho::Pi * playrho::Radian)
+    {
+        // 190_deg becomes 190_deg - 360_deg = -170_deg
+        return a01 - 2 * playrho::Pi * playrho::Radian;
+    }
+    if (a01 < -playrho::Pi * playrho::Radian)
+    {
+        // -200_deg becomes -200_deg + 360_deg = 100_deg
+        return a01 + 2 * playrho::Pi * playrho::Radian;
+    }
+    return a01;
+}
+
+static playrho::Angle GetShortestDelta2(playrho::Angle a0, playrho::Angle a1) noexcept
+{
+    // concept comes from https://gist.github.com/shaunlebron/8832585
+    constexpr auto twoPi = playrho::Pi * 2;
+    const auto da = playrho::ModuloViaTrunc(playrho::Real{(a1 - a0) / playrho::Radian}, twoPi);
+    return (playrho::ModuloViaTrunc(2 * da, twoPi) - da) * playrho::Radian;
+}
+
+static playrho::Angle GetShortestDelta25(playrho::Angle a0, playrho::Angle a1) noexcept
+{
+    constexpr auto twoPi = playrho::Pi * 2;
+    constexpr auto rTwoPi = playrho::Real(1) / twoPi;
+    const auto diff = a1 - a0;
+    const auto da = diff - trunc(diff * rTwoPi) * twoPi;
+    const auto two_da = 2 * da;
+    return ((two_da - (trunc(two_da * rTwoPi) * twoPi)) - da) * playrho::Radian;
+}
+
+static playrho::Angle GetShortestDelta3(playrho::Angle a0, playrho::Angle a1) noexcept
+{
+    constexpr auto onePi = playrho::Pi * 1;
+    constexpr auto twoPi = playrho::Pi * 2;
+    constexpr auto threePi = playrho::Pi * 3;
+    const auto da = playrho::Real{(a1 - a0) / playrho::Radian};
+    return (playrho::ModuloViaTrunc(playrho::ModuloViaTrunc(da, twoPi) + threePi, twoPi) - onePi) * playrho::Radian;
+}
+
+static void GetShortestDelta1(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), //
+                                -720 * playrho::Degree, 720 * playrho::Degree);
+    for (auto _ : state) {
+        for (const auto& val : vals) {
+            benchmark::DoNotOptimize(GetShortestDelta1(val.first, val.second));
+        }
+    }
+}
+
+static void GetShortestDelta2(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), //
+                                -720 * playrho::Degree, 720 * playrho::Degree);
+    for (auto _ : state) {
+        for (const auto& val : vals) {
+            benchmark::DoNotOptimize(GetShortestDelta2(val.first, val.second));
+        }
+    }
+}
+
+static void GetShortestDelta25(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), //
+                                -720 * playrho::Degree, 720 * playrho::Degree);
+    for (auto _ : state) {
+        for (const auto& val : vals) {
+            benchmark::DoNotOptimize(GetShortestDelta25(val.first, val.second));
+        }
+    }
+}
+
+static void GetShortestDelta3(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()), //
+                                -720 * playrho::Degree, 720 * playrho::Degree);
+    for (auto _ : state) {
+        for (const auto& val : vals) {
+            benchmark::DoNotOptimize(GetShortestDelta3(val.first, val.second));
         }
     }
 }
@@ -2607,6 +2751,9 @@ BENCHMARK(AlmostEqual3)->Arg(1000);
 BENCHMARK(DiffSignsViaSignbit)->Arg(1000);
 BENCHMARK(DiffSignsViaMul)->Arg(1000);
 BENCHMARK(ModuloViaTrunc)->Arg(1000);
+BENCHMARK(ModuloViaCTrunc1)->Arg(1000);
+BENCHMARK(ModuloViaCTrunc2)->Arg(1000);
+BENCHMARK(ModuloViaStdTrunc)->Arg(1000);
 BENCHMARK(ModuloViaFmod)->Arg(1000);
 
 BENCHMARK(DotProduct)->Arg(1000);
@@ -2645,6 +2792,17 @@ BENCHMARK(LengthIntervalIsIntersecting)->Arg(1000);
 BENCHMARK(AabbTestOverlap)->Arg(1000);
 BENCHMARK(AabbContains)->Arg(1000);
 BENCHMARK(AABB)->Arg(1000);
+
+BENCHMARK(GetShortestDelta1)->Arg(1000);
+BENCHMARK(GetShortestDelta2)->Arg(1000);
+BENCHMARK(GetShortestDelta25)->Arg(1000);
+BENCHMARK(GetShortestDelta3)->Arg(1000);
+
+BENCHMARK(GetShortestDelta1)->Arg(1000);
+BENCHMARK(GetShortestDelta2)->Arg(1000);
+BENCHMARK(GetShortestDelta25)->Arg(1000);
+BENCHMARK(GetShortestDelta3)->Arg(1000);
+
 // BENCHMARK(malloc_free_random_size);
 
 // BENCHMARK(MaxSepBetweenAbsSquares);

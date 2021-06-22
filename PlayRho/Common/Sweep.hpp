@@ -66,14 +66,14 @@ public:
     /// @brief Gets the local center of mass position.
     /// @note This value can only be set via a sweep constructed using an initializing
     ///   constructor.
-    Length2 GetLocalCenter() const noexcept
+    constexpr Length2 GetLocalCenter() const noexcept
     {
         return localCenter;
     }
 
     /// @brief Gets the alpha 0 for this sweep.
     /// @return Value between 0 and less than 1.
-    Real GetAlpha0() const noexcept
+    constexpr Real GetAlpha0() const noexcept
     {
         return alpha0;
     }
@@ -91,7 +91,10 @@ public:
 
     /// @brief Resets the alpha 0 value back to zero.
     /// @post Getting the alpha 0 value after calling this method will return zero.
-    void ResetAlpha0() noexcept;
+    constexpr void ResetAlpha0() noexcept
+    {
+        alpha0 = 0;
+    }
 
     /// @brief Center world position and world angle at time "0".
     Position pos0;
@@ -110,23 +113,6 @@ private:
     /// @note 4-bytes.
     Real alpha0 = 0;
 };
-
-inline void Sweep::Advance0(const Real alpha) noexcept
-{
-    assert(IsValid(alpha));
-    assert(alpha >= 0);
-    assert(alpha < 1);
-    assert(alpha0 < 1);
-
-    const auto beta = (alpha - alpha0) / (1 - alpha0);
-    pos0 = GetPosition(pos0, pos1, beta);
-    alpha0 = alpha;
-}
-
-inline void Sweep::ResetAlpha0() noexcept
-{
-    alpha0 = 0;
-}
 
 // Free functions...
 

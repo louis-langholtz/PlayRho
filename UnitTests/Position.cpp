@@ -87,24 +87,3 @@ TEST(Position, Multiplication)
     EXPECT_EQ((Position{Length2{1_m, 1_m}, 1_rad}) * Real(2), (Position{Length2{2_m, 2_m}, 2_rad}));
     EXPECT_EQ(Real(2) * (Position{Length2{1_m, 1_m}, 1_rad}), (Position{Length2{2_m, 2_m}, 2_rad}));
 }
-
-TEST(Position, GetPosition)
-{
-    EXPECT_EQ(GetPosition(Position{}, Position{}, Real(0.0)), (Position{}));
-    EXPECT_EQ(GetPosition(Position{}, Position{Length2{2_m, 2_m}, 2_rad}, Real(0.0)),
-              (Position{Length2{0_m, 0_m}, 0_rad}));
-    EXPECT_EQ(GetPosition(Position{}, Position{Length2{2_m, 2_m}, 2_rad}, Real(0.5)),
-              (Position{Length2{1_m, 1_m}, 1_rad}));
-    EXPECT_EQ(GetPosition(Position{}, Position{Length2{2_m, 2_m}, 2_rad}, Real(1.0)),
-              (Position{Length2{2_m, 2_m}, 2_rad}));
-
-    // Test a case that's maybe less obvious...
-    // See https://github.com/louis-langholtz/PlayRho/issues/331#issuecomment-507412550
-    const auto p0 = Position{Length2{-0.1615_m, -10.2494_m}, -3.1354_rad};
-    const auto p1 = Position{Length2{-0.3850_m, -10.1851_m}, +3.1258_rad};
-    const auto p = GetPosition(p0, p1, Real(0.2580));
-    constexpr auto abserr = 0.000001;
-    EXPECT_NEAR(static_cast<double>(Real(GetX(p.linear) / 1_m)), -0.21916300, abserr);
-    EXPECT_NEAR(static_cast<double>(Real(GetY(p.linear) / 1_m)), -10.232810974121094, abserr);
-    EXPECT_NEAR(static_cast<double>(Real(p.angular / 1_rad)), -1.52001, abserr);
-}

@@ -19,7 +19,10 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Common/Units.hpp>
+
+#include <limits> // for std::numeric_limits
 
 using namespace playrho;
 
@@ -83,4 +86,31 @@ TEST(Units, IsArithmetic)
     EXPECT_TRUE(IsArithmetic<Time>::value);
     EXPECT_TRUE(IsArithmetic<Force>::value);
     EXPECT_TRUE(IsArithmetic<LinearVelocity>::value);
+}
+
+TEST(Angle, ByteSize)
+{
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
+    switch (sizeof(Real))
+    {
+    case  4: EXPECT_EQ(sizeof(Angle), std::size_t(4)); break;
+    case  8: EXPECT_EQ(sizeof(Angle), std::size_t(8)); break;
+    case 16: EXPECT_EQ(sizeof(Angle), std::size_t(16)); break;
+    default: FAIL(); break;
+    }
+}
+
+TEST(Angle, DegreeAndRadian)
+{
+    EXPECT_NEAR(double(Real{Degree / 1_rad}),
+                double(Real{((Pi * 1_rad) / Real{180}) / 1_rad}), 0.0001);
+}
+
+TEST(Angle, limits)
+{
+    EXPECT_EQ(Real(+std::numeric_limits<Angle>::infinity()/Radian), +std::numeric_limits<Real>::infinity());
+    EXPECT_EQ(Real(+std::numeric_limits<Angle>::infinity()/Degree), +std::numeric_limits<Real>::infinity());
+    EXPECT_EQ(Real(-std::numeric_limits<Angle>::infinity()/Radian), -std::numeric_limits<Real>::infinity());
+    EXPECT_EQ(Real(-std::numeric_limits<Angle>::infinity()/Degree), -std::numeric_limits<Real>::infinity());
 }
