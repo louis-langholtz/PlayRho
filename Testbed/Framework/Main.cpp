@@ -1560,7 +1560,8 @@ static void EntityUI(const Sweep& sweep)
         ImGui::NextColumn();
         ImGui::Text("Ang. Pos. 0");
         if (ImGui::IsItemHovered()) {
-            ImGui::ShowTooltip("Angular position 0 in degrees.", tooltipWrapWidth);
+            ImGui::SetTooltip("Angular position 0 in degrees (%.2f° normalized).",
+                              static_cast<float>(Real(GetNormalized(sweep.pos0.angular)/1_deg)));
         }
         ImGui::NextColumn();
     }
@@ -1581,7 +1582,8 @@ static void EntityUI(const Sweep& sweep)
         ImGui::NextColumn();
         ImGui::Text("Ang. Pos. 1");
         if (ImGui::IsItemHovered()) {
-            ImGui::ShowTooltip("Angular position 1 in degrees.", tooltipWrapWidth);
+            ImGui::SetTooltip("Angular position 1 in degrees (%.2f° normalized).",
+                              static_cast<float>(Real(GetNormalized(sweep.pos1.angular)/1_deg)));
         }
         ImGui::NextColumn();
     }
@@ -2380,13 +2382,20 @@ static void EntityUI(GearJointConf& conf, BodyCounter bodyRange)
 {
     const auto type1 = GetType1(conf);
     const auto type1name = (type1 != GetTypeID<void>())? Test::ToName(type1): "unset";
-    if (ImGui::TreeNodeEx("TypeData1", 0, "Type 1 Data (%s)", type1name)) {
+    const auto hoverMessageAC = [&]() {
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Data for a %s joint between bodies A (%u) and C (%u).", type1name,
+                              to_underlying(conf.bodyA), to_underlying(conf.bodyC));
+        }
+    };
+    if (ImGui::TreeNodeEx("TypeData1", 0, "A-C Type Data (%s)", type1name)) {
+        hoverMessageAC();
         ChangeTypeUI(conf.typeData1);
         if (std::holds_alternative<GearJointConf::RevoluteData>(conf.typeData1)) {
             auto& data = std::get<GearJointConf::RevoluteData>(conf.typeData1);
-            AngleUI(data.referenceAngle, "Ref. Angle 1 (°)");
+            AngleUI(data.referenceAngle, "Ref. Angle (°)");
             if (ImGui::IsItemHovered()) {
-                ImGui::ShowTooltip("Reference angle 1 in degrees.", tooltipWrapWidth);
+                ImGui::ShowTooltip("Reference angle in degrees.", tooltipWrapWidth);
             }
         }
         if (std::holds_alternative<GearJointConf::PrismaticData>(conf.typeData1)) {
@@ -2403,20 +2412,26 @@ static void EntityUI(GearJointConf& conf, BodyCounter bodyRange)
         }
         ImGui::TreePop();
     }
-    if (ImGui::IsItemHovered()) {
-        ImGui::SetTooltip("Data for a %s joint between bodies A (%u) and C (%u).", type1name,
-                          to_underlying(conf.bodyA), to_underlying(conf.bodyC));
+    else {
+        hoverMessageAC();
     }
 
     const auto type2 = GetType2(conf);
     const auto type2name = (type2 != GetTypeID<void>())? Test::ToName(type2): "unset";
-    if (ImGui::TreeNodeEx("TypeData2", 0, "Type 2 Data (%s)", type2name)) {
+    const auto hoverMessageBD = [&]() {
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Data for a %s joint between bodies B (%u) and D (%u).", type2name,
+                              to_underlying(conf.bodyB), to_underlying(conf.bodyD));
+        }
+    };
+    if (ImGui::TreeNodeEx("TypeData2", 0, "B-D Type Data (%s)", type2name)) {
+        hoverMessageBD();
         ChangeTypeUI(conf.typeData2);
         if (std::holds_alternative<GearJointConf::RevoluteData>(conf.typeData2)) {
             auto& data = std::get<GearJointConf::RevoluteData>(conf.typeData2);
-            AngleUI(data.referenceAngle, "Ref. Angle 2 (°)");
+            AngleUI(data.referenceAngle, "Ref. Angle (°)");
             if (ImGui::IsItemHovered()) {
-                ImGui::ShowTooltip("Reference angle 2 in degrees.", tooltipWrapWidth);
+                ImGui::ShowTooltip("Reference angle in degrees.", tooltipWrapWidth);
             }
         }
         if (std::holds_alternative<GearJointConf::PrismaticData>(conf.typeData2)) {
@@ -2433,9 +2448,8 @@ static void EntityUI(GearJointConf& conf, BodyCounter bodyRange)
         }
         ImGui::TreePop();
     }
-    if (ImGui::IsItemHovered()) {
-        ImGui::SetTooltip("Data for a %s joint between bodies B (%u) and D (%u).", type2name,
-                          to_underlying(conf.bodyB), to_underlying(conf.bodyD));
+    else {
+        hoverMessageBD();
     }
 
     InputReal("Constant", conf.constant, 0, 0, "%.3f");
