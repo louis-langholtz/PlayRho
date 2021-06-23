@@ -2236,9 +2236,7 @@ static void EntityUI(World& world, BodyID bodyId, const FixtureSet& selectedFixt
 static void EntityUI(RevoluteJointConf& conf, BodyCounter bodyRange)
 {
     ImGui::IdContext idCtx("RevoluteJointConf");
-
-    ImGui::LabelText("Ref. Angle (°)", "%.1e",
-                     static_cast<double>(Real{GetReferenceAngle(conf) / Degree}));
+    AngleUI(conf.referenceAngle, "Ref. Angle (°)", "%.1e");
     ImGui::LabelText("Limit State", "%s", ToString(GetLimitState(conf)));
     ImGui::LabelText("Motor Impulse (N·m·s)", "%.1e",
                      static_cast<double>(Real{GetAngularMotorImpulse(conf) / NewtonMeterSecond}));
@@ -2255,12 +2253,7 @@ static void EntityUI(RevoluteJointConf& conf, BodyCounter bodyRange)
             SetAngularLimits(conf, GetAngularLowerLimit(conf), v * 1_deg);
         }
     }
-    {
-        auto v = IsMotorEnabled(conf);
-        if (ImGui::Checkbox("Enable Motor", &v)) {
-            EnableMotor(conf, v);
-        }
-    }
+    EntityUI(conf.enableMotor, "Enable Motor");
     {
         auto v = static_cast<float>(Real{GetMotorSpeed(conf) / DegreePerSecond});
         if (ImGui::InputFloat("Motor Speed (°/sec)", &v, 0, 0, "%.2f")) {
@@ -2273,6 +2266,9 @@ static void EntityUI(RevoluteJointConf& conf, BodyCounter bodyRange)
             SetMaxMotorTorque(conf, v * NewtonMeter);
         }
     }
+    LengthUI(conf.localAnchorA, "Loc. Anchor A");
+    LengthUI(conf.localAnchorB, "Loc. Anchor B");
+    EntityUI(conf.collideConnected, "Collide Connected");
     EntityUI(conf.bodyA, bodyRange, "ID of Body A");
     EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
@@ -2297,12 +2293,7 @@ static void EntityUI(PrismaticJointConf& conf, BodyCounter bodyRange)
             SetLinearLimits(conf, GetLinearLowerLimit(conf), v * Meter);
         }
     }
-    {
-        auto v = IsMotorEnabled(conf);
-        if (ImGui::Checkbox("Enable Motor", &v)) {
-            EnableMotor(conf, v);
-        }
-    }
+    EntityUI(conf.enableMotor, "Enable Motor");
     {
         auto v = static_cast<float>(Real{GetMotorSpeed(conf) / DegreePerSecond});
         if (ImGui::InputFloat("Motor Speed (°/sec)", &v)) {
@@ -2315,6 +2306,9 @@ static void EntityUI(PrismaticJointConf& conf, BodyCounter bodyRange)
             SetMaxMotorForce(conf, v * Newton);
         }
     }
+    LengthUI(conf.localAnchorA, "Loc. Anchor A");
+    LengthUI(conf.localAnchorB, "Loc. Anchor B");
+    EntityUI(conf.collideConnected, "Collide Connected");
     EntityUI(conf.bodyA, bodyRange, "ID of Body A");
     EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
@@ -2322,13 +2316,7 @@ static void EntityUI(PrismaticJointConf& conf, BodyCounter bodyRange)
 static void EntityUI(DistanceJointConf& conf, BodyCounter bodyRange)
 {
     // All settings implemented here...
-    {
-        auto v = static_cast<float>(Real{GetLength(conf) / Meter});
-        if (ImGui::InputFloat("Length (m)", &v))
-        {
-            SetLength(conf, v * Meter);
-        }
-    }
+    LengthUI(conf.length, "Length (m)");
     {
         auto v = static_cast<float>(Real{GetFrequency(conf) / Hertz});
         if (ImGui::InputFloat("Frequency (Hz)", &v))
@@ -2336,46 +2324,31 @@ static void EntityUI(DistanceJointConf& conf, BodyCounter bodyRange)
             SetFrequency(conf, v * Hertz);
         }
     }
-    {
-        auto v = static_cast<float>(GetDampingRatio(conf));
-        if (ImGui::InputFloat("Damping Ratio", &v))
-        {
-            SetDampingRatio(conf, static_cast<Real>(v));
-        }
-    }
+    InputReal("Damping Ratio", conf.dampingRatio);
+    LengthUI(conf.localAnchorA, "Loc. Anchor A");
+    LengthUI(conf.localAnchorB, "Loc. Anchor B");
+    EntityUI(conf.collideConnected, "Collide Connected");
     EntityUI(conf.bodyA, bodyRange, "ID of Body A");
     EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
 
 static void EntityUI(PulleyJointConf& conf, BodyCounter bodyRange)
 {
-    ImGui::LabelText("Length A (m)", "%f", static_cast<double>(Real{GetLengthA(conf)/Meter}));
-    ImGui::LabelText("Length B (m)", "%f", static_cast<double>(Real{GetLengthB(conf)/Meter}));
-    {
-        auto v = static_cast<float>(GetRatio(conf));
-        if (ImGui::InputFloat("Ratio", &v)) {
-            SetRatio(conf, static_cast<Real>(v));
-        }
-    }
+    LengthUI(conf.lengthA, "Length A (m)");
+    LengthUI(conf.lengthB, "Length B (m)");
+    InputReal("Ratio", conf.ratio);
+    LengthUI(conf.groundAnchorA, "Ground Anchor A");
+    LengthUI(conf.groundAnchorB, "Ground Anchor B");
+    LengthUI(conf.localAnchorA, "Loc. Anchor A");
+    LengthUI(conf.localAnchorB, "Loc. Anchor B");
+    EntityUI(conf.collideConnected, "Collide Connected");
     EntityUI(conf.bodyA, bodyRange, "ID of Body A");
     EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
 
 static void EntityUI(TargetJointConf& conf, BodyCounter bodyRange)
 {
-    {
-        const auto target = GetTarget(conf);
-        auto x = static_cast<float>(Real{GetX(target) / Meter});
-        auto y = static_cast<float>(Real{GetY(target) / Meter});
-        if (ImGui::InputFloat("Target X (m)", &x))
-        {
-            SetTarget(conf, Length2{x * Meter, y * Meter});
-        }
-        if (ImGui::InputFloat("Target Y (m)", &y))
-        {
-            SetTarget(conf, Length2{x * Meter, y * Meter});
-        }
-    }
+    LengthUI(conf.target, "Target Loc. (m)");
     {
         auto v = static_cast<float>(Real{GetMaxForce(conf) / Newton});
         if (ImGui::InputFloat("Max Force (N)", &v))
@@ -2397,6 +2370,9 @@ static void EntityUI(TargetJointConf& conf, BodyCounter bodyRange)
             SetDampingRatio(conf, static_cast<Real>(v));
         }
     }
+    LengthUI(conf.localAnchorB, "Loc. Anchor B");
+    EntityUI(conf.collideConnected, "Collide Connected");
+    EntityUI(conf.bodyA, bodyRange, "Not Used A");
     EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
 
@@ -2473,6 +2449,7 @@ static void EntityUI(GearJointConf& conf, BodyCounter bodyRange)
     LengthUI(conf.JwC, "JwC (m)");
     LengthUI(conf.JwD, "JwD (m)");
 
+    EntityUI(conf.collideConnected, "Collide Connected");
     EntityUI(conf.bodyA, bodyRange, "ID of Body A");
     EntityUI(conf.bodyB, bodyRange, "ID of Body B");
     EntityUI(conf.bodyC, bodyRange, "ID of Body C");
@@ -2481,13 +2458,7 @@ static void EntityUI(GearJointConf& conf, BodyCounter bodyRange)
 
 static void EntityUI(WheelJointConf& conf, BodyCounter bodyRange)
 {
-    {
-        auto v = IsMotorEnabled(conf);
-        if (ImGui::Checkbox("Enable Motor", &v))
-        {
-            EnableMotor(conf, v);
-        }
-    }
+    EntityUI(conf.enableMotor, "Enable Motor");
     {
         auto v = static_cast<float>(Real{GetMotorSpeed(conf) / DegreePerSecond});
         if (ImGui::InputFloat("Motor Speed (°/sec)", &v))
@@ -2516,14 +2487,16 @@ static void EntityUI(WheelJointConf& conf, BodyCounter bodyRange)
             SetDampingRatio(conf, static_cast<Real>(v));
         }
     }
+    LengthUI(conf.localAnchorA, "Loc. Anchor A");
+    LengthUI(conf.localAnchorB, "Loc. Anchor B");
+    EntityUI(conf.collideConnected, "Collide Connected");
     EntityUI(conf.bodyA, bodyRange, "ID of Body A");
     EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
 
 static void EntityUI(WeldJointConf& conf, BodyCounter bodyRange)
 {
-    ImGui::LabelText("Ref. Angle (°)", "%.1e",
-                     static_cast<double>(Real{GetReferenceAngle(conf) / Degree}));
+    AngleUI(conf.referenceAngle, "Ref. Angle (°)", "%.1e");
     {
         auto v = static_cast<float>(Real{GetFrequency(conf) / Hertz});
         if (ImGui::InputFloat("Frequency (Hz)", &v))
@@ -2531,13 +2504,10 @@ static void EntityUI(WeldJointConf& conf, BodyCounter bodyRange)
             SetFrequency(conf, v * Hertz);
         }
     }
-    {
-        auto v = static_cast<float>(GetDampingRatio(conf));
-        if (ImGui::InputFloat("Damping Ratio", &v))
-        {
-            SetDampingRatio(conf, static_cast<Real>(v));
-        }
-    }
+    InputReal("Damping Ratio", conf.dampingRatio);
+    LengthUI(conf.localAnchorA, "Loc. Anchor A");
+    LengthUI(conf.localAnchorB, "Loc. Anchor B");
+    EntityUI(conf.collideConnected, "Collide Connected");
     EntityUI(conf.bodyA, bodyRange, "ID of Body A");
     EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
@@ -2558,6 +2528,9 @@ static void EntityUI(FrictionJointConf& conf, BodyCounter bodyRange)
             SetMaxTorque(conf, v * NewtonMeter);
         }
     }
+    LengthUI(conf.localAnchorA, "Loc. Anchor A");
+    LengthUI(conf.localAnchorB, "Loc. Anchor B");
+    EntityUI(conf.collideConnected, "Collide Connected");
     EntityUI(conf.bodyA, bodyRange, "ID of Body A");
     EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
@@ -2565,6 +2538,7 @@ static void EntityUI(FrictionJointConf& conf, BodyCounter bodyRange)
 static void EntityUI(RopeJointConf& conf, BodyCounter bodyRange)
 {
     ImGui::LabelText("Limit State", "%s", ToString(GetLimitState(conf)));
+    LengthUI(conf.length, "Length (m)");
     {
         auto v = static_cast<float>(Real{GetMaxLength(conf) / Meter});
         if (ImGui::InputFloat("Max. Length (m)", &v))
@@ -2572,41 +2546,21 @@ static void EntityUI(RopeJointConf& conf, BodyCounter bodyRange)
             SetMaxLength(conf, v * Meter);
         }
     }
+    LengthUI(conf.localAnchorA, "Loc. Anchor A");
+    LengthUI(conf.localAnchorB, "Loc. Anchor B");
+    EntityUI(conf.collideConnected, "Collide Connected");
     EntityUI(conf.bodyA, bodyRange, "ID of Body A");
     EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
 
 static void EntityUI(MotorJointConf& conf, BodyCounter bodyRange)
 {
-    {
-        const auto linearError = GetLinearError(conf);
-        ImGui::LabelText("Lin. Error X (m)", "%.2e",
-                         static_cast<double>(Real{GetX(linearError) / Meter}));
-        ImGui::LabelText("Lin. Error Y (m)", "%.2e",
-                         static_cast<double>(Real{GetY(linearError) / Meter}));
-    }
-    ImGui::LabelText("Ang. Error (°)", "%.2e",
-                     static_cast<double>(Real{GetAngularError(conf) / Degree}));
-    {
-        const auto linOff = GetLinearOffset(conf);
-        auto x = static_cast<float>(Real{GetX(linOff) / Meter});
-        auto y = static_cast<float>(Real{GetY(linOff) / Meter});
-        if (ImGui::InputFloat("Lin. Offset X (m)", &x))
-        {
-            SetLinearOffset(conf, Length2{x * Meter, y * Meter});
-        }
-        if (ImGui::InputFloat("Lin. Offset Y (m)", &y))
-        {
-            SetLinearOffset(conf, Length2{x * Meter, y * Meter});
-        }
-    }
-    {
-        auto v = static_cast<float>(Real{GetAngularOffset(conf) / Degree});
-        if (ImGui::InputFloat("Ang. Offset (°)", &v, 0, 0, "%.2f"))
-        {
-            SetAngularOffset(conf, v * Degree);
-        }
-    }
+    LengthUI(conf.rA, "Relative A (m)");
+    LengthUI(conf.rB, "Relative B (m)");
+    LengthUI(conf.linearError, "Lin. Error (m)", "%.2e");
+    AngleUI(conf.angularError, "Ang. Error (°)", "%.2e");
+    LengthUI(conf.linearOffset, "Lin. Offset (m)");
+    AngleUI(conf.angularOffset, "Ang. Offset (°)", "%.2f");
     {
         auto v = static_cast<float>(Real{GetMaxForce(conf) / Newton});
         if (ImGui::InputFloat("Max Force (N)", &v))
@@ -2621,20 +2575,14 @@ static void EntityUI(MotorJointConf& conf, BodyCounter bodyRange)
             SetMaxTorque(conf, v * NewtonMeter);
         }
     }
-    {
-        auto v = static_cast<float>(GetCorrectionFactor(conf));
-        if (ImGui::InputFloat("Correction Factor", &v))
-        {
-            SetCorrectionFactor(conf, static_cast<Real>(v));
-        }
-    }
+    InputReal("Correction Factor", conf.correctionFactor);
+    EntityUI(conf.collideConnected, "Collide Connected");
     EntityUI(conf.bodyA, bodyRange, "ID of Body A");
     EntityUI(conf.bodyB, bodyRange, "ID of Body B");
 }
 
 static void EntityUI(Joint& joint, BodyCounter bodyRange)
 {
-    ImGui::LabelText("Collide Connected", "%s", GetCollideConnected(joint)? "true": "false");
     {
         const auto linReact = GetLinearReaction(joint);
         ImGui::LabelText("Lin. Reaction X (N·s)", "%.2e",
