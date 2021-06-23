@@ -1616,18 +1616,20 @@ static void EntityUI(Body& body)
     {
         const auto transformation = GetTransformation(body);
         auto location = GetLocation(transformation);
-        if (LengthUI(location, "Lin. Pos.")) {
+        if (LengthUI(location, "Lin. Transform")) {
             SetLocation(body, location);
         }
         if (ImGui::IsItemHovered()) {
-            ImGui::ShowTooltip("Linear position in meters.", tooltipWrapWidth);
+            ImGui::ShowTooltip("Linear transformation in meters.", tooltipWrapWidth);
         }
         auto angle = GetAngle(GetDirection(transformation));
-        if (AngleUI(angle, "Ang. Pos.", "%f")) {
+        if (AngleUI(angle, "Ang. Transform", "%f")) {
             SetAngle(body, angle);
         }
         if (ImGui::IsItemHovered()) {
-            ImGui::ShowTooltip("Angular position in degrees.", tooltipWrapWidth);
+            ImGui::ShowTooltip("Angular transformation in degrees. "
+                               "This is the directional/normalized angle of the body.",
+                               tooltipWrapWidth);
         }
     }
     {
