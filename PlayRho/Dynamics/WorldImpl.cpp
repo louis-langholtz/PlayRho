@@ -1283,6 +1283,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
         SetPosition0(body, GetPosition1(body)); // like Advance0(1) on the sweep.
         // XXX/TODO figure out why the following causes Gears Test to stutter!!!
         // SetSweep(body, GetNormalized(GetSweep(body)));
+        // SetSweep(body, Sweep{GetNormalized(GetPosition0(body)), GetLocalCenter(body)});
     });
 
     // Copy bodies' pos1 and velocity data into local arrays.
