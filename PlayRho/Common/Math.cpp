@@ -145,6 +145,18 @@ Angle GetShortestDelta(Angle a0, Angle a1) noexcept
 #endif
 }
 
+Real Normalize(Vec2& vector)
+{
+    const auto length = GetMagnitude(vector);
+    if (!AlmostZero(length)) {
+        const auto invLength = Real{1} / length;
+        vector[0] *= invLength;
+        vector[1] *= invLength;
+        return length;
+    }
+    return 0;
+}
+
 Length2 ComputeCentroid(const Span<const Length2>& vertices)
 {
     assert(size(vertices) >= 3);

@@ -157,7 +157,7 @@ constexpr bool IsOdd(T val) noexcept
 
 /// @brief Squares the given value.
 template <class TYPE>
-constexpr auto Square(TYPE t) noexcept
+constexpr auto Square(TYPE t) noexcept -> decltype(t * t)
 {
     return t * t;
 }
@@ -175,7 +175,7 @@ inline auto Atan2(T y, T x)
 template <typename T,
           typename = std::enable_if_t<IsIterable<T>::value &&
                                       IsAddable<decltype(*begin(std::declval<T>()))>::value>>
-inline auto Average(const T& span)
+auto Average(const T& span)
 {
     using value_type = decltype(*begin(std::declval<T>()));
 
@@ -277,9 +277,7 @@ template <typename T>
 auto ModuloViaTrunc(T dividend, T divisor) noexcept
 {
     const auto quotient = dividend / divisor;
-    const auto integer = trunc(quotient);
-    const auto remainder = quotient - integer;
-    return remainder * divisor;
+    return (quotient - trunc(quotient)) * divisor;
 }
 
 /// @brief Gets the "normalized" value of the given angle.
@@ -318,7 +316,7 @@ constexpr auto GetMagnitudeSquared(T value) noexcept
 /// @brief Gets the magnitude of the given value.
 /// @note Works for any type for which <code>GetMagnitudeSquared</code> also works.
 template <typename T>
-inline auto GetMagnitude(T value)
+inline auto GetMagnitude(T value) -> decltype(sqrt(GetMagnitudeSquared(value)))
 {
     return sqrt(GetMagnitudeSquared(value));
 }
@@ -620,17 +618,7 @@ constexpr T NextPowerOfTwo(T x)
 }
 
 /// @brief Converts the given vector into a unit vector and returns its original length.
-inline Real Normalize(Vec2& vector)
-{
-    const auto length = GetMagnitude(vector);
-    if (!AlmostZero(length)) {
-        const auto invLength = Real{1} / length;
-        vector[0] *= invLength;
-        vector[1] *= invLength;
-        return length;
-    }
-    return 0;
-}
+Real Normalize(Vec2& vector);
 
 /// @brief Computes the centroid of a counter-clockwise array of 3 or more vertices.
 /// @note Behavior is undefined if there are less than 3 vertices or the vertices don't
