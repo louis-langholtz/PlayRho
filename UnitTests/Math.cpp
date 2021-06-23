@@ -715,7 +715,6 @@ TEST(Math, GetNormalized)
 {
     // Confirm that GetNormalized returns a half-open interval value that's [-Pi, +Pi)...
     // I.e. greater than or equal to -Pi and less than +Pi.
-
     EXPECT_EQ(GetNormalized(0_deg) / Degree, Real(0));
     EXPECT_DOUBLE_EQ(double(Real(GetNormalized(  0.0_deg) / Degree)),    0.0);
     EXPECT_DOUBLE_EQ(double(Real(GetNormalized(360.0_deg) / Degree)),    0.0);
@@ -848,6 +847,19 @@ TEST(Math, GetNormalized)
                     +0x1.921fb54442d15p+1, abs_err);
         EXPECT_NEAR(StripUnit(GetNormalized(Real(-0x1.921fb54442d1cp+1) * 1_rad)),
                     +0x1.921fb54442d14p+1, abs_err);
+    }
+
+    // Confirm that GetNormalized is similar to atan2(sin(a), cos(a))
+    for (auto i = -360; i < +360; ++i) {
+        if (i == -180 /*Real=float*/ || i == +180 /*Real=double*/) {
+            continue; // skip -Pi and +Pi
+        }
+        std::ostringstream os;
+        const auto angle = i * 1_deg;
+        os << "At " << i << " deg, " << double(Real{angle/1_rad}) << "rad: " << std::hexfloat << double(Real{angle/1_rad});
+        SCOPED_TRACE(os.str());
+        EXPECT_NEAR(double(StripUnit(GetNormalized(angle))), //
+                    double(StripUnit(atan2(sin(angle), cos(angle)))), 0.001);
     }
 }
 

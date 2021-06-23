@@ -287,17 +287,20 @@ Position GetPosition(Position pos0, Position pos1, Real beta) noexcept
     // pos0 + (pos1 * beta - pos0 * beta)
     // pos0 + (pos1 - pos0) * beta
 
-//#define USE_GETSHORTESTDELTA_FOR_ANGULAR_LERP 1
+//#define USE_NORMALIZATION_FOR_ANGULAR_LERP 1
 #if USE_NORMALIZATION_FOR_ANGULAR_LERP
-    constexpr auto twoPi = 2 * Pi;
+    constexpr auto twoPi = Real(2) * Pi;
+    constexpr auto rTwoPi = Real(1) / twoPi;
     const auto da = pos1.angular - pos0.angular;
-    const auto na = pos0.angular + (da - twoPi * cfloor((da + Pi * 1_rad) / twoPi)) * beta;
+    const auto na = pos0.angular + (da - twoPi * cfloor((da + Pi * 1_rad) * rTwoPi)) * beta;
     return {pos0.linear + (pos1.linear - pos0.linear) * beta,
-            na - twoPi * cfloor((na + Pi * 1_rad) / twoPi)};
+            na - twoPi * cfloor((na + Pi * 1_rad) * rTwoPi)};
 #elif USE_GETSHORTESTDELTA_FOR_ANGULAR_LERP
+    // ~25% slower than USE_NORMALIZATION_FOR_ANGULAR_LERP
     return Position{pos0.linear + (pos1.linear - pos0.linear) * beta,
                     pos0.angular + GetShortestDelta(pos0.angular, pos1.angular) * beta};
 #else
+    // More than twice as fast as USE_NORMALIZATION_FOR_ANGULAR_LERP
     return pos0 + (pos1 - pos0) * beta;
 #endif
 }

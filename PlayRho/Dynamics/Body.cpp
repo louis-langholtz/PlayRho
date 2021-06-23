@@ -251,6 +251,11 @@ void SetLocation(Body& body, Length2 value)
     SetTransformation(body, Transformation{value, UnitVec::Get(GetAngle(body))});
 }
 
+Angle GetAngle(const Body& body) noexcept
+{
+    return GetAngle(GetDirection(GetTransformation(body)));
+}
+
 void SetAngle(Body& body, Angle value)
 {
     SetTransformation(body, Transformation{GetLocation(body), UnitVec::Get(value)});

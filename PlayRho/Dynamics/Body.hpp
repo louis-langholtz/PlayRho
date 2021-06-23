@@ -951,10 +951,7 @@ inline void SetPosition1(Body& body, Position value) noexcept
 /// @brief Gets the body's angle.
 /// @return Body's angle relative to its World.
 /// @relatedalso Body
-inline Angle GetAngle(const Body& body) noexcept
-{
-    return body.GetSweep().pos1.angular;
-}
+Angle GetAngle(const Body& body) noexcept;
 
 /// @brief Sets the body's angular orientation.
 /// @details This instantly adjusts the body to be at the new angular orientation.

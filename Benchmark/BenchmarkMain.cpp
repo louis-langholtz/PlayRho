@@ -1577,30 +1577,111 @@ static void GetShortestDelta3(benchmark::State& state)
     }
 }
 
+using PositionPair = std::pair<playrho::d2::Position, playrho::d2::Position>;
+using PositionPairs = std::vector<PositionPair>;
+
+static PositionPairs GetRandPositionPairs(unsigned count)
+{
+    const auto a0 = playrho::Real(-180.0) * playrho::Degree;
+    const auto a1 = playrho::Real(+180.0) * playrho::Degree;
+    PositionPairs result;
+    for (auto i = 0u; i < count; ++i) {
+        const auto pos0 = playrho::d2::Position{playrho::Length2{}, Rand(a0, a1)};
+        const auto pos1 = playrho::d2::Position{playrho::Length2{}, Rand(a0, a1)};
+        result.push_back(std::make_pair(pos0, pos1));
+    }
+    return result;
+}
+
+static playrho::d2::Position GetPositionNaively(playrho::d2::Position pos0, //
+                                                playrho::d2::Position pos1, //
+                                                playrho::Real beta) noexcept
+{
+    return pos0 + (pos1 - pos0) * beta;
+}
+
+static playrho::d2::Position GetPositionShortestDelta(playrho::d2::Position pos0, //
+                                                      playrho::d2::Position pos1, //
+                                                      playrho::Real beta) noexcept
+{
+    return playrho::d2::Position{pos0.linear + (pos1.linear - pos0.linear) * beta,
+        pos0.angular + playrho::GetShortestDelta(pos0.angular, pos1.angular) * beta};
+}
+
+static playrho::d2::Position GetPositionFloorNormal(playrho::d2::Position pos0, //
+                                                    playrho::d2::Position pos1, //
+                                                    playrho::Real beta) noexcept
+{
+    constexpr auto twoPi = playrho::Real(2) * playrho::Pi;
+    constexpr auto rTwoPi = playrho::Real(1) / twoPi;
+    const auto da = pos1.angular - pos0.angular;
+    const auto na = pos0.angular + (da - twoPi * std::floor((da + playrho::Pi * playrho::Radian) * rTwoPi)) * beta;
+    return {pos0.linear + (pos1.linear - pos0.linear) * beta,
+        na - twoPi * std::floor((na + playrho::Pi * playrho::Radian) * rTwoPi)};
+}
+
+static void GetPositionNaively(benchmark::State& state)
+{
+    const auto count = static_cast<unsigned>(state.range());
+    const auto vals = GetRandPositionPairs(count);
+    const auto betas = Rands(count, 0.0f, 1.0f);
+    for (auto _ : state) {
+        for (auto i = 0u; i < count; ++i) {
+            const auto& val = vals[i];
+            const auto beta = betas[i];
+            benchmark::DoNotOptimize(GetPositionNaively(val.first, val.second, beta));
+        }
+    }
+}
+
+static void GetPositionShortestDelta(benchmark::State& state)
+{
+    const auto count = static_cast<unsigned>(state.range());
+    const auto vals = GetRandPositionPairs(count);
+    const auto betas = Rands(count, 0.0f, 1.0f);
+    for (auto _ : state) {
+        for (auto i = 0u; i < count; ++i) {
+            const auto& val = vals[i];
+            const auto beta = betas[i];
+            benchmark::DoNotOptimize(GetPositionShortestDelta(val.first, val.second, beta));
+        }
+    }
+}
+
+static void GetPositionFloorNormal(benchmark::State& state)
+{
+    const auto count = static_cast<unsigned>(state.range());
+    const auto vals = GetRandPositionPairs(count);
+    const auto betas = Rands(count, 0.0f, 1.0f);
+    for (auto _ : state) {
+        for (auto i = 0u; i < count; ++i) {
+            const auto& val = vals[i];
+            const auto beta = betas[i];
+            benchmark::DoNotOptimize(GetPositionFloorNormal(val.first, val.second, beta));
+        }
+    }
+}
+
 // ----
 
 using TransformationPair = std::pair<playrho::d2::Transformation, playrho::d2::Transformation>;
 using TransformationPairs = std::vector<TransformationPair>;
 
-static TransformationPairs GetTransformationPairs(unsigned count)
+static const TransformationPairs& GetTransformationPairs(unsigned count)
 {
     static std::map<unsigned, TransformationPairs> xfms;
-
     constexpr auto pos0 =
         playrho::d2::Position{playrho::Vec2{0, -2} * (playrho::Real(1) * playrho::Meter),
                               playrho::Angle{playrho::Real{0.0f} * playrho::Degree}}; // bottom
-
     constexpr auto pos1 =
         playrho::d2::Position{playrho::Vec2{0, +2} * (playrho::Real(1) * playrho::Meter),
                               playrho::Angle{playrho::Real{360.0f} * playrho::Degree}}; // top
-
     auto it = xfms.find(count);
     if (it == xfms.end()) {
         const auto result =
             xfms.insert(std::make_pair(count, GetRandTransformationPairs(count, pos0, pos1)));
         it = result.first;
     }
-
     return it->second;
 }
 
@@ -1610,7 +1691,7 @@ static void DistanceBetweenRelSquares(benchmark::State& state)
     const auto shape1 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
     const auto child0 = GetChild(shape0, 0);
     const auto child1 = GetChild(shape1, 0);
-    const auto vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
+    const auto& vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
     for (auto _ : state) {
         for (const auto& val : vals) {
             const auto xf0 = val.first;
@@ -1635,7 +1716,7 @@ static void MaxSepBetweenRelSquaresNoStop(benchmark::State& state)
     const auto shape1 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
     const auto child0 = GetChild(shape0, 0);
     const auto child1 = GetChild(shape1, 0);
-    const auto vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
+    const auto& vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
     for (auto _ : state) {
         for (const auto& val : vals) {
             const auto xf0 = val.first;
@@ -1651,7 +1732,7 @@ static void MaxSepBetweenRel4x4(benchmark::State& state)
     const auto shape1 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
     const auto child0 = GetChild(shape0, 0);
     const auto child1 = GetChild(shape1, 0);
-    const auto vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
+    const auto& vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
     for (auto _ : state) {
         for (const auto& val : vals) {
             const auto xf0 = val.first;
@@ -1668,7 +1749,7 @@ static void MaxSepBetweenRelSquares(benchmark::State& state)
     const auto child0 = GetChild(shape0, 0);
     const auto child1 = GetChild(shape1, 0);
     const auto totalRadius = child0.GetVertexRadius() + child1.GetVertexRadius();
-    const auto vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
+    const auto& vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
     for (auto _ : state) {
         for (const auto& val : vals) {
             const auto xf0 = val.first;
@@ -2802,6 +2883,10 @@ BENCHMARK(GetShortestDelta1)->Arg(1000);
 BENCHMARK(GetShortestDelta2)->Arg(1000);
 BENCHMARK(GetShortestDelta25)->Arg(1000);
 BENCHMARK(GetShortestDelta3)->Arg(1000);
+
+BENCHMARK(GetPositionNaively)->Arg(1000);
+BENCHMARK(GetPositionShortestDelta)->Arg(1000);
+BENCHMARK(GetPositionFloorNormal)->Arg(1000);
 
 // BENCHMARK(malloc_free_random_size);
 

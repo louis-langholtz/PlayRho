@@ -455,6 +455,7 @@ TEST(World, CreateDestroyEmptyDynamicBody)
     ASSERT_NE(body, InvalidBodyID);
     
     EXPECT_EQ(GetType(world, body), BodyType::Dynamic);
+    EXPECT_EQ(GetAngle(world, body), 0_deg);
     EXPECT_TRUE(IsSpeedable(world, body));
     EXPECT_TRUE(IsAccelerable(world, body));
     EXPECT_FALSE(IsImpenetrable(world, body));
@@ -725,6 +726,26 @@ TEST(World, SetSleepingAllowed)
     EXPECT_TRUE(IsSleepingAllowed(world, body));
     EXPECT_NO_THROW(SetSleepingAllowed(world, body, false));
     EXPECT_FALSE(IsSleepingAllowed(world, body));
+}
+
+TEST(World, GetSetAngle)
+{
+    auto world = World{};
+    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Kinematic));
+    ASSERT_EQ(GetAngle(world, body), 0_deg);
+    ASSERT_EQ(GetAngularVelocity(world, body), 0_rpm);
+    EXPECT_NO_THROW(SetAngle(world, body, Pi * 0.5_rad));
+    EXPECT_NEAR(double(StripUnit(GetAngle(world, body))), Pi * 0.5, 0.00001);
+    EXPECT_NO_THROW(SetAngle(world, body, Pi * 2.1_rad));
+    EXPECT_NEAR(double(StripUnit(GetAngle(world, body))), Pi * 0.1, 0.00001);
+    EXPECT_NO_THROW(SetAngle(world, body, Pi * 0_rad));
+    EXPECT_NO_THROW(SetVelocity(world, body, 60_rpm));
+    for (auto i = 0; i < 105; ++i) {
+        world.Step();
+    }
+    EXPECT_NEAR(double(StripUnit(GetAngle(world, body))), //
+                double(StripUnit(GetNormalized(Angle{60_rpm * 105 * (1_s / 60)}))), //
+                0.001);
 }
 
 TEST(World, SetLinearDamping)
@@ -2747,11 +2768,11 @@ TEST(World_Longer, TilesComesToRest)
             EXPECT_EQ(*firstStepWithZeroMoved, 1798u);
         }
 #else
-        EXPECT_EQ(world->GetContactRange(), 1449u); // on amd64
-        EXPECT_EQ(totalBodiesSlept, createdBodyCount);
+        EXPECT_EQ(world->GetContactRange(), 1450u); // on amd64
+        EXPECT_EQ(totalBodiesSlept, createdBodyCount + 1u);
         EXPECT_TRUE(firstStepWithZeroMoved);
         if (firstStepWithZeroMoved) {
-            EXPECT_EQ(*firstStepWithZeroMoved, 1792u);
+            EXPECT_EQ(*firstStepWithZeroMoved, 1799u);
         }
 #endif
         break;
@@ -2870,10 +2891,10 @@ TEST(World_Longer, TilesComesToRest)
         {
             // From commits after 507a7c15c
             EXPECT_EQ(numSteps,         1793ul);
-            EXPECT_EQ(sumRegPosIters,  36493ul);
-            EXPECT_EQ(sumRegVelIters,  46884ul);
-            EXPECT_EQ(sumToiPosIters,  43874ul);
-            EXPECT_EQ(sumToiVelIters, 113472ul);
+            EXPECT_EQ(sumRegPosIters,  36514ul);
+            EXPECT_EQ(sumRegVelIters,  46947ul);
+            EXPECT_EQ(sumToiPosIters,  44106ul);
+            EXPECT_EQ(sumToiVelIters, 113302ul);
             break;
         }
         case  8:
