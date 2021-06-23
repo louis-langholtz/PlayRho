@@ -277,12 +277,9 @@ bool SolvePosition(const GearJointConf& object, std::vector<BodyConstraint>& bod
     auto posB = bodyConstraintB.GetPosition();
     auto posC = bodyConstraintC.GetPosition();
     auto posD = bodyConstraintD.GetPosition();
-    const auto qA = UnitVec::Get(posA.angular);
-    const auto qB = UnitVec::Get(posB.angular);
-    const auto qC = UnitVec::Get(posC.angular);
-    const auto qD = UnitVec::Get(posD.angular);
-    const auto linearError = 0_m;
 
+    auto linearError = 0_m;
+    auto angularError = 0_rad;
     auto JvAC = Vec2{};
     auto JvBD = Vec2{};
     auto JwA = Real{};
@@ -293,6 +290,8 @@ bool SolvePosition(const GearJointConf& object, std::vector<BodyConstraint>& bod
     auto coordinateB = Real{0};
     auto invMass = Real{0}; // Inverse linear mass or inverse angular mass.
     if (std::holds_alternative<GearJointConf::PrismaticData>(object.typeData1)) {
+        const auto qA = UnitVec::Get(posA.angular);
+        const auto qC = UnitVec::Get(posC.angular);
         const auto& typeData = std::get<GearJointConf::PrismaticData>(object.typeData1);
         const auto u = Rotate(typeData.localAxis, qC);
         const auto rC = Rotate(typeData.localAnchorA - bodyConstraintC.GetLocalCenter(), qC);
@@ -310,6 +309,7 @@ bool SolvePosition(const GearJointConf& object, std::vector<BodyConstraint>& bod
         const auto pC = typeData.localAnchorA - bodyConstraintC.GetLocalCenter();
         const auto pA = InverseRotate(rA + (posA.linear - posC.linear), qC);
         coordinateA = Dot(pA - pC, typeData.localAxis) / 1_m;
+        linearError = std::max(linearError, coordinateA * 1_m);
     }
     else if (std::holds_alternative<GearJointConf::RevoluteData>(object.typeData1)) {
         const auto& typeData = std::get<GearJointConf::RevoluteData>(object.typeData1);
@@ -319,11 +319,14 @@ bool SolvePosition(const GearJointConf& object, std::vector<BodyConstraint>& bod
         const auto invAngMass =
             bodyConstraintA.GetInvRotInertia() + bodyConstraintC.GetInvRotInertia();
         invMass += StripUnit(invAngMass);
-        //coordinateA = (GetShortestDelta(posC.angular, posA.angular) - typeData.referenceAngle) / 1_rad;
         coordinateA = ((posA.angular - posC.angular) - typeData.referenceAngle) / 1_rad;
+        //coordinateA = (GetShortestDelta(posC.angular, posA.angular) - typeData.referenceAngle) / 1_rad;
         //coordinateA = GetShortestDelta(typeData.referenceAngle, GetShortestDelta(posC.angular, posA.angular)) / 1_rad;
+        angularError = std::max(angularError, coordinateA * 1_rad);
     }
     if (std::holds_alternative<GearJointConf::PrismaticData>(object.typeData2)) {
+        const auto qB = UnitVec::Get(posB.angular);
+        const auto qD = UnitVec::Get(posD.angular);
         const auto& typeData = std::get<GearJointConf::PrismaticData>(object.typeData2);
         const auto u = Rotate(typeData.localAxis, qD);
         const auto rD = Rotate(typeData.localAnchorA - bodyConstraintD.GetLocalCenter(), qD);
@@ -341,6 +344,7 @@ bool SolvePosition(const GearJointConf& object, std::vector<BodyConstraint>& bod
         const auto pD = typeData.localAnchorA - bodyConstraintD.GetLocalCenter();
         const auto pB = InverseRotate(rB + (posB.linear - posD.linear), qD);
         coordinateB = Dot(pB - pD, typeData.localAxis) / 1_m;
+        linearError = std::max(linearError, coordinateB * 1_m);
     }
     else if (std::holds_alternative<GearJointConf::RevoluteData>(object.typeData2)) {
         const auto& typeData = std::get<GearJointConf::RevoluteData>(object.typeData2);
@@ -351,11 +355,12 @@ bool SolvePosition(const GearJointConf& object, std::vector<BodyConstraint>& bod
             InvRotInertia{Square(object.ratio) * (bodyConstraintB.GetInvRotInertia() +
                                                   bodyConstraintD.GetInvRotInertia())};
         invMass += StripUnit(invAngMass);
-        //coordinateB = (GetShortestDelta(posD.angular, posB.angular) - typeData.referenceAngle) / 1_rad;
         coordinateB = ((posB.angular - posD.angular) - typeData.referenceAngle) / 1_rad;
+        //coordinateB = (GetShortestDelta(posD.angular, posB.angular) - typeData.referenceAngle) / 1_rad;
         //coordinateB = GetShortestDelta(typeData.referenceAngle, GetShortestDelta(posD.angular, posB.angular)) / 1_rad;
+        angularError = std::max(angularError, coordinateB * 1_rad);
     }
-    const auto C = ((coordinateA + object.ratio * coordinateB) - object.constant);
+    const auto C = (coordinateA + object.ratio * coordinateB) - object.constant;
     const auto impulse = ((invMass > 0) ? -C / invMass : 0) * Kilogram * Meter;
     posA += Position{bodyConstraintA.GetInvMass() * impulse * JvAC,
                      bodyConstraintA.GetInvRotInertia() * impulse * JwA * Meter / Radian};
@@ -369,7 +374,7 @@ bool SolvePosition(const GearJointConf& object, std::vector<BodyConstraint>& bod
     bodyConstraintB.SetPosition(posB);
     bodyConstraintC.SetPosition(posC);
     bodyConstraintD.SetPosition(posD);
-    return linearError < conf.linearSlop;
+    return (linearError <= conf.linearSlop) && (angularError <= conf.angularSlop);
 }
 
 TypeID GetType1(const GearJointConf& object) noexcept
