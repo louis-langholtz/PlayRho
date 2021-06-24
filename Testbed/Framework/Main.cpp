@@ -1617,14 +1617,17 @@ static void EntityUI(Body& body)
         const auto transformation = GetTransformation(body);
         auto location = GetLocation(transformation);
         if (LengthUI(location, "Lin. Transform")) {
-            SetLocation(body, location);
+            SetTransformation(body, Transformation{location, transformation.q});
         }
         if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Linear transformation in meters.", tooltipWrapWidth);
         }
+    }
+    {
+        const auto transformation = GetTransformation(body);
         auto angle = GetAngle(GetDirection(transformation));
         if (AngleUI(angle, "Ang. Transform", "%f")) {
-            SetAngle(body, angle);
+            SetTransformation(body, Transformation{transformation.p, UnitVec::Get(angle)});
         }
         if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Angular transformation in degrees. "
