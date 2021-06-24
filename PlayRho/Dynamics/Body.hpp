@@ -145,16 +145,10 @@ public:
     ///   2. Forces and torques acting on the body (applied force, applied impulse, etc.).
     ///   3. The mass and rotational inertia of the body.
     ///   4. Damping of the body.
-    ///   5. Restitution and friction values of the body's fixtures when they experience collisions.
+    ///   5. Restitutioen and friction values of body's shape parts when experiencing collisions.
     /// @return the world transform of the body's origin.
-    /// @see SetTransformation.
+    /// @see SetSweep.
     const Transformation& GetTransformation() const noexcept;
-
-    /// @brief Sets the body's transformation.
-    /// @note <code>SetSweep</code> may also need to be called.
-    /// @post <code>GetTransformation()</code> will return the value set.
-    /// @see GetTransformation, GetSweep, SetSweep.
-    void SetTransformation(const Transformation& value) noexcept;
 
     /// @brief Gets the body's sweep.
     /// @see SetSweep.
@@ -175,6 +169,7 @@ public:
     /// @see GetVelocity.
     void JustSetVelocity(Velocity value) noexcept
     {
+        assert(IsSpeedable() || (value == Velocity{}));
         m_linearVelocity = value.linear;
         m_angularVelocity = value.angular;
     }
@@ -383,11 +378,12 @@ public:
     {
         assert(IsSpeedable() || value.pos0 == value.pos1);
         m_sweep = value;
+        m_xf = GetTransform1(value);
     }
 
     /// @brief Sets the "position 0" value of the body to the given position.
     /// @see GetSweep, SetSweep.
-    void SetPosition0(const Position value) noexcept
+    void SetPosition0(const Position& value) noexcept
     {
         assert(IsSpeedable() || m_sweep.pos0 == value);
         m_sweep.pos0 = value;
@@ -395,10 +391,11 @@ public:
 
     /// @brief Sets the body sweep's "position 1" value.
     /// @see GetSweep, SetSweep.
-    void SetPosition1(const Position value) noexcept
+    void SetPosition1(const Position& value) noexcept
     {
         assert(IsSpeedable() || m_sweep.pos1 == value);
         m_sweep.pos1 = value;
+        m_xf = ::playrho::d2::GetTransformation(value, m_sweep.GetLocalCenter());
     }
 
     /// @brief Resets the given body's "alpha-0" value.
@@ -408,46 +405,17 @@ public:
         m_sweep.ResetAlpha0();
     }
 
-    /// @brief Restores the given body's sweep to the given sweep value.
-    /// @see GetSweep, SetSweep.
-    void Restore(const Sweep& value) noexcept
-    {
-        SetSweep(value);
-        SetTransformation(GetTransform1(value));
-    }
-
     /// @brief Calls the body sweep's <code>Advance0</code> method to advance to
     ///    the given value.
     /// @see GetSweep.
     void Advance0(Real value) noexcept
     {
         // Note: Static bodies must **never** have different sweep position values.
-
         // Confirm bodies don't have different sweep positions to begin with...
         assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
-
         m_sweep.Advance0(value);
-
         // Confirm bodies don't have different sweep positions to end with...
         assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
-    }
-
-    /// Advances the body by a given time ratio.
-    /// @details This method:
-    ///    1. advances the body's sweep to the given time ratio;
-    ///    2. updates the body's sweep positions (linear and angular) to the advanced ones; and
-    ///    3. updates the body's transform to the new sweep one settings.
-    /// @param value Valid new time factor in [0,1) to advance the sweep to.
-    /// @see GetSweep, SetSweep, GetTransofmration, SetTransformation.
-    void Advance(Real value) noexcept
-    {
-        // assert(m_sweep.GetAlpha0() <= alpha);
-        assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
-
-        // Advance to the new safe time. This doesn't sync the broad-phase.
-        m_sweep.Advance0(value);
-        m_sweep.pos1 = m_sweep.pos0;
-        m_xf = GetTransform1(m_sweep);
     }
 
     /// @brief Gets the identifiers of the shapes attached to this body.
@@ -483,12 +451,14 @@ private:
 
     /// Transformation for body origin.
     /// @note Also availble from <code>GetTransform1(m_sweep)</code>.
+    /// @note <code>m_xf.p == m_sweep.pos1.linear && m_xf.q ==
+    ///   UnitVec::Get(m_sweep.pos1.angular)</code>.
     /// @note 16-bytes.
     Transformation m_xf;
 
     /// @brief Sweep motion for CCD. 36-bytes.
-    /// @note This is something of a non-essential part.
-    /// @todo Consider refactoring this data out of this class and into the world implementation.
+    /// @note <code>m_sweep.pos1.linear == m_xf.p && UnitVec::Get(m_sweep.pos1.angular) ==
+    ///   m_xf.q</code>.
     Sweep m_sweep;
 
     FlagsType m_flags = 0; ///< Flags. 2-bytes.
@@ -536,11 +506,6 @@ private:
 inline const Transformation& Body::GetTransformation() const noexcept
 {
     return m_xf;
-}
-
-inline void Body::SetTransformation(const Transformation& value) noexcept
-{
-    m_xf = value;
 }
 
 inline const Sweep& Body::GetSweep() const noexcept
@@ -861,23 +826,6 @@ inline void UnsetAwake(Body& body) noexcept
     body.UnsetAwake();
 }
 
-/// @brief Gets the body's transformation.
-/// @see SetTransformation(Body& body, Transformation value).
-/// @relatedalso Body
-inline Transformation GetTransformation(const Body& body) noexcept
-{
-    return body.GetTransformation();
-}
-
-/// Sets the body's transformation.
-/// @note This sets what <code>GetLocation</code> returns.
-/// @see GetTransformation(const Body& body).
-/// @relatedalso Body
-inline void SetTransformation(Body& body, Transformation value) noexcept
-{
-    body.SetTransformation(value);
-}
-
 /// @brief Gets the body's origin location.
 /// @details This is the location of the body's origin relative to its world.
 /// The location of the body after stepping the world's physics simulations is dependent on
@@ -886,7 +834,7 @@ inline void SetTransformation(Body& body, Transformation value) noexcept
 ///   2. Forces acting on the body (gravity, applied force, applied impulse).
 ///   3. The mass data of the body.
 ///   4. Damping of the body.
-///   5. Restitution and friction values of the body's fixtures when they experience collisions.
+///   5. Restitution and friction values of the body's shape parts when they experience collisions.
 /// @return World location of the body's origin.
 /// @see GetAngle.
 /// @relatedalso Body
@@ -946,6 +894,48 @@ inline void SetPosition0(Body& body, Position value) noexcept
 inline void SetPosition1(Body& body, Position value) noexcept
 {
     body.SetPosition1(value);
+}
+
+/// @brief Calls the body sweep's <code>Advance0</code> method to advance to
+///    the given value.
+/// @see GetSweep.
+inline void Advance0(Body& body, Real value) noexcept
+{
+    body.Advance0(value);
+}
+
+/// Advances the body by a given time ratio.
+/// @details This method:
+///    1. advances the body's sweep to the given time ratio;
+///    2. updates the body's sweep positions (linear and angular) to the advanced ones; and
+///    3. updates the body's transform to the new sweep one settings.
+/// @param value Valid new time factor in [0,1) to advance the sweep to.
+/// @see GetSweep, SetSweep, GetTransofmration, SetTransformation.
+inline void Advance(Body& body, Real value) noexcept
+{
+    // Advance to the new safe time. This doesn't sync the broad-phase.
+    Advance0(body, value);
+    SetPosition1(body, GetPosition0(body));
+}
+
+/// @brief Gets the body's transformation.
+/// @see SetTransformation(Body& body, Transformation value).
+/// @relatedalso Body
+inline const Transformation& GetTransformation(const Body& body) noexcept
+{
+    return body.GetTransformation();
+}
+
+/// @brief Sets the body's transformation.
+/// @note This sets the sweep to the new transformation.
+/// @post <code>GetTransformation(const Body& body)</code> will return the value set.
+/// @post <code>GetPosition1(const Body& body)</code> will return a position equivalent to value
+///   given.
+/// @see GetTransformation(const Body& body), GetPosition1(const Body& body).
+/// @relatedalso Body
+inline void SetTransformation(Body& body, const Transformation& value) noexcept
+{
+    SetSweep(body, Sweep{Position{value.p, GetAngle(value.q)}, GetSweep(body).GetLocalCenter()});
 }
 
 /// @brief Gets the body's angle.

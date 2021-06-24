@@ -173,7 +173,7 @@ void Body::UnsetAwake() noexcept
 
 void Body::SetVelocity(const Velocity& velocity) noexcept
 {
-    if ((velocity.linear != LinearVelocity2{}) || (velocity.angular != 0_rpm)) {
+    if (velocity != Velocity{}) {
         if (!IsSpeedable()) {
             return;
         }
@@ -248,17 +248,17 @@ bool Body::Detach(ShapeID shapeId)
 
 void SetLocation(Body& body, Length2 value)
 {
-    SetTransformation(body, Transformation{value, UnitVec::Get(GetAngle(body))});
+    SetTransformation(body, Transformation{value, GetTransformation(body).q});
 }
 
 Angle GetAngle(const Body& body) noexcept
 {
-    return GetAngle(GetDirection(GetTransformation(body)));
+    return GetSweep(body).pos1.angular;
 }
 
 void SetAngle(Body& body, Angle value)
 {
-    SetTransformation(body, Transformation{GetLocation(body), UnitVec::Get(value)});
+    SetSweep(body, Sweep{Position{GetSweep(body).pos1.linear, value}, GetLocalCenter(body)});
 }
 
 Velocity GetVelocity(const Body& body, Time h) noexcept

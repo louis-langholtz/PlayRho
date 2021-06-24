@@ -1280,7 +1280,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     // Update bodies' pos0 values.
     for_each(cbegin(island.bodies), cend(island.bodies), [&](const auto& bodyID) {
         auto& body = m_bodyBuffer[to_underlying(bodyID)];
-        SetPosition0(body, GetPosition1(body)); // like Advance0(1) on the sweep.
+        SetPosition0(body, GetPosition1(body));
         // XXX/TODO figure out why the following causes Gears Test to stutter!!!
         // SetSweep(body, GetNormalized(GetSweep(body)));
         // SetSweep(body, Sweep{GetNormalized(GetPosition0(body)), GetLocalCenter(body)});
@@ -1365,7 +1365,6 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
         // XXX/TODO figure out why calling GetNormalized here causes Gears Test to stutter!!!
         if (const auto pos = /*GetNormalized*/(bc.GetPosition()); GetPosition1(body) != pos) {
             SetPosition1(body, pos);
-            SetTransformation(body, GetTransformation(pos, GetLocalCenter(body)));
             FlagForUpdating(m_contactBuffer, m_bodyContacts[i]);
         }
     }
@@ -1428,8 +1427,8 @@ WorldImpl::UpdateContactTOIs(const StepConf& conf)
          */
         const auto alpha0 = std::max(bA.GetSweep().GetAlpha0(), bB.GetSweep().GetAlpha0());
         assert(alpha0 >= 0 && alpha0 < 1);
-        bA.Advance0(alpha0);
-        bB.Advance0(alpha0);
+        Advance0(bA, alpha0);
+        Advance0(bB, alpha0);
 
         // Compute the TOI for this contact (one or both bodies are active and impenetrable).
         // Computes the time of impact in interval [0, 1]
@@ -1544,7 +1543,7 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
             if (m_islandedBodies[to_underlying(b)]) {
                 m_islandedBodies[to_underlying(b)] = false;
                 const auto& body = m_bodyBuffer[to_underlying(b)];
-                if (body.IsAccelerable()) {
+                if (IsAccelerable(body)) {
                     stats.proxiesMoved += Synchronize(b,
                                                       GetTransform0(body.GetSweep()),
                                                       GetTransformation(body),
@@ -1599,13 +1598,13 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
     auto& bB = m_bodyBuffer[to_underlying(bodyIdB)];
 
     {
-        const auto backupA = bA.GetSweep();
-        const auto backupB = bB.GetSweep();
+        const auto backupA = GetSweep(bA);
+        const auto backupB = GetSweep(bB);
 
         // Advance the bodies to the TOI.
-        assert(toi != 0 || (bA.GetSweep().GetAlpha0() == 0 && bB.GetSweep().GetAlpha0() == 0));
-        bA.Advance(toi);
-        bB.Advance(toi);
+        assert(toi != 0 || (GetSweep(bA).GetAlpha0() == 0 && GetSweep(bB).GetAlpha0() == 0));
+        Advance(bA, toi);
+        Advance(bB, toi);
         FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(bodyIdA)]);
         FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(bodyIdB)]);
 
@@ -1630,21 +1629,21 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
         //assert(contact.IsEnabled() && contact.IsTouching());
         if (!contact.IsEnabled() || !contact.IsTouching()) {
             //contact.UnsetEnabled();
-            bA.Restore(backupA);
-            bB.Restore(backupB);
+            SetSweep(bA, backupA);
+            SetSweep(bB, backupB);
             auto results = IslandStats{};
             results.contactsUpdated += contactsUpdated;
             results.contactsSkipped += contactsSkipped;
             return results;
         }
     }
-    if (bA.IsSpeedable()) {
+    if (IsSpeedable(bA)) {
         bA.SetAwakeFlag();
         // XXX should the body's under-active time be reset here?
         //   Erin's code does for here but not in b2World::Solve(const b2TimeStep& step).
         //   Calling Body::ResetUnderActiveTime() has performance implications.
     }
-    if (bB.IsSpeedable()) {
+    if (IsSpeedable(bB)) {
         bB.SetAwakeFlag();
         // XXX should the body's under-active time be reset here?
         //   Erin's code does for here but not in b2World::Solve(const b2TimeStep& step).
@@ -1671,12 +1670,12 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
     // Process the contacts of the two bodies, adding appropriate ones to the island,
     // adding appropriate other bodies of added contacts, and advancing those other
     // bodies sweeps and transforms to the minimum contact's TOI.
-    if (bA.IsAccelerable()) {
+    if (IsAccelerable(bA)) {
         const auto procOut = ProcessContactsForTOI(bodyIdA, m_island, toi, conf);
         contactsUpdated += procOut.contactsUpdated;
         contactsSkipped += procOut.contactsSkipped;
     }
-    if (bB.IsAccelerable()) {
+    if (IsAccelerable(bB)) {
         const auto procOut = ProcessContactsForTOI(bodyIdB, m_island, toi, conf);
         contactsUpdated += procOut.contactsUpdated;
         contactsSkipped += procOut.contactsSkipped;
@@ -1785,7 +1784,6 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
         body.JustSetVelocity(bc.GetVelocity());
         if (const auto pos = bc.GetPosition(); GetPosition1(body) != pos) {
             SetPosition1(body, pos);
-            SetTransformation(body, GetTransformation(pos, GetLocalCenter(body)));
             FlagForUpdating(m_contactBuffer, m_bodyContacts[i]);
         }
     }
@@ -1823,12 +1821,12 @@ WorldImpl::ProcessContactsForTOI(BodyID id, Island& island, Real toi, const Step
                 const auto bodyIdB = contact.GetBodyB();
                 const auto otherId = (bodyIdA != id)? bodyIdA: bodyIdB;
                 auto& other = m_bodyBuffer[to_underlying(otherId)];
-                if (bodyImpenetrable || other.IsImpenetrable()) {
+                if (bodyImpenetrable || IsImpenetrable(other)) {
                     const auto otherIslanded = m_islandedBodies[to_underlying(otherId)];
                     {
-                        const auto backup = other.GetSweep();
-                        if (!otherIslanded /* && other->GetSweep().GetAlpha0() != toi */) {
-                            other.Advance(toi);
+                        const auto backup = GetSweep(other);
+                        if (!otherIslanded /* && GetSweep(other).GetAlpha0() != toi */) {
+                            Advance(other, toi);
                             FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(otherId)]);
                         }
 
@@ -1844,20 +1842,20 @@ WorldImpl::ProcessContactsForTOI(BodyID id, Island& island, Real toi, const Step
 
                         // Revert and skip if contact disabled by user or not touching anymore (very possible).
                         if (!contact.IsEnabled() || !contact.IsTouching()) {
-                            other.Restore(backup);
+                            SetSweep(other, backup);
                             continue;
                         }
                     }
                     island.contacts.push_back(contactID);
                     m_islandedContacts[to_underlying(contactID)] = true;
                     if (!otherIslanded) {
-                        if (other.IsSpeedable()) {
+                        if (IsSpeedable(other)) {
                             other.SetAwakeFlag();
                         }
                         island.bodies.push_back(otherId);
                         m_islandedBodies[to_underlying(otherId)] = true;
 #if 0
-                        if (other.IsAccelerable()) {
+                        if (IsAccelerable(other)) {
                             contactsUpdated += ProcessContactsForTOI(island, other, toi);
                         }
 #endif
@@ -1963,14 +1961,11 @@ void WorldImpl::ShiftOrigin(Length2 newOrigin)
     // Optimize for newOrigin being different than current...
     for (const auto& body: m_bodies) {
         auto& b = m_bodyBuffer[to_underlying(body)];
-        auto transformation = GetTransformation(b);
-        transformation.p -= newOrigin;
-        SetTransformation(b, transformation);
-        FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(body)]);
         auto sweep = GetSweep(b);
         sweep.pos0.linear -= newOrigin;
         sweep.pos1.linear -= newOrigin;
         SetSweep(b, sweep);
+        FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(body)]);
     }
 
     for_each(begin(m_joints), end(m_joints), [&](const auto& joint) {
@@ -2514,13 +2509,6 @@ void WorldImpl::SetBody(BodyID id, Body value)
         m_shapeBuffer.at(to_underlying(shapeId));
     }
     ValidateBodyFromUser(value);
-
-    {
-        // Silently set sweep positions to match body's transformation...
-        const auto localCenter = GetLocalCenter(value);
-        const auto xfm = GetTransformation(value);
-        SetSweep(value, Sweep{Position{Transform(localCenter, xfm), GetAngle(xfm.q)}, localCenter});
-    }
 
     auto addToBodiesForSync = false;
     // handle state changes that other data needs to stay in sync with

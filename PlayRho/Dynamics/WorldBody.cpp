@@ -417,7 +417,7 @@ void SetMassData(World& world, BodyID id, const MassData& massData)
     body.SetInvMassData(invMass, invRotInertia);
     // Move center of mass.
     const auto oldCenter = GetWorldCenter(body);
-    body.SetSweep(Sweep{
+    SetSweep(body, Sweep{
         Position{Transform(massData.center, GetTransformation(body)), GetAngle(body)},
         massData.center
     });

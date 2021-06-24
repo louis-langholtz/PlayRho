@@ -737,13 +737,13 @@ TEST(World, GetSetAngle)
     EXPECT_NO_THROW(SetAngle(world, body, Pi * 0.5_rad));
     EXPECT_NEAR(double(StripUnit(GetAngle(world, body))), Pi * 0.5, 0.00001);
     EXPECT_NO_THROW(SetAngle(world, body, Pi * 2.1_rad));
-    EXPECT_NEAR(double(StripUnit(GetAngle(world, body))), Pi * 0.1, 0.00001);
+    EXPECT_NEAR(double(StripUnit(GetAngle(world, body))), Pi * 2.1, 0.00001);
     EXPECT_NO_THROW(SetAngle(world, body, Pi * 0_rad));
     EXPECT_NO_THROW(SetVelocity(world, body, 60_rpm));
     for (auto i = 0; i < 105; ++i) {
-        world.Step();
+        EXPECT_NO_THROW(Step(world));
     }
-    EXPECT_NEAR(double(StripUnit(GetAngle(world, body))), //
+    EXPECT_NEAR(double(StripUnit(GetAngle(GetTransformation(world, body).q))), //
                 double(StripUnit(GetNormalized(Angle{60_rpm * 105 * (1_s / 60)}))), //
                 0.001);
 }

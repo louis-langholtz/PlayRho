@@ -164,7 +164,7 @@ TEST(Body, EqualsOperator)
     }
     {
         auto body = Body{};
-        body.SetTransformation(Transformation{Length2{2_m, 0_m}, UnitVec{}});
+        SetTransformation(body, Transformation{Length2{2_m, 0_m}, UnitVec{}});
         EXPECT_FALSE(body == Body());
     }
     {
@@ -236,7 +236,7 @@ TEST(Body, NotEqualsOperator)
     }
     {
         auto body = Body{};
-        body.SetTransformation(Transformation{Length2{2_m, 0_m}, UnitVec{}});
+        SetTransformation(body, Transformation{Length2{2_m, 0_m}, UnitVec{}});
         EXPECT_TRUE(body != Body());
     }
     {
