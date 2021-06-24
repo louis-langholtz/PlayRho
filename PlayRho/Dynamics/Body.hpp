@@ -29,7 +29,6 @@
 
 #include <PlayRho/Dynamics/BodyType.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
-#include <PlayRho/Dynamics/BodyID.hpp>
 
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>
@@ -44,21 +43,18 @@ namespace d2 {
 /// This is the <code>googletest</code> based unit testing file for the interfaces to
 ///   <code>playrho::d2::Body</code>.
 
-/// @brief Physical entity that exists within a World.
+/// @brief A "body" physical entity.
 ///
-/// @details A rigid body entity created or destroyed through a World instance. These have
-///   physical properties like: position, velocity, acceleration, and mass.
+/// @details A rigid body entity having associated properties like position, velocity,
+///   acceleration, and mass.
 ///
 /// @invariant Only bodies that allow sleeping, can be put to sleep.
 /// @invariant Only "speedable" bodies can be awake.
 /// @invariant Only "speedable" bodies can have non-zero velocities.
 /// @invariant Only "accelerable" bodies can have non-zero accelerations.
 /// @invariant Only "accelerable" bodies can have non-zero "under-active" times.
-///
-/// @note Create these using the <code>World::CreateBody</code> method.
-/// @note Destroy these using the <code>World::Destroy(BodyID)</code> method.
-/// @note On a 64-bit architecture with 4-byte Real, this data structure is at least
-///   192-bytes large.
+/// @invariant The body's transformation is always the body's sweep position one's linear position
+///   and the unit vector of the body's sweep position one's angular position.
 ///
 /// @ingroup PhysicalEntities
 ///
@@ -167,12 +163,7 @@ public:
     /// Sets the body's velocity.
     /// @note This sets what <code>GetVelocity()</code> returns.
     /// @see GetVelocity.
-    void JustSetVelocity(Velocity value) noexcept
-    {
-        assert(IsSpeedable() || (value == Velocity{}));
-        m_linearVelocity = value.linear;
-        m_angularVelocity = value.angular;
-    }
+    void JustSetVelocity(Velocity value) noexcept;
 
     /// @brief Sets the linear and rotational accelerations on this body.
     /// @note This has no effect on non-accelerable bodies.
@@ -211,12 +202,7 @@ public:
     /// @brief Sets the inverse mass data and clears the mass-data-dirty flag.
     /// @note This calls <code>UnsetMassDataDirty</code>.
     /// @see GetInvMass, GetInvRotInertia, IsMassDataDirty.
-    void SetInvMassData(InvMass invMass, InvRotInertia invRotI) noexcept
-    {
-        m_invMass = invMass;
-        m_invRotI = invRotI;
-        UnsetMassDataDirty();
-    }
+    void SetInvMassData(InvMass invMass, InvRotInertia invRotI) noexcept;
 
     /// @brief Gets the linear damping of the body.
     /// @see SetLinearDamping.
@@ -374,65 +360,33 @@ public:
 
     /// @brief Sets the sweep value of the given body.
     /// @see GetSweep.
-    void SetSweep(const Sweep& value) noexcept
-    {
-        assert(IsSpeedable() || value.pos0 == value.pos1);
-        m_sweep = value;
-        m_xf = GetTransform1(value);
-    }
+    void SetSweep(const Sweep& value) noexcept;
 
     /// @brief Sets the "position 0" value of the body to the given position.
     /// @see GetSweep, SetSweep.
-    void SetPosition0(const Position& value) noexcept
-    {
-        assert(IsSpeedable() || m_sweep.pos0 == value);
-        m_sweep.pos0 = value;
-    }
+    void SetPosition0(const Position& value) noexcept;
 
     /// @brief Sets the body sweep's "position 1" value.
     /// @see GetSweep, SetSweep.
-    void SetPosition1(const Position& value) noexcept
-    {
-        assert(IsSpeedable() || m_sweep.pos1 == value);
-        m_sweep.pos1 = value;
-        m_xf = ::playrho::d2::GetTransformation(value, m_sweep.GetLocalCenter());
-    }
+    void SetPosition1(const Position& value) noexcept;
 
     /// @brief Resets the given body's "alpha-0" value.
     /// @see GetSweep.
-    void ResetAlpha0() noexcept
-    {
-        m_sweep.ResetAlpha0();
-    }
+    void ResetAlpha0() noexcept;
 
     /// @brief Calls the body sweep's <code>Advance0</code> method to advance to
     ///    the given value.
     /// @see GetSweep.
-    void Advance0(Real value) noexcept
-    {
-        // Note: Static bodies must **never** have different sweep position values.
-        // Confirm bodies don't have different sweep positions to begin with...
-        assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
-        m_sweep.Advance0(value);
-        // Confirm bodies don't have different sweep positions to end with...
-        assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
-    }
+    void Advance0(Real value) noexcept;
 
     /// @brief Gets the identifiers of the shapes attached to this body.
     /// @see SetShapes, Attach, Detach.
-    std::vector<ShapeID> GetShapes() const noexcept
-    {
-        return m_shapes;
-    }
+    std::vector<ShapeID> GetShapes() const noexcept;
 
     /// @brief Sets the identifiers of the shapes attached to this body.
     /// @note This also sets the mass-data-dirty flag.
     /// @see GetShapes, Attach, Detach.
-    void SetShapes(std::vector<ShapeID> value)
-    {
-        m_shapes = std::move(value);
-        SetMassDataDirty();
-    }
+    void SetShapes(std::vector<ShapeID> value);
 
     /// @brief Adds the given shape identifier to the identifiers associated with this body.
     /// @note This also sets the mass-data-dirty flag. Call <code>SetInvMassData</code> to clear it.
@@ -526,6 +480,13 @@ inline InvMass Body::GetInvMass() const noexcept
 inline InvRotInertia Body::GetInvRotInertia() const noexcept
 {
     return m_invRotI;
+}
+
+inline void Body::SetInvMassData(InvMass invMass, InvRotInertia invRotI) noexcept
+{
+    m_invMass = invMass;
+    m_invRotI = invRotI;
+    UnsetMassDataDirty();
 }
 
 inline Frequency Body::GetLinearDamping() const noexcept
@@ -623,18 +584,6 @@ inline bool Body::IsSleepingAllowed() const noexcept
     return (m_flags & e_autoSleepFlag) != 0;
 }
 
-inline void Body::SetSleepingAllowed(bool flag) noexcept
-{
-    if (flag) {
-        m_flags |= e_autoSleepFlag;
-    }
-    else if (IsSpeedable()) {
-        m_flags &= ~e_autoSleepFlag;
-        SetAwakeFlag();
-        ResetUnderActiveTime();
-    }
-}
-
 inline LinearAcceleration2 Body::GetLinearAcceleration() const noexcept
 {
     return m_linearAcceleration;
@@ -668,6 +617,52 @@ inline void Body::SetEnabled() noexcept
 inline void Body::UnsetEnabled() noexcept
 {
     m_flags &= ~e_enabledFlag;
+}
+
+inline void Body::SetSweep(const Sweep& value) noexcept
+{
+    assert(IsSpeedable() || value.pos0 == value.pos1);
+    m_sweep = value;
+    m_xf = GetTransform1(value);
+}
+
+inline void Body::SetPosition0(const Position& value) noexcept
+{
+    assert(IsSpeedable() || m_sweep.pos0 == value);
+    m_sweep.pos0 = value;
+}
+
+inline void Body::SetPosition1(const Position& value) noexcept
+{
+    assert(IsSpeedable() || m_sweep.pos1 == value);
+    m_sweep.pos1 = value;
+    m_xf = ::playrho::d2::GetTransformation(value, m_sweep.GetLocalCenter());
+}
+
+inline void Body::ResetAlpha0() noexcept
+{
+    m_sweep.ResetAlpha0();
+}
+
+inline void Body::Advance0(Real value) noexcept
+{
+    // Note: Static bodies must **never** have different sweep position values.
+    // Confirm bodies don't have different sweep positions to begin with...
+    assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
+    m_sweep.Advance0(value);
+    // Confirm bodies don't have different sweep positions to end with...
+    assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
+}
+
+inline std::vector<ShapeID> Body::GetShapes() const noexcept
+{
+    return m_shapes;
+}
+
+inline void Body::SetShapes(std::vector<ShapeID> value)
+{
+    m_shapes = std::move(value);
+    SetMassDataDirty();
 }
 
 // Free functions...
@@ -933,10 +928,7 @@ inline const Transformation& GetTransformation(const Body& body) noexcept
 ///   given.
 /// @see GetTransformation(const Body& body), GetPosition1(const Body& body).
 /// @relatedalso Body
-inline void SetTransformation(Body& body, const Transformation& value) noexcept
-{
-    SetSweep(body, Sweep{Position{value.p, GetAngle(value.q)}, GetSweep(body).GetLocalCenter()});
-}
+void SetTransformation(Body& body, const Transformation& value) noexcept;
 
 /// @brief Gets the body's angle.
 /// @return Body's angle relative to its World.

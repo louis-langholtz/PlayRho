@@ -22,9 +22,7 @@
 #include <PlayRho/Dynamics/Body.hpp>
 
 #include <PlayRho/Dynamics/BodyConf.hpp>
-#include <PlayRho/Common/WrongState.hpp>
 
-#include <iterator>
 #include <type_traits>
 #include <utility>
 
@@ -151,6 +149,18 @@ void Body::SetType(BodyType value) noexcept
     m_underActiveTime = 0;
 }
 
+void Body::SetSleepingAllowed(bool flag) noexcept
+{
+    if (flag) {
+        m_flags |= e_autoSleepFlag;
+    }
+    else if (IsSpeedable()) {
+        m_flags &= ~e_autoSleepFlag;
+        SetAwakeFlag();
+        ResetUnderActiveTime();
+    }
+}
+
 void Body::SetAwake() noexcept
 {
     // Ignore this request unless this body is speedable so as to maintain the body's invariant
@@ -181,6 +191,13 @@ void Body::SetVelocity(const Velocity& velocity) noexcept
         ResetUnderActiveTime();
     }
     JustSetVelocity(velocity);
+}
+
+void Body::JustSetVelocity(Velocity value) noexcept
+{
+    assert(IsSpeedable() || (value == Velocity{}));
+    m_linearVelocity = value.linear;
+    m_angularVelocity = value.angular;
 }
 
 void Body::SetAcceleration(LinearAcceleration2 linear, AngularAcceleration angular) noexcept
@@ -245,6 +262,11 @@ bool Body::Detach(ShapeID shapeId)
 }
 
 // Free functions...
+
+void SetTransformation(Body& body, const Transformation& value) noexcept
+{
+    SetSweep(body, Sweep{Position{value.p, GetAngle(value.q)}, GetSweep(body).GetLocalCenter()});
+}
 
 void SetLocation(Body& body, Length2 value)
 {
