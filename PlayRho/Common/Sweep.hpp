@@ -133,6 +133,13 @@ constexpr bool operator!=(const Sweep& lhs, const Sweep& rhs)
     return !(lhs == rhs);
 }
 
+/// @brief Convenience function for setting the sweep's local center.
+/// @relatedalso Sweep
+inline void SetLocalCenter(Sweep& sweep, Length2 value) noexcept
+{
+    sweep = Sweep{sweep.pos0, sweep.pos1, value, sweep.GetAlpha0()};
+}
+
 } // namespace d2
 
 /// @brief Determines if the given value is valid.
