@@ -1132,6 +1132,25 @@ inline void SetMass(Body& body, Mass mass)
     body.SetInvMassData(InvMass{Real(1) / mass}, body.GetInvRotInertia());
 }
 
+/// @brief Gets the rotational inertia of the body.
+/// @param body Body to get the rotational inertia for.
+/// @return the rotational inertia.
+/// @see Body::GetInvRotInertia, Body::SetInvMassData.
+/// @relatedalso Body
+inline RotInertia GetRotInertia(const Body& body) noexcept
+{
+    const auto invRotInertia = body.GetInvRotInertia();
+    return (invRotInertia == InvRotInertia{}) ? std::numeric_limits<RotInertia>::infinity()
+                                              : RotInertia{Real{1} / invRotInertia};
+}
+
+/// @brief Sets the rotational inertia of the body.
+/// @relatedalso Body
+inline void SetRotInertia(Body& body, RotInertia value) noexcept
+{
+    body.SetInvMassData(body.GetInvMass(), InvRotInertia{Real(1) / value});
+}
+
 /// @brief Sets the linear and rotational accelerations on this body.
 /// @note This has no effect on non-accelerable bodies.
 /// @note A non-zero acceleration will also awaken the body.
@@ -1160,18 +1179,6 @@ inline void SetAcceleration(Body& body, LinearAcceleration2 value) noexcept
 inline void SetAcceleration(Body& body, AngularAcceleration value) noexcept
 {
     body.SetAcceleration(body.GetLinearAcceleration(), value);
-}
-
-/// @brief Gets the rotational inertia of the body.
-/// @param body Body to get the rotational inertia for.
-/// @return the rotational inertia.
-/// @see Body::GetInvRotInertia, Body::SetInvMassData.
-/// @relatedalso Body
-inline RotInertia GetRotInertia(const Body& body) noexcept
-{
-    const auto invRotInertia = body.GetInvRotInertia();
-    return (invRotInertia == InvRotInertia{}) ? std::numeric_limits<RotInertia>::infinity()
-                                              : RotInertia{Real{1} / invRotInertia};
 }
 
 /// @brief Gets the rotational inertia of the body about the local origin.

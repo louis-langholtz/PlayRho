@@ -26,6 +26,8 @@
 #include "backends/imgui_impl_opengl3.h"
 #include "ExtensionsForImgui.hpp"
 
+#include <cmath> // for std::nextafter
+
 // From imgui example code:
 //  "About Desktop OpenGL function loaders:
 //   Modern desktop OpenGL doesn't have a standard portable header file to load OpenGL function
@@ -320,10 +322,11 @@ static void EntityUI(bool& variable, const char* title)
 }
 
 template <class T>
-static auto LengthUI(T& variable, const char* title) -> decltype(Real(variable / 1_m) == Real())
+static auto LengthUI(T& variable, const char* title, const char* fmt = "%.3f")
+-> decltype(Real(variable / 1_m) == Real())
 {
     auto value = Real{variable / 1_m};
-    if (InputReal(title, value)) {
+    if (InputReal(title, value, 0, 0, fmt)) {
         variable = value * 1_m;
         return true;
     }
@@ -345,6 +348,16 @@ static bool AngleUI(Angle& variable, const char* title, const char* fmt = "%f")
     auto v = Real{variable / 1_deg};
     if (InputReal(title, v, 0, 0, fmt)) {
         variable = v * 1_deg;
+        return true;
+    }
+    return false;
+}
+
+static bool MassUI(Mass& variable, const char* title, const char* fmt = "%f")
+{
+    auto v = Real{variable / 1_kg};
+    if (InputReal(title, v, 0, 0, fmt)) {
+        variable = v * 1_kg;
         return true;
     }
     return false;
@@ -826,16 +839,16 @@ static bool ChangeType(Body& object, BodyType newType)
     return false;
 }
 
-static bool ChangeType(GearJointConf::TypeData& object, int newType)
+static bool ChangeType(GearJointConf::TypeData& object, std::size_t newType)
 {
     switch (newType) {
-    case 1:
+    case 1u:
         object = GearJointConf::PrismaticData{};
         return true;
-    case 2:
+    case 2u:
         object = GearJointConf::RevoluteData{};
         return true;
-    case 0:
+    case 0u:
         break;
     }
     object = std::monostate{};
@@ -1531,8 +1544,9 @@ static void EntityUI(BodyID& id, BodyCounter bodyRange, const char* title)
     }
 }
 
-static void EntityUI(const Sweep& sweep)
+static bool EntityUI(Sweep& sweep)
 {
+    auto changed = false;
     ImGui::TextUnformatted("Sweep Info...");
     if (ImGui::IsItemHovered()) {
         ImGui::ShowTooltip("The sweep represents current and end positions of the body if "
@@ -1540,23 +1554,31 @@ static void EntityUI(const Sweep& sweep)
                            "factor of how far along it's been moved so far during the step.",
                            tooltipWrapWidth);
     }
-    const auto totalWidth = 180.0f;
-    const auto linPosColWidths = std::initializer_list<float>{54, 54};
-    const auto angPosColWidths = std::initializer_list<float>{108};
-    {
-        ImGui::ColumnsContext cc(3, "ColsLinPos0", false);
-        ImGui::SetColumnWidths(totalWidth, linPosColWidths);
-        ImGui::Text("%f", static_cast<float>(Real(GetX(sweep.pos0.linear)/1_m)));
-        ImGui::NextColumn();
-        ImGui::Text("%f", static_cast<float>(Real(GetY(sweep.pos0.linear)/1_m)));
-        ImGui::NextColumn();
-        ImGui::Text("Lin. Pos. 0");
-        ImGui::NextColumn();
+    constexpr auto totalWidth = 180.0f;
+    constexpr auto colWidth = 52.0f;
+    const auto angPosColWidths = std::initializer_list<float>{colWidth, colWidth};
+    if (LengthUI(sweep.pos0.linear, "Lin. Pos. 0")) {
+        changed = true;
     }
     {
-        ImGui::ColumnsContext cc(2, "ColsAngPos0", false);
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2,2));
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
+        ImGui::ColumnsContext cc(3, "ColsAngPos0", false);
         ImGui::SetColumnWidths(totalWidth, angPosColWidths);
-        ImGui::Text("%f", static_cast<float>(Real(sweep.pos0.angular/1_deg)));
+        {
+            ImGui::ItemWidthContext itemWidthCtx(colWidth);
+            if (AngleUI(sweep.pos0.angular, "##AngPos0")) {
+                changed = true;
+            }
+        }
+        ImGui::NextColumn();
+        {
+            ImGui::ItemWidthContext itemWidthCtx(colWidth);
+            if (ImGui::Button("Norm.##0", ImVec2(-1, 0))) {
+                sweep.pos0.angular = GetNormalized(sweep.pos0.angular);
+                changed = true;
+            }
+        }
         ImGui::NextColumn();
         ImGui::Text("Ang. Pos. 0");
         if (ImGui::IsItemHovered()) {
@@ -1564,21 +1586,31 @@ static void EntityUI(const Sweep& sweep)
                               static_cast<float>(Real(GetNormalized(sweep.pos0.angular)/1_deg)));
         }
         ImGui::NextColumn();
+        ImGui::PopStyleVar();
+        ImGui::PopStyleVar();
+    }
+    if (LengthUI(sweep.pos1.linear, "Lin. Pos. 1")) {
+        changed = true;
     }
     {
-        ImGui::ColumnsContext cc(3, "ColsLinPos1", false);
-        ImGui::SetColumnWidths(totalWidth, linPosColWidths);
-        ImGui::Text("%f", static_cast<float>(Real(GetX(sweep.pos1.linear)/1_m)));
-        ImGui::NextColumn();
-        ImGui::Text("%f", static_cast<float>(Real(GetY(sweep.pos1.linear)/1_m)));
-        ImGui::NextColumn();
-        ImGui::Text("Lin. Pos. 1");
-        ImGui::NextColumn();
-    }
-    {
-        ImGui::ColumnsContext cc(2, "ColsAngPos1", false);
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
+        ImGui::ColumnsContext cc(3, "ColsAngPos1", false);
         ImGui::SetColumnWidths(totalWidth, angPosColWidths);
-        ImGui::Text("%f", static_cast<float>(Real(sweep.pos1.angular/1_deg)));
+        {
+            ImGui::ItemWidthContext itemWidthCtx(colWidth);
+            if (AngleUI(sweep.pos1.angular, "##AngPos1")) {
+                changed = true;
+            }
+        }
+        ImGui::NextColumn();
+        {
+            ImGui::ItemWidthContext itemWidthCtx(colWidth);
+            if (ImGui::Button("Norm.##1", ImVec2(-1, 0))) {
+                sweep.pos1.angular = GetNormalized(sweep.pos1.angular);
+                changed = true;
+            }
+        }
         ImGui::NextColumn();
         ImGui::Text("Ang. Pos. 1");
         if (ImGui::IsItemHovered()) {
@@ -1586,29 +1618,38 @@ static void EntityUI(const Sweep& sweep)
                               static_cast<float>(Real(GetNormalized(sweep.pos1.angular)/1_deg)));
         }
         ImGui::NextColumn();
+        ImGui::PopStyleVar();
+        ImGui::PopStyleVar();
     }
     {
-        ImGui::ColumnsContext cc(3, "ColsLocalCtr", false);
-        ImGui::SetColumnWidths(totalWidth, linPosColWidths);
-        const auto massCenter = sweep.GetLocalCenter();
-        ImGui::Text("%f", static_cast<float>(Real(GetX(massCenter)/1_m)));
-        ImGui::NextColumn();
-        ImGui::Text("%f", static_cast<float>(Real(GetY(massCenter)/1_m)));
-        ImGui::NextColumn();
-        ImGui::Text("Loc. Mass Ctr.");
+        auto location = sweep.GetLocalCenter();
+        if (LengthUI(location, "Loc. Mass Ctr.")) {
+            SetLocalCenter(sweep, location);
+            changed = true;
+        }
         if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Local center of mass in meters.", tooltipWrapWidth);
         }
-        ImGui::NextColumn();
     }
     {
         ImGui::ColumnsContext cc(2, "ColsAlpha0", false);
-        ImGui::SetColumnWidths(totalWidth, angPosColWidths);
-        ImGui::Text("%f", static_cast<float>(sweep.GetAlpha0()));
+        ImGui::SetColumnWidths(totalWidth, {colWidth * 2 + 4});
+        {
+            const auto min = 0.0f;
+            const auto max = std::nextafter(1.0f, min);
+            auto value = static_cast<float>(sweep.GetAlpha0());
+            ImGui::ItemWidthContext itemWidthCtx(colWidth * 2 + 4);
+            if (ImGui::SliderFloat("##Alpha0", &value, min, max, "%.2f")) {
+                value = std::min(value, max);
+                sweep.Advance0(Real(value));
+                changed = true;
+            }
+        }
         ImGui::NextColumn();
         ImGui::Text("Alpha 0");
         ImGui::NextColumn();
     }
+    return changed;
 }
 
 static void EntityUI(Body& body)
@@ -1674,7 +1715,12 @@ static void EntityUI(Body& body)
         }
     }
     ImGui::Spacing();
-    EntityUI(GetSweep(body));
+    {
+        auto sweep = GetSweep(body);
+        if (EntityUI(sweep)) {
+            SetSweep(body, sweep);
+        }
+    }
     ImGui::Spacing();
     {
         auto v = IsImpenetrable(body);
@@ -1710,24 +1756,30 @@ static void EntityUI(Body& body)
             }
         }
     }
-
     {
         auto v = IsEnabled(body);
         if (ImGui::Checkbox("Enabled", &v)) {
             SetEnabled(body, v);
         }
     }
-    
-    ImGui::LabelText("Mass", "%.2e kg", static_cast<double>(Real{GetMass(body) / Kilogram}));
-    if (ImGui::IsItemHovered()) {
-        ImGui::ShowTooltip("Mass of the body.", tooltipWrapWidth);
+    {
+        auto v = GetMass(body);
+        if (MassUI(v, "Mass", "%.2e kg")) {
+            SetMass(body, v);
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Mass of the body.", tooltipWrapWidth);
+        }
     }
-    
-    ImGui::LabelText("Rot. Inertia", "%.2e kg·m²",
-                     static_cast<double>(Real{GetRotInertia(body) / (1_kg * 1_m2 / Square(1_rad))}));
-    if (ImGui::IsItemHovered()) {
-        ImGui::ShowTooltip("Rotational inertia of the body. This may be the calculated value"
-                           " or a set value.", tooltipWrapWidth);
+    {
+        auto v = Real{GetRotInertia(body) / (1_kg * 1_m2 / Square(1_rad))};
+        if (InputReal("Rot. Inertia", v, 0, 0, "%.2e kg·m²")) {
+            SetRotInertia(body, RotInertia{v * (1_kg * 1_m2 / Square(1_rad))});
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Rotational inertia of the body. This may be the calculated value"
+                               " or a set value.", tooltipWrapWidth);
+        }
     }
 }
 
