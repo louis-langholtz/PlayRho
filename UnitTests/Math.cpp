@@ -676,11 +676,13 @@ TEST(Math, ModuloViaFmod)
 {
     {
         SCOPED_TRACE("For float");
-        TestModuloFunction<float>(ModuloViaFmod<float>);
+        auto f = ModuloViaFmod<float>;
+        TestModuloFunction<float>(f);
     }
     {
         SCOPED_TRACE("For double");
-        TestModuloFunction<double>(ModuloViaFmod<double>);
+        auto f = ModuloViaFmod<double>;
+        TestModuloFunction<double>(f);
     }
 }
 
@@ -688,11 +690,13 @@ TEST(Math, ModuloViaTrunc)
 {
     {
         SCOPED_TRACE("For float");
-        TestModuloFunction<float>(ModuloViaTrunc<float>);
+        auto f = ModuloViaTrunc<float>;
+        TestModuloFunction<float>(f);
     }
     {
         SCOPED_TRACE("For double");
-        TestModuloFunction<double>(ModuloViaTrunc<double>);
+        auto f = ModuloViaTrunc<double>;
+        TestModuloFunction<double>(f);
     }
 }
 

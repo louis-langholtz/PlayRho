@@ -2890,7 +2890,7 @@ TEST(World_Longer, TilesComesToRest)
         case  4:
         {
             // From commits after 507a7c15c
-            EXPECT_EQ(numSteps,         1793ul);
+            EXPECT_EQ(numSteps,         1800ul);
             EXPECT_EQ(sumRegPosIters,  36514ul);
             EXPECT_EQ(sumRegVelIters,  46947ul);
             EXPECT_EQ(sumToiPosIters,  44106ul);
