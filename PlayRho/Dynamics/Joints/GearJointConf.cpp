@@ -378,8 +378,8 @@ bool SolvePosition(const GearJointConf& object, std::vector<BodyConstraint>& bod
                  bodyConstraintD.GetInvRotInertia() * impulse * JwD * Meter / Radian};
     bodyConstraintA.SetPosition(posA + deltaA);
     bodyConstraintB.SetPosition(posB + deltaB);
-    bodyConstraintC.SetPosition(posC + deltaC);
-    bodyConstraintD.SetPosition(posD + deltaD);
+    bodyConstraintC.SetPosition(posC - deltaC);
+    bodyConstraintD.SetPosition(posD - deltaD);
     auto linearError = 0_m2;
     auto angularError = 0_rad;
     linearError = std::max(linearError, GetMagnitudeSquared(deltaA.linear));
