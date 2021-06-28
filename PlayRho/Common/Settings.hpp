@@ -165,10 +165,10 @@ constexpr auto DefaultMaxAngularCorrection = Real(8.0f / 180.0f) * Pi * 1_rad;
 constexpr auto DefaultMaxTranslation = 2_m;
 
 /// @brief Default maximum rotation per world step.
-/// @warning This value should be less than Pi * Radian.
+/// @warning This value should always be less than 180 degrees - i.e. less than .5 * Pi * Radian.
 /// @note This limit is meant to prevent numerical problems. Adjusting this value isn't advised.
 /// @see StepConf::maxRotation.
-constexpr auto DefaultMaxRotation = Angle{Pi * 1_rad / Real(2)};
+constexpr auto DefaultMaxRotation = Angle{179_deg};
 
 /// @brief Default maximum time of impact iterations.
 constexpr auto DefaultMaxToiIters = std::uint8_t{20};
