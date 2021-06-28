@@ -21,6 +21,8 @@
 
 #include <PlayRho/Common/Math.hpp>
 
+#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
+
 namespace playrho {
 
 namespace {
@@ -315,6 +317,16 @@ Position GetPosition(Position pos0, Position pos1, Real beta) noexcept
     // More than twice as fast as USE_NORMALIZATION_FOR_ANGULAR_LERP
     return pos0 + (pos1 - pos0) * beta;
 #endif
+}
+
+Position Cap(Position pos, const ConstraintSolverConf& conf)
+{
+    if (const auto lsquared = GetMagnitudeSquared(pos.linear);
+        lsquared > Square(conf.maxLinearCorrection)) {
+        pos.linear *= conf.maxLinearCorrection / sqrt(lsquared);
+    }
+    pos.angular = std::clamp(pos.angular, -conf.maxAngularCorrection, +conf.maxAngularCorrection);
+    return pos;
 }
 
 LinearVelocity2 GetContactRelVelocity(const Velocity velA, const Length2 relA, const Velocity velB,

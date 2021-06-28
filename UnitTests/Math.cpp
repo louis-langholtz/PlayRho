@@ -20,6 +20,8 @@
 
 #include <PlayRho/Common/Math.hpp>
 
+#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
+
 #include <array>
 #include <type_traits>
 #include <chrono>
@@ -700,6 +702,20 @@ TEST(Math, ModuloViaTrunc)
     }
 }
 
+TEST(Math, GetFwdRotationalAngle)
+{
+    EXPECT_EQ(GetFwdRotationalAngle(0_deg, 0_deg), 0_deg);
+    EXPECT_NEAR(double(Real{GetFwdRotationalAngle(0_deg, 10_deg) / 1_deg}), -350.0, 0.0001);
+    EXPECT_NEAR(double(Real{GetFwdRotationalAngle(-10_deg, 0_deg) / 1_deg}), -350.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real{GetFwdRotationalAngle(90_deg, -90_deg)/1_deg}), -180.0, 0.0001);
+    EXPECT_NEAR(double(Real{GetFwdRotationalAngle(100_deg, 110_deg) / 1_deg}), -350.0, 0.0001);
+    EXPECT_NEAR(double(Real{GetFwdRotationalAngle( 10_deg,   0_deg) / 1_deg}),  -10.0, 0.0001);
+    EXPECT_NEAR(double(Real{GetFwdRotationalAngle( -2_deg,  +3_deg) / 1_deg}), -355.0, 0.001);
+    EXPECT_NEAR(double(Real{GetFwdRotationalAngle( +2_deg,  -3_deg) / 1_deg}),   -5.0, 0.001);
+    EXPECT_NEAR(double(Real{GetFwdRotationalAngle(-13_deg,  -3_deg) / 1_deg}), -350.0, 0.001);
+    EXPECT_NEAR(double(Real{GetFwdRotationalAngle(-10_deg, -20_deg) / 1_deg}),  -10.0, 0.001);
+}
+
 TEST(Math, GetRevRotationalAngle)
 {
     EXPECT_EQ(GetRevRotationalAngle(0_deg, 0_deg), 0_deg);
@@ -1022,6 +1038,20 @@ TEST(Math, GetPosition)
         EXPECT_NEAR(static_cast<double>(Real(p.angular / 1_rad)), -3.1410722732543945, abserr);
     }
 #endif
+}
+
+TEST(Math, CapPosition)
+{
+    EXPECT_EQ(GetX(Cap(Position{}, ConstraintSolverConf{}).linear), 0_m);
+    EXPECT_EQ(GetY(Cap(Position{}, ConstraintSolverConf{}).linear), 0_m);
+    EXPECT_EQ(Cap(Position{}, ConstraintSolverConf{}).angular, 0_deg);
+
+    EXPECT_NEAR(double(StripUnit(GetX(Cap(Position{Length2{10_m, 0_m}, 360_deg}, ConstraintSolverConf{}).linear))),
+                double(StripUnit(ConstraintSolverConf{}.maxLinearCorrection)), 0.0001);
+    EXPECT_NEAR(double(StripUnit(GetY(Cap(Position{Length2{0_m, 10_m}, 360_deg}, ConstraintSolverConf{}).linear))),
+                double(StripUnit(ConstraintSolverConf{}.maxLinearCorrection)), 0.0001);
+    EXPECT_NEAR(double(StripUnit(Cap(Position{Length2{0_m, 0_m}, 360_deg}, ConstraintSolverConf{}).angular)),
+                double(StripUnit(ConstraintSolverConf{}.maxAngularCorrection)), 0.0001);
 }
 
 TEST(Math, ToiTolerance)

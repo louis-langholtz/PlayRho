@@ -42,6 +42,8 @@
 
 namespace playrho {
 
+struct ConstraintSolverConf;
+
 // Import common standard mathematical functions into the playrho namespace...
 using std::abs;
 using std::atan2;
@@ -648,7 +650,14 @@ constexpr T GetModuloPrev(T value, T count) noexcept
 /// @see GetNormalized
 Angle GetShortestDelta(Angle a0, Angle a1) noexcept;
 
-/// Gets the reverse (counter) clockwise rotational angle to go from angle 1 to angle 2.
+/// @brief Gets the forward/clockwise rotational angle to go from angle 1 to angle 2.
+/// @return Angular rotation in the clockwise direction to go from angle 1 to angle 2.
+constexpr Angle GetFwdRotationalAngle(Angle a1, Angle a2) noexcept
+{
+    return (a1 < a2) ? (a2 - a1) - 360_deg : a2 - a1;
+}
+
+/// @brief Gets the reverse (counter) clockwise rotational angle to go from angle 1 to angle 2.
 /// @return Angular rotation in the counter clockwise direction to go from angle 1 to angle 2.
 constexpr Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcept
 {
@@ -810,6 +819,10 @@ inline Sweep GetNormalized(Sweep sweep) noexcept
 ///   between position 0 and position 1.
 /// @relatedalso Position
 Position GetPosition(Position pos0, Position pos1, Real beta) noexcept;
+
+/// @brief Caps the given position by the amounts specified in the given configuration.
+/// @relatedalso Position
+Position Cap(Position pos, const ConstraintSolverConf& conf);
 
 /// @brief Transforms the given 2-D vector with the given transformation.
 /// @details
