@@ -92,14 +92,15 @@ struct GearJointConf : public JointBuilder<GearJointConf> {
     /// @brief Identifier of body D.
     BodyID bodyD = InvalidBodyID;
 
-    TypeData typeData1;
-    TypeData typeData2;
+    TypeData typeDataAC; ///< Data for a revolute or prismatic joint between body A & C.
+    TypeData typeDataBD; ///< Data for a revolute or prismatic joint between body B & D.
 
     /// The gear ratio.
     /// @see constant, GearJoint.
     Real ratio = Real{1};
 
     /// @brief Constant applied with the ratio.
+    /// @note If this value is not finite, then position constraint solving will be skipped.
     /// @see ratio.
     Real constant = Real{0};
 
@@ -149,8 +150,8 @@ constexpr bool operator==(const GearJointConf& lhs, const GearJointConf& rhs) no
         // Now check rest...
         && (lhs.bodyC == rhs.bodyC) // line break
         && (lhs.bodyD == rhs.bodyD) // line break
-        && (lhs.typeData1 == rhs.typeData1) // line break
-        && (lhs.typeData2 == rhs.typeData2) // line break
+        && (lhs.typeDataAC == rhs.typeDataAC) // line break
+        && (lhs.typeDataBD == rhs.typeDataBD) // line break
         && (lhs.ratio == rhs.ratio) // line break
         && (lhs.constant == rhs.constant) // line break
         && (lhs.impulse == rhs.impulse) // line break
@@ -242,11 +243,11 @@ constexpr auto GetConstant(const GearJointConf& object) noexcept
 
 /// @brief Free function for getting joint 1 type value of the given configuration.
 /// @relatedalso GearJointConf
-TypeID GetType1(const GearJointConf& object) noexcept;
+TypeID GetTypeAC(const GearJointConf& object) noexcept;
 
 /// @brief Free function for getting joint 2 type value of the given configuration.
 /// @relatedalso GearJointConf
-TypeID GetType2(const GearJointConf& object) noexcept;
+TypeID GetTypeBD(const GearJointConf& object) noexcept;
 
 /// @brief Gets the local anchor A property of the given joint.
 Length2 GetLocalAnchorA(const GearJointConf& conf);

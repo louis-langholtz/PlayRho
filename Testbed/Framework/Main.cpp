@@ -2437,26 +2437,27 @@ static void EntityUI(TargetJointConf& conf, BodyCounter bodyRange)
 
 static void EntityUI(GearJointConf& conf, BodyCounter bodyRange)
 {
-    const auto type1 = GetType1(conf);
-    const auto type1name = (type1 != GetTypeID<void>())? Test::ToName(type1): "unset";
+    const auto typeAC = GetTypeAC(conf);
+    const auto typeNameAC = (typeAC != GetTypeID<void>())? Test::ToName(typeAC): "unset";
     const auto hoverMessageAC = [&]() {
         if (ImGui::IsItemHovered()) {
-            ImGui::SetTooltip("Data for a %s joint between bodies A (%u) and C (%u).", type1name,
+            ImGui::SetTooltip("Data for a %s joint between bodies A (%u) and C (%u).", typeNameAC,
                               to_underlying(conf.bodyA), to_underlying(conf.bodyC));
         }
     };
-    if (ImGui::TreeNodeEx("TypeData1", 0, "A-C Type Data (%s)", type1name)) {
+    if (ImGui::TreeNodeEx("TypeDataAC", 0, "A-C Type Data (%s)", typeNameAC)) {
         hoverMessageAC();
-        ChangeTypeUI(conf.typeData1);
-        if (std::holds_alternative<GearJointConf::RevoluteData>(conf.typeData1)) {
-            auto& data = std::get<GearJointConf::RevoluteData>(conf.typeData1);
+        ChangeTypeUI(conf.typeDataAC);
+        if (std::holds_alternative<GearJointConf::RevoluteData>(conf.typeDataAC)) {
+            auto& data = std::get<GearJointConf::RevoluteData>(conf.typeDataAC);
             AngleUI(data.referenceAngle, "Ref. Angle (°)");
             if (ImGui::IsItemHovered()) {
-                ImGui::ShowTooltip("Reference angle in degrees.", tooltipWrapWidth);
+                ImGui::ShowTooltip("Reference angle in degrees. This is the initial angular "
+                                   "difference from body C to body A.", tooltipWrapWidth);
             }
         }
-        if (std::holds_alternative<GearJointConf::PrismaticData>(conf.typeData1)) {
-            auto& data = std::get<GearJointConf::PrismaticData>(conf.typeData1);
+        if (std::holds_alternative<GearJointConf::PrismaticData>(conf.typeDataAC)) {
+            auto& data = std::get<GearJointConf::PrismaticData>(conf.typeDataAC);
             LengthUI(data.localAnchorA, "Loc. Anchor C");
             if (ImGui::IsItemHovered()) {
                 ImGui::SetTooltip("Anchor local to body C (%u).", to_underlying(conf.bodyC));
@@ -2473,26 +2474,27 @@ static void EntityUI(GearJointConf& conf, BodyCounter bodyRange)
         hoverMessageAC();
     }
 
-    const auto type2 = GetType2(conf);
-    const auto type2name = (type2 != GetTypeID<void>())? Test::ToName(type2): "unset";
+    const auto typeBD = GetTypeBD(conf);
+    const auto typeNameBD = (typeBD != GetTypeID<void>())? Test::ToName(typeBD): "unset";
     const auto hoverMessageBD = [&]() {
         if (ImGui::IsItemHovered()) {
-            ImGui::SetTooltip("Data for a %s joint between bodies B (%u) and D (%u).", type2name,
+            ImGui::SetTooltip("Data for a %s joint between bodies B (%u) and D (%u).", typeNameBD,
                               to_underlying(conf.bodyB), to_underlying(conf.bodyD));
         }
     };
-    if (ImGui::TreeNodeEx("TypeData2", 0, "B-D Type Data (%s)", type2name)) {
+    if (ImGui::TreeNodeEx("TypeDataBD", 0, "B-D Type Data (%s)", typeNameBD)) {
         hoverMessageBD();
-        ChangeTypeUI(conf.typeData2);
-        if (std::holds_alternative<GearJointConf::RevoluteData>(conf.typeData2)) {
-            auto& data = std::get<GearJointConf::RevoluteData>(conf.typeData2);
+        ChangeTypeUI(conf.typeDataBD);
+        if (std::holds_alternative<GearJointConf::RevoluteData>(conf.typeDataBD)) {
+            auto& data = std::get<GearJointConf::RevoluteData>(conf.typeDataBD);
             AngleUI(data.referenceAngle, "Ref. Angle (°)");
             if (ImGui::IsItemHovered()) {
-                ImGui::ShowTooltip("Reference angle in degrees.", tooltipWrapWidth);
+                ImGui::ShowTooltip("Reference angle in degrees. This is the initial angular "
+                                   "difference from body D to body B.", tooltipWrapWidth);
             }
         }
-        if (std::holds_alternative<GearJointConf::PrismaticData>(conf.typeData2)) {
-            auto& data = std::get<GearJointConf::PrismaticData>(conf.typeData2);
+        if (std::holds_alternative<GearJointConf::PrismaticData>(conf.typeDataBD)) {
+            auto& data = std::get<GearJointConf::PrismaticData>(conf.typeDataBD);
             LengthUI(data.localAnchorA, "Loc. Anchor D");
             if (ImGui::IsItemHovered()) {
                 ImGui::SetTooltip("Anchor local to body D (%u).", to_underlying(conf.bodyD));
@@ -2510,7 +2512,15 @@ static void EntityUI(GearJointConf& conf, BodyCounter bodyRange)
     }
 
     InputReal("Constant", conf.constant, 0, 0, "%.3f");
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("An offset applied along with the ratio during position constraint "
+                           "solving. A non-finite value skips position constraint solving.",
+                           tooltipWrapWidth);
+    }
     InputReal("Ratio", conf.ratio, 0, 0, "%.3f");
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("The gearing ratio between bodies A & B.", tooltipWrapWidth);
+    }
     InputReal("\"Mass\"", conf.mass, 0, 0, "%.3f");
 
     InputReals("JvAC", conf.JvAC);
