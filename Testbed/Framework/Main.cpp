@@ -1561,8 +1561,8 @@ static bool EntityUI(Sweep& sweep)
         changed = true;
     }
     {
-        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2,2));
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
+        ImGui::StyleVarContext itemSpacingCtx(ImGuiStyleVar_ItemSpacing, ImVec2(2,2));
+        ImGui::StyleVarContext framePaddingCtx(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
         ImGui::ColumnsContext cc(3, "ColsAngPos0", false);
         ImGui::SetColumnWidths(totalWidth, angPosColWidths);
         {
@@ -1586,15 +1586,13 @@ static bool EntityUI(Sweep& sweep)
                               static_cast<float>(Real(GetNormalized(sweep.pos0.angular)/1_deg)));
         }
         ImGui::NextColumn();
-        ImGui::PopStyleVar();
-        ImGui::PopStyleVar();
     }
     if (LengthUI(sweep.pos1.linear, "Lin. Pos. 1")) {
         changed = true;
     }
     {
-        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
+        ImGui::StyleVarContext itemSpacingCtx(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
+        ImGui::StyleVarContext framePaddingCtx(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
         ImGui::ColumnsContext cc(3, "ColsAngPos1", false);
         ImGui::SetColumnWidths(totalWidth, angPosColWidths);
         {
@@ -1618,8 +1616,6 @@ static bool EntityUI(Sweep& sweep)
                               static_cast<float>(Real(GetNormalized(sweep.pos1.angular)/1_deg)));
         }
         ImGui::NextColumn();
-        ImGui::PopStyleVar();
-        ImGui::PopStyleVar();
     }
     {
         auto location = sweep.GetLocalCenter();
@@ -1813,11 +1809,7 @@ static auto DensityUI(T& shape) -> decltype(SetDensity(shape, GetDensity(shape))
 {
     auto val = static_cast<float>(Real{GetDensity(shape) * SquareMeter / Kilogram});
     if (ImGui::InputFloat("Density (kg/m²)", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-        try {
-            SetDensity(shape, val * Kilogram / SquareMeter);
-        } catch (const std::invalid_argument& ex) {
-            ui->message = ex.what();
-        }
+        SetDensity(shape, val * Kilogram / SquareMeter);
     }
 }
 
@@ -1826,11 +1818,7 @@ static auto FrictionUI(T& shape) -> decltype(SetFriction(shape, GetFriction(shap
 {
     auto val = static_cast<float>(GetFriction(shape));
     if (ImGui::InputFloat("Friction", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-        try {
-            SetFriction(shape, val);
-        } catch (const std::invalid_argument& ex) {
-            ui->message = ex.what();
-        }
+        SetFriction(shape, val);
     }
     if (ImGui::IsItemHovered()) {
         ImGui::ShowTooltip("Friction for the shape. Value must be non-negative!",
@@ -1843,11 +1831,7 @@ static auto RestitutionUI(T& shape) -> decltype(SetRestitution(shape, GetRestitu
 {
     auto val = static_cast<float>(GetRestitution(shape));
     if (ImGui::InputFloat("Restitution", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-        try {
-            SetRestitution(shape, val);
-        } catch (const std::invalid_argument& ex) {
-            ui->message = ex.what();
-        }
+        SetRestitution(shape, val);
     }
     if (ImGui::IsItemHovered()) {
         ImGui::ShowTooltip("Restitution/bounciness for the shape. Value must be finite!",
@@ -1858,14 +1842,9 @@ static auto RestitutionUI(T& shape) -> decltype(SetRestitution(shape, GetRestitu
 template <class T>
 static auto SensorUI(T& shape) -> decltype(SetSensor(shape, IsSensor(shape)))
 {
-    auto v = IsSensor(shape);
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-    if (ImGui::Checkbox("Sensor", &v)) {
-        try {
-            SetSensor(shape, v);
-        } catch (const std::invalid_argument& ex) {
-            ui->message = ex.what();
-        }
+    ImGui::StyleVarContext framePaddingCtx(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+    if (auto v = IsSensor(shape); ImGui::Checkbox("Sensor", &v)) {
+        SetSensor(shape, v);
     }
     if (ImGui::IsItemHovered()) {
         ImGui::ShowTooltip("Whether or not this acts as a sensor."
@@ -1874,7 +1853,6 @@ static auto SensorUI(T& shape) -> decltype(SetSensor(shape, IsSensor(shape)))
                            " bodies having just sensor shapes.",
                            tooltipWrapWidth);
     }
-    ImGui::PopStyleVar();
 }
 
 template <class T>
@@ -1931,11 +1909,7 @@ static auto FilterUI(T& shape) -> decltype(SetFilter(shape, GetFilter(shape)))
         static_cast<Filter::index_type>(groupIndex)
     };
     if (newFilterData != oldFilterData) {
-        try {
-            SetFilter(shape, newFilterData);
-        } catch (const std::invalid_argument& ex) {
-            ui->message = ex.what();
-        }
+        SetFilter(shape, newFilterData);
     }
 }
 
@@ -2115,7 +2089,12 @@ static void EntityUI(World& world, ShapeID shapeId)
     }
     ImGui::SameLine();
     ImGui::Text("Shape's Type");
-    EntityUI(shape);
+    try {
+        EntityUI(shape);
+    }
+    catch (const std::invalid_argument& ex) {
+        ui->message = std::string("Invalid shape setting: ") + ex.what();
+    }
     if (GetShape(world, shapeId) != shape) {
         SetShape(world, shapeId, shape);
     }
@@ -2129,10 +2108,10 @@ static void ShapesUI(World& world)
     ImGui::IdContext idCtx("WorldShapes");
     const auto y = ImGui::GetCursorPosY();
     {
+        ImGui::StyleVarContext itemSpacingCtx(ImGuiStyleVar_ItemSpacing, ImVec2(2,2));
+        ImGui::StyleVarContext framePaddingCtx(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
+        ImGui::ColumnsContext columnsCtx(2, "TransformationMatrix", false);
         const auto columnWidth = 40.0f;
-        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2,2));
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
-        ImGui::Columns(2, "TransformationMatrix", false);
         ImGui::SetColumnWidth(0, columnWidth);
         ImGui::SetColumnWidth(1, columnWidth);
         {
@@ -2166,9 +2145,6 @@ static void ShapesUI(World& world)
                 shapeTransformationMatrix[1][1] = val;
             }
         }
-        ImGui::Columns(1);
-        ImGui::PopStyleVar();
-        ImGui::PopStyleVar();
     }
     ImGui::SameLine();
     ImGui::SetCursorPosY(y + 3);
@@ -3006,7 +2982,7 @@ static void ModelEntitiesUI()
     const auto selShapes = false;
     auto& world = test->GetWorld();
 
-    ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, ImGui::GetFontSize()*1);
+    ImGui::StyleVarContext indentSpacingCtx(ImGuiStyleVar_IndentSpacing, ImGui::GetFontSize()*1);
     ImGui::Spacing();
     {
         static auto shape = Shape{PolygonShapeConf{}};
@@ -3087,7 +3063,6 @@ static void ModelEntitiesUI()
         }
     }
     ImGui::Spacing();
-    ImGui::PopStyleVar();
 }
 
 static bool UserInterface()

@@ -131,6 +131,24 @@ struct PopupModalContext
     }
 };
 
+struct StyleVarContext
+{
+    StyleVarContext(ImGuiStyleVar idx, const ImVec2& val)
+    {
+        PushStyleVar(idx, val);
+    }
+
+    StyleVarContext(ImGuiStyleVar idx, float val)
+    {
+        PushStyleVar(idx, val);
+    }
+
+    ~StyleVarContext()
+    {
+        PopStyleVar();
+    }
+};
+
 IMGUI_API void Value(const char* prefix, unsigned long v);
 IMGUI_API void Value(const char* prefix, double v, const char* float_format = nullptr);
 
