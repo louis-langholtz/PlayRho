@@ -37,6 +37,27 @@
 
 namespace playrho::shape_part {
 
+/// @brief "Discriminator" for named template arguments.
+/// @note "[This allows] the various setter types to be identical. (You cannot have multiple direct
+///   base classes of the same type. Indirect base classes, on the other hand, can have types that
+///   are identical to those of other bases.)"
+/// @see https://flylib.com/books/en/3.401.1.126/1/
+template <class Base, int D>
+struct Discriminator : Base {
+};
+
+/// @brief Policy selector for named template arguments.
+/// @see https://flylib.com/books/en/3.401.1.126/1/
+template <class Set1, class Set2, class Set3, class Set4, class Set5, class Set6>
+struct PolicySelector : Discriminator<Set1, 1>, //
+                        Discriminator<Set2, 2>, //
+                        Discriminator<Set3, 3>, //
+                        Discriminator<Set4, 4>, //
+                        Discriminator<Set5, 5>, //
+                        Discriminator<Set6, 6> //
+{
+};
+
 template <int W = 1, int H = 1, int V = 2>
 class StaticRectangle
 {
@@ -360,27 +381,6 @@ struct DynamicSensor {
     bool sensor = V;
 };
 
-/// @brief "Discriminator" for named template arguments.
-/// @note "[This allows] the various setter types to be identical. (You cannot have multiple direct
-///   base classes of the same type. Indirect base classes, on the other hand, can have types that
-///   are identical to those of other bases.)"
-/// @see https://flylib.com/books/en/3.401.1.126/1/
-template <class Base, int D>
-struct Discriminator : Base {
-};
-
-/// @brief Policy selector for named template arguments.
-/// @see https://flylib.com/books/en/3.401.1.126/1/
-template <class Set1, class Set2, class Set3, class Set4, class Set5, class Set6>
-struct PolicySelector : Discriminator<Set1, 1>, //
-                        Discriminator<Set2, 2>, //
-                        Discriminator<Set3, 3>, //
-                        Discriminator<Set4, 4>, //
-                        Discriminator<Set5, 5>, //
-                        Discriminator<Set6, 6> //
-{
-};
-
 /// @brief Default policies for the <code>Compositor</code> template class.
 struct DefaultPolicies {
     /// @brief Alias of the geometry policy.
@@ -606,7 +606,7 @@ auto Transform(Compositor<P1, P2, P3, P4, P5, P6>& arg, const Mat22& m)
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto SetVertexRadius(Compositor<P1, P2, P3, P4, P5, P6>& arg, decltype(arg.GetVertexRadius()) value)
--> decltype(arg.SetVertexRadius(value))
+    -> decltype(arg.SetVertexRadius(value))
 {
     return arg.SetVertexRadius(value);
 }
