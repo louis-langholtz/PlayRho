@@ -92,14 +92,14 @@ struct DynamicAreaDensity {
 template <int V = 2>
 struct StaticLinearSlopVertexRadius {
     /// @brief Vertex radius of the shape.
-    static constexpr auto vertexRadius = DefaultLinearSlop * Real(V);
+    static constexpr auto vertexRadius = NonNegative<Length>{Real(V) * DefaultLinearSlop};
 };
 
 /// @brief Dynamic vertex radius policy class.
 template <int V = 2>
 struct DynamicVertexRadius {
     /// @brief Vertex radius of the shape.
-    Length vertexRadius = DefaultLinearSlop * Real(V);
+    NonNegative<Length> vertexRadius = NonNegative<Length>{Real(V) * DefaultLinearSlop};
 };
 
 /// @brief Static filter policy class.
