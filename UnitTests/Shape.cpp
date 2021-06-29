@@ -211,6 +211,8 @@ TEST(Shape, ForMutableDataTypeCastIsLikeAnyCast)
 
 TEST(Shape, types)
 {
+    using namespace playrho::part;
+
     EXPECT_EQ(GetTypeID<DiskShapeConf>(), GetTypeID<DiskShapeConf>());
 
     const auto sc = DiskShapeConf{1_m};
@@ -221,7 +223,8 @@ TEST(Shape, types)
     EXPECT_NE(GetTypeID(DiskShapeConf{}), GetTypeID(EdgeShapeConf{}));
     EXPECT_EQ(GetTypeID(DiskShapeConf{}), GetTypeID(DiskShapeConf{}));
     EXPECT_EQ(GetTypeID(EdgeShapeConf{}), GetTypeID(EdgeShapeConf{}));
-    EXPECT_EQ(GetTypeID(StaticRectangle<1, 1>{}), GetTypeID(StaticRectangle<1, 1>{}));
+    EXPECT_EQ(GetTypeID(Compositor<GeometryIs<StaticRectangle<1, 1>>>{}),
+              GetTypeID(Compositor<GeometryIs<StaticRectangle<1, 1>>>{}));
 
     const auto s1 = Shape{sc};
     ASSERT_EQ(GetTypeID<Shape>(), GetTypeID(s1));
@@ -229,7 +232,8 @@ TEST(Shape, types)
     const auto& st1 = GetType(s1);
     ASSERT_NE(st1, GetTypeID<Shape>());
     EXPECT_EQ(st1, GetTypeID(sc));
-    EXPECT_EQ(Shape(StaticRectangle<1, 1>{}), Shape(StaticRectangle<1, 1>{}));
+    EXPECT_EQ(Shape(Compositor<GeometryIs<StaticRectangle<1, 1>>>{}),
+              Shape(Compositor<GeometryIs<StaticRectangle<1, 1>>>{}));
 
     const auto s2 = Shape{s1}; // This should copy construct
     const auto& st2 = GetType(s2);

@@ -24,7 +24,7 @@
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
 using namespace playrho;
-using namespace playrho::shape_part;
+using namespace playrho::part;
 
 TEST(Rectangle, ByteSize)
 {

@@ -35,7 +35,7 @@
 
 #include <array>
 
-namespace playrho::shape_part {
+namespace playrho::part {
 
 /// @brief "Discriminator" for named template arguments.
 /// @note "[This allows] the various setter types to be identical. (You cannot have multiple direct
@@ -759,19 +759,6 @@ bool operator!=(const Compositor<P11, P12, P13, P14, P15, P16>& lhs,
     return !(lhs == rhs);
 }
 
-} // namespace playrho::shape_part
-
-namespace playrho::d2 {
-
-template <int W = 1, int H = 1, int V = 2, //
-          class P2 = ::playrho::shape_part::DefaultPolicyArgs,
-          class P3 = ::playrho::shape_part::DefaultPolicyArgs, //
-          class P4 = ::playrho::shape_part::DefaultPolicyArgs, //
-          class P5 = ::playrho::shape_part::DefaultPolicyArgs, //
-          class P6 = ::playrho::shape_part::DefaultPolicyArgs>
-using StaticRectangle = ::playrho::shape_part::Compositor<
-    ::playrho::shape_part::GeometryIs<::playrho::shape_part::StaticRectangle<W, H, V>>>;
-
-} // namespace playrho::d2
+} // namespace playrho::part
 
 #endif // PLAYRHO_COLLISION_SHAPES_RECTANGLE_HPP
