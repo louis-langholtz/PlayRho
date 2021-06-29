@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2021 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -19,6 +19,7 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
@@ -29,21 +30,26 @@ TEST(EdgeShapeConf, ByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real))
-    {
-        case  4:
-            EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(56));
-            break;
-        case  8: EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(104)); break;
-        case 16: EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(208)); break;
-        default: FAIL(); break;
+    switch (sizeof(Real)) {
+    case 4:
+        EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(56));
+        break;
+    case 8:
+        EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(104));
+        break;
+    case 16:
+        EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(208));
+        break;
+    default:
+        FAIL();
+        break;
     }
 }
 
 TEST(EdgeShapeConf, GetInvalidChildThrows)
 {
     const auto foo = EdgeShapeConf{};
-    
+
     ASSERT_EQ(GetChildCount(foo), ChildCounter{1});
     EXPECT_NO_THROW(GetChild(foo, 0));
     EXPECT_THROW(GetChild(foo, 1), InvalidArgument);
@@ -98,37 +104,41 @@ TEST(EdgeShapeConf, Equality)
     EXPECT_TRUE(EdgeShapeConf() == EdgeShapeConf());
 
     EXPECT_FALSE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) == EdgeShapeConf());
-    EXPECT_TRUE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) == EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)));
+    EXPECT_TRUE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) ==
+                EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)));
 
     EXPECT_FALSE(EdgeShapeConf().UseVertexRadius(10_m) == EdgeShapeConf());
     EXPECT_TRUE(EdgeShapeConf().UseVertexRadius(10_m) == EdgeShapeConf().UseVertexRadius(10_m));
-    
+
     EXPECT_FALSE(EdgeShapeConf().UseDensity(10_kgpm2) == EdgeShapeConf());
     EXPECT_TRUE(EdgeShapeConf().UseDensity(10_kgpm2) == EdgeShapeConf().UseDensity(10_kgpm2));
-    
+
     EXPECT_FALSE(EdgeShapeConf().UseFriction(Real(10)) == EdgeShapeConf());
     EXPECT_TRUE(EdgeShapeConf().UseFriction(Real(10)) == EdgeShapeConf().UseFriction(Real(10)));
-    
+
     EXPECT_FALSE(EdgeShapeConf().UseRestitution(Real(10)) == EdgeShapeConf());
-    EXPECT_TRUE(EdgeShapeConf().UseRestitution(Real(10)) == EdgeShapeConf().UseRestitution(Real(10)));
+    EXPECT_TRUE(EdgeShapeConf().UseRestitution(Real(10)) ==
+                EdgeShapeConf().UseRestitution(Real(10)));
 }
 
 TEST(EdgeShapeConf, Inequality)
 {
     EXPECT_FALSE(EdgeShapeConf() != EdgeShapeConf());
-    
+
     EXPECT_TRUE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) != EdgeShapeConf());
-    EXPECT_FALSE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) != EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)));
+    EXPECT_FALSE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) !=
+                 EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)));
 
     EXPECT_TRUE(EdgeShapeConf().UseVertexRadius(10_m) != EdgeShapeConf());
     EXPECT_FALSE(EdgeShapeConf().UseVertexRadius(10_m) != EdgeShapeConf().UseVertexRadius(10_m));
-    
+
     EXPECT_TRUE(EdgeShapeConf().UseDensity(10_kgpm2) != EdgeShapeConf());
     EXPECT_FALSE(EdgeShapeConf().UseDensity(10_kgpm2) != EdgeShapeConf().UseDensity(10_kgpm2));
-    
+
     EXPECT_TRUE(EdgeShapeConf().UseFriction(Real(10)) != EdgeShapeConf());
     EXPECT_FALSE(EdgeShapeConf().UseFriction(Real(10)) != EdgeShapeConf().UseFriction(Real(10)));
-    
+
     EXPECT_TRUE(EdgeShapeConf().UseRestitution(Real(10)) != EdgeShapeConf());
-    EXPECT_FALSE(EdgeShapeConf().UseRestitution(Real(10)) != EdgeShapeConf().UseRestitution(Real(10)));
+    EXPECT_FALSE(EdgeShapeConf().UseRestitution(Real(10)) !=
+                 EdgeShapeConf().UseRestitution(Real(10)));
 }
