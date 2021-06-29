@@ -37,6 +37,248 @@
 
 namespace playrho::shape_part {
 
+template <int W = 1, int H = 1, int V = 2>
+class StaticRectangle
+{
+    using UnitVec = ::playrho::d2::UnitVec;
+    using DistanceProxy = ::playrho::d2::DistanceProxy;
+    using MassData = ::playrho::d2::MassData;
+
+    /// @brief Normals of the rectangle.
+    static constexpr auto normals = std::array<UnitVec, 4u>{
+        UnitVec::GetRight(), UnitVec::GetTop(), UnitVec::GetLeft(), UnitVec::GetBottom()};
+
+    /// @brief Vertices of the rectangle.
+    static constexpr auto vertices =
+        std::array<Length2, 4u>{Length2{+(W * Meter) / 2, -(H* Meter) / 2}, //
+                                Length2{+(W * Meter) / 2, +(H* Meter) / 2}, //
+                                Length2{-(W * Meter) / 2, +(H* Meter) / 2}, //
+                                Length2{-(W * Meter) / 2, -(H* Meter) / 2}};
+
+    /// @brief Vertex radius of the shape.
+    static constexpr auto vertexRadius = NonNegative<Length>{Real(V) * DefaultLinearSlop};
+
+public:
+    /// @brief Gets the dimensions of this rectangle.
+    /// @see SetDimensions.
+    constexpr Length2 GetDimensions() const noexcept
+    {
+        return Length2{GetX(vertices[0]) - GetX(vertices[2]),
+                       GetY(vertices[2]) - GetY(vertices[0])};
+    }
+
+    /// @brief Sets the dimensions of this rectangle.
+    /// @throws InvalidArgument If called to change the dimensions.
+    /// @see GetDimensions.
+    void SetDimensions(Length2 val)
+    {
+        if (GetDimensions() != val) {
+            throw InvalidArgument("changing dimensions not supported");
+        }
+    }
+
+    /// @brief Gets the x and y offset of this rectangle.
+    /// @see SetOffset.
+    constexpr Length2 GetOffset() const noexcept
+    {
+        return Length2{(GetX(vertices[0]) + GetX(vertices[2])) / 2,
+                       (GetY(vertices[0]) + GetY(vertices[2])) / 2};
+    }
+
+    /// @brief Sets the x and y offset of this rectangle.
+    /// @throws InvalidArgument If called to change the offset.
+    /// @see GetOffset.
+    void SetOffset(Length2 val)
+    {
+        if (GetOffset() != val) {
+            throw InvalidArgument("changing offset not supported");
+        }
+    }
+
+    constexpr NonNegative<Length> GetVertexRadius() const noexcept
+    {
+        return vertexRadius;
+    }
+
+    /// @brief Gets this rectangle's vertices.
+    /// @see GetNormals.
+    const std::array<Length2, 4u>& GetVertices() const noexcept
+    {
+        return vertices;
+    }
+
+    /// @brief Gets this rectangle's normals.
+    /// @see GetVertices.
+    const std::array<UnitVec, 4u>& GetNormals() const noexcept
+    {
+        return normals;
+    }
+
+    ChildCounter GetChildCount() const noexcept
+    {
+        return 1;
+    }
+
+    /// @brief Gets the "child" shape for the given shape configuration.
+    DistanceProxy GetChild(ChildCounter index) const
+    {
+        if (index != 0) {
+            throw InvalidArgument("only index of 0 is supported");
+        }
+        return DistanceProxy{GetVertexRadius(), static_cast<VertexCounter>(size(GetVertices())),
+                             data(GetVertices()), data(GetNormals())};
+    }
+
+    /// @brief Gets the mass data for the geometry.
+    MassData GetMassData(NonNegative<AreaDensity> density) const noexcept
+    {
+        return playrho::d2::GetMassData(vertexRadius, density, Span<const Length2>(GetVertices()));
+    }
+
+    void Transform(const Mat22& m)
+    {
+        if (m != GetIdentity<Mat22>()) {
+            throw InvalidArgument("transformation by non-identity matrix not supported");
+        }
+    }
+
+    void SetVertexRadius(NonNegative<Length> value)
+    {
+        if (GetVertexRadius() != value) {
+            throw InvalidArgument("changing vertex radius not supported");
+        }
+    }
+};
+
+template <int W = 1, int H = 1, int V = 2>
+class DynamicRectangle
+{
+    using UnitVec = ::playrho::d2::UnitVec;
+    using DistanceProxy = ::playrho::d2::DistanceProxy;
+    using MassData = ::playrho::d2::MassData;
+
+    /// @brief Normals of the rectangle.
+    static constexpr auto normals = std::array<UnitVec, 4u>{
+        UnitVec::GetRight(), UnitVec::GetTop(), UnitVec::GetLeft(), UnitVec::GetBottom()};
+
+    /// @brief Vertices of the rectangle.
+    std::array<Length2, 4u> vertices =
+        std::array<Length2, 4u>{Length2{+(W * Meter) / 2, -(H* Meter) / 2}, //
+                                Length2{+(W * Meter) / 2, +(H* Meter) / 2}, //
+                                Length2{-(W * Meter) / 2, +(H* Meter) / 2}, //
+                                Length2{-(W * Meter) / 2, -(H* Meter) / 2}};
+
+    /// @brief Vertex radius of the shape.
+    NonNegative<Length> vertexRadius = NonNegative<Length>{Real(V) * DefaultLinearSlop};
+
+public:
+    DynamicRectangle() = default;
+
+    /// @brief Initializing constructor.
+    DynamicRectangle(Length width, Length height, Length2 offset = Length2{})
+        : vertices{Length2{+width / 2, -height / 2} + offset, //
+                   Length2{+width / 2, +height / 2} + offset, //
+                   Length2{-width / 2, +height / 2} + offset, //
+                   Length2{-width / 2, -height / 2} + offset}
+    {
+        // Intentionally empty.
+    }
+
+    /// @brief Gets the dimensions of this rectangle.
+    /// @see SetDimensions.
+    Length2 GetDimensions() const noexcept
+    {
+        return Length2{GetX(vertices[0]) - GetX(vertices[2]),
+                       GetY(vertices[2]) - GetY(vertices[0])};
+    }
+
+    /// @brief Sets the dimensions of this rectangle.
+    /// @see GetDimensions.
+    void SetDimensions(Length2 val)
+    {
+        if (GetDimensions() != val) {
+            const auto offset = GetOffset();
+            vertices = {Length2{+GetX(val) / 2, -GetY(val) / 2} + offset, //
+                        Length2{+GetX(val) / 2, +GetY(val) / 2} + offset, //
+                        Length2{-GetX(val) / 2, +GetY(val) / 2} + offset, //
+                        Length2{-GetX(val) / 2, -GetY(val) / 2} + offset};
+        }
+    }
+
+    /// @brief Gets the x and y offset of this rectangle.
+    /// @see SetOffset.
+    Length2 GetOffset() const noexcept
+    {
+        return Length2{(GetX(vertices[0]) + GetX(vertices[2])) / 2,
+                       (GetY(vertices[0]) + GetY(vertices[2])) / 2};
+    }
+
+    /// @brief Sets the x and y offset of this rectangle.
+    /// @see GetOffset.
+    void SetOffset(Length2 val)
+    {
+        if (GetOffset() != val) {
+            const auto dims = GetDimensions();
+            vertices = {Length2{+GetX(dims) / 2, -GetY(dims) / 2} + val, //
+                        Length2{+GetX(dims) / 2, +GetY(dims) / 2} + val, //
+                        Length2{-GetX(dims) / 2, +GetY(dims) / 2} + val, //
+                        Length2{-GetX(dims) / 2, -GetY(dims) / 2} + val};
+        }
+    }
+
+    constexpr NonNegative<Length> GetVertexRadius() const noexcept
+    {
+        return vertexRadius;
+    }
+
+    /// @brief Gets this rectangle's vertices.
+    /// @see GetNormals, SetDimensions, SetOffset.
+    const std::array<Length2, 4u>& GetVertices() const noexcept
+    {
+        return vertices;
+    }
+
+    /// @brief Gets this rectangle's normals.
+    /// @see GetVertices.
+    const std::array<UnitVec, 4u>& GetNormals() const noexcept
+    {
+        return normals;
+    }
+
+    ChildCounter GetChildCount() const noexcept
+    {
+        return 1;
+    }
+
+    /// @brief Gets the "child" shape for the given shape configuration.
+    DistanceProxy GetChild(ChildCounter index) const
+    {
+        if (index != 0) {
+            throw InvalidArgument("only index of 0 is supported");
+        }
+        return DistanceProxy{GetVertexRadius(), static_cast<VertexCounter>(size(GetVertices())),
+                             data(GetVertices()), data(GetNormals())};
+    }
+
+    /// @brief Gets the mass data for the geometry.
+    MassData GetMassData(NonNegative<AreaDensity> density) const noexcept
+    {
+        return playrho::d2::GetMassData(vertexRadius, density, Span<const Length2>(GetVertices()));
+    }
+
+    void Transform(const Mat22& m)
+    {
+        if (m != GetIdentity<Mat22>()) {
+            throw InvalidArgument("transformation by non-identity matrix not supported");
+        }
+    }
+
+    void SetVertexRadius(NonNegative<Length> value)
+    {
+        vertexRadius = value;
+    }
+};
+
 /// @brief Static friction.
 template <int F = 0>
 struct StaticFriction {
@@ -88,20 +330,6 @@ struct DynamicAreaDensity {
     NonNegative<AreaDensity> density = NonNegative<AreaDensity>{Real(D) * KilogramPerSquareMeter};
 };
 
-/// @brief Static multiples of linear slop vertex radius policy class.
-template <int V = 2>
-struct StaticLinearSlopVertexRadius {
-    /// @brief Vertex radius of the shape.
-    static constexpr auto vertexRadius = NonNegative<Length>{Real(V) * DefaultLinearSlop};
-};
-
-/// @brief Dynamic vertex radius policy class.
-template <int V = 2>
-struct DynamicVertexRadius {
-    /// @brief Vertex radius of the shape.
-    NonNegative<Length> vertexRadius = NonNegative<Length>{Real(V) * DefaultLinearSlop};
-};
-
 /// @brief Static filter policy class.
 template <Filter::bits_type CategoryBits = 1, Filter::bits_type MaskBits = 0xFFFF,
           Filter::index_type GroupIndex = 0>
@@ -143,18 +371,21 @@ struct Discriminator : Base {
 
 /// @brief Policy selector for named template arguments.
 /// @see https://flylib.com/books/en/3.401.1.126/1/
-template <class Setter1, class Setter2, class Setter3, class Setter4, class Setter5, class Setter6>
-struct PolicySelector : Discriminator<Setter1, 1>, //
-                        Discriminator<Setter2, 2>, //
-                        Discriminator<Setter3, 3>, //
-                        Discriminator<Setter4, 4>, //
-                        Discriminator<Setter5, 5>, //
-                        Discriminator<Setter6, 6> //
+template <class Set1, class Set2, class Set3, class Set4, class Set5, class Set6>
+struct PolicySelector : Discriminator<Set1, 1>, //
+                        Discriminator<Set2, 2>, //
+                        Discriminator<Set3, 3>, //
+                        Discriminator<Set4, 4>, //
+                        Discriminator<Set5, 5>, //
+                        Discriminator<Set6, 6> //
 {
 };
 
-/// @brief Default policies for the <code>Rectangle</code> template class.
+/// @brief Default policies for the <code>Compositor</code> template class.
 struct DefaultPolicies {
+    /// @brief Alias of the geometry policy.
+    using Geometry = StaticRectangle<>;
+
     /// @brief Alias of the density policy.
     using Density = StaticAreaDensity<>;
 
@@ -164,9 +395,6 @@ struct DefaultPolicies {
     /// @brief Alias of the restitution policy.
     using Restitution = StaticRestitution<>;
 
-    /// @brief Alias of the vertex radius policy.
-    using VertexRadius = StaticLinearSlopVertexRadius<>;
-
     /// @brief Alias of the filter policy.
     using Filter = StaticFilter<>;
 
@@ -174,8 +402,15 @@ struct DefaultPolicies {
     using Sensor = StaticSensor<>;
 };
 
-/// @brief Default policy arguments for the <code>Rectangle</code> template class.
+/// @brief Default policy arguments for the <code>Compositor</code> template class.
 struct DefaultPolicyArgs : virtual DefaultPolicies {
+};
+
+/// @brief Sets the alias for the geometry policy.
+template <class Policy>
+struct GeometryIs : virtual DefaultPolicies {
+    /// @copydoc DefaultPolicies::Geometry
+    using Geometry = Policy;
 };
 
 /// @brief Sets the alias for the density policy.
@@ -199,13 +434,6 @@ struct RestitutionIs : virtual DefaultPolicies {
     using Restitution = Policy;
 };
 
-/// @brief Sets the alias for the vertex radius policy.
-template <class Policy>
-struct VertexRadiusIs : virtual DefaultPolicies {
-    /// @copydoc DefaultPolicies::VertexRadius
-    using VertexRadius = Policy;
-};
-
 /// @brief Sets the alias for the filter policy.
 template <class Policy>
 struct FilterIs : virtual DefaultPolicies {
@@ -220,337 +448,175 @@ struct SensorIs : virtual DefaultPolicies {
     using Sensor = Policy;
 };
 
-} // namespace playrho::shape_part
-
-namespace playrho::d2 {
-
-/// @brief Whether or not an associated shape's geometry (its position and dimensions)
-///   is mutable.
-enum class Geometry {
-    Constant,
-    Mutable,
-};
-
-/// @brief Templated rectangular shape part.
-/// @ingroup PartsGroup
-template <Geometry R, int W = 0, int H = 0, // force break
-          class P1 = shape_part::DefaultPolicyArgs, // force break
-          class P2 = shape_part::DefaultPolicyArgs, // force break
-          class P3 = shape_part::DefaultPolicyArgs, // force break
-          class P4 = shape_part::DefaultPolicyArgs, // force break
-          class P5 = shape_part::DefaultPolicyArgs, // force break
-          class P6 = shape_part::DefaultPolicyArgs>
-class Rectangle;
-
-/// @brief A statically sized rectangle shape template specialization taking zero or more policy
-///   classes.
-/// @ingroup PartsGroup
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-class Rectangle<Geometry::Constant, W, H, P1, P2, P3, P4, P5, P6> // break
-    : public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Density, // break
-      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Friction, // break
-      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Restitution, // break
-      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::VertexRadius, // break
-      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Filter, // break
-      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Sensor // break
+template <class P1 = DefaultPolicyArgs, //
+          class P2 = DefaultPolicyArgs, //
+          class P3 = DefaultPolicyArgs, //
+          class P4 = DefaultPolicyArgs, //
+          class P5 = DefaultPolicyArgs, //
+          class P6 = DefaultPolicyArgs>
+class Compositor : // break
+                   public PolicySelector<P1, P2, P3, P4, P5, P6>::Geometry, // break
+                   public PolicySelector<P1, P2, P3, P4, P5, P6>::Density, // break
+                   public PolicySelector<P1, P2, P3, P4, P5, P6>::Friction, // break
+                   public PolicySelector<P1, P2, P3, P4, P5, P6>::Restitution, // break
+                   public PolicySelector<P1, P2, P3, P4, P5, P6>::Filter, // break
+                   public PolicySelector<P1, P2, P3, P4, P5, P6>::Sensor // break
 {
-    /// @brief Normals of the rectangle.
-    static constexpr auto normals = std::array<UnitVec, 4u>{
-        UnitVec::GetRight(), UnitVec::GetTop(), UnitVec::GetLeft(), UnitVec::GetBottom()};
-
-    /// @brief Vertices of the rectangle.
-    static constexpr auto vertices =
-        std::array<Length2, 4u>{Length2{+(W * Meter) / 2, -(H* Meter) / 2}, //
-                                Length2{+(W * Meter) / 2, +(H* Meter) / 2}, //
-                                Length2{-(W * Meter) / 2, +(H* Meter) / 2}, //
-                                Length2{-(W * Meter) / 2, -(H* Meter) / 2}};
-
-public:
-    /// @brief Gets the dimensions of this rectangle.
-    /// @see SetDimensions.
-    constexpr Length2 GetDimensions() const noexcept
-    {
-        return Length2{GetX(vertices[0]) - GetX(vertices[2]),
-                       GetY(vertices[2]) - GetY(vertices[0])};
-    }
-
-    /// @brief Sets the dimensions of this rectangle.
-    /// @throws InvalidArgument If called to change the dimensions.
-    /// @see GetDimensions.
-    void SetDimensions(Length2 val)
-    {
-        if (GetDimensions() != val) {
-            throw InvalidArgument("changing dimensions not supported");
-        }
-    }
-
-    /// @brief Gets the x and y offset of this rectangle.
-    /// @see SetOffset.
-    Length2 GetOffset() const noexcept
-    {
-        return Length2{(GetX(vertices[0]) + GetX(vertices[2])) / 2,
-                       (GetY(vertices[0]) + GetY(vertices[2])) / 2};
-    }
-
-    /// @brief Sets the x and y offset of this rectangle.
-    /// @throws InvalidArgument If called to change the offset.
-    /// @see GetOffset.
-    void SetOffset(Length2 val)
-    {
-        if (GetOffset() != val) {
-            throw InvalidArgument("changing offset not supported");
-        }
-    }
-
-    /// @brief Gets this rectangle's vertices.
-    /// @see GetNormals.
-    const std::array<Length2, 4u>& GetVertices() const noexcept
-    {
-        return vertices;
-    }
-
-    /// @brief Gets this rectangle's normals.
-    /// @see GetVertices.
-    const std::array<UnitVec, 4u>& GetNormals() const noexcept
-    {
-        return normals;
-    }
-};
-
-/// @brief A dynamically sized rectangle shape template specialization taking zero or more policy
-///   classes.
-/// @ingroup PartsGroup
-template <int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-class Rectangle<Geometry::Mutable, W, H, P1, P2, P3, P4, P5, P6> // break
-    : public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Density, // break
-      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Friction, // break
-      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Restitution, // break
-      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::VertexRadius, // break
-      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Filter, // break
-      public shape_part::PolicySelector<P1, P2, P3, P4, P5, P6>::Sensor // break
-{
-    /// @brief Normals of the rectangle.
-    static constexpr auto normals = std::array<UnitVec, 4u>{
-        UnitVec::GetRight(), UnitVec::GetTop(), UnitVec::GetLeft(), UnitVec::GetBottom()};
-
-    /// @brief Vertices of the rectangle.
-    std::array<Length2, 4u> vertices =
-        std::array<Length2, 4u>{Length2{+(W * Meter) / 2, -(H* Meter) / 2}, //
-                                Length2{+(W * Meter) / 2, +(H* Meter) / 2}, //
-                                Length2{-(W * Meter) / 2, +(H* Meter) / 2}, //
-                                Length2{-(W * Meter) / 2, -(H* Meter) / 2}};
-
-public:
-    Rectangle() = default;
-
-    /// @brief Initializing constructor.
-    Rectangle(Length width, Length height, Length2 offset = Length2{})
-        : vertices{Length2{+width / 2, -height / 2} + offset, //
-                   Length2{+width / 2, +height / 2} + offset, //
-                   Length2{-width / 2, +height / 2} + offset, //
-                   Length2{-width / 2, -height / 2} + offset}
-    {
-        // Intentionally empty.
-    }
-
-    /// @brief Gets the dimensions of this rectangle.
-    /// @see SetDimensions.
-    Length2 GetDimensions() const noexcept
-    {
-        return Length2{GetX(vertices[0]) - GetX(vertices[2]),
-                       GetY(vertices[2]) - GetY(vertices[0])};
-    }
-
-    /// @brief Sets the dimensions of this rectangle.
-    /// @see GetDimensions.
-    void SetDimensions(Length2 val)
-    {
-        if (GetDimensions() != val) {
-            const auto offset = GetOffset();
-            vertices = {Length2{+GetX(val) / 2, -GetY(val) / 2} + offset, //
-                        Length2{+GetX(val) / 2, +GetY(val) / 2} + offset, //
-                        Length2{-GetX(val) / 2, +GetY(val) / 2} + offset, //
-                        Length2{-GetX(val) / 2, -GetY(val) / 2} + offset};
-        }
-    }
-
-    /// @brief Gets the x and y offset of this rectangle.
-    /// @see SetOffset.
-    Length2 GetOffset() const noexcept
-    {
-        return Length2{(GetX(vertices[0]) + GetX(vertices[2])) / 2,
-                       (GetY(vertices[0]) + GetY(vertices[2])) / 2};
-    }
-
-    /// @brief Sets the x and y offset of this rectangle.
-    /// @see GetOffset.
-    void SetOffset(Length2 val)
-    {
-        if (GetOffset() != val) {
-            const auto dims = GetDimensions();
-            vertices = {Length2{+GetX(dims) / 2, -GetY(dims) / 2} + val, //
-                        Length2{+GetX(dims) / 2, +GetY(dims) / 2} + val, //
-                        Length2{-GetX(dims) / 2, +GetY(dims) / 2} + val, //
-                        Length2{-GetX(dims) / 2, -GetY(dims) / 2} + val};
-        }
-    }
-    /// @brief Gets this rectangle's vertices.
-    /// @see GetNormals, SetDimensions, SetOffset.
-    const std::array<Length2, 4u>& GetVertices() const noexcept
-    {
-        return vertices;
-    }
-
-    /// @brief Gets this rectangle's normals.
-    /// @see GetVertices.
-    const std::array<UnitVec, 4u>& GetNormals() const noexcept
-    {
-        return normals;
-    }
 };
 
 /// @brief Gets the rectangle's width and height dimensions.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-constexpr Length2 GetDimensions(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
+constexpr auto GetDimensions(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
+    -> decltype(arg.GetDimensions())
 {
     return arg.GetDimensions();
 }
 
 /// @brief Sets the rectangle's width and height dimensions.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-void SetDimensions(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Length2 value)
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
+auto SetDimensions(Compositor<P1, P2, P3, P4, P5, P6>& arg, decltype(arg.GetDimensions()) value)
+    -> decltype(arg.SetDimensions(value))
 {
     arg.SetDimensions(value);
 }
 
 /// @brief Gets the rectangle's x and y offset.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-constexpr Length2 GetOffset(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
+constexpr auto GetOffset(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
+    -> decltype(arg.GetOffset())
 {
     return arg.GetOffset();
 }
 
 /// @brief Sets the rectangle's x and y offset.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-void SetOffset(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Length2 value)
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
+auto SetOffset(Compositor<P1, P2, P3, P4, P5, P6>& arg, decltype(arg.GetOffset()) value)
+    -> decltype(arg.SetOffset(value))
 {
     arg.SetOffset(value);
 }
 
 /// @brief Gets the "child" count for the given shape configuration.
 /// @return 1.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-constexpr ChildCounter GetChildCount(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>&) noexcept
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
+constexpr auto GetChildCount(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
+    -> decltype(arg.GetChildCount())
 {
-    return 1;
+    return arg.GetChildCount();
 }
 
 /// @brief Gets the "child" shape for the given shape configuration.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-DistanceProxy GetChild(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, ChildCounter index)
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
+auto GetChild(const Compositor<P1, P2, P3, P4, P5, P6>& arg, ChildCounter index)
+    -> decltype(arg.GetChild(index))
 {
-    if (index != 0) {
-        throw InvalidArgument("only index of 0 is supported");
-    }
-    return DistanceProxy{arg.vertexRadius, static_cast<VertexCounter>(size(arg.GetVertices())),
-                         data(arg.GetVertices()), data(arg.GetNormals())};
+    return arg.GetChild(index);
 }
 
 /// @brief Gets the density of the given shape configuration.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-constexpr NonNegative<AreaDensity>
-GetDensity(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
+constexpr auto GetDensity(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
+    -> decltype(arg.density)
 {
     return arg.density;
 }
 
 /// @brief Gets the restitution of the given shape configuration.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-constexpr Finite<Real>
-GetRestitution(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
+constexpr auto GetRestitution(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
+    -> decltype(arg.restitution)
 {
     return arg.restitution;
 }
 
 /// @brief Gets the friction of the given shape configuration.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-constexpr NonNegative<Real>
-GetFriction(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
+constexpr auto GetFriction(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
+    -> decltype(arg.friction)
 {
     return arg.friction;
 }
 
 /// @brief Gets the filter of the given shape configuration.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-constexpr Filter GetFilter(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
+constexpr auto GetFilter(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
+    -> decltype(arg.filter)
 {
     return arg.filter;
 }
 
 /// @brief Gets the is-sensor state of the given shape configuration.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-constexpr bool IsSensor(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
+constexpr auto IsSensor(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
+    -> decltype(arg.sensor)
 {
     return arg.sensor;
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-constexpr NonNegative<Length>
-GetVertexRadius(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
+constexpr auto GetVertexRadius(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
+    -> decltype(arg.GetVertexRadius())
 {
-    return arg.vertexRadius;
+    return arg.GetVertexRadius();
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-NonNegative<Length> GetVertexRadius(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg,
-                                    ChildCounter) noexcept
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
+auto GetVertexRadius(const Compositor<P1, P2, P3, P4, P5, P6>& arg, ChildCounter index) noexcept
+    -> decltype(GetVertexRadius(GetChild(arg, index)))
 {
-    return GetVertexRadius(arg);
+    return GetVertexRadius(GetChild(arg, index));
 }
 
 /// @brief Gets the mass data for the given shape configuration.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-MassData GetMassData(const Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg) noexcept
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
+auto GetMassData(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
+    -> decltype(arg.GetMassData(GetDensity(arg)))
 {
-    return playrho::d2::GetMassData(arg.vertexRadius, arg.density,
-                                    Span<const Length2>(arg.GetVertices()));
+    return arg.GetMassData(GetDensity(arg));
 }
 
 /// @brief Transforms the given polygon configuration's vertices by the given
 ///   transformation matrix.
-/// @relatedalso Rectangle
+/// @relatedalso Compositor
 /// @see https://en.wikipedia.org/wiki/Transformation_matrix
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-void Transform(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>&, const Mat22& m)
+template <class P1, class P2, class P3, class P4, class P5, class P6>
+auto Transform(Compositor<P1, P2, P3, P4, P5, P6>& arg, const Mat22& m)
+    -> decltype(arg.Transform(m))
 {
-    if (m != GetIdentity<Mat22>()) {
-        throw InvalidArgument("transformation by non-identity matrix not supported");
-    }
+    return arg.Transform(m);
+}
+
+/// @brief Sets the vertex radius of the given shape configuration.
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
+auto SetVertexRadius(Compositor<P1, P2, P3, P4, P5, P6>& arg, decltype(arg.GetVertexRadius()) value)
+-> decltype(arg.SetVertexRadius(value))
+{
+    return arg.SetVertexRadius(value);
 }
 
 /// @brief Density setter that throws unless given the same value as current.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
 std::enable_if_t<
-    std::is_const_v<decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>().density)>,
-    void>
-SetDensity(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, NonNegative<AreaDensity> value)
+    std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().density)>, void>
+SetDensity(Compositor<P1, P2, P3, P4, P5, P6>& arg, NonNegative<AreaDensity> value)
 {
     if (value != GetDensity(arg)) {
         throw InvalidArgument("SetDensity by non-equivalent value not supported");
@@ -558,23 +624,21 @@ SetDensity(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, NonNegative<AreaDens
 }
 
 /// @brief Density setter.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
 std::enable_if_t<
-    !std::is_const_v<decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>().density)>,
-    void>
-SetDensity(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, NonNegative<AreaDensity> value)
+    !std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().density)>, void>
+SetDensity(Compositor<P1, P2, P3, P4, P5, P6>& arg, NonNegative<AreaDensity> value)
 {
     arg.density = value;
 }
 
 /// @brief Filter setter that throws unless given the same value as current.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
 std::enable_if_t<
-    std::is_const_v<decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>().filter)>,
-    void>
-SetFilter(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Filter value)
+    std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().filter)>, void>
+SetFilter(Compositor<P1, P2, P3, P4, P5, P6>& arg, Filter value)
 {
     if (value != GetFilter(arg)) {
         throw InvalidArgument("SetFilter by non-equivalent filter not supported");
@@ -582,23 +646,21 @@ SetFilter(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Filter value)
 }
 
 /// @brief Filter setter.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
 std::enable_if_t<
-    !std::is_const_v<decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>().filter)>,
-    void>
-SetFilter(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Filter value)
+    !std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().filter)>, void>
+SetFilter(Compositor<P1, P2, P3, P4, P5, P6>& arg, Filter value)
 {
     arg.filter = value;
 }
 
 /// @brief Sensor setter that throws unless given the same value as current.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
 std::enable_if_t<
-    std::is_const_v<decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>().sensor)>,
-    void>
-SetSensor(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, bool value)
+    std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().sensor)>, void>
+SetSensor(Compositor<P1, P2, P3, P4, P5, P6>& arg, bool value)
 {
     if (value != IsSensor(arg)) {
         throw InvalidArgument("SetSensor by non-equivalent value not supported");
@@ -606,23 +668,21 @@ SetSensor(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, bool value)
 }
 
 /// @brief Sensor setter.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
 std::enable_if_t<
-    !std::is_const_v<decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>().sensor)>,
-    void>
-SetSensor(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, bool value)
+    !std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().sensor)>, void>
+SetSensor(Compositor<P1, P2, P3, P4, P5, P6>& arg, bool value)
 {
     arg.sensor = value;
 }
 
 /// @brief Friction setter that throws unless given the same value as current.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
 std::enable_if_t<
-    std::is_const_v<decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>().friction)>,
-    void>
-SetFriction(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Real value)
+    std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().friction)>, void>
+SetFriction(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
 {
     if (value != GetFriction(arg)) {
         throw InvalidArgument("SetFriction by non-equivalent value not supported");
@@ -630,23 +690,21 @@ SetFriction(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Real value)
 }
 
 /// @brief Sets friction.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
 std::enable_if_t<
-    !std::is_const_v<decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>().friction)>,
-    void>
-SetFriction(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Real value)
+    !std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().friction)>, void>
+SetFriction(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
 {
     arg.friction = value;
 }
 
 /// @brief Restitution setter that throws unless given the same value as current.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
-std::enable_if_t<std::is_const_v<decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>()
-                                              .restitution)>,
-                 void>
-SetRestitution(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Real value)
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
+std::enable_if_t<
+    std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().restitution)>, void>
+SetRestitution(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
 {
     if (value != GetRestitution(arg)) {
         throw InvalidArgument("SetRestitution by non-equivalent value not supported");
@@ -654,47 +712,65 @@ SetRestitution(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Real value)
 }
 
 /// @brief Sets restitution.
-/// @relatedalso Rectangle
-template <Geometry R, int W, int H, class P1, class P2, class P3, class P4, class P5, class P6>
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
 std::enable_if_t<
-    !std::is_const_v<
-        decltype(std::declval<Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>>().restitution)>,
+    !std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().restitution)>,
     void>
-SetRestitution(Rectangle<R, W, H, P1, P2, P3, P4, P5, P6>& arg, Real value)
+SetRestitution(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
 {
     arg.restitution = value;
 }
 
 /// @brief Equality operator.
-/// @relatedalso Rectangle
-template <Geometry R1, int W1, int H1, //
-          class P11, class P12, class P13, class P14, class P15, class P16, //
-          Geometry R2, int W2, int H2, //
+/// @relatedalso Compositor
+template <class P11, class P12, class P13, class P14, class P15, class P16, //
           class P21, class P22, class P23, class P24, class P25, class P26>
-bool operator==(const Rectangle<R1, W1, H1, P11, P12, P13, P14, P15, P16>& lhs,
-                const Rectangle<R2, W2, H2, P21, P22, P23, P24, P25, P26>& rhs) noexcept
+bool operator==(const Compositor<P11, P12, P13, P14, P15, P16>& lhs,
+                const Compositor<P21, P22, P23, P24, P25, P26>& rhs) noexcept
 {
-    return GetDimensions(lhs) == GetDimensions(rhs) && // force break
-           GetOffset(lhs) == GetOffset(rhs) && // force break
-           GetDensity(lhs) == GetDensity(rhs) && // force break
-           GetFriction(lhs) == GetFriction(rhs) && // force break
-           GetRestitution(lhs) == GetRestitution(rhs) && // force break
-           GetVertexRadius(lhs) == GetVertexRadius(rhs) && // force break
-           GetFilter(lhs) == GetFilter(rhs) && // force break
-           IsSensor(lhs) == IsSensor(rhs);
+    if (GetDensity(lhs) != GetDensity(rhs) || // force break
+        GetFriction(lhs) != GetFriction(rhs) || // force break
+        GetRestitution(lhs) != GetRestitution(rhs) || // force break
+        GetFilter(lhs) != GetFilter(rhs) || // force break
+        IsSensor(lhs) != IsSensor(rhs)) {
+        return false;
+    }
+    const auto lhsCount = GetChildCount(lhs);
+    const auto rhsCount = GetChildCount(rhs);
+    if (lhsCount != rhsCount) {
+        return false;
+    }
+    for (auto i = static_cast<decltype(lhsCount)>(0); i < lhsCount; ++i) {
+        if (GetChild(lhs, i) != GetChild(rhs, i)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 /// @brief Inequality operator.
-/// @relatedalso Rectangle
-template <Geometry R1, int W1, int H1, //
-          class P11, class P12, class P13, class P14, class P15, class P16, //
-          Geometry R2, int W2, int H2, //
+/// @relatedalso Compositor
+template <class P11, class P12, class P13, class P14, class P15, class P16, //
           class P21, class P22, class P23, class P24, class P25, class P26>
-bool operator!=(const Rectangle<R1, W1, H1, P11, P12, P13, P14, P15>& lhs,
-                const Rectangle<R2, W2, H2, P21, P22, P23, P24, P25>& rhs) noexcept
+bool operator!=(const Compositor<P11, P12, P13, P14, P15, P16>& lhs,
+                const Compositor<P21, P22, P23, P24, P25, P26>& rhs) noexcept
 {
     return !(lhs == rhs);
 }
+
+} // namespace playrho::shape_part
+
+namespace playrho::d2 {
+
+template <int W = 1, int H = 1, int V = 2, //
+          class P2 = ::playrho::shape_part::DefaultPolicyArgs,
+          class P3 = ::playrho::shape_part::DefaultPolicyArgs, //
+          class P4 = ::playrho::shape_part::DefaultPolicyArgs, //
+          class P5 = ::playrho::shape_part::DefaultPolicyArgs, //
+          class P6 = ::playrho::shape_part::DefaultPolicyArgs>
+using StaticRectangle = ::playrho::shape_part::Compositor<
+    ::playrho::shape_part::GeometryIs<::playrho::shape_part::StaticRectangle<W, H, V>>>;
 
 } // namespace playrho::d2
 

@@ -826,7 +826,7 @@ const char* Test::ToName(TypeID type) noexcept
         return found->second;
     }
     const auto name = GetName(type);
-    if (std::strstr(name, "playrho::d2::Rectangle")) {
+    if (std::strstr(name, "Rectangle")) {
         return "Rectangle";
     }
     return name;

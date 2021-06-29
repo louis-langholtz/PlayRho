@@ -1493,13 +1493,11 @@ static playrho::Angle GetShortestDelta1(playrho::Angle a0, playrho::Angle a1) no
     a0 = playrho::GetNormalized(a0);
     a1 = playrho::GetNormalized(a1);
     const auto a01 = a1 - a0;
-    if (a01 > playrho::Pi * playrho::Radian)
-    {
+    if (a01 > playrho::Pi * playrho::Radian) {
         // 190_deg becomes 190_deg - 360_deg = -170_deg
         return a01 - 2 * playrho::Pi * playrho::Radian;
     }
-    if (a01 < -playrho::Pi * playrho::Radian)
-    {
+    if (a01 < -playrho::Pi * playrho::Radian) {
         // -200_deg becomes -200_deg + 360_deg = 100_deg
         return a01 + 2 * playrho::Pi * playrho::Radian;
     }
@@ -1521,7 +1519,7 @@ static playrho::Angle GetShortestDelta25(playrho::Angle a0, playrho::Angle a1) n
     const auto diff = a1 - a0;
     const auto da = diff - trunc(diff * rTwoPi) * twoPi;
     const auto two_da = 2 * da;
-    return ((two_da - (trunc(two_da * rTwoPi) * twoPi)) - da) * playrho::Radian;
+    return (two_da - (trunc(two_da * rTwoPi) * twoPi)) - da;
 }
 
 static playrho::Angle GetShortestDelta3(playrho::Angle a0, playrho::Angle a1) noexcept
@@ -1530,7 +1528,8 @@ static playrho::Angle GetShortestDelta3(playrho::Angle a0, playrho::Angle a1) no
     constexpr auto twoPi = playrho::Pi * 2;
     constexpr auto threePi = playrho::Pi * 3;
     const auto da = playrho::Real{(a1 - a0) / playrho::Radian};
-    return (playrho::ModuloViaTrunc(playrho::ModuloViaTrunc(da, twoPi) + threePi, twoPi) - onePi) * playrho::Radian;
+    return (playrho::ModuloViaTrunc(playrho::ModuloViaTrunc(da, twoPi) + threePi, twoPi) - onePi) *
+           playrho::Radian;
 }
 
 static void GetShortestDelta1(benchmark::State& state)
@@ -1605,19 +1604,22 @@ static playrho::d2::Position GetPositionShortestDelta(playrho::d2::Position pos0
                                                       playrho::Real beta) noexcept
 {
     return playrho::d2::Position{pos0.linear + (pos1.linear - pos0.linear) * beta,
-        pos0.angular + playrho::GetShortestDelta(pos0.angular, pos1.angular) * beta};
+                                 pos0.angular +
+                                     playrho::GetShortestDelta(pos0.angular, pos1.angular) * beta};
 }
 
 static playrho::d2::Position GetPositionFloorNormal(playrho::d2::Position pos0, //
                                                     playrho::d2::Position pos1, //
                                                     playrho::Real beta) noexcept
 {
+    using std::floor;
     constexpr auto twoPi = playrho::Real(2) * playrho::Pi;
     constexpr auto rTwoPi = playrho::Real(1) / twoPi;
     const auto da = pos1.angular - pos0.angular;
-    const auto na = pos0.angular + (da - twoPi * std::floor((da + playrho::Pi * playrho::Radian) * rTwoPi)) * beta;
+    const auto na =
+        pos0.angular + (da - twoPi * floor((da + playrho::Pi * playrho::Radian) * rTwoPi)) * beta;
     return {pos0.linear + (pos1.linear - pos0.linear) * beta,
-        na - twoPi * std::floor((na + playrho::Pi * playrho::Radian) * rTwoPi)};
+            na - twoPi * floor((na + playrho::Pi * playrho::Radian) * rTwoPi)};
 }
 
 static void GetPositionNaively(benchmark::State& state)
@@ -1687,8 +1689,8 @@ static const TransformationPairs& GetTransformationPairs(unsigned count)
 
 static void DistanceBetweenRelSquares(benchmark::State& state)
 {
-    const auto shape0 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
-    const auto shape1 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
+    const auto shape0 = playrho::d2::StaticRectangle<4, 4>();
+    const auto shape1 = playrho::d2::StaticRectangle<4, 4>();
     const auto child0 = GetChild(shape0, 0);
     const auto child1 = GetChild(shape1, 0);
     const auto& vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
@@ -1712,8 +1714,8 @@ static void DistanceBetweenRelSquares(benchmark::State& state)
 
 static void MaxSepBetweenRelSquaresNoStop(benchmark::State& state)
 {
-    const auto shape0 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
-    const auto shape1 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
+    const auto shape0 = playrho::d2::StaticRectangle<4, 4>();
+    const auto shape1 = playrho::d2::StaticRectangle<4, 4>();
     const auto child0 = GetChild(shape0, 0);
     const auto child1 = GetChild(shape1, 0);
     const auto& vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
@@ -1728,8 +1730,8 @@ static void MaxSepBetweenRelSquaresNoStop(benchmark::State& state)
 
 static void MaxSepBetweenRel4x4(benchmark::State& state)
 {
-    const auto shape0 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
-    const auto shape1 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
+    const auto shape0 = playrho::d2::StaticRectangle<4, 4>();
+    const auto shape1 = playrho::d2::StaticRectangle<4, 4>();
     const auto child0 = GetChild(shape0, 0);
     const auto child1 = GetChild(shape1, 0);
     const auto& vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
@@ -1744,8 +1746,8 @@ static void MaxSepBetweenRel4x4(benchmark::State& state)
 
 static void MaxSepBetweenRelSquares(benchmark::State& state)
 {
-    const auto shape0 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
-    const auto shape1 = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
+    const auto shape0 = playrho::d2::StaticRectangle<4, 4>();
+    const auto shape1 = playrho::d2::StaticRectangle<4, 4>();
     const auto child0 = GetChild(shape0, 0);
     const auto child1 = GetChild(shape1, 0);
     const auto totalRadius = child0.GetVertexRadius() + child1.GetVertexRadius();
@@ -1806,7 +1808,7 @@ static void MaxSepBetweenAbsSquares(benchmark::State& state)
 static void ManifoldForTwoSquares1(benchmark::State& state)
 {
     // creates a square
-    const auto shape = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
+    const auto shape = playrho::d2::StaticRectangle<4, 4>();
 
     const auto rot0 = playrho::Angle{playrho::Real{45.0f} * playrho::Degree};
     const auto xfm0 =
@@ -1846,8 +1848,8 @@ static void ManifoldForTwoSquares1(benchmark::State& state)
 static void ManifoldForTwoSquares2(benchmark::State& state)
 {
     // Shape A is a square & shape B is a wide rectangle.
-    const auto shapeA = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 4, 4>();
-    const auto shapeB = playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 6, 3>();
+    const auto shapeA = playrho::d2::StaticRectangle<4, 4>();
+    const auto shapeB = playrho::d2::StaticRectangle<6, 3>();
 
     // Put square left, wide rectangle right.
     // In ASCII art terms:
@@ -1862,12 +1864,14 @@ static void ManifoldForTwoSquares2(benchmark::State& state)
     //   |     +-+---------+
     //   +-------2
     //
-    const auto xfmA = playrho::d2::Transformation{ //
-        playrho::Vec2{-2, 0} * (playrho::Real(1) * playrho::Meter), //
-        playrho::d2::UnitVec::GetRight()}; // left
-    const auto xfmB = playrho::d2::Transformation{ //
-        playrho::Vec2{+2, 0} * (playrho::Real(1) * playrho::Meter), //
-        playrho::d2::UnitVec::GetRight()}; // right
+    const auto xfmA =
+        playrho::d2::Transformation{//
+                                    playrho::Vec2{-2, 0} * (playrho::Real(1) * playrho::Meter), //
+                                    playrho::d2::UnitVec::GetRight()}; // left
+    const auto xfmB =
+        playrho::d2::Transformation{//
+                                    playrho::Vec2{+2, 0} * (playrho::Real(1) * playrho::Meter), //
+                                    playrho::d2::UnitVec::GetRight()}; // right
 
     for (auto _ : state) {
         benchmark::DoNotOptimize(
@@ -2031,8 +2035,7 @@ static void WorldStepBox2D(benchmark::State& state)
 static void CreateBodyWithOneShapePlayRho(benchmark::State& state)
 {
     const auto numBodies = state.range();
-    const auto shape =
-        playrho::d2::Shape(playrho::d2::Rectangle<playrho::d2::Geometry::Constant, 1, 1>{});
+    const auto shape = playrho::d2::Shape(playrho::d2::StaticRectangle<1, 1>{});
     for (auto _ : state) {
         state.PauseTiming();
         playrho::d2::World world{
@@ -2201,14 +2204,14 @@ static void DropDisksSixtyStepsBox2D(benchmark::State& state)
 static void AddPairStressTestPlayRho(benchmark::State& state, int count)
 {
     using namespace playrho;
-    using namespace playrho::d2;
-    const auto diskConf =
-        DiskShapeConf{}.UseRadius(playrho::Meter / 10).UseDensity(0.01f * KilogramPerSquareMeter);
-    const auto diskShape = Shape{diskConf};
+    const auto diskConf = d2::DiskShapeConf{}
+                              .UseRadius(playrho::Meter / 10)
+                              .UseDensity(0.01f * KilogramPerSquareMeter);
+    const auto diskShape = d2::Shape{diskConf};
 
-    const auto rectShape =
-        Shape{Rectangle<Geometry::Constant, 3, 3,
-                        shape_part::DensityIs<shape_part::StaticAreaDensity<1>>>()};
+    const auto rectShape = d2::Shape{
+        shape_part::Compositor<shape_part::GeometryIs<shape_part::StaticRectangle<3, 3>>,
+                               shape_part::DensityIs<shape_part::StaticAreaDensity<1>>>()};
 
     const auto rectBodyConf =
         playrho::d2::BodyConf{}
@@ -2339,10 +2342,9 @@ static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
     constexpr auto gravity =
         playrho::LinearAcceleration2{TilesGravityX * playrho::MeterPerSquareSecond,
                                      TilesGravityY * playrho::MeterPerSquareSecond};
-    auto conf = playrho::d2::Rectangle<
-        playrho::d2::Geometry::Mutable, 0, 0,
-        playrho::shape_part::VertexRadiusIs<playrho::shape_part::DynamicVertexRadius<>>>{};
-    conf.vertexRadius = vertexRadius;
+    auto conf = playrho::shape_part::Compositor<
+        playrho::shape_part::GeometryIs<playrho::shape_part::DynamicRectangle<0, 0>>>{};
+    playrho::shape_part::SetVertexRadius(conf, vertexRadius);
     auto world = playrho::d2::World{
         playrho::d2::WorldConf{}.UseMinVertexRadius(vertexRadius).UseTreeCapacity(8192)};
 
@@ -2378,8 +2380,8 @@ static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
 
     {
         const auto shapeId = world.CreateShape(playrho::d2::Shape(
-            playrho::d2::Rectangle<
-                playrho::d2::Geometry::Constant, 1, 1,
+            playrho::shape_part::Compositor<
+                playrho::shape_part::GeometryIs<playrho::shape_part::StaticRectangle<1, 1>>,
                 playrho::shape_part::DensityIs<playrho::shape_part::StaticAreaDensity<5>>>{}));
 
         playrho::Length2 x(-7.0f * playrho::Meter, 0.75f * playrho::Meter);
@@ -2593,8 +2595,8 @@ playrho::BodyID TumblerPlayRho::CreateEnclosure(playrho::d2::World& world)
                                    .UseType(playrho::BodyType::Dynamic)
                                    .UseLocation(playrho::Vec2(0, 10) * playrho::Meter)
                                    .UseAllowSleep(false)};
-    auto conf = playrho::d2::Rectangle<
-        playrho::d2::Geometry::Mutable, 0, 0,
+    auto conf = playrho::shape_part::Compositor<
+        playrho::shape_part::GeometryIs<playrho::shape_part::DynamicRectangle<0, 0>>,
         playrho::shape_part::DensityIs<playrho::shape_part::StaticAreaDensity<5>>>{};
     SetDimensions(conf, playrho::Length2{1 * playrho::Meter, 20 * playrho::Meter});
     SetOffset(conf, playrho::Vec2(10.0f, 0.0f) * playrho::Meter);
@@ -2614,8 +2616,8 @@ playrho::BodyID TumblerPlayRho::CreateEnclosure(playrho::d2::World& world)
 playrho::ShapeID TumblerPlayRho::CreateSquareShape(playrho::d2::World& world,
                                                    playrho::Length squareLen)
 {
-    auto conf = playrho::d2::Rectangle<
-        playrho::d2::Geometry::Mutable, 0, 0,
+    auto conf = playrho::shape_part::Compositor<
+        playrho::shape_part::GeometryIs<playrho::shape_part::DynamicRectangle<0, 0>>,
         playrho::shape_part::DensityIs<playrho::shape_part::StaticAreaDensity<1>>>{};
     conf.SetDimensions(playrho::Length2{squareLen, squareLen});
     return CreateShape(world, playrho::d2::Shape{conf});

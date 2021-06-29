@@ -39,7 +39,7 @@ public:
         ground.Attach(CreateShape(GetWorld(),
                                   EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));
         CreateBody(GetWorld(), ground);
-        const auto shape = CreateShape(GetWorld(), Rectangle<Geometry::Constant, 1, 1,
+        const auto shape = CreateShape(GetWorld(), Compositor<GeometryIs<StaticRectangle<1, 1>>,
                                        DensityIs<StaticAreaDensity<5>>>());
         auto x = Vec2(-7.0f, 0.75f);
         const auto deltaX = Vec2(0.5625f, 1.25f);
