@@ -106,10 +106,15 @@ void SetDensity(Shape& shape, NonNegative<AreaDensity> value);
 /// @param shape Shape to get child's vertex radius for.
 /// @param idx Child index to get vertex radius for.
 /// @image html SkinnedPolygon.png
-/// @note This must be a non-negative value.
 /// @see UseVertexRadius
 /// @throws InvalidArgument if the child index is not less than the child count.
 NonNegative<Length> GetVertexRadius(const Shape& shape, ChildCounter idx);
+
+/// @brief Sets the vertex radius of the indexed child of the given shape.
+/// @image html SkinnedPolygon.png
+/// @throws InvalidArgument if the vertex radius cannot be set to the specified value.
+/// @see GetVertexRadius(const Shape& shape, ChildCounter idx).
+void SetVertexRadius(Shape& shape, ChildCounter idx, NonNegative<Length> value);
 
 /// @brief Gets the filter value for the given shape.
 /// @return Filter for the given shape or the default filter is the shape has no value.
@@ -312,6 +317,15 @@ public:
         return shape.m_self->GetVertexRadius_(idx);
     }
 
+    friend void SetVertexRadius(Shape& shape, ChildCounter idx, NonNegative<Length> value)
+    {
+        if (shape.m_self) {
+            auto copy = shape.m_self->Clone_();
+            copy->SetVertexRadius_(idx, value);
+            shape.m_self = std::move(copy);
+        }
+    }
+
     friend Real GetFriction(const Shape& shape) noexcept
     {
         return shape.m_self ? shape.m_self->GetFriction_() : Real(0);
@@ -440,6 +454,11 @@ private:
         /// @param idx Child index to get vertex radius for.
         virtual NonNegative<Length> GetVertexRadius_(ChildCounter idx) const = 0;
 
+        /// @brief Sets the vertex radius.
+        /// @param idx Child index to set vertex radius for.
+        /// @param value Value to set the vertex radius to.
+        virtual void SetVertexRadius_(ChildCounter idx, NonNegative<Length> value) = 0;
+
         /// @brief Gets the density.
         virtual NonNegative<AreaDensity> GetDensity_() const noexcept = 0;
 
@@ -534,6 +553,11 @@ private:
         NonNegative<Length> GetVertexRadius_(ChildCounter idx) const override
         {
             return GetVertexRadius(data, idx);
+        }
+
+        void SetVertexRadius_(ChildCounter idx, NonNegative<Length> value) override
+        {
+            SetVertexRadius(data, idx, value);
         }
 
         NonNegative<AreaDensity> GetDensity_() const noexcept override

@@ -146,9 +146,15 @@ constexpr NonNegative<Length> GetVertexRadius(const DiskShapeConf& arg) noexcept
 
 /// @brief Gets the vertex radius of the given shape configuration.
 constexpr NonNegative<Length> GetVertexRadius(const DiskShapeConf& arg,
-                                                             ChildCounter) noexcept
+                                              ChildCounter) noexcept
 {
     return GetVertexRadius(arg);
+}
+
+/// @brief Sets the vertex radius of shape for the given index.
+inline void SetVertexRadius(DiskShapeConf& arg, ChildCounter, NonNegative<Length> value)
+{
+    arg.vertexRadius = value;
 }
 
 /// @brief Gets the mass data of the given disk shape configuration.

@@ -236,6 +236,12 @@ inline NonNegative<Length> GetVertexRadius(const PolygonShapeConf& arg, ChildCou
     return GetVertexRadius(arg);
 }
 
+/// @brief Sets the vertex radius of shape for the given index.
+inline void SetVertexRadius(PolygonShapeConf& arg, ChildCounter, NonNegative<Length> value)
+{
+    arg.vertexRadius = value;
+}
+
 /// @brief Gets the mass data for the given shape configuration.
 /// @relatedalso PolygonShapeConf
 inline MassData GetMassData(const PolygonShapeConf& arg) noexcept

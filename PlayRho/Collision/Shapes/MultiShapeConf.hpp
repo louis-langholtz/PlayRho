@@ -56,7 +56,12 @@ public:
     {
         return vertexRadius;
     }
-    
+
+    void SetVertexRadius(NonNegative<Length> value) noexcept
+    {
+        vertexRadius = value;
+    }
+
     /// @brief Transforms all the vertices by the given transformation matrix.
     /// @see https://en.wikipedia.org/wiki/Transformation_matrix
     ConvexHull& Transform(const Mat22& m) noexcept;
@@ -187,6 +192,16 @@ inline NonNegative<Length> GetVertexRadius(const MultiShapeConf& arg, ChildCount
         throw InvalidArgument("index out of range");
     }
     return arg.children[index].GetVertexRadius();
+}
+
+/// @brief Sets the vertex radius of shape for the given index.
+inline void SetVertexRadius(MultiShapeConf& arg, ChildCounter index, NonNegative<Length> value)
+{
+    if (index >= GetChildCount(arg))
+    {
+        throw InvalidArgument("index out of range");
+    }
+    arg.children[index].SetVertexRadius(value);
 }
 
 /// @brief Transforms the given multi shape configuration by the given

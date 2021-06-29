@@ -163,7 +163,7 @@ public:
         }
     }
 
-    void SetVertexRadius(NonNegative<Length> value)
+    void SetVertexRadius(ChildCounter, NonNegative<Length> value)
     {
         if (GetVertexRadius() != value) {
             throw InvalidArgument("changing vertex radius not supported");
@@ -294,7 +294,7 @@ public:
         }
     }
 
-    void SetVertexRadius(NonNegative<Length> value)
+    void SetVertexRadius(ChildCounter, NonNegative<Length> value)
     {
         vertexRadius = value;
     }
@@ -602,13 +602,14 @@ auto Transform(Compositor<P1, P2, P3, P4, P5, P6>& arg, const Mat22& m)
     return arg.Transform(m);
 }
 
-/// @brief Sets the vertex radius of the given shape configuration.
+/// @brief Gets the vertex radius of the given shape configuration.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
-auto SetVertexRadius(Compositor<P1, P2, P3, P4, P5, P6>& arg, decltype(arg.GetVertexRadius()) value)
-    -> decltype(arg.SetVertexRadius(value))
+auto SetVertexRadius(Compositor<P1, P2, P3, P4, P5, P6>& arg, ChildCounter index,
+                     decltype(arg.GetVertexRadius()) value) noexcept
+    -> decltype(arg.SetVertexRadius(index, value))
 {
-    return arg.SetVertexRadius(value);
+    return arg.SetVertexRadius(index, value);
 }
 
 /// @brief Density setter that throws unless given the same value as current.
