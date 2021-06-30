@@ -60,6 +60,11 @@ TEST(ChainShapeConf, ByteSize)
     }
 }
 
+TEST(ChainShapeConf, IsValidShapeType)
+{
+    EXPECT_TRUE(IsValidShapeType<ChainShapeConf>::value);
+}
+
 TEST(ChainShapeConf, DefaultConstruction)
 {
     const auto foo = ChainShapeConf{};

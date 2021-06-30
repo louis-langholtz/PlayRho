@@ -25,6 +25,7 @@
 #include <PlayRho/Collision/Shapes/ShapeConf.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>
+
 #include <vector>
 
 namespace playrho {

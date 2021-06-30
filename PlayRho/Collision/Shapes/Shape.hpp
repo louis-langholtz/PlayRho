@@ -47,6 +47,151 @@ namespace d2 {
 
 class Shape;
 
+// Traits...
+
+/// @brief An "is valid shape type" trait.
+/// @note This is the general false template type.
+template <typename T, class = void>
+struct IsValidShapeType : std::false_type {
+};
+
+/// @brief An "is valid shape type" trait.
+/// @note This is the specialized true template type.
+/// @note A shape can be constructed from or have its value set to any value whose type
+///   <code>T</code> has at least the following function definitions available for it:
+///   - <code>bool operator==(const T& lhs, const T& rhs) noexcept;</code>
+///   - <code>ChildCounter GetChildCount(const T&) noexcept;</code>
+///   - <code>DistanceProxy GetChild(const T&, ChildCounter index);</code>
+///   - <code>MassData GetMassData(const T&) noexcept;</code>
+///   - <code>NonNegative<Length> GetVertexRadius(const T&, ChildCounter idx);</code>
+///   - <code>NonNegative<AreaDensity> GetDensity(const T&) noexcept;</code>
+///   - <code>Real GetFriction(const T&) noexcept;</code>
+///   - <code>Real GetRestitution(const T&) noexcept;</code>
+///   - <code>void Transform(T&, const Mat22& value);</code>
+/// @see Shape
+template <typename T>
+struct IsValidShapeType<
+    T,
+    std::void_t<decltype(GetChildCount(std::declval<T>())), //
+                decltype(GetChild(std::declval<T>(), std::declval<ChildCounter>())), //
+                decltype(GetMassData(std::declval<T>())), //
+                decltype(GetVertexRadius(std::declval<T>(), std::declval<ChildCounter>())), //
+                decltype(GetDensity(std::declval<T>())), //
+                decltype(GetFriction(std::declval<T>())), //
+                decltype(GetRestitution(std::declval<T>())), //
+                decltype(std::declval<T>() == std::declval<T>()), //
+                decltype(std::declval<DecayedTypeIfNotSame<T, Shape>>()),
+                decltype(std::is_copy_constructible<DecayedTypeIfNotSame<T, Shape>>::value)>>
+    : std::true_type {
+};
+
+template <class T, class = void>
+struct HasSetFriction : std::false_type {
+};
+
+template <class T>
+struct HasSetFriction<T,
+                      std::void_t<decltype(SetFriction(std::declval<T&>(), std::declval<Real>()))>>
+    : std::true_type {
+};
+
+template <class T, class = void>
+struct HasSetSensor : std::false_type {
+};
+
+template <class T>
+struct HasSetSensor<T, std::void_t<decltype(SetSensor(std::declval<T&>(), std::declval<bool>()))>>
+    : std::true_type {
+};
+
+template <class T, class = void>
+struct HasSetDensity : std::false_type {
+};
+
+template <class T>
+struct HasSetDensity<T, std::void_t<decltype(SetDensity(std::declval<T&>(),
+                                                        std::declval<NonNegative<AreaDensity>>()))>>
+    : std::true_type {
+};
+
+template <class T, class = void>
+struct HasSetRestitution : std::false_type {
+};
+
+template <class T>
+struct HasSetRestitution<
+    T, std::void_t<decltype(SetRestitution(std::declval<T&>(), std::declval<Real>()))>>
+    : std::true_type {
+};
+
+template <class T, class = void>
+struct HasSetFilter : std::false_type {
+};
+
+template <class T>
+struct HasSetFilter<T, std::void_t<decltype(SetFilter(std::declval<T&>(), std::declval<Filter>()))>>
+    : std::true_type {
+};
+
+/// @brief Fallback friction setter that throws unless given the same value as current.
+template <class T>
+std::enable_if_t<IsValidShapeType<T>::value && !HasSetFriction<T>::value, void>
+SetFriction(T& o, Real value)
+{
+    if (GetFriction(o) != value) {
+        throw InvalidArgument("SetFriction to non-equivalent value not supported");
+    }
+}
+
+/// @brief Fallback sensor setter that throws unless given the same value as current.
+template <class T>
+std::enable_if_t<IsValidShapeType<T>::value && !HasSetSensor<T>::value, void> SetSensor(T& o,
+                                                                                        bool value)
+{
+    if (IsSensor(o) != value) {
+        throw InvalidArgument("SetSensor to non-equivalent value not supported");
+    }
+}
+
+/// @brief Fallback density setter that throws unless given the same value as current.
+template <class T>
+std::enable_if_t<IsValidShapeType<T>::value && !HasSetDensity<T>::value, void>
+SetDensity(T& o, NonNegative<AreaDensity> value)
+{
+    if (GetDensity(o) != value) {
+        throw InvalidArgument("SetDensity to non-equivalent value not supported");
+    }
+}
+
+/// @brief Fallback restitution setter that throws unless given the same value as current.
+template <class T>
+std::enable_if_t<IsValidShapeType<T>::value && !HasSetRestitution<T>::value, void>
+SetRestitution(T& o, Real value)
+{
+    if (GetRestitution(o) != value) {
+        throw InvalidArgument("SetRestitution to non-equivalent value not supported");
+    }
+}
+
+/// @brief Fallback filter setter that throws unless given the same value as current.
+template <class T>
+std::enable_if_t<IsValidShapeType<T>::value && !HasSetFilter<T>::value, void>
+SetFilter(T& o, Filter value)
+{
+    if (GetFilter(o) != value) {
+        throw InvalidArgument("SetFilter to non-equivalent filter not supported");
+    }
+}
+
+/// @brief Fallback transform function that throws unless given the identity value.
+template <class T>
+std::enable_if_t<IsValidShapeType<T>::value, void> Transform(T& o, const Mat22& value)
+{
+    if (GetIdentity<Mat22>() != value) {
+        throw InvalidArgument("Transform to non-identity matrix not supported");
+    }
+}
+
 // Forward declare functions.
 // Note that these may be friend functions but that declaring these within the class that
 // they're to be friends of, doesn't also insure that they're found within the namespace
@@ -168,7 +313,7 @@ bool operator!=(const Shape& lhs, const Shape& rhs) noexcept;
 
 /// @defgroup PartsGroup Shape Classes
 /// @brief Classes for configuring shapes with material properties.
-/// @details These are classes that specify physical characteristics of: shape,
+/// @details These are classes that specify physical characteristics of: geometry, mass,
 ///   friction, density and restitution. They've historically been called shape classes
 ///   but are now &mdash; with the other properties like friction and density having been
 ///   moved into them &mdash; maybe better thought of as "parts".
@@ -190,31 +335,12 @@ bool operator!=(const Shape& lhs, const Shape& rhs) noexcept;
 ///   Different shapes of a given type meanwhile are had by providing different values for the
 ///   type.
 /// @note A shape can be constructed from or have its value set to any value whose type
-///   <code>T</code> has at least the following function definitions available for it:
-///   - <code>bool operator==(const T& lhs, const T& rhs) noexcept;</code>
-///   - <code>ChildCounter GetChildCount(const T&) noexcept;</code>
-///   - <code>DistanceProxy GetChild(const T&, ChildCounter index);</code>
-///   - <code>MassData GetMassData(const T&) noexcept;</code>
-///   - <code>NonNegative<Length> GetVertexRadius(const T&, ChildCounter idx);</code>
-///   - <code>NonNegative<AreaDensity> GetDensity(const T&) noexcept;</code>
-///   - <code>Real GetFriction(const T&) noexcept;</code>
-///   - <code>void SetFriction(T&, Real);</code>
-///   - <code>Real GetRestitution(const T&) noexcept;</code>
-///   - <code>void SetRestitution(T&, Real);</code>
-///   - <code>void Transform(T&, const Mat22& value);</code>
+///   <code>T</code> satisfies the requirement that <code>IsValidShapeType<T>::value == true</code>.
 /// @ingroup PartsGroup
 /// @see https://youtu.be/QGcVXgEVMJg
 /// @see https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Polymorphic_Value_Types
 class Shape
 {
-    /// @brief Decayed type if not same as this class.
-    /// @note This is done separately from other checks to ensure order of compiler's SFINAE
-    ///   processing and to ensure elimination of self class before attempting to process other
-    ///   checks like is_copy_constructible. This prevents a compiler error that started showing
-    ///   up in gcc-9.
-    template <typename Type, typename DecayedType = std::decay_t<Type>>
-    using DecayedTypeIfNotSelf = std::enable_if_t<!std::is_same_v<DecayedType, Shape>, DecayedType>;
-
 public:
     /// @brief Default constructor.
     /// @post <code>has_value()</code> returns false.
@@ -234,13 +360,16 @@ public:
     /// @brief Move constructor.
     Shape(Shape&& other) noexcept = default;
 
-    /// @brief Initializing constructor.
-    /// @param arg Configuration value to construct a shape instance for.
+    /// @brief Initializing constructor for alternative types.
+    /// @param arg Value to construct a shape instance for.
     /// @note See the class notes section for an explanation of requirements on a type
-    ///   <code>T</code> for its values to be valid candidates for this function.
+    ///   <code>T</code> for its values to be fully valid candidates for this function.
+    /// @note The <code>IsValidShapeType</code> trait is intentionally not used to eliminate
+    ///   this function from resolution so that the compiler may offer insight into exactly
+    ///   which requirements are not met by the given type.
     /// @post <code>has_value()</code> returns true.
     /// @throws std::bad_alloc if there's a failure allocating storage.
-    template <typename T, typename Tp = DecayedTypeIfNotSelf<T>,
+    template <typename T, typename Tp = DecayedTypeIfNotSame<T, Shape>,
               typename = std::enable_if_t<std::is_copy_constructible<Tp>::value>>
     explicit Shape(T&& arg) : m_self
     {
@@ -269,9 +398,14 @@ public:
     /// @brief Move assignment operator.
     Shape& operator=(Shape&& other) = default;
 
-    /// @brief Move assignment operator.
+    /// @brief Move assignment operator for alternative types.
+    /// @note See the class notes section for an explanation of requirements on a type
+    ///   <code>T</code> for its values to be fully valid candidates for this function.
+    /// @note The <code>IsValidShapeType</code> trait is intentionally not used to eliminate
+    ///   this function from resolution so that the compiler may offer insight into exactly
+    ///   which requirements are not met by the given type.
     /// @post <code>has_value()</code> returns true.
-    template <typename T, typename Tp = DecayedTypeIfNotSelf<T>,
+    template <typename T, typename Tp = DecayedTypeIfNotSame<T, Shape>,
               typename = std::enable_if_t<std::is_copy_constructible<Tp>::value>>
     Shape& operator=(T&& other)
     {
@@ -520,6 +654,12 @@ private:
         }
     };
 
+    struct general_ {
+    };
+
+    struct special_ : general_ {
+    };
+
     /// @brief Internal model configuration concept.
     /// @note Provides an implementation for runtime polymorphism for shape configuration.
     template <typename T>
@@ -643,35 +783,6 @@ private:
 #else
     std::shared_ptr<const Concept> m_self; ///< Self pointer.
 #endif
-};
-
-// Traits...
-
-/// @brief An "is valid shape type" trait.
-/// @note This is the general false template type.
-template <typename T, class = void>
-struct IsValidShapeType : std::false_type {
-};
-
-/// @brief An "is valid shape type" trait.
-/// @note This is the specialized true template type.
-template <typename T>
-struct IsValidShapeType<
-    T,
-    std::void_t<decltype(GetChildCount(std::declval<T>())), //
-                decltype(GetChild(std::declval<T>(), std::declval<ChildCounter>())), //
-                decltype(GetMassData(std::declval<T>())), //
-                decltype(GetVertexRadius(std::declval<T>(), std::declval<ChildCounter>())), //
-                decltype(GetDensity(std::declval<T>())), //
-                decltype(SetDensity(std::declval<T&>(),
-                                    std::declval<NonNegative<AreaDensity>>())), //
-                decltype(GetFriction(std::declval<T>())), //
-                decltype(SetFriction(std::declval<T&>(), std::declval<Real>())),
-                decltype(GetRestitution(std::declval<T>())), //
-                decltype(SetRestitution(std::declval<T&>(), std::declval<Real>())), //
-                decltype(Transform(std::declval<T&>(), std::declval<Mat22>())), //
-                decltype(std::declval<T>() == std::declval<T>()), //
-                decltype(Shape{std::declval<T>()})>> : std::true_type {
 };
 
 // Related free functions...

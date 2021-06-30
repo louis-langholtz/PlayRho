@@ -482,6 +482,14 @@ using HasNullaryFunctor = HasFunctor<Type, Return()>;
 template <typename Type, typename Return, typename Arg>
 using HasUnaryFunctor = HasFunctor<Type, Return(Arg)>;
 
+/// @brief Decayed type if not same as the checked type.
+/// @note This is done separately from other checks to ensure order of compiler's SFINAE
+///   processing and to ensure elimination of check class before attempting to process other
+///   checks like is_copy_constructible. This prevents a compiler error that started showing
+///   up in gcc-9.
+template <typename Type, typename Check, typename DecayedType = std::decay_t<Type>>
+using DecayedTypeIfNotSame = std::enable_if_t<!std::is_same_v<DecayedType, Check>, DecayedType>;
+
 } // namespace playrho
 
 #endif // PLAYRHO_COMMON_TEMPLATES_HPP

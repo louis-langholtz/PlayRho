@@ -18,10 +18,14 @@
  */
 
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
+
+#include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <PlayRho/Common/VertexSet.hpp>
 
 namespace playrho {
 namespace d2 {
+
+static_assert(IsValidShapeType<PolygonShapeConf>::value);
 
 PolygonShapeConf::PolygonShapeConf() = default;
 

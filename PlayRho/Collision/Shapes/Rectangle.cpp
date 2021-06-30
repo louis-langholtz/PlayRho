@@ -19,3 +19,11 @@
  */
 
 #include <PlayRho/Collision/Shapes/Rectangle.hpp>
+
+#include <PlayRho/Collision/Shapes/Shape.hpp>
+
+namespace playrho::d2 {
+
+static_assert(IsValidShapeType<::playrho::part::Compositor<>>::value);
+
+} // namespace playrho::d2

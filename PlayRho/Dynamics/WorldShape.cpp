@@ -82,18 +82,46 @@ ShapeCounter GetUsedShapesCount(const World& world) noexcept
     return static_cast<ShapeCounter>(std::size(ids));
 }
 
+void SetFriction(World& world, ShapeID id, Real value)
+{
+    auto object = GetShape(world, id);
+    SetFriction(object, value);
+    SetShape(world, id, object);
+}
+
+void SetRestitution(World& world, ShapeID id, Real value)
+{
+    auto object = GetShape(world, id);
+    SetRestitution(object, value);
+    SetShape(world, id, object);
+}
+
 void SetFilterData(World& world, ShapeID id, const Filter& value)
 {
-    auto object = world.GetShape(id);
+    auto object = GetShape(world, id);
     SetFilter(object, value);
-    world.SetShape(id, object);
+    SetShape(world, id, object);
 }
 
 void SetSensor(World& world, ShapeID id, bool value)
 {
-    auto object = world.GetShape(id);
+    auto object = GetShape(world, id);
     SetSensor(object, value);
-    world.SetShape(id, object);
+    SetShape(world, id, object);
+}
+
+void SetDensity(World& world, ShapeID id, NonNegative<AreaDensity> value)
+{
+    auto object = GetShape(world, id);
+    SetDensity(object, value);
+    SetShape(world, id, object);
+}
+
+void Transform(World& world, ShapeID id, const Mat22& value)
+{
+    auto object = GetShape(world, id);
+    Transform(object, value);
+    SetShape(world, id, object);
 }
 
 bool TestPoint(const World& world, BodyID bodyId, ShapeID shapeId, Length2 p)

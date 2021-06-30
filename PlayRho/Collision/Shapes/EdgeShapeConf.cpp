@@ -19,8 +19,12 @@
 
 #include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 
+#include <PlayRho/Collision/Shapes/Shape.hpp>
+
 namespace playrho {
 namespace d2 {
+
+static_assert(IsValidShapeType<EdgeShapeConf>::value);
 
 EdgeShapeConf::EdgeShapeConf(Length2 vA, Length2 vB, const EdgeShapeConf& conf) noexcept:
     ShapeBuilder{conf}, vertexRadius{conf.vertexRadius}, m_vertices{vA, vB}

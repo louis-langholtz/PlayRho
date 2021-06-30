@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2021 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -19,12 +19,17 @@
  */
 
 #include <PlayRho/Collision/Shapes/MultiShapeConf.hpp>
+
+#include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <PlayRho/Common/VertexSet.hpp>
+
 #include <algorithm>
 #include <iterator>
 
 namespace playrho {
 namespace d2 {
+
+static_assert(IsValidShapeType<MultiShapeConf>::value);
 
 /// Computes the mass properties of this shape using its dimensions and density.
 /// The inertia tensor is computed about the local origin.

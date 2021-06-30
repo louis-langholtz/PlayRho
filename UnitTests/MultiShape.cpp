@@ -56,6 +56,11 @@ TEST(MultiShapeConf, ByteSize)
     }
 }
 
+TEST(MultiShapeConf, IsValidShapeType)
+{
+    EXPECT_TRUE(IsValidShapeType<MultiShapeConf>::value);
+}
+
 TEST(MultiShapeConf, DefaultConstruction)
 {
     const auto foo = MultiShapeConf{};

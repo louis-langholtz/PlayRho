@@ -54,6 +54,11 @@ TEST(PolygonShapeConf, ByteSize)
     }
 }
 
+TEST(PolygonShapeConf, IsValidShapeType)
+{
+    EXPECT_TRUE(IsValidShapeType<PolygonShapeConf>::value);
+}
+
 TEST(PolygonShapeConf, DefaultConstruction)
 {
     const auto shape = PolygonShapeConf{};

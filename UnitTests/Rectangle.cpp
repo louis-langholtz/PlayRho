@@ -89,6 +89,13 @@ TEST(Rectangle, ByteSize)
     }
 }
 
+TEST(Rectangle, IsValidShapeType)
+{
+    EXPECT_TRUE(playrho::d2::IsValidShapeType<Compositor<>>::value);
+    EXPECT_TRUE(playrho::d2::IsValidShapeType<Compositor<GeometryIs<StaticRectangle<>>>>::value);
+    EXPECT_TRUE(playrho::d2::IsValidShapeType<Compositor<GeometryIs<DynamicRectangle<>>>>::value);
+}
+
 TEST(Rectangle, GetDimensions)
 {
     EXPECT_EQ(GetDimensions(Compositor<GeometryIs<StaticRectangle<1, 1>>>{}), Length2(1_m, 1_m));
@@ -101,6 +108,24 @@ TEST(Rectangle, GetDimensions)
         const auto value = Length2{4_m, 8_m};
         EXPECT_NO_THROW(SetDimensions(rect, value));
         EXPECT_EQ(GetDimensions(rect), value);
+    }
+}
+
+TEST(Rectangle, SetDimensions)
+{
+    {
+        auto o = Compositor<GeometryIs<StaticRectangle<1, 1>>>{};
+        EXPECT_NO_THROW(SetDimensions(o, Length2(1_m, 1_m)));
+        EXPECT_EQ(GetDimensions(o), Length2(1_m, 1_m));
+        EXPECT_THROW(SetDimensions(o, Length2(2_m, 3_m)), InvalidArgument);
+        EXPECT_EQ(GetDimensions(o), Length2(1_m, 1_m));
+    }
+    {
+        auto o = Compositor<GeometryIs<DynamicRectangle<1, 1>>>{};
+        EXPECT_NO_THROW(SetDimensions(o, Length2(1_m, 1_m)));
+        EXPECT_EQ(GetDimensions(o), Length2(1_m, 1_m));
+        EXPECT_NO_THROW(SetDimensions(o, Length2(2_m, 3_m)));
+        EXPECT_EQ(GetDimensions(o), Length2(2_m, 3_m));
     }
 }
 
@@ -191,10 +216,15 @@ TEST(Rectangle, GetRestitution)
 
 TEST(Rectangle, SetFriction)
 {
+    using ::playrho::d2::SetFriction;
     {
         auto rectangle = Compositor<GeometryIs<StaticRectangle<1, 1>>>{};
         ASSERT_EQ(rectangle.friction, Real(2) / Real(10));
         EXPECT_THROW(SetFriction(rectangle, Real(3)), InvalidArgument);
+        {
+            auto shape = ::playrho::d2::Shape{rectangle};
+            EXPECT_THROW(SetFriction(shape, Real(3)), InvalidArgument);
+        }
         EXPECT_EQ(rectangle.friction, Real(2) / Real(10));
     }
     {
@@ -208,6 +238,7 @@ TEST(Rectangle, SetFriction)
 
 TEST(Rectangle, SetRestitution)
 {
+    using ::playrho::d2::SetRestitution;
     {
         auto rectangle = Compositor<GeometryIs<StaticRectangle<1, 1>>>{};
         ASSERT_EQ(rectangle.restitution, Real(0));

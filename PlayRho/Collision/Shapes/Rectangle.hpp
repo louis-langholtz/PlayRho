@@ -156,13 +156,6 @@ public:
         return playrho::d2::GetMassData(vertexRadius, density, Span<const Length2>(GetVertices()));
     }
 
-    void Transform(const Mat22& m)
-    {
-        if (m != GetIdentity<Mat22>()) {
-            throw InvalidArgument("transformation by non-identity matrix not supported");
-        }
-    }
-
     void SetVertexRadius(ChildCounter, NonNegative<Length> value)
     {
         if (GetVertexRadius() != value) {
@@ -217,13 +210,11 @@ public:
     /// @see GetDimensions.
     void SetDimensions(Length2 val)
     {
-        if (GetDimensions() != val) {
-            const auto offset = GetOffset();
-            vertices = {Length2{+GetX(val) / 2, -GetY(val) / 2} + offset, //
-                        Length2{+GetX(val) / 2, +GetY(val) / 2} + offset, //
-                        Length2{-GetX(val) / 2, +GetY(val) / 2} + offset, //
-                        Length2{-GetX(val) / 2, -GetY(val) / 2} + offset};
-        }
+        const auto offset = GetOffset();
+        vertices = {Length2{+GetX(val) / 2, -GetY(val) / 2} + offset, //
+                    Length2{+GetX(val) / 2, +GetY(val) / 2} + offset, //
+                    Length2{-GetX(val) / 2, +GetY(val) / 2} + offset, //
+                    Length2{-GetX(val) / 2, -GetY(val) / 2} + offset};
     }
 
     /// @brief Gets the x and y offset of this rectangle.
@@ -238,13 +229,11 @@ public:
     /// @see GetOffset.
     void SetOffset(Length2 val)
     {
-        if (GetOffset() != val) {
-            const auto dims = GetDimensions();
-            vertices = {Length2{+GetX(dims) / 2, -GetY(dims) / 2} + val, //
-                        Length2{+GetX(dims) / 2, +GetY(dims) / 2} + val, //
-                        Length2{-GetX(dims) / 2, +GetY(dims) / 2} + val, //
-                        Length2{-GetX(dims) / 2, -GetY(dims) / 2} + val};
-        }
+        const auto dims = GetDimensions();
+        vertices = {Length2{+GetX(dims) / 2, -GetY(dims) / 2} + val, //
+                    Length2{+GetX(dims) / 2, +GetY(dims) / 2} + val, //
+                    Length2{-GetX(dims) / 2, +GetY(dims) / 2} + val, //
+                    Length2{-GetX(dims) / 2, -GetY(dims) / 2} + val};
     }
 
     constexpr NonNegative<Length> GetVertexRadius() const noexcept
@@ -289,9 +278,11 @@ public:
 
     void Transform(const Mat22& m)
     {
-        if (m != GetIdentity<Mat22>()) {
-            throw InvalidArgument("transformation by non-identity matrix not supported");
+        if (m[0][1] != Real(0) || m[1][0] != Real(0)) {
+            throw InvalidArgument("Transform other than stretching not supported");
         }
+        const auto dims = GetDimensions();
+        SetDimensions(Length2{GetX(dims) * m[0][0], GetY(dims) * m[1][1]});
     }
 
     void SetVertexRadius(ChildCounter, NonNegative<Length> value)
@@ -382,6 +373,7 @@ struct DynamicSensor {
 };
 
 /// @brief Default policies for the <code>Compositor</code> template class.
+/// @see Compositor.
 struct DefaultPolicies {
     /// @brief Alias of the geometry policy.
     using Geometry = StaticRectangle<>;
@@ -400,10 +392,6 @@ struct DefaultPolicies {
 
     /// @brief Alias of the sensor policy.
     using Sensor = StaticSensor<>;
-};
-
-/// @brief Default policy arguments for the <code>Compositor</code> template class.
-struct DefaultPolicyArgs : virtual DefaultPolicies {
 };
 
 /// @brief Sets the alias for the geometry policy.
@@ -448,6 +436,11 @@ struct SensorIs : virtual DefaultPolicies {
     using Sensor = Policy;
 };
 
+/// @brief Default policy arguments for the <code>Compositor</code> template class.
+struct DefaultPolicyArgs : virtual DefaultPolicies {
+};
+
+/// @brief A template class for compositing eligible shape types.
 template <class P1 = DefaultPolicyArgs, //
           class P2 = DefaultPolicyArgs, //
           class P3 = DefaultPolicyArgs, //
@@ -612,18 +605,6 @@ auto SetVertexRadius(Compositor<P1, P2, P3, P4, P5, P6>& arg, ChildCounter index
     return arg.SetVertexRadius(index, value);
 }
 
-/// @brief Density setter that throws unless given the same value as current.
-/// @relatedalso Compositor
-template <class P1, class P2, class P3, class P4, class P5, class P6>
-std::enable_if_t<
-    std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().density)>, void>
-SetDensity(Compositor<P1, P2, P3, P4, P5, P6>& arg, NonNegative<AreaDensity> value)
-{
-    if (value != GetDensity(arg)) {
-        throw InvalidArgument("SetDensity by non-equivalent value not supported");
-    }
-}
-
 /// @brief Density setter.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
@@ -632,18 +613,6 @@ std::enable_if_t<
 SetDensity(Compositor<P1, P2, P3, P4, P5, P6>& arg, NonNegative<AreaDensity> value)
 {
     arg.density = value;
-}
-
-/// @brief Filter setter that throws unless given the same value as current.
-/// @relatedalso Compositor
-template <class P1, class P2, class P3, class P4, class P5, class P6>
-std::enable_if_t<
-    std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().filter)>, void>
-SetFilter(Compositor<P1, P2, P3, P4, P5, P6>& arg, Filter value)
-{
-    if (value != GetFilter(arg)) {
-        throw InvalidArgument("SetFilter by non-equivalent filter not supported");
-    }
 }
 
 /// @brief Filter setter.
@@ -656,18 +625,6 @@ SetFilter(Compositor<P1, P2, P3, P4, P5, P6>& arg, Filter value)
     arg.filter = value;
 }
 
-/// @brief Sensor setter that throws unless given the same value as current.
-/// @relatedalso Compositor
-template <class P1, class P2, class P3, class P4, class P5, class P6>
-std::enable_if_t<
-    std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().sensor)>, void>
-SetSensor(Compositor<P1, P2, P3, P4, P5, P6>& arg, bool value)
-{
-    if (value != IsSensor(arg)) {
-        throw InvalidArgument("SetSensor by non-equivalent value not supported");
-    }
-}
-
 /// @brief Sensor setter.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
@@ -678,18 +635,6 @@ SetSensor(Compositor<P1, P2, P3, P4, P5, P6>& arg, bool value)
     arg.sensor = value;
 }
 
-/// @brief Friction setter that throws unless given the same value as current.
-/// @relatedalso Compositor
-template <class P1, class P2, class P3, class P4, class P5, class P6>
-std::enable_if_t<
-    std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().friction)>, void>
-SetFriction(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
-{
-    if (value != GetFriction(arg)) {
-        throw InvalidArgument("SetFriction by non-equivalent value not supported");
-    }
-}
-
 /// @brief Sets friction.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
@@ -698,18 +643,6 @@ std::enable_if_t<
 SetFriction(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
 {
     arg.friction = value;
-}
-
-/// @brief Restitution setter that throws unless given the same value as current.
-/// @relatedalso Compositor
-template <class P1, class P2, class P3, class P4, class P5, class P6>
-std::enable_if_t<
-    std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().restitution)>, void>
-SetRestitution(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
-{
-    if (value != GetRestitution(arg)) {
-        throw InvalidArgument("SetRestitution by non-equivalent value not supported");
-    }
 }
 
 /// @brief Sets restitution.

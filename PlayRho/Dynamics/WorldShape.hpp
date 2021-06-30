@@ -122,7 +122,7 @@ inline Filter GetFilterData(const World& world, ShapeID id)
     return GetFilter(GetShape(world, id));
 }
 
-/// @brief Sets the contact filtering data.
+/// @brief Convenience function for setting the contact filtering data.
 /// @note This won't update contacts until the next time step when either parent body
 ///    is speedable and awake.
 /// @note This automatically refilters contacts.
@@ -140,6 +140,12 @@ inline Real GetFriction(const World& world, ShapeID id)
     return GetFriction(GetShape(world, id));
 }
 
+/// @brief Convenience function for setting the coefficient of friction of the specified shape.
+/// @throws std::out_of_range If given an invalid identifier.
+/// @see GetFriction.
+/// @relatedalso World
+void SetFriction(World& world, ShapeID id, Real value);
+
 /// @brief Gets the coefficient of restitution of the specified shape.
 /// @throws std::out_of_range If given an invalid identifier.
 /// @relatedalso World
@@ -147,6 +153,11 @@ inline Real GetRestitution(const World& world, ShapeID id)
 {
     return GetRestitution(GetShape(world, id));
 }
+
+/// @brief Sets the coefficient of restitution of the specified shape.
+/// @throws std::out_of_range If given an invalid identifier.
+/// @relatedalso World
+void SetRestitution(World& world, ShapeID id, Real value);
 
 /// @brief Is the specified shape a sensor (non-solid)?
 /// @return the true if the shape is a sensor.
@@ -158,7 +169,7 @@ inline bool IsSensor(const World& world, ShapeID id)
     return IsSensor(GetShape(world, id));
 }
 
-/// @brief Sets whether the shape is a sensor or not.
+/// @brief Convenience function for setting whether the shape is a sensor or not.
 /// @throws std::out_of_range If given an invalid identifier.
 /// @see IsSensor.
 /// @relatedalso World
@@ -172,6 +183,20 @@ inline NonNegative<AreaDensity> GetDensity(const World& world, ShapeID id)
 {
     return GetDensity(GetShape(world, id));
 }
+
+/// @brief Sets the density of this shape.
+/// @throws std::out_of_range If given an invalid identifier.
+/// @relatedalso World
+void SetDensity(World& world, ShapeID id, NonNegative<AreaDensity> value);
+
+/// @brief Transforms all of the given shape's vertices by the given transformation matrix.
+/// @see https://en.wikipedia.org/wiki/Transformation_matrix
+/// @note This may throw <code>std::bad_alloc</code> or any exception that's thrown
+///   by the constructor for the model's underlying data type.
+/// @throws std::bad_alloc if there's a failure allocating storage.
+/// @throws std::out_of_range If given an invalid identifier.
+/// @relatedalso World
+void Transform(World& world, ShapeID id, const Mat22& value);
 
 /// @brief Gets the mass data for the identified shape in the given world.
 /// @throws std::out_of_range If given an invalid identifier.

@@ -129,8 +129,6 @@ struct ShapeTest {
 } // namespace
 } // namespace sans_none
 
-static_assert(!IsValidShapeType<::sans_some::ShapeTest>::value);
-
 TEST(Shape, InitializingConstructor)
 {
     EXPECT_TRUE((std::is_constructible<Shape, ::sans_some::ShapeTest>::value));

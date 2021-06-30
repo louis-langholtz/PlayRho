@@ -20,12 +20,17 @@
  */
 
 #include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
+
 #include <PlayRho/Collision/AABB.hpp>
+#include <PlayRho/Collision/Shapes/Shape.hpp>
+
 #include <algorithm>
 #include <iterator>
 
 namespace playrho {
 namespace d2 {
+
+static_assert(IsValidShapeType<ChainShapeConf>::value);
 
 namespace {
 

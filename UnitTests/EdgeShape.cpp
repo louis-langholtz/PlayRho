@@ -46,6 +46,11 @@ TEST(EdgeShapeConf, ByteSize)
     }
 }
 
+TEST(EdgeShapeConf, IsValidShapeType)
+{
+    EXPECT_TRUE(IsValidShapeType<EdgeShapeConf>::value);
+}
+
 TEST(EdgeShapeConf, GetInvalidChildThrows)
 {
     const auto foo = EdgeShapeConf{};
