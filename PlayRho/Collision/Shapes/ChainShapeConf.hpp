@@ -47,7 +47,7 @@ namespace d2 {
 ///
 /// @ingroup PartsGroup
 ///
-class ChainShapeConf: public ShapeBuilder<ChainShapeConf>
+class ChainShapeConf : public ShapeBuilder<ChainShapeConf>
 {
 public:
     /// @brief Gets the default vertex radius.
@@ -58,10 +58,10 @@ public:
 
     /// @brief Default constructor.
     ChainShapeConf();
-    
+
     /// @brief Sets the configuration up for representing a chain of vertices as given.
     ChainShapeConf& Set(std::vector<Length2> arg);
-    
+
     /// @brief Adds the given vertex.
     ChainShapeConf& Add(Length2 vertex);
 
@@ -79,15 +79,15 @@ public:
     {
         // edge count = vertex count - 1
         const auto count = GetVertexCount();
-        return (count > 1)? count - 1: count;
+        return (count > 1) ? count - 1 : count;
     }
 
     /// @brief Gets the "child" shape at the given index.
     DistanceProxy GetChild(ChildCounter index) const;
-    
+
     /// @brief Gets the mass data.
     MassData GetMassData() const noexcept;
-    
+
     /// @brief Uses the given vertex radius.
     ChainShapeConf& UseVertexRadius(NonNegative<Length> value) noexcept;
 
@@ -96,37 +96,37 @@ public:
     {
         return static_cast<ChildCounter>(size(m_vertices));
     }
-    
+
     /// @brief Gets a vertex by index.
     Length2 GetVertex(ChildCounter index) const
     {
         assert((0 <= index) && (index < GetVertexCount()));
         return m_vertices[index];
     }
-    
+
     /// @brief Gets the normal at the given index.
     UnitVec GetNormal(ChildCounter index) const
     {
         assert((0 <= index) && (index < GetVertexCount()));
         return m_normals[index];
     }
-    
+
     /// @brief Equality operator.
-    friend bool operator== (const ChainShapeConf& lhs, const ChainShapeConf& rhs) noexcept
+    friend bool operator==(const ChainShapeConf& lhs, const ChainShapeConf& rhs) noexcept
     {
         // Don't need to check normals since normals based on vertices.
-        return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction
-            && lhs.restitution == rhs.restitution && lhs.density == rhs.density
-            && lhs.filter == rhs.filter && lhs.isSensor == rhs.isSensor
-            && lhs.m_vertices == rhs.m_vertices;
+        return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction &&
+               lhs.restitution == rhs.restitution && lhs.density == rhs.density &&
+               lhs.filter == rhs.filter && lhs.isSensor == rhs.isSensor &&
+               lhs.m_vertices == rhs.m_vertices;
     }
-    
+
     /// @brief Inequality operator.
-    friend bool operator!= (const ChainShapeConf& lhs, const ChainShapeConf& rhs) noexcept
+    friend bool operator!=(const ChainShapeConf& lhs, const ChainShapeConf& rhs) noexcept
     {
         return !(lhs == rhs);
     }
-    
+
     /// @brief Vertex radius.
     ///
     /// @details This is the radius from the vertex that the shape's "skin" should
@@ -175,7 +175,7 @@ inline MassData GetMassData(const ChainShapeConf& arg) noexcept
 inline bool IsLooped(const ChainShapeConf& shape) noexcept
 {
     const auto count = shape.GetVertexCount();
-    return (count > 1)? (shape.GetVertex(count - 1) == shape.GetVertex(0)): false;
+    return (count > 1) ? (shape.GetVertex(count - 1) == shape.GetVertex(0)) : false;
 }
 
 /// @brief Gets the next index after the given index for the given shape.

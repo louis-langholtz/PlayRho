@@ -38,8 +38,7 @@ namespace d2 {
 ///
 /// @ingroup PartsGroup
 ///
-struct DiskShapeConf: ShapeBuilder<DiskShapeConf>
-{
+struct DiskShapeConf : ShapeBuilder<DiskShapeConf> {
     /// @brief Gets the default radius.
     static constexpr NonNegative<Length> GetDefaultRadius() noexcept
     {
@@ -49,7 +48,7 @@ struct DiskShapeConf: ShapeBuilder<DiskShapeConf>
     constexpr DiskShapeConf() = default;
 
     /// @brief Initializing constructor.
-    constexpr DiskShapeConf(NonNegative<Length> r): vertexRadius{r}
+    constexpr DiskShapeConf(NonNegative<Length> r) : vertexRadius{r}
     {
         // Intentionally empty.
     }
@@ -60,7 +59,7 @@ struct DiskShapeConf: ShapeBuilder<DiskShapeConf>
         location = value;
         return *this;
     }
-    
+
     /// @brief Uses the given value as the radius.
     constexpr DiskShapeConf& UseRadius(NonNegative<Length> r) noexcept
     {
@@ -91,13 +90,13 @@ struct DiskShapeConf: ShapeBuilder<DiskShapeConf>
     {
         return vertexRadius;
     }
-    
+
     /// @brief Gets the location.
     Length2 GetLocation() const noexcept
     {
         return location;
     }
-    
+
     /// @brief Vertex radius.
     ///
     /// @details This is the radius from the vertex that the shape's "skin" should
@@ -118,16 +117,15 @@ struct DiskShapeConf: ShapeBuilder<DiskShapeConf>
 // Free functions...
 
 /// @brief Equality operator.
-inline bool operator== (const DiskShapeConf& lhs, const DiskShapeConf& rhs) noexcept
+inline bool operator==(const DiskShapeConf& lhs, const DiskShapeConf& rhs) noexcept
 {
-    return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction
-        && lhs.restitution == rhs.restitution && lhs.density == rhs.density
-        && lhs.filter == rhs.filter && lhs.isSensor == rhs.isSensor
-        && lhs.location == rhs.location;
+    return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction &&
+           lhs.restitution == rhs.restitution && lhs.density == rhs.density &&
+           lhs.filter == rhs.filter && lhs.isSensor == rhs.isSensor && lhs.location == rhs.location;
 }
 
 /// @brief Inequality operator.
-inline bool operator!= (const DiskShapeConf& lhs, const DiskShapeConf& rhs) noexcept
+inline bool operator!=(const DiskShapeConf& lhs, const DiskShapeConf& rhs) noexcept
 {
     return !(lhs == rhs);
 }
@@ -141,8 +139,7 @@ constexpr ChildCounter GetChildCount(const DiskShapeConf&) noexcept
 /// @brief Gets the "child" of the given disk shape configuration.
 inline DistanceProxy GetChild(const DiskShapeConf& arg, ChildCounter index)
 {
-    if (index != 0)
-    {
+    if (index != 0) {
         throw InvalidArgument("only index of 0 is supported");
     }
     return DistanceProxy{arg.vertexRadius, 1, &arg.location, nullptr};
@@ -155,8 +152,7 @@ constexpr NonNegative<Length> GetVertexRadius(const DiskShapeConf& arg) noexcept
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
-constexpr NonNegative<Length> GetVertexRadius(const DiskShapeConf& arg,
-                                              ChildCounter) noexcept
+constexpr NonNegative<Length> GetVertexRadius(const DiskShapeConf& arg, ChildCounter) noexcept
 {
     return GetVertexRadius(arg);
 }

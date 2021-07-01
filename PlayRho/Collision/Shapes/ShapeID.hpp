@@ -30,8 +30,7 @@ namespace playrho {
 using ShapeID = detail::IndexingNamedType<ShapeCounter, struct ShapeIdentifier>;
 
 /// @brief Invalid fixture ID value.
-constexpr auto InvalidShapeID =
-    static_cast<ShapeID>(static_cast<ShapeID::underlying_type>(-1));
+constexpr auto InvalidShapeID = static_cast<ShapeID>(static_cast<ShapeID::underlying_type>(-1));
 
 /// @brief Gets an invalid value for the ShapeID type.
 template <>
