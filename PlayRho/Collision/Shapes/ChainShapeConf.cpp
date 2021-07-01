@@ -77,10 +77,28 @@ ChainShapeConf& ChainShapeConf::Set(std::vector<Length2> vertices)
     return *this;
 }
 
-ChainShapeConf& ChainShapeConf::Transform(const Mat22& m) noexcept
+ChainShapeConf& ChainShapeConf::Translate(const Length2& value) noexcept
 {
     std::for_each(begin(m_vertices), end(m_vertices), [=](Length2& v){
-        v = m * v;
+        v = v + value;
+    });
+    ResetNormals(m_normals, m_vertices);
+    return *this;
+}
+
+ChainShapeConf& ChainShapeConf::Scale(const Vec2& value) noexcept
+{
+    std::for_each(begin(m_vertices), end(m_vertices), [=](Length2& v) {
+        v = Length2{GetX(value) * GetX(v), GetY(value) * GetY(v)};
+    });
+    ResetNormals(m_normals, m_vertices);
+    return *this;
+}
+
+ChainShapeConf& ChainShapeConf::Rotate(const UnitVec& value) noexcept
+{
+    std::for_each(begin(m_vertices), end(m_vertices), [=](Length2& v) {
+        v = ::playrho::d2::Rotate(v, value);
     });
     ResetNormals(m_normals, m_vertices);
     return *this;

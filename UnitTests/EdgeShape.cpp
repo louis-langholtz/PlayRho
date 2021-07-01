@@ -60,18 +60,33 @@ TEST(EdgeShapeConf, GetInvalidChildThrows)
     EXPECT_THROW(GetChild(foo, 1), InvalidArgument);
 }
 
-TEST(EdgeShapeConf, TransformFF)
+TEST(EdgeShapeConf, TranslateFF)
 {
     {
         auto foo = EdgeShapeConf{};
         auto tmp = foo;
-        Transform(foo, Mat22{});
+        Translate(foo, Length2{});
         EXPECT_EQ(foo, tmp);
     }
+    {
+        const auto v1 = Length2{1_m, 2_m};
+        const auto v2 = Length2{3_m, 4_m};
+        auto foo = EdgeShapeConf{v1, v2};
+        auto tmp = foo;
+        const auto value = Length2{1_m, 2_m};
+        Translate(foo, value);
+        EXPECT_NE(foo, tmp);
+        EXPECT_EQ(foo.GetVertexA(), v1 + value);
+        EXPECT_EQ(foo.GetVertexB(), v2 + value);
+    }
+}
+
+TEST(EdgeShapeConf, ScaleFF)
+{
     {
         auto foo = EdgeShapeConf{};
         auto tmp = foo;
-        Transform(foo, GetIdentity<Mat22>());
+        Scale(foo, Vec2{Real(1), Real(1)});
         EXPECT_EQ(foo, tmp);
     }
     {
@@ -79,18 +94,32 @@ TEST(EdgeShapeConf, TransformFF)
         const auto v2 = Length2{3_m, 4_m};
         auto foo = EdgeShapeConf{v1, v2};
         auto tmp = foo;
-        Transform(foo, GetIdentity<Mat22>());
-        EXPECT_EQ(foo, tmp);
-    }
-    {
-        const auto v1 = Length2{1_m, 2_m};
-        const auto v2 = Length2{3_m, 4_m};
-        auto foo = EdgeShapeConf{v1, v2};
-        auto tmp = foo;
-        Transform(foo, GetIdentity<Mat22>() * 2);
+        const auto value = Vec2{Real(2), Real(4)};
+        EXPECT_NO_THROW(Scale(foo, value));
         EXPECT_NE(foo, tmp);
-        EXPECT_EQ(foo.GetVertexA(), v1 * 2);
-        EXPECT_EQ(foo.GetVertexB(), v2 * 2);
+        EXPECT_EQ(foo.GetVertexA(), Length2(GetX(v1) * GetX(value), GetY(v1) * GetY(value)));
+        EXPECT_EQ(foo.GetVertexB(), Length2(GetX(v2) * GetX(value), GetY(v2) * GetY(value)));
+    }
+}
+
+TEST(EdgeShapeConf, RotateFF)
+{
+    {
+        auto foo = EdgeShapeConf{};
+        auto tmp = foo;
+        Rotate(foo, UnitVec::GetRight());
+        EXPECT_EQ(foo, tmp);
+    }
+    {
+        const auto v1 = Length2{1_m, 2_m};
+        const auto v2 = Length2{3_m, 4_m};
+        auto foo = EdgeShapeConf{v1, v2};
+        auto tmp = foo;
+        const auto value = UnitVec::GetTop();
+        EXPECT_NO_THROW(Rotate(foo, value));
+        EXPECT_NE(foo, tmp);
+        EXPECT_EQ(foo.GetVertexA(), Rotate(v1, value));
+        EXPECT_EQ(foo.GetVertexB(), Rotate(v2, value));
     }
 }
 

@@ -111,7 +111,7 @@ TEST(Shape, DefaultConstruction)
     EXPECT_TRUE(s == s);
     auto t = Shape{};
     EXPECT_TRUE(s == t);
-    EXPECT_NO_THROW(Transform(t, Mat22{}));
+    EXPECT_NO_THROW(Translate(t, Length2{}));
     EXPECT_EQ(GetType(s), GetTypeID<void>());
 }
 
@@ -122,7 +122,12 @@ struct ShapeTest {
     int number;
 };
 
-[[maybe_unused]] void Transform(ShapeTest&, const Mat22&)
+[[maybe_unused]] ChildCounter GetChildCount(const ShapeTest&)
+{
+    return 1u;
+}
+
+[[maybe_unused]] void Translate(ShapeTest&, const Length2&)
 {
 }
 
@@ -353,21 +358,6 @@ TEST(Shape, Inequality)
     EXPECT_TRUE(Shape(DiskShapeConf()) != Shape(EdgeShapeConf()));
     const auto filter = Filter{0x2u, 0x8, 0x1};
     EXPECT_TRUE(Shape(EdgeShapeConf()) != Shape(EdgeShapeConf().UseFilter(filter)));
-}
-
-TEST(Shape, Transform)
-{
-    const auto oldConf = DiskShapeConf{}.UseRadius(1_m).UseLocation(Length2{2_m, 0_m});
-    auto newConf = DiskShapeConf{};
-    auto shape = Shape(oldConf);
-
-    EXPECT_NO_THROW(Transform(shape, GetIdentity<Mat22>()));
-    newConf = TypeCast<DiskShapeConf>(shape);
-    EXPECT_EQ(oldConf.GetLocation(), newConf.GetLocation());
-
-    EXPECT_NO_THROW(Transform(shape, Mat22{Vec2{Real(2), Real(0)}, Vec2{Real(0), Real(2)}}));
-    newConf = TypeCast<DiskShapeConf>(shape);
-    EXPECT_EQ(Length2(4_m, 0_m), newConf.GetLocation());
 }
 
 #if 0

@@ -145,49 +145,49 @@ void SetAcceleration(World& world, BodyID id,
 {
     auto body = GetBody(world, id);
     SetAcceleration(body, linear, angular);
-    world.SetBody(id, body);
+    SetBody(world, id, body);
 }
 
 void SetAcceleration(World& world, BodyID id, LinearAcceleration2 value)
 {
     auto body = GetBody(world, id);
     SetAcceleration(body, value);
-    world.SetBody(id, body);
+    SetBody(world, id, body);
 }
 
 void SetAcceleration(World& world, BodyID id, AngularAcceleration value)
 {
     auto body = GetBody(world, id);
     SetAcceleration(body, value);
-    world.SetBody(id, body);
+    SetBody(world, id, body);
 }
 
 void SetAcceleration(World& world, BodyID id, Acceleration value)
 {
     auto body = GetBody(world, id);
     SetAcceleration(body, value);
-    world.SetBody(id, body);
+    SetBody(world, id, body);
 }
 
 void SetTransformation(World& world, BodyID id, Transformation value)
 {
     auto body = GetBody(world, id);
     SetTransformation(body, value);
-    world.SetBody(id, body);
+    SetBody(world, id, body);
 }
 
 void SetLocation(World& world, BodyID id, Length2 value)
 {
     auto body = GetBody(world, id);
     SetLocation(body, value);
-    world.SetBody(id, body);
+    SetBody(world, id, body);
 }
 
 void SetAngle(World& world, BodyID id, Angle value)
 {
     auto body = GetBody(world, id);
     SetAngle(body, value);
-    world.SetBody(id, body);
+    SetBody(world, id, body);
 }
 
 void RotateAboutWorldPoint(World& world, BodyID body, Angle amount, Length2 worldPoint)

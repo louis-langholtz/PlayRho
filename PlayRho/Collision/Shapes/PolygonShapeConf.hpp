@@ -106,6 +106,10 @@ public:
     /// @see https://en.wikipedia.org/wiki/Transformation_matrix
     PolygonShapeConf& Transform(const Mat22& m) noexcept;
 
+    PolygonShapeConf& Translate(const Length2& value) noexcept;
+    PolygonShapeConf& Scale(const Vec2& value) noexcept;
+    PolygonShapeConf& Rotate(const UnitVec& value) noexcept;
+
     /// @brief Equality operator.
     friend bool operator==(const PolygonShapeConf& lhs, const PolygonShapeConf& rhs) noexcept
     {
@@ -263,6 +267,24 @@ Length2 GetEdge(const PolygonShapeConf& shape, VertexCounter index);
 inline void Transform(PolygonShapeConf& arg, const Mat22& m) noexcept
 {
     arg.Transform(m);
+}
+
+/// @brief Translates the given shape configuration's vertices by the given amount.
+inline void Translate(PolygonShapeConf& arg, const Length2& value) noexcept
+{
+    arg.Translate(value);
+}
+
+/// @brief Scales the given shape configuration's vertices by the given amount.
+inline void Scale(PolygonShapeConf& arg, const Vec2& value) noexcept
+{
+    arg.Scale(value);
+}
+
+/// @brief Rotates the given shape configuration's vertices by the given amount.
+inline void Rotate(PolygonShapeConf& arg, const UnitVec& value) noexcept
+{
+    arg.Rotate(value);
 }
 
 /// @brief Validates the convexity of the given collection of vertices.

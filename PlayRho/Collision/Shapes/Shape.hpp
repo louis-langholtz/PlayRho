@@ -67,7 +67,6 @@ struct IsValidShapeType : std::false_type {
 ///   - <code>NonNegative<AreaDensity> GetDensity(const T&) noexcept;</code>
 ///   - <code>Real GetFriction(const T&) noexcept;</code>
 ///   - <code>Real GetRestitution(const T&) noexcept;</code>
-///   - <code>void Transform(T&, const Mat22& value);</code>
 /// @see Shape
 template <typename T>
 struct IsValidShapeType<
@@ -133,6 +132,34 @@ struct HasSetFilter<T, std::void_t<decltype(SetFilter(std::declval<T&>(), std::d
     : std::true_type {
 };
 
+template <class T, class = void>
+struct HasTranslate : std::false_type {
+};
+
+template <class T>
+struct HasTranslate<T,
+                    std::void_t<decltype(Translate(std::declval<T&>(), std::declval<Length2>()))>>
+    : std::true_type {
+};
+
+template <class T, class = void>
+struct HasScale : std::false_type {
+};
+
+template <class T>
+struct HasScale<T, std::void_t<decltype(Scale(std::declval<T&>(), std::declval<Vec2>()))>>
+    : std::true_type {
+};
+
+template <class T, class = void>
+struct HasRotate : std::false_type {
+};
+
+template <class T>
+struct HasRotate<T, std::void_t<decltype(Rotate(std::declval<T&>(), std::declval<Angle>()))>>
+    : std::true_type {
+};
+
 /// @brief Fallback friction setter that throws unless given the same value as current.
 template <class T>
 std::enable_if_t<IsValidShapeType<T>::value && !HasSetFriction<T>::value, void>
@@ -183,12 +210,29 @@ SetFilter(T& o, Filter value)
     }
 }
 
-/// @brief Fallback transform function that throws unless given the identity value.
 template <class T>
-std::enable_if_t<IsValidShapeType<T>::value, void> Transform(T& o, const Mat22& value)
+std::enable_if_t<IsValidShapeType<T>::value && !HasTranslate<T>::value, void>
+Translate(T& o, Length2 value)
 {
-    if (GetIdentity<Mat22>() != value) {
-        throw InvalidArgument("Transform to non-identity matrix not supported");
+    if (Length2{} != value) {
+        throw InvalidArgument("Translate non-zero amount not supported");
+    }
+}
+
+template <class T>
+std::enable_if_t<IsValidShapeType<T>::value && !HasScale<T>::value, void> Scale(T& o, Vec2 value)
+{
+    if (Vec2{Real(1), Real(1)} != value) {
+        throw InvalidArgument("Scale non-identity amount not supported");
+    }
+}
+
+template <class T>
+std::enable_if_t<IsValidShapeType<T>::value && !HasRotate<T>::value, void> Rotate(T& o,
+                                                                                  UnitVec value)
+{
+    if (UnitVec::GetRight() != value) {
+        throw InvalidArgument("Rotate non-zero amount not supported");
     }
 }
 
@@ -278,12 +322,11 @@ bool IsSensor(const Shape& shape) noexcept;
 /// @see IsSensor(const Shape& shape).
 void SetSensor(Shape& shape, bool value);
 
-/// @brief Transforms all of the given shape's vertices by the given transformation matrix.
-/// @see https://en.wikipedia.org/wiki/Transformation_matrix
+/// @brief Translates all of the given shape's vertices by the given amount.
 /// @note This may throw <code>std::bad_alloc</code> or any exception that's thrown
 ///   by the constructor for the model's underlying data type.
 /// @throws std::bad_alloc if there's a failure allocating storage.
-void Transform(Shape& shape, const Mat22& m);
+void Translate(Shape& shape, const Length2& value);
 
 /// @brief Gets a pointer to the underlying data.
 /// @note Provided for introspective purposes like visitation.
@@ -530,12 +573,30 @@ public:
         }
     }
 
-    friend void Transform(Shape& shape, const Mat22& m)
+    friend void Translate(Shape& shape, const Length2& value)
     {
         if (shape.m_self) {
             auto copy = shape.m_self->Clone_();
-            copy->Transform_(m);
-            shape.m_self = std::unique_ptr<decltype(shape.m_self)::element_type>{std::move(copy)};
+            copy->Translate_(value);
+            shape.m_self = std::move(copy);
+        }
+    }
+
+    friend void Scale(Shape& shape, const Vec2& value)
+    {
+        if (shape.m_self) {
+            auto copy = shape.m_self->Clone_();
+            copy->Scale_(value);
+            shape.m_self = std::move(copy);
+        }
+    }
+
+    friend void Rotate(Shape& shape, const UnitVec& value)
+    {
+        if (shape.m_self) {
+            auto copy = shape.m_self->Clone_();
+            copy->Rotate_(value);
+            shape.m_self = std::move(copy);
         }
     }
 
@@ -627,9 +688,14 @@ private:
         /// @see IsSensor_.
         virtual void SetSensor_(bool value) = 0;
 
-        /// @brief Transforms all of the shape's vertices by the given transformation matrix.
-        /// @see https://en.wikipedia.org/wiki/Transformation_matrix
-        virtual void Transform_(const Mat22& m) = 0;
+        /// @brief Translates all of the shape's vertices by the given amount.
+        virtual void Translate_(const Length2& value) = 0;
+
+        /// @brief Scales all of the shape's vertices by the given amount.
+        virtual void Scale_(const Vec2& value) = 0;
+
+        /// @brief Rotates all of the shape's vertices by the given amount.
+        virtual void Rotate_(const UnitVec& value) = 0;
 
         /// @brief Equality checking method.
         virtual bool IsEqual_(const Concept& other) const noexcept = 0;
@@ -652,12 +718,6 @@ private:
         {
             return !(lhs == rhs);
         }
-    };
-
-    struct general_ {
-    };
-
-    struct special_ : general_ {
     };
 
     /// @brief Internal model configuration concept.
@@ -750,9 +810,19 @@ private:
             SetSensor(data, value);
         }
 
-        void Transform_(const Mat22& m) override
+        void Translate_(const Length2& value) override
         {
-            Transform(data, m);
+            Translate(data, value);
+        }
+
+        void Scale_(const Vec2& value) override
+        {
+            Scale(data, value);
+        }
+
+        void Rotate_(const UnitVec& value) override
+        {
+            Rotate(data, value);
         }
 
         bool IsEqual_(const Concept& other) const noexcept override

@@ -117,10 +117,24 @@ void SetDensity(World& world, ShapeID id, NonNegative<AreaDensity> value)
     SetShape(world, id, object);
 }
 
-void Transform(World& world, ShapeID id, const Mat22& value)
+void Translate(World& world, ShapeID id, const Length2& value)
 {
     auto object = GetShape(world, id);
-    Transform(object, value);
+    Translate(object, value);
+    SetShape(world, id, object);
+}
+
+void Scale(World& world, ShapeID id, const Vec2& value)
+{
+    auto object = GetShape(world, id);
+    Scale(object, value);
+    SetShape(world, id, object);
+}
+
+void Rotate(World& world, ShapeID id, const UnitVec& value)
+{
+    auto object = GetShape(world, id);
+    Rotate(object, value);
     SetShape(world, id, object);
 }
 

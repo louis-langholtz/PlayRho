@@ -82,13 +82,31 @@ ConvexHull ConvexHull::Get(const VertexSet& pointSet, NonNegative<Length> vertex
     return ConvexHull{vertices, normals, vertexRadius};
 }
 
-ConvexHull& ConvexHull::Transform(const Mat22& m) noexcept
+ConvexHull& ConvexHull::Translate(const Length2& value) noexcept
 {
     auto newPoints = VertexSet{};
-    // clang++ recommends the following loop variable 'v' be of reference type (instead of value).
-    for (const auto& v: vertices)
-    {
-        newPoints.add(m * v);
+    for (const auto& v: vertices) {
+        newPoints.add(v + value);
+    }
+    *this = Get(newPoints, vertexRadius);
+    return *this;
+}
+
+ConvexHull& ConvexHull::Scale(const Vec2& value) noexcept
+{
+    auto newPoints = VertexSet{};
+    for (const auto& v: vertices) {
+        newPoints.add(Length2{GetX(v) * GetX(value), GetY(v) * GetY(value)});
+    }
+    *this = Get(newPoints, vertexRadius);
+    return *this;
+}
+
+ConvexHull& ConvexHull::Rotate(const UnitVec& value) noexcept
+{
+    auto newPoints = VertexSet{};
+    for (const auto& v: vertices) {
+        newPoints.add(::playrho::d2::Rotate(v, value));
     }
     *this = Get(newPoints, vertexRadius);
     return *this;
@@ -101,10 +119,26 @@ MultiShapeConf& MultiShapeConf::AddConvexHull(const VertexSet& pointSet,
     return *this;
 }
 
-MultiShapeConf& MultiShapeConf::Transform(const Mat22& m) noexcept
+MultiShapeConf& MultiShapeConf::Translate(const Length2& value) noexcept
 {
-    std::for_each(begin(children), end(children), [=](ConvexHull& child){
-        child.Transform(m);
+    std::for_each(begin(children), end(children), [&value](ConvexHull& child) {
+        child.Translate(value);
+    });
+    return *this;
+}
+
+MultiShapeConf& MultiShapeConf::Scale(const Vec2& value) noexcept
+{
+    std::for_each(begin(children), end(children), [&value](ConvexHull& child) {
+        child.Scale(value);
+    });
+    return *this;
+}
+
+MultiShapeConf& MultiShapeConf::Rotate(const UnitVec& value) noexcept
+{
+    std::for_each(begin(children), end(children), [&value](ConvexHull& child) {
+        child.Rotate(value);
     });
     return *this;
 }

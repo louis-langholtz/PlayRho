@@ -64,11 +64,15 @@ public:
     
     /// @brief Adds the given vertex.
     ChainShapeConf& Add(Length2 vertex);
-    
-    /// @brief Transforms all the vertices by the given transformation matrix.
-    /// @note This updates the normals too.
-    /// @see https://en.wikipedia.org/wiki/Transformation_matrix
-    ChainShapeConf& Transform(const Mat22& m) noexcept;
+
+    /// @brief Translates the vertices by the given amount.
+    ChainShapeConf& Translate(const Length2& value) noexcept;
+
+    /// @brief Scales the vertices by the given amount.
+    ChainShapeConf& Scale(const Vec2& value) noexcept;
+
+    /// @brief Rotates the vertices by the given amount.
+    ChainShapeConf& Rotate(const UnitVec& value) noexcept;
 
     /// @brief Gets the "child" shape count.
     ChildCounter GetChildCount() const noexcept
@@ -198,12 +202,22 @@ inline void SetVertexRadius(ChainShapeConf& arg, ChildCounter, NonNegative<Lengt
     arg.vertexRadius = value;
 }
 
-/// @brief Transforms the given chain shape configuration's vertices by the given
-///   transformation matrix.
-/// @see https://en.wikipedia.org/wiki/Transformation_matrix
-inline void Transform(ChainShapeConf& arg, const Mat22& m) noexcept
+/// @brief Translates the given shape's vertices by the given amount.
+inline void Translate(ChainShapeConf& arg, const Length2& value) noexcept
 {
-    arg.Transform(m);
+    arg.Translate(value);
+}
+
+/// @brief Scales the given shape's vertices by the given amount.
+inline void Scale(ChainShapeConf& arg, const Vec2& value) noexcept
+{
+    arg.Scale(value);
+}
+
+/// @brief Rotates the given shape's vertices by the given amount.
+inline void Rotate(ChainShapeConf& arg, const UnitVec& value) noexcept
+{
+    arg.Rotate(value);
 }
 
 /// @brief Gets an enclosing chain shape configuration for an axis aligned rectangle of the

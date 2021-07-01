@@ -189,14 +189,29 @@ inline NonNegative<AreaDensity> GetDensity(const World& world, ShapeID id)
 /// @relatedalso World
 void SetDensity(World& world, ShapeID id, NonNegative<AreaDensity> value);
 
-/// @brief Transforms all of the given shape's vertices by the given transformation matrix.
-/// @see https://en.wikipedia.org/wiki/Transformation_matrix
+/// @brief Translates all of the given shape's vertices by the given amount.
 /// @note This may throw <code>std::bad_alloc</code> or any exception that's thrown
 ///   by the constructor for the model's underlying data type.
 /// @throws std::bad_alloc if there's a failure allocating storage.
 /// @throws std::out_of_range If given an invalid identifier.
 /// @relatedalso World
-void Transform(World& world, ShapeID id, const Mat22& value);
+void Translate(World& world, ShapeID id, const Length2& value);
+
+/// @brief Scales all of the given shape's vertices by the given amount.
+/// @note This may throw <code>std::bad_alloc</code> or any exception that's thrown
+///   by the constructor for the model's underlying data type.
+/// @throws std::bad_alloc if there's a failure allocating storage.
+/// @throws std::out_of_range If given an invalid identifier.
+/// @relatedalso World
+void Scale(World& world, ShapeID id, const Vec2& value);
+
+/// @brief Rotates all of the given shape's vertices by the given amount.
+/// @note This may throw <code>std::bad_alloc</code> or any exception that's thrown
+///   by the constructor for the model's underlying data type.
+/// @throws std::bad_alloc if there's a failure allocating storage.
+/// @throws std::out_of_range If given an invalid identifier.
+/// @relatedalso World
+void Rotate(World& world, ShapeID id, const UnitVec& value);
 
 /// @brief Gets the mass data for the identified shape in the given world.
 /// @throws std::out_of_range If given an invalid identifier.

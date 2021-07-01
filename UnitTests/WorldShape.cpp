@@ -141,45 +141,46 @@ TEST(WorldShape, SetDensity)
     EXPECT_EQ(GetDensity(world, shapeId), value);
 }
 
-TEST(WorldShape, TransformDiskShape)
+TEST(WorldShape, TranslateDiskShape)
 {
     World world;
     const auto location0 = Length2{1_m, 2_m};
     const auto shapeId = CreateShape(world, DiskShapeConf{}.UseLocation(location0));
     ASSERT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0);
-    auto value = GetIdentity<Mat22>() * Real(1);
-    EXPECT_NO_THROW(Transform(world, shapeId, value));
+    auto value = Length2{0_m, 0_m};
+    EXPECT_NO_THROW(Translate(world, shapeId, value));
     EXPECT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0);
-    value = GetIdentity<Mat22>() * Real(2);
-    EXPECT_NO_THROW(Transform(world, shapeId, value));
-    EXPECT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0 * Real(2));
+    value = Length2{2_m, 3_m};
+    EXPECT_NO_THROW(Translate(world, shapeId, value));
+    EXPECT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0 + value);
 }
 
-TEST(WorldShape, TransformStaticRectangle)
+TEST(WorldShape, TranslateStaticRectangle)
 {
     World world;
     const auto location0 = Length2{+0.5_m, -0.5_m};
     const auto shapeId = CreateShape(world, ::playrho::part::Compositor<>{});
     ASSERT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0);
-    auto value = GetIdentity<Mat22>() * Real(1);
-    EXPECT_NO_THROW(Transform(world, shapeId, value));
+    auto value = Length2{0_m, 0_m};
+    EXPECT_NO_THROW(Translate(world, shapeId, value));
     EXPECT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0);
-    value = GetIdentity<Mat22>() * Real(2);
-    EXPECT_THROW(Transform(world, shapeId, value), InvalidArgument);
+    value = Length2{2_m, 3_m};
+    EXPECT_THROW(Translate(world, shapeId, value), InvalidArgument);
     EXPECT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0);
 }
 
-TEST(WorldShape, TransformDynamicRectangle)
+TEST(WorldShape, TranslateDynamicRectangle)
 {
     using namespace ::playrho::part;
     World world;
     const auto location0 = Length2{+0.5_m, -0.5_m};
     const auto shapeId = CreateShape(world, Compositor<GeometryIs<DynamicRectangle<>>>{});
     ASSERT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0);
-    EXPECT_NO_THROW(Transform(world, shapeId, GetIdentity<Mat22>()));
+    EXPECT_NO_THROW(Translate(world, shapeId, Length2{0_m, 0_m}));
     EXPECT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0);
-    EXPECT_NO_THROW(Transform(world, shapeId, GetIdentity<Mat22>() * Real(2)));
-    EXPECT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0 * Real(2));
+    const auto offset = Length2{2_m, 3_m};
+    EXPECT_NO_THROW(Translate(world, shapeId, offset));
+    EXPECT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0 + offset);
 }
 
 TEST(WorldShape, TestPointFreeFunction)

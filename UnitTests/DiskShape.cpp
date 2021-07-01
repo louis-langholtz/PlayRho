@@ -79,27 +79,22 @@ TEST(DiskShapeConf, InitConstruction)
     EXPECT_EQ(GetY(conf.GetLocation()), GetY(position));
 }
 
-TEST(DiskShapeConf, TransformFF)
+TEST(DiskShapeConf, TranslateFF)
 {
     {
         auto foo = DiskShapeConf{};
         auto tmp = foo;
-        Transform(foo, Mat22{});
-        EXPECT_EQ(foo, tmp);
-    }
-    {
-        auto foo = DiskShapeConf{};
-        auto tmp = foo;
-        Transform(foo, GetIdentity<Mat22>());
+        Translate(foo, Length2{});
         EXPECT_EQ(foo, tmp);
     }
     {
         const auto v1 = Length2{1_m, 2_m};
         auto foo = DiskShapeConf{}.UseLocation(v1).UseRadius(1_m);
         auto tmp = foo;
-        Transform(foo, GetIdentity<Mat22>() * 2);
+        const auto offset = Length2{3_m, 1_m};
+        Translate(foo, offset);
         EXPECT_NE(foo, tmp);
-        EXPECT_EQ(foo.GetLocation(), v1 * 2);
+        EXPECT_EQ(foo.GetLocation(), v1 + offset);
     }
 }
 

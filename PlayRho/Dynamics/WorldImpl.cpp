@@ -1008,6 +1008,21 @@ void WorldImpl::SetShape(ShapeID id, Shape def)
         throw WrongState("SetShape: world is locked");
     }
     const auto& shape = m_shapeBuffer.at(to_underlying(id));
+    const auto geometryChanged = [](const Shape& shape0, const Shape& shape1){
+        const auto numKids0 = GetChildCount(shape0);
+        const auto numKids1 = GetChildCount(shape1);
+        if (numKids0 != numKids1) {
+            return true;
+        }
+        for (auto child = 0u; child < numKids1; ++child) {
+            const auto distanceProxy0 = GetChild(shape0, child);
+            const auto distanceProxy1 = GetChild(shape1, child);
+            if (distanceProxy0 != distanceProxy1) {
+                return true;
+            }
+        }
+        return false;
+    }(shape, def);
     for (auto&& b: m_bodyBuffer) {
         for (const auto& shapeId: b.GetShapes()) {
             if (shapeId == id) {
@@ -1032,21 +1047,8 @@ void WorldImpl::SetShape(ShapeID id, Shape def)
         }
         AddProxies(FindProxies(m_tree, id));
     }
-    auto layoutChanged = [&shape,&def](){
-        const auto numKids0 = GetChildCount(shape);
-        const auto numKids1 = GetChildCount(def);
-        if (numKids0 != numKids1) {
-            return true;
-        }
-        for (auto child = 0u; child < numKids1; ++child) {
-            if (GetVertexRadius(shape, child) != GetVertexRadius(def, child)) {
-                return true;
-            }
-        }
-        return false;
-    };
     if ((IsSensor(shape) != IsSensor(def)) || (GetFriction(shape) != GetFriction(def)) ||
-        (GetRestitution(shape) != GetRestitution(def)) || layoutChanged()) {
+        (GetRestitution(shape) != GetRestitution(def)) || geometryChanged) {
         for (auto&& c: m_contactBuffer) {
             if (c.GetShapeA() == id || c.GetShapeB() == id) {
                 c.FlagForUpdating();

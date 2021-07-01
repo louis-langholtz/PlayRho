@@ -64,9 +64,14 @@ public:
     /// @brief Uses the given vertex radius.
     EdgeShapeConf& UseVertexRadius(NonNegative<Length> value) noexcept;
     
-    /// @brief Transforms both vertices by the given transformation matrix.
-    /// @see https://en.wikipedia.org/wiki/Transformation_matrix
-    EdgeShapeConf& Transform(const Mat22& m) noexcept;
+    /// @brief Translates the vertices by the given amount.
+    EdgeShapeConf& Translate(const Length2& value) noexcept;
+
+    /// @brief Scales the vertices by the given amount.
+    EdgeShapeConf& Scale(const Vec2& value) noexcept;
+
+    /// @brief Rotates the vertices by the given amount.
+    EdgeShapeConf& Rotate(const UnitVec& value) noexcept;
 
     /// @brief Gets vertex A.
     Length2 GetVertexA() const noexcept
@@ -169,11 +174,22 @@ inline MassData GetMassData(const EdgeShapeConf& arg) noexcept
                                     arg.GetVertexA(), arg.GetVertexB());
 }
 
-/// @brief Transforms the given shape configuration's vertices by the given transformation matrix.
-/// @see https://en.wikipedia.org/wiki/Transformation_matrix
-inline void Transform(EdgeShapeConf& arg, const Mat22& m) noexcept
+/// @brief Translates the given shape's vertices by the given amount.
+inline void Translate(EdgeShapeConf& arg, const Length2& value) noexcept
 {
-    arg.Transform(m);
+    arg.Translate(value);
+}
+
+/// @brief Scales the given shape's vertices by the given amount.
+inline void Scale(EdgeShapeConf& arg, const Vec2& value) noexcept
+{
+    arg.Scale(value);
+}
+
+/// @brief Rotates the given shape's vertices by the given amount.
+inline void Rotate(EdgeShapeConf& arg, const UnitVec& value) noexcept
+{
+    arg.Rotate(value);
 }
 
 } // namespace d2

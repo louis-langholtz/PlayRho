@@ -276,18 +276,20 @@ public:
         return playrho::d2::GetMassData(vertexRadius, density, Span<const Length2>(GetVertices()));
     }
 
-    void Transform(const Mat22& m)
-    {
-        if (m[0][1] != Real(0) || m[1][0] != Real(0)) {
-            throw InvalidArgument("Transform other than stretching not supported");
-        }
-        const auto dims = GetDimensions();
-        SetDimensions(Length2{GetX(dims) * m[0][0], GetY(dims) * m[1][1]});
-    }
-
     void SetVertexRadius(ChildCounter, NonNegative<Length> value)
     {
         vertexRadius = value;
+    }
+
+    void Translate(Length2 value)
+    {
+        SetOffset(GetOffset() + value);
+    }
+
+    void Scale(Vec2 value)
+    {
+        const auto dims = GetDimensions();
+        SetDimensions(Length2{GetX(dims) * GetX(value), GetY(dims) * GetY(value)});
     }
 };
 
@@ -584,15 +586,31 @@ auto GetMassData(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
     return arg.GetMassData(GetDensity(arg));
 }
 
-/// @brief Transforms the given polygon configuration's vertices by the given
-///   transformation matrix.
+/// @brief Translates the given compositor's vertices by the given value.
 /// @relatedalso Compositor
-/// @see https://en.wikipedia.org/wiki/Transformation_matrix
-template <class P1, class P2, class P3, class P4, class P5, class P6>
-auto Transform(Compositor<P1, P2, P3, P4, P5, P6>& arg, const Mat22& m)
-    -> decltype(arg.Transform(m))
+template <class P1, class P2, class P3, class P4, class P5, class P6, std::size_t N>
+auto Translate(Compositor<P1, P2, P3, P4, P5, P6>& arg, const Vector<Length, N>& value)
+    -> decltype(arg.Translate(value))
 {
-    return arg.Transform(m);
+    return arg.Translate(value);
+}
+
+/// @brief Scales the given compositor's vertices by the given value.
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6, std::size_t N>
+auto Scale(Compositor<P1, P2, P3, P4, P5, P6>& arg, const Vector<Real, N>& value)
+    -> decltype(arg.Scale(value))
+{
+    return arg.Scale(value);
+}
+
+/// @brief Rotates the given compositor's vertices by the given value.
+/// @relatedalso Compositor
+template <class P1, class P2, class P3, class P4, class P5, class P6>
+auto Rotate(Compositor<P1, P2, P3, P4, P5, P6>& arg, ::playrho::d2::UnitVec value)
+    -> decltype(arg.Rotate(value))
+{
+    return arg.Rotate(value);
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.

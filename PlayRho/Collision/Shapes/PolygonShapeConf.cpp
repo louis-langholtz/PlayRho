@@ -86,7 +86,7 @@ PolygonShapeConf& PolygonShapeConf::Transform(Transformation xfm) noexcept
 {
     for (auto i = decltype(GetVertexCount()){0}; i < GetVertexCount(); ++i) {
         m_vertices[i] = playrho::d2::Transform(m_vertices[i], xfm);
-        m_normals[i] = Rotate(m_normals[i], xfm.q);
+        m_normals[i] = ::playrho::d2::Rotate(m_normals[i], xfm.q);
     }
     m_centroid = playrho::d2::Transform(m_centroid, xfm);
     return *this;
@@ -95,9 +95,35 @@ PolygonShapeConf& PolygonShapeConf::Transform(Transformation xfm) noexcept
 PolygonShapeConf& PolygonShapeConf::Transform(const Mat22& m) noexcept
 {
     auto newPoints = VertexSet{};
-    // clang++ recommends the following loop variable 'v' be of reference type (instead of value).
     for (const auto& v : m_vertices) {
         newPoints.add(m * v);
+    }
+    return Set(newPoints);
+}
+
+PolygonShapeConf& PolygonShapeConf::Translate(const Length2& value) noexcept
+{
+    auto newPoints = VertexSet{};
+    for (const auto& v : m_vertices) {
+        newPoints.add(v + value);
+    }
+    return Set(newPoints);
+}
+
+PolygonShapeConf& PolygonShapeConf::Scale(const Vec2& value) noexcept
+{
+    auto newPoints = VertexSet{};
+    for (const auto& v : m_vertices) {
+        newPoints.add(Length2{GetX(v) * GetX(value), GetY(v) * GetY(value)});
+    }
+    return Set(newPoints);
+}
+
+PolygonShapeConf& PolygonShapeConf::Rotate(const UnitVec& value) noexcept
+{
+    auto newPoints = VertexSet{};
+    for (const auto& v : m_vertices) {
+        newPoints.add(::playrho::d2::Rotate(v, value));
     }
     return Set(newPoints);
 }

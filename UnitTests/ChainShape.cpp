@@ -104,18 +104,12 @@ TEST(ChainShapeConf, TypeInfo)
     EXPECT_THROW(TypeCast<int>(shape), std::bad_cast);
 }
 
-TEST(ChainShapeConf, TransformFF)
+TEST(ChainShapeConf, TranslateFF)
 {
     {
         auto foo = ChainShapeConf{};
         auto tmp = foo;
-        Transform(foo, Mat22{});
-        EXPECT_EQ(foo, tmp);
-    }
-    {
-        auto foo = ChainShapeConf{};
-        auto tmp = foo;
-        Transform(foo, GetIdentity<Mat22>());
+        EXPECT_NO_THROW(Translate(foo, Length2{}));
         EXPECT_EQ(foo, tmp);
     }
     {
@@ -125,11 +119,60 @@ TEST(ChainShapeConf, TransformFF)
         foo.Add(v1);
         foo.Add(v2);
         auto tmp = foo;
-        Transform(foo, GetIdentity<Mat22>() * 2);
+        const auto value = Length2{2_m, 1_m};
+        EXPECT_NO_THROW(Translate(foo, value));
         EXPECT_NE(foo, tmp);
         ASSERT_EQ(foo.GetVertexCount(), ChildCounter(2));
-        EXPECT_EQ(foo.GetVertex(0), v1 * 2);
-        EXPECT_EQ(foo.GetVertex(1), v2 * 2);
+        EXPECT_EQ(foo.GetVertex(0), v1 + value);
+        EXPECT_EQ(foo.GetVertex(1), v2 + value);
+    }
+}
+
+TEST(ChainShapeConf, ScaleFF)
+{
+    {
+        auto foo = ChainShapeConf{};
+        auto tmp = foo;
+        EXPECT_NO_THROW(Scale(foo, Vec2{Real(1), Real(1)}));
+        EXPECT_EQ(foo, tmp);
+    }
+    {
+        const auto v1 = Length2{1_m, 2_m};
+        const auto v2 = Length2{3_m, 4_m};
+        auto foo = ChainShapeConf{};
+        foo.Add(v1);
+        foo.Add(v2);
+        auto tmp = foo;
+        const auto value = Vec2{Real(2), Real(1)};
+        EXPECT_NO_THROW(Scale(foo, value));
+        EXPECT_NE(foo, tmp);
+        ASSERT_EQ(foo.GetVertexCount(), ChildCounter(2));
+        EXPECT_EQ(foo.GetVertex(0), Length2(GetX(v1) * GetX(value), GetY(v1) * GetY(value)));
+        EXPECT_EQ(foo.GetVertex(1), Length2(GetX(v2) * GetX(value), GetY(v2) * GetY(value)));
+    }
+}
+
+TEST(ChainShapeConf, RotateFF)
+{
+    {
+        auto foo = ChainShapeConf{};
+        auto tmp = foo;
+        EXPECT_NO_THROW(Rotate(foo, UnitVec::GetRight()));
+        EXPECT_EQ(foo, tmp);
+    }
+    {
+        const auto v1 = Length2{1_m, 2_m};
+        const auto v2 = Length2{3_m, 4_m};
+        auto foo = ChainShapeConf{};
+        foo.Add(v1);
+        foo.Add(v2);
+        auto tmp = foo;
+        const auto value = UnitVec::GetTop();
+        EXPECT_NO_THROW(Rotate(foo, value));
+        EXPECT_NE(foo, tmp);
+        ASSERT_EQ(foo.GetVertexCount(), ChildCounter(2));
+        EXPECT_EQ(foo.GetVertex(0), Rotate(v1, value));
+        EXPECT_EQ(foo.GetVertex(1), Rotate(v2, value));
     }
 }
 

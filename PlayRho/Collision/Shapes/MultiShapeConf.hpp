@@ -63,9 +63,14 @@ public:
         vertexRadius = value;
     }
 
-    /// @brief Transforms all the vertices by the given transformation matrix.
-    /// @see https://en.wikipedia.org/wiki/Transformation_matrix
-    ConvexHull& Transform(const Mat22& m) noexcept;
+    /// @brief Translates all the vertices by the given amount.
+    ConvexHull& Translate(const Length2& value) noexcept;
+
+    /// @brief Scales all the vertices by the given amount.
+    ConvexHull& Scale(const Vec2& value) noexcept;
+
+    /// @brief Rotates all the vertices by the given amount.
+    ConvexHull& Rotate(const UnitVec& value) noexcept;
 
     /// @brief Equality operator.
     friend bool operator== (const ConvexHull& lhs, const ConvexHull& rhs) noexcept
@@ -141,10 +146,10 @@ struct MultiShapeConf: public ShapeBuilder<MultiShapeConf>
     ///   may lead to poor stacking behavior.
     MultiShapeConf& AddConvexHull(const VertexSet& pointSet, NonNegative<Length> vertexRadius =
                                   GetDefaultVertexRadius()) noexcept;
-    
-    /// @brief Transforms the vertices of all the children by the given transformation matrix.
-    /// @see https://en.wikipedia.org/wiki/Transformation_matrix
-    MultiShapeConf& Transform(const Mat22& m) noexcept;
+
+    MultiShapeConf& Translate(const Length2& value) noexcept;
+    MultiShapeConf& Scale(const Vec2& value) noexcept;
+    MultiShapeConf& Rotate(const UnitVec& value) noexcept;
 
     std::vector<ConvexHull> children; ///< Children.
 };
@@ -205,12 +210,22 @@ inline void SetVertexRadius(MultiShapeConf& arg, ChildCounter index, NonNegative
     arg.children[index].SetVertexRadius(value);
 }
 
-/// @brief Transforms the given multi shape configuration by the given
-///   transformation matrix.
-/// @see https://en.wikipedia.org/wiki/Transformation_matrix
-inline void Transform(MultiShapeConf& arg, const Mat22& m) noexcept
+/// @brief Translates the given shape configuration's vertices by the given amount.
+inline void Translate(MultiShapeConf& arg, const Length2& value) noexcept
 {
-    arg.Transform(m);
+    arg.Translate(value);
+}
+
+/// @brief Scales the given shape configuration's vertices by the given amount.
+inline void Scale(MultiShapeConf& arg, const Vec2& value) noexcept
+{
+    arg.Scale(value);
+}
+
+/// @brief Rotates the given shape configuration's vertices by the given amount.
+inline void Rotate(MultiShapeConf& arg, const UnitVec& value) noexcept
+{
+    arg.Rotate(value);
 }
 
 } // namespace d2

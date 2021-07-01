@@ -67,15 +67,25 @@ struct DiskShapeConf: ShapeBuilder<DiskShapeConf>
         vertexRadius = r;
         return *this;
     }
-    
-    /// @brief Transforms the location by the given transformation matrix.
-    /// @see https://en.wikipedia.org/wiki/Transformation_matrix
-    constexpr DiskShapeConf& Transform(const Mat22& m) noexcept
+
+    constexpr DiskShapeConf& Translate(Length2 value) noexcept
     {
-        location = m * location;
+        location += value;
         return *this;
     }
-    
+
+    constexpr DiskShapeConf& Scale(Vec2 value) noexcept
+    {
+        location = Length2{GetX(location) * GetX(value), GetY(location) * GetY(value)};
+        return *this;
+    }
+
+    constexpr DiskShapeConf& Rotate(const UnitVec& value) noexcept
+    {
+        location = ::playrho::d2::Rotate(location, value);
+        return *this;
+    }
+
     /// @brief Gets the radius property.
     NonNegative<Length> GetRadius() const noexcept
     {
@@ -163,12 +173,22 @@ inline MassData GetMassData(const DiskShapeConf& arg) noexcept
     return playrho::d2::GetMassData(arg.vertexRadius, arg.density, arg.location);
 }
 
-/// @brief Transforms the given shape configuration's vertices by the given
-///   transformation matrix.
-/// @see https://en.wikipedia.org/wiki/Transformation_matrix
-inline void Transform(DiskShapeConf& arg, const Mat22& m) noexcept
+/// @brief Translates the given shape configuration's vertices by the given amount.
+inline void Translate(DiskShapeConf& arg, const Length2& value) noexcept
 {
-    arg.Transform(m);
+    arg.Translate(value);
+}
+
+/// @brief Scales the given shape configuration's vertices by the given amount.
+inline void Scale(DiskShapeConf& arg, const Vec2& value) noexcept
+{
+    arg.Scale(value);
+}
+
+/// @brief Rotates the given shape configuration's vertices by the given amount.
+inline void Rotate(DiskShapeConf& arg, const UnitVec& value) noexcept
+{
+    arg.Rotate(value);
 }
 
 } // namespace d2

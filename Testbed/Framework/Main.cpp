@@ -138,7 +138,12 @@ namespace
     auto refreshRate = 0;
 
     auto shapeTransformationMatrix = GetIdentity<Mat22>();
-    constexpr char shapeTransformButtonName[] = "Transform";
+    auto shapeTranslateValue = Length2{};
+    auto shapeScaleValue = Vec2{Real(1), Real(1)};
+    auto shapeRotateValue = 0_deg;
+    constexpr char shapeTranslateButtonName[] = "Translate";
+    constexpr char shapeScaleButtonName[] = "Scale";
+    constexpr char shapeRotateButtonName[] = "Rotate";
     constexpr char createShapeButtonName[] = "Create Shape";
     constexpr char createBodyButtonName[] = "Create Body";
     constexpr char createJointButtonName[] = "Create Joint";
@@ -1932,7 +1937,10 @@ static auto ChildrenUI(T& shape) -> decltype(GetChildCount(shape), EntityUI(GetC
 template <class T>
 static auto GeneralShapeUI(T& shape) ->
 decltype(DensityUI(shape), FrictionUI(shape), RestitutionUI(shape), SensorUI(shape),
-         FilterUI(shape), ChildrenUI(shape), Transform(shape, shapeTransformationMatrix))
+         FilterUI(shape), ChildrenUI(shape),
+         Translate(shape, shapeTranslateValue),
+         Scale(shape, shapeScaleValue),
+         Rotate(shape, UnitVec::Get(shapeRotateValue)))
 {
     {
         ImGui::ItemWidthContext itemWidthCtx(60);
@@ -1949,8 +1957,35 @@ decltype(DensityUI(shape), FrictionUI(shape), RestitutionUI(shape), SensorUI(sha
     FilterUI(shape);
     ImGui::Spacing();
     ChildrenUI(shape);
-    if (ImGui::Button(shapeTransformButtonName, ImVec2(-1, 0))) {
-        Transform(shape, shapeTransformationMatrix);
+    {
+        ImGui::StyleVarContext itemSpacingCtx(ImGuiStyleVar_ItemSpacing, ImVec2(1, 2));
+        ImGui::ColumnsContext cc(3, "TranslateScaleRotateColumns", false);
+        if (ImGui::Button(shapeTranslateButtonName, ImVec2(-1, 0))) {
+            Translate(shape, shapeTranslateValue);
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Press to translate this shape %fm horizontally and %fm vertically.",
+                              static_cast<float>(Real{GetX(shapeTranslateValue)/1_m}),
+                              static_cast<float>(Real{GetY(shapeTranslateValue)/1_m}));
+        }
+        ImGui::NextColumn();
+        if (ImGui::Button(shapeScaleButtonName, ImVec2(-1, 0))) {
+            Scale(shape, shapeScaleValue);
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Press to scale this shape %fx horizontally and %fx vertically.",
+                              static_cast<float>(GetX(shapeScaleValue)),
+                              static_cast<float>(GetY(shapeScaleValue)));
+        }
+        ImGui::NextColumn();
+        if (ImGui::Button(shapeRotateButtonName, ImVec2(-1, 0))) {
+            Rotate(shape, UnitVec::Get(shapeRotateValue));
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Press to rotate this shape %f degrees counter-clockwise.",
+                              static_cast<float>(Real{shapeRotateValue/1_deg}));
+        }
+        ImGui::NextColumn();
     }
 }
 
@@ -2103,9 +2138,8 @@ static void EntityUI(World& world, ShapeID shapeId)
     }
 }
 
-static void ShapesUI(World& world)
+[[maybe_unused]] static void TransformationMatrixUI()
 {
-    ImGui::IdContext idCtx("WorldShapes");
     const auto y = ImGui::GetCursorPosY();
     {
         ImGui::StyleVarContext itemSpacingCtx(ImGuiStyleVar_ItemSpacing, ImVec2(2,2));
@@ -2155,6 +2189,26 @@ static void ShapesUI(World& world)
     }
     //ImGui::NewLine();
     ImGui::Spacing();
+}
+
+static void ShapesUI(World& world)
+{
+    ImGui::IdContext idCtx("WorldShapes");
+    LengthUI(shapeTranslateValue, "Translate Amount");
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("Amount that's applied on pressing a shape's translate button.",
+                           tooltipWrapWidth);
+    }
+    InputReals("Scale Amount", shapeScaleValue);
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("Amount that's applied on pressing a shape's scale button.",
+                           tooltipWrapWidth);
+    }
+    AngleUI(shapeRotateValue, "Rotate Amount");
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("Amount that's applied on pressing a shape's rotate button.",
+                           tooltipWrapWidth);
+    }
     ImGui::Spacing();
     const auto numShapes = world.GetShapeRange();
     for (auto i = static_cast<ShapeCounter>(0); i < numShapes; ++i) {
