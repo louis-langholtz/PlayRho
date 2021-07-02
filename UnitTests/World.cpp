@@ -2903,7 +2903,7 @@ TEST(World_Longer, TilesComesToRest)
             EXPECT_EQ(sumRegPosIters,  36540ul);
             EXPECT_EQ(sumRegVelIters,  47173ul);
             EXPECT_EQ(sumToiPosIters,  44005ul);
-            EXPECT_EQ(sumToiVelIters, 114252ul);
+            EXPECT_EQ(sumToiVelIters, 114154ul);
             break;
         }
     }

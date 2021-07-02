@@ -67,7 +67,7 @@ TEST(Rectangle, ByteSize)
                   56u);
         break;
     case 8u:
-        EXPECT_EQ(sizeof(Compositor<GeometryIs<DynamicRectangle<1, 1>>>), 64u);
+        EXPECT_EQ(sizeof(Compositor<GeometryIs<DynamicRectangle<1, 1>>>), 72u);
         EXPECT_EQ(
             sizeof(Compositor<GeometryIs<StaticRectangle<1, 1>>, DensityIs<StaticAreaDensity<4>>,
                               FrictionIs<DynamicFriction<4>>>{}),
