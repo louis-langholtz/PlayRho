@@ -51,11 +51,14 @@ public:
 
     /// @brief Gets the vertex radius of this convex hull.
     /// @return Non-negative distance.
+    /// @see SetVertexRadius.
     NonNegative<Length> GetVertexRadius() const noexcept
     {
         return vertexRadius;
     }
 
+    /// @brief Sets the vertex radius of this convex hull.
+    /// @see GetVertexRadius.
     void SetVertexRadius(NonNegative<Length> value) noexcept
     {
         vertexRadius = value;
@@ -144,8 +147,13 @@ struct MultiShapeConf : public ShapeBuilder<MultiShapeConf> {
     AddConvexHull(const VertexSet& pointSet,
                   NonNegative<Length> vertexRadius = GetDefaultVertexRadius()) noexcept;
 
+    /// @brief Translates all the vertices by the given amount.
     MultiShapeConf& Translate(const Length2& value) noexcept;
+
+    /// @brief Scales all the vertices by the given amount.
     MultiShapeConf& Scale(const Vec2& value) noexcept;
+
+    /// @brief Rotates all the vertices by the given amount.
     MultiShapeConf& Rotate(const UnitVec& value) noexcept;
 
     std::vector<ConvexHull> children; ///< Children.

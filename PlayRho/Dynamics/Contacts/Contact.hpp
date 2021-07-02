@@ -830,6 +830,7 @@ constexpr Real GetToi(const Contact& contact) noexcept
 /// @note Behavior is undefined if the value assigned is less than 0 or greater than 1.
 /// @see Real GetToi() const.
 /// @see HasValidToi.
+/// @param contact The contact to update.
 /// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no actual impact
 ///   in the current time slot.
 /// @relatedalso Contact

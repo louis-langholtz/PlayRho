@@ -210,6 +210,7 @@ SetFilter(T& o, Filter value)
     }
 }
 
+/// @brief Fallback translate function that throws unless the given value has no effect.
 template <class T>
 std::enable_if_t<IsValidShapeType<T>::value && !HasTranslate<T>::value, void>
 Translate(T& o, Length2 value)
@@ -219,6 +220,7 @@ Translate(T& o, Length2 value)
     }
 }
 
+/// @brief Fallback scale function that throws unless the given value has no effect.
 template <class T>
 std::enable_if_t<IsValidShapeType<T>::value && !HasScale<T>::value, void> Scale(T& o, Vec2 value)
 {
@@ -227,6 +229,7 @@ std::enable_if_t<IsValidShapeType<T>::value && !HasScale<T>::value, void> Scale(
     }
 }
 
+/// @brief Fallback rotate function that throws unless the given value has no effect.
 template <class T>
 std::enable_if_t<IsValidShapeType<T>::value && !HasRotate<T>::value, void> Rotate(T& o,
                                                                                   UnitVec value)
@@ -327,6 +330,18 @@ void SetSensor(Shape& shape, bool value);
 ///   by the constructor for the model's underlying data type.
 /// @throws std::bad_alloc if there's a failure allocating storage.
 void Translate(Shape& shape, const Length2& value);
+
+/// @brief Scales all of the given shape's vertices by the given amount.
+/// @note This may throw <code>std::bad_alloc</code> or any exception that's thrown
+///   by the constructor for the model's underlying data type.
+/// @throws std::bad_alloc if there's a failure allocating storage.
+void Scale(Shape& shape, const Vec2& value);
+
+/// @brief Rotates all of the given shape's vertices by the given amount.
+/// @note This may throw <code>std::bad_alloc</code> or any exception that's thrown
+///   by the constructor for the model's underlying data type.
+/// @throws std::bad_alloc if there's a failure allocating storage.
+void Rotate(Shape& shape, const UnitVec& value);
 
 /// @brief Gets a pointer to the underlying data.
 /// @note Provided for introspective purposes like visitation.

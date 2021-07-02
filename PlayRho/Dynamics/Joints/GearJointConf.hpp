@@ -67,7 +67,7 @@ struct GearJointConf : public JointBuilder<GearJointConf> {
 
     /// @brief Revolute specific data.
     struct RevoluteData {
-        Angle referenceAngle = 0_deg;
+        Angle referenceAngle = 0_deg; ///< Reference angle between associated bodies.
     };
 
     /// @brief Type specific data type alias.
@@ -116,6 +116,8 @@ struct GearJointConf : public JointBuilder<GearJointConf> {
     Real mass = 0; ///< Either linear mass or angular mass.
 };
 
+/// @brief Equals operator.
+/// @relatedalso GearJointConf::PrismaticData
 constexpr bool operator==(const GearJointConf::PrismaticData& lhs,
                           const GearJointConf::PrismaticData& rhs) noexcept
 {
@@ -123,18 +125,24 @@ constexpr bool operator==(const GearJointConf::PrismaticData& lhs,
            lhs.localAxis == rhs.localAxis;
 }
 
+/// @brief Not equals operator.
+/// @relatedalso GearJointConf::PrismaticData
 constexpr bool operator!=(const GearJointConf::PrismaticData& lhs,
                           const GearJointConf::PrismaticData& rhs) noexcept
 {
     return !(lhs == rhs);
 }
 
+/// @brief Equals operator.
+/// @relatedalso GearJointConf::RevoluteData
 constexpr bool operator==(const GearJointConf::RevoluteData& lhs,
                           const GearJointConf::RevoluteData& rhs) noexcept
 {
     return lhs.referenceAngle == rhs.referenceAngle;
 }
 
+/// @brief Not equals operator.
+/// @relatedalso GearJointConf::RevoluteData
 constexpr bool operator!=(const GearJointConf::RevoluteData& lhs,
                           const GearJointConf::RevoluteData& rhs) noexcept
 {

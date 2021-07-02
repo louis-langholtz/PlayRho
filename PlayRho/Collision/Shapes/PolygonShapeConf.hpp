@@ -106,8 +106,13 @@ public:
     /// @see https://en.wikipedia.org/wiki/Transformation_matrix
     PolygonShapeConf& Transform(const Mat22& m) noexcept;
 
+    /// @brief Translates all the vertices by the given amount.
     PolygonShapeConf& Translate(const Length2& value) noexcept;
+
+    /// @brief Scales all the vertices by the given amount.
     PolygonShapeConf& Scale(const Vec2& value) noexcept;
+
+    /// @brief Rotates all the vertices by the given amount.
     PolygonShapeConf& Rotate(const UnitVec& value) noexcept;
 
     /// @brief Equality operator.

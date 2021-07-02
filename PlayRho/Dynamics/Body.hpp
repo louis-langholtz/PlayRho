@@ -841,6 +841,7 @@ inline Length2 GetLocation(const Body& body) noexcept
 /// @brief Sets the body's location.
 /// @details This instantly adjusts the body to be at the new location.
 /// @warning Manipulating a body's location this way can cause non-physical behavior!
+/// @param body The body to update.
 /// @param value Valid world location of the body's local origin. Behavior is undefined
 ///   if value is invalid.
 /// @see GetLocation(const Body& body).
@@ -904,6 +905,7 @@ inline void Advance0(Body& body, Real value) noexcept
 ///    1. advances the body's sweep to the given time ratio;
 ///    2. updates the body's sweep positions (linear and angular) to the advanced ones; and
 ///    3. updates the body's transform to the new sweep one settings.
+/// @param body The body to update.
 /// @param value Valid new time factor in [0,1) to advance the sweep to.
 /// @see GetSweep, SetSweep, GetTransofmration, SetTransformation.
 inline void Advance(Body& body, Real value) noexcept
@@ -938,6 +940,7 @@ Angle GetAngle(const Body& body) noexcept;
 /// @brief Sets the body's angular orientation.
 /// @details This instantly adjusts the body to be at the new angular orientation.
 /// @warning Manipulating a body's angle this way can cause non-physical behavior!
+/// @param body The body to update.
 /// @param value Valid world angle of the body's local origin. Behavior is undefined
 ///   if value is invalid.
 /// @see GetAngle(const Body& body).

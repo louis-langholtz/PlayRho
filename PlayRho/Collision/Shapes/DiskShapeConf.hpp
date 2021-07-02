@@ -67,18 +67,21 @@ struct DiskShapeConf : ShapeBuilder<DiskShapeConf> {
         return *this;
     }
 
+    /// @brief Translates the location by the given amount.
     constexpr DiskShapeConf& Translate(Length2 value) noexcept
     {
         location += value;
         return *this;
     }
 
+    /// @brief Scales the location by the given amount.
     constexpr DiskShapeConf& Scale(Vec2 value) noexcept
     {
         location = Length2{GetX(location) * GetX(value), GetY(location) * GetY(value)};
         return *this;
     }
 
+    /// @brief Rotates the location by the given amount.
     constexpr DiskShapeConf& Rotate(const UnitVec& value) noexcept
     {
         location = ::playrho::d2::Rotate(location, value);

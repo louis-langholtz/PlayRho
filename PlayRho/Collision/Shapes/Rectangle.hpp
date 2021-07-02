@@ -58,12 +58,16 @@ struct PolicySelector : Discriminator<Set1, 1>, //
 {
 };
 
+/// @brief Static rectangle.
+/// @note This is meant to be used as a compile-time constant geometry policy class of a
+///   <code>Compositor</code> class.
+/// @see DynamicRectangle.
 template <int W = 1, int H = 1, int V = 2>
 class StaticRectangle
 {
-    using UnitVec = ::playrho::d2::UnitVec;
-    using DistanceProxy = ::playrho::d2::DistanceProxy;
-    using MassData = ::playrho::d2::MassData;
+    using UnitVec = ::playrho::d2::UnitVec; ///< Alias for correct unit vector type.
+    using DistanceProxy = ::playrho::d2::DistanceProxy; ///< Alias for correct distance proxy.
+    using MassData = ::playrho::d2::MassData; ///< Alias for correct mass data.
 
     /// @brief Normals of the rectangle.
     static constexpr auto normals = std::array<UnitVec, 4u>{
@@ -116,6 +120,7 @@ public:
         }
     }
 
+    /// @brief Gets the vertex radius.
     constexpr NonNegative<Length> GetVertexRadius() const noexcept
     {
         return vertexRadius;
@@ -135,6 +140,8 @@ public:
         return normals;
     }
 
+    /// @brief Gets the child count.
+    /// @see GetChild.
     ChildCounter GetChildCount() const noexcept
     {
         return 1;
@@ -156,6 +163,8 @@ public:
         return playrho::d2::GetMassData(vertexRadius, density, Span<const Length2>(GetVertices()));
     }
 
+    /// @brief Sets the vertex radius for the specified child to the given value.
+    /// @note This class doesn't support changing the vertex radius.
     void SetVertexRadius(ChildCounter, NonNegative<Length> value)
     {
         if (GetVertexRadius() != value) {
@@ -164,12 +173,16 @@ public:
     }
 };
 
+/// @brief Dynamic rectangle.
+/// @note This is meant to be used as a run-time changable geometry policy class of a
+///   <code>Compositor</code> class.
+/// @see StaticRectangle.
 template <int W = 1, int H = 1, int V = 2>
 class DynamicRectangle
 {
-    using UnitVec = ::playrho::d2::UnitVec;
-    using DistanceProxy = ::playrho::d2::DistanceProxy;
-    using MassData = ::playrho::d2::MassData;
+    using UnitVec = ::playrho::d2::UnitVec; ///< Alias for correct unit vector type.
+    using DistanceProxy = ::playrho::d2::DistanceProxy; ///< Alias for correct distance proxy.
+    using MassData = ::playrho::d2::MassData; ///< Alias for correct mass data.
 
     /// @brief Normals of the rectangle.
     static constexpr auto normals = std::array<UnitVec, 4u>{
@@ -236,6 +249,7 @@ public:
                     Length2{-GetX(dims) / 2, -GetY(dims) / 2} + val};
     }
 
+    /// @brief Gets the vertex radius.
     constexpr NonNegative<Length> GetVertexRadius() const noexcept
     {
         return vertexRadius;
@@ -255,6 +269,8 @@ public:
         return normals;
     }
 
+    /// @brief Gets the child count.
+    /// @see GetChild.
     ChildCounter GetChildCount() const noexcept
     {
         return 1;
@@ -276,16 +292,20 @@ public:
         return playrho::d2::GetMassData(vertexRadius, density, Span<const Length2>(GetVertices()));
     }
 
+    /// @brief Sets the vertex radius for the specified child to the given value.
+    /// @note This class does support changing the vertex radius.
     void SetVertexRadius(ChildCounter, NonNegative<Length> value)
     {
         vertexRadius = value;
     }
 
+    /// @brief Translates the vertices of this geometry.
     void Translate(Length2 value)
     {
         SetOffset(GetOffset() + value);
     }
 
+    /// @brief Scales the vertices of this geometry.
     void Scale(Vec2 value)
     {
         const auto dims = GetDimensions();
