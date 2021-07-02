@@ -179,6 +179,7 @@ TEST(Body, EqualsOperator)
     }
     {
         auto body = Body{};
+        body.SetType(BodyType::Kinematic);
         body.JustSetVelocity(Velocity{LinearVelocity2{}, 2_rpm});
         EXPECT_FALSE(body == Body());
     }
@@ -251,6 +252,7 @@ TEST(Body, NotEqualsOperator)
     }
     {
         auto body = Body{};
+        body.SetType(BodyType::Kinematic);
         body.JustSetVelocity(Velocity{LinearVelocity2{}, 2_rpm});
         EXPECT_TRUE(body != Body());
     }
