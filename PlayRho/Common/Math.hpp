@@ -304,7 +304,7 @@ inline Angle GetAngle(const Vector2<T> value)
 /// @note For performance, use this instead of <code>GetMagnitude(T value)</code> (if possible).
 /// @return Non-negative value from 0 to infinity, or NaN.
 template <typename T>
-constexpr auto GetMagnitudeSquared(T value) noexcept
+constexpr auto GetMagnitudeSquared(const T& value) noexcept
 {
     using VT = typename T::value_type;
     using OT = decltype(VT{} * VT{});
@@ -318,7 +318,7 @@ constexpr auto GetMagnitudeSquared(T value) noexcept
 /// @brief Gets the magnitude of the given value.
 /// @note Works for any type for which <code>GetMagnitudeSquared</code> also works.
 template <typename T>
-inline auto GetMagnitude(T value) -> decltype(sqrt(GetMagnitudeSquared(value)))
+inline auto GetMagnitude(const T& value) -> decltype(sqrt(GetMagnitudeSquared(value)))
 {
     return sqrt(GetMagnitudeSquared(value));
 }
