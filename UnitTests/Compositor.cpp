@@ -26,7 +26,7 @@
 using namespace playrho;
 using namespace playrho::part;
 
-TEST(Rectangle, ByteSize)
+TEST(Compositor, ByteSize)
 {
     EXPECT_EQ(sizeof(Compositor<GeometryIs<StaticRectangle<1, 1>>>), 1u);
     EXPECT_EQ(
@@ -89,14 +89,14 @@ TEST(Rectangle, ByteSize)
     }
 }
 
-TEST(Rectangle, IsValidShapeType)
+TEST(Compositor, IsValidShapeType)
 {
     EXPECT_TRUE(playrho::d2::IsValidShapeType<Compositor<>>::value);
     EXPECT_TRUE(playrho::d2::IsValidShapeType<Compositor<GeometryIs<StaticRectangle<>>>>::value);
     EXPECT_TRUE(playrho::d2::IsValidShapeType<Compositor<GeometryIs<DynamicRectangle<>>>>::value);
 }
 
-TEST(Rectangle, GetDimensions)
+TEST(Compositor, GetDimensions)
 {
     EXPECT_EQ(GetDimensions(Compositor<GeometryIs<StaticRectangle<1, 1>>>{}), Length2(1_m, 1_m));
     EXPECT_EQ(GetDimensions(Compositor<GeometryIs<DynamicRectangle<1, 1>>>{}), Length2(1_m, 1_m));
@@ -111,7 +111,7 @@ TEST(Rectangle, GetDimensions)
     }
 }
 
-TEST(Rectangle, SetDimensions)
+TEST(Compositor, SetDimensions)
 {
     {
         auto o = Compositor<GeometryIs<StaticRectangle<1, 1>>>{};
@@ -129,7 +129,7 @@ TEST(Rectangle, SetDimensions)
     }
 }
 
-TEST(Rectangle, GetOffset)
+TEST(Compositor, GetOffset)
 {
     EXPECT_EQ(GetOffset(Compositor<GeometryIs<StaticRectangle<1, 1>>>{}), Length2(0_m, 0_m));
     EXPECT_EQ(GetOffset(Compositor<GeometryIs<DynamicRectangle<1, 1>>>{}), Length2(0_m, 0_m));
@@ -144,7 +144,7 @@ TEST(Rectangle, GetOffset)
     }
 }
 
-TEST(Rectangle, GetChildCount)
+TEST(Compositor, GetChildCount)
 {
     EXPECT_EQ(GetChildCount(Compositor<GeometryIs<StaticRectangle<1, 1>>>{}), 1u);
     EXPECT_EQ(GetChildCount(Compositor<GeometryIs<DynamicRectangle<>>>{}), 1u);
@@ -154,7 +154,7 @@ TEST(Rectangle, GetChildCount)
               1u);
 }
 
-TEST(Rectangle, GetDensity)
+TEST(Compositor, GetDensity)
 {
     EXPECT_EQ(GetDensity(
                   Compositor<GeometryIs<StaticRectangle<1, 1>>, DensityIs<StaticAreaDensity<4>>>{}),
@@ -176,7 +176,7 @@ TEST(Rectangle, GetDensity)
         2.4_kgpm2);
 }
 
-TEST(Rectangle, GetFriction)
+TEST(Compositor, GetFriction)
 {
     EXPECT_EQ(GetFriction(Compositor<GeometryIs<StaticRectangle<1, 1>>>{}), Real(2) / Real(10));
     EXPECT_EQ(
@@ -196,7 +196,7 @@ TEST(Rectangle, GetFriction)
         Real(0.5));
 }
 
-TEST(Rectangle, GetRestitution)
+TEST(Compositor, GetRestitution)
 {
     EXPECT_EQ(GetRestitution(Compositor<GeometryIs<StaticRectangle<1, 1>>>{}), Real(0));
     EXPECT_EQ(
@@ -214,7 +214,7 @@ TEST(Rectangle, GetRestitution)
         Real(1.2));
 }
 
-TEST(Rectangle, SetFriction)
+TEST(Compositor, SetFriction)
 {
     using ::playrho::d2::SetFriction;
     {
@@ -236,7 +236,7 @@ TEST(Rectangle, SetFriction)
     }
 }
 
-TEST(Rectangle, SetRestitution)
+TEST(Compositor, SetRestitution)
 {
     using ::playrho::d2::SetRestitution;
     {
