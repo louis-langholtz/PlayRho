@@ -213,7 +213,7 @@ SetFilter(T& o, Filter value)
 /// @brief Fallback translate function that throws unless the given value has no effect.
 template <class T>
 std::enable_if_t<IsValidShapeType<T>::value && !HasTranslate<T>::value, void>
-Translate(T& o, Length2 value)
+Translate(T&, Length2 value)
 {
     if (Length2{} != value) {
         throw InvalidArgument("Translate non-zero amount not supported");
@@ -222,7 +222,7 @@ Translate(T& o, Length2 value)
 
 /// @brief Fallback scale function that throws unless the given value has no effect.
 template <class T>
-std::enable_if_t<IsValidShapeType<T>::value && !HasScale<T>::value, void> Scale(T& o, Vec2 value)
+std::enable_if_t<IsValidShapeType<T>::value && !HasScale<T>::value, void> Scale(T&, Vec2 value)
 {
     if (Vec2{Real(1), Real(1)} != value) {
         throw InvalidArgument("Scale non-identity amount not supported");
@@ -231,7 +231,7 @@ std::enable_if_t<IsValidShapeType<T>::value && !HasScale<T>::value, void> Scale(
 
 /// @brief Fallback rotate function that throws unless the given value has no effect.
 template <class T>
-std::enable_if_t<IsValidShapeType<T>::value && !HasRotate<T>::value, void> Rotate(T& o,
+std::enable_if_t<IsValidShapeType<T>::value && !HasRotate<T>::value, void> Rotate(T&,
                                                                                   UnitVec value)
 {
     if (UnitVec::GetRight() != value) {
