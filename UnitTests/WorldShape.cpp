@@ -25,7 +25,7 @@
 #include <PlayRho/Dynamics/WorldShape.hpp>
 
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/Rectangle.hpp>
+#include <PlayRho/Collision/Shapes/Compositor.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/Shapes/Rectangle.hpp>
+#include <PlayRho/Collision/Shapes/Compositor.hpp>
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 

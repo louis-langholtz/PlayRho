@@ -24,7 +24,7 @@
 #include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/Rectangle.hpp>
+#include <PlayRho/Collision/Shapes/Compositor.hpp>
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 

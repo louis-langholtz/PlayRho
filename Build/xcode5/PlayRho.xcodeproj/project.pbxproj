@@ -262,7 +262,7 @@
 		47D61F781F1FE3B700E702BD /* EdgeShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47D61F771F1FE3B700E702BD /* EdgeShape.cpp */; };
 		47D61F7A1F20229A00E702BD /* ChainShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47D61F791F20229A00E702BD /* ChainShape.cpp */; };
 		47D61F7C1F21112000E702BD /* MultiShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47D61F7B1F21112000E702BD /* MultiShape.cpp */; };
-		47D6D4C92665EB3900AF32B4 /* Rectangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47D6D4C82665EB3900AF32B4 /* Rectangle.cpp */; };
+		47D6D4C92665EB3900AF32B4 /* Compositor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47D6D4C82665EB3900AF32B4 /* Compositor.cpp */; };
 		47D6D59E2672B5CA00AF32B4 /* DistanceConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47D6D59C2672B5C900AF32B4 /* DistanceConf.cpp */; };
 		47D6D59F2672B5CA00AF32B4 /* DistanceConf.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47D6D59D2672B5CA00AF32B4 /* DistanceConf.hpp */; };
 		47E36F501FE8477000C10B79 /* FixedLimits.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47E36F4E1FE8477000C10B79 /* FixedLimits.hpp */; };
@@ -272,8 +272,8 @@
 		47E841701DB3FDC400E5F311 /* WorldManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */; };
 		47E841721DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */; };
 		47ED555124F05F26005A3586 /* DynamicMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47ED555024F05F26005A3586 /* DynamicMemory.cpp */; };
-		47F397DF2654426F003C1FD9 /* Rectangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47F397DD2654426F003C1FD9 /* Rectangle.cpp */; };
-		47F397E02654426F003C1FD9 /* Rectangle.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47F397DE2654426F003C1FD9 /* Rectangle.hpp */; };
+		47F397DF2654426F003C1FD9 /* Compositor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47F397DD2654426F003C1FD9 /* Compositor.cpp */; };
+		47F397E02654426F003C1FD9 /* Compositor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47F397DE2654426F003C1FD9 /* Compositor.hpp */; };
 		47F932A61D11C283006A193C /* AllocatedArray.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47F932A41D11C283006A193C /* AllocatedArray.hpp */; };
 		47FFD0F91DABDC63000D6D0E /* Mat22.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47FFD0F81DABDC63000D6D0E /* Mat22.cpp */; };
 		47FFD0FB1DAC3EFC000D6D0E /* VelocityConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47FFD0FA1DAC3EFC000D6D0E /* VelocityConstraint.cpp */; };
@@ -675,7 +675,7 @@
 		47D61F771F1FE3B700E702BD /* EdgeShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeShape.cpp; sourceTree = "<group>"; };
 		47D61F791F20229A00E702BD /* ChainShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChainShape.cpp; sourceTree = "<group>"; };
 		47D61F7B1F21112000E702BD /* MultiShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MultiShape.cpp; sourceTree = "<group>"; };
-		47D6D4C82665EB3900AF32B4 /* Rectangle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Rectangle.cpp; sourceTree = "<group>"; };
+		47D6D4C82665EB3900AF32B4 /* Compositor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Compositor.cpp; sourceTree = "<group>"; };
 		47D6D59C2672B5C900AF32B4 /* DistanceConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceConf.cpp; sourceTree = "<group>"; };
 		47D6D59D2672B5CA00AF32B4 /* DistanceConf.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DistanceConf.hpp; sourceTree = "<group>"; };
 		47E36F4E1FE8477000C10B79 /* FixedLimits.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FixedLimits.hpp; sourceTree = "<group>"; };
@@ -685,8 +685,8 @@
 		47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldManifold.cpp; sourceTree = "<group>"; };
 		47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VelocityConstraint.cpp; sourceTree = "<group>"; };
 		47ED555024F05F26005A3586 /* DynamicMemory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicMemory.cpp; sourceTree = "<group>"; };
-		47F397DD2654426F003C1FD9 /* Rectangle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Rectangle.cpp; sourceTree = "<group>"; };
-		47F397DE2654426F003C1FD9 /* Rectangle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Rectangle.hpp; sourceTree = "<group>"; };
+		47F397DD2654426F003C1FD9 /* Compositor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Compositor.cpp; sourceTree = "<group>"; };
+		47F397DE2654426F003C1FD9 /* Compositor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Compositor.hpp; sourceTree = "<group>"; };
 		47F932A41D11C283006A193C /* AllocatedArray.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AllocatedArray.hpp; sourceTree = "<group>"; };
 		47FFD0F81DABDC63000D6D0E /* Mat22.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mat22.cpp; sourceTree = "<group>"; };
 		47FFD0FA1DAC3EFC000D6D0E /* VelocityConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VelocityConstraint.cpp; sourceTree = "<group>"; };
@@ -855,6 +855,7 @@
 				47D61F791F20229A00E702BD /* ChainShape.cpp */,
 				479B63C21ED9CAC300D49BC7 /* CheckedValue.cpp */,
 				474BC3F61D41278800447DCD /* CollideShapes.cpp */,
+				47D6D4C82665EB3900AF32B4 /* Compositor.cpp */,
 				476FBF54254015260057D5F3 /* Contact.cpp */,
 				474BC3F71D41278800447DCD /* ContactFeature.cpp */,
 				473273201F44AB9B00E22AE2 /* ContactImpulsesList.cpp */,
@@ -898,7 +899,6 @@
 				47D28D941F6E32720094C032 /* PulleyJoint.cpp */,
 				470F9B511EF8E2C5007EF7B6 /* RayCastOutput.cpp */,
 				472724221E310BB400C64921 /* Real.cpp */,
-				47D6D4C82665EB3900AF32B4 /* Rectangle.cpp */,
 				47315E031E28A66100DDA856 /* RevoluteJoint.cpp */,
 				47C85D111EFB0CD600F70C56 /* RopeJoint.cpp */,
 				474BC4001D41278800447DCD /* Rot.cpp */,
@@ -1014,6 +1014,8 @@
 			children = (
 				80BB8935141C3E5900F1753A /* ChainShapeConf.cpp */,
 				80BB8936141C3E5900F1753A /* ChainShapeConf.hpp */,
+				47F397DD2654426F003C1FD9 /* Compositor.cpp */,
+				47F397DE2654426F003C1FD9 /* Compositor.hpp */,
 				80BB8937141C3E5900F1753A /* DiskShapeConf.cpp */,
 				80BB8938141C3E5900F1753A /* DiskShapeConf.hpp */,
 				80BB8939141C3E5900F1753A /* EdgeShapeConf.cpp */,
@@ -1022,8 +1024,6 @@
 				474AFBF71EB1B2CB002AA6C8 /* MultiShapeConf.hpp */,
 				80BB893B141C3E5900F1753A /* PolygonShapeConf.cpp */,
 				80BB893C141C3E5900F1753A /* PolygonShapeConf.hpp */,
-				47F397DD2654426F003C1FD9 /* Rectangle.cpp */,
-				47F397DE2654426F003C1FD9 /* Rectangle.hpp */,
 				470F9B051EDB8F62007EF7B6 /* Shape.cpp */,
 				80BB893D141C3E5900F1753A /* Shape.hpp */,
 				4795B61C262B557100FB3EC6 /* ShapeID.hpp */,
@@ -1491,7 +1491,7 @@
 				4751EE2E1CEDD7A300D459CB /* MotorJoint.hpp in Headers */,
 				470F94D21EC6376F00AA3C82 /* ContactKey.hpp in Headers */,
 				47578BE11D8869110078CD40 /* WorldManifold.hpp in Headers */,
-				47F397E02654426F003C1FD9 /* Rectangle.hpp in Headers */,
+				47F397E02654426F003C1FD9 /* Compositor.hpp in Headers */,
 				4764087C251EA80D0090F711 /* WorldImplContact.hpp in Headers */,
 				475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */,
 				470F9B1E1EDF2B8A007EF7B6 /* Sweep.hpp in Headers */,
@@ -1655,7 +1655,7 @@
 				4795B9E62643425300FB3EC6 /* WorldShape.cpp in Sources */,
 				47C96C571FA6815F00A6C587 /* Acceleration.cpp in Sources */,
 				47C96C511FA24BC100A6C587 /* Units.cpp in Sources */,
-				47D6D4C92665EB3900AF32B4 /* Rectangle.cpp in Sources */,
+				47D6D4C92665EB3900AF32B4 /* Compositor.cpp in Sources */,
 				47D28D951F6E32720094C032 /* PulleyJoint.cpp in Sources */,
 				47D61F7C1F21112000E702BD /* MultiShape.cpp in Sources */,
 				474BC4311D413DC200447DCD /* Epsilon.cpp in Sources */,
@@ -1816,7 +1816,7 @@
 				47640887251F11630090F711 /* WorldImplJoint.cpp in Sources */,
 				475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */,
 				47B58F591F57218400354C34 /* Version.cpp in Sources */,
-				47F397DF2654426F003C1FD9 /* Rectangle.cpp in Sources */,
+				47F397DF2654426F003C1FD9 /* Compositor.cpp in Sources */,
 				80BB89B4141C3E5900F1753A /* World.cpp in Sources */,
 				47363E8920029DFD005912B1 /* Velocity.cpp in Sources */,
 				4787D6BA1F2E946E008C115E /* PrismaticJointConf.cpp in Sources */,

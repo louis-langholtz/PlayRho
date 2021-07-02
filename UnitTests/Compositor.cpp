@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Collision/Shapes/Rectangle.hpp>
+#include <PlayRho/Collision/Shapes/Compositor.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
 using namespace playrho;

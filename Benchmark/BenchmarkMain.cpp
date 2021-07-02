@@ -77,7 +77,7 @@
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #endif
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/Rectangle.hpp>
+#include <PlayRho/Collision/Shapes/Compositor.hpp>
 
 #define BENCHMARK_BOX2D
 #ifdef BENCHMARK_BOX2D
