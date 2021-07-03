@@ -79,7 +79,7 @@
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/Compositor.hpp>
 
-#define BENCHMARK_BOX2D
+// #define BENCHMARK_BOX2D
 #ifdef BENCHMARK_BOX2D
 #include <box2d/box2d.h>
 #endif // BENCHMARK_BOX2D
