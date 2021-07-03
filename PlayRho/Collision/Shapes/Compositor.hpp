@@ -528,7 +528,8 @@ constexpr auto GetChildCount(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noex
 /// @brief Gets the "child" shape for the given shape configuration.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
-auto GetChild(const Compositor<P1, P2, P3, P4, P5, P6>& arg, ChildCounter index)
+auto GetChild(const Compositor<P1, P2, P3, P4, P5, P6>& arg,
+              ChildCounter index) noexcept(noexcept(arg.GetChild(index)))
     -> decltype(arg.GetChild(index))
 {
     return arg.GetChild(index);
@@ -582,8 +583,8 @@ constexpr auto IsSensor(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
 /// @brief Gets the vertex radius of the given shape configuration.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
-constexpr auto GetVertexRadius(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
-    -> decltype(arg.GetVertexRadius())
+constexpr auto GetVertexRadius(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept(
+    noexcept(arg.GetVertexRadius())) -> decltype(arg.GetVertexRadius())
 {
     return arg.GetVertexRadius();
 }
@@ -591,7 +592,8 @@ constexpr auto GetVertexRadius(const Compositor<P1, P2, P3, P4, P5, P6>& arg) no
 /// @brief Gets the vertex radius of the given shape configuration.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
-auto GetVertexRadius(const Compositor<P1, P2, P3, P4, P5, P6>& arg, ChildCounter index) noexcept
+auto GetVertexRadius(const Compositor<P1, P2, P3, P4, P5, P6>& arg,
+                     ChildCounter index) noexcept(noexcept(GetChild(arg, index)))
     -> decltype(GetVertexRadius(GetChild(arg, index)))
 {
     return GetVertexRadius(GetChild(arg, index));
@@ -637,7 +639,7 @@ auto Rotate(Compositor<P1, P2, P3, P4, P5, P6>& arg, ::playrho::d2::UnitVec valu
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto SetVertexRadius(Compositor<P1, P2, P3, P4, P5, P6>& arg, ChildCounter index,
-                     decltype(arg.GetVertexRadius()) value) noexcept
+                     decltype(arg.GetVertexRadius()) value)
     -> decltype(arg.SetVertexRadius(index, value))
 {
     return arg.SetVertexRadius(index, value);

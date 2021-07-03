@@ -715,6 +715,7 @@ void WorldImpl::Clear() noexcept
     m_contactBuffer.clear();
     m_jointBuffer.clear();
     m_bodyBuffer.clear();
+    m_shapeBuffer.clear();
     m_bodyProxies.clear();
     m_bodyContacts.clear();
     m_bodyJoints.clear();

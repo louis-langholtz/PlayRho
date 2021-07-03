@@ -26,6 +26,7 @@
 
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/Compositor.hpp>
+#include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -193,4 +194,104 @@ TEST(WorldShape, TestPointFreeFunction)
     const auto bodyId = CreateBody(world, BodyConf{}.UseLocation(bodyCtrPos));
     EXPECT_TRUE(TestPoint(world, bodyId, shapeId, bodyCtrPos));
     EXPECT_FALSE(TestPoint(world, bodyId, shapeId, Length2{}));
+}
+
+TEST(WorldShape, GetShapeRange)
+{
+    auto world = World{};
+    EXPECT_EQ(GetShapeRange(world), 0u);
+    EXPECT_NO_THROW(CreateShape(world, DiskShapeConf{}));
+    EXPECT_EQ(GetShapeRange(world), 1u);
+    EXPECT_NO_THROW(CreateShape(world, DiskShapeConf{}));
+    EXPECT_EQ(GetShapeRange(world), 2u);
+    EXPECT_NO_THROW(CreateShape(world, DiskShapeConf{}));
+    EXPECT_EQ(GetShapeRange(world), 3u);
+    EXPECT_NO_THROW(Destroy(world, ShapeID(1u)));
+    EXPECT_EQ(GetShapeRange(world), 3u);
+    EXPECT_NO_THROW(Destroy(world, ShapeID(2u)));
+    EXPECT_EQ(GetShapeRange(world), 3u);
+    EXPECT_NO_THROW(Destroy(world, ShapeID(0u)));
+    EXPECT_EQ(GetShapeRange(world), 3u);
+    EXPECT_NO_THROW(world.Clear());
+    EXPECT_EQ(GetShapeRange(world), 0u);
+}
+
+TEST(WorldShape, Destroy)
+{
+    auto shape = Shape{};
+    auto world = World{};
+    EXPECT_THROW(Destroy(world, ShapeID(2u)), std::out_of_range);
+    auto shapeId = InvalidShapeID;
+    ASSERT_NO_THROW(shapeId = CreateShape(world, DiskShapeConf{}));
+    ASSERT_EQ(shapeId, ShapeID(0u));
+    ASSERT_NO_THROW(shape = GetShape(world, ShapeID(0u)));
+    ASSERT_EQ(GetChildCount(shape), 1u);
+    ASSERT_NO_THROW(shapeId = CreateShape(world, DiskShapeConf{}));
+    ASSERT_EQ(shapeId, ShapeID(1u));
+    ASSERT_NO_THROW(shape = GetShape(world, ShapeID(1u)));
+    ASSERT_EQ(GetChildCount(shape), 1u);
+
+    EXPECT_THROW(Destroy(world, ShapeID(2u)), std::out_of_range);
+    EXPECT_NO_THROW(Destroy(world, ShapeID(1u)));
+    EXPECT_NO_THROW(shape = GetShape(world, ShapeID(1u)));
+    EXPECT_EQ(GetChildCount(shape), 0u);
+}
+
+TEST(WorldShape, GetType)
+{
+    auto shapeId = InvalidShapeID;
+    auto typeId = TypeID{};
+    auto world = World{};
+    EXPECT_THROW(typeId = GetType(world, ShapeID(0u)), std::out_of_range);
+    ASSERT_NO_THROW(shapeId = CreateShape(world, DiskShapeConf{}));
+    ASSERT_EQ(shapeId, ShapeID(0u));
+    EXPECT_NO_THROW(typeId = GetType(world, ShapeID(0u)));
+    EXPECT_EQ(typeId, GetTypeID<DiskShapeConf>());
+}
+
+TEST(WorldShape, Scale)
+{
+    auto shape = Shape{};
+    auto shapeId = InvalidShapeID;
+    auto world = World{};
+    const auto v0 = Length2{-0.5_m, +0.0_m};
+    const auto v1 = Length2{+0.5_m, +0.0_m};
+    ASSERT_NO_THROW(shapeId = CreateShape(world, EdgeShapeConf{v0, v1}));
+    ASSERT_EQ(shapeId, ShapeID(0u));
+    ASSERT_NO_THROW(shape = GetShape(world, shapeId));
+    ASSERT_EQ(GetChildCount(shape), ChildCounter(1));
+    auto distanceProxy = DistanceProxy{};
+    ASSERT_NO_THROW(shape = GetShape(world, shapeId));
+    ASSERT_NO_THROW(distanceProxy = GetChild(shape, 0u));
+    ASSERT_EQ(distanceProxy.GetVertexCount(), 2u);
+    ASSERT_EQ(distanceProxy.GetVertex(0u), Length2(-0.5_m, +0.0_m));
+    ASSERT_EQ(distanceProxy.GetVertex(1u), Length2(+0.5_m, -0.0_m));
+    EXPECT_NO_THROW(Scale(world, shapeId, Vec2(Real(2), Real(3))));
+    ASSERT_NO_THROW(shape = GetShape(world, shapeId));
+    ASSERT_NO_THROW(distanceProxy = GetChild(shape, 0u));
+    EXPECT_EQ(distanceProxy.GetVertex(0u), Length2(-1.0_m, +0.0_m));
+    EXPECT_EQ(distanceProxy.GetVertex(1u), Length2(+1.0_m, +0.0_m));
+}
+
+TEST(WorldShape, Rotate)
+{
+    auto shape = Shape{};
+    auto shapeId = InvalidShapeID;
+    auto world = World{};
+    const auto v0 = Length2{-0.5_m, +0.0_m};
+    const auto v1 = Length2{+0.5_m, +0.0_m};
+    ASSERT_NO_THROW(shapeId = CreateShape(world, EdgeShapeConf{v0, v1}));
+    ASSERT_EQ(shapeId, ShapeID(0u));
+    ASSERT_NO_THROW(shape = GetShape(world, shapeId));
+    ASSERT_EQ(GetChildCount(shape), ChildCounter(1));
+    auto distanceProxy = DistanceProxy{};
+    ASSERT_NO_THROW(distanceProxy = GetChild(shape, 0u));
+    ASSERT_EQ(distanceProxy.GetVertexCount(), 2u);
+    ASSERT_EQ(distanceProxy.GetVertex(0u), Length2(-0.5_m, +0.0_m));
+    ASSERT_EQ(distanceProxy.GetVertex(1u), Length2(+0.5_m, -0.0_m));
+    EXPECT_NO_THROW(Rotate(world, shapeId, UnitVec::GetTop()));
+    ASSERT_NO_THROW(shape = GetShape(world, shapeId));
+    ASSERT_NO_THROW(distanceProxy = GetChild(shape, 0u));
+    EXPECT_EQ(distanceProxy.GetVertex(0u), Length2(0.0_m, -0.5_m));
+    EXPECT_EQ(distanceProxy.GetVertex(1u), Length2(0.0_m, +0.5_m));
 }

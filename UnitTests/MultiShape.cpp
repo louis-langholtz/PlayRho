@@ -176,6 +176,24 @@ TEST(MultiShapeConf, RotateZeroFF)
     EXPECT_EQ(foo, copy);
 }
 
+TEST(MultiShapeConf, SetVertexRadius)
+{
+    auto foo = MultiShapeConf{};
+    const auto v1 = Length2{1_m, 2_m};
+    const auto v2 = Length2{3_m, 4_m};
+    auto vs = VertexSet{};
+    vs.add(v1);
+    vs.add(v2);
+    foo.AddConvexHull(vs);
+    ASSERT_EQ(foo.children.size(), std::size_t(1));
+    ASSERT_EQ(foo.children.at(0).GetVertexRadius(), DefaultLinearSlop * Real(2));
+    auto copy = foo;
+    ASSERT_EQ(copy, foo);
+    const auto amount = 2_m;
+    EXPECT_NO_THROW(SetVertexRadius(foo, 0u, amount));
+    EXPECT_EQ(foo.children.at(0).GetVertexRadius(), amount);
+}
+
 TEST(MultiShapeConf, GetInvalidChildThrows)
 {
     const auto foo = MultiShapeConf{};

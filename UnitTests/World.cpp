@@ -236,6 +236,10 @@ TEST(World, Clear)
     ASSERT_EQ(GetJointRange(world), 1u);
 
     EXPECT_NO_THROW(world.Clear());
+    EXPECT_EQ(world.GetShapeRange(), 0u);
+    EXPECT_EQ(world.GetBodyRange(), 0u);
+    EXPECT_EQ(world.GetJointRange(), 0u);
+    EXPECT_EQ(world.GetContactRange(), 0u);
 
     EXPECT_EQ(world.GetBodies().size(), std::size_t(0));
     EXPECT_EQ(world.GetJoints().size(), std::size_t(0));
@@ -250,7 +254,7 @@ TEST(World, Clear)
     const auto b2 = CreateBody(world);
     EXPECT_LE(b2, b1);
     const auto f2 = CreateShape(world, Shape{DiskShapeConf{}});
-    EXPECT_LT(to_underlying(f1), to_underlying(f2));
+    EXPECT_EQ(f2, ShapeID(0));
 }
 
 TEST(World, SetSubSteppingFreeFunction)

@@ -89,11 +89,38 @@ TEST(Compositor, ByteSize)
     }
 }
 
+namespace playrho::part {
+
+/// @brief A 2-dimensional void geometry policy for testing <code>Compositor</code>.
+struct Void2 {
+    ChildCounter GetChildCount() const noexcept
+    {
+        return 0u;
+    }
+    ::playrho::d2::DistanceProxy GetChild(ChildCounter) const
+    {
+        throw InvalidArgument("no index is valid");
+    }
+    Length GetVertexRadius(ChildCounter) const
+    {
+        throw InvalidArgument("no index is valid");
+    }
+    ::playrho::d2::MassData GetMassData(NonNegative<AreaDensity>) const
+    {
+        throw InvalidArgument("no index is valid");
+    }
+};
+
+static_assert(playrho::d2::IsValidShapeType<Compositor<GeometryIs<Void2>>>::value);
+
+} // namespace playrho::part
+
 TEST(Compositor, IsValidShapeType)
 {
     EXPECT_TRUE(playrho::d2::IsValidShapeType<Compositor<>>::value);
     EXPECT_TRUE(playrho::d2::IsValidShapeType<Compositor<GeometryIs<StaticRectangle<>>>>::value);
     EXPECT_TRUE(playrho::d2::IsValidShapeType<Compositor<GeometryIs<DynamicRectangle<>>>>::value);
+    EXPECT_TRUE(playrho::d2::IsValidShapeType<Compositor<GeometryIs<Void2>>>::value);
 }
 
 TEST(Compositor, GetDimensions)
@@ -152,6 +179,41 @@ TEST(Compositor, GetChildCount)
               1u);
     EXPECT_EQ(GetChildCount(Compositor<GeometryIs<DynamicRectangle<0, 0>>, StaticAreaDensity<6>>{}),
               1u);
+}
+
+TEST(Compositor, GetChildDefaultCompositor)
+{
+    auto distanceProxy = ::playrho::d2::DistanceProxy{};
+    const auto compositor = Compositor<>{};
+    ASSERT_EQ(GetChildCount(compositor), 1u);
+    EXPECT_NO_THROW(distanceProxy = GetChild(compositor, 0u));
+    EXPECT_EQ(distanceProxy.GetVertexRadius(), Real(2) * DefaultLinearSlop);
+    EXPECT_THROW(distanceProxy = GetChild(compositor, 1u), InvalidArgument);
+}
+
+TEST(Compositor, SetVertexRadiusDefaultCompositor)
+{
+    auto distanceProxy = ::playrho::d2::DistanceProxy{};
+    auto compositor = Compositor<>{};
+    ASSERT_EQ(GetChildCount(compositor), 1u);
+    ASSERT_NO_THROW(distanceProxy = GetChild(compositor, 0u));
+    ASSERT_EQ(distanceProxy.GetVertexRadius(), Real(2) * DefaultLinearSlop);
+    EXPECT_NO_THROW(SetVertexRadius(compositor, 0u, Real(2) * DefaultLinearSlop));
+    EXPECT_THROW(SetVertexRadius(compositor, 0u, 2_m), InvalidArgument);
+}
+
+TEST(Compositor, SetVertexRadiusDynamicRectangle)
+{
+    auto distanceProxy = ::playrho::d2::DistanceProxy{};
+    auto compositor = Compositor<GeometryIs<DynamicRectangle<>>>{};
+    ASSERT_EQ(GetChildCount(compositor), 1u);
+    ASSERT_NO_THROW(distanceProxy = GetChild(compositor, 0u));
+    ASSERT_EQ(distanceProxy.GetVertexRadius(), Real(2) * DefaultLinearSlop);
+    EXPECT_NO_THROW(SetVertexRadius(compositor, 0u, Real(2) * DefaultLinearSlop));
+    const auto amount = 2_m;
+    EXPECT_NO_THROW(SetVertexRadius(compositor, 0u, amount));
+    ASSERT_NO_THROW(distanceProxy = GetChild(compositor, 0u));
+    EXPECT_EQ(distanceProxy.GetVertexRadius(), amount);
 }
 
 TEST(Compositor, GetDensity)
@@ -252,4 +314,125 @@ TEST(Compositor, SetRestitution)
         EXPECT_NO_THROW(SetRestitution(rectangle, Real(3)));
         EXPECT_EQ(rectangle.restitution, Real(3));
     }
+}
+
+TEST(Compositor, SetFrictionDefaultCompositor)
+{
+    using namespace ::playrho::d2;
+    auto composite = Compositor<>{};
+    EXPECT_NO_THROW(SetFriction(composite, Real(2) / Real(10)));
+    EXPECT_THROW(SetFriction(composite, Real(1)), InvalidArgument);
+}
+
+TEST(Compositor, SetRestitutionDefaultCompositor)
+{
+    using namespace ::playrho::d2;
+    auto composite = Compositor<>{};
+    EXPECT_NO_THROW(SetRestitution(composite, Real(0)));
+    EXPECT_THROW(SetRestitution(composite, Real(1)), InvalidArgument);
+}
+
+TEST(Compositor, SetDensityDefaultCompositor)
+{
+    using namespace ::playrho::d2;
+    auto composite = Compositor<>{};
+    EXPECT_NO_THROW(SetDensity(composite, 0_kgpm2));
+    EXPECT_THROW(SetDensity(composite, 1_kgpm2), InvalidArgument);
+}
+
+TEST(Compositor, SetSensorDefaultCompositor)
+{
+    using namespace ::playrho::d2;
+    auto composite = Compositor<>{};
+    EXPECT_NO_THROW(SetSensor(composite, false));
+    EXPECT_THROW(SetSensor(composite, true), InvalidArgument);
+}
+
+TEST(Compositor, SetFilterDefaultCompositor)
+{
+    using namespace ::playrho::d2;
+    auto composite = Compositor<>{};
+    EXPECT_NO_THROW(SetFilter(composite, StaticFilter<>::filter));
+    EXPECT_THROW(SetFilter(composite, Filter{2, 0, 1}), InvalidArgument);
+}
+
+TEST(Compositor, GetMassDataForStaticRectangle)
+{
+    using namespace ::playrho::d2;
+    auto composite =
+        Compositor<GeometryIs<StaticRectangle<1, 1>>, DensityIs<StaticAreaDensity<1>>>{};
+    auto massData = MassData{};
+    EXPECT_NO_THROW(massData = GetMassData(composite));
+    EXPECT_EQ(massData.center, Length2(0_m, 0_m));
+    EXPECT_EQ(massData.mass, 1_kg);
+}
+
+TEST(Compositor, GetMassDataForDynamicRectangle)
+{
+    using namespace ::playrho::d2;
+    auto composite =
+        Compositor<GeometryIs<DynamicRectangle<1, 1>>, DensityIs<StaticAreaDensity<1>>>{};
+    auto massData = MassData{};
+    EXPECT_NO_THROW(massData = GetMassData(composite));
+    EXPECT_EQ(massData.center, Length2(0_m, 0_m));
+    EXPECT_EQ(massData.mass, 1_kg);
+}
+
+TEST(Compositor, TranslateStaticRectangle)
+{
+    using namespace ::playrho::d2;
+    auto rectangle = Compositor<GeometryIs<StaticRectangle<1, 1>>>{};
+    EXPECT_NO_THROW(Translate(rectangle, Length2{0_m, 0_m}));
+    EXPECT_THROW(Translate(rectangle, Length2{1_m, 2_m}), InvalidArgument);
+}
+
+TEST(Compositor, ScaleStaticRectangle)
+{
+    using namespace ::playrho::d2;
+    auto rectangle = Compositor<GeometryIs<StaticRectangle<1, 1>>>{};
+    EXPECT_NO_THROW(Scale(rectangle, Vec2{Real(1), Real(1)}));
+    EXPECT_THROW(Scale(rectangle, Vec2{Real(2), Real(3)}), InvalidArgument);
+}
+
+TEST(Compositor, RotateStaticRectangle)
+{
+    using namespace ::playrho::d2;
+    auto rectangle = Compositor<GeometryIs<StaticRectangle<1, 1>>>{};
+    EXPECT_NO_THROW(Rotate(rectangle, ::playrho::d2::UnitVec::GetRight()));
+    EXPECT_THROW(Rotate(rectangle, ::playrho::d2::UnitVec::GetTop()), InvalidArgument);
+}
+
+TEST(Compositor, TranslateDynamicRectangle)
+{
+    using namespace ::playrho::d2;
+    auto rectangle = Compositor<GeometryIs<DynamicRectangle<1, 1>>>{};
+    EXPECT_NO_THROW(Translate(rectangle, Length2{0_m, 0_m}));
+    EXPECT_NO_THROW(Translate(rectangle, Length2{1_m, 2_m}));
+}
+
+TEST(Compositor, ScaleDynamicRectangle)
+{
+    using namespace ::playrho::d2;
+    auto rectangle = Compositor<GeometryIs<DynamicRectangle<1, 1>>>{};
+    EXPECT_NO_THROW(Scale(rectangle, Vec2{Real(1), Real(1)}));
+    EXPECT_NO_THROW(Scale(rectangle, Vec2{Real(2), Real(3)}));
+}
+
+TEST(Compositor, RotateDynamicRectangle)
+{
+    using namespace ::playrho::d2;
+    auto rectangle = Compositor<GeometryIs<DynamicRectangle<1, 1>>>{};
+    EXPECT_NO_THROW(Rotate(rectangle, ::playrho::d2::UnitVec::GetRight()));
+    EXPECT_THROW(Rotate(rectangle, ::playrho::d2::UnitVec::GetTop()), InvalidArgument);
+}
+
+TEST(Compositor, EqualsOperator)
+{
+    EXPECT_TRUE(Compositor<>() == Compositor<>());
+    EXPECT_TRUE(Compositor<GeometryIs<DynamicRectangle<>>>() ==
+                Compositor<GeometryIs<DynamicRectangle<>>>());
+    EXPECT_FALSE((Compositor<>() == Compositor<GeometryIs<DynamicRectangle<2, 3>>>()));
+    EXPECT_FALSE((Compositor<>() == Compositor<GeometryIs<StaticRectangle<2, 3>>>()));
+    EXPECT_FALSE((Compositor<>() == Compositor<FrictionIs<StaticFriction<4>>>()));
+    EXPECT_FALSE(Compositor<>() == Compositor<GeometryIs<Void2>>());
 }

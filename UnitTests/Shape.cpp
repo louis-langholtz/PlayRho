@@ -176,6 +176,13 @@ TEST(Shape, Assignment)
     s = EdgeShapeConf();
     EXPECT_NE(GetType(s), GetTypeID<void>());
     EXPECT_EQ(GetType(s), GetTypeID<EdgeShapeConf>());
+
+    // Test copy assignment...
+    const auto otherShape = Shape{};
+    ASSERT_EQ(GetType(otherShape), GetTypeID<void>());
+    s = otherShape;
+    EXPECT_EQ(GetType(s), GetTypeID<void>());
+    EXPECT_TRUE(s == otherShape);
 }
 
 TEST(Shape, TypeCast)
@@ -358,6 +365,30 @@ TEST(Shape, Inequality)
     EXPECT_TRUE(Shape(DiskShapeConf()) != Shape(EdgeShapeConf()));
     const auto filter = Filter{0x2u, 0x8, 0x1};
     EXPECT_TRUE(Shape(EdgeShapeConf()) != Shape(EdgeShapeConf().UseFilter(filter)));
+}
+
+TEST(Shape, EmptyShapeTranslateIsNoop)
+{
+    auto s = Shape{};
+    EXPECT_NO_THROW(Translate(s, Length2{1_m, 2_m}));
+}
+
+TEST(Shape, EmptyShapeScaleIsNoop)
+{
+    auto s = Shape{};
+    EXPECT_NO_THROW(Scale(s, Vec2(Real(2), Real(2))));
+}
+
+TEST(Shape, EmptyShapeRotateIsNoop)
+{
+    auto s = Shape{};
+    EXPECT_NO_THROW(Rotate(s, UnitVec::GetTop()));
+}
+
+TEST(Shape, EmptyShapeSetVertexRadiusIsNoop)
+{
+    auto s = Shape{};
+    EXPECT_NO_THROW(SetVertexRadius(s, 0, 2_m));
 }
 
 #if 0

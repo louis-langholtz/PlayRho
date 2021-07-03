@@ -174,3 +174,34 @@ TEST(Island, Count)
     EXPECT_EQ(Count(island, InvalidContactID), std::size_t(0));
     EXPECT_EQ(Count(island, InvalidJointID), std::size_t(0));
 }
+
+TEST(Island, Sort)
+{
+    auto island = Island();
+    island.bodies.push_back(BodyID(3u));
+    island.bodies.push_back(BodyID(8u));
+    island.bodies.push_back(BodyID(0u));
+    island.contacts.push_back(ContactID(1u));
+    island.contacts.push_back(ContactID(9u));
+    island.contacts.push_back(ContactID(2u));
+    island.contacts.push_back(ContactID(8u));
+    island.contacts.push_back(ContactID(3u));
+    island.contacts.push_back(ContactID(0u));
+    island.joints.push_back(JointID(3u));
+    island.joints.push_back(JointID(2u));
+    island.joints.push_back(JointID(4u));
+    island.joints.push_back(JointID(0u));
+    ASSERT_EQ(size(island.bodies), 3u);
+    ASSERT_EQ(size(island.contacts), 6u);
+    ASSERT_EQ(size(island.joints), 4u);
+    ASSERT_EQ(island.bodies[0], BodyID(3u));
+    ASSERT_EQ(island.contacts[0], ContactID(1u));
+    ASSERT_EQ(island.joints[0], JointID(3u));
+    EXPECT_NO_THROW(Sort(island));
+    EXPECT_EQ(island.bodies[0], BodyID(0u));
+    EXPECT_EQ(island.contacts[0], ContactID(0u));
+    EXPECT_EQ(island.joints[0], JointID(0u));
+    EXPECT_EQ(island.joints[1], JointID(2u));
+    EXPECT_EQ(island.joints[2], JointID(3u));
+    EXPECT_EQ(island.joints[3], JointID(4u));
+}

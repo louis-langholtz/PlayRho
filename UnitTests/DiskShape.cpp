@@ -79,23 +79,76 @@ TEST(DiskShapeConf, InitConstruction)
     EXPECT_EQ(GetY(conf.GetLocation()), GetY(position));
 }
 
-TEST(DiskShapeConf, TranslateFF)
+TEST(DiskShapeConf, TranslateNoneFF)
 {
-    {
-        auto foo = DiskShapeConf{};
-        auto tmp = foo;
-        Translate(foo, Length2{});
-        EXPECT_EQ(foo, tmp);
-    }
-    {
-        const auto v1 = Length2{1_m, 2_m};
-        auto foo = DiskShapeConf{}.UseLocation(v1).UseRadius(1_m);
-        auto tmp = foo;
-        const auto offset = Length2{3_m, 1_m};
-        Translate(foo, offset);
-        EXPECT_NE(foo, tmp);
-        EXPECT_EQ(foo.GetLocation(), v1 + offset);
-    }
+    auto foo = DiskShapeConf{};
+    auto tmp = foo;
+    EXPECT_NO_THROW(Translate(foo, Length2{}));
+    EXPECT_EQ(foo, tmp);
+}
+
+TEST(DiskShapeConf, TranslateSomeFF)
+{
+    const auto v1 = Length2{1_m, 2_m};
+    auto foo = DiskShapeConf{}.UseLocation(v1).UseRadius(1_m);
+    auto tmp = foo;
+    const auto offset = Length2{3_m, 1_m};
+    Translate(foo, offset);
+    EXPECT_NE(foo, tmp);
+    EXPECT_EQ(foo.GetLocation(), v1 + offset);
+}
+
+TEST(DiskShapeConf, ScaleNoneFF)
+{
+    const auto location = Length2{1_m, 2_m};
+    auto foo = DiskShapeConf{}.UseLocation(location);
+    auto tmp = foo;
+    EXPECT_NO_THROW(Scale(foo, Vec2{Real(1), Real(1)}));
+    EXPECT_EQ(foo, tmp);
+}
+
+TEST(DiskShapeConf, ScaleSomeFF)
+{
+    const auto location = Length2{1_m, 2_m};
+    auto foo = DiskShapeConf{}.UseLocation(location);
+    auto tmp = foo;
+    const auto amount = Vec2{Real(2), Real(4)};
+    EXPECT_NO_THROW(Scale(foo, amount));
+    EXPECT_NE(foo, tmp);
+    EXPECT_EQ(GetX(foo.GetLocation()), GetX(location) * GetX(amount));
+    EXPECT_EQ(GetY(foo.GetLocation()), GetY(location) * GetY(amount));
+}
+
+TEST(DiskShapeConf, RotateNoneFF)
+{
+    const auto location = Length2{1_m, 2_m};
+    auto foo = DiskShapeConf{}.UseLocation(location);
+    auto tmp = foo;
+    EXPECT_NO_THROW(Rotate(foo, UnitVec::GetRight()));
+    EXPECT_EQ(foo, tmp);
+}
+
+TEST(DiskShapeConf, RotateSomeFF)
+{
+    const auto location = Length2{1_m, 2_m};
+    auto foo = DiskShapeConf{}.UseLocation(location);
+    auto tmp = foo;
+    const auto amount = UnitVec::GetTop();
+    EXPECT_NO_THROW(Rotate(foo, amount));
+    EXPECT_NE(foo, tmp);
+    EXPECT_EQ(foo.GetLocation(), Rotate(location, amount));
+}
+
+TEST(DiskShapeConf, SetVertexRadiusFF)
+{
+    const auto location = Length2{1_m, 2_m};
+    auto foo = DiskShapeConf{}.UseLocation(location);
+    auto tmp = foo;
+    ASSERT_EQ(foo, tmp);
+    const auto amount = 4_m;
+    EXPECT_NO_THROW(SetVertexRadius(foo, 0u, amount));
+    EXPECT_NE(foo, tmp);
+    EXPECT_EQ(foo.vertexRadius, amount);
 }
 
 TEST(DiskShapeConf, GetInvalidChildThrows)
