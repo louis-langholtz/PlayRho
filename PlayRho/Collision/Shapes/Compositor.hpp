@@ -649,7 +649,7 @@ auto SetVertexRadius(Compositor<P1, P2, P3, P4, P5, P6>& arg, ChildCounter index
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto SetDensity(Compositor<P1, P2, P3, P4, P5, P6>& arg, NonNegative<AreaDensity> value)
-    -> decltype(std::declval<std::enable_if_t<!std::is_const_v<arg.density>, void>>())
+    -> std::enable_if_t<!std::is_const_v<decltype(arg.density)>, void>
 {
     arg.density = value;
 }
@@ -658,7 +658,7 @@ auto SetDensity(Compositor<P1, P2, P3, P4, P5, P6>& arg, NonNegative<AreaDensity
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto SetFilter(Compositor<P1, P2, P3, P4, P5, P6>& arg, Filter value)
-    -> decltype(std::declval<std::enable_if_t<std::is_const_v<arg.filter>, void>>())
+    -> std::enable_if_t<!std::is_const_v<decltype(arg.filter)>, void>
 {
     arg.filter = value;
 }
@@ -667,7 +667,7 @@ auto SetFilter(Compositor<P1, P2, P3, P4, P5, P6>& arg, Filter value)
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto SetSensor(Compositor<P1, P2, P3, P4, P5, P6>& arg, bool value)
-    -> decltype(std::declval<std::enable_if_t<std::is_const_v<arg.sensor>, void>>())
+    -> std::enable_if_t<!std::is_const_v<decltype(arg.sensor)>, void>
 {
     arg.sensor = value;
 }
@@ -676,7 +676,7 @@ auto SetSensor(Compositor<P1, P2, P3, P4, P5, P6>& arg, bool value)
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto SetFriction(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
-    -> decltype(std::declval<std::enable_if_t<std::is_const_v<arg.friction>, void>>())
+    -> std::enable_if_t<!std::is_const_v<decltype(arg.friction)>, void>
 {
     arg.friction = value;
 }
@@ -685,7 +685,7 @@ auto SetFriction(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto SetRestitution(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
-    -> decltype(std::declval<std::enable_if_t<std::is_const_v<arg.restitution>, void>>())
+    -> std::enable_if_t<!std::is_const_v<decltype(arg.restitution)>, void>
 {
     arg.restitution = value;
 }
