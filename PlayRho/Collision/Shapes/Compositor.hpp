@@ -648,9 +648,8 @@ auto SetVertexRadius(Compositor<P1, P2, P3, P4, P5, P6>& arg, ChildCounter index
 /// @brief Density setter.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
-std::enable_if_t<
-    !std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().density)>, void>
-SetDensity(Compositor<P1, P2, P3, P4, P5, P6>& arg, NonNegative<AreaDensity> value)
+auto SetDensity(Compositor<P1, P2, P3, P4, P5, P6>& arg, NonNegative<AreaDensity> value)
+    -> decltype(std::declval<std::enable_if_t<!std::is_const_v<arg.density>, void>>())
 {
     arg.density = value;
 }
@@ -658,9 +657,8 @@ SetDensity(Compositor<P1, P2, P3, P4, P5, P6>& arg, NonNegative<AreaDensity> val
 /// @brief Filter setter.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
-std::enable_if_t<
-    !std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().filter)>, void>
-SetFilter(Compositor<P1, P2, P3, P4, P5, P6>& arg, Filter value)
+auto SetFilter(Compositor<P1, P2, P3, P4, P5, P6>& arg, Filter value)
+    -> decltype(std::declval<std::enable_if_t<std::is_const_v<arg.filter>, void>>())
 {
     arg.filter = value;
 }
@@ -668,9 +666,8 @@ SetFilter(Compositor<P1, P2, P3, P4, P5, P6>& arg, Filter value)
 /// @brief Sensor setter.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
-std::enable_if_t<
-    !std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().sensor)>, void>
-SetSensor(Compositor<P1, P2, P3, P4, P5, P6>& arg, bool value)
+auto SetSensor(Compositor<P1, P2, P3, P4, P5, P6>& arg, bool value)
+    -> decltype(std::declval<std::enable_if_t<std::is_const_v<arg.sensor>, void>>())
 {
     arg.sensor = value;
 }
@@ -678,9 +675,8 @@ SetSensor(Compositor<P1, P2, P3, P4, P5, P6>& arg, bool value)
 /// @brief Sets friction.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
-std::enable_if_t<
-    !std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().friction)>, void>
-SetFriction(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
+auto SetFriction(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
+    -> decltype(std::declval<std::enable_if_t<std::is_const_v<arg.friction>, void>>())
 {
     arg.friction = value;
 }
@@ -688,10 +684,8 @@ SetFriction(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
 /// @brief Sets restitution.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
-std::enable_if_t<
-    !std::is_const_v<decltype(std::declval<Compositor<P1, P2, P3, P4, P5, P6>>().restitution)>,
-    void>
-SetRestitution(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
+auto SetRestitution(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
+    -> decltype(std::declval<std::enable_if_t<std::is_const_v<arg.restitution>, void>>())
 {
     arg.restitution = value;
 }

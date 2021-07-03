@@ -338,6 +338,7 @@ TEST(Compositor, SetDensityDefaultCompositor)
     auto composite = Compositor<>{};
     EXPECT_NO_THROW(SetDensity(composite, 0_kgpm2));
     EXPECT_THROW(SetDensity(composite, 1_kgpm2), InvalidArgument);
+    EXPECT_TRUE((std::is_same_v<decltype(SetDensity(composite, 1_kgpm2)), void>));
 }
 
 TEST(Compositor, SetSensorDefaultCompositor)
@@ -346,6 +347,7 @@ TEST(Compositor, SetSensorDefaultCompositor)
     auto composite = Compositor<>{};
     EXPECT_NO_THROW(SetSensor(composite, false));
     EXPECT_THROW(SetSensor(composite, true), InvalidArgument);
+    EXPECT_TRUE((std::is_same_v<decltype(SetSensor(composite, true)), void>));
 }
 
 TEST(Compositor, SetFilterDefaultCompositor)
