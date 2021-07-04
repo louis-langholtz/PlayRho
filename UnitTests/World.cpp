@@ -2830,7 +2830,11 @@ TEST(World_Longer, TilesComesToRest)
 
     EXPECT_EQ(awakeCount, 0u);
     if (awakeCount == 0u) {
+#ifdef _WIN32 // todo: update macro use, probably more to do with arch than OS!
+        EXPECT_EQ(lastStats.reg.proxiesMoved, 1u);
+#else
         EXPECT_EQ(lastStats.reg.proxiesMoved, 0u);
+#endif
         EXPECT_EQ(lastStats.toi.proxiesMoved, 0u);
     }
 
