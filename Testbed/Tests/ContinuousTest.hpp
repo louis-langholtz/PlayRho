@@ -32,8 +32,10 @@ public:
     {
         {
             const auto body = CreateBody(GetWorld());
-            CreateFixture(GetWorld(), body, Shape{EdgeShapeConf{Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m}});
-            CreateFixture(GetWorld(), body, Shape{PolygonShapeConf{}.SetAsBox(0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad)});
+            Attach(GetWorld(), body,
+                   CreateShape(GetWorld(), EdgeShapeConf{Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m}));
+            Attach(GetWorld(), body,
+                   CreateShape(GetWorld(), PolygonShapeConf{}.SetAsBox(0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad)));
         }
 
         {
@@ -44,7 +46,7 @@ public:
             //bd.angle = 0.1f;
 
             m_body = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), m_body, Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(2_m, 0.1_m)});
+            Attach(GetWorld(), m_body, CreateShape(GetWorld(), PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(2_m, 0.1_m)));
             m_angularVelocity = RandomFloat(-50.0f, 50.0f) * 1_rad / 1_s;
             //m_angularVelocity = 46.661274f;
             SetVelocity(GetWorld(), m_body, Velocity{Vec2(0.0f, -100.0f) * 1_mps, m_angularVelocity});

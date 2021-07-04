@@ -48,8 +48,10 @@ public:
     CollisionFiltering()
     {
         // Ground body
-        CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape(EdgeShapeConf{}
-            .UseFriction(0.3).Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m)));
+        const auto groundShapeId = CreateShape(GetWorld(), EdgeShapeConf{}
+                                    .UseFriction(Real(0.3))
+                                    .Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
+        Attach(GetWorld(), CreateBody(GetWorld()), groundShapeId);
         
         // Small triangle
         Length2 vertices[3];
@@ -60,36 +62,36 @@ public:
         polygon.UseDensity(1_kgpm2);
         polygon.Set(vertices);
 
-        auto triangleShapeConf = FixtureConf{};
-        triangleShapeConf.filter.groupIndex = k_smallGroup;
-        triangleShapeConf.filter.categoryBits = k_triangleCategory;
-        triangleShapeConf.filter.maskBits = k_triangleMask;
+        auto triangleFilter = Filter{};
+        triangleFilter.groupIndex = k_smallGroup;
+        triangleFilter.categoryBits = k_triangleCategory;
+        triangleFilter.maskBits = k_triangleMask;
 
         auto triangleBodyConf = BodyConf{};
         triangleBodyConf.type = BodyType::Dynamic;
         triangleBodyConf.location = Vec2(-5.0f, 2.0f) * 1_m;
 
         const auto body1 = CreateBody(GetWorld(), triangleBodyConf);
-        CreateFixture(GetWorld(), body1, Shape(polygon), triangleShapeConf);
+        Attach(GetWorld(), body1, CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(triangleFilter)));
 
         // Large triangle (recycle definitions)
         vertices[0] *= 2.0f;
         vertices[1] *= 2.0f;
         vertices[2] *= 2.0f;
         polygon.Set(vertices);
-        triangleShapeConf.filter.groupIndex = k_largeGroup;
+        triangleFilter.groupIndex = k_largeGroup;
         triangleBodyConf.location = Vec2(-5.0f, 6.0f) * 1_m;
         triangleBodyConf.fixedRotation = true; // look at me!
 
         const auto body2 = CreateBody(GetWorld(), triangleBodyConf);
-        CreateFixture(GetWorld(), body2, Shape(polygon), triangleShapeConf);
+        Attach(GetWorld(), body2, CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(triangleFilter)));
 
         {
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-5.0f, 10.0f) * 1_m;
             const auto body = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), body, Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 1_m)});
+            Attach(GetWorld(), body, CreateShape(GetWorld(), PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 1_m)));
 
             auto jd = PrismaticJointConf{};
             jd.bodyA = body2;
@@ -109,34 +111,34 @@ public:
         polygon.UseDensity(1_kgpm2);
         polygon.UseRestitution(Real(0.1));
 
-        auto boxShapeConf = FixtureConf{};
-        boxShapeConf.filter.groupIndex = k_smallGroup;
-        boxShapeConf.filter.categoryBits = k_boxCategory;
-        boxShapeConf.filter.maskBits = k_boxMask;
+        auto boxShapeFilter = Filter{};
+        boxShapeFilter.groupIndex = k_smallGroup;
+        boxShapeFilter.categoryBits = k_boxCategory;
+        boxShapeFilter.maskBits = k_boxMask;
 
         auto boxBodyConf = BodyConf{};
         boxBodyConf.type = BodyType::Dynamic;
         boxBodyConf.location = Vec2(0.0f, 2.0f) * 1_m;
 
         const auto body3 = CreateBody(GetWorld(), boxBodyConf);
-        CreateFixture(GetWorld(), body3, Shape(polygon), boxShapeConf);
+        Attach(GetWorld(), body3, CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(boxShapeFilter)));
 
         // Large box (recycle definitions)
         polygon.SetAsBox(2_m, 1_m);
-        boxShapeConf.filter.groupIndex = k_largeGroup;
+        boxShapeFilter.groupIndex = k_largeGroup;
         boxBodyConf.location = Vec2(0.0f, 6.0f) * 1_m;
 
         const auto body4 = CreateBody(GetWorld(), boxBodyConf);
-        CreateFixture(GetWorld(), body4, Shape(polygon), boxShapeConf);
+        Attach(GetWorld(), body4, CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(boxShapeFilter)));
 
         // Small circle
         auto circleConf = DiskShapeConf{};
         circleConf.density = 1_kgpm2;
 
-        auto circleShapeConf = FixtureConf{};
-        circleShapeConf.filter.groupIndex = k_smallGroup;
-        circleShapeConf.filter.categoryBits = k_circleCategory;
-        circleShapeConf.filter.maskBits = k_circleMask;
+        auto circleShapeFilter = Filter{};
+        circleShapeFilter.groupIndex = k_smallGroup;
+        circleShapeFilter.categoryBits = k_circleCategory;
+        circleShapeFilter.maskBits = k_circleMask;
 
         auto circleBodyConf = BodyConf{};
         circleBodyConf.type = BodyType::Dynamic;
@@ -144,15 +146,15 @@ public:
         
         const auto body5 = CreateBody(GetWorld(), circleBodyConf);
         circleConf.vertexRadius = 1_m;
-        CreateFixture(GetWorld(), body5, Shape(circleConf), circleShapeConf);
+        Attach(GetWorld(), body5, CreateShape(GetWorld(), DiskShapeConf{circleConf}.UseFilter(circleShapeFilter)));
 
         // Large circle
-        circleShapeConf.filter.groupIndex = k_largeGroup;
+        circleShapeFilter.groupIndex = k_largeGroup;
         circleBodyConf.location = Vec2(5.0f, 6.0f) * 1_m;
 
         const auto body6 = CreateBody(GetWorld(), circleBodyConf);
         circleConf.vertexRadius = circleConf.vertexRadius * 2;
-        CreateFixture(GetWorld(), body6, Shape(circleConf), circleShapeConf);
+        Attach(GetWorld(), body6, CreateShape(GetWorld(), DiskShapeConf{circleConf}.UseFilter(circleShapeFilter)));
         
         SetAccelerations(GetWorld(), GetGravity());
     }

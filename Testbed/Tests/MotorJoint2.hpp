@@ -68,8 +68,8 @@ public:
             std::make_pair(m_locationB, m_locationA): std::make_pair(m_locationA, m_locationB);
         m_bodyA = CreateBody(GetWorld(), BodyConf(bd).UseLocation(std::get<0>(locations)));
         m_bodyB = CreateBody(GetWorld(), BodyConf(bd).UseLocation(std::get<1>(locations)));
-        CreateFixture(GetWorld(), m_bodyA, m_diskShape);
-        CreateFixture(GetWorld(), m_bodyB, m_diskShape);
+        Attach(GetWorld(), m_bodyA, m_diskShape);
+        Attach(GetWorld(), m_bodyB, m_diskShape);
 
         const auto jc = MotorJointConf{
             m_reversedJoint
@@ -81,11 +81,10 @@ public:
     
     MotorJoint2(): Test(GetTestConf())
     {
+        m_diskShape = CreateShape(GetWorld(), DiskShapeConf{1_m}.UseFriction(0.6f).UseDensity(2_kgpm2));
         const auto ground = CreateBody(GetWorld());
-        CreateFixture(GetWorld(), ground, Shape{GetGroundEdgeConf()});
-        
+        Attach(GetWorld(), ground, CreateShape(GetWorld(), GetGroundEdgeConf()));
         Setup();
-        
         RegisterForKey(GLFW_KEY_B, GLFW_PRESS, 0, "Toggle bodies.", [&](KeyActionMods) {
             ToggleBody();
             Setup();
@@ -101,7 +100,7 @@ public:
         return new MotorJoint2;
     }
     
-    const Shape m_diskShape{DiskShapeConf{1_m}.UseFriction(0.6f).UseDensity(2_kgpm2)};
+    ShapeID m_diskShape = InvalidShapeID;
     const Length2 m_locationA{0_m, 4_m};
     const Length2 m_locationB{4_m, 8_m};
     bool m_reversedBody{false};

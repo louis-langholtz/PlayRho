@@ -30,7 +30,8 @@ public:
 
     ShapeEditing()
     {
-        CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        Attach(GetWorld(), CreateBody(GetWorld()),
+               CreateShape(GetWorld(), EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));
         
         BodyConf bd;
         bd.type = BodyType::Dynamic;
@@ -41,36 +42,37 @@ public:
         auto shape = PolygonShapeConf{};
         shape.SetAsBox(4_m, 4_m, Length2{}, 0_deg);
         shape.UseDensity(10_kgpm2);
-        m_fixture1 = CreateFixture(GetWorld(), m_body, Shape(shape));
+        Attach(GetWorld(), m_body, CreateShape(GetWorld(), shape));
 
-        m_fixture2 = InvalidFixtureID;
+        m_shape2 = InvalidShapeID;
 
         m_sensor = false;
         
         RegisterForKey(GLFW_KEY_C, GLFW_PRESS, 0, "Create a shape.", [&](KeyActionMods) {
-            if (!IsValid(m_fixture2))
+            if (!IsValid(m_shape2))
             {
                 auto conf = DiskShapeConf{};
                 conf.vertexRadius = 3_m;
                 conf.location = Vec2(0.5f, -4.0f) * 1_m;
                 conf.density = 10_kgpm2;
-                m_fixture2 = CreateFixture(GetWorld(), m_body, Shape(conf));
+                m_shape2 = CreateShape(GetWorld(), conf);
+                Attach(GetWorld(), m_body, m_shape2);
                 SetAwake(GetWorld(), m_body);
             }
         });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Destroy a shape.", [&](KeyActionMods) {
-            if (IsValid(m_fixture2))
+            if (IsValid(m_shape2))
             {
-                Destroy(GetWorld(), m_fixture2);
-                m_fixture2 = InvalidFixtureID;
+                Destroy(GetWorld(), m_shape2);
+                m_shape2 = InvalidShapeID;
                 SetAwake(GetWorld(), m_body);
             }
         });
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Toggle Sensor.", [&](KeyActionMods) {
-            if (IsValid(m_fixture2))
+            if (IsValid(m_shape2))
             {
                 m_sensor = !m_sensor;
-                SetSensor(GetWorld(), m_fixture2, m_sensor);
+                SetSensor(GetWorld(), m_shape2, m_sensor);
             }
         });
     }
@@ -83,8 +85,7 @@ public:
     }
 
     BodyID m_body;
-    FixtureID m_fixture1;
-    FixtureID m_fixture2;
+    ShapeID m_shape2 = InvalidShapeID;
     bool m_sensor;
 };
 

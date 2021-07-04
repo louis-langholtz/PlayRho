@@ -27,9 +27,9 @@
 
 #include <PlayRho/Common/UnitInterval.hpp>
 #include <PlayRho/Collision/RayCastInput.hpp>
+#include <PlayRho/Collision/Shapes/ShapeID.hpp>
 
 #include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/FixtureID.hpp>
 
 #include <optional>
 
@@ -92,16 +92,16 @@ using RayCastOutput = std::optional<RayCastHit>;
 /// @brief Ray cast callback function.
 /// @note Return 0 to terminate ray casting, or > 0 to update the segment bounding box.
 using DynamicTreeRayCastCB = std::function<Real(BodyID body,
-                                                FixtureID fixture,
+                                                ShapeID shape,
                                                 ChildCounter child,
                                                 const RayCastInput& input)>;
 
 /// @brief Ray cast callback function signature.
-using FixtureRayCastCB = std::function<RayCastOpcode(BodyID body,
-                                                     FixtureID fixture,
-                                                     ChildCounter child,
-                                                     Length2 point,
-                                                     UnitVec normal)>;
+using ShapeRayCastCB = std::function<RayCastOpcode(BodyID body,
+                                                   ShapeID shape,
+                                                   ChildCounter child,
+                                                   Length2 point,
+                                                   UnitVec normal)>;
 
 /// @defgroup RayCastGroup Ray Casting Functions
 /// @brief Collection of functions that do ray casting.
@@ -170,7 +170,7 @@ bool RayCast(const DynamicTree& tree, RayCastInput input,
 /// @return <code>true</code> if terminated by callback, <code>false</code> otherwise.
 ///
 /// @relatedalso World
-bool RayCast(const World& world, const RayCastInput& input, const FixtureRayCastCB& callback);
+bool RayCast(const World& world, const RayCastInput& input, const ShapeRayCastCB& callback);
 
 /// @}
 

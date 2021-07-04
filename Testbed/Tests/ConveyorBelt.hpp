@@ -36,8 +36,8 @@ public:
         });
 
         // Ground
-        CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape{
-            EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
+        Attach(GetWorld(), CreateBody(GetWorld()), CreateShape(GetWorld(),
+            EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}));
 
         // Platform
         {
@@ -48,37 +48,36 @@ public:
             auto conf = PolygonShapeConf{};
             conf.friction = 0.8f;
             conf.SetAsBox(10_m, 0.5_m);
-            m_platform = CreateFixture(GetWorld(), body, Shape{conf});
+            m_platform = CreateShape(GetWorld(), conf);
+            Attach(GetWorld(), body, m_platform);
         }
 
         // Boxes
-        const auto boxshape = Shape{PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.5_m)};
-        for (auto i = 0; i < 5; ++i)
-        {
+        const auto boxshape = CreateShape(GetWorld(),
+                                          PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.5_m));
+        for (auto i = 0; i < 5; ++i) {
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = GetGravity();
             bd.location = Vec2(-10.0f + 2.0f * i, 7.0f) * 1_m;
             const auto body = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), body, boxshape);
+            Attach(GetWorld(), body, boxshape);
         }
     }
 
-    void PreSolve(ContactID contact, const Manifold& oldManifold)
+    void PreSolve(ContactID contact, const Manifold& /*oldManifold*/)
     {
-        const auto fixtureA = GetFixtureA(GetWorld(), contact);
-        const auto fixtureB = GetFixtureB(GetWorld(), contact);
-        if (fixtureA == m_platform)
-        {
+        const auto shapeA = GetShapeA(GetWorld(), contact);
+        const auto shapeB = GetShapeB(GetWorld(), contact);
+        if (shapeA == m_platform) {
             SetTangentSpeed(GetWorld(), contact, 5_mps);
         }
-        if (fixtureB == m_platform)
-        {
+        if (shapeB == m_platform) {
             SetTangentSpeed(GetWorld(), contact, -5_mps);
         }
     }
 
-    FixtureID m_platform;
+    ShapeID m_platform;
 };
 
 } // namespace testbed

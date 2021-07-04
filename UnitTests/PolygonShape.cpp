@@ -36,22 +36,27 @@ TEST(PolygonShapeConf, ByteSize)
 #if !defined(NDEBUG)
             EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(96));
 #else
-            EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(72));
+            EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(80));
 #endif
 #elif defined(_WIN32)
 #if !defined(NDEBUG)
             EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(60));
 #else
-            EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(48));
+            EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(56));
 #endif
 #else
-            EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(72));
+            EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(80));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(96)); break;
-        case 16: EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(144)); break;
+        case  8: EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(104)); break;
+        case 16: EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(160)); break;
         default: FAIL(); break;
     }
+}
+
+TEST(PolygonShapeConf, IsValidShapeType)
+{
+    EXPECT_TRUE(IsValidShapeType<PolygonShapeConf>::value);
 }
 
 TEST(PolygonShapeConf, DefaultConstruction)
@@ -167,7 +172,7 @@ TEST(PolygonShapeConf, Copy)
     EXPECT_EQ(copy.GetNormal(3) * Real{1}, Vec2(0, -1));
 }
 
-TEST(PolygonShapeConf, Translate)
+TEST(PolygonShapeConf, Transform)
 {
     const auto hx = 2.3_m;
     const auto hy = 54.1_m;
@@ -498,4 +503,73 @@ TEST(PolygonShapeConf, ValidateFF)
     EXPECT_TRUE(Validate(vertices));
     vertices.push_back(Length2{+2_m, 1_m});
     EXPECT_FALSE(Validate(vertices));
+}
+
+TEST(PolygonShapeConf, SetVertexRadius)
+{
+    auto shape = PolygonShapeConf{};
+    ASSERT_EQ(shape.GetVertexCount(), 0);
+    ASSERT_EQ(GetChildCount(shape), ChildCounter(1));
+    ASSERT_EQ(GetVertexRadius(shape), PolygonShapeConf::GetDefaultVertexRadius());
+    EXPECT_FALSE(IsValid(shape.GetCentroid()));
+    const auto amount = 2_m;
+    EXPECT_NO_THROW(SetVertexRadius(shape, 0u, amount));
+    EXPECT_EQ(GetVertexRadius(shape), amount);
+}
+
+TEST(PolygonShapeConf, Translate)
+{
+    const auto v0 = Length2{-1.0_m, 0_m};
+    const auto v1 = Length2{+1.0_m, 0_m};
+    auto vertices = VertexSet{};
+    vertices.add(v0);
+    vertices.add(v1);
+    auto shape = PolygonShapeConf{};
+    shape.Set(vertices);
+    ASSERT_EQ(shape.GetVertexCount(), 2u);
+    ASSERT_EQ(shape.GetVertex(0u), v1);
+    ASSERT_EQ(shape.GetVertex(1u), v0);
+    const auto amount = Length2{2_m, 3_m};
+    EXPECT_NO_THROW(Translate(shape, amount));
+    ASSERT_EQ(shape.GetVertexCount(), 2u);
+    EXPECT_EQ(shape.GetVertex(0u), v1 + amount);
+    EXPECT_EQ(shape.GetVertex(1u), v0 + amount);
+}
+
+TEST(PolygonShapeConf, Scale)
+{
+    const auto v0 = Length2{-1.0_m, 0_m};
+    const auto v1 = Length2{+1.0_m, 0_m};
+    auto vertices = VertexSet{};
+    vertices.add(v0);
+    vertices.add(v1);
+    auto shape = PolygonShapeConf{};
+    shape.Set(vertices);
+    ASSERT_EQ(shape.GetVertexCount(), 2u);
+    ASSERT_EQ(shape.GetVertex(0u), v1);
+    ASSERT_EQ(shape.GetVertex(1u), v0);
+    const auto amount = Vec2{Real(2), Real(3)};
+    EXPECT_NO_THROW(Scale(shape, amount));
+    ASSERT_EQ(shape.GetVertexCount(), 2u);
+    EXPECT_EQ(shape.GetVertex(1u), Length2(GetX(v0) * GetX(amount), GetY(v0) * GetY(amount)));
+    EXPECT_EQ(shape.GetVertex(0u), Length2(GetX(v1) * GetX(amount), GetY(v1) * GetY(amount)));
+}
+
+TEST(PolygonShapeConf, Rotate)
+{
+    const auto v0 = Length2{+1.0_m, 0_m};
+    const auto v1 = Length2{-1.0_m, 0_m};
+    auto vertices = VertexSet{};
+    vertices.add(v0);
+    vertices.add(v1);
+    auto shape = PolygonShapeConf{};
+    shape.Set(vertices);
+    ASSERT_EQ(shape.GetVertexCount(), 2u);
+    ASSERT_EQ(shape.GetVertex(0u), v0);
+    ASSERT_EQ(shape.GetVertex(1u), v1);
+    const auto amount = UnitVec::GetTop();
+    EXPECT_NO_THROW(Rotate(shape, amount));
+    ASSERT_EQ(shape.GetVertexCount(), 2u);
+    EXPECT_EQ(shape.GetVertex(0u), Rotate(v1, amount));
+    EXPECT_EQ(shape.GetVertex(1u), Rotate(v0, amount));
 }

@@ -17,7 +17,10 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Common/Math.hpp>
+
+#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
 
 #include <array>
 #include <type_traits>
@@ -27,7 +30,18 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(Math, sqrt)
+namespace {
+
+Angle AlternateGetShortestDelta(Angle a0, Angle a1) noexcept
+{
+    constexpr auto twoPi = Angle{Pi * 2 * Radian};
+    const auto da = ModuloViaTrunc(a1 - a0, twoPi);
+    return ModuloViaTrunc(2 * da, twoPi) - da;
+}
+
+} // namespace
+
+TEST(Math, std_sqrt)
 {
     EXPECT_EQ(sqrt(Real{0}), Real{0});
     EXPECT_EQ(sqrt(Real{4}), Real{2});
@@ -38,10 +52,25 @@ TEST(Math, sqrt)
     EXPECT_EQ(Square(std::sqrt(std::numeric_limits<double>::min())), std::numeric_limits<double>::min());
 
     // The sin/cos of a 45 degree angle...
-    EXPECT_EQ(std::sqrt(1.0 / 2.0), 0.70710678118654752440);
-    EXPECT_EQ(std::sqrt(1.0l / 2.0l), 0.70710678118654752440l);
-    EXPECT_EQ(std::sqrt(2.0L) / 2.0L, 0.70710678118654752440L);
-    EXPECT_EQ(std::sqrt(2.0L), 1.414213562373095048801688724209698078569671875376948073176679737990732478462L);
+    EXPECT_EQ(sqrt(1.0 / 2.0), 0.70710678118654752440);
+    EXPECT_EQ(sqrt(1.0l / 2.0l), 0.70710678118654752440l);
+    EXPECT_EQ(sqrt(2.0L) / 2.0L, 0.70710678118654752440L);
+    EXPECT_EQ(sqrt(2.0L), 1.414213562373095048801688724209698078569671875376948073176679737990732478462L);
+}
+
+TEST(Math, std_atan2)
+{
+    // atan2 range appears to be (-PI, +PI]
+    const auto PI = 3.14159265358979323846264338327950288;
+    EXPECT_DOUBLE_EQ(atan2(nextafter(0.0, -1.0), +1.0), +PI * 0.0);
+    EXPECT_DOUBLE_EQ(atan2(nextafter(0.0, +0.0), +1.0), +PI * 0.0);
+    EXPECT_DOUBLE_EQ(atan2(nextafter(0.0, +1.0), +1.0), +PI * 0.0);
+    EXPECT_DOUBLE_EQ(atan2(+1.0, +0.0), +PI / 2.0);
+    EXPECT_DOUBLE_EQ(atan2(-1.0, +0.0), -PI / 2.0);
+    EXPECT_DOUBLE_EQ(atan2(nextafter(0.0, -1.0), -1.0), -PI);
+    EXPECT_DOUBLE_EQ(atan2(nextafter(0.0, -0.0), -1.0), -PI);
+    EXPECT_DOUBLE_EQ(atan2(nextafter(0.0, +0.0), -1.0), +PI);
+    EXPECT_DOUBLE_EQ(atan2(nextafter(0.0, +1.0), -1.0), +PI);
 }
 
 TEST(Math, Square)
@@ -627,7 +656,325 @@ TEST(Math, nextafter2)
     EXPECT_EQ(b + subnormal, b);
 }
 
-TEST(Math, GetPosition)
+template <class T>
+static void TestModuloFunction(std::function<T(T, T)> f)
+{
+    constexpr auto abs_error = 1e-6;
+    EXPECT_NEAR(static_cast<double>(f(static_cast<T>(+1.0), static_cast<T>(+1.0))), 0.0, abs_error);
+    EXPECT_NEAR(static_cast<double>(f(static_cast<T>(+1.0), static_cast<T>(+2.0))), 1.0, abs_error);
+    EXPECT_NEAR(static_cast<double>(f(static_cast<T>(+3.0), static_cast<T>(+2.0))), 1.0, abs_error);
+    EXPECT_NEAR(static_cast<double>(f(static_cast<T>(+5.1), static_cast<T>(+3.0))), 2.1, abs_error);
+    EXPECT_NEAR(static_cast<double>(f(static_cast<T>(-5.1), static_cast<T>(+3.0))), -2.1, abs_error);
+    EXPECT_NEAR(static_cast<double>(f(static_cast<T>(+5.1), static_cast<T>(-3.0))), 2.1, abs_error);
+    EXPECT_NEAR(static_cast<double>(f(static_cast<T>(-5.1), static_cast<T>(-3.0))), -2.1, abs_error);
+    EXPECT_NEAR(static_cast<double>(f(static_cast<T>(+0.0), static_cast<T>(1.0))), 0, abs_error);
+    EXPECT_NEAR(static_cast<double>(f(static_cast<T>(-0.0), static_cast<T>(1.0))), -0, abs_error);
+    // Typically, divisor is compile time constant for which the following aren't as important
+    //EXPECT_NEAR(static_cast<double>(f(static_cast<T>(5.1), std::numeric_limits<T>::infinity())), 5.1, abs_error);
+    //EXPECT_TRUE(std::isnan(static_cast<double>(f(static_cast<T>(+5.1), static_cast<T>(0.0)))));
+}
+
+TEST(Math, ModuloViaFmod)
+{
+    {
+        SCOPED_TRACE("For float");
+        auto f = ModuloViaFmod<float>;
+        TestModuloFunction<float>(f);
+    }
+    {
+        SCOPED_TRACE("For double");
+        auto f = ModuloViaFmod<double>;
+        TestModuloFunction<double>(f);
+    }
+}
+
+TEST(Math, ModuloViaTrunc)
+{
+    {
+        SCOPED_TRACE("For float");
+        auto f = ModuloViaTrunc<float>;
+        TestModuloFunction<float>(f);
+    }
+    {
+        SCOPED_TRACE("For double");
+        auto f = ModuloViaTrunc<double>;
+        TestModuloFunction<double>(f);
+    }
+}
+
+TEST(Math, GetFwdRotationalAngle)
+{
+    EXPECT_EQ(GetFwdRotationalAngle(0_deg, 0_deg), 0_deg);
+    EXPECT_NEAR(double(Real{GetFwdRotationalAngle(0_deg, 10_deg) / 1_deg}), -350.0, 0.0001);
+    EXPECT_NEAR(double(Real{GetFwdRotationalAngle(-10_deg, 0_deg) / 1_deg}), -350.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real{GetFwdRotationalAngle(90_deg, -90_deg)/1_deg}), -180.0, 0.0001);
+    EXPECT_NEAR(double(Real{GetFwdRotationalAngle(100_deg, 110_deg) / 1_deg}), -350.0, 0.0001);
+    EXPECT_NEAR(double(Real{GetFwdRotationalAngle( 10_deg,   0_deg) / 1_deg}),  -10.0, 0.0001);
+    EXPECT_NEAR(double(Real{GetFwdRotationalAngle( -2_deg,  +3_deg) / 1_deg}), -355.0, 0.001);
+    EXPECT_NEAR(double(Real{GetFwdRotationalAngle( +2_deg,  -3_deg) / 1_deg}),   -5.0, 0.001);
+    EXPECT_NEAR(double(Real{GetFwdRotationalAngle(-13_deg,  -3_deg) / 1_deg}), -350.0, 0.001);
+    EXPECT_NEAR(double(Real{GetFwdRotationalAngle(-10_deg, -20_deg) / 1_deg}),  -10.0, 0.001);
+}
+
+TEST(Math, GetRevRotationalAngle)
+{
+    EXPECT_EQ(GetRevRotationalAngle(0_deg, 0_deg), 0_deg);
+    EXPECT_EQ(GetRevRotationalAngle(0_deg, 10_deg), 10_deg);
+    // GetRevRotationalAngle(100 * Degree, 110 * Degree) almost equals 10 * Degree (but not exactly)
+    EXPECT_EQ(GetRevRotationalAngle(-10_deg, 0_deg), 10_deg);
+    EXPECT_NEAR(static_cast<double>(Real{GetRevRotationalAngle(90_deg, -90_deg)/1_deg}), 180.0, 0.0001);
+    EXPECT_NEAR(double(Real{GetRevRotationalAngle(100_deg, 110_deg) / 1_deg}),  10.0, 0.0001);
+    EXPECT_NEAR(double(Real{GetRevRotationalAngle( 10_deg,   0_deg) / 1_deg}), 350.0, 0.0001);
+    EXPECT_NEAR(double(Real{GetRevRotationalAngle( -2_deg,  +3_deg) / 1_deg}),   5.0, 0.001);
+    EXPECT_NEAR(double(Real{GetRevRotationalAngle( +2_deg,  -3_deg) / 1_deg}), 355.0, 0.001);
+    EXPECT_NEAR(double(Real{GetRevRotationalAngle(-13_deg,  -3_deg) / 1_deg}),  10.0, 0.001);
+    EXPECT_NEAR(double(Real{GetRevRotationalAngle(-10_deg, -20_deg) / 1_deg}), 350.0, 0.001);
+}
+
+TEST(Math, Normalize)
+{
+    const auto v0 = Real(2);
+    const auto v1 = Real(2);
+    auto value = Vec2{v0, v1};
+    const auto length = GetMagnitude(value);
+    const auto invLength = Real{1} / length;
+    auto magnitude = Real(0);
+    EXPECT_NO_THROW(magnitude = Normalize(value));
+    EXPECT_EQ(magnitude, length);
+    EXPECT_EQ(value[0], value[1]);
+    EXPECT_EQ(value[0], v0 * invLength);
+    EXPECT_EQ(value[1], v1 * invLength);
+}
+
+TEST(Math, GetNormalized)
+{
+    // Confirm that GetNormalized returns a half-open interval value that's [-Pi, +Pi)...
+    // I.e. greater than or equal to -Pi and less than +Pi.
+    EXPECT_EQ(GetNormalized(0_deg) / Degree, Real(0));
+    EXPECT_DOUBLE_EQ(double(Real(GetNormalized(  0.0_deg) / Degree)),    0.0);
+    EXPECT_DOUBLE_EQ(double(Real(GetNormalized(360.0_deg) / Degree)),    0.0);
+    EXPECT_DOUBLE_EQ(double(Real(GetNormalized(Pi * 2_rad) / 1_rad)),    0.0);
+    EXPECT_DOUBLE_EQ(double(Real(GetNormalized(720.0_deg) / Degree)),    0.0);
+    EXPECT_DOUBLE_EQ(double(Real(GetNormalized(Pi * 4_rad) / 1_rad)),    0.0);
+    EXPECT_NEAR(double(Real(GetNormalized(   21.3_deg) / Degree)),   21.3, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(   90.0_deg) / Degree)),   90.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(   93.2_deg) / Degree)),   93.2, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  180.0_deg) / Degree)), -180.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  185.4_deg) / Degree)), -174.6, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  190.0_deg) / Degree)), -170.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized( -180.0_deg) / Degree)), -180.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  270.0_deg) / Degree)),  -90.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  395.0_deg) / Degree)),   35.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  396.4_deg) / Degree)),   36.4, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  733.0_deg) / Degree)),   13.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  734.5_deg) / Degree)),   14.5, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  -45.0_deg) / Degree)),  -45.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(  -90.0_deg) / Degree)),  -90.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(-3610.0_deg) / Degree)),  -10.0, 0.01);
+    EXPECT_NEAR(double(Real(GetNormalized(-3611.2_deg) / Degree)),  -11.2, 0.01);
+    //EXPECT_TRUE(std::isnan(double(Real(GetNormalized(std::numeric_limits<Angle>::infinity()) / Degree))));
+    //EXPECT_TRUE(std::isnan(float(Real(GetNormalized(std::numeric_limits<Angle>::infinity()) / Degree))));
+    EXPECT_TRUE(std::isnan(float(Real(GetNormalized(std::numeric_limits<Angle>::quiet_NaN()) / Degree))));
+
+    // Following test doesn't work when Real=long double, presumably because of rounding issues.
+    //EXPECT_NEAR(double(Real(GetNormalized(Angle{ Real{ 360.0} * Degree}) / Degree)),   0.0, 0.0001);
+    EXPECT_NEAR(double(Real(GetNormalized(Angle{ 2 * Pi * 1_rad}) / 1_rad)),   0.0, 0.0001);
+    // Following test doesn't work when Real=long double, presumably because of rounding issues.
+    //EXPECT_NEAR(double(Real(GetNormalized(Angle{ Real( 720.0) * Degree}) / Degree)),   0.0, 0.0001);
+    EXPECT_NEAR(double(Real(GetNormalized(Angle{ 4 * Pi * 1_rad}) / 1_rad)),   0.0, 0.0001);
+
+    if constexpr (std::is_same_v<Real,float>) {
+        // Pick an absolute error allowable...
+        // Using EXPECT_EQ(a, b) checks exact equality but won't report the exact values.
+        // Using EXPECT_NEAR(a, b, abs_err) checks that difference is less than abs_err and reports
+        //   the exact values when they're difference is not less than or equal to abs_err.
+        // So use EXPECT_NEAR with an abs_err that's less tolerant than 1 ULP of a double at Pi
+        // so that code checks for exact equality and reports exact values when they don't match.
+        constexpr auto abs_err = 1e-20;
+
+        // Recognize some hex to decimal equavalents to help make sense of the following code.
+        EXPECT_NEAR(+0x1.921fb5p+1, +3.1415926218032837, abs_err);
+        EXPECT_NEAR(+0x1.921fb6p+1, +3.1415927410125732, abs_err);
+        EXPECT_NEAR(+0x1.921fb6p+1, +Pi, abs_err);
+        EXPECT_NEAR(+0x1.921fb7p+1, +3.1415928602218628, abs_err);
+
+        EXPECT_NEAR(StripUnit(GetNormalized(Real{+0x1.921fb5p+1f} * 1_rad)),
+                    Real{+0x1.921fb5p+1f}, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real{+0x1.921fb6p+1f} * 1_rad)),
+                    Real{-0x1.921fb6p+1f}, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real{+0x1.921fb7p+1f} * 1_rad)),
+                    Real{-0x1.921fb5p+1f}, abs_err);
+
+        EXPECT_NEAR(StripUnit(GetNormalized(Real{-0x1.921fb5p+1f} * 1_rad)),
+                    Real{-0x1.921fb5p+1f}, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real{-0x1.921fb6p+1f} * 1_rad)),
+                    Real{-0x1.921fb6p+1f}, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real{-0x1.921fb7p+1f} * 1_rad)),
+                    Real{+0x1.921fb5p+1f}, abs_err);
+    }
+    else if constexpr (std::is_same_v<Real, double>) {
+        // Pick an absolute error allowable...
+        // Using EXPECT_EQ(a, b) checks exact equality but won't report the exact values.
+        // Using EXPECT_NEAR(a, b, abs_err) checks that difference is less than abs_err and reports
+        //   the exact values when they're difference is not less than or equal to abs_err.
+        // So use EXPECT_NEAR with an abs_err that's less tolerant than 1 ULP of a double at Pi
+        // so that code checks for exact equality and reports exact values when they don't match.
+        constexpr auto abs_err = 1e-20;
+
+        // Recognize some hex to decimal equavalents to help make sense of the following code.
+        EXPECT_EQ(+0x1.921fb54442d13p+1, +3.1415926535897909);
+        EXPECT_EQ(+0x1.921fb54442d14p+1, +3.1415926535897913);
+        EXPECT_EQ(+0x1.921fb54442d15p+1, +3.1415926535897918);
+        EXPECT_EQ(+0x1.921fb54442d16p+1, +3.1415926535897922);
+        EXPECT_EQ(+0x1.921fb54442d17p+1, +3.1415926535897927);
+        EXPECT_EQ(+0x1.921fb54442d18p+1, +3.1415926535897931);
+        EXPECT_EQ(+0x1.921fb54442d18p+1, +Pi);
+        EXPECT_EQ(-0x1.921fb54442d13p+1, -3.1415926535897909);
+        EXPECT_EQ(-0x1.921fb54442d14p+1, -3.1415926535897913);
+        EXPECT_EQ(-0x1.921fb54442d15p+1, -3.1415926535897918);
+        EXPECT_EQ(-0x1.921fb54442d16p+1, -3.1415926535897922);
+        EXPECT_EQ(-0x1.921fb54442d17p+1, -3.1415926535897927);
+        EXPECT_EQ(-0x1.921fb54442d18p+1, -3.1415926535897931);
+        EXPECT_EQ(-0x1.921fb54442d18p+1, -Pi);
+
+        // Check that GetNormalized(-Pi) == -Pi
+        EXPECT_NEAR(static_cast<double>(Real{GetNormalized(-Pi * 1_rad)/1_rad}),
+                    -Pi, abs_err);
+
+        // Check that GetNormalized(-Pi) == GetNormalized(+Pi)...
+        EXPECT_NEAR(static_cast<double>(Real{GetNormalized(+Pi * 1_rad)/1_rad}),
+                    static_cast<double>(Real{GetNormalized(-Pi * 1_rad)/1_rad}),
+                    abs_err);
+
+        // Turning counter-clockwise, check before, during, and after positive Pi...
+        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d13p+1) * 1_rad)),
+                    +0x1.921fb54442d13p+1, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d14p+1) * 1_rad)),
+                    +0x1.921fb54442d14p+1, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d15p+1) * 1_rad)),
+                    +0x1.921fb54442d15p+1, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d16p+1) * 1_rad)),
+                    +0x1.921fb54442d16p+1, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d17p+1) * 1_rad)),
+                    +0x1.921fb54442d17p+1, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d18p+1) * 1_rad)),
+                    -0x1.921fb54442d18p+1, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d19p+1) * 1_rad)),
+                    -0x1.921fb54442d17p+1, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d1ap+1) * 1_rad)),
+                    -0x1.921fb54442d16p+1, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d1bp+1) * 1_rad)),
+                    -0x1.921fb54442d15p+1, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d1cp+1) * 1_rad)),
+                    -0x1.921fb54442d14p+1, abs_err);
+
+        // Turning clockwise, check before, during, and after negative Pi...
+        EXPECT_NEAR(StripUnit(GetNormalized(Real(-0x1.921fb54442d16p+1) * 1_rad)),
+                    -0x1.921fb54442d16p+1, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real(-0x1.921fb54442d17p+1) * 1_rad)),
+                    -0x1.921fb54442d17p+1, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real(-0x1.921fb54442d18p+1) * 1_rad)),
+                    -0x1.921fb54442d18p+1, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real(-0x1.921fb54442d19p+1) * 1_rad)),
+                    +0x1.921fb54442d17p+1, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real(-0x1.921fb54442d1ap+1) * 1_rad)),
+                    +0x1.921fb54442d16p+1, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real(-0x1.921fb54442d1bp+1) * 1_rad)),
+                    +0x1.921fb54442d15p+1, abs_err);
+        EXPECT_NEAR(StripUnit(GetNormalized(Real(-0x1.921fb54442d1cp+1) * 1_rad)),
+                    +0x1.921fb54442d14p+1, abs_err);
+    }
+
+    // Confirm that GetNormalized is similar to atan2(sin(a), cos(a))
+    for (auto i = -360; i < +360; ++i) {
+        if (i == -180 /*Real=float*/ || i == +180 /*Real=double*/) {
+            continue; // skip -Pi and +Pi
+        }
+        std::ostringstream os;
+        const auto angle = i * 1_deg;
+        os << "At " << i << " deg, " << double(Real{angle/1_rad}) << "rad: " << std::hexfloat << double(Real{angle/1_rad});
+        SCOPED_TRACE(os.str());
+        EXPECT_NEAR(double(StripUnit(GetNormalized(angle))), //
+                    double(StripUnit(atan2(sin(angle), cos(angle)))), 0.001);
+    }
+}
+
+//#define PLAYRHO_RUN_EVEN_SUPER_LONG_TESTS 1
+#if PLAYRHO_RUN_EVEN_SUPER_LONG_TESTS
+TEST(Math, GetNormalizedLong)
+{
+    auto first = float(-Pi);
+    for (auto i = 0; i < 2; ++i) {
+        first = nextafter(first, float(-2 * Pi));
+    }
+    auto last = float(Pi);
+    for (auto i = 0; i < 2; ++i) {
+        last = nextafter(last, float(+2 * Pi));
+    }
+    while (first < last) {
+        const auto angle = GetNormalized(first * 1_rad);
+        EXPECT_EQ(angle, GetNormalized(angle));
+        first = nextafter(first, last);
+    }
+}
+#endif
+
+TEST(Math, GetShortestDelta)
+{
+    EXPECT_EQ(GetShortestDelta(0_deg, 0_deg), 0_deg);
+    EXPECT_NEAR(static_cast<double>(Real{GetShortestDelta(0_deg, 10_deg) / Degree}), 10.0, 0.01);
+    // GetShortestDelta(100 * Degree, 110 * Degree) almost equals 10 * Degree (but not exactly)
+    EXPECT_NEAR(double(Real{GetShortestDelta(100_deg, 110_deg) / Degree}), 10.0, 0.0001);
+    EXPECT_NEAR(double(Real{GetShortestDelta(10_deg, 0_deg) / Degree}), -10.0, 0.0001);
+    EXPECT_NEAR(double(Real{GetShortestDelta(-10_deg, 0_deg) / Degree}), 10.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real{GetShortestDelta(+90_deg, -89_deg)/1_deg}), -179.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real{GetShortestDelta(+89_deg, -90_deg)/1_deg}), -179.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real{GetShortestDelta(+80_deg, -80_deg)/1_deg}), -160.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real{GetShortestDelta(-90_deg, +89_deg)/1_deg}), +179.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real{GetShortestDelta(-89_deg, +90_deg)/1_deg}), +179.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real{GetShortestDelta(-80_deg, +80_deg)/1_deg}), +160.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real{GetShortestDelta(+179_deg, -179_deg)/1_deg}), +2.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real{GetShortestDelta(+179_deg, -179_deg - 360_deg)/1_deg}), +2.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real{GetShortestDelta(-179_deg, +179_deg)/1_deg}), -2.0, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real{GetShortestDelta(-179_deg, +179_deg + 360_deg)/1_deg}), -2.0, 0.0001);
+    EXPECT_NEAR(double(Real{GetShortestDelta(-Pi * Radian, +Pi * Radian) / Degree}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{GetShortestDelta(+Pi * Radian, -Pi * Radian) / Degree}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{GetShortestDelta(-2_deg, +3_deg) / Degree}), 5.0, 0.01);
+    EXPECT_NEAR(double(Real{GetShortestDelta(+2_deg, -3_deg) / Degree}), -5.0, 0.01);
+    EXPECT_NEAR(double(Real{GetShortestDelta(-13_deg, -3_deg) / Degree}), 10.0, 0.01);
+    EXPECT_NEAR(double(Real{GetShortestDelta(-10_deg, -20_deg) / Degree}), -10.0, 0.01);
+    EXPECT_NEAR(double(Real{GetShortestDelta(10_deg, 340_deg) / Degree}), -30.0, 0.01);
+    EXPECT_NEAR(double(Real{GetShortestDelta(400_deg, 440_deg) / Degree}), 40.0, 0.01);
+    EXPECT_NEAR(double(Real{GetShortestDelta(400_deg, 300_deg) / Degree}), -100.0, 0.01);
+    EXPECT_NEAR(double(Real{GetShortestDelta(400_deg, 100_deg) / Degree}), 60.0, 0.01);
+    EXPECT_NEAR(double(Real{GetShortestDelta(800_deg, 100_deg) / Degree}), 20.0, 0.01);
+    EXPECT_NEAR(double(Real{GetShortestDelta(400_deg, -100_deg) / Degree}), -140.0, 0.01);
+    EXPECT_NEAR(double(Real{GetShortestDelta(-400_deg, 10_deg) / Degree}), 50.0, 0.01);
+    {
+        const auto a0 = std::nextafter(4.0f, 5.0f) * 1_deg;
+        const auto a1 = 4.0f * 1_deg;
+        const auto diff = double(Real{(a1 - a0) / 1_deg});
+        EXPECT_NEAR(double(Real{GetShortestDelta(a0, a1) / 1_deg}), diff, 1e-18);
+    }
+    {
+        const auto a0 = std::nextafter(0.0f, 1.0f) * 1_deg;
+        const auto a1 = 0.0f * 1_deg;
+        const auto diff = double(Real{(a1 - a0) / 1_deg});
+        EXPECT_NEAR(double(Real{GetShortestDelta(a0, a1) / 1_deg}), diff, 1e-18);
+    }
+    EXPECT_NEAR(double(Real{GetShortestDelta(4.00000_deg, 4.00001_deg) / 1_deg}), +0.00001, 0.000001);
+    EXPECT_NEAR(double(Real{GetShortestDelta(+2_deg, -3_deg) / 1_deg}), //
+                double(Real{AlternateGetShortestDelta(+2_deg, -3_deg) / 1_deg}), //
+                0.01);
+    EXPECT_NEAR(double(Real{GetShortestDelta(+179_deg, -179_deg) / 1_deg}), //
+                double(Real{AlternateGetShortestDelta(+179_deg, -179_deg) / 1_deg}), //
+                0.0001);
+    EXPECT_NEAR(double(Real{GetShortestDelta(+179_deg + 360_deg, -179_deg) / 1_deg}), //
+                double(Real{AlternateGetShortestDelta(+179_deg + 720_deg, -179_deg) / 1_deg}), //
+                0.0001);
+}
+
+TEST(Math, GetPositionDoesntFailWithPeculiarBeta)
 {
     /*
      * If GetPosition is implemented as: pos0 * (1 - beta) + pos1 * beta.
@@ -647,6 +994,80 @@ TEST(Math, GetPosition)
     
     EXPECT_EQ(oldPos.linear, newPos.linear);
     EXPECT_EQ(oldPos.angular, newPos.angular);
+}
+
+TEST(Math, GetPosition)
+{
+    EXPECT_EQ(GetPosition(Position{}, Position{}, Real(0.0)), (Position{}));
+    EXPECT_EQ(GetPosition(Position{}, Position{Length2{2_m, 2_m}, 2_rad}, Real(0.0)),
+              (Position{Length2{0_m, 0_m}, 0_rad}));
+    EXPECT_EQ(GetPosition(Position{}, Position{Length2{2_m, 2_m}, 2_rad}, Real(0.5)),
+              (Position{Length2{1_m, 1_m}, 1_rad}));
+    EXPECT_EQ(GetPosition(Position{}, Position{Length2{2_m, 2_m}, 2_rad}, Real(1.0)),
+              (Position{Length2{2_m, 2_m}, 2_rad}));
+
+#if 1
+    // Test a case that's maybe less obvious...
+    // See https://github.com/louis-langholtz/PlayRho/issues/331#issuecomment-507412550
+    const auto p0 = Position{Length2{-0.1615_m, -10.2494_m}, -3.1354_rad};
+    const auto p1 = Position{Length2{-0.3850_m, -10.1851_m}, +3.1258_rad};
+    const auto p = GetPosition(p0, p1, Real(0.2580));
+    constexpr auto abserr = 0.000001;
+    EXPECT_NEAR(static_cast<double>(Real(GetX(p.linear) / 1_m)), -0.21916300, abserr);
+    EXPECT_NEAR(static_cast<double>(Real(GetY(p.linear) / 1_m)), -10.232810974121094, abserr);
+    EXPECT_NEAR(static_cast<double>(Real(p.angular / 1_rad)), -1.52001, abserr);
+#else
+    {
+        // Test a case that's maybe less obvious...
+        // See https://github.com/louis-langholtz/PlayRho/issues/331#issuecomment-507412550
+        const auto p0 = Position{Length2{-0.1615_m, -10.2494_m}, -3.1354_rad};
+        const auto p1 = Position{Length2{-0.3850_m, -10.1851_m}, +3.1258_rad};
+        const auto p = GetPosition(p0, p1, Real(0.2580));
+        constexpr auto abserr = 0.000001;
+        EXPECT_NEAR(static_cast<double>(Real(GetX(p.linear) / 1_m)), -0.21916300, abserr);
+        EXPECT_NEAR(static_cast<double>(Real(GetY(p.linear) / 1_m)), -10.232810974121094, abserr);
+        //EXPECT_NEAR(static_cast<double>(Real(p.angular / 1_rad)), -1.52001, abserr);
+        EXPECT_NEAR(static_cast<double>(Real(p.angular / 1_rad)), -3.1410722732543945, abserr);
+    }
+    {
+        // Test a case that's maybe less obvious...
+        // See https://github.com/louis-langholtz/PlayRho/issues/331#issuecomment-507412550
+        const auto p0 = Position{Length2{-0.1615_m, -10.2494_m}, -3.1354_rad + Pi * 10_rad};
+        const auto p1 = Position{Length2{-0.3850_m, -10.1851_m}, +3.1258_rad};
+        const auto p = GetPosition(p0, p1, Real(0.2580));
+        constexpr auto abserr = 0.000001;
+        EXPECT_NEAR(static_cast<double>(Real(GetX(p.linear) / 1_m)), -0.21916300, abserr);
+        EXPECT_NEAR(static_cast<double>(Real(GetY(p.linear) / 1_m)), -10.232810974121094, abserr);
+        //EXPECT_NEAR(static_cast<double>(Real(p.angular / 1_rad)), -1.52001, abserr);
+        EXPECT_NEAR(static_cast<double>(Real(p.angular / 1_rad)), -3.1410722732543945, abserr);
+    }
+    {
+        // Test a case that's maybe less obvious...
+        // See https://github.com/louis-langholtz/PlayRho/issues/331#issuecomment-507412550
+        const auto p0 = Position{Length2{-0.1615_m, -10.2494_m}, -3.1354_rad + Pi * 10_rad};
+        const auto p1 = Position{Length2{-0.3850_m, -10.1851_m}, +3.1258_rad + Pi * 4_rad};
+        const auto p = GetPosition(p0, p1, Real(0.2580));
+        constexpr auto abserr = 0.000001;
+        EXPECT_NEAR(static_cast<double>(Real(GetX(p.linear) / 1_m)), -0.21916300, abserr);
+        EXPECT_NEAR(static_cast<double>(Real(GetY(p.linear) / 1_m)), -10.232810974121094, abserr);
+        //EXPECT_NEAR(static_cast<double>(Real(p.angular / 1_rad)), -1.52001, abserr);
+        EXPECT_NEAR(static_cast<double>(Real(p.angular / 1_rad)), -3.1410722732543945, abserr);
+    }
+#endif
+}
+
+TEST(Math, CapPosition)
+{
+    EXPECT_EQ(GetX(Cap(Position{}, ConstraintSolverConf{}).linear), 0_m);
+    EXPECT_EQ(GetY(Cap(Position{}, ConstraintSolverConf{}).linear), 0_m);
+    EXPECT_EQ(Cap(Position{}, ConstraintSolverConf{}).angular, 0_deg);
+
+    EXPECT_NEAR(double(StripUnit(GetX(Cap(Position{Length2{10_m, 0_m}, 360_deg}, ConstraintSolverConf{}).linear))),
+                double(StripUnit(ConstraintSolverConf{}.maxLinearCorrection)), 0.0001);
+    EXPECT_NEAR(double(StripUnit(GetY(Cap(Position{Length2{0_m, 10_m}, 360_deg}, ConstraintSolverConf{}).linear))),
+                double(StripUnit(ConstraintSolverConf{}.maxLinearCorrection)), 0.0001);
+    EXPECT_NEAR(double(StripUnit(Cap(Position{Length2{0_m, 0_m}, 360_deg}, ConstraintSolverConf{}).angular)),
+                double(StripUnit(ConstraintSolverConf{}.maxAngularCorrection)), 0.0001);
 }
 
 TEST(Math, ToiTolerance)

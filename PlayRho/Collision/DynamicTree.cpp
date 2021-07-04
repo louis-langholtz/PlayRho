@@ -559,6 +559,7 @@ void DynamicTree::DestroyLeaf(Size index) noexcept
 {
     assert(index != GetInvalidSize());
     assert(index < m_nodeCapacity);
+    assert(!IsUnused(m_nodes[index].GetHeight()));
     assert(IsLeaf(m_nodes[index].GetHeight()));
     assert(m_leafCount > 0);
 
@@ -735,11 +736,11 @@ void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTreeSizeCB& c
     }
 }
 
-void Query(const DynamicTree& tree, const AABB& aabb, QueryFixtureCallback callback)
+void Query(const DynamicTree& tree, const AABB& aabb, QueryShapeCallback callback)
 {
     Query(tree, aabb, [&](DynamicTree::Size treeId) {
         const auto leafData = tree.GetLeafData(treeId);
-        return callback(leafData.fixture, leafData.childIndex)?
+        return callback(leafData.body, leafData.shape, leafData.childIndex)?
         DynamicTreeOpcode::Continue: DynamicTreeOpcode::End;
     });
 }

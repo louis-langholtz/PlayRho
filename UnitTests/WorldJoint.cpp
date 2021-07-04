@@ -23,6 +23,7 @@
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
@@ -32,8 +33,8 @@ using namespace playrho::d2;
 TEST(WorldJoint, GetSetMotorSpeed)
 {
     World world;
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
 
     const auto motorSpeed = 4_rpm;
     auto jd = RevoluteJointConf{};
@@ -57,4 +58,27 @@ TEST(WorldJoint, GetWorldIndexFreeFunction)
 {
     World world;
     EXPECT_EQ(GetWorldIndex(world, InvalidJointID), JointCounter(-1));
+}
+
+TEST(WorldJoint, GetJointRange)
+{
+    auto world = World{};
+    EXPECT_EQ(GetJointRange(world), 0u);
+
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
+    const auto motorSpeed = 4_rpm;
+    auto jd = RevoluteJointConf{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2(4_m, 5_m);
+    jd.localAnchorB = Length2(6_m, 7_m);
+    jd.motorSpeed = motorSpeed;
+    auto id = InvalidJointID;
+    ASSERT_NO_THROW(id = CreateJoint(world, jd));
+    EXPECT_EQ(GetJointRange(world), 1u);
+    ASSERT_NO_THROW(Destroy(world, id));
+    EXPECT_EQ(GetJointRange(world), 1u);
+    ASSERT_NO_THROW(world.Clear());
+    EXPECT_EQ(GetJointRange(world), 0u);
 }

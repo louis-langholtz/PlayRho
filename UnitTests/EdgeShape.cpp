@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2021 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -19,6 +19,7 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
@@ -29,38 +30,72 @@ TEST(EdgeShapeConf, ByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real))
-    {
-        case  4:
-            EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(48));
-            break;
-        case  8: EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(96)); break;
-        case 16: EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(192)); break;
-        default: FAIL(); break;
+    switch (sizeof(Real)) {
+    case 4:
+        EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(56));
+        break;
+    case 8:
+        EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(104));
+        break;
+    case 16:
+        EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(208));
+        break;
+    default:
+        FAIL();
+        break;
     }
+}
+
+TEST(EdgeShapeConf, IsValidShapeType)
+{
+    EXPECT_TRUE(IsValidShapeType<EdgeShapeConf>::value);
 }
 
 TEST(EdgeShapeConf, GetInvalidChildThrows)
 {
     const auto foo = EdgeShapeConf{};
-    
+
     ASSERT_EQ(GetChildCount(foo), ChildCounter{1});
     EXPECT_NO_THROW(GetChild(foo, 0));
     EXPECT_THROW(GetChild(foo, 1), InvalidArgument);
 }
 
-TEST(EdgeShapeConf, TransformFF)
+TEST(EdgeShapeConf, SetVertexRadius)
+{
+    auto foo = EdgeShapeConf{};
+    ASSERT_EQ(GetVertexRadius(foo, GetChildCount(foo)), EdgeShapeConf::GetDefaultVertexRadius());
+    const auto value = 2_m;
+    EXPECT_NO_THROW(SetVertexRadius(foo, 0u, value));
+    EXPECT_EQ(GetVertexRadius(foo, GetChildCount(foo)), value);
+}
+
+TEST(EdgeShapeConf, TranslateFF)
 {
     {
         auto foo = EdgeShapeConf{};
         auto tmp = foo;
-        Transform(foo, Mat22{});
+        Translate(foo, Length2{});
         EXPECT_EQ(foo, tmp);
     }
+    {
+        const auto v1 = Length2{1_m, 2_m};
+        const auto v2 = Length2{3_m, 4_m};
+        auto foo = EdgeShapeConf{v1, v2};
+        auto tmp = foo;
+        const auto value = Length2{1_m, 2_m};
+        Translate(foo, value);
+        EXPECT_NE(foo, tmp);
+        EXPECT_EQ(foo.GetVertexA(), v1 + value);
+        EXPECT_EQ(foo.GetVertexB(), v2 + value);
+    }
+}
+
+TEST(EdgeShapeConf, ScaleFF)
+{
     {
         auto foo = EdgeShapeConf{};
         auto tmp = foo;
-        Transform(foo, GetIdentity<Mat22>());
+        Scale(foo, Vec2{Real(1), Real(1)});
         EXPECT_EQ(foo, tmp);
     }
     {
@@ -68,18 +103,32 @@ TEST(EdgeShapeConf, TransformFF)
         const auto v2 = Length2{3_m, 4_m};
         auto foo = EdgeShapeConf{v1, v2};
         auto tmp = foo;
-        Transform(foo, GetIdentity<Mat22>());
-        EXPECT_EQ(foo, tmp);
-    }
-    {
-        const auto v1 = Length2{1_m, 2_m};
-        const auto v2 = Length2{3_m, 4_m};
-        auto foo = EdgeShapeConf{v1, v2};
-        auto tmp = foo;
-        Transform(foo, GetIdentity<Mat22>() * 2);
+        const auto value = Vec2{Real(2), Real(4)};
+        EXPECT_NO_THROW(Scale(foo, value));
         EXPECT_NE(foo, tmp);
-        EXPECT_EQ(foo.GetVertexA(), v1 * 2);
-        EXPECT_EQ(foo.GetVertexB(), v2 * 2);
+        EXPECT_EQ(foo.GetVertexA(), Length2(GetX(v1) * GetX(value), GetY(v1) * GetY(value)));
+        EXPECT_EQ(foo.GetVertexB(), Length2(GetX(v2) * GetX(value), GetY(v2) * GetY(value)));
+    }
+}
+
+TEST(EdgeShapeConf, RotateFF)
+{
+    {
+        auto foo = EdgeShapeConf{};
+        auto tmp = foo;
+        Rotate(foo, UnitVec::GetRight());
+        EXPECT_EQ(foo, tmp);
+    }
+    {
+        const auto v1 = Length2{1_m, 2_m};
+        const auto v2 = Length2{3_m, 4_m};
+        auto foo = EdgeShapeConf{v1, v2};
+        auto tmp = foo;
+        const auto value = UnitVec::GetTop();
+        EXPECT_NO_THROW(Rotate(foo, value));
+        EXPECT_NE(foo, tmp);
+        EXPECT_EQ(foo.GetVertexA(), Rotate(v1, value));
+        EXPECT_EQ(foo.GetVertexB(), Rotate(v2, value));
     }
 }
 
@@ -98,37 +147,41 @@ TEST(EdgeShapeConf, Equality)
     EXPECT_TRUE(EdgeShapeConf() == EdgeShapeConf());
 
     EXPECT_FALSE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) == EdgeShapeConf());
-    EXPECT_TRUE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) == EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)));
+    EXPECT_TRUE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) ==
+                EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)));
 
     EXPECT_FALSE(EdgeShapeConf().UseVertexRadius(10_m) == EdgeShapeConf());
     EXPECT_TRUE(EdgeShapeConf().UseVertexRadius(10_m) == EdgeShapeConf().UseVertexRadius(10_m));
-    
+
     EXPECT_FALSE(EdgeShapeConf().UseDensity(10_kgpm2) == EdgeShapeConf());
     EXPECT_TRUE(EdgeShapeConf().UseDensity(10_kgpm2) == EdgeShapeConf().UseDensity(10_kgpm2));
-    
+
     EXPECT_FALSE(EdgeShapeConf().UseFriction(Real(10)) == EdgeShapeConf());
     EXPECT_TRUE(EdgeShapeConf().UseFriction(Real(10)) == EdgeShapeConf().UseFriction(Real(10)));
-    
+
     EXPECT_FALSE(EdgeShapeConf().UseRestitution(Real(10)) == EdgeShapeConf());
-    EXPECT_TRUE(EdgeShapeConf().UseRestitution(Real(10)) == EdgeShapeConf().UseRestitution(Real(10)));
+    EXPECT_TRUE(EdgeShapeConf().UseRestitution(Real(10)) ==
+                EdgeShapeConf().UseRestitution(Real(10)));
 }
 
 TEST(EdgeShapeConf, Inequality)
 {
     EXPECT_FALSE(EdgeShapeConf() != EdgeShapeConf());
-    
+
     EXPECT_TRUE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) != EdgeShapeConf());
-    EXPECT_FALSE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) != EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)));
+    EXPECT_FALSE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) !=
+                 EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)));
 
     EXPECT_TRUE(EdgeShapeConf().UseVertexRadius(10_m) != EdgeShapeConf());
     EXPECT_FALSE(EdgeShapeConf().UseVertexRadius(10_m) != EdgeShapeConf().UseVertexRadius(10_m));
-    
+
     EXPECT_TRUE(EdgeShapeConf().UseDensity(10_kgpm2) != EdgeShapeConf());
     EXPECT_FALSE(EdgeShapeConf().UseDensity(10_kgpm2) != EdgeShapeConf().UseDensity(10_kgpm2));
-    
+
     EXPECT_TRUE(EdgeShapeConf().UseFriction(Real(10)) != EdgeShapeConf());
     EXPECT_FALSE(EdgeShapeConf().UseFriction(Real(10)) != EdgeShapeConf().UseFriction(Real(10)));
-    
+
     EXPECT_TRUE(EdgeShapeConf().UseRestitution(Real(10)) != EdgeShapeConf());
-    EXPECT_FALSE(EdgeShapeConf().UseRestitution(Real(10)) != EdgeShapeConf().UseRestitution(Real(10)));
+    EXPECT_FALSE(EdgeShapeConf().UseRestitution(Real(10)) !=
+                 EdgeShapeConf().UseRestitution(Real(10)));
 }

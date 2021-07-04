@@ -159,8 +159,6 @@ static const TestEntry testEntries[] =
     {"Solar System", MakeUniqueTest<SolarSystem>},
 };
 
-static const std::size_t numTestEntries = sizeof(testEntries) / sizeof(TestEntry);
-
 Span<const TestEntry> GetTestEntries()
 {
     // Intentionally encapsulates access to the static array through this function.
@@ -168,7 +166,7 @@ Span<const TestEntry> GetTestEntries()
     // in a different file than it's used in.
     // This also allows this code to use sizeof to compile-time determine the size of
     // the test entries array and to return it along with the array pointer as a span.
-    return Span<const TestEntry>(testEntries, numTestEntries);
+    return Span<const TestEntry>(data(testEntries), size(testEntries));
 }
 
 } // namespace testbed

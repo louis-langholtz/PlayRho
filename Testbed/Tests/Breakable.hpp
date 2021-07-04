@@ -46,8 +46,10 @@ public:
         return PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 0.5_m, Length2{+0.5_m, 0_m}, 0_rad);
     }
     
-    Breakable(): m_shape1{GetShapeConf1()}, m_shape2{GetShapeConf2()}
+    Breakable()
     {
+        m_shape1 = CreateShape(GetWorld(), GetShapeConf1());
+        m_shape2 = CreateShape(GetWorld(), GetShapeConf2());
         SetPostSolveContactListener(GetWorld(), [this](ContactID id,
                                                        const ContactImpulsesList& impulses,
                                                        unsigned count){
@@ -55,7 +57,7 @@ public:
         });
 
         // Ground body
-        CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape{GetGroundEdgeConf()});
+        Attach(GetWorld(), CreateBody(GetWorld()), CreateShape(GetWorld(), GetGroundEdgeConf()));
 
         // Breakable dynamic body
         {
@@ -65,8 +67,8 @@ public:
             bd.location = Length2{0_m, 40_m};
             bd.angle = Pi * 0.25_rad;
             m_body1 = CreateBody(GetWorld(), bd);
-            m_piece1 = CreateFixture(GetWorld(), m_body1, m_shape1);
-            m_piece2 = CreateFixture(GetWorld(), m_body1, m_shape2);
+            Attach(GetWorld(), m_body1, m_shape1);
+            Attach(GetWorld(), m_body1, m_shape2);
         }
     }
 
@@ -98,30 +100,28 @@ public:
     void Break()
     {        
         // Create two bodies from one.
-        const auto body1 = GetBody(GetWorld(), m_piece1);
-        const auto center = GetWorldCenter(GetWorld(), body1);
+        const auto center = GetWorldCenter(GetWorld(), m_body1);
 
-        Destroy(GetWorld(), m_piece2);
-        m_piece2 = InvalidFixtureID;
+        Detach(GetWorld(), m_body1, m_shape2);
 
         BodyConf bd;
         bd.type = BodyType::Dynamic;
         bd.linearAcceleration = GetGravity();
-        bd.location = GetLocation(GetWorld(), body1);
-        bd.angle = GetAngle(GetWorld(), body1);
+        bd.location = GetLocation(GetWorld(), m_body1);
+        bd.angle = GetAngle(GetWorld(), m_body1);
 
         const auto body2 = CreateBody(GetWorld(), bd);
-        m_piece2 = CreateFixture(GetWorld(), body2, m_shape2);
+        Attach(GetWorld(), body2, m_shape2);
 
         // Compute consistent velocities for new bodies based on
         // cached velocity.
-        const auto center1 = GetWorldCenter(GetWorld(), body1);
+        const auto center1 = GetWorldCenter(GetWorld(), m_body1);
         const auto center2 = GetWorldCenter(GetWorld(), body2);
         
         const auto velocity1 = m_velocity + GetRevPerpendicular(center1 - center) * m_angularVelocity / 1_rad;
         const auto velocity2 = m_velocity + GetRevPerpendicular(center2 - center) * m_angularVelocity / 1_rad;
 
-        SetVelocity(GetWorld(), body1, Velocity{velocity1, m_angularVelocity});
+        SetVelocity(GetWorld(), m_body1, Velocity{velocity1, m_angularVelocity});
         SetVelocity(GetWorld(), body2, Velocity{velocity2, m_angularVelocity});
     }
 
@@ -146,11 +146,8 @@ public:
     BodyID m_body1;
     LinearVelocity2 m_velocity;
     AngularVelocity m_angularVelocity;
-    Shape m_shape1;
-    Shape m_shape2;
-    FixtureID m_piece1;
-    FixtureID m_piece2;
-
+    ShapeID m_shape1 = InvalidShapeID;
+    ShapeID m_shape2 = InvalidShapeID;
     bool m_broke = false;
     bool m_break = false;
 };

@@ -19,7 +19,7 @@ Some general goals of this project are:
 - Openness to contributions including pull requests with new features; and
 - Providing a [continuous integration](https://en.wikipedia.org/wiki/Continuous_integration)
   backed, [build automation](https://en.wikipedia.org/wiki/Build_automation) supported,
-  [unit testing](https://en.wikipedia.org/wiki/Unit_testing) validated, and [benchmark](https://en.wikipedia.org/wiki/Benchmark_(computing)) assessed, project.
+  [unit test](https://en.wikipedia.org/wiki/Unit_testing) validated, and [benchmark](https://en.wikipedia.org/wiki/Benchmark_(computing)) assessed, project.
 
 ## Continuous Integration Status
 
@@ -33,6 +33,6 @@ Some general goals of this project are:
   provides a run-down of changes between PlayRho and Box2D 2.3.2.
 - [Building Document](INSTALL.md):
   information on how to build this project and run the Testbed.
-- [API Pages](http://louis-langholtz.github.io/PlayRho/API/index.html): documentation on the Application Programming Interface (API).
+- [User Documentation & API Pages](http://louis-langholtz.github.io/PlayRho/API/index.html): documentation on usage and the programming interface.
 - [Issues Web Interface](https://github.com/louis-langholtz/PlayRho/issues):
   for questions, bugs reports, or suggestions associated with this project.

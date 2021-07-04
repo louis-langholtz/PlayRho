@@ -26,8 +26,8 @@
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/DynamicTree.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/WorldFixture.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
+#include <PlayRho/Dynamics/WorldShape.hpp>
 
 #include <utility>
 
@@ -277,7 +277,7 @@ bool RayCast(const DynamicTree& tree, RayCastInput input, const DynamicTreeRayCa
         {
             assert(DynamicTree::IsLeaf(tree.GetHeight(index)));
             const auto leafData = tree.GetLeafData(index);
-            const auto value = callback(leafData.body, leafData.fixture, leafData.childIndex,
+            const auto value = callback(leafData.body, leafData.shape, leafData.childIndex,
                                         input);
             if (value == 0)
             {
@@ -294,12 +294,12 @@ bool RayCast(const DynamicTree& tree, RayCastInput input, const DynamicTreeRayCa
     return false;
 }
 
-bool RayCast(const World& world, const RayCastInput& input, const FixtureRayCastCB& callback)
+bool RayCast(const World& world, const RayCastInput& input, const ShapeRayCastCB& callback)
 {
     return RayCast(GetTree(world), input,
-                   [&world,&callback](BodyID body, FixtureID fixture, ChildCounter index,
+                   [&world,&callback](BodyID body, ShapeID shape, ChildCounter index,
                                       const RayCastInput& rci) {
-        const auto output = RayCast(GetChild(GetShape(world, fixture), index), rci,
+        const auto output = RayCast(GetChild(GetShape(world, shape), index), rci,
                                     GetTransformation(world, body));
         if (output.has_value())
         {
@@ -320,7 +320,7 @@ bool RayCast(const World& world, const RayCastInput& input, const FixtureRayCast
             // The second way, does not have this problem.
             //
             const auto point = rci.p1 + (rci.p2 - rci.p1) * fraction;
-            const auto opcode = callback(body, fixture, index, point, output->normal);
+            const auto opcode = callback(body, shape, index, point, output->normal);
             switch (opcode)
             {
                 case RayCastOpcode::Terminate: return Real{0};

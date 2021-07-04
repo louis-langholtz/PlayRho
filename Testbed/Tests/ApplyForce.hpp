@@ -60,19 +60,19 @@ public:
 
             // Left vertical
             conf.Set(Length2{-20_m, -20_m}, Length2{-20_m, 20_m});
-            CreateFixture(GetWorld(), ground, Shape{conf});
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf));
 
             // Right vertical
             conf.Set(Length2{20_m, -20_m}, Length2{20_m, 20_m});
-            CreateFixture(GetWorld(), ground, Shape{conf});
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf));
 
             // Top horizontal
             conf.Set(Length2{-20_m, 20_m}, Length2{20_m, 20_m});
-            CreateFixture(GetWorld(), ground, Shape{conf});
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf));
 
             // Bottom horizontal
             conf.Set(Length2{-20_m, -20_m}, Length2{20_m, -20_m});
-            CreateFixture(GetWorld(), ground, Shape{conf});
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf));
         }
 
         {
@@ -109,8 +109,8 @@ public:
             bd.angle = Pi * 1_rad;
             bd.allowSleep = false;
             m_body = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), m_body, Shape(poly1));
-            CreateFixture(GetWorld(), m_body, Shape(poly2));
+            Attach(GetWorld(), m_body, CreateShape(GetWorld(), poly1));
+            Attach(GetWorld(), m_body, CreateShape(GetWorld(), poly2));
         }
 
         {
@@ -118,7 +118,7 @@ public:
             conf.density = 1_kgpm2;
             conf.friction = Real{0.3f};
             conf.SetAsBox(0.5_m, 0.5_m);
-            const auto shape = Shape(conf);
+            const auto shape = CreateShape(GetWorld(), conf);
 
             const auto gravity = LinearAcceleration{10_mps2};
             for (auto i = 0; i < 10; ++i)
@@ -126,7 +126,7 @@ public:
                 const auto location = Length2{0_m, (5.0f + 1.54f * i) * 1_m};
                 const auto body = CreateBody(GetWorld(), BodyConf{}.UseType(BodyType::Dynamic)
                                                      .UseLocation(location));
-                CreateFixture(GetWorld(), body, shape);
+                Attach(GetWorld(), body, shape);
 
                 const auto I = GetLocalRotInertia(GetWorld(), body); // RotInertia: M * L^2 QP^-2
                 const auto invMass = GetInvMass(GetWorld(), body); // InvMass: M^-1

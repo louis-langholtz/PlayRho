@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2006-2007 Erin Catto http://www.box2d.org
- * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Original work Copyright (c) 2007 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2021 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -30,39 +30,37 @@
 // to be used with the rendering engine of your game engine.
 int main()
 {
-    // Bring used namespaces into global namespace to simplify this source code.
+    // Brings used namespaces into global namespace to simplify this source code.
     using namespace playrho;
     using namespace playrho::d2;
 
-    // Construct a world object which will hold and simulate bodies.
+    // Constructs a world object which will hold and simulate bodies.
     auto world = World{};
 
-    // Call world's body creation method which allocates memory for ground body and
-    // adds it to the world.
-    const auto ground = CreateBody(world, BodyConf{}.UseLocation(Length2{0_m, -10_m}));
-
-    // Define the ground shape. Use a polygon configured as a box for this.
+    // Creates a shape within the world that's to act like the ground.
+    // Uses a polygon configured as a box for this.
     // The extents are the half-width and half-height of the box.
-    const auto box = Shape{PolygonShapeConf{}.SetAsBox(50_m, 10_m)};
+    const auto box = CreateShape(world, PolygonShapeConf{}.SetAsBox(50_m, 10_m));
 
-    // Add the box shape to the ground body.
-    CreateFixture(world, FixtureConf{}.UseBody(ground).UseShape(box));
+    // Creates a body within the world that's attached to the ground-like box shape
+    // and that's centered 10 meters below the origin.
+    CreateBody(world, BodyConf{}.Use(box).UseLocation(Length2{0_m, -10_m}));
 
-    // Define location above ground for a "dynamic" body & create this body within world.
+    // Creats a 1 meter radius, ball-like, disk shape within the world.
+    const auto diskShape = CreateShape(world, DiskShapeConf{}.UseRadius(1_m));
+
+    // Creates a "dynamic" body having the disk shape that will fall to the ground within world.
     const auto ball = CreateBody(world, BodyConf{}
-                                        .UseLocation(Length2{0_m, 4_m})
-                                        .UseType(BodyType::Dynamic)
-                                        .UseLinearAcceleration(EarthlyGravity));
-
-    // Define a disk shape for the ball body and create a fixture to add it.
-    CreateFixture(world, FixtureConf{}.UseBody(ball).UseShape(DiskShapeConf{}.UseRadius(1_m)));
+                                            .Use(BodyType::Dynamic)
+                                            .Use(diskShape)
+                                            .UseLocation(Length2{0_m, 4_m})
+                                            .UseLinearAcceleration(EarthlyGravity));
 
     // Setup the C++ stream output format.
     std::cout << std::fixed << std::setprecision(2);
 
     // A little game-like loop.
-    for (auto i = 0; i < 60; ++i)
-    {
+    for (auto i = 0; i < 60; ++i) {
         // Perform a step of the simulation. Keep the time step & iterations fixed.
         // Typically code uses a time step of 1/60 of a second (60Hz). The defaults
         // are setup for that and to generally provide a high enough quality simulation
@@ -74,6 +72,7 @@ int main()
         const auto angle = GetAngle(transformation);
 
         // Now print the location and angle of the body.
+        // The Y value will drop from 4.00 to 1.00 as the ball drops to the ground.
         std::cout << std::setw(5) << GetX(location);
         std::cout << std::setw(5) << GetY(location);
         std::cout << std::setw(5) << angle;

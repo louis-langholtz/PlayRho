@@ -42,23 +42,22 @@ public:
     iforce2d_Trajectories(): Test(GetTestConf()), m_groundBody{CreateBody(GetWorld())}
     {
         //add four walls to the ground body
-        FixtureConf myFixtureConf;
         auto polygonShape = PolygonShapeConf{};
         polygonShape.SetAsBox(20_m, 1_m); //ground
-        CreateFixture(GetWorld(), m_groundBody, Shape(polygonShape), myFixtureConf);
+        Attach(GetWorld(), m_groundBody, CreateShape(GetWorld(), polygonShape));
         polygonShape.SetAsBox(20_m, 1_m, Vec2(0, 40) * 1_m, 0_rad); //ceiling
-        CreateFixture(GetWorld(), m_groundBody, Shape(polygonShape), myFixtureConf);
+        Attach(GetWorld(), m_groundBody, CreateShape(GetWorld(), polygonShape));
         polygonShape.SetAsBox(1_m, 20_m, Vec2(-20, 20) * 1_m, 0_rad); //left wall
-        CreateFixture(GetWorld(), m_groundBody, Shape(polygonShape), myFixtureConf);
+        Attach(GetWorld(), m_groundBody, CreateShape(GetWorld(), polygonShape));
         polygonShape.SetAsBox(1_m, 20_m, Vec2(20, 20) * 1_m, 0_rad); //right wall
-        CreateFixture(GetWorld(), m_groundBody, Shape(polygonShape), myFixtureConf);
+        Attach(GetWorld(), m_groundBody, CreateShape(GetWorld(), polygonShape));
         
         //small ledges for target practice
         polygonShape.UseFriction(Real(0.95));
         polygonShape.SetAsBox(1.5_m, 0.25_m, Vec2(3, 35) * 1_m, 0_rad);
-        CreateFixture(GetWorld(), m_groundBody, Shape(polygonShape), myFixtureConf);
+        Attach(GetWorld(), m_groundBody, CreateShape(GetWorld(), polygonShape));
         polygonShape.SetAsBox(1.5_m, 0.25_m, Vec2(13, 30) * 1_m, 0_rad);
-        CreateFixture(GetWorld(), m_groundBody, Shape(polygonShape), myFixtureConf);
+        Attach(GetWorld(), m_groundBody, CreateShape(GetWorld(), polygonShape));
         
         //another ledge which we can move with the mouse
         BodyConf kinematicBody;
@@ -71,20 +70,20 @@ public:
         verts[1] = Length2(  w,    0_m);
         verts[2] = Length2(  0_m,   -w);
         polygonShape.Set(verts);
-        CreateFixture(GetWorld(), m_targetBody, Shape(polygonShape), myFixtureConf);
+        Attach(GetWorld(), m_targetBody, CreateShape(GetWorld(), polygonShape));
         verts[0] = Length2(  0_m, -2*w);
         verts[2] = Length2(  0_m,   -w);
         verts[1] = Length2( -w,    0_m);
         polygonShape.Set(verts);
-        CreateFixture(GetWorld(), m_targetBody, Shape(polygonShape), myFixtureConf);
+        Attach(GetWorld(), m_targetBody, CreateShape(GetWorld(), polygonShape));
         
         //create dynamic circle body
         BodyConf myBodyConf;
         myBodyConf.type = BodyType::Dynamic;
         myBodyConf.location = Vec2(-15, 5) * 1_m;
         m_launcherBody = CreateBody(GetWorld(), myBodyConf);
-        CreateFixture(GetWorld(), m_launcherBody, Shape{DiskShapeConf{}.UseRadius(2_m)
-            .UseFriction(Real(0.95)).UseDensity(1_kgpm2)}, myFixtureConf);
+        Attach(GetWorld(), m_launcherBody, CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(2_m)
+            .UseFriction(Real(0.95)).UseDensity(1_kgpm2)));
         
         //pin the circle in place
         RevoluteJointConf revoluteJointConf;
@@ -102,12 +101,12 @@ public:
         m_littleBox = CreateBody(GetWorld(), myBodyConf);
         polygonShape.SetAsBox( 0.5_m, 0.5_m );
         polygonShape.UseDensity(1_kgpm2);
-        CreateFixture(GetWorld(), m_littleBox, Shape(polygonShape), myFixtureConf);
+        Attach(GetWorld(), m_littleBox, CreateShape(GetWorld(), polygonShape));
         
         //ball for computer 'player' to fire
         m_littleBox2 = CreateBody(GetWorld(), myBodyConf);
-        CreateFixture(GetWorld(), m_littleBox2, Shape{DiskShapeConf{}.UseRadius(BallSize * 1_m)
-            .UseFriction(Real(0.95)).UseDensity(1_kgpm2)}, myFixtureConf);
+        Attach(GetWorld(), m_littleBox2,
+               CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(BallSize * 1_m).UseFriction(Real(0.95)).UseDensity(1_kgpm2)));
         
         m_firing = false;
         SetAcceleration(GetWorld(), m_littleBox, LinearAcceleration2{}, AngularAcceleration{});
@@ -266,7 +265,7 @@ public:
             if (i > 0)
             {
                 d2::RayCast(GetWorld(), RayCastInput{lastTP, trajectoryPosition, Real{1}},
-                            [&](BodyID b, FixtureID, ChildCounter, Length2 p, UnitVec) {
+                            [&](BodyID b, ShapeID, ChildCounter, Length2 p, UnitVec) {
                     if (b == m_littleBox)
                     {
                         return RayCastOpcode::IgnoreFixture;

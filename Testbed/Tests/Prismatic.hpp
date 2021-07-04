@@ -31,7 +31,7 @@ public:
     Prismatic()
     {
         const auto ground = CreateBody(GetWorld());
-        CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        Attach(GetWorld(), ground, CreateShape(GetWorld(), EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));
 
         {
             BodyConf bd;
@@ -41,7 +41,7 @@ public:
             bd.angle = 0.5_rad * Pi;
             bd.allowSleep = false;
             const auto body = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), body, Shape{PolygonShapeConf{}.UseDensity(5_kgpm2).SetAsBox(2_m, 0.5_m)});
+            Attach(GetWorld(), body, CreateShape(GetWorld(), PolygonShapeConf{}.UseDensity(5_kgpm2).SetAsBox(2_m, 0.5_m)));
 
             // Bouncy limit
             const auto axis = GetUnitVector(Vec2(2.0f, 1.0f));

@@ -23,6 +23,7 @@
 #define IFORCE2D_TOPDOWN_CAR_HPP
 
 #include "../Framework/Test.hpp"
+#include <map>
 #include <vector>
 #include <set>
 
@@ -96,7 +97,7 @@ private:
     Real m_currentTraction = 1;
     
 public:
-    TDTire(iforce2d_TopdownCar& parent, Shape tireShape);
+    TDTire(iforce2d_TopdownCar& parent, ShapeID tireShape);
 
     void setCharacteristics(LinearVelocity maxForwardSpeed, LinearVelocity maxBackwardSpeed, Force maxDriveForce, Momentum maxLateralImpulse)
     {
@@ -186,33 +187,26 @@ public:
         });
 
         SetGravity(LinearAcceleration2{});
-        SetFixtureDestructionListener(GetWorld(), [this](FixtureID id){
-            if (id.get() < m_fixtureData.size()) {
-                delete m_fixtureData[id.get()];
-                m_fixtureData[id.get()] = nullptr;
-            }
+        SetDetachListener(GetWorld(), [this](std::pair<BodyID, ShapeID> fixture){
+            delete m_fixtureData[fixture];
+            m_fixtureData[fixture] = nullptr;
         });
 
         //set up ground areas
         {
-            FixtureID groundAreaFixture;
+            ShapeID groundAreaFixture;
             BodyConf bodyConf;
             m_groundBody = CreateBody(GetWorld(), bodyConf);
-            
             auto polygonShape = PolygonShapeConf{};
-            FixtureConf fixtureConf;
-            fixtureConf.isSensor = true;
-            
+            polygonShape.isSensor = true;
             polygonShape.SetAsBox(9_m, 7_m, Vec2(-10,15) * 1_m, 20_deg );
-            groundAreaFixture = CreateFixture(GetWorld(), m_groundBody,
-                                              Shape(polygonShape), fixtureConf);
-            m_fixtureData.resize(groundAreaFixture.get() + 1u);
-            m_fixtureData[groundAreaFixture.get()] = new GroundAreaFUD(0.5f, false);
+            groundAreaFixture = CreateShape(GetWorld(), Shape(polygonShape));
+            Attach(GetWorld(), m_groundBody, groundAreaFixture);
+            m_fixtureData[std::make_pair(m_groundBody, groundAreaFixture)] = new GroundAreaFUD(0.5f, false);
             polygonShape.SetAsBox(9_m, 5_m, Vec2(5,20) * 1_m, -40_deg );
-            groundAreaFixture = CreateFixture(GetWorld(), m_groundBody,
-                                              Shape(polygonShape), fixtureConf);
-            m_fixtureData.resize(groundAreaFixture.get() + 1u);
-            m_fixtureData[groundAreaFixture.get()] = new GroundAreaFUD(0.2f, false);
+            groundAreaFixture = CreateShape(GetWorld(), Shape(polygonShape));
+            Attach(GetWorld(), m_groundBody, groundAreaFixture);
+            m_fixtureData[std::make_pair(m_groundBody, groundAreaFixture)] = new GroundAreaFUD(0.2f, false);
         }
         
         //m_tire = new TDTire(GetWorld());
@@ -256,10 +250,11 @@ public:
 
     void handleContact(ContactID contact, bool began)
     {
-        const auto fA = GetFixtureA(GetWorld(), contact);
-        const auto fB = GetFixtureB(GetWorld(), contact);
-        const auto fudA = m_fixtureData[fA.get()];
-        const auto fudB = m_fixtureData[fB.get()];
+        const auto& c = GetContact(GetWorld(), contact);
+        const auto fA = std::make_pair(GetBodyA(c), GetShapeA(c));
+        const auto fB = std::make_pair(GetBodyB(c), GetShapeB(c));
+        const auto fudA = m_fixtureData[fA];
+        const auto fudB = m_fixtureData[fB];
         
         if ( !fudA || !fudB )
             return;
@@ -272,10 +267,12 @@ public:
     void BeginContact(ContactID contact) { handleContact(contact, true); }
     void EndContact(ContactID contact) { handleContact(contact, false); }
 
-    void tire_vs_groundArea(FixtureID tireFixture, FixtureID groundAreaFixture, bool began)
+    void tire_vs_groundArea(std::pair<BodyID,ShapeID> tireFixture,
+                            std::pair<BodyID,ShapeID> groundAreaFixture,
+                            bool began)
     {
-        const auto tire = m_bodyData[GetBody(GetWorld(), tireFixture).get()];
-        const auto gaFud = (GroundAreaFUD*) m_fixtureData[groundAreaFixture.get()];
+        const auto tire = m_bodyData[to_underlying(tireFixture.first)];
+        const auto gaFud = (GroundAreaFUD*) m_fixtureData[groundAreaFixture];
         if ( began )
             tire->addGroundArea( gaFud );
         else
@@ -293,21 +290,18 @@ public:
     
     ControlStateType m_controlState;
     BodyID m_groundBody;
-    //TDTire* m_tire;
     TDCar* m_car;
-    std::vector<FixtureUserData*> m_fixtureData;
+    std::map<std::pair<BodyID, ShapeID>, FixtureUserData*> m_fixtureData;
     std::vector<TDTire*> m_bodyData;
 };
 
-inline TDTire::TDTire(iforce2d_TopdownCar& parent, Shape tireShape): m_parent{parent}
+inline TDTire::TDTire(iforce2d_TopdownCar& parent, ShapeID tireShape): m_parent{parent}
 {
     m_body = CreateBody(m_parent.GetWorld(), BodyConf{}.UseType(BodyType::Dynamic));
     m_parent.m_bodyData.resize(m_body.get() + 1u);
     m_parent.m_bodyData[m_body.get()] = this;
-
-    const auto fixture = CreateFixture(m_parent.GetWorld(), m_body, tireShape);
-    m_parent.m_fixtureData.resize(fixture.get() + 1u);
-    m_parent.m_fixtureData[fixture.get()] = new CarTireFUD();
+    Attach(m_parent.GetWorld(), m_body, tireShape);
+    m_parent.m_fixtureData[std::make_pair(m_body,tireShape)] = new CarTireFUD();
 }
 
 inline LinearVelocity2 TDTire::getLateralVelocity() const
@@ -408,7 +402,7 @@ inline TDCar::TDCar(iforce2d_TopdownCar& parent): m_parent{parent}
     auto polygonShape = PolygonShapeConf{};
     polygonShape.Set(vertices);
     polygonShape.UseDensity(0.1_kgpm2);
-    CreateFixture(m_parent.GetWorld(), m_body, Shape(polygonShape));
+    Attach(m_parent.GetWorld(), m_body, Shape(polygonShape));
 
     //prepare common joint parameters
     RevoluteJointConf jointConf;
@@ -428,7 +422,7 @@ inline TDCar::TDCar(iforce2d_TopdownCar& parent): m_parent{parent}
     auto tireShape = PolygonShapeConf{};
     tireShape.SetAsBox(0.5_m, 1.25_m);
     tireShape.UseDensity(1_kgpm2);
-    const auto sharedTireShape = Shape(tireShape);
+    const auto sharedTireShape = CreateShape(m_parent.GetWorld(), tireShape);
 
     TDTire* tire;
 

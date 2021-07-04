@@ -25,7 +25,6 @@
 #include <PlayRho/PlayRho.hpp>
 
 #include <PlayRho/Common/Templates.hpp>
-#include <PlayRho/Common/Range.hpp>
 #include <PlayRho/Common/UnitVec.hpp>
 #include <PlayRho/Common/TypeInfo.hpp>
 
@@ -36,9 +35,9 @@
 
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>
+#include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 #include <PlayRho/Dynamics/World.hpp>
@@ -46,7 +45,7 @@
 #include <PlayRho/Dynamics/WorldContact.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
-#include <PlayRho/Dynamics/WorldFixture.hpp>
+#include <PlayRho/Dynamics/WorldShape.hpp>
 
 #include "Drawer.hpp"
 #include "UiState.hpp"
@@ -60,6 +59,7 @@
 #include <deque>
 #include <algorithm>
 #include <limits>
+#include <map>
 #include <set>
 #include <utility>
 
@@ -211,13 +211,15 @@ public:
 
     using KeyHandlers = std::vector<std::pair<std::string, KeyHandler>>;
     using HandledKeys = std::vector<std::pair<KeyActionMods, KeyHandlerID>>;
-    using FixtureSet = std::set<FixtureID>;
+    using FixtureSet = std::set<std::pair<BodyID, ShapeID>>;
     using BodySet = std::set<BodyID>;
 
     struct ContactPoint
     {
-        FixtureID fixtureA;
-        FixtureID fixtureB;
+        BodyID bodyIdA;
+        ShapeID shapeIdA;
+        BodyID bodyIdB;
+        ShapeID shapeIdB;
         UnitVec normal;
         Length2 position;
         PointState state;
@@ -228,7 +230,13 @@ public:
 
     using ContactPoints = std::vector<ContactPoint>;
 
+    static const char* ToName(DistanceOutput::State value);
+    static const char* ToName(TypeID type) noexcept;
+    static const char* ToName(BodyType value) noexcept;
+    static bool AlertUser(const std::string& title, const char* fmt, ...);
     static const LinearAcceleration2 Gravity;
+    static const std::map<TypeID, const char*> shapeTypeToNameMap;
+    static const std::map<TypeID, const char*> jointTypeToNameMap;
 
     virtual ~Test();
 
@@ -256,11 +264,9 @@ public:
         return std::get<0>(m_keyHandlers[id]);
     }
 
-    SizedRange<HandledKeys::const_iterator> GetHandledKeys() const
+    HandledKeys GetHandledKeys() const
     {
-        return SizedRange<HandledKeys::const_iterator>(cbegin(m_handledKeys),
-                                                       cend(m_handledKeys),
-                                                       size(m_handledKeys));
+        return m_handledKeys;
     }
 
     void MouseDown(const Length2& p);
@@ -272,7 +278,7 @@ public:
     // Callbacks for derived classes.
     void PreSolve(ContactID contact, const Manifold& oldManifold);
 
-    static bool Contains(const FixtureSet& fixtures, FixtureID f) noexcept;
+    static bool Contains(const FixtureSet& fixtures, const std::pair<BodyID, ShapeID>& f) noexcept;
 
     const std::string& GetDescription() const noexcept { return m_description; }
     NeededSettings GetNeededSettings() const noexcept { return m_neededSettings; }
@@ -284,11 +290,9 @@ public:
     FixtureSet GetSelectedFixtures() const noexcept { return m_selectedFixtures; }
     BodySet GetSelectedBodies() const noexcept { return m_selectedBodies; }
 
-    SizedRange<ContactPoints::const_iterator> GetPoints() const noexcept
+    ContactPoints GetPoints() const noexcept
     {
-        return SizedRange<ContactPoints::const_iterator>(cbegin(m_points),
-                                                         cend(m_points),
-                                                         size(m_points));
+        return m_points;
     }
 
     /// @brief Gets the world.
@@ -303,10 +307,12 @@ public:
         return m_world;
     }
 
-    using QueryFixtureCallback = std::function<bool(FixtureID fixture, ChildCounter child)>;
+    using QueryShapeCallback = std::function<bool(BodyID body, ShapeID shape, ChildCounter child)>;
 
     /// @brief Queries the world for all fixtures that potentially overlap the provided AABB.
-    void Query(const AABB& aabb, QueryFixtureCallback callback);
+    void Query(const AABB& aabb, QueryShapeCallback callback);
+
+    void SetSelectedFixtures(const FixtureSet& value) noexcept;
 
 protected:
     EdgeShapeConf GetGroundEdgeConf() const noexcept
@@ -337,8 +343,6 @@ protected:
 
     Test(Conf config = GetDefaultConf());
 
-    void SetSelectedFixtures(FixtureSet value) noexcept;
-    
     void ClearSelectedFixtures()
     {
         m_selectedFixtures.clear();
@@ -352,9 +356,11 @@ protected:
     {
     public:
         virtual ~DestructionListenerImpl() = default;
-        virtual void SayGoodbye(const FixtureID fixture) noexcept { NOT_USED(fixture); }
-        virtual void SayGoodbye(const JointID joint) noexcept;
-        
+        virtual void SayGoodbye(ShapeID shape) noexcept { NOT_USED(shape); }
+        virtual void SayGoodbye(BodyID body, ShapeID shape) noexcept {
+            NOT_USED(body); NOT_USED(shape);
+        }
+        virtual void SayGoodbye(JointID joint) noexcept;
         Test* test;
     };
     
@@ -442,6 +448,7 @@ private:
     World m_world;
 
     std::string m_status;
+    std::string m_alertMessage;
     TextLinePos m_textLine = TextLinePos{30};
     AreaDensity m_bombDensity = 20_kgpm2;
     Length m_bombRadius = 0.3_m;
@@ -491,11 +498,7 @@ inline bool IsWithin(const Container& container, const T& element) noexcept
 void Draw(Drawer& drawer, const DiskShapeConf& shape, Color color, const Transformation& xf);
 void Draw(Drawer& drawer, const EdgeShapeConf& shape, Color color, bool skins,
           const Transformation& xf);
-void Draw(Drawer& drawer, const PolygonShapeConf& shape, Color color, bool skins,
-          const Transformation& xf);
 void Draw(Drawer& drawer, const ChainShapeConf& shape, Color color, bool skins,
-          const Transformation& xf);
-void Draw(Drawer& drawer, const MultiShapeConf& shape, Color color, bool skins,
           const Transformation& xf);
 
 bool HasFixture(const Test::ContactPoint& cp, const Test::FixtureSet& fixtures) noexcept;

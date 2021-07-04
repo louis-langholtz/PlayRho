@@ -37,6 +37,10 @@ public:
 
     BreakableTwo(): Test(GetTestConf())
     {
+        constexpr Length vr = 2 * DefaultLinearSlop;
+        m_shape = CreateShape(GetWorld(),
+                              PolygonShapeConf{}.UseVertexRadius(vr).UseDensity(100_kgpm2)
+                              .SetAsBox(0.5_m - vr, 0.5_m - vr));
         SetPostSolveContactListener(GetWorld(), [this](ContactID id,
                                                        const ContactImpulsesList& impulses,
                                                        unsigned count){
@@ -48,16 +52,13 @@ public:
         BodyID bodies[20 * 20];
         const auto startLoc = Length2{-10_m, 10_m};
         const auto bd = BodyConf{}.UseType(BodyType::Dynamic);
-        for (auto y = 0; y < 20; ++y)
-        {
-            for (auto x = 0; x < 20; ++x)
-            {
+        for (auto y = 0; y < 20; ++y) {
+            for (auto x = 0; x < 20; ++x) {
                 const auto location = startLoc + Length2{x * 1_m, y * 1_m};
                 // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
                 bodies[y * 20 + x] = CreateBody(GetWorld(), BodyConf(bd).UseLocation(location));
-                CreateFixture(GetWorld(), bodies[y * 20 + x], m_shape);
-                if (x > 0)
-                {
+                Attach(GetWorld(), bodies[y * 20 + x], m_shape);
+                if (x > 0) {
                     const auto jd = GetWeldJointConf(
                         GetWorld(),
                         bodies[y * 20 + x - 1],
@@ -66,8 +67,7 @@ public:
                     );
                     CreateJoint(GetWorld(), jd);
                 }
-                if (y > 0)
-                {
+                if (y > 0) {
                     const auto jd = GetWeldJointConf(
                         GetWorld(),
                         bodies[(y - 1) * 20 + x],
@@ -82,21 +82,17 @@ public:
 
     void PostSolve(ContactID contact, const ContactImpulsesList& impulses, unsigned)
     {
-        if (m_body == InvalidBodyID)
-        {
+        if (m_body == InvalidBodyID) {
             // Should the body break?
             auto maxImpulse = GetMaxNormalImpulse(impulses);
-            if (maxImpulse > 60_Ns)
-            {
-                const auto fA = GetFixtureA(GetWorld(), contact);
-                const auto fB = GetFixtureB(GetWorld(), contact);
-                if (GetShape(GetWorld(), fA) == m_shape)
-                {
-                    m_body = GetBody(GetWorld(), fA);
+            if (maxImpulse > 60_Ns) {
+                const auto shapeIdA = GetShapeA(GetWorld(), contact);
+                const auto shapeIdB = GetShapeB(GetWorld(), contact);
+                if (shapeIdA == m_shape) {
+                    m_body = GetBodyA(GetWorld(), contact);
                 }
-                else if (GetShape(GetWorld(), fB) == m_shape)
-                {
-                    m_body = GetBody(GetWorld(), fB);
+                else if (shapeIdB == m_shape) {
+                    m_body = GetBodyB(GetWorld(), contact);
                 }
             }
         }
@@ -104,19 +100,14 @@ public:
     
     void PreStep(const Settings&, Drawer&) override
     {
-        if (m_body != InvalidBodyID)
-        {
+        if (m_body != InvalidBodyID) {
             Destroy(GetWorld(), m_body);
             m_body = InvalidBodyID;
         }
     }
 
 private:
-    const Length vr = 2 * DefaultLinearSlop;
-    Shape m_shape{
-        PolygonShapeConf{}.UseVertexRadius(vr).UseDensity(100_kgpm2)
-        .SetAsBox(0.5_m - vr, 0.5_m - vr)
-    };
+    ShapeID m_shape = InvalidShapeID;
     BodyID m_body = InvalidBodyID;
 };
 

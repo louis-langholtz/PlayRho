@@ -35,27 +35,27 @@ using namespace playrho;
 TEST(CheckedValue, NonNegativeFloatTraits)
 {
     using type = NonNegative<float>;
-    
+
     EXPECT_TRUE(std::is_default_constructible<type>::value);
     EXPECT_TRUE(std::is_nothrow_default_constructible<type>::value);
     EXPECT_FALSE(std::is_trivially_default_constructible<type>::value);
-    
+
     EXPECT_TRUE((std::is_constructible<type, type::value_type>::value));
     EXPECT_FALSE((std::is_nothrow_constructible<type, type::value_type>::value));
     EXPECT_FALSE((std::is_trivially_constructible<type, type::value_type>::value));
-    
+
     EXPECT_TRUE(std::is_copy_constructible<type>::value);
     EXPECT_TRUE(std::is_nothrow_copy_constructible<type>::value);
     EXPECT_TRUE(std::is_trivially_copy_constructible<type>::value);
-    
+
     EXPECT_TRUE(std::is_copy_assignable<type>::value);
     EXPECT_TRUE(std::is_nothrow_copy_assignable<type>::value);
     EXPECT_TRUE(std::is_trivially_copy_assignable<type>::value);
-    
+
     EXPECT_TRUE(std::is_destructible<type>::value);
     EXPECT_TRUE(std::is_nothrow_destructible<type>::value);
     EXPECT_TRUE(std::is_trivially_destructible<type>::value);
-    
+
     EXPECT_TRUE((std::is_convertible<type, type::value_type>::value));
     EXPECT_TRUE((std::is_convertible<type::value_type, type>::value));
 }
@@ -66,7 +66,7 @@ TEST(CheckedValue, NegativeFloat)
     EXPECT_EQ(float(Negative<float>(-1.0f)), float(Negative<float>(-1.0f)));
     EXPECT_EQ(float(Negative<float>(-std::numeric_limits<float>::infinity())),
               -std::numeric_limits<float>::infinity());
-    
+
     EXPECT_THROW(Negative<float>(-0.0f), Negative<float>::checker_type::exception_type);
     EXPECT_THROW(Negative<float>{+0.00001f}, Negative<float>::checker_type::exception_type);
     EXPECT_THROW(Negative<float>{+1.4f}, Negative<float>::checker_type::exception_type);
@@ -74,7 +74,7 @@ TEST(CheckedValue, NegativeFloat)
                  Negative<float>::checker_type::exception_type);
     EXPECT_THROW(Negative<float>{std::numeric_limits<float>::quiet_NaN()},
                  Negative<float>::checker_type::exception_type);
-    
+
     {
         auto os = std::ostringstream{};
         os << Negative<float>(-1.0f);
@@ -105,7 +105,7 @@ TEST(CheckedValue, NonNegativeDouble)
     EXPECT_EQ(double(NonNegative<double>(0.0f)), 0.0f);
     EXPECT_EQ(double(NonNegative<double>(std::numeric_limits<double>::infinity())),
               std::numeric_limits<double>::infinity());
-    
+
     EXPECT_THROW(NonNegative<double>{-0.00001f}, NonNegative<double>::checker_type::exception_type);
     EXPECT_THROW(NonNegative<double>{-1.4f}, NonNegative<double>::checker_type::exception_type);
     EXPECT_THROW(NonNegative<double>{-std::numeric_limits<double>::infinity()},
@@ -119,10 +119,10 @@ TEST(CheckedValue, NonNegativeInt)
     EXPECT_EQ(int{NonNegative<int>(1)}, 1);
     EXPECT_EQ(int(NonNegative<int>(1)), int(NonNegative<int>(1)));
     EXPECT_EQ(int(NonNegative<int>(0)), 0);
-    
+
     EXPECT_THROW(NonNegative<int>{-1}, NonNegative<int>::checker_type::exception_type);
     EXPECT_THROW(NonNegative<int>{-2}, NonNegative<int>::checker_type::exception_type);
-    
+
     {
         auto os = std::ostringstream{};
         os << NonNegative<int>(2);
@@ -136,7 +136,7 @@ TEST(CheckedValue, PositiveFloat)
     EXPECT_EQ(float(Positive<float>(+1.0f)), float(Positive<float>(+1.0f)));
     EXPECT_EQ(float(Positive<float>(+std::numeric_limits<float>::infinity())),
               +std::numeric_limits<float>::infinity());
-    
+
     EXPECT_THROW(Positive<float>(+0.0f), Positive<float>::checker_type::exception_type);
     EXPECT_THROW(Positive<float>{-0.00001f}, Positive<float>::checker_type::exception_type);
     EXPECT_THROW(Positive<float>{-1.4f}, NonPositive<float>::checker_type::exception_type);
@@ -144,7 +144,7 @@ TEST(CheckedValue, PositiveFloat)
                  Positive<float>::checker_type::exception_type);
     EXPECT_THROW(Positive<float>{std::numeric_limits<float>::quiet_NaN()},
                  Positive<float>::checker_type::exception_type);
-    
+
     {
         auto os = std::ostringstream{};
         os << Positive<float>(1.0f);
@@ -159,7 +159,7 @@ TEST(CheckedValue, NonPositiveFloat)
     EXPECT_EQ(float(NonPositive<float>(0.0f)), 0.0f);
     EXPECT_EQ(float(NonPositive<float>(-std::numeric_limits<float>::infinity())),
               -std::numeric_limits<float>::infinity());
-    
+
     EXPECT_THROW(NonPositive<float>{0.00001f}, NonPositive<float>::checker_type::exception_type);
     EXPECT_THROW(NonPositive<float>{1.4f}, NonPositive<float>::checker_type::exception_type);
     EXPECT_THROW(NonPositive<float>{std::numeric_limits<float>::infinity()},
@@ -175,7 +175,7 @@ TEST(CheckedValue, NonPositiveDouble)
     EXPECT_EQ(double(NonPositive<double>(0.0f)), 0.0f);
     EXPECT_EQ(double(NonPositive<double>(-std::numeric_limits<double>::infinity())),
               -std::numeric_limits<double>::infinity());
-    
+
     EXPECT_THROW(NonPositive<double>{0.00001f}, NonPositive<double>::checker_type::exception_type);
     EXPECT_THROW(NonPositive<double>{1.4f}, NonPositive<double>::checker_type::exception_type);
     EXPECT_THROW(NonPositive<double>{std::numeric_limits<double>::infinity()},
@@ -189,7 +189,7 @@ TEST(CheckedValue, NonPositiveInt)
     EXPECT_EQ(int(NonPositive<int>(-1)), -1);
     EXPECT_EQ(int(NonPositive<int>(-1)), int(NonPositive<int>(-1)));
     EXPECT_EQ(int(NonPositive<int>(0)), 0);
-    
+
     EXPECT_THROW(NonPositive<int>{1}, NonPositive<int>::checker_type::exception_type);
     EXPECT_THROW(NonPositive<int>{2}, NonPositive<int>::checker_type::exception_type);
 }
@@ -219,7 +219,7 @@ TEST(CheckedValue, FloatUnitInterval)
     EXPECT_EQ(float(UnitInterval<float>(0.5f)), 0.5f);
     EXPECT_EQ(float(UnitInterval<float>(0.9999f)), 0.9999f);
     EXPECT_EQ(float(UnitInterval<float>(1.0f)), 1.0f);
-    
+
     EXPECT_THROW(UnitInterval<float>(2.0f), UnitInterval<float>::checker_type::exception_type);
     EXPECT_THROW(UnitInterval<float>(-1.0f), UnitInterval<float>::checker_type::exception_type);
     EXPECT_THROW(UnitInterval<float>(1.00001f), UnitInterval<float>::checker_type::exception_type);
@@ -232,13 +232,12 @@ TEST(CheckedValue, IntUnitInterval)
 {
     EXPECT_EQ(int(UnitInterval<int>(0)), 0);
     EXPECT_EQ(int(UnitInterval<int>(1)), 1);
-    
+
     EXPECT_THROW(UnitInterval<int>(2), UnitInterval<int>::checker_type::exception_type);
     EXPECT_THROW(UnitInterval<int>(-1), UnitInterval<int>::checker_type::exception_type);
 }
 
-namespace playrho
-{
+namespace playrho {
 class Body;
 }
 
@@ -252,15 +251,15 @@ TEST(CheckedValue, NonNull)
 {
     EXPECT_THROW(NonNull<Body*>(nullptr), NonNull<Body*>::checker_type::exception_type);
     EXPECT_NO_THROW(NonNull<Body*>(reinterpret_cast<Body*>(1)));
-    
+
     const int a = 5;
     const auto foo = NonNull<const int*>(&a);
     EXPECT_EQ(*foo, a);
-    
+
     struct B {
         int field1 = 6;
         double field2 = 1.6;
-        const char *field3 = "foo";
+        const char* field3 = "foo";
     };
     auto b = B{};
     auto boo = NonNull<B*>(&b);
@@ -274,27 +273,3 @@ TEST(CheckedValue, NonNull)
     (*boo).field1 = 44;
     EXPECT_EQ(b.field1, 44);
 }
-
-#if 0
-
-#include <PlayRho/Common/Fixed.hpp>
-
-namespace playrho
-{
-template <typename T>
-struct ValueCheckHelper<T, Fixed32>
-{
-    static constexpr bool has_one = true;
-    static constexpr T one() noexcept { return T(1); }
-};
-}
-
-TEST(CheckedValue, FixedUnitInterval)
-{
-    using fixed = Fixed32;
-    const auto zero = fixed{0};
-    EXPECT_EQ(fixed(UnitInterval<fixed>(zero)), zero);
-    
-    EXPECT_THROW(UnitInterval<float>(2.0f), UnitInterval<float>::checker_type::exception_type);
-}
-#endif

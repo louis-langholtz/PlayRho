@@ -41,13 +41,14 @@ public:
         const auto smallerDiskConf = DiskShapeConf(diskConf).UseRadius(0.5_m);
         const auto biggerDiskConf = DiskShapeConf(diskConf).UseRadius(5_m);
 
-        CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape(groundConf));
+        Attach(GetWorld(), CreateBody(GetWorld()), Shape(groundConf));
         
         const auto lowerBody = CreateBody(GetWorld(), lowerBodyConf);
         const auto upperBody = CreateBody(GetWorld(), upperBodyConf);
 
-        CreateFixture(GetWorld(), lowerBody, Shape(smallerDiskConf));
-        m_top = CreateFixture(GetWorld(), upperBody, Shape(biggerDiskConf));
+        Attach(GetWorld(), lowerBody, Shape(smallerDiskConf));
+        m_top = CreateShape(GetWorld(), Shape(biggerDiskConf));
+        Attach(GetWorld(), upperBody, m_top);
         
         RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "increase density of top shape", [&](KeyActionMods) {
             ChangeDensity(+1_kgpm2);
@@ -61,24 +62,11 @@ public:
     {
         const auto oldDensity = GetDensity(GetWorld(), m_top);
         const auto newDensity = std::max(oldDensity + change, 1_kgpm2);
-        if (newDensity != oldDensity)
-        {
-            auto selectedFixtures = GetSelectedFixtures();
-            const auto selectedFixture = (size(selectedFixtures) == 1)
-                ? *(begin(selectedFixtures)): InvalidFixtureID;
-            const auto wasSelected = selectedFixture == m_top;
-            const auto body = GetBody(GetWorld(), m_top);
-            Destroy(GetWorld(), m_top);
+        if (newDensity != oldDensity) {
             auto conf = DiskShapeConf{};
             conf.vertexRadius = 5_m;
             conf.density = newDensity;
-            m_top = CreateFixture(GetWorld(), body, Shape(conf));
-            if (wasSelected)
-            {
-                selectedFixtures.erase(begin(selectedFixtures));
-                selectedFixtures.insert(m_top);
-                SetSelectedFixtures(selectedFixtures);
-            }
+            SetShape(GetWorld(), m_top, Shape(conf));
         }
     }
 
@@ -91,7 +79,7 @@ public:
         SetStatus(stream.str());
     }
 
-    FixtureID m_top = InvalidFixtureID;
+    ShapeID m_top = InvalidShapeID;
 };
 
 } // namespace testbed

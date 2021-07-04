@@ -42,7 +42,7 @@ public:
             conf.Add(Vec2(-8.0f, 6.0f) * 1_m);
             conf.Add(conf.GetVertex(0)); // to loop back around completely.
             conf.UseDensity(0_kgpm2);
-            CreateFixture(GetWorld(), ground, Shape(conf));
+            Attach(GetWorld(), ground, CreateShape(GetWorld(), conf));
         }
 
         // Flippers
@@ -60,9 +60,9 @@ public:
             bd.location = p2;
             const auto rightFlipper = CreateBody(GetWorld(), bd);
 
-            const auto box = Shape(PolygonShapeConf{}.SetAsBox(1.75_m, 0.1_m).UseDensity(1_kgpm2));
-            CreateFixture(GetWorld(), leftFlipper, box);
-            CreateFixture(GetWorld(), rightFlipper, box);
+            const auto box = CreateShape(GetWorld(), PolygonShapeConf{}.SetAsBox(1.75_m, 0.1_m).UseDensity(1_kgpm2));
+            Attach(GetWorld(), leftFlipper, box);
+            Attach(GetWorld(), rightFlipper, box);
 
             RevoluteJointConf jd;
             jd.bodyA = ground;
@@ -99,7 +99,7 @@ public:
             auto conf = DiskShapeConf{};
             conf.density = 1_kgpm2;
             conf.vertexRadius = 0.2_m;
-            CreateFixture(GetWorld(), m_ball, Shape(conf));
+            Attach(GetWorld(), m_ball, CreateShape(GetWorld(), conf));
         }
         
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "To control the flippers", [&](KeyActionMods) {

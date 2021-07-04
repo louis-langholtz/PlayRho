@@ -26,7 +26,7 @@
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/WorldFixture.hpp>
+#include <PlayRho/Dynamics/WorldShape.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
@@ -138,14 +138,14 @@ TEST(FrictionJoint, GetFrictionJointConf)
 
 TEST(FrictionJoint, WithDynamicCircles)
 {
-    const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
     World world{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
+    const auto s0 = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m));
     const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    CreateFixture(world, b1, Shape{circle});
-    CreateFixture(world, b2, Shape{circle});
+    Attach(world, b1, s0);
+    Attach(world, b2, s0);
     auto jd = FrictionJointConf{};
     jd.bodyA = b1;
     jd.bodyB = b2;

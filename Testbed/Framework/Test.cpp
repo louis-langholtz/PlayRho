@@ -25,11 +25,13 @@
 
 #include "DebugDraw.hpp"
 
-#include <stdio.h>
-#include <vector>
-#include <sstream>
 #include <chrono>
+#include <cstring> // for std::strstr
+#include <stdarg.h> // for va_list
+#include <sstream>
+#include <stdio.h>
 #include <utility>
+#include <vector>
 
 #include "imgui.h"
 #include "ExtensionsForImgui.hpp"
@@ -47,8 +49,7 @@ void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, Color c
 {
     const auto angleDiff = GetRevRotationalAngle(a0, a1);
     auto lastAngle = 0_deg;
-    for (auto angle = 5_deg; angle < angleDiff; angle += 5_deg)
-    {
+    for (auto angle = 5_deg; angle < angleDiff; angle += 5_deg) {
         const auto c0 = p + r * UnitVec::Get(a0 + lastAngle);
         const auto c1 = p + r * UnitVec::Get(a0 + angle);
         drawer.DrawSegment(c0, c1, color);
@@ -65,25 +66,21 @@ void Draw(Drawer& drawer, const DistanceProxy& shape, Color color, bool skins, T
 {
     const auto vertexCount = shape.GetVertexCount();
     auto vertices = std::vector<Length2>(vertexCount);
-    for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-    {
+    for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i) {
         vertices[i] = Transform(shape.GetVertex(i), xf);
     }
     const auto fillColor = Color{0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f};
     drawer.DrawSolidPolygon(&vertices[0], vertexCount, fillColor);
     drawer.DrawPolygon(&vertices[0], vertexCount, color);
 
-    if (!skins)
-    {
+    if (!skins) {
         return;
     }
 
     const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
     const auto r = GetVertexRadius(shape);
-    for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-    {
-        if (i > 0)
-        {
+    for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i) {
+        if (i > 0) {
             const auto worldNormal0 = Rotate(shape.GetNormal(i - 1), xf.q);
             const auto p0 = vertices[i-1] + worldNormal0 * r;
             const auto p1 = vertices[i] + worldNormal0 * r;
@@ -95,8 +92,7 @@ void Draw(Drawer& drawer, const DistanceProxy& shape, Color color, bool skins, T
             DrawCorner(drawer, vertices[i], r, angle0, angle1, skinColor);
         }
     }
-    if (vertexCount > 1)
-    {
+    if (vertexCount > 1) {
         const auto worldNormal0 = Rotate(shape.GetNormal(vertexCount - 1), xf.q);
         drawer.DrawSegment(vertices[vertexCount - 1] + worldNormal0 * r, vertices[0] + worldNormal0 * r, skinColor);
         const auto worldNormal1 = Rotate(shape.GetNormal(0), xf.q);
@@ -104,8 +100,7 @@ void Draw(Drawer& drawer, const DistanceProxy& shape, Color color, bool skins, T
         const auto angle1 = GetAngle(worldNormal1);
         DrawCorner(drawer, vertices[0], r, angle0, angle1, skinColor);
     }
-    else if (vertexCount == 1)
-    {
+    else if (vertexCount == 1) {
         DrawCorner(drawer, vertices[0], r, 0_deg, 360_deg, skinColor);
     }
 }
@@ -126,32 +121,24 @@ void Draw(Drawer& drawer, const Shape& shape, const Color& color, bool skins,
         Draw(drawer, TypeCast<EdgeShapeConf>(shape), color, skins, xf);
         return;
     }
-    if (type == GetTypeID<MultiShapeConf>()) {
-        Draw(drawer, TypeCast<MultiShapeConf>(shape), color, skins, xf);
-        return;
-    }
-    if (type == GetTypeID<PolygonShapeConf>()) {
-        Draw(drawer, TypeCast<PolygonShapeConf>(shape), color, skins, xf);
-        return;
+    const auto childCount = GetChildCount(shape);
+    for (auto i = static_cast<decltype(GetChildCount(shape))>(0); i < childCount; ++i) {
+        Draw(drawer, GetChild(shape, i), color, skins, xf);
     }
 }
 
 Color GetColor(const World& world, BodyID body)
 {
-    if (!IsEnabled(world, body))
-    {
+    if (!IsEnabled(world, body)) {
         return Color{0.5f, 0.5f, 0.3f};
     }
-    if (GetType(world, body) == BodyType::Static)
-    {
+    if (GetType(world, body) == BodyType::Static) {
         return Color{0.5f, 0.9f, 0.5f};
     }
-    if (GetType(world, body) == BodyType::Kinematic)
-    {
+    if (GetType(world, body) == BodyType::Kinematic) {
         return Color{0.5f, 0.5f, 0.9f};
     }
-    if (!IsAwake(world, body))
-    {
+    if (!IsAwake(world, body)) {
         return Color{0.75f, 0.75f, 0.75f};
     }
     return Color{0.9f, 0.7f, 0.7f};
@@ -160,21 +147,23 @@ Color GetColor(const World& world, BodyID body)
 bool Draw(Drawer& drawer, const World& world, BodyID body,
           bool skins, const Test::FixtureSet& selected)
 {
-    auto found = false;
+    auto foundBody = false;
+    auto foundShape = false;
     const auto bodyColor = GetColor(world, body);
     const auto selectedColor = Brighten(bodyColor, 1.3f);
     const auto xf = GetTransformation(world, body);
-    for (const auto& fixtureID: GetFixtures(world, body))
-    {
-        auto color = bodyColor;
-        if (Test::Contains(selected, fixtureID))
-        {
-            color = selectedColor;
-            found = true;
-        }
-        Draw(drawer, GetShape(world, fixtureID), color, skins, xf);
+    if (Test::Contains(selected, std::make_pair(body, InvalidShapeID))) {
+        foundBody = true;
     }
-    return found;
+    for (const auto& shapeID: GetShapes(world, body)) {
+        auto color = bodyColor;
+        if (foundBody || Test::Contains(selected, std::make_pair(body, shapeID))) {
+            color = selectedColor;
+            foundShape = true;
+        }
+        Draw(drawer, GetShape(world, shapeID), color, skins, xf);
+    }
+    return foundBody || foundShape;
 }
 
 void Draw(Drawer& drawer, const World& world, JointID id)
@@ -202,13 +191,13 @@ void Draw(Drawer& drawer, const World& world, JointID id)
     else {
         const auto p1 = GetAnchorA(world, id);
         const auto p2 = GetAnchorB(world, id);
-        const auto bodyA = GetBodyA(joint);
-        const auto bodyB = GetBodyB(joint);
-        const auto x1 = GetTransformation(world, bodyA).p;
-        const auto x2 = GetTransformation(world, bodyB).p;
-        drawer.DrawSegment(x1, p1, color);
         drawer.DrawSegment(p1, p2, color);
-        drawer.DrawSegment(x2, p2, color);
+        if (const auto bodyId = GetBodyA(joint); bodyId != InvalidBodyID) {
+            drawer.DrawSegment(GetTransformation(world, bodyId).p, p1, color);
+        }
+        if (const auto bodyId = GetBodyB(joint); bodyId != InvalidBodyID) {
+            drawer.DrawSegment(GetTransformation(world, bodyId).p, p2, color);
+        }
     }
 }
 
@@ -234,13 +223,11 @@ inline bool ShouldDrawSkins(const Test::NeededSettings& needed,
     return (needed & (1u << Test::NeedDrawSkinsField))? test.drawSkins: step.drawSkins;
 }
 
-template <class T>
-std::set<BodyID> GetBodySetFromFixtures(const World& world, const T& fixtures)
+std::set<BodyID> GetBodySetFromFixtures(const Test::FixtureSet& fixtures)
 {
     auto collection = std::set<BodyID>();
-    for (const auto& f: fixtures)
-    {
-        collection.insert(GetBody(world, f));
+    for (const auto& f: fixtures) {
+        collection.insert(std::get<BodyID>(f));
     }
     return collection;
 }
@@ -263,8 +250,8 @@ void ShowStats(const StepConf& stepConf, UiState& ui, const World& world, const 
     const auto awakeCount = GetAwakeCount(world);
     const auto sleepCount = bodyCount - awakeCount;
     const auto jointCount = GetJointCount(world);
-    const auto fixtureCount = GetFixtureCount(world);
-    const auto shapeCount = GetShapeCount(world);
+    const auto attachmentCount = GetAssociationCount(world);
+    const auto shapeCount = GetAssociationCount(world);
     const auto touchingCount = GetTouchingCount(world);
 
     const ImGuiStyle& style = ImGui::GetStyle();
@@ -315,7 +302,7 @@ void ShowStats(const StepConf& stepConf, UiState& ui, const World& world, const 
             ImGui::SetTooltip("Counts of awake bodies over total bodies.");
         }
         ImGui::NextColumn();
-        ImGui::Text("Fixtures: %u/%u", shapeCount, fixtureCount);
+        ImGui::Text("Attachments: %u/%u", shapeCount, attachmentCount);
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Counts of shapes over fixtures.");
@@ -694,7 +681,7 @@ void ShowStats(const StepConf& stepConf, UiState& ui, const World& world, const 
 
 void DrawContactInfo(Drawer& drawer, const Settings& settings,
                      const Test::FixtureSet& selectedFixtures,
-                     SizedRange<Test::ContactPoints::const_iterator> points)
+                     const Test::ContactPoints& points)
 {
     const auto k_impulseScale = 0.1_s / 1_kg;
     const auto k_axisScale = 0.3_m;
@@ -765,8 +752,7 @@ bool DrawWorld(Drawer& drawer, const World& world, const Test::FixtureSet& selec
             }
             if (drawLabels) {
                 // Use center of mass instead of body center since body center may not
-                drawer.DrawString(GetWorldCenter(world, b), Drawer::Center, "%d",
-                                  GetWorldIndex(world, b));
+                drawer.DrawString(GetWorldCenter(world, b), Drawer::Center, "%u", to_underlying(b));
             }
         }
     }
@@ -809,12 +795,92 @@ bool DrawWorld(Drawer& drawer, const World& world, const Test::FixtureSet& selec
 
 } // namespace
 
+const std::map<TypeID, const char*> Test::shapeTypeToNameMap = {
+    std::make_pair(GetTypeID<ChainShapeConf>(), "Chain"),
+    std::make_pair(GetTypeID<DiskShapeConf>(), "Disk"),
+    std::make_pair(GetTypeID<EdgeShapeConf>(), "Edge"),
+    std::make_pair(GetTypeID<MultiShapeConf>(), "MultiShape"),
+    std::make_pair(GetTypeID<PolygonShapeConf>(), "Polygon"),
+};
+
+const std::map<TypeID, const char*> Test::jointTypeToNameMap = {
+    std::make_pair(GetTypeID<RevoluteJointConf>(), "Revolute"),
+    std::make_pair(GetTypeID<PrismaticJointConf>(), "Prismatic"),
+    std::make_pair(GetTypeID<DistanceJointConf>(), "Distance"),
+    std::make_pair(GetTypeID<PulleyJointConf>(), "Pulley"),
+    std::make_pair(GetTypeID<TargetJointConf>(), "Target"),
+    std::make_pair(GetTypeID<GearJointConf>(), "Gear"),
+    std::make_pair(GetTypeID<WheelJointConf>(), "Wheel"),
+    std::make_pair(GetTypeID<WeldJointConf>(), "Weld"),
+    std::make_pair(GetTypeID<FrictionJointConf>(), "Friction"),
+    std::make_pair(GetTypeID<RopeJointConf>(), "Rope"),
+    std::make_pair(GetTypeID<MotorJointConf>(), "Motor"),
+};
+
+const char* Test::ToName(TypeID type) noexcept
+{
+    if (const auto found = jointTypeToNameMap.find(type); found != end(jointTypeToNameMap)) {
+        return found->second;
+    }
+    if (const auto found = shapeTypeToNameMap.find(type); found != end(shapeTypeToNameMap)) {
+        return found->second;
+    }
+    const auto name = GetName(type);
+    if (std::strstr(name, "Rectangle")) {
+        return "Rectangle";
+    }
+    return name;
+}
+
+bool Test::AlertUser(const std::string& title, const char* fmt, ...)
+{
+    ImGui::OpenPopup(title.c_str());
+    if (const auto opened = ImGui::PopupModalContext(title.c_str())) {
+        va_list args;
+        va_start(args, fmt);
+        ImGui::TextWrappedV(fmt, args);
+        va_end(args);
+        if (ImGui::Button("Close")) {
+            ImGui::CloseCurrentPopup();
+            return true;
+        }
+    }
+    return false;
+}
+
+const char* Test::ToName(DistanceOutput::State value)
+{
+    switch (value) {
+    case DistanceOutput::MaxPoints:
+        return "MaxPoints";
+    case DistanceOutput::UnfitSearchDir:
+        return "UnfitSearchDir";
+    case DistanceOutput::DuplicateIndexPair:
+        return "DuplicateIndexPair";
+    case DistanceOutput::HitMaxIters:
+        return "HitMaxIters";
+    case DistanceOutput::Unknown:
+        break;
+    }
+    return "Unknown";
+}
+
+const char* Test::ToName(BodyType value) noexcept
+{
+    switch (value) {
+    case BodyType::Static: return "Static";
+    case BodyType::Kinematic: return "Kinematic";
+    case BodyType::Dynamic: return "Dynamic";
+    }
+    return "Unknown";
+}
+
 const LinearAcceleration2 Test::Gravity = LinearAcceleration2{
     Real(0.0f) * MeterPerSquareSecond,
     -Real(10.0f) * MeterPerSquareSecond
 };
 
-bool Test::Contains(const FixtureSet& fixtures, FixtureID f) noexcept
+bool Test::Contains(const FixtureSet& fixtures, const std::pair<BodyID, ShapeID>& f) noexcept
 {
     return fixtures.find(f) != std::end(fixtures);
 }
@@ -842,7 +908,7 @@ Test::Test(Conf conf):
     m_numTouchingPerStep(m_maxHistory, 0u)
 {
     m_destructionListener.test = this;
-    SetFixtureDestructionListener(m_world, [this](FixtureID id){
+    SetShapeDestructionListener(m_world, [this](ShapeID id){
         m_destructionListener.SayGoodbye(id);
     });
     SetJointDestructionListener(m_world, [this](JointID id){
@@ -890,14 +956,17 @@ void Test::ResetWorld(const World &saved)
     }
 }
 
-void Test::PreSolve(ContactID contact, const Manifold& oldManifold)
+void Test::PreSolve(ContactID contactId, const Manifold& oldManifold)
 {
-    const auto pointStates = GetPointStates(oldManifold, GetManifold(m_world, contact));
-    const auto worldManifold = GetWorldManifold(m_world, contact);
+    const auto pointStates = GetPointStates(oldManifold, GetManifold(m_world, contactId));
+    const auto worldManifold = GetWorldManifold(m_world, contactId);
 
     ContactPoint cp;
-    cp.fixtureA = GetFixtureA(m_world, contact);
-    cp.fixtureB = GetFixtureB(m_world, contact);
+    const auto& contact = GetContact(m_world, contactId);
+    cp.bodyIdA = GetBodyA(contact);
+    cp.shapeIdA = GetShapeA(contact);
+    cp.bodyIdB = GetBodyB(contact);
+    cp.shapeIdB = GetShapeB(contact);
     cp.normal = worldManifold.GetNormal();
 
     const auto count = worldManifold.GetPointCount();
@@ -913,18 +982,17 @@ void Test::PreSolve(ContactID contact, const Manifold& oldManifold)
     }
 }
 
-void Test::SetSelectedFixtures(FixtureSet value) noexcept
+void Test::SetSelectedFixtures(const FixtureSet& value) noexcept
 {
     m_selectedFixtures = value;
-    m_selectedBodies = GetBodySetFromFixtures(m_world, value);
+    m_selectedBodies = GetBodySetFromFixtures(value);
 }
 
 void Test::MouseDown(const Length2& p)
 {
     m_mouseWorld = p;
 
-    if (m_targetJoint != InvalidJointID)
-    {
+    if (m_targetJoint != InvalidJointID) {
         return;
     }
 
@@ -933,23 +1001,21 @@ void Test::MouseDown(const Length2& p)
 
     // Query the world for overlapping shapes.
     auto fixtures = FixtureSet{};
-    Query(aabb, [this,&p,&fixtures](FixtureID f, const ChildCounter) {
-        if (TestPoint(m_world, f, p))
-        {
-            fixtures.insert(f);
+    Query(aabb, [this,&p,&fixtures](BodyID b, ShapeID f, const ChildCounter) {
+        if (TestPoint(m_world, b, f, p)) {
+            fixtures.insert(std::make_pair(b, f));
         }
         return true; // Continue the query.
     });
 
     SetSelectedFixtures(fixtures);
-    if (size(fixtures) == 1)
-    {
-        const auto body = GetBody(m_world, *(begin(fixtures)));
-        if (GetType(m_world, body) == BodyType::Dynamic)
-        {
+    if (size(fixtures) == 1) {
+        const auto body = std::get<BodyID>(*begin(fixtures));
+        if (GetType(m_world, body) == BodyType::Dynamic) {
             auto md = TargetJointConf{};
             md.bodyB = body;
             md.target = p;
+            md.localAnchorB = GetLocalPoint(GetBody(m_world, body), p);
             md.maxForce = Real(10000) * GetMass(m_world, body) * MeterPerSquareSecond;
             m_targetJoint = CreateJoint(m_world, md);
             SetAwake(m_world, body);
@@ -1031,9 +1097,12 @@ void Test::LaunchBomb()
 
 void Test::LaunchBomb(const Length2& at, const LinearVelocity2 v)
 {
-    if (m_bomb != InvalidBodyID)
-    {
+    if (m_bomb != InvalidBodyID) {
+        const auto shapes = GetShapes(m_world, m_bomb); // copy shape identifiers
         Destroy(m_world, m_bomb);
+        for (auto& shape: shapes) {
+            Destroy(m_world, shape);
+        }
     }
 
     m_bomb = CreateBody(m_world, BodyConf{}.UseType(BodyType::Dynamic).UseBullet(true)
@@ -1044,7 +1113,7 @@ void Test::LaunchBomb(const Length2& at, const LinearVelocity2 v)
     conf.vertexRadius = m_bombRadius;
     conf.density = m_bombDensity;
     conf.restitution = 0.0f;
-    CreateFixture(m_world, m_bomb, Shape{conf});
+    Attach(m_world, m_bomb, CreateShape(m_world, conf));
 }
 
 void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
@@ -1079,10 +1148,10 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
 
     stepConf.deltaTime = settings.dt * Second;
 
-    stepConf.regVelocityIterations = static_cast<StepConf::iteration_type>(settings.regVelocityIterations);
-    stepConf.regPositionIterations = static_cast<StepConf::iteration_type>(settings.regPositionIterations);
-    stepConf.toiVelocityIterations = static_cast<StepConf::iteration_type>(settings.toiVelocityIterations);
-    stepConf.toiPositionIterations = static_cast<StepConf::iteration_type>(settings.toiPositionIterations);
+    stepConf.regVelocityIters = static_cast<StepConf::iteration_type>(settings.regVelocityIterations);
+    stepConf.regPositionIters = static_cast<StepConf::iteration_type>(settings.regPositionIterations);
+    stepConf.toiVelocityIters = static_cast<StepConf::iteration_type>(settings.toiVelocityIterations);
+    stepConf.toiPositionIters = static_cast<StepConf::iteration_type>(settings.toiPositionIterations);
 
     stepConf.maxSubSteps = static_cast<StepConf::iteration_type>(settings.maxSubSteps);
     stepConf.maxToiRootIters = static_cast<StepConf::iteration_type>(settings.maxToiRootIters);
@@ -1268,7 +1337,7 @@ void Test::RegisterForKey(KeyID key, KeyAction action, KeyMods mods, KeyHandlerI
     m_handledKeys.push_back(std::make_pair(KeyActionMods{key, action, mods}, id));
 }
 
-void Test::Query(const AABB& aabb, QueryFixtureCallback callback)
+void Test::Query(const AABB& aabb, QueryShapeCallback callback)
 {
     ::playrho::d2::Query(GetTree(m_world), aabb, callback);
 }
@@ -1357,28 +1426,11 @@ void Draw(Drawer& drawer, const ChainShapeConf& shape, Color color, bool skins,
     }
 }
 
-void Draw(Drawer& drawer, const PolygonShapeConf& shape, Color color, bool skins,
-          const Transformation& xf)
-{
-    Draw(drawer, GetChild(shape, 0), color, skins, xf);
-}
-
-void Draw(Drawer& drawer, const MultiShapeConf& shape, Color color, bool skins,
-          const Transformation& xf)
-{
-    const auto count = GetChildCount(shape);
-    for (auto i = decltype(count){0}; i < count; ++i)
-    {
-        Draw(drawer, GetChild(shape, i), color, skins, xf);
-    }
-}
-
 bool HasFixture(const Test::ContactPoint& cp, const Test::FixtureSet& fixtures) noexcept
 {
-    for (auto fixture: fixtures)
-    {
-        if (fixture == cp.fixtureA || fixture == cp.fixtureB)
-        {
+    for (auto fixture: fixtures) {
+        if (fixture == std::make_pair(cp.bodyIdA, cp.shapeIdA) ||
+            fixture == std::make_pair(cp.bodyIdB, cp.shapeIdB)) {
             return true;
         }
     }

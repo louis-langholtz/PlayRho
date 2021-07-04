@@ -31,7 +31,8 @@ public:
     SliderCrank()
     {
         const auto ground = CreateBody(GetWorld());
-        CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        Attach(GetWorld(), ground,
+               CreateShape(GetWorld(), EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));
 
         {
             auto prevBody = ground;
@@ -42,14 +43,13 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(0.0f, 7.0f) * 1_m;
                 const auto body = CreateBody(GetWorld(), bd);
-                CreateFixture(GetWorld(), body, Shape{PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 2_m)});
-
+                Attach(GetWorld(), body,
+                       CreateShape(GetWorld(), PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 2_m)));
                 auto rjd = GetRevoluteJointConf(GetWorld(), prevBody, body, Vec2(0.0f, 5.0f) * 1_m);
                 rjd.motorSpeed = Pi * 1_rad / 1_s;
                 rjd.maxMotorTorque = 10000_Nm;
                 rjd.enableMotor = true;
                 m_joint1 = CreateJoint(GetWorld(), rjd);
-
                 prevBody = body;
             }
 
@@ -59,8 +59,8 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(0.0f, 13.0f) * 1_m;
                 const auto body = CreateBody(GetWorld(), bd);
-                CreateFixture(GetWorld(), body, Shape{PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 4_m)});
-
+                Attach(GetWorld(), body,
+                       CreateShape(GetWorld(), PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 4_m)));
                 auto rjd = GetRevoluteJointConf(GetWorld(), prevBody, body, Vec2(0.0f, 9.0f) * 1_m);
                 rjd.enableMotor = false;
                 CreateJoint(GetWorld(), rjd);
@@ -75,7 +75,8 @@ public:
                 bd.fixedRotation = true;
                 bd.location = Vec2(0.0f, 17.0f) * 1_m;
                 const auto body = CreateBody(GetWorld(), bd);
-                CreateFixture(GetWorld(), body, Shape{PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(1.5_m, 1.5_m)});
+                Attach(GetWorld(), body,
+                       CreateShape(GetWorld(), PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(1.5_m, 1.5_m)));
                 CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), prevBody, body,
                                                           Vec2(0.0f, 17.0f) * 1_m));
 
@@ -91,7 +92,8 @@ public:
                 BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(0.0f, 23.0f) * 1_m;
-                CreateFixture(GetWorld(), CreateBody(GetWorld(), bd), Shape{PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(1.5_m, 1.5_m)});
+                Attach(GetWorld(), CreateBody(GetWorld(), bd),
+                       CreateShape(GetWorld(), PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(1.5_m, 1.5_m)));
             }
         }
         SetAccelerations(GetWorld(), GetGravity());
@@ -107,11 +109,15 @@ public:
 
     void PostStep(const Settings& settings, Drawer&) override
     {
-        const auto torque = GetMotorTorque(GetWorld(), m_joint1, 1_Hz / settings.dt);
         std::stringstream stream;
-        stream << "Motor Torque = ";
-        stream << static_cast<double>(Real{torque / 1_Nm});
-        stream << " Nm.";
+        try {
+            const auto torque = GetMotorTorque(GetWorld(), m_joint1, 1_Hz / settings.dt);
+            stream << "Motor Torque = ";
+            stream << static_cast<double>(Real{torque / 1_Nm});
+            stream << " Nm.";
+        } catch (...) {
+            stream << "Unable to get motor torque.";
+        }
         SetStatus(stream.str());
     }
 

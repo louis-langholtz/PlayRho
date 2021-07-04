@@ -43,14 +43,16 @@ public:
         });
 
         // Ground
-        CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape{EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
+        Attach(GetWorld(), CreateBody(GetWorld()),
+               CreateShape(GetWorld(), EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}));
 
         // Platform
         {
             BodyConf bd;
             bd.location = Vec2(0.0f, 10.0f) * 1_m;
             const auto body = CreateBody(GetWorld(), bd);
-            m_platform = CreateFixture(GetWorld(), body, Shape{PolygonShapeConf{}.SetAsBox(3_m, 0.5_m)});
+            m_platform = CreateShape(GetWorld(), PolygonShapeConf{}.SetAsBox(3_m, 0.5_m));
+            Attach(GetWorld(), body, m_platform);
             m_bottom = Real(10.0f - 0.5f) * 1_m;
             m_top = Real(10.0f + 0.5f) * 1_m;
         }
@@ -61,45 +63,36 @@ public:
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = GetGravity();
             bd.location = Vec2(0.0f, 12.0f) * 1_m;
-            const auto body = CreateBody(GetWorld(), bd);
+            m_characterBodyId = CreateBody(GetWorld(), bd);
             auto conf = DiskShapeConf{};
             conf.vertexRadius = m_radius;
             conf.density = 20_kgpm2;
-            m_character = CreateFixture(GetWorld(), body, Shape(conf));
-            SetVelocity(GetWorld(), body, Velocity{Vec2(0.0f, -50.0f) * 1_mps, 0_rpm});
+            m_character = CreateShape(GetWorld(), Shape(conf));
+            Attach(GetWorld(), m_characterBodyId, m_character);
+            SetVelocity(GetWorld(), m_characterBodyId, Velocity{Vec2(0.0f, -50.0f) * 1_mps, 0_rpm});
         }
     }
 
     void PreSolve(ContactID contact, const Manifold&)
     {
-        const auto fixtureA = GetFixtureA(GetWorld(), contact);
-        const auto fixtureB = GetFixtureB(GetWorld(), contact);
-        if (fixtureA != m_platform && fixtureA != m_character)
-        {
+        const auto shapeA = GetShapeA(GetWorld(), contact);
+        const auto shapeB = GetShapeB(GetWorld(), contact);
+        if (shapeA != m_platform && shapeA != m_character) {
             return;
         }
-        if (fixtureB != m_platform && fixtureB != m_character)
-        {
+        if (shapeB != m_platform && shapeB != m_character) {
             return;
         }
-#if 1
-        const auto position = GetLocation(GetWorld(), GetBody(GetWorld(), m_character));
+        const auto position = GetLocation(GetWorld(), m_characterBodyId);
         if (GetY(position) < m_top + m_radius - GetVertexRadius(GetShape(GetWorld(), m_platform), 0))
         {
             UnsetEnabled(GetWorld(), contact);
         }
-#else
-        const auto v = m_character->GetBody()->GetLinearVelocity();
-        if (v.y > 0.0f)
-        {
-            contact.UnsetEnabled();
-        }
-#endif
     }
 
     void PostStep(const Settings&, Drawer&) override
     {
-        const auto v = GetLinearVelocity(GetWorld(), GetBody(GetWorld(), m_character));
+        const auto v = GetLinearVelocity(GetWorld(), m_characterBodyId);
         std::stringstream stream;
         stream << "Character linear velocity: ";
         stream << static_cast<double>(Real{GetY(v) / 1_mps});
@@ -111,8 +104,9 @@ public:
     Length m_top;
     Length m_bottom;
     State m_state = e_unknown;
-    FixtureID m_platform;
-    FixtureID m_character;
+    BodyID m_characterBodyId = InvalidBodyID;
+    ShapeID m_platform = InvalidShapeID;
+    ShapeID m_character = InvalidShapeID;
 };
 
 } // namespace testbed

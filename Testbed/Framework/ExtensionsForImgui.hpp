@@ -23,7 +23,8 @@ public:
         Begin(name, p_open, flags);
     }
 
-    WindowContext(const char* name, bool* p_open, const ImVec2& size_first_use, float bg_alpha = -1.0f, ImGuiWindowFlags flags = 0)
+    WindowContext(const char* name, bool* p_open, const ImVec2& size_first_use,
+                  float bg_alpha = -1.0f, ImGuiWindowFlags flags = 0)
     {
         if (size_first_use.x != 0.0f || size_first_use.y != 0.0f)
             SetNextWindowSize(size_first_use, ImGuiCond_FirstUseEver);
@@ -108,8 +109,48 @@ struct GroupContext
     ~GroupContext() { EndGroup(); }
 };
 
-IMGUI_API void          Value(const char* prefix, unsigned long v);
-IMGUI_API void          Value(const char* prefix, double v, const char* float_format = nullptr);
+struct PopupModalContext
+{
+    bool is_open = false;
+
+    PopupModalContext(const char* name, bool* p_open = nullptr)
+    {
+        is_open = BeginPopupModal(name, p_open);
+    }
+
+    ~PopupModalContext()
+    {
+        if (is_open) {
+            EndPopup();
+        }
+    }
+
+    explicit operator bool() const noexcept
+    {
+        return is_open;
+    }
+};
+
+struct StyleVarContext
+{
+    StyleVarContext(ImGuiStyleVar idx, const ImVec2& val)
+    {
+        PushStyleVar(idx, val);
+    }
+
+    StyleVarContext(ImGuiStyleVar idx, float val)
+    {
+        PushStyleVar(idx, val);
+    }
+
+    ~StyleVarContext()
+    {
+        PopStyleVar();
+    }
+};
+
+IMGUI_API void Value(const char* prefix, unsigned long v);
+IMGUI_API void Value(const char* prefix, double v, const char* float_format = nullptr);
 
 void SetColumnWidths(float remainingWidth, std::initializer_list<float> widths);
 
@@ -131,6 +172,9 @@ inline void ShowTooltip(const std::string& str, float wrap_pos_x = 0.0f)
     TextUnformatted(str);
 }
 
-}
+IMGUI_API bool InputDouble2(const char* label, double v[2], const char* format = "%.6f",
+                            ImGuiInputTextFlags flags = 0);
+
+} // namespace ImGui
 
 #endif /* ExtensionsForImgui_hpp */

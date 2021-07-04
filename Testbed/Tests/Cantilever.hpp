@@ -42,11 +42,11 @@ public:
         const auto ground = CreateBody(GetWorld());
 
         // Creates bottom ground
-        CreateFixture(GetWorld(), ground, Shape(GetGroundEdgeConf()));
+        Attach(GetWorld(), ground, CreateShape(GetWorld(), GetGroundEdgeConf()));
 
         // Creates left-end-fixed 8-part plank (below the top one)
         {
-            const auto shape = Shape{PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.125_m)};
+            const auto shape = CreateShape(GetWorld(), PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.125_m));
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
             {
@@ -54,7 +54,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(-14.5f + 1.0f * i, 5.0f) * 1_m;
                 const auto body = CreateBody(GetWorld(), bd);
-                CreateFixture(GetWorld(), body, shape);
+                Attach(GetWorld(), body, shape);
 
                 CreateJoint(GetWorld(), GetWeldJointConf(GetWorld(),
                     prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f) * 1_m
@@ -66,7 +66,7 @@ public:
 
         // Creates left-end-fixed 3-part plank at top
         {
-            const auto shape = Shape{PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(1_m, 0.125_m)};
+            const auto shape = CreateShape(GetWorld(), PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(1_m, 0.125_m));
             auto prevBody = ground;
             for (auto i = 0; i < 3; ++i)
             {
@@ -74,7 +74,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(-14.0f + 2.0f * i, 15.0f) * 1_m;
                 const auto body = CreateBody(GetWorld(), bd);
-                CreateFixture(GetWorld(), body, shape);
+                Attach(GetWorld(), body, shape);
 
                 auto jd = GetWeldJointConf(GetWorld(), prevBody, body, Vec2(-15.0f + 2.0f * i, 15.0f) * 1_m);
                 jd.frequency = 5_Hz;
@@ -87,7 +87,7 @@ public:
 
         // Creates 8-part plank to the right of the fixed planks (but not farthest right)
         {
-            const auto shape = Shape{PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.125_m)};
+            const auto shape = CreateShape(GetWorld(), PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.125_m));
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
             {
@@ -95,7 +95,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(-4.5f + 1.0f * i, 5.0f) * 1_m;
                 const auto body = CreateBody(GetWorld(), bd);
-                CreateFixture(GetWorld(), body, shape);
+                Attach(GetWorld(), body, shape);
                 if (i > 0)
                 {
                     CreateJoint(GetWorld(), GetWeldJointConf(GetWorld(),
@@ -108,7 +108,7 @@ public:
 
         // Creates 8-part farthest-right plank
         {
-            const auto shape = Shape{PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.125_m)};
+            const auto shape = CreateShape(GetWorld(), PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.125_m));
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
             {
@@ -116,7 +116,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(5.5f + 1.0f * i, 10.0f) * 1_m;
                 const auto body = CreateBody(GetWorld(), bd);
-                CreateFixture(GetWorld(), body, shape);
+                Attach(GetWorld(), body, shape);
                 if (i > 0)
                 {
                     auto jd = GetWeldJointConf(GetWorld(), prevBody, body, Vec2(5.0f + 1.0f * i, 10.0f) * 1_m);
@@ -131,25 +131,23 @@ public:
         // Creates triangles
         const auto conf = PolygonShapeConf{}.UseDensity(1_kgpm2).UseVertices({
             Vec2(-0.5f, 0.0f) * 1_m, Vec2(0.5f, 0.0f) * 1_m, Vec2(0.0f, 1.5f) * 1_m});
-        const auto polyshape = Shape{conf};
+        const auto polyshape = CreateShape(GetWorld(), conf);
         for (auto i = 0; i < 2; ++i)
         {
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-8.0f + 8.0f * i, 12.0f) * 1_m;
-            const auto body = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), body, polyshape);
+            Attach(GetWorld(), CreateBody(GetWorld(), bd), polyshape);
         }
 
         // Creates circles
-        const auto circleshape = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2)};
+        const auto circleshape = CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2));
         for (auto i = 0; i < 2; ++i)
         {
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-6.0f + 6.0f * i, 10.0f) * 1_m;
-            const auto body = CreateBody(GetWorld(), bd);
-            CreateFixture(GetWorld(), body, circleshape);
+            Attach(GetWorld(), CreateBody(GetWorld(), bd), circleshape);
         }
         
         SetAccelerations(GetWorld(), GetGravity());

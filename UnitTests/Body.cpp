@@ -37,7 +37,7 @@ TEST(Body, ByteSize)
 #if !defined(NDEBUG)
         EXPECT_EQ(sizeof(Body), std::size_t(216));
 #else
-        EXPECT_EQ(sizeof(Body), std::size_t(100));
+        EXPECT_EQ(sizeof(Body), std::size_t(128));
 #endif
 #elif defined(_WIN32)
 #if !defined(NDEBUG)
@@ -45,22 +45,30 @@ TEST(Body, ByteSize)
         EXPECT_EQ(sizeof(Body), std::size_t(192));
 #else
         // Win32 release
-        EXPECT_EQ(sizeof(Body), std::size_t(100));
+        EXPECT_EQ(sizeof(Body), std::size_t(112));
 #endif
 #else
-        EXPECT_EQ(sizeof(Body), std::size_t(100));
+        EXPECT_EQ(sizeof(Body), std::size_t(128));
 #endif
         break;
     case 8:
-        EXPECT_EQ(sizeof(Body), std::size_t(200));
+        EXPECT_EQ(sizeof(Body), std::size_t(224));
         break;
     case 16:
-        EXPECT_EQ(sizeof(Body), std::size_t(400));
+        EXPECT_EQ(sizeof(Body), std::size_t(432));
         break;
     default:
         FAIL();
         break;
     }
+}
+
+TEST(Body, DefaultConstruction)
+{
+    EXPECT_EQ(Body().GetType(), BodyType::Static);
+    EXPECT_TRUE(Body().IsEnabled());
+    EXPECT_FALSE(Body().IsAwake());
+    EXPECT_FALSE(Body().IsSpeedable());
 }
 
 TEST(Body, GetFlagsForBodyType)
@@ -77,6 +85,14 @@ TEST(Body, GetFlagsForBodyConf)
     EXPECT_TRUE(
         Body::GetFlags(BodyConf{}.UseAwake(false).UseAllowSleep(false).UseType(BodyType::Dynamic)) &
         Body::e_awakeFlag);
+}
+
+TEST(Body, ShapeOnConstruction)
+{
+    const auto shapeId = ShapeID(1u);
+    ASSERT_TRUE(!empty(Body(BodyConf{}.Use(shapeId)).GetShapes()));
+    ASSERT_EQ(size(Body(BodyConf{}.Use(shapeId)).GetShapes()), 1u);
+    EXPECT_EQ(Body(BodyConf{}.Use(shapeId)).GetShapes()[0], shapeId);
 }
 
 TEST(Body, LinearDampingOnConstruction)
@@ -156,7 +172,7 @@ TEST(Body, EqualsOperator)
     }
     {
         auto body = Body{};
-        body.SetTransformation(Transformation{Length2{2_m, 0_m}, UnitVec{}});
+        SetTransformation(body, Transformation{Length2{2_m, 0_m}, UnitVec{}});
         EXPECT_FALSE(body == Body());
     }
     {
@@ -171,6 +187,7 @@ TEST(Body, EqualsOperator)
     }
     {
         auto body = Body{};
+        body.SetType(BodyType::Kinematic);
         body.JustSetVelocity(Velocity{LinearVelocity2{}, 2_rpm});
         EXPECT_FALSE(body == Body());
     }
@@ -189,7 +206,7 @@ TEST(Body, EqualsOperator)
     }
     {
         auto body = Body{};
-        body.SetInvRotInertia((Real(2) * SquareRadian) / (2_m2 * 1.2_kg));
+        body.SetInvMassData(body.GetInvMass(), (Real(2) * SquareRadian) / (2_m2 * 1.2_kg));
         EXPECT_FALSE(body == Body());
     }
     {
@@ -228,7 +245,7 @@ TEST(Body, NotEqualsOperator)
     }
     {
         auto body = Body{};
-        body.SetTransformation(Transformation{Length2{2_m, 0_m}, UnitVec{}});
+        SetTransformation(body, Transformation{Length2{2_m, 0_m}, UnitVec{}});
         EXPECT_TRUE(body != Body());
     }
     {
@@ -243,6 +260,7 @@ TEST(Body, NotEqualsOperator)
     }
     {
         auto body = Body{};
+        body.SetType(BodyType::Kinematic);
         body.JustSetVelocity(Velocity{LinearVelocity2{}, 2_rpm});
         EXPECT_TRUE(body != Body());
     }
@@ -261,7 +279,7 @@ TEST(Body, NotEqualsOperator)
     }
     {
         auto body = Body{};
-        body.SetInvRotInertia((Real(2) * SquareRadian) / (2_m2 * 1.2_kg));
+        body.SetInvMassData(body.GetInvMass(), (Real(2) * SquareRadian) / (2_m2 * 1.2_kg));
         EXPECT_TRUE(body != Body());
     }
     {

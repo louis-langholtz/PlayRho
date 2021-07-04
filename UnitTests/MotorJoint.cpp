@@ -27,8 +27,8 @@
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
-#include <PlayRho/Dynamics/WorldFixture.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
+#include <PlayRho/Dynamics/WorldShape.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
@@ -196,14 +196,14 @@ TEST(MotorJoint, GetMotorJointConf)
 
 TEST(MotorJoint, WithDynamicCircles)
 {
-    const auto circle = Shape{DiskShapeConf{}.UseRadius(0.2_m)};
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    CreateFixture(world, b1, circle);
-    CreateFixture(world, b2, circle);
+    const auto circle = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m));
+    ASSERT_NO_THROW(Attach(world, b1, circle));
+    ASSERT_NO_THROW(Attach(world, b2, circle));
     // const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetMotorJointConf(world, b1, b2);
     const auto joint = CreateJoint(world, jd);
@@ -233,14 +233,14 @@ TEST(MotorJoint, WithDynamicCircles)
 
 TEST(MotorJoint, SetLinearOffset)
 {
-    const auto circle = Shape{DiskShapeConf{}.UseRadius(0.2_m)};
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    CreateFixture(world, b1, circle);
-    CreateFixture(world, b2, circle);
+    const auto circle = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m));
+    Attach(world, b1, circle);
+    Attach(world, b2, circle);
     // const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetMotorJointConf(world, b1, b2);
     const auto joint = CreateJoint(world, jd);
@@ -257,14 +257,14 @@ TEST(MotorJoint, SetLinearOffset)
 
 TEST(MotorJoint, SetAngularOffset)
 {
-    const auto circle = Shape{DiskShapeConf{}.UseRadius(0.2_m)};
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    CreateFixture(world, b1, circle);
-    CreateFixture(world, b2, circle);
+    const auto circle = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m));
+    Attach(world, b1, circle);
+    Attach(world, b2, circle);
     // const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetMotorJointConf(world, b1, b2);
     const auto joint = CreateJoint(world, jd);

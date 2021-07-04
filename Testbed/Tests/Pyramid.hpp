@@ -34,26 +34,26 @@ public:
 
     Pyramid()
     {
-        const auto ground = CreateBody(GetWorld());
-        CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
-
-        const auto a = 0.5_m;
-        const auto shape = Shape{PolygonShapeConf{}.SetAsBox(a, a).UseDensity(5_kgpm2)};
+        using namespace playrho::part;
+        auto ground = Body{};
+        ground.Attach(CreateShape(GetWorld(),
+                                  EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));
+        CreateBody(GetWorld(), ground);
+        const auto shape = CreateShape(GetWorld(), Compositor<GeometryIs<StaticRectangle<1, 1>>,
+                                       DensityIs<StaticAreaDensity<5>>>());
         auto x = Vec2(-7.0f, 0.75f);
         const auto deltaX = Vec2(0.5625f, 1.25f);
         const auto deltaY = Vec2(1.125f, 0.0f);
         Vec2 y;
-        for (auto i = 0; i < e_count; ++i)
-        {
+        for (auto i = 0; i < e_count; ++i) {
             y = x;
-            for (auto j = i; j < e_count; ++j)
-            {
+            for (auto j = i; j < e_count; ++j) {
                 BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.linearAcceleration = GetGravity();
                 bd.location = y * 1_m;
-                const auto body = CreateBody(GetWorld(), bd);
-                CreateFixture(GetWorld(), body, shape);
+                bd.Use(shape);
+                CreateBody(GetWorld(), Body{bd});
                 y += deltaY;
             }
             x += deltaX;

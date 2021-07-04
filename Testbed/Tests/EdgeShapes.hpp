@@ -21,6 +21,8 @@
 #define  PLAYRHO_EDGE_SHAPES_HPP
 
 #include "../Framework/Test.hpp"
+
+#include <algorithm>
 #include <cmath>
 #include <cstring>
 
@@ -37,16 +39,16 @@ public:
 
     EdgeShapes()
     {
+        m_circle = CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(0.5_m).UseFriction(Real(0.3)).UseDensity(20_kgpm2));
         // Ground body
         {
             const auto ground = CreateBody(GetWorld());
             auto x1 = -20.0f;
             auto y1 = 2.0f * std::cos(x1 / 10.0f * static_cast<float>(Pi));
-            for (auto i = 0; i < 80; ++i)
-            {
+            for (auto i = 0; i < 80; ++i) {
                 const auto x2 = x1 + 0.5f;
                 const auto y2 = 2.0f * std::cos(x2 / 10.0f * static_cast<float>(Pi));
-                CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{Vec2(x1, y1) * 1_m, Vec2(x2, y2) * 1_m}});
+                Attach(GetWorld(), ground, CreateShape(GetWorld(), EdgeShapeConf{Vec2(x1, y1) * 1_m, Vec2(x2, y2) * 1_m}));
                 x1 = x2;
                 y1 = y2;
             }
@@ -60,14 +62,14 @@ public:
             Vec2(0.5f, 0.0f) * 1_m,
             Vec2(0.0f, 1.5f) * 1_m
         });
-        m_polygons[0] = Shape(conf);
+        m_polygons[0] = CreateShape(GetWorld(), conf);
         
         conf.Set({
             Vec2(-0.1f, 0.0f) * 1_m,
             Vec2(0.1f, 0.0f) * 1_m,
             Vec2(0.0f, 1.5f) * 1_m
         });
-        m_polygons[1] = Shape(conf);
+        m_polygons[1] = CreateShape(GetWorld(), conf);
 
         {
             const auto w = 1.0f;
@@ -84,16 +86,13 @@ public:
                 Vec2(-0.5f * w, b) * 1_m,
                 Vec2(-0.5f * s, 0.0f) * 1_m
             });
-            m_polygons[2] = Shape(conf);
+            m_polygons[2] = CreateShape(GetWorld(), conf);
         }
 
         conf.SetAsBox(0.5_m, 0.5_m);
-        m_polygons[3] = Shape(conf);
+        m_polygons[3] = CreateShape(GetWorld(), conf);
 
-        m_bodyIndex = 0;
-        std::memset(m_bodies, 0, sizeof(m_bodies));
-
-        m_angle = 0.0f;
+        std::fill(begin(m_bodies), end(m_bodies), InvalidBodyID);
         
         RegisterForKey(GLFW_KEY_1, GLFW_PRESS, 0, "to drop stuff", [&](KeyActionMods kam) {
             Create(kam.key - GLFW_KEY_1);
@@ -141,11 +140,11 @@ public:
 
         if (index < 4)
         {
-            CreateFixture(GetWorld(), m_bodies[m_bodyIndex], m_polygons[index]);
+            Attach(GetWorld(), m_bodies[m_bodyIndex], m_polygons[index]);
         }
         else
         {
-            CreateFixture(GetWorld(), m_bodies[m_bodyIndex], m_circle);
+            Attach(GetWorld(), m_bodies[m_bodyIndex], m_circle);
         }
 
         m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
@@ -171,19 +170,19 @@ public:
         const auto d = Vec2(L * cos(m_angle), -L * abs(sin(m_angle))) * 1_m;
         const auto point2 = point1 + d;
 
-        auto fixture = GetInvalid<FixtureID>();
+        auto shapeId = InvalidShapeID;
         Length2 point;
         UnitVec normal;
 
         RayCast(GetWorld(), RayCastInput{point1, point2, Real{1}},
-                [&](BodyID, FixtureID f, ChildCounter, Length2 p, UnitVec n) {
-            fixture = f;
+                [&](BodyID, ShapeID f, ChildCounter, Length2 p, UnitVec n) {
+            shapeId = f;
             point = p;
             normal = n;
             return RayCastOpcode::ClipRay;
         });
 
-        if (IsValid(fixture))
+        if (IsValid(shapeId))
         {
             drawer.DrawPoint(point, 5.0f, Color(0.4f, 0.9f, 0.4f));
             drawer.DrawSegment(point1, point, Color(0.8f, 0.8f, 0.8f));
@@ -202,15 +201,11 @@ public:
         }
     }
 
-    int m_bodyIndex;
+    int m_bodyIndex = 0;
     BodyID m_bodies[e_maxBodies];
-    Shape m_polygons[4] = {
-        Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}},
-        Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}}
-    };
-    Shape m_circle = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseFriction(Real(0.3)).UseDensity(20_kgpm2)};
-
-    Real m_angle;
+    ShapeID m_polygons[4] = { InvalidShapeID, InvalidShapeID, InvalidShapeID, InvalidShapeID };
+    ShapeID m_circle = InvalidShapeID;
+    Real m_angle = 0;
 };
 
 } // namespace testbed

@@ -38,7 +38,9 @@ namespace testbed {
             auto conf = Test::Conf{};
             conf.description = "Demonstrates the physics engine's behavior in a simulation of "
                 "the classic Newton's cradle. "
-                "Drag a circle with mouse, then let go to see how the physics is simulated.";
+                "Drag a sphere with the mouse, then let go to see how the physics is simulated. "
+                "Can you tell that it doesn't always act like it does in reality?";
+            conf.seeAlso = "https://en.wikipedia.org/wiki/Newton%27s_cradle";
             return conf;
         }
 
@@ -107,7 +109,7 @@ namespace testbed {
                 
                 const auto frame_width = frame_width_per_arm * static_cast<Real>(m_num_arms);
                 const auto shape = PolygonShapeConf{}.SetAsBox(frame_width / 2, frame_width / 24).UseDensity(20_kgpm2);
-                CreateFixture(GetWorld(), body, Shape(shape));
+                Attach(GetWorld(), body, CreateShape(GetWorld(), shape));
                 return body;
             }();
 
@@ -160,7 +162,7 @@ namespace testbed {
                 const auto body = CreateBody(GetWorld(), def);
                 
                 const auto shape = PolygonShapeConf{}.SetAsBox(frame_width / 24, arm_length / 2 + frame_width / 24).UseDensity(20_kgpm2);
-                CreateFixture(GetWorld(), body, Shape(shape));
+                Attach(GetWorld(), body, CreateShape(GetWorld(), shape));
                 
                 m_right_side_wall = body;
             }
@@ -180,7 +182,7 @@ namespace testbed {
                 const auto body = CreateBody(GetWorld(), def);
                 
                 const auto shape = PolygonShapeConf{}.SetAsBox(frame_width/Real{24}, (arm_length / Real{2} + frame_width / Real{24})).UseDensity(20_kgpm2);
-                CreateFixture(GetWorld(), body, Shape(shape));
+                Attach(GetWorld(), body, CreateShape(GetWorld(), shape));
                 
                 m_left_side_wall = body;
             }
@@ -204,7 +206,7 @@ namespace testbed {
             }
         }
 
-        FixtureID CreateBall(BodyID body, Length2 pos, Length radius)
+        void CreateBall(BodyID body, Length2 pos, Length radius)
         {
             auto conf = DiskShapeConf{};
             conf.vertexRadius = radius;
@@ -212,13 +214,13 @@ namespace testbed {
             conf.density = 20_kgpm2;
             conf.restitution = 1;
             conf.friction = 0;
-            return CreateFixture(GetWorld(), body, Shape(conf));
+            Attach(GetWorld(), body, CreateShape(GetWorld(), conf));
         }
 
-        FixtureID CreateArm(BodyID body, Length length = 10_m)
+        void CreateArm(BodyID body, Length length = 10_m)
         {
             const auto shape = PolygonShapeConf{}.SetAsBox(length / Real{2000}, length / Real{2}).UseDensity(20_kgpm2);
-            return CreateFixture(GetWorld(), body, Shape(shape));
+            Attach(GetWorld(), body, CreateShape(GetWorld(), shape));
         }
 
         void ToggleRightSideWall()

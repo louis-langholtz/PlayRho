@@ -26,13 +26,13 @@
 #include <PlayRho/Dynamics/WorldImplMisc.hpp>
 #include <PlayRho/Dynamics/WorldImplJoint.hpp>
 #include <PlayRho/Dynamics/WorldImplContact.hpp>
-#include <PlayRho/Dynamics/WorldImplFixture.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/Body.hpp> // for GetBody
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 
+#include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
@@ -144,10 +144,9 @@ TEST(WorldImpl, Init)
 {
     WorldImpl world{};
     EXPECT_FALSE(world.IsLocked());
-    
     {
         auto calls = 0;
-        Query(world.GetTree(), AABB{}, [&](FixtureID, ChildCounter) {
+        Query(world.GetTree(), AABB{}, [&](BodyID, ShapeID, ChildCounter) {
             ++calls;
             return true;
         });
@@ -167,28 +166,27 @@ TEST(WorldImpl, InvalidArgumentInit)
 TEST(WorldImpl, Clear)
 {
     auto jointListener = PushBackListener<JointID>{};
-    auto fixtureListener = PushBackListener<FixtureID>{};
+    auto shapeListener = PushBackListener<ShapeID>{};
+    auto associationListener = PushBackListener<std::pair<BodyID, ShapeID>>{};
 
     auto world = WorldImpl{};
     ASSERT_EQ(world.GetBodies().size(), std::size_t(0));
     ASSERT_EQ(world.GetJoints().size(), std::size_t(0));
 
     world.SetJointDestructionListener(std::ref(jointListener));
-    world.SetFixtureDestructionListener(std::ref(fixtureListener));
+    world.SetShapeDestructionListener(std::ref(shapeListener));
+    world.SetDetachListener(std::ref(associationListener));
 
-    const auto b0 = world.CreateBody();
+    const auto shapeId0 = world.CreateShape(Shape(DiskShapeConf{}));
+    const auto b0 = CreateBody(world);
     ASSERT_NE(b0, InvalidBodyID);
-    const auto fixtureConf0 = FixtureConf{}.UseBody(b0).UseShape(DiskShapeConf{});
-    const auto f0 = world.CreateFixture(fixtureConf0);
-    ASSERT_NE(f0, InvalidFixtureID);
-    ASSERT_EQ(GetFixtures(world, b0).size(), std::size_t(1));;
+    ASSERT_NO_THROW(Attach(world, b0, shapeId0));
+    ASSERT_EQ(GetShapes(world, b0).size(), std::size_t(1));;
 
-    const auto b1 = world.CreateBody();
+    const auto b1 = CreateBody(world);
     ASSERT_NE(b1, InvalidBodyID);
-    const auto fixtureConf1 = FixtureConf{}.UseBody(b1).UseShape(DiskShapeConf{});
-    const auto f1 = CreateFixture(world, fixtureConf1);
-    ASSERT_NE(f1, InvalidFixtureID);
-    ASSERT_EQ(GetFixtures(world, b1).size(), std::size_t(1));;
+    ASSERT_NO_THROW(Attach(world, b1, shapeId0));
+    ASSERT_EQ(GetShapes(world, b1).size(), std::size_t(1));;
 
     const auto j0 = world.CreateJoint(Joint{DistanceJointConf{b0, b1}});
     ASSERT_NE(j0, InvalidJointID);
@@ -206,25 +204,24 @@ TEST(WorldImpl, Clear)
     EXPECT_EQ(world.GetJointRange(), 0u);
     EXPECT_FALSE(world.IsDestroyed(JointID{0u})); // out-of-range so not destroyed
 
-    ASSERT_EQ(fixtureListener.ids.size(), std::size_t(2));
-    EXPECT_EQ(fixtureListener.ids.at(0), f0);
-    EXPECT_EQ(fixtureListener.ids.at(1), f1);
+    EXPECT_EQ(shapeListener.ids.size(), std::size_t(1));
+
+    ASSERT_EQ(associationListener.ids.size(), std::size_t(0));
 
     ASSERT_EQ(jointListener.ids.size(), std::size_t(1));
     EXPECT_EQ(jointListener.ids.at(0), j0);
 
-    const auto b2 = world.CreateBody();
+    const auto shapeId1 = world.CreateShape(Shape(DiskShapeConf{}));
+    const auto b2 = CreateBody(world);
     EXPECT_LE(b2, b1);
-    const auto fixtureConf2 = FixtureConf{}.UseBody(b2).UseShape(DiskShapeConf{});
-    const auto f2 = CreateFixture(world, fixtureConf2);
-    EXPECT_LE(f2, f1);
+    ASSERT_NO_THROW(Attach(world, b2, shapeId1));
 }
 
 TEST(WorldImpl, CreateDestroyEmptyStaticBody)
 {
     auto world = WorldImpl{};
     ASSERT_EQ(world.GetBodies().size(), BodyCounter(0));
-    const auto bodyID = world.CreateBody(BodyConf{}.UseType(BodyType::Static));
+    const auto bodyID = CreateBody(world, BodyConf{}.UseType(BodyType::Static));
     ASSERT_NE(bodyID, InvalidBodyID);
 
     const auto& body = world.GetBody(bodyID);
@@ -232,7 +229,7 @@ TEST(WorldImpl, CreateDestroyEmptyStaticBody)
     EXPECT_FALSE(IsSpeedable(body));
     EXPECT_FALSE(IsAccelerable(body));
     EXPECT_TRUE(IsImpenetrable(body));
-    EXPECT_EQ(GetFixtures(world, bodyID).size(), std::size_t{0});
+    EXPECT_EQ(GetShapes(world, bodyID).size(), std::size_t{0});
 
     EXPECT_EQ(world.GetBodies().size(), BodyCounter(1));
     const auto bodies1 = world.GetBodies();
@@ -259,7 +256,7 @@ TEST(WorldImpl, CreateDestroyEmptyDynamicBody)
 {
     auto world = WorldImpl{};
     ASSERT_EQ(world.GetBodies().size(), BodyCounter(0));
-    const auto bodyID = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    const auto bodyID = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     ASSERT_NE(bodyID, InvalidBodyID);
 
     const auto& body = world.GetBody(bodyID);
@@ -267,7 +264,7 @@ TEST(WorldImpl, CreateDestroyEmptyDynamicBody)
     EXPECT_TRUE(IsSpeedable(body));
     EXPECT_TRUE(IsAccelerable(body));
     EXPECT_FALSE(IsImpenetrable(body));
-    EXPECT_EQ(GetFixtures(world, bodyID).size(), std::size_t{0});
+    EXPECT_EQ(GetShapes(world, bodyID).size(), std::size_t{0});
 
     EXPECT_EQ(world.GetBodies().size(), BodyCounter(1));
     const auto bodies1 = world.GetBodies();
@@ -297,7 +294,7 @@ TEST(WorldImpl, CreateDestroyDynamicBodyAndFixture)
     
     auto world = WorldImpl{};
     ASSERT_EQ(world.GetBodies().size(), BodyCounter(0));
-    const auto bodyID = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    const auto bodyID = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     ASSERT_NE(bodyID, InvalidBodyID);
 
     const auto& body = world.GetBody(bodyID);
@@ -305,7 +302,7 @@ TEST(WorldImpl, CreateDestroyDynamicBodyAndFixture)
     EXPECT_TRUE(IsSpeedable(body));
     EXPECT_TRUE(IsAccelerable(body));
     EXPECT_FALSE(IsImpenetrable(body));
-    EXPECT_EQ(GetFixtures(world, bodyID).size(), std::size_t{0});
+    EXPECT_EQ(GetShapes(world, bodyID).size(), std::size_t{0});
 
     EXPECT_EQ(world.GetBodies().size(), BodyCounter(1));
     const auto bodies1 = world.GetBodies();
@@ -318,14 +315,13 @@ TEST(WorldImpl, CreateDestroyDynamicBodyAndFixture)
     EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
     EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
 
-    const auto fixtureConf = FixtureConf{}.UseBody(bodyID).UseShape(DiskShapeConf{1_m});
-    const auto fixture = CreateFixture(world, fixtureConf);
-    ASSERT_NE(fixture, InvalidFixtureID);
+    const auto shapeId = world.CreateShape(Shape(DiskShapeConf{1_m}));
+    ASSERT_NO_THROW(Attach(world, bodyID, shapeId));
     
     EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
-    EXPECT_EQ(GetFixtures(world, bodyID).size(), std::size_t{1});
+    EXPECT_EQ(GetShapes(world, bodyID).size(), std::size_t{1});
     ASSERT_EQ(world.GetFixturesForProxies().size(), std::size_t{1});
-    EXPECT_EQ(*world.GetFixturesForProxies().begin(), fixture);
+    EXPECT_EQ(*world.GetFixturesForProxies().begin(), std::make_pair(bodyID, shapeId));
 
     world.Destroy(bodyID); // should clear fixtures for proxies!
     
@@ -354,20 +350,21 @@ TEST(WorldImpl, CreateDestroyContactingBodies)
     const auto l1 = Length2{};
     const auto l2 = Length2{};
 
-    const auto body1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l1));
-    const auto body2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l2));
+    const auto body1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l1));
+    const auto body2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l2));
     EXPECT_EQ(world.GetBodies().size(), BodyCounter(2));
     EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
     EXPECT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(0));
     EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(0));
 
-    EXPECT_NE(world.CreateFixture(FixtureConf{}.UseBody(body1).UseShape(DiskShapeConf{1_m}.UseDensity(1_kgpm2))),
-              InvalidFixtureID);
-    EXPECT_NE(world.CreateFixture(FixtureConf{}.UseBody(body2).UseShape(DiskShapeConf{1_m}.UseDensity(1_kgpm2))),
-              InvalidFixtureID);
+    const auto shapeId = world.CreateShape(Shape(DiskShapeConf{1_m}.UseDensity(1_kgpm2)));
+    ASSERT_NO_THROW(Attach(world, body1, shapeId));
+    ASSERT_NO_THROW(Attach(world, body2, shapeId));
     EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
     EXPECT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(2));
     EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(0));
+    ASSERT_EQ(GetShapes(world, body1).size(), 1u);
+    ASSERT_EQ(GetShapes(world, body2).size(), 1u);
 
     const auto stepConf = StepConf{};
 
@@ -421,10 +418,10 @@ TEST(WorldImpl, CreateDestroyContactingBodies)
         EXPECT_EQ(contacts.begin()->first.GetMax(),
                   static_cast<decltype(contacts.begin()->first.GetMax())>(1));
         EXPECT_EQ(to_underlying(contacts.begin()->second), 0u);
-        EXPECT_EQ(GetFixtureA(world.GetContact(contacts.begin()->second)),
-                  *GetFixtures(world, body1).begin());
-        EXPECT_EQ(GetFixtureB(world.GetContact(contacts.begin()->second)),
-                  *GetFixtures(world, body2).begin());
+        EXPECT_EQ(GetShapeA(world.GetContact(contacts.begin()->second)),
+                  *GetShapes(world, body1).begin());
+        EXPECT_EQ(GetShapeB(world.GetContact(contacts.begin()->second)),
+                  *GetShapes(world, body2).begin());
         EXPECT_EQ(world.GetContactRange(), 1u);
         EXPECT_FALSE(world.IsDestroyed(ContactID{0u}));
     }
@@ -455,7 +452,7 @@ TEST(WorldImpl, CreateDestroyContactingBodies)
 TEST(WorldImpl, SetTypeOfBody)
 {
     auto world = WorldImpl{};
-    const auto bodyID = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    const auto bodyID = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     const auto& body = world.GetBody(bodyID);
     ASSERT_EQ(GetType(body), BodyType::Dynamic);
     auto other = WorldImpl{};
@@ -463,7 +460,7 @@ TEST(WorldImpl, SetTypeOfBody)
     EXPECT_EQ(GetType(body), BodyType::Dynamic);
     auto body2 = body;
     SetType(body2, BodyType::Static);
-    world.SetBody(bodyID, body2);
+    EXPECT_NO_THROW(world.SetBody(bodyID, body2));
     EXPECT_EQ(GetType(world.GetBody(bodyID)), BodyType::Static);
 }
 
@@ -475,77 +472,76 @@ TEST(WorldImpl, Proxies)
     const auto isSensor = true;
 
     {
-        const auto shape = Shape{
-            DiskShapeConf{}.UseFriction(friction).UseRestitution(restitution).UseDensity(density)
-        };
-
         auto world = WorldImpl{};
+        const auto shapeId = world.CreateShape(
+            Shape(DiskShapeConf{}.UseFriction(friction).UseRestitution(restitution).UseDensity(density).UseIsSensor(isSensor))
+        );
         const auto body = CreateBody(world);
-        const auto def = FixtureConf{}.UseBody(body).UseShape(shape).UseIsSensor(isSensor);
-        const auto fixtureID = CreateFixture(world, def);
-        const auto& fixture = world.GetFixture(fixtureID);
+        ASSERT_NO_THROW(Attach(world, body, shapeId));
+        ASSERT_EQ(std::size(GetShapes(world, body)), std::size_t(1));
+        ASSERT_EQ(GetShapes(world, body).at(0), shapeId);
 
-        ASSERT_EQ(GetBody(fixture), body);
-        ASSERT_EQ(GetShape(fixture), shape);
-        ASSERT_EQ(GetDensity(fixture), density);
-        ASSERT_EQ(GetFriction(fixture), friction);
-        ASSERT_EQ(GetRestitution(fixture), restitution);
-        ASSERT_EQ(IsSensor(fixture), isSensor);
-        ASSERT_EQ(world.GetProxies(fixtureID).size(), ChildCounter{0});
+        const auto& shape = world.GetShape(shapeId);
+        ASSERT_EQ(GetDensity(shape), density);
+        ASSERT_EQ(GetFriction(shape), friction);
+        ASSERT_EQ(GetRestitution(shape), restitution);
+        ASSERT_EQ(IsSensor(shape), isSensor);
+
+        auto psize = std::size_t(0u);
+        ASSERT_NO_THROW(psize = world.GetProxies(BodyID(0)).size());
+        EXPECT_EQ(psize, 0u);
+        ASSERT_EQ(world.GetFixturesForProxies().size(), 1u);
+        EXPECT_EQ(*world.GetFixturesForProxies().begin(), std::make_pair(body, shapeId));
 
         const auto stepConf = StepConf{};
-        Step(world, stepConf);
-        EXPECT_EQ(world.GetProxies(fixtureID).size(), ChildCounter{1});
-        EXPECT_EQ(GetProxy(world, fixtureID, 0), ContactCounter{0});
+        ASSERT_NO_THROW(Step(world, stepConf));
+        ASSERT_EQ(world.GetProxies(body).size(), 1u);
+        EXPECT_EQ(world.GetProxies(body)[0], 0u);
     }
 
     {
         const auto shape = Shape{
-            ChainShapeConf{}.Add(Length2{-2_m, -3_m}).Add(Length2{-2_m, 0_m}).Add(Length2{0_m, 0_m})
+            ChainShapeConf{}.UseIsSensor(isSensor).Add(Length2{-2_m, -3_m}).Add(Length2{-2_m, 0_m}).Add(Length2{0_m, 0_m})
         };
 
         auto world = WorldImpl{};
+        const auto shapeId = world.CreateShape(shape);
         const auto body = CreateBody(world);
-        const auto def = FixtureConf{}.UseBody(body).UseShape(shape).UseIsSensor(isSensor);
-        const auto fixtureID = CreateFixture(world, def);
-        const auto& fixture = world.GetFixture(fixtureID);
+        ASSERT_NO_THROW(Attach(world, body, shapeId));
 
-        ASSERT_EQ(GetBody(fixture), body);
-        ASSERT_EQ(GetShape(fixture), shape);
-        ASSERT_EQ(IsSensor(fixture), isSensor);
-        ASSERT_EQ(GetProxyCount(world, fixtureID), ChildCounter{0});
+        ASSERT_EQ(std::size(GetShapes(world, body)), 1u);
+        ASSERT_EQ(GetShapes(world, body).at(0), shapeId);
+        ASSERT_EQ(IsSensor(shape), isSensor);
+        ASSERT_EQ(world.GetProxies(body).size(), 0u);
 
         const auto stepConf = StepConf{};
-        Step(world, stepConf);
-        EXPECT_EQ(GetProxyCount(world, fixtureID), ChildCounter{2});
-        EXPECT_EQ(GetProxy(world, fixtureID, 0), ContactCounter{0});
-        EXPECT_EQ(GetProxy(world, fixtureID, 1), ContactCounter{1});
+        ASSERT_NO_THROW(Step(world, stepConf));
+        ASSERT_EQ(world.GetProxies(body).size(), 2u);
+        EXPECT_EQ(world.GetProxies(body)[0], 0u);
+        EXPECT_EQ(world.GetProxies(body)[1], 1u);
     }
 
     {
         const auto shape = Shape{
-            ChainShapeConf{}.Add(Length2{-2_m, -3_m}).Add(Length2{-2_m, 0_m}).Add(Length2{0_m, 0_m})
+            ChainShapeConf{}.UseIsSensor(isSensor).Add(Length2{-2_m, -3_m}).Add(Length2{-2_m, 0_m}).Add(Length2{0_m, 0_m})
             .Add(Length2{0_m, +2_m}).Add(Length2{2_m, 2_m})
         };
 
         auto world = WorldImpl{};
+        const auto shapeId = world.CreateShape(shape);
         const auto body = CreateBody(world);
-        const auto def = FixtureConf{}.UseBody(body).UseShape(shape).UseIsSensor(isSensor);
-        const auto fixtureID = CreateFixture(world, def);
-        const auto& fixture = world.GetFixture(fixtureID);
+        ASSERT_NO_THROW(Attach(world, body, shapeId));
 
-        ASSERT_EQ(GetBody(fixture), body);
-        ASSERT_EQ(GetShape(fixture), shape);
-        ASSERT_EQ(IsSensor(fixture), isSensor);
-        ASSERT_EQ(GetProxyCount(world, fixtureID), ChildCounter{0});
+        ASSERT_EQ(IsSensor(shape), isSensor);
+        ASSERT_EQ(world.GetProxies(body).size(), 0u);
 
         const auto stepConf = StepConf{};
-        Step(world, stepConf);
-        EXPECT_EQ(GetProxyCount(world, fixtureID), ChildCounter{4});
-        EXPECT_EQ(GetProxy(world, fixtureID, 0), ContactCounter{0});
-        EXPECT_EQ(GetProxy(world, fixtureID, 1), ContactCounter{1});
-        EXPECT_EQ(GetProxy(world, fixtureID, 2), ContactCounter{3});
-        EXPECT_EQ(GetProxy(world, fixtureID, 3), ContactCounter{5});
+        ASSERT_NO_THROW(Step(world, stepConf));
+        ASSERT_EQ(world.GetProxies(body).size(), 4u);
+        EXPECT_EQ(world.GetProxies(body)[0], 0u);
+        EXPECT_EQ(world.GetProxies(body)[1], 1u);
+        EXPECT_EQ(world.GetProxies(body)[2], 3u);
+        EXPECT_EQ(world.GetProxies(body)[3], 5u);
     }
 }
 
@@ -560,19 +556,18 @@ TEST(WorldImpl, SetEnabledBody)
     const auto body0 = CreateBody(world);
     const auto body1 = CreateBody(world);
     const auto valid_shape = Shape{DiskShapeConf(1_m)};
+    const auto shapeId = world.CreateShape(valid_shape);
 
-    const auto fixture0 = CreateFixture(world, FixtureConf{}.UseBody(body0).UseShape(valid_shape));
-    const auto fixture1 = CreateFixture(world, FixtureConf{}.UseBody(body1).UseShape(valid_shape));
-    ASSERT_NE(fixture0, InvalidFixtureID);
-    ASSERT_NE(fixture1, InvalidFixtureID);
+    ASSERT_NO_THROW(Attach(world, body0, shapeId));
+    ASSERT_NO_THROW(Attach(world, body1, shapeId));
 
     ASSERT_TRUE(IsEnabled(world.GetBody(body0)));
-    ASSERT_EQ(GetProxyCount(world, fixture0), 0u);
+    ASSERT_EQ(world.GetProxies(body0).size(), 0u);
     EXPECT_EQ(GetFixturesForProxies(world).size(), 2u);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
 
     EXPECT_NO_THROW(Step(world, stepConf));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
+    EXPECT_EQ(world.GetProxies(body0).size(), 1u);
     EXPECT_EQ(GetFixturesForProxies(world).size(), 0u);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
 
@@ -589,36 +584,36 @@ TEST(WorldImpl, SetEnabledBody)
         EXPECT_NO_THROW(world.SetBody(body1, copyBody1));
         EXPECT_FALSE(IsEnabled(world.GetBody(body1)));
     }
-    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 1u);
+    EXPECT_EQ(world.GetProxies(body0).size(), 1u);
+    EXPECT_EQ(GetFixturesForProxies(world).size(), 0u);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
 
     EXPECT_NO_THROW(SetEnabled(world, body0, false));
     EXPECT_FALSE(IsEnabled(world.GetBody(body0)));
     EXPECT_NO_THROW(SetEnabled(world, body1, true));
     EXPECT_TRUE(IsEnabled(world.GetBody(body1)));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 3u);
+    EXPECT_EQ(world.GetProxies(body0).size(), 0u);
+    EXPECT_EQ(GetFixturesForProxies(world).size(), 1u);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
 
     EXPECT_NO_THROW(SetEnabled(world, body0, true));
     EXPECT_TRUE(IsEnabled(world.GetBody(body0)));
     EXPECT_NO_THROW(SetEnabled(world, body1, false));
     EXPECT_FALSE(IsEnabled(world.GetBody(body1)));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 5u);
+    EXPECT_EQ(world.GetProxies(body0).size(), 0u);
+    EXPECT_EQ(GetFixturesForProxies(world).size(), 1u);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
 
     EXPECT_NO_THROW(SetEnabled(world, body0, false));
     EXPECT_FALSE(IsEnabled(world.GetBody(body0)));
     EXPECT_NO_THROW(SetEnabled(world, body1, true));
     EXPECT_TRUE(IsEnabled(world.GetBody(body1)));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 7u);
+    EXPECT_EQ(world.GetProxies(body0).size(), 0u);
+    EXPECT_EQ(GetFixturesForProxies(world).size(), 1u);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
 
     EXPECT_NO_THROW(Step(world, stepConf));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 0u);
+    EXPECT_EQ(world.GetProxies(body0).size(), 0u);
     EXPECT_EQ(GetFixturesForProxies(world).size(), 0u);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
 
@@ -628,18 +623,18 @@ TEST(WorldImpl, SetEnabledBody)
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
 
     EXPECT_NO_THROW(Step(world, stepConf));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
+    EXPECT_EQ(world.GetProxies(body0).size(), 1u);
     EXPECT_EQ(GetFixturesForProxies(world).size(), 0u);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
 }
 
-TEST(WorldImpl, CreateAndDestroyFixture)
+TEST(WorldImpl, AttachAndDetachShape)
 {
     auto world = WorldImpl{};
 
     auto body = CreateBody(world);
     ASSERT_NE(body, InvalidBodyID);
-    EXPECT_TRUE(GetFixtures(world, body).empty());
+    EXPECT_TRUE(GetShapes(world, body).empty());
     EXPECT_FALSE(IsMassDataDirty(world.GetBody(body)));
 
     auto conf = DiskShapeConf{};
@@ -647,18 +642,19 @@ TEST(WorldImpl, CreateAndDestroyFixture)
     conf.location = Vec2{1.912f, -77.31f} * 1_m;
     conf.density = 1_kgpm2;
     const auto shape = Shape(conf);
+    const auto shapeId = world.CreateShape(shape);
 
     {
-        auto fixture = CreateFixture(world, FixtureConf{}.UseBody(body).UseShape(shape));
-        const auto fshape = GetShape(world.GetFixture(fixture));
+        Attach(world, body, shapeId);
+        const auto& fshape = world.GetShape(shapeId);
         EXPECT_EQ(GetVertexRadius(fshape, 0), GetVertexRadius(shape, 0));
         EXPECT_EQ(TypeCast<DiskShapeConf>(fshape).GetLocation(), conf.GetLocation());
-        EXPECT_FALSE(GetFixtures(world, body).empty());
+        EXPECT_FALSE(GetShapes(world, body).empty());
         {
             auto i = 0;
-            for (const auto& f: GetFixtures(world, body))
+            for (const auto& f: GetShapes(world, body))
             {
-                EXPECT_EQ(f, fixture);
+                EXPECT_EQ(f, shapeId);
                 ++i;
             }
             EXPECT_EQ(i, 1);
@@ -666,31 +662,32 @@ TEST(WorldImpl, CreateAndDestroyFixture)
         EXPECT_TRUE(IsMassDataDirty(world.GetBody(body)));
 
         ASSERT_EQ(GetFixturesForProxies(world).size(), std::size_t{1});
-        EXPECT_EQ(*GetFixturesForProxies(world).begin(), fixture);
+        EXPECT_EQ(*GetFixturesForProxies(world).begin(), std::make_pair(body, shapeId));
 
-        EXPECT_TRUE(world.Destroy(fixture));
-        EXPECT_TRUE(GetFixtures(world, body).empty());
+        EXPECT_TRUE(Detach(world, body, shapeId));
+        EXPECT_FALSE(Detach(world, body, shapeId));
+        EXPECT_TRUE(GetShapes(world, body).empty());
         EXPECT_TRUE(IsMassDataDirty(world.GetBody(body)));
 
         EXPECT_EQ(GetFixturesForProxies(world).size(), std::size_t(0));
     }
     {
-        auto fixture = CreateFixture(world, FixtureConf{}.UseBody(body).UseShape(shape));
-        const auto fshape = GetShape(world.GetFixture(fixture));
+        Attach(world, body, shapeId);
+        const auto& fshape = world.GetShape(shapeId);
         EXPECT_EQ(GetVertexRadius(fshape, 0), GetVertexRadius(shape, 0));
         EXPECT_EQ(TypeCast<DiskShapeConf>(fshape).GetLocation(), conf.GetLocation());
-        EXPECT_FALSE(GetFixtures(world, body).empty());
+        EXPECT_FALSE(GetShapes(world, body).empty());
         {
             auto i = 0;
-            for (const auto& f: GetFixtures(world, body))
+            for (const auto& f: GetShapes(world, body))
             {
-                EXPECT_EQ(f, fixture);
+                EXPECT_EQ(f, shapeId);
                 ++i;
             }
             EXPECT_EQ(i, 1);
         }
         EXPECT_TRUE(IsMassDataDirty(world.GetBody(body)));
-        EXPECT_FALSE(GetFixtures(world, body).empty());
+        EXPECT_FALSE(GetShapes(world, body).empty());
     }
 }
 
@@ -715,16 +712,14 @@ TEST(WorldImpl, SetTypeBody)
     EXPECT_EQ(GetBodiesForProxies(world).size(), 1u);
 }
 
-TEST(WorldImpl, ThrowsLengthErrorOnMaxFitures)
+TEST(WorldImpl, ThrowsLengthErrorOnMaxShapes)
 {
     auto world = WorldImpl{};
-    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     const auto shape = Shape{DiskShapeConf{}};
-    const auto conf = FixtureConf{}.UseBody(body).UseShape(shape);
-    for (auto i = FixtureCounter{0u}; i < MaxFixtures; ++i) {
-        EXPECT_NO_THROW(world.CreateFixture(conf));
+    for (auto i = ShapeCounter{0u}; i < MaxShapes; ++i) {
+        EXPECT_NO_THROW(world.CreateShape(shape));
     }
-    EXPECT_THROW(world.CreateFixture(conf), LengthError);
+    EXPECT_THROW(world.CreateShape(shape), LengthError);
 }
 
 TEST(WorldImpl, GetBodyRange)
@@ -749,25 +744,29 @@ TEST(WorldImpl, GetBodyRange)
     EXPECT_EQ(world.GetBodies().size(), 1u);
 }
 
-TEST(WorldImpl, GetFixtureRange)
+TEST(WorldImpl, GetShapeRange)
 {
     const auto shape = Shape{DiskShapeConf{}};
     auto world = WorldImpl{};
-    EXPECT_EQ(world.GetFixtureRange(), FixtureCounter{0u});
+    EXPECT_EQ(world.GetShapeRange(), ShapeCounter{0u});
+    const auto shapeId = world.CreateShape(shape);
+    EXPECT_EQ(world.GetShapeRange(), ShapeCounter{1u});
     EXPECT_NO_THROW(CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
-    EXPECT_EQ(world.GetFixtures(BodyID{0u}).size(), 0u);
-    EXPECT_NO_THROW(CreateFixture(world, FixtureConf{}.UseBody(BodyID{0u}).UseShape(shape)));
-    EXPECT_EQ(world.GetFixtureRange(), FixtureCounter{1u});
-    EXPECT_EQ(world.GetFixtures(BodyID{0u}).size(), 1u);
-    EXPECT_NO_THROW(CreateFixture(world, FixtureConf{}.UseBody(BodyID{0u}).UseShape(shape)));
-    EXPECT_EQ(world.GetFixtureRange(), FixtureCounter{2u});
-    EXPECT_EQ(world.GetFixtures(BodyID{0u}).size(), 2u);
-    EXPECT_NO_THROW(Destroy(world, FixtureID{0u}));
-    EXPECT_EQ(world.GetFixtureRange(), FixtureCounter{2u});
-    EXPECT_EQ(world.GetFixtures(BodyID{0u}).size(), 1u);
-    EXPECT_NO_THROW(Destroy(world, FixtureID{1u}));
-    EXPECT_EQ(world.GetFixtureRange(), FixtureCounter{2u});
-    EXPECT_EQ(world.GetFixtures(BodyID{0u}).size(), 0u);
+    EXPECT_EQ(GetShapes(world, BodyID{0u}).size(), 0u);
+    EXPECT_NO_THROW(Attach(world, BodyID{0u}, shapeId));
+    EXPECT_EQ(world.GetShapeRange(), ShapeCounter{1u});
+    EXPECT_EQ(GetShapes(world, BodyID{0u}).size(), 1u);
+    EXPECT_NO_THROW(Attach(world, BodyID{0u}, shapeId));
+    EXPECT_EQ(world.GetShapeRange(), ShapeCounter{1u});
+    EXPECT_EQ(GetShapes(world, BodyID{0u}).size(), 2u);
+    EXPECT_NO_THROW(Detach(world, BodyID{0u}, shapeId));
+    EXPECT_EQ(world.GetShapeRange(), ShapeCounter{1u});
+    EXPECT_EQ(GetShapes(world, BodyID{0u}).size(), 1u);
+    EXPECT_NO_THROW(Detach(world, BodyID{0u}, shapeId));
+    EXPECT_EQ(world.GetShapeRange(), ShapeCounter{1u});
+    EXPECT_EQ(GetShapes(world, BodyID{0u}).size(), 0u);
+    EXPECT_NO_THROW(world.Destroy(shapeId));
+    EXPECT_EQ(world.GetShapeRange(), ShapeCounter{1u});
 }
 
 TEST(WorldImpl, GetJointRange)
@@ -807,25 +806,199 @@ TEST(WorldImpl, IsDestroyedBody)
     EXPECT_TRUE(world.IsDestroyed(BodyID{1u}));
 }
 
-TEST(WorldImpl, IsDestroyedFixture)
+TEST(WorldImpl, AttachDetach)
 {
     const auto shape = Shape{DiskShapeConf{}};
     auto world = WorldImpl{};
-    auto id = InvalidFixtureID;
+    const auto shapeId = world.CreateShape(shape);
     ASSERT_NO_THROW(CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
-    ASSERT_NO_THROW(id = CreateFixture(world, FixtureConf{}.UseBody(BodyID{0u}).UseShape(shape)));
-    ASSERT_EQ(to_underlying(id), 0u);
-    EXPECT_FALSE(world.IsDestroyed(FixtureID{0u}));
+    ASSERT_NO_THROW(Attach(world, BodyID{0u}, shapeId));
+    ASSERT_EQ(GetShapes(world, BodyID{0}).size(), 1u);
+    ASSERT_EQ(GetShapes(world, BodyID{0})[0], shapeId);
 
-    ASSERT_NO_THROW(id = CreateFixture(world, FixtureConf{}.UseBody(BodyID{0u}).UseShape(shape)));
-    ASSERT_EQ(to_underlying(id), 1u);
-    EXPECT_FALSE(world.IsDestroyed(FixtureID{1u}));
+    ASSERT_NO_THROW(Attach(world, BodyID{0u}, shapeId));
+    ASSERT_EQ(GetShapes(world, BodyID{0}).size(), 2u);
+    ASSERT_EQ(GetShapes(world, BodyID{0})[0], shapeId);
+    ASSERT_EQ(GetShapes(world, BodyID{0})[1], shapeId);
 
-    ASSERT_NO_THROW(Destroy(world, FixtureID{0u}));
-    EXPECT_TRUE(world.IsDestroyed(FixtureID{0u}));
-    EXPECT_FALSE(world.IsDestroyed(FixtureID{1u}));
+    ASSERT_NO_THROW(Detach(world, BodyID{0u}, shapeId));
+    ASSERT_EQ(GetShapes(world, BodyID{0}).size(), 1u);
+    ASSERT_EQ(GetShapes(world, BodyID{0})[0], shapeId);
 
-    ASSERT_NO_THROW(Destroy(world, FixtureID{1u}));
-    EXPECT_TRUE(world.IsDestroyed(FixtureID{0u}));
-    EXPECT_TRUE(world.IsDestroyed(FixtureID{1u}));
+    ASSERT_NO_THROW(Detach(world, BodyID{0u}, shapeId));
+    ASSERT_EQ(GetShapes(world, BodyID{0}).size(), 0u);
+}
+
+TEST(WorldImpl, SetShapeThrowsWithOutOfRangeID)
+{
+    auto world = WorldImpl{};
+    ASSERT_EQ(world.GetShapeRange(), 0u);
+    EXPECT_THROW(world.SetShape(ShapeID(0), Shape{}), std::out_of_range);
+}
+
+TEST(WorldImpl, CreateBodyThrowsWithOutOfRangeShapeID)
+{
+    auto world = WorldImpl{};
+    auto body = Body{};
+    ASSERT_NO_THROW(body.Attach(ShapeID(0)));
+    EXPECT_THROW(world.CreateBody(body), std::out_of_range);
+}
+
+TEST(WorldImpl, CreateBodyWithInRangeShapeIDs)
+{
+    auto world = WorldImpl{};
+
+    ASSERT_EQ(world.GetShapeRange(), 0u);
+    auto shapeId0 = InvalidShapeID;
+    auto shapeId1 = InvalidShapeID;
+    ASSERT_NO_THROW(shapeId0 = world.CreateShape(Shape(DiskShapeConf{})));
+    ASSERT_NO_THROW(shapeId1 = world.CreateShape(Shape(DiskShapeConf{})));
+    ASSERT_EQ(world.GetShapeRange(), 2u);
+
+    auto body = Body{};
+    ASSERT_EQ(size(body.GetShapes()), 0u);
+    ASSERT_NO_THROW(body.Attach(shapeId0));
+    ASSERT_EQ(size(body.GetShapes()), 1u);
+    ASSERT_NO_THROW(body.Attach(shapeId1));
+    ASSERT_EQ(size(body.GetShapes()), 2u);
+
+    ASSERT_EQ(world.GetBodyRange(), 0u);
+    auto bodyId = InvalidBodyID;
+    EXPECT_NO_THROW(bodyId = world.CreateBody(body));
+    EXPECT_EQ(world.GetBodyRange(), 1u);
+    ASSERT_EQ(size(world.GetBody(bodyId).GetShapes()), 2u);
+    ASSERT_EQ(world.GetBody(bodyId).GetShapes()[0], shapeId0);
+    ASSERT_EQ(world.GetBody(bodyId).GetShapes()[1], shapeId1);
+    ASSERT_EQ(size(world.GetFixturesForProxies()), 2u);
+    EXPECT_EQ(*begin(world.GetFixturesForProxies()), std::make_pair(bodyId, shapeId0));
+    EXPECT_EQ(*(begin(world.GetFixturesForProxies()) + 1), std::make_pair(bodyId, shapeId1));
+    EXPECT_EQ(size(world.GetProxies(bodyId)), 0u);
+
+    EXPECT_NO_THROW(world.Step(StepConf{}));
+    EXPECT_EQ(size(world.GetFixturesForProxies()), 0u);
+    EXPECT_EQ(size(world.GetProxies(bodyId)), 2u);
+}
+
+TEST(WorldImpl, SetBodyThrowsWithOutOfRangeID)
+{
+    auto world = WorldImpl{};
+    ASSERT_EQ(world.GetBodyRange(), 0u);
+    EXPECT_THROW(world.SetBody(BodyID(0), Body{}), std::out_of_range);
+}
+
+TEST(WorldImpl, SetBodyThrowsWithOutOfRangeShapeID)
+{
+    auto world = WorldImpl{};
+    ASSERT_EQ(world.GetBodyRange(), 0u);
+    ASSERT_NO_THROW(world.CreateBody(Body()));
+    ASSERT_EQ(world.GetBodyRange(), 1u);
+    auto body = Body{};
+    ASSERT_NO_THROW(world.SetBody(BodyID(0), body));
+    ASSERT_NO_THROW(body.Attach(ShapeID(0)));
+    EXPECT_THROW(world.SetBody(BodyID(0), body), std::out_of_range);
+}
+
+TEST(WorldImpl, SetFreedShapeThrows)
+{
+    auto world = WorldImpl{};
+    auto id = InvalidShapeID;
+    ASSERT_NO_THROW(id = world.CreateShape(Shape()));
+    ASSERT_NO_THROW(world.Destroy(id));
+    EXPECT_THROW(world.SetShape(id, Shape()), InvalidArgument);
+}
+
+TEST(WorldImpl, SetFreedBodyThrows)
+{
+    auto world = WorldImpl{};
+    auto id = InvalidBodyID;
+    ASSERT_NO_THROW(id = world.CreateBody(Body()));
+    ASSERT_NO_THROW(world.Destroy(id));
+    EXPECT_THROW(world.SetBody(id, Body()), InvalidArgument);
+}
+
+TEST(WorldImpl, SetFreedJointThrows)
+{
+    auto world = WorldImpl{};
+    auto id = InvalidJointID;
+    ASSERT_NO_THROW(id = world.CreateJoint(Joint()));
+    ASSERT_NO_THROW(world.Destroy(id));
+    EXPECT_THROW(world.SetJoint(id, Joint()), InvalidArgument);
+}
+
+TEST(WorldImpl, SetBodyWithShapeID)
+{
+    auto world = WorldImpl{};
+
+    ASSERT_EQ(world.GetShapeRange(), 0u);
+    auto shapeId = InvalidShapeID;
+    ASSERT_NO_THROW(shapeId = world.CreateShape(Shape(DiskShapeConf{})));
+    ASSERT_EQ(world.GetShapeRange(), 1u);
+
+    ASSERT_EQ(world.GetBodyRange(), 0u);
+    auto bodyId = InvalidBodyID;
+    ASSERT_NO_THROW(bodyId = world.CreateBody(Body()));
+    ASSERT_EQ(world.GetBodyRange(), 1u);
+    ASSERT_EQ(size(world.GetBody(bodyId).GetShapes()), 0u);
+
+    auto body = Body{};
+    ASSERT_EQ(size(body.GetShapes()), 0u);
+
+    ASSERT_NO_THROW(body.Attach(shapeId));
+    ASSERT_EQ(size(body.GetShapes()), 1u);
+    EXPECT_NO_THROW(world.SetBody(bodyId, body));
+    EXPECT_EQ(size(world.GetBody(bodyId).GetShapes()), 1u);
+    EXPECT_EQ(size(world.GetFixturesForProxies()), 1u);
+
+    ASSERT_NO_THROW(body.Detach(shapeId));
+    ASSERT_EQ(size(body.GetShapes()), 0u);
+    EXPECT_NO_THROW(world.SetBody(bodyId, body));
+    EXPECT_EQ(size(world.GetBody(bodyId).GetShapes()), 0u);
+    EXPECT_EQ(size(world.GetFixturesForProxies()), 0u);
+
+    ASSERT_NO_THROW(body.Attach(shapeId));
+    ASSERT_NO_THROW(body.Attach(shapeId));
+    ASSERT_EQ(size(body.GetShapes()), 2u);
+    EXPECT_NO_THROW(world.SetBody(bodyId, body));
+    EXPECT_EQ(size(world.GetBody(bodyId).GetShapes()), 2u);
+    EXPECT_EQ(size(world.GetFixturesForProxies()), 2u);
+
+    ASSERT_NO_THROW(body.Detach(shapeId));
+    ASSERT_EQ(size(body.GetShapes()), 1u);
+    EXPECT_NO_THROW(world.SetBody(bodyId, body));
+    EXPECT_EQ(size(world.GetBody(bodyId).GetShapes()), 1u);
+    // Detaching the shape currently gets rid of all attachments to the body of that shape...
+    EXPECT_EQ(size(world.GetFixturesForProxies()), 0u);
+}
+
+TEST(WorldImpl, CreateJointThrowsWithOutOfRangeBodyID)
+{
+    auto world = WorldImpl{};
+    auto joint = Joint(FrictionJointConf{}.UseBodyA(BodyID(0)));
+    EXPECT_THROW(world.CreateJoint(joint), std::out_of_range);
+}
+
+TEST(WorldImpl, SetJointThrowsWithOutOfRangeID)
+{
+    auto world = WorldImpl{};
+    ASSERT_EQ(world.GetJointRange(), 0u);
+    auto joint = Joint(FrictionJointConf{}.UseBodyA(BodyID(0)));
+    EXPECT_THROW(world.SetJoint(JointID(0), joint), std::out_of_range);
+}
+
+TEST(WorldImpl, SetJointThrowsWithOutOfRangeBodyID)
+{
+    const auto b0 = BodyID(0);
+    const auto b1 = BodyID(1);
+    const auto j0 = JointID(0);
+    auto world = WorldImpl{};
+    ASSERT_NO_THROW(world.CreateBody(Body()));
+    ASSERT_EQ(world.GetBodyRange(), 1u);
+    ASSERT_EQ(world.GetJointRange(), 0u);
+    ASSERT_NO_THROW(world.CreateJoint(Joint(FrictionJointConf{}.UseBodyA(b0).UseBodyB(b0))));
+    ASSERT_EQ(world.GetJointRange(), 1u);
+    ASSERT_NO_THROW(world.SetJoint(j0, Joint(FrictionJointConf{}.UseBodyA(b0).UseBodyB(b0))));
+    EXPECT_THROW(world.SetJoint(j0, Joint(FrictionJointConf{}.UseBodyA(b1).UseBodyB(b0))),
+                 std::out_of_range);
+    EXPECT_THROW(world.SetJoint(j0, Joint(FrictionJointConf{}.UseBodyA(b0).UseBodyB(b1))),
+                 std::out_of_range);
 }

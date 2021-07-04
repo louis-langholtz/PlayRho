@@ -29,10 +29,14 @@ namespace testbed {
 class Tumbler : public Test
 {
 public:
-    static constexpr auto Count = 800;
+    static constexpr auto Count = 1600;
     
     Tumbler()
     {
+        m_square = CreateShape(GetWorld(), PolygonShapeConf{}.SetAsBox(0.125_m, 0.125_m).UseDensity(1_kgpm2));
+        m_disk = CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(0.125_m).UseFriction(0).UseDensity(0.1_kgpm2));
+        m_shape = m_square;
+
         SetupTumblers(1);
         RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "Speed up rotation.", [&](KeyActionMods) {
             for (const auto& id: GetJoints(GetWorld())) {
@@ -67,12 +71,15 @@ public:
         });
         RegisterForKey(GLFW_KEY_C, GLFW_PRESS, 0, "Clear and re-emit shapes.", [&](KeyActionMods) {
             std::vector<BodyID> bodies;
-            for (const auto& b: GetBodies(GetWorld())) {
-                if ((b.get() < m_tumblee.size()) && m_tumblee[b.get()]) {
-                    bodies.push_back(b);
+            for (auto&& b: GetBodies(GetWorld())) {
+                const auto shapes = GetShapes(GetWorld(), b);
+                if (size(shapes) == 1u) {
+                    if (const auto shapeId = shapes.front(); shapeId == m_disk || shapeId == m_square) {
+                        bodies.push_back(b);
+                    }
                 }
             }
-            for (const auto& b: bodies) {
+            for (auto&& b: Reverse(bodies)) {
                 Destroy(GetWorld(), b);
             }
             m_count = 0;
@@ -102,13 +109,13 @@ public:
                                           .UseLinearAcceleration(GetGravity()));
         auto shape = PolygonShapeConf{}.UseDensity(5_kgpm2);
         shape.SetAsBox(0.5_m, 10_m, Vec2( 10,   0) * 1_m, 0_rad);
-        CreateFixture(GetWorld(), b, Shape(shape));
+        Attach(GetWorld(), b, CreateShape(GetWorld(), shape));
         shape.SetAsBox(0.5_m, 10_m, Vec2(-10,   0) * 1_m, 0_rad);
-        CreateFixture(GetWorld(), b, Shape(shape));
+        Attach(GetWorld(), b, CreateShape(GetWorld(), shape));
         shape.SetAsBox(10_m, 0.5_m, Vec2(  0,  10) * 1_m, 0_rad);
-        CreateFixture(GetWorld(), b, Shape(shape));
+        Attach(GetWorld(), b, CreateShape(GetWorld(), shape));
         shape.SetAsBox(10_m, 0.5_m, Vec2(  0, -10) * 1_m, 0_rad);
-        CreateFixture(GetWorld(), b, Shape(shape));
+        Attach(GetWorld(), b, CreateShape(GetWorld(), shape));
         return b;
     }
 
@@ -128,15 +135,12 @@ public:
     {
         const auto b = CreateBody(GetWorld(), BodyConf{}.UseType(BodyType::Dynamic).UseLocation(at)
                                           .UseLinearAcceleration(GetGravity()));
-        m_tumblee.resize(b.get() + 1u);
-        m_tumblee[b.get()] = true;
-        CreateFixture(GetWorld(), b, m_shape);
+        Attach(GetWorld(), b, m_shape);
     }
 
     void PostStep(const Settings& settings, Drawer&) override
     {
-        if ((!settings.pause || settings.singleStep) && (m_count < Count))
-        {
+        if ((!settings.pause || settings.singleStep) && (m_count < Count)) {
             for (const auto& id: GetJoints(GetWorld())) {
                 if (GetType(GetWorld(), id) == GetTypeID<RevoluteJointConf>()) {
                     CreateTumblee(GetLocation(GetWorld(), GetBodyB(GetWorld(), id)));
@@ -148,11 +152,10 @@ public:
     }
 
     const AngularVelocity MotorInc = 0.5_rpm;
-    const Shape m_square = Shape{PolygonShapeConf{}.SetAsBox(0.125_m, 0.125_m).UseDensity(1_kgpm2)};
-    const Shape m_disk = Shape{DiskShapeConf{}.UseRadius(0.125_m).UseFriction(0).UseDensity(0.1_kgpm2)};
+    ShapeID m_square = InvalidShapeID;
+    ShapeID m_disk = InvalidShapeID;
+    ShapeID m_shape = InvalidShapeID;
     int m_count = 0;
-    Shape m_shape = m_square;
-    std::vector<bool> m_tumblee;
 };
 
 } // namespace testbed

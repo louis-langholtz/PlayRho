@@ -45,28 +45,18 @@ public:
         });
 
         {
-            const auto ground = CreateBody(GetWorld());
-            CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
-#if 0
-            {
-                auto sd = FixtureConf{};
-                sd.SetAsBox(10_m, 2_m, Vec2(0.0f, 20.0f) * 1_m, 0.0f);
-                sd.isSensor = true;
-                m_sensor = CreateFixture(GetWorld(), ground, sd);
-            }
-#else
-            {
-                auto conf = DiskShapeConf{};
-                conf.vertexRadius = 5_m;
-                conf.location = Vec2(0.0f, 10.0f) * 1_m;
-                m_sensor = CreateFixture(GetWorld(), ground, Shape(conf), FixtureConf{}.UseIsSensor(true));
-            }
-#endif
+            m_ground = CreateBody(GetWorld());
+            Attach(GetWorld(), m_ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+            auto conf = DiskShapeConf{};
+            conf.vertexRadius = 5_m;
+            conf.location = Vec2(0.0f, 10.0f) * 1_m;
+            conf.isSensor = true;
+            m_sensor = CreateShape(GetWorld(), Shape(conf));
+            Attach(GetWorld(), m_ground, m_sensor);
         }
 
-        const auto shape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m)};
-        for (auto i = 0; i < e_count; ++i)
-        {
+        const auto shape = CreateShape(GetWorld(), DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m));
+        for (auto i = 0; i < e_count; ++i) {
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = GetGravity();
@@ -74,37 +64,31 @@ public:
             m_bodies[i] = CreateBody(GetWorld(), bd);
             m_touching.resize(m_bodies[i].get() + 1);
             m_touching[m_bodies[i].get()] = false;
-            CreateFixture(GetWorld(), m_bodies[i], shape);
+            Attach(GetWorld(), m_bodies[i], shape);
         }
     }
 
     // Implement contact listener.
-    void BeginContact(ContactID contact)
+    void BeginContact(ContactID contactId)
     {
-        const auto fixtureA = GetFixtureA(GetWorld(), contact);
-        const auto fixtureB = GetFixtureB(GetWorld(), contact);
-        if (fixtureA == m_sensor)
-        {
-            m_touching[GetBody(GetWorld(), fixtureB).get()] = true;
+        const auto& contact = GetContact(GetWorld(), contactId);
+        if (GetShapeA(contact) == m_sensor) {
+            m_touching[GetBodyB(contact).get()] = true;
         }
-        if (fixtureB == m_sensor)
-        {
-            m_touching[GetBody(GetWorld(), fixtureA).get()] = true;
+        if (GetShapeB(contact) == m_sensor) {
+            m_touching[GetBodyA(contact).get()] = true;
         }
     }
 
     // Implement contact listener.
-    void EndContact(ContactID contact)
+    void EndContact(ContactID contactId)
     {
-        const auto fixtureA = GetFixtureA(GetWorld(), contact);
-        const auto fixtureB = GetFixtureB(GetWorld(), contact);
-        if (fixtureA == m_sensor)
-        {
-            m_touching[GetBody(GetWorld(), fixtureB).get()] = false;
+        const auto& contact = GetContact(GetWorld(), contactId);
+        if (GetShapeA(contact) == m_sensor) {
+            m_touching[GetBodyB(contact).get()] = false;
         }
-        if (fixtureB == m_sensor)
-        {
-            m_touching[GetBody(GetWorld(), fixtureA).get()] = false;
+        if (GetShapeB(contact) == m_sensor) {
+            m_touching[GetBodyA(contact).get()] = false;
         }
     }
 
@@ -114,18 +98,15 @@ public:
         // that overlap the sensor.
         for (auto i = 0; i < e_count; ++i)
         {
-            if (!m_touching[m_bodies[i].get()])
-            {
+            if (!m_touching[m_bodies[i].get()]) {
                 continue;
             }
             const auto body = m_bodies[i];
-            const auto ground = GetBody(GetWorld(), m_sensor);
             const auto circle = TypeCast<DiskShapeConf>(GetShape(GetWorld(), m_sensor));
-            const auto center = GetWorldPoint(GetWorld(), ground, circle.GetLocation());
+            const auto center = GetWorldPoint(GetWorld(), m_ground, circle.GetLocation());
             const auto position = GetLocation(GetWorld(), body);
             const auto d = center - position;
-            if (AlmostZero(GetMagnitudeSquared(d) / SquareMeter))
-            {
+            if (AlmostZero(GetMagnitudeSquared(d) / SquareMeter)) {
                 continue;
             }
             const auto F = Force2{GetUnitVector(d) * 100_N};
@@ -133,7 +114,8 @@ public:
         }
     }
 
-    FixtureID m_sensor;
+    ShapeID m_sensor = InvalidShapeID;
+    BodyID m_ground = InvalidBodyID;
     BodyID m_bodies[e_count];
     std::vector<bool> m_touching;
 };

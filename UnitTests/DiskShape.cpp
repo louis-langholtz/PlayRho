@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2021 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -19,6 +19,7 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
@@ -30,21 +31,31 @@ TEST(DiskShapeConf, ByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real))
-    {
-        case  4:
-            EXPECT_EQ(sizeof(DiskShapeConf), std::size_t(24));
-            break;
-        case  8: EXPECT_EQ(sizeof(DiskShapeConf), std::size_t(48)); break;
-        case 16: EXPECT_EQ(sizeof(DiskShapeConf), std::size_t(96)); break;
-        default: FAIL(); break;
+    switch (sizeof(Real)) {
+    case 4:
+        EXPECT_EQ(sizeof(DiskShapeConf), std::size_t(32));
+        break;
+    case 8:
+        EXPECT_EQ(sizeof(DiskShapeConf), std::size_t(56));
+        break;
+    case 16:
+        EXPECT_EQ(sizeof(DiskShapeConf), std::size_t(112));
+        break;
+    default:
+        FAIL();
+        break;
     }
+}
+
+TEST(DiskShapeConf, IsValidShapeType)
+{
+    EXPECT_TRUE(IsValidShapeType<DiskShapeConf>::value);
 }
 
 TEST(DiskShapeConf, DefaultConstruction)
 {
     const auto foo = DiskShapeConf{};
-    
+
     EXPECT_EQ(GetTypeID(foo), GetTypeID<DiskShapeConf>());
     EXPECT_EQ(GetChildCount(foo), ChildCounter{1});
     EXPECT_EQ(foo.GetRadius(), DiskShapeConf::GetDefaultRadius());
@@ -60,7 +71,7 @@ TEST(DiskShapeConf, InitConstruction)
     conf.vertexRadius = radius;
     conf.location = position;
     Shape foo{conf};
-    
+
     EXPECT_EQ(GetTypeID(foo), GetTypeID<Shape>());
     EXPECT_EQ(GetChildCount(foo), ChildCounter{1});
     EXPECT_EQ(GetVertexRadius(foo, 0), radius);
@@ -68,34 +79,82 @@ TEST(DiskShapeConf, InitConstruction)
     EXPECT_EQ(GetY(conf.GetLocation()), GetY(position));
 }
 
-TEST(DiskShapeConf, TransformFF)
+TEST(DiskShapeConf, TranslateNoneFF)
 {
-    {
-        auto foo = DiskShapeConf{};
-        auto tmp = foo;
-        Transform(foo, Mat22{});
-        EXPECT_EQ(foo, tmp);
-    }
-    {
-        auto foo = DiskShapeConf{};
-        auto tmp = foo;
-        Transform(foo, GetIdentity<Mat22>());
-        EXPECT_EQ(foo, tmp);
-    }
-    {
-        const auto v1 = Length2{1_m, 2_m};
-        auto foo = DiskShapeConf{}.UseLocation(v1).UseRadius(1_m);
-        auto tmp = foo;
-        Transform(foo, GetIdentity<Mat22>() * 2);
-        EXPECT_NE(foo, tmp);
-        EXPECT_EQ(foo.GetLocation(), v1 * 2);
-    }
+    auto foo = DiskShapeConf{};
+    auto tmp = foo;
+    EXPECT_NO_THROW(Translate(foo, Length2{}));
+    EXPECT_EQ(foo, tmp);
+}
+
+TEST(DiskShapeConf, TranslateSomeFF)
+{
+    const auto v1 = Length2{1_m, 2_m};
+    auto foo = DiskShapeConf{}.UseLocation(v1).UseRadius(1_m);
+    auto tmp = foo;
+    const auto offset = Length2{3_m, 1_m};
+    Translate(foo, offset);
+    EXPECT_NE(foo, tmp);
+    EXPECT_EQ(foo.GetLocation(), v1 + offset);
+}
+
+TEST(DiskShapeConf, ScaleNoneFF)
+{
+    const auto location = Length2{1_m, 2_m};
+    auto foo = DiskShapeConf{}.UseLocation(location);
+    auto tmp = foo;
+    EXPECT_NO_THROW(Scale(foo, Vec2{Real(1), Real(1)}));
+    EXPECT_EQ(foo, tmp);
+}
+
+TEST(DiskShapeConf, ScaleSomeFF)
+{
+    const auto location = Length2{1_m, 2_m};
+    auto foo = DiskShapeConf{}.UseLocation(location);
+    auto tmp = foo;
+    const auto amount = Vec2{Real(2), Real(4)};
+    EXPECT_NO_THROW(Scale(foo, amount));
+    EXPECT_NE(foo, tmp);
+    EXPECT_EQ(GetX(foo.GetLocation()), GetX(location) * GetX(amount));
+    EXPECT_EQ(GetY(foo.GetLocation()), GetY(location) * GetY(amount));
+}
+
+TEST(DiskShapeConf, RotateNoneFF)
+{
+    const auto location = Length2{1_m, 2_m};
+    auto foo = DiskShapeConf{}.UseLocation(location);
+    auto tmp = foo;
+    EXPECT_NO_THROW(Rotate(foo, UnitVec::GetRight()));
+    EXPECT_EQ(foo, tmp);
+}
+
+TEST(DiskShapeConf, RotateSomeFF)
+{
+    const auto location = Length2{1_m, 2_m};
+    auto foo = DiskShapeConf{}.UseLocation(location);
+    auto tmp = foo;
+    const auto amount = UnitVec::GetTop();
+    EXPECT_NO_THROW(Rotate(foo, amount));
+    EXPECT_NE(foo, tmp);
+    EXPECT_EQ(foo.GetLocation(), Rotate(location, amount));
+}
+
+TEST(DiskShapeConf, SetVertexRadiusFF)
+{
+    const auto location = Length2{1_m, 2_m};
+    auto foo = DiskShapeConf{}.UseLocation(location);
+    auto tmp = foo;
+    ASSERT_EQ(foo, tmp);
+    const auto amount = 4_m;
+    EXPECT_NO_THROW(SetVertexRadius(foo, 0u, amount));
+    EXPECT_NE(foo, tmp);
+    EXPECT_EQ(foo.vertexRadius, amount);
 }
 
 TEST(DiskShapeConf, GetInvalidChildThrows)
 {
     Shape foo{DiskShapeConf{}};
-    
+
     ASSERT_EQ(GetChildCount(foo), ChildCounter{1});
     EXPECT_NO_THROW(GetChild(foo, 0));
     EXPECT_THROW(GetChild(foo, 1), InvalidArgument);
@@ -120,14 +179,14 @@ TEST(DiskShapeConf, TestPoint)
     conf.vertexRadius = radius;
     conf.location = position;
     Shape foo{conf};
-    EXPECT_TRUE(TestPoint(foo, Length2{ 0_m,  0_m}));
-    EXPECT_TRUE(TestPoint(foo, Length2{+1_m,  0_m}));
-    EXPECT_TRUE(TestPoint(foo, Length2{ 0_m, +1_m}));
-    EXPECT_TRUE(TestPoint(foo, Length2{ 0_m, -1_m}));
-    EXPECT_TRUE(TestPoint(foo, Length2{-1_m,  0_m}));
-    EXPECT_FALSE(TestPoint(foo, Length2{-1_m,  -1_m}));
-    EXPECT_FALSE(TestPoint(foo, Length2{+1_m,  +1_m}));
-    EXPECT_FALSE(TestPoint(foo, Length2{+0.9_m,  +0.9_m}));
+    EXPECT_TRUE(TestPoint(foo, Length2{0_m, 0_m}));
+    EXPECT_TRUE(TestPoint(foo, Length2{+1_m, 0_m}));
+    EXPECT_TRUE(TestPoint(foo, Length2{0_m, +1_m}));
+    EXPECT_TRUE(TestPoint(foo, Length2{0_m, -1_m}));
+    EXPECT_TRUE(TestPoint(foo, Length2{-1_m, 0_m}));
+    EXPECT_FALSE(TestPoint(foo, Length2{-1_m, -1_m}));
+    EXPECT_FALSE(TestPoint(foo, Length2{+1_m, +1_m}));
+    EXPECT_FALSE(TestPoint(foo, Length2{+0.9_m, +0.9_m}));
 }
 
 TEST(DiskShapeConf, ComputeAABB)
@@ -142,8 +201,10 @@ TEST(DiskShapeConf, ComputeAABB)
     EXPECT_EQ(GetY(GetLowerBound(aabb)), GetY(position) - radius);
     EXPECT_EQ(GetX(GetUpperBound(aabb)), GetX(position) + radius);
     EXPECT_EQ(GetY(GetUpperBound(aabb)), GetY(position) + radius);
-    EXPECT_NEAR(static_cast<double>(Real{GetX(GetExtents(aabb))/1_m}), static_cast<double>(Real{radius/1_m}), 1.0/1000000);
-    EXPECT_NEAR(static_cast<double>(Real{GetY(GetExtents(aabb))/1_m}), static_cast<double>(Real{radius/1_m}), 1.0/1000000);
+    EXPECT_NEAR(static_cast<double>(Real{GetX(GetExtents(aabb)) / 1_m}),
+                static_cast<double>(Real{radius / 1_m}), 1.0 / 1000000);
+    EXPECT_NEAR(static_cast<double>(Real{GetY(GetExtents(aabb)) / 1_m}),
+                static_cast<double>(Real{radius / 1_m}), 1.0 / 1000000);
     EXPECT_TRUE(AlmostEqual(StripUnit(GetX(GetExtents(aabb))), StripUnit(radius)));
     EXPECT_TRUE(AlmostEqual(StripUnit(GetY(GetExtents(aabb))), StripUnit(radius)));
     EXPECT_EQ(GetX(GetCenter(aabb)), GetX(position));
@@ -156,19 +217,21 @@ TEST(DiskShapeConf, Equality)
     EXPECT_FALSE(DiskShapeConf().UseRadius(10_m) == DiskShapeConf());
     EXPECT_TRUE(DiskShapeConf().UseRadius(10_m) == DiskShapeConf().UseRadius(10_m));
     EXPECT_FALSE(DiskShapeConf().UseLocation(Length2(1_m, 2_m)) == DiskShapeConf());
-    EXPECT_TRUE(DiskShapeConf().UseLocation(Length2(1_m, 2_m)) == DiskShapeConf().UseLocation(Length2(1_m, 2_m)));
-    
+    EXPECT_TRUE(DiskShapeConf().UseLocation(Length2(1_m, 2_m)) ==
+                DiskShapeConf().UseLocation(Length2(1_m, 2_m)));
+
     EXPECT_FALSE(DiskShapeConf().UseRadius(10_m) == DiskShapeConf());
     EXPECT_TRUE(DiskShapeConf().UseRadius(10_m) == DiskShapeConf().UseRadius(10_m));
-    
+
     EXPECT_FALSE(DiskShapeConf().UseDensity(10_kgpm2) == DiskShapeConf());
     EXPECT_TRUE(DiskShapeConf().UseDensity(10_kgpm2) == DiskShapeConf().UseDensity(10_kgpm2));
-    
+
     EXPECT_FALSE(DiskShapeConf().UseFriction(Real(10)) == DiskShapeConf());
     EXPECT_TRUE(DiskShapeConf().UseFriction(Real(10)) == DiskShapeConf().UseFriction(Real(10)));
-    
+
     EXPECT_FALSE(DiskShapeConf().UseRestitution(Real(10)) == DiskShapeConf());
-    EXPECT_TRUE(DiskShapeConf().UseRestitution(Real(10)) == DiskShapeConf().UseRestitution(Real(10)));
+    EXPECT_TRUE(DiskShapeConf().UseRestitution(Real(10)) ==
+                DiskShapeConf().UseRestitution(Real(10)));
 }
 
 TEST(DiskShapeConf, Inequality)
@@ -177,17 +240,19 @@ TEST(DiskShapeConf, Inequality)
     EXPECT_TRUE(DiskShapeConf().UseRadius(10_m) != DiskShapeConf());
     EXPECT_FALSE(DiskShapeConf().UseRadius(10_m) != DiskShapeConf().UseRadius(10_m));
     EXPECT_TRUE(DiskShapeConf().UseLocation(Length2(1_m, 2_m)) != DiskShapeConf());
-    EXPECT_FALSE(DiskShapeConf().UseLocation(Length2(1_m, 2_m)) != DiskShapeConf().UseLocation(Length2(1_m, 2_m)));
-    
+    EXPECT_FALSE(DiskShapeConf().UseLocation(Length2(1_m, 2_m)) !=
+                 DiskShapeConf().UseLocation(Length2(1_m, 2_m)));
+
     EXPECT_TRUE(DiskShapeConf().UseRadius(10_m) != DiskShapeConf());
     EXPECT_FALSE(DiskShapeConf().UseRadius(10_m) != DiskShapeConf().UseRadius(10_m));
-    
+
     EXPECT_TRUE(DiskShapeConf().UseDensity(10_kgpm2) != DiskShapeConf());
     EXPECT_FALSE(DiskShapeConf().UseDensity(10_kgpm2) != DiskShapeConf().UseDensity(10_kgpm2));
-    
+
     EXPECT_TRUE(DiskShapeConf().UseFriction(Real(10)) != DiskShapeConf());
     EXPECT_FALSE(DiskShapeConf().UseFriction(Real(10)) != DiskShapeConf().UseFriction(Real(10)));
-    
+
     EXPECT_TRUE(DiskShapeConf().UseRestitution(Real(10)) != DiskShapeConf());
-    EXPECT_FALSE(DiskShapeConf().UseRestitution(Real(10)) != DiskShapeConf().UseRestitution(Real(10)));
+    EXPECT_FALSE(DiskShapeConf().UseRestitution(Real(10)) !=
+                 DiskShapeConf().UseRestitution(Real(10)));
 }

@@ -33,19 +33,18 @@ public:
     VaryingRestitution()
     {
         const auto ground = CreateBody(GetWorld());
-        CreateFixture(GetWorld(), ground, Shape(GetGroundEdgeConf()));
+        Attach(GetWorld(), ground, CreateShape(GetWorld(), GetGroundEdgeConf()));
 
         Real restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};
         auto shape = DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2);
-        for (auto i = 0; i < 7; ++i)
-        {
+        for (auto i = 0; i < 7; ++i) {
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = GetGravity();
             bd.location = Vec2(Real(-10 + 3 * i), 20) * 1_m;
             const auto body = CreateBody(GetWorld(), bd);
             shape.UseRestitution(restitution[i]);
-            CreateFixture(GetWorld(), body, Shape(shape));
+            Attach(GetWorld(), body, CreateShape(GetWorld(), shape));
         }
     }
 };

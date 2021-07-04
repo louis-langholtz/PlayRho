@@ -43,47 +43,44 @@ public:
             const auto a = Real{0.5f};
             BodyConf bd;
             GetY(bd.location) = -a * 1_m;
-            const auto ground = CreateBody(GetWorld(), bd);
+            auto ground = Body{bd};
 
             const auto N = 200;
             const auto M = 10;
             Vec2 position;
             GetY(position) = 0.0f;
-            for (auto j = 0; j < M; ++j)
-            {
+            for (auto j = 0; j < M; ++j) {
                 GetX(position) = -N * a;
-                for (auto i = 0; i < N; ++i)
-                {
-                    CreateFixture(GetWorld(), ground, Shape{PolygonShapeConf{}.SetAsBox(a * 1_m, a * 1_m, position * 1_m, 0_deg)});
+                for (auto i = 0; i < N; ++i) {
+                    ground.Attach(CreateShape(GetWorld(), PolygonShapeConf{}.SetAsBox(a * 1_m, a * 1_m, position * 1_m, 0_deg)));
                     ++m_fixtureCount;
                     GetX(position) += 2.0f * a;
                 }
                 GetY(position) -= 2.0f * a;
             }
+            CreateBody(GetWorld(), ground);
         }
 
         {
             const auto a = Real{0.5f};
-            const auto shape = Shape{PolygonShapeConf{}.UseDensity(5_kgpm2).SetAsBox(a * 1_m, a * 1_m)};
+            const auto shape = CreateShape(GetWorld(),
+                                           PolygonShapeConf{}.UseDensity(5_kgpm2).SetAsBox(a * 1_m, a * 1_m));
 
             Vec2 x(-7.0f, 0.75f);
             Vec2 y;
             const auto deltaX = Vec2(0.5625f, 1.25f);
             const auto deltaY = Vec2(1.125f, 0.0f);
 
-            for (auto i = 0; i < e_count; ++i)
-            {
+            for (auto i = 0; i < e_count; ++i) {
                 y = x;
-
-                for (auto j = i; j < e_count; ++j)
-                {
+                for (auto j = i; j < e_count; ++j) {
                     BodyConf bd;
                     bd.type = BodyType::Dynamic;
                     bd.location = y * 1_m;
                     bd.linearAcceleration = GetGravity();
-
-                    const auto body = CreateBody(GetWorld(), bd);
-                    CreateFixture(GetWorld(), body, shape);
+                    auto body = Body{bd};
+                    body.Attach(shape);
+                    CreateBody(GetWorld(), body);
                     ++m_fixtureCount;
                     y += deltaY;
                 }

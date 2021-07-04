@@ -39,7 +39,7 @@ public:
         const auto ground = CreateBody(GetWorld(), BodyConf{}.UseLocation(Vec2(0.0f, 20.0f) * 1_m));
 
         const auto a = Real{0.5f};
-        const auto shape = Shape(PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(Real{0.25f} * a * 1_m, a * 1_m));
+        const auto shape = CreateShape(GetWorld(), PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(Real{0.25f} * a * 1_m, a * 1_m));
 
         RevoluteJointConf jointConf;
         jointConf.bodyA = ground;
@@ -50,7 +50,7 @@ public:
     }
 
     BodyID AddNode(BodyID parent, Length2 localAnchor, int depth, float offset, float a,
-                  Shape shape)
+                  ShapeID shape)
     {
         const auto h = Vec2(0.0f, a) * 1_m;
 
@@ -59,10 +59,9 @@ public:
         bodyConf.linearAcceleration = GetGravity();
         bodyConf.location = GetLocation(GetWorld(), parent) + localAnchor - h;
         const auto body = CreateBody(GetWorld(), bodyConf);
-        CreateFixture(GetWorld(), body, shape);
+        Attach(GetWorld(), body, shape);
 
-        if (depth == e_depth)
-        {
+        if (depth == e_depth) {
             return body;
         }
 

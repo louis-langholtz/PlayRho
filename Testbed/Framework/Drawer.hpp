@@ -65,6 +65,7 @@ public:
         Left,
         Center,
         Right,
+        AboveCenter,
     };
 
     Drawer() = default;

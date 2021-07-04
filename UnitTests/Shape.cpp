@@ -24,6 +24,7 @@
 #include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/Compositor.hpp>
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 
@@ -37,12 +38,11 @@ TEST(Shape, ByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
-#if defined(_WIN32) && !defined(_WIN64)
-    EXPECT_EQ(sizeof(Shape), std::size_t(8));
+#if SHAPE_USES_UNIQUE_PTR
+    EXPECT_EQ(sizeof(Shape), sizeof(std::unique_ptr<int>));
 #else
-    EXPECT_EQ(sizeof(Shape), std::size_t(16));
-#endif
     EXPECT_EQ(sizeof(Shape), sizeof(std::shared_ptr<int>));
+#endif
 }
 
 TEST(Shape, Traits)
@@ -65,7 +65,11 @@ TEST(Shape, Traits)
     EXPECT_FALSE((std::is_trivially_constructible<Shape, X, X>::value));
 
     EXPECT_TRUE(std::is_copy_constructible<Shape>::value);
+#if SHAPE_USES_UNIQUE_PTR
+    EXPECT_FALSE(std::is_nothrow_copy_constructible<Shape>::value);
+#else
     EXPECT_TRUE(std::is_nothrow_copy_constructible<Shape>::value);
+#endif
     EXPECT_FALSE(std::is_trivially_copy_constructible<Shape>::value);
     
     EXPECT_TRUE(std::is_move_constructible<Shape>::value);
@@ -73,7 +77,11 @@ TEST(Shape, Traits)
     EXPECT_FALSE(std::is_trivially_move_constructible<Shape>::value);
     
     EXPECT_TRUE(std::is_copy_assignable<Shape>::value);
+#if SHAPE_USES_UNIQUE_PTR
+    EXPECT_FALSE(std::is_nothrow_copy_assignable<Shape>::value);
+#else
     EXPECT_TRUE(std::is_nothrow_copy_assignable<Shape>::value);
+#endif
     EXPECT_FALSE(std::is_trivially_copy_assignable<Shape>::value);
     
     EXPECT_TRUE(std::is_move_assignable<Shape>::value);
@@ -103,7 +111,7 @@ TEST(Shape, DefaultConstruction)
     EXPECT_TRUE(s == s);
     auto t = Shape{};
     EXPECT_TRUE(s == t);
-    EXPECT_NO_THROW(Transform(t, Mat22{}));
+    EXPECT_NO_THROW(Translate(t, Length2{}));
     EXPECT_EQ(GetType(s), GetTypeID<void>());
 }
 
@@ -114,14 +122,17 @@ struct ShapeTest {
     int number;
 };
 
-[[maybe_unused]] void Transform(ShapeTest&, const Mat22&)
+[[maybe_unused]] ChildCounter GetChildCount(const ShapeTest&)
+{
+    return 1u;
+}
+
+[[maybe_unused]] void Translate(ShapeTest&, const Length2&)
 {
 }
 
 } // namespace
 } // namespace sans_none
-
-static_assert(!IsValidShapeType<::sans_some::ShapeTest>::value);
 
 TEST(Shape, InitializingConstructor)
 {
@@ -133,6 +144,13 @@ TEST(Shape, InitializingConstructor)
     auto s = Shape{conf};
     EXPECT_TRUE(s.has_value());
     EXPECT_EQ(GetChildCount(s), ChildCounter(1));
+    EXPECT_EQ(GetFilter(s).categoryBits, Filter{}.categoryBits);
+    EXPECT_EQ(GetFilter(s).maskBits, Filter{}.maskBits);
+    EXPECT_EQ(GetFilter(s).groupIndex, Filter{}.groupIndex);
+    EXPECT_EQ(IsSensor(s), false);
+    conf.UseIsSensor(true);
+    s = Shape{conf};
+    EXPECT_EQ(IsSensor(s), true);
 }
 
 TEST(Shape, Assignment)
@@ -158,6 +176,13 @@ TEST(Shape, Assignment)
     s = EdgeShapeConf();
     EXPECT_NE(GetType(s), GetTypeID<void>());
     EXPECT_EQ(GetType(s), GetTypeID<EdgeShapeConf>());
+
+    // Test copy assignment...
+    const auto otherShape = Shape{};
+    ASSERT_EQ(GetType(otherShape), GetTypeID<void>());
+    s = otherShape;
+    EXPECT_EQ(GetType(s), GetTypeID<void>());
+    EXPECT_TRUE(s == otherShape);
 }
 
 TEST(Shape, TypeCast)
@@ -196,6 +221,8 @@ TEST(Shape, ForMutableDataTypeCastIsLikeAnyCast)
 
 TEST(Shape, types)
 {
+    using namespace playrho::part;
+
     EXPECT_EQ(GetTypeID<DiskShapeConf>(), GetTypeID<DiskShapeConf>());
 
     const auto sc = DiskShapeConf{1_m};
@@ -206,6 +233,8 @@ TEST(Shape, types)
     EXPECT_NE(GetTypeID(DiskShapeConf{}), GetTypeID(EdgeShapeConf{}));
     EXPECT_EQ(GetTypeID(DiskShapeConf{}), GetTypeID(DiskShapeConf{}));
     EXPECT_EQ(GetTypeID(EdgeShapeConf{}), GetTypeID(EdgeShapeConf{}));
+    EXPECT_EQ(GetTypeID(Compositor<GeometryIs<StaticRectangle<1, 1>>>{}),
+              GetTypeID(Compositor<GeometryIs<StaticRectangle<1, 1>>>{}));
 
     const auto s1 = Shape{sc};
     ASSERT_EQ(GetTypeID<Shape>(), GetTypeID(s1));
@@ -213,6 +242,8 @@ TEST(Shape, types)
     const auto& st1 = GetType(s1);
     ASSERT_NE(st1, GetTypeID<Shape>());
     EXPECT_EQ(st1, GetTypeID(sc));
+    EXPECT_EQ(Shape(Compositor<GeometryIs<StaticRectangle<1, 1>>>{}),
+              Shape(Compositor<GeometryIs<StaticRectangle<1, 1>>>{}));
 
     const auto s2 = Shape{s1}; // This should copy construct
     const auto& st2 = GetType(s2);
@@ -316,36 +347,260 @@ TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
 TEST(Shape, Equality)
 {
     EXPECT_TRUE(Shape(EdgeShapeConf()) == Shape(EdgeShapeConf()));
-
     const auto shapeA = Shape(DiskShapeConf{}.UseRadius(100_m));
     const auto shapeB = Shape(DiskShapeConf{}.UseRadius(100_m));
     EXPECT_TRUE(shapeA == shapeB);
-    
     EXPECT_FALSE(Shape(DiskShapeConf()) == Shape(EdgeShapeConf()));
+    EXPECT_FALSE(Shape(EdgeShapeConf()) == Shape(EdgeShapeConf().UseIsSensor(true)));
+    const auto filter = Filter{0x2u, 0x8, 0x1};
+    EXPECT_FALSE(Shape(EdgeShapeConf()) == Shape(EdgeShapeConf().UseFilter(filter)));
 }
 
 TEST(Shape, Inequality)
 {
     EXPECT_FALSE(Shape(EdgeShapeConf()) != Shape(EdgeShapeConf()));
-    
     const auto shapeA = Shape(DiskShapeConf{}.UseRadius(100_m));
     const auto shapeB = Shape(DiskShapeConf{}.UseRadius(100_m));
     EXPECT_FALSE(shapeA != shapeB);
-
     EXPECT_TRUE(Shape(DiskShapeConf()) != Shape(EdgeShapeConf()));
+    const auto filter = Filter{0x2u, 0x8, 0x1};
+    EXPECT_TRUE(Shape(EdgeShapeConf()) != Shape(EdgeShapeConf().UseFilter(filter)));
 }
 
-TEST(Shape, Transform)
+TEST(Shape, EmptyShapeTranslateIsNoop)
 {
-    const auto oldConf = DiskShapeConf{}.UseRadius(1_m).UseLocation(Length2{2_m, 0_m});
-    auto newConf = DiskShapeConf{};
-    auto shape = Shape(oldConf);
-
-    EXPECT_NO_THROW(Transform(shape, GetIdentity<Mat22>()));
-    newConf = TypeCast<DiskShapeConf>(shape);
-    EXPECT_EQ(oldConf.GetLocation(), newConf.GetLocation());
-
-    EXPECT_NO_THROW(Transform(shape, Mat22{Vec2{Real(2), Real(0)}, Vec2{Real(0), Real(2)}}));
-    newConf = TypeCast<DiskShapeConf>(shape);
-    EXPECT_EQ(Length2(4_m, 0_m), newConf.GetLocation());
+    auto s = Shape{};
+    EXPECT_NO_THROW(Translate(s, Length2{1_m, 2_m}));
 }
+
+TEST(Shape, EmptyShapeScaleIsNoop)
+{
+    auto s = Shape{};
+    EXPECT_NO_THROW(Scale(s, Vec2(Real(2), Real(2))));
+}
+
+TEST(Shape, EmptyShapeRotateIsNoop)
+{
+    auto s = Shape{};
+    EXPECT_NO_THROW(Rotate(s, UnitVec::GetTop()));
+}
+
+TEST(Shape, EmptyShapeSetVertexRadiusIsNoop)
+{
+    auto s = Shape{};
+    EXPECT_NO_THROW(SetVertexRadius(s, 0, 2_m));
+}
+
+#if 0
+#include <cstddef> // for std::max_align_t
+#include <variant>
+
+class Foo {
+    struct Concept {
+        virtual ~Concept() = default;
+        virtual std::unique_ptr<Concept> Clone_() const = 0;
+        virtual void NewTo_(void* buffer) const = 0;
+        virtual Real GetFriction_() const noexcept = 0;
+    };
+
+    template <typename T>
+    struct Model final : Concept {
+        using data_type = T;
+
+        /// @brief Initializing constructor.
+        Model(T arg) : data{std::move(arg)} {}
+
+        std::unique_ptr<Concept> Clone_() const override
+        {
+            return std::make_unique<Model>(data);
+        }
+
+        void NewTo_(void* buffer) const override
+        {
+            ::new (buffer) Model(data);
+        }
+
+        Real GetFriction_() const noexcept override
+        {
+            return GetFriction(data);
+        }
+
+        data_type data; ///< Data.
+    };
+
+    const Concept* GetConcept() const
+    {
+        switch (m_type) {
+        case union_type::pointer:
+            return m_pointer.get();
+        case union_type::buffer:
+            return reinterpret_cast<const Concept*>(::std::addressof(m_buffer));
+        case union_type::none:
+            break;
+        }
+        return nullptr;
+    }
+
+public:
+
+#if 1
+    union {
+        std::unique_ptr<const Concept> m_pointer;
+        alignas(std::max_align_t) std::byte m_buffer[alignof(std::max_align_t) * 3u];
+    };
+    enum class union_type {none, pointer, buffer};
+    union_type m_type = union_type::none;
+#else
+    using pointer = std::unique_ptr<const Concept>;
+    //using buffer = std::aligned_storage_t<16u>;
+    using buffer = std::byte[62u];
+    std::variant<pointer, buffer> m_data;
+#endif
+
+    Foo() noexcept {}
+
+    ~Foo() noexcept
+    {
+#if 0
+        if (std::holds_alternative<buffer>(m_data)) {
+            reinterpret_cast<const Concept*>(&std::get<buffer>(m_data))->~Concept();
+        }
+#endif
+        switch (m_type) {
+        case union_type::pointer:
+            m_pointer.~unique_ptr<const Concept>();
+            break;
+        case union_type::buffer:
+            reinterpret_cast<const Concept*>(m_buffer)->~Concept();
+            break;
+        case union_type::none:
+            break;
+        }
+    }
+
+    template <class T>
+    Foo(T&& arg)
+    {
+#if 0
+        static_assert(alignof(Model<T>) <= alignof(decltype(m_buffer)), "bad alignment");
+        if (sizeof(Model<T>) > sizeof(m_buffer)) {
+            new (&m_pointer) std::unique_ptr<const Concept>{std::make_unique<Model<T>>(std::forward<T>(arg))};
+            m_type = union_type::pointer;
+        }
+        else {
+            new (&m_buffer) Model<T>(std::move(arg));
+            m_type = union_type::buffer;
+        }
+#else
+#if 0
+        if (sizeof(Model<T>) > sizeof(buffer)) {
+            m_data = std::unique_ptr<const Concept>{std::make_unique<Model<T>>(std::forward<T>(arg))};
+        }
+        else {
+            buffer b;
+            m_data = b;
+            new (&std::get<buffer>(m_data)) Model<T>(std::move(arg));
+        }
+#else
+        if (sizeof(Model<T>) > sizeof(m_buffer)) {
+            ::new ((void*)(::std::addressof(m_pointer))) std::unique_ptr<const Concept>{std::make_unique<Model<T>>(std::forward<T>(arg))};
+            m_type = union_type::pointer;
+        }
+        else {
+            ::new ((void*)(::std::addressof(m_buffer))) Model<T>(std::move(arg));
+            m_type = union_type::buffer;
+        }
+#endif
+#endif
+    }
+
+    Foo(const Foo& other)
+    {
+        switch (other.m_type) {
+        case union_type::buffer:
+            reinterpret_cast<const Concept*>(::std::addressof(other.m_buffer))->NewTo_(::std::addressof(m_buffer));
+            m_type = union_type::buffer;
+            break;
+        case union_type::pointer:
+            ::new ((void*)(::std::addressof(m_pointer))) std::unique_ptr<const Concept>{other.m_pointer->Clone_()};
+            m_type = union_type::pointer;
+            break;
+        case union_type::none:
+            break;
+        }
+    }
+
+    bool has_value() const noexcept
+    {
+        //return m_type != union_type::none;
+        //return !std::holds_alternative<pointer>(m_data) || std::get<pointer>(m_data);
+        return m_type == union_type::buffer || (m_type == union_type::pointer && m_pointer);
+    }
+
+    friend Real GetFriction(const Foo& foo) noexcept
+    {
+#if 0
+        //return foo.has_value()? reinterpret_cast<const Concept*>(&foo.m_buffer)->GetFriction_() : Real(0);
+        return std::holds_alternative<buffer>(foo.m_data)?
+        reinterpret_cast<const Concept*>(&std::get<buffer>(foo.m_data))->GetFriction_():
+        std::get<pointer>(foo.m_data)? std::get<pointer>(foo.m_data)->GetFriction_(): Real(0);
+#else
+        const auto c = foo.GetConcept();
+        return c? c->GetFriction_(): Real(0);
+        //return (foo.m_type == union_type::buffer)?
+        //reinterpret_cast<const Concept*>(foo.m_buffer)->GetFriction_():
+        //(foo.m_type == union_type::pointer && foo.m_pointer)? foo.m_pointer->GetFriction_(): Real(0);
+#endif
+    }
+};
+
+// static_assert(sizeof(Foo) == 64u, "");
+
+struct Foobar {
+    Real f;
+};
+
+static Real GetFriction(const Foobar& value)
+{
+    return value.f;
+}
+
+TEST(Shape, TestFoo)
+{
+    EXPECT_EQ(sizeof(Foo), 64u);
+    EXPECT_FALSE(Foo().has_value());
+    EXPECT_TRUE(Foo(Foobar{3.0f}).has_value());
+    EXPECT_EQ(GetFriction(Foo(Foobar{3.0f})), 3.0f);
+}
+
+class Concept {
+public:
+    virtual ~Concept() {};
+};
+
+struct storage {
+    union {
+        std::unique_ptr<const Concept> pointer;
+        alignas(std::max_align_t) std::byte buffer[alignof(std::max_align_t) * 3u];
+    };
+    enum class union_type {pointer, buffer};
+    union_type type = union_type::pointer;
+    storage(): pointer{} {}
+    ~storage() {
+        if (type == union_type::pointer) {
+            pointer.~unique_ptr<const Concept>();
+        }
+        else {
+            reinterpret_cast<const Concept*>(buffer)->~Concept();
+        }
+    }
+};
+
+TEST(Shape, TestStorage)
+{
+    storage data;
+    EXPECT_EQ(sizeof(data), 64u);
+    EXPECT_EQ(sizeof(data.buffer), 48u);
+}
+
+#endif

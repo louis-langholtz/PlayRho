@@ -30,13 +30,11 @@ public:
     Gears()
     {
         const auto ground = CreateBody(GetWorld());
-        CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{
-            Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m}});
-
+        Attach(GetWorld(), ground, Shape(EdgeShapeConf{Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m}));
         const auto circle1 = DiskShapeConf{}.UseRadius(1_m).UseDensity(5_kgpm2);
         const auto circle2 = DiskShapeConf{}.UseRadius(2_m).UseDensity(5_kgpm2);
-        const auto box = Shape{PolygonShapeConf{}.SetAsBox(0.5_m, 5_m).UseDensity(5_kgpm2)};
-    
+        const auto box = CreateShape(GetWorld(),
+                                     PolygonShapeConf{}.SetAsBox(0.5_m, 5_m).UseDensity(5_kgpm2));
         {
             auto bd1 = BodyConf{};
             bd1.type = BodyType::Static;
@@ -47,13 +45,13 @@ public:
             bd2.type = BodyType::Dynamic;
             bd2.location = Vec2(10.0f, 8.0f) * 1_m;
             const auto body2 = CreateBody(GetWorld(), bd2);
-            CreateFixture(GetWorld(), body2, box);
+            Attach(GetWorld(), body2, box);
 
             auto bd3 = BodyConf{};
             bd3.type = BodyType::Dynamic;
             bd3.location = Vec2(10.0f, 6.0f) * 1_m;
             const auto body3 = CreateBody(GetWorld(), bd3);
-            CreateFixture(GetWorld(), body3, Shape{circle2});
+            Attach(GetWorld(), body3, Shape{circle2});
 
             auto joint1 = CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), body2, body1, bd1.location));
             auto joint2 = CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), body2, body3, bd3.location));
@@ -68,7 +66,7 @@ public:
             bd1.type = BodyType::Dynamic;
             bd1.location = Vec2(-3.0f, 12.0f) * 1_m;
             const auto body1 = CreateBody(GetWorld(), bd1);
-            CreateFixture(GetWorld(), body1, Shape{circle1});
+            Attach(GetWorld(), body1, Shape{circle1});
 
             auto jd1 = RevoluteJointConf{};
             jd1.bodyA = ground;
@@ -82,7 +80,7 @@ public:
             bd2.type = BodyType::Dynamic;
             bd2.location = Vec2(0.0f, 12.0f) * 1_m;
             const auto body2 = CreateBody(GetWorld(), bd2);
-            CreateFixture(GetWorld(), body2, Shape{circle2});
+            Attach(GetWorld(), body2, Shape{circle2});
 
             auto jd2 = GetRevoluteJointConf(GetWorld(), ground, body2, bd2.location);
             m_joint2 = CreateJoint(GetWorld(), jd2);
@@ -91,7 +89,7 @@ public:
             bd3.type = BodyType::Dynamic;
             bd3.location = Vec2(2.5f, 12.0f) * 1_m;
             const auto body3 = CreateBody(GetWorld(), bd3);
-            CreateFixture(GetWorld(), body3, box);
+            Attach(GetWorld(), body3, box);
 
             auto jd3 = GetPrismaticJointConf(GetWorld(), ground, body3, bd3.location,
                                              UnitVec::GetTop());
@@ -116,19 +114,32 @@ public:
     void PostStep(const Settings&, Drawer&) override
     {
         std::stringstream stream;
-        {
+        try {
             const auto ratio = GetRatio(GetWorld(), m_joint4);
             const auto angle = GetAngle(GetWorld(), m_joint1) + ratio * GetAngle(GetWorld(), m_joint2);
             stream << "Theta1 + " << static_cast<double>(ratio);
             stream << " * theta2 = " << static_cast<double>(Real{angle / 1_rad});
             stream << " rad.\n";
+        } catch (const std::invalid_argument& ex) {
+            stream << "Unable to get ratio or angle data for joint ID ";
+            stream << to_underlying(m_joint4);
+            stream << " or ";
+            stream << to_underlying(m_joint1);
+            stream << ".\n";
         }
-        {
+        try {
             const auto ratio = GetRatio(GetWorld(), m_joint5);
             const auto value = ratio * GetJointTranslation(GetWorld(), m_joint3);
             stream << "Theta2 + " << static_cast<double>(ratio);
             stream << " * theta2 = " << static_cast<double>(Real{value / 1_m});
             stream << " m.";
+        }
+        catch (const std::invalid_argument& ex) {
+            stream << "Unable to get ratio or angle data for joint ID ";
+            stream << to_underlying(m_joint5);
+            stream << " or ";
+            stream << to_underlying(m_joint3);
+            stream << ".\n";
         }
         SetStatus(stream.str());
     }

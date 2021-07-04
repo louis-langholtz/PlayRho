@@ -25,7 +25,7 @@
 
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/WorldFixture.hpp>
+#include <PlayRho/Dynamics/WorldShape.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
@@ -130,14 +130,14 @@ TEST(WeldJoint, GetWeldJointConf)
 
 TEST(WeldJoint, WithDynamicCircles)
 {
-    const auto circle = Shape{DiskShapeConf{}.UseRadius(0.2_m)};
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
+    const auto shapeId = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m));
     const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    CreateFixture(world, b1, circle);
-    CreateFixture(world, b2, circle);
+    Attach(world, b1, shapeId);
+    Attach(world, b2, shapeId);
     const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetWeldJointConf(world, b1, b2, anchor);
     CreateJoint(world, Joint{jd});
@@ -152,14 +152,14 @@ TEST(WeldJoint, WithDynamicCircles)
 
 TEST(WeldJoint, WithDynamicCircles2)
 {
-    const auto circle = Shape{DiskShapeConf{}.UseRadius(0.2_m)};
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
+    const auto shapeId = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m));
     const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    CreateFixture(world, b1, circle);
-    CreateFixture(world, b2, circle);
+    Attach(world, b1, shapeId);
+    Attach(world, b2, shapeId);
     const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetWeldJointConf(world, b1, b2, anchor).UseFrequency(10_Hz);
     const auto joint = CreateJoint(world, Joint{jd});

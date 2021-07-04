@@ -30,7 +30,8 @@ public:
     Revolute()
     {
         const auto ground = CreateBody(GetWorld());
-        CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2( 40.0f, 0.0f) * 1_m}});
+        Attach(GetWorld(), ground,
+               CreateShape(GetWorld(), EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2( 40.0f, 0.0f) * 1_m}));
 
         {
             BodyConf bd;
@@ -41,7 +42,7 @@ public:
             auto circleConf = DiskShapeConf{};
             circleConf.vertexRadius = 0.5_m;
             circleConf.density = 5_kgpm2;
-            CreateFixture(GetWorld(), body, Shape(circleConf));
+            Attach(GetWorld(), body, CreateShape(GetWorld(), circleConf));
 
             const auto w = 100.0f;
             SetVelocity(GetWorld(), body, Velocity{
@@ -65,14 +66,12 @@ public:
             circle_bd.type = BodyType::Dynamic;
             circle_bd.location = Vec2(5.0f, 30.0f) * 1_m;
 
-            FixtureConf fd;
-            fd.filter.maskBits = 1;
-
             m_ball = CreateBody(GetWorld(), circle_bd);
             auto circleConf = DiskShapeConf{};
             circleConf.vertexRadius = 3_m;
             circleConf.density = 5_kgpm2;
-            CreateFixture(GetWorld(), m_ball, Shape(circleConf), fd);
+            circleConf.filter.maskBits = 1;
+            Attach(GetWorld(), m_ball, CreateShape(GetWorld(), circleConf));
 
             auto polygon_shape = PolygonShapeConf{};
             polygon_shape.SetAsBox(10_m, 0.2_m, Vec2(-10.0f, 0.0f) * 1_m, 0_rad);
@@ -83,7 +82,7 @@ public:
             polygon_bd.type = BodyType::Dynamic;
             polygon_bd.bullet = true;
             const auto polygon_body = CreateBody(GetWorld(), polygon_bd);
-            CreateFixture(GetWorld(), polygon_body, Shape(polygon_shape));
+            Attach(GetWorld(), polygon_body, CreateShape(GetWorld(), polygon_shape));
 
             auto rjd = GetRevoluteJointConf(GetWorld(), ground, polygon_body, Vec2(20.0f, 10.0f) * 1_m);
             rjd.lowerAngle = -0.25_rad * Pi;
@@ -101,7 +100,7 @@ public:
             }).UseDensity(1_kgpm2);
 
             const auto body = CreateBody(GetWorld(), BodyConf{}.UseType(BodyType::Dynamic));
-            CreateFixture(GetWorld(), body, Shape(polyShape));
+            Attach(GetWorld(), body, CreateShape(GetWorld(), polyShape));
         }
 
         SetAccelerations(GetWorld(), GetGravity());
