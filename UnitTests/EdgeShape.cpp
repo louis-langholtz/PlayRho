@@ -60,6 +60,15 @@ TEST(EdgeShapeConf, GetInvalidChildThrows)
     EXPECT_THROW(GetChild(foo, 1), InvalidArgument);
 }
 
+TEST(EdgeShapeConf, SetVertexRadius)
+{
+    auto foo = EdgeShapeConf{};
+    ASSERT_EQ(GetVertexRadius(foo, GetChildCount(foo)), EdgeShapeConf::GetDefaultVertexRadius());
+    const auto value = 2_m;
+    EXPECT_NO_THROW(SetVertexRadius(foo, 0u, value));
+    EXPECT_EQ(GetVertexRadius(foo, GetChildCount(foo)), value);
+}
+
 TEST(EdgeShapeConf, TranslateFF)
 {
     {

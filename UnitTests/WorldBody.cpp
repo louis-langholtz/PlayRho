@@ -78,6 +78,7 @@ TEST(WorldBody, SetVelocityDoesNothingToStatic)
 
 TEST(WorldBody, CreateAttachShape)
 {
+    auto shapeId = InvalidShapeID;
     auto world = World{};
     const auto body = CreateBody(world);
     EXPECT_EQ(size(GetShapes(world, body)), std::size_t(0));
@@ -86,6 +87,8 @@ TEST(WorldBody, CreateAttachShape)
     ASSERT_NE(valid_shape, InvalidShapeID);
     EXPECT_NO_THROW(Attach(world, body, valid_shape));
     EXPECT_EQ(size(GetShapes(world, body)), std::size_t(1));
+    EXPECT_NO_THROW(Attach(world, body, Shape{DiskShapeConf{2_m}}));
+    EXPECT_EQ(size(GetShapes(world, body)), std::size_t(2));
 
     const auto minRadius = GetMinVertexRadius(world);
     EXPECT_THROW(CreateShape(world, DiskShapeConf{minRadius / 2}), InvalidArgument);
@@ -115,6 +118,7 @@ TEST(WorldBody, Destroy)
     ASSERT_NO_THROW(Attach(world, bodyA, shapeId));
     ASSERT_EQ(GetShapeCount(world, bodyA), std::size_t(1));
     ASSERT_TRUE(Detach(world, bodyA, shapeId));
+    EXPECT_FALSE(Detach(world, bodyA, shapeId));
     EXPECT_EQ(GetShapeCount(world, bodyA), std::size_t(0));
 }
 

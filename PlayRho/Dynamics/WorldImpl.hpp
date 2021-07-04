@@ -326,9 +326,10 @@ public:
     const Body& GetBody(BodyID id) const;
 
     /// @brief Sets the identified body.
+    /// @throws WrongState if this function is called while the world is locked.
     /// @throws std::out_of_range if given an invalid id of if the given body references any
     ///   invalid shape identifiers.
-    /// @throws WrongState if this function is called while the world is locked.
+    /// @throws InvalidArgument if the specified ID was destroyed.
     /// @see GetBody, GetBodyRange.
     void SetBody(BodyID id, Body value);
 
@@ -401,13 +402,15 @@ public:
     JointID CreateJoint(Joint def);
 
     /// @brief Gets the identified joint.
-    /// @throws std::out_of_range if given an invalid id.
+    /// @throws std::out_of_range if given an invalid ID.
     const Joint& GetJoint(JointID id) const;
 
     /// @brief Sets the identified joint.
     /// @throws WrongState if this function is called while the world is locked.
-    /// @throws std::out_of_range if given an invalid id or the given joint references any
-    ///    invalid body id.
+    /// @throws std::out_of_range if given an invalid ID or the given joint references any
+    ///    invalid body ID.
+    /// @throws InvalidArgument if the specified ID was destroyed.
+    /// @see CreateJoint(Joint def), Destroy(JointID joint).
     void SetJoint(JointID id, Joint def);
 
     /// @brief Destroys a joint.
@@ -447,15 +450,18 @@ public:
     /// @see Destroy(ShapeID), GetShape, SetShape.
     ShapeID CreateShape(Shape def);
 
+    /// @brief Gets the identified shape.
     /// @throws std::out_of_range If given an invalid shape identifier.
     /// @see CreateShape.
     const Shape& GetShape(ShapeID id) const;
 
+    /// @brief Sets the value of the identified shape.
     /// @warning This function is locked during callbacks.
     /// @note This function does not reset the mass data of any effected bodies.
     /// @throws WrongState if this function is called while the world is locked.
     /// @throws std::out_of_range If given an invalid identifier.
-    /// @see CreateShape.
+    /// @throws InvalidArgument if the specified ID was destroyed.
+    /// @see CreateShape, Destroy(ShapeID id).
     void SetShape(ShapeID id, Shape def);
 
     /// @brief Destroys the identified shape removing any body associations with it first.
@@ -493,9 +499,10 @@ public:
     /// @invariant A contact may only be impenetrable if one or both bodies are.
     /// @invariant A contact may only be active if one or both bodies are awake.
     /// @invariant A contact may only be a sensor or one or both shapes are.
-    /// @throws InvalidArgument if a change would violate an invariant.
+    /// @throws InvalidArgument if a change would violate an invariant or if the specified ID
+    ///   was destroyed.
     /// @throws std::out_of_range If given an invalid contact identifier or an invalid identifier
-    ///    in the new contact value.
+    ///   in the new contact value.
     /// @see GetContact.
     void SetContact(ContactID id, Contact value);
 

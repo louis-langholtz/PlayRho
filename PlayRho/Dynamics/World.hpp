@@ -358,6 +358,7 @@ public:
     /// @brief Sets the state of the identified body.
     /// @throws std::out_of_range if given an invalid id of if the given body references any
     ///   invalid shape identifiers.
+    /// @throws InvalidArgument if the specified ID was destroyed.
     /// @see GetBody, GetBodyRange.
     void SetBody(BodyID id, const Body& value);
 
@@ -433,6 +434,7 @@ public:
     /// @brief Sets the identified joint to the given value.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws std::out_of_range If given an invalid joint identifier.
+    /// @throws InvalidArgument if the specified ID was destroyed.
     /// @see GetJoint, GetJointRange.
     void SetJoint(JointID id, const Joint& def);
 
@@ -475,6 +477,7 @@ public:
 
     /// @brief Sets the identified shape to the new value.
     /// @throws std::out_of_range If given an invalid shape identifier.
+    /// @throws InvalidArgument if the specified ID was destroyed.
     /// @see CreateShape.
     void SetShape(ShapeID, const Shape& def);
 
@@ -511,6 +514,8 @@ public:
     /// @invariant A contact may only be active if one or both bodies are awake.
     /// @invariant A contact may only be a sensor or one or both shapes are.
     /// @throws std::out_of_range If given an invalid contact identifier.
+    /// @throws InvalidArgument if a change would violate an invariant or if the specified ID
+    ///   was destroyed.
     /// @see GetContact, GetContactRange.
     void SetContact(ContactID id, const Contact& value);
 

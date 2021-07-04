@@ -2771,6 +2771,20 @@ TEST(World_Longer, TilesComesToRest)
         if (firstStepWithZeroMoved) {
             EXPECT_EQ(*firstStepWithZeroMoved, 1798u);
         }
+#elif defined(__WIN64)
+        EXPECT_EQ(world->GetContactRange(), 1448u);
+        EXPECT_EQ(totalBodiesSlept, 667u);
+        EXPECT_TRUE(firstStepWithZeroMoved);
+        if (firstStepWithZeroMoved) {
+            EXPECT_EQ(*firstStepWithZeroMoved, 1812u);
+        }
+#elif defined(__WIN32)
+        EXPECT_EQ(world->GetContactRange(), 1448u);
+        EXPECT_EQ(totalBodiesSlept, 671u);
+        EXPECT_TRUE(firstStepWithZeroMoved);
+        if (firstStepWithZeroMoved) {
+            EXPECT_EQ(*firstStepWithZeroMoved, 1801u);
+        }
 #else
         EXPECT_EQ(world->GetContactRange(), 1450u); // on amd64
         EXPECT_EQ(totalBodiesSlept, createdBodyCount + 1u);

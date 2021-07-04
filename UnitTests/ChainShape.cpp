@@ -85,6 +85,15 @@ TEST(ChainShapeConf, DefaultConstruction)
     EXPECT_EQ(GetRestitution(foo), defaultConf.restitution);
 }
 
+TEST(ChainShapeConf, SetVertexRadius)
+{
+    auto foo = ChainShapeConf{};
+    ASSERT_EQ(GetVertexRadius(foo, GetChildCount(foo)), ChainShapeConf::GetDefaultVertexRadius());
+    const auto value = 2_m;
+    EXPECT_NO_THROW(SetVertexRadius(foo, 0u, value));
+    EXPECT_EQ(GetVertexRadius(foo, GetChildCount(foo)), value);
+}
+
 TEST(ChainShapeConf, GetInvalidChildThrows)
 {
     const auto foo = ChainShapeConf{};

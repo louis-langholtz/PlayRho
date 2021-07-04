@@ -731,6 +731,21 @@ TEST(Math, GetRevRotationalAngle)
     EXPECT_NEAR(double(Real{GetRevRotationalAngle(-10_deg, -20_deg) / 1_deg}), 350.0, 0.001);
 }
 
+TEST(Math, Normalize)
+{
+    const auto v0 = Real(2);
+    const auto v1 = Real(2);
+    auto value = Vec2{v0, v1};
+    const auto length = GetMagnitude(value);
+    const auto invLength = Real{1} / length;
+    auto magnitude = Real(0);
+    EXPECT_NO_THROW(magnitude = Normalize(value));
+    EXPECT_EQ(magnitude, length);
+    EXPECT_EQ(value[0], value[1]);
+    EXPECT_EQ(value[0], v0 * invLength);
+    EXPECT_EQ(value[1], v1 * invLength);
+}
+
 TEST(Math, GetNormalized)
 {
     // Confirm that GetNormalized returns a half-open interval value that's [-Pi, +Pi)...

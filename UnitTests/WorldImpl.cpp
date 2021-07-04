@@ -460,7 +460,7 @@ TEST(WorldImpl, SetTypeOfBody)
     EXPECT_EQ(GetType(body), BodyType::Dynamic);
     auto body2 = body;
     SetType(body2, BodyType::Static);
-    world.SetBody(bodyID, body2);
+    EXPECT_NO_THROW(world.SetBody(bodyID, body2));
     EXPECT_EQ(GetType(world.GetBody(bodyID)), BodyType::Static);
 }
 
@@ -895,6 +895,33 @@ TEST(WorldImpl, SetBodyThrowsWithOutOfRangeShapeID)
     ASSERT_NO_THROW(world.SetBody(BodyID(0), body));
     ASSERT_NO_THROW(body.Attach(ShapeID(0)));
     EXPECT_THROW(world.SetBody(BodyID(0), body), std::out_of_range);
+}
+
+TEST(WorldImpl, SetFreedShapeThrows)
+{
+    auto world = WorldImpl{};
+    auto id = InvalidShapeID;
+    ASSERT_NO_THROW(id = world.CreateShape(Shape()));
+    ASSERT_NO_THROW(world.Destroy(id));
+    EXPECT_THROW(world.SetShape(id, Shape()), InvalidArgument);
+}
+
+TEST(WorldImpl, SetFreedBodyThrows)
+{
+    auto world = WorldImpl{};
+    auto id = InvalidBodyID;
+    ASSERT_NO_THROW(id = world.CreateBody(Body()));
+    ASSERT_NO_THROW(world.Destroy(id));
+    EXPECT_THROW(world.SetBody(id, Body()), InvalidArgument);
+}
+
+TEST(WorldImpl, SetFreedJointThrows)
+{
+    auto world = WorldImpl{};
+    auto id = InvalidJointID;
+    ASSERT_NO_THROW(id = world.CreateJoint(Joint()));
+    ASSERT_NO_THROW(world.Destroy(id));
+    EXPECT_THROW(world.SetJoint(id, Joint()), InvalidArgument);
 }
 
 TEST(WorldImpl, SetBodyWithShapeID)

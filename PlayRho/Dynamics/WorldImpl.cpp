@@ -120,6 +120,9 @@ struct WorldImpl::ContactUpdateConf
 
 namespace {
 
+constexpr char idIsDestroyedMsg[] = "ID is destroyed";
+constexpr char worldIsLockedMsg[] = "world is locked";
+
 inline void IntegratePositions(const Island::Bodies& bodies, BodyConstraints& constraints, Time h)
 {
     assert(IsValid(h));
@@ -636,35 +639,6 @@ GetOldAndNewShapeIDs(const Body& oldBody, const Body& newBody)
     return std::make_pair(oldShapeIds, newShapeIds);
 }
 
-void ValidateBodyFromUser(const Body& value)
-{
-    if (!IsAccelerable(value)) {
-        if (GetLinearAcceleration(value) != LinearAcceleration2{}) {
-            throw InvalidArgument("non accelerable body cannot have non-zero linear acceleration");
-        }
-        if (GetAngularAcceleration(value) != AngularAcceleration{}) {
-            throw InvalidArgument("non accelerable body cannot have non-zero angular acceleration");
-        }
-    }
-    if (!IsSpeedable(value)) {
-        if (GetLinearVelocity(value) != LinearVelocity2{}) {
-            throw InvalidArgument("non speedable body cannot have non-zero linear velocity");
-        }
-        if (GetAngularVelocity(value) != AngularVelocity{}) {
-            throw InvalidArgument("non speedable body cannot have non-zero angular velocity");
-        }
-        if (GetInvMass(value) != InvMass{}) {
-            throw InvalidArgument("non speedable body cannot have non-zero inverse mass");
-        }
-        if (GetInvRotInertia(value) != InvRotInertia{}) {
-            throw InvalidArgument("non speedable body cannot have non-zero inverse rot. inertia");
-        }
-        if (const auto sweep = GetSweep(value); sweep.pos0 != sweep.pos1) {
-            throw InvalidArgument("non speedable body cannot have different sweep positions");
-        }
-    }
-}
-
 } // anonymous namespace
 
 WorldImpl::WorldImpl(const WorldConf& def):
@@ -739,7 +713,7 @@ ContactCounter WorldImpl::GetContactRange() const noexcept
 BodyID WorldImpl::CreateBody(Body body)
 {
     if (IsLocked()) {
-        throw WrongState("CreateBody: world is locked");
+        throw WrongState(worldIsLockedMsg);
     }
     if (size(m_bodies) >= MaxBodies) {
         throw LengthError("CreateBody: operation would exceed MaxBodies");
@@ -748,7 +722,6 @@ BodyID WorldImpl::CreateBody(Body body)
     for (const auto& shapeId: body.GetShapes()) {
         m_shapeBuffer.at(to_underlying(shapeId));
     }
-    ValidateBodyFromUser(body);
     const auto id = static_cast<BodyID>(
         static_cast<BodyID::underlying_type>(m_bodyBuffer.Allocate(body)));
     m_bodyContacts.Allocate();
@@ -786,7 +759,7 @@ void WorldImpl::Remove(BodyID id) noexcept
 void WorldImpl::Destroy(BodyID id)
 {
     if (IsLocked()) {
-        throw WrongState("Destroy: world is locked");
+        throw WrongState(worldIsLockedMsg);
     }
 
     const auto& body = GetBody(id);
@@ -837,7 +810,7 @@ bool WorldImpl::IsDestroyed(BodyID id) const noexcept
 void WorldImpl::SetJoint(JointID id, Joint def)
 {
     if (IsLocked()) {
-        throw WrongState("SetJoint: world is locked");
+        throw WrongState(worldIsLockedMsg);
     }
     // Validate the references...
     m_jointBuffer.at(to_underlying(id));
@@ -847,6 +820,9 @@ void WorldImpl::SetJoint(JointID id, Joint def)
     if (const auto bodyId = GetBodyB(def); bodyId != InvalidBodyID) {
         GetBody(bodyId);
     }
+    if (m_jointBuffer.FindFree(to_underlying(id))) {
+        throw InvalidArgument(idIsDestroyedMsg);
+    }
     Remove(id);
     m_jointBuffer[to_underlying(id)] = def;
     Add(id, !GetCollideConnected(def));
@@ -855,7 +831,7 @@ void WorldImpl::SetJoint(JointID id, Joint def)
 JointID WorldImpl::CreateJoint(Joint def)
 {
     if (IsLocked()) {
-        throw WrongState("CreateJoint: world is locked");
+        throw WrongState(worldIsLockedMsg);
     }
     if (size(m_joints) >= MaxJoints) {
         throw LengthError("CreateJoint: operation would exceed MaxJoints");
@@ -934,7 +910,7 @@ void WorldImpl::Remove(JointID id) noexcept
 void WorldImpl::Destroy(JointID id)
 {
     if (IsLocked()) {
-        throw WrongState("Destroy: world is locked");
+        throw WrongState(worldIsLockedMsg);
     }
     const auto endIter = cend(m_joints);
     const auto iter = find(cbegin(m_joints), endIter, id);
@@ -970,7 +946,7 @@ ShapeID WorldImpl::CreateShape(Shape def)
         }
     }
     if (IsLocked()) {
-        throw WrongState("CreateShape: world is locked");
+        throw WrongState(worldIsLockedMsg);
     }
     if (size(m_shapeBuffer) >= MaxShapes) {
         throw LengthError("CreateShape: operation would exceed MaxShapes");
@@ -980,10 +956,10 @@ ShapeID WorldImpl::CreateShape(Shape def)
 
 void WorldImpl::Destroy(ShapeID id)
 {
-    m_shapeBuffer.at(to_underlying(id)); // confirm id valid.
     if (IsLocked()) {
-        throw WrongState("Destroy: world is locked");
+        throw WrongState(worldIsLockedMsg);
     }
+    m_shapeBuffer.at(to_underlying(id)); // confirm id valid.
     const auto numBodies = GetBodyRange();
     for (auto bodyIdx = static_cast<decltype(GetBodyRange())>(0); bodyIdx < numBodies; ++bodyIdx) {
         auto body = m_bodyBuffer[bodyIdx];
@@ -1006,9 +982,12 @@ const Shape& WorldImpl::GetShape(ShapeID id) const
 void WorldImpl::SetShape(ShapeID id, Shape def)
 {
     if (IsLocked()) {
-        throw WrongState("SetShape: world is locked");
+        throw WrongState(worldIsLockedMsg);
     }
     const auto& shape = m_shapeBuffer.at(to_underlying(id));
+    if (m_shapeBuffer.FindFree(to_underlying(id))) {
+        throw InvalidArgument(idIsDestroyedMsg);
+    }
     const auto geometryChanged = [](const Shape& shape0, const Shape& shape1){
         const auto numKids0 = GetChildCount(shape0);
         const auto numKids1 = GetChildCount(shape1);
@@ -1888,7 +1867,7 @@ StepStats WorldImpl::Step(const StepConf& conf)
            (Length{conf.linearSlop} / Real{4}) > (Length{m_maxVertexRadius} * Real{2}));
     
     if (IsLocked()) {
-        throw WrongState("Step: world is locked");
+        throw WrongState(worldIsLockedMsg);
     }
 
     // "Named return value optimization" (NRVO) will make returning this more efficient.
@@ -1958,7 +1937,7 @@ StepStats WorldImpl::Step(const StepConf& conf)
 void WorldImpl::ShiftOrigin(Length2 newOrigin)
 {
     if (IsLocked()) {
-        throw WrongState("ShiftOrigin: world is locked");
+        throw WrongState(worldIsLockedMsg);
     }
 
     // Optimize for newOrigin being different than current...
@@ -2504,14 +2483,16 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
 void WorldImpl::SetBody(BodyID id, Body value)
 {
     if (IsLocked()) {
-        throw WrongState("SetBody: world is locked");
+        throw WrongState(worldIsLockedMsg);
     }
     // confirm id and all shapeIds are valid...
     const auto& body = m_bodyBuffer.at(to_underlying(id));
     for (const auto& shapeId: value.GetShapes()) {
         m_shapeBuffer.at(to_underlying(shapeId));
     }
-    ValidateBodyFromUser(value);
+    if (m_bodyBuffer.FindFree(to_underlying(id))) {
+        throw InvalidArgument(idIsDestroyedMsg);
+    }
 
     auto addToBodiesForSync = false;
     // handle state changes that other data needs to stay in sync with
@@ -2629,6 +2610,9 @@ void WorldImpl::SetContact(ContactID id, Contact value)
     assert(IsImpenetrable(contact) == (IsImpenetrable(bodyA) || IsImpenetrable(bodyB)));
     assert(IsSensor(contact) == (IsSensor(shapeA) || IsSensor(shapeB)));
 
+    if (m_contactBuffer.FindFree(to_underlying(id))) {
+        throw InvalidArgument(idIsDestroyedMsg);
+    }
     if (contact.IsActive() != value.IsActive()) {
         throw InvalidArgument("change body A or B being awake to change active state");
     }
