@@ -87,6 +87,14 @@ TEST(Body, GetFlagsForBodyConf)
         Body::e_awakeFlag);
 }
 
+TEST(Body, ShapeOnConstruction)
+{
+    const auto shapeId = ShapeID(1u);
+    ASSERT_TRUE(!empty(Body(BodyConf{}.Use(shapeId)).GetShapes()));
+    ASSERT_EQ(size(Body(BodyConf{}.Use(shapeId)).GetShapes()), 1u);
+    EXPECT_EQ(Body(BodyConf{}.Use(shapeId)).GetShapes()[0], shapeId);
+}
+
 TEST(Body, LinearDampingOnConstruction)
 {
     EXPECT_EQ(Body(BodyConf{}.UseLinearDamping(0_Hz)).GetLinearDamping(), 0_Hz);

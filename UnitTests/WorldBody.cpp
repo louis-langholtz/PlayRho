@@ -78,7 +78,6 @@ TEST(WorldBody, SetVelocityDoesNothingToStatic)
 
 TEST(WorldBody, CreateAttachShape)
 {
-    auto shapeId = InvalidShapeID;
     auto world = World{};
     const auto body = CreateBody(world);
     EXPECT_EQ(size(GetShapes(world, body)), std::size_t(0));

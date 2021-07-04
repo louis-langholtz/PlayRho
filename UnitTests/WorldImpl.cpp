@@ -665,6 +665,7 @@ TEST(WorldImpl, AttachAndDetachShape)
         EXPECT_EQ(*GetFixturesForProxies(world).begin(), std::make_pair(body, shapeId));
 
         EXPECT_TRUE(Detach(world, body, shapeId));
+        EXPECT_FALSE(Detach(world, body, shapeId));
         EXPECT_TRUE(GetShapes(world, body).empty());
         EXPECT_TRUE(IsMassDataDirty(world.GetBody(body)));
 
