@@ -21,18 +21,22 @@
 #include "UnitTests.hpp"
 
 #include <PlayRho/Dynamics/Joints/GearJointConf.hpp>
+
 #include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldShape.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+
 #include <type_traits>
 
 using namespace playrho;
@@ -44,15 +48,7 @@ TEST(GearJointConf, ByteSize)
     // builds and to report actual size rather than just reporting that expected size is wrong.
     switch (sizeof(Real)) {
     case 4:
-#if defined(_WIN32)
-#if defined(_WIN64)
-        EXPECT_EQ(sizeof(GearJointConf), std::size_t(136));
-#else
-        EXPECT_EQ(sizeof(GearJointConf), std::size_t(124));
-#endif
-#else
         EXPECT_EQ(sizeof(GearJointConf), std::size_t(116));
-#endif
         break;
     case 8:
         EXPECT_EQ(sizeof(GearJointConf), std::size_t(224));
@@ -64,6 +60,24 @@ TEST(GearJointConf, ByteSize)
         FAIL();
         break;
     }
+}
+
+TEST(GearJointConf, DefaultConstruction)
+{
+    auto conf = GearJointConf{};
+    EXPECT_EQ(conf.bodyA, InvalidBodyID);
+    EXPECT_EQ(conf.bodyB, InvalidBodyID);
+    EXPECT_EQ(conf.bodyC, InvalidBodyID);
+    EXPECT_EQ(conf.bodyD, InvalidBodyID);
+    EXPECT_EQ(conf.ratio, Real(1));
+    EXPECT_TRUE(std::holds_alternative<std::monostate>(conf.typeDataAC));
+    EXPECT_TRUE(std::holds_alternative<std::monostate>(conf.typeDataBD));
+    EXPECT_EQ(GetTypeAC(conf), GetTypeID<void>());
+    EXPECT_EQ(GetTypeBD(conf), GetTypeID<void>());
+    auto bodies = std::vector<BodyConstraint>{};
+    EXPECT_NO_THROW(InitVelocity(conf, bodies, StepConf{}, ConstraintSolverConf{}));
+    EXPECT_NO_THROW(SolveVelocity(conf, bodies, StepConf{}));
+    EXPECT_NO_THROW(SolvePosition(conf, bodies, ConstraintSolverConf{}));
 }
 
 #if 0
@@ -88,7 +102,7 @@ TEST(GearJoint, IsOkay)
 }
 #endif
 
-TEST(GearJoint, Creation)
+TEST(GearJoint, CreationRevolute)
 {
     auto world = World{};
     const auto body0 = CreateBody(world);
@@ -239,6 +253,10 @@ TEST(GearJoint, WithDynamicCirclesAndPrismaticJoints)
         world,
         CreateJoint(world, GetPrismaticJointConf(world, b1, b2, Length2{}, UnitVec::GetTop())),
         CreateJoint(world, GetPrismaticJointConf(world, b4, b3, Length2{}, UnitVec::GetTop())));
+    EXPECT_EQ(GetTypeAC(def), GetTypeID<PrismaticJointConf>());
+    EXPECT_EQ(GetTypeBD(def), GetTypeID<PrismaticJointConf>());
+    EXPECT_EQ(GetLocalAnchorA(def), Length2(-1_m, 0_m));
+    EXPECT_EQ(GetLocalAnchorB(def), Length2(-2_m, 0_m));
     const auto joint = CreateJoint(world, def);
     ASSERT_NE(joint, InvalidJointID);
     Step(world, 1_s);

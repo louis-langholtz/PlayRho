@@ -38,13 +38,13 @@ TEST(MultiShapeConf, ByteSize)
 #if !defined(NDEBUG)
             EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(56));
 #else
-            EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(40));
+            EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(48));
 #endif
 #elif defined(_WIN32)
 #if !defined(NDEBUG)
             EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(36));
 #else
-            EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(24));
+            EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(32));
 #endif
 #else
             EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(48));
@@ -174,6 +174,27 @@ TEST(MultiShapeConf, RotateZeroFF)
     auto copy = foo;
     EXPECT_NO_THROW(Rotate(foo, UnitVec::GetRight()));
     EXPECT_EQ(foo, copy);
+}
+
+TEST(MultiShapeConf, RotateSomeFF)
+{
+    auto foo = MultiShapeConf{};
+    const auto v1 = Length2{1_m, 2_m};
+    const auto v2 = Length2{3_m, 4_m};
+    auto vs = VertexSet{};
+    vs.add(v1);
+    vs.add(v2);
+    foo.AddConvexHull(vs);
+    ASSERT_EQ(foo.children.size(), std::size_t(1));
+    auto copy = foo;
+
+    const auto value = UnitVec::GetTop();
+    EXPECT_NO_THROW(Rotate(foo, value));
+    EXPECT_NE(foo, copy);
+    const auto dp0 = foo.children[0].GetDistanceProxy();
+    ASSERT_EQ(dp0.GetVertexCount(), VertexCounter(2));
+    EXPECT_EQ(dp0.GetVertex(0), Rotate(v1, value));
+    EXPECT_EQ(dp0.GetVertex(1), Rotate(v2, value));
 }
 
 TEST(MultiShapeConf, SetVertexRadius)

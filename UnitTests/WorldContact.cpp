@@ -178,8 +178,17 @@ TEST(WorldContact, WorldManifoldAndMore)
     const auto contacts = GetContacts(world);
     ASSERT_EQ(contacts.size(), ContactCounter(1));
     EXPECT_EQ(GetContactRange(world), 1u);
-
     const auto c = contacts.begin()->second;
+    auto count = ContactCounter(0);
+    EXPECT_EQ(count = GetTouchingCount(world), ContactCounter(1));
+    if (count > ContactCounter(0)) {
+        if (HasValidToi(world, c)) {
+            auto toi = Real(0);
+            EXPECT_NO_THROW(toi = GetToi(world, c));
+            EXPECT_GE(toi, Real(0));
+            EXPECT_LE(toi, Real(1));
+        }
+    }
     {
         auto manifold = WorldManifold{};
         EXPECT_NO_THROW(manifold = GetWorldManifold(world, c));

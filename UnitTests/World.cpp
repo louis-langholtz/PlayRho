@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2021 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -210,9 +210,9 @@ TEST(World, Clear)
     ASSERT_EQ(world.GetJoints().size(), std::size_t(0));
     ASSERT_EQ(GetJointRange(world), 0u);
 
-    world.SetJointDestructionListener(std::ref(jointListener));
-    world.SetShapeDestructionListener(std::ref(shapeListener));
-    world.SetDetachListener(std::ref(associationListener));
+    SetJointDestructionListener(world, std::ref(jointListener));
+    SetShapeDestructionListener(world, std::ref(shapeListener));
+    SetDetachListener(world, std::ref(associationListener));
 
     const auto b0 = CreateBody(world);
     ASSERT_NE(b0, InvalidBodyID);
@@ -532,8 +532,8 @@ TEST(World, CreateDestroyJoinedBodies)
     ASSERT_EQ(GetJointCount(world), JointCounter(0));
 
     SetJointDestructionListener(world, std::ref(jointListener));
-    world.SetShapeDestructionListener(std::ref(shapeListener));
-    world.SetDetachListener(std::ref(associationListener));
+    SetShapeDestructionListener(world, std::ref(shapeListener));
+    SetDetachListener(world, std::ref(associationListener));
 
     const auto body1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
@@ -2912,11 +2912,11 @@ TEST(World_Longer, TilesComesToRest)
         }
     }
 #elif defined(_WIN64) // This is likely wrong as the results are more likely arch dependent
-    EXPECT_EQ(numSteps, 1794ul);
-    EXPECT_EQ(sumRegPosIters, 36498ul);
-    EXPECT_EQ(sumRegVelIters, 46900ul);
-    EXPECT_EQ(sumToiPosIters, 44074ul);
-    EXPECT_EQ(sumToiVelIters, 114404ul);
+    EXPECT_EQ(numSteps, 1814ul);
+    EXPECT_EQ(sumRegPosIters, 36530ul);
+    EXPECT_EQ(sumRegVelIters, 47061ul);
+    EXPECT_EQ(sumToiPosIters, 43786ul);
+    EXPECT_EQ(sumToiVelIters, 112952ul);
 #elif defined(_WIN32)
     EXPECT_EQ(numSteps, 1803ul);
     EXPECT_EQ(sumRegPosIters, 36528ul);

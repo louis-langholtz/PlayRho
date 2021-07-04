@@ -28,35 +28,68 @@ using namespace playrho::part;
 
 TEST(Compositor, ByteSize)
 {
+#ifdef _WIN32
+    EXPECT_EQ(sizeof(Compositor<GeometryIs<StaticRectangle<1, 1>>>), 5u);
+    EXPECT_EQ(
+              sizeof(Compositor<GeometryIs<StaticRectangle<1, 1, 2>>, DensityIs<StaticAreaDensity<6>>>),
+              5u);
+    EXPECT_EQ(sizeof(Compositor<GeometryIs<StaticRectangle<1, 1>>, DensityIs<StaticAreaDensity<4>>,
+                     FrictionIs<StaticTenthsFriction<3>>>{}),
+              5u);
+    EXPECT_EQ(sizeof(Compositor<GeometryIs<StaticRectangle<1, 2>>, FrictionIs<StaticFriction<>>>),
+              5u);
+#else
     EXPECT_EQ(sizeof(Compositor<GeometryIs<StaticRectangle<1, 1>>>), 1u);
     EXPECT_EQ(
-        sizeof(Compositor<GeometryIs<StaticRectangle<1, 1, 2>>, DensityIs<StaticAreaDensity<6>>>),
-        1u);
+              sizeof(Compositor<GeometryIs<StaticRectangle<1, 1, 2>>, DensityIs<StaticAreaDensity<6>>>),
+              1u);
     EXPECT_EQ(sizeof(Compositor<GeometryIs<StaticRectangle<1, 1>>, DensityIs<StaticAreaDensity<4>>,
-                                FrictionIs<StaticTenthsFriction<3>>>{}),
+                     FrictionIs<StaticTenthsFriction<3>>>{}),
               1u);
     EXPECT_EQ(sizeof(Compositor<GeometryIs<StaticRectangle<1, 2>>, FrictionIs<StaticFriction<>>>),
               1u);
+#endif
     switch (sizeof(Real)) {
     case 4u:
+#ifdef _WIN32
+        EXPECT_EQ(sizeof(Compositor<GeometryIs<DynamicRectangle<1, 1>>>), 40u);
+        EXPECT_EQ(
+                  sizeof(Compositor<GeometryIs<StaticRectangle<1, 1>>, DensityIs<StaticAreaDensity<4>>,
+                         FrictionIs<DynamicFriction<4>>>{}),
+                  12u);
+        EXPECT_EQ(
+                  sizeof(
+                         Compositor<GeometryIs<StaticRectangle<1, 1>>, DensityIs<StaticAreaDensity<4>>,
+                         FrictionIs<StaticFriction<4>>, RestitutionIs<DynamicRestitution<>>>{}),
+                  12u);
+        EXPECT_EQ(
+                  sizeof(
+                         Compositor<GeometryIs<StaticRectangle<1, 2>>, RestitutionIs<DynamicRestitution<>>>),
+                  12u);
+        EXPECT_EQ(
+                  sizeof(Compositor<GeometryIs<StaticRectangle<1, 2>>,
+                         RestitutionIs<DynamicRestitution<>>, FrictionIs<DynamicFriction<>>>),
+                  16u);
+#else
         EXPECT_EQ(sizeof(Compositor<GeometryIs<DynamicRectangle<1, 1>>>), 36u);
         EXPECT_EQ(
-            sizeof(Compositor<GeometryIs<StaticRectangle<1, 1>>, DensityIs<StaticAreaDensity<4>>,
-                              FrictionIs<DynamicFriction<4>>>{}),
-            4u);
+                  sizeof(Compositor<GeometryIs<StaticRectangle<1, 1>>, DensityIs<StaticAreaDensity<4>>,
+                         FrictionIs<DynamicFriction<4>>>{}),
+                  4u);
         EXPECT_EQ(
-            sizeof(
-                Compositor<GeometryIs<StaticRectangle<1, 1>>, DensityIs<StaticAreaDensity<4>>,
-                           FrictionIs<StaticFriction<4>>, RestitutionIs<DynamicRestitution<>>>{}),
-            4u);
+                  sizeof(
+                         Compositor<GeometryIs<StaticRectangle<1, 1>>, DensityIs<StaticAreaDensity<4>>,
+                         FrictionIs<StaticFriction<4>>, RestitutionIs<DynamicRestitution<>>>{}),
+                  4u);
         EXPECT_EQ(
-            sizeof(
-                Compositor<GeometryIs<StaticRectangle<1, 2>>, RestitutionIs<DynamicRestitution<>>>),
-            4u);
+                  sizeof(
+                         Compositor<GeometryIs<StaticRectangle<1, 2>>, RestitutionIs<DynamicRestitution<>>>),
+                  4u);
         EXPECT_EQ(
-            sizeof(Compositor<GeometryIs<StaticRectangle<1, 2>>,
-                              RestitutionIs<DynamicRestitution<>>, FrictionIs<DynamicFriction<>>>),
-            8u);
+                  sizeof(Compositor<GeometryIs<StaticRectangle<1, 2>>,
+                         RestitutionIs<DynamicRestitution<>>, FrictionIs<DynamicFriction<>>>),
+                  8u);
+#endif
         EXPECT_EQ(sizeof(Compositor<GeometryIs<DynamicRectangle<1, 1>>, //
                                     DensityIs<DynamicAreaDensity<1>>, //
                                     RestitutionIs<DynamicRestitution<>>, //
