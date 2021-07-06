@@ -58,11 +58,13 @@ as API (Application Programming Interface) changes, Testbed changes, and other c
 
 ## Testbed changes
 
-- Updated UI to provide full access to the per-step configurability, per-step statistics.
+- Updated UI to provide full access to the per-step configurability and per-step statistics.
 - Added the ability to manipulate bodies while paused.
 - Added additional paths to find font and a font-less mode (instead of aborting).
 - Added more demonstrations/tests: Half Pipe, iforce2d's Topdown Car, Orbiter, Newton's
   Cradle, Spinning Circles, and Solar System.
+- Added the ability to read and update shapes, bodies, joints, and contacts (since PR#414 from the master branch and coming up in release 2).
+- Added the ability to create and destroy shapes, bodies, and joints (since PR#414 from the master branch and coming up in release 2).
 - Numerous other changes.
 
 ## Other Changes
