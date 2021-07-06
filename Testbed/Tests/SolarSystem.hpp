@@ -102,7 +102,7 @@ public:
         conf.settings.maxTranslation = std::numeric_limits<float>::infinity();
         conf.settings.minDt = 1 * 3.6e3f; // 1 hour
         conf.settings.dt = 24 * 3.6e3f; // 1 day
-        conf.settings.maxDt = 96 * 3.6e3f;
+        conf.settings.maxDt = 96 * 3.6e3f; // 4 days
         return conf;
     }
 
@@ -141,7 +141,7 @@ public:
                        [&](KeyActionMods) { SetBombDensity(GetBombDensity() / 2); });
     }
 
-    void PreStep(const Settings&, Drawer& drawer) override
+    void PreStep(const Settings&, Drawer&) override
     {
         SetAccelerations(GetWorld(), CalcGravitationalAcceleration);
 
