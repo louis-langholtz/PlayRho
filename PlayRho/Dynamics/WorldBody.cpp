@@ -375,20 +375,7 @@ Length2 GetLocalCenter(const World& world, BodyID id)
 
 MassData ComputeMassData(const World& world, BodyID id)
 {
-    auto mass = 0_kg;
-    auto I = RotInertia{0};
-    auto weightedCenter = Length2{};
-    for (const auto& shapeId: GetShapes(world, id)) {
-        const auto& shape = GetShape(world, shapeId);
-        if (GetDensity(shape) > 0_kgpm2) {
-            const auto massData = GetMassData(shape);
-            mass += Mass{massData.mass};
-            weightedCenter += Real{massData.mass / Kilogram} * massData.center;
-            I += RotInertia{massData.I};
-        }
-    }
-    const auto center = (mass > 0_kg)? (weightedCenter / (Real{mass/1_kg})): Length2{};
-    return MassData{center, mass, I};
+    return ComputeMassData(world, GetShapes(world, id));
 }
 
 void SetMassData(World& world, BodyID id, const MassData& massData)
@@ -556,6 +543,24 @@ void ApplyAngularImpulse(World& world, BodyID id, AngularMomentum impulse)
     auto body = GetBody(world, id);
     ApplyAngularImpulse(body, impulse);
     SetBody(world, id, body);
+}
+
+void SetForce(World& world, BodyID id, Force2 force, Length2 point)
+{
+    const auto linAccel = LinearAcceleration2{force * GetInvMass(world, id)};
+    const auto invRotI = GetInvRotInertia(world, id);
+    const auto dp = point - GetWorldCenter(world, id);
+    const auto cp = Torque{Cross(dp, force) / Radian};
+    const auto angAccel = AngularAcceleration{cp * invRotI};
+    SetAcceleration(world, id, linAccel, angAccel);
+}
+
+void SetTorque(World& world, BodyID id, Torque torque)
+{
+    const auto linAccel = GetLinearAcceleration(world, id);
+    const auto invRotI = GetInvRotInertia(world, id);
+    const auto angAccel = torque * invRotI;
+    SetAcceleration(world, id, linAccel, angAccel);
 }
 
 BodyCounter GetAwakeCount(const World& world) noexcept
