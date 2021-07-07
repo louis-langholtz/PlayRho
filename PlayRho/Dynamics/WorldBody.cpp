@@ -211,17 +211,17 @@ void RotateAboutLocalPoint(World& world, BodyID body, Angle amount, Length2 loca
 Acceleration CalcGravitationalAcceleration(const World& world, BodyID body)
 {
     const auto m1 = GetMass(world, body);
-    if (m1 != 0_kg)
-    {
+    if (isnormal(m1)) {
         auto sumForce = Force2{};
         const auto loc1 = GetLocation(world, body);
-        for (const auto& b2: world.GetBodies())
-        {
-            if (b2 == body)
-            {
+        for (const auto& b2: world.GetBodies()) {
+            if (b2 == body) {
                 continue;
             }
             const auto m2 = GetMass(world, b2);
+            if (!isnormal(m2)) {
+                continue;
+            }
             const auto delta = GetLocation(world, b2) - loc1;
             const auto dir = GetUnitVector(delta);
             const auto rr = GetMagnitudeSquared(delta);
