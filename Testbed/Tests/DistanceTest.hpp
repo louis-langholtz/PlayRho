@@ -441,8 +441,10 @@ public:
             drawer.DrawPoint(std::get<1>(witnessPoints), 6.0f, witnessPointColor);
 
             for (auto&& edge : output.simplex.GetEdges()) {
-                drawer.DrawString(edge.GetPointA(), Drawer::AboveCenter, "Vertex %d", edge.GetIndexA());
-                drawer.DrawString(edge.GetPointB(), Drawer::AboveCenter, "Vertex %d", edge.GetIndexB());
+                drawer.DrawString(edge.GetPointA(), Drawer::AboveCenter, "Vertex %d",
+                                  edge.GetIndexA());
+                drawer.DrawString(edge.GetPointB(), Drawer::AboveCenter, "Vertex %d",
+                                  edge.GetIndexB());
                 drawer.DrawPoint(edge.GetPointA(), 8.0f, simplexPointColor);
                 drawer.DrawPoint(edge.GetPointB(), 8.0f, simplexPointColor);
             }

@@ -22,60 +22,56 @@
 #include "../Framework/Test.hpp"
 
 namespace testbed {
-    
-    class Orbiter: public Test
+
+class Orbiter : public Test
+{
+public:
+    Orbiter()
     {
-    public:
-        
-        Orbiter()
-        {
-            SetGravity(LinearAcceleration2{});
+        SetGravity(LinearAcceleration2{});
 
-            BodyConf bd;
-            const auto radius = Real{12.0f};
+        BodyConf bd;
+        const auto radius = Real{12.0f};
 
-            bd.type = BodyType::Static;
-            bd.location = m_center;
-            const auto ctrBody = CreateBody(GetWorld(), bd);
-            Attach(GetWorld(), ctrBody, CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(3_m)));
+        bd.type = BodyType::Static;
+        bd.location = m_center;
+        const auto ctrBody = CreateBody(GetWorld(), bd);
+        Attach(GetWorld(), ctrBody, CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(3_m)));
 
-            bd.type = BodyType::Dynamic;
-            bd.location = Length2{GetX(m_center), GetY(m_center) + radius * 1_m};
-            m_orbiter = CreateBody(GetWorld(), bd);
-            Attach(GetWorld(), m_orbiter,
-                   CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2)));
-            
-            const auto velocity = Velocity{
-                Vec2{Pi * radius / 2, 0} * 1_mps,
-                360_deg / 1_s
-            };
-            SetVelocity(GetWorld(), m_orbiter, velocity);
-            
-            auto conf = ChainShapeConf{};
-            conf.Set(GetCircleVertices(20_m, 180));
-            conf.UseVertexRadius(0.1_m);
-            conf.UseDensity(1_kgpm2);
+        bd.type = BodyType::Dynamic;
+        bd.location = Length2{GetX(m_center), GetY(m_center) + radius * 1_m};
+        m_orbiter = CreateBody(GetWorld(), bd);
+        Attach(GetWorld(), m_orbiter,
+               CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2)));
 
-            bd.type = BodyType::Dynamic;
-            bd.location = m_center;
-            bd.bullet = true;
-            const auto dysonSphere = CreateBody(GetWorld(), bd);
-            Attach(GetWorld(), dysonSphere, CreateShape(GetWorld(), conf));
-        }
-        
-        void PreStep(const Settings&, Drawer&) override
-        {
-            const auto force = GetCentripetalForce(GetWorld(), m_orbiter, m_center);
-            const auto linAccel = force * GetInvMass(GetWorld(), m_orbiter);
-            const auto angAccel = 0 * RadianPerSquareSecond;
-            SetAcceleration(GetWorld(), m_orbiter, linAccel, angAccel);
-        }
-        
-    private:
-        BodyID m_orbiter = InvalidBodyID;
-        Length2 const m_center = Vec2{0, 20} * 1_m;
-    };
-    
-}
+        const auto velocity = Velocity{Vec2{Pi * radius / 2, 0} * 1_mps, 360_deg / 1_s};
+        SetVelocity(GetWorld(), m_orbiter, velocity);
+
+        auto conf = ChainShapeConf{};
+        conf.Set(GetCircleVertices(20_m, 180));
+        conf.UseVertexRadius(0.1_m);
+        conf.UseDensity(1_kgpm2);
+
+        bd.type = BodyType::Dynamic;
+        bd.location = m_center;
+        bd.bullet = true;
+        const auto dysonSphere = CreateBody(GetWorld(), bd);
+        Attach(GetWorld(), dysonSphere, CreateShape(GetWorld(), conf));
+    }
+
+    void PreStep(const Settings&, Drawer&) override
+    {
+        const auto force = GetCentripetalForce(GetWorld(), m_orbiter, m_center);
+        const auto linAccel = force * GetInvMass(GetWorld(), m_orbiter);
+        const auto angAccel = 0 * RadianPerSquareSecond;
+        SetAcceleration(GetWorld(), m_orbiter, linAccel, angAccel);
+    }
+
+private:
+    BodyID m_orbiter = InvalidBodyID;
+    Length2 const m_center = Vec2{0, 20} * 1_m;
+};
+
+} // namespace testbed
 
 #endif /* PLAYRHO_ORBITER_HPP */

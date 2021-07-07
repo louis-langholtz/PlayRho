@@ -18,7 +18,7 @@
  */
 
 #ifndef PLAYRHO_EDGE_TEST_HPP
-#define  PLAYRHO_EDGE_TEST_HPP
+#define PLAYRHO_EDGE_TEST_HPP
 
 #include "../Framework/Test.hpp"
 
@@ -27,7 +27,6 @@ namespace testbed {
 class EdgeTest : public Test
 {
 public:
-
     EdgeTest()
     {
         {
@@ -82,7 +81,7 @@ public:
             shape.UseDensity(1_kgpm2);
             Attach(GetWorld(), body, CreateShape(GetWorld(), shape));
         }
-        
+
         SetAccelerations(GetWorld(), GetGravity());
     }
 };

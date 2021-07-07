@@ -36,15 +36,15 @@ public:
             Attach(GetWorld(), pipeBody, CreateShape(GetWorld(), conf));
         }
         const auto ballBody = CreateBody(GetWorld(), BodyConf{}
-                                         .UseType(BodyType::Dynamic)
-                                         .UseLocation(Vec2(-19, 28) * 1_m)
-                                         .UseLinearAcceleration(GetGravity()));
-        Attach(GetWorld(), ballBody, CreateShape(GetWorld(),
-                                                 DiskShapeConf{}
-                                                 .UseDensity(0.01_kgpm2)
-                                                 .UseRadius(1_m).UseFriction(Real(1))));
+                                                         .UseType(BodyType::Dynamic)
+                                                         .UseLocation(Vec2(-19, 28) * 1_m)
+                                                         .UseLinearAcceleration(GetGravity()));
+        Attach(GetWorld(), ballBody,
+               CreateShape(
+                   GetWorld(),
+                   DiskShapeConf{}.UseDensity(0.01_kgpm2).UseRadius(1_m).UseFriction(Real(1))));
     }
 };
-}
+} // namespace testbed
 
 #endif /* PLAYRHO_HALF_PIPE_HPP */

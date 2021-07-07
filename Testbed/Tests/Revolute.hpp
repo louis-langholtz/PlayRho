@@ -1,21 +1,21 @@
 /*
-* Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #ifndef PLAYRHO_REVOLUTE_HPP
 #define PLAYRHO_REVOLUTE_HPP
@@ -31,7 +31,8 @@ public:
     {
         const auto ground = CreateBody(GetWorld());
         Attach(GetWorld(), ground,
-               CreateShape(GetWorld(), EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2( 40.0f, 0.0f) * 1_m}));
+               CreateShape(GetWorld(),
+                           EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));
 
         {
             BodyConf bd;
@@ -45,10 +46,8 @@ public:
             Attach(GetWorld(), body, CreateShape(GetWorld(), circleConf));
 
             const auto w = 100.0f;
-            SetVelocity(GetWorld(), body, Velocity{
-                Vec2(-8.0f * w, 0.0f) * 1_mps, w * 1_rad / 1_s
-            });
-            
+            SetVelocity(GetWorld(), body, Velocity{Vec2(-8.0f * w, 0.0f) * 1_mps, w * 1_rad / 1_s});
+
             auto rjd = GetRevoluteJointConf(GetWorld(), ground, body, Vec2(-10.0f, 12.0f) * 1_m);
             rjd.motorSpeed = Pi * 1_rad / 1_s;
             rjd.maxMotorTorque = 10000_Nm;
@@ -84,7 +83,8 @@ public:
             const auto polygon_body = CreateBody(GetWorld(), polygon_bd);
             Attach(GetWorld(), polygon_body, CreateShape(GetWorld(), polygon_shape));
 
-            auto rjd = GetRevoluteJointConf(GetWorld(), ground, polygon_body, Vec2(20.0f, 10.0f) * 1_m);
+            auto rjd =
+                GetRevoluteJointConf(GetWorld(), ground, polygon_body, Vec2(20.0f, 10.0f) * 1_m);
             rjd.lowerAngle = -0.25_rad * Pi;
             rjd.upperAngle = 0_rad * Pi;
             rjd.enableLimit = true;
@@ -93,11 +93,10 @@ public:
 
         // Tests mass computation of a small object far from the origin
         {
-            const auto polyShape = PolygonShapeConf{}.Set({
-                Vec2(17.63f, 36.31f) * 1_m,
-                Vec2(17.52f, 36.69f) * 1_m,
-                Vec2(17.19f, 36.36f) * 1_m
-            }).UseDensity(1_kgpm2);
+            const auto polyShape = PolygonShapeConf{}
+                                       .Set({Vec2(17.63f, 36.31f) * 1_m, Vec2(17.52f, 36.69f) * 1_m,
+                                             Vec2(17.19f, 36.36f) * 1_m})
+                                       .UseDensity(1_kgpm2);
 
             const auto body = CreateBody(GetWorld(), BodyConf{}.UseType(BodyType::Dynamic));
             Attach(GetWorld(), body, CreateShape(GetWorld(), polyShape));

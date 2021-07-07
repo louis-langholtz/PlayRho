@@ -28,7 +28,7 @@
 namespace testbed {
 
 /// @brief Bag of disks test.
-class BagOfDisks: public Test
+class BagOfDisks : public Test
 {
 public:
     static constexpr auto Count = 180;
@@ -39,30 +39,30 @@ public:
         conf.description = "Simulates bag of a liquid.";
         return conf;
     }
-    
-    BagOfDisks(): Test(GetTestConf())
+
+    BagOfDisks() : Test(GetTestConf())
     {
         m_ground = CreateBody(GetWorld(), BodyConf{}.UseType(BodyType::Kinematic));
-        
+
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Increase counter-clockwise angular velocity",
                        [&](KeyActionMods) {
-            const auto angularVelocity = GetAngularVelocity(GetWorld(), m_ground);
-            SetVelocity(GetWorld(), m_ground, angularVelocity + 0.1_rad / Second);
-        });
+                           const auto angularVelocity = GetAngularVelocity(GetWorld(), m_ground);
+                           SetVelocity(GetWorld(), m_ground, angularVelocity + 0.1_rad / Second);
+                       });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Increase clockwise angular velocity",
                        [&](KeyActionMods) {
-            const auto angularVelocity = GetAngularVelocity(GetWorld(), m_ground);
-            SetVelocity(GetWorld(), m_ground, angularVelocity - 0.1_rad / Second);
-        });
+                           const auto angularVelocity = GetAngularVelocity(GetWorld(), m_ground);
+                           SetVelocity(GetWorld(), m_ground, angularVelocity - 0.1_rad / Second);
+                       });
 
         auto boundaryConf = ChainShapeConf{}.UseFriction(100);
         boundaryConf.UseVertexRadius(0.04_m);
         boundaryConf.Add(Vec2(-12, +20) * 1_m);
-        boundaryConf.Add(Vec2(-12,  +0) * 1_m);
-        boundaryConf.Add(Vec2(+12,  +0) * 1_m);
+        boundaryConf.Add(Vec2(-12, +0) * 1_m);
+        boundaryConf.Add(Vec2(+12, +0) * 1_m);
         boundaryConf.Add(Vec2(+12, +20) * 1_m);
         Attach(GetWorld(), m_ground, CreateShape(GetWorld(), boundaryConf));
-        
+
         const auto vertices = GetCircleVertices(10_m, 90);
         const auto halfSegmentLength = GetMagnitude(vertices[1] - vertices[0]) / 2;
 
@@ -76,26 +76,22 @@ public:
         auto prevBody = InvalidBodyID;
         auto firstBody = InvalidBodyID;
         auto prevVertex = std::optional<Length2>{};
-        for (const auto& vertex: vertices)
-        {
-            if (prevVertex.has_value())
-            {
+        for (const auto& vertex : vertices) {
+            if (prevVertex.has_value()) {
                 const auto midPoint = (vertex + *prevVertex) / 2;
                 const auto angle = GetAngle(vertex - *prevVertex);
                 const auto body = CreateBody(GetWorld(), BodyConf{}
-                                                     .UseType(BodyType::Dynamic)
-                                                     .UseBullet(true)
-                                                     .UseLocation(midPoint + vertexOffset)
-                                                     .UseAngle(angle)
-                                                     .UseLinearAcceleration(GetGravity()));
+                                                             .UseType(BodyType::Dynamic)
+                                                             .UseBullet(true)
+                                                             .UseLocation(midPoint + vertexOffset)
+                                                             .UseAngle(angle)
+                                                             .UseLinearAcceleration(GetGravity()));
                 Attach(GetWorld(), body, shape);
-                if (prevBody != InvalidBodyID)
-                {
-                    CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), body,
-                                                              prevBody, *prevVertex + vertexOffset));
+                if (prevBody != InvalidBodyID) {
+                    CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), body, prevBody,
+                                                                 *prevVertex + vertexOffset));
                 }
-                else
-                {
+                else {
                     firstBody = body;
                 }
                 prevBody = body;
@@ -106,20 +102,20 @@ public:
                                                      vertices[0] + vertexOffset));
 
         const auto diskRadius = 0.15_m;
-        const auto diskShape = CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(diskRadius).UseDensity(10_kgpm2).UseFriction(0));
+        const auto diskShape = CreateShape(
+            GetWorld(), DiskShapeConf{}.UseRadius(diskRadius).UseDensity(10_kgpm2).UseFriction(0));
         auto angleIncrement = 90_deg;
         auto angle = 0_deg;
         const auto alpha = diskRadius;
         const auto beta = 0.000125_m / Degree;
-        for (auto i = 0; i < 2000; ++i)
-        {
+        for (auto i = 0; i < 2000; ++i) {
             const auto radius = alpha + beta * angle;
             const auto unitVector = UnitVec::Get(angle);
             const auto location = radius * unitVector;
             const auto body = CreateBody(GetWorld(), BodyConf{}
-                                                 .UseType(BodyType::Dynamic)
-                                                 .UseLocation(location + vertexOffset)
-                                                 .UseLinearAcceleration(GetGravity()));
+                                                         .UseType(BodyType::Dynamic)
+                                                         .UseLocation(location + vertexOffset)
+                                                         .UseLinearAcceleration(GetGravity()));
             Attach(GetWorld(), body, diskShape);
             angle += angleIncrement;
             angleIncrement *= 0.999f;
@@ -130,6 +126,6 @@ private:
     BodyID m_ground;
 };
 
-}
+} // namespace testbed
 
 #endif /* PLAYRHO_BAG_OF_DISKS_HPP */

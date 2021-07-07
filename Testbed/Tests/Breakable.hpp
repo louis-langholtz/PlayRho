@@ -30,31 +30,27 @@ namespace testbed {
 class Breakable : public Test
 {
 public:
-
-    enum
-    {
-        e_count = 7
-    };
+    enum { e_count = 7 };
 
     static PolygonShapeConf GetShapeConf1() noexcept
     {
-        return PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 0.5_m, Length2{-0.5_m, 0_m}, 0_rad);
+        return PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 0.5_m, Length2{-0.5_m, 0_m},
+                                                               0_rad);
     }
-    
+
     static PolygonShapeConf GetShapeConf2() noexcept
     {
-        return PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 0.5_m, Length2{+0.5_m, 0_m}, 0_rad);
+        return PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 0.5_m, Length2{+0.5_m, 0_m},
+                                                               0_rad);
     }
-    
+
     Breakable()
     {
         m_shape1 = CreateShape(GetWorld(), GetShapeConf1());
         m_shape2 = CreateShape(GetWorld(), GetShapeConf2());
-        SetPostSolveContactListener(GetWorld(), [this](ContactID id,
-                                                       const ContactImpulsesList& impulses,
-                                                       unsigned count){
-            PostSolve(id, impulses, count);
-        });
+        SetPostSolveContactListener(GetWorld(),
+                                    [this](ContactID id, const ContactImpulsesList& impulses,
+                                           unsigned count) { PostSolve(id, impulses, count); });
 
         // Ground body
         Attach(GetWorld(), CreateBody(GetWorld()), CreateShape(GetWorld(), GetGroundEdgeConf()));
@@ -74,8 +70,7 @@ public:
 
     void PostSolve(ContactID, const ContactImpulsesList& impulse, unsigned)
     {
-        if (m_broke)
-        {
+        if (m_broke) {
             // The body already broke.
             return;
         }
@@ -84,21 +79,19 @@ public:
         auto maxImpulse = 0_Ns;
         {
             const auto count = impulse.GetCount();
-            for (auto i = decltype(count){0}; i < count; ++i)
-            {
+            for (auto i = decltype(count){0}; i < count; ++i) {
                 maxImpulse = std::max(maxImpulse, impulse.GetEntryNormal(i));
             }
         }
 
-        if (maxImpulse > 40_Ns)
-        {
+        if (maxImpulse > 40_Ns) {
             // Flag the body for breaking.
             m_break = true;
         }
     }
 
     void Break()
-    {        
+    {
         // Create two bodies from one.
         const auto center = GetWorldCenter(GetWorld(), m_body1);
 
@@ -117,9 +110,11 @@ public:
         // cached velocity.
         const auto center1 = GetWorldCenter(GetWorld(), m_body1);
         const auto center2 = GetWorldCenter(GetWorld(), body2);
-        
-        const auto velocity1 = m_velocity + GetRevPerpendicular(center1 - center) * m_angularVelocity / 1_rad;
-        const auto velocity2 = m_velocity + GetRevPerpendicular(center2 - center) * m_angularVelocity / 1_rad;
+
+        const auto velocity1 =
+            m_velocity + GetRevPerpendicular(center1 - center) * m_angularVelocity / 1_rad;
+        const auto velocity2 =
+            m_velocity + GetRevPerpendicular(center2 - center) * m_angularVelocity / 1_rad;
 
         SetVelocity(GetWorld(), m_body1, Velocity{velocity1, m_angularVelocity});
         SetVelocity(GetWorld(), body2, Velocity{velocity2, m_angularVelocity});
@@ -127,16 +122,14 @@ public:
 
     void PreStep(const Settings&, Drawer&) override
     {
-        if (m_break)
-        {
+        if (m_break) {
             Break();
             m_broke = true;
             m_break = false;
         }
 
         // Cache velocities to improve movement on breakage.
-        if (!m_broke)
-        {
+        if (!m_broke) {
             const auto velocity = GetVelocity(GetWorld(), m_body1);
             m_velocity = velocity.linear;
             m_angularVelocity = velocity.angular;

@@ -41,11 +41,10 @@ public:
                lilDisk);
         Attach(GetWorld(), CreateBody(GetWorld(), BodyConf(DynBD).UseLocation(Length2{0_m, 3.5_m})),
                lilDisk);
-        RegisterForKey(GLFW_KEY_H, GLFW_PRESS, 0, "Toggle Heavy", [&](KeyActionMods) {
-            ToggleHeavy();
-        });
+        RegisterForKey(GLFW_KEY_H, GLFW_PRESS, 0, "Toggle Heavy",
+                       [&](KeyActionMods) { ToggleHeavy(); });
     }
-    
+
     void ToggleHeavy()
     {
         if (m_heavy != InvalidBodyID) {
@@ -58,8 +57,9 @@ public:
             Attach(GetWorld(), m_heavy, bigDisk);
         }
     }
-    
-    const BodyConf DynBD = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(GetGravity());
+
+    const BodyConf DynBD =
+        BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(GetGravity());
     ShapeID lilDisk = InvalidShapeID;
     ShapeID bigDisk = InvalidShapeID;
     BodyID m_heavy = InvalidBodyID;

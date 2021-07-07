@@ -27,19 +27,16 @@ namespace testbed {
 class SphereStack : public Test
 {
 public:
-
-    enum
-    {
-        e_count = 10
-    };
+    enum { e_count = 10 };
 
     SphereStack()
     {
         Attach(GetWorld(), CreateBody(GetWorld()),
-               CreateShape(GetWorld(), EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));
-        const auto shape = CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2));
-        for (auto i = 0; i < e_count; ++i)
-        {
+               CreateShape(GetWorld(),
+                           EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));
+        const auto shape =
+            CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2));
+        for (auto i = 0; i < e_count; ++i) {
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = GetGravity();

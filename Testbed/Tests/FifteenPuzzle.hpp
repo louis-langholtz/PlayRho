@@ -24,72 +24,72 @@
 #include "../Framework/Test.hpp"
 
 namespace testbed {
-    
-    /// @brief 15 Puzzle.
-    /// @see https://en.wikipedia.org/wiki/15_puzzle
-    class FifteenPuzzle: public Test
+
+/// @brief 15 Puzzle.
+/// @see https://en.wikipedia.org/wiki/15_puzzle
+class FifteenPuzzle : public Test
+{
+public:
+    static Test::Conf GetTestConf()
     {
-    public:
-        static Test::Conf GetTestConf()
-        {
-            auto conf = Test::Conf{};
-            conf.settings.drawSkins = true;
-            conf.settings.drawLabels = true;
-            conf.neededSettings = (0x1u << NeedDrawLabelsField)|(0x1u << NeedDrawSkinsField);
-            conf.description = "Slide square tiles around using the mouse. See if you can re-order them. Good luck!";
-            return conf;
-        }
-        
-        FifteenPuzzle(): Test(GetTestConf())
-        {
-            SetGravity(LinearAcceleration2{});
-            auto conf = GetChainShapeConf(16_m + 2 * GetVertexRadius());
-            conf.UseVertexRadius(GetVertexRadius());
-            const auto enclosure = CreateBody(GetWorld());
-            Attach(GetWorld(), enclosure, CreateShape(GetWorld(), conf));
-            SetLocation(GetWorld(), enclosure, GetCenter());
-            for (auto i = 0; i < 15; ++i)
-            {
-                const auto row = 3 - i / 4;
-                const auto col = i % 4;
-                CreateSquareTile(col, row);
-            }
-        }
-        
-        Length GetVertexRadius() const
-        {
-            return DefaultLinearSlop * Real{100};
-        }
+        auto conf = Test::Conf{};
+        conf.settings.drawSkins = true;
+        conf.settings.drawLabels = true;
+        conf.neededSettings = (0x1u << NeedDrawLabelsField) | (0x1u << NeedDrawSkinsField);
+        conf.description =
+            "Slide square tiles around using the mouse. See if you can re-order them. Good luck!";
+        return conf;
+    }
 
-        Length2 GetCenter() const
-        {
-            return Vec2{Real{0}, Real{20}} * 1_m;
+    FifteenPuzzle() : Test(GetTestConf())
+    {
+        SetGravity(LinearAcceleration2{});
+        auto conf = GetChainShapeConf(16_m + 2 * GetVertexRadius());
+        conf.UseVertexRadius(GetVertexRadius());
+        const auto enclosure = CreateBody(GetWorld());
+        Attach(GetWorld(), enclosure, CreateShape(GetWorld(), conf));
+        SetLocation(GetWorld(), enclosure, GetCenter());
+        for (auto i = 0; i < 15; ++i) {
+            const auto row = 3 - i / 4;
+            const auto col = i % 4;
+            CreateSquareTile(col, row);
         }
+    }
 
-        BodyID CreateSquareTile(int col, int row)
-        {
-            const auto sideLength = 4_m;
-            const auto skinWidth = GetVertexRadius();
-            const auto halfSide = sideLength / Real{2} - skinWidth;
-            const auto relPos = Length2{(col - 2) * sideLength, (row - 2) * sideLength};
-            
-            auto conf = PolygonShapeConf{};
-            conf.density = 1_kgpm2;
-            conf.vertexRadius = skinWidth;
-            conf.SetAsBox(halfSide, halfSide);
-            
-            BodyConf bd;
-            bd.type = BodyType::Dynamic;
-            bd.bullet = true;
-            bd.location = GetCenter() + relPos + Length2{sideLength / 2, sideLength / 2};
-            bd.linearDamping = 20_Hz;
-            const auto body = CreateBody(GetWorld(), bd);
-            Attach(GetWorld(), body, CreateShape(GetWorld(), conf));
-            
-            return body;
-        }
-    };
-    
+    Length GetVertexRadius() const
+    {
+        return DefaultLinearSlop * Real{100};
+    }
+
+    Length2 GetCenter() const
+    {
+        return Vec2{Real{0}, Real{20}} * 1_m;
+    }
+
+    BodyID CreateSquareTile(int col, int row)
+    {
+        const auto sideLength = 4_m;
+        const auto skinWidth = GetVertexRadius();
+        const auto halfSide = sideLength / Real{2} - skinWidth;
+        const auto relPos = Length2{(col - 2) * sideLength, (row - 2) * sideLength};
+
+        auto conf = PolygonShapeConf{};
+        conf.density = 1_kgpm2;
+        conf.vertexRadius = skinWidth;
+        conf.SetAsBox(halfSide, halfSide);
+
+        BodyConf bd;
+        bd.type = BodyType::Dynamic;
+        bd.bullet = true;
+        bd.location = GetCenter() + relPos + Length2{sideLength / 2, sideLength / 2};
+        bd.linearDamping = 20_Hz;
+        const auto body = CreateBody(GetWorld(), bd);
+        Attach(GetWorld(), body, CreateShape(GetWorld(), conf));
+
+        return body;
+    }
+};
+
 } // namespace testbed
 
 #endif /* FifteenPuzzle_hpp */

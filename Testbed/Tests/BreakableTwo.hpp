@@ -25,7 +25,7 @@
 
 namespace testbed {
 
-class BreakableTwo: public Test
+class BreakableTwo : public Test
 {
 public:
     static Test::Conf GetTestConf()
@@ -35,17 +35,15 @@ public:
         return conf;
     }
 
-    BreakableTwo(): Test(GetTestConf())
+    BreakableTwo() : Test(GetTestConf())
     {
         constexpr Length vr = 2 * DefaultLinearSlop;
         m_shape = CreateShape(GetWorld(),
-                              PolygonShapeConf{}.UseVertexRadius(vr).UseDensity(100_kgpm2)
-                              .SetAsBox(0.5_m - vr, 0.5_m - vr));
-        SetPostSolveContactListener(GetWorld(), [this](ContactID id,
-                                                       const ContactImpulsesList& impulses,
-                                                       unsigned count){
-            PostSolve(id, impulses, count);
-        });
+                              PolygonShapeConf{}.UseVertexRadius(vr).UseDensity(100_kgpm2).SetAsBox(
+                                  0.5_m - vr, 0.5_m - vr));
+        SetPostSolveContactListener(GetWorld(),
+                                    [this](ContactID id, const ContactImpulsesList& impulses,
+                                           unsigned count) { PostSolve(id, impulses, count); });
 
         SetGravity(LinearAcceleration2{});
 
@@ -59,21 +57,15 @@ public:
                 bodies[y * 20 + x] = CreateBody(GetWorld(), BodyConf(bd).UseLocation(location));
                 Attach(GetWorld(), bodies[y * 20 + x], m_shape);
                 if (x > 0) {
-                    const auto jd = GetWeldJointConf(
-                        GetWorld(),
-                        bodies[y * 20 + x - 1],
-                        bodies[y * 20 + x],
-                        location + Length2{-0.5_m, 0_m}
-                    );
+                    const auto jd =
+                        GetWeldJointConf(GetWorld(), bodies[y * 20 + x - 1], bodies[y * 20 + x],
+                                         location + Length2{-0.5_m, 0_m});
                     CreateJoint(GetWorld(), jd);
                 }
                 if (y > 0) {
-                    const auto jd = GetWeldJointConf(
-                        GetWorld(),
-                        bodies[(y - 1) * 20 + x],
-                        bodies[(y + 0) * 20 + x],
-                        location + Length2{0_m, -0.5_m}
-                    );
+                    const auto jd =
+                        GetWeldJointConf(GetWorld(), bodies[(y - 1) * 20 + x],
+                                         bodies[(y + 0) * 20 + x], location + Length2{0_m, -0.5_m});
                     CreateJoint(GetWorld(), jd);
                 }
             }
@@ -97,7 +89,7 @@ public:
             }
         }
     }
-    
+
     void PreStep(const Settings&, Drawer&) override
     {
         if (m_body != InvalidBodyID) {

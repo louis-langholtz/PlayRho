@@ -18,7 +18,7 @@
  */
 
 #ifndef PLAYRHO_HEAVY_ON_LIGHT_HPP
-#define  PLAYRHO_HEAVY_ON_LIGHT_HPP
+#define PLAYRHO_HEAVY_ON_LIGHT_HPP
 
 #include "../Framework/Test.hpp"
 
@@ -27,35 +27,32 @@ namespace testbed {
 class HeavyOnLight : public Test
 {
 public:
-    
     HeavyOnLight()
     {
         const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(GetGravity());
         const auto upperBodyConf = BodyConf(bd).UseLocation(Vec2(0.0f, 6.0f) * 1_m);
         const auto lowerBodyConf = BodyConf(bd).UseLocation(Vec2(0.0f, 0.5f) * 1_m);
-        
-        const auto groundConf = EdgeShapeConf{}
-            .Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m);
-        
+
+        const auto groundConf =
+            EdgeShapeConf{}.Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m);
+
         const auto diskConf = DiskShapeConf{}.UseDensity(10_kgpm2);
         const auto smallerDiskConf = DiskShapeConf(diskConf).UseRadius(0.5_m);
         const auto biggerDiskConf = DiskShapeConf(diskConf).UseRadius(5_m);
 
         Attach(GetWorld(), CreateBody(GetWorld()), Shape(groundConf));
-        
+
         const auto lowerBody = CreateBody(GetWorld(), lowerBodyConf);
         const auto upperBody = CreateBody(GetWorld(), upperBodyConf);
 
         Attach(GetWorld(), lowerBody, Shape(smallerDiskConf));
         m_top = CreateShape(GetWorld(), Shape(biggerDiskConf));
         Attach(GetWorld(), upperBody, m_top);
-        
-        RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "increase density of top shape", [&](KeyActionMods) {
-            ChangeDensity(+1_kgpm2);
-        });
-        RegisterForKey(GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, 0, "decrease density of top shape", [&](KeyActionMods) {
-            ChangeDensity(-1_kgpm2);
-        });
+
+        RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "increase density of top shape",
+                       [&](KeyActionMods) { ChangeDensity(+1_kgpm2); });
+        RegisterForKey(GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, 0, "decrease density of top shape",
+                       [&](KeyActionMods) { ChangeDensity(-1_kgpm2); });
     }
 
     void ChangeDensity(AreaDensity change)

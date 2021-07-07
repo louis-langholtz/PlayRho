@@ -1,24 +1,24 @@
 /*
-* Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #ifndef PLAYRHO_COLLISION_PROCESSING_HPP
-#define  PLAYRHO_COLLISION_PROCESSING_HPP
+#define PLAYRHO_COLLISION_PROCESSING_HPP
 
 #include "../Framework/Test.hpp"
 #include <algorithm>
@@ -66,7 +66,7 @@ public:
 
         const auto body2 = CreateBody(GetWorld(), triangleBodyConf);
         Attach(GetWorld(), body2, CreateShape(GetWorld(), polygon));
-        
+
         // Small box
         polygon.SetAsBox(1_m, 0.5_m);
 
@@ -90,13 +90,15 @@ public:
         // Small circle
         circleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
         const auto body5 = CreateBody(GetWorld(), circleBodyConf);
-        Attach(GetWorld(), body5, CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2)));
+        Attach(GetWorld(), body5,
+               CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2)));
 
         // Large circle
         circleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
         const auto body6 = CreateBody(GetWorld(), circleBodyConf);
-        Attach(GetWorld(), body6, CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2)));
-        
+        Attach(GetWorld(), body6,
+               CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2)));
+
         SetAccelerations(GetWorld(), GetGravity());
     }
 
@@ -111,7 +113,7 @@ public:
 
         // Traverse the contact results. Destroy bodies that
         // are touching heavier bodies.
-        for (auto& point: GetPoints()) {
+        for (auto& point : GetPoints()) {
             const auto body1 = point.bodyIdA;
             const auto body2 = point.bodyIdB;
             const auto mass1 = GetMass(GetWorld(), body1);
@@ -134,16 +136,13 @@ public:
 
         // Destroy the bodies, skipping duplicates.
         auto i = 0;
-        while (i < nukeCount)
-        {
+        while (i < nukeCount) {
             const auto b = nuke[i++];
-            while (i < nukeCount && nuke[i] == b)
-            {
+            while (i < nukeCount && nuke[i] == b) {
                 ++i;
             }
 
-            if (b != GetBomb())
-            {
+            if (b != GetBomb()) {
                 Destroy(GetWorld(), b);
             }
         }

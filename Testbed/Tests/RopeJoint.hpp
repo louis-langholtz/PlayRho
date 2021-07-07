@@ -1,21 +1,21 @@
 /*
-* Original work Copyright (c) 2006-2010 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2010 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #ifndef PLAYRHO_TESTS_ROPE_JOINT_HPP
 #define PLAYRHO_TESTS_ROPE_JOINT_HPP
@@ -39,31 +39,34 @@ public:
     {
         const auto ground = CreateBody(GetWorld());
         Attach(GetWorld(), ground,
-               CreateShape(GetWorld(), EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));
+               CreateShape(GetWorld(),
+                           EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));
         {
             Filter filter;
             filter.categoryBits = 0x0001;
             filter.maskBits = 0xFFFF & ~0x0002;
-            const auto rectangle = CreateShape(GetWorld(),
-                PolygonShapeConf{}.UseDensity(20_kgpm2).UseFriction(Real(0.2)).UseFilter(filter).SetAsBox(0.5_m, 0.125_m)
-            );
+            const auto rectangle = CreateShape(GetWorld(), PolygonShapeConf{}
+                                                               .UseDensity(20_kgpm2)
+                                                               .UseFriction(Real(0.2))
+                                                               .UseFilter(filter)
+                                                               .SetAsBox(0.5_m, 0.125_m));
             filter.categoryBits = 0x0002;
-            const auto square = CreateShape(GetWorld(),
-                PolygonShapeConf{}.UseDensity(100_kgpm2).UseFriction(Real(0.2)).UseFilter(filter).SetAsBox(1.5_m, 1.5_m)
-            );
+            const auto square = CreateShape(GetWorld(), PolygonShapeConf{}
+                                                            .UseDensity(100_kgpm2)
+                                                            .UseFriction(Real(0.2))
+                                                            .UseFilter(filter)
+                                                            .SetAsBox(1.5_m, 1.5_m));
             const auto N = 10;
             const auto y = 15.0f;
             m_ropeConf.localAnchorA = Vec2(0.0f, y) * 1_m;
             auto prevBody = ground;
-            for (auto i = 0; i < N; ++i)
-            {
+            for (auto i = 0; i < N; ++i) {
                 auto shape = rectangle;
                 BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.linearAcceleration = GetGravity();
                 bd.location = Vec2(0.5f + 1.0f * i, y) * 1_m;
-                if (i == N - 1)
-                {
+                if (i == N - 1) {
                     shape = square;
                     bd.location = Vec2(1.0f * i, y) * 1_m;
                     bd.angularDamping = 0.4_Hz;
@@ -71,7 +74,7 @@ public:
                 const auto body = CreateBody(GetWorld(), bd);
                 Attach(GetWorld(), body, shape);
                 CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), prevBody, body,
-                                                          Vec2(Real(i), y) * 1_m));
+                                                             Vec2(Real(i), y) * 1_m));
                 prevBody = body;
             }
             m_ropeConf.localAnchorB = Length2{};
@@ -82,13 +85,11 @@ public:
         m_ropeConf.bodyA = ground;
         m_rope = CreateJoint(GetWorld(), m_ropeConf);
         RegisterForKey(GLFW_KEY_J, GLFW_PRESS, 0, "Toggle the rope joint", [&](KeyActionMods) {
-            if (IsValid(m_rope))
-            {
+            if (IsValid(m_rope)) {
                 Destroy(GetWorld(), m_rope);
                 m_rope = InvalidJointID;
             }
-            else
-            {
+            else {
                 m_rope = CreateJoint(GetWorld(), m_ropeConf);
             }
         });
@@ -97,7 +98,7 @@ public:
     void PostStep(const Settings&, Drawer&) override
     {
         std::stringstream stream;
-        stream << (IsValid(m_rope)? "Rope ON.": "Rope OFF.");
+        stream << (IsValid(m_rope) ? "Rope ON." : "Rope OFF.");
         SetStatus(stream.str());
     }
 

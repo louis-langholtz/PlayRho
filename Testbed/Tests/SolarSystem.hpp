@@ -167,7 +167,7 @@ public:
         }
         auto& world = GetWorld();
         const auto bodies = GetBodies(world);
-        std::for_each(begin(bodies), end(bodies), [&world](const auto &b) {
+        std::for_each(begin(bodies), end(bodies), [&world](const auto& b) {
             SetAngle(world, b, GetNormalized(GetAngle(world, b)));
         });
     }
