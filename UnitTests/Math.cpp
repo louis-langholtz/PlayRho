@@ -1251,8 +1251,11 @@ TEST(Math, clamp)
     EXPECT_EQ(std::clamp(-1.0,  0.0, +1.0), 0.0);
     EXPECT_EQ(std::clamp(+1.0, -1.0,  0.0), 0.0);
     EXPECT_EQ(std::clamp(0.0, NaN, NaN), 0.0);
+    EXPECT_EQ(std::clamp(8.0, NaN, NaN), 8.0);
     EXPECT_EQ(std::clamp(0.0, -1.0, NaN), 0.0);
+    EXPECT_EQ(std::clamp(-2.0, -1.0, NaN), -1.0);
     EXPECT_EQ(std::clamp(0.0, NaN, +1.0), 0.0);
+    EXPECT_EQ(std::clamp(2.0, NaN, +1.0), 1.0);
     EXPECT_EQ(std::clamp(0.0, -1.0, +1.0), 0.0);
     EXPECT_TRUE(std::isnan(std::clamp(NaN, -1.0, +1.0)));
     EXPECT_TRUE(std::isnan(std::clamp(NaN, NaN, +1.0)));
