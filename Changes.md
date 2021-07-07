@@ -70,7 +70,7 @@ as API (Application Programming Interface) changes, Testbed changes, and other c
 ## Other Changes
 
 - Unit tested via [Google Test](https://github.com/google/googletest/tree/aa148eb2b7f70ede0eb10de34b6254826bfb34f4)
-  and [over 400 tests](https://github.com/louis-langholtz/PlayRho/tree/master/UnitTests).
+  and [over 1100 tests](https://github.com/louis-langholtz/PlayRho/tree/master/UnitTests).
 - Added continuous integration (CI) building and unit testing of repository updates
   for the Linux and Windows platforms.
 - Configured use of [COVERALLS](https://coveralls.io/github/louis-langholtz/PlayRho?branch=dev)
