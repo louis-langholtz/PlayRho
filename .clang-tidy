@@ -1,12 +1,12 @@
 # YAML formatted configuration file for clang-tidy
 #
-# To run clang-tidy on a single file, entry 'clang-tidy $file -- -I. --std=c++14
+# To run clang-tidy on a single file, entry 'clang-tidy $file -- -I. --std=c++17
 #
 # For example:
-#   clang-tidy PlayRho/Collision/WorldManifold.cpp -- -I. --std=c++14
+#   clang-tidy PlayRho/Collision/WorldManifold.cpp -- -I. --std=c++17
 
 ---
-Checks:          'clang-diagnostic-*,clang-analyzer-*,*,-google-runtime-references,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-hicpp-no-array-decay,-llvm-include-order,-cppcoreguidelines-owning-memory,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-pro-bounds-constant-array-index'
+Checks:          'clang-diagnostic-*,clang-analyzer-*,*,-google-runtime-references,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-hicpp-no-array-decay,-llvm-include-order,-cppcoreguidelines-owning-memory,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-pro-bounds-constant-array-index,-modernize-use-trailing-return-type,-modernize-use-nodiscard,-fuchsia-overloaded-operator,-fuchsia-default-arguments-declarations,-misc-non-private-member-variables-in-classes,-llvmlibc-implementation-in-namespace,-altera-struct-pack-align,-llvmlibc-callee-namespace,-llvmlibc-restrict-system-libc-headers,-readability-uppercase-literal-suffix'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
