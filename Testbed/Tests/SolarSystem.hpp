@@ -147,7 +147,7 @@ public:
 
         std::ostringstream os;
         if (IsValid(m_focalBody)) {
-            const auto index = GetWorldIndex(GetWorld(), m_focalBody);
+            const auto index = to_underlying(m_focalBody);
             os << "Camera locked on body " << index << ": ";
             os << SolarSystemBodies[index].name;
             os << ".";
