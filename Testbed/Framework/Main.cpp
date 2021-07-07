@@ -115,39 +115,51 @@ static void CollectionUI(World& world, const World::Contacts& contacts, bool int
 static void CollectionUI(World& world, const World::Joints& joints);
 static void CollectionUI(World& world, const World::BodyJoints& joints);
 
-namespace
+namespace {
+
+TestSuite *g_testSuite = nullptr;
+Selection *g_selection = nullptr;
+UiState *ui = nullptr;
+
+Test::NeededSettings neededSettings = 0u;
+Settings testSettings;
+Settings settings; ///< User settings.
+auto rightMouseDown = false;
+auto leftMouseDown = false;
+Length2 lastp;
+
+Coord2D mouseScreen = Coord2D{0.0, 0.0};
+Length2 mouseWorld = Length2{};
+
+const auto menuWidth = 200;
+const auto tooltipWrapWidth = 400.0f;
+auto menuX = 0;
+auto menuHeight = 0;
+auto refreshRate = 0;
+
+auto shapeTransformationMatrix = GetIdentity<Mat22>();
+auto shapeTranslateValue = Length2{};
+auto shapeScaleValue = Vec2{Real(1), Real(1)};
+auto shapeRotateValue = 0_deg;
+constexpr char shapeTranslateButtonName[] = "Translate";
+constexpr char shapeScaleButtonName[] = "Scale";
+constexpr char shapeRotateButtonName[] = "Rotate";
+constexpr char createShapeButtonName[] = "Create Shape";
+constexpr char createBodyButtonName[] = "Create Body";
+constexpr char createJointButtonName[] = "Create Joint";
+
+auto GetMaxTranslation()
 {
-    TestSuite *g_testSuite = nullptr;
-    Selection *g_selection = nullptr;
-    UiState *ui = nullptr;
-
-    Test::NeededSettings neededSettings = 0u;
-    Settings testSettings;
-    Settings settings; ///< User settings.
-    auto rightMouseDown = false;
-    auto leftMouseDown = false;
-    Length2 lastp;
-
-    Coord2D mouseScreen = Coord2D{0.0, 0.0};
-    Length2 mouseWorld = Length2{};
-
-    const auto menuWidth = 200;
-    const auto tooltipWrapWidth = 400.0f;
-    auto menuX = 0;
-    auto menuHeight = 0;
-    auto refreshRate = 0;
-
-    auto shapeTransformationMatrix = GetIdentity<Mat22>();
-    auto shapeTranslateValue = Length2{};
-    auto shapeScaleValue = Vec2{Real(1), Real(1)};
-    auto shapeRotateValue = 0_deg;
-    constexpr char shapeTranslateButtonName[] = "Translate";
-    constexpr char shapeScaleButtonName[] = "Scale";
-    constexpr char shapeRotateButtonName[] = "Rotate";
-    constexpr char createShapeButtonName[] = "Create Shape";
-    constexpr char createBodyButtonName[] = "Create Body";
-    constexpr char createJointButtonName[] = "Create Joint";
+    return (neededSettings & (1u << Test::NeedMaxTranslation))?
+        testSettings.maxTranslation: settings.maxTranslation;
 }
+
+auto GetDeltaTime()
+{
+    return (neededSettings & (1u << Test::NeedDeltaTime))? testSettings.dt: settings.dt;
+}
+
+} // namespace
 
 class Selection
 {
@@ -1153,38 +1165,46 @@ static std::pair<float,int> ToScientific(float val)
 
 static void BasicStepOptionsUI()
 {
-    if (neededSettings & (0x1u << Test::NeedDeltaTime))
-    {
+    if (neededSettings & (0x1u << Test::NeedDeltaTime)) {
         auto frequency = 1.0f / testSettings.dt;
         const auto max = 1.0f / testSettings.minDt;
         const auto min = 1.0f / testSettings.maxDt;
-        ImGui::SliderFloat("Frequency", &frequency, min, max, "%.2e Hz");
-        frequency = std::clamp(frequency, min, max);
-        testSettings.dt = 1.0f / frequency;
+        const auto useSci = abs(frequency) < 1.0f;
+        if (const auto ratio = max / min; ratio <= 100.0f) {
+            ImGui::SliderFloat("Frequency", &frequency, min, max, (useSci? "%.2e Hz": "%.2f Hz"));
+        }
+        else {
+            ImGui::InputFloat("Frequency", &frequency, 0.0f, 0.0f, (useSci? "%.2e Hz": "%.2f Hz"));
+        }
+        testSettings.dt = 1.0f / std::clamp(frequency, min, max);
     }
-    else
-    {
-        auto frequency = static_cast<int>(std::nearbyint(1.0f / settings.dt));
-        ImGui::SliderInt("Frequency", &frequency, 5, 120, "%.0f Hz");
-        settings.dt = 1.0f / frequency;
+    else {
+        auto frequency = 1.0f / settings.dt;
+        const auto max = 1.0f / settings.minDt;
+        const auto min = 1.0f / settings.maxDt;
+        const auto useSci = abs(frequency) < 1.0f;
+        if (const auto ratio = max / min; ratio <= 100.0f) {
+            ImGui::SliderFloat("Frequency", &frequency, min, max, (useSci? "%.2e Hz": "%.2f Hz"));
+        }
+        else {
+            ImGui::InputFloat("Frequency", &frequency, 0.0f, 0.0f, (useSci? "%.2e Hz": "%.2f Hz"));
+        }
+        settings.dt = 1.0f / std::clamp(frequency, min, max);
     }
     const auto dt = (neededSettings & (0x1u << Test::NeedDeltaTime))? testSettings.dt: settings.dt;
-    if (ImGui::IsItemHovered())
-    {
+    if (ImGui::IsItemHovered()) {
         std::ostringstream os;
         os << "Simulating " << dt << " seconds every step.";
         ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
     }
     
     ImGui::SliderInt("Vel. Iter.", &settings.regVelocityIterations, 0, 100);
-    if (ImGui::IsItemHovered())
-    {
+    if (ImGui::IsItemHovered()) {
         ImGui::SetTooltip("Maximum number of velocity iterations per step.");
     }
     
     ImGui::SliderInt("Pos. Iter.", &settings.regPositionIterations, 0, 100);
-    if (ImGui::IsItemHovered())
-    {
+    if (ImGui::IsItemHovered()) {
         ImGui::SetTooltip("Maximum number of position iterations per step.");
     }
 }
@@ -1193,184 +1213,214 @@ static void AdvancedStepOptionsUI()
 {
     const auto defaultLinearSlop = static_cast<float>(Real{DefaultLinearSlop / Meter});
 
-    if (neededSettings & (0x1u << Test::NeedDeltaTime))
-    {
-        ImGui::SliderFloat("Sim Time", &testSettings.dt,
-                           testSettings.minDt, testSettings.maxDt, "%.2e s");
+    if (neededSettings & (0x1u << Test::NeedDeltaTime)) {
+        if (const auto ratio = testSettings.maxDt / testSettings.minDt; ratio <= 100.0f) {
+            ImGui::SliderFloat("Sim Time", &testSettings.dt,
+                               testSettings.minDt, testSettings.maxDt, "%.2e s");
+        }
+        else {
+            ImGui::InputFloat("Sim Time", &testSettings.dt, 0.0f, 0.0f, "%.2e s");
+        }
+        testSettings.dt = std::clamp(testSettings.dt, testSettings.minDt, testSettings.maxDt);
     }
-    else
-    {
-        ImGui::SliderFloat("Sim Time", &settings.dt,
-                           settings.minDt, settings.maxDt, "%.2e s");
+    else {
+        if (const auto ratio = settings.maxDt / settings.minDt; ratio <= 100.0f) {
+            ImGui::SliderFloat("Sim Time", &settings.dt,
+                               settings.minDt, settings.maxDt, "%.2e s");
+        }
+        else {
+            ImGui::InputFloat("Sim Time", &settings.dt, 0.0f, 0.0f, "%.2e s");
+        }
+        settings.dt = std::clamp(settings.dt, settings.minDt, settings.maxDt);
     }
-    const auto dt = (neededSettings & (0x1u << Test::NeedDeltaTime))? testSettings.dt: settings.dt;
-    if (ImGui::IsItemHovered())
-    {
+    const auto dt = GetDeltaTime();
+    if (ImGui::IsItemHovered()) {
         std::ostringstream os;
         os << "Simulating " << dt << " seconds every step.";
         os << " This is inversely tied to the frequency.";
         ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
     }
     
-    if (neededSettings & (0x1u << Test::NeedMaxTranslation))
-    {
+    if (neededSettings & (0x1u << Test::NeedMaxTranslation)) {
         ImGui::LabelText("Max Translation", "%.2e m", testSettings.maxTranslation);
     }
-    else
-    {
-        ImGui::SliderFloat("Max Translation", &settings.maxTranslation, 0.0f, 12.0f, "%.1f m");
+    else {
+        auto value = settings.maxTranslation;
+        if (ImGui::InputFloat("Max Translation", &value, 0.0f, 0.0f, "%.1f m",
+                              ImGuiInputTextFlags_EnterReturnsTrue)) {
+            settings.maxTranslation = std::max(value, 0.0f);
+        }
     }
-    if (ImGui::IsItemHovered())
-    {
-        const auto maxTranslation = (neededSettings & (0x1u << Test::NeedMaxTranslation))?
-            testSettings.maxTranslation: settings.maxTranslation;
+    if (ImGui::IsItemHovered()) {
+        const auto maxTranslation = GetMaxTranslation();
         const auto maxLinearVelocity = maxTranslation / dt;
         std::ostringstream os;
-        os << "Max translation is the maximum distance of travel allowed per step." \
-            " At its current setting and the current simulation time," \
-            " this establishes a max linear velocity of ";
+        os << "Max. translation in meters allowed per step.";
+        os << " This should be no less than zero.";
+        os << " At its current setting and the current simulation time," \
+              " this establishes a maximum linear velocity of ";
         os << maxLinearVelocity << " m/s.";
         ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
     }
-    
-    ImGui::SliderFloat("Max Rotation", &settings.maxRotation, 0.0f, 180.0f, "%.1f °");
-    if (ImGui::IsItemHovered())
     {
+        auto value = settings.maxRotation;
+        ImGui::SliderFloat("Max Rotation", &value, 0.0f, 179.0f, "%.1f °");
+        settings.maxRotation = std::clamp(value, 0.0f, 179.0f);
+    }
+    if (ImGui::IsItemHovered()) {
         std::ostringstream os;
         const auto maxRotationalVelocity = settings.maxRotation / dt;
-        os << "Max. rotation in degrees allowed per step." \
-            " At its current setting and the current simulation time," \
-            " this establishes a max rotational velocity of ";
-        os << maxRotationalVelocity << " °/s.";
+        os << "Max. rotation in degrees allowed per step.";
+        os << " This should be no less than zero and less than 180°.";
+        os << " At its current setting and the current simulation time, this establishes a max";
+        os << " rotational velocity of " << maxRotationalVelocity << " °/s.";
         ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
     }
     
     const auto neededLinearSlop = !!(neededSettings & (0x1u << Test::NeedLinearSlopField));
-    if (neededLinearSlop)
-    {
+    if (neededLinearSlop) {
         ImGui::LabelText("Linear Slop", "%.2e m", testSettings.linearSlop);
     }
-    else
-    {
-        ImGui::SliderFloat("Linear Slop", &settings.linearSlop,
-                           defaultLinearSlop / 5, defaultLinearSlop, "%.2e m");
+    else {
+        auto value = settings.linearSlop;
+        if (ImGui::InputFloat("Linear Slop", &value, 0.0f, 0.0f, "%.2e m",
+                              ImGuiInputTextFlags_EnterReturnsTrue)) {
+            settings.linearSlop = std::max(value, 0.0f);
+        }
     }
     const auto linearSlop = neededLinearSlop? testSettings.linearSlop: settings.linearSlop;
     const auto targetDepth = 3 * linearSlop;
-    if (ImGui::IsItemHovered())
-    {
+    if (ImGui::IsItemHovered()) {
         std::ostringstream os;
-        os << "A general basis of \"slop\" to allow for in various length-related calculations.";
+        os << "The amount of \"slop\" to allow for in various length-related calculations.";
+        os << " This should be greater than or equal to zero.";
         os << " Usually this should be below the visual threshold of scaling used in visualizing the simulation.";
-        os << " Results in a TOI-phase target depth of ";
+        os << " The current setting results in a TOI-phase target depth of ";
         os << std::scientific << std::setprecision(2) << targetDepth << " m.";
         ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
     }
-    
-    ImGui::SliderFloat("Angular Slop", &settings.angularSlop, 1.0f, 20.0f, "%.1f °");
-    if (ImGui::IsItemHovered())
+
     {
-        ImGui::ShowTooltip("A general basis of \"slop\" to allow for in various angle-related calculations.",
-                           tooltipWrapWidth);
+        auto value = settings.angularSlop;
+        ImGui::SliderFloat("Angular Slop", &value, 1.0f, 179.0f, "%.1f °");
+        settings.angularSlop = std::clamp(value, 1.0f, 179.0f);
     }
-    
-    ImGui::SliderFloat("Max Lin Correct", &settings.maxLinearCorrection, 0.0f, 1.0f, "%.2f m");
-    if (ImGui::IsItemHovered())
+    if (ImGui::IsItemHovered()) {
+        std::ostringstream os;
+        os << "The amount of \"slop\" to allow for in various angle-related calculations.";
+        os << " This should be greater than zero and less than 180°.";
+        ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
+    }
+
     {
+        auto value = settings.maxLinearCorrection;
+        if (ImGui::InputFloat("Max Lin Correct", &value, 0.0f, 0.0f, "%.2f m")) {
+            settings.maxLinearCorrection = std::max(value, settings.linearSlop);
+        }
+    }
+    if (ImGui::IsItemHovered()) {
         ImGui::ShowTooltip("Maximum linear correction. Should be greater than the linear slop value.",
                            tooltipWrapWidth);
     }
-    
-    ImGui::SliderFloat("Max Ang Correct", &settings.maxAngularCorrection, 0.0f, 90.0f, "%.1f °");
-    if (ImGui::IsItemHovered())
-    {
-        ImGui::SetTooltip("Maximum angular correction.");
-    }
-    
-    ImGui::SliderFloat("AABB Exten.", &settings.aabbExtension, 0.0f, defaultLinearSlop * 1000, "%.1e m");
-    if (ImGui::IsItemHovered())
-    {
-        ImGui::SetTooltip("Linear amount to additively extend all AABBs by.");
-    }
-    
-    if (ImGui::CollapsingHeader("Reg-Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
-    {
-        ImGui::IdContext idContext{"Reg-Phase Processing"};
 
+    {
+        auto value = settings.maxAngularCorrection;
+        ImGui::SliderFloat("Max Ang Correct", &value, 1.0f, 179.0f, "%.1f °");
+        settings.maxAngularCorrection = std::clamp(value, 1.0f, 179.0f);
+    }
+    if (ImGui::IsItemHovered()) {
+        std::ostringstream os;
+        os << "Maximum angular correction in degrees.";
+        os << " This should be greater than zero and significantly less than 180°.";
+        ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
+    }
+
+    ImGui::InputFloat("AABB Exten.", &settings.aabbExtension, 0.0f, 0.0f, "%.1e m");
+    if (ImGui::IsItemHovered()) {
+        ImGui::SetTooltip("Linear amount to extend all Abstract Aligned Bounding Boxes (AABBs) by.");
+    }
+    
+    if (ImGui::CollapsingHeader("Reg-Phase Processing", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::IdContext idContext{"Reg-Phase Processing"};
         ImGui::SliderInt("Vel Iters", &settings.regVelocityIterations, 0, 100);
-        if (ImGui::IsItemHovered())
-        {
+        if (ImGui::IsItemHovered()) {
             ImGui::SetTooltip("Maximum number of regular-phase velocity iterations per step.");
         }
-
         ImGui::SliderInt("Pos Iters", &settings.regPositionIterations, 0, 100);
-        if (ImGui::IsItemHovered())
-        {
+        if (ImGui::IsItemHovered()) {
             ImGui::SetTooltip("Maximum number of regular-phase position iterations per step.");
         }
-        
-        ImGui::SliderFloat("Min Sep", &settings.regMinSeparation,
-                           -5 * defaultLinearSlop, -0 * defaultLinearSlop);
-        ImGui::SliderInt("Resol Rate", &settings.regPosResRate, 0, 100, "%.0f %%");
-        if (ImGui::IsItemHovered())
         {
-            ImGui::ShowTooltip("This is the %% of overlap that will"
+            auto value = -settings.regMinSeparation;
+            ImGui::SliderFloat("Max Overlap", &value, 0.0f, 5 * defaultLinearSlop);
+            settings.regMinSeparation = -value;
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Maximum allowable overlap between interacting bodies for regular "
+                               "phase position resolution to be considered good enough for ending "
+                               "further iterations. This should be greater than zero. The more it "
+                               "is, the more noticable overlap may be but the faster steps will be."
+                               " This is the negative of the \"regMinSeparation\" step setting.",
+                               tooltipWrapWidth);
+        }
+        ImGui::SliderInt("Resol Rate", &settings.regPosResRate, 0, 100, "%.0f %%");
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("This is the % of overlap that will"
                                " be resolved per position iteration.", tooltipWrapWidth);
         }
         ImGui::Checkbox("Allow Sleeping", &settings.enableSleep);
         ImGui::InputFloat("Still To Sleep", &settings.minStillTimeToSleep);
-        if (ImGui::IsItemHovered())
-        {
+        if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("The min. time in seconds (in simulated time) that a body"
                                " must be still for before it will be put to sleep.",
                                tooltipWrapWidth);
         }
         ImGui::Checkbox("Warm Starting", &settings.enableWarmStarting);
     }
-    if (ImGui::CollapsingHeader("TOI-Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
-    {
+    if (ImGui::CollapsingHeader("TOI-Phase Processing", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::IdContext idContext{"TOI-Phase Processing"};
-
         ImGui::Checkbox("Perform Continuous", &settings.enableContinuous);
-
         ImGui::SliderInt("Vel Iters", &settings.toiVelocityIterations, 0, 100);
-        if (ImGui::IsItemHovered())
-        {
+        if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Maximum number of TOI-phase velocity iterations per step.",
                                tooltipWrapWidth);
         }
-
         ImGui::SliderInt("Pos Iters", &settings.toiPositionIterations, 0, 100);
-        if (ImGui::IsItemHovered())
-        {
+        if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Maximum number of TOI-phase position iterations per step.",
                                tooltipWrapWidth);
         }
-        
         settings.tolerance = std::min(settings.tolerance, targetDepth);
         ImGui::SliderFloat("Tolerance", &settings.tolerance, 0.0f, targetDepth, "%.2e m");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::ShowTooltip("+/- Tolerance from target depth.", tooltipWrapWidth);
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("+/- Tolerance from target depth. This must not exceed the target "
+                              "depth (which currently is %.2e m)", targetDepth);
         }
-
-        ImGui::SliderFloat("Min Sep", &settings.toiMinSeparation,
-                           -5 * defaultLinearSlop, -0 * defaultLinearSlop);
-        ImGui::SliderInt("Resol Rate", &settings.toiPosResRate, 0, 100, "%.0f %%");
-        if (ImGui::IsItemHovered())
         {
-            ImGui::ShowTooltip("This is the %% of overlap that will"
+            auto value = -settings.toiMinSeparation;
+            ImGui::SliderFloat("Max Overlap", &value, 0.0f, 5 * defaultLinearSlop);
+            settings.toiMinSeparation = -value;
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Maximum allowable overlap between interacting bodies for TOI "
+                               "phase position resolution to be considered good enough for ending "
+                               "further iterations. This should be greater than zero. The more it "
+                               "is, the more noticable overlap may be but the faster steps will be."
+                               "This is the negative of the \"toiMinSeparation\" step setting.",
+                               tooltipWrapWidth);
+        }
+        ImGui::SliderInt("Resol Rate", &settings.toiPosResRate, 0, 100, "%.0f %%");
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("This is the % of overlap that will"
                                " be resolved per position iteration.", tooltipWrapWidth);
         }
         ImGui::SliderInt("Max Sub Steps", &settings.maxSubSteps, 0, 200);
-        if (ImGui::IsItemHovered())
-        {
+        if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Max # of of sub steps that should be tried in resolving"
                                " collisions at a particular time of impact.", tooltipWrapWidth);
         }
         ImGui::SliderInt("Max Root Iters", &settings.maxToiRootIters, 0, 200);
-        if (ImGui::IsItemHovered())
-        {
+        if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Max # of iterations root finder should try before giving up.",
                                tooltipWrapWidth);
         }
@@ -1468,36 +1518,60 @@ static bool MenuUI()
     ImGui::Spacing();
     
     ImGui::PushItemWidth(100);
-    
-    if (ImGui::CollapsingHeader("Basic Step Options", ImGuiTreeNodeFlags_DefaultOpen))
-    {
-        if (ImGui::IsItemHovered())
-        {
-            std::ostringstream os;
-            os << "These are basic per-\"step\" options. ";
-            os << "One step of the simulation is performed for every display refresh.";
-            ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
-        }
+    const auto bsoOpen = ImGui::CollapsingHeader("Basic Step Options",
+                                                 ImGuiTreeNodeFlags_DefaultOpen);
+    if (ImGui::IsItemHovered()) {
+        std::ostringstream os;
+        os << "These are basic per-\"step\" options. ";
+        os << "One step of the simulation is performed for every display refresh.";
+        ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
+    }
+    if (bsoOpen) {
         BasicStepOptionsUI();
     }
-    
-    if (ImGui::CollapsingHeader("Advanced Step Options"))
-    {
+    const auto asoOpen = ImGui::CollapsingHeader("Advanced Step Options");
+    if (ImGui::IsItemHovered()) {
+        std::ostringstream os;
+        os << "These are advanced per-\"step\" options. ";
+        os << "One step of the simulation is performed for every display refresh.";
+        ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
+    }
+    if (asoOpen) {
         AdvancedStepOptionsUI();
     }
-    
     ImGui::PopItemWidth();
-    
-    if (ImGui::CollapsingHeader("Output Options", ImGuiTreeNodeFlags_DefaultOpen))
-    {
+
+    const auto outputOptsOpen = ImGui::CollapsingHeader("Output Options",
+                                                        ImGuiTreeNodeFlags_DefaultOpen);
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("Options for changing what's drawn in the main window.",
+                           tooltipWrapWidth);
+    }
+    if (outputOptsOpen) {
         OutputOptionsUI();
     }
-    
-    if (ImGui::CollapsingHeader("Windows", ImGuiTreeNodeFlags_DefaultOpen))
-    {
+
+    const auto windowOptsOpen = ImGui::CollapsingHeader("Windows", ImGuiTreeNodeFlags_DefaultOpen);
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("Options for opening or closing additional windows.", tooltipWrapWidth);
+    }
+    if (windowOptsOpen) {
         ImGui::Checkbox("About Test", &ui->showAboutTest);
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Shows a window that provides information about the current test.",
+                               tooltipWrapWidth);
+        }
         ImGui::Checkbox("Step Statistics", &ui->showStats);
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Shows a window that provides statistics for the current test.",
+                               tooltipWrapWidth);
+        }
         ImGui::Checkbox("Entity Editor", &ui->showEntities);
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Shows a window for creating, reading, updating, and destroying "
+                               "PlayRho entities for the current test simulation.",
+                               tooltipWrapWidth);
+        }
     }
     
     ImGui::Spacing();
@@ -1505,32 +1579,36 @@ static bool MenuUI()
     ImGui::Spacing();
 
     ImGui::Checkbox("Pause", &settings.pause);
-    if (ImGui::IsItemHovered())
-    {
+    if (ImGui::IsItemHovered()) {
         ImGui::ShowTooltip("\"Pauses\" the simulation by overriding the simulation time per step"
-                          " with a value of zero until un-paused. This can also be toggled by"
-                          " pressing the 'P' key.", tooltipWrapWidth);
+                           " with a value of zero until un-paused. This can also be toggled by"
+                           " pressing the 'P' key. Press the Single Step button when paused, to "
+                           " execute a single step.", tooltipWrapWidth);
     }
     
-    if (ImGui::Button("Single Step", button_sz))
-    {
+    if (ImGui::Button("Single Step", button_sz)) {
         settings.singleStep = !settings.singleStep;
     }
-    if (ImGui::Button("Restart", button_sz))
-    {
+    if (ImGui::IsItemHovered()) {
+        std::ostringstream os;
+        os << "Executes a single step of the current test when the simulation is otherwise paused";
+        if (settings.pause) {
+            os << " - like it is now";
+        }
+        os << ".";
+        ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
+    }
+    if (ImGui::Button("Restart", button_sz)) {
         g_testSuite->RestartTest();
     }
-    if (ImGui::IsItemHovered())
-    {
+    if (ImGui::IsItemHovered()) {
         ImGui::ShowTooltip("Restarts the current test. This can also be invoked by pressing the 'R' key.",
                            tooltipWrapWidth);
     }
-    if (ImGui::Button("Quit", button_sz))
-    {
+    if (ImGui::Button("Quit", button_sz)) {
         shouldQuit = true;
     }
-    if (ImGui::IsItemHovered())
-    {
+    if (ImGui::IsItemHovered()) {
         ImGui::ShowTooltip("Quits the application. This can also be invoked by pressing the 'ESC' key.",
                            tooltipWrapWidth);
     }
@@ -1566,6 +1644,7 @@ static bool EntityUI(Sweep& sweep)
         changed = true;
     }
     {
+        const auto normalized = GetNormalized(sweep.pos0.angular);
         ImGui::StyleVarContext itemSpacingCtx(ImGuiStyleVar_ItemSpacing, ImVec2(2,2));
         ImGui::StyleVarContext framePaddingCtx(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
         ImGui::ColumnsContext cc(3, "ColsAngPos0", false);
@@ -1580,15 +1659,20 @@ static bool EntityUI(Sweep& sweep)
         {
             ImGui::ItemWidthContext itemWidthCtx(colWidth);
             if (ImGui::Button("Norm.##0", ImVec2(-1, 0))) {
-                sweep.pos0.angular = GetNormalized(sweep.pos0.angular);
+                sweep.pos0.angular = normalized;
                 changed = true;
+            }
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("Press to change the angle to %.2f° and to normalize it to an "
+                                  "angle between -180° and +180°.",
+                                  static_cast<float>(Real(normalized/1_deg)));
             }
         }
         ImGui::NextColumn();
         ImGui::Text("Ang. Pos. 0");
         if (ImGui::IsItemHovered()) {
             ImGui::SetTooltip("Angular position 0 in degrees (%.2f° normalized).",
-                              static_cast<float>(Real(GetNormalized(sweep.pos0.angular)/1_deg)));
+                              static_cast<float>(Real(normalized/1_deg)));
         }
         ImGui::NextColumn();
     }
@@ -1596,6 +1680,7 @@ static bool EntityUI(Sweep& sweep)
         changed = true;
     }
     {
+        const auto normalized = GetNormalized(sweep.pos1.angular);
         ImGui::StyleVarContext itemSpacingCtx(ImGuiStyleVar_ItemSpacing, ImVec2(2, 2));
         ImGui::StyleVarContext framePaddingCtx(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
         ImGui::ColumnsContext cc(3, "ColsAngPos1", false);
@@ -1610,15 +1695,20 @@ static bool EntityUI(Sweep& sweep)
         {
             ImGui::ItemWidthContext itemWidthCtx(colWidth);
             if (ImGui::Button("Norm.##1", ImVec2(-1, 0))) {
-                sweep.pos1.angular = GetNormalized(sweep.pos1.angular);
+                sweep.pos1.angular = normalized;
                 changed = true;
+            }
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("Press to change the angle to %.2f° and to normalize it to an "
+                                  "angle between -180° and +180°.",
+                                  static_cast<float>(Real(normalized/1_deg)));
             }
         }
         ImGui::NextColumn();
         ImGui::Text("Ang. Pos. 1");
         if (ImGui::IsItemHovered()) {
             ImGui::SetTooltip("Angular position 1 in degrees (%.2f° normalized).",
-                              static_cast<float>(Real(GetNormalized(sweep.pos1.angular)/1_deg)));
+                              static_cast<float>(Real(normalized/1_deg)));
         }
         ImGui::NextColumn();
     }
@@ -1653,6 +1743,11 @@ static bool EntityUI(Sweep& sweep)
     return changed;
 }
 
+static bool AlmostGE(float value, float limit)
+{
+    return (value > limit) || AlmostEqual(value, limit);
+}
+
 static void EntityUI(Body& body)
 {
     {
@@ -1678,22 +1773,57 @@ static void EntityUI(Body& body)
         }
     }
     {
+        const auto dt = GetDeltaTime();
+        const auto maxTranslation = GetMaxTranslation();
+        const auto maxLinearVelocity = maxTranslation / dt;
+        const auto maxAngularVelocity = settings.maxRotation / dt;
         const auto velocity = GetVelocity(body);
         float vals[2];
         vals[0] = static_cast<float>(Real{GetX(velocity.linear) / MeterPerSecond});
         vals[1] = static_cast<float>(Real{GetY(velocity.linear) / MeterPerSecond});
-        if (ImGui::InputFloat2("Lin. Vel.", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            SetVelocity(body, LinearVelocity2{vals[0] * 1_mps, vals[1] * 1_mps});
+        const auto maxLinearHit = AlmostGE(abs(vals[0]), maxLinearVelocity) ||
+                                  AlmostGE(abs(vals[1]), maxLinearVelocity);
+        {
+            const auto color = maxLinearHit?
+                ImVec4(1.0f, 0.0f, 0.0f, 1.0f): ImGui::GetStyle().Colors[ImGuiCol_Text];
+            ImGui::StyleColorContext colorContext(ImGuiCol_Text, color);
+            if (ImGui::InputFloat2("Lin. Veloc.", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+                SetVelocity(body, LinearVelocity2{vals[0] * 1_mps, vals[1] * 1_mps});
+            }
         }
         if (ImGui::IsItemHovered()) {
-            ImGui::ShowTooltip("Linear velocity in meters/second.", tooltipWrapWidth);
+            std::ostringstream os;
+            os << "Linear velocity in meters/second.";
+            os << "The current maximum allowable linear velocity ";
+            os << "(based on the per-step simulation time of ";
+            os << dt << "s and the per-step max translation of " << maxTranslation;
+            os << "m) is " << maxLinearVelocity << " m/s.";
+            if (maxLinearHit) {
+                os << " Linear velocity is currently capped by this max.";
+            }
+            ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
         }
         auto val = static_cast<float>(Real{velocity.angular / DegreePerSecond});
-        if (ImGui::InputFloat("Ang. Vel.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            SetVelocity(body, val * DegreePerSecond);
+        const auto maxAngularHit = AlmostGE(abs(val), maxAngularVelocity);
+        {
+            const auto color = maxAngularHit?
+                ImVec4(1.0f, 0.0f, 0.0f, 1.0f): ImGui::GetStyle().Colors[ImGuiCol_Text];
+            ImGui::StyleColorContext colorContext(ImGuiCol_Text, color);
+            if (ImGui::InputFloat("Ang. Veloc.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+                SetVelocity(body, val * DegreePerSecond);
+            }
         }
         if (ImGui::IsItemHovered()) {
-            ImGui::ShowTooltip("Angular velocity in degrees/second.", tooltipWrapWidth);
+            std::ostringstream os;
+            os << "Angular velocity in degrees/second.";
+            os << "The current maximum allowable angular velocity ";
+            os << "(based on the per-step simulation time of ";
+            os << dt << "s and the per-step max rotation of " << settings.maxRotation;
+            os << "m) is " << maxAngularVelocity << " °/s.";
+            if (maxAngularHit) {
+                os << " Angular velocity is currently capped by this max.";
+            }
+            ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
         }
     }
     {
@@ -1701,14 +1831,14 @@ static void EntityUI(Body& body)
         float vals[2];
         vals[0] = static_cast<float>(Real{GetX(acceleration.linear) / MeterPerSquareSecond});
         vals[1] = static_cast<float>(Real{GetY(acceleration.linear) / MeterPerSquareSecond});
-        if (ImGui::InputFloat2("Lin. Acc.", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+        if (ImGui::InputFloat2("Lin. Accel.", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
             SetAcceleration(body, LinearAcceleration2{vals[0] * 1_mps2, vals[1] * 1_mps2});
         }
         if (ImGui::IsItemHovered()) {
             ImGui::ShowTooltip("Linear acceleration in meters/second².", tooltipWrapWidth);
         }
         auto val = static_cast<float>(Real{acceleration.angular / DegreePerSquareSecond});
-        if (ImGui::InputFloat("Ang. Acc.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+        if (ImGui::InputFloat("Ang. Accel.", &val, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
             SetAcceleration(body, val * DegreePerSquareSecond);
         }
         if (ImGui::IsItemHovered()) {
@@ -1763,23 +1893,28 @@ static void EntityUI(Body& body)
             SetEnabled(body, v);
         }
     }
+}
+
+static void EntityUI(Body& body, const MassData& computed)
+{
     {
         auto v = GetMass(body);
-        if (MassUI(v, "Mass", "%.2e kg")) {
+        if (MassUI(v, "Mass (kg)", "%.2e")) {
             SetMass(body, v);
         }
         if (ImGui::IsItemHovered()) {
-            ImGui::ShowTooltip("Mass of the body.", tooltipWrapWidth);
+            ImGui::SetTooltip("Mass of the body. This can be different than the computed mass of %.2e kg.",
+                              double(Real(computed.mass / 1_kg)));
         }
     }
     {
         auto v = Real{GetRotInertia(body) / (1_kg * 1_m2 / Square(1_rad))};
-        if (InputReal("Rot. Inertia", v, 0, 0, "%.2e kg·m²")) {
+        if (InputReal("Rot. Inertia (kg·m²)", v, 0, 0, "%.2e")) {
             SetRotInertia(body, RotInertia{v * (1_kg * 1_m2 / Square(1_rad))});
         }
         if (ImGui::IsItemHovered()) {
-            ImGui::ShowTooltip("Rotational inertia of the body. This may be the calculated value"
-                               " or a set value.", tooltipWrapWidth);
+            ImGui::SetTooltip("Rotational inertia of the body. This can be different than the computed rotational inertia of %.2e kg·m².",
+                              double(Real(computed.I / (1_kg * 1_m2 / Square(1_rad)))));
         }
     }
 }
@@ -1946,8 +2081,11 @@ decltype(DensityUI(shape), FrictionUI(shape), RestitutionUI(shape), SensorUI(sha
         ImGui::ItemWidthContext itemWidthCtx(60);
         //const auto vertexRadius = GetVertexRadius(shape);
         DensityUI(shape);
-        ImGui::LabelText("Mass (kg)", "%.2e",
+        ImGui::LabelText("Computed Mass (kg)", "%.2e",
                          static_cast<double>(Real{GetMassData(shape).mass / 1_kg}));
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Shape's computed mass based on its density and area.");
+        }
         FrictionUI(shape);
         RestitutionUI(shape);
     }
@@ -2283,7 +2421,9 @@ static void EntityUI(World& world, BodyID bodyId, const FixtureSet& selectedFixt
     }
     ImGui::SameLine();
     ImGui::Text("Body's Type");
+    const auto shapes = GetShapes(world, bodyId);
     EntityUI(body);
+    EntityUI(body, ComputeMassData(world, shapes));
     const auto& curBody = GetBody(world, bodyId);
     if (curBody != body) {
         const auto curType = GetType(curBody);
@@ -2296,12 +2436,9 @@ static void EntityUI(World& world, BodyID bodyId, const FixtureSet& selectedFixt
             ResetMassData(world, bodyId);
         }
     }
-    {
-        const auto shapes = GetShapes(world, bodyId);
-        if (ImGui::TreeNodeEx("BodyShapes", 0, "Shapes (%lu)", size(shapes))) {
-            CollectionUI(world, shapes, bodyId, selectedFixtures);
-            ImGui::TreePop();
-        }
+    if (ImGui::TreeNodeEx("BodyShapes", 0, "Shapes (%lu)", size(shapes))) {
+        CollectionUI(world, shapes, bodyId, selectedFixtures);
+        ImGui::TreePop();
     }
     {
         const auto joints = GetJoints(world, bodyId);
