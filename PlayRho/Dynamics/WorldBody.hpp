@@ -335,7 +335,10 @@ Acceleration CalcGravitationalAcceleration(const World& world, BodyID id);
 /// @brief Gets the world index for the given body.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-BodyCounter GetWorldIndex(const World& world, const BodyID id) noexcept;
+inline BodyCounter GetWorldIndex(const World&, BodyID id) noexcept
+{
+    return to_underlying(id);
+}
 
 /// @brief Gets the type of the identified body.
 /// @see SetType(World& world, BodyID id, BodyType value)

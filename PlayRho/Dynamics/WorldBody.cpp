@@ -244,11 +244,6 @@ Acceleration CalcGravitationalAcceleration(const World& world, BodyID body)
     return Acceleration{};
 }
 
-BodyCounter GetWorldIndex(const World&, BodyID id) noexcept
-{
-    return to_underlying(id);
-}
-
 BodyType GetType(const World& world, BodyID id)
 {
     return GetType(GetBody(world, id));
