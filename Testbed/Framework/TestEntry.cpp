@@ -150,7 +150,7 @@ static const TestEntry testEntries[] =
     {"Sensor Test", MakeUniqueTest<SensorTest>},
     {"Spinning Circles", MakeUniqueTest<SpinningCircle>},
     {"Half Pipe", MakeUniqueTest<HalfPipe>},
-    {"Orbiter", MakeUniqueTest<Orbiter>},
+    {"Encircled Orbiter", MakeUniqueTest<Orbiter>},
     {"Varying Friction", MakeUniqueTest<VaryingFriction>},
     {"Add Pair Stress Test", MakeUniqueTest<AddPair>},
     {"Newton's Cradle", MakeUniqueTest<NewtonsCradle>},
