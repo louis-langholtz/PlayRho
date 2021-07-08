@@ -149,6 +149,24 @@ struct StyleVarContext
     }
 };
 
+struct StyleColorContext
+{
+    StyleColorContext(ImGuiCol idx, ImU32 color)
+    {
+        PushStyleColor(idx, color);
+    }
+
+    StyleColorContext(ImGuiCol idx, const ImVec4& color)
+    {
+        PushStyleColor(idx, color);
+    }
+
+    ~StyleColorContext()
+    {
+        PopStyleColor();
+    }
+};
+
 IMGUI_API void Value(const char* prefix, unsigned long v);
 IMGUI_API void Value(const char* prefix, double v, const char* float_format = nullptr);
 

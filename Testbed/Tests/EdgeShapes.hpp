@@ -18,7 +18,7 @@
  */
 
 #ifndef PLAYRHO_EDGE_SHAPES_HPP
-#define  PLAYRHO_EDGE_SHAPES_HPP
+#define PLAYRHO_EDGE_SHAPES_HPP
 
 #include "../Framework/Test.hpp"
 
@@ -31,15 +31,13 @@ namespace testbed {
 class EdgeShapes : public Test
 {
 public:
-
-    enum
-    {
-        e_maxBodies = 256
-    };
+    enum { e_maxBodies = 256 };
 
     EdgeShapes()
     {
-        m_circle = CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(0.5_m).UseFriction(Real(0.3)).UseDensity(20_kgpm2));
+        m_circle = CreateShape(
+            GetWorld(),
+            DiskShapeConf{}.UseRadius(0.5_m).UseFriction(Real(0.3)).UseDensity(20_kgpm2));
         // Ground body
         {
             const auto ground = CreateBody(GetWorld());
@@ -48,7 +46,9 @@ public:
             for (auto i = 0; i < 80; ++i) {
                 const auto x2 = x1 + 0.5f;
                 const auto y2 = 2.0f * std::cos(x2 / 10.0f * static_cast<float>(Pi));
-                Attach(GetWorld(), ground, CreateShape(GetWorld(), EdgeShapeConf{Vec2(x1, y1) * 1_m, Vec2(x2, y2) * 1_m}));
+                Attach(
+                    GetWorld(), ground,
+                    CreateShape(GetWorld(), EdgeShapeConf{Vec2(x1, y1) * 1_m, Vec2(x2, y2) * 1_m}));
                 x1 = x2;
                 y1 = y2;
             }
@@ -57,18 +57,10 @@ public:
         auto conf = PolygonShapeConf{};
         conf.UseFriction(Real(0.3));
         conf.UseDensity(20_kgpm2);
-        conf.Set({
-            Vec2(-0.5f, 0.0f) * 1_m,
-            Vec2(0.5f, 0.0f) * 1_m,
-            Vec2(0.0f, 1.5f) * 1_m
-        });
+        conf.Set({Vec2(-0.5f, 0.0f) * 1_m, Vec2(0.5f, 0.0f) * 1_m, Vec2(0.0f, 1.5f) * 1_m});
         m_polygons[0] = CreateShape(GetWorld(), conf);
-        
-        conf.Set({
-            Vec2(-0.1f, 0.0f) * 1_m,
-            Vec2(0.1f, 0.0f) * 1_m,
-            Vec2(0.0f, 1.5f) * 1_m
-        });
+
+        conf.Set({Vec2(-0.1f, 0.0f) * 1_m, Vec2(0.1f, 0.0f) * 1_m, Vec2(0.0f, 1.5f) * 1_m});
         m_polygons[1] = CreateShape(GetWorld(), conf);
 
         {
@@ -76,16 +68,10 @@ public:
             const auto b = w / (2.0f + sqrt(2.0f));
             const auto s = sqrt(2.0f) * b;
 
-            conf.Set({
-                Vec2(0.5f * s, 0.0f) * 1_m,
-                Vec2(0.5f * w, b) * 1_m,
-                Vec2(0.5f * w, b + s) * 1_m,
-                Vec2(0.5f * s, w) * 1_m,
-                Vec2(-0.5f * s, w) * 1_m,
-                Vec2(-0.5f * w, b + s) * 1_m,
-                Vec2(-0.5f * w, b) * 1_m,
-                Vec2(-0.5f * s, 0.0f) * 1_m
-            });
+            conf.Set({Vec2(0.5f * s, 0.0f) * 1_m, Vec2(0.5f * w, b) * 1_m,
+                      Vec2(0.5f * w, b + s) * 1_m, Vec2(0.5f * s, w) * 1_m,
+                      Vec2(-0.5f * s, w) * 1_m, Vec2(-0.5f * w, b + s) * 1_m,
+                      Vec2(-0.5f * w, b) * 1_m, Vec2(-0.5f * s, 0.0f) * 1_m});
             m_polygons[2] = CreateShape(GetWorld(), conf);
         }
 
@@ -93,31 +79,24 @@ public:
         m_polygons[3] = CreateShape(GetWorld(), conf);
 
         std::fill(begin(m_bodies), end(m_bodies), InvalidBodyID);
-        
-        RegisterForKey(GLFW_KEY_1, GLFW_PRESS, 0, "to drop stuff", [&](KeyActionMods kam) {
-            Create(kam.key - GLFW_KEY_1);
-        });
-        RegisterForKey(GLFW_KEY_2, GLFW_PRESS, 0, "to drop stuff", [&](KeyActionMods kam) {
-            Create(kam.key - GLFW_KEY_1);
-        });
-        RegisterForKey(GLFW_KEY_3, GLFW_PRESS, 0, "to drop stuff", [&](KeyActionMods kam) {
-            Create(kam.key - GLFW_KEY_1);
-        });
-        RegisterForKey(GLFW_KEY_4, GLFW_PRESS, 0, "to drop stuff", [&](KeyActionMods kam) {
-            Create(kam.key - GLFW_KEY_1);
-        });
-        RegisterForKey(GLFW_KEY_5, GLFW_PRESS, 0, "to drop stuff", [&](KeyActionMods kam) {
-            Create(kam.key - GLFW_KEY_1);
-        });
-        RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "To Destroy Bodies", [&](KeyActionMods) {
-            DestroyBodies();
-        });
+
+        RegisterForKey(GLFW_KEY_1, GLFW_PRESS, 0, "to drop stuff",
+                       [&](KeyActionMods kam) { Create(kam.key - GLFW_KEY_1); });
+        RegisterForKey(GLFW_KEY_2, GLFW_PRESS, 0, "to drop stuff",
+                       [&](KeyActionMods kam) { Create(kam.key - GLFW_KEY_1); });
+        RegisterForKey(GLFW_KEY_3, GLFW_PRESS, 0, "to drop stuff",
+                       [&](KeyActionMods kam) { Create(kam.key - GLFW_KEY_1); });
+        RegisterForKey(GLFW_KEY_4, GLFW_PRESS, 0, "to drop stuff",
+                       [&](KeyActionMods kam) { Create(kam.key - GLFW_KEY_1); });
+        RegisterForKey(GLFW_KEY_5, GLFW_PRESS, 0, "to drop stuff",
+                       [&](KeyActionMods kam) { Create(kam.key - GLFW_KEY_1); });
+        RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "To Destroy Bodies",
+                       [&](KeyActionMods) { DestroyBodies(); });
     }
 
     void Create(int index)
     {
-        if (m_bodies[m_bodyIndex] != InvalidBodyID)
-        {
+        if (m_bodies[m_bodyIndex] != InvalidBodyID) {
             Destroy(GetWorld(), m_bodies[m_bodyIndex]);
             m_bodies[m_bodyIndex] = InvalidBodyID;
         }
@@ -131,19 +110,16 @@ public:
         bd.type = BodyType::Dynamic;
         bd.linearAcceleration = GetGravity();
 
-        if (index == 4)
-        {
+        if (index == 4) {
             bd.angularDamping = 0.02_Hz;
         }
 
         m_bodies[m_bodyIndex] = CreateBody(GetWorld(), bd);
 
-        if (index < 4)
-        {
+        if (index < 4) {
             Attach(GetWorld(), m_bodies[m_bodyIndex], m_polygons[index]);
         }
-        else
-        {
+        else {
             Attach(GetWorld(), m_bodies[m_bodyIndex], m_circle);
         }
 
@@ -152,10 +128,8 @@ public:
 
     void DestroyBodies()
     {
-        for (auto i = 0; i < e_maxBodies; ++i)
-        {
-            if (m_bodies[i] != InvalidBodyID)
-            {
+        for (auto i = 0; i < e_maxBodies; ++i) {
+            if (m_bodies[i] != InvalidBodyID) {
                 Destroy(GetWorld(), m_bodies[i]);
                 m_bodies[i] = InvalidBodyID;
                 return;
@@ -176,34 +150,31 @@ public:
 
         RayCast(GetWorld(), RayCastInput{point1, point2, Real{1}},
                 [&](BodyID, ShapeID f, ChildCounter, Length2 p, UnitVec n) {
-            shapeId = f;
-            point = p;
-            normal = n;
-            return RayCastOpcode::ClipRay;
-        });
+                    shapeId = f;
+                    point = p;
+                    normal = n;
+                    return RayCastOpcode::ClipRay;
+                });
 
-        if (IsValid(shapeId))
-        {
+        if (IsValid(shapeId)) {
             drawer.DrawPoint(point, 5.0f, Color(0.4f, 0.9f, 0.4f));
             drawer.DrawSegment(point1, point, Color(0.8f, 0.8f, 0.8f));
             const auto head = point + Real{0.5f} * normal * 1_m;
             drawer.DrawSegment(point, head, Color(0.9f, 0.9f, 0.4f));
         }
-        else
-        {
+        else {
             drawer.DrawSegment(point1, point2, Color(0.8f, 0.8f, 0.8f));
         }
 
         const auto advanceRay = !settings.pause || settings.singleStep;
-        if (advanceRay)
-        {
+        if (advanceRay) {
             m_angle += 0.25f * Pi / 180.0f;
         }
     }
 
     int m_bodyIndex = 0;
     BodyID m_bodies[e_maxBodies];
-    ShapeID m_polygons[4] = { InvalidShapeID, InvalidShapeID, InvalidShapeID, InvalidShapeID };
+    ShapeID m_polygons[4] = {InvalidShapeID, InvalidShapeID, InvalidShapeID, InvalidShapeID};
     ShapeID m_circle = InvalidShapeID;
     Real m_angle = 0;
 };

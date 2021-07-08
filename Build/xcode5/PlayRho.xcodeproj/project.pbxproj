@@ -1883,12 +1883,12 @@
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				HEADER_SEARCH_PATHS = (
-					/usr/local/boost_1_63_0,
+					/usr/local/boost_1_75_0,
 					/usr/local/include,
 					../..,
 				);
 				LIBRARY_SEARCH_PATHS = (
-					/usr/local/Cellar/llvm/12.0.0/Toolchains/LLVM12.0.0.xctoolchain/usr/lib,
+					/usr/local/Cellar/llvm/12.0.0_1/Toolchains/LLVM12.0.0.xctoolchain/usr/lib,
 					/usr/local/lib,
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1901,7 +1901,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-					/usr/local/boost_1_63_0,
+					/usr/local/boost_1_75_0,
 					/usr/local/include,
 					../..,
 				);
@@ -1917,11 +1917,11 @@
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					/usr/local/include,
-					/usr/local/boost_1_63_0,
+					/usr/local/boost_1_75_0,
 					../..,
 				);
 				LIBRARY_SEARCH_PATHS = (
-					/usr/local/Cellar/llvm/12.0.0/Toolchains/LLVM12.0.0.xctoolchain/usr/lib,
+					/usr/local/Cellar/llvm/12.0.0_1/Toolchains/LLVM12.0.0.xctoolchain/usr/lib,
 					/usr/local/lib,
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1938,7 +1938,7 @@
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					/usr/local/include,
-					/usr/local/boost_1_63_0,
+					/usr/local/boost_1_75_0,
 					../..,
 				);
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
@@ -1974,10 +1974,10 @@
 					../../Testbed/Framework/imgui/examples/libs/gl3w/,
 					../..,
 					/usr/local/include,
-					/usr/local/boost_1_63_0,
+					/usr/local/boost_1_75_0,
 				);
 				LIBRARY_SEARCH_PATHS = (
-					/usr/local/Cellar/llvm/12.0.0/Toolchains/LLVM12.0.0.xctoolchain/usr/lib,
+					/usr/local/Cellar/llvm/12.0.0_1/Toolchains/LLVM12.0.0.xctoolchain/usr/lib,
 					/usr/local/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
@@ -1999,7 +1999,7 @@
 					../../Testbed/Framework/imgui/examples/libs/gl3w/,
 					../..,
 					/usr/local/include,
-					/usr/local/boost_1_63_0,
+					/usr/local/boost_1_75_0,
 				);
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
@@ -2075,17 +2075,17 @@
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					/usr/local/boost_1_63_0,
+					/usr/local/boost_1_75_0,
 					../..,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_GENERATE_MAP_FILE = YES;
-				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/llvm/12.0.0/Toolchains/LLVM12.0.0.xctoolchain/usr/lib;
+				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/llvm/12.0.0_1/Toolchains/LLVM12.0.0.xctoolchain/usr/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-nostdinc++",
-					"-I/usr/local/Cellar/llvm/12.0.0/Toolchains/LLVM12.0.0.xctoolchain/usr/include/c++/v1",
+					"-I/usr/local/Cellar/llvm/12.0.0_1/Toolchains/LLVM12.0.0.xctoolchain/usr/include/c++/v1",
 					"$(OTHER_CFLAGS)",
 				);
 				SDKROOT = macosx;
@@ -2151,7 +2151,7 @@
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					/usr/local/boost_1_63_0,
+					/usr/local/boost_1_75_0,
 					../..,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;

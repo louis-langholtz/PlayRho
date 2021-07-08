@@ -22,46 +22,42 @@
 #include "../Framework/Test.hpp"
 
 namespace testbed {
-    
-    class SpinningCircle : public Test
+
+class SpinningCircle : public Test
+{
+public:
+    enum { e_count = 10 };
+
+    SpinningCircle()
     {
-    public:
-        
-        enum
-        {
-            e_count = 10
-        };
-        
-        SpinningCircle()
-        {
-            SetGravity(LinearAcceleration2{});
-            auto bodyConf = BodyConf{};
-            bodyConf.type = BodyType::Dynamic;
-            bodyConf.angularVelocity = 45_deg / 1_s;
-            bodyConf.linearVelocity = LinearVelocity2{};
-            bodyConf.linearDamping = 0.8_Hz;
-            bodyConf.bullet = true;
-            bodyConf.location = Vec2{0, 26} * 1_m;
-            const auto body1 = CreateBody(GetWorld(), bodyConf);
-            bodyConf.location = Vec2{0, 14} * 1_m;
-            const auto body2 = CreateBody(GetWorld(), bodyConf);
-            auto shapeConf = DiskShapeConf{};
-            shapeConf.density = 10_kgpm2;
-            shapeConf.vertexRadius = 2_m;
-            shapeConf.location = Length2{};
-            shapeConf.vertexRadius = 1.5_m;
-            shapeConf.location = Vec2{0,  3} * 1_m;
-            auto circleA = CreateShape(GetWorld(), shapeConf);
-            shapeConf.vertexRadius = 1.5_m;
-            shapeConf.location = Vec2{0, -3} * 1_m;
-            auto circleB = CreateShape(GetWorld(), shapeConf);
-            Attach(GetWorld(), body1, circleA);
-            Attach(GetWorld(), body1, circleB);
-            Attach(GetWorld(), body2, circleA);
-            Attach(GetWorld(), body2, circleB);
-        }
-    };
-    
+        SetGravity(LinearAcceleration2{});
+        auto bodyConf = BodyConf{};
+        bodyConf.type = BodyType::Dynamic;
+        bodyConf.angularVelocity = 45_deg / 1_s;
+        bodyConf.linearVelocity = LinearVelocity2{};
+        bodyConf.linearDamping = 0.8_Hz;
+        bodyConf.bullet = true;
+        bodyConf.location = Vec2{0, 26} * 1_m;
+        const auto body1 = CreateBody(GetWorld(), bodyConf);
+        bodyConf.location = Vec2{0, 14} * 1_m;
+        const auto body2 = CreateBody(GetWorld(), bodyConf);
+        auto shapeConf = DiskShapeConf{};
+        shapeConf.density = 10_kgpm2;
+        shapeConf.vertexRadius = 2_m;
+        shapeConf.location = Length2{};
+        shapeConf.vertexRadius = 1.5_m;
+        shapeConf.location = Vec2{0, 3} * 1_m;
+        auto circleA = CreateShape(GetWorld(), shapeConf);
+        shapeConf.vertexRadius = 1.5_m;
+        shapeConf.location = Vec2{0, -3} * 1_m;
+        auto circleB = CreateShape(GetWorld(), shapeConf);
+        Attach(GetWorld(), body1, circleA);
+        Attach(GetWorld(), body1, circleB);
+        Attach(GetWorld(), body2, circleA);
+        Attach(GetWorld(), body2, circleB);
+    }
+};
+
 } // namespace testbed
 
 #endif

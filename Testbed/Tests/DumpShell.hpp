@@ -1,24 +1,24 @@
 /*
-* Original work Copyright (c) 2011 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2011 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #ifndef PLAYRHO_DUMP_SHELL_HPP
-#define  PLAYRHO_DUMP_SHELL_HPP
+#define PLAYRHO_DUMP_SHELL_HPP
 
 #include "../Framework/Test.hpp"
 #include <PlayRho/Common/DynamicMemory.hpp>
@@ -29,10 +29,9 @@ namespace testbed {
 class DumpShell : public Test
 {
 public:
-
     DumpShell()
     {
-        //Source code dump of Box scene: issue304-minimal-case.rube
+        // Source code dump of Box scene: issue304-minimal-case.rube
         //
         //  Created by R.U.B.E 1.3.0
         //  Using Box version 2.3.0
@@ -42,7 +41,8 @@ public:
         //  but you can easily use it in other applications by providing
         //  a World for use as the 'GetWorld()' variable in the code below.
 
-        LinearAcceleration2 g(Real{0.000000000000000e+00f} * MeterPerSquareSecond, Real{-1.000000000000000e+01f} * MeterPerSquareSecond);
+        LinearAcceleration2 g(Real{0.000000000000000e+00f} * MeterPerSquareSecond,
+                              Real{-1.000000000000000e+01f} * MeterPerSquareSecond);
         SetGravity(g);
         BodyID* bodies = (BodyID*)Alloc(3 * sizeof(BodyID));
         JointID* joints = (JointID*)Alloc(0 * sizeof(JointID));
@@ -74,7 +74,8 @@ public:
                 shape.UseRestitution(Real(0.000000000000000e+00f));
                 shape.UseDensity(Real{1.000000000000000e+00f} * 1_kgpm2);
                 shape.UseIsSensor(false);
-                shape.UseFilter(Filter{Filter::bits_type(1), Filter::bits_type(65535), Filter::index_type(0)});
+                shape.UseFilter(
+                    Filter{Filter::bits_type(1), Filter::bits_type(65535), Filter::index_type(0)});
                 Attach(GetWorld(), bodies[0], CreateShape(GetWorld(), shape));
             }
         }
@@ -108,7 +109,8 @@ public:
                 shape.UseRestitution(Real(0.000000000000000e+00f));
                 shape.UseDensity(Real{5.000000000000000e+00f} * 1_kgpm2);
                 shape.UseIsSensor(false);
-                shape.UseFilter(Filter{Filter::bits_type(1), Filter::bits_type(65535), Filter::index_type(0)});
+                shape.UseFilter(
+                    Filter{Filter::bits_type(1), Filter::bits_type(65535), Filter::index_type(0)});
                 Attach(GetWorld(), bodies[1], CreateShape(GetWorld(), shape));
             }
         }
@@ -139,7 +141,8 @@ public:
                 shape.UseRestitution(Real(0.000000000000000e+00f));
                 shape.UseDensity(Real{1.000000000000000e+01f} * 1_kgpm2);
                 shape.UseIsSensor(false);
-                shape.UseFilter(Filter{Filter::bits_type(1), Filter::bits_type(65535), Filter::index_type(-3)});
+                shape.UseFilter(
+                    Filter{Filter::bits_type(1), Filter::bits_type(65535), Filter::index_type(-3)});
                 Attach(GetWorld(), bodies[2], CreateShape(GetWorld(), shape));
             }
         }

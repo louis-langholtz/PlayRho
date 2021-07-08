@@ -1,24 +1,24 @@
 /*
-* Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #ifndef PLAYRHO_COLLISION_FILTERING_HPP
-#define  PLAYRHO_COLLISION_FILTERING_HPP
+#define PLAYRHO_COLLISION_FILTERING_HPP
 
 #include "../Framework/Test.hpp"
 
@@ -48,11 +48,11 @@ public:
     CollisionFiltering()
     {
         // Ground body
-        const auto groundShapeId = CreateShape(GetWorld(), EdgeShapeConf{}
-                                    .UseFriction(Real(0.3))
-                                    .Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
+        const auto groundShapeId =
+            CreateShape(GetWorld(), EdgeShapeConf{}.UseFriction(Real(0.3)).Set(
+                                        Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
         Attach(GetWorld(), CreateBody(GetWorld()), groundShapeId);
-        
+
         // Small triangle
         Length2 vertices[3];
         vertices[0] = Vec2(-1.0f, 0.0f) * 1_m;
@@ -72,7 +72,8 @@ public:
         triangleBodyConf.location = Vec2(-5.0f, 2.0f) * 1_m;
 
         const auto body1 = CreateBody(GetWorld(), triangleBodyConf);
-        Attach(GetWorld(), body1, CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(triangleFilter)));
+        Attach(GetWorld(), body1,
+               CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(triangleFilter)));
 
         // Large triangle (recycle definitions)
         vertices[0] *= 2.0f;
@@ -84,14 +85,17 @@ public:
         triangleBodyConf.fixedRotation = true; // look at me!
 
         const auto body2 = CreateBody(GetWorld(), triangleBodyConf);
-        Attach(GetWorld(), body2, CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(triangleFilter)));
+        Attach(GetWorld(), body2,
+               CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(triangleFilter)));
 
         {
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-5.0f, 10.0f) * 1_m;
             const auto body = CreateBody(GetWorld(), bd);
-            Attach(GetWorld(), body, CreateShape(GetWorld(), PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 1_m)));
+            Attach(GetWorld(), body,
+                   CreateShape(GetWorld(),
+                               PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 1_m)));
 
             auto jd = PrismaticJointConf{};
             jd.bodyA = body2;
@@ -121,7 +125,8 @@ public:
         boxBodyConf.location = Vec2(0.0f, 2.0f) * 1_m;
 
         const auto body3 = CreateBody(GetWorld(), boxBodyConf);
-        Attach(GetWorld(), body3, CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(boxShapeFilter)));
+        Attach(GetWorld(), body3,
+               CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(boxShapeFilter)));
 
         // Large box (recycle definitions)
         polygon.SetAsBox(2_m, 1_m);
@@ -129,7 +134,8 @@ public:
         boxBodyConf.location = Vec2(0.0f, 6.0f) * 1_m;
 
         const auto body4 = CreateBody(GetWorld(), boxBodyConf);
-        Attach(GetWorld(), body4, CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(boxShapeFilter)));
+        Attach(GetWorld(), body4,
+               CreateShape(GetWorld(), PolygonShapeConf{polygon}.UseFilter(boxShapeFilter)));
 
         // Small circle
         auto circleConf = DiskShapeConf{};
@@ -143,10 +149,11 @@ public:
         auto circleBodyConf = BodyConf{};
         circleBodyConf.type = BodyType::Dynamic;
         circleBodyConf.location = Vec2(5.0f, 2.0f) * 1_m;
-        
+
         const auto body5 = CreateBody(GetWorld(), circleBodyConf);
         circleConf.vertexRadius = 1_m;
-        Attach(GetWorld(), body5, CreateShape(GetWorld(), DiskShapeConf{circleConf}.UseFilter(circleShapeFilter)));
+        Attach(GetWorld(), body5,
+               CreateShape(GetWorld(), DiskShapeConf{circleConf}.UseFilter(circleShapeFilter)));
 
         // Large circle
         circleShapeFilter.groupIndex = k_largeGroup;
@@ -154,12 +161,13 @@ public:
 
         const auto body6 = CreateBody(GetWorld(), circleBodyConf);
         circleConf.vertexRadius = circleConf.vertexRadius * 2;
-        Attach(GetWorld(), body6, CreateShape(GetWorld(), DiskShapeConf{circleConf}.UseFilter(circleShapeFilter)));
-        
+        Attach(GetWorld(), body6,
+               CreateShape(GetWorld(), DiskShapeConf{circleConf}.UseFilter(circleShapeFilter)));
+
         SetAccelerations(GetWorld(), GetGravity());
     }
 };
-    
+
 } // namespace testbed
 
 #endif

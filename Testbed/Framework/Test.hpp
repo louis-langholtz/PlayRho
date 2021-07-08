@@ -79,8 +79,8 @@ struct Settings
     float maxRotation = 90; // in degrees
 
     float dt = 1.0f / 60; // in seconds.
-    float minDt = 1.0f / 120;
-    float maxDt = 1.0f / 5;
+    float minDt = 0.0f;
+    float maxDt = std::numeric_limits<float>::max();
 
     float minStillTimeToSleep = static_cast<float>(Real{
         DefaultMinStillTimeToSleep / Second});

@@ -33,8 +33,8 @@ public:
         conf.description = "Stresses the physics engine's contact detecting and adding code.";
         return conf;
     }
-    
-    AddPair(): Test(GetTestConf())
+
+    AddPair() : Test(GetTestConf())
     {
         SetGravity(LinearAcceleration2{});
         {
@@ -43,18 +43,24 @@ public:
             const auto minY = 4.0f;
             const auto maxY = 6.0f;
             const auto bd = BodyConf{}.UseType(BodyType::Dynamic);
-            const auto shape = CreateShape(GetWorld(),
-                                           DiskShapeConf{}.UseRadius(0.1_m).UseDensity(0.01_kgpm2));
+            const auto shape =
+                CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(0.1_m).UseDensity(0.01_kgpm2));
             for (auto i = 0; i < 400; ++i) {
-                const auto location = Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY)) * Meter;
+                const auto location =
+                    Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY)) * Meter;
                 // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
-                Attach(GetWorld(), CreateBody(GetWorld(), BodyConf(bd).UseLocation(location)), shape);
+                Attach(GetWorld(), CreateBody(GetWorld(), BodyConf(bd).UseLocation(location)),
+                       shape);
             }
         }
-        const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseBullet(true)
-            .UseLocation(Length2{-40_m, 5_m}).UseLinearVelocity(LinearVelocity2{150_mps, 0_mps});
-        Attach(GetWorld(), CreateBody(GetWorld(), bd), CreateShape(GetWorld(),
-            PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(1.5_m, 1.5_m)));
+        const auto bd = BodyConf{}
+                            .UseType(BodyType::Dynamic)
+                            .UseBullet(true)
+                            .UseLocation(Length2{-40_m, 5_m})
+                            .UseLinearVelocity(LinearVelocity2{150_mps, 0_mps});
+        Attach(
+            GetWorld(), CreateBody(GetWorld(), bd),
+            CreateShape(GetWorld(), PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(1.5_m, 1.5_m)));
     }
 };
 

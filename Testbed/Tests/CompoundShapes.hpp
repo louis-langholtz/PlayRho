@@ -1,24 +1,24 @@
 /*
-* Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #ifndef PLAYRHO_COMPOUND_SHAPES_HPP
-#define  PLAYRHO_COMPOUND_SHAPES_HPP
+#define PLAYRHO_COMPOUND_SHAPES_HPP
 
 #include "../Framework/Test.hpp"
 
@@ -31,17 +31,17 @@ public:
     CompoundShapes()
     {
         Attach(GetWorld(), CreateBody(GetWorld()),
-               CreateShape(GetWorld(), EdgeShapeConf{Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m}));
+               CreateShape(GetWorld(),
+                           EdgeShapeConf{Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m}));
         {
             auto conf = DiskShapeConf{};
             conf.vertexRadius = 0.5_m;
-            
+
             conf.location = Vec2{-0.5f, 0.5f} * 1_m;
             const auto circle1 = CreateShape(GetWorld(), DiskShapeConf(conf).UseDensity(2_kgpm2));
             conf.location = Vec2{0.5f, 0.5f} * 1_m;
             const auto circle2 = CreateShape(GetWorld(), conf);
-            for (auto i = 0; i < 10; ++i)
-            {
+            for (auto i = 0; i < 10; ++i) {
                 const auto x = RandomFloat(-0.1f, 0.1f);
                 BodyConf bd;
                 bd.type = BodyType::Dynamic;
@@ -61,8 +61,7 @@ public:
             conf.UseDensity(2_kgpm2);
             conf.SetAsBox(0.25_m, 0.5_m, Vec2(0.0f, -0.5f) * 1_m, 0.5_rad * Pi);
             const auto polygon2 = CreateShape(GetWorld(), conf);
-            for (int i = 0; i < 10; ++i)
-            {
+            for (int i = 0; i < 10; ++i) {
                 const auto x = RandomFloat(-0.1f, 0.1f);
                 BodyConf bd;
                 bd.type = BodyType::Dynamic;
@@ -80,11 +79,9 @@ public:
             xf1.p = GetVec2(GetXAxis(xf1.q)) * 1_m;
 
             auto triangleConf1 = PolygonShapeConf{};
-            triangleConf1.Set({
-                Transform(Vec2(-1.0f, 0.0f) * 1_m, xf1),
-                Transform(Vec2(1.0f, 0.0f) * 1_m, xf1),
-                Transform(Vec2(0.0f, 0.5f) * 1_m, xf1)
-            });
+            triangleConf1.Set({Transform(Vec2(-1.0f, 0.0f) * 1_m, xf1),
+                               Transform(Vec2(1.0f, 0.0f) * 1_m, xf1),
+                               Transform(Vec2(0.0f, 0.5f) * 1_m, xf1)});
             triangleConf1.UseDensity(2_kgpm2);
             const auto triangle1 = CreateShape(GetWorld(), triangleConf1);
 
@@ -93,16 +90,13 @@ public:
             xf2.p = -GetVec2(GetXAxis(xf2.q)) * 1_m;
 
             auto trianglConf2 = PolygonShapeConf{};
-            trianglConf2.Set({
-                Transform(Vec2(-1.0f, 0.0f) * 1_m, xf2),
-                Transform(Vec2(1.0f, 0.0f) * 1_m, xf2),
-                Transform(Vec2(0.0f, 0.5f) * 1_m, xf2)
-            });
+            trianglConf2.Set({Transform(Vec2(-1.0f, 0.0f) * 1_m, xf2),
+                              Transform(Vec2(1.0f, 0.0f) * 1_m, xf2),
+                              Transform(Vec2(0.0f, 0.5f) * 1_m, xf2)});
             trianglConf2.UseDensity(2_kgpm2);
             const auto triangle2 = CreateShape(GetWorld(), trianglConf2);
 
-            for (auto i = 0; i < 10; ++i)
-            {
+            for (auto i = 0; i < 10; ++i) {
                 const auto x = RandomFloat(-0.1f, 0.1f);
                 BodyConf bd;
                 bd.type = BodyType::Dynamic;
@@ -127,13 +121,13 @@ public:
 
             BodyConf bd;
             bd.type = BodyType::Dynamic;
-            bd.location = Vec2( 0.0f, 2.0f ) * 1_m;
+            bd.location = Vec2(0.0f, 2.0f) * 1_m;
             const auto body = CreateBody(GetWorld(), bd);
             Attach(GetWorld(), body, bottom);
             Attach(GetWorld(), body, left);
             Attach(GetWorld(), body, right);
         }
-        
+
         SetAccelerations(GetWorld(), GetGravity());
     }
 };

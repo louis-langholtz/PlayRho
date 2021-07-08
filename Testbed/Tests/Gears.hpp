@@ -18,7 +18,7 @@
  */
 
 #ifndef PLAYRHO_GEARS_HPP
-#define  PLAYRHO_GEARS_HPP
+#define PLAYRHO_GEARS_HPP
 
 #include "../Framework/Test.hpp"
 
@@ -30,11 +30,12 @@ public:
     Gears()
     {
         const auto ground = CreateBody(GetWorld());
-        Attach(GetWorld(), ground, Shape(EdgeShapeConf{Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m}));
+        Attach(GetWorld(), ground,
+               Shape(EdgeShapeConf{Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m}));
         const auto circle1 = DiskShapeConf{}.UseRadius(1_m).UseDensity(5_kgpm2);
         const auto circle2 = DiskShapeConf{}.UseRadius(2_m).UseDensity(5_kgpm2);
-        const auto box = CreateShape(GetWorld(),
-                                     PolygonShapeConf{}.SetAsBox(0.5_m, 5_m).UseDensity(5_kgpm2));
+        const auto box =
+            CreateShape(GetWorld(), PolygonShapeConf{}.SetAsBox(0.5_m, 5_m).UseDensity(5_kgpm2));
         {
             auto bd1 = BodyConf{};
             bd1.type = BodyType::Static;
@@ -53,8 +54,10 @@ public:
             const auto body3 = CreateBody(GetWorld(), bd3);
             Attach(GetWorld(), body3, Shape{circle2});
 
-            auto joint1 = CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), body2, body1, bd1.location));
-            auto joint2 = CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), body2, body3, bd3.location));
+            auto joint1 = CreateJoint(GetWorld(),
+                                      GetRevoluteJointConf(GetWorld(), body2, body1, bd1.location));
+            auto joint2 = CreateJoint(GetWorld(),
+                                      GetRevoluteJointConf(GetWorld(), body2, body3, bd3.location));
 
             auto jd4 = GetGearJointConf(GetWorld(), joint1, joint2);
             jd4.ratio = circle2.GetRadius() / circle1.GetRadius();
@@ -91,8 +94,8 @@ public:
             const auto body3 = CreateBody(GetWorld(), bd3);
             Attach(GetWorld(), body3, box);
 
-            auto jd3 = GetPrismaticJointConf(GetWorld(), ground, body3, bd3.location,
-                                             UnitVec::GetTop());
+            auto jd3 =
+                GetPrismaticJointConf(GetWorld(), ground, body3, bd3.location, UnitVec::GetTop());
             jd3.lowerTranslation = -5_m;
             jd3.upperTranslation = 5_m;
             jd3.enableLimit = true;
@@ -107,7 +110,7 @@ public:
             jd5.ratio = -1.0f / (circle2.GetRadius() / 1_m);
             m_joint5 = CreateJoint(GetWorld(), jd5);
         }
-        
+
         SetAccelerations(GetWorld(), GetGravity());
     }
 
@@ -116,11 +119,13 @@ public:
         std::stringstream stream;
         try {
             const auto ratio = GetRatio(GetWorld(), m_joint4);
-            const auto angle = GetAngle(GetWorld(), m_joint1) + ratio * GetAngle(GetWorld(), m_joint2);
+            const auto angle =
+                GetAngle(GetWorld(), m_joint1) + ratio * GetAngle(GetWorld(), m_joint2);
             stream << "Theta1 + " << static_cast<double>(ratio);
             stream << " * theta2 = " << static_cast<double>(Real{angle / 1_rad});
             stream << " rad.\n";
-        } catch (const std::invalid_argument& ex) {
+        }
+        catch (const std::invalid_argument& ex) {
             stream << "Unable to get ratio or angle data for joint ID ";
             stream << to_underlying(m_joint4);
             stream << " or ";

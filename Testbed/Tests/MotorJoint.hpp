@@ -35,40 +35,41 @@ public:
     static Test::Conf GetTestConf()
     {
         auto conf = Test::Conf{};
-        conf.description =
-            "A motor joint forces two bodies to have a given linear and/or angular"
-            " offset(s) from each other.";
+        conf.description = "A motor joint forces two bodies to have a given linear and/or angular"
+                           " offset(s) from each other.";
         return conf;
     }
-    
-    MotorJointTest(): Test(GetTestConf())
+
+    MotorJointTest() : Test(GetTestConf())
     {
         const auto ground = CreateBody(GetWorld());
-        Attach(GetWorld(), ground, CreateShape(GetWorld(), EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}));
+        Attach(GetWorld(), ground,
+               CreateShape(GetWorld(),
+                           EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}));
 
         // Define motorized body
         const auto body = CreateBody(GetWorld(), BodyConf{}
-                                             .UseType(BodyType::Dynamic)
-                                             .UseLocation(Vec2(0.0f, 8.0f) * 1_m)
-                                             .UseLinearAcceleration(GetGravity()));
-        Attach(GetWorld(), body, CreateShape(GetWorld(),
-            PolygonShapeConf{}.SetAsBox(2_m, 0.5_m).UseFriction(Real(0.6)).UseDensity(2_kgpm2)
-        ));
+                                                     .UseType(BodyType::Dynamic)
+                                                     .UseLocation(Vec2(0.0f, 8.0f) * 1_m)
+                                                     .UseLinearAcceleration(GetGravity()));
+        Attach(GetWorld(), body,
+               CreateShape(GetWorld(), PolygonShapeConf{}
+                                           .SetAsBox(2_m, 0.5_m)
+                                           .UseFriction(Real(0.6))
+                                           .UseDensity(2_kgpm2)));
         auto mjd = GetMotorJointConf(GetWorld(), ground, body);
         mjd.maxForce = 1000_N;
         mjd.maxTorque = 1000_Nm;
         m_joint = CreateJoint(GetWorld(), mjd);
-        
-        RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Pause Motor", [&](KeyActionMods) {
-            m_go = !m_go;
-        });
+
+        RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Pause Motor",
+                       [&](KeyActionMods) { m_go = !m_go; });
     }
 
     void PreStep(const Settings& settings, Drawer& drawer) override
     {
-        SetStatus(m_go? "Motor going.": "Motor paused.");
-        if (m_go && settings.dt > 0)
-        {
+        SetStatus(m_go ? "Motor going." : "Motor paused.");
+        if (m_go && settings.dt > 0) {
             m_time += settings.dt;
         }
         const auto linearOffset = Vec2{6 * sin(2 * m_time), 8 + 4 * sin(m_time)} * 1_m;

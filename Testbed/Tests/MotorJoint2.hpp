@@ -39,19 +39,21 @@ public:
     static Test::Conf GetTestConf()
     {
         auto conf = Test::Conf{};
-        conf.seeAlso = "https://github.com/elemel/Box2D/commit/01bae74c52b9e089b04dda8899d8aba9d901ef22";
+        conf.seeAlso =
+            "https://github.com/elemel/Box2D/commit/01bae74c52b9e089b04dda8899d8aba9d901ef22";
         conf.credits = "Written by Mikael Lind for Box2D. Ported to PlayRho by Louis Langholtz.";
-        conf.description = "This test had demonstrated a problem in the MotorJoint code:"
+        conf.description =
+            "This test had demonstrated a problem in the MotorJoint code:"
             " after the first disk contacted the edge, the system went to sleep with the other"
             " end still up in the air. This should not happen now as this has been fixed.";
         return conf;
     }
-    
+
     void ToggleJoint()
     {
         m_reversedJoint = !m_reversedJoint;
     }
-    
+
     void ToggleBody()
     {
         m_reversedBody = !m_reversedBody;
@@ -59,29 +61,33 @@ public:
 
     void Setup()
     {
-        if (IsValid(m_joint)) Destroy(GetWorld(), m_joint);
-        if (IsValid(m_bodyA)) Destroy(GetWorld(), m_bodyA);
-        if (IsValid(m_bodyB)) Destroy(GetWorld(), m_bodyB);
+        if (IsValid(m_joint))
+            Destroy(GetWorld(), m_joint);
+        if (IsValid(m_bodyA))
+            Destroy(GetWorld(), m_bodyA);
+        if (IsValid(m_bodyB))
+            Destroy(GetWorld(), m_bodyB);
 
         const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(GetGravity());
-        const auto locations = m_reversedBody?
-            std::make_pair(m_locationB, m_locationA): std::make_pair(m_locationA, m_locationB);
+        const auto locations = m_reversedBody ? std::make_pair(m_locationB, m_locationA)
+                                              : std::make_pair(m_locationA, m_locationB);
         m_bodyA = CreateBody(GetWorld(), BodyConf(bd).UseLocation(std::get<0>(locations)));
         m_bodyB = CreateBody(GetWorld(), BodyConf(bd).UseLocation(std::get<1>(locations)));
         Attach(GetWorld(), m_bodyA, m_diskShape);
         Attach(GetWorld(), m_bodyB, m_diskShape);
 
-        const auto jc = MotorJointConf{
-            m_reversedJoint
-                ? GetMotorJointConf(GetWorld(), m_bodyB, m_bodyA)
-                : GetMotorJointConf(GetWorld(), m_bodyA, m_bodyB)
-        }.UseMaxForce(1000_N).UseMaxTorque(1000_Nm);
+        const auto jc =
+            MotorJointConf{m_reversedJoint ? GetMotorJointConf(GetWorld(), m_bodyB, m_bodyA)
+                                           : GetMotorJointConf(GetWorld(), m_bodyA, m_bodyB)}
+                .UseMaxForce(1000_N)
+                .UseMaxTorque(1000_Nm);
         m_joint = CreateJoint(GetWorld(), jc);
     }
-    
-    MotorJoint2(): Test(GetTestConf())
+
+    MotorJoint2() : Test(GetTestConf())
     {
-        m_diskShape = CreateShape(GetWorld(), DiskShapeConf{1_m}.UseFriction(0.6f).UseDensity(2_kgpm2));
+        m_diskShape =
+            CreateShape(GetWorld(), DiskShapeConf{1_m}.UseFriction(0.6f).UseDensity(2_kgpm2));
         const auto ground = CreateBody(GetWorld());
         Attach(GetWorld(), ground, CreateShape(GetWorld(), GetGroundEdgeConf()));
         Setup();
@@ -94,12 +100,12 @@ public:
             Setup();
         });
     }
-    
+
     static Test* Create()
     {
         return new MotorJoint2;
     }
-    
+
     ShapeID m_diskShape = InvalidShapeID;
     const Length2 m_locationA{0_m, 4_m};
     const Length2 m_locationB{4_m, 8_m};

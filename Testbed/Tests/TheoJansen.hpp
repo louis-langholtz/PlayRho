@@ -1,21 +1,21 @@
 /*
-* Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 // Inspired by a contribution by roman_m
 // Dimensions scooped from APE (http://www.cove.org/ape/index.htm)
@@ -30,7 +30,6 @@ namespace testbed {
 class TheoJansen : public Test
 {
 public:
-
     void CreateLeg(Real s, const Length2 wheelAnchor)
     {
         const auto p1 = Vec2(5.4f * s, -6.1f) * 1_m;
@@ -42,13 +41,11 @@ public:
 
         auto poly1 = PolygonShapeConf{};
         auto poly2 = PolygonShapeConf{};
-        if (s > 0.0f)
-        {
+        if (s > 0.0f) {
             poly1.Set({p1, p2, p3});
             poly2.Set({Length2{}, p5 - p4, p6 - p4});
         }
-        else
-        {
+        else {
             poly1.Set({p1, p3, p2});
             poly2.Set({Length2{}, p6 - p4, p5 - p4});
         }
@@ -78,20 +75,23 @@ public:
         // It also makes the structure seem a bit more fluid by
         // acting like a suspension system.
 
-        CreateJoint(GetWorld(), GetDistanceJointConf(GetWorld(), body1, body2,
-                                                  p2 + m_offset, p5 + m_offset)
-                             .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
-        CreateJoint(GetWorld(), GetDistanceJointConf(GetWorld(), body1, body2,
-                                                  p3 + m_offset, p4 + m_offset)
-                             .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
-        CreateJoint(GetWorld(), GetDistanceJointConf(GetWorld(), body1, m_wheel,
-                                                  p3 + m_offset, wheelAnchor + m_offset)
-                             .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
-        CreateJoint(GetWorld(), GetDistanceJointConf(GetWorld(), body2, m_wheel,
-                                                  p6 + m_offset, wheelAnchor + m_offset)
-                             .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
-        CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), body2, m_chassis,
-                                                  p4 + m_offset));
+        CreateJoint(GetWorld(),
+                    GetDistanceJointConf(GetWorld(), body1, body2, p2 + m_offset, p5 + m_offset)
+                        .UseFrequency(10_Hz)
+                        .UseDampingRatio(Real(0.5)));
+        CreateJoint(GetWorld(),
+                    GetDistanceJointConf(GetWorld(), body1, body2, p3 + m_offset, p4 + m_offset)
+                        .UseFrequency(10_Hz)
+                        .UseDampingRatio(Real(0.5)));
+        CreateJoint(GetWorld(), GetDistanceJointConf(GetWorld(), body1, m_wheel, p3 + m_offset,
+                                                     wheelAnchor + m_offset)
+                                    .UseFrequency(10_Hz)
+                                    .UseDampingRatio(Real(0.5)));
+        CreateJoint(GetWorld(), GetDistanceJointConf(GetWorld(), body2, m_wheel, p6 + m_offset,
+                                                     wheelAnchor + m_offset)
+                                    .UseFrequency(10_Hz)
+                                    .UseDampingRatio(Real(0.5)));
+        CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), body2, m_chassis, p4 + m_offset));
     }
 
     TheoJansen()
@@ -107,7 +107,7 @@ public:
             const auto ground = CreateBody(GetWorld(), bd);
 
             auto conf = EdgeShapeConf{};
- 
+
             conf.Set(Vec2(-50.0f, 0.0f) * 1_m, Vec2(50.0f, 0.0f) * 1_m);
             Attach(GetWorld(), ground, CreateShape(GetWorld(), conf));
 
@@ -123,8 +123,7 @@ public:
         circleConf.vertexRadius = 0.25_m;
         circleConf.density = 1_kgpm2;
         const auto circle = CreateShape(GetWorld(), circleConf);
-        for (auto i = 0; i < 40; ++i)
-        {
+        for (auto i = 0; i < 40; ++i) {
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-40.0f + 2.0f * i, 0.5f) * 1_m;
@@ -179,7 +178,7 @@ public:
         SetTransform(GetWorld(), m_wheel, GetLocation(GetWorld(), m_wheel), -120_deg);
         CreateLeg(-1.0f, wheelAnchor);
         CreateLeg(1.0f, wheelAnchor);
-        
+
         SetAccelerations(GetWorld(), GetGravity());
 
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Left", [&](KeyActionMods) {

@@ -18,7 +18,7 @@
  */
 
 #ifndef PLAYRHO_BULLET_TEST_HPP
-#define  PLAYRHO_BULLET_TEST_HPP
+#define PLAYRHO_BULLET_TEST_HPP
 
 #include "../Framework/Test.hpp"
 
@@ -27,15 +27,18 @@ namespace testbed {
 class BulletTest : public Test
 {
 public:
-
     BulletTest()
     {
         {
             BodyConf bd;
             bd.location = Length2{};
             const auto body = CreateBody(GetWorld(), bd);
-            Attach(GetWorld(), body, CreateShape(GetWorld(), EdgeShapeConf{Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m}));
-            Attach(GetWorld(), body, CreateShape(GetWorld(), PolygonShapeConf{}.SetAsBox(0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad)));
+            Attach(GetWorld(), body,
+                   CreateShape(GetWorld(),
+                               EdgeShapeConf{Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m}));
+            Attach(GetWorld(), body,
+                   CreateShape(GetWorld(), PolygonShapeConf{}.SetAsBox(
+                                               0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad)));
         }
 
         {
@@ -54,7 +57,7 @@ public:
             conf.UseDensity(100_kgpm2);
             conf.SetAsBox(0.25_m, 0.25_m);
 
-            //m_x = RandomFloat(-1.0f, 1.0f);
+            // m_x = RandomFloat(-1.0f, 1.0f);
             m_x = 0.20352793f;
             bd.location = Vec2(m_x, 10.0f) * 1_m;
             bd.bullet = true;
@@ -78,8 +81,7 @@ public:
 
     void PostStep(const Settings&, Drawer&) override
     {
-        if (GetStepCount() % 60 == 0)
-        {
+        if (GetStepCount() % 60 == 0) {
             Launch();
         }
     }

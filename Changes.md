@@ -58,17 +58,19 @@ as API (Application Programming Interface) changes, Testbed changes, and other c
 
 ## Testbed changes
 
-- Updated UI to provide full access to the per-step configurability, per-step statistics.
+- Updated UI to provide full access to the per-step configurability and per-step statistics.
 - Added the ability to manipulate bodies while paused.
 - Added additional paths to find font and a font-less mode (instead of aborting).
 - Added more demonstrations/tests: Half Pipe, iforce2d's Topdown Car, Orbiter, Newton's
   Cradle, Spinning Circles, and Solar System.
+- Added the ability to read and update shapes, bodies, joints, and contacts (since PR#414 from the master branch and coming up in release 2).
+- Added the ability to create and destroy shapes, bodies, and joints (since PR#414 from the master branch and coming up in release 2).
 - Numerous other changes.
 
 ## Other Changes
 
 - Unit tested via [Google Test](https://github.com/google/googletest/tree/aa148eb2b7f70ede0eb10de34b6254826bfb34f4)
-  and [over 400 tests](https://github.com/louis-langholtz/PlayRho/tree/master/UnitTests).
+  and [over 1100 tests](https://github.com/louis-langholtz/PlayRho/tree/master/UnitTests).
 - Added continuous integration (CI) building and unit testing of repository updates
   for the Linux and Windows platforms.
 - Configured use of [COVERALLS](https://coveralls.io/github/louis-langholtz/PlayRho?branch=dev)
