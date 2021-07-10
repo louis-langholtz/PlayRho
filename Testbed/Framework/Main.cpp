@@ -3118,15 +3118,13 @@ static void CollectionUI(World& world, const World::BodyJoints& joints)
         if (bodyID != InvalidBodyID) {
             ImGui::Text("Joint %u (%s Other-body=%u)", to_underlying(jointID),
                         Test::ToName(GetType(world, jointID)), to_underlying(bodyID));
-            if (ImGui::IsItemHovered())
-            {
+            if (ImGui::IsItemHovered()) {
                 ImGui::SetTooltip("World ID of joint and world ID of other associated body.");
             }
         }
         else {
             ImGui::Text("Joint %u", to_underlying(jointID));
-            if (ImGui::IsItemHovered())
-            {
+            if (ImGui::IsItemHovered()) {
                 ImGui::SetTooltip("World ID of joint.");
             }
         }
@@ -3308,7 +3306,7 @@ static void GlfwErrorCallback(int code, const char* str)
 
 static void ShowFrameInfo(double frameTime, double fps)
 {
-    std::stringstream stream;
+    std::ostringstream stream;
     const auto viewport = ConvertScreenToWorld();
     stream << "Zoom=" << g_camera.m_zoom;
     stream << " Center=";
@@ -3355,42 +3353,8 @@ static std::string InitializeOpenglLoader()
 #endif
 }
 
-int main()
+static void SetupGlfwWindowHints()
 {
-#if defined(_WIN32)
-    // Enable memory-leak reports
-    _CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG));
-#endif
-
-    TestSuite testSuite(GetTestEntries());
-    Selection selection(testSuite.GetTestCount());
-    g_testSuite = &testSuite;
-    g_selection = &selection;
-
-    g_camera.m_width = 1280; // 1152;
-    g_camera.m_height = 980; // 864;
-    menuX = g_camera.m_width - menuWidth - 10;
-    menuHeight = g_camera.m_height - 20;
-
-    if (glfwSetErrorCallback(GlfwErrorCallback))
-    {
-        std::fprintf(stderr,
-                     "Warning: overriding previously installed GLFW error callback function.\n");
-    }
-
-    if (glfwInit() == 0)
-    {
-        std::fprintf(stderr, "Failed to initialize GLFW\n");
-        return EXIT_FAILURE;
-    }
-
-    const auto buildVersion = GetVersion();
-    const auto buildDetails = GetBuildDetails();
-    
-    char title[64];
-    std::sprintf(title, "PlayRho Testbed Version %d.%d.%d",
-                 buildVersion.major, buildVersion.minor, buildVersion.revision);
-
     // Decide GL+GLSL versions
 #if defined(IMGUI_IMPL_OPENGL_ES2)
     // GL ES 2.0
@@ -3410,6 +3374,42 @@ int main()
     //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
+}
+
+int main()
+{
+#if defined(_WIN32)
+    // Enable memory-leak reports
+    _CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG));
+#endif
+
+    TestSuite testSuite(GetTestEntries());
+    Selection selection(testSuite.GetTestCount());
+    g_testSuite = &testSuite;
+    g_selection = &selection;
+
+    g_camera.m_width = 1280; // 1152;
+    g_camera.m_height = 980; // 864;
+    menuX = g_camera.m_width - menuWidth - 10;
+    menuHeight = g_camera.m_height - 20;
+
+    if (glfwSetErrorCallback(GlfwErrorCallback)) {
+        std::fprintf(stderr,
+                     "Warning: overriding previously installed GLFW error callback function.\n");
+    }
+    if (glfwInit() == 0) {
+        std::fprintf(stderr, "Failed to initialize GLFW\n");
+        return EXIT_FAILURE;
+    }
+
+    const auto buildVersion = GetVersion();
+    const auto buildDetails = GetBuildDetails();
+    
+    char title[64];
+    std::sprintf(title, "PlayRho Testbed Version %d.%d.%d",
+                 buildVersion.major, buildVersion.minor, buildVersion.revision);
+
+    SetupGlfwWindowHints();
 
     const auto mainWindow = glfwCreateWindow(g_camera.m_width, g_camera.m_height, title,
                                              nullptr, nullptr);
@@ -3460,8 +3460,7 @@ int main()
     glClearColor(0.3f, 0.3f, 0.3f, 1.f);
     {
         DebugDraw drawer(g_camera);
-        while (!glfwWindowShouldClose(mainWindow))
-        {
+        while (!glfwWindowShouldClose(mainWindow)) {
             glfwPollEvents();
             glViewport(0, 0, g_camera.m_width, g_camera.m_height);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -3473,16 +3472,15 @@ int main()
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
-
-            if (!UserInterface())
+            if (!UserInterface()) {
 	            glfwSetWindowShouldClose(mainWindow, GL_TRUE);
-
+            }
             Simulate(drawer);
-            
+
             // Measure speed
             const auto time2 = glfwGetTime();
             const auto timeElapsed = time2 - time1;
-            const auto alpha = 0.9;
+            constexpr auto alpha = 0.9;
             frameTime = alpha * frameTime + (1.0 - alpha) * timeElapsed;
             fps = 0.99 * fps + (1.0 - 0.99) / timeElapsed;
             time1 = time2;
@@ -3503,6 +3501,5 @@ int main()
 
     glfwDestroyWindow(mainWindow);
     glfwTerminate();
-
     return 0;
 }
