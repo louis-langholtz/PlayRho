@@ -382,13 +382,26 @@ TEST(Shape, EmptyShapeSetVertexRadiusIsNoop)
 TEST(Shape, DynamicRectangleSmallerThanPolygon)
 {
     using namespace playrho::part;
-    EXPECT_LT(sizeof(Compositor<GeometryIs<DynamicRectangle<>>, //
-                                DensityIs<DynamicAreaDensity<>>, //
-                                RestitutionIs<DynamicRestitution<>>, //
-                                FrictionIs<DynamicFriction<>>, //
-                                SensorIs<DynamicSensor<>>, //
-                                FilterIs<DynamicFilter<>>>),
-              sizeof(PolygonShapeConf));
+    switch (sizeof(Real))
+    {
+    case 4u:
+        // Compositor only smaller for 4-byte sized Real values. This is because PolygonShapeConf
+        // uses std::vector to store vertices and normals. This hides the full amount of memory it
+        // uses from sizeof(PolygonShapeConf). This also means that not all the data that
+        // PolygonShapeConf contains is available in one contiguous block of memory which increases
+        // the chance of memory cache misses that will slow simulations down. Meanwhile, the memory
+        // for the Compositor used here will be entirely contiguous.
+        EXPECT_LT(sizeof(Compositor<GeometryIs<DynamicRectangle<>>, //
+                         DensityIs<DynamicAreaDensity<>>, //
+                         RestitutionIs<DynamicRestitution<>>, //
+                         FrictionIs<DynamicFriction<>>, //
+                         SensorIs<DynamicSensor<>>, //
+                         FilterIs<DynamicFilter<>>>),
+                  sizeof(PolygonShapeConf));
+        break;
+    default:
+        break;
+    }
 }
 
 #if 0
