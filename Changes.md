@@ -32,7 +32,7 @@ as API (Application Programming Interface) changes, Testbed changes, and other c
   them (from Fixture class) for reduced memory usage.
 - Renamed circle shapes as "disk" shapes to distinguish them as solid and never hollow.
 - Switched from reference-semantics to value-semantics. Pointers are gone from the interface. References to bodies, fixtures, joints, and contacts have been replaced with identifiers and function interfaces.
-- Converted public "virtual" interfaces to value-semantic polymorphic value types.
+- Converted public "virtual" interfaces to value-semantic polymorphic value types. For an introduction to polymorphic value types, please check out [C++: My Love Affair With Polymorphic Value Types](https://gist.github.com/louis-langholtz/5da900c8333eed26641a09bea7aa5c31).
 - Added support for C++11 range-based loops and constant expressions.
 - Added compile-time support for "zero-runtime-overhead" strongly-typed physical units (using an
   interface to [`constexpr` enhanced boost units](https://github.com/louis-langholtz/units)).
