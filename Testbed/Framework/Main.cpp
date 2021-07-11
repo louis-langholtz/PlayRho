@@ -2170,10 +2170,14 @@ static void EntityUI(EdgeShapeConf& shape)
 
 static void EntityUI(PolygonShapeConf& shape)
 {
-    {
-        ImGui::ItemWidthContext itemWidthCtx(60);
-        LengthUI(shape.vertexRadius, "Vertex Radius (m)");
-    }
+    ImGui::ItemWidthContext itemWidthCtx(60);
+    LengthUI(shape.vertexRadius, "Vertex Radius (m)");
+}
+
+static void EntityUI(ChainShapeConf& shape)
+{
+    ImGui::ItemWidthContext itemWidthCtx(60);
+    LengthUI(shape.vertexRadius, "Vertex Radius (m)");
 }
 
 static void EntityUI(Shape& shape)
@@ -2191,6 +2195,11 @@ static void EntityUI(Shape& shape)
     }
     else if (type == GetTypeID<EdgeShapeConf>()) {
         auto conf = TypeCast<EdgeShapeConf>(shape);
+        EntityUI(conf);
+        shape = conf;
+    }
+    else if (type == GetTypeID<ChainShapeConf>()) {
+        auto conf = TypeCast<ChainShapeConf>(shape);
         EntityUI(conf);
         shape = conf;
     }
