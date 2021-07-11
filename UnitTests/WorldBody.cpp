@@ -710,14 +710,23 @@ TEST(WorldBody, CalcGravitationalAcceleration)
 
     const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l2));
     Attach(world, b2, shapeId);
-    const auto accel = CalcGravitationalAcceleration(world, b1);
-    EXPECT_NEAR(static_cast<double>(Real(GetX(accel.linear)/MeterPerSquareSecond)),
-                0.032761313021183014, 0.032761313021183014/100);
-    EXPECT_EQ(GetY(accel.linear), 0 * MeterPerSquareSecond);
-    EXPECT_EQ(accel.angular, 0 * RadianPerSquareSecond);
-    
+    {
+        const auto accel = CalcGravitationalAcceleration(world, b1);
+        EXPECT_NEAR(static_cast<double>(Real(GetX(accel.linear)/MeterPerSquareSecond)),
+                    0.032761313021183014, 0.032761313021183014/100);
+        EXPECT_EQ(GetY(accel.linear), 0 * MeterPerSquareSecond);
+        EXPECT_EQ(accel.angular, 0 * RadianPerSquareSecond);
+    }
     const auto b3 = CreateBody(world, BodyConf{}.UseType(BodyType::Static).UseLocation(l3));
     EXPECT_EQ(CalcGravitationalAcceleration(world, b3), Acceleration{});
+    {
+        // Confirm b3 doesn't impact b1's acceleration...
+        const auto accel = CalcGravitationalAcceleration(world, b1);
+        EXPECT_NEAR(static_cast<double>(Real(GetX(accel.linear)/MeterPerSquareSecond)),
+                    0.032761313021183014, 0.032761313021183014/100);
+        EXPECT_EQ(GetY(accel.linear), 0 * MeterPerSquareSecond);
+        EXPECT_EQ(accel.angular, 0 * RadianPerSquareSecond);
+    }
 }
 
 TEST(WorldBody, RotateAboutWorldPointFF)
@@ -839,4 +848,37 @@ TEST(WorldBody, GetBodyRange)
     ASSERT_NO_THROW(Destroy(world, body));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
     EXPECT_EQ(GetBodyRange(world), BodyCounter(1));
+}
+
+TEST(WorldBody, SetForce)
+{
+    auto shape = InvalidShapeID;
+    auto body = InvalidBodyID;
+    auto world = World{};
+    ASSERT_NO_THROW(shape = CreateShape(world, DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2)));
+    ASSERT_NO_THROW(body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).Use(shape)));
+    EXPECT_NO_THROW(SetForce(world, body, Force2{}, Length2{}));
+    EXPECT_EQ(GetAcceleration(world, body).linear, LinearAcceleration2());
+    EXPECT_EQ(GetAcceleration(world, body).angular, AngularAcceleration());
+    EXPECT_NO_THROW(SetForce(world, body, Force2{1_N, 0_N}, Length2{}));
+    EXPECT_NEAR(double(Real(GetX(GetAcceleration(world, body).linear)/1_mps2)), 0.318309873, 1e-6);
+    EXPECT_EQ(GetY(GetAcceleration(world, body).linear), 0_mps2);
+    EXPECT_EQ(GetAcceleration(world, body).angular, AngularAcceleration());
+}
+
+TEST(WorldBody, SetTorque)
+{
+    auto shape = InvalidShapeID;
+    auto body = InvalidBodyID;
+    auto world = World{};
+    ASSERT_NO_THROW(shape = CreateShape(world, DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2)));
+    ASSERT_NO_THROW(body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).Use(shape)));
+    EXPECT_NO_THROW(SetTorque(world, body, Torque{}));
+    EXPECT_EQ(GetAcceleration(world, body).linear, LinearAcceleration2());
+    EXPECT_EQ(GetAcceleration(world, body).angular, AngularAcceleration());
+    EXPECT_NO_THROW(SetTorque(world, body, Torque{1_Nm}));
+    EXPECT_EQ(GetX(GetAcceleration(world, body).linear), 0_mps2);
+    EXPECT_EQ(GetY(GetAcceleration(world, body).linear), 0_mps2);
+    EXPECT_NEAR(double(Real(GetAcceleration(world, body).angular/DegreePerSquareSecond)),
+                36.475624084472656, 1e-5);
 }

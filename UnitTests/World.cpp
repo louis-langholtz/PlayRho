@@ -1627,9 +1627,9 @@ struct MyContactListener
         const auto sB = GetShapeB(world, contact);
         body_a[0] = GetLocation(world, bA);
         body_b[0] = GetLocation(world, bB);
-        
         EXPECT_THROW(CreateBody(world), WrongState);
         EXPECT_THROW(world.SetJoint(InvalidJointID, Joint{}), WrongState);
+        EXPECT_THROW(world.SetShape(sA, Shape()), WrongState);
         const auto typeA = GetType(world, bA);
         if (typeA != BodyType::Kinematic)
         {
@@ -1637,6 +1637,7 @@ struct MyContactListener
             EXPECT_THROW(SetType(world, bA, BodyType::Kinematic), WrongState);
         }
         EXPECT_THROW(world.Destroy(bA), WrongState);
+        EXPECT_THROW(world.Destroy(sA), WrongState);
         EXPECT_THROW(world.CreateJoint(Joint{DistanceJointConf{bA, bB}}), WrongState);
         EXPECT_THROW(world.Step(stepConf), WrongState);
         EXPECT_THROW(world.ShiftOrigin(Length2{}), WrongState);
