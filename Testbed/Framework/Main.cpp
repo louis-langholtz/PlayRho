@@ -266,8 +266,7 @@ public:
 private:
     Span<const TestEntry> m_testEntries;
     std::unique_ptr<Test> m_test;
-public:
-    int m_testIndex;
+    int m_testIndex = 0;
 };
 
 #ifdef DONT_EMBED_FONT_DATA
