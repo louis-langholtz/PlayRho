@@ -294,11 +294,13 @@ static auto GetCwd()
 #endif
 
 static bool InputReal(const char* label, Real& var, Real step = 0, Real step_fast = 0,
-                      const char* format = "%.3f", ImGuiInputTextFlags flags = 0)
+                      const char* format = "%.3f",
+                      ImGuiInputTextFlags flags = ImGuiInputTextFlags_EnterReturnsTrue)
 {
     if constexpr (sizeof(Real) <= sizeof(float)) {
         auto val = static_cast<float>(var);
-        if (ImGui::InputFloat(label, &val, step, step_fast, format, flags)) {
+        if (ImGui::InputFloat(label, &val, static_cast<float>(step), static_cast<float>(step_fast),
+                              format, flags)) {
             var = static_cast<Real>(val);
             return true;
         }
@@ -314,7 +316,7 @@ static bool InputReal(const char* label, Real& var, Real step = 0, Real step_fas
 }
 
 static bool InputReals(const char* label, Vec2& var, const char* format = "%.3f",
-                       ImGuiInputTextFlags flags = 0)
+                       ImGuiInputTextFlags flags = ImGuiInputTextFlags_EnterReturnsTrue)
 {
     if constexpr (sizeof(Real) <= sizeof(float)) {
         float vals[2] = {static_cast<float>(var[0]), static_cast<float>(var[1])};
@@ -333,9 +335,9 @@ static bool InputReals(const char* label, Vec2& var, const char* format = "%.3f"
     return false;
 }
 
-static void EntityUI(bool& variable, const char* title)
+static bool EntityUI(bool& variable, const char* title)
 {
-    ImGui::Checkbox(title, &variable);
+    return ImGui::Checkbox(title, &variable);
 }
 
 template <class T>
@@ -380,12 +382,14 @@ static bool MassUI(Mass& variable, const char* title, const char* fmt = "%f")
     return false;
 }
 
-static void EntityUI(UnitVec& variable, const char* title, const char* fmt = "%f")
+static bool EntityUI(UnitVec& variable, const char* title, const char* fmt = "%f")
 {
     auto val = GetAngle(variable);
     if (AngleUI(val, title, fmt)) {
         variable = UnitVec::Get(val);
+        return true;
     }
+    return false;
 }
 
 static void CreateUI(GLFWwindow* window)
@@ -2036,13 +2040,9 @@ static auto FilterUI(T& shape) -> decltype(SetFilter(shape, GetFilter(shape)))
     auto groupIndex = int{oldFilterData.groupIndex};
     {
         ImGui::ItemWidthContext itemWidthCtx(80);
-        //ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0,0));
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
+        ImGui::StyleVarContext styleCtx(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
         ImGui::InputInt("Group Index", &groupIndex);
-        ImGui::PopStyleVar();
-        //ImGui::PopStyleVar();
     }
-
     const auto newFilterData = Filter{
         static_cast<Filter::bits_type>(cateBits),
         static_cast<Filter::bits_type>(maskBits),
@@ -2051,6 +2051,18 @@ static auto FilterUI(T& shape) -> decltype(SetFilter(shape, GetFilter(shape)))
     if (newFilterData != oldFilterData) {
         SetFilter(shape, newFilterData);
     }
+}
+
+template <class T>
+static auto VertexRadiusUI(T& arg) -> decltype(SetVertexRadius(arg, GetVertexRadius(arg)), true)
+{
+    ImGui::ItemWidthContext itemWidthCtx(60);
+    auto value = GetVertexRadius(arg);
+    if (LengthUI(value, "Vertex Radius (m)")) {
+        SetVertexRadius(arg, value);
+        return true;
+    }
+    return false;
 }
 
 template <class T>
@@ -2141,43 +2153,94 @@ static void EntityUI(DiskShapeConf& shape)
 
 static void EntityUI(EdgeShapeConf& shape)
 {
+    VertexRadiusUI(shape);
     {
-        ImGui::ItemWidthContext itemWidthCtx(60);
-        LengthUI(shape.vertexRadius, "Vertex Radius (m)");
-    }
-    {
-        //ImGui::ItemWidthContext itemWidthCtx(60);
-        const auto location = shape.GetVertexA();
-        float vals[2];
-        vals[0] = static_cast<float>(Real{GetX(location) / Meter});
-        vals[1] = static_cast<float>(Real{GetY(location) / Meter});
         ImGui::ItemWidthContext itemWidthCtx(100);
-        if (ImGui::InputFloat2("Vertex A", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            shape.Set(Length2{vals[0] * 1_m, vals[1] * 1_m}, shape.GetVertexB());
+        auto location = shape.GetVertexA();
+        if (LengthUI(location, "Vertex A")) {
+            shape.Set(location, shape.GetVertexB());
         }
     }
     {
-        const auto location = shape.GetVertexB();
-        float vals[2];
-        vals[0] = static_cast<float>(Real{GetX(location) / Meter});
-        vals[1] = static_cast<float>(Real{GetY(location) / Meter});
         ImGui::ItemWidthContext itemWidthCtx(100);
-        if (ImGui::InputFloat2("Vertex B", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            shape.Set(shape.GetVertexA(), Length2{vals[0] * 1_m, vals[1] * 1_m});
+        auto location = shape.GetVertexB();
+        if (LengthUI(location, "Vertex B")) {
+            shape.Set(shape.GetVertexA(), location);
         }
     }
 }
 
 static void EntityUI(PolygonShapeConf& shape)
 {
-    ImGui::ItemWidthContext itemWidthCtx(60);
-    LengthUI(shape.vertexRadius, "Vertex Radius (m)");
+    VertexRadiusUI(shape);
 }
 
-static void EntityUI(ChainShapeConf& shape)
+static bool EntityUI(ChainShapeConf& shape)
 {
-    ImGui::ItemWidthContext itemWidthCtx(60);
-    LengthUI(shape.vertexRadius, "Vertex Radius (m)");
+    auto radiusChanged = false;
+    if (VertexRadiusUI(shape)) {
+        radiusChanged = true;
+    }
+
+    auto verticesChanged = false;
+    std::ostringstream os;
+    auto vertices = shape.GetVertices();
+    auto last = end(vertices);
+    auto first = begin(vertices);
+    for (; first != last; ++first) {
+        //ImGui::StyleVarContext styleCtx(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+        const auto index = std::distance(begin(vertices), first);
+        os.str(std::string{});
+        os << "+##" << index;
+        if (ImGui::Button(os.str().c_str(), ImVec2(14.0f, 15.0f))) {
+            first = vertices.insert(first, *first);
+            last = end(vertices);
+            verticesChanged = true;
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Press to insert a vertex before the one on this same line.",
+                               tooltipWrapWidth);
+        }
+        ImGui::SameLine();
+        os.str(std::string{});
+        os << "-##" << index;
+        if (ImGui::Button(os.str().c_str(), ImVec2(14.0f, 15.0f))) {
+            first = vertices.erase(first);
+            last = end(vertices);
+            verticesChanged = true;
+            if (first == last) {
+                break;
+            }
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Press to erase the vertex on this same line.", tooltipWrapWidth);
+        }
+        ImGui::SameLine();
+        ImGui::ItemWidthContext itemWidthCtx(100);
+        os.str(std::string{});
+        os << "Vertex " << index;
+        auto&& v = *first;
+        if (LengthUI(v, os.str().c_str())) {
+            verticesChanged = true;
+        }
+    }
+    const auto index = size(vertices);
+    os.str(std::string{});
+    os << "+##" << index;
+    if (ImGui::Button(os.str().c_str(), ImVec2(14.0f, 14.0f))) {
+        const auto value = (index == 0u)? Length2{}: vertices.back();
+        vertices.insert(first, value);
+        verticesChanged = true;
+    }
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("Press to append a vertex to the end of the list of vertices.",
+                           tooltipWrapWidth);
+    }
+    if (verticesChanged) {
+        shape.Set(vertices);
+    }
+
+    return radiusChanged || verticesChanged;
 }
 
 static void EntityUI(Shape& shape)
