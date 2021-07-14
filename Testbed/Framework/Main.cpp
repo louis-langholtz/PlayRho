@@ -2283,7 +2283,6 @@ static bool VerticesUI(std::vector<Length2>& vertices)
 static void EntityUI(PolygonShapeConf& shape)
 {
     VertexRadiusUI(shape);
-
     const auto span = shape.GetVertices();
     auto vertices = std::set<Length2>(begin(span), end(span));
     if (VerticesUI(vertices)) {
@@ -2297,14 +2296,12 @@ static bool EntityUI(ChainShapeConf& shape)
     if (VertexRadiusUI(shape)) {
         radiusChanged = true;
     }
-
     auto verticesChanged = false;
     auto vertices = shape.GetVertices();
     if (VerticesUI(vertices)) {
         shape.Set(vertices);
         verticesChanged = true;
     }
-
     return radiusChanged || verticesChanged;
 }
 
