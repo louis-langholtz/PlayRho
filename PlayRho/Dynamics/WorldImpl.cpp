@@ -1004,9 +1004,42 @@ void WorldImpl::SetShape(ShapeID id, Shape def)
         return false;
     }(shape, def);
     for (auto&& b: m_bodyBuffer) {
+        const auto bodyId = BodyID(static_cast<BodyID::underlying_type>(&b - data(m_bodyBuffer)));
         for (const auto& shapeId: b.GetShapes()) {
             if (shapeId == id) {
-                b.SetAwake();
+                SetAwake(b);
+                if (geometryChanged && IsEnabled(b)) {
+                    auto& bodyProxies = m_bodyProxies[to_underlying(bodyId)];
+                    const auto lastProxy = end(bodyProxies);
+                    bodyProxies.erase(std::remove_if(begin(bodyProxies), lastProxy,
+                                                     [this,shapeId](DynamicTree::Size idx){
+                        const auto leafData = m_tree.GetLeafData(idx);
+                        if (leafData.shape == shapeId) {
+                            m_tree.DestroyLeaf(idx);
+                            EraseFirst(m_proxiesForContacts, idx);
+                            return true;
+                        }
+                        return false;
+                    }), lastProxy);
+                    // Destroy any contacts associated with the fixture.
+                    Erase(m_bodyContacts[to_underlying(bodyId)], [this,bodyId,shapeId,&b](ContactID contactID) {
+                        auto& contact = m_contactBuffer[to_underlying(contactID)];
+                        const auto bodyIdA = GetBodyA(contact);
+                        const auto shapeIdA = GetShapeA(contact);
+                        const auto bodyIdB = GetBodyB(contact);
+                        const auto shapeIdB = GetShapeB(contact);
+                        if ((bodyIdA == bodyId && shapeIdA == shapeId) ||
+                            (bodyIdB == bodyId && shapeIdB == shapeId)) {
+                            Destroy(contactID, &b);
+                            return true;
+                        }
+                        return false;
+                    });
+                    EraseAll(m_fixturesForProxies, std::make_pair(bodyId, shapeId));
+                    DestroyProxies(m_tree, FindProxies(m_tree, bodyId, shapeId), m_proxiesForContacts);
+                    m_fixturesForProxies.push_back(std::make_pair(bodyId, shapeId));
+                    m_flags |= e_newFixture;
+                }
             }
         }
     }
