@@ -26,9 +26,10 @@
 #include <cstddef>
 #include <type_traits>
 #include <iterator>
-#include <algorithm>
+#include <algorithm> // for std::lexicographical_compare and more
 #include <functional>
 #include <iostream>
+
 #include <PlayRho/Common/InvalidArgument.hpp>
 #include <PlayRho/Common/Real.hpp>
 #include <PlayRho/Common/Templates.hpp>
@@ -513,6 +514,15 @@ operator/ (Vector<T1, N> a, const T2 s) noexcept
         result[i] = a[i] * inverseS;
     }
     return result;
+}
+
+/// @brief Less than operator.
+/// @note Among other things, this also makes the Vector class usable with <code>std::set</code>.
+/// @relatedalso Vector
+template <std::size_t N0, class T0, std::size_t N1, class T1>
+constexpr bool operator< (const Vector<T0, N0>& lhs, const Vector<T1, N1>& rhs) noexcept
+{
+    return std::lexicographical_compare(begin(lhs), end(lhs), begin(rhs), end(rhs));
 }
 
 /// @brief Gets the specified element of the given collection.
