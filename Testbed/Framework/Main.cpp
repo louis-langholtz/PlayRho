@@ -2170,25 +2170,67 @@ static void EntityUI(EdgeShapeConf& shape)
     }
 }
 
-static void EntityUI(PolygonShapeConf& shape)
+static bool VerticesUI(std::set<Length2>& vertices)
 {
-    VertexRadiusUI(shape);
-}
-
-static bool EntityUI(ChainShapeConf& shape)
-{
-    auto radiusChanged = false;
-    if (VertexRadiusUI(shape)) {
-        radiusChanged = true;
-    }
-
     auto verticesChanged = false;
+    ImGui::ItemWidthContext itemWidthCtx(100);
     std::ostringstream os;
-    auto vertices = shape.GetVertices();
+    static auto newVertex = Length2{};
+    LengthUI(newVertex, "New Vertex");
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("Coordinates for the next new vertex.",
+                           tooltipWrapWidth);
+    }
+    os.str(std::string{});
+    if (ImGui::Button("+", ImVec2(14.0f, 15.0f))) {
+        const auto result = vertices.insert(newVertex);
+        if (std::get<bool>(result)) {
+            verticesChanged = true;
+        }
+    }
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("Press to add a new vertex.",
+                           tooltipWrapWidth);
+    }
     auto last = end(vertices);
     auto first = begin(vertices);
     for (; first != last; ++first) {
-        //ImGui::StyleVarContext styleCtx(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+        const auto index = std::distance(begin(vertices), first);
+        os.str(std::string{});
+        os << "-##" << index;
+        if (ImGui::Button(os.str().c_str(), ImVec2(14.0f, 15.0f))) {
+            first = vertices.erase(first);
+            verticesChanged = true;
+            if (first == last) {
+                break;
+            }
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Press to erase the vertex on this same line.", tooltipWrapWidth);
+        }
+        ImGui::SameLine();
+        os.str(std::string{});
+        os << "Vertex " << index;
+        auto vertex = *first;
+        if (LengthUI(vertex, os.str().c_str())) {
+            first = vertices.erase(first);
+            const auto result = vertices.insert(vertex);
+            if (std::get<bool>(result)) {
+                verticesChanged = true;
+            }
+        }
+    }
+    return verticesChanged;
+}
+
+static bool VerticesUI(std::vector<Length2>& vertices)
+{
+    auto verticesChanged = false;
+    ImGui::ItemWidthContext itemWidthCtx(100);
+    std::ostringstream os;
+    auto last = end(vertices);
+    auto first = begin(vertices);
+    for (; first != last; ++first) {
         const auto index = std::distance(begin(vertices), first);
         os.str(std::string{});
         os << "+##" << index;
@@ -2216,7 +2258,6 @@ static bool EntityUI(ChainShapeConf& shape)
             ImGui::ShowTooltip("Press to erase the vertex on this same line.", tooltipWrapWidth);
         }
         ImGui::SameLine();
-        ImGui::ItemWidthContext itemWidthCtx(100);
         os.str(std::string{});
         os << "Vertex " << index;
         auto&& v = *first;
@@ -2236,8 +2277,32 @@ static bool EntityUI(ChainShapeConf& shape)
         ImGui::ShowTooltip("Press to append a vertex to the end of the list of vertices.",
                            tooltipWrapWidth);
     }
-    if (verticesChanged) {
+    return verticesChanged;
+}
+
+static void EntityUI(PolygonShapeConf& shape)
+{
+    VertexRadiusUI(shape);
+
+    const auto span = shape.GetVertices();
+    auto vertices = std::set<Length2>(begin(span), end(span));
+    if (VerticesUI(vertices)) {
+        shape.UseVertices(std::vector<Length2>(begin(vertices), end(vertices)));
+    }
+}
+
+static bool EntityUI(ChainShapeConf& shape)
+{
+    auto radiusChanged = false;
+    if (VertexRadiusUI(shape)) {
+        radiusChanged = true;
+    }
+
+    auto verticesChanged = false;
+    auto vertices = shape.GetVertices();
+    if (VerticesUI(vertices)) {
         shape.Set(vertices);
+        verticesChanged = true;
     }
 
     return radiusChanged || verticesChanged;
