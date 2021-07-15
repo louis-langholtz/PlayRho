@@ -206,12 +206,12 @@ private:
 class TestSuite
 {
 public:
-    TestSuite(Span<const TestEntry> testEntries, int index = 0):
-    	m_testEntries(testEntries),
-    	m_testIndex(index < static_cast<int>(size(testEntries))? index: 0)
+    TestSuite(std::vector<TestEntry> testEntries, int index = 0):
+        m_testEntries(std::move(testEntries)),
+        m_testIndex(index < static_cast<int>(size(m_testEntries))? index: 0)
     {
-        assert(!empty(testEntries));
-        m_test = testEntries[static_cast<unsigned>(m_testIndex)].createFcn();
+        assert(!empty(m_testEntries));
+        m_test = m_testEntries[static_cast<unsigned>(m_testIndex)].createFcn();
     }
     
     int GetTestCount() const
@@ -264,7 +264,7 @@ public:
     }
     
 private:
-    Span<const TestEntry> m_testEntries;
+    std::vector<TestEntry> m_testEntries;
     std::unique_ptr<Test> m_test;
     int m_testIndex = 0;
 };

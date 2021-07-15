@@ -21,7 +21,9 @@
 #define PLAYRHO_TEST_ENTRY_HPP
 
 #include <PlayRho/Common/Span.hpp>
-#include <memory>
+
+#include <memory> // for std::unique_ptr
+#include <vector>
 
 namespace testbed {
 
@@ -53,7 +55,7 @@ struct TestEntry
 /// @note This serves as a wrapper to avoid any possible startup-time dependencies issues that
 ///   might be caused by having global data defined in a different file than it's used in.
 ///
-playrho::Span<const TestEntry> GetTestEntries();
+std::vector<TestEntry> GetTestEntries();
 
 } // namespace testbed
 

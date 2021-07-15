@@ -159,14 +159,14 @@ static const TestEntry testEntries[] =
     {"Solar System", MakeUniqueTest<SolarSystem>},
 };
 
-Span<const TestEntry> GetTestEntries()
+std::vector<TestEntry> GetTestEntries()
 {
     // Intentionally encapsulates access to the static array through this function.
     // This may help avoid issues with startup-time dependencies of having global data defined
     // in a different file than it's used in.
     // This also allows this code to use sizeof to compile-time determine the size of
     // the test entries array and to return it along with the array pointer as a span.
-    return Span<const TestEntry>(data(testEntries), size(testEntries));
+    return std::vector<TestEntry>(begin(testEntries), end(testEntries));
 }
 
 } // namespace testbed
