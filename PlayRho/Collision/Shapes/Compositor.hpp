@@ -596,8 +596,8 @@ class Compositor : // break
 };
 
 /// @brief Gets the rectangle's width and height dimensions.
-/// @note This function is only available from name lookup for objects having a member function of
-///   this same name.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member function of this same name.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 constexpr auto GetDimensions(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
@@ -607,8 +607,8 @@ constexpr auto GetDimensions(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noex
 }
 
 /// @brief Sets the rectangle's width and height dimensions.
-/// @note This function is only available from name lookup for objects having a member function of
-///   this same name and accepting the given value.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member function of this same name and accepting the given value.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto SetDimensions(Compositor<P1, P2, P3, P4, P5, P6>& arg, decltype(arg.GetDimensions()) value)
@@ -618,8 +618,8 @@ auto SetDimensions(Compositor<P1, P2, P3, P4, P5, P6>& arg, decltype(arg.GetDime
 }
 
 /// @brief Gets the rectangle's x and y offset.
-/// @note This function is only available from name lookup for objects having a member function of
-///   this same name.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member function of this same name.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 constexpr auto GetOffset(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
@@ -629,8 +629,8 @@ constexpr auto GetOffset(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
 }
 
 /// @brief Sets the rectangle's x and y offset.
-/// @note This function is only available from name lookup for objects having a member function of
-///   this same name and accepting the given value.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member function of this same name and accepting the given value.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto SetOffset(Compositor<P1, P2, P3, P4, P5, P6>& arg, decltype(arg.GetOffset()) value)
@@ -640,8 +640,8 @@ auto SetOffset(Compositor<P1, P2, P3, P4, P5, P6>& arg, decltype(arg.GetOffset()
 }
 
 /// @brief Gets the "child" count for the given shape configuration.
-/// @note This function is only available from name lookup for objects having a member function of
-///   this same name.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member function of this same name.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 constexpr auto GetChildCount(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
@@ -651,8 +651,8 @@ constexpr auto GetChildCount(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noex
 }
 
 /// @brief Gets the "child" shape for the given shape configuration.
-/// @note This function is only available from name lookup for objects having a member function of
-///   this same name.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member function of this same name.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto GetChild(const Compositor<P1, P2, P3, P4, P5, P6>& arg,
@@ -663,8 +663,8 @@ auto GetChild(const Compositor<P1, P2, P3, P4, P5, P6>& arg,
 }
 
 /// @brief Gets the density of the given shape configuration.
-/// @note This function is only available from name lookup for objects having a member variable of
-///   this same name.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member variable of this same name.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 constexpr auto GetDensity(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
@@ -674,8 +674,8 @@ constexpr auto GetDensity(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcep
 }
 
 /// @brief Gets the restitution of the given shape configuration.
-/// @note This function is only available from name lookup for objects having a member variable of
-///   this same name.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member variable of this same name.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 constexpr auto GetRestitution(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
@@ -685,8 +685,8 @@ constexpr auto GetRestitution(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noe
 }
 
 /// @brief Gets the friction of the given shape configuration.
-/// @note This function is only available from name lookup for objects having a member variable of
-///   this same name.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member variable of this same name.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 constexpr auto GetFriction(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
@@ -696,8 +696,8 @@ constexpr auto GetFriction(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexce
 }
 
 /// @brief Gets the filter of the given shape configuration.
-/// @note This function is only available from name lookup for objects having a member variable of
-///   this same name.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member variable of this same name.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 constexpr auto GetFilter(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
@@ -707,8 +707,8 @@ constexpr auto GetFilter(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
 }
 
 /// @brief Gets the is-sensor state of the given shape configuration.
-/// @note This function is only available from name lookup for objects having a member variable of
-///   this same name.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member variable of this same name.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 constexpr auto IsSensor(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
@@ -718,8 +718,8 @@ constexpr auto IsSensor(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
-/// @note This function is only available from name lookup for objects having a member function of
-///   this same name.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member function of this same name.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 constexpr auto GetVertexRadius(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept(
@@ -729,8 +729,8 @@ constexpr auto GetVertexRadius(const Compositor<P1, P2, P3, P4, P5, P6>& arg) no
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
-/// @note This function is only available from name lookup for objects having a member function of
-///   this same name.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member function of this same name.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto GetVertexRadius(const Compositor<P1, P2, P3, P4, P5, P6>& arg,
@@ -741,8 +741,8 @@ auto GetVertexRadius(const Compositor<P1, P2, P3, P4, P5, P6>& arg,
 }
 
 /// @brief Gets the mass data for the given shape configuration.
-/// @note This function is only available from name lookup for objects having a member function of
-///   this same name.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member function of this same name.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto GetMassData(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
@@ -752,8 +752,8 @@ auto GetMassData(const Compositor<P1, P2, P3, P4, P5, P6>& arg) noexcept
 }
 
 /// @brief Translates the given compositor's vertices by the given value.
-/// @note This function is only available from name lookup for objects having a member function of
-///   this same name and accepting the given value.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member function of this same name and accepting the given value.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6, std::size_t N>
 auto Translate(Compositor<P1, P2, P3, P4, P5, P6>& arg, const Vector<Length, N>& value)
@@ -763,8 +763,8 @@ auto Translate(Compositor<P1, P2, P3, P4, P5, P6>& arg, const Vector<Length, N>&
 }
 
 /// @brief Scales the given compositor's vertices by the given value.
-/// @note This function is only available from name lookup for objects having a member function of
-///   this same name and accepting the given value.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member function of this same name and accepting the given value.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6, std::size_t N>
 auto Scale(Compositor<P1, P2, P3, P4, P5, P6>& arg, const Vector<Real, N>& value)
@@ -774,8 +774,8 @@ auto Scale(Compositor<P1, P2, P3, P4, P5, P6>& arg, const Vector<Real, N>& value
 }
 
 /// @brief Rotates the given compositor's vertices by the given value.
-/// @note This function is only available from name lookup for objects having a member function of
-///   this same name and accepting the given value.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member function of this same name and accepting the given value.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto Rotate(Compositor<P1, P2, P3, P4, P5, P6>& arg, ::playrho::d2::UnitVec value)
@@ -785,8 +785,8 @@ auto Rotate(Compositor<P1, P2, P3, P4, P5, P6>& arg, ::playrho::d2::UnitVec valu
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
-/// @note This function is only available from name lookup for objects having a member function of
-///   this same name and accepting the given index and value.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member function of this same name and accepting the given index and value.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto SetVertexRadius(Compositor<P1, P2, P3, P4, P5, P6>& arg, ChildCounter index,
@@ -797,8 +797,8 @@ auto SetVertexRadius(Compositor<P1, P2, P3, P4, P5, P6>& arg, ChildCounter index
 }
 
 /// @brief Density setter.
-/// @note This function is only available from name lookup for objects having a member variable of
-///   this same name and accepting the given value.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member variable of this same name and accepting the given value.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto SetDensity(Compositor<P1, P2, P3, P4, P5, P6>& arg, NonNegative<AreaDensity> value)
@@ -808,8 +808,8 @@ auto SetDensity(Compositor<P1, P2, P3, P4, P5, P6>& arg, NonNegative<AreaDensity
 }
 
 /// @brief Filter setter.
-/// @note This function is only available from name lookup for objects having a member variable of
-///   this same name and accepting the given value.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member variable of this same name and accepting the given value.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto SetFilter(Compositor<P1, P2, P3, P4, P5, P6>& arg, Filter value)
@@ -819,8 +819,8 @@ auto SetFilter(Compositor<P1, P2, P3, P4, P5, P6>& arg, Filter value)
 }
 
 /// @brief Sensor setter.
-/// @note This function is only available from name lookup for objects having a member variable of
-///   this same name and accepting the given value.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member variable of this same name and accepting the given value.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto SetSensor(Compositor<P1, P2, P3, P4, P5, P6>& arg, bool value)
@@ -830,8 +830,8 @@ auto SetSensor(Compositor<P1, P2, P3, P4, P5, P6>& arg, bool value)
 }
 
 /// @brief Sets friction.
-/// @note This function is only available from name lookup for objects having a member variable of
-///   this same name and accepting the given value.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member variable of this same name and accepting the given value.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto SetFriction(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
@@ -841,8 +841,8 @@ auto SetFriction(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
 }
 
 /// @brief Sets restitution.
-/// @note This function is only available from name lookup for objects having a member variable of
-///   this same name and accepting the given value.
+/// @note By way of SFINAE, this function is only available from overload resolution for objects
+/// having a member variable of this same name and accepting the given value.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
 auto SetRestitution(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
