@@ -37,7 +37,7 @@ class Test;
 template <class U>
 std::unique_ptr<Test> MakeUniqueTest()
 {
-    return std::unique_ptr<Test>(std::make_unique<U>());
+    return std::make_unique<U>();
 }
 
 /// @brief A name and function pointer dataset for a test entry.
