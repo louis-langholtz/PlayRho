@@ -22,6 +22,8 @@
 #ifndef IFORCE2D_TRAJECTORIES_HPP
 #define IFORCE2D_TRAJECTORIES_HPP
 
+#include "../Framework/Test.hpp"
+
 namespace testbed {
 
 /// @brief iforce2d's Trajectories demo.
