@@ -17,9 +17,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_CONFINED_HPP
-#define PLAYRHO_CONFINED_HPP
-
 #include "../Framework/Test.hpp"
 #include <sstream>
 
@@ -190,5 +187,3 @@ public:
 };
 
 } // namespace testbed
-
-#endif

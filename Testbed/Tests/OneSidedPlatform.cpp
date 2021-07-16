@@ -17,9 +17,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_ONE_SIDED_PLATFORM_HPP
-#define PLAYRHO_ONE_SIDED_PLATFORM_HPP
-
 #include "../Framework/Test.hpp"
 
 namespace testbed {
@@ -106,5 +103,3 @@ public:
 };
 
 } // namespace testbed
-
-#endif

@@ -17,9 +17,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DISTANCE_TEST_HPP
-#define PLAYRHO_DISTANCE_TEST_HPP
-
 #include "../Framework/Test.hpp"
 
 #include <sstream>
@@ -469,5 +466,3 @@ private:
 };
 
 } // namespace testbed
-
-#endif

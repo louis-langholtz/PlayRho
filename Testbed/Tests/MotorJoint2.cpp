@@ -19,9 +19,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_TESTS_MOTOR_JOINT2_HPP
-#define PLAYRHO_TESTS_MOTOR_JOINT2_HPP
-
 #include "../Framework/Test.hpp"
 
 #include <utility>
@@ -119,5 +116,3 @@ public:
 };
 
 } // namespace testbed
-
-#endif // PLAYRHO_TESTS_MOTOR_JOINT2_HPP

@@ -16,9 +16,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_HALF_PIPE_HPP
-#define PLAYRHO_HALF_PIPE_HPP
-
 #include "../Framework/Test.hpp"
 
 namespace testbed {
@@ -47,6 +44,5 @@ public:
                    DiskShapeConf{}.UseDensity(0.01_kgpm2).UseRadius(1_m).UseFriction(Real(1))));
     }
 };
-} // namespace testbed
 
-#endif /* PLAYRHO_HALF_PIPE_HPP */
+} // namespace testbed

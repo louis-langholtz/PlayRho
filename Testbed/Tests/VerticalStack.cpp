@@ -17,10 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_VERTICAL_STACK_HPP
-#define PLAYRHO_VERTICAL_STACK_HPP
-
 #include "../Framework/Test.hpp"
+
 #include <array>
 
 namespace testbed {
@@ -99,5 +97,3 @@ public:
 };
 
 } // namespace testbed
-
-#endif

@@ -18,9 +18,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_BAG_OF_DISKS_HPP
-#define PLAYRHO_BAG_OF_DISKS_HPP
-
 #include "../Framework/Test.hpp"
 
 #include <optional>
@@ -128,5 +125,3 @@ private:
 };
 
 } // namespace testbed
-
-#endif /* PLAYRHO_BAG_OF_DISKS_HPP */

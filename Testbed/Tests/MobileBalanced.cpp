@@ -17,9 +17,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_MOBILE_BALANCED_HPP
-#define PLAYRHO_MOBILE_BALANCED_HPP
-
 #include "../Framework/Test.hpp"
 
 namespace testbed {
@@ -95,5 +92,3 @@ public:
 };
 
 } // namespace testbed
-
-#endif

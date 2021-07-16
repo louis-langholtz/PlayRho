@@ -17,9 +17,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_CONVEYOR_BELT_HPP
-#define PLAYRHO_CONVEYOR_BELT_HPP
-
 #include "../Framework/Test.hpp"
 
 namespace testbed {
@@ -83,5 +80,3 @@ public:
 };
 
 } // namespace testbed
-
-#endif

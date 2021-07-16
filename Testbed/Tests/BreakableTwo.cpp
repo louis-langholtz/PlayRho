@@ -18,9 +18,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef BreakableTwo_hpp
-#define BreakableTwo_hpp
-
 #include "../Framework/Test.hpp"
 
 namespace testbed {
@@ -106,5 +103,3 @@ private:
 };
 
 } // namespace testbed
-
-#endif /* BreakableTwo_hpp */

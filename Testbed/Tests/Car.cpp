@@ -17,10 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_CAR_HPP
-#define PLAYRHO_CAR_HPP
-
 #include "../Framework/Test.hpp"
+
 #include <sstream>
 
 namespace testbed {
@@ -251,5 +249,3 @@ public:
 };
 
 } // namespace testbed
-
-#endif

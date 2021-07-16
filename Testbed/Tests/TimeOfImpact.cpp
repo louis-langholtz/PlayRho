@@ -17,9 +17,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_TESTS_TIME_OF_IMPACT_HPP
-#define PLAYRHO_TESTS_TIME_OF_IMPACT_HPP
-
 #include "../Framework/Test.hpp"
 
 #include <PlayRho/Collision/TimeOfImpact.hpp>
@@ -114,5 +111,3 @@ public:
 };
 
 } // namespace testbed
-
-#endif /* PLAYRHO_TESTS_TIME_OF_IMPACT_HPP */

@@ -17,9 +17,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_VARYING_RESTITUTION_HPP
-#define PLAYRHO_VARYING_RESTITUTION_HPP
-
 #include "../Framework/Test.hpp"
 
 namespace testbed {
@@ -51,5 +48,3 @@ public:
 };
 
 } // namespace testbed
-
-#endif

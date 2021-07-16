@@ -17,9 +17,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_SPHERE_STACK_HPP
-#define PLAYRHO_SPHERE_STACK_HPP
-
 #include "../Framework/Test.hpp"
 
 namespace testbed {
@@ -52,5 +49,3 @@ public:
 };
 
 } // namespace testbed
-
-#endif

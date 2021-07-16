@@ -20,9 +20,6 @@
 // Inspired by a contribution by roman_m
 // Dimensions scooped from APE (http://www.cove.org/ape/index.htm)
 
-#ifndef THEO_JANSEN_HPP
-#define THEO_JANSEN_HPP
-
 #include "../Framework/Test.hpp"
 
 namespace testbed {
@@ -206,5 +203,3 @@ public:
 };
 
 } // namespace testbed
-
-#endif // THEO_JANSEN_HPP

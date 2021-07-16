@@ -18,9 +18,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef FifteenPuzzle_hpp
-#define FifteenPuzzle_hpp
-
 #include "../Framework/Test.hpp"
 
 namespace testbed {
@@ -93,5 +90,3 @@ public:
 };
 
 } // namespace testbed
-
-#endif /* FifteenPuzzle_hpp */

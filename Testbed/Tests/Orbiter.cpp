@@ -16,9 +16,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_ORBITER_HPP
-#define PLAYRHO_ORBITER_HPP
-
 #include "../Framework/Test.hpp"
 
 namespace testbed {
@@ -90,5 +87,3 @@ private:
 };
 
 } // namespace testbed
-
-#endif /* PLAYRHO_ORBITER_HPP */

@@ -18,9 +18,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef SolarSystem_hpp
-#define SolarSystem_hpp
-
 #include "../Framework/Test.hpp"
 
 namespace testbed {
@@ -178,5 +175,3 @@ public:
 };
 
 } // namespace testbed
-
-#endif /* SolarSystem_hpp */

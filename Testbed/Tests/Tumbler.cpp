@@ -17,9 +17,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_TUMBLER_HPP
-#define PLAYRHO_TUMBLER_HPP
-
 #include "../Framework/Test.hpp"
 
 #include <sstream> // for std::ostringstream
@@ -190,5 +187,3 @@ public:
 };
 
 } // namespace testbed
-
-#endif

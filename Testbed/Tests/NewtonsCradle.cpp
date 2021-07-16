@@ -18,9 +18,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_NEWTONS_CRADLE_HPP
-#define PLAYRHO_NEWTONS_CRADLE_HPP
-
 #include "../Framework/Test.hpp"
 
 namespace testbed {
@@ -263,5 +260,3 @@ public:
 };
 
 } // namespace testbed
-
-#endif /* PLAYRHO_NEWTONS_CRADLE_HPP */

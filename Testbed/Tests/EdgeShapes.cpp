@@ -17,9 +17,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_EDGE_SHAPES_HPP
-#define PLAYRHO_EDGE_SHAPES_HPP
-
 #include "../Framework/Test.hpp"
 
 #include <algorithm>
@@ -181,5 +178,3 @@ public:
 };
 
 } // namespace testbed
-
-#endif

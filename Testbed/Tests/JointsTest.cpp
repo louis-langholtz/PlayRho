@@ -18,9 +18,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef JointsTest_hpp
-#define JointsTest_hpp
-
 #include "../Framework/Test.hpp"
 
 namespace testbed {
@@ -463,5 +460,3 @@ private:
 };
 
 } // namespace testbed
-
-#endif // JointsTest_hpp

@@ -17,9 +17,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_VARYING_FRICTION_HPP
-#define PLAYRHO_VARYING_FRICTION_HPP
-
 #include "../Framework/Test.hpp"
 
 namespace testbed {
@@ -65,5 +62,3 @@ public:
 };
 
 } // namespace testbed
-
-#endif

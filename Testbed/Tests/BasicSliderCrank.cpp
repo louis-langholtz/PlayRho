@@ -17,9 +17,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_BASIC_SLIDER_CRANK_HPP
-#define PLAYRHO_BASIC_SLIDER_CRANK_HPP
-
 #include "../Framework/Test.hpp"
 
 namespace testbed {
@@ -87,5 +84,3 @@ public:
 };
 
 } // namespace testbed
-
-#endif
