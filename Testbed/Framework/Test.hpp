@@ -491,7 +491,7 @@ std::unique_ptr<Test> MakeUniqueTest()
     return std::make_unique<U>();
 }
 
-bool RegisterTest(const char *name, std::unique_ptr<Test> (*creator)());
+bool RegisterTest(const std::string& name, std::unique_ptr<Test> (*creator)());
 
 std::map<std::string, std::unique_ptr<Test> (*)()> GetRegisteredTestMap();
 
