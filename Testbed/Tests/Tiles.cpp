@@ -19,6 +19,8 @@
 
 #include "../Framework/Test.hpp"
 
+#include <sstream> // for std::stringstream
+
 namespace testbed {
 
 /// This stress tests the dynamic tree broad-phase. This also shows that tile

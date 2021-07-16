@@ -19,6 +19,8 @@
 
 #include "../Framework/Test.hpp"
 
+#include <sstream> // for std::stringstream
+
 namespace testbed {
 
 /// This test shows how a rope joint can be used to stabilize a chain of

@@ -20,6 +20,8 @@
 
 #include "../Framework/Test.hpp"
 
+#include <sstream> // for std::ostringstream
+
 namespace testbed {
 
 /// @brief Solar system demo.

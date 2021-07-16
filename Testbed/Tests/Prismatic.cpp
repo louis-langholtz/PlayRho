@@ -19,6 +19,8 @@
 
 #include "../Framework/Test.hpp"
 
+#include <sstream> // for std::stringstream
+
 namespace testbed {
 
 // The motor in this test gets smoother with higher velocity iterations.

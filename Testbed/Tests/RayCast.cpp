@@ -20,6 +20,7 @@
 #include "../Framework/Test.hpp"
 
 #include <cstring>
+#include <sstream> // for std::stringstream
 #include <vector>
 
 // This test demonstrates how to use the world ray-cast feature.

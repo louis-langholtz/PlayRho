@@ -19,7 +19,7 @@
 
 #include "../Framework/Test.hpp"
 
-#include <sstream>
+#include <sstream> // for std::stringstream
 #include <utility>
 
 namespace testbed {

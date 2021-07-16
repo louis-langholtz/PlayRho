@@ -19,6 +19,8 @@
 
 #include "../Framework/Test.hpp"
 
+#include <sstream> // for std::stringstream
+
 namespace testbed {
 
 // A motor driven slider crank with joint friction.

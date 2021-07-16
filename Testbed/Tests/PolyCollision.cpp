@@ -18,6 +18,8 @@
  */
 
 #include "../Framework/Test.hpp"
+
+#include <sstream> // for std::stringstream
 #include <vector>
 
 namespace testbed {
