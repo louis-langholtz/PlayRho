@@ -29,7 +29,7 @@
 #include <cstdio>
 #include <cstdarg>
 #include <cstdlib>
-#include <sstream>
+#include <sstream> // for std::stringstream
 
 namespace playrho {
 
