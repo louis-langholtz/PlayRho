@@ -25,7 +25,8 @@ namespace testbed {
 class BasicSliderCrank : public Test
 {
 public:
-    static inline const auto registered = RegisterTest("Basic Slider Crank", MakeUniqueTest<BasicSliderCrank>);
+    static inline const auto registered =
+        RegisterTest("Basic Slider Crank", MakeUniqueTest<BasicSliderCrank>);
 
     BasicSliderCrank()
     {

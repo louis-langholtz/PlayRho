@@ -24,7 +24,8 @@ namespace testbed {
 class MobileBalanced : public Test
 {
 public:
-    static inline const auto registered = RegisterTest("Mobile Balanced", MakeUniqueTest<MobileBalanced>);
+    static inline const auto registered =
+        RegisterTest("Mobile Balanced", MakeUniqueTest<MobileBalanced>);
     static constexpr int MaxDepth = 4;
 
     const AreaDensity density = 20_kgpm2;

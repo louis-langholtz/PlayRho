@@ -28,7 +28,8 @@ namespace testbed {
 class TimeOfImpactTest : public Test
 {
 public:
-    static inline const auto registered = RegisterTest("Time of Impact", MakeUniqueTest<TimeOfImpactTest>);
+    static inline const auto registered =
+        RegisterTest("Time of Impact", MakeUniqueTest<TimeOfImpactTest>);
 
     TimeOfImpactTest() {}
 

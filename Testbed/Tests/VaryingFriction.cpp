@@ -24,7 +24,8 @@ namespace testbed {
 class VaryingFriction : public Test
 {
 public:
-    static inline const auto registered = RegisterTest("Varying Friction", MakeUniqueTest<VaryingFriction>);
+    static inline const auto registered =
+        RegisterTest("Varying Friction", MakeUniqueTest<VaryingFriction>);
 
     VaryingFriction()
     {

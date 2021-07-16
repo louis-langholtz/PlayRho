@@ -24,7 +24,8 @@ namespace testbed {
 class ConveyorBelt : public Test
 {
 public:
-    static inline const auto registered = RegisterTest("Conveyor Belt", MakeUniqueTest<ConveyorBelt>);
+    static inline const auto registered =
+        RegisterTest("Conveyor Belt", MakeUniqueTest<ConveyorBelt>);
 
     ConveyorBelt()
     {

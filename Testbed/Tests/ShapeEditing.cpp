@@ -24,7 +24,8 @@ namespace testbed {
 class ShapeEditing : public Test
 {
 public:
-    static inline const auto registered = RegisterTest("Shape Editing", MakeUniqueTest<ShapeEditing>);
+    static inline const auto registered =
+        RegisterTest("Shape Editing", MakeUniqueTest<ShapeEditing>);
 
     ShapeEditing()
     {

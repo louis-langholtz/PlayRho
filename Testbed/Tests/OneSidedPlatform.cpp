@@ -24,7 +24,8 @@ namespace testbed {
 class OneSidedPlatform : public Test
 {
 public:
-    static inline const auto registered = RegisterTest("One-Sided Platform", MakeUniqueTest<OneSidedPlatform>);
+    static inline const auto registered =
+        RegisterTest("One-Sided Platform", MakeUniqueTest<OneSidedPlatform>);
     enum State { e_unknown, e_above, e_below };
 
     OneSidedPlatform()

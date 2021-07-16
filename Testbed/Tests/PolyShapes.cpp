@@ -28,7 +28,8 @@ namespace testbed {
 class PolyShapes : public Test
 {
 public:
-    static inline const auto registered = RegisterTest("Polygon Shapes", MakeUniqueTest<PolyShapes>);
+    static inline const auto registered =
+        RegisterTest("Polygon Shapes", MakeUniqueTest<PolyShapes>);
     enum { e_maxBodies = 256 };
 
     PolyShapes()

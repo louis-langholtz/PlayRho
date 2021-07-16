@@ -26,7 +26,8 @@ namespace testbed {
 class VerticalStack : public Test
 {
 public:
-    static inline const auto registered = RegisterTest("Vertical Stack", MakeUniqueTest<VerticalStack>);
+    static inline const auto registered =
+        RegisterTest("Vertical Stack", MakeUniqueTest<VerticalStack>);
 
     enum {
         e_columnCount = 5,

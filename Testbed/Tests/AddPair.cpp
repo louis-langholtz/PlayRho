@@ -24,7 +24,8 @@ namespace testbed {
 class AddPair : public Test
 {
 public:
-    static inline const auto registered = RegisterTest("Add Pair Stress Test", MakeUniqueTest<AddPair>);
+    static inline const auto registered =
+        RegisterTest("Add Pair Stress Test", MakeUniqueTest<AddPair>);
 
     static Test::Conf GetTestConf()
     {

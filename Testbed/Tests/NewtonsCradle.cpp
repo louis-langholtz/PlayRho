@@ -30,7 +30,8 @@ namespace testbed {
 class NewtonsCradle : public Test
 {
 public:
-    static inline const auto registered = RegisterTest("Newton's Cradle", MakeUniqueTest<NewtonsCradle>);
+    static inline const auto registered =
+        RegisterTest("Newton's Cradle", MakeUniqueTest<NewtonsCradle>);
 
     static Test::Conf GetTestConf()
     {

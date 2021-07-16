@@ -23,7 +23,8 @@ namespace testbed {
 class Orbiter : public Test
 {
 public:
-    static inline const auto registered = RegisterTest("Encircled Orbiter", MakeUniqueTest<Orbiter>);
+    static inline const auto registered =
+        RegisterTest("Encircled Orbiter", MakeUniqueTest<Orbiter>);
 
     static Test::Conf GetTestConf()
     {

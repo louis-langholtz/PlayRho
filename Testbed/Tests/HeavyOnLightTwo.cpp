@@ -26,7 +26,8 @@ namespace testbed {
 class HeavyOnLightTwo : public Test
 {
 public:
-    static inline const auto registered = RegisterTest("Heavy On Light Two", MakeUniqueTest<HeavyOnLightTwo>);
+    static inline const auto registered =
+        RegisterTest("Heavy On Light Two", MakeUniqueTest<HeavyOnLightTwo>);
 
     HeavyOnLightTwo()
     {

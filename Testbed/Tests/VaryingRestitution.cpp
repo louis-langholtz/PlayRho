@@ -26,7 +26,8 @@ namespace testbed {
 class VaryingRestitution : public Test
 {
 public:
-    static inline const auto registered = RegisterTest("Varying Restitution", MakeUniqueTest<VaryingRestitution>);
+    static inline const auto registered =
+        RegisterTest("Varying Restitution", MakeUniqueTest<VaryingRestitution>);
 
     VaryingRestitution()
     {

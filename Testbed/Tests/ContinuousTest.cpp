@@ -24,7 +24,8 @@ namespace testbed {
 class ContinuousTest : public Test
 {
 public:
-    static inline const auto registered = RegisterTest("Continuous Test", MakeUniqueTest<ContinuousTest>);
+    static inline const auto registered =
+        RegisterTest("Continuous Test", MakeUniqueTest<ContinuousTest>);
 
     ContinuousTest()
     {

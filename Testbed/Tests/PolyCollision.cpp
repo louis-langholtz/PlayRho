@@ -25,7 +25,8 @@ namespace testbed {
 class PolyCollision : public Test
 {
 public:
-    static inline const auto registered = RegisterTest("PolyCollision", MakeUniqueTest<PolyCollision>);
+    static inline const auto registered =
+        RegisterTest("PolyCollision", MakeUniqueTest<PolyCollision>);
 
     PolyCollision()
     {

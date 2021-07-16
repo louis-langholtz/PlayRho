@@ -27,7 +27,8 @@ namespace testbed {
 class FifteenPuzzle : public Test
 {
 public:
-    static inline const auto registered = RegisterTest("Fifteen Puzzle", MakeUniqueTest<FifteenPuzzle>);
+    static inline const auto registered =
+        RegisterTest("Fifteen Puzzle", MakeUniqueTest<FifteenPuzzle>);
 
     static Test::Conf GetTestConf()
     {

@@ -29,7 +29,8 @@ namespace testbed {
 class iforce2d_Trajectories : public Test
 {
 public:
-    static inline const auto registered = RegisterTest("Trajectories", MakeUniqueTest<iforce2d_Trajectories>);
+    static inline const auto registered =
+        RegisterTest("Trajectories", MakeUniqueTest<iforce2d_Trajectories>);
 
     static Test::Conf GetTestConf()
     {
