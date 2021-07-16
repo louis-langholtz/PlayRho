@@ -30,6 +30,8 @@ namespace testbed {
 class CollisionProcessing : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Collision Processing", MakeUniqueTest<CollisionProcessing>);
+
     CollisionProcessing()
     {
         // Ground body

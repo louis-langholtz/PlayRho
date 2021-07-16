@@ -27,6 +27,8 @@ namespace testbed {
 class EdgeTest : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Edge Test", MakeUniqueTest<EdgeTest>);
+
     EdgeTest()
     {
         {

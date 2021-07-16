@@ -26,6 +26,7 @@ namespace testbed {
 class SpinningCircle : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Spinning Circles", MakeUniqueTest<SpinningCircle>);
     enum { e_count = 10 };
 
     SpinningCircle()

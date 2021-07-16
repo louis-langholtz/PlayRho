@@ -30,6 +30,8 @@ namespace testbed {
 class TheoJansen : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Theo Jansen's Walker", MakeUniqueTest<TheoJansen>);
+
     void CreateLeg(Real s, const Length2 wheelAnchor)
     {
         const auto p1 = Vec2(5.4f * s, -6.1f) * 1_m;

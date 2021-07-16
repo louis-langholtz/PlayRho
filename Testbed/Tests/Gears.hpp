@@ -27,6 +27,8 @@ namespace testbed {
 class Gears : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Gears", MakeUniqueTest<Gears>);
+
     Gears()
     {
         const auto ground = CreateBody(GetWorld());

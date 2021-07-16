@@ -45,6 +45,8 @@ const Filter::bits_type k_circleMask = 0xFFFF;
 class CollisionFiltering : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Collision Filtering", MakeUniqueTest<CollisionFiltering>);
+
     CollisionFiltering()
     {
         // Ground body

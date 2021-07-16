@@ -27,6 +27,7 @@ namespace testbed {
 class Pyramid : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Pyramid", MakeUniqueTest<Pyramid>);
     enum { e_count = 20 };
 
     Pyramid()

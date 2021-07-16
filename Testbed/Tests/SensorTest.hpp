@@ -30,6 +30,7 @@ namespace testbed {
 class SensorTest : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Sensor Test", MakeUniqueTest<SensorTest>);
     enum { e_count = 7 };
 
     SensorTest()

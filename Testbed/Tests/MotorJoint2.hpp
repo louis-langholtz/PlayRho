@@ -36,6 +36,8 @@ namespace testbed {
 class MotorJoint2 : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Motor Joint Two", MakeUniqueTest<MotorJoint2>);
+
     static Test::Conf GetTestConf()
     {
         auto conf = Test::Conf{};

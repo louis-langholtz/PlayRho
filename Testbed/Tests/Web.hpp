@@ -28,6 +28,8 @@ namespace testbed {
 class Web : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Web", MakeUniqueTest<Web>);
+
     static Test::Conf GetTestConf()
     {
         auto conf = Test::Conf{};

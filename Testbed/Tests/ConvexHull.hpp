@@ -28,6 +28,7 @@ namespace testbed {
 class ConvexHullTest : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Convex Hull", MakeUniqueTest<ConvexHullTest>);
     enum : std::size_t { e_count = 16 };
     static constexpr auto yOffset = 20.0f;
 

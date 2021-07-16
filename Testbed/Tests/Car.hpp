@@ -29,6 +29,8 @@ namespace testbed {
 class Car : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Car", MakeUniqueTest<Car>);
+
     Car()
     {
         const auto motorSpeed = 50_rad / 1_s;

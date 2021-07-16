@@ -27,6 +27,8 @@ namespace testbed {
 class ConveyorBelt : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Conveyor Belt", MakeUniqueTest<ConveyorBelt>);
+
     ConveyorBelt()
     {
         SetPreSolveContactListener(GetWorld(), [this](ContactID id, const Manifold& manifold) {

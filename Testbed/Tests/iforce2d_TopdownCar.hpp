@@ -172,6 +172,8 @@ public:
 class iforce2d_TopdownCar : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Top-down Car", MakeUniqueTest<iforce2d_TopdownCar>);
+
     static Test::Conf GetTestConf()
     {
         auto conf = Test::Conf{};

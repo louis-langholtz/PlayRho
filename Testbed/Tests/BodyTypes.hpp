@@ -27,6 +27,8 @@ namespace testbed {
 class BodyTypes : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Body Types", MakeUniqueTest<BodyTypes>);
+
     BodyTypes()
     {
         const auto ground = CreateBody(GetWorld());

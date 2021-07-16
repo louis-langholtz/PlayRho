@@ -28,6 +28,8 @@ namespace testbed {
 class BasicSliderCrank : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Basic Slider Crank", MakeUniqueTest<BasicSliderCrank>);
+
     BasicSliderCrank()
     {
         const auto ground = CreateBody(GetWorld(), BodyConf{}.UseLocation(Vec2(0.0f, 17.0f) * 1_m));

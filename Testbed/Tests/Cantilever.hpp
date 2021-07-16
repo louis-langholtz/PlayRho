@@ -31,6 +31,7 @@ namespace testbed {
 class Cantilever : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Cantilever", MakeUniqueTest<Cantilever>);
     enum { e_count = 8 };
 
     Cantilever()

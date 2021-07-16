@@ -30,6 +30,8 @@ namespace testbed {
 class DistanceTest : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Distance Test", MakeUniqueTest<DistanceTest>);
+
     static Test::Conf GetTestConf()
     {
         auto conf = Test::Conf{};

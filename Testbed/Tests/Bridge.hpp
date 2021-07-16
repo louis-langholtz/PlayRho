@@ -27,6 +27,7 @@ namespace testbed {
 class Bridge : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Bridge", MakeUniqueTest<Bridge>);
     static constexpr auto Count = 30;
 
     Bridge()

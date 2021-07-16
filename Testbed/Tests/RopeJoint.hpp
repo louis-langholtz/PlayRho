@@ -35,6 +35,8 @@ namespace testbed {
 class RopeJointTest : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("RopeJoint", MakeUniqueTest<RopeJointTest>);
+
     RopeJointTest()
     {
         const auto ground = CreateBody(GetWorld());

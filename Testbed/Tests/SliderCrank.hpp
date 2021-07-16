@@ -28,6 +28,8 @@ namespace testbed {
 class SliderCrank : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Slider Crank", MakeUniqueTest<SliderCrank>);
+
     SliderCrank()
     {
         const auto ground = CreateBody(GetWorld());

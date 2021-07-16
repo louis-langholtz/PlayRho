@@ -29,17 +29,6 @@ namespace testbed {
 
 class Test;
 
-/// @brief Makes a unique test instance.
-///
-/// @details Makes a unique test instance that's wrapped in a std::unique_ptr<Test> data
-///   structure for managed use of memory for test intances.
-///
-template <class U>
-std::unique_ptr<Test> MakeUniqueTest()
-{
-    return std::make_unique<U>();
-}
-
 /// @brief A name and function pointer dataset for a test entry.
 ///
 struct TestEntry

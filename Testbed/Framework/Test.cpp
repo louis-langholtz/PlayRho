@@ -44,6 +44,7 @@ namespace testbed {
 namespace {
 
 constexpr auto RandLimit = 32767;
+static std::map<std::string, std::unique_ptr<Test> (*)()> testCreatorMap;
 
 void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, Color color)
 {
@@ -1343,6 +1344,17 @@ void Test::Query(const AABB& aabb, QueryShapeCallback callback)
 }
 
 // Exported free functions...
+
+bool RegisterTest(const char *name, std::unique_ptr<Test> (*creator)())
+{
+    testCreatorMap[name] = creator;
+    return true;
+}
+
+std::map<std::string, std::unique_ptr<Test> (*)()> GetRegisteredTestMap()
+{
+    return testCreatorMap;
+}
 
 Real RandomFloat()
 {

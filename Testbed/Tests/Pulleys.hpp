@@ -27,6 +27,8 @@ namespace testbed {
 class Pulleys : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Pulleys", MakeUniqueTest<Pulleys>);
+
     Pulleys()
     {
         const auto y = Real{16.0f};

@@ -34,8 +34,8 @@ namespace testbed {
 class RayCast : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Ray-Cast", MakeUniqueTest<RayCast>);
     enum { e_maxBodies = 256 };
-
     enum class Mode { e_closest, e_any, e_multiple };
 
     RayCast()

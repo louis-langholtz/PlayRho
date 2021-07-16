@@ -29,6 +29,8 @@ namespace testbed {
 class DumpShell : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Dump Shell", MakeUniqueTest<DumpShell>);
+
     DumpShell()
     {
         // Source code dump of Box scene: issue304-minimal-case.rube

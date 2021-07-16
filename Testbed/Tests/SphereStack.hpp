@@ -27,6 +27,7 @@ namespace testbed {
 class SphereStack : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Sphere Stack", MakeUniqueTest<SphereStack>);
     enum { e_count = 10 };
 
     SphereStack()

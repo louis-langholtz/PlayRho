@@ -31,6 +31,7 @@ namespace testbed {
 class BagOfDisks : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Bag of Disks", MakeUniqueTest<BagOfDisks>);
     static constexpr auto Count = 180;
 
     static Test::Conf GetTestConf()

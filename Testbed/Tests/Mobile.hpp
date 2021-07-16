@@ -27,6 +27,7 @@ namespace testbed {
 class Mobile : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Mobile", MakeUniqueTest<Mobile>);
     enum { e_depth = 4 };
 
     Mobile()

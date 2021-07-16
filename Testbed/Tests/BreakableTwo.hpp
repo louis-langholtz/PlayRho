@@ -28,6 +28,8 @@ namespace testbed {
 class BreakableTwo : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Breakable Two", MakeUniqueTest<BreakableTwo>);
+
     static Test::Conf GetTestConf()
     {
         auto conf = Test::Conf{};

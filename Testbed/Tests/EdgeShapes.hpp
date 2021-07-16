@@ -31,6 +31,7 @@ namespace testbed {
 class EdgeShapes : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Edge Shapes", MakeUniqueTest<EdgeShapes>);
     enum { e_maxBodies = 256 };
 
     EdgeShapes()

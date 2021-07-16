@@ -29,6 +29,8 @@ namespace testbed {
 class Pinball : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Pinball", MakeUniqueTest<Pinball>);
+
     Pinball()
     {
         // Ground body

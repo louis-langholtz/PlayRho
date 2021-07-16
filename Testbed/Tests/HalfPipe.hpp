@@ -26,6 +26,8 @@ namespace testbed {
 class HalfPipe : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Half Pipe", MakeUniqueTest<HalfPipe>);
+
     HalfPipe()
     {
         const auto pipeBody = CreateBody(GetWorld(), BodyConf{}.UseLocation(Vec2(0, 20) * 1_m));

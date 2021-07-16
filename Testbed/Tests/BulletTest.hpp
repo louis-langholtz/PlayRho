@@ -27,6 +27,8 @@ namespace testbed {
 class BulletTest : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Bullet Test", MakeUniqueTest<BulletTest>);
+
     BulletTest()
     {
         {

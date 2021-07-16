@@ -29,6 +29,8 @@ namespace testbed {
 class HeavyOnLightTwo : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Heavy On Light Two", MakeUniqueTest<HeavyOnLightTwo>);
+
     HeavyOnLightTwo()
     {
         const DiskShapeConf DiskConf = DiskShapeConf{}.UseDensity(10_kgpm2);

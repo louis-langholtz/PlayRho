@@ -27,6 +27,8 @@ namespace testbed {
 class ShapeEditing : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Shape Editing", MakeUniqueTest<ShapeEditing>);
+
     ShapeEditing()
     {
         Attach(GetWorld(), CreateBody(GetWorld()),

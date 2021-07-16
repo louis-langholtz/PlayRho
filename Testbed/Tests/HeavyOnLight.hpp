@@ -27,6 +27,8 @@ namespace testbed {
 class HeavyOnLight : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Heavy On Light", MakeUniqueTest<HeavyOnLight>);
+
     HeavyOnLight()
     {
         const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(GetGravity());

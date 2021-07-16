@@ -30,6 +30,7 @@ namespace testbed {
 class Tumbler : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Tumbler", MakeUniqueTest<Tumbler>);
     static constexpr auto Count = 1600;
     static constexpr auto MotorInc = 0.5_rpm;
 

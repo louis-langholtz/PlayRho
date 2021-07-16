@@ -29,6 +29,7 @@ namespace testbed {
 class Tiles : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Tiles", MakeUniqueTest<Tiles>);
     enum { e_count = 20 };
 
     Tiles()

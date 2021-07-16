@@ -30,6 +30,8 @@ namespace testbed {
 class CharacterCollision : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Character Collision", MakeUniqueTest<CharacterCollision>);
+
     static Test::Conf GetTestConf()
     {
         auto conf = Test::Conf{};

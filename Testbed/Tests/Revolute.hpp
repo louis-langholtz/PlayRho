@@ -27,6 +27,8 @@ namespace testbed {
 class Revolute : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Revolute", MakeUniqueTest<Revolute>);
+
     Revolute()
     {
         const auto ground = CreateBody(GetWorld());

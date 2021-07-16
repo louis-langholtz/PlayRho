@@ -30,6 +30,8 @@ namespace testbed {
 class Breakable : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Breakable", MakeUniqueTest<Breakable>);
+
     enum { e_count = 7 };
 
     static PolygonShapeConf GetShapeConf1() noexcept

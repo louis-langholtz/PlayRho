@@ -54,6 +54,8 @@ static const SolarSystemObject SolarSystemBodies[] = {
 class SolarSystem : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Solar System", MakeUniqueTest<SolarSystem>);
+
     static Test::Conf GetTestConf()
     {
         auto minRadius = std::numeric_limits<Length>::max();

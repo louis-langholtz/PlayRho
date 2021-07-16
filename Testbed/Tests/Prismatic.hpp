@@ -28,6 +28,8 @@ namespace testbed {
 class Prismatic : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Prismatic", MakeUniqueTest<Prismatic>);
+
     Prismatic()
     {
         const auto ground = CreateBody(GetWorld());

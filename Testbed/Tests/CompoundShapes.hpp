@@ -28,6 +28,8 @@ namespace testbed {
 class CompoundShapes : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Compound Shapes", MakeUniqueTest<CompoundShapes>);
+
     CompoundShapes()
     {
         Attach(GetWorld(), CreateBody(GetWorld()),

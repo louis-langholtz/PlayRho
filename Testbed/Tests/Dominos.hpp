@@ -27,6 +27,8 @@ namespace testbed {
 class Dominos : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Dominos", MakeUniqueTest<Dominos>);
+
     Dominos()
     {
         const auto b1 = CreateBody(GetWorld());

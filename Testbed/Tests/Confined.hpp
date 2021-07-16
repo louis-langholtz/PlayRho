@@ -28,6 +28,7 @@ namespace testbed {
 class Confined : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Confined", MakeUniqueTest<Confined>);
     const Length wall_length = DefaultLinearSlop * 80;
     const Length vertexRadiusIncrement = wall_length / Real{40};
 

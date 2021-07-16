@@ -27,6 +27,8 @@ namespace testbed {
 class ApplyForce : public Test
 {
 public:
+    static inline const auto registered = RegisterTest("Apply Force", MakeUniqueTest<ApplyForce>);
+
     ApplyForce()
     {
         SetGravity(LinearAcceleration2{});
