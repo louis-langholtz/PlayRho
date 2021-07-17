@@ -32,11 +32,13 @@
 namespace playrho {
 namespace d2 {
 
-/// @brief Polygon shape configuration.
-/// @details A convex polygon. The interior of the polygon is to the left of each edge.
-///   Polygons maximum number of vertices is defined by <code>MaxShapeVertices</code>.
-///   In most cases you should not need many vertices for a convex polygon.
+/// @brief An n-vertex convex polygon shaped part eligible for use with a <code>Shape</code>.
+/// @note The interior of the polygon geometry is to the left of each edge. The maximum number of
+/// vertices this can have is defined by <code>MaxShapeVertices</code>. If all you want is a
+/// rectangular part (that will only ever have 4-vertices) you may want to consider using a
+/// rectangular <code>::playrho::part::Compositor</code> instead.
 /// @image html convex_concave.gif
+/// @see Shape, ::playrho::part::Compositor.
 /// @ingroup PartsGroup
 class PolygonShapeConf : public ShapeBuilder<PolygonShapeConf>
 {
@@ -246,10 +248,16 @@ inline NonNegative<Length> GetVertexRadius(const PolygonShapeConf& arg, ChildCou
     return GetVertexRadius(arg);
 }
 
-/// @brief Sets the vertex radius of shape for the given index.
-inline void SetVertexRadius(PolygonShapeConf& arg, ChildCounter, NonNegative<Length> value)
+/// @brief Sets the vertex radius of the shape.
+inline void SetVertexRadius(PolygonShapeConf& arg, NonNegative<Length> value)
 {
     arg.vertexRadius = value;
+}
+
+/// @brief Sets the vertex radius of the shape for the given index.
+inline void SetVertexRadius(PolygonShapeConf& arg, ChildCounter, NonNegative<Length> value)
+{
+    SetVertexRadius(arg, value);
 }
 
 /// @brief Gets the mass data for the given shape configuration.

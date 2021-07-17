@@ -480,6 +480,21 @@ private:
 
 // Exported free functions...
 
+/// @brief Makes a unique test instance.
+///
+/// @details Makes a unique test instance that's wrapped in a std::unique_ptr<Test> data
+///   structure for managed use of memory for test instances.
+///
+template <class U>
+std::unique_ptr<Test> MakeUniqueTest()
+{
+    return std::make_unique<U>();
+}
+
+bool RegisterTest(const std::string& name, std::unique_ptr<Test> (*creator)());
+
+std::map<std::string, std::unique_ptr<Test> (*)()> GetRegisteredTestMap();
+
 /// Random number in range [-1,1]
 Real RandomFloat();
 

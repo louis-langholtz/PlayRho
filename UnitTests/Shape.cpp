@@ -52,7 +52,7 @@ TEST(Shape, Traits)
     EXPECT_TRUE(std::is_default_constructible<Shape>::value);
     EXPECT_TRUE(std::is_nothrow_default_constructible<Shape>::value);
     EXPECT_FALSE(std::is_trivially_default_constructible<Shape>::value);
-    
+
     // Construction with any 1 supporting argument should succeed...
     using X = DiskShapeConf;
     EXPECT_TRUE((std::is_constructible<Shape, X>::value));
@@ -71,11 +71,11 @@ TEST(Shape, Traits)
     EXPECT_TRUE(std::is_nothrow_copy_constructible<Shape>::value);
 #endif
     EXPECT_FALSE(std::is_trivially_copy_constructible<Shape>::value);
-    
+
     EXPECT_TRUE(std::is_move_constructible<Shape>::value);
     EXPECT_TRUE(std::is_nothrow_move_constructible<Shape>::value);
     EXPECT_FALSE(std::is_trivially_move_constructible<Shape>::value);
-    
+
     EXPECT_TRUE(std::is_copy_assignable<Shape>::value);
 #if SHAPE_USES_UNIQUE_PTR
     EXPECT_FALSE(std::is_nothrow_copy_assignable<Shape>::value);
@@ -83,11 +83,11 @@ TEST(Shape, Traits)
     EXPECT_TRUE(std::is_nothrow_copy_assignable<Shape>::value);
 #endif
     EXPECT_FALSE(std::is_trivially_copy_assignable<Shape>::value);
-    
+
     EXPECT_TRUE(std::is_move_assignable<Shape>::value);
     EXPECT_TRUE(std::is_nothrow_move_assignable<Shape>::value);
     EXPECT_FALSE(std::is_trivially_move_assignable<Shape>::value);
-    
+
     EXPECT_TRUE(std::is_destructible<Shape>::value);
     EXPECT_TRUE(std::is_nothrow_destructible<Shape>::value);
     EXPECT_FALSE(std::is_trivially_destructible<Shape>::value);
@@ -127,12 +127,10 @@ struct ShapeTest {
     return 1u;
 }
 
-[[maybe_unused]] void Translate(ShapeTest&, const Length2&)
-{
-}
+[[maybe_unused]] void Translate(ShapeTest&, const Length2&) {}
 
 } // namespace
-} // namespace sans_none
+} // namespace sans_some
 
 TEST(Shape, InitializingConstructor)
 {
@@ -261,15 +259,12 @@ TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
     std::chrono::duration<double> elapsed_test_overlap;
     std::chrono::duration<double> elapsed_collide_shapes;
 
-    for (auto attempt = 0u; attempt < 2u; ++attempt)
-    {
+    for (auto attempt = 0u; attempt < 2u; ++attempt) {
         {
             auto count = 0u;
             const auto start = std::chrono::high_resolution_clock::now();
-            for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
-            {
-                if (TestOverlap(child, xfm, child, xfm) >= 0_m2)
-                {
+            for (auto i = decltype(maxloops){0}; i < maxloops; ++i) {
+                if (TestOverlap(child, xfm, child, xfm) >= 0_m2) {
                     ++count;
                 }
             }
@@ -280,11 +275,9 @@ TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
         {
             auto count = 0u;
             const auto start = std::chrono::high_resolution_clock::now();
-            for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
-            {
+            for (auto i = decltype(maxloops){0}; i < maxloops; ++i) {
                 const auto manifold = CollideShapes(child, xfm, child, xfm);
-                if (manifold.GetPointCount() > 0)
-                {
+                if (manifold.GetPointCount() > 0) {
                     ++count;
                 }
             }
@@ -292,7 +285,7 @@ TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
             elapsed_collide_shapes = end - start;
             ASSERT_EQ(count, maxloops);
         }
-        
+
         EXPECT_GT(elapsed_test_overlap.count(), elapsed_collide_shapes.count());
     }
 }
@@ -304,19 +297,16 @@ TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
     const auto child = GetChild(shape, 0);
 
     const auto maxloops = 1000000u;
-    
+
     std::chrono::duration<double> elapsed_test_overlap;
     std::chrono::duration<double> elapsed_collide_shapes;
-    
-    for (auto attempt = 0u; attempt < 2u; ++attempt)
-    {
+
+    for (auto attempt = 0u; attempt < 2u; ++attempt) {
         {
             auto count = 0u;
             const auto start = std::chrono::high_resolution_clock::now();
-            for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
-            {
-                if (TestOverlap(child, xfm, child, xfm) >= 0_m2)
-                {
+            for (auto i = decltype(maxloops){0}; i < maxloops; ++i) {
+                if (TestOverlap(child, xfm, child, xfm) >= 0_m2) {
                     ++count;
                 }
             }
@@ -327,11 +317,9 @@ TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
         {
             auto count = 0u;
             const auto start = std::chrono::high_resolution_clock::now();
-            for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
-            {
+            for (auto i = decltype(maxloops){0}; i < maxloops; ++i) {
                 const auto manifold = CollideShapes(child, xfm, child, xfm);
-                if (manifold.GetPointCount() > 0)
-                {
+                if (manifold.GetPointCount() > 0) {
                     ++count;
                 }
             }
@@ -339,7 +327,7 @@ TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
             elapsed_collide_shapes = end - start;
             ASSERT_EQ(count, maxloops);
         }
-        
+
         EXPECT_LT(elapsed_test_overlap.count(), elapsed_collide_shapes.count());
     }
 }
@@ -389,6 +377,33 @@ TEST(Shape, EmptyShapeSetVertexRadiusIsNoop)
 {
     auto s = Shape{};
     EXPECT_NO_THROW(SetVertexRadius(s, 0, 2_m));
+}
+
+TEST(Shape, DynamicRectangleSmallerThanPolygon)
+{
+    using namespace playrho::part;
+    switch (sizeof(Real))
+    {
+#if defined(_WIN64) || !defined(_WIN32)
+    case 4u:
+        // Compositor only smaller for 4-byte sized Real values. This is because PolygonShapeConf
+        // uses std::vector to store vertices and normals. This hides the full amount of memory it
+        // uses from sizeof(PolygonShapeConf). This also means that not all the data that
+        // PolygonShapeConf contains is available in one contiguous block of memory which increases
+        // the chance of memory cache misses that will slow simulations down. Meanwhile, the memory
+        // for the Compositor used here will be entirely contiguous.
+        EXPECT_LT(sizeof(Compositor<GeometryIs<DynamicRectangle<>>, //
+                         DensityIs<DynamicAreaDensity<>>, //
+                         RestitutionIs<DynamicRestitution<>>, //
+                         FrictionIs<DynamicFriction<>>, //
+                         SensorIs<DynamicSensor<>>, //
+                         FilterIs<DynamicFilter<>>>),
+                  sizeof(PolygonShapeConf));
+        break;
+#endif
+    default:
+        break;
+    }
 }
 
 #if 0

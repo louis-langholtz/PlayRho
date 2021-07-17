@@ -28,6 +28,9 @@
 #include <PlayRho/Dynamics/WorldShape.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
+
+#include <PlayRho/Dynamics/Contacts/Contact.hpp>
+
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 using namespace playrho;
@@ -140,6 +143,60 @@ TEST(WorldContact, SetUnsetEnabled)
     EXPECT_FALSE(IsEnabled(world, c));
     EXPECT_NO_THROW(SetEnabled(world, c));
     EXPECT_TRUE(IsEnabled(world, c));
+}
+
+TEST(WorldContact, SetIsActive)
+{
+    auto world = World{};
+    const auto shapeId = CreateShape(world, DiskShapeConf{});
+    CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).Use(shapeId));
+    CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).Use(shapeId));
+    ASSERT_NO_THROW(Step(world, StepConf{}));
+    const auto contacts = GetContacts(world);
+    ASSERT_EQ(contacts.size(), ContactCounter(1));
+    const auto c = contacts.begin()->second;
+    auto contact = GetContact(world, c);
+    ASSERT_TRUE(IsActive(contact));
+    EXPECT_NO_THROW(SetIsActive(contact));
+    EXPECT_NO_THROW(SetContact(world, c, contact));
+    EXPECT_NO_THROW(UnsetIsActive(contact));
+    EXPECT_THROW(SetContact(world, c, contact), InvalidArgument);
+}
+
+TEST(WorldContact, SetImpenetrable)
+{
+    auto world = World{};
+    const auto shapeId = CreateShape(world, DiskShapeConf{});
+    CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).Use(shapeId));
+    CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).Use(shapeId));
+    ASSERT_NO_THROW(Step(world, StepConf{}));
+    const auto contacts = GetContacts(world);
+    ASSERT_EQ(contacts.size(), ContactCounter(1));
+    const auto c = contacts.begin()->second;
+    auto contact = GetContact(world, c);
+    ASSERT_FALSE(IsImpenetrable(contact));
+    EXPECT_NO_THROW(UnsetImpenetrable(contact));
+    EXPECT_NO_THROW(SetContact(world, c, contact));
+    EXPECT_NO_THROW(SetImpenetrable(contact));
+    EXPECT_THROW(SetContact(world, c, contact), InvalidArgument);
+}
+
+TEST(WorldContact, SetSensor)
+{
+    auto world = World{};
+    const auto shapeId = CreateShape(world, DiskShapeConf{});
+    CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).Use(shapeId));
+    CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).Use(shapeId));
+    ASSERT_NO_THROW(Step(world, StepConf{}));
+    const auto contacts = GetContacts(world);
+    ASSERT_EQ(contacts.size(), ContactCounter(1));
+    const auto c = contacts.begin()->second;
+    auto contact = GetContact(world, c);
+    ASSERT_FALSE(IsSensor(contact));
+    EXPECT_NO_THROW(UnsetIsSensor(contact));
+    EXPECT_NO_THROW(SetContact(world, c, contact));
+    EXPECT_NO_THROW(SetSensor(contact));
+    EXPECT_THROW(SetContact(world, c, contact), InvalidArgument);
 }
 
 TEST(WorldContact, SetTangentSpeed)

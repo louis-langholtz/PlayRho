@@ -21,22 +21,13 @@
 #define PLAYRHO_TEST_ENTRY_HPP
 
 #include <PlayRho/Common/Span.hpp>
-#include <memory>
+
+#include <memory> // for std::unique_ptr
+#include <vector>
 
 namespace testbed {
 
 class Test;
-
-/// @brief Makes a unique test instance.
-///
-/// @details Makes a unique test instance that's wrapped in a std::unique_ptr<Test> data
-///   structure for managed use of memory for test intances.
-///
-template <class U>
-std::unique_ptr<Test> MakeUniqueTest()
-{
-    return std::unique_ptr<Test>(std::make_unique<U>());
-}
 
 /// @brief A name and function pointer dataset for a test entry.
 ///
@@ -53,7 +44,7 @@ struct TestEntry
 /// @note This serves as a wrapper to avoid any possible startup-time dependencies issues that
 ///   might be caused by having global data defined in a different file than it's used in.
 ///
-playrho::Span<const TestEntry> GetTestEntries();
+std::vector<TestEntry> GetTestEntries();
 
 } // namespace testbed
 

@@ -160,10 +160,16 @@ inline NonNegative<Length> GetVertexRadius(const EdgeShapeConf& arg, ChildCounte
     return GetVertexRadius(arg);
 }
 
-/// @brief Sets the vertex radius of shape for the given index.
-inline void SetVertexRadius(EdgeShapeConf& arg, ChildCounter, NonNegative<Length> value)
+/// @brief Sets the vertex radius of the shape.
+inline void SetVertexRadius(EdgeShapeConf& arg, NonNegative<Length> value)
 {
     arg.vertexRadius = value;
+}
+
+/// @brief Sets the vertex radius of the shape for the given index.
+inline void SetVertexRadius(EdgeShapeConf& arg, ChildCounter, NonNegative<Length> value)
+{
+    SetVertexRadius(arg, value);
 }
 
 /// @brief Gets the mass data for the given shape configuration.

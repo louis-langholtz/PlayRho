@@ -278,6 +278,9 @@ public:
     /// @see Step.
     std::vector<std::pair<BodyID, ShapeID>> GetFixturesForProxies() const noexcept;
 
+    /// @brief Determines whether this world has new fixtures.
+    bool HasNewFixtures() const noexcept;
+
     /// @}
 
     /// @name Body Member Functions
@@ -743,10 +746,7 @@ private:
     ///  A non-null contact will be enabled, not have sensors, be active, and impenetrable.
     static ContactToiData GetSoonestContact(const Contacts& contacts,
                                             const ArrayAllocator<Contact>& buffer) noexcept;
-    
-    /// @brief Determines whether this world has new fixtures.
-    bool HasNewFixtures() const noexcept;
-    
+
     /// @brief Unsets the new fixtures state.
     void UnsetNewFixtures() noexcept;
 

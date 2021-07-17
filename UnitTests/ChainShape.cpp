@@ -74,6 +74,7 @@ TEST(ChainShapeConf, DefaultConstruction)
     EXPECT_EQ(GetTypeID(foo), GetTypeID<ChainShapeConf>());
     EXPECT_EQ(GetChildCount(foo), ChildCounter{0});
     EXPECT_EQ(foo.GetVertexCount(), ChildCounter{0});
+    EXPECT_TRUE(empty(foo.GetVertices()));
     EXPECT_EQ(GetMassData(foo), defaultMassData);
     for (auto i = ChildCounter{0}; i < GetChildCount(foo); ++i) {
         EXPECT_EQ(GetVertexRadius(foo, i), ChainShapeConf::GetDefaultVertexRadius());
@@ -204,9 +205,11 @@ TEST(ChainShapeConf, OneVertexLikeDisk)
         EXPECT_EQ(GetVertexRadius(foo, i), vertexRadius);
     }
     EXPECT_EQ(GetMassData(foo), expectedMassData);
-
     const auto child = GetChild(foo, 0);
     EXPECT_EQ(child, expectedDistanceProxy);
+    EXPECT_FALSE(empty(foo.GetVertices()));
+    ASSERT_EQ(size(foo.GetVertices()), 1u);
+    EXPECT_EQ(foo.GetVertices()[0], location);
 }
 
 TEST(ChainShapeConf, TwoVertexLikeEdge)
@@ -226,6 +229,10 @@ TEST(ChainShapeConf, TwoVertexLikeEdge)
     for (auto i = ChildCounter{0}; i < GetChildCount(foo); ++i) {
         EXPECT_EQ(GetVertexRadius(foo, i), vertexRadius);
     }
+    EXPECT_FALSE(empty(foo.GetVertices()));
+    ASSERT_EQ(size(foo.GetVertices()), 2u);
+    EXPECT_EQ(foo.GetVertices()[0], locations[0]);
+    EXPECT_EQ(foo.GetVertices()[1], locations[1]);
 }
 
 TEST(ChainShapeConf, TwoVertexDpLikeEdgeDp)

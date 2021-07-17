@@ -119,6 +119,31 @@ TEST(Vector, Inequality)
     EXPECT_FALSE(a != b);
 }
 
+TEST(Vector, LessThanOperator)
+{
+    Vector<int, 10> a;
+    Vector<int, 10> b;
+
+    std::fill(a.begin(), a.end(), 1);
+    std::fill(b.begin(), b.end(), 1);
+    EXPECT_FALSE(a < b);
+
+    std::fill(b.begin(), b.end(), 2);
+    EXPECT_TRUE(a < b);
+
+    std::fill(a.begin(), a.end(), 2);
+    EXPECT_FALSE(a < b);
+
+    for (auto& e: b) {
+        const auto old = e;
+        e = 10;
+        EXPECT_TRUE(a < b);
+        e = old;
+    }
+
+    EXPECT_FALSE(a < b);
+}
+
 TEST(Vector, LexicographicalLess)
 {
     Vector<int, 10> a;
@@ -130,7 +155,7 @@ TEST(Vector, LexicographicalLess)
     
     std::fill(b.begin(), b.end(), 2);
     EXPECT_TRUE((LexicographicalLess<Vector<int, 10>>{}(a, b)));
-    
+
     std::fill(a.begin(), a.end(), 2);
     EXPECT_FALSE((LexicographicalLess<Vector<int, 10>>{}(a, b)));
     

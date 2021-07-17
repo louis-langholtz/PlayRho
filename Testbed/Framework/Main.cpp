@@ -206,12 +206,12 @@ private:
 class TestSuite
 {
 public:
-    TestSuite(Span<const TestEntry> testEntries, int index = 0):
-    	m_testEntries(testEntries),
-    	m_testIndex(index < static_cast<int>(size(testEntries))? index: 0)
+    TestSuite(std::vector<TestEntry> testEntries, int index = 0):
+        m_testEntries(std::move(testEntries)),
+        m_testIndex(index < static_cast<int>(size(m_testEntries))? index: 0)
     {
-        assert(!empty(testEntries));
-        m_test = testEntries[static_cast<unsigned>(m_testIndex)].createFcn();
+        assert(!empty(m_testEntries));
+        m_test = m_testEntries[static_cast<unsigned>(m_testIndex)].createFcn();
     }
     
     int GetTestCount() const
@@ -264,10 +264,9 @@ public:
     }
     
 private:
-    Span<const TestEntry> m_testEntries;
+    std::vector<TestEntry> m_testEntries;
     std::unique_ptr<Test> m_test;
-public:
-    int m_testIndex;
+    int m_testIndex = 0;
 };
 
 #ifdef DONT_EMBED_FONT_DATA
@@ -294,11 +293,13 @@ static auto GetCwd()
 #endif
 
 static bool InputReal(const char* label, Real& var, Real step = 0, Real step_fast = 0,
-                      const char* format = "%.3f", ImGuiInputTextFlags flags = 0)
+                      const char* format = "%.3f",
+                      ImGuiInputTextFlags flags = ImGuiInputTextFlags_EnterReturnsTrue)
 {
     if constexpr (sizeof(Real) <= sizeof(float)) {
         auto val = static_cast<float>(var);
-        if (ImGui::InputFloat(label, &val, step, step_fast, format, flags)) {
+        if (ImGui::InputFloat(label, &val, static_cast<float>(step), static_cast<float>(step_fast),
+                              format, flags)) {
             var = static_cast<Real>(val);
             return true;
         }
@@ -314,7 +315,7 @@ static bool InputReal(const char* label, Real& var, Real step = 0, Real step_fas
 }
 
 static bool InputReals(const char* label, Vec2& var, const char* format = "%.3f",
-                       ImGuiInputTextFlags flags = 0)
+                       ImGuiInputTextFlags flags = ImGuiInputTextFlags_EnterReturnsTrue)
 {
     if constexpr (sizeof(Real) <= sizeof(float)) {
         float vals[2] = {static_cast<float>(var[0]), static_cast<float>(var[1])};
@@ -333,9 +334,9 @@ static bool InputReals(const char* label, Vec2& var, const char* format = "%.3f"
     return false;
 }
 
-static void EntityUI(bool& variable, const char* title)
+static bool EntityUI(bool& variable, const char* title)
 {
-    ImGui::Checkbox(title, &variable);
+    return ImGui::Checkbox(title, &variable);
 }
 
 template <class T>
@@ -380,12 +381,14 @@ static bool MassUI(Mass& variable, const char* title, const char* fmt = "%f")
     return false;
 }
 
-static void EntityUI(UnitVec& variable, const char* title, const char* fmt = "%f")
+static bool EntityUI(UnitVec& variable, const char* title, const char* fmt = "%f")
 {
     auto val = GetAngle(variable);
     if (AngleUI(val, title, fmt)) {
         variable = UnitVec::Get(val);
+        return true;
     }
+    return false;
 }
 
 static void CreateUI(GLFWwindow* window)
@@ -2036,13 +2039,9 @@ static auto FilterUI(T& shape) -> decltype(SetFilter(shape, GetFilter(shape)))
     auto groupIndex = int{oldFilterData.groupIndex};
     {
         ImGui::ItemWidthContext itemWidthCtx(80);
-        //ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0,0));
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
+        ImGui::StyleVarContext styleCtx(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
         ImGui::InputInt("Group Index", &groupIndex);
-        ImGui::PopStyleVar();
-        //ImGui::PopStyleVar();
     }
-
     const auto newFilterData = Filter{
         static_cast<Filter::bits_type>(cateBits),
         static_cast<Filter::bits_type>(maskBits),
@@ -2051,6 +2050,18 @@ static auto FilterUI(T& shape) -> decltype(SetFilter(shape, GetFilter(shape)))
     if (newFilterData != oldFilterData) {
         SetFilter(shape, newFilterData);
     }
+}
+
+template <class T>
+static auto VertexRadiusUI(T& arg) -> decltype(SetVertexRadius(arg, GetVertexRadius(arg)), true)
+{
+    ImGui::ItemWidthContext itemWidthCtx(60);
+    auto value = GetVertexRadius(arg);
+    if (LengthUI(value, "Vertex Radius (m)")) {
+        SetVertexRadius(arg, value);
+        return true;
+    }
+    return false;
 }
 
 template <class T>
@@ -2141,39 +2152,156 @@ static void EntityUI(DiskShapeConf& shape)
 
 static void EntityUI(EdgeShapeConf& shape)
 {
+    VertexRadiusUI(shape);
     {
-        ImGui::ItemWidthContext itemWidthCtx(60);
-        LengthUI(shape.vertexRadius, "Vertex Radius (m)");
-    }
-    {
-        //ImGui::ItemWidthContext itemWidthCtx(60);
-        const auto location = shape.GetVertexA();
-        float vals[2];
-        vals[0] = static_cast<float>(Real{GetX(location) / Meter});
-        vals[1] = static_cast<float>(Real{GetY(location) / Meter});
         ImGui::ItemWidthContext itemWidthCtx(100);
-        if (ImGui::InputFloat2("Vertex A", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            shape.Set(Length2{vals[0] * 1_m, vals[1] * 1_m}, shape.GetVertexB());
+        auto location = shape.GetVertexA();
+        if (LengthUI(location, "Vertex A")) {
+            shape.Set(location, shape.GetVertexB());
         }
     }
     {
-        const auto location = shape.GetVertexB();
-        float vals[2];
-        vals[0] = static_cast<float>(Real{GetX(location) / Meter});
-        vals[1] = static_cast<float>(Real{GetY(location) / Meter});
         ImGui::ItemWidthContext itemWidthCtx(100);
-        if (ImGui::InputFloat2("Vertex B", vals, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
-            shape.Set(shape.GetVertexA(), Length2{vals[0] * 1_m, vals[1] * 1_m});
+        auto location = shape.GetVertexB();
+        if (LengthUI(location, "Vertex B")) {
+            shape.Set(shape.GetVertexA(), location);
         }
     }
 }
 
+static bool VerticesUI(std::set<Length2>& vertices)
+{
+    auto verticesChanged = false;
+    ImGui::ItemWidthContext itemWidthCtx(100);
+    std::ostringstream os;
+    static auto newVertex = Length2{};
+    LengthUI(newVertex, "New Vertex");
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("Coordinates for the next new vertex.",
+                           tooltipWrapWidth);
+    }
+    os.str(std::string{});
+    if (ImGui::Button("+", ImVec2(14.0f, 15.0f))) {
+        const auto result = vertices.insert(newVertex);
+        if (std::get<bool>(result)) {
+            verticesChanged = true;
+        }
+    }
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("Press to add a new vertex.",
+                           tooltipWrapWidth);
+    }
+    auto last = end(vertices);
+    auto first = begin(vertices);
+    for (; first != last; ++first) {
+        const auto index = std::distance(begin(vertices), first);
+        os.str(std::string{});
+        os << "-##" << index;
+        if (ImGui::Button(os.str().c_str(), ImVec2(14.0f, 15.0f))) {
+            first = vertices.erase(first);
+            verticesChanged = true;
+            if (first == last) {
+                break;
+            }
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Press to erase the vertex on this same line.", tooltipWrapWidth);
+        }
+        ImGui::SameLine();
+        os.str(std::string{});
+        os << "Vertex " << index;
+        auto vertex = *first;
+        if (LengthUI(vertex, os.str().c_str())) {
+            first = vertices.erase(first);
+            const auto result = vertices.insert(vertex);
+            if (std::get<bool>(result)) {
+                verticesChanged = true;
+            }
+        }
+    }
+    return verticesChanged;
+}
+
+static bool VerticesUI(std::vector<Length2>& vertices)
+{
+    auto verticesChanged = false;
+    ImGui::ItemWidthContext itemWidthCtx(100);
+    std::ostringstream os;
+    auto last = end(vertices);
+    auto first = begin(vertices);
+    for (; first != last; ++first) {
+        const auto index = std::distance(begin(vertices), first);
+        os.str(std::string{});
+        os << "+##" << index;
+        if (ImGui::Button(os.str().c_str(), ImVec2(14.0f, 15.0f))) {
+            first = vertices.insert(first, *first);
+            last = end(vertices);
+            verticesChanged = true;
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Press to insert a vertex before the one on this same line.",
+                               tooltipWrapWidth);
+        }
+        ImGui::SameLine();
+        os.str(std::string{});
+        os << "-##" << index;
+        if (ImGui::Button(os.str().c_str(), ImVec2(14.0f, 15.0f))) {
+            first = vertices.erase(first);
+            last = end(vertices);
+            verticesChanged = true;
+            if (first == last) {
+                break;
+            }
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Press to erase the vertex on this same line.", tooltipWrapWidth);
+        }
+        ImGui::SameLine();
+        os.str(std::string{});
+        os << "Vertex " << index;
+        auto&& v = *first;
+        if (LengthUI(v, os.str().c_str())) {
+            verticesChanged = true;
+        }
+    }
+    const auto index = size(vertices);
+    os.str(std::string{});
+    os << "+##" << index;
+    if (ImGui::Button(os.str().c_str(), ImVec2(14.0f, 14.0f))) {
+        const auto value = (index == 0u)? Length2{}: vertices.back();
+        vertices.insert(first, value);
+        verticesChanged = true;
+    }
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("Press to append a vertex to the end of the list of vertices.",
+                           tooltipWrapWidth);
+    }
+    return verticesChanged;
+}
+
 static void EntityUI(PolygonShapeConf& shape)
 {
-    {
-        ImGui::ItemWidthContext itemWidthCtx(60);
-        LengthUI(shape.vertexRadius, "Vertex Radius (m)");
+    VertexRadiusUI(shape);
+    const auto span = shape.GetVertices();
+    auto vertices = std::set<Length2>(begin(span), end(span));
+    if (VerticesUI(vertices)) {
+        shape.UseVertices(std::vector<Length2>(begin(vertices), end(vertices)));
     }
+}
+
+static bool EntityUI(ChainShapeConf& shape)
+{
+    auto radiusChanged = false;
+    if (VertexRadiusUI(shape)) {
+        radiusChanged = true;
+    }
+    auto verticesChanged = false;
+    auto vertices = shape.GetVertices();
+    if (VerticesUI(vertices)) {
+        shape.Set(vertices);
+        verticesChanged = true;
+    }
+    return radiusChanged || verticesChanged;
 }
 
 static void EntityUI(Shape& shape)
@@ -2191,6 +2319,11 @@ static void EntityUI(Shape& shape)
     }
     else if (type == GetTypeID<EdgeShapeConf>()) {
         auto conf = TypeCast<EdgeShapeConf>(shape);
+        EntityUI(conf);
+        shape = conf;
+    }
+    else if (type == GetTypeID<ChainShapeConf>()) {
+        auto conf = TypeCast<ChainShapeConf>(shape);
         EntityUI(conf);
         shape = conf;
     }
@@ -3118,15 +3251,13 @@ static void CollectionUI(World& world, const World::BodyJoints& joints)
         if (bodyID != InvalidBodyID) {
             ImGui::Text("Joint %u (%s Other-body=%u)", to_underlying(jointID),
                         Test::ToName(GetType(world, jointID)), to_underlying(bodyID));
-            if (ImGui::IsItemHovered())
-            {
+            if (ImGui::IsItemHovered()) {
                 ImGui::SetTooltip("World ID of joint and world ID of other associated body.");
             }
         }
         else {
             ImGui::Text("Joint %u", to_underlying(jointID));
-            if (ImGui::IsItemHovered())
-            {
+            if (ImGui::IsItemHovered()) {
                 ImGui::SetTooltip("World ID of joint.");
             }
         }
@@ -3308,7 +3439,7 @@ static void GlfwErrorCallback(int code, const char* str)
 
 static void ShowFrameInfo(double frameTime, double fps)
 {
-    std::stringstream stream;
+    std::ostringstream stream;
     const auto viewport = ConvertScreenToWorld();
     stream << "Zoom=" << g_camera.m_zoom;
     stream << " Center=";
@@ -3355,42 +3486,8 @@ static std::string InitializeOpenglLoader()
 #endif
 }
 
-int main()
+static void SetupGlfwWindowHints()
 {
-#if defined(_WIN32)
-    // Enable memory-leak reports
-    _CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG));
-#endif
-
-    TestSuite testSuite(GetTestEntries());
-    Selection selection(testSuite.GetTestCount());
-    g_testSuite = &testSuite;
-    g_selection = &selection;
-
-    g_camera.m_width = 1280; // 1152;
-    g_camera.m_height = 980; // 864;
-    menuX = g_camera.m_width - menuWidth - 10;
-    menuHeight = g_camera.m_height - 20;
-
-    if (glfwSetErrorCallback(GlfwErrorCallback))
-    {
-        std::fprintf(stderr,
-                     "Warning: overriding previously installed GLFW error callback function.\n");
-    }
-
-    if (glfwInit() == 0)
-    {
-        std::fprintf(stderr, "Failed to initialize GLFW\n");
-        return EXIT_FAILURE;
-    }
-
-    const auto buildVersion = GetVersion();
-    const auto buildDetails = GetBuildDetails();
-    
-    char title[64];
-    std::sprintf(title, "PlayRho Testbed Version %d.%d.%d",
-                 buildVersion.major, buildVersion.minor, buildVersion.revision);
-
     // Decide GL+GLSL versions
 #if defined(IMGUI_IMPL_OPENGL_ES2)
     // GL ES 2.0
@@ -3410,6 +3507,42 @@ int main()
     //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
+}
+
+int main()
+{
+#if defined(_WIN32)
+    // Enable memory-leak reports
+    _CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG));
+#endif
+
+    TestSuite testSuite(GetTestEntries());
+    Selection selection(testSuite.GetTestCount());
+    g_testSuite = &testSuite;
+    g_selection = &selection;
+
+    g_camera.m_width = 1280; // 1152;
+    g_camera.m_height = 980; // 864;
+    menuX = g_camera.m_width - menuWidth - 10;
+    menuHeight = g_camera.m_height - 20;
+
+    if (glfwSetErrorCallback(GlfwErrorCallback)) {
+        std::fprintf(stderr,
+                     "Warning: overriding previously installed GLFW error callback function.\n");
+    }
+    if (glfwInit() == 0) {
+        std::fprintf(stderr, "Failed to initialize GLFW\n");
+        return EXIT_FAILURE;
+    }
+
+    const auto buildVersion = GetVersion();
+    const auto buildDetails = GetBuildDetails();
+    
+    char title[64];
+    std::sprintf(title, "PlayRho Testbed Version %d.%d.%d",
+                 buildVersion.major, buildVersion.minor, buildVersion.revision);
+
+    SetupGlfwWindowHints();
 
     const auto mainWindow = glfwCreateWindow(g_camera.m_width, g_camera.m_height, title,
                                              nullptr, nullptr);
@@ -3460,8 +3593,7 @@ int main()
     glClearColor(0.3f, 0.3f, 0.3f, 1.f);
     {
         DebugDraw drawer(g_camera);
-        while (!glfwWindowShouldClose(mainWindow))
-        {
+        while (!glfwWindowShouldClose(mainWindow)) {
             glfwPollEvents();
             glViewport(0, 0, g_camera.m_width, g_camera.m_height);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -3473,16 +3605,15 @@ int main()
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
-
-            if (!UserInterface())
+            if (!UserInterface()) {
 	            glfwSetWindowShouldClose(mainWindow, GL_TRUE);
-
+            }
             Simulate(drawer);
-            
+
             // Measure speed
             const auto time2 = glfwGetTime();
             const auto timeElapsed = time2 - time1;
-            const auto alpha = 0.9;
+            constexpr auto alpha = 0.9;
             frameTime = alpha * frameTime + (1.0 - alpha) * timeElapsed;
             fps = 0.99 * fps + (1.0 - 0.99) / timeElapsed;
             time1 = time2;
@@ -3503,6 +3634,5 @@ int main()
 
     glfwDestroyWindow(mainWindow);
     glfwTerminate();
-
     return 0;
 }

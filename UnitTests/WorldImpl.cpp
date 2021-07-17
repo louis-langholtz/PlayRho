@@ -898,6 +898,37 @@ TEST(WorldImpl, SetBodyThrowsWithOutOfRangeShapeID)
     EXPECT_THROW(world.SetBody(BodyID(0), body), std::out_of_range);
 }
 
+TEST(WorldImpl, SetShapeWithGeometryChange)
+{
+    const auto stepConf = StepConf{};
+    auto bodyId = InvalidBodyID;
+    auto shapeId = InvalidShapeID;
+    auto world = WorldImpl{};
+    auto diskShapeConf = DiskShapeConf{};
+    ASSERT_EQ(GetChildCount(diskShapeConf), 1u);
+    ASSERT_NO_THROW(shapeId = world.CreateShape(Shape{diskShapeConf}));
+    ASSERT_NO_THROW(bodyId = world.CreateBody(Body{BodyConf{}.Use(BodyType::Dynamic).Use(shapeId)}));
+    ASSERT_TRUE(IsEnabled(world.GetBody(bodyId)));
+    ASSERT_NO_THROW(world.Step(stepConf));
+    ASSERT_EQ(size(world.GetProxies(bodyId)), 1u);
+    auto chainShapeConf = ChainShapeConf{};
+    chainShapeConf.Add(Length2{0_m, 0_m});
+    chainShapeConf.Add(Length2{2_m, 0_m});
+    chainShapeConf.Add(Length2{2_m, 1_m});
+    ASSERT_EQ(GetChildCount(chainShapeConf), 2u);
+    EXPECT_NO_THROW(world.SetShape(shapeId, Shape{chainShapeConf}));
+    EXPECT_EQ(size(world.GetFixturesForProxies()), 1u);
+    if (!empty(world.GetFixturesForProxies())) {
+        EXPECT_EQ(world.GetFixturesForProxies()[0].first, bodyId);
+        EXPECT_EQ(world.GetFixturesForProxies()[0].second, shapeId);
+    }
+    EXPECT_EQ(size(world.GetProxies(bodyId)), 0u);
+    EXPECT_TRUE(world.HasNewFixtures());
+    EXPECT_NO_THROW(world.Step(stepConf));
+    EXPECT_EQ(size(world.GetFixturesForProxies()), 0u);
+    EXPECT_EQ(size(world.GetProxies(bodyId)), 2u);
+}
+
 TEST(WorldImpl, SetFreedShapeThrows)
 {
     auto world = WorldImpl{};

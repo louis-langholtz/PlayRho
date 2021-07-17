@@ -31,6 +31,7 @@
 #include <sstream>
 #include <stdio.h>
 #include <utility>
+#include <map>
 #include <vector>
 
 #include "imgui.h"
@@ -44,6 +45,14 @@ namespace testbed {
 namespace {
 
 constexpr auto RandLimit = 32767;
+
+/// @brief Gets the map for registered tests.
+/// @note This function exists to ensure proper initialization of the map.
+std::map<std::string, std::unique_ptr<Test> (*)()>& TestMap()
+{
+    static std::map<std::string, std::unique_ptr<Test> (*)()> map;
+    return map;
+}
 
 void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, Color color)
 {
@@ -1343,6 +1352,18 @@ void Test::Query(const AABB& aabb, QueryShapeCallback callback)
 }
 
 // Exported free functions...
+
+bool RegisterTest(const std::string& name, std::unique_ptr<Test> (*creator)())
+{
+    auto& map = TestMap();
+    map[name] = creator;
+    return true;
+}
+
+std::map<std::string, std::unique_ptr<Test> (*)()> GetRegisteredTestMap()
+{
+    return TestMap();
+}
 
 Real RandomFloat()
 {
