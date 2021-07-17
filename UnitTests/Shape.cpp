@@ -384,6 +384,7 @@ TEST(Shape, DynamicRectangleSmallerThanPolygon)
     using namespace playrho::part;
     switch (sizeof(Real))
     {
+#if defined(_WIN64) || !defined(_WIN32)
     case 4u:
         // Compositor only smaller for 4-byte sized Real values. This is because PolygonShapeConf
         // uses std::vector to store vertices and normals. This hides the full amount of memory it
@@ -399,6 +400,7 @@ TEST(Shape, DynamicRectangleSmallerThanPolygon)
                          FilterIs<DynamicFilter<>>>),
                   sizeof(PolygonShapeConf));
         break;
+#endif
     default:
         break;
     }
