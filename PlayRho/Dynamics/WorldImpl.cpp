@@ -1237,7 +1237,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
             assert(!body.IsAwake() || body.IsSpeedable());
             if (body.IsAwake() && body.IsEnabled()) {
                 ++stats.islandsFound;
-                ::playrho::d2::Clear(m_island);
+                ::playrho::Clear(m_island);
                 // Size the island for the remaining un-evaluated bodies, contacts, and joints.
                 Reserve(m_island, remNumBodies, remNumContacts, remNumJoints);
                 AddToIsland(m_island, b, remNumBodies, remNumContacts, remNumJoints);
@@ -1666,11 +1666,11 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
     }
 
     // Build the island
-    ::playrho::d2::Clear(m_island);
-    ::playrho::d2::Reserve(m_island,
-                           static_cast<BodyCounter>(used(m_bodyBuffer)),
-                           static_cast<ContactCounter>(used(m_contactBuffer)),
-                           static_cast<JointCounter>(0));
+    ::playrho::Clear(m_island);
+    ::playrho::Reserve(m_island,
+                       static_cast<BodyCounter>(used(m_bodyBuffer)),
+                       static_cast<ContactCounter>(used(m_contactBuffer)),
+                       static_cast<JointCounter>(0));
 
      // These asserts get triggered sometimes if contacts within TOI are iterated over.
     assert(!m_islandedBodies[to_underlying(bodyIdA)]);
