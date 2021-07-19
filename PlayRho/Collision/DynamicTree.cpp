@@ -740,7 +740,7 @@ void Query(const DynamicTree& tree, const AABB& aabb, QueryShapeCallback callbac
 {
     Query(tree, aabb, [&](DynamicTree::Size treeId) {
         const auto leafData = tree.GetLeafData(treeId);
-        return callback(leafData.body, leafData.shape, leafData.childIndex)?
+        return callback(leafData.bodyId, leafData.shapeId, leafData.childId)?
         DynamicTreeOpcode::Continue: DynamicTreeOpcode::End;
     });
 }

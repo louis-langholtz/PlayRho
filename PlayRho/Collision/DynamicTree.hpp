@@ -332,13 +332,13 @@ struct DynamicTree::LeafData
     /// @brief Identifier of the associated body.
     /// @note This field serves merely to potentially avoid the lookup of the body through
     ///   the fixture.
-    BodyID body;
-    
+    BodyID bodyId;
+
     /// @brief Identifier of the associated shape.
-    ShapeID shape;
+    ShapeID shapeId;
 
     /// @brief Child index of related Shape.
-    ChildCounter childIndex;
+    ChildCounter childId;
 };
 
 /// @brief Equality operator.
@@ -346,7 +346,7 @@ struct DynamicTree::LeafData
 constexpr bool operator== (const DynamicTree::LeafData& lhs,
                            const DynamicTree::LeafData& rhs) noexcept
 {
-    return lhs.body == rhs.body && lhs.shape == rhs.shape && lhs.childIndex == rhs.childIndex;
+    return lhs.bodyId == rhs.bodyId && lhs.shapeId == rhs.shapeId && lhs.childId == rhs.childId;
 }
 
 /// @brief Inequality operator.

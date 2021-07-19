@@ -394,9 +394,9 @@ TEST(DynamicTree, DefaultConstruction)
 
 TEST(DynamicTreeLeafData, DefaultConstructor)
 {
-    EXPECT_EQ(DynamicTree::LeafData().body, BodyID(0u));
-    EXPECT_EQ(DynamicTree::LeafData().shape, ShapeID(0u));
-    EXPECT_EQ(DynamicTree::LeafData().childIndex, ChildCounter(0u));
+    EXPECT_EQ(DynamicTree::LeafData().bodyId, BodyID(0u));
+    EXPECT_EQ(DynamicTree::LeafData().shapeId, ShapeID(0u));
+    EXPECT_EQ(DynamicTree::LeafData().childId, ChildCounter(0u));
 }
 
 TEST(DynamicTree, ZeroCapacityConstructionSameAsDefault)
