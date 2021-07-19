@@ -28,9 +28,6 @@
 #include <PlayRho/Common/ArrayList.hpp>
 #include <PlayRho/Collision/ContactFeature.hpp>
 
-#include <array>
-#include <type_traits>
-
 namespace playrho {
 
 /// @brief Point state enumeration.
