@@ -47,13 +47,13 @@ TEST(DynamicTree, VariantDataByteSize)
 {
 #if defined(_WIN64)
     EXPECT_EQ(alignof(DynamicTree), 8u);
-    EXPECT_EQ(sizeof(DynamicTree::VariantData), 8u);
+    EXPECT_EQ(sizeof(DynamicTreeVariantData), 8u);
 #elif defined(_WIN32)
     EXPECT_EQ(alignof(DynamicTree), 4u);
-    EXPECT_EQ(sizeof(DynamicTree::VariantData), 8u);
+    EXPECT_EQ(sizeof(DynamicTreeVariantData), 8u);
 #else
     EXPECT_EQ(alignof(DynamicTree), 8u);
-    EXPECT_EQ(sizeof(DynamicTree::VariantData), 8u);
+    EXPECT_EQ(sizeof(DynamicTreeVariantData), 8u);
 #endif
 }
 
@@ -111,82 +111,82 @@ TEST(DynamicTreeNode, Traits)
 
 TEST(DynamicTreeUnusedData, Traits)
 {
-    EXPECT_TRUE(std::is_default_constructible<DynamicTree::UnusedData>::value);
-    EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTree::UnusedData>::value);
-    EXPECT_TRUE(std::is_trivially_default_constructible<DynamicTree::UnusedData>::value);
+    EXPECT_TRUE(std::is_default_constructible<DynamicTreeUnusedData>::value);
+    EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTreeUnusedData>::value);
+    EXPECT_TRUE(std::is_trivially_default_constructible<DynamicTreeUnusedData>::value);
     
-    EXPECT_TRUE(std::is_nothrow_constructible<DynamicTree::UnusedData>::value);
-    EXPECT_TRUE(std::is_constructible<DynamicTree::UnusedData>::value);
-    EXPECT_TRUE(std::is_trivially_constructible<DynamicTree::UnusedData>::value);
+    EXPECT_TRUE(std::is_nothrow_constructible<DynamicTreeUnusedData>::value);
+    EXPECT_TRUE(std::is_constructible<DynamicTreeUnusedData>::value);
+    EXPECT_TRUE(std::is_trivially_constructible<DynamicTreeUnusedData>::value);
     
-    EXPECT_TRUE(std::is_copy_constructible<DynamicTree::UnusedData>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<DynamicTree::UnusedData>::value);
-    EXPECT_TRUE(std::is_trivially_copy_constructible<DynamicTree::UnusedData>::value);
+    EXPECT_TRUE(std::is_copy_constructible<DynamicTreeUnusedData>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible<DynamicTreeUnusedData>::value);
+    EXPECT_TRUE(std::is_trivially_copy_constructible<DynamicTreeUnusedData>::value);
     
-    EXPECT_TRUE(std::is_copy_assignable<DynamicTree::UnusedData>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTree::UnusedData>::value);
-    EXPECT_TRUE(std::is_trivially_copy_assignable<DynamicTree::UnusedData>::value);
+    EXPECT_TRUE(std::is_copy_assignable<DynamicTreeUnusedData>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTreeUnusedData>::value);
+    EXPECT_TRUE(std::is_trivially_copy_assignable<DynamicTreeUnusedData>::value);
     
-    EXPECT_TRUE(std::is_destructible<DynamicTree::UnusedData>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<DynamicTree::UnusedData>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<DynamicTree::UnusedData>::value);
+    EXPECT_TRUE(std::is_destructible<DynamicTreeUnusedData>::value);
+    EXPECT_TRUE(std::is_nothrow_destructible<DynamicTreeUnusedData>::value);
+    EXPECT_TRUE(std::is_trivially_destructible<DynamicTreeUnusedData>::value);
 }
 
 TEST(DynamicTreeBranchData, Traits)
 {
-    EXPECT_TRUE(std::is_default_constructible<DynamicTree::BranchData>::value);
-    EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTree::BranchData>::value);
-    EXPECT_TRUE(std::is_trivially_default_constructible<DynamicTree::BranchData>::value);
+    EXPECT_TRUE(std::is_default_constructible<DynamicTreeBranchData>::value);
+    EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTreeBranchData>::value);
+    EXPECT_TRUE(std::is_trivially_default_constructible<DynamicTreeBranchData>::value);
 
-    EXPECT_TRUE(std::is_copy_constructible<DynamicTree::BranchData>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<DynamicTree::BranchData>::value);
-    EXPECT_TRUE(std::is_trivially_copy_constructible<DynamicTree::BranchData>::value);
+    EXPECT_TRUE(std::is_copy_constructible<DynamicTreeBranchData>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible<DynamicTreeBranchData>::value);
+    EXPECT_TRUE(std::is_trivially_copy_constructible<DynamicTreeBranchData>::value);
 
-    EXPECT_TRUE(std::is_copy_assignable<DynamicTree::BranchData>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTree::BranchData>::value);
-    EXPECT_TRUE(std::is_trivially_copy_assignable<DynamicTree::BranchData>::value);
+    EXPECT_TRUE(std::is_copy_assignable<DynamicTreeBranchData>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTreeBranchData>::value);
+    EXPECT_TRUE(std::is_trivially_copy_assignable<DynamicTreeBranchData>::value);
 
-    EXPECT_TRUE(std::is_destructible<DynamicTree::BranchData>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<DynamicTree::BranchData>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<DynamicTree::BranchData>::value);
+    EXPECT_TRUE(std::is_destructible<DynamicTreeBranchData>::value);
+    EXPECT_TRUE(std::is_nothrow_destructible<DynamicTreeBranchData>::value);
+    EXPECT_TRUE(std::is_trivially_destructible<DynamicTreeBranchData>::value);
 }
 
 TEST(DynamicTreeLeafData, Traits)
 {
-    EXPECT_TRUE(std::is_default_constructible<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTree::LeafData>::value);
+    EXPECT_TRUE(std::is_default_constructible<DynamicTreeLeafData>::value);
+    EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTreeLeafData>::value);
 
-    EXPECT_TRUE(std::is_copy_constructible<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<DynamicTree::LeafData>::value);
+    EXPECT_TRUE(std::is_copy_constructible<DynamicTreeLeafData>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible<DynamicTreeLeafData>::value);
 
-    EXPECT_TRUE(std::is_copy_assignable<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTree::LeafData>::value);
+    EXPECT_TRUE(std::is_copy_assignable<DynamicTreeLeafData>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTreeLeafData>::value);
 
-    EXPECT_TRUE(std::is_destructible<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<DynamicTree::LeafData>::value);
+    EXPECT_TRUE(std::is_destructible<DynamicTreeLeafData>::value);
+    EXPECT_TRUE(std::is_nothrow_destructible<DynamicTreeLeafData>::value);
 }
 
 TEST(DynamicTreeVariantData, Traits)
 {
-    EXPECT_TRUE(std::is_default_constructible<DynamicTree::VariantData>::value);
-    EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTree::VariantData>::value);
-    //EXPECT_TRUE(std::is_trivially_default_constructible<DynamicTree::VariantData>::value);
+    EXPECT_TRUE(std::is_default_constructible<DynamicTreeVariantData>::value);
+    EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTreeVariantData>::value);
+    //EXPECT_TRUE(std::is_trivially_default_constructible<DynamicTreeVariantData>::value);
 
-    EXPECT_TRUE(std::is_nothrow_constructible<DynamicTree::VariantData>::value);
-    EXPECT_TRUE(std::is_constructible<DynamicTree::VariantData>::value);
-    //EXPECT_TRUE(std::is_trivially_constructible<DynamicTree::VariantData>::value);
+    EXPECT_TRUE(std::is_nothrow_constructible<DynamicTreeVariantData>::value);
+    EXPECT_TRUE(std::is_constructible<DynamicTreeVariantData>::value);
+    //EXPECT_TRUE(std::is_trivially_constructible<DynamicTreeVariantData>::value);
 
-    EXPECT_TRUE(std::is_copy_constructible<DynamicTree::VariantData>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<DynamicTree::VariantData>::value);
-    EXPECT_TRUE(std::is_trivially_copy_constructible<DynamicTree::VariantData>::value);
+    EXPECT_TRUE(std::is_copy_constructible<DynamicTreeVariantData>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible<DynamicTreeVariantData>::value);
+    EXPECT_TRUE(std::is_trivially_copy_constructible<DynamicTreeVariantData>::value);
 
-    EXPECT_TRUE(std::is_copy_assignable<DynamicTree::VariantData>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTree::VariantData>::value);
-    EXPECT_TRUE(std::is_trivially_copy_assignable<DynamicTree::VariantData>::value);
+    EXPECT_TRUE(std::is_copy_assignable<DynamicTreeVariantData>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTreeVariantData>::value);
+    EXPECT_TRUE(std::is_trivially_copy_assignable<DynamicTreeVariantData>::value);
 
-    EXPECT_TRUE(std::is_destructible<DynamicTree::VariantData>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<DynamicTree::VariantData>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<DynamicTree::VariantData>::value);
+    EXPECT_TRUE(std::is_destructible<DynamicTreeVariantData>::value);
+    EXPECT_TRUE(std::is_nothrow_destructible<DynamicTreeVariantData>::value);
+    EXPECT_TRUE(std::is_trivially_destructible<DynamicTreeVariantData>::value);
 }
 
 // Test class for testing move semantics.
@@ -394,9 +394,9 @@ TEST(DynamicTree, DefaultConstruction)
 
 TEST(DynamicTreeLeafData, DefaultConstructor)
 {
-    EXPECT_EQ(DynamicTree::LeafData().bodyId, BodyID(0u));
-    EXPECT_EQ(DynamicTree::LeafData().shapeId, ShapeID(0u));
-    EXPECT_EQ(DynamicTree::LeafData().childId, ChildCounter(0u));
+    EXPECT_EQ(DynamicTreeLeafData().bodyId, BodyID(0u));
+    EXPECT_EQ(DynamicTreeLeafData().shapeId, ShapeID(0u));
+    EXPECT_EQ(DynamicTreeLeafData().childId, ChildCounter(0u));
 }
 
 TEST(DynamicTree, ZeroCapacityConstructionSameAsDefault)
@@ -436,7 +436,7 @@ TEST(DynamicTree, CopyConstruction)
         Length2{0_m, 0_m},
         Length2(1_m, 1_m)
     };
-    const auto pid = orig.CreateLeaf(aabb, DynamicTree::LeafData{BodyID(1u), ShapeID(0u), 0u});
+    const auto pid = orig.CreateLeaf(aabb, DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0u});
     {
         DynamicTree copy{orig};
         EXPECT_EQ(copy.GetRootIndex(), orig.GetRootIndex());
@@ -467,7 +467,7 @@ TEST(DynamicTree, CopyAssignment)
         Length2{0_m, 0_m},
         Length2{1_m, 1_m}
     };
-    const auto pid = orig.CreateLeaf(aabb, DynamicTree::LeafData{BodyID(1u), ShapeID(0u), 0u});
+    const auto pid = orig.CreateLeaf(aabb, DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0u});
     EXPECT_EQ(orig.FindReference(pid), DynamicTree::GetInvalidSize());
     {
         DynamicTree copy;
@@ -494,7 +494,7 @@ TEST(DynamicTree, CreateAndDestroyProxy)
         Length2{3_m, 1_m},
         Length2{-5_m, -2_m}
     };
-    const auto userdata = DynamicTree::LeafData{BodyID(1u), ShapeID(0u), 0u};
+    const auto userdata = DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0u};
 
     const auto pid = foo.CreateLeaf(aabb, userdata);
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(1));
@@ -537,7 +537,7 @@ TEST(DynamicTree, FourIdenticalProxies)
         Length2{3_m, 1_m},
         Length2{-5_m, -2_m}
     };
-    const auto leafData = DynamicTree::LeafData{BodyID(1u), ShapeID(0u), 0u};
+    const auto leafData = DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0u};
 
     {
         const auto pid = foo.CreateLeaf(aabb, leafData);
@@ -651,7 +651,7 @@ TEST(DynamicTree, MoveConstruction)
         Length2{-5_m, -2_m}
     };
 
-    const auto leafData = DynamicTree::LeafData{BodyID(1u), ShapeID(0u), 0u};
+    const auto leafData = DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0u};
 
     const auto leaf0 = foo.CreateLeaf(aabb, leafData);
     const auto leaf1 = foo.CreateLeaf(aabb, leafData);
@@ -690,7 +690,7 @@ TEST(DynamicTree, MoveAssignment)
         Length2{-5_m, -2_m}
     };
     
-    const auto leafData = DynamicTree::LeafData{BodyID(1u), ShapeID(0u), 0u};
+    const auto leafData = DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0u};
 
     const auto leaf0 = foo.CreateLeaf(aabb, leafData);
     const auto leaf1 = foo.CreateLeaf(aabb, leafData);
@@ -734,7 +734,7 @@ TEST(DynamicTree, CreateLeaf)
         Length2{3_m, 1_m},
         Length2{-5_m, -2_m}
     };
-    const auto leafData = DynamicTree::LeafData{BodyID(1u), ShapeID(0u), 0u};
+    const auto leafData = DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0u};
 
     const auto l1 = foo.CreateLeaf(aabb, leafData);
     ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(1));
@@ -802,7 +802,7 @@ TEST(DynamicTree, UpdateLeaf)
     ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(0));
     
     const auto aabb = AABB{Length2{3_m, 1_m}, Length2{-5_m, -2_m}};
-    const auto leafData = DynamicTree::LeafData{BodyID(1u), ShapeID(0u), 0u};
+    const auto leafData = DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0u};
     
     leafs.push_back(foo.CreateLeaf(aabb, leafData)); // 1
     leafs.push_back(foo.CreateLeaf(aabb, leafData)); // 2
@@ -980,7 +980,7 @@ TEST(DynamicTree, Clear)
     EXPECT_EQ(foo.GetFreeIndex(), DynamicTree::GetInvalidSize());
     EXPECT_EQ(foo.GetRootIndex(), DynamicTree::GetInvalidSize());
 
-    ASSERT_NO_THROW(foo.CreateLeaf(AABB{}, DynamicTree::LeafData()));
+    ASSERT_NO_THROW(foo.CreateLeaf(AABB{}, DynamicTreeLeafData()));
     ASSERT_EQ(foo.GetNodeCount(), DynamicTree::Size(1));
     ASSERT_GE(foo.GetNodeCapacity(), DynamicTree::Size(1));
     ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(1));
@@ -998,7 +998,7 @@ TEST(DynamicTree, Clear)
     auto numLeafs = foo.GetLeafCount();
     while (foo.GetNodeCount() <= capacity)
     {
-        ASSERT_NO_THROW(foo.CreateLeaf(AABB{}, DynamicTree::LeafData()));
+        ASSERT_NO_THROW(foo.CreateLeaf(AABB{}, DynamicTreeLeafData()));
         ASSERT_GT(foo.GetLeafCount(), numLeafs);
         ASSERT_GE(foo.GetNodeCapacity(), capacity);
         numLeafs = foo.GetLeafCount();
@@ -1022,21 +1022,21 @@ TEST(DynamicTree, QueryFF)
         return DynamicTreeOpcode::End;
     });
     EXPECT_EQ(ncalls, 0);
-    foo.CreateLeaf(AABB{}, DynamicTree::LeafData{BodyID(1u), ShapeID(0u), 0});
+    foo.CreateLeaf(AABB{}, DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0});
     Query(foo, AABB{}, [&] (DynamicTree::Size) {
         ++ncalls;
         return DynamicTreeOpcode::End;
     });
     EXPECT_EQ(ncalls, 0);
     foo.CreateLeaf(AABB{LengthInterval{-10_m, 10_m}, LengthInterval{-20_m, 20_m}},
-                   DynamicTree::LeafData{BodyID(1u), ShapeID(0u), 0});
+                   DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0});
     Query(foo, AABB{}, [&] (DynamicTree::Size) {
         ++ncalls;
         return DynamicTreeOpcode::End;
     });
     EXPECT_EQ(ncalls, 0);
     foo.CreateLeaf(AABB{LengthInterval{-10_m, 10_m}, LengthInterval{-20_m, 20_m}},
-                   DynamicTree::LeafData{BodyID(1u), ShapeID(0u), 0});
+                   DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0});
     Query(foo, AABB{LengthInterval{-20_m, 20_m}, LengthInterval{-20_m, 20_m}}, [&] (DynamicTree::Size) {
         ++ncalls;
         return DynamicTreeOpcode::End;
@@ -1052,13 +1052,13 @@ TEST(DynamicTree, QueryFF)
 
 TEST(DynamicTree, LeafDataEquality)
 {
-    EXPECT_TRUE(DynamicTree::LeafData() == DynamicTree::LeafData());
-    EXPECT_TRUE((DynamicTree::LeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
-                 DynamicTree::LeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)}));
-    EXPECT_FALSE((DynamicTree::LeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
-                  DynamicTree::LeafData{BodyID(1u), ShapeID(0u), ChildCounter(0u)}));
-    EXPECT_FALSE((DynamicTree::LeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
-                  DynamicTree::LeafData{BodyID(0u), ShapeID(1u), ChildCounter(0u)}));
-    EXPECT_FALSE((DynamicTree::LeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
-                  DynamicTree::LeafData{BodyID(0u), ShapeID(0u), ChildCounter(1u)}));
+    EXPECT_TRUE(DynamicTreeLeafData() == DynamicTreeLeafData());
+    EXPECT_TRUE((DynamicTreeLeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
+                 DynamicTreeLeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)}));
+    EXPECT_FALSE((DynamicTreeLeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
+                  DynamicTreeLeafData{BodyID(1u), ShapeID(0u), ChildCounter(0u)}));
+    EXPECT_FALSE((DynamicTreeLeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
+                  DynamicTreeLeafData{BodyID(0u), ShapeID(1u), ChildCounter(0u)}));
+    EXPECT_FALSE((DynamicTreeLeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
+                  DynamicTreeLeafData{BodyID(0u), ShapeID(0u), ChildCounter(1u)}));
 }

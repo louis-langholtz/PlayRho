@@ -524,7 +524,7 @@ void CreateProxies(DynamicTree& tree,
         const auto dp = GetChild(shape, childIndex);
         const auto aabb = playrho::d2::ComputeAABB(dp, xfm);
         const auto fattenedAABB = GetFattenedAABB(aabb, aabbExtension);
-        const auto treeId = tree.CreateLeaf(fattenedAABB, DynamicTree::LeafData{
+        const auto treeId = tree.CreateLeaf(fattenedAABB, DynamicTreeLeafData{
             bodyID, shapeID, childIndex});
         fixtureProxies.push_back(treeId);
         otherProxies.push_back(treeId);
