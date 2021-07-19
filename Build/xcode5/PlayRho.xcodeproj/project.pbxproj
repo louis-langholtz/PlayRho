@@ -205,6 +205,8 @@
 		478E67CD1E777A43009B9AD5 /* StepStats.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478E67CA1E777A43009B9AD5 /* StepStats.hpp */; };
 		479132DF26A52AAF0011707B /* PointState.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 479132DD26A52AAF0011707B /* PointState.hpp */; };
 		479132F226A52FD00011707B /* RayCastOpcode.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 479132F026A52FD00011707B /* RayCastOpcode.hpp */; };
+		479132FF26A5344B0011707B /* ToiConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 479132FD26A5344A0011707B /* ToiConf.cpp */; };
+		4791330026A5344B0011707B /* ToiConf.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 479132FE26A5344B0011707B /* ToiConf.hpp */; };
 		47928F351E5FE19C00EE6E9E /* BodyConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F341E5FE19C00EE6E9E /* BodyConstraint.cpp */; };
 		47928F371E66539000EE6E9E /* FrictionJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F361E66539000EE6E9E /* FrictionJoint.cpp */; };
 		47928F391E66586400EE6E9E /* DistanceJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F381E66586400EE6E9E /* DistanceJoint.cpp */; };
@@ -679,6 +681,8 @@
 		478E67CA1E777A43009B9AD5 /* StepStats.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StepStats.hpp; sourceTree = "<group>"; };
 		479132DD26A52AAF0011707B /* PointState.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PointState.hpp; sourceTree = "<group>"; };
 		479132F026A52FD00011707B /* RayCastOpcode.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RayCastOpcode.hpp; sourceTree = "<group>"; };
+		479132FD26A5344A0011707B /* ToiConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ToiConf.cpp; sourceTree = "<group>"; };
+		479132FE26A5344B0011707B /* ToiConf.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ToiConf.hpp; sourceTree = "<group>"; };
 		47928F341E5FE19C00EE6E9E /* BodyConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BodyConstraint.cpp; sourceTree = "<group>"; };
 		47928F361E66539000EE6E9E /* FrictionJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrictionJoint.cpp; sourceTree = "<group>"; };
 		47928F381E66586400EE6E9E /* DistanceJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceJoint.cpp; sourceTree = "<group>"; };
@@ -1071,6 +1075,8 @@
 				4734B2241DC29F7C00F15E29 /* SimplexEdge.hpp */,
 				80BB8932141C3E5900F1753A /* TimeOfImpact.cpp */,
 				80BB8933141C3E5900F1753A /* TimeOfImpact.hpp */,
+				479132FD26A5344A0011707B /* ToiConf.cpp */,
+				479132FE26A5344B0011707B /* ToiConf.hpp */,
 				47578BE31D886FED0078CD40 /* WorldManifold.cpp */,
 				47578BDE1D8869110078CD40 /* WorldManifold.hpp */,
 			);
@@ -1485,6 +1491,7 @@
 				4787D6CB1F2EA3A1008C115E /* GearJointConf.hpp in Headers */,
 				4734B22D1DC2B11D00F15E29 /* Simplex.hpp in Headers */,
 				80BB899F141C3E5900F1753A /* BlockAllocator.hpp in Headers */,
+				4791330026A5344B0011707B /* ToiConf.hpp in Headers */,
 				476408942522698E0090F711 /* WorldJoint.hpp in Headers */,
 				4726DD381D387D630012A882 /* Manifold.hpp in Headers */,
 				4731DE5E1DEE3F0600E7F931 /* SeparationScenario.hpp in Headers */,
@@ -1942,6 +1949,7 @@
 				4731DE641DEF841600E7F931 /* SeparationScenario.cpp in Sources */,
 				47578BE41D886FED0078CD40 /* WorldManifold.cpp in Sources */,
 				80BB89B1141C3E5900F1753A /* Island.cpp in Sources */,
+				479132FF26A5344B0011707B /* ToiConf.cpp in Sources */,
 				47D6D59E2672B5CA00AF32B4 /* DistanceConf.cpp in Sources */,
 				47640887251F11630090F711 /* WorldImplJoint.cpp in Sources */,
 				475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */,

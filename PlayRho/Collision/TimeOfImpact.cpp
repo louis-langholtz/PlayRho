@@ -23,7 +23,7 @@
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/SeparationScenario.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
+
 #include <algorithm>
 
 namespace playrho {
@@ -62,21 +62,11 @@ const char* GetName(TOIOutput::State state) noexcept
     return "unknown";
 }
 
-ToiConf GetToiConf(const StepConf& conf) noexcept
-{
-    return ToiConf{}
-        .UseTimeMax(1)
-        .UseTargetDepth(conf.targetDepth)
-        .UseTolerance(conf.tolerance)
-        .UseMaxRootIters(conf.maxToiRootIters)
-        .UseMaxToiIters(conf.maxToiIters)
-        .UseMaxDistIters(conf.maxDistanceIters);
-}
-
 namespace d2 {
 
-TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
-                       const DistanceProxy& proxyB, const Sweep& sweepB, ToiConf conf)
+TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA, // force line-break
+                       const DistanceProxy& proxyB, const Sweep& sweepB, // force line-break
+                       const ToiConf& conf)
 {
     assert(IsValid(sweepA));
     assert(IsValid(sweepB));
