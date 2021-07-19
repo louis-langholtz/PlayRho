@@ -22,121 +22,13 @@
 #ifndef PLAYRHO_COLLISION_TIMEOFIMPACT_HPP
 #define PLAYRHO_COLLISION_TIMEOFIMPACT_HPP
 
-#include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Wider.hpp>
 #include <PlayRho/Collision/ToiConf.hpp>
+#include <PlayRho/Collision/ToiOutput.hpp>
 
-namespace playrho {
-
-/// @brief Output data for time of impact.
-struct ToiOutput {
-    /// @brief Time of impact statistics.
-    struct Statistics {
-        /// @brief TOI iterations type.
-        using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
-
-        /// @brief Distance iterations type.
-        using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
-
-        /// @brief Root iterations type.
-        using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
-
-        /// @brief TOI iterations sum type.
-        using toi_sum_type = Wider<toi_iter_type>::type;
-
-        /// @brief Distance iterations sum type.
-        using dist_sum_type = Wider<dist_iter_type>::type;
-
-        /// @brief Root iterations sum type.
-        using root_sum_type = Wider<root_iter_type>::type;
-
-        // 6-bytes
-        toi_sum_type sum_finder_iters = 0; ///< Sum total TOI iterations.
-        dist_sum_type sum_dist_iters = 0; ///< Sum total distance iterations.
-        root_sum_type sum_root_iters = 0; ///< Sum total of root finder iterations.
-
-        // 3-bytes
-        toi_iter_type toi_iters = 0; ///< Time of impact iterations.
-        dist_iter_type max_dist_iters = 0; ///< Max. distance iterations count.
-        root_iter_type max_root_iters = 0; ///< Max. root finder iterations for all TOI iterations.
-    };
-
-    /// @brief State.
-    enum State : std::uint8_t {
-        /// @brief Unknown.
-        /// @details Unknown state.
-        /// @note This is the default initialized state.
-        e_unknown,
-
-        /// @brief Touching.
-        /// @details Indicates that the returned time of impact for two convex polygons
-        ///   is for a time at which the two polygons are within the minimum and maximum
-        ///   target range inclusively.
-        /// @note This is a desirable result.
-        /// @note Time of impact is the time when the two convex polygons "touch".
-        e_touching,
-
-        /// @brief Separated.
-        /// @details Indicates that the two convex polygons never actually collide
-        ///   during their defined sweeps.
-        /// @note This is a desirable result.
-        /// @note Time of impact in this case is <code>tMax</code> (which is typically 1).
-        e_separated,
-
-        /// @brief Overlapped.
-        /// @details Indicates that the two convex polygons are closer to each other
-        ///   at the returned time than the target depth range allows for.
-        /// @note Can happen if total radius of the two convex polygons is too small.
-        /// @note Can happen if the tolerance is too low.
-        /// @note Time of impact is the time when the two convex polygons have already
-        ///   collided too much.
-        e_overlapped,
-
-        /// @brief Max root iterations.
-        /// @details Got to max number of root iterations allowed.
-        /// @note Can happen if the configured max number of root iterations is too low.
-        /// @note Can happen if the tolerance is too small.
-        e_maxRootIters,
-
-        /// @brief Next after.
-        /// @note Can happen if the length moved is too much bigger than the tolerance.
-        e_nextAfter,
-
-        /// @brief Max TOI iterations.
-        e_maxToiIters,
-
-        /// @brief Below minimum target.
-        e_belowMinTarget,
-
-        /// @brief Max distance iterations.
-        /// @details Indicates that the maximum number of distance iterations was done.
-        /// @note Can happen if the configured max number of distance iterations was too low.
-        e_maxDistIters,
-
-        e_targetDepthExceedsTotalRadius,
-        e_minTargetSquaredOverflow,
-        e_maxTargetSquaredOverflow,
-
-        e_notFinite,
-    };
-
-    /// @brief Default constructor.
-    ToiOutput() = default;
-
-    /// @brief Initializing constructor.
-    ToiOutput(Real t, Statistics s, State z) noexcept : time{t}, stats{s}, state{z} {}
-
-    Real time = 0; ///< Time factor in range of [0,1] into the future.
-    Statistics stats; ///< Statistics.
-    State state = e_unknown; ///< State at time factor.
-};
-
-/// @brief Gets a human readable name for the given output state.
-const char* GetName(ToiOutput::State state) noexcept;
-
-namespace d2 {
+namespace playrho::d2 {
 
 class DistanceProxy;
+class Sweep;
 
 /// @brief Gets the time of impact for two disjoint convex sets using the
 ///    Separating Axis Theorem.
@@ -170,7 +62,6 @@ ToiOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                        const DistanceProxy& proxyB, const Sweep& sweepB,
                        const ToiConf& conf = GetDefaultToiConf());
 
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2
 
 #endif // PLAYRHO_COLLISION_TIMEOFIMPACT_HPP

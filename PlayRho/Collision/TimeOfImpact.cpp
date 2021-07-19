@@ -20,49 +20,16 @@
  */
 
 #include <PlayRho/Collision/TimeOfImpact.hpp>
+
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/SeparationScenario.hpp>
+#include <PlayRho/Common/Sweep.hpp>
 
 #include <algorithm>
+#include <cassert> // for assert
 
-namespace playrho {
-
-const char* GetName(ToiOutput::State state) noexcept
-{
-    switch (state) {
-    case ToiOutput::e_unknown:
-        break;
-    case ToiOutput::e_touching:
-        return "touching";
-    case ToiOutput::e_separated:
-        return "separated";
-    case ToiOutput::e_overlapped:
-        return "overlapped";
-    case ToiOutput::e_nextAfter:
-        return "next-after";
-    case ToiOutput::e_maxRootIters:
-        return "max-root-iters";
-    case ToiOutput::e_maxToiIters:
-        return "max-toi-iters";
-    case ToiOutput::e_belowMinTarget:
-        return "below-min-target";
-    case ToiOutput::e_maxDistIters:
-        return "max-dist-iters";
-    case ToiOutput::e_targetDepthExceedsTotalRadius:
-        return "target-depth-exceeds-total-radius";
-    case ToiOutput::e_minTargetSquaredOverflow:
-        return "min-target-squared-overflow";
-    case ToiOutput::e_maxTargetSquaredOverflow:
-        return "max-target-squared-overflow";
-    case ToiOutput::e_notFinite:
-        return "not-finite";
-    }
-    assert(state == TOIOutput::e_unknown);
-    return "unknown";
-}
-
-namespace d2 {
+namespace playrho::d2 {
 
 ToiOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA, // force line-break
                        const DistanceProxy& proxyB, const Sweep& sweepB, // force line-break
@@ -287,5 +254,4 @@ ToiOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA, // forc
     return ToiOutput{timeLo, stats, ToiOutput::e_maxToiIters};
 }
 
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2
