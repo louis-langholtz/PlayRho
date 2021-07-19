@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2021 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -25,10 +25,10 @@
 /// Declaration of the <code>ContactKey</code> class.
 
 #include <PlayRho/Common/Settings.hpp>
-#include <utility>
+
 #include <algorithm>
 #include <functional>
-#include <cassert>
+#include <utility>
 
 namespace playrho {
 
