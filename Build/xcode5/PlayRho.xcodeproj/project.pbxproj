@@ -203,6 +203,7 @@
 		478869101D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */; };
 		478E67C71E760AB7009B9AD5 /* BodyType.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478E67C41E760AB7009B9AD5 /* BodyType.hpp */; };
 		478E67CD1E777A43009B9AD5 /* StepStats.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478E67CA1E777A43009B9AD5 /* StepStats.hpp */; };
+		479132DF26A52AAF0011707B /* PointState.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 479132DD26A52AAF0011707B /* PointState.hpp */; };
 		47928F351E5FE19C00EE6E9E /* BodyConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F341E5FE19C00EE6E9E /* BodyConstraint.cpp */; };
 		47928F371E66539000EE6E9E /* FrictionJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F361E66539000EE6E9E /* FrictionJoint.cpp */; };
 		47928F391E66586400EE6E9E /* DistanceJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F381E66586400EE6E9E /* DistanceJoint.cpp */; };
@@ -675,6 +676,7 @@
 		4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VelocityConstraint.hpp; sourceTree = "<group>"; };
 		478E67C41E760AB7009B9AD5 /* BodyType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyType.hpp; sourceTree = "<group>"; };
 		478E67CA1E777A43009B9AD5 /* StepStats.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StepStats.hpp; sourceTree = "<group>"; };
+		479132DD26A52AAF0011707B /* PointState.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PointState.hpp; sourceTree = "<group>"; };
 		47928F341E5FE19C00EE6E9E /* BodyConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BodyConstraint.cpp; sourceTree = "<group>"; };
 		47928F361E66539000EE6E9E /* FrictionJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrictionJoint.cpp; sourceTree = "<group>"; };
 		47928F381E66586400EE6E9E /* DistanceJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceJoint.cpp; sourceTree = "<group>"; };
@@ -1052,6 +1054,7 @@
 				4726DD351D387D630012A882 /* Manifold.hpp */,
 				4731DE2E1DDF9B6900E7F931 /* MassData.cpp */,
 				47CB343D1D6F3A8500828126 /* MassData.hpp */,
+				479132DD26A52AAF0011707B /* PointState.hpp */,
 				4731DE261DDF84A900E7F931 /* RayCastInput.hpp */,
 				4726DD281D31B4090012A882 /* RayCastOutput.cpp */,
 				4731DE201DDF83A500E7F931 /* RayCastOutput.hpp */,
@@ -1433,6 +1436,7 @@
 				4764086F250EA5DE0090F711 /* ArrayAllocator.hpp in Headers */,
 				80BB8987141C3E5900F1753A /* PlayRho.hpp in Headers */,
 				4764085325045B3C0090F711 /* UnitInterval.hpp in Headers */,
+				479132DF26A52AAF0011707B /* PointState.hpp in Headers */,
 				47D28D9D1F6F28C70094C032 /* WrongState.hpp in Headers */,
 				4706451B252CE27B006E69AA /* TypeInfo.hpp in Headers */,
 				476408932522698E0090F711 /* WorldMisc.hpp in Headers */,
