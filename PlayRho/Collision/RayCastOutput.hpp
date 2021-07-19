@@ -27,6 +27,7 @@
 
 #include <PlayRho/Common/UnitInterval.hpp>
 #include <PlayRho/Collision/RayCastInput.hpp>
+#include <PlayRho/Collision/RayCastOpcode.hpp>
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>
 
 #include <PlayRho/Dynamics/BodyID.hpp>
@@ -40,29 +41,6 @@ template <std::size_t N>
 struct AABB;
 
 } // namespace detail
-
-/// @brief Ray cast opcode enumeration.
-/// @details Instructs some ray casting methods on what to do next.
-enum class RayCastOpcode
-{
-    /// @brief End the ray-cast search for fixtures.
-    /// @details Use this to stop searching for fixtures.
-    Terminate,
-    
-    /// @brief Ignore the current fixture.
-    /// @details Use this to continue searching for fixtures along the ray.
-    IgnoreFixture,
-    
-    /// @brief Clip the ray end to the current point.
-    /// @details Use this shorten the ray to the current point and to continue searching
-    ///   for fixtures now along the newly shortened ray.
-    ClipRay,
-    
-    /// @brief Reset the ray end back to the second point.
-    /// @details Use this to restore the ray to its full length and to continue searching
-    ///    for fixtures now along the restored full length ray.
-    ResetRay
-};
 
 namespace d2 {
 
