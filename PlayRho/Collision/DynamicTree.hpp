@@ -26,95 +26,15 @@
 /// Declaration of the <code>DynamicTree</code> class.
 
 #include <PlayRho/Collision/AABB.hpp>
+#include <PlayRho/Collision/DynamicTreeData.hpp>
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Vector2.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 
-#include <functional>
-#include <type_traits>
-#include <utility>
+#include <cassert> // for assert
 
-namespace playrho {
-
-/// @brief Unused data of a tree node.
-/// @note This exists for symmetry and as placeholder in case this needs to later be used.
-struct DynamicTreeUnusedData {
-    // Intentionally empty.
-};
-
-/// @brief Branch data of a tree node.
-struct DynamicTreeBranchData {
-    DynamicTreeSize child1; ///< @brief Child 1.
-    DynamicTreeSize child2; ///< @brief Child 2.
-};
-
-/// @brief Leaf data of a tree node.
-/// @details This is the leaf node specific data for a <code>DynamicTree::TreeNode</code>.
-///   It's data that only pertains to leaf nodes.
-/// @note This class is used in the <code>DynamicTreeVariantData</code> union within a
-///   <code>DynamicTree::TreeNode</code>.
-///   This has ramifications on this class's data contents and size.
-struct DynamicTreeLeafData {
-    // In terms of what needs to be in this structure, it minimally needs to have enough
-    // information in it to identify the child shape for which the node's AABB represents,
-    // and its associated body. A pointer to the fixture and the index of the child in
-    // its shape could suffice for this. Meanwhile, a Contact is defined to be the
-    // recognition of an overlap between two child shapes having different bodies making
-    // the caching of the bodies a potential speed-up opportunity.
-
-    /// @brief Identifier of the associated body.
-    /// @note This field serves merely to potentially avoid the lookup of the body through
-    ///   the fixture.
-    BodyID bodyId;
-
-    /// @brief Identifier of the associated shape.
-    ShapeID shapeId;
-
-    /// @brief Child index of related Shape.
-    ChildCounter childId;
-};
-
-/// @brief Equality operator.
-/// @relatedalso DynamicTreeLeafData
-constexpr bool operator==(const DynamicTreeLeafData& lhs, const DynamicTreeLeafData& rhs) noexcept
-{
-    return lhs.bodyId == rhs.bodyId && lhs.shapeId == rhs.shapeId && lhs.childId == rhs.childId;
-}
-
-/// @brief Inequality operator.
-/// @relatedalso DynamicTreeLeafData
-constexpr bool operator!=(const DynamicTreeLeafData& lhs, const DynamicTreeLeafData& rhs) noexcept
-{
-    return !(lhs == rhs);
-}
-
-/// @brief Variant data.
-/// @note A union is used intentionally to save space.
-union DynamicTreeVariantData {
-    /// @brief Unused/free-list specific data.
-    DynamicTreeUnusedData unused;
-
-    /// @brief Leaf specific data.
-    DynamicTreeLeafData leaf;
-
-    /// @brief Branch specific data.
-    DynamicTreeBranchData branch;
-
-    /// @brief Default constructor.
-    DynamicTreeVariantData() noexcept {}
-
-    /// @brief Initializing constructor.
-    constexpr DynamicTreeVariantData(DynamicTreeUnusedData value) noexcept : unused{value} {}
-
-    /// @brief Initializing constructor.
-    constexpr DynamicTreeVariantData(DynamicTreeLeafData value) noexcept : leaf{value} {}
-
-    /// @brief Initializing constructor.
-    constexpr DynamicTreeVariantData(DynamicTreeBranchData value) noexcept : branch{value} {}
-};
-
-namespace d2 {
+namespace playrho::d2 {
 
 /// @brief A dynamic AABB tree broad-phase.
 ///
@@ -163,7 +83,7 @@ public:
     /// @brief Type for heights.
     /// @note The maximum height of a tree can never exceed half of the max value of the
     ///   <code>Size</code> type due to the binary nature of this tree structure.
-    using Height = ContactCounter;
+    using Height = DynamicTreeSize;
 
     /// @brief Invalid height constant value.
     static constexpr auto InvalidHeight = static_cast<Height>(-1);
@@ -763,7 +683,6 @@ inline std::size_t size(const DynamicTree& tree) noexcept
     return tree.GetLeafCount();
 }
 
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2
 
 #endif // PLAYRHO_COLLISION_DYNAMICTREE_HPP

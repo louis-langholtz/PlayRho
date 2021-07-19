@@ -44,17 +44,6 @@ static_assert(std::is_copy_assignable<DynamicTree>::value, "DynamicTree must be 
 static_assert(std::is_nothrow_move_assignable<DynamicTree>::value,
               "DynamicTree must be move assignable!");
 
-static_assert(std::is_nothrow_default_constructible<DynamicTreeLeafData>::value,
-              "DynamicTreeLeafData must be nothrow default constructible!");
-static_assert(std::is_copy_constructible<DynamicTreeLeafData>::value,
-              "DynamicTreeLeafData must be copy constructible!");
-static_assert(std::is_nothrow_move_constructible<DynamicTreeLeafData>::value,
-              "DynamicTreeLeafData must be nothrow move constructible!");
-static_assert(std::is_copy_assignable<DynamicTreeLeafData>::value,
-              "DynamicTreeLeafData must be copy assignable!");
-static_assert(std::is_nothrow_move_assignable<DynamicTreeLeafData>::value,
-              "DynamicTreeLeafData must be move assignable!");
-
 namespace {
 
 inline DynamicTree::TreeNode MakeNode(DynamicTree::Size c1, const AABB& aabb1,
