@@ -29,7 +29,7 @@
 namespace playrho {
 
 /// @brief Output data for time of impact.
-struct TOIOutput {
+struct ToiOutput {
     /// @brief Time of impact statistics.
     struct Statistics {
         /// @brief TOI iterations type.
@@ -121,10 +121,10 @@ struct TOIOutput {
     };
 
     /// @brief Default constructor.
-    TOIOutput() = default;
+    ToiOutput() = default;
 
     /// @brief Initializing constructor.
-    TOIOutput(Real t, Statistics s, State z) noexcept : time{t}, stats{s}, state{z} {}
+    ToiOutput(Real t, Statistics s, State z) noexcept : time{t}, stats{s}, state{z} {}
 
     Real time = 0; ///< Time factor in range of [0,1] into the future.
     Statistics stats; ///< Statistics.
@@ -132,7 +132,7 @@ struct TOIOutput {
 };
 
 /// @brief Gets a human readable name for the given output state.
-const char* GetName(TOIOutput::State state) noexcept;
+const char* GetName(ToiOutput::State state) noexcept;
 
 namespace d2 {
 
@@ -166,7 +166,7 @@ class DistanceProxy;
 ///
 /// @relatedalso ::playrho::TOIOutput
 ///
-TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
+ToiOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                        const DistanceProxy& proxyB, const Sweep& sweepB,
                        const ToiConf& conf = GetDefaultToiConf());
 

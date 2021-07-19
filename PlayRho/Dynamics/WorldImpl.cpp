@@ -393,9 +393,9 @@ inline BodyCounter Sleepem(const Island::Bodies& bodies,
     return unawoken;
 }
 
-inline bool IsValidForTime(TOIOutput::State state) noexcept
+inline bool IsValidForTime(ToiOutput::State state) noexcept
 {
-    return state == TOIOutput::e_touching;
+    return state == ToiOutput::e_touching;
 }
 
 bool FlagForFiltering(ArrayAllocator<Contact>& contactBuffer, BodyID bodyA,
