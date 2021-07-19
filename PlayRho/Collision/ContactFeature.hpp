@@ -27,7 +27,7 @@
 
 namespace playrho {
 
-/// @brief Contact Feature.
+/// @brief The contact feature.
 /// @details The features that intersect to form the contact point.
 /// @note This structure is designed to be compact and passed-by-value.
 /// @note This data structure is 4-bytes large.

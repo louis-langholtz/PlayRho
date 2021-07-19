@@ -31,10 +31,12 @@
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>
 
 namespace playrho {
+
+class Contact;
+
 namespace d2 {
 
 class WorldImpl;
-class Contact;
 class Manifold;
 
 /// @brief Gets the extent of the currently valid contact range.

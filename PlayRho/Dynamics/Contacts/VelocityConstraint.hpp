@@ -83,7 +83,7 @@ public:
     
     /// Gets the normal of the contact in world coordinates.
     /// @note This value is set on construction.
-    /// @return Contact normal (in world coordinates) if previously set, an invalid value
+    /// @return The contact normal (in world coordinates) if previously set, an invalid value
     ///   otherwise.
     UnitVec GetNormal() const noexcept { return m_normal; }
     
@@ -372,7 +372,7 @@ VelocityConstraint::Conf GetToiVelocityConstraintConf(const StepConf& conf) noex
 
 /// Gets the normal of the velocity constraint contact in world coordinates.
 /// @note This value is set via the velocity constraint's <code>SetNormal</code> method.
-/// @return Contact normal (in world coordinates) if previously set, an invalid value
+/// @return The contact normal (in world coordinates) if previously set, an invalid value
 ///   otherwise.
 inline UnitVec GetNormal(const VelocityConstraint& vc) noexcept
 {

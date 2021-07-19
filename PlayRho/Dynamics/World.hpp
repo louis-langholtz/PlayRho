@@ -51,13 +51,13 @@ namespace playrho {
 
 struct StepConf;
 struct Filter;
+class Contact;
 
 namespace d2 {
 
 class WorldImpl;
 class Body;
 class Joint;
-class Contact;
 class Manifold;
 class ContactImpulsesList;
 class DynamicTree;

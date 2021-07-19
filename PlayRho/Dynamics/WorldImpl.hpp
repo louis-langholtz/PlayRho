@@ -56,11 +56,11 @@ namespace playrho {
 
 struct StepConf;
 enum class BodyType;
+class Contact;
 
 namespace d2 {
 
 class Body;
-class Contact;
 class Joint;
 class Shape;
 class Manifold;

@@ -58,8 +58,6 @@ inline Real MixRestitution(Real restitution1, Real restitution2) noexcept
 
 struct ToiConf;
 
-namespace d2 {
-
 /// @brief A potential contact between the children of two body associated shapes.
 ///
 /// @details The class manages contact between two shapes. A contact exists for each overlapping
@@ -902,7 +900,6 @@ constexpr void SetTangentSpeed(Contact& contact, LinearVelocity value) noexcept
     contact.SetTangentSpeed(value);
 }
 
-} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_CONTACTS_CONTACT_HPP

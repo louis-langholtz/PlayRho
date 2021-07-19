@@ -26,7 +26,7 @@
 
 namespace playrho {
 
-/// @brief Contact identifier.
+/// @brief Identifier of contacts.
 using ContactID = detail::IndexingNamedType<ContactCounter, struct ContactIdentifier>;
 
 /// @brief Invalid contact ID value.

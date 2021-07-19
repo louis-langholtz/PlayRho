@@ -67,10 +67,10 @@ public:
     /// @brief Size type.
     using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
 
-    /// Contact feature index.
+    /// The contact feature index.
     using CfIndex = ContactFeature::Index;
 
-    /// @brief Contact feature type.
+    /// @brief The contact feature type.
     using CfType = ContactFeature::Type;
 
     struct Conf;
@@ -135,7 +135,7 @@ public:
         /// @note 8-bytes.
         Length2 localPoint;
 
-        /// @brief Contact feature.
+        /// @brief The contact feature.
         /// @details Uniquely identifies a contact point between two shapes - A and B.
         /// @note This field is 4-bytes.
         /// @see GetPointStates.

@@ -111,7 +111,7 @@ using PositionConstraints = std::vector<PositionConstraint>;
 /// @brief Collection of velocity constraints.
 using VelocityConstraints = std::vector<VelocityConstraint>;
 
-/// @brief Contact updating configuration.
+/// @brief The contact updating configuration.
 struct WorldImpl::ContactUpdateConf
 {
     DistanceConf distance; ///< Distance configuration data.

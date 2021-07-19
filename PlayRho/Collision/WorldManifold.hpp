@@ -23,10 +23,12 @@
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
+
+class Contact;
+
 namespace d2 {
 
 class Manifold;
-class Contact;
 class World;
 
 /// @brief Essentially a Manifold expressed in world coordinate terms.

@@ -24,7 +24,6 @@
 #include <type_traits> // for std::is_default_constructible etc.
 
 namespace playrho {
-namespace d2 {
 
 static_assert(std::is_default_constructible<Contact>::value,
               "Contact must be default constructible!");
@@ -37,5 +36,4 @@ static_assert(std::is_nothrow_destructible<Contact>::value,
 
 // Free functions...
 
-} // namespace d2
 } // namespace playrho
