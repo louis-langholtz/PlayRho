@@ -37,9 +37,6 @@
 
 namespace playrho {
 
-/// @brief Size type.
-using DynamicTreeSize = ContactCounter;
-
 /// @brief Unused data of a tree node.
 /// @note This exists for symmetry and as placeholder in case this needs to later be used.
 struct DynamicTreeUnusedData {
