@@ -28,10 +28,10 @@ namespace playrho {
 /// @note This is used for determining the state of contact points.
 enum class PointState
 {
-    NullState, ///< point does not exist
-    AddState, ///< point was added in the update
-    PersistState, ///< point persisted across the update
-    RemoveState ///< point was removed in the update
+    NullState, ///< Point does not exist.
+    AddState, ///< Point was added in the update.
+    PersistState, ///< Point persisted across the update.
+    RemoveState ///< Point was removed in the update.
 };
 
 } // namespace playrho
