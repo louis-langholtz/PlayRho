@@ -110,7 +110,7 @@ constexpr bool operator!=(ContactFeature lhs, ContactFeature rhs) noexcept
 }
 
 /// @brief Gets the human readable name for the given contact feature type.
-inline const char* GetName(ContactFeature::Type type) noexcept
+constexpr const char* GetName(ContactFeature::Type type) noexcept
 {
     switch (type)
     {
