@@ -47,14 +47,14 @@ TEST(TOIConf, DefaultConstruction)
     EXPECT_EQ(ToiConf{}.tolerance, DefaultLinearSlop / Real{4});
 }
 
-TEST(TOIOutput, StatsByteSize)
+TEST(ToiOutput, StatsByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
     EXPECT_EQ(sizeof(ToiOutput::Statistics), std::size_t(10));
 }
 
-TEST(TOIOutput, ByteSize)
+TEST(ToiOutput, ByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
@@ -67,7 +67,7 @@ TEST(TOIOutput, ByteSize)
     }
 }
 
-TEST(TOIOutput, StatisticsTraits)
+TEST(ToiOutput, StatisticsTraits)
 {
     EXPECT_TRUE(std::is_default_constructible<ToiOutput::Statistics>::value);
     EXPECT_TRUE(std::is_nothrow_default_constructible<ToiOutput::Statistics>::value);
@@ -78,7 +78,7 @@ TEST(TOIOutput, StatisticsTraits)
     EXPECT_TRUE(std::is_trivially_copy_constructible<ToiOutput::Statistics>::value);
 }
 
-TEST(TOIOutput, Traits)
+TEST(ToiOutput, Traits)
 {
     EXPECT_TRUE(std::is_default_constructible<ToiOutput>::value);
     EXPECT_TRUE(std::is_nothrow_default_constructible<ToiOutput>::value);
@@ -106,19 +106,19 @@ TEST(TOIOutput, Traits)
     EXPECT_TRUE(std::is_trivially_destructible<ToiOutput>::value);
 }
 
-TEST(TOIOutput, Types)
+TEST(ToiOutput, Types)
 {
     EXPECT_GT(sizeof(ToiOutput::Statistics::dist_sum_type), sizeof(ToiOutput::Statistics::dist_iter_type));
     EXPECT_GT(sizeof(ToiOutput::Statistics::root_sum_type), sizeof(ToiOutput::Statistics::root_iter_type));
 }
 
-TEST(TOIOutput, DefaultConstruction)
+TEST(ToiOutput, DefaultConstruction)
 {
     ToiOutput foo;
     EXPECT_EQ(foo.state, ToiOutput::e_unknown);
 }
 
-TEST(TOIOutput, InitConstruction)
+TEST(ToiOutput, InitConstruction)
 {
     const auto state = ToiOutput::e_separated;
     const auto time = Real(0.6);
@@ -144,7 +144,7 @@ TEST(TOIOutput, InitConstruction)
     EXPECT_EQ(foo.stats.sum_root_iters, 10);
 }
 
-TEST(TOIOutput, GetName)
+TEST(ToiOutput, GetName)
 {
     std::set<std::string> names;
     EXPECT_TRUE(names.insert(GetName(ToiOutput::e_unknown)).second);
@@ -708,7 +708,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
     }
 
 #if 0
-    ASSERT_EQ(output.state, TOIOutput::e_touching);
+    ASSERT_EQ(output.state, ToiOutput::e_touching);
 
     auto touching = true;
     auto iterations = 0u;
@@ -720,7 +720,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
         EXPECT_LE(output2.time, t);
         if (touching)
         {
-            if (output2.state != TOIOutput::e_touching)
+            if (output2.state != ToiOutput::e_touching)
             {
                 std::cout << "lost touch after " << iterations << " iterations at t=" << t << std::endl;
                 touching = false;
@@ -728,7 +728,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
         }
         else // !touching
         {
-            if (output2.state == TOIOutput::e_touching)
+            if (output2.state == ToiOutput::e_touching)
             {
                 std::cout << "found additional root at t=" << t << std::endl;
                 touching = true;
@@ -1042,7 +1042,7 @@ TEST(TimeOfImpact, NextAfter)
         Position{Length2{+0_m, 0_m}, 0_deg}
     };
 
-    // Negative tolerance results in a TOIOutput::e_nextAfter result no matter how
+    // Negative tolerance results in a ToiOutput::e_nextAfter result no matter how
     // many iterations are allowed.
     const auto conf = ToiConf{}
         .UseTargetDepth(0_m)
@@ -1218,7 +1218,7 @@ TEST(TimeOfImpact, BelowMinTarget)
         .UseMaxDistIters(1)
         ;
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
-    EXPECT_EQ(output.state, TOIOutput::e_belowMinTarget);
+    EXPECT_EQ(output.state, ToiOutput::e_belowMinTarget);
     EXPECT_NEAR(static_cast<double>(output.time), 0.0, 0.0001);
     EXPECT_EQ(output.stats.max_dist_iters, 1);
     EXPECT_EQ(output.stats.max_root_iters, 0);

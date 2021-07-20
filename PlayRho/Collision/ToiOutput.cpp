@@ -54,7 +54,7 @@ const char* GetName(ToiOutput::State state) noexcept
     case ToiOutput::e_notFinite:
         return "not-finite";
     }
-    assert(state == TOIOutput::e_unknown);
+    assert(state == ToiOutput::e_unknown);
     return "unknown";
 }
 

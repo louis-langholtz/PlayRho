@@ -56,7 +56,7 @@ class Sweep;
 ///
 /// @return Time of impact output data.
 ///
-/// @relatedalso ::playrho::TOIOutput
+/// @relatedalso ::playrho::ToiOutput
 ///
 ToiOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                        const DistanceProxy& proxyB, const Sweep& sweepB,

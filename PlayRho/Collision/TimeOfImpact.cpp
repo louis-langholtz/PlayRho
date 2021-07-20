@@ -92,12 +92,12 @@ ToiOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA, // forc
 #if 0
         if (!isfinite(distSquared))
         {
-            return TOIOutput{timeLo, stats, TOIOutput::e_notFinite};
+            return ToiOutput{timeLo, stats, ToiOutput::e_notFinite};
         }
 #endif
         // If shapes closer at time timeLo than min-target squared, bail as overlapped.
         if (distSquared < minTargetSquared) {
-            /// XXX maybe should return TOIOutput{timeLo, stats, TOIOutput::e_belowMinTarget}?
+            /// XXX maybe should return ToiOutput{timeLo, stats, ToiOutput::e_belowMinTarget}?
             return ToiOutput{timeLo, stats, ToiOutput::e_overlapped};
         }
 
@@ -129,7 +129,7 @@ ToiOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA, // forc
                 // Victory! No collision occurs within time span.
                 assert(timeHi == conf.tMax);
                 // Formerly this used tMax as in...
-                // return TOIOutput{TOIOutput::e_separated, tMax};
+                // return ToiOutput{ToiOutput::e_separated, tMax};
                 // timeHi seems more appropriate however given s2 was derived from it.
                 // Meanwhile timeHi always seems equal to input.tMax at this point.
                 stats.sum_finder_iters += pbIter;
