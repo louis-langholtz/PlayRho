@@ -19,8 +19,10 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Common/Real.hpp>
 #include <PlayRho/Common/Settings.hpp>
+
 #include <string>
 
 using namespace playrho;

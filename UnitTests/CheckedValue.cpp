@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2021 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -19,6 +19,7 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Common/NonNegative.hpp>
 #include <PlayRho/Common/NonPositive.hpp>
 #include <PlayRho/Common/NonZero.hpp>
@@ -26,6 +27,7 @@
 #include <PlayRho/Common/Finite.hpp>
 #include <PlayRho/Common/Positive.hpp>
 #include <PlayRho/Common/Negative.hpp>
+
 #include <limits>
 #include <cmath>
 #include <type_traits>

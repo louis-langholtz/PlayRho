@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2021 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -19,7 +19,9 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Common/Math.hpp>
+
 #include <sstream>
 #include <type_traits>
 
