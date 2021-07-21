@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2021 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -18,35 +18,19 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP
-#define PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP
-
-#include <PlayRho/Common/IndexingNamedType.hpp>
-#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Collision/DynamicTreeData.hpp>
 
 namespace playrho {
 
-/// @brief Identifier of contacts.
-using ContactID = detail::IndexingNamedType<ContactCounter, struct ContactIdentifier>;
-
-/// @brief Invalid contact ID value.
-constexpr auto InvalidContactID =
-    static_cast<ContactID>(static_cast<ContactID::underlying_type>(-1));
-
-/// @brief Gets an invalid value for the ContactID type.
-template <>
-constexpr ContactID GetInvalid() noexcept
-{
-    return InvalidContactID;
-}
-
-/// @brief Determines if the given value is valid.
-template <>
-constexpr bool IsValid(const ContactID& value) noexcept
-{
-    return value != GetInvalid<ContactID>();
-}
+static_assert(std::is_nothrow_default_constructible<DynamicTreeLeafData>::value,
+              "DynamicTreeLeafData must be nothrow default constructible!");
+static_assert(std::is_copy_constructible<DynamicTreeLeafData>::value,
+              "DynamicTreeLeafData must be copy constructible!");
+static_assert(std::is_nothrow_move_constructible<DynamicTreeLeafData>::value,
+              "DynamicTreeLeafData must be nothrow move constructible!");
+static_assert(std::is_copy_assignable<DynamicTreeLeafData>::value,
+              "DynamicTreeLeafData must be copy assignable!");
+static_assert(std::is_nothrow_move_assignable<DynamicTreeLeafData>::value,
+              "DynamicTreeLeafData must be move assignable!");
 
 } // namespace playrho
-
-#endif // PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP

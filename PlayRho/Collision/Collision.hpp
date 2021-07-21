@@ -27,21 +27,9 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/ArrayList.hpp>
 #include <PlayRho/Collision/ContactFeature.hpp>
-
-#include <array>
-#include <type_traits>
+#include <PlayRho/Collision/PointState.hpp>
 
 namespace playrho {
-
-/// @brief Point state enumeration.
-/// @note This is used for determining the state of contact points.
-enum class PointState
-{
-    NullState, ///< point does not exist
-    AddState, ///< point was added in the update
-    PersistState, ///< point persisted across the update
-    RemoveState ///< point was removed in the update
-};
 
 /// @brief Point states.
 /// @details The states pertain to the transition from an old manifold to a new manifold.

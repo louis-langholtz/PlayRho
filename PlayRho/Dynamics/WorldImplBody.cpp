@@ -24,19 +24,6 @@
 #include <PlayRho/Dynamics/WorldImpl.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Dynamics/MovementConf.hpp>
-
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
-
-#include <PlayRho/Common/DynamicMemory.hpp>
-
-#include <algorithm>
-#include <new>
-#include <functional>
-#include <type_traits>
-#include <memory>
-#include <vector>
 
 namespace playrho {
 namespace d2 {

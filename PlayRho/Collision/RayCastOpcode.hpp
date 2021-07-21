@@ -19,21 +19,34 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
-
-#include <type_traits> // for std::is_default_constructible etc.
+#ifndef PLAYRHO_COLLISION_RAYCASTOPCODE_HPP
+#define PLAYRHO_COLLISION_RAYCASTOPCODE_HPP
 
 namespace playrho {
 
-static_assert(std::is_default_constructible<Contact>::value,
-              "Contact must be default constructible!");
-static_assert(std::is_copy_constructible<Contact>::value, "Contact must be copy constructible!");
-static_assert(std::is_move_constructible<Contact>::value, "Contact must be move constructible!");
-static_assert(std::is_copy_assignable<Contact>::value, "Contact must be copy assignable!");
-static_assert(std::is_move_assignable<Contact>::value, "Contact must be move assignable!");
-static_assert(std::is_nothrow_destructible<Contact>::value,
-              "Contact must be nothrow destructible!");
+/// @brief Ray cast opcode enumeration.
+/// @details Instructs some ray casting methods on what to do next.
+enum class RayCastOpcode
+{
+    /// @brief End the ray-cast search for fixtures.
+    /// @details Use this to stop searching for fixtures.
+    Terminate,
 
-// Free functions...
+    /// @brief Ignore the current fixture.
+    /// @details Use this to continue searching for fixtures along the ray.
+    IgnoreFixture,
+
+    /// @brief Clip the ray end to the current point.
+    /// @details Use this shorten the ray to the current point and to continue searching
+    ///   for fixtures now along the newly shortened ray.
+    ClipRay,
+
+    /// @brief Reset the ray end back to the second point.
+    /// @details Use this to restore the ray to its full length and to continue searching
+    ///    for fixtures now along the restored full length ray.
+    ResetRay
+};
 
 } // namespace playrho
+
+#endif // PLAYRHO_COLLISION_RAYCASTOPCODE_HPP

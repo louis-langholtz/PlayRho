@@ -277,7 +277,7 @@ bool RayCast(const DynamicTree& tree, RayCastInput input, const DynamicTreeRayCa
         {
             assert(DynamicTree::IsLeaf(tree.GetHeight(index)));
             const auto leafData = tree.GetLeafData(index);
-            const auto value = callback(leafData.body, leafData.shape, leafData.childIndex,
+            const auto value = callback(leafData.bodyId, leafData.shapeId, leafData.childId,
                                         input);
             if (value == 0)
             {

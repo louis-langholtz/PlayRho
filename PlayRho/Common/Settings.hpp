@@ -220,6 +220,9 @@ constexpr auto InvalidContactIndex = static_cast<ContactCounter>(-1);
 /// This occurs when every possible body is connected to every other body.
 constexpr auto MaxContacts = ContactCounter{MaxBodies} * ContactCounter{MaxBodies - 1} / ContactCounter{2};
 
+/// @brief Dynamic tree size type.
+using DynamicTreeSize = ContactCounter;
+
 /// @brief Maximum number of joints in a world.
 /// @note This is 65534 based off <code>std::uint16_t</code> and eliminating one value for invalid.
 constexpr auto MaxJoints = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -

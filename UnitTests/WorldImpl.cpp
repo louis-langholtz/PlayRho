@@ -903,30 +903,36 @@ TEST(WorldImpl, SetShapeWithGeometryChange)
     const auto stepConf = StepConf{};
     auto bodyId = InvalidBodyID;
     auto shapeId = InvalidShapeID;
+    auto shapeIdOther = InvalidShapeID;
     auto world = WorldImpl{};
     auto diskShapeConf = DiskShapeConf{};
     ASSERT_EQ(GetChildCount(diskShapeConf), 1u);
     ASSERT_NO_THROW(shapeId = world.CreateShape(Shape{diskShapeConf}));
-    ASSERT_NO_THROW(bodyId = world.CreateBody(Body{BodyConf{}.Use(BodyType::Dynamic).Use(shapeId)}));
+    ASSERT_NO_THROW(shapeIdOther = world.CreateShape(Shape{diskShapeConf}));
+    auto body = Body{BodyConf{}.Use(BodyType::Dynamic).Use(shapeId)};
+    ASSERT_NO_THROW(body.Attach(shapeIdOther)); // to also cover the false match path
+    ASSERT_NE(shapeId, shapeIdOther);
+    ASSERT_NO_THROW(bodyId = world.CreateBody(body));
     ASSERT_TRUE(IsEnabled(world.GetBody(bodyId)));
+    EXPECT_EQ(size(world.GetFixturesForProxies()), 2u);
     ASSERT_NO_THROW(world.Step(stepConf));
-    ASSERT_EQ(size(world.GetProxies(bodyId)), 1u);
+    EXPECT_EQ(size(world.GetProxies(bodyId)), 2u);
     auto chainShapeConf = ChainShapeConf{};
     chainShapeConf.Add(Length2{0_m, 0_m});
     chainShapeConf.Add(Length2{2_m, 0_m});
     chainShapeConf.Add(Length2{2_m, 1_m});
-    ASSERT_EQ(GetChildCount(chainShapeConf), 2u);
-    EXPECT_NO_THROW(world.SetShape(shapeId, Shape{chainShapeConf}));
+    ASSERT_EQ(GetChildCount(chainShapeConf), 2u); // 2 kids here means 2 proxies get made!
+    EXPECT_NO_THROW(world.SetShape(shapeId, Shape{chainShapeConf})); // replaces 1 proxy w/ 2
     EXPECT_EQ(size(world.GetFixturesForProxies()), 1u);
     if (!empty(world.GetFixturesForProxies())) {
         EXPECT_EQ(world.GetFixturesForProxies()[0].first, bodyId);
         EXPECT_EQ(world.GetFixturesForProxies()[0].second, shapeId);
     }
-    EXPECT_EQ(size(world.GetProxies(bodyId)), 0u);
+    EXPECT_EQ(size(world.GetProxies(bodyId)), 1u);
     EXPECT_TRUE(world.HasNewFixtures());
-    EXPECT_NO_THROW(world.Step(stepConf));
+    EXPECT_NO_THROW(world.Step(stepConf)); // makes 1 proxy for shapeIdOther + 2 for shapeId
     EXPECT_EQ(size(world.GetFixturesForProxies()), 0u);
-    EXPECT_EQ(size(world.GetProxies(bodyId)), 2u);
+    EXPECT_EQ(size(world.GetProxies(bodyId)), 3u);
 }
 
 TEST(WorldImpl, SetFreedShapeThrows)

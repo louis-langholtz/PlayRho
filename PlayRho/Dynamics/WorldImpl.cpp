@@ -111,7 +111,7 @@ using PositionConstraints = std::vector<PositionConstraint>;
 /// @brief Collection of velocity constraints.
 using VelocityConstraints = std::vector<VelocityConstraint>;
 
-/// @brief Contact updating configuration.
+/// @brief The contact updating configuration.
 struct WorldImpl::ContactUpdateConf
 {
     DistanceConf distance; ///< Distance configuration data.
@@ -393,9 +393,9 @@ inline BodyCounter Sleepem(const Island::Bodies& bodies,
     return unawoken;
 }
 
-inline bool IsValidForTime(TOIOutput::State state) noexcept
+inline bool IsValidForTime(ToiOutput::State state) noexcept
 {
-    return state == TOIOutput::e_touching;
+    return state == ToiOutput::e_touching;
 }
 
 bool FlagForFiltering(ArrayAllocator<Contact>& contactBuffer, BodyID bodyA,
@@ -524,7 +524,7 @@ void CreateProxies(DynamicTree& tree,
         const auto dp = GetChild(shape, childIndex);
         const auto aabb = playrho::d2::ComputeAABB(dp, xfm);
         const auto fattenedAABB = GetFattenedAABB(aabb, aabbExtension);
-        const auto treeId = tree.CreateLeaf(fattenedAABB, DynamicTree::LeafData{
+        const auto treeId = tree.CreateLeaf(fattenedAABB, DynamicTreeLeafData{
             bodyID, shapeID, childIndex});
         fixtureProxies.push_back(treeId);
         otherProxies.push_back(treeId);
@@ -567,7 +567,7 @@ void ForProxies(const DynamicTree& tree, BodyID bodyId, ShapeID shapeId, Functor
     for (auto i = static_cast<decltype(tree.GetNodeCapacity())>(0); i < n; ++i) {
         if (DynamicTree::IsLeaf(tree.GetHeight(i))) {
             const auto leaf = tree.GetLeafData(i);
-            if (leaf.body == bodyId && leaf.shape == shapeId) {
+            if (leaf.bodyId == bodyId && leaf.shapeId == shapeId) {
                 fn(i);
             }
         }
@@ -590,7 +590,7 @@ std::vector<DynamicTree::Size> FindProxies(const DynamicTree& tree, BodyID bodyI
     for (auto i = static_cast<decltype(tree.GetNodeCapacity())>(0); i < n; ++i) {
         if (DynamicTree::IsLeaf(tree.GetHeight(i))) {
             const auto leaf = tree.GetLeafData(i);
-            if (leaf.body == bodyId)
+            if (leaf.bodyId == bodyId)
                 result.push_back(i);
         }
     }
@@ -604,7 +604,7 @@ std::vector<DynamicTree::Size> FindProxies(const DynamicTree& tree, ShapeID shap
     for (auto i = static_cast<decltype(tree.GetNodeCapacity())>(0); i < n; ++i) {
         if (DynamicTree::IsLeaf(tree.GetHeight(i))) {
             const auto leaf = tree.GetLeafData(i);
-            if (leaf.shape == shapeId)
+            if (leaf.shapeId == shapeId)
                 result.push_back(i);
         }
     }
@@ -1014,7 +1014,7 @@ void WorldImpl::SetShape(ShapeID id, Shape def)
                     bodyProxies.erase(std::remove_if(begin(bodyProxies), lastProxy,
                                                      [this,shapeId](DynamicTree::Size idx){
                         const auto leafData = m_tree.GetLeafData(idx);
-                        if (leafData.shape == shapeId) {
+                        if (leafData.shapeId == shapeId) {
                             m_tree.DestroyLeaf(idx);
                             EraseFirst(m_proxiesForContacts, idx);
                             return true;
@@ -1237,7 +1237,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
             assert(!body.IsAwake() || body.IsSpeedable());
             if (body.IsAwake() && body.IsEnabled()) {
                 ++stats.islandsFound;
-                ::playrho::d2::Clear(m_island);
+                ::playrho::Clear(m_island);
                 // Size the island for the remaining un-evaluated bodies, contacts, and joints.
                 Reserve(m_island, remNumBodies, remNumContacts, remNumJoints);
                 AddToIsland(m_island, b, remNumBodies, remNumContacts, remNumJoints);
@@ -1666,11 +1666,11 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
     }
 
     // Build the island
-    ::playrho::d2::Clear(m_island);
-    ::playrho::d2::Reserve(m_island,
-                           static_cast<BodyCounter>(used(m_bodyBuffer)),
-                           static_cast<ContactCounter>(used(m_contactBuffer)),
-                           static_cast<JointCounter>(0));
+    ::playrho::Clear(m_island);
+    ::playrho::Reserve(m_island,
+                       static_cast<BodyCounter>(used(m_bodyBuffer)),
+                       static_cast<ContactCounter>(used(m_contactBuffer)),
+                       static_cast<JointCounter>(0));
 
      // These asserts get triggered sometimes if contacts within TOI are iterated over.
     assert(!m_islandedBodies[to_underlying(bodyIdA)]);
@@ -2192,10 +2192,10 @@ ContactCounter WorldImpl::FindNewContacts()
     // to eliminate any node pairs that have the same body here before the key pairs are
     // sorted.
     for_each(cbegin(m_proxiesForContacts), cend(m_proxiesForContacts), [&](ProxyId pid) {
-        const auto body0 = m_tree.GetLeafData(pid).body;
+        const auto body0 = m_tree.GetLeafData(pid).bodyId;
         const auto aabb = m_tree.GetAABB(pid);
         Query(m_tree, aabb, [this,pid,body0](ProxyId nodeId) {
-            const auto body1 = m_tree.GetLeafData(nodeId).body;
+            const auto body1 = m_tree.GetLeafData(nodeId).bodyId;
             // A proxy cannot form a pair with itself.
             if ((nodeId != pid) && (body0 != body1)) {
                 m_proxyKeys.push_back(ContactKey{nodeId, pid});
@@ -2231,12 +2231,12 @@ bool WorldImpl::Add(ContactKey key)
     const auto minKeyLeafData = m_tree.GetLeafData(key.GetMin());
     const auto maxKeyLeafData = m_tree.GetLeafData(key.GetMax());
 
-    const auto bodyIdA = minKeyLeafData.body;
-    const auto shapeIdA = minKeyLeafData.shape;
-    const auto indexA = minKeyLeafData.childIndex;
-    const auto bodyIdB = maxKeyLeafData.body;
-    const auto shapeIdB = maxKeyLeafData.shape;
-    const auto indexB = maxKeyLeafData.childIndex;
+    const auto bodyIdA = minKeyLeafData.bodyId;
+    const auto shapeIdA = minKeyLeafData.shapeId;
+    const auto indexA = minKeyLeafData.childId;
+    const auto bodyIdB = maxKeyLeafData.bodyId;
+    const auto shapeIdB = maxKeyLeafData.shapeId;
+    const auto indexB = maxKeyLeafData.childId;
 
     assert(bodyIdA != bodyIdB);
 
@@ -2367,8 +2367,8 @@ ContactCounter WorldImpl::Synchronize(BodyID bodyId,
     for (auto&& e: m_bodyProxies[to_underlying(bodyId)]) {
         const auto& node = m_tree.GetNode(e);
         const auto leafData = node.AsLeaf();
-        const auto aabb = ComputeAABB(GetChild(m_shapeBuffer[to_underlying(leafData.shape)],
-                                               leafData.childIndex), xfm1, xfm2);
+        const auto aabb = ComputeAABB(GetChild(m_shapeBuffer[to_underlying(leafData.shapeId)],
+                                               leafData.childId), xfm1, xfm2);
         if (!Contains(node.GetAABB(), aabb)) {
             const auto newAabb = GetDisplacedAABB(GetFattenedAABB(aabb, extension),
                                                   displacement);
@@ -2570,7 +2570,7 @@ void WorldImpl::SetBody(BodyID id, Body value)
                                          [this,&oldShapeIds](DynamicTree::Size idx){
             const auto leafData = m_tree.GetLeafData(idx);
             const auto last = end(oldShapeIds);
-            if (std::find(begin(oldShapeIds), last, leafData.shape) != last) {
+            if (std::find(begin(oldShapeIds), last, leafData.shapeId) != last) {
                 m_tree.DestroyLeaf(idx);
                 EraseFirst(m_proxiesForContacts, idx);
                 return true;

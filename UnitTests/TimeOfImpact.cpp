@@ -47,83 +47,83 @@ TEST(TOIConf, DefaultConstruction)
     EXPECT_EQ(ToiConf{}.tolerance, DefaultLinearSlop / Real{4});
 }
 
-TEST(TOIOutput, StatsByteSize)
+TEST(ToiOutput, StatsByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
-    EXPECT_EQ(sizeof(TOIOutput::Statistics), std::size_t(10));
+    EXPECT_EQ(sizeof(ToiOutput::Statistics), std::size_t(10));
 }
 
-TEST(TOIOutput, ByteSize)
+TEST(ToiOutput, ByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(TOIOutput), std::size_t(16)); break;
-        case  8: EXPECT_EQ(sizeof(TOIOutput), std::size_t(24)); break;
-        case 16: EXPECT_EQ(sizeof(TOIOutput), std::size_t(32)); break;
+        case  4: EXPECT_EQ(sizeof(ToiOutput), std::size_t(16)); break;
+        case  8: EXPECT_EQ(sizeof(ToiOutput), std::size_t(24)); break;
+        case 16: EXPECT_EQ(sizeof(ToiOutput), std::size_t(32)); break;
         default: FAIL(); break;
     }
 }
 
-TEST(TOIOutput, StatisticsTraits)
+TEST(ToiOutput, StatisticsTraits)
 {
-    EXPECT_TRUE(std::is_default_constructible<TOIOutput::Statistics>::value);
-    EXPECT_TRUE(std::is_nothrow_default_constructible<TOIOutput::Statistics>::value);
-    EXPECT_FALSE(std::is_trivially_default_constructible<TOIOutput::Statistics>::value);
+    EXPECT_TRUE(std::is_default_constructible<ToiOutput::Statistics>::value);
+    EXPECT_TRUE(std::is_nothrow_default_constructible<ToiOutput::Statistics>::value);
+    EXPECT_FALSE(std::is_trivially_default_constructible<ToiOutput::Statistics>::value);
     
-    EXPECT_TRUE(std::is_copy_constructible<TOIOutput::Statistics>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<TOIOutput::Statistics>::value);
-    EXPECT_TRUE(std::is_trivially_copy_constructible<TOIOutput::Statistics>::value);
+    EXPECT_TRUE(std::is_copy_constructible<ToiOutput::Statistics>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible<ToiOutput::Statistics>::value);
+    EXPECT_TRUE(std::is_trivially_copy_constructible<ToiOutput::Statistics>::value);
 }
 
-TEST(TOIOutput, Traits)
+TEST(ToiOutput, Traits)
 {
-    EXPECT_TRUE(std::is_default_constructible<TOIOutput>::value);
-    EXPECT_TRUE(std::is_nothrow_default_constructible<TOIOutput>::value);
-    EXPECT_FALSE(std::is_trivially_default_constructible<TOIOutput>::value);
+    EXPECT_TRUE(std::is_default_constructible<ToiOutput>::value);
+    EXPECT_TRUE(std::is_nothrow_default_constructible<ToiOutput>::value);
+    EXPECT_FALSE(std::is_trivially_default_constructible<ToiOutput>::value);
     
-    EXPECT_TRUE((std::is_constructible<TOIOutput, Real, TOIOutput::Statistics, TOIOutput::State>::value));
-    EXPECT_TRUE((std::is_constructible<TOIOutput>::value));
+    EXPECT_TRUE((std::is_constructible<ToiOutput, Real, ToiOutput::Statistics, ToiOutput::State>::value));
+    EXPECT_TRUE((std::is_constructible<ToiOutput>::value));
     
-    EXPECT_TRUE((std::is_nothrow_constructible<TOIOutput, Real, TOIOutput::Statistics, TOIOutput::State>::value));
-    EXPECT_TRUE((std::is_nothrow_constructible<TOIOutput>::value));
+    EXPECT_TRUE((std::is_nothrow_constructible<ToiOutput, Real, ToiOutput::Statistics, ToiOutput::State>::value));
+    EXPECT_TRUE((std::is_nothrow_constructible<ToiOutput>::value));
     
-    EXPECT_FALSE((std::is_trivially_constructible<TOIOutput, Real, TOIOutput::Statistics, TOIOutput::State>::value));
-    EXPECT_FALSE((std::is_trivially_constructible<TOIOutput>::value));
+    EXPECT_FALSE((std::is_trivially_constructible<ToiOutput, Real, ToiOutput::Statistics, ToiOutput::State>::value));
+    EXPECT_FALSE((std::is_trivially_constructible<ToiOutput>::value));
     
-    EXPECT_TRUE(std::is_copy_constructible<TOIOutput>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<TOIOutput>::value);
-    EXPECT_TRUE(std::is_trivially_copy_constructible<TOIOutput>::value);
+    EXPECT_TRUE(std::is_copy_constructible<ToiOutput>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible<ToiOutput>::value);
+    EXPECT_TRUE(std::is_trivially_copy_constructible<ToiOutput>::value);
     
-    EXPECT_TRUE(std::is_copy_assignable<TOIOutput>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<TOIOutput>::value);
-    EXPECT_TRUE(std::is_trivially_copy_assignable<TOIOutput>::value);
+    EXPECT_TRUE(std::is_copy_assignable<ToiOutput>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable<ToiOutput>::value);
+    EXPECT_TRUE(std::is_trivially_copy_assignable<ToiOutput>::value);
     
-    EXPECT_TRUE(std::is_destructible<TOIOutput>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<TOIOutput>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<TOIOutput>::value);
+    EXPECT_TRUE(std::is_destructible<ToiOutput>::value);
+    EXPECT_TRUE(std::is_nothrow_destructible<ToiOutput>::value);
+    EXPECT_TRUE(std::is_trivially_destructible<ToiOutput>::value);
 }
 
-TEST(TOIOutput, Types)
+TEST(ToiOutput, Types)
 {
-    EXPECT_GT(sizeof(TOIOutput::Statistics::dist_sum_type), sizeof(TOIOutput::Statistics::dist_iter_type));
-    EXPECT_GT(sizeof(TOIOutput::Statistics::root_sum_type), sizeof(TOIOutput::Statistics::root_iter_type));
+    EXPECT_GT(sizeof(ToiOutput::Statistics::dist_sum_type), sizeof(ToiOutput::Statistics::dist_iter_type));
+    EXPECT_GT(sizeof(ToiOutput::Statistics::root_sum_type), sizeof(ToiOutput::Statistics::root_iter_type));
 }
 
-TEST(TOIOutput, DefaultConstruction)
+TEST(ToiOutput, DefaultConstruction)
 {
-    TOIOutput foo;
-    EXPECT_EQ(foo.state, TOIOutput::e_unknown);
+    ToiOutput foo;
+    EXPECT_EQ(foo.state, ToiOutput::e_unknown);
 }
 
-TEST(TOIOutput, InitConstruction)
+TEST(ToiOutput, InitConstruction)
 {
-    const auto state = TOIOutput::e_separated;
+    const auto state = ToiOutput::e_separated;
     const auto time = Real(0.6);
     
-    TOIOutput::Statistics stats;
+    ToiOutput::Statistics stats;
     stats.toi_iters = 3;
     stats.max_dist_iters = 11;
     stats.max_root_iters = 4;
@@ -131,7 +131,7 @@ TEST(TOIOutput, InitConstruction)
     stats.sum_dist_iters = 5;
     stats.sum_root_iters = 10;
 
-    TOIOutput foo{time, stats, state};
+    ToiOutput foo{time, stats, state};
 
     EXPECT_EQ(foo.state, state);
     EXPECT_EQ(foo.time, time);
@@ -144,23 +144,23 @@ TEST(TOIOutput, InitConstruction)
     EXPECT_EQ(foo.stats.sum_root_iters, 10);
 }
 
-TEST(TOIOutput, GetName)
+TEST(ToiOutput, GetName)
 {
     std::set<std::string> names;
-    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_unknown)).second);
-    ASSERT_FALSE(names.insert(GetName(TOIOutput::e_unknown)).second);
-    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_overlapped)).second);
-    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_touching)).second);
-    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_separated)).second);
-    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_maxRootIters)).second);
-    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_nextAfter)).second);
-    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_maxToiIters)).second);
-    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_belowMinTarget)).second);
-    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_maxDistIters)).second);
-    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_targetDepthExceedsTotalRadius)).second);
-    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_minTargetSquaredOverflow)).second);
-    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_maxTargetSquaredOverflow)).second);
-    EXPECT_TRUE(names.insert(GetName(TOIOutput::e_notFinite)).second);
+    EXPECT_TRUE(names.insert(GetName(ToiOutput::e_unknown)).second);
+    ASSERT_FALSE(names.insert(GetName(ToiOutput::e_unknown)).second);
+    EXPECT_TRUE(names.insert(GetName(ToiOutput::e_overlapped)).second);
+    EXPECT_TRUE(names.insert(GetName(ToiOutput::e_touching)).second);
+    EXPECT_TRUE(names.insert(GetName(ToiOutput::e_separated)).second);
+    EXPECT_TRUE(names.insert(GetName(ToiOutput::e_maxRootIters)).second);
+    EXPECT_TRUE(names.insert(GetName(ToiOutput::e_nextAfter)).second);
+    EXPECT_TRUE(names.insert(GetName(ToiOutput::e_maxToiIters)).second);
+    EXPECT_TRUE(names.insert(GetName(ToiOutput::e_belowMinTarget)).second);
+    EXPECT_TRUE(names.insert(GetName(ToiOutput::e_maxDistIters)).second);
+    EXPECT_TRUE(names.insert(GetName(ToiOutput::e_targetDepthExceedsTotalRadius)).second);
+    EXPECT_TRUE(names.insert(GetName(ToiOutput::e_minTargetSquaredOverflow)).second);
+    EXPECT_TRUE(names.insert(GetName(ToiOutput::e_maxTargetSquaredOverflow)).second);
+    EXPECT_TRUE(names.insert(GetName(ToiOutput::e_notFinite)).second);
 }
 
 TEST(TimeOfImpact, Overlapped)
@@ -176,7 +176,7 @@ TEST(TimeOfImpact, Overlapped)
     const auto proxyB = DistanceProxy{radius, 1, &pB, nullptr};
     const auto sweepB = Sweep{Position{Length2{}, 0_deg}};
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
-    EXPECT_EQ(output.state, TOIOutput::e_overlapped);
+    EXPECT_EQ(output.state, ToiOutput::e_overlapped);
     EXPECT_EQ(output.time, Real(0));
     EXPECT_EQ(output.stats.toi_iters, 1);
 }
@@ -198,7 +198,7 @@ TEST(TimeOfImpact, Touching)
 
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
     
-    EXPECT_EQ(output.state, TOIOutput::e_touching);
+    EXPECT_EQ(output.state, ToiOutput::e_touching);
     EXPECT_EQ(output.time, Real(0));
     EXPECT_EQ(output.stats.toi_iters, 1);
 }
@@ -219,7 +219,7 @@ TEST(TimeOfImpact, Separated)
     
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
     
-    EXPECT_EQ(output.state, TOIOutput::e_separated);
+    EXPECT_EQ(output.state, ToiOutput::e_separated);
     EXPECT_EQ(output.time, Real(1));
     EXPECT_EQ(output.stats.toi_iters, 1);
 }
@@ -247,13 +247,13 @@ TEST(TimeOfImpact, CollideCirclesHorizontally)
 
     if (std::is_same<Real, Fixed32>::value)
     {
-        EXPECT_EQ(output.state, TOIOutput::e_nextAfter);
+        EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
         EXPECT_TRUE(AlmostEqual(output.time, Real{approx_time_of_collision}));
         EXPECT_EQ(output.stats.toi_iters, 1);
     }
     else
     {
-        EXPECT_EQ(output.state, TOIOutput::e_touching);
+        EXPECT_EQ(output.state, ToiOutput::e_touching);
         EXPECT_TRUE(AlmostEqual(output.time, Real{approx_time_of_collision}));
         EXPECT_EQ(output.stats.toi_iters, 2);
     }
@@ -286,12 +286,12 @@ TEST(TimeOfImpact, CollideEdgeCircleTouchingly)
     
     if (std::is_same<Real, float>::value)
     {
-        EXPECT_EQ(output.state, TOIOutput::e_touching);
+        EXPECT_EQ(output.state, ToiOutput::e_touching);
         EXPECT_NEAR(static_cast<double>(output.time), 0.576901972, 0.000000001);
     }
     else if (std::is_same<Real, double>::value)
     {
-        EXPECT_EQ(output.state, TOIOutput::e_touching);
+        EXPECT_EQ(output.state, ToiOutput::e_touching);
         EXPECT_NEAR(static_cast<double>(output.time), 0.57690669361866653, 0.000000001);
     }
     EXPECT_EQ(output.stats.toi_iters, 2u);
@@ -325,13 +325,13 @@ TEST(TimeOfImpact, CollideCirclesVertically)
     
     if (std::is_same<Real, Fixed32>::value)
     {
-        EXPECT_EQ(output.state, TOIOutput::e_nextAfter);
+        EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
         EXPECT_NEAR(double(output.time), 0.474609375, 0.000001);
         EXPECT_EQ(output.stats.toi_iters, 1);
     }
     else
     {
-        EXPECT_EQ(output.state, TOIOutput::e_touching);
+        EXPECT_EQ(output.state, ToiOutput::e_touching);
         EXPECT_NEAR(double(output.time), 0.4750375, 0.000001);
         EXPECT_EQ(output.stats.toi_iters, 2);
     }
@@ -365,13 +365,13 @@ TEST(TimeOfImpact, CirclesPassingParSepPathsDontCollide)
     
     if (std::is_same<Real, Fixed<std::int32_t,9>>::value) // Code for Fixed32 basically
     {
-        EXPECT_EQ(output.state, TOIOutput::e_nextAfter);
+        EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
         EXPECT_NEAR(static_cast<double>(output.time), 0.37890625, 0.001);
         EXPECT_EQ(output.stats.toi_iters, 1);
     }
     else
     {
-        EXPECT_EQ(output.state, TOIOutput::e_separated);
+        EXPECT_EQ(output.state, ToiOutput::e_separated);
         EXPECT_NEAR(static_cast<double>(output.time), 1.0, 0.001);
         EXPECT_EQ(output.stats.toi_iters, 7);
     }
@@ -396,7 +396,7 @@ TEST(TimeOfImpact, CirclesExactlyTouchingAtStart)
     const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(slop * 3).UseTolerance(slop / 4);
     const auto output = GetToiViaSat(circle, circleSweep0, circle, circleSweep1, limits);
     
-    EXPECT_EQ(output.state, TOIOutput::e_touching);
+    EXPECT_EQ(output.state, ToiOutput::e_touching);
     EXPECT_NEAR(static_cast<double>(output.time), 0.0, 0.001);
     EXPECT_EQ(output.stats.toi_iters, 1);
 }
@@ -428,7 +428,7 @@ TEST(TimeOfImpact, EdgeCircleExactlyTouchingAtStart)
     const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(slop * 3).UseTolerance(slop / 4);
     const auto output = GetToiViaSat(edge, edgeSweep, circle, circleSweep, limits);
     
-    EXPECT_EQ(output.state, TOIOutput::e_touching);
+    EXPECT_EQ(output.state, ToiOutput::e_touching);
     EXPECT_NEAR(static_cast<double>(output.time), 0.0, 0.001);
     EXPECT_EQ(output.stats.toi_iters, 1);
 }
@@ -461,7 +461,7 @@ TEST(TimeOfImpact, EdgeCircleTolerantTouchingAsRounded)
     const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0_m).UseTolerance(0.001_m);
     const auto output = GetToiViaSat(edge, edgeSweep, circle, circleSweep, limits);
     
-    EXPECT_EQ(output.state, TOIOutput::e_touching);
+    EXPECT_EQ(output.state, ToiOutput::e_touching);
     EXPECT_NEAR(static_cast<double>(output.time), 0.53589820861816406, 0.53589820861816406 / 1000);
     EXPECT_EQ(output.stats.toi_iters, 3);
 }
@@ -490,7 +490,7 @@ TEST(TimeOfImpact, EdgeEdgeTolerantTouchingAsRounded)
     const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0_m).UseTolerance(0.001_m);
     const auto output = GetToiViaSat(edge, edgeSweep0, edge, edgeSweep1, limits);
     
-    EXPECT_EQ(output.state, TOIOutput::e_touching);
+    EXPECT_EQ(output.state, ToiOutput::e_touching);
     EXPECT_NEAR(static_cast<double>(output.time), 0.53589820861816406, 0.53589820861816406 / 1000);
     EXPECT_EQ(output.stats.toi_iters, 3);
 }
@@ -523,7 +523,7 @@ TEST(TimeOfImpact, EdgeCircleSeparated)
     const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(slop * 3).UseTolerance(slop / 4);
     const auto output = GetToiViaSat(edge, edgeSweep, circle, circleSweep, limits);
     
-    EXPECT_EQ(output.state, TOIOutput::e_separated);
+    EXPECT_EQ(output.state, ToiOutput::e_separated);
     EXPECT_NEAR(static_cast<double>(output.time), 1.0, 0.001);
     EXPECT_EQ(output.stats.toi_iters, 1);
 }
@@ -559,13 +559,13 @@ TEST(TimeOfImpact, RodCircleMissAt360)
     
     if (std::is_same<Real, Fixed<std::int32_t,9>>::value) // Code for Fixed32 basically
     {
-        EXPECT_EQ(output.state, TOIOutput::e_nextAfter);
+        EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
         EXPECT_NEAR(static_cast<double>(output.time), 0.51171875, 0.001);
         EXPECT_EQ(output.stats.toi_iters, 1);
     }
     else
     {
-        EXPECT_EQ(output.state, TOIOutput::e_separated);
+        EXPECT_EQ(output.state, ToiOutput::e_separated);
         EXPECT_NEAR(static_cast<double>(output.time), 1.0, 0.001);
         EXPECT_EQ(output.stats.toi_iters, 4);
     }
@@ -602,13 +602,13 @@ TEST(TimeOfImpact, RodCircleHitAt180)
     
     if (std::is_same<Real, Fixed<std::int32_t,9>>::value) // Code for Fixed32 basically
     {
-        EXPECT_EQ(output.state, TOIOutput::e_nextAfter);
+        EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
         EXPECT_NEAR(static_cast<double>(output.time), 0.490234375, 0.001);
         EXPECT_EQ(output.stats.toi_iters, 1);
     }
     else
     {
-        EXPECT_EQ(output.state, TOIOutput::e_touching);
+        EXPECT_EQ(output.state, ToiOutput::e_touching);
         EXPECT_NEAR(double(output.time), 0.4884203672409058, 0.0001);
         EXPECT_EQ(output.stats.toi_iters, 3);
     }
@@ -640,7 +640,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_1)
     
     if (std::is_same<Real, Fixed<std::int32_t,9>>::value) // Code for Fixed32 basically
     {
-        EXPECT_EQ(output.state, TOIOutput::e_nextAfter);
+        EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
         EXPECT_NEAR(static_cast<double>(output.time), 0.49609375, 0.001);
         EXPECT_EQ(output.stats.toi_iters, 1);
         EXPECT_EQ(output.stats.max_dist_iters, 1);
@@ -650,7 +650,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_1)
     }
     else
     {
-        EXPECT_EQ(output.state, TOIOutput::e_touching);
+        EXPECT_EQ(output.state, ToiOutput::e_touching);
         EXPECT_NEAR(double(output.time), 0.4975037276744843, 0.0002);
         EXPECT_EQ(output.stats.toi_iters, 2);
         EXPECT_EQ(output.stats.max_dist_iters, 1);
@@ -687,7 +687,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
     if (std::is_same<Real, Fixed<std::int32_t,9>>::value)
     {
         // The results limited to what's possible with this type...
-        EXPECT_EQ(output.state, TOIOutput::e_nextAfter);
+        EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
         EXPECT_NEAR(double(output.time), 0.9975037574768066, 0.002);
         EXPECT_EQ(output.stats.toi_iters, 1);
         EXPECT_EQ(output.stats.max_dist_iters, 1);
@@ -698,7 +698,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
     else
     {
         // what the results should be like...
-        EXPECT_EQ(output.state, TOIOutput::e_touching);
+        EXPECT_EQ(output.state, ToiOutput::e_touching);
         EXPECT_NEAR(double(output.time), 0.9975037574768066, 0.002);
         EXPECT_EQ(output.stats.toi_iters, 2);
         EXPECT_EQ(output.stats.max_dist_iters, 1);
@@ -708,7 +708,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
     }
 
 #if 0
-    ASSERT_EQ(output.state, TOIOutput::e_touching);
+    ASSERT_EQ(output.state, ToiOutput::e_touching);
 
     auto touching = true;
     auto iterations = 0u;
@@ -720,7 +720,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
         EXPECT_LE(output2.time, t);
         if (touching)
         {
-            if (output2.state != TOIOutput::e_touching)
+            if (output2.state != ToiOutput::e_touching)
             {
                 std::cout << "lost touch after " << iterations << " iterations at t=" << t << std::endl;
                 touching = false;
@@ -728,7 +728,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
         }
         else // !touching
         {
-            if (output2.state == TOIOutput::e_touching)
+            if (output2.state == ToiOutput::e_touching)
             {
                 std::cout << "found additional root at t=" << t << std::endl;
                 touching = true;
@@ -760,7 +760,7 @@ TEST(TimeOfImpact, WithClosingSpeedOf1600)
     if (std::is_same<Real, Fixed<std::int32_t,9>>::value)
     {
         // The results limited to what's possible with this type...
-        EXPECT_EQ(output.state, TOIOutput::e_nextAfter);
+        EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
         EXPECT_NEAR(double(output.time), 0.4987518787384033, 0.001);
         EXPECT_EQ(output.stats.toi_iters, 1);
         EXPECT_EQ(output.stats.max_dist_iters, 1);
@@ -770,7 +770,7 @@ TEST(TimeOfImpact, WithClosingSpeedOf1600)
     }
     else
     {
-        EXPECT_EQ(output.state, TOIOutput::e_touching);
+        EXPECT_EQ(output.state, ToiOutput::e_touching);
         EXPECT_NEAR(double(output.time), 0.4987518787384033, 0.001);
         EXPECT_EQ(output.stats.toi_iters, 2);
         EXPECT_EQ(output.stats.max_dist_iters, 1);
@@ -814,8 +814,8 @@ TEST(TimeOfImpact, ForNonCollidingShapesFails)
 
     if (std::is_same<Real, float>::value)
     {
-        EXPECT_EQ(output.state, TOIOutput::e_nextAfter);
-        if (output.state == TOIOutput::e_nextAfter)
+        EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
+        if (output.state == ToiOutput::e_nextAfter)
         {
             EXPECT_NEAR(double(output.time), 0.863826394, 0.0001);
             EXPECT_EQ(output.stats.toi_iters, 1);
@@ -826,8 +826,8 @@ TEST(TimeOfImpact, ForNonCollidingShapesFails)
     }
     else if (std::is_same<Real, Fixed<std::int32_t,9>>::value)
     {
-        EXPECT_EQ(output.state, TOIOutput::e_nextAfter);
-        if (output.state == TOIOutput::e_nextAfter)
+        EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
+        if (output.state == ToiOutput::e_nextAfter)
         {
             EXPECT_NEAR(double(output.time), 0.865234375, 0.0001);
             EXPECT_EQ(output.stats.toi_iters, 1);
@@ -837,8 +837,8 @@ TEST(TimeOfImpact, ForNonCollidingShapesFails)
     }
     else
     {
-        EXPECT_EQ(output.state, TOIOutput::e_separated);
-        if (output.state == TOIOutput::e_separated)
+        EXPECT_EQ(output.state, ToiOutput::e_separated);
+        if (output.state == ToiOutput::e_separated)
         {
             EXPECT_EQ(output.time, Real(1));
             EXPECT_EQ(output.stats.toi_iters, 2);
@@ -901,7 +901,7 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
 
     if (std::is_same<Real, float>::value)
     {
-        EXPECT_EQ(output.state, TOIOutput::e_separated);
+        EXPECT_EQ(output.state, ToiOutput::e_separated);
         EXPECT_NEAR(static_cast<double>(output.time), 1.0, 0.001);
         EXPECT_EQ(output.stats.toi_iters, 2);
         EXPECT_EQ(output.stats.max_dist_iters, 4);
@@ -911,7 +911,7 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
     }
     else if (std::is_same<Real, Fixed<std::int32_t,9>>::value)
     {
-        EXPECT_EQ(output.state, TOIOutput::e_overlapped);
+        EXPECT_EQ(output.state, ToiOutput::e_overlapped);
         EXPECT_NEAR(static_cast<double>(output.time), 0.0, 0.001);
         EXPECT_EQ(output.stats.toi_iters, 1);
         EXPECT_EQ(output.stats.max_dist_iters, 4);
@@ -922,7 +922,7 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
 #ifndef _WIN32
     else if (std::is_same<Real, Fixed<std::int64_t,24>>::value)
     {
-        EXPECT_EQ(output.state, TOIOutput::e_separated);
+        EXPECT_EQ(output.state, ToiOutput::e_separated);
         EXPECT_NEAR(static_cast<double>(output.time), 1.0, 0.001);
         EXPECT_EQ(output.stats.toi_iters, 1);
         EXPECT_EQ(output.stats.max_dist_iters, 4);
@@ -933,7 +933,7 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
 #endif
     else // if (std::is_same<Real, double>::value)
     {
-        EXPECT_EQ(output.state, TOIOutput::e_touching);
+        EXPECT_EQ(output.state, ToiOutput::e_touching);
         EXPECT_NEAR(static_cast<double>(output.time), 1.0, 0.001);
         EXPECT_EQ(output.stats.toi_iters, 2);
         EXPECT_EQ(output.stats.max_dist_iters, 4);
@@ -966,7 +966,7 @@ TEST(TimeOfImpact, MaxToiIters)
         .UseMaxDistIters(0)
         ;
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
-    EXPECT_EQ(output.state, TOIOutput::e_maxToiIters);
+    EXPECT_EQ(output.state, ToiOutput::e_maxToiIters);
 }
 
 TEST(TimeOfImpact, MaxDistIters)
@@ -992,7 +992,7 @@ TEST(TimeOfImpact, MaxDistIters)
         .UseMaxDistIters(0)
         ;
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
-    EXPECT_EQ(output.state, TOIOutput::e_maxDistIters);
+    EXPECT_EQ(output.state, ToiOutput::e_maxDistIters);
 }
 
 TEST(TimeOfImpact, MaxRootIters)
@@ -1018,7 +1018,7 @@ TEST(TimeOfImpact, MaxRootIters)
         .UseMaxDistIters(1)
         ;
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
-    EXPECT_EQ(output.state, TOIOutput::e_maxRootIters);
+    EXPECT_EQ(output.state, ToiOutput::e_maxRootIters);
 }
 
 TEST(TimeOfImpact, NextAfter)
@@ -1042,7 +1042,7 @@ TEST(TimeOfImpact, NextAfter)
         Position{Length2{+0_m, 0_m}, 0_deg}
     };
 
-    // Negative tolerance results in a TOIOutput::e_nextAfter result no matter how
+    // Negative tolerance results in a ToiOutput::e_nextAfter result no matter how
     // many iterations are allowed.
     const auto conf = ToiConf{}
         .UseTargetDepth(0_m)
@@ -1052,7 +1052,7 @@ TEST(TimeOfImpact, NextAfter)
         .UseMaxDistIters(255)
         ;
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
-    EXPECT_EQ(output.state, TOIOutput::e_nextAfter);
+    EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
     EXPECT_NEAR(static_cast<double>(output.time), 0.99750623441396513, 0.0001);
     EXPECT_EQ(output.stats.max_dist_iters, 1);
     if (std::is_same<Real, float>::value)
@@ -1113,7 +1113,7 @@ TEST(TimeOfImpact, TargetDepthExceedsTotalRadius)
     };
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
     
-    EXPECT_EQ(output.state, TOIOutput::e_targetDepthExceedsTotalRadius);
+    EXPECT_EQ(output.state, ToiOutput::e_targetDepthExceedsTotalRadius);
     EXPECT_NEAR(static_cast<double>(output.time), 0.0, 0.0001);
     EXPECT_EQ(output.stats.max_dist_iters, 0);
     EXPECT_EQ(output.stats.max_root_iters, 0);
@@ -1148,7 +1148,7 @@ TEST(TimeOfImpact, MinTargetSquaredOverflow)
     };
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
     
-    EXPECT_EQ(output.state, TOIOutput::e_minTargetSquaredOverflow);
+    EXPECT_EQ(output.state, ToiOutput::e_minTargetSquaredOverflow);
     EXPECT_NEAR(static_cast<double>(output.time), 0.0, 0.0001);
     EXPECT_EQ(output.stats.max_dist_iters, 0);
     EXPECT_EQ(output.stats.max_root_iters, 0);
@@ -1183,7 +1183,7 @@ TEST(TimeOfImpact, MaxTargetSquaredOverflow)
     };
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
     
-    EXPECT_EQ(output.state, TOIOutput::e_maxTargetSquaredOverflow);
+    EXPECT_EQ(output.state, ToiOutput::e_maxTargetSquaredOverflow);
     EXPECT_NEAR(static_cast<double>(output.time), 0.0, 0.0001);
     EXPECT_EQ(output.stats.max_dist_iters, 0);
     EXPECT_EQ(output.stats.max_root_iters, 0);
@@ -1218,7 +1218,7 @@ TEST(TimeOfImpact, BelowMinTarget)
         .UseMaxDistIters(1)
         ;
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
-    EXPECT_EQ(output.state, TOIOutput::e_belowMinTarget);
+    EXPECT_EQ(output.state, ToiOutput::e_belowMinTarget);
     EXPECT_NEAR(static_cast<double>(output.time), 0.0, 0.0001);
     EXPECT_EQ(output.stats.max_dist_iters, 1);
     EXPECT_EQ(output.stats.max_root_iters, 0);
@@ -1259,7 +1259,7 @@ TEST(TimeOfImpact, TryOutDifferentConfs)
             .UseMaxDistIters(1)
             ;
         const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
-        EXPECT_EQ(output.state, TOIOutput::e_touching);
+        EXPECT_EQ(output.state, ToiOutput::e_touching);
         EXPECT_NEAR(static_cast<double>(output.time), 0.79999959468841553, 0.0001);
         EXPECT_EQ(output.stats.max_dist_iters, 1);
         EXPECT_EQ(output.stats.max_root_iters, 2);

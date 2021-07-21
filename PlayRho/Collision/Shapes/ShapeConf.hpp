@@ -57,7 +57,7 @@ struct BaseShapeConf {
     ///
     NonNegative<AreaDensity> density = NonNegative<AreaDensity>{0_kgpm2};
 
-    /// Contact filtering data.
+    /// Filtering data for contacts.
     Filter filter;
 
     /// A sensor shape collects contact information but never generates a collision response.

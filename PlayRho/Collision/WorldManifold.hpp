@@ -23,10 +23,12 @@
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
+
+class Contact;
+
 namespace d2 {
 
 class Manifold;
-class Contact;
 class World;
 
 /// @brief Essentially a Manifold expressed in world coordinate terms.
@@ -200,7 +202,7 @@ WorldManifold GetWorldManifold(const Manifold& manifold,
 ///   the given manifold has. The returned world manifold points will be the mid-points of the
 ///   contact's intersection.
 ///
-/// @relatedalso Contact
+/// @relatedalso ::playrho::Contact
 ///
 WorldManifold GetWorldManifold(const World& world,
                                const Contact& contact, const Manifold& manifold);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2021 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -18,35 +18,20 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP
-#define PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP
-
-#include <PlayRho/Common/IndexingNamedType.hpp>
-#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Collision/ToiConf.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
 
 namespace playrho {
 
-/// @brief Identifier of contacts.
-using ContactID = detail::IndexingNamedType<ContactCounter, struct ContactIdentifier>;
-
-/// @brief Invalid contact ID value.
-constexpr auto InvalidContactID =
-    static_cast<ContactID>(static_cast<ContactID::underlying_type>(-1));
-
-/// @brief Gets an invalid value for the ContactID type.
-template <>
-constexpr ContactID GetInvalid() noexcept
+ToiConf GetToiConf(const StepConf& conf) noexcept
 {
-    return InvalidContactID;
-}
-
-/// @brief Determines if the given value is valid.
-template <>
-constexpr bool IsValid(const ContactID& value) noexcept
-{
-    return value != GetInvalid<ContactID>();
+    return ToiConf{}
+        .UseTimeMax(1)
+        .UseTargetDepth(conf.targetDepth)
+        .UseTolerance(conf.tolerance)
+        .UseMaxRootIters(conf.maxToiRootIters)
+        .UseMaxToiIters(conf.maxToiIters)
+        .UseMaxDistIters(conf.maxDistanceIters);
 }
 
 } // namespace playrho
-
-#endif // PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP

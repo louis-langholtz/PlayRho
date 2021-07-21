@@ -19,6 +19,7 @@
 
 #include <PlayRho/Collision/Collision.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
+
 #include <cmath>
 
 namespace playrho {
