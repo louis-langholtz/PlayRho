@@ -107,7 +107,6 @@
 		474FFC3C1F2CEE6C0037CCE0 /* Vector.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 474FFC3A1F2CEE6C0037CCE0 /* Vector.hpp */; };
 		475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4750398F1D2180D600D32047 /* DistanceProxy.cpp */; };
 		475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 475039901D2180D600D32047 /* DistanceProxy.hpp */; };
-		4751C34B1EC18A11006D9E69 /* Profile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4751C34A1EC18A11006D9E69 /* Profile.hpp */; };
 		4751EE291CEDD78F00D459CB /* Mobile.cpp in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE281CEDD78F00D459CB /* Mobile.cpp */; };
 		4751EE2B1CEDD79900D459CB /* ConveyorBelt.cpp in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE2A1CEDD79900D459CB /* ConveyorBelt.cpp */; };
 		4751EE2E1CEDD7A300D459CB /* MotorJoint.cpp in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE2C1CEDD7A300D459CB /* MotorJoint.cpp */; };
@@ -583,7 +582,6 @@
 		474FFC3A1F2CEE6C0037CCE0 /* Vector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vector.hpp; sourceTree = "<group>"; };
 		4750398F1D2180D600D32047 /* DistanceProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceProxy.cpp; sourceTree = "<group>"; };
 		475039901D2180D600D32047 /* DistanceProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DistanceProxy.hpp; sourceTree = "<group>"; };
-		4751C34A1EC18A11006D9E69 /* Profile.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Profile.hpp; sourceTree = "<group>"; };
 		4751EE281CEDD78F00D459CB /* Mobile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mobile.cpp; sourceTree = "<group>"; };
 		4751EE2A1CEDD79900D459CB /* ConveyorBelt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConveyorBelt.cpp; sourceTree = "<group>"; };
 		4751EE2C1CEDD7A300D459CB /* MotorJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MotorJoint.cpp; sourceTree = "<group>"; };
@@ -1329,7 +1327,6 @@
 				473971AC1DA45C4C00F7137F /* Drawer.cpp */,
 				473971AD1DA45C4C00F7137F /* Drawer.hpp */,
 				80BB8A38141C3E8500F1753A /* Main.cpp */,
-				4751C34A1EC18A11006D9E69 /* Profile.hpp */,
 				80BB8A3B141C3E8500F1753A /* Test.cpp */,
 				80BB8A3C141C3E8500F1753A /* Test.hpp */,
 				474AFBFD1EBA35A2002AA6C8 /* TestEntry.hpp */,
@@ -1582,7 +1579,6 @@
 				470F9B1E1EDF2B8A007EF7B6 /* Sweep.hpp in Headers */,
 				47440F0D1EDA365400AB3F51 /* WorldConf.hpp in Headers */,
 				472E301B1DBA925500DA821D /* VertexSet.hpp in Headers */,
-				4751C34B1EC18A11006D9E69 /* Profile.hpp in Headers */,
 				47F932A61D11C283006A193C /* AllocatedArray.hpp in Headers */,
 				47B58F5A1F57218400354C34 /* Version.hpp in Headers */,
 				47E70604255CDA4300A55BC1 /* ConstraintSolverConf.hpp in Headers */,
