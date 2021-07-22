@@ -19,8 +19,10 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
+
 #include <array>
 
 using namespace playrho;

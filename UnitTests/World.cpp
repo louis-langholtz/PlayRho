@@ -3320,7 +3320,13 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
                     ASSERT_LE(newPointCount, 2);
                     break;
             }
-            ASSERT_THROW(world.Destroy(target_joint), WrongState);
+            ASSERT_THROW(Destroy(world, target_joint), WrongState);
+            if (HasValidToi(world, contact)) {
+                auto toi = Real(0);
+                EXPECT_NO_THROW(toi = GetToi(world, contact));
+                EXPECT_GE(toi, Real(0));
+                EXPECT_LE(toi, Real(1));
+            }
         },
         [&](ContactID contact, const ContactImpulsesList& impulse, unsigned solved)
         {
@@ -3383,6 +3389,12 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
                 std::cout << std::endl;
 
                 //GTEST_FATAL_FAILURE_("");                
+            }
+            if (HasValidToi(world, contact)) {
+                auto toi = Real(0);
+                EXPECT_NO_THROW(toi = GetToi(world, contact));
+                EXPECT_GE(toi, Real(0));
+                EXPECT_LE(toi, Real(1));
             }
         },
         [&](ContactID contact) {
