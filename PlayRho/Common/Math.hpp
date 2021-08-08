@@ -454,12 +454,15 @@ template <typename T, typename U>
 constexpr auto Solve(const Matrix22<U>& mat, const Vector2<T>& b) noexcept
 {
     const auto cp = Cross(get<0>(mat), get<1>(mat));
-    const auto inverseCp = Real{1} / cp;
     using OutType = decltype((U{} * T{}) / cp);
-    return (!AlmostZero(StripUnit(cp)))
-               ? Vector2<OutType>{(get<1>(mat)[1] * b[0] - get<1>(mat)[0] * b[1]) * inverseCp,
-                                  (get<0>(mat)[0] * b[1] - get<0>(mat)[1] * b[0]) * inverseCp}
-               : Vector2<OutType>{};
+    if (!AlmostZero(StripUnit(cp))) {
+        const auto inverse = Real{1} / cp;
+        return Vector2<OutType>{
+            (get<1>(mat)[1] * b[0] - get<1>(mat)[0] * b[1]) * inverse,
+            (get<0>(mat)[0] * b[1] - get<0>(mat)[1] * b[0]) * inverse
+        };
+    }
+    return Vector2<OutType>{};
 }
 
 /// @brief Inverts the given value.
@@ -468,13 +471,14 @@ constexpr auto Invert(const Matrix22<IN_TYPE>& value) noexcept
 {
     const auto cp = Cross(get<0>(value), get<1>(value));
     using OutType = decltype(get<0>(value)[0] / cp);
-    const auto inverseCp = Real{1} / cp;
-    return (!AlmostZero(StripUnit(cp)))
-               ? Matrix22<OutType>{Vector2<OutType>{get<1>(get<1>(value)) * inverseCp,
-                                                    -get<1>(get<0>(value)) * inverseCp},
-                                   Vector2<OutType>{-get<0>(get<1>(value)) * inverseCp,
-                                                    get<0>(get<0>(value)) * inverseCp}}
-               : Matrix22<OutType>{};
+    if (!AlmostZero(StripUnit(cp))) {
+        const auto inverse = Real{1} / cp;
+        return Matrix22<OutType>{
+            Vector2<OutType>{get<1>(get<1>(value)) * inverse, -get<1>(get<0>(value)) * inverse},
+            Vector2<OutType>{-get<0>(get<1>(value)) * inverse, get<0>(get<0>(value)) * inverse}
+        };
+    }
+    return Matrix22<OutType>{};
 }
 
 /// @brief Solves A * x = b, where b is a column vector.
