@@ -90,7 +90,7 @@ if(PLAYRHO_BUILD_SHARED)
 		${PLAYRHO_Rope_SRCS}
 		${PLAYRHO_Rope_HDRS}
 	)
-	target_compile_features(PlayRho PUBLIC cxx_std_17)
+	target_compile_features(PlayRho_shared PUBLIC cxx_std_17)
 	set_target_properties(PlayRho_shared PROPERTIES
 		OUTPUT_NAME "PlayRho"
 		CLEAN_DIRECT_OUTPUT 1
