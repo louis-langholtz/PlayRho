@@ -30,6 +30,7 @@
 
 #include <any>
 #include <chrono>
+#include <string>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -113,6 +114,182 @@ TEST(Shape, DefaultConstruction)
     EXPECT_TRUE(s == t);
     EXPECT_NO_THROW(Translate(t, Length2{}));
     EXPECT_EQ(GetType(s), GetTypeID<void>());
+}
+
+namespace {
+
+struct MovableConf {
+    static int defaultConstructorCalled;
+    static int copyConstructorCalled;
+    static int moveConstructorCalled;
+    static int copyAssignmentCalled;
+    static int moveAssignmentCalled;
+
+    static void resetClass()
+    {
+        defaultConstructorCalled = 0;
+        copyConstructorCalled = 0;
+        moveConstructorCalled = 0;
+        copyAssignmentCalled = 0;
+        moveAssignmentCalled = 0;
+    }
+
+    std::string data;
+
+    MovableConf()
+    {
+        ++defaultConstructorCalled;
+    }
+
+    MovableConf(const MovableConf& other): data{other.data}
+    {
+        ++copyConstructorCalled;
+    }
+
+    MovableConf(MovableConf&& other): data{std::move(other.data)}
+    {
+        ++moveConstructorCalled;
+    }
+
+    MovableConf& operator=(const MovableConf& other)
+    {
+        data = other.data;
+        ++copyAssignmentCalled;
+        return *this;
+    }
+
+    MovableConf& operator=(MovableConf&& other)
+    {
+        data = std::move(other.data);
+        ++moveAssignmentCalled;
+        return *this;
+    }
+};
+
+int MovableConf::defaultConstructorCalled;
+int MovableConf::copyConstructorCalled;
+int MovableConf::moveConstructorCalled;
+int MovableConf::copyAssignmentCalled;
+int MovableConf::moveAssignmentCalled;
+
+bool operator==(const MovableConf& lhs, const MovableConf& rhs) noexcept
+{
+    return lhs.data == rhs.data;
+}
+
+ChildCounter GetChildCount(const MovableConf&) noexcept
+{
+    return 0;
+}
+
+DistanceProxy GetChild(const MovableConf&, ChildCounter)
+{
+    throw InvalidArgument("not supported");
+}
+
+MassData GetMassData(const MovableConf&) noexcept
+{
+    return {};
+}
+
+NonNegative<Length> GetVertexRadius(const MovableConf&, ChildCounter)
+{
+    throw InvalidArgument("not supported");
+}
+
+NonNegative<AreaDensity> GetDensity(const MovableConf&) noexcept
+{
+    return {};
+}
+
+Real GetFriction(const MovableConf&) noexcept
+{
+    return {};
+}
+
+Real GetRestitution(const MovableConf&) noexcept
+{
+    return {};
+}
+
+void SetVertexRadius(MovableConf&, ChildCounter, NonNegative<Length>)
+{
+}
+
+Filter GetFilter(const MovableConf&) noexcept
+{
+    return {};
+}
+
+bool IsSensor(const MovableConf&) noexcept
+{
+    return {};
+}
+
+static_assert(IsValidShapeType<MovableConf>::value, "MovableConf must be a valid shape type");
+
+}
+
+TEST(Shape, ConstructionFromMovable)
+{
+    MovableConf::resetClass();
+    ASSERT_FALSE(MovableConf::copyConstructorCalled);
+    ASSERT_FALSE(MovableConf::moveConstructorCalled);
+    MovableConf conf;
+    conf.data = "have some";
+    Shape s{std::move(conf)};
+    EXPECT_EQ(std::string(), conf.data);
+    EXPECT_EQ(0, MovableConf::copyConstructorCalled);
+    EXPECT_EQ(1, MovableConf::moveConstructorCalled);
+    EXPECT_EQ(0, MovableConf::copyAssignmentCalled);
+    EXPECT_EQ(0, MovableConf::moveAssignmentCalled);
+}
+
+TEST(Shape, AssignmentFromMovable)
+{
+    MovableConf::resetClass();
+    ASSERT_FALSE(MovableConf::copyConstructorCalled);
+    ASSERT_FALSE(MovableConf::moveConstructorCalled);
+    MovableConf conf;
+    conf.data = "have some";
+    Shape s;
+    s = std::move(conf);
+    EXPECT_EQ(std::string(), conf.data);
+    EXPECT_EQ(0, MovableConf::copyConstructorCalled);
+    EXPECT_EQ(1, MovableConf::moveConstructorCalled);
+    EXPECT_EQ(0, MovableConf::copyAssignmentCalled);
+    EXPECT_EQ(0, MovableConf::moveAssignmentCalled);
+}
+
+TEST(Shape, ConstructionFromCopyable)
+{
+    MovableConf::resetClass();
+    ASSERT_FALSE(MovableConf::copyConstructorCalled);
+    ASSERT_FALSE(MovableConf::moveConstructorCalled);
+    MovableConf conf;
+    conf.data = "have some";
+    Shape s{conf};
+    EXPECT_EQ(std::string("have some"), conf.data);
+    EXPECT_EQ(1, MovableConf::copyConstructorCalled);
+    EXPECT_EQ(0, MovableConf::moveConstructorCalled);
+    EXPECT_EQ(0, MovableConf::copyAssignmentCalled);
+    EXPECT_EQ(0, MovableConf::moveAssignmentCalled);
+}
+
+TEST(Shape, AssignmentFromCopyable)
+{
+    MovableConf::resetClass();
+    ASSERT_FALSE(MovableConf::copyConstructorCalled);
+    ASSERT_FALSE(MovableConf::moveConstructorCalled);
+    MovableConf conf;
+    conf.data = "have some";
+    Shape s;
+    s = conf;
+    EXPECT_EQ(std::string("have some"), conf.data);
+    EXPECT_EQ(1, MovableConf::copyConstructorCalled);
+    EXPECT_EQ(0, MovableConf::moveConstructorCalled);
+    EXPECT_EQ(0, MovableConf::copyAssignmentCalled);
+    EXPECT_EQ(0, MovableConf::moveAssignmentCalled);
 }
 
 namespace sans_some {

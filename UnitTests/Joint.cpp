@@ -83,8 +83,62 @@ namespace test {
 namespace sans_none {
 namespace {
 struct JointTester {
+    static int defaultConstructorCalled;
+    static int copyConstructorCalled;
+    static int moveConstructorCalled;
+    static int copyAssignmentCalled;
+    static int moveAssignmentCalled;
+
+    static void resetClass()
+    {
+        defaultConstructorCalled = 0;
+        copyConstructorCalled = 0;
+        moveConstructorCalled = 0;
+        copyAssignmentCalled = 0;
+        moveAssignmentCalled = 0;
+    }
+
     int number = 0;
+    std::string data;
+
+    JointTester()
+    {
+        ++defaultConstructorCalled;
+    }
+
+    JointTester(const JointTester& other): number{other.number}, data{other.data}
+    {
+        ++copyConstructorCalled;
+    }
+
+    JointTester(JointTester&& other): number{std::move(other.number)}, data{std::move(other.data)}
+    {
+        ++moveConstructorCalled;
+    }
+
+    JointTester& operator=(const JointTester& other)
+    {
+        number = other.number;
+        data = other.data;
+        ++copyAssignmentCalled;
+        return *this;
+    }
+
+    JointTester& operator=(JointTester&& other)
+    {
+        number = std::move(other.number);
+        data = std::move(other.data);
+        ++moveAssignmentCalled;
+        return *this;
+    }
 };
+
+int JointTester::defaultConstructorCalled;
+int JointTester::copyConstructorCalled;
+int JointTester::moveConstructorCalled;
+int JointTester::copyAssignmentCalled;
+int JointTester::moveAssignmentCalled;
+
 DEFINE_GETBODYA;
 DEFINE_GETBODYB;
 DEFINE_GETCOLLIDECONNECTED;
@@ -385,34 +439,111 @@ TEST(Joint, TypeCast)
         EXPECT_THROW(TypeCast<int>(joint), std::bad_cast);
         EXPECT_THROW(TypeCast<const int>(joint), std::bad_cast);
     }
-    {
-        auto number = 10;
-        const auto original = test::sans_none::JointTester{number};
-        EXPECT_EQ(original.number, number);
-        auto joint = Joint{original};
-        EXPECT_TRUE(joint.has_value());
-        EXPECT_THROW(TypeCast<int>(joint), std::bad_cast);
-        auto value = test::sans_none::JointTester{};
-        EXPECT_NO_THROW(value = TypeCast<test::sans_none::JointTester>(joint));
-        EXPECT_EQ(value.number, number);
-        EXPECT_NO_THROW(TypeCast<test::sans_none::JointTester&>(joint).number = 3);
-        EXPECT_EQ(TypeCast<const test::sans_none::JointTester&>(joint).number, 3);
-        EXPECT_NO_THROW(value = TypeCast<test::sans_none::JointTester>(joint));
-        EXPECT_EQ(value.number, 3);
-        EXPECT_NO_THROW(TypeCast<test::sans_none::JointTester>(&joint)->number = 4);
-        EXPECT_EQ(TypeCast<const test::sans_none::JointTester>(joint).number, 4);
-        EXPECT_TRUE(joint == joint);
-        EXPECT_FALSE(joint != joint);
-        EXPECT_EQ(GetBodyA(joint), InvalidBodyID);
-        EXPECT_EQ(GetBodyB(joint), InvalidBodyID);
-        EXPECT_FALSE(GetCollideConnected(joint));
-    }
+}
+
+TEST(Joint, TypeCastWithSansNoneToInt)
+{
+    constexpr auto number = 10;
+    const auto original = [&](){test::sans_none::JointTester v; v.number = number; return v;}();
+    EXPECT_EQ(original.number, number);
+    auto joint = Joint{original};
+    ASSERT_TRUE(joint.has_value());
+    test::sans_none::JointTester::resetClass();
+
+    EXPECT_THROW(TypeCast<int>(joint), std::bad_cast);
+
+    EXPECT_EQ(0, test::sans_none::JointTester::defaultConstructorCalled);
+    EXPECT_EQ(0, test::sans_none::JointTester::copyConstructorCalled);
+    EXPECT_EQ(0, test::sans_none::JointTester::moveConstructorCalled);
+    EXPECT_EQ(0, test::sans_none::JointTester::copyAssignmentCalled);
+    EXPECT_EQ(0, test::sans_none::JointTester::moveAssignmentCalled);
+}
+
+TEST(Joint, TypeCastWithSansNoneToPointer)
+{
+    constexpr auto number = 10;
+    auto pointer = static_cast<test::sans_none::JointTester*>(nullptr);
+    const auto original = [&](){test::sans_none::JointTester v; v.number = number; return v;}();
+    ASSERT_EQ(original.number, number);
+    auto joint = Joint{original};
+    test::sans_none::JointTester::resetClass();
+
+    EXPECT_NO_THROW(pointer = TypeCast<test::sans_none::JointTester>(&joint));
+
+    EXPECT_EQ(0, test::sans_none::JointTester::defaultConstructorCalled);
+    EXPECT_EQ(0, test::sans_none::JointTester::copyConstructorCalled);
+    EXPECT_EQ(0, test::sans_none::JointTester::moveConstructorCalled);
+    EXPECT_EQ(0, test::sans_none::JointTester::copyAssignmentCalled);
+    EXPECT_EQ(0, test::sans_none::JointTester::moveAssignmentCalled);
+    ASSERT_TRUE(pointer != nullptr);
+    EXPECT_EQ(number, pointer->number);
+}
+
+TEST(Joint, AnyCastWithSansNoneToValue)
+{
+    constexpr auto number = 10;
+    auto value = test::sans_none::JointTester{};
+    const auto original = [&](){test::sans_none::JointTester v; v.number = number; return v;}();
+    EXPECT_EQ(original.number, number);
+    auto anyObject = std::any{original};
+    test::sans_none::JointTester::resetClass();
+
+    EXPECT_NO_THROW(value = std::any_cast<test::sans_none::JointTester>(anyObject));
+
+    EXPECT_EQ(0, test::sans_none::JointTester::defaultConstructorCalled);
+    EXPECT_EQ(1, test::sans_none::JointTester::copyConstructorCalled);
+    EXPECT_EQ(0, test::sans_none::JointTester::moveConstructorCalled);
+    EXPECT_EQ(0, test::sans_none::JointTester::copyAssignmentCalled);
+    EXPECT_EQ(1, test::sans_none::JointTester::moveAssignmentCalled);
+    EXPECT_EQ(number, value.number);
+}
+
+TEST(Joint, TypeCastWithSansNoneToValue)
+{
+    constexpr auto number = 10;
+    auto value = test::sans_none::JointTester{};
+    const auto original = [&](){test::sans_none::JointTester v; v.number = number; return v;}();
+    EXPECT_EQ(original.number, number);
+    auto jointObject = Joint{original};
+    test::sans_none::JointTester::resetClass();
+
+    EXPECT_NO_THROW(value = TypeCast<test::sans_none::JointTester>(jointObject));
+
+    // Seeing both a copy and a move looks sub-optimal to me; what of C++17 copy elision?
+    // It's also the case for std::any however as seen in the other test.
+    EXPECT_EQ(0, test::sans_none::JointTester::defaultConstructorCalled);
+    EXPECT_EQ(1, test::sans_none::JointTester::copyConstructorCalled);
+    EXPECT_EQ(0, test::sans_none::JointTester::moveConstructorCalled);
+    EXPECT_EQ(0, test::sans_none::JointTester::copyAssignmentCalled);
+    EXPECT_EQ(1, test::sans_none::JointTester::moveAssignmentCalled);
+    EXPECT_EQ(number, value.number);
+}
+
+TEST(Joint, TypeCastWithSansNone)
+{
+    constexpr auto number = 10;
+    auto value = test::sans_none::JointTester{};
+    const auto original = [&](){test::sans_none::JointTester v; v.number = number; return v;}();
+    EXPECT_EQ(original.number, number);
+    auto joint = Joint{original};
+
+    EXPECT_NO_THROW(TypeCast<test::sans_none::JointTester&>(joint).number = 3);
+    EXPECT_EQ(TypeCast<const test::sans_none::JointTester&>(joint).number, 3);
+    EXPECT_NO_THROW(value = TypeCast<test::sans_none::JointTester>(joint));
+    EXPECT_EQ(value.number, 3);
+    EXPECT_NO_THROW(TypeCast<test::sans_none::JointTester>(&joint)->number = 4);
+    EXPECT_EQ(TypeCast<const test::sans_none::JointTester>(joint).number, 4);
+    EXPECT_TRUE(joint == joint);
+    EXPECT_FALSE(joint != joint);
+    EXPECT_EQ(GetBodyA(joint), InvalidBodyID);
+    EXPECT_EQ(GetBodyB(joint), InvalidBodyID);
+    EXPECT_FALSE(GetCollideConnected(joint));
 }
 
 TEST(Joint, ForConstantDataTypeCastIsLikeAnyCast)
 {
-    const auto foo = Joint{test::sans_none::JointTester{1}};
-    const auto bar = std::any{test::sans_none::JointTester{1}};
+    const auto foo = Joint{[](){test::sans_none::JointTester v; v.number = 1; return v;}()};
+    const auto bar = std::any{[](){test::sans_none::JointTester v; v.number = 1; return v;}()};
     EXPECT_TRUE(TypeCast<const test::sans_none::JointTester*>(&foo) == nullptr);
     EXPECT_TRUE(std::any_cast<const test::sans_none::JointTester*>(&bar) == nullptr);
     EXPECT_TRUE(TypeCast<test::sans_none::JointTester*>(&foo) == nullptr);
@@ -425,8 +556,8 @@ TEST(Joint, ForConstantDataTypeCastIsLikeAnyCast)
 
 TEST(Joint, ForMutableDataTypeCastIsLikeAnyCast)
 {
-    auto foo = Joint{test::sans_none::JointTester{1}};
-    auto bar = std::any{test::sans_none::JointTester{1}};
+    auto foo = Joint{[](){test::sans_none::JointTester v; v.number = 1; return v;}()};
+    auto bar = std::any{[](){test::sans_none::JointTester v; v.number = 1; return v;}()};
     EXPECT_TRUE(TypeCast<const test::sans_none::JointTester*>(&foo) == nullptr);
     EXPECT_TRUE(std::any_cast<const test::sans_none::JointTester*>(&bar) == nullptr);
     EXPECT_TRUE(TypeCast<test::sans_none::JointTester*>(&foo) == nullptr);
