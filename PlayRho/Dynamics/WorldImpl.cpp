@@ -326,7 +326,6 @@ Length SolvePositionConstraintsViaGS(PositionConstraints& posConstraints,
                                      const ConstraintSolverConf& conf)
 {
     auto minSeparation = std::numeric_limits<Length>::infinity();
-    
     for_each(begin(posConstraints), end(posConstraints), [&](PositionConstraint &pc) {
         assert(pc.GetBodyA() != pc.GetBodyB()); // Confirms ContactManager::Add() did its job.
         const auto res = GaussSeidel::SolvePositionConstraint(pc, true, true, bodies, conf);
@@ -334,7 +333,6 @@ Length SolvePositionConstraintsViaGS(PositionConstraints& posConstraints,
         bodies[to_underlying(pc.GetBodyB())].SetPosition(res.pos_b);
         minSeparation = std::min(minSeparation, res.min_separation);
     });
-    
     return minSeparation;
 }
 
@@ -1739,7 +1737,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
             //
             // Note: There are two flavors of the SolvePositionConstraints function.
             //   One takes an extra two arguments that are the indexes of two bodies that are
-            //   okay tomove. The other one does not.
+            //   okay to move. The other one does not.
             //   Calling the selective solver (that takes the two additional arguments) appears
             //   to result in phsyics simulations that are more prone to tunneling. Meanwhile,
             //   using the non-selective solver would presumably be slower (since it appears to
