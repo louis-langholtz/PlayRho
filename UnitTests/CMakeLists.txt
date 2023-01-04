@@ -82,3 +82,6 @@ endif()
 
 # Adds UnitTests to be run when like "make test" is executed.
 add_test(UnitTests UnitTests)
+
+include(GoogleTest)
+gtest_discover_tests(UnitTests)
