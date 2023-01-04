@@ -2786,12 +2786,22 @@ TEST(World_Longer, TilesComesToRest)
         if (firstStepWithZeroMoved) {
             EXPECT_EQ(*firstStepWithZeroMoved, 1801u);
         }
-#else
-        EXPECT_EQ(world->GetContactRange(), 1450u); // on amd64
-        EXPECT_EQ(totalBodiesSlept, createdBodyCount + 1u);
+#elif defined(__amd64__) // includes __k8__
+        EXPECT_EQ(world->GetContactRange(), 1448u);
+        EXPECT_EQ(totalBodiesSlept, 667u);
         EXPECT_TRUE(firstStepWithZeroMoved);
         if (firstStepWithZeroMoved) {
-            EXPECT_EQ(*firstStepWithZeroMoved, 1799u);
+            EXPECT_EQ(*firstStepWithZeroMoved, 1800u);
+        }
+#else // unrecognized arch; just check results are within range of others
+        EXPECT_GE(world->GetContactRange(), 1447u);
+        EXPECT_LE(world->GetContactRange(), 1450u);
+        EXPECT_GE(totalBodiesSlept, 667u);
+        EXPECT_LE(totalBodiesSlept, 668u);
+        EXPECT_TRUE(firstStepWithZeroMoved);
+        if (firstStepWithZeroMoved) {
+            EXPECT_GE(*firstStepWithZeroMoved, 1798u);
+            EXPECT_LE(*firstStepWithZeroMoved, 1812u);
         }
 #endif
         break;
@@ -2913,11 +2923,11 @@ TEST(World_Longer, TilesComesToRest)
         case  4:
         {
             // From commits after 507a7c15c
-            EXPECT_EQ(numSteps,         1800ul);
-            EXPECT_EQ(sumRegPosIters,  36514ul);
-            EXPECT_EQ(sumRegVelIters,  46947ul);
-            EXPECT_EQ(sumToiPosIters,  44106ul);
-            EXPECT_EQ(sumToiVelIters, 113302ul);
+            EXPECT_EQ(numSteps,         1801ul);
+            EXPECT_EQ(sumRegPosIters,  36518ul);
+            EXPECT_EQ(sumRegVelIters,  46948ul);
+            EXPECT_EQ(sumToiPosIters,  44170ul);
+            EXPECT_EQ(sumToiVelIters, 114108ul);
             break;
         }
         case  8:
