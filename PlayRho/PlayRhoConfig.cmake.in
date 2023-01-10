@@ -1,29 +1,3 @@
-#                                               -*- cmake -*-
-#
-#  PlayRhoConfig.cmake(.in)
-#
+@PACKAGE_INIT@
 
-# Use the following variables to compile and link against PlayRho:
-#  PLAYRHO_FOUND          - True if PlayRho was found on your system
-#  PLAYRHO_USE_FILE       - The file making PlayRho usable
-#  PLAYRHO_DEFINITIONS    - Definitions needed to build with PlayRho
-#  PLAYRHO_INCLUDE_DIR    - PlayRho headers location
-#  PLAYRHO_INCLUDE_DIRS   - List of directories where PlayRho header file are
-#  PLAYRHO_LIBRARY        - Library name
-#  PLAYRHO_LIBRARIES      - List of libraries to link against
-#  PLAYRHO_LIBRARY_DIRS   - List of directories containing PlayRho libraries
-#  PLAYRHO_ROOT_DIR       - The base directory of PlayRho
-#  PLAYRHO_VERSION_STRING - A human-readable string containing the version
-
-set ( PLAYRHO_FOUND 1 )
-set ( PLAYRHO_USE_FILE     "@PLAYRHO_USE_FILE@" )
-
-set ( PLAYRHO_DEFINITIONS  "@PLAYRHO_DEFINITIONS@" )
-set ( PLAYRHO_INCLUDE_DIR  "@PLAYRHO_INCLUDE_DIR@" )
-set ( PLAYRHO_INCLUDE_DIRS "@PLAYRHO_INCLUDE_DIRS@" )
-set ( PLAYRHO_LIBRARY      "@PLAYRHO_LIBRARY@" )
-set ( PLAYRHO_LIBRARIES    "@PLAYRHO_LIBRARIES@" )
-set ( PLAYRHO_LIBRARY_DIRS "@PLAYRHO_LIBRARY_DIRS@" )
-set ( PLAYRHO_ROOT_DIR     "@CMAKE_INSTALL_PREFIX@" )
-
-set ( PLAYRHO_VERSION_STRING "@PLAYRHO_VERSION@" )
+include("${CMAKE_CURRENT_LIST_DIR}/PlayRho-targets.cmake")
