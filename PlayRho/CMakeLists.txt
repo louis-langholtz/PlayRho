@@ -1,3 +1,6 @@
+include(CMakePackageConfigHelpers)
+include(GNUInstallDirs)
+
 if(NOT PLAYRHO_REAL_TYPE)
 	set(PLAYRHO_REAL_TYPE float)
 endif()
@@ -90,10 +93,10 @@ if(PLAYRHO_BUILD_SHARED)
 		${PLAYRHO_Rope_SRCS}
 		${PLAYRHO_Rope_HDRS}
 	)
+	add_library(PlayRho::PlayRho_shared ALIAS PlayRho)
 	target_compile_features(PlayRho_shared PUBLIC cxx_std_17)
 	set_target_properties(PlayRho_shared PROPERTIES
 		OUTPUT_NAME "PlayRho"
-		CLEAN_DIRECT_OUTPUT 1
 		VERSION ${PLAYRHO_VERSION}
 	)
 endif()
@@ -116,9 +119,9 @@ if(PLAYRHO_BUILD_STATIC)
 		${PLAYRHO_Rope_SRCS}
 		${PLAYRHO_Rope_HDRS}
 	)
+	add_library(PlayRho::PlayRho ALIAS PlayRho)
 	target_compile_features(PlayRho PUBLIC cxx_std_17)
 	set_target_properties(PlayRho PROPERTIES
-		CLEAN_DIRECT_OUTPUT 1
 		VERSION ${PLAYRHO_VERSION}
 	)
 endif()
@@ -134,34 +137,45 @@ source_group(Include FILES ${PLAYRHO_General_HDRS})
 
 if(PLAYRHO_INSTALL)
 	# install headers
-	install(FILES ${PLAYRHO_General_HDRS} DESTINATION include/PlayRho)
-	install(FILES ${PLAYRHO_Collision_HDRS} DESTINATION include/PlayRho/Collision)
-	install(FILES ${PLAYRHO_Shapes_HDRS} DESTINATION include/PlayRho/Collision/Shapes)
-	install(FILES ${PLAYRHO_Common_HDRS} DESTINATION include/PlayRho/Common)
-	install(FILES ${PLAYRHO_Dynamics_HDRS} DESTINATION include/PlayRho/Dynamics)
-	install(FILES ${PLAYRHO_Contacts_HDRS} DESTINATION include/PlayRho/Dynamics/Contacts)
-	install(FILES ${PLAYRHO_Joints_HDRS} DESTINATION include/PlayRho/Dynamics/Joints)
+	install(FILES ${PLAYRHO_General_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho)
+	install(FILES ${PLAYRHO_Collision_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Collision)
+	install(FILES ${PLAYRHO_Shapes_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Collision/Shapes)
+	install(FILES ${PLAYRHO_Common_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Common)
+	install(FILES ${PLAYRHO_Dynamics_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Dynamics)
+	install(FILES ${PLAYRHO_Contacts_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Dynamics/Contacts)
+	install(FILES ${PLAYRHO_Joints_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Dynamics/Joints)
 
 	# install libraries
 	if(PLAYRHO_BUILD_SHARED)
-		install(TARGETS PlayRho_shared EXPORT PlayRho-targets
-                  LIBRARY DESTINATION ${LIB_INSTALL_DIR}
-                  ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
-                  RUNTIME DESTINATION bin)
+		install(TARGETS PlayRho_shared
+		        EXPORT PlayRho-targets
+		        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+		        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+		)
 	endif()
 	if(PLAYRHO_BUILD_STATIC)
-		install(TARGETS PlayRho EXPORT PlayRho-targets DESTINATION ${LIB_INSTALL_DIR})
+		install(TARGETS PlayRho
+		        EXPORT PlayRho-targets
+		        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+		        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+		)
 	endif()
 
 	# install build system hooks for third-party apps
-	install(EXPORT PlayRho-targets DESTINATION ${LIB_INSTALL_DIR}/PlayRho)
+	install(EXPORT PlayRho-targets
+		FILE PlayRho-targets.cmake
+		NAMESPACE PlayRho::
+		DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/PlayRho)
 
-	set(PLAYRHO_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
+	set(PLAYRHO_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
 	set(PLAYRHO_INCLUDE_DIRS ${PLAYRHO_INCLUDE_DIR} )
 	set(PLAYRHO_LIBRARY_DIRS ${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR})
 	set(PLAYRHO_LIBRARY PlayRho)
 	set(PLAYRHO_LIBRARIES ${PLAYRHO_LIBRARY})
-	set(PLAYRHO_USE_FILE ${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/cmake/PlayRho/UsePlayRho.cmake)
-	configure_file(PlayRhoConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/PlayRhoConfig.cmake @ONLY ESCAPE_QUOTES)
-	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/PlayRhoConfig.cmake UsePlayRho.cmake DESTINATION ${LIB_INSTALL_DIR}/cmake/PlayRho)
+	configure_package_config_file(PlayRhoConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/PlayRhoConfig.cmake INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/PlayRho/PlayRhoConfig.cmake)
+	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/PlayRhoConfig.cmake DESTINATION ${LIB_INSTALL_DIR}/cmake/PlayRho)
 endif(PLAYRHO_INSTALL)
