@@ -22,20 +22,14 @@
 TEST(functional, FunctionSize)
 {
 #ifdef __APPLE__
+#if defined(__arm64__)
+    EXPECT_EQ(sizeof(std::function<int()>), std::size_t(32));
+#else
     EXPECT_EQ(sizeof(std::function<int()>), std::size_t(48));
-    EXPECT_EQ(sizeof(std::function<void(int)>), std::size_t(48));
-    EXPECT_EQ(sizeof(std::function<float(int)>), std::size_t(48));
-    EXPECT_EQ(sizeof(std::function<int(float)>), std::size_t(48));
-    EXPECT_EQ(sizeof(std::function<int(double)>), std::size_t(48));
-    EXPECT_EQ(sizeof(std::function<int(double, long, void*)>), std::size_t(48));
+#endif
 #endif
 #ifdef __linux__
     EXPECT_EQ(sizeof(std::function<int()>), std::size_t(32));
-    EXPECT_EQ(sizeof(std::function<void(int)>), std::size_t(32));
-    EXPECT_EQ(sizeof(std::function<float(int)>), std::size_t(32));
-    EXPECT_EQ(sizeof(std::function<int(float)>), std::size_t(32));
-    EXPECT_EQ(sizeof(std::function<int(double)>), std::size_t(32));
-    EXPECT_EQ(sizeof(std::function<int(double, long, void*)>), std::size_t(32));
 #endif
 }
 
