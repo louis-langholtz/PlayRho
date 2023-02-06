@@ -2793,6 +2793,16 @@ TEST(World_Longer, TilesComesToRest)
         if (firstStepWithZeroMoved) {
             EXPECT_EQ(*firstStepWithZeroMoved, 1800u);
         }
+#elif defined(__arm64__) // At least for Apple Silicon
+        EXPECT_GE(world->GetContactRange(), 1447u);
+        EXPECT_LE(world->GetContactRange(), 1451u);
+        EXPECT_GE(totalBodiesSlept, 667u);
+        EXPECT_LE(totalBodiesSlept, 670u);
+        EXPECT_TRUE(firstStepWithZeroMoved);
+        if (firstStepWithZeroMoved) {
+            EXPECT_GE(*firstStepWithZeroMoved, 1798u);
+            EXPECT_LE(*firstStepWithZeroMoved, 1812u);
+        }
 #else // unrecognized arch; just check results are within range of others
         EXPECT_GE(world->GetContactRange(), 1447u);
         EXPECT_LE(world->GetContactRange(), 1450u);
@@ -2952,6 +2962,13 @@ TEST(World_Longer, TilesComesToRest)
     EXPECT_EQ(sumRegVelIters, 46981ul);
     EXPECT_EQ(sumToiPosIters, 43684ul);
     EXPECT_EQ(sumToiVelIters, 112778ul);
+#elif defined(__arm64__)
+    // At least for Apple Silicon...
+    EXPECT_EQ(numSteps, 1799ul);
+    EXPECT_EQ(sumRegPosIters, 36512ul);
+    EXPECT_EQ(sumRegVelIters, 46940ul);
+    EXPECT_EQ(sumToiPosIters, 44021ul);
+    EXPECT_EQ(sumToiVelIters, 113137ul);
 #else
     // These will likely fail and need to be tweaked for the particular hardware...
     EXPECT_EQ(numSteps, 1814ul);
