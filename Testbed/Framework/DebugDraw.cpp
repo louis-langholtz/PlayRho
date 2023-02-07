@@ -725,7 +725,7 @@ void DebugDraw::DrawString(const Length2& pw, TextAlign align, const char *strin
     char buffer[512];
     va_list arg;
     va_start(arg, string);
-    vsprintf(buffer, string, arg);
+    std::vsnprintf(buffer, sizeof(buffer), string, arg);
     va_end(arg);
     
     const auto textSize = ImGui::CalcTextSize(buffer);

@@ -3539,8 +3539,8 @@ int main()
     const auto buildDetails = GetBuildDetails();
     
     char title[64];
-    std::sprintf(title, "PlayRho Testbed Version %d.%d.%d",
-                 buildVersion.major, buildVersion.minor, buildVersion.revision);
+    std::snprintf(title, sizeof(title), "PlayRho Testbed Version %d.%d.%d",
+                  buildVersion.major, buildVersion.minor, buildVersion.revision);
 
     SetupGlfwWindowHints();
 
