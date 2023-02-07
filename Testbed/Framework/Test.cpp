@@ -1193,13 +1193,13 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
                                 ImGuiWindowFlags_NoCollapse);
         char buffer[40];
         
-        std::sprintf(buffer, "Max of %u", m_stats.m_maxTouching);
+        std::snprintf(buffer, sizeof(buffer), "Max of %u", m_stats.m_maxTouching);
         ImGui::PlotHistogram("# Touching", DequeValuesGetter<std::size_t>::Func,
                              &m_numTouchingPerStep, static_cast<int>(size(m_numTouchingPerStep)),
                              0, buffer, 0.0f, static_cast<float>(m_stats.m_maxContacts),
                              ImVec2(600, 100));
 
-        std::sprintf(buffer, "Max of %u", m_stats.m_maxContacts);
+        std::snprintf(buffer, sizeof(buffer), "Max of %u", m_stats.m_maxContacts);
         ImGui::PlotHistogram("# Contacts", DequeValuesGetter<std::size_t>::Func,
                              &m_numContactsPerStep, static_cast<int>(size(m_numContactsPerStep)),
                              0, buffer, 0.0f, static_cast<float>(m_stats.m_maxContacts),
