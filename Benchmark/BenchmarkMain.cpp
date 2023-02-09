@@ -253,7 +253,8 @@ static void FloatAdd(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(val.first + val.second);
+            auto result = val.first + val.second;
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -263,7 +264,8 @@ static void FloatMul(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(val.first * val.second);
+            auto result = val.first * val.second;
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -273,7 +275,8 @@ static void FloatDiv(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(val.first / val.second);
+            auto result = val.first / val.second;
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -283,7 +286,8 @@ static void FloatSqrt(benchmark::State& state)
     const auto vals = Rands(static_cast<unsigned>(state.range()), 0.0f, 100.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(std::sqrt(val));
+            auto result = std::sqrt(val);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -293,7 +297,8 @@ static void FloatSin(benchmark::State& state)
     const auto vals = Rands(static_cast<unsigned>(state.range()), -4.0f, +4.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(std::sin(val));
+            auto result = std::sin(val);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -303,7 +308,8 @@ static void FloatCos(benchmark::State& state)
     const auto vals = Rands(static_cast<unsigned>(state.range()), -4.0f, +4.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(std::cos(val));
+            auto result = std::cos(val);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -315,7 +321,8 @@ static void FloatSinCos(benchmark::State& state)
         for (const auto& val : vals) {
             // If runtime of sin + cos = sin or cos then seemingly hardware
             //   calculates both at same time and compiler knows that.
-            benchmark::DoNotOptimize(std::make_pair(std::sin(val), std::cos(val)));
+            auto result = std::make_pair(std::sin(val), std::cos(val));
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -325,7 +332,8 @@ static void FloatAtan2(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(std::atan2(val.first, val.second));
+            auto result = std::atan2(val.first, val.second);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -335,7 +343,8 @@ static void FloatHypot(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(std::hypot(val.first, val.second));
+            auto result = std::hypot(val.first, val.second);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -345,7 +354,8 @@ static void FloatMulAdd(benchmark::State& state)
     const auto vals = RandTriplets(static_cast<unsigned>(state.range()), -1000.0f, 1000.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize((std::get<0>(val) * std::get<1>(val)) + std::get<2>(val));
+            auto result = (std::get<0>(val) * std::get<1>(val)) + std::get<2>(val);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -355,8 +365,8 @@ static void FloatFma(benchmark::State& state)
     const auto vals = RandTriplets(static_cast<unsigned>(state.range()), -1000.0f, 1000.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(
-                std::fma(std::get<0>(val), std::get<1>(val), std::get<2>(val)));
+            auto result = std::fma(std::get<0>(val), std::get<1>(val), std::get<2>(val));
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -368,7 +378,8 @@ static void DoubleAdd(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0, 100.0);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(val.first + val.second);
+            auto result = val.first + val.second;
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -378,7 +389,8 @@ static void DoubleMul(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0, 100.0);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(val.first * val.second);
+            auto result = val.first * val.second;
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -388,7 +400,8 @@ static void DoubleDiv(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0, 100.0);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(val.first / val.second);
+            auto result = val.first / val.second;
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -398,7 +411,8 @@ static void DoubleSqrt(benchmark::State& state)
     const auto vals = Rands(static_cast<unsigned>(state.range()), 0.0, 100.0);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(std::sqrt(val));
+            auto result = std::sqrt(val);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -408,7 +422,8 @@ static void DoubleSin(benchmark::State& state)
     const auto vals = Rands(static_cast<unsigned>(state.range()), -4.0, +4.0);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(std::sin(val));
+            auto result = std::sin(val);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -418,7 +433,8 @@ static void DoubleCos(benchmark::State& state)
     const auto vals = Rands(static_cast<unsigned>(state.range()), -4.0, +4.0);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(std::cos(val));
+            auto result = std::cos(val);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -430,7 +446,8 @@ static void DoubleSinCos(benchmark::State& state)
         for (const auto& val : vals) {
             // If runtime of sin + cos = sin or cos then seemingly hardware
             //   calculates both at same time and compiler knows that.
-            benchmark::DoNotOptimize(std::make_pair(std::sin(val), std::cos(val)));
+            auto result = std::make_pair(std::sin(val), std::cos(val));
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -440,7 +457,8 @@ static void DoubleAtan2(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0, 100.0);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(std::atan2(val.first, val.second));
+            auto result = std::atan2(val.first, val.second);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -450,7 +468,8 @@ static void DoubleHypot(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0, 100.0);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(std::hypot(val.first, val.second));
+            auto result = std::hypot(val.first, val.second);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -460,7 +479,8 @@ static void DoubleMulAdd(benchmark::State& state)
     const auto vals = RandTriplets(static_cast<unsigned>(state.range()), -1000.0, 1000.0);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize((std::get<0>(val) * std::get<1>(val)) + std::get<2>(val));
+            auto result = (std::get<0>(val) * std::get<1>(val)) + std::get<2>(val);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -470,8 +490,8 @@ static void DoubleFma(benchmark::State& state)
     const auto vals = RandTriplets(static_cast<unsigned>(state.range()), -1000.0, 1000.0);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(
-                std::fma(std::get<0>(val), std::get<1>(val), std::get<2>(val)));
+            auto result = std::fma(std::get<0>(val), std::get<1>(val), std::get<2>(val));
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -884,9 +904,10 @@ static void AlmostEqual1(benchmark::State& state)
         for (const auto& val : vals) {
             const auto x = val.first;
             const auto y = val.second;
-            benchmark::DoNotOptimize((playrho::abs(x - y) < (std::numeric_limits<float>::epsilon() *
-                                                             playrho::abs(x + y) * ulp)) ||
-                                     playrho::AlmostZero(x - y));
+            auto result = (playrho::abs(x - y) < (std::numeric_limits<float>::epsilon() *
+                                                  playrho::abs(x + y) * ulp)) ||
+                          playrho::AlmostZero(x - y);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -902,7 +923,8 @@ static void AlmostEqual2(benchmark::State& state)
             // Accesses the floats as unsigned 32 bit ints and strips off the signbits.
             const auto nX = (*reinterpret_cast<const std::uint32_t*>(&x)) & 0x7FFFFFF;
             const auto nY = (*reinterpret_cast<const std::uint32_t*>(&y)) & 0x7FFFFFF;
-            benchmark::DoNotOptimize(((nX >= nY) ? nX - nY : nY - nX) <= ulp);
+            auto result = ((nX >= nY) ? nX - nY : nY - nX) <= ulp;
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -920,7 +942,8 @@ static void AlmostEqual3(benchmark::State& state)
                 (*reinterpret_cast<const std::uint32_t*>(&x)) & std::uint32_t{0x7FFFFFF});
             const auto nY = static_cast<std::int32_t>(
                 (*reinterpret_cast<const std::uint32_t*>(&y)) & std::uint32_t{0x7FFFFFF});
-            benchmark::DoNotOptimize(std::abs(nX - nY) <= ulp);
+            auto result = std::abs(nX - nY) <= ulp;
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -955,7 +978,8 @@ static void ModuloViaCTrunc1(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(ModuloViaCTrunc1(val.first, val.second));
+            auto result = ModuloViaCTrunc1(val.first, val.second);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -965,7 +989,8 @@ static void ModuloViaCTrunc2(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(ModuloViaCTrunc2(val.first, val.second));
+            auto result = ModuloViaCTrunc2(val.first, val.second);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -975,7 +1000,8 @@ static void ModuloViaStdTrunc(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(ModuloViaStdTrunc(val.first, val.second));
+            auto result = ModuloViaStdTrunc(val.first, val.second);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -985,7 +1011,8 @@ static void ModuloViaTrunc(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(playrho::ModuloViaTrunc(val.first, val.second));
+            auto result = playrho::ModuloViaTrunc(val.first, val.second);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -995,7 +1022,8 @@ static void ModuloViaFmod(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(playrho::ModuloViaFmod(val.first, val.second));
+            auto result = playrho::ModuloViaFmod(val.first, val.second);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1006,7 +1034,8 @@ static void LengthSquaredViaDotProduct(benchmark::State& state)
     for (auto _ : state) {
         for (const auto& val : vals) {
             const auto vec = playrho::Vec2(val.first, val.second);
-            benchmark::DoNotOptimize(playrho::Dot(vec, vec));
+            auto result = playrho::Dot(vec, vec);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1016,8 +1045,8 @@ static void GetMagnitudeSquared(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(
-                playrho::GetMagnitudeSquared(playrho::Vec2(val.first, val.second)));
+            auto result = playrho::GetMagnitudeSquared(playrho::Vec2(val.first, val.second));
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1027,7 +1056,8 @@ static void GetMagnitude(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(playrho::GetMagnitude(playrho::Vec2(val.first, val.second)));
+            auto result = playrho::GetMagnitude(playrho::Vec2(val.first, val.second));
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1037,8 +1067,8 @@ static void UnitVectorFromVector(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(
-                playrho::d2::GetUnitVector(playrho::Vec2{val.first, val.second}));
+            auto result = playrho::d2::GetUnitVector(playrho::Vec2{val.first, val.second});
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1072,8 +1102,8 @@ static void GetUnitVec1(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -10000.0f, 10000.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(
-                GetUnitVec1(playrho::Vec2{val.first, val.second}, playrho::Vec2{0, 0}));
+            auto result = GetUnitVec1(playrho::Vec2{val.first, val.second}, playrho::Vec2{0, 0});
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1083,8 +1113,8 @@ static void GetUnitVec2(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -10000.0f, 10000.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(
-                GetUnitVec2(playrho::Vec2{val.first, val.second}, playrho::Vec2{0, 0}));
+            auto result = GetUnitVec2(playrho::Vec2{val.first, val.second}, playrho::Vec2{0, 0});
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1094,8 +1124,8 @@ static void UnitVectorFromVectorAndBack(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(playrho::d2::GetVec2(
-                playrho::d2::GetUnitVector(playrho::Vec2{val.first, val.second})));
+            auto result = playrho::d2::GetVec2(playrho::d2::GetUnitVector(playrho::Vec2{val.first, val.second}));
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1109,7 +1139,8 @@ static void UnitVecFromAngle(benchmark::State& state)
         for (const auto& val : vals) {
             // If runtime of sin + cos = sin or cos then seemingly hardware
             //   calculates both at same time and compiler knows that.
-            benchmark::DoNotOptimize(playrho::d2::UnitVec::Get(val * playrho::Radian));
+            auto result = playrho::d2::UnitVec::Get(val * playrho::Radian);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1119,7 +1150,8 @@ static void DiffSignsViaSignbit(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -1.0f, 1.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(std::signbit(val.first) != std::signbit(val.second));
+            auto result = std::signbit(val.first) != std::signbit(val.second);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1129,7 +1161,8 @@ static void DiffSignsViaMul(benchmark::State& state)
     const auto vals = RandPairs(static_cast<unsigned>(state.range()), -1.0f, 1.0f);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(val.first * val.second < 0.0f);
+            auto result = val.first * val.second < 0.0f;
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1141,7 +1174,8 @@ static void DotProduct(benchmark::State& state)
         for (const auto& val : vals) {
             const auto v1 = playrho::Vec2{std::get<0>(val), std::get<1>(val)};
             const auto v2 = playrho::Vec2{std::get<2>(val), std::get<3>(val)};
-            benchmark::DoNotOptimize(playrho::Dot(v1, v2));
+            auto result = playrho::Dot(v1, v2);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1153,7 +1187,8 @@ static void CrossProduct(benchmark::State& state)
         for (const auto& val : vals) {
             const auto v1 = playrho::Vec2{std::get<0>(val), std::get<1>(val)};
             const auto v2 = playrho::Vec2{std::get<2>(val), std::get<3>(val)};
-            benchmark::DoNotOptimize(playrho::Cross(v1, v2));
+            auto result = playrho::Cross(v1, v2);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1170,7 +1205,8 @@ static void IntervalIsIntersecting(benchmark::State& state)
             const auto d = std::get<3>(val);
             const auto i0 = playrho::Interval<playrho::Real>{a, b};
             const auto i1 = playrho::Interval<playrho::Real>{c, d};
-            benchmark::DoNotOptimize(playrho::IsIntersecting(i0, i1));
+            auto result = playrho::IsIntersecting(i0, i1);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1422,7 +1458,8 @@ static void LengthIntervalIsIntersecting(benchmark::State& state)
             const auto d = std::get<3>(val);
             const auto i0 = playrho::LengthInterval{a, b};
             const auto i1 = playrho::LengthInterval{c, d};
-            benchmark::DoNotOptimize(playrho::IsIntersecting(i0, i1));
+            auto result = playrho::IsIntersecting(i0, i1);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1442,7 +1479,8 @@ static void AabbTestOverlap(benchmark::State& state)
                                              std::get<7>(val) * playrho::Meter};
             const auto aabb0 = playrho::d2::AABB{p0, p1};
             const auto aabb1 = playrho::d2::AABB{p2, p3};
-            benchmark::DoNotOptimize(playrho::d2::TestOverlap(aabb0, aabb1));
+            auto result = playrho::d2::TestOverlap(aabb0, aabb1);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1462,7 +1500,8 @@ static void AabbContains(benchmark::State& state)
                                              std::get<7>(val) * playrho::Meter};
             const auto aabb0 = playrho::d2::AABB{p0, p1};
             const auto aabb1 = playrho::d2::AABB{p2, p3};
-            benchmark::DoNotOptimize(playrho::d2::Contains(aabb0, aabb1));
+            auto result = playrho::d2::Contains(aabb0, aabb1);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1482,8 +1521,10 @@ static void AABB(benchmark::State& state)
                                              std::get<7>(val) * playrho::Meter};
             const auto aabb0 = playrho::d2::AABB{p0, p1};
             const auto aabb1 = playrho::d2::AABB{p2, p3};
-            benchmark::DoNotOptimize(playrho::d2::TestOverlap(aabb0, aabb1));
-            benchmark::DoNotOptimize(playrho::d2::Contains(aabb0, aabb1));
+            auto result0 = playrho::d2::TestOverlap(aabb0, aabb1);
+            benchmark::DoNotOptimize(result0);
+            auto result1 = playrho::d2::Contains(aabb0, aabb1);
+            benchmark::DoNotOptimize(result1);
         }
     }
 }
@@ -1538,7 +1579,8 @@ static void GetShortestDelta1(benchmark::State& state)
                                 -720 * playrho::Degree, 720 * playrho::Degree);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(GetShortestDelta1(val.first, val.second));
+            auto result = GetShortestDelta1(val.first, val.second);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1549,7 +1591,8 @@ static void GetShortestDelta2(benchmark::State& state)
                                 -720 * playrho::Degree, 720 * playrho::Degree);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(GetShortestDelta2(val.first, val.second));
+            auto result = GetShortestDelta2(val.first, val.second);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1560,7 +1603,8 @@ static void GetShortestDelta25(benchmark::State& state)
                                 -720 * playrho::Degree, 720 * playrho::Degree);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(GetShortestDelta25(val.first, val.second));
+            auto result = GetShortestDelta25(val.first, val.second);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1571,7 +1615,8 @@ static void GetShortestDelta3(benchmark::State& state)
                                 -720 * playrho::Degree, 720 * playrho::Degree);
     for (auto _ : state) {
         for (const auto& val : vals) {
-            benchmark::DoNotOptimize(GetShortestDelta3(val.first, val.second));
+            auto result = GetShortestDelta3(val.first, val.second);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1631,7 +1676,8 @@ static void GetPositionNaively(benchmark::State& state)
         for (auto i = 0u; i < count; ++i) {
             const auto& val = vals[i];
             const auto beta = betas[i];
-            benchmark::DoNotOptimize(GetPositionNaively(val.first, val.second, beta));
+            auto result = GetPositionNaively(val.first, val.second, beta);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1645,7 +1691,8 @@ static void GetPositionShortestDelta(benchmark::State& state)
         for (auto i = 0u; i < count; ++i) {
             const auto& val = vals[i];
             const auto beta = betas[i];
-            benchmark::DoNotOptimize(GetPositionShortestDelta(val.first, val.second, beta));
+            auto result = GetPositionShortestDelta(val.first, val.second, beta);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1659,7 +1706,8 @@ static void GetPositionFloorNormal(benchmark::State& state)
         for (auto i = 0u; i < count; ++i) {
             const auto& val = vals[i];
             const auto beta = betas[i];
-            benchmark::DoNotOptimize(GetPositionFloorNormal(val.first, val.second, beta));
+            auto result = GetPositionFloorNormal(val.first, val.second, beta);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1727,7 +1775,8 @@ static void MaxSepBetweenRelSquaresNoStop(benchmark::State& state)
         for (const auto& val : vals) {
             const auto xf0 = val.first;
             const auto xf1 = val.second;
-            benchmark::DoNotOptimize(playrho::d2::GetMaxSeparation(child0, xf0, child1, xf1));
+            auto result = playrho::d2::GetMaxSeparation(child0, xf0, child1, xf1);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1745,7 +1794,8 @@ static void MaxSepBetweenRel4x4(benchmark::State& state)
         for (const auto& val : vals) {
             const auto xf0 = val.first;
             const auto xf1 = val.second;
-            benchmark::DoNotOptimize(playrho::d2::GetMaxSeparation4x4(child0, xf0, child1, xf1));
+            auto result = playrho::d2::GetMaxSeparation4x4(child0, xf0, child1, xf1);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1764,8 +1814,8 @@ static void MaxSepBetweenRelSquares(benchmark::State& state)
         for (const auto& val : vals) {
             const auto xf0 = val.first;
             const auto xf1 = val.second;
-            benchmark::DoNotOptimize(
-                playrho::d2::GetMaxSeparation(child0, xf0, child1, xf1, totalRadius));
+            auto result = playrho::d2::GetMaxSeparation(child0, xf0, child1, xf1, totalRadius);
+            benchmark::DoNotOptimize(result);
         }
     }
 }
@@ -1808,7 +1858,8 @@ static void MaxSepBetweenAbsSquares(benchmark::State& state)
     
     for (auto _: state)
     {
-        benchmark::DoNotOptimize(playrho::GetMaxSeparation(child0, child1, totalRadius));
+        auto result = playrho::GetMaxSeparation(child0, child1, totalRadius);
+        benchmark::DoNotOptimize(result);
     }
 }
 #endif
@@ -1849,8 +1900,8 @@ static void ManifoldForTwoSquares1(benchmark::State& state)
     //       +
 
     for (auto _ : state) {
-        benchmark::DoNotOptimize(
-            playrho::d2::CollideShapes(GetChild(shape, 0), xfm0, GetChild(shape, 0), xfm1));
+        auto result = playrho::d2::CollideShapes(GetChild(shape, 0), xfm0, GetChild(shape, 0), xfm1);
+        benchmark::DoNotOptimize(result);
     }
 }
 
@@ -1885,8 +1936,8 @@ static void ManifoldForTwoSquares2(benchmark::State& state)
                                     playrho::d2::UnitVec::GetRight()}; // right
 
     for (auto _ : state) {
-        benchmark::DoNotOptimize(
-            CollideShapes(GetChild(shapeA, 0), xfmA, GetChild(shapeB, 0), xfmB));
+        auto result = CollideShapes(GetChild(shapeA, 0), xfmA, GetChild(shapeB, 0), xfmB);
+        benchmark::DoNotOptimize(result);
     }
 }
 
@@ -2016,8 +2067,8 @@ static void SolveVC(benchmark::State& state)
                                         worldManifold,  playrho::BodyID(0u), playrho::BodyID(1u),
                                         bodyConstraints};
     for (auto _ : state) {
-        benchmark::DoNotOptimize(
-            playrho::GaussSeidel::SolveVelocityConstraint(vc, bodyConstraints));
+        auto result = playrho::GaussSeidel::SolveVelocityConstraint(vc, bodyConstraints);
+        benchmark::DoNotOptimize(result);
         benchmark::ClobberMemory();
     }
 }
