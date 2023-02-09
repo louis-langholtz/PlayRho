@@ -30,4 +30,4 @@ add_executable(Benchmark ${Benchmark_SRCS})
 
 # Link a target to given libraries.
 # See details at: https://cmake.org/cmake/help/v3.1/command/target_link_libraries.html
-target_link_libraries(Benchmark PlayRho benchmark)
+target_link_libraries(Benchmark PlayRho benchmark::benchmark)
