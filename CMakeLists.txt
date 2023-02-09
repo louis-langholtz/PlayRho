@@ -5,7 +5,7 @@
 # According to the following link, support for cxx_std_17 first became available in CMake 3.8.
 # https://github.com/Kitware/CMake/blob/07cfb18f9d29cfc0588ede928846a03ec5599c48/Help/release/3.8.rst
 # Availability of CMAKE_PROJECT_VERSION first appeared in CMake 3.12
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.16.3)
 
 foreach(p
     CMP0048 # OK to clear PROJECT_VERSION on project()
