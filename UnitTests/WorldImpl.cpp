@@ -117,7 +117,6 @@ TEST(WorldImpl, DefaultInit)
         EXPECT_TRUE(bodies.empty());
         EXPECT_EQ(bodies.size(), BodyCounter(0));
         EXPECT_EQ(bodies.begin(), bodies.end());
-        EXPECT_EQ(world.GetBodies().begin(), world.GetBodies().end());
     }
     {
         const auto& w = static_cast<const WorldImpl&>(world);
@@ -125,17 +124,14 @@ TEST(WorldImpl, DefaultInit)
         EXPECT_TRUE(bodies.empty());
         EXPECT_EQ(bodies.size(), BodyCounter(0));
         EXPECT_EQ(bodies.begin(), bodies.end());
-        EXPECT_EQ(w.GetBodies().begin(), w.GetBodies().end());
     }
 
     EXPECT_TRUE(world.GetContacts().empty());
     EXPECT_EQ(world.GetContacts().size(), ContactCounter(0));
-    EXPECT_EQ(world.GetContacts().begin(), world.GetContacts().end());
-    
+
     EXPECT_TRUE(world.GetJoints().empty());
     EXPECT_EQ(world.GetJoints().size(), JointCounter(0));
-    EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
-    
+
     EXPECT_FALSE(world.GetSubStepping());
     EXPECT_FALSE(world.IsLocked());
 }

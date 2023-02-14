@@ -16,6 +16,12 @@
 
 image: Visual Studio 2019
 
+# Specifies branches to build as done in .github/workflows/cmake.yml
+branches:
+  only:
+    - master
+    - release-1.1.1
+
 environment:
   matrix:
     - platform: noarch
@@ -24,12 +30,12 @@ environment:
       configuration: Debug
       additional_flags: "/permissive- /std:c++17"
       triplet: x64-windows-static
-      targets: -DCMAKE_GENERATOR_PLATFORM=x64 -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_TESTBED=ON
+      defines: -DCMAKE_GENERATOR_PLATFORM=x64   -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_TESTBED=ON
     - platform: x64
       configuration: Release
       additional_flags: "/permissive- /std:c++17"
       triplet: x64-windows-static
-      targets: -DCMAKE_GENERATOR_PLATFORM=x64 -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_TESTBED=ON -DPLAYRHO_BUILD_BENCHMARK=ON
+      defines: -DCMAKE_GENERATOR_PLATFORM=x64   -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_TESTBED=ON -DPLAYRHO_BUILD_BENCHMARK=ON
     - platform: Win32
       configuration: Debug
       additional_flags: "/permissive- /std:c++17"
@@ -63,8 +69,7 @@ install:
   - if "%platform%" equ "noarch" choco install graphviz
   - if "%platform%" neq "noarch" cmake --version
   - if "%platform%" neq "noarch" git submodule update --init --recursive
-  - if "%platform%" neq "noarch" vcpkg install glew:%triplet%
-  - if "%platform%" neq "noarch" vcpkg install glfw3:%triplet%
+  - if "%platform%" neq "noarch" vcpkg install glew:%triplet% glfw3:%triplet%
 
 before_build:
   - echo %APPVEYOR_BUILD_FOLDER%

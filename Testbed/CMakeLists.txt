@@ -1,39 +1,20 @@
 find_package(OpenGL REQUIRED)
 if(NOT APPLE)
-find_package(GLEW REQUIRED)
+	find_package(GLEW REQUIRED)
+	message(STATUS "GLEW_INCLUDE_DIR=${GLEW_INCLUDE_DIR}")
+	message(STATUS "GLEW_LIBRARIES=${GLEW_LIBRARIES}")
 endif()
 
-if(GLFW_INCLUDE_DIRS AND GLFW_LIBRARY_DIRS AND GLFW_STATIC_LIBRARIES AND OPENGL_INCLUDE_DIR)
-	set(GLFW_TARGET OFF)
-	message(STATUS "Values found for header and library paths.")
-else()
-
-	find_package(GLFW3 QUIET) #Find package assuming config file can be located
-	message(STATUS "GLFW3_FOUND=${GLFW_FOUND}")
-	
-	if(GLFW3_FOUND)
-		set(GLFW_TARGET ON)
-	else() #Find package using pkg-config
-		set(GLFW_TARGET OFF)
-		
-		message(STATUS "GLFW3 not found yet... Searching using pkg-config")
-		find_package(PkgConfig REQUIRED)
-		pkg_search_module(GLFW REQUIRED glfw3)
-		
-		find_library(GLFW_LIBRARY NAMES glfw3)
-		message(STATUS "GLFW_STATIC_LIBRARIES=${GLFW_STATIC_LIBRARIES}")
-		message(STATUS "GLFW_INCLUDE_DIRS=${GLFW_INCLUDE_DIRS}")
-		message(STATUS "GLFW_LIBRARY_DIRS=${GLFW_LIBRARY_DIRS}")
-		message(STATUS "OPENGL_INCLUDE_DIR=${OPENGL_INCLUDE_DIR}")
-	endif()
-	
-endif()
+find_package(GLFW3 REQUIRED)
+message(STATUS "GLFW3_FOUND=${GLFW3_FOUND}")
+message(STATUS "GLFW3_LIBRARY=${GLFW3_LIBRARY}")
+message(STATUS "GLFW3_INCLUDE_DIR =${GLFW3_INCLUDE_DIR}")
 
 # Some flags for Freeglut and GLUI.
 if(APPLE)
-add_definitions( -DIMGUI_IMPL_OPENGL_LOADER_GL3W )
+	add_definitions( -DIMGUI_IMPL_OPENGL_LOADER_GL3W )
 else()
-add_definitions( -DGLEW_STATIC -D_CRT_SECURE_NO_WARNINGS )
+	add_definitions( -DGLEW_STATIC -D_CRT_SECURE_NO_WARNINGS )
 endif()
 
 # Define the framework files.
@@ -64,7 +45,7 @@ if(APPLE)
 	mark_as_advanced(COREFOUNDATION_LIBRARY)
 	set(ADDITIONAL_LIBRARIES ${COREFOUNDATION_LIBRARY})
 elseif(WIN32)
-	set (ADDITIONAL_LIBRARIES winmm)
+	set(ADDITIONAL_LIBRARIES winmm)
 endif()
 
 # Resolve Linker error LNK4098; make sure default libcmt doesn't clash with other libraries
@@ -77,41 +58,26 @@ include_directories(
 	Framework/imgui
 	Framework/imgui/examples/libs/gl3w
 	${OPENGL_INCLUDE_DIR}
-	${GLEW_INCLUDE_DIRS}
-	${GLFW_INCLUDE_DIRS}
+	${GLEW_INCLUDE_DIR}
+	${GLFW3_INCLUDE_DIR}
 	${PlayRho_SOURCE_DIR}
 )
 
 message(STATUS "Setting link directories")
-link_directories (
-	${GLFW_LIBRARY_DIRS}
-)
 
 add_executable(Testbed
 	${Testbed_Framework_SRCS}
 	${Testbed_Tests_SRCS}
 )
 
-if(GLFW_TARGET)
-	target_link_libraries(
-		Testbed
-		PlayRho
-		glfw
-		${GLEW_LIBRARY}
-		${ADDITIONAL_LIBRARIES}
-		${OPENGL_LIBRARIES}
-	)
-else()
-	message(STATUS "Setting link libraries")
-	target_link_libraries(
-		Testbed
-		PlayRho
-		${GLEW_LIBRARY}
-		${GLFW_STATIC_LIBRARIES}
-		${ADDITIONAL_LIBRARIES}
-		${OPENGL_LIBRARIES}
-	)
-endif()
+target_link_libraries(
+	Testbed
+	PlayRho
+	${GLFW3_LIBRARY}
+	${GLEW_LIBRARIES}
+	${ADDITIONAL_LIBRARIES}
+	${OPENGL_LIBRARIES}
+)
 
 # link with coverage library
 if(${PLAYRHO_ENABLE_COVERAGE})
