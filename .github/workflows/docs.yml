@@ -1,0 +1,30 @@
+name: docs
+
+on:
+  push:
+    branches: [ "master", "release-1.1.1" ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ "master", "release-1.1.1" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Prerequisites
+      run: |
+        sudo apt update
+        sudo apt install doxygen graphviz
+
+    - name: Build
+      working-directory: Documentation
+      run: |
+        doxygen Doxyfile
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: doxygen-artifact
+        path: Documentation/API
