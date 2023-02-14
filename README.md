@@ -1,3 +1,8 @@
+<!--
+  This is written for GitHub Flavored Markdown.
+  See: https://github.github.com/gfm/
+-->
+
 # PlayRho
 
 *A way to play with physical behaviors like the conservation of momentum.*
@@ -23,9 +28,13 @@ Some general goals of this project are:
 
 ## Continuous Integration Status
 
-|iOS|Linux CMake|macOS Xcode|Windows VS2017|Coverage|CodeQL|
-|---|-----------|-----------|--------------|--------|------|
-|[![Build Status](https://api.travis-ci.com/louis-langholtz/PlayRho.svg?branch=iosfoo)](https://travis-ci.com/github/louis-langholtz/PlayRho)|[![Build Status](https://api.travis-ci.com/louis-langholtz/PlayRho.svg?branch=master)](https://travis-ci.com/github/louis-langholtz/PlayRho)|[![Build Status](https://api.travis-ci.com/louis-langholtz/PlayRho.svg?branch=macosxfoo)](https://travis-ci.com/github/louis-langholtz/PlayRho)|[![Build status](https://ci.appveyor.com/api/projects/status/buoix7kumafgsjtu/branch/master?svg=true)](https://ci.appveyor.com/project/louis-langholtz/playrho/branch/master)|[![Coverage Status](https://coveralls.io/repos/github/louis-langholtz/PlayRho/badge.svg?branch=master)](https://coveralls.io/github/louis-langholtz/PlayRho?branch=master)|[![CodeQL](https://github.com/louis-langholtz/PlayRho/workflows/CodeQL/badge.svg)](https://github.com/louis-langholtz/PlayRho/security/code-scanning?query=tool%3ACodeQL)|
+[![linux](https://github.com/louis-langholtz/PlayRho/actions/workflows/linux.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/linux.yml)
+[![macos](https://github.com/louis-langholtz/PlayRho/actions/workflows/macos.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/macos.yml)
+[![windows](https://github.com/louis-langholtz/PlayRho/actions/workflows/windows.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/windows.yml)
+[![API Documentation](https://github.com/louis-langholtz/PlayRho/actions/workflows/docs.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/docs.yml)
+[![CodeQL](https://github.com/louis-langholtz/PlayRho/actions/workflows/codeql.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/codeql.yml)
+[![Coverage Status](https://coveralls.io/repos/github/louis-langholtz/PlayRho/badge.svg?branch=master)](https://coveralls.io/github/louis-langholtz/PlayRho?branch=master)
+[![Ask questions at StackOverflow with the tag playrho](https://img.shields.io/badge/stackoverflow-playrho-blue.svg)](https://stackoverflow.com/questions/tagged/playrho)
 
 ## Additional Resources
 

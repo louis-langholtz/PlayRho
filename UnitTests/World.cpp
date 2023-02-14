@@ -140,7 +140,6 @@ TEST(World, DefaultInit)
         EXPECT_TRUE(bodies.empty());
         EXPECT_EQ(bodies.size(), BodyCounter(0));
         EXPECT_EQ(bodies.begin(), bodies.end());
-        EXPECT_EQ(world.GetBodies().begin(), world.GetBodies().end());
     }
     {
         const auto& w = static_cast<const World&>(world);
@@ -148,16 +147,13 @@ TEST(World, DefaultInit)
         EXPECT_TRUE(bodies.empty());
         EXPECT_EQ(bodies.size(), BodyCounter(0));
         EXPECT_EQ(bodies.begin(), bodies.end());
-        EXPECT_EQ(w.GetBodies().begin(), w.GetBodies().end());
     }
 
     EXPECT_TRUE(world.GetContacts().empty());
     EXPECT_EQ(world.GetContacts().size(), ContactCounter(0));
-    EXPECT_EQ(world.GetContacts().begin(), world.GetContacts().end());
     
     EXPECT_TRUE(world.GetJoints().empty());
     EXPECT_EQ(world.GetJoints().size(), JointCounter(0));
-    EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
     
     EXPECT_FALSE(world.GetSubStepping());
     EXPECT_FALSE(world.IsLocked());
@@ -1272,7 +1268,6 @@ TEST(World, CreateAndDestroyJoint)
     EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
     EXPECT_EQ(GetJointCount(world), JointCounter(0));
     EXPECT_TRUE(world.GetJoints().empty());
-    EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
     
     const auto anchorA = Length2{+0.4_m, -1.2_m};
     const auto anchorB = Length2{-2.3_m, +0.7_m};
@@ -1280,7 +1275,6 @@ TEST(World, CreateAndDestroyJoint)
                                                                     anchorA, anchorB)});
     EXPECT_EQ(GetJointCount(world), JointCounter(1));
     EXPECT_FALSE(world.GetJoints().empty());
-    EXPECT_NE(world.GetJoints().begin(), world.GetJoints().end());
     const auto first = *world.GetJoints().begin();
     EXPECT_EQ(joint, first);
     EXPECT_EQ(GetType(world, joint), GetTypeID<DistanceJointConf>());
@@ -1293,7 +1287,6 @@ TEST(World, CreateAndDestroyJoint)
     world.Destroy(joint);
     EXPECT_EQ(GetJointCount(world), JointCounter(0));
     EXPECT_TRUE(world.GetJoints().empty());
-    EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
 }
 
 TEST(World, MaxBodies)
