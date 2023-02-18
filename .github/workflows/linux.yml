@@ -49,16 +49,18 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: |
         ctest -C ${{matrix.build_type}} --output-on-failure
-        #lcov --gcov-tool /usr/bin/gcov-8 --compat-libtool --directory PlayRho --directory UnitTests --base-directory ../PlayRho/ --capture --output-file coverage.info --quiet
         lcov --compat-libtool --directory PlayRho --directory UnitTests --base-directory ../PlayRho/ --capture --output-file coverage.info --quiet
         echo "Lcov exited with status $?"
-        ls -laF coverage.info
-        #lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '*/UnitTests/*' -o coverage.info
-        #lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '/usr/include/*' -o coverage.info
+        ls -laF
         lcov --remove coverage.info '*/UnitTests/*' -o coverage.info
         lcov --remove coverage.info '/usr/include/*' -o coverage.info
         ls -laF coverage.info
         lcov --list coverage.info
-        cd .. && pwd
-        coveralls-lcov --verbose ${{github.workspace}}/build/coverage.info
+        # cd .. && pwd
+        # coveralls-lcov ${{github.workspace}}/build/coverage.info
 
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        path-to-lcov: build/coverage.info
