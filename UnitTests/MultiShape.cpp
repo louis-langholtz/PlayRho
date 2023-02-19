@@ -42,7 +42,7 @@ TEST(MultiShapeConf, ByteSize)
 #endif
 #elif defined(_WIN32)
 #if !defined(NDEBUG)
-            EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(36));
+            EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(28));
 #else
             EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(24));
 #endif

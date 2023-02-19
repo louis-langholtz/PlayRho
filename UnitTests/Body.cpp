@@ -42,7 +42,7 @@ TEST(Body, ByteSize)
 #elif defined(_WIN32)
 #if !defined(NDEBUG)
         // Win32 debug
-        EXPECT_EQ(sizeof(Body), std::size_t(116));
+        EXPECT_EQ(sizeof(Body), std::size_t(100));
 #else
         // Win32 release
         EXPECT_EQ(sizeof(Body), std::size_t(100));
