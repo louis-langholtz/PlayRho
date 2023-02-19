@@ -1,4 +1,4 @@
-name: linux
+name: linux-debug
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        build_type: [Release]
+        build_type: [Debug]
         real_type: [float, double]
 
     steps:
@@ -31,11 +31,12 @@ jobs:
       run: |
         sudo apt update
         sudo apt install xorg-dev libx11-dev libxmu-dev libxi-dev libgl1 libgl1-mesa-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev libosmesa-dev libglfw3-dev libglew2.2 libglew-dev
+        sudo apt install lcov
 
     - name: Configure
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DPLAYRHO_REAL_TYPE=${{matrix.real_type}} -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_TESTBED=ON
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DPLAYRHO_REAL_TYPE=${{matrix.real_type}} -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_TESTBED=ON -DPLAYRHO_ENABLE_COVERAGE=ON
 
     - name: Build
       # Build your program with the given configuration
@@ -47,3 +48,33 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest -C ${{matrix.build_type}} --output-on-failure
 
+    - name: lcov
+      working-directory: ${{github.workspace}}/build
+      run: |
+        lcov --compat-libtool --directory PlayRho --directory UnitTests --base-directory ../PlayRho/ --capture --output-file coverage.info --quiet
+        echo "Lcov exited with status $?"
+        ls -laF
+        lcov --remove coverage.info '*/UnitTests/*' -o coverage.info
+        lcov --remove coverage.info '/usr/include/*' -o coverage.info
+        ls -laF coverage.info
+        lcov --list coverage.info
+
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        path-to-lcov: build/coverage.info
+        parallel: true
+        flag-name: REAL_TYPE=${{matrix.real_type}}
+
+  finish:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        path-to-lcov: build/coverage.info
+        parallel-finished: true
