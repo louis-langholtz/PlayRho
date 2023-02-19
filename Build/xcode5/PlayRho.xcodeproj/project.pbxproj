@@ -2027,11 +2027,13 @@
 				HEADER_SEARCH_PATHS = (
 					/usr/local/boost_1_75_0,
 					/usr/local/include,
+					/opt/homebrew/opt/googletest/include,
 					../..,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/Cellar/llvm/12.0.0_1/Toolchains/LLVM12.0.0.xctoolchain/usr/lib,
 					/usr/local/lib,
+					/opt/homebrew/opt/googletest/lib,
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "-lgtest";
@@ -2045,9 +2047,13 @@
 				HEADER_SEARCH_PATHS = (
 					/usr/local/boost_1_75_0,
 					/usr/local/include,
+					/opt/homebrew/opt/googletest/include,
 					../..,
 				);
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib,
+					/opt/homebrew/opt/googletest/lib,
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-lgtest";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2117,10 +2123,12 @@
 					../..,
 					/usr/local/include,
 					/usr/local/boost_1_75_0,
+					/opt/homebrew/opt/glfw/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/Cellar/llvm/12.0.0_1/Toolchains/LLVM12.0.0.xctoolchain/usr/lib,
 					/usr/local/lib,
+					/opt/homebrew/opt/glfw/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -2142,8 +2150,12 @@
 					../..,
 					/usr/local/include,
 					/usr/local/boost_1_75_0,
+					/opt/homebrew/opt/glfw/include,
 				);
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib,
+					/opt/homebrew/opt/glfw/lib,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
