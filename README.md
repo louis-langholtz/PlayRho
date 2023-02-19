@@ -33,7 +33,7 @@ Some general goals of this project are:
 [![windows](https://github.com/louis-langholtz/PlayRho/actions/workflows/windows.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/windows.yml)
 [![API Documentation](https://github.com/louis-langholtz/PlayRho/actions/workflows/docs.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/docs.yml)
 [![CodeQL](https://github.com/louis-langholtz/PlayRho/actions/workflows/codeql.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/codeql.yml)
-[![Coverage Status](https://coveralls.io/repos/github/louis-langholtz/PlayRho/badge.svg?branch=master)](https://coveralls.io/github/louis-langholtz/PlayRho?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/louis-langholtz/PlayRho/badge.svg)](https://coveralls.io/github/louis-langholtz/PlayRho)
 [![Ask questions at StackOverflow with the tag playrho](https://img.shields.io/badge/stackoverflow-playrho-blue.svg)](https://stackoverflow.com/questions/tagged/playrho)
 
 ## Additional Resources
