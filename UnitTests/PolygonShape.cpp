@@ -34,7 +34,7 @@ TEST(PolygonShapeConf, ByteSize)
         case  4:
 #if defined(_WIN64)
 #if !defined(NDEBUG)
-            EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(96));
+            EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(88));
 #else
             EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(72));
 #endif
