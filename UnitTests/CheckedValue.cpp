@@ -141,7 +141,7 @@ TEST(CheckedValue, PositiveFloat)
 
     EXPECT_THROW(Positive<float>(+0.0f), Positive<float>::checker_type::exception_type);
     EXPECT_THROW(Positive<float>{-0.00001f}, Positive<float>::checker_type::exception_type);
-    EXPECT_THROW(Positive<float>{-1.4f}, NonPositive<float>::checker_type::exception_type);
+    EXPECT_THROW(Positive<float>{-1.4f}, Positive<float>::checker_type::exception_type);
     EXPECT_THROW(Positive<float>{-std::numeric_limits<float>::infinity()},
                  Positive<float>::checker_type::exception_type);
     EXPECT_THROW(Positive<float>{std::numeric_limits<float>::quiet_NaN()},
