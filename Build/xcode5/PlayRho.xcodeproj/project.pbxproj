@@ -1864,11 +1864,13 @@
 					/usr/local/boost_1_63_0,
 					../..,
 					/usr/local/include,
+					/opt/homebrew/opt/googletest/include,
 					../..,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/Cellar/llvm/11.0.0/Toolchains/LLVM11.0.0.xctoolchain/usr/lib,
 					/usr/local/lib,
+					/opt/homebrew/opt/googletest/lib,
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "-lgtest";
@@ -1883,9 +1885,13 @@
 					/usr/local/boost_1_63_0,
 					../..,
 					/usr/local/include,
+					/opt/homebrew/opt/googletest/include,
 					../..,
 				);
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib,
+					/opt/homebrew/opt/googletest/lib,
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-lgtest";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1951,8 +1957,8 @@
 					../../Testbed/Framework/imgui/examples/libs/gl3w,
 					../..,
 					/usr/local/include,
+					/usr/local/boost_1_75_0,
 					/opt/homebrew/opt/glfw/include,
-					/usr/local/boost_1_63_0,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/Cellar/llvm/12.0.0/Toolchains/LLVM12.0.0.xctoolchain/usr/lib,
@@ -1978,8 +1984,8 @@
 					../../Testbed/Framework/imgui/examples/libs/gl3w,
 					../..,
 					/usr/local/include,
+					/usr/local/boost_1_75_0,
 					/opt/homebrew/opt/glfw/include,
-					/usr/local/boost_1_63_0,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/lib,
