@@ -2,10 +2,10 @@ name: docs
 
 on:
   push:
-    branches: [ "master", "release-1.1.1" ]
+    branches: [ "master", "release-1.1" ]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "master", "release-1.1.1" ]
+    branches: [ "master", "release-1.1" ]
 
 jobs:
   build:

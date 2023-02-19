@@ -2,9 +2,9 @@ name: linux-debug
 
 on:
   push:
-    branches: [ "master", "release-1.1.1" ]
+    branches: [ "master", "release-1.1" ]
   pull_request:
-    branches: [ "master", "release-1.1.1" ]
+    branches: [ "master", "release-1.1" ]
 
 jobs:
   build:
