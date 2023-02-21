@@ -40,7 +40,7 @@ Some general goals of this project are:
 
 - [Changes Document](Changes.md):
   provides a run-down of changes between PlayRho and Box2D 2.3.2.
-- [Building Document](INSTALL.md):
+- [Building & Installation Document](INSTALL.md):
   information on how to build this project and run the Testbed.
 - [API Pages](http://louis-langholtz.github.io/PlayRho/API/index.html): documentation on the Application Programming Interface (API).
 - [Issues Web Interface](https://github.com/louis-langholtz/PlayRho/issues):
