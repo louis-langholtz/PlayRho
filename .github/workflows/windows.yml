@@ -33,17 +33,15 @@ jobs:
           "Win32" {
             $triplet = "x86-windows-static"
             $genplat = "WIN32"
-            cmd.exe /c "call `"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars32.bat`""
           }
           "x64"   {
             $triplet = "x64-windows-static"
             $genplat = "x64"
-            cmd.exe /c "call `"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat`""
           }
         }
         vcpkg install --triplet=$triplet glew glfw3
         echo "genplat=${genplat}, triplet=${triplet}"
-        cmake -B ${{github.workspace}}/build -G"Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_TESTBED=ON -DCMAKE_GENERATOR_PLATFORM="${genplat}" -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET="${triplet}"
+        cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_TESTBED=ON -DPLAYRHO_BUILD_BENCHMARK=ON -DCMAKE_GENERATOR_PLATFORM="${genplat}" -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET="${triplet}"
 
     - name: Build
       # Build your program with the given configuration
