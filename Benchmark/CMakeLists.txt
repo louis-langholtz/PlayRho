@@ -16,7 +16,7 @@ set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Enable testing of the benchmark lib
 # Add subdirectory to build.
 # For cmd details, see: https://cmake.org/cmake/help/v3.1/command/add_subdirectory.html
 # Adds benchmark here...
-add_subdirectory(benchmark)
+add_subdirectory(googlebench)
 
 # Add include directories to build...
 # For cmd details, see: https://cmake.org/cmake/help/v3.1/command/include_directories.html
@@ -31,3 +31,12 @@ add_executable(Benchmark ${Benchmark_SRCS})
 # Link a target to given libraries.
 # See details at: https://cmake.org/cmake/help/v3.1/command/target_link_libraries.html
 target_link_libraries(Benchmark PlayRho benchmark::benchmark)
+
+# link with coverage library
+if(${PLAYRHO_ENABLE_COVERAGE})
+    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+        # Use -ftest-coverage to generate .gcno notes files.
+        # Use -fprofile-arcs to generate .gcda count data files when resulting objects are run.
+        target_link_libraries(Benchmark -fprofile-arcs -ftest-coverage)
+    endif()
+endif()

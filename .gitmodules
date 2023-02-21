@@ -1,9 +1,9 @@
 [submodule "UnitTests/googletest"]
 	path = UnitTests/googletest
 	url = https://github.com/google/googletest.git
-[submodule "Benchmark/benchmark"]
-	path = Benchmark/benchmark
-	url = https://github.com/google/benchmark
 [submodule "Testbed/Framework/imgui"]
 	path = Testbed/Framework/imgui
 	url = https://github.com/louis-langholtz/imgui.git
+[submodule "Benchmark/googlebench"]
+	path = Benchmark/googlebench
+	url = https://github.com/google/benchmark.git

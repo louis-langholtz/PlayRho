@@ -69,7 +69,6 @@ endif()
 # Details at: https://cmake.org/cmake/help/v3.1/command/option.html
 option(PLAYRHO_BUILD_STATIC "Build PlayRho static libraries." ON)
 option(PLAYRHO_BUILD_SHARED "Build PlayRho shared libraries." OFF)
-option(PLAYRHO_INSTALL "Enable installation of PlayRho libs, includes, and CMake scripts." OFF)
 option(PLAYRHO_INSTALL_DOC "Enable installation of PlayRho documentation." OFF)
 option(PLAYRHO_BUILD_HELLOWORLD "Build PlayRho HelloWorld console application." OFF)
 option(PLAYRHO_BUILD_UNIT_TESTS "Build PlayRho Unit Tests console application." OFF)
