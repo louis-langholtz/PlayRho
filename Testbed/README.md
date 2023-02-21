@@ -9,140 +9,100 @@ Here in this directory, are three sub-directories:
 2. [`Framework`](Framework/): For code providing a framework for the
    application like the [Test](Framework/Test.hpp) base class.
 3. [`Tests`](Tests/): Containing code for demos. These demos all subclass the
-   `Test` base class. This folder is where you'd add your own code if you
-   wanted it to also run under the Testbed GUI application.
+   `Test` base class. Take a look herein to see this code and to see images
+   of these demos in action. This folder is also where you'd add your own code
+   if you wanted it to also run under the Testbed GUI application.
 
 For more specifics, see the relevant directory.
 
-## Build Instructions
+## Prerequisites
 
-Building the *Testbed* requires some library dependencies to be available:
-the project library, the GLFW version 3 library, and the GLEW version 2 library.
-These libraries may be installed from source, as described below, or they can be
-installed using a package manager such as `apt-get`, `yum`, NuGet, or `vcpkg`.
-On Windows, [`vcpkg`](https://github.com/Microsoft/vcpkg) is recommended, as the build system is equipped to find and link the libraries cleanly (see below).
+This component uses the `Testbed/Framework/imgui` git sub module and has
+prerequisites - like the [glfw](https://www.glfw.org) library and sometimes
+[glew](https://glew.sourceforge.net) library - depending on the target platform.
 
-### GLFW
+These prerequisites can be satisfied as follows as confirmed in continuous integration.
+They can probably be satisfied in other ways as well such as by downloading,
+configuring, building, and compiling and linking with the sources to these libraries.
 
-[GLFW](http://www.glfw.org) is an Open Source library that the Testbed depends
-on. The source code for this library is no longer included in this fork of
-the project. The GLFW version 3 library must be available in an installed form
-in order to build the Testbed. See the [GLFW Website](http://www.glfw.org) for
-up-to-date information on it including how to download and install it.
+### Ubuntu Linux
 
-Here are steps that can be used to download, build, and install this library
-from source code using a command line environment:
-1. Decide where you're going to have your GLFW sources. Setup an environment
-   variable called `GLFW_SOURCES` that's set to this path. For example:
-     `GLFW_SOURCES=/tmp/glfw-3.2.1`.
-2. Download the GLFW 3.2.1 sources from
-   https://github.com/glfw/glfw/releases/download/3.2.1/glfw-3.2.1.zip. Then
-   extract them into `$GLFW_SOURCES`: `unzip -d /tmp glfw-3.2.1.zip`.
-3. Run `cmake` on these sources. Maybe disable `GLFW_BUILD_DOCS` (and a few
-   others).
-4. Run `make`.
-5. Run `make install`
+Or probably any linux using the `apt` package manager.
+This platform needs the `glfw` and `glew` libraries in addition to their dependencies.
 
-### GLEW
+```sh
+sudo apt update
+sudo apt install xorg-dev libx11-dev libxmu-dev libxi-dev libgl1 libgl1-mesa-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev libosmesa-dev
+sudo apt install libglfw3-dev libglew2.2 libglew-dev
+```
 
-[GLEW](http://glew.sourceforge.net) is an Open Source library that the Testbed
-depends on. The source code for this library is no longer included in this fork
-of the project. The GLEW version 2 library must be available in an installed
-form in order to build the Testbed. See the
-[GLEW Website](http://glew.sourceforge.net) for up-to-date information on it
-including how to download and install it.
+### macOS
 
-Here are steps that can be used to download, build, and install this library
-from source code using a command line environment:
-1. Get GLEW 2.
-  - From a ZIP file:
-    1. Download GLEW 2.0.0 from
-       https://sourceforge.net/projects/glew/files/glew/2.0.0/glew-2.0.0.zip.
-    2. Extract the sources: `unzip glew-2.0.0.zip`
-  - As a git clone: `git clone https://github.com/nigels-com/glew.git glew`
-2. Make sure to have the needed build tools.
-  - For Debian/Ubuntu/Mint platforms: `$ sudo apt-get install build-essential libxmu-dev libxi-dev libgl-dev libosmesa-dev git`.
-  - For RedHat/CentOS/Fedora:  `$ sudo yum install libXmu-devel libXi-devel libGL-devel git`
-3. Run `make` and `make install` from within the source directory.
-   It's not necessary to run `cmake` and the GLEW build instructions themselves
-   don't say to run it.
+These steps use the Homebrew package manager for macOS.
+This package manager can be obtained from https://brew.sh.
+It will need to be installed if it's not already.
 
-### Testbed
+This platform needs the `glfw` library in addition to its dependencies; but not the `glew` library.
 
-When the GLFW 3 and GLEW 2 libraries are installed along with any specific
-dependencies that they might have for your platform, the Testbed can be built.
-The Testbed GUI application is currently building for Windows and Linux using CMake
-and for Mac OS X using Xcode.
+```sh
+brew update
+brew install pkg-config glfw
+```
 
-#### Linux Using CMake
+### Windows
 
-Assuming that GLFW and GLEW are installed under `/usr/local`:
+Building this component for Windows requires the `vcpkg` package manager.
+This package manager can be downloaded from https://vcpkg.io.
+It will need to be installed if it's not already.
+You will also need to note its tool chain file path and use that in the configuration.
 
-    cd ${BUILD_DIR} && cmake -DPLAYRHO_BUILD_TESTBED=ON ${CMAKEFILE} && make
+This platform needs the `glfw` and `glew` libraries in addition to their dependencies.
 
-See the [Travis-CI configuration file](../../.travis.yml) for how this has
-been done on the Linux CI build host.
+For `x64` builds:
+```sh
+vcpkg --triplet=x64-windows-static glew glfw3
+```
 
-#### Mac OS X Using Xcode
+For `Win32` builds:
+```sh
+vcpkg --triplet=x86-windows-static glew glfw3
+```
 
-Assuming GLFW and GLEW are installed under `/usr/local`, double-click on
-the Xcode project file from the Finder. Then select the `Testbed` scheme
-and run it by pressing <kbd>&#8984;</kbd> <kbd>R</kbd> key combination.
-This will first build the Testbed (and then it will run it).
+## Configuration
 
-#### Mac OS X Using CMake
+This component needs the `PLAYRHO_BUILD_TESTBED` CMake option turned on.
+This can be achieved through the command line interface by adding the
+`-DPLAYRHO_BUILD_TESTBED=ON` argument to the CMake configuration step's list of arguments.
 
-TODO.
+Some target platforms also need additional arguments.
 
-#### Windows Using VS2017 and the Solution File
+### Windows "x64"
 
-TODO.
+This platform also needs these arguments:
+- `-DCMAKE_TOOLCHAIN_FILE=<your_vcpkg_toolchain_file_path>`.
+- `-DVCPKG_TARGET_TRIPLET="x64-windows-static"`.
+- `-DCMAKE_GENERATOR_PLATFORM=x64`.
 
-#### Windows Using VS2017 and CMake
+Or altogether as:
+```sh
+-DPLAYRHO_BUILD_TESTBED=ON -DCMAKE_TOOLCHAIN_FILE=<your_vcpkg_toolchain_file_path> -DVCPKG_TARGET_TRIPLET="x64-windows-static" -DCMAKE_GENERATOR_PLATFORM=x64
+```
 
-Windows is less intelligent about locating GLFW and GLEW. There are at least two
-ways to handle this issue: use `vcpkg` or specify the library location using CMake variables.
+#### Windows "Win32"
 
-##### Using `vcpkg`
+This platform also needs these arguments:
+- `-DCMAKE_TOOLCHAIN_FILE=<your_vcpkg_toolchain_file_path>`.
+- `-DVCPKG_TARGET_TRIPLET="x86-windows-static"`.
+- `-DCMAKE_GENERATOR_PLATFORM=WIN32`.
 
- 1. Install [`vcpkg`](https://github.com/Microsoft/vcpkg) if necessary.
- 2. Run `vcpkg integrate install`, and copy the command line option starting from `-DCMAKE_TOOLCHAIN_FILE=[...]` to a notepad file or elsewhere.
- 3. Install the libraries using:
-     `vcpkg install glew:x64-windows-static`
-     `vcpkg install glfw3:x64-windows-static`
-  or use `x86` if running on a 32-bit platform.
- 4. Create a build directory somewhere on your PC if you haven't already, and navigate to it within a command prompt.
- 5. Run `cmake -DCMAKE_TOOLCHAIN_FILE=[...] -DVCPKG_TARGET_TRIPLET=x64-windows-static -DPLAYRHO_BUILD_TESTBED=ON [source code directory]`, inserting the command line option copied from step 2, and specifying a relative or absolute path to the source code directory. You may use any additional command line options as described in the [CMake documentation](https://cmake.org/cmake/help/v3.9/manual/cmake.1.html) to further customize your build.
- 6. Build the generated project.
+Or altogether as:
+```sh
+-DPLAYRHO_BUILD_TESTBED=ON -DCMAKE_TOOLCHAIN_FILE=<your_vcpkg_toolchain_file_path> -DVCPKG_TARGET_TRIPLET="x86-windows-static" -DCMAKE_GENERATOR_PLATFORM=WIN32
+```
 
-#### Other installations
+## Building & Installation
 
-If you have installed from source, or used a package manager other than `vcpkg` on Windows, you will likely need to explicitly specify library locations using CMake variables. While this method was tested on Windows 10, a similar procedure should work on Linux and OS X. The CMake variables may be set using the `-D` command line option, using a CMake cache file, or from within the CMake-gui. The variables which must be specified are:
-
- - `GLEW_INCLUDE_DIR` : the path to the GLEW include directory, ending with `\include`
- - `GLEW_LIBRARY` : the full filepath to the `glew.lib` file
- - `GLFW_INCLUDE_DIRS` : the path to the GLFW include directory, ending with `\include`
- - `GLFW_LIBRARY_DIRS` : the path to the folder containing the `glfw.lib` file
- - `OPENGL_INCLUDE_DIR` : the path to the OpenGL include directory, ending with `\include`
- - `GLFW_STATIC_LIBRARIES` : `glfw.lib`
-
-If the libraries were installed using the NuGet package manager, a CMake cache file setting these variables might resemble the following:
-
-    set(GLEW_INCLUDE_DIR "$ENV{NUGET_PATH}/glew.1.9.0.1/build/native/include" CACHE PATH "glew header directory")
-    set(GLEW_LIBRARY "$ENV{NUGET_PATH}/glew.1.9.0.1/build/native/lib/v110/x64/Release/static/glew.lib" CACHE FILEPATH "glew library")
-    set(GLFW_INCLUDE_DIRS "$ENV{NUGET_PATH}/glfw.3.2.1/build/native/include" CACHE PATH "glfw header directory")
-    set(GLFW_LIBRARY_DIRS "$ENV{NUGET_PATH}/glfw.3.2.1/build/native/lib/v140/x64/static" CACHE PATH "glfw directory")
-    set(OPENGL_INCLUDE_DIR "$ENV{NUGET_PATH}/glfw.3.2.1/build/native/include" CACHE PATH "opengl header directory")
-    set(GLFW_STATIC_LIBRARIES "glfw3.lib" CACHE FILEPATH "glfw library")
-    set(PLAYRHO_BUILD_TESTBED ON CACHE BOOL "Build PlayRho Testbed GUI application")
-
-where the environment variable `NUGET_PATH` has been set to the NuGet root folder. The project may be built using the following steps, assuming we start in a directory containing `MyCacheFile.cmake`:
-	
-    mkdir PlayRhoBuild
-    cd PlayRhoBuild
-    cmake ../MyCacheFile.cmake [source code directory]
-
-You may use any additional command line options as described in the [CMake documentation](https://cmake.org/cmake/help/v3.9/manual/cmake.1.html) to further customize your build.
+See the project's [documented build and installation steps](../INSTALL.md) and be sure to add the above mentioned command line arguments.
 
 ## Usage Instructions
 

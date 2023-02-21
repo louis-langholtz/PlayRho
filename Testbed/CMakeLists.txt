@@ -65,7 +65,7 @@ include_directories(
 
 message(STATUS "Setting link directories")
 
-add_executable(Testbed
+add_executable(Testbed MACOSX_BUNDLE
 	${Testbed_Framework_SRCS}
 	${Testbed_Tests_SRCS}
 )

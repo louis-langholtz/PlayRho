@@ -1,44 +1,29 @@
 # Benchmark Console Application
 
-Welcome to the Benchmark console application.
+This application component provides benchmark data for various functions and methods of PlayRho.
+It uses Google's [**benchmark**](https://github.com/google/benchmark) micro-benchmark support library.
 
-This application provides benchmark data for various functions and methods of PlayRho. It uses Google's [**benchmark**](https://github.com/google/benchmark) micro-benchmark support library.
+## Prerequisites
 
-## Build Instructions
+This application currently relies on the `Benchmark/googlebench` git sub module,
+so it has no prerequisites other than those for the [library component](../PlayRho/).
 
-### Configure &amp; Generate The Project Via CMake
+## Configuration
 
-Enable the `PLAYRHO_BUILD_BENCHMARK` CMake option and specify the `Release` CMake build type.
+This component needs the `PLAYRHO_BUILD_BENCHMARK` CMake option turned on.
+It also makes sense to set the `CMAKE_BUILD_TYPE` option to `Release`.
+This can be achieved through the command line interface by adding the
+`-DPLAYRHO_BUILD_BENCHMARK=ON` and `-DCMAKE_BUILD_TYPE=Release` arguments to
+the CMake configuration step's list of arguments.
 
-From the command line using `cmake` and `make`, this can be achieved by running the following:
-    cd $BUILD_DIR && cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DPLAYRHO_BUILD_BENCHMARK=ON $SOURCE_DIR
+## Building & Installation
 
-From the CMake GUI:
-1. If needed, specify the generator for the project and use the default native compilers. For 64-bit Windows machines, choose `Visual Studio 15 2017 Win64`.
-1. Specify the source folder.
-1. Specify where to build the binaries. Choose a different folder than where the source is.
-1. Press the CMake *Configure* button. You should see information output to the bottom CMake window and a window with `Name` and `Value` columns.
-1. Select and open the `PLAYRHO` row to reveal rows of name and value pairs that begin with `PLAYRHO_`.
-1. Check/enable the boolean value option for `PLAYRHO_BUILD_BENCHMARK`.
-1. Press the CMake *Configure* button again. This will reconfigure things based on the new settings.
-1. Press the CMake *Generate* button and wait for that to finish. It should finish much quicker than the configure steps.
-1. Exit the CMake GUI.
-
-### Build The Project
-
-#### Via Visual Studio
-1. If you're on a Windows machine and chose a `Visual Studio...` generator option then startup that version of Visual Studio and open the project or solution file that should now be in the build folder.
-1. Build the project.
-
-#### Via Make &amp; The Command Line
-1. Run `make`.
-1. Optionally, run `make install`.
-1. Run the `Benchmark` binary executable.
-1. Optionally, contribute the output results for your machine back to PlayRho.
+See the project's [documented build and installation steps](../INSTALL.md) and be sure to add the above mentioned command line arguments.
 
 ## Sample Output
 
-Note that the following times are for running the named benchmarks which may have way more overhead than their names suggests. Don't put much weight into these results unless you're clear on the code that's being timed.
+Note that the following times are for running the named benchmarks which may have way more overhead than their names suggests.
+Don't put much weight into these results unless you're clear on the code that's being timed.
 
 ```sh
 $ ./Benchmark
