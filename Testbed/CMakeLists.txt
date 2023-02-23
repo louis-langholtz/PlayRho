@@ -69,7 +69,7 @@ include_directories(
 
 message(STATUS "Setting link directories")
 
-add_executable(Testbed MACOSX_BUNDLE
+add_executable(Testbed
 	${Testbed_Framework_SRCS}
 	${Testbed_Tests_SRCS}
 )
@@ -94,3 +94,10 @@ endif()
 
 
 file(COPY Data DESTINATION ..)
+
+if(PLAYRHO_INSTALL)
+	include(GNUInstallDirs)
+	install(TARGETS Testbed
+		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+		COMPONENT Applications)
+endif()
