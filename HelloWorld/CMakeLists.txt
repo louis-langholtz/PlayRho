@@ -1,7 +1,8 @@
 # Hello World examples
 include_directories (${PlayRho_SOURCE_DIR})
 add_executable(HelloWorld HelloWorld.cpp)
-target_link_libraries (HelloWorld PlayRho)
+
+target_link_libraries(HelloWorld PlayRho)
 
 # link with coverage library
 if(${PLAYRHO_ENABLE_COVERAGE})
@@ -10,4 +11,11 @@ if(${PLAYRHO_ENABLE_COVERAGE})
         # Use -fprofile-arcs to generate .gcda count data files when resulting objects are run.
         target_link_libraries(HelloWorld -fprofile-arcs -ftest-coverage)
     endif()
+endif()
+
+if(PLAYRHO_INSTALL)
+	include(GNUInstallDirs)
+	install(TARGETS HelloWorld
+	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+	COMPONENT Applications)
 endif()

@@ -82,3 +82,13 @@ endif()
 
 # Adds UnitTests to be run when like "make test" is executed.
 add_test(UnitTests UnitTests)
+
+include(GoogleTest)
+gtest_discover_tests(UnitTests)
+
+if(PLAYRHO_INSTALL)
+	include(GNUInstallDirs)
+	install(TARGETS UnitTests
+	        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+		COMPONENT Applications)
+endif()

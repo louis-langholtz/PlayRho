@@ -22,7 +22,11 @@ endforeach()
 
 # Set name for entire project. This establishes the project name in <PROJECT_NAME>_* variables.
 # Details at: https://cmake.org/cmake/help/latest/command/project.html#command:project
-project(PlayRho VERSION 1.1.1)
+project(PlayRho
+        VERSION 1.1.1
+        DESCRIPTION "Real-time oriented physics engine and library that's currently best suited for 2D games."
+        HOMEPAGE_URL "https://louis-langholtz.github.io/PlayRho/"
+)
 # Now PlayRho_VERSION set to version above.
 # PlayRho_VERSION_MAJOR set to first component.
 # PlayRho_VERSION_MINOR set to second component.
@@ -65,10 +69,13 @@ else()
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 endif()
 
+string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}" is_top_level)
+
 # Provide options that user can optionally select.
+# Include the install rules if the user wanted them (included by default when top-level)
 # Details at: https://cmake.org/cmake/help/v3.1/command/option.html
-option(PLAYRHO_BUILD_STATIC "Build PlayRho static libraries." ON)
-option(PLAYRHO_BUILD_SHARED "Build PlayRho shared libraries." OFF)
+option(PLAYRHO_BUILD_SHARED "Build PlayRho as shared library." "${BUILD_SHARED_LIBS}")
+option(PLAYRHO_INSTALL "Enable installation of PlayRho libs, includes, and CMake scripts." "${is_top_level}")
 option(PLAYRHO_INSTALL_DOC "Enable installation of PlayRho documentation." OFF)
 option(PLAYRHO_BUILD_HELLOWORLD "Build PlayRho HelloWorld console application." OFF)
 option(PLAYRHO_BUILD_UNIT_TESTS "Build PlayRho Unit Tests console application." OFF)
@@ -125,3 +132,8 @@ if(PLAYRHO_INSTALL_DOC)
     add_subdirectory(Documentation)
   endif()
 endif(PLAYRHO_INSTALL_DOC)
+
+if(PLAYRHO_INSTALL)
+  set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt)
+  include(CPack)
+endif()
