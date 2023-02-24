@@ -25,6 +25,7 @@
 #define PLAYRHO_DYNAMICS_JOINTS_JOINT_HPP
 
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/TypeInfo.hpp> // for GetTypeID
 #include <PlayRho/Dynamics/Joints/LimitState.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 

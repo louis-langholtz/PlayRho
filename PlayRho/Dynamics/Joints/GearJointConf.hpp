@@ -224,14 +224,14 @@ constexpr auto GetConstant(const GearJointConf& object) noexcept
 
 /// @brief Free function for getting joint 1 type value of the given configuration.
 /// @relatedalso GearJointConf
-constexpr auto GetType1(const GearJointConf& object) noexcept
+inline auto GetType1(const GearJointConf& object) noexcept
 {
     return object.type1;
 }
 
 /// @brief Free function for getting joint 2 type value of the given configuration.
 /// @relatedalso GearJointConf
-constexpr auto GetType2(const GearJointConf& object) noexcept
+inline auto GetType2(const GearJointConf& object) noexcept
 {
     return object.type2;
 }

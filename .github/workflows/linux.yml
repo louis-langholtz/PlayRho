@@ -16,6 +16,11 @@ jobs:
       matrix:
         build_type: [Release]
         real_type: [float, double]
+        include:
+          - real_type: float
+            linkage: 'shared'
+          - real_type: double
+            linkage: 'static'
 
     steps:
     - uses: actions/checkout@v3
@@ -29,10 +34,18 @@ jobs:
         sudo apt install libglfw3-dev libglew2.2 libglew-dev
 
     - name: Configure
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # Configure CMake in a 'build' subdirectory.
+      # `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: |
-        cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_TESTBED=ON -DPLAYRHO_BUILD_BENCHMARK=ON -DPLAYRHO_REAL_TYPE=${{matrix.real_type}}
+      run: >
+        cmake -B ${{github.workspace}}/build
+        -DCMAKE_BUILD_TYPE=${{matrix.build_type}}
+        -DPLAYRHO_BUILD_HELLOWORLD=ON
+        -DPLAYRHO_BUILD_UNIT_TESTS=ON
+        -DPLAYRHO_BUILD_TESTBED=ON
+        -DPLAYRHO_BUILD_BENCHMARK=ON
+        -DPLAYRHO_REAL_TYPE=${{matrix.real_type}}
+        -DBUILD_SHARED_LIBS=${{matrix.linkage == 'shared'}}
 
     - name: Build
       # Build your program with the given configuration

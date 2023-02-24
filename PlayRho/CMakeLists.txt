@@ -67,11 +67,19 @@ set(libsrc
 )
 
 if(PLAYRHO_BUILD_SHARED)
+	set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 	add_library(PlayRho SHARED ${libsrc})
 else()
 	add_library(PlayRho STATIC ${libsrc})
 endif()
 add_library(PlayRho::PlayRho ALIAS PlayRho)
+
+include(GenerateExportHeader)
+generate_export_header(PlayRho EXPORT_FILE_NAME Export.h)
+if (NOT PLAYRHO_BUILD_SHARED)
+	target_compile_definitions(PlayRho PUBLIC -DPLAYRHO_STATIC_DEFINE)
+endif()
+
 target_compile_features(PlayRho PUBLIC cxx_std_17)
 set_target_properties(PlayRho PROPERTIES
 	OUTPUT_NAME "PlayRho"
