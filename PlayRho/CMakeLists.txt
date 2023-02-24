@@ -77,12 +77,10 @@ set_target_properties(PlayRho PROPERTIES
 	OUTPUT_NAME "PlayRho"
 	VERSION ${PlayRho_VERSION}
 	SOVERSION ${PlayRho_VERSION_MAJOR})
-target_include_directories(PlayRho AFTER PUBLIC
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../>
-)
-target_include_directories(PlayRho AFTER PUBLIC
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>
-	$<INSTALL_INTERFACE:include/>  # <prefix>/include
+target_include_directories(PlayRho PUBLIC
+	"$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../>"
+	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>"
+	"$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
 # These are used to create visual studio folders.

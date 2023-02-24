@@ -47,10 +47,6 @@ endif()
 # Adds googletest here...
 add_subdirectory(googletest EXCLUDE_FROM_ALL)
 
-# Add include directories to build...
-# For cmd details, see: https://cmake.org/cmake/help/v3.1/command/include_directories.html
-include_directories(${PlayRho_SOURCE_DIR})
-
 file(GLOB UnitTest_SRCS *.cpp)
 
 # Add an executable to the project using specified source files.
