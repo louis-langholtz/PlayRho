@@ -26,6 +26,7 @@
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Templates.hpp> // for DecayedTypeIfNotSame
+#include <PlayRho/Common/TypeInfo.hpp> // for GetTypeID
 #include <PlayRho/Dynamics/Joints/LimitState.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 
