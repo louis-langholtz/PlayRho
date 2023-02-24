@@ -17,10 +17,10 @@ See the documentation for each component to learn more about that component and 
 
 ## Supported Platforms
 
-All components are known to build and work on the following target platforms as confirmed through this project's continuous integration setup:
+All components are known to build, and the library to validate, on the following target platforms (as confirmed through this project's continuous integration setup):
 - [macOS 11 (Release & Debug)](.github/workflows/macos.yml).
-- [Ubuntu linux (Release)](.github/workflows/linux.yml).
-- [Ubuntu linux (Debug)](.github/workflows/linux-debug.yml).
+- [Ubuntu Linux (Release)](.github/workflows/linux.yml).
+- [Ubuntu Linux (Debug)](.github/workflows/linux-debug.yml).
 - [Windows "2019" (Win32, x64 for Release & Debug)](.github/workflows/windows.yml).
 
 While the library itself should be buildable on any platform having a C++17 or higher standards compliant compiler,
@@ -53,9 +53,9 @@ git clone --recurse-submodules https://github.com/louis-langholtz/PlayRho.git
 
 ### Configure
 
-This step sets up what is to be built and installed in future steps.
-This step depends on the components to be built and possibly the platform they are built on.
-Follow the above links for each component you want to build to read about the configuration arguments needed for that component and possibly for the target platform.
+This step sets up things for future steps, like what components are to be built, how they are to be built, and where they are to be installed.
+This step depends heavily on the components chosen, how you want them built, and possibly the platform they are built on.
+Follow the above links for each component you're interested in to read about the configuration arguments needed for that component and possibly for the target platform.
 
 For example, to only build the library component using the CMake default generator and compiler environment, run the following:
 
@@ -64,11 +64,23 @@ cmake -S PlayRho -B PlayRhoBuild
 ```
 
 Alternatively, add the configuration arguments needed for each desired component and your platform.
-Then run the following where `$ConfigOptions` is the accumalated configuration options for the components you want:
+Then run the following where `$ConfigOptions` is the accumulated configuration options for the components you want:
 
 ```sh
 cmake -S PlayRho -B PlayRhoBuild $ConfigOptions
 ```
+
+#### Additional Options
+
+For a listing of non-advanced configuration options, run:
+```sh
+cmake -LH -S PlayRho -B PlayRhoBuild
+```
+
+For example:
+- To build everything to use double precision floating point arithmetic (instead of single precision), add `-DPLAYRHO_REAL_TYPE=double`.
+- To build everything using shared linkage (instead of static linkage), add `-DBUILD_SHARED_LIBS=ON`.
+- To set the installation prefix, add an argument like `-DCMAKE_INSTALL_PREFIX=/opt/PlayRho`.
 
 ### Build
 
@@ -101,14 +113,3 @@ These steps assume that:
 - You want to install these components into CMake's standard system paths.
 - The necessary prerequisites for the components have already been installed.
 
-Various other options are also available.
-
-For example, add the following argument to set the installation prefix:
-```sh
--DCMAKE_INSTALL_PREFIX=/opt/PlayRho
-```
-
-Or, to list the available non-advanced options:
-```sh
-cmake -LH -S PlayRho -B PlayRhoBuild
-```

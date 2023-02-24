@@ -16,32 +16,42 @@ jobs:
       matrix:
         build_type: [Debug, Release]
         platform: [Win32, x64]
+        include:
+          - platform: Win32
+            triplet: x86-windows-static
+            genplat: WIN32
+          - platform: x64
+            triplet: x64-windows-static
+            genplat: x64
+          - build_type: Debug
+            linkage: 'shared'
+          - build_type: Release
+            linkage: 'static'
 
     steps:
     - uses: actions/checkout@v3
       with:
         submodules: true
 
-    - name: Install Prerequisites & Configure
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+    - name: Install Prerequisites
       run: |
-        $triplet = ""
-        $genplat = ""
-        switch ("${{matrix.platform}}")
-        {
-          "Win32" {
-            $triplet = "x86-windows-static"
-            $genplat = "WIN32"
-          }
-          "x64"   {
-            $triplet = "x64-windows-static"
-            $genplat = "x64"
-          }
-        }
-        vcpkg install --triplet=$triplet glew glfw3
-        echo "genplat=${genplat}, triplet=${triplet}"
-        cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_TESTBED=ON -DPLAYRHO_BUILD_BENCHMARK=ON -DCMAKE_GENERATOR_PLATFORM="${genplat}" -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET="${triplet}"
+        vcpkg install --triplet=${{matrix.triplet}} glew glfw3
+
+    - name: Configure
+      # Configure CMake in a 'build' subdirectory.
+      # `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: >
+        cmake -B ${{github.workspace}}/build
+        -DCMAKE_BUILD_TYPE=${{matrix.build_type}}
+        -DPLAYRHO_BUILD_HELLOWORLD=ON
+        -DPLAYRHO_BUILD_UNIT_TESTS=ON
+        -DPLAYRHO_BUILD_TESTBED=ON
+        -DPLAYRHO_BUILD_BENCHMARK=ON
+        -DCMAKE_GENERATOR_PLATFORM=${{matrix.genplat}}
+        -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake
+        -DVCPKG_TARGET_TRIPLET=${{matrix.triplet}}
+        -DBUILD_SHARED_LIBS=${{matrix.linkage == 'shared'}}
 
     - name: Build
       # Build your program with the given configuration
