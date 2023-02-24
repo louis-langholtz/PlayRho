@@ -46,16 +46,16 @@ TEST(GearJointConf, ByteSize)
     case 4:
 #if defined(_WIN32)
 #if defined(_WIN64)
-        EXPECT_EQ(sizeof(GearJointConf), std::size_t(136));
+        EXPECT_EQ(sizeof(GearJointConf), std::size_t(152));
 #else
-        EXPECT_EQ(sizeof(GearJointConf), std::size_t(124));
+        EXPECT_EQ(sizeof(GearJointConf), std::size_t(132));
 #endif
 #else
-        EXPECT_EQ(sizeof(GearJointConf), std::size_t(136));
+        EXPECT_EQ(sizeof(GearJointConf), std::size_t(152));
 #endif
         break;
     case 8:
-        EXPECT_EQ(sizeof(GearJointConf), std::size_t(240));
+        EXPECT_EQ(sizeof(GearJointConf), std::size_t(256));
         break;
     case 16:
         EXPECT_EQ(sizeof(GearJointConf), std::size_t(448));
