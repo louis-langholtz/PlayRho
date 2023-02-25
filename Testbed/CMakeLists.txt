@@ -57,16 +57,6 @@ if(MSVC)
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
 endif()
 
-message(STATUS "Including header directories")
-include_directories(
-	Framework/imgui
-	Framework/imgui/examples/libs/gl3w
-	${OPENGL_INCLUDE_DIR}
-	${GLEW_INCLUDE_DIR}
-	${GLFW3_INCLUDE_DIR}
-	${PlayRho_SOURCE_DIR}
-)
-
 message(STATUS "Setting link directories")
 
 add_executable(Testbed
@@ -81,6 +71,17 @@ target_link_libraries(
 	${GLEW_LIBRARIES}
 	${ADDITIONAL_LIBRARIES}
 	${OPENGL_LIBRARIES}
+)
+
+message(STATUS "Including header directories")
+# Note: include BINARY_DIR before /usr/local/include to ensure most recent PlayRho headers
+target_include_directories(Testbed PRIVATE
+	Framework/imgui
+	Framework/imgui/examples/libs/gl3w
+	"$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../>"
+	${OPENGL_INCLUDE_DIR}
+	${GLEW_INCLUDE_DIR}
+	${GLFW3_INCLUDE_DIR}
 )
 
 # link with coverage library

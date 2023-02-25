@@ -22,10 +22,6 @@ set(BENCHMARK_INSTALL_DOCS OFF CACHE BOOL "Enable installation of docs.")
 # Adds benchmark here...
 add_subdirectory(googlebench)
 
-# Add include directories to build...
-# For cmd details, see: https://cmake.org/cmake/help/v3.1/command/include_directories.html
-include_directories(${PlayRho_SOURCE_DIR})
-
 file(GLOB Benchmark_SRCS *.cpp)
 
 # Add an executable to the project using specified source files.
