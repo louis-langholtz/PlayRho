@@ -64,7 +64,7 @@ MotorJointConf::MotorJointConf(BodyID bA, BodyID bB, Length2 lo, Angle ao) noexc
     // Intentionally empty.
 }
 
-MotorJointConf GetMotorJointConf(const Joint& joint) noexcept
+MotorJointConf GetMotorJointConf(const Joint& joint)
 {
     return TypeCast<MotorJointConf>(joint);
 }

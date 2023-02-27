@@ -43,7 +43,7 @@ static_assert(std::is_move_assignable<RopeJointConf>::value,
 static_assert(std::is_nothrow_destructible<RopeJointConf>::value,
               "RopeJointConf should be nothrow destructible!");
 
-RopeJointConf GetRopeJointConf(const Joint& joint) noexcept
+RopeJointConf GetRopeJointConf(const Joint& joint)
 {
     return TypeCast<RopeJointConf>(joint);
 }

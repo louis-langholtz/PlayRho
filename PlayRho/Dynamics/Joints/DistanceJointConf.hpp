@@ -150,8 +150,9 @@ constexpr bool operator!=(const DistanceJointConf& lhs, const DistanceJointConf&
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @throws std::bad_cast If the given joint's type is inappropriate for getting this value.
 /// @relatedalso Joint
-DistanceJointConf GetDistanceJointConf(const Joint& joint) noexcept;
+DistanceJointConf GetDistanceJointConf(const Joint& joint);
 
 /// @brief Gets the configuration for the given parameters.
 /// @relatedalso World

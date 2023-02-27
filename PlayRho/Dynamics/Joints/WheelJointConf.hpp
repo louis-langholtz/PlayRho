@@ -185,6 +185,7 @@ constexpr bool operator!=(const WheelJointConf& lhs, const WheelJointConf& rhs) 
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @throws std::bad_cast If the given joint's type is inappropriate for getting this value.
 /// @relatedalso Joint
 WheelJointConf GetWheelJointConf(const Joint& joint);
 

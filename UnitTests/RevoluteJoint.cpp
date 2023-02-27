@@ -490,6 +490,11 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
     }
 }
 
+TEST(RevoluteJointConf, GetRevoluteJointConfThrows)
+{
+    EXPECT_THROW(GetRevoluteJointConf(Joint{}), std::bad_cast);
+}
+
 TEST(RevoluteJointConf, GetRevoluteJointConfFromJoint)
 {
     auto conf = RevoluteJointConf{BodyID(0u), BodyID(1u)};

@@ -81,6 +81,11 @@ TEST(PulleyJointConf, InitializingConstructor)
     EXPECT_EQ(PulleyJointConf(bA, bB, gndA, gndB, locA, locB, lenA, lenB).lengthB, lenB);
 }
 
+TEST(PulleyJointConf, GetPulleyJointConfThrows)
+{
+    EXPECT_THROW(GetPulleyJointConf(Joint{}), std::bad_cast);
+}
+
 TEST(PulleyJointConf, GetPulleyJointConfForWorld)
 {
     auto world = World{};

@@ -65,7 +65,7 @@ DistanceJointConf::DistanceJointConf(BodyID bA, BodyID bB, Length2 laA, Length2 
     // Intentionally empty.
 }
 
-DistanceJointConf GetDistanceJointConf(const Joint& joint) noexcept
+DistanceJointConf GetDistanceJointConf(const Joint& joint)
 {
     return TypeCast<DistanceJointConf>(joint);
 }

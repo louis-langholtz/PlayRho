@@ -209,6 +209,11 @@ TEST(WheelJointConf, GetJointTranslation)
     EXPECT_EQ(GetJointTranslation(world, joint), Length(2_m));
 }
 
+TEST(WheelJointConf, GetWheelJointConfThrows)
+{
+    EXPECT_THROW(GetWheelJointConf(Joint{}), std::bad_cast);
+}
+
 TEST(WheelJointConf, GetWheelJointConf)
 {
     WheelJointConf def;

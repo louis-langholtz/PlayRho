@@ -96,6 +96,11 @@ TEST(WeldJoint, Construction)
     EXPECT_EQ(GetDampingRatio(joint), def.dampingRatio);
 }
 
+TEST(WeldJoint, GetWeldJointConfThrows)
+{
+    EXPECT_THROW(GetWeldJointConf(Joint{}), std::bad_cast);
+}
+
 TEST(WeldJoint, GetWeldJointConf)
 {
     auto world = World{};

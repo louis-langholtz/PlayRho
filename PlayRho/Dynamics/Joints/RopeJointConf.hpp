@@ -115,8 +115,9 @@ constexpr bool operator!=(const RopeJointConf& lhs, const RopeJointConf& rhs) no
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @throws std::bad_cast If the given joint's type is inappropriate for getting this value.
 /// @relatedalso Joint
-RopeJointConf GetRopeJointConf(const Joint& joint) noexcept;
+RopeJointConf GetRopeJointConf(const Joint& joint);
 
 /// @brief Gets the current linear reaction of the given configuration.
 /// @relatedalso RopeJointConf

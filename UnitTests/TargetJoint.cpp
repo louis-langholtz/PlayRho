@@ -174,6 +174,11 @@ TEST(TargetJoint, ShiftOrigin)
     EXPECT_EQ(GetTarget(joint), def.target - newOrigin);
 }
 
+TEST(TargetJointConf, GetTargetJointConfThrows)
+{
+    EXPECT_THROW(GetTargetJointConf(Joint{}), std::bad_cast);
+}
+
 TEST(TargetJointConf, GetTargetJointDefFreeFunction)
 {
     World world;

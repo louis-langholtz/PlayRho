@@ -151,8 +151,9 @@ constexpr bool operator!=(const GearJointConf& lhs, const GearJointConf& rhs) no
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @throws std::bad_cast If the given joint's type is inappropriate for getting this value.
 /// @relatedalso Joint
-GearJointConf GetGearJointConf(const Joint& joint) noexcept;
+GearJointConf GetGearJointConf(const Joint& joint);
 
 /// @brief Gets the configuration for the given parameters.
 /// @relatedalso World

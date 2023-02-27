@@ -61,7 +61,7 @@ FrictionJointConf::FrictionJointConf(BodyID bA, BodyID bB, Length2 laA, Length2 
     // Intentionally empty.
 }
 
-FrictionJointConf GetFrictionJointConf(const Joint& joint) noexcept
+FrictionJointConf GetFrictionJointConf(const Joint& joint)
 {
     return TypeCast<FrictionJointConf>(joint);
 }

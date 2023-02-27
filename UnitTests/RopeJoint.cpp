@@ -96,6 +96,11 @@ TEST(RopeJointConf, Construction)
     EXPECT_EQ(GetMaxLength(conf), def.maxLength);
 }
 
+TEST(RopeJointConf, GetRopeJointConfThrows)
+{
+    EXPECT_THROW(GetRopeJointConf(Joint{}), std::bad_cast);
+}
+
 TEST(RopeJointConf, GetRopeJointConf)
 {
     auto world = World{};

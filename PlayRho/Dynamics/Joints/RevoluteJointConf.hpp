@@ -182,6 +182,7 @@ constexpr bool operator!=(const RevoluteJointConf& lhs, const RevoluteJointConf&
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @throws std::bad_cast If the given joint's type is inappropriate for getting this value.
 /// @relatedalso Joint
 RevoluteJointConf GetRevoluteJointConf(const Joint& joint);
 

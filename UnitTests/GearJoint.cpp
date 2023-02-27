@@ -157,6 +157,11 @@ TEST(GearJoint, SetRatio)
     EXPECT_EQ(GetRatio(world, joint), Real(2));
 }
 
+TEST(GearJoint, GetGearJointConfThrows)
+{
+    EXPECT_THROW(GetGearJointConf(Joint{}), std::bad_cast);
+}
+
 TEST(GearJoint, GetGearJointConf)
 {
     auto world = World{};

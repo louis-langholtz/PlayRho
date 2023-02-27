@@ -145,6 +145,7 @@ constexpr bool operator!=(const PulleyJointConf& lhs, const PulleyJointConf& rhs
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @throws std::bad_cast If the given joint's type is inappropriate for getting this value.
 /// @relatedalso Joint
 PulleyJointConf GetPulleyJointConf(const Joint& joint);
 

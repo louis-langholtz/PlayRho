@@ -122,8 +122,9 @@ constexpr bool operator!=(const FrictionJointConf& lhs, const FrictionJointConf&
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @throws std::bad_cast If the given joint's type is inappropriate for getting this value.
 /// @relatedalso Joint
-FrictionJointConf GetFrictionJointConf(const Joint& joint) noexcept;
+FrictionJointConf GetFrictionJointConf(const Joint& joint);
 
 /// @brief Gets the confguration for the given parameters.
 /// @relatedalso World
