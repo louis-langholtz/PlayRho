@@ -200,6 +200,7 @@ constexpr bool operator!=(const PrismaticJointConf& lhs, const PrismaticJointCon
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @throws std::bad_cast If the given joint's type is inappropriate for getting this value.
 /// @relatedalso Joint
 PrismaticJointConf GetPrismaticJointConf(const Joint& joint);
 

@@ -240,6 +240,11 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
     EXPECT_NEAR(double(Real{oldDistance / Meter}), double(Real{jointdef.length / Meter}), 0.1);
 }
 
+TEST(DistanceJointConf, GetDistanceJointConfThrows)
+{
+    EXPECT_THROW(GetDistanceJointConf(Joint{}), std::bad_cast);
+}
+
 TEST(DistanceJointConf, GetDistanceJointDefFreeFunction)
 {
     auto world = World{};

@@ -151,6 +151,7 @@ constexpr bool operator!=(const TargetJointConf& lhs, const TargetJointConf& rhs
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @throws std::bad_cast If the given joint's type is inappropriate for getting this value.
 /// @relatedalso Joint
 TargetJointConf GetTargetJointConf(const Joint& joint);
 
