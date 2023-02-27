@@ -130,6 +130,7 @@ constexpr bool operator!=(const WeldJointConf& lhs, const WeldJointConf& rhs) no
 }
 
 /// @brief Gets the definition data for the given joint.
+/// @throws std::bad_cast If the given joint's type is inappropriate for getting this value.
 /// @relatedalso Joint
 WeldJointConf GetWeldJointConf(const Joint& joint);
 

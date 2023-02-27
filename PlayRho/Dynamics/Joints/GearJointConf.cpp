@@ -84,7 +84,7 @@ GearJointConf::GearJointConf(BodyID bA, BodyID bB, BodyID bC, BodyID bD) noexcep
     // Intentionally empty.
 }
 
-GearJointConf GetGearJointConf(const Joint& joint) noexcept
+GearJointConf GetGearJointConf(const Joint& joint)
 {
     return TypeCast<GearJointConf>(joint);
 }

@@ -106,6 +106,11 @@ TEST(FrictionJoint, Construction)
     EXPECT_EQ(GetMaxTorque(joint), def.maxTorque);
 }
 
+TEST(FrictionJoint, GetFrictionJointConfThrows)
+{
+    EXPECT_THROW(GetFrictionJointConf(Joint{}), std::bad_cast);
+}
+
 TEST(FrictionJoint, GetFrictionJointConf)
 {
     auto world = World{};

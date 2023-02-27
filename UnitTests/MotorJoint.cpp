@@ -161,6 +161,11 @@ TEST(MotorJoint, SetCorrectionFactor)
     EXPECT_EQ(GetCorrectionFactor(conf2), Real(0.9));
 }
 
+TEST(MotorJoint, GetMotorJointConfThrows)
+{
+    EXPECT_THROW(GetMotorJointConf(Joint{}), std::bad_cast);
+}
+
 TEST(MotorJoint, GetMotorJointConf)
 {
     auto world = World{};
