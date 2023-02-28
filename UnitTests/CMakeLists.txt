@@ -32,14 +32,6 @@ set(INSTALL_GTEST OFF CACHE BOOL "Enable installation of googletest.")
 set(INSTALL_GMOCK OFF CACHE BOOL "Enable installation of googlemock.")
 set(gtest_hide_internal_symbols ON CACHE BOOL "")
 
-if (MSVC)
-  if (PLAYRHO_BUILD_SHARED)
-    #message(STATUS "UnitTests: Adding definition for linking with googletest as shared library.")
-    #add_definitions(-DGTEST_LINKED_AS_SHARED_LIBRARY)
-  else()
-    #message(STATUS "UnitTests: Setting option value for linking googletest with static library.")
-  endif()
-endif()
 # Prevent overriding the parent project's compiler/linker settings on Windows
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
@@ -67,7 +59,7 @@ endif()
 
 # Link a target to given libraries.
 # See details at: https://cmake.org/cmake/help/v3.1/command/target_link_libraries.html
-target_link_libraries(UnitTests PlayRho GTest::gtest)
+target_link_libraries(UnitTests PlayRho::PlayRho GTest::gtest)
 
 # link with coverage library
 if(${PLAYRHO_ENABLE_COVERAGE})
