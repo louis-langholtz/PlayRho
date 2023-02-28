@@ -2770,11 +2770,23 @@ TEST(World_Longer, TilesComesToRest)
     EXPECT_EQ(sumToiVelIters, 112778ul);
 #elif defined(__arm64__)
     // At least for Apple Silicon...
-    EXPECT_EQ(numSteps, 1802ul);
-    EXPECT_EQ(sumRegPosIters, 36523ul);
-    EXPECT_EQ(sumRegVelIters, 46964ul);
-    EXPECT_EQ(sumToiPosIters, 43901ul);
-    EXPECT_EQ(sumToiVelIters, 113141ul);
+    switch (sizeof(Real))
+    {
+        case 4u:
+            EXPECT_EQ(numSteps, 1802ul);
+            EXPECT_EQ(sumRegPosIters, 36523ul);
+            EXPECT_EQ(sumRegVelIters, 46964ul);
+            EXPECT_EQ(sumToiPosIters, 43901ul);
+            EXPECT_EQ(sumToiVelIters, 113141ul);
+            break;
+        case 8u:
+            EXPECT_EQ(numSteps, 1828ul);
+            EXPECT_EQ(sumRegPosIters, 36540ul);
+            EXPECT_EQ(sumRegVelIters, 47173ul);
+            EXPECT_EQ(sumToiPosIters, 44005ul);
+            EXPECT_EQ(sumToiVelIters, 114252ul);
+            break;
+    }
 #else
     // These will likely fail and need to be tweaked for the particular hardware...
     EXPECT_EQ(numSteps, 1814ul);
