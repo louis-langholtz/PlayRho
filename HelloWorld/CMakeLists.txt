@@ -1,7 +1,7 @@
 # Hello World examples
 add_executable(HelloWorld HelloWorld.cpp)
 
-target_link_libraries(HelloWorld PlayRho)
+target_link_libraries(HelloWorld PlayRho::PlayRho)
 
 # link with coverage library
 if(${PLAYRHO_ENABLE_COVERAGE})

@@ -64,9 +64,7 @@ add_executable(Testbed
 	${Testbed_Tests_SRCS}
 )
 
-target_link_libraries(
-	Testbed
-	PlayRho
+target_link_libraries(Testbed PlayRho::PlayRho
 	${GLFW3_LIBRARY}
 	${GLEW_LIBRARIES}
 	${ADDITIONAL_LIBRARIES}
@@ -74,11 +72,12 @@ target_link_libraries(
 )
 
 message(STATUS "Including header directories")
-# Note: include BINARY_DIR before /usr/local/include to ensure most recent PlayRho headers
+# Note: include BINARY_DIR and SOURCE_DIR before others to ensure most recent PlayRho headers
 target_include_directories(Testbed PRIVATE
+	"$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../>"
+	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>"
 	Framework/imgui
 	Framework/imgui/examples/libs/gl3w
-	"$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../>"
 	${OPENGL_INCLUDE_DIR}
 	${GLEW_INCLUDE_DIR}
 	${GLFW3_INCLUDE_DIR}
