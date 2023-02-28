@@ -23,15 +23,27 @@
 
 #include <PlayRho/Common/Templates.hpp>
 
-#include <functional> // for std::reference_wrapper
+#include <cstring> // for std::strcmp
 #include <regex>
 #include <string>
+
+// Fall back to requiring run-time type information (RTTI) support on some platforms...
+#if !defined(__clang__) && !defined(__GNUC__) && !defined(__FUNCSIG__)
 #include <typeindex>
 #include <typeinfo>
+#endif
 
 namespace playrho {
 namespace detail {
 
+/// @brief Gets the template type parameter's type name as a non-empty unique string.
+/// @note This string is the demangled name on supporting compilers, otherwise the mangled name is used
+///   and C++ run-time type information (RTTI) needs to be available.
+/// @note This code relies on the compiler being clang or GCC compatible supporting the <code>__clang__</code>
+///   or <code>__GNUC__</code> preprocessor macro and the <code>__PRETTY_FUNCTION__</code>
+///   identifier, or the compiler supporting the Microsoft Visual C++ style <code>__FUNCSIG__</code> macro.
+///   C++20's support for <code>std::source_location::function_name</code> could help make this function more
+///   portable, but only slightly since the returned string's format is still implementation defined.
 template <typename T>
 std::string TypeNameAsString()
 {
@@ -58,7 +70,7 @@ std::string TypeNameAsString()
     // class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __cdecl Name<enum Fruit>(void)
     return std::regex_replace(__FUNCSIG__, std::regex(".* __cdecl [^<]+<(.*)>\\(void\\)"), "$1");
 #else
-    return {}; // not unique but maybe still helpful at avoiding compiler issues
+    return {typeid(T).name()}; // not demangled but still should be unique and non-empty.
 #endif
 }
 
@@ -69,7 +81,7 @@ std::string TypeNameAsString()
 ///    when whole program is turned on. Such an issue is documented in Issue #370.
 /// @see https://github.com/louis-langholtz/PlayRho/issues/370
 template <typename T>
-static const char* GetNameForTypeInfo()
+const char* GetNameForTypeInfo()
 {
     static const std::string buffer = TypeNameAsString<T>();
     return buffer.c_str();
@@ -78,7 +90,8 @@ static const char* GetNameForTypeInfo()
 } // namespace detail
 
 /// @brief Type information.
-/// @note Users may specialize this to provide an alternative name for a type.
+/// @note Users may specialize this to provide an alternative name for a type so long as the provided
+///    name is still non-empty and unique for the application otherwise behavior is undefined.
 template <typename T>
 struct TypeInfo
 {
@@ -89,7 +102,7 @@ struct TypeInfo
     ///   template's type <code>T</code> prevents issue #370. Credit for this technique
     ///   goes to Li Jin (github user pigpigyyy).
     /// @see https://github.com/louis-langholtz/PlayRho/issues/370
-    static inline const char* name = detail::GetNameForTypeInfo<T>();
+    static inline const char* const name = detail::GetNameForTypeInfo<T>();
 };
 
 class TypeID;
@@ -114,13 +127,13 @@ public:
     /// Gets demangled name of the type this was generated for as a a non-null, null terminated string buffer.
     constexpr const char* GetName() const noexcept
     {
-        return m_name;
+        return *m_name;
     }
 
     /// Equality operator support via "hidden friend" function.
     inline friend bool operator==(const TypeID& lhs, const TypeID& rhs) noexcept
     {
-        return lhs.m_info.get() == rhs.m_info.get();
+        return (lhs.m_name == rhs.m_name) || (std::strcmp(*lhs.m_name, *rhs.m_name) == 0);
     }
 
     /// Inequality operator support via "hidden friend" function.
@@ -133,28 +146,28 @@ public:
     /// @note The ordering of type IDs is unspecified. This is provided anyway to support things like associative containers.
     inline friend bool operator<(const TypeID& lhs, const TypeID& rhs) noexcept
     {
-        return std::type_index{lhs.m_info.get()} < std::type_index{rhs.m_info.get()};
+        return (lhs.m_name != rhs.m_name) && (std::strcmp(*lhs.m_name, *rhs.m_name) < 0);
     }
 
     /// Less-than-or-equal operator support via "hidden friend" function.
     /// @note The ordering of type IDs is unspecified. This is provided anyway to support things like associative containers.
     inline friend bool operator<=(const TypeID& lhs, const TypeID& rhs) noexcept
     {
-        return std::type_index{lhs.m_info.get()} <= std::type_index{rhs.m_info.get()};
+        return (lhs.m_name == rhs.m_name) || (std::strcmp(*lhs.m_name, *rhs.m_name) <= 0);
     }
 
     /// Greater-than operator support via "hidden friend" function.
     /// @note The ordering of type IDs is unspecified. This is provided anyway to support things like associative containers.
     inline friend bool operator>(const TypeID& lhs, const TypeID& rhs) noexcept
     {
-        return std::type_index{lhs.m_info.get()} > std::type_index{rhs.m_info.get()};
+        return !(lhs <= rhs);
     }
 
     /// Greater-than-or-equal operator support via "hidden friend" function.
     /// @note The ordering of type IDs is unspecified. This is provided anyway to support things like associative containers.
     inline friend bool operator>=(const TypeID& lhs, const TypeID& rhs) noexcept
     {
-        return std::type_index{lhs.m_info.get()} >= std::type_index{rhs.m_info.get()};
+        return !(lhs < rhs);
     }
 
     template <typename T>
@@ -164,26 +177,24 @@ public:
     friend TypeID GetTypeID(const T&) noexcept;
 
 private:
-    explicit TypeID(const std::type_info& info, const char* name) noexcept:
-        m_info{info}, m_name{name}
+    explicit TypeID(const char* const * name) noexcept: m_name{name}
     {
         // Intentionally empty.
     }
 
-    std::reference_wrapper<const std::type_info> m_info{typeid(void)};
-    const char* m_name{TypeInfo<void>::name};
+    const char* const * m_name{&TypeInfo<void>::name};
 };
 
 template <typename T>
 TypeID GetTypeID() noexcept
 {
-    return TypeID{typeid(std::decay_t<T>), TypeInfo<std::decay_t<T>>::name};
+    return TypeID{&TypeInfo<std::decay_t<T>>::name};
 }
 
 template <typename T>
 TypeID GetTypeID(const T&) noexcept
 {
-    return TypeID{typeid(std::decay_t<T>), TypeInfo<std::decay_t<T>>::name};
+    return TypeID{&TypeInfo<std::decay_t<T>>::name};
 }
 
 /// @brief Gets the name associated with the given type ID.
