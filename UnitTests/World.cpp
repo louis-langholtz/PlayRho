@@ -2810,16 +2810,19 @@ TEST(World_Longer, TilesComesToRest)
         break;
     case 8u:
         EXPECT_EQ(world->GetContactRange(), 1447u);
-#if defined(__GNUC__) && defined(__clang__) && !defined(__core2__)
+#if defined(__GNUC__) && defined(__clang__) && !defined(__core2__) && !defined(__arm64__)
         EXPECT_EQ(totalBodiesSlept, createdBodyCount);
 #else
         EXPECT_EQ(totalBodiesSlept, createdBodyCount + 3u);
 #endif
-#if defined(__core2__) || (defined(__GNUC__) && !defined(__clang__))
-        EXPECT_TRUE(firstStepWithZeroMoved && (*firstStepWithZeroMoved == 1827u));
+        EXPECT_TRUE(firstStepWithZeroMoved);
+        if (firstStepWithZeroMoved) {
+#if defined(__core2__) || defined(__arm64__) || (defined(__GNUC__) && !defined(__clang__))
+            EXPECT_EQ(*firstStepWithZeroMoved, 1827u);
 #else
-        EXPECT_TRUE(firstStepWithZeroMoved && (*firstStepWithZeroMoved == 1792u));
+            EXPECT_EQ(*firstStepWithZeroMoved, 1792u);
 #endif
+        }
         break;
     }
     EXPECT_EQ(world->GetTree().GetNodeCount(), 5331u);
@@ -2961,11 +2964,23 @@ TEST(World_Longer, TilesComesToRest)
     EXPECT_EQ(sumToiVelIters, 112778ul);
 #elif defined(__arm64__)
     // At least for Apple Silicon...
-    EXPECT_EQ(numSteps, 1799ul);
-    EXPECT_EQ(sumRegPosIters, 36512ul);
-    EXPECT_EQ(sumRegVelIters, 46940ul);
-    EXPECT_EQ(sumToiPosIters, 44021ul);
-    EXPECT_EQ(sumToiVelIters, 113137ul);
+    switch (sizeof(Real))
+    {
+        case 4u:
+            EXPECT_EQ(numSteps, 1799ul);
+            EXPECT_EQ(sumRegPosIters, 36512ul);
+            EXPECT_EQ(sumRegVelIters, 46940ul);
+            EXPECT_EQ(sumToiPosIters, 44021ul);
+            EXPECT_EQ(sumToiVelIters, 113137ul);
+            break;
+        case 8u:
+            EXPECT_EQ(numSteps, 1828ul);
+            EXPECT_EQ(sumRegPosIters, 36540ul);
+            EXPECT_EQ(sumRegVelIters, 47173ul);
+            EXPECT_EQ(sumToiPosIters, 44005ul);
+            EXPECT_EQ(sumToiVelIters, 114196ul);
+            break;
+    }
 #else
     // These will likely fail and need to be tweaked for the particular hardware...
     EXPECT_EQ(numSteps, 1814ul);
