@@ -654,16 +654,20 @@ inline Real Normalize(Vec2& vector)
 Length2 ComputeCentroid(const Span<const Length2>& vertices);
 
 /// @brief Gets the modulo next value.
+/// @pre The given value is less than the given count.
+/// @warning Behavior is undefined if the given value is not less than the given count.
 template <typename T>
-constexpr T GetModuloNext(T value, T count) noexcept
+constexpr auto GetModuloNext(T value, T count) noexcept -> T
 {
     assert(value < count);
-    return (value + 1) % count;
+    return (value + 1) % count; // NOLINT(clang-analyzer-core.DivideZero)
 }
 
 /// @brief Gets the modulo previous value.
+/// @pre The given value is less than the given count.
+/// @warning Behavior is undefined if the given value is not less than the given count.
 template <typename T>
-constexpr T GetModuloPrev(T value, T count) noexcept
+constexpr auto GetModuloPrev(T value, T count) noexcept -> T
 {
     assert(value < count);
     return (value? value: count) - 1;
