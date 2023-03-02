@@ -577,6 +577,8 @@ Manifold GetManifold(bool flipped,
                      const Manifold::Conf conf);
 
 /// @brief Computes manifolds for face-to-point collision.
+/// @pre The given distance proxy <code>GetVertexCount()</code> must be one or greater.
+/// @warning Behavior is undefined if the given distance proxy <code>GetVertexCount()</code> is less than one.
 Manifold GetManifold(bool flipped, Length totalRadius,
                      const DistanceProxy& shape, const Transformation& sxf,
                      Length2 point, const Transformation& xfm);
