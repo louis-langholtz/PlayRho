@@ -261,11 +261,12 @@ Manifold GetManifold(bool flipped, const DistanceProxy& shape0, const Transforma
 Manifold GetManifold(bool flipped, Length totalRadius, const DistanceProxy& shape,
                      const Transformation& sxf, Length2 point, const Transformation& xfm)
 {
+    const auto vertexCount = shape.GetVertexCount();
+    assert(vertexCount > 0);
+
     // Computes the center of the circle in the frame of the polygon.
     const auto cLocal =
         InverseTransform(Transform(point, xfm), sxf); ///< Center of circle in frame of polygon.
-
-    const auto vertexCount = shape.GetVertexCount();
 
     // Find edge that circle is closest to.
     auto indexOfMax = decltype(vertexCount){0};
