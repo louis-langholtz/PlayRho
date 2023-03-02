@@ -1,267 +1,51 @@
-# YAML formatted configuration file for clang-tidy
+# YAML formatted configuration file for clang-tidy version 14.0.6
 #
-# To run clang-tidy on a single file, entry 'clang-tidy $file -- -I. --std=c++17
-#
-# For example:
-#   clang-tidy PlayRho/Collision/WorldManifold.cpp -- -I. --std=c++17
+# To run clang-tidy on all the files in the library:
+#   cmake -S PlayRho -B PlayRhoBuild -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+#   run-clang-tidy -p PlayRhoBuild PlayRho/PlayRho
 
 ---
-Checks:          'clang-diagnostic-*,clang-analyzer-*,*,-google-runtime-references,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-hicpp-no-array-decay,-llvm-include-order,-cppcoreguidelines-owning-memory,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-pro-bounds-constant-array-index,-modernize-use-trailing-return-type,-modernize-use-nodiscard,-fuchsia-overloaded-operator,-fuchsia-default-arguments-declarations,-misc-non-private-member-variables-in-classes,-llvmlibc-implementation-in-namespace,-altera-struct-pack-align,-llvmlibc-callee-namespace,-llvmlibc-restrict-system-libc-headers,-readability-uppercase-literal-suffix'
+Checks:          'clang-diagnostic-*,clang-analyzer-*,bugprone-*,concurrency-*,misc-*,modernize-*,performance-*,portability-*,readability-*,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-no-malloc,-cppcoreguidelines-owning-memory,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-cppcoreguidelines-pro-bounds-constant-array-index,-cppcoreguidelines-avoid-c-arrays,-llvmlibc-*,-readability-implicit-bool-conversion,-readability-named-parameter,-readability-identifier-length,-readability-uppercase-literal-suffix,-readability-container-size-empty,-fuchsia-overloaded-operator,-hicpp-no-array-decay'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
-FormatStyle:     none
+FormatStyle:     file
 CheckOptions:
-  - key:             cert-dcl59-cpp.HeaderFileExtensions
-    value:           ',h,hh,hpp,hxx'
-  - key:             cert-err09-cpp.CheckThrowTemporaries
-    value:           '1'
-  - key:             cert-err61-cpp.CheckThrowTemporaries
-    value:           '1'
-  - key:             cert-oop11-cpp.IncludeStyle
-    value:           llvm
-  - key:             cppcoreguidelines-no-malloc.Allocations
-    value:           '::malloc;::calloc'
-  - key:             cppcoreguidelines-no-malloc.Deallocations
-    value:           '::free'
-  - key:             cppcoreguidelines-no-malloc.Reallocations
-    value:           '::realloc'
-  - key:             cppcoreguidelines-pro-bounds-constant-array-index.GslHeader
-    value:           ''
-  - key:             cppcoreguidelines-pro-bounds-constant-array-index.IncludeStyle
-    value:           '0'
-  - key:             cppcoreguidelines-pro-type-member-init.IgnoreArrays
-    value:           '0'
-  - key:             cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions
-    value:           '0'
-  - key:             cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor
-    value:           '0'
-  - key:             google-build-namespaces.HeaderFileExtensions
-    value:           ',h,hh,hpp,hxx'
-  - key:             google-global-names-in-headers.HeaderFileExtensions
-    value:           ',h,hh,hpp,hxx'
-  - key:             google-readability-braces-around-statements.ShortStatementLines
-    value:           '1'
-  - key:             google-readability-function-size.BranchThreshold
-    value:           '4294967295'
-  - key:             google-readability-function-size.LineThreshold
-    value:           '4294967295'
-  - key:             google-readability-function-size.NestingThreshold
-    value:           '4294967295'
-  - key:             google-readability-function-size.ParameterThreshold
-    value:           '4294967295'
-  - key:             google-readability-function-size.StatementThreshold
-    value:           '800'
-  - key:             google-readability-namespace-comments.ShortNamespaceLines
-    value:           '10'
-  - key:             google-readability-namespace-comments.SpacesBeforeComments
-    value:           '2'
-  - key:             google-runtime-int.SignedTypePrefix
-    value:           int
-  - key:             google-runtime-int.TypeSuffix
-    value:           ''
-  - key:             google-runtime-int.UnsignedTypePrefix
-    value:           uint
-  - key:             hicpp-braces-around-statements.ShortStatementLines
-    value:           '0'
-  - key:             hicpp-function-size.BranchThreshold
-    value:           '4294967295'
-  - key:             hicpp-function-size.LineThreshold
-    value:           '4294967295'
-  - key:             hicpp-function-size.NestingThreshold
-    value:           '4294967295'
-  - key:             hicpp-function-size.ParameterThreshold
-    value:           '4294967295'
-  - key:             hicpp-function-size.StatementThreshold
-    value:           '800'
-  - key:             hicpp-member-init.IgnoreArrays
-    value:           '0'
-  - key:             hicpp-named-parameter.IgnoreFailedSplit
-    value:           '0'
-  - key:             hicpp-no-malloc.Allocations
-    value:           '::malloc;::calloc'
-  - key:             hicpp-no-malloc.Deallocations
-    value:           '::free'
-  - key:             hicpp-no-malloc.Reallocations
-    value:           '::realloc'
-  - key:             hicpp-special-member-functions.AllowMissingMoveFunctions
-    value:           '0'
-  - key:             hicpp-special-member-functions.AllowSoleDefaultDtor
-    value:           '0'
-  - key:             hicpp-use-auto.RemoveStars
-    value:           '0'
-  - key:             hicpp-use-emplace.ContainersWithPushBack
-    value:           '::std::vector;::std::list;::std::deque'
-  - key:             hicpp-use-emplace.SmartPointers
-    value:           '::std::shared_ptr;::std::unique_ptr;::std::auto_ptr;::std::weak_ptr'
-  - key:             hicpp-use-emplace.TupleMakeFunctions
-    value:           '::std::make_pair;::std::make_tuple'
-  - key:             hicpp-use-emplace.TupleTypes
-    value:           '::std::pair;::std::tuple'
-  - key:             hicpp-use-equals-default.IgnoreMacros
-    value:           '1'
-  - key:             hicpp-use-noexcept.ReplacementString
-    value:           ''
-  - key:             hicpp-use-noexcept.UseNoexceptFalse
-    value:           '1'
-  - key:             hicpp-use-nullptr.NullMacros
-    value:           ''
-  - key:             llvm-namespace-comment.ShortNamespaceLines
-    value:           '1'
-  - key:             llvm-namespace-comment.SpacesBeforeComments
-    value:           '1'
-  - key:             llvm-header-guard.RfindString
-    value:           'PlayRho/'
-  - key:             misc-argument-comment.StrictMode
-    value:           '0'
-  - key:             misc-assert-side-effect.AssertMacros
-    value:           assert
-  - key:             misc-assert-side-effect.CheckFunctionCalls
-    value:           '0'
-  - key:             misc-dangling-handle.HandleClasses
-    value:           'std::basic_string_view;std::experimental::basic_string_view'
-  - key:             misc-definitions-in-headers.HeaderFileExtensions
-    value:           ',h,hh,hpp,hxx'
-  - key:             misc-definitions-in-headers.UseHeaderFileExtension
-    value:           '1'
-  - key:             misc-misplaced-widening-cast.CheckImplicitCasts
-    value:           '0'
-  - key:             misc-move-constructor-init.IncludeStyle
-    value:           llvm
-  - key:             misc-sizeof-expression.WarnOnSizeOfCompareToConstant
-    value:           '1'
-  - key:             misc-sizeof-expression.WarnOnSizeOfConstant
-    value:           '1'
-  - key:             misc-sizeof-expression.WarnOnSizeOfThis
-    value:           '1'
-  - key:             misc-string-constructor.LargeLengthThreshold
-    value:           '8388608'
-  - key:             misc-string-constructor.WarnOnLargeLength
-    value:           '1'
-  - key:             misc-suspicious-enum-usage.StrictMode
-    value:           '0'
-  - key:             misc-suspicious-missing-comma.MaxConcatenatedTokens
-    value:           '5'
-  - key:             misc-suspicious-missing-comma.RatioThreshold
-    value:           '0.200000'
-  - key:             misc-suspicious-missing-comma.SizeThreshold
-    value:           '5'
-  - key:             misc-suspicious-string-compare.StringCompareLikeFunctions
-    value:           ''
-  - key:             misc-suspicious-string-compare.WarnOnImplicitComparison
-    value:           '1'
-  - key:             misc-suspicious-string-compare.WarnOnLogicalNotComparison
-    value:           '0'
-  - key:             misc-throw-by-value-catch-by-reference.CheckThrowTemporaries
-    value:           '1'
-  - key:             modernize-loop-convert.MaxCopySize
-    value:           '16'
+  - key:             llvm-else-after-return.WarnOnConditionVariables
+    value:           'false'
   - key:             modernize-loop-convert.MinConfidence
     value:           reasonable
-  - key:             modernize-loop-convert.NamingStyle
-    value:           CamelCase
-  - key:             modernize-make-shared.IgnoreMacros
-    value:           '1'
-  - key:             modernize-make-shared.IncludeStyle
-    value:           '0'
-  - key:             modernize-make-shared.MakeSmartPtrFunction
-    value:           'std::make_shared'
-  - key:             modernize-make-shared.MakeSmartPtrFunctionHeader
-    value:           memory
-  - key:             modernize-make-unique.IgnoreMacros
-    value:           '1'
-  - key:             modernize-make-unique.IncludeStyle
-    value:           '0'
-  - key:             modernize-make-unique.MakeSmartPtrFunction
-    value:           'std::make_unique'
-  - key:             modernize-make-unique.MakeSmartPtrFunctionHeader
-    value:           memory
-  - key:             modernize-pass-by-value.IncludeStyle
-    value:           llvm
-  - key:             modernize-pass-by-value.ValuesOnly
-    value:           '0'
-  - key:             modernize-raw-string-literal.ReplaceShorterLiterals
-    value:           '0'
   - key:             modernize-replace-auto-ptr.IncludeStyle
     value:           llvm
-  - key:             modernize-replace-random-shuffle.IncludeStyle
+  - key:             cert-str34-c.DiagnoseSignedUnsignedCharComparisons
+    value:           'false'
+  - key:             google-readability-namespace-comments.SpacesBeforeComments
+    value:           '2'
+  - key:             cert-err33-c.CheckedFunctions
+    value:           '::aligned_alloc;::asctime_s;::at_quick_exit;::atexit;::bsearch;::bsearch_s;::btowc;::c16rtomb;::c32rtomb;::calloc;::clock;::cnd_broadcast;::cnd_init;::cnd_signal;::cnd_timedwait;::cnd_wait;::ctime_s;::fclose;::fflush;::fgetc;::fgetpos;::fgets;::fgetwc;::fopen;::fopen_s;::fprintf;::fprintf_s;::fputc;::fputs;::fputwc;::fputws;::fread;::freopen;::freopen_s;::fscanf;::fscanf_s;::fseek;::fsetpos;::ftell;::fwprintf;::fwprintf_s;::fwrite;::fwscanf;::fwscanf_s;::getc;::getchar;::getenv;::getenv_s;::gets_s;::getwc;::getwchar;::gmtime;::gmtime_s;::localtime;::localtime_s;::malloc;::mbrtoc16;::mbrtoc32;::mbsrtowcs;::mbsrtowcs_s;::mbstowcs;::mbstowcs_s;::memchr;::mktime;::mtx_init;::mtx_lock;::mtx_timedlock;::mtx_trylock;::mtx_unlock;::printf_s;::putc;::putwc;::raise;::realloc;::remove;::rename;::scanf;::scanf_s;::setlocale;::setvbuf;::signal;::snprintf;::snprintf_s;::sprintf;::sprintf_s;::sscanf;::sscanf_s;::strchr;::strerror_s;::strftime;::strpbrk;::strrchr;::strstr;::strtod;::strtof;::strtoimax;::strtok;::strtok_s;::strtol;::strtold;::strtoll;::strtoul;::strtoull;::strtoumax;::strxfrm;::swprintf;::swprintf_s;::swscanf;::swscanf_s;::thrd_create;::thrd_detach;::thrd_join;::thrd_sleep;::time;::timespec_get;::tmpfile;::tmpfile_s;::tmpnam;::tmpnam_s;::tss_create;::tss_get;::tss_set;::ungetc;::ungetwc;::vfprintf;::vfprintf_s;::vfscanf;::vfscanf_s;::vfwprintf;::vfwprintf_s;::vfwscanf;::vfwscanf_s;::vprintf_s;::vscanf;::vscanf_s;::vsnprintf;::vsnprintf_s;::vsprintf;::vsprintf_s;::vsscanf;::vsscanf_s;::vswprintf;::vswprintf_s;::vswscanf;::vswscanf_s;::vwprintf_s;::vwscanf;::vwscanf_s;::wcrtomb;::wcschr;::wcsftime;::wcspbrk;::wcsrchr;::wcsrtombs;::wcsrtombs_s;::wcsstr;::wcstod;::wcstof;::wcstoimax;::wcstok;::wcstok_s;::wcstol;::wcstold;::wcstoll;::wcstombs;::wcstombs_s;::wcstoul;::wcstoull;::wcstoumax;::wcsxfrm;::wctob;::wctrans;::wctype;::wmemchr;::wprintf_s;::wscanf;::wscanf_s;'
+  - key:             cert-oop54-cpp.WarnOnlyIfThisHasSuspiciousField
+    value:           'false'
+  - key:             cert-dcl16-c.NewSuffixes
+    value:           'L;LL;LU;LLU'
+  - key:             google-readability-braces-around-statements.ShortStatementLines
+    value:           '1'
+  - key:             modernize-pass-by-value.IncludeStyle
     value:           llvm
-  - key:             modernize-use-auto.RemoveStars
-    value:           '1'
-  - key:             modernize-use-default-member-init.IgnoreMacros
-    value:           '1'
-  - key:             modernize-use-default-member-init.UseAssignment
-    value:           '0'
-  - key:             modernize-use-emplace.ContainersWithPushBack
-    value:           '::std::vector;::std::list;::std::deque'
-  - key:             modernize-use-emplace.SmartPointers
-    value:           '::std::shared_ptr;::std::unique_ptr;::std::auto_ptr;::std::weak_ptr'
-  - key:             modernize-use-emplace.TupleMakeFunctions
-    value:           '::std::make_pair;::std::make_tuple'
-  - key:             modernize-use-emplace.TupleTypes
-    value:           '::std::pair;::std::tuple'
-  - key:             modernize-use-equals-default.IgnoreMacros
-    value:           '1'
-  - key:             modernize-use-noexcept.ReplacementString
-    value:           ''
-  - key:             modernize-use-noexcept.UseNoexceptFalse
-    value:           '1'
+  - key:             google-readability-namespace-comments.ShortNamespaceLines
+    value:           '10'
+  - key:             modernize-loop-convert.MaxCopySize
+    value:           '16'
   - key:             modernize-use-nullptr.NullMacros
     value:           'NULL'
-  - key:             modernize-use-transparent-functors.SafeMode
-    value:           '0'
-  - key:             modernize-use-using.IgnoreMacros
-    value:           '1'
-  - key:             performance-faster-string-find.StringLikeClasses
-    value:           'std::basic_string'
-  - key:             performance-for-range-copy.WarnOnAllAutoCopies
-    value:           '0'
-  - key:             performance-inefficient-string-concatenation.StrictMode
-    value:           '0'
-  - key:             performance-inefficient-vector-operation.VectorLikeClasses
-    value:           '::std::vector'
-  - key:             performance-type-promotion-in-math-fn.IncludeStyle
-    value:           llvm
-  - key:             performance-unnecessary-value-param.IncludeStyle
-    value:           llvm
-  - key: performance-unnecessary-copy-initialization
-    value: '1'
-  - key: performance-implicit-conversion-in-loop
-    value: '1'
-  - key: performance-for-range-copy.WarnOnAllAutoCopies
-    value: '1'
-  - key:             readability-braces-around-statements.ShortStatementLines
-    value:           '0'
-  - key:             readability-function-size.BranchThreshold
-    value:           '14'
-  - key:             readability-function-size.LineThreshold
-    value:           '240'
-  - key:             readability-function-size.NestingThreshold
-    value:           '5'
-  - key:             readability-function-size.ParameterThreshold
-    value:           '6'
-  - key:             readability-function-size.StatementThreshold
-    value:           '120'
-  - key:             readability-identifier-naming.ClassCase
+  - key:             llvm-qualified-auto.AddConstToQualified
+    value:           'false'
+  - key:             cppcoreguidelines-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
+    value:           'true'
+  - key:             modernize-loop-convert.NamingStyle
     value:           CamelCase
-  - key:             readability-identifier-naming.ClassMethodCase
-    value:           CamelCase
-  - key:             readability-identifier-naming.IgnoreFailedSplit
-    value:           '0'
-  - key:             readability-implicit-bool-conversion.AllowIntegerConditions
-    value:           '0'
-  - key:             readability-implicit-bool-conversion.AllowPointerConditions
-    value:           '0'
-  - key:             readability-simplify-boolean-expr.ChainedConditionalAssignment
-    value:           '0'
-  - key:             readability-simplify-boolean-expr.ChainedConditionalReturn
-    value:           '0'
-  - key:             readability-static-accessed-through-instance.NameSpecifierNestingThreshold
-    value:           '3'
-  - key:             readability-non-const-parameter
-    value:           '1'
-  - key: readability-else-after-return
-    value: '1'
-  - key: readability-deleted-default
-    value: '1'
+  - key:             llvm-else-after-return.WarnOnUnfixable
+    value:           'false'
+  - key:             google-readability-function-size.StatementThreshold
+    value:           '800'
 ...
+
