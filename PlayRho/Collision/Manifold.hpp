@@ -305,10 +305,7 @@ public:
     /// For an unset-type manifold:
     /// point count is zero, point data is undefined, and all other properties are invalid.
     Manifold() = default;
-    
-    /// @brief Copy constructor.
-    Manifold(const Manifold& copy) = default;
-    
+
     /// Gets the type of this manifold.
     ///
     /// @note This must be a constant expression in order to use it in the context
