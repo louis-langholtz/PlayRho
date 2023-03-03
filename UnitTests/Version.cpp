@@ -66,3 +66,52 @@ TEST(Version, NotEqualsOperator)
     EXPECT_TRUE((Version{2, 1, 3} != Version{2, 3, 1}));
     EXPECT_TRUE((Version{2, 1, 3} != Version{3, 1, 2}));
 }
+
+TEST(Version, LessThanOperator)
+{
+    EXPECT_FALSE((Version{} < Version{}));
+    EXPECT_TRUE((Version{0, 0, 0} < Version{0, 1, 0}));
+    EXPECT_TRUE((Version{2, 4, 1} < Version{4, 0, 10}));
+}
+
+TEST(Version, LessThanEqualToOperator)
+{
+    EXPECT_TRUE((Version{} <= Version{}));
+    EXPECT_TRUE((Version{0, 0, 0} <= Version{0, 1, 0}));
+    EXPECT_TRUE((Version{2, 4, 1} <= Version{4, 0, 10}));
+}
+
+TEST(Version, GreaterThanOperator)
+{
+    EXPECT_FALSE((Version{} > Version{}));
+    EXPECT_FALSE((Version{0, 0, 0} > Version{0, 1, 0}));
+    EXPECT_FALSE((Version{2, 4, 1} > Version{4, 0, 10}));
+}
+
+TEST(Version, GreaterThanEqualToOperator)
+{
+    EXPECT_TRUE((Version{} >= Version{}));
+    EXPECT_FALSE((Version{0, 0, 0} >= Version{0, 1, 0}));
+    EXPECT_FALSE((Version{2, 4, 1} >= Version{4, 0, 10}));
+}
+
+TEST(Version, Compare)
+{
+    EXPECT_EQ(0, compare(Version{}, Version{}));
+    EXPECT_EQ(compare(Version{1, 1, 1}, Version{1, 1, 1}), 0);
+    EXPECT_EQ(compare(Version{2, 0, 0}, Version{2, 0, 0}), 0);
+
+    EXPECT_LT(compare(Version{1, 1, 1}, Version{1, 1, 2}), 0);
+    EXPECT_LT(compare(Version{1, 1, 1}, Version{1, 2, 1}), 0);
+    EXPECT_LT(compare(Version{1, 1, 1}, Version{2, 1, 1}), 0);
+    EXPECT_LT(compare(Version{1, 1, 1}, Version{1, 1, 2}), 0);
+    EXPECT_LT(compare(Version{1, 1, 1}, Version{1, 2, 0}), 0);
+    EXPECT_LT(compare(Version{1, 1, 1}, Version{2, 0, 0}), 0);
+
+    EXPECT_GT(compare(Version{1, 1, 2}, Version{1, 1, 1}), 0);
+    EXPECT_GT(compare(Version{1, 2, 1}, Version{1, 1, 1}), 0);
+    EXPECT_GT(compare(Version{2, 1, 1}, Version{1, 1, 1}), 0);
+    EXPECT_GT(compare(Version{1, 1, 2}, Version{1, 1, 1}), 0);
+    EXPECT_GT(compare(Version{1, 2, 0}, Version{1, 1, 1}), 0);
+    EXPECT_GT(compare(Version{2, 0, 0}, Version{1, 1, 1}), 0);
+}
