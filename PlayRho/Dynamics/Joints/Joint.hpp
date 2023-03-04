@@ -562,7 +562,11 @@ template <typename T>
 inline std::add_pointer_t<std::add_const_t<T>> TypeCast(const Joint* value) noexcept
 {
     static_assert(!std::is_reference<T>::value, "T may not be a reference.");
-    return ::playrho::d2::TypeCast<T>(const_cast<Joint*>(value));
+    using ReturnType = std::add_pointer_t<T>;
+    if (value && value->m_self && (GetType(*value) == GetTypeID<T>())) {
+        return static_cast<ReturnType>(value->m_self->GetData_());
+    }
+    return nullptr;
 }
 
 template <typename T>
