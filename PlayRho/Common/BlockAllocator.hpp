@@ -116,15 +116,6 @@ namespace playrho {
         Block* m_freeLists[size(AllocatorBlockSizes)]; ///< Free lists.
     };
     
-    /// @brief Deletes the given pointer by calling the pointed-to object's destructor and
-    ///    returning it to the given allocator.
-    template <typename T>
-    inline void Delete(const T* p, BlockAllocator& allocator)
-    {
-        p->~T();
-        allocator.Free(const_cast<T*>(p), sizeof(T));
-    }
-    
     /// Block deallocator.
     struct BlockDeallocator
     {
