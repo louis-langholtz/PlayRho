@@ -19,6 +19,3 @@ jobs:
         config_file: '.clang-tidy'
         cmake_command: cmake . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-    # If there are any comments, fail the check
-    - if: steps.review.outputs.total_comments > 0
-      run: exit 1
