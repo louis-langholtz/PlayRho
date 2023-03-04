@@ -204,7 +204,7 @@ Manifold GetManifold(bool flipped, const DistanceProxy& shape0, const Transforma
         }
         return Manifold::GetForCircles(shape1_rel_v0, shape1_e.first, shape0_rel_v0, idx0);
     }
-    else if (GetMagnitudeSquared(shape0_abs_v0 - shape1_abs_v1) <= totalRadiusSquared) {
+    if (GetMagnitudeSquared(shape0_abs_v0 - shape1_abs_v1) <= totalRadiusSquared) {
         // shape 1 vertex 1 is colliding with shape 2 vertex 2
         if (!flipped) {
             if (mustUseFaceManifold) {
@@ -221,7 +221,7 @@ Manifold GetManifold(bool flipped, const DistanceProxy& shape0, const Transforma
         }
         return Manifold::GetForCircles(shape1_rel_v1, shape1_e.second, shape0_rel_v0, idx0);
     }
-    else if (GetMagnitudeSquared(shape0_abs_v1 - shape1_abs_v1) <= totalRadiusSquared) {
+    if (GetMagnitudeSquared(shape0_abs_v1 - shape1_abs_v1) <= totalRadiusSquared) {
         // shape 1 vertex 2 is colliding with shape 2 vertex 2
         if (!flipped) {
             if (mustUseFaceManifold) {
@@ -238,7 +238,7 @@ Manifold GetManifold(bool flipped, const DistanceProxy& shape0, const Transforma
         }
         return Manifold::GetForCircles(shape1_rel_v1, shape1_e.second, shape0_rel_v1, idx0Next);
     }
-    else if (GetMagnitudeSquared(shape0_abs_v1 - shape1_abs_v0) <= totalRadiusSquared) {
+    if (GetMagnitudeSquared(shape0_abs_v1 - shape1_abs_v0) <= totalRadiusSquared) {
         // shape 1 vertex 2 is colliding with shape 2 vertex 1
         if (!flipped) {
             if (mustUseFaceManifold) {
