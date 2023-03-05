@@ -64,10 +64,12 @@ struct Version {
 ///    Or zero if both arguments are the same.
 constexpr auto compare(const Version& lhs, const Version& rhs) noexcept
 {
-    if (const auto diff = lhs.major - rhs.major)
+    if (const auto diff = lhs.major - rhs.major) {
         return diff;
-    if (const auto diff = lhs.minor - rhs.minor)
+    }
+    if (const auto diff = lhs.minor - rhs.minor) {
         return diff;
+    }
     return lhs.revision - rhs.revision;
 }
 
