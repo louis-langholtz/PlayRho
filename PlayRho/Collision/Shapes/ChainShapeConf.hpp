@@ -50,14 +50,17 @@ namespace d2 {
 class ChainShapeConf : public ShapeBuilder<ChainShapeConf>
 {
 public:
+    /// @brief Default vertex radius.
+    static constexpr auto DefaultVertexRadius = NonNegative<Length>{DefaultLinearSlop * Real{2}};
+
     /// @brief Gets the default vertex radius.
+    /// @note This is just a backward compatibility interface for getting the default vertex radius.
+    ///    The new way is to use <code>DefaultVertexRadius</code> directly.
+    /// @return <code>DefaultVertexRadius</code>.
     static constexpr NonNegative<Length> GetDefaultVertexRadius() noexcept
     {
-        return NonNegative<Length>{DefaultLinearSlop * Real{2}};
+        return DefaultVertexRadius;
     }
-
-    /// @brief Default constructor.
-    ChainShapeConf();
 
     /// @brief Sets the configuration up for representing a chain of vertices as given.
     ChainShapeConf& Set(std::vector<Length2> arg);
@@ -66,13 +69,13 @@ public:
     ChainShapeConf& Add(Length2 vertex);
 
     /// @brief Translates the vertices by the given amount.
-    ChainShapeConf& Translate(const Length2& value) noexcept;
+    ChainShapeConf& Translate(const Length2& value);
 
     /// @brief Scales the vertices by the given amount.
-    ChainShapeConf& Scale(const Vec2& value) noexcept;
+    ChainShapeConf& Scale(const Vec2& value);
 
     /// @brief Rotates the vertices by the given amount.
-    ChainShapeConf& Rotate(const UnitVec& value) noexcept;
+    ChainShapeConf& Rotate(const UnitVec& value);
 
     /// @brief Gets the "child" shape count.
     ChildCounter GetChildCount() const noexcept
@@ -86,7 +89,7 @@ public:
     DistanceProxy GetChild(ChildCounter index) const;
 
     /// @brief Gets the mass data.
-    MassData GetMassData() const noexcept;
+    MassData GetMassData() const;
 
     /// @brief Uses the given vertex radius.
     ChainShapeConf& UseVertexRadius(NonNegative<Length> value) noexcept;
@@ -172,7 +175,7 @@ inline DistanceProxy GetChild(const ChainShapeConf& arg, ChildCounter index)
 }
 
 /// @brief Gets the mass data for a given chain shape configuration.
-inline MassData GetMassData(const ChainShapeConf& arg) noexcept
+inline MassData GetMassData(const ChainShapeConf& arg)
 {
     return arg.GetMassData();
 }
@@ -191,43 +194,43 @@ inline ChildCounter GetNextIndex(const ChainShapeConf& shape, ChildCounter index
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
-inline NonNegative<Length> GetVertexRadius(const ChainShapeConf& arg)
+inline NonNegative<Length> GetVertexRadius(const ChainShapeConf& arg) noexcept
 {
     return arg.vertexRadius;
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
-inline NonNegative<Length> GetVertexRadius(const ChainShapeConf& arg, ChildCounter)
+inline NonNegative<Length> GetVertexRadius(const ChainShapeConf& arg, ChildCounter) noexcept
 {
     return GetVertexRadius(arg);
 }
 
 /// @brief Sets the vertex radius of the shape.
-inline void SetVertexRadius(ChainShapeConf& arg, NonNegative<Length> value)
+inline void SetVertexRadius(ChainShapeConf& arg, NonNegative<Length> value) noexcept
 {
     arg.vertexRadius = value;
 }
 
 /// @brief Sets the vertex radius of the shape for the given index.
-inline void SetVertexRadius(ChainShapeConf& arg, ChildCounter, NonNegative<Length> value)
+inline void SetVertexRadius(ChainShapeConf& arg, ChildCounter, NonNegative<Length> value) noexcept
 {
     SetVertexRadius(arg, value);
 }
 
 /// @brief Translates the given shape's vertices by the given amount.
-inline void Translate(ChainShapeConf& arg, const Length2& value) noexcept
+inline void Translate(ChainShapeConf& arg, const Length2& value)
 {
     arg.Translate(value);
 }
 
 /// @brief Scales the given shape's vertices by the given amount.
-inline void Scale(ChainShapeConf& arg, const Vec2& value) noexcept
+inline void Scale(ChainShapeConf& arg, const Vec2& value)
 {
     arg.Scale(value);
 }
 
 /// @brief Rotates the given shape's vertices by the given amount.
-inline void Rotate(ChainShapeConf& arg, const UnitVec& value) noexcept
+inline void Rotate(ChainShapeConf& arg, const UnitVec& value)
 {
     arg.Rotate(value);
 }

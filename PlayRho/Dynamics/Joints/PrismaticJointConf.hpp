@@ -59,10 +59,7 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf> {
     using super = JointBuilder<PrismaticJointConf>;
 
     /// @brief Default constructor.
-    constexpr PrismaticJointConf() = default;
-
-    /// @brief Copy constructor.
-    PrismaticJointConf(const PrismaticJointConf& copy) = default;
+    constexpr PrismaticJointConf() noexcept = default;
 
     /// @brief Initializing constructor.
     /// @details Initializes the bodies, anchors, axis, and reference angle using the world

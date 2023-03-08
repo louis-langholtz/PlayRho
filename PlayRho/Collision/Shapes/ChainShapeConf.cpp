@@ -58,8 +58,6 @@ void ResetNormals(std::vector<UnitVec>& normals, const std::vector<Length2>& ver
 
 } // anonymous namespace
 
-ChainShapeConf::ChainShapeConf() = default;
-
 ChainShapeConf& ChainShapeConf::Set(std::vector<Length2> vertices)
 {
     const auto count = size(vertices);
@@ -72,14 +70,14 @@ ChainShapeConf& ChainShapeConf::Set(std::vector<Length2> vertices)
     return *this;
 }
 
-ChainShapeConf& ChainShapeConf::Translate(const Length2& value) noexcept
+ChainShapeConf& ChainShapeConf::Translate(const Length2& value)
 {
     std::for_each(begin(m_vertices), end(m_vertices), [=](Length2& v) { v = v + value; });
     ResetNormals(m_normals, m_vertices);
     return *this;
 }
 
-ChainShapeConf& ChainShapeConf::Scale(const Vec2& value) noexcept
+ChainShapeConf& ChainShapeConf::Scale(const Vec2& value)
 {
     std::for_each(begin(m_vertices), end(m_vertices), [=](Length2& v) {
         v = Length2{GetX(value) * GetX(v), GetY(value) * GetY(v)};
@@ -88,7 +86,7 @@ ChainShapeConf& ChainShapeConf::Scale(const Vec2& value) noexcept
     return *this;
 }
 
-ChainShapeConf& ChainShapeConf::Rotate(const UnitVec& value) noexcept
+ChainShapeConf& ChainShapeConf::Rotate(const UnitVec& value)
 {
     std::for_each(begin(m_vertices), end(m_vertices),
                   [=](Length2& v) { v = ::playrho::d2::Rotate(v, value); });
@@ -111,7 +109,7 @@ ChainShapeConf& ChainShapeConf::Add(Length2 vertex)
     return *this;
 }
 
-MassData ChainShapeConf::GetMassData() const noexcept
+MassData ChainShapeConf::GetMassData() const
 {
     const auto density = this->density;
     if (density > 0_kgpm2) {

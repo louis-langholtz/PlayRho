@@ -34,7 +34,7 @@ static_assert(IsValidShapeType<MultiShapeConf>::value);
 /// Computes the mass properties of this shape using its dimensions and density.
 /// The inertia tensor is computed about the local origin.
 /// @return Mass data for this shape.
-MassData GetMassData(const MultiShapeConf& arg) noexcept
+MassData GetMassData(const MultiShapeConf& arg)
 {
     auto mass = 0_kg;
     const auto origin = Length2{};
@@ -79,7 +79,7 @@ ConvexHull ConvexHull::Get(const VertexSet& pointSet, NonNegative<Length> vertex
     return ConvexHull{vertices, normals, vertexRadius};
 }
 
-ConvexHull& ConvexHull::Translate(const Length2& value) noexcept
+ConvexHull& ConvexHull::Translate(const Length2& value)
 {
     auto newPoints = VertexSet{};
     for (const auto& v : vertices) {
@@ -89,7 +89,7 @@ ConvexHull& ConvexHull::Translate(const Length2& value) noexcept
     return *this;
 }
 
-ConvexHull& ConvexHull::Scale(const Vec2& value) noexcept
+ConvexHull& ConvexHull::Scale(const Vec2& value)
 {
     auto newPoints = VertexSet{};
     for (const auto& v : vertices) {
@@ -99,7 +99,7 @@ ConvexHull& ConvexHull::Scale(const Vec2& value) noexcept
     return *this;
 }
 
-ConvexHull& ConvexHull::Rotate(const UnitVec& value) noexcept
+ConvexHull& ConvexHull::Rotate(const UnitVec& value)
 {
     auto newPoints = VertexSet{};
     for (const auto& v : vertices) {
@@ -110,27 +110,27 @@ ConvexHull& ConvexHull::Rotate(const UnitVec& value) noexcept
 }
 
 MultiShapeConf& MultiShapeConf::AddConvexHull(const VertexSet& pointSet,
-                                              NonNegative<Length> vertexRadius) noexcept
+                                              NonNegative<Length> vertexRadius)
 {
     children.emplace_back(ConvexHull::Get(pointSet, vertexRadius));
     return *this;
 }
 
-MultiShapeConf& MultiShapeConf::Translate(const Length2& value) noexcept
+MultiShapeConf& MultiShapeConf::Translate(const Length2& value)
 {
     std::for_each(begin(children), end(children),
                   [&value](ConvexHull& child) { child.Translate(value); });
     return *this;
 }
 
-MultiShapeConf& MultiShapeConf::Scale(const Vec2& value) noexcept
+MultiShapeConf& MultiShapeConf::Scale(const Vec2& value)
 {
     std::for_each(begin(children), end(children),
                   [&value](ConvexHull& child) { child.Scale(value); });
     return *this;
 }
 
-MultiShapeConf& MultiShapeConf::Rotate(const UnitVec& value) noexcept
+MultiShapeConf& MultiShapeConf::Rotate(const UnitVec& value)
 {
     std::for_each(begin(children), end(children),
                   [&value](ConvexHull& child) { child.Rotate(value); });

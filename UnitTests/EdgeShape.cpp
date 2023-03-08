@@ -51,6 +51,15 @@ TEST(EdgeShapeConf, IsValidShapeType)
     EXPECT_TRUE(IsValidShapeType<EdgeShapeConf>::value);
 }
 
+TEST(EdgeShapeConf, DefaultConstruction)
+{
+    EXPECT_EQ(EdgeShapeConf::GetDefaultVertexRadius(), EdgeShapeConf::DefaultVertexRadius);
+    const auto foo = EdgeShapeConf{};
+    EXPECT_EQ(foo.vertexRadius, EdgeShapeConf::GetDefaultVertexRadius());
+    EXPECT_EQ((Length2{}), foo.GetVertexA());
+    EXPECT_EQ((Length2{}), foo.GetVertexB());
+}
+
 TEST(EdgeShapeConf, GetInvalidChildThrows)
 {
     const auto foo = EdgeShapeConf{};

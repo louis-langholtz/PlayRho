@@ -148,12 +148,12 @@ ContactCounter World::GetContactRange() const noexcept
     return ::playrho::d2::GetContactRange(*m_impl);
 }
 
-World::Bodies World::GetBodies() const noexcept
+const World::Bodies& World::GetBodies() const noexcept
 {
     return ::playrho::d2::GetBodies(*m_impl);
 }
 
-World::Bodies World::GetBodiesForProxies() const noexcept
+const World::Bodies& World::GetBodiesForProxies() const noexcept
 {
     return ::playrho::d2::GetBodiesForProxies(*m_impl);
 }
@@ -178,22 +178,22 @@ void World::Destroy(BodyID id)
     ::playrho::d2::Destroy(*m_impl, id);
 }
 
-World::Shapes World::GetShapes(BodyID id) const
+const World::Shapes& World::GetShapes(BodyID id) const
 {
     return ::playrho::d2::GetShapes(*m_impl, id);
 }
 
-World::BodyJoints World::GetJoints(BodyID id) const
+const World::BodyJoints& World::GetJoints(BodyID id) const
 {
     return ::playrho::d2::GetJoints(*m_impl, id);
 }
 
-World::Contacts World::GetContacts(BodyID id) const
+const World::Contacts& World::GetContacts(BodyID id) const
 {
     return ::playrho::d2::GetContacts(*m_impl, id);
 }
 
-World::Joints World::GetJoints() const noexcept
+const World::Joints& World::GetJoints() const noexcept
 {
     return ::playrho::d2::GetJoints(*m_impl);
 }
@@ -243,7 +243,7 @@ void World::Destroy(ShapeID id)
     ::playrho::d2::Destroy(*m_impl, id);
 }
 
-World::Contacts World::GetContacts() const noexcept
+const World::Contacts& World::GetContacts() const noexcept
 {
     return ::playrho::d2::GetContacts(*m_impl);
 }

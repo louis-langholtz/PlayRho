@@ -65,6 +65,8 @@ TEST(MotorJointConf, DefaultConstruction)
 
     EXPECT_EQ(def.linearOffset, (Length2{}));
     EXPECT_EQ(def.angularOffset, 0_deg);
+    EXPECT_EQ(def.maxForce, MotorJointConf::DefaultMaxForce);
+    EXPECT_EQ(def.maxTorque, MotorJointConf::DefaultMaxTorque);
     EXPECT_EQ(def.maxForce, 1_N);
     EXPECT_EQ(def.maxTorque, 1_Nm);
     EXPECT_EQ(def.correctionFactor, Real(0.3));

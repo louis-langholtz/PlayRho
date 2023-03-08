@@ -41,13 +41,19 @@ namespace d2 {
 /// @ingroup PartsGroup
 ///
 struct DiskShapeConf : ShapeBuilder<DiskShapeConf> {
+    /// @brief Default radius.
+    static constexpr auto DefaultRadius = NonNegative<Length>{DefaultLinearSlop * 2};
+
     /// @brief Gets the default radius.
+    /// @note This is just a backward compatibility interface for getting the default radius.
+    ///    The new way is to use <code>DefaultRadius</code> directly.
+    /// @return <code>DefaultRadius</code>.
     static constexpr NonNegative<Length> GetDefaultRadius() noexcept
     {
-        return NonNegative<Length>{DefaultLinearSlop * 2};
+        return DefaultRadius;
     }
 
-    constexpr DiskShapeConf() = default;
+    constexpr DiskShapeConf() noexcept = default;
 
     /// @brief Initializing constructor.
     constexpr DiskShapeConf(NonNegative<Length> r) : vertexRadius{r}
@@ -169,7 +175,7 @@ inline void SetVertexRadius(DiskShapeConf& arg, ChildCounter, NonNegative<Length
 }
 
 /// @brief Gets the mass data of the given disk shape configuration.
-inline MassData GetMassData(const DiskShapeConf& arg) noexcept
+inline MassData GetMassData(const DiskShapeConf& arg)
 {
     return playrho::d2::GetMassData(arg.vertexRadius, arg.density, arg.location);
 }

@@ -61,10 +61,10 @@ TypeID GetType(const World& world, ShapeID id)
     return GetType(GetShape(world, id));
 }
 
-ShapeCounter GetAssociationCount(const World& world) noexcept
+ShapeCounter GetAssociationCount(const World& world)
 {
     auto sum = ShapeCounter{0};
-    const auto bodies = world.GetBodies();
+    const auto& bodies = world.GetBodies();
     for_each(begin(bodies), end(bodies), [&world,&sum](const auto &b) {
         sum += static_cast<ShapeCounter>(size(world.GetShapes(b)));
     });

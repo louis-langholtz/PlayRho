@@ -74,7 +74,7 @@ struct GearJointConf : public JointBuilder<GearJointConf> {
     using TypeData = std::variant<std::monostate, PrismaticData, RevoluteData>;
 
     /// @brief Default constructor.
-    constexpr GearJointConf() = default;
+    constexpr GearJointConf() noexcept = default;
 
     /// @brief Initializing constructor.
     GearJointConf(BodyID bA, BodyID bB, BodyID bC, BodyID bD) noexcept;

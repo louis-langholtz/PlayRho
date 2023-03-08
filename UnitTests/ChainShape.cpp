@@ -67,6 +67,12 @@ TEST(ChainShapeConf, IsValidShapeType)
     EXPECT_TRUE(IsValidShapeType<ChainShapeConf>::value);
 }
 
+TEST(ChainShapeConf, Traits)
+{
+    EXPECT_TRUE(std::is_default_constructible_v<ChainShapeConf>);
+    EXPECT_TRUE(std::is_nothrow_default_constructible_v<ChainShapeConf>);
+}
+
 TEST(ChainShapeConf, DefaultConstruction)
 {
     const auto foo = ChainShapeConf{};
@@ -82,6 +88,7 @@ TEST(ChainShapeConf, DefaultConstruction)
         EXPECT_EQ(GetVertexRadius(foo, i), ChainShapeConf::GetDefaultVertexRadius());
     }
     EXPECT_THROW(GetChild(foo, GetChildCount(foo)), InvalidArgument);
+    EXPECT_EQ(ChainShapeConf::DefaultVertexRadius, ChainShapeConf::GetDefaultVertexRadius());
     EXPECT_EQ(GetVertexRadius(foo, GetChildCount(foo)), ChainShapeConf::GetDefaultVertexRadius());
     EXPECT_EQ(GetDensity(foo), defaultConf.density);
     EXPECT_EQ(GetFriction(foo), defaultConf.friction);

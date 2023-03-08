@@ -51,7 +51,7 @@ struct FrictionJointConf : public JointBuilder<FrictionJointConf> {
     using super = JointBuilder<FrictionJointConf>;
 
     /// @brief Default constructor.
-    constexpr FrictionJointConf() = default;
+    constexpr FrictionJointConf() noexcept = default;
 
     /// @brief Initializing constructor.
     /// @details Initialize the bodies, anchors, axis, and reference angle using the world

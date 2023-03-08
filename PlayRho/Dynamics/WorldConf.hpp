@@ -24,7 +24,7 @@
 /// @file
 /// Declarations of the WorldConf class.
 
-#include <PlayRho/Common/Positive.hpp>
+#include <PlayRho/Common/Settings.hpp>
 
 namespace playrho {
 namespace d2 {

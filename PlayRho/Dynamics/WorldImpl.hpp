@@ -276,7 +276,7 @@ public:
     /// @details Provides insight on what fixtures have been queued for proxy processing
     ///   during the next call to the world step method.
     /// @see Step.
-    std::vector<std::pair<BodyID, ShapeID>> GetFixturesForProxies() const noexcept;
+    const std::vector<std::pair<BodyID, ShapeID>>& GetFixturesForProxies() const noexcept;
 
     /// @brief Determines whether this world has new fixtures.
     bool HasNewFixtures() const noexcept;
@@ -299,13 +299,13 @@ public:
     /// @return Body range that can be iterated over using its begin and end methods
     ///   or using ranged-based for-loops.
     /// @see CreateBody(const Body&).
-    Bodies GetBodies() const noexcept;
+    const Bodies& GetBodies() const noexcept;
 
     /// @brief Gets the bodies-for-proxies range for this world.
     /// @details Provides insight on what bodies have been queued for proxy processing
     ///   during the next call to the world step method.
     /// @see Step.
-    Bodies GetBodiesForProxies() const noexcept;
+    const Bodies& GetBodiesForProxies() const noexcept;
 
     /// @brief Creates a rigid body that's a copy of the given one.
     /// @warning This function should not be used while the world is locked &mdash; as it is
@@ -365,10 +365,10 @@ public:
 
     /// @brief Gets the contacts associated with the identified body.
     /// @throws std::out_of_range if given an invalid id.
-    Contacts GetContacts(BodyID id) const;
+    const Contacts& GetContacts(BodyID id) const;
 
     /// @throws std::out_of_range if given an invalid id.
-    BodyJoints GetJoints(BodyID id) const;
+    const BodyJoints& GetJoints(BodyID id) const;
 
     /// @}
 
@@ -387,7 +387,7 @@ public:
     ///   <code>CreateJoint(const Joint&)</code> method that haven't yet been destroyed.
     /// @return World joints sized-range.
     /// @see CreateJoint(const Joint&).
-    Joints GetJoints() const noexcept;
+    const Joints& GetJoints() const noexcept;
 
     /// @brief Creates a joint to constrain one or more bodies.
     /// @warning This function is locked during callbacks.
@@ -490,7 +490,7 @@ public:
     /// @warning contacts are created and destroyed in the middle of a time step.
     /// Use <code>ContactListener</code> to avoid missing contacts.
     /// @return World contacts sized-range.
-    Contacts GetContacts() const noexcept;
+    const Contacts& GetContacts() const noexcept;
 
     /// @brief Gets the identified contact.
     /// @throws std::out_of_range If given an invalid contact identifier.
@@ -669,13 +669,13 @@ private:
                                                 const StepConf& conf);
 
     /// @brief Removes the given body from this world.
-    void Remove(BodyID id) noexcept;
+    void Remove(BodyID id);
 
     /// @brief Updates associated bodies and contacts for specified joint's addition.
     void Add(JointID j, bool flagForFiltering = false);
 
     /// @brief Updates associated bodies and contacts for specified joint's removal.
-    void Remove(JointID id) noexcept;
+    void Remove(JointID id);
 
     /// @brief Sets the step complete state.
     /// @post <code>IsStepComplete()</code> will return the value set.
@@ -884,27 +884,27 @@ inline void WorldImpl::AddProxies(const Proxies& proxies)
     m_proxiesForContacts.insert(end(m_proxiesForContacts), begin(proxies), end(proxies));
 }
 
-inline WorldImpl::Bodies WorldImpl::GetBodies() const noexcept
+inline const WorldImpl::Bodies& WorldImpl::GetBodies() const noexcept
 {
     return m_bodies;
 }
 
-inline WorldImpl::Bodies WorldImpl::GetBodiesForProxies() const noexcept
+inline const WorldImpl::Bodies& WorldImpl::GetBodiesForProxies() const noexcept
 {
     return m_bodiesForSync;
 }
 
-inline std::vector<std::pair<BodyID, ShapeID>> WorldImpl::GetFixturesForProxies() const noexcept
+inline const std::vector<std::pair<BodyID, ShapeID>>& WorldImpl::GetFixturesForProxies() const noexcept
 {
     return m_fixturesForProxies;
 }
 
-inline WorldImpl::Joints WorldImpl::GetJoints() const noexcept
+inline const WorldImpl::Joints& WorldImpl::GetJoints() const noexcept
 {
     return m_joints;
 }
 
-inline WorldImpl::Contacts WorldImpl::GetContacts() const noexcept
+inline const WorldImpl::Contacts& WorldImpl::GetContacts() const noexcept
 {
     return m_contacts;
 }

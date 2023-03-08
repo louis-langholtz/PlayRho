@@ -29,22 +29,22 @@ namespace d2 {
 
 static_assert(IsValidShapeType<PolygonShapeConf>::value);
 
-PolygonShapeConf::PolygonShapeConf() = default;
+PolygonShapeConf::PolygonShapeConf() noexcept = default;
 
-PolygonShapeConf::PolygonShapeConf(Length hx, Length hy, const PolygonShapeConf& conf) noexcept
+PolygonShapeConf::PolygonShapeConf(Length hx, Length hy, const PolygonShapeConf& conf)
     : ShapeBuilder{conf}
 {
     SetAsBox(hx, hy);
 }
 
 PolygonShapeConf::PolygonShapeConf(Span<const Length2> points,
-                                   const PolygonShapeConf& conf) noexcept
+                                   const PolygonShapeConf& conf)
     : ShapeBuilder{conf}
 {
     Set(points);
 }
 
-PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy) noexcept
+PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy)
 {
     m_centroid = Length2{};
 
@@ -71,13 +71,13 @@ PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy) noexcept
 }
 
 /// @brief Uses the given vertices.
-PolygonShapeConf& PolygonShapeConf::UseVertices(const std::vector<Length2>& verts) noexcept
+PolygonShapeConf& PolygonShapeConf::UseVertices(const std::vector<Length2>& verts)
 {
     return Set(Span<const Length2>(data(verts), size(verts)));
 }
 
 PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy, Length2 center,
-                                             Angle angle) noexcept
+                                             Angle angle)
 {
     SetAsBox(hx, hy);
     Transform(Transformation{center, UnitVec::Get(angle)});
@@ -94,7 +94,7 @@ PolygonShapeConf& PolygonShapeConf::Transform(Transformation xfm) noexcept
     return *this;
 }
 
-PolygonShapeConf& PolygonShapeConf::Transform(const Mat22& m) noexcept
+PolygonShapeConf& PolygonShapeConf::Transform(const Mat22& m)
 {
     auto newPoints = VertexSet{};
     for (const auto& v : m_vertices) {
@@ -103,7 +103,7 @@ PolygonShapeConf& PolygonShapeConf::Transform(const Mat22& m) noexcept
     return Set(newPoints);
 }
 
-PolygonShapeConf& PolygonShapeConf::Translate(const Length2& value) noexcept
+PolygonShapeConf& PolygonShapeConf::Translate(const Length2& value)
 {
     auto newPoints = VertexSet{};
     for (const auto& v : m_vertices) {
@@ -112,7 +112,7 @@ PolygonShapeConf& PolygonShapeConf::Translate(const Length2& value) noexcept
     return Set(newPoints);
 }
 
-PolygonShapeConf& PolygonShapeConf::Scale(const Vec2& value) noexcept
+PolygonShapeConf& PolygonShapeConf::Scale(const Vec2& value)
 {
     auto newPoints = VertexSet{};
     for (const auto& v : m_vertices) {
@@ -121,7 +121,7 @@ PolygonShapeConf& PolygonShapeConf::Scale(const Vec2& value) noexcept
     return Set(newPoints);
 }
 
-PolygonShapeConf& PolygonShapeConf::Rotate(const UnitVec& value) noexcept
+PolygonShapeConf& PolygonShapeConf::Rotate(const UnitVec& value)
 {
     auto newPoints = VertexSet{};
     for (const auto& v : m_vertices) {
@@ -130,7 +130,7 @@ PolygonShapeConf& PolygonShapeConf::Rotate(const UnitVec& value) noexcept
     return Set(newPoints);
 }
 
-PolygonShapeConf& PolygonShapeConf::Set(Span<const Length2> points) noexcept
+PolygonShapeConf& PolygonShapeConf::Set(Span<const Length2> points)
 {
     // Perform welding and copy vertices into local buffer.
     auto point_set = VertexSet(Square(DefaultLinearSlop));
@@ -140,7 +140,7 @@ PolygonShapeConf& PolygonShapeConf::Set(Span<const Length2> points) noexcept
     return Set(point_set);
 }
 
-PolygonShapeConf& PolygonShapeConf::Set(const VertexSet& points) noexcept
+PolygonShapeConf& PolygonShapeConf::Set(const VertexSet& points)
 {
     m_vertices = GetConvexHullAsVector(points);
     assert(size(m_vertices) < std::numeric_limits<VertexCounter>::max());

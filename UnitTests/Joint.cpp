@@ -309,6 +309,15 @@ static_assert(!IsValidJointType<sans_all::JointTester>::value);
 
 } // namespace test
 
+TEST(JointConf, Traits)
+{
+    EXPECT_TRUE(std::is_default_constructible_v<JointConf>);
+    EXPECT_TRUE(std::is_nothrow_default_constructible_v<JointConf>);
+
+    EXPECT_TRUE(std::is_copy_constructible_v<JointConf>);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible_v<JointConf>);
+}
+
 TEST(JointBuilder, Construction)
 {
     EXPECT_EQ(JointBuilder<JointConf>{}.bodyA, InvalidBodyID);

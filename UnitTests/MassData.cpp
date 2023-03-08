@@ -52,10 +52,9 @@ TEST(MassData, Traits)
 {
     EXPECT_FALSE(IsIterable<MassData>::value);
 
-    EXPECT_TRUE(std::is_default_constructible<MassData>::value);
-    // EXPECT_FALSE(std::is_nothrow_default_constructible<MassData>::value); // clang-3.7 and 4.0
-    // EXPECT_TRUE(std::is_nothrow_default_constructible<MassData>::value); // gcc 6.3
-    EXPECT_FALSE(std::is_trivially_default_constructible<MassData>::value);
+    EXPECT_TRUE(std::is_default_constructible_v<MassData>);
+    EXPECT_TRUE(std::is_nothrow_default_constructible_v<MassData>); // may be compiler dependent
+    EXPECT_FALSE(std::is_trivially_default_constructible_v<MassData>);
     
     EXPECT_FALSE((std::is_constructible<MassData, Length2, Mass, RotInertia>::value));
     EXPECT_FALSE((std::is_constructible<MassData, Length2, Mass>::value));
@@ -69,10 +68,7 @@ TEST(MassData, Traits)
     EXPECT_FALSE((std::is_trivially_constructible<MassData, Length2, Mass, RotInertia>::value));
     
     EXPECT_TRUE(std::is_copy_constructible<MassData>::value);
-    // EXPECT_TRUE(std::is_nothrow_copy_constructible<MassData>::value); // with clang-4.0 gcc 6.3
-    // EXPECT_FALSE(std::is_nothrow_copy_constructible<MassData>::value); // with clang-3.7
-    // EXPECT_TRUE(std::is_trivially_copy_constructible<MassData>::value); // with clang-4.0
-    // EXPECT_FALSE(std::is_trivially_copy_constructible<MassData>::value); // with clang-3.7
+    EXPECT_TRUE(std::is_nothrow_copy_constructible<MassData>::value); // may be compiler dependent
     
     EXPECT_TRUE(std::is_copy_assignable<MassData>::value);
     // EXPECT_TRUE(std::is_nothrow_copy_assignable<MassData>::value); // with clang-4.0 gcc 6.3

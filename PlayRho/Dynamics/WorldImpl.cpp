@@ -663,16 +663,28 @@ WorldImpl::~WorldImpl() noexcept
 void WorldImpl::Clear() noexcept
 {
     if (m_jointDestructionListener) {
-        for_each(cbegin(m_joints), cend(m_joints), [this](const auto& id) {
-            m_jointDestructionListener(id);
-        });
+        try {
+            for_each(cbegin(m_joints), cend(m_joints), [this](const auto& id) {
+                m_jointDestructionListener(id);
+            });
+        }
+        catch (...)
+        {
+            // Don't all exception to escape.
+        }
     }
     if (m_shapeDestructionListener) {
-        for (auto&& shape: m_shapeBuffer) {
-            if (shape != Shape{}) {
-                m_shapeDestructionListener(static_cast<ShapeID>(
-                    static_cast<underlying_type_t<ShapeID>>(&shape - m_shapeBuffer.data())));
+        try {
+            for (auto&& shape: m_shapeBuffer) {
+                if (shape != Shape{}) {
+                    m_shapeDestructionListener(static_cast<ShapeID>(
+                                                                    static_cast<underlying_type_t<ShapeID>>(&shape - m_shapeBuffer.data())));
+                }
             }
+        }
+        catch (...)
+        {
+            // Don't all exception to escape.
         }
     }
     m_contacts.clear();
@@ -739,7 +751,7 @@ BodyID WorldImpl::CreateBody(Body body)
     return id;
 }
 
-void WorldImpl::Remove(BodyID id) noexcept
+void WorldImpl::Remove(BodyID id)
 {
     m_bodiesForSync.erase(remove(begin(m_bodiesForSync), end(m_bodiesForSync), id),
                              end(m_bodiesForSync));
@@ -869,7 +881,7 @@ void WorldImpl::Add(JointID id, bool flagForFiltering)
     }
 }
 
-void WorldImpl::Remove(JointID id) noexcept
+void WorldImpl::Remove(JointID id)
 {
     // Disconnect from island graph.
     const auto& joint = m_jointBuffer[to_underlying(id)];
@@ -2346,12 +2358,12 @@ const WorldImpl::Proxies& WorldImpl::GetProxies(BodyID id) const
     return m_bodyProxies.at(to_underlying(id));
 }
 
-WorldImpl::Contacts WorldImpl::GetContacts(BodyID id) const
+const WorldImpl::Contacts& WorldImpl::GetContacts(BodyID id) const
 {
     return m_bodyContacts.at(to_underlying(id));
 }
 
-WorldImpl::BodyJoints WorldImpl::GetJoints(BodyID id) const
+const WorldImpl::BodyJoints& WorldImpl::GetJoints(BodyID id) const
 {
     return m_bodyJoints.at(to_underlying(id));
 }

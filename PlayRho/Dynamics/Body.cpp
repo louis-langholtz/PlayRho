@@ -86,7 +86,7 @@ Body::FlagsType Body::GetFlags(const BodyConf& bd) noexcept
     return flags;
 }
 
-Body::Body(const BodyConf& bd) noexcept
+Body::Body(const BodyConf& bd)
     : m_xf{::playrho::d2::GetTransformation(bd)},
       m_sweep{Position{bd.location, bd.angle}},
       m_flags{GetFlags(bd)},

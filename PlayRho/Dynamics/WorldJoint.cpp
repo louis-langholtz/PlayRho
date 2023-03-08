@@ -36,7 +36,7 @@ JointCounter GetJointRange(const World& world) noexcept
     return world.GetJointRange();
 }
 
-std::vector<JointID> GetJoints(const World& world) noexcept
+const std::vector<JointID>& GetJoints(const World& world) noexcept
 {
     return world.GetJoints();
 }

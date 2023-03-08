@@ -58,6 +58,7 @@ TEST(DiskShapeConf, DefaultConstruction)
 
     EXPECT_EQ(GetTypeID(foo), GetTypeID<DiskShapeConf>());
     EXPECT_EQ(GetChildCount(foo), ChildCounter{1});
+    EXPECT_EQ(DiskShapeConf::GetDefaultRadius(), DiskShapeConf::DefaultRadius);
     EXPECT_EQ(foo.GetRadius(), DiskShapeConf::GetDefaultRadius());
     EXPECT_EQ(GetX(foo.GetLocation()), 0_m);
     EXPECT_EQ(GetY(foo.GetLocation()), 0_m);

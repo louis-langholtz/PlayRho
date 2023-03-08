@@ -66,7 +66,7 @@ struct RevoluteJointConf : public JointBuilder<RevoluteJointConf> {
     using super = JointBuilder<RevoluteJointConf>;
 
     /// @brief Default constructor.
-    constexpr RevoluteJointConf() = default;
+    constexpr RevoluteJointConf() noexcept = default;
 
     /// @brief Initialize the bodies, anchors, and reference angle using a world anchor point.
     RevoluteJointConf(BodyID bA, BodyID bB, Length2 laA = Length2{}, Length2 laB = Length2{},
