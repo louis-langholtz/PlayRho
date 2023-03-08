@@ -56,7 +56,7 @@ AABB ComputeAABB(const DistanceProxy& proxy, const Transformation& xfm0,
     return GetFattenedAABB(result, proxy.GetVertexRadius());
 }
 
-AABB ComputeAABB(const Shape& shape, const Transformation& xf) noexcept
+AABB ComputeAABB(const Shape& shape, const Transformation& xf)
 {
     auto sum = AABB{};
     const auto childCount = GetChildCount(shape);
@@ -82,7 +82,7 @@ AABB ComputeAABB(const World& world, BodyID id)
 }
 
 AABB ComputeIntersectingAABB(const World& world, BodyID bA, ShapeID sA, ChildCounter iA, BodyID bB,
-                             ShapeID sB, ChildCounter iB) noexcept
+                             ShapeID sB, ChildCounter iB)
 {
     const auto xA = GetTransformation(world, bA);
     const auto xB = GetTransformation(world, bB);

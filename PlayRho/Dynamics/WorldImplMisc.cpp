@@ -97,22 +97,22 @@ void ShiftOrigin(WorldImpl& world, Length2 newOrigin)
     world.ShiftOrigin(newOrigin);
 }
 
-std::vector<BodyID> GetBodies(const WorldImpl& world) noexcept
+const std::vector<BodyID>& GetBodies(const WorldImpl& world) noexcept
 {
     return world.GetBodies();
 }
 
-std::vector<BodyID> GetBodiesForProxies(const WorldImpl& world) noexcept
+const std::vector<BodyID>& GetBodiesForProxies(const WorldImpl& world) noexcept
 {
     return world.GetBodiesForProxies();
 }
 
-std::vector<JointID> GetJoints(const WorldImpl& world) noexcept
+const std::vector<JointID>& GetJoints(const WorldImpl& world) noexcept
 {
     return world.GetJoints();
 }
 
-std::vector<KeyedContactPtr> GetContacts(const WorldImpl& world) noexcept
+const std::vector<KeyedContactPtr>& GetContacts(const WorldImpl& world) noexcept
 {
     return world.GetContacts();
 }
@@ -157,7 +157,7 @@ const DynamicTree& GetTree(const WorldImpl& world) noexcept
     return world.GetTree();
 }
 
-std::vector<std::pair<BodyID, ShapeID>> GetFixturesForProxies(const WorldImpl& world) noexcept
+const std::vector<std::pair<BodyID, ShapeID>>& GetFixturesForProxies(const WorldImpl& world) noexcept
 {
     return world.GetFixturesForProxies();
 }

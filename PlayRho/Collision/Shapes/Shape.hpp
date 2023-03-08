@@ -259,7 +259,7 @@ DistanceProxy GetChild(const Shape& shape, ChildCounter index);
 
 /// @brief Gets the mass properties of this shape using its dimensions and density.
 /// @return Mass data for this shape.
-MassData GetMassData(const Shape& shape) noexcept;
+MassData GetMassData(const Shape& shape);
 
 /// @brief Gets the coefficient of friction.
 /// @return Value of 0 or higher.
@@ -400,6 +400,9 @@ bool operator!=(const Shape& lhs, const Shape& rhs) noexcept;
 class Shape
 {
 public:
+    /// @brief Default density of a default-constructed, or otherwise value-less, shape.
+    static constexpr auto DefaultDensity = NonNegative<AreaDensity>{0_kgpm2};
+
     /// @brief Default constructor.
     /// @post <code>has_value()</code> returns false.
     Shape() noexcept = default;
@@ -496,7 +499,7 @@ public:
         return shape.m_self->GetChild_(index);
     }
 
-    friend MassData GetMassData(const Shape& shape) noexcept
+    friend MassData GetMassData(const Shape& shape)
     {
         return shape.m_self ? shape.m_self->GetMassData_() : MassData{};
     }
@@ -548,7 +551,7 @@ public:
 
     friend NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept
     {
-        return shape.m_self ? shape.m_self->GetDensity_() : NonNegative<AreaDensity>{0_kgpm2};
+        return shape.m_self ? shape.m_self->GetDensity_() : DefaultDensity;
     }
 
     friend void SetDensity(Shape& shape, NonNegative<AreaDensity> value)
@@ -658,7 +661,7 @@ private:
         virtual DistanceProxy GetChild_(ChildCounter index) const = 0;
 
         /// @brief Gets the mass data.
-        virtual MassData GetMassData_() const noexcept = 0;
+        virtual MassData GetMassData_() const = 0;
 
         /// @brief Gets the vertex radius.
         /// @param idx Child index to get vertex radius for.
@@ -765,7 +768,7 @@ private:
             return GetChild(data, index);
         }
 
-        MassData GetMassData_() const noexcept override
+        MassData GetMassData_() const override
         {
             return GetMassData(data);
         }

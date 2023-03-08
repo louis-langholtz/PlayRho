@@ -45,12 +45,12 @@ BodyCounter GetBodyRange(const World& world) noexcept
     return world.GetBodyRange();
 }
 
-std::vector<BodyID> GetBodies(const World& world) noexcept
+const std::vector<BodyID>& GetBodies(const World& world) noexcept
 {
     return world.GetBodies();
 }
 
-std::vector<BodyID> GetBodiesForProxies(const World& world) noexcept
+const std::vector<BodyID>& GetBodiesForProxies(const World& world) noexcept
 {
     return world.GetBodiesForProxies();
 }
@@ -119,7 +119,7 @@ bool Detach(World& world, BodyID id, bool resetMassData)
     return anyDetached;
 }
 
-std::vector<ShapeID> GetShapes(const World& world, BodyID id)
+const std::vector<ShapeID>& GetShapes(const World& world, BodyID id)
 {
     return world.GetShapes(id);
 }
@@ -412,7 +412,7 @@ void SetMassData(World& world, BodyID id, const MassData& massData)
     world.SetBody(id, body);
 }
 
-std::vector<std::pair<BodyID, JointID>> GetJoints(const World& world, BodyID id)
+const std::vector<std::pair<BodyID, JointID>>& GetJoints(const World& world, BodyID id)
 {
     return world.GetJoints(id);
 }
@@ -482,7 +482,7 @@ void SetAngularDamping(World& world, BodyID id, NonNegative<Frequency> value)
     world.SetBody(id, body);
 }
 
-std::vector<KeyedContactPtr> GetContacts(const World& world, BodyID id)
+const std::vector<KeyedContactPtr>& GetContacts(const World& world, BodyID id)
 {
     return world.GetContacts(id);
 }
@@ -558,19 +558,19 @@ void SetTorque(World& world, BodyID id, Torque torque)
     SetAcceleration(world, id, linAccel, angAccel);
 }
 
-BodyCounter GetAwakeCount(const World& world) noexcept
+BodyCounter GetAwakeCount(const World& world)
 {
-    const auto bodies = world.GetBodies();
+    const auto& bodies = world.GetBodies();
     return static_cast<BodyCounter>(count_if(cbegin(bodies), cend(bodies),
                                              [&](const auto &b) {
         return IsAwake(world, b); }));
 }
 
-BodyCounter Awaken(World& world) noexcept
+BodyCounter Awaken(World& world)
 {
     // Can't use count_if since body gets modified.
     auto awoken = BodyCounter{0};
-    const auto bodies = world.GetBodies();
+    const auto& bodies = world.GetBodies();
     for_each(begin(bodies), end(bodies), [&world,&awoken](const auto &b) {
         if (::playrho::d2::Awaken(world, b))
         {
@@ -580,25 +580,25 @@ BodyCounter Awaken(World& world) noexcept
     return awoken;
 }
 
-void SetAccelerations(World& world, Acceleration acceleration) noexcept
+void SetAccelerations(World& world, Acceleration acceleration)
 {
-    const auto bodies = world.GetBodies();
+    const auto& bodies = world.GetBodies();
     for_each(begin(bodies), end(bodies), [&world, acceleration](const auto &b) {
         SetAcceleration(world, b, acceleration);
     });
 }
 
-void SetAccelerations(World& world, LinearAcceleration2 acceleration) noexcept
+void SetAccelerations(World& world, LinearAcceleration2 acceleration)
 {
-    const auto bodies = world.GetBodies();
+    const auto& bodies = world.GetBodies();
     for_each(begin(bodies), end(bodies), [&world, acceleration](const auto &b) {
         SetAcceleration(world, b, acceleration);
     });
 }
 
-BodyID FindClosestBody(const World& world, Length2 location) noexcept
+BodyID FindClosestBody(const World& world, Length2 location)
 {
-    const auto bodies = world.GetBodies();
+    const auto& bodies = world.GetBodies();
     auto found = InvalidBodyID;
     auto minLengthSquared = std::numeric_limits<Area>::infinity();
     for (const auto& body: bodies)

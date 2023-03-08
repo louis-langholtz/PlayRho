@@ -44,6 +44,36 @@ TEST(BodyConf, ByteSize)
     }
 }
 
+TEST(BodyConf, Traits)
+{
+    EXPECT_TRUE(std::is_default_constructible_v<BodyConf>);
+    EXPECT_TRUE(std::is_nothrow_default_constructible_v<BodyConf>);
+
+    EXPECT_TRUE(std::is_copy_constructible_v<BodyConf>);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible_v<BodyConf>);
+}
+
+TEST(BodyConf, DefaultConstruction)
+{
+    EXPECT_EQ(BodyConf().type, BodyConf::DefaultBodyType);
+    EXPECT_EQ(BodyConf().location, BodyConf::DefaultLocation);
+    EXPECT_EQ(BodyConf().angle, BodyConf::DefaultAngle);
+    EXPECT_EQ(BodyConf().linearVelocity, BodyConf::DefaultLinearVelocity);
+    EXPECT_EQ(BodyConf().angularVelocity, BodyConf::DefaultAngularVelocity);
+    EXPECT_EQ(BodyConf().linearAcceleration, BodyConf::DefaultLinearAcceleration);
+    EXPECT_EQ(BodyConf().angularAcceleration, BodyConf::DefaultAngularAcceleration);
+    EXPECT_EQ(BodyConf().linearDamping, BodyConf::DefaultLinearDamping);
+    EXPECT_EQ(BodyConf().angularDamping, BodyConf::DefaultAngularDamping);
+    EXPECT_EQ(BodyConf().underActiveTime, BodyConf::DefaultUnderActiveTime);
+    EXPECT_EQ(BodyConf().type, BodyType::Static);
+    EXPECT_EQ(BodyConf().shape, InvalidShapeID);
+    EXPECT_EQ(BodyConf().allowSleep, BodyConf::DefaultAllowSleep);
+    EXPECT_EQ(BodyConf().awake, BodyConf::DefaultAwake);
+    EXPECT_EQ(BodyConf().fixedRotation, BodyConf::DefaultFixedRotation);
+    EXPECT_EQ(BodyConf().bullet, BodyConf::DefaultBullet);
+    EXPECT_EQ(BodyConf().enabled, BodyConf::DefaultEnabled);
+}
+
 TEST(BodyConf, UseType)
 {
     EXPECT_EQ(BodyConf{}.UseType(BodyType::Static).type, BodyType::Static);

@@ -50,6 +50,51 @@ class Body;
 /// @see World, Body.
 ///
 struct BodyConf {
+    /// @brief Default body type.
+    static constexpr auto DefaultBodyType = BodyType::Static;
+
+    /// @brief Default location.
+    static constexpr auto DefaultLocation = Length2{};
+
+    /// @brief Default angle.
+    static constexpr auto DefaultAngle = 0_deg;
+
+    /// @brief Default linear velocity.
+    static constexpr auto DefaultLinearVelocity = LinearVelocity2{};
+
+    /// @brief Default angular velocity.
+    static constexpr auto DefaultAngularVelocity = 0_rpm;
+
+    /// @brief Default linear acceleration.
+    static constexpr auto DefaultLinearAcceleration = LinearAcceleration2{};
+
+    /// @brief Default angular acceleration.
+    static constexpr auto DefaultAngularAcceleration = AngularAcceleration{0 * RadianPerSquareSecond};
+
+    /// @brief Default linear damping.
+    static constexpr auto DefaultLinearDamping = NonNegative<Frequency>{0_Hz};
+
+    /// @brief Default angular damping.
+    static constexpr auto DefaultAngularDamping = NonNegative<Frequency>{0_Hz};
+
+    /// @brief Default under active time.
+    static constexpr auto DefaultUnderActiveTime = 0_s;
+
+    /// @brief Default allow sleep.
+    static constexpr auto DefaultAllowSleep = true;
+
+    /// @brief Default awake value.
+    static constexpr auto DefaultAwake = true;
+
+    /// @brief Default fixed rotation value.
+    static constexpr auto DefaultFixedRotation = false;
+
+    /// @brief Default bullet value.
+    static constexpr auto DefaultBullet = false;
+
+    /// @brief Default enabled value.
+    static constexpr auto DefaultEnabled = true;
+
     // Builder-styled methods...
 
     /// @brief Use the given type.
@@ -113,43 +158,43 @@ struct BodyConf {
 
     /// @brief Type of the body: static, kinematic, or dynamic.
     /// @note If a dynamic body would have zero mass, the mass is set to one.
-    BodyType type = BodyType::Static;
+    BodyType type = DefaultBodyType;
 
     /// The world location of the body. Avoid creating bodies at the origin
     /// since this can lead to many overlapping shapes.
-    Length2 location = Length2{};
+    Length2 location = DefaultLocation;
 
     /// The world angle of the body.
-    Angle angle = 0_deg;
+    Angle angle = DefaultAngle;
 
     /// The linear velocity of the body's origin in world co-ordinates (in m/s).
-    LinearVelocity2 linearVelocity = LinearVelocity2{};
+    LinearVelocity2 linearVelocity = DefaultLinearVelocity;
 
     /// The angular velocity of the body.
-    AngularVelocity angularVelocity = 0_rpm;
+    AngularVelocity angularVelocity = DefaultAngularVelocity;
 
     /// Initial linear acceleration of the body.
     /// @note Usually this should be 0.
-    LinearAcceleration2 linearAcceleration = LinearAcceleration2{};
+    LinearAcceleration2 linearAcceleration = DefaultLinearAcceleration;
 
     /// Initial angular acceleration of the body.
     /// @note Usually this should be 0.
-    AngularAcceleration angularAcceleration = AngularAcceleration{0 * RadianPerSquareSecond};
+    AngularAcceleration angularAcceleration = DefaultAngularAcceleration;
 
     /// Linear damping is use to reduce the linear velocity. The damping parameter
     /// can be larger than 1 but the damping effect becomes sensitive to the
     /// time step when the damping parameter is large.
-    NonNegative<Frequency> linearDamping = NonNegative<Frequency>{0_Hz};
+    NonNegative<Frequency> linearDamping = DefaultLinearDamping;
 
     /// Angular damping is use to reduce the angular velocity. The damping parameter
     /// can be larger than 1 but the damping effect becomes sensitive to the
     /// time step when the damping parameter is large.
-    NonNegative<Frequency> angularDamping = NonNegative<Frequency>{0_Hz};
+    NonNegative<Frequency> angularDamping = DefaultAngularDamping;
 
     /// Under-active time.
     /// @details Set this to the value retrieved from <code>Body::GetUnderActiveTime</code>
     ///   or leave it as 0.
-    Time underActiveTime = 0_s;
+    Time underActiveTime = DefaultUnderActiveTime;
 
     /// Identifier of shape that will be associated with the body on its creation.
     /// @note This can often be faster than later using an <code>Attach</code> function.
@@ -157,22 +202,22 @@ struct BodyConf {
 
     /// Set this flag to false if this body should never fall asleep. Note that
     /// this increases CPU usage.
-    bool allowSleep = true;
+    bool allowSleep = DefaultAllowSleep;
 
     /// Is the body awake or sleeping?
-    bool awake = true;
+    bool awake = DefaultAwake;
 
     /// Should this body be prevented from rotating? Useful for characters.
-    bool fixedRotation = false;
+    bool fixedRotation = DefaultFixedRotation;
 
     /// Is this a fast moving body that should be prevented from tunneling through
     /// other moving bodies? Note that all bodies are prevented from tunneling through
     /// kinematic and static bodies. This setting is only considered on dynamic bodies.
     /// @note Use this flag sparingly since it increases processing time.
-    bool bullet = false;
+    bool bullet = DefaultBullet;
 
     /// Whether or not the body is enabled.
-    bool enabled = true;
+    bool enabled = DefaultEnabled;
 };
 
 constexpr BodyConf& BodyConf::UseType(BodyType t) noexcept

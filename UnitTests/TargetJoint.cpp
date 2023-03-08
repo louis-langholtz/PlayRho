@@ -31,9 +31,26 @@
 #include <PlayRho/Dynamics/WorldBody.hpp>
 
 #include <stdexcept>
+#include <type_traits>
 
 using namespace playrho;
 using namespace playrho::d2;
+
+TEST(TargetJointConf, Traits)
+{
+    EXPECT_TRUE(std::is_default_constructible_v<TargetJointConf>);
+    EXPECT_TRUE(std::is_nothrow_default_constructible_v<TargetJointConf>);
+    EXPECT_TRUE(std::is_copy_constructible_v<TargetJointConf>);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible_v<TargetJointConf>);
+    EXPECT_TRUE(std::is_copy_assignable_v<TargetJointConf>);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable_v<TargetJointConf>);
+}
+
+TEST(TargetJointConf, DefaultConstruction)
+{
+    EXPECT_EQ(TargetJointConf().frequency, TargetJointConf::DefaultFrequency);
+    EXPECT_EQ(TargetJointConf().dampingRatio, TargetJointConf::DefaultDampingRatio);
+}
 
 TEST(TargetJointConf, UseTarget)
 {

@@ -36,6 +36,7 @@
 
 #include <PlayRho/Common/Templates.hpp>
 #include <PlayRho/Common/RealConstants.hpp>
+#include <PlayRho/Common/Positive.hpp>
 #include <PlayRho/Common/Units.hpp>
 #include <PlayRho/Common/Wider.hpp>
 
@@ -134,10 +135,10 @@ constexpr auto InvalidVertex = static_cast<VertexCounter>(-1);
 constexpr auto DefaultLinearSlop = detail::Defaults<Real>::GetLinearSlop();
 
 /// @brief Default minimum vertex radius.
-constexpr auto DefaultMinVertexRadius = DefaultLinearSlop * Real{2};
+constexpr auto DefaultMinVertexRadius = Positive<Length>{DefaultLinearSlop * Real{2}};
 
 /// @brief Default maximum vertex radius.
-constexpr auto DefaultMaxVertexRadius = detail::Defaults<Real>::GetMaxVertexRadius();
+constexpr auto DefaultMaxVertexRadius = Positive<Length>{detail::Defaults<Real>::GetMaxVertexRadius()};
 
 /// @brief Default AABB extension amount.
 constexpr auto DefaultAabbExtension = DefaultLinearSlop * Real{20};

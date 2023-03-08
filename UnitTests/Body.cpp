@@ -69,6 +69,8 @@ TEST(Body, DefaultConstruction)
     EXPECT_TRUE(Body().IsEnabled());
     EXPECT_FALSE(Body().IsAwake());
     EXPECT_FALSE(Body().IsSpeedable());
+    EXPECT_EQ(Body().GetLinearDamping(), Body::DefaultLinearDamping);
+    EXPECT_EQ(Body().GetAngularDamping(), Body::DefaultAngularDamping);
 }
 
 TEST(Body, GetFlagsForBodyType)

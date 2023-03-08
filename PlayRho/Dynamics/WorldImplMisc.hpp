@@ -109,29 +109,29 @@ void ShiftOrigin(WorldImpl& world, Length2 newOrigin);
 
 /// @brief Gets the bodies of the specified world.
 /// @relatedalso WorldImpl
-std::vector<BodyID> GetBodies(const WorldImpl& world) noexcept;
+const std::vector<BodyID>& GetBodies(const WorldImpl& world) noexcept;
 
 /// @brief Gets the bodies-for-proxies range for this world.
 /// @details Provides insight on what bodies have been queued for proxy processing
 ///   during the next call to the world step method.
 /// @see WorldImpl::Step.
 /// @relatedalso WorldImpl
-std::vector<BodyID> GetBodiesForProxies(const WorldImpl& world) noexcept;
+const std::vector<BodyID>& GetBodiesForProxies(const WorldImpl& world) noexcept;
 
 /// @brief Gets the fixtures-for-proxies range for this world.
 /// @details Provides insight on what fixtures have been queued for proxy processing
 ///   during the next call to the world step method.
 /// @see Step.
 /// @relatedalso WorldImpl
-std::vector<std::pair<BodyID, ShapeID>> GetFixturesForProxies(const WorldImpl& world) noexcept;
+const std::vector<std::pair<BodyID, ShapeID>>& GetFixturesForProxies(const WorldImpl& world) noexcept;
 
 /// @brief Gets the joints of the specified world.
 /// @relatedalso WorldImpl
-std::vector<JointID> GetJoints(const WorldImpl& world) noexcept;
+const std::vector<JointID>& GetJoints(const WorldImpl& world) noexcept;
 
 /// @brief Gets the contacts of the specified world.
 /// @relatedalso WorldImpl
-std::vector<KeyedContactPtr> GetContacts(const WorldImpl& world) noexcept;
+const std::vector<KeyedContactPtr>& GetContacts(const WorldImpl& world) noexcept;
 
 /// @brief Is the world locked (in the middle of a time step).
 /// @relatedalso WorldImpl

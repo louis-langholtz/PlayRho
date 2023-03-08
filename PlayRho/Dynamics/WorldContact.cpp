@@ -38,7 +38,7 @@ ContactCounter GetContactRange(const World& world) noexcept
     return world.GetContactRange();
 }
 
-std::vector<KeyedContactPtr> GetContacts(const World& world) noexcept
+const std::vector<KeyedContactPtr>& GetContacts(const World& world) noexcept
 {
     return world.GetContacts();
 }
@@ -202,9 +202,9 @@ WorldManifold GetWorldManifold(const World& world, ContactID id)
     return GetWorldManifold(world, GetContact(world, id), GetManifold(world, id));
 }
 
-ContactCounter GetTouchingCount(const World& world) noexcept
+ContactCounter GetTouchingCount(const World& world)
 {
-    const auto contacts = world.GetContacts();
+    const auto& contacts = world.GetContacts();
     return static_cast<ContactCounter>(count_if(cbegin(contacts), cend(contacts),
                                                 [&](const auto &c) {
         return IsTouching(world, std::get<ContactID>(c));

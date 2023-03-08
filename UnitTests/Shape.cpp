@@ -100,12 +100,13 @@ TEST(Shape, Traits)
 
 TEST(Shape, DefaultConstruction)
 {
+    EXPECT_EQ(Shape::DefaultDensity, (NonNegative<AreaDensity>{0_kgpm2}));
     const auto s = Shape{};
     EXPECT_FALSE(s.has_value());
     EXPECT_EQ(GetMassData(s), MassData());
     EXPECT_EQ(GetFriction(s), Real(0));
     EXPECT_EQ(GetRestitution(s), Real(0));
-    EXPECT_EQ(GetDensity(s), 0_kgpm2);
+    EXPECT_EQ(GetDensity(s), Shape::DefaultDensity);
     EXPECT_THROW(GetVertexRadius(s, 0), InvalidArgument);
     EXPECT_EQ(GetChildCount(s), ChildCounter(0));
     EXPECT_THROW(GetChild(s, 0), InvalidArgument);

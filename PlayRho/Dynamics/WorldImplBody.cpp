@@ -58,7 +58,7 @@ void Destroy(WorldImpl& world, BodyID id)
     world.Destroy(id);
 }
 
-std::vector<std::pair<BodyID, JointID>> GetJoints(const WorldImpl& world, BodyID id)
+const std::vector<std::pair<BodyID, JointID>>& GetJoints(const WorldImpl& world, BodyID id)
 {
     return world.GetJoints(id);
 }
@@ -80,12 +80,12 @@ bool Detach(WorldImpl& world, BodyID id, ShapeID shapeID)
     return false;
 }
 
-std::vector<ShapeID> GetShapes(const WorldImpl& world, BodyID id)
+const std::vector<ShapeID>& GetShapes(const WorldImpl& world, BodyID id)
 {
     return world.GetBody(id).GetShapes();
 }
 
-std::vector<KeyedContactPtr> GetContacts(const WorldImpl& world, BodyID id)
+const std::vector<KeyedContactPtr>& GetContacts(const WorldImpl& world, BodyID id)
 {
     return world.GetContacts(id);
 }

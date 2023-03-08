@@ -54,10 +54,7 @@ struct DistanceJointConf : public JointBuilder<DistanceJointConf> {
     using super = JointBuilder<DistanceJointConf>;
 
     /// @brief Default constructor.
-    constexpr DistanceJointConf() = default;
-
-    /// @brief Copy constructor.
-    DistanceJointConf(const DistanceJointConf& copy) = default;
+    constexpr DistanceJointConf() noexcept = default;
 
     /// @brief Initializing constructor.
     /// @details Initialize the bodies, anchors, and length using the world anchors.

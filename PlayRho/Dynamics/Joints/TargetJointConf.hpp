@@ -49,11 +49,17 @@ struct TargetJointConf : public JointBuilder<TargetJointConf> {
     /// @brief Super type.
     using super = JointBuilder<TargetJointConf>;
 
+    /// @brief Default frequency.
+    static constexpr auto DefaultFrequency = NonNegative<Frequency>(5_Hz);
+
+    /// @brief Default damping ratio.
+    static constexpr auto DefaultDampingRatio = NonNegative<Real>(0.7f);
+
     /// @brief Default constructor.
-    constexpr TargetJointConf() = default;
+    constexpr TargetJointConf() noexcept = default;
 
     /// @brief Initializing constructor.
-    constexpr TargetJointConf(BodyID b) noexcept : super{super{}.UseBodyB(b)}
+    constexpr TargetJointConf(BodyID b) noexcept: super{super{}.UseBodyB(b)}
     {
         // Intentionally empty.
     }
@@ -115,10 +121,10 @@ struct TargetJointConf : public JointBuilder<TargetJointConf> {
     /// Frequency.
     /// @details The has to do with the response speed.
     /// @note This value may not be negative.
-    NonNegative<Frequency> frequency = NonNegative<Frequency>(5_Hz);
+    NonNegative<Frequency> frequency = DefaultFrequency;
 
     /// The damping ratio. 0 = no damping, 1 = critical damping.
-    NonNegative<Real> dampingRatio = NonNegative<Real>(0.7f);
+    NonNegative<Real> dampingRatio = DefaultDampingRatio;
 
     InvMass gamma = InvMass{0}; ///< Gamma.
 

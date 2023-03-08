@@ -318,7 +318,8 @@ constexpr auto GetMagnitudeSquared(const T& value) noexcept
 /// @brief Gets the magnitude of the given value.
 /// @note Works for any type for which <code>GetMagnitudeSquared</code> also works.
 template <typename T>
-inline auto GetMagnitude(const T& value) -> decltype(sqrt(GetMagnitudeSquared(value)))
+inline auto GetMagnitude(const T& value) noexcept(noexcept(sqrt(GetMagnitudeSquared(value))))
+    -> decltype(sqrt(GetMagnitudeSquared(value)))
 {
     return sqrt(GetMagnitudeSquared(value));
 }

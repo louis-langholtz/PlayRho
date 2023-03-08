@@ -72,11 +72,11 @@ BodyCounter GetBodyRange(const World& world) noexcept;
 
 /// @brief Gets the bodies of the specified world.
 /// @relatedalso World
-std::vector<BodyID> GetBodies(const World& world) noexcept;
+const std::vector<BodyID>& GetBodies(const World& world) noexcept;
 
 /// @brief Gets the bodies-for-proxies range for the given world.
 /// @relatedalso World
-std::vector<BodyID> GetBodiesForProxies(const World& world) noexcept;
+const std::vector<BodyID>& GetBodiesForProxies(const World& world) noexcept;
 
 /// @brief Creates a rigid body within the world that's a copy of the given one.
 /// @warning This function should not be used while the world is locked &mdash; as it is
@@ -172,7 +172,7 @@ bool Detach(World& world, BodyID id, bool resetMassData = true);
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see Attach, Detach.
 /// @relatedalso World
-std::vector<ShapeID> GetShapes(const World& world, BodyID id);
+const std::vector<ShapeID>& GetShapes(const World& world, BodyID id);
 
 /// @brief Gets the count of shapes associated with the identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
@@ -680,7 +680,7 @@ inline void ResetMassData(World& world, BodyID id)
 /// @brief Gets the range of all joints attached to the identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-std::vector<std::pair<BodyID, JointID>> GetJoints(const World& world, BodyID id);
+const std::vector<std::pair<BodyID, JointID>>& GetJoints(const World& world, BodyID id);
 
 /// @brief Is identified body "speedable".
 /// @details Is the body able to have a non-zero speed associated with it.
@@ -744,7 +744,7 @@ void SetSleepingAllowed(World& world, BodyID, bool value);
 ///   miss some collisions if you don't use <code>ContactListener</code>.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-std::vector<KeyedContactPtr> GetContacts(const World& world, BodyID id);
+const std::vector<KeyedContactPtr>& GetContacts(const World& world, BodyID id);
 
 /// @brief Gets the centripetal force necessary to put the body into an orbit having
 ///    the given radius.
@@ -851,17 +851,17 @@ void SetAngularDamping(World& world, BodyID id, NonNegative<Frequency> angularDa
 
 /// @brief Gets the count of awake bodies in the given world.
 /// @relatedalso World
-BodyCounter GetAwakeCount(const World& world) noexcept;
+BodyCounter GetAwakeCount(const World& world);
 
 /// @brief Awakens all of the bodies in the given world.
 /// @details Calls all of the world's bodies' <code>SetAwake</code> method.
 /// @return Sum total of calls to bodies' <code>SetAwake</code> method that returned true.
 /// @relatedalso World
-BodyCounter Awaken(World& world) noexcept;
+BodyCounter Awaken(World& world);
 
 /// @brief Finds body in given world that's closest to the given location.
 /// @relatedalso World
-BodyID FindClosestBody(const World& world, Length2 location) noexcept;
+BodyID FindClosestBody(const World& world, Length2 location);
 
 /// @brief Gets the body count in the given world.
 /// @return 0 or higher.
@@ -875,19 +875,19 @@ inline BodyCounter GetBodyCount(const World& world) noexcept
 /// @brief Sets the accelerations of all the world's bodies to the given value.
 /// @throws WrongState if this function is called while the world is locked.
 /// @relatedalso World
-void SetAccelerations(World& world, Acceleration acceleration) noexcept;
+void SetAccelerations(World& world, Acceleration acceleration);
 
 /// @brief Sets the accelerations of all the world's bodies to the given value.
 /// @note This will leave the angular acceleration alone.
 /// @throws WrongState if this function is called while the world is locked.
 /// @relatedalso World
-void SetAccelerations(World& world, LinearAcceleration2 acceleration) noexcept;
+void SetAccelerations(World& world, LinearAcceleration2 acceleration);
 
 /// @brief Clears forces.
 /// @details Manually clear the force buffer on all bodies.
 /// @throws WrongState if this function is called while the world is locked.
 /// @relatedalso World
-inline void ClearForces(World& world) noexcept
+inline void ClearForces(World& world)
 {
     SetAccelerations(world, Acceleration{});
 }

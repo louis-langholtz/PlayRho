@@ -106,7 +106,7 @@ TypeID GetType(const World& world, ShapeID id);
 
 /// @brief Gets the count of body-shape associations in the given world.
 /// @relatedalso World
-ShapeCounter GetAssociationCount(const World& world) noexcept;
+ShapeCounter GetAssociationCount(const World& world);
 
 /// @brief Gets the count of uniquely identified shapes that are in use -
 ///   i.e. that are attached to bodies.

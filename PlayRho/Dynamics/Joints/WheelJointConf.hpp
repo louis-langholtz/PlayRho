@@ -56,8 +56,11 @@ struct WheelJointConf : public JointBuilder<WheelJointConf> {
     /// @brief Super type.
     using super = JointBuilder<WheelJointConf>;
 
+    /// @brief Default frequency.
+    static constexpr auto DefaultFrequency = NonNegative<Frequency>{2_Hz};
+
     /// @brief Default constructor.
-    constexpr WheelJointConf() = default;
+    constexpr WheelJointConf() noexcept = default;
 
     /// Initialize the bodies, anchors, axis, and reference angle using the world
     /// anchor and world axis.
@@ -121,7 +124,7 @@ struct WheelJointConf : public JointBuilder<WheelJointConf> {
     AngularVelocity motorSpeed = 0_rpm;
 
     /// Suspension frequency, zero indicates no suspension
-    NonNegative<Frequency> frequency = 2_Hz;
+    NonNegative<Frequency> frequency = DefaultFrequency;
 
     /// Suspension damping ratio, one indicates critical damping
     Real dampingRatio = 0.7f;

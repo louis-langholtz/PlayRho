@@ -60,8 +60,16 @@ TEST(PolygonShapeConf, IsValidShapeType)
     EXPECT_TRUE(IsValidShapeType<PolygonShapeConf>::value);
 }
 
+TEST(PolygonShapeConf, Traits)
+{
+    EXPECT_TRUE(std::is_default_constructible_v<PolygonShapeConf>);
+    EXPECT_TRUE(std::is_nothrow_default_constructible_v<PolygonShapeConf>);
+    EXPECT_TRUE(std::is_copy_constructible_v<PolygonShapeConf>);
+}
+
 TEST(PolygonShapeConf, DefaultConstruction)
 {
+    EXPECT_EQ(PolygonShapeConf::GetDefaultVertexRadius(), PolygonShapeConf::DefaultVertexRadius);
     const auto shape = PolygonShapeConf{};
     EXPECT_EQ(shape.GetVertexCount(), 0);
     EXPECT_EQ(GetChildCount(shape), ChildCounter(1));

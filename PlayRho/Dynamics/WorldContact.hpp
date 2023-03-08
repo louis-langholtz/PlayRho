@@ -68,7 +68,7 @@ ContactCounter GetContactRange(const World& world) noexcept;
 
 /// @brief Gets the contacts recognized within the given world.
 /// @relatedalso World
-std::vector<KeyedContactPtr> GetContacts(const World& world) noexcept;
+const std::vector<KeyedContactPtr>& GetContacts(const World& world) noexcept;
 
 /// @brief Gets the identified contact.
 /// @throws std::out_of_range If given an invalid contact identifier.
@@ -264,7 +264,7 @@ void UnsetEnabled(World& world, ContactID id);
 
 /// @brief Gets the touching count for the given world.
 /// @relatedalso World
-ContactCounter GetTouchingCount(const World& world) noexcept;
+ContactCounter GetTouchingCount(const World& world);
 
 /// @brief Convenience function for setting/unsetting the enabled status of the identified
 ///   contact based on the value parameter.

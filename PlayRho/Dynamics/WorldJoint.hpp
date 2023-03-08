@@ -61,7 +61,7 @@ JointCounter GetJointRange(const World& world) noexcept;
 
 /// @brief Gets the joints of the specified world.
 /// @relatedalso World
-std::vector<JointID> GetJoints(const World& world) noexcept;
+const std::vector<JointID>& GetJoints(const World& world) noexcept;
 
 /// @brief Creates a new joint within the given world.
 /// @throws WrongState if this method is called while the world is locked.

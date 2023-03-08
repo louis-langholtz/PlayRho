@@ -25,6 +25,7 @@
 #include <PlayRho/Common/VertexSet.hpp>
 
 #include <array>
+#include <type_traits>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -63,12 +64,19 @@ TEST(MultiShapeConf, IsValidShapeType)
     EXPECT_TRUE(IsValidShapeType<MultiShapeConf>::value);
 }
 
+TEST(MultiShapeConf, Traits)
+{
+    EXPECT_TRUE(std::is_default_constructible_v<MultiShapeConf>);
+    EXPECT_TRUE(std::is_nothrow_default_constructible_v<MultiShapeConf>);
+    EXPECT_TRUE(std::is_copy_constructible_v<MultiShapeConf>);
+}
+
 TEST(MultiShapeConf, DefaultConstruction)
 {
     const auto foo = MultiShapeConf{};
     const auto defaultMassData = MassData{};
     const auto defaultConf = MultiShapeConf{};
-    
+    EXPECT_EQ(MultiShapeConf::DefaultVertexRadius, MultiShapeConf::GetDefaultVertexRadius());
     EXPECT_EQ(GetTypeID(foo), GetTypeID<MultiShapeConf>());
     EXPECT_EQ(GetChildCount(foo), ChildCounter{0});
     EXPECT_EQ(GetMassData(foo), defaultMassData);
@@ -209,7 +217,7 @@ TEST(MultiShapeConf, SetVertexRadius)
     vs.add(v2);
     foo.AddConvexHull(vs);
     ASSERT_EQ(foo.children.size(), std::size_t(1));
-    ASSERT_EQ(foo.children.at(0).GetVertexRadius(), DefaultLinearSlop * Real(2));
+    ASSERT_EQ(foo.children.at(0).GetVertexRadius(), MultiShapeConf::DefaultVertexRadius);
     auto copy = foo;
     ASSERT_EQ(copy, foo);
     const auto amount = 2_m;

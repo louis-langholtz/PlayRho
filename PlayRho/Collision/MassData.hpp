@@ -38,16 +38,22 @@ namespace detail {
 template <std::size_t N>
 struct MassData
 {
+    /// @brief Default mass.
+    static constexpr auto DefaultMass = NonNegative<Mass>{0_kg};
+
+    /// @brief Default rotational inertia (I).
+    static constexpr auto DefaultI = NonNegative<RotInertia>{0 * 1_m2 * 1_kg / SquareRadian};
+
     /// @brief Position of the shape's centroid relative to the shape's origin.
     Vector<Length, N> center = Vector<Length, N>{};
-    
+
     /// @brief Mass of the shape in kilograms.
-    NonNegative<Mass> mass = NonNegative<Mass>{0_kg};
-    
+    NonNegative<Mass> mass = DefaultMass;
+
     /// @brief Rotational inertia, a.k.a. moment of inertia.
     /// @details This is the rotational inertia of the shape about the local origin.
     /// @see https://en.wikipedia.org/wiki/Moment_of_inertia
-    NonNegative<RotInertia> I = NonNegative<RotInertia>{0 * 1_m2 * 1_kg / SquareRadian};
+    NonNegative<RotInertia> I = DefaultI;
 };
 
 // Free functions...

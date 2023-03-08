@@ -43,10 +43,16 @@ namespace d2 {
 class EdgeShapeConf : public ShapeBuilder<EdgeShapeConf>
 {
 public:
+    /// @brief Default vertex radius.
+    static constexpr auto DefaultVertexRadius = NonNegative<Length>{DefaultLinearSlop * Real{2}};
+
     /// @brief Gets the default vertex radius.
+    /// @note This is just a backward compatibility interface for getting the default vertex radius.
+    ///    The new way is to use <code>DefaultVertexRadius</code> directly.
+    /// @return <code>DefaultVertexRadius</code>.
     static constexpr NonNegative<Length> GetDefaultVertexRadius() noexcept
     {
-        return NonNegative<Length>{DefaultLinearSlop * Real{2}};
+        return DefaultVertexRadius;
     }
 
     /// @brief Gets the default configuration.
@@ -55,7 +61,7 @@ public:
         return EdgeShapeConf{};
     }
 
-    EdgeShapeConf() = default;
+    EdgeShapeConf() noexcept = default;
 
     /// @brief Initializing constructor.
     EdgeShapeConf(Length2 vA, Length2 vB, const EdgeShapeConf& conf = GetDefaultConf()) noexcept;
@@ -175,7 +181,7 @@ inline void SetVertexRadius(EdgeShapeConf& arg, ChildCounter, NonNegative<Length
 }
 
 /// @brief Gets the mass data for the given shape configuration.
-inline MassData GetMassData(const EdgeShapeConf& arg) noexcept
+inline MassData GetMassData(const EdgeShapeConf& arg)
 {
     return playrho::d2::GetMassData(arg.vertexRadius, arg.density, arg.GetVertexA(),
                                     arg.GetVertexB());

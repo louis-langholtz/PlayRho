@@ -50,8 +50,14 @@ struct MotorJointConf : public JointBuilder<MotorJointConf> {
     /// @brief Super type.
     using super = JointBuilder<MotorJointConf>;
 
+    /// @brief Default max force.
+    static constexpr auto DefaultMaxForce = NonNegative<Force>(1_N);
+
+    /// @brief Default max torque.
+    static constexpr auto DefaultMaxTorque = NonNegative<Torque>(1_Nm);
+
     /// @brief Default constructor.
-    constexpr MotorJointConf() = default;
+    constexpr MotorJointConf() noexcept = default;
 
     /// @brief Initialize the bodies and offsets using the current transforms.
     MotorJointConf(BodyID bA, BodyID bB, Length2 lo = Length2{}, Angle ao = 0_deg) noexcept;
@@ -101,10 +107,10 @@ struct MotorJointConf : public JointBuilder<MotorJointConf> {
     AngularMomentum angularImpulse{}; ///< Angular impulse.
 
     /// @brief Maximum motor force.
-    NonNegative<Force> maxForce = NonNegative<Force>(1_N);
+    NonNegative<Force> maxForce = DefaultMaxForce;
 
     /// @brief Maximum motor torque.
-    NonNegative<Torque> maxTorque = NonNegative<Torque>(1_Nm);
+    NonNegative<Torque> maxTorque = DefaultMaxTorque;
 
     /// @brief Position correction factor in the range [0,1].
     Real correctionFactor = Real(0.3);

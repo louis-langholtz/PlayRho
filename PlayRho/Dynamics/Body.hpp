@@ -100,6 +100,12 @@ public:
         e_massDataDirtyFlag = FlagsType(0x0200u),
     };
 
+    /// @brief Default linear damping.
+    static constexpr auto DefaultLinearDamping = NonNegative<Frequency>{};
+
+    /// @brief Default angular damping.
+    static constexpr auto DefaultAngularDamping = NonNegative<Frequency>{};
+
     /// @brief Gets the flags for the given value.
     static FlagsType GetFlags(BodyType type) noexcept;
 
@@ -130,7 +136,7 @@ public:
     /// @see GetLinearDamping, GetAngularDamping, GetInvMass, GetTransformation, GetVelocity,
     ///   GetAcceleration.
     /// @see World::CreateBody.
-    explicit Body(const BodyConf& bd = GetDefaultBodyConf()) noexcept;
+    explicit Body(const BodyConf& bd = GetDefaultBodyConf());
 
     /// @brief Gets the body transform for the body's origin.
     /// @details This gets the translation/location and rotation/direction of the body relative to
@@ -207,7 +213,7 @@ public:
 
     /// @brief Gets the linear damping of the body.
     /// @see SetLinearDamping.
-    Frequency GetLinearDamping() const noexcept;
+    NonNegative<Frequency> GetLinearDamping() const noexcept;
 
     /// @brief Sets the linear damping of the body.
     /// @see GetLinearDamping.
@@ -215,7 +221,7 @@ public:
 
     /// @brief Gets the angular damping of the body.
     /// @see SetAngularDamping.
-    Frequency GetAngularDamping() const noexcept;
+    NonNegative<Frequency> GetAngularDamping() const noexcept;
 
     /// @brief Sets the angular damping of the body.
     /// @see GetAngularDamping.
@@ -382,7 +388,7 @@ public:
 
     /// @brief Gets the identifiers of the shapes attached to this body.
     /// @see SetShapes, Attach, Detach.
-    std::vector<ShapeID> GetShapes() const noexcept;
+    const std::vector<ShapeID>& GetShapes() const noexcept;
 
     /// @brief Sets the identifiers of the shapes attached to this body.
     /// @note This also sets the mass-data-dirty flag.
@@ -400,6 +406,7 @@ public:
     bool Detach(ShapeID shapeId);
 
 private:
+
     //
     // Member variables. Try to keep total size small.
     //
@@ -444,8 +451,8 @@ private:
     /// @note 4-bytes.
     InvRotInertia m_invRotI = 0;
 
-    NonNegative<Frequency> m_linearDamping{}; ///< Linear damping. 4-bytes.
-    NonNegative<Frequency> m_angularDamping{}; ///< Angular damping. 4-bytes.
+    NonNegative<Frequency> m_linearDamping{DefaultLinearDamping}; ///< Linear damping. 4-bytes.
+    NonNegative<Frequency> m_angularDamping{DefaultAngularDamping}; ///< Angular damping. 4-bytes.
 
     /// Under-active time.
     /// @details A body under-active for enough time should have their awake flag unset.
@@ -490,7 +497,7 @@ inline void Body::SetInvMassData(NonNegative<InvMass> invMass,
     UnsetMassDataDirty();
 }
 
-inline Frequency Body::GetLinearDamping() const noexcept
+inline NonNegative<Frequency> Body::GetLinearDamping() const noexcept
 {
     return m_linearDamping;
 }
@@ -500,7 +507,7 @@ inline void Body::SetLinearDamping(NonNegative<Frequency> linearDamping) noexcep
     m_linearDamping = linearDamping;
 }
 
-inline Frequency Body::GetAngularDamping() const noexcept
+inline NonNegative<Frequency> Body::GetAngularDamping() const noexcept
 {
     return m_angularDamping;
 }
@@ -655,7 +662,7 @@ inline void Body::Advance0(Real value) noexcept
     assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
 }
 
-inline std::vector<ShapeID> Body::GetShapes() const noexcept
+inline const std::vector<ShapeID>& Body::GetShapes() const noexcept
 {
     return m_shapes;
 }
@@ -1030,7 +1037,7 @@ inline InvRotInertia GetInvRotInertia(const Body& body) noexcept
 /// @brief Gets the linear damping of the body.
 /// @see SetLinearDamping(Body& body, NonNegative<Frequency> value).
 /// @relatedalso Body
-inline Frequency GetLinearDamping(const Body& body) noexcept
+inline NonNegative<Frequency> GetLinearDamping(const Body& body) noexcept
 {
     return body.GetLinearDamping();
 }
@@ -1046,7 +1053,7 @@ inline void SetLinearDamping(Body& body, NonNegative<Frequency> value) noexcept
 /// @brief Gets the angular damping of the body.
 /// @see SetAngularDamping(Body& body, NonNegative<Frequency> value).
 /// @relatedalso Body
-inline Frequency GetAngularDamping(const Body& body) noexcept
+inline NonNegative<Frequency> GetAngularDamping(const Body& body) noexcept
 {
     return body.GetAngularDamping();
 }
@@ -1369,7 +1376,7 @@ void ApplyAngularImpulse(Body& body, AngularMomentum impulse) noexcept;
 
 /// @brief Gets the identifiers of the shapes attached to the body.
 /// @relatedalso Body
-inline std::vector<ShapeID> GetShapes(const Body& body) noexcept
+inline const std::vector<ShapeID>& GetShapes(const Body& body) noexcept
 {
     return body.GetShapes();
 }

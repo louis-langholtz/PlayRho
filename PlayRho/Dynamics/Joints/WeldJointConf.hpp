@@ -53,7 +53,7 @@ struct WeldJointConf : public JointBuilder<WeldJointConf> {
     using super = JointBuilder<WeldJointConf>;
 
     /// @brief Default constructor.
-    constexpr WeldJointConf() = default;
+    constexpr WeldJointConf() noexcept = default;
 
     /// @brief Initializing constructor.
     /// @details Initializes the bodies, anchors, and reference angle using a world
