@@ -407,8 +407,8 @@ namespace std {
 /// @brief Support for hash operation.
 template <class T>
 struct hash<::playrho::propagate_const<T>> {
-  typedef size_t result_type; ///< Result type.
-  typedef ::playrho::propagate_const<T> argument_type; ///< Argument type.
+  using result_type = size_t; ///< Result type.
+  using argument_type = ::playrho::propagate_const<T>; ///< Argument type.
 
   /// @brief Hash operation functor.
   bool operator()(
@@ -422,8 +422,8 @@ struct hash<::playrho::propagate_const<T>> {
 /// @brief Support for equal-to operations.
 template <class T>
 struct equal_to<::playrho::propagate_const<T>> {
-  typedef ::playrho::propagate_const<T> first_argument_type; ///< First argument type.
-  typedef ::playrho::propagate_const<T> second_argument_type; ///< Second argument type.
+  using first_argument_type = ::playrho::propagate_const<T>; ///< First argument type.
+  using second_argument_type = ::playrho::propagate_const<T>; ///< Second argument type.
 
   /// @brief Equal-to operation functor.
   bool operator()(
@@ -436,8 +436,8 @@ struct equal_to<::playrho::propagate_const<T>> {
 /// @brief Support for not-equal-to operations.
 template <class T>
 struct not_equal_to<::playrho::propagate_const<T>> {
-  typedef ::playrho::propagate_const<T> first_argument_type; ///< First argument type.
-  typedef ::playrho::propagate_const<T> second_argument_type; ///< Second argument type.
+  using first_argument_type = ::playrho::propagate_const<T>; ///< First argument type.
+  using second_argument_type = ::playrho::propagate_const<T>; ///< Second argument type.
 
   /// @brief Not-equal-to operation functor.
   bool operator()(
@@ -450,8 +450,8 @@ struct not_equal_to<::playrho::propagate_const<T>> {
 /// @brief Support for less than operations.
 template <class T>
 struct less<::playrho::propagate_const<T>> {
-  typedef ::playrho::propagate_const<T> first_argument_type; ///< First argument type.
-  typedef ::playrho::propagate_const<T> second_argument_type; ///< Second argument type.
+  using first_argument_type = ::playrho::propagate_const<T>; ///< First argument type.
+  using second_argument_type = ::playrho::propagate_const<T>; ///< Second argument type.
 
   /// @brief Less-than operation functor.
   bool operator()(
@@ -464,8 +464,8 @@ struct less<::playrho::propagate_const<T>> {
 /// @brief Support for greater than operations.
 template <class T>
 struct greater<::playrho::propagate_const<T>> {
-  typedef ::playrho::propagate_const<T> first_argument_type; ///< First argument type.
-  typedef ::playrho::propagate_const<T> second_argument_type; ///< Second argument type.
+  using first_argument_type = ::playrho::propagate_const<T>; ///< First argument type.
+  using second_argument_type = ::playrho::propagate_const<T>; ///< Second argument type.
 
   /// @brief Greater-than operation functor.
   bool operator()(
@@ -478,8 +478,8 @@ struct greater<::playrho::propagate_const<T>> {
 /// @brief Support for less than or equal operations.
 template <class T>
 struct less_equal<::playrho::propagate_const<T>> {
-  typedef ::playrho::propagate_const<T> first_argument_type; ///< First argument type.
-  typedef ::playrho::propagate_const<T> second_argument_type; ///< Second argument type.
+  using first_argument_type = ::playrho::propagate_const<T>; ///< First argument type.
+  using second_argument_type = ::playrho::propagate_const<T>; ///< Second argument type.
 
   /// @brief Lesser-than operation functor.
   bool operator()(
@@ -492,8 +492,8 @@ struct less_equal<::playrho::propagate_const<T>> {
 /// @brief Support for greater than or equal operations.
 template <class T>
 struct greater_equal<::playrho::propagate_const<T>> {
-  typedef ::playrho::propagate_const<T> first_argument_type; ///< First argument type.
-  typedef ::playrho::propagate_const<T> second_argument_type; ///< Second argument type.
+  using first_argument_type = ::playrho::propagate_const<T>; ///< First argument type.
+  using second_argument_type = ::playrho::propagate_const<T>; ///< Second argument type.
 
   /// @brief Greater-than operation functor.
   bool operator()(
