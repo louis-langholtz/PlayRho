@@ -5,7 +5,7 @@
 #   run-clang-tidy -p PlayRhoBuild -header-filter='.*' PlayRho/PlayRho
 
 ---
-Checks:          'clang-diagnostic-*,clang-analyzer-*,concurrency-*,portability-*,bugprone-exception-escape,readability-inconsistent-declaration-parameter-name,misc-redundant-expression,modernize-use-nullptr,modernize-unary-static-assert,modernize-use-emplace,modernize-use-using,modernize-return-braced-init-list'
+Checks:          'clang-diagnostic-*,clang-analyzer-*,concurrency-*,portability-*,bugprone-exception-escape,readability-inconsistent-declaration-parameter-name,misc-redundant-expression,modernize-use-nullptr,modernize-unary-static-assert,modernize-use-emplace,modernize-use-using,modernize-return-braced-init-list,bugprone-forwarding-reference-overload'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
