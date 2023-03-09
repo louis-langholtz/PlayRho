@@ -70,7 +70,9 @@ TEST(ChainShapeConf, IsValidShapeType)
 TEST(ChainShapeConf, Traits)
 {
     EXPECT_TRUE(std::is_default_constructible_v<ChainShapeConf>);
+#ifndef USE_BOOST_UNITS
     EXPECT_TRUE(std::is_nothrow_default_constructible_v<ChainShapeConf>);
+#endif
 }
 
 TEST(ChainShapeConf, DefaultConstruction)
@@ -300,7 +302,13 @@ TEST(ChainShapeConf, FourVertex)
     auto conf = ChainShapeConf{};
     conf.density = density;
     conf.vertexRadius = vertexRadius;
-    conf.Set(std::vector<Length2>(begin(locations), end(locations)));
+    const auto locationsVector = std::vector<Length2>(begin(locations), end(locations));
+    conf.Set(locationsVector);
+    EXPECT_EQ(conf.GetVertices(), locationsVector);
+    EXPECT_EQ(conf.GetVertexCount(), locations.size());
+    for (auto i = ChildCounter{0}; i < locations.size(); ++i) {
+        EXPECT_EQ(locations[i], conf.GetVertex(i));
+    }
     auto foo = ChainShapeConf{conf};
     EXPECT_EQ(GetChildCount(foo), ChildCounter{4});
     EXPECT_EQ(foo.GetVertexCount(), ChildCounter{5});

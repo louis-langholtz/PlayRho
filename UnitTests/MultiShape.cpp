@@ -67,8 +67,11 @@ TEST(MultiShapeConf, IsValidShapeType)
 TEST(MultiShapeConf, Traits)
 {
     EXPECT_TRUE(std::is_default_constructible_v<MultiShapeConf>);
-    EXPECT_TRUE(std::is_nothrow_default_constructible_v<MultiShapeConf>);
     EXPECT_TRUE(std::is_copy_constructible_v<MultiShapeConf>);
+
+#ifndef USE_BOOST_UNITS
+    EXPECT_TRUE(std::is_nothrow_default_constructible_v<MultiShapeConf>);
+#endif
 }
 
 TEST(MultiShapeConf, DefaultConstruction)

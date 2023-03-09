@@ -30,10 +30,11 @@ using namespace playrho::d2;
 TEST(BaseShapeConf, Traits)
 {
     EXPECT_TRUE(std::is_default_constructible_v<BaseShapeConf>);
-    EXPECT_TRUE(std::is_nothrow_default_constructible_v<BaseShapeConf>);
-
     EXPECT_TRUE(std::is_copy_constructible_v<BaseShapeConf>);
+#ifndef USE_BOOST_UNITS
+    EXPECT_TRUE(std::is_nothrow_default_constructible_v<BaseShapeConf>);
     EXPECT_TRUE(std::is_nothrow_copy_constructible_v<BaseShapeConf>);
+#endif
 }
 
 TEST(BaseShapeConf, DefaultConstruction)
