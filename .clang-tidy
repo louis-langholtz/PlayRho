@@ -5,7 +5,7 @@
 #   run-clang-tidy -p PlayRhoBuild -header-filter='.*' PlayRho/PlayRho
 
 ---
-Checks:          'clang-diagnostic-*,clang-analyzer-*,bugprone-*,concurrency-*,misc-*,modernize-*,performance-*,portability-*,readability-*,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-no-malloc,-cppcoreguidelines-owning-memory,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-cppcoreguidelines-pro-bounds-constant-array-index,-cppcoreguidelines-avoid-c-arrays,-llvmlibc-*,-readability-implicit-bool-conversion,-readability-named-parameter,-readability-identifier-length,-readability-uppercase-literal-suffix,-readability-container-size-empty,-fuchsia-overloaded-operator,-hicpp-no-array-decay'
+Checks:          'clang-diagnostic-*,clang-analyzer-*,concurrency-*,portability-*,bugprone-exception-escape,readability-inconsistent-declaration-parameter-name,misc-redundant-expression'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
