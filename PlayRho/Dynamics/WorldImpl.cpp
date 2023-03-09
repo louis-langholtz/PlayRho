@@ -742,7 +742,7 @@ BodyID WorldImpl::CreateBody(Body body)
     m_bodyConstraints.resize(size(m_bodyBuffer));
     if (IsEnabled(body)) {
         for (const auto& shapeId: body.GetShapes()) {
-            m_fixturesForProxies.push_back(std::make_pair(id, shapeId));
+            m_fixturesForProxies.emplace_back(id, shapeId);
         }
         if (!empty(body.GetShapes())) {
             m_flags |= e_newFixture;
@@ -869,10 +869,10 @@ void WorldImpl::Add(JointID id, bool flagForFiltering)
     const auto bodyA = GetBodyA(joint);
     const auto bodyB = GetBodyB(joint);
     if (bodyA != InvalidBodyID) {
-        m_bodyJoints[to_underlying(bodyA)].push_back(std::make_pair(bodyB, id));
+        m_bodyJoints[to_underlying(bodyA)].emplace_back(bodyB, id);
     }
     if (bodyB != InvalidBodyID) {
-        m_bodyJoints[to_underlying(bodyB)].push_back(std::make_pair(bodyA, id));
+        m_bodyJoints[to_underlying(bodyB)].emplace_back(bodyA, id);
     }
     if (flagForFiltering && (bodyA != InvalidBodyID) && (bodyB != InvalidBodyID)) {
         if (FlagForFiltering(m_contactBuffer, bodyA, m_bodyContacts[to_underlying(bodyB)], bodyB)) {
@@ -1047,9 +1047,10 @@ void WorldImpl::SetShape(ShapeID id, Shape def)
                         }
                         return false;
                     });
-                    EraseAll(m_fixturesForProxies, std::make_pair(bodyId, shapeId));
+                    const auto fixture = std::make_pair(bodyId, shapeId);
+                    EraseAll(m_fixturesForProxies, fixture);
                     DestroyProxies(m_tree, FindProxies(m_tree, bodyId, shapeId), m_proxiesForContacts);
-                    m_fixturesForProxies.push_back(std::make_pair(bodyId, shapeId));
+                    m_fixturesForProxies.push_back(fixture);
                     m_flags |= e_newFixture;
                 }
             }
@@ -2210,7 +2211,7 @@ ContactCounter WorldImpl::FindNewContacts()
             const auto body1 = m_tree.GetLeafData(nodeId).bodyId;
             // A proxy cannot form a pair with itself.
             if ((nodeId != pid) && (body0 != body1)) {
-                m_proxyKeys.push_back(ContactKey{nodeId, pid});
+                m_proxyKeys.emplace_back(nodeId, pid);
             }
             return DynamicTreeOpcode::Continue;
         });
@@ -2333,7 +2334,7 @@ bool WorldImpl::Add(ContactKey key)
     // Original strategy added to the front. Since processing done front to back, front
     // adding means container more a LIFO container, while back adding means more a FIFO.
     //
-    m_contacts.push_back(KeyedContactPtr{key, contactID});
+    m_contacts.emplace_back(key, contactID);
 
     // TODO: check contactID unique in contacts containers if !NDEBUG
     contactsA.emplace_back(key, contactID);
@@ -2608,7 +2609,7 @@ void WorldImpl::SetBody(BodyID id, Body value)
         DestroyProxies(m_tree, FindProxies(m_tree, id, shapeId), m_proxiesForContacts);
     }
     for (auto&& shapeId: newShapeIds) {
-        m_fixturesForProxies.push_back(std::make_pair(id, shapeId));
+        m_fixturesForProxies.emplace_back(id, shapeId);
     }
     if (!empty(newShapeIds)) {
         m_flags |= e_newFixture;

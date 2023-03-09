@@ -49,23 +49,17 @@ PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy)
     m_centroid = Length2{};
 
     // vertices must be counter-clockwise
-
-    const auto btm_rgt = Length2{+hx, -hy};
-    const auto top_rgt = Length2{hx, hy};
-    const auto top_lft = Length2{-hx, +hy};
-    const auto btm_lft = Length2{-hx, -hy};
-
     m_vertices.clear();
-    m_vertices.emplace_back(btm_rgt);
-    m_vertices.emplace_back(top_rgt);
-    m_vertices.emplace_back(top_lft);
-    m_vertices.emplace_back(btm_lft);
+    m_vertices.emplace_back(+hx, -hy); // bottom right
+    m_vertices.emplace_back(+hx, +hy); // top right
+    m_vertices.emplace_back(-hx, +hy); // top left
+    m_vertices.emplace_back(-hx, -hy); // bottom left
 
     m_normals.clear();
-    m_normals.emplace_back(UnitVec::GetRight());
-    m_normals.emplace_back(UnitVec::GetTop());
-    m_normals.emplace_back(UnitVec::GetLeft());
-    m_normals.emplace_back(UnitVec::GetBottom());
+    m_normals.push_back(UnitVec::GetRight());
+    m_normals.push_back(UnitVec::GetTop());
+    m_normals.push_back(UnitVec::GetLeft());
+    m_normals.push_back(UnitVec::GetBottom());
 
     return *this;
 }
@@ -152,11 +146,11 @@ PolygonShapeConf& PolygonShapeConf::Set(const VertexSet& points)
         // Compute normals.
         for (auto i = decltype(count){0}; i < count; ++i) {
             const auto edge = GetEdge(*this, i);
-            m_normals.emplace_back(GetUnitVector(GetFwdPerpendicular(edge)));
+            m_normals.push_back(GetUnitVector(GetFwdPerpendicular(edge)));
         }
     }
     else if (count == 1) {
-        m_normals.emplace_back(UnitVec{});
+        m_normals.emplace_back();
     }
 
     // Compute the polygon centroid.
