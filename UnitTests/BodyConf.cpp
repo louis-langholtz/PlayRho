@@ -47,10 +47,11 @@ TEST(BodyConf, ByteSize)
 TEST(BodyConf, Traits)
 {
     EXPECT_TRUE(std::is_default_constructible_v<BodyConf>);
-    EXPECT_TRUE(std::is_nothrow_default_constructible_v<BodyConf>);
-
     EXPECT_TRUE(std::is_copy_constructible_v<BodyConf>);
+#ifndef USE_BOOST_UNITS
+    EXPECT_TRUE(std::is_nothrow_default_constructible_v<BodyConf>);
     EXPECT_TRUE(std::is_nothrow_copy_constructible_v<BodyConf>);
+#endif
 }
 
 TEST(BodyConf, DefaultConstruction)
