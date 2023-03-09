@@ -173,13 +173,13 @@ public:
     /// @details Vertices go counter-clockwise.
     Span<const Length2> GetVertices() const noexcept
     {
-        return Span<const Length2>(data(m_vertices), size(m_vertices));
+        return {data(m_vertices), size(m_vertices)};
     }
 
     /// @brief Gets the span of normals.
     Span<const UnitVec> GetNormals() const noexcept
     {
-        return Span<const UnitVec>(data(m_normals), size(m_vertices));
+        return {data(m_normals), size(m_vertices)};
     }
 
     /// @brief Gets the centroid.
