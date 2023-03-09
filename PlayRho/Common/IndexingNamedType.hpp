@@ -133,9 +133,9 @@ private:
     underlying_type value_; ///< Underlying value.
 };
 
-static_assert(std::is_default_constructible<IndexingNamedType<int, struct Test>>::value, "");
-static_assert(std::is_nothrow_copy_constructible<IndexingNamedType<int, struct Test>>::value, "");
-static_assert(std::is_nothrow_move_constructible<IndexingNamedType<int, struct Test>>::value, "");
+static_assert(std::is_default_constructible<IndexingNamedType<int, struct Test>>::value);
+static_assert(std::is_nothrow_copy_constructible<IndexingNamedType<int, struct Test>>::value);
+static_assert(std::is_nothrow_move_constructible<IndexingNamedType<int, struct Test>>::value);
 
 /// @brief Gets the underlying value.
 template <typename T, typename Tag>
