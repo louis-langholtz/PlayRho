@@ -177,7 +177,7 @@ class propagate_const {
   template <class U,
             class = std::enable_if_t<!is_propagate_const<std::decay_t<U>>::value>>
   PROPAGATE_CONST_CONSTEXPR propagate_const& operator=(U&& u) {
-    t_ = std::move(u);
+    t_ = std::forward<U>(u);
     return *this;
   }
 
