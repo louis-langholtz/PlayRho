@@ -746,7 +746,7 @@ private:
         using data_type = T;
 
         /// @brief Initializing constructor.
-        template <typename U>
+        template <typename U, std::enable_if_t<!std::is_same_v<U, Model>, int> = 0>
         explicit Model(U&& arg) noexcept(std::is_nothrow_constructible_v<T, U>)
             : data{std::forward<U>(arg)}
         {
