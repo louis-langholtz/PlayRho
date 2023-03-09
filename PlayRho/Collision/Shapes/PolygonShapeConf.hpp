@@ -100,7 +100,7 @@ public:
     /// @warning Points may be re-ordered, even if they form a convex polygon
     /// @warning Collinear points are handled but not removed. Collinear points
     ///   may lead to poor stacking behavior.
-    PolygonShapeConf& Set(Span<const Length2> verts);
+    PolygonShapeConf& Set(Span<const Length2> points);
 
     /// @brief Sets the vertices to a convex hull of the given ones.
     /// @note The size of the span must be in the range [1, <code>MaxShapeVertices</code>].

@@ -72,9 +72,17 @@ struct PulleyJointConf : public JointBuilder<PulleyJointConf> {
     PulleyJointConf() noexcept : super{super{}.UseCollideConnected(true)} {}
 
     /// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
-    PulleyJointConf(BodyID bodyA, BodyID bodyB, Length2 groundAnchorA = DefaultGroundAnchorA,
-                    Length2 groundAnchorB = DefaultGroundAnchorB,
-                    Length2 anchorA = DefaultLocalAnchorA, Length2 anchorB = DefaultLocalAnchorB,
+    /// @post <code>bodyA</code> will have the value of <code>bA</code>.
+    /// @post <code>bodyB</code> will have the value of <code>bB</code>.
+    /// @post <code>groundAnchorA</code> will have the value of <code>gaA</code>.
+    /// @post <code>groundAnchorB</code> will have the value of <code>gaB</code>.
+    /// @post <code>localAnchorA</code> will have the value of <code>laA</code>.
+    /// @post <code>localAnchorB</code> will have the value of <code>laB</code>.
+    /// @post <code>lengthA</code> will have the value of <code>lA</code>.
+    /// @post <code>lengthB</code> will have the value of <code>lB</code>.
+    PulleyJointConf(BodyID bA, BodyID bB, Length2 gaA = DefaultGroundAnchorA,
+                    Length2 gaB = DefaultGroundAnchorB,
+                    Length2 laA = DefaultLocalAnchorA, Length2 laB = DefaultLocalAnchorB,
                     Length lA = 0_m, Length lB = 0_m);
 
     /// @brief Uses the given ratio value.

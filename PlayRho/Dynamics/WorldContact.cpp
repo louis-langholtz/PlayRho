@@ -135,17 +135,17 @@ Real GetRestitution(const World& world, ContactID id)
     return GetRestitution(GetContact(world, id));
 }
 
-void SetFriction(World& world, ContactID id, Real value)
+void SetFriction(World& world, ContactID id, Real friction)
 {
     auto contact = GetContact(world, id);
-    SetFriction(contact, value);
+    SetFriction(contact, friction);
     SetContact(world, id, contact);
 }
 
-void SetRestitution(World& world, ContactID id, Real value)
+void SetRestitution(World& world, ContactID id, Real restitution)
 {
     auto contact = GetContact(world, id);
-    SetRestitution(contact, value);
+    SetRestitution(contact, restitution);
     SetContact(world, id, contact);
 }
 

@@ -254,7 +254,7 @@ void SetAcceleration(World& world, BodyID id, Acceleration value);
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see GetTransformation(const World& world, BodyID id).
 /// @relatedalso World
-void SetTransformation(World& world, BodyID id, Transformation xfm);
+void SetTransformation(World& world, BodyID id, Transformation value);
 
 /// @brief Sets the position of the body's origin and rotation.
 /// @details This instantly adjusts the body to be at the new position and new orientation.
@@ -390,14 +390,14 @@ inline UnitVec GetLocalVector(const World& world, BodyID body, const UnitVec uv)
 
 /// @brief Gets a local point relative to the body's origin given a world point.
 /// @param world The world in which the identified body exists.
-/// @param body Identifier of body that the returned point should be relative to.
+/// @param id Identifier of body that the returned point should be relative to.
 /// @param worldPoint point in world coordinates.
 /// @return the corresponding local point relative to the body's origin.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-inline Length2 GetLocalPoint(const World& world, BodyID body, const Length2 worldPoint)
+inline Length2 GetLocalPoint(const World& world, BodyID id, const Length2 worldPoint)
 {
-    return InverseTransform(worldPoint, GetTransformation(world, body));
+    return InverseTransform(worldPoint, GetTransformation(world, id));
 }
 
 /// @brief Gets the angle of the identified body.
@@ -414,9 +414,9 @@ inline Position GetPosition(const World& world, BodyID id)
 
 /// @brief Convenience function for getting a world vector of the identified body.
 /// @relatedalso World
-inline UnitVec GetWorldVector(const World& world, BodyID body, UnitVec localVector)
+inline UnitVec GetWorldVector(const World& world, BodyID id, UnitVec localVector)
 {
-    return Rotate(localVector, GetTransformation(world, body).q);
+    return Rotate(localVector, GetTransformation(world, id).q);
 }
 
 /// @brief Gets the velocity of the identified body.

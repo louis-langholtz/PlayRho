@@ -63,18 +63,30 @@ public:
     }
 
     /// @brief Sets the configuration up for representing a chain of vertices as given.
-    ChainShapeConf& Set(std::vector<Length2> arg);
+    /// @note This function provides the strong exception guarantee. The state of this instance
+    ///   won't change if this function throws any exception.
+    /// @throws InvalidArgument if the number of vertices given is greater than <code>MaxChildCount</code>.
+    /// @post <code>GetVertices()</code> returns the vertices given.
+    /// @post <code>GetVertexCount()</code> returns the number of vertices given.
+    /// @post <code>GetVertex(i)</code> returns the vertex <code>vertices[i]</code> for all valid indices.
+    ChainShapeConf& Set(std::vector<Length2> vertices);
 
     /// @brief Adds the given vertex.
     ChainShapeConf& Add(Length2 vertex);
 
     /// @brief Translates the vertices by the given amount.
+    /// @note This function provides the strong exception guarantee. The state of this instance
+    ///   won't change if this function throws any exception.
     ChainShapeConf& Translate(const Length2& value);
 
     /// @brief Scales the vertices by the given amount.
+    /// @note This function provides the strong exception guarantee. The state of this instance
+    ///   won't change if this function throws any exception.
     ChainShapeConf& Scale(const Vec2& value);
 
     /// @brief Rotates the vertices by the given amount.
+    /// @note This function provides the strong exception guarantee. The state of this instance
+    ///   won't change if this function throws any exception.
     ChainShapeConf& Rotate(const UnitVec& value);
 
     /// @brief Gets the "child" shape count.

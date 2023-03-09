@@ -58,12 +58,17 @@ struct WeldJointConf : public JointBuilder<WeldJointConf> {
     /// @brief Initializing constructor.
     /// @details Initializes the bodies, anchors, and reference angle using a world
     ///   anchor point.
-    /// @param bodyA Identifier of body A.
+    /// @param bA Identifier of body A.
+    /// @param bB Identifier of body B.
     /// @param laA Local anchor A location in world coordinates.
-    /// @param bodyB Identifier of body B.
     /// @param laB Local anchor B location in world coordinates.
     /// @param ra Reference angle.
-    WeldJointConf(BodyID bodyA, BodyID bodyB, Length2 laA = Length2{}, Length2 laB = Length2{},
+    /// @post <code>bodyA</code> will have the value of <code>bA</code>.
+    /// @post <code>bodyB</code> will have the value of <code>bB</code>.
+    /// @post <code>localAnchorA</code> will have the value of <code>laA</code>.
+    /// @post <code>localAnchorB</code> will have the value of <code>laB</code>.
+    /// @post <code>referenceAngle</code> will have the value of <code>ra</code>.
+    WeldJointConf(BodyID bA, BodyID bB, Length2 laA = Length2{}, Length2 laB = Length2{},
                   Angle ra = 0_deg) noexcept;
 
     /// @brief Uses the given frequency value.

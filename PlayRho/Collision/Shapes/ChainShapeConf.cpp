@@ -34,9 +34,9 @@ static_assert(IsValidShapeType<ChainShapeConf>::value);
 
 namespace {
 
-void ResetNormals(std::vector<UnitVec>& normals, const std::vector<Length2>& vertices)
+std::vector<UnitVec> ComputeNormals(const std::vector<Length2>& vertices)
 {
-    normals.clear();
+    std::vector<UnitVec> normals;
     if (size(vertices) > std::size_t{1}) {
         auto vprev = Length2{};
         auto first = true;
@@ -54,43 +54,49 @@ void ResetNormals(std::vector<UnitVec>& normals, const std::vector<Length2>& ver
             vprev = v;
         }
     }
+    return normals;
 }
 
 } // anonymous namespace
 
 ChainShapeConf& ChainShapeConf::Set(std::vector<Length2> vertices)
 {
-    const auto count = size(vertices);
-    if (count > MaxChildCount) {
+    if (size(vertices) > MaxChildCount) {
         throw InvalidArgument("too many vertices");
     }
 
-    m_vertices = vertices;
-    ResetNormals(m_normals, m_vertices);
+    m_normals = ComputeNormals(vertices);
+    m_vertices = std::move(vertices);
     return *this;
 }
 
 ChainShapeConf& ChainShapeConf::Translate(const Length2& value)
 {
-    std::for_each(begin(m_vertices), end(m_vertices), [=](Length2& v) { v = v + value; });
-    ResetNormals(m_normals, m_vertices);
+    auto vertices = m_vertices;
+    std::for_each(begin(vertices), end(vertices), [=](Length2& v) { v = v + value; });
+    m_normals = ComputeNormals(vertices);
+    m_vertices = std::move(vertices);
     return *this;
 }
 
 ChainShapeConf& ChainShapeConf::Scale(const Vec2& value)
 {
-    std::for_each(begin(m_vertices), end(m_vertices), [=](Length2& v) {
+    auto vertices = m_vertices;
+    std::for_each(begin(vertices), end(vertices), [=](Length2& v) {
         v = Length2{GetX(value) * GetX(v), GetY(value) * GetY(v)};
     });
-    ResetNormals(m_normals, m_vertices);
+    m_normals = ComputeNormals(vertices);
+    m_vertices = std::move(vertices);
     return *this;
 }
 
 ChainShapeConf& ChainShapeConf::Rotate(const UnitVec& value)
 {
-    std::for_each(begin(m_vertices), end(m_vertices),
+    auto vertices = m_vertices;
+    std::for_each(begin(vertices), end(vertices),
                   [=](Length2& v) { v = ::playrho::d2::Rotate(v, value); });
-    ResetNormals(m_normals, m_vertices);
+    m_normals = ComputeNormals(vertices);
+    m_vertices = std::move(vertices);
     return *this;
 }
 

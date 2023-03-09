@@ -77,6 +77,26 @@ TEST(WeldJointConf, DefaultConstruction)
     EXPECT_EQ(def.dampingRatio, Real(0));
 }
 
+TEST(WeldJointConf, InitalizingConstruction)
+{
+    const auto bA = BodyID(1);
+    const auto bB = BodyID(2);
+    const auto laA = Length2(-4.2_m, 3.8_m);
+    const auto laB = Length2(5.1_m, 4_m);
+    const auto ra = 90_deg;
+    const auto def = WeldJointConf{bA, bB, laA, laB, ra};
+
+    EXPECT_EQ(def.bodyA, bA);
+    EXPECT_EQ(def.bodyB, bB);
+    EXPECT_EQ(def.collideConnected, false);
+
+    EXPECT_EQ(def.localAnchorA, laA);
+    EXPECT_EQ(def.localAnchorB, laB);
+    EXPECT_EQ(def.referenceAngle, ra);
+    EXPECT_EQ(def.frequency, 0_Hz);
+    EXPECT_EQ(def.dampingRatio, Real(0));
+}
+
 TEST(WeldJoint, Construction)
 {
     WeldJointConf def;
