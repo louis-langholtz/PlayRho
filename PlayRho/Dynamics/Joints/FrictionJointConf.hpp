@@ -54,9 +54,13 @@ struct FrictionJointConf : public JointBuilder<FrictionJointConf> {
     constexpr FrictionJointConf() noexcept = default;
 
     /// @brief Initializing constructor.
-    /// @details Initialize the bodies, anchors, axis, and reference angle using the world
-    ///   anchor and world axis.
-    FrictionJointConf(BodyID bodyA, BodyID bodyB, Length2 laA = Length2{},
+    /// @details Initialize the bodies and local anchors.
+    /// @post <code>bodyA</code> will hold the value of <code>bA</code>.
+    /// @post <code>bodyB</code> will hold the value of <code>bB</code>.
+    /// @post <code>localAnchorA</code> will hold the value of <code>laA</code>.
+    /// @post <code>localAnchorB</code> will hold the value of <code>laB</code>.
+    /// @post All other member variables will be zero initialized.
+    FrictionJointConf(BodyID bA, BodyID bB, Length2 laA = Length2{},
                       Length2 laB = Length2{}) noexcept;
 
     /// @brief Uses the given maximum force value.

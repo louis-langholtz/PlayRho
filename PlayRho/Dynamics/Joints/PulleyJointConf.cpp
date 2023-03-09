@@ -55,13 +55,13 @@ static_assert(std::is_nothrow_destructible<PulleyJointConf>::value,
 // K = J * invM * JT
 //   = invMass1 + invI1 * cross(r1, u1)^2 + ratio^2 * (invMass2 + invI2 * cross(r2, u2)^2)
 
-PulleyJointConf::PulleyJointConf(BodyID bA, BodyID bB, Length2 groundA, Length2 groundB,
-                                 Length2 anchorA, Length2 anchorB, Length lA, Length lB)
+PulleyJointConf::PulleyJointConf(BodyID bA, BodyID bB, Length2 gaA, Length2 gaB,
+                                 Length2 laA, Length2 laB, Length lA, Length lB)
     : super{super{}.UseBodyA(bA).UseBodyB(bB).UseCollideConnected(true)},
-      groundAnchorA{groundA},
-      groundAnchorB{groundB},
-      localAnchorA{anchorA},
-      localAnchorB{anchorB},
+      groundAnchorA{gaA},
+      groundAnchorB{gaB},
+      localAnchorA{laA},
+      localAnchorB{laB},
       lengthA{lA},
       lengthB{lB}
 {

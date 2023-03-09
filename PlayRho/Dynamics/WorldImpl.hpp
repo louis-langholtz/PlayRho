@@ -424,11 +424,11 @@ public:
     /// @note This may cause the connected bodies to begin colliding.
     /// @post The destroyed joint will no longer be present in the range returned from the
     ///   <code>GetJoints()</code> method.
-    /// @param joint Joint to destroy that had been created by this world.
+    /// @param id Identifier of joint to destroy that had been created by this world.
     /// @throws WrongState if this function is called while the world is locked.
     /// @see CreateJoint(const Joint&), GetJoints.
     /// @see PhysicalEntities.
-    void Destroy(JointID joint);
+    void Destroy(JointID id);
 
     /// @brief Gets whether the given identifier is to a joint that's been destroyed.
     /// @note Complexity is at most O(n) where n is the number of elements free.
@@ -672,7 +672,7 @@ private:
     void Remove(BodyID id);
 
     /// @brief Updates associated bodies and contacts for specified joint's addition.
-    void Add(JointID j, bool flagForFiltering = false);
+    void Add(JointID id, bool flagForFiltering = false);
 
     /// @brief Updates associated bodies and contacts for specified joint's removal.
     void Remove(JointID id);

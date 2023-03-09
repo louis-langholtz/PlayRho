@@ -190,9 +190,9 @@ void SetAngle(World& world, BodyID id, Angle value)
     SetBody(world, id, body);
 }
 
-void RotateAboutWorldPoint(World& world, BodyID body, Angle amount, Length2 worldPoint)
+void RotateAboutWorldPoint(World& world, BodyID id, Angle amount, Length2 worldPoint)
 {
-    const auto xfm = GetTransformation(world, body);
+    const auto xfm = GetTransformation(world, id);
     const auto p = xfm.p - worldPoint;
     const auto c = cos(amount);
     const auto s = sin(amount);
@@ -200,22 +200,22 @@ void RotateAboutWorldPoint(World& world, BodyID body, Angle amount, Length2 worl
     const auto y = GetX(p) * s + GetY(p) * c;
     const auto pos = Length2{x, y} + worldPoint;
     const auto angle = GetAngle(xfm.q) + amount;
-    SetTransform(world, body, pos, angle);
+    SetTransform(world, id, pos, angle);
 }
 
-void RotateAboutLocalPoint(World& world, BodyID body, Angle amount, Length2 localPoint)
+void RotateAboutLocalPoint(World& world, BodyID id, Angle amount, Length2 localPoint)
 {
-    RotateAboutWorldPoint(world, body, amount, GetWorldPoint(world, body, localPoint));
+    RotateAboutWorldPoint(world, id, amount, GetWorldPoint(world, id, localPoint));
 }
 
-Acceleration CalcGravitationalAcceleration(const World& world, BodyID body)
+Acceleration CalcGravitationalAcceleration(const World& world, BodyID id)
 {
-    const auto m1 = GetMass(world, body);
+    const auto m1 = GetMass(world, id);
     if (isnormal(m1)) {
         auto sumForce = Force2{};
-        const auto loc1 = GetLocation(world, body);
+        const auto loc1 = GetLocation(world, id);
         for (const auto& b2: world.GetBodies()) {
-            if (b2 == body) {
+            if (b2 == id) {
                 continue;
             }
             const auto m2 = GetMass(world, b2);
@@ -463,10 +463,10 @@ Frequency GetLinearDamping(const World& world, BodyID id)
     return GetLinearDamping(GetBody(world, id));
 }
 
-void SetLinearDamping(World& world, BodyID id, NonNegative<Frequency> value)
+void SetLinearDamping(World& world, BodyID id, NonNegative<Frequency> linearDamping)
 {
     auto body = GetBody(world, id);
-    SetLinearDamping(body, value);
+    SetLinearDamping(body, linearDamping);
     world.SetBody(id, body);
 }
 
@@ -475,10 +475,10 @@ Frequency GetAngularDamping(const World& world, BodyID id)
     return GetAngularDamping(GetBody(world, id));
 }
 
-void SetAngularDamping(World& world, BodyID id, NonNegative<Frequency> value)
+void SetAngularDamping(World& world, BodyID id, NonNegative<Frequency> angularDamping)
 {
     auto body = GetBody(world, id);
-    SetAngularDamping(body, value);
+    SetAngularDamping(body, angularDamping);
     world.SetBody(id, body);
 }
 

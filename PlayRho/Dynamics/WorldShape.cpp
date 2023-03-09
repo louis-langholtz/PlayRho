@@ -96,10 +96,10 @@ void SetRestitution(World& world, ShapeID id, Real value)
     SetShape(world, id, object);
 }
 
-void SetFilterData(World& world, ShapeID id, const Filter& value)
+void SetFilterData(World& world, ShapeID id, const Filter& filter)
 {
     auto object = GetShape(world, id);
-    SetFilter(object, value);
+    SetFilter(object, filter);
     SetShape(world, id, object);
 }
 

@@ -71,6 +71,27 @@ TEST(FrictionJointConf, DefaultConstruction)
 
 TEST(FrictionJointConf, InitializingConstructor)
 {
+    const auto laA = Length2{-1_m, 0_m};
+    const auto laB = Length2{+1_m, 0_m};
+    const auto bA = BodyID(0);
+    const auto bB = BodyID(1);
+    const auto def = FrictionJointConf(bA, bB, laA, laB);
+    EXPECT_EQ(def.bodyA, bA);
+    EXPECT_EQ(def.bodyB, bB);
+    EXPECT_EQ(def.localAnchorA, laA);
+    EXPECT_EQ(def.localAnchorB, laB);
+    EXPECT_EQ(def.maxForce, NonNegative<Force>());
+    EXPECT_EQ(def.maxTorque, NonNegative<Torque>());
+    EXPECT_EQ(def.linearImpulse, Momentum2());
+    EXPECT_EQ(def.angularImpulse, AngularMomentum());
+    EXPECT_EQ(def.rA, Length2());
+    EXPECT_EQ(def.rB, Length2());
+    EXPECT_EQ(def.linearMass, Mass22());
+    EXPECT_EQ(def.angularMass, RotInertia());
+}
+
+TEST(FrictionJointConf, GetFrictionJointConf)
+{
     World world{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
