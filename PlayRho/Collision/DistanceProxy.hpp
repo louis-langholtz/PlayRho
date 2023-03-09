@@ -63,7 +63,7 @@ public:
     DistanceProxy() = default;
 
     /// @brief Copy constructor.
-    DistanceProxy(const DistanceProxy& copy) noexcept
+    DistanceProxy(const DistanceProxy& copy) noexcept // NOLINT(modernize-use-equals-default)
         :
 #ifndef IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS
           m_vertices{copy.m_vertices},

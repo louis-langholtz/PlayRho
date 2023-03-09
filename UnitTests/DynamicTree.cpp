@@ -168,13 +168,7 @@ TEST(DynamicTreeLeafData, Traits)
 
 TEST(DynamicTreeVariantData, Traits)
 {
-    EXPECT_TRUE(std::is_default_constructible<DynamicTreeVariantData>::value);
-    EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTreeVariantData>::value);
-    //EXPECT_TRUE(std::is_trivially_default_constructible<DynamicTreeVariantData>::value);
-
-    EXPECT_TRUE(std::is_nothrow_constructible<DynamicTreeVariantData>::value);
-    EXPECT_TRUE(std::is_constructible<DynamicTreeVariantData>::value);
-    //EXPECT_TRUE(std::is_trivially_constructible<DynamicTreeVariantData>::value);
+    EXPECT_FALSE(std::is_default_constructible<DynamicTreeVariantData>::value);
 
     EXPECT_TRUE(std::is_copy_constructible<DynamicTreeVariantData>::value);
     EXPECT_TRUE(std::is_nothrow_copy_constructible<DynamicTreeVariantData>::value);

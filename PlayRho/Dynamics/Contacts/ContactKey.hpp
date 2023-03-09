@@ -36,10 +36,8 @@ namespace playrho {
 class ContactKey
 {
 public:
-    constexpr ContactKey() noexcept
-    {
-        // Intentionally empty
-    }
+    /// @brief Default constructor.
+    constexpr ContactKey() noexcept = default;
 
     /// @brief Initializing constructor.
     constexpr ContactKey(ContactCounter fp1, ContactCounter fp2) noexcept

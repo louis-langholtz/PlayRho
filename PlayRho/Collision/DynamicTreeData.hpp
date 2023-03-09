@@ -91,9 +91,6 @@ union DynamicTreeVariantData {
     /// @brief Branch specific data.
     DynamicTreeBranchData branch;
 
-    /// @brief Default constructor.
-    DynamicTreeVariantData() noexcept {}
-
     /// @brief Initializing constructor.
     constexpr DynamicTreeVariantData(DynamicTreeUnusedData value) noexcept : unused{value} {}
 

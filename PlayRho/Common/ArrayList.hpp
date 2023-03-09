@@ -57,12 +57,9 @@ public:
     /// @brief Constant pointer type.
     using const_pointer = const value_type*;
 
-    constexpr ArrayList() noexcept
-    {
-        // Intentionally empty.
-        // Note that defaulting this method instead of writing it out here,
-        // causes issues with gcc.
-    }
+    /// @brief Default constructor.
+    /// @note Some older versions of gcc have issues with this being defaulted.
+    constexpr ArrayList() noexcept = default;
 
     template <std::size_t COPY_MAXSIZE, typename COPY_SIZE_TYPE,
               typename = std::enable_if_t<COPY_MAXSIZE <= MAXSIZE>>
