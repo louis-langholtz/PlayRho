@@ -465,7 +465,7 @@ private:
     static constexpr std::false_type check(...);
 
     /// @brief Type alias for given template parameters.
-    using type = decltype(check<Type>(0));
+    using type = decltype(check<Type>(nullptr));
 
 public:
     /// Whether or not the given type has the specified functor.
