@@ -136,7 +136,7 @@ constexpr bool IsValid(const T& value) noexcept
     // So for all T, for which isnan() is implemented, this should work
     // correctly and quite usefully!
     //
-    return value == value;
+    return value == value; // NOLINT(misc-redundant-expression)
 }
 
 // GetInvalid template specializations.
