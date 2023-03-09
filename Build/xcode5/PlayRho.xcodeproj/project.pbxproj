@@ -395,6 +395,7 @@
 		80BB8A76141C3F7600F1753A /* libPlayRho.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80FF01D2141C3D980059E59D /* libPlayRho.a */; };
 		80BB8A7B141C3FA700F1753A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80BB8A7A141C3FA700F1753A /* OpenGL.framework */; };
 		9921FFD729AD43C30043F23F /* TypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9921FFD629AD43C30043F23F /* TypeInfo.cpp */; };
+		99CF862F29B9087700D9D112 /* BaseShapeConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99CF862E29B9087700D9D112 /* BaseShapeConf.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -864,6 +865,7 @@
 		80CD7722143AF3230086DB87 /* ConvexHull.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConvexHull.cpp; sourceTree = "<group>"; };
 		80FF01D2141C3D980059E59D /* libPlayRho.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPlayRho.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9921FFD629AD43C30043F23F /* TypeInfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TypeInfo.cpp; sourceTree = "<group>"; };
+		99CF862E29B9087700D9D112 /* BaseShapeConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BaseShapeConf.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -922,6 +924,7 @@
 				47CF984F1E0088ED0077F5F2 /* Angle.cpp */,
 				470ADAAB25546D2700EEE99D /* ArrayAllocator.cpp */,
 				4734B21B1DC1121900F15E29 /* ArrayList.cpp */,
+				99CF862E29B9087700D9D112 /* BaseShapeConf.cpp */,
 				475A94531D930503000CA9A8 /* BlockAllocator.cpp */,
 				476FBF52253FB96E0057D5F3 /* Body.cpp */,
 				476FBF4E253FAD690057D5F3 /* BodyConf.cpp */,
@@ -1208,6 +1211,7 @@
 				80BB8957141C3E5900F1753A /* World.hpp */,
 				4764089625226D7C0090F711 /* WorldBody.cpp */,
 				4764088C252268A30090F711 /* WorldBody.hpp */,
+				47440F0A1EDA365400AB3F51 /* WorldConf.hpp */,
 				4764089B25226E170090F711 /* WorldContact.cpp */,
 				476408912522698E0090F711 /* WorldContact.hpp */,
 				4764089825226E170090F711 /* WorldJoint.cpp */,
@@ -1216,7 +1220,6 @@
 				4764088F2522698E0090F711 /* WorldMisc.hpp */,
 				4795B64B262DF06800FB3EC6 /* WorldShape.cpp */,
 				4795B64A262DF06800FB3EC6 /* WorldShape.hpp */,
-				47440F0A1EDA365400AB3F51 /* WorldConf.hpp */,
 				47640861250807720090F711 /* WorldImpl.cpp */,
 				47640860250807720090F711 /* WorldImpl.hpp */,
 				47640880251F0F9B0090F711 /* WorldImplBody.cpp */,
@@ -1757,6 +1760,7 @@
 				4731DE4D1DE90D8200E7F931 /* MassData.cpp in Sources */,
 				474FDB531E72643D00F401AF /* forward_list.cpp in Sources */,
 				473971AA1D9F0E4E00F7137F /* ContactSolver.cpp in Sources */,
+				99CF862F29B9087700D9D112 /* BaseShapeConf.cpp in Sources */,
 				475A94541D930503000CA9A8 /* BlockAllocator.cpp in Sources */,
 				47B58F601F5B791500354C34 /* FlagGuard.cpp in Sources */,
 				4731DDFC1DC8FBEE00E7F931 /* Island.cpp in Sources */,
@@ -2029,6 +2033,7 @@
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				HEADER_SEARCH_PATHS = (
+					/opt/homebrew/opt/boost/include,
 					/usr/local/boost_1_75_0,
 					/usr/local/include,
 					/opt/homebrew/opt/googletest/include,
@@ -2049,6 +2054,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
+					/opt/homebrew/opt/boost/include,
 					/usr/local/boost_1_75_0,
 					/usr/local/include,
 					/opt/homebrew/opt/googletest/include,
@@ -2068,6 +2074,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
+					/opt/homebrew/opt/boost/include,
 					/usr/local/include,
 					/usr/local/boost_1_75_0,
 					../..,
@@ -2089,6 +2096,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
+					/opt/homebrew/opt/boost/include,
 					/usr/local/include,
 					/usr/local/boost_1_75_0,
 					../..,
@@ -2106,6 +2114,11 @@
 		80BB8912141C3E2700F1753A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					/opt/homebrew/opt/boost/include,
+					/usr/local/boost_1_75_0,
+					../..,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -2113,6 +2126,11 @@
 		80BB8913141C3E2700F1753A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					/opt/homebrew/opt/boost/include,
+					/usr/local/boost_1_75_0,
+					../..,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -2125,6 +2143,7 @@
 					../../Testbed/Framework/imgui,
 					../../Testbed/Framework/imgui/examples/libs/gl3w/,
 					../..,
+					/opt/homebrew/opt/boost/include,
 					/usr/local/include,
 					/usr/local/boost_1_75_0,
 					/opt/homebrew/opt/glfw/include,
@@ -2152,6 +2171,7 @@
 					../../Testbed/Framework/imgui,
 					../../Testbed/Framework/imgui/examples/libs/gl3w/,
 					../..,
+					/opt/homebrew/opt/boost/include,
 					/usr/local/include,
 					/usr/local/boost_1_75_0,
 					/opt/homebrew/opt/glfw/include,
@@ -2337,6 +2357,11 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				HEADER_SEARCH_PATHS = (
+					/opt/homebrew/opt/boost/include,
+					/usr/local/boost_1_75_0,
+					../..,
+				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -2356,6 +2381,11 @@
 				DEPLOYMENT_POSTPROCESSING = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
+				HEADER_SEARCH_PATHS = (
+					/opt/homebrew/opt/boost/include,
+					/usr/local/boost_1_75_0,
+					../..,
+				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
 					"-Wextra",
