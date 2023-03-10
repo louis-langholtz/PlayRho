@@ -186,7 +186,7 @@ public:
 
 private:
     size_type m_size = size_type{0};
-    std::array<value_type, MAXSIZE> m_elements;
+    std::array<value_type, MAXSIZE> m_elements = {};
 };
 
 /// @brief <code>ArrayList</code> append operator.

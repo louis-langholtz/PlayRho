@@ -41,16 +41,13 @@ public:
     /// @brief Default constructor.
     SimplexEdge() = default;
     
-    /// @brief Copy constructor.
-    constexpr SimplexEdge(const SimplexEdge& copy) = default;
-    
     /// @brief Initializing constructor.
     /// @param pA Point A in world coordinates.
     /// @param iA Index of point A within the shape that it comes from.
     /// @param pB Point B in world coordinates.
     /// @param iB Index of point B within the shape that it comes from.
     constexpr SimplexEdge(Length2 pA, VertexCounter iA,
-                                         Length2 pB, VertexCounter iB) noexcept;
+                          Length2 pB, VertexCounter iB) noexcept;
     
     /// @brief Gets point A (in world coordinates).
     constexpr auto GetPointA() const noexcept { return m_wA; }
@@ -68,9 +65,9 @@ public:
     constexpr auto GetIndexPair() const noexcept { return m_indexPair; }
 
 private:
-    Length2 m_wA; ///< Point A in world coordinates. This is the support point in proxy A. 8-bytes.
-    Length2 m_wB; ///< Point B in world coordinates. This is the support point in proxy B. 8-bytes.
-    IndexPair m_indexPair; ///< Index pair. @details Indices of points A and B. 2-bytes.
+    Length2 m_wA{}; ///< Point A in world coordinates. This is the support point in proxy A. 8-bytes.
+    Length2 m_wB{}; ///< Point B in world coordinates. This is the support point in proxy B. 8-bytes.
+    IndexPair m_indexPair{}; ///< Index pair. @details Indices of points A and B. 2-bytes.
 };
 
 constexpr SimplexEdge::SimplexEdge(Length2 pA, VertexCounter iA,

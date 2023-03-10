@@ -70,7 +70,7 @@ private:
 
     /// @brief Total "Radius" distance of the associated shapes of fixture A and fixture B.
     /// @note 0 or greater.
-    Length m_totalRadius; // 4-bytes.
+    Length m_totalRadius{}; // 4-bytes.
 };
 
 } // namespace d2

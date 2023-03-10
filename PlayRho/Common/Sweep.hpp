@@ -44,9 +44,6 @@ public:
     /// @brief Default constructor.
     Sweep() = default;
 
-    /// @brief Copy constructor.
-    constexpr Sweep(const Sweep& copy) = default;
-
     /// @brief Initializing constructor.
     constexpr Sweep(const Position p0, const Position p1, const Length2 lc = Length2{0_m, 0_m},
                     Real a0 = 0) noexcept
@@ -97,10 +94,10 @@ public:
     }
 
     /// @brief Center world position and world angle at time "0".
-    Position pos0;
+    Position pos0{};
 
     /// @brief Center world position and world angle at time "1".
-    Position pos1;
+    Position pos1{};
 
 private:
     /// @brief Local center of mass position.
