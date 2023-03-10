@@ -670,7 +670,7 @@ void WorldImpl::Clear() noexcept
         }
         catch (...)
         {
-            // Don't all exception to escape.
+            // Don't allow exception to escape.
         }
     }
     if (m_shapeDestructionListener) {
@@ -684,7 +684,7 @@ void WorldImpl::Clear() noexcept
         }
         catch (...)
         {
-            // Don't all exception to escape.
+            // Don't allow exception to escape.
         }
     }
     m_contacts.clear();
