@@ -114,3 +114,15 @@ TEST(StackAllocator, uses_malloc_when_full)
     foo.Free(p);
     EXPECT_EQ(foo.GetEntryCount(), decltype(foo.GetEntryCount()){0});
 }
+
+TEST(StackAllocator, ZeroConfig)
+{
+    constexpr auto allocationRecords = 0u;
+    constexpr auto allocationSize = 0u;
+    StackAllocator foo{StackAllocator::Conf{allocationSize, allocationRecords}};
+    EXPECT_EQ(foo.GetIndex(), 0u);
+    EXPECT_EQ(foo.GetPreallocatedSize(), allocationSize);
+    EXPECT_EQ(foo.GetMaxEntries(), allocationRecords);
+    EXPECT_EQ(foo.Allocate(0u), nullptr);
+    EXPECT_NO_THROW(foo.Free(nullptr));
+}
