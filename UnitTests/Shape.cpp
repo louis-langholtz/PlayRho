@@ -367,6 +367,14 @@ TEST(Shape, TypeCast)
     EXPECT_THROW(TypeCast<int>(shape), std::bad_cast);
 }
 
+TEST(Shape, SetVertexRadius)
+{
+    auto foo = Shape{DiskShapeConf{1_m}};
+    const auto radius = NonNegative<Length>(0.42_m);
+    EXPECT_NO_THROW(SetVertexRadius(foo, 0, radius));
+    EXPECT_EQ(GetVertexRadius(foo, 0), radius);
+}
+
 TEST(Shape, ForConstantDataTypeCastIsLikeAnyCast)
 {
     const auto foo = Shape{DiskShapeConf{1_m}};
