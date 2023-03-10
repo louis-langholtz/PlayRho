@@ -42,7 +42,7 @@ namespace playrho {
         /// @brief Allocator block sizes array data.
         static constexpr std::size_t AllocatorBlockSizes[] =
         {
-            16, 32, 64, 96, 128, 160, 192, 224, 256, 320, 384, 448, 512, 640,
+            16u, 32u, 64u, 96u, 128u, 160u, 192u, 224u, 256u, 320u, 384u, 448u, 512u, 640u,
         };
 
         /// @brief Chunk size.
@@ -112,8 +112,8 @@ namespace playrho {
         
         size_type m_chunkCount = 0; ///< Chunk count.
         size_type m_chunkSpace = GetChunkArrayIncrement(); ///< Chunk space.
-        Chunk* m_chunks; ///< Chunks array.
-        Block* m_freeLists[size(AllocatorBlockSizes)]; ///< Free lists.
+        Chunk* m_chunks = nullptr; ///< Chunks array.
+        Block* m_freeLists[size(AllocatorBlockSizes)] = {}; ///< Free lists.
     };
     
     /// Block deallocator.

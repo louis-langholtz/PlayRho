@@ -62,7 +62,7 @@ static constexpr auto k_errorTol = 1e-3_mps; ///< error tolerance
 ///
 struct ImpulseChange
 {
-    Momentum magnitude; ///< Magnitude.
+    Momentum magnitude{}; ///< Magnitude.
     UnitVec direction; ///< Direction.
 };
 

@@ -115,7 +115,6 @@ BlockAllocator::BlockAllocator():
     static_assert(size(AllocatorBlockSizes) < std::numeric_limits<std::uint8_t>::max(),
                   "AllocatorBlockSizes too big");
     std::memset(m_chunks, 0, m_chunkSpace * sizeof(Chunk));
-    std::memset(m_freeLists, 0, sizeof(m_freeLists));
 }
 
 BlockAllocator::~BlockAllocator() noexcept

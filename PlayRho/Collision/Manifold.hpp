@@ -135,13 +135,13 @@ public:
         /// point of shape A. It is also the point at which impulse forces should be relatively
         /// applied for position resolution.
         /// @note 8-bytes.
-        Length2 localPoint;
+        Length2 localPoint = {};
 
         /// @brief The contact feature.
         /// @details Uniquely identifies a contact point between two shapes - A and B.
         /// @note This field is 4-bytes.
         /// @see GetPointStates.
-        ContactFeature contactFeature;
+        ContactFeature contactFeature = {};
 
         /// @brief Normal impulse.
         /// @details This is the non-penetration impulse.

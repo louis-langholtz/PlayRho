@@ -60,8 +60,8 @@ public:
     }
     
 private:
-    Momentum normalImpulses[MaxManifoldPoints]; ///< Normal impulses.
-    Momentum tangentImpulses[MaxManifoldPoints]; ///< Tangent impulses.
+    Momentum normalImpulses[MaxManifoldPoints] = {}; ///< Normal impulses.
+    Momentum tangentImpulses[MaxManifoldPoints] = {}; ///< Tangent impulses.
     Counter count = 0; ///< Count of entries added.
 };
 

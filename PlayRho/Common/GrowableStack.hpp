@@ -126,7 +126,7 @@ public:
     }
 
 private:
-    ElementType m_array[N]; ///< Array data.
+    ElementType m_array[N] = {}; ///< Array data.
     ElementType* m_stack = m_array; ///< Pointer to array of data.
     CountType m_count = 0; ///< Count of elements.
     CountType m_capacity = N; ///< Capacity for storing elements.
