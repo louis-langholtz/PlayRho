@@ -226,6 +226,7 @@ TEST(MultiShapeConf, SetVertexRadius)
     const auto amount = 2_m;
     EXPECT_NO_THROW(SetVertexRadius(foo, 0u, amount));
     EXPECT_EQ(foo.children.at(0).GetVertexRadius(), amount);
+    EXPECT_THROW(SetVertexRadius(foo, 1u, amount), InvalidArgument);
 }
 
 TEST(MultiShapeConf, GetInvalidChildThrows)
