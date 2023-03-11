@@ -126,6 +126,10 @@ AngularVelocity GetAngularVelocity(const World& world, const RevoluteJointConf& 
 void InitVelocity(RevoluteJointConf& object, std::vector<BodyConstraint>& bodies,
                   const StepConf& step, const ConstraintSolverConf& conf)
 {
+    if ((GetBodyA(object) == InvalidBodyID) || (GetBodyB(object) == InvalidBodyID)) {
+        return;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
 
@@ -223,6 +227,10 @@ void InitVelocity(RevoluteJointConf& object, std::vector<BodyConstraint>& bodies
 bool SolveVelocity(RevoluteJointConf& object, std::vector<BodyConstraint>& bodies,
                    const StepConf& step)
 {
+    if ((GetBodyA(object) == InvalidBodyID) || (GetBodyB(object) == InvalidBodyID)) {
+        return true;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
 
@@ -338,6 +346,10 @@ bool SolveVelocity(RevoluteJointConf& object, std::vector<BodyConstraint>& bodie
 bool SolvePosition(const RevoluteJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf)
 {
+    if ((GetBodyA(object) == InvalidBodyID) || (GetBodyB(object) == InvalidBodyID)) {
+        return true;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
 

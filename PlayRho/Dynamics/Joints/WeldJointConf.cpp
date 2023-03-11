@@ -113,6 +113,10 @@ WeldJointConf GetWeldJointConf(const World& world, BodyID bodyA, BodyID bodyB, c
 void InitVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies, const StepConf& step,
                   const ConstraintSolverConf&)
 {
+    if ((GetBodyA(object) == InvalidBodyID) || (GetBodyB(object) == InvalidBodyID)) {
+        return;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
 
@@ -214,6 +218,10 @@ void InitVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies, co
 /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
 bool SolveVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies, const StepConf&)
 {
+    if ((GetBodyA(object) == InvalidBodyID) || (GetBodyB(object) == InvalidBodyID)) {
+        return true;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
 
@@ -299,6 +307,10 @@ bool SolveVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies, c
 bool SolvePosition(const WeldJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf)
 {
+    if ((GetBodyA(object) == InvalidBodyID) || (GetBodyB(object) == InvalidBodyID)) {
+        return true;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
 

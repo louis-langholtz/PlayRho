@@ -89,6 +89,10 @@ PulleyJointConf GetPulleyJointConf(const World& world, BodyID bA, BodyID bB, Len
 void InitVelocity(PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
                   const StepConf& step, const ConstraintSolverConf&)
 {
+    if ((GetBodyA(object) == InvalidBodyID) || (GetBodyB(object) == InvalidBodyID)) {
+        return;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
 
@@ -147,6 +151,10 @@ void InitVelocity(PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
 
 bool SolveVelocity(PulleyJointConf& object, std::vector<BodyConstraint>& bodies, const StepConf&)
 {
+    if ((GetBodyA(object) == InvalidBodyID) || (GetBodyB(object) == InvalidBodyID)) {
+        return true;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
 
@@ -181,6 +189,10 @@ bool SolveVelocity(PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
 bool SolvePosition(const PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf)
 {
+    if ((GetBodyA(object) == InvalidBodyID) || (GetBodyB(object) == InvalidBodyID)) {
+        return true;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
 

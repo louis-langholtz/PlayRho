@@ -59,6 +59,10 @@ RopeJointConf GetRopeJointConf(const Joint& joint)
 void InitVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies, const StepConf& step,
                   const ConstraintSolverConf& conf)
 {
+    if ((GetBodyA(object) == InvalidBodyID) || (GetBodyB(object) == InvalidBodyID)) {
+        return;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
 
@@ -128,6 +132,10 @@ void InitVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies, co
 
 bool SolveVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies, const StepConf& step)
 {
+    if ((GetBodyA(object) == InvalidBodyID) || (GetBodyB(object) == InvalidBodyID)) {
+        return true;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
 
@@ -166,6 +174,10 @@ bool SolveVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies, c
 bool SolvePosition(const RopeJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf)
 {
+    if ((GetBodyA(object) == InvalidBodyID) || (GetBodyB(object) == InvalidBodyID)) {
+        return true;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
 

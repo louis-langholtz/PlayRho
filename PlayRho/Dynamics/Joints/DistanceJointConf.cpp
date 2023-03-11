@@ -80,6 +80,10 @@ DistanceJointConf GetDistanceJointConf(const World& world, BodyID bodyA, BodyID 
 void InitVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodies,
                   const StepConf& step, const ConstraintSolverConf&)
 {
+    if ((GetBodyA(object) == InvalidBodyID) || (GetBodyB(object) == InvalidBodyID)) {
+        return;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
 
@@ -163,6 +167,10 @@ void InitVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodies
 
 bool SolveVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodies, const StepConf&)
 {
+    if ((GetBodyA(object) == InvalidBodyID) || (GetBodyB(object) == InvalidBodyID)) {
+        return true;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
 
@@ -194,13 +202,17 @@ bool SolveVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodie
 bool SolvePosition(const DistanceJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf)
 {
-    if (object.frequency > 0_Hz) {
-        // There is no position correction for soft distance constraints.
+    if ((GetBodyA(object) == InvalidBodyID) || (GetBodyB(object) == InvalidBodyID)) {
         return true;
     }
 
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
+
+    if (object.frequency > 0_Hz) {
+        // There is no position correction for soft distance constraints.
+        return true;
+    }
 
     auto posA = bodyConstraintA.GetPosition();
     auto posB = bodyConstraintB.GetPosition();

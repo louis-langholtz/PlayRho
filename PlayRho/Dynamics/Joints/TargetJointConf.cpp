@@ -84,6 +84,10 @@ Mass22 GetEffectiveMassMatrix(const TargetJointConf& object, const BodyConstrain
 void InitVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
                   const StepConf& step, const ConstraintSolverConf&)
 {
+    if (GetBodyB(object) == InvalidBodyID) {
+        return;
+    }
+
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
 
     const auto posB = bodyConstraintB.GetPosition();
@@ -143,6 +147,10 @@ void InitVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
 bool SolveVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
                    const StepConf& step)
 {
+    if (GetBodyB(object) == InvalidBodyID) {
+        return true;
+    }
+
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
 
     auto velB = bodyConstraintB.GetVelocity();

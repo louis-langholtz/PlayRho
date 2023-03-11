@@ -342,13 +342,15 @@ TEST(PulleyJointConf, InitVelocityColdStartResetsImpulse)
     EXPECT_EQ(jd.impulse, 0_Ns);
 }
 
-TEST(PulleyJointConf, InitVelocitySetsMass)
+TEST(PulleyJointConf, InitVelocity)
 {
-    auto stepConf = StepConf{};
     auto jd = PulleyJointConf{};
+    std::vector<BodyConstraint> bodies;
+    auto stepConf = StepConf{};
+    EXPECT_NO_THROW(InitVelocity(jd, bodies, stepConf, ConstraintSolverConf{}));
     jd.bodyA = BodyID(0u);
     jd.bodyB = BodyID(1u);
-    std::vector<BodyConstraint> bodies;
+    EXPECT_THROW(InitVelocity(jd, bodies, stepConf, ConstraintSolverConf{}), std::out_of_range);
     bodies.push_back(
         BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, Position{}, Velocity{}});
     bodies.push_back(
@@ -364,10 +366,13 @@ TEST(PulleyJointConf, SolveVelocity)
 {
     auto jd = PulleyJointConf{};
     std::vector<BodyConstraint> bodies;
-    EXPECT_THROW(SolveVelocity(jd, bodies, StepConf{}), std::out_of_range);
+    auto result = false;
+    EXPECT_NO_THROW(result = SolveVelocity(jd, bodies, StepConf{}));
+    EXPECT_TRUE(result);
 
     jd.bodyA = BodyID(0u);
     jd.bodyB = BodyID(0u);
+    EXPECT_THROW(SolveVelocity(jd, bodies, StepConf{}), std::out_of_range);
     bodies.push_back(BodyConstraint{});
     EXPECT_NO_THROW(SolveVelocity(jd, bodies, StepConf{}));
     EXPECT_EQ(bodies[0].GetPosition(), Position());
@@ -385,17 +390,21 @@ TEST(PulleyJointConf, SolveVelocity)
 TEST(PulleyJointConf, SolvePosition)
 {
     auto jd = PulleyJointConf{};
+    std::vector<BodyConstraint> bodies;
+    auto result = false;
+    EXPECT_NO_THROW(result = SolvePosition(jd, bodies, ConstraintSolverConf{}));
+    EXPECT_TRUE(result);
     jd.localAnchorA = Length2{};
     jd.localAnchorB = Length2{};
-    std::vector<BodyConstraint> bodies;
-    EXPECT_THROW(SolvePosition(jd, bodies, ConstraintSolverConf{}), std::out_of_range);
+    EXPECT_NO_THROW(SolvePosition(jd, bodies, ConstraintSolverConf{}));
 
+    jd.bodyA = BodyID(0u);
+    jd.bodyB = BodyID(1u);
+    EXPECT_THROW(SolvePosition(jd, bodies, ConstraintSolverConf{}), std::out_of_range);
     const auto posA = Position{Length2{-5_m, 0_m}, 0_deg};
     const auto posB = Position{Length2{+5_m, 0_m}, 0_deg};
     jd.groundAnchorA = posA.linear + Length2{0_m, 8_m};
     jd.groundAnchorB = posB.linear + Length2{0_m, 8_m};
-    jd.bodyA = BodyID(0u);
-    jd.bodyB = BodyID(1u);
     bodies.push_back(BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, posA, Velocity{}});
     bodies.push_back(BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, posB, Velocity{}});
 
