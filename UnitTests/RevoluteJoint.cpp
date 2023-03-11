@@ -58,6 +58,30 @@ TEST(RevoluteJointConf, ByteSize)
     }
 }
 
+TEST(RevoluteJointConf, DefaultConstruction)
+{
+    const auto jd = RevoluteJointConf{};
+    EXPECT_EQ(jd.bodyA, InvalidBodyID);
+    EXPECT_EQ(jd.bodyB, InvalidBodyID);
+    EXPECT_EQ(jd.collideConnected, false);
+    EXPECT_EQ(jd.localAnchorA, Length2());
+    EXPECT_EQ(jd.localAnchorB, Length2());
+    EXPECT_EQ(jd.impulse, Vec3());
+    EXPECT_EQ(jd.angularMotorImpulse, AngularMomentum());
+    EXPECT_EQ(jd.referenceAngle, 0_deg);
+    EXPECT_EQ(jd.enableLimit, false);
+    EXPECT_EQ(jd.lowerAngle, 0_deg);
+    EXPECT_EQ(jd.upperAngle, 0_deg);
+    EXPECT_EQ(jd.enableMotor, false);
+    EXPECT_EQ(jd.motorSpeed, 0_rpm);
+    EXPECT_EQ(jd.maxMotorTorque, Torque());
+    EXPECT_EQ(jd.rA, Length2());
+    EXPECT_EQ(jd.rB, Length2());
+    EXPECT_EQ(jd.mass, Mat33());
+    EXPECT_EQ(jd.angularMass, RotInertia());
+    EXPECT_EQ(jd.limitState, LimitState::e_inactiveLimit);
+}
+
 TEST(RevoluteJoint, Construction)
 {
     World world;
