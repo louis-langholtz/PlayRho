@@ -25,12 +25,13 @@
 
 struct UiState
 {
+    std::string message;
     bool showMenu = true;
     bool showAboutTest = true;
     bool showStats = false;
     bool showContactsHistory = false;
     bool showEntities = false;
-    std::string message;
+    bool doExit = false;
 };
 
 #endif /* UiState_hpp */
