@@ -30,6 +30,8 @@
 #include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/WorldShape.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 #include <cstring> // for std::memcmp
@@ -230,4 +232,47 @@ TEST(RopeJointConf, NotEqualsOperator)
 TEST(RopeJointConf, GetName)
 {
     EXPECT_STREQ(GetName(GetTypeID<RopeJointConf>()), "d2::RopeJointConf");
+}
+
+TEST(RopeJointConf, InitVelocity)
+{
+    auto conf = RopeJointConf{};
+    std::vector<BodyConstraint> bodies;
+    EXPECT_NO_THROW(InitVelocity(conf, bodies, StepConf{}, ConstraintSolverConf{}));
+    conf.bodyA = BodyID(0);
+    conf.bodyB = BodyID(0);
+    EXPECT_THROW(InitVelocity(conf, bodies, StepConf{}, ConstraintSolverConf{}), std::out_of_range);
+    const auto posA = Position{Length2{-5_m, 0_m}, 0_deg};
+    bodies.push_back(BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, posA, Velocity{}});
+    EXPECT_NO_THROW(InitVelocity(conf, bodies, StepConf{}, ConstraintSolverConf{}));
+}
+
+TEST(RopeJointConf, SolveVelocity)
+{
+    auto conf = RopeJointConf{};
+    std::vector<BodyConstraint> bodies;
+    auto result = false;
+    EXPECT_NO_THROW(result = SolveVelocity(conf, bodies, StepConf{}));
+    EXPECT_TRUE(result);
+    conf.bodyA = BodyID(0);
+    conf.bodyB = BodyID(0);
+    EXPECT_THROW(SolveVelocity(conf, bodies, StepConf{}), std::out_of_range);
+    const auto posA = Position{Length2{-5_m, 0_m}, 0_deg};
+    bodies.push_back(BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, posA, Velocity{}});
+    EXPECT_NO_THROW(result = SolveVelocity(conf, bodies, StepConf{}));
+}
+
+TEST(RopeJointConf, SolvePosition)
+{
+    auto conf = RopeJointConf{};
+    std::vector<BodyConstraint> bodies;
+    auto result = false;
+    EXPECT_NO_THROW(result = SolvePosition(conf, bodies, ConstraintSolverConf{}));
+    EXPECT_TRUE(result);
+    conf.bodyA = BodyID(0);
+    conf.bodyB = BodyID(0);
+    EXPECT_THROW(SolvePosition(conf, bodies, ConstraintSolverConf{}), std::out_of_range);
+    const auto posA = Position{Length2{-5_m, 0_m}, 0_deg};
+    bodies.push_back(BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, posA, Velocity{}});
+    EXPECT_NO_THROW(result = SolvePosition(conf, bodies, ConstraintSolverConf{}));
 }

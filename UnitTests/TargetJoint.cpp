@@ -242,15 +242,6 @@ TEST(TargetJointConf, GetEffectiveMassMatrix)
     EXPECT_EQ(mass[1][1], 0_kg);
 }
 
-TEST(TargetJointConf, InitVelocityThrows)
-{
-    std::vector<BodyConstraint> bodies;
-    auto step = StepConf{};
-    auto conf = ConstraintSolverConf{};
-    auto def = TargetJointConf{};
-    EXPECT_THROW(InitVelocity(def, bodies, step, conf), std::out_of_range);
-}
-
 TEST(TargetJointConf, InitVelocityUpdatesGamma)
 {
     auto invMass = InvMass{};
@@ -280,22 +271,39 @@ TEST(TargetJointConf, InitVelocityUpdatesGamma)
     EXPECT_EQ(def.gamma, Real(0) / 1_kg);
 }
 
-TEST(TargetJointConf, SolveVelocityThrows)
+TEST(TargetJointConf, InitVelocity)
 {
+    auto conf = TargetJointConf{};
     std::vector<BodyConstraint> bodies;
-    auto step = StepConf{};
-    auto def = TargetJointConf{};
-    EXPECT_THROW(SolveVelocity(def, bodies, step), std::out_of_range);
+    EXPECT_NO_THROW(InitVelocity(conf, bodies, StepConf{}, ConstraintSolverConf{}));
+    conf.bodyB = BodyID(0);
+    EXPECT_THROW(InitVelocity(conf, bodies, StepConf{}, ConstraintSolverConf{}), std::out_of_range);
+    const auto posA = Position{Length2{-5_m, 0_m}, 0_deg};
+    bodies.push_back(BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, posA, Velocity{}});
+    EXPECT_NO_THROW(InitVelocity(conf, bodies, StepConf{}, ConstraintSolverConf{}));
 }
 
-TEST(TargetJointConf, SolvePositionThrows)
+TEST(TargetJointConf, SolveVelocity)
 {
+    auto conf = TargetJointConf{};
     std::vector<BodyConstraint> bodies;
-    auto conf = ConstraintSolverConf{};
-    auto def = TargetJointConf{};
     auto result = false;
-    EXPECT_NO_THROW(result = SolvePosition(def, bodies, conf));
+    EXPECT_NO_THROW(result = SolveVelocity(conf, bodies, StepConf{}));
     EXPECT_EQ(result, true);
+    conf.bodyB = BodyID(0);
+    EXPECT_THROW(SolveVelocity(conf, bodies, StepConf{}), std::out_of_range);
+    const auto posA = Position{Length2{-5_m, 0_m}, 0_deg};
+    bodies.push_back(BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, posA, Velocity{}});
+    EXPECT_NO_THROW(result = SolveVelocity(conf, bodies, StepConf{}));
+}
+
+TEST(TargetJointConf, SolvePosition)
+{
+    auto conf = TargetJointConf{};
+    std::vector<BodyConstraint> bodies;
+    auto result = false;
+    EXPECT_NO_THROW(result = SolvePosition(conf, bodies, ConstraintSolverConf{}));
+    EXPECT_TRUE(result);
 }
 
 TEST(TargetJointConf, EqualsOperator)

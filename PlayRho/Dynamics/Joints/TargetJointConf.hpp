@@ -203,6 +203,13 @@ Mass22 GetEffectiveMassMatrix(const TargetJointConf& object, const BodyConstrain
 
 /// @brief Initializes velocity constraint data based on the given solver data.
 /// @note This MUST be called prior to calling <code>SolveVelocity</code>.
+/// @param object Configuration object. <code>bodyB</code> must index a body within
+///   the given <code>bodies</code> container or be the special body ID value of <code>InvalidBodyID</code>.
+/// @param bodies Container of body constraints.
+/// @param step Configuration for the step.
+/// @param conf Constraint solver configuration.
+/// @throws std::out_of_range If the given object's <code>bodyB</code> value is not
+///  <code>InvalidBodyID</code> and does not index within range of the given <code>bodies</code> container.
 /// @see SolveVelocity.
 /// @relatedalso TargetJointConf
 void InitVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
@@ -210,6 +217,12 @@ void InitVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
 
 /// @brief Solves velocity constraint.
 /// @pre <code>InitVelocity</code> has been called.
+/// @param object Configuration object. <code>bodyB</code> must index a body within
+///   the given <code>bodies</code> container or be the special body ID value of <code>InvalidBodyID</code>.
+/// @param bodies Container of body constraints.
+/// @param step Configuration for the step.
+/// @throws std::out_of_range If the given object's <code>bodyB</code> value is not
+///  <code>InvalidBodyID</code> and does not index within range of the given <code>bodies</code> container.
 /// @see InitVelocity.
 /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
 /// @relatedalso TargetJointConf
@@ -217,7 +230,8 @@ bool SolveVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
                    const StepConf& step);
 
 /// @brief Solves the position constraint.
-/// @return <code>true</code> if the position errors are within tolerance.
+/// @note This is a no-op and always returns <code>true</code>.
+/// @return <code>true</code>.
 /// @relatedalso TargetJointConf
 bool SolvePosition(const TargetJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);

@@ -76,6 +76,10 @@ FrictionJointConf GetFrictionJointConf(const World& world, BodyID bodyA, BodyID 
 void InitVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodies,
                   const StepConf& step, const ConstraintSolverConf&)
 {
+    if ((GetBodyA(object) == InvalidBodyID) || (GetBodyB(object) == InvalidBodyID)) {
+        return;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
     const auto posA = bodyConstraintA.GetPosition();
@@ -152,6 +156,10 @@ void InitVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodies
 bool SolveVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodies,
                    const StepConf& step)
 {
+    if ((GetBodyA(object) == InvalidBodyID) || (GetBodyB(object) == InvalidBodyID)) {
+        return true;
+    }
+
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
 

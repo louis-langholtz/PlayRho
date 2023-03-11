@@ -30,6 +30,8 @@
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 using namespace playrho;
@@ -322,4 +324,47 @@ TEST(WeldJointConf, SetFrequencyFreeFunction)
     EXPECT_EQ(GetFrequency(joint), frequencyA);
     EXPECT_NO_THROW(SetFrequency(joint, frequencyB));
     EXPECT_EQ(GetFrequency(joint), frequencyB);
+}
+
+TEST(WeldJointConf, InitVelocity)
+{
+    auto conf = WeldJointConf{};
+    std::vector<BodyConstraint> bodies;
+    EXPECT_NO_THROW(InitVelocity(conf, bodies, StepConf{}, ConstraintSolverConf{}));
+    conf.bodyA = BodyID(0);
+    conf.bodyB = BodyID(0);
+    EXPECT_THROW(InitVelocity(conf, bodies, StepConf{}, ConstraintSolverConf{}), std::out_of_range);
+    const auto posA = Position{Length2{-5_m, 0_m}, 0_deg};
+    bodies.push_back(BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, posA, Velocity{}});
+    EXPECT_NO_THROW(InitVelocity(conf, bodies, StepConf{}, ConstraintSolverConf{}));
+}
+
+TEST(WeldJointConf, SolveVelocity)
+{
+    auto conf = WeldJointConf{};
+    std::vector<BodyConstraint> bodies;
+    auto result = false;
+    EXPECT_NO_THROW(result = SolveVelocity(conf, bodies, StepConf{}));
+    EXPECT_TRUE(result);
+    conf.bodyA = BodyID(0);
+    conf.bodyB = BodyID(0);
+    EXPECT_THROW(SolveVelocity(conf, bodies, StepConf{}), std::out_of_range);
+    const auto posA = Position{Length2{-5_m, 0_m}, 0_deg};
+    bodies.push_back(BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, posA, Velocity{}});
+    EXPECT_NO_THROW(result = SolveVelocity(conf, bodies, StepConf{}));
+}
+
+TEST(WeldJointConf, SolvePosition)
+{
+    auto conf = WeldJointConf{};
+    std::vector<BodyConstraint> bodies;
+    auto result = false;
+    EXPECT_NO_THROW(result = SolvePosition(conf, bodies, ConstraintSolverConf{}));
+    EXPECT_TRUE(result);
+    conf.bodyA = BodyID(0);
+    conf.bodyB = BodyID(0);
+    EXPECT_THROW(SolvePosition(conf, bodies, ConstraintSolverConf{}), std::out_of_range);
+    const auto posA = Position{Length2{-5_m, 0_m}, 0_deg};
+    bodies.push_back(BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, posA, Velocity{}});
+    EXPECT_NO_THROW(result = SolvePosition(conf, bodies, ConstraintSolverConf{}));
 }

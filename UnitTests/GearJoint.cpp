@@ -347,3 +347,52 @@ TEST(GearJointConf, GetName)
 {
     EXPECT_STREQ(GetName(GetTypeID<GearJointConf>()), "d2::GearJointConf");
 }
+
+TEST(GearJointConf, InitVelocity)
+{
+    auto conf = GearJointConf{};
+    std::vector<BodyConstraint> bodies;
+    EXPECT_NO_THROW(InitVelocity(conf, bodies, StepConf{}, ConstraintSolverConf{}));
+    conf.bodyA = BodyID(0);
+    conf.bodyB = BodyID(0);
+    conf.bodyC = BodyID(0);
+    conf.bodyD = BodyID(0);
+    EXPECT_THROW(InitVelocity(conf, bodies, StepConf{}, ConstraintSolverConf{}), std::out_of_range);
+    const auto posA = Position{Length2{-5_m, 0_m}, 0_deg};
+    bodies.push_back(BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, posA, Velocity{}});
+    EXPECT_NO_THROW(InitVelocity(conf, bodies, StepConf{}, ConstraintSolverConf{}));
+}
+
+TEST(GearJointConf, SolveVelocity)
+{
+    auto conf = GearJointConf{};
+    std::vector<BodyConstraint> bodies;
+    auto result = false;
+    EXPECT_NO_THROW(result = SolveVelocity(conf, bodies, StepConf{}));
+    EXPECT_TRUE(result);
+    conf.bodyA = BodyID(0);
+    conf.bodyB = BodyID(0);
+    conf.bodyC = BodyID(0);
+    conf.bodyD = BodyID(0);
+    EXPECT_THROW(SolveVelocity(conf, bodies, StepConf{}), std::out_of_range);
+    const auto posA = Position{Length2{-5_m, 0_m}, 0_deg};
+    bodies.push_back(BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, posA, Velocity{}});
+    EXPECT_NO_THROW(result = SolveVelocity(conf, bodies, StepConf{}));
+}
+
+TEST(GearJointConf, SolvePosition)
+{
+    auto conf = GearJointConf{};
+    std::vector<BodyConstraint> bodies;
+    auto result = false;
+    EXPECT_NO_THROW(result = SolvePosition(conf, bodies, ConstraintSolverConf{}));
+    EXPECT_TRUE(result);
+    conf.bodyA = BodyID(0);
+    conf.bodyB = BodyID(0);
+    conf.bodyC = BodyID(0);
+    conf.bodyD = BodyID(0);
+    EXPECT_THROW(SolvePosition(conf, bodies, ConstraintSolverConf{}), std::out_of_range);
+    const auto posA = Position{Length2{-5_m, 0_m}, 0_deg};
+    bodies.push_back(BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, posA, Velocity{}});
+    EXPECT_NO_THROW(result = SolvePosition(conf, bodies, ConstraintSolverConf{}));
+}
