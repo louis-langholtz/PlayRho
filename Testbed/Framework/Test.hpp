@@ -233,7 +233,6 @@ public:
     static const char* ToName(DistanceOutput::State value);
     static const char* ToName(TypeID type) noexcept;
     static const char* ToName(BodyType value) noexcept;
-    static bool AlertUser(const std::string& title, const char* fmt, ...);
     static const LinearAcceleration2 Gravity;
     static const std::map<TypeID, const char*> shapeTypeToNameMap;
     static const std::map<TypeID, const char*> jointTypeToNameMap;
@@ -314,6 +313,8 @@ public:
 
     void SetSelectedFixtures(const FixtureSet& value) noexcept;
 
+    int GetStepCount() const noexcept { return m_stats.m_stepCount; }
+
 protected:
     EdgeShapeConf GetGroundEdgeConf() const noexcept
     {
@@ -378,8 +379,6 @@ protected:
     }
 
     void ResetWorld(const World& saved);
-
-    int GetStepCount() const noexcept { return m_stats.m_stepCount; }
 
     BodyID GetBomb() const noexcept { return m_bomb; }
     
@@ -448,7 +447,6 @@ private:
     World m_world;
 
     std::string m_status;
-    std::string m_alertMessage;
     TextLinePos m_textLine = TextLinePos{30};
     AreaDensity m_bombDensity = 20_kgpm2;
     Length m_bombRadius = 0.3_m;

@@ -841,22 +841,6 @@ const char* Test::ToName(TypeID type) noexcept
     return name;
 }
 
-bool Test::AlertUser(const std::string& title, const char* fmt, ...)
-{
-    ImGui::OpenPopup(title.c_str());
-    if (const auto opened = ImGui::PopupModalContext(title.c_str())) {
-        va_list args;
-        va_start(args, fmt);
-        ImGui::TextWrappedV(fmt, args);
-        va_end(args);
-        if (ImGui::Button("Close")) {
-            ImGui::CloseCurrentPopup();
-            return true;
-        }
-    }
-    return false;
-}
-
 const char* Test::ToName(DistanceOutput::State value)
 {
     switch (value) {

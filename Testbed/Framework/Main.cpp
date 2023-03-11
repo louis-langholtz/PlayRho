@@ -725,7 +725,20 @@ static void Simulate(Drawer& drawer)
                 mergedSettings.dt = 0.0f;
             }
         }
-        g_testSuite->GetTest()->Step(mergedSettings, drawer, *ui);
+        try {
+            g_testSuite->GetTest()->Step(mergedSettings, drawer, *ui);
+        }
+        catch (const std::out_of_range& ex) {
+            ui->message = "Out of range exception from Step operation (at step #";
+            ui->message += std::to_string(g_testSuite->GetTest()->GetStepCount());
+            ui->message += "): ";
+            ui->message += ex.what();
+        }
+        catch (...) {
+            ui->message = "Unknown exception from Step operation (at step #";
+            ui->message += std::to_string(g_testSuite->GetTest()->GetStepCount());
+            ui->message += ").";
+        }
     }
 
     glDisable(GL_DEPTH_TEST);
@@ -1472,9 +1485,8 @@ static void OutputOptionsUI()
     ImGui::Checkbox("Center of Masses", &settings.drawCOMs);
 }
 
-static bool MenuUI()
+static void MenuUI()
 {
-    auto shouldQuit = false;
     const auto button_sz = ImVec2(-1, 0);
 
     ImGui::PushAllowKeyboardFocus(false); // Disable TAB
@@ -1609,7 +1621,7 @@ static bool MenuUI()
                            tooltipWrapWidth);
     }
     if (ImGui::Button("Quit", button_sz)) {
-        shouldQuit = true;
+        ui->doExit = true;
     }
     if (ImGui::IsItemHovered()) {
         ImGui::ShowTooltip("Quits the application. This can also be invoked by pressing the 'ESC' key.",
@@ -1617,8 +1629,6 @@ static bool MenuUI()
     }
 
     ImGui::PopAllowKeyboardFocus();
-    
-    return shouldQuit;
 }
 
 static void EntityUI(BodyID& id, BodyCounter bodyRange, const char* title)
@@ -3387,10 +3397,42 @@ static void ModelEntitiesUI()
     ImGui::Spacing();
 }
 
-static bool UserInterface()
+enum class UserResponse {
+    None = 0, Close, Quit
+};
+
+static UserResponse AlertUser(const std::string& title, const char* fmt, ...)
 {
-    auto shouldQuit = false;
-    
+    ImGui::SetNextWindowSize(ImVec2(261, 136), ImGuiCond_Once);
+    ImGui::OpenPopup(title.c_str());
+    if (const auto opened = ImGui::PopupModalContext(title.c_str())) {
+        va_list args;
+        va_start(args, fmt);
+        ImGui::TextWrappedV(fmt, args);
+        va_end(args);
+        if (ImGui::Button("Close")) {
+            ImGui::CloseCurrentPopup();
+            return UserResponse::Close;
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Closes just this popup.",
+                               tooltipWrapWidth);
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Quit")) {
+            ImGui::CloseCurrentPopup();
+            return UserResponse::Quit;
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::ShowTooltip("Quits the application.",
+                               tooltipWrapWidth);
+        }
+    }
+    return UserResponse::None;
+}
+
+static void UserInterface()
+{
     if (ui->showAboutTest) {
         // Note: Use ImGuiCond_Appearing to set the position on first appearance of Test
         //   About info and allow later relocation by user. This is preferred over using
@@ -3411,7 +3453,7 @@ static bool UserInterface()
         ImGui::SetNextWindowSize(ImVec2(float(menuWidth), float(g_camera.m_height - 20)));
         ImGui::WindowContext window("Testbed Controls", &ui->showMenu,
                                     ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoCollapse);
-        shouldQuit = MenuUI();
+        MenuUI();
     }
     
     if (ui->showEntities) {
@@ -3423,13 +3465,23 @@ static bool UserInterface()
     }
 
     if (!ui->message.empty()) {
-        if (Test::AlertUser("Alert!", "Operation rejected.\n\nReason: %s.\n\n",
-                            ui->message.c_str())) {
-            ui->message = std::string{};
+        static auto alertCounter = std::size_t{1u};
+        const auto title = std::string{"Alert (#"} + std::to_string(alertCounter) + ")!";
+        const auto response = AlertUser(title, "Operation rejected.\n\nReason: %s.\n\n",
+                                        ui->message.c_str());
+        switch (response)
+        {
+            case UserResponse::None:
+                break;
+            case UserResponse::Close:
+                ui->message = std::string{};
+                ++alertCounter;
+                break;
+            case UserResponse::Quit:
+                ui->doExit = true;
+                break;
         }
     }
-
-    return !shouldQuit;
 }
 
 static void GlfwErrorCallback(int code, const char* str)
@@ -3605,10 +3657,11 @@ int main()
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
-            if (!UserInterface()) {
+            UserInterface();
+            Simulate(drawer);
+            if (ui->doExit) {
 	            glfwSetWindowShouldClose(mainWindow, GL_TRUE);
             }
-            Simulate(drawer);
 
             // Measure speed
             const auto time2 = glfwGetTime();
