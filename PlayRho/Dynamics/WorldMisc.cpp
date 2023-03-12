@@ -27,45 +27,47 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
 
+#include <utility> // for std::move
+
 namespace playrho {
 namespace d2 {
 
 void SetShapeDestructionListener(World& world, std::function<void(ShapeID)> listener) noexcept
 {
-    world.SetShapeDestructionListener(listener);
+    world.SetShapeDestructionListener(std::move(listener));
 }
 
 void SetDetachListener(World& world, std::function<void(std::pair<BodyID, ShapeID>)> listener) noexcept
 {
-    world.SetDetachListener(listener);
+    world.SetDetachListener(std::move(listener));
 }
 
 void SetJointDestructionListener(World& world, std::function<void(JointID)> listener) noexcept
 {
-    world.SetJointDestructionListener(listener);
+    world.SetJointDestructionListener(std::move(listener));
 }
 
 void SetBeginContactListener(World& world, std::function<void(ContactID)> listener) noexcept
 {
-    world.SetBeginContactListener(listener);
+    world.SetBeginContactListener(std::move(listener));
 }
 
 void SetEndContactListener(World& world, std::function<void(ContactID)> listener) noexcept
 {
-    world.SetEndContactListener(listener);
+    world.SetEndContactListener(std::move(listener));
 }
 
 void SetPreSolveContactListener(World& world,
                                 std::function<void(ContactID, const Manifold&)> listener) noexcept
 {
-    world.SetPreSolveContactListener(listener);
+    world.SetPreSolveContactListener(std::move(listener));
 }
 
 void SetPostSolveContactListener(World& world,
                                  std::function<void(ContactID, const ContactImpulsesList&,
                                                     unsigned)> listener) noexcept
 {
-    world.SetPostSolveContactListener(listener);
+    world.SetPostSolveContactListener(std::move(listener));
 }
 
 void Clear(World& world) noexcept

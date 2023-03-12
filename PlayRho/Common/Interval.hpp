@@ -25,6 +25,7 @@
 #include <algorithm>
 #include <limits>
 #include <iostream>
+#include <type_traits> // for std::is_nothrow_copy_constructible_v
 
 namespace playrho {
 
@@ -39,7 +40,8 @@ template <typename T>
 class Interval
 {
 public:
-    
+    static_assert(std::is_nothrow_copy_constructible_v<T>);
+
     /// @brief Value type.
     /// @details Alias for the type of the value that this class was template
     ///   instantiated for.
@@ -68,17 +70,7 @@ public:
     /// @details Constructs an "unset" interval.
     /// @post <code>GetMin()</code> returns the value of <code>GetHighest()</code>.
     /// @post <code>GetMax()</code> returns the value of <code>GetLowest()</code>.
-    constexpr Interval() = default;
-    
-    /// @brief Copy constructor.
-    /// @post <code>GetMin()</code> returns the value of <code>other.GetMin()</code>.
-    /// @post <code>GetMax()</code> returns the value of <code>other.GetMax()</code>.
-    constexpr Interval(const Interval& other) = default;
-
-    /// @brief Move constructor.
-    /// @post <code>GetMin()</code> returns the value of <code>other.GetMin()</code>.
-    /// @post <code>GetMax()</code> returns the value of <code>other.GetMax()</code>.
-    constexpr Interval(Interval&& other) = default;
+    constexpr Interval() noexcept = default;
     
     /// @brief Initializing constructor.
     /// @post <code>GetMin()</code> returns the value of <code>v</code>.
@@ -104,16 +96,6 @@ public:
     }
     
     ~Interval() noexcept = default;
-    
-    /// @brief Copy assignment operator.
-    /// @post <code>GetMin()</code> returns the value of <code>other.GetMin()</code>.
-    /// @post <code>GetMax()</code> returns the value of <code>other.GetMax()</code>.
-    Interval& operator= (const Interval& other) = default;
-
-    /// @brief Move assignment operator.
-    /// @post <code>GetMin()</code> returns the value of <code>other.GetMin()</code>.
-    /// @post <code>GetMax()</code> returns the value of <code>other.GetMax()</code>.
-    Interval& operator= (Interval&& other) = default;
     
     /// @brief Moves the interval by the given amount.
     /// @warning Behavior is undefined if incrementing the min or max value by

@@ -196,7 +196,7 @@ public:
     void SetDetachListener(AssociationListener listener) noexcept;
 
     /// @brief Registers a destruction listener for joints.
-    void SetJointDestructionListener(const JointListener& listener) noexcept;
+    void SetJointDestructionListener(JointListener listener) noexcept;
 
     /// @brief Registers a begin contact event listener.
     void SetBeginContactListener(ContactListener listener) noexcept;

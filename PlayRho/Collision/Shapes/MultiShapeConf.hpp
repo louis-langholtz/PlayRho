@@ -26,6 +26,7 @@
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>
 
+#include <utility> // for std::move
 #include <vector>
 
 namespace playrho {
@@ -89,7 +90,7 @@ public:
 private:
     /// @brief Initializing constructor.
     ConvexHull(std::vector<Length2> verts, std::vector<UnitVec> norms, NonNegative<Length> vr)
-        : vertices{verts}, normals{norms}, vertexRadius{vr}
+        : vertices{std::move(verts)}, normals{std::move(norms)}, vertexRadius{vr}
     {
     }
 

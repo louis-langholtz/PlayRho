@@ -30,6 +30,8 @@
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 
+#include <utility> // for std::move
+
 namespace playrho {
 namespace d2 {
 
@@ -45,37 +47,37 @@ static_assert(std::is_nothrow_destructible<World>::value, "World must be nothrow
 
 void World::SetShapeDestructionListener(ShapeListener listener) noexcept
 {
-    ::playrho::d2::SetShapeDestructionListener(*m_impl, listener);
+    ::playrho::d2::SetShapeDestructionListener(*m_impl, std::move(listener));
 }
 
 void World::SetDetachListener(AssociationListener listener) noexcept
 {
-    ::playrho::d2::SetDetachListener(*m_impl, listener);
+    ::playrho::d2::SetDetachListener(*m_impl, std::move(listener));
 }
 
-void World::SetJointDestructionListener(const JointListener& listener) noexcept
+void World::SetJointDestructionListener(JointListener listener) noexcept
 {
-    ::playrho::d2::SetJointDestructionListener(*m_impl, listener);
+    ::playrho::d2::SetJointDestructionListener(*m_impl, std::move(listener));
 }
 
 void World::SetBeginContactListener(ContactListener listener) noexcept
 {
-    ::playrho::d2::SetBeginContactListener(*m_impl, listener);
+    ::playrho::d2::SetBeginContactListener(*m_impl, std::move(listener));
 }
 
 void World::SetEndContactListener(ContactListener listener) noexcept
 {
-    ::playrho::d2::SetEndContactListener(*m_impl, listener);
+    ::playrho::d2::SetEndContactListener(*m_impl, std::move(listener));
 }
 
 void World::SetPreSolveContactListener(ManifoldContactListener listener) noexcept
 {
-    ::playrho::d2::SetPreSolveContactListener(*m_impl, listener);
+    ::playrho::d2::SetPreSolveContactListener(*m_impl, std::move(listener));
 }
 
 void World::SetPostSolveContactListener(ImpulsesContactListener listener) noexcept
 {
-    ::playrho::d2::SetPostSolveContactListener(*m_impl, listener);
+    ::playrho::d2::SetPostSolveContactListener(*m_impl, std::move(listener));
 }
 
 void World::Clear() noexcept
