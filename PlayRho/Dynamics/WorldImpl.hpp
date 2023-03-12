@@ -121,14 +121,6 @@ public:
     /// @see Step.
     explicit WorldImpl(const WorldConf& def = GetDefaultWorldConf());
 
-    /// @brief Copy constructor.
-    /// @details Copy constructs this world with a deep copy of the given world.
-    WorldImpl(const WorldImpl& other) = default;
-
-    /// @brief Assignment operator.
-    /// @details Copy assigns this world with a deep copy of the given world.
-    WorldImpl& operator=(const WorldImpl& other) = default;
-
     /// @brief Destructor.
     /// @details All physics entities are destroyed and all memory is released.
     /// @note This will call the <code>Clear()</code> function.
