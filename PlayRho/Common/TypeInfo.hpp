@@ -120,7 +120,7 @@ TypeID GetTypeID(const T&) noexcept;
 class TypeID
 {
 public:
-    /// Default constructor.
+    /// @brief Default constructor.
     /// @post A type identifier equivalent to the value returned by <code>GetTypeID<void>()</code>.
     TypeID() noexcept = default;
 
@@ -130,40 +130,40 @@ public:
         return *m_name;
     }
 
-    /// Equality operator support via "hidden friend" function.
+    /// @brief Equality operator support via "hidden friend" function.
     inline friend bool operator==(const TypeID& lhs, const TypeID& rhs) noexcept
     {
         return (lhs.m_name == rhs.m_name) || (std::strcmp(*lhs.m_name, *rhs.m_name) == 0);
     }
 
-    /// Inequality operator support via "hidden friend" function.
+    /// @brief Inequality operator support via "hidden friend" function.
     inline friend bool operator!=(const TypeID& lhs, const TypeID& rhs) noexcept
     {
         return !(lhs == rhs);
     }
 
-    /// Less-than operator support via "hidden friend" function.
+    /// @brief Less-than operator support via "hidden friend" function.
     /// @note The ordering of type IDs is unspecified. This is provided anyway to support things like associative containers.
     inline friend bool operator<(const TypeID& lhs, const TypeID& rhs) noexcept
     {
         return (lhs.m_name != rhs.m_name) && (std::strcmp(*lhs.m_name, *rhs.m_name) < 0);
     }
 
-    /// Less-than-or-equal operator support via "hidden friend" function.
+    /// @brief Less-than-or-equal operator support via "hidden friend" function.
     /// @note The ordering of type IDs is unspecified. This is provided anyway to support things like associative containers.
     inline friend bool operator<=(const TypeID& lhs, const TypeID& rhs) noexcept
     {
         return (lhs.m_name == rhs.m_name) || (std::strcmp(*lhs.m_name, *rhs.m_name) <= 0);
     }
 
-    /// Greater-than operator support via "hidden friend" function.
+    /// @brief Greater-than operator support via "hidden friend" function.
     /// @note The ordering of type IDs is unspecified. This is provided anyway to support things like associative containers.
     inline friend bool operator>(const TypeID& lhs, const TypeID& rhs) noexcept
     {
         return !(lhs <= rhs);
     }
 
-    /// Greater-than-or-equal operator support via "hidden friend" function.
+    /// @brief Greater-than-or-equal operator support via "hidden friend" function.
     /// @note The ordering of type IDs is unspecified. This is provided anyway to support things like associative containers.
     inline friend bool operator>=(const TypeID& lhs, const TypeID& rhs) noexcept
     {
@@ -177,11 +177,13 @@ public:
     friend TypeID GetTypeID(const T&) noexcept;
 
 private:
+    /// @brief Initializing constructor.
     explicit TypeID(const char* const * name) noexcept: m_name{name}
     {
         // Intentionally empty.
     }
 
+    /// @brief A unique, non-null, null-terminated string buffer, naming the type.
     const char* const * m_name{&TypeInfo<void>::name};
 };
 
