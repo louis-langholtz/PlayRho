@@ -27,15 +27,8 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
 
-#include <algorithm> // for std::for_each
-#include <set>
-
-using std::for_each;
-
 namespace playrho {
 namespace d2 {
-
-using playrho::size;
 
 void SetShapeDestructionListener(World& world, std::function<void(ShapeID)> listener) noexcept
 {
