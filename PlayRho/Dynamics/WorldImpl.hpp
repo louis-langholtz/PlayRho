@@ -677,17 +677,6 @@ private:
     /// @brief Updates associated bodies and contacts for specified joint's removal.
     void Remove(JointID id);
 
-    /// @brief Sets the step complete state.
-    /// @post <code>IsStepComplete()</code> will return the value set.
-    /// @see IsStepComplete.
-    void SetStepComplete(bool value) noexcept;
-
-    /// @brief Sets the allow sleeping state.
-    void SetAllowSleeping() noexcept;
-
-    /// @brief Unsets the allow sleeping state.
-    void UnsetAllowSleeping() noexcept;
-
     /// @brief Update contacts statistics.
     struct UpdateContactsStats
     {
@@ -746,9 +735,6 @@ private:
     ///  A non-null contact will be enabled, not have sensors, be active, and impenetrable.
     static ContactToiData GetSoonestContact(const Contacts& contacts,
                                             const ArrayAllocator<Contact>& buffer) noexcept;
-
-    /// @brief Unsets the new fixtures state.
-    void UnsetNewFixtures() noexcept;
 
     /// @brief Processes the narrow phase collision for the contacts collection.
     /// @details
@@ -919,16 +905,6 @@ inline bool WorldImpl::IsStepComplete() const noexcept
     return (m_flags & e_stepComplete) != 0u;
 }
 
-inline void WorldImpl::SetStepComplete(bool value) noexcept
-{
-    if (value) {
-        m_flags |= e_stepComplete;
-    }
-    else {
-        m_flags &= ~e_stepComplete;        
-    }
-}
-
 inline bool WorldImpl::GetSubStepping() const noexcept
 {
     return (m_flags & e_substepping) != 0u;
@@ -947,11 +923,6 @@ inline void WorldImpl::SetSubStepping(bool flag) noexcept
 inline bool WorldImpl::HasNewFixtures() const noexcept
 {
     return (m_flags & e_newFixture) != 0u;
-}
-
-inline void WorldImpl::UnsetNewFixtures() noexcept
-{
-    m_flags &= ~e_newFixture;
 }
 
 inline Length WorldImpl::GetMinVertexRadius() const noexcept

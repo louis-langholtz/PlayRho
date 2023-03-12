@@ -1543,7 +1543,7 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
         const auto ncount = next.simultaneous;
         if (contactID == InvalidContactID) {
             // No more TOI events to handle within the current time step. Done!
-            SetStepComplete(true);
+            m_flags |= e_stepComplete;
             break;
         }
 
@@ -1588,7 +1588,7 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
         stats.contactsAdded += FindNewContacts();
 
         if (subStepping) {
-            SetStepComplete(false);
+            m_flags &= ~e_stepComplete;
             break;
         }
     }
@@ -1950,7 +1950,7 @@ StepStats WorldImpl::Step(const StepConf& conf)
         }
 
         if (HasNewFixtures()) {
-            UnsetNewFixtures();
+            m_flags &= ~e_newFixture;
             
             // New fixtures were added: need to find and create the new contacts.
             // Note: this may update bodies (in addition to the contacts container).
