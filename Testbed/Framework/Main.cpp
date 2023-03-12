@@ -1633,11 +1633,35 @@ static void MenuUI()
 
 static void EntityUI(BodyID& id, BodyCounter bodyRange, const char* title)
 {
-    auto val = static_cast<int>(to_underlying(id));
-    ImGui::SliderInt(title, &val, 0, int(bodyRange) - 1);
-    if (val >= 0 && val < static_cast<int>(bodyRange)) {
-        id = BodyID(static_cast<BodyID::underlying_type>(val));
+    ImGui::IdContext subIdCtx(title);
+    ImGui::StyleVarContext itemSpacingCtx(ImGuiStyleVar_ItemSpacing, ImVec2(2,2));
+    ImGui::StyleVarContext styleCtx(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
+
+    const auto oldValid = to_underlying(id) < bodyRange;
+    auto newValid = oldValid;
+    const auto validChanged = ImGui::Checkbox("##enableid", &newValid);
+    if (ImGui::IsItemHovered()) {
+        ImGui::ShowTooltip("Check this box to select a valid body ID if any are available. "
+                           "Uncheck to select the special invalid body ID value.",
+                           tooltipWrapWidth);
     }
+    ImGui::SameLine();
+    const auto minValue = (newValid && (bodyRange > 0u))? 0: int(to_underlying(InvalidBodyID));
+    const auto maxValue = (newValid && (bodyRange > 0u))? int(bodyRange) - 1: int(to_underlying(InvalidBodyID));
+    auto curValue = std::clamp(int(to_underlying(id)), minValue, maxValue);
+    ImGui::SliderInt(title, &curValue, minValue, maxValue);
+    if (ImGui::IsItemHovered()) {
+        if (bodyRange > 0u) {
+            ImGui::ShowTooltip("Selects a body by its identifier value.",
+                               tooltipWrapWidth);
+        }
+        else {
+            ImGui::ShowTooltip("The current world has no bodies in it. Create some bodies "
+                               "in order to enable this element to provide valid choices.",
+                               tooltipWrapWidth);
+        }
+    }
+    id = BodyID(static_cast<BodyID::underlying_type>(curValue));
 }
 
 static bool EntityUI(Sweep& sweep)
