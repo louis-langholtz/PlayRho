@@ -733,18 +733,20 @@ BodyID WorldImpl::CreateBody(Body body)
         m_shapeBuffer.at(to_underlying(shapeId));
     }
     const auto id = static_cast<BodyID>(
-        static_cast<BodyID::underlying_type>(m_bodyBuffer.Allocate(body)));
+        static_cast<BodyID::underlying_type>(m_bodyBuffer.Allocate(std::move(body))));
     m_islandedBodies.resize(size(m_bodyBuffer));
     m_bodyContacts.Allocate();
     m_bodyJoints.Allocate();
     m_bodyProxies.Allocate();
     m_bodies.push_back(id);
     m_bodyConstraints.resize(size(m_bodyBuffer));
-    if (IsEnabled(body)) {
-        for (const auto& shapeId: body.GetShapes()) {
+    const auto& bufferedBody = m_bodyBuffer[to_underlying(id)];
+    if (IsEnabled(bufferedBody)) {
+        const auto& shapes = bufferedBody.GetShapes();
+        for (const auto& shapeId: shapes) {
             m_fixturesForProxies.emplace_back(id, shapeId);
         }
-        if (!empty(body.GetShapes())) {
+        if (!empty(shapes)) {
             m_flags |= e_newFixture;
         }
     }
@@ -835,8 +837,8 @@ void WorldImpl::SetJoint(JointID id, Joint def)
         throw InvalidArgument(idIsDestroyedMsg);
     }
     Remove(id);
-    m_jointBuffer[to_underlying(id)] = def;
-    Add(id, !GetCollideConnected(def));
+    m_jointBuffer[to_underlying(id)] = std::move(def);
+    Add(id, !GetCollideConnected(m_jointBuffer[to_underlying(id)]));
 }
 
 JointID WorldImpl::CreateJoint(Joint def)
@@ -855,11 +857,11 @@ JointID WorldImpl::CreateJoint(Joint def)
         GetBody(bodyId);
     }
     const auto id = static_cast<JointID>(
-        static_cast<JointID::underlying_type>(m_jointBuffer.Allocate(def)));
+        static_cast<JointID::underlying_type>(m_jointBuffer.Allocate(std::move(def))));
     m_islandedJoints.resize(size(m_jointBuffer));
     m_joints.push_back(id);
     // Note: creating a joint doesn't wake the bodies.
-    Add(id, !GetCollideConnected(def));
+    Add(id, !GetCollideConnected(m_jointBuffer[to_underlying(id)]));
     return id;
 }
 

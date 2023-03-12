@@ -31,6 +31,8 @@
 #include <PlayRho/Collision/Manifold.hpp> // for WorldImpl not being incomplete
 #include <PlayRho/Collision/Shapes/Shape.hpp> // for WorldImpl not being incomplete
 
+#include <utility> // for std::move
+
 namespace playrho {
 namespace d2 {
 
@@ -51,40 +53,40 @@ void Clear(WorldImpl& world) noexcept
 
 void SetShapeDestructionListener(WorldImpl& world, std::function<void(ShapeID)> listener) noexcept
 {
-    world.SetShapeDestructionListener(listener);
+    world.SetShapeDestructionListener(std::move(listener));
 }
 
 void SetDetachListener(WorldImpl& world, std::function<void(std::pair<BodyID, ShapeID>)> listener) noexcept
 {
-    world.SetDetachListener(listener);
+    world.SetDetachListener(std::move(listener));
 }
 
 void SetJointDestructionListener(WorldImpl& world,
                                  std::function<void(JointID)> listener) noexcept
 {
-    world.SetJointDestructionListener(listener);
+    world.SetJointDestructionListener(std::move(listener));
 }
 
 void SetBeginContactListener(WorldImpl& world, std::function<void(ContactID)> listener) noexcept
 {
-    world.SetBeginContactListener(listener);
+    world.SetBeginContactListener(std::move(listener));
 }
 
 void SetEndContactListener(WorldImpl& world, std::function<void(ContactID)> listener) noexcept
 {
-    world.SetEndContactListener(listener);
+    world.SetEndContactListener(std::move(listener));
 }
 
 void SetPreSolveContactListener(WorldImpl& world,
                                 std::function<void(ContactID, const Manifold&)> listener) noexcept
 {
-    world.SetPreSolveContactListener(listener);
+    world.SetPreSolveContactListener(std::move(listener));
 }
 
 void SetPostSolveContactListener(WorldImpl& world,
                                  std::function<void(ContactID, const ContactImpulsesList&, unsigned)> listener) noexcept
 {
-    world.SetPostSolveContactListener(listener);
+    world.SetPostSolveContactListener(std::move(listener));
 }
 
 StepStats Step(WorldImpl& world, const StepConf& conf)
