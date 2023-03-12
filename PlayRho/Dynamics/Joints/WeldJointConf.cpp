@@ -212,10 +212,6 @@ void InitVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies, co
     bodyConstraintB.SetVelocity(velB);
 }
 
-/// @brief Solves velocity constraint.
-/// @pre <code>InitVelocity</code> has been called.
-/// @see InitVelocity.
-/// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
 bool SolveVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies, const StepConf&)
 {
     if ((GetBodyA(object) == InvalidBodyID) || (GetBodyB(object) == InvalidBodyID)) {
@@ -302,8 +298,6 @@ bool SolveVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies, c
     return true;
 }
 
-/// @brief Solves the position constraint.
-/// @return <code>true</code> if the position errors are within tolerance.
 bool SolvePosition(const WeldJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf)
 {
