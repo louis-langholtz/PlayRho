@@ -1919,7 +1919,7 @@ StepStats WorldImpl::Step(const StepConf& conf)
     // "Named return value optimization" (NRVO) will make returning this more efficient.
     auto stepStats = StepStats{};
     {
-        FlagGuard<decltype(m_flags)> flagGaurd(m_flags, e_locked);
+        const FlagGuard<decltype(m_flags)> flagGaurd(m_flags, e_locked);
 
         for (const auto& [bodyID, shapeID]: m_fixturesForProxies) {
             CreateProxies(m_tree, bodyID, shapeID, m_shapeBuffer[to_underlying(shapeID)],

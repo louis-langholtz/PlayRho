@@ -30,15 +30,9 @@
 #include <memory>
 
 using std::for_each;
-using std::remove;
-using std::sort;
-using std::transform;
-using std::unique;
 
 namespace playrho {
 namespace d2 {
-
-using playrho::size;
 
 BodyCounter GetBodyRange(const World& world) noexcept
 {
