@@ -95,14 +95,14 @@ struct Vector
     }
 
     /// @brief Gets the max size.
-    constexpr size_type max_size() const noexcept { return N; }
+    static constexpr size_type max_size() noexcept { return N; }
     
     /// @brief Gets the size.
-    constexpr size_type size() const noexcept { return N; }
+    static constexpr size_type size() noexcept { return N; }
     
     /// @brief Whether empty.
     /// @note Always false for N > 0.
-    constexpr bool empty() const noexcept { return N == 0; }
+    static constexpr bool empty() noexcept { return N == 0; }
     
     /// @brief Gets a "begin" iterator.
     iterator begin() noexcept { return iterator(elements); }

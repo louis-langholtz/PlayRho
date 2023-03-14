@@ -129,7 +129,7 @@ PrismaticJointConf GetPrismaticJointConf(const Joint& joint)
 }
 
 PrismaticJointConf GetPrismaticJointConf(const World& world, BodyID bA, BodyID bB,
-                                         const Length2 anchor, const UnitVec axis)
+                                         const Length2& anchor, const UnitVec& axis)
 {
     return PrismaticJointConf{bA,
                               bB,

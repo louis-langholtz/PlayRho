@@ -181,7 +181,7 @@ Length2 GetEdge(const PolygonShapeConf& shape, VertexCounter index)
     return shape.GetVertex(i1) - shape.GetVertex(i0);
 }
 
-bool Validate(Span<const Length2> verts)
+bool Validate(const Span<const Length2>& verts)
 {
     const auto count = size(verts);
     for (auto i = decltype(count){0}; i < count; ++i) {

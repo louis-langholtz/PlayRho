@@ -176,7 +176,7 @@ bool SolveVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
 
     bodyConstraintB.SetVelocity(velB);
 
-    return incImpulse == Momentum2{};
+    return incImpulse == Momentum2{0_Ns, 0_Ns};
 }
 
 bool SolvePosition(const TargetJointConf&, std::vector<BodyConstraint>&,

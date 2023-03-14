@@ -121,6 +121,19 @@ using inverse_moment_of_inertia =
 
 namespace playrho {
 
+namespace detail {
+
+/// @brief Seconds per minute.
+constexpr auto SecondsPerMinute = 60;
+
+/// @brief Minutes per hour.
+constexpr auto MinutesPerHour = 60;
+
+/// @brief Hours per day.
+constexpr auto HoursPerDay = 24;
+
+}
+
 /// @defgroup PhysicalQuantities Physical Quantity Types
 /// @brief Types for physical quantities.
 /// @details These are the type aliases for physical quantities like time and length
@@ -420,7 +433,7 @@ constexpr auto NewtonMeterSecond = NewtonMeter * Second;
 /// @brief Revolutions per minute units of angular velocity.
 /// @see AngularVelocity, Time
 /// @see Minute.
-constexpr auto RevolutionsPerMinute = 2 * Pi * Radian / (Real{60} * Second);
+constexpr auto RevolutionsPerMinute = 2 * Pi * Radian / (Real{detail::SecondsPerMinute} * Second);
 
 /// @}
 
@@ -598,42 +611,42 @@ constexpr Time operator"" _s(long double v) noexcept
 /// @see https://en.wikipedia.org/wiki/Minute
 constexpr Time operator"" _min(unsigned long long int v) noexcept
 {
-    return static_cast<Real>(v) * 60 * Second;
+    return static_cast<Real>(v) * detail::SecondsPerMinute * Second;
 }
 
 /// @brief SI symbol for a minute unit of Time.
 /// @see https://en.wikipedia.org/wiki/Minute
 constexpr Time operator"" _min(long double v) noexcept
 {
-    return static_cast<Real>(v) * 60 * Second;
+    return static_cast<Real>(v) * detail::SecondsPerMinute * Second;
 }
 
 /// @brief Symbol for an hour unit of Time.
 /// @see https://en.wikipedia.org/wiki/Hour
 constexpr Time operator"" _h(unsigned long long int v) noexcept
 {
-    return static_cast<Real>(v) * 60 * 60 * Second;
+    return static_cast<Real>(v) * detail::MinutesPerHour * detail::SecondsPerMinute * Second;
 }
 
 /// @brief Symbol for an hour unit of Time.
 /// @see https://en.wikipedia.org/wiki/Hour
 constexpr Time operator"" _h(long double v) noexcept
 {
-    return static_cast<Real>(v) * 60 * 60 * Second;
+    return static_cast<Real>(v) * detail::MinutesPerHour * detail::SecondsPerMinute * Second;
 }
 
 /// @brief Symbol for a day unit of Time.
 /// @see https://en.wikipedia.org/wiki/Day
 constexpr Time operator"" _d(unsigned long long int v) noexcept
 {
-    return static_cast<Real>(v) * 60 * 60 * 24 * Second;
+    return static_cast<Real>(v) * detail::HoursPerDay * detail::MinutesPerHour * detail::SecondsPerMinute * Second;
 }
 
 /// @brief Symbol for a day unit of Time.
 /// @see https://en.wikipedia.org/wiki/Day
 constexpr Time operator"" _d(long double v) noexcept
 {
-    return static_cast<Real>(v) * 60 * 60 * 24 * Second;
+    return static_cast<Real>(v) * detail::HoursPerDay * detail::MinutesPerHour * detail::SecondsPerMinute * Second;
 }
 
 /// @brief SI symbol for a radian unit of Angle.

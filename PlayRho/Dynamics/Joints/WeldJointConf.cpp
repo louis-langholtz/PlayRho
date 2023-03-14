@@ -103,7 +103,7 @@ WeldJointConf GetWeldJointConf(const Joint& joint)
     return TypeCast<WeldJointConf>(joint);
 }
 
-WeldJointConf GetWeldJointConf(const World& world, BodyID bodyA, BodyID bodyB, const Length2 anchor)
+WeldJointConf GetWeldJointConf(const World& world, BodyID bodyA, BodyID bodyB, const Length2& anchor)
 {
     return WeldJointConf{bodyA, bodyB, GetLocalPoint(world, bodyA, anchor),
                          GetLocalPoint(world, bodyB, anchor),

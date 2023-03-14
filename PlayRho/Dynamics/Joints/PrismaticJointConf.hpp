@@ -204,7 +204,7 @@ PrismaticJointConf GetPrismaticJointConf(const Joint& joint);
 /// @brief Gets the configuration for the given parameters.
 /// @relatedalso World
 PrismaticJointConf GetPrismaticJointConf(const World& world, BodyID bA, BodyID bB,
-                                         const Length2 anchor, const UnitVec axis);
+                                         const Length2& anchor, const UnitVec& axis);
 
 /// @brief Gets the current linear velocity of the given configuration.
 /// @relatedalso World

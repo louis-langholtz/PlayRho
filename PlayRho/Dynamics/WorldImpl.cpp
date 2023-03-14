@@ -588,8 +588,9 @@ std::vector<DynamicTree::Size> FindProxies(const DynamicTree& tree, BodyID bodyI
     for (auto i = static_cast<decltype(tree.GetNodeCapacity())>(0); i < n; ++i) {
         if (DynamicTree::IsLeaf(tree.GetHeight(i))) {
             const auto leaf = tree.GetLeafData(i);
-            if (leaf.bodyId == bodyId)
+            if (leaf.bodyId == bodyId) {
                 result.push_back(i);
+            }
         }
     }
     return result;
@@ -602,8 +603,9 @@ std::vector<DynamicTree::Size> FindProxies(const DynamicTree& tree, ShapeID shap
     for (auto i = static_cast<decltype(tree.GetNodeCapacity())>(0); i < n; ++i) {
         if (DynamicTree::IsLeaf(tree.GetHeight(i))) {
             const auto leaf = tree.GetLeafData(i);
-            if (leaf.shapeId == shapeId)
+            if (leaf.shapeId == shapeId) {
                 result.push_back(i);
+            }
         }
     }
     return result;
@@ -993,7 +995,7 @@ const Shape& WorldImpl::GetShape(ShapeID id) const
     return m_shapeBuffer.at(to_underlying(id));
 }
 
-void WorldImpl::SetShape(ShapeID id, Shape def)
+void WorldImpl::SetShape(ShapeID id, Shape def) // NOLINT(readability-function-cognitive-complexity)
 {
     if (IsLocked()) {
         throw WrongState(worldIsLockedMsg);
@@ -1826,7 +1828,8 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
 }
 
 WorldImpl::ProcessContactsOutput
-WorldImpl::ProcessContactsForTOI(BodyID id, Island& island, Real toi, const StepConf& conf)
+WorldImpl::ProcessContactsForTOI( // NOLINT(readability-function-cognitive-complexity)
+                                 BodyID id, Island& island, Real toi, const StepConf& conf)
 {
     const auto& body = m_bodyBuffer[to_underlying(id)];
 
@@ -2372,18 +2375,18 @@ const WorldImpl::BodyJoints& WorldImpl::GetJoints(BodyID id) const
 }
 
 ContactCounter WorldImpl::Synchronize(BodyID bodyId,
-                                      const Transformation& xfm1, const Transformation& xfm2,
+                                      const Transformation& xfm0, const Transformation& xfm1,
                                       Real multiplier, Length extension)
 {
     auto updatedCount = ContactCounter{0};
+    assert(::playrho::IsValid(xfm0));
     assert(::playrho::IsValid(xfm1));
-    assert(::playrho::IsValid(xfm2));
-    const auto displacement = multiplier * (xfm2.p - xfm1.p);
+    const auto displacement = multiplier * (xfm1.p - xfm0.p);
     for (auto&& e: m_bodyProxies[to_underlying(bodyId)]) {
         const auto& node = m_tree.GetNode(e);
         const auto leafData = node.AsLeaf();
         const auto aabb = ComputeAABB(GetChild(m_shapeBuffer[to_underlying(leafData.shapeId)],
-                                               leafData.childId), xfm1, xfm2);
+                                               leafData.childId), xfm0, xfm1);
         if (!Contains(node.GetAABB(), aabb)) {
             const auto newAabb = GetDisplacedAABB(GetFattenedAABB(aabb, extension),
                                                   displacement);
@@ -2395,7 +2398,8 @@ ContactCounter WorldImpl::Synchronize(BodyID bodyId,
     return updatedCount;
 }
 
-void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
+void WorldImpl::Update( // NOLINT(readability-function-cognitive-complexity)
+                       ContactID contactID, const ContactUpdateConf& conf)
 {
     auto& c = m_contactBuffer[to_underlying(contactID)];
     auto& manifold = m_manifoldBuffer[to_underlying(contactID)];
@@ -2528,7 +2532,7 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
     }
 }
 
-void WorldImpl::SetBody(BodyID id, Body value)
+void WorldImpl::SetBody(BodyID id, Body value) // NOLINT(readability-function-cognitive-complexity)
 {
     if (IsLocked()) {
         throw WrongState(worldIsLockedMsg);

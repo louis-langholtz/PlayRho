@@ -230,7 +230,7 @@ NonNegative<Area> GetAreaOfCircle(Length radius)
     return Area{radius * radius * Pi};
 }
 
-NonNegative<Area> GetAreaOfPolygon(Span<const Length2> vertices)
+NonNegative<Area> GetAreaOfPolygon(const Span<const Length2>& vertices)
 {
     // Uses the "Shoelace formula".
     // See: https://en.wikipedia.org/wiki/Shoelace_formula
@@ -249,7 +249,7 @@ NonNegative<Area> GetAreaOfPolygon(Span<const Length2> vertices)
     return abs(sum) * RealInverseOfTwo;
 }
 
-SecondMomentOfArea GetPolarMoment(Span<const Length2> vertices)
+SecondMomentOfArea GetPolarMoment(const Span<const Length2>& vertices)
 {
     assert(size(vertices) > 2);
 
@@ -285,7 +285,7 @@ SecondMomentOfArea GetPolarMoment(Span<const Length2> vertices)
 
 namespace d2 {
 
-Position GetPosition(Position pos0, Position pos1, Real beta) noexcept
+Position GetPosition(const Position& pos0, const Position& pos1, Real beta) noexcept
 {
     assert(IsValid(pos0));
     assert(IsValid(pos1));
@@ -329,8 +329,8 @@ Position Cap(Position pos, const ConstraintSolverConf& conf)
     return pos;
 }
 
-LinearVelocity2 GetContactRelVelocity(const Velocity velA, const Length2 relA, const Velocity velB,
-                                      const Length2 relB) noexcept
+LinearVelocity2 GetContactRelVelocity(const Velocity& velA, const Length2& relA, const Velocity& velB,
+                                      const Length2& relB) noexcept
 {
 #if 0 // Using std::fma appears to be slower!
     const auto revPerpRelB = GetRevPerpendicular(relB);

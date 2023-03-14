@@ -299,8 +299,9 @@ public:
     friend void InitVelocity(Joint& object, std::vector<BodyConstraint>& bodies,
                              const playrho::StepConf& step, const ConstraintSolverConf& conf)
     {
-        if (object.m_self)
+        if (object.m_self) {
             object.m_self->InitVelocity_(bodies, step, conf);
+        }
     }
 
     friend bool SolveVelocity(Joint& object, std::vector<BodyConstraint>& bodies,
@@ -515,8 +516,9 @@ inline T TypeCast(const Joint& value)
                   "T is required to be a const lvalue reference "
                   "or a CopyConstructible type");
     auto tmp = ::playrho::d2::TypeCast<std::add_const_t<RawType>>(&value);
-    if (tmp == nullptr)
+    if (!tmp) {
         throw std::bad_cast();
+    }
     return static_cast<T>(*tmp);
 }
 
@@ -534,8 +536,9 @@ inline T TypeCast(Joint& value)
                   "T is required to be a const lvalue reference "
                   "or a CopyConstructible type");
     auto tmp = ::playrho::d2::TypeCast<RawType>(&value);
-    if (tmp == nullptr)
+    if (!tmp) {
         throw std::bad_cast();
+    }
     return static_cast<T>(*tmp);
 }
 
@@ -553,8 +556,9 @@ inline T TypeCast(Joint&& value)
                   "T is required to be a const lvalue reference "
                   "or a CopyConstructible type");
     auto tmp = ::playrho::d2::TypeCast<RawType>(&value);
-    if (tmp == nullptr)
+    if (!tmp) {
         throw std::bad_cast();
+    }
     return static_cast<T>(std::move(*tmp));
 }
 

@@ -909,8 +909,9 @@ inline T TypeCast(const Shape& value)
                   "T is required to be a const lvalue reference "
                   "or a CopyConstructible type");
     auto tmp = ::playrho::d2::TypeCast<std::add_const_t<RawType>>(&value);
-    if (tmp == nullptr)
+    if (!tmp) {
         throw std::bad_cast();
+    }
     return static_cast<T>(*tmp);
 }
 

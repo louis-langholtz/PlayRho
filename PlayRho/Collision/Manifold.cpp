@@ -106,10 +106,11 @@ Manifold::Conf GetManifoldConf(const StepConf& conf) noexcept
     return manifoldConf;
 }
 
-Manifold GetManifold(bool flipped, const DistanceProxy& shape0, const Transformation& xf0,
+Manifold GetManifold(bool flipped, // NOLINT(readability-function-cognitive-complexity)
+                     const DistanceProxy& shape0, const Transformation& xf0,
                      const VertexCounter idx0, const DistanceProxy& shape1,
                      const Transformation& xf1, const VertexCounter2 indices1,
-                     const Manifold::Conf conf)
+                     const Manifold::Conf& conf)
 {
     assert(shape0.GetVertexCount() > 1 && shape1.GetVertexCount() > 1);
 
@@ -343,7 +344,7 @@ Manifold GetManifold(bool flipped, Length totalRadius, const DistanceProxy& shap
                                  ContactFeature::e_vertex, 0, point);
 }
 
-Manifold GetManifold(Length2 locationA, const Transformation& xfA, Length2 locationB,
+Manifold GetManifold(const Length2& locationA, const Transformation& xfA, Length2 locationB,
                      const Transformation& xfB, Length totalRadius) noexcept
 {
     const auto pA = Transform(locationA, xfA);

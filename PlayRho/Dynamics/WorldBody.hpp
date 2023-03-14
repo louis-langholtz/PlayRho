@@ -428,6 +428,7 @@ Velocity GetVelocity(const World& world, BodyID id);
 /// @brief Sets the body's velocity (linear and angular velocity).
 /// @note This method does nothing if this body is not speedable.
 /// @note A non-zero velocity will awaken this body.
+/// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see GetVelocity(BodyID), SetAwake, SetUnderActiveTime.
 /// @relatedalso World
@@ -479,15 +480,6 @@ inline AngularVelocity GetAngularVelocity(const World& world, BodyID id)
     return GetVelocity(world, id).angular;
 }
 
-/// @brief Sets the body's velocity (linear and angular velocity).
-/// @note This method does nothing if this body is not speedable.
-/// @note A non-zero velocity will awaken this body.
-/// @throws WrongState if this function is called while the world is locked.
-/// @throws std::out_of_range If given an invalid body identifier.
-/// @see GetVelocity.
-/// @relatedalso World
-void SetVelocity(World& world, BodyID id, const Velocity& value);
-
 /// @brief Sets the velocity of the identified body.
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
@@ -523,27 +515,6 @@ bool IsEnabled(const World& world, BodyID id);
 /// @see IsEnabled.
 /// @relatedalso World
 void SetEnabled(World& world, BodyID id, bool value);
-
-/// @brief Gets the awake/asleep state of this body.
-/// @warning Being awake may or may not imply being speedable.
-/// @return true if the body is awake.
-/// @throws std::out_of_range If given an invalid body identifier.
-/// @see SetAwake, UnsetAwake.
-/// @relatedalso World
-bool IsAwake(const World& world, BodyID id);
-
-/// @brief Wakes up the identified body.
-/// @throws WrongState if this function is called while the world is locked.
-/// @throws std::out_of_range If given an invalid body identifier.
-/// @relatedalso World
-void SetAwake(World& world, BodyID id);
-
-/// @brief Sleeps the identified body.
-/// @throws WrongState if this function is called while the world is locked.
-/// @throws std::out_of_range If given an invalid body identifier.
-/// @see IsAwake, SetAwake.
-/// @relatedalso World
-void UnsetAwake(World& world, BodyID id);
 
 /// @brief Awakens the body if it's asleep.
 /// @throws WrongState if this function is called while the world is locked.
@@ -722,10 +693,12 @@ void UnsetImpenetrable(World& world, BodyID id);
 /// @relatedalso World
 inline void SetImpenetrable(World& world, BodyID id, bool value)
 {
-    if (value)
+    if (value) {
         SetImpenetrable(world, id);
-    else
+    }
+    else {
         UnsetImpenetrable(world, id);
+    }
 }
 
 /// @brief Gets whether the identified body is allowed to sleep.
