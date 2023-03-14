@@ -1095,7 +1095,6 @@ struct Coords {
     float x, y;
 };
 
-#if 0
 TEST(Math, LengthFasterThanHypot)
 {
     constexpr auto iterations = unsigned(5000000);
@@ -1158,7 +1157,6 @@ TEST(Math, LengthFasterThanHypot)
     EXPECT_LT(elapsed_secs_length.count(), elapsed_secs_hypot.count());
     EXPECT_NEAR(totalLength, totalHypot, totalLength / 10.0);
 }
-#endif
 
 TEST(Math, GetCircleVertices)
 {

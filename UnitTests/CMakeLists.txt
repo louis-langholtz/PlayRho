@@ -30,7 +30,10 @@ mark_as_advanced(FORCE CMAKE_DEBUG_POSTFIX)
 set(BUILD_GMOCK ON)
 set(INSTALL_GTEST OFF CACHE BOOL "Enable installation of googletest.")
 set(INSTALL_GMOCK OFF CACHE BOOL "Enable installation of googlemock.")
-set(gtest_hide_internal_symbols ON CACHE BOOL "")
+set(gtest_hide_internal_symbols OFF CACHE BOOL "")
+
+# Don't build gtest shared to ensure GTEST_FLAG_SET symbols can be resolved
+set(BUILD_SHARED_LIBS OFF)
 
 # Prevent overriding the parent project's compiler/linker settings on Windows
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)

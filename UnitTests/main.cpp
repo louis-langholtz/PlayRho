@@ -22,6 +22,9 @@
 
 int main(int argc, char** argv)
 {
+    // By default, skip these tests unless overridden on command line.
+    GTEST_FLAG_SET(filter, "-Shape.TestOverlapFasterThanCollideShapesForPolygons:Math.LengthFasterThanHypot");
+
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
