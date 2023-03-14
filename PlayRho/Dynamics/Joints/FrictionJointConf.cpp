@@ -216,7 +216,7 @@ bool SolveVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodie
         const auto angImpulseA = AngularMomentum{Cross(object.rA, incImpulse) / Radian};
         const auto angImpulseB = AngularMomentum{Cross(object.rB, incImpulse) / Radian};
 
-        if (incImpulse != Momentum2{}) {
+        if (incImpulse != Momentum2{0_Ns, 0_Ns}) {
             solved = false;
         }
 

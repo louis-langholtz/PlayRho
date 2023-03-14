@@ -142,7 +142,7 @@ WeldJointConf GetWeldJointConf(const Joint& joint);
 /// @brief Gets the configuration for the given parameters.
 /// @relatedalso World
 WeldJointConf GetWeldJointConf(const World& world, BodyID bodyA, BodyID bodyB,
-                               const Length2 anchor = Length2{});
+                               const Length2& anchor = Length2{});
 
 /// @brief Gets the current linear reaction of the given configuration.
 /// @relatedalso WeldJointConf

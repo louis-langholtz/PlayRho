@@ -31,7 +31,8 @@
 
 namespace playrho::d2 {
 
-ToiOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA, // force line-break
+ToiOutput GetToiViaSat( // NOLINT(readability-function-cognitive-complexity)
+                       const DistanceProxy& proxyA, const Sweep& sweepA, // force line-break
                        const DistanceProxy& proxyB, const Sweep& sweepB, // force line-break
                        const ToiConf& conf)
 {

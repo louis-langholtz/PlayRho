@@ -21,6 +21,7 @@
 #ifndef PLAYRHO_COMMON_ARRAYALLOCATOR_HPP
 #define PLAYRHO_COMMON_ARRAYALLOCATOR_HPP
 
+#include <algorithm> // for std::any_of
 #include <stdexcept>
 #include <type_traits>
 #include <utility>
@@ -113,12 +114,9 @@ public:
     /// @see https://en.wikipedia.org/wiki/Big_O_notation
     bool FindFree(size_type index) const noexcept
     {
-        for (const auto& element: m_free) {
-            if (element == index) {
-                return true;
-            }
-        }
-        return false;
+        return std::any_of(std::begin(m_free), std::end(m_free), [index](size_type element) {
+            return element == index;
+        });
     }
 
     /// @brief Array index operator.

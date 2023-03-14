@@ -121,7 +121,7 @@ namespace playrho {
     {
         /// @brief Size type.
         using size_type = BlockAllocator::size_type;
-        
+
         BlockDeallocator() = default;
 
         /// @brief Initializing constructor.
@@ -130,15 +130,15 @@ namespace playrho {
         {
             // Intentionally empty.
         }
-        
+
         /// @brief Default operator.
-        void operator()(void *p) noexcept
+        void operator()(void *p) const noexcept
         {
             allocator->Free(p, nelem);
         }
-        
-        BlockAllocator* allocator; ///< Allocator pointer.
-        size_type nelem; ///< Number of elements.
+
+        BlockAllocator* allocator = nullptr; ///< Allocator pointer.
+        size_type nelem = 0u; ///< Number of elements.
     };
     
     /// @brief <code>BlockAllocator</code> equality operator.

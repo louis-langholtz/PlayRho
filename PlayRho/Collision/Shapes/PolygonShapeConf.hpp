@@ -312,7 +312,7 @@ inline void Rotate(PolygonShapeConf& arg, const UnitVec& value)
 /// @note This is a time consuming operation.
 /// @returns <code>true</code> if the given collection of vertices is indeed convex,
 ///   <code>false</code> otherwise.
-bool Validate(const Span<const Length2> verts);
+bool Validate(const Span<const Length2>& verts);
 
 } // namespace d2
 

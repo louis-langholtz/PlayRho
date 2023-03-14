@@ -72,7 +72,8 @@ RayCastOutput RayCast(Length radius, Length2 location, const RayCastInput& input
     return RayCastOutput{};
 }
 
-RayCastOutput RayCast(const ::playrho::detail::AABB<2>& aabb, const RayCastInput& input) noexcept
+RayCastOutput RayCast( // NOLINT(readability-function-cognitive-complexity)
+                      const ::playrho::detail::AABB<2>& aabb, const RayCastInput& input) noexcept
 {
     // From Real-time Collision Detection, p179.
 
@@ -82,7 +83,7 @@ RayCastOutput RayCast(const ::playrho::detail::AABB<2>& aabb, const RayCastInput
     
     const auto p1 = input.p1;
     const auto pDelta = input.p2 - input.p1;
-    for (auto i = decltype(pDelta.max_size()){0}; i < pDelta.max_size(); ++i)
+    for (auto i = decltype(max_size(pDelta)){0}; i < max_size(pDelta); ++i)
     {
         const auto p1i = p1[i];
         const auto pdi = pDelta[i];

@@ -161,7 +161,7 @@ DistanceProxy ChainShapeConf::GetChild(ChildCounter index) const
     if (vertexCount > 1) {
         return DistanceProxy{vertexRadius, 2, &m_vertices[index], &m_normals[index * 2]};
     }
-    return DistanceProxy{vertexRadius, 1, &m_vertices[0], nullptr};
+    return DistanceProxy{vertexRadius, 1, &m_vertices[index], nullptr};
 }
 
 // Free functions...

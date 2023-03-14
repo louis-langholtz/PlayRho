@@ -153,19 +153,19 @@ public:
     ///   better accuracy will be had by using one of the four oriented unit
     ///   vector returning methods - for the right, top, left, bottom orientations.
     ///
-    static UnitVec Get(const Angle angle) noexcept;
+    static UnitVec Get(Angle angle) noexcept;
 
     constexpr UnitVec() noexcept = default;
     
     /// @brief Gets the max size.
-    constexpr size_type max_size() const noexcept { return size_type{2}; }
+    static constexpr size_type max_size() noexcept { return size_type{2}; }
     
     /// @brief Gets the size.
-    constexpr size_type size() const noexcept { return size_type{2}; }
+    static constexpr size_type size() noexcept { return size_type{2}; }
     
     /// @brief Whether empty.
     /// @note Always false for N > 0.
-    constexpr bool empty() const noexcept { return false; }
+    static constexpr bool empty() noexcept { return false; }
     
     /// @brief Gets a "begin" iterator.
     const_iterator begin() const noexcept { return const_iterator(m_elems); }

@@ -769,7 +769,7 @@ private:
     /// @brief Synchronizes the given body.
     /// @details This updates the broad phase dynamic tree data for all of the identified shapes.
     ContactCounter Synchronize(BodyID bodyId,
-                               const Transformation& xfm1, const Transformation& xfm2,
+                               const Transformation& xfm0, const Transformation& xfm1,
                                Real multiplier, Length extension);
 
     /// @brief Updates the touching related state and notifies listener (if one given).

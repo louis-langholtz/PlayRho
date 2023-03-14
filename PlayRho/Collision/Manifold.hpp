@@ -599,9 +599,9 @@ bool operator!=(const Manifold& lhs, const Manifold& rhs) noexcept;
 ///   that had the maximal separation distance from the edge of shape0 identified by idx0.
 /// @param conf Manifold configuration data.
 Manifold GetManifold(bool flipped, const DistanceProxy& shape0, const Transformation& xf0,
-                     const VertexCounter idx0, const DistanceProxy& shape1,
-                     const Transformation& xf1, const VertexCounter2 indices1,
-                     const Manifold::Conf conf);
+                     VertexCounter idx0, const DistanceProxy& shape1,
+                     const Transformation& xf1, VertexCounter2 indices1,
+                     const Manifold::Conf& conf);
 
 /// @brief Computes manifolds for face-to-point collision.
 /// @pre The given distance proxy <code>GetVertexCount()</code> must be one or greater.
@@ -610,7 +610,7 @@ Manifold GetManifold(bool flipped, Length totalRadius, const DistanceProxy& shap
                      const Transformation& sxf, Length2 point, const Transformation& xfm);
 
 /// @brief Gets a point-to-point based manifold.
-Manifold GetManifold(Length2 locationA, const Transformation& xfA, Length2 locationB,
+Manifold GetManifold(const Length2& locationA, const Transformation& xfA, Length2 locationB,
                      const Transformation& xfB, Length totalRadius) noexcept;
 
 /// @brief Calculates the relevant collision manifold.
