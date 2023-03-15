@@ -119,8 +119,8 @@ StepStats Step(World& world, const StepConf& conf = StepConf{});
 /// @relatedalso World
 ///
 StepStats Step(World& world, Time delta,
-               TimestepIters velocityIterations = 8,
-               TimestepIters positionIterations = 3);
+               TimestepIters velocityIterations = StepConf::DefaultRegVelocityIters,
+               TimestepIters positionIterations = StepConf::DefaultRegPositionIters);
 
 /// @brief Gets whether or not sub-stepping is enabled.
 /// @see SetSubStepping, IsStepComplete.

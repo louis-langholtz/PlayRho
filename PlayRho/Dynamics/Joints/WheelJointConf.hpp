@@ -59,6 +59,9 @@ struct WheelJointConf : public JointBuilder<WheelJointConf> {
     /// @brief Default frequency.
     static constexpr auto DefaultFrequency = NonNegative<Frequency>{2_Hz};
 
+    /// @brief Default damping ratio.
+    static constexpr auto DefaultDampingRatio = Real(0.7f);
+
     /// @brief Default constructor.
     constexpr WheelJointConf() noexcept = default;
 
@@ -127,7 +130,7 @@ struct WheelJointConf : public JointBuilder<WheelJointConf> {
     NonNegative<Frequency> frequency = DefaultFrequency;
 
     /// Suspension damping ratio, one indicates critical damping
-    Real dampingRatio = 0.7f;
+    Real dampingRatio = DefaultDampingRatio;
 
     Momentum impulse = 0; ///< Impulse.
     AngularMomentum angularImpulse = 0; ///< Angular impulse.

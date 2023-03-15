@@ -27,11 +27,6 @@
 
 namespace playrho {
 
-static_assert(size(BlockAllocator::AllocatorBlockSizes) == 14,
-              "Invalid number of elements of AllocatorBlockSizes");
-static_assert(BlockAllocator::GetMaxBlockSize() == 640,
-              "Invalid maximum block size of AllocatorBlockSizes");
-
 namespace {
 
 #if 0

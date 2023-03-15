@@ -34,32 +34,33 @@ namespace playrho {
 /// @note This data structure size is 6-bytes.
 struct Filter {
     /// @brief Bits type definition.
-    ///
     using bits_type = std::uint16_t;
 
     /// @brief Index type definition.
-    ///
     using index_type = std::int16_t;
 
+    /// @brief Default category bits.
+    static constexpr auto DefaultCategoryBits = bits_type(0x0001);
+
+    /// @brief Default mask bits.
+    static constexpr auto DefaultMaskBits = bits_type(0xFFFF);
+
+    /// @brief Default group index.
+    static constexpr auto DefaultGroupIndex = index_type{0};
+
     /// @brief The collision category bits.
-    ///
     /// @note Normally you would just set one bit.
-    ///
-    bits_type categoryBits = 0x0001;
+    bits_type categoryBits = DefaultCategoryBits;
 
     /// @brief The collision mask bits.
-    ///
     /// @details This states the categories that this shape would accept for collision.
-    ///
-    bits_type maskBits = 0xFFFF;
+    bits_type maskBits = DefaultMaskBits;
 
     /// @brief Group index.
-    ///
     /// @details Collision groups allow a certain group of objects to never collide
     ///   (negative) or always collide (positive). Zero means no collision group.
     ///    Non-zero group filtering always wins against the mask bits.
-    ///
-    index_type groupIndex = 0;
+    index_type groupIndex = DefaultGroupIndex;
 };
 
 /// @brief Equality operator.

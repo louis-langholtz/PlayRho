@@ -32,6 +32,24 @@
 #include <iostream>
 
 namespace playrho {
+namespace detail {
+
+template <typename BASE_TYPE>
+struct FixedDefault {};
+
+template <>
+struct FixedDefault<std::int32_t>
+{
+    static constexpr auto FractionBits = 9u;
+};
+
+template <>
+struct FixedDefault<std::int64_t>
+{
+    static constexpr auto FractionBits = 24u;
+};
+
+}
 
 /// @brief Template class for fixed-point numbers.
 ///
@@ -710,7 +728,7 @@ inline ::std::ostream& operator<<(::std::ostream& os, const Fixed<BT, FB>& value
 /// @see Fixed, Real
 /// @see https://en.wikipedia.org/wiki/Q_(number_format)
 ///
-using Fixed32 = Fixed<std::int32_t,9>;
+using Fixed32 = Fixed<std::int32_t, detail::FixedDefault<std::int32_t>::FractionBits>;
 
 // Fixed32 free functions.
 
@@ -819,7 +837,7 @@ struct TypeInfo<Fixed32>
 /// @see Fixed, Real
 /// @see https://en.wikipedia.org/wiki/Q_(number_format)
 ///
-using Fixed64 = Fixed<std::int64_t,24>;
+using Fixed64 = Fixed<std::int64_t,detail::FixedDefault<std::int64_t>::FractionBits>;
 
 /// @brief Gets an invalid value.
 template <>

@@ -650,8 +650,8 @@ WorldImpl::WorldImpl(const WorldConf& def):
     {
         throw InvalidArgument("max vertex radius must be >= min vertex radius");
     }
-    m_proxyKeys.reserve(1024);
-    m_proxiesForContacts.reserve(1024);
+    m_proxyKeys.reserve(def.proxyCapacity);
+    m_proxiesForContacts.reserve(def.proxyCapacity);
     m_contactBuffer.reserve(def.contactCapacity);
     m_contacts.reserve(def.contactCapacity);
     m_islandedContacts.reserve(def.contactCapacity);

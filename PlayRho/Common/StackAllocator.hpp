@@ -43,8 +43,14 @@ public:
     /// @brief Stack allocator configuration data.
     struct Conf
     {
-        size_type preallocation_size = 100 * 1024; ///< Preallocation size.
-        size_type allocation_records = 32; ///< Allocation records.
+        /// @brief Default preallocation size.
+        static constexpr auto DefaultPreallocationSize = size_type(100 * 1024);
+
+        /// @brief Default allocation records.
+        static constexpr auto DefaultAllocationRecords = size_type(32);
+
+        size_type preallocation_size = DefaultPreallocationSize; ///< Preallocation size.
+        size_type allocation_records = DefaultAllocationRecords; ///< Allocation records.
     };
 
     /// @brief Gets the default configuration.
