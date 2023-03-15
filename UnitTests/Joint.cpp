@@ -400,6 +400,31 @@ TEST(Joint, DefaultConstructor)
     EXPECT_FALSE(joint.has_value());
 }
 
+TEST(Joint, CopyAssignment)
+{
+    const auto bodyA = BodyID{4};
+    const auto bodyB = BodyID{11};
+
+    auto dst = Joint{};
+    ASSERT_EQ(GetBodyA(dst), InvalidBodyID);
+    ASSERT_EQ(GetBodyB(dst), InvalidBodyID);
+
+    auto conf = WheelJointConf{};
+    conf.bodyA = bodyA;
+    conf.bodyB = bodyB;
+    const auto src = Joint{conf};
+    ASSERT_EQ(GetBodyA(src), bodyA);
+    ASSERT_EQ(GetBodyB(src), bodyB);
+    ASSERT_NE(GetType(dst), GetType(src));
+    ASSERT_NE(dst, src);
+
+    dst = src;
+    EXPECT_EQ(GetBodyA(dst), bodyA);
+    EXPECT_EQ(GetBodyB(dst), bodyB);
+    EXPECT_EQ(GetType(dst), GetType(src));
+    EXPECT_EQ(dst, src);
+}
+
 TEST(Joint, LimitStateToStringFF)
 {
     const auto equalLimitsString = std::string(ToString(LimitState::e_equalLimits));
