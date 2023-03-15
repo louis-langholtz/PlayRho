@@ -242,8 +242,8 @@ bool RayCast(const DynamicTree& tree, RayCastInput input, const DynamicTreeRayCa
     const auto v = GetRevPerpendicular(GetUnitVector(input.p2 - input.p1, UnitVec::GetZero()));
     const auto abs_v = abs(v);
     auto segmentAABB = d2::GetAABB(input);
-    
-    GrowableStack<ContactCounter, 256> stack;
+    static constexpr auto InitialStackCapacity = 256;
+    GrowableStack<ContactCounter, InitialStackCapacity> stack;
     stack.push(tree.GetRootIndex());
     while (!empty(stack))
     {

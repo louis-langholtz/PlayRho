@@ -52,12 +52,12 @@ struct Discriminator : Base {
 /// @note This class is not intended for standalone use.
 /// @see Compositor.
 template <class Set1, class Set2, class Set3, class Set4, class Set5, class Set6>
-struct PolicySelector : Discriminator<Set1, 1>, //
-                        Discriminator<Set2, 2>, //
-                        Discriminator<Set3, 3>, //
-                        Discriminator<Set4, 4>, //
-                        Discriminator<Set5, 5>, //
-                        Discriminator<Set6, 6> //
+struct PolicySelector : Discriminator<Set1, 1>, // NOLINT(readability-magic-numbers)
+                        Discriminator<Set2, 2>, // NOLINT(readability-magic-numbers)
+                        Discriminator<Set3, 3>, // NOLINT(readability-magic-numbers)
+                        Discriminator<Set4, 4>, // NOLINT(readability-magic-numbers)
+                        Discriminator<Set5, 5>, // NOLINT(readability-magic-numbers)
+                        Discriminator<Set6, 6>  // NOLINT(readability-magic-numbers)
 {
 };
 
@@ -412,8 +412,9 @@ struct DynamicAreaDensity {
 /// <code>Compositor</code> host class template.
 /// @note This class is not intended for standalone use.
 /// @see DynamicFilter, Compositor.
-template <Filter::bits_type CategoryBits = 1, Filter::bits_type MaskBits = 0xFFFF,
-          Filter::index_type GroupIndex = 0>
+template <Filter::bits_type CategoryBits = Filter::DefaultCategoryBits, //
+          Filter::bits_type MaskBits = Filter::DefaultMaskBits, //
+          Filter::index_type GroupIndex = Filter::DefaultGroupIndex>
 struct StaticFilter {
     /// @brief The filter of the shape.
     static inline const auto filter = Filter{CategoryBits, MaskBits, GroupIndex};
@@ -424,8 +425,9 @@ struct StaticFilter {
 /// <code>Compositor</code> host class template.
 /// @note This class is not intended for standalone use.
 /// @see StaticFilter, Compositor.
-template <Filter::bits_type CategoryBits = 1, Filter::bits_type MaskBits = 0xFFFF,
-          Filter::index_type GroupIndex = 0>
+template <Filter::bits_type CategoryBits = Filter::DefaultCategoryBits, //
+          Filter::bits_type MaskBits = Filter::DefaultMaskBits, //
+          Filter::index_type GroupIndex = Filter::DefaultGroupIndex>
 struct DynamicFilter {
     /// @brief The filter of the shape.
     Filter filter = Filter{CategoryBits, MaskBits, GroupIndex};

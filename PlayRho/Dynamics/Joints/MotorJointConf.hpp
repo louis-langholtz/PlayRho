@@ -56,6 +56,9 @@ struct MotorJointConf : public JointBuilder<MotorJointConf> {
     /// @brief Default max torque.
     static constexpr auto DefaultMaxTorque = NonNegative<Torque>(1_Nm);
 
+    /// @brief Default correction factor.
+    static constexpr auto DefaultCorrectionFactor = Real(0.3);
+
     /// @brief Default constructor.
     constexpr MotorJointConf() noexcept = default;
 
@@ -113,7 +116,7 @@ struct MotorJointConf : public JointBuilder<MotorJointConf> {
     NonNegative<Torque> maxTorque = DefaultMaxTorque;
 
     /// @brief Position correction factor in the range [0,1].
-    Real correctionFactor = Real(0.3);
+    Real correctionFactor = DefaultCorrectionFactor;
 
     // Solver temp
     Length2 rA = {}; ///< Relative A.

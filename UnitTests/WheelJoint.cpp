@@ -76,7 +76,7 @@ TEST(WheelJointConf, DefaultConstruction)
     EXPECT_EQ(def.motorSpeed, 0_rpm);
     EXPECT_EQ(def.frequency, WheelJointConf::DefaultFrequency);
     EXPECT_EQ(def.frequency, 2_Hz);
-    EXPECT_EQ(def.dampingRatio, Real(0.7f));
+    EXPECT_EQ(def.dampingRatio, WheelJointConf::DefaultDampingRatio);
 }
 
 TEST(WheelJointConf, Traits)

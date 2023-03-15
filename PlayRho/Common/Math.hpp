@@ -193,18 +193,23 @@ auto Average(const T& span)
     return sum / static_cast<Real>(count);
 }
 
+/// @brief Default round-off precision.
+constexpr auto DefaultRoundOffPrecission = unsigned{100000};
+
 /// @brief Computes the rounded value of the given value.
 template <typename T>
-inline std::enable_if_t<IsArithmetic<T>::value, T> RoundOff(T value, unsigned precision = 100000)
+auto RoundOff(T value, unsigned precision = DefaultRoundOffPrecission) ->
+    decltype(round(value * static_cast<T>(precision)) / static_cast<T>(precision))
 {
     const auto factor = static_cast<T>(precision);
     return round(value * factor) / factor;
 }
 
 /// @brief Computes the rounded value of the given value.
-inline Vec2 RoundOff(const Vec2& value, std::uint32_t precision = 100000)
+/// @todo Consider making this function generic to any <code>Vector</code>.
+inline auto RoundOff(const Vec2& value, std::uint32_t precision = DefaultRoundOffPrecission) -> Vec2
 {
-    return Vec2{RoundOff(value[0], precision), RoundOff(value[1], precision)};
+    return {RoundOff(value[0], precision), RoundOff(value[1], precision)};
 }
 
 /// @brief Absolute value function for vectors.
@@ -611,24 +616,15 @@ inline Mat22 abs(const Mat22& A)
 /// a bit vector with the same most significant 1 as x, but all one's below it. Adding 1 to
 /// that value yields the next largest power of 2.
 template <typename T>
-constexpr T NextPowerOfTwo(T x)
+constexpr auto NextPowerOfTwo(T x) -> decltype((x | (x >> 1u)), T(++x))
 {
-    x |= (x >> 1u);
-    x |= (x >> 2u);
-    x |= (x >> 4u);
-    if constexpr (sizeof(T) >= 2u) {
-        x |= (x >> 8u);
+    constexpr auto MaxTypeSizeInBytesSupported = 32u;
+    constexpr auto BitsPerByte = 8u;
+    static_assert(sizeof(T) < MaxTypeSizeInBytesSupported);
+    for (auto shift = 1u; shift < (sizeof(T) * BitsPerByte); shift <<= 1u) {
+        x |= (x >> shift);
     }
-    if constexpr (sizeof(T) >= 4u) {
-        x |= (x >> 16u);
-    }
-    if constexpr (sizeof(T) >= 8u) {
-        x |= (x >> 32u);
-    }
-    if constexpr (sizeof(T) >= 16u) {
-        x |= (x >> 64u);
-    }
-    return x + 1;
+    return ++x;
 }
 
 /// @brief Converts the given vector into a unit vector and returns its original length.
@@ -670,14 +666,16 @@ Angle GetShortestDelta(Angle a0, Angle a1) noexcept;
 /// @return Angular rotation in the clockwise direction to go from angle 1 to angle 2.
 constexpr Angle GetFwdRotationalAngle(const Angle a1, const Angle a2) noexcept
 {
-    return (a1 < a2) ? (a2 - a1) - 360_deg : a2 - a1;
+    constexpr auto FullCircleAngle = 360_deg;
+    return (a1 < a2) ? (a2 - a1) - FullCircleAngle : a2 - a1;
 }
 
 /// @brief Gets the reverse (counter) clockwise rotational angle to go from angle 1 to angle 2.
 /// @return Angular rotation in the counter clockwise direction to go from angle 1 to angle 2.
 constexpr Angle GetRevRotationalAngle(const Angle a1, const Angle a2) noexcept
 {
-    return (a1 > a2) ? 360_deg - (a1 - a2) : a2 - a1;
+    constexpr auto FullCircleAngle = 360_deg;
+    return (a1 > a2) ? FullCircleAngle - (a1 - a2) : a2 - a1;
 }
 
 /// @brief Gets the vertices for a circle described by the given parameters.

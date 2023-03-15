@@ -31,6 +31,21 @@ namespace d2 {
 
 /// @brief World configuration data.
 struct WorldConf {
+    /// @brief Default min vertex radius.
+    static constexpr auto DefaultMinVertexRadius = ::playrho::DefaultMinVertexRadius;
+
+    /// @brief Default max vertex radius.
+    static constexpr auto DefaultMaxVertexRadius = ::playrho::DefaultMaxVertexRadius;
+
+    /// @brief Default tree capacity.
+    static constexpr auto DefaultTreeCapacity = ContactCounter(4096u);
+
+    /// @brief Default contact capacity.
+    static constexpr auto DefaultContactCapacity = ContactCounter(2048u);
+
+    /// @brief Default initial proxy capacity.
+    static constexpr auto DefaultProxyCapacity = ContactCounter(1024);
+
     /// @brief Uses the given min vertex radius value.
     constexpr WorldConf& UseMinVertexRadius(Positive<Length> value) noexcept;
 
@@ -63,10 +78,13 @@ struct WorldConf {
     Positive<Length> maxVertexRadius = DefaultMaxVertexRadius;
 
     /// @brief Initial tree size.
-    ContactCounter treeCapacity = 4096u;
+    ContactCounter treeCapacity = DefaultTreeCapacity;
 
     /// @brief Initial contact capacity.
-    ContactCounter contactCapacity = 2048u;
+    ContactCounter contactCapacity = DefaultContactCapacity;
+
+    /// @brief Initial proxy capacity.
+    ContactCounter proxyCapacity = DefaultProxyCapacity;
 };
 
 constexpr WorldConf& WorldConf::UseMinVertexRadius(Positive<Length> value) noexcept

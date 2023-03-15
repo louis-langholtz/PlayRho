@@ -40,6 +40,9 @@ TEST(StackAllocator, ByteSize)
 TEST(StackAllocator, DefaultConstruction)
 {
     const auto config = StackAllocator::GetDefaultConf();
+    ASSERT_EQ(config.preallocation_size, StackAllocator::Conf::DefaultPreallocationSize);
+    ASSERT_EQ(config.allocation_records, StackAllocator::Conf::DefaultAllocationRecords);
+
     StackAllocator foo;
     EXPECT_EQ(foo.GetPreallocatedSize(), config.preallocation_size);
     EXPECT_EQ(foo.GetMaxEntries(), config.allocation_records);

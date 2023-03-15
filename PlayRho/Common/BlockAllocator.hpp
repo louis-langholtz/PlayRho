@@ -39,6 +39,9 @@ namespace playrho {
         /// @brief Size type.
         using size_type = std::size_t;
 
+        /// @brief Chunk array increment.
+        static constexpr auto ChunkArrayIncrement = size_type{128};
+
         /// @brief Allocator block sizes array data.
         static constexpr std::size_t AllocatorBlockSizes[] =
         {
@@ -57,7 +60,7 @@ namespace playrho {
         /// @brief Chunk array increment.
         static constexpr size_type GetChunkArrayIncrement() noexcept
         {
-            return size_type{128};
+            return ChunkArrayIncrement;
         }
         
         BlockAllocator();

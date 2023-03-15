@@ -662,7 +662,8 @@ void swap(DynamicTree& lhs, DynamicTree& rhs) noexcept
 
 void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTreeSizeCB& callback)
 {
-    GrowableStack<DynamicTree::Size, 256> stack;
+    static constexpr auto InitialStackCapacity = 256;
+    GrowableStack<DynamicTree::Size, InitialStackCapacity> stack;
     stack.push(tree.GetRootIndex());
 
     while (!empty(stack)) {

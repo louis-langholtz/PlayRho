@@ -127,7 +127,8 @@ void InitVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
     assert(IsValid(object.C));
 
     // Cheat with some damping
-    velB.angular *= 0.98f;
+    static constexpr auto DampingAmount = 0.98f;
+    velB.angular *= DampingAmount;
 
     if (step.doWarmStart) {
         object.impulse *= step.dtRatio;

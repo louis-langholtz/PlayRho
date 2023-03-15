@@ -71,7 +71,7 @@ TEST(MotorJointConf, DefaultConstruction)
     EXPECT_EQ(def.maxTorque, MotorJointConf::DefaultMaxTorque);
     EXPECT_EQ(def.maxForce, 1_N);
     EXPECT_EQ(def.maxTorque, 1_Nm);
-    EXPECT_EQ(def.correctionFactor, Real(0.3));
+    EXPECT_EQ(def.correctionFactor, MotorJointConf::DefaultCorrectionFactor);
 }
 
 TEST(MotorJointConf, BuilderConstruction)

@@ -33,10 +33,10 @@ TEST(Filter, ByteSize)
 
 TEST(Filter, DefaultConstruction)
 {
-    Filter filter;
-    EXPECT_EQ(filter.categoryBits, Filter::bits_type(1));
-    EXPECT_EQ(filter.maskBits, Filter::bits_type(0xFFFF));
-    EXPECT_EQ(filter.groupIndex, Filter::index_type(0));
+    const Filter filter;
+    EXPECT_EQ(filter.categoryBits, Filter::DefaultCategoryBits);
+    EXPECT_EQ(filter.maskBits, Filter::DefaultMaskBits);
+    EXPECT_EQ(filter.groupIndex, Filter::DefaultGroupIndex);
 }
 
 TEST(Filter, Construction)

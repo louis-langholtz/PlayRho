@@ -78,11 +78,16 @@ TEST(World, ByteSize)
     EXPECT_EQ(sizeof(World), sizeof(void*));
 }
 
-TEST(World, Conf)
+TEST(WorldConf, DefaultConstruction)
 {
     const auto worldConf = WorldConf{};
+    EXPECT_EQ(worldConf.minVertexRadius, WorldConf::DefaultMinVertexRadius);
+    EXPECT_EQ(worldConf.maxVertexRadius, WorldConf::DefaultMaxVertexRadius);
+    EXPECT_EQ(worldConf.treeCapacity, WorldConf::DefaultTreeCapacity);
+    EXPECT_EQ(worldConf.contactCapacity, WorldConf::DefaultContactCapacity);
+
     const auto defaultConf = GetDefaultWorldConf();
-    
+
     EXPECT_EQ(defaultConf.maxVertexRadius, worldConf.maxVertexRadius);
     EXPECT_EQ(defaultConf.minVertexRadius, worldConf.minVertexRadius);
     const auto stepConf = StepConf{};

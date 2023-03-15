@@ -47,11 +47,17 @@ namespace detail {
 template <typename T>
 struct Defaults
 {
+    /// @brief Linear slop.
+    static constexpr auto LinearSlop = 0.005_m;
+
+    /// @brief Max vertex radius.
+    static constexpr auto MaxVertexRadius = 255_m;
+
     /// @brief Gets the linear slop.
     static constexpr auto GetLinearSlop() noexcept
     {
         // Return the value used by Box2D 2.3.2 b2_linearSlop define....
-        return 0.005_m;
+        return LinearSlop;
     }
     
     /// @brief Gets the max vertex radius.
@@ -59,7 +65,7 @@ struct Defaults
     {
         // DefaultLinearSlop * Real{2 * 1024 * 1024};
         // linearSlop * 2550000
-        return 255_m;
+        return MaxVertexRadius;
     }
 };
 
@@ -67,6 +73,9 @@ struct Defaults
 template <unsigned int FRACTION_BITS>
 struct Defaults<Fixed<std::int32_t,FRACTION_BITS>>
 {
+    /// @brief Max shift bits.
+    static constexpr auto MaxShiftBits = 28;
+
     /// @brief Gets the linear slop.
     static constexpr auto GetLinearSlop() noexcept
     {
@@ -79,7 +88,7 @@ struct Defaults<Fixed<std::int32_t,FRACTION_BITS>>
     static constexpr auto GetMaxVertexRadius() noexcept
     {
         // linearSlop * 2550000
-        return Length{Real(1u << (28 - FRACTION_BITS)) * 1_m};
+        return Length{Real(1u << (MaxShiftBits - FRACTION_BITS)) * 1_m};
     }
 };
 
