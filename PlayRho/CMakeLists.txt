@@ -33,13 +33,11 @@ file(GLOB PLAYRHO_Joints_SRCS "Dynamics/Joints/*.cpp")
 file(GLOB PLAYRHO_Joints_HDRS "Dynamics/Joints/*.hpp")
 
 file(GLOB PLAYRHO_General_HDRS "*.hpp")
-file(COPY ${PLAYRHO_General_HDRS} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
 configure_file("Defines.hpp.in" "Defines.hpp" @ONLY) # overwrites existing Defines.hpp
 file(GLOB PLAYRHO_GeneralCfg_HDRS "${CMAKE_CURRENT_BINARY_DIR}/*.hpp")
 
 file(GLOB PLAYRHO_Common_SRCS "Common/*.cpp")
 file(GLOB PLAYRHO_Common_HDRS "Common/*.hpp")
-file(COPY ${PLAYRHO_Common_HDRS} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/Common")
 configure_file("Common/Real.hpp.in" "Common/Real.hpp" @ONLY) # overwrites existing Common/Real.hpp
 file(GLOB PLAYRHO_CommonCfg_HDRS "${CMAKE_CURRENT_BINARY_DIR}/Common/*.hpp")
 
