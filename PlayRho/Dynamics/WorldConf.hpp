@@ -58,6 +58,9 @@ struct WorldConf {
     /// @brief Uses the given value as the initial contact capacity.
     constexpr WorldConf& UseContactCapacity(ContactCounter value) noexcept;
 
+    /// @brief Uses the given value as the initial proxy capacity.
+    constexpr WorldConf& UseProxyCapacity(ContactCounter value) noexcept;
+
     /// @brief Minimum vertex radius.
     /// @details This is the minimum vertex radius that this world establishes which bodies
     ///    shall allow fixtures to be created with. Trying to create a fixture with a shape
@@ -108,6 +111,12 @@ constexpr WorldConf& WorldConf::UseTreeCapacity(ContactCounter value) noexcept
 constexpr WorldConf& WorldConf::UseContactCapacity(ContactCounter value) noexcept
 {
     contactCapacity = value;
+    return *this;
+}
+
+constexpr WorldConf& WorldConf::UseProxyCapacity(ContactCounter value) noexcept
+{
+    proxyCapacity = value;
     return *this;
 }
 

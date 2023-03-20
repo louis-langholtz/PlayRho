@@ -395,6 +395,7 @@
 		80BB8A76141C3F7600F1753A /* libPlayRho.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80FF01D2141C3D980059E59D /* libPlayRho.a */; };
 		80BB8A7B141C3FA700F1753A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80BB8A7A141C3FA700F1753A /* OpenGL.framework */; };
 		9921FFD729AD43C30043F23F /* TypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9921FFD629AD43C30043F23F /* TypeInfo.cpp */; };
+		9980D10A29C8ACB700007B35 /* WorldConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9980D10929C8ACB700007B35 /* WorldConf.cpp */; };
 		99CF862F29B9087700D9D112 /* BaseShapeConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99CF862E29B9087700D9D112 /* BaseShapeConf.cpp */; };
 		99CF863129C251CB00D9D112 /* ConstraintSolverConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99CF863029C251CB00D9D112 /* ConstraintSolverConf.cpp */; };
 /* End PBXBuildFile section */
@@ -866,6 +867,7 @@
 		80CD7722143AF3230086DB87 /* ConvexHull.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConvexHull.cpp; sourceTree = "<group>"; };
 		80FF01D2141C3D980059E59D /* libPlayRho.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPlayRho.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9921FFD629AD43C30043F23F /* TypeInfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TypeInfo.cpp; sourceTree = "<group>"; };
+		9980D10929C8ACB700007B35 /* WorldConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WorldConf.cpp; sourceTree = "<group>"; };
 		99CF862E29B9087700D9D112 /* BaseShapeConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BaseShapeConf.cpp; sourceTree = "<group>"; };
 		99CF863029C251CB00D9D112 /* ConstraintSolverConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ConstraintSolverConf.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1009,6 +1011,7 @@
 				47C85D091EFA251B00F70C56 /* WheelJoint.cpp */,
 				474BC4061D41278800447DCD /* World.cpp */,
 				476FBF50253FB9550057D5F3 /* WorldBody.cpp */,
+				9980D10929C8ACB700007B35 /* WorldConf.cpp */,
 				475A94601D9996B6000CA9A8 /* WorldContact.cpp */,
 				475A94551D930E6C000CA9A8 /* WorldFixture.cpp */,
 				470ADAD82558C52300EEE99D /* WorldJoint.cpp */,
@@ -1747,6 +1750,7 @@
 				47C96C511FA24BC100A6C587 /* Units.cpp in Sources */,
 				47D6D4C92665EB3900AF32B4 /* Compositor.cpp in Sources */,
 				47D28D951F6E32720094C032 /* PulleyJoint.cpp in Sources */,
+				9980D10A29C8ACB700007B35 /* WorldConf.cpp in Sources */,
 				47D61F7C1F21112000E702BD /* MultiShape.cpp in Sources */,
 				474BC4311D413DC200447DCD /* Epsilon.cpp in Sources */,
 				47BE7FE225390E8F00CF0F22 /* BodyType.cpp in Sources */,
