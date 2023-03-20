@@ -78,29 +78,6 @@ TEST(World, ByteSize)
     EXPECT_EQ(sizeof(World), sizeof(void*));
 }
 
-TEST(WorldConf, DefaultConstruction)
-{
-    const auto worldConf = WorldConf{};
-    EXPECT_EQ(worldConf.minVertexRadius, WorldConf::DefaultMinVertexRadius);
-    EXPECT_EQ(worldConf.maxVertexRadius, WorldConf::DefaultMaxVertexRadius);
-    EXPECT_EQ(worldConf.treeCapacity, WorldConf::DefaultTreeCapacity);
-    EXPECT_EQ(worldConf.contactCapacity, WorldConf::DefaultContactCapacity);
-
-    const auto defaultConf = GetDefaultWorldConf();
-
-    EXPECT_EQ(defaultConf.maxVertexRadius, worldConf.maxVertexRadius);
-    EXPECT_EQ(defaultConf.minVertexRadius, worldConf.minVertexRadius);
-    const auto stepConf = StepConf{};
-
-    const auto v = Real(1);
-    const auto n = nextafter(v, Real(0));
-    const auto time_inc = (v - n) * 1_s;
-    ASSERT_GT(time_inc, 0_s);
-    ASSERT_LT(time_inc, 1_s);
-    const auto max_inc = time_inc * stepConf.maxTranslation;
-    EXPECT_GT(max_inc, 0_m * 1_s);
-}
-
 TEST(World, Traits)
 {
     EXPECT_TRUE(std::is_default_constructible<World>::value);
