@@ -972,6 +972,13 @@ constexpr auto GetReflectionMatrix(const UnitVec& axis)
     return result;
 }
 
+/// @brief Converts the given value to its closest signed equivalent.
+template< class T >
+constexpr auto ToSigned(const T& value) -> decltype(static_cast<std::make_signed_t<T>>(value))
+{
+    return static_cast<std::make_signed_t<T>>(value);
+}
+
 } // namespace d2
 } // namespace playrho
 

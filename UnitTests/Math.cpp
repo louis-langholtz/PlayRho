@@ -1330,3 +1330,12 @@ TEST(Math, GetReflectionMatrix)
         EXPECT_NEAR(static_cast<double>(get<1>(vp)), +2.0, 0.000001);
     }
 }
+
+TEST(Math, ToSigned)
+{
+    EXPECT_EQ(ToSigned(0), 0);
+    EXPECT_EQ(ToSigned(42), 42);
+    EXPECT_EQ(ToSigned(-42), -42);
+    EXPECT_EQ(ToSigned(42u), 42);
+    EXPECT_EQ(ToSigned(static_cast<std::uint8_t>(255u)), -1);
+}
