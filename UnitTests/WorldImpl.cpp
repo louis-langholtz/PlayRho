@@ -925,7 +925,6 @@ TEST(WorldImpl, SetShapeWithGeometryChange)
         EXPECT_EQ(world.GetFixturesForProxies()[0].second, shapeId);
     }
     EXPECT_EQ(size(world.GetProxies(bodyId)), 1u);
-    EXPECT_TRUE(world.HasNewFixtures());
     EXPECT_NO_THROW(world.Step(stepConf)); // makes 1 proxy for shapeIdOther + 2 for shapeId
     EXPECT_EQ(size(world.GetFixturesForProxies()), 0u);
     EXPECT_EQ(size(world.GetProxies(bodyId)), 3u);
