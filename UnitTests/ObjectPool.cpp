@@ -20,24 +20,24 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Common/ArrayAllocator.hpp>
+#include <PlayRho/Common/ObjectPool.hpp>
 
 using namespace playrho;
 
-TEST(ArrayAllocator, DefaultConstructor)
+TEST(ObjectPool, DefaultConstructor)
 {
-    ArrayAllocator<int> object;
+    ObjectPool<int> object;
     EXPECT_EQ(object.size(), 0u);
     EXPECT_EQ(object.free_size(), 0u);
-    EXPECT_EQ(object.GetIndex(nullptr), static_cast<ArrayAllocator<int>::size_type>(-1));
+    EXPECT_EQ(object.GetIndex(nullptr), static_cast<ObjectPool<int>::size_type>(-1));
     EXPECT_FALSE(object.FindFree(0u));
     EXPECT_THROW(object.at(0u), std::out_of_range);
 }
 
-TEST(ArrayAllocator, AllocateWithNoFreeIncreasesSizeByOne)
+TEST(ObjectPool, AllocateWithNoFreeIncreasesSizeByOne)
 {
-    ArrayAllocator<int> object;
-    auto index = static_cast<ArrayAllocator<int>::size_type>(-1);
+    ObjectPool<int> object;
+    auto index = static_cast<ObjectPool<int>::size_type>(-1);
     ASSERT_EQ(object.size(), 0u);
     ASSERT_EQ(object.free_size(), 0u);
     EXPECT_NO_THROW(index = object.Allocate(5));
@@ -46,10 +46,10 @@ TEST(ArrayAllocator, AllocateWithNoFreeIncreasesSizeByOne)
     EXPECT_FALSE(object.FindFree(index));
 }
 
-TEST(ArrayAllocator, AllocateWithFreeDecreasesFreeSizeByOne)
+TEST(ObjectPool, AllocateWithFreeDecreasesFreeSizeByOne)
 {
-    ArrayAllocator<int> object;
-    ArrayAllocator<int>::size_type index;
+    ObjectPool<int> object;
+    ObjectPool<int>::size_type index;
 
     ASSERT_EQ(object.size(), 0u);
     ASSERT_NO_THROW(index = object.Allocate(5));
@@ -65,9 +65,9 @@ TEST(ArrayAllocator, AllocateWithFreeDecreasesFreeSizeByOne)
     EXPECT_NO_THROW(object.at(index));
 }
 
-TEST(ArrayAllocator, FreeIncreasesFreeSize)
+TEST(ObjectPool, FreeIncreasesFreeSize)
 {
-    ArrayAllocator<int> object;
+    ObjectPool<int> object;
 
     ASSERT_EQ(object.free_size(), 0u);
     ASSERT_NO_THROW(object.Allocate(1));
@@ -87,10 +87,10 @@ TEST(ArrayAllocator, FreeIncreasesFreeSize)
     EXPECT_EQ(object.free_size(), 4u);
 }
 
-TEST(ArrayAllocator, FreeOutOfRangeThrows)
+TEST(ObjectPool, FreeOutOfRangeThrows)
 {
-    ArrayAllocator<int> object;
-    ArrayAllocator<int>::size_type index;
+    ObjectPool<int> object;
+    ObjectPool<int>::size_type index;
 
     ASSERT_EQ(object.size(), 0u);
     EXPECT_THROW(object.Free(0u), std::out_of_range);
@@ -100,12 +100,12 @@ TEST(ArrayAllocator, FreeOutOfRangeThrows)
     ASSERT_EQ(object.size(), 1u);
     EXPECT_THROW(object.Free(1u), std::out_of_range);
     EXPECT_THROW(object.Free(2u), std::out_of_range);
-    EXPECT_THROW(object.Free(static_cast<ArrayAllocator<int>::size_type>(-1)), std::out_of_range);
+    EXPECT_THROW(object.Free(static_cast<ObjectPool<int>::size_type>(-1)), std::out_of_range);
 }
 
-TEST(ArrayAllocator, clear)
+TEST(ObjectPool, clear)
 {
-    ArrayAllocator<int> object;
+    ObjectPool<int> object;
 
     ASSERT_EQ(object.size(), 0u);
     ASSERT_EQ(object.free_size(), 0u);
@@ -133,9 +133,9 @@ TEST(ArrayAllocator, clear)
     EXPECT_EQ(object.free_size(), 0u);
 }
 
-TEST(ArrayAllocator, usedFreeFunction)
+TEST(ObjectPool, usedFreeFunction)
 {
-    ArrayAllocator<int> object;
+    ObjectPool<int> object;
     EXPECT_EQ(used(object), 0u);
     ASSERT_NO_THROW(object.Allocate(1));
     EXPECT_EQ(used(object), 1u);
