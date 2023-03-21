@@ -29,9 +29,9 @@
 
 namespace playrho {
 
-/// @brief Array allocator.
+/// @brief Object pool with indexable properties.
 template <typename T>
-class ArrayAllocator
+class ObjectPool
 {
 public:
     /// @brief Element type.
@@ -219,7 +219,7 @@ private:
 /// @brief Gets the number of elements that are used in the specified structure.
 /// @return Size of the specified structure minus the size of its free pool.
 template <typename T>
-typename ArrayAllocator<T>::size_type used(const ArrayAllocator<T>& array) noexcept
+typename ObjectPool<T>::size_type used(const ObjectPool<T>& array) noexcept
 {
     return array.size() - array.free_size();
 }

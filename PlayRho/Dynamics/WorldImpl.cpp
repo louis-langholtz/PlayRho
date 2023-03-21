@@ -222,7 +222,7 @@ void WarmStartVelocities(const VelocityConstraints& velConstraints,
 }
 
 void GetBodyConstraints(std::vector<BodyConstraint>& constraints, const Island::Bodies& bodies,
-                        const ArrayAllocator<Body>& bodyBuffer, Time h, MovementConf conf)
+                        const ObjectPool<Body>& bodyBuffer, Time h, MovementConf conf)
 {
     assert(size(constraints) == size(bodyBuffer));
     for (const auto& id: bodies) {
@@ -231,9 +231,9 @@ void GetBodyConstraints(std::vector<BodyConstraint>& constraints, const Island::
 }
 
 PositionConstraints GetPositionConstraints(const Island::Contacts& contacts,
-                                           const ArrayAllocator<Contact>& contactBuffer,
-                                           const ArrayAllocator<Manifold>& manifoldBuffer,
-                                           const ArrayAllocator<Shape>& shapeBuffer)
+                                           const ObjectPool<Contact>& contactBuffer,
+                                           const ObjectPool<Manifold>& manifoldBuffer,
+                                           const ObjectPool<Shape>& shapeBuffer)
 {
     auto constraints = PositionConstraints{};
     constraints.reserve(size(contacts));
@@ -262,9 +262,9 @@ PositionConstraints GetPositionConstraints(const Island::Contacts& contacts,
 /// @post Velocity constraints will have their constraint points set.
 /// @see SolveVelocityConstraints.
 VelocityConstraints GetVelocityConstraints(const Island::Contacts& contacts,
-                                           const ArrayAllocator<Contact>& contactBuffer,
-                                           const ArrayAllocator<Manifold>& manifoldBuffer,
-                                           const ArrayAllocator<Shape>& shapeBuffer,
+                                           const ObjectPool<Contact>& contactBuffer,
+                                           const ObjectPool<Manifold>& manifoldBuffer,
+                                           const ObjectPool<Shape>& shapeBuffer,
                                            const BodyConstraints& bodies,
                                            const VelocityConstraint::Conf conf)
 {
@@ -345,7 +345,7 @@ inline Time GetUnderActiveTime(const Body& b, const StepConf& conf) noexcept
 }
 
 inline Time UpdateUnderActiveTimes(const Island::Bodies& bodies,
-                                   ArrayAllocator<Body>& bodyBuffer,
+                                   ObjectPool<Body>& bodyBuffer,
                                    const StepConf& conf)
 {
     auto minUnderActiveTime = std::numeric_limits<Time>::infinity();
@@ -363,9 +363,9 @@ inline Time UpdateUnderActiveTimes(const Island::Bodies& bodies,
 }
 
 inline BodyCounter Sleepem(const Island::Bodies& bodies,
-                           ArrayAllocator<Body>& bodyBuffer,
-                           ArrayAllocator<WorldImpl::Contacts>& bodyContacts,
-                           ArrayAllocator<Contact>& contactBuffer)
+                           ObjectPool<Body>& bodyBuffer,
+                           ObjectPool<WorldImpl::Contacts>& bodyContacts,
+                           ObjectPool<Contact>& contactBuffer)
 {
     auto unawoken = BodyCounter{0};
     for_each(cbegin(bodies), cend(bodies), [&](const auto& bodyID) {
@@ -396,7 +396,7 @@ inline bool IsValidForTime(ToiOutput::State state) noexcept
     return state == ToiOutput::e_touching;
 }
 
-bool FlagForFiltering(ArrayAllocator<Contact>& contactBuffer, BodyID bodyA,
+bool FlagForFiltering(ObjectPool<Contact>& contactBuffer, BodyID bodyA,
                       const std::vector<KeyedContactPtr>& contactsBodyB,
                       BodyID bodyB) noexcept
 {
@@ -423,7 +423,7 @@ WorldImpl::ContactUpdateConf GetUpdateConf(const StepConf& conf) noexcept
 }
 
 template <typename T>
-void FlagForUpdating(ArrayAllocator<Contact>& contactsBuffer, const T& contacts) noexcept
+void FlagForUpdating(ObjectPool<Contact>& contactsBuffer, const T& contacts) noexcept
 {
     std::for_each(begin(contacts), end(contacts), [&](const auto& ci) {
         contactsBuffer[to_underlying(std::get<ContactID>(ci))].FlagForUpdating();
@@ -435,8 +435,8 @@ inline bool EitherIsAccelerable(const Body& lhs, const Body& rhs) noexcept
     return lhs.IsAccelerable() || rhs.IsAccelerable();
 }
 
-bool ShouldCollide(const ArrayAllocator<Joint>& jointBuffer,
-                   const ArrayAllocator<WorldImpl::BodyJoints>& bodyJoints,
+bool ShouldCollide(const ObjectPool<Joint>& jointBuffer,
+                   const ObjectPool<WorldImpl::BodyJoints>& bodyJoints,
                    BodyID lhs, BodyID rhs)
 {
     // Does a joint prevent collision?
@@ -463,7 +463,7 @@ void Unset(std::vector<bool>& islanded, const WorldImpl::Contacts& elements)
 }
 
 /// @brief Reset bodies for solve TOI.
-void ResetBodiesForSolveTOI(WorldImpl::Bodies& bodies, ArrayAllocator<Body>& buffer) noexcept
+void ResetBodiesForSolveTOI(WorldImpl::Bodies& bodies, ObjectPool<Body>& buffer) noexcept
 {
     for_each(begin(bodies), end(bodies), [&](const auto& body) {
         buffer[to_underlying(body)].ResetAlpha0();
@@ -471,7 +471,7 @@ void ResetBodiesForSolveTOI(WorldImpl::Bodies& bodies, ArrayAllocator<Body>& buf
 }
 
 /// @brief Reset contacts for solve TOI.
-void ResetBodyContactsForSolveTOI(ArrayAllocator<Contact>& buffer,
+void ResetBodyContactsForSolveTOI(ObjectPool<Contact>& buffer,
                                   const std::vector<KeyedContactPtr>& contacts) noexcept
 {
     // Invalidate all contact TOIs on this displaced body.
@@ -482,7 +482,7 @@ void ResetBodyContactsForSolveTOI(ArrayAllocator<Contact>& buffer,
 }
 
 /// @brief Reset contacts for solve TOI.
-void ResetContactsForSolveTOI(ArrayAllocator<Contact>& buffer,
+void ResetContactsForSolveTOI(ObjectPool<Contact>& buffer,
                               const WorldImpl::Contacts& contacts) noexcept
 {
     for_each(begin(contacts), end(contacts), [&buffer](const auto& c) {
@@ -1211,7 +1211,7 @@ void WorldImpl::AddJointsToIsland(Island& island, BodyStack& stack, const BodyJo
 
 WorldImpl::Bodies::size_type
 WorldImpl::RemoveUnspeedablesFromIslanded(const std::vector<BodyID>& bodies,
-                                          const ArrayAllocator<Body>& buffer,
+                                          const ObjectPool<Body>& buffer,
                                           std::vector<bool>& islanded)
 {
     // Allow static bodies to participate in other islands.
@@ -1492,7 +1492,7 @@ WorldImpl::UpdateContactTOIs(const StepConf& conf)
 }
 
 WorldImpl::ContactToiData WorldImpl::GetSoonestContact(const Contacts& contacts,
-                                                       const ArrayAllocator<Contact>& buffer) noexcept
+                                                       const ObjectPool<Contact>& buffer) noexcept
 {
     auto minToi = nextafter(Real{1}, Real{0});
     auto found = InvalidContactID;

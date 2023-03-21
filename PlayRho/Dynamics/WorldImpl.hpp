@@ -27,7 +27,7 @@
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Positive.hpp>
-#include <PlayRho/Common/ArrayAllocator.hpp>
+#include <PlayRho/Common/ObjectPool.hpp>
 
 #include <PlayRho/Collision/DynamicTree.hpp>
 #include <PlayRho/Collision/MassData.hpp>
@@ -592,7 +592,7 @@ private:
     
     /// @brief Removes <em>unspeedables</em> from the is <em>is-in-island</em> state.
     static Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<BodyID>& bodies,
-                                                            const ArrayAllocator<Body>& buffer,
+                                                            const ObjectPool<Body>& buffer,
                                                             std::vector<bool>& islanded);
     
     /// @brief Solves the step using successive time of impact (TOI) events.
@@ -726,7 +726,7 @@ private:
     /// @return Contact with the least time of impact and its time of impact, or null contact.
     ///  A non-null contact will be enabled, not have sensors, be active, and impenetrable.
     static ContactToiData GetSoonestContact(const Contacts& contacts,
-                                            const ArrayAllocator<Contact>& buffer) noexcept;
+                                            const ObjectPool<Contact>& buffer) noexcept;
 
     /// @brief Processes the narrow phase collision for the contacts collection.
     /// @details
@@ -792,15 +792,15 @@ private:
 
     DynamicTree m_tree; ///< Dynamic tree.
 
-    ArrayAllocator<Body> m_bodyBuffer; ///< Array of body data both used and freed.
-    ArrayAllocator<Shape> m_shapeBuffer; ///< Array of shape data both used and freed.
-    ArrayAllocator<Joint> m_jointBuffer; ///< Array of joint data both used and freed.
-    ArrayAllocator<Contact> m_contactBuffer; ///< Array of contact data both used and freed.
-    ArrayAllocator<Manifold> m_manifoldBuffer; ///< Array of manifold data both used and freed.
+    ObjectPool<Body> m_bodyBuffer; ///< Array of body data both used and freed.
+    ObjectPool<Shape> m_shapeBuffer; ///< Array of shape data both used and freed.
+    ObjectPool<Joint> m_jointBuffer; ///< Array of joint data both used and freed.
+    ObjectPool<Contact> m_contactBuffer; ///< Array of contact data both used and freed.
+    ObjectPool<Manifold> m_manifoldBuffer; ///< Array of manifold data both used and freed.
 
-    ArrayAllocator<Contacts> m_bodyContacts; ///< Cache of contacts associated with bodies.
-    ArrayAllocator<BodyJoints> m_bodyJoints; ///< Cache of joints associated with bodies.
-    ArrayAllocator<Proxies> m_bodyProxies; ///< Cache of proxies associated with bodies.
+    ObjectPool<Contacts> m_bodyContacts; ///< Cache of contacts associated with bodies.
+    ObjectPool<BodyJoints> m_bodyJoints; ///< Cache of joints associated with bodies.
+    ObjectPool<Proxies> m_bodyProxies; ///< Cache of proxies associated with bodies.
 
     ContactKeyQueue m_proxyKeys; ///< Proxy keys.
     Proxies m_proxiesForContacts; ///< Proxies queue.
