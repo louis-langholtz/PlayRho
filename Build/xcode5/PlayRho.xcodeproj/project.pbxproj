@@ -342,7 +342,6 @@
 		47ED555124F05F26005A3586 /* DynamicMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47ED555024F05F26005A3586 /* DynamicMemory.cpp */; };
 		47F397DF2654426F003C1FD9 /* Compositor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47F397DD2654426F003C1FD9 /* Compositor.cpp */; };
 		47F397E02654426F003C1FD9 /* Compositor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47F397DE2654426F003C1FD9 /* Compositor.hpp */; };
-		47F932A61D11C283006A193C /* AllocatedArray.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47F932A41D11C283006A193C /* AllocatedArray.hpp */; };
 		47FFD0F91DABDC63000D6D0E /* Mat22.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47FFD0F81DABDC63000D6D0E /* Mat22.cpp */; };
 		47FFD0FB1DAC3EFC000D6D0E /* VelocityConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47FFD0FA1DAC3EFC000D6D0E /* VelocityConstraint.cpp */; };
 		47FFD0FD1DAC6235000D6D0E /* PositionConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47FFD0FC1DAC6235000D6D0E /* PositionConstraint.cpp */; };
@@ -764,7 +763,6 @@
 		47ED555024F05F26005A3586 /* DynamicMemory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicMemory.cpp; sourceTree = "<group>"; };
 		47F397DD2654426F003C1FD9 /* Compositor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Compositor.cpp; sourceTree = "<group>"; };
 		47F397DE2654426F003C1FD9 /* Compositor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Compositor.hpp; sourceTree = "<group>"; };
-		47F932A41D11C283006A193C /* AllocatedArray.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AllocatedArray.hpp; sourceTree = "<group>"; };
 		47FFD0F81DABDC63000D6D0E /* Mat22.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mat22.cpp; sourceTree = "<group>"; };
 		47FFD0FA1DAC3EFC000D6D0E /* VelocityConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VelocityConstraint.cpp; sourceTree = "<group>"; };
 		47FFD0FC1DAC6235000D6D0E /* PositionConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PositionConstraint.cpp; sourceTree = "<group>"; };
@@ -1129,7 +1127,6 @@
 			isa = PBXGroup;
 			children = (
 				47C96C531FA67D1D00A6C587 /* Acceleration.hpp */,
-				47F932A41D11C283006A193C /* AllocatedArray.hpp */,
 				4764086E250EA5DE0090F711 /* ArrayAllocator.hpp */,
 				4734B2161DC00AFD00F15E29 /* ArrayList.hpp */,
 				80BB893F141C3E5900F1753A /* BlockAllocator.cpp */,
@@ -1591,7 +1588,6 @@
 				470F9B1E1EDF2B8A007EF7B6 /* Sweep.hpp in Headers */,
 				47440F0D1EDA365400AB3F51 /* WorldConf.hpp in Headers */,
 				472E301B1DBA925500DA821D /* VertexSet.hpp in Headers */,
-				47F932A61D11C283006A193C /* AllocatedArray.hpp in Headers */,
 				47B58F5A1F57218400354C34 /* Version.hpp in Headers */,
 				47E70604255CDA4300A55BC1 /* ConstraintSolverConf.hpp in Headers */,
 				4764087A251EA80D0090F711 /* WorldImplJoint.hpp in Headers */,
