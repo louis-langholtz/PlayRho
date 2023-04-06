@@ -20,11 +20,11 @@ To build with Boost units support:
   3. Add the path to that directory to your build system's list of include paths.
      If using the example directory, then you'd add `/usr/local/boost_1_75_0` to your
      build system's include paths.
-  4. Go into your PlayRho project setup and add "USE_BOOST_UNITS" as a
+  4. Go into your PlayRho project setup and add "PLAYRHO_USE_BOOST_UNITS" as a
      C pre-processor define so that the file
      [`PlayRho/Common/Units.hpp`](../PlayRho/Common/Units.hpp) can see that it's defined.
      This could be achieved just by uncommenting the line that appears like:
-     `// #define USE_BOOST_UNITS`.
+     `// #define PLAYRHO_USE_BOOST_UNITS`.
   5. Rebuild the PlayRho library and any applications. If you've used the
      physical units interface correctly everywhere, you should get no units
      related warnings or errors.

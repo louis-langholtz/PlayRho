@@ -84,7 +84,7 @@ constexpr bool IsValid(const Vector2<TYPE>& value) noexcept
     return IsValid(get<0>(value)) && IsValid(get<1>(value));
 }
 
-#ifdef USE_BOOST_UNITS
+#ifdef PLAYRHO_USE_BOOST_UNITS
 /// @brief Gets an invalid value for the Length2 type.
 template <>
 constexpr Length2 GetInvalid() noexcept

@@ -69,7 +69,7 @@ struct StepConf {
     static constexpr auto DefaultRegResolutionRate = Real{2} / 10; // aka 0.2.;
 
     /// @brief Default regular min separation.
-    static constexpr auto DefaultRegMinSeparation = -DefaultLinearSlop * Real{3};
+    static constexpr auto DefaultRegMinSeparation = -playrho::DefaultLinearSlop * Real{3};
 
     /// @brief Default regular min momentum.
     static constexpr auto DefaultRegMinMomentum = Momentum{playrho::DefaultRegMinMomentum};
@@ -78,7 +78,7 @@ struct StepConf {
     static constexpr auto DefaultToiResolutionRate = Real{75} / 100; // aka .75
 
     /// @brief Default time of impact (TOI) min separation.
-    static constexpr auto DefaultToiMinSeparation = -DefaultLinearSlop * Real(1.5f);
+    static constexpr auto DefaultToiMinSeparation = -playrho::DefaultLinearSlop * Real(1.5f);
 
     /// @brief Default time of impact (TOI) min momemtum.
     static constexpr auto DefaultToiMinMomentum = Momentum{playrho::DefaultToiMinMomentum};
@@ -388,10 +388,6 @@ struct StepConf {
 // Basic requirements...
 static_assert(std::is_default_constructible_v<StepConf>);
 static_assert(std::is_copy_constructible_v<StepConf>);
-
-// Special expectations...
-static_assert(std::is_nothrow_default_constructible_v<StepConf>);
-static_assert(std::is_nothrow_copy_constructible_v<StepConf>);
 
 /// @brief Gets the maximum regular linear correction from the given value.
 /// @relatedalso StepConf

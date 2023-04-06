@@ -83,6 +83,9 @@ option(PLAYRHO_BUILD_BENCHMARK "Build PlayRho Benchmark console application." OF
 option(PLAYRHO_BUILD_TESTBED "Build PlayRho Testbed GUI application." OFF)
 option(PLAYRHO_ENABLE_COVERAGE "Enable code coverage generation." OFF)
 
+option(PLAYRHO_ENABLE_BOOST_UNITS "Enable use of Boost units (experimental)." OFF)
+mark_as_advanced(FORCE PLAYRHO_ENABLE_BOOST_UNITS)
+
 set(LIB_INSTALL_DIR lib${LIB_SUFFIX})
 
 # Tell Microsoft Visual C (MSVC) to enable unwind semantics since it doesn't by default.

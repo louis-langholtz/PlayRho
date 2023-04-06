@@ -89,6 +89,12 @@ target_include_directories(PlayRho PUBLIC
 	"$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
+if (PLAYRHO_ENABLE_BOOST_UNITS)
+	find_package(Boost REQUIRED)
+	target_include_directories(PlayRho SYSTEM PUBLIC ${Boost_INCLUDE_DIR})
+	target_compile_definitions(PlayRho PUBLIC -DPLAYRHO_USE_BOOST_UNITS)
+endif()
+
 # These are used to create visual studio folders.
 source_group(Collision FILES ${PLAYRHO_Collision_SRCS} ${PLAYRHO_Collision_HDRS})
 source_group(Collision\\Shapes FILES ${PLAYRHO_Shapes_SRCS} ${PLAYRHO_Shapes_HDRS})

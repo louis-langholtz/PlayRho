@@ -70,7 +70,7 @@ TEST(ChainShapeConf, IsValidShapeType)
 TEST(ChainShapeConf, Traits)
 {
     EXPECT_TRUE(std::is_default_constructible_v<ChainShapeConf>);
-#ifndef USE_BOOST_UNITS
+#ifndef PLAYRHO_USE_BOOST_UNITS
     EXPECT_TRUE(std::is_nothrow_default_constructible_v<ChainShapeConf>);
 #endif
 }
