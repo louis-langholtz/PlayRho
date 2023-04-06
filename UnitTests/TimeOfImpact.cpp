@@ -1059,37 +1059,11 @@ TEST(TimeOfImpact, NextAfter)
     EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
     EXPECT_NEAR(static_cast<double>(output.time), 0.99750623441396513, 0.0001);
     EXPECT_EQ(output.stats.max_dist_iters, 1);
-    if (std::is_same<Real, float>::value)
-    {
-        EXPECT_EQ(output.stats.max_root_iters, 8);
-    }
-    else if (std::is_same<Real, double>::value)
-    {
-        EXPECT_EQ(output.stats.max_root_iters, 8);
-    }
-    else if (std::is_same<Real, long double>::value)
-    {
-        EXPECT_EQ(output.stats.max_root_iters, 6);
-    }
+    EXPECT_EQ(output.stats.max_root_iters, 8);
     EXPECT_EQ(output.stats.toi_iters, 1);
     EXPECT_EQ(output.stats.sum_dist_iters, 1);
     EXPECT_EQ(output.stats.sum_finder_iters, 0);
-    if (std::is_same<Real, float>::value)
-    {
-        EXPECT_EQ(output.stats.sum_root_iters, 8);
-    }
-    else if (std::is_same<Real, double>::value)
-    {
-        EXPECT_EQ(output.stats.sum_root_iters, 8);
-    }
-    else if (std::is_same<Real, long double>::value)
-    {
-        EXPECT_EQ(output.stats.sum_root_iters, 6);
-    }
-    else
-    {
-        EXPECT_EQ(output.stats.sum_root_iters, 0);
-    }
+    EXPECT_EQ(output.stats.sum_root_iters, 8);
 }
 
 TEST(TimeOfImpact, TargetDepthExceedsTotalRadius)

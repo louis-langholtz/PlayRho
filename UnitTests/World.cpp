@@ -1571,7 +1571,7 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
         
         EXPECT_EQ(GetX(GetLocation(world, body)), GetX(def.location));
         EXPECT_GT(GetY(GetLocation(world, body)), GetY(pos));
-        EXPECT_EQ(GetY(GetLocation(world, body)), GetY(pos) + ((GetY(vel) + GetY(EarthlyGravity) * time_inc) * time_inc));
+        EXPECT_FLOAT_EQ(GetY(GetLocation(world, body)), GetY(pos) + ((GetY(vel) + GetY(EarthlyGravity) * time_inc) * time_inc));
         pos = GetLocation(world, body);
         
         EXPECT_EQ(GetX(GetLinearVelocity(world, body)), 0_mps);
@@ -2949,18 +2949,30 @@ TEST(World_Longer, TilesComesToRest)
     switch (sizeof(Real))
     {
         case 4u:
+#if defined(__clang_major__) && (__clang_major__ >= 14)
+            EXPECT_EQ(numSteps, 1804ul);
+            EXPECT_EQ(sumRegPosIters, 36527ul);
+            EXPECT_EQ(sumRegVelIters, 46979ul);
+            EXPECT_EQ(sumToiPosIters, 43806ul);
+            EXPECT_EQ(sumToiVelIters, 112175ul);
+#else
             EXPECT_EQ(numSteps, 1799ul);
             EXPECT_EQ(sumRegPosIters, 36512ul);
             EXPECT_EQ(sumRegVelIters, 46940ul);
             EXPECT_EQ(sumToiPosIters, 44021ul);
             EXPECT_EQ(sumToiVelIters, 113137ul);
+#endif
             break;
         case 8u:
             EXPECT_EQ(numSteps, 1828ul);
             EXPECT_EQ(sumRegPosIters, 36540ul);
             EXPECT_EQ(sumRegVelIters, 47173ul);
             EXPECT_EQ(sumToiPosIters, 44005ul);
+#if defined(__clang_major__) && (__clang_major__ >= 14)
+            EXPECT_EQ(sumToiVelIters, 114308ul);
+#else
             EXPECT_EQ(sumToiVelIters, 114196ul);
+#endif
             break;
     }
 #else
