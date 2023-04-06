@@ -53,7 +53,7 @@ TEST(MassData, Traits)
     EXPECT_FALSE(IsIterable<MassData>::value);
 
     EXPECT_TRUE(std::is_default_constructible_v<MassData>);
-#ifndef USE_BOOST_UNITS
+#ifndef PLAYRHO_USE_BOOST_UNITS
     EXPECT_TRUE(std::is_nothrow_default_constructible_v<MassData>); // may be compiler dependent
 #endif
     
@@ -68,7 +68,7 @@ TEST(MassData, Traits)
     // EXPECT_TRUE(std::is_nothrow_constructible<MassData>::value); // gcc 6.3
     
     EXPECT_TRUE(std::is_copy_constructible<MassData>::value);
-#ifndef USE_BOOST_UNITS
+#ifndef PLAYRHO_USE_BOOST_UNITS
     EXPECT_TRUE(std::is_nothrow_copy_constructible<MassData>::value); // may be compiler dependent
 #endif
 

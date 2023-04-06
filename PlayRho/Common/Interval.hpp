@@ -40,71 +40,61 @@ template <typename T>
 class Interval
 {
 public:
-    static_assert(std::is_nothrow_copy_constructible_v<T>);
+    static_assert(std::is_copy_constructible_v<T>);
 
     /// @brief Value type.
     /// @details Alias for the type of the value that this class was template
     ///   instantiated for.
     using value_type = T;
-    
-    /// @brief Limits alias for the <code>value_type</code>.
-    using limits = std::numeric_limits<value_type>;
-    
+
     /// @brief Gets the "lowest" value supported by the <code>value_type</code>.
     /// @return Negative infinity if supported by the value type, limits::lowest()
     ///   otherwise.
-    static constexpr value_type GetLowest() noexcept
+    static constexpr value_type GetLowest()
+        noexcept(noexcept(limits::infinity()) && noexcept(limits::lowest()))
     {
-        return (limits::has_infinity)? -limits::infinity(): limits::lowest();
+        return limits::has_infinity? -limits::infinity(): limits::lowest();
     }
     
     /// @brief Gets the "highest" value supported by the <code>value_type</code>.
     /// @return Positive infinity if supported by the value type, limits::max()
     ///   otherwise.
-    static constexpr value_type GetHighest() noexcept
+    static constexpr value_type GetHighest()
+        noexcept(noexcept(limits::infinity()) && noexcept(limits::max()))
     {
-        return (limits::has_infinity)? limits::infinity(): limits::max();
+        return limits::has_infinity? limits::infinity(): limits::max();
     }
 
     /// @brief Default constructor.
     /// @details Constructs an "unset" interval.
     /// @post <code>GetMin()</code> returns the value of <code>GetHighest()</code>.
     /// @post <code>GetMax()</code> returns the value of <code>GetLowest()</code>.
-    constexpr Interval() noexcept = default;
+    constexpr Interval() noexcept(noexcept(std::is_nothrow_move_constructible_v<T>)) = default;
     
     /// @brief Initializing constructor.
     /// @post <code>GetMin()</code> returns the value of <code>v</code>.
     /// @post <code>GetMax()</code> returns the value of <code>v</code>.
-    constexpr explicit Interval(const value_type& v) noexcept:
-        Interval(pair_type{v, v})
+    constexpr explicit Interval(const value_type v)
+        noexcept(noexcept(Interval{pair_type{v, v}})):
+        Interval{pair_type{v, v}}
     {
         // Intentionally empty.
     }
     
     /// @brief Initializing constructor.
-    constexpr Interval(const value_type& a, const value_type& b) noexcept:
-        Interval(std::minmax(a, b))
+    constexpr Interval(const value_type a, const value_type b)
+        noexcept(noexcept(Interval{std::minmax(a, b)})):
+        Interval{std::minmax(a, b)}
     {
         // Intentionally empty.
     }
     
     /// @brief Initializing constructor.
-    constexpr Interval(const std::initializer_list<T> ilist) noexcept:
-        Interval(std::minmax(ilist))
+    constexpr Interval(const std::initializer_list<T>& ilist)
+        noexcept(noexcept(Interval{std::minmax(ilist)})):
+        Interval{std::minmax(ilist)}
     {
         // Intentionally empty.
-    }
-    
-    ~Interval() noexcept = default;
-    
-    /// @brief Moves the interval by the given amount.
-    /// @warning Behavior is undefined if incrementing the min or max value by
-    ///   the given amount overflows the finite range of the <code>value_type</code>,
-    constexpr Interval& Move(const value_type& v) noexcept
-    {
-        m_min += v;
-        m_max += v;
-        return *this;
     }
 
     /// @brief Gets the minimum value of this range.
@@ -118,34 +108,48 @@ public:
     {
         return m_max;
     }
-    
+
+    /// @brief Moves the interval by the given amount.
+    /// @note This function is either non-throwing or offers the "strong exception guarantee". It has no effect on the interval if it throws.
+    constexpr Interval& Move(const value_type v)
+        noexcept(noexcept(*this + v) && std::is_nothrow_copy_assignable_v<Interval>)
+    {
+        *this = *this + v;
+        return *this;
+    }
+
     /// @brief Includes the given value into this interval.
-    /// @note If this value is the "unset" value then the result of this operation
-    ///   will be the given value.
+    /// @note This function is either non-throwing or offers the "strong exception guarantee". It has no effect on the interval if it throws.
+    /// @note If this value is the "unset" value then the result of this operation will be the given value.
     /// @param v Value to "include" into this value.
     /// @post This value's "min" is the minimum of the given value and this value's "min".
-    constexpr Interval& Include(const value_type& v) noexcept
+    constexpr Interval& Include(const value_type& v)
+        noexcept(noexcept(Interval{pair_type{std::min(v, GetMin()), std::max(v, GetMax())}}) &&
+                 std::is_nothrow_move_assignable_v<Interval>)
     {
-        m_min = std::min(v, GetMin());
-        m_max = std::max(v, GetMax());
+        *this = Interval{pair_type{std::min(v, GetMin()), std::max(v, GetMax())}};
         return *this;
     }
     
     /// @brief Includes the given interval into this interval.
-    /// @note If this value is the "unset" value then the result of this operation
-    ///   will be the given value.
+    /// @note If this value is the "unset" value then the result of this operation will be the given value.
+    /// @note This function is either non-throwing or offers the "strong exception guarantee". It has no effect on the interval if it throws.
     /// @param v Value to "include" into this value.
     /// @post This value's "min" is the minimum of the given value's "min" and
     ///   this value's "min".
-    constexpr Interval& Include(const Interval& v) noexcept
+    constexpr Interval& Include(const Interval& v)
+        noexcept(noexcept(Interval{pair_type{std::min(v.GetMin(), GetMin()), std::max(v.GetMax(), GetMax())}}) &&
+                 std::is_nothrow_move_assignable_v<Interval>)
     {
-        m_min = std::min(v.GetMin(), GetMin());
-        m_max = std::max(v.GetMax(), GetMax());
+        *this = Interval{pair_type{std::min(v.GetMin(), GetMin()), std::max(v.GetMax(), GetMax())}};
         return *this;
     }
     
     /// @brief Intersects this interval with the given interval.
-    constexpr Interval& Intersect(const Interval& v) noexcept
+    /// @note This function is either non-throwing or offers the "strong exception guarantee". It has no effect on the interval if it throws.
+    constexpr Interval& Intersect(const Interval& v)
+        noexcept(noexcept(Interval{pair_type{std::max(v.GetMin(), GetMin()), std::min(v.GetMax(), GetMax())}}) &&
+                 std::is_nothrow_move_assignable_v<Interval>)
     {
         const auto min = std::max(v.GetMin(), GetMin());
         const auto max = std::min(v.GetMax(), GetMax());
@@ -158,16 +162,15 @@ public:
     ///   given value is negative, or by increasing the max value if the
     ///   given value is positive.
     /// @param v Amount to expand this interval by.
+    /// @note This function is either non-throwing or offers the "strong exception guarantee". It has no effect on the interval if it throws.
     /// @warning Behavior is undefined if expanding the range by
     ///   the given amount overflows the range of the <code>value_type</code>,
-    constexpr Interval& Expand(const value_type& v) noexcept
+    constexpr Interval& Expand(const value_type& v) noexcept(noexcept(m_min += v) && noexcept(m_max += v))
     {
-        if (v < value_type{})
-        {
+        if (v < value_type{}) {
             m_min += v;
         }
-        else
-        {
+        else {
             m_max += v;
         }
         return *this;
@@ -178,32 +181,50 @@ public:
     ///   by increasing the max value by the given amount.
     /// @note This operation has no effect if this interval is "unset".
     /// @param v Amount to expand both ends of this interval by.
+    /// @note This function is either non-throwing or offers the "strong exception guarantee". It has no effect on the interval if it throws.
     /// @warning Behavior is undefined if expanding the range by
     ///   the given amount overflows the range of the <code>value_type</code>,
-    constexpr Interval& ExpandEqually(const NonNegative<value_type>& v) noexcept
+    constexpr Interval& ExpandEqually(const NonNegative<value_type>& v)
+        noexcept(noexcept(Interval{pair_type{m_min - value_type{v}, m_max + value_type{v}}}) &&
+                 std::is_nothrow_move_assignable_v<Interval>)
     {
         const auto amount = value_type{v};
-        m_min -= amount;
-        m_max += amount;
+        *this = Interval{pair_type{m_min - amount, m_max + amount}};
         return *this;
     }
     
 private:
+    /// @brief Limits alias for the <code>value_type</code>.
+    using limits = std::numeric_limits<value_type>;
+
     /// @brief Internal pair type.
     /// @note Uses <code>std::pair</code> since it's the most natural type given that
     ///   <code>std::minmax</code> returns it.
     using pair_type = std::pair<value_type, value_type>;
     
     /// @brief Internal pair type accepting constructor.
-    constexpr explicit Interval(pair_type pair) noexcept:
+    constexpr explicit Interval(pair_type pair)
+        noexcept(std::is_nothrow_copy_constructible_v<value_type>):
         m_min{std::get<0>(pair)}, m_max{std::get<1>(pair)}
     {
         // Intentionally empty.
     }
 
+    /// @brief Addition operator support.
+    constexpr Interval operator+(const value_type amount)
+        noexcept(noexcept(Interval{pair_type{m_min + amount, m_max + amount}}) &&
+                 std::is_nothrow_move_assignable_v<Interval>)
+    {
+        return (*this == Interval{}) ? *this : Interval{pair_type{m_min + amount, m_max + amount}};
+    }
+
     value_type m_min = GetHighest(); ///< Min value.
     value_type m_max = GetLowest(); ///< Max value.
 };
+
+static_assert(std::is_nothrow_default_constructible_v<Interval<float>>);
+static_assert(std::is_nothrow_copy_constructible_v<Interval<float>>);
+static_assert(std::is_nothrow_copy_assignable_v<Interval<float>>);
 
 /// @brief Gets the size of the given interval.
 /// @details Gets the difference between the max and min values.

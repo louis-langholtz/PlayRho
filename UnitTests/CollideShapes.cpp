@@ -688,7 +688,7 @@ TEST(CollideShapes, GetMaxSeparationFreeFunction1)
         case 4:
             EXPECT_EQ(GetFirstShapeVertexIdx( maxSep01_4x4), VertexCounter{0}); // v0 of shape0
             EXPECT_EQ(GetSecondShapeVertexIdx<0>(maxSep01_4x4), VertexCounter{3}); // v3 of shape1
-#if defined(__clang_major__) && (__clang_major__ >= 14)
+#if defined(__clang_major__) && (__clang_major__ >= 14) && !defined(PLAYRHO_USE_BOOST_UNITS)
             EXPECT_EQ(GetFirstShapeVertexIdx( maxSep01_NxN), VertexCounter{1}); // v0 of shape0
             EXPECT_EQ(GetFirstShapeVertexIdx( maxSep01_nos), VertexCounter{1}); // v0 of shape0
             EXPECT_EQ(GetSecondShapeVertexIdx<0>(maxSep01_NxN), VertexCounter{0}); // v3 of shape1

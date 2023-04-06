@@ -87,7 +87,7 @@ TEST(DynamicTreeNode, Traits)
     EXPECT_FALSE(std::is_trivially_constructible<DynamicTree::TreeNode>::value);
     
     EXPECT_TRUE(std::is_copy_constructible<DynamicTree::TreeNode>::value);
-#ifdef USE_BOOST_UNITS
+#ifdef PLAYRHO_USE_BOOST_UNITS
     EXPECT_FALSE(std::is_nothrow_copy_constructible<DynamicTree::TreeNode>::value);
     EXPECT_FALSE(std::is_trivially_copy_constructible<DynamicTree::TreeNode>::value);
 #else
@@ -96,7 +96,7 @@ TEST(DynamicTreeNode, Traits)
 #endif
     
     EXPECT_TRUE(std::is_copy_assignable<DynamicTree::TreeNode>::value);
-#ifdef USE_BOOST_UNITS
+#ifdef PLAYRHO_USE_BOOST_UNITS
     EXPECT_FALSE(std::is_nothrow_copy_assignable<DynamicTree::TreeNode>::value);
     EXPECT_FALSE(std::is_trivially_copy_assignable<DynamicTree::TreeNode>::value);
 #else

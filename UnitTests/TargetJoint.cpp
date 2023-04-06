@@ -42,7 +42,7 @@ TEST(TargetJointConf, Traits)
     EXPECT_TRUE(std::is_nothrow_default_constructible_v<TargetJointConf>);
     EXPECT_TRUE(std::is_copy_constructible_v<TargetJointConf>);
     EXPECT_TRUE(std::is_copy_assignable_v<TargetJointConf>);
-#ifndef USE_BOOST_UNITS
+#ifndef PLAYRHO_USE_BOOST_UNITS
     EXPECT_TRUE(std::is_nothrow_copy_constructible_v<TargetJointConf>);
     EXPECT_TRUE(std::is_nothrow_copy_assignable_v<TargetJointConf>);
 #endif

@@ -37,7 +37,7 @@ constexpr auto cfloor(T v) noexcept
 /// @brief Constant expression enhanced floor function.
 /// @note Unlike <code>std::floor</code>, this function is only defined for finite values.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/floor
-#if defined(USE_BOOST_UNITS)
+#if defined(PLAYRHO_USE_BOOST_UNITS)
 template <class Unit>
 constexpr auto cfloor(const boost::units::quantity<Unit, Real>& v) noexcept
 {
