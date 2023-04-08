@@ -225,7 +225,7 @@ public:
     const Point& GetPointAt(size_type index) const
     {
         assert(index < MaxManifoldPoints);
-        return m_points[index];
+        return m_points[index]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
     
 private:
@@ -259,7 +259,7 @@ private:
     Point& PointAt(size_type index)
     {
         assert(index < MaxManifoldPoints);
-        return m_points[index];
+        return m_points[index]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
     
     Point m_points[MaxManifoldPoints]; ///< Velocity constraint points array (at least 72-bytes).
@@ -297,7 +297,7 @@ private:
 inline void VelocityConstraint::RemovePoint() noexcept
 {
     assert(m_pointCount > 0);
-    m_points[m_pointCount - 1] = Point{};
+    m_points[m_pointCount - 1] = Point{}; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     --m_pointCount;
 }
 

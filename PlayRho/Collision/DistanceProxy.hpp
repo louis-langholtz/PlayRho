@@ -168,7 +168,7 @@ public:
     {
         assert(index != InvalidVertex);
         assert(index < m_count);
-        return *(m_vertices + index);
+        return *(m_vertices + index); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     }
 
     /// @brief Gets the normal for the given index.
@@ -176,7 +176,7 @@ public:
     {
         assert(index != InvalidVertex);
         assert(index < m_count);
-        return *(m_normals + index);
+        return *(m_normals + index); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     }
 
 private:

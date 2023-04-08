@@ -644,8 +644,8 @@ public:
 
 private:
     /// @brief Internal configuration concept.
-    /// @note Provides the interface for runtime value polymorphism.
-    struct Concept {
+    /// @details Provides an internal pure virtual interface for the runtime value polymorphism.
+    struct Concept { // NOLINT(cppcoreguidelines-special-member-functions)
         virtual ~Concept() = default;
 
         /// @brief Clones this concept and returns a pointer to a mutable copy.

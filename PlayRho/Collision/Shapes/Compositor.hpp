@@ -52,12 +52,12 @@ struct Discriminator : Base {
 /// @note This class is not intended for standalone use.
 /// @see Compositor.
 template <class Set1, class Set2, class Set3, class Set4, class Set5, class Set6>
-struct PolicySelector : Discriminator<Set1, 1>, // NOLINT(readability-magic-numbers)
-                        Discriminator<Set2, 2>, // NOLINT(readability-magic-numbers)
-                        Discriminator<Set3, 3>, // NOLINT(readability-magic-numbers)
-                        Discriminator<Set4, 4>, // NOLINT(readability-magic-numbers)
-                        Discriminator<Set5, 5>, // NOLINT(readability-magic-numbers)
-                        Discriminator<Set6, 6>  // NOLINT(readability-magic-numbers)
+struct PolicySelector : Discriminator<Set1, 1>, // NOLINT(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
+                        Discriminator<Set2, 2>, // NOLINT(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
+                        Discriminator<Set3, 3>, // NOLINT(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
+                        Discriminator<Set4, 4>, // NOLINT(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
+                        Discriminator<Set5, 5>, // NOLINT(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
+                        Discriminator<Set6, 6>  // NOLINT(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 {
 };
 

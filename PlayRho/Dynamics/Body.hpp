@@ -96,7 +96,7 @@ public:
         /// forces). Bodies with this set are "accelerable" - dynamic bodies.
         e_accelerationFlag = FlagsType(0x0100u),
 
-        /// @brief Mass Data Dirty Flag.
+        /// @brief Mass data dirty flag.
         e_massDataDirtyFlag = FlagsType(0x0200u),
     };
 

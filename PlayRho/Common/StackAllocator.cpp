@@ -61,8 +61,7 @@ void* StackAllocator::Allocate(size_type size)
 
     if (m_entryCount < m_max_entries)
     {
-        auto entry = m_entries + m_entryCount;
-        
+        const auto entry = m_entries + m_entryCount; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         const auto available = m_size - m_index;
         if (size > (available / sizeof(std::max_align_t)) * sizeof(std::max_align_t))
         {
@@ -71,19 +70,17 @@ void* StackAllocator::Allocate(size_type size)
         }
         else
         {
-            auto ptr = static_cast<void*>(m_data + m_index);
+            auto ptr = static_cast<void*>(m_data + m_index); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
             auto space = available;
             entry->data = std::align(alignment_size(size), size, ptr, space);
             entry->usedMalloc = false;
             size += (available - space);
             m_index += size;
         }
-
         entry->size = size;
         m_allocation += size;
         m_maxAllocation = std::max(m_maxAllocation, m_allocation);
         ++m_entryCount;
-
         return entry->data;
     }
     return nullptr;
@@ -94,7 +91,7 @@ void StackAllocator::Free(void* p) noexcept
     if (p)
     {
         assert(m_entryCount > 0);
-        const auto entry = m_entries + m_entryCount - 1;
+        const auto entry = m_entries + m_entryCount - 1; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         assert(p == entry->data);
         if (entry->usedMalloc)
         {

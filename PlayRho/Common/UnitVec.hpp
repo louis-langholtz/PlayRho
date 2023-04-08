@@ -66,7 +66,7 @@ public:
     
     /// @brief Constant reverse iterator type.
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
-    
+
     /// @brief Gets the right-ward oriented unit vector.
     /// @note This is the value for the 0/4 turned (0 angled) unit vector.
     /// @note This is the reverse perpendicular unit vector of the bottom oriented vector.
@@ -92,7 +92,7 @@ public:
     static constexpr UnitVec GetBottom() noexcept { return UnitVec{0, -1}; }
 
     /// @brief Gets the non-oriented unit vector.
-    static constexpr UnitVec GetZero() noexcept { return UnitVec{0, 0}; }
+    static constexpr UnitVec GetZero() noexcept { return UnitVec{}; }
 
     /// @brief Gets the 45 degree unit vector.
     /// @details This is the unit vector in the positive X and Y quadrant where X == Y.
@@ -158,20 +158,20 @@ public:
     constexpr UnitVec() noexcept = default;
     
     /// @brief Gets the max size.
-    static constexpr size_type max_size() noexcept { return size_type{2}; }
+    static constexpr size_type max_size() noexcept { return N; }
     
     /// @brief Gets the size.
-    static constexpr size_type size() noexcept { return size_type{2}; }
+    static constexpr size_type size() noexcept { return N; }
     
     /// @brief Whether empty.
     /// @note Always false for N > 0.
     static constexpr bool empty() noexcept { return false; }
     
     /// @brief Gets a "begin" iterator.
-    const_iterator begin() const noexcept { return const_iterator(m_elems); }
+    const_iterator begin() const noexcept { return const_iterator(data()); }
     
     /// @brief Gets an "end" iterator.
-    const_iterator end() const noexcept { return const_iterator(m_elems + 2); }
+    const_iterator end() const noexcept { return const_iterator(data() + N); }
     
     /// @brief Gets a "begin" iterator.
     const_iterator cbegin() const noexcept { return begin(); }
@@ -182,13 +182,13 @@ public:
     /// @brief Gets a reverse "begin" iterator.
     const_reverse_iterator crbegin() const noexcept
     {
-        return const_reverse_iterator{m_elems + 2};
+        return const_reverse_iterator{data() + N};
     }
     
     /// @brief Gets a reverse "end" iterator.
     const_reverse_iterator crend() const noexcept
     {
-        return const_reverse_iterator{m_elems};
+        return const_reverse_iterator{data()};
     }
     
     /// @brief Gets a reverse "begin" iterator.
@@ -209,7 +209,7 @@ public:
     constexpr const_reference operator[](size_type pos) const noexcept
     {
         assert(pos < size());
-        return m_elems[pos];
+        return m_elems[pos]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
     
     /// @brief Gets a constant reference to the requested element.
@@ -220,13 +220,14 @@ public:
         {
             throw InvalidArgument("Vector::at: position >= size()");
         }
-        return m_elems[pos];
+        return m_elems[pos]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
     
     /// @brief Direct access to data.
     constexpr const_pointer data() const noexcept
     {
-        return m_elems;
+        // Cast to be more explicit about wanting to decay array into pointer...
+        return static_cast<const_pointer>(m_elems);
     }
     
     /// @brief Gets the "X" value.
@@ -290,14 +291,16 @@ public:
     }
 
 private:
-    
+    /// @brief Dimensionality of this type.
+    static constexpr auto N = std::size_t{2};
+
     /// @brief Initializing constructor.
     constexpr UnitVec(value_type x, value_type y) noexcept : m_elems{x, y}
     {
         // Intentionally empty.
     }
 
-    value_type m_elems[2] = { value_type{0}, value_type{0} }; ///< Element values.
+    value_type m_elems[N] = {}; ///< Element values.
 };
 
 // Free functions...
@@ -360,7 +363,7 @@ constexpr UnitVec InverseRotate(const UnitVec vector, const UnitVec& angle) noex
 template <std::size_t I>
 constexpr UnitVec::value_type get(UnitVec v) noexcept
 {
-    static_assert(I < 2, "Index out of bounds in playrho::get<> (playrho::UnitVec)");
+    static_assert(I < UnitVec::size(), "Index out of bounds in playrho::get<> (playrho::UnitVec)");
     switch (I)
     {
         case 0: return v.GetX();
@@ -405,7 +408,7 @@ namespace std {
 
 /// @brief Tuple size info for <code>playrho::d2::UnitVec</code>.
 template<>
-class tuple_size< playrho::d2::UnitVec >: public std::integral_constant<std::size_t, 2> {};
+class tuple_size< playrho::d2::UnitVec >: public std::integral_constant<std::size_t, playrho::d2::UnitVec::size()> {};
 
 /// @brief Tuple element type info for <code>playrho::d2::UnitVec</code>.
 template<std::size_t I>

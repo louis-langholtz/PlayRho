@@ -35,9 +35,7 @@ PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2)
     for (auto i = decltype(manifold1.GetPointCount()){0}; i < manifold1.GetPointCount(); ++i)
     {
         const auto cf = manifold1.GetContactFeature(i);
-
         retval.state1[i] = PointState::RemoveState;
-
         for (auto j = decltype(manifold2.GetPointCount()){0}; j < manifold2.GetPointCount(); ++j)
         {
             if (manifold2.GetContactFeature(j) == cf)
@@ -52,9 +50,7 @@ PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2)
     for (auto i = decltype(manifold2.GetPointCount()){0}; i < manifold2.GetPointCount(); ++i)
     {
         const auto cf = manifold2.GetContactFeature(i);
-
         retval.state2[i] = PointState::AddState;
-
         for (auto j = decltype(manifold1.GetPointCount()){0}; j < manifold1.GetPointCount(); ++j)
         {
             if (manifold1.GetContactFeature(j) == cf)

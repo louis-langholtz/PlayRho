@@ -120,8 +120,8 @@ struct WorldImpl::ContactUpdateConf
 
 namespace {
 
-constexpr char idIsDestroyedMsg[] = "ID is destroyed";
-constexpr char worldIsLockedMsg[] = "world is locked";
+constexpr auto idIsDestroyedMsg = "ID is destroyed";
+constexpr auto worldIsLockedMsg = "world is locked";
 
 inline void IntegratePositions(const Island::Bodies& bodies, BodyConstraints& constraints, Time h)
 {

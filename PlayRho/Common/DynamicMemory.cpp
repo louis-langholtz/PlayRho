@@ -29,7 +29,7 @@ namespace playrho {
     void* Alloc(std::size_t size)
     {
         if (size) {
-            const auto memory = std::malloc(size);
+            const auto memory = std::malloc(size); // NOLINT(cppcoreguidelines-no-malloc,cppcoreguidelines-owning-memory)
             if (!memory) {
                 throw std::bad_alloc{};
             }
@@ -41,7 +41,7 @@ namespace playrho {
     void* Realloc(void* ptr, std::size_t size)
     {
         if (size) {
-            const auto memory = std::realloc(ptr, size);
+            const auto memory = std::realloc(ptr, size); // NOLINT(cppcoreguidelines-no-malloc,cppcoreguidelines-owning-memory)
              if (!memory) {
                  throw std::bad_alloc{};
              }
@@ -53,7 +53,7 @@ namespace playrho {
     
     void Free(void* mem)
     {
-        std::free(mem);
+        std::free(mem); // NOLINT(cppcoreguidelines-no-malloc,cppcoreguidelines-owning-memory)
     }
 
 } // namespace playrho

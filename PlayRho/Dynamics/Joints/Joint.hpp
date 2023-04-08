@@ -319,7 +319,7 @@ public:
 private:
     /// @brief Internal configuration concept.
     /// @note Provides the interface for runtime value polymorphism.
-    struct Concept {
+    struct Concept { // NOLINT(cppcoreguidelines-special-member-functions)
         /// @brief Explicitly declared virtual destructor.
         virtual ~Concept() = default;
 
