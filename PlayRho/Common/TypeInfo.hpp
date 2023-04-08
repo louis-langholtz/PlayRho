@@ -54,14 +54,16 @@ std::string TypeNameAsString()
     // enum class Fruit {APPLE, PEAR};
     // std::cout << Name<Fruit>() << '\n';
     // produces: std::string Name() [T = Fruit]
-    return std::regex_replace(__PRETTY_FUNCTION__, std::regex(".*T = (.*)\\].*"), "$1");
+    return std::regex_replace(__PRETTY_FUNCTION__, // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+                              std::regex(".*T = (.*)\\].*"), "$1");
 #elif defined(__GNUC__)
     // Use __PRETTY_FUNCTION__. **Note that despite its appearance, this is an identifier; it's not a macro**!
     // template <typename T> string Name() { return string{__PRETTY_FUNCTION__}; }
     // enum class Fruit {APPLE, PEAR};
     // std::cout << Name<Fruit>() << '\n';
     // produces: std::string Name() [with T = Fruit; std::string = std::__cxx11::basic_string<char>]
-    return std::regex_replace(__PRETTY_FUNCTION__, std::regex(".*T = (.*);.*"), "$1");
+    return std::regex_replace(__PRETTY_FUNCTION__, // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+                              std::regex(".*T = (.*);.*"), "$1");
 #elif defined(__FUNCSIG__)
     // Assume this is Microsoft Visual C++ or compatible compiler and format.
     // enum class Fruit {APPLE, PEAR};
