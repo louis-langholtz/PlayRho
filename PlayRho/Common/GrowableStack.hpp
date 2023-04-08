@@ -23,6 +23,8 @@
 #define PLAYRHO_COMMON_GROWABLESTACK_HPP
 
 #include <PlayRho/Common/DynamicMemory.hpp>
+#include <PlayRho/Common/Templates.hpp>
+
 #include <cstring>
 
 namespace playrho {
@@ -61,7 +63,7 @@ public:
 
     ~GrowableStack() noexcept
     {
-        if (m_stack != m_array)
+        if (m_stack != data(m_array))
         {
             Free(m_stack);
             m_stack = nullptr;
@@ -81,7 +83,7 @@ public:
             m_capacity *= GetBufferGrowthRate();
             m_stack = AllocArray<T>(m_capacity);
             std::memcpy(m_stack, old, m_count * sizeof(T));
-            if (old != m_array)
+            if (old != data(m_array))
             {
                 Free(old);
             }
@@ -127,7 +129,7 @@ public:
 
 private:
     ElementType m_array[N] = {}; ///< Array data.
-    ElementType* m_stack = m_array; ///< Pointer to array of data.
+    ElementType* m_stack = data(m_array); ///< Pointer to array of data.
     CountType m_count = 0; ///< Count of elements.
     CountType m_capacity = N; ///< Capacity for storing elements.
 };

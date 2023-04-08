@@ -57,9 +57,6 @@ public:
 
     Span() = default;
 
-    /// @brief Copy constructor.
-    Span(const Span& copy) = default;
-
     /// @brief Initializing constructor.
     constexpr Span(pointer array, size_type size) noexcept : m_array{array}, m_size{size} {}
 

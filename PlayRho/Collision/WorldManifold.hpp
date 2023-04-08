@@ -139,7 +139,7 @@ public:
     Length2 GetPoint(size_type index) const noexcept
     {
         assert(index < MaxManifoldPoints);
-        return m_points[index];
+        return m_points[index]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
     
     /// Gets the amount of separation at the given indexed point.
@@ -155,7 +155,7 @@ public:
     Length GetSeparation(size_type index) const noexcept
     {
         assert(index < MaxManifoldPoints);
-        return m_separations[index];
+        return m_separations[index]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
     
     /// @brief Gets the given index contact impulses.
@@ -163,7 +163,7 @@ public:
     Momentum2 GetImpulses(size_type index) const noexcept
     {
         assert(index < MaxManifoldPoints);
-        return m_impulses[index];
+        return m_impulses[index]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 };
 

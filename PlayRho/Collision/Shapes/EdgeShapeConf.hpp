@@ -96,7 +96,10 @@ public:
     /// @brief Gets the "child" shape.
     DistanceProxy GetChild() const noexcept
     {
-        return DistanceProxy{vertexRadius, 2, m_vertices, m_normals};
+        return DistanceProxy{vertexRadius, 2, // force line-break
+            static_cast<const Length2*>(m_vertices), // explicitly decay array into pointer
+            static_cast<const UnitVec*>(m_normals) // explicitly decay array into pointer
+        };
     }
 
     /// @brief Vertex radius.

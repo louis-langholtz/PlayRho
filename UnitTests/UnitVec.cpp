@@ -42,6 +42,19 @@ TEST(UnitVec, ByteSize)
     }
 }
 
+TEST(UnitVec, DefaultConstruction)
+{
+    constexpr auto ExpectedDimensions = 2u;
+    EXPECT_EQ(UnitVec::size(), ExpectedDimensions);
+    EXPECT_EQ(UnitVec().GetX(), UnitVec::value_type());
+    EXPECT_EQ(UnitVec().GetY(), UnitVec::value_type());
+    const auto uv = UnitVec();
+    for (const auto& e: uv) {
+        EXPECT_EQ(e, UnitVec::value_type());
+    }
+    EXPECT_EQ(UnitVec(), UnitVec::GetZero());
+}
+
 TEST(UnitVec, RightIsRevPerpOfBottom)
 {
     EXPECT_EQ(UnitVec::GetRight(), UnitVec::GetBottom().GetRevPerpendicular());

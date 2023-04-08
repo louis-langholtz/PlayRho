@@ -5,7 +5,20 @@
 #   run-clang-tidy -p PlayRhoBuild -header-filter='.*' PlayRho/PlayRho
 
 ---
-Checks:          'clang-diagnostic-*,clang-analyzer-*,concurrency-*,portability-*,readability-*,misc-*,performance-*,modernize-use-nullptr,modernize-unary-static-assert,modernize-use-emplace,modernize-use-using,modernize-return-braced-init-list,cppcoreguidelines-avoid-capture-default-when-capturing-this,cppcoreguidelines-avoid-non-const-global-variables,cppcoreguidelines-narrowing-conversions,cppcoreguidelines-prefer-member-initializer,cppcoreguidelines-pro-type-const-cast,cppcoreguidelines-pro-type-cstyle-cast,cppcoreguidelines-slicing,cppcoreguidelines-virtual-class-destructor,cppcoreguidelines-pro-type-member-init,bugprone-*,-bugprone-implicit-widening-of-multiplication-result,-bugprone-branch-clone,-bugprone-easily-swappable-parameters,-misc-non-private-member-variables-in-classes,-misc-no-recursion,-readability-uppercase-literal-suffix,-readability-identifier-length,-readability-named-parameter,-readability-implicit-bool-conversion,-readability-qualified-auto'
+Checks: 'bugprone-*,
+  clang-analyzer-*,
+  clang-diagnostic-*,
+  concurrency-*,
+  cppcoreguidelines-*,
+  misc-*,
+  modernize-use-nullptr,modernize-unary-static-assert,modernize-use-emplace,modernize-use-using,modernize-return-braced-init-list,
+  performance-*,
+  portability-*,
+  readability-*,
+  -bugprone-implicit-widening-of-multiplication-result,-bugprone-branch-clone,-bugprone-easily-swappable-parameters,
+  -cppcoreguidelines-avoid-c-arrays,-cppcoreguidelines-non-private-member-variables-in-classes,-cppcoreguidelines-special-member-functions,-cppcoreguidelines-macro-usage,-cppcoreguidelines-pro-type-union-access,-cppcoreguidelines-pro-bounds-constant-array-index,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-pro-type-reinterpret-cast,
+  -misc-non-private-member-variables-in-classes,-misc-no-recursion,
+  -readability-uppercase-literal-suffix,-readability-identifier-length,-readability-named-parameter,-readability-implicit-bool-conversion,-readability-qualified-auto'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false

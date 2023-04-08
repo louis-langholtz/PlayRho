@@ -448,13 +448,15 @@ private:
         /// @brief Array indexing operator.
         constexpr Point& operator[](std::size_t i)
         {
-            return elements[i];
+            assert(i < MaxManifoldPoints);
+            return elements[i]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
         }
 
         /// @brief Array indexing operator.
         constexpr const Point& operator[](std::size_t i) const
         {
-            return elements[i];
+            assert(i < MaxManifoldPoints);
+            return elements[i]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
         }
     };
 

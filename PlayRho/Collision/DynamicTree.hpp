@@ -497,7 +497,7 @@ inline const DynamicTree::TreeNode& DynamicTree::GetNode(Size index) const noexc
 {
     assert(index != GetInvalidSize());
     assert(index < m_nodeCapacity);
-    return m_nodes[index];
+    return *(m_nodes + index); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 }
 
 inline DynamicTree::Height DynamicTree::GetHeight(Size index) const noexcept

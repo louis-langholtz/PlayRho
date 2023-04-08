@@ -218,14 +218,12 @@ void BlockAllocator::Free(void* p, size_type n)
 
 void BlockAllocator::Clear()
 {
-    for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i)
-    {
+    for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i) {
         playrho::Free(m_chunks[i].blocks);
     }
-
     m_chunkCount = 0;
     std::memset(m_chunks, 0, m_chunkSpace * sizeof(Chunk));
-    std::memset(m_freeLists, 0, sizeof(m_freeLists));
+    std::memset(data(m_freeLists), 0, sizeof(m_freeLists));
 }
 
 } // namespace playrho
