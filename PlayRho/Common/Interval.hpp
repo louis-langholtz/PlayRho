@@ -22,8 +22,9 @@
 #define PLAYRHO_COMMON_INTERVAL_HPP
 
 #include <PlayRho/Common/NonNegative.hpp>
+
 #include <algorithm>
-#include <limits>
+#include <limits> // for std::numeric_limits
 #include <iostream>
 #include <type_traits> // for std::is_nothrow_copy_constructible_v
 
@@ -41,6 +42,7 @@ class Interval
 {
 public:
     static_assert(std::is_copy_constructible_v<T>);
+    static_assert(std::numeric_limits<T>::is_specialized);
 
     /// @brief Value type.
     /// @details Alias for the type of the value that this class was template
@@ -74,7 +76,7 @@ public:
     /// @brief Initializing constructor.
     /// @post <code>GetMin()</code> returns the value of <code>v</code>.
     /// @post <code>GetMax()</code> returns the value of <code>v</code>.
-    constexpr explicit Interval(const value_type v)
+    constexpr explicit Interval(const value_type& v)
         noexcept(noexcept(Interval{pair_type{v, v}})):
         Interval{pair_type{v, v}}
     {
@@ -82,7 +84,7 @@ public:
     }
     
     /// @brief Initializing constructor.
-    constexpr Interval(const value_type a, const value_type b)
+    constexpr Interval(const value_type& a, const value_type& b)
         noexcept(noexcept(Interval{std::minmax(a, b)})):
         Interval{std::minmax(a, b)}
     {
@@ -111,7 +113,7 @@ public:
 
     /// @brief Moves the interval by the given amount.
     /// @note This function is either non-throwing or offers the "strong exception guarantee". It has no effect on the interval if it throws.
-    constexpr Interval& Move(const value_type v)
+    constexpr Interval& Move(const value_type& v)
         noexcept(noexcept(*this + v) && std::is_nothrow_copy_assignable_v<Interval>)
     {
         *this = *this + v;
@@ -167,6 +169,11 @@ public:
     ///   the given amount overflows the range of the <code>value_type</code>,
     constexpr Interval& Expand(const value_type& v) noexcept(noexcept(m_min += v) && noexcept(m_max += v))
     {
+        if constexpr (!limits::has_infinity) {
+            if (*this == Interval{}) {
+                return *this;
+            }
+        }
         if (v < value_type{}) {
             m_min += v;
         }
@@ -188,6 +195,11 @@ public:
         noexcept(noexcept(Interval{pair_type{m_min - value_type{v}, m_max + value_type{v}}}) &&
                  std::is_nothrow_move_assignable_v<Interval>)
     {
+        if constexpr (!limits::has_infinity) {
+            if (*this == Interval{}) {
+                return *this;
+            }
+        }
         const auto amount = value_type{v};
         *this = Interval{pair_type{m_min - amount, m_max + amount}};
         return *this;
@@ -211,28 +223,36 @@ private:
     }
 
     /// @brief Addition operator support.
-    constexpr Interval operator+(const value_type amount)
+    constexpr Interval operator+(const value_type& amount)
         noexcept(noexcept(Interval{pair_type{m_min + amount, m_max + amount}}) &&
                  std::is_nothrow_move_assignable_v<Interval>)
     {
-        return (*this == Interval{}) ? *this : Interval{pair_type{m_min + amount, m_max + amount}};
+        if constexpr (!limits::has_infinity) {
+            if (*this == Interval{}) {
+                return *this;
+            }
+        }
+        return Interval{pair_type{m_min + amount, m_max + amount}};
     }
 
     value_type m_min = GetHighest(); ///< Min value.
     value_type m_max = GetLowest(); ///< Max value.
 };
 
+// Recognize and confirm type expectations...
 static_assert(std::is_nothrow_default_constructible_v<Interval<float>>);
 static_assert(std::is_nothrow_copy_constructible_v<Interval<float>>);
 static_assert(std::is_nothrow_copy_assignable_v<Interval<float>>);
+static_assert(std::is_nothrow_move_constructible_v<Interval<float>>);
+static_assert(std::is_nothrow_move_assignable_v<Interval<float>>);
 
 /// @brief Gets the size of the given interval.
 /// @details Gets the difference between the max and min values.
 /// @warning Behavior is undefined if the difference between the given range's
 ///   max and min values overflows the range of the <code>Interval::value_type</code>.
 /// @return Non-negative value unless the given interval is "unset" or invalid.
-template <typename T>
-constexpr T GetSize(const Interval<T>& v) noexcept
+template <typename T, typename U = decltype(Interval<T>{}, (T{} - T{}))>
+constexpr auto GetSize(const Interval<T>& v) noexcept(noexcept(v.GetMax() - v.GetMin()))
 {
     return v.GetMax() - v.GetMin();
 }
@@ -241,17 +261,20 @@ constexpr T GetSize(const Interval<T>& v) noexcept
 /// @warning Behavior is undefined if the difference between the given range's
 ///   max and min values overflows the range of the <code>Interval::value_type</code>.
 /// @relatedalso Interval
-template <typename T>
-constexpr T GetCenter(const Interval<T>& v) noexcept
+template <typename T, typename U = decltype(Interval<T>{}, ((T{} + T{}) / 2))>
+constexpr auto GetCenter(const Interval<T>& v) noexcept(noexcept((v.GetMin() + v.GetMax()) / 2))
 {
     // Rounding may cause issues...
     return (v.GetMin() + v.GetMax()) / 2;
 }
 
 /// @brief Checks whether two value ranges have any intersection/overlap at all.
+/// @note <code>a</code> intersects with <code>b</code> if and only if any value of <code>a</code>
+///   is also a value of <code>b</code>.
 /// @relatedalso Interval
-template <typename T>
-constexpr bool IsIntersecting(const Interval<T>& a, const Interval<T>& b) noexcept
+template <typename T, typename U = decltype(Interval<T>{}, T{} < T{}, T{} >= T{})>
+constexpr bool IsIntersecting(const Interval<T>& a, const Interval<T>& b)
+    noexcept(noexcept(T{} < T{}) && noexcept(T{} >= T{}))
 {
     const auto maxOfMins = std::max(a.GetMin(), b.GetMin());
     const auto minOfMaxs = std::min(a.GetMax(), b.GetMax());

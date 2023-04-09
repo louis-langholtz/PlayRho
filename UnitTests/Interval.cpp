@@ -21,13 +21,123 @@
 #include "UnitTests.hpp"
 
 #include <PlayRho/Common/Interval.hpp>
+#include <PlayRho/Common/TypeInfo.hpp> // for TypeNameAsString
+#include <PlayRho/Common/Units.hpp>
 
-#include <limits>
+using namespace playrho;
 
-class Interval: public ::testing::Test
+TEST(Interval, GetLowest)
+{
+    EXPECT_EQ(Interval<int>::GetLowest(), std::numeric_limits<int>::lowest());
+    EXPECT_EQ(Interval<float>::GetLowest(), -std::numeric_limits<float>::infinity());
+    EXPECT_EQ(Interval<Length>::GetLowest(), -std::numeric_limits<Length>::infinity());
+}
+
+TEST(Interval, GetHighest)
+{
+    EXPECT_EQ(Interval<int>::GetHighest(), std::numeric_limits<int>::max());
+    EXPECT_EQ(Interval<float>::GetHighest(), std::numeric_limits<float>::infinity());
+    EXPECT_EQ(Interval<Length>::GetHighest(), std::numeric_limits<Length>::infinity());
+}
+
+template <class T>
+auto DefaultConstructionChecks() -> void
+{
+    SCOPED_TRACE(detail::TypeNameAsString<T>() + " type...");
+    EXPECT_EQ(Interval<T>{}, Interval<T>{});
+    EXPECT_EQ(Interval<T>{}.GetMin(), Interval<T>::GetHighest());
+    EXPECT_EQ(Interval<T>{}.GetMax(), Interval<T>::GetLowest());
+}
+
+TEST(Interval, DefaultConstruction)
+{
+    DefaultConstructionChecks<int>();
+    DefaultConstructionChecks<unsigned>();
+    DefaultConstructionChecks<float>();
+    DefaultConstructionChecks<double>();
+    DefaultConstructionChecks<Length>();
+}
+
+TEST(Interval, MoveInvalidDoesNothing)
+{
+    EXPECT_EQ(Interval<int>().Move(3), Interval<int>());
+    EXPECT_EQ(Interval<float>().Move(3), Interval<float>());
+}
+
+TEST(Interval, ExpandInvalidDoesNothing)
+{
+    EXPECT_EQ(Interval<int>().Expand(3), Interval<int>());
+    EXPECT_EQ(Interval<float>().Expand(3), Interval<float>());
+}
+
+TEST(Interval, ExpandEquallyInvalidDoesNothing)
+{
+    EXPECT_EQ(Interval<int>().ExpandEqually(3), Interval<int>());
+    EXPECT_EQ(Interval<float>().ExpandEqually(3), Interval<float>());
+}
+
+TEST(Interval, IncludeValueInvalid)
+{
+    constexpr auto v = 42;
+    EXPECT_EQ(Interval<int>().Include(v), Interval<int>(v));
+    EXPECT_EQ(Interval<int>(v).Include(Interval<int>()), Interval<int>(v));
+    EXPECT_EQ(Interval<float>().Include(v), Interval<float>(v));
+    EXPECT_EQ(Interval<float>(v).Include(Interval<float>()), Interval<float>(v));
+}
+
+TEST(Interval, IncludeIntervalInvalid)
+{
+    {
+        constexpr auto v = Interval<int>(42);
+        EXPECT_EQ(Interval<int>().Include(v), Interval<int>(v));
+        EXPECT_EQ(Interval<int>(v).Include(Interval<int>()), Interval<int>(v));
+    }
+    {
+        constexpr auto v = Interval<float>(8.0f);
+        EXPECT_EQ(Interval<float>().Include(v), Interval<float>(v));
+        EXPECT_EQ(Interval<float>(v).Include(Interval<float>()), Interval<float>(v));
+    }
+}
+
+TEST(Interval, IntersectWithInvalidAlwaysInvalid)
+{
+    constexpr auto v = 42;
+    EXPECT_EQ(Interval<int>().Intersect(Interval<int>()), Interval<int>());
+    EXPECT_EQ(Interval<int>().Intersect(Interval<int>(v)), Interval<int>());
+    EXPECT_EQ(Interval<int>(v).Intersect(Interval<int>()), Interval<int>());
+    EXPECT_EQ(Interval<float>().Intersect(Interval<float>()), Interval<float>());
+    EXPECT_EQ(Interval<float>().Intersect(Interval<float>(v)), Interval<float>());
+    EXPECT_EQ(Interval<float>(v).Intersect(Interval<float>()), Interval<float>());
+}
+
+TEST(Interval, GetSize)
+{
+    EXPECT_EQ(GetSize(Interval<int>(0)), 0);
+    EXPECT_EQ(GetSize(Interval<int>(-1, +1)), 2);
+    EXPECT_EQ(GetSize(Interval<int>(0, 4)), 4);
+    EXPECT_EQ(GetSize(Interval<float>(0)), 0.0f);
+    EXPECT_EQ(GetSize(Interval<float>(-1, +1)), 2.0f);
+    EXPECT_EQ(GetSize(Interval<float>()), -std::numeric_limits<float>::infinity());
+    EXPECT_EQ(GetSize(Interval<float>(Interval<float>::GetLowest(), Interval<float>::GetHighest())),
+              +std::numeric_limits<float>::infinity());
+}
+
+TEST(Interval, GetCenter)
+{
+    EXPECT_EQ(GetCenter(Interval<int>(0)), 0);
+    EXPECT_EQ(GetCenter(Interval<int>(-1, +1)), 0);
+    EXPECT_EQ(GetCenter(Interval<int>(0, 4)), 2);
+    EXPECT_EQ(GetCenter(Interval<float>(0)), 0.0f);
+    EXPECT_EQ(GetCenter(Interval<float>(-1, +1)), 0.0f);
+    EXPECT_EQ(GetCenter(Interval<float>(0, 4)), 2.0f);
+    EXPECT_TRUE(std::isnan(GetCenter(Interval<float>())));
+    EXPECT_TRUE(std::isnan(GetCenter(Interval<float>(Interval<float>::GetLowest(), Interval<float>::GetHighest()))));
+}
+
+class IntervalFixture: public ::testing::Test
 {
 protected:
-    using type = playrho::Interval<int>;
+    using type = Interval<int>;
 
     virtual void SetUp()
     {
@@ -53,7 +163,7 @@ protected:
     std::vector<type> m_ranges;
 };
 
-TEST_F(Interval, Equality)
+TEST_F(IntervalFixture, Equality)
 {
     for (auto& v: m_ranges)
     {
@@ -90,7 +200,7 @@ TEST_F(Interval, Equality)
     }
 }
 
-TEST_F(Interval, Inequality)
+TEST_F(IntervalFixture, Inequality)
 {
     for (auto& v: m_ranges)
     {
@@ -127,7 +237,7 @@ TEST_F(Interval, Inequality)
     }
 }
 
-TEST_F(Interval, LessThan)
+TEST_F(IntervalFixture, LessThan)
 {
     // Establish irreflexivity.
     // See: https://en.wikipedia.org/wiki/Reflexive_relation
@@ -170,7 +280,7 @@ TEST_F(Interval, LessThan)
     }
 }
 
-TEST_F(Interval, GreaterThan)
+TEST_F(IntervalFixture, GreaterThan)
 {
     // Establish irreflexivity.
     // See: https://en.wikipedia.org/wiki/Reflexive_relation
@@ -213,7 +323,7 @@ TEST_F(Interval, GreaterThan)
     }
 }
 
-TEST_F(Interval, LessThanOrEqualTo)
+TEST_F(IntervalFixture, LessThanOrEqualTo)
 {
     {
         type last = type{std::numeric_limits<int>::lowest()};
@@ -266,7 +376,7 @@ TEST_F(Interval, LessThanOrEqualTo)
     }
 }
 
-TEST_F(Interval, GreaterThanOrEqualTo)
+TEST_F(IntervalFixture, GreaterThanOrEqualTo)
 {
     {
         type last = type{std::numeric_limits<int>::lowest()};
@@ -317,26 +427,4 @@ TEST_F(Interval, GreaterThanOrEqualTo)
             }
         }
     }
-}
-
-TEST_F(Interval, GetLowest)
-{
-    EXPECT_EQ(playrho::Interval<int>::GetLowest(), std::numeric_limits<int>::lowest());
-    EXPECT_EQ(playrho::Interval<float>::GetLowest(), -std::numeric_limits<float>::infinity());
-}
-
-TEST_F(Interval, GetHighest)
-{
-    EXPECT_EQ(playrho::Interval<int>::GetHighest(), std::numeric_limits<int>::max());
-    EXPECT_EQ(playrho::Interval<float>::GetHighest(), std::numeric_limits<float>::infinity());
-}
-
-TEST_F(Interval, DefaultConstruction)
-{
-    EXPECT_EQ(playrho::Interval<int>{}, playrho::Interval<int>{});
-    EXPECT_EQ(playrho::Interval<int>{}.GetMin(), std::numeric_limits<int>::max());
-    EXPECT_EQ(playrho::Interval<int>{}.GetMax(), std::numeric_limits<int>::lowest());
-    EXPECT_EQ(playrho::Interval<float>{}, playrho::Interval<float>{});
-    EXPECT_EQ(playrho::Interval<float>{}.GetMin(),  std::numeric_limits<float>::infinity());
-    EXPECT_EQ(playrho::Interval<float>{}.GetMax(), -std::numeric_limits<float>::infinity());
 }
