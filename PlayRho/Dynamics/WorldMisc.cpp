@@ -121,7 +121,7 @@ const DynamicTree& GetTree(const World& world) noexcept
     return world.GetTree();
 }
 
-void ShiftOrigin(World& world, Length2 newOrigin)
+void ShiftOrigin(World& world, const Length2& newOrigin)
 {
     world.ShiftOrigin(newOrigin);
 }

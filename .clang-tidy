@@ -24,6 +24,8 @@ HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
 FormatStyle:     file
 CheckOptions:
+  - key:             performance-unnecessary-value-param.AllowedTypes
+    value:           'Angle;AngularAcceleration;AngularVelocity;Area;AreaDensity;Force;Frequency;InvMass;InvRotInertia;Length;LinearVelocity;Mass;Momentum;NonNegative;Positive;RotInertia;Time;Torque;'
   - key:             llvm-else-after-return.WarnOnConditionVariables
     value:           'false'
   - key:             modernize-loop-convert.MinConfidence

@@ -214,7 +214,7 @@ Acceleration GetAcceleration(const World& world, BodyID id);
 /// @see GetAcceleration(const World& world, BodyID id).
 /// @relatedalso World
 void SetAcceleration(World& world, BodyID id,
-                     LinearAcceleration2 linear, AngularAcceleration angular);
+                     const LinearAcceleration2& linear, AngularAcceleration angular);
 
 /// @brief Sets the linear accelerations on the body.
 /// @note This has no effect on non-accelerable bodies.
@@ -223,7 +223,7 @@ void SetAcceleration(World& world, BodyID id,
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see GetAcceleration(const World& world, BodyID id).
 /// @relatedalso World
-void SetAcceleration(World& world, BodyID id, LinearAcceleration2 value);
+void SetAcceleration(World& world, BodyID id, const LinearAcceleration2& value);
 
 /// @brief Sets the rotational accelerations on the body.
 /// @note This has no effect on non-accelerable bodies.
@@ -244,7 +244,7 @@ void SetAcceleration(World& world, BodyID id, AngularAcceleration value);
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see GetAcceleration(const World& world, BodyID id).
 /// @relatedalso World
-void SetAcceleration(World& world, BodyID id, Acceleration value);
+void SetAcceleration(World& world, BodyID id, const Acceleration& value);
 
 /// @brief Sets the transformation of the body.
 /// @details This instantly adjusts the body to be at the new transformation.
@@ -254,7 +254,7 @@ void SetAcceleration(World& world, BodyID id, Acceleration value);
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see GetTransformation(const World& world, BodyID id).
 /// @relatedalso World
-void SetTransformation(World& world, BodyID id, Transformation value);
+void SetTransformation(World& world, BodyID id, const Transformation& value);
 
 /// @brief Sets the position of the body's origin and rotation.
 /// @details This instantly adjusts the body to be at the new position and new orientation.
@@ -268,7 +268,7 @@ void SetTransformation(World& world, BodyID id, Transformation value);
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-inline void SetTransform(World& world, BodyID id, Length2 location, Angle angle)
+inline void SetTransform(World& world, BodyID id, const Length2& location, Angle angle)
 {
     SetTransformation(world, id, Transformation{location, UnitVec::Get(angle)});
 }
@@ -284,7 +284,7 @@ inline void SetTransform(World& world, BodyID id, Length2 location, Angle angle)
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see GetLocation(const World& world, BodyID id).
 /// @relatedalso World
-void SetLocation(World& world, BodyID id, Length2 value);
+void SetLocation(World& world, BodyID id, const Length2& value);
 
 /// @brief Sets the body's angular orientation.
 /// @details This instantly adjusts the body to be at the new angular orientation.
@@ -309,7 +309,7 @@ void SetAngle(World& world, BodyID id, Angle value);
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-void RotateAboutWorldPoint(World& world, BodyID id, Angle amount, Length2 worldPoint);
+void RotateAboutWorldPoint(World& world, BodyID id, Angle amount, const Length2& worldPoint);
 
 /// @brief Rotates a body a given amount around a point in body local coordinates.
 /// @details This changes both the linear and angular positions of the body.
@@ -323,7 +323,7 @@ void RotateAboutWorldPoint(World& world, BodyID id, Angle amount, Length2 worldP
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-void RotateAboutLocalPoint(World& world, BodyID id, Angle amount, Length2 localPoint);
+void RotateAboutLocalPoint(World& world, BodyID id, Angle amount, const Length2& localPoint);
 
 /// @brief Calculates the gravitationally associated acceleration for the given body within its world.
 /// @return Zero acceleration if given body is has no mass, else the acceleration of
@@ -375,7 +375,7 @@ inline Length2 GetLocation(const World& world, BodyID id)
 /// @return the same point expressed in world coordinates.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-inline Length2 GetWorldPoint(const World& world, BodyID id, const Length2 localPoint)
+inline Length2 GetWorldPoint(const World& world, BodyID id, const Length2& localPoint)
 {
     return Transform(localPoint, GetTransformation(world, id));
 }
@@ -383,7 +383,7 @@ inline Length2 GetWorldPoint(const World& world, BodyID id, const Length2 localP
 /// @brief Convenience function for getting the local vector of the identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-inline UnitVec GetLocalVector(const World& world, BodyID body, const UnitVec uv)
+inline UnitVec GetLocalVector(const World& world, BodyID body, const UnitVec& uv)
 {
     return InverseRotate(uv, GetTransformation(world, body).q);
 }
@@ -395,7 +395,7 @@ inline UnitVec GetLocalVector(const World& world, BodyID body, const UnitVec uv)
 /// @return the corresponding local point relative to the body's origin.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-inline Length2 GetLocalPoint(const World& world, BodyID id, const Length2 worldPoint)
+inline Length2 GetLocalPoint(const World& world, BodyID id, const Length2& worldPoint)
 {
     return InverseTransform(worldPoint, GetTransformation(world, id));
 }
@@ -414,7 +414,7 @@ inline Position GetPosition(const World& world, BodyID id)
 
 /// @brief Convenience function for getting a world vector of the identified body.
 /// @relatedalso World
-inline UnitVec GetWorldVector(const World& world, BodyID id, UnitVec localVector)
+inline UnitVec GetWorldVector(const World& world, BodyID id, const UnitVec& localVector)
 {
     return Rotate(localVector, GetTransformation(world, id).q);
 }
@@ -576,7 +576,7 @@ InvRotInertia GetInvRotInertia(const World& world, BodyID id);
 inline Mass GetMass(const World& world, BodyID id)
 {
     const auto invMass = GetInvMass(world, id);
-    return (invMass != InvMass{0})? Mass{Real{1} / invMass}: 0_kg;
+    return (invMass != InvMass{})? Mass{Real{1} / invMass}: 0_kg;
 }
 
 /// @brief Gets the rotational inertia of the body.
@@ -723,7 +723,7 @@ const std::vector<KeyedContactPtr>& GetContacts(const World& world, BodyID id);
 ///    the given radius.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-Force2 GetCentripetalForce(const World& world, BodyID id, Length2 axis);
+Force2 GetCentripetalForce(const World& world, BodyID id, const Length2& axis);
 
 /// @brief Applies a force to the center of mass of the given body.
 /// @note Non-zero forces wakes up the body.
@@ -733,7 +733,7 @@ Force2 GetCentripetalForce(const World& world, BodyID id, Length2 axis);
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-inline void ApplyForceToCenter(World& world, BodyID id, Force2 force)
+inline void ApplyForceToCenter(World& world, BodyID id, const Force2& force)
 {
     const auto linAccel = GetLinearAcceleration(world, id) + force * GetInvMass(world, id);
     const auto angAccel = GetAngularAcceleration(world, id);
@@ -751,7 +751,7 @@ inline void ApplyForceToCenter(World& world, BodyID id, Force2 force)
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-void ApplyForce(World& world, BodyID id, Force2 force, Length2 point);
+void ApplyForce(World& world, BodyID id, const Force2& force, const Length2& point);
 
 /// @brief Applies a torque.
 /// @note This affects the angular velocity without affecting the linear velocity of the
@@ -777,7 +777,7 @@ void ApplyTorque(World& world, BodyID id, Torque torque);
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-void ApplyLinearImpulse(World& world, BodyID id, Momentum2 impulse, Length2 point);
+void ApplyLinearImpulse(World& world, BodyID id, const Momentum2& impulse, const Length2& point);
 
 /// @brief Applies an angular impulse.
 /// @param world The world in which the identified body exists.
@@ -792,7 +792,7 @@ void ApplyAngularImpulse(World& world, BodyID id, AngularMomentum impulse);
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-void SetForce(World& world, BodyID id, Force2 force, Length2 point);
+void SetForce(World& world, BodyID id, const Force2& force, const Length2& point);
 
 /// @brief Sets the given amount of torque to the given body.
 /// @throws WrongState if this function is called while the world is locked.
@@ -834,7 +834,7 @@ BodyCounter Awaken(World& world);
 
 /// @brief Finds body in given world that's closest to the given location.
 /// @relatedalso World
-BodyID FindClosestBody(const World& world, Length2 location);
+BodyID FindClosestBody(const World& world, const Length2& location);
 
 /// @brief Gets the body count in the given world.
 /// @return 0 or higher.
@@ -848,13 +848,13 @@ inline BodyCounter GetBodyCount(const World& world) noexcept
 /// @brief Sets the accelerations of all the world's bodies to the given value.
 /// @throws WrongState if this function is called while the world is locked.
 /// @relatedalso World
-void SetAccelerations(World& world, Acceleration acceleration);
+void SetAccelerations(World& world, const Acceleration& acceleration);
 
 /// @brief Sets the accelerations of all the world's bodies to the given value.
 /// @note This will leave the angular acceleration alone.
 /// @throws WrongState if this function is called while the world is locked.
 /// @relatedalso World
-void SetAccelerations(World& world, LinearAcceleration2 acceleration);
+void SetAccelerations(World& world, const LinearAcceleration2& acceleration);
 
 /// @brief Clears forces.
 /// @details Manually clear the force buffer on all bodies.

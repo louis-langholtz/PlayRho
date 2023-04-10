@@ -66,42 +66,42 @@ using std::trunc;
 
 /// @brief Gets the "X" element of the given value - i.e. the first element.
 template <typename T>
-constexpr auto& GetX(T& value)
+constexpr auto GetX(T& value) -> decltype(get<0>(value))
 {
     return get<0>(value);
 }
 
 /// @brief Gets the "Y" element of the given value - i.e. the second element.
 template <typename T>
-constexpr auto& GetY(T& value)
+constexpr auto GetY(T& value) -> decltype(get<1>(value))
 {
     return get<1>(value);
 }
 
 /// @brief Gets the "Z" element of the given value - i.e. the third element.
 template <typename T>
-constexpr auto& GetZ(T& value)
+constexpr auto GetZ(T& value) -> decltype(get<2>(value))
 {
     return get<2>(value);
 }
 
 /// @brief Gets the "X" element of the given value - i.e. the first element.
 template <typename T>
-constexpr auto GetX(const T& value)
+constexpr auto GetX(const T& value) -> decltype(get<0>(value))
 {
     return get<0>(value);
 }
 
 /// @brief Gets the "Y" element of the given value - i.e. the second element.
 template <typename T>
-constexpr auto GetY(const T& value)
+constexpr auto GetY(const T& value) -> decltype(get<1>(value))
 {
     return get<1>(value);
 }
 
 /// @brief Gets the "Z" element of the given value - i.e. the third element.
 template <typename T>
-constexpr auto GetZ(const T& value)
+constexpr auto GetZ(const T& value) -> decltype(get<2>(value))
 {
     return get<2>(value);
 }
@@ -113,8 +113,8 @@ constexpr auto GetZ(const T& value)
 ///   to the value in the type that's the unsigned type equivalent of the input value.
 ///   <code>std::make_unsigned</code> merely provides the unsigned **type** equivalent.
 template <typename T>
-constexpr std::enable_if_t<std::is_signed<T>::value, std::make_unsigned_t<T>>
-MakeUnsigned(const T& arg) noexcept
+constexpr auto MakeUnsigned(const T& arg) noexcept
+    -> std::enable_if_t<std::is_signed<T>::value, std::make_unsigned_t<T>>
 {
     return static_cast<std::make_unsigned_t<T>>(arg);
 }
@@ -135,16 +135,17 @@ constexpr auto StripUnit(const T& v) -> decltype(StripUnit(v.get()))
 /// @brief Secant method.
 /// @see https://en.wikipedia.org/wiki/Secant_method
 template <typename T, typename U>
-constexpr U Secant(T target, U a1, T s1, U a2, T s2) noexcept
+constexpr auto Secant(const T& target, const U& a1, const T& s1, const U& a2, const T& s2)
+    -> decltype(a1 + (target - s1) * (a2 - a1) / (s2 - s1))
 {
-    static_assert(IsArithmetic<T>::value && IsArithmetic<U>::value, "Arithmetic types required.");
     return a1 + (target - s1) * (a2 - a1) / (s2 - s1);
 }
 
 /// @brief Bisection method.
 /// @see https://en.wikipedia.org/wiki/Bisection_method
 template <typename T>
-constexpr T Bisect(T a1, T a2) noexcept
+constexpr auto Bisect(const T& a1, const T& a2)
+    -> decltype((a1 + a2) / 2)
 {
     return (a1 + a2) / 2;
 }
@@ -152,10 +153,9 @@ constexpr T Bisect(T a1, T a2) noexcept
 /// @brief Is-odd.
 /// @details Determines whether the given integral value is odd (as opposed to being even).
 template <typename T>
-constexpr bool IsOdd(T val) noexcept
+constexpr auto IsOdd(const T& val) -> decltype((val % 2) != T{})
 {
-    static_assert(std::is_integral<T>::value, "Integral type required.");
-    return val % 2;
+    return (val % 2) != T{};
 }
 
 /// @brief Squares the given value.
@@ -198,7 +198,7 @@ constexpr auto DefaultRoundOffPrecission = unsigned{100000};
 
 /// @brief Computes the rounded value of the given value.
 template <typename T>
-auto RoundOff(T value, unsigned precision = DefaultRoundOffPrecission) ->
+auto RoundOff(const T& value, unsigned precision = DefaultRoundOffPrecission) ->
     decltype(round(value * static_cast<T>(precision)) / static_cast<T>(precision))
 {
     const auto factor = static_cast<T>(precision);
@@ -215,7 +215,7 @@ inline auto RoundOff(const Vec2& value, std::uint32_t precision = DefaultRoundOf
 /// @brief Absolute value function for vectors.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr Vector<T, N> abs(const Vector<T, N>& v) noexcept
+constexpr auto abs(const Vector<T, N>& v) noexcept -> decltype(abs(T{}), Vector<T, N>{})
 {
     auto result = Vector<T, N>{};
     for (auto i = decltype(N){0}; i < N; ++i) {
@@ -235,15 +235,15 @@ inline d2::UnitVec abs(const d2::UnitVec& v) noexcept
 /// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 template <typename T>
-constexpr auto AlmostZero(T value) -> decltype(abs(value) < std::numeric_limits<T>::min())
+constexpr auto AlmostZero(const T& value) -> decltype(abs(value) < std::numeric_limits<T>::min())
 {
     return abs(value) < std::numeric_limits<T>::min();
 }
 
 /// @brief Determines whether the given two values are "almost equal".
 template <typename T>
-constexpr std::enable_if_t<std::is_floating_point<T>::value, bool> AlmostEqual(T x, T y,
-                                                                               int ulp = 2)
+constexpr auto AlmostEqual(const T& x, const T& y, int ulp = 2)
+    -> std::enable_if_t<std::is_floating_point<T>::value, bool>
 {
     // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
     //   "the machine epsilon has to be scaled to the magnitude of the values used
@@ -664,7 +664,7 @@ Angle GetShortestDelta(Angle a0, Angle a1) noexcept;
 
 /// @brief Gets the forward/clockwise rotational angle to go from angle 1 to angle 2.
 /// @return Angular rotation in the clockwise direction to go from angle 1 to angle 2.
-constexpr Angle GetFwdRotationalAngle(const Angle a1, const Angle a2) noexcept
+constexpr Angle GetFwdRotationalAngle(const Angle& a1, const Angle& a2) noexcept
 {
     constexpr auto FullCircleAngle = 360_deg;
     return (a1 < a2) ? (a2 - a1) - FullCircleAngle : a2 - a1;
@@ -672,7 +672,7 @@ constexpr Angle GetFwdRotationalAngle(const Angle a1, const Angle a2) noexcept
 
 /// @brief Gets the reverse (counter) clockwise rotational angle to go from angle 1 to angle 2.
 /// @return Angular rotation in the counter clockwise direction to go from angle 1 to angle 2.
-constexpr Angle GetRevRotationalAngle(const Angle a1, const Angle a2) noexcept
+constexpr Angle GetRevRotationalAngle(const Angle& a1, const Angle& a2) noexcept
 {
     constexpr auto FullCircleAngle = 360_deg;
     return (a1 > a2) ? FullCircleAngle - (a1 - a2) : a2 - a1;
@@ -791,7 +791,7 @@ constexpr auto InverseRotate(const Vector2<T>& vector, const UnitVec& angle) noe
 /// @return value divided by its length if length not almost zero otherwise invalid value.
 /// @see AlmostEqual.
 template <class T>
-inline UnitVec GetUnitVector(const Vector2<T>& value, UnitVec fallback = UnitVec::GetDefaultFallback())
+inline UnitVec GetUnitVector(const Vector2<T>& value, const UnitVec& fallback = UnitVec::GetDefaultFallback())
 {
     return std::get<0>(UnitVec::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), fallback));
 }
@@ -940,8 +940,8 @@ LinearVelocity2 GetContactRelVelocity(const Velocity& velA, const Length2& relA,
                                       const Length2& relB) noexcept;
 
 /// @brief Gets whether the given velocity is "under active" based on the given tolerances.
-inline bool IsUnderActive(const Velocity& velocity, const LinearVelocity linSleepTol,
-                          const AngularVelocity angSleepTol) noexcept
+inline bool IsUnderActive(const Velocity& velocity, const LinearVelocity& linSleepTol,
+                          const AngularVelocity& angSleepTol) noexcept
 {
     const auto linVelSquared = GetMagnitudeSquared(velocity.linear);
     const auto angVelSquared = Square(velocity.angular);
@@ -949,7 +949,7 @@ inline bool IsUnderActive(const Velocity& velocity, const LinearVelocity linSlee
 }
 
 /// @brief Gets the "effective" inverse mass.
-inline InvMass GetEffectiveInvMass(const InvRotInertia invRotI, const Length2& p, const UnitVec& q)
+inline InvMass GetEffectiveInvMass(const InvRotInertia& invRotI, const Length2& p, const UnitVec& q)
 {
     // InvRotInertia is L^-2 M^-1 QP^2. Therefore (L^-2 M^-1 QP^2) * (L^2 / QP^2) gives M^-1.
     return invRotI * Square(Length{Cross(p, q)} / Radian);

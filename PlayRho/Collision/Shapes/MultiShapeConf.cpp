@@ -39,7 +39,7 @@ MassData GetMassData(const MultiShapeConf& arg)
     auto mass = 0_kg;
     const auto origin = Length2{};
     auto weightedCenter = origin * Kilogram;
-    auto I = RotInertia{0};
+    auto I = RotInertia{};
     const auto density = arg.density;
 
     std::for_each(begin(arg.children), end(arg.children), [&](const ConvexHull& ch) {

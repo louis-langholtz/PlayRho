@@ -93,7 +93,7 @@ public:
     PolygonShapeConf& SetAsBox(Length hx, Length hy);
 
     /// @brief Sets the vertices for the described box.
-    PolygonShapeConf& SetAsBox(Length hx, Length hy, Length2 center, Angle angle);
+    PolygonShapeConf& SetAsBox(Length hx, Length hy, const Length2& center, Angle angle);
 
     /// @brief Sets the vertices to a convex hull of the given ones.
     /// @note The size of the span must be in the range [1, <code>MaxShapeVertices</code>].
@@ -110,7 +110,7 @@ public:
     PolygonShapeConf& Set(const VertexSet& points);
 
     /// @brief Transforms the vertices by the given transformation.
-    PolygonShapeConf& Transform(Transformation xfm) noexcept;
+    PolygonShapeConf& Transform(const Transformation& xfm) noexcept;
 
     /// @brief Transforms the vertices by the given transformation matrix.
     /// @see https://en.wikipedia.org/wiki/Transformation_matrix

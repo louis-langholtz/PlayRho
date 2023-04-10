@@ -230,7 +230,7 @@ public:
     /// @note Useful for large worlds.
     /// @note The shift formula is: <code>position -= newOrigin</code>.
     /// @param newOrigin the new origin with respect to the old origin.
-    void ShiftOrigin(Length2 newOrigin) noexcept;
+    void ShiftOrigin(const Length2& newOrigin) noexcept;
 
     /// @brief Gets the current node capacity of this tree.
     /// @see Reserve.
@@ -338,7 +338,7 @@ public:
     }
 
     /// @brief Initializing constructor.
-    constexpr TreeNode(const DynamicTreeLeafData& value, AABB aabb,
+    constexpr TreeNode(const DynamicTreeLeafData& value, const AABB& aabb,
                        Size other = DynamicTree::GetInvalidSize()) noexcept
         : m_aabb{aabb}, m_variant{value}, m_height{0}, m_other{other}
     {
@@ -346,7 +346,7 @@ public:
     }
 
     /// @brief Initializing constructor.
-    constexpr TreeNode(const DynamicTreeBranchData& value, AABB aabb, Height height,
+    constexpr TreeNode(const DynamicTreeBranchData& value, const AABB& aabb, Height height,
                        Size other = DynamicTree::GetInvalidSize()) noexcept
         : m_aabb{aabb}, m_variant{value}, m_height{height}, m_other{other}
     {
@@ -386,7 +386,7 @@ public:
 
     /// @brief Sets the node's AABB.
     /// @warning Behavior is undefined if called on a free/unused node!
-    constexpr void SetAABB(AABB value) noexcept
+    constexpr void SetAABB(const AABB& value) noexcept
     {
         assert(!IsUnused(m_height));
         m_aabb = value;

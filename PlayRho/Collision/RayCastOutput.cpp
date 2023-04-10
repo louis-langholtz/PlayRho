@@ -36,7 +36,7 @@
 namespace playrho {
 namespace d2 {
 
-RayCastOutput RayCast(Length radius, Length2 location, const RayCastInput& input) noexcept
+RayCastOutput RayCast(Length radius, const Length2& location, const RayCastInput& input) noexcept
 {
     // Collision Detection in Interactive 3D Environments by Gino van den Bergen
     // From Section 3.1.2
@@ -85,9 +85,9 @@ RayCastOutput RayCast( // NOLINT(readability-function-cognitive-complexity)
     const auto pDelta = input.p2 - input.p1;
     for (auto i = decltype(max_size(pDelta)){0}; i < max_size(pDelta); ++i)
     {
-        const auto p1i = p1[i];
-        const auto pdi = pDelta[i];
-        const auto range = aabb.ranges[i];
+        const auto& p1i = p1[i];
+        const auto& pdi = pDelta[i];
+        const auto& range = aabb.ranges[i];
 
         if (AlmostZero(pdi))
         {

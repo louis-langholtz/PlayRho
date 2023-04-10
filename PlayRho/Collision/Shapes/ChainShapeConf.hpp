@@ -72,7 +72,7 @@ public:
     ChainShapeConf& Set(std::vector<Length2> vertices);
 
     /// @brief Adds the given vertex.
-    ChainShapeConf& Add(Length2 vertex);
+    ChainShapeConf& Add(const Length2& vertex);
 
     /// @brief Translates the vertices by the given amount.
     /// @note This function provides the strong exception guarantee. The state of this instance
@@ -249,7 +249,7 @@ inline void Rotate(ChainShapeConf& arg, const UnitVec& value)
 
 /// @brief Gets an enclosing chain shape configuration for an axis aligned rectangle of the
 ///    given dimensions (width and height).
-ChainShapeConf GetChainShapeConf(Length2 dimensions);
+ChainShapeConf GetChainShapeConf(const Length2& dimensions);
 
 /// @brief Gets an enclosing chain shape configuration for an axis aligned square of the
 ///    given dimension.

@@ -87,7 +87,7 @@ using MassData = ::playrho::detail::MassData<2>;
 /// @param density Areal density of mass.
 /// @param location Location of the center of the shape.
 ///
-MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 location);
+MassData GetMassData(Length r, NonNegative<AreaDensity> density, const Length2& location);
 
 /// @brief Computes the mass data for a linear shape.
 ///
@@ -96,7 +96,8 @@ MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 locatio
 /// @param v0 Location of vertex zero.
 /// @param v1 Location of vertex one.
 ///
-MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Length2 v1);
+MassData GetMassData(Length r, NonNegative<AreaDensity> density, // force line-break
+                     const Length2& v0, const Length2& v1);
 
 /// @brief Gets the mass data for the given collection of vertices with the given
 ///    properties.

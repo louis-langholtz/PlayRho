@@ -59,8 +59,9 @@ static_assert(std::is_nothrow_destructible<WheelJointConf>::value,
 // Cdot = wB - wA
 // J = [0 0 -1 0 0 1]
 
-WheelJointConf::WheelJointConf(BodyID bA, BodyID bB, Length2 laA, Length2 laB,
-                               UnitVec axis) noexcept
+WheelJointConf::WheelJointConf(BodyID bA, BodyID bB, // force line-break
+                               const Length2& laA, const Length2& laB,
+                               const UnitVec& axis) noexcept
     : super{super{}.UseBodyA(bA).UseBodyB(bB)},
       localAnchorA{laA},
       localAnchorB{laB},
@@ -75,8 +76,8 @@ WheelJointConf GetWheelJointConf(const Joint& joint)
     return TypeCast<WheelJointConf>(joint);
 }
 
-WheelJointConf GetWheelJointConf(const World& world, BodyID bodyA, BodyID bodyB, Length2 anchor,
-                                 UnitVec axis)
+WheelJointConf GetWheelJointConf(const World& world, BodyID bodyA, BodyID bodyB, // force line-break
+                                 const Length2& anchor, const UnitVec& axis)
 {
     return WheelJointConf{bodyA, bodyB, GetLocalPoint(world, bodyA, anchor),
                           GetLocalPoint(world, bodyB, anchor), GetLocalVector(world, bodyA, axis)};
@@ -125,13 +126,13 @@ void InitVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies, c
         const auto invRotMassB = invRotInertiaB * Square(object.sBy) / SquareRadian;
         const auto invMass = invMassA + invMassB + invRotMassA + invRotMassB;
 
-        object.mass = (invMass > InvMass{0}) ? Real{1} / invMass : 0;
+        object.mass = (invMass > InvMass{}) ? Real{1} / invMass : 0_kg;
     }
 
     // Spring constraint
     object.springMass = 0_kg;
-    object.bias = 0;
-    object.gamma = 0;
+    object.bias = 0_mps;
+    object.gamma = {};
     if (object.frequency > 0_Hz) {
         object.ax = Rotate(object.localXAxisA, qA);
         object.sAx = Cross(dd + rA, object.ax);
@@ -141,7 +142,7 @@ void InitVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies, c
         const auto invRotMassB = invRotInertiaB * Square(object.sBx) / SquareRadian;
         const auto invMass = invMassA + invMassB + invRotMassA + invRotMassB;
 
-        if (invMass > InvMass{0}) {
+        if (invMass > InvMass{}) {
             object.springMass = Real{1} / invMass;
 
             const auto C = Length{Dot(dd, object.ax)};
@@ -159,16 +160,15 @@ void InitVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies, c
             const auto h = step.deltaTime;
 
             const auto invGamma = Mass{h * (d + h * k)};
-            object.gamma = (invGamma > 0_kg) ? Real{1} / invGamma : 0;
+            object.gamma = (invGamma > 0_kg) ? Real{1} / invGamma : InvMass{};
             object.bias = LinearVelocity{C * h * k * object.gamma};
 
             const auto totalInvMass = invMass + object.gamma;
-            object.springMass = (totalInvMass > InvMass{0}) ? Real{1} / totalInvMass : 0_kg;
+            object.springMass = (totalInvMass > InvMass{}) ? Real{1} / totalInvMass : 0_kg;
         }
     }
     else {
-        object.springImpulse = 0;
-
+        object.springImpulse = 0_Ns;
         object.ax = UnitVec::GetZero();
         object.sAx = 0_m;
         object.sBx = 0_m;
@@ -178,11 +178,11 @@ void InitVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies, c
     if (object.enableMotor) {
         const auto invRotInertia = invRotInertiaA + invRotInertiaB;
         object.angularMass =
-            (invRotInertia > InvRotInertia{0}) ? Real{1} / invRotInertia : RotInertia{0};
+            (invRotInertia > InvRotInertia{}) ? Real{1} / invRotInertia : RotInertia{};
     }
     else {
-        object.angularMass = RotInertia{0};
-        object.angularImpulse = 0;
+        object.angularMass = RotInertia{};
+        object.angularImpulse = AngularMomentum{};
     }
 
     if (step.doWarmStart) {
@@ -206,9 +206,9 @@ void InitVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies, c
         velB += Velocity{invMassB * P, invRotInertiaB * LB};
     }
     else {
-        object.impulse = 0;
-        object.springImpulse = 0;
-        object.angularImpulse = 0;
+        object.impulse = 0_Ns;
+        object.springImpulse = 0_Ns;
+        object.angularImpulse = AngularMomentum{};
     }
 
     bodyConstraintA.SetVelocity(velA);
@@ -329,7 +329,7 @@ bool SolvePosition(const WheelJointConf& object, std::vector<BodyConstraint>& bo
 
     const auto k = InvMass{invMassA + invMassB + invRotMassA + invRotMassB};
 
-    const auto impulse = (k != InvMass{0}) ? -(C / k) : 0 * Kilogram * Meter;
+    const auto impulse = (k != InvMass{}) ? -(C / k) : 0 * Kilogram * Meter;
 
     const auto P = impulse * ay;
     const auto LA = impulse * sAy / Radian;

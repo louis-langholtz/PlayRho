@@ -30,7 +30,7 @@ namespace playrho {
 struct IslandStats
 {
     Length minSeparation = std::numeric_limits<Length>::infinity(); ///< Minimum separation.
-    Momentum maxIncImpulse = 0; ///< Maximum incremental impulse.
+    Momentum maxIncImpulse = 0_Ns; ///< Maximum incremental impulse.
     BodyCounter bodiesSlept = 0; ///< Bodies slept.
     ContactCounter contactsUpdated = 0; ///< Contacts updated.
     ContactCounter contactsSkipped = 0; ///< Contacts skipped.

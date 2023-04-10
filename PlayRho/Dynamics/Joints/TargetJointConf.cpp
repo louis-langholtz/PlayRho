@@ -115,7 +115,7 @@ void InitVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
     const auto tmp = d + h * k; // M T^-1
     assert(IsValid(Real{tmp * Second / Kilogram}));
     const auto invGamma = Mass{h * tmp}; // M T^-1 * T is simply M.
-    object.gamma = (invGamma != 0_kg) ? Real{1} / invGamma : InvMass{0};
+    object.gamma = (invGamma != 0_kg) ? Real{1} / invGamma : InvMass{};
     const auto beta = Frequency{h * k * object.gamma}; // T * M T^-2 * M^-1 is T^-1
 
     // Compute the effective mass matrix.

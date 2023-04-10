@@ -237,16 +237,16 @@ private:
     ///   <code>MaxManifoldPoints</code> points.
     /// @see GetPointCount().
     void AddPoint(Momentum normalImpulse, Momentum tangentImpulse,
-                  Length2 relA, Length2 relB, const std::vector<BodyConstraint>& bodies,
-                  Conf conf);
+                  const Length2& relA, const Length2& relB, const std::vector<BodyConstraint>& bodies,
+                  const Conf& conf);
     
     /// Removes the last point added.
     void RemovePoint() noexcept;
     
     /// @brief Gets a point instance for the given parameters.
     Point GetPoint(Momentum normalImpulse, Momentum tangentImpulse,
-                   Length2 relA, Length2 relB, const std::vector<BodyConstraint>& bodies,
-                   Conf conf) const noexcept;
+                   const Length2& relA, const Length2& relB, const std::vector<BodyConstraint>& bodies,
+                   const Conf& conf) const noexcept;
     
     /// Accesses the point identified by the given index.
     /// @warning Behavior is undefined if given index is not less than
@@ -460,14 +460,14 @@ inline void SetTangentImpulseAtPoint(VelocityConstraint& vc, VelocityConstraint:
 }
 
 /// @brief Sets the normal impulses of the given velocity constraint.
-inline void SetNormalImpulses(VelocityConstraint& vc, const Momentum2 impulses)
+inline void SetNormalImpulses(VelocityConstraint& vc, const Momentum2& impulses)
 {
     SetNormalImpulseAtPoint(vc, 0, impulses[0]);
     SetNormalImpulseAtPoint(vc, 1, impulses[1]);
 }
 
 /// @brief Sets the tangent impulses of the given velocity constraint.
-inline void SetTangentImpulses(VelocityConstraint& vc, const Momentum2 impulses)
+inline void SetTangentImpulses(VelocityConstraint& vc, const Momentum2& impulses)
 {
     SetTangentImpulseAtPoint(vc, 0, impulses[0]);
     SetTangentImpulseAtPoint(vc, 1, impulses[1]);

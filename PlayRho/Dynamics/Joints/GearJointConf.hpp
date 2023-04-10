@@ -203,7 +203,7 @@ constexpr AngularMomentum GetAngularReaction(const GearJointConf& object)
 
 /// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso GearJointConf
-constexpr bool ShiftOrigin(GearJointConf&, Length2) noexcept
+constexpr bool ShiftOrigin(GearJointConf&, const Length2&) noexcept
 {
     return false;
 }

@@ -212,8 +212,8 @@ SetFilter(T& o, Filter value)
 
 /// @brief Fallback translate function that throws unless the given value has no effect.
 template <class T>
-std::enable_if_t<IsValidShapeType<T>::value && !HasTranslate<T>::value, void>
-Translate(T&, Length2 value)
+auto Translate(T&, const Length2& value)
+    -> std::enable_if_t<IsValidShapeType<T>::value && !HasTranslate<T>::value, void>
 {
     if (Length2{} != value) {
         throw InvalidArgument("Translate non-zero amount not supported");
@@ -222,7 +222,8 @@ Translate(T&, Length2 value)
 
 /// @brief Fallback scale function that throws unless the given value has no effect.
 template <class T>
-std::enable_if_t<IsValidShapeType<T>::value && !HasScale<T>::value, void> Scale(T&, Vec2 value)
+auto Scale(T&, const Vec2& value)
+    -> std::enable_if_t<IsValidShapeType<T>::value && !HasScale<T>::value, void>
 {
     if (Vec2{Real(1), Real(1)} != value) {
         throw InvalidArgument("Scale non-identity amount not supported");
@@ -231,8 +232,8 @@ std::enable_if_t<IsValidShapeType<T>::value && !HasScale<T>::value, void> Scale(
 
 /// @brief Fallback rotate function that throws unless the given value has no effect.
 template <class T>
-std::enable_if_t<IsValidShapeType<T>::value && !HasRotate<T>::value, void> Rotate(T&,
-                                                                                  UnitVec value)
+auto Rotate(T&, const UnitVec& value)
+    -> std::enable_if_t<IsValidShapeType<T>::value && !HasRotate<T>::value, void>
 {
     if (UnitVec::GetRight() != value) {
         throw InvalidArgument("Rotate non-zero amount not supported");
@@ -887,7 +888,7 @@ private:
 ///   <code>false</code> otherwise.
 /// @relatedalso Shape
 /// @ingroup TestPointGroup
-bool TestPoint(const Shape& shape, Length2 point) noexcept;
+bool TestPoint(const Shape& shape, const Length2& point) noexcept;
 
 /// @brief Gets the vertex count for the specified child of the given shape.
 /// @relatedalso Shape

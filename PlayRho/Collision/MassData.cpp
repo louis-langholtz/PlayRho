@@ -30,7 +30,7 @@
 namespace playrho {
 namespace d2 {
 
-MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 location)
+MassData GetMassData(Length r, NonNegative<AreaDensity> density, const Length2& location)
 {
     // Uses parallel axis theorem, perpendicular axis theorem, and the second moment of area.
     // See: https://en.wikipedia.org/wiki/Second_moment_of_area
@@ -53,7 +53,8 @@ MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 locatio
     return MassData{location, mass, I};
 }
 
-MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Length2 v1)
+MassData GetMassData(Length r, NonNegative<AreaDensity> density, // force line-break
+                     const Length2& v0, const Length2& v1)
 {
     const auto r_squared = Area{r * r};
     const auto circle_area = r_squared * Pi;
@@ -131,7 +132,7 @@ MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
     
     auto center = Length2{};
     auto area = 0_m2;
-    auto I = SecondMomentOfArea{0};
+    auto I = SecondMomentOfArea{};
     
     // s is the reference point for forming triangles.
     // It's location doesn't change the result (except for rounding error).

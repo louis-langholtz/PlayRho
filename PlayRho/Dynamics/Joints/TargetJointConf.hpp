@@ -65,7 +65,7 @@ struct TargetJointConf : public JointBuilder<TargetJointConf> {
     }
 
     /// @brief Use value for target.
-    constexpr auto& UseTarget(Length2 v) noexcept
+    constexpr auto& UseTarget(const Length2& v) noexcept
     {
         target = v;
         return *this;
@@ -76,7 +76,7 @@ struct TargetJointConf : public JointBuilder<TargetJointConf> {
     ///   <code>bodyB != InvalidBodyID
     ///     ? GetLocalPoint(GetBody(world, bodyB), target)
     ///     : GetInvalid<Length2>()</code>.
-    constexpr auto& UseAnchor(Length2 v) noexcept
+    constexpr auto& UseAnchor(const Length2& v) noexcept
     {
         localAnchorB = v;
         return *this;
@@ -126,7 +126,7 @@ struct TargetJointConf : public JointBuilder<TargetJointConf> {
     /// The damping ratio. 0 = no damping, 1 = critical damping.
     NonNegative<Real> dampingRatio = DefaultDampingRatio;
 
-    InvMass gamma = InvMass{0}; ///< Gamma.
+    InvMass gamma = InvMass{}; ///< Gamma.
 
     Momentum2 impulse = Momentum2{}; ///< Impulse.
 
@@ -179,12 +179,12 @@ constexpr Momentum2 GetLinearReaction(const TargetJointConf& object)
 /// @relatedalso TargetJointConf
 constexpr AngularMomentum GetAngularReaction(const TargetJointConf&)
 {
-    return AngularMomentum{0};
+    return AngularMomentum{};
 }
 
 /// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso TargetJointConf
-constexpr bool ShiftOrigin(TargetJointConf& object, Length2 newOrigin)
+constexpr bool ShiftOrigin(TargetJointConf& object, const Length2& newOrigin)
 {
     object.target -= newOrigin;
     return true;
@@ -238,7 +238,7 @@ bool SolvePosition(const TargetJointConf& object, std::vector<BodyConstraint>& b
 
 /// @brief Free function for setting the target value of the given configuration.
 /// @relatedalso TargetJointConf
-constexpr void SetTarget(TargetJointConf& object, Length2 value) noexcept
+constexpr void SetTarget(TargetJointConf& object, const Length2& value) noexcept
 {
     object.UseTarget(value);
 }

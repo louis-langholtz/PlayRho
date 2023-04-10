@@ -64,8 +64,9 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf> {
     /// @brief Initializing constructor.
     /// @details Initializes the bodies, anchors, axis, and reference angle using the world
     ///   anchor and unit world axis.
-    PrismaticJointConf(BodyID bA, BodyID bB, Length2 laA = Length2{}, Length2 laB = Length2{},
-                       UnitVec axisA = UnitVec::GetRight(), Angle angle = 0_deg) noexcept;
+    PrismaticJointConf(BodyID bA, BodyID bB, // force line-break
+                       const Length2& laA = Length2{}, const Length2& laB = Length2{},
+                       const UnitVec& axisA = UnitVec::GetRight(), Angle angle = 0_deg) noexcept;
 
     /// @brief Uses the given enable limit state value.
     constexpr auto& UseEnableLimit(bool v) noexcept
@@ -126,7 +127,7 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf> {
 
     Vec3 impulse = Vec3{}; ///< Impulse.
 
-    Momentum motorImpulse = 0; ///< Motor impulse.
+    Momentum motorImpulse = 0_Ns; ///< Motor impulse.
 
     /// Enable/disable the joint limit.
     bool enableLimit = false;
@@ -233,7 +234,7 @@ constexpr void SetLinearLimits(PrismaticJointConf& conf, Length lower, Length up
 
 /// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso PrismaticJointConf
-constexpr auto ShiftOrigin(PrismaticJointConf&, Length2) noexcept
+constexpr auto ShiftOrigin(PrismaticJointConf&, const Length2&) noexcept
 {
     return false;
 }

@@ -50,7 +50,7 @@ struct RegStepStats {
     Length minSeparation = std::numeric_limits<Length>::infinity();
 
     /// @brief Max incremental impulse.
-    Momentum maxIncImpulse = 0;
+    Momentum maxIncImpulse = 0_Ns;
 
     BodyCounter islandsFound = 0; ///< Islands found count.
     BodyCounter islandsSolved = 0; ///< Islands solved count.
@@ -73,7 +73,7 @@ struct ToiStepStats {
     Length minSeparation = std::numeric_limits<Length>::infinity();
 
     /// @brief Max incremental impulse.
-    Momentum maxIncImpulse = 0;
+    Momentum maxIncImpulse = 0_Ns;
 
     counter_type islandsFound = 0; ///< Islands found count.
     counter_type islandsSolved = 0; ///< Islands solved count.

@@ -96,7 +96,7 @@ void InitVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies, co
     else {
         object.u = UnitVec::GetZero();
         object.mass = 0_kg;
-        object.impulse = 0;
+        object.impulse = 0_Ns;
         return;
     }
 
@@ -107,7 +107,7 @@ void InitVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies, co
     const auto invRotMassB = InvMass{invRotInertiaB * Square(crB)};
     const auto invMass = invMassA + invMassB + invRotMassA + invRotMassB;
 
-    object.mass = (invMass != InvMass{0}) ? Real{1} / invMass : 0_kg;
+    object.mass = (invMass != InvMass{}) ? Real{1} / invMass : 0_kg;
 
     if (step.doWarmStart) {
         // Scale the impulse to support a variable time step.
@@ -123,7 +123,7 @@ void InitVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies, co
         velB += Velocity{invMassB * P, invRotInertiaB * LB};
     }
     else {
-        object.impulse = 0;
+        object.impulse = 0_Ns;
     }
 
     bodyConstraintA.SetVelocity(velA);

@@ -78,7 +78,7 @@ using DynamicTreeRayCastCB = std::function<Real(BodyID body,
 using ShapeRayCastCB = std::function<RayCastOpcode(BodyID body,
                                                    ShapeID shape,
                                                    ChildCounter child,
-                                                   Length2 point,
+                                                   const Length2& point,
                                                    UnitVec normal)>;
 
 /// @defgroup RayCastGroup Ray Casting Functions
@@ -90,7 +90,7 @@ using ShapeRayCastCB = std::function<RayCastOpcode(BodyID body,
 /// @param radius Radius of the circle.
 /// @param location Location in world coordinates of the circle.
 /// @param input Ray-cast input parameters.
-RayCastOutput RayCast(Length radius, Length2 location, const RayCastInput& input) noexcept;
+RayCastOutput RayCast(Length radius, const Length2& location, const RayCastInput& input) noexcept;
 
 /// @brief Cast a ray against the given AABB.
 /// @param aabb Axis Aligned Bounding Box.

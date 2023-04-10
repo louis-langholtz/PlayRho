@@ -46,8 +46,8 @@ public:
     /// @param iA Index of point A within the shape that it comes from.
     /// @param pB Point B in world coordinates.
     /// @param iB Index of point B within the shape that it comes from.
-    constexpr SimplexEdge(Length2 pA, VertexCounter iA,
-                          Length2 pB, VertexCounter iB) noexcept;
+    constexpr SimplexEdge(const Length2& pA, VertexCounter iA, // force line-break
+                          const Length2& pB, VertexCounter iB) noexcept;
     
     /// @brief Gets point A (in world coordinates).
     constexpr auto GetPointA() const noexcept { return m_wA; }
@@ -70,8 +70,8 @@ private:
     IndexPair m_indexPair{}; ///< Index pair. @details Indices of points A and B. 2-bytes.
 };
 
-constexpr SimplexEdge::SimplexEdge(Length2 pA, VertexCounter iA,
-                                                  Length2 pB, VertexCounter iB) noexcept:
+constexpr SimplexEdge::SimplexEdge(const Length2& pA, VertexCounter iA, // force line-break
+                                   const Length2& pB, VertexCounter iB) noexcept:
     m_wA{pA}, m_wB{pB}, m_indexPair{iA, iB}
 {
     // Intentionally empty.

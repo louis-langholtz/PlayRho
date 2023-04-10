@@ -70,7 +70,7 @@ PolygonShapeConf& PolygonShapeConf::UseVertices(const std::vector<Length2>& vert
     return Set(Span<const Length2>(data(verts), size(verts)));
 }
 
-PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy, Length2 center,
+PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy, const Length2& center,
                                              Angle angle)
 {
     SetAsBox(hx, hy);
@@ -78,7 +78,7 @@ PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy, Length2 cente
     return *this;
 }
 
-PolygonShapeConf& PolygonShapeConf::Transform(Transformation xfm) noexcept
+PolygonShapeConf& PolygonShapeConf::Transform(const Transformation& xfm) noexcept
 {
     for (auto i = decltype(GetVertexCount()){0}; i < GetVertexCount(); ++i) {
         m_vertices[i] = playrho::d2::Transform(m_vertices[i], xfm);
@@ -187,7 +187,7 @@ bool Validate(const Span<const Length2>& verts)
     for (auto i = decltype(count){0}; i < count; ++i) {
         const auto i1 = i;
         const auto i2 = GetModuloNext(i1, count);
-        const auto p = verts[i1];
+        const auto& p = verts[i1];
         const auto e = verts[i2] - p;
         for (auto j = decltype(count){0}; j < count; ++j) {
             if ((j == i1) || (j == i2)) {

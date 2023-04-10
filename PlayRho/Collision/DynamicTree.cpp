@@ -224,7 +224,7 @@ DynamicTree::Size UpdateUpwardFrom(DynamicTree::TreeNode nodes[], DynamicTree::S
 /// @details Finds the index of the "lowest cost" node using a surface area heuristic
 ///   (S.A.H.) for two dimensions.
 /// @warning Behavior is undefined if the given index is invalid or for an unused node.
-DynamicTree::Size FindLowestCostNode(const DynamicTree::TreeNode nodes[], AABB leafAABB,
+DynamicTree::Size FindLowestCostNode(const DynamicTree::TreeNode nodes[], const AABB& leafAABB,
                                      DynamicTree::Size index) noexcept
 {
     assert(IsValid(leafAABB));
@@ -637,7 +637,7 @@ void DynamicTree::RebuildBottomUp()
     Free(nodes);
 }
 
-void DynamicTree::ShiftOrigin(Length2 newOrigin) noexcept
+void DynamicTree::ShiftOrigin(const Length2& newOrigin) noexcept
 {
     // Build array of leaves. Free the rest.
     for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i) {

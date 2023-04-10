@@ -89,7 +89,7 @@ bool GetCollideConnected(const Joint& object) noexcept;
 
 /// @brief Shifts the origin for any points stored in world coordinates.
 /// @return <code>true</code> if shift done, <code>false</code> otherwise.
-bool ShiftOrigin(Joint& object, Length2 value) noexcept;
+bool ShiftOrigin(Joint& object, const Length2& value) noexcept;
 
 /// @brief Initializes velocity constraint data based on the given solver data.
 /// @note This MUST be called prior to calling <code>SolveVelocity</code>.
@@ -291,7 +291,7 @@ public:
         return object.m_self ? object.m_self->GetCollideConnected_() : false;
     }
 
-    friend bool ShiftOrigin(Joint& object, Length2 value) noexcept
+    friend bool ShiftOrigin(Joint& object, const Length2& value) noexcept
     {
         return object.m_self ? object.m_self->ShiftOrigin_(value) : false;
     }
@@ -352,7 +352,7 @@ private:
         virtual bool GetCollideConnected_() const noexcept = 0;
 
         /// @brief Call to notify joint of a shift in the world origin.
-        virtual bool ShiftOrigin_(Length2 value) noexcept = 0;
+        virtual bool ShiftOrigin_(const Length2& value) noexcept = 0;
 
         /// @brief Initializes the velocities for this joint.
         virtual void InitVelocity_(BodyConstraintsMap& bodies, const playrho::StepConf& step,
@@ -436,7 +436,7 @@ private:
         }
 
         /// @copydoc Concept::ShiftOrigin_
-        bool ShiftOrigin_(Length2 value) noexcept override
+        bool ShiftOrigin_(const Length2& value) noexcept override
         {
             return ShiftOrigin(data, value);
         }
@@ -693,7 +693,7 @@ Length2 GetTarget(const Joint& object);
 /// @brief Sets the given joint's target property if it has one.
 /// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
-void SetTarget(Joint& object, Length2 value);
+void SetTarget(Joint& object, const Length2& value);
 
 /// Gets the lower linear joint limit.
 /// @throws std::invalid_argument If not supported for the given joint's type.
@@ -753,7 +753,7 @@ Length2 GetLinearOffset(const Joint& object);
 /// @brief Sets the linear offset property of the specified joint if its type has one.
 /// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
-void SetLinearOffset(Joint& object, Length2 value);
+void SetLinearOffset(Joint& object, const Length2& value);
 
 /// @brief Gets the angular offset property of the specified joint if its type has one.
 /// @throws std::invalid_argument If not supported for the given joint's type.

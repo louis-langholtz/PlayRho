@@ -266,7 +266,7 @@ Length2 GetLinearOffset(const World& world, JointID id)
     return GetLinearOffset(GetJoint(world, id));
 }
 
-void SetLinearOffset(World& world, JointID id, Length2 value)
+void SetLinearOffset(World& world, JointID id, const Length2& value)
 {
     auto joint = GetJoint(world, id);
     SetLinearOffset(joint, value);
@@ -310,7 +310,7 @@ Length2 GetTarget(const World& world, JointID id)
     return GetTarget(GetJoint(world, id));
 }
 
-void SetTarget(World& world, JointID id, Length2 value)
+void SetTarget(World& world, JointID id, const Length2& value)
 {
     auto joint = GetJoint(world, id);
     SetTarget(joint, value);
@@ -334,7 +334,7 @@ void SetAngularLimits(World& world, JointID id, Angle lower, Angle upper)
     SetJoint(world, id, joint);
 }
 
-bool ShiftOrigin(World& world, JointID id, Length2 value)
+bool ShiftOrigin(World& world, JointID id, const Length2& value)
 {
     auto joint = GetJoint(world, id);
     const auto shifted = ShiftOrigin(joint, value);

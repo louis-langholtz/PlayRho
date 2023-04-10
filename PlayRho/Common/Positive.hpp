@@ -33,9 +33,9 @@ struct PositiveChecker {
 
     /// @brief Value checking functor.
     /// @throws exception_type if given value is not valid.
-    constexpr auto operator()(const T& v) -> decltype(!(v > static_cast<T>(0)), T{v})
+    constexpr auto operator()(const T& v) -> decltype(!(v > T{}), T{v})
     {
-        if (!(v > static_cast<T>(0))) {
+        if (!(v > T{})) {
             throw exception_type("value not greater than zero");
         }
         return v;

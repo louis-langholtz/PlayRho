@@ -124,7 +124,7 @@ public:
     /// @brief Gets the unit vector & magnitude from the given parameters.
     template <typename T>
     static PolarCoord<T> Get(const T x, const T y,
-                             const UnitVec fallback = GetDefaultFallback()) noexcept
+                             const UnitVec& fallback = GetDefaultFallback()) noexcept
     {
         // Try the faster way first...
         const auto magnitudeSquared = x * x + y * y;
@@ -144,7 +144,7 @@ public:
         }
         
         // Give up and return the fallback value.
-        return std::make_pair(fallback, T{0});
+        return std::make_pair(fallback, T{});
     }
 
     /// @brief Gets the given angled unit vector.
@@ -252,7 +252,7 @@ public:
     ///
     /// @return Result of rotating this unit vector by the given amount.
     ///
-    constexpr UnitVec Rotate(UnitVec amount) const noexcept
+    constexpr UnitVec Rotate(const UnitVec& amount) const noexcept
     {
         return UnitVec{GetX() * amount.GetX() - GetY() * amount.GetY(),
                         GetY() * amount.GetX() + GetX() * amount.GetY()};
@@ -306,20 +306,20 @@ private:
 // Free functions...
 
 /// @brief Gets the "X-axis".
-constexpr UnitVec GetXAxis(UnitVec rot) noexcept { return rot; }
+constexpr UnitVec GetXAxis(const UnitVec& rot) noexcept { return rot; }
 
 /// @brief Gets the "Y-axis".
 /// @note This is the reverse perpendicular vector of the given unit vector.
-constexpr UnitVec GetYAxis(UnitVec rot) noexcept { return rot.GetRevPerpendicular(); }
+constexpr UnitVec GetYAxis(const UnitVec& rot) noexcept { return rot.GetRevPerpendicular(); }
 
 /// @brief Equality operator.
-constexpr bool operator==(const UnitVec a, const UnitVec b) noexcept
+constexpr bool operator==(const UnitVec& a, const UnitVec& b) noexcept
 {
     return (a.GetX() == b.GetX()) && (a.GetY() == b.GetY());
 }
 
 /// @brief Inequality operator.
-constexpr bool operator!=(const UnitVec a, const UnitVec b) noexcept
+constexpr bool operator!=(const UnitVec& a, const UnitVec& b) noexcept
 {
     return (a.GetX() != b.GetX()) || (a.GetY() != b.GetY());
 }
@@ -330,7 +330,7 @@ constexpr bool operator!=(const UnitVec a, const UnitVec b) noexcept
 /// @param vector Vector to return a counter-clockwise perpendicular equivalent for.
 /// @return A counter-clockwise 90-degree rotation of the given vector.
 /// @see GetFwdPerpendicular.
-constexpr UnitVec GetRevPerpendicular(const UnitVec vector) noexcept
+constexpr UnitVec GetRevPerpendicular(const UnitVec& vector) noexcept
 {
     return vector.GetRevPerpendicular();
 }
@@ -340,7 +340,7 @@ constexpr UnitVec GetRevPerpendicular(const UnitVec vector) noexcept
 /// @param vector Vector to return a clockwise perpendicular equivalent for.
 /// @return A clockwise 90-degree rotation of the given vector.
 /// @see GetRevPerpendicular.
-constexpr UnitVec GetFwdPerpendicular(const UnitVec vector) noexcept
+constexpr UnitVec GetFwdPerpendicular(const UnitVec& vector) noexcept
 {
     return vector.GetFwdPerpendicular();
 }
@@ -348,20 +348,20 @@ constexpr UnitVec GetFwdPerpendicular(const UnitVec vector) noexcept
 /// @brief Rotates a unit vector by the angle expressed by the second unit vector.
 /// @return Unit vector for the angle that's the sum of the two angles expressed by
 ///   the input unit vectors.
-constexpr UnitVec Rotate(const UnitVec vector, const UnitVec& angle) noexcept
+constexpr UnitVec Rotate(const UnitVec& vector, const UnitVec& angle) noexcept
 {
     return vector.Rotate(angle);
 }
 
 /// @brief Inverse rotates a vector.
-constexpr UnitVec InverseRotate(const UnitVec vector, const UnitVec& angle) noexcept
+constexpr UnitVec InverseRotate(const UnitVec& vector, const UnitVec& angle) noexcept
 {
     return vector.Rotate(angle.FlipY());
 }
 
 /// @brief Gets the specified element of the given collection.
 template <std::size_t I>
-constexpr UnitVec::value_type get(UnitVec v) noexcept
+constexpr UnitVec::value_type get(const UnitVec& v) noexcept
 {
     static_assert(I < UnitVec::size(), "Index out of bounds in playrho::get<> (playrho::UnitVec)");
     switch (I)
@@ -373,14 +373,14 @@ constexpr UnitVec::value_type get(UnitVec v) noexcept
 
 /// @brief Gets element 0 of the given collection.
 template <>
-constexpr UnitVec::value_type get<0>(UnitVec v) noexcept
+constexpr UnitVec::value_type get<0>(const UnitVec& v) noexcept
 {
     return v.GetX();
 }
 
 /// @brief Gets element 1 of the given collection.
 template <>
-constexpr UnitVec::value_type get<1>(UnitVec v) noexcept
+constexpr UnitVec::value_type get<1>(const UnitVec& v) noexcept
 {
     return v.GetY();
 }

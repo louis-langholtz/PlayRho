@@ -64,10 +64,11 @@ public:
     EdgeShapeConf() noexcept = default;
 
     /// @brief Initializing constructor.
-    EdgeShapeConf(Length2 vA, Length2 vB, const EdgeShapeConf& conf = GetDefaultConf()) noexcept;
+    EdgeShapeConf(const Length2& vA, const Length2& vB, // force line-break
+                  const EdgeShapeConf& conf = GetDefaultConf()) noexcept;
 
     /// @brief Sets both vertices in one call.
-    EdgeShapeConf& Set(Length2 vA, Length2 vB) noexcept;
+    EdgeShapeConf& Set(const Length2& vA, const Length2& vB) noexcept;
 
     /// @brief Uses the given vertex radius.
     EdgeShapeConf& UseVertexRadius(NonNegative<Length> value) noexcept;

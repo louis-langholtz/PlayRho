@@ -55,7 +55,8 @@ static_assert(std::is_nothrow_destructible<FrictionJointConf>::value,
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-FrictionJointConf::FrictionJointConf(BodyID bA, BodyID bB, Length2 laA, Length2 laB) noexcept
+FrictionJointConf::FrictionJointConf(BodyID bA, BodyID bB, // force line-break
+                                     const Length2& laA, const Length2& laB) noexcept
     : super{super{}.UseBodyA(bA).UseBodyB(bB)}, localAnchorA{laA}, localAnchorB{laB}
 {
     // Intentionally empty.
@@ -67,7 +68,7 @@ FrictionJointConf GetFrictionJointConf(const Joint& joint)
 }
 
 FrictionJointConf GetFrictionJointConf(const World& world, BodyID bodyA, BodyID bodyB,
-                                       Length2 anchor)
+                                       const Length2& anchor)
 {
     return FrictionJointConf{bodyA, bodyB, GetLocalPoint(world, bodyA, anchor),
                              GetLocalPoint(world, bodyB, anchor)};
@@ -127,7 +128,7 @@ void InitVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodies
 
     const auto invRotInertia = invRotInertiaA + invRotInertiaB;
     object.angularMass =
-        (invRotInertia > InvRotInertia{0}) ? RotInertia{Real{1} / invRotInertia} : RotInertia{0};
+        (invRotInertia > InvRotInertia{}) ? RotInertia{Real{1} / invRotInertia} : RotInertia{};
 
     if (step.doWarmStart) {
         // Scale impulses to support a variable time step.
@@ -146,7 +147,7 @@ void InitVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodies
     }
     else {
         object.linearImpulse = Momentum2{};
-        object.angularImpulse = AngularMomentum{0};
+        object.angularImpulse = AngularMomentum{};
     }
 
     bodyConstraintA.SetVelocity(velA);
@@ -186,7 +187,7 @@ bool SolveVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodie
                                            -maxAngularImpulse, maxAngularImpulse);
         const auto incAngularImpulse = object.angularImpulse - oldAngularImpulse;
 
-        if (incAngularImpulse != AngularMomentum{0}) {
+        if (incAngularImpulse != AngularMomentum{}) {
             solved = false;
         }
 

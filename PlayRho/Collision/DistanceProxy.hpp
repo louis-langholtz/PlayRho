@@ -99,7 +99,7 @@ public:
     /// @warning Behavior is undefined if the normals aren't normals for adjacent vertices.
     /// @warning Behavior is undefined if any normal is not unique.
     ///
-    DistanceProxy(const NonNegative<Length> vertexRadius, const VertexCounter count,
+    DistanceProxy(const NonNegative<Length>& vertexRadius, const VertexCounter count,
                   const Length2* vertices, const UnitVec* normals) noexcept
         :
 #ifndef IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS
@@ -246,7 +246,7 @@ inline VertexCounter GetSupportIndex(const DistanceProxy& proxy, T dir) noexcept
 /// @return <code>true</code> if point is contained in the proxy, <code>false</code> otherwise.
 /// @relatedalso DistanceProxy
 /// @ingroup TestPointGroup
-bool TestPoint(const DistanceProxy& proxy, Length2 point) noexcept;
+bool TestPoint(const DistanceProxy& proxy, const Length2& point) noexcept;
 
 /// @brief Finds the lowest right most vertex in the given collection.
 std::size_t FindLowestRightMostVertex(Span<const Length2> vertices);

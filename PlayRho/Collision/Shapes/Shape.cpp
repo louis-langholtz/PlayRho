@@ -29,7 +29,7 @@ namespace d2 {
 // construction nor copy/move assignment.
 static_assert(!IsValidShapeType<Shape>::value);
 
-bool TestPoint(const Shape& shape, Length2 point) noexcept
+bool TestPoint(const Shape& shape, const Length2& point) noexcept
 {
     const auto childCount = GetChildCount(shape);
     for (auto i = decltype(childCount){0}; i < childCount; ++i) {

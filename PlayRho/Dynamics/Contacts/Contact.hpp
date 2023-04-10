@@ -326,7 +326,7 @@ private:
 
     /// Tangent speed.
     /// @note Field is 4-bytes (with 4-byte Real).
-    LinearVelocity m_tangentSpeed = 0;
+    LinearVelocity m_tangentSpeed = 0_mps;
 
     /// Time of impact.
     /// @note This is a unit interval of time (a value between 0 and 1).
