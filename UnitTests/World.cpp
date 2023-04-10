@@ -2834,7 +2834,7 @@ TEST(World_Longer, TilesComesToRest)
 
     EXPECT_EQ(awakeCount, 0u);
     if (awakeCount == 0u) {
-#if defined(_WIN32) // todo: update macro use, probably more to do with arch than OS!
+#if defined(_WIN32) || defined(PLAYRHO_USE_BOOST_UNITS) // odd
         EXPECT_EQ(lastStats.reg.proxiesMoved, 1u);
 #else
         EXPECT_EQ(lastStats.reg.proxiesMoved, 0u);
