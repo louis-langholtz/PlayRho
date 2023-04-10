@@ -222,7 +222,7 @@ void WarmStartVelocities(const VelocityConstraints& velConstraints,
 }
 
 void GetBodyConstraints(std::vector<BodyConstraint>& constraints, const Island::Bodies& bodies,
-                        const ObjectPool<Body>& bodyBuffer, Time h, MovementConf conf)
+                        const ObjectPool<Body>& bodyBuffer, Time h, const MovementConf& conf)
 {
     assert(size(constraints) == size(bodyBuffer));
     for (const auto& id: bodies) {
@@ -2027,7 +2027,7 @@ StepStats WorldImpl::Step(const StepConf& conf)
     return stepStats;
 }
 
-void WorldImpl::ShiftOrigin(Length2 newOrigin)
+void WorldImpl::ShiftOrigin(const Length2& newOrigin)
 {
     if (IsLocked()) {
         throw WrongState(worldIsLockedMsg);

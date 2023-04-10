@@ -63,10 +63,11 @@ struct MotorJointConf : public JointBuilder<MotorJointConf> {
     constexpr MotorJointConf() noexcept = default;
 
     /// @brief Initialize the bodies and offsets using the current transforms.
-    MotorJointConf(BodyID bA, BodyID bB, Length2 lo = Length2{}, Angle ao = 0_deg) noexcept;
+    MotorJointConf(BodyID bA, BodyID bB, // force line-break
+                   const Length2& lo = Length2{}, Angle ao = 0_deg) noexcept;
 
     /// @brief Uses the given linear offset value.
-    constexpr auto& UseLinearOffset(Length2 v) noexcept
+    constexpr auto& UseLinearOffset(const Length2& v) noexcept
     {
         linearOffset = v;
         return *this;
@@ -178,7 +179,7 @@ constexpr auto GetLocalAnchorB(const MotorJointConf&) noexcept
 
 /// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso MotorJointConf
-constexpr auto ShiftOrigin(MotorJointConf&, Length2) noexcept
+constexpr auto ShiftOrigin(MotorJointConf&, const Length2&) noexcept
 {
     return false;
 }
@@ -269,7 +270,7 @@ constexpr auto GetLinearOffset(const MotorJointConf& object) noexcept
 
 /// @brief Free function for setting the linear offset value of the given configuration.
 /// @relatedalso MotorJointConf
-constexpr auto SetLinearOffset(MotorJointConf& object, Length2 value) noexcept
+constexpr auto SetLinearOffset(MotorJointConf& object, const Length2& value) noexcept
 {
     object.UseLinearOffset(value);
 }

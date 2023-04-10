@@ -113,7 +113,7 @@ std::vector<Length2> GetConvexHullAsVector(Span<const Length2> vertices)
     return result;
 }
 
-bool TestPoint(const DistanceProxy& proxy, Length2 point) noexcept
+bool TestPoint(const DistanceProxy& proxy, const Length2& point) noexcept
 {
     const auto count = proxy.GetVertexCount();
     const auto vr = proxy.GetVertexRadius();

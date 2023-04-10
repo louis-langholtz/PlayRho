@@ -58,7 +58,9 @@ struct DistanceJointConf : public JointBuilder<DistanceJointConf> {
 
     /// @brief Initializing constructor.
     /// @details Initialize the bodies, anchors, and length using the world anchors.
-    DistanceJointConf(BodyID bA, BodyID bB, Length2 laA = Length2{}, Length2 laB = Length2{},
+    DistanceJointConf(BodyID bA, BodyID bB, // force line-break
+                      const Length2& laA = Length2{}, // force line-break
+                      const Length2& laB = Length2{}, // force line-break
                       Length l = 1_m) noexcept;
 
     /// @brief Uses the given length.
@@ -153,8 +155,9 @@ DistanceJointConf GetDistanceJointConf(const Joint& joint);
 
 /// @brief Gets the configuration for the given parameters.
 /// @relatedalso World
-DistanceJointConf GetDistanceJointConf(const World& world, BodyID bodyA, BodyID bodyB,
-                                       Length2 anchorA = Length2{}, Length2 anchorB = Length2{});
+DistanceJointConf GetDistanceJointConf(const World& world, BodyID bodyA, BodyID bodyB, // force line-break
+                                       const Length2& anchorA = Length2{}, // force line-break
+                                       const Length2& anchorB = Length2{});
 
 /// @brief Gets the current linear reaction for the given configuration.
 /// @relatedalso DistanceJointConf
@@ -167,7 +170,7 @@ constexpr Momentum2 GetLinearReaction(const DistanceJointConf& object) noexcept
 /// @relatedalso DistanceJointConf
 constexpr AngularMomentum GetAngularReaction(const DistanceJointConf&) noexcept
 {
-    return AngularMomentum{0};
+    return AngularMomentum{};
 }
 
 /// @brief Shifts the origin notion of the given configuration.

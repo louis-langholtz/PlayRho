@@ -105,7 +105,7 @@ StepStats Step(WorldImpl& world, const StepConf& conf);
 /// @param newOrigin the new origin with respect to the old origin
 /// @throws WrongState if this method is called while the world is locked.
 /// @relatedalso WorldImpl
-void ShiftOrigin(WorldImpl& world, Length2 newOrigin);
+void ShiftOrigin(WorldImpl& world, const Length2& newOrigin);
 
 /// @brief Gets the bodies of the specified world.
 /// @relatedalso WorldImpl

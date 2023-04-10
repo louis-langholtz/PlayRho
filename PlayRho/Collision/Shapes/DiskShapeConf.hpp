@@ -62,7 +62,7 @@ struct DiskShapeConf : ShapeBuilder<DiskShapeConf> {
     }
 
     /// @brief Uses the given value as the location.
-    constexpr DiskShapeConf& UseLocation(Length2 value) noexcept
+    constexpr DiskShapeConf& UseLocation(const Length2& value) noexcept
     {
         location = value;
         return *this;
@@ -76,14 +76,14 @@ struct DiskShapeConf : ShapeBuilder<DiskShapeConf> {
     }
 
     /// @brief Translates the location by the given amount.
-    constexpr DiskShapeConf& Translate(Length2 value) noexcept
+    constexpr DiskShapeConf& Translate(const Length2& value) noexcept
     {
         location += value;
         return *this;
     }
 
     /// @brief Scales the location by the given amount.
-    constexpr DiskShapeConf& Scale(Vec2 value) noexcept
+    constexpr DiskShapeConf& Scale(const Vec2& value) noexcept
     {
         location = Length2{GetX(location) * GetX(value), GetY(location) * GetY(value)};
         return *this;

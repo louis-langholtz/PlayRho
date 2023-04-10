@@ -32,8 +32,8 @@ namespace d2 {
 
 namespace {
 
-Mat33 GetMat33(InvMass invMassA, Length2 rA, InvRotInertia invRotInertiaA, InvMass invMassB,
-               Length2 rB, InvRotInertia invRotInertiaB)
+Mat33 GetMat33(InvMass invMassA, const Length2& rA, InvRotInertia invRotInertiaA, InvMass invMassB,
+               const Length2& rB, InvRotInertia invRotInertiaB)
 {
     const auto exx = InvMass{invMassA + Square(GetY(rA)) * invRotInertiaA / SquareRadian +
                              invMassB + Square(GetY(rB)) * invRotInertiaB / SquareRadian};
@@ -89,7 +89,8 @@ static_assert(std::is_nothrow_destructible<WeldJointConf>::value,
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-WeldJointConf::WeldJointConf(BodyID bA, BodyID bB, Length2 laA, Length2 laB, Angle ra) noexcept
+WeldJointConf::WeldJointConf(BodyID bA, BodyID bB,
+                             const Length2& laA, const Length2& laB, Angle ra) noexcept
     : super{super{}.UseBodyA(bA).UseBodyB(bB)},
       localAnchorA{laA},
       localAnchorB{laB},
@@ -157,7 +158,7 @@ void InitVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies, co
         //    RotInertia is L^2  M    QP^-2
         auto invRotInertia = InvRotInertia{invRotInertiaA + invRotInertiaB};
         const auto rotInertia =
-            (invRotInertia > InvRotInertia{0}) ? Real{1} / invRotInertia : RotInertia{0};
+            (invRotInertia > InvRotInertia{}) ? Real{1} / invRotInertia : RotInertia{};
 
         const auto C = Angle{posB.angular - posA.angular - object.referenceAngle};
         const auto omega = Real(2) * Pi * object.frequency; // T^-1
@@ -169,22 +170,22 @@ void InitVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies, co
         // magic formulas
         const auto h = step.deltaTime;
         const auto invGamma = RotInertia{h * (d + h * k)};
-        object.gamma = (invGamma != RotInertia{0}) ? Real{1} / invGamma : InvRotInertia{0};
+        object.gamma = (invGamma != RotInertia{}) ? Real{1} / invGamma : InvRotInertia{};
         // QP * T * L^2 M QP^-2 T^-2 * L^-2 M^-1 QP^2 is: QP T^-1
         object.bias = AngularVelocity{C * h * k * object.gamma};
 
         invRotInertia += object.gamma;
         GetZ(GetZ(object.mass)) = StripUnit(
-            (invRotInertia != InvRotInertia{0}) ? Real{1} / invRotInertia : RotInertia{0});
+            (invRotInertia != InvRotInertia{}) ? Real{1} / invRotInertia : RotInertia{});
     }
     else if (GetZ(GetZ(K)) == 0) {
         object.mass = GetInverse22(K);
-        object.gamma = InvRotInertia{0};
+        object.gamma = InvRotInertia{};
         object.bias = 0_rpm;
     }
     else {
         object.mass = GetSymInverse33(K);
-        object.gamma = InvRotInertia{0};
+        object.gamma = InvRotInertia{};
         object.bias = 0_rpm;
     }
 

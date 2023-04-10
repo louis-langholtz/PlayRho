@@ -238,7 +238,7 @@ MassData ComputeMassData(const World& world, const std::vector<ShapeID>& ids);
 /// @throws std::out_of_range If given an invalid body or shape identifier.
 /// @relatedalso World
 /// @ingroup TestPointGroup
-bool TestPoint(const World& world, BodyID bodyId, ShapeID shapeId, Length2 p);
+bool TestPoint(const World& world, BodyID bodyId, ShapeID shapeId, const Length2& p);
 
 /// @brief Gets the default friction amount for the given shapes.
 /// @relatedalso Shape

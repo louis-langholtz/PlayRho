@@ -46,7 +46,7 @@ struct PositionSolution
 };
 
 /// @brief Addition operator.
-inline PositionSolution operator+ (PositionSolution lhs, PositionSolution rhs)
+inline PositionSolution operator+ (const PositionSolution& lhs, const PositionSolution& rhs)
 {
     return PositionSolution{
         lhs.pos_a + rhs.pos_a,
@@ -56,7 +56,7 @@ inline PositionSolution operator+ (PositionSolution lhs, PositionSolution rhs)
 }
 
 /// @brief Subtraction operator.
-inline PositionSolution operator- (PositionSolution lhs, PositionSolution rhs)
+inline PositionSolution operator- (const PositionSolution& lhs, const PositionSolution& rhs)
 {
     return PositionSolution{
         lhs.pos_a - rhs.pos_a,

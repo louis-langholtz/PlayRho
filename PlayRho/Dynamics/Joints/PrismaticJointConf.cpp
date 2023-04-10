@@ -111,8 +111,9 @@ static_assert(std::is_nothrow_destructible<PrismaticJointConf>::value,
 // Now compute impulse to be applied:
 // df = f2 - f1
 
-PrismaticJointConf::PrismaticJointConf(BodyID bA, BodyID bB, Length2 laA, Length2 laB,
-                                       UnitVec axisA, Angle angle) noexcept
+PrismaticJointConf::PrismaticJointConf(BodyID bA, BodyID bB, // force line-break
+                                       const Length2& laA, const Length2& laB, // force line-break
+                                       const UnitVec& axisA, Angle angle) noexcept
     : super{super{}.UseBodyA(bA).UseBodyB(bB)},
       localAnchorA{laA},
       localAnchorB{laB},
@@ -187,7 +188,7 @@ void InitVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodie
     const auto invRotMassA = InvMass{invRotInertiaA * Square(object.a1) / SquareRadian};
     const auto invRotMassB = InvMass{invRotInertiaB * Square(object.a2) / SquareRadian};
     const auto totalInvMass = invMassA + invMassB + invRotMassA + invRotMassB;
-    object.motorMass = (totalInvMass > InvMass{0}) ? Real{1} / totalInvMass : 0_kg;
+    object.motorMass = (totalInvMass > InvMass{}) ? Real{1} / totalInvMass : 0_kg;
 
     // Prismatic constraint.
     {
@@ -209,7 +210,7 @@ void InitVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodie
         const auto totalInvRotInertia = invRotInertiaA + invRotInertiaB;
 
         const auto k22 =
-            (totalInvRotInertia == InvRotInertia{0}) ? Real{1} : StripUnit(totalInvRotInertia);
+            (totalInvRotInertia == InvRotInertia{}) ? Real{1} : StripUnit(totalInvRotInertia);
         const auto k23 = (invRotInertiaA * object.a1 + invRotInertiaB * object.a2) * Meter *
                          Kilogram / SquareRadian;
         const auto k33 = StripUnit(totalInvMass);
@@ -248,7 +249,7 @@ void InitVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodie
     }
 
     if (!object.enableMotor) {
-        object.motorImpulse = 0;
+        object.motorImpulse = 0_Ns;
     }
 
     if (step.doWarmStart) {
@@ -276,7 +277,7 @@ void InitVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodie
     }
     else {
         object.impulse = Vec3{};
-        object.motorImpulse = 0;
+        object.motorImpulse = 0_Ns;
     }
 
     bodyConstraintA.SetVelocity(velA);

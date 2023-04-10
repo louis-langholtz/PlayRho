@@ -217,7 +217,7 @@ public:
     DynamicRectangle() = default;
 
     /// @brief Initializing constructor.
-    DynamicRectangle(Length width, Length height, Length2 offset = Length2{})
+    DynamicRectangle(Length width, Length height, const Length2& offset = Length2{})
         : vertices{Length2{+width / 2, -height / 2} + offset, //
                    Length2{+width / 2, +height / 2} + offset, //
                    Length2{-width / 2, +height / 2} + offset, //
@@ -236,7 +236,7 @@ public:
 
     /// @brief Sets the dimensions of this rectangle.
     /// @see GetDimensions.
-    void SetDimensions(Length2 val)
+    void SetDimensions(const Length2& val)
     {
         const auto offset = GetOffset();
         vertices = {Length2{+GetX(val) / 2, -GetY(val) / 2} + offset, //
@@ -255,7 +255,7 @@ public:
 
     /// @brief Sets the x and y offset of this rectangle.
     /// @see GetOffset.
-    void SetOffset(Length2 val)
+    void SetOffset(const Length2& val)
     {
         const auto dims = GetDimensions();
         vertices = {Length2{+GetX(dims) / 2, -GetY(dims) / 2} + val, //
@@ -315,13 +315,13 @@ public:
     }
 
     /// @brief Translates the vertices of this geometry.
-    void Translate(Length2 value)
+    void Translate(const Length2& value)
     {
         SetOffset(GetOffset() + value);
     }
 
     /// @brief Scales the vertices of this geometry.
-    void Scale(Vec2 value)
+    void Scale(const Vec2& value)
     {
         const auto dims = GetDimensions();
         SetDimensions(Length2{GetX(dims) * GetX(value), GetY(dims) * GetY(value)});

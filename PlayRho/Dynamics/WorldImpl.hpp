@@ -234,7 +234,7 @@ public:
     ///   have been translated per the shift amount and direction.
     /// @param newOrigin the new origin with respect to the old origin
     /// @throws WrongState if this function is called while the world is locked.
-    void ShiftOrigin(Length2 newOrigin);
+    void ShiftOrigin(const Length2& newOrigin);
 
     /// @brief Gets the minimum vertex radius that shapes in this world can be.
     Length GetMinVertexRadius() const noexcept;
@@ -820,7 +820,7 @@ private:
     /// @details Used to compute time step ratio to support a variable time step.
     /// @note 4-bytes large.
     /// @see Step.
-    Frequency m_inv_dt0 = 0;
+    Frequency m_inv_dt0 = 0_Hz;
     
     /// @brief Minimum vertex radius.
     Positive<Length> m_minVertexRadius;

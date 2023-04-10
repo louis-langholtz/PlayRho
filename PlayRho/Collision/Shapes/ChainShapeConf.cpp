@@ -100,7 +100,7 @@ ChainShapeConf& ChainShapeConf::Rotate(const UnitVec& value)
     return *this;
 }
 
-ChainShapeConf& ChainShapeConf::Add(Length2 vertex)
+ChainShapeConf& ChainShapeConf::Add(const Length2& vertex)
 {
     if (!empty(m_vertices)) {
         auto vprev = m_vertices.back();
@@ -123,7 +123,7 @@ MassData ChainShapeConf::GetMassData() const
         if (vertexCount > 1) {
             // XXX: This overcounts for the overlapping circle shape.
             auto mass = 0_kg;
-            auto I = RotInertia{0};
+            auto I = RotInertia{};
             auto area = 0_m2;
             auto center = Length2{};
             auto vprev = GetVertex(0);
@@ -166,7 +166,7 @@ DistanceProxy ChainShapeConf::GetChild(ChildCounter index) const
 
 // Free functions...
 
-ChainShapeConf GetChainShapeConf(Length2 dimensions)
+ChainShapeConf GetChainShapeConf(const Length2& dimensions)
 {
     auto conf = ChainShapeConf{};
 

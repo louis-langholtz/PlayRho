@@ -84,7 +84,7 @@ struct RopeJointConf : public JointBuilder<RopeJointConf> {
     /// The maximum length of the rope.
     Length maxLength = 0_m;
 
-    Length length = 0; ///< Length.
+    Length length = 0_m; ///< Length.
     Momentum impulse = 0_Ns; ///< Impulse.
 
     // Solver temp
@@ -130,12 +130,12 @@ constexpr Momentum2 GetLinearReaction(const RopeJointConf& object) noexcept
 /// @relatedalso RopeJointConf
 constexpr AngularMomentum GetAngularReaction(const RopeJointConf&) noexcept
 {
-    return AngularMomentum{0};
+    return AngularMomentum{};
 }
 
 /// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso RopeJointConf
-constexpr auto ShiftOrigin(RopeJointConf&, Length2) noexcept
+constexpr auto ShiftOrigin(RopeJointConf&, const Length2&) noexcept
 {
     return false;
 }

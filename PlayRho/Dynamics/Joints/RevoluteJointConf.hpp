@@ -69,7 +69,8 @@ struct RevoluteJointConf : public JointBuilder<RevoluteJointConf> {
     constexpr RevoluteJointConf() noexcept = default;
 
     /// @brief Initialize the bodies, anchors, and reference angle using a world anchor point.
-    RevoluteJointConf(BodyID bA, BodyID bB, Length2 laA = Length2{}, Length2 laB = Length2{},
+    RevoluteJointConf(BodyID bA, BodyID bB, // force line-break
+                      const Length2& laA = Length2{}, const Length2& laB = Length2{},
                       Angle ra = 0_deg) noexcept;
 
     /// @brief Uses the given enable limit state value.
@@ -149,7 +150,7 @@ struct RevoluteJointConf : public JointBuilder<RevoluteJointConf> {
     AngularVelocity motorSpeed = 0_rpm;
 
     /// @brief Maximum motor torque used to achieve the desired motor speed.
-    Torque maxMotorTorque = 0;
+    Torque maxMotorTorque = 0_Nm;
 
     Length2 rA = {}; ///< Rotated delta of body A's local center from local anchor A.
     Length2 rB = {}; ///< Rotated delta of body B's local center from local anchor B.
@@ -189,7 +190,7 @@ RevoluteJointConf GetRevoluteJointConf(const Joint& joint);
 /// @brief Gets the configuration for the given parameters.
 /// @relatedalso World
 RevoluteJointConf GetRevoluteJointConf(const World& world, BodyID bodyA, BodyID bodyB,
-                                       Length2 anchor);
+                                       const Length2& anchor);
 
 /// @brief Gets the current angle of the given configuration in the given world.
 /// @relatedalso World
@@ -201,7 +202,7 @@ AngularVelocity GetAngularVelocity(const World& world, const RevoluteJointConf& 
 
 /// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso RevoluteJointConf
-constexpr auto ShiftOrigin(RevoluteJointConf&, Length2) noexcept
+constexpr auto ShiftOrigin(RevoluteJointConf&, const Length2&) noexcept
 {
     return false;
 }

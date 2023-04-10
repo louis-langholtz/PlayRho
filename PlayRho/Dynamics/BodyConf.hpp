@@ -104,25 +104,25 @@ struct BodyConf {
     constexpr BodyConf& Use(BodyType t) noexcept;
 
     /// @brief Use the given location.
-    constexpr BodyConf& UseLocation(Length2 l) noexcept;
+    constexpr BodyConf& UseLocation(const Length2& l) noexcept;
 
     /// @brief Use the given angle.
     constexpr BodyConf& UseAngle(Angle a) noexcept;
 
     /// @brief Use the given linear velocity.
-    constexpr BodyConf& UseLinearVelocity(LinearVelocity2 v) noexcept;
+    constexpr BodyConf& UseLinearVelocity(const LinearVelocity2& v) noexcept;
 
     /// @brief Use the given angular velocity.
     constexpr BodyConf& UseAngularVelocity(AngularVelocity v) noexcept;
 
     /// @brief Use the given position for the linear and angular positions.
-    constexpr BodyConf& Use(Position v) noexcept;
+    constexpr BodyConf& Use(const Position& v) noexcept;
 
     /// @brief Use the given velocity for the linear and angular velocities.
-    constexpr BodyConf& Use(Velocity v) noexcept;
+    constexpr BodyConf& Use(const Velocity& v) noexcept;
 
     /// @brief Use the given linear acceleration.
-    constexpr BodyConf& UseLinearAcceleration(LinearAcceleration2 v) noexcept;
+    constexpr BodyConf& UseLinearAcceleration(const LinearAcceleration2& v) noexcept;
 
     /// @brief Use the given angular acceleration.
     constexpr BodyConf& UseAngularAcceleration(AngularAcceleration v) noexcept;
@@ -231,7 +231,7 @@ constexpr BodyConf& BodyConf::Use(BodyType t) noexcept
     return *this;
 }
 
-constexpr BodyConf& BodyConf::UseLocation(Length2 l) noexcept
+constexpr BodyConf& BodyConf::UseLocation(const Length2& l) noexcept
 {
     location = l;
     return *this;
@@ -243,27 +243,27 @@ constexpr BodyConf& BodyConf::UseAngle(Angle a) noexcept
     return *this;
 }
 
-constexpr BodyConf& BodyConf::Use(Position v) noexcept
+constexpr BodyConf& BodyConf::Use(const Position& v) noexcept
 {
     location = v.linear;
     angle = v.angular;
     return *this;
 }
 
-constexpr BodyConf& BodyConf::Use(Velocity v) noexcept
+constexpr BodyConf& BodyConf::Use(const Velocity& v) noexcept
 {
     linearVelocity = v.linear;
     angularVelocity = v.angular;
     return *this;
 }
 
-constexpr BodyConf& BodyConf::UseLinearVelocity(LinearVelocity2 v) noexcept
+constexpr BodyConf& BodyConf::UseLinearVelocity(const LinearVelocity2& v) noexcept
 {
     linearVelocity = v;
     return *this;
 }
 
-constexpr BodyConf& BodyConf::UseLinearAcceleration(LinearAcceleration2 v) noexcept
+constexpr BodyConf& BodyConf::UseLinearAcceleration(const LinearAcceleration2& v) noexcept
 {
     linearAcceleration = v;
     return *this;

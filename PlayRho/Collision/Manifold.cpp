@@ -57,7 +57,7 @@ inline index_type GetEdgeIndex(VertexCounter i1, VertexCounter i2, VertexCounter
 
 using VertexCounterPair = std::pair<VertexCounter, VertexCounter>;
 
-VertexCounterPair GetMostAntiParallelEdge(UnitVec shape0_rel_n0, const Transformation& xf0,
+VertexCounterPair GetMostAntiParallelEdge(const UnitVec& shape0_rel_n0, const Transformation& xf0,
                                           const DistanceProxy& shape1, const Transformation& xf1,
                                           const VertexCounter2 indices1) noexcept
 {
@@ -78,9 +78,9 @@ VertexCounterPair GetMostAntiParallelEdge(UnitVec shape0_rel_n0, const Transform
                : std::make_pair(secondIdx, firstIdx);
 }
 
-ClipList GetClipPoints(Length2 shape0_abs_v0, Length2 shape0_abs_v1, VertexCounterPair shape0_e,
-                       UnitVec shape0_abs_e0_dir, Length2 shape1_abs_v0, Length2 shape1_abs_v1,
-                       VertexCounterPair shape1_e)
+ClipList GetClipPoints(const Length2& shape0_abs_v0, const Length2& shape0_abs_v1, VertexCounterPair shape0_e,
+                       const UnitVec& shape0_abs_e0_dir, const Length2& shape1_abs_v0,
+                       const Length2& shape1_abs_v1, VertexCounterPair shape1_e)
 {
     // Gets the two vertices in world coordinates and their face-vertex contact features
     // of the incident edge of shape1
@@ -260,7 +260,7 @@ Manifold GetManifold(bool flipped, // NOLINT(readability-function-cognitive-comp
 }
 
 Manifold GetManifold(bool flipped, Length totalRadius, const DistanceProxy& shape,
-                     const Transformation& sxf, Length2 point, const Transformation& xfm)
+                     const Transformation& sxf, const Length2& point, const Transformation& xfm)
 {
     const auto vertexCount = shape.GetVertexCount();
     assert(vertexCount > 0);
@@ -344,8 +344,9 @@ Manifold GetManifold(bool flipped, Length totalRadius, const DistanceProxy& shap
                                  ContactFeature::e_vertex, 0, point);
 }
 
-Manifold GetManifold(const Length2& locationA, const Transformation& xfA, Length2 locationB,
-                     const Transformation& xfB, Length totalRadius) noexcept
+Manifold GetManifold(const Length2& locationA, const Transformation& xfA, // force line-break
+                     const Length2& locationB, const Transformation& xfB, // force line-break
+                     Length totalRadius) noexcept
 {
     const auto pA = Transform(locationA, xfA);
     const auto pB = Transform(locationB, xfB);
@@ -362,7 +363,7 @@ Manifold GetManifold(const Length2& locationA, const Transformation& xfA, Length
 
 Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA, //
                        const DistanceProxy& shapeB, const Transformation& xfB, //
-                       Manifold::Conf conf)
+                       const Manifold::Conf& conf)
 {
     // Assumes called after detecting AABB overlap.
     // Find edge normal of max separation on A - return if separating axis is found

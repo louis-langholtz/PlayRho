@@ -58,7 +58,8 @@ static_assert(std::is_nothrow_destructible<MotorJointConf>::value,
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-MotorJointConf::MotorJointConf(BodyID bA, BodyID bB, Length2 lo, Angle ao) noexcept
+MotorJointConf::MotorJointConf(BodyID bA, BodyID bB, // force line-break
+                               const Length2& lo, Angle ao) noexcept
     : super{super{}.UseBodyA(bA).UseBodyB(bB)}, linearOffset{lo}, angularOffset{ao}
 {
     // Intentionally empty.
@@ -128,7 +129,7 @@ void InitVelocity(MotorJointConf& object, std::vector<BodyConstraint>& bodies, c
 
     const auto invRotInertia = invRotInertiaA + invRotInertiaB;
     object.angularMass =
-        (invRotInertia > InvRotInertia{0}) ? RotInertia{Real{1} / invRotInertia} : RotInertia{0};
+        (invRotInertia > InvRotInertia{}) ? RotInertia{Real{1} / invRotInertia} : RotInertia{};
 
     object.linearError = (posB.linear + object.rB) - (posA.linear + object.rA);
     object.angularError = (posB.angular - posA.angular) - object.angularOffset;
@@ -149,7 +150,7 @@ void InitVelocity(MotorJointConf& object, std::vector<BodyConstraint>& bodies, c
     }
     else {
         object.linearImpulse = Momentum2{};
-        object.angularImpulse = AngularMomentum{0};
+        object.angularImpulse = AngularMomentum{};
     }
 
     bodyConstraintA.SetVelocity(velA);
@@ -192,7 +193,7 @@ bool SolveVelocity(MotorJointConf& object, std::vector<BodyConstraint>& bodies,
         object.angularImpulse = newAngularImpulse;
         const auto incAngularImpulse = newAngularImpulse - oldAngularImpulse;
 
-        if (incAngularImpulse != AngularMomentum{0}) {
+        if (incAngularImpulse != AngularMomentum{}) {
             solved = false;
         }
         velA.angular -= invRotInertiaA * incAngularImpulse;

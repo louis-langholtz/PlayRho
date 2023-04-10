@@ -67,8 +67,9 @@ struct WheelJointConf : public JointBuilder<WheelJointConf> {
 
     /// Initialize the bodies, anchors, axis, and reference angle using the world
     /// anchor and world axis.
-    WheelJointConf(BodyID bA, BodyID bB, Length2 laA = Length2{}, Length2 laB = Length2{},
-                   UnitVec axis = UnitVec::GetRight()) noexcept;
+    WheelJointConf(BodyID bA, BodyID bB, // force line-break
+                   const Length2& laA = Length2{}, const Length2& laB = Length2{},
+                   const UnitVec& axis = UnitVec::GetRight()) noexcept;
 
     /// @brief Uses the given enable motor state value.
     constexpr auto& UseEnableMotor(bool v) noexcept
@@ -121,7 +122,7 @@ struct WheelJointConf : public JointBuilder<WheelJointConf> {
     bool enableMotor = false;
 
     /// The maximum motor torque.
-    Torque maxMotorTorque = Torque{0};
+    Torque maxMotorTorque = Torque{};
 
     /// The desired angular motor speed.
     AngularVelocity motorSpeed = 0_rpm;
@@ -132,9 +133,9 @@ struct WheelJointConf : public JointBuilder<WheelJointConf> {
     /// Suspension damping ratio, one indicates critical damping
     Real dampingRatio = DefaultDampingRatio;
 
-    Momentum impulse = 0; ///< Impulse.
-    AngularMomentum angularImpulse = 0; ///< Angular impulse.
-    Momentum springImpulse = 0; ///< Spring impulse.
+    Momentum impulse = 0_Ns; ///< Impulse.
+    AngularMomentum angularImpulse = {}; ///< Angular impulse.
+    Momentum springImpulse = 0_Ns; ///< Spring impulse.
 
     UnitVec ax; ///< Solver A X directional.
     UnitVec ay; ///< Solver A Y directional.
@@ -145,11 +146,11 @@ struct WheelJointConf : public JointBuilder<WheelJointConf> {
     Length sBy = 0_m; ///< Solver B y location.
 
     Mass mass = 0_kg; ///< Mass.
-    RotInertia angularMass = RotInertia{0}; ///< Motor mass.
+    RotInertia angularMass = RotInertia{}; ///< Motor mass.
     Mass springMass = 0_kg; ///< Spring mass.
 
     LinearVelocity bias = 0_mps; ///< Bias.
-    InvMass gamma = InvMass{0}; ///< Gamma.
+    InvMass gamma = InvMass{}; ///< Gamma.
 };
 
 /// @brief Equality operator.
@@ -197,8 +198,8 @@ WheelJointConf GetWheelJointConf(const Joint& joint);
 
 /// @brief Gets the definition data for the given parameters.
 /// @relatedalso World
-WheelJointConf GetWheelJointConf(const World& world, BodyID bodyA, BodyID bodyB, Length2 anchor,
-                                 UnitVec axis = UnitVec::GetRight());
+WheelJointConf GetWheelJointConf(const World& world, BodyID bodyA, BodyID bodyB, // force line-break
+                                 const Length2& anchor, const UnitVec& axis = UnitVec::GetRight());
 
 /// @brief Gets the angular velocity for the given configuration within the specified world.
 /// @relatedalso World
@@ -213,7 +214,7 @@ constexpr Momentum2 GetLinearReaction(const WheelJointConf& object)
 
 /// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso WheelJointConf
-constexpr auto ShiftOrigin(WheelJointConf&, Length2)
+constexpr auto ShiftOrigin(WheelJointConf&, const Length2&)
 {
     return false;
 }

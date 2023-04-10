@@ -80,9 +80,11 @@ struct PulleyJointConf : public JointBuilder<PulleyJointConf> {
     /// @post <code>localAnchorB</code> will have the value of <code>laB</code>.
     /// @post <code>lengthA</code> will have the value of <code>lA</code>.
     /// @post <code>lengthB</code> will have the value of <code>lB</code>.
-    PulleyJointConf(BodyID bA, BodyID bB, Length2 gaA = DefaultGroundAnchorA,
-                    Length2 gaB = DefaultGroundAnchorB,
-                    Length2 laA = DefaultLocalAnchorA, Length2 laB = DefaultLocalAnchorB,
+    PulleyJointConf(BodyID bA, BodyID bB, // force line-break
+                    const Length2& gaA = DefaultGroundAnchorA,
+                    const Length2& gaB = DefaultGroundAnchorB,
+                    const Length2& laA = DefaultLocalAnchorA,
+                    const Length2& laB = DefaultLocalAnchorB,
                     Length lA = 0_m, Length lB = 0_m);
 
     /// @brief Uses the given ratio value.
@@ -159,8 +161,9 @@ PulleyJointConf GetPulleyJointConf(const Joint& joint);
 
 /// @brief Gets the configuration for the given parameters.
 /// @relatedalso World
-PulleyJointConf GetPulleyJointConf(const World& world, BodyID bA, BodyID bB, Length2 groundA,
-                                   Length2 groundB, Length2 anchorA, Length2 anchorB);
+PulleyJointConf GetPulleyJointConf(const World& world, BodyID bA, BodyID bB, // force line-break
+                                   const Length2& groundA, const Length2& groundB,
+                                   const Length2& anchorA, const Length2& anchorB);
 
 /// @brief Gets the current linear reaction of the given configuration.
 /// @relatedalso PulleyJointConf
@@ -173,12 +176,12 @@ constexpr Momentum2 GetLinearReaction(const PulleyJointConf& object) noexcept
 /// @relatedalso PulleyJointConf
 constexpr AngularMomentum GetAngularReaction(const PulleyJointConf&) noexcept
 {
-    return AngularMomentum{0};
+    return AngularMomentum{};
 }
 
 /// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso PulleyJointConf
-bool ShiftOrigin(PulleyJointConf& object, Length2 newOrigin) noexcept;
+bool ShiftOrigin(PulleyJointConf& object, const Length2& newOrigin) noexcept;
 
 /// @brief Initializes velocity constraint data based on the given solver data.
 /// @note This MUST be called prior to calling <code>SolveVelocity</code>.

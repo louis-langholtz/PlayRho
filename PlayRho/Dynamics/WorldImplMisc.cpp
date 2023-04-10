@@ -94,7 +94,7 @@ StepStats Step(WorldImpl& world, const StepConf& conf)
     return world.Step(conf);
 }
 
-void ShiftOrigin(WorldImpl& world, Length2 newOrigin)
+void ShiftOrigin(WorldImpl& world, const Length2& newOrigin)
 {
     world.ShiftOrigin(newOrigin);
 }

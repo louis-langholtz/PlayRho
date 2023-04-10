@@ -60,8 +60,9 @@ struct FrictionJointConf : public JointBuilder<FrictionJointConf> {
     /// @post <code>localAnchorA</code> will hold the value of <code>laA</code>.
     /// @post <code>localAnchorB</code> will hold the value of <code>laB</code>.
     /// @post All other member variables will be zero initialized.
-    FrictionJointConf(BodyID bA, BodyID bB, Length2 laA = Length2{},
-                      Length2 laB = Length2{}) noexcept;
+    FrictionJointConf(BodyID bA, BodyID bB, // force line-break
+                      const Length2& laA = Length2{}, // force line-break
+                      const Length2& laB = Length2{}) noexcept;
 
     /// @brief Uses the given maximum force value.
     constexpr auto& UseMaxForce(NonNegative<Force> v) noexcept
@@ -91,7 +92,7 @@ struct FrictionJointConf : public JointBuilder<FrictionJointConf> {
 
     // Solver shared data - data saved & updated over multiple InitVelocityConstraints calls.
     Momentum2 linearImpulse = Momentum2{}; ///< Linear impulse.
-    AngularMomentum angularImpulse = AngularMomentum{0}; ///< Angular impulse.
+    AngularMomentum angularImpulse = AngularMomentum{}; ///< Angular impulse.
 
     // Solver temp
     Length2 rA = {}; ///< Relative A.
@@ -133,7 +134,7 @@ FrictionJointConf GetFrictionJointConf(const Joint& joint);
 /// @brief Gets the confguration for the given parameters.
 /// @relatedalso World
 FrictionJointConf GetFrictionJointConf(const World& world, BodyID bodyA, BodyID bodyB,
-                                       Length2 anchor);
+                                       const Length2& anchor);
 
 /// @brief Gets the current linear reaction for the given configuration.
 /// @relatedalso FrictionJointConf

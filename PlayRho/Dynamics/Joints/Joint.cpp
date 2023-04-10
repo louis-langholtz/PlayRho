@@ -465,7 +465,7 @@ Length2 GetTarget(const Joint& object)
     throw std::invalid_argument("GetTarget not supported by joint type");
 }
 
-void SetTarget(Joint& object, Length2 value)
+void SetTarget(Joint& object, const Length2& value)
 {
     const auto type = GetType(object);
     if (type == GetTypeID<TargetJointConf>()) {
@@ -599,7 +599,7 @@ Length2 GetLinearOffset(const Joint& object)
     throw std::invalid_argument("GetLinearOffset not supported by joint type!");
 }
 
-void SetLinearOffset(Joint& object, Length2 value)
+void SetLinearOffset(Joint& object, const Length2& value)
 {
     const auto type = GetType(object);
     if (type == GetTypeID<MotorJointConf>()) {

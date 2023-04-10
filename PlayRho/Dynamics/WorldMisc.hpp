@@ -156,7 +156,7 @@ Length GetMaxVertexRadius(const World& world) noexcept;
 /// @param newOrigin the new origin with respect to the old origin
 /// @throws WrongState if this method is called while the world is locked.
 /// @relatedalso World
-void ShiftOrigin(World& world, Length2 newOrigin);
+void ShiftOrigin(World& world, const Length2& newOrigin);
 
 } // namespace d2
 } // namespace playrho

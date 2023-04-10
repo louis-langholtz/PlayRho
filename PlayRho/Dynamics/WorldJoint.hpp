@@ -303,7 +303,7 @@ Length2 GetLinearOffset(const World& world, JointID id);
 /// @brief Sets the target linear offset, in frame A.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-void SetLinearOffset(World& world, JointID id, Length2 value);
+void SetLinearOffset(World& world, JointID id, const Length2& value);
 
 /// @brief Gets the target angular offset.
 /// @throws std::out_of_range If given an invalid joint identifier.
@@ -345,7 +345,7 @@ Length2 GetTarget(const World& world, JointID id);
 /// @throws WrongState if this method is called while the world is locked.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-void SetTarget(World& world, JointID id, Length2 value);
+void SetTarget(World& world, JointID id, const Length2& value);
 
 /// Get the lower joint limit.
 /// @throws std::out_of_range If given an invalid joint identifier.
@@ -368,7 +368,7 @@ void SetAngularLimits(World& world, JointID id, Angle lower, Angle upper);
 /// @throws WrongState if this method is called while the world is locked.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-bool ShiftOrigin(World& world, JointID id, Length2 value);
+bool ShiftOrigin(World& world, JointID id, const Length2& value);
 
 /// @brief Gets the damping ratio associated with the identified joint if it has one.
 /// @throws std::out_of_range If given an invalid joint identifier.

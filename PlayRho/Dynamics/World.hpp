@@ -292,7 +292,7 @@ public:
     ///   have been translated per the shift amount and direction.
     /// @param newOrigin the new origin with respect to the old origin
     /// @throws WrongState if this method is called while the world is locked.
-    void ShiftOrigin(Length2 newOrigin);
+    void ShiftOrigin(const Length2& newOrigin);
 
     /// @brief Gets the minimum vertex radius that shapes in this world can be.
     /// @see GetMaxVertexRadius.

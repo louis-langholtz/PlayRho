@@ -115,7 +115,7 @@ bool World::IsLocked() const noexcept
     return m_impl && ::playrho::d2::IsLocked(*m_impl);
 }
 
-void World::ShiftOrigin(Length2 newOrigin)
+void World::ShiftOrigin(const Length2& newOrigin)
 {
     ::playrho::d2::ShiftOrigin(*m_impl, newOrigin);
 }

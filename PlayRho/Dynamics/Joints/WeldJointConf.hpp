@@ -68,7 +68,8 @@ struct WeldJointConf : public JointBuilder<WeldJointConf> {
     /// @post <code>localAnchorA</code> will have the value of <code>laA</code>.
     /// @post <code>localAnchorB</code> will have the value of <code>laB</code>.
     /// @post <code>referenceAngle</code> will have the value of <code>ra</code>.
-    WeldJointConf(BodyID bA, BodyID bB, Length2 laA = Length2{}, Length2 laB = Length2{},
+    WeldJointConf(BodyID bA, BodyID bB, // force line-break
+                  const Length2& laA = Length2{}, const Length2& laB = Length2{},
                   Angle ra = 0_deg) noexcept;
 
     /// @brief Uses the given frequency value.
@@ -161,7 +162,7 @@ constexpr AngularMomentum GetAngularReaction(const WeldJointConf& object) noexce
 
 /// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso WeldJointConf
-constexpr auto ShiftOrigin(WeldJointConf&, Length2) noexcept
+constexpr auto ShiftOrigin(WeldJointConf&, const Length2&) noexcept
 {
     return false;
 }
