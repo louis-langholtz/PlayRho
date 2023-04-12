@@ -77,11 +77,11 @@ public:
     /// @brief Gets the current size of this set.
     std::size_t size() const noexcept
     {
-        return ::playrho::detail::Size(m_elements);
+        return ::playrho::size(m_elements);
     }
     
     /// @brief Gets the pointer to the data buffer.
-    const_pointer data() const { return ::playrho::detail::Data(m_elements); }
+    const_pointer data() const { return ::playrho::data(m_elements); }
     
     /// @brief Gets the "begin" iterator value.
     const_pointer begin() const { return data(); }

@@ -85,24 +85,6 @@ constexpr auto IsFull(const T& arg) -> decltype(size(arg) == max_size(arg))
     return size(arg) == max_size(arg);
 }
 
-/// @brief Internal helper template function to avoid confusion for use within classes
-///   that define their own <code>data()</code> method.
-template <typename T>
-static auto Data(T& v)
-{
-    using ::playrho::data;
-    return data(v);
-}
-
-/// @brief Internal helper template function to avoid confusion for use within classes
-///   that define their own <code>size()</code> method.
-template <typename T>
-static auto Size(T& v)
-{
-    using ::playrho::size;
-    return size(v);
-}
-
 } // namespace detail
 
 /// @brief "Not used" annotator.
