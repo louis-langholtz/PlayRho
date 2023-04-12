@@ -57,6 +57,7 @@
 #include <PlayRho/Common/LengthError.hpp>
 #include <PlayRho/Common/DynamicMemory.hpp>
 #include <PlayRho/Common/FlagGuard.hpp>
+#include <PlayRho/Common/Span.hpp>
 #include <PlayRho/Common/WrongState.hpp>
 
 #include <algorithm>
@@ -142,7 +143,7 @@ inline void IntegratePositions(const Island::Bodies& bodies, BodyConstraints& co
 /// @param listener Listener to call.
 /// @param constraints Array of m_contactCount contact velocity constraint elements.
 inline void Report(const WorldImpl::ImpulsesContactListener& listener,
-                   const std::vector<ContactID>& contacts,
+                   const Span<const ContactID>& contacts,
                    const VelocityConstraints& constraints,
                    StepConf::iteration_type solved)
 {
@@ -176,7 +177,7 @@ inline void AssignImpulses(Manifold& var, const VelocityConstraint& vc)
 
 /// @brief Calculates the "warm start" velocity deltas for the given velocity constraint.
 VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc,
-                                         const std::vector<BodyConstraint>& bodies)
+                                         const Span<const BodyConstraint>& bodies)
 {
     auto vp = VelocityPair{Velocity{LinearVelocity2{}, 0_rpm}, Velocity{LinearVelocity2{}, 0_rpm}};
 
@@ -210,7 +211,7 @@ VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc,
 }
 
 void WarmStartVelocities(const VelocityConstraints& velConstraints,
-                         std::vector<BodyConstraint>& bodies)
+                         const Span<BodyConstraint>& bodies)
 {
     for_each(cbegin(velConstraints), cend(velConstraints), [&](const VelocityConstraint& vc) {
         const auto vp = CalcWarmStartVelocityDeltas(vc, bodies);
@@ -221,7 +222,7 @@ void WarmStartVelocities(const VelocityConstraints& velConstraints,
     });
 }
 
-void GetBodyConstraints(std::vector<BodyConstraint>& constraints, const Island::Bodies& bodies,
+void GetBodyConstraints(const Span<BodyConstraint>& constraints, const Island::Bodies& bodies,
                         const ObjectPool<Body>& bodyBuffer, Time h, const MovementConf& conf)
 {
     assert(size(constraints) == size(bodyBuffer));
@@ -395,7 +396,7 @@ inline bool IsValidForTime(ToiOutput::State state) noexcept
 }
 
 bool FlagForFiltering(ObjectPool<Contact>& contactBuffer, BodyID bodyA,
-                      const std::vector<KeyedContactPtr>& contactsBodyB,
+                      const Span<const KeyedContactPtr>& contactsBodyB,
                       BodyID bodyB) noexcept
 {
     auto anyFlagged = false;
@@ -470,7 +471,7 @@ void ResetBodiesForSolveTOI(WorldImpl::Bodies& bodies, ObjectPool<Body>& buffer)
 
 /// @brief Reset contacts for solve TOI.
 void ResetBodyContactsForSolveTOI(ObjectPool<Contact>& buffer,
-                                  const std::vector<KeyedContactPtr>& contacts) noexcept
+                                  const Span<const KeyedContactPtr>& contacts) noexcept
 {
     // Invalidate all contact TOIs on this displaced body.
     for_each(cbegin(contacts), cend(contacts), [&buffer](const auto& ci) {
@@ -491,7 +492,7 @@ void ResetContactsForSolveTOI(ObjectPool<Contact>& buffer,
 
 /// @brief Destroys all of the given fixture's proxies.
 void DestroyProxies(DynamicTree& tree,
-                    const std::vector<DynamicTree::Size>& fixtureProxies,
+                    const Span<const DynamicTree::Size>& fixtureProxies,
                     std::vector<DynamicTree::Size>& proxies) noexcept
 {
     const auto childCount = size(fixtureProxies);
@@ -647,7 +648,7 @@ void ResizeAndReset(std::vector<T>& vector, typename std::vector<T>::size_type n
 
 /// @brief Removes <em>unspeedables</em> from the is <em>is-in-island</em> state.
 WorldImpl::Bodies::size_type
-RemoveUnspeedablesFromIslanded(const std::vector<BodyID>& bodies,
+RemoveUnspeedablesFromIslanded(const Span<const BodyID>& bodies,
                                           const ObjectPool<Body>& buffer,
                                           std::vector<bool>& islanded)
 {

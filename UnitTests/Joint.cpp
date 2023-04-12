@@ -55,18 +55,18 @@ using namespace playrho::d2;
         return false;                                                                              \
     }
 #define DEFINE_INITVELOCITY                                                                        \
-    [[maybe_unused]] void InitVelocity(JointTester&, std::vector<BodyConstraint>&,                 \
+    [[maybe_unused]] void InitVelocity(JointTester&, const Span<BodyConstraint>&,                  \
                                        const StepConf&, const ConstraintSolverConf&)               \
     {                                                                                              \
     }
 #define DEFINE_SOLVEVELOCITY                                                                       \
-    [[maybe_unused]] bool SolveVelocity(JointTester&, std::vector<BodyConstraint>&,                \
+    [[maybe_unused]] bool SolveVelocity(JointTester&, const Span<BodyConstraint>&,                 \
                                         const StepConf&)                                           \
     {                                                                                              \
         return true;                                                                               \
     }
 #define DEFINE_SOLVEPOSITION                                                                       \
-    [[maybe_unused]] bool SolvePosition(const JointTester&, std::vector<BodyConstraint>&,          \
+    [[maybe_unused]] bool SolvePosition(const JointTester&, const Span<BodyConstraint>&,           \
                                         const ConstraintSolverConf&)                               \
     {                                                                                              \
         return true;                                                                               \

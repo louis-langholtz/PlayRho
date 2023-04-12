@@ -286,7 +286,7 @@ TEST(PrismaticJointConf, WithDynamicCirclesAndLimitEnabled)
         ASSERT_EQ(GetLinearUpperLimit(conf), 0_m);
     }
 
-    Step(world, 1_s);
+    EXPECT_NO_THROW(Step(world, 1_s));
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / Meter}), +1.0, 0.01);

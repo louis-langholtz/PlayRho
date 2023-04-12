@@ -356,7 +356,7 @@ TEST(WheelJointConf, InitVelocity)
 {
     auto conf = WheelJointConf{};
     std::vector<BodyConstraint> bodies;
-    EXPECT_NO_THROW(InitVelocity(conf, bodies, StepConf{}, ConstraintSolverConf{}));
+    EXPECT_NO_THROW(InitVelocity(conf, Span<BodyConstraint>(bodies), StepConf{}, ConstraintSolverConf{}));
     conf.bodyA = BodyID(0);
     conf.bodyB = BodyID(0);
     EXPECT_THROW(InitVelocity(conf, bodies, StepConf{}, ConstraintSolverConf{}), std::out_of_range);
