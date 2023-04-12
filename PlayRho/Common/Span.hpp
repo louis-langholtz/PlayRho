@@ -55,7 +55,7 @@ public:
     /// @brief Size type.
     using size_type = std::size_t;
 
-    Span() = default;
+    constexpr Span() noexcept = default;
 
     /// @brief Initializing constructor.
     constexpr Span(pointer array, size_type size) noexcept : m_array{array}, m_size{size} {}
@@ -68,7 +68,8 @@ public:
 
     /// @brief Initializing constructor.
     template <typename U, typename = std::enable_if_t<!std::is_array<U>::value>>
-    constexpr Span(U& value) noexcept : m_array{detail::Data(value)}, m_size{detail::Size(value)}
+    constexpr Span(U&& value) noexcept
+        : m_array{::playrho::data(std::forward<U>(value))}, m_size{::playrho::size(std::forward<U>(value))}
     {
     }
 
@@ -79,38 +80,19 @@ public:
     }
 
     /// @brief Gets the "begin" iterator value.
-    pointer begin() const noexcept
-    {
-        return m_array;
-    }
-
-    /// @brief Gets the "begin" iterator value.
-    const_pointer cbegin() const noexcept
+    constexpr pointer begin() const noexcept
     {
         return m_array;
     }
 
     /// @brief Gets the "end" iterator value.
-    pointer end() const noexcept
-    {
-        return m_array + m_size;
-    }
-
-    /// @brief Gets the "end" iterator value.
-    const_pointer cend() const noexcept
+    constexpr pointer end() const noexcept
     {
         return m_array + m_size;
     }
 
     /// @brief Accesses the indexed element.
-    data_type& operator[](size_type index) noexcept
-    {
-        assert(index < m_size);
-        return m_array[index];
-    }
-
-    /// @brief Accesses the indexed element.
-    const data_type& operator[](size_type index) const noexcept
+    constexpr data_type& operator[](size_type index) const noexcept
     {
         assert(index < m_size);
         return m_array[index];
@@ -123,7 +105,7 @@ public:
     }
 
     /// @brief Direct access to data.
-    pointer data() const noexcept
+    constexpr pointer data() const noexcept
     {
         return m_array;
     }
