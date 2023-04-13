@@ -27,11 +27,10 @@
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/propagate_const.hpp>
-
+#include <PlayRho/Common/PoolMemoryResource.hpp>
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>
-
 #include <PlayRho/Dynamics/BodyConf.hpp> // for GetDefaultBodyConf
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
@@ -157,6 +156,39 @@ public:
     /// @brief Impulses contact listener.
     using ImpulsesContactListener =
         std::function<void(ContactID, const ContactImpulsesList&, unsigned)>;
+
+    static pmr::PoolMemoryResource::Options GetContactsOptions();
+    static void SetContactsOptions(const pmr::PoolMemoryResource::Options& options);
+    static pmr::PoolMemoryResource::Stats GetContactsStats();
+
+    static pmr::PoolMemoryResource::Options GetContactKeysOptions();
+    static void SetContactKeysOptions(const pmr::PoolMemoryResource::Options& options);
+    static pmr::PoolMemoryResource::Stats GetContactKeysStats();
+
+    static pmr::PoolMemoryResource::Options GetBodyConstraintsOptions();
+    static void SetBodyConstraintsOptions(const pmr::PoolMemoryResource::Options& options);
+    static pmr::PoolMemoryResource::Stats GetBodyConstraintsStats();
+
+    static pmr::PoolMemoryResource::Options GetPositionConstraintsOptions();
+    static void SetPositionConstraintsOptions(const pmr::PoolMemoryResource::Options& options);
+    static pmr::PoolMemoryResource::Stats GetPositionConstraintsStats();
+
+    static pmr::PoolMemoryResource::Options GetVelocityConstraintsOptions();
+    static void SetVelocityConstraintsOptions(const pmr::PoolMemoryResource::Options& options);
+    static pmr::PoolMemoryResource::Stats GetVelocityConstraintsStats();
+
+    static pmr::PoolMemoryResource::Options GetBodyStackOptions();
+    static void SetBodyStackOptions(const pmr::PoolMemoryResource::Options& options);
+    static pmr::PoolMemoryResource::Stats GetBodyStackStats();
+
+    static pmr::PoolMemoryResource::Options GetIslandBodiesOptions();
+    static void SetIslandBodiesOptions(const pmr::PoolMemoryResource::Options& options);
+
+    static pmr::PoolMemoryResource::Options GetIslandContactsOptions();
+    static void SetIslandContactsOptions(const pmr::PoolMemoryResource::Options& options);
+
+    static pmr::PoolMemoryResource::Options GetIslandJointsOptions();
+    static void SetIslandJointsOptions(const pmr::PoolMemoryResource::Options& options);
 
     /// @name Special Member Functions
     /// Special member functions that are explicitly defined.

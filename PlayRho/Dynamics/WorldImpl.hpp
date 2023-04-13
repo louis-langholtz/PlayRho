@@ -28,13 +28,10 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Positive.hpp>
 #include <PlayRho/Common/ObjectPool.hpp>
-
 #include <PlayRho/Collision/DynamicTree.hpp>
 #include <PlayRho/Collision/MassData.hpp>
-
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/Filter.hpp>
-#include <PlayRho/Dynamics/Island.hpp>
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
@@ -43,6 +40,8 @@
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 #include <PlayRho/Dynamics/IslandStats.hpp>
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>
+#include <PlayRho/Common/PoolMemoryResource.hpp>
+#include <PlayRho/Common/ThreadLocalAllocator.hpp>
 
 #include <iterator>
 #include <vector>
@@ -74,8 +73,51 @@ public:
     /// @brief Bodies container type.
     using Bodies = std::vector<BodyID>;
 
+    struct UpstreamResource
+    {
+        pmr::memory_resource *operator()() const {
+            return GetUpstreamResource();
+        }
+    };
+
+    struct BodyStackOptions
+    {
+        pmr::PoolMemoryResource::Options operator()() const {
+            return GetBodyStackOptions();
+        }
+    };
+
+    struct ContactKeysOptions
+    {
+        pmr::PoolMemoryResource::Options operator()() const {
+            return GetContactKeysOptions();
+        }
+    };
+
+    struct ContactsOptions
+    {
+        pmr::PoolMemoryResource::Options operator()() const {
+            return GetContactsOptions();
+        }
+    };
+
+    template <class T, class Opts>
+    using Allocator = ThreadLocalAllocator<T, pmr::PoolMemoryResource, Opts, UpstreamResource>;
+
+    /// @brief Body stack allocator.
+    using BodyStackAllocator = Allocator<BodyID, BodyStackOptions>;
+
+    /// @brief Contacts allocator.
+    using ContactsAllocator = Allocator<KeyedContactPtr, ContactsOptions>;
+
+    /// @brief Contact keys allocator.
+    using ContactKeysAllocator = Allocator<ContactKey, ContactKeysOptions>;
+
     /// @brief Contacts container type.
-    using Contacts = std::vector<KeyedContactPtr>;
+    using Contacts = std::vector<KeyedContactPtr, ContactsAllocator>;
+
+    /// @brief Contact keys container.
+    using ContactKeys = std::vector<ContactKey, ContactKeysAllocator>;
 
     /// @brief Joints container type.
     /// @note Cannot be container of Joint instances since joints are polymorphic types.
@@ -109,6 +151,43 @@ public:
     using ImpulsesContactListener = std::function<void(ContactID, const ContactImpulsesList&, unsigned)>;
 
     struct ContactUpdateConf;
+    struct Island;
+
+    static pmr::memory_resource* GetUpstreamResource();
+    static pmr::memory_resource* SetUpstreamResource(pmr::memory_resource *resource);
+
+    static pmr::PoolMemoryResource::Options GetBodyStackOptions();
+    static void SetBodyStackOptions(const pmr::PoolMemoryResource::Options& options);
+    static pmr::PoolMemoryResource::Stats GetBodyStackStats();
+
+    static pmr::PoolMemoryResource::Options GetContactsOptions();
+    static void SetContactsOptions(const pmr::PoolMemoryResource::Options& options);
+    static pmr::PoolMemoryResource::Stats GetContactsStats();
+
+    static pmr::PoolMemoryResource::Options GetContactKeysOptions();
+    static void SetContactKeysOptions(const pmr::PoolMemoryResource::Options& options);
+    static pmr::PoolMemoryResource::Stats GetContactKeysStats();
+
+    static pmr::PoolMemoryResource::Options GetBodyConstraintsOptions();
+    static void SetBodyConstraintsOptions(const pmr::PoolMemoryResource::Options& options);
+    static pmr::PoolMemoryResource::Stats GetBodyConstraintsStats();
+
+    static pmr::PoolMemoryResource::Options GetPositionConstraintsOptions();
+    static void SetPositionConstraintsOptions(const pmr::PoolMemoryResource::Options& options);
+    static pmr::PoolMemoryResource::Stats GetPositionConstraintsStats();
+
+    static pmr::PoolMemoryResource::Options GetVelocityConstraintsOptions();
+    static void SetVelocityConstraintsOptions(const pmr::PoolMemoryResource::Options& options);
+    static pmr::PoolMemoryResource::Stats GetVelocityConstraintsStats();
+
+    static pmr::PoolMemoryResource::Options GetIslandBodiesOptions();
+    static void SetIslandBodiesOptions(const pmr::PoolMemoryResource::Options& options);
+
+    static pmr::PoolMemoryResource::Options GetIslandContactsOptions();
+    static void SetIslandContactsOptions(const pmr::PoolMemoryResource::Options& options);
+
+    static pmr::PoolMemoryResource::Options GetIslandJointsOptions();
+    static void SetIslandJointsOptions(const pmr::PoolMemoryResource::Options& options);
 
     /// @name Special Member Functions
     /// Special member functions that are explicitly defined.
@@ -554,7 +633,7 @@ private:
     /// @return Island solver results.
     ///
     IslandStats SolveRegIslandViaGS(const StepConf& conf, const Island& island);
-    
+
     /// @brief Adds to the island based off of a given "seed" body.
     /// @post Contacts are listed in the island in the order that bodies provide those contacts.
     /// @post Joints are listed the island in the order that bodies provide those joints.
@@ -562,23 +641,24 @@ private:
                      BodyCounter& remNumBodies,
                      ContactCounter& remNumContacts,
                      JointCounter& remNumJoints);
-    
+
     /// @brief Body stack.
-    using BodyStack = std::stack<BodyID, std::vector<BodyID>>;
-    
+    using BodyStack = std::vector<BodyID, BodyStackAllocator>;
+
     /// @brief Adds to the island.
     void AddToIsland(Island& island, BodyStack& stack,
                      BodyCounter& remNumBodies,
                      ContactCounter& remNumContacts,
                      JointCounter& remNumJoints);
-    
+
     /// @brief Adds contacts to the island.
-    void AddContactsToIsland(Island& island, BodyStack& stack, const Contacts& contacts,
+    void AddContactsToIsland(Island& island, BodyStack& stack,
+                             const std::vector<KeyedContactPtr>& contacts,
                              BodyID bodyID);
 
     /// @brief Adds joints to the island.
     void AddJointsToIsland(Island& island, BodyStack& stack, const BodyJoints& joints);
-    
+
     /// @brief Solves the step using successive time of impact (TOI) events.
     /// @details Used for continuous physics.
     /// @note This is intended to detect and prevent the tunneling that the faster Solve method
@@ -715,7 +795,7 @@ private:
     /// @note New contacts will all have overlapping AABBs.
     /// @post <code>GetProxies()</code> will return an empty container.
     /// @see GetProxies.
-    ContactCounter FindNewContacts(std::vector<ContactKey>&& contactKeys);
+    ContactCounter FindNewContacts(ContactKeys&& contactKeys);
 
     /// @brief Destroys the given contact and removes it from its container.
     /// @details This updates the contacts container, returns the memory to the allocator,
@@ -950,6 +1030,71 @@ inline void WorldImpl::SetPostSolveContactListener(ImpulsesContactListener liste
 static_assert(std::is_default_constructible_v<WorldImpl>);
 static_assert(std::is_copy_constructible_v<WorldImpl>);
 static_assert(std::is_move_constructible_v<WorldImpl>);
+
+/// @brief Definition of a self-contained constraint "island".
+/// @details A container of bodies contacts and joints relevant to handling world dynamics.
+/// @note This is an internal class.
+/// @note This data structure is 72-bytes large (on at least one 64-bit platform).
+struct WorldImpl::Island
+{
+    struct BodiesOptions
+    {
+        pmr::PoolMemoryResource::Options operator()() const
+        {
+            return GetIslandBodiesOptions();
+        }
+    };
+
+    struct ContactsOptions
+    {
+        pmr::PoolMemoryResource::Options operator()() const
+        {
+            return GetIslandContactsOptions();
+        }
+    };
+
+    struct JointsOptions
+    {
+        pmr::PoolMemoryResource::Options operator()() const
+        {
+            return GetIslandJointsOptions();
+        }
+    };
+
+    template <class T, class Opts>
+    using Allocator = ThreadLocalAllocator<T, pmr::PoolMemoryResource, Opts, UpstreamResource>;
+    using BodiesAllocator = Allocator<BodyID, BodiesOptions>;
+    using ContactsAllocator = Allocator<ContactID, ContactsOptions>;
+    using JointsAllocator = Allocator<JointID, JointsOptions>;
+
+    std::vector<BodyID, BodiesAllocator> bodies; ///< Container of body identifiers.
+    std::vector<ContactID, ContactsAllocator> contacts; ///< Container of contact identifiers.
+    std::vector<JointID, JointsAllocator> joints; ///< Container of joint identifiers.
+};
+
+/// @brief Reserves space ahead of time.
+/// @relatedalso Island
+void Reserve(WorldImpl::Island& island, BodyCounter bodies, ContactCounter contacts, JointCounter joints);
+
+/// @brief Clears the island containers.
+/// @relatedalso Island
+void Clear(WorldImpl::Island& island) noexcept;
+
+/// @brief Sorts the island containers.
+/// @relatedalso WorldImpl::Island
+void Sort(WorldImpl::Island& island);
+
+/// @brief Counts the number of occurrences of the given entry in the given island.
+/// @relatedalso WorldImpl::Island
+std::size_t Count(const WorldImpl::Island& island, BodyID entry);
+
+/// @brief Counts the number of occurrences of the given entry in the given island.
+/// @relatedalso WorldImpl::Island
+std::size_t Count(const WorldImpl::Island& island, ContactID entry);
+
+/// @brief Counts the number of occurrences of the given entry in the given island.
+/// @relatedalso WorldImpl::Island
+std::size_t Count(const WorldImpl::Island& island, JointID entry);
 
 } // namespace d2
 } // namespace playrho

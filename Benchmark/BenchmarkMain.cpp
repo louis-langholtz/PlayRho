@@ -62,11 +62,12 @@
 #include <PlayRho/Dynamics/WorldBody.hpp> // for GetAwakeCount
 #include <PlayRho/Dynamics/WorldShape.hpp> // for CreateShape
 #include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
-#include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
-
+#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
+#include <PlayRho/Dynamics/Contacts/PositionConstraint.hpp>
+#include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/DynamicTree.hpp>
@@ -2734,7 +2735,6 @@ static void TumblerAddSquaresForStepsPlayRho(benchmark::State& state, int additi
     for (auto _ : state) {
         state.PauseTiming();
         TumblerPlayRho tumbler;
-        std::this_thread::sleep_for(2000ms);
         for (auto i = 0; i < squareAddingSteps; ++i) {
             tumbler.Step();
             tumbler.AddSquare();
@@ -3056,6 +3056,46 @@ int main(int argc, char** argv)
     ::benchmark::Initialize(&argc, argv);
     if (::benchmark::ReportUnrecognizedArguments(argc, argv))
         return 1;
+
+    playrho::pmr::PoolMemoryResource::Options options;
+    options.reserveBuffers = 1u;
+    options.limitBuffers = 1u;
+    options.releasable = false;
+
+    constexpr auto BodyStackSize = 16384u;
+    options.reserveBytes = BodyStackSize * sizeof(playrho::BodyID);
+    playrho::d2::World::SetBodyStackOptions(options);
+
+    constexpr auto NumContactKeys = 65536u;
+    options.reserveBytes = NumContactKeys * sizeof(playrho::ContactKey);
+    playrho::d2::World::SetContactKeysOptions(options);
+
+    constexpr auto NumBodyConstraints = 128u * 1024u;
+    options.reserveBytes = NumBodyConstraints * sizeof(playrho::d2::BodyConstraint);
+    playrho::d2::World::SetBodyConstraintsOptions(options);
+
+    constexpr auto NumLocSpeedConstraints = 16u * 1024u;
+    options.reserveBytes = NumLocSpeedConstraints * sizeof(playrho::d2::PositionConstraint);
+    playrho::d2::World::SetPositionConstraintsOptions(options);
+    options.reserveBytes = NumLocSpeedConstraints * sizeof(playrho::d2::VelocityConstraint);
+    playrho::d2::World::SetVelocityConstraintsOptions(options);
+
+    constexpr auto NumIslandBodies = 16u * 1024u;
+    options.reserveBytes = NumIslandBodies * sizeof(playrho::BodyID);
+    playrho::d2::World::SetIslandBodiesOptions(options);
+
+    constexpr auto NumIslandContacts = 64u * 1024u;
+    options.reserveBytes = NumIslandContacts * sizeof(playrho::ContactID);
+    playrho::d2::World::SetIslandContactsOptions(options);
+
+    constexpr auto NumIslandJoints = 64u;
+    options.reserveBytes = NumIslandJoints * sizeof(playrho::JointID);
+    playrho::d2::World::SetIslandJointsOptions(options);
+
+    options.reserveBytes = playrho::d2::WorldConf::DefaultContactCapacity * 2u * sizeof(playrho::KeyedContactPtr);
+    options.reserveBuffers = 2u;
+    options.limitBuffers = playrho::pmr::PoolMemoryResource::Options{}.limitBuffers;
+    playrho::d2::World::SetContactsOptions(options);
 
     std::srand(
         static_cast<unsigned>(std::time(0))); // use current time as seed for random generator

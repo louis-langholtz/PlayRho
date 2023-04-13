@@ -208,7 +208,6 @@ struct Vector
     
     /// @brief Elements.
     /// @details Array of N elements unless N is 0 in which case this is an array of 1 element.
-    /// @warning Don't access this directly!
     /// @warning Data is not initialized on default construction. This is intentional
     ///   to avoid any performance overhead that default initialization might incur.
     value_type elements[N? N: 1]; // Never zero to avoid needing C++ extension capability.

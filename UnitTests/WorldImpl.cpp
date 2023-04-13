@@ -60,6 +60,7 @@
 #include <PlayRho/Dynamics/Joints/GearJointConf.hpp>
 
 #include <chrono>
+#include <exception> // for std::set_terminate
 #include <type_traits>
 
 using namespace playrho;
@@ -1033,4 +1034,265 @@ TEST(WorldImpl, SetJointThrowsWithOutOfRangeBodyID)
                  std::out_of_range);
     EXPECT_THROW(world.SetJoint(j0, Joint(FrictionJointConf{}.UseBodyA(b0).UseBodyB(b1))),
                  std::out_of_range);
+}
+
+TEST(WorldImplDeathTest, SetUpstreamResource)
+{
+    EXPECT_EXIT({
+        auto old = WorldImpl::SetUpstreamResource(pmr::null_memory_resource());
+        if (old != pmr::new_delete_resource()) {
+            std::cerr << "unexpected old resource after set\n";
+        }
+        if (WorldImpl::GetUpstreamResource() != pmr::null_memory_resource()) {
+            std::cerr << "unexpected get_default_resource() return value\n";
+        }
+        old = WorldImpl::SetUpstreamResource(nullptr);
+        if (old != pmr::null_memory_resource()) {
+            std::cerr << "unexpected old resource after reset\n";
+        }
+        std::exit(WorldImpl::GetUpstreamResource() != pmr::new_delete_resource());
+    }, testing::ExitedWithCode(0), "");
+}
+
+TEST(WorldImplIsland, BodiesBytesSize)
+{
+    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
+    // builds and to report actual size rather than just reporting that expected size is wrong.
+    const auto island = WorldImpl::Island{};
+#if defined(_WIN64)
+#if !defined(NDEBUG)
+    EXPECT_EQ(sizeof(island.bodies), std::size_t(32));
+#else
+    EXPECT_EQ(sizeof(island.bodies), std::size_t(24));
+#endif
+#elif defined(_WIN32)
+#if !defined(NDEBUG)
+    EXPECT_EQ(sizeof(island.bodies), std::size_t(16));
+#else
+    EXPECT_EQ(sizeof(island.bodies), std::size_t(12));
+#endif
+#else
+    EXPECT_EQ(sizeof(island.bodies), std::size_t(24));
+#endif
+}
+
+TEST(WorldImplIsland, ContactsBytesSize)
+{
+    const auto island = WorldImpl::Island{};
+#if defined(_WIN64)
+#if !defined(NDEBUG)
+    EXPECT_EQ(sizeof(island.contacts), std::size_t(32));
+#else
+    EXPECT_EQ(sizeof(island.contacts), std::size_t(24));
+#endif
+#elif defined(_WIN32)
+#if !defined(NDEBUG)
+    EXPECT_EQ(sizeof(island.contacts), std::size_t(16));
+#else
+    EXPECT_EQ(sizeof(island.contacts), std::size_t(12));
+#endif
+#else
+    EXPECT_EQ(sizeof(island.contacts), std::size_t(24));
+#endif
+}
+
+TEST(WorldImplIsland, JointsBytesSize)
+{
+    const auto island = WorldImpl::Island{};
+#if defined(_WIN64)
+#if !defined(NDEBUG)
+    EXPECT_EQ(sizeof(island.joints), std::size_t(32));
+#else
+    EXPECT_EQ(sizeof(island.joints), std::size_t(24));
+#endif
+#elif defined(_WIN32)
+#if !defined(NDEBUG)
+    EXPECT_EQ(sizeof(island.joints), std::size_t(16));
+#else
+    EXPECT_EQ(sizeof(island.joints), std::size_t(12));
+#endif
+#else
+    EXPECT_EQ(sizeof(island.joints), std::size_t(24));
+#endif
+}
+
+TEST(WorldImplIsland, ByteSize)
+{
+#if defined(_WIN64)
+#if !defined(NDEBUG)
+    EXPECT_EQ(sizeof(WorldImpl::Island), std::size_t(96));
+#else
+    EXPECT_EQ(sizeof(WorldImpl::Island), std::size_t(72));
+#endif
+#elif defined(_WIN32)
+#if !defined(NDEBUG)
+    EXPECT_EQ(sizeof(WorldImpl::Island), std::size_t(48));
+#else
+    EXPECT_EQ(sizeof(WorldImpl::Island), std::size_t(36));
+#endif
+#else
+    EXPECT_EQ(sizeof(WorldImpl::Island), std::size_t(72));
+#endif
+}
+
+constexpr auto foo_reserve_size = std::uint16_t{10u};
+
+static WorldImpl::Island foo()
+{
+    WorldImpl::Island island;
+    Reserve(island, foo_reserve_size, foo_reserve_size, foo_reserve_size);
+    return island;
+}
+
+TEST(WorldImplIsland, DefaultConstructor)
+{
+    WorldImpl::Island island;
+    EXPECT_EQ(island.bodies.size(), 0u);
+    EXPECT_EQ(island.contacts.size(), 0u);
+    EXPECT_EQ(island.joints.size(), 0u);
+}
+
+TEST(WorldImplIsland_DeathTest, ReserveExits)
+{
+    const auto bodyCapacity = 2u;
+    const auto contactCapacity = 3u;
+    const auto jointCapacity = 4u;
+    EXPECT_EXIT({
+        std::set_terminate([](){
+            const auto ex = std::current_exception();
+            try {
+                if (ex) {
+                    std::rethrow_exception(ex);
+                }
+                std::cerr << "terminate called\n";
+            }
+            catch (const std::bad_array_new_length& ex) {
+                std::cerr << "Unhandled unexpected bad_array_new_length: " << ex.what();
+            }
+            catch (const std::length_error& ex) {
+                std::cerr << "Unhandled unexpected length_error: " << ex.what();
+            }
+            catch (const std::invalid_argument& ex) {
+                std::cerr << "Unhandled unexpected invalid_argument: " << ex.what();
+            }
+            catch (const std::logic_error& ex) {
+                std::cerr << "Unhandled unexpected logic_error: " << ex.what();
+            }
+            catch (...) {
+                std::cerr << "Unhandled unexpected exception";
+            }
+            std::cerr << std::flush;
+            std::abort();
+        });
+        {
+            WorldImpl::Island island;
+            Reserve(island, bodyCapacity, contactCapacity, jointCapacity);
+        }
+        std::exit(0);
+    }, testing::ExitedWithCode(0), "");
+}
+
+TEST(WorldImplIsland, Reserve)
+{
+    const auto bodyCapacity = 2u;
+    const auto contactCapacity = 3u;
+    const auto jointCapacity = 4u;
+    try {
+        WorldImpl::Island island;
+        Reserve(island, bodyCapacity, contactCapacity, jointCapacity);
+        EXPECT_GE(island.bodies.capacity(), bodyCapacity);
+        EXPECT_GE(island.contacts.capacity(), contactCapacity);
+        EXPECT_GE(island.joints.capacity(), jointCapacity);
+    }
+    catch (const std::bad_array_new_length& ex) {
+        FAIL() << "unexpected bad_array_new_length: " << ex.what();
+    }
+    catch (const std::length_error& ex) {
+        FAIL() << "unexpected length_error: " << ex.what();
+    }
+    catch (const std::invalid_argument& ex) {
+        FAIL() << "unexpected invalid_argument: " << ex.what();
+    }
+    catch (const std::logic_error& ex) {
+        FAIL() << "unexpected logic_error: " << ex.what();
+    }
+    catch (...) {
+        FAIL() << "unexpected exception";
+    }
+}
+
+TEST(WorldImplIsland, Clear)
+{
+    WorldImpl::Island island;
+
+    island.bodies.push_back(InvalidBodyID);
+    ASSERT_EQ(island.bodies.size(), 1u);
+    ASSERT_GE(island.bodies.capacity(), 1u);
+    island.contacts.push_back(InvalidContactID);
+    ASSERT_EQ(island.contacts.size(), 1u);
+    ASSERT_GE(island.contacts.capacity(), 1u);
+    island.joints.push_back(InvalidJointID);
+    ASSERT_EQ(island.joints.size(), 1u);
+    ASSERT_GE(island.joints.capacity(), 1u);
+
+    EXPECT_NO_THROW(Clear(island));
+    EXPECT_EQ(island.bodies.size(), 0u);
+    EXPECT_GE(island.bodies.capacity(), 1u);
+    EXPECT_EQ(island.contacts.size(), 0u);
+    EXPECT_GE(island.contacts.capacity(), 1u);
+    EXPECT_EQ(island.joints.size(), 0u);
+    EXPECT_GE(island.joints.capacity(), 1u);
+}
+
+TEST(WorldImplIsland, IsReturnableByValue)
+{
+    // This should be possible due to C++ copy elision (regardless of move construction or copy
+    // construction support). For information on copy elision see:
+    //   http://en.cppreference.com/w/cpp/language/copy_elision
+    {
+        const auto island = foo();
+        EXPECT_GE(island.bodies.capacity(), foo_reserve_size);
+        EXPECT_GE(island.contacts.capacity(), foo_reserve_size);
+        EXPECT_GE(island.joints.capacity(), foo_reserve_size);
+    }
+}
+
+TEST(WorldImplIsland, Count)
+{
+    auto island = WorldImpl::Island();
+    Reserve(island, 4, 4, 4);
+    EXPECT_EQ(Count(island, InvalidBodyID), std::size_t(0));
+    EXPECT_EQ(Count(island, InvalidContactID), std::size_t(0));
+    EXPECT_EQ(Count(island, InvalidJointID), std::size_t(0));
+}
+
+TEST(WorldImplIsland, Sort)
+{
+    auto island = WorldImpl::Island();
+    island.bodies.push_back(BodyID(3u));
+    island.bodies.push_back(BodyID(8u));
+    island.bodies.push_back(BodyID(0u));
+    island.contacts.push_back(ContactID(1u));
+    island.contacts.push_back(ContactID(9u));
+    island.contacts.push_back(ContactID(2u));
+    island.contacts.push_back(ContactID(8u));
+    island.contacts.push_back(ContactID(3u));
+    island.contacts.push_back(ContactID(0u));
+    island.joints.push_back(JointID(3u));
+    island.joints.push_back(JointID(2u));
+    island.joints.push_back(JointID(4u));
+    island.joints.push_back(JointID(0u));
+    ASSERT_EQ(size(island.bodies), 3u);
+    ASSERT_EQ(size(island.contacts), 6u);
+    ASSERT_EQ(size(island.joints), 4u);
+    ASSERT_EQ(island.bodies[0], BodyID(3u));
+    ASSERT_EQ(island.contacts[0], ContactID(1u));
+    ASSERT_EQ(island.joints[0], JointID(3u));
+    EXPECT_NO_THROW(Sort(island));
+    EXPECT_EQ(island.bodies[0], BodyID(0u));
+    EXPECT_EQ(island.contacts[0], ContactID(0u));
+    EXPECT_EQ(island.joints[0], JointID(0u));
+    EXPECT_EQ(island.joints[1], JointID(2u));
+    EXPECT_EQ(island.joints[2], JointID(3u));
+    EXPECT_EQ(island.joints[3], JointID(4u));
 }

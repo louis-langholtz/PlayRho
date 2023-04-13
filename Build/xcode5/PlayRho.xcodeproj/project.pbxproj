@@ -46,7 +46,6 @@
 		472E301E1DBA98BC00DA821D /* VertexSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472E301D1DBA98BC00DA821D /* VertexSet.cpp */; };
 		47315E041E28A66100DDA856 /* RevoluteJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47315E031E28A66100DDA856 /* RevoluteJoint.cpp */; };
 		4731DDFA1DC7C9B000E7F931 /* Simplex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DDF91DC7C9B000E7F931 /* Simplex.cpp */; };
-		4731DDFC1DC8FBEE00E7F931 /* Island.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DDFB1DC8FBEE00E7F931 /* Island.cpp */; };
 		4731DE1E1DDD0B8700E7F931 /* DynamicTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE1D1DDD0B8700E7F931 /* DynamicTree.cpp */; };
 		4731DE231DDF83A600E7F931 /* RayCastOutput.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE201DDF83A500E7F931 /* RayCastOutput.hpp */; };
 		4731DE291DDF84A900E7F931 /* RayCastInput.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE261DDF84A900E7F931 /* RayCastInput.hpp */; };
@@ -376,8 +375,6 @@
 		80BB89A8141C3E5900F1753A /* StackAllocator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8949141C3E5900F1753A /* StackAllocator.hpp */; };
 		80BB89AB141C3E5900F1753A /* Body.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB894D141C3E5900F1753A /* Body.cpp */; };
 		80BB89AC141C3E5900F1753A /* Body.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB894E141C3E5900F1753A /* Body.hpp */; };
-		80BB89B1141C3E5900F1753A /* Island.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8953141C3E5900F1753A /* Island.cpp */; };
-		80BB89B2141C3E5900F1753A /* Island.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8954141C3E5900F1753A /* Island.hpp */; };
 		80BB89B3141C3E5900F1753A /* StepConf.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8955141C3E5900F1753A /* StepConf.hpp */; };
 		80BB89B4141C3E5900F1753A /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8956141C3E5900F1753A /* World.cpp */; };
 		80BB89B5141C3E5900F1753A /* World.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8957141C3E5900F1753A /* World.hpp */; };
@@ -527,7 +524,6 @@
 		472E301D1DBA98BC00DA821D /* VertexSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexSet.cpp; sourceTree = "<group>"; };
 		47315E031E28A66100DDA856 /* RevoluteJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RevoluteJoint.cpp; sourceTree = "<group>"; };
 		4731DDF91DC7C9B000E7F931 /* Simplex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Simplex.cpp; sourceTree = "<group>"; };
-		4731DDFB1DC8FBEE00E7F931 /* Island.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Island.cpp; sourceTree = "<group>"; };
 		4731DE1D1DDD0B8700E7F931 /* DynamicTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicTree.cpp; sourceTree = "<group>"; };
 		4731DE201DDF83A500E7F931 /* RayCastOutput.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RayCastOutput.hpp; sourceTree = "<group>"; };
 		4731DE261DDF84A900E7F931 /* RayCastInput.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RayCastInput.hpp; sourceTree = "<group>"; };
@@ -813,8 +809,6 @@
 		80BB8949141C3E5900F1753A /* StackAllocator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StackAllocator.hpp; sourceTree = "<group>"; };
 		80BB894D141C3E5900F1753A /* Body.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = Body.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		80BB894E141C3E5900F1753A /* Body.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 2; path = Body.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		80BB8953141C3E5900F1753A /* Island.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Island.cpp; sourceTree = "<group>"; };
-		80BB8954141C3E5900F1753A /* Island.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Island.hpp; sourceTree = "<group>"; };
 		80BB8955141C3E5900F1753A /* StepConf.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StepConf.hpp; sourceTree = "<group>"; };
 		80BB8956141C3E5900F1753A /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
 		80BB8957141C3E5900F1753A /* World.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = World.hpp; sourceTree = "<group>"; };
@@ -884,6 +878,7 @@
 		996B7B8A2A6DF25200A8207F /* PoolMemoryResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PoolMemoryResource.cpp; sourceTree = "<group>"; };
 		996B7B8E2A6EED6200A8207F /* polymorphic_allocator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = polymorphic_allocator.cpp; sourceTree = "<group>"; };
 		9980D10929C8ACB700007B35 /* WorldConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WorldConf.cpp; sourceTree = "<group>"; };
+		99940BC229F0576000A77461 /* ThreadLocalAllocator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ThreadLocalAllocator.cpp; sourceTree = "<group>"; };
 		99CF862E29B9087700D9D112 /* BaseShapeConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BaseShapeConf.cpp; sourceTree = "<group>"; };
 		99CF863029C251CB00D9D112 /* ConstraintSolverConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ConstraintSolverConf.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -981,7 +976,6 @@
 				47C85D231F112E2700F70C56 /* GrowableStack.cpp */,
 				474BC3FB1D41278800447DCD /* IndexPair.cpp */,
 				472E24651F82C4EA0051E192 /* Interval.cpp */,
-				4731DDFB1DC8FBEE00E7F931 /* Island.cpp */,
 				475A945C1D959537000CA9A8 /* Joint.cpp */,
 				474BC3FC1D41278800447DCD /* main.cpp */,
 				474BC3FD1D41278800447DCD /* Manifold.cpp */,
@@ -1013,6 +1007,7 @@
 				47250DA01FEAD20C00FDDE1C /* StepStats.cpp */,
 				474BC4021D41278800447DCD /* Sweep.cpp */,
 				47327E741E9F1E2A0048FCD8 /* TargetJoint.cpp */,
+				99940BC229F0576000A77461 /* ThreadLocalAllocator.cpp */,
 				474BC4031D41278800447DCD /* TimeOfImpact.cpp */,
 				996B7B892A6DF25200A8207F /* ThreadLocalAllocator.cpp */,
 				474BC4041D41278800447DCD /* Transformation.cpp */,
@@ -1227,8 +1222,6 @@
 				47363E8420027FE2005912B1 /* ContactImpulsesList.cpp */,
 				47363E8520027FE2005912B1 /* ContactImpulsesList.hpp */,
 				470F94B11EC4CB6C00AA3C82 /* Filter.hpp */,
-				80BB8953141C3E5900F1753A /* Island.cpp */,
-				80BB8954141C3E5900F1753A /* Island.hpp */,
 				47B490D5201E6C3000AB07A0 /* IslandStats.hpp */,
 				80BB896D141C3E5900F1753A /* Joints */,
 				471E7EAF1F34E34000DFF626 /* MovementConf.cpp */,
@@ -1558,7 +1551,6 @@
 				4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */,
 				47C96C551FA67D1F00A6C587 /* Acceleration.hpp in Headers */,
 				47D61F741F1F148500E702BD /* SilkscreenTtfData.h in Headers */,
-				80BB89B2141C3E5900F1753A /* Island.hpp in Headers */,
 				47327E801EA585790048FCD8 /* Defines.hpp in Headers */,
 				4787D6C71F2EA1DB008C115E /* FrictionJointConf.hpp in Headers */,
 				470F9B3D1EE63515007EF7B6 /* InvalidArgument.hpp in Headers */,
@@ -1796,7 +1788,6 @@
 				99CF862F29B9087700D9D112 /* BaseShapeConf.cpp in Sources */,
 				475A94541D930503000CA9A8 /* BlockAllocator.cpp in Sources */,
 				47B58F601F5B791500354C34 /* FlagGuard.cpp in Sources */,
-				4731DDFC1DC8FBEE00E7F931 /* Island.cpp in Sources */,
 				474BC4341D413DC200447DCD /* Manifold.cpp in Sources */,
 				475A945B1D9593A4000CA9A8 /* Shape.cpp in Sources */,
 				470ADAD92558C52300EEE99D /* WorldJoint.cpp in Sources */,
@@ -2002,7 +1993,6 @@
 				47E841721DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */,
 				4731DE641DEF841600E7F931 /* SeparationScenario.cpp in Sources */,
 				47578BE41D886FED0078CD40 /* WorldManifold.cpp in Sources */,
-				80BB89B1141C3E5900F1753A /* Island.cpp in Sources */,
 				479132FF26A5344B0011707B /* ToiConf.cpp in Sources */,
 				47D6D59E2672B5CA00AF32B4 /* DistanceConf.cpp in Sources */,
 				47640887251F11630090F711 /* WorldImplJoint.cpp in Sources */,
@@ -2074,15 +2064,14 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				HEADER_SEARCH_PATHS = (
 					/opt/homebrew/opt/boost/include,
-					/usr/local/boost_1_75_0,
-					/usr/local/include,
 					/opt/homebrew/opt/googletest/include,
+					/usr/local/include,
 					../..,
 				);
 				LIBRARY_SEARCH_PATHS = (
-					/usr/local/Cellar/llvm/12.0.0_1/Toolchains/LLVM12.0.0.xctoolchain/usr/lib,
-					/usr/local/lib,
+					/opt/homebrew/opt/boost/lib,
 					/opt/homebrew/opt/googletest/lib,
+					/usr/local/lib,
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "-lgtest";
@@ -2095,14 +2084,14 @@
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					/opt/homebrew/opt/boost/include,
-					/usr/local/boost_1_75_0,
-					/usr/local/include,
 					/opt/homebrew/opt/googletest/include,
+					/usr/local/include,
 					../..,
 				);
 				LIBRARY_SEARCH_PATHS = (
-					/usr/local/lib,
+					/opt/homebrew/opt/boost/lib,
 					/opt/homebrew/opt/googletest/lib,
+					/usr/local/lib,
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-lgtest";
@@ -2276,7 +2265,6 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
-					"_LIBCPP_DEBUG=1",
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
@@ -2305,14 +2293,10 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_GENERATE_MAP_FILE = YES;
-				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/llvm/12.0.0_1/Toolchains/LLVM12.0.0.xctoolchain/usr/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CPLUSPLUSFLAGS = (
-					"-nostdinc++",
-					"-I/usr/local/Cellar/llvm/12.0.0_1/Toolchains/LLVM12.0.0.xctoolchain/usr/include/c++/v1",
-					"$(OTHER_CFLAGS)",
-				);
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				SDKROOT = macosx;
 				USE_HEADERMAP = NO;
 			};
@@ -2382,7 +2366,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_GENERATE_MAP_FILE = YES;
 				LLVM_LTO = NO;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				SDKROOT = macosx;

@@ -32,6 +32,126 @@
 namespace playrho {
 namespace d2 {
 
+pmr::PoolMemoryResource::Options World::GetContactsOptions()
+{
+    return WorldImpl::GetContactsOptions();
+}
+
+void World::SetContactsOptions(const pmr::PoolMemoryResource::Options& options)
+{
+    WorldImpl::SetContactsOptions(options);
+}
+
+pmr::PoolMemoryResource::Stats World::GetContactsStats()
+{
+    return WorldImpl::GetContactsStats();
+}
+
+pmr::PoolMemoryResource::Options World::GetContactKeysOptions()
+{
+    return WorldImpl::GetContactKeysOptions();
+}
+
+void World::SetContactKeysOptions(const pmr::PoolMemoryResource::Options& options)
+{
+    WorldImpl::SetContactKeysOptions(options);
+}
+
+pmr::PoolMemoryResource::Stats World::GetContactKeysStats()
+{
+    return WorldImpl::GetContactKeysStats();
+}
+
+pmr::PoolMemoryResource::Options World::GetBodyConstraintsOptions()
+{
+    return WorldImpl::GetBodyConstraintsOptions();
+}
+
+void World::SetBodyConstraintsOptions(const pmr::PoolMemoryResource::Options& options)
+{
+    WorldImpl::SetBodyConstraintsOptions(options);
+}
+
+pmr::PoolMemoryResource::Stats World::GetBodyConstraintsStats()
+{
+    return WorldImpl::GetBodyConstraintsStats();
+}
+
+pmr::PoolMemoryResource::Options World::GetPositionConstraintsOptions()
+{
+    return WorldImpl::GetPositionConstraintsOptions();
+}
+
+void World::SetPositionConstraintsOptions(const pmr::PoolMemoryResource::Options& options)
+{
+    WorldImpl::SetPositionConstraintsOptions(options);
+}
+
+pmr::PoolMemoryResource::Stats World::GetPositionConstraintsStats()
+{
+    return WorldImpl::GetPositionConstraintsStats();
+}
+
+pmr::PoolMemoryResource::Options World::GetVelocityConstraintsOptions()
+{
+    return WorldImpl::GetVelocityConstraintsOptions();
+}
+
+void World::SetVelocityConstraintsOptions(const pmr::PoolMemoryResource::Options& options)
+{
+    WorldImpl::SetVelocityConstraintsOptions(options);
+}
+
+pmr::PoolMemoryResource::Stats World::GetVelocityConstraintsStats()
+{
+    return WorldImpl::GetVelocityConstraintsStats();
+}
+
+pmr::PoolMemoryResource::Options World::GetBodyStackOptions()
+{
+    return WorldImpl::GetBodyStackOptions();
+}
+
+void World::SetBodyStackOptions(const pmr::PoolMemoryResource::Options& options)
+{
+    WorldImpl::SetBodyStackOptions(options);
+}
+
+pmr::PoolMemoryResource::Stats World::GetBodyStackStats()
+{
+    return WorldImpl::GetBodyStackStats();
+}
+
+pmr::PoolMemoryResource::Options World::GetIslandBodiesOptions()
+{
+    return WorldImpl::GetIslandBodiesOptions();
+}
+
+void World::SetIslandBodiesOptions(const pmr::PoolMemoryResource::Options& options)
+{
+    WorldImpl::SetIslandBodiesOptions(options);
+}
+
+pmr::PoolMemoryResource::Options World::GetIslandContactsOptions()
+{
+    return WorldImpl::GetIslandContactsOptions();
+}
+
+void World::SetIslandContactsOptions(const pmr::PoolMemoryResource::Options& options)
+{
+    WorldImpl::SetIslandContactsOptions(options);
+}
+
+pmr::PoolMemoryResource::Options World::GetIslandJointsOptions()
+{
+    return WorldImpl::GetIslandJointsOptions();
+}
+
+void World::SetIslandJointsOptions(const pmr::PoolMemoryResource::Options& options)
+{
+    WorldImpl::SetIslandJointsOptions(options);
+}
+
 World::World(const WorldConf& def): m_impl{CreateWorldImpl(def)}
 {
 }

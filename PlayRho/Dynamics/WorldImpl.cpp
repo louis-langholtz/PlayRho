@@ -24,7 +24,6 @@
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Dynamics/Island.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 
@@ -61,6 +60,7 @@
 #include <PlayRho/Common/WrongState.hpp>
 
 #include <algorithm>
+#include <atomic>
 #include <new>
 #include <functional>
 #include <type_traits>
@@ -68,10 +68,6 @@
 #include <memory>
 #include <set>
 #include <vector>
-
-#ifdef DO_PAR_UNSEQ
-#include <atomic>
-#endif
 
 //#define DO_THREADED
 #if defined(DO_THREADED)
@@ -94,14 +90,42 @@ namespace d2 {
 
 using playrho::size;
 
+struct BodyConstraintsOptions
+{
+    pmr::PoolMemoryResource::Options operator()() const {
+        return WorldImpl::GetBodyConstraintsOptions();
+    }
+};
+
+struct PositionConstraintsOptions
+{
+    pmr::PoolMemoryResource::Options operator()() const {
+        return WorldImpl::GetPositionConstraintsOptions();
+    }
+};
+
+struct VelocityConstraintsOptions
+{
+    pmr::PoolMemoryResource::Options operator()() const {
+        return WorldImpl::GetVelocityConstraintsOptions();
+    }
+};
+
+using BodyConstraintsAllocator = ThreadLocalAllocator<BodyConstraint,
+    pmr::PoolMemoryResource, BodyConstraintsOptions, WorldImpl::UpstreamResource>;
+using PositionConstraintsAllocator = ThreadLocalAllocator<PositionConstraint,
+    pmr::PoolMemoryResource, PositionConstraintsOptions, WorldImpl::UpstreamResource>;
+using VelocityConstraintsAllocator = ThreadLocalAllocator<VelocityConstraint,
+    pmr::PoolMemoryResource, VelocityConstraintsOptions, WorldImpl::UpstreamResource>;
+
 /// @brief Collection of body constraints.
-using BodyConstraints = std::vector<BodyConstraint>;
+using BodyConstraints = std::vector<BodyConstraint, BodyConstraintsAllocator>;
 
 /// @brief Collection of position constraints.
-using PositionConstraints = std::vector<PositionConstraint>;
+using PositionConstraints = std::vector<PositionConstraint, PositionConstraintsAllocator>;
 
 /// @brief Collection of velocity constraints.
-using VelocityConstraints = std::vector<VelocityConstraint>;
+using VelocityConstraints = std::vector<VelocityConstraint, VelocityConstraintsAllocator>;
 
 /// @brief The contact updating configuration.
 struct WorldImpl::ContactUpdateConf
@@ -358,7 +382,7 @@ inline Time UpdateUnderActiveTimes(const Span<const BodyID>& bodies,
 
 inline BodyCounter Sleepem(const Span<const BodyID>& bodies,
                            ObjectPool<Body>& bodyBuffer,
-                           ObjectPool<WorldImpl::Contacts>& bodyContacts,
+                           ObjectPool<std::vector<KeyedContactPtr>>& bodyContacts,
                            ObjectPool<Contact>& contactBuffer)
 {
     auto unawoken = BodyCounter{0};
@@ -523,8 +547,8 @@ auto CreateProxies(DynamicTree& tree,
     return childCount;
 }
 
-template <typename Element, typename Value>
-auto FindTypeValue(const std::vector<Element>& container, const Value& value)
+template <typename Element, typename Value, typename Alloc = std::allocator<Element>>
+auto FindTypeValue(const std::vector<Element, Alloc>& container, const Value& value)
 {
     const auto last = end(container);
     auto it = std::find_if(begin(container), last, [value](const auto& elem) {
@@ -633,7 +657,7 @@ GetOldAndNewShapeIDs(const Body& oldBody, const Body& newBody)
 }
 
 template <class T, class U>
-void ResizeAndReset(std::vector<T>& vector, typename std::vector<T>::size_type newSize, const U& newValue)
+void ResizeAndReset(std::vector<T>& vector, std::size_t newSize, const U& newValue)
 {
     std::fill(begin(vector),
               begin(vector) + ToSigned(std::min(size(vector), newSize)),
@@ -643,9 +667,8 @@ void ResizeAndReset(std::vector<T>& vector, typename std::vector<T>::size_type n
 
 /// @brief Removes <em>unspeedables</em> from the is <em>is-in-island</em> state.
 WorldImpl::Bodies::size_type
-RemoveUnspeedablesFromIslanded(const Span<const BodyID>& bodies,
-                                          const ObjectPool<Body>& buffer,
-                                          std::vector<bool>& islanded)
+RemoveUnspeedablesFromIslanded(const Span<const BodyID>& bodies, const ObjectPool<Body>& buffer,
+                               std::vector<bool>& islanded)
 {
     // Allow static bodies to participate in other islands.
     auto numRemoved = WorldImpl::Bodies::size_type{0};
@@ -699,11 +722,11 @@ ContactToiData GetSoonestContact(const WorldImpl::Contacts& contacts,
     return ContactToiData{found, minToi, count};
 }
 
-auto FindContactKeys(const DynamicTree& tree, WorldImpl::Proxies&& proxies) -> std::vector<ContactKey>
+auto FindContactKeys(const DynamicTree& tree, WorldImpl::Proxies&& proxies) -> WorldImpl::ContactKeys
 {
-    static constexpr auto DefaultReserveSize = 512u;
-    std::vector<ContactKey> proxyKeys;
-    proxyKeys.reserve(DefaultReserveSize);
+    WorldImpl::ContactKeys proxyKeys;
+    const auto options = WorldImpl::GetContactKeysOptions();
+    proxyKeys.reserve(options.reserveBytes / sizeof(WorldImpl::ContactKeys::value_type));
 
     // Accumalate contact keys for pairs of nodes that are overlapping and aren't identical.
     // Note that if the dynamic tree node provides the body pointer, it's assumed to be faster
@@ -728,7 +751,266 @@ auto FindContactKeys(const DynamicTree& tree, WorldImpl::Proxies&& proxies) -> s
     return proxyKeys;
 }
 
+enum class SingletonOperation {
+    Read, Write,
+};
+
+pmr::memory_resource *TheUpstreamResource(SingletonOperation operation,
+                                          pmr::memory_resource *r = nullptr)
+{
+    static std::atomic<::playrho::pmr::memory_resource*> resource{::playrho::pmr::new_delete_resource()};
+    if (operation == SingletonOperation::Write) {
+        r = r? r: pmr::new_delete_resource();
+        return std::atomic_exchange_explicit(&resource, r, std::memory_order_acq_rel);
+    }
+    return std::atomic_load_explicit(&resource, std::memory_order_acquire);
+}
+
+// Use limitBuffers 2+ otherwise debug windows build throws on returning vectors
+constexpr auto DefaultLimitBuffers = std::size_t{2u};
+
+pmr::PoolMemoryResource::Options
+TheBodyStackOptions(SingletonOperation operation,
+                    const pmr::PoolMemoryResource::Options& newOptions = pmr::PoolMemoryResource::Options{})
+{
+    static constexpr auto DefaultReserveCount = 16384u;
+    static pmr::PoolMemoryResource::Options options{
+        1u, DefaultReserveCount * sizeof(BodyID), DefaultLimitBuffers};
+    if (operation == SingletonOperation::Write) {
+        options = newOptions;
+    }
+    return options;
+}
+
+pmr::PoolMemoryResource::Options
+TheContactsOptions(SingletonOperation operation,
+                   const pmr::PoolMemoryResource::Options& newOptions = pmr::PoolMemoryResource::Options{})
+{
+    static constexpr auto DefaultReserveCount = 1024u;
+    static pmr::PoolMemoryResource::Options options{1u,
+        DefaultReserveCount * sizeof(WorldImpl::Contacts::value_type)};
+    if (operation == SingletonOperation::Write) {
+        options = newOptions;
+    }
+    return options;
+}
+
+pmr::PoolMemoryResource::Options
+TheContactKeysOptions(SingletonOperation operation,
+                      const pmr::PoolMemoryResource::Options& newOptions = pmr::PoolMemoryResource::Options{})
+{
+    static constexpr auto DefaultReserveCount = 1024u;
+    static pmr::PoolMemoryResource::Options options{
+        1u, DefaultReserveCount * sizeof(WorldImpl::ContactKeys::value_type), DefaultLimitBuffers};
+    if (operation == SingletonOperation::Write) {
+        options = newOptions;
+    }
+    return options;
+}
+
+pmr::PoolMemoryResource::Options
+TheBodyConstraintsOptions(SingletonOperation operation,
+                          const pmr::PoolMemoryResource::Options& newOptions = pmr::PoolMemoryResource::Options{})
+{
+    static constexpr auto DefaultReserveCount = 1024u;
+    static pmr::PoolMemoryResource::Options options{
+        1u, DefaultReserveCount * sizeof(BodyConstraint), DefaultLimitBuffers};
+    if (operation == SingletonOperation::Write) {
+        options = newOptions;
+    }
+    return options;
+}
+
+constexpr auto DefaultLocSpeedConstraintsCount = 4096u;
+
+pmr::PoolMemoryResource::Options
+ThePositionConstraintsOptions(SingletonOperation operation,
+                              const pmr::PoolMemoryResource::Options& newOptions = pmr::PoolMemoryResource::Options{})
+{
+    static pmr::PoolMemoryResource::Options options{
+        1u, DefaultLocSpeedConstraintsCount * sizeof(PositionConstraint), DefaultLimitBuffers};
+    if (operation == SingletonOperation::Write) {
+        options = newOptions;
+    }
+    return options;
+}
+
+pmr::PoolMemoryResource::Options
+TheVelocityConstraintsOptions(SingletonOperation operation,
+                              const pmr::PoolMemoryResource::Options& newOptions = pmr::PoolMemoryResource::Options{})
+{
+    static pmr::PoolMemoryResource::Options options{
+        1u, DefaultLocSpeedConstraintsCount * sizeof(VelocityConstraint), DefaultLimitBuffers};
+    if (operation == SingletonOperation::Write) {
+        options = newOptions;
+    }
+    return options;
+}
+
+pmr::PoolMemoryResource::Options
+TheIslandBodiesOptions(SingletonOperation operation,
+                       const pmr::PoolMemoryResource::Options& newOptions = pmr::PoolMemoryResource::Options{})
+{
+    static pmr::PoolMemoryResource::Options options{};
+    if (operation == SingletonOperation::Write) {
+        options = newOptions;
+    }
+    return options;
+}
+
+pmr::PoolMemoryResource::Options
+TheIslandContactsOptions(SingletonOperation operation,
+                         const pmr::PoolMemoryResource::Options& newOptions = pmr::PoolMemoryResource::Options{})
+{
+    static pmr::PoolMemoryResource::Options options{};
+    if (operation == SingletonOperation::Write) {
+        options = newOptions;
+    }
+    return options;
+}
+
+pmr::PoolMemoryResource::Options
+TheIslandJointsOptions(SingletonOperation operation,
+                       const pmr::PoolMemoryResource::Options& newOptions = pmr::PoolMemoryResource::Options{})
+{
+    static pmr::PoolMemoryResource::Options options{};
+    if (operation == SingletonOperation::Write) {
+        options = newOptions;
+    }
+    return options;
+}
+
 } // anonymous namespace
+
+pmr::PoolMemoryResource::Options WorldImpl::GetIslandBodiesOptions()
+{
+    return TheIslandBodiesOptions(SingletonOperation::Read);
+}
+
+void WorldImpl::SetIslandBodiesOptions(const pmr::PoolMemoryResource::Options& options)
+{
+    TheIslandBodiesOptions(SingletonOperation::Write, options);
+}
+
+pmr::PoolMemoryResource::Options WorldImpl::GetIslandContactsOptions()
+{
+    return TheIslandContactsOptions(SingletonOperation::Read);
+}
+
+void WorldImpl::SetIslandContactsOptions(const pmr::PoolMemoryResource::Options& options)
+{
+    TheIslandContactsOptions(SingletonOperation::Write, options);
+}
+
+pmr::PoolMemoryResource::Options WorldImpl::GetIslandJointsOptions()
+{
+    return TheIslandJointsOptions(SingletonOperation::Read);
+}
+
+void WorldImpl::SetIslandJointsOptions(const pmr::PoolMemoryResource::Options& options)
+{
+    TheIslandJointsOptions(SingletonOperation::Write, options);
+}
+
+pmr::memory_resource* WorldImpl::GetUpstreamResource()
+{
+    return TheUpstreamResource(SingletonOperation::Read);
+}
+
+pmr::memory_resource* WorldImpl::SetUpstreamResource(pmr::memory_resource *resource)
+{
+    return TheUpstreamResource(SingletonOperation::Write, resource);
+}
+
+pmr::PoolMemoryResource::Options WorldImpl::GetBodyStackOptions()
+{
+    return TheBodyStackOptions(SingletonOperation::Read);
+}
+
+void WorldImpl::SetBodyStackOptions(const pmr::PoolMemoryResource::Options& options)
+{
+    TheBodyStackOptions(SingletonOperation::Write, options);
+}
+
+pmr::PoolMemoryResource::Stats WorldImpl::GetBodyStackStats()
+{
+    return BodyStackAllocator::resource()->GetStats();
+}
+
+pmr::PoolMemoryResource::Options WorldImpl::GetContactsOptions()
+{
+    return TheContactsOptions(SingletonOperation::Read);
+}
+
+void WorldImpl::SetContactsOptions(const pmr::PoolMemoryResource::Options& options)
+{
+    TheContactsOptions(SingletonOperation::Write, options);
+}
+
+pmr::PoolMemoryResource::Stats WorldImpl::GetContactsStats()
+{
+    return ContactsAllocator::resource()->GetStats();
+}
+
+pmr::PoolMemoryResource::Options WorldImpl::GetContactKeysOptions()
+{
+    return TheContactKeysOptions(SingletonOperation::Read);
+}
+
+void WorldImpl::SetContactKeysOptions(const pmr::PoolMemoryResource::Options& options)
+{
+    TheContactKeysOptions(SingletonOperation::Write, options);
+}
+
+pmr::PoolMemoryResource::Stats WorldImpl::GetContactKeysStats()
+{
+    return ContactKeysAllocator::resource()->GetStats();
+}
+
+pmr::PoolMemoryResource::Options WorldImpl::GetBodyConstraintsOptions()
+{
+    return TheBodyConstraintsOptions(SingletonOperation::Read);
+}
+
+void WorldImpl::SetBodyConstraintsOptions(const pmr::PoolMemoryResource::Options& options)
+{
+    TheBodyConstraintsOptions(SingletonOperation::Write, options);
+}
+
+pmr::PoolMemoryResource::Stats WorldImpl::GetBodyConstraintsStats()
+{
+    return BodyConstraintsAllocator::resource()->GetStats();
+}
+
+pmr::PoolMemoryResource::Options WorldImpl::GetPositionConstraintsOptions()
+{
+    return ThePositionConstraintsOptions(SingletonOperation::Read);
+}
+
+void WorldImpl::SetPositionConstraintsOptions(const pmr::PoolMemoryResource::Options& options)
+{
+    ThePositionConstraintsOptions(SingletonOperation::Write, options);
+}
+
+pmr::PoolMemoryResource::Stats WorldImpl::GetPositionConstraintsStats()
+{
+    return PositionConstraintsAllocator::resource()->GetStats();
+}
+
+pmr::PoolMemoryResource::Options WorldImpl::GetVelocityConstraintsOptions()
+{
+    return TheVelocityConstraintsOptions(SingletonOperation::Read);
+}
+
+void WorldImpl::SetVelocityConstraintsOptions(const pmr::PoolMemoryResource::Options& options)
+{
+    TheVelocityConstraintsOptions(SingletonOperation::Write, options);
+}
+
+pmr::PoolMemoryResource::Stats WorldImpl::GetVelocityConstraintsStats()
+{
+    return VelocityConstraintsAllocator::resource()->GetStats();
+}
 
 WorldImpl::WorldImpl(const WorldConf& conf):
     m_tree(conf.treeCapacity),
@@ -1195,15 +1477,11 @@ void WorldImpl::AddToIsland(Island& island, BodyID seedID,
 #endif
     // Perform a depth first search (DFS) on the constraint graph.
     // Create a stack for bodies to be is-in-island that aren't already in the island.
-    auto bodies = std::vector<BodyID>{};
-    bodies.reserve(remNumBodies);
-    bodies.push_back(seedID);
-    auto stack = BodyStack{std::move(bodies)};
+    auto stack = BodyStack{};
+    stack.reserve(remNumBodies);
+    stack.push_back(seedID);
     m_islanded.bodies[to_underlying(seedID)] = true;
     AddToIsland(island, stack, remNumBodies, remNumContacts, remNumJoints);
-#if DO_SORT_ID_LISTS
-    Sort(island);
-#endif
 }
 
 void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
@@ -1213,8 +1491,8 @@ void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
 {
     while (!empty(stack)) {
         // Grab the next body off the stack and add it to the island.
-        const auto bodyID = stack.top();
-        stack.pop();
+        const auto bodyID = stack.back();
+        stack.pop_back();
 
         auto& body = m_bodyBuffer[to_underlying(bodyID)];
 
@@ -1251,7 +1529,7 @@ void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
 }
 
 void WorldImpl::AddContactsToIsland(Island& island, BodyStack& stack,
-                                    const Contacts& contacts, BodyID bodyID)
+                                    const std::vector<KeyedContactPtr>& contacts, BodyID bodyID)
 {
     for_each(cbegin(contacts), cend(contacts), [&](const KeyedContactPtr& ci) {
         const auto contactID = std::get<ContactID>(ci);
@@ -1267,7 +1545,7 @@ void WorldImpl::AddContactsToIsland(Island& island, BodyStack& stack,
                 if (!m_islanded.bodies[to_underlying(other)])
                 {
                     m_islanded.bodies[to_underlying(other)] = true;
-                    stack.push(other);
+                    stack.push_back(other);
                 }
             }
         }
@@ -1290,7 +1568,7 @@ void WorldImpl::AddJointsToIsland(Island& island, BodyStack& stack, const BodyJo
                 if ((otherID != InvalidBodyID) && !m_islanded.bodies[to_underlying(otherID)])
                 {
                     m_islanded.bodies[to_underlying(otherID)] = true;
-                    stack.push(otherID);
+                    stack.push_back(otherID);
                 }
             }
         }
@@ -1323,10 +1601,18 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
             assert(!IsAwake(body) || IsSpeedable(body));
             if (IsAwake(body) && IsEnabled(body)) {
                 ++stats.islandsFound;
+
                 Island island;
-                // Size the island for the remaining un-evaluated contacts.
+
+                // Make some educated guesses at Island containers' upper capacity bounds...
+                island.bodies.reserve(remNumBodies);
                 island.contacts.reserve(remNumContacts);
+                island.contacts.reserve(remNumJoints);
+
                 AddToIsland(island, b, remNumBodies, remNumContacts, remNumJoints);
+#if defined(DO_SORT_ISLANDS)
+                Sort(island);
+#endif
                 stats.maxIslandBodies = std::max(stats.maxIslandBodies,
                                                  static_cast<BodyCounter>(size(island.bodies)));
                 const auto numRemoved = RemoveUnspeedablesFromIslanded(island.bodies, m_bodyBuffer, m_islanded.bodies);
@@ -1374,7 +1660,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
 IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& island)
 {
     assert(!empty(island.bodies) || !empty(island.contacts) || !empty(island.joints));
-    
+
     auto results = IslandStats{};
     results.positionIters = conf.regPositionIters;
     const auto h = conf.deltaTime; ///< Time step.
@@ -1388,7 +1674,6 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
         // SetSweep(body, Sweep{GetNormalized(GetPosition0(body)), GetLocalCenter(body)});
     });
 
-    // Copy bodies' pos1 and velocity data into local arrays.
     auto bodyConstraints = GetBodyConstraints(island.bodies, m_bodyBuffer, h, GetMovementConf(conf));
     auto posConstraints = GetPositionConstraints(island.contacts, m_contactBuffer,
                                                  m_manifoldBuffer, m_shapeBuffer);
@@ -1406,7 +1691,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
         auto& joint = m_jointBuffer[to_underlying(id)];
         InitVelocity(joint, bodyConstraints, conf, psConf);
     });
-    
+
     results.velocityIters = conf.regVelocityIters;
     for (auto i = decltype(conf.regVelocityIters){0}; i < conf.regVelocityIters; ++i) {
         auto jointsOkay = true;
@@ -1428,7 +1713,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
             break;
         }
     }
-    
+
     // updates array of tentative new body positions per the velocities as if there were no obstacles...
     IntegratePositions(island.bodies, bodyConstraints, h);
     
@@ -1453,7 +1738,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     
     // Update normal and tangent impulses of contacts' manifold points
     for_each(cbegin(velConstraints), cend(velConstraints), [&](const VelocityConstraint& vc) {
-        const auto i = static_cast<VelocityConstraints::size_type>(&vc - data(velConstraints));
+        const auto i = static_cast<std::size_t>(&vc - data(velConstraints));
         AssignImpulses(m_manifoldBuffer[to_underlying(island.contacts[i])], vc);
     });
 
@@ -1724,9 +2009,11 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
         //   Calling Body::ResetUnderActiveTime() has performance implications.
     }
 
-    // Build the island
     Island island;
-    island.contacts.reserve(used(m_contactBuffer));
+
+    // Make some educated guesses at Island containers' upper capacity bounds...
+    island.contacts.reserve(size(m_contacts));
+    island.bodies.reserve(size(m_bodies));
 
      // These asserts get triggered sometimes if contacts within TOI are iterated over.
     assert(!m_islanded.bodies[to_underlying(bodyIdA)]);
@@ -1752,7 +2039,7 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
         contactsSkipped += procOut.contactsSkipped;
     }
 
-#if DO_SORT_ID_LISTS
+#if defined(DO_SORT_ISLANDS)
     Sort(island);
 #endif
     RemoveUnspeedablesFromIslanded(island.bodies, m_bodyBuffer, m_islanded.bodies);
@@ -2238,7 +2525,7 @@ WorldImpl::UpdateContactsStats WorldImpl::UpdateContacts(const StepConf& conf)
 }
 
 ContactCounter WorldImpl::FindNewContacts( // NOLINT(readability-function-cognitive-complexity)
-                                          std::vector<ContactKey>&& contactKeys)
+                                          ContactKeys&& contactKeys)
 {
     const auto numContactsBefore = size(m_contacts);
     for_each(cbegin(contactKeys), cend(contactKeys), [this](ContactKey key) {
@@ -2370,7 +2657,7 @@ const WorldImpl::Proxies& WorldImpl::GetProxies(BodyID id) const
     return m_bodyProxies.at(to_underlying(id));
 }
 
-const WorldImpl::Contacts& WorldImpl::GetContacts(BodyID id) const
+const std::vector<KeyedContactPtr>& WorldImpl::GetContacts(BodyID id) const
 {
     return m_bodyContacts.at(to_underlying(id));
 }
@@ -2708,6 +2995,45 @@ const Contact& WorldImpl::GetContact(ContactID id) const
 const Manifold& WorldImpl::GetManifold(ContactID id) const
 {
     return m_manifoldBuffer.at(to_underlying(id));
+}
+
+// WorldImpl based free functions...
+
+void Reserve(WorldImpl::Island& island, BodyCounter bodies, ContactCounter contacts, JointCounter joints)
+{
+    island.bodies.reserve(bodies);
+    island.contacts.reserve(contacts);
+    island.joints.reserve(joints);
+}
+
+void Clear(WorldImpl::Island& island) noexcept
+{
+    island.bodies.clear();
+    island.contacts.clear();
+    island.joints.clear();
+}
+
+void Sort(WorldImpl::Island& island)
+{
+    using std::sort;
+    sort(begin(island.bodies), end(island.bodies));
+    sort(begin(island.contacts), end(island.contacts));
+    sort(begin(island.joints), end(island.joints));
+}
+
+std::size_t Count(const WorldImpl::Island& island, BodyID entry)
+{
+    return MakeUnsigned(count(cbegin(island.bodies), cend(island.bodies), entry));
+}
+
+std::size_t Count(const WorldImpl::Island& island, ContactID entry)
+{
+    return MakeUnsigned(count(cbegin(island.contacts), cend(island.contacts), entry));
+}
+
+std::size_t Count(const WorldImpl::Island& island, JointID entry)
+{
+    return MakeUnsigned(count(cbegin(island.joints), cend(island.joints), entry));
 }
 
 } // namespace d2
