@@ -2085,7 +2085,8 @@
 					../..,
 				);
 				LIBRARY_SEARCH_PATHS = (
-					/usr/local/Cellar/llvm/12.0.0_1/Toolchains/LLVM12.0.0.xctoolchain/usr/lib,
+					"/opt/homebrew/opt/google-benchmark/lib",
+					/opt/homebrew/opt/box2d/lib,
 					/usr/local/lib,
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
