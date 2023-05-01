@@ -77,10 +77,10 @@
 #include <future>
 #endif
 
-// Enable this macro to enable sorting ID lists like m_contacts. This results in more linearly
+// Set this macro to 1 to enable sorting ID lists like m_contacts. This results in more linearly
 // accessed memory. Benchmarking hasn't found a significant performance improvement however but
 // it does seem to decrease performance in smaller simulations.
-//#define DO_SORT_ID_LISTS
+#define DO_SORT_ID_LISTS 0
 
 using std::for_each;
 using std::remove;
@@ -1246,13 +1246,13 @@ void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
         assert(newNumContacts >= oldNumContacts);
         const auto netNumContacts = newNumContacts - oldNumContacts;
         assert(remNumContacts >= netNumContacts);
-        remNumContacts -= netNumContacts;
+        remNumContacts -= (ContactCounter) netNumContacts;
         
         const auto numJoints = size(island.joints);
         // Adds appropriate joints of current body and appropriate 'other' bodies of those joint.
         AddJointsToIsland(island, stack, m_bodyJoints[to_underlying(bodyID)]);
 
-        remNumJoints -= size(island.joints) - numJoints;
+        remNumJoints -= static_cast<JointCounter> (size(island.joints) - numJoints);
     }
 }
 
@@ -1335,7 +1335,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
                 AddToIsland(island, b, remNumBodies, remNumContacts, remNumJoints);
                 stats.maxIslandBodies = std::max(stats.maxIslandBodies,
                                                  static_cast<BodyCounter>(size(island.bodies)));
-                remNumBodies += RemoveUnspeedablesFromIslanded(island.bodies, m_bodyBuffer,
+                remNumBodies += (JointCounter) RemoveUnspeedablesFromIslanded(island.bodies, m_bodyBuffer,
                                                                m_islandedBodies);
 #if defined(DO_THREADED)
                 // Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions

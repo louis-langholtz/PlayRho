@@ -642,7 +642,7 @@ template <typename T>
 constexpr auto GetModuloNext(const T value, const T count) noexcept -> T
 {
     assert(value < count);
-    return (value + 1) % count; // NOLINT(clang-analyzer-core.DivideZero)
+    return (unsigned char) (value + 1) % (unsigned char) count; // NOLINT(clang-analyzer-core.DivideZero)
 }
 
 /// @brief Gets the modulo previous value.
