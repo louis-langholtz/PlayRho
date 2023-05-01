@@ -83,13 +83,16 @@ DynamicTree::Size RebalanceAt(DynamicTree::TreeNode nodes[], DynamicTree::Size i
     // assert(index < GetNodeCapacity());
     assert(DynamicTree::IsBranch(nodes[i].GetHeight()));
 
-    //          o
-    //          |
-    //          i
-    //         / \
-    //      *-c1  c2-*
-    //     /   |  |   \
-    // c1c1 c1c2  c2c1 c2c2
+    /*
+              o
+              |
+              i
+             / \
+          *-c1  c2-*
+         /   |  |   \
+     c1c1 c1c2  c2c1 c2c2
+
+    */
     const auto oldNodeI = nodes[i];
     const auto o = oldNodeI.GetOther();
     const auto c1 = oldNodeI.AsBranch().child1;
@@ -106,23 +109,26 @@ DynamicTree::Size RebalanceAt(DynamicTree::TreeNode nodes[], DynamicTree::Size i
         const auto c2c1Node = nodes[c2c1];
         const auto c2c2Node = nodes[c2c2];
 
-        // From:
-        //          *i*
-        //         /   \
-        //        c1   c2*
-        //            /   \
-        //         c2c1   c2c2
-        //    where c2c1 or c2c2 is also a branch node
-        //
-        // To:
-        //           c2*
-        //          /   \
-        //       *i*     c2cY
-        //      /   \
-        //    c1    c2cX
-        //
-        // Rotate left and pick the taller of c2c1 or c2c2 or the better fitting to move to the new
-        // i node.
+        /*
+         From:
+                  *i*
+                 /   \
+                c1   c2*
+                    /   \
+                 c2c1   c2c2
+            where c2c1 or c2c2 is also a branch node
+        
+         To:
+                   c2*
+                  /   \
+               *i*     c2cY
+              /   \
+            c1    c2cX
+        
+         Rotate left and pick the taller of c2c1 or c2c2 or the better fitting to move to the new
+         i node.
+        */
+        
         const auto ms = MakeMoveStay(c2c1Node, c2c1, c2c2Node, c2c2, c1Node.GetAABB());
         const auto newNodeI = MakeNode(c1, c1Node.GetAABB(), c1Height, ms.first,
                                        nodes[ms.first].GetAABB(), nodes[ms.first].GetHeight(), c2);
@@ -153,23 +159,26 @@ DynamicTree::Size RebalanceAt(DynamicTree::TreeNode nodes[], DynamicTree::Size i
         const auto c1c1Node = nodes[c1c1];
         const auto c1c2Node = nodes[c1c2];
 
-        // From:
-        //          *i*
-        //         /   \
-        //       *c1   c2*
-        //      /   \
-        //   c1c1   c1c2
-        //    where c1c1 or c1c2 is also a branch node
-        //
-        // To:
-        //           c1*
-        //          /   \
-        //       c1cX    *i*
-        //              /   \
-        //           c1cY    c2
-        //
-        // Rotate right and pick the taller of c1c1 or c1c2 or the better fitting to move to the new
-        // i node.
+        /*
+         From:
+                  *i*
+                 /   \
+               *c1   c2*
+              /   \
+           c1c1   c1c2
+            where c1c1 or c1c2 is also a branch node
+        
+         To:
+                   c1*
+                  /   \
+               c1cX    *i*
+                      /   \
+                   c1cY    c2
+        
+         Rotate right and pick the taller of c1c1 or c1c2 or the better fitting to move to the new
+         i node.
+        */
+
         const auto ms = MakeMoveStay(c1c1Node, c1c1, c1c2Node, c1c2, c2Node.GetAABB());
         const auto newNodeI =
             MakeNode(ms.first, nodes[ms.first].GetAABB(), nodes[ms.first].GetHeight(), c2,
