@@ -58,9 +58,9 @@ endif()
 # else will be ignored. PlayRho only supports Debug and Release
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;" CACHE STRING "Semicolon separated list of supported configuration types. PlayRho only supports Debug and Release configurations.")
 
-# Options for robustness
-# Note -Wno-error=float-equal that should be resolved
-add_definitions("-Wall -Wextra -Werror -Wfloat-equal -Wundef -Wcast-align -Wwrite-strings -Wunreachable-code -Wconversion -Wno-error=maybe-uninitialized -Wno-error=float-equal -Wno-error=ignored-qualifiers")
+# Options for robustness: Useful during development
+# Note: -Wno-error=float-equal should be resolved
+# add_definitions("-Wall -Wextra -Werror -Wfloat-equal -Wundef -Wcast-align -Wwrite-strings -Wunreachable-code -Wconversion -Wno-error=maybe-uninitialized -Wno-error=float-equal -Wno-error=ignored-qualifiers")
 
 # Tell C++ compiler to optimize release builds for speed.
 # In clang++, the optimize for speed flag is '-Ot'. This option isn't supported on g++
