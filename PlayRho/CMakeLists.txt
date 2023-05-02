@@ -95,6 +95,13 @@ if (PLAYRHO_ENABLE_BOOST_UNITS)
 	target_compile_definitions(PlayRho PUBLIC -DPLAYRHO_USE_BOOST_UNITS)
 endif()
 
+# Enable additional warnings to help ensure library code compiles clean
+# For GNU, see https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
+target_compile_options(PlayRho PRIVATE
+	$<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
+	$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Wundef -Wcast-align -Wconversion -Werror>
+)
+
 # These are used to create visual studio folders.
 source_group(Collision FILES ${PLAYRHO_Collision_SRCS} ${PLAYRHO_Collision_HDRS})
 source_group(Collision\\Shapes FILES ${PLAYRHO_Shapes_SRCS} ${PLAYRHO_Shapes_HDRS})
