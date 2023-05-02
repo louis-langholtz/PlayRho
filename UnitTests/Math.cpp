@@ -1339,3 +1339,14 @@ TEST(Math, ToSigned)
     EXPECT_EQ(ToSigned(42u), 42);
     EXPECT_EQ(ToSigned(static_cast<std::uint8_t>(255u)), -1);
 }
+
+TEST(Math, GetModuloNext)
+{
+    EXPECT_EQ(GetModuloNext(std::uint8_t(0u), std::uint8_t(1u)), std::uint8_t(0u));
+    EXPECT_EQ(GetModuloNext(std::uint8_t(0u), std::uint8_t(2u)), std::uint8_t(1u));
+    EXPECT_EQ(GetModuloNext(std::uint8_t(254u), std::uint8_t(255u)), std::uint8_t(0u));
+    EXPECT_EQ(GetModuloNext(std::int8_t(0), std::int8_t(1)), std::int8_t(0));
+    EXPECT_EQ(GetModuloNext(std::int8_t(0), std::int8_t(2)), std::int8_t(1));
+    EXPECT_EQ(GetModuloNext(std::int8_t(1), std::int8_t(2)), std::int8_t(0));
+    EXPECT_EQ(GetModuloNext(std::int8_t(126), std::int8_t(127)), std::int8_t(0));
+}
