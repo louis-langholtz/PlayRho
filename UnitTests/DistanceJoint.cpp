@@ -44,7 +44,7 @@ TEST(DistanceJointConf, ByteSize)
     // builds and to report actual size rather than just reporting that expected size is wrong.
     switch (sizeof(Real)) {
     case 4:
-        EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(76));
+        EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(80));
         break;
     case 8:
         EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(144));
