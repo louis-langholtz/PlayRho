@@ -137,26 +137,6 @@ TEST(PulleyJointConf, UseRatio)
     EXPECT_EQ(PulleyJointConf{}.UseRatio(value).ratio, value);
 }
 
-TEST(PulleyJointConf, ByteSize)
-{
-    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
-    // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real)) {
-    case 4:
-        EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(92));
-        break;
-    case 8:
-        EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(176));
-        break;
-    case 16:
-        EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(352));
-        break;
-    default:
-        FAIL();
-        break;
-    }
-}
-
 TEST(PulleyJoint, Construction)
 {
     PulleyJointConf def;

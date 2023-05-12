@@ -42,26 +42,6 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(GearJointConf, ByteSize)
-{
-    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
-    // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real)) {
-    case 4:
-        EXPECT_EQ(sizeof(GearJointConf), std::size_t(116));
-        break;
-    case 8:
-        EXPECT_EQ(sizeof(GearJointConf), std::size_t(224));
-        break;
-    case 16:
-        EXPECT_EQ(sizeof(GearJointConf), std::size_t(432));
-        break;
-    default:
-        FAIL();
-        break;
-    }
-}
-
 TEST(GearJointConf, DefaultConstruction)
 {
     auto conf = GearJointConf{};

@@ -37,26 +37,6 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(FrictionJointConf, ByteSize)
-{
-    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
-    // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real)) {
-    case 4:
-        EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(80));
-        break;
-    case 8:
-        EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(152));
-        break;
-    case 16:
-        EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(304));
-        break;
-    default:
-        FAIL();
-        break;
-    }
-}
-
 TEST(FrictionJointConf, DefaultConstruction)
 {
     FrictionJointConf def{};

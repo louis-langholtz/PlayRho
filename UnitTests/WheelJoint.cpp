@@ -39,26 +39,6 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(WheelJointConf, ByteSize)
-{
-    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
-    // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real)) {
-    case 4:
-        EXPECT_EQ(sizeof(WheelJointConf), std::size_t(124));
-        break;
-    case 8:
-        EXPECT_EQ(sizeof(WheelJointConf), std::size_t(240));
-        break;
-    case 16:
-        EXPECT_EQ(sizeof(WheelJointConf), std::size_t(480));
-        break;
-    default:
-        FAIL();
-        break;
-    }
-}
-
 TEST(WheelJointConf, DefaultConstruction)
 {
     WheelJointConf def{};

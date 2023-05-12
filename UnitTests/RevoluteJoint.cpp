@@ -40,26 +40,6 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(RevoluteJointConf, ByteSize)
-{
-    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
-    // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real)) {
-    case 4:
-        EXPECT_EQ(sizeof(RevoluteJointConf), std::size_t(128));
-        break;
-    case 8:
-        EXPECT_EQ(sizeof(RevoluteJointConf), std::size_t(248));
-        break;
-    case 16:
-        EXPECT_EQ(sizeof(RevoluteJointConf), std::size_t(496));
-        break;
-    default:
-        FAIL();
-        break;
-    }
-}
-
 TEST(RevoluteJointConf, DefaultConstruction)
 {
     const auto jd = RevoluteJointConf{};

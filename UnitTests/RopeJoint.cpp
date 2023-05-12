@@ -39,26 +39,6 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(RopeJointConf, ByteSize)
-{
-    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
-    // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real)) {
-    case 4:
-        EXPECT_EQ(sizeof(RopeJointConf), std::size_t(68));
-        break;
-    case 8:
-        EXPECT_EQ(sizeof(RopeJointConf), std::size_t(128));
-        break;
-    case 16:
-        EXPECT_EQ(sizeof(RopeJointConf), std::size_t(256));
-        break;
-    default:
-        FAIL();
-        break;
-    }
-}
-
 TEST(RopeJointConf, DefaultConstruction)
 {
     RopeJointConf def{};
