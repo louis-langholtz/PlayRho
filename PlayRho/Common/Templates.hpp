@@ -322,10 +322,11 @@ template <typename T>
 struct LexicographicalLess {
     /// @brief Checks whether the first argument is lexicographically less-than the
     ///   second argument.
-    constexpr bool operator()(const T& lhs, const T& rhs) const
+    constexpr auto operator()(const T& lhs, const T& rhs) const ->
+        decltype(std::lexicographical_compare(begin(lhs), end(lhs), begin(rhs), end(rhs)), true)
     {
         using std::less;
-        using ElementType = decltype(*begin(lhs));
+        using ElementType = std::decay_t<decltype(*begin(lhs))>;
         return std::lexicographical_compare(begin(lhs), end(lhs), begin(rhs), end(rhs),
                                             less<ElementType>{});
     }
@@ -339,10 +340,11 @@ template <typename T>
 struct LexicographicalGreater {
     /// @brief Checks whether the first argument is lexicographically greater-than the
     ///   second argument.
-    constexpr bool operator()(const T& lhs, const T& rhs) const
+    constexpr auto operator()(const T& lhs, const T& rhs) const ->
+        decltype(std::lexicographical_compare(begin(lhs), end(lhs), begin(rhs), end(rhs)), true)
     {
         using std::greater;
-        using ElementType = decltype(*begin(lhs));
+        using ElementType = std::decay_t<decltype(*begin(lhs))>;
         return std::lexicographical_compare(begin(lhs), end(lhs), begin(rhs), end(rhs),
                                             greater<ElementType>{});
     }
@@ -356,12 +358,13 @@ template <typename T>
 struct LexicographicalLessEqual {
     /// @brief Checks whether the first argument is lexicographically less-than or
     ///   equal-to the second argument.
-    constexpr bool operator()(const T& lhs, const T& rhs) const
+    constexpr auto operator()(const T& lhs, const T& rhs) const ->
+        decltype(std::mismatch(begin(lhs), end(lhs), begin(rhs), end(rhs)), true)
     {
         using std::get;
         using std::less;
         using std::mismatch;
-        using ElementType = decltype(*begin(lhs));
+        using ElementType = std::decay_t<decltype(*begin(lhs))>;
         const auto lhsEnd = end(lhs);
         const auto diff = mismatch(begin(lhs), lhsEnd, begin(rhs), end(rhs));
         return (get<0>(diff) == lhsEnd) || less<ElementType>{}(*get<0>(diff), *get<1>(diff));
@@ -376,12 +379,13 @@ template <typename T>
 struct LexicographicalGreaterEqual {
     /// @brief Checks whether the first argument is lexicographically greater-than or
     ///   equal-to the second argument.
-    constexpr bool operator()(const T& lhs, const T& rhs) const
+    constexpr auto operator()(const T& lhs, const T& rhs) const ->
+        decltype(std::mismatch(begin(lhs), end(lhs), begin(rhs), end(rhs)), true)
     {
         using std::get;
         using std::greater;
         using std::mismatch;
-        using ElementType = decltype(*begin(lhs));
+        using ElementType = std::decay_t<decltype(*begin(lhs))>;
         const auto lhsEnd = end(lhs);
         const auto diff = mismatch(begin(lhs), lhsEnd, begin(rhs), end(rhs));
         return (get<0>(diff) == lhsEnd) || greater<ElementType>{}(*get<0>(diff), *get<1>(diff));
