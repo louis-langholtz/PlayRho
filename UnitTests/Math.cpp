@@ -1350,3 +1350,26 @@ TEST(Math, GetModuloNext)
     EXPECT_EQ(GetModuloNext(std::int8_t(1), std::int8_t(2)), std::int8_t(0));
     EXPECT_EQ(GetModuloNext(std::int8_t(126), std::int8_t(127)), std::int8_t(0));
 }
+
+TEST(Math, IsPowerOfTwo)
+{
+    EXPECT_TRUE(IsPowerOfTwo(1));
+    EXPECT_TRUE(IsPowerOfTwo(2));
+    EXPECT_TRUE(IsPowerOfTwo(4));
+    EXPECT_TRUE(IsPowerOfTwo(8));
+
+    EXPECT_FALSE(IsPowerOfTwo(0));
+    EXPECT_FALSE(IsPowerOfTwo(3));
+    EXPECT_FALSE(IsPowerOfTwo(5));
+    EXPECT_FALSE(IsPowerOfTwo(6));
+
+    EXPECT_TRUE(IsPowerOfTwo(1u));
+    EXPECT_TRUE(IsPowerOfTwo(2u));
+    EXPECT_TRUE(IsPowerOfTwo(4u));
+    EXPECT_TRUE(IsPowerOfTwo(8u));
+
+    EXPECT_FALSE(IsPowerOfTwo(0u));
+    EXPECT_FALSE(IsPowerOfTwo(3u));
+    EXPECT_FALSE(IsPowerOfTwo(5u));
+    EXPECT_FALSE(IsPowerOfTwo(6u));
+}
