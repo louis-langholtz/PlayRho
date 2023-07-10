@@ -627,6 +627,13 @@ constexpr auto NextPowerOfTwo(T x) -> decltype((x | (x >> 1u)), T(++x))
     return ++x;
 }
 
+/// @brief Reports whether or not the given value is a power of two.
+template <typename T>
+constexpr auto IsPowerOfTwo(const T& n) -> decltype(n && !(n & (n - 1)))
+{
+    return n && !(n & (n - 1));
+}
+
 /// @brief Converts the given vector into a unit vector and returns its original length.
 Real Normalize(Vec2& vector);
 
