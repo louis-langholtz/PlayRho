@@ -462,10 +462,10 @@ TEST(WorldImpl, SetTypeOfBody)
 
 TEST(WorldImpl, Proxies)
 {
-    const auto density = 2_kgpm2;
-    const auto friction = Real(0.5);
-    const auto restitution = Real(0.4);
-    const auto isSensor = true;
+    constexpr auto density = 2_kgpm2;
+    constexpr auto friction = Real(0.5);
+    constexpr auto restitution = Real(0.4);
+    constexpr auto isSensor = true;
 
     {
         auto world = WorldImpl{};
