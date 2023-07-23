@@ -69,14 +69,12 @@ if(PLAYRHO_BUILD_SHARED)
 	add_library(PlayRho SHARED ${libsrc})
 else()
 	add_library(PlayRho STATIC ${libsrc})
+	target_compile_definitions(PlayRho PUBLIC -DPLAYRHO_STATIC_DEFINE)
 endif()
 add_library(PlayRho::PlayRho ALIAS PlayRho)
 
 include(GenerateExportHeader)
-generate_export_header(PlayRho EXPORT_FILE_NAME Export.h)
-if (NOT PLAYRHO_BUILD_SHARED)
-	target_compile_definitions(PlayRho PUBLIC -DPLAYRHO_STATIC_DEFINE)
-endif()
+generate_export_header(PlayRho EXPORT_FILE_NAME Export.hpp)
 
 target_compile_features(PlayRho PUBLIC cxx_std_17)
 set_target_properties(PlayRho PROPERTIES
@@ -116,6 +114,9 @@ if(PLAYRHO_INSTALL)
 	include(CMakePackageConfigHelpers)
 
 	# install headers
+	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/Export.hpp
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho
+		COMPONENT Library)
 	install(FILES ${PLAYRHO_GeneralCfg_HDRS}
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho
 		COMPONENT Library)
