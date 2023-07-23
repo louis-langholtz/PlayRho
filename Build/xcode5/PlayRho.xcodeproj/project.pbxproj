@@ -394,6 +394,14 @@
 		80BB8A76141C3F7600F1753A /* libPlayRho.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80FF01D2141C3D980059E59D /* libPlayRho.a */; };
 		80BB8A7B141C3FA700F1753A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80BB8A7A141C3FA700F1753A /* OpenGL.framework */; };
 		9921FFD729AD43C30043F23F /* TypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9921FFD629AD43C30043F23F /* TypeInfo.cpp */; };
+		996B7B832A6DF1A500A8207F /* PoolMemoryResource.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */; };
+		996B7B842A6DF1A500A8207F /* MemoryResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */; };
+		996B7B852A6DF1A500A8207F /* MemoryResource.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 996B7B802A6DF1A400A8207F /* MemoryResource.hpp */; };
+		996B7B862A6DF1A500A8207F /* ThreadLocalAllocator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 996B7B812A6DF1A400A8207F /* ThreadLocalAllocator.hpp */; };
+		996B7B872A6DF1A500A8207F /* PoolMemoryResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B822A6DF1A500A8207F /* PoolMemoryResource.cpp */; };
+		996B7B8B2A6DF25200A8207F /* MemoryResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B882A6DF25200A8207F /* MemoryResource.cpp */; };
+		996B7B8C2A6DF25200A8207F /* ThreadLocalAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B892A6DF25200A8207F /* ThreadLocalAllocator.cpp */; };
+		996B7B8D2A6DF25200A8207F /* PoolMemoryResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B8A2A6DF25200A8207F /* PoolMemoryResource.cpp */; };
 		9980D10A29C8ACB700007B35 /* WorldConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9980D10929C8ACB700007B35 /* WorldConf.cpp */; };
 		99CF862F29B9087700D9D112 /* BaseShapeConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99CF862E29B9087700D9D112 /* BaseShapeConf.cpp */; };
 		99CF863129C251CB00D9D112 /* ConstraintSolverConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99CF863029C251CB00D9D112 /* ConstraintSolverConf.cpp */; };
@@ -865,6 +873,14 @@
 		80CD7722143AF3230086DB87 /* ConvexHull.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConvexHull.cpp; sourceTree = "<group>"; };
 		80FF01D2141C3D980059E59D /* libPlayRho.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPlayRho.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9921FFD629AD43C30043F23F /* TypeInfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TypeInfo.cpp; sourceTree = "<group>"; };
+		996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PoolMemoryResource.hpp; sourceTree = "<group>"; };
+		996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryResource.cpp; sourceTree = "<group>"; };
+		996B7B802A6DF1A400A8207F /* MemoryResource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MemoryResource.hpp; sourceTree = "<group>"; };
+		996B7B812A6DF1A400A8207F /* ThreadLocalAllocator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ThreadLocalAllocator.hpp; sourceTree = "<group>"; };
+		996B7B822A6DF1A500A8207F /* PoolMemoryResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PoolMemoryResource.cpp; sourceTree = "<group>"; };
+		996B7B882A6DF25200A8207F /* MemoryResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryResource.cpp; sourceTree = "<group>"; };
+		996B7B892A6DF25200A8207F /* ThreadLocalAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThreadLocalAllocator.cpp; sourceTree = "<group>"; };
+		996B7B8A2A6DF25200A8207F /* PoolMemoryResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PoolMemoryResource.cpp; sourceTree = "<group>"; };
 		9980D10929C8ACB700007B35 /* WorldConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WorldConf.cpp; sourceTree = "<group>"; };
 		99CF862E29B9087700D9D112 /* BaseShapeConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BaseShapeConf.cpp; sourceTree = "<group>"; };
 		99CF863029C251CB00D9D112 /* ConstraintSolverConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ConstraintSolverConf.cpp; sourceTree = "<group>"; };
@@ -971,9 +987,11 @@
 				47FFD0F81DABDC63000D6D0E /* Mat22.cpp */,
 				474BC3FE1D41278800447DCD /* Mat33.cpp */,
 				473971A71D9D9B4C00F7137F /* Math.cpp */,
+				996B7B882A6DF25200A8207F /* MemoryResource.cpp */,
 				470F9B531EF9666B007EF7B6 /* MotorJoint.cpp */,
 				47D61F7B1F21112000E702BD /* MultiShape.cpp */,
 				474BC3FF1D41278800447DCD /* PolygonShape.cpp */,
+				996B7B8A2A6DF25200A8207F /* PoolMemoryResource.cpp */,
 				479DEA56267AB8730070497D /* Position.cpp */,
 				47FFD0FC1DAC6235000D6D0E /* PositionConstraint.cpp */,
 				47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */,
@@ -993,6 +1011,7 @@
 				474BC4021D41278800447DCD /* Sweep.cpp */,
 				47327E741E9F1E2A0048FCD8 /* TargetJoint.cpp */,
 				474BC4031D41278800447DCD /* TimeOfImpact.cpp */,
+				996B7B892A6DF25200A8207F /* ThreadLocalAllocator.cpp */,
 				474BC4041D41278800447DCD /* Transformation.cpp */,
 				9921FFD629AD43C30043F23F /* TypeInfo.cpp */,
 				47C96C501FA24BC100A6C587 /* Units.cpp */,
@@ -1149,11 +1168,15 @@
 				471E7EA81F32668E00DFF626 /* Matrix.hpp */,
 				80BB8944141C3E5900F1753A /* Math.cpp */,
 				80BB8945141C3E5900F1753A /* Math.hpp */,
+				996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */,
+				996B7B802A6DF1A400A8207F /* MemoryResource.hpp */,
 				4764085C250484820090F711 /* Negative.hpp */,
 				4764085025042BD00090F711 /* NonNegative.hpp */,
 				4764085825047FA10090F711 /* NonPositive.hpp */,
 				47640854250475860090F711 /* NonZero.hpp */,
 				4764086E250EA5DE0090F711 /* ObjectPool.hpp */,
+				996B7B822A6DF1A500A8207F /* PoolMemoryResource.cpp */,
+				996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */,
 				470F9B0F1EDF2890007EF7B6 /* Position.hpp */,
 				4764085A2504822F0090F711 /* Positive.hpp */,
 				4764085E2507FBFF0090F711 /* propagate_const.hpp */,
@@ -1167,6 +1190,7 @@
 				479DEBAC268155E50070497D /* Sweep.cpp */,
 				470F9B1B1EDF2B8A007EF7B6 /* Sweep.hpp */,
 				47C85D1E1F0DA14500F70C56 /* Templates.hpp */,
+				996B7B812A6DF1A400A8207F /* ThreadLocalAllocator.hpp */,
 				470F9B151EDF2959007EF7B6 /* Transformation.hpp */,
 				4706451A252CE27B006E69AA /* TypeInfo.hpp */,
 				4764085225045B3C0090F711 /* UnitInterval.hpp */,
@@ -1472,6 +1496,7 @@
 				4731DE581DEC908600E7F931 /* UnitVec.hpp in Headers */,
 				474AFBFA1EB1B2CB002AA6C8 /* MultiShapeConf.hpp in Headers */,
 				47B58F641F64C19600354C34 /* RealConstants.hpp in Headers */,
+				996B7B832A6DF1A500A8207F /* PoolMemoryResource.hpp in Headers */,
 				4787D6EB1F2FA0CA008C115E /* LengthError.hpp in Headers */,
 				80BB8990141C3E5900F1753A /* Distance.hpp in Headers */,
 				47CB34401D6F3A8500828126 /* MassData.hpp in Headers */,
@@ -1559,6 +1584,7 @@
 				4787D6D31F2ECB8E008C115E /* TargetJointConf.hpp in Headers */,
 				80BB89BF141C3E5900F1753A /* Contact.hpp in Headers */,
 				4787D6C31F2E9DC0008C115E /* DistanceJointConf.hpp in Headers */,
+				996B7B852A6DF1A500A8207F /* MemoryResource.hpp in Headers */,
 				80BB89C1141C3E5900F1753A /* ContactSolver.hpp in Headers */,
 				473E019E1F80ACBE00D58CC8 /* ShapeConf.hpp in Headers */,
 				47CF984D1DF9C4A30077F5F2 /* ShapeSeparation.hpp in Headers */,
@@ -1579,6 +1605,7 @@
 				4764085125042BD10090F711 /* NonNegative.hpp in Headers */,
 				47B490D7201E6C3000AB07A0 /* IslandStats.hpp in Headers */,
 				4787D6DB1F2ECFFB008C115E /* RevoluteJointConf.hpp in Headers */,
+				996B7B862A6DF1A500A8207F /* ThreadLocalAllocator.hpp in Headers */,
 				4751EE2E1CEDD7A300D459CB /* MotorJoint.cpp in Headers */,
 				470F94D21EC6376F00AA3C82 /* ContactKey.hpp in Headers */,
 				47578BE11D8869110078CD40 /* WorldManifold.hpp in Headers */,
@@ -1775,6 +1802,7 @@
 				47D61F781F1FE3B700E702BD /* EdgeShape.cpp in Sources */,
 				47928F391E66586400EE6E9E /* DistanceJoint.cpp in Sources */,
 				475A94611D9996B6000CA9A8 /* WorldContact.cpp in Sources */,
+				996B7B8C2A6DF25200A8207F /* ThreadLocalAllocator.cpp in Sources */,
 				474BC4361D413DC200447DCD /* PolygonShape.cpp in Sources */,
 				470F9B541EF9666B007EF7B6 /* MotorJoint.cpp in Sources */,
 				479DEA57267AB8730070497D /* Position.cpp in Sources */,
@@ -1801,6 +1829,7 @@
 				475931D21F26ABBD009BACA3 /* Filter.cpp in Sources */,
 				47250DA11FEAD20C00FDDE1C /* StepStats.cpp in Sources */,
 				47327E751E9F1E2A0048FCD8 /* TargetJoint.cpp in Sources */,
+				996B7B8D2A6DF25200A8207F /* PoolMemoryResource.cpp in Sources */,
 				47C85D121EFB0CD600F70C56 /* RopeJoint.cpp in Sources */,
 				47CF98501E0088ED0077F5F2 /* Angle.cpp in Sources */,
 				476FBF51253FB9550057D5F3 /* WorldBody.cpp in Sources */,
@@ -1818,6 +1847,7 @@
 				479B63C31ED9CAC300D49BC7 /* CheckedValue.cpp in Sources */,
 				475A94561D930E6C000CA9A8 /* WorldFixture.cpp in Sources */,
 				473E01A01F81705100D58CC8 /* Vector.cpp in Sources */,
+				996B7B8B2A6DF25200A8207F /* MemoryResource.cpp in Sources */,
 				472E24661F82C4EA0051E192 /* Interval.cpp in Sources */,
 				4775A9381E05B032001C2332 /* StepConf.cpp in Sources */,
 				47AFC3051DAEBC120023E9D1 /* PositionSolverManifold.cpp in Sources */,
@@ -1944,6 +1974,7 @@
 				4764089E25226E180090F711 /* WorldMisc.cpp in Sources */,
 				80BB8993141C3E5900F1753A /* TimeOfImpact.cpp in Sources */,
 				470F9B4C1EEF20B6007EF7B6 /* BodyConf.cpp in Sources */,
+				996B7B842A6DF1A500A8207F /* MemoryResource.cpp in Sources */,
 				80BB8995141C3E5900F1753A /* ChainShapeConf.cpp in Sources */,
 				4726DD2A1D31B4090012A882 /* RayCastOutput.cpp in Sources */,
 				80BB8997141C3E5900F1753A /* DiskShapeConf.cpp in Sources */,
@@ -1989,6 +2020,7 @@
 				4787D6C61F2EA1DB008C115E /* FrictionJointConf.cpp in Sources */,
 				4787D6E61F2ED62C008C115E /* WheelJointConf.cpp in Sources */,
 				4768D4001E54E7CC00574143 /* StepConf.cpp in Sources */,
+				996B7B872A6DF1A500A8207F /* PoolMemoryResource.cpp in Sources */,
 				47640863250807720090F711 /* WorldImpl.cpp in Sources */,
 				80BB89D0141C3E5900F1753A /* Joint.cpp in Sources */,
 				47640881251F0F9B0090F711 /* WorldImplBody.cpp in Sources */,
