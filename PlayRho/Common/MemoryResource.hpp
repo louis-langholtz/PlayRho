@@ -102,11 +102,6 @@ class polymorphic_allocator
 public:
     using value_type = T;
 
-    static constexpr auto max_size() noexcept -> std::size_t
-    {
-        return std::numeric_limits<std::size_t>::max() / sizeof(T);
-    }
-
     polymorphic_allocator(ResourceType resource = nullptr) noexcept:
         m_resource{resource ? resource : get_default_resource()}
     {
@@ -126,7 +121,7 @@ public:
 
     [[nodiscard]] T* allocate(std::size_t n)
     {
-        if (n > max_size()) {
+        if (n > (std::numeric_limits<std::size_t>::max() / sizeof(T))) {
             throw std::bad_array_new_length{};
         }
         return static_cast<T*>(m_resource->allocate(n * sizeof(value_type), alignof(T)));

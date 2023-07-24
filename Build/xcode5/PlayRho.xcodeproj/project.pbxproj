@@ -402,6 +402,7 @@
 		996B7B8B2A6DF25200A8207F /* MemoryResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B882A6DF25200A8207F /* MemoryResource.cpp */; };
 		996B7B8C2A6DF25200A8207F /* ThreadLocalAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B892A6DF25200A8207F /* ThreadLocalAllocator.cpp */; };
 		996B7B8D2A6DF25200A8207F /* PoolMemoryResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B8A2A6DF25200A8207F /* PoolMemoryResource.cpp */; };
+		996B7B8F2A6EED6200A8207F /* polymorphic_allocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B8E2A6EED6200A8207F /* polymorphic_allocator.cpp */; };
 		9980D10A29C8ACB700007B35 /* WorldConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9980D10929C8ACB700007B35 /* WorldConf.cpp */; };
 		99CF862F29B9087700D9D112 /* BaseShapeConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99CF862E29B9087700D9D112 /* BaseShapeConf.cpp */; };
 		99CF863129C251CB00D9D112 /* ConstraintSolverConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99CF863029C251CB00D9D112 /* ConstraintSolverConf.cpp */; };
@@ -881,6 +882,7 @@
 		996B7B882A6DF25200A8207F /* MemoryResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryResource.cpp; sourceTree = "<group>"; };
 		996B7B892A6DF25200A8207F /* ThreadLocalAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThreadLocalAllocator.cpp; sourceTree = "<group>"; };
 		996B7B8A2A6DF25200A8207F /* PoolMemoryResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PoolMemoryResource.cpp; sourceTree = "<group>"; };
+		996B7B8E2A6EED6200A8207F /* polymorphic_allocator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = polymorphic_allocator.cpp; sourceTree = "<group>"; };
 		9980D10929C8ACB700007B35 /* WorldConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WorldConf.cpp; sourceTree = "<group>"; };
 		99CF862E29B9087700D9D112 /* BaseShapeConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BaseShapeConf.cpp; sourceTree = "<group>"; };
 		99CF863029C251CB00D9D112 /* ConstraintSolverConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ConstraintSolverConf.cpp; sourceTree = "<group>"; };
@@ -991,6 +993,7 @@
 				470F9B531EF9666B007EF7B6 /* MotorJoint.cpp */,
 				47D61F7B1F21112000E702BD /* MultiShape.cpp */,
 				474BC3FF1D41278800447DCD /* PolygonShape.cpp */,
+				996B7B8E2A6EED6200A8207F /* polymorphic_allocator.cpp */,
 				996B7B8A2A6DF25200A8207F /* PoolMemoryResource.cpp */,
 				479DEA56267AB8730070497D /* Position.cpp */,
 				47FFD0FC1DAC6235000D6D0E /* PositionConstraint.cpp */,
@@ -1835,6 +1838,7 @@
 				476FBF51253FB9550057D5F3 /* WorldBody.cpp in Sources */,
 				47C85D0C1EFA2C1C00F70C56 /* Version.cpp in Sources */,
 				47C85D0E1EFAE03700F70C56 /* WeldJoint.cpp in Sources */,
+				996B7B8F2A6EED6200A8207F /* polymorphic_allocator.cpp in Sources */,
 				47315E041E28A66100DDA856 /* RevoluteJoint.cpp in Sources */,
 				4734B2361DC39F3E00F15E29 /* SimplexEdge.cpp in Sources */,
 				4731DDFA1DC7C9B000E7F931 /* Simplex.cpp in Sources */,
