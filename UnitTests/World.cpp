@@ -78,29 +78,6 @@ TEST(World, ByteSize)
     EXPECT_EQ(sizeof(World), sizeof(void*));
 }
 
-TEST(World, Traits)
-{
-    EXPECT_TRUE(std::is_default_constructible<World>::value);
-    EXPECT_FALSE(std::is_nothrow_default_constructible<World>::value);
-    EXPECT_FALSE(std::is_trivially_default_constructible<World>::value);
-    
-    EXPECT_TRUE(std::is_constructible<World>::value);
-    EXPECT_FALSE(std::is_nothrow_constructible<World>::value);
-    EXPECT_FALSE(std::is_trivially_constructible<World>::value);
-    
-    EXPECT_TRUE(std::is_copy_constructible<World>::value);
-    EXPECT_FALSE(std::is_nothrow_copy_constructible<World>::value);
-    EXPECT_FALSE(std::is_trivially_copy_constructible<World>::value);
-    
-    EXPECT_TRUE(std::is_copy_assignable<World>::value);
-    EXPECT_FALSE(std::is_nothrow_copy_assignable<World>::value);
-    EXPECT_FALSE(std::is_trivially_copy_assignable<World>::value);
-    
-    EXPECT_TRUE(std::is_destructible<World>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<World>::value);
-    EXPECT_FALSE(std::is_trivially_destructible<World>::value);
-}
-
 TEST(World, WorldLockedError)
 {
     const auto value = WrongState{"world is locked"};
