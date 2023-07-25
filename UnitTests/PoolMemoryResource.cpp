@@ -394,7 +394,36 @@ TEST(PoolMemoryResource, do_allocate_unchanged_on_throw)
     }
 }
 
-TEST(PoolMemoryResource, do_allocate_deallocate)
+TEST(PoolMemoryResource, do_allocate_deallocate_releasable)
+{
+    PoolMemoryResource::Options opts;
+    opts.releasable = true;
+    PoolMemoryResource object{opts, new_delete_resource()};
+    void* ptrA = nullptr;
+    constexpr auto ptrA_num_bytes = 2u;
+    constexpr auto ptrA_align_bytes = 1u;
+    EXPECT_NO_THROW(ptrA = object.do_allocate(ptrA_num_bytes, ptrA_align_bytes));
+    EXPECT_NE(ptrA, nullptr);
+    {
+        const auto stats = object.GetStats();
+        EXPECT_EQ(stats.numBuffers, 1u);
+        EXPECT_EQ(stats.maxBytes, ptrA_num_bytes);
+        EXPECT_EQ(stats.totalBytes, ptrA_num_bytes);
+        EXPECT_EQ(stats.allocatedBuffers, 1u);
+    }
+    EXPECT_NO_THROW(object.do_deallocate(ptrA, ptrA_num_bytes, ptrA_align_bytes));
+    EXPECT_NO_THROW(ptrA = object.do_allocate(ptrA_num_bytes * 2u, ptrA_align_bytes));
+    EXPECT_NE(ptrA, nullptr);
+    {
+        const auto stats = object.GetStats();
+        EXPECT_EQ(stats.numBuffers, 1u);
+        EXPECT_EQ(stats.maxBytes, ptrA_num_bytes * 2u);
+        EXPECT_EQ(stats.totalBytes, ptrA_num_bytes * 2u);
+        EXPECT_EQ(stats.allocatedBuffers, 1u);
+    }
+}
+
+TEST(PoolMemoryResource, do_allocate_deallocate_nonreleasable)
 {
     PoolMemoryResource::Options opts;
     opts.releasable = false;
