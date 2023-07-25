@@ -515,7 +515,7 @@ public:
     /// @warning contacts are created and destroyed in the middle of a time step.
     /// Use <code>ContactListener</code> to avoid missing contacts.
     /// @return World contacts sized-range.
-    const Contacts& GetContacts() const noexcept;
+    Contacts GetContacts() const;
 
     /// @brief Gets the identified contact.
     /// @throws std::out_of_range If given an invalid contact identifier.
