@@ -342,7 +342,7 @@ public:
 
     /// @brief Gets the contacts associated with the identified body.
     /// @throws std::out_of_range if given an invalid id.
-    const Contacts& GetContacts(BodyID id) const;
+    const std::vector<KeyedContactPtr>& GetContacts(BodyID id) const;
 
     /// @throws std::out_of_range if given an invalid id.
     const BodyJoints& GetJoints(BodyID id) const;
@@ -467,7 +467,7 @@ public:
     /// @warning contacts are created and destroyed in the middle of a time step.
     /// Use <code>ContactListener</code> to avoid missing contacts.
     /// @return World contacts sized-range.
-    const Contacts& GetContacts() const noexcept;
+    std::vector<KeyedContactPtr> GetContacts() const;
 
     /// @brief Gets the identified contact.
     /// @throws std::out_of_range If given an invalid contact identifier.
@@ -756,7 +756,7 @@ private:
 
     /// @brief Cache of contacts associated with bodies.
     /// @note Size depends on and matches <code>size(m_bodyBuffer)</code>.
-    ObjectPool<Contacts> m_bodyContacts;
+    ObjectPool<std::vector<KeyedContactPtr>> m_bodyContacts;
 
     ///< Cache of joints associated with bodies.
     /// @note Size depends on and matches <code>size(m_bodyBuffer)</code>.
@@ -862,9 +862,9 @@ inline const WorldImpl::Joints& WorldImpl::GetJoints() const noexcept
     return m_joints;
 }
 
-inline const WorldImpl::Contacts& WorldImpl::GetContacts() const noexcept
+inline std::vector<KeyedContactPtr> WorldImpl::GetContacts() const
 {
-    return m_contacts;
+    return std::vector<KeyedContactPtr>{begin(m_contacts), end(m_contacts)};
 }
 
 inline bool WorldImpl::IsLocked() const noexcept
