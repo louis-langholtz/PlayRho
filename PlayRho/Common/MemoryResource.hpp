@@ -191,6 +191,8 @@ using std::pmr::new_delete_resource; // NOLINT(misc-unused-using-decls)
 using std::pmr::null_memory_resource; // NOLINT(misc-unused-using-decls)
 using std::pmr::set_default_resource; // NOLINT(misc-unused-using-decls)
 using std::pmr::get_default_resource; // NOLINT(misc-unused-using-decls)
+template <class T>
+using polymorphic_allocator = std::pmr::polymorphic_allocator<T>; // NOLINT(misc-unused-using-decls)
 
 }
 
