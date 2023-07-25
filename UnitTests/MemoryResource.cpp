@@ -80,7 +80,7 @@ public:
     std::vector<do_allocate_record> do_allocate_calls;
     std::vector<do_deallocate_record> do_deallocate_calls;
     mutable std::vector<do_is_equal_record> do_is_equal_calls;
-    
+
     void *do_allocate(std::size_t bytes, std::size_t alignment) override
     {
         auto pointer = unique_ptr{std::malloc(bytes)};
@@ -88,12 +88,12 @@ public:
         back.pointer = std::move(pointer);
         return back.pointer.get();
     }
-    
+
     void do_deallocate(void *p, std::size_t bytes, std::size_t alignment) override
     {
         do_deallocate_calls.emplace_back(p, bytes, alignment);
     }
-    
+
     bool do_is_equal(const memory_resource &other) const noexcept override
     {
         do_is_equal_calls.emplace_back(&other);

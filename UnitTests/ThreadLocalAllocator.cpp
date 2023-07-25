@@ -61,6 +61,25 @@ class TestMemoryResource: public pmr::memory_resource
     }
 };
 
+class NewDeleteResource: public pmr::memory_resource
+{
+public:
+    void *do_allocate(std::size_t bytes, std::size_t alignment) override
+    {
+        return pmr::new_delete_resource()->allocate(bytes, alignment);
+    }
+
+    void do_deallocate(void *p, std::size_t bytes, std::size_t alignment) override
+    {
+        pmr::new_delete_resource()->deallocate(p, bytes, alignment);
+    }
+
+    bool do_is_equal(const playrho::pmr::memory_resource &other) const noexcept override
+    {
+        return pmr::new_delete_resource()->is_equal(other);
+    }
+};
+
 }
 
 TEST(ThreadLocalAllocator, max_size)
@@ -135,6 +154,18 @@ TEST(ThreadLocalAllocator, deallocate)
         EXPECT_EQ(args.bytes, count * sizeof(value_type));
         EXPECT_EQ(args.alignment, alignof(value_type));
     }
+}
+
+TEST(ThreadLocalAllocator, allocate_deallocate)
+{
+    using value_type = int;
+    using allocator_type = ThreadLocalAllocator<value_type, NewDeleteResource>;
+    allocator_type allocator;
+    constexpr auto count = 42u;
+    auto p = static_cast<value_type*>(nullptr);
+    EXPECT_NO_THROW(p = allocator.allocate(count));
+    EXPECT_NE(p, nullptr);
+    EXPECT_NO_THROW(allocator.deallocate(p, count));
 }
 
 TEST(ThreadLocalAllocator, Equals)
