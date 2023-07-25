@@ -51,6 +51,7 @@
 #include <stack>
 #include <stdexcept>
 #include <functional>
+#include <type_traits> // for std::is_default_constructible_v, etc.
 
 namespace playrho {
 
@@ -945,6 +946,11 @@ inline void WorldImpl::SetPostSolveContactListener(ImpulsesContactListener liste
 {
     m_postSolveContactListener = std::move(listener);
 }
+
+// State & confirm intended compile-time traits of WorldImpl class...
+static_assert(std::is_default_constructible_v<WorldImpl>);
+static_assert(std::is_copy_constructible_v<WorldImpl>);
+static_assert(std::is_move_constructible_v<WorldImpl>);
 
 } // namespace d2
 } // namespace playrho

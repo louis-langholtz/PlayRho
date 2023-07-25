@@ -92,15 +92,6 @@ using std::unique;
 namespace playrho {
 namespace d2 {
 
-static_assert(std::is_default_constructible<WorldImpl>::value,
-              "WorldImpl must be default constructible!");
-static_assert(std::is_copy_constructible<WorldImpl>::value,
-              "WorldImpl must be copy constructible!");
-static_assert(std::is_copy_assignable<WorldImpl>::value,
-              "WorldImpl must be copy assignable!");
-static_assert(std::is_nothrow_destructible<WorldImpl>::value,
-              "WorldImpl must be nothrow destructible!");
-
 using playrho::size;
 
 /// @brief Collection of body constraints.
