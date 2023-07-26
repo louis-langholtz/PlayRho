@@ -774,12 +774,6 @@ private:
     /// @note Capacity grows on calls to <code>CreateBody</code>, <code>SetBody</code>, and <code>SetShape</code>.
     std::vector<std::pair<BodyID, ShapeID>> m_fixturesForProxies;
 
-    /// @brief Cache of constraints associated with bodies.
-    /// @note Size grows on calls to <code>CreateBody</code>.
-    /// @note Size shrinks on calls to <code>Remove(BodyID id)</code>.
-    /// @note Size depends on and matches <code>size(m_bodyBuffer)</code>.
-    std::vector<BodyConstraint> m_bodyConstraints;
-
     /// @brief Bodies for proxies queue.
     /// @note Size & capacity grows on calls to <code>SetBody</code>.
     /// @note Size shrinks on calls to <code>Remove(BodyID id)</code>.
