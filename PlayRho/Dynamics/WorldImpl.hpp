@@ -516,6 +516,16 @@ private:
         e_needsContactFiltering = 0x0080,
     };
 
+    /// Bodies, contacts, and joints that are already in an <code>Island</code> by their ID.
+    /// @see Step.
+    struct Islanded
+    {
+        using vector = std::vector<bool>;
+        vector bodies;
+        vector contacts;
+        vector joints;
+    };
+
     /// @brief Solves the step.
     /// @details Finds islands, integrates and solves constraints, solves position constraints.
     /// @note This may miss collisions involving fast moving bodies and allow them to tunnel
@@ -789,18 +799,13 @@ private:
     ///   during a given time step.
     Contacts m_contacts;
 
-    /// @brief Per body boolean on whether body islanded.
-    /// @note Size depends on and matches <code>size(m_bodyBuffer)</code>.
-    std::vector<bool> m_islandedBodies;
+    /// Bodies, contacts, and joints that are already in an island.
+    /// @note This is step-wise state that needs to be here or within a step solving co-routine for sub-stepping TOI solving.
+    /// @note This instance's members capacities depend on state changed outside the step loop.
+    /// @see Island.
+    Islanded m_islanded;
 
-    /// @brief Per contact boolean on whether contact islanded.
-    /// @note Size depends on and matches <code>size(m_contactBuffer)</code>.
-    std::vector<bool> m_islandedContacts;
-
-    /// @brief Per joint boolean on whether joint islanded.
-    /// @note Size depends on and matches <code>size(m_jointBuffer)</code>.
-    std::vector<bool> m_islandedJoints;
-
+    // Listeners...
     ShapeListener m_shapeDestructionListener; ///< Listener for shape destruction.
     AssociationListener m_detachListener; ///< Listener for shapes detaching from bodies.
     JointListener m_jointDestructionListener; ///< Listener for joint destruction.
