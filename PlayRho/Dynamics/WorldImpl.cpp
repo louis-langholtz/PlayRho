@@ -115,7 +115,7 @@ namespace {
 constexpr auto idIsDestroyedMsg = "ID is destroyed";
 constexpr auto worldIsLockedMsg = "world is locked";
 
-inline void IntegratePositions(const Island::Bodies& bodies, BodyConstraints& constraints, Time h)
+inline void IntegratePositions(const Span<const BodyID>& bodies, const Span<BodyConstraint>& constraints, Time h)
 {
     assert(IsValid(h));
     for_each(cbegin(bodies), cend(bodies), [&](const auto& id) {
@@ -135,7 +135,7 @@ inline void IntegratePositions(const Island::Bodies& bodies, BodyConstraints& co
 /// @param constraints Array of m_contactCount contact velocity constraint elements.
 inline void Report(const WorldImpl::ImpulsesContactListener& listener,
                    const Span<const ContactID>& contacts,
-                   const VelocityConstraints& constraints,
+                   const Span<const VelocityConstraint>& constraints,
                    StepConf::iteration_type solved)
 {
     const auto numContacts = size(contacts);
@@ -201,7 +201,7 @@ VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc,
     return vp;
 }
 
-void WarmStartVelocities(const VelocityConstraints& velConstraints,
+void WarmStartVelocities(const Span<const VelocityConstraint>& velConstraints,
                          const Span<BodyConstraint>& bodies)
 {
     for_each(cbegin(velConstraints), cend(velConstraints), [&](const VelocityConstraint& vc) {
@@ -213,7 +213,7 @@ void WarmStartVelocities(const VelocityConstraints& velConstraints,
     });
 }
 
-BodyConstraints GetBodyConstraints(const Island::Bodies& bodies,
+BodyConstraints GetBodyConstraints(const Span<const BodyID>& bodies,
                                    const ObjectPool<Body>& bodyBuffer,
                                    Time h, const MovementConf& conf)
 {
@@ -225,7 +225,7 @@ BodyConstraints GetBodyConstraints(const Island::Bodies& bodies,
     return constraints;
 }
 
-PositionConstraints GetPositionConstraints(const Island::Contacts& contacts,
+PositionConstraints GetPositionConstraints(const Span<const ContactID>& contacts,
                                            const ObjectPool<Contact>& contactBuffer,
                                            const ObjectPool<Manifold>& manifoldBuffer,
                                            const ObjectPool<Shape>& shapeBuffer)
@@ -256,11 +256,11 @@ PositionConstraints GetPositionConstraints(const Island::Contacts& contacts,
 ///   normal for them.
 /// @post Velocity constraints will have their constraint points set.
 /// @see SolveVelocityConstraints.
-VelocityConstraints GetVelocityConstraints(const Island::Contacts& contacts,
+VelocityConstraints GetVelocityConstraints(const Span<const ContactID>& contacts,
                                            const ObjectPool<Contact>& contactBuffer,
                                            const ObjectPool<Manifold>& manifoldBuffer,
                                            const ObjectPool<Shape>& shapeBuffer,
-                                           const BodyConstraints& bodies,
+                                           const Span<const BodyConstraint>& bodies,
                                            const VelocityConstraint::Conf conf)
 {
     auto velConstraints = VelocityConstraints{};
@@ -298,7 +298,8 @@ VelocityConstraints GetVelocityConstraints(const Island::Contacts& contacts,
 /// @pre <code>UpdateVelocityConstraints</code> has been called on the velocity constraints.
 /// @return Maximum momentum used for solving both the tangential and normal portions of
 ///   the velocity constraints.
-Momentum SolveVelocityConstraintsViaGS(VelocityConstraints& velConstraints, BodyConstraints& bodies)
+Momentum SolveVelocityConstraintsViaGS(const Span<VelocityConstraint>& velConstraints,
+                                       const Span<BodyConstraint>& bodies)
 {
     auto maxIncImpulse = 0_Ns;
     for_each(begin(velConstraints), end(velConstraints), [&](VelocityConstraint& vc)
@@ -314,12 +315,12 @@ Momentum SolveVelocityConstraintsViaGS(VelocityConstraints& velConstraints, Body
 ///  <code>-conf.linearSlop</code> because code won't push the separation above this
 ///   amount to begin with.
 /// @return Minimum separation.
-Length SolvePositionConstraintsViaGS(PositionConstraints& posConstraints,
-                                     BodyConstraints& bodies,
+Length SolvePositionConstraintsViaGS(const Span<const PositionConstraint>& posConstraints,
+                                     const Span<BodyConstraint>& bodies,
                                      const ConstraintSolverConf& conf)
 {
     auto minSeparation = std::numeric_limits<Length>::infinity();
-    for_each(begin(posConstraints), end(posConstraints), [&](PositionConstraint &pc) {
+    for_each(begin(posConstraints), end(posConstraints), [&](const PositionConstraint &pc) {
         assert(pc.GetBodyA() != pc.GetBodyB()); // Confirms ContactManager::Add() did its job.
         const auto res = GaussSeidel::SolvePositionConstraint(pc, true, true, bodies, conf);
         bodies[to_underlying(pc.GetBodyA())].SetPosition(res.pos_a);
@@ -337,7 +338,7 @@ inline Time GetUnderActiveTime(const Body& b, const StepConf& conf) noexcept
     return (sleepable && underactive)? GetUnderActiveTime(b) + conf.deltaTime: 0_s;
 }
 
-inline Time UpdateUnderActiveTimes(const Island::Bodies& bodies,
+inline Time UpdateUnderActiveTimes(const Span<const BodyID>& bodies,
                                    ObjectPool<Body>& bodyBuffer,
                                    const StepConf& conf)
 {
@@ -355,7 +356,7 @@ inline Time UpdateUnderActiveTimes(const Island::Bodies& bodies,
     return minUnderActiveTime;
 }
 
-inline BodyCounter Sleepem(const Island::Bodies& bodies,
+inline BodyCounter Sleepem(const Span<const BodyID>& bodies,
                            ObjectPool<Body>& bodyBuffer,
                            ObjectPool<WorldImpl::Contacts>& bodyContacts,
                            ObjectPool<Contact>& contactBuffer)
@@ -448,7 +449,7 @@ void Unset(std::vector<bool>& islanded, const WorldImpl::Bodies& elements)
     }
 }
 
-void Unset(std::vector<bool>& islanded, const WorldImpl::Contacts& elements)
+void Unset(std::vector<bool>& islanded, const Span<const KeyedContactPtr>& elements)
 {
     for (const auto& element: elements) {
         islanded[to_underlying(std::get<ContactID>(element))] = false;
