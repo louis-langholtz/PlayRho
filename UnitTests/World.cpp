@@ -406,6 +406,49 @@ TEST(World, CopyAssignment)
     }
 }
 
+TEST(World, MoveConstruction)
+{
+    auto world = World{};
+    const auto shapeId = CreateShape(world, DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m));
+    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    Attach(world, b1, shapeId);
+    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    Attach(world, b2, shapeId);
+    world.CreateJoint(Joint{RevoluteJointConf{b1, b2, Length2{}}});
+    world.CreateJoint(Joint{GetPrismaticJointConf(world, b1, b2, Length2{}, UnitVec::GetRight())});
+    world.CreateJoint(Joint{GetPulleyJointConf(world, b1, b2, Length2{}, Length2{},
+                                               Length2{}, Length2{}).UseRatio(Real(1))});
+    auto stepConf = StepConf{};
+    world.Step(stepConf);
+    {
+        auto other = World{std::move(world)};
+        EXPECT_EQ(other.GetBodies().size(), 2u);
+        EXPECT_EQ(other.GetJoints().size(), 3u);
+    }
+}
+
+TEST(World, MoveAssignment)
+{
+    auto world = World{};
+    const auto shapeId = CreateShape(world, DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m));
+    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    Attach(world, b1, shapeId);
+    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    Attach(world, b2, shapeId);
+    world.CreateJoint(Joint{RevoluteJointConf{b1, b2, Length2{}}});
+    world.CreateJoint(Joint{GetPrismaticJointConf(world, b1, b2, Length2{}, UnitVec::GetRight())});
+    world.CreateJoint(Joint{GetPulleyJointConf(world, b1, b2, Length2{}, Length2{},
+                                               Length2{}, Length2{}).UseRatio(Real(1))});
+    auto stepConf = StepConf{};
+    world.Step(stepConf);
+    {
+        auto other = World{};
+        other = std::move(world);
+        EXPECT_EQ(other.GetBodies().size(), 2u);
+        EXPECT_EQ(other.GetJoints().size(), 3u);
+    }
+}
+
 TEST(World, CreateDestroyEmptyDynamicBody)
 {
     auto world = World{};
