@@ -28,6 +28,7 @@
 #include <utility> // for std::pair
 #include <vector>
 
+#include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/MemoryResource.hpp>
 
 namespace playrho::pmr {
@@ -108,7 +109,94 @@ public:
         }
     };
 
-    class BufferRecord;
+    /// @brief Signed size type.
+    using ssize_t = std::make_signed_t<std::size_t>;
+
+    class BufferRecord
+    {
+        void* pointer{};
+        std::size_t size_bytes{};
+        std::size_t align_bytes{};
+    public:
+        BufferRecord() noexcept = default;
+
+        BufferRecord(void* p, std::size_t n, std::size_t a)
+            : pointer{p},
+              size_bytes{n},
+              align_bytes{a}
+        {
+            // Intentionally empty.
+        }
+
+        BufferRecord(const BufferRecord& other) = default;
+
+        BufferRecord(BufferRecord&& other) noexcept
+            : pointer(std::exchange(other.pointer, nullptr)),
+              size_bytes(std::exchange(other.size_bytes, 0u)),
+              align_bytes(std::exchange(other.align_bytes, 0u))
+        {
+            // Intentionally empty.
+        }
+
+        ~BufferRecord() = default;
+
+        BufferRecord& operator=(const BufferRecord& other) = delete;
+
+        BufferRecord& operator=(BufferRecord&& other) noexcept
+        {
+            if (this != &other) {
+                pointer = std::exchange(other.pointer, pointer);
+                size_bytes = std::exchange(other.size_bytes, size_bytes);
+                align_bytes = std::exchange(other.align_bytes, align_bytes);
+            }
+            return *this;
+        }
+
+        BufferRecord& assign(void* p, std::size_t n, std::size_t a) noexcept
+        {
+            pointer = p;
+            size_bytes = n;
+            align_bytes = a;
+            return *this;
+        }
+
+        void *data() const noexcept
+        {
+            return pointer;
+        }
+
+        std::size_t size() const noexcept
+        {
+            return static_cast<std::size_t>(std::abs(ssize()));
+        }
+
+        ssize_t ssize() const noexcept
+        {
+            return ToSigned(size_bytes);
+        }
+
+        std::size_t alignment() const noexcept
+        {
+            return align_bytes;
+        }
+
+        bool is_allocated() const noexcept
+        {
+            return ssize() < 0;
+        }
+
+        void allocate() noexcept
+        {
+            assert(!is_allocated());
+            size_bytes = static_cast<std::size_t>(-abs(ssize()));
+        }
+
+        void deallocate() noexcept
+        {
+            assert(is_allocated());
+            size_bytes = size();
+        }
+    };
 
     /// @brief Gets the maximum number of bytes supported for any allocations this class does.
     /// @see PoolMemoryResource(const Options& options), do_allocate.
@@ -133,8 +221,16 @@ public:
     ///   the <code>options.reserveBuffers</code> buffers.
     PoolMemoryResource(const Options& options, memory_resource* upstream);
 
-    /// @brief Copy constructor deleted!
-    PoolMemoryResource(const PoolMemoryResource& other) = delete;
+    PoolMemoryResource(memory_resource* upstream): PoolMemoryResource(Options{}, upstream) {}
+
+    /// @brief Copy constructor.
+    /// @post <code>GetOptions()</code> returns same value as <code>other.GetOptions()</code>.
+    /// @post <code>GetUpstream()</code> returns same value as <code>other.GetUpstream()</code>.
+    /// @post <code>GetStats()</code> returns the same value as would be returned if this instance
+    ///   was initialized with the options of other.
+    PoolMemoryResource(const PoolMemoryResource& other);
+
+    PoolMemoryResource(PoolMemoryResource&& other) noexcept;
 
     /// @brief Destructor.
     /// @note Deallocates the allocated memory.
@@ -143,6 +239,8 @@ public:
 
     /// @brief Copy assignment deleted!
     PoolMemoryResource& operator=(const PoolMemoryResource& other) = delete;
+
+    PoolMemoryResource& operator=(PoolMemoryResource&& other) noexcept;
 
     /// @brief Gets the options used by this instance.
     /// @see PoolMemoryResource(const Options&, memory_resource*).
@@ -190,14 +288,6 @@ private:
     /// @note Buffers are not actually released until this instance's destruction.
     std::vector<BufferRecord> m_buffers;
 };
-
-// Confirm and recognize expected/required type traits...
-static_assert(std::is_nothrow_default_constructible_v<PoolMemoryResource>);
-static_assert(!std::is_move_constructible_v<PoolMemoryResource>);
-static_assert(!std::is_move_assignable_v<PoolMemoryResource>);
-static_assert(!std::is_copy_constructible_v<PoolMemoryResource>);
-static_assert(!std::is_copy_assignable_v<PoolMemoryResource>);
-static_assert(!std::is_move_assignable_v<PoolMemoryResource>);
 
 /// @brief Provide output streaming support for <code>PoolMemoryResource::Stats</code>.
 std::ostream& operator<<(std::ostream& os, const PoolMemoryResource::Stats& stats);

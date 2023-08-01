@@ -26,6 +26,7 @@
 /// Declarations of the WorldImpl class.
 
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/PoolMemoryResource.hpp>
 #include <PlayRho/Common/Positive.hpp>
 #include <PlayRho/Common/ObjectPool.hpp>
 
@@ -715,7 +716,7 @@ private:
     /// @note New contacts will all have overlapping AABBs.
     /// @post <code>GetProxies()</code> will return an empty container.
     /// @see GetProxies.
-    ContactCounter FindNewContacts(std::vector<ContactKey>&& contactKeys);
+    ContactCounter FindNewContacts(std::vector<ContactKey, pmr::polymorphic_allocator<ContactKey>>&& contactKeys);
 
     /// @brief Destroys the given contact and removes it from its container.
     /// @details This updates the contacts container, returns the memory to the allocator,
@@ -751,6 +752,12 @@ private:
 
     /******** Member variables. ********/
 
+    pmr::PoolMemoryResource m_bodyConstraintsResource;
+    pmr::PoolMemoryResource m_positionConstraintsResource;
+    pmr::PoolMemoryResource m_velocityConstraintsResource;
+    pmr::PoolMemoryResource m_contactKeysResource;
+    pmr::PoolMemoryResource m_islandResource;
+
     DynamicTree m_tree; ///< Dynamic tree.
 
     ObjectPool<Body> m_bodyBuffer; ///< Array of body data both used and freed.
@@ -777,7 +784,7 @@ private:
     ObjectPool<Proxies> m_bodyProxies;
 
     /// @brief Buffer of proxies to inspect for finding new contacts.
-    /// @note Built from fixtures-for-proxies and on body synchronization. Consumed by the finding-of-new-contacts.
+    /// @note Built from @a m_fixturesForProxies and on body synchronization. Consumed by the finding-of-new-contacts.
     Proxies m_proxiesForContacts;
 
     /// @brief Fixtures for proxies queue.

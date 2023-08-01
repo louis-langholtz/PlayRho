@@ -24,6 +24,7 @@
 /// @file
 /// Declarations of the WorldConf class.
 
+#include <PlayRho/Common/MemoryResource.hpp> // for pmr things
 #include <PlayRho/Common/Settings.hpp>
 
 namespace playrho {
@@ -31,6 +32,9 @@ namespace d2 {
 
 /// @brief World configuration data.
 struct WorldConf {
+
+    static inline const auto DefaultUpstream = pmr::new_delete_resource();
+
     /// @brief Default min vertex radius.
     static constexpr auto DefaultMinVertexRadius = ::playrho::DefaultMinVertexRadius;
 
@@ -47,6 +51,9 @@ struct WorldConf {
     static constexpr auto DefaultProxyCapacity = ContactCounter(1024);
 
     /// @brief Uses the given min vertex radius value.
+    constexpr WorldConf& UseUpstream(pmr::memory_resource *value) noexcept;
+
+    /// @brief Uses the given min vertex radius value.
     constexpr WorldConf& UseMinVertexRadius(Positive<Length> value) noexcept;
 
     /// @brief Uses the given max vertex radius value.
@@ -60,6 +67,8 @@ struct WorldConf {
 
     /// @brief Uses the given value as the initial proxy capacity.
     constexpr WorldConf& UseProxyCapacity(ContactCounter value) noexcept;
+
+    pmr::memory_resource *upstream = DefaultUpstream;
 
     /// @brief Minimum vertex radius.
     /// @details This is the minimum vertex radius that this world establishes which bodies
@@ -89,6 +98,12 @@ struct WorldConf {
     /// @brief Initial proxy capacity.
     ContactCounter proxyCapacity = DefaultProxyCapacity;
 };
+
+constexpr WorldConf& WorldConf::UseUpstream(pmr::memory_resource *value) noexcept
+{
+    upstream = value;
+    return *this;
+}
 
 constexpr WorldConf& WorldConf::UseMinVertexRadius(Positive<Length> value) noexcept
 {
@@ -126,7 +141,7 @@ constexpr WorldConf& WorldConf::UseProxyCapacity(ContactCounter value) noexcept
 ///     "cannot use defaulted constructor of '<code>Conf</code>' within '<code>World</code>'
 ///     outside of member functions because 'gravity' has an initializer"
 /// @relatedalso WorldConf
-constexpr WorldConf GetDefaultWorldConf() noexcept
+inline WorldConf GetDefaultWorldConf() noexcept
 {
     return WorldConf{};
 }

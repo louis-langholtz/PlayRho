@@ -33,99 +33,85 @@ static_assert(PoolMemoryResource::Options{}.reserveBuffers == 0u);
 static_assert(PoolMemoryResource::Options{}.reserveBytes == 0u);
 static_assert(PoolMemoryResource::Options{}.limitBuffers == static_cast<std::size_t>(-1));
 
-/// @brief Signed size type.
-using ssize_t = std::make_signed_t<std::size_t>;
+namespace {
 
-class PoolMemoryResource::BufferRecord
+PoolMemoryResource::Options Validate(const PoolMemoryResource::Options& options)
 {
-    void* pointer{};
-    std::size_t size_bytes{};
-    std::size_t align_bytes{};
-public:
-    BufferRecord() noexcept = default;
-
-    BufferRecord(void* p, std::size_t n, std::size_t a)
-        : pointer{p},
-          size_bytes{n},
-          align_bytes{a}
-    {
-        // Intentionally empty.
+    if (options.reserveBuffers > options.limitBuffers) {
+        throw std::length_error{"pre-allocation would exceed buffers limit"};
     }
 
-    BufferRecord(const BufferRecord& other) = delete;
-
-    BufferRecord(BufferRecord&& other) noexcept
-        : pointer(std::exchange(other.pointer, nullptr)),
-          size_bytes(std::exchange(other.size_bytes, 0u)),
-          align_bytes(std::exchange(other.align_bytes, 0u))
-    {
-        // Intentionally empty.
+    if (options.reserveBytes > PoolMemoryResource::GetMaxNumBytes()) {
+        throw std::bad_array_new_length{};
     }
+    return options;
+}
 
-    BufferRecord& operator=(const BufferRecord& other) = delete;
-
-    BufferRecord& operator=(BufferRecord&& other) noexcept
-    {
-        if (this != &other) {
-            pointer = std::exchange(other.pointer, pointer);
-            size_bytes = std::exchange(other.size_bytes, size_bytes);
-            align_bytes = std::exchange(other.align_bytes, align_bytes);
+std::vector<PoolMemoryResource::BufferRecord>
+GetBuffers(const PoolMemoryResource::Options& options, memory_resource* upstream)
+{
+    std::vector<PoolMemoryResource::BufferRecord> buffers;
+    buffers.resize(options.reserveBuffers);
+    for (auto i = std::size_t{0}; i < options.reserveBuffers; ++i) {
+        auto* p = static_cast<void*>(nullptr);
+        try {
+            p = upstream->allocate(options.reserveBytes, alignof(std::max_align_t)); // could throw!
         }
-        return *this;
+        catch (...) {
+            // Attempt to cleanup by deallocating any memory already allocated...
+            for (--i; i < std::size_t(-1); --i) {
+                auto& buffer = buffers[i];
+                try {
+                    upstream->deallocate(buffer.data(), buffer.size(), buffer.alignment());
+                }
+                catch (...) {
+                    std::terminate();
+                }
+            }
+            throw; // rethrow original exception
+        }
+        buffers[i].assign(p, options.reserveBytes, alignof(std::max_align_t));
     }
+    return buffers;
+}
 
-    BufferRecord& assign(void* p, std::size_t n, std::size_t a) noexcept
-    {
-        pointer = p;
-        size_bytes = n;
-        align_bytes = a;
-        return *this;
-    }
-
-    void *data() const noexcept
-    {
-        return pointer;
-    }
-
-    std::size_t size() const noexcept
-    {
-        return static_cast<std::size_t>(std::abs(ssize()));
-    }
-
-    ssize_t ssize() const noexcept
-    {
-        return ToSigned(size_bytes);
-    }
-
-    std::size_t alignment() const noexcept
-    {
-        return align_bytes;
-    }
-
-    bool is_allocated() const noexcept
-    {
-        return ssize() < 0;
-    }
-
-    void allocate() noexcept
-    {
-        assert(!is_allocated());
-        size_bytes = static_cast<std::size_t>(-abs(ssize()));
-    }
-
-    void deallocate() noexcept
-    {
-        assert(is_allocated());
-        size_bytes = size();
-    }
-};
+}
 
 std::size_t PoolMemoryResource::GetMaxNumBytes() noexcept
 {
     return static_cast<std::size_t>(std::numeric_limits<ssize_t>::max());
 }
 
-PoolMemoryResource::PoolMemoryResource() noexcept = default;
+PoolMemoryResource::PoolMemoryResource() noexcept:
+    m_options{Validate(Options{})},
+    m_upstream{new_delete_resource()},
+    m_buffers{GetBuffers(m_options, m_upstream)}
+{
+    // Intentionally empty
+}
+
+PoolMemoryResource::PoolMemoryResource(const Options& options, memory_resource* upstream)
+    : m_options{Validate(options)},
+      m_upstream{upstream ? upstream : new_delete_resource()},
+      m_buffers{GetBuffers(m_options, m_upstream)}
+{
+    // Intentionally empty
+}
+
+PoolMemoryResource::PoolMemoryResource(const PoolMemoryResource& other)
+    : m_options{other.m_options},
+      m_upstream{other.m_upstream},
+      m_buffers{GetBuffers(m_options, m_upstream)}
+{
+    // Intentionally empty
+}
+
+PoolMemoryResource::PoolMemoryResource(PoolMemoryResource&& other) noexcept:
+    m_options(std::exchange(other.m_options, Options())),
+    m_upstream(std::exchange(other.m_upstream, new_delete_resource())),
+    m_buffers(std::exchange(other.m_buffers, {}))
+{
+}
 
 PoolMemoryResource::~PoolMemoryResource() noexcept
 {
@@ -139,39 +125,14 @@ PoolMemoryResource::~PoolMemoryResource() noexcept
     }
 }
 
-PoolMemoryResource::PoolMemoryResource(const Options& options, memory_resource* upstream)
-    : m_options{options}, m_upstream{upstream ? upstream : new_delete_resource()}
+PoolMemoryResource& PoolMemoryResource::operator=(PoolMemoryResource&& other) noexcept
 {
-    if (m_options.reserveBuffers > m_options.limitBuffers) {
-        throw std::length_error{"pre-allocation would exceed buffers limit"};
+    if (this != &other) {
+        m_options = std::exchange(other.m_options, Options());
+        m_upstream = std::exchange(other.m_upstream, new_delete_resource());
+        m_buffers = std::exchange(other.m_buffers, {});
     }
-
-    if (m_options.reserveBytes > GetMaxNumBytes()) {
-        throw std::bad_array_new_length{};
-    }
-
-    m_buffers.resize(m_options.reserveBuffers);
-    for (auto i = std::size_t{0}; i < m_options.reserveBuffers; ++i) {
-        auto* p = static_cast<void*>(nullptr);
-        try {
-            p = m_upstream->allocate(m_options.reserveBytes, alignof(std::max_align_t)); // could throw!
-        }
-        catch (...) {
-            // Attempt to cleanup by deallocating any memory already allocated...
-            for (--i; i < std::size_t(-1); --i) {
-                auto& buffer = m_buffers[i];
-                try {
-                    m_upstream->deallocate(buffer.data(), buffer.size(), buffer.alignment());
-                }
-                catch (...) {
-                    std::terminate();
-                }
-            }
-            throw; // rethrow original exception
-        }
-        auto& buffer = m_buffers[i];
-        buffer.assign(p, m_options.reserveBytes, alignof(std::max_align_t));
-    }
+    return *this;
 }
 
 PoolMemoryResource::Stats PoolMemoryResource::GetStats() const noexcept
