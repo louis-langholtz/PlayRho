@@ -86,7 +86,7 @@ TEST(PoolMemoryResource_DeathTest, DestructorTerminatesOnDeallocThrow)
         }, [](void *p, std::size_t bytes, std::size_t alignment){
             throw TestDeallocateArgs{p, bytes, alignment};
         }};
-        auto opts = PoolMemoryResource::Options{};
+        auto opts = PoolMemoryOptions{};
         PoolMemoryResource object{opts, &upstream};
         (void) object.do_allocate(byte_size, align_size);
     };
@@ -128,7 +128,7 @@ TEST(PoolMemoryResource_DeathTest, ConstructionTerminatesOnDeallocThrow)
         }, [](void *p, std::size_t bytes, std::size_t alignment){
             throw TestDeallocateArgs{p, bytes, alignment};
         }};
-        auto opts = PoolMemoryResource::Options{};
+        auto opts = PoolMemoryOptions{};
         opts.reserveBuffers = 2u;
         PoolMemoryResource object{opts, &upstream};
     };
@@ -159,7 +159,7 @@ TEST(PoolMemoryResource_DeathTest, ConstructionTerminatesOnDeallocThrow)
 
 TEST(PoolMemoryResource_Options, DefaultConstruction)
 {
-    const PoolMemoryResource::Options object;
+    const PoolMemoryOptions object;
     EXPECT_EQ(object.reserveBuffers, 0u);
     EXPECT_EQ(object.reserveBytes, 0u);
     EXPECT_EQ(object.limitBuffers, static_cast<std::size_t>(-1));
@@ -167,33 +167,33 @@ TEST(PoolMemoryResource_Options, DefaultConstruction)
 
 TEST(PoolMemoryResource_Options, Equality)
 {
-    EXPECT_TRUE(PoolMemoryResource::Options() == PoolMemoryResource::Options());
+    EXPECT_TRUE(PoolMemoryOptions() == PoolMemoryOptions());
     constexpr auto reserveBuffers = 11u;
     constexpr auto reserveBytes = 42u;
     constexpr auto limitBuffers = 12u;
     {
-        const PoolMemoryResource::Options a{reserveBuffers, reserveBytes, limitBuffers};
-        const PoolMemoryResource::Options b{reserveBuffers, reserveBytes, limitBuffers};
+        const PoolMemoryOptions a{reserveBuffers, reserveBytes, limitBuffers};
+        const PoolMemoryOptions b{reserveBuffers, reserveBytes, limitBuffers};
         EXPECT_TRUE(a == a);
         EXPECT_TRUE(a == b);
         EXPECT_TRUE(b == a);
         EXPECT_TRUE(b == b);
     }
     {
-        const PoolMemoryResource::Options a{reserveBuffers, reserveBytes, limitBuffers};
-        const PoolMemoryResource::Options b{reserveBuffers + 1u, reserveBytes, limitBuffers};
+        const PoolMemoryOptions a{reserveBuffers, reserveBytes, limitBuffers};
+        const PoolMemoryOptions b{reserveBuffers + 1u, reserveBytes, limitBuffers};
         EXPECT_FALSE(a == b);
         EXPECT_FALSE(b == a);
     }
     {
-        const PoolMemoryResource::Options a{reserveBuffers, reserveBytes, limitBuffers};
-        const PoolMemoryResource::Options b{reserveBuffers, reserveBytes + 1u, limitBuffers};
+        const PoolMemoryOptions a{reserveBuffers, reserveBytes, limitBuffers};
+        const PoolMemoryOptions b{reserveBuffers, reserveBytes + 1u, limitBuffers};
         EXPECT_FALSE(a == b);
         EXPECT_FALSE(b == a);
     }
     {
-        const PoolMemoryResource::Options a{reserveBuffers, reserveBytes, limitBuffers};
-        const PoolMemoryResource::Options b{reserveBuffers, reserveBytes, limitBuffers + 1u};
+        const PoolMemoryOptions a{reserveBuffers, reserveBytes, limitBuffers};
+        const PoolMemoryOptions b{reserveBuffers, reserveBytes, limitBuffers + 1u};
         EXPECT_FALSE(a == b);
         EXPECT_FALSE(b == a);
     }
@@ -201,33 +201,33 @@ TEST(PoolMemoryResource_Options, Equality)
 
 TEST(PoolMemoryResource_Options, Inequality)
 {
-    EXPECT_FALSE(PoolMemoryResource::Options() != PoolMemoryResource::Options());
+    EXPECT_FALSE(PoolMemoryOptions() != PoolMemoryOptions());
     constexpr auto reserveBuffers = 11u;
     constexpr auto reserveBytes = 42u;
     constexpr auto limitBuffers = 12u;
     {
-        const PoolMemoryResource::Options a{reserveBuffers, reserveBytes, limitBuffers};
-        const PoolMemoryResource::Options b{reserveBuffers, reserveBytes, limitBuffers};
+        const PoolMemoryOptions a{reserveBuffers, reserveBytes, limitBuffers};
+        const PoolMemoryOptions b{reserveBuffers, reserveBytes, limitBuffers};
         EXPECT_FALSE(a != a);
         EXPECT_FALSE(a != b);
         EXPECT_FALSE(b != a);
         EXPECT_FALSE(b != b);
     }
     {
-        const PoolMemoryResource::Options a{reserveBuffers, reserveBytes, limitBuffers};
-        const PoolMemoryResource::Options b{reserveBuffers + 1u, reserveBytes, limitBuffers};
+        const PoolMemoryOptions a{reserveBuffers, reserveBytes, limitBuffers};
+        const PoolMemoryOptions b{reserveBuffers + 1u, reserveBytes, limitBuffers};
         EXPECT_TRUE(a != b);
         EXPECT_TRUE(b != a);
     }
     {
-        const PoolMemoryResource::Options a{reserveBuffers, reserveBytes, limitBuffers};
-        const PoolMemoryResource::Options b{reserveBuffers, reserveBytes + 1u, limitBuffers};
+        const PoolMemoryOptions a{reserveBuffers, reserveBytes, limitBuffers};
+        const PoolMemoryOptions b{reserveBuffers, reserveBytes + 1u, limitBuffers};
         EXPECT_TRUE(a != b);
         EXPECT_TRUE(b != a);
     }
     {
-        const PoolMemoryResource::Options a{reserveBuffers, reserveBytes, limitBuffers};
-        const PoolMemoryResource::Options b{reserveBuffers, reserveBytes, limitBuffers + 1u};
+        const PoolMemoryOptions a{reserveBuffers, reserveBytes, limitBuffers};
+        const PoolMemoryOptions b{reserveBuffers, reserveBytes, limitBuffers + 1u};
         EXPECT_TRUE(a != b);
         EXPECT_TRUE(b != a);
     }
@@ -327,13 +327,13 @@ TEST(PoolMemoryResource_Stats, Inequality)
 TEST(PoolMemoryResource, DefaultConstruction)
 {
     const PoolMemoryResource object;
-    EXPECT_EQ(object.GetOptions(), PoolMemoryResource::Options());
+    EXPECT_EQ(object.GetOptions(), PoolMemoryOptions());
     EXPECT_EQ(object.GetStats(), PoolMemoryResource::Stats());
 }
 
 TEST(PoolMemoryResource, ConstructWithMoreReserveBuffersThanLimit)
 {
-    PoolMemoryResource::Options opts;
+    PoolMemoryOptions opts;
     opts.limitBuffers = 0u;
     opts.reserveBuffers = opts.limitBuffers + 1u;
     EXPECT_THROW(PoolMemoryResource(opts, new_delete_resource()), std::length_error);
@@ -341,14 +341,14 @@ TEST(PoolMemoryResource, ConstructWithMoreReserveBuffersThanLimit)
 
 TEST(PoolMemoryResource, ConstructWithTooManyReserveBytes)
 {
-    PoolMemoryResource::Options opts;
+    PoolMemoryOptions opts;
     opts.reserveBytes = PoolMemoryResource::GetMaxNumBytes() + 1u;
     EXPECT_THROW(PoolMemoryResource(opts, new_delete_resource()), std::bad_array_new_length);
 }
 
 TEST(PoolMemoryResource, ConstructReserveBuffersWithNullResource)
 {
-    PoolMemoryResource::Options opts;
+    PoolMemoryOptions opts;
     opts.reserveBuffers = 2u;
     EXPECT_THROW(PoolMemoryResource(opts, null_memory_resource()), std::bad_alloc);
 }
@@ -362,7 +362,7 @@ TEST(PoolMemoryResource, do_allocate_throws_bad_array_new_length)
 
 TEST(PoolMemoryResource, do_allocate_throws_length_error)
 {
-    PoolMemoryResource object{PoolMemoryResource::Options{0u, 0u, 0u}, new_delete_resource()};
+    PoolMemoryResource object{PoolMemoryOptions{0u, 0u, 0u}, new_delete_resource()};
     EXPECT_THROW(object.do_allocate(1u, 1u), std::length_error);
 }
 
@@ -376,7 +376,7 @@ TEST(PoolMemoryResource, do_allocate_unchanged_on_throw)
             throw TestDeallocateArgs{p, bytes, alignment};
         }
     };
-    PoolMemoryResource object{PoolMemoryResource::Options{0u, 0u, 1u}, &upstream};
+    PoolMemoryResource object{PoolMemoryOptions{0u, 0u, 1u}, &upstream};
     {
         const auto stats = object.GetStats();
         ASSERT_EQ(stats.numBuffers, 0u);
@@ -396,7 +396,7 @@ TEST(PoolMemoryResource, do_allocate_unchanged_on_throw)
 
 TEST(PoolMemoryResource, do_allocate_deallocate_releasable)
 {
-    PoolMemoryResource::Options opts;
+    PoolMemoryOptions opts;
     opts.releasable = true;
     PoolMemoryResource object{opts, new_delete_resource()};
     void* ptrA = nullptr;
@@ -425,7 +425,7 @@ TEST(PoolMemoryResource, do_allocate_deallocate_releasable)
 
 TEST(PoolMemoryResource, do_allocate_deallocate_nonreleasable)
 {
-    PoolMemoryResource::Options opts;
+    PoolMemoryOptions opts;
     opts.releasable = false;
     PoolMemoryResource object{opts, new_delete_resource()};
     void* ptrA = nullptr;

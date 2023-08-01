@@ -29,13 +29,99 @@
 
 namespace playrho::pmr {
 
-static_assert(PoolMemoryResource::Options{}.reserveBuffers == 0u);
-static_assert(PoolMemoryResource::Options{}.reserveBytes == 0u);
-static_assert(PoolMemoryResource::Options{}.limitBuffers == static_cast<std::size_t>(-1));
+static_assert(PoolMemoryOptions{}.reserveBuffers == 0u);
+static_assert(PoolMemoryOptions{}.reserveBytes == 0u);
+static_assert(PoolMemoryOptions{}.limitBuffers == static_cast<std::size_t>(-1));
+
+class PoolMemoryResource::BufferRecord
+{
+    void* pointer{};
+    std::size_t size_bytes{};
+    std::size_t align_bytes{};
+public:
+    BufferRecord() noexcept = default;
+
+    BufferRecord(void* p, std::size_t n, std::size_t a)
+        : pointer{p},
+          size_bytes{n},
+          align_bytes{a}
+    {
+        // Intentionally empty.
+    }
+
+    BufferRecord(const BufferRecord& other) = default;
+
+    BufferRecord(BufferRecord&& other) noexcept
+        : pointer(std::exchange(other.pointer, nullptr)),
+          size_bytes(std::exchange(other.size_bytes, 0u)),
+          align_bytes(std::exchange(other.align_bytes, 0u))
+    {
+        // Intentionally empty.
+    }
+
+    ~BufferRecord() = default;
+
+    BufferRecord& operator=(const BufferRecord& other) = delete;
+
+    BufferRecord& operator=(BufferRecord&& other) noexcept
+    {
+        if (this != &other) {
+            pointer = std::exchange(other.pointer, pointer);
+            size_bytes = std::exchange(other.size_bytes, size_bytes);
+            align_bytes = std::exchange(other.align_bytes, align_bytes);
+        }
+        return *this;
+    }
+
+    BufferRecord& assign(void* p, std::size_t n, std::size_t a) noexcept
+    {
+        pointer = p;
+        size_bytes = n;
+        align_bytes = a;
+        return *this;
+    }
+
+    void *data() const noexcept
+    {
+        return pointer;
+    }
+
+    std::size_t size() const noexcept
+    {
+        return static_cast<std::size_t>(std::abs(ssize()));
+    }
+
+    ssize_t ssize() const noexcept
+    {
+        return ToSigned(size_bytes);
+    }
+
+    std::size_t alignment() const noexcept
+    {
+        return align_bytes;
+    }
+
+    bool is_allocated() const noexcept
+    {
+        return ssize() < 0;
+    }
+
+    void allocate() noexcept
+    {
+        assert(!is_allocated());
+        size_bytes = static_cast<std::size_t>(-abs(ssize()));
+    }
+
+    void deallocate() noexcept
+    {
+        assert(is_allocated());
+        size_bytes = size();
+    }
+};
 
 namespace {
 
-PoolMemoryResource::Options Validate(const PoolMemoryResource::Options& options)
+PoolMemoryOptions Validate(const PoolMemoryOptions& options)
 {
     if (options.reserveBuffers > options.limitBuffers) {
         throw std::length_error{"pre-allocation would exceed buffers limit"};
@@ -48,7 +134,7 @@ PoolMemoryResource::Options Validate(const PoolMemoryResource::Options& options)
 }
 
 std::vector<PoolMemoryResource::BufferRecord>
-GetBuffers(const PoolMemoryResource::Options& options, memory_resource* upstream)
+GetBuffers(const PoolMemoryOptions& options, memory_resource* upstream)
 {
     std::vector<PoolMemoryResource::BufferRecord> buffers;
     buffers.resize(options.reserveBuffers);
@@ -82,15 +168,7 @@ std::size_t PoolMemoryResource::GetMaxNumBytes() noexcept
     return static_cast<std::size_t>(std::numeric_limits<ssize_t>::max());
 }
 
-PoolMemoryResource::PoolMemoryResource() noexcept:
-    m_options{Validate(Options{})},
-    m_upstream{new_delete_resource()},
-    m_buffers{GetBuffers(m_options, m_upstream)}
-{
-    // Intentionally empty
-}
-
-PoolMemoryResource::PoolMemoryResource(const Options& options, memory_resource* upstream)
+PoolMemoryResource::PoolMemoryResource(const PoolMemoryOptions& options, memory_resource* upstream)
     : m_options{Validate(options)},
       m_upstream{upstream ? upstream : new_delete_resource()},
       m_buffers{GetBuffers(m_options, m_upstream)}
@@ -107,7 +185,7 @@ PoolMemoryResource::PoolMemoryResource(const PoolMemoryResource& other)
 }
 
 PoolMemoryResource::PoolMemoryResource(PoolMemoryResource&& other) noexcept:
-    m_options(std::exchange(other.m_options, Options())),
+    m_options(std::exchange(other.m_options, PoolMemoryOptions())),
     m_upstream(std::exchange(other.m_upstream, new_delete_resource())),
     m_buffers(std::exchange(other.m_buffers, {}))
 {
@@ -128,7 +206,7 @@ PoolMemoryResource::~PoolMemoryResource() noexcept
 PoolMemoryResource& PoolMemoryResource::operator=(PoolMemoryResource&& other) noexcept
 {
     if (this != &other) {
-        m_options = std::exchange(other.m_options, Options());
+        m_options = std::exchange(other.m_options, PoolMemoryOptions());
         m_upstream = std::exchange(other.m_upstream, new_delete_resource());
         m_buffers = std::exchange(other.m_buffers, {});
     }
