@@ -755,6 +755,36 @@ WorldImpl::WorldImpl(const WorldConf& conf):
     m_islanded.contacts.reserve(conf.contactCapacity);
 }
 
+WorldImpl::WorldImpl(const WorldImpl& other):
+    m_bodyConstraintsResource(other.m_bodyConstraintsResource.GetOptions()),
+    m_positionConstraintsResource(other.m_positionConstraintsResource.GetOptions()),
+    m_velocityConstraintsResource(other.m_velocityConstraintsResource.GetOptions()),
+    m_contactKeysResource(other.m_contactKeysResource.GetOptions()),
+    m_islandResource(other.m_islandResource.GetOptions()),
+    m_tree(other.m_tree),
+    m_bodyBuffer(other.m_bodyBuffer),
+    m_shapeBuffer(other.m_shapeBuffer),
+    m_jointBuffer(other.m_jointBuffer),
+    m_contactBuffer(other.m_contactBuffer),
+    m_manifoldBuffer(other.m_manifoldBuffer),
+    m_bodyContacts(other.m_bodyContacts),
+    m_bodyJoints(other.m_bodyJoints),
+    m_bodyProxies(other.m_bodyProxies),
+    m_proxiesForContacts(other.m_proxiesForContacts),
+    m_fixturesForProxies(other.m_fixturesForProxies),
+    m_bodiesForSync(other.m_bodiesForSync),
+    m_bodies(other.m_bodies),
+    m_joints(other.m_joints),
+    m_contacts(other.m_contacts),
+    m_islanded(other.m_islanded),
+    m_listeners(other.m_listeners),
+    m_flags(other.m_flags),
+    m_inv_dt0(other.m_inv_dt0),
+    m_minVertexRadius(other.m_minVertexRadius),
+    m_maxVertexRadius(other.m_maxVertexRadius)
+{
+}
+
 WorldImpl::~WorldImpl() noexcept
 {
     Clear();
@@ -762,10 +792,10 @@ WorldImpl::~WorldImpl() noexcept
 
 void WorldImpl::Clear() noexcept
 {
-    if (m_jointDestructionListener) {
+    if (m_listeners.jointDestruction) {
         try {
             for_each(cbegin(m_joints), cend(m_joints), [this](const auto& id) {
-                m_jointDestructionListener(id);
+                m_listeners.jointDestruction(id);
             });
         }
         catch (...)
@@ -773,12 +803,12 @@ void WorldImpl::Clear() noexcept
             // Don't allow exception to escape.
         }
     }
-    if (m_shapeDestructionListener) {
+    if (m_listeners.shapeDestruction) {
         try {
             for (auto&& shape: m_shapeBuffer) {
                 if (shape != Shape{}) {
                     const auto index = &shape - m_shapeBuffer.data();
-                    m_shapeDestructionListener(static_cast<ShapeID>(static_cast<underlying_type_t<ShapeID>>(index)));
+                    m_listeners.shapeDestruction(static_cast<ShapeID>(static_cast<underlying_type_t<ShapeID>>(index)));
                 }
             }
         }
@@ -879,8 +909,8 @@ void WorldImpl::Destroy(BodyID id)
     auto& joints = m_bodyJoints[to_underlying(id)];
     while (!joints.empty()) {
         const auto jointID = std::get<JointID>(*begin(joints));
-        if (m_jointDestructionListener) {
-            m_jointDestructionListener(jointID);
+        if (m_listeners.jointDestruction) {
+            m_listeners.jointDestruction(jointID);
         }
         const auto endIter = cend(m_joints);
         const auto iter = find(cbegin(m_joints), endIter, jointID);
@@ -905,9 +935,9 @@ void WorldImpl::Destroy(BodyID id)
     for (const auto& proxy: proxies) {
         m_tree.DestroyLeaf(proxy);
     }
-    if (m_detachListener) {
+    if (m_listeners.detach) {
         for (const auto& shapeId: body.GetShapes()) {
-            m_detachListener(std::make_pair(id, shapeId));
+            m_listeners.detach(std::make_pair(id, shapeId));
         }
     }
     Remove(id);
@@ -1483,8 +1513,8 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
 
     // XXX: Should contacts needing updating be updated now??
 
-    if (m_postSolveContactListener) {
-        Report(m_postSolveContactListener, island.contacts, velConstraints,
+    if (m_listeners.postSolveContact) {
+        Report(m_listeners.postSolveContact, island.contacts, velConstraints,
                results.solved? results.positionIters - 1: StepConf::InvalidIteration);
     }
     
@@ -1870,8 +1900,8 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
         }
     }
 
-    if (m_postSolveContactListener) {
-        Report(m_postSolveContactListener, island.contacts, velConstraints, results.positionIters);
+    if (m_listeners.postSolveContact) {
+        Report(m_listeners.postSolveContact, island.contacts, velConstraints, results.positionIters);
     }
 
     return results;
@@ -2060,10 +2090,10 @@ void WorldImpl::InternalDestroy(ContactID contactID, const Body* from)
 {
     assert(contactID != InvalidContactID);
     auto& contact = m_contactBuffer[to_underlying(contactID)];
-    if (m_endContactListener && contact.IsTouching()) {
+    if (m_listeners.endContact && contact.IsTouching()) {
         // EndContact hadn't been called in DestroyOrUpdateContacts() since is-touching,
         //  so call it now
-        m_endContactListener(contactID);
+        m_listeners.endContact(contactID);
     }
     const auto bodyIdA = contact.GetBodyA();
     const auto bodyIdB = contact.GetBodyB();
@@ -2531,20 +2561,20 @@ void WorldImpl::Update( // NOLINT(readability-function-cognitive-complexity)
 
     if (!oldTouching && newTouching) {
         c.SetTouching();
-        if (m_beginContactListener) {
-            m_beginContactListener(contactID);
+        if (m_listeners.beginContact) {
+            m_listeners.beginContact(contactID);
         }
     }
     else if (oldTouching && !newTouching) {
         c.UnsetTouching();
-        if (m_endContactListener) {
-            m_endContactListener(contactID);
+        if (m_listeners.endContact) {
+            m_listeners.endContact(contactID);
         }
     }
 
     if (!sensor && newTouching) {
-        if (m_preSolveContactListener) {
-            m_preSolveContactListener(contactID, oldManifold);
+        if (m_listeners.preSolveContact) {
+            m_listeners.preSolveContact(contactID, oldManifold);
         }
     }
 }
