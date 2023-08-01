@@ -109,9 +109,6 @@ public:
         }
     };
 
-    /// @brief Signed size type.
-    using ssize_t = std::make_signed_t<std::size_t>;
-
     class BufferRecord;
 
     /// @brief Gets the maximum number of bytes supported for any allocations this class does.
@@ -139,14 +136,11 @@ public:
         // Intentionally empty.
     }
 
-    /// @brief Copy constructor.
-    /// @post <code>GetOptions()</code> returns same value as <code>other.GetOptions()</code>.
-    /// @post <code>GetUpstream()</code> returns same value as <code>other.GetUpstream()</code>.
-    /// @post <code>GetStats()</code> returns the same value as would be returned if this instance
-    ///   was initialized with the options of other.
-    PoolMemoryResource(const PoolMemoryResource& other);
+    /// @brief Copy construction deleted!
+    PoolMemoryResource(const PoolMemoryResource& other) = delete;
 
-    PoolMemoryResource(PoolMemoryResource&& other) noexcept;
+    /// @brief Moves construction deleted!
+    PoolMemoryResource(PoolMemoryResource&& other) = delete;
 
     /// @brief Destructor.
     /// @note Deallocates the allocated memory.
@@ -156,7 +150,8 @@ public:
     /// @brief Copy assignment deleted!
     PoolMemoryResource& operator=(const PoolMemoryResource& other) = delete;
 
-    PoolMemoryResource& operator=(PoolMemoryResource&& other) noexcept;
+    /// @brief Moves assignment deleted!
+    PoolMemoryResource& operator=(PoolMemoryResource&& other) = delete;
 
     /// @brief Gets the options used by this instance.
     /// @see PoolMemoryResource(const Options&, memory_resource*).

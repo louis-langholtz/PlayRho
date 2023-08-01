@@ -39,6 +39,10 @@ class PoolMemoryResource::BufferRecord
     std::size_t size_bytes{};
     std::size_t align_bytes{};
 public:
+
+    /// @brief Signed size type.
+    using ssize_t = std::make_signed_t<std::size_t>;
+
     BufferRecord() noexcept = default;
 
     BufferRecord(void* p, std::size_t n, std::size_t a)
@@ -49,7 +53,7 @@ public:
         // Intentionally empty.
     }
 
-    BufferRecord(const BufferRecord& other) = default;
+    BufferRecord(const BufferRecord& other) = delete;
 
     BufferRecord(BufferRecord&& other) noexcept
         : pointer(std::exchange(other.pointer, nullptr)),
@@ -176,21 +180,6 @@ PoolMemoryResource::PoolMemoryResource(const PoolMemoryOptions& options, memory_
     // Intentionally empty
 }
 
-PoolMemoryResource::PoolMemoryResource(const PoolMemoryResource& other)
-    : m_options{other.m_options},
-      m_upstream{other.m_upstream},
-      m_buffers{GetBuffers(m_options, m_upstream)}
-{
-    // Intentionally empty
-}
-
-PoolMemoryResource::PoolMemoryResource(PoolMemoryResource&& other) noexcept:
-    m_options(std::exchange(other.m_options, PoolMemoryOptions())),
-    m_upstream(std::exchange(other.m_upstream, new_delete_resource())),
-    m_buffers(std::exchange(other.m_buffers, {}))
-{
-}
-
 PoolMemoryResource::~PoolMemoryResource() noexcept
 {
     for (auto&& buffer: m_buffers) {
@@ -201,16 +190,6 @@ PoolMemoryResource::~PoolMemoryResource() noexcept
         m_upstream->deallocate(buffer.data(), buffer.size(), buffer.alignment());
         buffer = BufferRecord{};
     }
-}
-
-PoolMemoryResource& PoolMemoryResource::operator=(PoolMemoryResource&& other) noexcept
-{
-    if (this != &other) {
-        m_options = std::exchange(other.m_options, PoolMemoryOptions());
-        m_upstream = std::exchange(other.m_upstream, new_delete_resource());
-        m_buffers = std::exchange(other.m_buffers, {});
-    }
-    return *this;
 }
 
 PoolMemoryResource::Stats PoolMemoryResource::GetStats() const noexcept
@@ -285,7 +264,13 @@ void PoolMemoryResource::do_deallocate(void *p, std::size_t num_bytes, std::size
         throw std::logic_error{"deallocation size greater-than size originally allocated"};
     }
     if (alignment > it->alignment()) {
-        throw std::logic_error{"deallocation alignment greater-than alignment originally allocated"};
+        std::ostringstream os;
+        os << "deallocation alignment (";
+        os << alignment;
+        os << "), greater-than alignment originally allocated (";
+        os << it->alignment();
+        os << ")";
+        throw std::logic_error{os.str()};
     }
     if (it->is_allocated()) {
         it->deallocate();

@@ -123,6 +123,9 @@ public:
     /// @see Step.
     explicit WorldImpl(const WorldConf& conf = GetDefaultWorldConf());
 
+    /// @brief Copy constructor.
+    WorldImpl(const WorldImpl& other);
+
     /// @brief Destructor.
     /// @details All physics entities are destroyed and all memory is released.
     /// @note This will call the <code>Clear()</code> function.
@@ -695,6 +698,17 @@ private:
         root_iter_type maxRootIters = 0; ///< Max root iterations.
     };
 
+    struct Listeners
+    {
+        ShapeListener shapeDestruction; ///< Listener for shape destruction.
+        AssociationListener detach; ///< Listener for shapes detaching from bodies.
+        JointListener jointDestruction; ///< Listener for joint destruction.
+        ContactListener beginContact; ///< Listener for beginning contact events.
+        ContactListener endContact; ///< Listener for ending contact events.
+        ManifoldContactListener preSolveContact; ///< Listener for pre-solving contacts.
+        ImpulsesContactListener postSolveContact; ///< Listener for post-solving contacts.
+    };
+
     /// @brief Updates the contact times of impact.
     UpdateContactsData UpdateContactTOIs(const StepConf& conf);
 
@@ -812,14 +826,7 @@ private:
     /// @see Island.
     Islanded m_islanded;
 
-    // Listeners...
-    ShapeListener m_shapeDestructionListener; ///< Listener for shape destruction.
-    AssociationListener m_detachListener; ///< Listener for shapes detaching from bodies.
-    JointListener m_jointDestructionListener; ///< Listener for joint destruction.
-    ContactListener m_beginContactListener; ///< Listener for beginning contact events.
-    ContactListener m_endContactListener; ///< Listener for ending contact events.
-    ManifoldContactListener m_preSolveContactListener; ///< Listener for pre-solving contacts.
-    ImpulsesContactListener m_postSolveContactListener; ///< Listener for post-solving contacts.
+    Listeners m_listeners;
 
     FlagsType m_flags = e_stepComplete; ///< Flags.
     
@@ -830,8 +837,8 @@ private:
     Frequency m_inv_dt0 = 0_Hz;
     
     /// @brief Minimum vertex radius.
-    Positive<Length> m_minVertexRadius;
-    
+    Positive<Length> m_minVertexRadius{WorldConf::DefaultMinVertexRadius};
+
     /// @brief Maximum vertex radius.
     /// @details
     /// This is the maximum shape vertex radius that any bodies' of this world should create
@@ -840,7 +847,7 @@ private:
     /// associated with this world that would otherwise not be able to be simulated due to
     /// numerical issues. It can also be set below this upper bound to constrain the differences
     /// between shape vertex radiuses to possibly more limited visual ranges.
-    Positive<Length> m_maxVertexRadius;
+    Positive<Length> m_maxVertexRadius{WorldConf::DefaultMaxVertexRadius};
 };
 
 inline const WorldImpl::Proxies& WorldImpl::GetProxies() const noexcept
@@ -920,37 +927,37 @@ inline const DynamicTree& WorldImpl::GetTree() const noexcept
 
 inline void WorldImpl::SetShapeDestructionListener(ShapeListener listener) noexcept
 {
-    m_shapeDestructionListener = std::move(listener);
+    m_listeners.shapeDestruction = std::move(listener);
 }
 
 inline void WorldImpl::SetDetachListener(AssociationListener listener) noexcept
 {
-    m_detachListener = std::move(listener);
+    m_listeners.detach = std::move(listener);
 }
 
 inline void WorldImpl::SetJointDestructionListener(JointListener listener) noexcept
 {
-    m_jointDestructionListener = std::move(listener);
+    m_listeners.jointDestruction = std::move(listener);
 }
 
 inline void WorldImpl::SetBeginContactListener(ContactListener listener) noexcept
 {
-    m_beginContactListener = std::move(listener);
+    m_listeners.beginContact = std::move(listener);
 }
 
 inline void WorldImpl::SetEndContactListener(ContactListener listener) noexcept
 {
-    m_endContactListener = std::move(listener);
+    m_listeners.endContact = std::move(listener);
 }
 
 inline void WorldImpl::SetPreSolveContactListener(ManifoldContactListener listener) noexcept
 {
-    m_preSolveContactListener = std::move(listener);
+    m_listeners.preSolveContact = std::move(listener);
 }
 
 inline void WorldImpl::SetPostSolveContactListener(ImpulsesContactListener listener) noexcept
 {
-    m_postSolveContactListener = std::move(listener);
+    m_listeners.postSolveContact = std::move(listener);
 }
 
 // State & confirm intended compile-time traits of WorldImpl class...
