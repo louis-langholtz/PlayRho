@@ -33,15 +33,15 @@ static_assert(PoolMemoryOptions{}.reserveBuffers == 0u);
 static_assert(PoolMemoryOptions{}.reserveBytes == 0u);
 static_assert(PoolMemoryOptions{}.limitBuffers == static_cast<std::size_t>(-1));
 
+/// @brief Signed size type.
+using ssize_t = std::make_signed_t<std::size_t>;
+
 class PoolMemoryResource::BufferRecord
 {
     void* pointer{};
     std::size_t size_bytes{};
     std::size_t align_bytes{};
 public:
-
-    /// @brief Signed size type.
-    using ssize_t = std::make_signed_t<std::size_t>;
 
     BufferRecord() noexcept = default;
 

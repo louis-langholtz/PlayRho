@@ -129,7 +129,7 @@ public:
 
     void deallocate(T* p, std::size_t n) noexcept
     {
-        m_resource->deallocate(p, n * sizeof(value_type));
+        m_resource->deallocate(p, n * sizeof(value_type), alignof(T));
     }
 
     ResourceType resource() const noexcept
