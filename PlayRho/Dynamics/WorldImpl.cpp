@@ -95,13 +95,13 @@ namespace d2 {
 using playrho::size;
 
 /// @brief Collection of body constraints.
-using BodyConstraints = std::vector<BodyConstraint>;
+using BodyConstraints = std::vector<BodyConstraint, pmr::polymorphic_allocator<BodyConstraint>>;
 
 /// @brief Collection of position constraints.
-using PositionConstraints = std::vector<PositionConstraint>;
+using PositionConstraints = std::vector<PositionConstraint, pmr::polymorphic_allocator<PositionConstraint>>;
 
 /// @brief Collection of velocity constraints.
-using VelocityConstraints = std::vector<VelocityConstraint>;
+using VelocityConstraints = std::vector<VelocityConstraint, pmr::polymorphic_allocator<VelocityConstraint>>;
 
 /// @brief The contact updating configuration.
 struct WorldImpl::ContactUpdateConf
@@ -213,27 +213,29 @@ void WarmStartVelocities(const Span<const VelocityConstraint>& velConstraints,
     });
 }
 
-BodyConstraints GetBodyConstraints(const Span<const BodyID>& bodies,
+BodyConstraints GetBodyConstraints(pmr::memory_resource& resource,
+                                   const Span<const BodyID>& bodies,
                                    const ObjectPool<Body>& bodyBuffer,
                                    Time h, const MovementConf& conf)
 {
-    auto constraints = BodyConstraints{};
-    constraints.resize(size(bodyBuffer));
+    auto constraints = BodyConstraints{&resource};
+    constraints.resize(size(bodyBuffer)); // can't be size(bodies)!
     for (const auto& id: bodies) {
         constraints[to_underlying(id)] = GetBodyConstraint(bodyBuffer[to_underlying(id)], h, conf);
     }
     return constraints;
 }
 
-PositionConstraints GetPositionConstraints(const Span<const ContactID>& contacts,
+PositionConstraints GetPositionConstraints(pmr::memory_resource& resource,
+                                           const Span<const ContactID>& contacts,
                                            const ObjectPool<Contact>& contactBuffer,
                                            const ObjectPool<Manifold>& manifoldBuffer,
                                            const ObjectPool<Shape>& shapeBuffer)
 {
-    auto constraints = PositionConstraints{};
+    auto constraints = PositionConstraints{&resource};
     constraints.reserve(size(contacts));
     transform(cbegin(contacts), cend(contacts), back_inserter(constraints),
-              [&](const auto& contactID) {
+              [&](const ContactID& contactID) {
         const auto& contact = contactBuffer[to_underlying(contactID)];
         const auto shapeA = GetShapeA(contact);
         const auto shapeB = GetShapeB(contact);
@@ -256,14 +258,15 @@ PositionConstraints GetPositionConstraints(const Span<const ContactID>& contacts
 ///   normal for them.
 /// @post Velocity constraints will have their constraint points set.
 /// @see SolveVelocityConstraints.
-VelocityConstraints GetVelocityConstraints(const Span<const ContactID>& contacts,
+VelocityConstraints GetVelocityConstraints(pmr::memory_resource& resource,
+                                           const Span<const ContactID>& contacts,
                                            const ObjectPool<Contact>& contactBuffer,
                                            const ObjectPool<Manifold>& manifoldBuffer,
                                            const ObjectPool<Shape>& shapeBuffer,
                                            const Span<const BodyConstraint>& bodies,
                                            const VelocityConstraint::Conf conf)
 {
-    auto velConstraints = VelocityConstraints{};
+    auto velConstraints = VelocityConstraints{&resource};
     velConstraints.reserve(size(contacts));
     transform(cbegin(contacts), cend(contacts), back_inserter(velConstraints),
               [&](const auto& contactID) {
@@ -699,10 +702,11 @@ ContactToiData GetSoonestContact(const WorldImpl::Contacts& contacts,
     return ContactToiData{found, minToi, count};
 }
 
-auto FindContactKeys(const DynamicTree& tree, WorldImpl::Proxies&& proxies) -> std::vector<ContactKey>
+auto FindContactKeys(pmr::memory_resource& resource, const DynamicTree& tree, WorldImpl::Proxies&& proxies)
+    -> std::vector<ContactKey, pmr::polymorphic_allocator<ContactKey>>
 {
+    std::vector<ContactKey, pmr::polymorphic_allocator<ContactKey>> proxyKeys{&resource};
     static constexpr auto DefaultReserveSize = 512u;
-    std::vector<ContactKey> proxyKeys;
     proxyKeys.reserve(DefaultReserveSize);
 
     // Accumalate contact keys for pairs of nodes that are overlapping and aren't identical.
@@ -731,6 +735,11 @@ auto FindContactKeys(const DynamicTree& tree, WorldImpl::Proxies&& proxies) -> s
 } // anonymous namespace
 
 WorldImpl::WorldImpl(const WorldConf& conf):
+    m_bodyConstraintsResource(conf.upstream),
+    m_positionConstraintsResource(conf.upstream),
+    m_velocityConstraintsResource(conf.upstream),
+    m_contactKeysResource(conf.upstream),
+    m_islandResource(conf.upstream),
     m_tree(conf.treeCapacity),
     m_minVertexRadius{conf.minVertexRadius},
     m_maxVertexRadius{conf.maxVertexRadius}
@@ -1323,7 +1332,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
             assert(!IsAwake(body) || IsSpeedable(body));
             if (IsAwake(body) && IsEnabled(body)) {
                 ++stats.islandsFound;
-                Island island;
+                Island island{m_islandResource, m_islandResource, m_islandResource};
                 // Size the island for the remaining un-evaluated contacts.
                 island.contacts.reserve(remNumContacts);
                 AddToIsland(island, b, remNumBodies, remNumContacts, remNumJoints);
@@ -1365,7 +1374,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
     }
 
     // Look for new contacts.
-    stats.contactsAdded = FindNewContacts(FindContactKeys(m_tree, std::move(m_proxiesForContacts)));
+    stats.contactsAdded = FindNewContacts(FindContactKeys(m_contactKeysResource, m_tree, std::move(m_proxiesForContacts)));
     m_proxiesForContacts = {};
     
     return stats;
@@ -1389,10 +1398,11 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     });
 
     // Copy bodies' pos1 and velocity data into local arrays.
-    auto bodyConstraints = GetBodyConstraints(island.bodies, m_bodyBuffer, h, GetMovementConf(conf));
-    auto posConstraints = GetPositionConstraints(island.contacts, m_contactBuffer,
-                                                 m_manifoldBuffer, m_shapeBuffer);
-    auto velConstraints = GetVelocityConstraints(island.contacts,
+    auto bodyConstraints = GetBodyConstraints(m_bodyConstraintsResource,
+                                              island.bodies, m_bodyBuffer, h, GetMovementConf(conf));
+    auto posConstraints = GetPositionConstraints(m_positionConstraintsResource, island.contacts,
+                                                 m_contactBuffer, m_manifoldBuffer, m_shapeBuffer);
+    auto velConstraints = GetVelocityConstraints(m_velocityConstraintsResource, island.contacts,
                                                  m_contactBuffer, m_manifoldBuffer, m_shapeBuffer,
                                                  bodyConstraints,
                                                  GetRegVelocityConstraintConf(conf));
@@ -1630,7 +1640,7 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
 
         // Commit fixture proxy movements to the broad-phase so that new contacts are created.
         // Also, some contacts can be destroyed.
-        stats.contactsAdded += FindNewContacts(FindContactKeys(m_tree, std::move(m_proxiesForContacts)));
+        stats.contactsAdded += FindNewContacts(FindContactKeys(m_contactKeysResource, m_tree, std::move(m_proxiesForContacts)));
         m_proxiesForContacts = {};
 
         if (subStepping) {
@@ -1725,7 +1735,7 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
     }
 
     // Build the island
-    Island island;
+    Island island{m_islandResource, m_islandResource, m_islandResource};
     island.contacts.reserve(used(m_contactBuffer));
 
      // These asserts get triggered sometimes if contacts within TOI are iterated over.
@@ -1777,10 +1787,11 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
      * the body constraint doesn't need to pass an elapsed time (and doesn't need to
      * update the velocity from what it already is).
      */
-    auto bodyConstraints = GetBodyConstraints(island.bodies, m_bodyBuffer, 0_s, GetMovementConf(conf));
+    auto bodyConstraints = GetBodyConstraints(m_bodyConstraintsResource,
+                                              island.bodies, m_bodyBuffer, 0_s, GetMovementConf(conf));
 
     // Initialize the body state.
-    auto posConstraints = GetPositionConstraints(island.contacts, m_contactBuffer,
+    auto posConstraints = GetPositionConstraints(m_positionConstraintsResource, island.contacts, m_contactBuffer,
                                                  m_manifoldBuffer, m_shapeBuffer);
 
     // Solve TOI-based position constraints.
@@ -1821,7 +1832,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
         SetPosition0(m_bodyBuffer[to_underlying(id)], bc.GetPosition());
     }
 
-    auto velConstraints = GetVelocityConstraints(island.contacts,
+    auto velConstraints = GetVelocityConstraints(m_velocityConstraintsResource, island.contacts,
                                                  m_contactBuffer, m_manifoldBuffer, m_shapeBuffer,
                                                  bodyConstraints,
                                                  GetToiVelocityConstraintConf(conf));
@@ -1995,7 +2006,7 @@ StepStats WorldImpl::Step(const StepConf& conf)
 
         // For any new fixtures added: need to find and create the new contacts.
         // Note: this may update bodies (in addition to the contacts container).
-        stepStats.pre.added = FindNewContacts(FindContactKeys(m_tree, std::move(m_proxiesForContacts)));
+        stepStats.pre.added = FindNewContacts(FindContactKeys(m_contactKeysResource, m_tree, std::move(m_proxiesForContacts)));
         m_proxiesForContacts = {};
 
         if (conf.deltaTime != 0_s) {
@@ -2238,7 +2249,7 @@ WorldImpl::UpdateContactsStats WorldImpl::UpdateContacts(const StepConf& conf)
 }
 
 ContactCounter WorldImpl::FindNewContacts( // NOLINT(readability-function-cognitive-complexity)
-                                          std::vector<ContactKey>&& contactKeys)
+                                          std::vector<ContactKey, pmr::polymorphic_allocator<ContactKey>>&& contactKeys)
 {
     const auto numContactsBefore = size(m_contacts);
     for_each(cbegin(contactKeys), cend(contactKeys), [this](ContactKey key) {
