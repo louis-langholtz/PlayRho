@@ -33,6 +33,43 @@
 
 namespace playrho::pmr {
 
+/// @brief Configurable options.
+struct PoolMemoryOptions
+{
+    /// @brief Reserver buffers.
+    /// @note This is the initial number of buffers to reserve space for on construction.
+    std::size_t reserveBuffers{};
+
+    /// @brief Reserve bytes.
+    /// @note This is the initial size of any buffers reserved on construction. If zero,
+    ///   no-memory is pre-allocated for these buffers.
+    std::size_t reserveBytes{};
+
+    /// @brief Limit on number of buffers.
+    /// @note This limit is used by <code>do_allocate</code>.
+    /// @note Needs to be 2+ for supporting post-construction push/emplace increases in container
+    ///   capacity.
+    /// @see do_allocate.
+    std::size_t limitBuffers{static_cast<std::size_t>(-1)};
+
+    bool releasable{true};
+
+    /// @brief Operator equals support.
+    friend bool operator==(const PoolMemoryOptions& lhs, const PoolMemoryOptions& rhs) noexcept
+    {
+        return (lhs.reserveBuffers == rhs.reserveBuffers) // force line-break
+            && (lhs.reserveBytes == rhs.reserveBytes) // force line-break
+            && (lhs.limitBuffers == rhs.limitBuffers) // force line-break
+            && (lhs.releasable == rhs.releasable);
+    }
+
+    /// @brief Operator not-equals support.
+    friend bool operator!=(const PoolMemoryOptions& lhs, const PoolMemoryOptions& rhs) noexcept
+    {
+        return !(lhs == rhs);
+    }
+};
+
 /// @brief Pool memory resource.
 /// @note This is a memory pooling implementation of a <code>memory_resource</code>.
 ///  It is similar to <code>std::pmr::unsynchronized_pool_resource</code>.
@@ -40,43 +77,6 @@ namespace playrho::pmr {
 class PoolMemoryResource final: public memory_resource
 {
 public:
-    /// @brief Configurable options.
-    struct Options
-    {
-        /// @brief Reserver buffers.
-        /// @note This is the initial number of buffers to reserve space for on construction.
-        std::size_t reserveBuffers{};
-
-        /// @brief Reserve bytes.
-        /// @note This is the initial size of any buffers reserved on construction. If zero,
-        ///   no-memory is pre-allocated for these buffers.
-        std::size_t reserveBytes{};
-
-        /// @brief Limit on number of buffers.
-        /// @note This limit is used by <code>do_allocate</code>.
-        /// @note Needs to be 2+ for supporting post-construction push/emplace increases in container
-        ///   capacity.
-        /// @see do_allocate.
-        std::size_t limitBuffers{static_cast<std::size_t>(-1)};
-
-        bool releasable{true};
-
-        /// @brief Operator equals support.
-        friend bool operator==(const Options& lhs, const Options& rhs) noexcept
-        {
-            return (lhs.reserveBuffers == rhs.reserveBuffers) // force line-break
-                && (lhs.reserveBytes == rhs.reserveBytes) // force line-break
-                && (lhs.limitBuffers == rhs.limitBuffers) // force line-break
-                && (lhs.releasable == rhs.releasable);
-        }
-
-        /// @brief Operator not-equals support.
-        friend bool operator!=(const Options& lhs, const Options& rhs) noexcept
-        {
-            return !(lhs == rhs);
-        }
-    };
-
     /// @brief Statistics data.
     struct Stats
     {
@@ -112,116 +112,32 @@ public:
     /// @brief Signed size type.
     using ssize_t = std::make_signed_t<std::size_t>;
 
-    class BufferRecord
-    {
-        void* pointer{};
-        std::size_t size_bytes{};
-        std::size_t align_bytes{};
-    public:
-        BufferRecord() noexcept = default;
-
-        BufferRecord(void* p, std::size_t n, std::size_t a)
-            : pointer{p},
-              size_bytes{n},
-              align_bytes{a}
-        {
-            // Intentionally empty.
-        }
-
-        BufferRecord(const BufferRecord& other) = default;
-
-        BufferRecord(BufferRecord&& other) noexcept
-            : pointer(std::exchange(other.pointer, nullptr)),
-              size_bytes(std::exchange(other.size_bytes, 0u)),
-              align_bytes(std::exchange(other.align_bytes, 0u))
-        {
-            // Intentionally empty.
-        }
-
-        ~BufferRecord() = default;
-
-        BufferRecord& operator=(const BufferRecord& other) = delete;
-
-        BufferRecord& operator=(BufferRecord&& other) noexcept
-        {
-            if (this != &other) {
-                pointer = std::exchange(other.pointer, pointer);
-                size_bytes = std::exchange(other.size_bytes, size_bytes);
-                align_bytes = std::exchange(other.align_bytes, align_bytes);
-            }
-            return *this;
-        }
-
-        BufferRecord& assign(void* p, std::size_t n, std::size_t a) noexcept
-        {
-            pointer = p;
-            size_bytes = n;
-            align_bytes = a;
-            return *this;
-        }
-
-        void *data() const noexcept
-        {
-            return pointer;
-        }
-
-        std::size_t size() const noexcept
-        {
-            return static_cast<std::size_t>(std::abs(ssize()));
-        }
-
-        ssize_t ssize() const noexcept
-        {
-            return ToSigned(size_bytes);
-        }
-
-        std::size_t alignment() const noexcept
-        {
-            return align_bytes;
-        }
-
-        bool is_allocated() const noexcept
-        {
-            return ssize() < 0;
-        }
-
-        void allocate() noexcept
-        {
-            assert(!is_allocated());
-            size_bytes = static_cast<std::size_t>(-abs(ssize()));
-        }
-
-        void deallocate() noexcept
-        {
-            assert(is_allocated());
-            size_bytes = size();
-        }
-    };
+    class BufferRecord;
 
     /// @brief Gets the maximum number of bytes supported for any allocations this class does.
     /// @see PoolMemoryResource(const Options& options), do_allocate.
     static std::size_t GetMaxNumBytes() noexcept;
 
-    /// @brief Default constructor.
-    /// @note This results in the same instance as using the options initializing constructor with the default options
-    ///    except that this constructor is marked <code>noexcept</code>.
-    /// @post <code>GetOptions()</code> returns a default constructed set of options.
-    /// @post <code>GetStats()</code> returns a default constructed set of stats.
-    PoolMemoryResource() noexcept;
-
-    /// @brief Options initializing constructor.
+    /// @brief Default and initializing constructor.
     /// @note Constructs an instance with the given options such that <code>options.reserveBuffers</code>
     ///    buffers are pre-allocated with <code>options.reserveBytes</code> bytes and are immediately
     ///    available for <code>do_allocate</code> calls.
     /// @pre Upstream memory resource won't throw any exceptions if called to deallocate buffers
     ///    it's previously allocated.
+    /// @post <code>GetOptions()</code> returns the given options.
     /// @throws std::length_error if <code>options.reserveBuffers > options.limitBuffers</code>.
     /// @throws std::bad_array_new_length if <code>options.reserveBytes > GetMaxNumBytes()</code>.
     /// @throws std::bad_alloc if an allocation of <code>options.reserveBytes</code> fails for any of
     ///   the <code>options.reserveBuffers</code> buffers.
-    PoolMemoryResource(const Options& options, memory_resource* upstream);
+    PoolMemoryResource(const PoolMemoryOptions& options = {}, memory_resource* upstream = nullptr);
 
-    PoolMemoryResource(memory_resource* upstream): PoolMemoryResource(Options{}, upstream) {}
+    /// @brief Upstream initializing constructor.
+    /// @pre Upstream memory resource won't throw any exceptions if called to deallocate buffers
+    ///    it's previously allocated.
+    PoolMemoryResource(memory_resource* upstream): PoolMemoryResource(PoolMemoryOptions{}, upstream)
+    {
+        // Intentionally empty.
+    }
 
     /// @brief Copy constructor.
     /// @post <code>GetOptions()</code> returns same value as <code>other.GetOptions()</code>.
@@ -244,7 +160,7 @@ public:
 
     /// @brief Gets the options used by this instance.
     /// @see PoolMemoryResource(const Options&, memory_resource*).
-    Options GetOptions() const noexcept
+    PoolMemoryOptions GetOptions() const noexcept
     {
         return m_options;
     }
@@ -279,7 +195,7 @@ public:
 
 private:
     /// @brief Options used by this instance.
-    Options m_options;
+    PoolMemoryOptions m_options;
 
     /// @brief Upstream memory provider.
     memory_resource* m_upstream{new_delete_resource()};
