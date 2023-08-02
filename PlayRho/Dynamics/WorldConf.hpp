@@ -50,6 +50,18 @@ struct WorldConf {
     /// @brief Default initial proxy capacity.
     static constexpr auto DefaultProxyCapacity = ContactCounter(1024);
 
+    /// @brief Default initial reserve body stack capacity.
+    static constexpr auto DefaultReserveBodyStack = BodyCounter(16384u);
+
+    /// @brief Default initial reserve body constraints capacity.
+    static constexpr auto DefaultReserveBodyConstraints = BodyCounter(1024u);
+
+    /// @brief Default initial reserve distance constraints capacity.
+    static constexpr auto DefaultReserveDistanceConstraints = DefaultReserveBodyConstraints * 4u;
+
+    /// @brief Default initial reserve contact keys capacity.
+    static constexpr auto DefaultReserveContactKeys = ContactCounter(1024u);
+
     /// @brief Uses the given min vertex radius value.
     constexpr WorldConf& UseUpstream(pmr::memory_resource *value) noexcept;
 
@@ -68,6 +80,7 @@ struct WorldConf {
     /// @brief Uses the given value as the initial proxy capacity.
     constexpr WorldConf& UseProxyCapacity(ContactCounter value) noexcept;
 
+    /// @brief Upstream memory resource.
     pmr::memory_resource *upstream = DefaultUpstream;
 
     /// @brief Minimum vertex radius.
@@ -97,6 +110,18 @@ struct WorldConf {
 
     /// @brief Initial proxy capacity.
     ContactCounter proxyCapacity = DefaultProxyCapacity;
+
+    /// @brief Reserve body stack capacity.
+    BodyCounter reserveBodyStack = DefaultReserveBodyStack;
+
+    /// @brief Reserve body constraints capacity.
+    BodyCounter reserveBodyConstraints = DefaultReserveBodyConstraints;
+
+    /// @brief Reserve distance constraints capacity.
+    BodyCounter reserveDistanceConstraints = DefaultReserveDistanceConstraints;
+
+    /// @brief Reserve contact keys capacity.
+    ContactCounter reserveContactKeys = DefaultReserveContactKeys;
 };
 
 constexpr WorldConf& WorldConf::UseUpstream(pmr::memory_resource *value) noexcept
@@ -133,17 +158,6 @@ constexpr WorldConf& WorldConf::UseProxyCapacity(ContactCounter value) noexcept
 {
     proxyCapacity = value;
     return *this;
-}
-
-/// Gets the default definitions value.
-/// @note This method exists as a work-around for providing the World constructor a default
-///   value without otherwise getting a compiler error such as:
-///     "cannot use defaulted constructor of '<code>Conf</code>' within '<code>World</code>'
-///     outside of member functions because 'gravity' has an initializer"
-/// @relatedalso WorldConf
-inline WorldConf GetDefaultWorldConf() noexcept
-{
-    return WorldConf{};
 }
 
 } // namespace d2

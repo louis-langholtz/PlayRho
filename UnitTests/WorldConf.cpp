@@ -28,19 +28,21 @@ using namespace playrho::d2;
 TEST(WorldConf, DefaultConstruction)
 {
     const auto worldConf = WorldConf{};
+    EXPECT_EQ(worldConf.upstream, WorldConf::DefaultUpstream);
     EXPECT_EQ(worldConf.minVertexRadius, WorldConf::DefaultMinVertexRadius);
     EXPECT_EQ(worldConf.maxVertexRadius, WorldConf::DefaultMaxVertexRadius);
     EXPECT_EQ(worldConf.treeCapacity, WorldConf::DefaultTreeCapacity);
     EXPECT_EQ(worldConf.contactCapacity, WorldConf::DefaultContactCapacity);
     EXPECT_EQ(worldConf.proxyCapacity, WorldConf::DefaultProxyCapacity);
+    EXPECT_EQ(worldConf.reserveBodyStack, WorldConf::DefaultReserveBodyStack);
+    EXPECT_EQ(worldConf.reserveBodyConstraints, WorldConf::DefaultReserveBodyConstraints);
+    EXPECT_EQ(worldConf.reserveDistanceConstraints, WorldConf::DefaultReserveDistanceConstraints);
+    EXPECT_EQ(worldConf.reserveContactKeys, WorldConf::DefaultReserveContactKeys);
 }
 
-TEST(WorldConf, GetDefaultWorldConf)
+TEST(WorldConf, UseUpstream)
 {
-    const auto worldConf = WorldConf{};
-    const auto defaultConf = GetDefaultWorldConf();
-    EXPECT_EQ(defaultConf.maxVertexRadius, worldConf.maxVertexRadius);
-    EXPECT_EQ(defaultConf.minVertexRadius, worldConf.minVertexRadius);
+    EXPECT_EQ(WorldConf().UseUpstream(nullptr).upstream, nullptr);
 }
 
 TEST(WorldConf, UseMinVertexRadius)

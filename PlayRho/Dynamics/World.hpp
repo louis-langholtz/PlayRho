@@ -168,7 +168,7 @@ public:
     ///   data that's given to the world's <code>Step</code> method.
     /// @throws InvalidArgument if the given max vertex radius is less than the min.
     /// @see Step.
-    explicit World(const WorldConf& def = GetDefaultWorldConf());
+    explicit World(const WorldConf& def = WorldConf{});
 
     /// @brief Copy constructor.
     /// @details Copy constructs this world with a deep copy of the given world.

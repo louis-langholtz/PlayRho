@@ -305,8 +305,7 @@ Momentum SolveVelocityConstraintsViaGS(const Span<VelocityConstraint>& velConstr
                                        const Span<BodyConstraint>& bodies)
 {
     auto maxIncImpulse = 0_Ns;
-    for_each(begin(velConstraints), end(velConstraints), [&](VelocityConstraint& vc)
-    {
+    for_each(begin(velConstraints), end(velConstraints), [&](VelocityConstraint& vc) {
         maxIncImpulse = std::max(maxIncImpulse, GaussSeidel::SolveVelocityConstraint(vc, bodies));
     });
     return maxIncImpulse;
@@ -346,11 +345,9 @@ inline Time UpdateUnderActiveTimes(const Span<const BodyID>& bodies,
                                    const StepConf& conf)
 {
     auto minUnderActiveTime = std::numeric_limits<Time>::infinity();
-    for_each(cbegin(bodies), cend(bodies), [&](const auto& bodyID)
-    {
+    for_each(cbegin(bodies), cend(bodies), [&](const auto& bodyID) {
         auto& b = bodyBuffer[to_underlying(bodyID)];
-        if (IsSpeedable(b))
-        {
+        if (IsSpeedable(b)) {
             const auto underActiveTime = GetUnderActiveTime(b, conf);
             b.SetUnderActiveTime(underActiveTime);
             minUnderActiveTime = std::min(minUnderActiveTime, underActiveTime);
@@ -440,7 +437,7 @@ bool ShouldCollide(const ObjectPool<Joint>& jointBuffer,
     const auto& joints = bodyJoints[to_underlying(lhs)];
     const auto it = std::find_if(cbegin(joints), cend(joints), [&](const auto& ji) {
         return (std::get<BodyID>(ji) == rhs) &&
-            !GetCollideConnected(jointBuffer[to_underlying(std::get<JointID>(ji))]);
+        !GetCollideConnected(jointBuffer[to_underlying(std::get<JointID>(ji))]);
     });
     return it == end(joints);
 }
@@ -595,7 +592,7 @@ std::vector<DynamicTree::Size> FindProxies(const DynamicTree& tree, BodyID bodyI
 
 template <class Function>
 auto ForMatchingProxies(const DynamicTree& tree, ShapeID shapeId, Function f)
-    -> decltype(f(DynamicTree::Size{}), std::declval<void>())
+-> decltype(f(DynamicTree::Size{}), std::declval<void>())
 {
     const auto n = tree.GetNodeCapacity();
     for (auto i = static_cast<decltype(tree.GetNodeCapacity())>(0); i < n; ++i) {
@@ -647,8 +644,8 @@ void ResizeAndReset(std::vector<T>& vector, typename std::vector<T>::size_type n
 /// @brief Removes <em>unspeedables</em> from the is <em>is-in-island</em> state.
 WorldImpl::Bodies::size_type
 RemoveUnspeedablesFromIslanded(const Span<const BodyID>& bodies,
-                                          const ObjectPool<Body>& buffer,
-                                          std::vector<bool>& islanded)
+                               const ObjectPool<Body>& buffer,
+                               std::vector<bool>& islanded)
 {
     // Allow static bodies to participate in other islands.
     auto numRemoved = WorldImpl::Bodies::size_type{0};
@@ -703,7 +700,7 @@ ContactToiData GetSoonestContact(const WorldImpl::Contacts& contacts,
 }
 
 auto FindContactKeys(pmr::memory_resource& resource, const DynamicTree& tree, WorldImpl::Proxies&& proxies)
-    -> std::vector<ContactKey, pmr::polymorphic_allocator<ContactKey>>
+-> std::vector<ContactKey, pmr::polymorphic_allocator<ContactKey>>
 {
     std::vector<ContactKey, pmr::polymorphic_allocator<ContactKey>> proxyKeys{&resource};
     static constexpr auto DefaultReserveSize = 512u;
@@ -732,20 +729,21 @@ auto FindContactKeys(pmr::memory_resource& resource, const DynamicTree& tree, Wo
     return proxyKeys;
 }
 
+constexpr auto ReserveBuffers = 1u;
+
 } // anonymous namespace
 
 WorldImpl::WorldImpl(const WorldConf& conf):
-    m_bodyConstraintsResource(conf.upstream),
-    m_positionConstraintsResource(conf.upstream),
-    m_velocityConstraintsResource(conf.upstream),
-    m_contactKeysResource(conf.upstream),
-    m_islandResource(conf.upstream),
+    m_bodyStackResource({ReserveBuffers, conf.reserveBodyStack * sizeof(BodyID)}, conf.upstream),
+    m_bodyConstraintsResource({ReserveBuffers, conf.reserveBodyConstraints * sizeof(BodyConstraint)}, conf.upstream),
+    m_positionConstraintsResource({ReserveBuffers, conf.reserveDistanceConstraints * sizeof(PositionConstraint)}, conf.upstream),
+    m_velocityConstraintsResource({ReserveBuffers, conf.reserveDistanceConstraints * sizeof(VelocityConstraint)}, conf.upstream),
+    m_contactKeysResource({ReserveBuffers, conf.reserveContactKeys * sizeof(ContactKey)}, conf.upstream),
+    m_islandResource({ReserveBuffers}, conf.upstream),
     m_tree(conf.treeCapacity),
-    m_minVertexRadius{conf.minVertexRadius},
-    m_maxVertexRadius{conf.maxVertexRadius}
+    m_vertexRadius{conf.minVertexRadius, conf.maxVertexRadius}
 {
-    if (conf.minVertexRadius > conf.maxVertexRadius)
-    {
+    if (conf.minVertexRadius > conf.maxVertexRadius) {
         throw InvalidArgument("max vertex radius must be >= min vertex radius");
     }
     m_proxiesForContacts.reserve(conf.proxyCapacity);
@@ -780,8 +778,7 @@ WorldImpl::WorldImpl(const WorldImpl& other):
     m_listeners(other.m_listeners),
     m_flags(other.m_flags),
     m_inv_dt0(other.m_inv_dt0),
-    m_minVertexRadius(other.m_minVertexRadius),
-    m_maxVertexRadius(other.m_maxVertexRadius)
+    m_vertexRadius(other.m_vertexRadius)
 {
 }
 
@@ -1234,15 +1231,11 @@ void WorldImpl::AddToIsland(Island& island, BodyID seedID,
 #endif
     // Perform a depth first search (DFS) on the constraint graph.
     // Create a stack for bodies to be is-in-island that aren't already in the island.
-    auto bodies = std::vector<BodyID>{};
-    bodies.reserve(remNumBodies);
-    bodies.push_back(seedID);
-    auto stack = BodyStack{std::move(bodies)};
+    auto stack = BodyStack{&m_bodyStackResource};
+    stack.reserve(remNumBodies);
+    stack.push_back(seedID);
     m_islanded.bodies[to_underlying(seedID)] = true;
     AddToIsland(island, stack, remNumBodies, remNumContacts, remNumJoints);
-#if DO_SORT_ID_LISTS
-    Sort(island);
-#endif
 }
 
 void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
@@ -1252,8 +1245,8 @@ void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
 {
     while (!empty(stack)) {
         // Grab the next body off the stack and add it to the island.
-        const auto bodyID = stack.top();
-        stack.pop();
+        const auto bodyID = stack.back();
+        stack.pop_back();
 
         auto& body = m_bodyBuffer[to_underlying(bodyID)];
 
@@ -1306,7 +1299,7 @@ void WorldImpl::AddContactsToIsland(Island& island, BodyStack& stack,
                 if (!m_islanded.bodies[to_underlying(other)])
                 {
                     m_islanded.bodies[to_underlying(other)] = true;
-                    stack.push(other);
+                    stack.push_back(other);
                 }
             }
         }
@@ -1329,7 +1322,7 @@ void WorldImpl::AddJointsToIsland(Island& island, BodyStack& stack, const BodyJo
                 if ((otherID != InvalidBodyID) && !m_islanded.bodies[to_underlying(otherID)])
                 {
                     m_islanded.bodies[to_underlying(otherID)] = true;
-                    stack.push(otherID);
+                    stack.push_back(otherID);
                 }
             }
         }
@@ -1364,8 +1357,13 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
                 ++stats.islandsFound;
                 Island island{m_islandResource, m_islandResource, m_islandResource};
                 // Size the island for the remaining un-evaluated contacts.
+                island.bodies.reserve(remNumBodies);
                 island.contacts.reserve(remNumContacts);
+                island.joints.reserve(remNumJoints);
                 AddToIsland(island, b, remNumBodies, remNumContacts, remNumJoints);
+#if defined(DO_SORT_ISLANDS)
+                Sort(island);
+#endif
                 stats.maxIslandBodies = std::max(stats.maxIslandBodies,
                                                  static_cast<BodyCounter>(size(island.bodies)));
                 const auto numRemoved = RemoveUnspeedablesFromIslanded(island.bodies, m_bodyBuffer, m_islanded.bodies);
@@ -1766,6 +1764,7 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
 
     // Build the island
     Island island{m_islandResource, m_islandResource, m_islandResource};
+    island.bodies.reserve(size(m_bodies));
     island.contacts.reserve(used(m_contactBuffer));
 
      // These asserts get triggered sometimes if contacts within TOI are iterated over.
@@ -1792,7 +1791,7 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
         contactsSkipped += procOut.contactsSkipped;
     }
 
-#if DO_SORT_ID_LISTS
+#if defined(DO_SORT_ISLANDS)
     Sort(island);
 #endif
     RemoveUnspeedablesFromIslanded(island.bodies, m_bodyBuffer, m_islanded.bodies);
@@ -1994,8 +1993,8 @@ WorldImpl::ProcessContactsForTOI( // NOLINT(readability-function-cognitive-compl
 
 StepStats WorldImpl::Step(const StepConf& conf)
 {
-    assert((Length{m_maxVertexRadius} * Real{2}) +
-           (Length{conf.linearSlop} / Real{4}) > (Length{m_maxVertexRadius} * Real{2}));
+    assert((Length{m_vertexRadius.GetMax()} * Real{2}) +
+           (Length{conf.linearSlop} / Real{4}) > (Length{m_vertexRadius.GetMax()} * Real{2}));
     
     if (IsLocked()) {
         throw WrongState(worldIsLockedMsg);
