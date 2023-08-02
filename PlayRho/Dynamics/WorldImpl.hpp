@@ -25,6 +25,7 @@
 /// @file
 /// Declarations of the WorldImpl class.
 
+#include <PlayRho/Common/Interval.hpp>
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/PoolMemoryResource.hpp>
 #include <PlayRho/Common/Positive.hpp>
@@ -121,7 +122,7 @@ public:
     ///   data that's given to the world's <code>Step</code> method.
     /// @throws InvalidArgument if the given max vertex radius is less than the min.
     /// @see Step.
-    explicit WorldImpl(const WorldConf& conf = GetDefaultWorldConf());
+    explicit WorldImpl(const WorldConf& conf = WorldConf{});
 
     /// @brief Copy constructor.
     WorldImpl(const WorldImpl& other);
@@ -131,6 +132,11 @@ public:
     /// @note This will call the <code>Clear()</code> function.
     /// @see Clear.
     ~WorldImpl() noexcept;
+
+    // Delete compiler defined implementations of move construction/assignment and copy assignment...
+    WorldImpl(WorldImpl&& other) = delete;
+    WorldImpl& operator=(const WorldImpl& other) = delete;
+    WorldImpl& operator=(WorldImpl&& other) = delete;
 
     /// @}
 
@@ -566,23 +572,23 @@ private:
                      BodyCounter& remNumBodies,
                      ContactCounter& remNumContacts,
                      JointCounter& remNumJoints);
-    
+
     /// @brief Body stack.
-    using BodyStack = std::stack<BodyID, std::vector<BodyID>>;
-    
+    using BodyStack = std::vector<BodyID, pmr::polymorphic_allocator<BodyID>>;
+
     /// @brief Adds to the island.
     void AddToIsland(Island& island, BodyStack& stack,
                      BodyCounter& remNumBodies,
                      ContactCounter& remNumContacts,
                      JointCounter& remNumJoints);
-    
+
     /// @brief Adds contacts to the island.
     void AddContactsToIsland(Island& island, BodyStack& stack, const Contacts& contacts,
                              BodyID bodyID);
 
     /// @brief Adds joints to the island.
     void AddJointsToIsland(Island& island, BodyStack& stack, const BodyJoints& joints);
-    
+
     /// @brief Solves the step using successive time of impact (TOI) events.
     /// @details Used for continuous physics.
     /// @note This is intended to detect and prevent the tunneling that the faster Solve method
@@ -766,6 +772,7 @@ private:
 
     /******** Member variables. ********/
 
+    pmr::PoolMemoryResource m_bodyStackResource;
     pmr::PoolMemoryResource m_bodyConstraintsResource;
     pmr::PoolMemoryResource m_positionConstraintsResource;
     pmr::PoolMemoryResource m_velocityConstraintsResource;
@@ -826,6 +833,7 @@ private:
     /// @see Island.
     Islanded m_islanded;
 
+    /// @brief Listeners.
     Listeners m_listeners;
 
     FlagsType m_flags = e_stepComplete; ///< Flags.
@@ -835,19 +843,16 @@ private:
     /// @note 4-bytes large.
     /// @see Step.
     Frequency m_inv_dt0 = 0_Hz;
-    
-    /// @brief Minimum vertex radius.
-    Positive<Length> m_minVertexRadius{WorldConf::DefaultMinVertexRadius};
 
-    /// @brief Maximum vertex radius.
+    /// @brief Min and max vertex radii.
     /// @details
-    /// This is the maximum shape vertex radius that any bodies' of this world should create
-    /// fixtures for. Requests to create fixtures for shapes with vertex radiuses bigger than
+    /// The interval max is the maximum shape vertex radius that any bodies' of this world should
+    /// create fixtures for. Requests to create fixtures for shapes with vertex radiuses bigger than
     /// this must be rejected. As an upper bound, this value prevents shapes from getting
     /// associated with this world that would otherwise not be able to be simulated due to
     /// numerical issues. It can also be set below this upper bound to constrain the differences
     /// between shape vertex radiuses to possibly more limited visual ranges.
-    Positive<Length> m_maxVertexRadius{WorldConf::DefaultMaxVertexRadius};
+    Interval<Positive<Length>> m_vertexRadius{WorldConf::DefaultMinVertexRadius, WorldConf::DefaultMaxVertexRadius};
 };
 
 inline const WorldImpl::Proxies& WorldImpl::GetProxies() const noexcept
@@ -907,12 +912,12 @@ inline void WorldImpl::SetSubStepping(bool flag) noexcept
 
 inline Length WorldImpl::GetMinVertexRadius() const noexcept
 {
-    return m_minVertexRadius;
+    return m_vertexRadius.GetMin();
 }
 
 inline Length WorldImpl::GetMaxVertexRadius() const noexcept
 {
-    return m_maxVertexRadius;
+    return m_vertexRadius.GetMax();
 }
 
 inline Frequency WorldImpl::GetInvDeltaTime() const noexcept
@@ -960,10 +965,13 @@ inline void WorldImpl::SetPostSolveContactListener(ImpulsesContactListener liste
     m_listeners.postSolveContact = std::move(listener);
 }
 
-// State & confirm intended compile-time traits of WorldImpl class...
+// State & confirm compile-time traits of WorldImpl class.
+// It minimally needs to be default and copy constructable.
 static_assert(std::is_default_constructible_v<WorldImpl>);
 static_assert(std::is_copy_constructible_v<WorldImpl>);
-static_assert(std::is_move_constructible_v<WorldImpl>);
+static_assert(!std::is_move_constructible_v<WorldImpl>);
+static_assert(!std::is_copy_assignable_v<WorldImpl>);
+static_assert(!std::is_move_assignable_v<WorldImpl>);
 
 } // namespace d2
 } // namespace playrho
