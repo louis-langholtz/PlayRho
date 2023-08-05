@@ -26,11 +26,11 @@ namespace playrho {
 namespace d2 {
 namespace {
 
-LengthIndexPair FindMinSeparationForPoints(const SeparationScenario& scenario,
-                                           const DistanceProxy& proxyA,
-                                           const Transformation& xfA,
-                                           const DistanceProxy& proxyB,
-                                           const Transformation& xfB)
+LengthIndexPair FindMinSeparation(const SeparationScenarioPoints& scenario,
+                                  const DistanceProxy& proxyA,
+                                  const Transformation& xfA,
+                                  const DistanceProxy& proxyB,
+                                  const Transformation& xfB)
 {
     const auto dirA = InverseRotate(+scenario.axis, xfA.q);
     const auto dirB = InverseRotate(-scenario.axis, xfB.q);
@@ -42,10 +42,10 @@ LengthIndexPair FindMinSeparationForPoints(const SeparationScenario& scenario,
     return LengthIndexPair{Dot(delta, scenario.axis), IndexPair{indexA, indexB}};
 }
 
-LengthIndexPair FindMinSeparationForFaceA(const SeparationScenario& scenario,
-                                          const Transformation& xfA,
-                                          const DistanceProxy& proxyB,
-                                          const Transformation& xfB)
+LengthIndexPair FindMinSeparation(const SeparationScenarioFaceA& scenario,
+                                  const Transformation& xfA,
+                                  const DistanceProxy& proxyB,
+                                  const Transformation& xfB)
 {
     const auto normal = Rotate(scenario.axis, xfA.q);
     const auto indexA = InvalidVertex;
@@ -57,10 +57,10 @@ LengthIndexPair FindMinSeparationForFaceA(const SeparationScenario& scenario,
     return LengthIndexPair{Dot(delta, normal), IndexPair{indexA, indexB}};
 }
 
-LengthIndexPair FindMinSeparationForFaceB(const SeparationScenario& scenario,
-                                          const DistanceProxy& proxyA,
-                                          const Transformation& xfA,
-                                          const Transformation& xfB)
+LengthIndexPair FindMinSeparation(const SeparationScenarioFaceB& scenario,
+                                  const DistanceProxy& proxyA,
+                                  const Transformation& xfA,
+                                  const Transformation& xfB)
 {
     const auto normal = Rotate(scenario.axis, xfB.q);
     const auto dir = InverseRotate(-normal, xfA.q);
@@ -72,12 +72,12 @@ LengthIndexPair FindMinSeparationForFaceB(const SeparationScenario& scenario,
     return LengthIndexPair{Dot(delta, normal), IndexPair{indexA, indexB}};
 }
 
-Length EvaluateForPoints(const SeparationScenario& scenario,
-                         const DistanceProxy& proxyA,
-                         const Transformation& xfA,
-                         const DistanceProxy& proxyB,
-                         const Transformation& xfB,
-                         IndexPair indexPair)
+Length Evaluate(const SeparationScenarioPoints& scenario,
+                const DistanceProxy& proxyA,
+                const Transformation& xfA,
+                const DistanceProxy& proxyB,
+                const Transformation& xfB,
+                IndexPair indexPair)
 {
     const auto pointA = Transform(proxyA.GetVertex(std::get<0>(indexPair)), xfA);
     const auto pointB = Transform(proxyB.GetVertex(std::get<1>(indexPair)), xfB);
@@ -85,11 +85,11 @@ Length EvaluateForPoints(const SeparationScenario& scenario,
     return Dot(delta, scenario.axis);
 }
 
-Length EvaluateForFaceA(const SeparationScenario& scenario,
-                        const Transformation& xfA,
-                        const DistanceProxy& proxyB,
-                        const Transformation& xfB,
-                        IndexPair indexPair)
+Length Evaluate(const SeparationScenarioFaceA& scenario,
+                const Transformation& xfA,
+                const DistanceProxy& proxyB,
+                const Transformation& xfB,
+                IndexPair indexPair)
 {
     const auto normal = Rotate(scenario.axis, xfA.q);
     const auto pointA = Transform(scenario.localPoint, xfA);
@@ -98,11 +98,11 @@ Length EvaluateForFaceA(const SeparationScenario& scenario,
     return Dot(delta, normal);
 }
 
-Length EvaluateForFaceB(const SeparationScenario& scenario,
-                        const DistanceProxy& proxyA,
-                        const Transformation& xfA,
-                        const Transformation& xfB,
-                        IndexPair indexPair)
+Length Evaluate(const SeparationScenarioFaceB& scenario,
+                const DistanceProxy& proxyA,
+                const Transformation& xfA,
+                const Transformation& xfB,
+                IndexPair indexPair)
 {
     const auto normal = Rotate(scenario.axis, xfB.q);
     const auto pointB = Transform(scenario.localPoint, xfB);
@@ -110,6 +110,28 @@ Length EvaluateForFaceB(const SeparationScenario& scenario,
     const auto delta = pointA - pointB;
     return Dot(delta, normal);
 }
+
+enum class SeparationScenarioType {
+    Points,
+    FaceA,
+    FaceB,
+};
+
+constexpr SeparationScenarioType GetSeparationScenarioType(IndexPair3 indices)
+{
+    return (GetNumValidIndices(indices) < 2u)
+               ? SeparationScenarioType::Points
+               : ((std::get<0>(indices[0]) == std::get<0>(indices[1]))
+                   ? SeparationScenarioType::FaceB : SeparationScenarioType::FaceA);
+}
+
+// helper type for the visitor
+template<class... Ts>
+struct overloaded : Ts... { using Ts::operator()...; };
+
+// explicit deduction guide (not needed as of C++20)
+template<class... Ts>
+overloaded(Ts...) -> overloaded<Ts...>;
 
 } // namespace
 
@@ -120,18 +142,15 @@ SeparationScenario GetSeparationScenario(IndexPair3 indices, const DistanceProxy
     assert(!empty(indices));
     assert(proxyA.GetVertexCount() > 0);
     assert(proxyB.GetVertexCount() > 0);
-
-    const auto type = SeparationScenario::GetType(indices);
+    const auto type = GetSeparationScenarioType(indices);
     switch (type) {
-    case SeparationScenario::e_faceB: {
+    case SeparationScenarioType::FaceB: {
         const auto ip0 = indices[0];
         const auto ip1 = indices[1];
-
         // Two points on B and one on A.
         const auto localPointB1 = proxyB.GetVertex(std::get<1>(ip0));
         const auto localPointB2 = proxyB.GetVertex(std::get<1>(ip1));
-        const auto axis =
-            GetUnitVector(GetFwdPerpendicular(localPointB2 - localPointB1), UnitVec::GetZero());
+        const auto axis = GetUnitVector(GetFwdPerpendicular(localPointB2 - localPointB1), UnitVec::GetZero());
         const auto normal = Rotate(axis, xfB.q);
         const auto localPoint = (localPointB1 + localPointB2) / Real{2};
         const auto pointB = Transform(localPoint, xfB);
@@ -139,17 +158,15 @@ SeparationScenario GetSeparationScenario(IndexPair3 indices, const DistanceProxy
         const auto pointA = Transform(localPointA, xfA);
         const auto deltaPoint = pointA - pointB;
         const auto axisIt = (Dot(deltaPoint, normal) < 0_m) ? -axis : axis;
-        return SeparationScenario{axisIt, localPoint, type};
+        return SeparationScenarioFaceB{axisIt, localPoint};
     }
-    case SeparationScenario::e_faceA: {
+    case SeparationScenarioType::FaceA: {
         const auto ip0 = indices[0];
         const auto ip1 = indices[1];
-
         // Two points on A and one or two points on B.
         const auto localPointA1 = proxyA.GetVertex(std::get<0>(ip0));
         const auto localPointA2 = proxyA.GetVertex(std::get<0>(ip1));
-        const auto axis =
-            GetUnitVector(GetFwdPerpendicular(localPointA2 - localPointA1), UnitVec::GetZero());
+        const auto axis = GetUnitVector(GetFwdPerpendicular(localPointA2 - localPointA1), UnitVec::GetZero());
         const auto normal = Rotate(axis, xfA.q);
         const auto localPoint = (localPointA1 + localPointA2) / Real{2};
         const auto pointA = Transform(localPoint, xfA);
@@ -157,20 +174,19 @@ SeparationScenario GetSeparationScenario(IndexPair3 indices, const DistanceProxy
         const auto pointB = Transform(localPointB, xfB);
         const auto deltaPoint = pointB - pointA;
         const auto axisIt = (Dot(deltaPoint, normal) < 0_m) ? -axis : axis;
-        return SeparationScenario{axisIt, localPoint, type};
+        return SeparationScenarioFaceA{axisIt, localPoint};
     }
-    case SeparationScenario::e_points:
+    case SeparationScenarioType::Points:
         break;
     }
-
-    assert(type == SeparationScenario::e_points);
+    assert(type == SeparationScenarioType::Points);
     const auto ip0 = indices[0];
     const auto localPointA = proxyA.GetVertex(std::get<0>(ip0));
     const auto localPointB = proxyB.GetVertex(std::get<1>(ip0));
     const auto pointA = Transform(localPointA, xfA);
     const auto pointB = Transform(localPointB, xfB);
     const auto axis = GetUnitVector(pointB - pointA, UnitVec::GetZero());
-    return SeparationScenario{axis, GetInvalid<Length2>(), type};
+    return SeparationScenarioPoints{axis};
 }
 
 LengthIndexPair FindMinSeparation(const SeparationScenario& scenario,
@@ -179,16 +195,11 @@ LengthIndexPair FindMinSeparation(const SeparationScenario& scenario,
                                   const DistanceProxy& proxyB,
                                   const Transformation& xfB)
 {
-    switch (scenario.type) {
-    case SeparationScenario::e_faceA:
-        return FindMinSeparationForFaceA(scenario, xfA, proxyB, xfB);
-    case SeparationScenario::e_faceB:
-        return FindMinSeparationForFaceB(scenario, proxyA, xfA, xfB);
-    case SeparationScenario::e_points:
-        break;
-    }
-    assert(scenario.type == SeparationScenario::e_points);
-    return FindMinSeparationForPoints(scenario, proxyA, xfA, proxyB, xfB);
+    return std::visit(overloaded{
+        [&](const SeparationScenarioFaceA& arg) { return FindMinSeparation(arg, xfA, proxyB, xfB); },
+        [&](const SeparationScenarioFaceB& arg) { return FindMinSeparation(arg, proxyA, xfA, xfB); },
+        [&](const SeparationScenarioPoints& arg) { return FindMinSeparation(arg, proxyA, xfA, proxyB, xfB); },
+    }, scenario);
 }
 
 Length Evaluate(const SeparationScenario& scenario,
@@ -198,16 +209,11 @@ Length Evaluate(const SeparationScenario& scenario,
                 const Transformation& xfB,
                 IndexPair indexPair)
 {
-    switch (scenario.type) {
-    case SeparationScenario::e_faceA:
-        return EvaluateForFaceA(scenario, xfA, proxyB, xfB, indexPair);
-    case SeparationScenario::e_faceB:
-        return EvaluateForFaceB(scenario, proxyA, xfA, xfB, indexPair);
-    case SeparationScenario::e_points:
-        break;
-    }
-    assert(scenario.type == SeparationScenario::e_points);
-    return EvaluateForPoints(scenario, proxyA, xfA, proxyB, xfB, indexPair);
+    return std::visit(overloaded{
+        [&](const SeparationScenarioFaceA& arg) { return Evaluate(arg, xfA, proxyB, xfB, indexPair); },
+        [&](const SeparationScenarioFaceB& arg) { return Evaluate(arg, proxyA, xfA, xfB, indexPair); },
+        [&](const SeparationScenarioPoints& arg) { return Evaluate(arg, proxyA, xfA, proxyB, xfB, indexPair); },
+    }, scenario);
 }
 
 } // namespace d2

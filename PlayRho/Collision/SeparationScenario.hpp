@@ -22,6 +22,8 @@
 #ifndef PLAYRHO_COLLISION_SEPARATIONFINDER_HPP
 #define PLAYRHO_COLLISION_SEPARATIONFINDER_HPP
 
+#include <variant>
+
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/IndexPair.hpp>
 
@@ -31,31 +33,34 @@ namespace d2 {
 class DistanceProxy;
 struct Transformation;
 
-/// Separation scenario.
-struct SeparationScenario {
-    /// Separation finder type.
-    enum Type {
-        e_points,
-        e_faceA,
-        e_faceB,
-    };
+/// Points separation scenario.
+struct SeparationScenarioPoints {
+    /// Axis. @details Directional vector of the axis of separation.
+    UnitVec axis;
+};
 
-    /// @brief Gets the type of the given value.
-    static constexpr Type GetType(IndexPair3 indices)
-    {
-        return (GetNumValidIndices(indices) == 1u)
-                   ? e_points
-                   : ((std::get<0>(indices[0]) == std::get<0>(indices[1])) ? e_faceB : e_faceA);
-    }
-
-    UnitVec axis; ///< Axis. @details Directional vector of the axis of separation.
+/// Face A separation scenario.
+struct SeparationScenarioFaceA {
+    /// Axis. @details Directional vector of the axis of separation.
+    UnitVec axis;
 
     /// @brief Local point.
-    /// @note Only used if type is <code>e_faceA</code> or <code>e_faceB</code>.
     Length2 localPoint{};
-
-    Type type{e_points}; ///< The type of this scenario.
 };
+
+/// Face B separation scenario.
+struct SeparationScenarioFaceB {
+    /// Axis. @details Directional vector of the axis of separation.
+    UnitVec axis;
+
+    /// @brief Local point.
+    Length2 localPoint{};
+};
+
+/// Separation scenario.
+using SeparationScenario = std::variant<
+    SeparationScenarioPoints, SeparationScenarioFaceA, SeparationScenarioFaceB
+>;
 
 // Free functions...
 
