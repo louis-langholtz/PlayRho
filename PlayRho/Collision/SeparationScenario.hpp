@@ -50,13 +50,13 @@ struct SeparationScenario {
 
     const DistanceProxy& proxyA; ///< Distance proxy A.
     const DistanceProxy& proxyB; ///< Distance proxy B.
-    const UnitVec axis; ///< Axis. @details Directional vector of the axis of separation.
+    UnitVec axis; ///< Axis. @details Directional vector of the axis of separation.
 
     /// @brief Local point.
     /// @note Only used if type is <code>e_faceA</code> or <code>e_faceB</code>.
-    const Length2 localPoint;
+    Length2 localPoint{};
 
-    const Type type; ///< The type of this scenario.
+    Type type{e_points}; ///< The type of this scenario.
 };
 
 // Free functions...
