@@ -30,25 +30,6 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(SeparationScenario, ByteSize)
-{
-    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
-    // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real))
-    {
-        case  4:
-#if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(SeparationScenario), std::size_t(28));
-#else
-            EXPECT_EQ(sizeof(SeparationScenario), std::size_t(40));
-#endif
-            break;
-        case  8: EXPECT_EQ(sizeof(SeparationScenario), std::size_t(56)); break;
-        case 16: EXPECT_EQ(sizeof(SeparationScenario), std::size_t(96)); break;
-        default: FAIL(); break;
-    }
-}
-
 TEST(SeparationScenario, BehavesAsExpected)
 {
     const auto shape = PolygonShapeConf{0.5_m, 0.5_m};
@@ -85,7 +66,7 @@ TEST(SeparationScenario, BehavesAsExpected)
         const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
         const auto distance = GetMagnitude(std::get<0>(witnessPoints) - std::get<1>(witnessPoints));
 
-        const auto minSeparation = FindMinSeparation(fcn, xfA, xfB);
+        const auto minSeparation = FindMinSeparation(fcn, distproxy, xfA, distproxy, xfB);
 
         EXPECT_EQ(minSeparation.indices, (IndexPair{InvalidVertex, 2}));
         EXPECT_LT(minSeparation.distance, last_s);
@@ -105,7 +86,7 @@ TEST(SeparationScenario, BehavesAsExpected)
         }
         last_min_sep = minSeparation.distance;
         
-        const auto s = Evaluate(fcn, xfA, xfB, minSeparation.indices);
+        const auto s = Evaluate(fcn, distproxy, xfA, distproxy, xfB, minSeparation.indices);
         EXPECT_EQ(s, minSeparation.distance);
         if (s >= 0_m)
         {

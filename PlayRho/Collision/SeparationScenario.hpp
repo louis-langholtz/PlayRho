@@ -48,8 +48,6 @@ struct SeparationScenario {
                    : ((std::get<0>(indices[0]) == std::get<0>(indices[1])) ? e_faceB : e_faceA);
     }
 
-    const DistanceProxy& proxyA; ///< Distance proxy A.
-    const DistanceProxy& proxyB; ///< Distance proxy B.
     UnitVec axis; ///< Axis. @details Directional vector of the axis of separation.
 
     /// @brief Local point.
@@ -72,14 +70,19 @@ struct SeparationScenario {
 /// @param proxyB Proxy B.
 /// @param xfB Transformation B.
 ///
-SeparationScenario GetSeparationScenario(IndexPair3 indices, const DistanceProxy& proxyA,
-                                         const Transformation& xfA, const DistanceProxy& proxyB,
+SeparationScenario GetSeparationScenario(IndexPair3 indices,
+                                         const DistanceProxy& proxyA,
+                                         const Transformation& xfA,
+                                         const DistanceProxy& proxyB,
                                          const Transformation& xfB);
 
 /// @brief Finds the minimum separation.
 /// @return indexes of proxy A's and proxy B's vertices that have the minimum
 ///    distance between them and what that distance is.
-LengthIndexPair FindMinSeparation(const SeparationScenario& scenario, const Transformation& xfA,
+LengthIndexPair FindMinSeparation(const SeparationScenario& scenario,
+                                  const DistanceProxy& proxyA,
+                                  const Transformation& xfA,
+                                  const DistanceProxy& proxyB,
                                   const Transformation& xfB);
 
 /// Evaluates the separation of the identified proxy vertices at the given time factor.
@@ -92,8 +95,12 @@ LengthIndexPair FindMinSeparation(const SeparationScenario& scenario, const Tran
 /// @return Separation distance which will be negative when the given transforms put the
 ///    vertices on the opposite sides of the separating axis.
 ///
-Length Evaluate(const SeparationScenario& scenario, const Transformation& xfA,
-                const Transformation& xfB, IndexPair indexPair);
+Length Evaluate(const SeparationScenario& scenario,
+                const DistanceProxy& proxyA,
+                const Transformation& xfA,
+                const DistanceProxy& proxyB,
+                const Transformation& xfB,
+                IndexPair indexPair);
 
 } // namespace d2
 } // namespace playrho
