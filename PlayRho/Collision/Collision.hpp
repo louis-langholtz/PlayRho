@@ -39,10 +39,10 @@ namespace playrho {
 struct PointStates
 {
     /// @brief State 1.
-    PointState state1[MaxManifoldPoints] = {PointState::NullState, PointState::NullState};
+    PointState state1[MaxManifoldPoints] = {PointState::Null, PointState::Null};
     
     /// @brief State 2.
-    PointState state2[MaxManifoldPoints] = {PointState::NullState, PointState::NullState};
+    PointState state2[MaxManifoldPoints] = {PointState::Null, PointState::Null};
 };
 
 namespace d2 {

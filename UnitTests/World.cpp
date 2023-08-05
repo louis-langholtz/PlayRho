@@ -3352,16 +3352,16 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
             switch (oldPointCount)
             {
                 case 0:
-                    ASSERT_EQ(pointStates.state1[0], PointState::NullState);
-                    ASSERT_EQ(pointStates.state1[1], PointState::NullState);
+                    ASSERT_EQ(pointStates.state1[0], PointState::Null);
+                    ASSERT_EQ(pointStates.state1[1], PointState::Null);
                     break;
                 case 1:
-                    ASSERT_NE(pointStates.state1[0], PointState::NullState);
-                    ASSERT_EQ(pointStates.state1[1], PointState::NullState);
+                    ASSERT_NE(pointStates.state1[0], PointState::Null);
+                    ASSERT_EQ(pointStates.state1[1], PointState::Null);
                     break;
                 case 2:
-                    ASSERT_NE(pointStates.state1[0], PointState::NullState);
-                    ASSERT_NE(pointStates.state1[1], PointState::NullState);
+                    ASSERT_NE(pointStates.state1[0], PointState::Null);
+                    ASSERT_NE(pointStates.state1[1], PointState::Null);
                     break;
                 default:
                     ASSERT_LE(oldPointCount, 2);
@@ -3371,16 +3371,16 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
             switch (newPointCount)
             {
                 case 0:
-                    ASSERT_EQ(pointStates.state2[0], PointState::NullState);
-                    ASSERT_EQ(pointStates.state2[1], PointState::NullState);
+                    ASSERT_EQ(pointStates.state2[0], PointState::Null);
+                    ASSERT_EQ(pointStates.state2[1], PointState::Null);
                     break;
                 case 1:
-                    ASSERT_NE(pointStates.state2[0], PointState::NullState);
-                    ASSERT_EQ(pointStates.state2[1], PointState::NullState);
+                    ASSERT_NE(pointStates.state2[0], PointState::Null);
+                    ASSERT_EQ(pointStates.state2[1], PointState::Null);
                     break;
                 case 2:
-                    ASSERT_NE(pointStates.state2[0], PointState::NullState);
-                    ASSERT_NE(pointStates.state2[1], PointState::NullState);
+                    ASSERT_NE(pointStates.state2[0], PointState::Null);
+                    ASSERT_NE(pointStates.state2[1], PointState::Null);
                     break;
                 default:
                     ASSERT_LE(newPointCount, 2);

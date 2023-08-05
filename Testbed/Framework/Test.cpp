@@ -706,12 +706,12 @@ void DrawContactInfo(Drawer& drawer, const Settings& settings,
         const auto selected = HasFixture(point, selectedFixtures);
         if (settings.drawContactPoints)
         {
-            if (point.state == PointState::AddState)
+            if (point.state == PointState::Add)
             {
                 drawer.DrawPoint(point.position, 7.0f,
                                  Brighten(addStateColor, selected? lighten: darken));
             }
-            else if (point.state == PointState::PersistState)
+            else if (point.state == PointState::Persist)
             {
                 // Persist
                 drawer.DrawPoint(point.position, 5.0f,
