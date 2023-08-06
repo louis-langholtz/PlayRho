@@ -22,8 +22,7 @@
 #include <PlayRho/Collision/PointStates.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho::d2 {
 
 PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2) noexcept
 {
@@ -62,5 +61,4 @@ PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2)
     return retval;
 }
 
-} // namespace d2
-} // namespace playrho
+}
