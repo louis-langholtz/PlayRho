@@ -37,7 +37,6 @@
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
-#include <PlayRho/Collision/Collision.hpp>
 #include <PlayRho/Collision/DynamicTree.hpp> // for GetTree
 #include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
