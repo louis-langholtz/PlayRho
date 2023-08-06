@@ -19,7 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/Collision.hpp>
+#include <PlayRho/Collision/PointStates.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 
 namespace playrho {
