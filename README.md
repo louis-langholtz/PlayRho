@@ -5,17 +5,30 @@
 
 # PlayRho
 
+[![linux](https://github.com/louis-langholtz/PlayRho/actions/workflows/linux.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/linux.yml)
+[![macos](https://github.com/louis-langholtz/PlayRho/actions/workflows/macos.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/macos.yml)
+[![windows](https://github.com/louis-langholtz/PlayRho/actions/workflows/windows.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/windows.yml)
+[![API Documentation](https://github.com/louis-langholtz/PlayRho/actions/workflows/docs.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/docs.yml)
+[![CodeQL](https://github.com/louis-langholtz/PlayRho/actions/workflows/codeql.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/codeql.yml)
+[![Coverage Status](https://coveralls.io/repos/github/louis-langholtz/PlayRho/badge.svg?branch=master)](https://coveralls.io/github/louis-langholtz/PlayRho?branch=master)
+[![Ask questions at StackOverflow with the tag playrho](https://img.shields.io/badge/stackoverflow-playrho-blue.svg)](https://stackoverflow.com/questions/tagged/playrho)
+
 *A way to play with physical behaviors like the conservation of momentum.*
 
-PlayRho is a real-time oriented physics engine and library that's currently best suited for
-2-D games. The project name is the composition of the verb *play* with the noun *rho* where
+PlayRho is a real-time oriented, platform independent, physics engine and library, that's currently best suited for 2-D games.
+The project name is the composition of the verb *play* with the noun *rho*, where
 *rho* is the Greek letter often used to represent physical quantities like momentum.
 
-## Background
+PlayRho started off as a port by Louis Langholtz of the Box2D 2.3.2 physics engine to ["modern C++"](https://msdn.microsoft.com/en-us/library/hh279654.aspx).
+It's evolved into a derivative work by Louis and other contributors to the code base.
+Like its predecessor, PlayRho is also [licensed](LICENSE.txt) under a [Zlib License](https://opensource.org/licenses/Zlib).
+Many other open source physics engines exist, like: [Bullet Physics](http://bulletphysics.org/) and [Chipmunk](https://chipmunk-physics.net).
 
-PlayRho started off as a port by Louis Langholtz of the Box2D 2.3.2 physics engine to ["modern C++"](https://msdn.microsoft.com/en-us/library/hh279654.aspx). It's evolved into a derivative work by Louis and other contributors to the code base. Like its predecessor, PlayRho is also [licensed](LICENSE.txt) under a [Zlib License](https://opensource.org/licenses/Zlib).
+The PlayRho library component itself requires only a standards compliant C++17 compiler and standard library implementation.
+It's continuous integration backed and unit test proven to compile and work on at least Linux, macOS, and Windows.
+See the status badges above for up-to-date status of builds, tests, documentation, code-security and more.
 
-Some general goals of this project are:
+General goals of this project are:
 - Supporting value semantics over reference semantics. Values are in and pointers are out!
 - Conforming to the [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md),
   particularly in regards to things like avoiding global variables,
@@ -26,18 +39,7 @@ Some general goals of this project are:
   backed, [build automation](https://en.wikipedia.org/wiki/Build_automation) supported,
   [unit test](https://en.wikipedia.org/wiki/Unit_testing) validated, and [benchmark](https://en.wikipedia.org/wiki/Benchmark_(computing)) assessed, project.
 
-## Continuous Integration Status
-
-[![linux](https://github.com/louis-langholtz/PlayRho/actions/workflows/linux.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/linux.yml)
-[![macos](https://github.com/louis-langholtz/PlayRho/actions/workflows/macos.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/macos.yml)
-[![windows](https://github.com/louis-langholtz/PlayRho/actions/workflows/windows.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/windows.yml)
-[![API Documentation](https://github.com/louis-langholtz/PlayRho/actions/workflows/docs.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/docs.yml)
-[![CodeQL](https://github.com/louis-langholtz/PlayRho/actions/workflows/codeql.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/codeql.yml)
-[![Coverage Status](https://coveralls.io/repos/github/louis-langholtz/PlayRho/badge.svg?branch=master)](https://coveralls.io/github/louis-langholtz/PlayRho?branch=master)
-[![Ask questions at StackOverflow with the tag playrho](https://img.shields.io/badge/stackoverflow-playrho-blue.svg)](https://stackoverflow.com/questions/tagged/playrho)
-
-## Additional Resources
-
+Additional Resources:
 - [Changes Document](Changes.md):
   provides a run-down of changes between PlayRho and Box2D 2.3.2.
 - [Building & Installation Document](INSTALL.md):
