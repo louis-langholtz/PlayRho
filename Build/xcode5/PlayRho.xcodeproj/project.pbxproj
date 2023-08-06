@@ -404,6 +404,8 @@
 		996B7B8D2A6DF25200A8207F /* PoolMemoryResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B8A2A6DF25200A8207F /* PoolMemoryResource.cpp */; };
 		996B7B8F2A6EED6200A8207F /* polymorphic_allocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B8E2A6EED6200A8207F /* polymorphic_allocator.cpp */; };
 		9980D10A29C8ACB700007B35 /* WorldConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9980D10929C8ACB700007B35 /* WorldConf.cpp */; };
+		998A7C012A801C1C00F29B01 /* ClipList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 998A7BFF2A801C1C00F29B01 /* ClipList.cpp */; };
+		998A7C022A801C1C00F29B01 /* ClipList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 998A7C002A801C1C00F29B01 /* ClipList.hpp */; };
 		99CF862F29B9087700D9D112 /* BaseShapeConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99CF862E29B9087700D9D112 /* BaseShapeConf.cpp */; };
 		99CF863129C251CB00D9D112 /* ConstraintSolverConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99CF863029C251CB00D9D112 /* ConstraintSolverConf.cpp */; };
 /* End PBXBuildFile section */
@@ -884,6 +886,8 @@
 		996B7B8A2A6DF25200A8207F /* PoolMemoryResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PoolMemoryResource.cpp; sourceTree = "<group>"; };
 		996B7B8E2A6EED6200A8207F /* polymorphic_allocator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = polymorphic_allocator.cpp; sourceTree = "<group>"; };
 		9980D10929C8ACB700007B35 /* WorldConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WorldConf.cpp; sourceTree = "<group>"; };
+		998A7BFF2A801C1C00F29B01 /* ClipList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ClipList.cpp; sourceTree = "<group>"; };
+		998A7C002A801C1C00F29B01 /* ClipList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ClipList.hpp; sourceTree = "<group>"; };
 		99CF862E29B9087700D9D112 /* BaseShapeConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BaseShapeConf.cpp; sourceTree = "<group>"; };
 		99CF863029C251CB00D9D112 /* ConstraintSolverConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ConstraintSolverConf.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1079,6 +1083,8 @@
 			children = (
 				4731DE2B1DDF94A600E7F931 /* AABB.cpp */,
 				4726DD291D31B4090012A882 /* AABB.hpp */,
+				998A7BFF2A801C1C00F29B01 /* ClipList.cpp */,
+				998A7C002A801C1C00F29B01 /* ClipList.hpp */,
 				80BB892C141C3E5900F1753A /* Collision.cpp */,
 				4731DE431DE2570900E7F931 /* Collision.hpp */,
 				4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */,
@@ -1508,6 +1514,7 @@
 				4734B2271DC29F7C00F15E29 /* SimplexEdge.hpp in Headers */,
 				4787D6BB1F2E946E008C115E /* PrismaticJointConf.hpp in Headers */,
 				47C85D1B1F0D9D8D00F70C56 /* Units.hpp in Headers */,
+				998A7C022A801C1C00F29B01 /* ClipList.hpp in Headers */,
 				470F9B181EDF2959007EF7B6 /* Transformation.hpp in Headers */,
 				4791332626A5F58C0011707B /* DynamicTreeData.hpp in Headers */,
 				4764088D252268A40090F711 /* WorldBody.hpp in Headers */,
@@ -2013,6 +2020,7 @@
 				47363E8920029DFD005912B1 /* Velocity.cpp in Sources */,
 				4787D6BA1F2E946E008C115E /* PrismaticJointConf.cpp in Sources */,
 				4787D6CE1F2EC902008C115E /* MotorJointConf.cpp in Sources */,
+				998A7C012A801C1C00F29B01 /* ClipList.cpp in Sources */,
 				4787D6CA1F2EA3A1008C115E /* GearJointConf.cpp in Sources */,
 				80BB89BE141C3E5900F1753A /* Contact.cpp in Sources */,
 				80BB89C0141C3E5900F1753A /* ContactSolver.cpp in Sources */,
