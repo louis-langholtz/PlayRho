@@ -1288,7 +1288,7 @@ void WorldImpl::AddContactsToIsland(Island& island, BodyStack& stack,
     for_each(cbegin(contacts), cend(contacts), [&](const KeyedContactPtr& ci) {
         const auto contactID = std::get<ContactID>(ci);
         if (!m_islanded.contacts[to_underlying(contactID)]) {
-            auto& contact = m_contactBuffer[to_underlying(contactID)];
+            const auto& contact = m_contactBuffer[to_underlying(contactID)];
             if (IsEnabled(contact) && IsTouching(contact) && !IsSensor(contact))
             {
                 const auto bodyA = GetBodyA(contact);
