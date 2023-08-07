@@ -442,7 +442,7 @@ bool ShouldCollide(const ObjectPool<Joint>& jointBuffer,
     return it == end(joints);
 }
 
-void Unset(std::vector<bool>& islanded, const WorldImpl::Bodies& elements)
+void Unset(std::vector<bool>& islanded, const Span<const BodyID>& elements)
 {
     for (const auto& element: elements) {
         islanded[to_underlying(element)] = false;
