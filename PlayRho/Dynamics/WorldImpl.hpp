@@ -540,6 +540,8 @@ private:
     /// @details Finds islands, integrates and solves constraints, solves position constraints.
     /// @note This may miss collisions involving fast moving bodies and allow them to tunnel
     ///   through each other.
+    /// @pre <code>IsLocked()</code> returns false.
+    /// @pre <code>IsStepComplete()</code> returns true.
     RegStepStats SolveReg(const StepConf& conf);
 
     /// @brief Solves the given island (regularly).
@@ -582,7 +584,8 @@ private:
                      ContactCounter& remNumContacts,
                      JointCounter& remNumJoints);
 
-    /// @brief Adds contacts to the island.
+    /// @brief Adds contacts of the specified body to the island and adds the other contacted
+    ///   bodies to the body stack.
     void AddContactsToIsland(Island& island, BodyStack& stack, const Contacts& contacts,
                              BodyID bodyID);
 
