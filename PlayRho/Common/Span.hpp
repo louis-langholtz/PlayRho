@@ -67,7 +67,9 @@ public:
     }
 
     /// @brief Initializing constructor.
-    template <typename U, typename = std::enable_if_t<!std::is_array<U>::value>>
+    template <typename U,
+        typename = std::enable_if_t<!std::is_array_v<U> && std::is_same_v<decltype(pointer{::playrho::data(std::declval<U>())}), pointer>>
+    >
     constexpr Span(U&& value) noexcept
         : m_array{::playrho::data(std::forward<U>(value))}, m_size{::playrho::size(std::forward<U>(value))}
     {
