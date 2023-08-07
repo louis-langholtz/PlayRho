@@ -406,6 +406,9 @@
 		9980D10A29C8ACB700007B35 /* WorldConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9980D10929C8ACB700007B35 /* WorldConf.cpp */; };
 		998A7C012A801C1C00F29B01 /* ClipList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 998A7BFF2A801C1C00F29B01 /* ClipList.cpp */; };
 		998A7C022A801C1C00F29B01 /* ClipList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 998A7C002A801C1C00F29B01 /* ClipList.hpp */; };
+		998A7C052A80404600F29B01 /* StatsResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 998A7C032A80404600F29B01 /* StatsResource.cpp */; };
+		998A7C062A80404600F29B01 /* StatsResource.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 998A7C042A80404600F29B01 /* StatsResource.hpp */; };
+		998A7C082A814F9300F29B01 /* StatsResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 998A7C072A814F9300F29B01 /* StatsResource.cpp */; };
 		99CF862F29B9087700D9D112 /* BaseShapeConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99CF862E29B9087700D9D112 /* BaseShapeConf.cpp */; };
 		99CF863129C251CB00D9D112 /* ConstraintSolverConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99CF863029C251CB00D9D112 /* ConstraintSolverConf.cpp */; };
 /* End PBXBuildFile section */
@@ -888,6 +891,9 @@
 		9980D10929C8ACB700007B35 /* WorldConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WorldConf.cpp; sourceTree = "<group>"; };
 		998A7BFF2A801C1C00F29B01 /* ClipList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ClipList.cpp; sourceTree = "<group>"; };
 		998A7C002A801C1C00F29B01 /* ClipList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ClipList.hpp; sourceTree = "<group>"; };
+		998A7C032A80404600F29B01 /* StatsResource.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StatsResource.cpp; sourceTree = "<group>"; };
+		998A7C042A80404600F29B01 /* StatsResource.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StatsResource.hpp; sourceTree = "<group>"; };
+		998A7C072A814F9300F29B01 /* StatsResource.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StatsResource.cpp; sourceTree = "<group>"; };
 		99CF862E29B9087700D9D112 /* BaseShapeConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BaseShapeConf.cpp; sourceTree = "<group>"; };
 		99CF863029C251CB00D9D112 /* ConstraintSolverConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ConstraintSolverConf.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1016,6 +1022,7 @@
 				4775A9371E05B032001C2332 /* StepConf.cpp */,
 				47250DA01FEAD20C00FDDE1C /* StepStats.cpp */,
 				474BC4021D41278800447DCD /* Sweep.cpp */,
+				998A7C072A814F9300F29B01 /* StatsResource.cpp */,
 				47327E741E9F1E2A0048FCD8 /* TargetJoint.cpp */,
 				474BC4031D41278800447DCD /* TimeOfImpact.cpp */,
 				996B7B892A6DF25200A8207F /* ThreadLocalAllocator.cpp */,
@@ -1197,6 +1204,8 @@
 				80BB8948141C3E5900F1753A /* StackAllocator.cpp */,
 				80BB8949141C3E5900F1753A /* StackAllocator.hpp */,
 				479DEBAC268155E50070497D /* Sweep.cpp */,
+				998A7C032A80404600F29B01 /* StatsResource.cpp */,
+				998A7C042A80404600F29B01 /* StatsResource.hpp */,
 				470F9B1B1EDF2B8A007EF7B6 /* Sweep.hpp */,
 				47C85D1E1F0DA14500F70C56 /* Templates.hpp */,
 				996B7B812A6DF1A400A8207F /* ThreadLocalAllocator.hpp */,
@@ -1584,6 +1593,7 @@
 				470F94B41EC4CB6C00AA3C82 /* Filter.hpp in Headers */,
 				47D6D59F2672B5CA00AF32B4 /* DistanceConf.hpp in Headers */,
 				4787D6CF1F2EC902008C115E /* MotorJointConf.hpp in Headers */,
+				998A7C062A80404600F29B01 /* StatsResource.hpp in Headers */,
 				4751EE291CEDD78F00D459CB /* Mobile.cpp in Headers */,
 				4751EE2B1CEDD79900D459CB /* ConveyorBelt.cpp in Headers */,
 				4768D3FD1E414A0100574143 /* Vector2.hpp in Headers */,
@@ -1860,6 +1870,7 @@
 				473E01A01F81705100D58CC8 /* Vector.cpp in Sources */,
 				996B7B8B2A6DF25200A8207F /* MemoryResource.cpp in Sources */,
 				472E24661F82C4EA0051E192 /* Interval.cpp in Sources */,
+				998A7C082A814F9300F29B01 /* StatsResource.cpp in Sources */,
 				4775A9381E05B032001C2332 /* StepConf.cpp in Sources */,
 				47AFC3051DAEBC120023E9D1 /* PositionSolverManifold.cpp in Sources */,
 				473971A81D9D9B4C00F7137F /* Math.cpp in Sources */,
@@ -2031,6 +2042,7 @@
 				4764089C25226E180090F711 /* WorldJoint.cpp in Sources */,
 				4787D6C61F2EA1DB008C115E /* FrictionJointConf.cpp in Sources */,
 				4787D6E61F2ED62C008C115E /* WheelJointConf.cpp in Sources */,
+				998A7C052A80404600F29B01 /* StatsResource.cpp in Sources */,
 				4768D4001E54E7CC00574143 /* StepConf.cpp in Sources */,
 				996B7B872A6DF1A500A8207F /* PoolMemoryResource.cpp in Sources */,
 				47640863250807720090F711 /* WorldImpl.cpp in Sources */,
