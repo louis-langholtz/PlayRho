@@ -717,7 +717,7 @@ void SetSleepingAllowed(World& world, BodyID, bool value);
 ///   miss some collisions if you don't use <code>ContactListener</code>.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-const std::vector<KeyedContactPtr>& GetContacts(const World& world, BodyID id);
+const std::vector<std::tuple<ContactKey, ContactID>>& GetContacts(const World& world, BodyID id);
 
 /// @brief Gets the centripetal force necessary to put the body into an orbit having
 ///    the given radius.

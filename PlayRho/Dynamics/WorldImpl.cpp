@@ -358,7 +358,7 @@ inline Time UpdateUnderActiveTimes(const Span<const BodyID>& bodies,
 
 inline BodyCounter Sleepem(const Span<const BodyID>& bodies,
                            ObjectPool<Body>& bodyBuffer,
-                           ObjectPool<WorldImpl::Contacts>& bodyContacts,
+                           ObjectPool<WorldImpl::BodyContacts>& bodyContacts,
                            ObjectPool<Contact>& contactBuffer)
 {
     auto unawoken = BodyCounter{0};
@@ -391,7 +391,7 @@ inline bool IsValidForTime(ToiOutput::State state) noexcept
 }
 
 bool FlagForFiltering(ObjectPool<Contact>& contactBuffer, BodyID bodyA,
-                      const Span<const KeyedContactPtr>& contactsBodyB,
+                      const Span<const std::tuple<ContactKey, ContactID>>& contactsBodyB,
                       BodyID bodyB) noexcept
 {
     auto anyFlagged = false;
@@ -449,7 +449,14 @@ void Unset(std::vector<bool>& islanded, const Span<const BodyID>& elements)
     }
 }
 
-void Unset(std::vector<bool>& islanded, const Span<const KeyedContactPtr>& elements)
+void Unset(std::vector<bool>& islanded, const Span<const std::pair<ContactKey, ContactID>>& elements)
+{
+    for (const auto& element: elements) {
+        islanded[to_underlying(std::get<ContactID>(element))] = false;
+    }
+}
+
+void Unset(std::vector<bool>& islanded, const Span<const std::tuple<ContactKey, ContactID>>& elements)
 {
     for (const auto& element: elements) {
         islanded[to_underlying(std::get<ContactID>(element))] = false;
@@ -466,7 +473,7 @@ void ResetBodiesForSolveTOI(WorldImpl::Bodies& bodies, ObjectPool<Body>& buffer)
 
 /// @brief Reset contacts for solve TOI.
 void ResetBodyContactsForSolveTOI(ObjectPool<Contact>& buffer,
-                                  const Span<const KeyedContactPtr>& contacts) noexcept
+                                  const Span<const std::tuple<ContactKey, ContactID>>& contacts) noexcept
 {
     // Invalidate all contact TOIs on this displaced body.
     for_each(cbegin(contacts), cend(contacts), [&buffer](const auto& ci) {
@@ -533,7 +540,7 @@ auto FindTypeValue(const std::vector<Element>& container, const Value& value)
     return (it != last)? std::optional<decltype(it)>{it}: std::optional<decltype(it)>{};
 }
 
-void Erase(std::vector<KeyedContactPtr>& contacts, const std::function<bool(ContactID)>& callback)
+void Erase(std::vector<std::tuple<ContactKey, ContactID>>& contacts, const std::function<bool(ContactID)>& callback)
 {
     auto last = end(contacts);
     auto iter = begin(contacts);
@@ -1283,9 +1290,9 @@ void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
 }
 
 void WorldImpl::AddContactsToIsland(Island& island, BodyStack& stack,
-                                    const Contacts& contacts, BodyID bodyID)
+                                    const BodyContacts& contacts, BodyID bodyID)
 {
-    for_each(cbegin(contacts), cend(contacts), [&](const KeyedContactPtr& ci) {
+    for_each(cbegin(contacts), cend(contacts), [&](const auto& ci) {
         const auto contactID = std::get<ContactID>(ci);
         if (!m_islanded.contacts[to_underlying(contactID)]) {
             const auto& contact = m_contactBuffer[to_underlying(contactID)];
@@ -2311,7 +2318,7 @@ ContactCounter WorldImpl::FindNewContacts( // NOLINT(readability-function-cognit
         // Code herein may be racey in a multithreaded context...
         // Would need a lock on bodyA, bodyB, and contacts.
         // A global lock on the world instance should work but then would it have so much
-        // contention as to make multi-threaded handing of adding new connections senseless?
+        // contention as to make multi-threaded handling of adding new connections senseless?
 
         // Have to quickly figure out if there's a contact already added for the current
         // fixture-childindex pair that this method's been called for.
@@ -2410,7 +2417,7 @@ const WorldImpl::Proxies& WorldImpl::GetProxies(BodyID id) const
     return m_bodyProxies.at(to_underlying(id));
 }
 
-const WorldImpl::Contacts& WorldImpl::GetContacts(BodyID id) const
+const WorldImpl::BodyContacts& WorldImpl::GetContacts(BodyID id) const
 {
     return m_bodyContacts.at(to_underlying(id));
 }

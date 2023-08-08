@@ -476,7 +476,7 @@ void SetAngularDamping(World& world, BodyID id, NonNegative<Frequency> angularDa
     world.SetBody(id, body);
 }
 
-const std::vector<KeyedContactPtr>& GetContacts(const World& world, BodyID id)
+const std::vector<std::tuple<ContactKey, ContactID>>& GetContacts(const World& world, BodyID id)
 {
     return world.GetContacts(id);
 }

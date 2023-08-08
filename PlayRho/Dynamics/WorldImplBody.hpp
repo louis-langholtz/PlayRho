@@ -105,7 +105,7 @@ const std::vector<ShapeID>& GetShapes(const WorldImpl& world, BodyID id);
 ///   miss some collisions if you don't use <code>ContactListener</code>.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso WorldImpl
-const std::vector<KeyedContactPtr>& GetContacts(const WorldImpl& world, BodyID id);
+const std::vector<std::tuple<ContactKey, ContactID>>& GetContacts(const WorldImpl& world, BodyID id);
 
 } // namespace d2
 } // namespace playrho

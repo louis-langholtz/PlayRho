@@ -85,7 +85,7 @@ const std::vector<ShapeID>& GetShapes(const WorldImpl& world, BodyID id)
     return world.GetBody(id).GetShapes();
 }
 
-const std::vector<KeyedContactPtr>& GetContacts(const WorldImpl& world, BodyID id)
+const std::vector<std::tuple<ContactKey, ContactID>>& GetContacts(const WorldImpl& world, BodyID id)
 {
     return world.GetContacts(id);
 }

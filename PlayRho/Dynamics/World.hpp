@@ -136,6 +136,9 @@ public:
     /// @brief Container type for Joint identifiers.
     using Joints = std::vector<JointID>;
 
+    /// @brief Container type for Body associated contact information.
+    using BodyContacts = std::vector<std::tuple<ContactKey, ContactID>>;
+
     /// @brief Container type for Body associated Joint identifiers.
     using BodyJoints = std::vector<std::pair<BodyID, JointID>>;
 
@@ -402,7 +405,7 @@ public:
     ///   miss some collisions if you don't use <code>ContactListener</code>.
     /// @throws std::out_of_range If given an invalid body identifier.
     /// @see GetBodyRange.
-    const Contacts& GetContacts(BodyID id) const;
+    const BodyContacts& GetContacts(BodyID id) const;
 
     /// @brief Gets the identities of the shapes associated with the identified body.
     /// @throws std::out_of_range If given an invalid body identifier.
