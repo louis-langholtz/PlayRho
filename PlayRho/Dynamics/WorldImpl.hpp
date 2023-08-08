@@ -83,6 +83,9 @@ public:
     /// @note Cannot be container of Joint instances since joints are polymorphic types.
     using Joints = std::vector<JointID>;
 
+    /// @brief Container type for Body associated contact information.
+    using BodyContacts = std::vector<std::tuple<ContactKey, ContactID>>;
+
     /// @brief Body joints container type.
     using BodyJoints = std::vector<std::pair<BodyID, JointID>>;
 
@@ -352,7 +355,7 @@ public:
 
     /// @brief Gets the contacts associated with the identified body.
     /// @throws std::out_of_range if given an invalid id.
-    const std::vector<KeyedContactPtr>& GetContacts(BodyID id) const;
+    const BodyContacts& GetContacts(BodyID id) const;
 
     /// @throws std::out_of_range if given an invalid id.
     const BodyJoints& GetJoints(BodyID id) const;
@@ -586,7 +589,7 @@ private:
 
     /// @brief Adds contacts of the specified body to the island and adds the other contacted
     ///   bodies to the body stack.
-    void AddContactsToIsland(Island& island, BodyStack& stack, const Contacts& contacts,
+    void AddContactsToIsland(Island& island, BodyStack& stack, const BodyContacts& contacts,
                              BodyID bodyID);
 
     /// @brief Adds joints to the island.
@@ -738,6 +741,8 @@ private:
     ///   the contacts container.
     /// @note New contacts will all have overlapping AABBs.
     /// @post <code>GetProxies()</code> will return an empty container.
+    /// @post Container returned by <code>GetContacts()</code> will have increased in size by returned amount.
+    /// @post Container returned by <code>GetContacts(BodyID)</code> for some body IDs may have more elements.
     /// @see GetProxies.
     ContactCounter FindNewContacts(std::vector<ContactKey, pmr::polymorphic_allocator<ContactKey>>&& contactKeys);
 
@@ -797,7 +802,8 @@ private:
 
     /// @brief Cache of contacts associated with bodies.
     /// @note Size depends on and matches <code>size(m_bodyBuffer)</code>.
-    ObjectPool<std::vector<KeyedContactPtr>> m_bodyContacts;
+    /// @note Individual body contact containers are added to by <code>FindNewContacts</code>.
+    ObjectPool<BodyContacts> m_bodyContacts;
 
     ///< Cache of joints associated with bodies.
     /// @note Size depends on and matches <code>size(m_bodyBuffer)</code>.

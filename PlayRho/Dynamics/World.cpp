@@ -190,7 +190,7 @@ const World::BodyJoints& World::GetJoints(BodyID id) const
     return ::playrho::d2::GetJoints(*m_impl, id);
 }
 
-const World::Contacts& World::GetContacts(BodyID id) const
+const World::BodyContacts& World::GetContacts(BodyID id) const
 {
     return ::playrho::d2::GetContacts(*m_impl, id);
 }

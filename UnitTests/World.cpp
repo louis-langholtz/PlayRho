@@ -2583,8 +2583,8 @@ TEST(World, CollidingDynamicBodies)
     EXPECT_FALSE(GetContacts(world, body_a).empty());
     for (const auto& ci: GetContacts(world, body_a))
     {
-        EXPECT_FALSE(NeedsFiltering(world, ci.second));
-        EXPECT_TRUE(NeedsUpdating(world, ci.second));
+        EXPECT_FALSE(NeedsFiltering(world, std::get<ContactID>(ci)));
+        EXPECT_TRUE(NeedsUpdating(world, std::get<ContactID>(ci)));
     }
     auto filter = GetFilterData(world, shape);
     filter.categoryBits = ~filter.categoryBits;
@@ -2597,8 +2597,8 @@ TEST(World, CollidingDynamicBodies)
     EXPECT_FALSE(GetContacts(world, body_a).empty());
     for (auto&& ci: GetContacts(world, body_a))
     {
-        EXPECT_TRUE(NeedsFiltering(world, ci.second));
-        EXPECT_TRUE(NeedsUpdating(world, ci.second));
+        EXPECT_TRUE(NeedsFiltering(world, std::get<ContactID>(ci)));
+        EXPECT_TRUE(NeedsUpdating(world, std::get<ContactID>(ci)));
     }
 
     const auto time_contacting = elapsed_time;

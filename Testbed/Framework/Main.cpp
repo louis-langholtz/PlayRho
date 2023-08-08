@@ -112,6 +112,7 @@ using BodySet = Test::BodySet;
 static void EntityUI(World& world, ContactID contact);
 static void EntityUI(World& world, JointID e);
 static void CollectionUI(World& world, const World::Contacts& contacts, bool interactive = true);
+static void CollectionUI(World& world, const World::BodyContacts& contacts, bool interactive = true);
 static void CollectionUI(World& world, const World::Joints& joints);
 static void CollectionUI(World& world, const World::BodyJoints& joints);
 
@@ -3275,29 +3276,6 @@ static void CollectionUI(World& world, const World::Joints& joints)
     }
 }
 
-static void CollectionUI(World& world, const World::BodyJoints& joints)
-{
-    ImGui::IdContext idCtx("BodyJointsRange");
-    ImGui::ItemWidthContext itemWidthCtx(130);
-    for (const auto& e: joints) {
-        const auto bodyID = std::get<BodyID>(e);
-        const auto jointID = std::get<JointID>(e);
-        if (bodyID != InvalidBodyID) {
-            ImGui::Text("Joint %u (%s Other-body=%u)", to_underlying(jointID),
-                        Test::ToName(GetType(world, jointID)), to_underlying(bodyID));
-            if (ImGui::IsItemHovered()) {
-                ImGui::SetTooltip("World ID of joint and world ID of other associated body.");
-            }
-        }
-        else {
-            ImGui::Text("Joint %u", to_underlying(jointID));
-            if (ImGui::IsItemHovered()) {
-                ImGui::SetTooltip("World ID of joint.");
-            }
-        }
-    }
-}
-
 static void CollectionUI(World& world, const World::Contacts& contacts, bool interactive)
 {
     ImGui::IdContext idCtx("ContactsRange");
@@ -3322,6 +3300,58 @@ static void CollectionUI(World& world, const World::Contacts& contacts, bool int
                         IsTouching(world, contactID)? ",touching": "");
             if (ImGui::IsItemHovered()) {
                 ImGui::SetTooltip("World ID of contact (and associated min & max tree keys).");
+            }
+        }
+    }
+}
+
+static void CollectionUI(World& world, const World::BodyJoints& joints)
+{
+    ImGui::IdContext idCtx("BodyJointsRange");
+    ImGui::ItemWidthContext itemWidthCtx(130);
+    for (const auto& e: joints) {
+        const auto bodyID = std::get<BodyID>(e);
+        const auto jointID = std::get<JointID>(e);
+        if (bodyID != InvalidBodyID) {
+            ImGui::Text("Joint %u (%s Other-body=%u)", to_underlying(jointID),
+                        Test::ToName(GetType(world, jointID)), to_underlying(bodyID));
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("World ID of joint and world ID of other associated body.");
+            }
+        }
+        else {
+            ImGui::Text("Joint %u", to_underlying(jointID));
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("World ID of joint.");
+            }
+        }
+    }
+}
+
+static void CollectionUI(World& world, const World::BodyContacts& contacts, bool interactive)
+{
+    ImGui::IdContext idCtx("BodyContactsRange");
+    if (interactive) {
+        for (const auto& ct: contacts) {
+            const auto key = std::get<ContactKey>(ct);
+            const auto contactID = std::get<ContactID>(ct);
+            if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(contactID.get()), 0,
+                                  "Contact %u (%u,%u%s)", contactID.get(),
+                                  key.GetMin(), key.GetMax(),
+                                  (IsTouching(world, contactID)? ",touching": ""))) {
+                EntityUI(world, contactID);
+                ImGui::TreePop();
+            }
+        }
+    }
+    else {
+        for (const auto& ct: contacts) {
+            const auto key = std::get<ContactKey>(ct);
+            const auto contactID = std::get<ContactID>(ct);
+            ImGui::Text("Contact %u (%u,%u%s)", contactID.get(), key.GetMin(), key.GetMax(),
+                        IsTouching(world, contactID)? ",touching": "");
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("World ID of body contact (and associated min & max tree keys).");
             }
         }
     }
