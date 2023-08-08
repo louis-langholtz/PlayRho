@@ -15,8 +15,10 @@
 
 *A way to play with physical behaviors like the conservation of momentum.*
 
-PlayRho is a real-time oriented, platform independent, physics engine and library, that's currently best suited for 2-D games.
-The project name is the composition of the verb *play* with the noun *rho*, where
+## Overview
+
+PlayRho is a real-time oriented, platform independent, physics engine and library, that's currently best suited for interactive 2-D games or demos.
+The project's name is the composition of the verb *play* with the noun *rho*, where
 *rho* is the Greek letter often used to represent physical quantities like momentum.
 
 PlayRho started off as a port by Louis Langholtz of the Box2D 2.3.2 physics engine to ["modern C++"](https://msdn.microsoft.com/en-us/library/hh279654.aspx).
@@ -26,9 +28,17 @@ Many other open source physics engines exist, like: [Bullet Physics](http://bull
 
 The PlayRho library component itself requires only a standards compliant C++17 compiler and standard library implementation.
 It's continuous integration backed and unit test proven to compile and work on at least Linux, macOS, and Windows.
-See the status badges above for up-to-date status of builds, tests, documentation, code-security and more.
+See the status badges above for up-to-date status of builds, tests, documentation, code-security, and more.
 
-General goals of this project are:
+By design, new development is done in the default/master branch, merged in by pull requests, and then possibly
+backported to a release branch if not API breaking.
+While the master branch is intended to always be buildable and runnable,
+its interface is not meant to be stable and it's not meant for use unless you're specifically looking to help develop this project.
+For use in projects,
+choose from a more stable [tagged release](https://github.com/louis-langholtz/PlayRho/releases) or a release branch.
+
+## General Goals
+
 - Supporting value semantics over reference semantics. Values are in and pointers are out!
 - Conforming to the [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md),
   particularly in regards to things like avoiding global variables,
@@ -39,7 +49,8 @@ General goals of this project are:
   backed, [build automation](https://en.wikipedia.org/wiki/Build_automation) supported,
   [unit test](https://en.wikipedia.org/wiki/Unit_testing) validated, and [benchmark](https://en.wikipedia.org/wiki/Benchmark_(computing)) assessed, project.
 
-Additional Resources:
+## Additional Resources:
+
 - [Changes Document](Changes.md):
   provides a run-down of changes between PlayRho and Box2D 2.3.2.
 - [Building & Installation Document](INSTALL.md):
