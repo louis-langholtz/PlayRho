@@ -736,7 +736,7 @@ private:
     /// @brief Update contacts.
     UpdateContactsStats UpdateContacts(const StepConf& conf);
 
-    /// @brief Finds new contacts.
+    /// @brief Adds new contacts.
     /// @details Processes the proxy queue for finding new contacts and adding them to
     ///   the contacts container.
     /// @note New contacts will all have overlapping AABBs.
@@ -744,7 +744,7 @@ private:
     /// @post Container returned by <code>GetContacts()</code> will have increased in size by returned amount.
     /// @post Container returned by <code>GetContacts(BodyID)</code> for some body IDs may have more elements.
     /// @see GetProxies.
-    ContactCounter FindNewContacts(std::vector<ContactKey, pmr::polymorphic_allocator<ContactKey>>&& contactKeys);
+    ContactCounter AddNewContacts(std::vector<ContactKey, pmr::polymorphic_allocator<ContactKey>>&& contactKeys);
 
     /// @brief Destroys the given contact and removes it from its container.
     /// @details This updates the contacts container, returns the memory to the allocator,
@@ -802,7 +802,7 @@ private:
 
     /// @brief Cache of contacts associated with bodies.
     /// @note Size depends on and matches <code>size(m_bodyBuffer)</code>.
-    /// @note Individual body contact containers are added to by <code>FindNewContacts</code>.
+    /// @note Individual body contact containers are added to by <code>AddNewContacts</code>.
     ObjectPool<BodyContacts> m_bodyContacts;
 
     ///< Cache of joints associated with bodies.

@@ -1409,7 +1409,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
     }
 
     // Look for new contacts.
-    stats.contactsAdded = FindNewContacts(FindContactKeys(m_contactKeysResource, m_tree, std::move(m_proxiesForContacts)));
+    stats.contactsAdded = AddNewContacts(FindContactKeys(m_contactKeysResource, m_tree, std::move(m_proxiesForContacts)));
     m_proxiesForContacts = {};
     
     return stats;
@@ -1675,7 +1675,7 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
 
         // Commit fixture proxy movements to the broad-phase so that new contacts are created.
         // Also, some contacts can be destroyed.
-        stats.contactsAdded += FindNewContacts(FindContactKeys(m_contactKeysResource, m_tree, std::move(m_proxiesForContacts)));
+        stats.contactsAdded += AddNewContacts(FindContactKeys(m_contactKeysResource, m_tree, std::move(m_proxiesForContacts)));
         m_proxiesForContacts = {};
 
         if (subStepping) {
@@ -2042,7 +2042,7 @@ StepStats WorldImpl::Step(const StepConf& conf)
 
         // For any new fixtures added: need to find and create the new contacts.
         // Note: this may update bodies (in addition to the contacts container).
-        stepStats.pre.added = FindNewContacts(FindContactKeys(m_contactKeysResource, m_tree, std::move(m_proxiesForContacts)));
+        stepStats.pre.added = AddNewContacts(FindContactKeys(m_contactKeysResource, m_tree, std::move(m_proxiesForContacts)));
         m_proxiesForContacts = {};
 
         if (conf.deltaTime != 0_s) {
@@ -2284,8 +2284,8 @@ WorldImpl::UpdateContactsStats WorldImpl::UpdateContacts(const StepConf& conf)
     };
 }
 
-ContactCounter WorldImpl::FindNewContacts( // NOLINT(readability-function-cognitive-complexity)
-                                          std::vector<ContactKey, pmr::polymorphic_allocator<ContactKey>>&& contactKeys)
+ContactCounter WorldImpl::AddNewContacts( // NOLINT(readability-function-cognitive-complexity)
+                                         std::vector<ContactKey, pmr::polymorphic_allocator<ContactKey>>&& contactKeys)
 {
     const auto numContactsBefore = size(m_contacts);
     for_each(cbegin(contactKeys), cend(contactKeys), [this](ContactKey key) {
