@@ -151,21 +151,6 @@ TEST(DynamicTreeBranchData, Traits)
     EXPECT_TRUE(std::is_trivially_destructible<DynamicTreeBranchData>::value);
 }
 
-TEST(DynamicTreeLeafData, Traits)
-{
-    EXPECT_TRUE(std::is_default_constructible<DynamicTreeLeafData>::value);
-    EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTreeLeafData>::value);
-
-    EXPECT_TRUE(std::is_copy_constructible<DynamicTreeLeafData>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<DynamicTreeLeafData>::value);
-
-    EXPECT_TRUE(std::is_copy_assignable<DynamicTreeLeafData>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTreeLeafData>::value);
-
-    EXPECT_TRUE(std::is_destructible<DynamicTreeLeafData>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<DynamicTreeLeafData>::value);
-}
-
 TEST(DynamicTreeVariantData, Traits)
 {
     EXPECT_FALSE(std::is_default_constructible<DynamicTreeVariantData>::value);
@@ -386,11 +371,11 @@ TEST(DynamicTree, DefaultConstruction)
     EXPECT_EQ(foo.FindReference(DynamicTree::Size(0)), DynamicTree::GetInvalidSize());
 }
 
-TEST(DynamicTreeLeafData, DefaultConstructor)
+TEST(Contactable, DefaultConstructor)
 {
-    EXPECT_EQ(DynamicTreeLeafData().bodyId, BodyID(0u));
-    EXPECT_EQ(DynamicTreeLeafData().shapeId, ShapeID(0u));
-    EXPECT_EQ(DynamicTreeLeafData().childId, ChildCounter(0u));
+    EXPECT_EQ(Contactable().bodyId, BodyID(0u));
+    EXPECT_EQ(Contactable().shapeId, ShapeID(0u));
+    EXPECT_EQ(Contactable().childId, ChildCounter(0u));
 }
 
 TEST(DynamicTree, ZeroCapacityConstructionSameAsDefault)
@@ -430,7 +415,7 @@ TEST(DynamicTree, CopyConstruction)
         Length2{0_m, 0_m},
         Length2(1_m, 1_m)
     };
-    const auto pid = orig.CreateLeaf(aabb, DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0u});
+    const auto pid = orig.CreateLeaf(aabb, Contactable{BodyID(1u), ShapeID(0u), 0u});
     {
         DynamicTree copy{orig};
         EXPECT_EQ(copy.GetRootIndex(), orig.GetRootIndex());
@@ -461,7 +446,7 @@ TEST(DynamicTree, CopyAssignment)
         Length2{0_m, 0_m},
         Length2{1_m, 1_m}
     };
-    const auto pid = orig.CreateLeaf(aabb, DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0u});
+    const auto pid = orig.CreateLeaf(aabb, Contactable{BodyID(1u), ShapeID(0u), 0u});
     EXPECT_EQ(orig.FindReference(pid), DynamicTree::GetInvalidSize());
     {
         DynamicTree copy;
@@ -488,7 +473,7 @@ TEST(DynamicTree, CreateAndDestroyProxy)
         Length2{3_m, 1_m},
         Length2{-5_m, -2_m}
     };
-    const auto userdata = DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0u};
+    const auto userdata = Contactable{BodyID(1u), ShapeID(0u), 0u};
 
     const auto pid = foo.CreateLeaf(aabb, userdata);
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(1));
@@ -531,7 +516,7 @@ TEST(DynamicTree, FourIdenticalProxies)
         Length2{3_m, 1_m},
         Length2{-5_m, -2_m}
     };
-    const auto leafData = DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0u};
+    const auto leafData = Contactable{BodyID(1u), ShapeID(0u), 0u};
 
     {
         const auto pid = foo.CreateLeaf(aabb, leafData);
@@ -645,7 +630,7 @@ TEST(DynamicTree, MoveConstruction)
         Length2{-5_m, -2_m}
     };
 
-    const auto leafData = DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0u};
+    const auto leafData = Contactable{BodyID(1u), ShapeID(0u), 0u};
 
     const auto leaf0 = foo.CreateLeaf(aabb, leafData);
     const auto leaf1 = foo.CreateLeaf(aabb, leafData);
@@ -684,7 +669,7 @@ TEST(DynamicTree, MoveAssignment)
         Length2{-5_m, -2_m}
     };
     
-    const auto leafData = DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0u};
+    const auto leafData = Contactable{BodyID(1u), ShapeID(0u), 0u};
 
     const auto leaf0 = foo.CreateLeaf(aabb, leafData);
     const auto leaf1 = foo.CreateLeaf(aabb, leafData);
@@ -695,22 +680,22 @@ TEST(DynamicTree, MoveAssignment)
     ASSERT_EQ(foo.GetNodeCount(), DynamicTree::Size(7));
     ASSERT_GE(foo.GetNodeCapacity(), foo.GetNodeCount());
     ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(4));
-    
+
     DynamicTree roo;
-    
+
     roo = std::move(foo);
-    
+
     EXPECT_EQ(foo.GetRootIndex(), DynamicTree::GetInvalidSize());
     EXPECT_EQ(foo.GetFreeIndex(), DynamicTree::GetInvalidSize());
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
     EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::Size(0));
     EXPECT_EQ(foo.GetLeafCount(), DynamicTree::Size(0));
-    
+
     EXPECT_EQ(roo.GetRootIndex(), DynamicTree::Size(4));
     EXPECT_EQ(roo.GetNodeCount(), DynamicTree::Size(7));
     EXPECT_GE(roo.GetNodeCapacity(), roo.GetNodeCount());
     EXPECT_EQ(roo.GetLeafCount(), DynamicTree::Size(4));
-    
+
     EXPECT_EQ(roo.GetAABB(leaf0), aabb);
     EXPECT_EQ(roo.GetAABB(leaf1), aabb);
     EXPECT_EQ(roo.GetAABB(leaf2), aabb);
@@ -728,7 +713,7 @@ TEST(DynamicTree, CreateLeaf)
         Length2{3_m, 1_m},
         Length2{-5_m, -2_m}
     };
-    const auto leafData = DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0u};
+    const auto leafData = Contactable{BodyID(1u), ShapeID(0u), 0u};
 
     const auto l1 = foo.CreateLeaf(aabb, leafData);
     ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(1));
@@ -796,7 +781,7 @@ TEST(DynamicTree, UpdateLeaf)
     ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(0));
     
     const auto aabb = AABB{Length2{3_m, 1_m}, Length2{-5_m, -2_m}};
-    const auto leafData = DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0u};
+    const auto leafData = Contactable{BodyID(1u), ShapeID(0u), 0u};
     
     leafs.push_back(foo.CreateLeaf(aabb, leafData)); // 1
     leafs.push_back(foo.CreateLeaf(aabb, leafData)); // 2
@@ -974,7 +959,7 @@ TEST(DynamicTree, Clear)
     EXPECT_EQ(foo.GetFreeIndex(), DynamicTree::GetInvalidSize());
     EXPECT_EQ(foo.GetRootIndex(), DynamicTree::GetInvalidSize());
 
-    ASSERT_NO_THROW(foo.CreateLeaf(AABB{}, DynamicTreeLeafData()));
+    ASSERT_NO_THROW(foo.CreateLeaf(AABB{}, Contactable()));
     ASSERT_EQ(foo.GetNodeCount(), DynamicTree::Size(1));
     ASSERT_GE(foo.GetNodeCapacity(), DynamicTree::Size(1));
     ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(1));
@@ -992,7 +977,7 @@ TEST(DynamicTree, Clear)
     auto numLeafs = foo.GetLeafCount();
     while (foo.GetNodeCount() <= capacity)
     {
-        ASSERT_NO_THROW(foo.CreateLeaf(AABB{}, DynamicTreeLeafData()));
+        ASSERT_NO_THROW(foo.CreateLeaf(AABB{}, Contactable()));
         ASSERT_GT(foo.GetLeafCount(), numLeafs);
         ASSERT_GE(foo.GetNodeCapacity(), capacity);
         numLeafs = foo.GetLeafCount();
@@ -1016,21 +1001,21 @@ TEST(DynamicTree, QueryFF)
         return DynamicTreeOpcode::End;
     });
     EXPECT_EQ(ncalls, 0);
-    foo.CreateLeaf(AABB{}, DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0});
+    foo.CreateLeaf(AABB{}, Contactable{BodyID(1u), ShapeID(0u), 0});
     Query(foo, AABB{}, [&] (DynamicTree::Size) {
         ++ncalls;
         return DynamicTreeOpcode::End;
     });
     EXPECT_EQ(ncalls, 0);
     foo.CreateLeaf(AABB{LengthInterval{-10_m, 10_m}, LengthInterval{-20_m, 20_m}},
-                   DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0});
+                   Contactable{BodyID(1u), ShapeID(0u), 0});
     Query(foo, AABB{}, [&] (DynamicTree::Size) {
         ++ncalls;
         return DynamicTreeOpcode::End;
     });
     EXPECT_EQ(ncalls, 0);
     foo.CreateLeaf(AABB{LengthInterval{-10_m, 10_m}, LengthInterval{-20_m, 20_m}},
-                   DynamicTreeLeafData{BodyID(1u), ShapeID(0u), 0});
+                   Contactable{BodyID(1u), ShapeID(0u), 0});
     Query(foo, AABB{LengthInterval{-20_m, 20_m}, LengthInterval{-20_m, 20_m}}, [&] (DynamicTree::Size) {
         ++ncalls;
         return DynamicTreeOpcode::End;
@@ -1046,13 +1031,13 @@ TEST(DynamicTree, QueryFF)
 
 TEST(DynamicTree, LeafDataEquality)
 {
-    EXPECT_TRUE(DynamicTreeLeafData() == DynamicTreeLeafData());
-    EXPECT_TRUE((DynamicTreeLeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
-                 DynamicTreeLeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)}));
-    EXPECT_FALSE((DynamicTreeLeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
-                  DynamicTreeLeafData{BodyID(1u), ShapeID(0u), ChildCounter(0u)}));
-    EXPECT_FALSE((DynamicTreeLeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
-                  DynamicTreeLeafData{BodyID(0u), ShapeID(1u), ChildCounter(0u)}));
-    EXPECT_FALSE((DynamicTreeLeafData{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
-                  DynamicTreeLeafData{BodyID(0u), ShapeID(0u), ChildCounter(1u)}));
+    EXPECT_TRUE(Contactable() == Contactable());
+    EXPECT_TRUE((Contactable{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
+                 Contactable{BodyID(0u), ShapeID(0u), ChildCounter(0u)}));
+    EXPECT_FALSE((Contactable{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
+                  Contactable{BodyID(1u), ShapeID(0u), ChildCounter(0u)}));
+    EXPECT_FALSE((Contactable{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
+                  Contactable{BodyID(0u), ShapeID(1u), ChildCounter(0u)}));
+    EXPECT_FALSE((Contactable{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
+                  Contactable{BodyID(0u), ShapeID(0u), ChildCounter(1u)}));
 }

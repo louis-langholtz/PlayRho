@@ -522,7 +522,7 @@ auto CreateProxies(DynamicTree& tree,
         const auto dp = GetChild(shape, childIndex);
         const auto aabb = playrho::d2::ComputeAABB(dp, xfm);
         const auto fattenedAABB = GetFattenedAABB(aabb, aabbExtension);
-        const auto treeId = tree.CreateLeaf(fattenedAABB, DynamicTreeLeafData{
+        const auto treeId = tree.CreateLeaf(fattenedAABB, Contactable{
             bodyID, shapeID, childIndex});
         fixtureProxies.push_back(treeId);
         otherProxies.push_back(treeId);
@@ -706,10 +706,10 @@ ContactToiData GetSoonestContact(const WorldImpl::Contacts& contacts,
     return ContactToiData{found, minToi, count};
 }
 
-auto FindContactKeys(pmr::memory_resource& resource, const DynamicTree& tree, WorldImpl::Proxies&& proxies)
--> std::vector<ContactKey, pmr::polymorphic_allocator<ContactKey>>
+auto FindContacts(pmr::memory_resource& resource, const DynamicTree& tree, WorldImpl::Proxies&& proxies)
+    -> std::vector<WorldImpl::ProxyKey, pmr::polymorphic_allocator<WorldImpl::ProxyKey>>
 {
-    std::vector<ContactKey, pmr::polymorphic_allocator<ContactKey>> proxyKeys{&resource};
+    std::vector<WorldImpl::ProxyKey, pmr::polymorphic_allocator<WorldImpl::ProxyKey>> proxyKeys{&resource};
     static constexpr auto DefaultReserveSize = 512u;
     proxyKeys.reserve(DefaultReserveSize);
 
@@ -718,20 +718,28 @@ auto FindContactKeys(pmr::memory_resource& resource, const DynamicTree& tree, Wo
     // to eliminate any node pairs that have the same body here before the key pairs are
     // sorted.
     for_each(cbegin(proxies), cend(proxies), [&](DynamicTree::Size pid) {
-        const auto body0 = tree.GetLeafData(pid).bodyId;
+        const auto leaf0 = tree.GetLeafData(pid);
         const auto aabb = tree.GetAABB(pid);
-        Query(tree, aabb, [pid,body0,&proxyKeys,&tree](DynamicTree::Size nodeId) {
-            const auto body1 = tree.GetLeafData(nodeId).bodyId;
+        Query(tree, aabb, [pid,leaf0,&proxyKeys,&tree](DynamicTree::Size nodeId) {
+            const auto leaf1 = tree.GetLeafData(nodeId);
             // A proxy cannot form a pair with itself.
-            if ((nodeId != pid) && (body0 != body1)) {
-                proxyKeys.emplace_back(nodeId, pid);
+            if ((nodeId != pid) && (leaf0.bodyId != leaf1.bodyId)) {
+                const auto key = ContactKey{pid, nodeId};
+                if (key.GetMin() == pid) {
+                    proxyKeys.emplace_back(key, leaf0, leaf1);
+                }
+                else {
+                    proxyKeys.emplace_back(key, leaf1, leaf0);
+                }
             }
             return DynamicTreeOpcode::Continue;
         });
     });
 
     // Sort and eliminate any duplicate contact keys.
-    sort(begin(proxyKeys), end(proxyKeys));
+    sort(begin(proxyKeys), end(proxyKeys), [](const WorldImpl::ProxyKey& a, const WorldImpl::ProxyKey& b) {
+        return std::get<0>(a) < std::get<0>(b);
+    });
     proxyKeys.erase(unique(begin(proxyKeys), end(proxyKeys)), end(proxyKeys));
     return proxyKeys;
 }
@@ -745,7 +753,7 @@ WorldImpl::WorldImpl(const WorldConf& conf):
     m_bodyConstraintsResource({ReserveBuffers, conf.reserveBodyConstraints * sizeof(BodyConstraint)}, conf.upstream),
     m_positionConstraintsResource({ReserveBuffers, conf.reserveDistanceConstraints * sizeof(PositionConstraint)}, conf.upstream),
     m_velocityConstraintsResource({ReserveBuffers, conf.reserveDistanceConstraints * sizeof(VelocityConstraint)}, conf.upstream),
-    m_contactKeysResource({ReserveBuffers, conf.reserveContactKeys * sizeof(ContactKey)}, conf.upstream),
+    m_proxyKeysResource({ReserveBuffers, conf.reserveContactKeys * sizeof(ProxyKey)}, conf.upstream),
     m_islandResource({ReserveBuffers}, conf.upstream),
     m_tree(conf.treeCapacity),
     m_vertexRadius{conf.minVertexRadius, conf.maxVertexRadius}
@@ -764,7 +772,7 @@ WorldImpl::WorldImpl(const WorldImpl& other):
     m_bodyConstraintsResource(other.m_bodyConstraintsResource.GetOptions()),
     m_positionConstraintsResource(other.m_positionConstraintsResource.GetOptions()),
     m_velocityConstraintsResource(other.m_velocityConstraintsResource.GetOptions()),
-    m_contactKeysResource(other.m_contactKeysResource.GetOptions()),
+    m_proxyKeysResource(other.m_proxyKeysResource.GetOptions()),
     m_islandResource(other.m_islandResource.GetOptions()),
     m_tree(other.m_tree),
     m_bodyBuffer(other.m_bodyBuffer),
@@ -1394,13 +1402,13 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
     }
 #endif
 
-    for (const auto& b: m_bodies) {
-        if (m_islanded.bodies[to_underlying(b)]) {
+    for (const auto& bodyId: m_bodies) {
+        if (m_islanded.bodies[to_underlying(bodyId)]) {
             // A non-static body that was in an island may have moved.
-            const auto& body = m_bodyBuffer[to_underlying(b)];
+            const auto& body = m_bodyBuffer[to_underlying(bodyId)];
             if (IsSpeedable(body)) {
                 // Update fixtures (for broad-phase).
-                stats.proxiesMoved += Synchronize(b,
+                stats.proxiesMoved += Synchronize(m_bodyProxies[to_underlying(bodyId)],
                                                   GetTransform0(GetSweep(body)),
                                                   GetTransformation(body),
                                                   conf.displaceMultiplier, conf.aabbExtension);
@@ -1409,7 +1417,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
     }
 
     // Look for new contacts.
-    stats.contactsAdded = AddNewContacts(FindContactKeys(m_contactKeysResource, m_tree, std::move(m_proxiesForContacts)));
+    stats.contactsAdded = AddNewContacts(FindContacts(m_proxyKeysResource, m_tree, std::move(m_proxiesForContacts)));
     m_proxiesForContacts = {};
     
     return stats;
@@ -1657,16 +1665,16 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
         stats.islandsFound += islandsFound;
 
         // Reset island flags and synchronize broad-phase proxies.
-        for (const auto& b: m_bodies) {
-            if (m_islanded.bodies[to_underlying(b)]) {
-                m_islanded.bodies[to_underlying(b)] = false;
-                const auto& body = m_bodyBuffer[to_underlying(b)];
+        for (const auto& bodyId: m_bodies) {
+            if (m_islanded.bodies[to_underlying(bodyId)]) {
+                m_islanded.bodies[to_underlying(bodyId)] = false;
+                const auto& body = m_bodyBuffer[to_underlying(bodyId)];
                 if (IsAccelerable(body)) {
-                    stats.proxiesMoved += Synchronize(b,
+                    stats.proxiesMoved += Synchronize(m_bodyProxies[to_underlying(bodyId)],
                                                       GetTransform0(body.GetSweep()),
                                                       GetTransformation(body),
                                                       conf.displaceMultiplier, conf.aabbExtension);
-                    const auto& bodyContacts = m_bodyContacts[to_underlying(b)];
+                    const auto& bodyContacts = m_bodyContacts[to_underlying(bodyId)];
                     ResetBodyContactsForSolveTOI(m_contactBuffer, bodyContacts);
                     Unset(m_islanded.contacts, bodyContacts);
                 }
@@ -1675,7 +1683,7 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
 
         // Commit fixture proxy movements to the broad-phase so that new contacts are created.
         // Also, some contacts can be destroyed.
-        stats.contactsAdded += AddNewContacts(FindContactKeys(m_contactKeysResource, m_tree, std::move(m_proxiesForContacts)));
+        stats.contactsAdded += AddNewContacts(FindContacts(m_proxyKeysResource, m_tree, std::move(m_proxiesForContacts)));
         m_proxiesForContacts = {};
 
         if (subStepping) {
@@ -2026,7 +2034,7 @@ StepStats WorldImpl::Step(const StepConf& conf)
             for_each(begin(m_bodiesForSync), end(m_bodiesForSync), [this,&conf,&proxiesMoved](const auto& bodyID) {
                 const auto xfm = GetTransformation(m_bodyBuffer[to_underlying(bodyID)]);
                 // Not always true: assert(GetTransform0(b->GetSweep()) == xfm);
-                proxiesMoved += Synchronize(bodyID, xfm, xfm,
+                proxiesMoved += Synchronize(m_bodyProxies[to_underlying(bodyID)], xfm, xfm,
                                             conf.displaceMultiplier, conf.aabbExtension);
             });
             return proxiesMoved;
@@ -2042,7 +2050,7 @@ StepStats WorldImpl::Step(const StepConf& conf)
 
         // For any new fixtures added: need to find and create the new contacts.
         // Note: this may update bodies (in addition to the contacts container).
-        stepStats.pre.added = AddNewContacts(FindContactKeys(m_contactKeysResource, m_tree, std::move(m_proxiesForContacts)));
+        stepStats.pre.added = AddNewContacts(FindContacts(m_proxyKeysResource, m_tree, std::move(m_proxiesForContacts)));
         m_proxiesForContacts = {};
 
         if (conf.deltaTime != 0_s) {
@@ -2285,22 +2293,17 @@ WorldImpl::UpdateContactsStats WorldImpl::UpdateContacts(const StepConf& conf)
 }
 
 ContactCounter WorldImpl::AddNewContacts( // NOLINT(readability-function-cognitive-complexity)
-                                         std::vector<ContactKey, pmr::polymorphic_allocator<ContactKey>>&& contactKeys)
+                                         std::vector<ProxyKey, pmr::polymorphic_allocator<ProxyKey>>&& keys)
 {
     const auto numContactsBefore = size(m_contacts);
-    for_each(cbegin(contactKeys), cend(contactKeys), [this](ContactKey key) {
-        const auto minKeyLeafData = m_tree.GetLeafData(key.GetMin());
-        const auto maxKeyLeafData = m_tree.GetLeafData(key.GetMax());
-
+    for_each(cbegin(keys), cend(keys), [this](const ProxyKey& key) {
+        const auto& minKeyLeafData = std::get<1>(key);
+        const auto& maxKeyLeafData = std::get<2>(key);
         const auto bodyIdA = minKeyLeafData.bodyId;
         const auto shapeIdA = minKeyLeafData.shapeId;
-        const auto indexA = minKeyLeafData.childId;
         const auto bodyIdB = maxKeyLeafData.bodyId;
         const auto shapeIdB = maxKeyLeafData.shapeId;
-        const auto indexB = maxKeyLeafData.childId;
-
         assert(bodyIdA != bodyIdB);
-
         auto& bodyA = m_bodyBuffer[to_underlying(bodyIdA)];
         auto& bodyB = m_bodyBuffer[to_underlying(bodyIdB)];
         const auto& shapeA = m_shapeBuffer[to_underlying(shapeIdA)];
@@ -2350,7 +2353,7 @@ ContactCounter WorldImpl::AddNewContacts( // NOLINT(readability-function-cogniti
         //     set, map.
         auto& contactsA = m_bodyContacts[to_underlying(bodyIdA)];
         auto& contactsB = m_bodyContacts[to_underlying(bodyIdB)];
-        if (FindTypeValue((size(contactsA) < size(contactsB))? contactsA: contactsB, key)) {
+        if (FindTypeValue((size(contactsA) < size(contactsB))? contactsA: contactsB, std::get<0>(key))) {
             return;
         }
 
@@ -2360,7 +2363,7 @@ ContactCounter WorldImpl::AddNewContacts( // NOLINT(readability-function-cogniti
         }
 
         const auto contactID = static_cast<ContactID>(static_cast<ContactID::underlying_type>(
-            m_contactBuffer.Allocate(bodyIdA, shapeIdA, indexA, bodyIdB, shapeIdB, indexB)));
+            m_contactBuffer.Allocate(minKeyLeafData, maxKeyLeafData)));
         m_islanded.contacts.resize(size(m_contactBuffer));
         m_manifoldBuffer.Allocate();
         auto& contact = m_contactBuffer[to_underlying(contactID)];
@@ -2383,11 +2386,11 @@ ContactCounter WorldImpl::AddNewContacts( // NOLINT(readability-function-cogniti
         // Original strategy added to the front. Since processing done front to back, front
         // adding means container more a LIFO container, while back adding means more a FIFO.
         //
-        m_contacts.emplace_back(key, contactID);
+        m_contacts.emplace_back(std::get<0>(key), contactID);
 
         // TODO: check contactID unique in contacts containers if !NDEBUG
-        contactsA.emplace_back(key, contactID);
-        contactsB.emplace_back(key, contactID);
+        contactsA.emplace_back(std::get<0>(key), contactID);
+        contactsB.emplace_back(std::get<0>(key), contactID);
 
         // Wake up the bodies
         if (!IsSensor(contact)) {
@@ -2427,7 +2430,7 @@ const WorldImpl::BodyJoints& WorldImpl::GetJoints(BodyID id) const
     return m_bodyJoints.at(to_underlying(id));
 }
 
-ContactCounter WorldImpl::Synchronize(BodyID bodyId,
+ContactCounter WorldImpl::Synchronize(const Proxies& bodyProxies,
                                       const Transformation& xfm0, const Transformation& xfm1,
                                       Real multiplier, Length extension)
 {
@@ -2435,7 +2438,7 @@ ContactCounter WorldImpl::Synchronize(BodyID bodyId,
     assert(::playrho::IsValid(xfm0));
     assert(::playrho::IsValid(xfm1));
     const auto displacement = multiplier * (xfm1.p - xfm0.p);
-    for (auto&& e: m_bodyProxies[to_underlying(bodyId)]) {
+    for (auto&& e: bodyProxies) {
         const auto& node = m_tree.GetNode(e);
         const auto leafData = node.AsLeaf();
         const auto aabb = ComputeAABB(GetChild(m_shapeBuffer[to_underlying(leafData.shapeId)],

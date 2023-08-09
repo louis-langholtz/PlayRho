@@ -513,7 +513,7 @@ DynamicTree::Size DynamicTree::FindReference(Size index) const noexcept
     return (it != m_nodes + m_nodeCapacity) ? static_cast<Size>(it - m_nodes) : GetInvalidSize();
 }
 
-DynamicTree::Size DynamicTree::CreateLeaf(const AABB& aabb, const DynamicTreeLeafData& data)
+DynamicTree::Size DynamicTree::CreateLeaf(const AABB& aabb, const Contactable& data)
 {
     assert(IsValid(aabb));
     if (m_rootIndex == GetInvalidSize()) {

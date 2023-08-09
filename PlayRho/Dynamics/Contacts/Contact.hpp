@@ -24,9 +24,7 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-#include <PlayRho/Collision/Shapes/ShapeID.hpp>
-
-#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/Dynamics/Contactable.hpp>
 
 namespace playrho {
 
@@ -77,18 +75,8 @@ public:
     constexpr Contact() noexcept = default;
 
     /// @brief Initializing constructor.
-    ///
-    /// @param bA Identifier of body-A.
-    /// @param sA Non-invalid identifier to shape A.
-    /// @param iA Child index A.
-    /// @param bB Identifier of body-B.
-    /// @param sB Non-invalid identifier to shape B.
-    /// @param iB Child index B.
-    ///
     /// @note This need never be called directly by a user.
-    ///
-    constexpr Contact(BodyID bA, ShapeID sA, ChildCounter iA, // forced-linebreak
-                      BodyID bB, ShapeID sB, ChildCounter iB) noexcept;
+    constexpr Contact(const Contactable& a, const Contactable& b) noexcept;
 
     /// @brief Is this contact touching?
     /// @details
@@ -290,27 +278,11 @@ private:
         e_impenetrableFlag = 0x80,
     };
 
-    /// Identifier of body A.
-    /// @note Field is 2-bytes.
-    /// @warning Should only be body associated with shape A.
-    BodyID m_bodyA = InvalidBodyID;
+    /// @brief Identifying info for the A-side of the 2-bodied contact.
+    Contactable m_contactableA{InvalidBodyID, InvalidShapeID, 0};
 
-    /// Identifier of body B.
-    /// @note Field is 2-bytes.
-    /// @warning Should only be body associated with shape B.
-    BodyID m_bodyB = InvalidBodyID;
-
-    /// Identifier of shape A.
-    /// @note Field is 2-bytes.
-    ShapeID m_shapeA = InvalidShapeID;
-
-    /// Identifier of shape B.
-    /// @note Field is 2-bytes.
-    ShapeID m_shapeB = InvalidShapeID;
-
-    ChildCounter m_indexA = 0; ///< Index A. 4-bytes.
-
-    ChildCounter m_indexB = 0; ///< Index B. 4-bytes.
+    /// @brief Identifying info for the B-side of the 2-bodied contact.
+    Contactable m_contactableB{InvalidBodyID, InvalidShapeID, 0};
 
     // initialized on construction (construction-time depedent)
 
@@ -341,14 +313,9 @@ private:
     FlagsType m_flags = 0; ///< Flags.
 };
 
-constexpr Contact::Contact(BodyID bA, ShapeID sA, ChildCounter iA, // explicit line break
-                           BodyID bB, ShapeID sB, ChildCounter iB) noexcept
-    : m_bodyA{bA},
-      m_bodyB{bB},
-      m_shapeA{sA},
-      m_shapeB{sB},
-      m_indexA{iA},
-      m_indexB{iB},
+constexpr Contact::Contact(const Contactable& a, const Contactable& b) noexcept
+    : m_contactableA{a},
+      m_contactableB{b},
       m_flags{e_enabledFlag | e_dirtyFlag}
 {
 }
@@ -397,22 +364,22 @@ constexpr void Contact::UnsetTouching() noexcept
 
 constexpr BodyID Contact::GetBodyA() const noexcept
 {
-    return m_bodyA;
+    return m_contactableA.bodyId;
 }
 
 constexpr BodyID Contact::GetBodyB() const noexcept
 {
-    return m_bodyB;
+    return m_contactableB.bodyId;
 }
 
 constexpr ShapeID Contact::GetShapeA() const noexcept
 {
-    return m_shapeA;
+    return m_contactableA.shapeId;
 }
 
 constexpr ShapeID Contact::GetShapeB() const noexcept
 {
-    return m_shapeB;
+    return m_contactableB.shapeId;
 }
 
 constexpr void Contact::FlagForFiltering() noexcept
@@ -511,12 +478,12 @@ constexpr Contact::substep_type Contact::GetToiCount() const noexcept
 
 constexpr ChildCounter Contact::GetChildIndexA() const noexcept
 {
-    return m_indexA;
+    return m_contactableA.childId;
 }
 
 constexpr ChildCounter Contact::GetChildIndexB() const noexcept
 {
-    return m_indexB;
+    return m_contactableB.childId;
 }
 
 constexpr bool Contact::IsSensor() const noexcept
