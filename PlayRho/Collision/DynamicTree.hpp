@@ -166,7 +166,7 @@ public:
     /// @throws std::bad_alloc If unable to allocate necessary memory. If this exception is
     ///   thrown, this function has no effect.
     /// @see GetLeafCount(), GetNodeCount()
-    Size CreateLeaf(const AABB& aabb, const DynamicTreeLeafData& data);
+    Size CreateLeaf(const AABB& aabb, const Contactable& data);
 
     /// @brief Destroys a leaf node.
     /// @post The leaf count will be decremented by one.
@@ -188,7 +188,7 @@ public:
     /// @warning Behavior is undefined if the given index is not valid.
     /// @param index Identifier of node to get the leaf data for.
     /// @return Leaf data for the specified node.
-    DynamicTreeLeafData GetLeafData(Size index) const noexcept;
+    Contactable GetLeafData(Size index) const noexcept;
 
     /// @brief Gets the AABB for a leaf or branch (a non-unused node).
     /// @warning Behavior is undefined if the given index is not valid.
@@ -338,7 +338,7 @@ public:
     }
 
     /// @brief Initializing constructor.
-    constexpr TreeNode(const DynamicTreeLeafData& value, const AABB& aabb,
+    constexpr TreeNode(const Contactable& value, const AABB& aabb,
                        Size other = DynamicTree::GetInvalidSize()) noexcept
         : m_aabb{aabb}, m_variant{value}, m_height{0}, m_other{other}
     {
@@ -402,7 +402,7 @@ public:
 
     /// @brief Gets the node as a "leaf" value.
     /// @warning Behavior is undefined unless called on a leaf node!
-    constexpr DynamicTreeLeafData AsLeaf() const noexcept
+    constexpr Contactable AsLeaf() const noexcept
     {
         assert(IsLeaf(m_height));
         return m_variant.leaf;
@@ -424,7 +424,7 @@ public:
     }
 
     /// @brief Gets the node as a "leaf" value.
-    constexpr void Assign(const DynamicTreeLeafData& v) noexcept
+    constexpr void Assign(const Contactable& v) noexcept
     {
         m_variant.leaf = v;
         m_height = 0;
@@ -524,7 +524,7 @@ inline DynamicTreeBranchData DynamicTree::GetBranchData(Size index) const noexce
     return node.AsBranch();
 }
 
-inline DynamicTreeLeafData DynamicTree::GetLeafData(Size index) const noexcept
+inline Contactable DynamicTree::GetLeafData(Size index) const noexcept
 {
     const auto& node = GetNode(index);
     assert(IsLeaf(node.GetHeight()));

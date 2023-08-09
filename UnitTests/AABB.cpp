@@ -530,7 +530,7 @@ TEST(AABB, ComputeIntersectingAABBForContact)
     ASSERT_NE(shapeAabb, fixtureAabb1);
     ASSERT_EQ(intersectingAabb, (AABB{intersectInterval, shapeInterval}));
 
-    const auto contact = Contact{body0, shapeId0, 0, body1, shapeId1, 0};
+    const auto contact = Contact{{body0, shapeId0, 0}, {body1, shapeId1, 0}};
     const auto contactAabb = ComputeIntersectingAABB(world, contact);
 
     EXPECT_EQ(contactAabb, intersectingAabb);

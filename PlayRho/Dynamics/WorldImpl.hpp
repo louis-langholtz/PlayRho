@@ -113,6 +113,10 @@ public:
     /// @brief Impulses contact listener.
     using ImpulsesContactListener = std::function<void(ContactID, const ContactImpulsesList&, unsigned)>;
 
+    /// @brief Broad phase generated data for identifying potentially new contacts.
+    /// @details Stores the contact-key followed by the key's min contactable then max contactable data.
+    using ProxyKey = std::tuple<ContactKey, Contactable, Contactable>;
+
     struct ContactUpdateConf;
 
     /// @name Special Member Functions
@@ -744,7 +748,7 @@ private:
     /// @post Container returned by <code>GetContacts()</code> will have increased in size by returned amount.
     /// @post Container returned by <code>GetContacts(BodyID)</code> for some body IDs may have more elements.
     /// @see GetProxies.
-    ContactCounter AddNewContacts(std::vector<ContactKey, pmr::polymorphic_allocator<ContactKey>>&& contactKeys);
+    ContactCounter AddNewContacts(std::vector<ProxyKey, pmr::polymorphic_allocator<ProxyKey>>&& contactKeys);
 
     /// @brief Destroys the given contact and removes it from its container.
     /// @details This updates the contacts container, returns the memory to the allocator,
@@ -758,7 +762,7 @@ private:
 
     /// @brief Synchronizes the given body.
     /// @details This updates the broad phase dynamic tree data for all of the identified shapes.
-    ContactCounter Synchronize(BodyID bodyId,
+    ContactCounter Synchronize(const Proxies& bodyProxies,
                                const Transformation& xfm0, const Transformation& xfm1,
                                Real multiplier, Length extension);
 
@@ -784,7 +788,7 @@ private:
     pmr::PoolMemoryResource m_bodyConstraintsResource;
     pmr::PoolMemoryResource m_positionConstraintsResource;
     pmr::PoolMemoryResource m_velocityConstraintsResource;
-    pmr::PoolMemoryResource m_contactKeysResource;
+    pmr::PoolMemoryResource m_proxyKeysResource;
     pmr::PoolMemoryResource m_islandResource;
 
     DynamicTree m_tree; ///< Dynamic tree.

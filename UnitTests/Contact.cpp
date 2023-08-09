@@ -53,7 +53,7 @@ TEST(Contact, Enabled)
     const auto bA = BodyID(0u);
     const auto bB = BodyID(1u);
     const auto shapeId = ShapeID(0u);
-    auto c = Contact{bA, shapeId, 0u, bB, shapeId, 0u};
+    auto c = Contact{{bA, shapeId, 0u}, {bB, shapeId, 0u}};
     EXPECT_TRUE(c.IsEnabled());
     c.UnsetEnabled();
     EXPECT_FALSE(c.IsEnabled());
@@ -91,7 +91,7 @@ TEST(Contact, InitializingConstructor)
     const auto bodyIdB = BodyID(4u);
     const auto shapeIdB = ShapeID(5u);
     const auto childIndexB = ChildCounter(6u);
-    const auto contact = Contact(bodyIdA, shapeIdA, childIndexA, bodyIdB, shapeIdB, childIndexB);
+    const auto contact = Contact({bodyIdA, shapeIdA, childIndexA}, {bodyIdB, shapeIdB, childIndexB});
     EXPECT_EQ(contact.GetBodyA(), bodyIdA);
     EXPECT_EQ(contact.GetBodyB(), bodyIdB);
     EXPECT_EQ(contact.GetShapeA(), shapeIdA);
@@ -120,7 +120,7 @@ TEST(Contact, InitializingConstructorFF)
     const auto bodyIdB = BodyID(4u);
     const auto shapeIdB = ShapeID(5u);
     const auto childIndexB = ChildCounter(6u);
-    auto contact = Contact(bodyIdA, shapeIdA, childIndexA, bodyIdB, shapeIdB, childIndexB);
+    auto contact = Contact({bodyIdA, shapeIdA, childIndexA}, {bodyIdB, shapeIdB, childIndexB});
 
     EXPECT_EQ(GetBodyA(contact), bodyIdA);
     EXPECT_EQ(GetBodyB(contact), bodyIdB);
