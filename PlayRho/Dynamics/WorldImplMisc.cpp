@@ -114,7 +114,7 @@ const std::vector<JointID>& GetJoints(const WorldImpl& world) noexcept
     return world.GetJoints();
 }
 
-std::vector<KeyedContactPtr> GetContacts(const WorldImpl& world)
+std::vector<KeyedContactID> GetContacts(const WorldImpl& world)
 {
     return world.GetContacts();
 }

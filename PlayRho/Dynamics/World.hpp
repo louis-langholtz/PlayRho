@@ -37,7 +37,7 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Dynamics/WorldConf.hpp>
-#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
+#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 
 #include <iterator>
@@ -131,7 +131,7 @@ public:
     using Bodies = std::vector<BodyID>;
 
     /// @brief Container type for keyed contact identifiers.
-    using Contacts = std::vector<KeyedContactPtr>;
+    using Contacts = std::vector<KeyedContactID>;
 
     /// @brief Container type for Joint identifiers.
     using Joints = std::vector<JointID>;

@@ -544,7 +544,7 @@ void Erase(std::vector<std::tuple<ContactKey, ContactID>>& contacts, const std::
 {
     auto last = end(contacts);
     auto iter = begin(contacts);
-    auto index = std::vector<KeyedContactPtr>::difference_type(0);
+    auto index = std::vector<KeyedContactID>::difference_type(0);
     while (iter != last) {
         const auto contact = std::get<ContactID>(*iter);
         if (callback(contact)) {
@@ -2407,7 +2407,7 @@ ContactCounter WorldImpl::AddNewContacts( // NOLINT(readability-function-cogniti
     const auto numContactsAdded = numContactsAfter - numContactsBefore;
 #if DO_SORT_ID_LISTS
     if (numContactsAdded > 0u) {
-        sort(begin(m_contacts), end(m_contacts), [](const KeyedContactPtr& a, const KeyedContactPtr& b){
+        sort(begin(m_contacts), end(m_contacts), [](const KeyedContactID& a, const KeyedContactID& b){
             return std::get<ContactID>(a) < std::get<ContactID>(b);
         });
     }

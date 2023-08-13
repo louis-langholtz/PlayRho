@@ -40,7 +40,7 @@
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
-#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
+#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp>
 #include <PlayRho/Dynamics/WorldConf.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 #include <PlayRho/Dynamics/IslandStats.hpp>
@@ -77,7 +77,7 @@ public:
     using Bodies = std::vector<BodyID>;
 
     /// @brief Contacts container type.
-    using Contacts = std::vector<KeyedContactPtr>;
+    using Contacts = std::vector<KeyedContactID>;
 
     /// @brief Joints container type.
     /// @note Cannot be container of Joint instances since joints are polymorphic types.
@@ -484,7 +484,7 @@ public:
     /// @warning contacts are created and destroyed in the middle of a time step.
     /// Use <code>ContactListener</code> to avoid missing contacts.
     /// @return World contacts sized-range.
-    std::vector<KeyedContactPtr> GetContacts() const;
+    std::vector<KeyedContactID> GetContacts() const;
 
     /// @brief Gets the identified contact.
     /// @throws std::out_of_range If given an invalid contact identifier.
@@ -893,9 +893,9 @@ inline const WorldImpl::Joints& WorldImpl::GetJoints() const noexcept
     return m_joints;
 }
 
-inline std::vector<KeyedContactPtr> WorldImpl::GetContacts() const
+inline std::vector<KeyedContactID> WorldImpl::GetContacts() const
 {
-    return std::vector<KeyedContactPtr>{begin(m_contacts), end(m_contacts)};
+    return std::vector<KeyedContactID>{begin(m_contacts), end(m_contacts)};
 }
 
 inline bool WorldImpl::IsLocked() const noexcept
