@@ -43,7 +43,7 @@
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>
-#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
+#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp>
 
 #include <PlayRho/Collision/WorldManifold.hpp>
 
@@ -68,7 +68,7 @@ ContactCounter GetContactRange(const World& world) noexcept;
 
 /// @brief Gets the contacts recognized within the given world.
 /// @relatedalso World
-std::vector<KeyedContactPtr> GetContacts(const World& world);
+std::vector<KeyedContactID> GetContacts(const World& world);
 
 /// @brief Gets the identified contact.
 /// @throws std::out_of_range If given an invalid contact identifier.

@@ -33,7 +33,7 @@
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>
-#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
+#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 
 #include <functional> // for std::function
@@ -131,7 +131,7 @@ const std::vector<JointID>& GetJoints(const WorldImpl& world) noexcept;
 
 /// @brief Gets the contacts of the specified world.
 /// @relatedalso WorldImpl
-std::vector<KeyedContactPtr> GetContacts(const WorldImpl& world);
+std::vector<KeyedContactID> GetContacts(const WorldImpl& world);
 
 /// @brief Is the world locked (in the middle of a time step).
 /// @relatedalso WorldImpl
