@@ -25,10 +25,11 @@
 #include <limits> // for std::numeric_limits
 #include <new> // for std::bad_array_new_length
 #include <tuple>
-#include <type_traits> // for std::is_copy_constructible_v
+#include <type_traits> // for std::is_base_of_v
 
 #include <PlayRho/Common/MemoryResource.hpp>
 
+// Support PlayRho/Export.hpp being a generated file that may not exist...
 #if !defined(__has_include) || !__has_include(<PlayRho/Export.hpp>)
 #ifndef PLAYRHO_EXPORT
 #define PLAYRHO_EXPORT
@@ -39,10 +40,18 @@
 
 namespace playrho {
 
-/// @brief Thread local stateless allocator.
+/// @brief Thread local "stateless" allocator.
 /// @note This is meant to meet the allocator named requirements.
+/// @note Being a "stateless" allocator, means that objects of this type do not have
+///    any *non-static* data members - i.e. instances themselves don't have any state.
 /// @warning Behavior is undefined if memory allocated by this class is ever used or
 ///   deallocated by a different thread.
+/// @tparam T cv-unqualified object type of each array element that the instantiated
+///   allocator will allocate buffers for.
+/// @tparam MemoryResource The <code>pmr::memory_resource</code> derived type that the
+///   instantiated allocator will use to allocate and deallocate buffers from and to.
+/// @tparam MemoryResourceArgs Zero or more default constructable functor types for
+///   passing compile-time arguments for construction of the memory resource object.
 /// @see https://en.cppreference.com/w/cpp/named_req/Allocator.
 template <class T, class MemoryResource, class... MemoryResourceArgs>
 class ThreadLocalAllocator
@@ -60,11 +69,13 @@ public:
     using resource_type = MemoryResource;
 
     /// @brief Resource argument functors.
-    /// @details This is the list of zero or more types providing arguments for constructing the resource type.
+    /// @details This is the list of zero or more types providing arguments for constructing
+    ///   the resource type.
     using resource_args = std::tuple<MemoryResourceArgs...>;
 
     /// @brief Max size usable by instances of this allocator.
-    /// @return Max value of <code>std::size_t</code> divided by size of this allocator's value type.
+    /// @return Max value of <code>std::size_t</code> divided by size of this allocator's
+    ///   value type.
     static constexpr auto max_size() noexcept -> std::size_t
     {
         return std::numeric_limits<std::size_t>::max() / sizeof(T);
@@ -82,10 +93,14 @@ public:
 
     /// @brief Copy constructor.
     template <class U>
-    ThreadLocalAllocator(const ThreadLocalAllocator<U, MemoryResource, MemoryResourceArgs...>&) {}
+    ThreadLocalAllocator(const ThreadLocalAllocator<U, MemoryResource, MemoryResourceArgs...>&)
+    {
+        // Intentionally empty.
+    }
 
     /// @brief Allocate interface function.
-    /// @note Calls underlying resource's allocate function if given size is not too large for this class.
+    /// @note Calls underlying resource's allocate function if given size is not too large for
+    ///   this class.
     /// @throws std::bad_array_new_length if given a size greater than <code>max_size()</code>.
     [[nodiscard]] T* allocate(std::size_t n)
     {
@@ -118,9 +133,5 @@ public:
 };
 
 }
-
-#if !defined(__has_include) || !__has_include(<PlayRho/Export.hpp>)
-#undef PLAYRHO_EXPORT
-#endif // !defined(__has_include) || !__has_include(<PlayRho/Export.hpp>)
 
 #endif // PLAYRHO_COMMON_THREAD_LOCAL_ALLOCATOR_HPP
