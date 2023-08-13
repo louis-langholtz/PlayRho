@@ -11,6 +11,11 @@
 #ifndef PLAYRHO_COMMON_MEMORY_RESOURCE_HPP
 #define PLAYRHO_COMMON_MEMORY_RESOURCE_HPP
 
+/// @namespace playrho::pmr Name space for organizing custom allocator
+///   funtionality & supporting standard libraries that don't yet provide the
+///   <code>memory_resource</code> header file.
+/// @see: https://en.cppreference.com/w/cpp/header/memory_resource.
+
 #if !defined(__has_include) || !__has_include(<memory_resource>)
 
 #include <cstddef> // for std::size_t, std::max_align_t
@@ -18,9 +23,9 @@
 #include <new> // for std::bad_array_new_length
 #include <type_traits> // for std::is_copy_constructible_v
 
-/// @see: https://en.cppreference.com/w/cpp/header/memory_resource.
 namespace playrho::pmr {
 
+/// @brief A limited implementation of the <code>std::pmr::memory_resource</code> type.
 /// @see https://en.cppreference.com/w/cpp/memory/memory_resource.
 class memory_resource
 {
