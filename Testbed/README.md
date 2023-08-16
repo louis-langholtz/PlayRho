@@ -5,6 +5,7 @@ presented demos. These may be helpful for testing and/or for learning how to use
 [PlayRho](https://github.com/louis-langholtz/PlayRho).
 
 Here in this directory, are three sub-directories:
+
 1. [`Data`](Data/): For data for the application.
 2. [`Framework`](Framework/): For code providing a framework for the
    application like the [Test](Framework/Test.hpp) base class.
@@ -59,13 +60,15 @@ You will also need to note its tool chain file path and use that in the configur
 This platform needs the `glfw` and `glew` libraries in addition to their dependencies.
 
 For `x64` builds:
+
 ```sh
-vcpkg --triplet=x64-windows-static glew glfw3
+vcpkg install --triplet=x64-windows-static glew glfw3
 ```
 
 For `Win32` builds:
+
 ```sh
-vcpkg --triplet=x86-windows-static glew glfw3
+vcpkg install --triplet=x86-windows-static glew glfw3
 ```
 
 ## Configuration
@@ -79,11 +82,13 @@ Some target platforms also need additional arguments.
 ### Windows "x64"
 
 This platform also needs these arguments:
+
 - `-DCMAKE_TOOLCHAIN_FILE=<your_vcpkg_toolchain_file_path>`.
 - `-DVCPKG_TARGET_TRIPLET="x64-windows-static"`.
 - `-DCMAKE_GENERATOR_PLATFORM=x64`.
 
 Or altogether as:
+
 ```sh
 -DPLAYRHO_BUILD_TESTBED=ON -DCMAKE_TOOLCHAIN_FILE=<your_vcpkg_toolchain_file_path> -DVCPKG_TARGET_TRIPLET="x64-windows-static" -DCMAKE_GENERATOR_PLATFORM=x64
 ```
@@ -91,11 +96,13 @@ Or altogether as:
 #### Windows "Win32"
 
 This platform also needs these arguments:
+
 - `-DCMAKE_TOOLCHAIN_FILE=<your_vcpkg_toolchain_file_path>`.
 - `-DVCPKG_TARGET_TRIPLET="x86-windows-static"`.
 - `-DCMAKE_GENERATOR_PLATFORM=WIN32`.
 
 Or altogether as:
+
 ```sh
 -DPLAYRHO_BUILD_TESTBED=ON -DCMAKE_TOOLCHAIN_FILE=<your_vcpkg_toolchain_file_path> -DVCPKG_TARGET_TRIPLET="x86-windows-static" -DCMAKE_GENERATOR_PLATFORM=WIN32
 ```
@@ -110,6 +117,7 @@ To run the demos under MS Visual Studio, set `Testbed` as your startup project a
 
 Once the Testbed is up and running, here are some keyboard and mouse commands
 that can be used:
+
 - <kbd>r</kbd> to reset the current test.
 - <kbd>SPACE</kbd> to launch a bomb.
 - <kbd>&larr;</kbd> <kbd>&rarr;</kbd> keys to pan.
