@@ -22,6 +22,7 @@
 
 #include <exception> // for std::set_terminate
 #include <stdexcept> // for std::logic_error
+#include <vector>
 
 #include <PlayRho/Common/PoolMemoryResource.hpp>
 
@@ -506,4 +507,137 @@ TEST(PoolMemoryResource, do_is_equal)
     EXPECT_TRUE(objectB.do_is_equal(objectB));
     EXPECT_FALSE(objectA.do_is_equal(objectB));
     EXPECT_FALSE(objectB.do_is_equal(objectA));
+}
+
+TEST(PoolMemoryResource, statefulCopyAssignment)
+{
+    PoolMemoryResource resource;
+    std::vector<int, polymorphic_allocator<int>> myInts(&resource);
+    {
+        const auto stats = resource.GetStats();
+#if !defined(_MSC_VER) || defined(NDEBUG)
+        EXPECT_EQ(stats.numBuffers, 0u);
+        EXPECT_EQ(stats.maxBytes, 0u);
+        EXPECT_EQ(stats.totalBytes, 0u);
+        EXPECT_EQ(stats.allocatedBuffers, 0u);
+#endif
+    }
+    EXPECT_EQ(myInts.get_allocator(), polymorphic_allocator<int>(&resource));
+    myInts.assign({1, 2, 3, 4, 5, 6});
+    {
+        const auto stats = resource.GetStats();
+        EXPECT_EQ(stats.maxBytes, 24u);
+#if !defined(_MSC_VER) || defined(NDEBUG)
+        EXPECT_EQ(stats.numBuffers, 1u);
+        EXPECT_EQ(stats.totalBytes, 24u);
+        EXPECT_EQ(stats.allocatedBuffers, 1u);
+#endif
+    }
+    std::vector<int, polymorphic_allocator<int>> otherInts(&resource);
+    EXPECT_NE(otherInts, myInts);
+    {
+        const auto stats = resource.GetStats();
+        EXPECT_EQ(stats.maxBytes, 24u);
+#if !defined(_MSC_VER) || defined(NDEBUG)
+        EXPECT_EQ(stats.numBuffers, 1u);
+        EXPECT_EQ(stats.totalBytes, 24u);
+        EXPECT_EQ(stats.allocatedBuffers, 1u);
+#endif
+    }
+    otherInts = myInts;
+    EXPECT_EQ(otherInts, myInts);
+    {
+        const auto stats = resource.GetStats();
+        EXPECT_EQ(stats.maxBytes, 24u);
+#if !defined(_MSC_VER) || defined(NDEBUG)
+        EXPECT_EQ(stats.numBuffers, 2u);
+        EXPECT_EQ(stats.totalBytes, 48u);
+        EXPECT_EQ(stats.allocatedBuffers, 2u);
+#endif
+    }
+    myInts = otherInts;
+    {
+        const auto stats = resource.GetStats();
+        EXPECT_EQ(stats.maxBytes, 24u);
+#if !defined(_MSC_VER) || defined(NDEBUG)
+        EXPECT_EQ(stats.numBuffers, 2u);
+        EXPECT_EQ(stats.totalBytes, 48u);
+        EXPECT_EQ(stats.allocatedBuffers, 2u);
+#endif
+    }
+    EXPECT_EQ(myInts.get_allocator(), polymorphic_allocator<int>(&resource));
+
+    // Confirm copy doesn't copy memory resource...
+    PoolMemoryResource resource2;
+    std::vector<int, polymorphic_allocator<int>> otherInts2(&resource2);
+    EXPECT_EQ(otherInts2.get_allocator(), polymorphic_allocator<int>(&resource2));
+    otherInts2 = myInts;
+    EXPECT_EQ(otherInts2.get_allocator(), polymorphic_allocator<int>(&resource2));
+    {
+        const auto stats = resource.GetStats();
+        EXPECT_EQ(stats.maxBytes, 24u);
+#if !defined(_MSC_VER) || defined(NDEBUG)
+        EXPECT_EQ(stats.numBuffers, 2u);
+        EXPECT_EQ(stats.totalBytes, 48u);
+        EXPECT_EQ(stats.allocatedBuffers, 2u);
+#endif
+    }
+    EXPECT_EQ(otherInts2, myInts);
+}
+
+TEST(PoolMemoryResource, statefulMoveAssignment)
+{
+    PoolMemoryResource resource;
+    std::vector<int, polymorphic_allocator<int>> myInts(&resource);
+    {
+        const auto stats = resource.GetStats();
+#if !defined(_MSC_VER) || defined(NDEBUG)
+        EXPECT_EQ(stats.numBuffers, 0u);
+        EXPECT_EQ(stats.maxBytes, 0u);
+        EXPECT_EQ(stats.totalBytes, 0u);
+        EXPECT_EQ(stats.allocatedBuffers, 0u);
+#endif
+    }
+    EXPECT_EQ(myInts.get_allocator(), polymorphic_allocator<int>(&resource));
+    const auto intArray = std::initializer_list<int>{1, 2, 3, 4, 5, 6};
+    const auto MaxBytes = size(intArray) * sizeof(int);
+    myInts.assign(intArray);
+    {
+        const auto stats = resource.GetStats();
+        EXPECT_EQ(stats.maxBytes, MaxBytes);
+#if !defined(_MSC_VER) || defined(NDEBUG)
+        EXPECT_EQ(stats.numBuffers, 1u);
+        EXPECT_EQ(stats.totalBytes, 24u);
+        EXPECT_EQ(stats.allocatedBuffers, 1u);
+#endif
+    }
+    std::vector<int, polymorphic_allocator<int>> otherInts(&resource);
+    EXPECT_EQ(otherInts.get_allocator(), polymorphic_allocator<int>(&resource));
+    {
+        const auto stats = resource.GetStats();
+        EXPECT_EQ(stats.maxBytes, MaxBytes);
+#if !defined(_MSC_VER) || defined(NDEBUG)
+        EXPECT_EQ(stats.numBuffers, 1u);
+        EXPECT_EQ(stats.totalBytes, 24u);
+        EXPECT_EQ(stats.allocatedBuffers, 1u);
+#endif
+    }
+    otherInts = std::move(myInts);
+    EXPECT_EQ(otherInts.get_allocator(), polymorphic_allocator<int>(&resource));
+    {
+        const auto stats = resource.GetStats();
+        EXPECT_EQ(stats.maxBytes, MaxBytes);
+#if !defined(_MSC_VER) || defined(NDEBUG)
+        EXPECT_EQ(stats.numBuffers, 1u);
+        EXPECT_EQ(stats.totalBytes, 24u);
+        EXPECT_EQ(stats.allocatedBuffers, 1u);
+#endif
+    }
+
+    // Confirm move doesn't move memory resource...
+    PoolMemoryResource resource2;
+    std::vector<int, polymorphic_allocator<int>> otherInts2(&resource2);
+    EXPECT_EQ(otherInts2.get_allocator(), polymorphic_allocator<int>(&resource2));
+    otherInts2 = std::move(otherInts);
+    EXPECT_EQ(otherInts2.get_allocator(), polymorphic_allocator<int>(&resource2));
 }
