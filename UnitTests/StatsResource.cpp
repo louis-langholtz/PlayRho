@@ -27,6 +27,7 @@ using namespace playrho;
 TEST(StatsResource, DefaultConstruction)
 {
     const pmr::StatsResource resource;
+    EXPECT_EQ(resource.upstream_resource(), pmr::new_delete_resource());
     EXPECT_EQ(resource.GetStats().blocksAllocated, 0u);
     EXPECT_EQ(resource.GetStats().bytesAllocated, 0u);
     EXPECT_EQ(resource.GetStats().maxBlocksAllocated, 0u);
@@ -35,6 +36,13 @@ TEST(StatsResource, DefaultConstruction)
     EXPECT_EQ(resource.GetStats().maxAlignment, 0u);
     EXPECT_TRUE(resource.is_equal(resource));
     EXPECT_FALSE(resource.is_equal(pmr::StatsResource()));
+}
+
+TEST(StatsResource, ConstructorSetsUpstream)
+{
+    pmr::StatsResource upstream;
+    pmr::StatsResource resource{&upstream};
+    EXPECT_EQ(resource.upstream_resource(), &upstream);
 }
 
 TEST(StatsResource, allocate_deallocate)
