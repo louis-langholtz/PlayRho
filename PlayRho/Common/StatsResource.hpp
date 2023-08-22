@@ -25,21 +25,51 @@
 
 namespace playrho::pmr {
 
+/// @brief Statistics memory resource.
+/// @details Forwards allocation and deallocation calls to the configured upstream
+///   memory resource, and collects statistics on successful calls.
 class StatsResource final: public memory_resource
 {
 public:
+    /// @brief Statistics collected.
     struct Stats {
+        /// @brief Number of blocks currently allocated.
         std::size_t blocksAllocated{};
+
+        /// @brief Number of bytes currently allocated.
         std::size_t bytesAllocated{};
+
+        /// @brief Maximum number of blocks allocated at any time.
         std::size_t maxBlocksAllocated{};
+
+        /// @brief Maximum number of bytes allocated at any time.
         std::size_t maxBytesAllocated{};
+
+        /// @brief Maximum byte size of any allocation.
         std::size_t maxBytes{};
+
+        /// @brief Maximum alignment size of any allocation.
         std::size_t maxAlignment{};
     };
 
+    /// @brief Initializing constructor.
+    /// @post <code>upstream_resource()</code> returns the resource given.
+    StatsResource(memory_resource* resource = new_delete_resource()) noexcept
+        : m_upstream{resource}
+    {
+        // Intentionally empty.
+    }
+
+    /// @brief Gets the currently collected statistics.
     Stats GetStats() const noexcept
     {
         return m_stats;
+    }
+
+    /// @brief Returns a pointer to the upstream resource set on construction.
+    pmr::memory_resource* upstream_resource() const noexcept
+    {
+        return m_upstream;
     }
 
 private:
