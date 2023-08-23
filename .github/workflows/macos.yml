@@ -47,11 +47,14 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{matrix.build_type}}
 
+    - name: Install
+      run: cmake --install ${{github.workspace}}/build --prefix ${{github.workspace}}/install
+
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
       with:
         name: macos-${{matrix.build_type}}
-        path: ${{github.workspace}}/build
+        path: ${{github.workspace}}/install
 
     - name: Test
       working-directory: ${{github.workspace}}/build

@@ -22,7 +22,7 @@ jobs:
       with:
         submodules: true
 
-    - name: Install Prerequisites
+    - name: Prerequisites
       run: |
         sudo apt update
         sudo apt install xorg-dev libx11-dev libxmu-dev libxi-dev libgl1 libgl1-mesa-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev libosmesa-dev
