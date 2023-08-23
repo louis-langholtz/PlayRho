@@ -60,8 +60,6 @@ set(libsrc
 	${PLAYRHO_Shapes_HDRS}
 	${PLAYRHO_Collision_SRCS}
 	${PLAYRHO_Collision_HDRS}
-	${PLAYRHO_Rope_SRCS}
-	${PLAYRHO_Rope_HDRS}
 )
 
 if(PLAYRHO_BUILD_SHARED)
