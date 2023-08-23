@@ -78,9 +78,8 @@ cmake -LH -S PlayRho -B PlayRhoBuild
 ```
 
 For example:
-- To build everything to use double precision floating point arithmetic (instead of single precision), add `-DPLAYRHO_REAL_TYPE=double`.
-- To build everything using shared linkage (instead of static linkage), add `-DBUILD_SHARED_LIBS=ON`.
-- To set the installation prefix, add an argument like `-DCMAKE_INSTALL_PREFIX=/opt/PlayRho`.
+- To specify the use of double precision floating point arithmetic, add `-DPLAYRHO_REAL_TYPE=double`.
+- To use shared linkage (instead of static linkage), add `-DBUILD_SHARED_LIBS=ON`.
 
 ### Build
 
@@ -94,10 +93,13 @@ cmake --build PlayRhoBuild --config Release
 
 This step is optional.
 
-To install the configured components into the CMake default system locations, run the following command.
+To install the configured components into CMake's default locations, just run the following command:
+
 ```sh
 cmake --install PlayRhoBuild
 ```
+
+See CMake's [Install a Project](https://cmake.org/cmake/help/latest/manual/cmake.1.html#install-a-project) webpage for more info.
 
 ## TLDR
 
@@ -110,6 +112,6 @@ cmake --install PlayRhoBuild
 
 These steps assume that:
 - You only want to build the library component and want it optimized for fastest performance.
-- You want to install these components into CMake's standard system paths.
+- You want to install these components into CMake's default paths.
 - The necessary prerequisites for the components have already been installed.
 
