@@ -47,6 +47,7 @@ if (${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 endif()
 
 set(libsrc
+	${PLAYRHO_General_HDRS}
 	${PLAYRHO_GeneralCfg_HDRS}
 	${PLAYRHO_Joints_SRCS}
 	${PLAYRHO_Joints_HDRS}
@@ -55,6 +56,7 @@ set(libsrc
 	${PLAYRHO_Dynamics_SRCS}
 	${PLAYRHO_Dynamics_HDRS}
 	${PLAYRHO_Common_SRCS}
+	${PLAYRHO_Common_HDRS}
 	${PLAYRHO_CommonCfg_HDRS}
 	${PLAYRHO_Shapes_SRCS}
 	${PLAYRHO_Shapes_HDRS}
@@ -99,13 +101,13 @@ target_compile_options(PlayRho PRIVATE
 )
 
 # These are used to create visual studio folders.
+source_group(Include FILES ${PLAYRHO_General_HDRS} ${PLAYRHO_GeneralCfg_HDRS})
+source_group(Common FILES ${PLAYRHO_Common_SRCS} ${PLAYRHO_CommonCfg_HDRS} ${PLAYRHO_Common_HDRS})
 source_group(Collision FILES ${PLAYRHO_Collision_SRCS} ${PLAYRHO_Collision_HDRS})
 source_group(Collision\\Shapes FILES ${PLAYRHO_Shapes_SRCS} ${PLAYRHO_Shapes_HDRS})
-source_group(Common FILES ${PLAYRHO_Common_SRCS} ${PLAYRHO_CommonCfg_HDRS})
 source_group(Dynamics FILES ${PLAYRHO_Dynamics_SRCS} ${PLAYRHO_Dynamics_HDRS})
 source_group(Dynamics\\Contacts FILES ${PLAYRHO_Contacts_SRCS} ${PLAYRHO_Contacts_HDRS})
 source_group(Dynamics\\Joints FILES ${PLAYRHO_Joints_SRCS} ${PLAYRHO_Joints_HDRS})
-source_group(Include FILES ${PLAYRHO_GeneralCfg_HDRS})
 
 if(PLAYRHO_INSTALL)
 	include(GNUInstallDirs)
@@ -115,17 +117,23 @@ if(PLAYRHO_INSTALL)
 	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/Export.hpp
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho
 		COMPONENT Library)
+	install(FILES ${PLAYRHO_General_HDRS}
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho
+		COMPONENT Library)
 	install(FILES ${PLAYRHO_GeneralCfg_HDRS}
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho
+		COMPONENT Library)
+	install(FILES ${PLAYRHO_Common_HDRS}
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Common
+		COMPONENT Library)
+	install(FILES ${PLAYRHO_CommonCfg_HDRS}
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Common
 		COMPONENT Library)
 	install(FILES ${PLAYRHO_Collision_HDRS}
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Collision
 		COMPONENT Library)
 	install(FILES ${PLAYRHO_Shapes_HDRS}
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Collision/Shapes
-		COMPONENT Library)
-	install(FILES ${PLAYRHO_CommonCfg_HDRS}
-		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Common
 		COMPONENT Library)
 	install(FILES ${PLAYRHO_Dynamics_HDRS}
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Dynamics
