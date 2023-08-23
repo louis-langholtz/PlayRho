@@ -33,7 +33,7 @@ jobs:
       with:
         submodules: true
 
-    - name: Install Prerequisites
+    - name: Prerequisites
       run: |
         vcpkg install --triplet=${{matrix.triplet}} glew glfw3
 
@@ -57,11 +57,14 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{matrix.build_type}}
 
-    - name: Archive Build Results
+    - name: Install
+      run: cmake --install ${{github.workspace}}/build --config ${{matrix.build_type}} --prefix ${{github.workspace}}/install
+
+    - name: Upload Artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: windows-${{ matrix.build_type }}-${{ matrix.platform }}
-        path: D:/a/PlayRho/PlayRho/Build/
+        name: windows-${{matrix.build_type}}-${{matrix.platform}}
+        path: ${{github.workspace}}/install
 
     - name: Test
       working-directory: ${{github.workspace}}/build
