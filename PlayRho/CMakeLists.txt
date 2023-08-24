@@ -47,21 +47,12 @@ if (${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 endif()
 
 set(libsrc
-	${PLAYRHO_General_HDRS}
-	${PLAYRHO_GeneralCfg_HDRS}
 	${PLAYRHO_Joints_SRCS}
-	${PLAYRHO_Joints_HDRS}
 	${PLAYRHO_Contacts_SRCS}
-	${PLAYRHO_Contacts_HDRS}
 	${PLAYRHO_Dynamics_SRCS}
-	${PLAYRHO_Dynamics_HDRS}
 	${PLAYRHO_Common_SRCS}
-	${PLAYRHO_Common_HDRS}
-	${PLAYRHO_CommonCfg_HDRS}
 	${PLAYRHO_Shapes_SRCS}
-	${PLAYRHO_Shapes_HDRS}
 	${PLAYRHO_Collision_SRCS}
-	${PLAYRHO_Collision_HDRS}
 )
 
 if(PLAYRHO_BUILD_SHARED)
