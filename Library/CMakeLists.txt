@@ -21,25 +21,28 @@ add_compile_definitions(PLAYRHO_VERSION_MAJOR=${PlayRho_VERSION_MAJOR})
 add_compile_definitions(PLAYRHO_VERSION_MINOR=${PlayRho_VERSION_MINOR})
 add_compile_definitions(PLAYRHO_VERSION_PATCH=${PlayRho_VERSION_PATCH})
 
-file(GLOB PLAYRHO_Collision_SRCS "Collision/*.cpp")
-file(GLOB PLAYRHO_Collision_HDRS "Collision/*.hpp")
-file(GLOB PLAYRHO_Shapes_SRCS "Collision/Shapes/*.cpp")
-file(GLOB PLAYRHO_Shapes_HDRS "Collision/Shapes/*.hpp")
-file(GLOB PLAYRHO_Dynamics_SRCS "Dynamics/*.cpp")
-file(GLOB PLAYRHO_Dynamics_HDRS "Dynamics/*.hpp")
-file(GLOB PLAYRHO_Contacts_SRCS "Dynamics/Contacts/*.cpp")
-file(GLOB PLAYRHO_Contacts_HDRS "Dynamics/Contacts/*.hpp")
-file(GLOB PLAYRHO_Joints_SRCS "Dynamics/Joints/*.cpp")
-file(GLOB PLAYRHO_Joints_HDRS "Dynamics/Joints/*.hpp")
+set(PLAYRHO_INCLUDE_PREFIX "include/PlayRho/")
+set(PLAYRHO_SOURCE_PREFIX "source/PlayRho/")
 
-file(GLOB PLAYRHO_General_HDRS "*.hpp")
-configure_file("Defines.hpp.in" "Defines.hpp" @ONLY) # overwrites existing Defines.hpp
-file(GLOB PLAYRHO_GeneralCfg_HDRS "${CMAKE_CURRENT_BINARY_DIR}/*.hpp")
+file(GLOB PLAYRHO_Collision_SRCS "${PLAYRHO_SOURCE_PREFIX}Collision/*.cpp")
+file(GLOB PLAYRHO_Collision_HDRS "${PLAYRHO_INCLUDE_PREFIX}Collision/*.hpp")
+file(GLOB PLAYRHO_Shapes_SRCS "${PLAYRHO_SOURCE_PREFIX}Collision/Shapes/*.cpp")
+file(GLOB PLAYRHO_Shapes_HDRS "${PLAYRHO_INCLUDE_PREFIX}Collision/Shapes/*.hpp")
+file(GLOB PLAYRHO_Dynamics_SRCS "${PLAYRHO_SOURCE_PREFIX}Dynamics/*.cpp")
+file(GLOB PLAYRHO_Dynamics_HDRS "${PLAYRHO_INCLUDE_PREFIX}Dynamics/*.hpp")
+file(GLOB PLAYRHO_Contacts_SRCS "${PLAYRHO_SOURCE_PREFIX}Dynamics/Contacts/*.cpp")
+file(GLOB PLAYRHO_Contacts_HDRS "${PLAYRHO_INCLUDE_PREFIX}Dynamics/Contacts/*.hpp")
+file(GLOB PLAYRHO_Joints_SRCS "${PLAYRHO_SOURCE_PREFIX}Dynamics/Joints/*.cpp")
+file(GLOB PLAYRHO_Joints_HDRS "${PLAYRHO_INCLUDE_PREFIX}Dynamics/Joints/*.hpp")
+file(GLOB PLAYRHO_General_HDRS "${PLAYRHO_INCLUDE_PREFIX}*.hpp")
+file(GLOB PLAYRHO_Common_SRCS "${PLAYRHO_SOURCE_PREFIX}Common/*.cpp")
+file(GLOB PLAYRHO_Common_HDRS "${PLAYRHO_INCLUDE_PREFIX}Common/*.hpp")
 
-file(GLOB PLAYRHO_Common_SRCS "Common/*.cpp")
-file(GLOB PLAYRHO_Common_HDRS "Common/*.hpp")
-configure_file("Common/Real.hpp.in" "Common/Real.hpp" @ONLY) # overwrites existing Common/Real.hpp
-file(GLOB PLAYRHO_CommonCfg_HDRS "${CMAKE_CURRENT_BINARY_DIR}/Common/*.hpp")
+configure_file("${PLAYRHO_INCLUDE_PREFIX}Defines.hpp.in" "${PLAYRHO_INCLUDE_PREFIX}Defines.hpp" @ONLY)
+set(PLAYRHO_GeneralCfg_HDRS "${CMAKE_CURRENT_BINARY_DIR}/${PLAYRHO_INCLUDE_PREFIX}Defines.hpp")
+
+configure_file("${PLAYRHO_INCLUDE_PREFIX}Common/Real.hpp.in" "${PLAYRHO_INCLUDE_PREFIX}Common/Real.hpp" @ONLY)
+set(PLAYRHO_CommonCfg_HDRS "${CMAKE_CURRENT_BINARY_DIR}/${PLAYRHO_INCLUDE_PREFIX}Common/Real.hpp")
 
 if (${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	message(STATUS "lib: Adding definitions for coverage analysis.")
@@ -65,7 +68,7 @@ endif()
 add_library(PlayRho::PlayRho ALIAS PlayRho)
 
 include(GenerateExportHeader)
-generate_export_header(PlayRho EXPORT_FILE_NAME Export.hpp)
+generate_export_header(PlayRho EXPORT_FILE_NAME "${PLAYRHO_INCLUDE_PREFIX}Export.hpp")
 
 target_compile_features(PlayRho PUBLIC cxx_std_17)
 set_target_properties(PlayRho PROPERTIES
@@ -73,8 +76,8 @@ set_target_properties(PlayRho PROPERTIES
 	VERSION ${PlayRho_VERSION}
 	SOVERSION ${PlayRho_VERSION_MAJOR})
 target_include_directories(PlayRho PUBLIC
-	"$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../>"
-	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>"
+	"$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include/>"
+	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>"
 	"$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
@@ -105,7 +108,7 @@ if(PLAYRHO_INSTALL)
 	include(CMakePackageConfigHelpers)
 
 	# install headers
-	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/Export.hpp
+	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PLAYRHO_INCLUDE_PREFIX}Export.hpp
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho
 		COMPONENT Library)
 	install(FILES ${PLAYRHO_General_HDRS}

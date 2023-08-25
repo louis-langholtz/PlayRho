@@ -1071,274 +1071,14 @@
 			path = OptimizationProfiles;
 			sourceTree = "<group>";
 		};
-		80BB8922141C3E5900F1753A /* PlayRho */ = {
+		80BB8922141C3E5900F1753A /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				80BB8923141C3E5900F1753A /* PlayRho.hpp */,
-				47327E7D1EA585790048FCD8 /* Defines.hpp */,
-				470ADAB82555E05100EEE99D /* Defines.hpp.in */,
-				80BB8926141C3E5900F1753A /* Collision */,
-				80BB893E141C3E5900F1753A /* Common */,
-				80BB894C141C3E5900F1753A /* Dynamics */,
+				996BDA752A98532F00CD2D55 /* include */,
+				996BDA782A98535400CD2D55 /* source */,
 			);
-			name = PlayRho;
-			path = ../../PlayRho;
-			sourceTree = "<group>";
-		};
-		80BB8926141C3E5900F1753A /* Collision */ = {
-			isa = PBXGroup;
-			children = (
-				4731DE2B1DDF94A600E7F931 /* AABB.cpp */,
-				4726DD291D31B4090012A882 /* AABB.hpp */,
-				998A7BFF2A801C1C00F29B01 /* ClipList.cpp */,
-				998A7C002A801C1C00F29B01 /* ClipList.hpp */,
-				4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */,
-				80BB892E141C3E5900F1753A /* Distance.cpp */,
-				80BB892F141C3E5900F1753A /* Distance.hpp */,
-				47D6D59C2672B5C900AF32B4 /* DistanceConf.cpp */,
-				47D6D59D2672B5CA00AF32B4 /* DistanceConf.hpp */,
-				4750398F1D2180D600D32047 /* DistanceProxy.cpp */,
-				475039901D2180D600D32047 /* DistanceProxy.hpp */,
-				80BB8930141C3E5900F1753A /* DynamicTree.cpp */,
-				80BB8931141C3E5900F1753A /* DynamicTree.hpp */,
-				4791332426A5F58C0011707B /* DynamicTreeData.hpp */,
-				4726DD0C1D3014990012A882 /* IndexPair.hpp */,
-				4731DE661DF0A73000E7F931 /* Manifold.cpp */,
-				4726DD351D387D630012A882 /* Manifold.hpp */,
-				4731DE2E1DDF9B6900E7F931 /* MassData.cpp */,
-				47CB343D1D6F3A8500828126 /* MassData.hpp */,
-				479132DD26A52AAF0011707B /* PointState.hpp */,
-				80BB892C141C3E5900F1753A /* PointStates.cpp */,
-				4731DE431DE2570900E7F931 /* PointStates.hpp */,
-				4731DE261DDF84A900E7F931 /* RayCastInput.hpp */,
-				4726DD281D31B4090012A882 /* RayCastOutput.cpp */,
-				4731DE201DDF83A500E7F931 /* RayCastOutput.hpp */,
-				479132F026A52FD00011707B /* RayCastOpcode.hpp */,
-				4731DE631DEF841600E7F931 /* SeparationScenario.cpp */,
-				4731DE5B1DEE3F0600E7F931 /* SeparationScenario.hpp */,
-				80BB8934141C3E5900F1753A /* Shapes */,
-				47CF98491DF9C4A30077F5F2 /* ShapeSeparation.cpp */,
-				47CF984A1DF9C4A30077F5F2 /* ShapeSeparation.hpp */,
-				4731DE601DEF7B5100E7F931 /* Simplex.cpp */,
-				4734B22A1DC2B11D00F15E29 /* Simplex.hpp */,
-				4734B2241DC29F7C00F15E29 /* SimplexEdge.hpp */,
-				80BB8932141C3E5900F1753A /* TimeOfImpact.cpp */,
-				80BB8933141C3E5900F1753A /* TimeOfImpact.hpp */,
-				479132FD26A5344A0011707B /* ToiConf.cpp */,
-				479132FE26A5344B0011707B /* ToiConf.hpp */,
-				4791330B26A5B90C0011707B /* ToiOutput.cpp */,
-				4791330C26A5B90C0011707B /* ToiOutput.hpp */,
-				47578BE31D886FED0078CD40 /* WorldManifold.cpp */,
-				47578BDE1D8869110078CD40 /* WorldManifold.hpp */,
-			);
-			path = Collision;
-			sourceTree = "<group>";
-		};
-		80BB8934141C3E5900F1753A /* Shapes */ = {
-			isa = PBXGroup;
-			children = (
-				80BB8935141C3E5900F1753A /* ChainShapeConf.cpp */,
-				80BB8936141C3E5900F1753A /* ChainShapeConf.hpp */,
-				47F397DD2654426F003C1FD9 /* Compositor.cpp */,
-				47F397DE2654426F003C1FD9 /* Compositor.hpp */,
-				80BB8937141C3E5900F1753A /* DiskShapeConf.cpp */,
-				80BB8938141C3E5900F1753A /* DiskShapeConf.hpp */,
-				80BB8939141C3E5900F1753A /* EdgeShapeConf.cpp */,
-				80BB893A141C3E5900F1753A /* EdgeShapeConf.hpp */,
-				474AFBF61EB1B2CB002AA6C8 /* MultiShapeConf.cpp */,
-				474AFBF71EB1B2CB002AA6C8 /* MultiShapeConf.hpp */,
-				80BB893B141C3E5900F1753A /* PolygonShapeConf.cpp */,
-				80BB893C141C3E5900F1753A /* PolygonShapeConf.hpp */,
-				470F9B051EDB8F62007EF7B6 /* Shape.cpp */,
-				80BB893D141C3E5900F1753A /* Shape.hpp */,
-				4795B61C262B557100FB3EC6 /* ShapeID.hpp */,
-				473E019C1F80ACBE00D58CC8 /* ShapeConf.hpp */,
-			);
-			path = Shapes;
-			sourceTree = "<group>";
-		};
-		80BB893E141C3E5900F1753A /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				47C96C531FA67D1D00A6C587 /* Acceleration.hpp */,
-				4734B2161DC00AFD00F15E29 /* ArrayList.hpp */,
-				80BB893F141C3E5900F1753A /* BlockAllocator.cpp */,
-				80BB8940141C3E5900F1753A /* BlockAllocator.hpp */,
-				476162C61E245C9D002C7FB0 /* CodeDumper.cpp */,
-				476162C71E245C9D002C7FB0 /* CodeDumper.hpp */,
-				470463ED250305C900614373 /* CheckedValue.hpp */,
-				47B58F531F570E2C00354C34 /* DynamicMemory.cpp */,
-				47B58F541F570E2C00354C34 /* DynamicMemory.hpp */,
-				4764085625047C090090F711 /* Finite.hpp */,
-				4727242D1E315E1A00C64921 /* Fixed.hpp */,
-				47E36F4E1FE8477000C10B79 /* FixedLimits.hpp */,
-				47E36F521FE8534500C10B79 /* FixedMath.hpp */,
-				47B58F5C1F5B314400354C34 /* FlagGuard.hpp */,
-				80BB8943141C3E5900F1753A /* GrowableStack.hpp */,
-				47640866250C855D0090F711 /* IndexingNamedType.hpp */,
-				47D28D9F1F72B9340094C032 /* Interval.hpp */,
-				472D35361F98C56200574B73 /* Intervals.hpp */,
-				470F9B3A1EE63515007EF7B6 /* InvalidArgument.hpp */,
-				4787D6E91F2FA0CA008C115E /* LengthError.hpp */,
-				471E7EA81F32668E00DFF626 /* Matrix.hpp */,
-				80BB8944141C3E5900F1753A /* Math.cpp */,
-				80BB8945141C3E5900F1753A /* Math.hpp */,
-				996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */,
-				996B7B802A6DF1A400A8207F /* MemoryResource.hpp */,
-				4764085C250484820090F711 /* Negative.hpp */,
-				4764085025042BD00090F711 /* NonNegative.hpp */,
-				4764085825047FA10090F711 /* NonPositive.hpp */,
-				47640854250475860090F711 /* NonZero.hpp */,
-				4764086E250EA5DE0090F711 /* ObjectPool.hpp */,
-				996B7B822A6DF1A500A8207F /* PoolMemoryResource.cpp */,
-				996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */,
-				470F9B0F1EDF2890007EF7B6 /* Position.hpp */,
-				4764085A2504822F0090F711 /* Positive.hpp */,
-				4764085E2507FBFF0090F711 /* propagate_const.hpp */,
-				47B58F651F64D2B500354C34 /* Real.hpp */,
-				470ADAB92555F72B00EEE99D /* Real.hpp.in */,
-				47B58F621F64C19600354C34 /* RealConstants.hpp */,
-				80BB8947141C3E5900F1753A /* Settings.hpp */,
-				4734B21E1DC1340500F15E29 /* Span.hpp */,
-				80BB8948141C3E5900F1753A /* StackAllocator.cpp */,
-				80BB8949141C3E5900F1753A /* StackAllocator.hpp */,
-				479DEBAC268155E50070497D /* Sweep.cpp */,
-				998A7C032A80404600F29B01 /* StatsResource.cpp */,
-				998A7C042A80404600F29B01 /* StatsResource.hpp */,
-				470F9B1B1EDF2B8A007EF7B6 /* Sweep.hpp */,
-				47C85D1E1F0DA14500F70C56 /* Templates.hpp */,
-				996B7B812A6DF1A400A8207F /* ThreadLocalAllocator.hpp */,
-				470F9B151EDF2959007EF7B6 /* Transformation.hpp */,
-				4706451A252CE27B006E69AA /* TypeInfo.hpp */,
-				4764085225045B3C0090F711 /* UnitInterval.hpp */,
-				47C85D181F0D9D8D00F70C56 /* Units.hpp */,
-				476E8ABD1FC8CD9F00705BB5 /* UnitVec.cpp */,
-				4731DE551DEC908600E7F931 /* UnitVec.hpp */,
-				474FFC3A1F2CEE6C0037CCE0 /* Vector.hpp */,
-				4768D3FA1E414A0100574143 /* Vector2.hpp */,
-				470F9B091EDE6340007EF7B6 /* Vector3.hpp */,
-				47363E8820029DFD005912B1 /* Velocity.cpp */,
-				470F9B2D1EDF5165007EF7B6 /* Velocity.hpp */,
-				47B58F571F57218400354C34 /* Version.cpp */,
-				47B58F581F57218400354C34 /* Version.hpp */,
-				472E30181DBA925500DA821D /* VertexSet.hpp */,
-				4768D3F21E3A7ACA00574143 /* Wider.hpp */,
-				47D28D9B1F6F28C70094C032 /* WrongState.hpp */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
-		80BB894C141C3E5900F1753A /* Dynamics */ = {
-			isa = PBXGroup;
-			children = (
-				80BB894D141C3E5900F1753A /* Body.cpp */,
-				80BB894E141C3E5900F1753A /* Body.hpp */,
-				470F9B4B1EEF20B6007EF7B6 /* BodyConf.cpp */,
-				470F94A51EC4C79B00AA3C82 /* BodyConf.hpp */,
-				47640869250C86640090F711 /* BodyID.hpp */,
-				478E67C41E760AB7009B9AD5 /* BodyType.hpp */,
-				998A7C0A2A82D55100F29B01 /* Contactable.hpp */,
-				80BB895A141C3E5900F1753A /* Contacts */,
-				47363E8420027FE2005912B1 /* ContactImpulsesList.cpp */,
-				47363E8520027FE2005912B1 /* ContactImpulsesList.hpp */,
-				470F94B11EC4CB6C00AA3C82 /* Filter.hpp */,
-				80BB8953141C3E5900F1753A /* Island.cpp */,
-				80BB8954141C3E5900F1753A /* Island.hpp */,
-				47B490D5201E6C3000AB07A0 /* IslandStats.hpp */,
-				80BB896D141C3E5900F1753A /* Joints */,
-				471E7EAF1F34E34000DFF626 /* MovementConf.cpp */,
-				471E7EAC1F34CA4D00DFF626 /* MovementConf.hpp */,
-				4768D3FF1E54E7CB00574143 /* StepConf.cpp */,
-				80BB8955141C3E5900F1753A /* StepConf.hpp */,
-				4764088A251FA6360090F711 /* StepStats.cpp */,
-				478E67CA1E777A43009B9AD5 /* StepStats.hpp */,
-				80BB8956141C3E5900F1753A /* World.cpp */,
-				80BB8957141C3E5900F1753A /* World.hpp */,
-				4764089625226D7C0090F711 /* WorldBody.cpp */,
-				4764088C252268A30090F711 /* WorldBody.hpp */,
-				47440F0A1EDA365400AB3F51 /* WorldConf.hpp */,
-				4764089B25226E170090F711 /* WorldContact.cpp */,
-				476408912522698E0090F711 /* WorldContact.hpp */,
-				4764089825226E170090F711 /* WorldJoint.cpp */,
-				476408902522698E0090F711 /* WorldJoint.hpp */,
-				4764089A25226E170090F711 /* WorldMisc.cpp */,
-				4764088F2522698E0090F711 /* WorldMisc.hpp */,
-				4795B64B262DF06800FB3EC6 /* WorldShape.cpp */,
-				4795B64A262DF06800FB3EC6 /* WorldShape.hpp */,
-				47640861250807720090F711 /* WorldImpl.cpp */,
-				47640860250807720090F711 /* WorldImpl.hpp */,
-				47640880251F0F9B0090F711 /* WorldImplBody.cpp */,
-				47640877251EA80C0090F711 /* WorldImplBody.hpp */,
-				47640885251F11630090F711 /* WorldImplContact.cpp */,
-				47640878251EA80C0090F711 /* WorldImplContact.hpp */,
-				47640883251F11620090F711 /* WorldImplJoint.cpp */,
-				47640876251EA80B0090F711 /* WorldImplJoint.hpp */,
-				47640884251F11620090F711 /* WorldImplMisc.cpp */,
-				4764087E251EB90E0090F711 /* WorldImplMisc.hpp */,
-				4795B62D262B72BB00FB3EC6 /* WorldImplShape.cpp */,
-				4795B62E262B72BB00FB3EC6 /* WorldImplShape.hpp */,
-				476408A0252391730090F711 /* WorldSpecial.cpp */,
-			);
-			path = Dynamics;
-			sourceTree = "<group>";
-		};
-		80BB895A141C3E5900F1753A /* Contacts */ = {
-			isa = PBXGroup;
-			children = (
-				474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */,
-				47E7060A255CDBEE00A55BC1 /* ConstraintSolverConf.cpp */,
-				47E70603255CDA4300A55BC1 /* ConstraintSolverConf.hpp */,
-				80BB8961141C3E5900F1753A /* Contact.cpp */,
-				80BB8962141C3E5900F1753A /* Contact.hpp */,
-				47640872251198AA0090F711 /* ContactID.hpp */,
-				470F94D41EC649B300AA3C82 /* ContactKey.cpp */,
-				470F94CF1EC6376F00AA3C82 /* ContactKey.hpp */,
-				80BB8963141C3E5900F1753A /* ContactSolver.cpp */,
-				80BB8964141C3E5900F1753A /* ContactSolver.hpp */,
-				476408742511A5CC0090F711 /* KeyedContactID.hpp */,
-				478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */,
-				477DB2AA1D1C4BE800846ED6 /* PositionSolverManifold.cpp */,
-				477DB2AB1D1C4BE800846ED6 /* PositionSolverManifold.hpp */,
-				47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */,
-				4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */,
-			);
-			path = Contacts;
-			sourceTree = "<group>";
-		};
-		80BB896D141C3E5900F1753A /* Joints */ = {
-			isa = PBXGroup;
-			children = (
-				4787D6C01F2E9DC0008C115E /* DistanceJointConf.cpp */,
-				4787D6C11F2E9DC0008C115E /* DistanceJointConf.hpp */,
-				4787D6C41F2EA1DB008C115E /* FrictionJointConf.cpp */,
-				4787D6C51F2EA1DB008C115E /* FrictionJointConf.hpp */,
-				4787D6C81F2EA3A1008C115E /* GearJointConf.cpp */,
-				4787D6C91F2EA3A1008C115E /* GearJointConf.hpp */,
-				80BB8974141C3E5900F1753A /* Joint.cpp */,
-				80BB8975141C3E5900F1753A /* Joint.hpp */,
-				4787D6BC1F2E968E008C115E /* JointConf.cpp */,
-				4787D6BD1F2E968E008C115E /* JointConf.hpp */,
-				4764087025105DD90090F711 /* JointID.hpp */,
-				4706451E25336323006E69AA /* LimitState.cpp */,
-				4706451C25336237006E69AA /* LimitState.hpp */,
-				4787D6CC1F2EC902008C115E /* MotorJointConf.cpp */,
-				4787D6CD1F2EC902008C115E /* MotorJointConf.hpp */,
-				4787D6B81F2E946E008C115E /* PrismaticJointConf.cpp */,
-				4787D6B91F2E946E008C115E /* PrismaticJointConf.hpp */,
-				4787D6D41F2ECD87008C115E /* PulleyJointConf.cpp */,
-				4787D6D51F2ECD87008C115E /* PulleyJointConf.hpp */,
-				4787D6D81F2ECFFB008C115E /* RevoluteJointConf.cpp */,
-				4787D6D91F2ECFFB008C115E /* RevoluteJointConf.hpp */,
-				4787D6DC1F2ED2D6008C115E /* RopeJointConf.cpp */,
-				4787D6DD1F2ED2D6008C115E /* RopeJointConf.hpp */,
-				4787D6D01F2ECB8D008C115E /* TargetJointConf.cpp */,
-				4787D6D11F2ECB8D008C115E /* TargetJointConf.hpp */,
-				4787D6E01F2ED461008C115E /* WeldJointConf.cpp */,
-				4787D6E11F2ED461008C115E /* WeldJointConf.hpp */,
-				4787D6E41F2ED62C008C115E /* WheelJointConf.cpp */,
-				4787D6E51F2ED62C008C115E /* WheelJointConf.hpp */,
-			);
-			path = Joints;
+			name = Library;
+			path = ../../Library;
 			sourceTree = "<group>";
 		};
 		80BB8A31141C3E7B00F1753A /* HelloWorld */ = {
@@ -1469,7 +1209,7 @@
 				474AFBF41EB19BB6002AA6C8 /* CoreVideo.framework */,
 				80BB8A35141C3E8500F1753A /* Testbed */,
 				80BB8A31141C3E7B00F1753A /* HelloWorld */,
-				80BB8922141C3E5900F1753A /* PlayRho */,
+				80BB8922141C3E5900F1753A /* Library */,
 				80FF01D3141C3D980059E59D /* Products */,
 				474BC3F31D41278800447DCD /* UnitTests */,
 				475CE1631F253B2F00456470 /* Benchmark */,
@@ -1488,6 +1228,346 @@
 				475CE1621F253B2F00456470 /* Benchmark */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		996BDA752A98532F00CD2D55 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				996BDA762A98532F00CD2D55 /* PlayRho */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		996BDA762A98532F00CD2D55 /* PlayRho */ = {
+			isa = PBXGroup;
+			children = (
+				996BDA7C2A9855E400CD2D55 /* Collision */,
+				996BDA7B2A9855E400CD2D55 /* Common */,
+				47327E7D1EA585790048FCD8 /* Defines.hpp */,
+				470ADAB82555E05100EEE99D /* Defines.hpp.in */,
+				996BDA7D2A9855E400CD2D55 /* Dynamics */,
+				80BB8923141C3E5900F1753A /* PlayRho.hpp */,
+			);
+			path = PlayRho;
+			sourceTree = "<group>";
+		};
+		996BDA782A98535400CD2D55 /* source */ = {
+			isa = PBXGroup;
+			children = (
+				996BDA792A98535400CD2D55 /* PlayRho */,
+			);
+			path = source;
+			sourceTree = "<group>";
+		};
+		996BDA792A98535400CD2D55 /* PlayRho */ = {
+			isa = PBXGroup;
+			children = (
+				996BDA7E2A98561A00CD2D55 /* Collision */,
+				996BDA7F2A98561A00CD2D55 /* Common */,
+				996BDA802A98561A00CD2D55 /* Dynamics */,
+			);
+			path = PlayRho;
+			sourceTree = "<group>";
+		};
+		996BDA7B2A9855E400CD2D55 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				47C96C531FA67D1D00A6C587 /* Acceleration.hpp */,
+				4734B2161DC00AFD00F15E29 /* ArrayList.hpp */,
+				80BB8940141C3E5900F1753A /* BlockAllocator.hpp */,
+				476162C71E245C9D002C7FB0 /* CodeDumper.hpp */,
+				470463ED250305C900614373 /* CheckedValue.hpp */,
+				47B58F541F570E2C00354C34 /* DynamicMemory.hpp */,
+				4764085625047C090090F711 /* Finite.hpp */,
+				4727242D1E315E1A00C64921 /* Fixed.hpp */,
+				47E36F4E1FE8477000C10B79 /* FixedLimits.hpp */,
+				47E36F521FE8534500C10B79 /* FixedMath.hpp */,
+				47B58F5C1F5B314400354C34 /* FlagGuard.hpp */,
+				80BB8943141C3E5900F1753A /* GrowableStack.hpp */,
+				47640866250C855D0090F711 /* IndexingNamedType.hpp */,
+				47D28D9F1F72B9340094C032 /* Interval.hpp */,
+				472D35361F98C56200574B73 /* Intervals.hpp */,
+				470F9B3A1EE63515007EF7B6 /* InvalidArgument.hpp */,
+				4787D6E91F2FA0CA008C115E /* LengthError.hpp */,
+				471E7EA81F32668E00DFF626 /* Matrix.hpp */,
+				80BB8945141C3E5900F1753A /* Math.hpp */,
+				996B7B802A6DF1A400A8207F /* MemoryResource.hpp */,
+				4764085C250484820090F711 /* Negative.hpp */,
+				4764085025042BD00090F711 /* NonNegative.hpp */,
+				4764085825047FA10090F711 /* NonPositive.hpp */,
+				47640854250475860090F711 /* NonZero.hpp */,
+				4764086E250EA5DE0090F711 /* ObjectPool.hpp */,
+				996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */,
+				470F9B0F1EDF2890007EF7B6 /* Position.hpp */,
+				4764085A2504822F0090F711 /* Positive.hpp */,
+				4764085E2507FBFF0090F711 /* propagate_const.hpp */,
+				47B58F651F64D2B500354C34 /* Real.hpp */,
+				470ADAB92555F72B00EEE99D /* Real.hpp.in */,
+				47B58F621F64C19600354C34 /* RealConstants.hpp */,
+				80BB8947141C3E5900F1753A /* Settings.hpp */,
+				4734B21E1DC1340500F15E29 /* Span.hpp */,
+				80BB8949141C3E5900F1753A /* StackAllocator.hpp */,
+				998A7C042A80404600F29B01 /* StatsResource.hpp */,
+				470F9B1B1EDF2B8A007EF7B6 /* Sweep.hpp */,
+				47C85D1E1F0DA14500F70C56 /* Templates.hpp */,
+				996B7B812A6DF1A400A8207F /* ThreadLocalAllocator.hpp */,
+				470F9B151EDF2959007EF7B6 /* Transformation.hpp */,
+				4706451A252CE27B006E69AA /* TypeInfo.hpp */,
+				4764085225045B3C0090F711 /* UnitInterval.hpp */,
+				47C85D181F0D9D8D00F70C56 /* Units.hpp */,
+				4731DE551DEC908600E7F931 /* UnitVec.hpp */,
+				474FFC3A1F2CEE6C0037CCE0 /* Vector.hpp */,
+				4768D3FA1E414A0100574143 /* Vector2.hpp */,
+				470F9B091EDE6340007EF7B6 /* Vector3.hpp */,
+				470F9B2D1EDF5165007EF7B6 /* Velocity.hpp */,
+				47B58F581F57218400354C34 /* Version.hpp */,
+				472E30181DBA925500DA821D /* VertexSet.hpp */,
+				4768D3F21E3A7ACA00574143 /* Wider.hpp */,
+				47D28D9B1F6F28C70094C032 /* WrongState.hpp */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		996BDA7C2A9855E400CD2D55 /* Collision */ = {
+			isa = PBXGroup;
+			children = (
+				4726DD291D31B4090012A882 /* AABB.hpp */,
+				998A7C002A801C1C00F29B01 /* ClipList.hpp */,
+				4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */,
+				80BB892F141C3E5900F1753A /* Distance.hpp */,
+				47D6D59D2672B5CA00AF32B4 /* DistanceConf.hpp */,
+				475039901D2180D600D32047 /* DistanceProxy.hpp */,
+				80BB8931141C3E5900F1753A /* DynamicTree.hpp */,
+				4791332426A5F58C0011707B /* DynamicTreeData.hpp */,
+				4726DD0C1D3014990012A882 /* IndexPair.hpp */,
+				4726DD351D387D630012A882 /* Manifold.hpp */,
+				47CB343D1D6F3A8500828126 /* MassData.hpp */,
+				479132DD26A52AAF0011707B /* PointState.hpp */,
+				4731DE431DE2570900E7F931 /* PointStates.hpp */,
+				4731DE261DDF84A900E7F931 /* RayCastInput.hpp */,
+				4731DE201DDF83A500E7F931 /* RayCastOutput.hpp */,
+				479132F026A52FD00011707B /* RayCastOpcode.hpp */,
+				4731DE5B1DEE3F0600E7F931 /* SeparationScenario.hpp */,
+				996BDA812A9857A000CD2D55 /* Shapes */,
+				47CF984A1DF9C4A30077F5F2 /* ShapeSeparation.hpp */,
+				4734B22A1DC2B11D00F15E29 /* Simplex.hpp */,
+				4734B2241DC29F7C00F15E29 /* SimplexEdge.hpp */,
+				80BB8933141C3E5900F1753A /* TimeOfImpact.hpp */,
+				479132FE26A5344B0011707B /* ToiConf.hpp */,
+				4791330C26A5B90C0011707B /* ToiOutput.hpp */,
+				47578BDE1D8869110078CD40 /* WorldManifold.hpp */,
+			);
+			path = Collision;
+			sourceTree = "<group>";
+		};
+		996BDA7D2A9855E400CD2D55 /* Dynamics */ = {
+			isa = PBXGroup;
+			children = (
+				80BB894E141C3E5900F1753A /* Body.hpp */,
+				470F94A51EC4C79B00AA3C82 /* BodyConf.hpp */,
+				47640869250C86640090F711 /* BodyID.hpp */,
+				478E67C41E760AB7009B9AD5 /* BodyType.hpp */,
+				998A7C0A2A82D55100F29B01 /* Contactable.hpp */,
+				47363E8520027FE2005912B1 /* ContactImpulsesList.hpp */,
+				996BDA832A98590E00CD2D55 /* Contacts */,
+				470F94B11EC4CB6C00AA3C82 /* Filter.hpp */,
+				80BB8954141C3E5900F1753A /* Island.hpp */,
+				47B490D5201E6C3000AB07A0 /* IslandStats.hpp */,
+				996BDA842A98590E00CD2D55 /* Joints */,
+				471E7EAC1F34CA4D00DFF626 /* MovementConf.hpp */,
+				80BB8955141C3E5900F1753A /* StepConf.hpp */,
+				478E67CA1E777A43009B9AD5 /* StepStats.hpp */,
+				80BB8957141C3E5900F1753A /* World.hpp */,
+				4764088C252268A30090F711 /* WorldBody.hpp */,
+				47440F0A1EDA365400AB3F51 /* WorldConf.hpp */,
+				476408912522698E0090F711 /* WorldContact.hpp */,
+				476408902522698E0090F711 /* WorldJoint.hpp */,
+				4764088F2522698E0090F711 /* WorldMisc.hpp */,
+				4795B64A262DF06800FB3EC6 /* WorldShape.hpp */,
+				47640860250807720090F711 /* WorldImpl.hpp */,
+				47640877251EA80C0090F711 /* WorldImplBody.hpp */,
+				47640878251EA80C0090F711 /* WorldImplContact.hpp */,
+				47640876251EA80B0090F711 /* WorldImplJoint.hpp */,
+				4764087E251EB90E0090F711 /* WorldImplMisc.hpp */,
+				4795B62E262B72BB00FB3EC6 /* WorldImplShape.hpp */,
+			);
+			path = Dynamics;
+			sourceTree = "<group>";
+		};
+		996BDA7E2A98561A00CD2D55 /* Collision */ = {
+			isa = PBXGroup;
+			children = (
+				4731DE2B1DDF94A600E7F931 /* AABB.cpp */,
+				998A7BFF2A801C1C00F29B01 /* ClipList.cpp */,
+				80BB892E141C3E5900F1753A /* Distance.cpp */,
+				47D6D59C2672B5C900AF32B4 /* DistanceConf.cpp */,
+				4750398F1D2180D600D32047 /* DistanceProxy.cpp */,
+				80BB8930141C3E5900F1753A /* DynamicTree.cpp */,
+				4731DE661DF0A73000E7F931 /* Manifold.cpp */,
+				4731DE2E1DDF9B6900E7F931 /* MassData.cpp */,
+				80BB892C141C3E5900F1753A /* PointStates.cpp */,
+				4726DD281D31B4090012A882 /* RayCastOutput.cpp */,
+				4731DE631DEF841600E7F931 /* SeparationScenario.cpp */,
+				996BDA822A9857AC00CD2D55 /* Shapes */,
+				47CF98491DF9C4A30077F5F2 /* ShapeSeparation.cpp */,
+				4731DE601DEF7B5100E7F931 /* Simplex.cpp */,
+				80BB8932141C3E5900F1753A /* TimeOfImpact.cpp */,
+				479132FD26A5344A0011707B /* ToiConf.cpp */,
+				4791330B26A5B90C0011707B /* ToiOutput.cpp */,
+				47578BE31D886FED0078CD40 /* WorldManifold.cpp */,
+			);
+			path = Collision;
+			sourceTree = "<group>";
+		};
+		996BDA7F2A98561A00CD2D55 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				80BB893F141C3E5900F1753A /* BlockAllocator.cpp */,
+				476162C61E245C9D002C7FB0 /* CodeDumper.cpp */,
+				47B58F531F570E2C00354C34 /* DynamicMemory.cpp */,
+				80BB8944141C3E5900F1753A /* Math.cpp */,
+				996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */,
+				996B7B822A6DF1A500A8207F /* PoolMemoryResource.cpp */,
+				80BB8948141C3E5900F1753A /* StackAllocator.cpp */,
+				479DEBAC268155E50070497D /* Sweep.cpp */,
+				998A7C032A80404600F29B01 /* StatsResource.cpp */,
+				476E8ABD1FC8CD9F00705BB5 /* UnitVec.cpp */,
+				47363E8820029DFD005912B1 /* Velocity.cpp */,
+				47B58F571F57218400354C34 /* Version.cpp */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		996BDA802A98561A00CD2D55 /* Dynamics */ = {
+			isa = PBXGroup;
+			children = (
+				80BB894D141C3E5900F1753A /* Body.cpp */,
+				470F9B4B1EEF20B6007EF7B6 /* BodyConf.cpp */,
+				47363E8420027FE2005912B1 /* ContactImpulsesList.cpp */,
+				996BDA852A98591D00CD2D55 /* Contacts */,
+				80BB8953141C3E5900F1753A /* Island.cpp */,
+				996BDA862A98591D00CD2D55 /* Joints */,
+				471E7EAF1F34E34000DFF626 /* MovementConf.cpp */,
+				4768D3FF1E54E7CB00574143 /* StepConf.cpp */,
+				4764088A251FA6360090F711 /* StepStats.cpp */,
+				80BB8956141C3E5900F1753A /* World.cpp */,
+				4764089625226D7C0090F711 /* WorldBody.cpp */,
+				4764089B25226E170090F711 /* WorldContact.cpp */,
+				4764089825226E170090F711 /* WorldJoint.cpp */,
+				4764089A25226E170090F711 /* WorldMisc.cpp */,
+				4795B64B262DF06800FB3EC6 /* WorldShape.cpp */,
+				47640861250807720090F711 /* WorldImpl.cpp */,
+				47640880251F0F9B0090F711 /* WorldImplBody.cpp */,
+				47640885251F11630090F711 /* WorldImplContact.cpp */,
+				47640883251F11620090F711 /* WorldImplJoint.cpp */,
+				47640884251F11620090F711 /* WorldImplMisc.cpp */,
+				4795B62D262B72BB00FB3EC6 /* WorldImplShape.cpp */,
+				476408A0252391730090F711 /* WorldSpecial.cpp */,
+			);
+			path = Dynamics;
+			sourceTree = "<group>";
+		};
+		996BDA812A9857A000CD2D55 /* Shapes */ = {
+			isa = PBXGroup;
+			children = (
+				80BB8936141C3E5900F1753A /* ChainShapeConf.hpp */,
+				47F397DE2654426F003C1FD9 /* Compositor.hpp */,
+				80BB8938141C3E5900F1753A /* DiskShapeConf.hpp */,
+				80BB893A141C3E5900F1753A /* EdgeShapeConf.hpp */,
+				474AFBF71EB1B2CB002AA6C8 /* MultiShapeConf.hpp */,
+				80BB893C141C3E5900F1753A /* PolygonShapeConf.hpp */,
+				80BB893D141C3E5900F1753A /* Shape.hpp */,
+				4795B61C262B557100FB3EC6 /* ShapeID.hpp */,
+				473E019C1F80ACBE00D58CC8 /* ShapeConf.hpp */,
+			);
+			path = Shapes;
+			sourceTree = "<group>";
+		};
+		996BDA822A9857AC00CD2D55 /* Shapes */ = {
+			isa = PBXGroup;
+			children = (
+				80BB8935141C3E5900F1753A /* ChainShapeConf.cpp */,
+				47F397DD2654426F003C1FD9 /* Compositor.cpp */,
+				80BB8937141C3E5900F1753A /* DiskShapeConf.cpp */,
+				80BB8939141C3E5900F1753A /* EdgeShapeConf.cpp */,
+				474AFBF61EB1B2CB002AA6C8 /* MultiShapeConf.cpp */,
+				80BB893B141C3E5900F1753A /* PolygonShapeConf.cpp */,
+				470F9B051EDB8F62007EF7B6 /* Shape.cpp */,
+			);
+			path = Shapes;
+			sourceTree = "<group>";
+		};
+		996BDA832A98590E00CD2D55 /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */,
+				47E70603255CDA4300A55BC1 /* ConstraintSolverConf.hpp */,
+				80BB8962141C3E5900F1753A /* Contact.hpp */,
+				47640872251198AA0090F711 /* ContactID.hpp */,
+				470F94CF1EC6376F00AA3C82 /* ContactKey.hpp */,
+				80BB8964141C3E5900F1753A /* ContactSolver.hpp */,
+				476408742511A5CC0090F711 /* KeyedContactID.hpp */,
+				478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */,
+				477DB2AB1D1C4BE800846ED6 /* PositionSolverManifold.hpp */,
+				4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */,
+			);
+			path = Contacts;
+			sourceTree = "<group>";
+		};
+		996BDA842A98590E00CD2D55 /* Joints */ = {
+			isa = PBXGroup;
+			children = (
+				4787D6C11F2E9DC0008C115E /* DistanceJointConf.hpp */,
+				4787D6C51F2EA1DB008C115E /* FrictionJointConf.hpp */,
+				4787D6C91F2EA3A1008C115E /* GearJointConf.hpp */,
+				80BB8975141C3E5900F1753A /* Joint.hpp */,
+				4787D6BD1F2E968E008C115E /* JointConf.hpp */,
+				4764087025105DD90090F711 /* JointID.hpp */,
+				4706451C25336237006E69AA /* LimitState.hpp */,
+				4787D6CD1F2EC902008C115E /* MotorJointConf.hpp */,
+				4787D6B91F2E946E008C115E /* PrismaticJointConf.hpp */,
+				4787D6D51F2ECD87008C115E /* PulleyJointConf.hpp */,
+				4787D6D91F2ECFFB008C115E /* RevoluteJointConf.hpp */,
+				4787D6DD1F2ED2D6008C115E /* RopeJointConf.hpp */,
+				4787D6D11F2ECB8D008C115E /* TargetJointConf.hpp */,
+				4787D6E11F2ED461008C115E /* WeldJointConf.hpp */,
+				4787D6E51F2ED62C008C115E /* WheelJointConf.hpp */,
+			);
+			path = Joints;
+			sourceTree = "<group>";
+		};
+		996BDA852A98591D00CD2D55 /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				47E7060A255CDBEE00A55BC1 /* ConstraintSolverConf.cpp */,
+				80BB8961141C3E5900F1753A /* Contact.cpp */,
+				470F94D41EC649B300AA3C82 /* ContactKey.cpp */,
+				80BB8963141C3E5900F1753A /* ContactSolver.cpp */,
+				477DB2AA1D1C4BE800846ED6 /* PositionSolverManifold.cpp */,
+				47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */,
+			);
+			path = Contacts;
+			sourceTree = "<group>";
+		};
+		996BDA862A98591D00CD2D55 /* Joints */ = {
+			isa = PBXGroup;
+			children = (
+				4787D6C01F2E9DC0008C115E /* DistanceJointConf.cpp */,
+				4787D6C41F2EA1DB008C115E /* FrictionJointConf.cpp */,
+				4787D6C81F2EA3A1008C115E /* GearJointConf.cpp */,
+				80BB8974141C3E5900F1753A /* Joint.cpp */,
+				4787D6BC1F2E968E008C115E /* JointConf.cpp */,
+				4706451E25336323006E69AA /* LimitState.cpp */,
+				4787D6CC1F2EC902008C115E /* MotorJointConf.cpp */,
+				4787D6B81F2E946E008C115E /* PrismaticJointConf.cpp */,
+				4787D6D41F2ECD87008C115E /* PulleyJointConf.cpp */,
+				4787D6D81F2ECFFB008C115E /* RevoluteJointConf.cpp */,
+				4787D6DC1F2ED2D6008C115E /* RopeJointConf.cpp */,
+				4787D6D01F2ECB8D008C115E /* TargetJointConf.cpp */,
+				4787D6E01F2ED461008C115E /* WeldJointConf.cpp */,
+				4787D6E41F2ED62C008C115E /* WheelJointConf.cpp */,
+			);
+			path = Joints;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1717,9 +1797,9 @@
 			productReference = 80BB8918141C3E3600F1753A /* Testbed */;
 			productType = "com.apple.product-type.tool";
 		};
-		80FF01D1141C3D980059E59D /* PlayRho */ = {
+		80FF01D1141C3D980059E59D /* Library */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 80FF01D6141C3D980059E59D /* Build configuration list for PBXNativeTarget "PlayRho" */;
+			buildConfigurationList = 80FF01D6141C3D980059E59D /* Build configuration list for PBXNativeTarget "Library" */;
 			buildPhases = (
 				80FF01CE141C3D980059E59D /* Sources */,
 				80FF01CF141C3D980059E59D /* Frameworks */,
@@ -1729,7 +1809,7 @@
 			);
 			dependencies = (
 			);
-			name = PlayRho;
+			name = Library;
 			productName = PlayRho;
 			productReference = 80FF01D2141C3D980059E59D /* libPlayRho.a */;
 			productType = "com.apple.product-type.library.static";
@@ -1764,7 +1844,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				80FF01D1141C3D980059E59D /* PlayRho */,
+				80FF01D1141C3D980059E59D /* Library */,
 				80BB8909141C3E2600F1753A /* HelloWorld */,
 				80BB8917141C3E3600F1753A /* Testbed */,
 				474BC41F1D413D5200447DCD /* UnitTests */,
@@ -2067,22 +2147,22 @@
 /* Begin PBXTargetDependency section */
 		474BC4281D413D6300447DCD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 80FF01D1141C3D980059E59D /* PlayRho */;
+			target = 80FF01D1141C3D980059E59D /* Library */;
 			targetProxy = 474BC4271D413D6300447DCD /* PBXContainerItemProxy */;
 		};
 		475CE16B1F253CD900456470 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 80FF01D1141C3D980059E59D /* PlayRho */;
+			target = 80FF01D1141C3D980059E59D /* Library */;
 			targetProxy = 475CE16A1F253CD900456470 /* PBXContainerItemProxy */;
 		};
 		80BB8A70141C3EA100F1753A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 80FF01D1141C3D980059E59D /* PlayRho */;
+			target = 80FF01D1141C3D980059E59D /* Library */;
 			targetProxy = 80BB8A6F141C3EA100F1753A /* PBXContainerItemProxy */;
 		};
 		80BB8A72141C3EA800F1753A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 80FF01D1141C3D980059E59D /* PlayRho */;
+			target = 80FF01D1141C3D980059E59D /* Library */;
 			targetProxy = 80BB8A71141C3EA800F1753A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -2097,7 +2177,7 @@
 					/usr/local/boost_1_75_0,
 					/usr/local/include,
 					/opt/homebrew/opt/googletest/include,
-					../..,
+					../../Library/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/Cellar/llvm/12.0.0_1/Toolchains/LLVM12.0.0.xctoolchain/usr/lib,
@@ -2118,7 +2198,7 @@
 					/usr/local/boost_1_75_0,
 					/usr/local/include,
 					/opt/homebrew/opt/googletest/include,
-					../..,
+					../../Library/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/lib,
@@ -2138,7 +2218,7 @@
 					"/opt/homebrew/opt/google-benchmark/include",
 					/usr/local/include,
 					/usr/local/boost_1_75_0,
-					../..,
+					../../Library/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"/opt/homebrew/opt/google-benchmark/lib",
@@ -2162,7 +2242,7 @@
 					"/opt/homebrew/opt/google-benchmark/include",
 					/usr/local/include,
 					/usr/local/boost_1_75_0,
-					../..,
+					../../Library/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"/opt/homebrew/opt/google-benchmark/lib",
@@ -2182,9 +2262,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
+					../../Library/include,
 					/opt/homebrew/opt/boost/include,
 					/usr/local/boost_1_75_0,
-					../..,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -2194,9 +2274,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
+					../../Library/include,
 					/opt/homebrew/opt/boost/include,
 					/usr/local/boost_1_75_0,
-					../..,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -2209,7 +2289,7 @@
 				HEADER_SEARCH_PATHS = (
 					../../Testbed/Framework/imgui,
 					../../Testbed/Framework/imgui/examples/libs/gl3w/,
-					../..,
+					../../Library/include,
 					/opt/homebrew/opt/boost/include,
 					/usr/local/include,
 					/usr/local/boost_1_75_0,
@@ -2237,7 +2317,7 @@
 				HEADER_SEARCH_PATHS = (
 					../../Testbed/Framework/imgui,
 					../../Testbed/Framework/imgui/examples/libs/gl3w/,
-					../..,
+					../../Library/include,
 					/opt/homebrew/opt/boost/include,
 					/usr/local/include,
 					/usr/local/boost_1_75_0,
@@ -2320,8 +2400,8 @@
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
+					../../Library/include,
 					/usr/local/boost_1_75_0,
-					../..,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_GENERATE_MAP_FILE = YES;
@@ -2396,8 +2476,8 @@
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
+					../../Library/include,
 					/usr/local/boost_1_75_0,
-					../..,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_GENERATE_MAP_FILE = YES;
@@ -2425,12 +2505,12 @@
 					"$(inherited)",
 				);
 				HEADER_SEARCH_PATHS = (
+					../../Library/include,
 					/opt/homebrew/opt/boost/include,
 					/usr/local/boost_1_75_0,
-					../..,
 				);
 				OTHER_CPLUSPLUSFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = PlayRho;
 				STRIP_INSTALLED_PRODUCT = NO;
 				WARNING_CFLAGS = (
 					"-Wall",
@@ -2452,12 +2532,12 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				HEADER_SEARCH_PATHS = (
+					../../Library/include,
 					/opt/homebrew/opt/boost/include,
 					/usr/local/boost_1_75_0,
-					../..,
 				);
 				OTHER_CPLUSPLUSFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = PlayRho;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -2515,7 +2595,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		80FF01D6141C3D980059E59D /* Build configuration list for PBXNativeTarget "PlayRho" */ = {
+		80FF01D6141C3D980059E59D /* Build configuration list for PBXNativeTarget "Library" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				80FF01D7141C3D980059E59D /* Debug */,
