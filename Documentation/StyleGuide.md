@@ -128,7 +128,7 @@ constexpr Acceleration Subtract(const Acceleration& lhs, const Acceleration& rhs
 Here are some links to available tools to help with formatting. Unfortunately they don't seem perfectly up to the job by themselves so it's still necessary to be aware of these guidelines:
 
 - [`.editorconfig`](../.editorconfig): Configuration file for [EditorConfig](http://editorconfig.org).
-- [`.clang-format`](../.clang-format): Configuration file for [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html). From a POSIX shell, ClangFormat can be run as: `clang-format -i PlayRho/**/*.cpp PlayRho/**/*.hpp`.
+- [`.clang-format`](../.clang-format): Configuration file for [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html). From a POSIX shell, ClangFormat can be run as: `clang-format -i Library/source/PlayRho/**/*.cpp Library/include/PlayRho/**/*.hpp`.
 
 ## Naming
 

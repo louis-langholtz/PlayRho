@@ -40,11 +40,11 @@ as API (Application Programming Interface) changes, Testbed changes, and other c
   [Documentation/PhysicalUnits.md](Documentation/PhysicalUnits.md).
 - Added compile-time support for `double` and `long double` floating-point types (in addition to `float`), and 32-bit and 64-bit fixed-point types.
 - Fully per-step run-time configurable (via
-  [`StepConf`](PlayRho/Dynamics/StepConf.hpp)).
+  [`StepConf`](Library/include/PlayRho/Dynamics/StepConf.hpp)).
 - In-depth per-step return value statistics (via
-  [`StepStats`](PlayRho/Dynamics/StepStats.hpp)).
+  [`StepStats`](Library/include/PlayRho/Dynamics/StepStats.hpp)).
 - Increased construction-time configurability of world instances (via
-  [`WorldConf`](PlayRho/Dynamics/WorldConf.hpp)).
+  [`WorldConf`](Library/include/PlayRho/Dynamics/WorldConf.hpp)).
 - Refactored numerous methods to be
   [non-member non-friend functions](http://www.drdobbs.com/cpp/how-non-member-functions-improve-encapsu/184401197).
 - Refactored various functions and procedures to be
