@@ -928,13 +928,13 @@ constexpr Real StripUnit(const Real value)
 /// @note This constant is only appropriate for use for objects of low mass and close
 ///   distance relative to the Earth.
 /// @see https://en.wikipedia.org/wiki/Gravity_of_Earth
-constexpr auto EarthlyLinearAcceleration = Real{-9.8f} * MeterPerSquareSecond;
+constexpr auto EarthlyLinearAcceleration = static_cast<Real>(-9.8f) * MeterPerSquareSecond;
 
 /// @brief Big "G".
 /// @details Gravitational constant used in calculating the attractive force on a mass
 ///   to another mass at a given distance due to gravity.
 /// @see https://en.wikipedia.org/wiki/Gravitational_constant
-constexpr auto BigG = Real{6.67408e-11f} * CubicMeter / (Kilogram * SquareSecond);
+constexpr auto BigG = static_cast<Real>(6.67408e-11f) * CubicMeter / (Kilogram * SquareSecond);
 
 /// @}
 

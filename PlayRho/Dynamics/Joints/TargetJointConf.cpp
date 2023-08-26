@@ -127,7 +127,7 @@ void InitVelocity(TargetJointConf& object, const Span<BodyConstraint>& bodies,
     assert(IsValid(object.C));
 
     // Cheat with some damping
-    static constexpr auto DampingAmount = 0.98f;
+    static constexpr auto DampingAmount = static_cast<Real>(0.98f);
     velB.angular *= DampingAmount;
 
     if (step.doWarmStart) {

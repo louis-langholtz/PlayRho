@@ -54,7 +54,7 @@ struct TargetJointConf : public JointBuilder<TargetJointConf> {
     static constexpr auto DefaultFrequency = NonNegative<Frequency>(5_Hz);
 
     /// @brief Default damping ratio.
-    static constexpr auto DefaultDampingRatio = NonNegative<Real>(0.7f);
+    static constexpr auto DefaultDampingRatio = NonNegative<Real>(static_cast<Real>(0.7f));
 
     /// @brief Default constructor.
     constexpr TargetJointConf() noexcept = default;

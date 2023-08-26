@@ -1591,8 +1591,8 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
         
         EXPECT_EQ(GetX(GetLocation(world, body)), GetX(def.location));
         EXPECT_GT(GetY(GetLocation(world, body)), GetY(pos));
-        EXPECT_FLOAT_EQ(Real(GetY(GetLocation(world, body)) / 1_m),
-                        Real((GetY(pos) + ((GetY(vel) + GetY(EarthlyGravity) * time_inc) * time_inc)) / 1_m));
+        EXPECT_FLOAT_EQ(static_cast<float>(Real(GetY(GetLocation(world, body)) / 1_m)),
+                        static_cast<float>(Real((GetY(pos) + ((GetY(vel) + GetY(EarthlyGravity) * time_inc) * time_inc)) / 1_m)));
         pos = GetLocation(world, body);
         
         EXPECT_EQ(GetX(GetLinearVelocity(world, body)), 0_mps);
