@@ -2435,6 +2435,8 @@
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
+					"-Wshadow",
+					"-Wdouble-promotion",
 				);
 			};
 			name = Debug;
@@ -2459,6 +2461,8 @@
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
+					"-Wshadow",
+					"-Wdouble-promotion",
 				);
 			};
 			name = Release;

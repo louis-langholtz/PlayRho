@@ -62,8 +62,8 @@ struct RopeJointConf : public JointBuilder<RopeJointConf> {
     constexpr RopeJointConf() noexcept = default;
 
     /// @brief Initializing constructor.
-    constexpr RopeJointConf(BodyID bodyA, BodyID bodyB) noexcept
-        : super{super{}.UseBodyA(bodyA).UseBodyB(bodyB)}
+    constexpr RopeJointConf(BodyID bA, BodyID bB) noexcept
+        : super{super{}.UseBodyA(bA).UseBodyB(bB)}
     {
         // Intentionally empty.
     }

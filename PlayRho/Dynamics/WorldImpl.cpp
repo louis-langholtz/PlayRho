@@ -2029,13 +2029,13 @@ StepStats WorldImpl::Step(const StepConf& conf)
         }
         m_fixturesForProxies = {};
 
-        stepStats.pre.proxiesMoved = [this](const StepConf& conf){
+        stepStats.pre.proxiesMoved = [this](const StepConf& cfg){
             auto proxiesMoved = PreStepStats::counter_type{0};
-            for_each(begin(m_bodiesForSync), end(m_bodiesForSync), [this,&conf,&proxiesMoved](const auto& bodyID) {
+            for_each(begin(m_bodiesForSync), end(m_bodiesForSync), [this,&cfg,&proxiesMoved](const auto& bodyID) {
                 const auto xfm = GetTransformation(m_bodyBuffer[to_underlying(bodyID)]);
                 // Not always true: assert(GetTransform0(b->GetSweep()) == xfm);
                 proxiesMoved += Synchronize(m_bodyProxies[to_underlying(bodyID)], xfm, xfm,
-                                            conf.displaceMultiplier, conf.aabbExtension);
+                                            cfg.displaceMultiplier, cfg.aabbExtension);
             });
             return proxiesMoved;
         }(conf);

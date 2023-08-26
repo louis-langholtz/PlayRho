@@ -88,7 +88,7 @@ endif()
 # For GNU, see https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
 target_compile_options(PlayRho PRIVATE
 	$<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
-	$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Wundef -Wcast-align -Wconversion -Werror>
+	$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Wundef -Wcast-align -Wconversion -Wshadow -Wdouble-promotion -Werror>
 )
 
 # These are used to create visual studio folders.
