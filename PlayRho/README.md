@@ -3,9 +3,7 @@
 This component is the base required component for the project.
 None of the other components are necessary if you only want to build and install the library.
 
-If you want to build any other components:
-1. Ensure you have the following prerequisites installed.
-2. See the other component folders README.md files.
+If you want to build any other components, see the other component folders' README.md files.
 
 ## Prerequisites
 
