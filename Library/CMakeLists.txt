@@ -28,8 +28,6 @@ file(GLOB PLAYRHO_Collision_SRCS "${PLAYRHO_SOURCE_PREFIX}Collision/*.cpp")
 file(GLOB PLAYRHO_Collision_HDRS "${PLAYRHO_INCLUDE_PREFIX}Collision/*.hpp")
 file(GLOB PLAYRHO_Shapes_SRCS "${PLAYRHO_SOURCE_PREFIX}Collision/Shapes/*.cpp")
 file(GLOB PLAYRHO_Shapes_HDRS "${PLAYRHO_INCLUDE_PREFIX}Collision/Shapes/*.hpp")
-file(GLOB PLAYRHO_Dynamics_SRCS "${PLAYRHO_SOURCE_PREFIX}Dynamics/*.cpp")
-file(GLOB PLAYRHO_Dynamics_HDRS "${PLAYRHO_INCLUDE_PREFIX}Dynamics/*.hpp")
 file(GLOB PLAYRHO_General_SRCS "${PLAYRHO_SOURCE_PREFIX}*.cpp")
 file(GLOB PLAYRHO_General_HDRS "${PLAYRHO_INCLUDE_PREFIX}*.hpp")
 
@@ -138,7 +136,6 @@ set(PLAYRHO_D2_SRCS
 
 set(libsrc
 	${PLAYRHO_General_SRCS}
-	${PLAYRHO_Dynamics_SRCS}
 	${PLAYRHO_Shapes_SRCS}
 	${PLAYRHO_Collision_SRCS}
 	${PLAYRHO_PMR_SRCS}
@@ -191,7 +188,6 @@ source_group(Include FILES ${PLAYRHO_General_HDRS} ${PLAYRHO_GeneralCfg_HDRS})
 source_group(General FILES ${PLAYRHO_General_SRCS} ${PLAYRHO_GeneralCfg_HDRS} ${PLAYRHO_General_HDRS})
 source_group(Collision FILES ${PLAYRHO_Collision_SRCS} ${PLAYRHO_Collision_HDRS})
 source_group(Collision\\Shapes FILES ${PLAYRHO_Shapes_SRCS} ${PLAYRHO_Shapes_HDRS})
-source_group(Dynamics FILES ${PLAYRHO_Dynamics_SRCS} ${PLAYRHO_Dynamics_HDRS})
 
 if(PLAYRHO_INSTALL)
 	include(GNUInstallDirs)
@@ -212,9 +208,6 @@ if(PLAYRHO_INSTALL)
 		COMPONENT Library)
 	install(FILES ${PLAYRHO_Shapes_HDRS}
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Collision/Shapes
-		COMPONENT Library)
-	install(FILES ${PLAYRHO_Dynamics_HDRS}
-		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Dynamics
 		COMPONENT Library)
 	install(FILES ${PLAYRHO_PMR_HDRS}
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/pmr

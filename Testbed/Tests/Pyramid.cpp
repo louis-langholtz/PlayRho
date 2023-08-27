@@ -31,7 +31,7 @@ public:
 
     Pyramid()
     {
-        using namespace playrho::part;
+        using namespace playrho::d2::part;
         auto ground = Body{};
         ground.Attach(CreateShape(
             GetWorld(), EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));

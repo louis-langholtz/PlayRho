@@ -405,7 +405,7 @@ TEST(Shape, ForMutableDataTypeCastIsLikeAnyCast)
 
 TEST(Shape, types)
 {
-    using namespace playrho::part;
+    using namespace playrho::d2::part;
 
     EXPECT_EQ(GetTypeID<DiskShapeConf>(), GetTypeID<DiskShapeConf>());
 
@@ -567,7 +567,7 @@ TEST(Shape, EmptyShapeSetVertexRadiusIsNoop)
 
 TEST(Shape, DynamicRectangleSmallerThanPolygon)
 {
-    using namespace playrho::part;
+    using namespace playrho::d2::part;
     switch (sizeof(Real))
     {
 #if defined(_WIN64) || !defined(_WIN32)
