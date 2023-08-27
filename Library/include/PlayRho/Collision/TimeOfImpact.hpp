@@ -22,8 +22,8 @@
 #ifndef PLAYRHO_COLLISION_TIMEOFIMPACT_HPP
 #define PLAYRHO_COLLISION_TIMEOFIMPACT_HPP
 
-#include <PlayRho/Collision/ToiConf.hpp>
-#include <PlayRho/Collision/ToiOutput.hpp>
+#include <PlayRho/ToiConf.hpp>
+#include <PlayRho/ToiOutput.hpp>
 
 namespace playrho::d2 {
 

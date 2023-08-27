@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/ToiOutput.hpp>
+#include <PlayRho/ToiOutput.hpp>
 
 #include <cassert>
 
