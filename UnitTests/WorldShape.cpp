@@ -160,7 +160,7 @@ TEST(WorldShape, TranslateStaticRectangle)
 {
     World world;
     const auto location0 = Length2{+0.5_m, -0.5_m};
-    const auto shapeId = CreateShape(world, ::playrho::part::Compositor<>{});
+    const auto shapeId = CreateShape(world, ::playrho::d2::part::Compositor<>{});
     ASSERT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0);
     auto value = Length2{0_m, 0_m};
     EXPECT_NO_THROW(Translate(world, shapeId, value));
@@ -172,7 +172,7 @@ TEST(WorldShape, TranslateStaticRectangle)
 
 TEST(WorldShape, TranslateDynamicRectangle)
 {
-    using namespace ::playrho::part;
+    using namespace ::playrho::d2::part;
     World world;
     const auto location0 = Length2{+0.5_m, -0.5_m};
     const auto shapeId = CreateShape(world, Compositor<GeometryIs<DynamicRectangle<>>>{});

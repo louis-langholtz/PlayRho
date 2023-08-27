@@ -93,7 +93,7 @@ For a more elaborate example, that's of an entire application, see
 /// @namespace playrho::d2
 /// Name space for 2-dimensionally related PlayRho names.
 
-/// @namespace playrho::part
+/// @namespace playrho::d2::part
 /// Name space for parts attached to bodies and support for those parts.
 
 /// @namespace playrho::detail

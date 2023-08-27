@@ -39,9 +39,9 @@ namespace d2 {
 /// @note The interior of the polygon geometry is to the left of each edge. The maximum number of
 /// vertices this can have is defined by <code>MaxShapeVertices</code>. If all you want is a
 /// rectangular part (that will only ever have 4-vertices) you may want to consider using a
-/// rectangular <code>::playrho::part::Compositor</code> instead.
+/// rectangular <code>::playrho::d2::part::Compositor</code> instead.
 /// @image html convex_concave.gif
-/// @see Shape, ::playrho::part::Compositor.
+/// @see Shape, ::playrho::d2::part::Compositor.
 /// @ingroup PartsGroup
 class PolygonShapeConf : public ShapeBuilder<PolygonShapeConf>
 {

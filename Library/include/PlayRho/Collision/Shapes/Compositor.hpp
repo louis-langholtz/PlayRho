@@ -35,7 +35,7 @@
 
 #include <array>
 
-namespace playrho::part {
+namespace playrho::d2::part {
 
 /// @brief "Discriminator" for named template arguments.
 /// @note "[This allows] the various setter types to be identical. (You cannot have multiple direct
@@ -554,7 +554,7 @@ struct DefaultPolicyArgs : virtual DefaultPolicies {
 
 /// @example Compositor.cpp
 /// This is the <code>googletest</code> based unit testing file for uses of the
-///   <code>playrho::part::Compositor</code> class template.
+///   <code>playrho::d2::part::Compositor</code> class template.
 
 /// @brief A class template for compositing shaped part types eligible for use with classes like
 /// the <code>::playrho::d2::Shape</code> class.
@@ -891,6 +891,6 @@ bool operator!=(const Compositor<P11, P12, P13, P14, P15, P16>& lhs,
     return !(lhs == rhs);
 }
 
-} // namespace playrho::part
+} // namespace playrho::d2::part
 
 #endif // PLAYRHO_COLLISION_SHAPES_RECTANGLE_HPP

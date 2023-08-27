@@ -24,7 +24,7 @@
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
 using namespace playrho;
-using namespace playrho::part;
+using namespace playrho::d2::part;
 
 TEST(Compositor, ByteSize)
 {
@@ -122,7 +122,7 @@ TEST(Compositor, ByteSize)
     }
 }
 
-namespace playrho::part {
+namespace playrho::d2::part {
 
 /// @brief A 2-dimensional void geometry policy for testing <code>Compositor</code>.
 struct Void2 {
@@ -146,7 +146,7 @@ struct Void2 {
 
 static_assert(playrho::d2::IsValidShapeType<Compositor<GeometryIs<Void2>>>::value);
 
-} // namespace playrho::part
+} // namespace playrho::d2::part
 
 TEST(Compositor, IsValidShapeType)
 {
