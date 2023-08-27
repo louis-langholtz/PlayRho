@@ -22,9 +22,9 @@
 #ifndef PLAYRHO_DYNAMICS_JOINTS_REVOLUTEJOINTCONF_HPP
 #define PLAYRHO_DYNAMICS_JOINTS_REVOLUTEJOINTCONF_HPP
 
-#include <PlayRho/Dynamics/Joints/JointConf.hpp>
+#include <PlayRho/d2/JointConf.hpp>
 #include <PlayRho/Math.hpp>
-#include <PlayRho/Dynamics/Joints/LimitState.hpp>
+#include <PlayRho/d2/LimitState.hpp>
 #include <PlayRho/Span.hpp>
 
 namespace playrho {

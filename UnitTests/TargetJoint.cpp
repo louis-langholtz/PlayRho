@@ -20,8 +20,8 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/d2/TargetJointConf.hpp>
+#include <PlayRho/d2/Joint.hpp>
 
 #include <PlayRho/ConstraintSolverConf.hpp>
 #include <PlayRho/d2/BodyConstraint.hpp>

@@ -41,9 +41,9 @@
 #include <PlayRho/Math.hpp>
 
 #include <PlayRho/BodyID.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/d2/Joint.hpp>
 #include <PlayRho/JointID.hpp>
-#include <PlayRho/Dynamics/Joints/LimitState.hpp>
+#include <PlayRho/d2/LimitState.hpp>
 
 #include <vector>
 

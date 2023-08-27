@@ -19,10 +19,10 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
+#include <PlayRho/d2/DistanceJointConf.hpp>
 
 #include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/d2/Joint.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/d2/BodyConstraint.hpp>
 #include <PlayRho/ConstraintSolverConf.hpp>

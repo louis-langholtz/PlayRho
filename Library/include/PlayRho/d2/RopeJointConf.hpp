@@ -22,10 +22,10 @@
 #ifndef PLAYRHO_DYNAMICS_JOINTS_ROPEJOINTCONF_HPP
 #define PLAYRHO_DYNAMICS_JOINTS_ROPEJOINTCONF_HPP
 
-#include <PlayRho/Dynamics/Joints/JointConf.hpp>
+#include <PlayRho/d2/JointConf.hpp>
 #include <PlayRho/Math.hpp>
 #include <PlayRho/Span.hpp>
-#include <PlayRho/Dynamics/Joints/LimitState.hpp>
+#include <PlayRho/d2/LimitState.hpp>
 
 namespace playrho {
 

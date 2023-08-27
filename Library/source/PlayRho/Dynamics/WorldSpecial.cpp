@@ -23,7 +23,7 @@
 
 #include <PlayRho/Dynamics/Body.hpp> // for completing WorldImpl type
 #include <PlayRho/Contact.hpp> // for completing WorldImpl type
-#include <PlayRho/Dynamics/Joints/Joint.hpp> // for completing WorldImpl type
+#include <PlayRho/d2/Joint.hpp> // for completing WorldImpl type
 #include <PlayRho/Dynamics/WorldImpl.hpp> // for completing WorldImpl type
 #include <PlayRho/Dynamics/WorldImplMisc.hpp>
 

@@ -64,8 +64,8 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/d2/ContactSolver.hpp>
 #include <PlayRho/d2/VelocityConstraint.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
+#include <PlayRho/d2/Joint.hpp>
+#include <PlayRho/d2/RevoluteJointConf.hpp>
 
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Collision/Distance.hpp>

@@ -22,7 +22,7 @@
 #ifndef PLAYRHO_DYNAMICS_JOINTS_MOTORJOINTCONF_HPP
 #define PLAYRHO_DYNAMICS_JOINTS_MOTORJOINTCONF_HPP
 
-#include <PlayRho/Dynamics/Joints/JointConf.hpp>
+#include <PlayRho/d2/JointConf.hpp>
 #include <PlayRho/NonNegative.hpp>
 #include <PlayRho/Math.hpp>
 #include <PlayRho/Span.hpp>

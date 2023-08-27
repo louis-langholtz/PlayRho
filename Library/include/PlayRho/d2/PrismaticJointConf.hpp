@@ -22,8 +22,8 @@
 #ifndef PLAYRHO_DYNAMICS_JOINTS_PRISMATICJOINTCONF_HPP
 #define PLAYRHO_DYNAMICS_JOINTS_PRISMATICJOINTCONF_HPP
 
-#include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Dynamics/Joints/LimitState.hpp>
+#include <PlayRho/d2/JointConf.hpp>
+#include <PlayRho/d2/LimitState.hpp>
 #include <PlayRho/Math.hpp>
 #include <PlayRho/Span.hpp>
 

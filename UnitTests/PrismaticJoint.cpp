@@ -20,9 +20,9 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
+#include <PlayRho/d2/PrismaticJointConf.hpp>
 
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/d2/Joint.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
