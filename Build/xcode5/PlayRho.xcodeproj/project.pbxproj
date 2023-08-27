@@ -1230,6 +1230,41 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		9901AEF32A9BCEB90075122D /* pmr */ = {
+			isa = PBXGroup;
+			children = (
+				996B7B802A6DF1A400A8207F /* MemoryResource.hpp */,
+				996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */,
+				998A7C042A80404600F29B01 /* StatsResource.hpp */,
+				996B7B812A6DF1A400A8207F /* ThreadLocalAllocator.hpp */,
+			);
+			path = pmr;
+			sourceTree = "<group>";
+		};
+		9901AEF42A9BCEB90075122D /* d2 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = d2;
+			sourceTree = "<group>";
+		};
+		9901AEF52A9BCECD0075122D /* pmr */ = {
+			isa = PBXGroup;
+			children = (
+				996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */,
+				996B7B822A6DF1A500A8207F /* PoolMemoryResource.cpp */,
+				998A7C032A80404600F29B01 /* StatsResource.cpp */,
+			);
+			path = pmr;
+			sourceTree = "<group>";
+		};
+		9901AEF62A9BCECD0075122D /* d2 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = d2;
+			sourceTree = "<group>";
+		};
 		996BDA752A98532F00CD2D55 /* include */ = {
 			isa = PBXGroup;
 			children = (
@@ -1241,6 +1276,8 @@
 		996BDA762A98532F00CD2D55 /* PlayRho */ = {
 			isa = PBXGroup;
 			children = (
+				9901AEF42A9BCEB90075122D /* d2 */,
+				9901AEF32A9BCEB90075122D /* pmr */,
 				996BDA7C2A9855E400CD2D55 /* Collision */,
 				996BDA7B2A9855E400CD2D55 /* Common */,
 				47327E7D1EA585790048FCD8 /* Defines.hpp */,
@@ -1262,6 +1299,8 @@
 		996BDA792A98535400CD2D55 /* PlayRho */ = {
 			isa = PBXGroup;
 			children = (
+				9901AEF62A9BCECD0075122D /* d2 */,
+				9901AEF52A9BCECD0075122D /* pmr */,
 				996BDA7E2A98561A00CD2D55 /* Collision */,
 				996BDA7F2A98561A00CD2D55 /* Common */,
 				996BDA802A98561A00CD2D55 /* Dynamics */,
@@ -1291,13 +1330,11 @@
 				4787D6E91F2FA0CA008C115E /* LengthError.hpp */,
 				471E7EA81F32668E00DFF626 /* Matrix.hpp */,
 				80BB8945141C3E5900F1753A /* Math.hpp */,
-				996B7B802A6DF1A400A8207F /* MemoryResource.hpp */,
 				4764085C250484820090F711 /* Negative.hpp */,
 				4764085025042BD00090F711 /* NonNegative.hpp */,
 				4764085825047FA10090F711 /* NonPositive.hpp */,
 				47640854250475860090F711 /* NonZero.hpp */,
 				4764086E250EA5DE0090F711 /* ObjectPool.hpp */,
-				996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */,
 				470F9B0F1EDF2890007EF7B6 /* Position.hpp */,
 				4764085A2504822F0090F711 /* Positive.hpp */,
 				4764085E2507FBFF0090F711 /* propagate_const.hpp */,
@@ -1307,10 +1344,8 @@
 				80BB8947141C3E5900F1753A /* Settings.hpp */,
 				4734B21E1DC1340500F15E29 /* Span.hpp */,
 				80BB8949141C3E5900F1753A /* StackAllocator.hpp */,
-				998A7C042A80404600F29B01 /* StatsResource.hpp */,
 				470F9B1B1EDF2B8A007EF7B6 /* Sweep.hpp */,
 				47C85D1E1F0DA14500F70C56 /* Templates.hpp */,
-				996B7B812A6DF1A400A8207F /* ThreadLocalAllocator.hpp */,
 				470F9B151EDF2959007EF7B6 /* Transformation.hpp */,
 				4706451A252CE27B006E69AA /* TypeInfo.hpp */,
 				4764085225045B3C0090F711 /* UnitInterval.hpp */,
@@ -1426,11 +1461,8 @@
 				476162C61E245C9D002C7FB0 /* CodeDumper.cpp */,
 				47B58F531F570E2C00354C34 /* DynamicMemory.cpp */,
 				80BB8944141C3E5900F1753A /* Math.cpp */,
-				996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */,
-				996B7B822A6DF1A500A8207F /* PoolMemoryResource.cpp */,
 				80BB8948141C3E5900F1753A /* StackAllocator.cpp */,
 				479DEBAC268155E50070497D /* Sweep.cpp */,
-				998A7C032A80404600F29B01 /* StatsResource.cpp */,
 				476E8ABD1FC8CD9F00705BB5 /* UnitVec.cpp */,
 				47363E8820029DFD005912B1 /* Velocity.cpp */,
 				47B58F571F57218400354C34 /* Version.cpp */,

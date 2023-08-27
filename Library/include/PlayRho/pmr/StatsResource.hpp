@@ -21,7 +21,7 @@
 #ifndef PLAYRHO_COMMON_STATS_RESOURCE_HPP
 #define PLAYRHO_COMMON_STATS_RESOURCE_HPP
 
-#include <PlayRho/Common/MemoryResource.hpp>
+#include <PlayRho/pmr/MemoryResource.hpp>
 
 namespace playrho::pmr {
 

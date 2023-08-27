@@ -27,7 +27,7 @@
 
 #include <PlayRho/Common/Interval.hpp>
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/PoolMemoryResource.hpp>
+#include <PlayRho/pmr/PoolMemoryResource.hpp>
 #include <PlayRho/Common/Positive.hpp>
 #include <PlayRho/Common/ObjectPool.hpp>
 
