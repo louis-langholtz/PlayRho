@@ -29,7 +29,7 @@
 #include <PlayRho/d2/WorldShape.hpp>
 #include <PlayRho/StepConf.hpp>
 #include <PlayRho/d2/BodyConf.hpp>
-#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+#include <PlayRho/d2/DiskShapeConf.hpp>
 #include <PlayRho/d2/BodyConstraint.hpp>
 #include <PlayRho/ConstraintSolverConf.hpp>
 

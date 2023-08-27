@@ -23,7 +23,7 @@
 #include <PlayRho/Collision/WorldManifold.hpp>
 
 #include <PlayRho/Collision/Manifold.hpp>
-#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+#include <PlayRho/d2/DiskShapeConf.hpp>
 
 #include <PlayRho/Contact.hpp>
 #include <PlayRho/d2/World.hpp>

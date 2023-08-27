@@ -112,12 +112,12 @@ For a more elaborate example, that's of an entire application, see
 #include <PlayRho/d2/WorldContact.hpp>
 
 // For any and all shape configurations, add one or more of the following.
-#include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/MultiShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/Compositor.hpp>
+#include <PlayRho/d2/ChainShapeConf.hpp>
+#include <PlayRho/d2/DiskShapeConf.hpp>
+#include <PlayRho/d2/EdgeShapeConf.hpp>
+#include <PlayRho/d2/MultiShapeConf.hpp>
+#include <PlayRho/d2/PolygonShapeConf.hpp>
+#include <PlayRho/d2/Compositor.hpp>
 
 // For any and all joint configurations, add one or more of the following.
 #include <PlayRho/d2/DistanceJointConf.hpp>

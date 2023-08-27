@@ -52,7 +52,7 @@
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
-#include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/d2/Shape.hpp>
 
 #include <PlayRho/LengthError.hpp>
 #include <PlayRho/DynamicMemory.hpp>

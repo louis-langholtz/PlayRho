@@ -28,8 +28,8 @@
 #include <PlayRho/d2/WorldShape.hpp>
 #include <PlayRho/StepConf.hpp>
 #include <PlayRho/d2/Joint.hpp>
-#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
+#include <PlayRho/d2/DiskShapeConf.hpp>
+#include <PlayRho/d2/PolygonShapeConf.hpp>
 
 #include <chrono>
 

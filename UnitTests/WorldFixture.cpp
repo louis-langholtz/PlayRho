@@ -26,8 +26,8 @@
 #include <PlayRho/d2/WorldMisc.hpp>
 #include <PlayRho/d2/WorldShape.hpp>
 
-#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
+#include <PlayRho/d2/DiskShapeConf.hpp>
+#include <PlayRho/d2/ChainShapeConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

@@ -19,9 +19,9 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
+#include <PlayRho/d2/EdgeShapeConf.hpp>
 
-#include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/d2/Shape.hpp>
 
 namespace playrho {
 namespace d2 {

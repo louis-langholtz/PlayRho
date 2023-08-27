@@ -20,9 +20,9 @@
 
 #include "UnitTests.hpp"
 #include <PlayRho/Collision/MassData.hpp>
-#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
+#include <PlayRho/d2/DiskShapeConf.hpp>
+#include <PlayRho/d2/PolygonShapeConf.hpp>
+#include <PlayRho/d2/EdgeShapeConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

@@ -31,7 +31,7 @@
 
 #include <PlayRho/Contact.hpp>
 
-#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+#include <PlayRho/d2/DiskShapeConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

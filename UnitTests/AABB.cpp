@@ -25,7 +25,7 @@
 #include <PlayRho/Vector2.hpp>
 
 #include <PlayRho/Collision/DistanceProxy.hpp>
-#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+#include <PlayRho/d2/DiskShapeConf.hpp>
 
 #include <PlayRho/d2/World.hpp>
 #include <PlayRho/d2/WorldBody.hpp>

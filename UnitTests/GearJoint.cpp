@@ -35,7 +35,7 @@
 #include <PlayRho/StepConf.hpp>
 #include <PlayRho/d2/BodyConstraint.hpp>
 #include <PlayRho/ConstraintSolverConf.hpp>
-#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+#include <PlayRho/d2/DiskShapeConf.hpp>
 
 #include <type_traits>
 

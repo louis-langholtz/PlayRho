@@ -20,7 +20,7 @@
  */
 
 #include <PlayRho/Collision/DistanceProxy.hpp>
-#include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/d2/Shape.hpp>
 #include <algorithm>
 #include <iterator>
 
