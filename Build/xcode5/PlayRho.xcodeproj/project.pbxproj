@@ -1288,41 +1288,6 @@
 		996BDA762A98532F00CD2D55 /* PlayRho */ = {
 			isa = PBXGroup;
 			children = (
-				9901AEF42A9BCEB90075122D /* d2 */,
-				9901AEF32A9BCEB90075122D /* pmr */,
-				996BDA7C2A9855E400CD2D55 /* Collision */,
-				996BDA7B2A9855E400CD2D55 /* Common */,
-				47327E7D1EA585790048FCD8 /* Defines.hpp */,
-				470ADAB82555E05100EEE99D /* Defines.hpp.in */,
-				996BDA7D2A9855E400CD2D55 /* Dynamics */,
-				80BB8923141C3E5900F1753A /* PlayRho.hpp */,
-			);
-			path = PlayRho;
-			sourceTree = "<group>";
-		};
-		996BDA782A98535400CD2D55 /* source */ = {
-			isa = PBXGroup;
-			children = (
-				996BDA792A98535400CD2D55 /* PlayRho */,
-			);
-			path = source;
-			sourceTree = "<group>";
-		};
-		996BDA792A98535400CD2D55 /* PlayRho */ = {
-			isa = PBXGroup;
-			children = (
-				9901AEF62A9BCECD0075122D /* d2 */,
-				9901AEF52A9BCECD0075122D /* pmr */,
-				996BDA7E2A98561A00CD2D55 /* Collision */,
-				996BDA7F2A98561A00CD2D55 /* Common */,
-				996BDA802A98561A00CD2D55 /* Dynamics */,
-			);
-			path = PlayRho;
-			sourceTree = "<group>";
-		};
-		996BDA7B2A9855E400CD2D55 /* Common */ = {
-			isa = PBXGroup;
-			children = (
 				4734B2161DC00AFD00F15E29 /* ArrayList.hpp */,
 				80BB8940141C3E5900F1753A /* BlockAllocator.hpp */,
 				470463ED250305C900614373 /* CheckedValue.hpp */,
@@ -1363,8 +1328,39 @@
 				47B58F581F57218400354C34 /* Version.hpp */,
 				4768D3F21E3A7ACA00574143 /* Wider.hpp */,
 				47D28D9B1F6F28C70094C032 /* WrongState.hpp */,
+				9901AEF42A9BCEB90075122D /* d2 */,
+				9901AEF32A9BCEB90075122D /* pmr */,
+				996BDA7C2A9855E400CD2D55 /* Collision */,
+				47327E7D1EA585790048FCD8 /* Defines.hpp */,
+				470ADAB82555E05100EEE99D /* Defines.hpp.in */,
+				996BDA7D2A9855E400CD2D55 /* Dynamics */,
+				80BB8923141C3E5900F1753A /* PlayRho.hpp */,
 			);
-			path = Common;
+			path = PlayRho;
+			sourceTree = "<group>";
+		};
+		996BDA782A98535400CD2D55 /* source */ = {
+			isa = PBXGroup;
+			children = (
+				996BDA792A98535400CD2D55 /* PlayRho */,
+			);
+			path = source;
+			sourceTree = "<group>";
+		};
+		996BDA792A98535400CD2D55 /* PlayRho */ = {
+			isa = PBXGroup;
+			children = (
+				80BB893F141C3E5900F1753A /* BlockAllocator.cpp */,
+				47B58F531F570E2C00354C34 /* DynamicMemory.cpp */,
+				80BB8944141C3E5900F1753A /* Math.cpp */,
+				80BB8948141C3E5900F1753A /* StackAllocator.cpp */,
+				47B58F571F57218400354C34 /* Version.cpp */,
+				9901AEF62A9BCECD0075122D /* d2 */,
+				9901AEF52A9BCECD0075122D /* pmr */,
+				996BDA7E2A98561A00CD2D55 /* Collision */,
+				996BDA802A98561A00CD2D55 /* Dynamics */,
+			);
+			path = PlayRho;
 			sourceTree = "<group>";
 		};
 		996BDA7C2A9855E400CD2D55 /* Collision */ = {
@@ -1456,18 +1452,6 @@
 				47578BE31D886FED0078CD40 /* WorldManifold.cpp */,
 			);
 			path = Collision;
-			sourceTree = "<group>";
-		};
-		996BDA7F2A98561A00CD2D55 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				80BB893F141C3E5900F1753A /* BlockAllocator.cpp */,
-				47B58F531F570E2C00354C34 /* DynamicMemory.cpp */,
-				80BB8944141C3E5900F1753A /* Math.cpp */,
-				80BB8948141C3E5900F1753A /* StackAllocator.cpp */,
-				47B58F571F57218400354C34 /* Version.cpp */,
-			);
-			path = Common;
 			sourceTree = "<group>";
 		};
 		996BDA802A98561A00CD2D55 /* Dynamics */ = {

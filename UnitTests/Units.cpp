@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Common/Units.hpp>
+#include <PlayRho/Units.hpp>
 
 #include <limits> // for std::numeric_limits
 

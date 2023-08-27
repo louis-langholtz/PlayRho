@@ -21,7 +21,7 @@
 #include "UnitTests.hpp"
 
 #include <PlayRho/d2/UnitVec.hpp>
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Math.hpp>
 
 #include <iostream>
 #include <utility>

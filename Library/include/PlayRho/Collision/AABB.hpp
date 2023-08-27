@@ -24,10 +24,10 @@
 /// @file
 /// Declaration of the AABB class and free functions that return instances of it.
 
-#include <PlayRho/Common/Intervals.hpp> // for LengthInterval, IsIntersecting
-#include <PlayRho/Common/Vector.hpp>
-#include <PlayRho/Common/Settings.hpp> // for ChildCounter, etc.
-#include <PlayRho/Common/Templates.hpp>
+#include <PlayRho/Intervals.hpp> // for LengthInterval, IsIntersecting
+#include <PlayRho/Vector.hpp>
+#include <PlayRho/Settings.hpp> // for ChildCounter, etc.
+#include <PlayRho/Templates.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>
 

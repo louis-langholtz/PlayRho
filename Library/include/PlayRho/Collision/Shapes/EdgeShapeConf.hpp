@@ -22,7 +22,7 @@
 #ifndef PLAYRHO_COLLISION_SHAPES_EDGESHAPECONF_HPP
 #define PLAYRHO_COLLISION_SHAPES_EDGESHAPECONF_HPP
 
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Math.hpp>
 #include <PlayRho/Collision/Shapes/ShapeConf.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>

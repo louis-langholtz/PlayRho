@@ -23,8 +23,8 @@
 #define PLAYRHO_COMMON_SWEEP_HPP
 
 #include <PlayRho/d2/Position.hpp>
-#include <PlayRho/Common/Settings.hpp>
-#include <PlayRho/Common/Vector2.hpp>
+#include <PlayRho/Settings.hpp>
+#include <PlayRho/Vector2.hpp>
 
 namespace playrho {
 namespace d2 {

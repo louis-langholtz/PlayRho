@@ -23,9 +23,9 @@
 #define PLAYRHO_DYNAMICS_JOINTS_FRICTIONJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Common/NonNegative.hpp>
-#include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Span.hpp>
+#include <PlayRho/NonNegative.hpp>
+#include <PlayRho/Math.hpp>
+#include <PlayRho/Span.hpp>
 
 namespace playrho {
 

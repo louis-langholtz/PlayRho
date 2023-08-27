@@ -21,7 +21,7 @@
 #ifndef PLAYRHO_DYNAMICS_STEPSTATS_HPP
 #define PLAYRHO_DYNAMICS_STEPSTATS_HPP
 
-#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Settings.hpp>
 
 namespace playrho {
 

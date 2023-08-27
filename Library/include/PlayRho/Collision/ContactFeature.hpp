@@ -22,7 +22,7 @@
 #ifndef PLAYRHO_COLLISION_CONTACTFEATURE_HPP
 #define PLAYRHO_COLLISION_CONTACTFEATURE_HPP
 
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Math.hpp>
 #include <ostream>
 
 namespace playrho {

@@ -21,7 +21,7 @@
 #ifndef PLAYRHO_COLLISION_DISTANCE_CONF_HPP
 #define PLAYRHO_COLLISION_DISTANCE_CONF_HPP
 
-#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Settings.hpp>
 
 #include <PlayRho/Collision/Simplex.hpp>
 

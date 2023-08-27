@@ -22,9 +22,9 @@
 #ifndef PLAYRHO_COMMON_POSITION_HPP
 #define PLAYRHO_COMMON_POSITION_HPP
 
-#include <PlayRho/Common/Templates.hpp>
-#include <PlayRho/Common/Settings.hpp>
-#include <PlayRho/Common/Vector2.hpp>
+#include <PlayRho/Templates.hpp>
+#include <PlayRho/Settings.hpp>
+#include <PlayRho/Vector2.hpp>
 
 namespace playrho {
 namespace d2 {

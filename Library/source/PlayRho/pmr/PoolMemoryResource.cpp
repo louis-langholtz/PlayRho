@@ -23,8 +23,8 @@
 #include <sstream> // for std::ostringstream
 #include <utility> // for std::exchange
 
-#include <PlayRho/Common/DynamicMemory.hpp>
-#include <PlayRho/Common/Math.hpp> // for ToSigned
+#include <PlayRho/DynamicMemory.hpp>
+#include <PlayRho/Math.hpp> // for ToSigned
 #include <PlayRho/pmr/PoolMemoryResource.hpp>
 
 namespace playrho::pmr {

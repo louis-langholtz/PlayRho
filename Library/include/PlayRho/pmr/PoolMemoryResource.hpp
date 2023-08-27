@@ -28,7 +28,7 @@
 #include <utility> // for std::pair
 #include <vector>
 
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Math.hpp>
 #include <PlayRho/pmr/MemoryResource.hpp>
 
 namespace playrho::pmr {

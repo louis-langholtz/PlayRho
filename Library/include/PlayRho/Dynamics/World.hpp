@@ -25,8 +25,8 @@
 /// @file
 /// Declarations of the World class.
 
-#include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/propagate_const.hpp>
+#include <PlayRho/Math.hpp>
+#include <PlayRho/propagate_const.hpp>
 
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>

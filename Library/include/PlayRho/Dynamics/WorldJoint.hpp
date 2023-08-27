@@ -38,7 +38,7 @@
 /// @see World, JointID.
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Math.hpp>
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>

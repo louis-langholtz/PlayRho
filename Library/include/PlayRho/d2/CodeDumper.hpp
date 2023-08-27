@@ -24,7 +24,7 @@
 
 #ifdef CODE_DUMPER_IS_READY
 
-#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Settings.hpp>
 
 namespace playrho {
 namespace d2 {

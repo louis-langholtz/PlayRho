@@ -21,8 +21,8 @@
 #ifndef PLAYRHO_COMMON_VELOCITY_HPP
 #define PLAYRHO_COMMON_VELOCITY_HPP
 
-#include <PlayRho/Common/Settings.hpp>
-#include <PlayRho/Common/Vector2.hpp>
+#include <PlayRho/Settings.hpp>
+#include <PlayRho/Vector2.hpp>
 
 #include <utility>
 #include <vector>

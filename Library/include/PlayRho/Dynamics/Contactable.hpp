@@ -21,7 +21,7 @@
 #ifndef PLAYRHO_DYNAMICS_CONTACTABLE_HPP
 #define PLAYRHO_DYNAMICS_CONTACTABLE_HPP
 
-#include <PlayRho/Common/Settings.hpp> // for ChildCounter
+#include <PlayRho/Settings.hpp> // for ChildCounter
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 

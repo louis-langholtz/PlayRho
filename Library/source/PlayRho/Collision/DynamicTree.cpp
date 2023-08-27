@@ -20,10 +20,10 @@
  */
 
 #include <PlayRho/Collision/DynamicTree.hpp>
-#include <PlayRho/Common/GrowableStack.hpp>
-#include <PlayRho/Common/DynamicMemory.hpp>
-#include <PlayRho/Common/Math.hpp> // for NextPowerOfTwo and others
-#include <PlayRho/Common/Templates.hpp>
+#include <PlayRho/GrowableStack.hpp>
+#include <PlayRho/DynamicMemory.hpp>
+#include <PlayRho/Math.hpp> // for NextPowerOfTwo and others
+#include <PlayRho/Templates.hpp>
 
 #include <algorithm>
 #include <cstring>

@@ -24,9 +24,9 @@
 /// @file
 /// Declarations of the UnitVec class and free functions associated with it.
 
-#include <PlayRho/Common/Settings.hpp>
-#include <PlayRho/Common/Units.hpp>
-#include <PlayRho/Common/InvalidArgument.hpp>
+#include <PlayRho/Settings.hpp>
+#include <PlayRho/Units.hpp>
+#include <PlayRho/InvalidArgument.hpp>
 
 #include <cstdlib>
 #include <iostream>

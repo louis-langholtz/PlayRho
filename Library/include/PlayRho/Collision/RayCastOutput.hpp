@@ -25,7 +25,7 @@
 /// @file
 /// Declaration of the RayCastOutput structure and related free functions.
 
-#include <PlayRho/Common/UnitInterval.hpp>
+#include <PlayRho/UnitInterval.hpp>
 #include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Collision/RayCastOpcode.hpp>
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>

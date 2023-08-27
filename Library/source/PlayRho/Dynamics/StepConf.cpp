@@ -20,7 +20,7 @@
  */
 
 #include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Math.hpp>
 
 namespace playrho {
 

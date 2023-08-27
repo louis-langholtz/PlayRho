@@ -20,7 +20,7 @@
  */
 
 #include <PlayRho/d2/Sweep.hpp>
-#include <PlayRho/Common/Math.hpp> // for GetPosition
+#include <PlayRho/Math.hpp> // for GetPosition
 
 namespace playrho::d2 {
 

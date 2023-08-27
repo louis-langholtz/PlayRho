@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Common/TypeInfo.hpp>
+#include <PlayRho/TypeInfo.hpp>
 
 #include <cstring>
 

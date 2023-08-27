@@ -22,8 +22,8 @@
 #ifndef PLAYRHO_COLLISION_SIMPLEX_HPP
 #define PLAYRHO_COLLISION_SIMPLEX_HPP
 
-#include <PlayRho/Common/ArrayList.hpp>
-#include <PlayRho/Common/Vector.hpp>
+#include <PlayRho/ArrayList.hpp>
+#include <PlayRho/Vector.hpp>
 #include <PlayRho/Collision/SimplexEdge.hpp>
 #include <array>
 

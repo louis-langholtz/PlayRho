@@ -13,7 +13,7 @@
 #include <atomic>
 #include <new>
 
-#include <PlayRho/Common/DynamicMemory.hpp>
+#include <PlayRho/DynamicMemory.hpp>
 #include <PlayRho/pmr/MemoryResource.hpp>
 
 namespace playrho::pmr {

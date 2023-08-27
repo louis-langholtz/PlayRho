@@ -22,7 +22,7 @@
 
 #include <PlayRho/Collision/AABB.hpp>
 
-#include <PlayRho/Common/Vector2.hpp>
+#include <PlayRho/Vector2.hpp>
 
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>

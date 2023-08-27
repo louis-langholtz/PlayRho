@@ -22,8 +22,8 @@
 #ifndef PLAYRHO_DYNAMICS_CONTACTS_CONTACTSOLVER_HPP
 #define PLAYRHO_DYNAMICS_CONTACTS_CONTACTSOLVER_HPP
 
-#include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Span.hpp>
+#include <PlayRho/Math.hpp>
+#include <PlayRho/Span.hpp>
 
 #include <vector>
 

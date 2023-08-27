@@ -20,9 +20,9 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Common/Fixed.hpp>
-#include <PlayRho/Common/FixedLimits.hpp>
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Fixed.hpp>
+#include <PlayRho/FixedLimits.hpp>
+#include <PlayRho/Math.hpp>
 
 #include <iostream>
 

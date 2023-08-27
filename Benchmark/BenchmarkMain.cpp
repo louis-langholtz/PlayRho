@@ -55,8 +55,8 @@
 #include <dispatch/dispatch.h>
 #endif // BENCHMARK_GCDISPATCH
 
-#include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Intervals.hpp>
+#include <PlayRho/Math.hpp>
+#include <PlayRho/Intervals.hpp>
 
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp> // for GetAwakeCount

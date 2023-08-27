@@ -20,7 +20,7 @@
  */
 
 #include "../Framework/Test.hpp"
-#include <PlayRho/Common/DynamicMemory.hpp>
+#include <PlayRho/DynamicMemory.hpp>
 
 namespace testbed {
 

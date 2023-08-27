@@ -22,7 +22,7 @@
 #ifndef PLAYRHO_COLLISION_SHAPESEPARATION_HPP
 #define PLAYRHO_COLLISION_SHAPESEPARATION_HPP
 
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Math.hpp>
 #include <PlayRho/Collision/IndexPair.hpp>
 
 namespace playrho::d2 {

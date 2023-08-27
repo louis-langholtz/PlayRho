@@ -24,7 +24,7 @@
 /// @file
 /// Declaration of the <code>ContactKey</code> class.
 
-#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Settings.hpp>
 
 #include <algorithm>
 #include <functional>

@@ -22,8 +22,8 @@
 #ifndef PLAYRHO_DYNAMICS_CONTACTS_POSITIONSOLVERMANIFOLD_HPP
 #define PLAYRHO_DYNAMICS_CONTACTS_POSITIONSOLVERMANIFOLD_HPP
 
-#include <PlayRho/Common/Settings.hpp>
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Settings.hpp>
+#include <PlayRho/Math.hpp>
 
 #include <PlayRho/Collision/Manifold.hpp>
 

@@ -22,7 +22,7 @@
 #ifndef PLAYRHO_DYNAMICS_CONTACTS_CONTACT_HPP
 #define PLAYRHO_DYNAMICS_CONTACTS_CONTACT_HPP
 
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Math.hpp>
 
 #include <PlayRho/Dynamics/Contactable.hpp>
 
