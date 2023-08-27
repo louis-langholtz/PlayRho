@@ -25,7 +25,7 @@
 #include <PlayRho/PlayRho.hpp>
 
 #include <PlayRho/Common/Templates.hpp>
-#include <PlayRho/Common/UnitVec.hpp>
+#include <PlayRho/d2/UnitVec.hpp>
 #include <PlayRho/Common/TypeInfo.hpp>
 
 #include <PlayRho/Collision/PointStates.hpp>

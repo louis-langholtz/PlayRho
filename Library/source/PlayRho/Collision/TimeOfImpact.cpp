@@ -24,7 +24,7 @@
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/SeparationScenario.hpp>
-#include <PlayRho/Common/Sweep.hpp>
+#include <PlayRho/d2/Sweep.hpp>
 
 #include <algorithm>
 #include <cassert> // for assert

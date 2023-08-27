@@ -18,17 +18,32 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Common/UnitVec.hpp>
+#include <PlayRho/d2/Velocity.hpp>
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
 
 namespace playrho {
 namespace d2 {
 
-UnitVec UnitVec::Get(const Angle angle) noexcept
+Velocity Cap(Velocity velocity, Time h, const MovementConf& conf) noexcept
 {
-    return UnitVec{cos(angle), sin(angle)};
+    const auto translation = h * velocity.linear;
+    const auto lsquared = GetMagnitudeSquared(translation);
+    if (lsquared > Square(conf.maxTranslation)) {
+        // Scale back linear velocity so max translation not exceeded.
+        const auto ratio = conf.maxTranslation / sqrt(lsquared);
+        velocity.linear *= ratio;
+    }
+
+    const auto absRotation = abs(h * velocity.angular);
+    if (absRotation > conf.maxRotation) {
+        // Scale back angular velocity so max rotation not exceeded.
+        const auto ratio = conf.maxRotation / absRotation;
+        velocity.angular *= ratio;
+    }
+
+    return velocity;
 }
 
 } // namespace d2
 } // namespace playrho
-

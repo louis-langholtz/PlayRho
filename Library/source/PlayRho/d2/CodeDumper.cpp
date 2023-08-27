@@ -19,7 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Common/CodeDumper.hpp>
+#include <PlayRho/d2/CodeDumper.hpp>
 
 #ifdef CODE_DUMPER_IS_READY
 

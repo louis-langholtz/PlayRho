@@ -27,8 +27,8 @@
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Units.hpp>
-#include <PlayRho/Common/Transformation.hpp>
-#include <PlayRho/Common/Velocity.hpp>
+#include <PlayRho/d2/Transformation.hpp>
+#include <PlayRho/d2/Velocity.hpp>
 #include <PlayRho/Common/Vector2.hpp> // for Length2, LinearAcceleration2
 
 #include <PlayRho/Dynamics/Body.hpp>

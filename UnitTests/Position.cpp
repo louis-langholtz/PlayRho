@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Common/Position.hpp>
+#include <PlayRho/d2/Position.hpp>
 
 #include <PlayRho/Common/Math.hpp>
 

@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Common/UnitVec.hpp>
+#include <PlayRho/d2/UnitVec.hpp>
 #include <PlayRho/Common/Math.hpp>
 
 #include <iostream>

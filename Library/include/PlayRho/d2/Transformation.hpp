@@ -24,7 +24,7 @@
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Vector2.hpp>
-#include <PlayRho/Common/UnitVec.hpp>
+#include <PlayRho/d2/UnitVec.hpp>
 
 /// @file
 /// Definition of the Transformation class and free functions directly associated with it.
