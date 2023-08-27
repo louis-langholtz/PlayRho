@@ -28,7 +28,7 @@
 #include <PlayRho/Math.hpp>
 #include <PlayRho/NonNegative.hpp>
 
-#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/BodyID.hpp>
 
 namespace playrho {
 namespace detail {

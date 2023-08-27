@@ -29,8 +29,8 @@
 #include <PlayRho/d2/UnitVec.hpp>
 #include <PlayRho/Vector2.hpp> // for Momentum2, Length2
 
-#include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/Joints/JointID.hpp>
+#include <PlayRho/BodyID.hpp>
+#include <PlayRho/JointID.hpp>
 
 namespace playrho {
 namespace d2 {

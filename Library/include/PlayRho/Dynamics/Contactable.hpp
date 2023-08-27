@@ -22,8 +22,8 @@
 #define PLAYRHO_DYNAMICS_CONTACTABLE_HPP
 
 #include <PlayRho/Settings.hpp> // for ChildCounter
-#include <PlayRho/Collision/Shapes/ShapeID.hpp>
-#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/ShapeID.hpp>
+#include <PlayRho/BodyID.hpp>
 
 namespace playrho {
 

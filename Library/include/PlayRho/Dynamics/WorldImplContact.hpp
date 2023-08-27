@@ -27,7 +27,7 @@
 
 #include <PlayRho/Real.hpp>
 
-#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/BodyID.hpp>
 #include <PlayRho/ContactID.hpp>
 
 namespace playrho {

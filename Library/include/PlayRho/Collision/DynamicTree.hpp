@@ -27,10 +27,10 @@
 
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Collision/DynamicTreeData.hpp>
-#include <PlayRho/Collision/Shapes/ShapeID.hpp>
+#include <PlayRho/ShapeID.hpp>
 #include <PlayRho/Settings.hpp>
 #include <PlayRho/Vector2.hpp>
-#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/BodyID.hpp>
 
 #include <cassert> // for assert
 

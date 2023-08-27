@@ -27,12 +27,12 @@
 
 #include <PlayRho/Math.hpp>
 
-#include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/Joints/JointID.hpp>
+#include <PlayRho/BodyID.hpp>
+#include <PlayRho/JointID.hpp>
 #include <PlayRho/ContactID.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/StepStats.hpp>
-#include <PlayRho/Collision/Shapes/ShapeID.hpp>
+#include <PlayRho/ShapeID.hpp>
 
 #include <utility> // for std::pair
 

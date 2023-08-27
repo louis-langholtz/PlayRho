@@ -34,7 +34,7 @@
 #include <PlayRho/Collision/DynamicTree.hpp>
 #include <PlayRho/Collision/MassData.hpp>
 
-#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/BodyID.hpp>
 #include <PlayRho/Dynamics/Filter.hpp>
 #include <PlayRho/Dynamics/Island.hpp>
 #include <PlayRho/Dynamics/StepStats.hpp>
@@ -42,9 +42,9 @@
 #include <PlayRho/ContactKey.hpp>
 #include <PlayRho/KeyedContactID.hpp>
 #include <PlayRho/Dynamics/WorldConf.hpp>
-#include <PlayRho/Dynamics/Joints/JointID.hpp>
+#include <PlayRho/JointID.hpp>
 #include <PlayRho/Dynamics/IslandStats.hpp>
-#include <PlayRho/Collision/Shapes/ShapeID.hpp>
+#include <PlayRho/ShapeID.hpp>
 
 #include <iterator>
 #include <vector>
