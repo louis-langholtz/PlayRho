@@ -32,13 +32,13 @@
 #include <PlayRho/Vector2.hpp> // for Length2, LinearAcceleration2
 
 #include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/BodyID.hpp>
 #include <PlayRho/Dynamics/BodyType.hpp>
 #include <PlayRho/KeyedContactID.hpp>
-#include <PlayRho/Dynamics/Joints/JointID.hpp>
+#include <PlayRho/JointID.hpp>
 
 #include <PlayRho/Collision/MassData.hpp>
-#include <PlayRho/Collision/Shapes/ShapeID.hpp>
+#include <PlayRho/ShapeID.hpp>
 
 #include <vector>
 

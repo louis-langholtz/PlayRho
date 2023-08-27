@@ -26,8 +26,8 @@
 #include <PlayRho/Templates.hpp> // IsFull
 #include <PlayRho/Settings.hpp> // BodyCounter, ContactCounter, JointCounter
 
-#include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/Joints/JointID.hpp>
+#include <PlayRho/BodyID.hpp>
+#include <PlayRho/JointID.hpp>
 #include <PlayRho/ContactID.hpp>
 
 #include <vector>

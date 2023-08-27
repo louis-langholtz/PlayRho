@@ -28,9 +28,9 @@
 #include <PlayRho/UnitInterval.hpp>
 #include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Collision/RayCastOpcode.hpp>
-#include <PlayRho/Collision/Shapes/ShapeID.hpp>
+#include <PlayRho/ShapeID.hpp>
 
-#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/BodyID.hpp>
 
 #include <optional>
 

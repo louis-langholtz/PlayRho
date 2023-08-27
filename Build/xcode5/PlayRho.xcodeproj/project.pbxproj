@@ -1296,6 +1296,7 @@
 			children = (
 				4734B2161DC00AFD00F15E29 /* ArrayList.hpp */,
 				80BB8940141C3E5900F1753A /* BlockAllocator.hpp */,
+				47640869250C86640090F711 /* BodyID.hpp */,
 				470463ED250305C900614373 /* CheckedValue.hpp */,
 				47E70603255CDA4300A55BC1 /* ConstraintSolverConf.hpp */,
 				80BB8962141C3E5900F1753A /* Contact.hpp */,
@@ -1312,6 +1313,7 @@
 				47D28D9F1F72B9340094C032 /* Interval.hpp */,
 				472D35361F98C56200574B73 /* Intervals.hpp */,
 				470F9B3A1EE63515007EF7B6 /* InvalidArgument.hpp */,
+				4764087025105DD90090F711 /* JointID.hpp */,
 				476408742511A5CC0090F711 /* KeyedContactID.hpp */,
 				4787D6E91F2FA0CA008C115E /* LengthError.hpp */,
 				471E7EA81F32668E00DFF626 /* Matrix.hpp */,
@@ -1327,6 +1329,7 @@
 				470ADAB92555F72B00EEE99D /* Real.hpp.in */,
 				47B58F621F64C19600354C34 /* RealConstants.hpp */,
 				80BB8947141C3E5900F1753A /* Settings.hpp */,
+				4795B61C262B557100FB3EC6 /* ShapeID.hpp */,
 				4734B21E1DC1340500F15E29 /* Span.hpp */,
 				80BB8949141C3E5900F1753A /* StackAllocator.hpp */,
 				47C85D1E1F0DA14500F70C56 /* Templates.hpp */,
@@ -1413,7 +1416,6 @@
 			children = (
 				80BB894E141C3E5900F1753A /* Body.hpp */,
 				470F94A51EC4C79B00AA3C82 /* BodyConf.hpp */,
-				47640869250C86640090F711 /* BodyID.hpp */,
 				478E67C41E760AB7009B9AD5 /* BodyType.hpp */,
 				998A7C0A2A82D55100F29B01 /* Contactable.hpp */,
 				47363E8520027FE2005912B1 /* ContactImpulsesList.hpp */,
@@ -1504,7 +1506,6 @@
 				474AFBF71EB1B2CB002AA6C8 /* MultiShapeConf.hpp */,
 				80BB893C141C3E5900F1753A /* PolygonShapeConf.hpp */,
 				80BB893D141C3E5900F1753A /* Shape.hpp */,
-				4795B61C262B557100FB3EC6 /* ShapeID.hpp */,
 				473E019C1F80ACBE00D58CC8 /* ShapeConf.hpp */,
 			);
 			path = Shapes;
@@ -1532,7 +1533,6 @@
 				4787D6C91F2EA3A1008C115E /* GearJointConf.hpp */,
 				80BB8975141C3E5900F1753A /* Joint.hpp */,
 				4787D6BD1F2E968E008C115E /* JointConf.hpp */,
-				4764087025105DD90090F711 /* JointID.hpp */,
 				4706451C25336237006E69AA /* LimitState.hpp */,
 				4787D6CD1F2EC902008C115E /* MotorJointConf.hpp */,
 				4787D6B91F2E946E008C115E /* PrismaticJointConf.hpp */,

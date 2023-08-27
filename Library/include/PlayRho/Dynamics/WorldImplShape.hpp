@@ -24,7 +24,7 @@
 /// @file
 /// Declarations of free functions of WorldImpl for shapes.
 
-#include <PlayRho/Collision/Shapes/ShapeID.hpp>
+#include <PlayRho/ShapeID.hpp>
 
 namespace playrho {
 namespace d2 {

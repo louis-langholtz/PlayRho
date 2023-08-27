@@ -28,7 +28,7 @@
 #include <PlayRho/Templates.hpp> // for DecayedTypeIfNotSame
 #include <PlayRho/TypeInfo.hpp> // for GetTypeID
 #include <PlayRho/Dynamics/Joints/LimitState.hpp>
-#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/BodyID.hpp>
 
 #include <memory> // for std::unique_ptr
 #include <vector>

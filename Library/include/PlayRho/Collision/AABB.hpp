@@ -28,8 +28,8 @@
 #include <PlayRho/Vector.hpp>
 #include <PlayRho/Settings.hpp> // for ChildCounter, etc.
 #include <PlayRho/Templates.hpp>
-#include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Collision/Shapes/ShapeID.hpp>
+#include <PlayRho/BodyID.hpp>
+#include <PlayRho/ShapeID.hpp>
 
 #include <algorithm> // for std::mismatch, lexicographical_compare, etc
 #include <utility> // for std::get

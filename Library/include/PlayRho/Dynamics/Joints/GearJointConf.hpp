@@ -24,7 +24,7 @@
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
 #include <PlayRho/Math.hpp>
-#include <PlayRho/Dynamics/Joints/JointID.hpp>
+#include <PlayRho/JointID.hpp>
 #include <PlayRho/Span.hpp>
 
 #include <variant>

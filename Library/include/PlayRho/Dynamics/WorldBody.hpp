@@ -41,12 +41,12 @@
 #include <PlayRho/Math.hpp>
 
 #include <PlayRho/Collision/MassData.hpp>
-#include <PlayRho/Collision/Shapes/ShapeID.hpp>
+#include <PlayRho/ShapeID.hpp>
 
-#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/BodyID.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/KeyedContactID.hpp>
-#include <PlayRho/Dynamics/Joints/JointID.hpp>
+#include <PlayRho/JointID.hpp>
 
 #include <iterator>
 #include <vector>

@@ -30,15 +30,15 @@
 
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
-#include <PlayRho/Collision/Shapes/ShapeID.hpp>
+#include <PlayRho/ShapeID.hpp>
 
 #include <PlayRho/Dynamics/BodyConf.hpp> // for GetDefaultBodyConf
-#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/BodyID.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Dynamics/WorldConf.hpp>
 #include <PlayRho/KeyedContactID.hpp>
-#include <PlayRho/Dynamics/Joints/JointID.hpp>
+#include <PlayRho/JointID.hpp>
 
 #include <iterator>
 #include <vector>

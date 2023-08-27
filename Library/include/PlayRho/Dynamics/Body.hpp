@@ -31,7 +31,7 @@
 #include <PlayRho/Dynamics/BodyConf.hpp>
 
 #include <PlayRho/Collision/MassData.hpp>
-#include <PlayRho/Collision/Shapes/ShapeID.hpp>
+#include <PlayRho/ShapeID.hpp>
 
 #include <cassert>
 #include <utility>

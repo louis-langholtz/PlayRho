@@ -22,7 +22,7 @@
 #ifndef PLAYRHO_DYNAMICS_JOINTS_JOINTCONF_HPP
 #define PLAYRHO_DYNAMICS_JOINTS_JOINTCONF_HPP
 
-#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/BodyID.hpp>
 
 #include <cstddef> // for std::max_align_t
 #include <cstdint>

@@ -40,8 +40,8 @@
 
 #include <PlayRho/Settings.hpp>
 
-#include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Collision/Shapes/ShapeID.hpp>
+#include <PlayRho/BodyID.hpp>
+#include <PlayRho/ShapeID.hpp>
 #include <PlayRho/ContactID.hpp>
 #include <PlayRho/KeyedContactID.hpp>
 

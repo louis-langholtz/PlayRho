@@ -31,7 +31,7 @@
 
 #include <PlayRho/Dynamics/BodyType.hpp>
 
-#include <PlayRho/Collision/Shapes/ShapeID.hpp>
+#include <PlayRho/ShapeID.hpp>
 
 namespace playrho::d2 {
 
