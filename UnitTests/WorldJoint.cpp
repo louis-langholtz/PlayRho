@@ -24,8 +24,8 @@
 
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/d2/RevoluteJointConf.hpp>
+#include <PlayRho/d2/Joint.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

@@ -19,13 +19,13 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/Joints/GearJointConf.hpp>
+#include <PlayRho/d2/GearJointConf.hpp>
 
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
+#include <PlayRho/d2/Joint.hpp>
+#include <PlayRho/d2/RevoluteJointConf.hpp>
+#include <PlayRho/d2/PrismaticJointConf.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/d2/BodyConstraint.hpp>
 #include <PlayRho/ConstraintSolverConf.hpp>

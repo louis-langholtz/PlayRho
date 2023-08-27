@@ -30,8 +30,6 @@ file(GLOB PLAYRHO_Shapes_SRCS "${PLAYRHO_SOURCE_PREFIX}Collision/Shapes/*.cpp")
 file(GLOB PLAYRHO_Shapes_HDRS "${PLAYRHO_INCLUDE_PREFIX}Collision/Shapes/*.hpp")
 file(GLOB PLAYRHO_Dynamics_SRCS "${PLAYRHO_SOURCE_PREFIX}Dynamics/*.cpp")
 file(GLOB PLAYRHO_Dynamics_HDRS "${PLAYRHO_INCLUDE_PREFIX}Dynamics/*.hpp")
-file(GLOB PLAYRHO_Joints_SRCS "${PLAYRHO_SOURCE_PREFIX}Dynamics/Joints/*.cpp")
-file(GLOB PLAYRHO_Joints_HDRS "${PLAYRHO_INCLUDE_PREFIX}Dynamics/Joints/*.hpp")
 file(GLOB PLAYRHO_General_SRCS "${PLAYRHO_SOURCE_PREFIX}*.cpp")
 file(GLOB PLAYRHO_General_HDRS "${PLAYRHO_INCLUDE_PREFIX}*.hpp")
 
@@ -58,28 +56,56 @@ set(PLAYRHO_D2_HDRS
 	"${PLAYRHO_INCLUDE_PREFIX}d2/BodyConstraint.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/CodeDumper.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/ContactSolver.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/DistanceJointConf.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/FrictionJointConf.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/GearJointConf.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/Joint.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/JointConf.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/LimitState.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/MotorJointConf.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/Position.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/PositionConstraint.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/PositionSolverManifold.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/PrismaticJointConf.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/PulleyJointConf.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/RevoluteJointConf.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/RopeJointConf.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/Sweep.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/TargetJointConf.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/Transformation.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/UnitVec.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/Velocity.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/VelocityConstraint.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/VertexSet.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/WeldJointConf.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/WheelJointConf.hpp"
 	)
 set(PLAYRHO_D2_SRCS
 	"${PLAYRHO_SOURCE_PREFIX}d2/CodeDumper.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/ContactSolver.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/DistanceJointConf.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/FrictionJointConf.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/GearJointConf.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/Joint.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/JointConf.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/LimitState.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/MotorJointConf.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/PositionSolverManifold.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/PrismaticJointConf.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/PulleyJointConf.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/RevoluteJointConf.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/RopeJointConf.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/Sweep.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/TargetJointConf.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/UnitVec.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/Velocity.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/VelocityConstraint.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/WeldJointConf.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/WheelJointConf.cpp"
 	)
 
 set(libsrc
 	${PLAYRHO_General_SRCS}
-	${PLAYRHO_Joints_SRCS}
 	${PLAYRHO_Dynamics_SRCS}
 	${PLAYRHO_Shapes_SRCS}
 	${PLAYRHO_Collision_SRCS}
@@ -134,7 +160,6 @@ source_group(General FILES ${PLAYRHO_General_SRCS} ${PLAYRHO_GeneralCfg_HDRS} ${
 source_group(Collision FILES ${PLAYRHO_Collision_SRCS} ${PLAYRHO_Collision_HDRS})
 source_group(Collision\\Shapes FILES ${PLAYRHO_Shapes_SRCS} ${PLAYRHO_Shapes_HDRS})
 source_group(Dynamics FILES ${PLAYRHO_Dynamics_SRCS} ${PLAYRHO_Dynamics_HDRS})
-source_group(Dynamics\\Joints FILES ${PLAYRHO_Joints_SRCS} ${PLAYRHO_Joints_HDRS})
 
 if(PLAYRHO_INSTALL)
 	include(GNUInstallDirs)
@@ -158,9 +183,6 @@ if(PLAYRHO_INSTALL)
 		COMPONENT Library)
 	install(FILES ${PLAYRHO_Dynamics_HDRS}
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Dynamics
-		COMPONENT Library)
-	install(FILES ${PLAYRHO_Joints_HDRS}
-		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Dynamics/Joints
 		COMPONENT Library)
 	install(FILES ${PLAYRHO_PMR_HDRS}
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/pmr

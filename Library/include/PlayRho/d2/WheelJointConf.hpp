@@ -22,7 +22,7 @@
 #ifndef PLAYRHO_DYNAMICS_JOINTS_WHEELJOINTCONF_HPP
 #define PLAYRHO_DYNAMICS_JOINTS_WHEELJOINTCONF_HPP
 
-#include <PlayRho/Dynamics/Joints/JointConf.hpp>
+#include <PlayRho/d2/JointConf.hpp>
 
 #include <PlayRho/Math.hpp>
 #include <PlayRho/Span.hpp>

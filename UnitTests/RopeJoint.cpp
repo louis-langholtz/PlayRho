@@ -20,9 +20,9 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/Joints/RopeJointConf.hpp>
+#include <PlayRho/d2/RopeJointConf.hpp>
 
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/d2/Joint.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>

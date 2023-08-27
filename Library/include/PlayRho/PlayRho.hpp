@@ -120,16 +120,16 @@ For a more elaborate example, that's of an entire application, see
 #include <PlayRho/Collision/Shapes/Compositor.hpp>
 
 // For any and all joint configurations, add one or more of the following.
-#include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/FrictionJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/GearJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/MotorJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/RopeJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/WeldJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
+#include <PlayRho/d2/DistanceJointConf.hpp>
+#include <PlayRho/d2/FrictionJointConf.hpp>
+#include <PlayRho/d2/GearJointConf.hpp>
+#include <PlayRho/d2/MotorJointConf.hpp>
+#include <PlayRho/d2/TargetJointConf.hpp>
+#include <PlayRho/d2/PrismaticJointConf.hpp>
+#include <PlayRho/d2/PulleyJointConf.hpp>
+#include <PlayRho/d2/RevoluteJointConf.hpp>
+#include <PlayRho/d2/RopeJointConf.hpp>
+#include <PlayRho/d2/WeldJointConf.hpp>
+#include <PlayRho/d2/WheelJointConf.hpp>
 
 #endif // PLAYRHO_PLAYRHO_HPP

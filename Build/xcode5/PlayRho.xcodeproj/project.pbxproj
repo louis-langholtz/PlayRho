@@ -1242,6 +1242,20 @@
 		9901AEF42A9BCEB90075122D /* d2 */ = {
 			isa = PBXGroup;
 			children = (
+				4787D6C11F2E9DC0008C115E /* DistanceJointConf.hpp */,
+				4787D6C51F2EA1DB008C115E /* FrictionJointConf.hpp */,
+				4787D6C91F2EA3A1008C115E /* GearJointConf.hpp */,
+				80BB8975141C3E5900F1753A /* Joint.hpp */,
+				4787D6BD1F2E968E008C115E /* JointConf.hpp */,
+				4706451C25336237006E69AA /* LimitState.hpp */,
+				4787D6CD1F2EC902008C115E /* MotorJointConf.hpp */,
+				4787D6B91F2E946E008C115E /* PrismaticJointConf.hpp */,
+				4787D6D51F2ECD87008C115E /* PulleyJointConf.hpp */,
+				4787D6D91F2ECFFB008C115E /* RevoluteJointConf.hpp */,
+				4787D6DD1F2ED2D6008C115E /* RopeJointConf.hpp */,
+				4787D6D11F2ECB8D008C115E /* TargetJointConf.hpp */,
+				4787D6E11F2ED461008C115E /* WeldJointConf.hpp */,
+				4787D6E51F2ED62C008C115E /* WheelJointConf.hpp */,
 				47C96C531FA67D1D00A6C587 /* Acceleration.hpp */,
 				474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */,
 				476162C71E245C9D002C7FB0 /* CodeDumper.hpp */,
@@ -1272,6 +1286,20 @@
 		9901AEF62A9BCECD0075122D /* d2 */ = {
 			isa = PBXGroup;
 			children = (
+				4787D6C01F2E9DC0008C115E /* DistanceJointConf.cpp */,
+				4787D6C41F2EA1DB008C115E /* FrictionJointConf.cpp */,
+				4787D6C81F2EA3A1008C115E /* GearJointConf.cpp */,
+				80BB8974141C3E5900F1753A /* Joint.cpp */,
+				4787D6BC1F2E968E008C115E /* JointConf.cpp */,
+				4706451E25336323006E69AA /* LimitState.cpp */,
+				4787D6CC1F2EC902008C115E /* MotorJointConf.cpp */,
+				4787D6B81F2E946E008C115E /* PrismaticJointConf.cpp */,
+				4787D6D41F2ECD87008C115E /* PulleyJointConf.cpp */,
+				4787D6D81F2ECFFB008C115E /* RevoluteJointConf.cpp */,
+				4787D6DC1F2ED2D6008C115E /* RopeJointConf.cpp */,
+				4787D6D01F2ECB8D008C115E /* TargetJointConf.cpp */,
+				4787D6E01F2ED461008C115E /* WeldJointConf.cpp */,
+				4787D6E41F2ED62C008C115E /* WheelJointConf.cpp */,
 				476162C61E245C9D002C7FB0 /* CodeDumper.cpp */,
 				80BB8963141C3E5900F1753A /* ContactSolver.cpp */,
 				477DB2AA1D1C4BE800846ED6 /* PositionSolverManifold.cpp */,
@@ -1422,7 +1450,6 @@
 				470F94B11EC4CB6C00AA3C82 /* Filter.hpp */,
 				80BB8954141C3E5900F1753A /* Island.hpp */,
 				47B490D5201E6C3000AB07A0 /* IslandStats.hpp */,
-				996BDA842A98590E00CD2D55 /* Joints */,
 				471E7EAC1F34CA4D00DFF626 /* MovementConf.hpp */,
 				80BB8955141C3E5900F1753A /* StepConf.hpp */,
 				478E67CA1E777A43009B9AD5 /* StepStats.hpp */,
@@ -1475,7 +1502,6 @@
 				470F9B4B1EEF20B6007EF7B6 /* BodyConf.cpp */,
 				47363E8420027FE2005912B1 /* ContactImpulsesList.cpp */,
 				80BB8953141C3E5900F1753A /* Island.cpp */,
-				996BDA862A98591D00CD2D55 /* Joints */,
 				471E7EAF1F34E34000DFF626 /* MovementConf.cpp */,
 				4768D3FF1E54E7CB00574143 /* StepConf.cpp */,
 				4764088A251FA6360090F711 /* StepStats.cpp */,
@@ -1523,48 +1549,6 @@
 				470F9B051EDB8F62007EF7B6 /* Shape.cpp */,
 			);
 			path = Shapes;
-			sourceTree = "<group>";
-		};
-		996BDA842A98590E00CD2D55 /* Joints */ = {
-			isa = PBXGroup;
-			children = (
-				4787D6C11F2E9DC0008C115E /* DistanceJointConf.hpp */,
-				4787D6C51F2EA1DB008C115E /* FrictionJointConf.hpp */,
-				4787D6C91F2EA3A1008C115E /* GearJointConf.hpp */,
-				80BB8975141C3E5900F1753A /* Joint.hpp */,
-				4787D6BD1F2E968E008C115E /* JointConf.hpp */,
-				4706451C25336237006E69AA /* LimitState.hpp */,
-				4787D6CD1F2EC902008C115E /* MotorJointConf.hpp */,
-				4787D6B91F2E946E008C115E /* PrismaticJointConf.hpp */,
-				4787D6D51F2ECD87008C115E /* PulleyJointConf.hpp */,
-				4787D6D91F2ECFFB008C115E /* RevoluteJointConf.hpp */,
-				4787D6DD1F2ED2D6008C115E /* RopeJointConf.hpp */,
-				4787D6D11F2ECB8D008C115E /* TargetJointConf.hpp */,
-				4787D6E11F2ED461008C115E /* WeldJointConf.hpp */,
-				4787D6E51F2ED62C008C115E /* WheelJointConf.hpp */,
-			);
-			path = Joints;
-			sourceTree = "<group>";
-		};
-		996BDA862A98591D00CD2D55 /* Joints */ = {
-			isa = PBXGroup;
-			children = (
-				4787D6C01F2E9DC0008C115E /* DistanceJointConf.cpp */,
-				4787D6C41F2EA1DB008C115E /* FrictionJointConf.cpp */,
-				4787D6C81F2EA3A1008C115E /* GearJointConf.cpp */,
-				80BB8974141C3E5900F1753A /* Joint.cpp */,
-				4787D6BC1F2E968E008C115E /* JointConf.cpp */,
-				4706451E25336323006E69AA /* LimitState.cpp */,
-				4787D6CC1F2EC902008C115E /* MotorJointConf.cpp */,
-				4787D6B81F2E946E008C115E /* PrismaticJointConf.cpp */,
-				4787D6D41F2ECD87008C115E /* PulleyJointConf.cpp */,
-				4787D6D81F2ECFFB008C115E /* RevoluteJointConf.cpp */,
-				4787D6DC1F2ED2D6008C115E /* RopeJointConf.cpp */,
-				4787D6D01F2ECB8D008C115E /* TargetJointConf.cpp */,
-				4787D6E01F2ED461008C115E /* WeldJointConf.cpp */,
-				4787D6E41F2ED62C008C115E /* WheelJointConf.cpp */,
-			);
-			path = Joints;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

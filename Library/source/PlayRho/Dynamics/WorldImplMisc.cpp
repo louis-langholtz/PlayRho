@@ -26,7 +26,7 @@
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 #include <PlayRho/Dynamics/Body.hpp> // for WorldImpl not being incomplete
-#include <PlayRho/Dynamics/Joints/Joint.hpp> // for WorldImpl not being incomplete
+#include <PlayRho/d2/Joint.hpp> // for WorldImpl not being incomplete
 #include <PlayRho/Contact.hpp> // for WorldImpl not being incomplete
 #include <PlayRho/Collision/Manifold.hpp> // for WorldImpl not being incomplete
 #include <PlayRho/Collision/Shapes/Shape.hpp> // for WorldImpl not being incomplete

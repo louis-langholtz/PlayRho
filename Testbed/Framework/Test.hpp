@@ -38,7 +38,7 @@
 #include <PlayRho/Contact.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 #include <PlayRho/BodyID.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/d2/Joint.hpp>
 #include <PlayRho/JointID.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>

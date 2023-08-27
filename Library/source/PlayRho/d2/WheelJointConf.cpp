@@ -19,9 +19,9 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
+#include <PlayRho/d2/WheelJointConf.hpp>
 
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/d2/Joint.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/d2/BodyConstraint.hpp>
