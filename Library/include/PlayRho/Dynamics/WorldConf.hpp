@@ -24,7 +24,7 @@
 /// @file
 /// Declarations of the WorldConf class.
 
-#include <PlayRho/Common/MemoryResource.hpp> // for pmr things
+#include <PlayRho/pmr/MemoryResource.hpp> // for pmr things
 #include <PlayRho/Common/Settings.hpp>
 
 namespace playrho {

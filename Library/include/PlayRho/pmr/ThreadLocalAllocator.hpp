@@ -27,7 +27,7 @@
 #include <tuple>
 #include <type_traits> // for std::is_base_of_v
 
-#include <PlayRho/Common/MemoryResource.hpp>
+#include <PlayRho/pmr/MemoryResource.hpp>
 
 // Support PlayRho/Export.hpp being a generated file that may not exist...
 #if !defined(__has_include) || !__has_include(<PlayRho/Export.hpp>)

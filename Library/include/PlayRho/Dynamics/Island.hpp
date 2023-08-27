@@ -22,7 +22,7 @@
 #ifndef PLAYRHO_DYNAMICS_ISLAND_HPP
 #define PLAYRHO_DYNAMICS_ISLAND_HPP
 
-#include <PlayRho/Common/MemoryResource.hpp> // for pmr::polymorphic_allocator
+#include <PlayRho/pmr/MemoryResource.hpp> // for pmr::polymorphic_allocator
 #include <PlayRho/Common/Templates.hpp> // IsFull
 #include <PlayRho/Common/Settings.hpp> // BodyCounter, ContactCounter, JointCounter
 

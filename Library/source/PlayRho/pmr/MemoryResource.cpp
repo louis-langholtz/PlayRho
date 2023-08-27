@@ -14,7 +14,7 @@
 #include <new>
 
 #include <PlayRho/Common/DynamicMemory.hpp>
-#include <PlayRho/Common/MemoryResource.hpp>
+#include <PlayRho/pmr/MemoryResource.hpp>
 
 namespace playrho::pmr {
 

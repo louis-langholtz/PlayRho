@@ -44,10 +44,17 @@ set(PLAYRHO_GeneralCfg_HDRS "${CMAKE_CURRENT_BINARY_DIR}/${PLAYRHO_INCLUDE_PREFI
 configure_file("${PLAYRHO_INCLUDE_PREFIX}Common/Real.hpp.in" "${PLAYRHO_INCLUDE_PREFIX}Common/Real.hpp" @ONLY)
 set(PLAYRHO_CommonCfg_HDRS "${CMAKE_CURRENT_BINARY_DIR}/${PLAYRHO_INCLUDE_PREFIX}Common/Real.hpp")
 
-if (${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-	message(STATUS "lib: Adding definitions for coverage analysis.")
-	add_definitions(--coverage)
-endif()
+set(PLAYRHO_PMR_HDRS
+	"${PLAYRHO_INCLUDE_PREFIX}pmr/MemoryResource.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}pmr/PoolMemoryResource.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}pmr/StatsResource.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}pmr/ThreadLocalAllocator.hpp"
+	)
+set(PLAYRHO_PMR_SRCS
+	"${PLAYRHO_SOURCE_PREFIX}pmr/MemoryResource.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}pmr/PoolMemoryResource.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}pmr/StatsResource.cpp"
+	)
 
 set(libsrc
 	${PLAYRHO_Joints_SRCS}
@@ -56,6 +63,7 @@ set(libsrc
 	${PLAYRHO_Common_SRCS}
 	${PLAYRHO_Shapes_SRCS}
 	${PLAYRHO_Collision_SRCS}
+	${PLAYRHO_PMR_SRCS}
 )
 
 if(PLAYRHO_BUILD_SHARED)
@@ -66,6 +74,11 @@ else()
 	target_compile_definitions(PlayRho PUBLIC -DPLAYRHO_STATIC_DEFINE)
 endif()
 add_library(PlayRho::PlayRho ALIAS PlayRho)
+
+if (${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+	message(STATUS "lib: Adding definitions for coverage analysis.")
+	add_definitions(--coverage)
+endif()
 
 include(GenerateExportHeader)
 generate_export_header(PlayRho EXPORT_FILE_NAME "${PLAYRHO_INCLUDE_PREFIX}Export.hpp")
@@ -137,6 +150,9 @@ if(PLAYRHO_INSTALL)
 		COMPONENT Library)
 	install(FILES ${PLAYRHO_Joints_HDRS}
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Dynamics/Joints
+		COMPONENT Library)
+	install(FILES ${PLAYRHO_PMR_HDRS}
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/pmr
 		COMPONENT Library)
 
 	# install libraries

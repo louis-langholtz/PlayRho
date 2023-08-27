@@ -24,7 +24,7 @@
 
 // Macro to avoid ThreadLocalAllocator<T, TestMemoryResource> Windows shared-builds linkage errors.
 #define PLAYRHO_EXPORT
-#include <PlayRho/Common/ThreadLocalAllocator.hpp>
+#include <PlayRho/pmr/ThreadLocalAllocator.hpp>
 
 using namespace playrho;
 

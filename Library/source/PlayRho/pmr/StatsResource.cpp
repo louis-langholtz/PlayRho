@@ -20,7 +20,7 @@
 
 #include <algorithm> // for std::max
 
-#include <PlayRho/Common/StatsResource.hpp>
+#include <PlayRho/pmr/StatsResource.hpp>
 
 namespace playrho::pmr {
 
