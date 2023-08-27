@@ -41,11 +41,11 @@
 #include <PlayRho/Dynamics/Joints/RopeJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/MotorJointConf.hpp>
 
-#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
-#include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
-#include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
-#include <PlayRho/Dynamics/Contacts/PositionConstraint.hpp>
+#include <PlayRho/ConstraintSolverConf.hpp>
+#include <PlayRho/Contact.hpp>
+#include <PlayRho/d2/ContactSolver.hpp>
+#include <PlayRho/d2/VelocityConstraint.hpp>
+#include <PlayRho/d2/PositionConstraint.hpp>
 
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/WorldManifold.hpp>

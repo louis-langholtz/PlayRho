@@ -19,7 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
+#include <PlayRho/d2/PositionSolverManifold.hpp>
 
 namespace playrho {
 namespace d2 {

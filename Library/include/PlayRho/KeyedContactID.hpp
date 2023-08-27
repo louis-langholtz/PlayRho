@@ -24,8 +24,8 @@
 /// @file
 /// Declaration of the <code>KeyedContactID</code> alias.
 
-#include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
-#include <PlayRho/Dynamics/Contacts/ContactID.hpp>
+#include <PlayRho/ContactKey.hpp>
+#include <PlayRho/ContactID.hpp>
 
 namespace playrho {
 

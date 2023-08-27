@@ -29,7 +29,7 @@
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
-#include <PlayRho/Dynamics/Contacts/ContactID.hpp>
+#include <PlayRho/ContactID.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>

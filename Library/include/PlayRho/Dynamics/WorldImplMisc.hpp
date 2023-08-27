@@ -32,8 +32,8 @@
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>
-#include <PlayRho/Dynamics/Contacts/ContactID.hpp>
-#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp>
+#include <PlayRho/ContactID.hpp>
+#include <PlayRho/KeyedContactID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 
 #include <functional> // for std::function

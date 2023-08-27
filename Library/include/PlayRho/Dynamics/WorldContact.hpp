@@ -42,8 +42,8 @@
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>
-#include <PlayRho/Dynamics/Contacts/ContactID.hpp>
-#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp>
+#include <PlayRho/ContactID.hpp>
+#include <PlayRho/KeyedContactID.hpp>
 
 #include <PlayRho/Collision/WorldManifold.hpp>
 

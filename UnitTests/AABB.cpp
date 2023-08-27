@@ -32,7 +32,7 @@
 #include <PlayRho/Dynamics/WorldShape.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
+#include <PlayRho/Contact.hpp>
 
 #include <algorithm>
 #include <iterator>

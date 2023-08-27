@@ -34,7 +34,7 @@
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/BodyType.hpp>
-#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp>
+#include <PlayRho/KeyedContactID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 
 #include <PlayRho/Collision/MassData.hpp>

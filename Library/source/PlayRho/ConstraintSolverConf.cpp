@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
+#include <PlayRho/ConstraintSolverConf.hpp>
 
 #include <PlayRho/Dynamics/StepConf.hpp>
 

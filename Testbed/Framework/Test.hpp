@@ -33,9 +33,9 @@
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
 
-#include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
-#include <PlayRho/Dynamics/Contacts/ContactID.hpp>
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
+#include <PlayRho/d2/PositionSolverManifold.hpp>
+#include <PlayRho/ContactID.hpp>
+#include <PlayRho/Contact.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>

@@ -20,11 +20,11 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
-#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
-#include <PlayRho/Dynamics/Contacts/PositionConstraint.hpp>
-#include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
-#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/d2/ContactSolver.hpp>
+#include <PlayRho/ConstraintSolverConf.hpp>
+#include <PlayRho/d2/PositionConstraint.hpp>
+#include <PlayRho/d2/VelocityConstraint.hpp>
+#include <PlayRho/d2/BodyConstraint.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 

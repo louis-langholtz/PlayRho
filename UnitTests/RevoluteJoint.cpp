@@ -32,8 +32,8 @@
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
-#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
-#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
+#include <PlayRho/d2/BodyConstraint.hpp>
+#include <PlayRho/ConstraintSolverConf.hpp>
 
 #include <cstring> // for std::memcmp
 

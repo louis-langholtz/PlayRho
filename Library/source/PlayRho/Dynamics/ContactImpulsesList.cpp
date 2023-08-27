@@ -19,7 +19,7 @@
  */
 
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
-#include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
+#include <PlayRho/d2/VelocityConstraint.hpp>
 
 namespace playrho {
 namespace d2 {

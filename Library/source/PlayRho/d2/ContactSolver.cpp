@@ -20,12 +20,12 @@
  */
 
 #include <PlayRho/Collision/WorldManifold.hpp>
-#include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
-#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
-#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
-#include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
-#include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
-#include <PlayRho/Dynamics/Contacts/PositionConstraint.hpp>
+#include <PlayRho/d2/ContactSolver.hpp>
+#include <PlayRho/ConstraintSolverConf.hpp>
+#include <PlayRho/d2/BodyConstraint.hpp>
+#include <PlayRho/d2/PositionSolverManifold.hpp>
+#include <PlayRho/d2/VelocityConstraint.hpp>
+#include <PlayRho/d2/PositionConstraint.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 
 #include <algorithm>

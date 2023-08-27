@@ -29,7 +29,7 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/Body.hpp> // for GetBody
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
+#include <PlayRho/Contact.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>

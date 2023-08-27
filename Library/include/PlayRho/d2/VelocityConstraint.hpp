@@ -25,7 +25,7 @@
 #include <PlayRho/Math.hpp>
 #include <PlayRho/Span.hpp>
 
-#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/d2/BodyConstraint.hpp>
 
 namespace playrho {
 

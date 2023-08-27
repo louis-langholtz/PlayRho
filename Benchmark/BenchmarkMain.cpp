@@ -62,8 +62,8 @@
 #include <PlayRho/Dynamics/WorldBody.hpp> // for GetAwakeCount
 #include <PlayRho/Dynamics/WorldShape.hpp> // for CreateShape
 #include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
-#include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
+#include <PlayRho/d2/ContactSolver.hpp>
+#include <PlayRho/d2/VelocityConstraint.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
 

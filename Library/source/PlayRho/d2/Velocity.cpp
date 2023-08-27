@@ -20,7 +20,7 @@
 
 #include <PlayRho/d2/Velocity.hpp>
 #include <PlayRho/Math.hpp>
-#include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
+#include <PlayRho/d2/VelocityConstraint.hpp>
 
 namespace playrho {
 namespace d2 {
