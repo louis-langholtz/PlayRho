@@ -19,9 +19,9 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/WorldManifold.hpp>
+#include <PlayRho/d2/WorldManifold.hpp>
 
-#include <PlayRho/Collision/Manifold.hpp>
+#include <PlayRho/d2/Manifold.hpp>
 #include <PlayRho/Contact.hpp>
 #include <PlayRho/d2/WorldBody.hpp>
 #include <PlayRho/d2/WorldShape.hpp>

@@ -20,10 +20,10 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Collision/RayCastOutput.hpp>
-#include <PlayRho/Collision/RayCastInput.hpp>
-#include <PlayRho/Collision/AABB.hpp>
-#include <PlayRho/Collision/DistanceProxy.hpp>
+#include <PlayRho/d2/RayCastOutput.hpp>
+#include <PlayRho/d2/RayCastInput.hpp>
+#include <PlayRho/d2/AABB.hpp>
+#include <PlayRho/d2/DistanceProxy.hpp>
 #include <PlayRho/d2/DiskShapeConf.hpp>
 #include <PlayRho/d2/Shape.hpp>
 

@@ -40,7 +40,7 @@
 #include <PlayRho/Math.hpp>
 #include <PlayRho/Span.hpp>
 
-#include <PlayRho/Collision/MassData.hpp>
+#include <PlayRho/d2/MassData.hpp>
 #include <PlayRho/d2/Shape.hpp>
 #include <PlayRho/ShapeID.hpp>
 

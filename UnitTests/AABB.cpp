@@ -20,11 +20,11 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Collision/AABB.hpp>
+#include <PlayRho/d2/AABB.hpp>
 
 #include <PlayRho/Vector2.hpp>
 
-#include <PlayRho/Collision/DistanceProxy.hpp>
+#include <PlayRho/d2/DistanceProxy.hpp>
 #include <PlayRho/d2/DiskShapeConf.hpp>
 
 #include <PlayRho/d2/World.hpp>

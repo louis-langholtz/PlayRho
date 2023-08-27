@@ -20,9 +20,9 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Collision/Manifold.hpp>
-#include <PlayRho/Collision/WorldManifold.hpp>
-#include <PlayRho/Collision/ShapeSeparation.hpp>
+#include <PlayRho/d2/Manifold.hpp>
+#include <PlayRho/d2/WorldManifold.hpp>
+#include <PlayRho/d2/ShapeSeparation.hpp>
 #include <PlayRho/d2/DiskShapeConf.hpp>
 #include <PlayRho/d2/PolygonShapeConf.hpp>
 #include <PlayRho/d2/EdgeShapeConf.hpp>

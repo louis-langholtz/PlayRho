@@ -21,8 +21,8 @@
 
 #include <PlayRho/d2/VelocityConstraint.hpp>
 #include <PlayRho/StepConf.hpp>
-#include <PlayRho/Collision/WorldManifold.hpp>
-#include <PlayRho/Collision/Manifold.hpp>
+#include <PlayRho/d2/WorldManifold.hpp>
+#include <PlayRho/d2/Manifold.hpp>
 
 #define PLAYRHO_MAGIC(x) (x)
 

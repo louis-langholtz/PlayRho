@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/SeparationScenario.hpp>
-#include <PlayRho/Collision/DistanceProxy.hpp>
+#include <PlayRho/d2/SeparationScenario.hpp>
+#include <PlayRho/d2/DistanceProxy.hpp>
 
 namespace playrho {
 namespace d2 {

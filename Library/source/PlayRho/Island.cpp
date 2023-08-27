@@ -19,7 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/Distance.hpp>
+#include <PlayRho/d2/Distance.hpp>
 #include <PlayRho/Island.hpp>
 
 #include <algorithm>

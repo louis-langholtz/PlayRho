@@ -19,7 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/WorldManifold.hpp>
+#include <PlayRho/d2/WorldManifold.hpp>
 #include <PlayRho/d2/ContactSolver.hpp>
 #include <PlayRho/ConstraintSolverConf.hpp>
 #include <PlayRho/d2/BodyConstraint.hpp>

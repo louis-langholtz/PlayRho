@@ -23,7 +23,7 @@
 #define PLAYRHO_COLLISION_SIMPLEXEDGE_HPP
 
 #include <PlayRho/Math.hpp>
-#include <PlayRho/Collision/IndexPair.hpp>
+#include <PlayRho/d2/IndexPair.hpp>
 
 namespace playrho {
 namespace d2 {

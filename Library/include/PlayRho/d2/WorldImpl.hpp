@@ -31,8 +31,8 @@
 #include <PlayRho/Positive.hpp>
 #include <PlayRho/ObjectPool.hpp>
 
-#include <PlayRho/Collision/DynamicTree.hpp>
-#include <PlayRho/Collision/MassData.hpp>
+#include <PlayRho/d2/DynamicTree.hpp>
+#include <PlayRho/d2/MassData.hpp>
 
 #include <PlayRho/BodyID.hpp>
 #include <PlayRho/Filter.hpp>

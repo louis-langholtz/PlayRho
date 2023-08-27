@@ -24,7 +24,7 @@
 
 #include <PlayRho/Math.hpp>
 #include <PlayRho/ContactFeature.hpp>
-#include <PlayRho/Collision/IndexPair.hpp>
+#include <PlayRho/d2/IndexPair.hpp>
 
 namespace playrho {
 

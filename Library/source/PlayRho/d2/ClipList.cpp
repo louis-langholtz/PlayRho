@@ -21,7 +21,7 @@
 
 #include <cmath>
 
-#include <PlayRho/Collision/ClipList.hpp>
+#include <PlayRho/d2/ClipList.hpp>
 
 namespace playrho::d2 {
 

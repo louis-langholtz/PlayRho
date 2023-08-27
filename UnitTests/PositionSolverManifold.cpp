@@ -22,8 +22,8 @@
 
 #include <PlayRho/d2/PositionSolverManifold.hpp>
 #include <PlayRho/d2/PolygonShapeConf.hpp>
-#include <PlayRho/Collision/WorldManifold.hpp>
-#include <PlayRho/Collision/Manifold.hpp>
+#include <PlayRho/d2/WorldManifold.hpp>
+#include <PlayRho/d2/Manifold.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

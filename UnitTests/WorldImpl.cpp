@@ -37,10 +37,10 @@
 #include <PlayRho/d2/DiskShapeConf.hpp>
 #include <PlayRho/d2/PolygonShapeConf.hpp>
 #include <PlayRho/d2/EdgeShapeConf.hpp>
-#include <PlayRho/Collision/DynamicTree.hpp> // for GetTree
-#include <PlayRho/Collision/RayCastInput.hpp>
-#include <PlayRho/Collision/RayCastOutput.hpp>
-#include <PlayRho/Collision/Manifold.hpp>
+#include <PlayRho/d2/DynamicTree.hpp> // for GetTree
+#include <PlayRho/d2/RayCastInput.hpp>
+#include <PlayRho/d2/RayCastOutput.hpp>
+#include <PlayRho/d2/Manifold.hpp>
 
 #include <PlayRho/LengthError.hpp>
 #include <PlayRho/WrongState.hpp>
