@@ -19,15 +19,15 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/d2/World.hpp>
 
-#include <PlayRho/Dynamics/WorldImplBody.hpp>
-#include <PlayRho/Dynamics/WorldImplContact.hpp>
-#include <PlayRho/Dynamics/WorldImplJoint.hpp>
-#include <PlayRho/Dynamics/WorldImplShape.hpp>
-#include <PlayRho/Dynamics/WorldImplMisc.hpp>
+#include <PlayRho/d2/WorldImplBody.hpp>
+#include <PlayRho/d2/WorldImplContact.hpp>
+#include <PlayRho/d2/WorldImplJoint.hpp>
+#include <PlayRho/d2/WorldImplShape.hpp>
+#include <PlayRho/d2/WorldImplMisc.hpp>
 
-#include <PlayRho/Dynamics/BodyConf.hpp>
+#include <PlayRho/d2/BodyConf.hpp>
 #include <PlayRho/StepConf.hpp>
 
 #include <utility> // for std::move

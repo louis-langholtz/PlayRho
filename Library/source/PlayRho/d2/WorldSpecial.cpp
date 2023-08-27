@@ -19,13 +19,13 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/d2/World.hpp>
 
-#include <PlayRho/Dynamics/Body.hpp> // for completing WorldImpl type
+#include <PlayRho/d2/Body.hpp> // for completing WorldImpl type
 #include <PlayRho/Contact.hpp> // for completing WorldImpl type
 #include <PlayRho/d2/Joint.hpp> // for completing WorldImpl type
-#include <PlayRho/Dynamics/WorldImpl.hpp> // for completing WorldImpl type
-#include <PlayRho/Dynamics/WorldImplMisc.hpp>
+#include <PlayRho/d2/WorldImpl.hpp> // for completing WorldImpl type
+#include <PlayRho/d2/WorldImplMisc.hpp>
 
 #include <PlayRho/Collision/Manifold.hpp> // for completing WorldImpl type
 

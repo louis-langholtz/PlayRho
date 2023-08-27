@@ -41,7 +41,7 @@
 #include <PlayRho/d2/BodyConstraint.hpp>
 #include <PlayRho/ContactKey.hpp>
 #include <PlayRho/KeyedContactID.hpp>
-#include <PlayRho/Dynamics/WorldConf.hpp>
+#include <PlayRho/d2/WorldConf.hpp>
 #include <PlayRho/JointID.hpp>
 #include <PlayRho/IslandStats.hpp>
 #include <PlayRho/ShapeID.hpp>

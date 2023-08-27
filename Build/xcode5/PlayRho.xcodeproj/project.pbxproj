@@ -1242,6 +1242,13 @@
 		9901AEF42A9BCEB90075122D /* d2 */ = {
 			isa = PBXGroup;
 			children = (
+				47C96C531FA67D1D00A6C587 /* Acceleration.hpp */,
+				80BB894E141C3E5900F1753A /* Body.hpp */,
+				470F94A51EC4C79B00AA3C82 /* BodyConf.hpp */,
+				474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */,
+				476162C71E245C9D002C7FB0 /* CodeDumper.hpp */,
+				47363E8520027FE2005912B1 /* ContactImpulsesList.hpp */,
+				80BB8964141C3E5900F1753A /* ContactSolver.hpp */,
 				4787D6C11F2E9DC0008C115E /* DistanceJointConf.hpp */,
 				4787D6C51F2EA1DB008C115E /* FrictionJointConf.hpp */,
 				4787D6C91F2EA3A1008C115E /* GearJointConf.hpp */,
@@ -1249,26 +1256,35 @@
 				4787D6BD1F2E968E008C115E /* JointConf.hpp */,
 				4706451C25336237006E69AA /* LimitState.hpp */,
 				4787D6CD1F2EC902008C115E /* MotorJointConf.hpp */,
+				470F9B0F1EDF2890007EF7B6 /* Position.hpp */,
+				478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */,
+				477DB2AB1D1C4BE800846ED6 /* PositionSolverManifold.hpp */,
 				4787D6B91F2E946E008C115E /* PrismaticJointConf.hpp */,
 				4787D6D51F2ECD87008C115E /* PulleyJointConf.hpp */,
 				4787D6D91F2ECFFB008C115E /* RevoluteJointConf.hpp */,
 				4787D6DD1F2ED2D6008C115E /* RopeJointConf.hpp */,
-				4787D6D11F2ECB8D008C115E /* TargetJointConf.hpp */,
-				4787D6E11F2ED461008C115E /* WeldJointConf.hpp */,
-				4787D6E51F2ED62C008C115E /* WheelJointConf.hpp */,
-				47C96C531FA67D1D00A6C587 /* Acceleration.hpp */,
-				474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */,
-				476162C71E245C9D002C7FB0 /* CodeDumper.hpp */,
-				80BB8964141C3E5900F1753A /* ContactSolver.hpp */,
-				470F9B0F1EDF2890007EF7B6 /* Position.hpp */,
-				478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */,
-				477DB2AB1D1C4BE800846ED6 /* PositionSolverManifold.hpp */,
 				470F9B1B1EDF2B8A007EF7B6 /* Sweep.hpp */,
+				4787D6D11F2ECB8D008C115E /* TargetJointConf.hpp */,
 				470F9B151EDF2959007EF7B6 /* Transformation.hpp */,
 				4731DE551DEC908600E7F931 /* UnitVec.hpp */,
 				470F9B2D1EDF5165007EF7B6 /* Velocity.hpp */,
 				4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */,
 				472E30181DBA925500DA821D /* VertexSet.hpp */,
+				80BB8957141C3E5900F1753A /* World.hpp */,
+				4764088C252268A30090F711 /* WorldBody.hpp */,
+				47440F0A1EDA365400AB3F51 /* WorldConf.hpp */,
+				476408912522698E0090F711 /* WorldContact.hpp */,
+				476408902522698E0090F711 /* WorldJoint.hpp */,
+				4764088F2522698E0090F711 /* WorldMisc.hpp */,
+				4795B64A262DF06800FB3EC6 /* WorldShape.hpp */,
+				47640860250807720090F711 /* WorldImpl.hpp */,
+				47640877251EA80C0090F711 /* WorldImplBody.hpp */,
+				47640878251EA80C0090F711 /* WorldImplContact.hpp */,
+				47640876251EA80B0090F711 /* WorldImplJoint.hpp */,
+				4764087E251EB90E0090F711 /* WorldImplMisc.hpp */,
+				4795B62E262B72BB00FB3EC6 /* WorldImplShape.hpp */,
+				4787D6E11F2ED461008C115E /* WeldJointConf.hpp */,
+				4787D6E51F2ED62C008C115E /* WheelJointConf.hpp */,
 			);
 			path = d2;
 			sourceTree = "<group>";
@@ -1286,6 +1302,9 @@
 		9901AEF62A9BCECD0075122D /* d2 */ = {
 			isa = PBXGroup;
 			children = (
+				80BB894D141C3E5900F1753A /* Body.cpp */,
+				470F9B4B1EEF20B6007EF7B6 /* BodyConf.cpp */,
+				47363E8420027FE2005912B1 /* ContactImpulsesList.cpp */,
 				4787D6C01F2E9DC0008C115E /* DistanceJointConf.cpp */,
 				4787D6C41F2EA1DB008C115E /* FrictionJointConf.cpp */,
 				4787D6C81F2EA3A1008C115E /* GearJointConf.cpp */,
@@ -1307,6 +1326,19 @@
 				476E8ABD1FC8CD9F00705BB5 /* UnitVec.cpp */,
 				47363E8820029DFD005912B1 /* Velocity.cpp */,
 				47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */,
+				80BB8956141C3E5900F1753A /* World.cpp */,
+				4764089625226D7C0090F711 /* WorldBody.cpp */,
+				4764089B25226E170090F711 /* WorldContact.cpp */,
+				47640861250807720090F711 /* WorldImpl.cpp */,
+				47640880251F0F9B0090F711 /* WorldImplBody.cpp */,
+				47640885251F11630090F711 /* WorldImplContact.cpp */,
+				47640883251F11620090F711 /* WorldImplJoint.cpp */,
+				47640884251F11620090F711 /* WorldImplMisc.cpp */,
+				4795B62D262B72BB00FB3EC6 /* WorldImplShape.cpp */,
+				4764089825226E170090F711 /* WorldJoint.cpp */,
+				4764089A25226E170090F711 /* WorldMisc.cpp */,
+				4795B64B262DF06800FB3EC6 /* WorldShape.cpp */,
+				476408A0252391730090F711 /* WorldSpecial.cpp */,
 			);
 			path = d2;
 			sourceTree = "<group>";
@@ -1384,7 +1416,6 @@
 				9901AEF42A9BCEB90075122D /* d2 */,
 				9901AEF32A9BCEB90075122D /* pmr */,
 				996BDA7C2A9855E400CD2D55 /* Collision */,
-				996BDA7D2A9855E400CD2D55 /* Dynamics */,
 			);
 			path = PlayRho;
 			sourceTree = "<group>";
@@ -1414,7 +1445,6 @@
 				9901AEF62A9BCECD0075122D /* d2 */,
 				9901AEF52A9BCECD0075122D /* pmr */,
 				996BDA7E2A98561A00CD2D55 /* Collision */,
-				996BDA802A98561A00CD2D55 /* Dynamics */,
 			);
 			path = PlayRho;
 			sourceTree = "<group>";
@@ -1451,29 +1481,6 @@
 			path = Collision;
 			sourceTree = "<group>";
 		};
-		996BDA7D2A9855E400CD2D55 /* Dynamics */ = {
-			isa = PBXGroup;
-			children = (
-				80BB894E141C3E5900F1753A /* Body.hpp */,
-				470F94A51EC4C79B00AA3C82 /* BodyConf.hpp */,
-				47363E8520027FE2005912B1 /* ContactImpulsesList.hpp */,
-				80BB8957141C3E5900F1753A /* World.hpp */,
-				4764088C252268A30090F711 /* WorldBody.hpp */,
-				47440F0A1EDA365400AB3F51 /* WorldConf.hpp */,
-				476408912522698E0090F711 /* WorldContact.hpp */,
-				476408902522698E0090F711 /* WorldJoint.hpp */,
-				4764088F2522698E0090F711 /* WorldMisc.hpp */,
-				4795B64A262DF06800FB3EC6 /* WorldShape.hpp */,
-				47640860250807720090F711 /* WorldImpl.hpp */,
-				47640877251EA80C0090F711 /* WorldImplBody.hpp */,
-				47640878251EA80C0090F711 /* WorldImplContact.hpp */,
-				47640876251EA80B0090F711 /* WorldImplJoint.hpp */,
-				4764087E251EB90E0090F711 /* WorldImplMisc.hpp */,
-				4795B62E262B72BB00FB3EC6 /* WorldImplShape.hpp */,
-			);
-			path = Dynamics;
-			sourceTree = "<group>";
-		};
 		996BDA7E2A98561A00CD2D55 /* Collision */ = {
 			isa = PBXGroup;
 			children = (
@@ -1497,29 +1504,6 @@
 				47578BE31D886FED0078CD40 /* WorldManifold.cpp */,
 			);
 			path = Collision;
-			sourceTree = "<group>";
-		};
-		996BDA802A98561A00CD2D55 /* Dynamics */ = {
-			isa = PBXGroup;
-			children = (
-				80BB894D141C3E5900F1753A /* Body.cpp */,
-				470F9B4B1EEF20B6007EF7B6 /* BodyConf.cpp */,
-				47363E8420027FE2005912B1 /* ContactImpulsesList.cpp */,
-				80BB8956141C3E5900F1753A /* World.cpp */,
-				4764089625226D7C0090F711 /* WorldBody.cpp */,
-				4764089B25226E170090F711 /* WorldContact.cpp */,
-				4764089825226E170090F711 /* WorldJoint.cpp */,
-				4764089A25226E170090F711 /* WorldMisc.cpp */,
-				4795B64B262DF06800FB3EC6 /* WorldShape.cpp */,
-				47640861250807720090F711 /* WorldImpl.cpp */,
-				47640880251F0F9B0090F711 /* WorldImplBody.cpp */,
-				47640885251F11630090F711 /* WorldImplContact.cpp */,
-				47640883251F11620090F711 /* WorldImplJoint.cpp */,
-				47640884251F11620090F711 /* WorldImplMisc.cpp */,
-				4795B62D262B72BB00FB3EC6 /* WorldImplShape.cpp */,
-				476408A0252391730090F711 /* WorldSpecial.cpp */,
-			);
-			path = Dynamics;
 			sourceTree = "<group>";
 		};
 		996BDA812A9857A000CD2D55 /* Shapes */ = {

@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/WorldConf.hpp>
+#include <PlayRho/d2/WorldConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

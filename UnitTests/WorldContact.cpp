@@ -20,14 +20,14 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/WorldContact.hpp>
+#include <PlayRho/d2/WorldContact.hpp>
 
-#include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/WorldMisc.hpp>
-#include <PlayRho/Dynamics/WorldShape.hpp>
+#include <PlayRho/d2/World.hpp>
+#include <PlayRho/d2/WorldBody.hpp>
+#include <PlayRho/d2/WorldMisc.hpp>
+#include <PlayRho/d2/WorldShape.hpp>
 #include <PlayRho/StepConf.hpp>
-#include <PlayRho/Dynamics/BodyConf.hpp>
+#include <PlayRho/d2/BodyConf.hpp>
 
 #include <PlayRho/Contact.hpp>
 

@@ -27,9 +27,9 @@
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/DynamicTree.hpp>
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/WorldMisc.hpp>
-#include <PlayRho/Dynamics/WorldShape.hpp>
+#include <PlayRho/d2/WorldBody.hpp>
+#include <PlayRho/d2/WorldMisc.hpp>
+#include <PlayRho/d2/WorldShape.hpp>
 
 #include <utility>
 

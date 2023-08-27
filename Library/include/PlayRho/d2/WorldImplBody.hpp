@@ -31,7 +31,7 @@
 #include <PlayRho/d2/Velocity.hpp>
 #include <PlayRho/Vector2.hpp> // for Length2, LinearAcceleration2
 
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/d2/Body.hpp>
 #include <PlayRho/BodyID.hpp>
 #include <PlayRho/BodyType.hpp>
 #include <PlayRho/KeyedContactID.hpp>

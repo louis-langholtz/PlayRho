@@ -1,6 +1,5 @@
 /*
- * Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
- * Modified work Copyright (c) 2023 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2023 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -19,33 +18,37 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/WorldImplContact.hpp>
+#include <PlayRho/d2/WorldImplShape.hpp>
+#include <PlayRho/d2/WorldImpl.hpp>
 
-#include <PlayRho/Dynamics/WorldImpl.hpp>
-
-#include <PlayRho/Contact.hpp> // for use of GetContact
+#include <PlayRho/Collision/Shapes/Shape.hpp>
 
 namespace playrho {
 namespace d2 {
 
-ContactCounter GetContactRange(const WorldImpl& world) noexcept
+ShapeCounter GetShapeRange(const WorldImpl& world) noexcept
 {
-    return world.GetContactRange();
+    return world.GetShapeRange();
 }
 
-const Contact& GetContact(const WorldImpl& world, ContactID id)
+ShapeID CreateShape(WorldImpl& world, const Shape& def)
 {
-    return world.GetContact(id);
+    return world.CreateShape(def);
 }
 
-void SetContact(WorldImpl& world, ContactID id, const Contact& value)
+const Shape& GetShape(const WorldImpl& world, ShapeID id)
 {
-    world.SetContact(id, value);
+    return world.GetShape(id);
 }
 
-const Manifold& GetManifold(const WorldImpl& world, ContactID id)
+void SetShape(WorldImpl& world, ShapeID id, const Shape& def)
 {
-    return world.GetManifold(id);
+    world.SetShape(id, def);
+}
+
+void Destroy(WorldImpl& world, ShapeID id)
+{
+    world.Destroy(id);
 }
 
 } // namespace d2

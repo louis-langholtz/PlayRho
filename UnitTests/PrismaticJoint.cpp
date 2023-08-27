@@ -23,11 +23,11 @@
 #include <PlayRho/d2/PrismaticJointConf.hpp>
 
 #include <PlayRho/d2/Joint.hpp>
-#include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/WorldJoint.hpp>
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/WorldShape.hpp>
-#include <PlayRho/Dynamics/WorldMisc.hpp> // for Step
+#include <PlayRho/d2/World.hpp>
+#include <PlayRho/d2/WorldJoint.hpp>
+#include <PlayRho/d2/WorldBody.hpp>
+#include <PlayRho/d2/WorldShape.hpp>
+#include <PlayRho/d2/WorldMisc.hpp> // for Step
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/d2/BodyConstraint.hpp>
 #include <PlayRho/ConstraintSolverConf.hpp>

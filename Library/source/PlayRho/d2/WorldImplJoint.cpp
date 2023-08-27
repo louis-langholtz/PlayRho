@@ -19,9 +19,9 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/WorldImplJoint.hpp>
+#include <PlayRho/d2/WorldImplJoint.hpp>
 
-#include <PlayRho/Dynamics/WorldImpl.hpp>
+#include <PlayRho/d2/WorldImpl.hpp>
 
 #include <PlayRho/d2/Joint.hpp>
 #include <PlayRho/d2/RevoluteJointConf.hpp>

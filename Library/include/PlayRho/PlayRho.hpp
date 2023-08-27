@@ -44,7 +44,7 @@ For coding, purists may want to begin by just including the
  <a href="classplayrho_1_1d2_1_1World.html"><code>playrho::d2::World</code></a> class.
  Here's what this might look like:
  @code
- #include <PlayRho/Dynamics/World.hpp>
+ #include <PlayRho/d2/World.hpp>
 
  int main()
  {
@@ -100,16 +100,16 @@ For a more elaborate example, that's of an entire application, see
 /// Name space for internal/detail related PlayRho names.
 
 // For purists, just include this first file.
-#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/d2/World.hpp>
 
 // For pragmatists, add these for free function interfaces to the world and some additional
 // functionality. Note that using these free function interfaces, instead of directly using
 // world member functions, may help isolate your code from changes to the World class.
-#include <PlayRho/Dynamics/WorldMisc.hpp>
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/WorldShape.hpp>
-#include <PlayRho/Dynamics/WorldJoint.hpp>
-#include <PlayRho/Dynamics/WorldContact.hpp>
+#include <PlayRho/d2/WorldMisc.hpp>
+#include <PlayRho/d2/WorldBody.hpp>
+#include <PlayRho/d2/WorldShape.hpp>
+#include <PlayRho/d2/WorldJoint.hpp>
+#include <PlayRho/d2/WorldContact.hpp>
 
 // For any and all shape configurations, add one or more of the following.
 #include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>

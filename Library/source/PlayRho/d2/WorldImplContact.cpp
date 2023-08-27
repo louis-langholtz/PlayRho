@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2023 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2023 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -18,22 +19,33 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/ContactImpulsesList.hpp>
-#include <PlayRho/d2/VelocityConstraint.hpp>
+#include <PlayRho/d2/WorldImplContact.hpp>
+
+#include <PlayRho/d2/WorldImpl.hpp>
+
+#include <PlayRho/Contact.hpp> // for use of GetContact
 
 namespace playrho {
 namespace d2 {
 
-/// @brief Gets the contact impulses for the given velocity constraint.
-ContactImpulsesList GetContactImpulses(const VelocityConstraint& vc)
+ContactCounter GetContactRange(const WorldImpl& world) noexcept
 {
-    ContactImpulsesList impulse;
-    const auto count = vc.GetPointCount();
-    for (auto j = decltype(count){0}; j < count; ++j)
-    {
-        impulse.AddEntry(GetNormalImpulseAtPoint(vc, j), GetTangentImpulseAtPoint(vc, j));
-    }
-    return impulse;
+    return world.GetContactRange();
+}
+
+const Contact& GetContact(const WorldImpl& world, ContactID id)
+{
+    return world.GetContact(id);
+}
+
+void SetContact(WorldImpl& world, ContactID id, const Contact& value)
+{
+    world.SetContact(id, value);
+}
+
+const Manifold& GetManifold(const WorldImpl& world, ContactID id)
+{
+    return world.GetManifold(id);
 }
 
 } // namespace d2

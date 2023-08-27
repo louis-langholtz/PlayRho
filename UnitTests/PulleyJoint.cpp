@@ -23,9 +23,9 @@
 #include <PlayRho/d2/PulleyJointConf.hpp>
 
 #include <PlayRho/StepConf.hpp>
-#include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/WorldJoint.hpp>
-#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/d2/World.hpp>
+#include <PlayRho/d2/WorldJoint.hpp>
+#include <PlayRho/d2/WorldBody.hpp>
 #include <PlayRho/d2/Joint.hpp>
 
 #include <PlayRho/ConstraintSolverConf.hpp>

@@ -20,17 +20,17 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/WorldImpl.hpp>
+#include <PlayRho/d2/WorldImpl.hpp>
 
-#include <PlayRho/Dynamics/WorldImplBody.hpp>
-#include <PlayRho/Dynamics/WorldImplMisc.hpp>
-#include <PlayRho/Dynamics/WorldImplJoint.hpp>
-#include <PlayRho/Dynamics/WorldImplContact.hpp>
+#include <PlayRho/d2/WorldImplBody.hpp>
+#include <PlayRho/d2/WorldImplMisc.hpp>
+#include <PlayRho/d2/WorldImplJoint.hpp>
+#include <PlayRho/d2/WorldImplContact.hpp>
 #include <PlayRho/StepConf.hpp>
-#include <PlayRho/Dynamics/BodyConf.hpp>
-#include <PlayRho/Dynamics/Body.hpp> // for GetBody
+#include <PlayRho/d2/BodyConf.hpp>
+#include <PlayRho/d2/Body.hpp> // for GetBody
 #include <PlayRho/Contact.hpp>
-#include <PlayRho/Dynamics/ContactImpulsesList.hpp>
+#include <PlayRho/d2/ContactImpulsesList.hpp>
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>

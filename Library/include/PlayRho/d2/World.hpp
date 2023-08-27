@@ -32,11 +32,11 @@
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <PlayRho/ShapeID.hpp>
 
-#include <PlayRho/Dynamics/BodyConf.hpp> // for GetDefaultBodyConf
+#include <PlayRho/d2/BodyConf.hpp> // for GetDefaultBodyConf
 #include <PlayRho/BodyID.hpp>
 #include <PlayRho/StepConf.hpp>
 #include <PlayRho/StepStats.hpp>
-#include <PlayRho/Dynamics/WorldConf.hpp>
+#include <PlayRho/d2/WorldConf.hpp>
 #include <PlayRho/KeyedContactID.hpp>
 #include <PlayRho/JointID.hpp>
 
