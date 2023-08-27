@@ -27,8 +27,7 @@
 /// collision response states.
 
 #include <PlayRho/Settings.hpp>
-
-#include <PlayRho/Collision/PointState.hpp>
+#include <PlayRho/PointState.hpp>
 
 namespace playrho::d2 {
 

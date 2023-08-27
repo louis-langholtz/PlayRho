@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/ToiConf.hpp>
+#include <PlayRho/ToiConf.hpp>
 #include <PlayRho/StepConf.hpp>
 
 namespace playrho {

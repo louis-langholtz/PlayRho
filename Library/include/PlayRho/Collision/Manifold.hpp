@@ -23,7 +23,7 @@
 #define PLAYRHO_COLLISION_MANIFOLD_HPP
 
 #include <PlayRho/Math.hpp>
-#include <PlayRho/Collision/ContactFeature.hpp>
+#include <PlayRho/ContactFeature.hpp>
 #include <PlayRho/Collision/IndexPair.hpp>
 
 namespace playrho {

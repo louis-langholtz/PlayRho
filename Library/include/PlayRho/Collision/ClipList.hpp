@@ -26,8 +26,7 @@
 /// Structures and functions used for computing clip lists.
 
 #include <PlayRho/ArrayList.hpp>
-
-#include <PlayRho/Collision/ContactFeature.hpp>
+#include <PlayRho/ContactFeature.hpp>
 
 namespace playrho::d2 {
 
