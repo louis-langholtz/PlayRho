@@ -23,7 +23,7 @@
 #define PLAYRHO_COLLISION_SHAPES_DISKSHAPECONF_HPP
 
 #include <PlayRho/Math.hpp>
-#include <PlayRho/Collision/Shapes/ShapeConf.hpp>
+#include <PlayRho/d2/ShapeConf.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>
 

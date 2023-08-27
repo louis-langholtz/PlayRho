@@ -24,7 +24,7 @@
 
 #include <PlayRho/Math.hpp>
 #include <PlayRho/Span.hpp>
-#include <PlayRho/Collision/Shapes/ShapeConf.hpp>
+#include <PlayRho/d2/ShapeConf.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/d2/VertexSet.hpp>

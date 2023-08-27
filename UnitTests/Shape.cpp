@@ -20,11 +20,11 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Collision/Shapes/Shape.hpp>
-#include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/Compositor.hpp>
+#include <PlayRho/d2/Shape.hpp>
+#include <PlayRho/d2/EdgeShapeConf.hpp>
+#include <PlayRho/d2/DiskShapeConf.hpp>
+#include <PlayRho/d2/PolygonShapeConf.hpp>
+#include <PlayRho/d2/Compositor.hpp>
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 

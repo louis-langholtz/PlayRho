@@ -25,7 +25,7 @@
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Distance.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
+#include <PlayRho/d2/PolygonShapeConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

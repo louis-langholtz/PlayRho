@@ -32,11 +32,11 @@
 #include <PlayRho/Contact.hpp>
 #include <PlayRho/d2/ContactImpulsesList.hpp>
 
-#include <PlayRho/Collision/Shapes/Shape.hpp>
-#include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
+#include <PlayRho/d2/Shape.hpp>
+#include <PlayRho/d2/ChainShapeConf.hpp>
+#include <PlayRho/d2/DiskShapeConf.hpp>
+#include <PlayRho/d2/PolygonShapeConf.hpp>
+#include <PlayRho/d2/EdgeShapeConf.hpp>
 #include <PlayRho/Collision/DynamicTree.hpp> // for GetTree
 #include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>

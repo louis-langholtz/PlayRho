@@ -21,9 +21,9 @@
 
 #include <PlayRho/Span.hpp>
 
-#include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
+#include <PlayRho/d2/ChainShapeConf.hpp>
 #include <PlayRho/Collision/AABB.hpp>
-#include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/d2/Shape.hpp>
 
 #include <algorithm>
 #include <iterator>

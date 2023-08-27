@@ -23,7 +23,7 @@
 #include <PlayRho/d2/FrictionJointConf.hpp>
 #include <PlayRho/d2/Joint.hpp>
 
-#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+#include <PlayRho/d2/DiskShapeConf.hpp>
 #include <PlayRho/d2/World.hpp>
 #include <PlayRho/d2/WorldBody.hpp>
 #include <PlayRho/d2/WorldShape.hpp>

@@ -24,9 +24,9 @@
 #include <PlayRho/d2/WorldBody.hpp>
 #include <PlayRho/d2/WorldShape.hpp>
 
-#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/Compositor.hpp>
-#include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
+#include <PlayRho/d2/DiskShapeConf.hpp>
+#include <PlayRho/d2/Compositor.hpp>
+#include <PlayRho/d2/EdgeShapeConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

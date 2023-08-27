@@ -29,7 +29,7 @@
 #include <PlayRho/propagate_const.hpp>
 
 #include <PlayRho/Collision/MassData.hpp>
-#include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/d2/Shape.hpp>
 #include <PlayRho/ShapeID.hpp>
 
 #include <PlayRho/d2/BodyConf.hpp> // for GetDefaultBodyConf

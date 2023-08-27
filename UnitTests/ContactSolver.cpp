@@ -25,7 +25,7 @@
 #include <PlayRho/d2/PositionConstraint.hpp>
 #include <PlayRho/d2/VelocityConstraint.hpp>
 #include <PlayRho/d2/BodyConstraint.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
+#include <PlayRho/d2/PolygonShapeConf.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 
 using namespace playrho;

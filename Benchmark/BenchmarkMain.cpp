@@ -74,10 +74,10 @@
 #include <PlayRho/Collision/WorldManifold.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
 #if 0
-#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
+#include <PlayRho/d2/PolygonShapeConf.hpp>
 #endif
-#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/Compositor.hpp>
+#include <PlayRho/d2/DiskShapeConf.hpp>
+#include <PlayRho/d2/Compositor.hpp>
 
 // #define BENCHMARK_BOX2D
 #ifdef BENCHMARK_BOX2D
