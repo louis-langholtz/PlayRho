@@ -23,8 +23,8 @@
 #define PLAYRHO_DYNAMICS_JOINTS_PULLEYJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Span.hpp>
+#include <PlayRho/Math.hpp>
+#include <PlayRho/Span.hpp>
 
 namespace playrho {
 

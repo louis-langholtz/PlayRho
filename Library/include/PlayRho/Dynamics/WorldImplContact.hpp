@@ -25,7 +25,7 @@
 /// @file
 /// Declarations of free functions of WorldImpl for contacts.
 
-#include <PlayRho/Common/Real.hpp>
+#include <PlayRho/Real.hpp>
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>

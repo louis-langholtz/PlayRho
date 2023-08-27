@@ -19,7 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Common/Version.hpp>
+#include <PlayRho/Version.hpp>
 
 #include "imgui.h"
 #include "backends/imgui_impl_glfw.h"

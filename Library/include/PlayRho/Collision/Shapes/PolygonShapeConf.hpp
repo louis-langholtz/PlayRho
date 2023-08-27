@@ -22,8 +22,8 @@
 #ifndef PLAYRHO_COLLISION_SHAPES_POLYGONSHAPECONF_HPP
 #define PLAYRHO_COLLISION_SHAPES_POLYGONSHAPECONF_HPP
 
-#include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Span.hpp>
+#include <PlayRho/Math.hpp>
+#include <PlayRho/Span.hpp>
 #include <PlayRho/Collision/Shapes/ShapeConf.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>

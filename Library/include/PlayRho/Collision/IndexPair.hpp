@@ -22,7 +22,7 @@
 #ifndef PLAYRHO_COLLISION_INDEXPAIR_HPP
 #define PLAYRHO_COLLISION_INDEXPAIR_HPP
 
-#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Settings.hpp>
 #include <array>
 #include <utility>
 

@@ -20,8 +20,8 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Common/Vector.hpp>
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Vector.hpp>
+#include <PlayRho/Math.hpp>
 
 #include <sstream>
 #include <type_traits>

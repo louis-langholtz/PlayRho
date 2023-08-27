@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Common/BlockAllocator.hpp>
+#include <PlayRho/BlockAllocator.hpp>
 
 using namespace playrho;
 

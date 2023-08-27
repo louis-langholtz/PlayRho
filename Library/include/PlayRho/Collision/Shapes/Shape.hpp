@@ -24,13 +24,13 @@
 #ifndef PLAYRHO_COLLISION_SHAPES_SHAPE_HPP
 #define PLAYRHO_COLLISION_SHAPES_SHAPE_HPP
 
-#include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/TypeInfo.hpp>
+#include <PlayRho/Math.hpp>
+#include <PlayRho/TypeInfo.hpp>
 
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>
-#include <PlayRho/Common/NonNegative.hpp>
-#include <PlayRho/Common/InvalidArgument.hpp>
+#include <PlayRho/NonNegative.hpp>
+#include <PlayRho/InvalidArgument.hpp>
 #include <PlayRho/Dynamics/Filter.hpp>
 
 #include <memory>

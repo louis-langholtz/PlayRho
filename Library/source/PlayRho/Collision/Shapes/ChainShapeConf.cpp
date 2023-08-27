@@ -19,7 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Common/Span.hpp>
+#include <PlayRho/Span.hpp>
 
 #include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 #include <PlayRho/Collision/AABB.hpp>

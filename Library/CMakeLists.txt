@@ -34,15 +34,15 @@ file(GLOB PLAYRHO_Contacts_SRCS "${PLAYRHO_SOURCE_PREFIX}Dynamics/Contacts/*.cpp
 file(GLOB PLAYRHO_Contacts_HDRS "${PLAYRHO_INCLUDE_PREFIX}Dynamics/Contacts/*.hpp")
 file(GLOB PLAYRHO_Joints_SRCS "${PLAYRHO_SOURCE_PREFIX}Dynamics/Joints/*.cpp")
 file(GLOB PLAYRHO_Joints_HDRS "${PLAYRHO_INCLUDE_PREFIX}Dynamics/Joints/*.hpp")
+file(GLOB PLAYRHO_General_SRCS "${PLAYRHO_SOURCE_PREFIX}*.cpp")
 file(GLOB PLAYRHO_General_HDRS "${PLAYRHO_INCLUDE_PREFIX}*.hpp")
-file(GLOB PLAYRHO_Common_SRCS "${PLAYRHO_SOURCE_PREFIX}Common/*.cpp")
-file(GLOB PLAYRHO_Common_HDRS "${PLAYRHO_INCLUDE_PREFIX}Common/*.hpp")
 
 configure_file("${PLAYRHO_INCLUDE_PREFIX}Defines.hpp.in" "${PLAYRHO_INCLUDE_PREFIX}Defines.hpp" @ONLY)
-set(PLAYRHO_GeneralCfg_HDRS "${CMAKE_CURRENT_BINARY_DIR}/${PLAYRHO_INCLUDE_PREFIX}Defines.hpp")
-
-configure_file("${PLAYRHO_INCLUDE_PREFIX}Common/Real.hpp.in" "${PLAYRHO_INCLUDE_PREFIX}Common/Real.hpp" @ONLY)
-set(PLAYRHO_CommonCfg_HDRS "${CMAKE_CURRENT_BINARY_DIR}/${PLAYRHO_INCLUDE_PREFIX}Common/Real.hpp")
+configure_file("${PLAYRHO_INCLUDE_PREFIX}Real.hpp.in" "${PLAYRHO_INCLUDE_PREFIX}Real.hpp" @ONLY)
+set(PLAYRHO_GeneralCfg_HDRS
+	"${CMAKE_CURRENT_BINARY_DIR}/${PLAYRHO_INCLUDE_PREFIX}Defines.hpp"
+	"${CMAKE_CURRENT_BINARY_DIR}/${PLAYRHO_INCLUDE_PREFIX}Real.hpp"
+	)
 
 set(PLAYRHO_PMR_HDRS
 	"${PLAYRHO_INCLUDE_PREFIX}pmr/MemoryResource.hpp"
@@ -73,10 +73,10 @@ set(PLAYRHO_D2_SRCS
 	)
 
 set(libsrc
+	${PLAYRHO_General_SRCS}
 	${PLAYRHO_Joints_SRCS}
 	${PLAYRHO_Contacts_SRCS}
 	${PLAYRHO_Dynamics_SRCS}
-	${PLAYRHO_Common_SRCS}
 	${PLAYRHO_Shapes_SRCS}
 	${PLAYRHO_Collision_SRCS}
 	${PLAYRHO_PMR_SRCS}
@@ -126,7 +126,7 @@ target_compile_options(PlayRho PRIVATE
 
 # These are used to create visual studio folders.
 source_group(Include FILES ${PLAYRHO_General_HDRS} ${PLAYRHO_GeneralCfg_HDRS})
-source_group(Common FILES ${PLAYRHO_Common_SRCS} ${PLAYRHO_CommonCfg_HDRS} ${PLAYRHO_Common_HDRS})
+source_group(General FILES ${PLAYRHO_General_SRCS} ${PLAYRHO_GeneralCfg_HDRS} ${PLAYRHO_General_HDRS})
 source_group(Collision FILES ${PLAYRHO_Collision_SRCS} ${PLAYRHO_Collision_HDRS})
 source_group(Collision\\Shapes FILES ${PLAYRHO_Shapes_SRCS} ${PLAYRHO_Shapes_HDRS})
 source_group(Dynamics FILES ${PLAYRHO_Dynamics_SRCS} ${PLAYRHO_Dynamics_HDRS})
@@ -146,12 +146,6 @@ if(PLAYRHO_INSTALL)
 		COMPONENT Library)
 	install(FILES ${PLAYRHO_GeneralCfg_HDRS}
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho
-		COMPONENT Library)
-	install(FILES ${PLAYRHO_Common_HDRS}
-		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Common
-		COMPONENT Library)
-	install(FILES ${PLAYRHO_CommonCfg_HDRS}
-		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Common
 		COMPONENT Library)
 	install(FILES ${PLAYRHO_Collision_HDRS}
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Collision

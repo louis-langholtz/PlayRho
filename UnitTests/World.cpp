@@ -39,8 +39,8 @@
 #include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
-#include <PlayRho/Common/LengthError.hpp>
-#include <PlayRho/Common/WrongState.hpp>
+#include <PlayRho/LengthError.hpp>
+#include <PlayRho/WrongState.hpp>
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>

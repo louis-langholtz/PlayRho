@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Common/GrowableStack.hpp>
+#include <PlayRho/GrowableStack.hpp>
 
 using namespace playrho;
 

@@ -21,12 +21,12 @@
 #ifndef PLAYRHO_COLLISION_SHAPES_RECTANGLE_HPP
 #define PLAYRHO_COLLISION_SHAPES_RECTANGLE_HPP
 
-#include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Units.hpp>
-#include <PlayRho/Common/InvalidArgument.hpp>
-#include <PlayRho/Common/NonNegative.hpp>
-#include <PlayRho/Common/Finite.hpp>
-#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Math.hpp>
+#include <PlayRho/Units.hpp>
+#include <PlayRho/InvalidArgument.hpp>
+#include <PlayRho/NonNegative.hpp>
+#include <PlayRho/Finite.hpp>
+#include <PlayRho/Settings.hpp>
 
 #include <PlayRho/Dynamics/Filter.hpp>
 

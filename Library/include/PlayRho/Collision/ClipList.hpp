@@ -25,7 +25,7 @@
 /// @file
 /// Structures and functions used for computing clip lists.
 
-#include <PlayRho/Common/ArrayList.hpp>
+#include <PlayRho/ArrayList.hpp>
 
 #include <PlayRho/Collision/ContactFeature.hpp>
 

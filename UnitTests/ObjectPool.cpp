@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Common/ObjectPool.hpp>
+#include <PlayRho/ObjectPool.hpp>
 
 using namespace playrho;
 

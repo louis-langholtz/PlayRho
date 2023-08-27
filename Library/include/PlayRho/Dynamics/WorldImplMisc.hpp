@@ -25,8 +25,8 @@
 /// @file
 /// Declarations of free functions of WorldImpl.
 
-#include <PlayRho/Common/Units.hpp> // for Length, Frequency, etc.
-#include <PlayRho/Common/Vector2.hpp> // for Length2
+#include <PlayRho/Units.hpp> // for Length, Frequency, etc.
+#include <PlayRho/Vector2.hpp> // for Length2
 
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>

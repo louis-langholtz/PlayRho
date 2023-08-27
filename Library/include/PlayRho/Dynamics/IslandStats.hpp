@@ -21,8 +21,8 @@
 #ifndef PLAYRHO_DYNAMICS_ISLANDSTATS_HPP
 #define PLAYRHO_DYNAMICS_ISLANDSTATS_HPP
 
-#include <PlayRho/Common/Units.hpp>
-#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Units.hpp>
+#include <PlayRho/Settings.hpp>
 
 namespace playrho {
 

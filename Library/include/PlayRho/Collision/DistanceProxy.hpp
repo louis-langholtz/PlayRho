@@ -22,8 +22,8 @@
 #ifndef PLAYRHO_COLLISION_DISTANCEPROXY_HPP
 #define PLAYRHO_COLLISION_DISTANCEPROXY_HPP
 
-#include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Span.hpp>
+#include <PlayRho/Math.hpp>
+#include <PlayRho/Span.hpp>
 #include <vector>
 #include <algorithm>
 

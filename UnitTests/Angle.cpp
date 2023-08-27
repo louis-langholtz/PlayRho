@@ -20,6 +20,6 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Math.hpp>
 
 using namespace playrho;

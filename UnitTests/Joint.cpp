@@ -22,7 +22,7 @@
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-#include <PlayRho/Common/Templates.hpp>
+#include <PlayRho/Templates.hpp>
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
 #include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
 

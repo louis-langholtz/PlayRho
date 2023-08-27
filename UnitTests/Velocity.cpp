@@ -21,7 +21,7 @@
 #include "UnitTests.hpp"
 
 #include <PlayRho/d2/Velocity.hpp>
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Math.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
 
 using namespace playrho;

@@ -24,7 +24,7 @@
 
 #include <variant>
 
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Math.hpp>
 #include <PlayRho/Collision/IndexPair.hpp>
 
 namespace playrho {

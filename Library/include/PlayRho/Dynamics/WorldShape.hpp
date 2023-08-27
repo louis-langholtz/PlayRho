@@ -37,8 +37,8 @@
 /// @see World, ShapeID.
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 
-#include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Span.hpp>
+#include <PlayRho/Math.hpp>
+#include <PlayRho/Span.hpp>
 
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>

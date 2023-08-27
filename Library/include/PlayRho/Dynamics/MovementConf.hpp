@@ -21,7 +21,7 @@
 #ifndef PLAYRHO_DYNAMICS_MOVEMENTCONF_HPP
 #define PLAYRHO_DYNAMICS_MOVEMENTCONF_HPP
 
-#include <PlayRho/Common/Units.hpp>
+#include <PlayRho/Units.hpp>
 
 namespace playrho {
 

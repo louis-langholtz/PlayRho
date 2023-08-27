@@ -22,10 +22,10 @@
 #ifndef PLAYRHO_COLLISION_SHAPES_SHAPECONF_HPP
 #define PLAYRHO_COLLISION_SHAPES_SHAPECONF_HPP
 
-#include <PlayRho/Common/Units.hpp>
-#include <PlayRho/Common/Finite.hpp>
-#include <PlayRho/Common/NonNegative.hpp>
-#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Units.hpp>
+#include <PlayRho/Finite.hpp>
+#include <PlayRho/NonNegative.hpp>
+#include <PlayRho/Settings.hpp>
 #include <PlayRho/Dynamics/Filter.hpp>
 
 namespace playrho {

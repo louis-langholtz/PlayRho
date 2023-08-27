@@ -20,9 +20,9 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Common/ArrayList.hpp>
-#include <PlayRho/Common/Vector.hpp>
-//#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/ArrayList.hpp>
+#include <PlayRho/Vector.hpp>
+//#include <PlayRho/Math.hpp>
 
 using namespace playrho;
 

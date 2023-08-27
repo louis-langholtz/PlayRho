@@ -21,8 +21,8 @@
 #ifndef PLAYRHO_COLLISION_TOICONF_HPP
 #define PLAYRHO_COLLISION_TOICONF_HPP
 
-#include <PlayRho/Common/NonNegative.hpp>
-#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/NonNegative.hpp>
+#include <PlayRho/Settings.hpp>
 
 namespace playrho {
 

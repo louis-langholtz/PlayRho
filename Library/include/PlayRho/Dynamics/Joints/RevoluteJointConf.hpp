@@ -23,9 +23,9 @@
 #define PLAYRHO_DYNAMICS_JOINTS_REVOLUTEJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Math.hpp>
 #include <PlayRho/Dynamics/Joints/LimitState.hpp>
-#include <PlayRho/Common/Span.hpp>
+#include <PlayRho/Span.hpp>
 
 namespace playrho {
 

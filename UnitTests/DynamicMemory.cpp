@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Common/DynamicMemory.hpp>
+#include <PlayRho/DynamicMemory.hpp>
 
 #include <new>
 

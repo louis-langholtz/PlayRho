@@ -21,8 +21,8 @@
 #ifndef PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP
 #define PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP
 
-#include <PlayRho/Common/IndexingNamedType.hpp>
-#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/IndexingNamedType.hpp>
+#include <PlayRho/Settings.hpp>
 
 namespace playrho {
 

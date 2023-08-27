@@ -25,9 +25,9 @@
 /// @file
 /// Declarations of the BodyConf struct and free functions associated with it.
 
-#include <PlayRho/Common/Settings.hpp>
-#include <PlayRho/Common/NonNegative.hpp>
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Settings.hpp>
+#include <PlayRho/NonNegative.hpp>
+#include <PlayRho/Math.hpp>
 
 #include <PlayRho/Dynamics/BodyType.hpp>
 

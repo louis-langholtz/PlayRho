@@ -21,8 +21,8 @@
 #ifndef PLAYRHO_COLLISION_TOIOUTPUT_HPP
 #define PLAYRHO_COLLISION_TOIOUTPUT_HPP
 
-#include <PlayRho/Common/Settings.hpp>
-#include <PlayRho/Common/Wider.hpp>
+#include <PlayRho/Settings.hpp>
+#include <PlayRho/Wider.hpp>
 
 namespace playrho {
 

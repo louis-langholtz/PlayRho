@@ -19,7 +19,7 @@
  */
 
 #include <PlayRho/d2/UnitVec.hpp>
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Math.hpp>
 
 namespace playrho {
 namespace d2 {

@@ -38,7 +38,7 @@
 /// @see World, ContactID.
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 
-#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Settings.hpp>
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Collision/Shapes/ShapeID.hpp>

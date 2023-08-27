@@ -30,7 +30,7 @@
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
 
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Math.hpp>
 
 namespace playrho {
 namespace d2 {

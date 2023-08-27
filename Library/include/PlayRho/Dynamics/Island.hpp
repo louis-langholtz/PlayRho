@@ -23,8 +23,8 @@
 #define PLAYRHO_DYNAMICS_ISLAND_HPP
 
 #include <PlayRho/pmr/MemoryResource.hpp> // for pmr::polymorphic_allocator
-#include <PlayRho/Common/Templates.hpp> // IsFull
-#include <PlayRho/Common/Settings.hpp> // BodyCounter, ContactCounter, JointCounter
+#include <PlayRho/Templates.hpp> // IsFull
+#include <PlayRho/Settings.hpp> // BodyCounter, ContactCounter, JointCounter
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>

@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Math.hpp>
 
 #include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
 

@@ -54,11 +54,11 @@
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
-#include <PlayRho/Common/LengthError.hpp>
-#include <PlayRho/Common/DynamicMemory.hpp>
-#include <PlayRho/Common/FlagGuard.hpp>
-#include <PlayRho/Common/Span.hpp>
-#include <PlayRho/Common/WrongState.hpp>
+#include <PlayRho/LengthError.hpp>
+#include <PlayRho/DynamicMemory.hpp>
+#include <PlayRho/FlagGuard.hpp>
+#include <PlayRho/Span.hpp>
+#include <PlayRho/WrongState.hpp>
 
 #include <algorithm>
 #include <new>

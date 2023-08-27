@@ -25,7 +25,7 @@
 /// @file
 /// Declarations of free functions of World for unidentified information.
 
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Math.hpp>
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>

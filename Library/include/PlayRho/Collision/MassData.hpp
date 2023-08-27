@@ -25,8 +25,8 @@
 /// @file
 /// Declaration of the <code>MassData</code> structure and associated free functions.
 
-#include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/NonNegative.hpp>
+#include <PlayRho/Math.hpp>
+#include <PlayRho/NonNegative.hpp>
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 

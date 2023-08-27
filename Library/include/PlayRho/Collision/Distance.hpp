@@ -22,7 +22,7 @@
 #ifndef PLAYRHO_COLLISION_DISTANCE_HPP
 #define PLAYRHO_COLLISION_DISTANCE_HPP
 
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Math.hpp>
 
 #include <PlayRho/Collision/DistanceConf.hpp>
 #include <PlayRho/Collision/Simplex.hpp>

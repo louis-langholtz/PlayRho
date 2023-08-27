@@ -23,9 +23,9 @@
 #define PLAYRHO_DYNAMICS_JOINTS_GEARJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Math.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
-#include <PlayRho/Common/Span.hpp>
+#include <PlayRho/Span.hpp>
 
 #include <variant>
 

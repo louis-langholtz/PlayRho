@@ -25,9 +25,9 @@
 /// @file
 /// Declarations of the StepConf class, and free functions associated with it.
 
-#include <PlayRho/Common/Settings.hpp>
-#include <PlayRho/Common/NonNegative.hpp>
-#include <PlayRho/Common/Positive.hpp>
+#include <PlayRho/Settings.hpp>
+#include <PlayRho/NonNegative.hpp>
+#include <PlayRho/Positive.hpp>
 
 #include <type_traits> // for std::is_default_constructible_v
 

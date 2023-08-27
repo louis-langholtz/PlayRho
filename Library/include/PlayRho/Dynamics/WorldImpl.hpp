@@ -25,11 +25,11 @@
 /// @file
 /// Declarations of the WorldImpl class.
 
-#include <PlayRho/Common/Interval.hpp>
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Interval.hpp>
+#include <PlayRho/Math.hpp>
 #include <PlayRho/pmr/PoolMemoryResource.hpp>
-#include <PlayRho/Common/Positive.hpp>
-#include <PlayRho/Common/ObjectPool.hpp>
+#include <PlayRho/Positive.hpp>
+#include <PlayRho/ObjectPool.hpp>
 
 #include <PlayRho/Collision/DynamicTree.hpp>
 #include <PlayRho/Collision/MassData.hpp>

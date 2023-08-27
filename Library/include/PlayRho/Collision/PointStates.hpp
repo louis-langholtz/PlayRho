@@ -26,7 +26,7 @@
 /// Structures and functions used for computing before and after like point oriented
 /// collision response states.
 
-#include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Settings.hpp>
 
 #include <PlayRho/Collision/PointState.hpp>
 

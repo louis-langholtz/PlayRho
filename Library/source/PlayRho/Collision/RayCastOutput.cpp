@@ -21,8 +21,8 @@
 
 #include <PlayRho/Collision/RayCastOutput.hpp>
 
-#include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/GrowableStack.hpp>
+#include <PlayRho/Math.hpp>
+#include <PlayRho/GrowableStack.hpp>
 #include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
