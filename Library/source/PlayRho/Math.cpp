@@ -21,7 +21,7 @@
 
 #include <PlayRho/Math.hpp>
 
-#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
+#include <PlayRho/ConstraintSolverConf.hpp>
 
 namespace playrho {
 

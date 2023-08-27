@@ -23,7 +23,7 @@
 #include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
+#include <PlayRho/Contact.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldShape.hpp>
 

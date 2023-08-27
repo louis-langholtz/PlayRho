@@ -22,7 +22,7 @@
 
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/Contacts/Contact.hpp> // for MixFriction
+#include <PlayRho/Contact.hpp> // for MixFriction
 
 #include <set>
 

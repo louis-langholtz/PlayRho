@@ -33,7 +33,7 @@
 #include <PlayRho/Dynamics/Joints/WeldJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
 
-#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/d2/BodyConstraint.hpp>
 
 #include <PlayRho/Defines.hpp>
 

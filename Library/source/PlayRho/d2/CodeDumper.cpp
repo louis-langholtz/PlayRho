@@ -26,7 +26,7 @@
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
+#include <PlayRho/Contact.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>

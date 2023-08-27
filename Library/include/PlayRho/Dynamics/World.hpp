@@ -37,7 +37,7 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Dynamics/WorldConf.hpp>
-#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp>
+#include <PlayRho/KeyedContactID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 
 #include <iterator>

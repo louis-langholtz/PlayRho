@@ -23,7 +23,7 @@
 
 #include <PlayRho/Dynamics/WorldImpl.hpp>
 
-#include <PlayRho/Dynamics/Contacts/Contact.hpp> // for use of GetContact
+#include <PlayRho/Contact.hpp> // for use of GetContact
 
 namespace playrho {
 namespace d2 {

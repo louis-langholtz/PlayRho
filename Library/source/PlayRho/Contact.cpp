@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2023 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2023 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -18,10 +19,21 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
+#include <PlayRho/Contact.hpp>
+
+#include <type_traits> // for std::is_default_constructible etc.
 
 namespace playrho {
-namespace d2 {
 
-} // namespace d2
+static_assert(std::is_default_constructible<Contact>::value,
+              "Contact must be default constructible!");
+static_assert(std::is_copy_constructible<Contact>::value, "Contact must be copy constructible!");
+static_assert(std::is_move_constructible<Contact>::value, "Contact must be move constructible!");
+static_assert(std::is_copy_assignable<Contact>::value, "Contact must be copy assignable!");
+static_assert(std::is_move_assignable<Contact>::value, "Contact must be move assignable!");
+static_assert(std::is_nothrow_destructible<Contact>::value,
+              "Contact must be nothrow destructible!");
+
+// Free functions...
+
 } // namespace playrho

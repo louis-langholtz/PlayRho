@@ -30,8 +30,8 @@
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
-#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
+#include <PlayRho/d2/BodyConstraint.hpp>
+#include <PlayRho/ConstraintSolverConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 using namespace playrho;

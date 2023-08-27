@@ -22,7 +22,7 @@
 
 #include <PlayRho/Dynamics/StepConf.hpp>
 
-#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
+#include <PlayRho/ConstraintSolverConf.hpp>
 
 using namespace playrho;
 

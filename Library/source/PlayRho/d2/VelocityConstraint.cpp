@@ -19,7 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
+#include <PlayRho/d2/VelocityConstraint.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Collision/WorldManifold.hpp>
 #include <PlayRho/Collision/Manifold.hpp>

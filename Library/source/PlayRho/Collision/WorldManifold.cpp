@@ -22,7 +22,7 @@
 #include <PlayRho/Collision/WorldManifold.hpp>
 
 #include <PlayRho/Collision/Manifold.hpp>
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
+#include <PlayRho/Contact.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldShape.hpp>
 

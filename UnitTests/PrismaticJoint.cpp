@@ -29,8 +29,8 @@
 #include <PlayRho/Dynamics/WorldShape.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp> // for Step
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
-#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
-#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
+#include <PlayRho/d2/BodyConstraint.hpp>
+#include <PlayRho/ConstraintSolverConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

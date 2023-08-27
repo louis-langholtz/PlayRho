@@ -20,8 +20,8 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
-#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/d2/VelocityConstraint.hpp>
+#include <PlayRho/d2/BodyConstraint.hpp>
 #include <PlayRho/Collision/WorldManifold.hpp>
 
 using namespace playrho;

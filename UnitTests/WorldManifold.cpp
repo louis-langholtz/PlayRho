@@ -25,7 +25,7 @@
 #include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
+#include <PlayRho/Contact.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldShape.hpp>

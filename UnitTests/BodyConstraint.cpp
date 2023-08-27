@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/d2/BodyConstraint.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

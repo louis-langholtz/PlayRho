@@ -38,9 +38,9 @@
 #include <PlayRho/Dynamics/Filter.hpp>
 #include <PlayRho/Dynamics/Island.hpp>
 #include <PlayRho/Dynamics/StepStats.hpp>
-#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
-#include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
-#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp>
+#include <PlayRho/d2/BodyConstraint.hpp>
+#include <PlayRho/ContactKey.hpp>
+#include <PlayRho/KeyedContactID.hpp>
 #include <PlayRho/Dynamics/WorldConf.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 #include <PlayRho/Dynamics/IslandStats.hpp>

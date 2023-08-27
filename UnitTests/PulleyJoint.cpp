@@ -28,8 +28,8 @@
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-#include <PlayRho/Dynamics/Contacts/ConstraintSolverConf.hpp>
-#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/ConstraintSolverConf.hpp>
+#include <PlayRho/d2/BodyConstraint.hpp>
 
 #include <stdexcept>
 
