@@ -23,11 +23,11 @@
 
 #ifdef CODE_DUMPER_IS_READY
 
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/WorldJoint.hpp>
+#include <PlayRho/d2/WorldBody.hpp>
+#include <PlayRho/d2/WorldJoint.hpp>
 
 #include <PlayRho/Contact.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/d2/Body.hpp>
 
 #include <PlayRho/d2/Joint.hpp>
 #include <PlayRho/d2/PulleyJointConf.hpp>

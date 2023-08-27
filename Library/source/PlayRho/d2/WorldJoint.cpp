@@ -19,10 +19,10 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/WorldJoint.hpp>
+#include <PlayRho/d2/WorldJoint.hpp>
 
-#include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/Body.hpp> // for GetBody
+#include <PlayRho/d2/World.hpp>
+#include <PlayRho/d2/Body.hpp> // for GetBody
 
 #include <PlayRho/d2/Joint.hpp>
 

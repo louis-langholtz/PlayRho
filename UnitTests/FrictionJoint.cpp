@@ -24,12 +24,12 @@
 #include <PlayRho/d2/Joint.hpp>
 
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
-#include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/WorldShape.hpp>
-#include <PlayRho/Dynamics/WorldJoint.hpp>
-#include <PlayRho/Dynamics/WorldMisc.hpp>
-#include <PlayRho/Dynamics/BodyConf.hpp>
+#include <PlayRho/d2/World.hpp>
+#include <PlayRho/d2/WorldBody.hpp>
+#include <PlayRho/d2/WorldShape.hpp>
+#include <PlayRho/d2/WorldJoint.hpp>
+#include <PlayRho/d2/WorldMisc.hpp>
+#include <PlayRho/d2/BodyConf.hpp>
 #include <PlayRho/StepConf.hpp>
 #include <PlayRho/d2/BodyConstraint.hpp>
 #include <PlayRho/ConstraintSolverConf.hpp>

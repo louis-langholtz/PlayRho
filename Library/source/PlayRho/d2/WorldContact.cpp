@@ -19,12 +19,12 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/WorldContact.hpp>
+#include <PlayRho/d2/WorldContact.hpp>
 
-#include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/WorldShape.hpp>
-#include <PlayRho/Dynamics/Body.hpp> // for GetBody
+#include <PlayRho/d2/World.hpp>
+#include <PlayRho/d2/WorldBody.hpp>
+#include <PlayRho/d2/WorldShape.hpp>
+#include <PlayRho/d2/Body.hpp> // for GetBody
 #include <PlayRho/Contact.hpp>
 
 #include <PlayRho/Collision/Manifold.hpp>

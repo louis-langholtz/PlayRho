@@ -19,9 +19,9 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/BodyConf.hpp>
+#include <PlayRho/d2/BodyConf.hpp>
 
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/d2/Body.hpp>
 
 namespace playrho::d2 {
 

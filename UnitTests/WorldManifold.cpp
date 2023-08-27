@@ -26,10 +26,10 @@
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 #include <PlayRho/Contact.hpp>
-#include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/WorldShape.hpp>
-#include <PlayRho/Dynamics/BodyConf.hpp>
+#include <PlayRho/d2/World.hpp>
+#include <PlayRho/d2/WorldBody.hpp>
+#include <PlayRho/d2/WorldShape.hpp>
+#include <PlayRho/d2/BodyConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

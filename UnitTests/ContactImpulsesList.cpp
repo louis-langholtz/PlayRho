@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/ContactImpulsesList.hpp>
+#include <PlayRho/d2/ContactImpulsesList.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

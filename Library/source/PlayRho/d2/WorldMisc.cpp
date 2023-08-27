@@ -19,11 +19,11 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/WorldMisc.hpp>
+#include <PlayRho/d2/WorldMisc.hpp>
 
-#include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/BodyConf.hpp>
+#include <PlayRho/d2/World.hpp>
+#include <PlayRho/d2/WorldBody.hpp>
+#include <PlayRho/d2/BodyConf.hpp>
 #include <PlayRho/StepConf.hpp>
 #include <PlayRho/MovementConf.hpp>
 

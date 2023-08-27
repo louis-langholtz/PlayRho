@@ -24,7 +24,7 @@
 
 #include <PlayRho/Math.hpp>
 #include <PlayRho/MovementConf.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/d2/Body.hpp>
 
 namespace playrho {
 namespace d2 {

@@ -58,9 +58,9 @@
 #include <PlayRho/Math.hpp>
 #include <PlayRho/Intervals.hpp>
 
-#include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/WorldBody.hpp> // for GetAwakeCount
-#include <PlayRho/Dynamics/WorldShape.hpp> // for CreateShape
+#include <PlayRho/d2/World.hpp>
+#include <PlayRho/d2/WorldBody.hpp> // for GetAwakeCount
+#include <PlayRho/d2/WorldShape.hpp> // for CreateShape
 #include <PlayRho/StepConf.hpp>
 #include <PlayRho/d2/ContactSolver.hpp>
 #include <PlayRho/d2/VelocityConstraint.hpp>

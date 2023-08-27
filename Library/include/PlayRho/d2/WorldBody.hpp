@@ -44,7 +44,7 @@
 #include <PlayRho/ShapeID.hpp>
 
 #include <PlayRho/BodyID.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/d2/Body.hpp>
 #include <PlayRho/KeyedContactID.hpp>
 #include <PlayRho/JointID.hpp>
 

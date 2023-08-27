@@ -18,38 +18,22 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/WorldImplShape.hpp>
-
-#include <PlayRho/Dynamics/WorldImpl.hpp>
-
-#include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/d2/ContactImpulsesList.hpp>
+#include <PlayRho/d2/VelocityConstraint.hpp>
 
 namespace playrho {
 namespace d2 {
 
-ShapeCounter GetShapeRange(const WorldImpl& world) noexcept
+/// @brief Gets the contact impulses for the given velocity constraint.
+ContactImpulsesList GetContactImpulses(const VelocityConstraint& vc)
 {
-    return world.GetShapeRange();
-}
-
-ShapeID CreateShape(WorldImpl& world, const Shape& def)
-{
-    return world.CreateShape(def);
-}
-
-const Shape& GetShape(const WorldImpl& world, ShapeID id)
-{
-    return world.GetShape(id);
-}
-
-void SetShape(WorldImpl& world, ShapeID id, const Shape& def)
-{
-    world.SetShape(id, def);
-}
-
-void Destroy(WorldImpl& world, ShapeID id)
-{
-    world.Destroy(id);
+    ContactImpulsesList impulse;
+    const auto count = vc.GetPointCount();
+    for (auto j = decltype(count){0}; j < count; ++j)
+    {
+        impulse.AddEntry(GetNormalImpulseAtPoint(vc, j), GetTangentImpulseAtPoint(vc, j));
+    }
+    return impulse;
 }
 
 } // namespace d2

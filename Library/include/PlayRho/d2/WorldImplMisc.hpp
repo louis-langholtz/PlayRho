@@ -30,7 +30,7 @@
 
 #include <PlayRho/StepStats.hpp>
 #include <PlayRho/BodyID.hpp>
-#include <PlayRho/Dynamics/BodyConf.hpp>
+#include <PlayRho/d2/BodyConf.hpp>
 #include <PlayRho/ShapeID.hpp>
 #include <PlayRho/ContactID.hpp>
 #include <PlayRho/KeyedContactID.hpp>

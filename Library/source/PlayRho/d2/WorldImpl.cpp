@@ -19,14 +19,14 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/WorldImpl.hpp>
+#include <PlayRho/d2/WorldImpl.hpp>
 
-#include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/BodyConf.hpp>
+#include <PlayRho/d2/Body.hpp>
+#include <PlayRho/d2/BodyConf.hpp>
 #include <PlayRho/StepConf.hpp>
 #include <PlayRho/Island.hpp>
 #include <PlayRho/MovementConf.hpp>
-#include <PlayRho/Dynamics/ContactImpulsesList.hpp>
+#include <PlayRho/d2/ContactImpulsesList.hpp>
 
 #include <PlayRho/d2/Joint.hpp>
 #include <PlayRho/d2/RevoluteJointConf.hpp>

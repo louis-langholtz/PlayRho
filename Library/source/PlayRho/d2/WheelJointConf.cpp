@@ -22,7 +22,7 @@
 #include <PlayRho/d2/WheelJointConf.hpp>
 
 #include <PlayRho/d2/Joint.hpp>
-#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/d2/WorldBody.hpp>
 #include <PlayRho/StepConf.hpp>
 #include <PlayRho/d2/BodyConstraint.hpp>
 #include <PlayRho/ConstraintSolverConf.hpp>
