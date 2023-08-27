@@ -26,7 +26,7 @@
 #include <PlayRho/ConstraintSolverConf.hpp>
 #include <PlayRho/d2/BodyConstraint.hpp>
 
-#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/StepConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 

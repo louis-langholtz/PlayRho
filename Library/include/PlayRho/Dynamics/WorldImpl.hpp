@@ -35,15 +35,15 @@
 #include <PlayRho/Collision/MassData.hpp>
 
 #include <PlayRho/BodyID.hpp>
-#include <PlayRho/Dynamics/Filter.hpp>
-#include <PlayRho/Dynamics/Island.hpp>
-#include <PlayRho/Dynamics/StepStats.hpp>
+#include <PlayRho/Filter.hpp>
+#include <PlayRho/Island.hpp>
+#include <PlayRho/StepStats.hpp>
 #include <PlayRho/d2/BodyConstraint.hpp>
 #include <PlayRho/ContactKey.hpp>
 #include <PlayRho/KeyedContactID.hpp>
 #include <PlayRho/Dynamics/WorldConf.hpp>
 #include <PlayRho/JointID.hpp>
-#include <PlayRho/Dynamics/IslandStats.hpp>
+#include <PlayRho/IslandStats.hpp>
 #include <PlayRho/ShapeID.hpp>
 
 #include <iterator>

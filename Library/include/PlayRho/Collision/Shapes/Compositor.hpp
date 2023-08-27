@@ -28,7 +28,7 @@
 #include <PlayRho/Finite.hpp>
 #include <PlayRho/Settings.hpp>
 
-#include <PlayRho/Dynamics/Filter.hpp>
+#include <PlayRho/Filter.hpp>
 
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>

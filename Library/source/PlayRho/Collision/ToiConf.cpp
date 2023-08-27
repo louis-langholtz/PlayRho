@@ -19,7 +19,7 @@
  */
 
 #include <PlayRho/Collision/ToiConf.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/StepConf.hpp>
 
 namespace playrho {
 

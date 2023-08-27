@@ -22,7 +22,7 @@
 
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 
-#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/StepConf.hpp>
 
 namespace playrho::d2 {
 

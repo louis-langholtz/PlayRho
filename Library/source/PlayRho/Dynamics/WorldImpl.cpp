@@ -23,9 +23,9 @@
 
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Dynamics/Island.hpp>
-#include <PlayRho/Dynamics/MovementConf.hpp>
+#include <PlayRho/StepConf.hpp>
+#include <PlayRho/Island.hpp>
+#include <PlayRho/MovementConf.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 
 #include <PlayRho/d2/Joint.hpp>

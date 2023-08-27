@@ -20,7 +20,7 @@
  */
 
 #include <PlayRho/Collision/Distance.hpp>
-#include <PlayRho/Dynamics/Island.hpp>
+#include <PlayRho/Island.hpp>
 
 #include <algorithm>
 

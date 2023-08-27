@@ -33,7 +33,7 @@
 
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/BodyID.hpp>
-#include <PlayRho/Dynamics/BodyType.hpp>
+#include <PlayRho/BodyType.hpp>
 #include <PlayRho/KeyedContactID.hpp>
 #include <PlayRho/JointID.hpp>
 

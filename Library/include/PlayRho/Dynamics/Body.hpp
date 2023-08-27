@@ -27,7 +27,7 @@
 
 #include <PlayRho/Math.hpp>
 
-#include <PlayRho/Dynamics/BodyType.hpp>
+#include <PlayRho/BodyType.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 
 #include <PlayRho/Collision/MassData.hpp>

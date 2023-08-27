@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2023 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2023 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -18,23 +19,15 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/StepStats.hpp>
-
-#include <PlayRho/Dynamics/IslandStats.hpp>
-
-#include <algorithm> // for std::min, std::max
+#include <PlayRho/StepConf.hpp>
+#include <PlayRho/Math.hpp>
 
 namespace playrho {
 
-RegStepStats& Update(RegStepStats& lhs, const IslandStats& rhs) noexcept
+bool IsMaxTranslationWithinTolerance(const StepConf& conf) noexcept
 {
-    lhs.maxIncImpulse = std::max(lhs.maxIncImpulse, rhs.maxIncImpulse);
-    lhs.minSeparation = std::min(lhs.minSeparation, rhs.minSeparation);
-    lhs.islandsSolved += rhs.solved;
-    lhs.sumPosIters += rhs.positionIters;
-    lhs.sumVelIters += rhs.velocityIters;
-    lhs.bodiesSlept += rhs.bodiesSlept;
-    return lhs;
+    const auto delta = Real{1} - nextafter(Real{1}, Real{0});
+    return (conf.maxTranslation * delta) < Length{conf.tolerance};
 }
 
 } // namespace playrho

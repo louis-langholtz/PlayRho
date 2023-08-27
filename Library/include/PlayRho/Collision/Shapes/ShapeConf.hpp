@@ -26,7 +26,7 @@
 #include <PlayRho/Finite.hpp>
 #include <PlayRho/NonNegative.hpp>
 #include <PlayRho/Settings.hpp>
-#include <PlayRho/Dynamics/Filter.hpp>
+#include <PlayRho/Filter.hpp>
 
 namespace playrho {
 namespace d2 {

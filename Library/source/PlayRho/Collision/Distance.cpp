@@ -25,7 +25,7 @@
 #include <PlayRho/Collision/Simplex.hpp>
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 
-#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/StepConf.hpp>
 
 namespace playrho {
 namespace d2 {

@@ -20,7 +20,7 @@
  */
 
 #include <PlayRho/d2/VelocityConstraint.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/StepConf.hpp>
 #include <PlayRho/Collision/WorldManifold.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 

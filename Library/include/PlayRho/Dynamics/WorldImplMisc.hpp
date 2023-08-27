@@ -28,7 +28,7 @@
 #include <PlayRho/Units.hpp> // for Length, Frequency, etc.
 #include <PlayRho/Vector2.hpp> // for Length2
 
-#include <PlayRho/Dynamics/StepStats.hpp>
+#include <PlayRho/StepStats.hpp>
 #include <PlayRho/BodyID.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/ShapeID.hpp>

@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/StepStats.hpp>
+#include <PlayRho/StepStats.hpp>
 
 using namespace playrho;
 

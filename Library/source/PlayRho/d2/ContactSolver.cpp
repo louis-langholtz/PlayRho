@@ -26,7 +26,7 @@
 #include <PlayRho/d2/PositionSolverManifold.hpp>
 #include <PlayRho/d2/VelocityConstraint.hpp>
 #include <PlayRho/d2/PositionConstraint.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/StepConf.hpp>
 
 #include <algorithm>
 #include <optional>

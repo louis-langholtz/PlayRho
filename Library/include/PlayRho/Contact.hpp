@@ -24,7 +24,7 @@
 
 #include <PlayRho/Math.hpp>
 
-#include <PlayRho/Dynamics/Contactable.hpp>
+#include <PlayRho/Contactable.hpp>
 
 namespace playrho {
 
