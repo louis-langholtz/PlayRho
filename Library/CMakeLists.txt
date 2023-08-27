@@ -24,8 +24,6 @@ add_compile_definitions(PLAYRHO_VERSION_PATCH=${PlayRho_VERSION_PATCH})
 set(PLAYRHO_INCLUDE_PREFIX "include/PlayRho/")
 set(PLAYRHO_SOURCE_PREFIX "source/PlayRho/")
 
-file(GLOB PLAYRHO_Collision_SRCS "${PLAYRHO_SOURCE_PREFIX}Collision/*.cpp")
-file(GLOB PLAYRHO_Collision_HDRS "${PLAYRHO_INCLUDE_PREFIX}Collision/*.hpp")
 file(GLOB PLAYRHO_General_SRCS "${PLAYRHO_SOURCE_PREFIX}*.cpp")
 file(GLOB PLAYRHO_General_HDRS "${PLAYRHO_INCLUDE_PREFIX}*.hpp")
 
@@ -48,37 +46,55 @@ set(PLAYRHO_PMR_SRCS
 	"${PLAYRHO_SOURCE_PREFIX}pmr/StatsResource.cpp"
 	)
 set(PLAYRHO_D2_HDRS
+	"${PLAYRHO_INCLUDE_PREFIX}d2/AABB.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/Acceleration.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/Body.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/BodyConf.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/BodyConstraint.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/ChainShapeConf.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/ClipList.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/CodeDumper.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/Compositor.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/ContactImpulsesList.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/ContactSolver.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/DiskShapeConf.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/Distance.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/DistanceConf.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/DistanceJointConf.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/DistanceProxy.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/DynamicTree.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/DynamicTreeData.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/EdgeShapeConf.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/FrictionJointConf.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/GearJointConf.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/IndexPair.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/Joint.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/JointConf.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/LimitState.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/Manifold.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/MassData.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/MotorJointConf.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/MultiShapeConf.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/PointStates.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/PolygonShapeConf.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/Position.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/PositionConstraint.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/PositionSolverManifold.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/PrismaticJointConf.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/PulleyJointConf.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/RayCastInput.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/RayCastOutput.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/RevoluteJointConf.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/RopeJointConf.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/SeparationScenario.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/Shape.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/ShapeConf.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/ShapeSeparation.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/Simplex.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/SimplexEdge.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/Sweep.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/TargetJointConf.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/TimeOfImpact.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/Transformation.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/UnitVec.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/Velocity.hpp"
@@ -97,36 +113,51 @@ set(PLAYRHO_D2_HDRS
 	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldImplMisc.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldImplShape.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldJoint.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldManifold.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldMisc.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldShape.hpp"
 	)
 set(PLAYRHO_D2_SRCS
+	"${PLAYRHO_SOURCE_PREFIX}d2/AABB.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/Body.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/BodyConf.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/ChainShapeConf.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/ClipList.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/CodeDumper.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/Compositor.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/ContactImpulsesList.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/ContactSolver.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/DiskShapeConf.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/Distance.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/DistanceConf.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/DistanceJointConf.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/DistanceProxy.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/DynamicTree.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/EdgeShapeConf.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/FrictionJointConf.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/GearJointConf.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/Joint.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/JointConf.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/LimitState.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/Manifold.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/MassData.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/MotorJointConf.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/MultiShapeConf.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/PointStates.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/PolygonShapeConf.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/PositionSolverManifold.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/PrismaticJointConf.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/PulleyJointConf.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/RayCastOutput.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/RevoluteJointConf.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/RopeJointConf.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/SeparationScenario.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/Shape.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/ShapeSeparation.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/Simplex.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/Sweep.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/TargetJointConf.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/TimeOfImpact.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/UnitVec.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/Velocity.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/VelocityConstraint.cpp"
@@ -142,6 +173,7 @@ set(PLAYRHO_D2_SRCS
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldImplMisc.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldImplShape.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldJoint.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/WorldManifold.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldMisc.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldShape.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldSpecial.cpp"
@@ -149,7 +181,6 @@ set(PLAYRHO_D2_SRCS
 
 set(libsrc
 	${PLAYRHO_General_SRCS}
-	${PLAYRHO_Collision_SRCS}
 	${PLAYRHO_PMR_SRCS}
 	${PLAYRHO_D2_SRCS}
 )
@@ -198,7 +229,6 @@ target_compile_options(PlayRho PRIVATE
 # These are used to create visual studio folders.
 source_group(Include FILES ${PLAYRHO_General_HDRS} ${PLAYRHO_GeneralCfg_HDRS})
 source_group(General FILES ${PLAYRHO_General_SRCS} ${PLAYRHO_GeneralCfg_HDRS} ${PLAYRHO_General_HDRS})
-source_group(Collision FILES ${PLAYRHO_Collision_SRCS} ${PLAYRHO_Collision_HDRS})
 
 if(PLAYRHO_INSTALL)
 	include(GNUInstallDirs)
@@ -213,9 +243,6 @@ if(PLAYRHO_INSTALL)
 		COMPONENT Library)
 	install(FILES ${PLAYRHO_GeneralCfg_HDRS}
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho
-		COMPONENT Library)
-	install(FILES ${PLAYRHO_Collision_HDRS}
-		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/Collision
 		COMPONENT Library)
 	install(FILES ${PLAYRHO_PMR_HDRS}
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/pmr

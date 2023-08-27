@@ -22,7 +22,7 @@
 #ifndef PLAYRHO_DYNAMICS_CONTACTS_POSITIONCONSTRAINT_HPP
 #define PLAYRHO_DYNAMICS_CONTACTS_POSITIONCONSTRAINT_HPP
 
-#include <PlayRho/Collision/Manifold.hpp>
+#include <PlayRho/d2/Manifold.hpp>
 #include <PlayRho/d2/BodyConstraint.hpp>
 
 namespace playrho {

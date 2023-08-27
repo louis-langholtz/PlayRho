@@ -24,8 +24,8 @@
 
 #include <PlayRho/Math.hpp>
 
-#include <PlayRho/Collision/DistanceConf.hpp>
-#include <PlayRho/Collision/Simplex.hpp>
+#include <PlayRho/d2/DistanceConf.hpp>
+#include <PlayRho/d2/Simplex.hpp>
 
 namespace playrho {
 

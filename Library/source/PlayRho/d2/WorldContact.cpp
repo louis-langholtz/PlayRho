@@ -27,8 +27,8 @@
 #include <PlayRho/d2/Body.hpp> // for GetBody
 #include <PlayRho/Contact.hpp>
 
-#include <PlayRho/Collision/Manifold.hpp>
-#include <PlayRho/Collision/WorldManifold.hpp>
+#include <PlayRho/d2/Manifold.hpp>
+#include <PlayRho/d2/WorldManifold.hpp>
 
 namespace playrho {
 namespace d2 {

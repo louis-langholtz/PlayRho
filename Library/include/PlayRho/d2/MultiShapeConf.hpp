@@ -23,8 +23,8 @@
 
 #include <PlayRho/Math.hpp>
 #include <PlayRho/d2/ShapeConf.hpp>
-#include <PlayRho/Collision/DistanceProxy.hpp>
-#include <PlayRho/Collision/MassData.hpp>
+#include <PlayRho/d2/DistanceProxy.hpp>
+#include <PlayRho/d2/MassData.hpp>
 
 #include <utility> // for std::move
 #include <vector>

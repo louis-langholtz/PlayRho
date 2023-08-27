@@ -47,11 +47,11 @@
 #include <PlayRho/d2/VelocityConstraint.hpp>
 #include <PlayRho/d2/PositionConstraint.hpp>
 
-#include <PlayRho/Collision/Distance.hpp>
-#include <PlayRho/Collision/WorldManifold.hpp>
-#include <PlayRho/Collision/TimeOfImpact.hpp>
-#include <PlayRho/Collision/RayCastOutput.hpp>
-#include <PlayRho/Collision/DistanceProxy.hpp>
+#include <PlayRho/d2/Distance.hpp>
+#include <PlayRho/d2/WorldManifold.hpp>
+#include <PlayRho/d2/TimeOfImpact.hpp>
+#include <PlayRho/d2/RayCastOutput.hpp>
+#include <PlayRho/d2/DistanceProxy.hpp>
 #include <PlayRho/d2/Shape.hpp>
 
 #include <PlayRho/LengthError.hpp>

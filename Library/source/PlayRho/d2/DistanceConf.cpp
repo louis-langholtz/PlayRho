@@ -18,9 +18,9 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/DistanceConf.hpp>
+#include <PlayRho/d2/DistanceConf.hpp>
 
-#include <PlayRho/Collision/TimeOfImpact.hpp>
+#include <PlayRho/d2/TimeOfImpact.hpp>
 
 #include <PlayRho/StepConf.hpp>
 

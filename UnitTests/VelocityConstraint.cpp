@@ -22,7 +22,7 @@
 
 #include <PlayRho/d2/VelocityConstraint.hpp>
 #include <PlayRho/d2/BodyConstraint.hpp>
-#include <PlayRho/Collision/WorldManifold.hpp>
+#include <PlayRho/d2/WorldManifold.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

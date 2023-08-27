@@ -30,7 +30,7 @@
 #include <PlayRho/BodyType.hpp>
 #include <PlayRho/d2/BodyConf.hpp>
 
-#include <PlayRho/Collision/MassData.hpp>
+#include <PlayRho/d2/MassData.hpp>
 #include <PlayRho/ShapeID.hpp>
 
 #include <cassert>

@@ -19,11 +19,11 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/Distance.hpp>
+#include <PlayRho/d2/Distance.hpp>
 
-#include <PlayRho/Collision/DistanceProxy.hpp>
-#include <PlayRho/Collision/Simplex.hpp>
-#include <PlayRho/Collision/TimeOfImpact.hpp>
+#include <PlayRho/d2/DistanceProxy.hpp>
+#include <PlayRho/d2/Simplex.hpp>
+#include <PlayRho/d2/TimeOfImpact.hpp>
 
 #include <PlayRho/StepConf.hpp>
 

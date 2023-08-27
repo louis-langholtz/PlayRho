@@ -28,7 +28,7 @@
 #include <PlayRho/Math.hpp>
 #include <PlayRho/propagate_const.hpp>
 
-#include <PlayRho/Collision/MassData.hpp>
+#include <PlayRho/d2/MassData.hpp>
 #include <PlayRho/d2/Shape.hpp>
 #include <PlayRho/ShapeID.hpp>
 

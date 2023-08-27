@@ -19,7 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/MassData.hpp>
+#include <PlayRho/d2/MassData.hpp>
 
 #include <PlayRho/d2/Shape.hpp>
 #include <PlayRho/d2/EdgeShapeConf.hpp>

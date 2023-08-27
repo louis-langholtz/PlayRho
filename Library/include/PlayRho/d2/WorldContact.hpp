@@ -45,7 +45,7 @@
 #include <PlayRho/ContactID.hpp>
 #include <PlayRho/KeyedContactID.hpp>
 
-#include <PlayRho/Collision/WorldManifold.hpp>
+#include <PlayRho/d2/WorldManifold.hpp>
 
 #include <vector>
 

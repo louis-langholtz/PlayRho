@@ -22,7 +22,7 @@
 #include <PlayRho/Span.hpp>
 
 #include <PlayRho/d2/ChainShapeConf.hpp>
-#include <PlayRho/Collision/AABB.hpp>
+#include <PlayRho/d2/AABB.hpp>
 #include <PlayRho/d2/Shape.hpp>
 
 #include <algorithm>

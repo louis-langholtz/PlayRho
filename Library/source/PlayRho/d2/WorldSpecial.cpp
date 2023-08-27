@@ -27,7 +27,7 @@
 #include <PlayRho/d2/WorldImpl.hpp> // for completing WorldImpl type
 #include <PlayRho/d2/WorldImplMisc.hpp>
 
-#include <PlayRho/Collision/Manifold.hpp> // for completing WorldImpl type
+#include <PlayRho/d2/Manifold.hpp> // for completing WorldImpl type
 
 namespace playrho {
 namespace d2 {

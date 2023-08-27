@@ -19,7 +19,7 @@
  */
 
 #include "UnitTests.hpp"
-#include <PlayRho/Collision/MassData.hpp>
+#include <PlayRho/d2/MassData.hpp>
 #include <PlayRho/d2/DiskShapeConf.hpp>
 #include <PlayRho/d2/PolygonShapeConf.hpp>
 #include <PlayRho/d2/EdgeShapeConf.hpp>

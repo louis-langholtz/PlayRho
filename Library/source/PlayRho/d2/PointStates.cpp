@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/PointStates.hpp>
-#include <PlayRho/Collision/Manifold.hpp>
+#include <PlayRho/d2/PointStates.hpp>
+#include <PlayRho/d2/Manifold.hpp>
 
 namespace playrho::d2 {
 

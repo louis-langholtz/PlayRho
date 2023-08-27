@@ -28,10 +28,10 @@
 #include <PlayRho/d2/UnitVec.hpp>
 #include <PlayRho/TypeInfo.hpp>
 
-#include <PlayRho/Collision/PointStates.hpp>
-#include <PlayRho/Collision/Distance.hpp>
-#include <PlayRho/Collision/RayCastOutput.hpp>
-#include <PlayRho/Collision/ShapeSeparation.hpp>
+#include <PlayRho/d2/PointStates.hpp>
+#include <PlayRho/d2/Distance.hpp>
+#include <PlayRho/d2/RayCastOutput.hpp>
+#include <PlayRho/d2/ShapeSeparation.hpp>
 
 #include <PlayRho/d2/PositionSolverManifold.hpp>
 #include <PlayRho/ContactID.hpp>

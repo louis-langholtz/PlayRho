@@ -25,7 +25,7 @@
 #include <PlayRho/Settings.hpp>
 #include <PlayRho/Math.hpp>
 
-#include <PlayRho/Collision/Manifold.hpp>
+#include <PlayRho/d2/Manifold.hpp>
 
 namespace playrho {
 namespace d2 {

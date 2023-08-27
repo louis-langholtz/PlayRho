@@ -20,11 +20,11 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Collision/SeparationScenario.hpp>
-#include <PlayRho/Collision/Simplex.hpp>
-#include <PlayRho/Collision/TimeOfImpact.hpp>
-#include <PlayRho/Collision/DistanceProxy.hpp>
-#include <PlayRho/Collision/Distance.hpp>
+#include <PlayRho/d2/SeparationScenario.hpp>
+#include <PlayRho/d2/Simplex.hpp>
+#include <PlayRho/d2/TimeOfImpact.hpp>
+#include <PlayRho/d2/DistanceProxy.hpp>
+#include <PlayRho/d2/Distance.hpp>
 #include <PlayRho/d2/PolygonShapeConf.hpp>
 
 using namespace playrho;

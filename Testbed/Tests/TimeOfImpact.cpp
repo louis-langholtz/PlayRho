@@ -21,7 +21,7 @@
 
 #include "../Framework/Test.hpp"
 
-#include <PlayRho/Collision/TimeOfImpact.hpp>
+#include <PlayRho/d2/TimeOfImpact.hpp>
 
 #include <sstream> // for std::stringstream
 #include <vector>

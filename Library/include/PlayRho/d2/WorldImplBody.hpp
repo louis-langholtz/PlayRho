@@ -37,7 +37,7 @@
 #include <PlayRho/KeyedContactID.hpp>
 #include <PlayRho/JointID.hpp>
 
-#include <PlayRho/Collision/MassData.hpp>
+#include <PlayRho/d2/MassData.hpp>
 #include <PlayRho/ShapeID.hpp>
 
 #include <vector>

@@ -25,8 +25,8 @@
 /// @file
 /// Declaration of the <code>DynamicTree</code> class.
 
-#include <PlayRho/Collision/AABB.hpp>
-#include <PlayRho/Collision/DynamicTreeData.hpp>
+#include <PlayRho/d2/AABB.hpp>
+#include <PlayRho/d2/DynamicTreeData.hpp>
 #include <PlayRho/ShapeID.hpp>
 #include <PlayRho/Settings.hpp>
 #include <PlayRho/Vector2.hpp>

@@ -24,7 +24,7 @@
 
 #include <PlayRho/ArrayList.hpp>
 #include <PlayRho/Vector.hpp>
-#include <PlayRho/Collision/SimplexEdge.hpp>
+#include <PlayRho/d2/SimplexEdge.hpp>
 #include <array>
 
 namespace playrho {

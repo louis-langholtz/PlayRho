@@ -19,7 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/DynamicTree.hpp>
+#include <PlayRho/d2/DynamicTree.hpp>
 #include <PlayRho/GrowableStack.hpp>
 #include <PlayRho/DynamicMemory.hpp>
 #include <PlayRho/Math.hpp> // for NextPowerOfTwo and others

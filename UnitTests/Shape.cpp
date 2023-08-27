@@ -25,8 +25,8 @@
 #include <PlayRho/d2/DiskShapeConf.hpp>
 #include <PlayRho/d2/PolygonShapeConf.hpp>
 #include <PlayRho/d2/Compositor.hpp>
-#include <PlayRho/Collision/Distance.hpp>
-#include <PlayRho/Collision/Manifold.hpp>
+#include <PlayRho/d2/Distance.hpp>
+#include <PlayRho/d2/Manifold.hpp>
 
 #include <any>
 #include <chrono>

@@ -19,14 +19,14 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/RayCastOutput.hpp>
+#include <PlayRho/d2/RayCastOutput.hpp>
 
 #include <PlayRho/Math.hpp>
 #include <PlayRho/GrowableStack.hpp>
-#include <PlayRho/Collision/RayCastInput.hpp>
-#include <PlayRho/Collision/AABB.hpp>
-#include <PlayRho/Collision/DistanceProxy.hpp>
-#include <PlayRho/Collision/DynamicTree.hpp>
+#include <PlayRho/d2/RayCastInput.hpp>
+#include <PlayRho/d2/AABB.hpp>
+#include <PlayRho/d2/DistanceProxy.hpp>
+#include <PlayRho/d2/DynamicTree.hpp>
 #include <PlayRho/d2/WorldBody.hpp>
 #include <PlayRho/d2/WorldMisc.hpp>
 #include <PlayRho/d2/WorldShape.hpp>

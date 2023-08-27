@@ -23,7 +23,7 @@
 
 #include <PlayRho/Settings.hpp>
 
-#include <PlayRho/Collision/Simplex.hpp>
+#include <PlayRho/d2/Simplex.hpp>
 
 namespace playrho {
 

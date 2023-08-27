@@ -67,12 +67,12 @@
 #include <PlayRho/d2/Joint.hpp>
 #include <PlayRho/d2/RevoluteJointConf.hpp>
 
-#include <PlayRho/Collision/AABB.hpp>
-#include <PlayRho/Collision/Distance.hpp>
-#include <PlayRho/Collision/DynamicTree.hpp>
-#include <PlayRho/Collision/Manifold.hpp>
-#include <PlayRho/Collision/WorldManifold.hpp>
-#include <PlayRho/Collision/ShapeSeparation.hpp>
+#include <PlayRho/d2/AABB.hpp>
+#include <PlayRho/d2/Distance.hpp>
+#include <PlayRho/d2/DynamicTree.hpp>
+#include <PlayRho/d2/Manifold.hpp>
+#include <PlayRho/d2/WorldManifold.hpp>
+#include <PlayRho/d2/ShapeSeparation.hpp>
 #if 0
 #include <PlayRho/d2/PolygonShapeConf.hpp>
 #endif

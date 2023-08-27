@@ -28,7 +28,7 @@
 #include <PlayRho/d2/Body.hpp> // for WorldImpl not being incomplete
 #include <PlayRho/d2/Joint.hpp> // for WorldImpl not being incomplete
 #include <PlayRho/Contact.hpp> // for WorldImpl not being incomplete
-#include <PlayRho/Collision/Manifold.hpp> // for WorldImpl not being incomplete
+#include <PlayRho/d2/Manifold.hpp> // for WorldImpl not being incomplete
 #include <PlayRho/d2/Shape.hpp> // for WorldImpl not being incomplete
 
 #include <utility> // for std::move

@@ -19,13 +19,13 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/Manifold.hpp>
+#include <PlayRho/d2/Manifold.hpp>
 
-#include <PlayRho/Collision/Simplex.hpp>
-#include <PlayRho/Collision/Distance.hpp>
-#include <PlayRho/Collision/DistanceProxy.hpp>
-#include <PlayRho/Collision/ClipList.hpp>
-#include <PlayRho/Collision/ShapeSeparation.hpp>
+#include <PlayRho/d2/Simplex.hpp>
+#include <PlayRho/d2/Distance.hpp>
+#include <PlayRho/d2/DistanceProxy.hpp>
+#include <PlayRho/d2/ClipList.hpp>
+#include <PlayRho/d2/ShapeSeparation.hpp>
 
 #include <PlayRho/Defines.hpp>
 
