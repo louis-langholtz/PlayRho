@@ -18,14 +18,23 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/MovementConf.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/StepStats.hpp>
+
+#include <PlayRho/IslandStats.hpp>
+
+#include <algorithm> // for std::min, std::max
 
 namespace playrho {
 
-MovementConf GetMovementConf(const StepConf& conf) noexcept
+RegStepStats& Update(RegStepStats& lhs, const IslandStats& rhs) noexcept
 {
-    return MovementConf{conf.maxTranslation, conf.maxRotation};
+    lhs.maxIncImpulse = std::max(lhs.maxIncImpulse, rhs.maxIncImpulse);
+    lhs.minSeparation = std::min(lhs.minSeparation, rhs.minSeparation);
+    lhs.islandsSolved += rhs.solved;
+    lhs.sumPosIters += rhs.positionIters;
+    lhs.sumVelIters += rhs.velocityIters;
+    lhs.bodiesSlept += rhs.bodiesSlept;
+    return lhs;
 }
 
 } // namespace playrho

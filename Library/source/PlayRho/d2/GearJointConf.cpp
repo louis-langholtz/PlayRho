@@ -26,7 +26,7 @@
 #include <PlayRho/d2/Joint.hpp>
 #include <PlayRho/d2/RevoluteJointConf.hpp>
 #include <PlayRho/d2/PrismaticJointConf.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/StepConf.hpp>
 #include <PlayRho/d2/BodyConstraint.hpp>
 #include <PlayRho/ConstraintSolverConf.hpp>
 

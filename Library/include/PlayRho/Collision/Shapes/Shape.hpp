@@ -31,7 +31,7 @@
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/NonNegative.hpp>
 #include <PlayRho/InvalidArgument.hpp>
-#include <PlayRho/Dynamics/Filter.hpp>
+#include <PlayRho/Filter.hpp>
 
 #include <memory>
 #include <functional>

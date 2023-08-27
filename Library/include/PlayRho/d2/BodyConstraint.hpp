@@ -23,7 +23,7 @@
 #define PLAYRHO_DYNAMICS_CONTACTS_BODYCONSTRAINT_HPP
 
 #include <PlayRho/Math.hpp>
-#include <PlayRho/Dynamics/MovementConf.hpp>
+#include <PlayRho/MovementConf.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 
 namespace playrho {

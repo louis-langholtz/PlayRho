@@ -22,7 +22,7 @@
 
 #include <PlayRho/d2/Velocity.hpp>
 #include <PlayRho/Math.hpp>
-#include <PlayRho/Dynamics/MovementConf.hpp>
+#include <PlayRho/MovementConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

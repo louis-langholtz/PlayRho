@@ -61,7 +61,7 @@
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp> // for GetAwakeCount
 #include <PlayRho/Dynamics/WorldShape.hpp> // for CreateShape
-#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/StepConf.hpp>
 #include <PlayRho/d2/ContactSolver.hpp>
 #include <PlayRho/d2/VelocityConstraint.hpp>
 #include <PlayRho/d2/Joint.hpp>

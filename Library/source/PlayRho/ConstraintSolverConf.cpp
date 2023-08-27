@@ -20,7 +20,7 @@
 
 #include <PlayRho/ConstraintSolverConf.hpp>
 
-#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/StepConf.hpp>
 
 namespace playrho {
 

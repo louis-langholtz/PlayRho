@@ -29,7 +29,7 @@
 
 #include <PlayRho/Defines.hpp>
 
-#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/StepConf.hpp>
 
 #include <array>
 #include <bitset>

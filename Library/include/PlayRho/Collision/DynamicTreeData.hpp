@@ -22,7 +22,7 @@
 #define PLAYRHO_COLLISION_DYNAMICTREEDATA_HPP
 
 #include <PlayRho/Settings.hpp>
-#include <PlayRho/Dynamics/Contactable.hpp>
+#include <PlayRho/Contactable.hpp>
 
 namespace playrho {
 

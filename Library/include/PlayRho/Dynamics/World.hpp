@@ -34,8 +34,8 @@
 
 #include <PlayRho/Dynamics/BodyConf.hpp> // for GetDefaultBodyConf
 #include <PlayRho/BodyID.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Dynamics/StepStats.hpp>
+#include <PlayRho/StepConf.hpp>
+#include <PlayRho/StepStats.hpp>
 #include <PlayRho/Dynamics/WorldConf.hpp>
 #include <PlayRho/KeyedContactID.hpp>
 #include <PlayRho/JointID.hpp>

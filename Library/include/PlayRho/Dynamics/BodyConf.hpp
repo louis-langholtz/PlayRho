@@ -29,7 +29,7 @@
 #include <PlayRho/NonNegative.hpp>
 #include <PlayRho/Math.hpp>
 
-#include <PlayRho/Dynamics/BodyType.hpp>
+#include <PlayRho/BodyType.hpp>
 
 #include <PlayRho/ShapeID.hpp>
 

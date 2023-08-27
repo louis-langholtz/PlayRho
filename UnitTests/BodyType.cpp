@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/BodyType.hpp>
+#include <PlayRho/BodyType.hpp>
 
 using namespace playrho;
 

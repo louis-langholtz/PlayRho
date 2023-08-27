@@ -28,7 +28,7 @@
 #include <PlayRho/Dynamics/WorldImplMisc.hpp>
 
 #include <PlayRho/Dynamics/BodyConf.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/StepConf.hpp>
 
 #include <utility> // for std::move
 
