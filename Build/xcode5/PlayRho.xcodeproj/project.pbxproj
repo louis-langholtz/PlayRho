@@ -1244,6 +1244,14 @@
 		9901AEF42A9BCEB90075122D /* d2 */ = {
 			isa = PBXGroup;
 			children = (
+				47C96C531FA67D1D00A6C587 /* Acceleration.hpp */,
+				476162C71E245C9D002C7FB0 /* CodeDumper.hpp */,
+				470F9B0F1EDF2890007EF7B6 /* Position.hpp */,
+				470F9B1B1EDF2B8A007EF7B6 /* Sweep.hpp */,
+				470F9B151EDF2959007EF7B6 /* Transformation.hpp */,
+				4731DE551DEC908600E7F931 /* UnitVec.hpp */,
+				470F9B2D1EDF5165007EF7B6 /* Velocity.hpp */,
+				472E30181DBA925500DA821D /* VertexSet.hpp */,
 			);
 			path = d2;
 			sourceTree = "<group>";
@@ -1261,6 +1269,10 @@
 		9901AEF62A9BCECD0075122D /* d2 */ = {
 			isa = PBXGroup;
 			children = (
+				476162C61E245C9D002C7FB0 /* CodeDumper.cpp */,
+				479DEBAC268155E50070497D /* Sweep.cpp */,
+				476E8ABD1FC8CD9F00705BB5 /* UnitVec.cpp */,
+				47363E8820029DFD005912B1 /* Velocity.cpp */,
 			);
 			path = d2;
 			sourceTree = "<group>";
@@ -1311,10 +1323,8 @@
 		996BDA7B2A9855E400CD2D55 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				47C96C531FA67D1D00A6C587 /* Acceleration.hpp */,
 				4734B2161DC00AFD00F15E29 /* ArrayList.hpp */,
 				80BB8940141C3E5900F1753A /* BlockAllocator.hpp */,
-				476162C71E245C9D002C7FB0 /* CodeDumper.hpp */,
 				470463ED250305C900614373 /* CheckedValue.hpp */,
 				47B58F541F570E2C00354C34 /* DynamicMemory.hpp */,
 				4764085625047C090090F711 /* Finite.hpp */,
@@ -1335,7 +1345,6 @@
 				4764085825047FA10090F711 /* NonPositive.hpp */,
 				47640854250475860090F711 /* NonZero.hpp */,
 				4764086E250EA5DE0090F711 /* ObjectPool.hpp */,
-				470F9B0F1EDF2890007EF7B6 /* Position.hpp */,
 				4764085A2504822F0090F711 /* Positive.hpp */,
 				4764085E2507FBFF0090F711 /* propagate_const.hpp */,
 				47B58F651F64D2B500354C34 /* Real.hpp */,
@@ -1344,19 +1353,14 @@
 				80BB8947141C3E5900F1753A /* Settings.hpp */,
 				4734B21E1DC1340500F15E29 /* Span.hpp */,
 				80BB8949141C3E5900F1753A /* StackAllocator.hpp */,
-				470F9B1B1EDF2B8A007EF7B6 /* Sweep.hpp */,
 				47C85D1E1F0DA14500F70C56 /* Templates.hpp */,
-				470F9B151EDF2959007EF7B6 /* Transformation.hpp */,
 				4706451A252CE27B006E69AA /* TypeInfo.hpp */,
 				4764085225045B3C0090F711 /* UnitInterval.hpp */,
 				47C85D181F0D9D8D00F70C56 /* Units.hpp */,
-				4731DE551DEC908600E7F931 /* UnitVec.hpp */,
 				474FFC3A1F2CEE6C0037CCE0 /* Vector.hpp */,
 				4768D3FA1E414A0100574143 /* Vector2.hpp */,
 				470F9B091EDE6340007EF7B6 /* Vector3.hpp */,
-				470F9B2D1EDF5165007EF7B6 /* Velocity.hpp */,
 				47B58F581F57218400354C34 /* Version.hpp */,
-				472E30181DBA925500DA821D /* VertexSet.hpp */,
 				4768D3F21E3A7ACA00574143 /* Wider.hpp */,
 				47D28D9B1F6F28C70094C032 /* WrongState.hpp */,
 			);
@@ -1458,13 +1462,9 @@
 			isa = PBXGroup;
 			children = (
 				80BB893F141C3E5900F1753A /* BlockAllocator.cpp */,
-				476162C61E245C9D002C7FB0 /* CodeDumper.cpp */,
 				47B58F531F570E2C00354C34 /* DynamicMemory.cpp */,
 				80BB8944141C3E5900F1753A /* Math.cpp */,
 				80BB8948141C3E5900F1753A /* StackAllocator.cpp */,
-				479DEBAC268155E50070497D /* Sweep.cpp */,
-				476E8ABD1FC8CD9F00705BB5 /* UnitVec.cpp */,
-				47363E8820029DFD005912B1 /* Velocity.cpp */,
 				47B58F571F57218400354C34 /* Version.cpp */,
 			);
 			path = Common;

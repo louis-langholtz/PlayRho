@@ -25,14 +25,14 @@
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/NonNegative.hpp>
 #include <PlayRho/Common/Span.hpp>
-#include <PlayRho/Common/UnitVec.hpp>
+#include <PlayRho/d2/UnitVec.hpp>
 #include <PlayRho/Common/Vector2.hpp>
 #include <PlayRho/Common/Vector3.hpp>
-#include <PlayRho/Common/Position.hpp>
-#include <PlayRho/Common/Velocity.hpp>
-#include <PlayRho/Common/Acceleration.hpp>
-#include <PlayRho/Common/Transformation.hpp>
-#include <PlayRho/Common/Sweep.hpp>
+#include <PlayRho/d2/Position.hpp>
+#include <PlayRho/d2/Velocity.hpp>
+#include <PlayRho/d2/Acceleration.hpp>
+#include <PlayRho/d2/Transformation.hpp>
+#include <PlayRho/d2/Sweep.hpp>
 #include <PlayRho/Common/Matrix.hpp>
 #include <PlayRho/Common/FixedMath.hpp>
 

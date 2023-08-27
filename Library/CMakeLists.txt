@@ -55,6 +55,22 @@ set(PLAYRHO_PMR_SRCS
 	"${PLAYRHO_SOURCE_PREFIX}pmr/PoolMemoryResource.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}pmr/StatsResource.cpp"
 	)
+set(PLAYRHO_D2_HDRS
+	"${PLAYRHO_INCLUDE_PREFIX}d2/Acceleration.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/CodeDumper.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/Position.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/Sweep.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/Transformation.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/UnitVec.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/Velocity.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/VertexSet.hpp"
+	)
+set(PLAYRHO_D2_SRCS
+	"${PLAYRHO_SOURCE_PREFIX}d2/CodeDumper.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/Sweep.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/UnitVec.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/Velocity.cpp"
+	)
 
 set(libsrc
 	${PLAYRHO_Joints_SRCS}
@@ -64,6 +80,7 @@ set(libsrc
 	${PLAYRHO_Shapes_SRCS}
 	${PLAYRHO_Collision_SRCS}
 	${PLAYRHO_PMR_SRCS}
+	${PLAYRHO_D2_SRCS}
 )
 
 if(PLAYRHO_BUILD_SHARED)
@@ -153,6 +170,9 @@ if(PLAYRHO_INSTALL)
 		COMPONENT Library)
 	install(FILES ${PLAYRHO_PMR_HDRS}
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/pmr
+		COMPONENT Library)
+	install(FILES ${PLAYRHO_D2_HDRS}
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PlayRho/d2
 		COMPONENT Library)
 
 	# install libraries

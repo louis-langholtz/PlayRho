@@ -27,7 +27,7 @@
 #include <PlayRho/Collision/Shapes/ShapeConf.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>
-#include <PlayRho/Common/VertexSet.hpp>
+#include <PlayRho/d2/VertexSet.hpp>
 
 #include <type_traits>
 #include <vector>

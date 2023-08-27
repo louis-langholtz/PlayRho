@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Common/Velocity.hpp>
+#include <PlayRho/d2/Velocity.hpp>
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
 

@@ -22,7 +22,7 @@
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
-#include <PlayRho/Common/VertexSet.hpp>
+#include <PlayRho/d2/VertexSet.hpp>
 
 namespace playrho {
 namespace d2 {

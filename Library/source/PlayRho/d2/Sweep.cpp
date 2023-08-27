@@ -19,8 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Common/Sweep.hpp>
-
+#include <PlayRho/d2/Sweep.hpp>
 #include <PlayRho/Common/Math.hpp> // for GetPosition
 
 namespace playrho::d2 {
