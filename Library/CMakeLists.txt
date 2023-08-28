@@ -27,6 +27,10 @@ set(PLAYRHO_SOURCE_PREFIX "source/playrho/")
 file(GLOB PLAYRHO_General_SRCS "${PLAYRHO_SOURCE_PREFIX}*.cpp")
 file(GLOB PLAYRHO_General_HDRS "${PLAYRHO_INCLUDE_PREFIX}*.hpp")
 
+set(PLAYRHO_DETAIL_HDRS
+	"${PLAYRHO_INCLUDE_PREFIX}detail/RayCastInput.hpp"
+	)
+
 configure_file("${PLAYRHO_INCLUDE_PREFIX}Defines.hpp.in" "${PLAYRHO_INCLUDE_PREFIX}Defines.hpp" @ONLY)
 configure_file("${PLAYRHO_INCLUDE_PREFIX}Real.hpp.in" "${PLAYRHO_INCLUDE_PREFIX}Real.hpp" @ONLY)
 set(PLAYRHO_GeneralCfg_HDRS
@@ -229,6 +233,7 @@ target_compile_options(PlayRho PRIVATE
 # These are used to create visual studio folders.
 source_group(Include FILES ${PLAYRHO_General_HDRS} ${PLAYRHO_GeneralCfg_HDRS})
 source_group(General FILES ${PLAYRHO_General_SRCS} ${PLAYRHO_GeneralCfg_HDRS} ${PLAYRHO_General_HDRS})
+source_group(Detail FILES ${PLAYRHO_DETAIL_HDRS})
 
 if(PLAYRHO_INSTALL)
 	include(GNUInstallDirs)
@@ -243,6 +248,9 @@ if(PLAYRHO_INSTALL)
 		COMPONENT Library)
 	install(FILES ${PLAYRHO_GeneralCfg_HDRS}
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/playrho
+		COMPONENT Library)
+	install(FILES ${PLAYRHO_DETAIL_HDRS}
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/playrho/detail
 		COMPONENT Library)
 	install(FILES ${PLAYRHO_PMR_HDRS}
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/playrho/pmr

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2023 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2023 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -18,22 +19,31 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_D2_RAYCASTINPUT_HPP
-#define PLAYRHO_D2_RAYCASTINPUT_HPP
+#ifndef PLAYRHO_DETAIL_RAYCASTINPUT_HPP
+#define PLAYRHO_DETAIL_RAYCASTINPUT_HPP
 
 /// @file
-/// Alias for the 2-D RayCastInput struct.
+/// Declaration of the RayCastInput class template.
 
 #include <playrho/Math.hpp>
 #include <playrho/UnitInterval.hpp>
 
-#include <playrho/detail/RayCastInput.hpp>
+namespace playrho::detail {
 
-namespace playrho::d2 {
+/// @brief Ray-cast input data for N-dimensions.
+/// @note The ray extends from <code>p1</code> to <code>p1 + maxFraction * (p2 - p1)</code>.
+template <std::size_t N>
+struct RayCastInput
+{
+    Vector<Length, N> p1; ///< Point 1.
+    Vector<Length, N> p2; ///< Point 2.
 
-/// @brief Ray cast input data for 2-dimensions.
-using RayCastInput = playrho::detail::RayCastInput<2>;
+    /// @brief Max fraction.
+    /// @details Unit interval value - a value between 0 and 1 inclusive.
+    UnitInterval<Real> maxFraction = UnitInterval<Real>{0};
+};
 
-} // namespace playrho::d2
+} // namespace playrho::detail
 
-#endif // PLAYRHO_D2_RAYCASTINPUT_HPP
+#endif // PLAYRHO_RAYCASTINPUT_HPP
+
