@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_SHAPES_EDGESHAPECONF_HPP
-#define PLAYRHO_COLLISION_SHAPES_EDGESHAPECONF_HPP
+#ifndef PLAYRHO_D2_SHAPES_EDGESHAPECONF_HPP
+#define PLAYRHO_D2_SHAPES_EDGESHAPECONF_HPP
 
 #include <playrho/Math.hpp>
 #include <playrho/d2/ShapeConf.hpp>
@@ -220,4 +220,4 @@ struct TypeInfo<d2::EdgeShapeConf> {
 
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_SHAPES_EDGESHAPECONF_HPP
+#endif // PLAYRHO_D2_SHAPES_EDGESHAPECONF_HPP

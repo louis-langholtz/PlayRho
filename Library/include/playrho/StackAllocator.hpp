@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_STACKALLOCATOR_HPP
-#define PLAYRHO_COMMON_STACKALLOCATOR_HPP
+#ifndef PLAYRHO_STACKALLOCATOR_HPP
+#define PLAYRHO_STACKALLOCATOR_HPP
 
 #include <playrho/Settings.hpp>
 
@@ -164,4 +164,4 @@ private:
     
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_STACKALLOCATOR_HPP
+#endif // PLAYRHO_STACKALLOCATOR_HPP

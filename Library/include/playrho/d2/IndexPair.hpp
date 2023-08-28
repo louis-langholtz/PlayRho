@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_INDEXPAIR_HPP
-#define PLAYRHO_COLLISION_INDEXPAIR_HPP
+#ifndef PLAYRHO_D2_INDEXPAIR_HPP
+#define PLAYRHO_D2_INDEXPAIR_HPP
 
 #include <playrho/Settings.hpp>
 #include <array>
@@ -150,4 +150,4 @@ using SeparationInfo = ::playrho::detail::SeparationInfo<2>;
 } // namespace 2d
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_INDEXPAIR_HPP
+#endif // PLAYRHO_D2_INDEXPAIR_HPP

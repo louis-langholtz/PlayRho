@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_RAYCASTINPUT_HPP
-#define PLAYRHO_COLLISION_RAYCASTINPUT_HPP
+#ifndef PLAYRHO_D2_RAYCASTINPUT_HPP
+#define PLAYRHO_D2_RAYCASTINPUT_HPP
 
 /// @file
 /// Declaration of the RayCastInput struct.
@@ -54,4 +54,4 @@ using RayCastInput = playrho::detail::RayCastInput<2>;
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_RAYCASTINPUT_HPP
+#endif // PLAYRHO_D2_RAYCASTINPUT_HPP

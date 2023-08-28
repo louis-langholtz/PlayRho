@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_CONTACTS_KEYEDCONTACTID_HPP
-#define PLAYRHO_DYNAMICS_CONTACTS_KEYEDCONTACTID_HPP
+#ifndef PLAYRHO_KEYEDCONTACTID_HPP
+#define PLAYRHO_KEYEDCONTACTID_HPP
 
 /// @file
 /// Declaration of the <code>KeyedContactID</code> alias.
@@ -34,4 +34,4 @@ using KeyedContactID = std::pair<ContactKey, ContactID>;
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_CONTACTS_KEYEDCONTACTID_HPP
+#endif // PLAYRHO_KEYEDCONTACTID_HPP

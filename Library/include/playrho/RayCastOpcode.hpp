@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_RAYCASTOPCODE_HPP
-#define PLAYRHO_COLLISION_RAYCASTOPCODE_HPP
+#ifndef PLAYRHO_RAYCASTOPCODE_HPP
+#define PLAYRHO_RAYCASTOPCODE_HPP
 
 namespace playrho {
 
@@ -49,4 +49,4 @@ enum class RayCastOpcode
 
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_RAYCASTOPCODE_HPP
+#endif // PLAYRHO_RAYCASTOPCODE_HPP

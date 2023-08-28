@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_WORLDMANIFOLD_HPP
-#define PLAYRHO_COLLISION_WORLDMANIFOLD_HPP
+#ifndef PLAYRHO_D2_WORLDMANIFOLD_HPP
+#define PLAYRHO_D2_WORLDMANIFOLD_HPP
 
 #include <playrho/Math.hpp>
 
@@ -212,4 +212,4 @@ WorldManifold GetWorldManifold(const World& world,
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_WORLDMANIFOLD_HPP
+#endif // PLAYRHO_D2_WORLDMANIFOLD_HPP

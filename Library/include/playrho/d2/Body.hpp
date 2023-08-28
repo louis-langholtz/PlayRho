@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_BODY_HPP
-#define PLAYRHO_DYNAMICS_BODY_HPP
+#ifndef PLAYRHO_D2_BODY_HPP
+#define PLAYRHO_D2_BODY_HPP
 
 /// @file
 /// Declarations of the Body class, and free functions associated with it.
@@ -1394,4 +1394,4 @@ inline bool operator!=(const Body& lhs, const Body& rhs)
 
 } // namespace playrho::d2
 
-#endif // PLAYRHO_DYNAMICS_BODY_HPP
+#endif // PLAYRHO_D2_BODY_HPP

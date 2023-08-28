@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_FINITE_HPP
-#define PLAYRHO_COMMON_FINITE_HPP
+#ifndef PLAYRHO_FINITE_HPP
+#define PLAYRHO_FINITE_HPP
 
 #include <playrho/CheckedValue.hpp>
 #include <playrho/Math.hpp> // for playrho::isfinite
@@ -59,4 +59,4 @@ static_assert(std::is_default_constructible<Finite<int>>::value);
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_FINITE_HPP
+#endif // PLAYRHO_FINITE_HPP

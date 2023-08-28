@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_BODYTYPE_HPP
-#define PLAYRHO_DYNAMICS_BODYTYPE_HPP
+#ifndef PLAYRHO_BODYTYPE_HPP
+#define PLAYRHO_BODYTYPE_HPP
 
 namespace playrho {
 
@@ -81,4 +81,4 @@ inline bool IsAccelerable(BodyType type)
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_BODYTYPE_HPP
+#endif // PLAYRHO_BODYTYPE_HPP

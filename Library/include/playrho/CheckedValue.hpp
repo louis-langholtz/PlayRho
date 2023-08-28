@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_CHECKEDVALUE_HPP
-#define PLAYRHO_COMMON_CHECKEDVALUE_HPP
+#ifndef PLAYRHO_CHECKEDVALUE_HPP
+#define PLAYRHO_CHECKEDVALUE_HPP
 
 #include <playrho/Templates.hpp>
 
@@ -548,4 +548,4 @@ using DefaultCheckedValue = CheckedValue<T>;
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_CHECKEDVALUE_HPP
+#endif // PLAYRHO_CHECKEDVALUE_HPP

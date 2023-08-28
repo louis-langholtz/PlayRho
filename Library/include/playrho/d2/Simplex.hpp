@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_SIMPLEX_HPP
-#define PLAYRHO_COLLISION_SIMPLEX_HPP
+#ifndef PLAYRHO_D2_SIMPLEX_HPP
+#define PLAYRHO_D2_SIMPLEX_HPP
 
 #include <playrho/ArrayList.hpp>
 #include <playrho/Vector.hpp>
@@ -220,4 +220,4 @@ constexpr Length2 GetClosestPoint(const Simplex& simplex)
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_SIMPLEX_HPP
+#endif // PLAYRHO_D2_SIMPLEX_HPP

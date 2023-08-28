@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_JOINTS_WELDJOINTCONF_HPP
-#define PLAYRHO_DYNAMICS_JOINTS_WELDJOINTCONF_HPP
+#ifndef PLAYRHO_D2_WELDJOINTCONF_HPP
+#define PLAYRHO_D2_WELDJOINTCONF_HPP
 
 #include <playrho/d2/JointConf.hpp>
 
@@ -233,4 +233,4 @@ struct TypeInfo<d2::WeldJointConf> {
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_WELDJOINTCONF_HPP
+#endif // PLAYRHO_D2_WELDJOINTCONF_HPP

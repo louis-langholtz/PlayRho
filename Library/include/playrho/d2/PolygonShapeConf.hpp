@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_SHAPES_POLYGONSHAPECONF_HPP
-#define PLAYRHO_COLLISION_SHAPES_POLYGONSHAPECONF_HPP
+#ifndef PLAYRHO_D2_SHAPES_POLYGONSHAPECONF_HPP
+#define PLAYRHO_D2_SHAPES_POLYGONSHAPECONF_HPP
 
 #include <playrho/Math.hpp>
 #include <playrho/Span.hpp>
@@ -326,4 +326,4 @@ struct TypeInfo<d2::PolygonShapeConf> {
 
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_SHAPES_POLYGONSHAPECONF_HPP
+#endif // PLAYRHO_D2_SHAPES_POLYGONSHAPECONF_HPP

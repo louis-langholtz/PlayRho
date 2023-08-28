@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_NONZERO_HPP
-#define PLAYRHO_COMMON_NONZERO_HPP
+#ifndef PLAYRHO_NONZERO_HPP
+#define PLAYRHO_NONZERO_HPP
 
 #include <playrho/CheckedValue.hpp>
 
@@ -58,4 +58,4 @@ static_assert(!std::is_default_constructible<NonNull<int*>>::value);
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_NONZERO_HPP
+#endif // PLAYRHO_NONZERO_HPP

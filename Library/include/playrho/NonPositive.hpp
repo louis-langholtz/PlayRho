@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_NONPOSITIVE_HPP
-#define PLAYRHO_COMMON_NONPOSITIVE_HPP
+#ifndef PLAYRHO_NONPOSITIVE_HPP
+#define PLAYRHO_NONPOSITIVE_HPP
 
 #include <playrho/CheckedValue.hpp>
 
@@ -57,4 +57,4 @@ static_assert(std::is_default_constructible<NonPositive<int>>::value);
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_NONPOSITIVE_HPP
+#endif // PLAYRHO_NONPOSITIVE_HPP

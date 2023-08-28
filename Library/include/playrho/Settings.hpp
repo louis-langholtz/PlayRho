@@ -24,8 +24,8 @@
  * @brief Types and default settings file.
  */
 
-#ifndef PLAYRHO_COMMON_SETTINGS_HPP
-#define PLAYRHO_COMMON_SETTINGS_HPP
+#ifndef PLAYRHO_SETTINGS_HPP
+#define PLAYRHO_SETTINGS_HPP
 
 #include <cstddef>
 #include <cassert>
@@ -278,4 +278,4 @@ constexpr auto DefaultCirclesRatio = Real{10};
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_SETTINGS_HPP
+#endif // PLAYRHO_SETTINGS_HPP

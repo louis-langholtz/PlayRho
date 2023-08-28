@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_POOL_ALLOCATOR_HPP
-#define PLAYRHO_COMMON_POOL_ALLOCATOR_HPP
+#ifndef PLAYRHO_POOL_ALLOCATOR_HPP
+#define PLAYRHO_POOL_ALLOCATOR_HPP
 
 #include <cstddef> // for std::size_t, std::byte
 #include <memory> // for std::unique_ptr
@@ -205,4 +205,4 @@ std::ostream& operator<<(std::ostream& os, const PoolMemoryResource::Stats& stat
 
 }
 
-#endif // PLAYRHO_COMMON_POOL_ALLOCATOR_HPP
+#endif // PLAYRHO_POOL_ALLOCATOR_HPP

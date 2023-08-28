@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_TRANSFORMATION_HPP
-#define PLAYRHO_COMMON_TRANSFORMATION_HPP
+#ifndef PLAYRHO_D2_TRANSFORMATION_HPP
+#define PLAYRHO_D2_TRANSFORMATION_HPP
 
 #include <playrho/Settings.hpp>
 #include <playrho/Vector2.hpp>
@@ -89,4 +89,4 @@ constexpr bool IsValid(const d2::Transformation& value) noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_TRANSFORMATION_HPP
+#endif // PLAYRHO_D2_TRANSFORMATION_HPP

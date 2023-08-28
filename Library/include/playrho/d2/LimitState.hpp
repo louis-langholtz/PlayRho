@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_JOINTS_LIMITSTATE_HPP
-#define PLAYRHO_DYNAMICS_JOINTS_LIMITSTATE_HPP
+#ifndef PLAYRHO_D2_LIMITSTATE_HPP
+#define PLAYRHO_D2_LIMITSTATE_HPP
 
 namespace playrho {
 namespace d2 {
@@ -50,4 +50,4 @@ const char* ToString(LimitState val) noexcept;
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_LIMITSTATE_HPP
+#endif // PLAYRHO_D2_LIMITSTATE_HPP

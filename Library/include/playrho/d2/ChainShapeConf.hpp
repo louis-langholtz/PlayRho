@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_SHAPES_CHAINSHAPECONF_HPP
-#define PLAYRHO_COLLISION_SHAPES_CHAINSHAPECONF_HPP
+#ifndef PLAYRHO_D2_SHAPES_CHAINSHAPECONF_HPP
+#define PLAYRHO_D2_SHAPES_CHAINSHAPECONF_HPP
 
 #include <playrho/Math.hpp>
 #include <playrho/d2/ShapeConf.hpp>
@@ -272,4 +272,4 @@ struct TypeInfo<d2::ChainShapeConf> {
 
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_SHAPES_CHAINSHAPECONF_HPP
+#endif // PLAYRHO_D2_SHAPES_CHAINSHAPECONF_HPP

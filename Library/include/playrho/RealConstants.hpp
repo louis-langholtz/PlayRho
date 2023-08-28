@@ -26,8 +26,8 @@
  * @see https://en.wikipedia.org/wiki/Dimensionless_quantity
  */
 
-#ifndef PLAYRHO_COMMON_REALCONSTANTS_HPP
-#define PLAYRHO_COMMON_REALCONSTANTS_HPP
+#ifndef PLAYRHO_REALCONSTANTS_HPP
+#define PLAYRHO_REALCONSTANTS_HPP
 
 #include <playrho/Defines.hpp>
 #include <playrho/Real.hpp>
@@ -104,4 +104,4 @@ constexpr auto Yotta = Real(1e24);
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_REALCONSTANTS_HPP
+#endif // PLAYRHO_REALCONSTANTS_HPP

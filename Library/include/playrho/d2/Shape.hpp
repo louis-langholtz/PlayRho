@@ -21,8 +21,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_SHAPES_SHAPE_HPP
-#define PLAYRHO_COLLISION_SHAPES_SHAPE_HPP
+#ifndef PLAYRHO_D2_SHAPES_SHAPE_HPP
+#define PLAYRHO_D2_SHAPES_SHAPE_HPP
 
 #include <playrho/Math.hpp>
 #include <playrho/TypeInfo.hpp>
@@ -939,4 +939,4 @@ inline bool ShouldCollide(const Shape& a, const Shape& b) noexcept
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_SHAPES_SHAPE_HPP
+#endif // PLAYRHO_D2_SHAPES_SHAPE_HPP

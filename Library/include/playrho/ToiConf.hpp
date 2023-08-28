@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_TOICONF_HPP
-#define PLAYRHO_COLLISION_TOICONF_HPP
+#ifndef PLAYRHO_TOICONF_HPP
+#define PLAYRHO_TOICONF_HPP
 
 #include <playrho/NonNegative.hpp>
 #include <playrho/Settings.hpp>
@@ -152,4 +152,4 @@ ToiConf GetToiConf(const StepConf& conf) noexcept;
 
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_TOICONF_HPP
+#endif // PLAYRHO_TOICONF_HPP

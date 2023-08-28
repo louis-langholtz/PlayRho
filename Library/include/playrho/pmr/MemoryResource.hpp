@@ -8,8 +8,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef PLAYRHO_COMMON_MEMORY_RESOURCE_HPP
-#define PLAYRHO_COMMON_MEMORY_RESOURCE_HPP
+#ifndef PLAYRHO_MEMORY_RESOURCE_HPP
+#define PLAYRHO_MEMORY_RESOURCE_HPP
 
 /// @namespace playrho::pmr Name space for organizing custom allocator
 ///   funtionality & supporting standard libraries that don't yet provide the
@@ -203,4 +203,4 @@ using polymorphic_allocator = std::pmr::polymorphic_allocator<T>; // NOLINT(misc
 
 #endif
 
-#endif // PLAYRHO_COMMON_MEMORY_RESOURCE_HPP
+#endif // PLAYRHO_MEMORY_RESOURCE_HPP

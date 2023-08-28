@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_JOINTS_PULLEYJOINTCONF_HPP
-#define PLAYRHO_DYNAMICS_JOINTS_PULLEYJOINTCONF_HPP
+#ifndef PLAYRHO_D2_PULLEYJOINTCONF_HPP
+#define PLAYRHO_D2_PULLEYJOINTCONF_HPP
 
 #include <playrho/d2/JointConf.hpp>
 #include <playrho/Math.hpp>
@@ -255,4 +255,4 @@ struct TypeInfo<d2::PulleyJointConf> {
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_PULLEYJOINTCONF_HPP
+#endif // PLAYRHO_D2_PULLEYJOINTCONF_HPP

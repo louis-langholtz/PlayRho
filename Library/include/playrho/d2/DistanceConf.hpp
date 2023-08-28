@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_DISTANCE_CONF_HPP
-#define PLAYRHO_COLLISION_DISTANCE_CONF_HPP
+#ifndef PLAYRHO_D2_DISTANCE_CONF_HPP
+#define PLAYRHO_D2_DISTANCE_CONF_HPP
 
 #include <playrho/Settings.hpp>
 
@@ -54,4 +54,4 @@ DistanceConf GetDistanceConf(const StepConf& conf) noexcept;
 
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_DISTANCE_CONF_HPP
+#endif // PLAYRHO_D2_DISTANCE_CONF_HPP

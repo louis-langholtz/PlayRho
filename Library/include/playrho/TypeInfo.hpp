@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_TYPEID_HPP
-#define PLAYRHO_COMMON_TYPEID_HPP
+#ifndef PLAYRHO_TYPEID_HPP
+#define PLAYRHO_TYPEID_HPP
 
 #include <playrho/Templates.hpp>
 
@@ -216,4 +216,4 @@ constexpr const char* GetTypeName() noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_TYPEID_HPP
+#endif // PLAYRHO_TYPEID_HPP

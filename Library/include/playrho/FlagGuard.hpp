@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_FLAGGUARD_HPP
-#define PLAYRHO_COMMON_FLAGGUARD_HPP
+#ifndef PLAYRHO_FLAGGUARD_HPP
+#define PLAYRHO_FLAGGUARD_HPP
 
 #include <type_traits>
 
@@ -73,4 +73,4 @@ namespace playrho {
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_FLAGGUARD_HPP
+#endif // PLAYRHO_FLAGGUARD_HPP

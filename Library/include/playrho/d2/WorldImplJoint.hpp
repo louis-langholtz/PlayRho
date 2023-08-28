@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_WORLDIMPLJOINT_HPP
-#define PLAYRHO_DYNAMICS_WORLDIMPLJOINT_HPP
+#ifndef PLAYRHO_D2_WORLDIMPLJOINT_HPP
+#define PLAYRHO_D2_WORLDIMPLJOINT_HPP
 
 /// @file
 /// Declarations of free functions of WorldImpl for joints.
@@ -63,4 +63,4 @@ void SetJoint(WorldImpl& world, JointID id, const Joint& def);
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_WORLDIMPLJOINT_HPP
+#endif // PLAYRHO_D2_WORLDIMPLJOINT_HPP

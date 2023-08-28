@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_SHAPES_SHAPEID_HPP
-#define PLAYRHO_COLLISION_SHAPES_SHAPEID_HPP
+#ifndef PLAYRHO_SHAPES_SHAPEID_HPP
+#define PLAYRHO_SHAPES_SHAPEID_HPP
 
 #include <playrho/IndexingNamedType.hpp>
 #include <playrho/Settings.hpp>
@@ -48,4 +48,4 @@ constexpr bool IsValid(const ShapeID& value) noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_SHAPES_SHAPEID_HPP
+#endif // PLAYRHO_SHAPES_SHAPEID_HPP

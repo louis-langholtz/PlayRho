@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_CONTACTS_CONTACT_HPP
-#define PLAYRHO_DYNAMICS_CONTACTS_CONTACT_HPP
+#ifndef PLAYRHO_CONTACT_HPP
+#define PLAYRHO_CONTACT_HPP
 
 #include <playrho/Math.hpp>
 
@@ -869,4 +869,4 @@ constexpr void SetTangentSpeed(Contact& contact, LinearVelocity value) noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_CONTACTS_CONTACT_HPP
+#endif // PLAYRHO_CONTACT_HPP

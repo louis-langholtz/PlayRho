@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_WORLDIMPLMISC_HPP
-#define PLAYRHO_DYNAMICS_WORLDIMPLMISC_HPP
+#ifndef PLAYRHO_D2_WORLDIMPLMISC_HPP
+#define PLAYRHO_D2_WORLDIMPLMISC_HPP
 
 /// @file
 /// Declarations of free functions of WorldImpl.
@@ -181,4 +181,4 @@ const DynamicTree& GetTree(const WorldImpl& world) noexcept;
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_WORLDIMPLMISC_HPP
+#endif // PLAYRHO_D2_WORLDIMPLMISC_HPP

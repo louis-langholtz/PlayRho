@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_VECTOR_HPP
-#define PLAYRHO_COMMON_VECTOR_HPP
+#ifndef PLAYRHO_VECTOR_HPP
+#define PLAYRHO_VECTOR_HPP
 
 #include <cassert>
 #include <cstddef>
@@ -581,4 +581,4 @@ namespace std {
     
 } // namespace std
 
-#endif // PLAYRHO_COMMON_VECTOR_HPP
+#endif // PLAYRHO_VECTOR_HPP

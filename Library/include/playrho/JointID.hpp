@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_JOINTS_JOINTID_HPP
-#define PLAYRHO_DYNAMICS_JOINTS_JOINTID_HPP
+#ifndef PLAYRHO_JOINTID_HPP
+#define PLAYRHO_JOINTID_HPP
 
 #include <playrho/IndexingNamedType.hpp>
 #include <playrho/Settings.hpp>
@@ -48,4 +48,4 @@ constexpr bool IsValid(const JointID& value) noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_JOINTID_HPP
+#endif // PLAYRHO_JOINTID_HPP

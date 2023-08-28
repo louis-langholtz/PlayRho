@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_DYNAMICMEMORY_HPP
-#define PLAYRHO_COMMON_DYNAMICMEMORY_HPP
+#ifndef PLAYRHO_DYNAMICMEMORY_HPP
+#define PLAYRHO_DYNAMICMEMORY_HPP
 
 #include <playrho/Defines.hpp>
 
@@ -96,4 +96,4 @@ void Free(void* mem);
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_DYNAMICMEMORY_HPP
+#endif // PLAYRHO_DYNAMICMEMORY_HPP

@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_SHAPES_RECTANGLE_HPP
-#define PLAYRHO_COLLISION_SHAPES_RECTANGLE_HPP
+#ifndef PLAYRHO_D2_COMPOSITOR_HPP
+#define PLAYRHO_D2_COMPOSITOR_HPP
 
 #include <playrho/Math.hpp>
 #include <playrho/Units.hpp>
@@ -893,4 +893,4 @@ bool operator!=(const Compositor<P11, P12, P13, P14, P15, P16>& lhs,
 
 } // namespace playrho::d2::part
 
-#endif // PLAYRHO_COLLISION_SHAPES_RECTANGLE_HPP
+#endif // PLAYRHO_D2_COMPOSITOR_HPP

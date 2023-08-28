@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_DISTANCE_HPP
-#define PLAYRHO_COLLISION_DISTANCE_HPP
+#ifndef PLAYRHO_D2_DISTANCE_HPP
+#define PLAYRHO_D2_DISTANCE_HPP
 
 #include <playrho/Math.hpp>
 
@@ -102,4 +102,4 @@ Area TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_DISTANCE_HPP
+#endif // PLAYRHO_D2_DISTANCE_HPP

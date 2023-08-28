@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_WORLDIMPLBODY_HPP
-#define PLAYRHO_DYNAMICS_WORLDIMPLBODY_HPP
+#ifndef PLAYRHO_D2_WORLDIMPLBODY_HPP
+#define PLAYRHO_D2_WORLDIMPLBODY_HPP
 
 /// @file
 /// Declarations of free functions of WorldImpl for bodies.
@@ -110,4 +110,4 @@ const std::vector<std::tuple<ContactKey, ContactID>>& GetContacts(const WorldImp
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_WORLDIMPLBODY_HPP
+#endif // PLAYRHO_D2_WORLDIMPLBODY_HPP

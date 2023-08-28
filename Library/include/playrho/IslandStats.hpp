@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_ISLANDSTATS_HPP
-#define PLAYRHO_DYNAMICS_ISLANDSTATS_HPP
+#ifndef PLAYRHO_ISLANDSTATS_HPP
+#define PLAYRHO_ISLANDSTATS_HPP
 
 #include <playrho/Units.hpp>
 #include <playrho/Settings.hpp>
@@ -41,4 +41,4 @@ struct IslandStats
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_ISLANDSTATS_HPP
+#endif // PLAYRHO_ISLANDSTATS_HPP

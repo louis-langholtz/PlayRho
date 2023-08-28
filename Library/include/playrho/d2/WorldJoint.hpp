@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_WORLDJOINT_HPP
-#define PLAYRHO_DYNAMICS_WORLDJOINT_HPP
+#ifndef PLAYRHO_D2_WORLDJOINT_HPP
+#define PLAYRHO_D2_WORLDJOINT_HPP
 
 /// @file
 /// Declarations of free functions of World for joints identified by <code>JointID</code>.
@@ -406,4 +406,4 @@ inline JointCounter GetJointCount(const World& world) noexcept
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_WORLDJOINT_HPP
+#endif // PLAYRHO_D2_WORLDJOINT_HPP

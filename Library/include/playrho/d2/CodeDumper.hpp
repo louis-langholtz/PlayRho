@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_CODEDUMPER_HPP
-#define PLAYRHO_COMMON_CODEDUMPER_HPP
+#ifndef PLAYRHO_D2_CODEDUMPER_HPP
+#define PLAYRHO_D2_CODEDUMPER_HPP
 
 #ifdef CODE_DUMPER_IS_READY
 
@@ -92,4 +92,4 @@ void Dump(const WheelJointConf& joint, std::size_t index, const World& world);
 
 #endif // CODE_DUMPER_IS_READY
 
-#endif // PLAYRHO_COMMON_CODEDUMPER_HPP
+#endif // PLAYRHO_D2_CODEDUMPER_HPP

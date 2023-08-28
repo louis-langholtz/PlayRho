@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_AABB_HPP
-#define PLAYRHO_COLLISION_AABB_HPP
+#ifndef PLAYRHO_D2_AABB_HPP
+#define PLAYRHO_D2_AABB_HPP
 
 /// @file
 /// Declaration of the AABB class and free functions that return instances of it.
@@ -464,4 +464,4 @@ constexpr d2::AABB GetInvalid() noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_AABB_HPP
+#endif // PLAYRHO_D2_AABB_HPP

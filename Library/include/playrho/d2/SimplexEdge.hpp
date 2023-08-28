@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_SIMPLEXEDGE_HPP
-#define PLAYRHO_COLLISION_SIMPLEXEDGE_HPP
+#ifndef PLAYRHO_D2_SIMPLEXEDGE_HPP
+#define PLAYRHO_D2_SIMPLEXEDGE_HPP
 
 #include <playrho/Math.hpp>
 #include <playrho/d2/IndexPair.hpp>
@@ -101,4 +101,4 @@ constexpr bool operator!= (const SimplexEdge& lhs, const SimplexEdge& rhs) noexc
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_SIMPLEXEDGE_HPP
+#endif // PLAYRHO_D2_SIMPLEXEDGE_HPP

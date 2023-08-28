@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_INTERVAL_HPP
-#define PLAYRHO_COMMON_INTERVAL_HPP
+#ifndef PLAYRHO_INTERVAL_HPP
+#define PLAYRHO_INTERVAL_HPP
 
 #include <playrho/NonNegative.hpp>
 
@@ -392,4 +392,4 @@ template <typename T>
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_INTERVAL_HPP
+#endif // PLAYRHO_INTERVAL_HPP

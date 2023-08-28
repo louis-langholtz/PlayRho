@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_BODYID_HPP
-#define PLAYRHO_DYNAMICS_BODYID_HPP
+#ifndef PLAYRHO_BODYID_HPP
+#define PLAYRHO_BODYID_HPP
 
 #include <playrho/IndexingNamedType.hpp>
 #include <playrho/Settings.hpp>
@@ -48,4 +48,4 @@ constexpr bool IsValid(const BodyID& value) noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_BODYID_HPP
+#endif // PLAYRHO_BODYID_HPP

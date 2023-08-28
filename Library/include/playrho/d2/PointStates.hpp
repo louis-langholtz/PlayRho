@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_POINTSTATES_HPP
-#define PLAYRHO_COLLISION_POINTSTATES_HPP
+#ifndef PLAYRHO_D2_POINTSTATES_HPP
+#define PLAYRHO_D2_POINTSTATES_HPP
 
 /// @file
 /// Structures and functions used for computing before and after like point oriented
@@ -55,4 +55,4 @@ PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2)
 
 }
 
-#endif // PLAYRHO_COLLISION_POINTSTATES_HPP
+#endif // PLAYRHO_D2_POINTSTATES_HPP

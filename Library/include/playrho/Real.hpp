@@ -23,8 +23,8 @@
  * @brief Real number definition file.
  */
 
-#ifndef PLAYRHO_COMMON_REAL_HPP
-#define PLAYRHO_COMMON_REAL_HPP
+#ifndef PLAYRHO_REAL_HPP
+#define PLAYRHO_REAL_HPP
 
 #include <playrho/Fixed.hpp>
 #include <playrho/FixedMath.hpp>
@@ -68,4 +68,4 @@ using Real = float;
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_REAL_HPP
+#endif // PLAYRHO_REAL_HPP

@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_MATH_HPP
-#define PLAYRHO_COMMON_MATH_HPP
+#ifndef PLAYRHO_MATH_HPP
+#define PLAYRHO_MATH_HPP
 
 #include <playrho/Settings.hpp>
 #include <playrho/NonNegative.hpp>
@@ -994,4 +994,4 @@ constexpr auto GetReflectionMatrix(const UnitVec& axis)
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_MATH_HPP
+#endif // PLAYRHO_MATH_HPP

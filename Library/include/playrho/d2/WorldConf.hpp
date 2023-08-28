@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_WORLDCONF_HPP
-#define PLAYRHO_DYNAMICS_WORLDCONF_HPP
+#ifndef PLAYRHO_D2_WORLDCONF_HPP
+#define PLAYRHO_D2_WORLDCONF_HPP
 
 /// @file
 /// Declarations of the WorldConf class.
@@ -163,4 +163,4 @@ constexpr WorldConf& WorldConf::UseProxyCapacity(ContactCounter value) noexcept
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_WORLDCONF_HPP
+#endif // PLAYRHO_D2_WORLDCONF_HPP

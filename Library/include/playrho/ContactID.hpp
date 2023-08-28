@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP
-#define PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP
+#ifndef PLAYRHO_CONTACTID_HPP
+#define PLAYRHO_CONTACTID_HPP
 
 #include <playrho/IndexingNamedType.hpp>
 #include <playrho/Settings.hpp>
@@ -49,4 +49,4 @@ constexpr bool IsValid(const ContactID& value) noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP
+#endif // PLAYRHO_CONTACTID_HPP

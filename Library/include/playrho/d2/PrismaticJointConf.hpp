@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_JOINTS_PRISMATICJOINTCONF_HPP
-#define PLAYRHO_DYNAMICS_JOINTS_PRISMATICJOINTCONF_HPP
+#ifndef PLAYRHO_D2_PRISMATICJOINTCONF_HPP
+#define PLAYRHO_D2_PRISMATICJOINTCONF_HPP
 
 #include <playrho/d2/JointConf.hpp>
 #include <playrho/d2/LimitState.hpp>
@@ -305,4 +305,4 @@ struct TypeInfo<d2::PrismaticJointConf> {
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_PRISMATICJOINTCONF_HPP
+#endif // PLAYRHO_D2_PRISMATICJOINTCONF_HPP

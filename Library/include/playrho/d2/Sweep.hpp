@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_SWEEP_HPP
-#define PLAYRHO_COMMON_SWEEP_HPP
+#ifndef PLAYRHO_D2_SWEEP_HPP
+#define PLAYRHO_D2_SWEEP_HPP
 
 #include <playrho/d2/Position.hpp>
 #include <playrho/Settings.hpp>
@@ -150,4 +150,4 @@ constexpr bool IsValid(const d2::Sweep& value) noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_SWEEP_HPP
+#endif // PLAYRHO_D2_SWEEP_HPP

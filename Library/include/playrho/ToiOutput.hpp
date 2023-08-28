@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_TOIOUTPUT_HPP
-#define PLAYRHO_COLLISION_TOIOUTPUT_HPP
+#ifndef PLAYRHO_TOIOUTPUT_HPP
+#define PLAYRHO_TOIOUTPUT_HPP
 
 #include <playrho/Settings.hpp>
 #include <playrho/Wider.hpp>
@@ -134,4 +134,4 @@ const char* GetName(ToiOutput::State state) noexcept;
 
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_TOIOUTPUT_HPP
+#endif // PLAYRHO_TOIOUTPUT_HPP
