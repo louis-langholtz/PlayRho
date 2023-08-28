@@ -22,7 +22,7 @@
 #ifndef PLAYRHO_TEST_HPP
 #define PLAYRHO_TEST_HPP
 
-#include <playrho/PlayRho.hpp>
+#include <playrho/BasicAPI.hpp>
 
 #include <playrho/Templates.hpp>
 #include <playrho/d2/UnitVec.hpp>
