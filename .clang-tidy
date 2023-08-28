@@ -2,7 +2,7 @@
 #
 # To run clang-tidy on all the files in the library:
 #   cmake -S PlayRho -B PlayRhoBuild -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-#   run-clang-tidy -p PlayRhoBuild -header-filter='.*' PlayRho/PlayRho
+#   run-clang-tidy -p PlayRhoBuild -header-filter='.*' PlayRho/Library
 
 ---
 Checks: 'bugprone-*,

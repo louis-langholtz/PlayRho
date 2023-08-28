@@ -54,7 +54,7 @@ For coding, purists may want to begin by just including the
      return 0; // world and associated resources go away automatically
  }
  @endcode
-Pragmatists may instead want to begin by including this file, <code>PlayRho.hpp</code>,
+Pragmatists may instead want to begin by including this file, <code>BasicAPI.hpp</code>,
  which includes headers for most of the entire PlayRho public API.
 
 @section helloworld_sec An Entire Application
