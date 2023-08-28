@@ -21,7 +21,7 @@
 #ifndef PLAYRHO_SHAPES_SHAPEID_HPP
 #define PLAYRHO_SHAPES_SHAPEID_HPP
 
-#include <playrho/IndexingNamedType.hpp>
+#include <playrho/detail/IndexingNamedType.hpp>
 #include <playrho/Settings.hpp>
 
 namespace playrho {

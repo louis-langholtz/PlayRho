@@ -19,15 +19,16 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/WorldBody.hpp>
-#include <playrho/d2/WorldShape.hpp>
-
-#include <playrho/d2/World.hpp>
-#include <playrho/d2/Body.hpp>
-
 #include <algorithm>
 #include <functional>
 #include <memory>
+
+#include <playrho/to_underlying.hpp>
+
+#include <playrho/d2/Body.hpp>
+#include <playrho/d2/WorldBody.hpp>
+#include <playrho/d2/WorldShape.hpp>
+#include <playrho/d2/World.hpp>
 
 using std::for_each;
 
@@ -236,6 +237,11 @@ Acceleration CalcGravitationalAcceleration(const World& world, BodyID id)
         return Acceleration{sumForce / m1, 0 * RadianPerSquareSecond};
     }
     return Acceleration{};
+}
+
+BodyCounter GetWorldIndex(const World&, BodyID id) noexcept
+{
+    return to_underlying(id);
 }
 
 BodyType GetType(const World& world, BodyID id)

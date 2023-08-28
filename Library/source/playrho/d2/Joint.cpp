@@ -19,8 +19,12 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/Joint.hpp>
+#include <algorithm>
 
+#include <playrho/Defines.hpp>
+#include <playrho/to_underlying.hpp>
+
+#include <playrho/d2/Joint.hpp>
 #include <playrho/d2/DistanceJointConf.hpp>
 #include <playrho/d2/FrictionJointConf.hpp>
 #include <playrho/d2/GearJointConf.hpp>
@@ -32,12 +36,7 @@
 #include <playrho/d2/TargetJointConf.hpp>
 #include <playrho/d2/WeldJointConf.hpp>
 #include <playrho/d2/WheelJointConf.hpp>
-
 #include <playrho/d2/BodyConstraint.hpp>
-
-#include <playrho/Defines.hpp>
-
-#include <algorithm>
 
 namespace playrho {
 namespace d2 {

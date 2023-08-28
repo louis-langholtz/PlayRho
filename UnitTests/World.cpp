@@ -20,6 +20,15 @@
 
 #include "UnitTests.hpp"
 
+#include <chrono>
+#include <type_traits>
+
+#include <playrho/Contact.hpp>
+#include <playrho/LengthError.hpp>
+#include <playrho/StepConf.hpp>
+#include <playrho/to_underlying.hpp>
+#include <playrho/WrongState.hpp>
+
 #include <playrho/d2/World.hpp>
 #include <playrho/d2/Body.hpp>
 #include <playrho/d2/WorldBody.hpp>
@@ -27,9 +36,7 @@
 #include <playrho/d2/WorldMisc.hpp>
 #include <playrho/d2/WorldJoint.hpp>
 #include <playrho/d2/WorldContact.hpp>
-#include <playrho/StepConf.hpp>
 #include <playrho/d2/BodyConf.hpp>
-#include <playrho/Contact.hpp>
 #include <playrho/d2/ContactImpulsesList.hpp>
 #include <playrho/d2/DiskShapeConf.hpp>
 #include <playrho/d2/PolygonShapeConf.hpp>
@@ -39,9 +46,6 @@
 #include <playrho/d2/RayCastInput.hpp>
 #include <playrho/d2/RayCastOutput.hpp>
 #include <playrho/d2/Manifold.hpp>
-#include <playrho/LengthError.hpp>
-#include <playrho/WrongState.hpp>
-
 #include <playrho/d2/Joint.hpp>
 #include <playrho/d2/TargetJointConf.hpp>
 #include <playrho/d2/RopeJointConf.hpp>
@@ -54,9 +58,6 @@
 #include <playrho/d2/MotorJointConf.hpp>
 #include <playrho/d2/WheelJointConf.hpp>
 #include <playrho/d2/GearJointConf.hpp>
-
-#include <chrono>
-#include <type_traits>
 
 using namespace playrho;
 using namespace playrho::d2;

@@ -19,8 +19,10 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/VelocityConstraint.hpp>
 #include <playrho/StepConf.hpp>
+#include <playrho/to_underlying.hpp>
+
+#include <playrho/d2/VelocityConstraint.hpp>
 #include <playrho/d2/WorldManifold.hpp>
 #include <playrho/d2/Manifold.hpp>
 

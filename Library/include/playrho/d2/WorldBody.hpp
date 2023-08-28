@@ -38,19 +38,18 @@
 /// @see World, BodyID.
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 
-#include <playrho/Math.hpp>
-
-#include <playrho/d2/MassData.hpp>
-#include <playrho/ShapeID.hpp>
-
-#include <playrho/BodyID.hpp>
-#include <playrho/d2/Body.hpp>
-#include <playrho/KeyedContactID.hpp>
-#include <playrho/JointID.hpp>
-
 #include <iterator>
 #include <vector>
 #include <functional>
+
+#include <playrho/BodyID.hpp>
+#include <playrho/JointID.hpp>
+#include <playrho/KeyedContactID.hpp>
+#include <playrho/Math.hpp>
+#include <playrho/ShapeID.hpp>
+
+#include <playrho/d2/Body.hpp>
+#include <playrho/d2/MassData.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -335,10 +334,7 @@ Acceleration CalcGravitationalAcceleration(const World& world, BodyID id);
 /// @brief Gets the world index for the given body.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
-inline BodyCounter GetWorldIndex(const World&, BodyID id) noexcept
-{
-    return to_underlying(id);
-}
+BodyCounter GetWorldIndex(const World&, BodyID id) noexcept;
 
 /// @brief Gets the type of the identified body.
 /// @see SetType(World& world, BodyID id, BodyType value)

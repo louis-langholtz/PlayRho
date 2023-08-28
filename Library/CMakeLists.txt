@@ -28,6 +28,7 @@ file(GLOB PLAYRHO_General_SRCS "${PLAYRHO_SOURCE_PREFIX}*.cpp")
 file(GLOB PLAYRHO_General_HDRS "${PLAYRHO_INCLUDE_PREFIX}*.hpp")
 
 set(PLAYRHO_DETAIL_HDRS
+	"${PLAYRHO_INCLUDE_PREFIX}detail/IndexingNamedType.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}detail/RayCastInput.hpp"
 	)
 

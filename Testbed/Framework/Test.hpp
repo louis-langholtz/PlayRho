@@ -23,23 +23,22 @@
 #define PLAYRHO_TEST_HPP
 
 #include <playrho/BasicAPI.hpp>
-
+#include <playrho/to_underlying.hpp>
 #include <playrho/Templates.hpp>
-#include <playrho/d2/UnitVec.hpp>
 #include <playrho/TypeInfo.hpp>
+#include <playrho/ContactID.hpp>
+#include <playrho/Contact.hpp>
+#include <playrho/BodyID.hpp>
+#include <playrho/JointID.hpp>
 
+#include <playrho/d2/UnitVec.hpp>
 #include <playrho/d2/PointStates.hpp>
 #include <playrho/d2/Distance.hpp>
 #include <playrho/d2/RayCastOutput.hpp>
 #include <playrho/d2/ShapeSeparation.hpp>
-
 #include <playrho/d2/PositionSolverManifold.hpp>
-#include <playrho/ContactID.hpp>
-#include <playrho/Contact.hpp>
 #include <playrho/d2/ContactImpulsesList.hpp>
-#include <playrho/BodyID.hpp>
 #include <playrho/d2/Joint.hpp>
-#include <playrho/JointID.hpp>
 #include <playrho/d2/World.hpp>
 #include <playrho/d2/WorldBody.hpp>
 #include <playrho/d2/WorldContact.hpp>

@@ -19,17 +19,19 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#include <algorithm>
+#include <optional>
+
+#include <playrho/ConstraintSolverConf.hpp>
+#include <playrho/to_underlying.hpp>
+#include <playrho/StepConf.hpp>
+
 #include <playrho/d2/WorldManifold.hpp>
 #include <playrho/d2/ContactSolver.hpp>
-#include <playrho/ConstraintSolverConf.hpp>
 #include <playrho/d2/BodyConstraint.hpp>
 #include <playrho/d2/PositionSolverManifold.hpp>
 #include <playrho/d2/VelocityConstraint.hpp>
 #include <playrho/d2/PositionConstraint.hpp>
-#include <playrho/StepConf.hpp>
-
-#include <algorithm>
-#include <optional>
 
 #if !defined(NDEBUG)
 // Solver debugging is normally disabled because the block solver sometimes has to deal with a
