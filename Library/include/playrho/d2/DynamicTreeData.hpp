@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_DYNAMICTREEDATA_HPP
-#define PLAYRHO_COLLISION_DYNAMICTREEDATA_HPP
+#ifndef PLAYRHO_D2_DYNAMICTREEDATA_HPP
+#define PLAYRHO_D2_DYNAMICTREEDATA_HPP
 
 #include <playrho/Settings.hpp>
 #include <playrho/Contactable.hpp>
@@ -62,4 +62,4 @@ union DynamicTreeVariantData {
 
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_DYNAMICTREEDATA_HPP
+#endif // PLAYRHO_D2_DYNAMICTREEDATA_HPP

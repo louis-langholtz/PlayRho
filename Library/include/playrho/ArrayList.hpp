@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_ARRAYLIST_HPP
-#define PLAYRHO_COMMON_ARRAYLIST_HPP
+#ifndef PLAYRHO_ARRAYLIST_HPP
+#define PLAYRHO_ARRAYLIST_HPP
 
 #include <playrho/Defines.hpp>
 
@@ -231,4 +231,4 @@ class tuple_size<playrho::ArrayList<T, N, SIZE_TYPE>> : public integral_constant
 
 } // namespace std
 
-#endif // PLAYRHO_COMMON_ARRAYLIST_HPP
+#endif // PLAYRHO_ARRAYLIST_HPP

@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_SEPARATIONFINDER_HPP
-#define PLAYRHO_COLLISION_SEPARATIONFINDER_HPP
+#ifndef PLAYRHO_D2_SEPARATIONFINDER_HPP
+#define PLAYRHO_D2_SEPARATIONFINDER_HPP
 
 #include <variant>
 
@@ -110,4 +110,4 @@ Length Evaluate(const SeparationScenario& scenario,
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_SEPARATIONFINDER_HPP
+#endif // PLAYRHO_D2_SEPARATIONFINDER_HPP

@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_BLOCKALLOCATOR_HPP
-#define PLAYRHO_COMMON_BLOCKALLOCATOR_HPP
+#ifndef PLAYRHO_BLOCKALLOCATOR_HPP
+#define PLAYRHO_BLOCKALLOCATOR_HPP
 
 #include <playrho/Settings.hpp>
 
@@ -158,4 +158,4 @@ namespace playrho {
     
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_BLOCKALLOCATOR_HPP
+#endif // PLAYRHO_BLOCKALLOCATOR_HPP

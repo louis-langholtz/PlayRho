@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_WORLDBODY_HPP
-#define PLAYRHO_DYNAMICS_WORLDBODY_HPP
+#ifndef PLAYRHO_D2_WORLDBODY_HPP
+#define PLAYRHO_D2_WORLDBODY_HPP
 
 /// @file
 /// Declarations of free functions of World for bodies identified by <code>BodyID</code>.
@@ -883,4 +883,4 @@ void SetAccelerations(World& world, F fn)
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_WORLDBODY_HPP
+#endif // PLAYRHO_D2_WORLDBODY_HPP

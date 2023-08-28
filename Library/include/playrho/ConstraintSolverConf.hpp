@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_CONTACTS_CONSTRAINTSOLVERCONF_HPP
-#define PLAYRHO_DYNAMICS_CONTACTS_CONSTRAINTSOLVERCONF_HPP
+#ifndef PLAYRHO_CONSTRAINTSOLVERCONF_HPP
+#define PLAYRHO_CONSTRAINTSOLVERCONF_HPP
 
 #include <playrho/Math.hpp>
 
@@ -138,4 +138,4 @@ ConstraintSolverConf GetToiConstraintSolverConf(const StepConf& conf) noexcept;
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_CONTACTS_CONSTRAINTSOLVERCONF_HPP
+#endif // PLAYRHO_CONSTRAINTSOLVERCONF_HPP

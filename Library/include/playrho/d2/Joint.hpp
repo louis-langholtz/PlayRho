@@ -21,8 +21,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_JOINTS_JOINT_HPP
-#define PLAYRHO_DYNAMICS_JOINTS_JOINT_HPP
+#ifndef PLAYRHO_D2_JOINT_HPP
+#define PLAYRHO_D2_JOINT_HPP
 
 #include <playrho/Math.hpp>
 #include <playrho/Templates.hpp> // for DecayedTypeIfNotSame
@@ -794,4 +794,4 @@ inline Torque GetMotorTorque(const Joint& joint, Frequency inv_dt)
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_JOINT_HPP
+#endif // PLAYRHO_D2_JOINT_HPP

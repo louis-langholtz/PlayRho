@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_DISTANCEPROXY_HPP
-#define PLAYRHO_COLLISION_DISTANCEPROXY_HPP
+#ifndef PLAYRHO_D2_DISTANCEPROXY_HPP
+#define PLAYRHO_D2_DISTANCEPROXY_HPP
 
 #include <playrho/Math.hpp>
 #include <playrho/Span.hpp>
@@ -255,4 +255,4 @@ std::vector<Length2> GetConvexHullAsVector(Span<const Length2> vertices);
 
 } // namespace playrho::d2
 
-#endif // PLAYRHO_COLLISION_DISTANCEPROXY_HPP
+#endif // PLAYRHO_D2_DISTANCEPROXY_HPP

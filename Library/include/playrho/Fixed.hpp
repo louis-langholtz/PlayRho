@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_FIXED_HPP
-#define PLAYRHO_COMMON_FIXED_HPP
+#ifndef PLAYRHO_FIXED_HPP
+#define PLAYRHO_FIXED_HPP
 
 #include <playrho/Wider.hpp>
 #include <playrho/Templates.hpp>
@@ -933,4 +933,4 @@ struct TypeInfo<Fixed64>
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_FIXED_HPP
+#endif // PLAYRHO_FIXED_HPP

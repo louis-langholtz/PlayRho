@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_MASSDATA_HPP
-#define PLAYRHO_COLLISION_MASSDATA_HPP
+#ifndef PLAYRHO_D2_MASSDATA_HPP
+#define PLAYRHO_D2_MASSDATA_HPP
 
 /// @file
 /// Declaration of the <code>MassData</code> structure and associated free functions.
@@ -107,4 +107,4 @@ MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_MASSDATA_HPP
+#endif // PLAYRHO_D2_MASSDATA_HPP

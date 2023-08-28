@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_THREAD_LOCAL_ALLOCATOR_HPP
-#define PLAYRHO_COMMON_THREAD_LOCAL_ALLOCATOR_HPP
+#ifndef PLAYRHO_THREAD_LOCAL_ALLOCATOR_HPP
+#define PLAYRHO_THREAD_LOCAL_ALLOCATOR_HPP
 
 #include <cstddef> // for std::size_t, std::max_align_t
 #include <limits> // for std::numeric_limits
@@ -134,4 +134,4 @@ public:
 
 }
 
-#endif // PLAYRHO_COMMON_THREAD_LOCAL_ALLOCATOR_HPP
+#endif // PLAYRHO_THREAD_LOCAL_ALLOCATOR_HPP

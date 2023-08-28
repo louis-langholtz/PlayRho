@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_VERSION_HPP
-#define PLAYRHO_COMMON_VERSION_HPP
+#ifndef PLAYRHO_VERSION_HPP
+#define PLAYRHO_VERSION_HPP
 
 #include <playrho/Defines.hpp>
 
@@ -117,4 +117,4 @@ std::string GetBuildDetails();
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_VERSION_HPP
+#endif // PLAYRHO_VERSION_HPP

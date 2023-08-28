@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_VECTOR2_HPP
-#define PLAYRHO_COMMON_VECTOR2_HPP
+#ifndef PLAYRHO_VECTOR2_HPP
+#define PLAYRHO_VECTOR2_HPP
 
 #include <playrho/Settings.hpp>
 #include <playrho/InvalidArgument.hpp>
@@ -156,4 +156,4 @@ constexpr auto EarthlyGravity = LinearAcceleration2{0_mps2, EarthlyLinearAcceler
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_VECTOR2_HPP
+#endif // PLAYRHO_VECTOR2_HPP

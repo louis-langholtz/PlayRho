@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_CONTACTS_POSITIONSOLVERMANIFOLD_HPP
-#define PLAYRHO_DYNAMICS_CONTACTS_POSITIONSOLVERMANIFOLD_HPP
+#ifndef PLAYRHO_D2_POSITIONSOLVERMANIFOLD_HPP
+#define PLAYRHO_D2_POSITIONSOLVERMANIFOLD_HPP
 
 #include <playrho/Settings.hpp>
 #include <playrho/Math.hpp>
@@ -64,4 +64,4 @@ PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type inde
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_CONTACTS_POSITIONSOLVERMANIFOLD_HPP
+#endif // PLAYRHO_D2_POSITIONSOLVERMANIFOLD_HPP

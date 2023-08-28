@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_POSITION_HPP
-#define PLAYRHO_COMMON_POSITION_HPP
+#ifndef PLAYRHO_D2_POSITION_HPP
+#define PLAYRHO_D2_POSITION_HPP
 
 #include <playrho/Templates.hpp>
 #include <playrho/Settings.hpp>
@@ -123,4 +123,4 @@ constexpr bool IsValid(const d2::Position& value) noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_POSITION_HPP
+#endif // PLAYRHO_D2_POSITION_HPP

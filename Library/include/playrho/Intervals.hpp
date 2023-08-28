@@ -19,8 +19,8 @@
  */
 
 
-#ifndef PLAYRHO_COMMON_INTERVALS_HPP
-#define PLAYRHO_COMMON_INTERVALS_HPP
+#ifndef PLAYRHO_INTERVALS_HPP
+#define PLAYRHO_INTERVALS_HPP
 
 #include <playrho/Interval.hpp>
 #include <playrho/Units.hpp>
@@ -33,4 +33,4 @@ namespace playrho {
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_INTERVALS_HPP
+#endif // PLAYRHO_INTERVALS_HPP

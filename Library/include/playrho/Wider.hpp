@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_WIDER_HPP
-#define PLAYRHO_COMMON_WIDER_HPP
+#ifndef PLAYRHO_WIDER_HPP
+#define PLAYRHO_WIDER_HPP
 
 #include <playrho/Defines.hpp>
 
@@ -117,4 +117,4 @@ struct make_unsigned<PLAYRHO_INT128> {
 
 } // namespace std
 
-#endif // PLAYRHO_COMMON_WIDER_HPP
+#endif // PLAYRHO_WIDER_HPP

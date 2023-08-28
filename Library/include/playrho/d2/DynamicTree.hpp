@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_DYNAMICTREE_HPP
-#define PLAYRHO_COLLISION_DYNAMICTREE_HPP
+#ifndef PLAYRHO_D2_DYNAMICTREE_HPP
+#define PLAYRHO_D2_DYNAMICTREE_HPP
 
 /// @file
 /// Declaration of the <code>DynamicTree</code> class.
@@ -685,4 +685,4 @@ inline std::size_t size(const DynamicTree& tree) noexcept
 
 } // namespace playrho::d2
 
-#endif // PLAYRHO_COLLISION_DYNAMICTREE_HPP
+#endif // PLAYRHO_D2_DYNAMICTREE_HPP

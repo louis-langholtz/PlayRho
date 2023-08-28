@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_WORLDSHAPE_HPP
-#define PLAYRHO_DYNAMICS_WORLDSHAPE_HPP
+#ifndef PLAYRHO_D2_WORLDSHAPE_HPP
+#define PLAYRHO_D2_WORLDSHAPE_HPP
 
 /// @file
 /// Declarations of free functions of World for shapes identified by <code>ShapeID</code>.
@@ -252,4 +252,4 @@ Real GetDefaultRestitution(const Shape& a, const Shape& b);
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_WORLDSHAPE_HPP
+#endif // PLAYRHO_D2_WORLDSHAPE_HPP

@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_STEPSTATS_HPP
-#define PLAYRHO_DYNAMICS_STEPSTATS_HPP
+#ifndef PLAYRHO_STEPSTATS_HPP
+#define PLAYRHO_STEPSTATS_HPP
 
 #include <playrho/Settings.hpp>
 
@@ -128,4 +128,4 @@ RegStepStats& Update(RegStepStats& lhs, const IslandStats& rhs) noexcept;
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_STEPSTATS_HPP
+#endif // PLAYRHO_STEPSTATS_HPP

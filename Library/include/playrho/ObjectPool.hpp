@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_ARRAYALLOCATOR_HPP
-#define PLAYRHO_COMMON_ARRAYALLOCATOR_HPP
+#ifndef PLAYRHO_ARRAYALLOCATOR_HPP
+#define PLAYRHO_ARRAYALLOCATOR_HPP
 
 #include <algorithm> // for std::any_of
 #include <stdexcept>
@@ -226,4 +226,4 @@ typename ObjectPool<T>::size_type used(const ObjectPool<T>& array) noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_ARRAYALLOCATOR_HPP
+#endif // PLAYRHO_ARRAYALLOCATOR_HPP

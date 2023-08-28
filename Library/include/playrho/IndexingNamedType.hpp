@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_INDEXINGNAMEDTYPE_HPP
-#define PLAYRHO_COMMON_INDEXINGNAMEDTYPE_HPP
+#ifndef PLAYRHO_INDEXINGNAMEDTYPE_HPP
+#define PLAYRHO_INDEXINGNAMEDTYPE_HPP
 
 #include <utility>
 #include <functional> // for std::hash
@@ -205,4 +205,4 @@ struct hash<::playrho::detail::IndexingNamedType<T, Tag>>
 
 } // namespace std
 
-#endif // PLAYRHO_COMMON_INDEXINGNAMEDTYPE_HPP
+#endif // PLAYRHO_INDEXINGNAMEDTYPE_HPP

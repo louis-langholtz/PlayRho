@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_MANIFOLD_HPP
-#define PLAYRHO_COLLISION_MANIFOLD_HPP
+#ifndef PLAYRHO_D2_MANIFOLD_HPP
+#define PLAYRHO_D2_MANIFOLD_HPP
 
 #include <playrho/Math.hpp>
 #include <playrho/ContactFeature.hpp>
@@ -658,4 +658,4 @@ constexpr bool IsValid(const d2::Manifold& value) noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_MANIFOLD_HPP
+#endif // PLAYRHO_D2_MANIFOLD_HPP

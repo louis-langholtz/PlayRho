@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_FILTER_HPP
-#define PLAYRHO_DYNAMICS_FILTER_HPP
+#ifndef PLAYRHO_FILTER_HPP
+#define PLAYRHO_FILTER_HPP
 
 /// @file
 /// Declarations of the Filter struct and any free functions associated with it.
@@ -91,4 +91,4 @@ inline bool ShouldCollide(const Filter filterA, const Filter filterB) noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_FILTER_HPP
+#endif // PLAYRHO_FILTER_HPP

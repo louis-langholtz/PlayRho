@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_INVALIDARGUMENT_HPP
-#define PLAYRHO_COMMON_INVALIDARGUMENT_HPP
+#ifndef PLAYRHO_INVALIDARGUMENT_HPP
+#define PLAYRHO_INVALIDARGUMENT_HPP
 
 #include <playrho/Defines.hpp>
 #include <stdexcept>
@@ -37,4 +37,4 @@ public:
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_INVALIDARGUMENT_HPP
+#endif // PLAYRHO_INVALIDARGUMENT_HPP

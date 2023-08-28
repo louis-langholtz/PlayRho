@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_WORLDIMPLSHAPE_HPP
-#define PLAYRHO_DYNAMICS_WORLDIMPLSHAPE_HPP
+#ifndef PLAYRHO_D2_WORLDIMPLSHAPE_HPP
+#define PLAYRHO_D2_WORLDIMPLSHAPE_HPP
 
 /// @file
 /// Declarations of free functions of WorldImpl for shapes.
@@ -63,4 +63,4 @@ void Destroy(WorldImpl& world, ShapeID id);
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_WORLDIMPLSHAPE_HPP
+#endif // PLAYRHO_D2_WORLDIMPLSHAPE_HPP

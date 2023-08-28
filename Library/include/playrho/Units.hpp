@@ -35,8 +35,8 @@
  *   of the Real type.
  */
 
-#ifndef PLAYRHO_COMMON_UNITS_HPP
-#define PLAYRHO_COMMON_UNITS_HPP
+#ifndef PLAYRHO_UNITS_HPP
+#define PLAYRHO_UNITS_HPP
 
 #include <playrho/RealConstants.hpp>
 #include <playrho/Templates.hpp>
@@ -1170,4 +1170,4 @@ constexpr auto operator*(X lhs, quantity<Dimension, playrho::Real> rhs)
 } // namespace boost
 #endif // defined(PLAYRHO_USE_BOOST_UNITS)
 
-#endif // PLAYRHO_COMMON_UNITS_HPP
+#endif // PLAYRHO_UNITS_HPP

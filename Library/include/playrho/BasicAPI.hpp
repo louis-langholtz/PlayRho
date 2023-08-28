@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_PLAYRHO_HPP
-#define PLAYRHO_PLAYRHO_HPP
+#ifndef PLAYRHO_BASICAPI_HPP
+#define PLAYRHO_BASICAPI_HPP
 
 /**
 @mainpage PlayRho API Documentation
@@ -132,4 +132,4 @@ For a more elaborate example, that's of an entire application, see
 #include <playrho/d2/WeldJointConf.hpp>
 #include <playrho/d2/WheelJointConf.hpp>
 
-#endif // PLAYRHO_PLAYRHO_HPP
+#endif // PLAYRHO_BASICAPI_HPP

@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_RAYCASTOUTPUT_HPP
-#define PLAYRHO_COLLISION_RAYCASTOUTPUT_HPP
+#ifndef PLAYRHO_D2_RAYCASTOUTPUT_HPP
+#define PLAYRHO_D2_RAYCASTOUTPUT_HPP
 
 /// @file
 /// Declaration of the RayCastOutput structure and related free functions.
@@ -155,5 +155,5 @@ bool RayCast(const World& world, const RayCastInput& input, const ShapeRayCastCB
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_RAYCASTOUTPUT_HPP
+#endif // PLAYRHO_D2_RAYCASTOUTPUT_HPP
 

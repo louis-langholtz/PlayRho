@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_CONTACTFEATURE_HPP
-#define PLAYRHO_COLLISION_CONTACTFEATURE_HPP
+#ifndef PLAYRHO_CONTACTFEATURE_HPP
+#define PLAYRHO_CONTACTFEATURE_HPP
 
 #include <playrho/Math.hpp>
 #include <ostream>
@@ -137,4 +137,4 @@ inline ::std::ostream& operator<<(::std::ostream& os, const ContactFeature& valu
 
 }; // namespace playrho
 
-#endif // PLAYRHO_COLLISION_CONTACTFEATURE_HPP
+#endif // PLAYRHO_CONTACTFEATURE_HPP

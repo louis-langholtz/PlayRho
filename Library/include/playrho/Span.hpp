@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_SPAN_HPP
-#define PLAYRHO_COMMON_SPAN_HPP
+#ifndef PLAYRHO_SPAN_HPP
+#define PLAYRHO_SPAN_HPP
 
 #include <playrho/Defines.hpp>
 #include <playrho/Templates.hpp>
@@ -125,4 +125,4 @@ private:
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_SPAN_HPP
+#endif // PLAYRHO_SPAN_HPP

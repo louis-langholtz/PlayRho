@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_STEPCONF_HPP
-#define PLAYRHO_DYNAMICS_STEPCONF_HPP
+#ifndef PLAYRHO_STEPCONF_HPP
+#define PLAYRHO_STEPCONF_HPP
 
 /// @file
 /// Declarations of the StepConf class, and free functions associated with it.
@@ -402,4 +402,4 @@ bool IsMaxTranslationWithinTolerance(const StepConf& conf) noexcept;
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_STEPCONF_HPP
+#endif // PLAYRHO_STEPCONF_HPP

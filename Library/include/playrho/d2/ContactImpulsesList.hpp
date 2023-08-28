@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_CONTACTIMPULSESLIST_HPP
-#define PLAYRHO_DYNAMICS_CONTACTIMPULSESLIST_HPP
+#ifndef PLAYRHO_D2_CONTACTIMPULSESLIST_HPP
+#define PLAYRHO_D2_CONTACTIMPULSESLIST_HPP
 
 #include <playrho/Settings.hpp>
 
@@ -94,4 +94,4 @@ ContactImpulsesList GetContactImpulses(const VelocityConstraint& vc);
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_CONTACTIMPULSESLIST_HPP
+#endif // PLAYRHO_D2_CONTACTIMPULSESLIST_HPP

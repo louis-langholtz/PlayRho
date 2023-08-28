@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_SHAPES_DISKSHAPECONF_HPP
-#define PLAYRHO_COLLISION_SHAPES_DISKSHAPECONF_HPP
+#ifndef PLAYRHO_D2_SHAPES_DISKSHAPECONF_HPP
+#define PLAYRHO_D2_SHAPES_DISKSHAPECONF_HPP
 
 #include <playrho/Math.hpp>
 #include <playrho/d2/ShapeConf.hpp>
@@ -209,4 +209,4 @@ struct TypeInfo<d2::DiskShapeConf> {
 
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_SHAPES_DISKSHAPECONF_HPP
+#endif // PLAYRHO_D2_SHAPES_DISKSHAPECONF_HPP

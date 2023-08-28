@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_MATRIX_HPP
-#define PLAYRHO_COMMON_MATRIX_HPP
+#ifndef PLAYRHO_MATRIX_HPP
+#define PLAYRHO_MATRIX_HPP
 
 #include <playrho/Vector.hpp>
 #include <playrho/Vector2.hpp>
@@ -209,4 +209,4 @@ constexpr Mat22 GetInvalid() noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_MATRIX_HPP
+#endif // PLAYRHO_MATRIX_HPP

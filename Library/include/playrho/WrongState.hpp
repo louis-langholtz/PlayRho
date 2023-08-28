@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_WRONGSTATE_HPP
-#define PLAYRHO_COMMON_WRONGSTATE_HPP
+#ifndef PLAYRHO_WRONGSTATE_HPP
+#define PLAYRHO_WRONGSTATE_HPP
 
 #include <stdexcept>
 
@@ -37,4 +37,4 @@ namespace playrho {
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_WRONGSTATE_HPP
+#endif // PLAYRHO_WRONGSTATE_HPP

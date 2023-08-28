@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_CONTACTS_POSITIONCONSTRAINT_HPP
-#define PLAYRHO_DYNAMICS_CONTACTS_POSITIONCONSTRAINT_HPP
+#ifndef PLAYRHO_D2_POSITIONCONSTRAINT_HPP
+#define PLAYRHO_D2_POSITIONCONSTRAINT_HPP
 
 #include <playrho/d2/Manifold.hpp>
 #include <playrho/d2/BodyConstraint.hpp>
@@ -76,4 +76,4 @@ private:
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_CONTACTS_POSITIONCONSTRAINT_HPP
+#endif // PLAYRHO_D2_POSITIONCONSTRAINT_HPP

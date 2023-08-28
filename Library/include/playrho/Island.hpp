@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_ISLAND_HPP
-#define PLAYRHO_DYNAMICS_ISLAND_HPP
+#ifndef PLAYRHO_ISLAND_HPP
+#define PLAYRHO_ISLAND_HPP
 
 #include <playrho/pmr/MemoryResource.hpp> // for pmr::polymorphic_allocator
 #include <playrho/Templates.hpp> // IsFull
@@ -99,4 +99,4 @@ std::size_t Count(const Island& island, JointID entry);
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_ISLAND_HPP
+#endif // PLAYRHO_ISLAND_HPP

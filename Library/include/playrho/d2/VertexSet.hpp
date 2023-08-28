@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_VERTEXSET_HPP
-#define PLAYRHO_COMMON_VERTEXSET_HPP
+#ifndef PLAYRHO_D2_VERTEXSET_HPP
+#define PLAYRHO_D2_VERTEXSET_HPP
 
 #include <playrho/Math.hpp>
 
@@ -116,4 +116,4 @@ private:
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_VERTEXSET_HPP
+#endif // PLAYRHO_D2_VERTEXSET_HPP

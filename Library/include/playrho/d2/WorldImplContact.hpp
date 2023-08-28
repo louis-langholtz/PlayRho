@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_WORLDIMPLCONTACT_HPP
-#define PLAYRHO_DYNAMICS_WORLDIMPLCONTACT_HPP
+#ifndef PLAYRHO_D2_WORLDIMPLCONTACT_HPP
+#define PLAYRHO_D2_WORLDIMPLCONTACT_HPP
 
 /// @file
 /// Declarations of free functions of WorldImpl for contacts.
@@ -65,4 +65,4 @@ const Manifold& GetManifold(const WorldImpl& world, ContactID id);
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_WORLDIMPLCONTACT_HPP
+#endif // PLAYRHO_D2_WORLDIMPLCONTACT_HPP

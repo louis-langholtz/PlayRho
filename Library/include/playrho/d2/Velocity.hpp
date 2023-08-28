@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_VELOCITY_HPP
-#define PLAYRHO_COMMON_VELOCITY_HPP
+#ifndef PLAYRHO_D2_VELOCITY_HPP
+#define PLAYRHO_D2_VELOCITY_HPP
 
 #include <playrho/Settings.hpp>
 #include <playrho/Vector2.hpp>
@@ -163,4 +163,4 @@ constexpr bool IsValid(const d2::Velocity& value) noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_VELOCITY_HPP
+#endif // PLAYRHO_D2_VELOCITY_HPP

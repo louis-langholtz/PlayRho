@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_JOINTS_FRICTIONJOINTCONF_HPP
-#define PLAYRHO_DYNAMICS_JOINTS_FRICTIONJOINTCONF_HPP
+#ifndef PLAYRHO_D2_FRICTIONJOINTCONF_HPP
+#define PLAYRHO_D2_FRICTIONJOINTCONF_HPP
 
 #include <playrho/d2/JointConf.hpp>
 #include <playrho/NonNegative.hpp>
@@ -231,4 +231,4 @@ struct TypeInfo<d2::FrictionJointConf> {
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_FRICTIONJOINTCONF_HPP
+#endif // PLAYRHO_D2_FRICTIONJOINTCONF_HPP

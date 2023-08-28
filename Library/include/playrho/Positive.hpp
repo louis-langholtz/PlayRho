@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_POSITIVE_HPP
-#define PLAYRHO_COMMON_POSITIVE_HPP
+#ifndef PLAYRHO_POSITIVE_HPP
+#define PLAYRHO_POSITIVE_HPP
 
 #include <playrho/CheckedValue.hpp>
 
@@ -148,4 +148,4 @@ public:
 
 }
 
-#endif // PLAYRHO_COMMON_POSITIVE_HPP
+#endif // PLAYRHO_POSITIVE_HPP

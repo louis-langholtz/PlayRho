@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_STATS_RESOURCE_HPP
-#define PLAYRHO_COMMON_STATS_RESOURCE_HPP
+#ifndef PLAYRHO_STATS_RESOURCE_HPP
+#define PLAYRHO_STATS_RESOURCE_HPP
 
 #include <playrho/pmr/MemoryResource.hpp>
 
@@ -88,4 +88,4 @@ private:
 
 }
 
-#endif // PLAYRHO_COMMON_STATS_RESOURCE_HPP
+#endif // PLAYRHO_STATS_RESOURCE_HPP

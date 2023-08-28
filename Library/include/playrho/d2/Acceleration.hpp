@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_ACCELERATION_HPP
-#define PLAYRHO_COMMON_ACCELERATION_HPP
+#ifndef PLAYRHO_D2_ACCELERATION_HPP
+#define PLAYRHO_D2_ACCELERATION_HPP
 
 #include <playrho/Settings.hpp>
 #include <playrho/Vector2.hpp>
@@ -147,4 +147,4 @@ constexpr bool IsValid(const d2::Acceleration& value) noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_ACCELERATION_HPP
+#endif // PLAYRHO_D2_ACCELERATION_HPP

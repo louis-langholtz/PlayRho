@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_CONTACTABLE_HPP
-#define PLAYRHO_DYNAMICS_CONTACTABLE_HPP
+#ifndef PLAYRHO_CONTACTABLE_HPP
+#define PLAYRHO_CONTACTABLE_HPP
 
 #include <playrho/Settings.hpp> // for ChildCounter
 #include <playrho/ShapeID.hpp>
@@ -66,4 +66,4 @@ constexpr bool operator!=(const Contactable& lhs, const Contactable& rhs) noexce
 
 }
 
-#endif /* PLAYRHO_DYNAMICS_CONTACTABLE_HPP */
+#endif /* PLAYRHO_CONTACTABLE_HPP */

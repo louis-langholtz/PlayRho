@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_CLIPLIST_HPP
-#define PLAYRHO_COLLISION_CLIPLIST_HPP
+#ifndef PLAYRHO_D2_CLIPLIST_HPP
+#define PLAYRHO_D2_CLIPLIST_HPP
 
 /// @file
 /// Structures and functions used for computing clip lists.
@@ -57,4 +57,4 @@ ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec& normal, Length of
 
 }
 
-#endif /* PLAYRHO_COLLISION_CLIPLIST_HPP */
+#endif /* PLAYRHO_D2_CLIPLIST_HPP */

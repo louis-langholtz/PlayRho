@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_JOINTS_ROPEJOINTCONF_HPP
-#define PLAYRHO_DYNAMICS_JOINTS_ROPEJOINTCONF_HPP
+#ifndef PLAYRHO_D2_ROPEJOINTCONF_HPP
+#define PLAYRHO_D2_ROPEJOINTCONF_HPP
 
 #include <playrho/d2/JointConf.hpp>
 #include <playrho/Math.hpp>
@@ -205,4 +205,4 @@ struct TypeInfo<d2::RopeJointConf> {
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_ROPEJOINTCONF_HPP
+#endif // PLAYRHO_D2_ROPEJOINTCONF_HPP

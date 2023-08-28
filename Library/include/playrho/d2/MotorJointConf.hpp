@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_JOINTS_MOTORJOINTCONF_HPP
-#define PLAYRHO_DYNAMICS_JOINTS_MOTORJOINTCONF_HPP
+#ifndef PLAYRHO_D2_MOTORJOINTCONF_HPP
+#define PLAYRHO_D2_MOTORJOINTCONF_HPP
 
 #include <playrho/d2/JointConf.hpp>
 #include <playrho/NonNegative.hpp>
@@ -314,4 +314,4 @@ struct TypeInfo<d2::MotorJointConf> {
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_MOTORJOINTCONF_HPP
+#endif // PLAYRHO_D2_MOTORJOINTCONF_HPP

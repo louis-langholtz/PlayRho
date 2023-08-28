@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_UNITINTERVAL_HPP
-#define PLAYRHO_COMMON_UNITINTERVAL_HPP
+#ifndef PLAYRHO_UNITINTERVAL_HPP
+#define PLAYRHO_UNITINTERVAL_HPP
 
 #include <playrho/CheckedValue.hpp>
 
@@ -66,4 +66,4 @@ static_assert(std::is_default_constructible<UnitInterval<int>>::value);
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_UNITINTERVAL_HPP
+#endif // PLAYRHO_UNITINTERVAL_HPP

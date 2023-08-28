@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_TEMPLATES_HPP
-#define PLAYRHO_COMMON_TEMPLATES_HPP
+#ifndef PLAYRHO_TEMPLATES_HPP
+#define PLAYRHO_TEMPLATES_HPP
 
 #include <playrho/Defines.hpp>
 
@@ -479,4 +479,4 @@ using DecayedTypeIfNotSame = std::enable_if_t<!std::is_same_v<DecayedType, Check
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_TEMPLATES_HPP
+#endif // PLAYRHO_TEMPLATES_HPP

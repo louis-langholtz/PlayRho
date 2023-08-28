@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_VECTOR3_HPP
-#define PLAYRHO_COMMON_VECTOR3_HPP
+#ifndef PLAYRHO_VECTOR3_HPP
+#define PLAYRHO_VECTOR3_HPP
 
 #include <playrho/Settings.hpp>
 #include <playrho/Vector.hpp>
@@ -59,4 +59,4 @@ constexpr bool IsValid(const Vec3& value) noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_VECTOR3_HPP
+#endif // PLAYRHO_VECTOR3_HPP

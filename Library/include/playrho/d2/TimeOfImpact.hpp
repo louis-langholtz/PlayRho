@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_TIMEOFIMPACT_HPP
-#define PLAYRHO_COLLISION_TIMEOFIMPACT_HPP
+#ifndef PLAYRHO_D2_TIMEOFIMPACT_HPP
+#define PLAYRHO_D2_TIMEOFIMPACT_HPP
 
 #include <playrho/ToiConf.hpp>
 #include <playrho/ToiOutput.hpp>
@@ -64,4 +64,4 @@ ToiOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
 
 } // namespace playrho::d2
 
-#endif // PLAYRHO_COLLISION_TIMEOFIMPACT_HPP
+#endif // PLAYRHO_D2_TIMEOFIMPACT_HPP

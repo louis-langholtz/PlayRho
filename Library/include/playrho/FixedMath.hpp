@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_FIXEDMATH_HPP
-#define PLAYRHO_COMMON_FIXEDMATH_HPP
+#ifndef PLAYRHO_FIXEDMATH_HPP
+#define PLAYRHO_FIXEDMATH_HPP
 
 #include <playrho/Fixed.hpp>
 #include <cmath>
@@ -596,4 +596,4 @@ inline bool isfinite(Fixed<BT, FB> value) noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_FIXEDMATH_HPP
+#endif // PLAYRHO_FIXEDMATH_HPP

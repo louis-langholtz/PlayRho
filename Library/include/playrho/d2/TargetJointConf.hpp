@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_JOINTS_MOUSEJOINTCONF_HPP
-#define PLAYRHO_DYNAMICS_JOINTS_MOUSEJOINTCONF_HPP
+#ifndef PLAYRHO_D2_MOUSEJOINTCONF_HPP
+#define PLAYRHO_D2_MOUSEJOINTCONF_HPP
 
 #include <playrho/d2/JointConf.hpp>
 
@@ -283,4 +283,4 @@ struct TypeInfo<d2::TargetJointConf> {
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_MOUSEJOINTCONF_HPP
+#endif // PLAYRHO_D2_MOUSEJOINTCONF_HPP

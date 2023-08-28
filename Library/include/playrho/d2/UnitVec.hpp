@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_UNITVEC2_HPP
-#define PLAYRHO_COMMON_UNITVEC2_HPP
+#ifndef PLAYRHO_D2_UNITVEC2_HPP
+#define PLAYRHO_D2_UNITVEC2_HPP
 
 /// @file
 /// Declarations of the UnitVec class and free functions associated with it.
@@ -421,4 +421,4 @@ public:
 
 } // namespace std
 
-#endif // PLAYRHO_COMMON_UNITVEC2_HPP
+#endif // PLAYRHO_D2_UNITVEC2_HPP

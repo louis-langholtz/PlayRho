@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_CONTACTS_VELOCITYCONSTRAINT_HPP
-#define PLAYRHO_DYNAMICS_CONTACTS_VELOCITYCONSTRAINT_HPP
+#ifndef PLAYRHO_D2_VELOCITYCONSTRAINT_HPP
+#define PLAYRHO_D2_VELOCITYCONSTRAINT_HPP
 
 #include <playrho/Math.hpp>
 #include <playrho/Span.hpp>
@@ -478,4 +478,4 @@ inline void SetTangentImpulses(VelocityConstraint& vc, const Momentum2& impulses
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_CONTACTS_VELOCITYCONSTRAINT_HPP
+#endif // PLAYRHO_D2_VELOCITYCONSTRAINT_HPP

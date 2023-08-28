@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_SHAPES_SHAPECONF_HPP
-#define PLAYRHO_COLLISION_SHAPES_SHAPECONF_HPP
+#ifndef PLAYRHO_D2_SHAPES_SHAPECONF_HPP
+#define PLAYRHO_D2_SHAPES_SHAPECONF_HPP
 
 #include <playrho/Units.hpp>
 #include <playrho/Finite.hpp>
@@ -224,4 +224,4 @@ inline void SetSensor(BaseShapeConf& arg, bool value)
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_SHAPES_SHAPECONF_HPP
+#endif // PLAYRHO_D2_SHAPES_SHAPECONF_HPP

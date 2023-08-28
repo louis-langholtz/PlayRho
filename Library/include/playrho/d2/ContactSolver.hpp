@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_CONTACTS_CONTACTSOLVER_HPP
-#define PLAYRHO_DYNAMICS_CONTACTS_CONTACTSOLVER_HPP
+#ifndef PLAYRHO_D2_CONTACTSOLVER_HPP
+#define PLAYRHO_D2_CONTACTSOLVER_HPP
 
 #include <playrho/Math.hpp>
 #include <playrho/Span.hpp>
@@ -104,5 +104,5 @@ d2::PositionSolution SolvePositionConstraint(const d2::PositionConstraint& pc,
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_CONTACTS_CONTACTSOLVER_HPP
+#endif // PLAYRHO_D2_CONTACTSOLVER_HPP
 

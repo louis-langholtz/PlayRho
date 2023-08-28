@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_JOINTS_WHEELJOINTCONF_HPP
-#define PLAYRHO_DYNAMICS_JOINTS_WHEELJOINTCONF_HPP
+#ifndef PLAYRHO_D2_WHEELJOINTCONF_HPP
+#define PLAYRHO_D2_WHEELJOINTCONF_HPP
 
 #include <playrho/d2/JointConf.hpp>
 
@@ -292,4 +292,4 @@ struct TypeInfo<d2::WheelJointConf> {
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_WHEELJOINTCONF_HPP
+#endif // PLAYRHO_D2_WHEELJOINTCONF_HPP

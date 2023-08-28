@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_JOINTS_GEARJOINTCONF_HPP
-#define PLAYRHO_DYNAMICS_JOINTS_GEARJOINTCONF_HPP
+#ifndef PLAYRHO_D2_GEARJOINTCONF_HPP
+#define PLAYRHO_D2_GEARJOINTCONF_HPP
 
 #include <playrho/d2/JointConf.hpp>
 #include <playrho/Math.hpp>
@@ -294,4 +294,4 @@ struct TypeInfo<d2::GearJointConf> {
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_GEARJOINTCONF_HPP
+#endif // PLAYRHO_D2_GEARJOINTCONF_HPP

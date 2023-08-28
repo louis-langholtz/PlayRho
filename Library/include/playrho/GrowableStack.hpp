@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COMMON_GROWABLESTACK_HPP
-#define PLAYRHO_COMMON_GROWABLESTACK_HPP
+#ifndef PLAYRHO_GROWABLESTACK_HPP
+#define PLAYRHO_GROWABLESTACK_HPP
 
 #include <playrho/DynamicMemory.hpp>
 #include <playrho/Templates.hpp>
@@ -136,4 +136,4 @@ private:
 
 } // namespace playrho
 
-#endif // PLAYRHO_COMMON_GROWABLESTACK_HPP
+#endif // PLAYRHO_GROWABLESTACK_HPP

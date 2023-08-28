@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_MOVEMENTCONF_HPP
-#define PLAYRHO_DYNAMICS_MOVEMENTCONF_HPP
+#ifndef PLAYRHO_MOVEMENTCONF_HPP
+#define PLAYRHO_MOVEMENTCONF_HPP
 
 #include <playrho/Units.hpp>
 
@@ -42,4 +42,4 @@ MovementConf GetMovementConf(const StepConf& conf) noexcept;
 
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_MOVEMENTCONF_HPP
+#endif // PLAYRHO_MOVEMENTCONF_HPP

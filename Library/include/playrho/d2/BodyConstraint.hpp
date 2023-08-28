@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_CONTACTS_BODYCONSTRAINT_HPP
-#define PLAYRHO_DYNAMICS_CONTACTS_BODYCONSTRAINT_HPP
+#ifndef PLAYRHO_D2_BODYCONSTRAINT_HPP
+#define PLAYRHO_D2_BODYCONSTRAINT_HPP
 
 #include <playrho/Math.hpp>
 #include <playrho/MovementConf.hpp>
@@ -151,4 +151,4 @@ inline BodyConstraint GetBodyConstraint(const Body& body, Time time,
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_CONTACTS_BODYCONSTRAINT_HPP
+#endif // PLAYRHO_D2_BODYCONSTRAINT_HPP

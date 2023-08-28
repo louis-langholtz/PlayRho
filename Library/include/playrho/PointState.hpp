@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_POINTSTATE_HPP
-#define PLAYRHO_COLLISION_POINTSTATE_HPP
+#ifndef PLAYRHO_POINTSTATE_HPP
+#define PLAYRHO_POINTSTATE_HPP
 
 namespace playrho {
 
@@ -36,4 +36,4 @@ enum class PointState
 
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_POINTSTATE_HPP
+#endif // PLAYRHO_POINTSTATE_HPP

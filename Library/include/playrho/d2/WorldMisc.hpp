@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_WORLDMISC_HPP
-#define PLAYRHO_DYNAMICS_WORLDMISC_HPP
+#ifndef PLAYRHO_D2_WORLDMISC_HPP
+#define PLAYRHO_D2_WORLDMISC_HPP
 
 /// @file
 /// Declarations of free functions of World for unidentified information.
@@ -161,4 +161,4 @@ void ShiftOrigin(World& world, const Length2& newOrigin);
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_WORLDMISC_HPP
+#endif // PLAYRHO_D2_WORLDMISC_HPP
