@@ -24,15 +24,15 @@
 /// @file
 /// Declaration of the AABB class and free functions that return instances of it.
 
+#include <algorithm> // for std::mismatch, lexicographical_compare, etc
+#include <utility> // for std::get
+
 #include <playrho/Intervals.hpp> // for LengthInterval, IsIntersecting
 #include <playrho/Vector.hpp>
 #include <playrho/Settings.hpp> // for ChildCounter, etc.
 #include <playrho/Templates.hpp>
 #include <playrho/BodyID.hpp>
 #include <playrho/ShapeID.hpp>
-
-#include <algorithm> // for std::mismatch, lexicographical_compare, etc
-#include <utility> // for std::get
 
 namespace playrho {
 
