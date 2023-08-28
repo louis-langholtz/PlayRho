@@ -20,16 +20,16 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/WorldManifold.hpp>
+#include <playrho/d2/WorldManifold.hpp>
 
-#include <PlayRho/d2/Manifold.hpp>
-#include <PlayRho/d2/DiskShapeConf.hpp>
+#include <playrho/d2/Manifold.hpp>
+#include <playrho/d2/DiskShapeConf.hpp>
 
-#include <PlayRho/Contact.hpp>
-#include <PlayRho/d2/World.hpp>
-#include <PlayRho/d2/WorldBody.hpp>
-#include <PlayRho/d2/WorldShape.hpp>
-#include <PlayRho/d2/BodyConf.hpp>
+#include <playrho/Contact.hpp>
+#include <playrho/d2/World.hpp>
+#include <playrho/d2/WorldBody.hpp>
+#include <playrho/d2/WorldShape.hpp>
+#include <playrho/d2/BodyConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

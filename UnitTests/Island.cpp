@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Island.hpp>
+#include <playrho/Island.hpp>
 
 #include <type_traits>
 

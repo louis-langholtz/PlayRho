@@ -55,29 +55,29 @@
 #include <dispatch/dispatch.h>
 #endif // BENCHMARK_GCDISPATCH
 
-#include <PlayRho/Math.hpp>
-#include <PlayRho/Intervals.hpp>
+#include <playrho/Math.hpp>
+#include <playrho/Intervals.hpp>
 
-#include <PlayRho/d2/World.hpp>
-#include <PlayRho/d2/WorldBody.hpp> // for GetAwakeCount
-#include <PlayRho/d2/WorldShape.hpp> // for CreateShape
-#include <PlayRho/StepConf.hpp>
-#include <PlayRho/d2/ContactSolver.hpp>
-#include <PlayRho/d2/VelocityConstraint.hpp>
-#include <PlayRho/d2/Joint.hpp>
-#include <PlayRho/d2/RevoluteJointConf.hpp>
+#include <playrho/d2/World.hpp>
+#include <playrho/d2/WorldBody.hpp> // for GetAwakeCount
+#include <playrho/d2/WorldShape.hpp> // for CreateShape
+#include <playrho/StepConf.hpp>
+#include <playrho/d2/ContactSolver.hpp>
+#include <playrho/d2/VelocityConstraint.hpp>
+#include <playrho/d2/Joint.hpp>
+#include <playrho/d2/RevoluteJointConf.hpp>
 
-#include <PlayRho/d2/AABB.hpp>
-#include <PlayRho/d2/Distance.hpp>
-#include <PlayRho/d2/DynamicTree.hpp>
-#include <PlayRho/d2/Manifold.hpp>
-#include <PlayRho/d2/WorldManifold.hpp>
-#include <PlayRho/d2/ShapeSeparation.hpp>
+#include <playrho/d2/AABB.hpp>
+#include <playrho/d2/Distance.hpp>
+#include <playrho/d2/DynamicTree.hpp>
+#include <playrho/d2/Manifold.hpp>
+#include <playrho/d2/WorldManifold.hpp>
+#include <playrho/d2/ShapeSeparation.hpp>
 #if 0
-#include <PlayRho/d2/PolygonShapeConf.hpp>
+#include <playrho/d2/PolygonShapeConf.hpp>
 #endif
-#include <PlayRho/d2/DiskShapeConf.hpp>
-#include <PlayRho/d2/Compositor.hpp>
+#include <playrho/d2/DiskShapeConf.hpp>
+#include <playrho/d2/Compositor.hpp>
 
 // #define BENCHMARK_BOX2D
 #ifdef BENCHMARK_BOX2D

@@ -20,8 +20,8 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/Distance.hpp>
-#include <PlayRho/d2/DistanceProxy.hpp>
+#include <playrho/d2/Distance.hpp>
+#include <playrho/d2/DistanceProxy.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

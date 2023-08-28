@@ -20,8 +20,8 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/UnitVec.hpp>
-#include <PlayRho/Math.hpp>
+#include <playrho/d2/UnitVec.hpp>
+#include <playrho/Math.hpp>
 
 #include <iostream>
 #include <utility>

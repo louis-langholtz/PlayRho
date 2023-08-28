@@ -20,9 +20,9 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/DiskShapeConf.hpp>
-#include <PlayRho/d2/AABB.hpp>
-#include <PlayRho/d2/Shape.hpp>
+#include <playrho/d2/DiskShapeConf.hpp>
+#include <playrho/d2/AABB.hpp>
+#include <playrho/d2/Shape.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

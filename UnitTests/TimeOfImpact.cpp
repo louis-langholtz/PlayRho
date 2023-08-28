@@ -20,9 +20,9 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/TimeOfImpact.hpp>
-#include <PlayRho/d2/DistanceProxy.hpp>
-#include <PlayRho/d2/PolygonShapeConf.hpp>
+#include <playrho/d2/TimeOfImpact.hpp>
+#include <playrho/d2/DistanceProxy.hpp>
+#include <playrho/d2/PolygonShapeConf.hpp>
 
 #include <set>
 

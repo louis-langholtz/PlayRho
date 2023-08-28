@@ -20,9 +20,9 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/BodyConf.hpp>
+#include <playrho/d2/BodyConf.hpp>
 
-#include <PlayRho/d2/Body.hpp>
+#include <playrho/d2/Body.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

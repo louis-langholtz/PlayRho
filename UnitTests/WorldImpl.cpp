@@ -20,43 +20,43 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/WorldImpl.hpp>
+#include <playrho/d2/WorldImpl.hpp>
 
-#include <PlayRho/d2/WorldImplBody.hpp>
-#include <PlayRho/d2/WorldImplMisc.hpp>
-#include <PlayRho/d2/WorldImplJoint.hpp>
-#include <PlayRho/d2/WorldImplContact.hpp>
-#include <PlayRho/StepConf.hpp>
-#include <PlayRho/d2/BodyConf.hpp>
-#include <PlayRho/d2/Body.hpp> // for GetBody
-#include <PlayRho/Contact.hpp>
-#include <PlayRho/d2/ContactImpulsesList.hpp>
+#include <playrho/d2/WorldImplBody.hpp>
+#include <playrho/d2/WorldImplMisc.hpp>
+#include <playrho/d2/WorldImplJoint.hpp>
+#include <playrho/d2/WorldImplContact.hpp>
+#include <playrho/StepConf.hpp>
+#include <playrho/d2/BodyConf.hpp>
+#include <playrho/d2/Body.hpp> // for GetBody
+#include <playrho/Contact.hpp>
+#include <playrho/d2/ContactImpulsesList.hpp>
 
-#include <PlayRho/d2/Shape.hpp>
-#include <PlayRho/d2/ChainShapeConf.hpp>
-#include <PlayRho/d2/DiskShapeConf.hpp>
-#include <PlayRho/d2/PolygonShapeConf.hpp>
-#include <PlayRho/d2/EdgeShapeConf.hpp>
-#include <PlayRho/d2/DynamicTree.hpp> // for GetTree
-#include <PlayRho/d2/RayCastInput.hpp>
-#include <PlayRho/d2/RayCastOutput.hpp>
-#include <PlayRho/d2/Manifold.hpp>
+#include <playrho/d2/Shape.hpp>
+#include <playrho/d2/ChainShapeConf.hpp>
+#include <playrho/d2/DiskShapeConf.hpp>
+#include <playrho/d2/PolygonShapeConf.hpp>
+#include <playrho/d2/EdgeShapeConf.hpp>
+#include <playrho/d2/DynamicTree.hpp> // for GetTree
+#include <playrho/d2/RayCastInput.hpp>
+#include <playrho/d2/RayCastOutput.hpp>
+#include <playrho/d2/Manifold.hpp>
 
-#include <PlayRho/LengthError.hpp>
-#include <PlayRho/WrongState.hpp>
+#include <playrho/LengthError.hpp>
+#include <playrho/WrongState.hpp>
 
-#include <PlayRho/d2/Joint.hpp>
-#include <PlayRho/d2/TargetJointConf.hpp>
-#include <PlayRho/d2/RopeJointConf.hpp>
-#include <PlayRho/d2/RevoluteJointConf.hpp>
-#include <PlayRho/d2/PrismaticJointConf.hpp>
-#include <PlayRho/d2/DistanceJointConf.hpp>
-#include <PlayRho/d2/PulleyJointConf.hpp>
-#include <PlayRho/d2/WeldJointConf.hpp>
-#include <PlayRho/d2/FrictionJointConf.hpp>
-#include <PlayRho/d2/MotorJointConf.hpp>
-#include <PlayRho/d2/WheelJointConf.hpp>
-#include <PlayRho/d2/GearJointConf.hpp>
+#include <playrho/d2/Joint.hpp>
+#include <playrho/d2/TargetJointConf.hpp>
+#include <playrho/d2/RopeJointConf.hpp>
+#include <playrho/d2/RevoluteJointConf.hpp>
+#include <playrho/d2/PrismaticJointConf.hpp>
+#include <playrho/d2/DistanceJointConf.hpp>
+#include <playrho/d2/PulleyJointConf.hpp>
+#include <playrho/d2/WeldJointConf.hpp>
+#include <playrho/d2/FrictionJointConf.hpp>
+#include <playrho/d2/MotorJointConf.hpp>
+#include <playrho/d2/WheelJointConf.hpp>
+#include <playrho/d2/GearJointConf.hpp>
 
 #include <chrono>
 #include <type_traits>

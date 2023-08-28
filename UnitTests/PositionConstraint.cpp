@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/PositionConstraint.hpp>
+#include <playrho/d2/PositionConstraint.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

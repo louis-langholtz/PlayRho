@@ -20,18 +20,18 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/DistanceJointConf.hpp>
-#include <PlayRho/d2/Joint.hpp>
-#include <PlayRho/d2/World.hpp>
-#include <PlayRho/d2/WorldJoint.hpp>
-#include <PlayRho/d2/WorldBody.hpp>
-#include <PlayRho/d2/WorldMisc.hpp>
-#include <PlayRho/d2/WorldShape.hpp>
-#include <PlayRho/StepConf.hpp>
-#include <PlayRho/d2/BodyConf.hpp>
-#include <PlayRho/d2/DiskShapeConf.hpp>
-#include <PlayRho/d2/BodyConstraint.hpp>
-#include <PlayRho/ConstraintSolverConf.hpp>
+#include <playrho/d2/DistanceJointConf.hpp>
+#include <playrho/d2/Joint.hpp>
+#include <playrho/d2/World.hpp>
+#include <playrho/d2/WorldJoint.hpp>
+#include <playrho/d2/WorldBody.hpp>
+#include <playrho/d2/WorldMisc.hpp>
+#include <playrho/d2/WorldShape.hpp>
+#include <playrho/StepConf.hpp>
+#include <playrho/d2/BodyConf.hpp>
+#include <playrho/d2/DiskShapeConf.hpp>
+#include <playrho/d2/BodyConstraint.hpp>
+#include <playrho/ConstraintSolverConf.hpp>
 
 #include <stdexcept> // for std::invalid_argument
 

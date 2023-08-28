@@ -24,7 +24,7 @@
 #include <stdexcept> // for std::logic_error
 #include <vector>
 
-#include <PlayRho/pmr/PoolMemoryResource.hpp>
+#include <playrho/pmr/PoolMemoryResource.hpp>
 
 using namespace playrho::pmr;
 

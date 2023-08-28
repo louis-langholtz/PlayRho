@@ -20,8 +20,8 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Real.hpp>
-#include <PlayRho/Settings.hpp>
+#include <playrho/Real.hpp>
+#include <playrho/Settings.hpp>
 
 #include <string>
 

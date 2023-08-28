@@ -22,30 +22,30 @@
 #ifndef PLAYRHO_TEST_HPP
 #define PLAYRHO_TEST_HPP
 
-#include <PlayRho/PlayRho.hpp>
+#include <playrho/PlayRho.hpp>
 
-#include <PlayRho/Templates.hpp>
-#include <PlayRho/d2/UnitVec.hpp>
-#include <PlayRho/TypeInfo.hpp>
+#include <playrho/Templates.hpp>
+#include <playrho/d2/UnitVec.hpp>
+#include <playrho/TypeInfo.hpp>
 
-#include <PlayRho/d2/PointStates.hpp>
-#include <PlayRho/d2/Distance.hpp>
-#include <PlayRho/d2/RayCastOutput.hpp>
-#include <PlayRho/d2/ShapeSeparation.hpp>
+#include <playrho/d2/PointStates.hpp>
+#include <playrho/d2/Distance.hpp>
+#include <playrho/d2/RayCastOutput.hpp>
+#include <playrho/d2/ShapeSeparation.hpp>
 
-#include <PlayRho/d2/PositionSolverManifold.hpp>
-#include <PlayRho/ContactID.hpp>
-#include <PlayRho/Contact.hpp>
-#include <PlayRho/d2/ContactImpulsesList.hpp>
-#include <PlayRho/BodyID.hpp>
-#include <PlayRho/d2/Joint.hpp>
-#include <PlayRho/JointID.hpp>
-#include <PlayRho/d2/World.hpp>
-#include <PlayRho/d2/WorldBody.hpp>
-#include <PlayRho/d2/WorldContact.hpp>
-#include <PlayRho/d2/WorldJoint.hpp>
-#include <PlayRho/d2/WorldMisc.hpp>
-#include <PlayRho/d2/WorldShape.hpp>
+#include <playrho/d2/PositionSolverManifold.hpp>
+#include <playrho/ContactID.hpp>
+#include <playrho/Contact.hpp>
+#include <playrho/d2/ContactImpulsesList.hpp>
+#include <playrho/BodyID.hpp>
+#include <playrho/d2/Joint.hpp>
+#include <playrho/JointID.hpp>
+#include <playrho/d2/World.hpp>
+#include <playrho/d2/WorldBody.hpp>
+#include <playrho/d2/WorldContact.hpp>
+#include <playrho/d2/WorldJoint.hpp>
+#include <playrho/d2/WorldMisc.hpp>
+#include <playrho/d2/WorldShape.hpp>
 
 #include "Drawer.hpp"
 #include "UiState.hpp"

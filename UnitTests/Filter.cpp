@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Filter.hpp>
+#include <playrho/Filter.hpp>
 
 using namespace playrho;
 

@@ -1395,12 +1395,12 @@
 		996BDA752A98532F00CD2D55 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				996BDA762A98532F00CD2D55 /* PlayRho */,
+				996BDA762A98532F00CD2D55 /* playrho */,
 			);
 			path = include;
 			sourceTree = "<group>";
 		};
-		996BDA762A98532F00CD2D55 /* PlayRho */ = {
+		996BDA762A98532F00CD2D55 /* playrho */ = {
 			isa = PBXGroup;
 			children = (
 				4734B2161DC00AFD00F15E29 /* ArrayList.hpp */,
@@ -1470,18 +1470,18 @@
 				9901AEF42A9BCEB90075122D /* d2 */,
 				9901AEF32A9BCEB90075122D /* pmr */,
 			);
-			path = PlayRho;
+			path = playrho;
 			sourceTree = "<group>";
 		};
 		996BDA782A98535400CD2D55 /* source */ = {
 			isa = PBXGroup;
 			children = (
-				996BDA792A98535400CD2D55 /* PlayRho */,
+				996BDA792A98535400CD2D55 /* playrho */,
 			);
 			path = source;
 			sourceTree = "<group>";
 		};
-		996BDA792A98535400CD2D55 /* PlayRho */ = {
+		996BDA792A98535400CD2D55 /* playrho */ = {
 			isa = PBXGroup;
 			children = (
 				80BB893F141C3E5900F1753A /* BlockAllocator.cpp */,
@@ -1500,7 +1500,7 @@
 				9901AEF62A9BCECD0075122D /* d2 */,
 				9901AEF52A9BCECD0075122D /* pmr */,
 			);
-			path = PlayRho;
+			path = playrho;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

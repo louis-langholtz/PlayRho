@@ -25,7 +25,7 @@
 #include <memory> // for std::unique_ptr
 #include <vector>
 
-#include <PlayRho/pmr/MemoryResource.hpp>
+#include <playrho/pmr/MemoryResource.hpp>
 
 using namespace playrho;
 

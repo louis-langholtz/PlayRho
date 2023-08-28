@@ -20,14 +20,14 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/World.hpp>
-#include <PlayRho/d2/WorldImpl.hpp>
-#include <PlayRho/d2/WorldBody.hpp>
-#include <PlayRho/d2/WorldMisc.hpp>
-#include <PlayRho/d2/WorldShape.hpp>
+#include <playrho/d2/World.hpp>
+#include <playrho/d2/WorldImpl.hpp>
+#include <playrho/d2/WorldBody.hpp>
+#include <playrho/d2/WorldMisc.hpp>
+#include <playrho/d2/WorldShape.hpp>
 
-#include <PlayRho/d2/DiskShapeConf.hpp>
-#include <PlayRho/d2/ChainShapeConf.hpp>
+#include <playrho/d2/DiskShapeConf.hpp>
+#include <playrho/d2/ChainShapeConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

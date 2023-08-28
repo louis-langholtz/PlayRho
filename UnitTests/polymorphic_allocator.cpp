@@ -22,7 +22,7 @@
 
 #include <cstddef> // for std::byte
 
-#include <PlayRho/pmr/MemoryResource.hpp>
+#include <playrho/pmr/MemoryResource.hpp>
 
 using namespace playrho;
 

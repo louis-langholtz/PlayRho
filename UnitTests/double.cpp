@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/TypeInfo.hpp> // for GetTypeName
+#include <playrho/TypeInfo.hpp> // for GetTypeName
 
 #include <type_traits>
 #include <cmath>

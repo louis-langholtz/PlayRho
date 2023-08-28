@@ -20,9 +20,9 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/Position.hpp>
+#include <playrho/d2/Position.hpp>
 
-#include <PlayRho/Math.hpp>
+#include <playrho/Math.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

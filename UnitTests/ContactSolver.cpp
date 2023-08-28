@@ -20,13 +20,13 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/ContactSolver.hpp>
-#include <PlayRho/ConstraintSolverConf.hpp>
-#include <PlayRho/d2/PositionConstraint.hpp>
-#include <PlayRho/d2/VelocityConstraint.hpp>
-#include <PlayRho/d2/BodyConstraint.hpp>
-#include <PlayRho/d2/PolygonShapeConf.hpp>
-#include <PlayRho/d2/Manifold.hpp>
+#include <playrho/d2/ContactSolver.hpp>
+#include <playrho/ConstraintSolverConf.hpp>
+#include <playrho/d2/PositionConstraint.hpp>
+#include <playrho/d2/VelocityConstraint.hpp>
+#include <playrho/d2/BodyConstraint.hpp>
+#include <playrho/d2/PolygonShapeConf.hpp>
+#include <playrho/d2/Manifold.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

@@ -20,19 +20,19 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/AABB.hpp>
+#include <playrho/d2/AABB.hpp>
 
-#include <PlayRho/Vector2.hpp>
+#include <playrho/Vector2.hpp>
 
-#include <PlayRho/d2/DistanceProxy.hpp>
-#include <PlayRho/d2/DiskShapeConf.hpp>
+#include <playrho/d2/DistanceProxy.hpp>
+#include <playrho/d2/DiskShapeConf.hpp>
 
-#include <PlayRho/d2/World.hpp>
-#include <PlayRho/d2/WorldBody.hpp>
-#include <PlayRho/d2/WorldShape.hpp>
-#include <PlayRho/StepConf.hpp>
+#include <playrho/d2/World.hpp>
+#include <playrho/d2/WorldBody.hpp>
+#include <playrho/d2/WorldShape.hpp>
+#include <playrho/StepConf.hpp>
 
-#include <PlayRho/Contact.hpp>
+#include <playrho/Contact.hpp>
 
 #include <algorithm>
 #include <iterator>

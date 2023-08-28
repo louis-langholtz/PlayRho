@@ -22,7 +22,7 @@
 #ifndef PLAYRHO_DRAWER_HPP
 #define PLAYRHO_DRAWER_HPP
 
-#include <PlayRho/Math.hpp>
+#include <playrho/Math.hpp>
 #include <algorithm>
 
 namespace testbed {

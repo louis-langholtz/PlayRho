@@ -20,8 +20,8 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/DistanceProxy.hpp>
-#include <PlayRho/d2/ShapeSeparation.hpp>
+#include <playrho/d2/DistanceProxy.hpp>
+#include <playrho/d2/ShapeSeparation.hpp>
 
 #include <initializer_list>
 #include <vector>

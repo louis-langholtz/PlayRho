@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/FlagGuard.hpp>
+#include <playrho/FlagGuard.hpp>
 
 #include <cstdint>
 #include <cstddef>

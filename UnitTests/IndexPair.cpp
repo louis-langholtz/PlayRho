@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/IndexPair.hpp>
+#include <playrho/d2/IndexPair.hpp>
 
 using namespace playrho;
 

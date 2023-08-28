@@ -20,10 +20,10 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/PositionSolverManifold.hpp>
-#include <PlayRho/d2/PolygonShapeConf.hpp>
-#include <PlayRho/d2/WorldManifold.hpp>
-#include <PlayRho/d2/Manifold.hpp>
+#include <playrho/d2/PositionSolverManifold.hpp>
+#include <playrho/d2/PolygonShapeConf.hpp>
+#include <playrho/d2/WorldManifold.hpp>
+#include <playrho/d2/Manifold.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

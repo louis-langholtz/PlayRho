@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/BodyID.hpp>
+#include <playrho/BodyID.hpp>
 
 using namespace playrho;
 
