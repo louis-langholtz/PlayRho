@@ -38,14 +38,14 @@
 /// @see World, JointID.
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 
-#include <playrho/Math.hpp>
-
-#include <playrho/BodyID.hpp>
-#include <playrho/d2/Joint.hpp>
-#include <playrho/JointID.hpp>
-#include <playrho/d2/LimitState.hpp>
-
 #include <vector>
+
+#include <playrho/Math.hpp>
+#include <playrho/BodyID.hpp>
+#include <playrho/JointID.hpp>
+
+#include <playrho/d2/Joint.hpp>
+#include <playrho/d2/LimitState.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -249,10 +249,7 @@ bool IsEnabled(const World& world, JointID id);
 /// @brief Gets the world index of the given joint.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-inline JointCounter GetWorldIndex(const World&, JointID id) noexcept
-{
-    return to_underlying(id);
-}
+JointCounter GetWorldIndex(const World&, JointID id) noexcept;
 
 /// Get the anchor point on body-A in world coordinates.
 /// @throws std::out_of_range If given an invalid joint identifier.

@@ -19,11 +19,11 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/WorldJoint.hpp>
+#include <playrho/to_underlying.hpp>
 
+#include <playrho/d2/WorldJoint.hpp>
 #include <playrho/d2/World.hpp>
 #include <playrho/d2/Body.hpp> // for GetBody
-
 #include <playrho/d2/Joint.hpp>
 
 #include <algorithm>
@@ -192,6 +192,11 @@ bool IsEnabled(const World& world, JointID id)
     const auto bB = GetBodyB(world, id);
     return (bA == InvalidBodyID || IsEnabled(world.GetBody(bA)))
         && (bB == InvalidBodyID || IsEnabled(world.GetBody(bB)));
+}
+
+JointCounter GetWorldIndex(const World&, JointID id) noexcept
+{
+    return to_underlying(id);
 }
 
 Length2 GetAnchorA(const World& world, JointID id)

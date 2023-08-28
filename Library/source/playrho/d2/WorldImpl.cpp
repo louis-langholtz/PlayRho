@@ -19,6 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#include <playrho/to_underlying.hpp>
+
 #include <playrho/d2/WorldImpl.hpp>
 
 #include <playrho/d2/Body.hpp>
@@ -819,8 +821,9 @@ void WorldImpl::Clear() noexcept
         try {
             for (auto&& shape: m_shapeBuffer) {
                 if (shape != Shape{}) {
+                    using underlying_type = detail::underlying_type_t<ShapeID>;
                     const auto index = &shape - m_shapeBuffer.data();
-                    m_listeners.shapeDestruction(static_cast<ShapeID>(static_cast<underlying_type_t<ShapeID>>(index)));
+                    m_listeners.shapeDestruction(static_cast<ShapeID>(static_cast<underlying_type>(index)));
                 }
             }
         }

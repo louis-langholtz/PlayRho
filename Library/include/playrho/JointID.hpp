@@ -21,7 +21,7 @@
 #ifndef PLAYRHO_JOINTID_HPP
 #define PLAYRHO_JOINTID_HPP
 
-#include <playrho/IndexingNamedType.hpp>
+#include <playrho/detail/IndexingNamedType.hpp>
 #include <playrho/Settings.hpp>
 
 namespace playrho {

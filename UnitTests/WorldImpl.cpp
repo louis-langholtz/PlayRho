@@ -20,6 +20,8 @@
 
 #include "UnitTests.hpp"
 
+#include <playrho/to_underlying.hpp>
+
 #include <playrho/d2/WorldImpl.hpp>
 
 #include <playrho/d2/WorldImplBody.hpp>

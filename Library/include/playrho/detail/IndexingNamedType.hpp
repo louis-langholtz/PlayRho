@@ -19,15 +19,14 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_INDEXINGNAMEDTYPE_HPP
-#define PLAYRHO_INDEXINGNAMEDTYPE_HPP
+#ifndef PLAYRHO_DETAIL_INDEXINGNAMEDTYPE_HPP
+#define PLAYRHO_DETAIL_INDEXINGNAMEDTYPE_HPP
 
 #include <utility>
 #include <functional> // for std::hash
 #include <type_traits> // for std::is_nothrow_default_constructible
 
-namespace playrho {
-namespace detail {
+namespace playrho::detail {
 
 /// @brief An indexable, hashable, named "strong type" template class.
 /// @details A template class for wrapping types into more special-purposed types. Wrapping
@@ -153,41 +152,7 @@ constexpr const T& UnderlyingValue(const IndexingNamedType<T, Tag>& o) noexcept
     return static_cast<const T&>(o);
 }
 
-} // namespace detail
-
-/// Underlying-type template class.
-template <class T, class Enable = void>
-struct underlying_type {};
-
-/// Underlying-type class specialization for enum types.
-template <class T>
-struct underlying_type<T, std::enable_if_t<std::is_enum_v<T>>>
-{
-    /// @brief Type alias of the underlying type.
-    using type = std::underlying_type_t<T>;
-};
-
-/// Underlying-type template class for <code>detail::IndexingNamedType</code> types.
-template <class T, class Tag>
-struct underlying_type<detail::IndexingNamedType<T, Tag>>
-{
-    /// @brief Type alias of the underlying type.
-    using type = T;
-};
-
-/// Underlying-type convenience alias.
-template <class T>
-using underlying_type_t = typename underlying_type<T>::type;
-
-/// Converts the given value to the value as the underlying type.
-/// @note This is like <code>std::to_underlying</code> slated for C++23.
-template <typename T>
-constexpr auto to_underlying(T value) noexcept -> underlying_type_t<T>
-{
-    return static_cast<underlying_type_t<T>>(value);
-}
-
-} // namespace playrho
+} // namespace playrho::detail
 
 namespace std {
 
@@ -205,4 +170,4 @@ struct hash<::playrho::detail::IndexingNamedType<T, Tag>>
 
 } // namespace std
 
-#endif // PLAYRHO_INDEXINGNAMEDTYPE_HPP
+#endif // PLAYRHO_DETAIL_INDEXINGNAMEDTYPE_HPP
