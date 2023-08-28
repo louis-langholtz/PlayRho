@@ -22,8 +22,8 @@
 
 #ifdef CODE_DUMPER_IS_READY
 
-#include <PlayRho/PlayRho.hpp>
-#include <PlayRho/CodeDumper.hpp>
+#include <playrho/PlayRho.hpp>
+#include <playrho/CodeDumper.hpp>
 
 using namespace playrho;
 

@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/SimplexEdge.hpp>
+#include <playrho/d2/SimplexEdge.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

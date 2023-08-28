@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Contact.hpp>
+#include <playrho/Contact.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

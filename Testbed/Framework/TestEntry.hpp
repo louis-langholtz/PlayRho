@@ -22,7 +22,7 @@
 #ifndef PLAYRHO_TEST_ENTRY_HPP
 #define PLAYRHO_TEST_ENTRY_HPP
 
-#include <PlayRho/Span.hpp>
+#include <playrho/Span.hpp>
 
 #include <memory> // for std::unique_ptr
 #include <vector>

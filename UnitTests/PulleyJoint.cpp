@@ -20,16 +20,16 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/PulleyJointConf.hpp>
+#include <playrho/d2/PulleyJointConf.hpp>
 
-#include <PlayRho/StepConf.hpp>
-#include <PlayRho/d2/World.hpp>
-#include <PlayRho/d2/WorldJoint.hpp>
-#include <PlayRho/d2/WorldBody.hpp>
-#include <PlayRho/d2/Joint.hpp>
+#include <playrho/StepConf.hpp>
+#include <playrho/d2/World.hpp>
+#include <playrho/d2/WorldJoint.hpp>
+#include <playrho/d2/WorldBody.hpp>
+#include <playrho/d2/Joint.hpp>
 
-#include <PlayRho/ConstraintSolverConf.hpp>
-#include <PlayRho/d2/BodyConstraint.hpp>
+#include <playrho/ConstraintSolverConf.hpp>
+#include <playrho/d2/BodyConstraint.hpp>
 
 #include <stdexcept>
 

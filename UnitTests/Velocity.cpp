@@ -20,9 +20,9 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/Velocity.hpp>
-#include <PlayRho/Math.hpp>
-#include <PlayRho/MovementConf.hpp>
+#include <playrho/d2/Velocity.hpp>
+#include <playrho/Math.hpp>
+#include <playrho/MovementConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/StackAllocator.hpp>
+#include <playrho/StackAllocator.hpp>
 
 #include <chrono>
 

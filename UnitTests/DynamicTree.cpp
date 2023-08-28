@@ -19,7 +19,7 @@
  */
 
 #include "UnitTests.hpp"
-#include <PlayRho/d2/DynamicTree.hpp>
+#include <playrho/d2/DynamicTree.hpp>
 #include <type_traits>
 #include <algorithm>
 #include <iterator>

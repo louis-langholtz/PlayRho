@@ -20,9 +20,9 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/MultiShapeConf.hpp>
-#include <PlayRho/d2/Shape.hpp>
-#include <PlayRho/d2/VertexSet.hpp>
+#include <playrho/d2/MultiShapeConf.hpp>
+#include <playrho/d2/Shape.hpp>
+#include <playrho/d2/VertexSet.hpp>
 
 #include <array>
 #include <type_traits>

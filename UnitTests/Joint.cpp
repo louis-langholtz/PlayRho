@@ -20,11 +20,11 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/Joint.hpp>
+#include <playrho/d2/Joint.hpp>
 
-#include <PlayRho/Templates.hpp>
-#include <PlayRho/d2/JointConf.hpp>
-#include <PlayRho/d2/WheelJointConf.hpp>
+#include <playrho/Templates.hpp>
+#include <playrho/d2/JointConf.hpp>
+#include <playrho/d2/WheelJointConf.hpp>
 
 #include <any>
 #include <stdexcept> // for std::invalid_argument

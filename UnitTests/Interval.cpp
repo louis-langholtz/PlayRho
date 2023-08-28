@@ -20,9 +20,9 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Interval.hpp>
-#include <PlayRho/TypeInfo.hpp> // for TypeNameAsString
-#include <PlayRho/Units.hpp>
+#include <playrho/Interval.hpp>
+#include <playrho/TypeInfo.hpp> // for TypeNameAsString
+#include <playrho/Units.hpp>
 
 using namespace playrho;
 

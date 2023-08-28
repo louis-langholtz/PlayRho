@@ -20,13 +20,13 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/NonNegative.hpp>
-#include <PlayRho/NonPositive.hpp>
-#include <PlayRho/NonZero.hpp>
-#include <PlayRho/UnitInterval.hpp>
-#include <PlayRho/Finite.hpp>
-#include <PlayRho/Positive.hpp>
-#include <PlayRho/Negative.hpp>
+#include <playrho/NonNegative.hpp>
+#include <playrho/NonPositive.hpp>
+#include <playrho/NonZero.hpp>
+#include <playrho/UnitInterval.hpp>
+#include <playrho/Finite.hpp>
+#include <playrho/Positive.hpp>
+#include <playrho/Negative.hpp>
 
 #include <limits>
 #include <cmath>

@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/pmr/StatsResource.hpp>
+#include <playrho/pmr/StatsResource.hpp>
 
 using namespace playrho;
 

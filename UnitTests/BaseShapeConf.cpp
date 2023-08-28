@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/ShapeConf.hpp>
+#include <playrho/d2/ShapeConf.hpp>
 
 #include <type_traits>
 

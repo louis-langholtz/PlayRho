@@ -20,8 +20,8 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/EdgeShapeConf.hpp>
-#include <PlayRho/d2/Shape.hpp>
+#include <playrho/d2/EdgeShapeConf.hpp>
+#include <playrho/d2/Shape.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

@@ -20,8 +20,8 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/StepConf.hpp>
-#include <PlayRho/d2/World.hpp>
+#include <playrho/StepConf.hpp>
+#include <playrho/d2/World.hpp>
 
 using namespace playrho;
 

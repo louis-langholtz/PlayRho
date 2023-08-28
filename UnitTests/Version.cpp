@@ -20,9 +20,9 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Version.hpp>
+#include <playrho/Version.hpp>
 
-#include <PlayRho/Defines.hpp> // for PLAYRHO_VERSION_*
+#include <playrho/Defines.hpp> // for PLAYRHO_VERSION_*
 
 using namespace playrho;
 

@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/Manifold.hpp>
+#include <playrho/d2/Manifold.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

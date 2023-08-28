@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/ContactFeature.hpp>
+#include <playrho/ContactFeature.hpp>
 
 #include <sstream>
 

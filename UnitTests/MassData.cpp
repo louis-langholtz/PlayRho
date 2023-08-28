@@ -19,10 +19,10 @@
  */
 
 #include "UnitTests.hpp"
-#include <PlayRho/d2/MassData.hpp>
-#include <PlayRho/d2/DiskShapeConf.hpp>
-#include <PlayRho/d2/PolygonShapeConf.hpp>
-#include <PlayRho/d2/EdgeShapeConf.hpp>
+#include <playrho/d2/MassData.hpp>
+#include <playrho/d2/DiskShapeConf.hpp>
+#include <playrho/d2/PolygonShapeConf.hpp>
+#include <playrho/d2/EdgeShapeConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Math.hpp>
+#include <playrho/Math.hpp>
 
 #include <sstream>
 #include <type_traits>

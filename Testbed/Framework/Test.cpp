@@ -21,7 +21,7 @@
 
 #include "Test.hpp"
 
-#include <PlayRho/d2/DynamicTree.hpp>
+#include <playrho/d2/DynamicTree.hpp>
 
 #include "DebugDraw.hpp"
 

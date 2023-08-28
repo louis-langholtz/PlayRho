@@ -20,8 +20,8 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/ChainShapeConf.hpp>
-#include <PlayRho/d2/Shape.hpp>
+#include <playrho/d2/ChainShapeConf.hpp>
+#include <playrho/d2/Shape.hpp>
 
 #include <array>
 

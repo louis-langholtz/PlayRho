@@ -20,9 +20,9 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/VelocityConstraint.hpp>
-#include <PlayRho/d2/BodyConstraint.hpp>
-#include <PlayRho/d2/WorldManifold.hpp>
+#include <playrho/d2/VelocityConstraint.hpp>
+#include <playrho/d2/BodyConstraint.hpp>
+#include <playrho/d2/WorldManifold.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

@@ -20,12 +20,12 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/d2/WorldJoint.hpp>
+#include <playrho/d2/WorldJoint.hpp>
 
-#include <PlayRho/d2/World.hpp>
-#include <PlayRho/d2/WorldBody.hpp>
-#include <PlayRho/d2/RevoluteJointConf.hpp>
-#include <PlayRho/d2/Joint.hpp>
+#include <playrho/d2/World.hpp>
+#include <playrho/d2/WorldBody.hpp>
+#include <playrho/d2/RevoluteJointConf.hpp>
+#include <playrho/d2/Joint.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

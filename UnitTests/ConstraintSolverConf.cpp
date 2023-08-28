@@ -20,9 +20,9 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/StepConf.hpp>
+#include <playrho/StepConf.hpp>
 
-#include <PlayRho/ConstraintSolverConf.hpp>
+#include <playrho/ConstraintSolverConf.hpp>
 
 using namespace playrho;
 
