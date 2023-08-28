@@ -391,6 +391,7 @@
 		80BB8A75141C3F4C00F1753A /* libPlayRho.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80FF01D2141C3D980059E59D /* libPlayRho.a */; };
 		80BB8A76141C3F7600F1753A /* libPlayRho.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80FF01D2141C3D980059E59D /* libPlayRho.a */; };
 		80BB8A7B141C3FA700F1753A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80BB8A7A141C3FA700F1753A /* OpenGL.framework */; };
+		9901AEFB2A9D1DA70075122D /* RayCastInput.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9901AEF92A9D1DA70075122D /* RayCastInput.hpp */; };
 		9921FFD729AD43C30043F23F /* TypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9921FFD629AD43C30043F23F /* TypeInfo.cpp */; };
 		996B7B832A6DF1A500A8207F /* PoolMemoryResource.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */; };
 		996B7B842A6DF1A500A8207F /* MemoryResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */; };
@@ -875,6 +876,7 @@
 		80BB8A7A141C3FA700F1753A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		80CD7722143AF3230086DB87 /* ConvexHull.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConvexHull.cpp; sourceTree = "<group>"; };
 		80FF01D2141C3D980059E59D /* libPlayRho.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPlayRho.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9901AEF92A9D1DA70075122D /* RayCastInput.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RayCastInput.hpp; sourceTree = "<group>"; };
 		9921FFD629AD43C30043F23F /* TypeInfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TypeInfo.cpp; sourceTree = "<group>"; };
 		996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PoolMemoryResource.hpp; sourceTree = "<group>"; };
 		996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryResource.cpp; sourceTree = "<group>"; };
@@ -1392,6 +1394,14 @@
 			path = d2;
 			sourceTree = "<group>";
 		};
+		9901AEF72A9D1D130075122D /* detail */ = {
+			isa = PBXGroup;
+			children = (
+				9901AEF92A9D1DA70075122D /* RayCastInput.hpp */,
+			);
+			path = detail;
+			sourceTree = "<group>";
+		};
 		996BDA752A98532F00CD2D55 /* include */ = {
 			isa = PBXGroup;
 			children = (
@@ -1417,6 +1427,8 @@
 				47327E7D1EA585790048FCD8 /* Defines.hpp */,
 				470ADAB82555E05100EEE99D /* Defines.hpp.in */,
 				47B58F541F570E2C00354C34 /* DynamicMemory.hpp */,
+				9901AEF42A9BCEB90075122D /* d2 */,
+				9901AEF72A9D1D130075122D /* detail */,
 				470F94B11EC4CB6C00AA3C82 /* Filter.hpp */,
 				4764085625047C090090F711 /* Finite.hpp */,
 				4727242D1E315E1A00C64921 /* Fixed.hpp */,
@@ -1444,6 +1456,7 @@
 				80BB8923141C3E5900F1753A /* BasicAPI.hpp */,
 				479132DD26A52AAF0011707B /* PointState.hpp */,
 				4764085A2504822F0090F711 /* Positive.hpp */,
+				9901AEF32A9BCEB90075122D /* pmr */,
 				4764085E2507FBFF0090F711 /* propagate_const.hpp */,
 				479132F026A52FD00011707B /* RayCastOpcode.hpp */,
 				47B58F651F64D2B500354C34 /* Real.hpp */,
@@ -1467,8 +1480,6 @@
 				47B58F581F57218400354C34 /* Version.hpp */,
 				4768D3F21E3A7ACA00574143 /* Wider.hpp */,
 				47D28D9B1F6F28C70094C032 /* WrongState.hpp */,
-				9901AEF42A9BCEB90075122D /* d2 */,
-				9901AEF32A9BCEB90075122D /* pmr */,
 			);
 			path = playrho;
 			sourceTree = "<group>";
@@ -1488,17 +1499,17 @@
 				47E7060A255CDBEE00A55BC1 /* ConstraintSolverConf.cpp */,
 				80BB8961141C3E5900F1753A /* Contact.cpp */,
 				47B58F531F570E2C00354C34 /* DynamicMemory.cpp */,
+				9901AEF62A9BCECD0075122D /* d2 */,
 				80BB8953141C3E5900F1753A /* Island.cpp */,
 				80BB8944141C3E5900F1753A /* Math.cpp */,
 				471E7EAF1F34E34000DFF626 /* MovementConf.cpp */,
+				9901AEF52A9BCECD0075122D /* pmr */,
 				80BB8948141C3E5900F1753A /* StackAllocator.cpp */,
 				4768D3FF1E54E7CB00574143 /* StepConf.cpp */,
 				4764088A251FA6360090F711 /* StepStats.cpp */,
 				479132FD26A5344A0011707B /* ToiConf.cpp */,
 				4791330B26A5B90C0011707B /* ToiOutput.cpp */,
 				47B58F571F57218400354C34 /* Version.cpp */,
-				9901AEF62A9BCECD0075122D /* d2 */,
-				9901AEF52A9BCECD0075122D /* pmr */,
 			);
 			path = playrho;
 			sourceTree = "<group>";
@@ -1589,6 +1600,7 @@
 				47C96C551FA67D1F00A6C587 /* Acceleration.hpp in Headers */,
 				47D61F741F1F148500E702BD /* SilkscreenTtfData.h in Headers */,
 				80BB89B2141C3E5900F1753A /* Island.hpp in Headers */,
+				9901AEFB2A9D1DA70075122D /* RayCastInput.hpp in Headers */,
 				47327E801EA585790048FCD8 /* Defines.hpp in Headers */,
 				4787D6C71F2EA1DB008C115E /* FrictionJointConf.hpp in Headers */,
 				470F9B3D1EE63515007EF7B6 /* InvalidArgument.hpp in Headers */,
