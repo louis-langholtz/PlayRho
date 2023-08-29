@@ -71,6 +71,105 @@ struct IsReverseIterableImpl<
                    decltype(*rbegin(std::declval<T>()))>> : std::true_type {
 };
 
+/// @brief Template for determining if the given type is an equality comparable type.
+/// @note This isn't exactly the same as the "EqualityComparable" named requirement.
+/// @see https://en.cppreference.com/w/cpp/named_req/EqualityComparable
+template <class T1, class T2, class = void>
+struct IsEqualityComparable : std::false_type {
+};
+
+/// @brief Template specialization for equality comparable types.
+template <class T1, class T2>
+struct IsEqualityComparable<T1, T2, std::void_t<decltype(T1{} == T2{})>> : std::true_type {
+};
+
+/// @brief Template for determining if the given type is an inequality comparable type.
+template <class T1, class T2, class = void>
+struct IsInequalityComparable : std::false_type {
+};
+
+/// @brief Template specialization for inequality comparable types.
+template <class T1, class T2>
+struct IsInequalityComparable<T1, T2, std::void_t<decltype(T1{} != T2{})>> : std::true_type {
+};
+
+/// @brief Template for determining if the given types are addable.
+template <class T1, class T2 = T1, class = void>
+struct IsAddable : std::false_type {
+};
+
+/// @brief Template specializing for addable types.
+template <class T1, class T2>
+struct IsAddable<T1, T2, std::void_t<decltype(T1{} + T2{})>> : std::true_type {
+};
+
+/// @brief Template for determining if the given types are multipliable.
+template <class T1, class T2, class = void>
+struct IsMultipliable : std::false_type {
+};
+
+/// @brief Template specializing for multipliable types.
+template <class T1, class T2>
+struct IsMultipliable<T1, T2, std::void_t<decltype(T1{} * T2{})>> : std::true_type {
+};
+
+/// @brief Template for determining if the given types are divisable.
+template <class T1, class T2, class = void>
+struct IsDivisable : std::false_type {
+};
+
+/// @brief Template specializing for divisable types.
+template <class T1, class T2>
+struct IsDivisable<T1, T2, std::void_t<decltype(T1{} / T2{})>> : std::true_type {
+};
+
+/// @brief Template for determining if the given type is an "arithmetic" type.
+/// @note In the context of this library, "arithmetic" types are all types which
+///   have +, -, *, / arithmetic operator support.
+template <class T, class = void>
+struct IsArithmetic : std::false_type {
+};
+
+/// @brief Template specialization for valid/acceptable "arithmetic" types.
+template <class T>
+struct IsArithmetic<T, std::void_t<decltype(T{} + T{}), decltype(T{} - T{}), decltype(T{} * T{}),
+                                   decltype(T{} / T{})>> : std::true_type {
+};
+
+/// @brief Has-functor trait template fallback class.
+/// @note This is based off the answer by "jrok" on the <em>StackOverflow</em> website
+///   to the question of: "Check if a class has a member function of a given signature".
+/// @see https://stackoverflow.com/a/16824239/7410358
+template <typename, typename T>
+struct HasFunctor {
+    static_assert(std::integral_constant<T, false>::value,
+                  "Second template parameter needs to be of function type.");
+};
+
+/// @brief Has-functor trait template class.
+/// @note This is based off the answer by "jrok" on the <em>StackOverflow</em> website
+///   to the question of: "Check if a class has a member function of a given signature".
+/// @see https://stackoverflow.com/a/16824239/7410358
+template <typename Type, typename Return, typename... Args>
+struct HasFunctor<Type, Return(Args...)> {
+private:
+    /// @brief Declaration of check function for supporting types given to template.
+    template <typename T>
+    static constexpr auto check(T*) ->
+        typename std::is_same<decltype(std::declval<T>()(std::declval<Args>()...)), Return>::type;
+
+    /// @brief Declaration of check function for non-supporting types given to template.
+    template <typename>
+    static constexpr std::false_type check(...);
+
+    /// @brief Type alias for given template parameters.
+    using type = decltype(check<Type>(nullptr)); // NOLINT(cppcoreguidelines-pro-type-vararg)
+
+public:
+    /// Whether or not the given type has the specified functor.
+    static constexpr auto value = type::value;
+};
+
 /// @brief Gets the maximum size of the given container.
 template <class T>
 constexpr auto max_size(const T& arg) -> decltype(arg.max_size())
@@ -156,71 +255,6 @@ constexpr bool IsValid(const std::size_t& value) noexcept
 
 // Other templates.
 
-/// @brief Template for determining if the given type is an equality comparable type.
-/// @note This isn't exactly the same as the "EqualityComparable" named requirement.
-/// @see https://en.cppreference.com/w/cpp/named_req/EqualityComparable
-template <class T1, class T2, class = void>
-struct IsEqualityComparable : std::false_type {
-};
-
-/// @brief Template specialization for equality comparable types.
-template <class T1, class T2>
-struct IsEqualityComparable<T1, T2, std::void_t<decltype(T1{} == T2{})>> : std::true_type {
-};
-
-/// @brief Template for determining if the given type is an inequality comparable type.
-template <class T1, class T2, class = void>
-struct IsInequalityComparable : std::false_type {
-};
-
-/// @brief Template specialization for inequality comparable types.
-template <class T1, class T2>
-struct IsInequalityComparable<T1, T2, std::void_t<decltype(T1{} != T2{})>> : std::true_type {
-};
-
-/// @brief Template for determining if the given types are addable.
-template <class T1, class T2 = T1, class = void>
-struct IsAddable : std::false_type {
-};
-
-/// @brief Template specializing for addable types.
-template <class T1, class T2>
-struct IsAddable<T1, T2, std::void_t<decltype(T1{} + T2{})>> : std::true_type {
-};
-
-/// @brief Template for determining if the given types are multipliable.
-template <class T1, class T2, class = void>
-struct IsMultipliable : std::false_type {
-};
-
-/// @brief Template specializing for multipliable types.
-template <class T1, class T2>
-struct IsMultipliable<T1, T2, std::void_t<decltype(T1{} * T2{})>> : std::true_type {
-};
-
-/// @brief Template for determining if the given types are divisable.
-template <class T1, class T2, class = void>
-struct IsDivisable : std::false_type {
-};
-
-/// @brief Template specializing for divisable types.
-template <class T1, class T2>
-struct IsDivisable<T1, T2, std::void_t<decltype(T1{} / T2{})>> : std::true_type {
-};
-
-/// @brief Template for determining if the given type is an "arithmetic" type.
-/// @note In the context of this library, "arithmetic" types are all types which
-///   have +, -, *, / arithmetic operator support.
-template <class T, class = void>
-struct IsArithmetic : std::false_type {
-};
-
-/// @brief Template specialization for valid/acceptable "arithmetic" types.
-template <class T>
-struct IsArithmetic<T, std::void_t<decltype(T{} + T{}), decltype(T{} - T{}), decltype(T{} * T{}),
-                                   decltype(T{} / T{})>> : std::true_type {
-};
-
 /// @brief Determines whether the given type is an iterable type.
 template <class T>
 using IsIterable = typename detail::IsIterableImpl<T>;
@@ -228,6 +262,30 @@ using IsIterable = typename detail::IsIterableImpl<T>;
 /// @brief Determines whether the given type is a reverse iterable type.
 template <class T>
 using IsReverseIterable = typename detail::IsReverseIterableImpl<T>;
+
+/// @brief Determines whether the given types are equality comparable.
+template <class T1, class T2 = T1>
+using IsEqualityComparable = typename detail::IsEqualityComparable<T1, T2>;
+
+/// @brief Determines whether the given types are inequality comparable.
+template <class T1, class T2 = T1>
+using IsInequalityComparable = typename detail::IsInequalityComparable<T1, T2>;
+
+/// @brief Determines whether the given type is an addable type.
+template <class T1, class T2 = T1>
+using IsAddable = typename detail::IsAddable<T1, T2>;
+
+/// @brief Determines whether the given type is a multipliable type.
+template <class T1, class T2 = T1>
+using IsMultipliable = typename detail::IsMultipliable<T1, T2>;
+
+/// @brief Determines whether the given type is a divisible type.
+template <class T1, class T2 = T1>
+using IsDivisable = typename detail::IsDivisable<T1, T2>;
+
+/// @brief Determines whether the given type is an arithmetic type.
+template <class T>
+using IsArithmetic = typename detail::IsArithmetic<T>;
 
 /// @brief Wrapper for reversing ranged-for loop ordering.
 /// @warning This won't lifetime extend the iterable variable!
@@ -379,49 +437,15 @@ auto EraseAll(T& container, const U& value)
     return count;
 }
 
-/// @brief Has-functor trait template fallback class.
-/// @note This is based off the answer by "jrok" on the <em>StackOverflow</em> website
-///   to the question of: "Check if a class has a member function of a given signature".
-/// @see https://stackoverflow.com/a/16824239/7410358
-template <typename, typename T>
-struct HasFunctor {
-    static_assert(std::integral_constant<T, false>::value,
-                  "Second template parameter needs to be of function type.");
-};
-
-/// @brief Has-functor trait template class.
-/// @note This is based off the answer by "jrok" on the <em>StackOverflow</em> website
-///   to the question of: "Check if a class has a member function of a given signature".
-/// @see https://stackoverflow.com/a/16824239/7410358
-template <typename Type, typename Return, typename... Args>
-struct HasFunctor<Type, Return(Args...)> {
-private:
-    /// @brief Declaration of check function for supporting types given to template.
-    template <typename T>
-    static constexpr auto check(T*) ->
-        typename std::is_same<decltype(std::declval<T>()(std::declval<Args>()...)), Return>::type;
-
-    /// @brief Declaration of check function for non-supporting types given to template.
-    template <typename>
-    static constexpr std::false_type check(...);
-
-    /// @brief Type alias for given template parameters.
-    using type = decltype(check<Type>(nullptr)); // NOLINT(cppcoreguidelines-pro-type-vararg)
-
-public:
-    /// Whether or not the given type has the specified functor.
-    static constexpr auto value = type::value;
-};
-
 /// @brief Has nullary functor type alias.
 /// @see HasUnaryFunctor.
 template <typename Type, typename Return>
-using HasNullaryFunctor = HasFunctor<Type, Return()>;
+using HasNullaryFunctor = detail::HasFunctor<Type, Return()>;
 
 /// @brief Has unary functor type alias.
 /// @see HasNullaryFunctor.
 template <typename Type, typename Return, typename Arg>
-using HasUnaryFunctor = HasFunctor<Type, Return(Arg)>;
+using HasUnaryFunctor = detail::HasFunctor<Type, Return(Arg)>;
 
 /// @brief Decayed type if not same as the checked type.
 /// @note This is done separately from other checks to ensure order of compiler's SFINAE
