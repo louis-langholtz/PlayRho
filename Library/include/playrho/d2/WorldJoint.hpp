@@ -40,12 +40,12 @@
 
 #include <vector>
 
+#include <playrho/LimitState.hpp>
 #include <playrho/Math.hpp>
 #include <playrho/BodyID.hpp>
 #include <playrho/JointID.hpp>
 
 #include <playrho/d2/Joint.hpp>
-#include <playrho/d2/LimitState.hpp>
 
 namespace playrho {
 namespace d2 {

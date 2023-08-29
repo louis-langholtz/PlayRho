@@ -24,17 +24,17 @@
 #ifndef PLAYRHO_D2_JOINT_HPP
 #define PLAYRHO_D2_JOINT_HPP
 
-#include <playrho/Math.hpp>
-#include <playrho/Templates.hpp> // for DecayedTypeIfNotSame
-#include <playrho/TypeInfo.hpp> // for GetTypeID
-#include <playrho/d2/LimitState.hpp>
-#include <playrho/BodyID.hpp>
-
 #include <memory> // for std::unique_ptr
 #include <vector>
 #include <utility> // for std::move, std::forward
 #include <stdexcept> // for std::bad_cast
 #include <type_traits> // for std::decay_t, std::void_t
+
+#include <playrho/Math.hpp>
+#include <playrho/Templates.hpp> // for DecayedTypeIfNotSame
+#include <playrho/TypeInfo.hpp> // for GetTypeID
+#include <playrho/LimitState.hpp>
+#include <playrho/BodyID.hpp>
 
 namespace playrho {
 
