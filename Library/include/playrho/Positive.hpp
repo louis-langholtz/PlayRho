@@ -51,6 +51,8 @@ static_assert(!std::is_default_constructible<Positive<int>>::value);
 
 } // namespace playrho
 
+/// @brief Specialization of <code>std::numeric_limits</code> class template.
+/// @see https://en.cppreference.com/w/cpp/types/numeric_limits
 template <class T>
 class std::numeric_limits<::playrho::Positive<T>> {
 public:
