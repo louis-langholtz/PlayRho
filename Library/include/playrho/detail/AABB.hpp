@@ -32,14 +32,7 @@
 #include <playrho/Settings.hpp> // for ChildCounter, etc.
 #include <playrho/Templates.hpp>
 
-namespace playrho {
-
-class Contact;
-
-namespace detail {
-
-template <std::size_t N>
-struct RayCastInput;
+namespace playrho::detail {
 
 /// @brief N-dimensional Axis Aligned Bounding Box.
 ///
@@ -373,8 +366,6 @@ inline ::std::ostream& operator<<(::std::ostream& os, const AABB<N>& value)
     return os;
 }
 
-} // namespace detail
-
-} // namespace playrho
+} // namespace playrho::detail
 
 #endif // PLAYRHO_DETAIL_AABB_HPP
