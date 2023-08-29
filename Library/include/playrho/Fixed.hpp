@@ -21,15 +21,16 @@
 #ifndef PLAYRHO_FIXED_HPP
 #define PLAYRHO_FIXED_HPP
 
-#include <playrho/Wider.hpp>
-#include <playrho/Templates.hpp>
-#include <playrho/TypeInfo.hpp>
-
 #include <cstdint>
 #include <limits>
 #include <cassert>
 #include <type_traits>
 #include <iostream>
+
+#include <playrho/Templates.hpp>
+#include <playrho/TypeInfo.hpp>
+
+#include <playrho/detail/Wider.hpp>
 
 namespace playrho {
 namespace detail {
@@ -572,7 +573,7 @@ public:
 private:
 
     /// @brief Widened type alias.
-    using wider_type = typename Wider<value_type>::type;
+    using wider_type = typename detail::Wider<value_type>::type;
 
     /// @brief Unsigned widened type alias.
     using unsigned_wider_type = typename std::make_unsigned<wider_type>::type;
@@ -917,7 +918,7 @@ constexpr bool operator > (Fixed64 lhs, Fixed64 rhs) noexcept
 }
 
 /// @brief Specialization of the Wider trait for the <code>Fixed32</code> type.
-template<> struct Wider<Fixed32> {
+template<> struct detail::Wider<Fixed32> {
     using type = Fixed64; ///< Wider type.
 };
 

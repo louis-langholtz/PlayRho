@@ -26,7 +26,7 @@
 #include <cstdint>
 #include <type_traits>
 
-namespace playrho {
+namespace playrho::detail {
 
 /// @brief Wider data type obtainer.
 ///
@@ -100,7 +100,7 @@ struct Wider<std::uint64_t> {
 };
 #endif
 
-} // namespace playrho
+} // namespace playrho::detail
 
 namespace std {
 
