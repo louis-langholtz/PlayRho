@@ -446,13 +446,11 @@ PROPAGATE_CONST_CONSTEXPR void swap(propagate_const<T>& pt, propagate_const<T>& 
 
 }  // end namespace playrho
 
-namespace std {
-
 // [propagate_const.hash], hash support
 
 /// @brief Support for hash operation.
 template <class T>
-struct hash<::playrho::propagate_const<T>> {
+struct std::hash<::playrho::propagate_const<T>> {
   using result_type = size_t; ///< Result type.
   using argument_type = ::playrho::propagate_const<T>; ///< Argument type.
 
@@ -467,7 +465,7 @@ struct hash<::playrho::propagate_const<T>> {
 
 /// @brief Support for equal-to operations.
 template <class T>
-struct equal_to<::playrho::propagate_const<T>> {
+struct std::equal_to<::playrho::propagate_const<T>> {
   using first_argument_type = ::playrho::propagate_const<T>; ///< First argument type.
   using second_argument_type = ::playrho::propagate_const<T>; ///< Second argument type.
 
@@ -481,7 +479,7 @@ struct equal_to<::playrho::propagate_const<T>> {
 
 /// @brief Support for not-equal-to operations.
 template <class T>
-struct not_equal_to<::playrho::propagate_const<T>> {
+struct std::not_equal_to<::playrho::propagate_const<T>> {
   using first_argument_type = ::playrho::propagate_const<T>; ///< First argument type.
   using second_argument_type = ::playrho::propagate_const<T>; ///< Second argument type.
 
@@ -495,7 +493,7 @@ struct not_equal_to<::playrho::propagate_const<T>> {
 
 /// @brief Support for less than operations.
 template <class T>
-struct less<::playrho::propagate_const<T>> {
+struct std::less<::playrho::propagate_const<T>> {
   using first_argument_type = ::playrho::propagate_const<T>; ///< First argument type.
   using second_argument_type = ::playrho::propagate_const<T>; ///< Second argument type.
 
@@ -509,7 +507,7 @@ struct less<::playrho::propagate_const<T>> {
 
 /// @brief Support for greater than operations.
 template <class T>
-struct greater<::playrho::propagate_const<T>> {
+struct std::greater<::playrho::propagate_const<T>> {
   using first_argument_type = ::playrho::propagate_const<T>; ///< First argument type.
   using second_argument_type = ::playrho::propagate_const<T>; ///< Second argument type.
 
@@ -523,7 +521,7 @@ struct greater<::playrho::propagate_const<T>> {
 
 /// @brief Support for less than or equal operations.
 template <class T>
-struct less_equal<::playrho::propagate_const<T>> {
+struct std::less_equal<::playrho::propagate_const<T>> {
   using first_argument_type = ::playrho::propagate_const<T>; ///< First argument type.
   using second_argument_type = ::playrho::propagate_const<T>; ///< Second argument type.
 
@@ -537,7 +535,7 @@ struct less_equal<::playrho::propagate_const<T>> {
 
 /// @brief Support for greater than or equal operations.
 template <class T>
-struct greater_equal<::playrho::propagate_const<T>> {
+struct std::greater_equal<::playrho::propagate_const<T>> {
   using first_argument_type = ::playrho::propagate_const<T>; ///< First argument type.
   using second_argument_type = ::playrho::propagate_const<T>; ///< Second argument type.
 
@@ -548,8 +546,6 @@ struct greater_equal<::playrho::propagate_const<T>> {
     return std::greater_equal<T>()(pc1.t_, pc2.t_);
   }
 };
-
-}  // end namespace playrho
 
 #undef PROPAGATE_CONST_CONSTEXPR
 #endif // JBCOE_PROPAGATE_CONST_INCLUDED

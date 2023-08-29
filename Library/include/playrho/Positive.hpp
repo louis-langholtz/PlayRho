@@ -51,10 +51,8 @@ static_assert(!std::is_default_constructible<Positive<int>>::value);
 
 } // namespace playrho
 
-namespace std {
-
 template <class T>
-class numeric_limits<::playrho::Positive<T>> {
+class std::numeric_limits<::playrho::Positive<T>> {
 public:
     static constexpr bool is_specialized = true; ///< Type is specialized.
 
@@ -145,7 +143,5 @@ public:
 
     static constexpr float_round_style round_style = numeric_limits<T>::round_style; ///< Rounds down.
 };
-
-}
 
 #endif // PLAYRHO_POSITIVE_HPP

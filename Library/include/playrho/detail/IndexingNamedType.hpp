@@ -154,12 +154,10 @@ constexpr const T& UnderlyingValue(const IndexingNamedType<T, Tag>& o) noexcept
 
 } // namespace playrho::detail
 
-namespace std {
-
 /// @brief Custom specialization of std::hash for
 ///   <code>::playrho::detail::IndexingNamedType</code>.
 template <typename T, typename Tag>
-struct hash<::playrho::detail::IndexingNamedType<T, Tag>>
+struct std::hash<::playrho::detail::IndexingNamedType<T, Tag>>
 {
     /// @brief Hashing functor operator.
     ::std::size_t operator()(const ::playrho::detail::IndexingNamedType<T, Tag>& v) const noexcept
@@ -167,7 +165,5 @@ struct hash<::playrho::detail::IndexingNamedType<T, Tag>>
         return ::std::hash<T>()(v.get());;
     }
 };
-
-} // namespace std
 
 #endif // PLAYRHO_DETAIL_INDEXINGNAMEDTYPE_HPP
