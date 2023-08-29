@@ -20,17 +20,18 @@
 
 #include "UnitTests.hpp"
 
+#include <any>
+#include <chrono>
+#include <string>
+
 #include <playrho/d2/Shape.hpp>
 #include <playrho/d2/EdgeShapeConf.hpp>
 #include <playrho/d2/DiskShapeConf.hpp>
 #include <playrho/d2/PolygonShapeConf.hpp>
-#include <playrho/d2/Compositor.hpp>
 #include <playrho/d2/Distance.hpp>
 #include <playrho/d2/Manifold.hpp>
 
-#include <any>
-#include <chrono>
-#include <string>
+#include <playrho/d2/part/Compositor.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

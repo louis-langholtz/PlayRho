@@ -77,7 +77,7 @@
 #include <playrho/d2/PolygonShapeConf.hpp>
 #endif
 #include <playrho/d2/DiskShapeConf.hpp>
-#include <playrho/d2/Compositor.hpp>
+#include <playrho/d2/part/Compositor.hpp>
 
 // #define BENCHMARK_BOX2D
 #ifdef BENCHMARK_BOX2D

@@ -25,7 +25,7 @@
 #include <playrho/d2/WorldShape.hpp>
 
 #include <playrho/d2/DiskShapeConf.hpp>
-#include <playrho/d2/Compositor.hpp>
+#include <playrho/d2/part/Compositor.hpp>
 #include <playrho/d2/EdgeShapeConf.hpp>
 
 using namespace playrho;
