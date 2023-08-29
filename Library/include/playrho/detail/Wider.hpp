@@ -102,19 +102,15 @@ struct Wider<std::uint64_t> {
 
 } // namespace playrho::detail
 
-namespace std {
-
 #if defined(PLAYRHO_INT128) && defined(PLAYRHO_UINT128)
 // This might already be defined by the standard library header, but
 // define it here explicitly in case it's not.
 
 /// @brief Make unsigned specialization for the <code>__int128_t</code> type.
 template <>
-struct make_unsigned<PLAYRHO_INT128> {
+struct std::make_unsigned<PLAYRHO_INT128> {
     using type = PLAYRHO_UINT128; ///< Wider type.
 };
 #endif
-
-} // namespace std
 
 #endif // PLAYRHO_DETAIL_WIDER_HPP

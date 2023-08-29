@@ -404,21 +404,17 @@ template <> constexpr bool IsValid(const d2::UnitVec& value) noexcept
 
 } // namespace playrho
 
-namespace std {
-
 /// @brief Tuple size info for <code>playrho::d2::UnitVec</code>.
 template<>
-class tuple_size< playrho::d2::UnitVec >: public std::integral_constant<std::size_t, playrho::d2::UnitVec::size()> {};
+class std::tuple_size< playrho::d2::UnitVec >: public std::integral_constant<std::size_t, playrho::d2::UnitVec::size()> {};
 
 /// @brief Tuple element type info for <code>playrho::d2::UnitVec</code>.
 template<std::size_t I>
-class tuple_element<I, playrho::d2::UnitVec>
+class std::tuple_element<I, playrho::d2::UnitVec>
 {
 public:
     /// @brief Type alias revealing the actual type of the element.
     using type = playrho::Real;
 };
-
-} // namespace std
 
 #endif // PLAYRHO_D2_UNITVEC2_HPP
