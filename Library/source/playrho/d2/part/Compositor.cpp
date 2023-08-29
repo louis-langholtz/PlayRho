@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/Compositor.hpp>
+#include <playrho/d2/part/Compositor.hpp>
 
 #include <playrho/d2/Shape.hpp>
 

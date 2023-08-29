@@ -61,7 +61,6 @@ set(PLAYRHO_D2_HDRS
 	"${PLAYRHO_INCLUDE_PREFIX}d2/ChainShapeConf.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/ClipList.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/CodeDumper.hpp"
-	"${PLAYRHO_INCLUDE_PREFIX}d2/Compositor.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/ContactImpulsesList.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/ContactSolver.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/DiskShapeConf.hpp"
@@ -130,7 +129,6 @@ set(PLAYRHO_D2_SRCS
 	"${PLAYRHO_SOURCE_PREFIX}d2/ChainShapeConf.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/ClipList.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/CodeDumper.cpp"
-	"${PLAYRHO_SOURCE_PREFIX}d2/Compositor.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/ContactImpulsesList.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/ContactSolver.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/DiskShapeConf.cpp"
@@ -184,10 +182,18 @@ set(PLAYRHO_D2_SRCS
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldSpecial.cpp"
 	)
 
+set(PLAYRHO_D2_PART_HDRS
+	"${PLAYRHO_INCLUDE_PREFIX}d2/part/Compositor.hpp"
+	)
+set(PLAYRHO_D2_PART_SRCS
+	"${PLAYRHO_SOURCE_PREFIX}d2/part/Compositor.cpp"
+	)
+
 set(libsrc
 	${PLAYRHO_General_SRCS}
 	${PLAYRHO_PMR_SRCS}
 	${PLAYRHO_D2_SRCS}
+	${PLAYRHO_D2_PART_SRCS}
 )
 
 if(PLAYRHO_BUILD_SHARED)
@@ -258,6 +264,9 @@ if(PLAYRHO_INSTALL)
 		COMPONENT Library)
 	install(FILES ${PLAYRHO_D2_HDRS}
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/playrho/d2
+		COMPONENT Library)
+	install(FILES ${PLAYRHO_D2_PART_HDRS}
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/playrho/d2/part
 		COMPONENT Library)
 
 	# install libraries

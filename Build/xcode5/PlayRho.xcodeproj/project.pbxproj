@@ -1258,7 +1258,6 @@
 				80BB8936141C3E5900F1753A /* ChainShapeConf.hpp */,
 				998A7C002A801C1C00F29B01 /* ClipList.hpp */,
 				476162C71E245C9D002C7FB0 /* CodeDumper.hpp */,
-				47F397DE2654426F003C1FD9 /* Compositor.hpp */,
 				47363E8520027FE2005912B1 /* ContactImpulsesList.hpp */,
 				80BB8964141C3E5900F1753A /* ContactSolver.hpp */,
 				80BB8938141C3E5900F1753A /* DiskShapeConf.hpp */,
@@ -1285,6 +1284,7 @@
 				477DB2AB1D1C4BE800846ED6 /* PositionSolverManifold.hpp */,
 				4787D6B91F2E946E008C115E /* PrismaticJointConf.hpp */,
 				4787D6D51F2ECD87008C115E /* PulleyJointConf.hpp */,
+				9901AF062A9D89770075122D /* part */,
 				4731DE261DDF84A900E7F931 /* RayCastInput.hpp */,
 				4731DE201DDF83A500E7F931 /* RayCastOutput.hpp */,
 				4787D6D91F2ECFFB008C115E /* RevoluteJointConf.hpp */,
@@ -1342,7 +1342,6 @@
 				80BB8935141C3E5900F1753A /* ChainShapeConf.cpp */,
 				998A7BFF2A801C1C00F29B01 /* ClipList.cpp */,
 				476162C61E245C9D002C7FB0 /* CodeDumper.cpp */,
-				47F397DD2654426F003C1FD9 /* Compositor.cpp */,
 				47363E8420027FE2005912B1 /* ContactImpulsesList.cpp */,
 				80BB8963141C3E5900F1753A /* ContactSolver.cpp */,
 				80BB8937141C3E5900F1753A /* DiskShapeConf.cpp */,
@@ -1365,6 +1364,7 @@
 				477DB2AA1D1C4BE800846ED6 /* PositionSolverManifold.cpp */,
 				4787D6B81F2E946E008C115E /* PrismaticJointConf.cpp */,
 				4787D6D41F2ECD87008C115E /* PulleyJointConf.cpp */,
+				9901AF072A9D8A7C0075122D /* part */,
 				4787D6D81F2ECFFB008C115E /* RevoluteJointConf.cpp */,
 				4787D6DC1F2ED2D6008C115E /* RopeJointConf.cpp */,
 				4726DD281D31B4090012A882 /* RayCastOutput.cpp */,
@@ -1407,6 +1407,22 @@
 				9901AF012A9D5D6B0075122D /* underlying_type.hpp */,
 			);
 			path = detail;
+			sourceTree = "<group>";
+		};
+		9901AF062A9D89770075122D /* part */ = {
+			isa = PBXGroup;
+			children = (
+				47F397DE2654426F003C1FD9 /* Compositor.hpp */,
+			);
+			path = part;
+			sourceTree = "<group>";
+		};
+		9901AF072A9D8A7C0075122D /* part */ = {
+			isa = PBXGroup;
+			children = (
+				47F397DD2654426F003C1FD9 /* Compositor.cpp */,
+			);
+			path = part;
 			sourceTree = "<group>";
 		};
 		996BDA752A98532F00CD2D55 /* include */ = {

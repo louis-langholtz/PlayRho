@@ -20,7 +20,7 @@
 
 #include "UnitTests.hpp"
 
-#include <playrho/d2/Compositor.hpp>
+#include <playrho/d2/part/Compositor.hpp>
 #include <playrho/d2/Shape.hpp>
 
 using namespace playrho;

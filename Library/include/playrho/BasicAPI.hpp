@@ -117,7 +117,7 @@ For a more elaborate example, that's of an entire application, see
 #include <playrho/d2/EdgeShapeConf.hpp>
 #include <playrho/d2/MultiShapeConf.hpp>
 #include <playrho/d2/PolygonShapeConf.hpp>
-#include <playrho/d2/Compositor.hpp>
+#include <playrho/d2/part/Compositor.hpp>
 
 // For any and all joint configurations, add one or more of the following.
 #include <playrho/d2/DistanceJointConf.hpp>
