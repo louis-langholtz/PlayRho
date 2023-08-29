@@ -1,6 +1,5 @@
 /*
- * Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
- * Modified work Copyright (c) 2023 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2023 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -19,35 +18,23 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_D2_LIMITSTATE_HPP
-#define PLAYRHO_D2_LIMITSTATE_HPP
+#include <cassert>
+
+#include <playrho/LimitState.hpp>
 
 namespace playrho {
-namespace d2 {
 
-/// @brief Limit state.
-/// @note Only used by joints that implement some notion of a limited range.
-enum class LimitState
+const char* ToString(LimitState val) noexcept
 {
-    /// @brief Inactive limit.
-    e_inactiveLimit,
+    switch (val)
+    {
+        case LimitState::e_atLowerLimit: return "at lower";
+        case LimitState::e_atUpperLimit: return "at upper";
+        case LimitState::e_equalLimits: return "equal";
+        case LimitState::e_inactiveLimit: break;
+    }
+    assert(val == LimitState::e_inactiveLimit);
+    return "inactive";
+}
 
-    /// @brief At-lower limit.
-    e_atLowerLimit,
-
-    /// @brief At-upper limit.
-    e_atUpperLimit,
-
-    /// @brief Equal limit.
-    /// @details Equal limit is used to indicate that a joint's upper and lower limits
-    ///   are approximately the same.
-    e_equalLimits
-};
-
-/// @brief Provides a human readable C-style string uniquely identifying the given limit state.
-const char* ToString(LimitState val) noexcept;
-
-} // namespace d2
 } // namespace playrho
-
-#endif // PLAYRHO_D2_LIMITSTATE_HPP
