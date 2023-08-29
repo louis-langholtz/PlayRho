@@ -196,14 +196,13 @@ constexpr auto SetMaxLength(RopeJointConf& object, Length value) noexcept
 }
 
 } // namespace d2
+} // namespace playrho
 
 /// @brief Type info specialization for <code>d2::RopeJointConf</code>.
 template <>
-struct TypeInfo<d2::RopeJointConf> {
+struct playrho::detail::TypeInfo<playrho::d2::RopeJointConf> {
     /// @brief Provides a null-terminated string name for the type.
     static constexpr const char* name = "d2::RopeJointConf";
 };
-
-} // namespace playrho
 
 #endif // PLAYRHO_D2_ROPEJOINTCONF_HPP

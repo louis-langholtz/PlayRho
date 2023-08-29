@@ -32,8 +32,7 @@
 #include <type_traits>
 #include <vector>
 
-namespace playrho {
-namespace d2 {
+namespace playrho::d2 {
 
 /// @brief An n-vertex convex polygon shaped part eligible for use with a <code>Shape</code>.
 /// @note The interior of the polygon geometry is to the left of each edge. The maximum number of
@@ -315,15 +314,13 @@ inline void Rotate(PolygonShapeConf& arg, const UnitVec& value)
 ///   <code>false</code> otherwise.
 bool Validate(const Span<const Length2>& verts);
 
-} // namespace d2
+} // namespace playrho::d2
 
-/// @brief Type info specialization for <code>d2::PolygonShapeConf</code>.
+/// @brief Type info specialization for <code>playrho::d2::PolygonShapeConf</code>.
 template <>
-struct TypeInfo<d2::PolygonShapeConf> {
+struct playrho::detail::TypeInfo<playrho::d2::PolygonShapeConf> {
     /// @brief Provides a null-terminated string name for the type.
     static constexpr const char* name = "d2::PolygonShapeConf";
 };
-
-} // namespace playrho
 
 #endif // PLAYRHO_D2_SHAPES_POLYGONSHAPECONF_HPP

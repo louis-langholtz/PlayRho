@@ -221,14 +221,13 @@ constexpr auto SetMaxTorque(FrictionJointConf& object, NonNegative<Torque> value
 }
 
 } // namespace d2
+} // namespace playrho
 
-/// @brief Type info specialization for <code>d2::FrictionJointConf</code>.
+/// @brief Type info specialization for <code>playrho::d2::FrictionJointConf</code>.
 template <>
-struct TypeInfo<d2::FrictionJointConf> {
+struct playrho::detail::TypeInfo<playrho::d2::FrictionJointConf> {
     /// @brief Provides a null-terminated string name for the type.
     static constexpr const char* name = "d2::FrictionJointConf";
 };
-
-} // namespace playrho
 
 #endif // PLAYRHO_D2_FRICTIONJOINTCONF_HPP

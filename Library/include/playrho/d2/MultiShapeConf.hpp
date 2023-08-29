@@ -232,14 +232,13 @@ inline void Rotate(MultiShapeConf& arg, const UnitVec& value)
 }
 
 } // namespace d2
+} // namespace playrho
 
-/// @brief Type info specialization for <code>d2::MultiShapeConf</code>.
+/// @brief Type info specialization for <code>playrho::d2::MultiShapeConf</code>.
 template <>
-struct TypeInfo<d2::MultiShapeConf> {
+struct playrho::detail::TypeInfo<playrho::d2::MultiShapeConf> {
     /// @brief Provides a null-terminated string name for the type.
     static constexpr const char* name = "d2::MultiShapeConf";
 };
-
-} // namespace playrho
 
 #endif // PLAYRHO_D2_SHAPES_MULTISHAPECONF_HPP

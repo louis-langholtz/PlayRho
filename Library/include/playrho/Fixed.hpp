@@ -815,14 +815,6 @@ constexpr bool operator > (Fixed32 lhs, Fixed32 rhs) noexcept
     return result == Fixed32::CmpResult::GreaterThan;
 }
 
-/// @brief Type info specialization for <code>Fixed32</code>.
-template <>
-struct TypeInfo<Fixed32>
-{
-    /// @brief The specialized name for the <code>Fixed32</code> type.
-    static constexpr const char* name = "Fixed32";
-};
-
 #ifdef PLAYRHO_INT128
 // Fixed64 free functions.
 
@@ -922,16 +914,26 @@ template<> struct detail::Wider<Fixed32> {
     using type = Fixed64; ///< Wider type.
 };
 
-/// @brief Type info specialization for <code>Fixed64</code>.
-template <>
-struct TypeInfo<Fixed64>
-{
-    /// @brief The specialized name for the <code>Fixed64</code> type.
-    static constexpr const char* name = "Fixed64";
-};
-
 #endif /* PLAYRHO_INT128 */
 
 } // namespace playrho
+
+/// @brief Type info specialization for <code>playrho::Fixed32</code>.
+template <>
+struct playrho::detail::TypeInfo<playrho::Fixed32>
+{
+    /// @brief The specialized name for the <code>playrho::Fixed32</code> type.
+    static constexpr const char* name = "Fixed32";
+};
+
+#ifdef PLAYRHO_INT128
+/// @brief Type info specialization for <code>playrho::Fixed64</code>.
+template <>
+struct playrho::detail::TypeInfo<playrho::Fixed64>
+{
+    /// @brief The specialized name for the <code>playrho::Fixed64</code> type.
+    static constexpr const char* name = "Fixed64";
+};
+#endif /* PLAYRHO_INT128 */
 
 #endif // PLAYRHO_FIXED_HPP

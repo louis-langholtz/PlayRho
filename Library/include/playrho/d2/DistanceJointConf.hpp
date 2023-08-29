@@ -250,14 +250,13 @@ constexpr auto SetLength(DistanceJointConf& object, Length value) noexcept
 }
 
 } // namespace d2
+} // namespace playrho
 
-/// @brief Type info specialization for <code>d2::DistanceJointConf</code>.
+/// @brief Type info specialization for <code>playrho::d2::DistanceJointConf</code>.
 template <>
-struct TypeInfo<d2::DistanceJointConf> {
+struct playrho::detail::TypeInfo<playrho::d2::DistanceJointConf> {
     /// @brief Provides a null-terminated string name for the type.
     static constexpr const char* name = "d2::DistanceJointConf";
 };
-
-} // namespace playrho
 
 #endif // PLAYRHO_D2_DISTANCEJOINTCONF_HPP
