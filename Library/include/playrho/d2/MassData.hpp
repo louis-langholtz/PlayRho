@@ -27,6 +27,7 @@
 
 #include <playrho/Math.hpp>
 #include <playrho/NonNegative.hpp>
+#include <playrho/Units.hpp>
 
 #include <playrho/BodyID.hpp>
 

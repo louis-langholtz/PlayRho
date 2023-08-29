@@ -21,6 +21,8 @@
 #ifndef PLAYRHO_UNITINTERVAL_HPP
 #define PLAYRHO_UNITINTERVAL_HPP
 
+#include <stdexcept> // for std::invalid_argument
+
 #include <playrho/CheckedValue.hpp>
 
 namespace playrho {

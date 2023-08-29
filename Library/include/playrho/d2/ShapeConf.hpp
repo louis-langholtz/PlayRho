@@ -22,11 +22,11 @@
 #ifndef PLAYRHO_D2_SHAPES_SHAPECONF_HPP
 #define PLAYRHO_D2_SHAPES_SHAPECONF_HPP
 
-#include <playrho/Units.hpp>
+#include <playrho/Filter.hpp>
 #include <playrho/Finite.hpp>
 #include <playrho/NonNegative.hpp>
 #include <playrho/Settings.hpp>
-#include <playrho/Filter.hpp>
+#include <playrho/Units.hpp>
 
 namespace playrho {
 namespace d2 {

@@ -24,9 +24,6 @@
 /// @file
 /// Alias for the 2-D RayCastInput struct.
 
-#include <playrho/Math.hpp>
-#include <playrho/UnitInterval.hpp>
-
 #include <playrho/detail/RayCastInput.hpp>
 
 namespace playrho::d2 {
