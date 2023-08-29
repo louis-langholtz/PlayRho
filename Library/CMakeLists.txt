@@ -32,6 +32,7 @@ set(PLAYRHO_DETAIL_HDRS
 	"${PLAYRHO_INCLUDE_PREFIX}detail/IndexingNamedType.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}detail/RayCastInput.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}detail/underlying_type.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}detail/Wider.hpp"
 	)
 
 configure_file("${PLAYRHO_INCLUDE_PREFIX}Defines.hpp.in" "${PLAYRHO_INCLUDE_PREFIX}Defines.hpp" @ONLY)

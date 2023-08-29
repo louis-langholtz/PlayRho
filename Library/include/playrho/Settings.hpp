@@ -38,7 +38,7 @@
 #include <playrho/RealConstants.hpp>
 #include <playrho/Positive.hpp>
 #include <playrho/Units.hpp>
-#include <playrho/Wider.hpp>
+#include <playrho/WiderType.hpp>
 
 namespace playrho {
 namespace detail {
@@ -219,7 +219,7 @@ using BodyCounter = std::remove_const<decltype(MaxBodies)>::type;
 
 /// @brief Count type for contacts.
 /// @note This type must be able to contain the squared value of <code>BodyCounter</code>.
-using ContactCounter = Wider<BodyCounter>::type;
+using ContactCounter = WiderType<BodyCounter>;
 
 /// @brief Invalid contact index.
 constexpr auto InvalidContactIndex = static_cast<ContactCounter>(-1);

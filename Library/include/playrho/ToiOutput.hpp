@@ -22,7 +22,7 @@
 #define PLAYRHO_TOIOUTPUT_HPP
 
 #include <playrho/Settings.hpp>
-#include <playrho/Wider.hpp>
+#include <playrho/WiderType.hpp>
 
 namespace playrho {
 
@@ -40,13 +40,13 @@ struct ToiOutput {
         using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
 
         /// @brief TOI iterations sum type.
-        using toi_sum_type = Wider<toi_iter_type>::type;
+        using toi_sum_type = WiderType<toi_iter_type>;
 
         /// @brief Distance iterations sum type.
-        using dist_sum_type = Wider<dist_iter_type>::type;
+        using dist_sum_type = WiderType<dist_iter_type>;
 
         /// @brief Root iterations sum type.
-        using root_sum_type = Wider<root_iter_type>::type;
+        using root_sum_type = WiderType<root_iter_type>;
 
         // 6-bytes
         toi_sum_type sum_finder_iters = 0; ///< Sum total TOI iterations.

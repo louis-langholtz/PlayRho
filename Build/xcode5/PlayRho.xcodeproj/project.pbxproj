@@ -395,6 +395,7 @@
 		9901AEFF2A9D24EC0075122D /* IndexingNamedType.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9901AEFD2A9D24EC0075122D /* IndexingNamedType.hpp */; };
 		9901AF032A9D5D6B0075122D /* underlying_type.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9901AF012A9D5D6B0075122D /* underlying_type.hpp */; };
 		9901AF052A9D7EC00075122D /* AABB.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9901AF042A9D7EC00075122D /* AABB.hpp */; };
+		9901AF0B2A9D8F7B0075122D /* WiderType.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9901AF092A9D8F7B0075122D /* WiderType.hpp */; };
 		9921FFD729AD43C30043F23F /* TypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9921FFD629AD43C30043F23F /* TypeInfo.cpp */; };
 		996B7B832A6DF1A500A8207F /* PoolMemoryResource.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */; };
 		996B7B842A6DF1A500A8207F /* MemoryResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */; };
@@ -883,6 +884,7 @@
 		9901AEFD2A9D24EC0075122D /* IndexingNamedType.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IndexingNamedType.hpp; sourceTree = "<group>"; };
 		9901AF012A9D5D6B0075122D /* underlying_type.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = underlying_type.hpp; sourceTree = "<group>"; };
 		9901AF042A9D7EC00075122D /* AABB.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AABB.hpp; sourceTree = "<group>"; };
+		9901AF092A9D8F7B0075122D /* WiderType.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = WiderType.hpp; sourceTree = "<group>"; };
 		9921FFD629AD43C30043F23F /* TypeInfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TypeInfo.cpp; sourceTree = "<group>"; };
 		996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PoolMemoryResource.hpp; sourceTree = "<group>"; };
 		996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryResource.cpp; sourceTree = "<group>"; };
@@ -1405,6 +1407,7 @@
 				9901AEFD2A9D24EC0075122D /* IndexingNamedType.hpp */,
 				9901AEF92A9D1DA70075122D /* RayCastInput.hpp */,
 				9901AF012A9D5D6B0075122D /* underlying_type.hpp */,
+				4768D3F21E3A7ACA00574143 /* Wider.hpp */,
 			);
 			path = detail;
 			sourceTree = "<group>";
@@ -1502,7 +1505,7 @@
 				4768D3FA1E414A0100574143 /* Vector2.hpp */,
 				470F9B091EDE6340007EF7B6 /* Vector3.hpp */,
 				47B58F581F57218400354C34 /* Version.hpp */,
-				4768D3F21E3A7ACA00574143 /* Wider.hpp */,
+				9901AF092A9D8F7B0075122D /* WiderType.hpp */,
 				47D28D9B1F6F28C70094C032 /* WrongState.hpp */,
 			);
 			path = playrho;
@@ -1609,6 +1612,7 @@
 				80BB89A2141C3E5900F1753A /* GrowableStack.hpp in Headers */,
 				474BAB301E5D00960058E08A /* BodyConstraint.hpp in Headers */,
 				479132F226A52FD00011707B /* RayCastOpcode.hpp in Headers */,
+				9901AF0B2A9D8F7B0075122D /* WiderType.hpp in Headers */,
 				80BB89A4141C3E5900F1753A /* Math.hpp in Headers */,
 				47E36F501FE8477000C10B79 /* FixedLimits.hpp in Headers */,
 				47E36F541FE8534500C10B79 /* FixedMath.hpp in Headers */,
