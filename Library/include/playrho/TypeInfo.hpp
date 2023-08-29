@@ -89,8 +89,6 @@ const char* GetNameForTypeInfo()
     return buffer.c_str();
 }
 
-} // namespace detail
-
 /// @brief Type information.
 /// @note Users may specialize this to provide an alternative name for a type so long as the provided
 ///    name is still non-empty and unique for the application otherwise behavior is undefined.
@@ -104,8 +102,10 @@ struct TypeInfo
     ///   template's type <code>T</code> prevents issue #370. Credit for this technique
     ///   goes to Li Jin (github user pigpigyyy).
     /// @see https://github.com/louis-langholtz/PlayRho/issues/370
-    static inline const char* const name = detail::GetNameForTypeInfo<T>();
+    static inline const char* const name = GetNameForTypeInfo<T>();
 };
+
+} // namespace detail
 
 class TypeID;
 
@@ -186,19 +186,19 @@ private:
     }
 
     /// @brief A unique, non-null, null-terminated string buffer, naming the type.
-    const char* const * m_name{&TypeInfo<void>::name};
+    const char* const * m_name{&detail::TypeInfo<void>::name};
 };
 
 template <typename T>
 TypeID GetTypeID() noexcept
 {
-    return TypeID{&TypeInfo<std::decay_t<T>>::name};
+    return TypeID{&detail::TypeInfo<std::decay_t<T>>::name};
 }
 
 template <typename T>
 TypeID GetTypeID(const T&) noexcept
 {
-    return TypeID{&TypeInfo<std::decay_t<T>>::name};
+    return TypeID{&detail::TypeInfo<std::decay_t<T>>::name};
 }
 
 /// @brief Gets the name associated with the given type ID.

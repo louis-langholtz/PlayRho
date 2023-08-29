@@ -27,8 +27,7 @@
 #include <playrho/d2/DistanceProxy.hpp>
 #include <playrho/d2/MassData.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho::d2 {
 
 /// @brief Disk shape configuration.
 ///
@@ -198,15 +197,13 @@ inline void Rotate(DiskShapeConf& arg, const UnitVec& value) noexcept
     arg.Rotate(value);
 }
 
-} // namespace d2
+} // namespace playrho::d2
 
-/// @brief Type info specialization for <code>d2::DiskShapeConf</code>.
+/// @brief Type info specialization for <code>playrho::d2::DiskShapeConf</code>.
 template <>
-struct TypeInfo<d2::DiskShapeConf> {
+struct playrho::detail::TypeInfo<playrho::d2::DiskShapeConf> {
     /// @brief Provides a null-terminated string name for the type.
     static constexpr const char* name = "d2::DiskShapeConf";
 };
-
-} // namespace playrho
 
 #endif // PLAYRHO_D2_SHAPES_DISKSHAPECONF_HPP

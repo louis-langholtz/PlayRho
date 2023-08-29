@@ -292,14 +292,13 @@ constexpr void SetMaxMotorTorque(RevoluteJointConf& object, Torque value)
 }
 
 } // namespace d2
+} // namespace playrho
 
 /// @brief Type info specialization for <code>d2::RevoluteJointConf</code>.
 template <>
-struct TypeInfo<d2::RevoluteJointConf> {
+struct playrho::detail::TypeInfo<playrho::d2::RevoluteJointConf> {
     /// @brief Provides a null-terminated string name for the type.
     static constexpr const char* name = "d2::RevoluteJointConf";
 };
-
-} // namespace playrho
 
 #endif // PLAYRHO_D2_REVOLUTEJOINTCONF_HPP

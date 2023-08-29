@@ -210,14 +210,13 @@ inline void Rotate(EdgeShapeConf& arg, const UnitVec& value) noexcept
 }
 
 } // namespace d2
+} // namespace playrho
 
-/// @brief Type info specialization for <code>d2::EdgeShapeConf</code>.
+/// @brief Type info specialization for <code>playrho::d2::EdgeShapeConf</code>.
 template <>
-struct TypeInfo<d2::EdgeShapeConf> {
+struct playrho::detail::TypeInfo<playrho::d2::EdgeShapeConf> {
     /// @brief Provides a null-terminated string name for the type.
     static constexpr const char* name = "d2::EdgeShapeConf";
 };
-
-} // namespace playrho
 
 #endif // PLAYRHO_D2_SHAPES_EDGESHAPECONF_HPP

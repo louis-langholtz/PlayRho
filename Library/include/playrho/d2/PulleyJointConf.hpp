@@ -245,14 +245,13 @@ constexpr auto SetRatio(PulleyJointConf& object, Real value) noexcept
 }
 
 } // namespace d2
+} // namespace playrho
 
 /// @brief Type info specialization for <code>d2::PulleyJointConf</code>.
 template <>
-struct TypeInfo<d2::PulleyJointConf> {
+struct playrho::detail::TypeInfo<playrho::d2::PulleyJointConf> {
     /// @brief Provides a null-terminated string name for the type.
     static constexpr const char* name = "d2::PulleyJointConf";
 };
-
-} // namespace playrho
 
 #endif // PLAYRHO_D2_PULLEYJOINTCONF_HPP

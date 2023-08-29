@@ -223,14 +223,13 @@ constexpr void SetDampingRatio(WeldJointConf& object, Real value) noexcept
 }
 
 } // namespace d2
+} // namespace playrho
 
 /// @brief Type info specialization for <code>d2::WeldJointConf</code>.
 template <>
-struct TypeInfo<d2::WeldJointConf> {
+struct playrho::detail::TypeInfo<playrho::d2::WeldJointConf> {
     /// @brief Provides a null-terminated string name for the type.
     static constexpr const char* name = "d2::WeldJointConf";
 };
-
-} // namespace playrho
 
 #endif // PLAYRHO_D2_WELDJOINTCONF_HPP
