@@ -37,6 +37,10 @@ namespace playrho {
 
 class Contact;
 
+namespace detail {
+template <std::size_t N> struct RayCastInput;
+}
+
 namespace d2 {
 
 class Shape;
