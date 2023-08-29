@@ -271,7 +271,7 @@ public:
     void MouseUp(const Length2& p);
 
     // Let derived tests know that a joint was destroyed.
-    virtual void JointDestroyed(JointID joint) { NOT_USED(joint); }
+    virtual void JointDestroyed([[maybe_unused]] JointID joint) {}
 
     // Callbacks for derived classes.
     void PreSolve(ContactID contact, const Manifold& oldManifold);
@@ -356,10 +356,8 @@ protected:
     {
     public:
         virtual ~DestructionListenerImpl() = default;
-        virtual void SayGoodbye(ShapeID shape) noexcept { NOT_USED(shape); }
-        virtual void SayGoodbye(BodyID body, ShapeID shape) noexcept {
-            NOT_USED(body); NOT_USED(shape);
-        }
+        virtual void SayGoodbye([[maybe_unused]] ShapeID shape) noexcept {}
+        virtual void SayGoodbye([[maybe_unused]] BodyID body, [[maybe_unused]] ShapeID shape) noexcept {}
         virtual void SayGoodbye(JointID joint) noexcept;
         Test* test;
     };

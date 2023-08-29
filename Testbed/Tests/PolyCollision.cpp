@@ -65,10 +65,8 @@ public:
         });
     }
 
-    void PostStep(const Settings& settings, Drawer& drawer) override
+    void PostStep([[maybe_unused]] const Settings& settings, Drawer& drawer) override
     {
-        NOT_USED(settings);
-
         const auto proxyA = GetChild(m_polygonA, 0);
         const auto proxyB = GetChild(m_polygonB, 0);
 

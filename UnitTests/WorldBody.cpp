@@ -588,9 +588,8 @@ TEST(WorldBody, CreateLotsOfFixtures)
         EXPECT_FALSE(GetShapes(world, body).empty());
         {
             int i = decltype(num){0};
-            for (auto&& f: GetShapes(world, body))
+            for ([[maybe_unused]] auto&& f: GetShapes(world, body))
             {
-                NOT_USED(f);
                 ++i;
             }
             EXPECT_EQ(i, num);
@@ -602,23 +601,22 @@ TEST(WorldBody, CreateLotsOfFixtures)
     start = std::chrono::system_clock::now();
     {
         auto world = World{};
-        
+
         const auto shapeId = CreateShape(world, shape);
         auto body = CreateBody(world, bd);
         ASSERT_NE(body, InvalidBodyID);
         EXPECT_TRUE(GetShapes(world, body).empty());
-        
+
         for (auto i = decltype(num){0}; i < num; ++i)
         {
             ASSERT_NO_THROW(Attach(world, body, shapeId, true));
         }
-        
+
         EXPECT_FALSE(GetShapes(world, body).empty());
         {
             auto i = decltype(num){0};
-            for (auto&& f: GetShapes(world, body))
+            for ([[maybe_unused]] auto&& f: GetShapes(world, body))
             {
-                NOT_USED(f);
                 ++i;
             }
             EXPECT_EQ(i, num);
