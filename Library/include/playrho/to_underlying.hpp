@@ -1,6 +1,5 @@
 /*
- * Based on work by Jonathan Boccara and Jonathan Müller.
- * Modified work Copyright (c) 2023 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2023 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -22,46 +21,9 @@
 #ifndef PLAYRHO_TOUNDERLYING_HPP
 #define PLAYRHO_TOUNDERLYING_HPP
 
-#include <type_traits> // for std::void_t, std::is_nothrow_default_constructible
+#include <playrho/detail/underlying_type.hpp>
 
 namespace playrho {
-namespace detail {
-
-/// Primary template handles types that have no nested <code>::type</code> member.
-/// @see https://en.cppreference.com/w/cpp/types/void_t
-template<class, class = void>
-struct has_underlying_type_member : std::false_type {};
-
-/// Specialization recognizes types that do have a nested <code>::type</code> member.
-/// @see https://en.cppreference.com/w/cpp/types/void_t
-template<class T>
-struct has_underlying_type_member<T, std::void_t<typename T::underlying_type>> : std::true_type {};
-
-/// Underlying-type template class.
-template <class T, class Enable = void>
-struct underlying_type {};
-
-/// Underlying-type class specialization for enum types.
-template <class T>
-struct underlying_type<T, std::enable_if_t<std::is_enum_v<T>>>
-{
-    /// @brief Type alias of the underlying type.
-    using type = std::underlying_type_t<T>;
-};
-
-/// Underlying-type template class for <code>detail::IndexingNamedType</code> types.
-template <class T>
-struct underlying_type<T, std::enable_if_t<detail::has_underlying_type_member<T>::value>>
-{
-    /// @brief Type alias of the underlying type.
-    using type = typename T::underlying_type;
-};
-
-/// Underlying-type convenience alias.
-template <class T>
-using underlying_type_t = typename underlying_type<T>::type;
-
-}
 
 /// Converts the given value to the value as the underlying type.
 /// @note This is like <code>std::to_underlying</code> slated for C++23.
