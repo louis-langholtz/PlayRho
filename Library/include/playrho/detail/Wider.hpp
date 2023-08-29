@@ -21,10 +21,10 @@
 #ifndef PLAYRHO_DETAIL_WIDER_HPP
 #define PLAYRHO_DETAIL_WIDER_HPP
 
-#include <playrho/Defines.hpp>
-
 #include <cstdint>
 #include <type_traits>
+
+#include <playrho/Defines.hpp>
 
 namespace playrho::detail {
 

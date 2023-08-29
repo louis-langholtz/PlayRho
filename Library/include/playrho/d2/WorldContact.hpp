@@ -38,16 +38,15 @@
 /// @see World, ContactID.
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 
-#include <playrho/Settings.hpp>
+#include <vector>
 
 #include <playrho/BodyID.hpp>
 #include <playrho/ShapeID.hpp>
 #include <playrho/ContactID.hpp>
 #include <playrho/KeyedContactID.hpp>
+#include <playrho/Settings.hpp>
 
 #include <playrho/d2/WorldManifold.hpp>
-
-#include <vector>
 
 namespace playrho {
 namespace d2 {
