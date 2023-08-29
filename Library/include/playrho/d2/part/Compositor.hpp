@@ -42,6 +42,9 @@ namespace playrho::d2::part {
 ///   base classes of the same type. Indirect base classes, on the other hand, can have types that
 ///   are identical to those of other bases.)"
 /// @note This class is not intended for standalone use.
+/// @tparam Base Class to derive from - as a "mixin".
+/// @tparam D Unique index of the discriminator within a derived class that can then possibly inherit
+///   from multiple discriminators.
 /// @see https://flylib.com/books/en/3.401.1.126/1/
 template <class Base, int D>
 struct Discriminator : Base {
