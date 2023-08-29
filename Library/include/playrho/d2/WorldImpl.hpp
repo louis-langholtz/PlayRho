@@ -714,6 +714,7 @@ private:
         root_iter_type maxRootIters = 0; ///< Max root iterations.
     };
 
+    /// @brief Aggregate of user settable listener functions.
     struct Listeners
     {
         ShapeListener shapeDestruction; ///< Listener for shape destruction.
@@ -784,12 +785,12 @@ private:
 
     /******** Member variables. ********/
 
-    pmr::PoolMemoryResource m_bodyStackResource;
-    pmr::PoolMemoryResource m_bodyConstraintsResource;
-    pmr::PoolMemoryResource m_positionConstraintsResource;
-    pmr::PoolMemoryResource m_velocityConstraintsResource;
-    pmr::PoolMemoryResource m_proxyKeysResource;
-    pmr::PoolMemoryResource m_islandResource;
+    pmr::PoolMemoryResource m_bodyStackResource; ///< For body stacks.
+    pmr::PoolMemoryResource m_bodyConstraintsResource; ///< For body constraints.
+    pmr::PoolMemoryResource m_positionConstraintsResource; ///< For position constraints.
+    pmr::PoolMemoryResource m_velocityConstraintsResource; ///< For velocity constraints.
+    pmr::PoolMemoryResource m_proxyKeysResource; ///< For dynamic tree.
+    pmr::PoolMemoryResource m_islandResource; ///< For island building.
 
     DynamicTree m_tree; ///< Dynamic tree.
 

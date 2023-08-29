@@ -35,15 +35,19 @@
 namespace playrho {
 namespace detail {
 
+/// @brief Defaults for the <code>Fixed</code> class template.
+/// @see Fixed.
 template <typename BASE_TYPE>
 struct FixedDefault {};
 
+/// @brief Defaults for 32-bit integer instantiation of the <code>Fixed</code> class template.
 template <>
 struct FixedDefault<std::int32_t>
 {
     static constexpr auto FractionBits = 9u;
 };
 
+/// @brief Defaults for 64-bit integer instantiation of the <code>Fixed</code> class template.
 template <>
 struct FixedDefault<std::int64_t>
 {

@@ -173,6 +173,8 @@ inline bool operator!=(const pmr::polymorphic_allocator<T1>& lhs,
     return !(lhs == rhs);
 }
 
+/// @brief Options for memory pooling.
+/// @see https://en.cppreference.com/w/cpp/memory/pool_options
 struct pool_options
 {
     std::size_t max_blocks_per_chunk = 0;

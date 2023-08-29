@@ -93,9 +93,11 @@ LengthIndexPair FindMinSeparation(const SeparationScenario& scenario,
 /// Evaluates the separation of the identified proxy vertices at the given time factor.
 ///
 /// @param scenario Separation scenario to evaluate.
-/// @param indexPair Indexes of the proxy A and proxy B vertexes.
+/// @param proxyA Interface to data for convex polygon A.
 /// @param xfA Transformation A.
+/// @param proxyB Interface to data for convex polygon B.
 /// @param xfB Transformation B.
+/// @param indexPair Indexes of the proxy A and proxy B vertexes.
 ///
 /// @return Separation distance which will be negative when the given transforms put the
 ///    vertices on the opposite sides of the separating axis.

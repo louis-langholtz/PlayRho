@@ -33,6 +33,8 @@ namespace d2 {
 /// @brief World configuration data.
 struct WorldConf {
 
+    /// @brief Default upstream memory resource.
+    /// @warning The pointed to object must stay valid for the life of the configured world.
     static inline const auto DefaultUpstream = pmr::new_delete_resource();
 
     /// @brief Default min vertex radius.

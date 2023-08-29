@@ -49,8 +49,10 @@ struct Island
     /// @brief Container type for joint identifiers.
     using Joints = std::vector<JointID, pmr::polymorphic_allocator<JointID>>;
 
+    /// @brief Default constructor.
     Island() = default;
 
+    /// @brief Initializing constructor.
     Island(pmr::memory_resource& br, pmr::memory_resource& cr, pmr::memory_resource& jr)
     : bodies(&br), contacts(&cr), joints(&jr) {}
 
