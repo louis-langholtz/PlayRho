@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_D2_LIMITSTATE_HPP
-#define PLAYRHO_D2_LIMITSTATE_HPP
+#ifndef PLAYRHO_LIMITSTATE_HPP
+#define PLAYRHO_LIMITSTATE_HPP
 
 namespace playrho {
 
@@ -48,4 +48,4 @@ const char* ToString(LimitState val) noexcept;
 
 } // namespace playrho
 
-#endif // PLAYRHO_D2_LIMITSTATE_HPP
+#endif // PLAYRHO_LIMITSTATE_HPP
