@@ -266,46 +266,6 @@ std::enable_if_t<IsReverseIterable<T>::value, ReversionWrapper<T>> Reverse(T&& i
     return {iterable};
 }
 
-/// @brief Has-type trait template class.
-/// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
-///   to the question of: "How do I find out if a tuple contains a type?".
-/// @see https://stackoverflow.com/a/25958302/7410358
-template <typename T, typename Tuple>
-struct HasType;
-
-/// @brief Has-type trait template class specialized for <code>std::tuple</code> classes.
-/// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
-///   to the question of: "How do I find out if a tuple contains a type?".
-/// @see https://stackoverflow.com/a/25958302/7410358
-template <typename T>
-struct HasType<T, std::tuple<>> : std::false_type {
-};
-
-/// @brief Has-type trait true class.
-/// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
-///   to the question of: "How do I find out if a tuple contains a type?".
-/// @see https://stackoverflow.com/a/25958302/7410358
-template <typename T, typename... Ts>
-struct HasType<T, std::tuple<T, Ts...>> : std::true_type {
-};
-
-/// @brief Has-type trait template super class.
-/// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
-///   to the question of: "How do I find out if a tuple contains a type?".
-/// @see https://stackoverflow.com/a/25958302/7410358
-template <typename T, typename U, typename... Ts>
-struct HasType<T, std::tuple<U, Ts...>> : HasType<T, std::tuple<Ts...>> {
-};
-
-/// @brief Tuple contains type alias.
-/// @details Alias in case the trait itself should be <code>std::true_type</code> or
-///   <code>std::false_type</code>.
-/// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
-///   to the question of: "How do I find out if a tuple contains a type?".
-/// @see https://stackoverflow.com/a/25958302/7410358
-template <typename T, typename Tuple>
-using TupleContainsType = typename HasType<T, Tuple>::type;
-
 /// @brief Alias for pulling the <code>max_size</code> constomization point into the
 ///   playrho namesapce.
 using detail::max_size;
