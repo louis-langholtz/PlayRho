@@ -1258,6 +1258,7 @@
 			children = (
 				4726DD291D31B4090012A882 /* AABB.hpp */,
 				47C96C531FA67D1D00A6C587 /* Acceleration.hpp */,
+				80BB8923141C3E5900F1753A /* BasicAPI.hpp */,
 				80BB894E141C3E5900F1753A /* Body.hpp */,
 				470F94A51EC4C79B00AA3C82 /* BodyConf.hpp */,
 				474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */,
@@ -1446,7 +1447,6 @@
 			isa = PBXGroup;
 			children = (
 				4734B2161DC00AFD00F15E29 /* ArrayList.hpp */,
-				80BB8923141C3E5900F1753A /* BasicAPI.hpp */,
 				80BB8940141C3E5900F1753A /* BlockAllocator.hpp */,
 				47640869250C86640090F711 /* BodyID.hpp */,
 				478E67C41E760AB7009B9AD5 /* BodyType.hpp */,

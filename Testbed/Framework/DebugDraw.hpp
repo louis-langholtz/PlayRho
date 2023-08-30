@@ -22,7 +22,7 @@
 #ifndef PLAYRHO_DEBUGDRAW_HPP
 #define  PLAYRHO_DEBUGDRAW_HPP
 
-#include <playrho/BasicAPI.hpp>
+#include <playrho/d2/BasicAPI.hpp>
 
 #include "Drawer.hpp"
 
