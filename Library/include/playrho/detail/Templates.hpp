@@ -31,14 +31,14 @@
 namespace playrho {
 
 // Bring standard customization points into the namespace...
-using std::begin;
-using std::cbegin;
-using std::cend;
-using std::data;
-using std::empty;
-using std::end;
-using std::size;
-using std::swap;
+using std::begin; // NOLINT(misc-unused-using-decls)
+using std::cbegin; // NOLINT(misc-unused-using-decls)
+using std::cend; // NOLINT(misc-unused-using-decls)
+using std::data; // NOLINT(misc-unused-using-decls)
+using std::empty; // NOLINT(misc-unused-using-decls)
+using std::end; // NOLINT(misc-unused-using-decls)
+using std::size; // NOLINT(misc-unused-using-decls)
+using std::swap; // NOLINT(misc-unused-using-decls)
 
 namespace detail {
 

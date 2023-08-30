@@ -21,14 +21,14 @@
 #ifndef PLAYRHO_SPAN_HPP
 #define PLAYRHO_SPAN_HPP
 
-#include <playrho/Defines.hpp>
-#include <playrho/Templates.hpp>
-
 #include <cstddef>
 #include <cassert>
 #include <type_traits>
 #include <iterator>
 #include <vector>
+
+#include <playrho/Defines.hpp>
+#include <playrho/Templates.hpp>
 
 namespace playrho {
 
