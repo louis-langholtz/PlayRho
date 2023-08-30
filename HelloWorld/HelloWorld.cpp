@@ -19,7 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/BasicAPI.hpp>
+#include <playrho/d2/BasicAPI.hpp>
 
 #include <iostream>
 #include <iomanip>
