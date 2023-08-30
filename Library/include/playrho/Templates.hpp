@@ -21,15 +21,12 @@
 #ifndef PLAYRHO_TEMPLATES_HPP
 #define PLAYRHO_TEMPLATES_HPP
 
-#include <playrho/Defines.hpp>
-
 #include <algorithm>
 #include <functional>
 #include <iterator>
 #include <limits>
 #include <type_traits>
-#include <tuple>
-#include <utility>
+#include <utility> // for std::declval
 
 namespace playrho {
 
@@ -47,12 +44,12 @@ namespace detail {
 
 /// @brief Low-level implementation of the is-iterable default value trait.
 template <class T, class = void>
-struct IsIterableImpl : std::false_type {
+struct IsIterable : std::false_type {
 };
 
 /// @brief Low-level implementation of the is-iterable true value trait.
 template <class T>
-struct IsIterableImpl<
+struct IsIterable<
     T, std::void_t<decltype(begin(std::declval<T>())), decltype(end(std::declval<T>())),
                    decltype(++std::declval<decltype(begin(std::declval<T&>()))&>()),
                    decltype(*begin(std::declval<T>()))>> : std::true_type {
@@ -60,12 +57,12 @@ struct IsIterableImpl<
 
 /// @brief Low-level implementation of the is-reverse-iterable default value trait.
 template <class T, class = void>
-struct IsReverseIterableImpl : std::false_type {
+struct IsReverseIterable : std::false_type {
 };
 
 /// @brief Low-level implementation of the is-reverse-iterable true value trait.
 template <class T>
-struct IsReverseIterableImpl<
+struct IsReverseIterable<
     T, std::void_t<decltype(rbegin(std::declval<T>())), decltype(rend(std::declval<T>())),
                    decltype(++std::declval<decltype(rbegin(std::declval<T&>()))&>()),
                    decltype(*rbegin(std::declval<T>()))>> : std::true_type {
@@ -257,11 +254,11 @@ constexpr bool IsValid(const std::size_t& value) noexcept
 
 /// @brief Determines whether the given type is an iterable type.
 template <class T>
-using IsIterable = typename detail::IsIterableImpl<T>;
+using IsIterable = typename detail::IsIterable<T>;
 
 /// @brief Determines whether the given type is a reverse iterable type.
 template <class T>
-using IsReverseIterable = typename detail::IsReverseIterableImpl<T>;
+using IsReverseIterable = typename detail::IsReverseIterable<T>;
 
 /// @brief Determines whether the given types are equality comparable.
 template <class T1, class T2 = T1>
