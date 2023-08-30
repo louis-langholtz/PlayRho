@@ -911,7 +911,8 @@ using namespace literals::units;
 namespace playrho {
 
 /// @brief Strips the units off of the given value.
-constexpr Real StripUnit(const Real value)
+template <class T>
+constexpr auto StripUnit(const T& value) -> std::enable_if_t<std::is_arithmetic_v<T>, T>
 {
     return value;
 }
