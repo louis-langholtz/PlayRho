@@ -1373,3 +1373,38 @@ TEST(Math, IsPowerOfTwo)
     EXPECT_FALSE(IsPowerOfTwo(5u));
     EXPECT_FALSE(IsPowerOfTwo(6u));
 }
+
+TEST(Math, Cross)
+{
+    Vector2<double> a{};
+    Vector2<double> b{};
+    auto result = 0.0;
+    result = Cross(a, b);
+    EXPECT_EQ(result, 0.0);
+    a = Vector2<double>{2.0, 3.0};
+    b = Vector2<double>{4.0, 5.0};
+    result = Cross(a, b);
+    // expect (a.x * b.y) - (a.y * b.x)
+    // i.e. (2 * 5) - (3 * 4)
+    EXPECT_EQ(result, -2.0);
+    a = Vector2<double>{1.0, 3.0};
+    b = Vector2<double>{1.0, 3.0};
+    result = Cross(a, b);
+    EXPECT_EQ(result, 0.0);
+}
+
+TEST(Math, Solve)
+{
+    Matrix22<double> mat{};
+    Vector2<double> b{};
+    auto result = Vector2<double>{};
+    result = Solve(mat, b);
+    EXPECT_EQ(result, (Vector2<double>{}));
+    mat = Matrix22<double>{Vector2<double>{1.0, 3.0}, Vector2<double>{1.0, 3.0}};
+    result = Solve(mat, b);
+    EXPECT_EQ(result, (Vector2<double>{}));
+    mat = Matrix22<double>{Vector2<double>{2.0, 3.0}, Vector2<double>{4.0, 5.0}};
+    b = Vector2<double>{1.0, 3.0};
+    result = Solve(mat, b);
+    EXPECT_EQ(result, (Vector2<double>{3.5, -1.5}));
+}

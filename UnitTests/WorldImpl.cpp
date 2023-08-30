@@ -1035,3 +1035,14 @@ TEST(WorldImpl, SetJointThrowsWithOutOfRangeBodyID)
     EXPECT_THROW(world.SetJoint(j0, Joint(FrictionJointConf{}.UseBodyA(b0).UseBodyB(b1))),
                  std::out_of_range);
 }
+
+// Added herein since only WorldImpl uses EraseFirst and saves making new file.
+TEST(Templates, EraseFirst)
+{
+    auto container = std::vector<int>{0, 1, 2};
+    EXPECT_FALSE(EraseFirst(container, 99));
+    EXPECT_EQ(size(container), 3u);
+    EXPECT_TRUE(EraseFirst(container, 1));
+    EXPECT_EQ(size(container), 2u);
+    EXPECT_EQ(container, (std::vector<int>{0, 2}));
+}
