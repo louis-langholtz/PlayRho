@@ -806,30 +806,30 @@ WorldImpl::~WorldImpl() noexcept
 
 void WorldImpl::Clear() noexcept
 {
-    if (m_listeners.jointDestruction) {
-        try {
-            for_each(cbegin(m_joints), cend(m_joints), [this](const auto& id) {
-                m_listeners.jointDestruction(id);
-            });
-        }
-        catch (...)
-        {
-            // Don't allow exception to escape.
-        }
+    if (const auto listener = m_listeners.jointDestruction) {
+        for_each(cbegin(m_joints), cend(m_joints), [&listener](const auto& id) {
+            try {
+                listener(id);
+            }
+            catch (...)
+            {
+                // Don't allow exception to escape.
+            }
+        });
     }
-    if (m_listeners.shapeDestruction) {
-        try {
-            for (auto&& shape: m_shapeBuffer) {
-                if (shape != Shape{}) {
-                    using underlying_type = detail::underlying_type_t<ShapeID>;
-                    const auto index = &shape - m_shapeBuffer.data();
-                    m_listeners.shapeDestruction(static_cast<ShapeID>(static_cast<underlying_type>(index)));
+    if (const auto listener = m_listeners.shapeDestruction) {
+        for (auto&& shape: m_shapeBuffer) {
+            if (shape != Shape{}) {
+                using underlying_type = detail::underlying_type_t<ShapeID>;
+                const auto index = &shape - m_shapeBuffer.data();
+                try {
+                    listener(static_cast<ShapeID>(static_cast<underlying_type>(index)));
+                }
+                catch (...)
+                {
+                    // Don't allow exception to escape.
                 }
             }
-        }
-        catch (...)
-        {
-            // Don't allow exception to escape.
         }
     }
     m_contacts.clear();

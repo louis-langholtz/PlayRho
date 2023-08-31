@@ -556,14 +556,25 @@ TEST(World, CreateDestroyJoinedBodies)
     auto stepConf = StepConf{};
     world.Step(stepConf);
     ASSERT_EQ(world.GetContacts().size(), ContactCounter(1));
-    const auto contact0 = std::get<ContactID>(*world.GetContacts().begin());
-    const auto contactBodyA = GetBodyA(world, contact0);
-    const auto contactBodyB = GetBodyB(world, contact0);
-    EXPECT_EQ(contactBodyA, body1);
-    EXPECT_EQ(contactBodyB, body2);
     const auto worldContacts = world.GetContacts();
     const auto c0 = worldContacts.begin();
+    auto cid0 = std::get<ContactID>(*c0);
+    const auto contactBodyA = GetBodyA(world, cid0);
+    const auto contactBodyB = GetBodyB(world, cid0);
+    EXPECT_EQ(contactBodyA, body1);
+    EXPECT_EQ(contactBodyB, body2);
     EXPECT_FALSE(NeedsFiltering(world, c0->second));
+    auto contact0 = world.GetContact(cid0);
+    if (contact0.HasValidToi()) {
+        contact0.UnsetToi();
+    }
+    else {
+        contact0.SetToi(Real(0.5f));
+    }
+    EXPECT_THROW(world.SetContact(cid0, contact0), InvalidArgument);
+    contact0 = world.GetContact(cid0);
+    contact0.SetToiCount(contact0.GetToiCount() + 1u);
+    EXPECT_THROW(world.SetContact(cid0, contact0), InvalidArgument);
 
     const auto joint = world.CreateJoint(Joint{DistanceJointConf{body1, body2}});
     ASSERT_NE(joint, InvalidJointID);

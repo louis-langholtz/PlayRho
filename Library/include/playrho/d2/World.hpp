@@ -207,12 +207,17 @@ public:
     /// @{
 
     /// @brief Registers a destruction listener for shapes.
+    /// @note This listener is called on <code>Clear()</code> for every shape.
+    /// @see Clear.
     void SetShapeDestructionListener(ShapeListener listener) noexcept;
 
     /// @brief Registers a detach listener for shapes detaching from bodies.
     void SetDetachListener(AssociationListener listener) noexcept;
 
     /// @brief Registers a destruction listener for joints.
+    /// @note This listener is called on <code>Clear()</code> for every joint. It's also called
+    ///   on <code>Destroy(BodyID)</code> for every joint associated with the identified body.
+    /// @see Clear, Destroy(BodyID).
     void SetJointDestructionListener(JointListener listener) noexcept;
 
     /// @brief Registers a begin contact event listener.
@@ -233,10 +238,12 @@ public:
     /// @{
 
     /// @brief Clears this world.
-    /// @note This calls the joint and fixture destruction listeners (if they're set)
-    ///   before clearing anything.
+    /// @note This calls the joint and shape destruction listeners (if they're set), for all
+    ///   defined joints and shapes, before clearing anything. Any exceptions thrown from these
+    ///   listeners are ignored.
     /// @post The contents of this world have all been destroyed and this world's internal
     ///   state is reset as though it had just been constructed.
+    /// @see SetJointDestructionListener, SetShapeDestructionListener.
     void Clear() noexcept;
 
     /// @brief Steps the world simulation according to the given configuration.
