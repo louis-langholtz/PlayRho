@@ -223,6 +223,15 @@ TEST(Compositor, GetChildCount)
               1u);
 }
 
+TEST(Compositor, GetChildDynamicRectangle)
+{
+    auto compositor = Compositor<GeometryIs<DynamicRectangle<>>>{};
+    EXPECT_THROW(GetChild(compositor, 1u), InvalidArgument);
+    auto distanceProxy = ::playrho::d2::DistanceProxy{};
+    EXPECT_NO_THROW(distanceProxy = GetChild(compositor, 0u));
+    ASSERT_EQ(distanceProxy.GetVertexRadius(), Real(2) * DefaultLinearSlop);
+}
+
 TEST(Compositor, GetChildDefaultCompositor)
 {
     auto distanceProxy = ::playrho::d2::DistanceProxy{};

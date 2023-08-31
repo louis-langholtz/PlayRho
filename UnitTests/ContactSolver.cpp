@@ -466,6 +466,34 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
     EXPECT_EQ(solution.pos_b.angular, old_pB.angular);
 }
 
+TEST(ContactSolver, SolvePosConstraintsForDefault)
+{
+    const auto pc = PositionConstraint{};
+    const auto conf = ConstraintSolverConf{};
+    const auto old_pA = Position{Length2{}, 0_deg};
+    const auto old_pB = Position{Length2{}, 0_deg};
+    const auto old_vA = Velocity{};
+    const auto old_vB = Velocity{};
+    const auto lcA = Length2{};
+    const auto lcB = Length2{};
+    const auto bc0 = BodyConstraint{
+        Real(1) / 1_kg,
+        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
+        lcA, old_pA, old_vA
+    };
+    const auto bc1 = BodyConstraint{
+        Real(1) / 1_kg,
+        InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
+        lcB, old_pB, old_vB
+    };
+    auto bodies = std::vector<BodyConstraint>{bc0, bc1};
+    const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, bodies, conf);
+    using std::isinf;
+    EXPECT_TRUE(isinf(solution.min_separation));
+    EXPECT_EQ(solution.pos_a, bc0.GetPosition());
+    EXPECT_EQ(solution.pos_b, bc1.GetPosition());
+}
+
 #if 0
 TEST(ContactSolver, SolveVelocityConstraint1)
 {

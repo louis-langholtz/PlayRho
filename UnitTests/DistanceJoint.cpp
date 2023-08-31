@@ -393,6 +393,13 @@ TEST(DistanceJointConf, InitVelocity)
     const auto posA = Position{Length2{-5_m, 0_m}, 0_deg};
     bodies.push_back(BodyConstraint{Real(1) / 4_kg, InvRotInertia{}, Length2{}, posA, Velocity{}});
     EXPECT_NO_THROW(InitVelocity(conf, bodies, StepConf{}, ConstraintSolverConf{}));
+    EXPECT_EQ(conf.impulse, 0_Ns);
+    {
+        auto stepConf = StepConf{};
+        stepConf.doWarmStart = false;
+        EXPECT_NO_THROW(InitVelocity(conf, bodies, StepConf{}, ConstraintSolverConf{}));
+        EXPECT_EQ(conf.impulse, 0_Ns);
+    }
 }
 
 TEST(DistanceJointConf, SolveVelocity)

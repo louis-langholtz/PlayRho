@@ -68,13 +68,16 @@ using namespace playrho::d2;
 
 namespace {
 
-template <typename T>
+template <typename T, class Exception = void>
 struct PushBackListener
 {
     std::vector<T> ids;
     void operator()(T id)
     {
         ids.push_back(id);
+        if constexpr (!std::is_same_v<void, Exception>) {
+            throw Exception{"PushBackListener"};
+        }
     }
 };
 
@@ -162,8 +165,8 @@ TEST(WorldImpl, InvalidArgumentInit)
 
 TEST(WorldImpl, Clear)
 {
-    auto jointListener = PushBackListener<JointID>{};
-    auto shapeListener = PushBackListener<ShapeID>{};
+    auto jointListener = PushBackListener<JointID, InvalidArgument>{};
+    auto shapeListener = PushBackListener<ShapeID, InvalidArgument>{};
     auto associationListener = PushBackListener<std::pair<BodyID, ShapeID>>{};
 
     auto world = WorldImpl{};

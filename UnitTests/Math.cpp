@@ -746,6 +746,9 @@ TEST(Math, Normalize)
     EXPECT_EQ(value[0], value[1]);
     EXPECT_EQ(value[0], v0 * invLength);
     EXPECT_EQ(value[1], v1 * invLength);
+    value = {};
+    EXPECT_NO_THROW(magnitude = Normalize(value));
+    EXPECT_EQ(magnitude, Real(0));
 }
 
 TEST(Math, GetNormalized)
