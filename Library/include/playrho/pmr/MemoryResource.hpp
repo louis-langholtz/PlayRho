@@ -29,8 +29,16 @@ namespace playrho::pmr {
 /// @see https://en.cppreference.com/w/cpp/memory/memory_resource.
 class memory_resource
 {
+    /// @brief Allocates memory.
+    /// @see https://en.cppreference.com/w/cpp/memory/memory_resource/do_allocate.
     virtual void* do_allocate(std::size_t bytes, std::size_t alignment) = 0;
+
+    /// @brief Deallocates memory.
+    /// @see https://en.cppreference.com/w/cpp/memory/memory_resource/do_deallocate.
     virtual void do_deallocate(void* p, std::size_t bytes, std::size_t alignment) = 0;
+
+    /// @brief Compare for equality with other resource.
+    /// @see https://en.cppreference.com/w/cpp/memory/memory_resource/do_is_equal.
     virtual bool do_is_equal(const memory_resource& other) const noexcept = 0;
 
 public:
@@ -38,18 +46,21 @@ public:
     memory_resource(const memory_resource&) = default;
     virtual ~memory_resource();
 
+    /// @brief Allocates memory.
     [[nodiscard]] void* allocate(std::size_t bytes,
                                  std::size_t alignment = alignof(std::max_align_t))
     {
         return do_allocate(bytes, alignment);
     }
 
+    /// @brief Deallocates memory.
     void deallocate(void* p, std::size_t bytes,
                     std::size_t alignment = alignof(std::max_align_t))
     {
         do_deallocate(p, bytes, alignment);
     }
 
+    /// @brief Compare for equality with other resource.
     bool is_equal(const memory_resource& other) const noexcept
     {
         return do_is_equal(other);
