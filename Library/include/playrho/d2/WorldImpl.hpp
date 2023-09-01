@@ -546,10 +546,12 @@ private:
     /// @see Step.
     struct Islanded
     {
+        /// @brief Type alias for member variables.
         using vector = std::vector<bool>;
-        vector bodies;
-        vector contacts;
-        vector joints;
+
+        vector bodies; ///< IDs of bodies that have been "islanded".
+        vector contacts; ///< IDs of contacts that have been "islanded".
+        vector joints; ///< IDs of joints that have been "islanded".
     };
 
     /// @brief Solves the step.
@@ -819,7 +821,7 @@ private:
     /// @note Individual body contact containers are added to by <code>AddNewContacts</code>.
     ObjectPool<BodyContacts> m_bodyContacts;
 
-    ///< Cache of joints associated with bodies.
+    /// @brief Cache of joints associated with bodies.
     /// @note Size depends on and matches <code>size(m_bodyBuffer)</code>.
     ObjectPool<BodyJoints> m_bodyJoints;
 
