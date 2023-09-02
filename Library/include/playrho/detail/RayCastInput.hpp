@@ -40,7 +40,7 @@ struct RayCastInput
 
     /// @brief Max fraction.
     /// @details Unit interval value - a value between 0 and 1 inclusive.
-    UnitInterval<Real> maxFraction = UnitInterval<Real>{0};
+    UnitInterval<Real> maxFraction;
 };
 
 } // namespace playrho::detail
