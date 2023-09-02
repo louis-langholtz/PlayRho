@@ -2362,11 +2362,7 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"_LIBCPP_DEBUG=1",
-					"$(inherited)",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -2396,11 +2392,7 @@
 				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/llvm/12.0.0_1/Toolchains/LLVM12.0.0.xctoolchain/usr/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CPLUSPLUSFLAGS = (
-					"-nostdinc++",
-					"-I/usr/local/Cellar/llvm/12.0.0_1/Toolchains/LLVM12.0.0.xctoolchain/usr/include/c++/v1",
-					"$(OTHER_CFLAGS)",
-				);
+				OTHER_CPLUSPLUSFLAGS = "";
 				SDKROOT = macosx;
 				USE_HEADERMAP = NO;
 			};
