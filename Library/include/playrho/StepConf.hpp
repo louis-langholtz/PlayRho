@@ -25,11 +25,11 @@
 /// @file
 /// Declarations of the StepConf class, and free functions associated with it.
 
-#include <playrho/Settings.hpp>
+#include <type_traits> // for std::is_default_constructible_v
+
 #include <playrho/NonNegative.hpp>
 #include <playrho/Positive.hpp>
-
-#include <type_traits> // for std::is_default_constructible_v
+#include <playrho/Settings.hpp>
 
 namespace playrho {
 
@@ -39,7 +39,6 @@ namespace playrho {
 /// the values have defaults. These defaults are intended to most likely be the values desired.
 /// @note Be sure to confirm that the delta time (the time-per-step i.e. <code>deltaTime</code>)
 ///   is correct for your use.
-/// @note This data structure is 104-bytes large (with 4-byte Real on at least one 64-bit platform).
 /// @see World::Step.
 struct StepConf {
     /// @brief Step iterations type.
@@ -54,28 +53,29 @@ struct StepConf {
     static constexpr auto DefaultStepTime = Time{playrho::DefaultStepTime};
 
     /// @brief Default delta time ratio.
-    static constexpr auto DefaultDtRatio = Real{1};
+    static constexpr auto DefaultDtRatio = Real(1);
 
     /// @brief Default min still time to sleep.
     static constexpr auto DefaultMinStillTimeToSleep = Time{playrho::DefaultMinStillTimeToSleep};
 
     /// @brief Default linear slop.
+    /// @see DefaultTargetDepth, DefaultTolerance.
     static constexpr auto DefaultLinearSlop = Positive<Length>{playrho::DefaultLinearSlop};
 
     /// @brief Default angular slop.
     static constexpr auto DefaultAngularSlop = Positive<Angle>{playrho::DefaultAngularSlop};
 
     /// @brief Default regular resolution rate.
-    static constexpr auto DefaultRegResolutionRate = Real{2} / 10; // aka 0.2.;
+    static constexpr auto DefaultRegResolutionRate = Real(2) / 10; // aka 0.2.;
 
     /// @brief Default regular min separation.
-    static constexpr auto DefaultRegMinSeparation = -playrho::DefaultLinearSlop * Real{3};
+    static constexpr auto DefaultRegMinSeparation = -playrho::DefaultLinearSlop * Real(3);
 
     /// @brief Default regular min momentum.
     static constexpr auto DefaultRegMinMomentum = Momentum{playrho::DefaultRegMinMomentum};
 
     /// @brief Default time of impact (TOI) resolution rate.
-    static constexpr auto DefaultToiResolutionRate = Real{75} / 100; // aka .75
+    static constexpr auto DefaultToiResolutionRate = Real(75) / 100; // aka .75
 
     /// @brief Default time of impact (TOI) min separation.
     static constexpr auto DefaultToiMinSeparation = -playrho::DefaultLinearSlop * Real(1.5f);
@@ -84,10 +84,12 @@ struct StepConf {
     static constexpr auto DefaultToiMinMomentum = Momentum{playrho::DefaultToiMinMomentum};
 
     /// @brief Default target depth.
-    static constexpr auto DefaultTargetDepth = DefaultLinearSlop * Real{3};
+    /// @see DefaultLinearSlop.
+    static constexpr auto DefaultTargetDepth = NonNegative<Length>{DefaultLinearSlop * Real(3)};
 
     /// @brief Default tolerance.
-    static constexpr auto DefaultTolerance = NonNegative<Length>{DefaultLinearSlop / Real{4}};
+    /// @see DefaultLinearSlop.
+    static constexpr auto DefaultTolerance = NonNegative<Length>{DefaultLinearSlop / Real(4)};
 
     /// @brief Default velocity threshold.
     static constexpr auto DefaultVelocityThreshold = LinearVelocity{playrho::DefaultVelocityThreshold};
@@ -111,13 +113,13 @@ struct StepConf {
     static constexpr auto DefaultAngularSleepTolerance = AngularVelocity{playrho::DefaultAngularSleepTolerance};
 
     /// @brief Default distance multiplier.
-    static constexpr auto DefaultDistanceMultiplier = Real{playrho::DefaultDistanceMultiplier};
+    static constexpr auto DefaultDistanceMultiplier = Real(playrho::DefaultDistanceMultiplier);
 
     /// @brief Default abstract aligned bounding box (AABB) extension.
     static constexpr auto DefaultAabbExtension = Length{playrho::DefaultAabbExtension};
 
     /// @brief Default curcles ratio.
-    static constexpr auto DefaultCirclesRatio = Real{playrho::DefaultCirclesRatio};
+    static constexpr auto DefaultCirclesRatio = Real(playrho::DefaultCirclesRatio);
 
     /// @brief Default regular velocity iterations.
     static constexpr auto DefaultRegVelocityIters = iteration_type{8};
@@ -170,12 +172,10 @@ struct StepConf {
 
     /// @brief Linear slop.
     /// @details Linear slop for position resolution.
-    /// @note Must be greater than 0.
     /// @note Used in both the regular and TOI phases of step processing.
     Positive<Length> linearSlop = DefaultLinearSlop;
 
     /// @brief Angular slop.
-    /// @note Must be greater than 0.
     /// @note Used in both the regular and TOI phases of step processing.
     Positive<Angle> angularSlop = DefaultAngularSlop;
 
@@ -225,14 +225,14 @@ struct StepConf {
     /// @details Target depth of overlap for calculating the TOI for CCD eligible bodies.
     /// @note Recommend value that's less than twice the world's minimum vertex radius.
     /// @note Used in the TOI phase of step processing.
-    Length targetDepth = DefaultTargetDepth;
+    NonNegative<Length> targetDepth = DefaultTargetDepth;
 
     /// @brief Tolerance.
     /// @details The acceptable plus or minus tolerance from the target depth for TOI calculations.
-    /// @note Must be greater than 0.
     /// @note Must not be subnormal.
-    /// @note Must be less than the target depth.
+    /// @note Should be less than the target depth (<code>targetDepth</code>).
     /// @note Used in the TOI phase of step processing.
+    /// @see targetDepth.
     NonNegative<Length> tolerance = DefaultTolerance;
 
     /// @brief Velocity threshold.

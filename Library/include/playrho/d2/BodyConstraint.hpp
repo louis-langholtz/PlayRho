@@ -37,11 +37,16 @@ namespace d2 {
 class BodyConstraint
 {
 public:
-    // Note: Seeing World.TilesComesToRest times of around 5686 ms with this setup.
-
     BodyConstraint() = default;
 
     /// @brief Initializing constructor.
+    /// @param invMass Inverse mass.
+    /// @param invRotI Inverse rotational inertia.
+    /// @param localCenter Local center.
+    /// @param position Position of the body.
+    /// @param velocity Velocity of the body.
+    /// @pre @p position, @p velocity, and @p locatCenter are all valid.
+    /// @pre @p invMass and @p invRotI are greater-than or equal-to zero.
     constexpr
     BodyConstraint(InvMass invMass, InvRotInertia invRotI, const Length2& localCenter,
                    const Position& position, const Velocity& velocity) noexcept:
@@ -77,12 +82,16 @@ public:
 
     /// @brief Sets the position of the body.
     /// @param value A valid position value to set for the represented body.
-    /// @warning Behavior is undefined if the given value is not valid.
+    /// @pre @p value is valid - i.e. <code>IsValid(value)</code> is true.
+    /// @post <code>GetPosition()</code> returns the value to be set.
+    /// @see GetPosition.
     BodyConstraint& SetPosition(const Position& value) noexcept;
 
     /// @brief Sets the velocity of the body.
     /// @param value A valid velocity value to set for the represented body.
-    /// @warning Behavior is undefined if the given value is not valid.
+    /// @pre @p value is valid - i.e. <code>IsValid(value)</code> is true.
+    /// @post <code>GetVelocity()</code> returns the value to be set.
+    /// @see GetVelocity.
     BodyConstraint& SetVelocity(const Velocity& value) noexcept;
 
 private:

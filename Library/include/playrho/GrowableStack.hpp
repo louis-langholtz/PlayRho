@@ -94,8 +94,7 @@ public:
     }
 
     /// @brief Accesses the "top" element.
-    /// @warning Behavior is undefined if this stack doesn't already have at least
-    ///   one value pushed onto it.
+    /// @pre <code>size()</code> is greater than zero.
     ElementType top() const
     {
         assert(m_count > 0);
@@ -103,6 +102,7 @@ public:
     }
 
     /// @brief Pops the "top" element.
+    /// @pre <code>size()</code> is greater than zero.
     void pop() noexcept
     {
         assert(m_count > 0);

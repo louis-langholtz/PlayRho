@@ -275,9 +275,10 @@ inline MassData GetMassData(const PolygonShapeConf& arg)
     return playrho::d2::GetMassData(arg.vertexRadius, arg.density, arg.GetVertices());
 }
 
-/// Gets the identified edge of the given polygon shape.
-/// @note This must not be called for shapes with less than 2 vertices.
-/// @warning Behavior is undefined if called for a shape with less than 2 vertices.
+/// @brief Gets the identified edge of the given polygon shape.
+/// @param shape The shape to get vertices for
+/// @param index Vertex index in shape to get edge for.
+/// @pre @p shape has 2 or more vertices and @p index is less than the number of vertices.
 /// @relatedalso PolygonShapeConf
 Length2 GetEdge(const PolygonShapeConf& shape, VertexCounter index);
 

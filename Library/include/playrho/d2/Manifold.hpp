@@ -82,7 +82,7 @@ public:
     enum Type : std::uint8_t {
         /// Unset type.
         /// @details Manifold is unset. For manifolds of this type: the point count is zero,
-        ///   point data is undefined, and all other properties are invalid.
+        ///   point data is not defined, and all other properties are invalid.
         e_unset,
 
         /// Circles type.
@@ -324,7 +324,7 @@ public:
     /// @details
     /// Constructs an unset-type manifold.
     /// For an unset-type manifold:
-    /// point count is zero, point data is undefined, and all other properties are invalid.
+    /// point count is zero, point data is not defined, and all other properties are invalid.
     Manifold() = default;
 
     /// Gets the type of this manifold.

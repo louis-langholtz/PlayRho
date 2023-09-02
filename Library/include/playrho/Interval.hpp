@@ -248,8 +248,8 @@ static_assert(std::is_nothrow_move_assignable_v<Interval<float>>);
 
 /// @brief Gets the size of the given interval.
 /// @details Gets the difference between the max and min values.
-/// @warning Behavior is undefined if the difference between the given range's
-///   max and min values overflows the range of the <code>Interval::value_type</code>.
+/// @pre The difference between the given interval's max and min is representable
+///   by <code>Interval::value_type</code>.
 /// @return Non-negative value unless the given interval is "unset" or invalid.
 template <typename T, typename U = decltype(Interval<T>{}, (T{} - T{}))>
 constexpr auto GetSize(const Interval<T>& v) noexcept(noexcept(v.GetMax() - v.GetMin()))

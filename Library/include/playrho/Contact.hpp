@@ -22,34 +22,30 @@
 #ifndef PLAYRHO_CONTACT_HPP
 #define PLAYRHO_CONTACT_HPP
 
-#include <playrho/Math.hpp>
+#include <cassert> // for assert
+#include <limits> // for std::numeric_limits
 
 #include <playrho/Contactable.hpp>
+#include <playrho/Math.hpp>
+#include <playrho/NonNegative.hpp>
+#include <playrho/UnitInterval.hpp>
 
 namespace playrho {
 
 /// @brief Mixes friction.
-///
 /// @details Friction mixing formula. The idea is to allow either value to drive the
 ///   resulting friction to zero. For example, anything slides on ice.
-///
-/// @warning Behavior is undefined if either friction values is less than zero.
-///
 /// @param friction1 A zero or greater value.
 /// @param friction2 A zero or greater value.
-///
-inline Real MixFriction(Real friction1, Real friction2)
+inline auto MixFriction(NonNegative<Real> friction1, NonNegative<Real> friction2)
 {
-    assert(friction1 >= 0 && friction2 >= 0);
-    return sqrt(friction1 * friction2);
+    return NonNegative<Real>(sqrt(friction1 * friction2));
 }
 
 /// @brief Mixes restitution.
-///
 /// @details Restitution mixing law. The idea is allow for anything to bounce off an inelastic
 ///   surface. For example, a super ball bounces on anything.
-///
-inline Real MixRestitution(Real restitution1, Real restitution2) noexcept
+inline auto MixRestitution(Real restitution1, Real restitution2) noexcept
 {
     return (restitution1 > restitution2) ? restitution1 : restitution2;
 }
@@ -91,25 +87,26 @@ public:
     /// @note This should only be called if either:
     ///   1. The contact's manifold has more than 0 contact points, or
     ///   2. The contact has sensors and the two shapes of this contact are found to be overlapping.
+    /// @post <code>IsTouching()</code> returns true.
     /// @see IsTouching().
     constexpr void SetTouching() noexcept;
 
     /// @brief Unsets the touching flag state.
+    /// @post <code>IsTouching()</code> returns false.
+    /// @see IsTouching().
     constexpr void UnsetTouching() noexcept;
-
-    /// @brief Enables or disables this contact.
-    /// @note This can be used inside the pre-solve contact listener.
-    ///   The contact is only disabled for the current time step (or sub-step in continuous
-    ///   collisions).
-    [[deprecated]] constexpr void SetEnabled(bool flag) noexcept;
 
     /// @brief Has this contact been disabled?
     constexpr bool IsEnabled() const noexcept;
 
     /// @brief Enables this contact.
+    /// @post <code>IsEnabled() </code> returns true.
+    /// @see IsEnabled.
     constexpr void SetEnabled() noexcept;
 
     /// @brief Disables this contact.
+    /// @post <code>IsEnabled() </code> returns false.
+    /// @see IsEnabled.
     constexpr void UnsetEnabled() noexcept;
 
     /// @brief Gets the body-A identifier.
@@ -134,27 +131,30 @@ public:
     /// @details Override the default friction mixture.
     /// @note You can call this in "pre-solve" listeners.
     /// @note This value persists until set or reset.
-    /// @warning Behavior is undefined if given a negative friction value.
     /// @param friction Co-efficient of friction value of zero or greater.
+    /// @post <code>GetFriction()</code> returns the value set.
     /// @see GetFriction.
-    constexpr void SetFriction(Real friction) noexcept;
+    constexpr void SetFriction(NonNegative<Real> friction) noexcept;
 
     /// @brief Gets the coefficient of friction.
     /// @details Gets the combined friction of the two shapes associated with this contact.
-    /// @return Value of 0 or higher.
     /// @see SetFriction.
-    constexpr Real GetFriction() const noexcept;
+    constexpr NonNegative<Real> GetFriction() const noexcept;
 
     /// @brief Sets the restitution.
     /// @details This override the default restitution mixture.
     /// @note You can call this in "pre-solve" listeners.
     /// @note The value persists until you set or reset.
+    /// @post <code>GetRestitution()</code> returns the value set.
+    /// @see GetRestitution.
     constexpr void SetRestitution(Real restitution) noexcept;
 
     /// @brief Gets the restitution.
     constexpr Real GetRestitution() const noexcept;
 
     /// @brief Sets the desired tangent speed for a conveyor belt behavior.
+    /// @post <code>GetTangentSpeed()</code> returns the value set.
+    /// @see GetTangentSpeed.
     constexpr void SetTangentSpeed(LinearVelocity speed) noexcept;
 
     /// @brief Gets the desired tangent speed.
@@ -165,10 +165,14 @@ public:
     constexpr substep_type GetToiCount() const noexcept;
 
     /// @brief Sets the TOI count to the given value.
+    /// @post <code>GetToiCount()</code> returns the value set.
     /// @see GetToiCount.
     constexpr void SetToiCount(substep_type value) noexcept;
 
     /// @brief Increments the TOI count.
+    /// @pre <code>GetToiCount()</code> is less than <code>numeric_limits<substep_type>::max()</code>.
+    /// @post <code>GetToiCount()</code> returns one more than before.
+    /// @see GetToiCount, SetToiCount.
     constexpr void IncrementToiCount() noexcept;
 
     /// @brief Gets whether a TOI is set.
@@ -176,41 +180,49 @@ public:
     constexpr bool HasValidToi() const noexcept;
 
     /// @brief Gets the time of impact (TOI) as a fraction.
-    /// @note This is only valid if a TOI has been set.
-    /// @see void SetToi(Real toi).
+    /// @pre <code>HasValidToi()</code> must be true.
     /// @return Time of impact fraction in the range of 0 to 1 if set (where 1
     ///   means no actual impact in current time slot), otherwise undefined.
-    constexpr Real GetToi() const;
+    /// @see void SetToi(Real toi).
+    constexpr UnitInterval<Real> GetToi() const;
 
     /// @brief Sets the time of impact (TOI).
-    /// @details After returning, this object will have a TOI that is set as indicated by
-    /// <code>HasValidToi()</code>.
-    /// @note Behavior is undefined if the value assigned is less than 0 or greater than 1.
+    /// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no actual
+    ///   impact in the current time slot.
+    /// @post <code>HasValidToi()</code> returns true, and <code>GetToi()</code> returns
+    ///   the value set.
     /// @see Real GetToi() const.
     /// @see HasValidToi.
-    /// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no actual impact
-    /// in the current time slot.
-    constexpr void SetToi(Real toi) noexcept;
+    constexpr void SetToi(UnitInterval<Real> toi) noexcept;
 
     /// @brief Unsets the TOI.
+    /// @post <code>HasValidToi()</code> returns false.
     constexpr void UnsetToi() noexcept;
 
     /// @brief Whether or not the contact needs filtering.
     constexpr bool NeedsFiltering() const noexcept;
 
     /// @brief Flags the contact for filtering.
+    /// @post <code>NeedsFiltering()</code> returns true.
+    /// @see NeedsFiltering.
     constexpr void FlagForFiltering() noexcept;
 
     /// @brief Unflags this contact for filtering.
+    /// @post <code>NeedsFiltering()</code> returns false.
+    /// @see NeedsFiltering.
     constexpr void UnflagForFiltering() noexcept;
 
     /// @brief Whether or not the contact needs updating.
     constexpr bool NeedsUpdating() const noexcept;
 
     /// @brief Flags the contact for updating.
+    /// @post <code>NeedsUpdating()</code> returns true.
+    /// @see NeedsUpdating.
     constexpr void FlagForUpdating() noexcept;
 
     /// @brief Unflags this contact for updating.
+    /// @post <code>NeedsUpdating()</code> returns false.
+    /// @see NeedsUpdating.
     constexpr void UnflagForUpdating() noexcept;
 
     /// @brief Whether or not this contact is a "sensor".
@@ -219,9 +231,13 @@ public:
 
     /// @brief Sets the sensor state of this contact.
     /// @attention Call this if shape A or shape B is a sensor.
+    /// @post <code>IsSensor()</code> returns true.
+    /// @see IsSensor().
     constexpr void SetSensor() noexcept;
 
     /// @brief Unsets the sensor state of this contact.
+    /// @post <code>IsSensor()</code> returns false.
+    /// @see IsSensor().
     constexpr void UnsetIsSensor() noexcept;
 
     /// @brief Whether or not this contact is "impenetrable".
@@ -230,9 +246,13 @@ public:
 
     /// @brief Sets the impenetrability of this contact.
     /// @attention Call this if body A or body B are impenetrable.
+    /// @post <code>IsImpenetrable()</code> returns true.
+    /// @see IsImpenetrable().
     constexpr void SetImpenetrable() noexcept;
 
     /// @brief Unsets the impenetrability of this contact.
+    /// @post <code>IsImpenetrable()</code> returns false.
+    /// @see IsImpenetrable().
     constexpr void UnsetImpenetrable() noexcept;
 
     /// @brief Whether or not this contact is "active".
@@ -241,10 +261,14 @@ public:
 
     /// @brief Sets the active state of this contact.
     /// @attention Call this if body A or body B are "awake".
+    /// @post <code>IsActive()</code> returns true.
+    /// @see IsActive().
     constexpr void SetIsActive() noexcept;
 
     /// @brief Unsets the active state of this contact.
     /// @attention Call this if neither body A nor body B are "awake".
+    /// @post <code>IsActive()</code> returns false.
+    /// @see IsActive().
     constexpr void UnsetIsActive() noexcept;
 
 private:
@@ -287,25 +311,20 @@ private:
     // initialized on construction (construction-time depedent)
 
     /// Mix of frictions of associated shapes.
-    /// @note Field is 4-bytes (with 4-byte Real).
     /// @see MixFriction.
-    Real m_friction = 0;
+    NonNegative<Real> m_friction;
 
     /// Mix of restitutions of associated shapes.
-    /// @note Field is 4-bytes (with 4-byte Real).
     /// @see MixRestitution.
     Real m_restitution = 0;
 
     /// Tangent speed.
-    /// @note Field is 4-bytes (with 4-byte Real).
     LinearVelocity m_tangentSpeed = 0_mps;
 
     /// Time of impact.
     /// @note This is a unit interval of time (a value between 0 and 1).
     /// @note Only valid if <code>m_flags & e_toiFlag</code>.
-    Real m_toi = 0;
-
-    // 32-bytes to here.
+    UnitInterval<Real> m_toi;
 
     /// Count of TOI calculations contact has gone through since last reset.
     substep_type m_toiCount = 0;
@@ -318,16 +337,6 @@ constexpr Contact::Contact(const Contactable& a, const Contactable& b) noexcept
       m_contactableB{b},
       m_flags{e_enabledFlag | e_dirtyFlag}
 {
-}
-
-constexpr void Contact::SetEnabled(bool flag) noexcept
-{
-    if (flag) {
-        SetEnabled();
-    }
-    else {
-        UnsetEnabled();
-    }
 }
 
 constexpr void Contact::SetEnabled() noexcept
@@ -347,8 +356,6 @@ constexpr bool Contact::IsEnabled() const noexcept
 
 constexpr bool Contact::IsTouching() const noexcept
 {
-    // XXX: What to do if needs-updating?
-    // assert(!NeedsUpdating());
     return (m_flags & e_touchingFlag) != 0;
 }
 
@@ -412,13 +419,12 @@ constexpr bool Contact::NeedsUpdating() const noexcept
     return (m_flags & e_dirtyFlag) != 0;
 }
 
-constexpr void Contact::SetFriction(Real friction) noexcept
+constexpr void Contact::SetFriction(NonNegative<Real> friction) noexcept
 {
-    assert(friction >= 0);
     m_friction = friction;
 }
 
-constexpr Real Contact::GetFriction() const noexcept
+constexpr NonNegative<Real> Contact::GetFriction() const noexcept
 {
     return m_friction;
 }
@@ -448,15 +454,14 @@ constexpr bool Contact::HasValidToi() const noexcept
     return (m_flags & Contact::e_toiFlag) != 0;
 }
 
-constexpr Real Contact::GetToi() const
+constexpr UnitInterval<Real> Contact::GetToi() const
 {
     assert(HasValidToi());
     return m_toi;
 }
 
-constexpr void Contact::SetToi(Real toi) noexcept
+constexpr void Contact::SetToi(UnitInterval<Real> toi) noexcept
 {
-    assert(toi >= 0 && toi <= 1);
     m_toi = toi;
     m_flags |= Contact::e_toiFlag;
 }
@@ -533,6 +538,7 @@ constexpr void Contact::UnsetIsActive() noexcept
 
 constexpr void Contact::IncrementToiCount() noexcept
 {
+    assert(m_toiCount < std::numeric_limits<decltype(m_toiCount)>::max());
     ++m_toiCount;
 }
 
@@ -622,6 +628,8 @@ constexpr bool IsImpenetrable(const Contact& contact) noexcept
 
 /// @brief Sets the impenetrability of the given contact.
 /// @attention Call this if body A or body B are impenetrable.
+/// @post <code>IsImpenetrable(contact)</code> returns true.
+/// @see IsImpenetrable(const Contact &).
 /// @relatedalso Contact
 constexpr void SetImpenetrable(Contact& contact) noexcept
 {
@@ -630,6 +638,8 @@ constexpr void SetImpenetrable(Contact& contact) noexcept
 
 /// @brief Unsets the impenetrability of the given contact.
 /// @attention Call this if body A or body B are no longer impenetrable.
+/// @post <code>IsImpenetrable(contact)</code> returns false.
+/// @see IsImpenetrable(const Contact &).
 /// @relatedalso Contact
 constexpr void UnsetImpenetrable(Contact& contact) noexcept
 {
@@ -645,6 +655,8 @@ constexpr bool IsActive(const Contact& contact) noexcept
 
 /// @brief Sets the active state of the given contact.
 /// @attention Call this if body A or body B are "awake".
+/// @post <code>IsActive(contact)</code> returns true.
+/// @see IsActive(const Contact &).
 /// @relatedalso Contact
 constexpr void SetIsActive(Contact& contact) noexcept
 {
@@ -653,6 +665,8 @@ constexpr void SetIsActive(Contact& contact) noexcept
 
 /// @brief Unsets the active state of this contact.
 /// @attention Call this if neither body A nor body B are "awake".
+/// @post <code>IsActive(contact)</code> returns false.
+/// @see IsActive(const Contact &).
 /// @relatedalso Contact
 constexpr void UnsetIsActive(Contact& contact) noexcept
 {
@@ -666,15 +680,18 @@ constexpr bool IsEnabled(const Contact& contact) noexcept
     return contact.IsEnabled();
 }
 
-/// @brief Enables the identified contact.
-/// @throws std::out_of_range If given an invalid contact identifier.
+/// @brief Enables the contact.
+/// @post <code>IsEnabled(contact)</code> returns true.
+/// @see IsEnabled(const Contact &).
+/// @relatedalso Contact
 constexpr void SetEnabled(Contact& contact) noexcept
 {
     contact.SetEnabled();
 }
 
 /// @brief Disables the identified contact.
-/// @throws std::out_of_range If given an invalid contact identifier.
+/// @post <code>IsEnabled(contact)</code> returns false.
+/// @see IsEnabled(const Contact &).
 constexpr void UnsetEnabled(Contact& contact) noexcept
 {
     contact.UnsetEnabled();
@@ -696,6 +713,8 @@ constexpr bool IsSensor(const Contact& contact) noexcept
 
 /// @brief Sets the sensor state of the given contact.
 /// @attention Call this if shape A or shape B is a sensor.
+/// @post <code>IsSensor(contact)</code> returns true.
+/// @see IsSensor(const Contact &).
 /// @relatedalso Contact
 constexpr void SetSensor(Contact& contact) noexcept
 {
@@ -703,6 +722,8 @@ constexpr void SetSensor(Contact& contact) noexcept
 }
 
 /// @brief Unsets the sensor state of the given contact.
+/// @post <code>IsSensor(contact)</code> returns false.
+/// @see IsSensor(const Contact &).
 /// @relatedalso Contact
 constexpr void UnsetIsSensor(Contact& contact) noexcept
 {
@@ -718,6 +739,7 @@ constexpr auto GetToiCount(const Contact& contact) noexcept
 }
 
 /// @brief Sets the TOI count to the given value.
+/// @post <code>GetToiCount(contact)</code> returns @p value.
 /// @see GetToiCount.
 /// @relatedalso Contact
 constexpr void SetToiCount(Contact& contact, Contact::substep_type value) noexcept
@@ -733,6 +755,8 @@ constexpr auto NeedsFiltering(const Contact& contact) noexcept
 }
 
 /// @brief Flags the contact for filtering.
+/// @post <code>NeedsFiltering(contact)</code> returns true.
+/// @see NeedsFiltering(const Contact &).
 /// @relatedalso Contact
 constexpr void FlagForFiltering(Contact& contact) noexcept
 {
@@ -740,6 +764,8 @@ constexpr void FlagForFiltering(Contact& contact) noexcept
 }
 
 /// @brief Unflags this contact for filtering.
+/// @post <code>NeedsFiltering(contact)</code> returns false.
+/// @see NeedsFiltering(const Contact &).
 /// @relatedalso Contact
 constexpr void UnflagForFiltering(Contact& contact) noexcept
 {
@@ -754,6 +780,8 @@ constexpr auto NeedsUpdating(const Contact& contact) noexcept
 }
 
 /// @brief Flags the contact for updating.
+/// @post <code>NeedsUpdating(contact)</code> returns true.
+/// @see NeedsUpdating(const Contact &).
 /// @relatedalso Contact
 constexpr void FlagForUpdating(Contact& contact) noexcept
 {
@@ -761,6 +789,8 @@ constexpr void FlagForUpdating(Contact& contact) noexcept
 }
 
 /// @brief Unflags this contact for updating.
+/// @post <code>NeedsUpdating(contact)</code> returns false.
+/// @see NeedsUpdating(const Contact &).
 /// @relatedalso Contact
 constexpr void UnflagForUpdating(Contact& contact) noexcept
 {
@@ -782,25 +812,27 @@ constexpr auto HasValidToi(const Contact& contact) noexcept
 ///   means no actual impact in current time slot), otherwise undefined.
 /// @see HasValidToi
 /// @relatedalso Contact
-constexpr Real GetToi(const Contact& contact) noexcept
+constexpr auto GetToi(const Contact& contact) noexcept
 {
     return contact.GetToi();
 }
 
 /// @brief Sets the time of impact (TOI).
-/// @note Behavior is undefined if the value assigned is less than 0 or greater than 1.
-/// @see Real GetToi() const.
-/// @see HasValidToi.
 /// @param contact The contact to update.
 /// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no actual impact
 ///   in the current time slot.
+/// @post <code>HasValidToi(contact)</code> returns true.
+/// @post <code>GetToi(const Contact&)</code> returns the value set.
+/// @see HasValidToi, GetToi.
 /// @relatedalso Contact
-constexpr void SetToi(Contact& contact, Real toi) noexcept
+constexpr void SetToi(Contact& contact, UnitInterval<Real> toi) noexcept
 {
     contact.SetToi(toi);
 }
 
 /// @brief Unsets the TOI.
+/// @post <code>HasValidToi(contact)</code> returns false.
+/// @see HasValidToi.
 /// @relatedalso Contact
 constexpr void UnsetToi(Contact& contact) noexcept
 {
@@ -818,13 +850,13 @@ constexpr auto GetFriction(const Contact& contact) noexcept
 /// @brief Sets the friction value for the identified contact.
 /// @details Overrides the default friction mixture.
 /// @note This value persists until set or reset.
-/// @warning Behavior is undefined if given a negative friction value.
 /// @param contact The contact whose friction should be set.
 /// @param value Co-efficient of friction value of zero or greater.
-/// @throws std::out_of_range If given an invalid contact identifier.
+/// @pre @p friction must be greater-than or equal-to zero.
+/// @post <code>GetFriction(contact)</code> returns the value set.
 /// @see GetFriction.
 /// @relatedalso Contact
-constexpr void SetFriction(Contact& contact, Real value) noexcept
+constexpr void SetFriction(Contact& contact, NonNegative<Real> value) noexcept
 {
     contact.SetFriction(value);
 }
@@ -841,7 +873,7 @@ constexpr auto GetRestitution(const Contact& contact) noexcept
 /// @details This override the default restitution mixture.
 /// @note You can call this in "pre-solve" listeners.
 /// @note The value persists until you set or reset.
-/// @throws std::out_of_range If given an invalid contact identifier.
+/// @post <code>GetRestitution(contact)</code> returns the value set.
 /// @see GetRestitution.
 /// @relatedalso Contact
 constexpr void SetRestitution(Contact& contact, Real value)
@@ -850,7 +882,6 @@ constexpr void SetRestitution(Contact& contact, Real value)
 }
 
 /// @brief Gets the desired tangent speed.
-/// @throws std::out_of_range If given an invalid contact identifier.
 /// @see SetTangentSpeed.
 /// @relatedalso Contact
 constexpr auto GetTangentSpeed(const Contact& contact) noexcept
@@ -859,7 +890,7 @@ constexpr auto GetTangentSpeed(const Contact& contact) noexcept
 }
 
 /// @brief Sets the desired tangent speed for a conveyor belt behavior.
-/// @throws std::out_of_range If given an invalid contact identifier.
+/// @post <code>GetTangentSpeed(contact)</code> returns the value set.
 /// @see GetTangentSpeed.
 /// @relatedalso Contact
 constexpr void SetTangentSpeed(Contact& contact, LinearVelocity value) noexcept

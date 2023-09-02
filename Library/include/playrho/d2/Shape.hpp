@@ -65,7 +65,7 @@ struct IsValidShapeType : std::false_type {
 ///   - <code>MassData GetMassData(const T&) noexcept;</code>
 ///   - <code>NonNegative<Length> GetVertexRadius(const T&, ChildCounter idx);</code>
 ///   - <code>NonNegative<AreaDensity> GetDensity(const T&) noexcept;</code>
-///   - <code>Real GetFriction(const T&) noexcept;</code>
+///   - <code>NonNegative<Real> GetFriction(const T&) noexcept;</code>
 ///   - <code>Real GetRestitution(const T&) noexcept;</code>
 /// @see Shape
 template <typename T>
@@ -163,7 +163,7 @@ struct HasRotate<T, std::void_t<decltype(Rotate(std::declval<T&>(), std::declval
 /// @brief Fallback friction setter that throws unless given the same value as current.
 template <class T>
 std::enable_if_t<IsValidShapeType<T>::value && !HasSetFriction<T>::value, void>
-SetFriction(T& o, Real value)
+SetFriction(T& o, NonNegative<Real> value)
 {
     if (GetFriction(o) != value) {
         throw InvalidArgument("SetFriction to non-equivalent value not supported");
@@ -264,12 +264,12 @@ MassData GetMassData(const Shape& shape);
 
 /// @brief Gets the coefficient of friction.
 /// @return Value of 0 or higher.
-/// @see SetFriction(Shape& shape, Real value).
-Real GetFriction(const Shape& shape) noexcept;
+/// @see SetFriction(Shape& shape, NonNegative<Real> value).
+NonNegative<Real> GetFriction(const Shape& shape) noexcept;
 
 /// @brief Sets the coefficient of friction.
 /// @see GetFriction(const Shape& shape).
-void SetFriction(Shape& shape, Real value);
+void SetFriction(Shape& shape, NonNegative<Real> value);
 
 /// @brief Gets the coefficient of restitution value of the given shape.
 /// @see SetRestitution(Shape& shape, Real value).
@@ -522,12 +522,12 @@ public:
         }
     }
 
-    friend Real GetFriction(const Shape& shape) noexcept
+    friend NonNegative<Real> GetFriction(const Shape& shape) noexcept
     {
-        return shape.m_self ? shape.m_self->GetFriction_() : Real(0);
+        return shape.m_self ? shape.m_self->GetFriction_() : NonNegative<Real>();
     }
 
-    friend void SetFriction(Shape& shape, Real value)
+    friend void SetFriction(Shape& shape, NonNegative<Real> value)
     {
         if (shape.m_self) {
             auto copy = shape.m_self->Clone_();
@@ -680,10 +680,10 @@ private:
         virtual void SetDensity_(NonNegative<AreaDensity>) noexcept = 0;
 
         /// @brief Gets the friction.
-        virtual Real GetFriction_() const noexcept = 0;
+        virtual NonNegative<Real> GetFriction_() const noexcept = 0;
 
         /// @brief Sets the friction.
-        virtual void SetFriction_(Real value) = 0;
+        virtual void SetFriction_(NonNegative<Real> value) = 0;
 
         /// @brief Gets the restitution.
         virtual Real GetRestitution_() const noexcept = 0;
@@ -794,12 +794,12 @@ private:
             SetDensity(data, value);
         }
 
-        Real GetFriction_() const noexcept override
+        NonNegative<Real> GetFriction_() const noexcept override
         {
             return GetFriction(data);
         }
 
-        void SetFriction_(Real value) override
+        void SetFriction_(NonNegative<Real> value) override
         {
             SetFriction(data, value);
         }

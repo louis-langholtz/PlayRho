@@ -25,7 +25,6 @@
 /// @file
 /// Declarations of the WorldImpl class.
 
-#include <playrho/Interval.hpp>
 #include <playrho/Math.hpp>
 #include <playrho/pmr/PoolMemoryResource.hpp>
 #include <playrho/Positive.hpp>
@@ -127,7 +126,6 @@ public:
     /// @param conf A customized world configuration or its default value.
     /// @note A lot more configurability can be had via the <code>StepConf</code>
     ///   data that's given to the world's <code>Step</code> method.
-    /// @throws InvalidArgument if the given max vertex radius is less than the min.
     /// @see Step.
     explicit WorldImpl(const WorldConf& conf = WorldConf{});
 
@@ -197,7 +195,6 @@ public:
     /// of the contacts, and notifying the contact listener of begin-contact, end-contact,
     /// pre-solve, and post-solve events.
     ///
-    /// @warning Behavior is undefined if given a negative step time delta.
     /// @warning Varying the step time delta may lead to non-physical behaviors.
     ///
     /// @note Calling this with a zero step time delta results only in fixtures and bodies
@@ -212,6 +209,9 @@ public:
     ///   velocity (<code>v1</code>) of <code>v0 + (a * t)</code> and a new position
     ///   (<code>p1</code>) of <code>p0 + v1 * t</code>.
     ///
+    /// @param conf Configuration for the simulation step.
+    ///
+    /// @pre @p conf.linearSlop is significant enough compared to <code>GetMaxVertexRadius()</code>.
     /// @post Static bodies are unmoved.
     /// @post Kinetic bodies are moved based on their previous velocities.
     /// @post Dynamic bodies are moved based on their previous velocities, gravity, applied
@@ -219,8 +219,6 @@ public:
     ///   of their fixtures when they experience collisions.
     /// @post The bodies for proxies queue will be empty.
     /// @post The fixtures for proxies queue will be empty.
-    ///
-    /// @param conf Configuration for the simulation step.
     ///
     /// @return Statistics for the step.
     ///
@@ -344,8 +342,7 @@ public:
     ///   world's <code>CreateBody(const Body&)</code> method.
     /// @warning This automatically deletes all associated shapes and joints.
     /// @warning This function is locked during callbacks.
-    /// @warning Behavior is undefined if given a null body.
-    /// @warning Behavior is undefined if the passed body was not created by this world.
+    /// @warning Behavior is undefined if the identified body was not created by this world.
     /// @note This function is locked during callbacks.
     /// @post The destroyed body will no longer be present in the range returned from the
     ///   <code>GetBodies()</code> method.
@@ -423,7 +420,7 @@ public:
     /// @details Destroys a given joint that had previously been created by a call to this
     ///   world's <code>CreateJoint(const Joint&)</code> method.
     /// @warning This function is locked during callbacks.
-    /// @warning Behavior is undefined if the passed joint was not created by this world.
+    /// @warning Behavior is undefined if the identified joint was not created by this world.
     /// @note This may cause the connected bodies to begin colliding.
     /// @post The destroyed joint will no longer be present in the range returned from the
     ///   <code>GetJoints()</code> method.
@@ -865,11 +862,10 @@ private:
     
     /// Inverse delta-t from previous step.
     /// @details Used to compute time step ratio to support a variable time step.
-    /// @note 4-bytes large.
     /// @see Step.
     Frequency m_inv_dt0 = 0_Hz;
 
-    /// @brief Min and max vertex radii.
+    /// @brief Vertex radius range.
     /// @details
     /// The interval max is the maximum shape vertex radius that any bodies' of this world should
     /// create fixtures for. Requests to create fixtures for shapes with vertex radiuses bigger than
@@ -877,7 +873,7 @@ private:
     /// associated with this world that would otherwise not be able to be simulated due to
     /// numerical issues. It can also be set below this upper bound to constrain the differences
     /// between shape vertex radiuses to possibly more limited visual ranges.
-    Interval<Positive<Length>> m_vertexRadius{WorldConf::DefaultMinVertexRadius, WorldConf::DefaultMaxVertexRadius};
+    Interval<Positive<Length>> m_vertexRadius = WorldConf::DefaultVertexRadius;
 };
 
 inline const WorldImpl::Proxies& WorldImpl::GetProxies() const noexcept

@@ -157,8 +157,7 @@ public:
     /// @note The indices of leaf nodes that have been destroyed get reused for new nodes.
     /// @post If the root index had been the <code>GetInvalidSize()</code>, then it will
     ///   be set to the index returned from this method.
-    /// @post The leaf count (as reported by <code>GetLeafCount()</code>) will be incremented by
-    /// one.
+    /// @post The leaf count per <code>GetLeafCount()</code> is incremented by one.
     /// @post The node count (as reported by <code>GetNodeCount()</code>) will be incremented by one
     ///   or two (if the root index had not been <code>GetInvalidSize()</code>).
     /// @return The index of the created leaf node. This will be a value not equal to
@@ -169,45 +168,53 @@ public:
     Size CreateLeaf(const AABB& aabb, const Contactable& data);
 
     /// @brief Destroys a leaf node.
-    /// @post The leaf count will be decremented by one.
-    /// @warning Behavior is undefined if the given index is not valid.
+    /// @param index Identifier of node to destroy.
+    /// @pre @p index is less than <code>GetNodeCapacity()</code> and
+    ///   <code>IsLeaf(GetNode(index).GetHeight())</code> is true.
+    /// @post The leaf count per <code>GetLeafCount()</code> is decremented by one.
+    /// @see GetLeafCount().
     void DestroyLeaf(Size index) noexcept;
 
     /// @brief Updates a leaf node with a new AABB value.
-    /// @warning Behavior is undefined if the given index is not valid.
-    /// @param index Leaf node's ID. Behavior is undefined if this is not a valid ID.
+    /// @param index Leaf node's ID.
     /// @param aabb New axis aligned bounding box for the leaf node.
+    /// @pre @p index is less than <code>GetNodeCapacity()</code> and
+    ///   <code>IsLeaf(GetNode(index).GetHeight())</code> is true.
     void UpdateLeaf(Size index, const AABB& aabb);
 
     /// @brief Gets the node identified by the given identifier.
-    /// @warning Behavior is undefined if the given index is not valid.
     /// @param index Identifier of node to get.
+    /// @pre @p index is less than <code>GetNodeCapacity()</code>.
     const TreeNode& GetNode(Size index) const noexcept;
 
     /// @brief Gets the leaf data for the node identified by the given identifier.
-    /// @warning Behavior is undefined if the given index is not valid.
     /// @param index Identifier of node to get the leaf data for.
+    /// @pre @p index is less than <code>GetNodeCapacity()</code> and
+    ///   <code>IsLeaf(GetNode(index).GetHeight())</code> is true.
     /// @return Leaf data for the specified node.
     Contactable GetLeafData(Size index) const noexcept;
 
     /// @brief Gets the AABB for a leaf or branch (a non-unused node).
-    /// @warning Behavior is undefined if the given index is not valid.
     /// @param index Leaf or branch node's ID. Must be a valid ID.
+    /// @pre @p index is less than <code>GetNodeCapacity()</code> and
+    ///   <code>!IsUnused(GetNode(index).GetHeight())</code> is true.
     AABB GetAABB(Size index) const noexcept;
 
     /// @brief Gets the height value for the identified node.
-    /// @warning Behavior is undefined if the given index is not valid.
+    /// @param index Identifier of node to get "height" for.
+    /// @pre @p index is less than <code>GetNodeCapacity()</code>.
     Height GetHeight(Size index) const noexcept;
 
     /// @brief Gets the "other" index for the node at the given index.
     /// @note For unused nodes, this is the index to the "next" unused node.
     /// @note For used nodes (leaf or branch nodes), this is the index to the "parent" node.
-    /// @warning Behavior is undefined if the given index is not valid.
+    /// @param index Identifier of node to get "other" for.
     /// @pre This tree has a node capacity greater than the given index.
     /// @return The invalid index value or a value less than the node capacity.
     Size GetOther(Size index) const noexcept;
 
     /// @brief Gets the branch data for the identified node.
+    /// @param index Identifier of node to get branch data for.
     /// @warning Behavior is undefined if the given index in not a valid branch node.
     DynamicTreeBranchData GetBranchData(Size index) const noexcept;
 

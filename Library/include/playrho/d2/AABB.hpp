@@ -56,7 +56,7 @@ using ::playrho::detail::TestOverlap;
 using AABB = ::playrho::detail::AABB<2>;
 
 /// @brief Gets the perimeter length of the 2-dimensional AABB.
-/// @warning Behavior is undefined for an invalid AABB.
+/// @pre The sizes of each of the AABB's ranges are representable.
 /// @return Twice the sum of the width and height.
 /// @relatedalso playrho::detail::AABB
 /// @see https://en.wikipedia.org/wiki/Perimeter
@@ -68,9 +68,9 @@ constexpr Length GetPerimeter(const AABB& aabb) noexcept
 /// @brief Computes the AABB.
 /// @details Computes the Axis Aligned Bounding Box (AABB) for the given child shape
 ///   at a given a transform.
-/// @warning Behavior is undefined if the given transformation is invalid.
 /// @param proxy Distance proxy for the child shape.
 /// @param xf World transform of the shape.
+/// @pre @p xf is valid.
 /// @return AABB for the proxy shape or the default AABB if the proxy has a zero vertex count.
 /// @relatedalso DistanceProxy
 AABB ComputeAABB(const DistanceProxy& proxy, const Transformation& xf) noexcept;
@@ -78,10 +78,10 @@ AABB ComputeAABB(const DistanceProxy& proxy, const Transformation& xf) noexcept;
 /// @brief Computes the AABB.
 /// @details Computes the Axis Aligned Bounding Box (AABB) for the given child shape
 ///   at the given transforms.
-/// @warning Behavior is undefined if a given transformation is invalid.
 /// @param proxy Distance proxy for the child shape.
 /// @param xfm0 World transform 0 of the shape.
 /// @param xfm1 World transform 1 of the shape.
+/// @pre @p xfm0 and @p xfm1 are both valid.
 /// @return AABB for the proxy shape or the default AABB if the proxy has a zero vertex count.
 /// @relatedalso DistanceProxy
 AABB ComputeAABB(const DistanceProxy& proxy, const Transformation& xfm0,

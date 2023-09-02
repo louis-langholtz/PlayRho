@@ -82,7 +82,7 @@ ShapeCounter GetUsedShapesCount(const World& world) noexcept
     return static_cast<ShapeCounter>(std::size(ids));
 }
 
-void SetFriction(World& world, ShapeID id, Real value)
+void SetFriction(World& world, ShapeID id, NonNegative<Real> value)
 {
     auto object = GetShape(world, id);
     SetFriction(object, value);
@@ -161,7 +161,7 @@ bool TestPoint(const World& world, BodyID bodyId, ShapeID shapeId, const Length2
     return TestPoint(GetShape(world, shapeId), InverseTransform(p, GetTransformation(world, bodyId)));
 }
 
-Real GetDefaultFriction(const Shape& a, const Shape& b)
+NonNegative<Real> GetDefaultFriction(const Shape& a, const Shape& b)
 {
     return MixFriction(GetFriction(a), GetFriction(b));
 }

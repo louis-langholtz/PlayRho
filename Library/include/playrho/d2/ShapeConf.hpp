@@ -188,7 +188,7 @@ constexpr NonNegative<Real> GetFriction(const BaseShapeConf& arg) noexcept
 
 /// @brief Sets the friction of the given shape.
 /// @relatedalso BaseShapeConf
-inline void SetFriction(BaseShapeConf& arg, Real value)
+inline void SetFriction(BaseShapeConf& arg, NonNegative<Real> value)
 {
     arg.friction = value;
 }

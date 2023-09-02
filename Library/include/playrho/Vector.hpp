@@ -154,7 +154,8 @@ struct Vector
 
     /// @brief Gets a reference to the requested element.
     /// @note No bounds checking is performed.
-    /// @warning Behavior is undefined if given a position equal to or greater than size().
+    /// @param pos Indexing position into the vector to return reference for.
+    /// @pre @p pos is less-than <code>size()</code>.
     constexpr reference operator[](size_type pos) noexcept
     {
         assert(pos < size());
@@ -163,7 +164,8 @@ struct Vector
     
     /// @brief Gets a constant reference to the requested element.
     /// @note No bounds checking is performed.
-    /// @warning Behavior is undefined if given a position equal to or greater than size().
+    /// @param pos Indexing position into the vector to return reference for.
+    /// @pre @p pos is less-than <code>size()</code>.
     constexpr const_reference operator[](size_type pos) const noexcept
     {
         assert(pos < size());
