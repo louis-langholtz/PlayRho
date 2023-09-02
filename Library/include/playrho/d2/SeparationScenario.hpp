@@ -65,16 +65,14 @@ using SeparationScenario = std::variant<
 // Free functions...
 
 /// @brief Gets a separation finder for the given inputs.
-///
-/// @warning Behavior is undefined if given less than one index pair or more than three.
-///
 /// @param indices Collection of 1 to 3 index pairs. A points-type finder will be
 ///    returned if given 1 index pair. A face-type finder will be returned otherwise.
 /// @param proxyA Proxy A.
 /// @param xfA Transformation A.
 /// @param proxyB Proxy B.
 /// @param xfB Transformation B.
-///
+/// @pre <code>empty(indices)</code> is false.
+/// @pre @p proxyA and @p proxyB both have more than zero vertices.
 SeparationScenario GetSeparationScenario(IndexPair3 indices,
                                          const DistanceProxy& proxyA,
                                          const Transformation& xfA,

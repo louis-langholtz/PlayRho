@@ -758,11 +758,8 @@ WorldImpl::WorldImpl(const WorldConf& conf):
     m_proxyKeysResource({ReserveBuffers, conf.reserveContactKeys * sizeof(ProxyKey)}, conf.upstream),
     m_islandResource({ReserveBuffers}, conf.upstream),
     m_tree(conf.treeCapacity),
-    m_vertexRadius{conf.minVertexRadius, conf.maxVertexRadius}
+    m_vertexRadius{conf.vertexRadius}
 {
-    if (conf.minVertexRadius > conf.maxVertexRadius) {
-        throw InvalidArgument("max vertex radius must be >= min vertex radius");
-    }
     m_proxiesForContacts.reserve(conf.proxyCapacity);
     m_contactBuffer.reserve(conf.contactCapacity);
     m_manifoldBuffer.reserve(conf.contactCapacity);
@@ -1816,7 +1813,7 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
 
     // Now solve for remainder of time step.
     auto subConf = StepConf{conf};
-    subConf.deltaTime = (1 - toi) * conf.deltaTime;
+    subConf.deltaTime = (Real(1) - toi) * conf.deltaTime;
     auto results = SolveToiViaGS(island, subConf);
     results.contactsUpdated += contactsUpdated;
     results.contactsSkipped += contactsSkipped;
@@ -2011,9 +2008,9 @@ WorldImpl::ProcessContactsForTOI( // NOLINT(readability-function-cognitive-compl
 
 StepStats WorldImpl::Step(const StepConf& conf)
 {
-    assert((Length{m_vertexRadius.GetMax()} * Real{2}) +
-           (Length{conf.linearSlop} / Real{4}) > (Length{m_vertexRadius.GetMax()} * Real{2}));
-    
+    assert((m_vertexRadius.GetMax() * Real(2)) +
+           (conf.linearSlop / Real(4)) > (m_vertexRadius.GetMax() * Real(2)));
+
     if (IsLocked()) {
         throw WrongState(worldIsLockedMsg);
     }

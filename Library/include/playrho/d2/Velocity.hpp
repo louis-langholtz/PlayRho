@@ -145,8 +145,8 @@ using VelocityPair = std::pair<Velocity, Velocity>;
 
 /// @brief Caps velocity.
 /// @details Enforces maximums on the given velocity.
-/// @param velocity Velocity to cap. Behavior is undefined if this value is invalid.
-/// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
+/// @param velocity Velocity to cap.
+/// @param h Time elapsed to get velocity for.
 /// @param conf Movement configuration. This defines caps on linear and angular speeds.
 /// @relatedalso Velocity
 Velocity Cap(Velocity velocity, Time h, const MovementConf& conf) noexcept;

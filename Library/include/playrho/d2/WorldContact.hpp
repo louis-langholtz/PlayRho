@@ -41,10 +41,12 @@
 #include <vector>
 
 #include <playrho/BodyID.hpp>
-#include <playrho/ShapeID.hpp>
 #include <playrho/ContactID.hpp>
 #include <playrho/KeyedContactID.hpp>
+#include <playrho/NonNegative.hpp>
 #include <playrho/Settings.hpp>
+#include <playrho/ShapeID.hpp>
+#include <playrho/UnitInterval.hpp>
 
 #include <playrho/d2/WorldManifold.hpp>
 
@@ -165,7 +167,7 @@ bool HasValidToi(const World& world, ContactID id);
 /// @throws std::out_of_range If given an invalid contact identifier.
 /// @see HasValidToi.
 /// @relatedalso World
-Real GetToi(const World& world, ContactID id);
+UnitInterval<Real> GetToi(const World& world, ContactID id);
 
 /// @brief Gets the default friction amount for the identified contact.
 /// @throws std::out_of_range If given an invalid contact identifier.
@@ -183,7 +185,7 @@ Real GetDefaultRestitution(const World& world, ContactID id);
 /// @throws std::out_of_range If given an invalid contact identifier.
 /// @see SetFriction.
 /// @relatedalso World
-Real GetFriction(const World& world, ContactID id);
+NonNegative<Real> GetFriction(const World& world, ContactID id);
 
 /// @brief Gets the restitution used with the identified contact.
 /// @throws std::out_of_range If given an invalid contact identifier.
@@ -192,16 +194,17 @@ Real GetFriction(const World& world, ContactID id);
 Real GetRestitution(const World& world, ContactID id);
 
 /// @brief Sets the friction value for the identified contact.
-/// @details Overrides the default friction mixture.
-/// @note You can call this in "pre-solve" listeners.
-/// @note This value persists until set or reset.
-/// @warning Behavior is undefined if given a negative friction value.
+/// @note Overrides the default friction mixture. You can call this in "pre-solve"
+///   listeners. This value persists until set or reset.
 /// @param world The world in which the contact is identified in.
 /// @param id Identifier of the contact whose friction value should be set.
 /// @param friction Co-efficient of friction value of zero or greater.
+/// @pre @p friction must be greater-than or equal-to zero.
+/// @post <code>GetFriction(world, id)</code> returns the value set.
 /// @throws std::out_of_range If given an invalid contact identifier.
+/// @see GetFriction(const World&, ContactID).
 /// @relatedalso World
-void SetFriction(World& world, ContactID id, Real friction);
+void SetFriction(World& world, ContactID id, NonNegative<Real> friction);
 
 /// @brief Sets the restitution value for the specified contact.
 /// @details This override the default restitution mixture.

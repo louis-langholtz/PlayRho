@@ -217,10 +217,9 @@ public:
     };
     
     /// @brief Accesses the point identified by the given index.
-    /// @warning Behavior is undefined if given index is not less than
-    ///   <code>MaxManifoldPoints</code>.
     /// @param index Index of the point to return. This should be a value less than returned
     ///   by <code>GetPointCount</code>.
+    /// @pre @p index is less than <code>MaxManifoldPoints</code>.
     /// @return velocity constraint point for the given index. This point's data will be invalid
     ///   unless previously added and set.
     /// @see GetPointCount.
@@ -235,8 +234,7 @@ private:
     /// @brief Adds the given point to this contact velocity constraint object.
     /// @details Adds up to <code>MaxManifoldPoints</code> points. To find out how many points
     ///   have already been added, call <code>GetPointCount</code>.
-    /// @warning Behavior is undefined if an attempt is made to add more than
-    ///   <code>MaxManifoldPoints</code> points.
+    /// @pre <code>GetPointCount()</code> is less than <code>MaxManifoldPoints</code>.
     /// @see GetPointCount().
     void AddPoint(Momentum normalImpulse, Momentum tangentImpulse,
                   const Length2& relA, const Length2& relB, const Span<const BodyConstraint>& bodies,
@@ -251,10 +249,9 @@ private:
                    const Conf& conf) const noexcept;
     
     /// Accesses the point identified by the given index.
-    /// @warning Behavior is undefined if given index is not less than
-    ///   <code>MaxManifoldPoints</code>.
     /// @param index Index of the point to return. This should be a value less than returned
     ///   by <code>GetPointCount</code>.
+    /// @pre @p index is less than <code>MaxManifoldPoints</code>.
     /// @return velocity constraint point for the given index. This point's data will be invalid
     ///   unless previously added and set.
     /// @see GetPointCount.

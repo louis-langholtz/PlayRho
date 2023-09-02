@@ -229,7 +229,8 @@ DynamicTree::Size UpdateUpwardFrom(DynamicTree::TreeNode nodes[], DynamicTree::S
 ///   starting from the given index.
 /// @details Finds the index of the "lowest cost" node using a surface area heuristic
 ///   (S.A.H.) for two dimensions.
-/// @warning Behavior is undefined if the given index is invalid or for an unused node.
+/// @pre <code>IsValid(leafAABB)</code>, <code>index != DynamicTree::GetInvalidSize()</code>,
+///   and <code>!playrho::d2::IsUnused(nodes[index])</code> are all true.
 DynamicTree::Size FindLowestCostNode(const DynamicTree::TreeNode nodes[], const AABB& leafAABB,
                                      DynamicTree::Size index) noexcept
 {

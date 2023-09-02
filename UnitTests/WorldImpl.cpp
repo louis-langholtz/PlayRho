@@ -154,15 +154,6 @@ TEST(WorldImpl, Init)
     }
 }
 
-TEST(WorldImpl, InvalidArgumentInit)
-{
-    const auto min = Positive<Length>(4_m);
-    const auto max = Positive<Length>(8_m);
-    ASSERT_GT(max, min);
-    const auto def = WorldConf{}.UseMinVertexRadius(max).UseMaxVertexRadius(min);
-    EXPECT_THROW(WorldImpl{def}, InvalidArgument);
-}
-
 TEST(WorldImpl, Clear)
 {
     auto jointListener = PushBackListener<JointID, InvalidArgument>{};

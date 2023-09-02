@@ -29,8 +29,7 @@ TEST(WorldConf, DefaultConstruction)
 {
     const auto worldConf = WorldConf{};
     EXPECT_EQ(worldConf.upstream, WorldConf::DefaultUpstream);
-    EXPECT_EQ(worldConf.minVertexRadius, WorldConf::DefaultMinVertexRadius);
-    EXPECT_EQ(worldConf.maxVertexRadius, WorldConf::DefaultMaxVertexRadius);
+    EXPECT_EQ(worldConf.vertexRadius, WorldConf::DefaultVertexRadius);
     EXPECT_EQ(worldConf.treeCapacity, WorldConf::DefaultTreeCapacity);
     EXPECT_EQ(worldConf.contactCapacity, WorldConf::DefaultContactCapacity);
     EXPECT_EQ(worldConf.proxyCapacity, WorldConf::DefaultProxyCapacity);
@@ -45,14 +44,10 @@ TEST(WorldConf, UseUpstream)
     EXPECT_EQ(WorldConf().UseUpstream(nullptr).upstream, nullptr);
 }
 
-TEST(WorldConf, UseMinVertexRadius)
+TEST(WorldConf, UseVertexRadius)
 {
-    EXPECT_EQ(WorldConf().UseMinVertexRadius(4.2_m).minVertexRadius, 4.2_m);
-}
-
-TEST(WorldConf, UseMaxVertexRadius)
-{
-    EXPECT_EQ(WorldConf().UseMaxVertexRadius(4.2_m).maxVertexRadius, 4.2_m);
+    EXPECT_EQ(WorldConf().UseVertexRadius({4.2_m, 6.3_m}).vertexRadius.GetMin(), 4.2_m);
+    EXPECT_EQ(WorldConf().UseVertexRadius({4.2_m, 6.3_m}).vertexRadius.GetMax(), 6.3_m);
 }
 
 TEST(WorldConf, UseTreeCapacity)

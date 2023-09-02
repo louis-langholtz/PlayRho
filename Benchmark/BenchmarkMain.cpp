@@ -2403,6 +2403,9 @@ static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
     constexpr auto linearSlop = 0.005f * playrho::Meter;
     constexpr auto angularSlop = (2.0f / 180.0f * playrho::Pi) * playrho::Radian;
     constexpr auto vertexRadius = linearSlop * 2;
+    constexpr auto radiusRange = ::playrho::Interval<::playrho::Positive<::playrho::Length>>{
+        vertexRadius, ::playrho::DefaultMaxVertexRadius
+    };
     constexpr auto gravity =
         playrho::LinearAcceleration2{TilesGravityX * playrho::MeterPerSquareSecond,
                                      TilesGravityY * playrho::MeterPerSquareSecond};
@@ -2410,7 +2413,7 @@ static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
         playrho::d2::part::GeometryIs<playrho::d2::part::DynamicRectangle<0, 0>>>{};
     playrho::d2::part::SetVertexRadius(conf, 0, vertexRadius);
     auto world = playrho::d2::World{
-        playrho::d2::WorldConf{}.UseMinVertexRadius(vertexRadius).UseTreeCapacity(8192)};
+        playrho::d2::WorldConf{}.UseVertexRadius(radiusRange).UseTreeCapacity(8192)};
 
     {
         constexpr auto a = 0.5f;

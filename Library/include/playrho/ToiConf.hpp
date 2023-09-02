@@ -56,11 +56,17 @@ struct ToiConf {
     /// @brief Distance iteration type.
     using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
 
+    /// @brief Default target depth.
+    static constexpr auto DefaultTargetDepth = NonNegative<Length>{DefaultLinearSlop * Real(3)};
+
+    /// @brief Default tolerance.
+    static constexpr auto DefaultTolerance = NonNegative<Length>{DefaultLinearSlop / Real(4)};
+
     /// @brief Uses the given time max value.
     constexpr ToiConf& UseTimeMax(Real value) noexcept;
 
     /// @brief Uses the given target depth value.
-    constexpr ToiConf& UseTargetDepth(Length value) noexcept;
+    constexpr ToiConf& UseTargetDepth(NonNegative<Length> value) noexcept;
 
     /// @brief Uses the given tolerance value.
     constexpr ToiConf& UseTolerance(NonNegative<Length> value) noexcept;
@@ -78,16 +84,16 @@ struct ToiConf {
     Real tMax = 1;
 
     /// @brief Targeted depth of impact.
-    /// @note Value must be less than twice the minimum vertex radius of any shape.
-    Length targetDepth = DefaultLinearSlop * Real{3};
+    /// @note Value should be less than twice the minimum vertex radius of any shape.
+    NonNegative<Length> targetDepth = DefaultTargetDepth;
 
     /// @brief Tolerance.
     /// @details Provides a +/- range from the target depth that defines a minimum and
     ///   maximum target depth within which inclusively, time of impact calculating code
     ///   is expected to return a "touching" status.
     /// @note Use the default value unless you really know what you're doing.
-    /// @note Use 0 to require a TOI at exactly the target depth. This is ill-advised.
-    NonNegative<Length> tolerance = NonNegative<Length>{DefaultLinearSlop / Real{4}};
+    /// @note A value of 0 requires a TOI at exactly the target depth. This is ill-advised.
+    NonNegative<Length> tolerance = DefaultTolerance;
 
     /// @brief Maximum number of root finder iterations.
     /// @details This is the maximum number of iterations for calculating the 1-dimensional
@@ -109,7 +115,7 @@ constexpr ToiConf& ToiConf::UseTimeMax(Real value) noexcept
     return *this;
 }
 
-constexpr ToiConf& ToiConf::UseTargetDepth(Length value) noexcept
+constexpr ToiConf& ToiConf::UseTargetDepth(NonNegative<Length> value) noexcept
 {
     targetDepth = value;
     return *this;

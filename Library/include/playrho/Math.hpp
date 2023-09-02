@@ -642,13 +642,11 @@ constexpr auto IsPowerOfTwo(const T& n) -> decltype(n && !(n & (n - 1)))
 Real Normalize(Vec2& vector);
 
 /// @brief Computes the centroid of a counter-clockwise array of 3 or more vertices.
-/// @note Behavior is undefined if there are less than 3 vertices or the vertices don't
-///   go counter-clockwise.
+/// @pre @p vertices Has 3 or more elements and they're in counter-clockwise order.
 Length2 ComputeCentroid(const Span<const Length2>& vertices);
 
 /// @brief Gets the modulo next value.
 /// @pre The given value is less than the given count.
-/// @warning Behavior is undefined if the given value is not less than the given count.
 template <typename T>
 constexpr auto GetModuloNext(T value, T count) noexcept -> decltype(++value, T(value % count))
 {
@@ -659,7 +657,6 @@ constexpr auto GetModuloNext(T value, T count) noexcept -> decltype(++value, T(v
 
 /// @brief Gets the modulo previous value.
 /// @pre The given value is less than the given count.
-/// @warning Behavior is undefined if the given value is not less than the given count.
 template <typename T>
 constexpr auto GetModuloPrev(const T value, const T count) noexcept -> T
 {
@@ -711,11 +708,8 @@ NonNegative<Area> GetAreaOfCircle(Length radius);
 NonNegative<Area> GetAreaOfPolygon(const Span<const Length2>& vertices);
 
 /// @brief Gets the polar moment of the area enclosed by the given vertices.
-///
-/// @warning Behavior is undefined if given collection has less than 3 vertices.
-///
 /// @param vertices Collection of three or more vertices.
-///
+/// @pre @p vertices has 3 or more elements.
 SecondMomentOfArea GetPolarMoment(const Span<const Length2>& vertices);
 
 /// @}

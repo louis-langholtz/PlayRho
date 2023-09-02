@@ -146,15 +146,6 @@ TEST(World, Init)
     }
 }
 
-TEST(World, InvalidArgumentInit)
-{
-    const auto min = Positive<Length>(4_m);
-    const auto max = Positive<Length>(8_m);
-    ASSERT_GT(max, min);
-    const auto def = WorldConf{}.UseMinVertexRadius(max).UseMaxVertexRadius(min);
-    EXPECT_THROW(World{def}, InvalidArgument);
-}
-
 TEST(World, Clear)
 {
     auto jointListener = PushBackListener<JointID>{};
@@ -1806,6 +1797,8 @@ TEST(World, HeavyOnLight)
     constexpr auto AngularSlop = (Pi * Real{2} * 1_rad) / Real{180};
     constexpr auto LargerLinearSlop = playrho::Meter / playrho::Real(200);
     constexpr auto SmallerLinearSlop = playrho::Meter / playrho::Real(1000);
+    constexpr auto MaxVertexRadius = ::playrho::DefaultMaxVertexRadius;
+    constexpr auto VertexRadius = Interval<Positive<Length>>{SmallerLinearSlop, MaxVertexRadius};
 
     const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity);
     const auto upperBodyConf = BodyConf(bd).UseLocation(Vec2(0.0f, 6.0f) * Meter);
@@ -1854,7 +1847,7 @@ TEST(World, HeavyOnLight)
     
     // Create lower body, then upper body using the larger step conf
     {
-        auto world = World{WorldConf{}.UseMinVertexRadius(SmallerLinearSlop)};
+        auto world = World{WorldConf{}.UseVertexRadius(VertexRadius)};
         const auto ground = CreateBody(world);
         Attach(world, ground, CreateShape(world, groundConf));
 
@@ -1887,7 +1880,7 @@ TEST(World, HeavyOnLight)
 
     // Create upper body, then lower body using the larger step conf
     {
-        auto world = World{WorldConf{}.UseMinVertexRadius(SmallerLinearSlop)};
+        auto world = World{WorldConf{}.UseVertexRadius(VertexRadius)};
         const auto ground = CreateBody(world);
         Attach(world, ground, CreateShape(world, groundConf));
 
@@ -1916,7 +1909,7 @@ TEST(World, HeavyOnLight)
     
     // Create lower body, then upper body using the smaller step conf
     {
-        auto world = World{WorldConf{}.UseMinVertexRadius(SmallerLinearSlop)};
+        auto world = World{WorldConf{}.UseVertexRadius(VertexRadius)};
         const auto ground = CreateBody(world);
         Attach(world, ground, CreateShape(world, groundConf));
 
@@ -1952,7 +1945,7 @@ TEST(World, HeavyOnLight)
     
     // Create upper body, then lower body using the smaller step conf
     {
-        auto world = World{WorldConf{}.UseMinVertexRadius(SmallerLinearSlop)};
+        auto world = World{WorldConf{}.UseVertexRadius(VertexRadius)};
         const auto ground = CreateBody(world);
         Attach(world, ground, CreateShape(world, groundConf));
 
@@ -1992,7 +1985,7 @@ TEST(World, HeavyOnLight)
     
     // Create upper body, then lower body using the smaller step conf, and using sensors
     {
-        auto world = World{WorldConf{}.UseMinVertexRadius(SmallerLinearSlop)};
+        auto world = World{WorldConf{}.UseVertexRadius(VertexRadius)};
         const auto ground = CreateBody(world);
         Attach(world, ground, CreateShape(world, groundConf));
 
@@ -2675,10 +2668,11 @@ TEST(World_Longer, TilesComesToRest)
 {
     constexpr auto LinearSlop = Meter / 1000;
     constexpr auto AngularSlop = (Pi * 2 * 1_rad) / 180;
-    constexpr auto VertexRadius = LinearSlop * 2;
-    auto conf = PolygonShapeConf{}.UseVertexRadius(VertexRadius);
-    const auto world = std::make_unique<World>(WorldConf{}.UseMinVertexRadius(VertexRadius));
-    
+    constexpr auto MinVertexRadius = LinearSlop * 2;
+    constexpr auto MaxVertexRadius = ::playrho::DefaultMaxVertexRadius;
+    constexpr auto VertexRadius = Interval<Positive<Length>>{MinVertexRadius, MaxVertexRadius};
+    auto conf = PolygonShapeConf{}.UseVertexRadius(MinVertexRadius);
+    const auto world = std::make_unique<World>(WorldConf{}.UseVertexRadius(VertexRadius));
     constexpr auto e_count = 36;
     auto createdBodyCount = 0ul;
     
@@ -3038,8 +3032,9 @@ TEST(World, SpeedingBulletBallWontTunnel)
     constexpr auto LinearSlop = playrho::Meter / playrho::Real(1000);
     constexpr auto AngularSlop = (Pi * Real{2} * 1_rad) / Real{180};
     constexpr auto VertexRadius = playrho::Length{LinearSlop * playrho::Real(2)};
-    
-    World world{WorldConf{}.UseMinVertexRadius(VertexRadius)};
+    constexpr auto MaxVertexRadius = ::playrho::DefaultMaxVertexRadius;
+    constexpr auto RadiusRange = Interval<Positive<Length>>{VertexRadius, MaxVertexRadius};
+    World world{WorldConf{}.UseVertexRadius(RadiusRange)};
     MyContactListener listener{
         world,
         [&](ContactID, const Manifold&) {},

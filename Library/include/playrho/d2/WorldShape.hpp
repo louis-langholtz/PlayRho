@@ -136,7 +136,7 @@ void SetFilterData(World& world, ShapeID id, const Filter& filter);
 /// @return Value of 0 or higher.
 /// @throws std::out_of_range If given an invalid identifier.
 /// @relatedalso World
-inline Real GetFriction(const World& world, ShapeID id)
+inline NonNegative<Real> GetFriction(const World& world, ShapeID id)
 {
     return GetFriction(GetShape(world, id));
 }
@@ -145,7 +145,7 @@ inline Real GetFriction(const World& world, ShapeID id)
 /// @throws std::out_of_range If given an invalid identifier.
 /// @see GetFriction.
 /// @relatedalso World
-void SetFriction(World& world, ShapeID id, Real value);
+void SetFriction(World& world, ShapeID id, NonNegative<Real> value);
 
 /// @brief Gets the coefficient of restitution of the specified shape.
 /// @throws std::out_of_range If given an invalid identifier.
@@ -243,7 +243,7 @@ bool TestPoint(const World& world, BodyID bodyId, ShapeID shapeId, const Length2
 
 /// @brief Gets the default friction amount for the given shapes.
 /// @relatedalso Shape
-Real GetDefaultFriction(const Shape& a, const Shape& b);
+NonNegative<Real> GetDefaultFriction(const Shape& a, const Shape& b);
 
 /// @brief Gets the default restitution amount for the given shapes.
 /// @relatedalso Shape

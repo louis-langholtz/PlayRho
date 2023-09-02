@@ -29,19 +29,6 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(TOIConf, ByteSize)
-{
-    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
-    // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real))
-    {
-        case  4: EXPECT_EQ(sizeof(ToiConf), std::size_t(16)); break;
-        case  8: EXPECT_EQ(sizeof(ToiConf), std::size_t(32)); break;
-        case 16: EXPECT_EQ(sizeof(ToiConf), std::size_t(64)); break;
-        default: FAIL(); break;
-    }
-}
-
 TEST(TOIConf, DefaultConstruction)
 {
     EXPECT_EQ(ToiConf{}.tMax, Real(1));
@@ -384,7 +371,6 @@ TEST(TimeOfImpact, CirclesPassingParSepPathsDontCollide)
 TEST(TimeOfImpact, CirclesExactlyTouchingAtStart)
 {
     const auto radius = 1_m;
-    
     const Length2 circleVertices[] = {Length2{}};
     const UnitVec circleNormals[] = {UnitVec{}};
     const auto circle = DistanceProxy{radius, 1, circleVertices, circleNormals};

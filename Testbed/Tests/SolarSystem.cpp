@@ -90,7 +90,7 @@ public:
 
         auto conf = Test::Conf{};
         conf.description = os.str();
-        conf.worldConf = WorldConf{}.UseMaxVertexRadius(1e7_km);
+        conf.worldConf = WorldConf{}.UseVertexRadius({2_m, 1e7_km});
         conf.neededSettings = 0;
         conf.neededSettings |= (1u << NeedLinearSlopField);
         conf.neededSettings |= (1u << NeedCameraZoom);

@@ -325,7 +325,9 @@ protected:
         /// @brief World definition/configuration data.
         /// @note Explicitly uses -10 for gravity here to behave more like
         ///   Erin Catto's Box Testbed (which uses -10 for Earthly gravity).
-        WorldConf worldConf = WorldConf{}.UseMinVertexRadius(0.0002_m);
+        WorldConf worldConf = WorldConf{}.UseVertexRadius({
+            0.0002_m, Positive<Length>{::playrho::DefaultMaxVertexRadius}
+        });
 
         Settings settings;
         

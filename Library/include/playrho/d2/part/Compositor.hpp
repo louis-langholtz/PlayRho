@@ -839,7 +839,7 @@ auto SetSensor(Compositor<P1, P2, P3, P4, P5, P6>& arg, bool value)
 /// having a member variable of this same name and accepting the given value.
 /// @relatedalso Compositor
 template <class P1, class P2, class P3, class P4, class P5, class P6>
-auto SetFriction(Compositor<P1, P2, P3, P4, P5, P6>& arg, Real value)
+auto SetFriction(Compositor<P1, P2, P3, P4, P5, P6>& arg, NonNegative<Real> value)
     -> std::enable_if_t<!std::is_const_v<decltype(arg.friction)>, void>
 {
     arg.friction = value;

@@ -80,6 +80,7 @@ public:
     WorldManifold() = default;
     
     /// @brief Initializing constructor.
+    /// @pre <code>IsValid(normal)</code> is true.
     constexpr explicit WorldManifold(const UnitVec& normal) noexcept:
         m_normal{normal}
     {
@@ -88,6 +89,7 @@ public:
     }
     
     /// @brief Initializing constructor.
+    /// @pre <code>IsValid(normal)</code> is true.
     constexpr explicit WorldManifold(const UnitVec& normal, const PointData& ps0) noexcept:
         m_normal{normal},
         m_points{ps0.location, GetInvalid<Length2>()},
@@ -99,6 +101,7 @@ public:
     }
     
     /// @brief Initializing constructor.
+    /// @pre <code>IsValid(normal)</code> is true.
     constexpr explicit WorldManifold(const UnitVec& normal, const PointData& ps0, const PointData& ps1) noexcept:
         m_normal{normal},
         m_points{ps0.location, ps1.location},
@@ -110,12 +113,9 @@ public:
     }
     
     /// @brief Gets the point count.
-    ///
     /// @details This is the maximum index value that can be used to access valid point or
     ///   separation information.
-    ///
     /// @return Value between 0 and 2.
-    ///
     size_type GetPointCount() const noexcept
     {
         return static_cast<size_type>((IsValid(m_separations[0])? 1u: 0u) + (IsValid(m_separations[1])? 1u: 0u));
@@ -126,32 +126,23 @@ public:
     /// @return Normal of the contact or an invalid value.
     UnitVec GetNormal() const noexcept { return m_normal; }
     
-    /// Gets the indexed point's location in world coordinates.
-    ///
-    /// @warning Behavior is undefined if the index value is not less than
-    ///   <code>MaxManifoldPoints</code>
-    ///
+    /// @brief Gets the indexed point's location in world coordinates.
     /// @param index Index to return point for. This must be between 0 and
     ///   <code>GetPointCount()</code> to get a valid point from this method.
-    ///
+    /// @pre @p index is less than <code>MaxManifoldPoints</code>.
     /// @return Point or an invalid value if the given index was invalid.
-    ///
     Length2 GetPoint(size_type index) const noexcept
     {
         assert(index < MaxManifoldPoints);
         return m_points[index]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
     
-    /// Gets the amount of separation at the given indexed point.
-    ///
-    /// @warning Behavior is undefined if the index value is not less than
-    ///   <code>MaxManifoldPoints</code>
+    /// @brief Gets the amount of separation at the given indexed point.
     /// @param index Index to return separation for. This must be between 0 and
     ///   <code>GetPointCount()</code>.
-    ///
+    /// @pre @p index is less than <code>MaxManifoldPoints</code>.
     /// @return Separation amount (a negative value), or an invalid value if the given index
     ///   was invalid.
-    ///
     Length GetSeparation(size_type index) const noexcept
     {
         assert(index < MaxManifoldPoints);
@@ -159,6 +150,7 @@ public:
     }
     
     /// @brief Gets the given index contact impulses.
+    /// @pre @p index is less than <code>MaxManifoldPoints</code>.
     /// @return "Normal impulse" and "tangent impulse" pair.
     Momentum2 GetImpulses(size_type index) const noexcept
     {

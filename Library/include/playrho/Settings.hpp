@@ -22,6 +22,8 @@
 /**
  * @file
  * @brief Types and default settings file.
+ * @note This file intentionally doesn't use any checked values to avoid
+ *   imposing those for these base values.
  */
 
 #ifndef PLAYRHO_SETTINGS_HPP
@@ -36,7 +38,6 @@
 
 #include <playrho/Templates.hpp>
 #include <playrho/RealConstants.hpp>
-#include <playrho/Positive.hpp>
 #include <playrho/Units.hpp>
 #include <playrho/WiderType.hpp>
 
@@ -63,7 +64,7 @@ struct Defaults
     /// @brief Gets the max vertex radius.
     static constexpr auto GetMaxVertexRadius() noexcept
     {
-        // DefaultLinearSlop * Real{2 * 1024 * 1024};
+        // DefaultLinearSlop * Real(2 * 1024 * 1024);
         // linearSlop * 2550000
         return MaxVertexRadius;
     }
@@ -81,7 +82,7 @@ struct Defaults<Fixed<std::int32_t,FRACTION_BITS>>
     {
         // Needs to be big enough that the step tolerance doesn't go to zero.
         // ex: FRACTION_BITS==10, then divisor==256
-        return Length{1_m / Real{(1u << (FRACTION_BITS - 2))}};
+        return Length{1_m / Real(1u << (FRACTION_BITS - 2))};
     }
     
     /// @brief Gets the max vertex radius.
@@ -144,22 +145,22 @@ constexpr auto InvalidVertex = static_cast<VertexCounter>(-1);
 constexpr auto DefaultLinearSlop = detail::Defaults<Real>::GetLinearSlop();
 
 /// @brief Default minimum vertex radius.
-constexpr auto DefaultMinVertexRadius = Positive<Length>{DefaultLinearSlop * Real{2}};
+constexpr auto DefaultMinVertexRadius = DefaultLinearSlop * Real(2);
 
 /// @brief Default maximum vertex radius.
-constexpr auto DefaultMaxVertexRadius = Positive<Length>{detail::Defaults<Real>::GetMaxVertexRadius()};
+constexpr auto DefaultMaxVertexRadius = detail::Defaults<Real>::GetMaxVertexRadius();
 
 /// @brief Default AABB extension amount.
-constexpr auto DefaultAabbExtension = DefaultLinearSlop * Real{20};
+constexpr auto DefaultAabbExtension = DefaultLinearSlop * Real(20);
 
 /// @brief Default distance multiplier.
-constexpr auto DefaultDistanceMultiplier = Real{2};
+constexpr auto DefaultDistanceMultiplier = Real(2);
 
 /// @brief Default angular slop.
 /// @details
 /// A small angle used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.
-constexpr auto DefaultAngularSlop = (Pi * 2_rad) / Real{180};
+constexpr auto DefaultAngularSlop = (Pi * 2_rad) / Real(180);
 
 /// @brief Default maximum linear correction.
 /// @details The maximum linear position correction used when solving constraints.
@@ -269,12 +270,12 @@ constexpr auto DefaultLinearSleepTolerance = 0.01_mps; // aka 0.01
 
 /// Default angular sleep tolerance.
 /// @details A body cannot sleep if its angular velocity is above this amount.
-constexpr auto DefaultAngularSleepTolerance = Real{(Pi * 2) / 180} * RadianPerSecond;
+constexpr auto DefaultAngularSleepTolerance = Real((Pi * 2) / 180) * RadianPerSecond;
 
 /// Default circles ratio.
 /// @details Ratio used for switching between rounded-corner collisions and closest-face
 ///   biased normal collisions.
-constexpr auto DefaultCirclesRatio = Real{10};
+constexpr auto DefaultCirclesRatio = Real(10);
 
 } // namespace playrho
 

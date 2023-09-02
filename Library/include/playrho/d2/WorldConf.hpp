@@ -24,8 +24,11 @@
 /// @file
 /// Declarations of the WorldConf class.
 
-#include <playrho/pmr/MemoryResource.hpp> // for pmr things
+#include <playrho/Interval.hpp>
+#include <playrho/Positive.hpp>
 #include <playrho/Settings.hpp>
+
+#include <playrho/pmr/MemoryResource.hpp> // for pmr things
 
 namespace playrho {
 namespace d2 {
@@ -37,11 +40,11 @@ struct WorldConf {
     /// @warning The pointed to object must stay valid for the life of the configured world.
     static inline const auto DefaultUpstream = pmr::new_delete_resource();
 
-    /// @brief Default min vertex radius.
-    static constexpr auto DefaultMinVertexRadius = ::playrho::DefaultMinVertexRadius;
-
-    /// @brief Default max vertex radius.
-    static constexpr auto DefaultMaxVertexRadius = ::playrho::DefaultMaxVertexRadius;
+    /// @brief Default vertex radius range.
+    static constexpr auto DefaultVertexRadius = Interval<Positive<Length>>{ // force line-break
+        Positive<Length>{::playrho::DefaultMinVertexRadius}, // force line-break
+        Positive<Length>{::playrho::DefaultMaxVertexRadius} // force line-break
+    };
 
     /// @brief Default tree capacity.
     static constexpr auto DefaultTreeCapacity = ContactCounter(4096u);
@@ -67,11 +70,8 @@ struct WorldConf {
     /// @brief Uses the given min vertex radius value.
     constexpr WorldConf& UseUpstream(pmr::memory_resource *value) noexcept;
 
-    /// @brief Uses the given min vertex radius value.
-    constexpr WorldConf& UseMinVertexRadius(Positive<Length> value) noexcept;
-
-    /// @brief Uses the given max vertex radius value.
-    constexpr WorldConf& UseMaxVertexRadius(Positive<Length> value) noexcept;
+    /// @brief Uses the given vertex radius range value.
+    constexpr WorldConf& UseVertexRadius(const Interval<Positive<Length>>& value) noexcept;
 
     /// @brief Uses the given value as the initial dynamic tree size.
     constexpr WorldConf& UseTreeCapacity(ContactCounter value) noexcept;
@@ -85,24 +85,18 @@ struct WorldConf {
     /// @brief Upstream memory resource.
     pmr::memory_resource *upstream = DefaultUpstream;
 
-    /// @brief Minimum vertex radius.
-    /// @details This is the minimum vertex radius that this world establishes which bodies
-    ///    shall allow fixtures to be created with. Trying to create a fixture with a shape
-    ///    having a smaller vertex radius shall be rejected with a <code>nullptr</code>
-    ///    returned value.
+    /// @brief Allowable vertex radius range.
+    /// @details The allowable vertex radius range that this world establishes which
+    ///   shapes may be created with. Trying to create a shape having a vertex radius
+    ///   outside this range will be rejected.
     /// @note This value probably should not be changed except to experiment with what
     ///    can happen.
-    /// @note Making it smaller means some shapes could have insufficient buffer for
-    ///    continuous collision.
-    /// @note Making it larger may create artifacts for vertex collision.
-    Positive<Length> minVertexRadius = DefaultMinVertexRadius;
-
-    /// @brief Maximum vertex radius.
-    /// @details This is the maximum vertex radius that this world establishes which bodies
-    ///    shall allow fixtures to be created with. Trying to create a fixture with a shape
-    ///    having a larger vertex radius shall be rejected with a <code>nullptr</code>
-    ///    returned value.
-    Positive<Length> maxVertexRadius = DefaultMaxVertexRadius;
+    /// @note Making the minimum too small means some shapes could have insufficient
+    ///    buffer for continuous collision.
+    /// @note Making the minimum too large may create artifacts for vertex collision.
+    /// @note Making the maximum too small or too large may cause numerical issues
+    ///    dealing with tolerance and target depth.
+    Interval<Positive<Length>> vertexRadius = DefaultVertexRadius;
 
     /// @brief Initial tree size.
     ContactCounter treeCapacity = DefaultTreeCapacity;
@@ -132,15 +126,9 @@ constexpr WorldConf& WorldConf::UseUpstream(pmr::memory_resource *value) noexcep
     return *this;
 }
 
-constexpr WorldConf& WorldConf::UseMinVertexRadius(Positive<Length> value) noexcept
+constexpr WorldConf& WorldConf::UseVertexRadius(const Interval<Positive<Length>>& value) noexcept
 {
-    minVertexRadius = value;
-    return *this;
-}
-
-constexpr WorldConf& WorldConf::UseMaxVertexRadius(Positive<Length> value) noexcept
-{
-    maxVertexRadius = value;
+    vertexRadius = value;
     return *this;
 }
 

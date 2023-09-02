@@ -310,7 +310,6 @@ public:
     /// @brief Sets the "under-active" time to the given value.
     /// @details Sets the "under-active" time to a value of zero or a non-zero value if the
     ///   body is "accelerable". Otherwise it does nothing.
-    /// @warning Behavior is undefined for negative values.
     /// @note A non-zero time is only valid for an "accelerable" body.
     /// @see GetUnderActiveTime.
     void SetUnderActiveTime(Time value) noexcept;
@@ -333,11 +332,12 @@ public:
     /// @brief Sets the body's awake flag.
     /// @details This is done unconditionally.
     /// @note This should **not** be called unless the body is "speedable".
-    /// @warning Behavior is undefined if called for a body that is not "speedable".
+    /// @pre <code>IsSpeedable()</code> is true.
     /// @see UnsetAwakeFlag.
     void SetAwakeFlag() noexcept;
 
     /// @brief Unsets the body's awake flag.
+    /// @pre Either <code>!IsSpeedable()</code> or <code>IsSleepingAllowed()</code>.
     /// @see SetAwakeFlag.
     void UnsetAwakeFlag() noexcept;
 
@@ -852,8 +852,7 @@ inline Length2 GetLocation(const Body& body) noexcept
 /// @details This instantly adjusts the body to be at the new location.
 /// @warning Manipulating a body's location this way can cause non-physical behavior!
 /// @param body The body to update.
-/// @param value Valid world location of the body's local origin. Behavior is undefined
-///   if value is invalid.
+/// @param value Valid world location of the body's local origin.
 /// @see GetLocation(const Body& body).
 /// @relatedalso Body
 void SetLocation(Body& body, const Length2& value);
@@ -951,8 +950,7 @@ Angle GetAngle(const Body& body) noexcept;
 /// @details This instantly adjusts the body to be at the new angular orientation.
 /// @warning Manipulating a body's angle this way can cause non-physical behavior!
 /// @param body The body to update.
-/// @param value Valid world angle of the body's local origin. Behavior is undefined
-///   if value is invalid.
+/// @param value Valid world angle of the body's local origin.
 /// @see GetAngle(const Body& body).
 /// @relatedalso Body
 void SetAngle(Body& body, Angle value);
@@ -1351,9 +1349,8 @@ inline Torque GetTorque(const Body& body) noexcept
 
 /// @brief Gets the velocity of the body after the given time accounting for the body's
 ///   acceleration and capped by the given configuration.
-/// @warning Behavior is undefined if the given elapsed time is an invalid value (like NaN).
 /// @param body Body to get the velocity for.
-/// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
+/// @param h Time elapsed to get velocity for.
 /// @relatedalso Body
 Velocity GetVelocity(const Body& body, Time h) noexcept;
 

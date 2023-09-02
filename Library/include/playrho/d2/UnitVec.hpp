@@ -205,7 +205,8 @@ public:
     
     /// @brief Gets a constant reference to the requested element.
     /// @note No bounds checking is performed.
-    /// @warning Behavior is undefined if given a position equal to or greater than size().
+    /// @param pos Valid element index to get value for.
+    /// @pre The given position parameter (@p pos), is less than <code>size()</code>.
     constexpr const_reference operator[](size_type pos) const noexcept
     {
         assert(pos < size());

@@ -120,12 +120,12 @@ bool HasValidToi(const World& world, ContactID id)
     return HasValidToi(GetContact(world, id));
 }
 
-Real GetToi(const World& world, ContactID id)
+UnitInterval<Real> GetToi(const World& world, ContactID id)
 {
     return GetToi(GetContact(world, id));
 }
 
-Real GetFriction(const World& world, ContactID id)
+NonNegative<Real> GetFriction(const World& world, ContactID id)
 {
     return GetFriction(GetContact(world, id));
 }
@@ -135,7 +135,7 @@ Real GetRestitution(const World& world, ContactID id)
     return GetRestitution(GetContact(world, id));
 }
 
-void SetFriction(World& world, ContactID id, Real friction)
+void SetFriction(World& world, ContactID id, NonNegative<Real> friction)
 {
     auto contact = GetContact(world, id);
     SetFriction(contact, friction);
