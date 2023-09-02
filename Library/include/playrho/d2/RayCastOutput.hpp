@@ -25,14 +25,14 @@
 /// @file
 /// Declaration of the RayCastOutput structure and related free functions.
 
-#include <playrho/UnitInterval.hpp>
-#include <playrho/d2/RayCastInput.hpp>
-#include <playrho/RayCastOpcode.hpp>
-#include <playrho/ShapeID.hpp>
+#include <optional>
 
 #include <playrho/BodyID.hpp>
+#include <playrho/RayCastOpcode.hpp>
+#include <playrho/ShapeID.hpp>
+#include <playrho/UnitInterval.hpp>
 
-#include <optional>
+#include <playrho/d2/RayCastInput.hpp>
 
 namespace playrho {
 namespace detail {
@@ -59,7 +59,7 @@ struct RayCastHit
     
     /// @brief Fraction.
     /// @note This is a unit interval value - a value between 0 and 1 - or it's invalid.
-    UnitInterval<Real> fraction = UnitInterval<Real>{0};
+    UnitInterval<Real> fraction;
 };
 
 /// @brief Ray cast output.
