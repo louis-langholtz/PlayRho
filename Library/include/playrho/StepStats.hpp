@@ -26,7 +26,6 @@
 namespace playrho {
 
 /// @brief Pre-phase per-step statistics.
-/// @note This data structure is 24-bytes large (on at least one 64-bit platform).
 struct PreStepStats {
     /// @brief Counter type.
     using counter_type = std::uint32_t;
@@ -40,8 +39,6 @@ struct PreStepStats {
 };
 
 /// @brief Regular-phase per-step statistics.
-/// @note This data structure is 32-bytes large (on at least one 64-bit platform with
-///   4-byte Real type).
 struct RegStepStats {
     /// @brief Counter type.
     using counter_type = std::uint32_t;

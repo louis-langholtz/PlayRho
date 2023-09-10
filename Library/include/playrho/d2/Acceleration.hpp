@@ -29,7 +29,6 @@ namespace playrho {
 namespace d2 {
 
 /// @brief 2-D acceleration related data structure.
-/// @note This data structure is 12-bytes (with 4-byte Real on at least one 64-bit platform).
 struct Acceleration {
     LinearAcceleration2 linear; ///< Linear acceleration.
     AngularAcceleration angular; ///< Angular acceleration.

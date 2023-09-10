@@ -29,8 +29,7 @@ namespace playrho {
 
 /// @brief The contact feature.
 /// @details The features that intersect to form the contact point.
-/// @note This structure is designed to be compact and passed-by-value.
-/// @note This data structure is 4-bytes large.
+/// @note This structure is intended to be compact and passed-by-value.
 /// @note Possible type combinations are:
 ///   vertex-vertex,
 ///   vertex-face,
@@ -46,8 +45,6 @@ struct ContactFeature
         e_vertex = 0,
         e_face = 1
     };
-
-    // Fit data into 4-byte large structure...
 
     Type typeA; ///< The feature type on shape A
     Index indexA; ///< Feature index on shape A
