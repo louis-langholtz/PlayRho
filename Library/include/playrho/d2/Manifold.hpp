@@ -22,8 +22,9 @@
 #ifndef PLAYRHO_D2_MANIFOLD_HPP
 #define PLAYRHO_D2_MANIFOLD_HPP
 
-#include <playrho/Math.hpp>
 #include <playrho/ContactFeature.hpp>
+#include <playrho/Math.hpp>
+
 #include <playrho/d2/IndexPair.hpp>
 
 namespace playrho {
@@ -488,13 +489,6 @@ private:
 struct Manifold::Conf {
     /// @brief Linear slop.
     Length linearSlop = DefaultLinearSlop;
-
-    /// @brief Targeted depth of impact.
-    /// @note Value must be less than twice the minimum vertex radius of any shape.
-    Length targetDepth = DefaultLinearSlop * Real{3};
-
-    /// @brief Tolerance.
-    Length tolerance = DefaultLinearSlop / Real{4}; ///< Tolerance.
 
     /// Max. circles ratio.
     /// @details When the ratio of the closest face's length to the vertex radius is

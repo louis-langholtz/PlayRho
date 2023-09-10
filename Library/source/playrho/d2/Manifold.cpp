@@ -100,8 +100,6 @@ Manifold::Conf GetManifoldConf(const StepConf& conf) noexcept
 {
     auto manifoldConf = Manifold::Conf{};
     manifoldConf.linearSlop = conf.linearSlop;
-    manifoldConf.tolerance = conf.tolerance;
-    manifoldConf.targetDepth = conf.targetDepth;
     manifoldConf.maxCirclesRatio = conf.maxCirclesRatio;
     return manifoldConf;
 }
