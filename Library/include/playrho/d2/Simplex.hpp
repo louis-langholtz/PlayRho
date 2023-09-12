@@ -54,10 +54,10 @@ Length2 CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept;
 class Simplex
 {
 public:
-    /// Size type.
+    /// @brief Size type.
     using size_type = SimplexEdges::size_type;
 
-    /// Coefficients.
+    /// @brief Coefficients.
     /// @details Collection of coefficient values.
     using Coefficients =
         ArrayList<Real, MaxSimplexEdges, std::remove_const<decltype(MaxSimplexEdges)>::type>;
@@ -78,13 +78,13 @@ public:
     /// @brief Gets the cache value for the given edges.
     static Cache GetCache(const SimplexEdges& edges) noexcept;
 
-    /// Gets the given simplex's "metric".
+    /// @brief Gets the given simplex's "metric".
     static Real CalcMetric(const SimplexEdges& simplexEdges);
 
     /// @brief Gets the Simplex for the given simplex edge.
     static Simplex Get(const SimplexEdge& s0) noexcept;
 
-    /// Gets the simplex for the given 2 edges.
+    /// @brief Gets the simplex for the given 2 edges.
     /// @note The given simplex vertices must have different index pairs or be of the same values.
     /// @warning Behavior is undefined if the given simplex edges index pairs are the same
     ///    and the whole edges values are not also the same.
@@ -93,12 +93,12 @@ public:
     /// @result One or two edge simplex.
     static Simplex Get(const SimplexEdge& s0, const SimplexEdge& s1) noexcept;
 
-    /// Gets the simplex for the given 3 edges.
+    /// @brief Gets the simplex for the given 3 edges.
     /// @result One, two, or three edge simplex.
     static Simplex Get(const SimplexEdge& s0, const SimplexEdge& s1,
                        const SimplexEdge& s2) noexcept;
 
-    /// Gets the simplex for the given collection of vertices.
+    /// @brief Gets the simplex for the given collection of vertices.
     /// @param edges Collection of zero, one, two, or three simplex edges.
     /// @warning Behavior is undefined if the given collection has more than 3 edges.
     /// @return Zero, one, two, or three edge simplex.
@@ -120,12 +120,13 @@ public:
 
 private:
     /// @brief Initializing constructor.
+    /// @pre Sizes of @p simplexEdges and @p normalizedWeights are the same.
     Simplex(const SimplexEdges& simplexEdges, const Coefficients& normalizedWeights) noexcept;
 
     /// Collection of valid simplex edges.
     SimplexEdges m_simplexEdges;
 
-    /// Normalized weights.
+    /// @brief Normalized weights.
     /// @details Collection of coefficients (ranging from greater than 0 to less than 1).
     /// A.k.a.: barycentric coordinates.
     Coefficients m_normalizedWeights;
@@ -175,7 +176,7 @@ inline Length2 GetScaledDelta(const Simplex& simplex, Simplex::size_type index)
     return GetPointDelta(simplex.GetSimplexEdge(index)) * simplex.GetCoefficient(index);
 }
 
-/// Gets the "closest point".
+/// @brief Gets the "closest point".
 constexpr Length2 GetClosestPoint(const Simplex& simplex)
 {
     switch (simplex.size()) {

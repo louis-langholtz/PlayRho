@@ -38,11 +38,9 @@ namespace playrho::d2 {
 class Shape;
 
 /// @brief Distance Proxy.
-///
 /// @details A distance proxy aggregates a convex set of vertices, their normals, and a vertex
 ///   radius of those vertices. This can be visualized as a convex N-sided polygon with rounded
 ///   corners. It's meant to represent any single portion of a shape identified by its child-index.
-///
 class DistanceProxy
 {
 public:
@@ -58,6 +56,7 @@ public:
     /// @brief Constant normal iterator.
     using ConstNormalIterator = ConstNormalPointer;
 
+    /// @brief Default constructor.
     DistanceProxy() = default;
 
     /// @brief Copy constructor.
@@ -80,23 +79,19 @@ public:
     }
 
     /// @brief Initializing constructor.
-    ///
     /// @details Constructs a distance proxy for n-point shape (like a polygon).
-    ///
     /// @param vertexRadius Radius of the given vertices.
     /// @param count Count of elements of the vertices and normals arrays.
     /// @param vertices Collection of vertices of the shape (relative to the shape's origin).
     /// @param normals Collection of normals of the shape.
-    ///
     /// @note The vertices collection must have more than zero elements and no more than
     ///    <code>MaxShapeVertices</code> elements.
-    /// @warning Behavior is undefined if the vertices collection has less than one element or
+    /// @warning Behavior is not specified if the vertices collection has less than one element or
     ///   more than <code>MaxShapeVertices</code> elements.
-    /// @warning Behavior is undefined if the vertices are not in counter-clockwise order.
-    /// @warning Behavior is undefined if the shape defined by the vertices is not convex.
-    /// @warning Behavior is undefined if the normals aren't normals for adjacent vertices.
-    /// @warning Behavior is undefined if any normal is not unique.
-    ///
+    /// @warning Behavior is not specified if the vertices are not in counter-clockwise order.
+    /// @warning Behavior is not specified if the shape defined by the vertices is not convex.
+    /// @warning Behavior is not specified if the normals aren't normals for adjacent vertices.
+    /// @warning Behavior is not specified if any normal is not unique.
     DistanceProxy(const NonNegative<Length>& vertexRadius, const VertexCounter count,
                   const Length2* vertices, const UnitVec* normals) noexcept
         :
@@ -120,7 +115,7 @@ public:
 #endif
     }
 
-    /// Gets the vertex radius of the vertices of the associated shape.
+    /// @brief Gets the vertex radius of the vertices of the associated shape.
     /// @return Non-negative distance.
     auto GetVertexRadius() const noexcept
     {
@@ -139,7 +134,7 @@ public:
         return {m_normals, m_count};
     }
 
-    /// Gets the vertex count.
+    /// @brief Gets the vertex count.
     /// @details This is the count of valid vertex elements that this object provides.
     /// @return Value between 0 and <code>MaxShapeVertices</code>.
     /// @note This only returns 0 if this proxy was default constructed.
@@ -148,19 +143,11 @@ public:
         return m_count;
     }
 
-    /// Gets a vertex by index.
-    ///
+    /// @brief Gets a vertex by index.
     /// @param index Index value less than the count of vertices represented by this proxy.
-    ///
-    /// @warning Behavior is undefined if the index given is not less than the count of
-    ///   vertices represented by this proxy.
-    /// @warning Behavior is undefined if <code>InvalidVertex</code> is given as the index
-    ///   value.
-    ///
+    /// @pre The given @p index is less than <code>GetVertexCount()</code>.
     /// @return Vertex linear position (relative to the shape's origin) at the given index.
-    ///
-    /// @see Distance.
-    ///
+    /// @see Distance, GetVertexCount.
     auto GetVertex(VertexCounter index) const noexcept
     {
         assert(index != InvalidVertex);
@@ -169,6 +156,7 @@ public:
     }
 
     /// @brief Gets the normal for the given index.
+    /// @pre The given @p index is less than <code>GetVertexCount()</code>.
     auto GetNormal(VertexCounter index) const noexcept
     {
         assert(index != InvalidVertex);
@@ -185,7 +173,7 @@ private:
     const UnitVec* m_normals = nullptr; ///< Normals.
 #endif
     VertexCounter m_count = 0; ///< Count of valid elements of m_vertices.
-    NonNegative<Length> m_vertexRadius = 0_m; ///< Radius of the vertices of the associated shape.
+    NonNegativeFF<Length> m_vertexRadius = 0_m; ///< Radius of the vertices of the associated shape.
 };
 
 // Free functions...
@@ -203,7 +191,7 @@ inline bool operator!=(const DistanceProxy& lhs, const DistanceProxy& rhs) noexc
 
 /// @brief Gets the vertex radius property of a given distance proxy.
 /// @relatedalso DistanceProxy
-inline NonNegative<Length> GetVertexRadius(const DistanceProxy& arg) noexcept
+inline auto GetVertexRadius(const DistanceProxy& arg) noexcept
 {
     return arg.GetVertexRadius();
 }

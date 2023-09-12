@@ -193,7 +193,6 @@ RayCastOutput RayCast(const DistanceProxy& proxy, const RayCastInput& input,
             const auto offset = normal * radius;
             const auto v0off = v0 + offset;
             const auto q_sub_p = v0off - ray0;
-            
             const auto reciprocalRayCrossEdge = Real{1} / ray_cross_edge;
 
             // t = ((q - p) x s) / (r x s)
