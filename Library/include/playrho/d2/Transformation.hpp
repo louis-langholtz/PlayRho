@@ -39,7 +39,6 @@ struct BodyConf;
 ///   the location and direction of things like bodies.
 /// @note The default transformation is the identity transformation - the transformation
 ///   which neither translates nor rotates a location.
-/// @note This data structure is 16-bytes large (on at least one 64-bit platform).
 struct Transformation
 {
     Length2 p = Length2{}; ///< Translational portion of the transformation.

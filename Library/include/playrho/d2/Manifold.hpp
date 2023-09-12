@@ -79,7 +79,6 @@ public:
     struct Conf;
 
     /// Manifold type.
-    /// @note This is by design a 1-byte sized type.
     enum Type : std::uint8_t {
         /// Unset type.
         /// @details Manifold is unset. For manifolds of this type: the point count is zero,
@@ -116,15 +115,10 @@ public:
     };
 
     /// @brief Data for a point of collision in a Manifold.
-    ///
     /// @details This is a contact point belonging to a contact manifold. It holds details
     /// related to the geometry and dynamics of the contact points.
-    ///
     /// @note The impulses are used for internal caching and may not provide reliable contact
     ///    forces especially for high speed collisions.
-    ///
-    /// @note This structure is at least 20-bytes large.
-    ///
     struct Point {
         /// @brief Local point.
         /// @details Usage depends on manifold type.
@@ -135,25 +129,21 @@ public:
         /// @note For face-B type manifolds, this is the local center of "circle" A or a clip
         /// point of shape A. It is also the point at which impulse forces should be relatively
         /// applied for position resolution.
-        /// @note 8-bytes.
         Length2 localPoint = {};
 
         /// @brief The contact feature.
         /// @details Uniquely identifies a contact point between two shapes - A and B.
-        /// @note This field is 4-bytes.
         /// @see GetPointStates.
         ContactFeature contactFeature = {};
 
         /// @brief Normal impulse.
         /// @details This is the non-penetration impulse.
         /// @note This is only used for velocity constraint resolution.
-        /// @note 4-bytes.
         Momentum normalImpulse = 0_Ns;
 
         /// @brief Tangent impulse.
         /// @details This is the friction impulse.
         /// @note This is only used for velocity constraint resolution.
-        /// @note 4-bytes.
         Momentum tangentImpulse = 0_Ns;
     };
 
@@ -469,20 +459,20 @@ private:
     /// @param mpa Manifold point array.
     constexpr Manifold(Type t, const UnitVec& ln, const Length2& lp, size_type n, const PointArray& mpa) noexcept;
 
-    Type m_type = e_unset; ///< Type of collision this manifold is associated with (1-byte).
-    size_type m_pointCount = 0; ///< Number of defined manifold points (1-byte).
+    Type m_type = e_unset; ///< Type of collision this manifold is associated with.
+    size_type m_pointCount = 0; ///< Number of defined manifold points.
 
     /// Local normal.
-    /// @details Exact usage depends on manifold type (8-bytes).
+    /// @details Exact usage depends on manifold type.
     /// @note Invalid for the unset and circle manifold types.
     UnitVec m_localNormal = GetInvalid<decltype(m_localNormal)>();
 
     /// Local point.
-    /// @details Exact usage depends on manifold type (8-bytes).
+    /// @details Exact usage depends on manifold type.
     /// @note Invalid for the unset manifold type.
     Length2 m_localPoint = GetInvalid<Length2>();
 
-    PointArray m_points; ///< Points of contact (at least 40-bytes). @see pointCount.
+    PointArray m_points; ///< Points of contact. @see pointCount.
 };
 
 /// @brief Configuration data for manifold calculation.

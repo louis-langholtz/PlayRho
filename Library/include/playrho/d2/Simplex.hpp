@@ -31,7 +31,6 @@ namespace playrho {
 namespace d2 {
 
 /// @brief Simplex edge collection.
-/// @note This data is 20 * 3 + 4 = 64-bytes large (on at least one 64-bit platform).
 using SimplexEdges =
     ArrayList<SimplexEdge, MaxSimplexEdges, std::remove_const<decltype(MaxSimplexEdges)>::type>;
 
@@ -45,40 +44,27 @@ IndexPair3 GetIndexPairs(const SimplexEdges& collection) noexcept;
 Length2 CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept;
 
 /// @brief An encapsulation of a point, line segment, or triangle.
-///
 /// @details An encapsulation of a point, line segment, or triangle.
 ///   These are defined respectively as: a 0-simplex, a 1-simplex, and a 2-simplex.
 ///   Used in doing G.J.K. (GJK) collision detection.
-///
-/// @note This data structure is 104-bytes large.
-///
 /// @invariant Vertex's for the same index must have the same point locations.
 /// @invariant There may not be more than one entry for the same index pair.
-///
 /// @see https://en.wikipedia.org/wiki/Simplex
 /// @see https://en.wikipedia.org/wiki/Gilbert%2DJohnson%2DKeerthi_distance_algorithm
-///
 class Simplex
 {
 public:
     /// Size type.
-    ///
-    /// @note This data type is explicitly set to 1-byte large.
     using size_type = SimplexEdges::size_type;
 
     /// Coefficients.
-    ///
     /// @details Collection of coefficient values.
-    ///
-    /// @note This data structure is 4 * 3 + 4 = 16-bytes large.
-    ///
     using Coefficients =
         ArrayList<Real, MaxSimplexEdges, std::remove_const<decltype(MaxSimplexEdges)>::type>;
 
     /// @brief Simplex cache.
     /// @details Used to warm start Distance. Caches particular information from a simplex:
     ///   a related metric and up-to 3 index pairs.
-    /// @note This data structure is 12-bytes large.
     struct Cache {
         /// @brief Metric.
         /// @details Metric based on a length or area value of edges.
@@ -99,22 +85,16 @@ public:
     static Simplex Get(const SimplexEdge& s0) noexcept;
 
     /// Gets the simplex for the given 2 edges.
-    ///
     /// @note The given simplex vertices must have different index pairs or be of the same values.
     /// @warning Behavior is undefined if the given simplex edges index pairs are the same
     ///    and the whole edges values are not also the same.
-    ///
     /// @param s0 Simplex edge 0.
     /// @param s1 Simplex edge 1.
-    ///
     /// @result One or two edge simplex.
-    ///
     static Simplex Get(const SimplexEdge& s0, const SimplexEdge& s1) noexcept;
 
     /// Gets the simplex for the given 3 edges.
-    ///
     /// @result One, two, or three edge simplex.
-    ///
     static Simplex Get(const SimplexEdge& s0, const SimplexEdge& s1,
                        const SimplexEdge& s2) noexcept;
 
@@ -143,18 +123,11 @@ private:
     Simplex(const SimplexEdges& simplexEdges, const Coefficients& normalizedWeights) noexcept;
 
     /// Collection of valid simplex edges.
-    ///
-    /// @note This member variable is 88-bytes.
-    ///
     SimplexEdges m_simplexEdges;
 
     /// Normalized weights.
-    ///
     /// @details Collection of coefficients (ranging from greater than 0 to less than 1).
     /// A.k.a.: barycentric coordinates.
-    ///
-    /// @note This member variable is 16-bytes.
-    ///
     Coefficients m_normalizedWeights;
 };
 

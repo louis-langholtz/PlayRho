@@ -31,7 +31,6 @@
 namespace playrho {
 
 /// @brief A holder for contact filtering data.
-/// @note This data structure size is 6-bytes.
 struct Filter {
     /// @brief Bits type definition.
     using bits_type = std::uint16_t;

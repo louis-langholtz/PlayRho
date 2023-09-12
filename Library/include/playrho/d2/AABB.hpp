@@ -52,7 +52,6 @@ using ::playrho::detail::Contains;
 using ::playrho::detail::TestOverlap;
 
 /// @brief 2-Dimensional Axis Aligned Bounding Box.
-/// @note This data structure is 16-bytes large (on at least one 64-bit platform).
 using AABB = ::playrho::detail::AABB<2>;
 
 /// @brief Gets the perimeter length of the 2-dimensional AABB.

@@ -32,7 +32,6 @@ namespace d2 {
 /// @brief 2-D positional data structure.
 /// @details A 2-element length and angle pair suitable for representing a linear and
 ///   angular position in 2-D.
-/// @note This structure is likely to be 12-bytes large (at least on 64-bit platforms).
 struct Position {
     Length2 linear; ///< Linear position.
     Angle angular; ///< Angular position.

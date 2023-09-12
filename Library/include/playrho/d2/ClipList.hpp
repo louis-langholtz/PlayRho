@@ -32,16 +32,14 @@ namespace playrho::d2 {
 
 /// @brief Clip vertex.
 /// @details Used for computing contact manifolds.
-/// @note This data structure is 12-bytes large (on at least one 64-bit platform).
 struct ClipVertex
 {
-    Length2 v; ///< Vertex of edge or polygon. 8-bytes.
-    ContactFeature cf; ///< Contact feature information. 4-bytes.
+    Length2 v; ///< Vertex of edge or polygon.
+    ContactFeature cf; ///< Contact feature information.
 };
 
 /// @brief Clip list for <code>ClipSegmentToLine</code>.
 /// @see ClipSegmentToLine.
-/// @note This data structure is at least 24-bytes large.
 using ClipList = ArrayList<ClipVertex, MaxManifoldPoints>;
 
 /// Clipping for contact manifolds.

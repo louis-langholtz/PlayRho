@@ -33,8 +33,6 @@ template <typename T>
 using Vector3 = Vector<T, 3>;
 
 /// A 3-dimensional column vector with 3 elements.
-/// @note This data structure is 3 times the size of <code>Real</code> -
-///   i.e. 12-bytes (with 4-byte Real).
 using Vec3 = Vector3<Real>;
 
 /// @brief 3-element vector of Mass quantities.

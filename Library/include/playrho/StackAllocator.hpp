@@ -32,7 +32,6 @@ namespace playrho {
 /// You must nest allocate/free pairs. The code will assert
 /// if you try to interleave multiple allocate/free pairs.
 /// @note This class satisfies the C++11 <code>std::unique_ptr()</code> Deleter requirement.
-/// @note This data structure is 64-bytes large (on at least one 64-bit platform).
 class StackAllocator
 {
 public:

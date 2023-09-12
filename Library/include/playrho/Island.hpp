@@ -37,7 +37,6 @@ namespace playrho {
 /// @brief Definition of a self-contained constraint "island".
 /// @details A container of bodies contacts and joints relevant to handling world dynamics.
 /// @note This is an internal class.
-/// @note This data structure is 72-bytes large (on at least one 64-bit platform).
 struct Island
 {   
     /// @brief Container type for body identifiers.

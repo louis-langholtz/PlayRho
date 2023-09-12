@@ -32,8 +32,6 @@ namespace d2 {
 /// @brief Constraint for a body.
 /// @details Data related to body constraint processing.
 /// @note Only position and velocity is independently changeable after construction.
-/// @note This data structure is 40-bytes large (with 4-byte Real on at least one
-///   64-bit platform).
 class BodyConstraint
 {
 public:

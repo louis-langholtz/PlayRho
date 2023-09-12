@@ -79,7 +79,6 @@ constexpr bool operator!= (MassData<N> lhs, MassData<N> rhs)
 namespace d2 {
 
 /// @brief Mass data alias for 2-D objects.
-/// @note This data structure is 16-bytes large (on at least one 64-bit platform).
 using MassData = ::playrho::detail::MassData<2>;
 
 /// @brief Computes the mass data for a circular shape.

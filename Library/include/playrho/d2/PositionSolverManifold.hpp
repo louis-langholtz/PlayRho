@@ -33,23 +33,19 @@ namespace d2 {
 /// Position solver manifold.
 /// @details
 /// This is a normal-point-separation composition of data for position constraint resolution.
-/// @note This data structure is 20-bytes large.
 struct PositionSolverManifold
 {
     /// Normal.
     /// @details Normal of the contact between two points. This is the axis upon which impulses
     ///    should be applied to resolve the negative separations of overlapping shapes.
-    /// @note This field is 8-bytes large.
     UnitVec m_normal;
 
     /// Point.
     /// @details Point at which position resolution should be relatively applied.
-    /// @note This field is 8-bytes large.
     Length2 m_point{};
     
     /// Separation.
     /// @details Separation between two points (i.e. penetration if negative).
-    /// @note This field is 4-bytes large.
     Length m_separation{};
 };
 

@@ -36,8 +36,6 @@ namespace d2 {
 ///   not coincide with the center of mass. However, to support dynamics
 ///   we must interpolate the center of mass position.
 ///
-/// @note This data structure is likely 36-bytes (at least on 64-bit platforms).
-///
 class Sweep
 {
 public:

@@ -179,14 +179,11 @@ public:
     void SetTangentImpulseAtPoint(size_type index, Momentum value);
     
     /// @brief Velocity constraint point.
-    ///
     /// @note Default initialized to values that make this point ineffective if it got
     ///   processed counter to being a valid point per the point count property.
     ///   This allows both points to be unconditionally processed which may be faster
     ///   if it'd otherwise cause branch misprediction and depending on the cost of
     ///   branch misprediction.
-    /// @note This structure is at least 36-bytes large.
-    ///
     struct Point
     {
         /// Position of body A relative to world manifold point.
@@ -261,36 +258,34 @@ private:
         return m_points[index]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
     
-    Point m_points[MaxManifoldPoints]; ///< Velocity constraint points array (at least 72-bytes).
+    Point m_points[MaxManifoldPoints]; ///< Velocity constraint points array.
     
     // K and normalMass fields are only used for the block solver.
     
     /// Block solver "K" info.
     /// @note Depends on the total inverse mass, the normal, and the point relative positions.
     /// @note Only used by block solver.
-    /// @note This field is 12-bytes (on at least one 64-bit platform).
     InvMass3 m_K = InvMass3{};
     
     /// Normal mass information.
     /// @details This is the cached inverse of the K value or the zero initialized value.
     /// @note Depends on the K value.
     /// @note Only used by block solver.
-    /// @note This field is 12-bytes (on at least one 64-bit platform).
     Mass3 m_normalMass = Mass3{};
     
     BodyID m_bodyA = InvalidBodyID; ///< Identifier for body-A.
     BodyID m_bodyB = InvalidBodyID; ///< Identifier for body-B.
     
-    UnitVec m_normal = GetInvalid<UnitVec>(); ///< Normal of the world manifold. 8-bytes.
+    UnitVec m_normal = GetInvalid<UnitVec>(); ///< Normal of the world manifold.
     
-    /// Friction coefficient (4-bytes). Usually in the range of [0,1].
+    /// Friction coefficient. Usually in the range of [0,1].
     Real m_friction = GetInvalid<Real>();
     
-    Real m_restitution = GetInvalid<Real>(); ///< Restitution coefficient (4-bytes).
+    Real m_restitution = GetInvalid<Real>(); ///< Restitution coefficient.
     
-    LinearVelocity m_tangentSpeed = GetInvalid<decltype(m_tangentSpeed)>(); ///< Tangent speed (4-bytes).
+    LinearVelocity m_tangentSpeed = GetInvalid<decltype(m_tangentSpeed)>(); ///< Tangent speed.
     
-    size_type m_pointCount = 0; ///< Point count (at least 1-byte).
+    size_type m_pointCount = 0; ///< Point count.
 };
 
 inline void VelocityConstraint::RemovePoint() noexcept

@@ -30,7 +30,6 @@ namespace playrho {
     ///
     /// This is a small object allocator used for allocating small
     ///   objects that persist for more than one time step.
-    /// @note This data structure is 136-bytes large (on at least one 64-bit platform).
     /// @see http://www.codeproject.com/useritems/Small_Block_Allocator.asp
     ///
     class BlockAllocator

@@ -29,12 +29,8 @@ namespace playrho {
 namespace d2 {
 
 /// @brief Simplex edge.
-///
 /// @details This is the locations (in world coordinates) and indices of a pair of vertices
 /// from two shapes (shape A and shape B).
-///
-/// @note This data structure is 20-bytes large (on at least one 64-bit platform).
-///
 class SimplexEdge
 {
 public:
@@ -65,9 +61,9 @@ public:
     constexpr auto GetIndexPair() const noexcept { return m_indexPair; }
 
 private:
-    Length2 m_wA{}; ///< Point A in world coordinates. This is the support point in proxy A. 8-bytes.
-    Length2 m_wB{}; ///< Point B in world coordinates. This is the support point in proxy B. 8-bytes.
-    IndexPair m_indexPair{}; ///< Index pair. @details Indices of points A and B. 2-bytes.
+    Length2 m_wA{}; ///< Point A in world coordinates. This is the support point in proxy A.
+    Length2 m_wB{}; ///< Point B in world coordinates. This is the support point in proxy B.
+    IndexPair m_indexPair{}; ///< Index pair. @details Indices of points A and B.
 };
 
 constexpr SimplexEdge::SimplexEdge(const Length2& pA, VertexCounter iA, // force line-break
