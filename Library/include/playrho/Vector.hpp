@@ -474,7 +474,7 @@ operator* (const Vector<Vector<T1, A>, B>& lhs, const Vector<T2, A>& rhs) noexce
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
 constexpr
 std::enable_if_t<IsMultipliable<T1, T2>::value && !IsVector<T1>::value, Vector<OT, N>>
-operator* (const T1 s, Vector<T2, N> a) noexcept
+operator* (const T1& s, const Vector<T2, N>& a) noexcept
 {
     // Can't base this off of *= since result type in this case can be different
     auto result = Vector<OT, N>{};
@@ -492,7 +492,7 @@ operator* (const T1 s, Vector<T2, N> a) noexcept
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
 constexpr
 std::enable_if_t<IsMultipliable<T1, T2>::value && !IsVector<T2>::value, Vector<OT, N>>
-operator* (Vector<T1, N> a, const T2 s) noexcept
+operator* (const Vector<T1, N>& a, const T2& s) noexcept
 {
     // Can't base this off of *= since result type in this case can be different
     auto result = Vector<OT, N>{};
