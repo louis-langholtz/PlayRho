@@ -265,7 +265,7 @@ MassData GetMassData(const Shape& shape);
 /// @brief Gets the coefficient of friction.
 /// @return Value of 0 or higher.
 /// @see SetFriction(Shape& shape, NonNegative<Real> value).
-NonNegative<Real> GetFriction(const Shape& shape) noexcept;
+NonNegativeFF<Real> GetFriction(const Shape& shape) noexcept;
 
 /// @brief Sets the coefficient of friction.
 /// @see GetFriction(const Shape& shape).
@@ -522,9 +522,9 @@ public:
         }
     }
 
-    friend NonNegative<Real> GetFriction(const Shape& shape) noexcept
+    friend NonNegativeFF<Real> GetFriction(const Shape& shape) noexcept
     {
-        return shape.m_self ? shape.m_self->GetFriction_() : NonNegative<Real>();
+        return shape.m_self ? shape.m_self->GetFriction_() : NonNegativeFF<Real>();
     }
 
     friend void SetFriction(Shape& shape, NonNegative<Real> value)
@@ -680,7 +680,7 @@ private:
         virtual void SetDensity_(NonNegative<AreaDensity>) noexcept = 0;
 
         /// @brief Gets the friction.
-        virtual NonNegative<Real> GetFriction_() const noexcept = 0;
+        virtual NonNegativeFF<Real> GetFriction_() const noexcept = 0;
 
         /// @brief Sets the friction.
         virtual void SetFriction_(NonNegative<Real> value) = 0;
@@ -794,7 +794,7 @@ private:
             SetDensity(data, value);
         }
 
-        NonNegative<Real> GetFriction_() const noexcept override
+        NonNegativeFF<Real> GetFriction_() const noexcept override
         {
             return GetFriction(data);
         }

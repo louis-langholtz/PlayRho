@@ -51,10 +51,10 @@ struct MotorJointConf : public JointBuilder<MotorJointConf> {
     using super = JointBuilder<MotorJointConf>;
 
     /// @brief Default max force.
-    static constexpr auto DefaultMaxForce = NonNegative<Force>(1_N);
+    static constexpr auto DefaultMaxForce = NonNegativeFF<Force>(1_N);
 
     /// @brief Default max torque.
-    static constexpr auto DefaultMaxTorque = NonNegative<Torque>(1_Nm);
+    static constexpr auto DefaultMaxTorque = NonNegativeFF<Torque>(1_Nm);
 
     /// @brief Default correction factor.
     static constexpr auto DefaultCorrectionFactor = Real(0.3);

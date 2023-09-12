@@ -53,6 +53,9 @@ struct WeldJointConf : public JointBuilder<WeldJointConf> {
     /// @brief Super type.
     using super = JointBuilder<WeldJointConf>;
 
+    /// @brief Default frequency.
+    static constexpr auto DefaultFrequency = NonNegativeFF<Frequency>(0_Hz);
+
     /// @brief Default constructor.
     constexpr WeldJointConf() noexcept = default;
 
@@ -99,7 +102,7 @@ struct WeldJointConf : public JointBuilder<WeldJointConf> {
     /// @brief Mass-spring-damper frequency.
     /// @note Rotation only.
     /// @note Disable softness with a value of 0.
-    NonNegative<Frequency> frequency{}; // 0_Hz
+    NonNegative<Frequency> frequency = DefaultFrequency;
 
     /// @brief Damping ratio.
     /// @note 0 = no damping, 1 = critical damping.
