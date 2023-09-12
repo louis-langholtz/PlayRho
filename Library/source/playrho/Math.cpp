@@ -224,12 +224,12 @@ std::vector<Length2> GetCircleVertices(Length radius, unsigned slices, Angle sta
     return vertices;
 }
 
-NonNegative<Area> GetAreaOfCircle(Length radius)
+NonNegativeFF<Area> GetAreaOfCircle(Length radius)
 {
     return Area{radius * radius * Pi};
 }
 
-NonNegative<Area> GetAreaOfPolygon(const Span<const Length2>& vertices)
+NonNegativeFF<Area> GetAreaOfPolygon(const Span<const Length2>& vertices)
 {
     // Uses the "Shoelace formula".
     // See: https://en.wikipedia.org/wiki/Shoelace_formula
@@ -284,11 +284,10 @@ SecondMomentOfArea GetPolarMoment(const Span<const Length2>& vertices)
 
 namespace d2 {
 
-Position GetPosition(const Position& pos0, const Position& pos1, Real beta) noexcept
+Position GetPosition(const Position& pos0, const Position& pos1, UnitIntervalFF<Real> beta) noexcept
 {
     assert(IsValid(pos0));
     assert(IsValid(pos1));
-    assert(IsValid(beta));
 
     // Note: have to be careful how this is done.
     //   If pos0 == pos1 then return value should always be equal to pos0 too.

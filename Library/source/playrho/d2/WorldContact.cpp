@@ -120,12 +120,12 @@ bool HasValidToi(const World& world, ContactID id)
     return HasValidToi(GetContact(world, id));
 }
 
-UnitInterval<Real> GetToi(const World& world, ContactID id)
+UnitIntervalFF<Real> GetToi(const World& world, ContactID id)
 {
     return GetToi(GetContact(world, id));
 }
 
-NonNegative<Real> GetFriction(const World& world, ContactID id)
+NonNegativeFF<Real> GetFriction(const World& world, ContactID id)
 {
     return GetFriction(GetContact(world, id));
 }

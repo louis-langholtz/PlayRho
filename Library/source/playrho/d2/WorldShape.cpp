@@ -161,7 +161,7 @@ bool TestPoint(const World& world, BodyID bodyId, ShapeID shapeId, const Length2
     return TestPoint(GetShape(world, shapeId), InverseTransform(p, GetTransformation(world, bodyId)));
 }
 
-NonNegative<Real> GetDefaultFriction(const Shape& a, const Shape& b)
+NonNegativeFF<Real> GetDefaultFriction(const Shape& a, const Shape& b)
 {
     return MixFriction(GetFriction(a), GetFriction(b));
 }

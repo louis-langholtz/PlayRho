@@ -167,7 +167,7 @@ bool HasValidToi(const World& world, ContactID id);
 /// @throws std::out_of_range If given an invalid contact identifier.
 /// @see HasValidToi.
 /// @relatedalso World
-UnitInterval<Real> GetToi(const World& world, ContactID id);
+UnitIntervalFF<Real> GetToi(const World& world, ContactID id);
 
 /// @brief Gets the default friction amount for the identified contact.
 /// @throws std::out_of_range If given an invalid contact identifier.
@@ -185,7 +185,7 @@ Real GetDefaultRestitution(const World& world, ContactID id);
 /// @throws std::out_of_range If given an invalid contact identifier.
 /// @see SetFriction.
 /// @relatedalso World
-NonNegative<Real> GetFriction(const World& world, ContactID id);
+NonNegativeFF<Real> GetFriction(const World& world, ContactID id);
 
 /// @brief Gets the restitution used with the identified contact.
 /// @throws std::out_of_range If given an invalid contact identifier.

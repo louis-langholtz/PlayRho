@@ -61,6 +61,11 @@ struct UnitIntervalChecker {
 template <typename T>
 using UnitInterval = CheckedValue<T, UnitIntervalChecker<T>>;
 
+/// @ingroup CheckedValues
+/// @brief Fast failing unit interval constrained value type.
+template <typename T>
+using UnitIntervalFF = CheckedValue<T, UnitIntervalChecker<T>, true>;
+
 static_assert(std::is_default_constructible<UnitInterval<int>>::value);
 
 } // namespace playrho

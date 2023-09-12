@@ -45,6 +45,11 @@ struct PositiveChecker {
 template <typename T>
 using Positive = CheckedValue<T, PositiveChecker<T>>;
 
+/// @ingroup CheckedValues
+/// @brief Fast failing positive constrained value type.
+template <typename T>
+using PositiveFF = CheckedValue<T, PositiveChecker<T>, true>;
+
 static_assert(!std::is_default_constructible<Positive<int>>::value);
 
 } // namespace playrho
