@@ -34,10 +34,8 @@ namespace playrho {
 /// @see CheckedValue.
 template <typename T>
 struct UnitIntervalChecker {
-    /// @brief Exception type possibly thrown by this checker.
-    using exception_type = std::invalid_argument;
 
-    /// @brief Valid value supplying functor.
+    /// @brief Default value supplying functor.
     /// @return Zero casted to the checked type.
     constexpr auto operator()() noexcept -> decltype(static_cast<T>(0))
     {
@@ -45,17 +43,16 @@ struct UnitIntervalChecker {
     }
 
     /// @brief Value checking functor.
-    /// @throws exception_type if given value is not valid.
-    /// @return Value given if greater-than or equal-to zero and less-than or equal-to one.
-    constexpr auto operator()(const T& v) -> decltype((v >= static_cast<T>(0) && v <= static_cast<T>(1)), T(v))
+    constexpr auto operator()(const T& v) noexcept
+        -> decltype((v >= static_cast<T>(0)) && (v <= static_cast<T>(1)), static_cast<const char*>(nullptr))
     {
         if (!(v >= static_cast<T>(0))) {
-            throw exception_type("value not greater than nor equal to zero");
+            return "value not greater than nor equal to zero";
         }
         if (!(v <= static_cast<T>(1))) {
-            throw exception_type("value not less than nor equal to one");
+            return "value not less than nor equal to one";
         }
-        return v;
+        return {};
     }
 };
 
