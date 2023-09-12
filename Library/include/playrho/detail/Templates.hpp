@@ -153,7 +153,7 @@ private:
     /// @brief Declaration of check function for supporting types given to template.
     template <typename T>
     static constexpr auto check(T*) ->
-        typename std::is_same<decltype(std::declval<T>()(std::declval<Args>()...)), Return>::type;
+        typename std::is_convertible<decltype(std::declval<T>()(std::declval<Args>()...)), Return>::type;
 
     /// @brief Declaration of check function for non-supporting types given to template.
     template <typename>
@@ -179,6 +179,23 @@ template <class T>
 constexpr auto IsFull(const T& arg) -> decltype(size(arg) == max_size(arg))
 {
     return size(arg) == max_size(arg);
+}
+
+template <class T>
+auto c_str(const T& arg) -> decltype(arg.c_str())
+{
+    return arg.c_str();
+}
+
+inline auto c_str(const char* arg) -> const char*
+{
+    return arg? arg: "";
+}
+
+template <class T>
+auto c_str(const T& arg) -> decltype(arg.has_value(), c_str(arg.value()))
+{
+    return arg.has_value()? c_str(arg.value()): "";
 }
 
 } // namespace detail

@@ -28,23 +28,21 @@ namespace playrho {
 /// @brief Non-negative constrained value checker.
 template <typename T>
 struct NonNegativeChecker {
-    /// @brief Exception type possibly thrown by this checker.
-    using exception_type = std::invalid_argument;
 
-    /// @brief Valid value supplying functor.
+    /// @brief Default value supplying functor.
     constexpr auto operator()() noexcept -> decltype(T{})
     {
         return T{};
     }
 
     /// @brief Value checking functor.
-    /// @throws exception_type if given value is not valid.
-    constexpr auto operator()(const T& v) -> decltype(!(v >= T{}), T{v})
+    constexpr auto operator()(const T& v) noexcept
+        -> decltype(v >= T{}, static_cast<const char*>(nullptr))
     {
         if (!(v >= T{})) {
-            throw exception_type("value not greater than nor equal to zero");
+            return "value not greater than nor equal to zero";
         }
-        return v;
+        return {};
     }
 };
 

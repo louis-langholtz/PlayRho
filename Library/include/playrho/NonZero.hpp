@@ -28,17 +28,15 @@ namespace playrho {
 /// @brief Non-zero constrained value checker.
 template <typename T>
 struct NonZeroChecker {
-    /// @brief Exception type possibly thrown by this checker.
-    using exception_type = std::invalid_argument;
 
     /// @brief Value checking functor.
-    /// @throws exception_type if given value is not valid.
-    constexpr auto operator()(const T& v) -> decltype(!(v != static_cast<T>(0)), T{v})
+    constexpr auto operator()(const T& v) noexcept
+        -> decltype(!(v != static_cast<T>(0)), static_cast<const char*>(nullptr))
     {
         if (!(v != static_cast<T>(0))) {
-            throw exception_type("value not non-zero");
+            return "value not non-zero";
         }
-        return v;
+        return {};
     }
 };
 

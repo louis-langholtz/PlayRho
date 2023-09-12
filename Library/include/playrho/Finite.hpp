@@ -30,23 +30,20 @@ namespace playrho {
 template <typename T>
 struct FiniteChecker {
 
-    /// @brief Exception type possibly thrown by this checker.
-    using exception_type = std::invalid_argument;
-
-    /// @brief Valid value supplying functor.
+    /// @brief Default value supplying functor.
     constexpr auto operator()() noexcept(noexcept(static_cast<T>(0))) -> decltype(static_cast<T>(0))
     {
         return static_cast<T>(0);
     }
 
     /// @brief Value checking functor.
-    /// @throws exception_type if given value is not valid.
-    auto operator()(const T& v) -> decltype(isfinite(v), T{v})
+    auto operator()(const T& v) noexcept(noexcept(isfinite(v)))
+        -> decltype(isfinite(v), static_cast<const char*>(nullptr))
     {
         if (!isfinite(v)) {
-            throw exception_type("value not finite");
+            return "value not finite";
         }
-        return v;
+        return {};
     }
 };
 

@@ -28,17 +28,15 @@ namespace playrho {
 /// @brief Positive constrained value checker.
 template <typename T>
 struct PositiveChecker {
-    /// @brief Exception type possibly thrown by this checker.
-    using exception_type = std::invalid_argument;
 
     /// @brief Value checking functor.
-    /// @throws exception_type if given value is not valid.
-    constexpr auto operator()(const T& v) -> decltype(!(v > T{}), T{v})
+    constexpr auto operator()(const T& v) noexcept
+        -> decltype(v > T{}, static_cast<const char*>(nullptr))
     {
         if (!(v > T{})) {
-            throw exception_type("value not greater than zero");
+            return "value not greater than zero";
         }
-        return v;
+        return {};
     }
 };
 
