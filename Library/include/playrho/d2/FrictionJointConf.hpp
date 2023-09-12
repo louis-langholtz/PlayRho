@@ -50,6 +50,12 @@ struct FrictionJointConf : public JointBuilder<FrictionJointConf> {
     /// @brief Super type.
     using super = JointBuilder<FrictionJointConf>;
 
+    /// @brief Default max force.
+    static constexpr auto DefaultMaxForce = NonNegativeFF<Force>(0_N);
+
+    /// @brief Default max torque.
+    static constexpr auto DefaultMaxTorque = NonNegativeFF<Torque>(0_Nm);
+
     /// @brief Default constructor.
     constexpr FrictionJointConf() noexcept = default;
 
@@ -85,10 +91,10 @@ struct FrictionJointConf : public JointBuilder<FrictionJointConf> {
     Length2 localAnchorB = Length2{};
 
     /// @brief Maximum friction force.
-    NonNegative<Force> maxForce{}; // 0_N
+    NonNegative<Force> maxForce = DefaultMaxForce;
 
     /// @brief Maximum friction torque.
-    NonNegative<Torque> maxTorque{}; // 0_Nm
+    NonNegative<Torque> maxTorque = DefaultMaxTorque;
 
     // Solver shared data - data saved & updated over multiple InitVelocityConstraints calls.
     Momentum2 linearImpulse = Momentum2{}; ///< Linear impulse.

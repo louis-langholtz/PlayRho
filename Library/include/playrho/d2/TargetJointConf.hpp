@@ -51,10 +51,13 @@ struct TargetJointConf : public JointBuilder<TargetJointConf> {
     using super = JointBuilder<TargetJointConf>;
 
     /// @brief Default frequency.
-    static constexpr auto DefaultFrequency = NonNegative<Frequency>(5_Hz);
+    static constexpr auto DefaultFrequency = NonNegativeFF<Frequency>(5_Hz);
 
     /// @brief Default damping ratio.
-    static constexpr auto DefaultDampingRatio = NonNegative<Real>(static_cast<Real>(0.7f));
+    static constexpr auto DefaultDampingRatio = NonNegativeFF<Real>(static_cast<Real>(0.7f));
+
+    /// @brief Default max force.
+    static constexpr auto DefaultMaxForce = NonNegativeFF<Force>(0_N);
 
     /// @brief Default constructor.
     constexpr TargetJointConf() noexcept = default;
@@ -117,7 +120,7 @@ struct TargetJointConf : public JointBuilder<TargetJointConf> {
     /// to move the candidate body. Usually you will express
     /// as some multiple of the weight (multiplier * mass * gravity).
     /// @note This may not be negative.
-    NonNegative<Force> maxForce{}; // 0_N
+    NonNegative<Force> maxForce = DefaultMaxForce;
 
     /// Frequency.
     /// @details The has to do with the response speed.

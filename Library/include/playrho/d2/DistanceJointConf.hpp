@@ -54,6 +54,9 @@ struct DistanceJointConf : public JointBuilder<DistanceJointConf> {
     /// @brief Super type.
     using super = JointBuilder<DistanceJointConf>;
 
+    /// @brief Default frequency.
+    static constexpr auto DefaultFrequency = NonNegativeFF<Frequency>(0_Hz);
+
     /// @brief Default constructor.
     constexpr DistanceJointConf() noexcept = default;
 
@@ -97,7 +100,7 @@ struct DistanceJointConf : public JointBuilder<DistanceJointConf> {
 
     /// @brief Mass-spring-damper frequency.
     /// @note 0 disables softness.
-    NonNegative<Frequency> frequency{};
+    NonNegative<Frequency> frequency = DefaultFrequency;
 
     /// @brief Damping ratio.
     /// @note 0 = no damping, 1 = critical damping.

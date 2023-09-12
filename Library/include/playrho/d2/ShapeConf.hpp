@@ -181,7 +181,7 @@ inline void SetRestitution(BaseShapeConf& arg, Real value) noexcept
 
 /// @brief Gets the friction of the given shape.
 /// @relatedalso BaseShapeConf
-constexpr NonNegative<Real> GetFriction(const BaseShapeConf& arg) noexcept
+constexpr NonNegativeFF<Real> GetFriction(const BaseShapeConf& arg) noexcept
 {
     return arg.friction;
 }
