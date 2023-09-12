@@ -74,6 +74,7 @@ public:
     constexpr Interval() noexcept(noexcept(std::is_nothrow_move_constructible_v<T>)) = default;
     
     /// @brief Initializing constructor.
+    /// @details Constructs an interval of a single value.
     /// @post <code>GetMin()</code> returns the value of <code>v</code>.
     /// @post <code>GetMax()</code> returns the value of <code>v</code>.
     constexpr explicit Interval(const value_type& v)
@@ -84,6 +85,9 @@ public:
     }
     
     /// @brief Initializing constructor.
+    /// @details Constructs an interval of two values.
+    /// @post <code>GetMin()</code> returns min of @p a and @p b.
+    /// @post <code>GetMax()</code> returns max of @p a and @p b.
     constexpr Interval(const value_type& a, const value_type& b)
         noexcept(noexcept(Interval{std::minmax(a, b)})):
         Interval{std::minmax(a, b)}
@@ -92,6 +96,9 @@ public:
     }
     
     /// @brief Initializing constructor.
+    /// @details Constructs an interval of the min and max of a list of values.
+    /// @post <code>GetMin()</code> returns min of @p ilist.
+    /// @post <code>GetMax()</code> returns max of @p ilist.
     constexpr Interval(const std::initializer_list<T>& ilist)
         noexcept(noexcept(Interval{std::minmax(ilist)})):
         Interval{std::minmax(ilist)}
