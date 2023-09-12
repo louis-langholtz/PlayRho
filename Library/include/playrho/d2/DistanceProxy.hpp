@@ -43,8 +43,6 @@ class Shape;
 ///   radius of those vertices. This can be visualized as a convex N-sided polygon with rounded
 ///   corners. It's meant to represent any single portion of a shape identified by its child-index.
 ///
-/// @note This data structure is 24-bytes.
-///
 class DistanceProxy
 {
 public:

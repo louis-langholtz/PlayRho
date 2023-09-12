@@ -48,12 +48,10 @@ struct ToiOutput {
         /// @brief Root iterations sum type.
         using root_sum_type = WiderType<root_iter_type>;
 
-        // 6-bytes
         toi_sum_type sum_finder_iters = 0; ///< Sum total TOI iterations.
         dist_sum_type sum_dist_iters = 0; ///< Sum total distance iterations.
         root_sum_type sum_root_iters = 0; ///< Sum total of root finder iterations.
 
-        // 3-bytes
         toi_iter_type toi_iters = 0; ///< Time of impact iterations.
         dist_iter_type max_dist_iters = 0; ///< Max. distance iterations count.
         root_iter_type max_root_iters = 0; ///< Max. root finder iterations for all TOI iterations.

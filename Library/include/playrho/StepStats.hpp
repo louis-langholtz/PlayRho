@@ -60,8 +60,6 @@ struct RegStepStats {
 };
 
 /// @brief TOI-phase per-step statistics.
-/// @note This data structure is 60-bytes large (on at least one 64-bit platform with
-///   4-byte Real type).
 struct ToiStepStats {
     /// @brief Counter type.
     using counter_type = std::uint32_t;
@@ -100,17 +98,12 @@ struct ToiStepStats {
 };
 
 /// @brief Per-step statistics.
-///
 /// @details These are statistics output from the <code>d2::World::Step</code> method.
-/// @note This data structure is 116-bytes large (on at least one 64-bit platform with
-///   4-byte Real type).
 /// @note Efficient transfer of this data is predicated on compiler support for
 ///   "named-return-value-optimization" (N.R.V.O.) - a form of "copy elision".
-///
 /// @see d2::World::Step.
 /// @see https://en.wikipedia.org/wiki/Return_value_optimization
 /// @see https://en.cppreference.com/w/cpp/language/copy_elision
-///
 struct StepStats {
     PreStepStats pre; ///< Pre-phase step statistics.
     RegStepStats reg; ///< Reg-phase step statistics.

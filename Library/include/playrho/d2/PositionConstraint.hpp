@@ -43,7 +43,7 @@ public:
         assert(radius >= 0_m);
     }
 
-    Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points (64-bytes).
+    Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points.
 
     /// @brief Gets body A.
     BodyID GetBodyA() const noexcept
@@ -70,7 +70,7 @@ private:
 
     /// @brief Total "Radius" distance of the associated shapes of fixture A and fixture B.
     /// @note 0 or greater.
-    Length m_totalRadius{}; // 4-bytes.
+    Length m_totalRadius{};
 };
 
 } // namespace d2

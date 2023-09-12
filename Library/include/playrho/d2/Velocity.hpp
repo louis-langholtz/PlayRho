@@ -34,7 +34,6 @@ struct MovementConf;
 namespace d2 {
 
 /// @brief 2-D velocity related data structure.
-/// @note This data structure is 12-bytes (with 4-byte Real on at least one 64-bit platform).
 struct Velocity {
     LinearVelocity2 linear; ///< Linear velocity.
     AngularVelocity angular; ///< Angular velocity.

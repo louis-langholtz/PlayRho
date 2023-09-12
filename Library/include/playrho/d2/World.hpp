@@ -106,7 +106,6 @@ class DynamicTree;
 ///   implementations used. This forms a "compilation firewall" &mdash; or application
 ///   binary interface (ABI) &mdash; to help provide binary stability while facilitating
 ///   experimentation and optimization.
-/// @note This data structure is 8-bytes large (on at least one 64-bit platform).
 ///
 /// @attention For example, the following could be used to create a dynamic body having a one
 ///   meter radius disk shape:

@@ -34,13 +34,8 @@ class Manifold;
 class World;
 
 /// @brief Essentially a Manifold expressed in world coordinate terms.
-///
 /// @details Used to recognize the current state of a contact manifold in world coordinates.
-///
-/// @note This data structure is 48-bytes large (on at least one 64-bit platform).
-///
 /// @see GetWorldManifold
-///
 class WorldManifold
 {
 private:
@@ -48,11 +43,9 @@ private:
     
     /// @brief Points.
     /// @details Manifold's contact points in world coordinates (mid-point of intersection)
-    /// @note 16-bytes.
     Length2 m_points[MaxManifoldPoints] = {GetInvalid<Length2>(), GetInvalid<Length2>()};
 
     /// @brief Impulses.
-    /// @note 16-bytes.
     Momentum2 m_impulses[MaxManifoldPoints] = {Momentum2{}, Momentum2{}};
     
     /// @brief Separations.
@@ -65,7 +58,6 @@ public:
     using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
 
     /// @brief Point data for world manifold.
-    /// @note This data structure is 20-bytes large at least on one 64-bit architecture.
     struct PointData
     {
         Length2 location; ///< Location of point or the invalid value.

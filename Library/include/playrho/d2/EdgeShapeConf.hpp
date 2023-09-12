@@ -36,8 +36,6 @@ namespace d2 {
 ///   to other edge shapes. The connectivity information is used to ensure correct
 ///   contact normals.
 ///
-/// @note This data structure is 56-bytes.
-///
 /// @ingroup PartsGroup
 ///
 class EdgeShapeConf : public ShapeBuilder<EdgeShapeConf>

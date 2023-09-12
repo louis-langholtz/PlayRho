@@ -29,7 +29,6 @@
 namespace playrho {
 
 /// @brief Index pair.
-/// @note This data structure is at least 2-bytes large.
 /// @note Using <code>std::array</code> would make more sense if it weren't for the
 ///   fact that <code>std::pair</code>, but not <code>std::array</code>, has
 ///   <code>constexpr</code> equality and inequality operators.
@@ -43,7 +42,6 @@ constexpr auto InvalidIndexPair = IndexPair{
 /// @brief Array of three index-pair elements.
 /// @note An element having the <code>InvalidIndexPair</code> value, denotes an
 ///   unused or invalid elements.
-/// @note This data type is 6-bytes large (on at least one 64-bit platform).
 using IndexPair3 = std::array<IndexPair, MaxSimplexEdges>;
 
 /// @brief Invalid array of three index-pair elements.

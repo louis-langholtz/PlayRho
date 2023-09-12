@@ -415,49 +415,41 @@ private:
     /// @note Also availble from <code>GetTransform1(m_sweep)</code>.
     /// @note <code>m_xf.p == m_sweep.pos1.linear && m_xf.q ==
     ///   UnitVec::Get(m_sweep.pos1.angular)</code>.
-    /// @note 16-bytes.
     Transformation m_xf;
 
-    /// @brief Sweep motion for CCD. 36-bytes.
+    /// @brief Sweep motion for CCD.
     /// @note <code>m_sweep.pos1.linear == m_xf.p && UnitVec::Get(m_sweep.pos1.angular) ==
     ///   m_xf.q</code>.
     Sweep m_sweep;
 
-    FlagsType m_flags = 0u; ///< Flags. 2-bytes.
+    FlagsType m_flags = 0u; ///< Flags.
 
     /// @brief Linear velocity.
-    /// @note 8-bytes.
     LinearVelocity2 m_linearVelocity = {};
 
     /// @brief Linear acceleration.
-    /// @note 8-bytes.
     LinearAcceleration2 m_linearAcceleration = {};
 
     /// @brief Angular velocity.
-    /// @note 4-bytes.
     AngularVelocity m_angularVelocity = 0_rpm;
 
     /// @brief Angular acceleration.
-    /// @note 4-bytes.
     AngularAcceleration m_angularAcceleration = {};
 
     /// Inverse mass of the body.
     /// @details A non-negative value. Zero for non linearly-accelerable bodies.
-    /// @note 4-bytes.
     InvMass m_invMass = {};
 
     /// Inverse rotational inertia about the center of mass.
     /// @details A non-negative value. Zero for non rotationally-accelerable bodies.
-    /// @note 4-bytes.
     InvRotInertia m_invRotI = {};
 
-    NonNegative<Frequency> m_linearDamping{DefaultLinearDamping}; ///< Linear damping. 4-bytes.
-    NonNegative<Frequency> m_angularDamping{DefaultAngularDamping}; ///< Angular damping. 4-bytes.
+    NonNegative<Frequency> m_linearDamping{DefaultLinearDamping}; ///< Linear damping.
+    NonNegative<Frequency> m_angularDamping{DefaultAngularDamping}; ///< Angular damping.
 
     /// Under-active time.
     /// @details A body under-active for enough time should have their awake flag unset.
     ///   I.e. if a body is under-active for long enough, it should go to sleep.
-    /// @note 4-bytes.
     Time m_underActiveTime = 0_s;
 
     /// @brief Identifiers of shapes attached/associated with this body.

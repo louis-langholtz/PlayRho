@@ -60,7 +60,6 @@ namespace playrho::d2 {
 ///
 /// @note This code was inspired by Nathanael Presson's <code>btDbvt</code>.
 /// @note Nodes are pooled and relocatable, so we use node indices rather than pointers.
-/// @note This data structure is 32-bytes large (on at least one 64-bit platform).
 ///
 /// @see http://www.randygaul.net/2013/08/06/dynamic-aabb-tree/
 /// @see http://www.cs.utah.edu/~thiago/papers/rotations.pdf ("Fast, Effective
@@ -325,7 +324,6 @@ constexpr bool IsBranch(const DynamicTree::TreeNode& node) noexcept;
 ///   if the memory for other nodes is relocated.
 /// @note On some 64-bit architectures, pointers are 8-bytes, while indices need only be
 ///   4-bytes. So using indices can also save 4-bytes.
-/// @note This data structure is 48-bytes large on at least one 64-bit platform.
 class DynamicTree::TreeNode
 {
 public:
