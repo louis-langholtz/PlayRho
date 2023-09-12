@@ -52,6 +52,11 @@ struct FiniteChecker {
 template <typename T>
 using Finite = CheckedValue<T, FiniteChecker<T>>;
 
+/// @ingroup CheckedValues
+/// @brief Fast failing finite constrained value type.
+template <typename T>
+using FiniteFF = CheckedValue<T, FiniteChecker<T>, true>;
+
 static_assert(std::is_default_constructible<Finite<int>>::value);
 
 } // namespace playrho

@@ -59,7 +59,7 @@ struct RayCastHit
     
     /// @brief Fraction.
     /// @note This is a unit interval value - a value between 0 and 1 - or it's invalid.
-    UnitInterval<Real> fraction;
+    UnitIntervalFF<Real> fraction;
 };
 
 /// @brief Ray cast output.

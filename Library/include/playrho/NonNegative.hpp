@@ -51,6 +51,11 @@ struct NonNegativeChecker {
 template <typename T>
 using NonNegative = CheckedValue<T, NonNegativeChecker<T>>;
 
+/// @ingroup CheckedValues
+/// @brief Fast failing non-negative constrained value type.
+template <typename T>
+using NonNegativeFF = CheckedValue<T, NonNegativeChecker<T>, true>;
+
 static_assert(std::is_default_constructible<NonNegative<int>>::value);
 
 } // namespace playrho

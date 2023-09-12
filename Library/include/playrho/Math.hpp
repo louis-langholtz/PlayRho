@@ -22,24 +22,26 @@
 #ifndef PLAYRHO_MATH_HPP
 #define PLAYRHO_MATH_HPP
 
-#include <playrho/Settings.hpp>
+#include <cmath>
+#include <numeric>
+#include <type_traits> // for std::decay_t
+#include <vector>
+
+#include <playrho/FixedMath.hpp>
+#include <playrho/Matrix.hpp>
 #include <playrho/NonNegative.hpp>
+#include <playrho/Settings.hpp>
 #include <playrho/Span.hpp>
-#include <playrho/d2/UnitVec.hpp>
+#include <playrho/UnitInterval.hpp>
 #include <playrho/Vector2.hpp>
 #include <playrho/Vector3.hpp>
+
+#include <playrho/d2/UnitVec.hpp>
 #include <playrho/d2/Position.hpp>
 #include <playrho/d2/Velocity.hpp>
 #include <playrho/d2/Acceleration.hpp>
 #include <playrho/d2/Transformation.hpp>
 #include <playrho/d2/Sweep.hpp>
-#include <playrho/Matrix.hpp>
-#include <playrho/FixedMath.hpp>
-
-#include <cmath>
-#include <vector>
-#include <numeric>
-#include <type_traits> // for std::decay_t
 
 namespace playrho {
 
@@ -699,13 +701,13 @@ std::vector<Length2> GetCircleVertices(Length radius, unsigned slices, Angle sta
                                        Real turns = Real{1});
 
 /// @brief Gets the area of a circle.
-NonNegative<Area> GetAreaOfCircle(Length radius);
+NonNegativeFF<Area> GetAreaOfCircle(Length radius);
 
 /// @brief Gets the area of a polygon.
 /// @note This function is valid for any non-self-intersecting (simple) polygon,
 ///   which can be convex or concave.
 /// @note Winding order doesn't matter.
-NonNegative<Area> GetAreaOfPolygon(const Span<const Length2>& vertices);
+NonNegativeFF<Area> GetAreaOfPolygon(const Span<const Length2>& vertices);
 
 /// @brief Gets the polar moment of the area enclosed by the given vertices.
 /// @param vertices Collection of three or more vertices.
@@ -735,29 +737,29 @@ inline Angle GetAngle(const Transformation& value)
 }
 
 /// @brief Multiplication operator.
-template <class T, typename U>
-constexpr Vector2<T> operator*(CheckedValue<T, U> s, const UnitVec& u) noexcept
+template <class T, typename U, bool NoExcept>
+constexpr Vector2<T> operator*(const CheckedValue<T, U, NoExcept>& s, const UnitVec& u) noexcept
 {
     return Vector2<T>{u.GetX() * s, u.GetY() * s};
 }
 
 /// @brief Multiplication operator.
 template <class T>
-constexpr Vector2<T> operator*(const T s, const UnitVec& u) noexcept
+constexpr Vector2<T> operator*(const T& s, const UnitVec& u) noexcept
 {
     return Vector2<T>{u.GetX() * s, u.GetY() * s};
 }
 
 /// @brief Multiplication operator.
-template <class T, typename U>
-constexpr Vector2<T> operator*(const UnitVec& u, CheckedValue<T, U> s) noexcept
+template <class T, class U, bool NoExcept>
+constexpr Vector2<T> operator*(const UnitVec& u, const CheckedValue<T, U, NoExcept>& s) noexcept
 {
     return Vector2<T>{u.GetX() * s, u.GetY() * s};
 }
 
 /// @brief Multiplication operator.
 template <class T>
-constexpr Vector2<T> operator*(const UnitVec& u, const T s) noexcept
+constexpr Vector2<T> operator*(const UnitVec& u, const T& s) noexcept
 {
     return Vector2<T>{u.GetX() * s, u.GetY() * s};
 }
@@ -845,7 +847,7 @@ inline Sweep GetNormalized(Sweep sweep) noexcept
 ///   position 1 if <code>beta == 1</code>, or at the given unit interval value
 ///   between position 0 and position 1.
 /// @relatedalso Position
-Position GetPosition(const Position& pos0, const Position& pos1, Real beta) noexcept;
+Position GetPosition(const Position& pos0, const Position& pos1, UnitIntervalFF<Real> beta) noexcept;
 
 /// @brief Caps the given position by the amounts specified in the given configuration.
 /// @relatedalso Position
@@ -919,10 +921,8 @@ inline Transformation GetTransformation(const Position& pos, const Length2& loca
 /// @param sweep Sweep data to get the transform from.
 /// @param beta Time factor in [0,1], where 0 indicates alpha 0.
 /// @return Transformation of the given sweep at the specified time.
-inline Transformation GetTransformation(const Sweep& sweep, const Real beta) noexcept
+inline Transformation GetTransformation(const Sweep& sweep, const UnitIntervalFF<Real> beta) noexcept
 {
-    assert(beta >= 0);
-    assert(beta <= 1);
     return GetTransformation(GetPosition(sweep.pos0, sweep.pos1, beta), sweep.GetLocalCenter());
 }
 

@@ -671,7 +671,7 @@ RemoveUnspeedablesFromIslanded(const Span<const BodyID>& bodies,
 struct ContactToiData
 {
     ContactID contact = InvalidContactID; ///< Contact for which the time of impact is relevant.
-    Real toi = std::numeric_limits<Real>::infinity(); ///< Time of impact (TOI) as a fractional value between 0 and 1.
+    UnitIntervalFF<Real> toi; ///< Time of impact (TOI) as a fractional value between 0 and 1.
     ContactCounter simultaneous = 0; ///< Count of simultaneous contacts at this TOI.
 };
 
@@ -682,7 +682,7 @@ struct ContactToiData
 ContactToiData GetSoonestContact(const WorldImpl::Contacts& contacts,
                                  const ObjectPool<Contact>& buffer) noexcept
 {
-    auto minToi = nextafter(Real{1}, Real{0});
+    auto minToi = UnitIntervalFF<Real>{nextafter(Real{1}, Real{0})};
     auto found = InvalidContactID;
     auto count = ContactCounter{0};
     for (const auto& contact: contacts)

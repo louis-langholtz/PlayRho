@@ -37,9 +37,9 @@ namespace playrho {
 ///   resulting friction to zero. For example, anything slides on ice.
 /// @param friction1 A zero or greater value.
 /// @param friction2 A zero or greater value.
-inline auto MixFriction(NonNegative<Real> friction1, NonNegative<Real> friction2)
+inline auto MixFriction(NonNegativeFF<Real> friction1, NonNegativeFF<Real> friction2)
 {
-    return NonNegative<Real>(sqrt(friction1 * friction2));
+    return NonNegativeFF<Real>(sqrt(friction1 * friction2));
 }
 
 /// @brief Mixes restitution.
@@ -139,7 +139,7 @@ public:
     /// @brief Gets the coefficient of friction.
     /// @details Gets the combined friction of the two shapes associated with this contact.
     /// @see SetFriction.
-    constexpr NonNegative<Real> GetFriction() const noexcept;
+    constexpr NonNegativeFF<Real> GetFriction() const noexcept;
 
     /// @brief Sets the restitution.
     /// @details This override the default restitution mixture.
@@ -184,7 +184,7 @@ public:
     /// @return Time of impact fraction in the range of 0 to 1 if set (where 1
     ///   means no actual impact in current time slot), otherwise undefined.
     /// @see void SetToi(Real toi).
-    constexpr UnitInterval<Real> GetToi() const;
+    constexpr UnitIntervalFF<Real> GetToi() const;
 
     /// @brief Sets the time of impact (TOI).
     /// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no actual
@@ -312,7 +312,7 @@ private:
 
     /// Mix of frictions of associated shapes.
     /// @see MixFriction.
-    NonNegative<Real> m_friction;
+    NonNegativeFF<Real> m_friction;
 
     /// Mix of restitutions of associated shapes.
     /// @see MixRestitution.
@@ -324,7 +324,7 @@ private:
     /// Time of impact.
     /// @note This is a unit interval of time (a value between 0 and 1).
     /// @note Only valid if <code>m_flags & e_toiFlag</code>.
-    UnitInterval<Real> m_toi;
+    UnitIntervalFF<Real> m_toi;
 
     /// Count of TOI calculations contact has gone through since last reset.
     substep_type m_toiCount = 0;
@@ -424,7 +424,7 @@ constexpr void Contact::SetFriction(NonNegative<Real> friction) noexcept
     m_friction = friction;
 }
 
-constexpr NonNegative<Real> Contact::GetFriction() const noexcept
+constexpr NonNegativeFF<Real> Contact::GetFriction() const noexcept
 {
     return m_friction;
 }
@@ -454,7 +454,7 @@ constexpr bool Contact::HasValidToi() const noexcept
     return (m_flags & Contact::e_toiFlag) != 0;
 }
 
-constexpr UnitInterval<Real> Contact::GetToi() const
+constexpr UnitIntervalFF<Real> Contact::GetToi() const
 {
     assert(HasValidToi());
     return m_toi;

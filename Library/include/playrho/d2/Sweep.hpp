@@ -101,13 +101,11 @@ public:
 
 private:
     /// @brief Local center of mass position.
-    /// @note 8-bytes.
     Length2 localCenter = Length2{0_m, 0_m};
 
     /// @brief Fraction of the current time step in the range [0,1]
     /// @note <code>pos0.linear</code> and <code>pos0.angular</code> are the positions at
     ///   <code>alpha0</code>.
-    /// @note 4-bytes.
     Real alpha0 = 0;
 };
 
