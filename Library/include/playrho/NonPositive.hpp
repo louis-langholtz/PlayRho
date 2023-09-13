@@ -21,7 +21,7 @@
 #ifndef PLAYRHO_NONPOSITIVE_HPP
 #define PLAYRHO_NONPOSITIVE_HPP
 
-#include <playrho/CheckedValue.hpp>
+#include <playrho/Checked.hpp>
 
 namespace playrho {
 
@@ -46,15 +46,15 @@ struct NonPositiveChecker {
     }
 };
 
-/// @ingroup CheckedValues
+/// @ingroup CheckedTypes
 /// @brief Non-positive constrained value type.
 template <typename T>
-using NonPositive = CheckedValue<T, NonPositiveChecker<T>>;
+using NonPositive = Checked<T, NonPositiveChecker<T>>;
 
-/// @ingroup CheckedValues
+/// @ingroup CheckedTypes
 /// @brief Fast failing non-positive constrained value type.
 template <typename T>
-using NonPositiveFF = CheckedValue<T, NonPositiveChecker<T>, true>;
+using NonPositiveFF = Checked<T, NonPositiveChecker<T>, true>;
 
 static_assert(std::is_default_constructible<NonPositive<int>>::value);
 

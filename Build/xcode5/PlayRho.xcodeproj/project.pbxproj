@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		470463EE250305C900614373 /* CheckedValue.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470463ED250305C900614373 /* CheckedValue.hpp */; };
+		470463EE250305C900614373 /* Checked.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470463ED250305C900614373 /* Checked.hpp */; };
 		4706451B252CE27B006E69AA /* TypeInfo.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4706451A252CE27B006E69AA /* TypeInfo.hpp */; };
 		4706451D25336237006E69AA /* LimitState.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4706451C25336237006E69AA /* LimitState.hpp */; };
 		4706451F25336323006E69AA /* LimitState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4706451E25336323006E69AA /* LimitState.cpp */; };
@@ -224,7 +224,7 @@
 		4795B951263C990700FB3EC6 /* imgui_impl_glfw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4795B950263C990700FB3EC6 /* imgui_impl_glfw.cpp */; };
 		4795B95D263C996200FB3EC6 /* gl3w.c in Sources */ = {isa = PBXBuildFile; fileRef = 4795B95C263C996200FB3EC6 /* gl3w.c */; };
 		4795B9E62643425300FB3EC6 /* WorldShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4795B9E52643425300FB3EC6 /* WorldShape.cpp */; };
-		479B63C31ED9CAC300D49BC7 /* CheckedValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 479B63C21ED9CAC300D49BC7 /* CheckedValue.cpp */; };
+		479B63C31ED9CAC300D49BC7 /* Checked.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 479B63C21ED9CAC300D49BC7 /* Checked.cpp */; };
 		479DEA50267AABBE0070497D /* imgui.h in Headers */ = {isa = PBXBuildFile; fileRef = 479DEA4F267AABBD0070497D /* imgui.h */; };
 		479DEA57267AB8730070497D /* Position.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 479DEA56267AB8730070497D /* Position.cpp */; };
 		479DEBAD268155E50070497D /* Sweep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 479DEBAC268155E50070497D /* Sweep.cpp */; };
@@ -493,7 +493,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		470463ED250305C900614373 /* CheckedValue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CheckedValue.hpp; sourceTree = "<group>"; };
+		470463ED250305C900614373 /* Checked.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Checked.hpp; sourceTree = "<group>"; };
 		4706451A252CE27B006E69AA /* TypeInfo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TypeInfo.hpp; sourceTree = "<group>"; };
 		4706451C25336237006E69AA /* LimitState.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LimitState.hpp; sourceTree = "<group>"; };
 		4706451E25336323006E69AA /* LimitState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LimitState.cpp; sourceTree = "<group>"; };
@@ -731,7 +731,7 @@
 		4795B950263C990700FB3EC6 /* imgui_impl_glfw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_impl_glfw.cpp; path = imgui/backends/imgui_impl_glfw.cpp; sourceTree = "<group>"; };
 		4795B95C263C996200FB3EC6 /* gl3w.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gl3w.c; path = imgui/examples/libs/gl3w/GL/gl3w.c; sourceTree = "<group>"; };
 		4795B9E52643425300FB3EC6 /* WorldShape.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WorldShape.cpp; sourceTree = "<group>"; };
-		479B63C21ED9CAC300D49BC7 /* CheckedValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CheckedValue.cpp; sourceTree = "<group>"; };
+		479B63C21ED9CAC300D49BC7 /* Checked.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Checked.cpp; sourceTree = "<group>"; };
 		479DEA4F267AABBD0070497D /* imgui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imgui.h; path = imgui/imgui.h; sourceTree = "<group>"; };
 		479DEA56267AB8730070497D /* Position.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Position.cpp; sourceTree = "<group>"; };
 		479DEBAC268155E50070497D /* Sweep.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Sweep.cpp; sourceTree = "<group>"; };
@@ -980,7 +980,7 @@
 				47C2F6E72691638900DC79B4 /* BodyID.cpp */,
 				47BE7FE125390E8F00CF0F22 /* BodyType.cpp */,
 				47D61F791F20229A00E702BD /* ChainShape.cpp */,
-				479B63C21ED9CAC300D49BC7 /* CheckedValue.cpp */,
+				479B63C21ED9CAC300D49BC7 /* Checked.cpp */,
 				474BC3F61D41278800447DCD /* CollideShapes.cpp */,
 				47D6D4C82665EB3900AF32B4 /* Compositor.cpp */,
 				99CF863029C251CB00D9D112 /* ConstraintSolverConf.cpp */,
@@ -1458,7 +1458,7 @@
 				80BB8940141C3E5900F1753A /* BlockAllocator.hpp */,
 				47640869250C86640090F711 /* BodyID.hpp */,
 				478E67C41E760AB7009B9AD5 /* BodyType.hpp */,
-				470463ED250305C900614373 /* CheckedValue.hpp */,
+				470463ED250305C900614373 /* Checked.hpp */,
 				47E70603255CDA4300A55BC1 /* ConstraintSolverConf.hpp */,
 				80BB8962141C3E5900F1753A /* Contact.hpp */,
 				998A7C0A2A82D55100F29B01 /* Contactable.hpp */,
@@ -1673,7 +1673,7 @@
 				4751EE2B1CEDD79900D459CB /* ConveyorBelt.cpp in Headers */,
 				4768D3FD1E414A0100574143 /* Vector2.hpp in Headers */,
 				477DB2AD1D1C4BE800846ED6 /* PositionSolverManifold.hpp in Headers */,
-				470463EE250305C900614373 /* CheckedValue.hpp in Headers */,
+				470463EE250305C900614373 /* Checked.hpp in Headers */,
 				4731DE291DDF84A900E7F931 /* RayCastInput.hpp in Headers */,
 				478E67C71E760AB7009B9AD5 /* BodyType.hpp in Headers */,
 				4787D6D31F2ECB8E008C115E /* TargetJointConf.hpp in Headers */,
@@ -1942,7 +1942,7 @@
 				47FFD0FB1DAC3EFC000D6D0E /* VelocityConstraint.cpp in Sources */,
 				47E841701DB3FDC400E5F311 /* WorldManifold.cpp in Sources */,
 				474BC43D1D413DC200447DCD /* World.cpp in Sources */,
-				479B63C31ED9CAC300D49BC7 /* CheckedValue.cpp in Sources */,
+				479B63C31ED9CAC300D49BC7 /* Checked.cpp in Sources */,
 				475A94561D930E6C000CA9A8 /* WorldFixture.cpp in Sources */,
 				473E01A01F81705100D58CC8 /* Vector.cpp in Sources */,
 				996B7B8B2A6DF25200A8207F /* MemoryResource.cpp in Sources */,
