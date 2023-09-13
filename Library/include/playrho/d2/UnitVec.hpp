@@ -403,6 +403,12 @@ template <> constexpr bool IsValid(const d2::UnitVec& value) noexcept
     return IsValid(value.GetX()) && IsValid(value.GetY()) && (value != d2::UnitVec::GetZero());
 }
 
+/// @brief Gets the absolute value of the given value.
+inline d2::UnitVec abs(const d2::UnitVec& v) noexcept
+{
+    return v.Absolute();
+}
+
 } // namespace playrho
 
 /// @brief Tuple size info for <code>playrho::d2::UnitVec</code>.

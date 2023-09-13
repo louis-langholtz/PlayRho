@@ -22,10 +22,9 @@
 #ifndef PLAYRHO_D2_CONTACTSOLVER_HPP
 #define PLAYRHO_D2_CONTACTSOLVER_HPP
 
-#include <playrho/Math.hpp>
 #include <playrho/Span.hpp>
 
-#include <vector>
+#include <playrho/d2/Math.hpp>
 
 namespace playrho {
 

@@ -30,11 +30,12 @@
 #include <stdexcept> // for std::bad_cast
 #include <type_traits> // for std::decay_t, std::void_t
 
-#include <playrho/Math.hpp>
+#include <playrho/BodyID.hpp>
+#include <playrho/LimitState.hpp>
 #include <playrho/Templates.hpp> // for DecayedTypeIfNotSame
 #include <playrho/TypeInfo.hpp> // for GetTypeID
-#include <playrho/LimitState.hpp>
-#include <playrho/BodyID.hpp>
+
+#include <playrho/d2/Math.hpp>
 
 namespace playrho {
 

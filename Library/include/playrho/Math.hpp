@@ -36,13 +36,6 @@
 #include <playrho/Vector2.hpp>
 #include <playrho/Vector3.hpp>
 
-#include <playrho/d2/UnitVec.hpp>
-#include <playrho/d2/Position.hpp>
-#include <playrho/d2/Velocity.hpp>
-#include <playrho/d2/Acceleration.hpp>
-#include <playrho/d2/Transformation.hpp>
-#include <playrho/d2/Sweep.hpp>
-
 namespace playrho {
 
 struct ConstraintSolverConf;
@@ -116,7 +109,7 @@ constexpr auto GetZ(const T& value) -> decltype(get<2>(value))
 ///   <code>std::make_unsigned</code> merely provides the unsigned **type** equivalent.
 template <typename T>
 constexpr auto MakeUnsigned(const T& arg) noexcept
-    -> std::enable_if_t<std::is_signed<T>::value, std::make_unsigned_t<T>>
+-> std::enable_if_t<std::is_signed<T>::value, std::make_unsigned_t<T>>
 {
     return static_cast<std::make_unsigned_t<T>>(arg);
 }
@@ -138,7 +131,7 @@ constexpr auto StripUnit(const T& v) -> decltype(StripUnit(v.get()))
 /// @see https://en.wikipedia.org/wiki/Secant_method
 template <typename T, typename U>
 constexpr auto Secant(const T& target, const U& a1, const T& s1, const U& a2, const T& s2)
-    -> decltype(a1 + (target - s1) * (a2 - a1) / (s2 - s1))
+-> decltype(a1 + (target - s1) * (a2 - a1) / (s2 - s1))
 {
     return a1 + (target - s1) * (a2 - a1) / (s2 - s1);
 }
@@ -147,7 +140,7 @@ constexpr auto Secant(const T& target, const U& a1, const T& s1, const U& a2, co
 /// @see https://en.wikipedia.org/wiki/Bisection_method
 template <typename T>
 constexpr auto Bisect(const T& a1, const T& a2)
-    -> decltype((a1 + a2) / 2)
+-> decltype((a1 + a2) / 2)
 {
     return (a1 + a2) / 2;
 }
@@ -178,8 +171,8 @@ inline auto Atan2(T y, T x)
 
 /// @brief Computes the average of the given values.
 template <typename T,
-          typename = std::enable_if_t<IsIterable<T>::value &&
-                                      IsAddable<decltype(*begin(std::declval<T>()))>::value>>
+typename = std::enable_if_t<IsIterable<T>::value &&
+IsAddable<decltype(*begin(std::declval<T>()))>::value>>
 auto Average(const T& span)
 {
     using value_type = decltype(*begin(std::declval<T>()));
@@ -201,7 +194,7 @@ constexpr auto DefaultRoundOffPrecission = unsigned{100000};
 /// @brief Computes the rounded value of the given value.
 template <typename T>
 auto RoundOff(const T& value, unsigned precision = DefaultRoundOffPrecission) ->
-    decltype(round(value * static_cast<T>(precision)) / static_cast<T>(precision))
+decltype(round(value * static_cast<T>(precision)) / static_cast<T>(precision))
 {
     const auto factor = static_cast<T>(precision);
     return round(value * factor) / factor;
@@ -226,12 +219,6 @@ constexpr auto abs(const Vector<T, N>& v) noexcept -> decltype(abs(T{}), Vector<
     return result;
 }
 
-/// @brief Gets the absolute value of the given value.
-inline d2::UnitVec abs(const d2::UnitVec& v) noexcept
-{
-    return v.Absolute();
-}
-
 /// @brief Gets whether a given value is almost zero.
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occurring.
@@ -245,7 +232,7 @@ constexpr auto AlmostZero(const T& value) -> decltype(abs(value) < std::numeric_
 /// @brief Determines whether the given two values are "almost equal".
 template <typename T>
 constexpr auto AlmostEqual(const T& x, const T& y, int ulp = 2)
-    -> std::enable_if_t<std::is_floating_point<T>::value, bool>
+-> std::enable_if_t<std::is_floating_point<T>::value, bool>
 {
     // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
     //   "the machine epsilon has to be scaled to the magnitude of the values used
@@ -266,6 +253,25 @@ constexpr auto ctrunc(T v) noexcept
     assert(isfinite(v));
     return T(std::int64_t(v));
 }
+
+template <class T>
+constexpr auto cfloor(T v) noexcept
+{
+    assert(isfinite(v));
+    return T((v >= T{}) ? static_cast<std::int64_t>(v) : static_cast<std::int64_t>(v) - 1);
+}
+
+/// @brief Constant expression enhanced floor function.
+/// @note Unlike <code>std::floor</code>, this function is only defined for finite values.
+/// @see https://en.cppreference.com/w/cpp/numeric/math/floor
+#if defined(PLAYRHO_USE_BOOST_UNITS)
+template <class Unit>
+constexpr auto cfloor(const boost::units::quantity<Unit, Real>& v) noexcept
+{
+    using quantity = boost::units::quantity<Unit, Real>;
+    return quantity::from_value(cfloor(v.value()));
+}
+#endif
 
 /// @brief Modulo operation using <code>std::fmod</code>.
 /// @note Modulo via <code>std::fmod</code> appears slower than via <code>std::trunc</code>.
@@ -327,7 +333,7 @@ constexpr auto GetMagnitudeSquared(const T& value) noexcept
 /// @note Works for any type for which <code>GetMagnitudeSquared</code> also works.
 template <typename T>
 inline auto GetMagnitude(const T& value) noexcept(noexcept(sqrt(GetMagnitudeSquared(value))))
-    -> decltype(sqrt(GetMagnitudeSquared(value)))
+-> decltype(sqrt(GetMagnitudeSquared(value)))
 {
     return sqrt(GetMagnitudeSquared(value));
 }
@@ -400,15 +406,14 @@ constexpr auto Dot(const T1& a, const T2& b) noexcept
 /// @return Cross product of the two values.
 ///
 template <
-    class T1, class T2,
-    std::enable_if_t<std::tuple_size<T1>::value == 2 && std::tuple_size<T2>::value == 2, int> = 0>
+class T1, class T2,
+std::enable_if_t<std::tuple_size<T1>::value == 2 && std::tuple_size<T2>::value == 2, int> = 0>
 constexpr auto Cross(const T1& a, const T2& b) noexcept
 {
     assert(isfinite(StripUnit(get<0>(a))));
     assert(isfinite(StripUnit(get<1>(a))));
     assert(isfinite(StripUnit(get<0>(b))));
     assert(isfinite(StripUnit(get<1>(b))));
-
     // Both vectors of same direction...
     // If a = Vec2{1, 2} and b = Vec2{1, 2} then: a x b = 1 * 2 - 2 * 1 = 0.
     // If a = Vec2{1, 2} and b = Vec2{2, 4} then: a x b = 1 * 4 - 2 * 2 = 0.
@@ -433,8 +438,8 @@ constexpr auto Cross(const T1& a, const T2& b) noexcept
 /// @param b Value B of a 3-element type.
 /// @return Cross product of the two values.
 template <
-    class T1, class T2,
-    std::enable_if_t<std::tuple_size<T1>::value == 3 && std::tuple_size<T2>::value == 3, int> = 0>
+class T1, class T2,
+std::enable_if_t<std::tuple_size<T1>::value == 3 && std::tuple_size<T2>::value == 3, int> = 0>
 constexpr auto Cross(const T1& a, const T2& b) noexcept
 {
     assert(isfinite(get<0>(a)));
@@ -443,11 +448,10 @@ constexpr auto Cross(const T1& a, const T2& b) noexcept
     assert(isfinite(get<0>(b)));
     assert(isfinite(get<1>(b)));
     assert(isfinite(get<2>(b)));
-
     using OT = decltype(get<0>(a) * get<0>(b));
     return Vector<OT, 3>{GetY(a) * GetZ(b) - GetZ(a) * GetY(b),
-                         GetZ(a) * GetX(b) - GetX(a) * GetZ(b),
-                         GetX(a) * GetY(b) - GetY(a) * GetX(b)};
+        GetZ(a) * GetX(b) - GetX(a) * GetZ(b),
+        GetX(a) * GetY(b) - GetY(a) * GetX(b)};
 }
 
 /// @brief Solves A * x = b, where b is a column vector.
@@ -536,21 +540,18 @@ constexpr auto GetSymInverse33(const Mat33& value) noexcept -> Mat33
 {
     const auto invDet = Dot(GetX(value), Cross(GetY(value), GetZ(value)));
     const auto det = (invDet != Real{0})? (Real{1} / invDet): invDet;
-
     const auto a11 = GetX(GetX(value));
     const auto a12 = GetX(GetY(value));
     const auto a13 = GetX(GetZ(value));
     const auto a22 = GetY(GetY(value));
     const auto a23 = GetY(GetZ(value));
     const auto a33 = GetZ(GetZ(value));
-
     const auto ex_y = det * (a13 * a23 - a12 * a33);
     const auto ey_z = det * (a13 * a12 - a11 * a23);
     const auto ex_z = det * (a12 * a23 - a13 * a22);
-
     return {Vec3{det * (a22 * a33 - a23 * a23), ex_y, ex_z},
-            Vec3{ex_y, det * (a11 * a33 - a13 * a13), ey_z},
-            Vec3{ex_z, ey_z, det * (a11 * a22 - a12 * a12)}};
+        Vec3{ex_y, det * (a11 * a33 - a13 * a13), ey_z},
+        Vec3{ex_z, ey_z, det * (a11 * a22 - a12 * a12)}};
 }
 
 /// @brief Gets a vector counter-clockwise (reverse-clockwise) perpendicular to the given vector.
@@ -591,7 +592,7 @@ constexpr auto Transform(const Vector<T1, M>& v, const Matrix<T2, M, N>& m) noex
 constexpr Vec2 Transform(const Vec2& v, const Mat33& A) noexcept
 {
     return {get<0>(get<0>(A)) * v[0] + get<0>(get<1>(A)) * v[1],
-            get<1>(get<0>(A)) * v[0] + get<1>(get<1>(A)) * v[1]};
+        get<1>(get<0>(A)) * v[0] + get<1>(get<1>(A)) * v[1]};
 }
 
 /// Multiply a matrix transpose times a vector. If a rotation matrix is provided,
@@ -648,22 +649,36 @@ Real Normalize(Vec2& vector);
 Length2 ComputeCentroid(const Span<const Length2>& vertices);
 
 /// @brief Gets the modulo next value.
-/// @pre The given value is less than the given count.
+/// @param value To get the modulo next value for.
+/// @param count Count to wrap around at. Must be greater-than zero.
+/// @pre @p value is less than @p count.
+/// @pre @p count is greater-than zero.
+/// @pre @p value plus one is greater-than zero.
+/// @see GetModuloPrev.
 template <typename T>
-constexpr auto GetModuloNext(T value, T count) noexcept -> decltype(++value, T(value % count))
+constexpr auto GetModuloNext(T value, const T count) noexcept
+-> decltype(++value, (value < count)? value: static_cast<T>(0), T())
 {
     assert(value < count);
+    assert(count > static_cast<T>(0)); // else undefined behavior
+    assert((value + static_cast<T>(1)) > static_cast<T>(0));
     ++value;
-    return T(value % count); // NOLINT(clang-analyzer-core.DivideZero)
+    return (value < count)? value: static_cast<T>(0);
 }
 
 /// @brief Gets the modulo previous value.
-/// @pre The given value is less than the given count.
+/// @param value To get the modulo previous value for.
+/// @param count Count to wrap around at. Must be greater-than zero.
+/// @pre @p count is greater-than zero and @p value is less than @p count.
+/// @see GetModuloNext.
 template <typename T>
-constexpr auto GetModuloPrev(const T value, const T count) noexcept -> T
+constexpr auto GetModuloPrev(const T value, const T count) noexcept
+-> decltype((value ? value : count) - static_cast<T>(1), T())
 {
     assert(value < count);
-    return (value ? value : count) - 1;
+    assert(count > static_cast<T>(0));
+    assert((value + static_cast<T>(1)) > static_cast<T>(0));
+    return (value ? value : count) - static_cast<T>(1);
 }
 
 /// @brief Converts the given value to its closest signed equivalent.
@@ -716,275 +731,6 @@ SecondMomentOfArea GetPolarMoment(const Span<const Length2>& vertices);
 
 /// @}
 
-namespace d2 {
-
-/// @brief Gets a <code>Vec2</code> representation of the given value.
-constexpr Vec2 GetVec2(const UnitVec& value)
-{
-    return Vec2{get<0>(value), get<1>(value)};
-}
-
-/// @brief Gets the angle of the given unit vector.
-inline Angle GetAngle(const UnitVec& value)
-{
-    return Atan2(GetY(value), GetX(value));
-}
-
-/// @brief Gets the angle of the given transformation.
-inline Angle GetAngle(const Transformation& value)
-{
-    return GetAngle(value.q);
-}
-
-/// @brief Multiplication operator.
-template <class T, typename U, bool NoExcept>
-constexpr Vector2<T> operator*(const CheckedValue<T, U, NoExcept>& s, const UnitVec& u) noexcept
-{
-    return Vector2<T>{u.GetX() * s, u.GetY() * s};
-}
-
-/// @brief Multiplication operator.
-template <class T>
-constexpr Vector2<T> operator*(const T& s, const UnitVec& u) noexcept
-{
-    return Vector2<T>{u.GetX() * s, u.GetY() * s};
-}
-
-/// @brief Multiplication operator.
-template <class T, class U, bool NoExcept>
-constexpr Vector2<T> operator*(const UnitVec& u, const CheckedValue<T, U, NoExcept>& s) noexcept
-{
-    return Vector2<T>{u.GetX() * s, u.GetY() * s};
-}
-
-/// @brief Multiplication operator.
-template <class T>
-constexpr Vector2<T> operator*(const UnitVec& u, const T& s) noexcept
-{
-    return Vector2<T>{u.GetX() * s, u.GetY() * s};
-}
-
-/// @brief Division operator.
-constexpr Vec2 operator/(const UnitVec& u, const UnitVec::value_type s) noexcept
-{
-    const auto inverseS = Real{1} / s;
-    return Vec2{GetX(u) * inverseS, GetY(u) * inverseS};
-}
-
-/// @brief Rotates a vector by a given angle.
-/// @details This rotates a vector by the angle expressed by the angle parameter.
-/// @param vector Vector to forward rotate.
-/// @param angle Expresses the angle to forward rotate the given vector by.
-/// @see InverseRotate.
-template <class T>
-constexpr auto Rotate(const Vector2<T>& vector, const UnitVec& angle) noexcept
-{
-    const auto newX = (GetX(angle) * GetX(vector)) - (GetY(angle) * GetY(vector));
-    const auto newY = (GetY(angle) * GetX(vector)) + (GetX(angle) * GetY(vector));
-    return Vector2<T>{newX, newY};
-}
-
-/// @brief Inverse rotates a vector.
-/// @details This is the inverse of rotating a vector - it undoes what rotate does. I.e.
-///   this effectively subtracts from the angle of the given vector the angle that's
-///   expressed by the angle parameter.
-/// @param vector Vector to reverse rotate.
-/// @param angle Expresses the angle to reverse rotate the given vector by.
-/// @see Rotate.
-template <class T>
-constexpr auto InverseRotate(const Vector2<T>& vector, const UnitVec& angle) noexcept
-{
-    const auto newX = (GetX(angle) * GetX(vector)) + (GetY(angle) * GetY(vector));
-    const auto newY = (GetX(angle) * GetY(vector)) - (GetY(angle) * GetX(vector));
-    return Vector2<T>{newX, newY};
-}
-
-/// Gets the unit vector for the given value.
-/// @param value Value to get the unit vector for.
-/// @param fallback Fallback unit vector value to use in case a unit vector can't effectively be
-///   calculated from the given value.
-/// @return value divided by its length if length not almost zero otherwise invalid value.
-/// @see AlmostEqual.
-template <class T>
-inline UnitVec GetUnitVector(const Vector2<T>& value, const UnitVec& fallback = UnitVec::GetDefaultFallback())
-{
-    return std::get<0>(UnitVec::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), fallback));
-}
-
-/// @brief Gets the "normalized" position.
-/// @details Enforces a wrap-around of one rotation on the angular position.
-/// @note Use to prevent unbounded angles in positions.
-inline Position GetNormalized(const Position& val) noexcept
-{
-    return Position{val.linear, playrho::GetNormalized(val.angular)};
-}
-
-/// @brief Gets a sweep with the given sweep's angles normalized.
-/// @param sweep Sweep to return with its angles normalized.
-/// @return Sweep with its position 0 angle to be between -2 pi and 2 pi and its
-///   position 1 angle reduced by the amount the position 0 angle was reduced by.
-/// @relatedalso Sweep
-inline Sweep GetNormalized(Sweep sweep) noexcept
-{
-#if 1
-    const auto pos0a = playrho::GetNormalized(sweep.pos0.angular);
-    const auto d = sweep.pos0.angular - pos0a;
-    sweep.pos0.angular = pos0a;
-    sweep.pos1.angular -= d;
-#else
-    sweep.pos0.angular = playrho::GetNormalized(sweep.pos0.angular);
-    sweep.pos1.angular = playrho::GetNormalized(sweep.pos1.angular);
-#endif
-    return sweep;
-}
-
-/// Gets the position between two positions at a given unit interval.
-/// @param pos0 Position at unit interval value of 0.
-/// @param pos1 Position at unit interval value of 1.
-/// @param beta Ratio of travel between position 0 and position 1.
-/// @return position 0 if <code>pos0 == pos1</code> or <code>beta == 0</code>,
-///   position 1 if <code>beta == 1</code>, or at the given unit interval value
-///   between position 0 and position 1.
-/// @relatedalso Position
-Position GetPosition(const Position& pos0, const Position& pos1, Real beta) noexcept;
-
-/// @brief Caps the given position by the amounts specified in the given configuration.
-/// @relatedalso Position
-Position Cap(Position pos, const ConstraintSolverConf& conf);
-
-/// @brief Transforms the given 2-D vector with the given transformation.
-/// @details
-/// Rotate and translate the given 2-D linear position according to the rotation and translation
-/// defined by the given transformation.
-/// @note Passing the output of this function to <code>InverseTransform</code> (with the same
-/// transformation again) will result in the original vector being returned.
-/// @note For a 2-D linear position of the origin (0, 0), the result is simply the translation.
-/// @see <code>InverseTransform</code>.
-/// @param v 2-D position to transform (to rotate and then translate).
-/// @param xfm Transformation (a translation and rotation) to apply to the given vector.
-/// @return Rotated and translated vector.
-constexpr Length2 Transform(const Length2& v, const Transformation& xfm) noexcept
-{
-    return Rotate(v, xfm.q) + xfm.p;
-}
-
-/// @brief Inverse transforms the given 2-D vector with the given transformation.
-/// @details
-/// Inverse translate and rotate the given 2-D vector according to the translation and rotation
-/// defined by the given transformation.
-/// @note Passing the output of this function to <code>Transform</code> (with the same
-/// transformation again) will result in the original vector being returned.
-/// @see <code>Transform</code>.
-/// @param v 2-D vector to inverse transform (inverse translate and inverse rotate).
-/// @param xfm Transformation (a translation and rotation) to inversely apply to the given vector.
-/// @return Inverse transformed vector.
-constexpr Length2 InverseTransform(const Length2& v, const Transformation& xfm) noexcept
-{
-    return InverseRotate(v - xfm.p, xfm.q);
-}
-
-/// @brief Multiplies a given transformation by another given transformation.
-/// @note <code>v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p
-///                = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p</code>
-constexpr Transformation Mul(const Transformation& A, const Transformation& B) noexcept
-{
-    return Transformation{A.p + Rotate(B.p, A.q), A.q.Rotate(B.q)};
-}
-
-/// @brief Inverse multiplies a given transformation by another given transformation.
-/// @note <code>v2 = A.q' * (B.q * v1 + B.p - A.p)
-///                = A.q' * B.q * v1 + A.q' * (B.p - A.p)</code>
-constexpr Transformation MulT(const Transformation& A, const Transformation& B) noexcept
-{
-    const auto dp = B.p - A.p;
-    return Transformation{InverseRotate(dp, A.q), B.q.Rotate(A.q.FlipY())};
-}
-
-/// @brief Gets the transformation for the given values.
-constexpr Transformation GetTransformation(const Length2& ctr, const UnitVec& rot,
-                                           const Length2& localCtr) noexcept
-{
-    assert(IsValid(rot));
-    return Transformation{ctr - (Rotate(localCtr, rot)), rot};
-}
-
-/// @brief Gets the transformation for the given values.
-inline Transformation GetTransformation(const Position& pos, const Length2& local_ctr) noexcept
-{
-    assert(IsValid(pos));
-    assert(IsValid(local_ctr));
-    return GetTransformation(pos.linear, UnitVec::Get(pos.angular), local_ctr);
-}
-
-/// @brief Gets the interpolated transform at a specific time.
-/// @param sweep Sweep data to get the transform from.
-/// @param beta Time factor in [0,1], where 0 indicates alpha 0.
-/// @return Transformation of the given sweep at the specified time.
-inline Transformation GetTransformation(const Sweep& sweep, const UnitIntervalFF<Real> beta) noexcept
-{
-    return GetTransformation(GetPosition(sweep.pos0, sweep.pos1, beta), sweep.GetLocalCenter());
-}
-
-/// @brief Gets the transform at "time" zero.
-/// @note This is like calling <code>GetTransformation(sweep, 0)</code>, except more efficiently.
-/// @see GetTransformation(const Sweep& sweep, Real beta).
-/// @param sweep Sweep data to get the transform from.
-/// @return Transformation of the given sweep at time zero.
-inline Transformation GetTransform0(const Sweep& sweep) noexcept
-{
-    return GetTransformation(sweep.pos0, sweep.GetLocalCenter());
-}
-
-/// @brief Gets the transform at "time" one.
-/// @note This is like calling <code>GetTransformation(sweep, 1.0)</code>, except more efficiently.
-/// @see GetTransformation(const Sweep& sweep, Real beta).
-/// @param sweep Sweep data to get the transform from.
-/// @return Transformation of the given sweep at time one.
-inline Transformation GetTransform1(const Sweep& sweep) noexcept
-{
-    return GetTransformation(sweep.pos1, sweep.GetLocalCenter());
-}
-
-/// @brief Gets the contact relative velocity.
-/// @note If <code>relA</code> and <code>relB</code> are the zero vectors, the resulting
-///    value is simply <code>velB.linear - velA.linear</code>.
-LinearVelocity2 GetContactRelVelocity(const Velocity& velA, const Length2& relA, const Velocity& velB,
-                                      const Length2& relB) noexcept;
-
-/// @brief Gets whether the given velocity is "under active" based on the given tolerances.
-inline bool IsUnderActive(const Velocity& velocity, const LinearVelocity& linSleepTol,
-                          const AngularVelocity& angSleepTol) noexcept
-{
-    const auto linVelSquared = GetMagnitudeSquared(velocity.linear);
-    const auto angVelSquared = Square(velocity.angular);
-    return (angVelSquared <= Square(angSleepTol)) && (linVelSquared <= Square(linSleepTol));
-}
-
-/// @brief Gets the "effective" inverse mass.
-inline InvMass GetEffectiveInvMass(const InvRotInertia& invRotI, const Length2& p, const UnitVec& q)
-{
-    // InvRotInertia is L^-2 M^-1 QP^2. Therefore (L^-2 M^-1 QP^2) * (L^2 / QP^2) gives M^-1.
-    return invRotI * Square(Length{Cross(p, q)} / Radian);
-}
-
-/// @brief Gets the reflection matrix for the given unit vector that defines the normal of
-///   the line through the origin that points should be reflected against.
-/// @see https://en.wikipedia.org/wiki/Transformation_matrix
-constexpr auto GetReflectionMatrix(const UnitVec& axis)
-{
-    constexpr auto TupleSize = std::tuple_size<std::decay_t<decltype(axis)>>::value;
-    constexpr auto NumRows = TupleSize;
-    constexpr auto NumCols = TupleSize;
-    auto result = Matrix<Real, NumRows, NumCols>{};
-    for (auto row = decltype(NumRows){0}; row < NumRows; ++row) {
-        for (auto col = decltype(NumCols){0}; col < NumCols; ++col) {
-            result[row][col] = ((row == col) ? Real{1} : Real{0}) - axis[row] * axis[col] * 2;
-        }
-    }
-    return result;
-}
-
-} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_MATH_HPP

@@ -19,13 +19,14 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/WheelJointConf.hpp>
-
-#include <playrho/d2/Joint.hpp>
-#include <playrho/d2/WorldBody.hpp>
-#include <playrho/StepConf.hpp>
-#include <playrho/d2/BodyConstraint.hpp>
 #include <playrho/ConstraintSolverConf.hpp>
+#include <playrho/StepConf.hpp>
+
+#include <playrho/d2/BodyConstraint.hpp>
+#include <playrho/d2/Joint.hpp>
+#include <playrho/d2/Math.hpp>
+#include <playrho/d2/WorldBody.hpp>
+#include <playrho/d2/WheelJointConf.hpp>
 
 namespace playrho {
 namespace d2 {

@@ -38,10 +38,11 @@
 #ifndef PLAYRHO_UNITS_HPP
 #define PLAYRHO_UNITS_HPP
 
+#include <cmath>
+#include <type_traits>
+
 #include <playrho/RealConstants.hpp>
 #include <playrho/Templates.hpp>
-#include <type_traits>
-#include <cmath>
 
 // #define PLAYRHO_USE_BOOST_UNITS
 #if defined(PLAYRHO_USE_BOOST_UNITS)

@@ -25,22 +25,21 @@
 /// @file
 /// Declarations of free functions of WorldImpl for bodies.
 
-#include <playrho/Math.hpp>
+#include <vector>
+
+#include <playrho/BodyID.hpp>
+#include <playrho/BodyType.hpp>
+#include <playrho/JointID.hpp>
+#include <playrho/KeyedContactID.hpp>
+#include <playrho/ShapeID.hpp>
 #include <playrho/Units.hpp>
-#include <playrho/d2/Transformation.hpp>
-#include <playrho/d2/Velocity.hpp>
 #include <playrho/Vector2.hpp> // for Length2, LinearAcceleration2
 
 #include <playrho/d2/Body.hpp>
-#include <playrho/BodyID.hpp>
-#include <playrho/BodyType.hpp>
-#include <playrho/KeyedContactID.hpp>
-#include <playrho/JointID.hpp>
-
 #include <playrho/d2/MassData.hpp>
-#include <playrho/ShapeID.hpp>
-
-#include <vector>
+#include <playrho/d2/Math.hpp>
+#include <playrho/d2/Transformation.hpp>
+#include <playrho/d2/Velocity.hpp>
 
 namespace playrho {
 namespace d2 {

@@ -22,15 +22,16 @@
 #ifndef PLAYRHO_D2_SHAPES_POLYGONSHAPECONF_HPP
 #define PLAYRHO_D2_SHAPES_POLYGONSHAPECONF_HPP
 
-#include <playrho/Math.hpp>
+#include <type_traits>
+#include <vector>
+
 #include <playrho/Span.hpp>
+
 #include <playrho/d2/ShapeConf.hpp>
 #include <playrho/d2/DistanceProxy.hpp>
 #include <playrho/d2/MassData.hpp>
+#include <playrho/d2/Math.hpp>
 #include <playrho/d2/VertexSet.hpp>
-
-#include <type_traits>
-#include <vector>
 
 namespace playrho::d2 {
 

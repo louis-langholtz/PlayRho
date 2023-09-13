@@ -23,9 +23,9 @@
 #define PLAYRHO_D2_MANIFOLD_HPP
 
 #include <playrho/ContactFeature.hpp>
-#include <playrho/Math.hpp>
 
 #include <playrho/d2/IndexPair.hpp>
+#include <playrho/d2/Math.hpp>
 
 namespace playrho {
 

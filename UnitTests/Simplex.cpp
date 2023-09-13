@@ -20,6 +20,7 @@
 
 #include "UnitTests.hpp"
 
+#include <playrho/d2/Math.hpp>
 #include <playrho/d2/Simplex.hpp>
 
 using namespace playrho;

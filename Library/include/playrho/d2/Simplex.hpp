@@ -22,10 +22,11 @@
 #ifndef PLAYRHO_D2_SIMPLEX_HPP
 #define PLAYRHO_D2_SIMPLEX_HPP
 
-#include <playrho/ArrayList.hpp>
-#include <playrho/Vector.hpp>
-#include <playrho/d2/SimplexEdge.hpp>
 #include <array>
+
+#include <playrho/ArrayList.hpp>
+
+#include <playrho/d2/SimplexEdge.hpp>
 
 namespace playrho {
 namespace d2 {

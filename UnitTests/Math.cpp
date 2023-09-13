@@ -20,14 +20,14 @@
 
 #include "UnitTests.hpp"
 
-#include <playrho/Math.hpp>
-
-#include <playrho/ConstraintSolverConf.hpp>
-
 #include <array>
 #include <type_traits>
 #include <chrono>
 #include <cmath>
+
+#include <playrho/ConstraintSolverConf.hpp>
+
+#include <playrho/d2/Math.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

@@ -22,10 +22,10 @@
 #ifndef PLAYRHO_D2_SHAPES_EDGESHAPECONF_HPP
 #define PLAYRHO_D2_SHAPES_EDGESHAPECONF_HPP
 
-#include <playrho/Math.hpp>
-#include <playrho/d2/ShapeConf.hpp>
 #include <playrho/d2/DistanceProxy.hpp>
 #include <playrho/d2/MassData.hpp>
+#include <playrho/d2/Math.hpp>
+#include <playrho/d2/ShapeConf.hpp>
 
 namespace playrho {
 namespace d2 {

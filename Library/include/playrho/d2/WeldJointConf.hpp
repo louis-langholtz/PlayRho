@@ -22,10 +22,10 @@
 #ifndef PLAYRHO_D2_WELDJOINTCONF_HPP
 #define PLAYRHO_D2_WELDJOINTCONF_HPP
 
-#include <playrho/d2/JointConf.hpp>
-
-#include <playrho/Math.hpp>
 #include <playrho/Span.hpp>
+
+#include <playrho/d2/JointConf.hpp>
+#include <playrho/d2/Math.hpp>
 
 namespace playrho {
 

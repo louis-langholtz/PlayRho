@@ -45,11 +45,11 @@
 #include <playrho/BodyID.hpp>
 #include <playrho/JointID.hpp>
 #include <playrho/KeyedContactID.hpp>
-#include <playrho/Math.hpp>
 #include <playrho/ShapeID.hpp>
 
 #include <playrho/d2/Body.hpp>
 #include <playrho/d2/MassData.hpp>
+#include <playrho/d2/Math.hpp>
 
 namespace playrho {
 namespace d2 {

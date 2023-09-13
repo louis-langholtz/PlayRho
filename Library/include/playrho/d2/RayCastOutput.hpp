@@ -31,8 +31,10 @@
 #include <playrho/RayCastOpcode.hpp>
 #include <playrho/ShapeID.hpp>
 #include <playrho/UnitInterval.hpp>
+#include <playrho/Vector2.hpp>
 
 #include <playrho/d2/RayCastInput.hpp>
+#include <playrho/d2/UnitVec.hpp>
 
 namespace playrho {
 namespace detail {
@@ -47,6 +49,7 @@ namespace d2 {
 class Shape;
 class DistanceProxy;
 class DynamicTree;
+struct Transformation;
 class World;
 
 /// @brief Ray-cast hit data.

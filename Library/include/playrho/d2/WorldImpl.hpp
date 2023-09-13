@@ -25,26 +25,6 @@
 /// @file
 /// Declarations of the WorldImpl class.
 
-#include <playrho/Math.hpp>
-#include <playrho/pmr/PoolMemoryResource.hpp>
-#include <playrho/Positive.hpp>
-#include <playrho/ObjectPool.hpp>
-
-#include <playrho/d2/DynamicTree.hpp>
-#include <playrho/d2/MassData.hpp>
-
-#include <playrho/BodyID.hpp>
-#include <playrho/Filter.hpp>
-#include <playrho/Island.hpp>
-#include <playrho/StepStats.hpp>
-#include <playrho/d2/BodyConstraint.hpp>
-#include <playrho/ContactKey.hpp>
-#include <playrho/KeyedContactID.hpp>
-#include <playrho/d2/WorldConf.hpp>
-#include <playrho/JointID.hpp>
-#include <playrho/IslandStats.hpp>
-#include <playrho/ShapeID.hpp>
-
 #include <iterator>
 #include <vector>
 #include <map>
@@ -53,6 +33,26 @@
 #include <stdexcept>
 #include <functional>
 #include <type_traits> // for std::is_default_constructible_v, etc.
+
+#include <playrho/BodyID.hpp>
+#include <playrho/ContactKey.hpp>
+#include <playrho/Filter.hpp>
+#include <playrho/JointID.hpp>
+#include <playrho/Island.hpp>
+#include <playrho/IslandStats.hpp>
+#include <playrho/KeyedContactID.hpp>
+#include <playrho/ObjectPool.hpp>
+#include <playrho/Positive.hpp>
+#include <playrho/ShapeID.hpp>
+#include <playrho/StepStats.hpp>
+
+#include <playrho/pmr/PoolMemoryResource.hpp>
+
+#include <playrho/d2/BodyConstraint.hpp>
+#include <playrho/d2/DynamicTree.hpp>
+#include <playrho/d2/MassData.hpp>
+#include <playrho/d2/Math.hpp>
+#include <playrho/d2/WorldConf.hpp>
 
 namespace playrho {
 
