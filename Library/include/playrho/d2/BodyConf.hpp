@@ -25,13 +25,12 @@
 /// @file
 /// Declarations of the BodyConf struct and free functions associated with it.
 
-#include <playrho/Settings.hpp>
-#include <playrho/NonNegative.hpp>
-#include <playrho/Math.hpp>
-
 #include <playrho/BodyType.hpp>
-
+#include <playrho/NonNegative.hpp>
+#include <playrho/Settings.hpp>
 #include <playrho/ShapeID.hpp>
+
+#include <playrho/d2/Math.hpp>
 
 namespace playrho::d2 {
 

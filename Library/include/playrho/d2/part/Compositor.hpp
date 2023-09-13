@@ -21,7 +21,8 @@
 #ifndef PLAYRHO_D2_PART_COMPOSITOR_HPP
 #define PLAYRHO_D2_PART_COMPOSITOR_HPP
 
-#include <playrho/Math.hpp>
+#include <array>
+
 #include <playrho/Units.hpp>
 #include <playrho/InvalidArgument.hpp>
 #include <playrho/NonNegative.hpp>
@@ -32,8 +33,7 @@
 
 #include <playrho/d2/DistanceProxy.hpp>
 #include <playrho/d2/MassData.hpp>
-
-#include <array>
+#include <playrho/d2/Math.hpp>
 
 namespace playrho::d2::part {
 

@@ -23,7 +23,6 @@
 #define PLAYRHO_VECTOR2_HPP
 
 #include <playrho/Settings.hpp>
-#include <playrho/InvalidArgument.hpp>
 #include <playrho/Vector.hpp>
 
 namespace playrho {

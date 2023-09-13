@@ -399,6 +399,8 @@
 		9901AF0D2A9E30450075122D /* TypeInfo.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9901AF0C2A9E30450075122D /* TypeInfo.hpp */; };
 		9901AF0F2A9FD68A0075122D /* Templates.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9901AF0E2A9FD68A0075122D /* Templates.hpp */; };
 		9901AF112A9FF3D30075122D /* Doxygen.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9901AF102A9FF3D30075122D /* Doxygen.hpp */; };
+		9901AF132AB21D740075122D /* Math.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9901AF122AB21D740075122D /* Math.hpp */; };
+		9901AF152AB22AE30075122D /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9901AF142AB22AE30075122D /* Math.cpp */; };
 		9921FFD729AD43C30043F23F /* TypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9921FFD629AD43C30043F23F /* TypeInfo.cpp */; };
 		996B7B832A6DF1A500A8207F /* PoolMemoryResource.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */; };
 		996B7B842A6DF1A500A8207F /* MemoryResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */; };
@@ -891,6 +893,8 @@
 		9901AF0C2A9E30450075122D /* TypeInfo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TypeInfo.hpp; sourceTree = "<group>"; };
 		9901AF0E2A9FD68A0075122D /* Templates.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Templates.hpp; sourceTree = "<group>"; };
 		9901AF102A9FF3D30075122D /* Doxygen.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Doxygen.hpp; sourceTree = "<group>"; };
+		9901AF122AB21D740075122D /* Math.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Math.hpp; sourceTree = "<group>"; };
+		9901AF142AB22AE30075122D /* Math.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
 		9921FFD629AD43C30043F23F /* TypeInfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TypeInfo.cpp; sourceTree = "<group>"; };
 		996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PoolMemoryResource.hpp; sourceTree = "<group>"; };
 		996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryResource.cpp; sourceTree = "<group>"; };
@@ -1284,6 +1288,7 @@
 				4787D6BD1F2E968E008C115E /* JointConf.hpp */,
 				4726DD351D387D630012A882 /* Manifold.hpp */,
 				47CB343D1D6F3A8500828126 /* MassData.hpp */,
+				9901AF122AB21D740075122D /* Math.hpp */,
 				4787D6CD1F2EC902008C115E /* MotorJointConf.hpp */,
 				474AFBF71EB1B2CB002AA6C8 /* MultiShapeConf.hpp */,
 				4731DE431DE2570900E7F931 /* PointStates.hpp */,
@@ -1366,6 +1371,7 @@
 				4787D6BC1F2E968E008C115E /* JointConf.cpp */,
 				4731DE661DF0A73000E7F931 /* Manifold.cpp */,
 				4731DE2E1DDF9B6900E7F931 /* MassData.cpp */,
+				9901AF142AB22AE30075122D /* Math.cpp */,
 				4787D6CC1F2EC902008C115E /* MotorJointConf.cpp */,
 				474AFBF61EB1B2CB002AA6C8 /* MultiShapeConf.cpp */,
 				80BB892C141C3E5900F1753A /* PointStates.cpp */,
@@ -1574,6 +1580,7 @@
 				4764087125105DD90090F711 /* JointID.hpp in Headers */,
 				4731DE581DEC908600E7F931 /* UnitVec.hpp in Headers */,
 				474AFBFA1EB1B2CB002AA6C8 /* MultiShapeConf.hpp in Headers */,
+				9901AF132AB21D740075122D /* Math.hpp in Headers */,
 				47B58F641F64C19600354C34 /* RealConstants.hpp in Headers */,
 				996B7B832A6DF1A500A8207F /* PoolMemoryResource.hpp in Headers */,
 				4787D6EB1F2FA0CA008C115E /* LengthError.hpp in Headers */,
@@ -2063,6 +2070,7 @@
 				476E8ABE1FC8CD9F00705BB5 /* UnitVec.cpp in Sources */,
 				4764089E25226E180090F711 /* WorldMisc.cpp in Sources */,
 				80BB8993141C3E5900F1753A /* TimeOfImpact.cpp in Sources */,
+				9901AF152AB22AE30075122D /* Math.cpp in Sources */,
 				470F9B4C1EEF20B6007EF7B6 /* BodyConf.cpp in Sources */,
 				996B7B842A6DF1A500A8207F /* MemoryResource.cpp in Sources */,
 				80BB8995141C3E5900F1753A /* ChainShapeConf.cpp in Sources */,

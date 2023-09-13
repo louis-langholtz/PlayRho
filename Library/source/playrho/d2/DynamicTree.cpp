@@ -19,17 +19,18 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/DynamicTree.hpp>
-#include <playrho/GrowableStack.hpp>
-#include <playrho/DynamicMemory.hpp>
-#include <playrho/Math.hpp> // for NextPowerOfTwo and others
-#include <playrho/Templates.hpp>
-
 #include <algorithm>
 #include <cstring>
 #include <limits>
 #include <numeric>
 #include <utility>
+
+#include <playrho/GrowableStack.hpp>
+#include <playrho/DynamicMemory.hpp>
+#include <playrho/Templates.hpp>
+
+#include <playrho/d2/DynamicTree.hpp>
+#include <playrho/d2/Math.hpp> // for NextPowerOfTwo and others
 
 namespace playrho {
 namespace d2 {

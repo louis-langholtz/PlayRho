@@ -23,9 +23,9 @@
 #define PLAYRHO_D2_POSITIONSOLVERMANIFOLD_HPP
 
 #include <playrho/Settings.hpp>
-#include <playrho/Math.hpp>
 
 #include <playrho/d2/Manifold.hpp>
+#include <playrho/d2/Math.hpp>
 
 namespace playrho {
 namespace d2 {

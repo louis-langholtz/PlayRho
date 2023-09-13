@@ -19,19 +19,19 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/RayCastOutput.hpp>
+#include <utility>
 
-#include <playrho/Math.hpp>
 #include <playrho/GrowableStack.hpp>
-#include <playrho/d2/RayCastInput.hpp>
+
 #include <playrho/d2/AABB.hpp>
 #include <playrho/d2/DistanceProxy.hpp>
 #include <playrho/d2/DynamicTree.hpp>
+#include <playrho/d2/Math.hpp>
+#include <playrho/d2/RayCastInput.hpp>
+#include <playrho/d2/RayCastOutput.hpp>
 #include <playrho/d2/WorldBody.hpp>
 #include <playrho/d2/WorldMisc.hpp>
 #include <playrho/d2/WorldShape.hpp>
-
-#include <utility>
 
 namespace playrho {
 namespace d2 {

@@ -25,8 +25,9 @@
 /// @file
 /// Declaration of the RayCastInput class template.
 
-#include <playrho/Math.hpp>
+#include <playrho/Vector.hpp>
 #include <playrho/UnitInterval.hpp>
+#include <playrho/Units.hpp>
 
 namespace playrho::detail {
 

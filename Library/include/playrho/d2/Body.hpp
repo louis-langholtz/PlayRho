@@ -25,16 +25,15 @@
 /// @file
 /// Declarations of the Body class, and free functions associated with it.
 
-#include <playrho/Math.hpp>
-
-#include <playrho/BodyType.hpp>
-#include <playrho/d2/BodyConf.hpp>
-
-#include <playrho/d2/MassData.hpp>
-#include <playrho/ShapeID.hpp>
-
 #include <cassert>
 #include <utility>
+
+#include <playrho/BodyType.hpp>
+#include <playrho/ShapeID.hpp>
+
+#include <playrho/d2/BodyConf.hpp>
+#include <playrho/d2/MassData.hpp>
+#include <playrho/d2/Math.hpp>
 
 namespace playrho::d2 {
 

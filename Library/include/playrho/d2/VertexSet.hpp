@@ -21,10 +21,10 @@
 #ifndef PLAYRHO_D2_VERTEXSET_HPP
 #define PLAYRHO_D2_VERTEXSET_HPP
 
-#include <playrho/Math.hpp>
-
 #include <vector>
 #include <algorithm>
+
+#include <playrho/d2/Math.hpp>
 
 namespace playrho {
 namespace d2 {

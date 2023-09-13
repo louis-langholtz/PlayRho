@@ -22,12 +22,13 @@
 #ifndef PLAYRHO_D2_GEARJOINTCONF_HPP
 #define PLAYRHO_D2_GEARJOINTCONF_HPP
 
-#include <playrho/d2/JointConf.hpp>
-#include <playrho/Math.hpp>
+#include <variant>
+
 #include <playrho/JointID.hpp>
 #include <playrho/Span.hpp>
 
-#include <variant>
+#include <playrho/d2/JointConf.hpp>
+#include <playrho/d2/Math.hpp>
 
 namespace playrho {
 

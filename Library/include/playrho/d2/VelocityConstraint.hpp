@@ -22,10 +22,10 @@
 #ifndef PLAYRHO_D2_VELOCITYCONSTRAINT_HPP
 #define PLAYRHO_D2_VELOCITYCONSTRAINT_HPP
 
-#include <playrho/Math.hpp>
 #include <playrho/Span.hpp>
 
 #include <playrho/d2/BodyConstraint.hpp>
+#include <playrho/d2/Math.hpp>
 
 namespace playrho {
 

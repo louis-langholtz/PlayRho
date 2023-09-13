@@ -22,10 +22,12 @@
 #ifndef PLAYRHO_D2_DISTANCEPROXY_HPP
 #define PLAYRHO_D2_DISTANCEPROXY_HPP
 
-#include <playrho/Math.hpp>
-#include <playrho/Span.hpp>
-#include <vector>
 #include <algorithm>
+#include <vector>
+
+#include <playrho/Span.hpp>
+
+#include <playrho/d2/Math.hpp>
 
 // Define IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS to implement the DistanceProxy class
 // using buffers instead of pointers. Note that timing tests suggest implementing with

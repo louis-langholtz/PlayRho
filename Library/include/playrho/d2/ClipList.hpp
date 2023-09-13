@@ -28,6 +28,8 @@
 #include <playrho/ArrayList.hpp>
 #include <playrho/ContactFeature.hpp>
 
+#include <playrho/d2/Math.hpp>
+
 namespace playrho::d2 {
 
 /// @brief Clip vertex.

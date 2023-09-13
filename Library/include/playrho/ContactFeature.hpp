@@ -22,8 +22,9 @@
 #ifndef PLAYRHO_CONTACTFEATURE_HPP
 #define PLAYRHO_CONTACTFEATURE_HPP
 
-#include <playrho/Math.hpp>
 #include <ostream>
+
+#include <playrho/Math.hpp>
 
 namespace playrho {
 

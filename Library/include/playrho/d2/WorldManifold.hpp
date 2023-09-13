@@ -22,7 +22,7 @@
 #ifndef PLAYRHO_D2_WORLDMANIFOLD_HPP
 #define PLAYRHO_D2_WORLDMANIFOLD_HPP
 
-#include <playrho/Math.hpp>
+#include <playrho/d2/Math.hpp>
 
 namespace playrho {
 

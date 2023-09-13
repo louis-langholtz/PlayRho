@@ -19,18 +19,17 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/GearJointConf.hpp>
+#include <playrho/ConstraintSolverConf.hpp>
+#include <playrho/StepConf.hpp>
 
+#include <playrho/d2/BodyConstraint.hpp>
+#include <playrho/d2/GearJointConf.hpp>
+#include <playrho/d2/Joint.hpp>
+#include <playrho/d2/Math.hpp>
+#include <playrho/d2/PrismaticJointConf.hpp>
+#include <playrho/d2/RevoluteJointConf.hpp>
 #include <playrho/d2/WorldBody.hpp>
 #include <playrho/d2/WorldJoint.hpp>
-#include <playrho/d2/Joint.hpp>
-#include <playrho/d2/RevoluteJointConf.hpp>
-#include <playrho/d2/PrismaticJointConf.hpp>
-#include <playrho/StepConf.hpp>
-#include <playrho/d2/BodyConstraint.hpp>
-#include <playrho/ConstraintSolverConf.hpp>
-
-#include <playrho/Math.hpp>
 
 namespace playrho {
 namespace d2 {

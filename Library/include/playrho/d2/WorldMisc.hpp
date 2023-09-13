@@ -25,7 +25,7 @@
 /// @file
 /// Declarations of free functions of World for unidentified information.
 
-#include <playrho/Math.hpp>
+#include <utility> // for std::pair
 
 #include <playrho/BodyID.hpp>
 #include <playrho/JointID.hpp>
@@ -34,7 +34,7 @@
 #include <playrho/StepStats.hpp>
 #include <playrho/ShapeID.hpp>
 
-#include <utility> // for std::pair
+#include <playrho/d2/Math.hpp>
 
 namespace playrho {
 namespace d2 {

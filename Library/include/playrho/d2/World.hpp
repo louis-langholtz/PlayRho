@@ -25,27 +25,26 @@
 /// @file
 /// Declarations of the World class.
 
-#include <playrho/Math.hpp>
-#include <playrho/propagate_const.hpp>
-
-#include <playrho/d2/MassData.hpp>
-#include <playrho/d2/Shape.hpp>
-#include <playrho/ShapeID.hpp>
-
-#include <playrho/d2/BodyConf.hpp> // for GetDefaultBodyConf
-#include <playrho/BodyID.hpp>
-#include <playrho/StepConf.hpp>
-#include <playrho/StepStats.hpp>
-#include <playrho/d2/WorldConf.hpp>
-#include <playrho/KeyedContactID.hpp>
-#include <playrho/JointID.hpp>
-
 #include <iterator>
 #include <vector>
 #include <memory> // for std::unique_ptr
 #include <stdexcept>
 #include <functional> // for std::function
 #include <type_traits> // for std::is_default_constructible_v, etc.
+
+#include <playrho/BodyID.hpp>
+#include <playrho/KeyedContactID.hpp>
+#include <playrho/JointID.hpp>
+#include <playrho/propagate_const.hpp>
+#include <playrho/ShapeID.hpp>
+#include <playrho/StepConf.hpp>
+#include <playrho/StepStats.hpp>
+
+#include <playrho/d2/BodyConf.hpp> // for GetDefaultBodyConf
+#include <playrho/d2/MassData.hpp>
+#include <playrho/d2/Math.hpp>
+#include <playrho/d2/Shape.hpp>
+#include <playrho/d2/WorldConf.hpp>
 
 namespace playrho {
 

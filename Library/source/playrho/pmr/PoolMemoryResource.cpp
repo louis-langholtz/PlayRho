@@ -25,6 +25,7 @@
 
 #include <playrho/DynamicMemory.hpp>
 #include <playrho/Math.hpp> // for ToSigned
+
 #include <playrho/pmr/PoolMemoryResource.hpp>
 
 namespace playrho::pmr {

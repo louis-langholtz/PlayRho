@@ -21,7 +21,7 @@
 #ifndef PLAYRHO_CONSTRAINTSOLVERCONF_HPP
 #define PLAYRHO_CONSTRAINTSOLVERCONF_HPP
 
-#include <playrho/Math.hpp>
+#include <playrho/Settings.hpp>
 
 namespace playrho {
 

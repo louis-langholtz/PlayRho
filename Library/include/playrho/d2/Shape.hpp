@@ -24,20 +24,20 @@
 #ifndef PLAYRHO_D2_SHAPES_SHAPE_HPP
 #define PLAYRHO_D2_SHAPES_SHAPE_HPP
 
-#include <playrho/Math.hpp>
-#include <playrho/TypeInfo.hpp>
-
-#include <playrho/d2/DistanceProxy.hpp>
-#include <playrho/d2/MassData.hpp>
-#include <playrho/NonNegative.hpp>
-#include <playrho/InvalidArgument.hpp>
-#include <playrho/Filter.hpp>
-
 #include <memory>
 #include <functional>
 #include <utility>
 #include <stdexcept>
 #include <type_traits> // for std::add_pointer_t, std::add_const_t
+
+#include <playrho/InvalidArgument.hpp>
+#include <playrho/Filter.hpp>
+#include <playrho/NonNegative.hpp>
+#include <playrho/TypeInfo.hpp>
+
+#include <playrho/d2/DistanceProxy.hpp>
+#include <playrho/d2/MassData.hpp>
+#include <playrho/d2/Math.hpp>
 
 // Set this to 1 to use std::unique_ptr or to 0 to use std::shared_ptr.
 #define SHAPE_USES_UNIQUE_PTR 1

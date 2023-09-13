@@ -37,15 +37,15 @@
 /// @see World, ShapeID.
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 
-#include <playrho/Math.hpp>
+#include <iterator>
+#include <vector>
+
+#include <playrho/ShapeID.hpp>
 #include <playrho/Span.hpp>
 
 #include <playrho/d2/MassData.hpp>
+#include <playrho/d2/Math.hpp>
 #include <playrho/d2/Shape.hpp>
-#include <playrho/ShapeID.hpp>
-
-#include <iterator>
-#include <vector>
 
 namespace playrho {
 
