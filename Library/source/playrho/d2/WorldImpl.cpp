@@ -1729,7 +1729,7 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
         const auto backupB = GetSweep(bB);
 
         // Advance the bodies to the TOI.
-        assert(toi != 0 || ((GetSweep(bA).GetAlpha0() == 0) && (GetSweep(bB).GetAlpha0() == 0)));
+        assert((toi != Real(0)) || ((GetSweep(bA).GetAlpha0() == Real(0)) && (GetSweep(bB).GetAlpha0() == Real(0))));
         Advance(bA, toi);
         Advance(bB, toi);
         FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(bodyIdA)]);

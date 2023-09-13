@@ -841,13 +841,12 @@ inline Sweep GetNormalized(Sweep sweep) noexcept
 /// Gets the position between two positions at a given unit interval.
 /// @param pos0 Position at unit interval value of 0.
 /// @param pos1 Position at unit interval value of 1.
-/// @param beta Unit interval (value between 0 and 1) of travel between position 0 and
-///   position 1.
+/// @param beta Ratio of travel between position 0 and position 1.
 /// @return position 0 if <code>pos0 == pos1</code> or <code>beta == 0</code>,
 ///   position 1 if <code>beta == 1</code>, or at the given unit interval value
 ///   between position 0 and position 1.
 /// @relatedalso Position
-Position GetPosition(const Position& pos0, const Position& pos1, UnitIntervalFF<Real> beta) noexcept;
+Position GetPosition(const Position& pos0, const Position& pos1, Real beta) noexcept;
 
 /// @brief Caps the given position by the amounts specified in the given configuration.
 /// @relatedalso Position

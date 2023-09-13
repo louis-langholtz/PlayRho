@@ -284,7 +284,7 @@ SecondMomentOfArea GetPolarMoment(const Span<const Length2>& vertices)
 
 namespace d2 {
 
-Position GetPosition(const Position& pos0, const Position& pos1, UnitIntervalFF<Real> beta) noexcept
+Position GetPosition(const Position& pos0, const Position& pos1, Real beta) noexcept
 {
     assert(IsValid(pos0));
     assert(IsValid(pos1));
