@@ -21,40 +21,19 @@
 #ifndef PLAYRHO_NONPOSITIVE_HPP
 #define PLAYRHO_NONPOSITIVE_HPP
 
-#include <playrho/Checked.hpp>
+#include <playrho/detail/NonPositiveChecker.hpp>
 
 namespace playrho {
-
-/// @brief Non-positive constrained value checker.
-template <typename T>
-struct NonPositiveChecker {
-
-    /// @brief Default value supplying functor.
-    constexpr auto operator()() noexcept -> decltype(static_cast<T>(0))
-    {
-        return static_cast<T>(0);
-    }
-
-    /// @brief Value checking functor.
-    constexpr auto operator()(const T& v) noexcept
-        -> decltype(v <= static_cast<T>(0), static_cast<const char*>(nullptr))
-    {
-        if (!(v <= static_cast<T>(0))) {
-            return "value not lesser than nor equal to zero";
-        }
-        return {};
-    }
-};
 
 /// @ingroup CheckedTypes
 /// @brief Non-positive constrained value type.
 template <typename T>
-using NonPositive = Checked<T, NonPositiveChecker<T>>;
+using NonPositive = detail::Checked<T, detail::NonPositiveChecker<T>>;
 
 /// @ingroup CheckedTypes
 /// @brief Fast failing non-positive constrained value type.
 template <typename T>
-using NonPositiveFF = Checked<T, NonPositiveChecker<T>, true>;
+using NonPositiveFF = detail::Checked<T, detail::NonPositiveChecker<T>, true>;
 
 static_assert(std::is_default_constructible<NonPositive<int>>::value);
 

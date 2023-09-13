@@ -29,7 +29,7 @@
 #include <playrho/InvalidArgument.hpp>
 #include <playrho/Templates.hpp>
 
-namespace playrho {
+namespace playrho::detail {
 
 /// @brief No-op value checker.
 /// @details Provides functors ensuring values are the value given.
@@ -632,6 +632,6 @@ constexpr auto operator- (const Other& lhs,
 template <typename T>
 using DefaultCheckedValue = Checked<T>;
 
-} // namespace playrho
+} // namespace playrho::detail
 
 #endif // PLAYRHO_CHECKEDVALUE_HPP

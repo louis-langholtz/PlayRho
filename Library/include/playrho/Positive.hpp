@@ -21,34 +21,19 @@
 #ifndef PLAYRHO_POSITIVE_HPP
 #define PLAYRHO_POSITIVE_HPP
 
-#include <playrho/Checked.hpp>
+#include <playrho/detail/PositiveChecker.hpp>
 
 namespace playrho {
-
-/// @brief Positive constrained value checker.
-template <typename T>
-struct PositiveChecker {
-
-    /// @brief Value checking functor.
-    constexpr auto operator()(const T& v) noexcept
-        -> decltype(v > T{}, static_cast<const char*>(nullptr))
-    {
-        if (!(v > T{})) {
-            return "value not greater than zero";
-        }
-        return {};
-    }
-};
 
 /// @ingroup CheckedTypes
 /// @brief Positive constrained value type.
 template <typename T>
-using Positive = Checked<T, PositiveChecker<T>>;
+using Positive = detail::Checked<T, detail::PositiveChecker<T>>;
 
 /// @ingroup CheckedTypes
 /// @brief Fast failing positive constrained value type.
 template <typename T>
-using PositiveFF = Checked<T, PositiveChecker<T>, true>;
+using PositiveFF = detail::Checked<T, detail::PositiveChecker<T>, true>;
 
 static_assert(!std::is_default_constructible<Positive<int>>::value);
 

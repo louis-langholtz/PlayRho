@@ -18,25 +18,28 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_UNITINTERVAL_HPP
-#define PLAYRHO_UNITINTERVAL_HPP
+#ifndef PLAYRHO_DETAIL_POSITIVECHECKER_HPP
+#define PLAYRHO_DETAIL_POSITIVECHECKER_HPP
 
-#include <playrho/detail/UnitIntervalChecker.hpp>
+#include <playrho/detail/Checked.hpp>
 
-namespace playrho {
+namespace playrho::detail {
 
-/// @ingroup CheckedTypes
-/// @brief Unit interval constrained value type.
+/// @brief Positive constrained value checker.
 template <typename T>
-using UnitInterval = detail::Checked<T, detail::UnitIntervalChecker<T>>;
+struct PositiveChecker {
 
-/// @ingroup CheckedTypes
-/// @brief Fast failing unit interval constrained value type.
-template <typename T>
-using UnitIntervalFF = detail::Checked<T, detail::UnitIntervalChecker<T>, true>;
+    /// @brief Value checking functor.
+    constexpr auto operator()(const T& v) noexcept
+        -> decltype(v > T{}, static_cast<const char*>(nullptr))
+    {
+        if (!(v > T{})) {
+            return "value not greater than zero";
+        }
+        return {};
+    }
+};
 
-static_assert(std::is_default_constructible<UnitInterval<int>>::value);
+} // namespace playrho::detail
 
-} // namespace playrho
-
-#endif // PLAYRHO_UNITINTERVAL_HPP
+#endif // PLAYRHO_DETAIL_POSITIVECHECKER_HPP

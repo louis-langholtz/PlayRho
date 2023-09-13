@@ -65,7 +65,7 @@ TEST(CheckedValue, NonNegativeFloatTraits)
 #ifndef NDEBUG
 TEST(CheckedValue_DeathTest, NonNegativeFfTerminates)
 {
-    using type = Checked<float, NonNegativeChecker<float>, true>;
+    using type = detail::Checked<float, detail::NonNegativeChecker<float>, true>;
     constexpr auto exit_value = 42;
     constexpr auto exit_message = "terminate called for invalid_argument\n";
     type foo;
@@ -324,8 +324,8 @@ unsigned CountingChecker<T>::numChecks = 0u;
 TEST(CheckedValue, CopyFromDiffNoExcept)
 {
     CountingChecker<float>::numChecks = 0;
-    using TrueType = Checked<float, CountingChecker<float>, true>;
-    using FalseType = Checked<float, CountingChecker<float>, false>;
+    using TrueType = detail::Checked<float, CountingChecker<float>, true>;
+    using FalseType = detail::Checked<float, CountingChecker<float>, false>;
     constexpr auto vA = 42.0f;
     constexpr auto vB = 88.0f;
     TrueType a{vA};

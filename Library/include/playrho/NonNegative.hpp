@@ -21,40 +21,19 @@
 #ifndef PLAYRHO_NONNEGATIVE_HPP
 #define PLAYRHO_NONNEGATIVE_HPP
 
-#include <playrho/Checked.hpp>
+#include <playrho/detail/NonNegativeChecker.hpp>
 
 namespace playrho {
-
-/// @brief Non-negative constrained value checker.
-template <typename T>
-struct NonNegativeChecker {
-
-    /// @brief Default value supplying functor.
-    constexpr auto operator()() noexcept -> decltype(T{})
-    {
-        return T{};
-    }
-
-    /// @brief Value checking functor.
-    constexpr auto operator()(const T& v) noexcept
-        -> decltype(v >= T{}, static_cast<const char*>(nullptr))
-    {
-        if (!(v >= T{})) {
-            return "value not greater than nor equal to zero";
-        }
-        return {};
-    }
-};
 
 /// @ingroup CheckedTypes
 /// @brief Non-negative constrained value type.
 template <typename T>
-using NonNegative = Checked<T, NonNegativeChecker<T>>;
+using NonNegative = detail::Checked<T, detail::NonNegativeChecker<T>>;
 
 /// @ingroup CheckedTypes
 /// @brief Fast failing non-negative constrained value type.
 template <typename T>
-using NonNegativeFF = Checked<T, NonNegativeChecker<T>, true>;
+using NonNegativeFF = detail::Checked<T, detail::NonNegativeChecker<T>, true>;
 
 static_assert(std::is_default_constructible<NonNegative<int>>::value);
 

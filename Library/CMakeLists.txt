@@ -29,10 +29,18 @@ file(GLOB PLAYRHO_General_HDRS "${PLAYRHO_INCLUDE_PREFIX}*.hpp")
 
 set(PLAYRHO_DETAIL_HDRS
 	"${PLAYRHO_INCLUDE_PREFIX}detail/AABB.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}detail/Checked.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}detail/FiniteChecker.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}detail/IndexingNamedType.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}detail/NegativeChecker.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}detail/NonNegativeChecker.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}detail/NonPositiveChecker.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}detail/NonZeroChecker.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}detail/PositiveChecker.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}detail/RayCastInput.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}detail/Templates.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}detail/TypeInfo.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}detail/UnitIntervalChecker.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}detail/underlying_type.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}detail/Wider.hpp"
 	)

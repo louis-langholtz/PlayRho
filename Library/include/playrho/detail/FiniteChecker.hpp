@@ -18,25 +18,36 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_UNITINTERVAL_HPP
-#define PLAYRHO_UNITINTERVAL_HPP
+#ifndef PLAYRHO_DETAIL_FINITECHECKER_HPP
+#define PLAYRHO_DETAIL_FINITECHECKER_HPP
 
-#include <playrho/detail/UnitIntervalChecker.hpp>
+#include <playrho/detail/Checked.hpp>
 
-namespace playrho {
+#include <playrho/Math.hpp> // for playrho::isfinite
 
-/// @ingroup CheckedTypes
-/// @brief Unit interval constrained value type.
+namespace playrho::detail {
+
+/// @brief Finite constrained value checker.
 template <typename T>
-using UnitInterval = detail::Checked<T, detail::UnitIntervalChecker<T>>;
+struct FiniteChecker {
 
-/// @ingroup CheckedTypes
-/// @brief Fast failing unit interval constrained value type.
-template <typename T>
-using UnitIntervalFF = detail::Checked<T, detail::UnitIntervalChecker<T>, true>;
+    /// @brief Default value supplying functor.
+    constexpr auto operator()() noexcept(noexcept(static_cast<T>(0))) -> decltype(static_cast<T>(0))
+    {
+        return static_cast<T>(0);
+    }
 
-static_assert(std::is_default_constructible<UnitInterval<int>>::value);
+    /// @brief Value checking functor.
+    auto operator()(const T& v) noexcept(noexcept(isfinite(v)))
+        -> decltype(isfinite(v), static_cast<const char*>(nullptr))
+    {
+        if (!isfinite(v)) {
+            return "value not finite";
+        }
+        return {};
+    }
+};
 
-} // namespace playrho
+} // namespace playrho::detail
 
-#endif // PLAYRHO_UNITINTERVAL_HPP
+#endif // PLAYRHO_DETAIL_FINITECHECKER_HPP
