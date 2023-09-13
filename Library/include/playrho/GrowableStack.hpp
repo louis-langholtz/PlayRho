@@ -25,6 +25,7 @@
 #include <playrho/DynamicMemory.hpp>
 #include <playrho/Templates.hpp>
 
+#include <cassert> // for assert
 #include <cstring>
 
 namespace playrho {
