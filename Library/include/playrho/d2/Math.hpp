@@ -53,7 +53,7 @@ inline Angle GetAngle(const Transformation& value)
 
 /// @brief Multiplication operator.
 template <class T, typename U, bool NoExcept>
-constexpr Vector2<T> operator*(const Checked<T, U, NoExcept>& s, const UnitVec& u) noexcept
+constexpr Vector2<T> operator*(const detail::Checked<T, U, NoExcept>& s, const UnitVec& u) noexcept
 {
     return Vector2<T>{u.GetX() * s, u.GetY() * s};
 }
@@ -67,7 +67,7 @@ constexpr Vector2<T> operator*(const T& s, const UnitVec& u) noexcept
 
 /// @brief Multiplication operator.
 template <class T, class U, bool NoExcept>
-constexpr Vector2<T> operator*(const UnitVec& u, const Checked<T, U, NoExcept>& s) noexcept
+constexpr Vector2<T> operator*(const UnitVec& u, const detail::Checked<T, U, NoExcept>& s) noexcept
 {
     return Vector2<T>{u.GetX() * s, u.GetY() * s};
 }
