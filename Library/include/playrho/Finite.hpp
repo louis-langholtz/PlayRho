@@ -21,7 +21,7 @@
 #ifndef PLAYRHO_FINITE_HPP
 #define PLAYRHO_FINITE_HPP
 
-#include <playrho/CheckedValue.hpp>
+#include <playrho/Checked.hpp>
 #include <playrho/Math.hpp> // for playrho::isfinite
 
 namespace playrho {
@@ -47,15 +47,15 @@ struct FiniteChecker {
     }
 };
 
-/// @ingroup CheckedValues
+/// @ingroup CheckedTypes
 /// @brief Finite constrained value type.
 template <typename T>
-using Finite = CheckedValue<T, FiniteChecker<T>>;
+using Finite = Checked<T, FiniteChecker<T>>;
 
-/// @ingroup CheckedValues
+/// @ingroup CheckedTypes
 /// @brief Fast failing finite constrained value type.
 template <typename T>
-using FiniteFF = CheckedValue<T, FiniteChecker<T>, true>;
+using FiniteFF = Checked<T, FiniteChecker<T>, true>;
 
 static_assert(std::is_default_constructible<Finite<int>>::value);
 

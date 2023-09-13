@@ -23,15 +23,15 @@
 
 #include <stdexcept> // for std::invalid_argument
 
-#include <playrho/CheckedValue.hpp>
+#include <playrho/Checked.hpp>
 
 namespace playrho {
 
 /// @brief Unit-interval constrained value checker.
 /// @details Provides functors ensuring values are:
 ///   greater-than or equal-to zero, and less-than or equal-to one.
-/// @note This is meant to be used as a checker with types like <code>CheckedValue</code>.
-/// @see CheckedValue.
+/// @note This is meant to be used as a checker with types like <code>Checked</code>.
+/// @see Checked.
 template <typename T>
 struct UnitIntervalChecker {
 
@@ -56,15 +56,15 @@ struct UnitIntervalChecker {
     }
 };
 
-/// @ingroup CheckedValues
+/// @ingroup CheckedTypes
 /// @brief Unit interval constrained value type.
 template <typename T>
-using UnitInterval = CheckedValue<T, UnitIntervalChecker<T>>;
+using UnitInterval = Checked<T, UnitIntervalChecker<T>>;
 
-/// @ingroup CheckedValues
+/// @ingroup CheckedTypes
 /// @brief Fast failing unit interval constrained value type.
 template <typename T>
-using UnitIntervalFF = CheckedValue<T, UnitIntervalChecker<T>, true>;
+using UnitIntervalFF = Checked<T, UnitIntervalChecker<T>, true>;
 
 static_assert(std::is_default_constructible<UnitInterval<int>>::value);
 
