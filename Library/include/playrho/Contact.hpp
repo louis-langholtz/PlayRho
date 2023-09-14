@@ -33,8 +33,8 @@
 namespace playrho {
 
 /// @brief Mixes friction.
-/// @details Friction mixing formula. The idea is to allow either value to drive the
-///   resulting friction to zero. For example, anything slides on ice.
+/// @details Friction mixing formula. The idea is to allow either value to drive
+///   the resulting friction to zero. For example, anything slides on ice.
 /// @param friction1 A zero or greater value.
 /// @param friction2 A zero or greater value.
 inline auto MixFriction(NonNegativeFF<Real> friction1, NonNegativeFF<Real> friction2)
@@ -43,8 +43,8 @@ inline auto MixFriction(NonNegativeFF<Real> friction1, NonNegativeFF<Real> frict
 }
 
 /// @brief Mixes restitution.
-/// @details Restitution mixing law. The idea is allow for anything to bounce off an inelastic
-///   surface. For example, a super ball bounces on anything.
+/// @details Restitution mixing law. The idea is allow for anything to bounce off
+///   an inelastic surface. For example, a super ball bounces on anything.
 inline auto MixRestitution(Real restitution1, Real restitution2) noexcept
 {
     return (restitution1 > restitution2) ? restitution1 : restitution2;
@@ -54,9 +54,9 @@ struct ToiConf;
 
 /// @brief A potential contact between the children of two body associated shapes.
 ///
-/// @details The class manages contact between two shapes. A contact exists for each overlapping
-///   AABB in the broad-phase (except if filtered). Therefore a contact object may exist
-///   that has no actual contact points.
+/// @details The class manages contact between two shapes. A contact exists for
+///   each overlapping AABB in the broad-phase (except if filtered). Therefore a
+///   contact object may exist that has no actual contact points.
 ///
 /// @ingroup PhysicalEntities
 /// @ingroup ConstraintsGroup
@@ -78,15 +78,16 @@ public:
     /// @details
     /// Touching is defined as either:
     ///   1. This contact's manifold has more than 0 contact points, or
-    ///   2. This contact has sensors and the two shapes of this contact are found to be
-    ///      overlapping.
+    ///   2. This contact has sensors and the two shapes of this contact are found
+    ///      to be overlapping.
     /// @return true if this contact is said to be touching, false otherwise.
     constexpr bool IsTouching() const noexcept;
 
     /// @brief Sets the touching flag state.
     /// @note This should only be called if either:
     ///   1. The contact's manifold has more than 0 contact points, or
-    ///   2. The contact has sensors and the two shapes of this contact are found to be overlapping.
+    ///   2. The contact has sensors and the two shapes of this contact are found
+    ///      to be overlapping.
     /// @post <code>IsTouching()</code> returns true.
     /// @see IsTouching().
     constexpr void SetTouching() noexcept;
@@ -137,7 +138,7 @@ public:
     constexpr void SetFriction(NonNegative<Real> friction) noexcept;
 
     /// @brief Gets the coefficient of friction.
-    /// @details Gets the combined friction of the two shapes associated with this contact.
+    /// @details Gets combined friction of two shapes associated with this.
     /// @see SetFriction.
     constexpr NonNegativeFF<Real> GetFriction() const noexcept;
 
@@ -170,7 +171,8 @@ public:
     constexpr void SetToiCount(substep_type value) noexcept;
 
     /// @brief Increments the TOI count.
-    /// @pre <code>GetToiCount()</code> is less than <code>numeric_limits<substep_type>::max()</code>.
+    /// @pre <code>GetToiCount()</code> is less than
+    ///   <code>numeric_limits<substep_type>::max()</code>.
     /// @post <code>GetToiCount()</code> returns one more than before.
     /// @see GetToiCount, SetToiCount.
     constexpr void IncrementToiCount() noexcept;
@@ -187,10 +189,10 @@ public:
     constexpr UnitIntervalFF<Real> GetToi() const;
 
     /// @brief Sets the time of impact (TOI).
-    /// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no actual
-    ///   impact in the current time slot.
-    /// @post <code>HasValidToi()</code> returns true, and <code>GetToi()</code> returns
-    ///   the value set.
+    /// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates
+    ///   no actual impact in the current time slot.
+    /// @post <code>HasValidToi()</code> returns true, and <code>GetToi()</code>
+    ///   returns the value set.
     /// @see Real GetToi() const.
     /// @see HasValidToi.
     constexpr void SetToi(UnitInterval<Real> toi) noexcept;
@@ -298,7 +300,7 @@ private:
         /// Indicates whether the contact is to be treated as active or not.
         e_activeFlag = 0x40,
 
-        /// Indicates whether the contact is to be treated as between impenetrable bodies.
+        /// Whether contact is to be treated as between impenetrable bodies.
         e_impenetrableFlag = 0x80,
     };
 
@@ -819,8 +821,8 @@ constexpr auto GetToi(const Contact& contact) noexcept
 
 /// @brief Sets the time of impact (TOI).
 /// @param contact The contact to update.
-/// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no actual impact
-///   in the current time slot.
+/// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no
+///   actual impact in the current time slot.
 /// @post <code>HasValidToi(contact)</code> returns true.
 /// @post <code>GetToi(const Contact&)</code> returns the value set.
 /// @see HasValidToi, GetToi.
