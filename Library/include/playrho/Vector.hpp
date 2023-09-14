@@ -227,7 +227,7 @@ struct Vector
 /// IsVector<int>::value || IsVector<float>::value
 /// @endcode
 /// @see Vector
-template <typename>
+template <typename T>
 struct IsVector: std::false_type {};
 
 /// @brief Trait class specialization for checking if type is a <code>Vector</code> type..
@@ -547,6 +547,60 @@ template <typename T, std::size_t N>
     }
     os << "}";
     return os;
+}
+
+/// @brief Absolute value function for vectors.
+/// @relatedalso Vector
+template <typename T, std::size_t N>
+constexpr auto abs(const Vector<T, N>& v) noexcept -> decltype(abs(T{}), Vector<T, N>{})
+{
+    auto result = Vector<T, N>{};
+    for (auto i = decltype(N){0}; i < N; ++i) {
+        result[i] = abs(v[i]);
+    }
+    return result;
+}
+
+/// @brief Gets the "X" element of the given value - i.e. the first element.
+template <typename T, std::size_t N>
+constexpr auto GetX(Vector<T, N>& value) -> decltype(get<0>(value))
+{
+    return get<0>(value);
+}
+
+/// @brief Gets the "Y" element of the given value - i.e. the second element.
+template <typename T, std::size_t N>
+constexpr auto GetY(Vector<T, N>& value) -> decltype(get<1>(value))
+{
+    return get<1>(value);
+}
+
+/// @brief Gets the "Z" element of the given value - i.e. the third element.
+template <typename T, std::size_t N>
+constexpr auto GetZ(Vector<T, N>& value) -> decltype(get<2>(value))
+{
+    return get<2>(value);
+}
+
+/// @brief Gets the "X" element of the given value - i.e. the first element.
+template <typename T, std::size_t N>
+constexpr auto GetX(const Vector<T, N>& value) -> decltype(get<0>(value))
+{
+    return get<0>(value);
+}
+
+/// @brief Gets the "Y" element of the given value - i.e. the second element.
+template <typename T, std::size_t N>
+constexpr auto GetY(const Vector<T, N>& value) -> decltype(get<1>(value))
+{
+    return get<1>(value);
+}
+
+/// @brief Gets the "Z" element of the given value - i.e. the third element.
+template <typename T, std::size_t N>
+constexpr auto GetZ(const Vector<T, N>& value) -> decltype(get<2>(value))
+{
+    return get<2>(value);
 }
 
 } // namespace playrho

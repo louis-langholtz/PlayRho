@@ -386,6 +386,18 @@ constexpr UnitVec::value_type get<1>(const UnitVec& v) noexcept
     return v.GetY();
 }
 
+/// @brief Gets the "X" element of the given value - i.e. the first element.
+constexpr auto GetX(const UnitVec& value)
+{
+    return value.GetX();
+}
+
+/// @brief Gets the "Y" element of the given value - i.e. the second element.
+constexpr auto GetY(const UnitVec& value) -> decltype(get<1>(value))
+{
+    return value.GetY();
+}
+
 /// @brief Output stream operator.
 inline ::std::ostream& operator<<(::std::ostream& os, const UnitVec& value)
 {
