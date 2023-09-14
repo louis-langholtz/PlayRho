@@ -79,10 +79,8 @@ public:
     /// @details This advances position 0 (<code>pos0</code>) of the sweep towards position
     ///   1 (<code>pos1</code>) by a factor of the difference between the given alpha and
     ///   the alpha 0.
-    ///
     /// @param alpha Valid new time factor in [0,1) to update the sweep to. Behavior is
-    ///   undefined if value is invalid.
-    ///
+    ///   not specified if value is invalid.
     void Advance0(Real alpha) noexcept;
 
     /// @brief Resets the alpha 0 value back to zero.

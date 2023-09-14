@@ -251,7 +251,7 @@ public:
     /// of the contacts, and notifying the contact listener of begin-contact, end-contact,
     /// pre-solve, and post-solve events.
     ///
-    /// @warning Behavior is undefined if given a negative step time delta.
+    /// @warning Behavior is not specified if given a negative step time delta.
     /// @warning Varying the step time delta may lead to non-physical behaviors.
     ///
     /// @note Calling this with a zero step time delta results only in fixtures and bodies
@@ -389,7 +389,7 @@ public:
     ///   world's <code>CreateBody(const BodyConf&)</code> method.
     /// @warning This automatically deletes all associated shapes and joints.
     /// @warning This function is locked during callbacks.
-    /// @warning Behavior is undefined if the identified body was not created by this world.
+    /// @warning Behavior is not specified if identified body wasn't created by this world.
     /// @note This function is locked during callbacks.
     /// @post The destroyed body will no longer be present in the range returned from the
     ///   <code>GetBodies()</code> method.

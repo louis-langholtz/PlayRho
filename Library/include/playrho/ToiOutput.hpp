@@ -76,7 +76,7 @@ struct ToiOutput {
         /// @details Indicates that the two convex polygons never actually collide
         ///   during their defined sweeps.
         /// @note This is a desirable result.
-        /// @note Time of impact in this case is <code>tMax</code> (which is typically 1).
+        /// @note Time of impact in this case is <code>timeMax</code> (which is typically 1).
         e_separated,
 
         /// @brief Overlapped.

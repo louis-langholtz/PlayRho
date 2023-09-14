@@ -151,8 +151,8 @@ public:
 
     /// @brief Creates a new leaf node.
     /// @details Creates a leaf node for a tight fitting AABB and the given data.
-    /// @warning Behavior is undefined unless the number of nodes already allocated (as reported by
-    ///   <code>GetNodeCount()</code>) is less than <code>std::numeric_limits<Size>::max()</code>.
+    /// @warning Behavior is not specified unless the number of nodes already allocated (as reported
+    ///   by <code>GetNodeCount()</code>) is less than <code>std::numeric_limits<Size>::max()</code>.
     /// @note The indices of leaf nodes that have been destroyed get reused for new nodes.
     /// @post If the root index had been the <code>GetInvalidSize()</code>, then it will
     ///   be set to the index returned from this method.
@@ -214,7 +214,7 @@ public:
 
     /// @brief Gets the branch data for the identified node.
     /// @param index Identifier of node to get branch data for.
-    /// @warning Behavior is undefined if the given index in not a valid branch node.
+    /// @pre @p index is less than <code>GetNodeCapacity()</code>.
     DynamicTreeBranchData GetBranchData(Size index) const noexcept;
 
     /// @brief Gets the index of the "root" node if this tree has one.
@@ -277,7 +277,7 @@ private:
     ///   node or a branch node.
     /// @pre <code>GetNodeCapacity()</code> returns a value at least one greater than the value
     ///   returned from <code>GetNodeCount()</code>.
-    /// @warning Behavior is undefined unless the number of nodes allocated (as reported by
+    /// @warning Behavior is not specified unless the number of nodes allocated (as reported by
     ///   <code>GetNodeCount()</code>) is less than <code>GetNodeCapacity()</code>.
     /// @note Call <code>Reserve(GetNodeCount() + 1u)</code> before this if uncertain of whether
     ///   any entries are available on the free list.
@@ -286,8 +286,9 @@ private:
     Size AllocateNode() noexcept;
 
     /// @brief Frees the specified node.
-    /// @warning Behavior is undefined if the given index is not valid.
-    /// @warning Specified node must be a "leaf" or "branch" node.
+    /// @pre @p index is less than <code>GetNodeCapacity()</code>.
+    /// @pre <code>GetNodeCount()</code> is greater than zero.
+    /// @pre Specified node is not "unused".
     /// @pre Specified node's other index is the invalid size index.
     /// @pre Specified node isn't referenced by any other nodes.
     /// @post The free list links to the given index.
@@ -339,7 +340,7 @@ public:
     constexpr explicit TreeNode(Size other = DynamicTree::GetInvalidSize()) noexcept
         : m_other{other}
     {
-        assert(IsUnused(m_height));
+        assert(IsUnused(GetHeight()));
     }
 
     /// @brief Initializing constructor.
@@ -382,62 +383,68 @@ public:
     }
 
     /// @brief Gets the node's AABB.
-    /// @warning Behavior is undefined if called on a free/unused node!
+    /// @pre This node is not unused, i.e.: <code>IsUnused(GetHeight())</code> is false.
     constexpr AABB GetAABB() const noexcept
     {
-        assert(!IsUnused(m_height));
+        assert(!IsUnused(GetHeight()));
         return m_aabb;
     }
 
     /// @brief Sets the node's AABB.
-    /// @warning Behavior is undefined if called on a free/unused node!
+    /// @pre This node is not unused, i.e.: <code>IsUnused(GetHeight())</code> is false.
     constexpr void SetAABB(const AABB& value) noexcept
     {
-        assert(!IsUnused(m_height));
+        assert(!IsUnused(GetHeight()));
         m_aabb = value;
     }
 
     /// @brief Gets the node as an "unused" value.
-    /// @warning Behavior is undefined unless called on a free/unused node!
+    /// @pre This node is unused, i.e.: <code>IsUnused(GetHeight())</code> is true.
     constexpr DynamicTreeUnusedData AsUnused() const noexcept
     {
-        assert(IsUnused(m_height));
+        assert(IsUnused(GetHeight()));
         return m_variant.unused;
     }
 
     /// @brief Gets the node as a "leaf" value.
-    /// @warning Behavior is undefined unless called on a leaf node!
+    /// @pre This node is a leaf, i.e.: <code>IsLeaf(GetHeight())</code> is true.
     constexpr Contactable AsLeaf() const noexcept
     {
-        assert(IsLeaf(m_height));
+        assert(IsLeaf(GetHeight()));
         return m_variant.leaf;
     }
 
     /// @brief Gets the node as a "branch" value.
-    /// @warning Behavior is undefined unless called on a branch node!
+    /// @pre This node is a branch, i.e.: <code>IsBranch(GetHeight())</code> is true.
     constexpr DynamicTreeBranchData AsBranch() const noexcept
     {
-        assert(IsBranch(m_height));
+        assert(IsBranch(GetHeight()));
         return m_variant.branch;
     }
 
     /// @brief Gets the node as an "unused" value.
+    /// @pre This node is unused, i.e.: <code>IsUnused(GetHeight())</code> is true.
     constexpr void Assign(const DynamicTreeUnusedData& v) noexcept
     {
+        assert(IsUnused(GetHeight()));
         m_variant.unused = v;
         m_height = static_cast<Height>(-1);
     }
 
     /// @brief Gets the node as a "leaf" value.
+    /// @pre This node is a leaf, i.e.: <code>IsLeaf(GetHeight())</code> is true.
     constexpr void Assign(const Contactable& v) noexcept
     {
+        assert(IsLeaf(GetHeight()));
         m_variant.leaf = v;
         m_height = 0;
     }
 
     /// @brief Assigns the node as a "branch" value.
+    /// @pre This node is a branch, i.e.: <code>IsBranch(GetHeight())</code> is true.
     constexpr void Assign(const DynamicTreeBranchData& v, const AABB& bb, Height h) noexcept
     {
+        assert(IsBranch(GetHeight()));
         assert(v.child1 != GetInvalidSize());
         assert(v.child2 != GetInvalidSize());
         assert(IsBranch(h));
@@ -501,7 +508,7 @@ inline DynamicTree::Size DynamicTree::GetLeafCount() const noexcept
 inline const DynamicTree::TreeNode& DynamicTree::GetNode(Size index) const noexcept
 {
     assert(index != GetInvalidSize());
-    assert(index < m_nodeCapacity);
+    assert(index < GetNodeCapacity());
     return *(m_nodes + index); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 }
 
@@ -580,7 +587,7 @@ constexpr AABB GetAABB(const DynamicTree::TreeNode& node) noexcept
 }
 
 /// @brief Gets the next index of the given node.
-/// @warning Behavior is undefined if the given node is not an "unused" node.
+/// @pre The given node is unused, i.e.: <code>IsUnused(node)</code> is true.
 /// @relatedalso DynamicTree::TreeNode
 constexpr DynamicTree::Size GetNext(const DynamicTree::TreeNode& node) noexcept
 {
@@ -628,9 +635,9 @@ Length ComputeTotalPerimeter(const DynamicTree& tree) noexcept;
 Real ComputePerimeterRatio(const DynamicTree& tree) noexcept;
 
 /// @brief Computes the height of the tree from a given node.
-/// @warning Behavior is undefined if the given index is not valid.
 /// @param tree Tree to compute the height at the given node for.
 /// @param index ID of node to compute height from.
+/// @pre @p index is less than <code>tree.GetNodeCapacity()</code>.
 /// @return 0 unless the given index is to a branch node.
 DynamicTree::Height ComputeHeight(const DynamicTree& tree, DynamicTree::Size index) noexcept;
 

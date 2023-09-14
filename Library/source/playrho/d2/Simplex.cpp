@@ -201,7 +201,6 @@ Simplex Simplex::Get(const SimplexEdge& s0, const SimplexEdge& s1, const Simplex
 Simplex Simplex::Get(const SimplexEdges& edges) noexcept
 {
     const auto count = edges.size();
-    assert(count < 4);
     switch (count) {
     case 1:
         return Get(edges[0]);

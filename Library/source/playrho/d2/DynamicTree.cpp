@@ -471,7 +471,6 @@ void DynamicTree::FreeNode(Size index) noexcept
     assert(m_nodeCount > 0); // index is not necessarily less than m_nodeCount.
     assert(!IsUnused(m_nodes[index].GetHeight()));
     assert(m_nodes[index].GetOther() == GetInvalidSize());
-
     m_nodes[index] = TreeNode{m_freeIndex};
     m_freeIndex = index;
     --m_nodeCount;

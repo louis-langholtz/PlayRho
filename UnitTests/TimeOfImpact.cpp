@@ -31,7 +31,7 @@ using namespace playrho::d2;
 
 TEST(TOIConf, DefaultConstruction)
 {
-    EXPECT_EQ(ToiConf{}.tMax, Real(1));
+    EXPECT_EQ(ToiConf{}.timeMax, ToiConf::DefaultTimeMax);
     EXPECT_EQ(ToiConf{}.maxRootIters, DefaultMaxToiRootIters);
     EXPECT_EQ(ToiConf{}.maxToiIters, DefaultMaxToiIters);
     EXPECT_EQ(ToiConf{}.targetDepth, DefaultLinearSlop * Real{3});

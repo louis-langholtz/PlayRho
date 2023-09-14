@@ -182,7 +182,7 @@ public:
     /// @brief Gets the time of impact (TOI) as a fraction.
     /// @pre <code>HasValidToi()</code> must be true.
     /// @return Time of impact fraction in the range of 0 to 1 if set (where 1
-    ///   means no actual impact in current time slot), otherwise undefined.
+    ///   means no actual impact in current time slot), otherwise not specified.
     /// @see void SetToi(Real toi).
     constexpr UnitIntervalFF<Real> GetToi() const;
 
@@ -809,7 +809,7 @@ constexpr auto HasValidToi(const Contact& contact) noexcept
 /// @note This is only valid if a TOI has been set.
 /// @see void SetToi(Real toi).
 /// @return Time of impact fraction in the range of 0 to 1 if set (where 1
-///   means no actual impact in current time slot), otherwise undefined.
+///   means no actual impact in current time slot), otherwise not specified.
 /// @see HasValidToi
 /// @relatedalso Contact
 constexpr auto GetToi(const Contact& contact) noexcept

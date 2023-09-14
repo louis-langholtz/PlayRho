@@ -320,21 +320,18 @@ public:
     /// @brief Unsigned long long operator.
     explicit constexpr operator unsigned long long() const noexcept
     {
-        // Behavior is undefined if m_value is negative
         return static_cast<unsigned long long>(m_value / ScaleFactor);
     }
 
     /// @brief Unsigned long operator.
     explicit constexpr operator unsigned long() const noexcept
     {
-        // Behavior is undefined if m_value is negative
         return static_cast<unsigned long>(m_value / ScaleFactor);
     }
 
     /// @brief Unsigned int operator.
     explicit constexpr operator unsigned int() const noexcept
     {
-        // Behavior is undefined if m_value is negative
         return static_cast<unsigned int>(m_value / ScaleFactor);
     }
 
