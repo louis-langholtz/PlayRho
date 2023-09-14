@@ -28,26 +28,26 @@ namespace playrho {
 /// @ingroup CheckedTypes
 /// @brief Non-zero constrained value type.
 template <typename T>
-using NonZero = std::enable_if_t<!std::is_pointer<T>::value, detail::Checked<T, detail::NonZeroChecker<T>>>;
+using NonZero = std::enable_if_t<!std::is_pointer_v<T>, detail::Checked<T, detail::NonZeroChecker<T>>>;
 
 /// @ingroup CheckedTypes
 /// @brief Fast failing non-zero constrained value type.
 template <typename T>
-using NonZeroFF = std::enable_if_t<!std::is_pointer<T>::value, detail::Checked<T, detail::NonZeroChecker<T>, true>>;
+using NonZeroFF = std::enable_if_t<!std::is_pointer_v<T>, detail::Checked<T, detail::NonZeroChecker<T>, true>>;
 
-static_assert(!std::is_default_constructible<NonZero<int>>::value);
+static_assert(!std::is_default_constructible_v<NonZero<int>>);
 
 /// @ingroup CheckedTypes
 /// @brief Non-null constrained value type.
 template <typename T>
-using NonNull = std::enable_if_t<std::is_pointer<T>::value, detail::Checked<T, detail::NonZeroChecker<T>>>;
+using NonNull = std::enable_if_t<std::is_pointer_v<T>, detail::Checked<T, detail::NonZeroChecker<T>>>;
 
 /// @ingroup CheckedTypes
 /// @brief Fast failing non-null constrained value type.
 template <typename T>
-using NonNullFF = std::enable_if_t<std::is_pointer<T>::value, detail::Checked<T, detail::NonZeroChecker<T>, true>>;
+using NonNullFF = std::enable_if_t<std::is_pointer_v<T>, detail::Checked<T, detail::NonZeroChecker<T>, true>>;
 
-static_assert(!std::is_default_constructible<NonNull<int*>>::value);
+static_assert(!std::is_default_constructible_v<NonNull<int*>>);
 
 } // namespace playrho
 

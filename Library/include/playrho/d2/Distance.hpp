@@ -59,7 +59,7 @@ struct DistanceOutput {
     };
 
     /// @brief Iteration type.
-    using iteration_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+    using iteration_type = std::remove_const_t<decltype(DefaultMaxDistanceIters)>;
 
     Simplex simplex; ///< Simplex.
     iteration_type iterations = 0; ///< Count of iterations performed to return result.

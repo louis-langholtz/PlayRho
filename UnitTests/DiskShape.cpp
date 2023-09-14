@@ -47,9 +47,9 @@ TEST(DiskShapeConf, ByteSize)
     }
 }
 
-TEST(DiskShapeConf, IsValidShapeType)
+TEST(DiskShapeConf, IsValidShapeTypeV)
 {
-    EXPECT_TRUE(IsValidShapeType<DiskShapeConf>::value);
+    EXPECT_TRUE(IsValidShapeTypeV<DiskShapeConf>);
 }
 
 TEST(DiskShapeConf, DefaultConstruction)

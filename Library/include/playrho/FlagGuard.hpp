@@ -30,7 +30,7 @@ namespace playrho {
     class FlagGuard
     {
     public:
-        static_assert(std::is_unsigned<T>::value, "Unsigned type required");
+        static_assert(std::is_unsigned_v<T>, "Unsigned type required");
 
         /// @brief Initializing constructor.
         /// @details Sets the given flag variable to the bitwise or of it with the

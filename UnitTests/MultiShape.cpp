@@ -59,9 +59,9 @@ TEST(MultiShapeConf, ByteSize)
     }
 }
 
-TEST(MultiShapeConf, IsValidShapeType)
+TEST(MultiShapeConf, IsValidShapeTypeV)
 {
-    EXPECT_TRUE(IsValidShapeType<MultiShapeConf>::value);
+    EXPECT_TRUE(IsValidShapeTypeV<MultiShapeConf>);
 }
 
 TEST(MultiShapeConf, Traits)

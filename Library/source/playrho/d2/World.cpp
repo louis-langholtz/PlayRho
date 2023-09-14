@@ -35,12 +35,12 @@
 namespace playrho {
 namespace d2 {
 
-static_assert(std::is_default_constructible<World>::value, "World must be default constructible!");
-static_assert(std::is_copy_constructible<World>::value, "World must be copy constructible!");
-static_assert(std::is_copy_assignable<World>::value, "World must be copy assignable!");
-static_assert(std::is_move_constructible<World>::value, "World must be move constructible!");
-static_assert(std::is_move_assignable<World>::value, "World must be move assignable!");
-static_assert(std::is_nothrow_destructible<World>::value, "World must be nothrow destructible!");
+static_assert(std::is_default_constructible_v<World>, "World must be default constructible!");
+static_assert(std::is_copy_constructible_v<World>, "World must be copy constructible!");
+static_assert(std::is_copy_assignable_v<World>, "World must be copy assignable!");
+static_assert(std::is_move_constructible_v<World>, "World must be move constructible!");
+static_assert(std::is_move_assignable_v<World>, "World must be move assignable!");
+static_assert(std::is_nothrow_destructible_v<World>, "World must be nothrow destructible!");
 
 // Special member functions are off in their own .cpp file to avoid their
 // necessary includes being in this file!!

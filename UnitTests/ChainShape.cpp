@@ -62,9 +62,9 @@ TEST(ChainShapeConf, ByteSize)
     }
 }
 
-TEST(ChainShapeConf, IsValidShapeType)
+TEST(ChainShapeConf, IsValidShapeTypeV)
 {
-    EXPECT_TRUE(IsValidShapeType<ChainShapeConf>::value);
+    EXPECT_TRUE(IsValidShapeTypeV<ChainShapeConf>);
 }
 
 TEST(ChainShapeConf, Traits)

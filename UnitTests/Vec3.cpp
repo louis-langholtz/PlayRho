@@ -42,28 +42,28 @@ TEST(Vec3, ByteSize)
 
 TEST(Vec3, Traits)
 {
-    EXPECT_TRUE((IsAddable<Vec3>::value));
-    EXPECT_TRUE((IsAddable<Vec3,Vec3>::value));
+    EXPECT_TRUE((IsAddableV<Vec3>));
+    EXPECT_TRUE((IsAddableV<Vec3,Vec3>));
 
-    EXPECT_TRUE(std::is_default_constructible<Vec3>::value);
-    EXPECT_TRUE(std::is_nothrow_default_constructible<Vec3>::value);
-    EXPECT_TRUE(std::is_trivially_default_constructible<Vec3>::value);
+    EXPECT_TRUE(std::is_default_constructible_v<Vec3>);
+    EXPECT_TRUE(std::is_nothrow_default_constructible_v<Vec3>);
+    EXPECT_TRUE(std::is_trivially_default_constructible_v<Vec3>);
     
-    EXPECT_TRUE(std::is_constructible<Vec3>::value);
-    EXPECT_TRUE(std::is_nothrow_constructible<Vec3>::value);
-    EXPECT_TRUE(std::is_trivially_constructible<Vec3>::value);
+    EXPECT_TRUE(std::is_constructible_v<Vec3>);
+    EXPECT_TRUE(std::is_nothrow_constructible_v<Vec3>);
+    EXPECT_TRUE(std::is_trivially_constructible_v<Vec3>);
     
-    EXPECT_TRUE(std::is_copy_constructible<Vec3>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<Vec3>::value);
-    EXPECT_TRUE(std::is_trivially_copy_constructible<Vec3>::value);
+    EXPECT_TRUE(std::is_copy_constructible_v<Vec3>);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible_v<Vec3>);
+    EXPECT_TRUE(std::is_trivially_copy_constructible_v<Vec3>);
     
-    EXPECT_TRUE(std::is_copy_assignable<Vec3>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<Vec3>::value);
-    EXPECT_TRUE(std::is_trivially_copy_assignable<Vec3>::value);
+    EXPECT_TRUE(std::is_copy_assignable_v<Vec3>);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable_v<Vec3>);
+    EXPECT_TRUE(std::is_trivially_copy_assignable_v<Vec3>);
     
-    EXPECT_TRUE(std::is_destructible<Vec3>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<Vec3>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<Vec3>::value);
+    EXPECT_TRUE(std::is_destructible_v<Vec3>);
+    EXPECT_TRUE(std::is_nothrow_destructible_v<Vec3>);
+    EXPECT_TRUE(std::is_trivially_destructible_v<Vec3>);
 }
 
 TEST(Vec3, Constructor) {
@@ -176,12 +176,12 @@ TEST(Vec3, ScalarMultiplication)
 
 TEST(Vec3, std_tuple_size)
 {
-    EXPECT_EQ(std::tuple_size<Vec3>::value, 3u);
+    EXPECT_EQ(std::tuple_size_v<Vec3>, 3u);
 }
 
 TEST(Vec3, std_tuple_element)
 {
-    ::testing::StaticAssertTypeEq<std::tuple_element<0, Vec3>::type, Real>();
-    ::testing::StaticAssertTypeEq<std::tuple_element<1, Vec3>::type, Real>();
-    ::testing::StaticAssertTypeEq<std::tuple_element<2, Vec3>::type, Real>();
+    ::testing::StaticAssertTypeEq<std::tuple_element_t<0, Vec3>, Real>();
+    ::testing::StaticAssertTypeEq<std::tuple_element_t<1, Vec3>, Real>();
+    ::testing::StaticAssertTypeEq<std::tuple_element_t<2, Vec3>, Real>();
 }

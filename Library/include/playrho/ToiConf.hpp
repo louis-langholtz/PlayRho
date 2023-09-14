@@ -48,13 +48,13 @@ struct StepConf;
 ///
 struct ToiConf {
     /// @brief Root iteration type.
-    using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
+    using root_iter_type = std::remove_const_t<decltype(DefaultMaxToiRootIters)>;
 
     /// @brief TOI iteration type.
-    using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+    using toi_iter_type = std::remove_const_t<decltype(DefaultMaxToiIters)>;
 
     /// @brief Distance iteration type.
-    using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+    using dist_iter_type = std::remove_const_t<decltype(DefaultMaxDistanceIters)>;
 
     /// @brief Default target depth.
     static constexpr auto DefaultTargetDepth = NonNegative<Length>{DefaultLinearSlop * Real(3)};

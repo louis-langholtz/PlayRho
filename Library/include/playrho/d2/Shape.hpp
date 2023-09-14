@@ -84,6 +84,11 @@ struct IsValidShapeType<
     : std::true_type {
 };
 
+/// @brief Boolean value for whether the specified type is a valid shape type.
+/// @see Shape.
+template <class T>
+inline constexpr bool IsValidShapeTypeV = IsValidShapeType<T>::value;
+
 template <class T, class = void>
 struct HasSetFriction : std::false_type {
 };
@@ -94,6 +99,9 @@ struct HasSetFriction<T,
     : std::true_type {
 };
 
+template <class T>
+inline constexpr bool HasSetFrictionV = HasSetFriction<T>::value;
+
 template <class T, class = void>
 struct HasSetSensor : std::false_type {
 };
@@ -102,6 +110,9 @@ template <class T>
 struct HasSetSensor<T, std::void_t<decltype(SetSensor(std::declval<T&>(), std::declval<bool>()))>>
     : std::true_type {
 };
+
+template <class T>
+inline constexpr bool HasSetSensorV = HasSetSensor<T>::value;
 
 template <class T, class = void>
 struct HasSetDensity : std::false_type {
@@ -113,6 +124,9 @@ struct HasSetDensity<T, std::void_t<decltype(SetDensity(std::declval<T&>(),
     : std::true_type {
 };
 
+template <class T>
+inline constexpr bool HasSetDensityV = HasSetDensity<T>::value;
+
 template <class T, class = void>
 struct HasSetRestitution : std::false_type {
 };
@@ -123,6 +137,9 @@ struct HasSetRestitution<
     : std::true_type {
 };
 
+template <class T>
+inline constexpr bool HasSetRestitutionV = HasSetRestitution<T>::value;
+
 template <class T, class = void>
 struct HasSetFilter : std::false_type {
 };
@@ -131,6 +148,9 @@ template <class T>
 struct HasSetFilter<T, std::void_t<decltype(SetFilter(std::declval<T&>(), std::declval<Filter>()))>>
     : std::true_type {
 };
+
+template <class T>
+inline constexpr bool HasSetFilterV = HasSetFilter<T>::value;
 
 template <class T, class = void>
 struct HasTranslate : std::false_type {
@@ -142,6 +162,9 @@ struct HasTranslate<T,
     : std::true_type {
 };
 
+template <class T>
+inline constexpr bool HasTranslateV = HasTranslate<T>::value;
+
 template <class T, class = void>
 struct HasScale : std::false_type {
 };
@@ -150,6 +173,9 @@ template <class T>
 struct HasScale<T, std::void_t<decltype(Scale(std::declval<T&>(), std::declval<Vec2>()))>>
     : std::true_type {
 };
+
+template <class T>
+inline constexpr bool HasScaleV = HasScale<T>::value;
 
 template <class T, class = void>
 struct HasRotate : std::false_type {
@@ -160,9 +186,12 @@ struct HasRotate<T, std::void_t<decltype(Rotate(std::declval<T&>(), std::declval
     : std::true_type {
 };
 
+template <class T>
+inline constexpr bool HasRotateV = HasRotate<T>::value;
+
 /// @brief Fallback friction setter that throws unless given the same value as current.
 template <class T>
-std::enable_if_t<IsValidShapeType<T>::value && !HasSetFriction<T>::value, void>
+std::enable_if_t<IsValidShapeTypeV<T> && !HasSetFrictionV<T>, void>
 SetFriction(T& o, NonNegative<Real> value)
 {
     if (GetFriction(o) != value) {
@@ -172,7 +201,7 @@ SetFriction(T& o, NonNegative<Real> value)
 
 /// @brief Fallback sensor setter that throws unless given the same value as current.
 template <class T>
-std::enable_if_t<IsValidShapeType<T>::value && !HasSetSensor<T>::value, void> SetSensor(T& o,
+std::enable_if_t<IsValidShapeTypeV<T> && !HasSetSensorV<T>, void> SetSensor(T& o,
                                                                                         bool value)
 {
     if (IsSensor(o) != value) {
@@ -182,7 +211,7 @@ std::enable_if_t<IsValidShapeType<T>::value && !HasSetSensor<T>::value, void> Se
 
 /// @brief Fallback density setter that throws unless given the same value as current.
 template <class T>
-std::enable_if_t<IsValidShapeType<T>::value && !HasSetDensity<T>::value, void>
+std::enable_if_t<IsValidShapeTypeV<T> && !HasSetDensityV<T>, void>
 SetDensity(T& o, NonNegative<AreaDensity> value)
 {
     if (GetDensity(o) != value) {
@@ -192,7 +221,7 @@ SetDensity(T& o, NonNegative<AreaDensity> value)
 
 /// @brief Fallback restitution setter that throws unless given the same value as current.
 template <class T>
-std::enable_if_t<IsValidShapeType<T>::value && !HasSetRestitution<T>::value, void>
+std::enable_if_t<IsValidShapeTypeV<T> && !HasSetRestitutionV<T>, void>
 SetRestitution(T& o, Real value)
 {
     if (GetRestitution(o) != value) {
@@ -202,7 +231,7 @@ SetRestitution(T& o, Real value)
 
 /// @brief Fallback filter setter that throws unless given the same value as current.
 template <class T>
-std::enable_if_t<IsValidShapeType<T>::value && !HasSetFilter<T>::value, void>
+std::enable_if_t<IsValidShapeTypeV<T> && !HasSetFilterV<T>, void>
 SetFilter(T& o, Filter value)
 {
     if (GetFilter(o) != value) {
@@ -213,7 +242,7 @@ SetFilter(T& o, Filter value)
 /// @brief Fallback translate function that throws unless the given value has no effect.
 template <class T>
 auto Translate(T&, const Length2& value)
-    -> std::enable_if_t<IsValidShapeType<T>::value && !HasTranslate<T>::value, void>
+    -> std::enable_if_t<IsValidShapeTypeV<T> && !HasTranslateV<T>, void>
 {
     if (Length2{} != value) {
         throw InvalidArgument("Translate non-zero amount not supported");
@@ -223,7 +252,7 @@ auto Translate(T&, const Length2& value)
 /// @brief Fallback scale function that throws unless the given value has no effect.
 template <class T>
 auto Scale(T&, const Vec2& value)
-    -> std::enable_if_t<IsValidShapeType<T>::value && !HasScale<T>::value, void>
+    -> std::enable_if_t<IsValidShapeTypeV<T> && !HasScaleV<T>, void>
 {
     if (Vec2{Real(1), Real(1)} != value) {
         throw InvalidArgument("Scale non-identity amount not supported");
@@ -233,7 +262,7 @@ auto Scale(T&, const Vec2& value)
 /// @brief Fallback rotate function that throws unless the given value has no effect.
 template <class T>
 auto Rotate(T&, const UnitVec& value)
-    -> std::enable_if_t<IsValidShapeType<T>::value && !HasRotate<T>::value, void>
+    -> std::enable_if_t<IsValidShapeTypeV<T> && !HasRotateV<T>, void>
 {
     if (UnitVec::GetRight() != value) {
         throw InvalidArgument("Rotate non-zero amount not supported");
@@ -394,7 +423,7 @@ bool operator!=(const Shape& lhs, const Shape& rhs) noexcept;
 ///   Different shapes of a given type meanwhile are had by providing different values for the
 ///   type.
 /// @note A shape can be constructed from or have its value set to any value whose type
-///   <code>T</code> satisfies the requirement that <code>IsValidShapeType<T>::value == true</code>.
+///   <code>T</code> satisfies the requirement that <code>IsValidShapeTypeV<T> == true</code>.
 /// @ingroup PartsGroup
 /// @see https://youtu.be/QGcVXgEVMJg
 /// @see https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Polymorphic_Value_Types

@@ -28,8 +28,8 @@ using namespace playrho;
 
 TEST(ArrayList, traits)
 {
-    EXPECT_TRUE((IsIterable<ArrayList<int, 4u>>::value));
-    EXPECT_FALSE((IsAddable<ArrayList<int, 4u>>::value));
+    EXPECT_TRUE((IsIterableV<ArrayList<int, 4u>>));
+    EXPECT_FALSE((IsAddableV<ArrayList<int, 4u>>));
 }
 
 TEST(ArrayList, DefaultConstruction)

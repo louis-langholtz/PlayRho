@@ -709,13 +709,13 @@ private:
         ContactCounter numValidTOI = 0; ///< # already valid TOIs.
 
         /// @brief Distance iterations type alias.
-        using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+        using dist_iter_type = std::remove_const_t<decltype(DefaultMaxDistanceIters)>;
 
         /// @brief TOI iterations type alias.
-        using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+        using toi_iter_type = std::remove_const_t<decltype(DefaultMaxToiIters)>;
 
         /// @brief Root iterations type alias.
-        using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
+        using root_iter_type = std::remove_const_t<decltype(DefaultMaxToiRootIters)>;
 
         dist_iter_type maxDistIters = 0; ///< Max distance iterations.
         toi_iter_type maxToiIters = 0; ///< Max TOI iterations.

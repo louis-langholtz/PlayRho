@@ -119,7 +119,7 @@ public:
     /// @note A magnitude of 0 indicates that no conclusive direction could be determined.
     ///   The magnitude will otherwise be a normal value.
     template <typename T>
-    using PolarCoord = std::enable_if_t<IsArithmetic<T>::value, std::pair<UnitVec, T>>;
+    using PolarCoord = std::enable_if_t<IsArithmeticV<T>, std::pair<UnitVec, T>>;
 
     /// @brief Gets the unit vector & magnitude from the given parameters.
     template <typename T>

@@ -365,7 +365,7 @@ TEST(float, GetInvalid)
 {
     auto val = playrho::GetInvalid<float>();
     EXPECT_TRUE(std::isnan(val));
-    const auto same = std::is_same<decltype(val), float>::value;
+    const auto same = std::is_same_v<decltype(val), float>;
     EXPECT_TRUE(same);
 }
 
@@ -377,8 +377,8 @@ TEST(float, GetTypeName)
 
 TEST(float, traits)
 {
-    EXPECT_TRUE((playrho::IsAddable<float>::value));
-    EXPECT_TRUE((playrho::IsAddable<float,float>::value));
-    EXPECT_TRUE((playrho::IsAddable<float,double>::value));
-    EXPECT_TRUE((playrho::IsAddable<float,int>::value));
+    EXPECT_TRUE((playrho::IsAddableV<float>));
+    EXPECT_TRUE((playrho::IsAddableV<float,float>));
+    EXPECT_TRUE((playrho::IsAddableV<float,double>));
+    EXPECT_TRUE((playrho::IsAddableV<float,int>));
 }

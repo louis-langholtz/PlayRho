@@ -67,7 +67,7 @@ using std::trunc;
 ///   <code>std::make_unsigned</code> merely provides the unsigned **type** equivalent.
 template <typename T>
 constexpr auto MakeUnsigned(const T& arg) noexcept
--> std::enable_if_t<std::is_signed<T>::value, std::make_unsigned_t<T>>
+-> std::enable_if_t<std::is_signed_v<T>, std::make_unsigned_t<T>>
 {
     return static_cast<std::make_unsigned_t<T>>(arg);
 }
@@ -129,8 +129,8 @@ inline auto Atan2(T y, T x)
 
 /// @brief Computes the average of the given values.
 template <typename T,
-typename = std::enable_if_t<IsIterable<T>::value &&
-IsAddable<decltype(*begin(std::declval<T>()))>::value>>
+typename = std::enable_if_t<IsIterableV<T> &&
+IsAddableV<decltype(*begin(std::declval<T>()))>>>
 auto Average(const T& span)
 {
     using value_type = decltype(*begin(std::declval<T>()));
@@ -178,7 +178,7 @@ constexpr auto AlmostZero(const T& value) -> decltype(abs(value) < std::numeric_
 /// @brief Determines whether the given two values are "almost equal".
 template <typename T>
 constexpr auto AlmostEqual(const T& x, const T& y, int ulp = 2)
--> std::enable_if_t<std::is_floating_point<T>::value, bool>
+-> std::enable_if_t<std::is_floating_point_v<T>, bool>
 {
     // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
     //   "the machine epsilon has to be scaled to the magnitude of the values used
@@ -311,7 +311,7 @@ inline auto GetMagnitude(const T& value) noexcept(noexcept(sqrt(GetMagnitudeSqua
 template <typename T1, typename T2>
 constexpr auto Dot(const T1& a, const T2& b) noexcept
 {
-    static_assert(std::tuple_size<T1>::value == std::tuple_size<T2>::value,
+    static_assert(std::tuple_size_v<T1> == std::tuple_size_v<T2>,
                   "Dot only for same tuple-like sized types");
     using VT1 = typename T1::value_type;
     using VT2 = typename T2::value_type;
@@ -353,7 +353,7 @@ constexpr auto Dot(const T1& a, const T2& b) noexcept
 ///
 template <
 class T1, class T2,
-std::enable_if_t<std::tuple_size<T1>::value == 2 && std::tuple_size<T2>::value == 2, int> = 0>
+std::enable_if_t<std::tuple_size_v<T1> == 2 && std::tuple_size_v<T2> == 2, int> = 0>
 constexpr auto Cross(const T1& a, const T2& b) noexcept
 {
     assert(isfinite(StripUnit(get<0>(a))));
@@ -385,7 +385,7 @@ constexpr auto Cross(const T1& a, const T2& b) noexcept
 /// @return Cross product of the two values.
 template <
 class T1, class T2,
-std::enable_if_t<std::tuple_size<T1>::value == 3 && std::tuple_size<T2>::value == 3, int> = 0>
+std::enable_if_t<std::tuple_size_v<T1> == 3 && std::tuple_size_v<T2> == 3, int> = 0>
 constexpr auto Cross(const T1& a, const T2& b) noexcept
 {
     assert(isfinite(get<0>(a)));

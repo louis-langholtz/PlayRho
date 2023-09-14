@@ -36,7 +36,7 @@ namespace d2 {
 /// @details Configuration information for calling GJK distance functions.
 struct DistanceConf {
     /// @brief Iteration type.
-    using iteration_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+    using iteration_type = std::remove_const_t<decltype(DefaultMaxDistanceIters)>;
 
     Simplex::Cache cache; ///< Cache.
     iteration_type maxIterations = DefaultMaxDistanceIters; ///< Max iterations.

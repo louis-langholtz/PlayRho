@@ -27,7 +27,7 @@
 namespace playrho {
 namespace d2 {
 
-static_assert(IsValidShapeType<PolygonShapeConf>::value);
+static_assert(IsValidShapeTypeV<PolygonShapeConf>);
 
 PolygonShapeConf::PolygonShapeConf() noexcept = default;
 

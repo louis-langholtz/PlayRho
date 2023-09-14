@@ -24,7 +24,7 @@
 
 #include <utility>
 #include <functional> // for std::hash
-#include <type_traits> // for std::is_nothrow_default_constructible
+#include <type_traits> // for std::is_nothrow_default_constructible_v
 
 namespace playrho::detail {
 
@@ -44,15 +44,15 @@ public:
     /// @brief Default constructor.
     /// @note This causes default initialization of the underlying type.
     constexpr explicit IndexingNamedType()
-    noexcept(std::is_nothrow_default_constructible<underlying_type>::value): value_{} {}
+    noexcept(std::is_nothrow_default_constructible_v<underlying_type>): value_{} {}
 
     /// @brief Copy initializing constructor.
     constexpr explicit IndexingNamedType(const underlying_type& value)
-    noexcept(std::is_nothrow_copy_constructible<underlying_type>::value): value_(value) {}
+    noexcept(std::is_nothrow_copy_constructible_v<underlying_type>): value_(value) {}
 
     /// @brief Move initializing constructor.
     constexpr explicit IndexingNamedType(underlying_type&& value)
-    noexcept(std::is_nothrow_move_constructible<underlying_type>::value):
+    noexcept(std::is_nothrow_move_constructible_v<underlying_type>):
         value_(std::move(value)) {}
 
     /// @brief Underlying type cast operator support.
@@ -132,9 +132,9 @@ private:
     underlying_type value_; ///< Underlying value.
 };
 
-static_assert(std::is_default_constructible<IndexingNamedType<int, struct Test>>::value);
-static_assert(std::is_nothrow_copy_constructible<IndexingNamedType<int, struct Test>>::value);
-static_assert(std::is_nothrow_move_constructible<IndexingNamedType<int, struct Test>>::value);
+static_assert(std::is_default_constructible_v<IndexingNamedType<int, struct Test>>);
+static_assert(std::is_nothrow_copy_constructible_v<IndexingNamedType<int, struct Test>>);
+static_assert(std::is_nothrow_move_constructible_v<IndexingNamedType<int, struct Test>>);
 
 /// @brief Gets the underlying value.
 template <typename T, typename Tag>

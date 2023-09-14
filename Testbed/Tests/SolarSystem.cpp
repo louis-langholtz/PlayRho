@@ -82,7 +82,7 @@ public:
         os << " km (" << minName << "), to ";
         os << static_cast<float>(Real{maxRadius / 1_km});
         os << " km (" << maxName << ").";
-        if (std::is_same<Real, float>::value) {
+        if (std::is_same_v<Real, float>) {
             os << "\n\n";
             os << "Note: recompile with playrho::Real set to use double (or bigger)";
             os << " for collisions to work better at these scales.";

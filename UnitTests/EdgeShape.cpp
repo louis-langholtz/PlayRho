@@ -46,9 +46,9 @@ TEST(EdgeShapeConf, ByteSize)
     }
 }
 
-TEST(EdgeShapeConf, IsValidShapeType)
+TEST(EdgeShapeConf, IsValidShapeTypeV)
 {
-    EXPECT_TRUE(IsValidShapeType<EdgeShapeConf>::value);
+    EXPECT_TRUE(IsValidShapeTypeV<EdgeShapeConf>);
 }
 
 TEST(EdgeShapeConf, DefaultConstruction)

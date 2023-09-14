@@ -48,18 +48,18 @@ TEST(Mat33, Init)
     EXPECT_EQ(c3, GetZ(foo));
 }
 
-TEST(Mat33, IsMatrix)
+TEST(Mat33, IsMatrixV)
 {
-    ASSERT_FALSE(IsMatrix<int>::value);
-    ASSERT_TRUE((IsMatrix<Matrix<int, 2, 3>>::value));
-    EXPECT_TRUE(IsMatrix<Mat33>::value);
+    ASSERT_FALSE(IsMatrixV<int>);
+    ASSERT_TRUE((IsMatrixV<Matrix<int, 2, 3>>));
+    EXPECT_TRUE(IsMatrixV<Mat33>);
 }
 
-TEST(Mat33, IsSquareMatrix)
+TEST(Mat33, IsSquareMatrixV)
 {
-    ASSERT_FALSE(IsSquareMatrix<int>::value);
-    ASSERT_FALSE((IsSquareMatrix<Matrix<int, 3, 2>>::value));
-    EXPECT_TRUE(IsSquareMatrix<Mat33>::value);
+    ASSERT_FALSE(IsSquareMatrixV<int>);
+    ASSERT_FALSE((IsSquareMatrixV<Matrix<int, 3, 2>>));
+    EXPECT_TRUE(IsSquareMatrixV<Mat33>);
 }
 
 TEST(Mat33, GetInverse)

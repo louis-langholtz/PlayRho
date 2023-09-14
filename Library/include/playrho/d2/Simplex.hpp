@@ -33,7 +33,7 @@ namespace d2 {
 
 /// @brief Simplex edge collection.
 using SimplexEdges =
-    ArrayList<SimplexEdge, MaxSimplexEdges, std::remove_const<decltype(MaxSimplexEdges)>::type>;
+    ArrayList<SimplexEdge, MaxSimplexEdges, std::remove_const_t<decltype(MaxSimplexEdges)>>;
 
 /// @brief Gets index pairs for the given edges collection.
 IndexPair3 GetIndexPairs(const SimplexEdges& collection) noexcept;
@@ -61,7 +61,7 @@ public:
     /// @brief Coefficients.
     /// @details Collection of coefficient values.
     using Coefficients =
-        ArrayList<Real, MaxSimplexEdges, std::remove_const<decltype(MaxSimplexEdges)>::type>;
+        ArrayList<Real, MaxSimplexEdges, std::remove_const_t<decltype(MaxSimplexEdges)>>;
 
     /// @brief Simplex cache.
     /// @details Used to warm start Distance. Caches particular information from a simplex:

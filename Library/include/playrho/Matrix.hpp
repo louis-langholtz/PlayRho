@@ -34,7 +34,7 @@ namespace playrho {
 /// @note M is the number of rows of the matrix.
 /// @note N is the number of columns of the matrix.
 /// @see https://en.wikipedia.org/wiki/Matrix_(mathematics)
-/// @see Vector, MatrixTraitsGroup, IsVector
+/// @see Vector, MatrixTraitsGroup, IsVectorV
 template <typename T, std::size_t M, std::size_t N>
 using Matrix = Vector<Vector<T, N>, M>;
 
@@ -51,7 +51,7 @@ using Matrix = Vector<Vector<T, N>, M>;
 /// @code{.cpp}
 /// IsMatrix<int>::value || IsMatrix<float>::value
 /// @endcode
-/// @see Matrix, IsSquareMatrix, IsVector
+/// @see Matrix, IsSquareMatrix, IsVectorV
 template <typename>
 struct IsMatrix: std::false_type {};
 
@@ -63,9 +63,13 @@ struct IsMatrix: std::false_type {};
 /// @code{.cpp}
 /// IsMatrix<Matrix<int, 2, 3>>::value && IsMatrix<Mat22>::value && IsMatrix<Mat33>::value
 /// @endcode
-/// @see Matrix, IsSquareMatrix, IsVector
+/// @see Matrix, IsSquareMatrix, IsVectorV
 template <typename T, std::size_t M, std::size_t N>
 struct IsMatrix<Vector<Vector<T, N>, M>>: std::true_type {};
+
+/// @brief Determines whether the given type is a <code>Matrix</code> type.
+template <class T>
+inline constexpr bool IsMatrixV = IsMatrix<T>::value;
 
 /// @brief Trait class for checking if type is a square matrix type.
 /// @details Trait class for determining whether the given type is a matrix having an equal
@@ -92,6 +96,10 @@ struct IsSquareMatrix: std::false_type {};
 template <typename T, std::size_t M>
 struct IsSquareMatrix<Vector<Vector<T, M>, M>>: std::true_type {};
 
+/// @brief Determines whether the given type is a **square** <code>Matrix</code> type.
+template <class T>
+inline constexpr bool IsSquareMatrixV = IsSquareMatrix<T>::value;
+
 /// @}
 
 /// @brief Gets the identity matrix of the template type and size.
@@ -99,7 +107,7 @@ struct IsSquareMatrix<Vector<Vector<T, M>, M>>: std::true_type {};
 /// @see Matrix, IsMatrix, IsSquareMatrix
 template <typename T, std::size_t N>
 constexpr
-std::enable_if_t<!IsVector<T>::value, Matrix<T, N, N>> GetIdentityMatrix()
+std::enable_if_t<!IsVectorV<T>, Matrix<T, N, N>> GetIdentityMatrix()
 {
     auto result = Matrix<Real, N, N>{};
     for (auto i = std::size_t{0}; i < N; ++i)
@@ -113,15 +121,15 @@ std::enable_if_t<!IsVector<T>::value, Matrix<T, N, N>> GetIdentityMatrix()
 /// @see https://en.wikipedia.org/wiki/Identity_matrix
 /// @see Matrix, IsMatrix, IsSquareMatrix
 template <typename T>
-constexpr std::enable_if_t<IsSquareMatrix<T>::value, T> GetIdentity()
+constexpr std::enable_if_t<IsSquareMatrixV<T>, T> GetIdentity()
 {
-    return GetIdentityMatrix<typename T::value_type::value_type, std::tuple_size<T>::value>();
+    return GetIdentityMatrix<typename T::value_type::value_type, std::tuple_size_v<T>>();
 }
 
 /// @brief Gets the specified row of the given matrix as a row matrix.
 template <typename T, std::size_t N>
 constexpr
-std::enable_if_t<!IsVector<T>::value, Vector<Vector<T, N>, 1>> GetRowMatrix(Vector<T, N> arg)
+std::enable_if_t<!IsVectorV<T>, Vector<Vector<T, N>, 1>> GetRowMatrix(Vector<T, N> arg)
 {
     return Vector<Vector<T, N>, 1>{arg};
 }
@@ -129,7 +137,7 @@ std::enable_if_t<!IsVector<T>::value, Vector<Vector<T, N>, 1>> GetRowMatrix(Vect
 /// @brief Gets the specified column of the given matrix as a column matrix.
 template <typename T, std::size_t N>
 constexpr
-std::enable_if_t<!IsVector<T>::value, Vector<Vector<T, 1>, N>> GetColumnMatrix(Vector<T, N> arg)
+std::enable_if_t<!IsVectorV<T>, Vector<Vector<T, 1>, N>> GetColumnMatrix(Vector<T, N> arg)
 {
     auto result = Vector<Vector<T, 1>, N>{};
     for (auto i = std::size_t{0}; i < N; ++i)

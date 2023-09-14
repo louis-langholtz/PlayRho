@@ -55,9 +55,9 @@ TEST(PolygonShapeConf, ByteSize)
     }
 }
 
-TEST(PolygonShapeConf, IsValidShapeType)
+TEST(PolygonShapeConf, IsValidShapeTypeV)
 {
-    EXPECT_TRUE(IsValidShapeType<PolygonShapeConf>::value);
+    EXPECT_TRUE(IsValidShapeTypeV<PolygonShapeConf>);
 }
 
 TEST(PolygonShapeConf, Traits)

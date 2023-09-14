@@ -41,7 +41,7 @@ class ContactImpulsesList
 public:
     
     /// @brief Counter type.
-    using Counter = std::remove_const<decltype(MaxManifoldPoints)>::type;
+    using Counter = std::remove_const_t<decltype(MaxManifoldPoints)>;
     
     /// @brief Gets the count.
     Counter GetCount() const noexcept { return count; }

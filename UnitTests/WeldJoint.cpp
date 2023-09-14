@@ -39,9 +39,9 @@ using namespace playrho::d2;
 
 TEST(WeldJoint, Traits)
 {
-    EXPECT_FALSE((IsIterable<WeldJointConf>::value));
-    EXPECT_FALSE((IsAddable<WeldJointConf>::value));
-    EXPECT_FALSE((IsAddable<WeldJointConf, WeldJointConf>::value));
+    EXPECT_FALSE((IsIterableV<WeldJointConf>));
+    EXPECT_FALSE((IsAddableV<WeldJointConf>));
+    EXPECT_FALSE((IsAddableV<WeldJointConf, WeldJointConf>));
 }
 
 TEST(WeldJointConf, DefaultConstruction)

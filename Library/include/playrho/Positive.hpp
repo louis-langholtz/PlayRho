@@ -35,7 +35,7 @@ using Positive = detail::Checked<T, detail::PositiveChecker<T>>;
 template <typename T>
 using PositiveFF = detail::Checked<T, detail::PositiveChecker<T>, true>;
 
-static_assert(!std::is_default_constructible<Positive<int>>::value);
+static_assert(!std::is_default_constructible_v<Positive<int>>);
 
 } // namespace playrho
 

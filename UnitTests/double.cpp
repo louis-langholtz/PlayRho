@@ -29,7 +29,7 @@ TEST(double, GetInvalid)
 {
     auto val = playrho::GetInvalid<double>();
     EXPECT_TRUE(std::isnan(val));
-    const auto same = std::is_same<decltype(val), double>::value;
+    const auto same = std::is_same_v<decltype(val), double>;
     EXPECT_TRUE(same);
 }
 
@@ -41,8 +41,8 @@ TEST(double, GetTypeName)
 
 TEST(double, traits)
 {
-    EXPECT_TRUE((playrho::IsAddable<double>::value));
-    EXPECT_TRUE((playrho::IsAddable<double,double>::value));
-    EXPECT_TRUE((playrho::IsAddable<double,float>::value));
-    EXPECT_TRUE((playrho::IsAddable<double,int>::value));
+    EXPECT_TRUE((playrho::IsAddableV<double>));
+    EXPECT_TRUE((playrho::IsAddableV<double,double>));
+    EXPECT_TRUE((playrho::IsAddableV<double,float>));
+    EXPECT_TRUE((playrho::IsAddableV<double,int>));
 }

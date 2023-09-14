@@ -48,36 +48,36 @@ TEST(Vec2, max_size) {
 
 TEST(Vec2, Traits)
 {
-    EXPECT_TRUE((IsAddable<Vec2>::value));
-    EXPECT_TRUE((IsAddable<Vec2,Vec2>::value));
+    EXPECT_TRUE((IsAddableV<Vec2>));
+    EXPECT_TRUE((IsAddableV<Vec2,Vec2>));
 
-    EXPECT_TRUE(std::is_default_constructible<Vec2>::value);
-    EXPECT_TRUE(std::is_nothrow_default_constructible<Vec2>::value);
-    EXPECT_TRUE(std::is_trivially_default_constructible<Vec2>::value);
+    EXPECT_TRUE(std::is_default_constructible_v<Vec2>);
+    EXPECT_TRUE(std::is_nothrow_default_constructible_v<Vec2>);
+    EXPECT_TRUE(std::is_trivially_default_constructible_v<Vec2>);
     
-    EXPECT_TRUE((std::is_constructible<Vec2, Real, Real>::value));
-    EXPECT_FALSE((std::is_constructible<Vec2, Real>::value));
-    EXPECT_TRUE((std::is_constructible<Vec2>::value));
+    EXPECT_TRUE((std::is_constructible_v<Vec2, Real, Real>));
+    EXPECT_FALSE((std::is_constructible_v<Vec2, Real>));
+    EXPECT_TRUE((std::is_constructible_v<Vec2>));
 
-    EXPECT_TRUE((std::is_nothrow_constructible<Vec2, Real, Real>::value));
-    EXPECT_FALSE((std::is_nothrow_constructible<Vec2, Real>::value));
-    EXPECT_TRUE((std::is_nothrow_constructible<Vec2>::value));
+    EXPECT_TRUE((std::is_nothrow_constructible_v<Vec2, Real, Real>));
+    EXPECT_FALSE((std::is_nothrow_constructible_v<Vec2, Real>));
+    EXPECT_TRUE((std::is_nothrow_constructible_v<Vec2>));
     
-    EXPECT_FALSE((std::is_trivially_constructible<Vec2, Real, Real>::value));
-    EXPECT_FALSE((std::is_trivially_constructible<Vec2, Real>::value));
-    EXPECT_TRUE((std::is_trivially_constructible<Vec2>::value));
+    EXPECT_FALSE((std::is_trivially_constructible_v<Vec2, Real, Real>));
+    EXPECT_FALSE((std::is_trivially_constructible_v<Vec2, Real>));
+    EXPECT_TRUE((std::is_trivially_constructible_v<Vec2>));
     
-    EXPECT_TRUE(std::is_copy_constructible<Vec2>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<Vec2>::value);
-    EXPECT_TRUE(std::is_trivially_copy_constructible<Vec2>::value);
+    EXPECT_TRUE(std::is_copy_constructible_v<Vec2>);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible_v<Vec2>);
+    EXPECT_TRUE(std::is_trivially_copy_constructible_v<Vec2>);
     
-    EXPECT_TRUE(std::is_copy_assignable<Vec2>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<Vec2>::value);
-    EXPECT_TRUE(std::is_trivially_copy_assignable<Vec2>::value);
+    EXPECT_TRUE(std::is_copy_assignable_v<Vec2>);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable_v<Vec2>);
+    EXPECT_TRUE(std::is_trivially_copy_assignable_v<Vec2>);
     
-    EXPECT_TRUE(std::is_destructible<Vec2>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<Vec2>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<Vec2>::value);
+    EXPECT_TRUE(std::is_destructible_v<Vec2>);
+    EXPECT_TRUE(std::is_nothrow_destructible_v<Vec2>);
+    EXPECT_TRUE(std::is_trivially_destructible_v<Vec2>);
 }
 
 TEST(Vec2, ZeroInitialization)
@@ -246,12 +246,12 @@ TEST(Vec2, InvalidIndex)
 
 TEST(Vec2, std_tuple_size)
 {
-    EXPECT_EQ(std::tuple_size<Vec2>::value, 2u);
+    EXPECT_EQ(std::tuple_size_v<Vec2>, 2u);
 }
 
 TEST(Vec2, std_tuple_element)
 {
-    ::testing::StaticAssertTypeEq<std::tuple_element<0, Vec2>::type, Real>();
-    ::testing::StaticAssertTypeEq<std::tuple_element<1, Vec2>::type, Real>();
+    ::testing::StaticAssertTypeEq<std::tuple_element_t<0, Vec2>, Real>();
+    ::testing::StaticAssertTypeEq<std::tuple_element_t<1, Vec2>, Real>();
 }
 
