@@ -261,9 +261,8 @@ void SetTransformation(World& world, BodyID id, const Transformation& value);
 /// @note Contacts are updated on the next call to World::Step.
 /// @param world The world in which the identified body's transform should be set.
 /// @param id Identifier of body whose transform is to be set.
-/// @param location Valid world location of the body's local origin. Behavior is undefined
-///   if value is invalid.
-/// @param angle Valid world rotation. Behavior is undefined if value is invalid.
+/// @param location Valid world location of the body's local origin.
+/// @param angle Valid world rotation.
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
@@ -277,8 +276,7 @@ inline void SetTransform(World& world, BodyID id, const Length2& location, Angle
 /// @warning Manipulating a body's location this way can cause non-physical behavior!
 /// @param world The world in which the identified body's location should be set.
 /// @param id Identifier of body to move.
-/// @param value Valid world location of the body's local origin. Behavior is undefined
-///   if value is invalid.
+/// @param value Valid world location of the body's local origin.
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see GetLocation(const World& world, BodyID id).
@@ -290,8 +288,7 @@ void SetLocation(World& world, BodyID id, const Length2& value);
 /// @warning Manipulating a body's angle this way can cause non-physical behavior!
 /// @param world The world in which the identified body's angle should be set.
 /// @param id Identifier of body to move.
-/// @param value Valid world angle of the body's local origin. Behavior is undefined
-///   if value is invalid.
+/// @param value Valid world angle of the body's local origin.
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see GetAngle(const World& world, BodyID id).

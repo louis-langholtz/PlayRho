@@ -122,7 +122,7 @@ WorldManifold GetWorldManifold(const Manifold& manifold,
         default: break;
     }
     
-    // When type == Manifold::e_unset (or is an undefined value & NDEBUG is defined)...
+    // When type == Manifold::e_unset (or is not an enumerated value & NDEBUG is defined)...
     return WorldManifold{};
 }
 

@@ -342,7 +342,7 @@ public:
     ///   world's <code>CreateBody(const Body&)</code> method.
     /// @warning This automatically deletes all associated shapes and joints.
     /// @warning This function is locked during callbacks.
-    /// @warning Behavior is undefined if the identified body was not created by this world.
+    /// @warning Behavior is not specified if identified body was not created by this world.
     /// @note This function is locked during callbacks.
     /// @post The destroyed body will no longer be present in the range returned from the
     ///   <code>GetBodies()</code> method.
@@ -420,7 +420,7 @@ public:
     /// @details Destroys a given joint that had previously been created by a call to this
     ///   world's <code>CreateJoint(const Joint&)</code> method.
     /// @warning This function is locked during callbacks.
-    /// @warning Behavior is undefined if the identified joint was not created by this world.
+    /// @warning Behavior is not specified if identified joint wasn't created by this world.
     /// @note This may cause the connected bodies to begin colliding.
     /// @post The destroyed joint will no longer be present in the range returned from the
     ///   <code>GetJoints()</code> method.
@@ -575,8 +575,7 @@ private:
     /// @param island Island of bodies, contacts, and joints to solve for. Must contain at least
     ///   one body, contact, or joint.
     ///
-    /// @warning Behavior is undefined if the given island doesn't have at least one body,
-    ///   contact, or joint.
+    /// @pre @p island contains at least one body, contact, or joint identifier.
     ///
     /// @return Island solver results.
     ///

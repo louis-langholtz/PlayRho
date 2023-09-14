@@ -23,6 +23,7 @@
 
 #include <playrho/NonNegative.hpp>
 #include <playrho/Settings.hpp>
+#include <playrho/UnitInterval.hpp>
 
 namespace playrho {
 
@@ -62,8 +63,11 @@ struct ToiConf {
     /// @brief Default tolerance.
     static constexpr auto DefaultTolerance = NonNegative<Length>{DefaultLinearSlop / Real(4)};
 
+    /// @brief Default time max.
+    static constexpr auto DefaultTimeMax = UnitIntervalFF<Real>(Real(1));
+
     /// @brief Uses the given time max value.
-    constexpr ToiConf& UseTimeMax(Real value) noexcept;
+    constexpr ToiConf& UseTimeMax(UnitInterval<Real> value) noexcept;
 
     /// @brief Uses the given target depth value.
     constexpr ToiConf& UseTargetDepth(NonNegative<Length> value) noexcept;
@@ -80,8 +84,8 @@ struct ToiConf {
     /// @brief Uses the given max distance iterations value.
     constexpr ToiConf& UseMaxDistIters(dist_iter_type value) noexcept;
 
-    /// @brief T-Max.
-    Real tMax = 1;
+    /// @brief Time max expressed as a unit interval between 0 and 1 inclusive.
+    UnitInterval<Real> timeMax = DefaultTimeMax;
 
     /// @brief Targeted depth of impact.
     /// @note Value should be less than twice the minimum vertex radius of any shape.
@@ -109,9 +113,9 @@ struct ToiConf {
     dist_iter_type maxDistIters = DefaultMaxDistanceIters; ///< Max distance iterations.
 };
 
-constexpr ToiConf& ToiConf::UseTimeMax(Real value) noexcept
+constexpr ToiConf& ToiConf::UseTimeMax(UnitInterval<Real> value) noexcept
 {
-    tMax = value;
+    timeMax = value;
     return *this;
 }
 

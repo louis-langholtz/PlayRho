@@ -163,7 +163,7 @@ bool HasValidToi(const World& world, ContactID id);
 /// @brief Gets the time of impact (TOI) as a fraction.
 /// @note This is only valid if a TOI has been set.
 /// @return Time of impact fraction in the range of 0 to 1 if set (where 1
-///   means no actual impact in current time slot), otherwise undefined.
+///   means no actual impact in current time slot), otherwise not specified.
 /// @throws std::out_of_range If given an invalid contact identifier.
 /// @see HasValidToi.
 /// @relatedalso World

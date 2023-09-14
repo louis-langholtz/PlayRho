@@ -22,12 +22,13 @@
 #ifndef PLAYRHO_ARRAYLIST_HPP
 #define PLAYRHO_ARRAYLIST_HPP
 
-#include <playrho/Defines.hpp>
-
 #include <array>
 #include <cassert>
 #include <initializer_list>
 #include <type_traits>
+#include <utility> // for std::move
+
+#include <playrho/Defines.hpp>
 
 namespace playrho {
 
@@ -86,68 +87,90 @@ public:
     }
 
     template <std::size_t SIZE, typename = std::enable_if_t<SIZE <= MAXSIZE>>
-    explicit ArrayList(value_type (&value)[SIZE]) noexcept
+    explicit ArrayList(value_type (&value)[SIZE]) noexcept(std::is_nothrow_copy_assignable_v<VALUE_TYPE>)
     {
         for (auto&& elem : value) {
             push_back(elem);
         }
     }
 
-    ArrayList(std::initializer_list<value_type> list)
+    ArrayList(std::initializer_list<value_type> list) noexcept(std::is_nothrow_copy_assignable_v<VALUE_TYPE>)
     {
         for (auto&& elem : list) {
             push_back(elem);
         }
     }
 
-    constexpr ArrayList& Append(const value_type& value)
+    /// @brief Appends the given value onto back.
+    /// @return Reference to this instance.
+    constexpr ArrayList& Append(value_type value) noexcept(std::is_nothrow_move_assignable_v<VALUE_TYPE>)
     {
-        push_back(value);
+        push_back(std::move(value));
         return *this;
     }
 
-    constexpr void push_back(const value_type& value) noexcept
+    /// @brief Pushes given value onto back.
+    /// @pre <code>size()</code> is less than <code>max_size()</code>.
+    /// @post <code>size()</code> is one greater than before.
+    /// @post <code>empty()</code> returns false.
+    constexpr void push_back(value_type value) noexcept(std::is_nothrow_move_assignable_v<VALUE_TYPE>)
     {
-        assert(m_size < MAXSIZE);
-        m_elements[m_size] = value; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+        assert(m_size < max_size());
+        m_elements[m_size] = std::move(value); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
         ++m_size;
     }
 
+    /// @brief Sets the size to the given value.
+    /// @pre @p value is less-than or equal-to <code>max_size()</code>.
+    /// @post <code>size()</code> returns the value given.
+    /// @see size().
     void size(size_type value) noexcept
     {
-        assert(value <= MAXSIZE);
+        assert(value <= max_size());
         m_size = value;
     }
 
+    /// @brief Resets size to zero.
+    /// @see size().
     void clear() noexcept
     {
         m_size = 0;
     }
 
+    /// @brief Gets whether this object has no elements.
+    /// @return true if <code>size()</code> is zero, false otherwise.
+    /// @see size().
     bool empty() const noexcept
     {
         return m_size == 0;
     }
 
-    bool add(value_type value) noexcept
+    /// @brief Adds given value if space available.
+    /// @post On successful addition, <code>size()</code> returns value one greater than before.
+    /// @return true if value was added, false otherwise.
+    bool add(value_type value) noexcept(std::is_nothrow_move_assignable_v<VALUE_TYPE>)
     {
-        if (m_size < MAXSIZE) {
-            m_elements[m_size] = value;
+        if (m_size < max_size()) {
+            m_elements[m_size] = std::move(value);
             ++m_size;
             return true;
         }
         return false;
     }
 
+    /// @brief Accesses element at given index.
+    /// @pre @p index is less than <code>max_size()</code>.
     reference operator[](size_type index) noexcept
     {
-        assert(index < MAXSIZE);
+        assert(index < max_size());
         return m_elements[index]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 
+    /// @brief Accesses element at given index.
+    /// @pre @p index is less than <code>max_size()</code>.
     constexpr const_reference operator[](size_type index) const noexcept
     {
-        assert(index < MAXSIZE);
+        assert(index < max_size());
         return m_elements[index]; // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 
@@ -160,18 +183,20 @@ public:
         return m_size;
     }
 
-    /// Gets the maximum size that this collection can be.
+    /// @brief Gets the maximum size that this collection can be.
     /// @details This is the maximum number of elements that can be contained in this collection.
     constexpr size_type max_size() const noexcept
     {
         return MAXSIZE;
     }
 
+    /// @brief Gets pointer to underlying data array.
     pointer data() noexcept
     {
         return m_elements.data();
     }
 
+    /// @brief Gets pointer to underlying data array.
     const_pointer data() const noexcept
     {
         return m_elements.data();

@@ -576,7 +576,7 @@ constexpr auto GetModuloNext(T value, const T count) noexcept
 -> decltype(++value, (value < count)? value: static_cast<T>(0), T())
 {
     assert(value < count);
-    assert(count > static_cast<T>(0)); // else undefined behavior
+    assert(count > static_cast<T>(0));
     assert((value + static_cast<T>(1)) > static_cast<T>(0));
     ++value;
     return (value < count)? value: static_cast<T>(0);
