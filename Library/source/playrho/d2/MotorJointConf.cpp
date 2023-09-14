@@ -123,7 +123,7 @@ void InitVelocity(MotorJointConf& object, const Span<BodyConstraint>& bodies, co
             InvMass{invMassA + invMassB + invRotInertiaA * Square(GetX(object.rA)) / SquareRadian +
                     invRotInertiaB * Square(GetX(object.rB)) / SquareRadian};
         // Upper 2 by 2 of K above for point to point
-        const auto k22 = InvMass22{Vector<InvMass, 2>{exx, exy}, Vector<InvMass, 2>{exy, eyy}};
+        const auto k22 = InvMass22{InvMass2{exx, exy}, InvMass2{exy, eyy}};
         object.linearMass = Invert(k22);
     }
 

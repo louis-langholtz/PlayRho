@@ -26,6 +26,7 @@
 #include <playrho/to_underlying.hpp>
 
 #include <playrho/d2/Body.hpp>
+#include <playrho/d2/Math.hpp>
 #include <playrho/d2/WorldBody.hpp>
 #include <playrho/d2/WorldShape.hpp>
 #include <playrho/d2/World.hpp>
@@ -376,7 +377,6 @@ MassData ComputeMassData(const World& world, BodyID id)
 void SetMassData(World& world, BodyID id, const MassData& massData)
 {
     auto body = GetBody(world, id);
-
     if (!body.IsAccelerable()) {
         body.SetInvMassData(InvMass{}, InvRotInertia{});
         if (!body.IsSpeedable()) {
@@ -385,7 +385,6 @@ void SetMassData(World& world, BodyID id, const MassData& massData)
         world.SetBody(id, body);
         return;
     }
-
     const auto mass = (massData.mass > 0_kg)? Mass{massData.mass}: 1_kg;
     const auto invMass = Real{1} / mass;
     auto invRotInertia = Real(0) / (1_m2 * 1_kg / SquareRadian);
@@ -494,7 +493,7 @@ Force2 GetCentripetalForce(const World& world, BodyID id, const Length2& axis)
 
     // Force is M L T^-2.
     const auto velocity = GetLinearVelocity(world, id);
-    const auto magnitudeOfVelocity = GetMagnitude(GetVec2(velocity)) * MeterPerSecond;
+    const auto magnitudeOfVelocity = GetMagnitude(velocity);
     const auto location = GetLocation(world, id);
     const auto mass = GetMass(world, id);
     const auto delta = axis - location;

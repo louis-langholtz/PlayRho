@@ -59,48 +59,6 @@ using std::trunc;
 
 // Other templates.
 
-/// @brief Gets the "X" element of the given value - i.e. the first element.
-template <typename T>
-constexpr auto GetX(T& value) -> decltype(get<0>(value))
-{
-    return get<0>(value);
-}
-
-/// @brief Gets the "Y" element of the given value - i.e. the second element.
-template <typename T>
-constexpr auto GetY(T& value) -> decltype(get<1>(value))
-{
-    return get<1>(value);
-}
-
-/// @brief Gets the "Z" element of the given value - i.e. the third element.
-template <typename T>
-constexpr auto GetZ(T& value) -> decltype(get<2>(value))
-{
-    return get<2>(value);
-}
-
-/// @brief Gets the "X" element of the given value - i.e. the first element.
-template <typename T>
-constexpr auto GetX(const T& value) -> decltype(get<0>(value))
-{
-    return get<0>(value);
-}
-
-/// @brief Gets the "Y" element of the given value - i.e. the second element.
-template <typename T>
-constexpr auto GetY(const T& value) -> decltype(get<1>(value))
-{
-    return get<1>(value);
-}
-
-/// @brief Gets the "Z" element of the given value - i.e. the third element.
-template <typename T>
-constexpr auto GetZ(const T& value) -> decltype(get<2>(value))
-{
-    return get<2>(value);
-}
-
 /// @brief Makes the given **value** into an **unsigned value**.
 /// @note If the given value is negative, this will result in an unsigned value which is the
 ///   two's complement modulo-wrapped value.
@@ -205,18 +163,6 @@ decltype(round(value * static_cast<T>(precision)) / static_cast<T>(precision))
 inline auto RoundOff(const Vec2& value, std::uint32_t precision = DefaultRoundOffPrecission) -> Vec2
 {
     return {RoundOff(value[0], precision), RoundOff(value[1], precision)};
-}
-
-/// @brief Absolute value function for vectors.
-/// @relatedalso Vector
-template <typename T, std::size_t N>
-constexpr auto abs(const Vector<T, N>& v) noexcept -> decltype(abs(T{}), Vector<T, N>{})
-{
-    auto result = Vector<T, N>{};
-    for (auto i = decltype(N){0}; i < N; ++i) {
-        result[i] = abs(v[i]);
-    }
-    return result;
 }
 
 /// @brief Gets whether a given value is almost zero.
@@ -554,30 +500,6 @@ constexpr auto GetSymInverse33(const Mat33& value) noexcept -> Mat33
         Vec3{ex_z, ey_z, det * (a11 * a22 - a12 * a12)}};
 }
 
-/// @brief Gets a vector counter-clockwise (reverse-clockwise) perpendicular to the given vector.
-/// @details This takes a vector of form (x, y) and returns the vector (-y, x).
-/// @param vector Vector to return a counter-clockwise perpendicular equivalent for.
-/// @return A counter-clockwise 90-degree rotation of the given vector.
-/// @see GetFwdPerpendicular.
-template <class T>
-constexpr auto GetRevPerpendicular(const T& vector) noexcept
-{
-    // See http://mathworld.wolfram.com/PerpendicularVector.html
-    return T{-GetY(vector), GetX(vector)};
-}
-
-/// @brief Gets a vector clockwise (forward-clockwise) perpendicular to the given vector.
-/// @details This takes a vector of form (x, y) and returns the vector (y, -x).
-/// @param vector Vector to return a clockwise perpendicular equivalent for.
-/// @return A clockwise 90-degree rotation of the given vector.
-/// @see GetRevPerpendicular.
-template <class T>
-constexpr auto GetFwdPerpendicular(const T& vector) noexcept
-{
-    // See http://mathworld.wolfram.com/PerpendicularVector.html
-    return T{GetY(vector), -GetX(vector)};
-}
-
 /// @brief Multiplies an M-element vector by an M-by-N matrix.
 /// @param v Vector that's interpreted as a matrix with 1 row and M-columns.
 /// @param m An M-row by N-column *transformation matrix* to multiply the vector by.
@@ -608,12 +530,6 @@ constexpr Mat22 MulT(const Mat22& A, const Mat22& B) noexcept
     const auto c1 = Vec2{Dot(GetX(A), GetX(B)), Dot(GetY(A), GetX(B))};
     const auto c2 = Vec2{Dot(GetX(A), GetY(B)), Dot(GetY(A), GetY(B))};
     return {c1, c2};
-}
-
-/// @brief Gets the absolute value of the given value.
-inline Mat22 abs(const Mat22& A)
-{
-    return {abs(GetX(A)), abs(GetY(A))};
 }
 
 /// @brief Gets the next largest power of 2
