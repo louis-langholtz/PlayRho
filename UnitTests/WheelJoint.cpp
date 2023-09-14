@@ -61,9 +61,9 @@ TEST(WheelJointConf, DefaultConstruction)
 
 TEST(WheelJointConf, Traits)
 {
-    EXPECT_FALSE((IsIterable<WheelJointConf>::value));
-    EXPECT_FALSE((IsAddable<WheelJointConf>::value));
-    EXPECT_FALSE((IsAddable<WheelJointConf, WheelJointConf>::value));
+    EXPECT_FALSE((IsIterableV<WheelJointConf>));
+    EXPECT_FALSE((IsAddableV<WheelJointConf>));
+    EXPECT_FALSE((IsAddableV<WheelJointConf, WheelJointConf>));
 }
 
 TEST(WheelJointConf, Construction)

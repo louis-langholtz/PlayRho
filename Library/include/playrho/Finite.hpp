@@ -35,7 +35,7 @@ using Finite = detail::Checked<T, detail::FiniteChecker<T>>;
 template <typename T>
 using FiniteFF = detail::Checked<T, detail::FiniteChecker<T>, true>;
 
-static_assert(std::is_default_constructible<Finite<int>>::value);
+static_assert(std::is_default_constructible_v<Finite<int>>);
 
 } // namespace playrho
 

@@ -21,7 +21,7 @@
 #ifndef PLAYRHO_DETAIL_UNDERLYINGTYPE_HPP
 #define PLAYRHO_DETAIL_UNDERLYINGTYPE_HPP
 
-#include <type_traits> // for std::void_t, std::is_nothrow_default_constructible
+#include <type_traits> // for std::void_t, std::is_nothrow_default_constructible_v
 
 namespace playrho::detail {
 

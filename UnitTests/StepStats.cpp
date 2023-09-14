@@ -72,43 +72,43 @@ TEST(StepStats, ByteSize)
 
 TEST(StepStats, Traits)
 {
-    EXPECT_TRUE(std::is_default_constructible<StepStats>::value);
+    EXPECT_TRUE(std::is_default_constructible_v<StepStats>);
 #ifdef PLAYRHO_USE_BOOST_UNITS
-    EXPECT_FALSE(std::is_nothrow_default_constructible<StepStats>::value);
+    EXPECT_FALSE(std::is_nothrow_default_constructible_v<StepStats>);
 #else
-    EXPECT_TRUE(std::is_nothrow_default_constructible<StepStats>::value);
+    EXPECT_TRUE(std::is_nothrow_default_constructible_v<StepStats>);
 #endif // PLAYRHO_USE_BOOST_UNITS
-    EXPECT_FALSE(std::is_trivially_default_constructible<StepStats>::value);
+    EXPECT_FALSE(std::is_trivially_default_constructible_v<StepStats>);
     
-    EXPECT_TRUE(std::is_constructible<StepStats>::value);
+    EXPECT_TRUE(std::is_constructible_v<StepStats>);
 #ifdef PLAYRHO_USE_BOOST_UNITS
-    EXPECT_FALSE(std::is_nothrow_constructible<StepStats>::value);
+    EXPECT_FALSE(std::is_nothrow_constructible_v<StepStats>);
 #else
-    EXPECT_TRUE(std::is_nothrow_constructible<StepStats>::value);
+    EXPECT_TRUE(std::is_nothrow_constructible_v<StepStats>);
 #endif // PLAYRHO_USE_BOOST_UNITS
-    EXPECT_FALSE(std::is_trivially_constructible<StepStats>::value);
+    EXPECT_FALSE(std::is_trivially_constructible_v<StepStats>);
 
-    EXPECT_TRUE(std::is_copy_constructible<StepStats>::value);
+    EXPECT_TRUE(std::is_copy_constructible_v<StepStats>);
 #ifdef PLAYRHO_USE_BOOST_UNITS
-    EXPECT_FALSE(std::is_nothrow_copy_constructible<StepStats>::value);
-    EXPECT_FALSE(std::is_trivially_copy_constructible<StepStats>::value);
+    EXPECT_FALSE(std::is_nothrow_copy_constructible_v<StepStats>);
+    EXPECT_FALSE(std::is_trivially_copy_constructible_v<StepStats>);
 #else
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<StepStats>::value);
-    EXPECT_TRUE(std::is_trivially_copy_constructible<StepStats>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible_v<StepStats>);
+    EXPECT_TRUE(std::is_trivially_copy_constructible_v<StepStats>);
 #endif
     
-    EXPECT_TRUE(std::is_copy_assignable<StepStats>::value);
+    EXPECT_TRUE(std::is_copy_assignable_v<StepStats>);
 #ifdef PLAYRHO_USE_BOOST_UNITS
-    EXPECT_FALSE(std::is_nothrow_copy_assignable<StepStats>::value);
-    EXPECT_FALSE(std::is_trivially_copy_assignable<StepStats>::value);
+    EXPECT_FALSE(std::is_nothrow_copy_assignable_v<StepStats>);
+    EXPECT_FALSE(std::is_trivially_copy_assignable_v<StepStats>);
 #else
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<StepStats>::value);
-    EXPECT_TRUE(std::is_trivially_copy_assignable<StepStats>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable_v<StepStats>);
+    EXPECT_TRUE(std::is_trivially_copy_assignable_v<StepStats>);
 #endif
     
-    EXPECT_TRUE(std::is_destructible<StepStats>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<StepStats>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<StepStats>::value);
+    EXPECT_TRUE(std::is_destructible_v<StepStats>);
+    EXPECT_TRUE(std::is_nothrow_destructible_v<StepStats>);
+    EXPECT_TRUE(std::is_trivially_destructible_v<StepStats>);
 }
 
 TEST(RegStepStats, DefaultConstructor)

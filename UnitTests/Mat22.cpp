@@ -46,18 +46,18 @@ TEST(Mat22, Init)
     EXPECT_EQ(v2, get<1>(foo));
 }
 
-TEST(Mat22, IsMatrix)
+TEST(Mat22, IsMatrixV)
 {
-    ASSERT_FALSE(IsMatrix<int>::value);
-    ASSERT_TRUE((IsMatrix<Matrix<int, 2, 3>>::value));
-    EXPECT_TRUE(IsMatrix<Mat22>::value);
+    ASSERT_FALSE(IsMatrixV<int>);
+    ASSERT_TRUE((IsMatrixV<Matrix<int, 2, 3>>));
+    EXPECT_TRUE(IsMatrixV<Mat22>);
 }
 
-TEST(Mat22, IsSquareMatrix)
+TEST(Mat22, IsSquareMatrixV)
 {
-    ASSERT_FALSE(IsSquareMatrix<int>::value);
-    ASSERT_FALSE((IsSquareMatrix<Matrix<int, 3, 2>>::value));
-    EXPECT_TRUE(IsSquareMatrix<Mat22>::value);
+    ASSERT_FALSE(IsSquareMatrixV<int>);
+    ASSERT_FALSE((IsSquareMatrixV<Matrix<int, 3, 2>>));
+    EXPECT_TRUE(IsSquareMatrixV<Mat22>);
 }
 
 TEST(Mat22, Invert)
@@ -142,13 +142,13 @@ TEST(Mat22, Multiplication)
         //
         EXPECT_EQ(m1 * m2, Mat22(Vec2(7, 10), Vec2(15, 22)));
         
-        static_assert(!IsVector<int>::value, "supposed to not be vector but is");
+        static_assert(!IsVectorV<int>, "supposed to not be vector but is");
         const auto m3 = Mat33{};
-        static_assert(IsVector<Mat33>::value, "supposed to be vector but not");
+        static_assert(IsVectorV<Mat33>, "supposed to be vector but not");
         const auto m23 = Vector<Vector<Real, 3>, 2>{};
-        static_assert(IsVector<Vector<Vector<Real, 3>, 2>>::value, "supposed to be vector but not");
-        static_assert(!IsMultipliable<decltype(m3), decltype(m2)>::value, "");
-        static_assert(!IsMultipliable<decltype(m2), decltype(m3)>::value, "");
+        static_assert(IsVectorV<Vector<Vector<Real, 3>, 2>>, "supposed to be vector but not");
+        static_assert(!IsMultipliableV<decltype(m3), decltype(m2)>, "");
+        static_assert(!IsMultipliableV<decltype(m2), decltype(m3)>, "");
         EXPECT_EQ(m2 * m23, (Matrix<Real, 2, 3>{}));
     }
 }

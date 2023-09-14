@@ -30,22 +30,22 @@
 
 using namespace playrho;
 
-TEST(Vector, IsVector)
+TEST(Vector, IsVectorV)
 {
-    EXPECT_TRUE((IsVector<Vector<int, 2>>::value));
-    EXPECT_TRUE((IsVector<Vector<float, 1>>::value));
-    EXPECT_TRUE((IsVector<Vector<Vector<float, 1>, 1>>::value));
-    EXPECT_FALSE(IsVector<int>::value);
-    EXPECT_FALSE(IsVector<float>::value);
-    EXPECT_FALSE(IsVector<std::nullptr_t>::value);
+    EXPECT_TRUE((IsVectorV<Vector<int, 2>>));
+    EXPECT_TRUE((IsVectorV<Vector<float, 1>>));
+    EXPECT_TRUE((IsVectorV<Vector<Vector<float, 1>, 1>>));
+    EXPECT_FALSE(IsVectorV<int>);
+    EXPECT_FALSE(IsVectorV<float>);
+    EXPECT_FALSE(IsVectorV<std::nullptr_t>);
 }
 
-TEST(Vector, IsIterable)
+TEST(Vector, IsIterableV)
 {
-    ASSERT_FALSE((IsIterable<int>::value));
-    EXPECT_TRUE((IsIterable<Vector<int, 0>>::value));
-    EXPECT_TRUE((IsIterable<Vector<int, 1>>::value));
-    EXPECT_TRUE((IsIterable<Vector<int, 2>>::value));
+    ASSERT_FALSE((IsIterableV<int>));
+    EXPECT_TRUE((IsIterableV<Vector<int, 0>>));
+    EXPECT_TRUE((IsIterableV<Vector<int, 1>>));
+    EXPECT_TRUE((IsIterableV<Vector<int, 2>>));
 }
 
 TEST(Vector, empty)

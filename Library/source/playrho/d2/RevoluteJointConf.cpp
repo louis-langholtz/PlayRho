@@ -63,17 +63,17 @@ Mat33 GetMat33(InvMass invMassA, const Length2& rA, InvRotInertia invRotInertiaA
 
 } // unnamed namespace
 
-static_assert(std::is_default_constructible<RevoluteJointConf>::value,
+static_assert(std::is_default_constructible_v<RevoluteJointConf>,
               "RevoluteJointConf should be default constructible!");
-static_assert(std::is_copy_constructible<RevoluteJointConf>::value,
+static_assert(std::is_copy_constructible_v<RevoluteJointConf>,
               "RevoluteJointConf should be copy constructible!");
-static_assert(std::is_copy_assignable<RevoluteJointConf>::value,
+static_assert(std::is_copy_assignable_v<RevoluteJointConf>,
               "RevoluteJointConf should be copy assignable!");
-static_assert(std::is_move_constructible<RevoluteJointConf>::value,
+static_assert(std::is_move_constructible_v<RevoluteJointConf>,
               "RevoluteJointConf should be move constructible!");
-static_assert(std::is_move_assignable<RevoluteJointConf>::value,
+static_assert(std::is_move_assignable_v<RevoluteJointConf>,
               "RevoluteJointConf should be move assignable!");
-static_assert(std::is_nothrow_destructible<RevoluteJointConf>::value,
+static_assert(std::is_nothrow_destructible_v<RevoluteJointConf>,
               "RevoluteJointConf should be nothrow destructible!");
 
 // Point-to-point constraint

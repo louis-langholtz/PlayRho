@@ -38,7 +38,7 @@
 #include <iterator>
 #include <limits> // for std::numeric_limits
 #include <string>
-#include <type_traits> // for std::is_default_constructible etc.
+#include <type_traits> // for std::is_default_constructible_v etc.
 #include <utility>
 
 using namespace playrho;
@@ -63,40 +63,40 @@ TEST(AABB, DefaultConstruction)
 
 TEST(AABB, Traits)
 {
-    EXPECT_FALSE(IsIterable<AABB>::value);
-    EXPECT_FALSE(IsAddable<AABB>::value);
+    EXPECT_FALSE(IsIterableV<AABB>);
+    EXPECT_FALSE(IsAddableV<AABB>);
 
-    EXPECT_TRUE(std::is_default_constructible<AABB>::value);
-    //EXPECT_TRUE(std::is_nothrow_default_constructible<AABB>::value);
-    EXPECT_FALSE(std::is_trivially_default_constructible<AABB>::value);
+    EXPECT_TRUE(std::is_default_constructible_v<AABB>);
+    //EXPECT_TRUE(std::is_nothrow_default_constructible_v<AABB>);
+    EXPECT_FALSE(std::is_trivially_default_constructible_v<AABB>);
 
-    EXPECT_TRUE((std::is_constructible<AABB, Length2>::value));
-    //EXPECT_FALSE((std::is_nothrow_constructible<AABB, Length2>::value));
-    EXPECT_FALSE((std::is_trivially_constructible<AABB, Length2>::value));
+    EXPECT_TRUE((std::is_constructible_v<AABB, Length2>));
+    //EXPECT_FALSE((std::is_nothrow_constructible_v<AABB, Length2>));
+    EXPECT_FALSE((std::is_trivially_constructible_v<AABB, Length2>));
     
-    EXPECT_TRUE((std::is_constructible<AABB, Length2, Length2>::value));
-    //EXPECT_FALSE((std::is_nothrow_constructible<AABB, Length2, Length2>::value));
-    EXPECT_FALSE((std::is_trivially_constructible<AABB, Length2, Length2>::value));
+    EXPECT_TRUE((std::is_constructible_v<AABB, Length2, Length2>));
+    //EXPECT_FALSE((std::is_nothrow_constructible_v<AABB, Length2, Length2>));
+    EXPECT_FALSE((std::is_trivially_constructible_v<AABB, Length2, Length2>));
     
-    EXPECT_TRUE(std::is_copy_constructible<AABB>::value);
-    //EXPECT_TRUE(std::is_nothrow_copy_constructible<AABB>::value);
-    //EXPECT_TRUE(std::is_trivially_copy_constructible<AABB>::value);
+    EXPECT_TRUE(std::is_copy_constructible_v<AABB>);
+    //EXPECT_TRUE(std::is_nothrow_copy_constructible_v<AABB>);
+    //EXPECT_TRUE(std::is_trivially_copy_constructible_v<AABB>);
 
-    EXPECT_TRUE(std::is_move_constructible<AABB>::value);
-    //EXPECT_TRUE(std::is_nothrow_move_constructible<AABB>::value);
-    //EXPECT_FALSE(std::is_trivially_move_constructible<AABB>::value);
+    EXPECT_TRUE(std::is_move_constructible_v<AABB>);
+    //EXPECT_TRUE(std::is_nothrow_move_constructible_v<AABB>);
+    //EXPECT_FALSE(std::is_trivially_move_constructible_v<AABB>);
 
-    EXPECT_TRUE(std::is_copy_assignable<AABB>::value);
-    //EXPECT_FALSE(std::is_nothrow_copy_assignable<AABB>::value);
-    //EXPECT_FALSE(std::is_trivially_copy_assignable<AABB>::value);
+    EXPECT_TRUE(std::is_copy_assignable_v<AABB>);
+    //EXPECT_FALSE(std::is_nothrow_copy_assignable_v<AABB>);
+    //EXPECT_FALSE(std::is_trivially_copy_assignable_v<AABB>);
 
-    EXPECT_TRUE(std::is_move_assignable<AABB>::value);
-    //EXPECT_FALSE(std::is_nothrow_move_assignable<AABB>::value);
-    //EXPECT_FALSE(std::is_trivially_move_assignable<AABB>::value);
+    EXPECT_TRUE(std::is_move_assignable_v<AABB>);
+    //EXPECT_FALSE(std::is_nothrow_move_assignable_v<AABB>);
+    //EXPECT_FALSE(std::is_trivially_move_assignable_v<AABB>);
 
-    EXPECT_TRUE(std::is_destructible<AABB>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<AABB>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<AABB>::value);
+    EXPECT_TRUE(std::is_destructible_v<AABB>);
+    EXPECT_TRUE(std::is_nothrow_destructible_v<AABB>);
+    EXPECT_TRUE(std::is_trivially_destructible_v<AABB>);
 }
 
 TEST(AABB, DefaultAabbAddsToOther)

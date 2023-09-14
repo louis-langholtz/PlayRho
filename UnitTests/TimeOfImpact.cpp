@@ -60,41 +60,41 @@ TEST(ToiOutput, ByteSize)
 
 TEST(ToiOutput, StatisticsTraits)
 {
-    EXPECT_TRUE(std::is_default_constructible<ToiOutput::Statistics>::value);
-    EXPECT_TRUE(std::is_nothrow_default_constructible<ToiOutput::Statistics>::value);
-    EXPECT_FALSE(std::is_trivially_default_constructible<ToiOutput::Statistics>::value);
+    EXPECT_TRUE(std::is_default_constructible_v<ToiOutput::Statistics>);
+    EXPECT_TRUE(std::is_nothrow_default_constructible_v<ToiOutput::Statistics>);
+    EXPECT_FALSE(std::is_trivially_default_constructible_v<ToiOutput::Statistics>);
     
-    EXPECT_TRUE(std::is_copy_constructible<ToiOutput::Statistics>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<ToiOutput::Statistics>::value);
-    EXPECT_TRUE(std::is_trivially_copy_constructible<ToiOutput::Statistics>::value);
+    EXPECT_TRUE(std::is_copy_constructible_v<ToiOutput::Statistics>);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible_v<ToiOutput::Statistics>);
+    EXPECT_TRUE(std::is_trivially_copy_constructible_v<ToiOutput::Statistics>);
 }
 
 TEST(ToiOutput, Traits)
 {
-    EXPECT_TRUE(std::is_default_constructible<ToiOutput>::value);
-    EXPECT_TRUE(std::is_nothrow_default_constructible<ToiOutput>::value);
-    EXPECT_FALSE(std::is_trivially_default_constructible<ToiOutput>::value);
+    EXPECT_TRUE(std::is_default_constructible_v<ToiOutput>);
+    EXPECT_TRUE(std::is_nothrow_default_constructible_v<ToiOutput>);
+    EXPECT_FALSE(std::is_trivially_default_constructible_v<ToiOutput>);
     
-    EXPECT_TRUE((std::is_constructible<ToiOutput, Real, ToiOutput::Statistics, ToiOutput::State>::value));
-    EXPECT_TRUE((std::is_constructible<ToiOutput>::value));
+    EXPECT_TRUE((std::is_constructible_v<ToiOutput, Real, ToiOutput::Statistics, ToiOutput::State>));
+    EXPECT_TRUE((std::is_constructible_v<ToiOutput>));
     
-    EXPECT_TRUE((std::is_nothrow_constructible<ToiOutput, Real, ToiOutput::Statistics, ToiOutput::State>::value));
-    EXPECT_TRUE((std::is_nothrow_constructible<ToiOutput>::value));
+    EXPECT_TRUE((std::is_nothrow_constructible_v<ToiOutput, Real, ToiOutput::Statistics, ToiOutput::State>));
+    EXPECT_TRUE((std::is_nothrow_constructible_v<ToiOutput>));
     
-    EXPECT_FALSE((std::is_trivially_constructible<ToiOutput, Real, ToiOutput::Statistics, ToiOutput::State>::value));
-    EXPECT_FALSE((std::is_trivially_constructible<ToiOutput>::value));
+    EXPECT_FALSE((std::is_trivially_constructible_v<ToiOutput, Real, ToiOutput::Statistics, ToiOutput::State>));
+    EXPECT_FALSE((std::is_trivially_constructible_v<ToiOutput>));
     
-    EXPECT_TRUE(std::is_copy_constructible<ToiOutput>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<ToiOutput>::value);
-    EXPECT_TRUE(std::is_trivially_copy_constructible<ToiOutput>::value);
+    EXPECT_TRUE(std::is_copy_constructible_v<ToiOutput>);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible_v<ToiOutput>);
+    EXPECT_TRUE(std::is_trivially_copy_constructible_v<ToiOutput>);
     
-    EXPECT_TRUE(std::is_copy_assignable<ToiOutput>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<ToiOutput>::value);
-    EXPECT_TRUE(std::is_trivially_copy_assignable<ToiOutput>::value);
+    EXPECT_TRUE(std::is_copy_assignable_v<ToiOutput>);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable_v<ToiOutput>);
+    EXPECT_TRUE(std::is_trivially_copy_assignable_v<ToiOutput>);
     
-    EXPECT_TRUE(std::is_destructible<ToiOutput>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<ToiOutput>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<ToiOutput>::value);
+    EXPECT_TRUE(std::is_destructible_v<ToiOutput>);
+    EXPECT_TRUE(std::is_nothrow_destructible_v<ToiOutput>);
+    EXPECT_TRUE(std::is_trivially_destructible_v<ToiOutput>);
 }
 
 TEST(ToiOutput, Types)
@@ -236,7 +236,7 @@ TEST(TimeOfImpact, CollideCirclesHorizontally)
     
     const auto approx_time_of_collision = ((x * Meter - radius) + limits.targetDepth / Real{2}) / (x * Meter);
 
-    if (std::is_same<Real, Fixed32>::value)
+    if (std::is_same_v<Real, Fixed32>)
     {
         EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
         EXPECT_TRUE(AlmostEqual(output.time, Real{approx_time_of_collision}));
@@ -275,12 +275,12 @@ TEST(TimeOfImpact, CollideEdgeCircleTouchingly)
     // Compute the time of impact information now...
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
     
-    if (std::is_same<Real, float>::value)
+    if (std::is_same_v<Real, float>)
     {
         EXPECT_EQ(output.state, ToiOutput::e_touching);
         EXPECT_NEAR(static_cast<double>(output.time), 0.576901972, 0.000000001);
     }
-    else if (std::is_same<Real, double>::value)
+    else if (std::is_same_v<Real, double>)
     {
         EXPECT_EQ(output.state, ToiOutput::e_touching);
         EXPECT_NEAR(static_cast<double>(output.time), 0.57690669361866653, 0.000000001);
@@ -314,7 +314,7 @@ TEST(TimeOfImpact, CollideCirclesVertically)
     
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
     
-    if (std::is_same<Real, Fixed32>::value)
+    if (std::is_same_v<Real, Fixed32>)
     {
         EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
         EXPECT_NEAR(double(output.time), 0.474609375, 0.000001);
@@ -354,7 +354,7 @@ TEST(TimeOfImpact, CirclesPassingParSepPathsDontCollide)
     // Compute the time of impact information now...
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
     
-    if (std::is_same<Real, Fixed<std::int32_t,9>>::value) // Code for Fixed32 basically
+    if (std::is_same_v<Real, Fixed<std::int32_t,9>>) // Code for Fixed32 basically
     {
         EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
         EXPECT_NEAR(static_cast<double>(output.time), 0.37890625, 0.001);
@@ -547,7 +547,7 @@ TEST(TimeOfImpact, RodCircleMissAt360)
     // Compute the time of impact information now...
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
     
-    if (std::is_same<Real, Fixed<std::int32_t,9>>::value) // Code for Fixed32 basically
+    if (std::is_same_v<Real, Fixed<std::int32_t,9>>) // Code for Fixed32 basically
     {
         EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
         EXPECT_NEAR(static_cast<double>(output.time), 0.51171875, 0.001);
@@ -590,7 +590,7 @@ TEST(TimeOfImpact, RodCircleHitAt180)
     // Compute the time of impact information now...
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
     
-    if (std::is_same<Real, Fixed<std::int32_t,9>>::value) // Code for Fixed32 basically
+    if (std::is_same_v<Real, Fixed<std::int32_t,9>>) // Code for Fixed32 basically
     {
         EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
         EXPECT_NEAR(static_cast<double>(output.time), 0.490234375, 0.001);
@@ -628,7 +628,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_1)
         .UseTolerance((slop / 4) * Meter);
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
     
-    if (std::is_same<Real, Fixed<std::int32_t,9>>::value) // Code for Fixed32 basically
+    if (std::is_same_v<Real, Fixed<std::int32_t,9>>) // Code for Fixed32 basically
     {
         EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
         EXPECT_NEAR(static_cast<double>(output.time), 0.49609375, 0.001);
@@ -674,7 +674,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
         .UseTolerance((slop / 4) * Meter);
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
     
-    if (std::is_same<Real, Fixed<std::int32_t,9>>::value)
+    if (std::is_same_v<Real, Fixed<std::int32_t,9>>)
     {
         // The results limited to what's possible with this type...
         EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
@@ -747,7 +747,7 @@ TEST(TimeOfImpact, WithClosingSpeedOf1600)
         .UseTolerance((slop / 4) * Meter);
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
     
-    if (std::is_same<Real, Fixed<std::int32_t,9>>::value)
+    if (std::is_same_v<Real, Fixed<std::int32_t,9>>)
     {
         // The results limited to what's possible with this type...
         EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
@@ -802,7 +802,7 @@ TEST(TimeOfImpact, ForNonCollidingShapesFails)
         .UseTolerance(Real(1.0f / 40000) * Meter);
     const auto output = GetToiViaSat(dpA, sweepA, dpB, sweepB, conf);
 
-    if (std::is_same<Real, float>::value)
+    if (std::is_same_v<Real, float>)
     {
         EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
         if (output.state == ToiOutput::e_nextAfter)
@@ -814,7 +814,7 @@ TEST(TimeOfImpact, ForNonCollidingShapesFails)
             EXPECT_EQ(output.stats.max_root_iters, 23);
         }
     }
-    else if (std::is_same<Real, Fixed<std::int32_t,9>>::value)
+    else if (std::is_same_v<Real, Fixed<std::int32_t,9>>)
     {
         EXPECT_EQ(output.state, ToiOutput::e_nextAfter);
         if (output.state == ToiOutput::e_nextAfter)
@@ -889,7 +889,7 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
 
     const auto output = GetToiViaSat(dpA, sweepA, dpB, sweepB, conf);
 
-    if (std::is_same<Real, float>::value)
+    if (std::is_same_v<Real, float>)
     {
         EXPECT_EQ(output.state, ToiOutput::e_separated);
         EXPECT_NEAR(static_cast<double>(output.time), 1.0, 0.001);
@@ -899,7 +899,7 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
         EXPECT_GE(output.stats.sum_dist_iters, output.stats.max_dist_iters);
         EXPECT_GE(output.stats.sum_root_iters, output.stats.max_root_iters);
     }
-    else if (std::is_same<Real, Fixed<std::int32_t,9>>::value)
+    else if (std::is_same_v<Real, Fixed<std::int32_t,9>>)
     {
         EXPECT_EQ(output.state, ToiOutput::e_overlapped);
         EXPECT_NEAR(static_cast<double>(output.time), 0.0, 0.001);
@@ -910,7 +910,7 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
         EXPECT_GE(output.stats.sum_root_iters, output.stats.max_root_iters);
     }
 #ifndef _WIN32
-    else if (std::is_same<Real, Fixed<std::int64_t,24>>::value)
+    else if (std::is_same_v<Real, Fixed<std::int64_t,24>>)
     {
         EXPECT_EQ(output.state, ToiOutput::e_separated);
         EXPECT_NEAR(static_cast<double>(output.time), 1.0, 0.001);
@@ -921,7 +921,7 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
         EXPECT_GE(output.stats.sum_root_iters, output.stats.max_root_iters);
     }
 #endif
-    else // if (std::is_same<Real, double>::value)
+    else // if (std::is_same_v<Real, double>)
     {
         EXPECT_EQ(output.state, ToiOutput::e_touching);
         EXPECT_NEAR(static_cast<double>(output.time), 1.0, 0.001);
@@ -1013,7 +1013,7 @@ TEST(TimeOfImpact, MaxRootIters)
 
 TEST(TimeOfImpact, NextAfter)
 {
-    if (!std::is_floating_point<Real>::value)
+    if (!std::is_floating_point_v<Real>)
     {
         // Test only designed for fundamental floating point types.
         return;
@@ -1195,7 +1195,7 @@ TEST(TimeOfImpact, BelowMinTarget)
 
 TEST(TimeOfImpact, TryOutDifferentConfs)
 {
-    if (!std::is_floating_point<Real>::value)
+    if (!std::is_floating_point_v<Real>)
     {
         // Test only designed for fundamental floating point types.
         return;

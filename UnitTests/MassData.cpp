@@ -50,36 +50,36 @@ TEST(MassData, DefaultConstruct)
 
 TEST(MassData, Traits)
 {
-    EXPECT_FALSE(IsIterable<MassData>::value);
+    EXPECT_FALSE(IsIterableV<MassData>);
 
     EXPECT_TRUE(std::is_default_constructible_v<MassData>);
 #ifndef PLAYRHO_USE_BOOST_UNITS
     EXPECT_TRUE(std::is_nothrow_default_constructible_v<MassData>); // may be compiler dependent
 #endif
+
+    EXPECT_FALSE((std::is_constructible_v<MassData, Length2, Mass, RotInertia>));
+    EXPECT_FALSE((std::is_constructible_v<MassData, Length2, Mass>));
+    EXPECT_FALSE((std::is_constructible_v<MassData, Length2>));
+    EXPECT_FALSE((std::is_constructible_v<MassData, Length2, NonNegative<Mass>, NonNegative<RotInertia>>));
+    EXPECT_FALSE((std::is_constructible_v<MassData, Length2, NonNegative<Mass>>));
+    EXPECT_FALSE((std::is_constructible_v<MassData, Length2>));
+    EXPECT_TRUE((std::is_constructible_v<MassData>));
+    // EXPECT_FALSE(std::is_nothrow_constructible_v<MassData>); // clang 3.7 and 4.0
+    // EXPECT_TRUE(std::is_nothrow_constructible_v<MassData>); // gcc 6.3
     
-    EXPECT_FALSE((std::is_constructible<MassData, Length2, Mass, RotInertia>::value));
-    EXPECT_FALSE((std::is_constructible<MassData, Length2, Mass>::value));
-    EXPECT_FALSE((std::is_constructible<MassData, Length2>::value));
-    EXPECT_FALSE((std::is_constructible<MassData, Length2, NonNegative<Mass>, NonNegative<RotInertia>>::value));
-    EXPECT_FALSE((std::is_constructible<MassData, Length2, NonNegative<Mass>>::value));
-    EXPECT_FALSE((std::is_constructible<MassData, Length2>::value));
-    EXPECT_TRUE((std::is_constructible<MassData>::value));
-    // EXPECT_FALSE(std::is_nothrow_constructible<MassData>::value); // clang 3.7 and 4.0
-    // EXPECT_TRUE(std::is_nothrow_constructible<MassData>::value); // gcc 6.3
-    
-    EXPECT_TRUE(std::is_copy_constructible<MassData>::value);
+    EXPECT_TRUE(std::is_copy_constructible_v<MassData>);
 #ifndef PLAYRHO_USE_BOOST_UNITS
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<MassData>::value); // may be compiler dependent
+    EXPECT_TRUE(std::is_nothrow_copy_constructible_v<MassData>); // may be compiler dependent
 #endif
 
-    EXPECT_TRUE(std::is_copy_assignable<MassData>::value);
-    // EXPECT_TRUE(std::is_nothrow_copy_assignable<MassData>::value); // with clang-4.0 gcc 6.3
-    // EXPECT_FALSE(std::is_nothrow_copy_assignable<MassData>::value); // with clang-3.7
-    // EXPECT_FALSE(std::is_trivially_copy_assignable<MassData>::value);
+    EXPECT_TRUE(std::is_copy_assignable_v<MassData>);
+    // EXPECT_TRUE(std::is_nothrow_copy_assignable_v<MassData>); // with clang-4.0 gcc 6.3
+    // EXPECT_FALSE(std::is_nothrow_copy_assignable_v<MassData>); // with clang-3.7
+    // EXPECT_FALSE(std::is_trivially_copy_assignable_v<MassData>);
     
-    EXPECT_TRUE(std::is_destructible<MassData>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<MassData>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<MassData>::value);
+    EXPECT_TRUE(std::is_destructible_v<MassData>);
+    EXPECT_TRUE(std::is_nothrow_destructible_v<MassData>);
+    EXPECT_TRUE(std::is_trivially_destructible_v<MassData>);
 }
 
 TEST(MassData, GetAreaOfPolygon)

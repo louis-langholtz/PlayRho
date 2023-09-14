@@ -51,52 +51,52 @@ TEST(Shape, Traits)
 {
     // NOTE: Double parenthesis needed sometimes for proper macro expansion.
 
-    EXPECT_TRUE(std::is_default_constructible<Shape>::value);
-    EXPECT_TRUE(std::is_nothrow_default_constructible<Shape>::value);
-    EXPECT_FALSE(std::is_trivially_default_constructible<Shape>::value);
+    EXPECT_TRUE(std::is_default_constructible_v<Shape>);
+    EXPECT_TRUE(std::is_nothrow_default_constructible_v<Shape>);
+    EXPECT_FALSE(std::is_trivially_default_constructible_v<Shape>);
 
     // Construction with any 1 supporting argument should succeed...
     using X = DiskShapeConf;
-    EXPECT_TRUE((std::is_constructible<Shape, X>::value));
-    EXPECT_FALSE((std::is_nothrow_constructible<Shape, X>::value));
-    EXPECT_FALSE((std::is_trivially_constructible<Shape, X>::value));
+    EXPECT_TRUE((std::is_constructible_v<Shape, X>));
+    EXPECT_FALSE((std::is_nothrow_constructible_v<Shape, X>));
+    EXPECT_FALSE((std::is_trivially_constructible_v<Shape, X>));
 
     // Construction with 2 arguments should fail...
-    EXPECT_FALSE((std::is_constructible<Shape, X, X>::value));
-    EXPECT_FALSE((std::is_nothrow_constructible<Shape, X, X>::value));
-    EXPECT_FALSE((std::is_trivially_constructible<Shape, X, X>::value));
+    EXPECT_FALSE((std::is_constructible_v<Shape, X, X>));
+    EXPECT_FALSE((std::is_nothrow_constructible_v<Shape, X, X>));
+    EXPECT_FALSE((std::is_trivially_constructible_v<Shape, X, X>));
 
-    EXPECT_TRUE(std::is_copy_constructible<Shape>::value);
+    EXPECT_TRUE(std::is_copy_constructible_v<Shape>);
 #if SHAPE_USES_UNIQUE_PTR
-    EXPECT_FALSE(std::is_nothrow_copy_constructible<Shape>::value);
+    EXPECT_FALSE(std::is_nothrow_copy_constructible_v<Shape>);
 #else
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<Shape>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible_v<Shape>);
 #endif
-    EXPECT_FALSE(std::is_trivially_copy_constructible<Shape>::value);
+    EXPECT_FALSE(std::is_trivially_copy_constructible_v<Shape>);
 
-    EXPECT_TRUE(std::is_move_constructible<Shape>::value);
-    EXPECT_TRUE(std::is_nothrow_move_constructible<Shape>::value);
-    EXPECT_FALSE(std::is_trivially_move_constructible<Shape>::value);
+    EXPECT_TRUE(std::is_move_constructible_v<Shape>);
+    EXPECT_TRUE(std::is_nothrow_move_constructible_v<Shape>);
+    EXPECT_FALSE(std::is_trivially_move_constructible_v<Shape>);
 
-    EXPECT_TRUE(std::is_copy_assignable<Shape>::value);
+    EXPECT_TRUE(std::is_copy_assignable_v<Shape>);
 #if SHAPE_USES_UNIQUE_PTR
-    EXPECT_FALSE(std::is_nothrow_copy_assignable<Shape>::value);
+    EXPECT_FALSE(std::is_nothrow_copy_assignable_v<Shape>);
 #else
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<Shape>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable_v<Shape>);
 #endif
-    EXPECT_FALSE(std::is_trivially_copy_assignable<Shape>::value);
+    EXPECT_FALSE(std::is_trivially_copy_assignable_v<Shape>);
 
-    EXPECT_TRUE(std::is_move_assignable<Shape>::value);
-    EXPECT_TRUE(std::is_nothrow_move_assignable<Shape>::value);
-    EXPECT_FALSE(std::is_trivially_move_assignable<Shape>::value);
+    EXPECT_TRUE(std::is_move_assignable_v<Shape>);
+    EXPECT_TRUE(std::is_nothrow_move_assignable_v<Shape>);
+    EXPECT_FALSE(std::is_trivially_move_assignable_v<Shape>);
 
-    EXPECT_TRUE(std::is_destructible<Shape>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<Shape>::value);
-    EXPECT_FALSE(std::is_trivially_destructible<Shape>::value);
+    EXPECT_TRUE(std::is_destructible_v<Shape>);
+    EXPECT_TRUE(std::is_nothrow_destructible_v<Shape>);
+    EXPECT_FALSE(std::is_trivially_destructible_v<Shape>);
 
     // The value initializing constructor resolves for ineligible types but preferably any such
     // instantiation will not actually compile.
-    EXPECT_TRUE((std::is_constructible<Shape, int>::value));
+    EXPECT_TRUE((std::is_constructible_v<Shape, int>));
 }
 
 TEST(Shape, DefaultConstruction)
@@ -228,7 +228,7 @@ bool IsSensor(const MovableConf&) noexcept
     return {};
 }
 
-static_assert(IsValidShapeType<MovableConf>::value, "MovableConf must be a valid shape type");
+static_assert(IsValidShapeTypeV<MovableConf>, "MovableConf must be a valid shape type");
 
 }
 
@@ -313,10 +313,10 @@ struct ShapeTest {
 
 TEST(Shape, InitializingConstructor)
 {
-    EXPECT_TRUE((std::is_constructible<Shape, ::sans_some::ShapeTest>::value));
-    EXPECT_FALSE(IsValidShapeType<::sans_some::ShapeTest>::value);
-    EXPECT_TRUE((std::is_constructible<Shape, DiskShapeConf>::value));
-    EXPECT_TRUE(IsValidShapeType<DiskShapeConf>::value);
+    EXPECT_TRUE((std::is_constructible_v<Shape, ::sans_some::ShapeTest>));
+    EXPECT_FALSE(IsValidShapeTypeV<::sans_some::ShapeTest>);
+    EXPECT_TRUE((std::is_constructible_v<Shape, DiskShapeConf>));
+    EXPECT_TRUE(IsValidShapeTypeV<DiskShapeConf>);
     auto conf = DiskShapeConf{};
     auto s = Shape{conf};
     EXPECT_TRUE(s.has_value());

@@ -68,7 +68,7 @@ class Manifold
 {
 public:
     /// @brief Size type.
-    using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
+    using size_type = std::remove_const_t<decltype(MaxManifoldPoints)>;
 
     /// The contact feature index.
     using CfIndex = ContactFeature::Index;

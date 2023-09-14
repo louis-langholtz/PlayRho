@@ -241,6 +241,10 @@ struct IsVector: std::false_type {};
 template <typename T, std::size_t N>
 struct IsVector<Vector<T, N>>: std::true_type {};
 
+/// @brief Determines whether the given type is a <code>Vector</code> type.
+template <class T>
+inline constexpr bool IsVectorV = IsVector<T>::value;
+
 /// @}
 
 /// @brief Equality operator.
@@ -269,7 +273,7 @@ constexpr bool operator!= (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noe
 /// @brief Unary plus operator.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr std::enable_if_t<std::is_same<T, decltype(+T{})>::value, Vector<T, N>>
+constexpr std::enable_if_t<std::is_same_v<T, decltype(+T{})>, Vector<T, N>>
 operator+ (Vector<T, N> v) noexcept
 {
     return v;
@@ -278,7 +282,7 @@ operator+ (Vector<T, N> v) noexcept
 /// @brief Unary negation operator.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr std::enable_if_t<std::is_same<T, decltype(-T{})>::value, Vector<T, N>>
+constexpr std::enable_if_t<std::is_same_v<T, decltype(-T{})>, Vector<T, N>>
 operator- (Vector<T, N> v) noexcept
 {
     for (auto i = decltype(N){0}; i < N; ++i)
@@ -291,7 +295,7 @@ operator- (Vector<T, N> v) noexcept
 /// @brief Increments the left hand side value by the right hand side value.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr std::enable_if_t<std::is_same<T, decltype(T{} + T{})>::value, Vector<T, N>&>
+constexpr std::enable_if_t<std::is_same_v<T, decltype(T{} + T{})>, Vector<T, N>&>
 operator+= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
 {
     for (auto i = decltype(N){0}; i < N; ++i)
@@ -304,7 +308,7 @@ operator+= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
 /// @brief Decrements the left hand side value by the right hand side value.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr std::enable_if_t<std::is_same<T, decltype(T{} - T{})>::value, Vector<T, N>&>
+constexpr std::enable_if_t<std::is_same_v<T, decltype(T{} - T{})>, Vector<T, N>&>
 operator-= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
 {
     for (auto i = decltype(N){0}; i < N; ++i)
@@ -317,7 +321,7 @@ operator-= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
 /// @brief Adds two vectors component-wise.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr std::enable_if_t<std::is_same<T, decltype(T{} + T{})>::value, Vector<T, N>>
+constexpr std::enable_if_t<std::is_same_v<T, decltype(T{} + T{})>, Vector<T, N>>
 operator+ (Vector<T, N> lhs, const Vector<T, N> rhs) noexcept
 {
     return lhs += rhs;
@@ -326,7 +330,7 @@ operator+ (Vector<T, N> lhs, const Vector<T, N> rhs) noexcept
 /// @brief Subtracts two vectors component-wise.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr std::enable_if_t<std::is_same<T, decltype(T{} - T{})>::value, Vector<T, N>>
+constexpr std::enable_if_t<std::is_same_v<T, decltype(T{} - T{})>, Vector<T, N>>
 operator- (Vector<T, N> lhs, const Vector<T, N> rhs) noexcept
 {
     return lhs -= rhs;
@@ -335,7 +339,7 @@ operator- (Vector<T, N> lhs, const Vector<T, N> rhs) noexcept
 /// @brief Multiplication assignment operator.
 /// @relatedalso Vector
 template <typename T1, typename T2, std::size_t N>
-constexpr std::enable_if_t<std::is_same<T1, decltype(T1{} * T2{})>::value, Vector<T1, N>&>
+constexpr std::enable_if_t<std::is_same_v<T1, decltype(T1{} * T2{})>, Vector<T1, N>&>
 operator*= (Vector<T1, N>& lhs, const T2 rhs) noexcept
 {
     for (auto i = decltype(N){0}; i < N; ++i)
@@ -348,7 +352,7 @@ operator*= (Vector<T1, N>& lhs, const T2 rhs) noexcept
 /// @brief Division assignment operator.
 /// @relatedalso Vector
 template <typename T1, typename T2, std::size_t N>
-constexpr std::enable_if_t<std::is_same<T1, decltype(T1{} / T2{})>::value, Vector<T1, N>&>
+constexpr std::enable_if_t<std::is_same_v<T1, decltype(T1{} / T2{})>, Vector<T1, N>&>
 operator/= (Vector<T1, N>& lhs, const T2 rhs) noexcept
 {
     const auto inverseRhs = Real{1} / rhs;
@@ -379,7 +383,7 @@ operator/= (Vector<T1, N>& lhs, const T2 rhs) noexcept
 /// @relatedalso Vector
 template <typename T1, typename T2, std::size_t A, std::size_t B, std::size_t C,
     typename OT = decltype(T1{} * T2{})>
-constexpr std::enable_if_t<IsMultipliable<T1, T2>::value, Vector<Vector<OT, C>, A>>
+constexpr std::enable_if_t<IsMultipliableV<T1, T2>, Vector<Vector<OT, C>, A>>
 operator* (const Vector<Vector<T1, B>, A>& lhs, const Vector<Vector<T2, C>, B>& rhs) noexcept
 {
     //using OT = decltype(T1{} * T2{});
@@ -414,7 +418,7 @@ operator* (const Vector<Vector<T1, B>, A>& lhs, const Vector<Vector<T2, C>, B>& 
 /// @return B-element vector product.
 template <typename T1, typename T2, std::size_t A, std::size_t B,
     typename OT = decltype(T1{} * T2{})>
-constexpr std::enable_if_t<IsMultipliable<T1, T2>::value && !IsVector<T1>::value, Vector<OT, B>>
+constexpr std::enable_if_t<IsMultipliableV<T1, T2> && !IsVectorV<T1>, Vector<OT, B>>
 operator* (const Vector<T1, A>& lhs, const Vector<Vector<T2, B>, A>& rhs) noexcept
 {
     auto result = Vector<OT, B>{};
@@ -439,7 +443,7 @@ operator* (const Vector<T1, A>& lhs, const Vector<Vector<T2, B>, A>& rhs) noexce
 /// @return B-element vector product.
 template <typename T1, typename T2, std::size_t A, std::size_t B,
     typename OT = decltype(T1{} * T2{})>
-constexpr std::enable_if_t<IsMultipliable<T1, T2>::value && !IsVector<T2>::value, Vector<OT, B>>
+constexpr std::enable_if_t<IsMultipliableV<T1, T2> && !IsVectorV<T2>, Vector<OT, B>>
 operator* (const Vector<Vector<T1, A>, B>& lhs, const Vector<T2, A>& rhs) noexcept
 {
     auto result = Vector<OT, B>{};
@@ -460,7 +464,7 @@ operator* (const Vector<Vector<T1, A>, B>& lhs, const Vector<T2, A>& rhs) noexce
 /// @note Explicitly disabled for Vector * Vector to prevent this function from existing
 ///   in that case and prevent errors like "use of overloaded operator '*' is ambiguous".
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
-constexpr std::enable_if_t<IsMultipliable<T1, T2>::value && !IsVector<T1>::value, Vector<OT, N>>
+constexpr std::enable_if_t<IsMultipliableV<T1, T2> && !IsVectorV<T1>, Vector<OT, N>>
 operator* (const T1& s, const Vector<T2, N>& a) noexcept
 {
     // Can't base this off of *= since result type in this case can be different
@@ -477,7 +481,7 @@ operator* (const T1& s, const Vector<T2, N>& a) noexcept
 /// @note Explicitly disabled for Vector * Vector to prevent this function from existing
 ///   in that case and prevent errors like "use of overloaded operator '*' is ambiguous".
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
-constexpr std::enable_if_t<IsMultipliable<T1, T2>::value && !IsVector<T2>::value, Vector<OT, N>>
+constexpr std::enable_if_t<IsMultipliableV<T1, T2> && !IsVectorV<T2>, Vector<OT, N>>
 operator* (const Vector<T1, N>& a, const T2& s) noexcept
 {
     // Can't base this off of *= since result type in this case can be different
@@ -492,7 +496,7 @@ operator* (const Vector<T1, N>& a, const T2& s) noexcept
 /// @brief Division operator.
 /// @relatedalso Vector
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} / T2{})>
-constexpr std::enable_if_t<IsDivisable<T1, T2>::value && !IsVector<T2>::value, Vector<OT, N>>
+constexpr std::enable_if_t<IsDivisableV<T1, T2> && !IsVectorV<T2>, Vector<OT, N>>
 operator/ (Vector<T1, N> a, const T2 s) noexcept
 {
     // Can't base this off of /= since result type in this case can be different

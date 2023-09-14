@@ -105,7 +105,7 @@ constexpr auto MaxChildCount = std::numeric_limits<std::uint32_t>::max() >> 6;
 /// @details Relating to "children" of shape where each child is a convex shape possibly
 ///   comprising a concave shape.
 /// @note This type must always be able to contain the <code>MaxChildCount</code> value.
-using ChildCounter = std::remove_const<decltype(MaxChildCount)>::type;
+using ChildCounter = std::remove_const_t<decltype(MaxChildCount)>;
 
 /// Time step iterations type.
 /// @details A type for counting iterations per time-step.
@@ -130,7 +130,7 @@ constexpr auto MaxShapeVertices = std::uint8_t{254};
 /// @brief Vertex count type.
 /// @note This type must not support more than 255 vertices as that would conflict
 ///   with the <code>ContactFeature::Index</code> type.
-using VertexCounter = std::remove_const<decltype(MaxShapeVertices)>::type;
+using VertexCounter = std::remove_const_t<decltype(MaxShapeVertices)>;
 
 /// @brief Invalid vertex index.
 constexpr auto InvalidVertex = static_cast<VertexCounter>(-1);
@@ -216,7 +216,7 @@ constexpr auto MaxBodies = static_cast<std::uint16_t>(std::numeric_limits<std::u
 
 /// @brief Count type for bodies.
 /// @note This type must always be able to contain the <code>MaxBodies</code> value.
-using BodyCounter = std::remove_const<decltype(MaxBodies)>::type;
+using BodyCounter = std::remove_const_t<decltype(MaxBodies)>;
 
 /// @brief Count type for contacts.
 /// @note This type must be able to contain the squared value of <code>BodyCounter</code>.
@@ -241,7 +241,7 @@ constexpr auto MaxJoints = static_cast<std::uint16_t>(std::numeric_limits<std::u
 
 /// @brief Counter type for joints.
 /// @note This type must be able to contain the <code>MaxJoints</code> value.
-using JointCounter = std::remove_const<decltype(MaxJoints)>::type;
+using JointCounter = std::remove_const_t<decltype(MaxJoints)>;
 
 /// @brief Maximum number of shapes in a world.
 /// @note This is 65534 based off <code>std::uint16_t</code> and eliminating one value for invalid.

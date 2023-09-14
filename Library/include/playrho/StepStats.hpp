@@ -84,13 +84,13 @@ struct ToiStepStats {
     counter_type maxSimulContacts = 0; ///< Max contacts occurring simultaneously.
 
     /// @brief Distance iteration type.
-    using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+    using dist_iter_type = std::remove_const_t<decltype(DefaultMaxDistanceIters)>;
 
     /// @brief TOI iteration type.
-    using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+    using toi_iter_type = std::remove_const_t<decltype(DefaultMaxToiIters)>;
 
     /// @brief Root iteration type.
-    using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
+    using root_iter_type = std::remove_const_t<decltype(DefaultMaxToiRootIters)>;
 
     dist_iter_type maxDistIters = 0; ///< Max distance iterations.
     toi_iter_type maxToiIters = 0; ///< Max TOI iterations.

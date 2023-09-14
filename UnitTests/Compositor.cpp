@@ -144,16 +144,16 @@ struct Void2 {
     }
 };
 
-static_assert(playrho::d2::IsValidShapeType<Compositor<GeometryIs<Void2>>>::value);
+static_assert(playrho::d2::IsValidShapeTypeV<Compositor<GeometryIs<Void2>>>);
 
 } // namespace playrho::d2::part
 
-TEST(Compositor, IsValidShapeType)
+TEST(Compositor, IsValidShapeTypeV)
 {
-    EXPECT_TRUE(playrho::d2::IsValidShapeType<Compositor<>>::value);
-    EXPECT_TRUE(playrho::d2::IsValidShapeType<Compositor<GeometryIs<StaticRectangle<>>>>::value);
-    EXPECT_TRUE(playrho::d2::IsValidShapeType<Compositor<GeometryIs<DynamicRectangle<>>>>::value);
-    EXPECT_TRUE(playrho::d2::IsValidShapeType<Compositor<GeometryIs<Void2>>>::value);
+    EXPECT_TRUE(playrho::d2::IsValidShapeTypeV<Compositor<>>);
+    EXPECT_TRUE(playrho::d2::IsValidShapeTypeV<Compositor<GeometryIs<StaticRectangle<>>>>);
+    EXPECT_TRUE(playrho::d2::IsValidShapeTypeV<Compositor<GeometryIs<DynamicRectangle<>>>>);
+    EXPECT_TRUE(playrho::d2::IsValidShapeTypeV<Compositor<GeometryIs<Void2>>>);
 }
 
 TEST(Compositor, GetNormalsForDefaultCompositor)

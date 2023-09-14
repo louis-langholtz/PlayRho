@@ -38,28 +38,28 @@ TEST(CheckedValue, NonNegativeFloatTraits)
 {
     using type = NonNegative<float>;
 
-    EXPECT_TRUE(std::is_default_constructible<type>::value);
-    EXPECT_FALSE(std::is_nothrow_default_constructible<type>::value);
-    EXPECT_FALSE(std::is_trivially_default_constructible<type>::value);
+    EXPECT_TRUE(std::is_default_constructible_v<type>);
+    EXPECT_FALSE(std::is_nothrow_default_constructible_v<type>);
+    EXPECT_FALSE(std::is_trivially_default_constructible_v<type>);
 
-    EXPECT_TRUE((std::is_constructible<type, type::value_type>::value));
-    EXPECT_FALSE((std::is_nothrow_constructible<type, type::value_type>::value));
-    EXPECT_FALSE((std::is_trivially_constructible<type, type::value_type>::value));
+    EXPECT_TRUE((std::is_constructible_v<type, type::value_type>));
+    EXPECT_FALSE((std::is_nothrow_constructible_v<type, type::value_type>));
+    EXPECT_FALSE((std::is_trivially_constructible_v<type, type::value_type>));
 
-    EXPECT_TRUE(std::is_copy_constructible<type>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<type>::value);
-    EXPECT_TRUE(std::is_trivially_copy_constructible<type>::value);
+    EXPECT_TRUE(std::is_copy_constructible_v<type>);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible_v<type>);
+    EXPECT_TRUE(std::is_trivially_copy_constructible_v<type>);
 
-    EXPECT_TRUE(std::is_copy_assignable<type>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<type>::value);
-    EXPECT_TRUE(std::is_trivially_copy_assignable<type>::value);
+    EXPECT_TRUE(std::is_copy_assignable_v<type>);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable_v<type>);
+    EXPECT_TRUE(std::is_trivially_copy_assignable_v<type>);
 
-    EXPECT_TRUE(std::is_destructible<type>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<type>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<type>::value);
+    EXPECT_TRUE(std::is_destructible_v<type>);
+    EXPECT_TRUE(std::is_nothrow_destructible_v<type>);
+    EXPECT_TRUE(std::is_trivially_destructible_v<type>);
 
-    EXPECT_TRUE((std::is_convertible<type, type::value_type>::value));
-    EXPECT_TRUE((std::is_convertible<type::value_type, type>::value));
+    EXPECT_TRUE((std::is_convertible_v<type, type::value_type>));
+    EXPECT_TRUE((std::is_convertible_v<type::value_type, type>));
 }
 
 #ifndef NDEBUG

@@ -35,7 +35,7 @@ using UnitInterval = detail::Checked<T, detail::UnitIntervalChecker<T>>;
 template <typename T>
 using UnitIntervalFF = detail::Checked<T, detail::UnitIntervalChecker<T>, true>;
 
-static_assert(std::is_default_constructible<UnitInterval<int>>::value);
+static_assert(std::is_default_constructible_v<UnitInterval<int>>);
 
 } // namespace playrho
 

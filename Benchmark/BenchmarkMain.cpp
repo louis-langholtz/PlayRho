@@ -520,9 +520,9 @@ static void AsyncFutureAsync(benchmark::State& state)
 
 #ifdef BENCHMARK_GCDISPATCH
 template <typename F, typename... Args>
-auto gcd_async(F&& f, Args&&... args) -> std::future<typename std::result_of<F(Args...)>::type>
+auto gcd_async(F&& f, Args&&... args) -> std::future<std::result_of_t<F(Args...)>>
 {
-    using result_type = typename std::result_of<F(Args...)>::type;
+    using result_type = std::result_of_t<F(Args...)>;
     using packaged_type = std::packaged_task<result_type()>;
 
     auto p = new packaged_type(std::bind(std::forward<F>(f), std::forward<Args>(args)...));
@@ -1221,7 +1221,7 @@ static void LessFloat(benchmark::State& state)
             const auto a = std::get<0>(val);
             const auto b = std::get<1>(val);
             const auto v = (a < b);
-            static_assert(std::is_same<decltype(v), const bool>::value, "not bool");
+            static_assert(std::is_same_v<decltype(v), const bool>, "not bool");
             benchmark::DoNotOptimize(c = v);
         }
     }
@@ -1237,7 +1237,7 @@ static void LessDouble(benchmark::State& state)
             const auto a = std::get<0>(val);
             const auto b = std::get<1>(val);
             const auto v = (a < b);
-            static_assert(std::is_same<decltype(v), const bool>::value, "not bool");
+            static_assert(std::is_same_v<decltype(v), const bool>, "not bool");
             benchmark::DoNotOptimize(c = v);
         }
     }
@@ -1253,7 +1253,7 @@ static void LessEqualFloat(benchmark::State& state)
             const auto a = std::get<0>(val);
             const auto b = std::get<1>(val);
             const auto v = (a <= b);
-            static_assert(std::is_same<decltype(v), const bool>::value, "not bool");
+            static_assert(std::is_same_v<decltype(v), const bool>, "not bool");
             benchmark::DoNotOptimize(c = v);
         }
     }
@@ -1268,7 +1268,7 @@ static void LessEqualDouble(benchmark::State& state)
             const auto a = std::get<0>(val);
             const auto b = std::get<1>(val);
             const auto v = (a <= b);
-            static_assert(std::is_same<decltype(v), const bool>::value, "not bool");
+            static_assert(std::is_same_v<decltype(v), const bool>, "not bool");
             benchmark::DoNotOptimize(c = v);
         }
     }
@@ -1283,7 +1283,7 @@ static void LesserFloat(benchmark::State& state)
             const auto a = std::get<0>(val);
             const auto b = std::get<1>(val);
             const auto v = (a < b) ? a : b;
-            static_assert(std::is_same<decltype(v), const float>::value, "not float");
+            static_assert(std::is_same_v<decltype(v), const float>, "not float");
             benchmark::DoNotOptimize(c = v);
         }
     }
@@ -1298,7 +1298,7 @@ static void LesserDouble(benchmark::State& state)
             const auto a = std::get<0>(val);
             const auto b = std::get<1>(val);
             const auto v = (a < b) ? a : b;
-            static_assert(std::is_same<decltype(v), const double>::value, "not double");
+            static_assert(std::is_same_v<decltype(v), const double>, "not double");
             benchmark::DoNotOptimize(c = v);
         }
     }
@@ -1313,7 +1313,7 @@ static void LesserEqualFloat(benchmark::State& state)
             const auto a = std::get<0>(val);
             const auto b = std::get<1>(val);
             const auto v = (a <= b) ? a : b;
-            static_assert(std::is_same<decltype(v), const float>::value, "not float");
+            static_assert(std::is_same_v<decltype(v), const float>, "not float");
             benchmark::DoNotOptimize(c = v);
         }
     }
@@ -1328,7 +1328,7 @@ static void LesserEqualDouble(benchmark::State& state)
             const auto a = std::get<0>(val);
             const auto b = std::get<1>(val);
             const auto v = (a <= b) ? a : b;
-            static_assert(std::is_same<decltype(v), const double>::value, "not double");
+            static_assert(std::is_same_v<decltype(v), const double>, "not double");
             benchmark::DoNotOptimize(c = v);
         }
     }
@@ -1344,7 +1344,7 @@ static void LesserEqualLength(benchmark::State& state)
             const auto a = std::get<0>(val);
             const auto b = std::get<1>(val);
             const auto v = (a <= b) ? a : b;
-            static_assert(std::is_same<decltype(v), const playrho::Length>::value, "not Length");
+            static_assert(std::is_same_v<decltype(v), const playrho::Length>, "not Length");
             benchmark::DoNotOptimize(c = v);
         }
     }
@@ -1359,7 +1359,7 @@ static void MinFloat(benchmark::State& state)
             const auto a = std::get<0>(val);
             const auto b = std::get<1>(val);
             const auto v = std::min(a, b);
-            static_assert(std::is_same<decltype(v), const float>::value, "not float");
+            static_assert(std::is_same_v<decltype(v), const float>, "not float");
             benchmark::DoNotOptimize(c = v);
         }
     }
@@ -1374,7 +1374,7 @@ static void MinDouble(benchmark::State& state)
             const auto a = std::get<0>(val);
             const auto b = std::get<1>(val);
             const auto v = std::min(a, b);
-            static_assert(std::is_same<decltype(v), const double>::value, "not double");
+            static_assert(std::is_same_v<decltype(v), const double>, "not double");
             benchmark::DoNotOptimize(c = v);
         }
     }
@@ -1391,7 +1391,7 @@ static void LessLength(benchmark::State& state)
             const auto a = std::get<0>(val);
             const auto b = std::get<1>(val);
             const auto v = (a < b);
-            static_assert(std::is_same<decltype(v), const bool>::value, "not bool");
+            static_assert(std::is_same_v<decltype(v), const bool>, "not bool");
             benchmark::DoNotOptimize(c = v);
         }
     }
@@ -1408,7 +1408,7 @@ static void LessEqualLength(benchmark::State& state)
             const auto a = std::get<0>(val);
             const auto b = std::get<1>(val);
             const auto v = (a <= b);
-            static_assert(std::is_same<decltype(v), const bool>::value, "not bool");
+            static_assert(std::is_same_v<decltype(v), const bool>, "not bool");
             benchmark::DoNotOptimize(c = v);
         }
     }
@@ -1423,7 +1423,7 @@ static void LesserLength(benchmark::State& state)
         for (const auto& val : vals) {
             const auto a = std::get<0>(val);
             const auto b = std::get<1>(val);
-            static_assert(std::is_same<decltype(b), const playrho::Length>::value, "not Length");
+            static_assert(std::is_same_v<decltype(b), const playrho::Length>, "not Length");
             const auto v = (a < b) ? a : b;
             benchmark::DoNotOptimize(c = v);
         }
@@ -1440,7 +1440,7 @@ static void MinLength(benchmark::State& state)
             const auto a = std::get<0>(val);
             const auto b = std::get<1>(val);
             const auto v = std::min(a, b);
-            static_assert(std::is_same<decltype(v), const playrho::Length>::value, "not Length");
+            static_assert(std::is_same_v<decltype(v), const playrho::Length>, "not Length");
             benchmark::DoNotOptimize(c = v);
         }
     }

@@ -493,6 +493,11 @@ struct IsValidJointType<
         decltype(Joint{std::declval<T>()})>> : std::true_type {
 };
 
+/// @brief Boolean value for whether the specified type is a valid joint type.
+/// @see Joint.
+template <class T>
+inline constexpr bool IsValidJointTypeV = IsValidJointType<T>::value;
+
 // Free functions...
 
 /// @brief Provides referenced access to the identified element of the given container.
@@ -510,7 +515,7 @@ template <typename T>
 inline T TypeCast(const Joint& value)
 {
     using RawType = std::remove_cv_t<std::remove_reference_t<T>>;
-    static_assert(std::is_constructible<T, RawType const&>::value,
+    static_assert(std::is_constructible_v<T, RawType const&>,
                   "T is required to be a const lvalue reference "
                   "or a CopyConstructible type");
     auto tmp = ::playrho::d2::TypeCast<std::add_const_t<RawType>>(&value);
@@ -530,7 +535,7 @@ template <typename T>
 inline T TypeCast(Joint& value)
 {
     using RawType = std::remove_cv_t<std::remove_reference_t<T>>;
-    static_assert(std::is_constructible<T, RawType&>::value,
+    static_assert(std::is_constructible_v<T, RawType&>,
                   "T is required to be a const lvalue reference "
                   "or a CopyConstructible type");
     auto tmp = ::playrho::d2::TypeCast<RawType>(&value);
@@ -550,7 +555,7 @@ template <typename T>
 inline T TypeCast(Joint&& value)
 {
     using RawType = std::remove_cv_t<std::remove_reference_t<T>>;
-    static_assert(std::is_constructible<T, RawType>::value,
+    static_assert(std::is_constructible_v<T, RawType>,
                   "T is required to be a const lvalue reference "
                   "or a CopyConstructible type");
     auto tmp = ::playrho::d2::TypeCast<RawType>(&value);
@@ -563,7 +568,7 @@ inline T TypeCast(Joint&& value)
 template <typename T>
 inline std::add_pointer_t<std::add_const_t<T>> TypeCast(const Joint* value) noexcept
 {
-    static_assert(!std::is_reference<T>::value, "T may not be a reference.");
+    static_assert(!std::is_reference_v<T>, "T may not be a reference.");
     using ReturnType = std::add_pointer_t<T>;
     if (value && value->m_self && (GetType(*value) == GetTypeID<T>())) {
         return static_cast<ReturnType>(value->m_self->GetData_());
@@ -574,7 +579,7 @@ inline std::add_pointer_t<std::add_const_t<T>> TypeCast(const Joint* value) noex
 template <typename T>
 inline std::add_pointer_t<T> TypeCast(Joint* value) noexcept
 {
-    static_assert(!std::is_reference<T>::value, "T may not be a reference.");
+    static_assert(!std::is_reference_v<T>, "T may not be a reference.");
     using ReturnType = std::add_pointer_t<T>;
     if (value && value->m_self && (GetType(*value) == GetTypeID<T>())) {
         return static_cast<ReturnType>(value->m_self->GetData_());

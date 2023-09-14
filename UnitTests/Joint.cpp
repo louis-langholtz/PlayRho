@@ -296,16 +296,16 @@ struct JointTester {
 } // namespace sans_all
 
 // Compile-time test the different combos defined above...
-static_assert(IsValidJointType<sans_none::JointTester>::value);
-static_assert(!IsValidJointType<sans_getbodya::JointTester>::value);
-static_assert(!IsValidJointType<sans_getbodyb::JointTester>::value);
-static_assert(!IsValidJointType<sans_getcollideconnected::JointTester>::value);
-static_assert(!IsValidJointType<sans_shiftorigin::JointTester>::value);
-static_assert(!IsValidJointType<sans_initvelocity::JointTester>::value);
-static_assert(!IsValidJointType<sans_solvevelocity::JointTester>::value);
-static_assert(!IsValidJointType<sans_solveposition::JointTester>::value);
-static_assert(!IsValidJointType<sans_equals::JointTester>::value);
-static_assert(!IsValidJointType<sans_all::JointTester>::value);
+static_assert(IsValidJointTypeV<sans_none::JointTester>);
+static_assert(!IsValidJointTypeV<sans_getbodya::JointTester>);
+static_assert(!IsValidJointTypeV<sans_getbodyb::JointTester>);
+static_assert(!IsValidJointTypeV<sans_getcollideconnected::JointTester>);
+static_assert(!IsValidJointTypeV<sans_shiftorigin::JointTester>);
+static_assert(!IsValidJointTypeV<sans_initvelocity::JointTester>);
+static_assert(!IsValidJointTypeV<sans_solvevelocity::JointTester>);
+static_assert(!IsValidJointTypeV<sans_solveposition::JointTester>);
+static_assert(!IsValidJointTypeV<sans_equals::JointTester>);
+static_assert(!IsValidJointTypeV<sans_all::JointTester>);
 
 } // namespace test
 
@@ -363,30 +363,30 @@ TEST(Joint, ByteSize)
 
 TEST(Joint, Traits)
 {
-    EXPECT_FALSE(IsIterable<Joint>::value);
-    EXPECT_FALSE((IsAddable<Joint>::value));
-    EXPECT_FALSE((IsAddable<Joint, Joint>::value));
+    EXPECT_FALSE(IsIterableV<Joint>);
+    EXPECT_FALSE((IsAddableV<Joint>));
+    EXPECT_FALSE((IsAddableV<Joint, Joint>));
 
-    EXPECT_TRUE(std::is_default_constructible<Joint>::value);
-    EXPECT_TRUE(std::is_nothrow_default_constructible<Joint>::value);
-    EXPECT_FALSE(std::is_trivially_default_constructible<Joint>::value);
+    EXPECT_TRUE(std::is_default_constructible_v<Joint>);
+    EXPECT_TRUE(std::is_nothrow_default_constructible_v<Joint>);
+    EXPECT_FALSE(std::is_trivially_default_constructible_v<Joint>);
 
-    EXPECT_TRUE(std::is_copy_constructible<Joint>::value);
-    EXPECT_FALSE(std::is_nothrow_copy_constructible<Joint>::value);
-    EXPECT_FALSE(std::is_trivially_copy_constructible<Joint>::value);
+    EXPECT_TRUE(std::is_copy_constructible_v<Joint>);
+    EXPECT_FALSE(std::is_nothrow_copy_constructible_v<Joint>);
+    EXPECT_FALSE(std::is_trivially_copy_constructible_v<Joint>);
 
-    EXPECT_TRUE(std::is_copy_assignable<Joint>::value);
-    EXPECT_FALSE(std::is_nothrow_copy_assignable<Joint>::value);
-    EXPECT_FALSE(std::is_trivially_copy_assignable<Joint>::value);
+    EXPECT_TRUE(std::is_copy_assignable_v<Joint>);
+    EXPECT_FALSE(std::is_nothrow_copy_assignable_v<Joint>);
+    EXPECT_FALSE(std::is_trivially_copy_assignable_v<Joint>);
 
-    EXPECT_TRUE(std::is_destructible<Joint>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<Joint>::value);
-    EXPECT_FALSE(std::is_trivially_destructible<Joint>::value);
+    EXPECT_TRUE(std::is_destructible_v<Joint>);
+    EXPECT_TRUE(std::is_nothrow_destructible_v<Joint>);
+    EXPECT_FALSE(std::is_trivially_destructible_v<Joint>);
 
     // Double parenthesis needed for proper macro expansion.
-    EXPECT_TRUE((std::is_constructible<Joint, int>::value));
-    EXPECT_TRUE((std::is_constructible<Joint, char*>::value));
-    EXPECT_TRUE((std::is_constructible<Joint, test::sans_none::JointTester>::value));
+    EXPECT_TRUE((std::is_constructible_v<Joint, int>));
+    EXPECT_TRUE((std::is_constructible_v<Joint, char*>));
+    EXPECT_TRUE((std::is_constructible_v<Joint, test::sans_none::JointTester>));
 }
 
 TEST(Joint, DefaultConstructor)

@@ -35,14 +35,14 @@
 namespace playrho {
 namespace d2 {
 
-static_assert(std::is_nothrow_default_constructible<DynamicTree>::value,
+static_assert(std::is_nothrow_default_constructible_v<DynamicTree>,
               "DynamicTree must be nothrow default constructible!");
-static_assert(std::is_copy_constructible<DynamicTree>::value,
+static_assert(std::is_copy_constructible_v<DynamicTree>,
               "DynamicTree must be copy constructible!");
-static_assert(std::is_nothrow_move_constructible<DynamicTree>::value,
+static_assert(std::is_nothrow_move_constructible_v<DynamicTree>,
               "DynamicTree must be nothrow move constructible!");
-static_assert(std::is_copy_assignable<DynamicTree>::value, "DynamicTree must be copy assignable!");
-static_assert(std::is_nothrow_move_assignable<DynamicTree>::value,
+static_assert(std::is_copy_assignable_v<DynamicTree>, "DynamicTree must be copy assignable!");
+static_assert(std::is_nothrow_move_assignable_v<DynamicTree>,
               "DynamicTree must be move assignable!");
 
 namespace {

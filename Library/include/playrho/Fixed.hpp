@@ -137,7 +137,7 @@ public:
     template <typename T>
     static constexpr value_type GetFromFloat(T val) noexcept
     {
-        static_assert(std::is_floating_point<T>::value, "floating point value required");
+        static_assert(std::is_floating_point_v<T>, "floating point value required");
         // Note: std::isnan(val) *NOT* constant expression, so can't use here!
         return !(val <= 0 || val >= 0) // NOLINT(misc-redundant-expression)
             ? GetNaN().m_value // force line-break
@@ -152,8 +152,8 @@ public:
     template <typename T>
     static constexpr value_type GetFromSignedInt(T val) noexcept
     {
-        static_assert(std::is_integral<T>::value, "integral value required");
-        static_assert(std::is_signed<T>::value, "must be signed");
+        static_assert(std::is_integral_v<T>, "integral value required");
+        static_assert(std::is_signed_v<T>, "must be signed");
         return (val > (GetMax().m_value / ScaleFactor))? GetInfinity().m_value:
             (val < (GetLowest().m_value / ScaleFactor))? GetNegativeInfinity().m_value:
             static_cast<value_type>(val * ScaleFactor);
@@ -163,8 +163,8 @@ public:
     template <typename T>
     static constexpr value_type GetFromUnsignedInt(T val) noexcept
     {
-        static_assert(std::is_integral<T>::value, "integral value required");
-        static_assert(!std::is_signed<T>::value, "must be unsigned");
+        static_assert(std::is_integral_v<T>, "integral value required");
+        static_assert(!std::is_signed_v<T>, "must be unsigned");
         const auto max = static_cast<unsigned_wider_type>(GetMax().m_value / ScaleFactor);
         return (val > max)? GetInfinity().m_value: static_cast<value_type>(val) * ScaleFactor;
     }
@@ -580,7 +580,7 @@ private:
     using wider_type = typename detail::Wider<value_type>::type;
 
     /// @brief Unsigned widened type alias.
-    using unsigned_wider_type = typename std::make_unsigned<wider_type>::type;
+    using unsigned_wider_type = std::make_unsigned_t<wider_type>;
 
     /// @brief Scalar type.
     struct scalar_type

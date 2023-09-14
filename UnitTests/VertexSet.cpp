@@ -27,9 +27,9 @@ using namespace playrho::d2;
 
 TEST(VertexSet, Traits)
 {
-    EXPECT_TRUE((IsIterable<VertexSet>::value));
-    EXPECT_FALSE((IsAddable<VertexSet>::value));
-    EXPECT_FALSE((IsAddable<VertexSet,VertexSet>::value));
+    EXPECT_TRUE((IsIterableV<VertexSet>));
+    EXPECT_FALSE((IsAddableV<VertexSet>));
+    EXPECT_FALSE((IsAddableV<VertexSet,VertexSet>));
 }
 
 TEST(VertexSet, ByteSize)

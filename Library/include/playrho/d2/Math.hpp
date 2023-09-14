@@ -287,7 +287,7 @@ inline InvMass GetEffectiveInvMass(const InvRotInertia& invRotI, const Length2& 
 /// @see https://en.wikipedia.org/wiki/Transformation_matrix
 constexpr auto GetReflectionMatrix(const UnitVec& axis)
 {
-    constexpr auto TupleSize = std::tuple_size<std::decay_t<decltype(axis)>>::value;
+    constexpr auto TupleSize = std::tuple_size_v<std::decay_t<decltype(axis)>>;
     constexpr auto NumRows = TupleSize;
     constexpr auto NumCols = TupleSize;
     auto result = Matrix<Real, NumRows, NumCols>{};

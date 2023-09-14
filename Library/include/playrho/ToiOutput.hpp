@@ -31,13 +31,13 @@ struct ToiOutput {
     /// @brief Time of impact statistics.
     struct Statistics {
         /// @brief TOI iterations type.
-        using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+        using toi_iter_type = std::remove_const_t<decltype(DefaultMaxToiIters)>;
 
         /// @brief Distance iterations type.
-        using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+        using dist_iter_type = std::remove_const_t<decltype(DefaultMaxDistanceIters)>;
 
         /// @brief Root iterations type.
-        using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
+        using root_iter_type = std::remove_const_t<decltype(DefaultMaxToiRootIters)>;
 
         /// @brief TOI iterations sum type.
         using toi_sum_type = WiderType<toi_iter_type>;

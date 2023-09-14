@@ -26,7 +26,7 @@
 namespace playrho {
 namespace d2 {
 
-static_assert(IsValidShapeType<EdgeShapeConf>::value);
+static_assert(IsValidShapeTypeV<EdgeShapeConf>);
 
 EdgeShapeConf::EdgeShapeConf(const Length2& vA, const Length2& vB, // force line-break
                              const EdgeShapeConf& conf) noexcept

@@ -1118,8 +1118,8 @@ namespace units {
 ///
 template <class Dimension, typename X,
           typename = std::enable_if_t<
-              playrho::IsArithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
-              std::is_same<decltype(playrho::Real{} / X{}), playrho::Real>::value>>
+              playrho::IsArithmeticV<X> && !std::is_same_v<X, playrho::Real> &&
+              std::is_same_v<decltype(playrho::Real{} / X{}), playrho::Real>>>
 constexpr auto operator/(quantity<Dimension, playrho::Real> lhs, X rhs)
 {
     return lhs / playrho::Real(rhs);
@@ -1127,8 +1127,8 @@ constexpr auto operator/(quantity<Dimension, playrho::Real> lhs, X rhs)
 
 template <class Dimension, typename X,
           typename = std::enable_if_t<
-              playrho::IsArithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
-              std::is_same<decltype(X{} / playrho::Real{}), playrho::Real>::value>>
+              playrho::IsArithmeticV<X> && !std::is_same_v<X, playrho::Real> &&
+              std::is_same_v<decltype(X{} / playrho::Real{}), playrho::Real>>>
 constexpr auto operator/(X lhs, quantity<Dimension, playrho::Real> rhs)
 {
     return playrho::Real(lhs) / rhs;
@@ -1144,8 +1144,8 @@ constexpr auto operator/(X lhs, quantity<Dimension, playrho::Real> rhs)
 ///
 template <class Dimension, typename X,
           typename = std::enable_if_t<
-              playrho::IsArithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
-              std::is_same<decltype(playrho::Real{} * X{}), playrho::Real>::value>>
+              playrho::IsArithmeticV<X> && !std::is_same_v<X, playrho::Real> &&
+              std::is_same_v<decltype(playrho::Real{} * X{}), playrho::Real>>>
 constexpr auto operator*(quantity<Dimension, playrho::Real> lhs, X rhs)
 {
     return lhs * playrho::Real(rhs);
@@ -1161,8 +1161,8 @@ constexpr auto operator*(quantity<Dimension, playrho::Real> lhs, X rhs)
 ///
 template <class Dimension, typename X,
           typename = std::enable_if_t<
-              playrho::IsArithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
-              std::is_same<decltype(playrho::Real{} * X{}), playrho::Real>::value>>
+              playrho::IsArithmeticV<X> && !std::is_same_v<X, playrho::Real> &&
+              std::is_same_v<decltype(playrho::Real{} * X{}), playrho::Real>>>
 constexpr auto operator*(X lhs, quantity<Dimension, playrho::Real> rhs)
 {
     return playrho::Real(lhs) * rhs;

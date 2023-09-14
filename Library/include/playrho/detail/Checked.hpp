@@ -67,7 +67,7 @@ public:
     using value_type = ValueType;
 
     /// @brief Remove pointer type.
-    using remove_pointer_type = typename std::remove_pointer<ValueType>::type;
+    using remove_pointer_type = typename std::remove_pointer_t<ValueType>;
 
     /// @brief Checker type.
     using checker_type = Checker;
@@ -134,14 +134,14 @@ public:
 
     /// @brief Member of pointer operator available for pointer <code>ValueType</code>.
     template <typename U = ValueType>
-    constexpr std::enable_if_t<std::is_pointer<U>::value, U> operator-> () const
+    constexpr std::enable_if_t<std::is_pointer_v<U>, U> operator-> () const
     {
         return m_value;
     }
 
     /// @brief Indirection operator available for pointer <code>ValueType</code>.
     template <typename U = ValueType>
-    constexpr std::enable_if_t<std::is_pointer<U>::value, remove_pointer_type>&
+    constexpr std::enable_if_t<std::is_pointer_v<U>, remove_pointer_type>&
     operator* () const
     {
         return *m_value;
@@ -514,7 +514,7 @@ constexpr auto operator> (const Other& lhs,
 /// @relatedalso Checked
 template <typename ValueType, typename Checker, bool NoExcept, typename Other>
 constexpr auto operator* (const Checked<ValueType, Checker, NoExcept>& lhs, const Other& rhs)
--> std::enable_if_t<!IsMultipliable<Checked<ValueType, Checker, NoExcept>, Other>::value,
+-> std::enable_if_t<!IsMultipliableV<Checked<ValueType, Checker, NoExcept>, Other>,
 decltype(ValueType()*Other())>
 {
     return ValueType(lhs) * rhs;
@@ -528,7 +528,7 @@ decltype(ValueType()*Other())>
 /// @relatedalso Checked
 template <typename ValueType, typename Checker, bool NoExcept, typename Other>
 constexpr auto operator* (const Other& lhs, const Checked<ValueType, Checker, NoExcept>& rhs)
--> std::enable_if_t<!IsMultipliable<Other, Checked<ValueType, Checker, NoExcept>>::value,
+-> std::enable_if_t<!IsMultipliableV<Other, Checked<ValueType, Checker, NoExcept>>,
 decltype(Other()*ValueType())>
 {
     return lhs * ValueType(rhs);

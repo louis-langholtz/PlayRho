@@ -70,22 +70,22 @@ TEST(Units, Literals)
     EXPECT_EQ(1.0_Nm, NewtonMeter);
 }
 
-TEST(Units, IsArithmetic)
+TEST(Units, IsArithmeticV)
 {
-    ASSERT_FALSE(IsArithmetic<void>::value);
+    ASSERT_FALSE(IsArithmeticV<void>);
     
-    ASSERT_TRUE(IsArithmetic<int>::value);
-    ASSERT_TRUE(IsArithmetic<float>::value);
-    ASSERT_TRUE(IsArithmetic<double>::value);
+    ASSERT_TRUE(IsArithmeticV<int>);
+    ASSERT_TRUE(IsArithmeticV<float>);
+    ASSERT_TRUE(IsArithmeticV<double>);
 #ifndef _WIN32
-    ASSERT_TRUE(IsArithmetic<Fixed64>::value);
+    ASSERT_TRUE(IsArithmeticV<Fixed64>);
 #endif
     
-    EXPECT_TRUE(IsArithmetic<Length>::value);
-    EXPECT_TRUE(IsArithmetic<Mass>::value);
-    EXPECT_TRUE(IsArithmetic<Time>::value);
-    EXPECT_TRUE(IsArithmetic<Force>::value);
-    EXPECT_TRUE(IsArithmetic<LinearVelocity>::value);
+    EXPECT_TRUE(IsArithmeticV<Length>);
+    EXPECT_TRUE(IsArithmeticV<Mass>);
+    EXPECT_TRUE(IsArithmeticV<Time>);
+    EXPECT_TRUE(IsArithmeticV<Force>);
+    EXPECT_TRUE(IsArithmeticV<LinearVelocity>);
 }
 
 TEST(Angle, ByteSize)

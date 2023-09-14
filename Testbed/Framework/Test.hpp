@@ -168,9 +168,9 @@ struct Stats
 
     std::uint32_t m_maxSimulContacts = 0;
 
-    using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
-    using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
-    using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
+    using dist_iter_type = std::remove_const_t<decltype(DefaultMaxDistanceIters)>;
+    using toi_iter_type = std::remove_const_t<decltype(DefaultMaxToiIters)>;
+    using root_iter_type = std::remove_const_t<decltype(DefaultMaxToiRootIters)>;
 
     dist_iter_type m_maxDistIters = 0;
     toi_iter_type m_maxToiIters = 0;

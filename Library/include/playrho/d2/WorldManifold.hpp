@@ -55,7 +55,7 @@ private:
 public:
     
     /// @brief Size type.
-    using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
+    using size_type = std::remove_const_t<decltype(MaxManifoldPoints)>;
 
     /// @brief Point data for world manifold.
     struct PointData

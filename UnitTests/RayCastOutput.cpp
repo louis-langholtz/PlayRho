@@ -203,27 +203,27 @@ TEST(RayCastHit, ByteSize)
 
 TEST(RayCastHit, Traits)
 {
-    EXPECT_TRUE(std::is_default_constructible<RayCastHit>::value);
-    //EXPECT_FALSE(std::is_nothrow_default_constructible<RayCastHit>::value); // on clang 4.0 or older
-    //EXPECT_TRUE(std::is_nothrow_default_constructible<RayCastHit>::value); // on gcc 6
-    EXPECT_FALSE(std::is_trivially_default_constructible<RayCastHit>::value);
+    EXPECT_TRUE(std::is_default_constructible_v<RayCastHit>);
+    //EXPECT_FALSE(std::is_nothrow_default_constructible_v<RayCastHit>); // on clang 4.0 or older
+    //EXPECT_TRUE(std::is_nothrow_default_constructible_v<RayCastHit>); // on gcc 6
+    EXPECT_FALSE(std::is_trivially_default_constructible_v<RayCastHit>);
 
-    EXPECT_TRUE(std::is_constructible<RayCastHit>::value);
-    //EXPECT_FALSE(std::is_nothrow_constructible<RayCastHit>::value); // on clang 4.0 or older
-    //EXPECT_TRUE(std::is_nothrow_constructible<RayCastHit>::value); // on gcc 6
-    EXPECT_FALSE(std::is_trivially_constructible<RayCastHit>::value);
+    EXPECT_TRUE(std::is_constructible_v<RayCastHit>);
+    //EXPECT_FALSE(std::is_nothrow_constructible_v<RayCastHit>); // on clang 4.0 or older
+    //EXPECT_TRUE(std::is_nothrow_constructible_v<RayCastHit>); // on gcc 6
+    EXPECT_FALSE(std::is_trivially_constructible_v<RayCastHit>);
 
-    EXPECT_TRUE(std::is_copy_constructible<RayCastHit>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<RayCastHit>::value);
-    EXPECT_TRUE(std::is_trivially_copy_constructible<RayCastHit>::value);
+    EXPECT_TRUE(std::is_copy_constructible_v<RayCastHit>);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible_v<RayCastHit>);
+    EXPECT_TRUE(std::is_trivially_copy_constructible_v<RayCastHit>);
 
-    EXPECT_TRUE(std::is_copy_assignable<RayCastHit>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<RayCastHit>::value);
-    EXPECT_TRUE(std::is_trivially_copy_assignable<RayCastHit>::value);
+    EXPECT_TRUE(std::is_copy_assignable_v<RayCastHit>);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable_v<RayCastHit>);
+    EXPECT_TRUE(std::is_trivially_copy_assignable_v<RayCastHit>);
 
-    EXPECT_TRUE(std::is_destructible<RayCastHit>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<RayCastHit>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<RayCastHit>::value);
+    EXPECT_TRUE(std::is_destructible_v<RayCastHit>);
+    EXPECT_TRUE(std::is_nothrow_destructible_v<RayCastHit>);
+    EXPECT_TRUE(std::is_trivially_destructible_v<RayCastHit>);
 }
 
 TEST(RayCastHit, DefaultConstruction)
