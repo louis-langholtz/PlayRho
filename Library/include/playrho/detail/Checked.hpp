@@ -72,8 +72,12 @@ public:
     /// @brief Checker type.
     using checker_type = Checker;
 
+    /// @brief Alias for the exception type possibly thrown by this class.
     using exception_type = InvalidArgument;
 
+    /// @brief Throws this class's exception type if the given value is invalid.
+    /// @throws @c exception_type if the checker returns an error.
+    /// @see exception_type.
     static constexpr auto ThrowIfInvalid(const value_type& value)
         -> decltype((void)exception_type(Checker{}(value)), std::declval<void>())
     {
@@ -82,6 +86,10 @@ public:
         }
     }
 
+    /// @brief Validates the given value using the @c checker_type type.
+    /// @throws @c exception_type if the checker returns an error and @c NoExcept is false.
+    /// @return value given.
+    /// @pre @p value must be valid if @c NoExcept is true.
     static constexpr auto Validate(const value_type& value) noexcept(NoExcept)
         -> decltype(ThrowIfInvalid(value), value_type{})
     {
@@ -96,7 +104,7 @@ public:
         return value;
     }
 
-    /// Default constructor available for checker types with acceptable nullary functors.
+    /// @brief Default constructor available for checker types with acceptable nullary functors.
     template <bool B = HasNullaryFunctor<Checker,ValueType>::value, typename std::enable_if_t<B, int> = 0>
     constexpr Checked() noexcept(NoExcept):
         m_value{Validate(Checker{}())}
@@ -112,6 +120,7 @@ public:
         // Intentionally empty.
     }
 
+    /// @brief Copy constructor.
     template <bool OtherNoExcept>
     constexpr Checked(const Checked<ValueType, Checker, OtherNoExcept>& other) noexcept:
         m_value{other.get()}
