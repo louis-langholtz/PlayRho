@@ -38,6 +38,7 @@
 /// @see World, ContactID.
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 
+#include <optional>
 #include <vector>
 
 #include <playrho/BodyID.hpp>
@@ -160,14 +161,13 @@ bool NeedsUpdating(const World& world, ContactID id);
 /// @relatedalso World
 bool HasValidToi(const World& world, ContactID id);
 
-/// @brief Gets the time of impact (TOI) as a fraction.
-/// @note This is only valid if a TOI has been set.
+/// @brief Gets the time of impact (TOI) as a fraction or empty value.
 /// @return Time of impact fraction in the range of 0 to 1 if set (where 1
-///   means no actual impact in current time slot), otherwise not specified.
+///   means no actual impact in current time slot), otherwise empty.
 /// @throws std::out_of_range If given an invalid contact identifier.
 /// @see HasValidToi.
 /// @relatedalso World
-UnitIntervalFF<Real> GetToi(const World& world, ContactID id);
+std::optional<UnitInterval<Real>> GetToi(const World& world, ContactID id);
 
 /// @brief Gets the default friction amount for the identified contact.
 /// @throws std::out_of_range If given an invalid contact identifier.

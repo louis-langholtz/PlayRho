@@ -479,7 +479,7 @@ void ResetBodyContactsForSolveTOI(ObjectPool<Contact>& buffer,
 {
     // Invalidate all contact TOIs on this displaced body.
     for_each(cbegin(contacts), cend(contacts), [&buffer](const auto& ci) {
-        UnsetToi(buffer[to_underlying(std::get<ContactID>(ci))]);
+        SetToi(buffer[to_underlying(std::get<ContactID>(ci))], {});
     });
 }
 
@@ -489,7 +489,7 @@ void ResetContactsForSolveTOI(ObjectPool<Contact>& buffer,
 {
     for_each(begin(contacts), end(contacts), [&buffer](const auto& c) {
         auto& contact = buffer[to_underlying(std::get<ContactID>(c))];
-        UnsetToi(contact);
+        SetToi(contact, {});
         SetToiCount(contact, 0);
     });
 }
@@ -689,16 +689,15 @@ ContactToiData GetSoonestContact(const WorldImpl::Contacts& contacts,
     {
         const auto contactID = std::get<ContactID>(contact);
         const auto& c = buffer[to_underlying(contactID)];
-        if (c.HasValidToi())
+        if (const auto toi = c.GetToi())
         {
-            const auto toi = c.GetToi();
-            if (minToi > toi)
+            if (minToi > *toi)
             {
-                minToi = toi;
+                minToi = *toi;
                 found = contactID;
                 count = 1;
             }
-            else if (minToi == toi)
+            else if (minToi == *toi)
             {
                 // Have multiple contacts at the current minimum time of impact.
                 ++count;
@@ -1637,20 +1636,18 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
         stats.maxToiIters = std::max(stats.maxToiIters, updateData.maxToiIters);
         
         const auto next = GetSoonestContact(m_contacts, m_contactBuffer);
-        const auto contactID = next.contact;
-        const auto ncount = next.simultaneous;
-        if (contactID == InvalidContactID) {
+        if (next.contact == InvalidContactID) {
             // No more TOI events to handle within the current time step. Done!
             m_flags |= e_stepComplete;
             break;
         }
 
         stats.maxSimulContacts = std::max(stats.maxSimulContacts,
-                                          static_cast<decltype(stats.maxSimulContacts)>(ncount));
-        stats.contactsFound += ncount;
+                                          static_cast<decltype(stats.maxSimulContacts)>(next.simultaneous));
+        stats.contactsFound += next.simultaneous;
         auto islandsFound = 0u;
-        if (!m_islanded.contacts[to_underlying(contactID)]) {
-            const auto solverResults = SolveToi(contactID, conf);
+        if (!m_islanded.contacts[to_underlying(next.contact)]) {
+            const auto solverResults = SolveToi(next.contact, conf);
             stats.minSeparation = std::min(stats.minSeparation, solverResults.minSeparation);
             stats.maxIncImpulse = std::max(stats.maxIncImpulse, solverResults.maxIncImpulse);
             stats.islandsSolved += solverResults.solved;
@@ -1717,8 +1714,9 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
     assert(IsActive(contact));
     assert(IsImpenetrable(contact));
     assert(!m_islanded.contacts[to_underlying(contactID)]);
+    assert(GetToi(contact));
 
-    const auto toi = GetToi(contact);
+    const auto toi = *GetToi(contact); // NOLINT(bugprone-unchecked-optional-access)
     const auto bodyIdA = GetBodyA(contact);
     const auto bodyIdB = GetBodyB(contact);
     auto& bA = m_bodyBuffer[to_underlying(bodyIdA)];
@@ -1741,7 +1739,7 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
         Update(contactID, GetUpdateConf(conf));
         ++contactsUpdated;
 
-        UnsetToi(contact);
+        SetToi(contact, {});
         contact.IncrementToiCount();
 
         // Is contact disabled or separated?
@@ -2727,10 +2725,7 @@ void WorldImpl::SetContact(ContactID id, Contact value)
     if (contact.IsSensor() != value.IsSensor()) {
         throw InvalidArgument("change shape A or B being a sensor to change sensor state");
     }
-    if (contact.HasValidToi() != value.HasValidToi()) {
-        throw InvalidArgument("user may not change whether contact has a valid TOI");
-    }
-    if (contact.HasValidToi() && (contact.GetToi() != value.GetToi())) {
+    if (contact.GetToi() != value.GetToi()) {
         throw InvalidArgument("user may not change the TOI");
     }
     if (contact.GetToiCount() != value.GetToiCount()) {

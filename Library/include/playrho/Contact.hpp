@@ -24,6 +24,7 @@
 
 #include <cassert> // for assert
 #include <limits> // for std::numeric_limits
+#include <optional>
 
 #include <playrho/Contactable.hpp>
 #include <playrho/Math.hpp>
@@ -182,24 +183,18 @@ public:
     constexpr bool HasValidToi() const noexcept;
 
     /// @brief Gets the time of impact (TOI) as a fraction.
-    /// @pre <code>HasValidToi()</code> must be true.
     /// @return Time of impact fraction in the range of 0 to 1 if set (where 1
-    ///   means no actual impact in current time slot), otherwise not specified.
-    /// @see void SetToi(Real toi).
-    constexpr UnitIntervalFF<Real> GetToi() const;
+    ///   means no actual impact in current time slot), otherwise empty.
+    /// @see SetToi(const std::optional<UnitInterval<Real>>&).
+    constexpr std::optional<UnitInterval<Real>> GetToi() const noexcept;
 
     /// @brief Sets the time of impact (TOI).
     /// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates
-    ///   no actual impact in the current time slot.
-    /// @post <code>HasValidToi()</code> returns true, and <code>GetToi()</code>
-    ///   returns the value set.
-    /// @see Real GetToi() const.
-    /// @see HasValidToi.
-    constexpr void SetToi(UnitInterval<Real> toi) noexcept;
-
-    /// @brief Unsets the TOI.
-    /// @post <code>HasValidToi()</code> returns false.
-    constexpr void UnsetToi() noexcept;
+    ///   no actual impact in the current time slot, or empty.
+    /// @post <code>GetToi()</code> returns the value set and
+    ///   <code>HasValidToi()</code> returns <code>toi.has_value()</code>.
+    /// @see Real GetToi() const, HasValidToi.
+    constexpr void SetToi(const std::optional<UnitInterval<Real>>& toi) noexcept;
 
     /// @brief Whether or not the contact needs filtering.
     constexpr bool NeedsFiltering() const noexcept;
@@ -456,21 +451,23 @@ constexpr bool Contact::HasValidToi() const noexcept
     return (m_flags & Contact::e_toiFlag) != 0;
 }
 
-constexpr UnitIntervalFF<Real> Contact::GetToi() const
+constexpr std::optional<UnitInterval<Real>> Contact::GetToi() const noexcept
 {
-    assert(HasValidToi());
-    return m_toi;
+    if (HasValidToi()) {
+        return m_toi;
+    }
+    return {};
 }
 
-constexpr void Contact::SetToi(UnitInterval<Real> toi) noexcept
+constexpr void Contact::SetToi(const std::optional<UnitInterval<Real>>& toi) noexcept
 {
-    m_toi = toi;
-    m_flags |= Contact::e_toiFlag;
-}
-
-constexpr void Contact::UnsetToi() noexcept
-{
-    m_flags &= ~Contact::e_toiFlag;
+    if (toi) {
+        m_toi = *toi;
+        m_flags |= Contact::e_toiFlag;
+    }
+    else {
+        m_flags &= ~Contact::e_toiFlag;
+    }
 }
 
 constexpr void Contact::SetToiCount(substep_type value) noexcept
@@ -568,7 +565,7 @@ constexpr bool operator==(const Contact& lhs, const Contact& rhs) noexcept
            lhs.IsSensor() == rhs.IsSensor() && //
            lhs.IsActive() == rhs.IsActive() && //
            lhs.IsImpenetrable() == rhs.IsImpenetrable() && //
-           (!lhs.HasValidToi() || !rhs.HasValidToi() || lhs.GetToi() == rhs.GetToi());
+           lhs.GetToi() == rhs.GetToi();
 }
 
 /// @brief Operator not-equals.
@@ -808,11 +805,9 @@ constexpr auto HasValidToi(const Contact& contact) noexcept
 }
 
 /// @brief Gets the time of impact (TOI) as a fraction.
-/// @note This is only valid if a TOI has been set.
-/// @see void SetToi(Real toi).
 /// @return Time of impact fraction in the range of 0 to 1 if set (where 1
-///   means no actual impact in current time slot), otherwise not specified.
-/// @see HasValidToi
+///   means no actual impact in current time slot), otherwise empty.
+/// @see HasValidToi, SetToi(Contact&, const std::optional<UnitInterval<Real>>&).
 /// @relatedalso Contact
 constexpr auto GetToi(const Contact& contact) noexcept
 {
@@ -821,24 +816,15 @@ constexpr auto GetToi(const Contact& contact) noexcept
 
 /// @brief Sets the time of impact (TOI).
 /// @param contact The contact to update.
-/// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no
+/// @param toi Optional time of impact as a fraction between 0 and 1 where 1 indicates no
 ///   actual impact in the current time slot.
-/// @post <code>HasValidToi(contact)</code> returns true.
+/// @post <code>HasValidToi(contact)</code> returns <code>toi.has_value()</code>.
 /// @post <code>GetToi(const Contact&)</code> returns the value set.
 /// @see HasValidToi, GetToi.
 /// @relatedalso Contact
-constexpr void SetToi(Contact& contact, UnitInterval<Real> toi) noexcept
+constexpr void SetToi(Contact& contact, const std::optional<UnitInterval<Real>>& toi) noexcept
 {
     contact.SetToi(toi);
-}
-
-/// @brief Unsets the TOI.
-/// @post <code>HasValidToi(contact)</code> returns false.
-/// @see HasValidToi.
-/// @relatedalso Contact
-constexpr void UnsetToi(Contact& contact) noexcept
-{
-    contact.UnsetToi();
 }
 
 /// @brief Gets the coefficient of friction.

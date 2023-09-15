@@ -557,7 +557,7 @@ TEST(World, CreateDestroyJoinedBodies)
     EXPECT_FALSE(NeedsFiltering(world, c0->second));
     auto contact0 = world.GetContact(cid0);
     if (contact0.HasValidToi()) {
-        contact0.UnsetToi();
+        contact0.SetToi({});
     }
     else {
         contact0.SetToi(Real(0.5f));
@@ -3394,12 +3394,6 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
                     break;
             }
             ASSERT_THROW(Destroy(world, target_joint), WrongState);
-            if (HasValidToi(world, contact)) {
-                auto toi = Real(0);
-                EXPECT_NO_THROW(toi = GetToi(world, contact));
-                EXPECT_GE(toi, Real(0));
-                EXPECT_LE(toi, Real(1));
-            }
         },
         [&](ContactID contact, const ContactImpulsesList& impulse, unsigned solved)
         {
@@ -3462,12 +3456,6 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
                 std::cout << std::endl;
 
                 //GTEST_FATAL_FAILURE_("");                
-            }
-            if (HasValidToi(world, contact)) {
-                auto toi = Real(0);
-                EXPECT_NO_THROW(toi = GetToi(world, contact));
-                EXPECT_GE(toi, Real(0));
-                EXPECT_LE(toi, Real(1));
             }
         },
         [&](ContactID contact) {

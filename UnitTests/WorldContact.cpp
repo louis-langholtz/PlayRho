@@ -239,12 +239,8 @@ TEST(WorldContact, WorldManifoldAndMore)
     auto count = ContactCounter(0);
     EXPECT_EQ(count = GetTouchingCount(world), ContactCounter(1));
     if (count > ContactCounter(0)) {
-        if (HasValidToi(world, c)) {
-            auto toi = Real(0);
-            EXPECT_NO_THROW(toi = GetToi(world, c));
-            EXPECT_GE(toi, Real(0));
-            EXPECT_LE(toi, Real(1));
-        }
+        auto toi = std::optional<UnitInterval<Real>>{};
+        EXPECT_NO_THROW(toi = GetToi(world, c));
     }
     {
         auto manifold = WorldManifold{};

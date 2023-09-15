@@ -120,7 +120,7 @@ bool HasValidToi(const World& world, ContactID id)
     return HasValidToi(GetContact(world, id));
 }
 
-UnitIntervalFF<Real> GetToi(const World& world, ContactID id)
+std::optional<UnitInterval<Real>> GetToi(const World& world, ContactID id)
 {
     return GetToi(GetContact(world, id));
 }
