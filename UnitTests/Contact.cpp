@@ -141,7 +141,7 @@ TEST(Contact, InitializingConstructorFF)
     EXPECT_FALSE(IsImpenetrable(contact));
     EXPECT_FALSE(IsActive(contact));
 
-    const auto toi = Real(0.5);
+    const auto toi = std::optional<UnitInterval<Real>>{Real(0.5)};
     EXPECT_NO_THROW(SetToi(contact, toi));
     EXPECT_TRUE(HasValidToi(contact));
     EXPECT_EQ(GetToi(contact), toi);

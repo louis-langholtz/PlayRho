@@ -3205,13 +3205,14 @@ static void EntityUI(Contact& contact)
         }
     }
     {
-        auto v = HasValidToi(contact)? static_cast<double>(GetToi(contact)): std::numeric_limits<double>::quiet_NaN();
+        const auto toi = GetToi(contact);
+        auto v = toi? static_cast<double>(*toi): std::numeric_limits<double>::quiet_NaN();
         if (ImGui::InputDouble("TOI", &v, 0, 0, "%f", ImGuiInputTextFlags_EnterReturnsTrue)) {
             if (v >= 0 && v <= 1) {
                 SetToi(contact, static_cast<Real>(v));
             }
             else {
-                UnsetToi(contact);
+                SetToi(contact, {});
             }
         }
     }

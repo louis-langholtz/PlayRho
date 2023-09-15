@@ -618,9 +618,11 @@ private:
     /// @param contactID Identifier of contact to solve for.
     /// @param conf Time step configuration to solve for.
     ///
-    /// @note Precondition 1: there is no contact having a lower TOI in this time step that has
+    /// @pre The identified contact has a valid TOI, is enabled, is active, and is impenetrable.
+    /// @pre The identified contact is **not** a sensor.
+    /// @pre There is no contact having a lower TOI in this time step that has
     ///   not already been solved for.
-    /// @note Precondition 2: there is not a lower TOI in the time step for which collisions have
+    /// @pre There is not a lower TOI in the time step for which collisions have
     ///   not already been processed.
     ///
     IslandStats SolveToi(ContactID contactID, const StepConf& conf);
