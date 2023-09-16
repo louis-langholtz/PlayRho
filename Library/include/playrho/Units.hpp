@@ -145,25 +145,25 @@ using inverse_moment_of_inertia = boost::units::quantity<playrho::units::si::inv
 using momentum = boost::units::quantity<boost::units::si::momentum, Real>;
 using angular_momentum = boost::units::quantity<boost::units::si::angular_momentum, Real>;
 #else // !defined(PLAYRHO_USE_BOOST_UNITS)
-using time = Real;
-using frequency = Real;
-using length = Real;
-using velocity = Real;
-using acceleration = Real;
-using mass = Real;
-using inverse_mass = Real;
-using area = Real;
-using surface_density = Real;
-using plane_angle = Real;
-using angular_velocity = Real;
-using angular_acceleration = Real;
-using force = Real;
-using torque = Real;
-using second_moment_of_area = Real;
-using moment_of_inertia = Real;
-using inverse_moment_of_inertia = Real;
-using momentum = Real;
-using angular_momentum = Real;
+using time = Real; ///< Time quantity type.
+using frequency = Real; ///< Frequency quantity type.
+using length = Real; ///< Length quantity type.
+using velocity = Real; ///< Velocity quantity type.
+using acceleration = Real; ///< Acceleration quantity type.
+using mass = Real; ///< Mass quantity type.
+using inverse_mass = Real; ///< Inverse mass quantity type.
+using area = Real; ///< Area quantity type.
+using surface_density = Real; ///< Surface density quantity type.
+using plane_angle = Real; ///< Plane angle quantity type.
+using angular_velocity = Real; ///< Angular velocity quantity type.
+using angular_acceleration = Real; ///< Angular acceleration quantity type.
+using force = Real; ///< Force quantity type.
+using torque = Real; ///< Torque quantity type.
+using second_moment_of_area = Real; ///< 2nd moment of area quantity type.
+using moment_of_inertia = Real; ///< 2nd momemnt of inertia quantity type.
+using inverse_moment_of_inertia = Real; ///< Inverse moment of inertia quantity type.
+using momentum = Real; ///< Linear momentum quantity type.
+using angular_momentum = Real; ///< Angular momemntum quantity type.
 #endif // defined(PLAYRHO_USE_BOOST_UNITS)
 
 // Setup unit types...
@@ -181,18 +181,18 @@ constexpr auto radian_per_second = 1 * boost::units::si::radian_per_second;
 constexpr auto newton = 1 * boost::units::si::newton;
 constexpr auto newton_meter = 1 * boost::units::si::newton_meter;
 #else // !defined(PLAYRHO_USE_BOOST_UNITS)
-constexpr auto second = 1;
-constexpr auto hertz = 1;
-constexpr auto meter = 1;
-constexpr auto meter_per_second = 1;
-constexpr auto meter_per_second_squared = 1;
-constexpr auto kilogram = 1;
-constexpr auto square_meter = 1;
-constexpr auto kilogram_per_square_meter = 1;
-constexpr auto radian = 1;
-constexpr auto radian_per_second = 1;
-constexpr auto newton = 1;
-constexpr auto newton_meter = 1;
+constexpr auto second = 1; ///< Second unit value.
+constexpr auto hertz = 1; ///< Hertz unit value.
+constexpr auto meter = 1; ///< Meter unit value.
+constexpr auto meter_per_second = 1; ///< Meter per second unit value.
+constexpr auto meter_per_second_squared = 1; ///< Meter per second^2 unit value.
+constexpr auto kilogram = 1; ///< Kilogram unit value.
+constexpr auto square_meter = 1; ///< Square meter unit value.
+constexpr auto kilogram_per_square_meter = 1; ///< Kilogram per meter^2 unit value.
+constexpr auto radian = 1; ///< Radian unit value.
+constexpr auto radian_per_second = 1; ///< Radian per second unit value.
+constexpr auto newton = 1; ///< Newton unit value.
+constexpr auto newton_meter = 1; ///< Newton meter unit value.
 #endif // defined(PLAYRHO_USE_BOOST_UNITS)
 
 }

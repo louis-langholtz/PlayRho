@@ -112,10 +112,19 @@ namespace detail {
 template <typename BT, unsigned int FB>
 constexpr auto FixedPi = Fixed<BT, FB>{3.14159265358979323846264338327950288};
 
+/// @brief Default iterations for @c exp function.
 constexpr auto DefaultExpIterations = 6;
+
+/// @brief Default iterations for @c log function.
 constexpr auto DefaultLogIterations = 6;
+
+/// @brief Default iterations for @c sin function.
 constexpr auto DefaultSinIterations = 5;
+
+/// @brief Default iterations for @c cos function.
 constexpr auto DefaultCosIterations = 5;
+
+/// @brief Default iterations for @c atan function.
 constexpr auto DefaultAtanIterations = 5;
 
 /// @brief Computes the factorial.

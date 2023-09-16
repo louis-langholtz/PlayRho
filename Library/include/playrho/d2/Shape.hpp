@@ -99,6 +99,7 @@ struct HasSetFriction<T,
     : std::true_type {
 };
 
+/// @brief Helper variable template on whether <code>SetFriction(T&, Real)</code> is found.
 template <class T>
 inline constexpr bool HasSetFrictionV = HasSetFriction<T>::value;
 
@@ -111,6 +112,7 @@ struct HasSetSensor<T, std::void_t<decltype(SetSensor(std::declval<T&>(), std::d
     : std::true_type {
 };
 
+/// @brief Helper variable template on whether <code>SetSensor(T&, bool)</code> is found.
 template <class T>
 inline constexpr bool HasSetSensorV = HasSetSensor<T>::value;
 
@@ -124,6 +126,7 @@ struct HasSetDensity<T, std::void_t<decltype(SetDensity(std::declval<T&>(),
     : std::true_type {
 };
 
+/// @brief Helper variable template on whether <code>SetDensity(T&, NonNegative<AreaDensity>)</code> is found.
 template <class T>
 inline constexpr bool HasSetDensityV = HasSetDensity<T>::value;
 
@@ -137,6 +140,7 @@ struct HasSetRestitution<
     : std::true_type {
 };
 
+/// @brief Helper variable template on whether <code>SetRestitution(T&, Real)</code> is found.
 template <class T>
 inline constexpr bool HasSetRestitutionV = HasSetRestitution<T>::value;
 
@@ -149,6 +153,7 @@ struct HasSetFilter<T, std::void_t<decltype(SetFilter(std::declval<T&>(), std::d
     : std::true_type {
 };
 
+/// @brief Helper variable template on whether <code>SetFilter(T&, Filter)</code> is found.
 template <class T>
 inline constexpr bool HasSetFilterV = HasSetFilter<T>::value;
 
@@ -162,6 +167,7 @@ struct HasTranslate<T,
     : std::true_type {
 };
 
+/// @brief Helper variable template on whether <code>Translate(T&, Length2)</code> is found.
 template <class T>
 inline constexpr bool HasTranslateV = HasTranslate<T>::value;
 
@@ -174,18 +180,30 @@ struct HasScale<T, std::void_t<decltype(Scale(std::declval<T&>(), std::declval<V
     : std::true_type {
 };
 
+/// @brief Helper variable template on whether <code>Scale(T&, Vec2)</code> is found.
 template <class T>
 inline constexpr bool HasScaleV = HasScale<T>::value;
 
+/// @brief Type trait for not finding a <code>Rotate(T&, Angle)</code> function.
+/// @details A @c UnaryTypeTrait providing the member constant @c value equal to @c false for
+///   the given type for which no <code>Rotate</code> function is found taking it and an @c Angle.
+/// @tparam T type to check.
+/// @see https://en.cppreference.com/w/cpp/named_req/UnaryTypeTrait.
 template <class T, class = void>
 struct HasRotate : std::false_type {
 };
 
+/// @brief Type trait for finding a <code>Rotate(T&, Angle)</code> function.
+/// @details A @c UnaryTypeTrait providing the member constant @c value equal to @c true for
+///   the given type for which a <code>Rotate</code> function is found taking it and an @c Angle.
+/// @tparam T type to check.
+/// @see https://en.cppreference.com/w/cpp/named_req/UnaryTypeTrait.
 template <class T>
 struct HasRotate<T, std::void_t<decltype(Rotate(std::declval<T&>(), std::declval<Angle>()))>>
     : std::true_type {
 };
 
+/// @brief Helper variable template on whether <code>Rotate(T&, Angle)</code> is found.
 template <class T>
 inline constexpr bool HasRotateV = HasRotate<T>::value;
 
@@ -201,8 +219,8 @@ SetFriction(T& o, NonNegative<Real> value)
 
 /// @brief Fallback sensor setter that throws unless given the same value as current.
 template <class T>
-std::enable_if_t<IsValidShapeTypeV<T> && !HasSetSensorV<T>, void> SetSensor(T& o,
-                                                                                        bool value)
+std::enable_if_t<IsValidShapeTypeV<T> && !HasSetSensorV<T>, void>
+SetSensor(T& o, bool value)
 {
     if (IsSensor(o) != value) {
         throw InvalidArgument("SetSensor to non-equivalent value not supported");

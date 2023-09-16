@@ -44,6 +44,7 @@ struct FixedDefault {};
 template <>
 struct FixedDefault<std::int32_t>
 {
+    /// @brief Fraction bits for the type this is specialized for.
     static constexpr auto FractionBits = 9u;
 };
 
@@ -51,6 +52,7 @@ struct FixedDefault<std::int32_t>
 template <>
 struct FixedDefault<std::int64_t>
 {
+    /// @brief Fraction bits for the type this is specialized for.
     static constexpr auto FractionBits = 24u;
 };
 

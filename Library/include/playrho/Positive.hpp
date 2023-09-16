@@ -126,9 +126,10 @@ public:
     static constexpr bool is_bounded = true; ///< Type bounded: has limited precision.
     static constexpr bool is_modulo = false; ///< Doesn't modulo arithmetic overflows.
 
+    /// @brief Whether the type for which this is specialized can cause arithmetic operations to trap.
     static constexpr bool traps = numeric_limits<T>::traps;
 
-    ///< Doesn't detect <code>tinyness</code> before rounding.
+    /// @brief Doesn't detect <code>tinyness</code> before rounding.
     static constexpr bool tinyness_before = numeric_limits<T>::tinyness_before;
 
     static constexpr float_round_style round_style = numeric_limits<T>::round_style; ///< Rounds down.

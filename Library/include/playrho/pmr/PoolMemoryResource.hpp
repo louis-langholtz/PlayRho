@@ -52,6 +52,7 @@ struct PoolMemoryOptions
     /// @see do_allocate.
     std::size_t limitBuffers{static_cast<std::size_t>(-1)};
 
+    /// @brief Whether buffers are releasable when unused and a bigger space is needed.
     bool releasable{true};
 
     /// @brief Operator equals support.
@@ -163,6 +164,7 @@ public:
     /// @brief Gets the current statistics.
     Stats GetStats() const noexcept;
 
+    /// @brief Gets the upstream resource.
     memory_resource* GetUpstream() const noexcept
     {
         return m_upstream;

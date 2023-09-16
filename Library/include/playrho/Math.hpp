@@ -200,6 +200,9 @@ constexpr auto ctrunc(T v) noexcept
     return T(std::int64_t(v));
 }
 
+/// @brief Constant expression enhanced floor function.
+/// @note Unlike <code>std::floor</code>, this function is only defined for finite values.
+/// @see https://en.cppreference.com/w/cpp/numeric/math/floor
 template <class T>
 constexpr auto cfloor(T v) noexcept
 {
@@ -207,10 +210,10 @@ constexpr auto cfloor(T v) noexcept
     return T((v >= T{}) ? static_cast<std::int64_t>(v) : static_cast<std::int64_t>(v) - 1);
 }
 
-/// @brief Constant expression enhanced floor function.
+#if defined(PLAYRHO_USE_BOOST_UNITS)
+/// @brief Constant expression enhanced floor function for boost units.
 /// @note Unlike <code>std::floor</code>, this function is only defined for finite values.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/floor
-#if defined(PLAYRHO_USE_BOOST_UNITS)
 template <class Unit>
 constexpr auto cfloor(const boost::units::quantity<Unit, Real>& v) noexcept
 {

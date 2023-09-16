@@ -76,7 +76,7 @@ public:
     using exception_type = InvalidArgument;
 
     /// @brief Throws this class's exception type if the given value is invalid.
-    /// @throws @c exception_type if the checker returns an error.
+    /// @throws exception_type if the checker returns an error.
     /// @see exception_type.
     static constexpr auto ThrowIfInvalid(const value_type& value)
         -> decltype((void)exception_type(Checker{}(value)), std::declval<void>())
@@ -87,7 +87,7 @@ public:
     }
 
     /// @brief Validates the given value using the @c checker_type type.
-    /// @throws @c exception_type if the checker returns an error and @c NoExcept is false.
+    /// @throws exception_type if the checker returns an error and @c NoExcept is false.
     /// @return value given.
     /// @pre @p value must be valid if @c NoExcept is true.
     static constexpr auto Validate(const value_type& value) noexcept(NoExcept)
