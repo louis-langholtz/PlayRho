@@ -21,11 +21,8 @@ just so I could use new features in C++14, but my work on the library grew
 to include many other changes including moving the fork off to its own repo
 and project name.
 
-The project's [source code](https://github.com/louis-langholtz/PlayRho) is
-available online. Its API documentation is also available online for the
-following:
-- [Release 1.1.0](API/1.1.0).
-- [master branch](API/master).
+The project's [source code](https://github.com/louis-langholtz/PlayRho) and
+[API documentation](API/index.md) are available online.
 
 Sincerely,
 
