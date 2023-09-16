@@ -1,0 +1,11 @@
+<map id="playrho::d2::BodyConf" name="playrho::d2::BodyConf">
+<area shape="rect" id="node1" title="Configuration for a body." alt="" coords="899,107,1065,133"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="495,5,690,32"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1Vector.html" title="Vector." alt="" coords="41,56,217,83"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="471,56,714,83"/>
+<area shape="rect" id="node9" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="457,107,728,133"/>
+<area shape="rect" id="node5" href="$classplayrho_1_1detail_1_1IndexingNamedType.html" title=" " alt="" coords="488,157,697,213"/>
+<area shape="rect" id="node6" href="$classplayrho_1_1detail_1_1IndexingNamedType.html" title="An indexable, hashable, named &quot;strong type&quot; template class." alt="" coords="39,165,219,206"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1detail_1_1Checked.html" title=" " alt="" coords="503,238,682,279"/>
+<area shape="rect" id="node8" href="$classplayrho_1_1detail_1_1Checked.html" title="Checked value." alt="" coords="5,238,253,279"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="playrho::d2::WheelJointConf" name="playrho::d2::WheelJointConf">
+<area shape="rect" id="node1" title="Wheel joint definition." alt="" coords="5,261,208,288"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1JointBuilder.html" title=" " alt="" coords="17,171,196,212"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1JointConf.html" title="Base joint definition class." alt="" coords="20,5,183,32"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="Joint builder definition structure." alt="" coords="123,81,339,108"/>
+</map>

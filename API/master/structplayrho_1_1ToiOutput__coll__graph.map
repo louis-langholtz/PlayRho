@@ -1,0 +1,4 @@
+<map id="playrho::ToiOutput" name="playrho::ToiOutput">
+<area shape="rect" id="node1" title="Output data for time of impact." alt="" coords="5,109,147,136"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1ToiOutput_1_1Statistics.html" title="Time of impact statistics." alt="" coords="5,5,147,47"/>
+</map>

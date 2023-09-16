@@ -1,0 +1,4 @@
+<map id="playrho::pmr::PoolMemoryResource" name="playrho::pmr::PoolMemoryResource">
+<area shape="rect" id="node1" title="Pool memory resource." alt="" coords="5,95,200,136"/>
+<area shape="rect" id="node2" href="$classplayrho_1_1pmr_1_1memory__resource.html" title="A limited implementation of the std::pmr::memory_resource type." alt="" coords="19,5,187,47"/>
+</map>

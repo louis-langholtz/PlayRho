@@ -1,0 +1,5 @@
+<map id="Joint Classes" name="Joint Classes">
+<area shape="rect" id="node1" href="$group__PhysicalEntities.html" title="Concepts and types associated with physical entities within a world." alt="" coords="517,7,647,33"/>
+<area shape="rect" id="node2" title="The user creatable classes that specify constraints on one or more body instances." alt="" coords="253,7,359,33"/>
+<area shape="rect" id="node3" href="$group__ConstraintsGroup.html" title="Constraints defined and used by the PlayRho library." alt="" coords="5,7,204,33"/>
+</map>

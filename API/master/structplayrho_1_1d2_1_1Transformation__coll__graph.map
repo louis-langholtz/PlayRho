@@ -1,0 +1,6 @@
+<map id="playrho::d2::Transformation" name="playrho::d2::Transformation">
+<area shape="rect" id="node1" title="Describes a geometric transformation." alt="" coords="101,184,302,211"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="5,95,200,121"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1Vector.html" title="Vector." alt="" coords="15,5,191,32"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector." alt="" coords="225,95,378,121"/>
+</map>

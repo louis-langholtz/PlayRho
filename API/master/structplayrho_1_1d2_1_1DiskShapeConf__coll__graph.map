@@ -1,0 +1,13 @@
+<map id="playrho::d2::DiskShapeConf" name="playrho::d2::DiskShapeConf">
+<area shape="rect" id="node1" title="Disk shape configuration." alt="" coords="1747,185,1949,212"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title=" " alt="" coords="1449,117,1639,158"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1BaseShapeConf.html" title="Base configuration for initializing shapes." alt="" coords="821,65,1027,92"/>
+<area shape="rect" id="node8" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title="Builder configuration structure." alt="" coords="1076,58,1265,99"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1detail_1_1Checked.html" title=" " alt="" coords="416,57,595,98"/>
+<area shape="rect" id="node5" href="$classplayrho_1_1detail_1_1Checked.html" title="Checked value." alt="" coords="5,122,253,163"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1detail_1_1Checked.html" title=" " alt="" coords="416,122,595,163"/>
+<area shape="rect" id="node11" href="$classplayrho_1_1detail_1_1Checked.html" title=" " alt="" coords="619,179,797,221"/>
+<area shape="rect" id="node6" href="$structplayrho_1_1Filter.html" title="A holder for contact filtering data." alt="" coords="449,5,561,32"/>
+<area shape="rect" id="node9" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="1447,241,1641,268"/>
+<area shape="rect" id="node10" href="$structplayrho_1_1Vector.html" title="Vector." alt="" coords="1083,247,1259,273"/>
+</map>

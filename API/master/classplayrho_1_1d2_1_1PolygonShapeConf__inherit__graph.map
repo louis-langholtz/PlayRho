@@ -1,0 +1,6 @@
+<map id="playrho::d2::PolygonShapeConf" name="playrho::d2::PolygonShapeConf">
+<area shape="rect" id="node1" title="An n&#45;vertex convex polygon shaped part eligible for use with a Shape." alt="" coords="5,276,231,303"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title=" " alt="" coords="23,185,213,227"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1BaseShapeConf.html" title="Base configuration for initializing shapes." alt="" coords="10,5,215,32"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title="Builder configuration structure." alt="" coords="134,81,323,123"/>
+</map>

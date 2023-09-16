@@ -1,0 +1,6 @@
+<map id="playrho::StepStats" name="playrho::StepStats">
+<area shape="rect" id="node1" title="Per&#45;step statistics." alt="" coords="199,95,341,121"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1ToiStepStats.html" title="TOI&#45;phase per&#45;step statistics." alt="" coords="5,5,164,32"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1PreStepStats.html" title="Pre&#45;phase per&#45;step statistics." alt="" coords="189,5,351,32"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1RegStepStats.html" title="Regular&#45;phase per&#45;step statistics." alt="" coords="376,5,543,32"/>
+</map>
