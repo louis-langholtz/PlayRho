@@ -24,7 +24,7 @@ endforeach()
 # Details at: https://cmake.org/cmake/help/latest/command/project.html#command:project
 project(PlayRho
         VERSION 2.0.0
-        DESCRIPTION "Real-time oriented physics engine and library that's currently best suited for 2D games."
+        DESCRIPTION "An interactive physics engine & library."
         HOMEPAGE_URL "https://louis-langholtz.github.io/PlayRho/"
 )
 # Now PlayRho_VERSION set to version above.
@@ -71,17 +71,19 @@ endif()
 
 string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}" is_top_level)
 
+include(CMakeDependentOption)
 # Provide options that user can optionally select.
 # Include the install rules if the user wanted them (included by default when top-level)
 # Details at: https://cmake.org/cmake/help/v3.1/command/option.html
 option(PLAYRHO_BUILD_SHARED "Build PlayRho as shared library." "${BUILD_SHARED_LIBS}")
 option(PLAYRHO_INSTALL "Enable installation of PlayRho libs, includes, and CMake scripts." "${is_top_level}")
-option(PLAYRHO_INSTALL_DOC "Enable installation of PlayRho documentation." OFF)
-option(PLAYRHO_BUILD_HELLOWORLD "Build PlayRho HelloWorld console application." OFF)
-option(PLAYRHO_BUILD_UNIT_TESTS "Build PlayRho Unit Tests console application." OFF)
-option(PLAYRHO_BUILD_BENCHMARK "Build PlayRho Benchmark console application." OFF)
-option(PLAYRHO_BUILD_TESTBED "Build PlayRho Testbed GUI application." OFF)
-option(PLAYRHO_ENABLE_COVERAGE "Enable code coverage generation." OFF)
+option(PLAYRHO_BUILD_LIBRARY "Build PlayRho Library component." ON)
+option(PLAYRHO_BUILD_DOC "Build PlayRho documentation." OFF)
+cmake_dependent_option(PLAYRHO_BUILD_HELLOWORLD "Build PlayRho HelloWorld console application." OFF "PLAYRHO_BUILD_LIBRARY" OFF)
+cmake_dependent_option(PLAYRHO_BUILD_UNIT_TESTS "Build PlayRho Unit Tests console application." OFF "PLAYRHO_BUILD_LIBRARY" OFF)
+cmake_dependent_option(PLAYRHO_BUILD_BENCHMARK "Build PlayRho Benchmark console application." OFF "PLAYRHO_BUILD_LIBRARY" OFF)
+cmake_dependent_option(PLAYRHO_BUILD_TESTBED "Build PlayRho Testbed GUI application." OFF "PLAYRHO_BUILD_LIBRARY" OFF)
+cmake_dependent_option(PLAYRHO_ENABLE_COVERAGE "Enable code coverage generation." OFF "PLAYRHO_BUILD_LIBRARY" OFF)
 
 option(PLAYRHO_ENABLE_BOOST_UNITS "Enable use of Boost units (experimental)." OFF)
 mark_as_advanced(FORCE PLAYRHO_ENABLE_BOOST_UNITS)
@@ -104,18 +106,20 @@ endif()
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
-# The PlayRho library.
-add_subdirectory(Library)
+# Library.
+if(PLAYRHO_BUILD_LIBRARY)
+  add_subdirectory(Library)
+endif()
 
 # HelloWorld console example.
 if(PLAYRHO_BUILD_HELLOWORLD)
   add_subdirectory(HelloWorld)
-endif(PLAYRHO_BUILD_HELLOWORLD)
+endif()
 
 # Testbed GUI application.
 if(PLAYRHO_BUILD_TESTBED)
   add_subdirectory(Testbed)
-endif(PLAYRHO_BUILD_TESTBED)
+endif()
 
 # Unit tests console application.
 if(PLAYRHO_BUILD_UNIT_TESTS)
@@ -126,18 +130,15 @@ if(PLAYRHO_BUILD_UNIT_TESTS)
   enable_testing()
 
   add_subdirectory(UnitTests)
-endif(PLAYRHO_BUILD_UNIT_TESTS)
+endif()
 
 if(PLAYRHO_BUILD_BENCHMARK)
   add_subdirectory(Benchmark)
-endif(PLAYRHO_BUILD_BENCHMARK)
+endif()
 
-if(PLAYRHO_INSTALL_DOC)
-  find_package(Doxygen)
-  if (DOXYGEN_FOUND)
-    add_subdirectory(Documentation)
-  endif()
-endif(PLAYRHO_INSTALL_DOC)
+if(PLAYRHO_BUILD_DOC)
+  add_subdirectory(Documentation)
+endif()
 
 if(PLAYRHO_INSTALL)
   set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt)
