@@ -25,12 +25,12 @@
 
 namespace playrho::detail {
 
-/// Primary template handles types that have no nested <code>::type</code> member.
+/// Primary template handles types that have no nested @c type member.
 /// @see https://en.cppreference.com/w/cpp/types/void_t
 template<class, class = void>
 struct has_underlying_type_member : std::false_type {};
 
-/// Specialization recognizes types that do have a nested <code>::type</code> member.
+/// Specialization recognizes types that do have a nested @c type member.
 /// @see https://en.cppreference.com/w/cpp/types/void_t
 template<class T>
 struct has_underlying_type_member<T, std::void_t<typename T::underlying_type>> : std::true_type {};

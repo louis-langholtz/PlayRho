@@ -181,23 +181,6 @@ constexpr auto IsFull(const T& arg) -> decltype(size(arg) == max_size(arg))
     return size(arg) == max_size(arg);
 }
 
-template <class T>
-auto c_str(const T& arg) -> decltype(arg.c_str())
-{
-    return arg.c_str();
-}
-
-inline auto c_str(const char* arg) -> const char*
-{
-    return arg? arg: "";
-}
-
-template <class T>
-auto c_str(const T& arg) -> decltype(arg.has_value(), c_str(arg.value()))
-{
-    return arg.has_value()? c_str(arg.value()): "";
-}
-
 } // namespace detail
 
 } // namespace playrho

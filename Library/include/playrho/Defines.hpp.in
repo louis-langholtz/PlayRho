@@ -36,14 +36,17 @@
 #endif
 
 #ifndef PLAYRHO_VERSION_MAJOR
+/// @brief PlayRho major version number.
 #define PLAYRHO_VERSION_MAJOR @PlayRho_VERSION_MAJOR@
 #endif
 
 #ifndef PLAYRHO_VERSION_MINOR
+/// @brief PlayRho minor version number.
 #define PLAYRHO_VERSION_MINOR @PlayRho_VERSION_MINOR@
 #endif
 
 #ifndef PLAYRHO_VERSION_PATCH
+/// @brief PlayRho patch version number.
 #define PLAYRHO_VERSION_PATCH @PlayRho_VERSION_PATCH@
 #endif
 
