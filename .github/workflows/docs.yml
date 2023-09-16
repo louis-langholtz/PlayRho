@@ -7,6 +7,9 @@ on:
     # The branches below must be a subset of the branches above
     branches: [ "master", "release-1.1" ]
 
+env:
+  TARGET_BRANCH_NAME: ${{github.base_ref || github.ref_name}}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,12 +22,21 @@ jobs:
         sudo apt update
         sudo apt install doxygen graphviz
 
-    - name: Build
-      working-directory: Documentation
-      run: |
-        doxygen Doxyfile
+    - name: Configure
+      run: >
+        cmake -B ${{github.workspace}}/build
+        -DCMAKE_BUILD_TYPE=Release
+        -DPLAYRHO_BUILD_DOC=ON
+        -DPLAYRHO_BUILD_LIBRARY=OFF
 
-    - uses: actions/upload-artifact@v3
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config Release
+
+    - name: Install
+      run: cmake --install ${{github.workspace}}/build --prefix ${{github.workspace}}/install
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
       with:
-        name: doxygen-artifact
-        path: Documentation/API
+        name: docs-${{env.TARGET_BRANCH_NAME}}
+        path: ${{github.workspace}}/install/share/doc/PlayRho
