@@ -24,6 +24,7 @@
 #include <playrho/d2/DistanceProxy.hpp>
 #include <playrho/d2/Shape.hpp>
 #include <playrho/Contact.hpp>
+#include <playrho/d2/World.hpp>
 #include <playrho/d2/WorldBody.hpp>
 #include <playrho/d2/WorldShape.hpp>
 

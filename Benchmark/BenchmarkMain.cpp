@@ -57,27 +57,28 @@
 
 #include <playrho/Math.hpp>
 #include <playrho/Intervals.hpp>
-
-#include <playrho/d2/World.hpp>
-#include <playrho/d2/WorldBody.hpp> // for GetAwakeCount
-#include <playrho/d2/WorldShape.hpp> // for CreateShape
 #include <playrho/StepConf.hpp>
-#include <playrho/d2/ContactSolver.hpp>
-#include <playrho/d2/VelocityConstraint.hpp>
-#include <playrho/d2/Joint.hpp>
-#include <playrho/d2/RevoluteJointConf.hpp>
 
 #include <playrho/d2/AABB.hpp>
+#include <playrho/d2/ContactSolver.hpp>
+#include <playrho/d2/DiskShapeConf.hpp>
 #include <playrho/d2/Distance.hpp>
 #include <playrho/d2/DynamicTree.hpp>
+#include <playrho/d2/Joint.hpp>
 #include <playrho/d2/Manifold.hpp>
-#include <playrho/d2/WorldManifold.hpp>
 #include <playrho/d2/ShapeSeparation.hpp>
+#include <playrho/d2/World.hpp>
+#include <playrho/d2/WorldBody.hpp> // for GetAwakeCount
+#include <playrho/d2/WorldManifold.hpp>
+#include <playrho/d2/WorldShape.hpp> // for CreateShape
+#include <playrho/d2/VelocityConstraint.hpp>
+#include <playrho/d2/RevoluteJointConf.hpp>
+
 #if 0
 #include <playrho/d2/PolygonShapeConf.hpp>
-#endif
-#include <playrho/d2/DiskShapeConf.hpp>
+#else
 #include <playrho/d2/part/Compositor.hpp>
+#endif
 
 // #define BENCHMARK_BOX2D
 #ifdef BENCHMARK_BOX2D
@@ -2079,7 +2080,7 @@ static void WorldStepPlayRho(benchmark::State& state)
     auto world =
         playrho::d2::World{playrho::d2::WorldConf{}.UseTreeCapacity(0).UseContactCapacity(0u)};
     for (auto _ : state) {
-        world.Step(stepConf);
+        Step(world, stepConf);
     }
 }
 
@@ -2102,9 +2103,8 @@ static void CreateBodyWithOneShapePlayRho(benchmark::State& state)
                            playrho::d2::part::GeometryIs<playrho::d2::part::StaticRectangle<1, 1>>>{});
     for (auto _ : state) {
         state.PauseTiming();
-        playrho::d2::World world{
-            playrho::d2::WorldConf{/* zero G */}.UseTreeCapacity(0u).UseContactCapacity(0u)};
-        const auto shapeId = world.CreateShape(shape);
+        playrho::d2::World world{playrho::d2::WorldConf{/* zero G */}.UseTreeCapacity(0u).UseContactCapacity(0u)};
+        const auto shapeId = CreateShape(world, shape);
         state.ResumeTiming();
         for (auto i = 0; i < numBodies; ++i) {
             CreateBody(world, playrho::d2::Body{}.Attach(shapeId), false);
@@ -2141,7 +2141,7 @@ static void WorldStepWithStatsStaticPlayRho(benchmark::State& state)
         CreateBody(world, playrho::d2::BodyConf{}.UseType(playrho::BodyType::Static));
     }
     for (auto _ : state) {
-        benchmark::DoNotOptimize(stepStats = world.Step(stepConf));
+        benchmark::DoNotOptimize(stepStats = Step(world, stepConf));
     }
 }
 
@@ -2169,7 +2169,7 @@ static void DropDisksPlayRho(benchmark::State& state)
     auto world = playrho::d2::World{};
     const auto diskRadius = 0.5f * playrho::Meter;
     const auto diskConf = playrho::d2::DiskShapeConf{}.UseRadius(diskRadius);
-    const auto shapeId = world.CreateShape(playrho::d2::Shape{diskConf});
+    const auto shapeId = CreateShape(world, playrho::d2::Shape{diskConf});
     for (auto i = decltype(numDisks){0}; i < numDisks; ++i) {
         const auto x = i * diskRadius * 4;
         const auto location = playrho::Length2{x, 0 * playrho::Meter};
@@ -2182,7 +2182,7 @@ static void DropDisksPlayRho(benchmark::State& state)
     }
     const auto stepConf = playrho::StepConf{};
     for (auto _ : state) {
-        world.Step(stepConf);
+        Step(world, stepConf);
     }
 }
 
@@ -2195,7 +2195,7 @@ static void DropDisksSixtyStepsPlayRho(benchmark::State& state)
     for (auto _ : state) {
         state.PauseTiming();
         auto world = playrho::d2::World{};
-        const auto shapeId = world.CreateShape(playrho::d2::Shape{diskConf});
+        const auto shapeId = CreateShape(world, playrho::d2::Shape{diskConf});
         for (auto i = decltype(numDisks){0}; i < numDisks; ++i) {
             const auto x = i * diskRadius * 4;
             const auto location = playrho::Length2{x, 0 * playrho::Meter};
@@ -2208,7 +2208,7 @@ static void DropDisksSixtyStepsPlayRho(benchmark::State& state)
         }
         state.ResumeTiming();
         for (auto i = 0; i < 60; ++i) {
-            world.Step(stepConf);
+            Step(world, stepConf);
         }
     }
 }
@@ -2312,8 +2312,8 @@ static void AddPairStressTestPlayRho(benchmark::State& state, int count)
     for (auto _ : state) {
         state.PauseTiming();
         auto world = playrho::d2::World{worldConf};
-        const auto diskShapeId = world.CreateShape(diskShape);
-        const auto rectShapeId = world.CreateShape(rectShape);
+        const auto diskShapeId = CreateShape(world, diskShape);
+        const auto rectShapeId = CreateShape(world, rectShape);
         {
             for (auto i = 0; i < count; ++i) {
                 const auto location =
@@ -2328,11 +2328,11 @@ static void AddPairStressTestPlayRho(benchmark::State& state, int count)
         rectBody.Attach(rectShapeId);
         CreateBody(world, rectBody);
         for (auto i = 0; i < state.range(); ++i) {
-            world.Step(stepConf);
+            Step(world, stepConf);
         }
         state.ResumeTiming();
 
-        world.Step(stepConf);
+        Step(world, stepConf);
     }
 }
 
@@ -2412,8 +2412,7 @@ static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
     auto conf = playrho::d2::part::Compositor<
         playrho::d2::part::GeometryIs<playrho::d2::part::DynamicRectangle<0, 0>>>{};
     playrho::d2::part::SetVertexRadius(conf, 0, vertexRadius);
-    auto world = playrho::d2::World{
-        playrho::d2::WorldConf{}.UseVertexRadius(radiusRange).UseTreeCapacity(8192)};
+    auto world = playrho::d2::World{playrho::d2::WorldConf{}.UseVertexRadius(radiusRange).UseTreeCapacity(8192)};
 
     {
         constexpr auto a = 0.5f;
@@ -2446,7 +2445,7 @@ static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
     }
 
     {
-        const auto shapeId = world.CreateShape(
+        const auto shapeId = CreateShape(world,
             playrho::d2::Shape(playrho::d2::part::Compositor<
                                playrho::d2::part::GeometryIs<playrho::d2::part::StaticRectangle<1, 1>>,
                                playrho::d2::part::DensityIs<playrho::d2::part::StaticAreaDensity<5>>>{}));
@@ -2493,7 +2492,7 @@ static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
     step.toiVelocityIters = 8;
 
     while (GetAwakeCount(world) > 0) {
-        world.Step(step);
+        Step(world, step);
     }
 }
 
@@ -2667,16 +2666,16 @@ playrho::BodyID TumblerPlayRho::CreateEnclosure(playrho::d2::World& world)
                                   playrho::d2::part::DensityIs<playrho::d2::part::StaticAreaDensity<5>>>{};
     SetDimensions(conf, playrho::Length2{1 * playrho::Meter, 20 * playrho::Meter});
     SetOffset(conf, playrho::Vec2(10.0f, 0.0f) * playrho::Meter);
-    b.Attach(world.CreateShape(playrho::d2::Shape(conf)));
+    b.Attach(CreateShape(world, playrho::d2::Shape(conf)));
     SetDimensions(conf, playrho::Length2{1 * playrho::Meter, 20 * playrho::Meter});
     SetOffset(conf, playrho::Vec2(-10.0f, 0.0f) * playrho::Meter);
-    b.Attach(world.CreateShape(playrho::d2::Shape(conf)));
+    b.Attach(CreateShape(world, playrho::d2::Shape(conf)));
     SetDimensions(conf, playrho::Length2{20 * playrho::Meter, 1 * playrho::Meter});
     SetOffset(conf, playrho::Vec2(0.0f, 10.0f) * playrho::Meter);
-    b.Attach(world.CreateShape(playrho::d2::Shape(conf)));
+    b.Attach(CreateShape(world, playrho::d2::Shape(conf)));
     SetDimensions(conf, playrho::Length2{20 * playrho::Meter, 1 * playrho::Meter});
     SetOffset(conf, playrho::Vec2(0.0f, -10.0f) * playrho::Meter);
-    b.Attach(world.CreateShape(playrho::d2::Shape(conf)));
+    b.Attach(CreateShape(world, playrho::d2::Shape(conf)));
     return CreateBody(world, b);
 }
 
@@ -2702,12 +2701,12 @@ playrho::JointID TumblerPlayRho::CreateRevoluteJoint(playrho::d2::World& world,
     jd.motorSpeed = 0.05f * playrho::Pi * playrho::Radian / playrho::Second;
     jd.maxMotorTorque = 100000 * playrho::NewtonMeter; // 1e8f;
     jd.enableMotor = true;
-    return world.CreateJoint(playrho::d2::Joint(jd));
+    return CreateJoint(world, playrho::d2::Joint(jd));
 }
 
 void TumblerPlayRho::Step()
 {
-    m_world.Step(m_stepConf);
+    playrho::d2::Step(m_world, m_stepConf);
 }
 
 void TumblerPlayRho::AddSquare()
@@ -2722,7 +2721,7 @@ void TumblerPlayRho::AddSquare()
 
 bool TumblerPlayRho::IsWithin(const playrho::d2::AABB& aabb) const
 {
-    return playrho::d2::Contains(aabb, GetAABB(m_world.GetTree()));
+    return playrho::d2::Contains(aabb, GetAABB(GetTree(m_world)));
 }
 
 static void TumblerAddSquaresForStepsPlayRho(benchmark::State& state, int additionalSteps)

@@ -32,32 +32,5 @@
 namespace playrho {
 namespace d2 {
 
-World::World(const WorldConf& def): m_impl{CreateWorldImpl(def)}
-{
-}
-
-World::World(const World& other): m_impl{CreateWorldImpl(*other.m_impl)}
-{
-}
-
-World::World(World&& other) noexcept = default;
-
-World& World::operator=(World&& other) noexcept = default;
-
-World::~World() noexcept
-{
-    if (m_impl) {
-        // Call implementation's clear while World still valid to give destruction
-        // listening callbacks chance to run while world data is still valid.
-        m_impl->Clear();
-    }
-}
-
-World& World::operator= (const World& other)
-{
-    m_impl = CreateWorldImpl(*other.m_impl);
-    return *this;
-}
-
 } // namespace d2
 } // namespace playrho

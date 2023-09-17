@@ -28,6 +28,7 @@
 #include <playrho/d2/Math.hpp>
 #include <playrho/d2/PrismaticJointConf.hpp>
 #include <playrho/d2/RevoluteJointConf.hpp>
+#include <playrho/d2/World.hpp>
 #include <playrho/d2/WorldBody.hpp>
 #include <playrho/d2/WorldJoint.hpp>
 

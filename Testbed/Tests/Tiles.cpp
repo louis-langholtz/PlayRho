@@ -98,7 +98,7 @@ public:
                        [&](KeyActionMods) { m_snapshot = GetWorld(); });
         RegisterForKey(GLFW_KEY_BACKSPACE, GLFW_PRESS, 0, "Restore to snapshot.",
                        [&](KeyActionMods) {
-                           if (!empty(m_snapshot.GetBodies())) {
+                           if (!empty(GetBodies(m_snapshot))) {
                                ResetWorld(m_snapshot);
                            }
                        });

@@ -436,9 +436,9 @@ TEST(AABB, ComputeAabbForShapeAtBodyOrigin)
     const auto shapeAabb = ComputeAABB(Shape(shape), Transformation{});
     World world;
     const auto shapeId = CreateShape(world, shape);
-    const auto body = CreateBody(world);
-    Attach(world, body, shapeId);
-    const auto bodyAabb = ComputeAABB(world, body);
+    const auto bodyId = CreateBody(world);
+    Attach(world, bodyId, shapeId);
+    const auto bodyAabb = ComputeAABB(world, bodyId);
     ASSERT_NE(shapeAabb, AABB{});
     EXPECT_EQ(shapeAabb, bodyAabb);
 }

@@ -111,10 +111,11 @@ using BodySet = Test::BodySet;
 
 static void EntityUI(World& world, ContactID contact);
 static void EntityUI(World& world, JointID e);
-static void CollectionUI(World& world, const World::Contacts& contacts, bool interactive = true);
-static void CollectionUI(World& world, const World::BodyContacts& contacts, bool interactive = true);
-static void CollectionUI(World& world, const World::Joints& joints);
-static void CollectionUI(World& world, const World::BodyJoints& joints);
+static void CollectionUI(World& world, const std::vector<KeyedContactID>& contacts, bool interactive = true);
+static void CollectionUI(World& world, const std::vector<std::tuple<ContactKey, ContactID>>& contacts,
+                         bool interactive = true);
+static void CollectionUI(World& world, const std::vector<JointID>& joints);
+static void CollectionUI(World& world, const std::vector<std::pair<BodyID, JointID>>& joints);
 
 namespace {
 
@@ -2516,7 +2517,7 @@ static void ShapesUI(World& world)
                            tooltipWrapWidth);
     }
     ImGui::Spacing();
-    const auto numShapes = world.GetShapeRange();
+    const auto numShapes = GetShapeRange(world);
     for (auto i = static_cast<ShapeCounter>(0); i < numShapes; ++i) {
         ImGui::IdContext ctx(i);
         const auto shapeId = ShapeID(i);
@@ -3247,7 +3248,7 @@ static void EntityUI(World& world, ContactID contactId)
     }
 }
 
-static void CollectionUI(World& world, const World::Bodies& bodies,
+static void CollectionUI(World& world, const std::vector<BodyID>& bodies,
                          const BodySet& selectedBodies, const FixtureSet& selectedFixtures)
 {
     ImGui::IdContext idCtx("Bodies");
@@ -3262,7 +3263,7 @@ static void CollectionUI(World& world, const World::Bodies& bodies,
     }
 }
 
-static void CollectionUI(World& world, const World::Joints& joints)
+static void CollectionUI(World& world, const std::vector<JointID>& joints)
 {
     ImGui::IdContext idCtx("Joints");
     for (const auto& jointID: joints) {
@@ -3277,7 +3278,7 @@ static void CollectionUI(World& world, const World::Joints& joints)
     }
 }
 
-static void CollectionUI(World& world, const World::Contacts& contacts, bool interactive)
+static void CollectionUI(World& world, const std::vector<KeyedContactID>& contacts, bool interactive)
 {
     ImGui::IdContext idCtx("ContactsRange");
     if (interactive) {
@@ -3306,7 +3307,7 @@ static void CollectionUI(World& world, const World::Contacts& contacts, bool int
     }
 }
 
-static void CollectionUI(World& world, const World::BodyJoints& joints)
+static void CollectionUI(World& world, const std::vector<std::pair<BodyID, JointID>>& joints)
 {
     ImGui::IdContext idCtx("BodyJointsRange");
     ImGui::ItemWidthContext itemWidthCtx(130);
@@ -3329,7 +3330,9 @@ static void CollectionUI(World& world, const World::BodyJoints& joints)
     }
 }
 
-static void CollectionUI(World& world, const World::BodyContacts& contacts, bool interactive)
+static void CollectionUI(World& world,
+                         const std::vector<std::tuple<ContactKey, ContactID>>& contacts,
+                         bool interactive)
 {
     ImGui::IdContext idCtx("BodyContactsRange");
     if (interactive) {
@@ -3385,7 +3388,7 @@ static void ModelEntitiesUI()
             CreateShape(world, shape);
         }
         if (ImGui::TreeNodeEx("Shapes", selShapes? ImGuiTreeNodeFlags_DefaultOpen: 0,
-                              "Shapes (%hu)", world.GetShapeRange())) {
+                              "Shapes (%hu)", GetShapeRange(world))) {
             ShapesUI(world);
             ImGui::TreePop();
         }

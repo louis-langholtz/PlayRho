@@ -18,22 +18,25 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#include <chrono>
+#include <type_traits>
+
 #include "UnitTests.hpp"
 
+#include <playrho/Contact.hpp>
+#include <playrho/LengthError.hpp>
+#include <playrho/StepConf.hpp>
 #include <playrho/to_underlying.hpp>
+#include <playrho/WrongState.hpp>
 
+#include <playrho/d2/Body.hpp> // for GetBody
+#include <playrho/d2/BodyConf.hpp>
+#include <playrho/d2/ContactImpulsesList.hpp>
 #include <playrho/d2/WorldImpl.hpp>
-
 #include <playrho/d2/WorldImplBody.hpp>
 #include <playrho/d2/WorldImplMisc.hpp>
 #include <playrho/d2/WorldImplJoint.hpp>
 #include <playrho/d2/WorldImplContact.hpp>
-#include <playrho/StepConf.hpp>
-#include <playrho/d2/BodyConf.hpp>
-#include <playrho/d2/Body.hpp> // for GetBody
-#include <playrho/Contact.hpp>
-#include <playrho/d2/ContactImpulsesList.hpp>
-
 #include <playrho/d2/Shape.hpp>
 #include <playrho/d2/ChainShapeConf.hpp>
 #include <playrho/d2/DiskShapeConf.hpp>
@@ -43,10 +46,6 @@
 #include <playrho/d2/RayCastInput.hpp>
 #include <playrho/d2/RayCastOutput.hpp>
 #include <playrho/d2/Manifold.hpp>
-
-#include <playrho/LengthError.hpp>
-#include <playrho/WrongState.hpp>
-
 #include <playrho/d2/Joint.hpp>
 #include <playrho/d2/TargetJointConf.hpp>
 #include <playrho/d2/RopeJointConf.hpp>
@@ -59,9 +58,6 @@
 #include <playrho/d2/MotorJointConf.hpp>
 #include <playrho/d2/WheelJointConf.hpp>
 #include <playrho/d2/GearJointConf.hpp>
-
-#include <chrono>
-#include <type_traits>
 
 using namespace playrho;
 using namespace playrho::d2;

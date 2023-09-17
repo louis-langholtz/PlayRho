@@ -53,6 +53,7 @@
 #include <playrho/d2/MassData.hpp>
 #include <playrho/d2/Math.hpp>
 #include <playrho/d2/WorldConf.hpp>
+#include <playrho/d2/WorldImplMisc.hpp>
 
 namespace playrho {
 
@@ -132,6 +133,9 @@ public:
     /// @brief Copy constructor.
     WorldImpl(const WorldImpl& other);
 
+    /// @brief Move constructor.
+    WorldImpl(WorldImpl&& other) noexcept;
+
     /// @brief Destructor.
     /// @details All physics entities are destroyed and all memory is released.
     /// @note This will call the <code>Clear()</code> function.
@@ -139,7 +143,6 @@ public:
     ~WorldImpl() noexcept;
 
     // Delete compiler defined implementations of move construction/assignment and copy assignment...
-    WorldImpl(WorldImpl&& other) = delete;
     WorldImpl& operator=(const WorldImpl& other) = delete;
     WorldImpl& operator=(WorldImpl&& other) = delete;
 
@@ -991,7 +994,7 @@ inline void WorldImpl::SetPostSolveContactListener(ImpulsesContactListener liste
 // It minimally needs to be default and copy constructable.
 static_assert(std::is_default_constructible_v<WorldImpl>);
 static_assert(std::is_copy_constructible_v<WorldImpl>);
-static_assert(!std::is_move_constructible_v<WorldImpl>);
+static_assert(std::is_move_constructible_v<WorldImpl>);
 static_assert(!std::is_copy_assignable_v<WorldImpl>);
 static_assert(!std::is_move_assignable_v<WorldImpl>);
 
