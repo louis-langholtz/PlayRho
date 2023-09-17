@@ -51,8 +51,7 @@
 
 #include <playrho/d2/WorldManifold.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho::d2 {
 
 class World;
 class Manifold;
@@ -61,30 +60,6 @@ class Manifold;
 /// This is the <code>googletest</code> based unit testing file for the free function
 ///   interfaces to <code>playrho::d2::World</code> contact member functions and additional
 ///   functionality.
-
-/// @brief Gets the extent of the currently valid contact range.
-/// @note This is one higher than the maxium <code>ContactID</code> that is in range
-///   for contact related functions.
-/// @relatedalso World
-ContactCounter GetContactRange(const World& world) noexcept;
-
-/// @brief Gets the contacts recognized within the given world.
-/// @relatedalso World
-std::vector<KeyedContactID> GetContacts(const World& world);
-
-/// @brief Gets the identified contact.
-/// @throws std::out_of_range If given an invalid contact identifier.
-/// @relatedalso World
-const Contact& GetContact(const World& world, ContactID id);
-
-/// @brief Sets the identified contact's state.
-/// @note This may throw an exception or update associated entities to preserve invariants.
-/// @invariant A contact may only be impenetrable if one or both bodies are.
-/// @invariant A contact may only be active if one or both bodies are awake.
-/// @invariant A contact may only be a sensor or one or both shapes are.
-/// @throws std::out_of_range If given an invalid contact identifier.
-/// @relatedalso World
-void SetContact(World& world, ContactID id, const Contact& value);
 
 /// @brief Is this contact touching?
 /// @details
@@ -213,11 +188,6 @@ void SetFriction(World& world, ContactID id, NonNegative<Real> friction);
 /// @relatedalso World
 void SetRestitution(World& world, ContactID id, Real restitution);
 
-/// @brief Gets the manifold for the identified contact.
-/// @throws std::out_of_range If given an invalid contact identifier.
-/// @relatedalso World
-const Manifold& GetManifold(const World& world, ContactID id);
-
 /// @brief Gets the world manifold for the identified contact.
 /// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
@@ -283,18 +253,6 @@ inline void SetEnabled(World& world, ContactID id, bool value)
     }
 }
 
-/// @brief Gets the count of contacts in the given world.
-/// @note Not all contacts are for shapes that are actually touching. Some contacts are for
-///   shapes which merely have overlapping AABBs.
-/// @return 0 or higher.
-/// @relatedalso World
-inline ContactCounter GetContactCount(const World& world) noexcept
-{
-    using std::size;
-    return static_cast<ContactCounter>(size(GetContacts(world)));
-}
-
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2
 
 #endif // PLAYRHO_D2_WORLDCONTACT_HPP

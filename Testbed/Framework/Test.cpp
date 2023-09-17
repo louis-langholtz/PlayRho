@@ -19,12 +19,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "Test.hpp"
-
-#include <playrho/d2/DynamicTree.hpp>
-
-#include "DebugDraw.hpp"
-
 #include <chrono>
 #include <cstring> // for std::strstr
 #include <stdarg.h> // for va_list
@@ -36,6 +30,11 @@
 
 #include "imgui.h"
 #include "ExtensionsForImgui.hpp"
+
+#include "DebugDraw.hpp"
+#include "Test.hpp"
+
+#include <playrho/d2/DynamicTree.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

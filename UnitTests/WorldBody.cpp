@@ -191,15 +191,12 @@ TEST(WorldBody, CreateAndDestroyFixture)
         EXPECT_TRUE(IsMassDataDirty(world, bodyId));
         EXPECT_NO_THROW(ResetMassData(world, bodyId));
         EXPECT_FALSE(IsMassDataDirty(world, bodyId));
-
-        EXPECT_NO_THROW(world.Destroy(shapeId));
+        EXPECT_NO_THROW(Destroy(world, shapeId));
         EXPECT_TRUE(GetShapes(world, bodyId).empty());
         EXPECT_TRUE(IsMassDataDirty(world, bodyId));
-
         EXPECT_NO_THROW(ResetMassData(world, bodyId));
         EXPECT_FALSE(IsMassDataDirty(world, bodyId));
-
-        Detach(world, bodyId);
+        EXPECT_NO_THROW(Detach(world, bodyId));
         EXPECT_TRUE(GetShapes(world, bodyId).empty());
     }
     {
@@ -324,7 +321,6 @@ TEST(WorldBody, SetTransform)
     bd.type = BodyType::Dynamic;
     auto world = World{};
     ASSERT_EQ(GetBodiesForProxies(world).size(), 0u);
-    
     const auto body = CreateBody(world, bd);
     const auto xfm1 = Transformation{Length2{}, UnitVec::GetRight()};
     ASSERT_EQ(GetTransformation(world, body), xfm1);
@@ -340,8 +336,7 @@ TEST(WorldBody, SetTransform)
                 static_cast<double>(GetY(xfm2.q)),
                 0.001);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 1u);
-    
-    world.Destroy(body);
+    EXPECT_NO_THROW(Destroy(world, body));
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
 }
 

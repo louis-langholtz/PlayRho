@@ -795,6 +795,35 @@ WorldImpl::WorldImpl(const WorldImpl& other):
 {
 }
 
+WorldImpl::WorldImpl(WorldImpl&& other) noexcept:
+    m_bodyConstraintsResource(other.m_bodyConstraintsResource.GetOptions()),
+    m_positionConstraintsResource(other.m_positionConstraintsResource.GetOptions()),
+    m_velocityConstraintsResource(other.m_velocityConstraintsResource.GetOptions()),
+    m_proxyKeysResource(other.m_proxyKeysResource.GetOptions()),
+    m_islandResource(other.m_islandResource.GetOptions()),
+    m_tree(std::move(other.m_tree)),
+    m_bodyBuffer(std::move(other.m_bodyBuffer)),
+    m_shapeBuffer(std::move(other.m_shapeBuffer)),
+    m_jointBuffer(std::move(other.m_jointBuffer)),
+    m_contactBuffer(std::move(other.m_contactBuffer)),
+    m_manifoldBuffer(std::move(other.m_manifoldBuffer)),
+    m_bodyContacts(std::move(other.m_bodyContacts)),
+    m_bodyJoints(std::move(other.m_bodyJoints)),
+    m_bodyProxies(std::move(other.m_bodyProxies)),
+    m_proxiesForContacts(std::move(other.m_proxiesForContacts)),
+    m_fixturesForProxies(std::move(other.m_fixturesForProxies)),
+    m_bodiesForSync(std::move(other.m_bodiesForSync)),
+    m_bodies(std::move(other.m_bodies)),
+    m_joints(std::move(other.m_joints)),
+    m_contacts(std::move(other.m_contacts)),
+    m_islanded(std::move(other.m_islanded)),
+    m_listeners(std::move(other.m_listeners)),
+    m_flags(other.m_flags),
+    m_inv_dt0(other.m_inv_dt0),
+    m_vertexRadius(other.m_vertexRadius)
+{
+}
+
 WorldImpl::~WorldImpl() noexcept
 {
     Clear();
@@ -884,7 +913,7 @@ BodyID WorldImpl::CreateBody(Body body)
     m_bodies.push_back(id);
     const auto& bufferedBody = m_bodyBuffer[to_underlying(id)];
     if (IsEnabled(bufferedBody)) {
-        const auto& shapes = bufferedBody.GetShapes();
+        const auto shapes = bufferedBody.GetShapes();
         for (const auto& shapeId: shapes) {
             m_fixturesForProxies.emplace_back(id, shapeId);
         }

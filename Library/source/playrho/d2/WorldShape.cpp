@@ -31,31 +31,6 @@ namespace d2 {
 
 using playrho::size;
 
-ShapeCounter GetShapeRange(const World& world) noexcept
-{
-    return world.GetShapeRange();
-}
-
-ShapeID CreateShape(World& world, const Shape& def)
-{
-    return world.CreateShape(def);
-}
-
-void Destroy(World& world, ShapeID id)
-{
-    world.Destroy(id);
-}
-
-const Shape& GetShape(const World& world, ShapeID id)
-{
-    return world.GetShape(id);
-}
-
-void SetShape(World& world, ShapeID id, const Shape& def)
-{
-    world.SetShape(id, def);
-}
-
 TypeID GetType(const World& world, ShapeID id)
 {
     return GetType(GetShape(world, id));
@@ -64,9 +39,9 @@ TypeID GetType(const World& world, ShapeID id)
 ShapeCounter GetAssociationCount(const World& world)
 {
     auto sum = ShapeCounter{0};
-    const auto& bodies = world.GetBodies();
+    const auto bodies = GetBodies(world);
     for_each(begin(bodies), end(bodies), [&world,&sum](const auto &b) {
-        sum += static_cast<ShapeCounter>(size(world.GetShapes(b)));
+        sum += static_cast<ShapeCounter>(size(GetShapes(world, b)));
     });
     return sum;
 }
@@ -74,8 +49,8 @@ ShapeCounter GetAssociationCount(const World& world)
 ShapeCounter GetUsedShapesCount(const World& world) noexcept
 {
     auto ids = std::set<ShapeID>{};
-    for (auto&& bodyId: world.GetBodies()) {
-        for (auto&& shapeId: world.GetShapes(bodyId)) {
+    for (auto&& bodyId: GetBodies(world)) {
+        for (auto&& shapeId: GetShapes(world, bodyId)) {
             ids.insert(shapeId);
         }
     }
@@ -144,7 +119,7 @@ MassData ComputeMassData(const World& world, const Span<const ShapeID>& ids)
     auto I = RotInertia{};
     auto weightedCenter = Length2{};
     for (const auto& shapeId: ids) {
-        const auto& shape = GetShape(world, shapeId);
+        const auto shape = GetShape(world, shapeId);
         if (GetDensity(shape) > 0_kgpm2) {
             const auto massData = GetMassData(shape);
             mass += Mass{massData.mass};

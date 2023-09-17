@@ -79,6 +79,6 @@ TEST(WorldJoint, GetJointRange)
     EXPECT_EQ(GetJointRange(world), 1u);
     ASSERT_NO_THROW(Destroy(world, id));
     EXPECT_EQ(GetJointRange(world), 1u);
-    ASSERT_NO_THROW(world.Clear());
+    ASSERT_NO_THROW(Clear(world));
     EXPECT_EQ(GetJointRange(world), 0u);
 }

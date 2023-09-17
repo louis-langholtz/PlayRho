@@ -90,44 +90,44 @@ TEST(World, DefaultInit)
     World world;
 
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
-    EXPECT_EQ(world.GetTree().GetLeafCount(), ContactCounter(0));
+    EXPECT_EQ(GetTree(world).GetLeafCount(), ContactCounter(0));
     EXPECT_EQ(GetJointCount(world), JointCounter(0));
     EXPECT_EQ(GetContactCount(world), ContactCounter(0));
-    EXPECT_EQ(GetHeight(world.GetTree()), ContactCounter(0));
-    EXPECT_EQ(ComputePerimeterRatio(world.GetTree()), Real(0));
+    EXPECT_EQ(GetHeight(GetTree(world)), ContactCounter(0));
+    EXPECT_EQ(ComputePerimeterRatio(GetTree(world)), Real(0));
 
     {
-        const auto& bodies = world.GetBodies();
+        const auto bodies = GetBodies(world);
         EXPECT_TRUE(bodies.empty());
         EXPECT_EQ(bodies.size(), BodyCounter(0));
         EXPECT_EQ(bodies.begin(), bodies.end());
     }
     {
         const auto& w = static_cast<const World&>(world);
-        const auto& bodies = w.GetBodies();
+        const auto bodies = GetBodies(w);
         EXPECT_TRUE(bodies.empty());
         EXPECT_EQ(bodies.size(), BodyCounter(0));
         EXPECT_EQ(bodies.begin(), bodies.end());
     }
 
-    EXPECT_TRUE(world.GetContacts().empty());
-    EXPECT_EQ(world.GetContacts().size(), ContactCounter(0));
+    EXPECT_TRUE(GetContacts(world).empty());
+    EXPECT_EQ(GetContacts(world).size(), ContactCounter(0));
     
-    EXPECT_TRUE(world.GetJoints().empty());
-    EXPECT_EQ(world.GetJoints().size(), JointCounter(0));
+    EXPECT_TRUE(GetJoints(world).empty());
+    EXPECT_EQ(GetJoints(world).size(), JointCounter(0));
     
-    EXPECT_FALSE(world.GetSubStepping());
-    EXPECT_FALSE(world.IsLocked());
+    EXPECT_FALSE(GetSubStepping(world));
+    EXPECT_FALSE(IsLocked(world));
 }
 
 TEST(World, Init)
 {
     World world{};
-    EXPECT_FALSE(world.IsLocked());
+    EXPECT_FALSE(IsLocked(world));
     
     {
         auto calls = 0;
-        Query(world.GetTree(), AABB{}, [&](BodyID, ShapeID, ChildCounter) {
+        Query(GetTree(world), AABB{}, [&](BodyID, ShapeID, ChildCounter) {
             ++calls;
             return true;
         });
@@ -153,8 +153,8 @@ TEST(World, Clear)
     auto associationListener = PushBackListener<std::pair<BodyID, ShapeID>>{};
 
     auto world = World{};
-    ASSERT_EQ(world.GetBodies().size(), std::size_t(0));
-    ASSERT_EQ(world.GetJoints().size(), std::size_t(0));
+    ASSERT_EQ(GetBodies(world).size(), std::size_t(0));
+    ASSERT_EQ(GetJoints(world).size(), std::size_t(0));
     ASSERT_EQ(GetJointRange(world), 0u);
 
     SetJointDestructionListener(world, std::ref(jointListener));
@@ -166,30 +166,30 @@ TEST(World, Clear)
     const auto f0 = CreateShape(world, DiskShapeConf{});
     ASSERT_NE(f0, InvalidShapeID);
     Attach(world, b0, f0);
-    ASSERT_EQ(world.GetShapes(b0).size(), std::size_t(1));;
+    ASSERT_EQ(GetShapes(world, b0).size(), std::size_t(1));;
 
     const auto b1 = CreateBody(world);
     ASSERT_NE(b1, InvalidBodyID);
     const auto f1 = CreateShape(world, Shape{DiskShapeConf{}});
     ASSERT_NE(f1, InvalidShapeID);
     Attach(world, b1, f1);
-    ASSERT_EQ(world.GetShapes(b1).size(), std::size_t(1));;
+    ASSERT_EQ(GetShapes(world, b1).size(), std::size_t(1));;
 
-    const auto j0 = world.CreateJoint(Joint{DistanceJointConf{b0, b1}});
+    const auto j0 = CreateJoint(world, Joint{DistanceJointConf{b0, b1}});
     ASSERT_NE(j0, InvalidJointID);
 
-    ASSERT_EQ(world.GetBodies().size(), std::size_t(2));
-    ASSERT_EQ(world.GetJoints().size(), std::size_t(1));
+    ASSERT_EQ(GetBodies(world).size(), std::size_t(2));
+    ASSERT_EQ(GetJoints(world).size(), std::size_t(1));
     ASSERT_EQ(GetJointRange(world), 1u);
 
-    EXPECT_NO_THROW(world.Clear());
-    EXPECT_EQ(world.GetShapeRange(), 0u);
-    EXPECT_EQ(world.GetBodyRange(), 0u);
-    EXPECT_EQ(world.GetJointRange(), 0u);
-    EXPECT_EQ(world.GetContactRange(), 0u);
+    EXPECT_NO_THROW(Clear(world));
+    EXPECT_EQ(GetShapeRange(world), 0u);
+    EXPECT_EQ(GetBodyRange(world), 0u);
+    EXPECT_EQ(GetJointRange(world), 0u);
+    EXPECT_EQ(GetContactRange(world), 0u);
 
-    EXPECT_EQ(world.GetBodies().size(), std::size_t(0));
-    EXPECT_EQ(world.GetJoints().size(), std::size_t(0));
+    EXPECT_EQ(GetBodies(world).size(), std::size_t(0));
+    EXPECT_EQ(GetJoints(world).size(), std::size_t(0));
 
     ASSERT_EQ(shapeListener.ids.size(), std::size_t(2));
     EXPECT_EQ(shapeListener.ids.at(0), f0);
@@ -223,18 +223,18 @@ TEST(World, SetSubSteppingFreeFunction)
 TEST(World, IsStepComplete)
 {
     auto world = World{};
-    ASSERT_FALSE(world.GetSubStepping());
-    EXPECT_TRUE(world.IsStepComplete());
+    ASSERT_FALSE(GetSubStepping(world));
+    EXPECT_TRUE(IsStepComplete(world));
 
-    world.SetSubStepping(true);
-    ASSERT_TRUE(world.GetSubStepping());
-    EXPECT_TRUE(world.IsStepComplete());
+    SetSubStepping(world, true);
+    ASSERT_TRUE(GetSubStepping(world));
+    EXPECT_TRUE(IsStepComplete(world));
 
     auto stepConf = StepConf{};
     stepConf.deltaTime = Real(1) / 100_Hz;
-    world.Step(stepConf);
-    ASSERT_TRUE(world.GetSubStepping());
-    EXPECT_TRUE(world.IsStepComplete());
+    Step(world, stepConf);
+    ASSERT_TRUE(GetSubStepping(world));
+    EXPECT_TRUE(IsStepComplete(world));
 
     const auto b0 = CreateBody(world, BodyConf{}
                                      .UseType(BodyType::Dynamic)
@@ -258,16 +258,16 @@ TEST(World, IsStepComplete)
     Attach(world, stabody, shapeId2);
 
     auto i = 0ull;
-    while (world.IsStepComplete() && i < 100000) {
-        world.Step(stepConf);
+    while (IsStepComplete(world) && i < 100000) {
+        Step(world, stepConf);
         ++i;
     }
     EXPECT_LT(i, 1000000ull);
-    EXPECT_FALSE(world.IsStepComplete());
-    world.Step(stepConf);
-    EXPECT_FALSE(world.IsStepComplete());
-    world.Step(stepConf);
-    EXPECT_TRUE(world.IsStepComplete());
+    EXPECT_FALSE(IsStepComplete(world));
+    Step(world, stepConf);
+    EXPECT_FALSE(IsStepComplete(world));
+    Step(world, stepConf);
+    EXPECT_TRUE(IsStepComplete(world));
 }
 
 TEST(World, CopyConstruction)
@@ -275,14 +275,14 @@ TEST(World, CopyConstruction)
     auto world = World{};
     {
         const auto copy = World{world};
-        EXPECT_EQ(world.GetMinVertexRadius(), copy.GetMinVertexRadius());
-        EXPECT_EQ(world.GetMaxVertexRadius(), copy.GetMaxVertexRadius());
-        EXPECT_EQ(world.GetJoints().size(), copy.GetJoints().size());
-        EXPECT_EQ(world.GetBodies().size(), copy.GetBodies().size());
-        EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
-        EXPECT_EQ(GetHeight(world.GetTree()), GetHeight(copy.GetTree()));
-        EXPECT_EQ(world.GetTree().GetLeafCount(), copy.GetTree().GetLeafCount());
-        EXPECT_EQ(GetMaxImbalance(world.GetTree()), GetMaxImbalance(copy.GetTree()));
+        EXPECT_EQ(GetMinVertexRadius(world), GetMinVertexRadius(copy));
+        EXPECT_EQ(GetMaxVertexRadius(world), GetMaxVertexRadius(copy));
+        EXPECT_EQ(GetJoints(world).size(), GetJoints(copy).size());
+        EXPECT_EQ(GetBodies(world).size(), GetBodies(copy).size());
+        EXPECT_EQ(GetContacts(world).size(), GetContacts(copy).size());
+        EXPECT_EQ(GetHeight(GetTree(world)), GetHeight(GetTree(copy)));
+        EXPECT_EQ(GetTree(world).GetLeafCount(), GetTree(copy).GetLeafCount());
+        EXPECT_EQ(GetMaxImbalance(GetTree(world)), GetMaxImbalance(GetTree(copy)));
     }
     
     const auto shapeId = CreateShape(world, DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m));
@@ -300,33 +300,33 @@ TEST(World, CopyConstruction)
     const auto b5 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     Attach(world, b5, shapeId);
 
-    const auto rj1 = world.CreateJoint(Joint{RevoluteJointConf{b1, b2}});
-    const auto rj2 = world.CreateJoint(Joint{RevoluteJointConf{b3, b4}});
-    world.CreateJoint(Joint{PrismaticJointConf{b1, b2}});
-    world.CreateJoint(Joint{GetPulleyJointConf(world, b1, b2, Length2{}, Length2{},
+    const auto rj1 = CreateJoint(world, Joint{RevoluteJointConf{b1, b2}});
+    const auto rj2 = CreateJoint(world, Joint{RevoluteJointConf{b3, b4}});
+    CreateJoint(world, Joint{PrismaticJointConf{b1, b2}});
+    CreateJoint(world, Joint{GetPulleyJointConf(world, b1, b2, Length2{}, Length2{},
                                                Length2{}, Length2{}).UseRatio(Real(1))});
-    world.CreateJoint(Joint{DistanceJointConf{b4, b5}});
-    world.CreateJoint(Joint{GetWeldJointConf(world, b4, b5)});
-    world.CreateJoint(Joint{FrictionJointConf{b4, b5}});
-    world.CreateJoint(Joint{RopeJointConf{b4, b5}});
-    world.CreateJoint(Joint{GetMotorJointConf(world, b4, b5)});
-    world.CreateJoint(Joint{WheelJointConf{b4, b5}});
-    world.CreateJoint(Joint{TargetJointConf{b4}});
-    world.CreateJoint(Joint{GetGearJointConf(world, rj1, rj2)});
+    CreateJoint(world, Joint{DistanceJointConf{b4, b5}});
+    CreateJoint(world, Joint{GetWeldJointConf(world, b4, b5)});
+    CreateJoint(world, Joint{FrictionJointConf{b4, b5}});
+    CreateJoint(world, Joint{RopeJointConf{b4, b5}});
+    CreateJoint(world, Joint{GetMotorJointConf(world, b4, b5)});
+    CreateJoint(world, Joint{WheelJointConf{b4, b5}});
+    CreateJoint(world, Joint{TargetJointConf{b4}});
+    CreateJoint(world, Joint{GetGearJointConf(world, rj1, rj2)});
 
     auto stepConf = StepConf{};
-    world.Step(stepConf);
-    ASSERT_FALSE(world.GetContacts().empty());
+    Step(world, stepConf);
+    ASSERT_FALSE(GetContacts(world).empty());
 
     {
         const auto copy = World{world};
-        EXPECT_EQ(world.GetMinVertexRadius(), copy.GetMinVertexRadius());
-        EXPECT_EQ(world.GetMaxVertexRadius(), copy.GetMaxVertexRadius());
-        EXPECT_EQ(world.GetJoints().size(), copy.GetJoints().size());
-        const auto minJoints = std::min(world.GetJoints().size(), copy.GetJoints().size());
+        EXPECT_EQ(GetMinVertexRadius(world), GetMinVertexRadius(copy));
+        EXPECT_EQ(GetMaxVertexRadius(world), GetMaxVertexRadius(copy));
+        EXPECT_EQ(GetJoints(world).size(), GetJoints(copy).size());
+        const auto minJoints = std::min(GetJoints(world).size(), GetJoints(copy).size());
 
-        const auto worldJoints = world.GetJoints();
-        const auto copyJoints = copy.GetJoints();
+        const auto worldJoints = GetJoints(world);
+        const auto copyJoints = GetJoints(copy);
         auto worldJointIter = worldJoints.begin();
         auto copyJointIter = copyJoints.begin();
         for (auto i = decltype(minJoints){0}; i < minJoints; ++i)
@@ -335,11 +335,11 @@ TEST(World, CopyConstruction)
             ++worldJointIter;
             ++copyJointIter;
         }
-        EXPECT_EQ(world.GetBodies().size(), copy.GetBodies().size());
-        EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
-        EXPECT_EQ(GetHeight(world.GetTree()), GetHeight(copy.GetTree()));
-        EXPECT_EQ(world.GetTree().GetLeafCount(), copy.GetTree().GetLeafCount());
-        EXPECT_EQ(GetMaxImbalance(world.GetTree()), GetMaxImbalance(copy.GetTree()));
+        EXPECT_EQ(GetBodies(world).size(), GetBodies(copy).size());
+        EXPECT_EQ(GetContacts(world).size(), GetContacts(copy).size());
+        EXPECT_EQ(GetHeight(GetTree(world)), GetHeight(GetTree(copy)));
+        EXPECT_EQ(GetTree(world).GetLeafCount(), GetTree(copy).GetLeafCount());
+        EXPECT_EQ(GetMaxImbalance(GetTree(world)), GetMaxImbalance(GetTree(copy)));
     }
 }
 
@@ -349,14 +349,14 @@ TEST(World, CopyAssignment)
     {
         auto copy = World{};
         copy = world;
-        EXPECT_EQ(world.GetMinVertexRadius(), copy.GetMinVertexRadius());
-        EXPECT_EQ(world.GetMaxVertexRadius(), copy.GetMaxVertexRadius());
-        EXPECT_EQ(world.GetJoints().size(), copy.GetJoints().size());
-        EXPECT_EQ(world.GetBodies().size(), copy.GetBodies().size());
-        EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
-        EXPECT_EQ(GetHeight(world.GetTree()), GetHeight(copy.GetTree()));
-        EXPECT_EQ(world.GetTree().GetLeafCount(), copy.GetTree().GetLeafCount());
-        EXPECT_EQ(GetMaxImbalance(world.GetTree()), GetMaxImbalance(copy.GetTree()));
+        EXPECT_EQ(GetMinVertexRadius(world), GetMinVertexRadius(copy));
+        EXPECT_EQ(GetMaxVertexRadius(world), GetMaxVertexRadius(copy));
+        EXPECT_EQ(GetJoints(world).size(), GetJoints(copy).size());
+        EXPECT_EQ(GetBodies(world).size(), GetBodies(copy).size());
+        EXPECT_EQ(GetContacts(world).size(), GetContacts(copy).size());
+        EXPECT_EQ(GetHeight(GetTree(world)), GetHeight(GetTree(copy)));
+        EXPECT_EQ(GetTree(world).GetLeafCount(), GetTree(copy).GetLeafCount());
+        EXPECT_EQ(GetMaxImbalance(GetTree(world)), GetMaxImbalance(GetTree(copy)));
     }
 
     const auto shapeId = CreateShape(world, DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m));
@@ -365,22 +365,22 @@ TEST(World, CopyAssignment)
     const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     Attach(world, b2, shapeId);
 
-    world.CreateJoint(Joint{RevoluteJointConf{b1, b2, Length2{}}});
-    world.CreateJoint(Joint{GetPrismaticJointConf(world, b1, b2, Length2{}, UnitVec::GetRight())});
-    world.CreateJoint(Joint{GetPulleyJointConf(world, b1, b2, Length2{}, Length2{},
+    CreateJoint(world, Joint{RevoluteJointConf{b1, b2, Length2{}}});
+    CreateJoint(world, Joint{GetPrismaticJointConf(world, b1, b2, Length2{}, UnitVec::GetRight())});
+    CreateJoint(world, Joint{GetPulleyJointConf(world, b1, b2, Length2{}, Length2{},
                                                Length2{}, Length2{}).UseRatio(Real(1))});
 
     auto stepConf = StepConf{};
-    world.Step(stepConf);
+    Step(world, stepConf);
     {
         auto copy = World{};
         copy = world;
-        EXPECT_EQ(world.GetMinVertexRadius(), copy.GetMinVertexRadius());
-        EXPECT_EQ(world.GetMaxVertexRadius(), copy.GetMaxVertexRadius());
-        EXPECT_EQ(world.GetJoints().size(), copy.GetJoints().size());
-        const auto minJoints = std::min(world.GetJoints().size(), copy.GetJoints().size());
-        const auto worldJoints = world.GetJoints();
-        const auto copyJoints = copy.GetJoints();
+        EXPECT_EQ(GetMinVertexRadius(world), GetMinVertexRadius(copy));
+        EXPECT_EQ(GetMaxVertexRadius(world), GetMaxVertexRadius(copy));
+        EXPECT_EQ(GetJoints(world).size(), GetJoints(copy).size());
+        const auto minJoints = std::min(GetJoints(world).size(), GetJoints(copy).size());
+        const auto worldJoints = GetJoints(world);
+        const auto copyJoints = GetJoints(copy);
         auto worldJointIter = worldJoints.begin();
         auto copyJointIter = copyJoints.begin();
         for (auto i = decltype(minJoints){0}; i < minJoints; ++i)
@@ -389,12 +389,12 @@ TEST(World, CopyAssignment)
             ++worldJointIter;
             ++copyJointIter;
         }
-        EXPECT_EQ(world.GetShapeRange(), copy.GetShapeRange());
-        EXPECT_EQ(world.GetBodies().size(), copy.GetBodies().size());
-        EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
-        EXPECT_EQ(GetHeight(world.GetTree()), GetHeight(copy.GetTree()));
-        EXPECT_EQ(world.GetTree().GetLeafCount(), copy.GetTree().GetLeafCount());
-        EXPECT_EQ(GetMaxImbalance(world.GetTree()), GetMaxImbalance(copy.GetTree()));
+        EXPECT_EQ(GetShapeRange(world), GetShapeRange(copy));
+        EXPECT_EQ(GetBodies(world).size(), GetBodies(copy).size());
+        EXPECT_EQ(GetContacts(world).size(), GetContacts(copy).size());
+        EXPECT_EQ(GetHeight(GetTree(world)), GetHeight(GetTree(copy)));
+        EXPECT_EQ(GetTree(world).GetLeafCount(), GetTree(copy).GetLeafCount());
+        EXPECT_EQ(GetMaxImbalance(GetTree(world)), GetMaxImbalance(GetTree(copy)));
     }
 }
 
@@ -406,16 +406,16 @@ TEST(World, MoveConstruction)
     Attach(world, b1, shapeId);
     const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     Attach(world, b2, shapeId);
-    world.CreateJoint(Joint{RevoluteJointConf{b1, b2, Length2{}}});
-    world.CreateJoint(Joint{GetPrismaticJointConf(world, b1, b2, Length2{}, UnitVec::GetRight())});
-    world.CreateJoint(Joint{GetPulleyJointConf(world, b1, b2, Length2{}, Length2{},
+    CreateJoint(world, Joint{RevoluteJointConf{b1, b2, Length2{}}});
+    CreateJoint(world, Joint{GetPrismaticJointConf(world, b1, b2, Length2{}, UnitVec::GetRight())});
+    CreateJoint(world, Joint{GetPulleyJointConf(world, b1, b2, Length2{}, Length2{},
                                                Length2{}, Length2{}).UseRatio(Real(1))});
     auto stepConf = StepConf{};
-    world.Step(stepConf);
+    Step(world, stepConf);
     {
         auto other = World{std::move(world)};
-        EXPECT_EQ(other.GetBodies().size(), 2u);
-        EXPECT_EQ(other.GetJoints().size(), 3u);
+        EXPECT_EQ(GetBodies(other).size(), 2u);
+        EXPECT_EQ(GetJoints(other).size(), 3u);
     }
 }
 
@@ -427,17 +427,17 @@ TEST(World, MoveAssignment)
     Attach(world, b1, shapeId);
     const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     Attach(world, b2, shapeId);
-    world.CreateJoint(Joint{RevoluteJointConf{b1, b2, Length2{}}});
-    world.CreateJoint(Joint{GetPrismaticJointConf(world, b1, b2, Length2{}, UnitVec::GetRight())});
-    world.CreateJoint(Joint{GetPulleyJointConf(world, b1, b2, Length2{}, Length2{},
+    CreateJoint(world, Joint{RevoluteJointConf{b1, b2, Length2{}}});
+    CreateJoint(world, Joint{GetPrismaticJointConf(world, b1, b2, Length2{}, UnitVec::GetRight())});
+    CreateJoint(world, Joint{GetPulleyJointConf(world, b1, b2, Length2{}, Length2{},
                                                Length2{}, Length2{}).UseRatio(Real(1))});
     auto stepConf = StepConf{};
-    world.Step(stepConf);
+    Step(world, stepConf);
     {
         auto other = World{};
         other = std::move(world);
-        EXPECT_EQ(other.GetBodies().size(), 2u);
-        EXPECT_EQ(other.GetJoints().size(), 3u);
+        EXPECT_EQ(GetBodies(other).size(), 2u);
+        EXPECT_EQ(GetJoints(other).size(), 3u);
     }
 }
 
@@ -456,16 +456,16 @@ TEST(World, CreateDestroyEmptyDynamicBody)
     EXPECT_EQ(GetShapes(world, body).size(), std::size_t{0});
 
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
-    const auto bodies1 = world.GetBodies();
+    const auto bodies1 = GetBodies(world);
     EXPECT_FALSE(bodies1.empty());
     EXPECT_EQ(bodies1.size(), BodyCounter(1));
     EXPECT_NE(bodies1.begin(), bodies1.end());
     const auto first = bodies1.begin();
     EXPECT_EQ(body, *first);
 
-    world.Destroy(body);
+    Destroy(world, body);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
-    const auto& bodies2 = world.GetBodies();
+    const auto bodies2 = GetBodies(world);
     EXPECT_TRUE(bodies2.empty());
     EXPECT_EQ(bodies2.size(), BodyCounter(0));
 }
@@ -488,7 +488,7 @@ TEST(World, CreateDestroyDynamicBodyAndFixture)
     EXPECT_EQ(GetShapes(world, bodyId).size(), std::size_t{0});
 
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
-    const auto bodies1 = world.GetBodies();
+    const auto bodies1 = GetBodies(world);
     EXPECT_FALSE(bodies1.empty());
     EXPECT_EQ(bodies1.size(), BodyCounter(1));
     EXPECT_NE(bodies1.begin(), bodies1.end());
@@ -497,16 +497,16 @@ TEST(World, CreateDestroyDynamicBodyAndFixture)
 
     Attach(world, bodyId, CreateShape(world, DiskShapeConf{1_m}));
     
-    EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
+    EXPECT_EQ(GetBodiesForProxies(world).size(), std::size_t{0});
     EXPECT_EQ(GetShapes(world, bodyId).size(), std::size_t{1});
 
-    world.Destroy(bodyId); // should clear fixtures for proxies!
+    Destroy(world, bodyId); // should clear fixtures for proxies!
     EXPECT_EQ(GetType(world, bodyId), BodyType::Static);
     EXPECT_FALSE(IsAwake(world, bodyId));
     EXPECT_FALSE(IsSpeedable(world, bodyId));
 
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
-    const auto& bodies2 = world.GetBodies();
+    const auto bodies2 = GetBodies(world);
     EXPECT_TRUE(bodies2.empty());
     EXPECT_EQ(bodies2.size(), BodyCounter(0));
 }
@@ -527,7 +527,7 @@ TEST(World, CreateDestroyJoinedBodies)
 
     const auto body1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
-    const auto& bodies1 = world.GetBodies();
+    const auto bodies1 = GetBodies(world);
     EXPECT_FALSE(bodies1.empty());
     EXPECT_EQ(bodies1.size(), BodyCounter(1));
     EXPECT_NE(bodies1.begin(), bodies1.end());
@@ -542,12 +542,12 @@ TEST(World, CreateDestroyJoinedBodies)
     const auto shapeId2 = CreateShape(world, DiskShapeConf{1_m});
     Attach(world, body2, shapeId2);
 
-    EXPECT_EQ(world.GetContacts().size(), ContactCounter(0));
+    EXPECT_EQ(GetContacts(world).size(), ContactCounter(0));
     
     auto stepConf = StepConf{};
-    world.Step(stepConf);
-    ASSERT_EQ(world.GetContacts().size(), ContactCounter(1));
-    const auto worldContacts = world.GetContacts();
+    Step(world, stepConf);
+    ASSERT_EQ(GetContacts(world).size(), ContactCounter(1));
+    const auto worldContacts = GetContacts(world);
     const auto c0 = worldContacts.begin();
     auto cid0 = std::get<ContactID>(*c0);
     const auto contactBodyA = GetBodyA(world, cid0);
@@ -555,33 +555,33 @@ TEST(World, CreateDestroyJoinedBodies)
     EXPECT_EQ(contactBodyA, body1);
     EXPECT_EQ(contactBodyB, body2);
     EXPECT_FALSE(NeedsFiltering(world, c0->second));
-    auto contact0 = world.GetContact(cid0);
+    auto contact0 = GetContact(world, cid0);
     if (contact0.HasValidToi()) {
         contact0.SetToi({});
     }
     else {
         contact0.SetToi(Real(0.5f));
     }
-    EXPECT_THROW(world.SetContact(cid0, contact0), InvalidArgument);
-    contact0 = world.GetContact(cid0);
+    EXPECT_THROW(SetContact(world, cid0, contact0), InvalidArgument);
+    contact0 = GetContact(world, cid0);
     contact0.SetToiCount(contact0.GetToiCount() + 1u);
-    EXPECT_THROW(world.SetContact(cid0, contact0), InvalidArgument);
+    EXPECT_THROW(SetContact(world, cid0, contact0), InvalidArgument);
 
-    const auto joint = world.CreateJoint(Joint{DistanceJointConf{body1, body2}});
+    const auto joint = CreateJoint(world, Joint{DistanceJointConf{body1, body2}});
     ASSERT_NE(joint, InvalidJointID);
     EXPECT_EQ(GetJointCount(world), JointCounter(1));
     EXPECT_TRUE(NeedsFiltering(world, c0->second));
 
-    world.Destroy(body1);
+    Destroy(world, body1);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
     EXPECT_EQ(GetJointCount(world), JointCounter(0));
-    EXPECT_EQ(world.GetContacts().size(), ContactCounter(0));
+    EXPECT_EQ(GetContacts(world).size(), ContactCounter(0));
 
-    const auto& bodies0 = world.GetBodies();
+    const auto bodies0 = GetBodies(world);
     EXPECT_FALSE(bodies0.empty());
     EXPECT_EQ(bodies0.size(), BodyCounter(1));
     EXPECT_NE(bodies0.begin(), bodies0.end());
-    world.Destroy(body2);
+    Destroy(world, body2);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
     
     ASSERT_EQ(associationListener.ids.size(), std::size_t(2));
@@ -597,10 +597,10 @@ TEST(World, CreateDestroyContactingBodies)
     auto world = World{};
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
     ASSERT_EQ(GetJointCount(world), JointCounter(0));
-    ASSERT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
-    ASSERT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(0));
+    ASSERT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
+    ASSERT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(0));
 
-    auto contacts = world.GetContacts();
+    auto contacts = GetContacts(world);
     ASSERT_TRUE(contacts.empty());
     ASSERT_EQ(contacts.size(), ContactCounter(0));
 
@@ -610,23 +610,23 @@ TEST(World, CreateDestroyContactingBodies)
     const auto body1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l1));
     const auto body2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l2));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
-    EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
-    EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(0));
+    EXPECT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
+    EXPECT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(0));
 
     Attach(world, body1, CreateShape(world, DiskShapeConf{1_m}.UseDensity(1_kgpm2)));
     Attach(world, body2, CreateShape(world, DiskShapeConf{1_m}.UseDensity(1_kgpm2)));
     ASSERT_EQ(size(GetShapes(world, body1)), 1u);
     ASSERT_EQ(size(GetShapes(world, body2)), 1u);
-    EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
+    EXPECT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
     EXPECT_EQ(GetAssociationCount(world), std::size_t(2));
-    EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(0));
+    EXPECT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(0));
 
     const auto stepConf = StepConf{};
 
-    const auto stats0 = world.Step(stepConf);
+    const auto stats0 = Step(world, stepConf);
 
-    EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
-    EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(3));
+    EXPECT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
+    EXPECT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(3));
 
     EXPECT_EQ(stats0.pre.proxiesMoved, static_cast<decltype(stats0.pre.proxiesMoved)>(0));
     EXPECT_EQ(stats0.pre.destroyed, static_cast<decltype(stats0.pre.destroyed)>(0));
@@ -663,7 +663,7 @@ TEST(World, CreateDestroyContactingBodies)
     EXPECT_EQ(stats0.toi.maxToiIters, static_cast<decltype(stats0.toi.maxToiIters)>(0));
     EXPECT_EQ(stats0.toi.maxRootIters, static_cast<decltype(stats0.toi.maxRootIters)>(0));
 
-    contacts = world.GetContacts();
+    contacts = GetContacts(world);
     EXPECT_FALSE(contacts.empty());
     EXPECT_EQ(contacts.size(), ContactCounter(1));
     if (contacts.size() == 1u) {
@@ -677,22 +677,22 @@ TEST(World, CreateDestroyContactingBodies)
                   *GetShapes(world, body2).begin());
     }
 
-    world.Destroy(body1);
+    Destroy(world, body1);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
-    EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
-    EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(1));
+    EXPECT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
+    EXPECT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(1));
 
-    world.Step(stepConf);
-    EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
-    EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(1));
-    contacts = world.GetContacts();
-    EXPECT_TRUE(contacts.empty());
-    EXPECT_EQ(contacts.size(), ContactCounter(0));
+    Step(world, stepConf);
+    EXPECT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
+    EXPECT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(1));
+    contacts = GetContacts(world);
+    EXPECT_TRUE(empty(contacts));
+    EXPECT_EQ(size(contacts), ContactCounter(0));
 
-    world.Destroy(body2);
+    Destroy(world, body2);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
-    EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(0));
-    contacts = world.GetContacts();
+    EXPECT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(0));
+    contacts = GetContacts(world);
     EXPECT_TRUE(contacts.empty());
     EXPECT_EQ(contacts.size(), ContactCounter(0));
     EXPECT_EQ(GetAssociationCount(world), std::size_t(0));
@@ -786,12 +786,12 @@ TEST(World, SynchronizeProxies)
     auto world = World{};
     const auto stepConf = StepConf{};
     
-    EXPECT_EQ(world.Step(stepConf).pre.proxiesMoved, PreStepStats::counter_type(0));
+    EXPECT_EQ(Step(world, stepConf).pre.proxiesMoved, PreStepStats::counter_type(0));
     const auto bodyA = CreateBody(world);
     Attach(world, bodyA, CreateShape(world, DiskShapeConf(1_m)));
-    EXPECT_EQ(world.Step(stepConf).pre.proxiesMoved, PreStepStats::counter_type(0));
+    EXPECT_EQ(Step(world, stepConf).pre.proxiesMoved, PreStepStats::counter_type(0));
     SetLocation(world, bodyA, Length2{10_m, -4_m});
-    EXPECT_EQ(world.Step(stepConf).pre.proxiesMoved, PreStepStats::counter_type(1));
+    EXPECT_EQ(Step(world, stepConf).pre.proxiesMoved, PreStepStats::counter_type(1));
 }
 
 TEST(World, SetTypeOfBody)
@@ -831,12 +831,12 @@ TEST(World, Query)
     
     auto stepConf = StepConf{};
     stepConf.deltaTime = 0_s;
-    world.Step(stepConf);
+    Step(world, stepConf);
 
     {
         auto foundOurs = 0;
         auto foundOthers = 0;
-        Query(world.GetTree(), AABB{v1, v2}, [&](BodyID, ShapeID f, ChildCounter i) {
+        Query(GetTree(world), AABB{v1, v2}, [&](BodyID, ShapeID f, ChildCounter i) {
             if (f == shapeId && i == 0)
             {
                 ++foundOurs;
@@ -889,7 +889,7 @@ TEST(World, RayCast)
     
     auto stepConf = StepConf{};
     stepConf.deltaTime = 0_s;
-    world.Step(stepConf);
+    Step(world, stepConf);
     
     {
         const auto p2 = Length2{-2_m, 0_m};
@@ -1242,7 +1242,7 @@ TEST(World, AwakenFreeFunction)
     ASSERT_TRUE(IsAwake(world, body));
     auto stepConf = StepConf{};
     while (IsAwake(world, body))
-        world.Step(stepConf);
+        Step(world, stepConf);
     ASSERT_FALSE(IsAwake(world, body));
     
     Awaken(world);
@@ -1254,10 +1254,10 @@ TEST(World, GetTouchingCountFreeFunction)
     World world;
     EXPECT_EQ(GetTouchingCount(world), ContactCounter(0));
     auto stepConf = StepConf{};
-    world.Step(stepConf);
+    Step(world, stepConf);
     EXPECT_EQ(GetTouchingCount(world), ContactCounter(0));
     stepConf.deltaTime = Real(1) / 100_Hz;
-    world.Step(stepConf);
+    Step(world, stepConf);
     EXPECT_EQ(GetTouchingCount(world), ContactCounter(0));
 
     const auto groundConf = EdgeShapeConf{}
@@ -1274,7 +1274,7 @@ TEST(World, GetTouchingCountFreeFunction)
     ASSERT_EQ(GetAwakeCount(world), 1);
     while (GetAwakeCount(world) > 0)
     {
-        world.Step(stepConf);
+        Step(world, stepConf);
         EXPECT_EQ(GetTouchingCount(world), ContactCounter(1));
     }
 }
@@ -1338,15 +1338,16 @@ TEST(World, CreateAndDestroyJoint)
     EXPECT_NE(body2, InvalidBodyID);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
     EXPECT_EQ(GetJointCount(world), JointCounter(0));
-    EXPECT_TRUE(world.GetJoints().empty());
+    EXPECT_TRUE(GetJoints(world).empty());
     
     const auto anchorA = Length2{+0.4_m, -1.2_m};
     const auto anchorB = Length2{-2.3_m, +0.7_m};
-    const auto joint = world.CreateJoint(Joint{GetDistanceJointConf(world, body1, body2,
+    const auto joint = CreateJoint(world, Joint{GetDistanceJointConf(world, body1, body2,
                                                                     anchorA, anchorB)});
     EXPECT_EQ(GetJointCount(world), JointCounter(1));
-    EXPECT_FALSE(world.GetJoints().empty());
-    const auto first = *world.GetJoints().begin();
+    EXPECT_FALSE(GetJoints(world).empty());
+    const auto joints = GetJoints(world);
+    const auto first = *joints.begin();
     EXPECT_EQ(joint, first);
     EXPECT_EQ(GetType(world, joint), GetTypeID<DistanceJointConf>());
     EXPECT_EQ(GetBodyA(world, joint), body1);
@@ -1355,9 +1356,9 @@ TEST(World, CreateAndDestroyJoint)
     EXPECT_EQ(GetLocalAnchorB(world, joint), anchorB);
     EXPECT_FALSE(GetCollideConnected(world, joint));
 
-    world.Destroy(joint);
+    Destroy(world, joint);
     EXPECT_EQ(GetJointCount(world), JointCounter(0));
-    EXPECT_TRUE(world.GetJoints().empty());
+    EXPECT_TRUE(GetJoints(world).empty());
 }
 
 TEST(World, MaxBodies)
@@ -1384,11 +1385,11 @@ TEST(World, MaxJoints)
     
     for (auto i = decltype(MaxJoints){0}; i < MaxJoints; ++i)
     {
-        const auto joint = world.CreateJoint(Joint{RopeJointConf{body1, body2}});
+        const auto joint = CreateJoint(world, Joint{RopeJointConf{body1, body2}});
         ASSERT_NE(joint, InvalidJointID);
     }
     {
-        EXPECT_THROW(world.CreateJoint(Joint{RopeJointConf{body1, body2}}), LengthError);
+        EXPECT_THROW(CreateJoint(world, Joint{RopeJointConf{body1, body2}}), LengthError);
     }
 }
 
@@ -1507,7 +1508,7 @@ TEST(World, BodyAngleDoesntGrowUnbounded)
     auto maxAngle = 0_rad;
     for (auto i = 0; i < 1000000; ++i)
     {
-        world.Step(stepConf);
+        Step(world, stepConf);
         const auto angle = GetAngle(world, body);
         EXPECT_NE(angle, lastAngle);
         ASSERT_LE(angle, 360_deg);
@@ -1588,7 +1589,7 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
     auto vel = GetLinearVelocity(world, body);
     for (auto i = 0; i < 99; ++i)
     {
-        world.Step(stepConf);
+        Step(world, stepConf);
         
         EXPECT_EQ(GetY(GetLinearAcceleration(world, body)), GetY(EarthlyGravity));
         
@@ -1627,20 +1628,20 @@ struct MyContactListener
         body_a[0] = GetLocation(world, bA);
         body_b[0] = GetLocation(world, bB);
         EXPECT_THROW(CreateBody(world), WrongState);
-        EXPECT_THROW(world.SetJoint(InvalidJointID, Joint{}), WrongState);
-        EXPECT_THROW(world.SetShape(sA, Shape()), WrongState);
+        EXPECT_THROW(SetJoint(world, InvalidJointID, Joint{}), WrongState);
+        EXPECT_THROW(SetShape(world, sA, Shape()), WrongState);
         const auto typeA = GetType(world, bA);
         if (typeA != BodyType::Kinematic)
         {
             EXPECT_NO_THROW(SetType(world, bA, typeA));
             EXPECT_THROW(SetType(world, bA, BodyType::Kinematic), WrongState);
         }
-        EXPECT_THROW(world.Destroy(bA), WrongState);
-        EXPECT_THROW(world.Destroy(sA), WrongState);
-        EXPECT_THROW(world.CreateJoint(Joint{DistanceJointConf{bA, bB}}), WrongState);
-        EXPECT_THROW(world.Step(stepConf), WrongState);
-        EXPECT_THROW(world.ShiftOrigin(Length2{}), WrongState);
-        EXPECT_THROW(world.CreateShape(Shape{DiskShapeConf{}}), WrongState);
+        EXPECT_THROW(Destroy(world, bA), WrongState);
+        EXPECT_THROW(Destroy(world, sA), WrongState);
+        EXPECT_THROW(CreateJoint(world, Joint{DistanceJointConf{bA, bB}}), WrongState);
+        EXPECT_THROW(Step(world, stepConf), WrongState);
+        EXPECT_THROW(ShiftOrigin(world, Length2{}), WrongState);
+        EXPECT_THROW(CreateShape(world, Shape{DiskShapeConf{}}), WrongState);
         EXPECT_THROW(Attach(world, bA, sA), WrongState);
         EXPECT_THROW(Detach(world, bA, sA), WrongState);
         EXPECT_THROW(Detach(world, bB, sB), WrongState);
@@ -1700,16 +1701,16 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
         [&](ContactID) {},
     };
 
-    world.SetBeginContactListener([&listener](ContactID id) {
+    SetBeginContactListener(world, [&listener](ContactID id) {
         listener.BeginContact(id);
     });
-    world.SetEndContactListener([&listener](ContactID id) {
+    SetEndContactListener(world, [&listener](ContactID id) {
         listener.EndContact(id);
     });
-    world.SetPreSolveContactListener([&listener](ContactID id, const Manifold& manifold) {
+    SetPreSolveContactListener(world, [&listener](ContactID id, const Manifold& manifold) {
         listener.PreSolve(id, manifold);
     });
-    world.SetPostSolveContactListener([&listener](ContactID id,
+    SetPostSolveContactListener(world, [&listener](ContactID id,
                                                   const ContactImpulsesList& impulses,
                                                   unsigned count){
         listener.PostSolve(id, impulses, count);
@@ -1764,7 +1765,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     auto steps = unsigned{0};
     while (GetX(pos_a) < (x * Meter) && GetX(pos_b) > (-x * Meter))
     {
-        world.Step(conf);
+        Step(world, conf);
         ++steps;
         
         EXPECT_TRUE(AlmostEqual(Real{GetX(GetLocation(world, body_a)) / Meter},
@@ -1844,7 +1845,7 @@ TEST(World, HeavyOnLight)
         step.maxSubSteps = std::uint8_t{48};
         return step;
     }(baseStepConf);
-    
+
     // Create lower body, then upper body using the larger step conf
     {
         auto world = World{WorldConf{}.UseVertexRadius(VertexRadius)};
@@ -1863,7 +1864,7 @@ TEST(World, HeavyOnLight)
         auto numSteps = 0ul;
         while (GetAwakeCount(world) > 0)
         {
-            world.Step(largerStepConf);
+            Step(world, largerStepConf);
             upperBodysLowestPoint = std::min(upperBodysLowestPoint, GetY(GetLocation(world, upperBody)));
             ++numSteps;
         }
@@ -1896,7 +1897,7 @@ TEST(World, HeavyOnLight)
         auto numSteps = 0ul;
         while (GetAwakeCount(world) > 0)
         {
-            world.Step(largerStepConf);
+            Step(world, largerStepConf);
             upperBodysLowestPoint = std::min(upperBodysLowestPoint, GetY(GetLocation(world, upperBody)));
             ++numSteps;
         }
@@ -1925,7 +1926,7 @@ TEST(World, HeavyOnLight)
         auto numSteps = 0ul;
         while (GetAwakeCount(world) > 0)
         {
-            world.Step(smallerStepConf);
+            Step(world, smallerStepConf);
             upperBodysLowestPoint = std::min(upperBodysLowestPoint, GetY(GetLocation(world, upperBody)));
             ++numSteps;
         }
@@ -1962,7 +1963,7 @@ TEST(World, HeavyOnLight)
         EXPECT_EQ(GetAwakeCount(world), 2);
         while (GetAwakeCount(world) > 0)
         {
-            world.Step(smallerStepConf);
+            Step(world, smallerStepConf);
             EXPECT_EQ(GetTouchingCount(world), ContactCounter(2));
             upperBodysLowestPoint = std::min(upperBodysLowestPoint, GetY(GetLocation(world, upperBody)));
             ++numSteps;
@@ -1998,7 +1999,7 @@ TEST(World, HeavyOnLight)
         ASSERT_LT(GetMass(world, lowerBody), GetMass(world, upperBody));
 
         EXPECT_EQ(GetAwakeCount(world), BodyCounter(2));
-        world.Step(smallerStepConf);
+        Step(world, smallerStepConf);
         EXPECT_EQ(GetTouchingCount(world), ContactCounter(2));
     }
 }
@@ -2071,16 +2072,16 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
         [&](ContactID, const ContactImpulsesList&, unsigned) {},
         [&](ContactID) {},
     };
-    world.SetBeginContactListener([&listener](ContactID id) {
+    SetBeginContactListener(world, [&listener](ContactID id) {
         listener.BeginContact(id);
     });
-    world.SetEndContactListener([&listener](ContactID id) {
+    SetEndContactListener(world, [&listener](ContactID id) {
         listener.EndContact(id);
     });
-    world.SetPreSolveContactListener([&listener](ContactID id, const Manifold& manifold) {
+    SetPreSolveContactListener(world, [&listener](ContactID id, const Manifold& manifold) {
         listener.PreSolve(id, manifold);
     });
-    world.SetPostSolveContactListener([&listener](ContactID id,
+    SetPostSolveContactListener(world, [&listener](ContactID id,
                                                   const ContactImpulsesList& impulses,
                                                   unsigned count){
         listener.PostSolve(id, impulses, count);
@@ -2119,16 +2120,16 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
         [&](ContactID, const ContactImpulsesList&, unsigned) {},
         [&](ContactID) {},
     };
-    world.SetBeginContactListener([&listener](ContactID id) {
+    SetBeginContactListener(world, [&listener](ContactID id) {
         listener.BeginContact(id);
     });
-    world.SetEndContactListener([&listener](ContactID id) {
+    SetEndContactListener(world, [&listener](ContactID id) {
         listener.EndContact(id);
     });
-    world.SetPreSolveContactListener([&listener](ContactID id, const Manifold& manifold) {
+    SetPreSolveContactListener(world, [&listener](ContactID id, const Manifold& manifold) {
         listener.PreSolve(id, manifold);
     });
-    world.SetPostSolveContactListener([&listener](ContactID id,
+    SetPostSolveContactListener(world, [&listener](ContactID id,
                                                   const ContactImpulsesList& impulses,
                                                   unsigned count){
         listener.PostSolve(id, impulses, count);
@@ -2169,7 +2170,7 @@ TEST(World, DropDisks)
     const auto numDisks = static_cast<std::uint16_t>(10000u);
     auto world = World{};
     auto shapeId = InvalidShapeID;
-    ASSERT_NO_THROW(shapeId = world.CreateShape(Shape{DiskShapeConf{}.UseRadius(diskRadius)}));
+    ASSERT_NO_THROW(shapeId = CreateShape(world, Shape{DiskShapeConf{}.UseRadius(diskRadius)}));
     for (auto i = decltype(numDisks){0}; i < numDisks; ++i) {
         const auto x = i * diskRadius * 4;
         const auto location = Length2{x, 0_m};
@@ -2179,16 +2180,16 @@ TEST(World, DropDisks)
                                            .UseLinearAcceleration(playrho::d2::EarthlyGravity));
         ASSERT_NO_THROW(Attach(world, body, shapeId));
     }
-    ASSERT_EQ(size(world.GetBodies()), numDisks);
-    ASSERT_EQ(world.GetTree().GetNodeCount(), 0u);
-    ASSERT_EQ(world.GetTree().GetNodeCapacity(), 4096u);
+    ASSERT_EQ(size(GetBodies(world)), numDisks);
+    ASSERT_EQ(GetTree(world).GetNodeCount(), 0u);
+    ASSERT_EQ(GetTree(world).GetNodeCapacity(), 4096u);
 
     const auto stepConf = playrho::StepConf{};
     auto stats = StepStats{};
-    ASSERT_NO_THROW(stats = world.Step(stepConf));
+    ASSERT_NO_THROW(stats = Step(world, stepConf));
 
-    EXPECT_EQ(world.GetTree().GetNodeCount(), 19999u);
-    EXPECT_EQ(world.GetTree().GetNodeCapacity(), 32768u);
+    EXPECT_EQ(GetTree(world).GetNodeCount(), 19999u);
+    EXPECT_EQ(GetTree(world).GetNodeCapacity(), 32768u);
 
     EXPECT_EQ(stats.reg.islandsFound, numDisks);
     EXPECT_EQ(stats.reg.islandsSolved, numDisks);
@@ -2212,18 +2213,18 @@ TEST(World, DropDisks)
     EXPECT_EQ(stats.toi.sumVelIters, 0u);
 
     for (auto i = decltype(numDisks){0}; i < numDisks; ++i) {
-        const auto& body = world.GetBody(BodyID(i));
+        const auto body = GetBody(world, BodyID(i));
         EXPECT_EQ(GetX(body.GetVelocity().linear), 0_mps);
         EXPECT_LT(GetY(body.GetVelocity().linear), 0_mps);
     }
 
     for (auto i = 1; i < 8; ++i) {
-        EXPECT_NO_THROW(stats = world.Step(stepConf));
+        EXPECT_NO_THROW(stats = Step(world, stepConf));
         SCOPED_TRACE(std::string("#-steps is ") + std::to_string(i));
         EXPECT_EQ(stats.reg.proxiesMoved, 0u);
     }
 
-    EXPECT_NO_THROW(stats = world.Step(stepConf));
+    EXPECT_NO_THROW(stats = Step(world, stepConf));
     EXPECT_EQ(stats.reg.proxiesMoved, numDisks);
     EXPECT_EQ(stats.toi.islandsFound, 0u);
     EXPECT_EQ(stats.toi.islandsSolved, 0u);
@@ -2233,8 +2234,8 @@ TEST(World, DropDisks)
     EXPECT_EQ(stats.toi.sumPosIters, 0u);
     EXPECT_EQ(stats.toi.sumVelIters, 0u);
 
-    EXPECT_EQ(world.GetTree().GetNodeCount(), 19999u);
-    EXPECT_EQ(world.GetTree().GetNodeCapacity(), 32768u);
+    EXPECT_EQ(GetTree(world).GetNodeCount(), 19999u);
+    EXPECT_EQ(GetTree(world).GetNodeCapacity(), 32768u);
 }
 
 TEST(World, PartiallyOverlappedSameCirclesSeparate)
@@ -2276,7 +2277,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
     const auto full_separation = radius * 2_m - Length{step.linearSlop};
     for (auto i = 0; i < 100; ++i)
     {
-        world.Step(step);
+        Step(world, step);
 
         const auto new_pos_diff = GetLocation(world, body2) - GetLocation(world, body1);
         const auto new_distance = GetMagnitude(new_pos_diff);
@@ -2353,7 +2354,7 @@ TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
     stepConf.maxLinearCorrection = Real{0.0001f * 40} * Meter;
     for (auto i = 0; i < 100; ++i)
     {
-        world.Step(stepConf);
+        Step(world, stepConf);
         
         // body1 moves left only
         EXPECT_LT(GetX(GetLocation(world, body1)), GetX(lastpos1));
@@ -2408,8 +2409,8 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     auto last_angle_1 = GetAngle(world, body1);
     auto last_angle_2 = GetAngle(world, body2);
 
-    ASSERT_EQ(world.GetBodies().size(), World::Bodies::size_type(2));
-    ASSERT_EQ(world.GetContacts().size(), World::Contacts::size_type(0));
+    ASSERT_EQ(GetBodies(world).size(), 2u);
+    ASSERT_EQ(GetContacts(world).size(), 0u);
 
     auto position_diff = body1pos - body2pos;
     auto distance = GetMagnitude(position_diff);
@@ -2432,10 +2433,10 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     {
         Step(world, 1_s * time_inc, velocity_iters, position_iters);
         
-        ASSERT_EQ(world.GetContacts().size(), decltype(world.GetContacts().size())(1));
+        ASSERT_EQ(GetContacts(world).size(), decltype(GetContacts(world).size())(1));
 
-        auto count = decltype(world.GetContacts().size())(0);
-        const auto& contacts = world.GetContacts();
+        auto count = decltype(GetContacts(world).size())(0);
+        const auto contacts = GetContacts(world);
         for (auto&& contact: contacts)
         {
             ++count;
@@ -2444,11 +2445,11 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
             const auto body_b = GetBodyB(world, c);
             EXPECT_EQ(body_a, body1);
             EXPECT_EQ(body_b, body2);
-            const auto& manifold = GetManifold(world, c);
+            const auto manifold = GetManifold(world, c);
             EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
             EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
         }
-        ASSERT_EQ(count, decltype(world.GetContacts().size())(1));
+        ASSERT_EQ(count, decltype(GetContacts(world).size())(1));
 
         const auto v1 = GetVelocity(world, body1);
         EXPECT_EQ(v1.angular, 0_deg / 1_s);
@@ -2530,16 +2531,16 @@ TEST(World, CollidingDynamicBodies)
         [&](ContactID, const ContactImpulsesList&, unsigned) {},
         [&](ContactID) {},
     };
-    world.SetBeginContactListener([&listener](ContactID id) {
+    SetBeginContactListener(world, [&listener](ContactID id) {
         listener.BeginContact(id);
     });
-    world.SetEndContactListener([&listener](ContactID id) {
+    SetEndContactListener(world, [&listener](ContactID id) {
         listener.EndContact(id);
     });
-    world.SetPreSolveContactListener([&listener](ContactID id, const Manifold& manifold) {
+    SetPreSolveContactListener(world, [&listener](ContactID id, const Manifold& manifold) {
         listener.PreSolve(id, manifold);
     });
-    world.SetPostSolveContactListener([&listener](ContactID id,
+    SetPostSolveContactListener(world, [&listener](ContactID id,
                                                   const ContactImpulsesList& impulses,
                                                   unsigned count){
         listener.PostSolve(id, impulses, count);
@@ -2702,7 +2703,7 @@ TEST(World_Longer, TilesComesToRest)
         const auto a = Real{0.5f};
         conf.UseDensity(5_kgpm2);
         conf.SetAsBox(a * Meter, a * Meter);
-        const auto shapeId = world->CreateShape(Shape(conf));
+        const auto shapeId = CreateShape(*world, Shape(conf));
 
         Length2 x(-7.0_m, 0.75_m);
         Length2 y;
@@ -2751,7 +2752,7 @@ TEST(World_Longer, TilesComesToRest)
     auto awakeCount = 0ul;
     constexpr auto maxSteps = 3000ul;
     while ((awakeCount = GetAwakeCount(*world)) > 0 && numSteps < maxSteps) {
-        const auto stats = world->Step(step);
+        const auto stats = Step(*world, step);
         sumRegPosIters += stats.reg.sumPosIters;
         sumRegVelIters += stats.reg.sumVelIters;
         sumToiPosIters += stats.toi.sumPosIters;
@@ -2768,36 +2769,36 @@ TEST(World_Longer, TilesComesToRest)
     switch (sizeof(Real)) {
     case 4u:
 #if defined(__core2__)
-        EXPECT_EQ(world->GetContactRange(), 1447u);
+        EXPECT_EQ(GetContactRange(*world), 1447u);
         EXPECT_EQ(totalBodiesSlept, createdBodyCount + 1u);
         EXPECT_TRUE(firstStepWithZeroMoved);
         if (firstStepWithZeroMoved) {
             EXPECT_EQ(*firstStepWithZeroMoved, 1798u);
         }
 #elif defined(_WIN64)
-        EXPECT_EQ(world->GetContactRange(), 1448u);
+        EXPECT_EQ(GetContactRange(*world), 1448u);
         EXPECT_EQ(totalBodiesSlept, 667u);
         EXPECT_TRUE(firstStepWithZeroMoved);
         if (firstStepWithZeroMoved) {
             EXPECT_EQ(*firstStepWithZeroMoved, 1812u);
         }
 #elif defined(_WIN32)
-        EXPECT_EQ(world->GetContactRange(), 1448u);
+        EXPECT_EQ(GetContactRange(*world), 1448u);
         EXPECT_EQ(totalBodiesSlept, 671u);
         EXPECT_TRUE(firstStepWithZeroMoved);
         if (firstStepWithZeroMoved) {
             EXPECT_EQ(*firstStepWithZeroMoved, 1801u);
         }
 #elif defined(__amd64__) // includes __k8__
-        EXPECT_EQ(world->GetContactRange(), 1448u);
+        EXPECT_EQ(GetContactRange(*world), 1448u);
         EXPECT_EQ(totalBodiesSlept, 667u);
         EXPECT_TRUE(firstStepWithZeroMoved);
         if (firstStepWithZeroMoved) {
             EXPECT_EQ(*firstStepWithZeroMoved, 1800u);
         }
 #elif defined(__arm64__) // At least for Apple Silicon
-        EXPECT_GE(world->GetContactRange(), 1447u);
-        EXPECT_LE(world->GetContactRange(), 1451u);
+        EXPECT_GE(GetContactRange(*world), 1447u);
+        EXPECT_LE(GetContactRange(*world), 1451u);
         EXPECT_GE(totalBodiesSlept, 667u);
         EXPECT_LE(totalBodiesSlept, 670u);
         EXPECT_TRUE(firstStepWithZeroMoved);
@@ -2810,8 +2811,8 @@ TEST(World_Longer, TilesComesToRest)
             EXPECT_LE(*firstStepWithZeroMoved, 1812u);
         }
 #else // unrecognized arch; just check results are within range of others
-        EXPECT_GE(world->GetContactRange(), 1447u);
-        EXPECT_LE(world->GetContactRange(), 1450u);
+        EXPECT_GE(GetContactRange(*world), 1447u);
+        EXPECT_LE(GetContactRange(*world), 1450u);
         EXPECT_GE(totalBodiesSlept, 667u);
         EXPECT_LE(totalBodiesSlept, 668u);
         EXPECT_TRUE(firstStepWithZeroMoved);
@@ -2822,7 +2823,7 @@ TEST(World_Longer, TilesComesToRest)
 #endif
         break;
     case 8u:
-        EXPECT_EQ(world->GetContactRange(), 1447u);
+        EXPECT_EQ(GetContactRange(*world), 1447u);
 #if defined(__GNUC__) && defined(__clang__) && !defined(__core2__) && !defined(__arm64__)
         EXPECT_EQ(totalBodiesSlept, createdBodyCount);
 #else
@@ -2838,7 +2839,7 @@ TEST(World_Longer, TilesComesToRest)
         }
         break;
     }
-    EXPECT_EQ(world->GetTree().GetNodeCount(), 5331u);
+    EXPECT_EQ(GetTree(*world).GetNodeCount(), 5331u);
     //const auto end_time = std::chrono::high_resolution_clock::now();
     
     //const std::chrono::duration<double> elapsed_time = end_time - start_time;
@@ -3041,16 +3042,16 @@ TEST(World, SpeedingBulletBallWontTunnel)
         [&](ContactID, const ContactImpulsesList&, unsigned) {},
         [&](ContactID) {},
     };
-    world.SetBeginContactListener([&listener](ContactID id) {
+    SetBeginContactListener(world, [&listener](ContactID id) {
         listener.BeginContact(id);
     });
-    world.SetEndContactListener([&listener](ContactID id) {
+    SetEndContactListener(world, [&listener](ContactID id) {
         listener.EndContact(id);
     });
-    world.SetPreSolveContactListener([&listener](ContactID id, const Manifold& manifold) {
+    SetPreSolveContactListener(world, [&listener](ContactID id, const Manifold& manifold) {
         listener.PreSolve(id, manifold);
     });
-    world.SetPostSolveContactListener([&listener](ContactID id,
+    SetPostSolveContactListener(world, [&listener](ContactID id,
                                                   const ContactImpulsesList& impulses,
                                                   unsigned count){
         listener.PostSolve(id, impulses, count);
@@ -3108,7 +3109,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     step.aabbExtension = LinearSlop * Real(20);
     step.velocityThreshold = (Real{8} / Real{10}) * 1_mps;
     step.maxSubSteps = std::uint8_t{48};
-    world.Step(step);
+    Step(world, step);
 
     const auto max_velocity = step.maxTranslation / time_inc;
 
@@ -3134,7 +3135,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
             }
 
             const auto last_contact_count = listener.begin_contacts;
-            world.Step(step);
+            Step(world, step);
 
             EXPECT_LT(GetX(GetLocation(world, ball_body)), right_edge_x - (ball_radius/Real{2}));
             EXPECT_GT(GetX(GetLocation(world, ball_body)), left_edge_x + (ball_radius/Real{2}));
@@ -3176,7 +3177,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
             }
             
             const auto last_contact_count = listener.begin_contacts;
-            world.Step(step);
+            Step(world, step);
             
             EXPECT_LT(GetX(GetLocation(world, ball_body)), right_edge_x - (ball_radius/Real{2}));
             EXPECT_GT(GetX(GetLocation(world, ball_body)), left_edge_x + (ball_radius/Real{2}));
@@ -3323,7 +3324,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
             GetY(ball_body_pos) + ball_radius / Real{2}
         };
         mjd.maxForce = Real(1000) * GetMass(world, ball_body) * MeterPerSquareSecond;
-        return world.CreateJoint(Joint{mjd});
+        return CreateJoint(world, Joint{mjd});
     }();
     ASSERT_NE(target_joint, InvalidJointID);
 
@@ -3599,7 +3600,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
 
     const auto target0 = GetTarget(world, target_joint);
     const auto shift = Length2{2_m, 2_m};
-    world.ShiftOrigin(shift);
+    ShiftOrigin(world, shift);
     const auto target1 = GetTarget(world, target_joint);
     EXPECT_EQ(target0 - shift, target1);
 }
@@ -3633,7 +3634,7 @@ public:
         stepConf.deltaTime = 1_s / 60;
         while (loopsTillSleeping < maxLoops)
         {
-            world.Step(stepConf);
+            Step(world, stepConf);
             if (GetAwakeCount(world) == 0)
             {
                 break;

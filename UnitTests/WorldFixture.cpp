@@ -21,7 +21,6 @@
 #include "UnitTests.hpp"
 
 #include <playrho/d2/World.hpp>
-#include <playrho/d2/WorldImpl.hpp>
 #include <playrho/d2/WorldBody.hpp>
 #include <playrho/d2/WorldMisc.hpp>
 #include <playrho/d2/WorldShape.hpp>

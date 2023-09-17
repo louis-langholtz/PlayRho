@@ -29,6 +29,7 @@
 #include <playrho/d2/Math.hpp>
 #include <playrho/d2/RayCastInput.hpp>
 #include <playrho/d2/RayCastOutput.hpp>
+#include <playrho/d2/World.hpp>
 #include <playrho/d2/WorldBody.hpp>
 #include <playrho/d2/WorldMisc.hpp>
 #include <playrho/d2/WorldShape.hpp>

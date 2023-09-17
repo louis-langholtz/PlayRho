@@ -212,7 +212,7 @@ TEST(WorldShape, GetShapeRange)
     EXPECT_EQ(GetShapeRange(world), 3u);
     EXPECT_NO_THROW(Destroy(world, ShapeID(0u)));
     EXPECT_EQ(GetShapeRange(world), 3u);
-    EXPECT_NO_THROW(world.Clear());
+    EXPECT_NO_THROW(Clear(world));
     EXPECT_EQ(GetShapeRange(world), 0u);
 }
 
