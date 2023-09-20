@@ -97,6 +97,7 @@ set(PLAYRHO_D2_HDRS
 	"${PLAYRHO_INCLUDE_PREFIX}d2/PolygonShapeConf.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/Position.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/PositionConstraint.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/PositionSolution.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/PositionSolverManifold.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/PrismaticJointConf.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/PulleyJointConf.hpp"

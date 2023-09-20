@@ -25,10 +25,10 @@
 #include <playrho/Span.hpp>
 
 #include <playrho/d2/Math.hpp>
+#include <playrho/d2/PositionSolution.hpp>
 
 namespace playrho {
 
-struct StepConf;
 struct ConstraintSolverConf;
 
 namespace d2 {
@@ -36,34 +36,6 @@ namespace d2 {
 class VelocityConstraint;
 class PositionConstraint;
 class BodyConstraint;
-
-/// @brief Solution for position constraint.
-struct PositionSolution
-{
-    Position pos_a; ///< Position A.
-    Position pos_b; ///< Position B.
-    Length min_separation; ///< Min separation.
-};
-
-/// @brief Addition operator.
-inline PositionSolution operator+ (const PositionSolution& lhs, const PositionSolution& rhs)
-{
-    return PositionSolution{
-        lhs.pos_a + rhs.pos_a,
-        lhs.pos_b + rhs.pos_b,
-        lhs.min_separation + rhs.min_separation
-    };
-}
-
-/// @brief Subtraction operator.
-inline PositionSolution operator- (const PositionSolution& lhs, const PositionSolution& rhs)
-{
-    return PositionSolution{
-        lhs.pos_a - rhs.pos_a,
-        lhs.pos_b - rhs.pos_b,
-        lhs.min_separation - rhs.min_separation
-    };
-}
 
 } // namespace d2
 
