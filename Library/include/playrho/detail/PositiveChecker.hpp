@@ -29,6 +29,9 @@
 namespace playrho::detail {
 
 /// @brief Positive constrained value checker.
+/// @note This is meant to be used as a checker with types like <code>Checked</code>.
+/// @ingroup Checkers
+/// @see Checked.
 template <typename T>
 struct PositiveChecker {
 
