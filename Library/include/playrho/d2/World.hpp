@@ -128,7 +128,7 @@ void Clear(World& world) noexcept;
 /// @warning Varying the step time delta may lead to non-physical behaviors.
 /// @note Calling this with a zero step time delta results only in fixtures and bodies
 ///   registered for special handling being processed. No physics is performed.
-/// @note If the given velocity and position iterations are zero, this method doesn't
+/// @note If the given velocity and position iterations are zero, this function doesn't
 ///   do velocity or position resolutions respectively of the contacting bodies.
 /// @note While body velocities are updated accordingly (per the sum of forces acting on them),
 ///   body positions (barring any collisions) are updated as if they had moved the entire time
@@ -145,13 +145,13 @@ void Clear(World& world) noexcept;
 /// @param world The world to simulate a step for.
 /// @param conf Configuration for the simulation step.
 /// @return Statistics for the step.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 StepStats Step(World& world, const StepConf& conf = StepConf{});
 
 /// @brief Whether or not "step" is complete.
 /// @details The "step" is completed when there are no more TOI events for the current time
 /// step.
-/// @return <code>true</code> unless sub-stepping is enabled and the step method returned
+/// @return <code>true</code> unless sub-stepping is enabled and the step function returned
 ///   without finishing all of its sub-steps.
 /// @see GetSubStepping, SetSubStepping.
 bool IsStepComplete(const World& world) noexcept;
@@ -162,7 +162,7 @@ bool GetSubStepping(const World& world) noexcept;
 
 /// @brief Enables/disables single stepped continuous physics.
 /// @note This is not normally used. Enabling sub-stepping is meant for testing.
-/// @post The <code>GetSubStepping()</code> method will return the value this method was
+/// @post The <code>GetSubStepping()</code> function will return the value this function was
 ///   called with.
 /// @see IsStepComplete, GetSubStepping.
 void SetSubStepping(World& world, bool flag) noexcept;
@@ -182,7 +182,7 @@ bool IsLocked(const World& world) noexcept;
 ///   have been translated per the shift amount and direction.
 /// @param world The world whose origin is to be shifted.
 /// @param newOrigin the new origin with respect to the old origin
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 void ShiftOrigin(World& world, const Length2& newOrigin);
 
 /// @brief Gets the minimum vertex radius that shapes in this world can be.
@@ -195,7 +195,7 @@ Length GetMaxVertexRadius(const World& world) noexcept;
 
 /// @brief Gets the inverse delta time.
 /// @details Gets the inverse delta time that was set on construction or assignment, and
-///   updated on every call to the <code>Step()</code> method having a non-zero delta-time.
+///   updated on every call to the <code>Step()</code> function having a non-zero delta-time.
 /// @see Step.
 Frequency GetInvDeltaTime(const World& world) noexcept;
 
@@ -221,7 +221,7 @@ std::vector<BodyID> GetBodies(const World& world);
 
 /// @brief Gets the bodies-for-proxies range for this world.
 /// @details Provides insight on what bodies have been queued for proxy processing
-///   during the next call to the world step method.
+///   during the next call to the world step function.
 /// @see Step.
 /// @todo Remove this function from this class - access from implementation instead.
 std::vector<BodyID> GetBodiesForProxies(const World& world);
@@ -231,13 +231,13 @@ std::vector<BodyID> GetBodiesForProxies(const World& world);
 ///   during callbacks. If it is, it will throw an exception or abort your program.
 /// @note No references to the configuration are retained. Its value is copied.
 /// @post The created body will be present in the range returned from the
-///   <code>GetBodies(const World&)</code> method.
+///   <code>GetBodies(const World&)</code> function.
 /// @param world The world within which to create the body.
 /// @param body A customized body or its default value.
 /// @param resetMassData Whether or not the mass data of the body should be reset.
 /// @return Identifier of the newly created body which can later be destroyed by calling
-///   the <code>Destroy(BodyID)</code> method.
-/// @throws WrongState if this method is called while the world is locked.
+///   the <code>Destroy(BodyID)</code> function.
+/// @throws WrongState if this function is called while the world is locked.
 /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
 /// @throws std::out_of_range if the given body references any invalid shape identifiers.
 /// @see Destroy(World& world, BodyID), GetBodies(const World&), ResetMassData.
@@ -259,16 +259,16 @@ void SetBody(World& world, BodyID id, const Body& body);
 
 /// @brief Destroys the identified body.
 /// @details Destroys the identified body that had previously been created by a call
-///   to this world's <code>CreateBody(const BodyConf&)</code> method.
+///   to this world's <code>CreateBody(const BodyConf&)</code> function.
 /// @warning This automatically deletes all associated shapes and joints.
 /// @warning This function is locked during callbacks.
 /// @warning Behavior is not specified if identified body wasn't created by this world.
 /// @note This function is locked during callbacks.
 /// @post The destroyed body will no longer be present in the range returned from the
-///   <code>GetBodies()</code> method.
+///   <code>GetBodies()</code> function.
 /// @param world The world from which to delete the identified body from.
 /// @param id Identifier of body to destroy that had been created in @p world.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see CreateBody(const BodyConf&), GetBodies, GetBodyRange.
 /// @see PhysicalEntities.
@@ -335,12 +335,12 @@ inline JointCounter GetJointCount(const World& world)
 }
 
 /// @brief Creates a new joint within the given world.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 JointID CreateJoint(World& world, const Joint& def);
 
 /// @brief Creates a new joint from a configuration.
 /// @details This is a convenience function for allowing limited implicit conversions to joints.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @relatedalso World
 template <typename T>
 JointID CreateJoint(World& world, const T& value)
@@ -349,7 +349,7 @@ JointID CreateJoint(World& world, const T& value)
 }
 
 /// @brief Destroys the identified joint.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid joint identifier.
 void Destroy(World& world, JointID id);
 
@@ -358,13 +358,13 @@ void Destroy(World& world, JointID id);
 Joint GetJoint(const World& world, JointID id);
 
 /// @brief Sets the value of the identified joint.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid joint identifier.
 void SetJoint(World& world, JointID id, const Joint& def);
 
 /// @brief Sets a joint's value from a configuration.
 /// @details This is a convenience function for allowing limited implicit conversions to joints.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
 template <typename T>
@@ -466,9 +466,8 @@ inline ContactCounter GetContactCount(const World& world) noexcept
 ///
 /// @details Concepts and types of creatable and destroyable instances that associate
 ///   physical properties to simulations. These instances are typically created via a
-///   method whose name begins with the prefix of <code>Create</code>. Similarly, these
-///   instances are typically destroyed using a method whose name begins with the prefix
-///   of <code>Destroy</code>.
+///   function whose name begins with the prefix of <code>Create</code>. Similarly, these
+///   instances are typically destroyed using a <code>Destroy</code> function.
 ///
 /// @note For example, the following could be used to create a dynamic body having a one meter
 ///   radius disk shape:
@@ -706,7 +705,7 @@ private:
         /// @warning Varying the step time delta may lead to non-physical behaviors.
         /// @note Calling this with a zero step time delta results only in fixtures and bodies
         ///   registered for special handling being processed. No physics is performed.
-        /// @note If the given velocity and position iterations are zero, this method doesn't
+        /// @note If the given velocity and position iterations are zero, this function doesn't
         ///   do velocity or position resolutions respectively of the contacting bodies.
         /// @note While body velocities are updated accordingly (per the sum of forces acting on them),
         ///   body positions (barring any collisions) are updated as if they had moved the entire time
@@ -722,13 +721,13 @@ private:
         ///   of their fixtures when they experience collisions.
         /// @param conf Configuration for the simulation step.
         /// @return Statistics for the step.
-        /// @throws WrongState if this method is called while the world is locked.
+        /// @throws WrongState if this function is called while the world is locked.
         virtual StepStats Step_(const StepConf& conf) = 0;
 
         /// @brief Whether or not "step" is complete.
         /// @details The "step" is completed when there are no more TOI events for the current time
         /// step.
-        /// @return <code>true</code> unless sub-stepping is enabled and the step method returned
+        /// @return <code>true</code> unless sub-stepping is enabled and the step function returned
         ///   without finishing all of its sub-steps.
         /// @see GetSubStepping_, SetSubStepping_.
         virtual bool IsStepComplete_() const noexcept = 0;
@@ -739,7 +738,7 @@ private:
 
         /// @brief Enables/disables single stepped continuous physics.
         /// @note This is not normally used. Enabling sub-stepping is meant for testing.
-        /// @post The <code>GetSubStepping_()</code> method will return the value this method was
+        /// @post The <code>GetSubStepping_()</code> function will return the value this function was
         ///   called with.
         /// @see IsStepComplete_, GetSubStepping_.
         virtual void SetSubStepping_(bool flag) noexcept = 0;
@@ -758,7 +757,7 @@ private:
         /// @post The "origin" of this world's bodies, joints, and the board-phase dynamic tree
         ///   have been translated per the shift amount and direction.
         /// @param newOrigin the new origin with respect to the old origin
-        /// @throws WrongState if this method is called while the world is locked.
+        /// @throws WrongState if this function is called while the world is locked.
         virtual void ShiftOrigin_(const Length2& newOrigin) = 0;
 
         /// @brief Gets the minimum vertex radius that shapes in this world can be.
@@ -771,7 +770,7 @@ private:
 
         /// @brief Gets the inverse delta time.
         /// @details Gets the inverse delta time that was set on construction or assignment, and
-        ///   updated on every call to the <code>Step_</code> method having a non-zero delta-time.
+        ///   updated on every call to the <code>Step_</code> function having a non-zero delta-time.
         /// @see Step_.
         virtual Frequency GetInvDeltaTime_() const noexcept = 0;
 
@@ -789,14 +788,14 @@ private:
         /// @brief Gets the world body range for this constant world.
         /// @details Gets a range enumerating the bodies currently existing within this world.
         ///   These are the bodies that had been created from previous calls to the
-        ///   <code>CreateBody_(const Body&)</code> method that haven't yet been destroyed.
+        ///   <code>CreateBody_(const Body&)</code> function that haven't yet been destroyed.
         /// @return An iterable of body identifiers.
         /// @see CreateBody_.
         virtual std::vector<BodyID> GetBodies_() const = 0;
 
         /// @brief Gets the bodies-for-proxies range for this world.
         /// @details Provides insight on what bodies have been queued for proxy processing
-        ///   during the next call to the world step method.
+        ///   during the next call to the world step function.
         /// @see Step_.
         /// @todo Remove this function from this class - access from implementation instead.
         virtual std::vector<BodyID> GetBodiesForProxies_() const = 0;
@@ -806,11 +805,11 @@ private:
         ///   during callbacks. If it is, it will throw an exception or abort your program.
         /// @note No references to the configuration are retained. Its value is copied.
         /// @post The created body will be present in the range returned from the
-        ///   <code>GetBodies_()</code> method.
+        ///   <code>GetBodies_()</code> function.
         /// @param body A customized body or its default value.
         /// @return Identifier of the newly created body which can later be destroyed by calling
-        ///   the <code>Destroy_(BodyID)</code> method.
-        /// @throws WrongState if this method is called while the world is locked.
+        ///   the <code>Destroy_(BodyID)</code> function.
+        /// @throws WrongState if this function is called while the world is locked.
         /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
         /// @throws std::out_of_range if the given body references any invalid shape identifiers.
         /// @see Destroy_(BodyID), GetBodies_.
@@ -831,15 +830,15 @@ private:
 
         /// @brief Destroys the identified body.
         /// @details Destroys the identified body that had previously been created by a call to this
-        ///   world's <code>CreateBody_(const Body&)</code> method.
+        ///   world's <code>CreateBody_(const Body&)</code> function.
         /// @warning This automatically deletes all associated shapes and joints.
         /// @warning This function is locked during callbacks.
         /// @warning Behavior is not specified if identified body wasn't created by this world.
         /// @note This function is locked during callbacks.
         /// @post The destroyed body will no longer be present in the range returned from the
-        ///   <code>GetBodies_()</code> method.
+        ///   <code>GetBodies_()</code> function.
         /// @param id Identifier of body to destroy that had been created by this world.
-        /// @throws WrongState if this method is called while the world is locked.
+        /// @throws WrongState if this function is called while the world is locked.
         /// @throws std::out_of_range If given an invalid body identifier.
         /// @see CreateBody_, GetBodies_, GetBodyRange_.
         /// @see PhysicalEntities.
@@ -876,7 +875,7 @@ private:
         /// @brief Gets the world joint range.
         /// @details Gets a range enumerating the joints currently existing within this world.
         ///   These are the joints that had been created from previous calls to the
-        ///   <code>CreateJoint_</code> method that haven't yet been destroyed.
+        ///   <code>CreateJoint_</code> function that haven't yet been destroyed.
         /// @return World joints sized-range.
         /// @see CreateJoint_.
         virtual std::vector<JointID> GetJoints_() const = 0;
@@ -884,10 +883,10 @@ private:
         /// @brief Creates a joint to constrain one or more bodies.
         /// @warning This function is locked during callbacks.
         /// @post The created joint will be present in the range returned from the
-        ///   <code>GetJoints_()</code> method.
+        ///   <code>GetJoints_()</code> function.
         /// @return Identifier of newly created joint which can later be destroyed by calling the
-        ///   <code>Destroy_(JointID)</code> method.
-        /// @throws WrongState if this method is called while the world is locked.
+        ///   <code>Destroy_(JointID)</code> function.
+        /// @throws WrongState if this function is called while the world is locked.
         /// @throws LengthError if this operation would create more than <code>MaxJoints</code>.
         /// @see PhysicalEntities.
         /// @see Destroy_(JointID), GetJoints_.
@@ -899,7 +898,7 @@ private:
         virtual Joint GetJoint_(JointID id) const = 0;
 
         /// @brief Sets the identified joint to the given value.
-        /// @throws WrongState if this method is called while the world is locked.
+        /// @throws WrongState if this function is called while the world is locked.
         /// @throws std::out_of_range If given an invalid joint identifier.
         /// @throws InvalidArgument if the specified ID was destroyed.
         /// @see GetJoint_, GetJointRange_.
@@ -907,13 +906,13 @@ private:
 
         /// @brief Destroys the identified joint.
         /// @details Destroys the identified joint that had previously been created by a call to this
-        ///   world's <code>CreateJoint_(const Joint&)</code> method.
+        ///   world's <code>CreateJoint_(const Joint&)</code> function.
         /// @warning This function is locked during callbacks.
         /// @note This may cause the connected bodies to begin colliding.
         /// @post The destroyed joint will no longer be present in the range returned from the
-        ///   <code>GetJoints_()</code> method.
+        ///   <code>GetJoints_()</code> function.
         /// @param id Identifier of joint to destroy that had been created by this world.
-        /// @throws WrongState if this method is called while the world is locked.
+        /// @throws WrongState if this function is called while the world is locked.
         /// @throws std::out_of_range If given an invalid joint identifier.
         /// @see CreateJoint_(const Joint&), GetJoints_, GetJointRange_.
         /// @see PhysicalEntities.
@@ -933,7 +932,7 @@ private:
         /// @brief Creates an identifiable copy of the given shape within this world.
         /// @throws InvalidArgument if called for a shape with a vertex radius that's either:
         ///    less than the minimum vertex radius, or greater than the maximum vertex radius.
-        /// @throws WrongState if this method is called while the world is locked.
+        /// @throws WrongState if this function is called while the world is locked.
         /// @throws LengthError if this operation would create more than <code>MaxShapes</code>.
         /// @see Destroy_(ShapeID), GetShape_, SetShape_.
         virtual ShapeID CreateShape_(const Shape& def) = 0;

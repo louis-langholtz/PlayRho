@@ -132,7 +132,7 @@ public:
 
     /// @brief Unifying assignment operator.
     /// @note This intentionally takes the argument by-value. Along with the move constructor,
-    ///   this assignment method effectively doubles up as both copy assignment and move
+    ///   this assignment operator effectively doubles up as both copy assignment and move
     ///   assignment support.
     /// @see https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Copy-and-swap
     /// @see https://stackoverflow.com/a/3279550/7410358
@@ -155,7 +155,7 @@ public:
     ///   by <code>GetNodeCount()</code>) is less than <code>std::numeric_limits<Size>::max()</code>.
     /// @note The indices of leaf nodes that have been destroyed get reused for new nodes.
     /// @post If the root index had been the <code>GetInvalidSize()</code>, then it will
-    ///   be set to the index returned from this method.
+    ///   be set to the index returned from this function.
     /// @post The leaf count per <code>GetLeafCount()</code> is incremented by one.
     /// @post The node count (as reported by <code>GetNodeCount()</code>) will be incremented by one
     ///   or two (if the root index had not been <code>GetInvalidSize()</code>).
@@ -687,7 +687,7 @@ void Query(const DynamicTree& tree, const AABB& aabb, QueryShapeCallback callbac
 
 /// @brief Gets the "size" of the given tree.
 /// @note Size in this context is defined as the leaf count.
-/// @note This provides ancillary support for the container named requirement's size method.
+/// @note This provides ancillary support for the container named requirement's size function.
 /// @see DynamicTree::GetLeafCount()
 /// @see https://en.cppreference.com/w/cpp/named_req/Container
 inline std::size_t size(const DynamicTree& tree) noexcept

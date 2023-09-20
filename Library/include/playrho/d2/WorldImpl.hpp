@@ -126,7 +126,7 @@ public:
     /// @brief Constructs a world implementation for a world.
     /// @param conf A customized world configuration or its default value.
     /// @note A lot more configurability can be had via the <code>StepConf</code>
-    ///   data that's given to the world's <code>Step</code> method.
+    ///   data that's given to the world's <code>Step</code> function.
     /// @see Step.
     explicit WorldImpl(const WorldConf& conf = WorldConf{});
 
@@ -202,7 +202,7 @@ public:
     ///
     /// @note Calling this with a zero step time delta results only in fixtures and bodies
     ///   registered for proxy handling being processed. No physics is performed.
-    /// @note If the given velocity and position iterations are zero, this method doesn't
+    /// @note If the given velocity and position iterations are zero, this function doesn't
     ///   do velocity or position resolutions respectively of the contacting bodies.
     /// @note While body velocities are updated accordingly (per the sum of forces acting on them),
     ///   body positions (barring any collisions) are updated as if they had moved the entire time
@@ -233,7 +233,7 @@ public:
 
     /// @brief Whether or not "step" is complete.
     /// @details The "step" is completed when there are no more TOI events for the current time step.
-    /// @return <code>true</code> unless sub-stepping is enabled and the step method returned
+    /// @return <code>true</code> unless sub-stepping is enabled and the step function returned
     ///   without finishing all of its sub-steps.
     /// @see GetSubStepping, SetSubStepping.
     bool IsStepComplete() const noexcept;
@@ -244,7 +244,7 @@ public:
 
     /// @brief Enables/disables single stepped continuous physics.
     /// @note This is not normally used. Enabling sub-stepping is meant for testing.
-    /// @post The <code>GetSubStepping()</code> method will return the value this method was
+    /// @post The <code>GetSubStepping()</code> function will return the value this function was
     ///   called with.
     /// @see IsStepComplete, GetSubStepping.
     void SetSubStepping(bool flag) noexcept;
@@ -272,7 +272,7 @@ public:
 
     /// @brief Gets the inverse delta time.
     /// @details Gets the inverse delta time that was set on construction or assignment, and
-    ///   updated on every call to the <code>Step()</code> method having a non-zero delta-time.
+    ///   updated on every call to the <code>Step()</code> function having a non-zero delta-time.
     /// @see Step.
     Frequency GetInvDeltaTime() const noexcept;
 
@@ -281,7 +281,7 @@ public:
 
     /// @brief Gets the fixtures-for-proxies for this world.
     /// @details Provides insight on what fixtures have been queued for proxy processing
-    ///   during the next call to the world step method.
+    ///   during the next call to the world step function.
     /// @see Step.
     const std::vector<std::pair<BodyID, ShapeID>>& GetFixturesForProxies() const noexcept;
 
@@ -299,7 +299,7 @@ public:
     /// @brief Gets the world body range for this constant world.
     /// @details Gets a range enumerating the bodies currently existing within this world.
     ///   These are the bodies that had been created from previous calls to the
-    ///   <code>CreateBody(const Body&)</code> method that haven't yet been destroyed.
+    ///   <code>CreateBody(const Body&)</code> function that haven't yet been destroyed.
     /// @return Body range that can be iterated over using its begin and end methods
     ///   or using ranged-based for-loops.
     /// @see CreateBody(const Body&).
@@ -307,7 +307,7 @@ public:
 
     /// @brief Gets the bodies-for-proxies range for this world.
     /// @details Provides insight on what bodies have been queued for proxy processing
-    ///   during the next call to the world step method.
+    ///   during the next call to the world step function.
     /// @see Step.
     const Bodies& GetBodiesForProxies() const noexcept;
 
@@ -316,10 +316,10 @@ public:
     ///   during callbacks. If it is, it will throw an exception or abort your program.
     /// @note No references to the configuration are retained. Its value is copied.
     /// @post The created body will be present in the range returned from the
-    ///   <code>GetBodies()</code> method.
+    ///   <code>GetBodies()</code> function.
     /// @param body A customized body or its default value.
     /// @return Identifier of the newly created body which can later be destroyed by calling
-    ///   the <code>Destroy(BodyID)</code> method.
+    ///   the <code>Destroy(BodyID)</code> function.
     /// @throws WrongState if this function is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
     /// @throws std::out_of_range if the given body references any invalid shape identifiers.
@@ -342,13 +342,13 @@ public:
 
     /// @brief Destroys the identified body.
     /// @details Destroys a given body that had previously been created by a call to this
-    ///   world's <code>CreateBody(const Body&)</code> method.
+    ///   world's <code>CreateBody(const Body&)</code> function.
     /// @warning This automatically deletes all associated shapes and joints.
     /// @warning This function is locked during callbacks.
     /// @warning Behavior is not specified if identified body was not created by this world.
     /// @note This function is locked during callbacks.
     /// @post The destroyed body will no longer be present in the range returned from the
-    ///   <code>GetBodies()</code> method.
+    ///   <code>GetBodies()</code> function.
     /// @post None of the body's fixtures will be present in the fixtures-for-proxies
     ///   collection.
     /// @param id Body to destroy that had been created by this world.
@@ -387,7 +387,7 @@ public:
     /// @brief Gets the world joint range.
     /// @details Gets a range enumerating the joints currently existing within this world.
     ///   These are the joints that had been created from previous calls to the
-    ///   <code>CreateJoint(const Joint&)</code> method that haven't yet been destroyed.
+    ///   <code>CreateJoint(const Joint&)</code> function that haven't yet been destroyed.
     /// @return World joints sized-range.
     /// @see CreateJoint(const Joint&).
     const Joints& GetJoints() const noexcept;
@@ -396,9 +396,9 @@ public:
     /// @warning This function is locked during callbacks.
     /// @note No references to the configuration are retained. Its value is copied.
     /// @post The created joint will be present in the range returned from the
-    ///   <code>GetJoints()</code> method.
+    ///   <code>GetJoints()</code> function.
     /// @return Identifier for the newly created joint which can later be destroyed by calling
-    ///   the <code>Destroy(JointID)</code> method.
+    ///   the <code>Destroy(JointID)</code> function.
     /// @throws WrongState if this function is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxJoints</code>.
     /// @throws InvalidArgument if the given definition is not allowed.
@@ -421,12 +421,12 @@ public:
 
     /// @brief Destroys a joint.
     /// @details Destroys a given joint that had previously been created by a call to this
-    ///   world's <code>CreateJoint(const Joint&)</code> method.
+    ///   world's <code>CreateJoint(const Joint&)</code> function.
     /// @warning This function is locked during callbacks.
     /// @warning Behavior is not specified if identified joint wasn't created by this world.
     /// @note This may cause the connected bodies to begin colliding.
     /// @post The destroyed joint will no longer be present in the range returned from the
-    ///   <code>GetJoints()</code> method.
+    ///   <code>GetJoints()</code> function.
     /// @param id Identifier of joint to destroy that had been created by this world.
     /// @throws WrongState if this function is called while the world is locked.
     /// @see CreateJoint(const Joint&), GetJoints.
@@ -611,7 +611,7 @@ private:
 
     /// @brief Solves the step using successive time of impact (TOI) events.
     /// @details Used for continuous physics.
-    /// @note This is intended to detect and prevent the tunneling that the faster Solve method
+    /// @note This is intended to detect and prevent the tunneling that the faster Solve function
     ///    may miss.
     /// @param conf Time step configuration to use.
     ToiStepStats SolveToi(const StepConf& conf);
@@ -781,7 +781,7 @@ private:
 
     /// @brief Updates the touching related state and notifies listener (if one given).
     ///
-    /// @note Ideally this method is only called when a dependent change has occurred.
+    /// @note Ideally this function is only called when a dependent change has occurred.
     /// @note Touching related state depends on the following data:
     ///   - The fixtures' sensor states.
     ///   - The fixtures bodies' transformations.

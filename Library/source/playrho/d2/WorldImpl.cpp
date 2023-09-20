@@ -131,7 +131,7 @@ inline void IntegratePositions(const Span<const BodyID>& bodies, const Span<Body
 
 /// Reports the given constraints to the listener.
 /// @details
-/// This calls the listener's PostSolve method for all size(contacts) elements of
+/// This calls the listener's PostSolve function for all size(contacts) elements of
 /// the given array of constraints.
 /// @param listener Listener to call.
 /// @param constraints Array of m_contactCount contact velocity constraint elements.
@@ -1723,7 +1723,7 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
 IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
 {
     // Note:
-    //   This method is what used to be b2World::SolveToi(const b2TimeStep& step).
+    //   This function is what used to be b2World::SolveToi(const b2TimeStep& step).
     //   It also differs internally from Erin's implementation.
     //
     //   Here's some specific behavioral differences:
@@ -1736,7 +1736,7 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
 
     /*
      * Confirm that contact is as it's supposed to be according to contract of the
-     * GetSoonestContacts method from which this contact should have been obtained.
+     * GetSoonestContacts function from which this contact should have been obtained.
      */
     assert(IsEnabled(contact));
     assert(!IsSensor(contact));
@@ -1775,7 +1775,7 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
         //
         // XXX: Not often, but sometimes, contact.IsTouching() is false now.
         //      Seems like this is a bug, or at least suboptimal, condition.
-        //      This method shouldn't be getting called unless contact has an
+        //      This function shouldn't be getting called unless contact has an
         //      impact indeed at the given TOI. Seen this happen in an edge-polygon
         //      contact situation where the polygon had a larger than default
         //      vertex radius. CollideShapes had called GetManifoldFaceB which
@@ -1964,7 +1964,7 @@ WorldImpl::ProcessContactsForTOI( // NOLINT(readability-function-cognitive-compl
     
     const auto updateConf = GetUpdateConf(conf);
 
-    // Note: the original contact (for body of which this method was called) already is-in-island.
+    // Note: the original contact (for body of which this function was called) already is-in-island.
     const auto bodyImpenetrable = body.IsImpenetrable();
     for (const auto& ci: m_bodyContacts[to_underlying(id)]) {
         const auto contactID = std::get<ContactID>(ci);
@@ -2358,7 +2358,7 @@ ContactCounter WorldImpl::AddNewContacts( // NOLINT(readability-function-cogniti
         // Test demo that has some 400 smaller objects, the bigger object could have 387 contacts
         // while the smaller object has 369 or more, and the total world contact count can be over
         // 30,495. While searching linearly through the object with less contacts should help,
-        // that may still be a lot of contacts to be going through in the context this method
+        // that may still be a lot of contacts to be going through in the context this function
         // is being called. OTOH, speed seems to be dominated by cache hit-ratio...
         //
         // With compiler optimization enabled and 400 small bodies and Real=double...
@@ -2572,7 +2572,7 @@ void WorldImpl::Update( // NOLINT(readability-function-cognitive-complexity)
             }
         }
 
-        // Ideally this method is **NEVER** called unless a dependency changed such
+        // Ideally this function is **NEVER** called unless a dependency changed such
         // that the following assertion is **ALWAYS** valid.
         //assert(newManifold != oldManifold);
 
@@ -2581,7 +2581,7 @@ void WorldImpl::Update( // NOLINT(readability-function-cognitive-complexity)
 #ifdef MAKE_CONTACT_PROCESSING_ORDER_DEPENDENT
         /*
          * The following code creates an ordering dependency in terms of update processing
-         * over a container of contacts. It also puts this method into the situation of
+         * over a container of contacts. It also puts this function into the situation of
          * modifying bodies which adds race potential in a multi-threaded mode of operation.
          * Lastly, without this code, the step-statistics show a world getting to sleep in
          * less TOI position iterations.

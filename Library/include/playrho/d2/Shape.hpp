@@ -766,7 +766,7 @@ private:
         /// @brief Rotates all of the shape's vertices by the given amount.
         virtual void Rotate_(const UnitVec& value) = 0;
 
-        /// @brief Equality checking method.
+        /// @brief Equality checking function.
         virtual bool IsEqual_(const Concept& other) const noexcept = 0;
 
         /// @brief Gets the use type information.

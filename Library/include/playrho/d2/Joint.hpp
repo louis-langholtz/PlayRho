@@ -340,7 +340,7 @@ private:
         /// @brief Gets the data for the underlying configuration.
         virtual void* GetData_() noexcept = 0;
 
-        /// @brief Equality checking method.
+        /// @brief Equality checking function.
         virtual bool IsEqual_(const Concept& other) const noexcept = 0;
 
         /// @brief Gets the ID of body-A.

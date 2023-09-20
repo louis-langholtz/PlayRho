@@ -71,7 +71,7 @@ bool GetCollideConnected(const World& world, JointID id);
 bool IsMotorEnabled(const World& world, JointID id);
 
 /// Enable/disable the joint motor.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
 void EnableMotor(World& world, JointID id, bool value);
@@ -82,7 +82,7 @@ void EnableMotor(World& world, JointID id, bool value);
 bool IsLimitEnabled(const World& world, JointID id);
 
 /// @brief Sets whether the identified joint's limit is enabled or not.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
 void EnableLimit(World& world, JointID id, bool value);
@@ -139,7 +139,7 @@ UnitVec GetLocalYAxisA(const World& world, JointID id);
 AngularVelocity GetMotorSpeed(const World& world, JointID id);
 
 /// @brief Sets the motor-speed property of the identied joint if it supports it.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
 /// @see GetMotorSpeed(const World& world, JointID id)
@@ -151,7 +151,7 @@ void SetMotorSpeed(World& world, JointID id, AngularVelocity value);
 Torque GetMaxMotorTorque(const World& world, JointID id);
 
 /// Sets the maximum motor torque.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
 void SetMaxMotorTorque(World& world, JointID id, Torque value);
@@ -177,7 +177,7 @@ RotInertia GetAngularMass(const World& world, JointID id);
 Frequency GetFrequency(const World& world, JointID id);
 
 /// @brief Sets the frequency of the identified joint if it has this property.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
 void SetFrequency(World& world, JointID id, Frequency value);
@@ -254,7 +254,7 @@ void SetLinearOffset(World& world, JointID id, const Length2& value);
 Angle GetAngularOffset(const World& world, JointID id);
 
 /// @brief Sets the target angular offset.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
 void SetAngularOffset(World& world, JointID id, Angle value);
@@ -285,7 +285,7 @@ Length GetCurrentLengthB(const World& world, JointID id);
 Length2 GetTarget(const World& world, JointID id);
 
 /// @brief Sets the target point.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
 void SetTarget(World& world, JointID id, const Length2& value);
@@ -301,14 +301,14 @@ Angle GetAngularLowerLimit(const World& world, JointID id);
 Angle GetAngularUpperLimit(const World& world, JointID id);
 
 /// Set the joint limits.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
 void SetAngularLimits(World& world, JointID id, Angle lower, Angle upper);
 
 /// @brief Shifts the origin of the identified joint.
 /// @note This only effects joints having points in world coordinates.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
 bool ShiftOrigin(World& world, JointID id, const Length2& value);
@@ -332,7 +332,7 @@ Length GetLength(const World& world, JointID id);
 LimitState GetLimitState(const World& world, JointID id);
 
 /// @brief Wakes up the joined bodies.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
 void SetAwake(World& world, JointID id);

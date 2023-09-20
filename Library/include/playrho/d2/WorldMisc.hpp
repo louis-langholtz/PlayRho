@@ -48,7 +48,7 @@ class ContactImpulsesList;
 /// @details Performs position and velocity updating, sleeping of non-moving bodies, updating
 ///   of the contacts, and notifying the contact listener of begin-contact, end-contact,
 ///   pre-solve, and post-solve events.
-///   If the given velocity and position iterations are more than zero, this method also
+///   If the given velocity and position iterations are more than zero, this function also
 ///   respectively performs velocity and position resolution of the contacting bodies.
 ///
 /// @note While body velocities are updated accordingly (per the sum of forces acting on them),

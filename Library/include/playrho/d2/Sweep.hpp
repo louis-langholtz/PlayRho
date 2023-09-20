@@ -87,7 +87,7 @@ public:
     void Advance0(Real alpha) noexcept;
 
     /// @brief Resets the alpha 0 value back to zero.
-    /// @post Getting the alpha 0 value after calling this method will return zero.
+    /// @post Getting the alpha 0 value after calling this function will return zero.
     constexpr void ResetAlpha0() noexcept
     {
         alpha0 = 0;
