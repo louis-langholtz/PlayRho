@@ -24,6 +24,9 @@
 #ifndef PLAYRHO_D2_SHAPES_SHAPE_HPP
 #define PLAYRHO_D2_SHAPES_SHAPE_HPP
 
+/// @file
+/// @brief Definition of the @c Shape class and closely related code.
+
 #include <memory>
 #include <functional>
 #include <utility>

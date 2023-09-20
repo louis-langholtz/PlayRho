@@ -18,13 +18,13 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#ifndef PLAYRHO_REAL_HPP
+#define PLAYRHO_REAL_HPP
+
 /**
  * @file
  * @brief Real number definition file.
  */
-
-#ifndef PLAYRHO_REAL_HPP
-#define PLAYRHO_REAL_HPP
 
 #include <playrho/Fixed.hpp>
 #include <playrho/FixedMath.hpp>

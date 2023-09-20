@@ -23,14 +23,14 @@
 #define PLAYRHO_D2_WORLD_HPP
 
 /// @file
-/// Declarations of the World class.
+/// @brief Definitions of the World class and closely related code.
 
+#include <functional> // for std::function
 #include <iterator>
-#include <vector>
 #include <memory> // for std::unique_ptr
 #include <stdexcept>
-#include <functional> // for std::function
 #include <type_traits> // for std::is_default_constructible_v, etc.
+#include <vector>
 
 #include <playrho/BodyID.hpp>
 #include <playrho/Contact.hpp>
@@ -49,25 +49,12 @@
 #include <playrho/d2/MassData.hpp>
 #include <playrho/d2/Math.hpp>
 #include <playrho/d2/Shape.hpp>
-#include <playrho/d2/WorldBody.hpp>
 #include <playrho/d2/WorldConf.hpp>
-#include <playrho/d2/WorldContact.hpp>
-#include <playrho/d2/WorldJoint.hpp>
-#include <playrho/d2/WorldMisc.hpp>
-#include <playrho/d2/WorldShape.hpp>
 
 namespace playrho {
-
-struct StepConf;
-struct Filter;
-class Contact;
-
 namespace d2 {
 
 class World;
-class Body;
-class Joint;
-class Manifold;
 class ContactImpulsesList;
 class DynamicTree;
 
@@ -96,34 +83,27 @@ using ImpulsesContactListener =
 /// @brief Sets the destruction listener for shapes.
 /// @note This listener is called on <code>Clear(World&)</code> for every shape.
 /// @see Clear(World&).
-/// @relatedalso World
 void SetShapeDestructionListener(World& world, ShapeListener listener) noexcept;
 
 /// @brief Sets the detach listener for shapes detaching from bodies.
-/// @relatedalso World
 void SetDetachListener(World& world, AssociationListener listener) noexcept;
 
 /// @brief Sets the destruction listener for joints.
 /// @note This listener is called on <code>Clear(World&)</code> for every joint. It's also called
 ///   on <code>Destroy(BodyID)</code> for every joint associated with the identified body.
 /// @see Clear(World&), Destroy(BodyID).
-/// @relatedalso World
 void SetJointDestructionListener(World& world, JointListener listener) noexcept;
 
 /// @brief Sets the begin-contact lister.
-/// @relatedalso World
 void SetBeginContactListener(World& world, ContactListener listener) noexcept;
 
 /// @brief Sets the end-contact lister.
-/// @relatedalso World
 void SetEndContactListener(World& world, ContactListener listener) noexcept;
 
 /// @brief Sets the pre-solve-contact lister.
-/// @relatedalso World
 void SetPreSolveContactListener(World& world, ManifoldContactListener listener) noexcept;
 
 /// @brief Sets the post-solve-contact lister.
-/// @relatedalso World
 void SetPostSolveContactListener(World& world, ImpulsesContactListener listener) noexcept;
 
 /// @}
@@ -138,7 +118,6 @@ void SetPostSolveContactListener(World& world, ImpulsesContactListener listener)
 /// @post The contents of this world have all been destroyed and this world's internal
 ///   state is reset as though it had just been constructed.
 /// @see SetJointDestructionListener, SetShapeDestructionListener.
-/// @relatedalso World
 void Clear(World& world) noexcept;
 
 /// @brief Steps the given world simulation according to the given configuration.
@@ -167,7 +146,6 @@ void Clear(World& world) noexcept;
 /// @param conf Configuration for the simulation step.
 /// @return Statistics for the step.
 /// @throws WrongState if this method is called while the world is locked.
-/// @relatedalso World
 StepStats Step(World& world, const StepConf& conf = StepConf{});
 
 /// @brief Whether or not "step" is complete.
@@ -176,12 +154,10 @@ StepStats Step(World& world, const StepConf& conf = StepConf{});
 /// @return <code>true</code> unless sub-stepping is enabled and the step method returned
 ///   without finishing all of its sub-steps.
 /// @see GetSubStepping, SetSubStepping.
-/// @relatedalso World
 bool IsStepComplete(const World& world) noexcept;
 
 /// @brief Gets whether or not sub-stepping is enabled.
 /// @see SetSubStepping, IsStepComplete.
-/// @relatedalso World
 bool GetSubStepping(const World& world) noexcept;
 
 /// @brief Enables/disables single stepped continuous physics.
@@ -189,17 +165,14 @@ bool GetSubStepping(const World& world) noexcept;
 /// @post The <code>GetSubStepping()</code> method will return the value this method was
 ///   called with.
 /// @see IsStepComplete, GetSubStepping.
-/// @relatedalso World
 void SetSubStepping(World& world, bool flag) noexcept;
 
 /// @brief Gets access to the broad-phase dynamic tree information.
 /// @todo Consider removing this function. This function exposes the implementation detail
 ///   of the broad-phase contact detection system.
-/// @relatedalso World
 const DynamicTree& GetTree(const World& world);
 
 /// @brief Is the world locked (in the middle of a time step).
-/// @relatedalso World
 bool IsLocked(const World& world) noexcept;
 
 /// @brief Shifts the origin of the specified world.
@@ -210,24 +183,20 @@ bool IsLocked(const World& world) noexcept;
 /// @param world The world whose origin is to be shifted.
 /// @param newOrigin the new origin with respect to the old origin
 /// @throws WrongState if this method is called while the world is locked.
-/// @relatedalso World
 void ShiftOrigin(World& world, const Length2& newOrigin);
 
 /// @brief Gets the minimum vertex radius that shapes in this world can be.
 /// @see GetMaxVertexRadius.
-/// @relatedalso World
 Length GetMinVertexRadius(const World& world) noexcept;
 
 /// @brief Gets the maximum vertex radius that shapes in this world can be.
 /// @see GetMinVertexRadius.
-/// @relatedalso World
 Length GetMaxVertexRadius(const World& world) noexcept;
 
 /// @brief Gets the inverse delta time.
 /// @details Gets the inverse delta time that was set on construction or assignment, and
 ///   updated on every call to the <code>Step()</code> method having a non-zero delta-time.
 /// @see Step.
-/// @relatedalso World
 Frequency GetInvDeltaTime(const World& world) noexcept;
 
 /// @}
@@ -239,16 +208,15 @@ Frequency GetInvDeltaTime(const World& world) noexcept;
 /// @brief Gets the extent of the currently valid body range.
 /// @note This is one higher than the maxium <code>BodyID</code> that is in range
 ///   for body related functions.
-/// @relatedalso World
 BodyCounter GetBodyRange(const World& world) noexcept;
 
 /// @brief Gets the world body range for this constant world.
 /// @details Gets a range enumerating the bodies currently existing within this world.
-///   These are the bodies that had been created from previous calls to the
-///   <code>CreateBody(const BodyConf&)</code> method that haven't yet been destroyed.
-/// @return An iterable of body identifiers.
-/// @see CreateBody(const BodyConf&).
-/// @relatedalso World
+///   These are the bodies that had been created from previous calls to
+///   <code>CreateBody(World&, const Body&)</code> that haven't yet been destroyed by
+///   a call to <code>Destroy(World& world, BodyID)</code> or to <code>Clear(World&)</code>.
+/// @return Container of body identifiers.
+/// @see CreateBody(World&, const Body&), Destroy(World& world, BodyID), Clear(World&).
 std::vector<BodyID> GetBodies(const World& world);
 
 /// @brief Gets the bodies-for-proxies range for this world.
@@ -256,7 +224,6 @@ std::vector<BodyID> GetBodies(const World& world);
 ///   during the next call to the world step method.
 /// @see Step.
 /// @todo Remove this function from this class - access from implementation instead.
-/// @relatedalso World
 std::vector<BodyID> GetBodiesForProxies(const World& world);
 
 /// @brief Creates a rigid body within the world that's a copy of the given one.
@@ -275,35 +242,12 @@ std::vector<BodyID> GetBodiesForProxies(const World& world);
 /// @throws std::out_of_range if the given body references any invalid shape identifiers.
 /// @see Destroy(World& world, BodyID), GetBodies(const World&), ResetMassData.
 /// @see PhysicalEntities.
-/// @relatedalso World
 BodyID CreateBody(World& world, const Body& body = Body{}, bool resetMassData = true);
-
-/// @brief Creates a rigid body with the given configuration.
-/// @warning This function should not be used while the world is locked &mdash; as it is
-///   during callbacks. If it is, it will throw an exception or abort your program.
-/// @note No references to the configuration are retained. Its value is copied.
-/// @post The created body will be present in the range returned from the
-///   <code>GetBodies(const World&)</code> method.
-/// @param world The world within which to create the body.
-/// @param def A customized body configuration or its default value.
-/// @param resetMassData Whether or not the mass data of the body should be reset.
-/// @return Identifier of the newly created body which can later be destroyed by calling
-///   the <code>Destroy(World&, BodyID)</code> method.
-/// @throws WrongState if this method is called while the world is locked.
-/// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
-/// @see Destroy(World& world, BodyID), GetBodies(const World&), ResetMassData.
-/// @see PhysicalEntities.
-/// @relatedalso World
-inline BodyID CreateBody(World& world, const BodyConf& def, bool resetMassData = true)
-{
-    return CreateBody(world, Body{def}, resetMassData);
-}
 
 /// @brief Gets the state of the identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see CreateBody(World& world, const BodyConf&),
 ///   SetBody(World& world, BodyID id, const Body& body).
-/// @relatedalso World
 Body GetBody(const World& world, BodyID id);
 
 /// @brief Sets the state of the identified body.
@@ -311,7 +255,6 @@ Body GetBody(const World& world, BodyID id);
 ///   invalid shape identifiers.
 /// @throws InvalidArgument if the specified ID was destroyed.
 /// @see GetBody(const World& world, BodyID id), GetBodyRange.
-/// @relatedalso World
 void SetBody(World& world, BodyID id, const Body& body);
 
 /// @brief Destroys the identified body.
@@ -329,13 +272,11 @@ void SetBody(World& world, BodyID id, const Body& body);
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see CreateBody(const BodyConf&), GetBodies, GetBodyRange.
 /// @see PhysicalEntities.
-/// @relatedalso World
 void Destroy(World& world, BodyID id);
 
 /// @brief Gets the range of joints attached to the identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see CreateJoint, GetBodyRange.
-/// @relatedalso World
 std::vector<std::pair<BodyID, JointID>> GetJoints(const World& world, BodyID id);
 
 /// @brief Gets the container of contacts attached to the identified body.
@@ -343,48 +284,12 @@ std::vector<std::pair<BodyID, JointID>> GetJoints(const World& world, BodyID id)
 ///   miss some collisions if you don't use <code>ContactListener</code>.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see GetBodyRange.
-/// @relatedalso World
 std::vector<std::tuple<ContactKey, ContactID>> GetContacts(const World& world, BodyID id);
 
 /// @brief Gets the identities of the shapes associated with the identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see GetBodyRange, CreateBody, SetBody.
-/// @relatedalso World
 std::vector<ShapeID> GetShapes(const World& world, BodyID id);
-
-/// @brief Computes the identified body's mass data.
-/// @details This basically accumulates the mass data over all fixtures.
-/// @note The center is the mass weighted sum of all fixture centers. Divide it by the
-///   mass to get the averaged center.
-/// @return accumulated mass data for all fixtures associated with the given body.
-/// @throws std::out_of_range If given an invalid body identifier.
-/// @relatedalso World
-MassData ComputeMassData(const World& world, BodyID id);
-
-/// @brief Sets the mass properties to override the mass properties of the fixtures.
-/// @note This changes the center of mass position.
-/// @note Creating or destroying fixtures can also alter the mass.
-/// @note This function has no effect if the body isn't dynamic.
-/// @param world The world in which the identified body exists.
-/// @param id Identifier of the body.
-/// @param massData the mass properties.
-/// @throws WrongState if this function is called while the world is locked.
-/// @throws std::out_of_range If given an invalid body identifier.
-/// @relatedalso World
-void SetMassData(World& world, BodyID id, const MassData& massData);
-
-/// @brief Resets the mass data properties.
-/// @details This resets the mass data to the sum of the mass properties of the fixtures.
-/// @note This method must be called after associating new shapes to the body to update the
-///   body mass data properties unless <code>SetMassData</code> is used.
-/// @throws WrongState if this function is called while the world is locked.
-/// @throws std::out_of_range If given an invalid body identifier.
-/// @see SetMassData, Attach, Detach.
-/// @relatedalso World
-inline void ResetMassData(World& world, BodyID id)
-{
-    SetMassData(world, id, ComputeMassData(world, id));
-}
 
 /// @brief Sets the accelerations of all the world's bodies.
 /// @param world World instance to set the acceleration of all contained bodies for.
@@ -410,16 +315,27 @@ void SetAccelerations(World& world, F fn)
 /// @brief Gets the extent of the currently valid joint range.
 /// @note This is one higher than the maxium <code>JointID</code> that is in range
 ///   for joint related functions.
-/// @relatedalso World
 JointCounter GetJointRange(const World& world) noexcept;
 
 /// @brief Gets the joints of the specified world.
-/// @relatedalso World
+/// @note These are joints created by previous calls to
+///   <code>CreateJoint(World&, const Joint&)</code> that haven't yet been
+///   destroyed by a call to <code>Destroy(World& world, JointID)</code> or
+///   <code>Clear(World&)</code>.
+/// @see CreateJoint(World&, const Joint&), Destroy(World& world, JointID), Clear(World&).
 std::vector<JointID> GetJoints(const World& world);
+
+/// Gets the count of joints in the given world.
+/// @return 0 or higher.
+/// @relatedalso World
+inline JointCounter GetJointCount(const World& world)
+{
+    using std::size;
+    return static_cast<JointCounter>(size(GetJoints(world)));
+}
 
 /// @brief Creates a new joint within the given world.
 /// @throws WrongState if this method is called while the world is locked.
-/// @relatedalso World
 JointID CreateJoint(World& world, const Joint& def);
 
 /// @brief Creates a new joint from a configuration.
@@ -435,23 +351,15 @@ JointID CreateJoint(World& world, const T& value)
 /// @brief Destroys the identified joint.
 /// @throws WrongState if this method is called while the world is locked.
 /// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
 void Destroy(World& world, JointID id);
-
-/// @brief Gets the type of the joint.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-TypeID GetType(const World& world, JointID id);
 
 /// @brief Gets the value of the identified joint.
 /// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
 Joint GetJoint(const World& world, JointID id);
 
 /// @brief Sets the value of the identified joint.
 /// @throws WrongState if this method is called while the world is locked.
 /// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
 void SetJoint(World& world, JointID id, const Joint& def);
 
 /// @brief Sets a joint's value from a configuration.
@@ -465,295 +373,6 @@ void SetJoint(World& world, JointID id, const T& value)
     return SetJoint(world, id, Joint{value});
 }
 
-/// @brief Gets collide connected for the specified joint.
-/// @note Modifying the collide connect flag won't work correctly because
-///   the flag is only checked when fixture AABBs begin to overlap.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-bool GetCollideConnected(const World& world, JointID id);
-
-/// Is the joint motor enabled?
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @see EnableMotor(World& world, JointID joint, bool value)
-/// @relatedalso World
-bool IsMotorEnabled(const World& world, JointID id);
-
-/// Enable/disable the joint motor.
-/// @throws WrongState if this method is called while the world is locked.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-void EnableMotor(World& world, JointID id, bool value);
-
-/// @brief Gets whether the identified joint's limit is enabled.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-bool IsLimitEnabled(const World& world, JointID id);
-
-/// @brief Sets whether the identified joint's limit is enabled or not.
-/// @throws WrongState if this method is called while the world is locked.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-void EnableLimit(World& world, JointID id, bool value);
-
-/// @brief Gets the identifier of body-A of the identified joint.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-BodyID GetBodyA(const World& world, JointID id);
-
-/// @brief Gets the identifier of body-B of the identified joint.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-BodyID GetBodyB(const World& world, JointID id);
-
-/// Get the anchor point on body-A in local coordinates.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Length2 GetLocalAnchorA(const World& world, JointID id);
-
-/// Get the anchor point on body-B in local coordinates.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Length2 GetLocalAnchorB(const World& world, JointID id);
-
-/// @brief Gets the linear reaction on body-B at the joint anchor.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Momentum2 GetLinearReaction(const World& world, JointID id);
-
-/// @brief Get the angular reaction on body-B for the identified joint.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-AngularMomentum GetAngularReaction(const World& world, JointID id);
-
-/// @brief Gets the reference-angle property of the identified joint if it has it.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Angle GetReferenceAngle(const World& world, JointID id);
-
-/// @brief Gets the local-X-axis-A property of the identified joint if it has it.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-UnitVec GetLocalXAxisA(const World& world, JointID id);
-
-/// @brief Gets the local-Y-axis-A property of the identified joint if it has it.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-UnitVec GetLocalYAxisA(const World& world, JointID id);
-
-/// @brief Gets the motor-speed property of the identied joint if it supports it.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-/// @see SetMotorSpeed(World& world, JointID id, AngularVelocity value)
-AngularVelocity GetMotorSpeed(const World& world, JointID id);
-
-/// @brief Sets the motor-speed property of the identied joint if it supports it.
-/// @throws WrongState if this method is called while the world is locked.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-/// @see GetMotorSpeed(const World& world, JointID id)
-void SetMotorSpeed(World& world, JointID id, AngularVelocity value);
-
-/// @brief Gets the max motor torque.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Torque GetMaxMotorTorque(const World& world, JointID id);
-
-/// Sets the maximum motor torque.
-/// @throws WrongState if this method is called while the world is locked.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-void SetMaxMotorTorque(World& world, JointID id, Torque value);
-
-/// @brief Gets the linear motor impulse of the identified joint if it supports that.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Momentum GetLinearMotorImpulse(const World& world, JointID id);
-
-/// @brief Gets the angular motor impulse of the identified joint if it has this property.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-AngularMomentum GetAngularMotorImpulse(const World& world, JointID id);
-
-/// @brief Gets the computed angular rotational inertia used by the joint.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-RotInertia GetAngularMass(const World& world, JointID id);
-
-/// @brief Gets the frequency of the identified joint if it has this property.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Frequency GetFrequency(const World& world, JointID id);
-
-/// @brief Sets the frequency of the identified joint if it has this property.
-/// @throws WrongState if this method is called while the world is locked.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-void SetFrequency(World& world, JointID id, Frequency value);
-
-/// @brief Gets the angular velocity of the identified joint if it has this property.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-AngularVelocity GetAngularVelocity(const World& world, JointID id);
-
-/// @brief Gets the enabled/disabled state of the joint.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-bool IsEnabled(const World& world, JointID id);
-
-/// @brief Gets the world index of the given joint.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-JointCounter GetWorldIndex(const World&, JointID id) noexcept;
-
-/// Get the anchor point on body-A in world coordinates.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Length2 GetAnchorA(const World& world, JointID id);
-
-/// Get the anchor point on body-B in world coordinates.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Length2 GetAnchorB(const World& world, JointID id);
-
-/// @brief Gets the ratio property of the identified joint if it has it.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Real GetRatio(const World& world, JointID id);
-
-/// @brief Gets the current joint translation.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Length GetJointTranslation(const World& world, JointID id);
-
-/// @brief Gets the angle property of the identified joint if it has it.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Angle GetAngle(const World& world, JointID id);
-
-/// @brief Gets the current motor force for the given joint, given the inverse time step.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-inline Force GetMotorForce(const World& world, JointID id, Frequency inv_dt)
-{
-    return GetLinearMotorImpulse(world, id) * inv_dt;
-}
-
-/// @brief Gets the current motor torque for the given joint given the inverse time step.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-inline Torque GetMotorTorque(const World& world, JointID id, Frequency inv_dt)
-{
-    return GetAngularMotorImpulse(world, id) * inv_dt;
-}
-
-/// @brief Gets the target linear offset, in frame A.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Length2 GetLinearOffset(const World& world, JointID id);
-
-/// @brief Sets the target linear offset, in frame A.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-void SetLinearOffset(World& world, JointID id, const Length2& value);
-
-/// @brief Gets the target angular offset.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Angle GetAngularOffset(const World& world, JointID id);
-
-/// @brief Sets the target angular offset.
-/// @throws WrongState if this method is called while the world is locked.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-void SetAngularOffset(World& world, JointID id, Angle value);
-
-/// Get the first ground anchor.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Length2 GetGroundAnchorA(const World& world, JointID id);
-
-/// Get the second ground anchor.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Length2 GetGroundAnchorB(const World& world, JointID id);
-
-/// @brief Get the current length of the segment attached to body-A.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Length GetCurrentLengthA(const World& world, JointID id);
-
-/// @brief Get the current length of the segment attached to body-B.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Length GetCurrentLengthB(const World& world, JointID id);
-
-/// @brief Gets the target point.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Length2 GetTarget(const World& world, JointID id);
-
-/// @brief Sets the target point.
-/// @throws WrongState if this method is called while the world is locked.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-void SetTarget(World& world, JointID id, const Length2& value);
-
-/// Get the lower joint limit.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Angle GetAngularLowerLimit(const World& world, JointID id);
-
-/// Get the upper joint limit.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-Angle GetAngularUpperLimit(const World& world, JointID id);
-
-/// Set the joint limits.
-/// @throws WrongState if this method is called while the world is locked.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-void SetAngularLimits(World& world, JointID id, Angle lower, Angle upper);
-
-/// @brief Shifts the origin of the identified joint.
-/// @note This only effects joints having points in world coordinates.
-/// @throws WrongState if this method is called while the world is locked.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-bool ShiftOrigin(World& world, JointID id, const Length2& value);
-
-/// @brief Gets the damping ratio associated with the identified joint if it has one.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @throws std::invalid_argument If the identified joint's type doesn't support this.
-/// @relatedalso World
-Real GetDampingRatio(const World& world, JointID id);
-
-/// @brief Gets the length associated with the identified joint if it has one.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @throws std::invalid_argument If the identified joint's type doesn't support this.
-/// @relatedalso World
-Length GetLength(const World& world, JointID id);
-
-/// @brief Gets the joint's limit state if it has one.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @throws std::invalid_argument If the identified joint's type doesn't support this.
-/// @relatedalso World
-LimitState GetLimitState(const World& world, JointID id);
-
-/// @brief Wakes up the joined bodies.
-/// @throws WrongState if this method is called while the world is locked.
-/// @throws std::out_of_range If given an invalid joint identifier.
-/// @relatedalso World
-void SetAwake(World& world, JointID id);
-
-/// Gets the count of joints in the given world.
-/// @return 0 or higher.
-/// @relatedalso World
-inline JointCounter GetJointCount(const World& world)
-{
-    using std::size;
-    return static_cast<JointCounter>(size(GetJoints(world)));
-}
-
 /// @}
 
 /// @name World Shape Non-Member Functions
@@ -763,12 +382,10 @@ inline JointCounter GetJointCount(const World& world)
 /// @brief Gets the extent of the currently valid shape range.
 /// @note This is one higher than the maxium <code>ShapeID</code> that is in range
 ///   for shape related functions.
-/// @relatedalso World
 ShapeCounter GetShapeRange(const World& world) noexcept;
 
 /// @brief Creates a shape within the specified world.
 /// @throws WrongState if called while the world is "locked".
-/// @relatedalso World
 ShapeID CreateShape(World& world, const Shape& def);
 
 /// @brief Creates a shape within the specified world using a configuration of the shape.
@@ -786,168 +403,16 @@ auto CreateShape(World& world, const T& shapeConf) ->
 /// @brief Destroys the identified shape.
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid identifier.
-/// @relatedalso World
 void Destroy(World& world, ShapeID id);
 
 /// @brief Gets the shape associated with the identifier.
 /// @throws std::out_of_range If given an invalid identifier.
-/// @relatedalso World
 Shape GetShape(const World& world, ShapeID id);
 
 /// @brief Sets the identified shape to the new value.
 /// @throws std::out_of_range If given an invalid shape identifier.
 /// @see CreateShape.
-/// @relatedalso World
 void SetShape(World& world, ShapeID, const Shape& def);
-
-/// @brief Gets the type of the shape.
-/// @throws std::out_of_range If given an invalid identifier.
-/// @relatedalso World
-TypeID GetType(const World& world, ShapeID id);
-
-/// @brief Gets the count of body-shape associations in the given world.
-/// @relatedalso World
-ShapeCounter GetAssociationCount(const World& world);
-
-/// @brief Gets the count of uniquely identified shapes that are in use -
-///   i.e. that are attached to bodies.
-/// @relatedalso World
-ShapeCounter GetUsedShapesCount(const World& world) noexcept;
-
-/// @brief Gets the filter data for the identified shape.
-/// @throws std::out_of_range If given an invalid identifier.
-/// @see SetFilterData.
-/// @relatedalso World
-inline Filter GetFilterData(const World& world, ShapeID id)
-{
-    return GetFilter(GetShape(world, id));
-}
-
-/// @brief Convenience function for setting the contact filtering data.
-/// @note This won't update contacts until the next time step when either parent body
-///    is speedable and awake.
-/// @note This automatically refilters contacts.
-/// @throws std::out_of_range If given an invalid identifier.
-/// @see GetFilterData.
-/// @relatedalso World
-void SetFilterData(World& world, ShapeID id, const Filter& filter);
-
-/// @brief Gets the coefficient of friction of the specified shape.
-/// @return Value of 0 or higher.
-/// @throws std::out_of_range If given an invalid identifier.
-/// @relatedalso World
-inline NonNegativeFF<Real> GetFriction(const World& world, ShapeID id)
-{
-    return GetFriction(GetShape(world, id));
-}
-
-/// @brief Convenience function for setting the coefficient of friction of the specified shape.
-/// @throws std::out_of_range If given an invalid identifier.
-/// @see GetFriction.
-/// @relatedalso World
-void SetFriction(World& world, ShapeID id, NonNegative<Real> value);
-
-/// @brief Gets the coefficient of restitution of the specified shape.
-/// @throws std::out_of_range If given an invalid identifier.
-/// @relatedalso World
-inline Real GetRestitution(const World& world, ShapeID id)
-{
-    return GetRestitution(GetShape(world, id));
-}
-
-/// @brief Sets the coefficient of restitution of the specified shape.
-/// @throws std::out_of_range If given an invalid identifier.
-/// @relatedalso World
-void SetRestitution(World& world, ShapeID id, Real value);
-
-/// @brief Is the specified shape a sensor (non-solid)?
-/// @return the true if the shape is a sensor.
-/// @throws std::out_of_range If given an invalid identifier.
-/// @see SetSensor.
-/// @relatedalso World
-inline bool IsSensor(const World& world, ShapeID id)
-{
-    return IsSensor(GetShape(world, id));
-}
-
-/// @brief Convenience function for setting whether the shape is a sensor or not.
-/// @throws std::out_of_range If given an invalid identifier.
-/// @see IsSensor.
-/// @relatedalso World
-void SetSensor(World& world, ShapeID id, bool value);
-
-/// @brief Gets the density of this shape.
-/// @return Non-negative density (in mass per area).
-/// @throws std::out_of_range If given an invalid identifier.
-/// @relatedalso World
-inline NonNegative<AreaDensity> GetDensity(const World& world, ShapeID id)
-{
-    return GetDensity(GetShape(world, id));
-}
-
-/// @brief Sets the density of this shape.
-/// @throws std::out_of_range If given an invalid identifier.
-/// @relatedalso World
-void SetDensity(World& world, ShapeID id, NonNegative<AreaDensity> value);
-
-/// @brief Translates all of the given shape's vertices by the given amount.
-/// @note This may throw <code>std::bad_alloc</code> or any exception that's thrown
-///   by the constructor for the model's underlying data type.
-/// @throws std::bad_alloc if there's a failure allocating storage.
-/// @throws std::out_of_range If given an invalid identifier.
-/// @relatedalso World
-void Translate(World& world, ShapeID id, const Length2& value);
-
-/// @brief Scales all of the given shape's vertices by the given amount.
-/// @note This may throw <code>std::bad_alloc</code> or any exception that's thrown
-///   by the constructor for the model's underlying data type.
-/// @throws std::bad_alloc if there's a failure allocating storage.
-/// @throws std::out_of_range If given an invalid identifier.
-/// @relatedalso World
-void Scale(World& world, ShapeID id, const Vec2& value);
-
-/// @brief Rotates all of the given shape's vertices by the given amount.
-/// @note This may throw <code>std::bad_alloc</code> or any exception that's thrown
-///   by the constructor for the model's underlying data type.
-/// @throws std::bad_alloc if there's a failure allocating storage.
-/// @throws std::out_of_range If given an invalid identifier.
-/// @relatedalso World
-void Rotate(World& world, ShapeID id, const UnitVec& value);
-
-/// @brief Gets the mass data for the identified shape in the given world.
-/// @throws std::out_of_range If given an invalid identifier.
-/// @relatedalso World
-inline MassData GetMassData(const World& world, ShapeID id)
-{
-    return GetMassData(GetShape(world, id));
-}
-
-/// @brief Computes the mass data total of the identified shapes.
-/// @details This basically accumulates the mass data over all shapes.
-/// @note The center is the mass weighted sum of all shape centers. Divide it by the
-///   mass to get the averaged center.
-/// @return accumulated mass data for all shapes identified.
-/// @throws std::out_of_range If given an invalid shape identifier.
-/// @relatedalso World
-MassData ComputeMassData(const World& world, const Span<const ShapeID>& ids);
-
-/// @brief Tests a point for containment in a shape associated with a body.
-/// @param world The world that the given shape ID exists within.
-/// @param bodyId Body to use for test.
-/// @param shapeId Shape to use for test.
-/// @param p Point in world coordinates.
-/// @throws std::out_of_range If given an invalid body or shape identifier.
-/// @relatedalso World
-/// @ingroup TestPointGroup
-bool TestPoint(const World& world, BodyID bodyId, ShapeID shapeId, const Length2& p);
-
-/// @brief Gets the default friction amount for the given shapes.
-/// @relatedalso Shape
-NonNegativeFF<Real> GetDefaultFriction(const Shape& a, const Shape& b);
-
-/// @brief Gets the default restitution amount for the given shapes.
-/// @relatedalso Shape
-Real GetDefaultRestitution(const Shape& a, const Shape& b);
 
 /// @}
 
@@ -959,16 +424,15 @@ Real GetDefaultRestitution(const Shape& a, const Shape& b);
 /// @brief Gets the extent of the currently valid contact range.
 /// @note This is one higher than the maxium <code>ContactID</code> that is in range
 ///   for contact related functions.
-/// @relatedalso World
 ContactCounter GetContactRange(const World& world) noexcept;
 
-/// @brief Gets the contacts recognized within the given world.
-/// @relatedalso World
+/// @brief Gets the contacts identified within the given world.
+/// @note Further information for each element of the returned container
+///   is available from functions like @c GetContact or @c GetManifold.
 std::vector<KeyedContactID> GetContacts(const World& world);
 
 /// @brief Gets the identified contact.
 /// @throws std::out_of_range If given an invalid contact identifier.
-/// @relatedalso World
 Contact GetContact(const World& world, ContactID id);
 
 /// @brief Sets the identified contact's state.
@@ -977,12 +441,10 @@ Contact GetContact(const World& world, ContactID id);
 /// @invariant A contact may only be active if one or both bodies are awake.
 /// @invariant A contact may only be a sensor or one or both shapes are.
 /// @throws std::out_of_range If given an invalid contact identifier.
-/// @relatedalso World
 void SetContact(World& world, ContactID id, const Contact& value);
 
 /// @brief Gets the manifold for the identified contact.
 /// @throws std::out_of_range If given an invalid contact identifier.
-/// @relatedalso World
 Manifold GetManifold(const World& world, ContactID id);
 
 /// @brief Gets the count of contacts in the given world.
@@ -1017,10 +479,10 @@ inline ContactCounter GetContactCount(const World& world) noexcept
 /// @endcode
 ///
 /// @see World.
-/// @see BodyID, World::CreateBody, World::Destroy(BodyID), World::GetBodies().
-/// @see ShapeID, World::CreateShape, World::Destroy(ShapeID).
-/// @see JointID, World::CreateJoint, World::Destroy(JointID), World::GetJoints().
-/// @see ContactID, World::GetContacts().
+/// @see BodyID, CreateBody, Destroy(World&, BodyID), GetBodies.
+/// @see ShapeID, CreateShape, Destroy(World&, ShapeID).
+/// @see JointID, CreateJoint, Destroy(World&, JointID), GetJoints(const World&).
+/// @see ContactID, GetContacts(const World&).
 /// @see BodyType, Shape, DiskShapeConf.
 
 /// @brief Definition of an independent and simulatable "world".
@@ -1042,6 +504,10 @@ inline ContactCounter GetContactCount(const World& world) noexcept
 ///   implementations used. This forms a "compilation firewall" &mdash; or application
 ///   binary interface (ABI) &mdash; to help provide binary stability while facilitating
 ///   experimentation and optimization.
+/// @note This class's design provides a "polymorphic value type" offering polymorphism
+///   without public inheritance. This is based on a technique that's described by Sean Parent
+///   in his January 2017 Norwegian Developers Conference London talk "Better Code: Runtime
+///   Polymorphism".
 ///
 /// @attention For example, the following could be used to create a dynamic body having a one
 ///   meter radius disk shape:
@@ -1054,16 +520,16 @@ inline ContactCounter GetContactCount(const World& world) noexcept
 /// @see BodyID, ContactID, ShapeID, JointID, PhysicalEntities.
 /// @see https://en.wikipedia.org/wiki/Non-virtual_interface_pattern
 /// @see https://en.wikipedia.org/wiki/Application_binary_interface
+/// @see https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Polymorphic_Value_Types
 /// @see https://en.cppreference.com/w/cpp/language/pimpl
+/// @see https://youtu.be/QGcVXgEVMJg
 ///
 class World
 {
 public:
-    /// @name Special Member Functions
-    /// Special member functions that are explicitly defined.
-    /// @{
-
     /// @brief Constructs a world object.
+    /// @details Constructs a world object using the default world implementation class
+    ///   that's instantiated with the given configuraion.
     /// @param def A customized world configuration or its default value.
     /// @note A lot more configurability can be had via the <code>StepConf</code>
     ///   data that's given to the <code>Step(World&, const StepConf&)</code> function.
@@ -1088,7 +554,10 @@ public:
         // Intentionally empty.
     }
 
-    /// @brief Initializing constructor.
+    /// @brief Polymorphic initializing constructor.
+    /// @details Constructor for constructing an instance from any class supporting the @c World
+    ///   functionality.
+    /// @throws std::bad_alloc if there's a failure allocating storage for the given value.
     template <typename T, typename DT = std::decay_t<T>,
     typename Tp = std::enable_if_t<!std::is_same_v<DT, World> && !std::is_same_v<DT, WorldConf>, DT>,
     typename = std::enable_if_t<std::is_constructible_v<DT, T>>>
@@ -1121,8 +590,6 @@ public:
     /// @note This will call the <code>Clear()</code> function.
     /// @see Clear.
     ~World() noexcept;
-
-    /// @}
 
     // Listener friend functions...
     friend void SetShapeDestructionListener(World& world, ShapeListener listener) noexcept;
@@ -1715,19 +1182,19 @@ struct World::Model final: World::Concept {
         SetBody(data, id, value);
     }
 
-    /// @copydoc Concept::Destroy_
+    /// @copydoc Concept::Destroy_(BodyID)
     void Destroy_(BodyID id) override
     {
         Destroy(data, id);
     }
 
-    /// @copydoc Concept::GetJoints_
+    /// @copydoc Concept::GetJoints_(BodyID)
     std::vector<std::pair<BodyID, JointID>> GetJoints_(BodyID id) const override
     {
         return GetJoints(data, id);
     }
 
-    /// @copydoc Concept::GetContacts_
+    /// @copydoc Concept::GetContacts_(BodyID)
     std::vector<std::tuple<ContactKey, ContactID>> GetContacts_(BodyID id) const override
     {
         return GetContacts(data, id);
@@ -1983,15 +1450,6 @@ inline std::vector<BodyID> GetBodies(const World& world)
 inline std::vector<BodyID> GetBodiesForProxies(const World& world)
 {
     return world.m_impl->GetBodiesForProxies_();
-}
-
-inline BodyID CreateBody(World& world, const Body& body, bool resetMassData)
-{
-    const auto id = world.m_impl->CreateBody_(body);
-    if (resetMassData) {
-        ResetMassData(world, id);
-    }
-    return id;
 }
 
 inline Body GetBody(const World& world, BodyID id)

@@ -23,7 +23,7 @@
 #define PLAYRHO_D2_DYNAMICTREE_HPP
 
 /// @file
-/// Declaration of the <code>DynamicTree</code> class.
+/// @brief Declaration of the <code>DynamicTree</code> class.
 
 #include <playrho/d2/AABB.hpp>
 #include <playrho/d2/DynamicTreeData.hpp>

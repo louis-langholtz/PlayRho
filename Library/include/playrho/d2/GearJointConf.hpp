@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_GEARJOINTCONF_HPP
 #define PLAYRHO_D2_GEARJOINTCONF_HPP
 
+/// @file
+/// @brief Definition of the @c GearJointConf class and closely related code.
+
 #include <variant>
 
 #include <playrho/JointID.hpp>

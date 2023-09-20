@@ -23,7 +23,7 @@
 #define PLAYRHO_D2_BODY_HPP
 
 /// @file
-/// Declarations of the Body class, and free functions associated with it.
+/// @brief Declarations of the Body class, and functions associated with it.
 
 #include <cassert>
 #include <utility>

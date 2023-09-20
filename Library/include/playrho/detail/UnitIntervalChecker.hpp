@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_DETAIL_UNITINTERVALCHECKER_HPP
 #define PLAYRHO_DETAIL_UNITINTERVALCHECKER_HPP
 
+/// @file
+/// @brief Definition of the @c UnitIntervalChecker class template.
+
 #include <playrho/detail/Checked.hpp>
 
 namespace playrho::detail {

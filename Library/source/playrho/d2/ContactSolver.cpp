@@ -634,6 +634,7 @@ d2::PositionSolution SolvePositionConstraint(const d2::PositionConstraint& pc,
             }
 #endif
             // reaches here if one or both psm separation values was NaN (and NDEBUG is defined).
+            [[fallthrough]];
         }
         default: break;
     }

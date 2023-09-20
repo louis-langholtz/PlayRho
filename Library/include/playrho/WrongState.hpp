@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_WRONGSTATE_HPP
 #define PLAYRHO_WRONGSTATE_HPP
 
+/// @file
+/// @brief Definition of the @c WrongState class.
+
 #include <stdexcept>
 
 namespace playrho {

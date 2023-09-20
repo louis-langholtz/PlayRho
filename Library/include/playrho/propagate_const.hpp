@@ -25,6 +25,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef JBCOE_PROPAGATE_CONST_INCLUDED
 #define JBCOE_PROPAGATE_CONST_INCLUDED
 
+/// @file
+/// @brief Definition of the @c propagate_const class template and related code.
+
 #include <functional>
 #include <type_traits>
 #include <utility>

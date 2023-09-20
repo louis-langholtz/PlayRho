@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_NONZERO_HPP
 #define PLAYRHO_NONZERO_HPP
 
+/// @file
+/// @brief Definition of the @c NonZero value checked types.
+
 #include <playrho/detail/NonZeroChecker.hpp>
 
 namespace playrho {

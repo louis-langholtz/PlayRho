@@ -28,9 +28,6 @@
 #include <playrho/d2/WorldBody.hpp>
 #include <playrho/d2/WorldShape.hpp>
 
-/// @file
-/// Definitions for the AABB class.
-
 namespace playrho {
 namespace d2 {
 

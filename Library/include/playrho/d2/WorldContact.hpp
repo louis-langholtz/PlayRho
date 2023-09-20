@@ -23,7 +23,7 @@
 #define PLAYRHO_D2_WORLDCONTACT_HPP
 
 /// @file
-/// Declarations of free functions of World for contacts identified by <code>ContactID</code>.
+/// @brief Declarations of free functions of World for contacts identified by <code>ContactID</code>.
 /// @details This is a collection of non-member non-friend functions - also called "free"
 ///   functions - that are related to contacts within an instance of a <code>World</code>.
 ///   Many are just "wrappers" to similarly named member functions but some are additional

@@ -22,10 +22,13 @@
 #ifndef PLAYRHO_D2_JOINTCONF_HPP
 #define PLAYRHO_D2_JOINTCONF_HPP
 
-#include <playrho/BodyID.hpp>
+/// @file
+/// @brief Definition of the @c JointConf class and closely related code.
 
 #include <cstddef> // for std::max_align_t
 #include <cstdint>
+
+#include <playrho/BodyID.hpp>
 
 namespace playrho {
 namespace d2 {

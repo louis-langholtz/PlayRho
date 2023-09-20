@@ -29,8 +29,7 @@
 
 #include <utility> // for std::move
 
-namespace playrho {
-namespace d2 {
+namespace playrho::d2 {
 
 StepStats Step(World& world, Time delta, TimestepIters velocityIterations,
                TimestepIters positionIterations)
@@ -48,5 +47,4 @@ StepStats Step(World& world, Time delta, TimestepIters velocityIterations,
     return Step(world, conf);
 }
 
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2

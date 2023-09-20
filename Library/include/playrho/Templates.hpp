@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_TEMPLATES_HPP
 #define PLAYRHO_TEMPLATES_HPP
 
+/// @file
+/// @brief Definitions of miscellaneous template related code.
+
 #include <playrho/detail/Templates.hpp>
 
 namespace playrho {

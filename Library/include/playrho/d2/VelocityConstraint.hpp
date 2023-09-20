@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_VELOCITYCONSTRAINT_HPP
 #define PLAYRHO_D2_VELOCITYCONSTRAINT_HPP
 
+/// @file
+/// @brief Definition of the @c VelocityConstraint class and closely related code.
+
 #include <playrho/Span.hpp>
 
 #include <playrho/d2/BodyConstraint.hpp>

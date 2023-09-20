@@ -22,7 +22,7 @@
 #define PLAYRHO_D2_UNITVEC2_HPP
 
 /// @file
-/// Declarations of the UnitVec class and free functions associated with it.
+/// @brief Declarations of the UnitVec class and free functions associated with it.
 
 #include <playrho/Settings.hpp>
 #include <playrho/Units.hpp>

@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_SWEEP_HPP
 #define PLAYRHO_D2_SWEEP_HPP
 
+/// @file
+/// @brief Definition of the @c Sweep class and closely related code.
+
 #include <playrho/Settings.hpp>
 #include <playrho/Vector2.hpp>
 

@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_TOICONF_HPP
 #define PLAYRHO_TOICONF_HPP
 
+/// @file
+/// @brief Definitions of @c ToiConf class and closely related code.
+
 #include <playrho/NonNegative.hpp>
 #include <playrho/Settings.hpp>
 #include <playrho/UnitInterval.hpp>

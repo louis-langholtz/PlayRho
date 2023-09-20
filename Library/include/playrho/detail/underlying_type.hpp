@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_DETAIL_UNDERLYINGTYPE_HPP
 #define PLAYRHO_DETAIL_UNDERLYINGTYPE_HPP
 
+/// @file
+/// @brief Definition of @c underlying_type trait class and related code.
+
 #include <type_traits> // for std::void_t, std::is_nothrow_default_constructible_v
 
 namespace playrho::detail {

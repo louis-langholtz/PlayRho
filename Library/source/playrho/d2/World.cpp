@@ -25,6 +25,7 @@
 
 #include <playrho/d2/BodyConf.hpp>
 #include <playrho/d2/World.hpp>
+#include <playrho/d2/WorldBody.hpp> // for ResetMassData
 #include <playrho/d2/WorldImpl.hpp>
 #include <playrho/d2/WorldImplBody.hpp>
 #include <playrho/d2/WorldImplContact.hpp>
@@ -42,10 +43,16 @@ static_assert(std::is_move_constructible_v<World>, "World must be move construct
 static_assert(std::is_move_assignable_v<World>, "World must be move assignable!");
 static_assert(std::is_nothrow_destructible_v<World>, "World must be nothrow destructible!");
 
-// Special member functions are off in their own .cpp file to avoid their
-// necessary includes being in this file!!
-
 World::World(const WorldConf& def): World{WorldImpl{def}} {}
+
+BodyID CreateBody(World& world, const Body& body, bool resetMassData)
+{
+    const auto id = world.m_impl->CreateBody_(body);
+    if (resetMassData) {
+        ResetMassData(world, id);
+    }
+    return id;
+}
 
 } // namespace d2
 } // namespace playrho

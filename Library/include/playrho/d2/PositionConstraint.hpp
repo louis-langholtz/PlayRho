@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_POSITIONCONSTRAINT_HPP
 #define PLAYRHO_D2_POSITIONCONSTRAINT_HPP
 
+/// @file
+/// @brief Definition of the @c PositionConstraint class and closely related code.
+
 #include <playrho/d2/Manifold.hpp>
 #include <playrho/d2/BodyConstraint.hpp>
 

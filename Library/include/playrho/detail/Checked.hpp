@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_CHECKEDVALUE_HPP
 #define PLAYRHO_CHECKEDVALUE_HPP
 
+/// @file
+/// @brief Declarations of the @c Checked class template and closely related code.
+
 #include <iostream>
 #include <string>
 #include <type_traits>

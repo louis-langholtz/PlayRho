@@ -23,7 +23,7 @@
 #define PLAYRHO_D2_MASSDATA_HPP
 
 /// @file
-/// Declaration of the <code>MassData</code> structure and associated free functions.
+/// @brief Declaration of the <code>MassData</code> structure and associated free functions.
 
 #include <playrho/BodyID.hpp>
 #include <playrho/NonNegative.hpp>

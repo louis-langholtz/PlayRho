@@ -22,7 +22,7 @@
 #define PLAYRHO_D2_AABB_HPP
 
 /// @file
-/// Declaration of the AABB class and free functions that return instances of it.
+/// @brief Declaration of the AABB class and free functions that return instances of it.
 
 #include <playrho/Intervals.hpp> // for LengthInterval, IsIntersecting
 #include <playrho/Vector.hpp>

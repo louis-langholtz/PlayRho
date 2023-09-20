@@ -33,8 +33,12 @@
 
 using std::for_each;
 
-namespace playrho {
-namespace d2 {
+namespace playrho::d2 {
+
+BodyID CreateBody(World& world, const BodyConf& def, bool resetMassData)
+{
+    return CreateBody(world, Body{def}, resetMassData);
+}
 
 void Attach(World& world, BodyID id, ShapeID shapeID, bool resetMassData)
 {
@@ -336,6 +340,11 @@ MassData ComputeMassData(const World& world, BodyID id)
     return ComputeMassData(world, GetShapes(world, id));
 }
 
+void ResetMassData(World& world, BodyID id)
+{
+    SetMassData(world, id, ComputeMassData(world, id));
+}
+
 void SetMassData(World& world, BodyID id, const MassData& massData)
 {
     auto body = GetBody(world, id);
@@ -571,5 +580,4 @@ BodyCounter GetBodyCount(const World& world) noexcept
     return static_cast<BodyCounter>(size(GetBodies(world)));
 }
 
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2

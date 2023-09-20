@@ -24,6 +24,9 @@
 #ifndef PLAYRHO_D2_JOINT_HPP
 #define PLAYRHO_D2_JOINT_HPP
 
+/// @file
+/// @brief Definition of the @c Joint class and closely related code.
+
 #include <memory> // for std::unique_ptr
 #include <vector>
 #include <utility> // for std::move, std::forward

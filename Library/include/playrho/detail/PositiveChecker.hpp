@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_DETAIL_POSITIVECHECKER_HPP
 #define PLAYRHO_DETAIL_POSITIVECHECKER_HPP
 
+/// @file
+/// @brief Definition of the @c PositiveChecker class template.
+
 #include <playrho/detail/Checked.hpp>
 
 namespace playrho::detail {

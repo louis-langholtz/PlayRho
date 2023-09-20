@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_D2_POSITIONSOLUTION_HPP
 #define PLAYRHO_D2_POSITIONSOLUTION_HPP
 
+/// @file
+/// @brief Definition of the @c PositionSolution class and closely related code.
+
 #include <playrho/d2/Math.hpp>
 #include <playrho/d2/Position.hpp>
 

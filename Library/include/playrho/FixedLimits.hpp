@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_FIXEDLIMITS_HPP
 #define PLAYRHO_FIXEDLIMITS_HPP
 
+/// @file
+/// @brief Specialization of @c std::numeric_limits for @c Fixed.
+
 #include <playrho/Fixed.hpp>
 
 /// @brief Template specialization of numeric limits for Fixed types.

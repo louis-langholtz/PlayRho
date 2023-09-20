@@ -21,7 +21,7 @@
 /**
  * @file
  *
- * @brief Units file.
+ * @brief Declarations for physical units possibly backed by strong types.
  *
  * @details This file establishes quantity aliases, unit constants, and associated code
  *   for the expression of physical quantities using recognizably named units of those
