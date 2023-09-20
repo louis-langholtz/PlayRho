@@ -22,7 +22,7 @@
 #define PLAYRHO_D2_WORLDIMPLSHAPE_HPP
 
 /// @file
-/// Declarations of free functions of WorldImpl for shapes.
+/// @brief Declarations of free functions of WorldImpl for shapes.
 
 #include <playrho/ShapeID.hpp>
 

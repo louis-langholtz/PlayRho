@@ -23,7 +23,7 @@
 #define PLAYRHO_D2_WORLDIMPLCONTACT_HPP
 
 /// @file
-/// Declarations of free functions of WorldImpl for contacts.
+/// @brief Declarations of free functions of WorldImpl for contacts.
 
 #include <playrho/Real.hpp>
 

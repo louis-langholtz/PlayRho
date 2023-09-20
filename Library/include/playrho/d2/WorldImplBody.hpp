@@ -23,7 +23,7 @@
 #define PLAYRHO_D2_WORLDIMPLBODY_HPP
 
 /// @file
-/// Declarations of free functions of WorldImpl for bodies.
+/// @brief Declarations of free functions of WorldImpl for bodies.
 
 #include <vector>
 
