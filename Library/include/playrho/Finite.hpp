@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_FINITE_HPP
 #define PLAYRHO_FINITE_HPP
 
+/// @file
+/// @brief Aliases for checked finite types.
+
 #include <playrho/detail/FiniteChecker.hpp>
 
 namespace playrho {

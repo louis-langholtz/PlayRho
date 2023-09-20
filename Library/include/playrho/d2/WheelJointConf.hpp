@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_WHEELJOINTCONF_HPP
 #define PLAYRHO_D2_WHEELJOINTCONF_HPP
 
+/// @file
+/// @brief Definition of the @c WheelJointConf class and closely related code.
+
 #include <playrho/Span.hpp>
 #include <playrho/Units.hpp>
 

@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_SHAPES_POLYGONSHAPECONF_HPP
 #define PLAYRHO_D2_SHAPES_POLYGONSHAPECONF_HPP
 
+/// @file
+/// @brief Definition of the @c PolygonShapeConf class and closely related code.
+
 #include <type_traits>
 #include <vector>
 

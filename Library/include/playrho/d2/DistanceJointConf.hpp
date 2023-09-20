@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_DISTANCEJOINTCONF_HPP
 #define PLAYRHO_D2_DISTANCEJOINTCONF_HPP
 
+/// @file
+/// @brief Definition of the @c DistanceJointConf class and closely related code.
+
 #include <playrho/NonNegative.hpp>
 #include <playrho/Span.hpp>
 

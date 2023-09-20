@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_ROPEJOINTCONF_HPP
 #define PLAYRHO_D2_ROPEJOINTCONF_HPP
 
+/// @file
+/// @brief Definition of the @c RopeJointConf class and closely related code.
+
 #include <playrho/LimitState.hpp>
 #include <playrho/Span.hpp>
 

@@ -28,8 +28,7 @@
 
 #include <algorithm>
 
-namespace playrho {
-namespace d2 {
+namespace playrho::d2 {
 
 TypeID GetType(const World& world, JointID id)
 {
@@ -332,5 +331,4 @@ LimitState GetLimitState(const World& world, JointID id)
     return GetLimitState(GetJoint(world, id));
 }
 
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2

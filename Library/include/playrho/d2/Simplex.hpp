@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_SIMPLEX_HPP
 #define PLAYRHO_D2_SIMPLEX_HPP
 
+/// @file
+/// @brief Definition of the @c Simplex class and closely related code.
+
 #include <array>
 
 #include <playrho/ArrayList.hpp>

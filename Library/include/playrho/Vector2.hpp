@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_VECTOR2_HPP
 #define PLAYRHO_VECTOR2_HPP
 
+/// @file
+/// @brief Definition of the @c Vector2 alias template and closely related code.
+
 #include <playrho/Settings.hpp>
 #include <playrho/Vector.hpp>
 

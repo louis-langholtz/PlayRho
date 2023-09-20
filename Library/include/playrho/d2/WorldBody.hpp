@@ -23,7 +23,7 @@
 #define PLAYRHO_D2_WORLDBODY_HPP
 
 /// @file
-/// Declarations of free functions of World for bodies identified by <code>BodyID</code>.
+/// @brief Declarations of free functions of World for bodies identified by <code>BodyID</code>.
 /// @details This is a collection of non-member non-friend functions - also called "free"
 ///   functions - that are related to bodies within an instance of a <code>World</code>.
 ///   Many are just "wrappers" to similarly named member functions but some are additional
@@ -61,6 +61,28 @@ class Shape;
 /// This is the <code>googletest</code> based unit testing file for the free function
 ///   interfaces to <code>playrho::d2::World</code> body member functions and additional
 ///   functionality.
+
+/// @name World Body Non-Member Functions.
+/// Non-Member functions relating to bodies.
+/// @{
+
+/// @brief Creates a rigid body with the given configuration.
+/// @warning This function should not be used while the world is locked &mdash; as it is
+///   during callbacks. If it is, it will throw an exception or abort your program.
+/// @note No references to the configuration are retained. Its value is copied.
+/// @post The created body will be present in the range returned from the
+///   <code>GetBodies(const World&)</code> method.
+/// @param world The world within which to create the body.
+/// @param def A customized body configuration or its default value.
+/// @param resetMassData Whether or not the mass data of the body should be reset.
+/// @return Identifier of the newly created body which can later be destroyed by calling
+///   the <code>Destroy(World&, BodyID)</code> method.
+/// @throws WrongState if this method is called while the world is locked.
+/// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
+/// @see Destroy(World& world, BodyID), GetBodies(const World&), ResetMassData.
+/// @see PhysicalEntities.
+/// @relatedalso World
+BodyID CreateBody(World& world, const BodyConf& def, bool resetMassData = true);
 
 /// @brief Associates a validly identified shape with the validly identified body.
 /// @note This function should not be called if the world is locked.
@@ -503,6 +525,37 @@ inline RotInertia GetRotInertia(const World& world, BodyID id)
 /// @relatedalso World
 Length2 GetLocalCenter(const World& world, BodyID id);
 
+/// @brief Computes the identified body's mass data.
+/// @details This basically accumulates the mass data over all fixtures.
+/// @note The center is the mass weighted sum of all fixture centers. Divide it by the
+///   mass to get the averaged center.
+/// @return accumulated mass data for all fixtures associated with the given body.
+/// @throws std::out_of_range If given an invalid body identifier.
+/// @relatedalso World
+MassData ComputeMassData(const World& world, BodyID id);
+
+/// @brief Sets the mass properties to override the mass properties of the fixtures.
+/// @note This changes the center of mass position.
+/// @note Creating or destroying fixtures can also alter the mass.
+/// @note This function has no effect if the body isn't dynamic.
+/// @param world The world in which the identified body exists.
+/// @param id Identifier of the body.
+/// @param massData the mass properties.
+/// @throws WrongState if this function is called while the world is locked.
+/// @throws std::out_of_range If given an invalid body identifier.
+/// @relatedalso World
+void SetMassData(World& world, BodyID id, const MassData& massData);
+
+/// @brief Resets the mass data properties.
+/// @details This resets the mass data to the sum of the mass properties of the fixtures.
+/// @note This method must be called after associating new shapes to the body to update the
+///   body mass data properties unless <code>SetMassData</code> is used.
+/// @throws WrongState if this function is called while the world is locked.
+/// @throws std::out_of_range If given an invalid body identifier.
+/// @see SetMassData, Attach, Detach.
+/// @relatedalso World
+void ResetMassData(World& world, BodyID id);
+
 /// @brief Gets the rotational inertia of the body about the local origin.
 /// @return the rotational inertia.
 /// @throws std::out_of_range If given an invalid body identifier.
@@ -722,6 +775,8 @@ inline void ClearForces(World& world)
 {
     SetAccelerations(world, Acceleration{});
 }
+
+/// @}
 
 } // namespace playrho::d2
 

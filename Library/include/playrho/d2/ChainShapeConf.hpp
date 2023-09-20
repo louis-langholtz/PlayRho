@@ -22,16 +22,18 @@
 #ifndef PLAYRHO_D2_SHAPES_CHAINSHAPECONF_HPP
 #define PLAYRHO_D2_SHAPES_CHAINSHAPECONF_HPP
 
+/// @file
+/// @brief Definition of the @c ChainShapeConf class and closely related code.
+
+#include <vector>
+
 #include <playrho/d2/ShapeConf.hpp>
 #include <playrho/d2/DistanceProxy.hpp>
 #include <playrho/d2/MassData.hpp>
 #include <playrho/d2/Math.hpp>
 #include <playrho/d2/AABB.hpp>
 
-#include <vector>
-
-namespace playrho {
-namespace d2 {
+namespace playrho::d2 {
 
 /// @brief Chain shape configuration.
 ///
@@ -261,8 +263,7 @@ inline ChainShapeConf GetChainShapeConf(Length dimension)
 /// @brief Gets an enclosing chain shape configuration for the given axis aligned box.
 ChainShapeConf GetChainShapeConf(const AABB& arg);
 
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2
 
 /// @brief Type info specialization for <code>playrho::d2::ChainShapeConf</code>.
 template <>

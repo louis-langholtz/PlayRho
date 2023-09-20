@@ -22,7 +22,7 @@
 #define PLAYRHO_D2_WORLDCONF_HPP
 
 /// @file
-/// Declarations of the WorldConf class.
+/// @brief Declarations of the @c WorldConf class.
 
 #include <playrho/Interval.hpp>
 #include <playrho/Positive.hpp>

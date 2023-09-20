@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_CONSTRAINTSOLVERCONF_HPP
 #define PLAYRHO_CONSTRAINTSOLVERCONF_HPP
 
+/// @file
+/// @brief Definition of the <code>ConstraintSolverConf</code> class and closely related code.
+
 #include <playrho/Settings.hpp>
 
 namespace playrho {

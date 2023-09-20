@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_POSITIONSOLVERMANIFOLD_HPP
 #define PLAYRHO_D2_POSITIONSOLVERMANIFOLD_HPP
 
+/// @file
+/// @brief Definition of the @c PositionSolverManifold class and closely related code.
+
 #include <playrho/Settings.hpp>
 
 #include <playrho/d2/Manifold.hpp>

@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_CONTACTSOLVER_HPP
 #define PLAYRHO_D2_CONTACTSOLVER_HPP
 
+/// @file
+/// @brief Declarations of the velocity and position constraint solver functions.
+
 #include <playrho/Span.hpp>
 
 #include <playrho/d2/Math.hpp>
@@ -47,8 +50,6 @@ namespace GaussSeidel {
 /// @note Linear velocity is only changed if the inverse mass of either body is non-zero.
 /// @note Angular velocity is only changed if the inverse rotational inertia of either
 ///   body is non-zero.
-/// @note Inlining this function may yield a 10% speed boost in the
-///   <code>World.TilesComesToRest</code> unit test.
 /// @param vc Velocity constraint to solve for.
 /// @param bodies Collection of bodies containing the two for the velocity constraint.
 /// @pre @p vc must have a valid normal, a valid tangent, valid point relative positions,

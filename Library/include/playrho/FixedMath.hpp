@@ -21,8 +21,12 @@
 #ifndef PLAYRHO_FIXEDMATH_HPP
 #define PLAYRHO_FIXEDMATH_HPP
 
-#include <playrho/Fixed.hpp>
+/// @file
+/// @brief Conventional math functions for the @c Fixed class template.
+
 #include <cmath>
+
+#include <playrho/Fixed.hpp>
 
 namespace playrho {
 

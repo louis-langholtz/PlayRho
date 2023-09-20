@@ -18,13 +18,13 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/WorldShape.hpp>
+#include <set>
+
+#include <playrho/Contact.hpp> // for MixFriction
 
 #include <playrho/d2/World.hpp>
 #include <playrho/d2/WorldBody.hpp>
-#include <playrho/Contact.hpp> // for MixFriction
-
-#include <set>
+#include <playrho/d2/WorldShape.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -57,11 +57,21 @@ ShapeCounter GetUsedShapesCount(const World& world) noexcept
     return static_cast<ShapeCounter>(std::size(ids));
 }
 
+Filter GetFilterData(const World& world, ShapeID id)
+{
+    return GetFilter(GetShape(world, id));
+}
+
 void SetFriction(World& world, ShapeID id, NonNegative<Real> value)
 {
     auto object = GetShape(world, id);
     SetFriction(object, value);
     SetShape(world, id, object);
+}
+
+Real GetRestitution(const World& world, ShapeID id)
+{
+    return GetRestitution(GetShape(world, id));
 }
 
 void SetRestitution(World& world, ShapeID id, Real value)
@@ -71,6 +81,11 @@ void SetRestitution(World& world, ShapeID id, Real value)
     SetShape(world, id, object);
 }
 
+bool IsSensor(const World& world, ShapeID id)
+{
+    return IsSensor(GetShape(world, id));
+}
+
 void SetFilterData(World& world, ShapeID id, const Filter& filter)
 {
     auto object = GetShape(world, id);
@@ -78,11 +93,21 @@ void SetFilterData(World& world, ShapeID id, const Filter& filter)
     SetShape(world, id, object);
 }
 
+NonNegativeFF<Real> GetFriction(const World& world, ShapeID id)
+{
+    return GetFriction(GetShape(world, id));
+}
+
 void SetSensor(World& world, ShapeID id, bool value)
 {
     auto object = GetShape(world, id);
     SetSensor(object, value);
     SetShape(world, id, object);
+}
+
+NonNegative<AreaDensity> GetDensity(const World& world, ShapeID id)
+{
+    return GetDensity(GetShape(world, id));
 }
 
 void SetDensity(World& world, ShapeID id, NonNegative<AreaDensity> value)
@@ -111,6 +136,11 @@ void Rotate(World& world, ShapeID id, const UnitVec& value)
     auto object = GetShape(world, id);
     Rotate(object, value);
     SetShape(world, id, object);
+}
+
+MassData GetMassData(const World& world, ShapeID id)
+{
+    return GetMassData(GetShape(world, id));
 }
 
 MassData ComputeMassData(const World& world, const Span<const ShapeID>& ids)

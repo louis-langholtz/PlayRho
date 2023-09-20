@@ -23,7 +23,7 @@
 #define PLAYRHO_D2_BODYCONF_HPP
 
 /// @file
-/// Declarations of the BodyConf struct and free functions associated with it.
+/// @brief Declarations of the BodyConf struct and free functions associated with it.
 
 #include <playrho/BodyType.hpp>
 #include <playrho/NonNegative.hpp>

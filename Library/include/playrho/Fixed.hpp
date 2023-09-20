@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_FIXED_HPP
 #define PLAYRHO_FIXED_HPP
 
+/// @file
+/// @brief Definition of the @c Fixed class and closely related code.
+
 #include <cstdint>
 #include <limits>
 #include <cassert>
@@ -265,8 +268,8 @@ public:
     constexpr T ConvertTo() const noexcept
     {
         return isnan()? std::numeric_limits<T>::signaling_NaN():
-            !isfinite()? std::numeric_limits<T>::infinity() * getsign():
-                m_value / static_cast<T>(ScaleFactor);
+            !isfinite()? std::numeric_limits<T>::infinity() * static_cast<T>(getsign()):
+                static_cast<T>(m_value) / static_cast<T>(ScaleFactor);
     }
 
     /// @brief Compares this value to the given one.

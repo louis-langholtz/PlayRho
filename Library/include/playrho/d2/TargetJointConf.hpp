@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_MOUSEJOINTCONF_HPP
 #define PLAYRHO_D2_MOUSEJOINTCONF_HPP
 
+/// @file
+/// @brief Definition of the @c TargetJointConf class and closely related code.
+
 #include <playrho/Span.hpp>
 
 #include <playrho/d2/JointConf.hpp>

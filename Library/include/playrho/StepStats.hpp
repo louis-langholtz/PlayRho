@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_STEPSTATS_HPP
 #define PLAYRHO_STEPSTATS_HPP
 
+/// @file
+/// @brief Definition of the @c StepStats related classes and code.
+
 #include <playrho/Settings.hpp>
 
 namespace playrho {

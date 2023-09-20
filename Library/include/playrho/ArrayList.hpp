@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_ARRAYLIST_HPP
 #define PLAYRHO_ARRAYLIST_HPP
 
+/// @file
+/// @brief Definition of the <code>ArrayList</code> class and closely related functions.
+
 #include <array>
 #include <cassert>
 #include <initializer_list>
@@ -251,6 +254,7 @@ private:
 };
 
 /// @brief <code>ArrayList</code> append operator.
+/// @relatedalso ArrayList
 template <typename T, std::size_t S>
 ArrayList<T, S>& operator+=(ArrayList<T, S>& lhs, const typename ArrayList<T, S>::data_type& rhs)
 {
@@ -259,6 +263,11 @@ ArrayList<T, S>& operator+=(ArrayList<T, S>& lhs, const typename ArrayList<T, S>
 }
 
 /// @brief <code>ArrayList</code> add operator.
+/// @details Appends the right-hand-side value to the left-hand-side instance's values.
+/// @param lhs Left hand side instance.
+/// @param rhs Right hand side value to append with @p lhs into the returned result.
+/// @return An instance with all of @p lhs values follwed by the @p rhs value.
+/// @relatedalso ArrayList
 template <typename T, std::size_t S>
 ArrayList<T, S> operator+(ArrayList<T, S> lhs, const typename ArrayList<T, S>::data_type& rhs)
 {

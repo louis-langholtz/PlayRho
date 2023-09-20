@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_DETAIL_INDEXINGNAMEDTYPE_HPP
 #define PLAYRHO_DETAIL_INDEXINGNAMEDTYPE_HPP
 
+/// @file
+/// @brief Definition of @c IndexingNamedType class template and related code.
+
 #include <utility>
 #include <functional> // for std::hash
 #include <type_traits> // for std::is_nothrow_default_constructible_v
@@ -137,6 +140,7 @@ static_assert(std::is_nothrow_copy_constructible_v<IndexingNamedType<int, struct
 static_assert(std::is_nothrow_move_constructible_v<IndexingNamedType<int, struct Test>>);
 
 /// @brief Gets the underlying value.
+/// @relatedalso IndexingNamedType
 template <typename T, typename Tag>
 [[deprecated("Use to_underlying instead")]]
 constexpr T& UnderlyingValue(IndexingNamedType<T, Tag>& o) noexcept
@@ -145,6 +149,7 @@ constexpr T& UnderlyingValue(IndexingNamedType<T, Tag>& o) noexcept
 }
 
 /// @brief Gets the underlying value.
+/// @relatedalso IndexingNamedType
 template <typename T, typename Tag>
 [[deprecated("Use to_underlying instead")]]
 constexpr const T& UnderlyingValue(const IndexingNamedType<T, Tag>& o) noexcept
@@ -156,6 +161,7 @@ constexpr const T& UnderlyingValue(const IndexingNamedType<T, Tag>& o) noexcept
 
 /// @brief Custom specialization of std::hash for
 ///   <code>::playrho::detail::IndexingNamedType</code>.
+/// @relatedalso IndexingNamedType
 template <typename T, typename Tag>
 struct std::hash<::playrho::detail::IndexingNamedType<T, Tag>>
 {

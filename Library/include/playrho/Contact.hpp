@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_CONTACT_HPP
 #define PLAYRHO_CONTACT_HPP
 
+/// @file
+/// @brief Definition of the <code>Contact</code> class and closely related code.
+
 #include <cassert> // for assert
 #include <limits> // for std::numeric_limits
 #include <optional>
@@ -38,6 +41,7 @@ namespace playrho {
 ///   the resulting friction to zero. For example, anything slides on ice.
 /// @param friction1 A zero or greater value.
 /// @param friction2 A zero or greater value.
+/// @return Mixed friction result.
 inline auto MixFriction(NonNegativeFF<Real> friction1, NonNegativeFF<Real> friction2)
 {
     return NonNegativeFF<Real>(sqrt(friction1 * friction2));
@@ -46,6 +50,7 @@ inline auto MixFriction(NonNegativeFF<Real> friction1, NonNegativeFF<Real> frict
 /// @brief Mixes restitution.
 /// @details Restitution mixing law. The idea is allow for anything to bounce off
 ///   an inelastic surface. For example, a super ball bounces on anything.
+/// @return Mixed restitution result.
 inline auto MixRestitution(Real restitution1, Real restitution2) noexcept
 {
     return (restitution1 > restitution2) ? restitution1 : restitution2;
@@ -54,14 +59,11 @@ inline auto MixRestitution(Real restitution1, Real restitution2) noexcept
 struct ToiConf;
 
 /// @brief A potential contact between the children of two body associated shapes.
-///
 /// @details The class manages contact between two shapes. A contact exists for
 ///   each overlapping AABB in the broad-phase (except if filtered). Therefore a
 ///   contact object may exist that has no actual contact points.
-///
 /// @ingroup PhysicalEntities
 /// @ingroup ConstraintsGroup
-///
 class Contact
 {
 public:

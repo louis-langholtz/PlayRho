@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_FRICTIONJOINTCONF_HPP
 #define PLAYRHO_D2_FRICTIONJOINTCONF_HPP
 
+/// @file
+/// @brief Definition of the @c FrictionJointConf class and closely related code.
+
 #include <playrho/NonNegative.hpp>
 #include <playrho/Span.hpp>
 

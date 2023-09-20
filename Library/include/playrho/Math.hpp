@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_MATH_HPP
 #define PLAYRHO_MATH_HPP
 
+/// @file
+/// @brief Conventional and custom math related code.
+
 #include <cmath>
 #include <numeric>
 #include <type_traits> // for std::decay_t

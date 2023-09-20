@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_DETAIL_NEGATIVECHECKER_HPP
 #define PLAYRHO_DETAIL_NEGATIVECHECKER_HPP
 
+/// @file
+/// @brief Definition of the @c NegativeChecker class template.
+
 #include <playrho/detail/Checked.hpp>
 
 namespace playrho::detail {

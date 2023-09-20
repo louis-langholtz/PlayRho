@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_PRISMATICJOINTCONF_HPP
 #define PLAYRHO_D2_PRISMATICJOINTCONF_HPP
 
+/// @file
+/// @brief Definition of the @c PrismaticJointConf class and closely related code.
+
 #include <playrho/LimitState.hpp>
 #include <playrho/Span.hpp>
 

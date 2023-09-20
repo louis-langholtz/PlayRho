@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_DETAIL_TYPEINFO_HPP
 #define PLAYRHO_DETAIL_TYPEINFO_HPP
 
+/// @file
+/// @brief Definition of @c TypeInfo class template and related code.
+
 #include <regex>
 #include <string>
 

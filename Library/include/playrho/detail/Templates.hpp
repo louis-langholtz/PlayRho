@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_DETAIL_TEMPLATES_HPP
 #define PLAYRHO_DETAIL_TEMPLATES_HPP
 
+/// @file
+/// @brief Low-level declarations for general class & function templates.
+
 #include <algorithm>
 #include <functional>
 #include <iterator>

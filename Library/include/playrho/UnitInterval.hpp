@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_UNITINTERVAL_HPP
 #define PLAYRHO_UNITINTERVAL_HPP
 
+/// @file
+/// @brief Definition of the @c UnitInterval value checked types and related code.
+
 #include <playrho/detail/UnitIntervalChecker.hpp>
 
 namespace playrho {

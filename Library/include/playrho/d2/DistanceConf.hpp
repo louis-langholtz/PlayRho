@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_D2_DISTANCE_CONF_HPP
 #define PLAYRHO_D2_DISTANCE_CONF_HPP
 
+/// @file
+/// @brief Definition of the @c DistanceConf class and closely related code.
+
 #include <playrho/Settings.hpp>
 
 #include <playrho/d2/Simplex.hpp>

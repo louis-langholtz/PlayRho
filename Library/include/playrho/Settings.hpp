@@ -36,8 +36,8 @@
 #include <cstdint>
 #include <algorithm>
 
-#include <playrho/Templates.hpp>
 #include <playrho/RealConstants.hpp>
+#include <playrho/Templates.hpp>
 #include <playrho/Units.hpp>
 #include <playrho/WiderType.hpp>
 

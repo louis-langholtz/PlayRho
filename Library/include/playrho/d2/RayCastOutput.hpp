@@ -23,7 +23,7 @@
 #define PLAYRHO_D2_RAYCASTOUTPUT_HPP
 
 /// @file
-/// Declaration of the RayCastOutput structure and related free functions.
+/// @brief Declaration of the RayCastOutput structure and related free functions.
 
 #include <optional>
 

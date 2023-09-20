@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_D2_VERTEXSET_HPP
 #define PLAYRHO_D2_VERTEXSET_HPP
 
+/// @file
+/// @brief Definition of the @c VertexSet class and closely related code.
+
 #include <vector>
 #include <algorithm>
 

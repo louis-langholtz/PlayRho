@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_VECTOR_HPP
 #define PLAYRHO_VECTOR_HPP
 
+/// @file
+/// @brief Definition of the @c Vector class template and closely related code.
+
 #include <cassert>
 #include <cstddef>
 #include <type_traits>
@@ -497,7 +500,7 @@ operator* (const Vector<T1, N>& a, const T2& s) noexcept
 /// @relatedalso Vector
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} / T2{})>
 constexpr std::enable_if_t<IsDivisableV<T1, T2> && !IsVectorV<T2>, Vector<OT, N>>
-operator/ (Vector<T1, N> a, const T2 s) noexcept
+operator/ (const Vector<T1, N>& a, const T2& s) noexcept
 {
     // Can't base this off of /= since result type in this case can be different
     auto result = Vector<OT, N>{};

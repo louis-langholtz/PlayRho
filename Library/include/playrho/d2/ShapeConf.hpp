@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_SHAPES_SHAPECONF_HPP
 #define PLAYRHO_D2_SHAPES_SHAPECONF_HPP
 
+/// @file
+/// @brief Definition of the @c BaseShapeConf class and closely related code.
+
 #include <playrho/Filter.hpp>
 #include <playrho/Finite.hpp>
 #include <playrho/NonNegative.hpp>

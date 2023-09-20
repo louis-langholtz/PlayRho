@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_DISTANCEPROXY_HPP
 #define PLAYRHO_D2_DISTANCEPROXY_HPP
 
+/// @file
+/// @brief Definition of the @c DistanceProxy class and closely related code.
+
 #include <algorithm>
 #include <vector>
 

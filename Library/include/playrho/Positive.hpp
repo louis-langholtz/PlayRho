@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_POSITIVE_HPP
 #define PLAYRHO_POSITIVE_HPP
 
+/// @file
+/// @brief Definition of the @c Positive value checked types and related code.
+
 #include <playrho/detail/PositiveChecker.hpp>
 
 namespace playrho {

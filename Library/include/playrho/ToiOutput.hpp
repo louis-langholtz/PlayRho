@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_TOIOUTPUT_HPP
 #define PLAYRHO_TOIOUTPUT_HPP
 
+/// @file
+/// @brief Definitions of @c ToiOutput class and closely related code.
+
 #include <playrho/Settings.hpp>
 #include <playrho/WiderType.hpp>
 

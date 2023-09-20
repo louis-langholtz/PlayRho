@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_WORLDMANIFOLD_HPP
 #define PLAYRHO_D2_WORLDMANIFOLD_HPP
 
+/// @file
+/// @brief Declarations of the @c WorldManifold class and closely related code.
+
 #include <playrho/d2/Math.hpp>
 
 namespace playrho {

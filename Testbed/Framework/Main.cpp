@@ -19,14 +19,23 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/Version.hpp>
+#include <algorithm>
+#include <cmath> // for std::nextafter
+#include <cstdio>
+#include <sstream>
+#include <iostream>
+#include <iomanip>
+#include <memory>
+#include <string>
+#include <cstring>
+#include <cctype>
+#include <map>
+#include <set>
 
 #include "imgui.h"
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 #include "ExtensionsForImgui.hpp"
-
-#include <cmath> // for std::nextafter
 
 // From imgui example code:
 //  "About Desktop OpenGL function loaders:
@@ -77,19 +86,7 @@ using namespace gl;
 #include "DroidSansTtfData.h"
 #endif
 
-#include <algorithm>
-#include <sstream>
-#include <iostream>
-#include <iomanip>
-#include <memory>
-#include <string>
-#include <cstring>
-#include <cctype>
-#include <map>
-#include <set>
-
 #include <GLFW/glfw3.h>
-#include <cstdio>
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <direct.h>
@@ -98,6 +95,8 @@ using namespace gl;
 #include <cerrno>
 #include <unistd.h>
 #endif
+
+#include <playrho/Version.hpp>
 
 using namespace testbed;
 using namespace playrho;
@@ -651,6 +650,7 @@ static void MouseButton(GLFWwindow* window, const int button, const int action, 
                 default:
                     break;
             }
+            break;
         }
         default:
             break;

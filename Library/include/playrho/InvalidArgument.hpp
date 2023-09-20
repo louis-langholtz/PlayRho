@@ -21,7 +21,9 @@
 #ifndef PLAYRHO_INVALIDARGUMENT_HPP
 #define PLAYRHO_INVALIDARGUMENT_HPP
 
-#include <playrho/Defines.hpp>
+/// @file
+/// @brief Definition of the @c InvalidArgument class.
+
 #include <stdexcept>
 
 namespace playrho {

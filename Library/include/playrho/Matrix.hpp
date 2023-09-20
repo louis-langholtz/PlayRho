@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_MATRIX_HPP
 #define PLAYRHO_MATRIX_HPP
 
+/// @file
+/// @brief Definition of the @c Matrix alias and closely related code.
+
 #include <playrho/Vector.hpp>
 #include <playrho/Vector2.hpp>
 #include <playrho/Templates.hpp>

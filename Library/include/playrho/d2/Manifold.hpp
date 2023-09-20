@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_MANIFOLD_HPP
 #define PLAYRHO_D2_MANIFOLD_HPP
 
+/// @file
+/// @brief Definition of the @c Manifold class and closely related code.
+
 #include <playrho/ContactFeature.hpp>
 
 #include <playrho/d2/IndexPair.hpp>

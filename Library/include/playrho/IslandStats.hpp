@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_ISLANDSTATS_HPP
 #define PLAYRHO_ISLANDSTATS_HPP
 
+/// @file
+/// @brief Definition of the @c IslandStats class.
+
 #include <playrho/Units.hpp>
 #include <playrho/Settings.hpp>
 

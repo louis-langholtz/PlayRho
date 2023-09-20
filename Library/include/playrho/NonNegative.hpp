@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_NONNEGATIVE_HPP
 #define PLAYRHO_NONNEGATIVE_HPP
 
+/// @file
+/// @brief Definition of the @c NonNegative value checked types.
+
 #include <playrho/detail/NonNegativeChecker.hpp>
 
 namespace playrho {

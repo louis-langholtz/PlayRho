@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_MATH_HPP
 #define PLAYRHO_D2_MATH_HPP
 
+/// @file
+/// @brief Declarations of general 2-D math related code.
+
 #include <playrho/Math.hpp>
 
 #include <playrho/d2/UnitVec.hpp>

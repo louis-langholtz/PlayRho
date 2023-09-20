@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_WELDJOINTCONF_HPP
 #define PLAYRHO_D2_WELDJOINTCONF_HPP
 
+/// @file
+/// @brief Definition of the @c WeldJointConf class and closely related code.
+
 #include <playrho/Span.hpp>
 
 #include <playrho/d2/JointConf.hpp>

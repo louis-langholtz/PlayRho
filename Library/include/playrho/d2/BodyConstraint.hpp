@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_BODYCONSTRAINT_HPP
 #define PLAYRHO_D2_BODYCONSTRAINT_HPP
 
+/// @file
+/// @brief Definition of the @c BodyConstraint class and closely related code.
+
 #include <cassert>
 
 #include <playrho/MovementConf.hpp>

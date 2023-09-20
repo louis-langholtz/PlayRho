@@ -29,9 +29,11 @@ IndexPair3 GetIndexPairs(const SimplexEdges& collection) noexcept
     auto list = IndexPair3{{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair}};
     switch (size(collection)) {
     case 3:
-        list[2] = collection[2].GetIndexPair(); // fall through
+        list[2] = collection[2].GetIndexPair();
+        [[fallthrough]];
     case 2:
-        list[1] = collection[1].GetIndexPair(); // fall through
+        list[1] = collection[1].GetIndexPair();
+        [[fallthrough]];
     case 1:
         list[0] = collection[0].GetIndexPair(); // fall through
     }

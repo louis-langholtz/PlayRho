@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_D2_SHAPES_EDGESHAPECONF_HPP
 #define PLAYRHO_D2_SHAPES_EDGESHAPECONF_HPP
 
+/// @file
+/// @brief Definition of the @c EdgeShapeConf class and closely related code.
+
 #include <playrho/d2/DistanceProxy.hpp>
 #include <playrho/d2/MassData.hpp>
 #include <playrho/d2/Math.hpp>

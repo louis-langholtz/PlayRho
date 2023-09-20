@@ -23,6 +23,9 @@
 
 #include <type_traits>
 
+/// @file
+/// @brief Definition of the @c FlagGuard class template.
+
 namespace playrho {
     
     /// @brief Flag guard type.

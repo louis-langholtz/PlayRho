@@ -22,6 +22,9 @@
 #ifndef PLAYRHO_STACKALLOCATOR_HPP
 #define PLAYRHO_STACKALLOCATOR_HPP
 
+/// @file
+/// @brief Definition of the @c StackAllocator class.
+
 #include <playrho/Settings.hpp>
 
 namespace playrho {

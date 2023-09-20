@@ -23,7 +23,7 @@
 #define PLAYRHO_D2_WORLDMISC_HPP
 
 /// @file
-/// Declarations of free functions of World for unidentified information.
+/// @brief Declarations of free functions of World for unidentified information.
 
 #include <utility> // for std::pair
 

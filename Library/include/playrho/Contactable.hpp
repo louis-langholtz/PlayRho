@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_CONTACTABLE_HPP
 #define PLAYRHO_CONTACTABLE_HPP
 
+/// @file
+/// @brief Definition of the <code>Contactable</code> class and closely related code.
+
 #include <playrho/Settings.hpp> // for ChildCounter
 #include <playrho/ShapeID.hpp>
 #include <playrho/BodyID.hpp>

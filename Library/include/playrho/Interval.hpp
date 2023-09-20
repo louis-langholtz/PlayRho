@@ -21,12 +21,15 @@
 #ifndef PLAYRHO_INTERVAL_HPP
 #define PLAYRHO_INTERVAL_HPP
 
-#include <playrho/NonNegative.hpp>
+/// @file
+/// @brief Definition of the @c Interval class template and closely related code.
 
 #include <algorithm>
 #include <limits> // for std::numeric_limits
 #include <iostream>
 #include <type_traits> // for std::is_nothrow_copy_constructible_v
+
+#include <playrho/NonNegative.hpp>
 
 namespace playrho {
 

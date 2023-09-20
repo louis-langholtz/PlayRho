@@ -21,6 +21,9 @@
 #ifndef PLAYRHO_DETAIL_FINITECHECKER_HPP
 #define PLAYRHO_DETAIL_FINITECHECKER_HPP
 
+/// @file
+/// @brief Definition of the @c FiniteChecker class template.
+
 #include <playrho/detail/Checked.hpp>
 
 #include <playrho/Math.hpp> // for playrho::isfinite
