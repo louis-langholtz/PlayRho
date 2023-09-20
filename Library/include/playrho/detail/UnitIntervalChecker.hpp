@@ -32,6 +32,7 @@ namespace playrho::detail {
 /// @details Provides functors ensuring values are:
 ///   greater-than or equal-to zero, and less-than or equal-to one.
 /// @note This is meant to be used as a checker with types like <code>Checked</code>.
+/// @ingroup Checkers
 /// @see Checked.
 template <typename T>
 struct UnitIntervalChecker {
@@ -44,6 +45,9 @@ struct UnitIntervalChecker {
     }
 
     /// @brief Value checking functor.
+    /// @return @c nullptr if the given value is within 0 and 1 inclusively, else a
+    ///   non-null pointer to the C-style nul-terminated string indicating whether the
+    ///   value is less than zero or greater than 1.
     constexpr auto operator()(const T& v) noexcept
         -> decltype((v >= static_cast<T>(0)) && (v <= static_cast<T>(1)), static_cast<const char*>(nullptr))
     {

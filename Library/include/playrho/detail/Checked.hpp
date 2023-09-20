@@ -34,21 +34,39 @@
 
 namespace playrho::detail {
 
+/// @defgroup Checkers Checker Types
+/// @brief Types for checking values.
+/// @details Types for checking values for use in types like @c Checked.
+///   Valid checkers must minimally provide a one-parameter functor taking
+///   the value to be checked and returning @c nullptr if **valid** or a non-null
+///   pointer to a C-style nul-terminated ASCII string in static storage
+///   indicating why the given value is **invalid**.
+///   Additionally, checkers can optionally provide a no-parameter functor returning
+///   a default value for the type and that checker.
+/// @note It's expected that these functors are non-throwing.
+/// @note An example conforming checker is the <code>NoOpChecker</code>.
+/// @see Checked, NoOpChecker.
+
 /// @brief No-op value checker.
-/// @details Provides functors ensuring values are the value given.
-/// @tparam T Value type to check (or pass-through in this case).
+/// @details Provides functors for a no-operation style checker. This simply always
+///   returns @c nullptr in the one-parameter value checking functor and returns the
+///   template specified type's default value from the no-parameter functor.
+/// @ingroup Checkers
+/// @tparam T Value type to check.
 /// @note This is meant to be used as a checker with types like <code>Checked</code>.
 /// @see Checked.
 template <typename T>
 struct NoOpChecker
 {
     /// @brief Default value supplying functor.
+    /// @return Always returns defaulted value of class template's given type parameter.
     constexpr auto operator()() noexcept -> decltype(T())
     {
         return T();
     }
 
     /// @brief Value checking functor.
+    /// @return Always @c nullptr, in a conceivably no-operation style.
     constexpr auto operator()(const T&) noexcept -> const char *
     {
         return nullptr;
@@ -631,7 +649,7 @@ constexpr auto operator- (const Other& lhs,
 }
 
 /// @defgroup CheckedTypes Checked Value Types
-/// @brief Types for checked values.
+/// @brief Types for holding checked valid values.
 /// @details Type aliases for checked values via on-construction checks that
 ///   may throw an exception if an attempt is made to construct the checked value
 ///   type with a value not allowed by the specific alias.
