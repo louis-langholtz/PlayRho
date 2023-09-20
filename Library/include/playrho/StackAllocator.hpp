@@ -92,7 +92,7 @@ public:
     }
 
     /// Functional operator for freeing memory allocated by this object.
-    /// @details This method frees memory (like called Free) and allows this object
+    /// @details This function frees memory (like called Free) and allows this object
     ///   to be used as deleter to <code>std::unique_ptr</code>.
     void operator()(void *p) noexcept
     {

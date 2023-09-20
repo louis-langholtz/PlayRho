@@ -44,7 +44,7 @@ std::vector<UnitVec> ComputeNormals(const Span<const Length2>& vertices)
         for (const auto& v : vertices) {
             if (!first) {
                 // Get the normal and push it and its reverse.
-                // This "doubling up" of the normals, makes the GetChild() method work.
+                // This "doubling up" of the normals, makes the GetChild() function work.
                 const auto normal = GetUnitVector(GetFwdPerpendicular(v - vprev));
                 normals.push_back(normal);
                 normals.push_back(-normal);

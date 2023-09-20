@@ -123,7 +123,7 @@ public:
     
     /// @brief Gets the indexed point's location in world coordinates.
     /// @param index Index to return point for. This must be between 0 and
-    ///   <code>GetPointCount()</code> to get a valid point from this method.
+    ///   <code>GetPointCount()</code> to get a valid point from this function.
     /// @pre @p index is less than <code>MaxManifoldPoints</code>.
     /// @return Point or an invalid value if the given index was invalid.
     Length2 GetPoint(size_type index) const noexcept

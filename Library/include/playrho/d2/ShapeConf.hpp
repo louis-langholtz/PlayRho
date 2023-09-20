@@ -88,7 +88,7 @@ struct BaseShapeConf {
 /// @details This is a builder structure of chainable methods for building a shape
 ///   configuration.
 /// @note This is a templated nested value class for initializing shapes that
-///   uses the Curiously Recurring Template Pattern (CRTP) to provide method chaining
+///   uses the Curiously Recurring Template Pattern (CRTP) to provide function chaining
 ///   via static polymorphism.
 /// @see https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern
 template <typename ConcreteConf>

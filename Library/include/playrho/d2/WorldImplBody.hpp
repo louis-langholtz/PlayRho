@@ -82,20 +82,20 @@ const std::vector<std::pair<BodyID, JointID>>& GetJoints(const WorldImpl& world,
 
 /// @brief Associates a validly identified shape with the validly identified body.
 /// @throws std::out_of_range If given an invalid body or shape identifier.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @see GetShapes.
 /// @relatedalso WorldImpl
 void Attach(WorldImpl& world, BodyID id, ShapeID shapeID);
 
 /// @brief Disassociates a validly identified shape from the validly identified body.
 /// @throws std::out_of_range If given an invalid body or shape identifier.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @relatedalso WorldImpl
 bool Detach(WorldImpl& world, BodyID id, ShapeID shapeID);
 
 /// @brief Disassociates all of the associated shape from the validly identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @relatedalso WorldImpl
 const std::vector<ShapeID>& GetShapes(const WorldImpl& world, BodyID id);
 

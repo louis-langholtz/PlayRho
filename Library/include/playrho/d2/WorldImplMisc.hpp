@@ -103,7 +103,7 @@ StepStats Step(WorldImpl& world, const StepConf& conf);
 ///   have been translated per the shift amount and direction.
 /// @param world The world whose origin should be shifted.
 /// @param newOrigin the new origin with respect to the old origin
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @relatedalso WorldImpl
 void ShiftOrigin(WorldImpl& world, const Length2& newOrigin);
 
@@ -113,14 +113,14 @@ const std::vector<BodyID>& GetBodies(const WorldImpl& world) noexcept;
 
 /// @brief Gets the bodies-for-proxies range for this world.
 /// @details Provides insight on what bodies have been queued for proxy processing
-///   during the next call to the world step method.
+///   during the next call to the world step function.
 /// @see WorldImpl::Step.
 /// @relatedalso WorldImpl
 const std::vector<BodyID>& GetBodiesForProxies(const WorldImpl& world) noexcept;
 
 /// @brief Gets the fixtures-for-proxies range for this world.
 /// @details Provides insight on what fixtures have been queued for proxy processing
-///   during the next call to the world step method.
+///   during the next call to the world step function.
 /// @see Step.
 /// @relatedalso WorldImpl
 const std::vector<std::pair<BodyID, ShapeID>>& GetFixturesForProxies(const WorldImpl& world) noexcept;
@@ -140,7 +140,7 @@ bool IsLocked(const WorldImpl& world) noexcept;
 /// @brief Whether or not "step" is complete.
 /// @details The "step" is completed when there are no more TOI events for the current time
 ///   step.
-/// @return <code>true</code> unless sub-stepping is enabled and the step method returned
+/// @return <code>true</code> unless sub-stepping is enabled and the step function returned
 ///   without finishing all of its sub-steps.
 /// @see GetSubStepping, SetSubStepping.
 /// @relatedalso WorldImpl
@@ -153,7 +153,7 @@ bool GetSubStepping(const WorldImpl& world) noexcept;
 
 /// @brief Enables/disables single stepped continuous physics.
 /// @note This is not normally used. Enabling sub-stepping is meant for testing.
-/// @post The <code>GetSubStepping()</code> method will return the value this method was
+/// @post The <code>GetSubStepping()</code> function will return the value this function was
 ///   called with.
 /// @see IsStepComplete, GetSubStepping.
 /// @relatedalso WorldImpl
@@ -169,7 +169,7 @@ Length GetMaxVertexRadius(const WorldImpl& world) noexcept;
 
 /// @brief Gets the inverse delta time.
 /// @details Gets the inverse delta time that was set on construction or assignment, and
-///   updated on every call to the <code>Step()</code> method having a non-zero delta-time.
+///   updated on every call to the <code>Step()</code> function having a non-zero delta-time.
 /// @see Step.
 /// @relatedalso WorldImpl
 Frequency GetInvDeltaTime(const WorldImpl& world) noexcept;

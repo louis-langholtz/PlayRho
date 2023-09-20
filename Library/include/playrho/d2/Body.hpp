@@ -159,7 +159,7 @@ public:
     Velocity GetVelocity() const noexcept;
 
     /// @brief Sets the body's velocity (linear and angular velocity).
-    /// @note This method does nothing if this body is not speedable.
+    /// @note This function does nothing if this body is not speedable.
     /// @note A non-zero velocity will awaken this body.
     /// @see SetAwake, SetUnderActiveTime, GetVelocity.
     void SetVelocity(const Velocity& velocity) noexcept;
@@ -281,11 +281,11 @@ public:
 
     /// @brief Awakens this body.
     /// @details Sets this body to awake and resets its under-active time if it's a "speedable"
-    ///   body. This method has no effect otherwise.
-    /// @post If this body is a "speedable" body, then this body's <code>IsAwake</code> method
+    ///   body. This function has no effect otherwise.
+    /// @post If this body is a "speedable" body, then this body's <code>IsAwake</code> function
     ///   returns true.
     /// @post If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</code>
-    ///   method returns zero.
+    ///   function returns zero.
     /// @see IsAwake.
     void SetAwake() noexcept;
 
@@ -293,9 +293,9 @@ public:
     /// @details If this body is allowed to sleep, this: sets the sleep state of the body to
     ///   asleep, resets this body's under active time, and resets this body's velocity (linear
     ///   and angular).
-    /// @post This body's <code>IsAwake</code> method returns false.
-    /// @post This body's <code>GetUnderActiveTime</code> method returns zero.
-    /// @post This body's <code>GetVelocity</code> method returns zero linear and zero angular
+    /// @post This body's <code>IsAwake</code> function returns false.
+    /// @post This body's <code>GetUnderActiveTime</code> function returns zero.
+    /// @post This body's <code>GetVelocity</code> function returns zero linear and zero angular
     ///   speed.
     /// @see IsAwake.
     void UnsetAwake() noexcept;
@@ -380,7 +380,7 @@ public:
     /// @see GetSweep.
     void ResetAlpha0() noexcept;
 
-    /// @brief Calls the body sweep's <code>Advance0</code> method to advance to
+    /// @brief Calls the body sweep's <code>Advance0</code> function to advance to
     ///    the given value.
     /// @see GetSweep.
     void Advance0(Real value) noexcept;
@@ -795,11 +795,11 @@ inline bool IsAwake(const Body& body) noexcept
 
 /// @brief Awakens this body.
 /// @details Sets this body to awake and resets its under-active time if it's a "speedable"
-///   body. This method has no effect otherwise.
-/// @post If this body is a "speedable" body, then this body's <code>IsAwake</code> method
+///   body. This function has no effect otherwise.
+/// @post If this body is a "speedable" body, then this body's <code>IsAwake</code> function
 ///   returns true.
 /// @post If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</code>
-///   method returns zero.
+///   function returns zero.
 /// @see IsAwake(const Body&), UnsetAwake(Body&).
 /// @relatedalso Body
 inline void SetAwake(Body& body) noexcept
@@ -811,9 +811,9 @@ inline void SetAwake(Body& body) noexcept
 /// @details If this body is allowed to sleep, this: sets the sleep state of the body to
 /// asleep, resets this body's under active time, and resets this body's velocity (linear
 /// and angular).
-/// @post This body's <code>IsAwake</code> method returns false.
-/// @post This body's <code>GetUnderActiveTime</code> method returns zero.
-/// @post This body's <code>GetVelocity</code> method returns zero linear and zero angular
+/// @post This body's <code>IsAwake</code> function returns false.
+/// @post This body's <code>GetUnderActiveTime</code> function returns zero.
+/// @post This body's <code>GetVelocity</code> function returns zero linear and zero angular
 ///   speed.
 /// @see IsAwake(const Body&), SetAwake(Body&).
 /// @relatedalso Body
@@ -892,7 +892,7 @@ inline void SetPosition1(Body& body, const Position& value) noexcept
     body.SetPosition1(value);
 }
 
-/// @brief Calls the body sweep's <code>Advance0</code> method to advance to
+/// @brief Calls the body sweep's <code>Advance0</code> function to advance to
 ///    the given value.
 /// @see GetSweep.
 inline void Advance0(Body& body, Real value) noexcept
@@ -901,7 +901,7 @@ inline void Advance0(Body& body, Real value) noexcept
 }
 
 /// Advances the body by a given time ratio.
-/// @details This method:
+/// @details This function:
 ///    1. advances the body's sweep to the given time ratio;
 ///    2. updates the body's sweep positions (linear and angular) to the advanced ones; and
 ///    3. updates the body's transform to the new sweep one settings.
@@ -1202,7 +1202,7 @@ inline Velocity GetVelocity(const Body& body) noexcept
 }
 
 /// @brief Sets the body's velocity (linear and angular velocity).
-/// @note This method does nothing if this body is not speedable.
+/// @note This function does nothing if this body is not speedable.
 /// @note A non-zero velocity will awaken this body.
 /// @see GetVelocity(const Body& body), SetAwake, SetUnderActiveTime.
 /// @relatedalso Body

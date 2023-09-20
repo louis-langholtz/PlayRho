@@ -334,7 +334,7 @@ public:
     /// Gets the manifold point count.
     /// @details This is the count of contact points for this manifold.
     ///   Only up to this many points can be validly accessed using the
-    ///   <code>GetPoint()</code> method.
+    ///   <code>GetPoint()</code> function.
     /// @note Non-zero values indicate that the two shapes are touching.
     /// @return Value between 0 and <code>MaxManifoldPoints</code>.
     /// @see MaxManifoldPoints, AddPoint(), GetPoint().

@@ -101,7 +101,7 @@ struct ToiStepStats {
 };
 
 /// @brief Per-step statistics.
-/// @details These are statistics output from the <code>d2::World::Step</code> method.
+/// @details These are statistics output from the <code>d2::World::Step</code> function.
 /// @note Efficient transfer of this data is predicated on compiler support for
 ///   "named-return-value-optimization" (N.R.V.O.) - a form of "copy elision".
 /// @see d2::World::Step.

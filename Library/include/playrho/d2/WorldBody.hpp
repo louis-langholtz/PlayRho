@@ -71,13 +71,13 @@ class Shape;
 ///   during callbacks. If it is, it will throw an exception or abort your program.
 /// @note No references to the configuration are retained. Its value is copied.
 /// @post The created body will be present in the range returned from the
-///   <code>GetBodies(const World&)</code> method.
+///   <code>GetBodies(const World&)</code> function.
 /// @param world The world within which to create the body.
 /// @param def A customized body configuration or its default value.
 /// @param resetMassData Whether or not the mass data of the body should be reset.
 /// @return Identifier of the newly created body which can later be destroyed by calling
-///   the <code>Destroy(World&, BodyID)</code> method.
-/// @throws WrongState if this method is called while the world is locked.
+///   the <code>Destroy(World&, BodyID)</code> function.
+/// @throws WrongState if this function is called while the world is locked.
 /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
 /// @see Destroy(World& world, BodyID), GetBodies(const World&), ResetMassData.
 /// @see PhysicalEntities.
@@ -87,7 +87,7 @@ BodyID CreateBody(World& world, const BodyConf& def, bool resetMassData = true);
 /// @brief Associates a validly identified shape with the validly identified body.
 /// @note This function should not be called if the world is locked.
 /// @throws std::out_of_range If given an invalid body or shape identifier.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @see GetShapes, ResetMassData.
 /// @relatedalso World
 void Attach(World& world, BodyID id, ShapeID shapeID, bool resetMassData = true);
@@ -95,21 +95,21 @@ void Attach(World& world, BodyID id, ShapeID shapeID, bool resetMassData = true)
 /// @brief Creates the shape within the world and then associates it with the validly
 ///   identified body.
 /// @throws std::out_of_range If given an invalid body.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @see GetShapes, ResetMassData.
 /// @relatedalso World
 void Attach(World& world, BodyID id, const Shape& shape, bool resetMassData = true);
 
 /// @brief Disassociates a validly identified shape from the validly identified body.
 /// @throws std::out_of_range If given an invalid body or shape identifier.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @see ResetMassData.
 /// @relatedalso World
 bool Detach(World& world, BodyID id, ShapeID shapeID, bool resetMassData = true);
 
 /// @brief Disassociates all of the associated shape from the validly identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @see Attach, ResetMassData.
 /// @relatedalso World
 bool Detach(World& world, BodyID id, bool resetMassData = true);
@@ -277,7 +277,7 @@ BodyType GetType(const World& world, BodyID id);
 
 /// @brief Sets the type of the given body.
 /// @note This may alter the body's mass and velocity.
-/// @throws WrongState if this method is called while the world is locked.
+/// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see GetType(const World& world, BodyID id), ResetMassData.
 /// @relatedalso World
@@ -356,7 +356,7 @@ inline UnitVec GetWorldVector(const World& world, BodyID id, const UnitVec& loca
 Velocity GetVelocity(const World& world, BodyID id);
 
 /// @brief Sets the body's velocity (linear and angular velocity).
-/// @note This method does nothing if this body is not speedable.
+/// @note This function does nothing if this body is not speedable.
 /// @note A non-zero velocity will awaken this body.
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
@@ -548,7 +548,7 @@ void SetMassData(World& world, BodyID id, const MassData& massData);
 
 /// @brief Resets the mass data properties.
 /// @details This resets the mass data to the sum of the mass properties of the fixtures.
-/// @note This method must be called after associating new shapes to the body to update the
+/// @note This function must be called after associating new shapes to the body to update the
 ///   body mass data properties unless <code>SetMassData</code> is used.
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
@@ -742,8 +742,8 @@ void SetAngularDamping(World& world, BodyID id, NonNegative<Frequency> angularDa
 BodyCounter GetAwakeCount(const World& world);
 
 /// @brief Awakens all of the bodies in the given world.
-/// @details Calls all of the world's bodies' <code>SetAwake</code> method.
-/// @return Sum total of calls to bodies' <code>SetAwake</code> method that returned true.
+/// @details Calls all of the world's bodies' <code>SetAwake</code> function.
+/// @return Sum total of calls to bodies' <code>SetAwake</code> function that returned true.
 /// @relatedalso World
 BodyCounter Awaken(World& world);
 
