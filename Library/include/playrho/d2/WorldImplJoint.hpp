@@ -23,7 +23,7 @@
 #define PLAYRHO_D2_WORLDIMPLJOINT_HPP
 
 /// @file
-/// Declarations of free functions of WorldImpl for joints.
+/// @brief Declarations of free functions of WorldImpl for joints.
 
 #include <playrho/Units.hpp>
 #include <playrho/d2/UnitVec.hpp>

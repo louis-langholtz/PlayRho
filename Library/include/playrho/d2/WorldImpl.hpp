@@ -23,7 +23,7 @@
 #define PLAYRHO_D2_WORLDIMPL_HPP
 
 /// @file
-/// Declarations of the WorldImpl class.
+/// @brief Declarations of the WorldImpl class.
 
 #include <iterator>
 #include <vector>

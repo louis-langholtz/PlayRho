@@ -23,7 +23,7 @@
 #define PLAYRHO_D2_WORLDIMPLMISC_HPP
 
 /// @file
-/// Declarations of free functions of WorldImpl.
+/// @brief Declarations of free functions of WorldImpl.
 
 #include <playrho/Units.hpp> // for Length, Frequency, etc.
 #include <playrho/Vector2.hpp> // for Length2
