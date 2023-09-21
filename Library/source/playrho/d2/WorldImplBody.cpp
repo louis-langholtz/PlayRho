@@ -19,48 +19,16 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/WorldImplBody.hpp>
-
-#include <playrho/d2/WorldImpl.hpp>
 #include <playrho/d2/Body.hpp>
 #include <playrho/d2/BodyConf.hpp>
+#include <playrho/d2/WorldImpl.hpp>
+#include <playrho/d2/WorldImplBody.hpp>
 
-namespace playrho {
-namespace d2 {
-
-BodyCounter GetBodyRange(const WorldImpl& world) noexcept
-{
-    return world.GetBodyRange();
-}
-
-BodyID CreateBody(WorldImpl& world, const Body& body)
-{
-    return world.CreateBody(body);
-}
+namespace playrho::d2 {
 
 BodyID CreateBody(WorldImpl& world, const BodyConf& def)
 {
     return CreateBody(world, Body{def});
-}
-
-const Body& GetBody(const WorldImpl& world, BodyID id)
-{
-    return world.GetBody(id);
-}
-
-void SetBody(WorldImpl& world, BodyID id, const Body& value)
-{
-    world.SetBody(id, value);
-}
-
-void Destroy(WorldImpl& world, BodyID id)
-{
-    world.Destroy(id);
-}
-
-const std::vector<std::pair<BodyID, JointID>>& GetJoints(const WorldImpl& world, BodyID id)
-{
-    return world.GetJoints(id);
 }
 
 void Attach(WorldImpl& world, BodyID id, ShapeID shapeID)
@@ -82,13 +50,7 @@ bool Detach(WorldImpl& world, BodyID id, ShapeID shapeID)
 
 const std::vector<ShapeID>& GetShapes(const WorldImpl& world, BodyID id)
 {
-    return world.GetBody(id).GetShapes();
+    return GetBody(world, id).GetShapes();
 }
 
-const std::vector<std::tuple<ContactKey, ContactID>>& GetContacts(const WorldImpl& world, BodyID id)
-{
-    return world.GetContacts(id);
-}
-
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2

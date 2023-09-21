@@ -28,10 +28,6 @@
 #include <playrho/d2/WorldBody.hpp> // for ResetMassData
 #include <playrho/d2/WorldImpl.hpp>
 #include <playrho/d2/WorldImplBody.hpp>
-#include <playrho/d2/WorldImplContact.hpp>
-#include <playrho/d2/WorldImplJoint.hpp>
-#include <playrho/d2/WorldImplShape.hpp>
-#include <playrho/d2/WorldImplMisc.hpp>
 
 namespace playrho {
 namespace d2 {
