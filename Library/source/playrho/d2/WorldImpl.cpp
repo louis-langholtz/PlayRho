@@ -2258,12 +2258,12 @@ WorldImpl::UpdateContactsStats WorldImpl::UpdateContacts(const StepConf& conf)
             return;
         }
 
-        // Possible that bodyA->GetSweep().GetAlpha0() != 0
-        // Possible that bodyB->GetSweep().GetAlpha0() != 0
+        // Possible that bodyA.GetSweep().GetAlpha0() != 0
+        // Possible that bodyB.GetSweep().GetAlpha0() != 0
 
-        // Update the contact manifold and notify the listener.
         contact.SetEnabled();
 
+        // Update the contact manifold and notify the listener.
         // Note: ideally contacts are only updated if there was a change to:
         //   - The fixtures' sensor states.
         //   - The fixtures bodies' transformations.

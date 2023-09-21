@@ -94,7 +94,7 @@ using ProxyIDs = std::vector<DynamicTree::Size>;
 /// @brief Shapes listener.
 using ShapeListener = std::function<void(ShapeID)>;
 
-/// @brief Shapes paired with bodies listener.
+/// @brief Shapes paired with bodies IDs listener.
 using AssociationListener = std::function<void(std::pair<BodyID, ShapeID>)>;
 
 /// @brief Joints listener.
