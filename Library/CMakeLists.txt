@@ -127,10 +127,6 @@ set(PLAYRHO_D2_HDRS
 	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldContact.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldImpl.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldImplBody.hpp"
-	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldImplContact.hpp"
-	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldImplJoint.hpp"
-	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldImplMisc.hpp"
-	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldImplShape.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldJoint.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldManifold.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldMisc.hpp"
@@ -186,15 +182,10 @@ set(PLAYRHO_D2_SRCS
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldContact.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldImpl.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldImplBody.cpp"
-	"${PLAYRHO_SOURCE_PREFIX}d2/WorldImplContact.cpp"
-	"${PLAYRHO_SOURCE_PREFIX}d2/WorldImplJoint.cpp"
-	"${PLAYRHO_SOURCE_PREFIX}d2/WorldImplMisc.cpp"
-	"${PLAYRHO_SOURCE_PREFIX}d2/WorldImplShape.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldJoint.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldManifold.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldMisc.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldShape.cpp"
-	"${PLAYRHO_SOURCE_PREFIX}d2/WorldSpecial.cpp"
 	)
 
 set(PLAYRHO_D2_PART_HDRS
