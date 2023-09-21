@@ -1112,15 +1112,14 @@ ShapeCounter GetShapeRange(const WorldImpl& world) noexcept
 
 ShapeID CreateShape(WorldImpl& world, Shape def)
 {
-    const auto minVertexRadius = GetMinVertexRadius(world);
-    const auto maxVertexRadius = GetMaxVertexRadius(world);
+    const auto vertexRadius = GetVertexRadiusInterval(world);
     const auto childCount = GetChildCount(def);
     for (auto i = ChildCounter{0}; i < childCount; ++i) {
         const auto vr = GetVertexRadius(def, i);
-        if (!(vr >= minVertexRadius)) {
+        if (!(vr >= vertexRadius.GetMin())) {
             throw InvalidArgument("CreateShape: vertex radius < min");
         }
-        if (!(vr <= maxVertexRadius)) {
+        if (!(vr <= vertexRadius.GetMax())) {
             throw InvalidArgument("CreateShape: vertex radius > max");
         }
     }
