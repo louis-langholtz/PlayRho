@@ -228,11 +228,9 @@ bool IsLocked(const WorldImpl& world) noexcept;
 /// @throws WrongState if this function is called while the world is locked.
 void ShiftOrigin(WorldImpl& world, const Length2& newOrigin);
 
-/// @brief Gets the minimum vertex radius that shapes in this world can be.
-Length GetMinVertexRadius(const WorldImpl& world) noexcept;
-
-/// @brief Gets the maximum vertex radius that shapes in this world can be.
-Length GetMaxVertexRadius(const WorldImpl& world) noexcept;
+/// @brief Gets the vertex radius interval allowable for the given world.
+/// @see CreateShape(WorldImpl&, const Shape&).
+Interval<Positive<Length>> GetVertexRadiusInterval(const WorldImpl& world) noexcept;
 
 /// @brief Gets the inverse delta time.
 /// @details Gets the inverse delta time that was set on construction or assignment, and
@@ -416,11 +414,11 @@ bool IsDestroyed(const WorldImpl& world, JointID id) noexcept;
 ShapeCounter GetShapeRange(const WorldImpl& world) noexcept;
 
 /// @brief Creates an identifiable copy of the given shape within this world.
-/// @throws InvalidArgument if called for a shape with a vertex radius that's either:
-///    less than the minimum vertex radius, or greater than the maximum vertex radius.
+/// @throws InvalidArgument if called for a shape with a vertex radius that's not within
+///   the world's allowable vertex radius interval.
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws LengthError if this operation would create more than <code>MaxShapes</code>.
-/// @see Destroy(ShapeID), GetShape, SetShape.
+/// @see Destroy(ShapeID), GetShape, SetShape, GetVertexRadiusInterval(const WorldImpl& world).
 ShapeID CreateShape(WorldImpl& world, Shape def);
 
 /// @brief Gets the identified shape.
@@ -539,8 +537,7 @@ public:
     friend const DynamicTree& GetTree(const WorldImpl& world) noexcept;
     friend bool IsLocked(const WorldImpl& world) noexcept;
     friend void ShiftOrigin(WorldImpl& world, const Length2& newOrigin);
-    friend Length GetMinVertexRadius(const WorldImpl& world) noexcept;
-    friend Length GetMaxVertexRadius(const WorldImpl& world) noexcept;
+    friend Interval<Positive<Length>> GetVertexRadiusInterval(const WorldImpl& world) noexcept;
     friend Frequency GetInvDeltaTime(const WorldImpl& world) noexcept;
     friend const ProxyIDs& GetProxies(const WorldImpl& world) noexcept;
     friend const BodyShapeIDs& GetFixturesForProxies(const WorldImpl& world) noexcept;
@@ -1003,14 +1000,9 @@ inline void SetSubStepping(WorldImpl& world, bool flag) noexcept
     }
 }
 
-inline Length GetMinVertexRadius(const WorldImpl& world) noexcept
+inline Interval<Positive<Length>> GetVertexRadiusInterval(const WorldImpl& world) noexcept
 {
-    return world.m_vertexRadius.GetMin();
-}
-
-inline Length GetMaxVertexRadius(const WorldImpl& world) noexcept
-{
-    return world.m_vertexRadius.GetMax();
+    return world.m_vertexRadius;
 }
 
 inline Frequency GetInvDeltaTime(const WorldImpl& world) noexcept

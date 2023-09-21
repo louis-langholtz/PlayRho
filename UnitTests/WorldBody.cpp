@@ -89,10 +89,9 @@ TEST(WorldBody, CreateAttachShape)
     EXPECT_NO_THROW(Attach(world, body, Shape{DiskShapeConf{2_m}}));
     EXPECT_EQ(size(GetShapes(world, body)), std::size_t(2));
 
-    const auto minRadius = GetMinVertexRadius(world);
-    EXPECT_THROW(CreateShape(world, DiskShapeConf{minRadius / 2}), InvalidArgument);
-
-    const auto maxRadius = GetMaxVertexRadius(world);
+    const auto radiusRange = GetVertexRadiusInterval(world);
+    const auto maxRadius = radiusRange.GetMax();
+    EXPECT_THROW(CreateShape(world, DiskShapeConf{radiusRange.GetMin() / 2}), InvalidArgument);
     EXPECT_THROW(CreateShape(world, DiskShapeConf{maxRadius + maxRadius / 10}), InvalidArgument);
 }
 

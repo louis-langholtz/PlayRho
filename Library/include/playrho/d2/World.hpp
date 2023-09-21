@@ -198,13 +198,9 @@ bool IsLocked(const World& world) noexcept;
 /// @throws WrongState if this function is called while the world is locked.
 void ShiftOrigin(World& world, const Length2& newOrigin);
 
-/// @brief Gets the minimum vertex radius that shapes in this world can be.
-/// @see GetMaxVertexRadius.
-Length GetMinVertexRadius(const World& world) noexcept;
-
-/// @brief Gets the maximum vertex radius that shapes in this world can be.
-/// @see GetMinVertexRadius.
-Length GetMaxVertexRadius(const World& world) noexcept;
+/// @brief Gets the vertex radius interval allowable for the given world.
+/// @see CreateShape(World&, const Shape&).
+Interval<Positive<Length>> GetVertexRadiusInterval(const World& world) noexcept;
 
 /// @brief Gets the inverse delta time.
 /// @details Gets the inverse delta time that was set on construction or assignment, and
@@ -397,14 +393,20 @@ void SetJoint(World& world, JointID id, const T& value)
 ///   for shape related functions.
 ShapeCounter GetShapeRange(const World& world) noexcept;
 
-/// @brief Creates a shape within the specified world.
-/// @throws WrongState if called while the world is "locked".
+/// @brief Creates an identifiable copy of the given shape within the specified world.
+/// @throws InvalidArgument if called for a shape with a vertex radius that's not within
+///   the world's allowable vertex radius interval.
+/// @throws WrongState if this function is called while the world is locked.
+/// @throws LengthError if this operation would create more than <code>MaxShapes</code>.
+/// @see Destroy(World&, ShapeID), GetShape, SetShape, GetVertexRadiusInterval.
 ShapeID CreateShape(World& world, const Shape& def);
 
 /// @brief Creates a shape within the specified world using a configuration of the shape.
 /// @details This is a convenience function for allowing limited implicit conversions to shapes.
+/// @throws InvalidArgument if called for a shape with a vertex radius that's not within
+///   the world's allowable vertex radius interval.
 /// @throws WrongState if called while the world is "locked".
-/// @see CreateShape(World& world, const Shape& def).
+/// @see CreateShape(World& world, const Shape& def), GetVertexRadiusInterval.
 /// @relatedalso World
 template <typename T>
 auto CreateShape(World& world, const T& shapeConf) ->
@@ -621,8 +623,7 @@ public:
     friend const DynamicTree& GetTree(const World& world);
     friend bool IsLocked(const World& world) noexcept;
     friend void ShiftOrigin(World& world, const Length2& newOrigin);
-    friend Length GetMinVertexRadius(const World& world) noexcept;
-    friend Length GetMaxVertexRadius(const World& world) noexcept;
+    friend Interval<Positive<Length>> GetVertexRadiusInterval(const World& world) noexcept;
     friend Frequency GetInvDeltaTime(const World& world) noexcept;
 
     // Body friend functions...
@@ -773,13 +774,8 @@ private:
         /// @throws WrongState if this function is called while the world is locked.
         virtual void ShiftOrigin_(const Length2& newOrigin) = 0;
 
-        /// @brief Gets the minimum vertex radius that shapes in this world can be.
-        /// @see GetMaxVertexRadius_.
-        virtual Length GetMinVertexRadius_() const noexcept = 0;
-
-        /// @brief Gets the maximum vertex radius that shapes in this world can be.
-        /// @see GetMinVertexRadius_.
-        virtual Length GetMaxVertexRadius_() const noexcept = 0;
+        /// @brief Gets the vertex radius range that shapes in this world can be.
+        virtual Interval<Positive<Length>> GetVertexRadiusInterval_() const noexcept = 0;
 
         /// @brief Gets the inverse delta time.
         /// @details Gets the inverse delta time that was set on construction or assignment, and
@@ -1134,16 +1130,10 @@ struct World::Model final: World::Concept {
         ShiftOrigin(data, newOrigin);
     }
 
-    /// @copydoc Concept::GetMinVertexRadius_
-    Length GetMinVertexRadius_() const noexcept override
+    /// @copydoc Concept::GetVertexRadiusInterval_
+    Interval<Positive<Length>> GetVertexRadiusInterval_() const noexcept override
     {
-        return GetMinVertexRadius(data);
-    }
-
-    /// @copydoc Concept::GetMaxVertexRadius_
-    Length GetMaxVertexRadius_() const noexcept override
-    {
-        return GetMaxVertexRadius(data);
+        return GetVertexRadiusInterval(data);
     }
 
     /// @copydoc Concept::GetInvDeltaTime_
@@ -1432,14 +1422,9 @@ inline void ShiftOrigin(World& world, const Length2& newOrigin)
     world.m_impl->ShiftOrigin_(newOrigin);
 }
 
-inline Length GetMinVertexRadius(const World& world) noexcept
+inline Interval<Positive<Length>> GetVertexRadiusInterval(const World& world) noexcept
 {
-    return world.m_impl->GetMinVertexRadius_();
-}
-
-inline Length GetMaxVertexRadius(const World& world) noexcept
-{
-    return world.m_impl->GetMaxVertexRadius_();
+    return world.m_impl->GetVertexRadiusInterval_();
 }
 
 inline Frequency GetInvDeltaTime(const World& world) noexcept

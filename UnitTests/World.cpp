@@ -275,8 +275,7 @@ TEST(World, CopyConstruction)
     auto world = World{};
     {
         const auto copy = World{world};
-        EXPECT_EQ(GetMinVertexRadius(world), GetMinVertexRadius(copy));
-        EXPECT_EQ(GetMaxVertexRadius(world), GetMaxVertexRadius(copy));
+        EXPECT_EQ(GetVertexRadiusInterval(world), GetVertexRadiusInterval(copy));
         EXPECT_EQ(GetJoints(world).size(), GetJoints(copy).size());
         EXPECT_EQ(GetBodies(world).size(), GetBodies(copy).size());
         EXPECT_EQ(GetContacts(world).size(), GetContacts(copy).size());
@@ -320,8 +319,7 @@ TEST(World, CopyConstruction)
 
     {
         const auto copy = World{world};
-        EXPECT_EQ(GetMinVertexRadius(world), GetMinVertexRadius(copy));
-        EXPECT_EQ(GetMaxVertexRadius(world), GetMaxVertexRadius(copy));
+        EXPECT_EQ(GetVertexRadiusInterval(world), GetVertexRadiusInterval(copy));
         EXPECT_EQ(GetJoints(world).size(), GetJoints(copy).size());
         const auto minJoints = std::min(GetJoints(world).size(), GetJoints(copy).size());
 
@@ -349,8 +347,7 @@ TEST(World, CopyAssignment)
     {
         auto copy = World{};
         copy = world;
-        EXPECT_EQ(GetMinVertexRadius(world), GetMinVertexRadius(copy));
-        EXPECT_EQ(GetMaxVertexRadius(world), GetMaxVertexRadius(copy));
+        EXPECT_EQ(GetVertexRadiusInterval(world), GetVertexRadiusInterval(copy));
         EXPECT_EQ(GetJoints(world).size(), GetJoints(copy).size());
         EXPECT_EQ(GetBodies(world).size(), GetBodies(copy).size());
         EXPECT_EQ(GetContacts(world).size(), GetContacts(copy).size());
@@ -375,8 +372,7 @@ TEST(World, CopyAssignment)
     {
         auto copy = World{};
         copy = world;
-        EXPECT_EQ(GetMinVertexRadius(world), GetMinVertexRadius(copy));
-        EXPECT_EQ(GetMaxVertexRadius(world), GetMaxVertexRadius(copy));
+        EXPECT_EQ(GetVertexRadiusInterval(world), GetVertexRadiusInterval(copy));
         EXPECT_EQ(GetJoints(world).size(), GetJoints(copy).size());
         const auto minJoints = std::min(GetJoints(world).size(), GetJoints(copy).size());
         const auto worldJoints = GetJoints(world);
