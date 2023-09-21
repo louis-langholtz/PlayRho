@@ -95,15 +95,19 @@ void SetDetachListener(World& world, AssociationListener listener) noexcept;
 void SetJointDestructionListener(World& world, JointListener listener) noexcept;
 
 /// @brief Sets the begin-contact lister.
+/// @see SetEndContactListener(World&, ContactListener).
 void SetBeginContactListener(World& world, ContactListener listener) noexcept;
 
 /// @brief Sets the end-contact lister.
+/// @see SetBeginContactListener(World&, ContactListener).
 void SetEndContactListener(World& world, ContactListener listener) noexcept;
 
 /// @brief Sets the pre-solve-contact lister.
+/// @see etPostSolveContactListener(World&, ImpulsesContactListener).
 void SetPreSolveContactListener(World& world, ManifoldContactListener listener) noexcept;
 
 /// @brief Sets the post-solve-contact lister.
+/// @see SetPreSolveContactListener(World&, ManifoldContactListener).
 void SetPostSolveContactListener(World& world, ImpulsesContactListener listener) noexcept;
 
 /// @}
@@ -137,6 +141,11 @@ void Clear(World& world) noexcept;
 ///   <code>a</code>, after time <code>t</code> and barring any collisions, will have a new
 ///   velocity (<code>v1</code>) of <code>v0 + (a * t)</code> and a new position
 ///   (<code>p1</code>) of <code>p0 + v1 * t</code>.
+/// @note While this function is running, some listener functions could get called.
+///   Meanwhile some functions on <code>World</code> can only operate while the world
+///   is not in the middle of being updated by this function. Listeners can use the
+///   <code>IsLocked(const World& world)</code> function to detect whether they've been
+///   called in this case or not and then act accordingly.
 /// @post Static bodies are unmoved.
 /// @post Kinetic bodies are moved based on their previous velocities.
 /// @post Dynamic bodies are moved based on their previous velocities, gravity, applied
@@ -146,6 +155,7 @@ void Clear(World& world) noexcept;
 /// @param conf Configuration for the simulation step.
 /// @return Statistics for the step.
 /// @throws WrongState if this function is called while the world is locked.
+/// @see IsLocked(const World&).
 StepStats Step(World& world, const StepConf& conf = StepConf{});
 
 /// @brief Whether or not "step" is complete.
@@ -172,7 +182,10 @@ void SetSubStepping(World& world, bool flag) noexcept;
 ///   of the broad-phase contact detection system.
 const DynamicTree& GetTree(const World& world);
 
-/// @brief Is the world locked (in the middle of a time step).
+/// @brief Is the specified world locked.
+/// @details Used to detect whether being called while already within the execution of the
+///   <code>Step(World&, const StepConf&)</code> function - which sets this "lock".
+/// @see Step(World&, const StepConf&).
 bool IsLocked(const World& world) noexcept;
 
 /// @brief Shifts the origin of the specified world.
