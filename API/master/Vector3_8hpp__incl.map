@@ -1,0 +1,37 @@
+<map id="Library/include/playrho/Vector3.hpp" name="Library/include/playrho/Vector3.hpp">
+<area shape="rect" id="node1" title="Definition of the Vector3 alias template and closely related code." alt="" coords="1029,5,1200,47"/>
+<area shape="rect" id="node2" href="$Settings_8hpp.html" title="Types and default settings file." alt="" coords="837,95,993,121"/>
+<area shape="rect" id="node33" href="$Vector_8hpp.html" title="Definition of the Vector class template and closely related code." alt="" coords="1243,244,1386,271"/>
+<area shape="rect" id="node3" title=" " alt="" coords="1105,319,1175,345"/>
+<area shape="rect" id="node4" title=" " alt="" coords="1003,543,1072,569"/>
+<area shape="rect" id="node5" title=" " alt="" coords="656,169,715,196"/>
+<area shape="rect" id="node6" title=" " alt="" coords="833,468,895,495"/>
+<area shape="rect" id="node7" title=" " alt="" coords="487,617,553,644"/>
+<area shape="rect" id="node8" title=" " alt="" coords="1709,767,1795,793"/>
+<area shape="rect" id="node9" href="$RealConstants_8hpp.html" title="Definitions file for constant expressions of type Real." alt="" coords="520,244,717,271"/>
+<area shape="rect" id="node16" href="$Templates_8hpp.html" title="Definitions of miscellaneous template related code." alt="" coords="1109,617,1280,644"/>
+<area shape="rect" id="node31" href="$Units_8hpp.html" title="Declarations for physical units possibly backed by strong types." alt="" coords="739,169,877,196"/>
+<area shape="rect" id="node32" href="$WiderType_8hpp.html" title="Definition of the WiderType alias template." alt="" coords="5,244,176,271"/>
+<area shape="rect" id="node10" href="$Defines_8hpp.html" title="Miscellaneous C&#45;preprocessor definitions." alt="" coords="255,617,407,644"/>
+<area shape="rect" id="node11" href="$Real_8hpp.html" title="Real number definition file." alt="" coords="553,319,685,345"/>
+<area shape="rect" id="node12" href="$Fixed_8hpp.html" title="Definition of the Fixed class and closely related code." alt="" coords="671,468,809,495"/>
+<area shape="rect" id="node29" href="$FixedMath_8hpp.html" title="Conventional math functions for the Fixed class template." alt="" coords="656,393,827,420"/>
+<area shape="rect" id="node30" href="$FixedLimits_8hpp.html" title="Specialization of std::numeric_limits for Fixed." alt="" coords="403,393,581,420"/>
+<area shape="rect" id="node13" title=" " alt="" coords="1188,767,1247,793"/>
+<area shape="rect" id="node14" title=" " alt="" coords="583,767,675,793"/>
+<area shape="rect" id="node15" title=" " alt="" coords="1096,543,1176,569"/>
+<area shape="rect" id="node21" href="$TypeInfo_8hpp.html" title="Definition of TypeID class and closely related code." alt="" coords="667,543,826,569"/>
+<area shape="rect" id="node28" href="$Wider_8hpp.html" title="Definition of the Wider class template and specializations." alt="" coords="301,543,483,569"/>
+<area shape="rect" id="node17" href="$detail_2Templates_8hpp.html" title="Low&#45;level declarations for general class &amp; function templates." alt="" coords="1248,692,1459,719"/>
+<area shape="rect" id="node18" title=" " alt="" coords="1462,767,1549,793"/>
+<area shape="rect" id="node19" title=" " alt="" coords="1601,767,1671,793"/>
+<area shape="rect" id="node20" title=" " alt="" coords="1323,767,1383,793"/>
+<area shape="rect" id="node22" title=" " alt="" coords="691,617,757,644"/>
+<area shape="rect" id="node23" href="$detail_2TypeInfo_8hpp.html" title="Definition of TypeInfo class template and related code." alt="" coords="781,617,979,644"/>
+<area shape="rect" id="node24" title=" " alt="" coords="1005,692,1064,719"/>
+<area shape="rect" id="node25" title=" " alt="" coords="711,692,769,719"/>
+<area shape="rect" id="node26" title=" " alt="" coords="794,692,881,719"/>
+<area shape="rect" id="node27" title=" " alt="" coords="905,692,981,719"/>
+<area shape="rect" id="node34" href="$InvalidArgument_8hpp.html" title="Definition of the InvalidArgument class." alt="" coords="1403,319,1613,345"/>
+<area shape="rect" id="node35" title=" " alt="" coords="1465,393,1551,420"/>
+</map>

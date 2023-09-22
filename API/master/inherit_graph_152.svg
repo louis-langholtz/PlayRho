@@ -68,7 +68,7 @@
 <!-- Node86 -->
 <g id="node5" class="node">
 <title>Node86</title>
-<g id="a_node5"><a xlink:href="structplayrho_1_1d2_1_1HasRotate.html" target="_top" xlink:title=" ">
+<g id="a_node5"><a xlink:href="structplayrho_1_1d2_1_1HasRotate.html" target="_top" xlink:title="Type trait for not finding a Rotate(T&amp;, Angle) function.">
 <polygon fill="white" stroke="black" points="143.5,-894 143.5,-924 271.5,-924 271.5,-894 143.5,-894"/>
 <text text-anchor="start" x="151.5" y="-912" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::HasRotate</text>
 <text text-anchor="middle" x="207.5" y="-901" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; T, class &gt;</text>

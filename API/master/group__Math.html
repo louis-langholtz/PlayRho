@@ -128,9 +128,9 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:gad9807960f6f6e39b0449aec22d646669"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#gad9807960f6f6e39b0449aec22d646669">playrho::Bisect</a> (const T &amp;a1, const T &amp;a2) -&gt; decltype((a1+a2)/2)</td></tr>
 <tr class="memdesc:gad9807960f6f6e39b0449aec22d646669"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bisection method.  <a href="group__Math.html#gad9807960f6f6e39b0449aec22d646669">More...</a><br /></td></tr>
 <tr class="separator:gad9807960f6f6e39b0449aec22d646669"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3f6e8b69eaeee408d3894b59629cffe9"><td class="memTemplParams" colspan="2"><a id="ga3f6e8b69eaeee408d3894b59629cffe9"></a>
-template&lt;class T &gt; </td></tr>
-<tr class="memitem:ga3f6e8b69eaeee408d3894b59629cffe9"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><b>playrho::cfloor</b> (T v) noexcept</td></tr>
+<tr class="memitem:ga3f6e8b69eaeee408d3894b59629cffe9"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga3f6e8b69eaeee408d3894b59629cffe9"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga3f6e8b69eaeee408d3894b59629cffe9">playrho::cfloor</a> (T v) noexcept</td></tr>
+<tr class="memdesc:ga3f6e8b69eaeee408d3894b59629cffe9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constant expression enhanced floor function.  <a href="group__Math.html#ga3f6e8b69eaeee408d3894b59629cffe9">More...</a><br /></td></tr>
 <tr class="separator:ga3f6e8b69eaeee408d3894b59629cffe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae769785f0540a4b8960b282f6b105c14"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#gae769785f0540a4b8960b282f6b105c14">playrho::ComputeCentroid</a> (const <a class="el" href="classplayrho_1_1Span.html">Span</a>&lt; const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &gt; &amp;vertices)</td></tr>
 <tr class="memdesc:gae769785f0540a4b8960b282f6b105c14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the centroid of a counter-clockwise array of 3 or more vertices.  <a href="group__Math.html#gae769785f0540a4b8960b282f6b105c14">More...</a><br /></td></tr>
@@ -217,7 +217,7 @@ template&lt;typename T &gt; </td></tr>
 <tr class="separator:ga08b9672d78dbe1aa5275a9c514b422f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab53c16bcb68dd36d3b18027a2ac6b1b2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:gab53c16bcb68dd36d3b18027a2ac6b1b2"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#gab53c16bcb68dd36d3b18027a2ac6b1b2">playrho::ModuloViaFmod</a> (T dividend, T divisor)</td></tr>
-<tr class="memdesc:gab53c16bcb68dd36d3b18027a2ac6b1b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constant expression enhanced floor function.  <a href="group__Math.html#gab53c16bcb68dd36d3b18027a2ac6b1b2">More...</a><br /></td></tr>
+<tr class="memdesc:gab53c16bcb68dd36d3b18027a2ac6b1b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modulo operation using <code>std::fmod</code>.  <a href="group__Math.html#gab53c16bcb68dd36d3b18027a2ac6b1b2">More...</a><br /></td></tr>
 <tr class="separator:gab53c16bcb68dd36d3b18027a2ac6b1b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga84e7cb2a415fcb956202c8d7e1b1d200"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga84e7cb2a415fcb956202c8d7e1b1d200"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga84e7cb2a415fcb956202c8d7e1b1d200">playrho::ModuloViaTrunc</a> (T dividend, T divisor) noexcept</td></tr>
@@ -409,6 +409,40 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="ga3f6e8b69eaeee408d3894b59629cffe9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3f6e8b69eaeee408d3894b59629cffe9">&#9670;&nbsp;</a></span>cfloor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto playrho::cfloor </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constant expression enhanced floor function. </p>
+<dl class="section note"><dt>Note</dt><dd>Unlike <code>std::floor</code>, this function is only defined for finite values. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://en.cppreference.com/w/cpp/numeric/math/floor">https://en.cppreference.com/w/cpp/numeric/math/floor</a> </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="group__Math.html#ga156a2abff11f978a8df25efbf0c10147">playrho::GetNormalized()</a>, and <a class="el" href="structplayrho_1_1d2_1_1Position.html#a30e3652aa86130f81c948112cf4538d6">playrho::d2::Position::GetPosition()</a>.</p>
+
+</div>
+</div>
 <a id="gae769785f0540a4b8960b282f6b105c14"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gae769785f0540a4b8960b282f6b105c14">&#9670;&nbsp;</a></span>ComputeCentroid()</h2>
 
@@ -497,7 +531,7 @@ The absolute value of the result is the area of the parallelogram formed by the 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Cross product of the two values. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#aa4467a2050404136d210f7d81017f2d6">playrho::d2::World::ApplyForce()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a822028bbec557a6caf1040105f78244f">playrho::d2::Body::ApplyLinearImpulse()</a>, <a class="el" href="classplayrho_1_1d2_1_1Simplex.html#a21f4fbe4f435a497f723ba4692745d13">playrho::d2::Simplex::CalcMetric()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a8eafa8c052954d863e81d00251d51194">playrho::d2::CalcSearchDirection()</a>, <a class="el" href="group__Math.html#gae769785f0540a4b8960b282f6b105c14">playrho::ComputeCentroid()</a>, <a class="el" href="classplayrho_1_1d2_1_1Simplex.html#ab745b96a84c8e8340e8abf7efbfd3c69">playrho::d2::Simplex::Get()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ae1538594ce2f0d86da70bf832c0327bb">playrho::d2::GetConvexHullAsVector()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ab0e7f6b99f8d46a62c739d0df5ba8c1d">playrho::d2::GetEffectiveInvMass()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a7304da106cfaa394b4d0179ded468aa6">playrho::d2::GetMassData()</a>, <a class="el" href="group__Math.html#gaee743e28b24b01d9101b8a2e7bd72284">playrho::GetPolarMoment()</a>, <a class="el" href="group__Math.html#ga39333b6fc4de2a8f365b74194e42ceef">playrho::GetSymInverse33()</a>, <a class="el" href="structplayrho_1_1d2_1_1DistanceJointConf.html#a04f5087d761eecd8554b6156d1cc3021">playrho::d2::DistanceJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1FrictionJointConf.html#a904a7c9eb12d39f5331d70e31bfc5aa3">playrho::d2::FrictionJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html#a6fb896d2cd2716bc5313edf9664311dd">playrho::d2::GearJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1MotorJointConf.html#a2b683394550bdac7d8ff211bf659cc79">playrho::d2::MotorJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1PrismaticJointConf.html#ac1c8f45842be63b34da6d53d811881db">playrho::d2::PrismaticJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1PulleyJointConf.html#a4bc9c62ac7aaef84c0c536a1b439ccf9">playrho::d2::PulleyJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RevoluteJointConf.html#a7b32961588123ecf24d8c176b39be0b8">playrho::d2::RevoluteJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RopeJointConf.html#a0fa82bd7d2ebe576faf0ceac30982870">playrho::d2::RopeJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a1bc16ad22662f69d6218f879a5c17245">playrho::d2::TargetJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#ad9a429415a87a06a9134b001d73bf508">playrho::d2::WeldJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a9e194ef30b3a342a38f9afc09c629f6d">playrho::d2::WheelJointConf::InitVelocity()</a>, <a class="el" href="group__Math.html#ga01639d99c5401d526aeb5c6df075e153">playrho::Invert()</a>, <a class="el" href="group__RayCastGroup.html#gabc2e992343e201f48c1956753a530247">playrho::d2::DistanceProxy::RayCast()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#adb7f803accaca7a22ef4ba09067c4eea">playrho::d2::World::SetForce()</a>, <a class="el" href="group__Math.html#ga1dfb22979400417701de8582bb6d76ad">playrho::Solve()</a>, <a class="el" href="group__Math.html#gab5eb451a3aff0db8ef5bcbb3d67a18df">playrho::Solve33()</a>, <a class="el" href="structplayrho_1_1d2_1_1DistanceJointConf.html#a1cb4cf206219920fd02778200b00d623">playrho::d2::DistanceJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html#a5a54a7c5cb24901f677963106f310fec">playrho::d2::GearJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1PrismaticJointConf.html#a9781e7946b790d5697f7692de702ab82">playrho::d2::PrismaticJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1PulleyJointConf.html#afa2b76fbf75674d72e4bab581590eec4">playrho::d2::PulleyJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1RevoluteJointConf.html#a15b5d820404f01071ece796f787c4fab">playrho::d2::RevoluteJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1RopeJointConf.html#a168b27b3bf6ef8dec62708dd2037abcb">playrho::d2::RopeJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#a0a2a5151fb0a799e0d2f0a84e4534b94">playrho::d2::WeldJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a14e495be301fc95b5f890716f9e51309">playrho::d2::WheelJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1DistanceJointConf.html#a9b2e8c358061fcd3724da3c1cb5fcc32">playrho::d2::DistanceJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1FrictionJointConf.html#a6072ec80a0f6f19ddf2bbc57abe6110a">playrho::d2::FrictionJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1MotorJointConf.html#a9fbbab76d642be0211f8c76334ccbe0f">playrho::d2::MotorJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1PulleyJointConf.html#ac62c3b05e95c61b801722de099d962de">playrho::d2::PulleyJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RevoluteJointConf.html#aa27f190089266d9d8de1d9f3ae963999">playrho::d2::RevoluteJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RopeJointConf.html#a67249c115b7b84fc2a58abc83664c934">playrho::d2::RopeJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a87f0cb382d657fcac4402b3896269fe3">playrho::d2::TargetJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#a25cfb7a5d3d5f2aeef028803b37454da">playrho::d2::WeldJointConf::SolveVelocity()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#a0254e96c6b1df87a80cf44dc29fc2017">playrho::d2::Validate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#aa4467a2050404136d210f7d81017f2d6">playrho::d2::World::ApplyForce()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a822028bbec557a6caf1040105f78244f">playrho::d2::Body::ApplyLinearImpulse()</a>, <a class="el" href="classplayrho_1_1d2_1_1Simplex.html#a21f4fbe4f435a497f723ba4692745d13">playrho::d2::Simplex::CalcMetric()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a8eafa8c052954d863e81d00251d51194">playrho::d2::CalcSearchDirection()</a>, <a class="el" href="group__Math.html#gae769785f0540a4b8960b282f6b105c14">playrho::ComputeCentroid()</a>, <a class="el" href="classplayrho_1_1d2_1_1Simplex.html#ab745b96a84c8e8340e8abf7efbfd3c69">playrho::d2::Simplex::Get()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ae1538594ce2f0d86da70bf832c0327bb">playrho::d2::GetConvexHullAsVector()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ab0e7f6b99f8d46a62c739d0df5ba8c1d">playrho::d2::GetEffectiveInvMass()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a7304da106cfaa394b4d0179ded468aa6">playrho::d2::GetMassData()</a>, <a class="el" href="group__Math.html#gaee743e28b24b01d9101b8a2e7bd72284">playrho::GetPolarMoment()</a>, <a class="el" href="group__Math.html#ga39333b6fc4de2a8f365b74194e42ceef">playrho::GetSymInverse33()</a>, <a class="el" href="structplayrho_1_1d2_1_1DistanceJointConf.html#a04f5087d761eecd8554b6156d1cc3021">playrho::d2::DistanceJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1FrictionJointConf.html#a904a7c9eb12d39f5331d70e31bfc5aa3">playrho::d2::FrictionJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html#a6fb896d2cd2716bc5313edf9664311dd">playrho::d2::GearJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1MotorJointConf.html#a2b683394550bdac7d8ff211bf659cc79">playrho::d2::MotorJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1PrismaticJointConf.html#ac1c8f45842be63b34da6d53d811881db">playrho::d2::PrismaticJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1PulleyJointConf.html#a4bc9c62ac7aaef84c0c536a1b439ccf9">playrho::d2::PulleyJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RevoluteJointConf.html#a7b32961588123ecf24d8c176b39be0b8">playrho::d2::RevoluteJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RopeJointConf.html#a0fa82bd7d2ebe576faf0ceac30982870">playrho::d2::RopeJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a1bc16ad22662f69d6218f879a5c17245">playrho::d2::TargetJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#ad9a429415a87a06a9134b001d73bf508">playrho::d2::WeldJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a9e194ef30b3a342a38f9afc09c629f6d">playrho::d2::WheelJointConf::InitVelocity()</a>, <a class="el" href="group__Math.html#ga01639d99c5401d526aeb5c6df075e153">playrho::Invert()</a>, <a class="el" href="group__RayCastGroup.html#gabc2e992343e201f48c1956753a530247">playrho::d2::DistanceProxy::RayCast()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#adb7f803accaca7a22ef4ba09067c4eea">playrho::d2::World::SetForce()</a>, <a class="el" href="group__Math.html#ga1dfb22979400417701de8582bb6d76ad">playrho::Solve()</a>, <a class="el" href="group__Math.html#gab5eb451a3aff0db8ef5bcbb3d67a18df">playrho::Solve33()</a>, <a class="el" href="structplayrho_1_1d2_1_1DistanceJointConf.html#a1cb4cf206219920fd02778200b00d623">playrho::d2::DistanceJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html#a5a54a7c5cb24901f677963106f310fec">playrho::d2::GearJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1PrismaticJointConf.html#a9781e7946b790d5697f7692de702ab82">playrho::d2::PrismaticJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1PulleyJointConf.html#afa2b76fbf75674d72e4bab581590eec4">playrho::d2::PulleyJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1RevoluteJointConf.html#a15b5d820404f01071ece796f787c4fab">playrho::d2::RevoluteJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1RopeJointConf.html#a168b27b3bf6ef8dec62708dd2037abcb">playrho::d2::RopeJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#a0a2a5151fb0a799e0d2f0a84e4534b94">playrho::d2::WeldJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a14e495be301fc95b5f890716f9e51309">playrho::d2::WheelJointConf::SolvePosition()</a>, <a class="el" href="ContactSolver_8hpp.html#a0fd21d441a78194f210e9f900bd3d1a4">playrho::GaussSeidel::SolvePositionConstraint()</a>, <a class="el" href="structplayrho_1_1d2_1_1DistanceJointConf.html#a9b2e8c358061fcd3724da3c1cb5fcc32">playrho::d2::DistanceJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1FrictionJointConf.html#a6072ec80a0f6f19ddf2bbc57abe6110a">playrho::d2::FrictionJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1MotorJointConf.html#a9fbbab76d642be0211f8c76334ccbe0f">playrho::d2::MotorJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1PulleyJointConf.html#ac62c3b05e95c61b801722de099d962de">playrho::d2::PulleyJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RevoluteJointConf.html#aa27f190089266d9d8de1d9f3ae963999">playrho::d2::RevoluteJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RopeJointConf.html#a67249c115b7b84fc2a58abc83664c934">playrho::d2::RopeJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a87f0cb382d657fcac4402b3896269fe3">playrho::d2::TargetJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#a25cfb7a5d3d5f2aeef028803b37454da">playrho::d2::WeldJointConf::SolveVelocity()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#a0254e96c6b1df87a80cf44dc29fc2017">playrho::d2::Validate()</a>.</p>
 
 </div>
 </div>
@@ -748,7 +782,7 @@ template&lt;typename T &gt; </div>
 
 <p>Gets the magnitude of the given value. </p>
 <dl class="section note"><dt>Note</dt><dd>Works for any type for which <code>GetMagnitudeSquared</code> also works. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="DistanceJoint_8cpp-example.html#a26">DistanceJoint.cpp</a>, <a class="el" href="PulleyJoint_8cpp-example.html#a28">PulleyJoint.cpp</a>, and <a class="el" href="World_8cpp-example.html#a101">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="DistanceJoint_8cpp-example.html#a28">DistanceJoint.cpp</a>, <a class="el" href="PulleyJoint_8cpp-example.html#a28">PulleyJoint.cpp</a>, and <a class="el" href="World_8cpp-example.html#a123">World.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Simplex.html#a21f4fbe4f435a497f723ba4692745d13">playrho::d2::Simplex::CalcMetric()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae563375c4aff49f02b9ecab9dce5fc62">playrho::d2::World::GetCentripetalForce()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#afd81bf06efee4b29f2490134f52baddc">playrho::d2::World::GetCurrentLengthA()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a11679510e7348f8480d317a02ba3e2aa">playrho::d2::World::GetCurrentLengthB()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aeca593754c5f10e69f145526786978fe">playrho::d2::World::GetDistanceJointConf()</a>, <a class="el" href="classplayrho_1_1d2_1_1ChainShapeConf.html#acf3a62f07bbb6fdaeb1cbc962d62feb8">playrho::d2::ChainShapeConf::GetMassData()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a32e1a0772998ac59c02ff4b1a7981343">playrho::d2::GetMassData()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a52974eadc9023357fc460b5392160a0e">playrho::d2::World::GetPulleyJointConf()</a>, <a class="el" href="group__Math.html#ga0c7d2525a406c1f83c0574e46a2cee32">playrho::Normalize()</a>, and <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#a0a2a5151fb0a799e0d2f0a84e4534b94">playrho::d2::WeldJointConf::SolvePosition()</a>.</p>
@@ -934,7 +968,7 @@ Both -Pi and +Pi normalize to -Pi. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Angle that's greater than or equal to -Pi and that's less than +Pi radians. I.e. the value returned will be a value within the half-open interval of [-Pi, +Pi). </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Math.html#gab870a9188fcc77c905807fa718a8268d" title="Computes the arc-tangent of the given y and x values.">Atan2</a> </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a2e2f7487e6bca2b26a9dc6779a9bc72b">playrho::d2::World::GetGearJointConf()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a5955bf7b1c0cdfa36d11adea236d9af4">playrho::d2::GetNormalized()</a>, <a class="el" href="classplayrho_1_1d2_1_1Sweep.html#a09b21383c1a73afea37f11e0ba906a76">playrho::d2::Sweep::GetNormalized()</a>, and <a class="el" href="group__Math.html#gac9b72aa4a587e552a586a42494d614c1">playrho::GetShortestDelta()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a5955bf7b1c0cdfa36d11adea236d9af4">playrho::d2::GetNormalized()</a>, <a class="el" href="classplayrho_1_1d2_1_1Sweep.html#a09b21383c1a73afea37f11e0ba906a76">playrho::d2::Sweep::GetNormalized()</a>, and <a class="el" href="group__Math.html#gac9b72aa4a587e552a586a42494d614c1">playrho::GetShortestDelta()</a>.</p>
 
 </div>
 </div>
@@ -1181,10 +1215,8 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Constant expression enhanced floor function. </p>
-<dl class="section note"><dt>Note</dt><dd>Unlike <code>std::floor</code>, this function is only defined for finite values. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a href="https://en.cppreference.com/w/cpp/numeric/math/floor">https://en.cppreference.com/w/cpp/numeric/math/floor</a></dd></dl>
-<p>Modulo operation using <code>std::fmod</code>. </p><dl class="section note"><dt>Note</dt><dd>Modulo via <code>std::fmod</code> appears slower than via <code>std::trunc</code>. </dd></dl>
+<p>Modulo operation using <code>std::fmod</code>. </p>
+<dl class="section note"><dt>Note</dt><dd>Modulo via <code>std::fmod</code> appears slower than via <code>std::trunc</code>. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Math.html#ga84e7cb2a415fcb956202c8d7e1b1d200" title="Modulo operation using std::trunc.">ModuloViaTrunc</a> </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="group__Math.html#ga156a2abff11f978a8df25efbf0c10147">playrho::GetNormalized()</a>.</p>
@@ -1238,7 +1270,7 @@ This function won't behave like <code>ModuloViaFmod</code> when divisor is infin
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Math.html#gab53c16bcb68dd36d3b18027a2ac6b1b2" title="Constant expression enhanced floor function.">ModuloViaFmod</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Math.html#gab53c16bcb68dd36d3b18027a2ac6b1b2" title="Modulo operation using std::fmod.">ModuloViaFmod</a> </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="group__Math.html#ga156a2abff11f978a8df25efbf0c10147">playrho::GetNormalized()</a>, and <a class="el" href="group__Math.html#gac9b72aa4a587e552a586a42494d614c1">playrho::GetShortestDelta()</a>.</p>
 
@@ -1314,7 +1346,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Computes the rounded value of the given value. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Consider making this function generic to any <code><a class="el" href="structplayrho_1_1Vector.html" title="Vector.">Vector</a></code>. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>Consider making this function generic to any <code><a class="el" href="structplayrho_1_1Vector.html" title="Vector.">Vector</a></code>. </dd></dl>
 
 </div>
 </div>
@@ -1566,7 +1598,7 @@ template&lt;std::size_t M, typename T1 , std::size_t N, typename T2 &gt; </div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Sep 16 2023 15:28:55 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 22 2023 00:56:18 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

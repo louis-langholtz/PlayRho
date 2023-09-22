@@ -103,18 +103,19 @@ Overview</h1>
 <p>PlayRho is an interactive, real-time oriented, C++17 based, physics engine and library currently best suited for 2-dimensional games. To view its source code, please see: <a href="https://github.com/louis-langholtz/PlayRho">https://github.com/louis-langholtz/PlayRho</a>. For issues, visit: <a href="https://github.com/louis-langholtz/PlayRho/issues">https://github.com/louis-langholtz/PlayRho/issues</a>. For mathematical insight into how a physics engine works, see: <a href="http://box2d.org/files/GDC2009/GDC2009_Catto_Erin_Solver.ppt">Erin Catto's 2009 Modeling and Solving Constraints slides</a>.</p>
 <h1><a class="anchor" id="coding_sec"></a>
 Getting Started</h1>
-<p>For coding, purists may want to begin by just including the <code>World.hpp</code> header file and making an instance of the <a href="classplayrho_1_1d2_1_1World.html"><code>playrho::d2::World</code></a> class. Here's what this might look like: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;playrho/d2/World.hpp&gt;</span></div>
+<p>For coding, purists may want to begin by just including the <code><a class="el" href="World_8hpp.html" title="Definitions of the World class and closely related code.">World.hpp</a></code> header file and making an instance of the <a href="classplayrho_1_1d2_1_1World.html"><code>playrho::d2::World</code></a> class. Here's what this might look like: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="World_8hpp.html">playrho/d2/World.hpp</a>&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main()</div>
 <div class="line">{</div>
 <div class="line">    <span class="keyword">auto</span> world = <a class="code" href="classplayrho_1_1d2_1_1World.html">playrho::d2::World</a>{};</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> bodyID = world.<a class="code" href="classplayrho_1_1d2_1_1World.html#af85475017c80371a8341dd596d358d5e">CreateBody</a>();</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> bodyID = world.<a class="code" href="classplayrho_1_1d2_1_1World.html#ac844fbdfb282bfd77c0dfea427eab4a1">CreateBody</a>();</div>
 <div class="line">    <span class="comment">// do more things with the world instance and body identifier (bodyID).</span></div>
 <div class="line">    <span class="keywordflow">return</span> 0; <span class="comment">// world and associated resources go away automatically</span></div>
 <div class="line">}</div>
-<div class="ttc" id="aclassplayrho_1_1d2_1_1World_html"><div class="ttname"><a href="classplayrho_1_1d2_1_1World.html">playrho::d2::World</a></div><div class="ttdoc">Definition of an independent and simulatable &quot;world&quot;.</div><div class="ttdef"><b>Definition:</b> World.hpp:123</div></div>
-<div class="ttc" id="aclassplayrho_1_1d2_1_1World_html_af85475017c80371a8341dd596d358d5e"><div class="ttname"><a href="classplayrho_1_1d2_1_1World.html#af85475017c80371a8341dd596d358d5e">playrho::d2::World::CreateBody</a></div><div class="ttdeci">BodyID CreateBody(const Body &amp;body)</div><div class="ttdoc">Creates a rigid body that's a copy of the given one.</div><div class="ttdef"><b>Definition:</b> World.cpp:163</div></div>
-</div><!-- fragment --><p> Pragmatists may instead want to begin by including this file, <code>BasicAPI.hpp</code>, which includes headers for most of the entire PlayRho public API.</p>
+<div class="ttc" id="aWorld_8hpp_html"><div class="ttname"><a href="World_8hpp.html">World.hpp</a></div><div class="ttdoc">Definitions of the World class and closely related code.</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1World_html"><div class="ttname"><a href="classplayrho_1_1d2_1_1World.html">playrho::d2::World</a></div><div class="ttdoc">Definition of an independent and simulatable &quot;world&quot;.</div><div class="ttdef"><b>Definition:</b> World.hpp:542</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1World_html_ac844fbdfb282bfd77c0dfea427eab4a1"><div class="ttname"><a href="classplayrho_1_1d2_1_1World.html#ac844fbdfb282bfd77c0dfea427eab4a1">playrho::d2::World::CreateBody</a></div><div class="ttdeci">friend BodyID CreateBody(World &amp;world, const Body &amp;body, bool resetMassData)</div><div class="ttdoc">Creates a rigid body within the world that's a copy of the given one.</div><div class="ttdef"><b>Definition:</b> World.cpp:44</div></div>
+</div><!-- fragment --><p> Pragmatists may instead want to begin by including this file, <code><a class="el" href="BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used.">BasicAPI.hpp</a></code>, which includes headers for most of the entire PlayRho public API.</p>
 <h1><a class="anchor" id="helloworld_sec"></a>
 An Entire Application</h1>
 <p>For a more elaborate example, that's of an entire application, see <a href="HelloWorld_8cpp-example.html"><code>HelloWorld.cpp</code></a>.</p>
@@ -125,7 +126,7 @@ An Entire Application</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Sep 16 2023 15:28:56 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 22 2023 00:56:19 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

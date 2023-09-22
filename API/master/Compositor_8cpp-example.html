@@ -121,7 +121,7 @@ $(document).ready(function(){initNavTree('Compositor_8cpp-example.html',''); ini
 <div class="line"><span class="preprocessor">#include &quot;UnitTests.hpp&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#include &lt;playrho/d2/part/Compositor.hpp&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;playrho/d2/Shape.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="Shape_8hpp.html">playrho/d2/Shape.hpp</a>&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">using namespace </span><a class="code" href="namespaceplayrho.html">playrho</a>;</div>
 <div class="line"><span class="keyword">using namespace </span><a class="code" href="namespaceplayrho_1_1d2_1_1part.html">playrho::d2::part</a>;</div>
@@ -428,13 +428,13 @@ $(document).ready(function(){initNavTree('Compositor_8cpp-example.html',''); ini
 <div class="line"> </div>
 <div class="line">TEST(Compositor, <a name="a25"></a><a class="code" href="namespaceplayrho_1_1d2_1_1part.html#a09f290e872984197b9c7bb8b11268e0f">SetFriction</a>)</div>
 <div class="line">{</div>
-<div class="line">    using ::playrho::d2::SetFriction;</div>
+<div class="line">    <a name="a26"></a><a class="code" href="namespaceplayrho.html#acaf284b9eea3b4ad78ba5b673e67b00b">using ::playrho::d2::SetFriction</a>;</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keyword">auto</span> rectangle = Compositor&lt;GeometryIs&lt;StaticRectangle&lt;1, 1&gt;&gt;&gt;{};</div>
 <div class="line">        ASSERT_EQ(rectangle.friction, <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(2) / <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(10));</div>
 <div class="line">        EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2_1_1part.html#a09f290e872984197b9c7bb8b11268e0f">SetFriction</a>(rectangle, <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(3)), InvalidArgument);</div>
 <div class="line">        {</div>
-<div class="line">            <span class="keyword">auto</span> shape = <a name="_a26"></a><a class="code" href="classplayrho_1_1d2_1_1Shape.html">::playrho::d2::Shape</a>{rectangle};</div>
+<div class="line">            <span class="keyword">auto</span> shape = <a name="_a27"></a><a class="code" href="classplayrho_1_1d2_1_1Shape.html">::playrho::d2::Shape</a>{rectangle};</div>
 <div class="line">            EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2_1_1part.html#a09f290e872984197b9c7bb8b11268e0f">SetFriction</a>(shape, <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(3)), InvalidArgument);</div>
 <div class="line">        }</div>
 <div class="line">        EXPECT_EQ(rectangle.friction, <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(2) / <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(10));</div>
@@ -448,9 +448,9 @@ $(document).ready(function(){initNavTree('Compositor_8cpp-example.html',''); ini
 <div class="line">    }</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line">TEST(Compositor, <a name="a27"></a><a class="code" href="namespaceplayrho_1_1d2_1_1part.html#acae907e2173e3c211c5fe7784f011e41">SetRestitution</a>)</div>
+<div class="line">TEST(Compositor, <a name="a28"></a><a class="code" href="namespaceplayrho_1_1d2_1_1part.html#acae907e2173e3c211c5fe7784f011e41">SetRestitution</a>)</div>
 <div class="line">{</div>
-<div class="line">    using ::playrho::d2::SetRestitution;</div>
+<div class="line">    <a name="a29"></a><a class="code" href="namespaceplayrho.html#ae72b11c11801f8189dbd1d61dd917f77">using ::playrho::d2::SetRestitution</a>;</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keyword">auto</span> rectangle = Compositor&lt;GeometryIs&lt;StaticRectangle&lt;1, 1&gt;&gt;&gt;{};</div>
 <div class="line">        ASSERT_EQ(rectangle.restitution, <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(0));</div>
@@ -486,7 +486,7 @@ $(document).ready(function(){initNavTree('Compositor_8cpp-example.html',''); ini
 <div class="line">{</div>
 <div class="line">    <span class="keyword">using namespace </span>::<a class="code" href="namespaceplayrho_1_1d2.html">playrho::d2</a>;</div>
 <div class="line">    <span class="keyword">auto</span> composite = Compositor&lt;&gt;{};</div>
-<div class="line">    EXPECT_NO_THROW(<a name="a28"></a><a class="code" href="namespaceplayrho_1_1d2_1_1part.html#ac3474dff07f98ed9fa68cfa612ef529b">SetDensity</a>(composite, 0_kgpm2));</div>
+<div class="line">    EXPECT_NO_THROW(<a name="a30"></a><a class="code" href="namespaceplayrho_1_1d2_1_1part.html#ac3474dff07f98ed9fa68cfa612ef529b">SetDensity</a>(composite, 0_kgpm2));</div>
 <div class="line">    EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2_1_1part.html#ac3474dff07f98ed9fa68cfa612ef529b">SetDensity</a>(composite, 1_kgpm2), InvalidArgument);</div>
 <div class="line">    EXPECT_TRUE((std::is_same_v&lt;decltype(<a class="code" href="namespaceplayrho_1_1d2_1_1part.html#ac3474dff07f98ed9fa68cfa612ef529b">SetDensity</a>(composite, 1_kgpm2)), <span class="keywordtype">void</span>&gt;));</div>
 <div class="line">}</div>
@@ -495,7 +495,7 @@ $(document).ready(function(){initNavTree('Compositor_8cpp-example.html',''); ini
 <div class="line">{</div>
 <div class="line">    <span class="keyword">using namespace </span>::<a class="code" href="namespaceplayrho_1_1d2.html">playrho::d2</a>;</div>
 <div class="line">    <span class="keyword">auto</span> composite = Compositor&lt;&gt;{};</div>
-<div class="line">    EXPECT_NO_THROW(<a name="a29"></a><a class="code" href="namespaceplayrho_1_1d2_1_1part.html#ad07854cfbdaaa13c43e8e683b8806d4a">SetSensor</a>(composite, <span class="keyword">false</span>));</div>
+<div class="line">    EXPECT_NO_THROW(<a name="a31"></a><a class="code" href="namespaceplayrho_1_1d2_1_1part.html#ad07854cfbdaaa13c43e8e683b8806d4a">SetSensor</a>(composite, <span class="keyword">false</span>));</div>
 <div class="line">    EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2_1_1part.html#ad07854cfbdaaa13c43e8e683b8806d4a">SetSensor</a>(composite, <span class="keyword">true</span>), InvalidArgument);</div>
 <div class="line">    EXPECT_TRUE((std::is_same_v&lt;decltype(<a class="code" href="namespaceplayrho_1_1d2_1_1part.html#ad07854cfbdaaa13c43e8e683b8806d4a">SetSensor</a>(composite, <span class="keyword">true</span>)), <span class="keywordtype">void</span>&gt;));</div>
 <div class="line">}</div>
@@ -504,7 +504,7 @@ $(document).ready(function(){initNavTree('Compositor_8cpp-example.html',''); ini
 <div class="line">{</div>
 <div class="line">    <span class="keyword">using namespace </span>::<a class="code" href="namespaceplayrho_1_1d2.html">playrho::d2</a>;</div>
 <div class="line">    <span class="keyword">auto</span> composite = Compositor&lt;&gt;{};</div>
-<div class="line">    EXPECT_NO_THROW(<a name="a30"></a><a class="code" href="namespaceplayrho_1_1d2_1_1part.html#ae95d9ee6e7af9b236d77dc88ecdda0ff">SetFilter</a>(composite, <a name="a31"></a><a class="code" href="structplayrho_1_1d2_1_1part_1_1StaticFilter.html#a5a0a743a2acc9502ee5615044c76d901">StaticFilter&lt;&gt;::filter</a>));</div>
+<div class="line">    EXPECT_NO_THROW(<a name="a32"></a><a class="code" href="namespaceplayrho_1_1d2_1_1part.html#ae95d9ee6e7af9b236d77dc88ecdda0ff">SetFilter</a>(composite, <a name="a33"></a><a class="code" href="structplayrho_1_1d2_1_1part_1_1StaticFilter.html#a5a0a743a2acc9502ee5615044c76d901">StaticFilter&lt;&gt;::filter</a>));</div>
 <div class="line">    EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2_1_1part.html#ae95d9ee6e7af9b236d77dc88ecdda0ff">SetFilter</a>(composite, Filter{2, 0, 1}), InvalidArgument);</div>
 <div class="line">}</div>
 <div class="line"> </div>
@@ -513,7 +513,7 @@ $(document).ready(function(){initNavTree('Compositor_8cpp-example.html',''); ini
 <div class="line">    <span class="keyword">using namespace </span>::<a class="code" href="namespaceplayrho_1_1d2.html">playrho::d2</a>;</div>
 <div class="line">    <span class="keyword">auto</span> composite =</div>
 <div class="line">        Compositor&lt;GeometryIs&lt;StaticRectangle&lt;1, 1&gt;&gt;, DensityIs&lt;StaticAreaDensity&lt;1&gt;&gt;&gt;{};</div>
-<div class="line">    <span class="keyword">auto</span> massData = <a name="a32"></a><a class="code" href="namespaceplayrho_1_1d2.html#a1afff43f96a91b8c26b8f0de7b9a71da">MassData</a>{};</div>
+<div class="line">    <span class="keyword">auto</span> massData = <a name="a34"></a><a class="code" href="namespaceplayrho_1_1d2.html#a1afff43f96a91b8c26b8f0de7b9a71da">MassData</a>{};</div>
 <div class="line">    EXPECT_NO_THROW(massData = <a class="code" href="namespaceplayrho_1_1d2_1_1part.html#aa4f02037d00c66d1489f8ddc0a2a5887">GetMassData</a>(composite));</div>
 <div class="line">    EXPECT_EQ(massData.center, <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>(0_m, 0_m));</div>
 <div class="line">    EXPECT_EQ(massData.mass, 1_kg);</div>
@@ -534,7 +534,7 @@ $(document).ready(function(){initNavTree('Compositor_8cpp-example.html',''); ini
 <div class="line">{</div>
 <div class="line">    <span class="keyword">using namespace </span>::<a class="code" href="namespaceplayrho_1_1d2.html">playrho::d2</a>;</div>
 <div class="line">    <span class="keyword">auto</span> rectangle = Compositor&lt;GeometryIs&lt;StaticRectangle&lt;1, 1&gt;&gt;&gt;{};</div>
-<div class="line">    EXPECT_NO_THROW(<a name="a33"></a><a class="code" href="namespaceplayrho_1_1d2_1_1part.html#a6c8858631b267d914adb8362445e3acf">Translate</a>(rectangle, <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{0_m, 0_m}));</div>
+<div class="line">    EXPECT_NO_THROW(<a name="a35"></a><a class="code" href="namespaceplayrho_1_1d2_1_1part.html#a6c8858631b267d914adb8362445e3acf">Translate</a>(rectangle, <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{0_m, 0_m}));</div>
 <div class="line">    EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2_1_1part.html#a6c8858631b267d914adb8362445e3acf">Translate</a>(rectangle, <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{1_m, 2_m}), InvalidArgument);</div>
 <div class="line">}</div>
 <div class="line"> </div>
@@ -542,7 +542,7 @@ $(document).ready(function(){initNavTree('Compositor_8cpp-example.html',''); ini
 <div class="line">{</div>
 <div class="line">    <span class="keyword">using namespace </span>::<a class="code" href="namespaceplayrho_1_1d2.html">playrho::d2</a>;</div>
 <div class="line">    <span class="keyword">auto</span> rectangle = Compositor&lt;GeometryIs&lt;StaticRectangle&lt;1, 1&gt;&gt;&gt;{};</div>
-<div class="line">    EXPECT_NO_THROW(<a name="a34"></a><a class="code" href="namespaceplayrho_1_1d2_1_1part.html#aa1cc186121c80395f147cc49cbdadf09">Scale</a>(rectangle, <a name="a35"></a><a class="code" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a>{<a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(1), <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(1)}));</div>
+<div class="line">    EXPECT_NO_THROW(<a name="a36"></a><a class="code" href="namespaceplayrho_1_1d2_1_1part.html#aa1cc186121c80395f147cc49cbdadf09">Scale</a>(rectangle, <a name="a37"></a><a class="code" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a>{<a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(1), <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(1)}));</div>
 <div class="line">    EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2_1_1part.html#aa1cc186121c80395f147cc49cbdadf09">Scale</a>(rectangle, <a class="code" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a>{<a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(2), <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(3)}), InvalidArgument);</div>
 <div class="line">}</div>
 <div class="line"> </div>
@@ -550,7 +550,7 @@ $(document).ready(function(){initNavTree('Compositor_8cpp-example.html',''); ini
 <div class="line">{</div>
 <div class="line">    <span class="keyword">using namespace </span>::<a class="code" href="namespaceplayrho_1_1d2.html">playrho::d2</a>;</div>
 <div class="line">    <span class="keyword">auto</span> rectangle = Compositor&lt;GeometryIs&lt;StaticRectangle&lt;1, 1&gt;&gt;&gt;{};</div>
-<div class="line">    EXPECT_NO_THROW(<a name="a36"></a><a class="code" href="namespaceplayrho_1_1d2_1_1part.html#a2c707b282337d3ed55c80c54be669b7d">Rotate</a>(rectangle, ::<a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#a989ef293213c6b3a4d1901533445cd85">playrho::d2::UnitVec::GetRight</a>()));</div>
+<div class="line">    EXPECT_NO_THROW(<a name="a38"></a><a class="code" href="namespaceplayrho_1_1d2_1_1part.html#a2c707b282337d3ed55c80c54be669b7d">Rotate</a>(rectangle, ::<a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#a989ef293213c6b3a4d1901533445cd85">playrho::d2::UnitVec::GetRight</a>()));</div>
 <div class="line">    EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2_1_1part.html#a2c707b282337d3ed55c80c54be669b7d">Rotate</a>(rectangle, ::<a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#ad3f132b30c82d05c107a8d8231db244b">playrho::d2::UnitVec::GetTop</a>()), InvalidArgument);</div>
 <div class="line">}</div>
 <div class="line"> </div>
@@ -588,8 +588,9 @@ $(document).ready(function(){initNavTree('Compositor_8cpp-example.html',''); ini
 <div class="line">    EXPECT_FALSE((Compositor&lt;&gt;() == Compositor&lt;FrictionIs&lt;StaticFriction&lt;4&gt;&gt;&gt;()));</div>
 <div class="line">    EXPECT_FALSE(Compositor&lt;&gt;() == Compositor&lt;GeometryIs&lt;Void2&gt;&gt;());</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassplayrho_1_1d2_1_1DistanceProxy_html"><div class="ttname"><a href="classplayrho_1_1d2_1_1DistanceProxy.html">playrho::d2::DistanceProxy</a></div><div class="ttdoc">Distance Proxy.</div><div class="ttdef"><b>Definition:</b> DistanceProxy.hpp:47</div></div>
-<div class="ttc" id="aclassplayrho_1_1d2_1_1Shape_html"><div class="ttname"><a href="classplayrho_1_1d2_1_1Shape.html">playrho::d2::Shape</a></div><div class="ttdoc">Shape.</div><div class="ttdef"><b>Definition:</b> Shape.hpp:431</div></div>
+<div class="ttc" id="aShape_8hpp_html"><div class="ttname"><a href="Shape_8hpp.html">Shape.hpp</a></div><div class="ttdoc">Definition of the Shape class and closely related code.</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1DistanceProxy_html"><div class="ttname"><a href="classplayrho_1_1d2_1_1DistanceProxy.html">playrho::d2::DistanceProxy</a></div><div class="ttdoc">Distance Proxy.</div><div class="ttdef"><b>Definition:</b> DistanceProxy.hpp:53</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1Shape_html"><div class="ttname"><a href="classplayrho_1_1d2_1_1Shape.html">playrho::d2::Shape</a></div><div class="ttdoc">Shape.</div><div class="ttdef"><b>Definition:</b> Shape.hpp:455</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1UnitVec_html_a44b186e8e5faa989049dcb9fba7367c7"><div class="ttname"><a href="classplayrho_1_1d2_1_1UnitVec.html#a44b186e8e5faa989049dcb9fba7367c7">playrho::d2::UnitVec::GetLeft</a></div><div class="ttdeci">static constexpr UnitVec GetLeft() noexcept</div><div class="ttdoc">Gets the left-ward oriented unit vector.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:86</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1UnitVec_html_a814ef2468f93f2785da36e6651840a14"><div class="ttname"><a href="classplayrho_1_1d2_1_1UnitVec.html#a814ef2468f93f2785da36e6651840a14">playrho::d2::UnitVec::GetBottom</a></div><div class="ttdeci">static constexpr UnitVec GetBottom() noexcept</div><div class="ttdoc">Gets the bottom-ward oriented unit vector.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:92</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1UnitVec_html_a989ef293213c6b3a4d1901533445cd85"><div class="ttname"><a href="classplayrho_1_1d2_1_1UnitVec.html#a989ef293213c6b3a4d1901533445cd85">playrho::d2::UnitVec::GetRight</a></div><div class="ttdeci">static constexpr UnitVec GetRight() noexcept</div><div class="ttdoc">Gets the right-ward oriented unit vector.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:74</div></div>
@@ -619,13 +620,15 @@ $(document).ready(function(){initNavTree('Compositor_8cpp-example.html',''); ini
 <div class="ttc" id="anamespaceplayrho_1_1d2_html"><div class="ttname"><a href="namespaceplayrho_1_1d2.html">playrho::d2</a></div><div class="ttdef"><b>Definition:</b> AABB.hpp:44</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a0f207924edd9511c1d56c03933928fa8"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">playrho::d2::size</a></div><div class="ttdeci">std::size_t size(const DynamicTree &amp;tree) noexcept</div><div class="ttdoc">Gets the &quot;size&quot; of the given tree.</div><div class="ttdef"><b>Definition:</b> DynamicTree.hpp:693</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a1afff43f96a91b8c26b8f0de7b9a71da"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a1afff43f96a91b8c26b8f0de7b9a71da">playrho::d2::MassData</a></div><div class="ttdeci">::playrho::detail::MassData&lt; 2 &gt; MassData</div><div class="ttdoc">Mass data alias for 2-D objects.</div><div class="ttdef"><b>Definition:</b> MassData.hpp:83</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_ad6691b6d27434e35424d34885cdf9359"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ad6691b6d27434e35424d34885cdf9359">playrho::d2::IsValidShapeTypeV</a></div><div class="ttdeci">constexpr bool IsValidShapeTypeV</div><div class="ttdoc">Boolean value for whether the specified type is a valid shape type.</div><div class="ttdef"><b>Definition:</b> Shape.hpp:90</div></div>
-<div class="ttc" id="anamespaceplayrho_html"><div class="ttname"><a href="namespaceplayrho.html">playrho</a></div><div class="ttdef"><b>Definition:</b> ArrayList.hpp:33</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_ad6691b6d27434e35424d34885cdf9359"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ad6691b6d27434e35424d34885cdf9359">playrho::d2::IsValidShapeTypeV</a></div><div class="ttdeci">constexpr bool IsValidShapeTypeV</div><div class="ttdoc">Boolean value for whether the specified type is a valid shape type.</div><div class="ttdef"><b>Definition:</b> Shape.hpp:93</div></div>
+<div class="ttc" id="anamespaceplayrho_html"><div class="ttname"><a href="namespaceplayrho.html">playrho</a></div><div class="ttdef"><b>Definition:</b> ArrayList.hpp:36</div></div>
 <div class="ttc" id="anamespaceplayrho_html_a0e937a573db2db27b95156590ef5dd12"><div class="ttname"><a href="namespaceplayrho.html#a0e937a573db2db27b95156590ef5dd12">playrho::ChildCounter</a></div><div class="ttdeci">std::remove_const_t&lt; decltype(MaxChildCount)&gt; ChildCounter</div><div class="ttdoc">Child counter type.</div><div class="ttdef"><b>Definition:</b> Settings.hpp:108</div></div>
 <div class="ttc" id="anamespaceplayrho_html_a1fc125070a08100d083a1360f7167f87"><div class="ttname"><a href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">playrho::Real</a></div><div class="ttdeci">float Real</div><div class="ttdoc">Real-number type.</div><div class="ttdef"><b>Definition:</b> Real.hpp:69</div></div>
-<div class="ttc" id="anamespaceplayrho_html_a7dc68cd0ce177e175ae0bb6c39db158d"><div class="ttname"><a href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">playrho::Length2</a></div><div class="ttdeci">Vector2&lt; Length &gt; Length2</div><div class="ttdoc">2-element vector of Length quantities.</div><div class="ttdef"><b>Definition:</b> Vector2.hpp:42</div></div>
+<div class="ttc" id="anamespaceplayrho_html_a7dc68cd0ce177e175ae0bb6c39db158d"><div class="ttname"><a href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">playrho::Length2</a></div><div class="ttdeci">Vector2&lt; Length &gt; Length2</div><div class="ttdoc">2-element vector of Length quantities.</div><div class="ttdef"><b>Definition:</b> Vector2.hpp:45</div></div>
+<div class="ttc" id="anamespaceplayrho_html_acaf284b9eea3b4ad78ba5b673e67b00b"><div class="ttname"><a href="namespaceplayrho.html#acaf284b9eea3b4ad78ba5b673e67b00b">playrho::SetFriction</a></div><div class="ttdeci">constexpr void SetFriction(Contact &amp;contact, NonNegative&lt; Real &gt; value) noexcept</div><div class="ttdoc">Sets the friction value for the identified contact.</div><div class="ttdef"><b>Definition:</b> Contact.hpp:849</div></div>
 <div class="ttc" id="anamespaceplayrho_html_ad91e53ba44755653e34147d39695a0a1"><div class="ttname"><a href="namespaceplayrho.html#ad91e53ba44755653e34147d39695a0a1">playrho::DefaultLinearSlop</a></div><div class="ttdeci">constexpr auto DefaultLinearSlop</div><div class="ttdoc">Default linear slop.</div><div class="ttdef"><b>Definition:</b> Settings.hpp:145</div></div>
-<div class="ttc" id="anamespaceplayrho_html_ad93c0cd83df090aba6593ffac4b628ec"><div class="ttname"><a href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">playrho::Vec2</a></div><div class="ttdeci">Vector2&lt; Real &gt; Vec2</div><div class="ttdoc">Vector with 2 Real elements.</div><div class="ttdef"><b>Definition:</b> Vector2.hpp:38</div></div>
+<div class="ttc" id="anamespaceplayrho_html_ad93c0cd83df090aba6593ffac4b628ec"><div class="ttname"><a href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">playrho::Vec2</a></div><div class="ttdeci">Vector2&lt; Real &gt; Vec2</div><div class="ttdoc">Vector with 2 Real elements.</div><div class="ttdef"><b>Definition:</b> Vector2.hpp:41</div></div>
+<div class="ttc" id="anamespaceplayrho_html_ae72b11c11801f8189dbd1d61dd917f77"><div class="ttname"><a href="namespaceplayrho.html#ae72b11c11801f8189dbd1d61dd917f77">playrho::SetRestitution</a></div><div class="ttdeci">constexpr void SetRestitution(Contact &amp;contact, Real value)</div><div class="ttdoc">Sets the restitution value for the identified contact.</div><div class="ttdef"><b>Definition:</b> Contact.hpp:869</div></div>
 <div class="ttc" id="astructplayrho_1_1d2_1_1part_1_1StaticFilter_html_a5a0a743a2acc9502ee5615044c76d901"><div class="ttname"><a href="structplayrho_1_1d2_1_1part_1_1StaticFilter.html#a5a0a743a2acc9502ee5615044c76d901">playrho::d2::part::StaticFilter::filter</a></div><div class="ttdeci">static const auto filter</div><div class="ttdoc">The filter of the shape.</div><div class="ttdef"><b>Definition:</b> Compositor.hpp:423</div></div>
 <div class="ttc" id="astructplayrho_1_1detail_1_1MassData_html"><div class="ttname"><a href="structplayrho_1_1detail_1_1MassData.html">playrho::detail::MassData</a></div><div class="ttdoc">Mass data.</div><div class="ttdef"><b>Definition:</b> MassData.hpp:41</div></div>
 </div><!-- fragment --> </div><!-- contents -->
@@ -633,7 +636,7 @@ $(document).ready(function(){initNavTree('Compositor_8cpp-example.html',''); ini
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Sep 16 2023 15:28:55 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 22 2023 00:56:17 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

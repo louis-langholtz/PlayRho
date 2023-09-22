@@ -5,6 +5,7 @@ var group__Math =
     [ "Atan2", "group__Math.html#gab870a9188fcc77c905807fa718a8268d", null ],
     [ "Average", "group__Math.html#ga5928e1bb2ea4a8d60673314ff46a83cf", null ],
     [ "Bisect", "group__Math.html#gad9807960f6f6e39b0449aec22d646669", null ],
+    [ "cfloor", "group__Math.html#ga3f6e8b69eaeee408d3894b59629cffe9", null ],
     [ "ComputeCentroid", "group__Math.html#gae769785f0540a4b8960b282f6b105c14", null ],
     [ "Cross", "group__Math.html#gab5164277624274fde39d33fd4f0f5dd5", null ],
     [ "ctrunc", "group__Math.html#gaff0508a648e02202d025b83e46973e45", null ],

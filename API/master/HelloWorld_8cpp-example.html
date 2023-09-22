@@ -119,7 +119,7 @@ $(document).ready(function(){initNavTree('HelloWorld_8cpp-example.html',''); ini
 <div class="line"><span class="comment"> * 3. This notice may not be removed or altered from any source distribution.</span></div>
 <div class="line"><span class="comment"> */</span></div>
 <div class="line"> </div>
-<div class="line"><span class="preprocessor">#include &lt;playrho/d2/BasicAPI.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="BasicAPI_8hpp.html">playrho/d2/BasicAPI.hpp</a>&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;iomanip&gt;</span></div>
@@ -140,14 +140,14 @@ $(document).ready(function(){initNavTree('HelloWorld_8cpp-example.html',''); ini
 <div class="line">    <span class="comment">// Creates a shape within the world that&#39;s to act like the ground.</span></div>
 <div class="line">    <span class="comment">// Uses a polygon configured as a box for this.</span></div>
 <div class="line">    <span class="comment">// The extents are the half-width and half-height of the box.</span></div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> box = <a name="a0"></a><a class="code" href="namespaceplayrho_1_1d2.html#affb166faacbfc8b6e6a8ba5044180347">CreateShape</a>(world, PolygonShapeConf{}.SetAsBox(50_m, 10_m));</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> box = <a name="a0"></a><a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, PolygonShapeConf{}.SetAsBox(50_m, 10_m));</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Creates a body within the world that&#39;s attached to the ground-like box shape</span></div>
 <div class="line">    <span class="comment">// and that&#39;s centered 10 meters below the origin.</span></div>
 <div class="line">    <a name="a1"></a><a class="code" href="namespaceplayrho_1_1d2.html#a9d451d642b4be1c355a908b7c67df344">CreateBody</a>(world, BodyConf{}.Use(box).UseLocation(<a name="a2"></a><a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{0_m, -10_m}));</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Creats a 1 meter radius, ball-like, disk shape within the world.</span></div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> diskShape = <a class="code" href="namespaceplayrho_1_1d2.html#affb166faacbfc8b6e6a8ba5044180347">CreateShape</a>(world, DiskShapeConf{}.UseRadius(1_m));</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> diskShape = <a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, DiskShapeConf{}.UseRadius(1_m));</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Creates a &quot;dynamic&quot; body having the disk shape that will fall to the ground within world.</span></div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> ball = <a class="code" href="namespaceplayrho_1_1d2.html#a9d451d642b4be1c355a908b7c67df344">CreateBody</a>(world, BodyConf{}</div>
@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('HelloWorld_8cpp-example.html',''); ini
 <div class="line">        <span class="comment">// Typically code uses a time step of 1/60 of a second (60Hz). The defaults</span></div>
 <div class="line">        <span class="comment">// are setup for that and to generally provide a high enough quality simulation</span></div>
 <div class="line">        <span class="comment">// in most scenarios.</span></div>
-<div class="line">        <a name="a5"></a><a class="code" href="namespaceplayrho_1_1d2.html#ab5f8eb0b78ec0f8550234cf8a9ebea85">Step</a>(world);</div>
+<div class="line">        <a name="a5"></a><a class="code" href="namespaceplayrho_1_1d2.html#a360c1123ecc81b089d4f5b1a579e3501">Step</a>(world);</div>
 <div class="line"> </div>
 <div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> transformation = <a name="a6"></a><a class="code" href="namespaceplayrho_1_1d2.html#a798bf0d73d9cdbbaad16af6fd13cfed0">GetTransformation</a>(world, ball);</div>
 <div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> location = <a name="a7"></a><a class="code" href="namespaceplayrho_1_1d2.html#a8a6f694cab71d0db91049dc0908de63f">GetLocation</a>(transformation);</div>
@@ -181,25 +181,26 @@ $(document).ready(function(){initNavTree('HelloWorld_8cpp-example.html',''); ini
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
+<div class="ttc" id="aBasicAPI_8hpp_html"><div class="ttname"><a href="BasicAPI_8hpp.html">BasicAPI.hpp</a></div><div class="ttdoc">Basic API include file to pull in at once most headers used.</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html"><div class="ttname"><a href="namespaceplayrho_1_1d2.html">playrho::d2</a></div><div class="ttdef"><b>Definition:</b> AABB.hpp:44</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a23717005f46c309d31dfbb9f0e1b9daf"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a23717005f46c309d31dfbb9f0e1b9daf">playrho::d2::GetY</a></div><div class="ttdeci">constexpr auto GetY(const UnitVec &amp;value) -&gt; decltype(get&lt; 1 &gt;(value))</div><div class="ttdoc">Gets the &quot;Y&quot; element of the given value - i.e. the second element.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:396</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a2ecdf15e8b628491940dd2e568afc427"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a2ecdf15e8b628491940dd2e568afc427">playrho::d2::GetAngle</a></div><div class="ttdeci">Angle GetAngle(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the body's angle.</div><div class="ttdef"><b>Definition:</b> Body.cpp:274</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a798bf0d73d9cdbbaad16af6fd13cfed0"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a798bf0d73d9cdbbaad16af6fd13cfed0">playrho::d2::GetTransformation</a></div><div class="ttdeci">const Transformation &amp; GetTransformation(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the body's transformation.</div><div class="ttdef"><b>Definition:</b> Body.hpp:921</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a8a6f694cab71d0db91049dc0908de63f"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a8a6f694cab71d0db91049dc0908de63f">playrho::d2::GetLocation</a></div><div class="ttdeci">Length2 GetLocation(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the body's origin location.</div><div class="ttdef"><b>Definition:</b> Body.hpp:837</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a9d451d642b4be1c355a908b7c67df344"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a9d451d642b4be1c355a908b7c67df344">playrho::d2::CreateBody</a></div><div class="ttdeci">BodyID CreateBody(World &amp;world, const Body &amp;body=Body{}, bool resetMassData=true)</div><div class="ttdoc">Creates a rigid body within the world that's a copy of the given one.</div><div class="ttdef"><b>Definition:</b> WorldBody.cpp:54</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_ab5f8eb0b78ec0f8550234cf8a9ebea85"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ab5f8eb0b78ec0f8550234cf8a9ebea85">playrho::d2::Step</a></div><div class="ttdeci">StepStats Step(WorldImpl &amp;world, const StepConf &amp;conf)</div><div class="ttdoc">Steps the given world the specified amount.</div><div class="ttdef"><b>Definition:</b> WorldImplMisc.cpp:92</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_ababb5cdb48a1960a30aed40859075dee"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ababb5cdb48a1960a30aed40859075dee">playrho::d2::EarthlyGravity</a></div><div class="ttdeci">constexpr auto EarthlyGravity</div><div class="ttdoc">Earthly gravity in 2-dimensions.</div><div class="ttdef"><b>Definition:</b> Vector2.hpp:154</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a2ecdf15e8b628491940dd2e568afc427"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a2ecdf15e8b628491940dd2e568afc427">playrho::d2::GetAngle</a></div><div class="ttdeci">Angle GetAngle(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the body's angle.</div><div class="ttdef"><b>Definition:</b> Body.cpp:275</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a360c1123ecc81b089d4f5b1a579e3501"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a360c1123ecc81b089d4f5b1a579e3501">playrho::d2::Step</a></div><div class="ttdeci">StepStats Step(World &amp;world, const StepConf &amp;conf=StepConf{})</div><div class="ttdoc">Steps the given world simulation according to the given configuration.</div><div class="ttdef"><b>Definition:</b> World.hpp:1390</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a4ce8ced3a725faadab6912a877e83e84"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">playrho::d2::CreateShape</a></div><div class="ttdeci">ShapeID CreateShape(World &amp;world, const Shape &amp;def)</div><div class="ttdoc">Creates an identifiable copy of the given shape within the specified world.</div><div class="ttdef"><b>Definition:</b> World.hpp:1521</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a798bf0d73d9cdbbaad16af6fd13cfed0"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a798bf0d73d9cdbbaad16af6fd13cfed0">playrho::d2::GetTransformation</a></div><div class="ttdeci">const Transformation &amp; GetTransformation(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the body's transformation.</div><div class="ttdef"><b>Definition:</b> Body.hpp:922</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a8a6f694cab71d0db91049dc0908de63f"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a8a6f694cab71d0db91049dc0908de63f">playrho::d2::GetLocation</a></div><div class="ttdeci">Length2 GetLocation(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the body's origin location.</div><div class="ttdef"><b>Definition:</b> Body.hpp:838</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a9d451d642b4be1c355a908b7c67df344"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a9d451d642b4be1c355a908b7c67df344">playrho::d2::CreateBody</a></div><div class="ttdeci">BodyID CreateBody(World &amp;world, const Body &amp;body=Body{}, bool resetMassData=true)</div><div class="ttdoc">Creates a rigid body within the world that's a copy of the given one.</div><div class="ttdef"><b>Definition:</b> World.cpp:44</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_ababb5cdb48a1960a30aed40859075dee"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ababb5cdb48a1960a30aed40859075dee">playrho::d2::EarthlyGravity</a></div><div class="ttdeci">constexpr auto EarthlyGravity</div><div class="ttdoc">Earthly gravity in 2-dimensions.</div><div class="ttdef"><b>Definition:</b> Vector2.hpp:157</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_adab7becf1945a89fa8459e8c2853478a"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#adab7becf1945a89fa8459e8c2853478a">playrho::d2::GetX</a></div><div class="ttdeci">constexpr auto GetX(const UnitVec &amp;value)</div><div class="ttdoc">Gets the &quot;X&quot; element of the given value - i.e. the first element.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:390</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_affb166faacbfc8b6e6a8ba5044180347"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#affb166faacbfc8b6e6a8ba5044180347">playrho::d2::CreateShape</a></div><div class="ttdeci">ShapeID CreateShape(WorldImpl &amp;world, const Shape &amp;def)</div><div class="ttdoc">Creates a shape within the specified world.</div><div class="ttdef"><b>Definition:</b> WorldImplShape.cpp:34</div></div>
-<div class="ttc" id="anamespaceplayrho_html"><div class="ttname"><a href="namespaceplayrho.html">playrho</a></div><div class="ttdef"><b>Definition:</b> ArrayList.hpp:33</div></div>
+<div class="ttc" id="anamespaceplayrho_html"><div class="ttname"><a href="namespaceplayrho.html">playrho</a></div><div class="ttdef"><b>Definition:</b> ArrayList.hpp:36</div></div>
 <div class="ttc" id="anamespaceplayrho_html_a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c"><div class="ttname"><a href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">playrho::BodyType::Dynamic</a></div><div class="ttdeci">@ Dynamic</div></div>
-<div class="ttc" id="anamespaceplayrho_html_a7dc68cd0ce177e175ae0bb6c39db158d"><div class="ttname"><a href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">playrho::Length2</a></div><div class="ttdeci">Vector2&lt; Length &gt; Length2</div><div class="ttdoc">2-element vector of Length quantities.</div><div class="ttdef"><b>Definition:</b> Vector2.hpp:42</div></div>
+<div class="ttc" id="anamespaceplayrho_html_a7dc68cd0ce177e175ae0bb6c39db158d"><div class="ttname"><a href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">playrho::Length2</a></div><div class="ttdeci">Vector2&lt; Length &gt; Length2</div><div class="ttdoc">2-element vector of Length quantities.</div><div class="ttdef"><b>Definition:</b> Vector2.hpp:45</div></div>
 </div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Sep 16 2023 15:28:55 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 22 2023 00:56:17 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

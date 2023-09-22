@@ -3,7 +3,7 @@
 <area shape="rect" id="node2" href="$structplayrho_1_1IsMatrix.html" title="Trait class for checking if type is a matrix type." alt="" coords="211,5,353,47"/>
 <area shape="rect" id="node3" href="$structplayrho_1_1IsSquareMatrix.html" title="Trait class for checking if type is a square matrix type." alt="" coords="193,71,371,112"/>
 <area shape="rect" id="node4" href="$structplayrho_1_1IsVector.html" title="Trait class for checking if type is a Vector type." alt="" coords="197,137,367,163"/>
-<area shape="rect" id="node5" href="$structplayrho_1_1d2_1_1HasRotate.html" title=" " alt="" coords="197,188,367,229"/>
+<area shape="rect" id="node5" href="$structplayrho_1_1d2_1_1HasRotate.html" title="Type trait for not finding a Rotate(T&amp;, Angle) function." alt="" coords="197,188,367,229"/>
 <area shape="rect" id="node6" href="$structplayrho_1_1d2_1_1HasScale.html" title=" " alt="" coords="201,253,363,295"/>
 <area shape="rect" id="node7" href="$structplayrho_1_1d2_1_1HasSetDensity.html" title=" " alt="" coords="183,319,381,360"/>
 <area shape="rect" id="node8" href="$structplayrho_1_1d2_1_1HasSetFilter.html" title=" " alt="" coords="191,384,373,425"/>

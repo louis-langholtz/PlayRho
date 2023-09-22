@@ -1,0 +1,9 @@
+<map id="Library/include/playrho/d2/ShapeConf.hpp" name="Library/include/playrho/d2/ShapeConf.hpp">
+<area shape="rect" id="node1" title="Definition of the BaseShapeConf class and closely related code." alt="" coords="407,5,578,47"/>
+<area shape="rect" id="node2" href="$ChainShapeConf_8hpp.html" title="Definition of the ChainShapeConf class and closely related code." alt="" coords="5,95,185,136"/>
+<area shape="rect" id="node4" href="$DiskShapeConf_8hpp.html" title="Definition of the DiskShapeConf class and closely related code." alt="" coords="209,95,381,136"/>
+<area shape="rect" id="node5" href="$EdgeShapeConf_8hpp.html" title="Definition of the EdgeShapeConf class and closely related code." alt="" coords="405,95,580,136"/>
+<area shape="rect" id="node6" href="$MultiShapeConf_8hpp.html" title="Definition of the MultiShapeConf class and closely related code." alt="" coords="605,95,781,136"/>
+<area shape="rect" id="node7" href="$PolygonShapeConf_8hpp.html" title="Definition of the PolygonShapeConf class and closely related code." alt="" coords="805,95,999,136"/>
+<area shape="rect" id="node3" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="407,184,578,225"/>
+</map>

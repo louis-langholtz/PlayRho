@@ -1,0 +1,11 @@
+<map id="Library/include/playrho/detail/FiniteChecker.hpp" name="Library/include/playrho/detail/FiniteChecker.hpp">
+<area shape="rect" id="node1" title="Definition of the FiniteChecker class template." alt="" coords="401,5,584,47"/>
+<area shape="rect" id="node2" href="$Finite_8hpp.html" title="Aliases for checked finite types." alt="" coords="407,95,578,136"/>
+<area shape="rect" id="node3" href="$ShapeConf_8hpp.html" title="Definition of the BaseShapeConf class and closely related code." alt="" coords="407,184,578,225"/>
+<area shape="rect" id="node4" href="$ChainShapeConf_8hpp.html" title="Definition of the ChainShapeConf class and closely related code." alt="" coords="5,273,185,315"/>
+<area shape="rect" id="node6" href="$DiskShapeConf_8hpp.html" title="Definition of the DiskShapeConf class and closely related code." alt="" coords="209,273,381,315"/>
+<area shape="rect" id="node7" href="$EdgeShapeConf_8hpp.html" title="Definition of the EdgeShapeConf class and closely related code." alt="" coords="405,273,580,315"/>
+<area shape="rect" id="node8" href="$MultiShapeConf_8hpp.html" title="Definition of the MultiShapeConf class and closely related code." alt="" coords="605,273,781,315"/>
+<area shape="rect" id="node9" href="$PolygonShapeConf_8hpp.html" title="Definition of the PolygonShapeConf class and closely related code." alt="" coords="805,273,999,315"/>
+<area shape="rect" id="node5" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="407,363,578,404"/>
+</map>

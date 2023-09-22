@@ -39,18 +39,18 @@
 <g id="node3" class="node">
 <title>Node3</title>
 <g id="a_node3"><a xlink:href="classplayrho_1_1ObjectPool.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="321.5,-294.5 321.5,-324.5 433.5,-324.5 433.5,-294.5 321.5,-294.5"/>
-<text text-anchor="start" x="329.5" y="-312.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::ObjectPool</text>
-<text text-anchor="middle" x="377.5" y="-301.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; BodyJoints &gt;</text>
+<polygon fill="white" stroke="black" points="319,-294.5 319,-324.5 436,-324.5 436,-294.5 319,-294.5"/>
+<text text-anchor="start" x="327" y="-312.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::ObjectPool</text>
+<text text-anchor="middle" x="377.5" y="-301.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; BodyContactIDs &gt;</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node1&#45;&gt;Node3</title>
-<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M86.02,-203.7C102.09,-220.99 129.19,-247.09 158,-261.5 209.93,-287.48 275.72,-299.48 321.48,-304.98"/>
+<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M86.02,-203.7C102.09,-220.99 129.19,-247.09 158,-261.5 208.89,-286.96 273.09,-299 318.7,-304.64"/>
 <polygon fill="orange" stroke="orange" points="88.36,-201.08 79.06,-196.01 83.17,-205.78 88.36,-201.08"/>
-<text text-anchor="middle" x="223" y="-302.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; BodyJoints &gt;</text>
+<text text-anchor="middle" x="223" y="-302.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; BodyContactIDs &gt;</text>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
@@ -58,7 +58,7 @@
 <g id="a_node4"><a xlink:href="classplayrho_1_1ObjectPool.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="black" points="321.5,-245.5 321.5,-275.5 433.5,-275.5 433.5,-245.5 321.5,-245.5"/>
 <text text-anchor="start" x="329.5" y="-263.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::ObjectPool</text>
-<text text-anchor="middle" x="377.5" y="-252.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; Proxies &gt;</text>
+<text text-anchor="middle" x="377.5" y="-252.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; ProxyIDs &gt;</text>
 </a>
 </g>
 </g>
@@ -67,7 +67,7 @@
 <title>Node1&#45;&gt;Node4</title>
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M103.46,-199.87C119.65,-206.17 139.64,-213.39 158,-218.5 212.71,-233.71 276.63,-245.3 321.15,-252.41"/>
 <polygon fill="orange" stroke="orange" points="104.51,-196.52 93.93,-196.1 101.94,-203.03 104.51,-196.52"/>
-<text text-anchor="middle" x="223" y="-249.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; Proxies &gt;</text>
+<text text-anchor="middle" x="223" y="-249.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; ProxyIDs &gt;</text>
 </g>
 <!-- Node5 -->
 <g id="node5" class="node">
@@ -75,7 +75,7 @@
 <g id="a_node5"><a xlink:href="classplayrho_1_1ObjectPool.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="black" points="321.5,-196.5 321.5,-226.5 433.5,-226.5 433.5,-196.5 321.5,-196.5"/>
 <text text-anchor="start" x="329.5" y="-214.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::ObjectPool</text>
-<text text-anchor="middle" x="377.5" y="-203.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; BodyContacts &gt;</text>
+<text text-anchor="middle" x="377.5" y="-203.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; BodyJointIDs &gt;</text>
 </a>
 </g>
 </g>
@@ -84,7 +84,7 @@
 <title>Node1&#45;&gt;Node5</title>
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M150.48,-193C204.11,-197.39 273.52,-203.07 321.2,-206.97"/>
 <polygon fill="orange" stroke="orange" points="150.57,-189.5 140.32,-192.17 150,-196.48 150.57,-189.5"/>
-<text text-anchor="middle" x="223" y="-206.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; BodyContacts &gt;</text>
+<text text-anchor="middle" x="223" y="-206.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; BodyJointIDs &gt;</text>
 </g>
 <!-- Node6 -->
 <g id="node6" class="node">

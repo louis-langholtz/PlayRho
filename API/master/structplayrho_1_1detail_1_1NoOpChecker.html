@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('structplayrho_1_1detail_1_1NoOpChecker
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="structplayrho_1_1detail_1_1NoOpChecker-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">playrho::detail::NoOpChecker&lt; T &gt; Struct Template Reference</div>  </div>
+<div class="title">playrho::detail::NoOpChecker&lt; T &gt; Struct Template Reference<div class="ingroups"><a class="el" href="group__Checkers.html">Checker Types</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -108,13 +108,11 @@ $(document).ready(function(){initNavTree('structplayrho_1_1detail_1_1NoOpChecker
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa21bc4d18971eb9ac35d172231879ee2"><td class="memItemLeft" align="right" valign="top"><a id="aa21bc4d18971eb9ac35d172231879ee2"></a>
-constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1NoOpChecker.html#aa21bc4d18971eb9ac35d172231879ee2">operator()</a> () noexcept -&gt; decltype(T())</td></tr>
-<tr class="memdesc:aa21bc4d18971eb9ac35d172231879ee2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value supplying functor. <br /></td></tr>
+<tr class="memitem:aa21bc4d18971eb9ac35d172231879ee2"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1NoOpChecker.html#aa21bc4d18971eb9ac35d172231879ee2">operator()</a> () noexcept -&gt; decltype(T())</td></tr>
+<tr class="memdesc:aa21bc4d18971eb9ac35d172231879ee2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value supplying functor.  <a href="structplayrho_1_1detail_1_1NoOpChecker.html#aa21bc4d18971eb9ac35d172231879ee2">More...</a><br /></td></tr>
 <tr class="separator:aa21bc4d18971eb9ac35d172231879ee2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d4ec425569538783b6ec47814bcfd52"><td class="memItemLeft" align="right" valign="top"><a id="a6d4ec425569538783b6ec47814bcfd52"></a>
-constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1NoOpChecker.html#a6d4ec425569538783b6ec47814bcfd52">operator()</a> (const T &amp;) noexcept -&gt; const char *</td></tr>
-<tr class="memdesc:a6d4ec425569538783b6ec47814bcfd52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value checking functor. <br /></td></tr>
+<tr class="memitem:a6d4ec425569538783b6ec47814bcfd52"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1NoOpChecker.html#a6d4ec425569538783b6ec47814bcfd52">operator()</a> (const T &amp;) noexcept -&gt; const char *</td></tr>
+<tr class="memdesc:a6d4ec425569538783b6ec47814bcfd52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value checking functor.  <a href="structplayrho_1_1detail_1_1NoOpChecker.html#a6d4ec425569538783b6ec47814bcfd52">More...</a><br /></td></tr>
 <tr class="separator:a6d4ec425569538783b6ec47814bcfd52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -122,16 +120,81 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 struct playrho::detail::NoOpChecker&lt; T &gt;</h3>
 
 <p>No-op value checker. </p>
-<p>Provides functors ensuring values are the value given. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+<p>Provides functors for a no-operation style checker. This simply always returns <code>nullptr</code> in the one-parameter value checking functor and returns the template specified type's default value from the no-parameter functor.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">T</td><td>Value type to check (or pass-through in this case). </td></tr>
+    <tr><td class="paramname">T</td><td>Value type to check. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This is meant to be used as a checker with types like <code><a class="el" href="classplayrho_1_1detail_1_1Checked.html" title="Checked value.">Checked</a></code>. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1detail_1_1Checked.html" title="Checked value.">Checked</a>. </dd></dl>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li>Library/include/playrho/detail/Checked.hpp</li>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa21bc4d18971eb9ac35d172231879ee2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa21bc4d18971eb9ac35d172231879ee2">&#9670;&nbsp;</a></span>operator()() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto <a class="el" href="structplayrho_1_1detail_1_1NoOpChecker.html">playrho::detail::NoOpChecker</a>&lt; T &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt; decltype(T())
+    </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default value supplying functor. </p>
+<dl class="section return"><dt>Returns</dt><dd>Always returns defaulted value of class template's given type parameter. </dd></dl>
+
+</div>
+</div>
+<a id="a6d4ec425569538783b6ec47814bcfd52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d4ec425569538783b6ec47814bcfd52">&#9670;&nbsp;</a></span>operator()() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto <a class="el" href="structplayrho_1_1detail_1_1NoOpChecker.html">playrho::detail::NoOpChecker</a>&lt; T &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt; const char *
+    </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Value checking functor. </p>
+<dl class="section return"><dt>Returns</dt><dd>Always <code>nullptr</code>, in a conceivably no-operation style. </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>Library/include/playrho/detail/<a class="el" href="Checked_8hpp.html">Checked.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -139,7 +202,7 @@ struct playrho::detail::NoOpChecker&lt; T &gt;</h3>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structplayrho_1_1detail_1_1NoOpChecker.html">NoOpChecker</a></li>
-    <li class="footer">Generated on Sat Sep 16 2023 15:28:56 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 22 2023 00:56:19 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

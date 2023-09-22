@@ -136,7 +136,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ac55d448e1bde256f0dbf7824fb1deaa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor.  <a href="classplayrho_1_1d2_1_1Body.html#ac55d448e1bde256f0dbf7824fb1deaa3">More...</a><br /></td></tr>
 <tr class="separator:ac55d448e1bde256f0dbf7824fb1deaa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a928fcdf5f5573d43dc8cc354ac143aa8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a928fcdf5f5573d43dc8cc354ac143aa8">Advance0</a> (<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> value) noexcept</td></tr>
-<tr class="memdesc:a928fcdf5f5573d43dc8cc354ac143aa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the body sweep's <code>Advance0</code> method to advance to the given value.  <a href="classplayrho_1_1d2_1_1Body.html#a928fcdf5f5573d43dc8cc354ac143aa8">More...</a><br /></td></tr>
+<tr class="memdesc:a928fcdf5f5573d43dc8cc354ac143aa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the body sweep's <code>Advance0</code> function to advance to the given value.  <a href="classplayrho_1_1d2_1_1Body.html#a928fcdf5f5573d43dc8cc354ac143aa8">More...</a><br /></td></tr>
 <tr class="separator:a928fcdf5f5573d43dc8cc354ac143aa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3566096889324eb250b5def78428385b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a3566096889324eb250b5def78428385b">Attach</a> (<a class="el" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a> shapeId)</td></tr>
 <tr class="memdesc:a3566096889324eb250b5def78428385b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the given shape identifier to the identifiers associated with this body.  <a href="classplayrho_1_1d2_1_1Body.html#a3566096889324eb250b5def78428385b">More...</a><br /></td></tr>
@@ -644,7 +644,7 @@ The body's transformation is always the body's sweep position one's linear posit
 </div><div class="memdoc">
 
 <p>Initializing constructor. </p>
-<dl class="section note"><dt>Note</dt><dd>To create a body within a world, use <code><a class="el" href="classplayrho_1_1d2_1_1World.html#af85475017c80371a8341dd596d358d5e" title="Creates a rigid body that&#39;s a copy of the given one.">World::CreateBody</a></code>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>To create a body within a world, use <code><a class="el" href="classplayrho_1_1d2_1_1World.html#ac844fbdfb282bfd77c0dfea427eab4a1" title="Creates a rigid body within the world that&#39;s a copy of the given one.">World::CreateBody</a></code>. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">bd</td><td>Configuration data for the body to construct. </td></tr>
@@ -668,7 +668,7 @@ The body's transformation is always the body's sweep position one's linear posit
 <dd>
 <a class="el" href="classplayrho_1_1d2_1_1Body.html#a9fc8e671e71c96267e77714f1e95d9dd" title="Gets the linear damping of the body.">GetLinearDamping</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a1e7bc9caea686d310a1cc2aee805b5ae" title="Gets the angular damping of the body.">GetAngularDamping</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a479319dda79903324ef520ae21c7ca56" title="Gets the inverse total mass of the body.">GetInvMass</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7987170b5f0cd8224735b960f06fcf59" title="Gets the body transform for the body&#39;s origin.">GetTransformation</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a60d609b9f5c0a1d568b3fc42d169c428" title="Gets the velocity.">GetVelocity</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#acafaac4ef15f7416f464dff9b19780fa" title="Gets the given body&#39;s acceleration.">GetAcceleration</a>. </dd>
 <dd>
-<a class="el" href="classplayrho_1_1d2_1_1World.html#af85475017c80371a8341dd596d358d5e" title="Creates a rigid body that&#39;s a copy of the given one.">World::CreateBody</a>. </dd></dl>
+<a class="el" href="classplayrho_1_1d2_1_1World.html#ac844fbdfb282bfd77c0dfea427eab4a1" title="Creates a rigid body within the world that&#39;s a copy of the given one.">World::CreateBody</a>. </dd></dl>
 
 </div>
 </div>
@@ -697,7 +697,7 @@ The body's transformation is always the body's sweep position one's linear posit
 </table>
 </div><div class="memdoc">
 
-<p>Calls the body sweep's <code>Advance0</code> method to advance to the given value. </p>
+<p>Calls the body sweep's <code>Advance0</code> function to advance to the given value. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a100b4822505143079cde749303494809" title="Gets the body&#39;s sweep.">GetSweep</a>. </dd></dl>
 
 </div>
@@ -720,6 +720,7 @@ The body's transformation is always the body's sweep position one's linear posit
 
 <p>Adds the given shape identifier to the identifiers associated with this body. </p>
 <dl class="section note"><dt>Note</dt><dd>This also sets the mass-data-dirty flag. Call <code>SetInvMassData</code> to clear it. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd><code>shapeId</code> is not <code>InvalidShapeID</code> . </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#abd3e55def4a2dbffd86150cc9f83f98d" title="Gets the identifiers of the shapes attached to this body.">GetShapes</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a5ae2cb923c532dba000fb448a9ec801c" title="Sets the identifiers of the shapes attached to this body.">SetShapes</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7b3ced75366a6a8e6dab9a43fd55984a" title="Removes the given shape identifier from the identifiers associated with this body.">Detach</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#aeaaabca11d576c36c966da926fcde2db" title="Sets the inverse mass data and clears the mass-data-dirty flag.">SetInvMassData</a>. </dd></dl>
 
 </div>
@@ -974,7 +975,7 @@ The body's transformation is always the body's sweep position one's linear posit
 <p>Gets the identifiers of the shapes attached to this body. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a5ae2cb923c532dba000fb448a9ec801c" title="Sets the identifiers of the shapes attached to this body.">SetShapes</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a3566096889324eb250b5def78428385b" title="Adds the given shape identifier to the identifiers associated with this body.">Attach</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7b3ced75366a6a8e6dab9a43fd55984a" title="Removes the given shape identifier from the identifiers associated with this body.">Detach</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a7c2beb681bb2c95ac4578d9cd90a738e">playrho::d2::WorldImpl::CreateBody()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a9ed793c033f7e52f3e358d75248542d6">playrho::d2::WorldImpl::GetShapes()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#adfa088652f4e2b99fd0e7b982ab91607">playrho::d2::WorldImpl::SetBody()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a9ed793c033f7e52f3e358d75248542d6">playrho::d2::WorldImpl::GetShapes()</a>.</p>
 
 </div>
 </div>
@@ -1003,8 +1004,6 @@ The body's transformation is always the body's sweep position one's linear posit
 
 <p>Gets the body's sweep. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#aff436223b960a71937476dea03117d9c" title="Sets the sweep value of the given body.">SetSweep</a>. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#adfa088652f4e2b99fd0e7b982ab91607">playrho::d2::WorldImpl::SetBody()</a>.</p>
 
 </div>
 </div>
@@ -1069,8 +1068,6 @@ The body's transformation is always the body's sweep position one's linear posit
 
 <p>Gets the type of this body. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea" title="Sets the type of this body.">SetType</a>. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#adfa088652f4e2b99fd0e7b982ab91607">playrho::d2::WorldImpl::SetBody()</a>.</p>
 
 </div>
 </div>
@@ -1549,9 +1546,9 @@ A non-zero acceleration will also awaken the body. </dd></dl>
 </div><div class="memdoc">
 
 <p>Awakens this body. </p>
-<p>Sets this body to awake and resets its under-active time if it's a "speedable" body. This method has no effect otherwise. </p><dl class="section post"><dt>Postcondition</dt><dd>If this body is a "speedable" body, then this body's <code>IsAwake</code> method returns true. </dd>
+<p>Sets this body to awake and resets its under-active time if it's a "speedable" body. This function has no effect otherwise. </p><dl class="section post"><dt>Postcondition</dt><dd>If this body is a "speedable" body, then this body's <code>IsAwake</code> function returns true. </dd>
 <dd>
-If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</code> method returns zero. </dd></dl>
+If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</code> function returns zero. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a7abc6b8d4f50e3e3e703f53f66ecc035" title="Gets the awake/asleep state of this body.">IsAwake</a>. </dd></dl>
 
 </div>
@@ -1997,7 +1994,7 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 </div><div class="memdoc">
 
 <p>Sets the body's velocity (linear and angular velocity). </p>
-<dl class="section note"><dt>Note</dt><dd>This method does nothing if this body is not speedable. </dd>
+<dl class="section note"><dt>Note</dt><dd>This function does nothing if this body is not speedable. </dd>
 <dd>
 A non-zero velocity will awaken this body. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a794c4c1b8c24aedb959c5031a5ecde69" title="Awakens this body.">SetAwake</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a0a6f3e57e6a9b132f30f3d3f85ca5802" title="Sets the &quot;under-active&quot; time to the given value.">SetUnderActiveTime</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a60d609b9f5c0a1d568b3fc42d169c428" title="Gets the velocity.">GetVelocity</a>. </dd></dl>
@@ -2028,11 +2025,11 @@ A non-zero velocity will awaken this body. </dd></dl>
 </div><div class="memdoc">
 
 <p>Sets this body to asleep if sleeping is allowed. </p>
-<p>If this body is allowed to sleep, this: sets the sleep state of the body to asleep, resets this body's under active time, and resets this body's velocity (linear and angular). </p><dl class="section post"><dt>Postcondition</dt><dd>This body's <code>IsAwake</code> method returns false. </dd>
+<p>If this body is allowed to sleep, this: sets the sleep state of the body to asleep, resets this body's under active time, and resets this body's velocity (linear and angular). </p><dl class="section post"><dt>Postcondition</dt><dd>This body's <code>IsAwake</code> function returns false. </dd>
 <dd>
-This body's <code>GetUnderActiveTime</code> method returns zero. </dd>
+This body's <code>GetUnderActiveTime</code> function returns zero. </dd>
 <dd>
-This body's <code>GetVelocity</code> method returns zero linear and zero angular speed. </dd></dl>
+This body's <code>GetVelocity</code> function returns zero linear and zero angular speed. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a7abc6b8d4f50e3e3e703f53f66ecc035" title="Gets the awake/asleep state of this body.">IsAwake</a>. </dd></dl>
 
 </div>
@@ -2343,8 +2340,6 @@ Non-zero impulses wakes up the body. </dd></dl>
 
 <p>Gets the body's angle. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="A &quot;body&quot; physical entity.">Body</a>'s angle relative to its <a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;.">World</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a119">World.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -2561,8 +2556,6 @@ Non-zero impulses wakes up the body. </dd></dl>
 
 <p>Gets this body's linear acceleration. </p>
 <dl class="section see"><dt>See also</dt><dd>SetAcceleration(Body&amp; body, Acceleration value), <a class="el" href="classplayrho_1_1d2_1_1Body.html#a986b11edba421b23879fa363c557f1e5" title="Gets this body&#39;s angular acceleration.">GetAngularAcceleration(const Body&amp; body)</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a109">World.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -2628,8 +2621,6 @@ Non-zero impulses wakes up the body. </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the linear velocity of the center of mass. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a13ee26a73a0987dbb7c825539590719d" title="Gets the velocity.">GetVelocity(const Body&amp; body)</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a108">World.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -2881,8 +2872,6 @@ Non-zero impulses wakes up the body. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a93f21ae0c92245d912cb91a99e756946" title="Gets the body&#39;s angle.">GetAngle</a>. </dd></dl>
 </li>
 </ol>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a107">World.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -2914,8 +2903,6 @@ Non-zero impulses wakes up the body. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This may be the total calculated mass or it may be the set mass of the body. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Value of zero or more representing the body's mass. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a479319dda79903324ef520ae21c7ca56" title="Gets the inverse total mass of the body.">GetInvMass</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#aeaaabca11d576c36c966da926fcde2db" title="Sets the inverse mass data and clears the mass-data-dirty flag.">SetInvMassData</a> </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a128">World.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -3039,8 +3026,6 @@ Non-zero impulses wakes up the body. </dd></dl>
 
 <p>Gets the type of this body. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a2a12afea1828cb69ef94cbfa86018069" title="Sets the type of this body.">SetType(Body&amp;,BodyType)</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a113">World.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -3099,8 +3084,6 @@ Non-zero impulses wakes up the body. </dd></dl>
 
 <p>Gets the velocity. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#adddd763be5890fad18f5a3dd9d2b4d38" title="Sets the body&#39;s velocity (linear and angular velocity).">SetVelocity(Body&amp; body, const Velocity&amp; value)</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a138">World.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -3267,8 +3250,6 @@ Non-zero impulses wakes up the body. </dd></dl>
 
 <p>Is "accelerable". </p>
 <p>Indicates whether this body is accelerable, i.e. whether it is effected by forces. Only Dynamic bodies are accelerable. </p><dl class="section return"><dt>Returns</dt><dd>true if the body is accelerable, false otherwise. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a125">World.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -3445,8 +3426,6 @@ Non-zero impulses wakes up the body. </dd></dl>
 
 <p>Is "speedable". </p>
 <p>Is this body able to have a non-zero speed associated with it. Kinematic and Dynamic bodies are speedable. Static bodies are not. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a124">World.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -3744,12 +3723,10 @@ A non-zero acceleration will also awaken the body. </dd></dl>
 </div><div class="memdoc">
 
 <p>Awakens this body. </p>
-<p>Sets this body to awake and resets its under-active time if it's a "speedable" body. This method has no effect otherwise. </p><dl class="section post"><dt>Postcondition</dt><dd>If this body is a "speedable" body, then this body's <code>IsAwake</code> method returns true. </dd>
+<p>Sets this body to awake and resets its under-active time if it's a "speedable" body. This function has no effect otherwise. </p><dl class="section post"><dt>Postcondition</dt><dd>If this body is a "speedable" body, then this body's <code>IsAwake</code> function returns true. </dd>
 <dd>
-If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</code> method returns zero. </dd></dl>
+If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</code> function returns zero. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a139df81757401545db36e6fc6f030d75" title="Gets the awake/asleep state of this body.">IsAwake(const Body&amp;)</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#afce7db62d828a84a94e8c6222d9111a6" title="Sets this body to asleep if sleeping is allowed.">UnsetAwake(Body&amp;)</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a151">World.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -4261,12 +4238,10 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 </div><div class="memdoc">
 
 <p>Sets the body's velocity (linear and angular velocity). </p>
-<dl class="section note"><dt>Note</dt><dd>This method does nothing if this body is not speedable. </dd>
+<dl class="section note"><dt>Note</dt><dd>This function does nothing if this body is not speedable. </dd>
 <dd>
 A non-zero velocity will awaken this body. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a13ee26a73a0987dbb7c825539590719d" title="Gets the velocity.">GetVelocity(const Body&amp; body)</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a794c4c1b8c24aedb959c5031a5ecde69" title="Awakens this body.">SetAwake</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a0a6f3e57e6a9b132f30f3d3f85ca5802" title="Sets the &quot;under-active&quot; time to the given value.">SetUnderActiveTime</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a147">World.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -4324,11 +4299,11 @@ A non-zero velocity will awaken this body. </dd></dl>
 </div><div class="memdoc">
 
 <p>Sets this body to asleep if sleeping is allowed. </p>
-<p>If this body is allowed to sleep, this: sets the sleep state of the body to asleep, resets this body's under active time, and resets this body's velocity (linear and angular). </p><dl class="section post"><dt>Postcondition</dt><dd>This body's <code>IsAwake</code> method returns false. </dd>
+<p>If this body is allowed to sleep, this: sets the sleep state of the body to asleep, resets this body's under active time, and resets this body's velocity (linear and angular). </p><dl class="section post"><dt>Postcondition</dt><dd>This body's <code>IsAwake</code> function returns false. </dd>
 <dd>
-This body's <code>GetUnderActiveTime</code> method returns zero. </dd>
+This body's <code>GetUnderActiveTime</code> function returns zero. </dd>
 <dd>
-This body's <code>GetVelocity</code> method returns zero linear and zero angular speed. </dd></dl>
+This body's <code>GetVelocity</code> function returns zero linear and zero angular speed. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a139df81757401545db36e6fc6f030d75" title="Gets the awake/asleep state of this body.">IsAwake(const Body&amp;)</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a60201ffd45e0d810ff5d4fb90fd0bc4b" title="Awakens this body.">SetAwake(Body&amp;)</a>. </dd></dl>
 
 </div>
@@ -4392,8 +4367,8 @@ This body's <code>GetVelocity</code> method returns zero linear and zero angular
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>Library/include/playrho/d2/Body.hpp</li>
-<li>Library/include/playrho/d2/BodyConf.hpp</li>
+<li>Library/include/playrho/d2/<a class="el" href="Body_8hpp.html">Body.hpp</a></li>
+<li>Library/include/playrho/d2/<a class="el" href="BodyConf_8hpp.html">BodyConf.hpp</a></li>
 <li>Library/source/playrho/d2/Body.cpp</li>
 </ul>
 </div><!-- contents -->
@@ -4402,7 +4377,7 @@ This body's <code>GetVelocity</code> method returns zero linear and zero angular
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a></li>
-    <li class="footer">Generated on Sat Sep 16 2023 15:28:56 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 22 2023 00:56:19 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -410,8 +410,6 @@ Nodes are pooled and relocatable, so we use node indices rather than pointers.</
 <dd>
 <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a6a84cb18d4e07355e33e01fc062974a3" title="Gets the free index.">GetFreeIndex()</a></code> will return 0 if this tree had any node capacity, else the value of <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">GetInvalidSize()</a></code>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a45766f0643fca6561f909b896f02822e">playrho::d2::WorldImpl::Clear()</a>.</p>
-
 </div>
 </div>
 <a id="a63c3c99d25c6e735174cb9ddeec58c4a"></a>
@@ -443,7 +441,7 @@ Nodes are pooled and relocatable, so we use node indices rather than pointers.</
 <p>Creates a new leaf node. </p>
 <p>Creates a leaf node for a tight fitting AABB and the given data. </p><dl class="section warning"><dt>Warning</dt><dd>Behavior is not specified unless the number of nodes already allocated (as reported by <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a211b3f8b163604b56db4fa3887fc2f43" title="Gets the current count of allocated nodes.">GetNodeCount()</a></code>) is less than <code>std::numeric_limits&lt;Size&gt;::max()</code>. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The indices of leaf nodes that have been destroyed get reused for new nodes. </dd></dl>
-<dl class="section post"><dt>Postcondition</dt><dd>If the root index had been the <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">GetInvalidSize()</a></code>, then it will be set to the index returned from this method. </dd>
+<dl class="section post"><dt>Postcondition</dt><dd>If the root index had been the <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">GetInvalidSize()</a></code>, then it will be set to the index returned from this function. </dd>
 <dd>
 The leaf count per <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a835291d0eb5b8bf966c76e2ab4f4e3fe" title="Gets the current leaf node count.">GetLeafCount()</a></code> is incremented by one. </dd>
 <dd>
@@ -493,8 +491,6 @@ The node count (as reported by <code><a class="el" href="classplayrho_1_1d2_1_1D
 <dl class="section pre"><dt>Precondition</dt><dd><code>index</code> is less than <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a6d5405cac98b2f35be80869c23abfe5a" title="Gets the current node capacity of this tree.">GetNodeCapacity()</a></code> and <code>IsLeaf(GetNode(index).<a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a4c6bccb9bc6df8db71421e3ef32d001c" title="Gets the height value for the identified node.">GetHeight()</a>)</code> is true. </dd></dl>
 <dl class="section post"><dt>Postcondition</dt><dd>The leaf count per <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a835291d0eb5b8bf966c76e2ab4f4e3fe" title="Gets the current leaf node count.">GetLeafCount()</a></code> is decremented by one. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a835291d0eb5b8bf966c76e2ab4f4e3fe" title="Gets the current leaf node count.">GetLeafCount()</a>. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a497b22f2480ab65cf01ad56a76143721">playrho::d2::WorldImpl::Destroy()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#adfa088652f4e2b99fd0e7b982ab91607">playrho::d2::WorldImpl::SetBody()</a>.</p>
 
 </div>
 </div>
@@ -701,7 +697,7 @@ The node count (as reported by <code><a class="el" href="classplayrho_1_1d2_1_1D
 <dl class="section pre"><dt>Precondition</dt><dd><code>index</code> is less than <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a6d5405cac98b2f35be80869c23abfe5a" title="Gets the current node capacity of this tree.">GetNodeCapacity()</a></code> and <code>IsLeaf(GetNode(index).<a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a4c6bccb9bc6df8db71421e3ef32d001c" title="Gets the height value for the identified node.">GetHeight()</a>)</code> is true. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Leaf data for the specified node. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#ac6aa2ced68dfade6cf384f097fe8f55b">playrho::d2::Query()</a>, <a class="el" href="group__RayCastGroup.html#gadf0ec62e1852e3bc9b017eae4a5616b4">playrho::d2::RayCast()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#adfa088652f4e2b99fd0e7b982ab91607">playrho::d2::WorldImpl::SetBody()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a9414e9f9ffa22ab3d59ddf96930704f5">playrho::d2::WorldImpl::SetShape()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#ac6aa2ced68dfade6cf384f097fe8f55b">playrho::d2::Query()</a>, and <a class="el" href="group__RayCastGroup.html#gadf0ec62e1852e3bc9b017eae4a5616b4">playrho::d2::RayCast()</a>.</p>
 
 </div>
 </div>
@@ -793,6 +789,8 @@ The node count (as reported by <code><a class="el" href="classplayrho_1_1d2_1_1D
 
 <p>Gets the current count of allocated nodes. </p>
 <dl class="section return"><dt>Returns</dt><dd>Count of existing proxies (count of nodes currently allocated). </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a168">World.cpp</a>.</dd>
+</dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a63c3c99d25c6e735174cb9ddeec58c4a">CreateLeaf()</a>, and <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a47cbaffc41092844c1b4812057e37f13">RebuildBottomUp()</a>.</p>
 
@@ -895,7 +893,7 @@ For used nodes (leaf or branch nodes), this is the index to the "parent" node. <
 </div><div class="memdoc">
 
 <p>Unifying assignment operator. </p>
-<dl class="section note"><dt>Note</dt><dd>This intentionally takes the argument by-value. Along with the move constructor, this assignment method effectively doubles up as both copy assignment and move assignment support. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This intentionally takes the argument by-value. Along with the move constructor, this assignment operator effectively doubles up as both copy assignment and move assignment support. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a href="https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Copy-and-swap">https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Copy-and-swap</a> </dd>
 <dd>
 <a href="https://stackoverflow.com/a/3279550/7410358">https://stackoverflow.com/a/3279550/7410358</a> </dd></dl>
@@ -996,8 +994,6 @@ The shift formula is: <code>position -= newOrigin</code>. </dd></dl>
   </table>
   </dd>
 </dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#afe324e72391320bf7ad77d6fb3408a5d">playrho::d2::WorldImpl::ShiftOrigin()</a>.</p>
 
 </div>
 </div>
@@ -1139,7 +1135,7 @@ The shift formula is: <code>position -= newOrigin</code>. </dd></dl>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>Library/include/playrho/d2/DynamicTree.hpp</li>
+<li>Library/include/playrho/d2/<a class="el" href="DynamicTree_8hpp.html">DynamicTree.hpp</a></li>
 <li>Library/source/playrho/d2/DynamicTree.cpp</li>
 </ul>
 </div><!-- contents -->
@@ -1148,7 +1144,7 @@ The shift formula is: <code>position -= newOrigin</code>. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html">DynamicTree</a></li>
-    <li class="footer">Generated on Sat Sep 16 2023 15:28:56 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 22 2023 00:56:19 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

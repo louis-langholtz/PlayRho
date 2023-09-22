@@ -542,8 +542,6 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <dl class="section return"><dt>Returns</dt><dd>Time of impact fraction in the range of 0 to 1 if set (where 1 means no actual impact in current time slot), otherwise empty. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1Contact.html#ab6c050ea9a993243c934ce87f1deb78e" title="Sets the time of impact (TOI).">SetToi(const std::optional&lt;UnitInterval&lt;Real&gt;&gt;&amp;)</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a901cf282161071447a3a7777f3ecd1c2">playrho::d2::WorldImpl::SetContact()</a>.</p>
-
 </div>
 </div>
 <a id="a6a9908d4288e5821aef95f11858d020a"></a>
@@ -571,8 +569,6 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 <p>Gets the time of impact count. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1Contact.html#a870c13b36e34ae2448cf5fd5b3e6318d" title="Sets the TOI count to the given value.">SetToiCount</a>. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a901cf282161071447a3a7777f3ecd1c2">playrho::d2::WorldImpl::SetContact()</a>.</p>
 
 </div>
 </div>
@@ -662,8 +658,6 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <p>Whether or not this contact is "active". </p>
 <dl class="section note"><dt>Note</dt><dd>This should be true whenever body A or body B are "awake". </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a901cf282161071447a3a7777f3ecd1c2">playrho::d2::WorldImpl::SetContact()</a>.</p>
-
 </div>
 </div>
 <a id="a124ab0621dc4198266bc46d4685f17e5"></a>
@@ -692,8 +686,6 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <p>Whether or not this contact is "impenetrable". </p>
 <dl class="section note"><dt>Note</dt><dd>This should be true whenever body A or body B are impenetrable. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a901cf282161071447a3a7777f3ecd1c2">playrho::d2::WorldImpl::SetContact()</a>.</p>
-
 </div>
 </div>
 <a id="adc4b980422c2f14f9ebf86c9aaa76e9b"></a>
@@ -721,8 +713,6 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 <p>Whether or not this contact is a "sensor". </p>
 <dl class="section note"><dt>Note</dt><dd>This should be true whenever shape A or shape B is a sensor. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a901cf282161071447a3a7777f3ecd1c2">playrho::d2::WorldImpl::SetContact()</a>.</p>
 
 </div>
 </div>
@@ -1487,8 +1477,6 @@ The value persists until you set or reset. </dd></dl>
 
 <p>Gets the time of impact count. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1Contact.html#a870c13b36e34ae2448cf5fd5b3e6318d" title="Sets the TOI count to the given value.">SetToiCount</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a154">World.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -1571,8 +1559,6 @@ The value persists until you set or reset. </dd></dl>
 
 <p>Gets whether a TOI is set. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1Contact.html#aeac1b25d69d65e634343a55076e686d3" title="Gets the time of impact (TOI) as a fraction.">GetToi</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a155">World.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -1602,8 +1588,6 @@ The value persists until you set or reset. </dd></dl>
 
 <p>Whether the given contact is "impenetrable". </p>
 <dl class="section note"><dt>Note</dt><dd>This should be true whenever body A or body B are impenetrable. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a112">World.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -1819,8 +1803,6 @@ The value persists until you set or reset. </dd></dl>
 <dl class="section attention"><dt>Attention</dt><dd>Call this if shape A or shape B is a sensor. </dd></dl>
 <dl class="section post"><dt>Postcondition</dt><dd><code>IsSensor(contact)</code> returns true. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1Contact.html#ab8801b7203d1ab9a06ca349a9d304f3c" title="Gets whether the given contact is for sensors or not.">IsSensor(const Contact &amp;)</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a145">World.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -2106,8 +2088,8 @@ The value persists until you set or reset. </dd></dl>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>Library/include/playrho/Contact.hpp</li>
-<li>Library/include/playrho/d2/WorldManifold.hpp</li>
+<li>Library/include/playrho/<a class="el" href="Contact_8hpp.html">Contact.hpp</a></li>
+<li>Library/include/playrho/d2/<a class="el" href="WorldManifold_8hpp.html">WorldManifold.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -2115,7 +2097,7 @@ The value persists until you set or reset. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="classplayrho_1_1Contact.html">Contact</a></li>
-    <li class="footer">Generated on Sat Sep 16 2023 15:28:55 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 22 2023 00:56:18 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

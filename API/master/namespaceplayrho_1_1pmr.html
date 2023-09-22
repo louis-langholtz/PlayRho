@@ -146,7 +146,8 @@ Functions</h2></td></tr>
 <tr class="separator:aaf18fd28f42968db7755634824b74460"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80701bd5dbc1e5b600b15182c9b7a945"><td class="memTemplParams" colspan="2"><a id="a80701bd5dbc1e5b600b15182c9b7a945"></a>
 template&lt;class T1 , class T2 &gt; </td></tr>
-<tr class="memitem:a80701bd5dbc1e5b600b15182c9b7a945"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator!=</b> (const <a class="el" href="classplayrho_1_1pmr_1_1polymorphic__allocator.html">pmr::polymorphic_allocator</a>&lt; T1 &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1pmr_1_1polymorphic__allocator.html">pmr::polymorphic_allocator</a>&lt; T2 &gt; &amp;rhs) noexcept</td></tr>
+<tr class="memitem:a80701bd5dbc1e5b600b15182c9b7a945"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1pmr.html#a80701bd5dbc1e5b600b15182c9b7a945">operator!=</a> (const <a class="el" href="classplayrho_1_1pmr_1_1polymorphic__allocator.html">pmr::polymorphic_allocator</a>&lt; T1 &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1pmr_1_1polymorphic__allocator.html">pmr::polymorphic_allocator</a>&lt; T2 &gt; &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a80701bd5dbc1e5b600b15182c9b7a945"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequalality operator support. <br /></td></tr>
 <tr class="separator:a80701bd5dbc1e5b600b15182c9b7a945"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abef17f606c315585f06c7692dbf324db"><td class="memItemLeft" align="right" valign="top"><a id="abef17f606c315585f06c7692dbf324db"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1pmr.html#abef17f606c315585f06c7692dbf324db">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="structplayrho_1_1pmr_1_1PoolMemoryResource_1_1Stats.html">PoolMemoryResource::Stats</a> &amp;stats)</td></tr>
@@ -157,7 +158,8 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <tr class="separator:a45c913acbe242f3e4e97f6d28f10ae8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae567841c24e0caa1084bc0567b08fcac"><td class="memTemplParams" colspan="2"><a id="ae567841c24e0caa1084bc0567b08fcac"></a>
 template&lt;class T1 , class T2 &gt; </td></tr>
-<tr class="memitem:ae567841c24e0caa1084bc0567b08fcac"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classplayrho_1_1pmr_1_1polymorphic__allocator.html">pmr::polymorphic_allocator</a>&lt; T1 &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1pmr_1_1polymorphic__allocator.html">pmr::polymorphic_allocator</a>&lt; T2 &gt; &amp;rhs) noexcept</td></tr>
+<tr class="memitem:ae567841c24e0caa1084bc0567b08fcac"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1pmr.html#ae567841c24e0caa1084bc0567b08fcac">operator==</a> (const <a class="el" href="classplayrho_1_1pmr_1_1polymorphic__allocator.html">pmr::polymorphic_allocator</a>&lt; T1 &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1pmr_1_1polymorphic__allocator.html">pmr::polymorphic_allocator</a>&lt; T2 &gt; &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:ae567841c24e0caa1084bc0567b08fcac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equalality operator support. <br /></td></tr>
 <tr class="separator:ae567841c24e0caa1084bc0567b08fcac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa593fe7c274337dd47a6e8ca367875ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1pmr_1_1memory__resource.html">memory_resource</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1pmr.html#aa593fe7c274337dd47a6e8ca367875ad">set_default_resource</a> (<a class="el" href="classplayrho_1_1pmr_1_1memory__resource.html">memory_resource</a> *r) noexcept</td></tr>
 <tr class="memdesc:aa593fe7c274337dd47a6e8ca367875ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the default memory resource.  <a href="namespaceplayrho_1_1pmr.html#aa593fe7c274337dd47a6e8ca367875ad">More...</a><br /></td></tr>
@@ -191,6 +193,8 @@ template&lt;class T1 , class T2 &gt; </td></tr>
 
 <p>Gets the default memory resource. </p>
 <dl class="section see"><dt>See also</dt><dd><a href="https://en.cppreference.com/w/cpp/memory/get_default_resource">https://en.cppreference.com/w/cpp/memory/get_default_resource</a>. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1pmr_1_1polymorphic__allocator.html#a57cd89ff990eeb07d539780a2f20f20a">playrho::pmr::polymorphic_allocator&lt; T &gt;::polymorphic_allocator()</a>.</p>
 
 </div>
 </div>
@@ -366,7 +370,7 @@ template&lt;class T1 , class T2 &gt; </td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1pmr.html">pmr</a></li>
-    <li class="footer">Generated on Sat Sep 16 2023 15:28:56 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 22 2023 00:56:19 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

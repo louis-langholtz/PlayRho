@@ -3,6 +3,7 @@ var modules =
     [ "Ray Casting Functions", "group__RayCastGroup.html", "group__RayCastGroup" ],
     [ "Shape Classes", "group__PartsGroup.html", "group__PartsGroup" ],
     [ "Physical Entities", "group__PhysicalEntities.html", "group__PhysicalEntities" ],
+    [ "Checker Types", "group__Checkers.html", "group__Checkers" ],
     [ "Checked Value Types", "group__CheckedTypes.html", "group__CheckedTypes" ],
     [ "Point Containment Test Functions", "group__TestPointGroup.html", "group__TestPointGroup" ],
     [ "Library Defined Exceptions", "group__ExceptionsGroup.html", "group__ExceptionsGroup" ],

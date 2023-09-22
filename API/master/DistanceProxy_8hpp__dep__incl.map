@@ -1,0 +1,11 @@
+<map id="Library/include/playrho/d2/DistanceProxy.hpp" name="Library/include/playrho/d2/DistanceProxy.hpp">
+<area shape="rect" id="node1" title="Definition of the DistanceProxy class and closely related code." alt="" coords="319,5,490,47"/>
+<area shape="rect" id="node2" href="$ChainShapeConf_8hpp.html" title="Definition of the ChainShapeConf class and closely related code." alt="" coords="5,184,185,225"/>
+<area shape="rect" id="node4" href="$DiskShapeConf_8hpp.html" title="Definition of the DiskShapeConf class and closely related code." alt="" coords="209,184,381,225"/>
+<area shape="rect" id="node5" href="$EdgeShapeConf_8hpp.html" title="Definition of the EdgeShapeConf class and closely related code." alt="" coords="405,184,580,225"/>
+<area shape="rect" id="node6" href="$MultiShapeConf_8hpp.html" title="Definition of the MultiShapeConf class and closely related code." alt="" coords="379,95,555,136"/>
+<area shape="rect" id="node7" href="$PolygonShapeConf_8hpp.html" title="Definition of the PolygonShapeConf class and closely related code." alt="" coords="579,95,774,136"/>
+<area shape="rect" id="node8" href="$Shape_8hpp.html" title="Definition of the Shape class and closely related code." alt="" coords="798,95,969,136"/>
+<area shape="rect" id="node3" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="470,273,641,315"/>
+<area shape="rect" id="node9" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="757,184,927,225"/>
+</map>

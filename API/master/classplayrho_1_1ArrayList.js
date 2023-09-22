@@ -8,5 +8,7 @@ var classplayrho_1_1ArrayList =
     [ "reference", "classplayrho_1_1ArrayList.html#af8df8532d007eec85164392f49348636", null ],
     [ "size_type", "classplayrho_1_1ArrayList.html#a4a0c35a082d030d92f764690e732b37f", null ],
     [ "value_type", "classplayrho_1_1ArrayList.html#a0276dcd7122ecfae3448abb1b559e694", null ],
-    [ "ArrayList", "classplayrho_1_1ArrayList.html#a7cbc50e8f7093460b749107e4ba5e1ca", null ]
+    [ "ArrayList", "classplayrho_1_1ArrayList.html#a7cbc50e8f7093460b749107e4ba5e1ca", null ],
+    [ "operator+", "classplayrho_1_1ArrayList.html#a04db47926693f7d605331b5035d4c9c5", null ],
+    [ "operator+=", "classplayrho_1_1ArrayList.html#a750eac4f3ab1ac6026e37ae41b87058d", null ]
 ];

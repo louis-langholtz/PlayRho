@@ -328,11 +328,11 @@ template&lt;typename T , std::size_t N&gt; </td></tr>
 <tr class="memitem:a6fba1d15bc6902dca10efe3a579d1c0a"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if_t&lt; std::is_same_v&lt; T, decltype(T{} - T{})&gt;, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a6fba1d15bc6902dca10efe3a579d1c0a">operator-=</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; rhs) noexcept</td></tr>
 <tr class="memdesc:a6fba1d15bc6902dca10efe3a579d1c0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrements the left hand side value by the right hand side value. <br /></td></tr>
 <tr class="separator:a6fba1d15bc6902dca10efe3a579d1c0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adedab150f5a3fe9e4ef4aa5bae2eb6b4"><td class="memTemplParams" colspan="2"><a id="adedab150f5a3fe9e4ef4aa5bae2eb6b4"></a>
+<tr class="memitem:a6da12fe999b8b56930c6cbd9dd4cd920"><td class="memTemplParams" colspan="2"><a id="a6da12fe999b8b56930c6cbd9dd4cd920"></a>
 template&lt;std::size_t N, typename T1 , typename T2 , typename OT  = decltype(T1{} / T2{})&gt; </td></tr>
-<tr class="memitem:adedab150f5a3fe9e4ef4aa5bae2eb6b4"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if_t&lt; <a class="el" href="namespaceplayrho.html#abdcd4932a27b9347d3afbae550fa57d2">IsDivisableV</a>&lt; T1, T2 &gt; &amp;&amp;!<a class="el" href="group__VectorTraitsGroup.html#ga168449a74e78ad00c9d22f1017de05f7">IsVectorV</a>&lt; T2 &gt;, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, N &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#adedab150f5a3fe9e4ef4aa5bae2eb6b4">operator/</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; a, const T2 s) noexcept</td></tr>
-<tr class="memdesc:adedab150f5a3fe9e4ef4aa5bae2eb6b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Division operator. <br /></td></tr>
-<tr class="separator:adedab150f5a3fe9e4ef4aa5bae2eb6b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6da12fe999b8b56930c6cbd9dd4cd920"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if_t&lt; <a class="el" href="namespaceplayrho.html#abdcd4932a27b9347d3afbae550fa57d2">IsDivisableV</a>&lt; T1, T2 &gt; &amp;&amp;!<a class="el" href="group__VectorTraitsGroup.html#ga168449a74e78ad00c9d22f1017de05f7">IsVectorV</a>&lt; T2 &gt;, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, N &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a6da12fe999b8b56930c6cbd9dd4cd920">operator/</a> (const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp;a, const T2 &amp;s) noexcept</td></tr>
+<tr class="memdesc:a6da12fe999b8b56930c6cbd9dd4cd920"><td class="mdescLeft">&#160;</td><td class="mdescRight">Division operator. <br /></td></tr>
+<tr class="separator:a6da12fe999b8b56930c6cbd9dd4cd920"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8af63c98286091483bcd8bc55a8072d1"><td class="memTemplParams" colspan="2"><a id="a8af63c98286091483bcd8bc55a8072d1"></a>
 template&lt;typename T1 , typename T2 , std::size_t N&gt; </td></tr>
 <tr class="memitem:a8af63c98286091483bcd8bc55a8072d1"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if_t&lt; std::is_same_v&lt; T1, decltype(T1{}/T2{})&gt;, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a8af63c98286091483bcd8bc55a8072d1">operator/=</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp;lhs, const T2 rhs) noexcept</td></tr>
@@ -780,7 +780,7 @@ Data is not initialized on default construction. This is intentional to avoid an
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>Library/include/playrho/Vector.hpp</li>
+<li>Library/include/playrho/<a class="el" href="Vector_8hpp.html">Vector.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -788,7 +788,7 @@ Data is not initialized on default construction. This is intentional to avoid an
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="structplayrho_1_1Vector.html">Vector</a></li>
-    <li class="footer">Generated on Sat Sep 16 2023 15:28:55 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 22 2023 00:56:18 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

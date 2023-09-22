@@ -390,7 +390,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <div class="textblock"><p>Step configuration. </p>
 <p>Provides the primary means for configuring the per-step world physics simulation. All the values have defaults. These defaults are intended to most likely be the values desired. </p><dl class="section note"><dt>Note</dt><dd>Be sure to confirm that the delta time (the time-per-step i.e. <code>deltaTime</code>) is correct for your use. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd>World::Step. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#_a133">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#_a154">World.cpp</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a8e5a2fa02589f5bdd860ce232242cdc5"></a>
@@ -455,8 +455,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 
 <p>AABB extension. </p>
 <p>This is the extension that will be applied to Axis Aligned Bounding Box objects used in broad phase collision detection. This fattens AABBs in the dynamic tree. This allows proxies to move by a small amount without triggering a tree adjustment. </p><dl class="section note"><dt>Note</dt><dd>Should be greater than 0. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a221c003be264927ac01d690712b4551b">playrho::d2::WorldImpl::Step()</a>.</p>
 
 </div>
 </div>
@@ -584,7 +582,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <p>Delta time. </p>
 <p>This is the time step in seconds. </p>
 
-<p class="reference">Referenced by <a class="el" href="structplayrho_1_1d2_1_1DistanceJointConf.html#a04f5087d761eecd8554b6156d1cc3021">playrho::d2::DistanceJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a1bc16ad22662f69d6218f879a5c17245">playrho::d2::TargetJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#ad9a429415a87a06a9134b001d73bf508">playrho::d2::WeldJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a9e194ef30b3a342a38f9afc09c629f6d">playrho::d2::WheelJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1FrictionJointConf.html#a6072ec80a0f6f19ddf2bbc57abe6110a">playrho::d2::FrictionJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1MotorJointConf.html#a9fbbab76d642be0211f8c76334ccbe0f">playrho::d2::MotorJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1PrismaticJointConf.html#a6ee4f0a073351cace3dc1ba478411140">playrho::d2::PrismaticJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RevoluteJointConf.html#aa27f190089266d9d8de1d9f3ae963999">playrho::d2::RevoluteJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RopeJointConf.html#a67249c115b7b84fc2a58abc83664c934">playrho::d2::RopeJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a87f0cb382d657fcac4402b3896269fe3">playrho::d2::TargetJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a6474e7647ffafa7698e6b2fb0282f3cc">playrho::d2::WheelJointConf::SolveVelocity()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a221c003be264927ac01d690712b4551b">playrho::d2::WorldImpl::Step()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a98f8ea974c7cc90e2a093cedaa757d6d">playrho::d2::World::Step()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="structplayrho_1_1d2_1_1DistanceJointConf.html#a04f5087d761eecd8554b6156d1cc3021">playrho::d2::DistanceJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a1bc16ad22662f69d6218f879a5c17245">playrho::d2::TargetJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#ad9a429415a87a06a9134b001d73bf508">playrho::d2::WeldJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a9e194ef30b3a342a38f9afc09c629f6d">playrho::d2::WheelJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1FrictionJointConf.html#a6072ec80a0f6f19ddf2bbc57abe6110a">playrho::d2::FrictionJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1MotorJointConf.html#a9fbbab76d642be0211f8c76334ccbe0f">playrho::d2::MotorJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1PrismaticJointConf.html#a6ee4f0a073351cace3dc1ba478411140">playrho::d2::PrismaticJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RevoluteJointConf.html#aa27f190089266d9d8de1d9f3ae963999">playrho::d2::RevoluteJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RopeJointConf.html#a67249c115b7b84fc2a58abc83664c934">playrho::d2::RopeJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a87f0cb382d657fcac4402b3896269fe3">playrho::d2::TargetJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a6474e7647ffafa7698e6b2fb0282f3cc">playrho::d2::WheelJointConf::SolveVelocity()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a98f8ea974c7cc90e2a093cedaa757d6d">playrho::d2::World::Step()</a>.</p>
 
 </div>
 </div>
@@ -602,8 +600,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 
 <p>Do time of impact (TOI) calculations. </p>
 <p>Whether or not to perform any time of impact (TOI) calculations used for doing continuous collision detection. Without this, steps can potentially be computed faster but with increased chance of bodies passing unobstructed through other bodies (a process called "tunneling") even when they're not supposed to be able to go through them. </p><dl class="section note"><dt>Note</dt><dd>Used in the TOI phase of step processing. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a221c003be264927ac01d690712b4551b">playrho::d2::WorldImpl::Step()</a>.</p>
 
 </div>
 </div>
@@ -676,8 +672,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 
 <p>Linear slop. </p>
 <p>Linear slop for position resolution. </p><dl class="section note"><dt>Note</dt><dd>Used in both the regular and TOI phases of step processing. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a221c003be264927ac01d690712b4551b">playrho::d2::WorldImpl::Step()</a>.</p>
 
 </div>
 </div>
@@ -1081,8 +1075,8 @@ Used in the TOI phase of step processing. </dd></dl>
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following files:<ul>
-<li>Library/include/playrho/StepConf.hpp</li>
-<li>Library/include/playrho/MovementConf.hpp</li>
+<li>Library/include/playrho/<a class="el" href="StepConf_8hpp.html">StepConf.hpp</a></li>
+<li>Library/include/playrho/<a class="el" href="MovementConf_8hpp.html">MovementConf.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -1090,7 +1084,7 @@ Used in the TOI phase of step processing. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="structplayrho_1_1StepConf.html">StepConf</a></li>
-    <li class="footer">Generated on Sat Sep 16 2023 15:28:55 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Sep 22 2023 00:56:18 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
