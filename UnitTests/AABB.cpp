@@ -463,11 +463,12 @@ TEST(AABB, ComputeIntersectingAABBForSameFixture)
     const auto shape = DiskShapeConf{};
     const auto shapeAabb = ComputeAABB(Shape{shape}, Transformation{});
     World world;
-    const auto body = CreateBody(world);
-    const auto shapeId = CreateShape(world, Shape{shape});
-    Attach(world, body, shapeId);
-    const auto attachedAabb = ComputeAABB(world, body, shapeId);
-    const auto intersectingAabb = ComputeIntersectingAABB(world, body, shapeId, 0, body, shapeId, 0);
+    const auto bodyId = CreateBody(world);
+    auto shapeId = InvalidShapeID;
+    ASSERT_NO_THROW(shapeId = CreateShape(world, Shape{shape}));
+    ASSERT_NO_THROW(Attach(world, bodyId, shapeId));
+    const auto attachedAabb = ComputeAABB(world, bodyId, shapeId);
+    const auto intersectingAabb = ComputeIntersectingAABB(world, bodyId, shapeId, 0, bodyId, shapeId, 0);
     ASSERT_NE(shapeAabb, AABB{});
     ASSERT_EQ(shapeAabb, attachedAabb);
     EXPECT_EQ(attachedAabb, intersectingAabb);
@@ -528,7 +529,7 @@ TEST(AABB, ComputeIntersectingAABBForContact)
 
     ASSERT_NE(shapeAabb, fixtureAabb0);
     ASSERT_NE(shapeAabb, fixtureAabb1);
-    ASSERT_EQ(intersectingAabb, (AABB{intersectInterval, shapeInterval}));
+    EXPECT_EQ(intersectingAabb, (AABB{intersectInterval, shapeInterval}));
 
     const auto contact = Contact{{body0, shapeId0, 0}, {body1, shapeId1, 0}};
     const auto contactAabb = ComputeIntersectingAABB(world, contact);

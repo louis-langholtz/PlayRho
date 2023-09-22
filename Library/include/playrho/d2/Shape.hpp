@@ -303,10 +303,13 @@ ChildCounter GetChildCount(const Shape& shape) noexcept;
 /// @param shape Shape to get "child" shape of.
 /// @param index Index to a child element of the shape. Value must be less
 ///   than the number of child primitives of the shape.
-/// @note The shape must remain in scope while the proxy is in use.
+/// @warning The shape must remain in scope while the proxy is in use!
 /// @throws InvalidArgument if the given index is out of range.
 /// @see GetChildCount
 DistanceProxy GetChild(const Shape& shape, ChildCounter index);
+
+/// @brief Getting the "child" for a temporary is deleted to prevent dangling references.
+DistanceProxy GetChild(Shape&& shape, ChildCounter index) = delete;
 
 /// @brief Gets the mass properties of this shape using its dimensions and density.
 /// @return Mass data for this shape.

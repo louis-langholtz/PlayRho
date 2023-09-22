@@ -147,13 +147,17 @@ TEST(WorldShape, TranslateDiskShape)
     World world;
     const auto location0 = Length2{1_m, 2_m};
     const auto shapeId = CreateShape(world, DiskShapeConf{}.UseLocation(location0));
-    ASSERT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0);
+    auto shape = Shape{};
+    ASSERT_NO_THROW(shape = GetShape(world, shapeId));
+    ASSERT_EQ(GetChild(shape, 0u).GetVertex(0), location0);
     auto value = Length2{0_m, 0_m};
     EXPECT_NO_THROW(Translate(world, shapeId, value));
-    EXPECT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0);
+    ASSERT_NO_THROW(shape = GetShape(world, shapeId));
+    EXPECT_EQ(GetChild(shape, 0u).GetVertex(0), location0);
     value = Length2{2_m, 3_m};
     EXPECT_NO_THROW(Translate(world, shapeId, value));
-    EXPECT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0 + value);
+    ASSERT_NO_THROW(shape = GetShape(world, shapeId));
+    EXPECT_EQ(GetChild(shape, 0u).GetVertex(0), location0 + value);
 }
 
 TEST(WorldShape, TranslateStaticRectangle)
@@ -161,13 +165,17 @@ TEST(WorldShape, TranslateStaticRectangle)
     World world;
     const auto location0 = Length2{+0.5_m, -0.5_m};
     const auto shapeId = CreateShape(world, ::playrho::d2::part::Compositor<>{});
-    ASSERT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0);
+    auto shape = Shape{};
+    ASSERT_NO_THROW(shape = GetShape(world, shapeId));
+    ASSERT_EQ(GetChild(shape, 0u).GetVertex(0), location0);
     auto value = Length2{0_m, 0_m};
     EXPECT_NO_THROW(Translate(world, shapeId, value));
-    EXPECT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0);
+    ASSERT_NO_THROW(shape = GetShape(world, shapeId));
+    EXPECT_EQ(GetChild(shape, 0u).GetVertex(0), location0);
     value = Length2{2_m, 3_m};
     EXPECT_THROW(Translate(world, shapeId, value), InvalidArgument);
-    EXPECT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0);
+    ASSERT_NO_THROW(shape = GetShape(world, shapeId));
+    EXPECT_EQ(GetChild(shape, 0u).GetVertex(0), location0);
 }
 
 TEST(WorldShape, TranslateDynamicRectangle)
@@ -176,12 +184,16 @@ TEST(WorldShape, TranslateDynamicRectangle)
     World world;
     const auto location0 = Length2{+0.5_m, -0.5_m};
     const auto shapeId = CreateShape(world, Compositor<GeometryIs<DynamicRectangle<>>>{});
-    ASSERT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0);
+    auto shape = Shape{};
+    ASSERT_NO_THROW(shape = GetShape(world, shapeId));
+    ASSERT_EQ(GetChild(shape, 0u).GetVertex(0), location0);
     EXPECT_NO_THROW(Translate(world, shapeId, Length2{0_m, 0_m}));
-    EXPECT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0);
+    ASSERT_NO_THROW(shape = GetShape(world, shapeId));
+    EXPECT_EQ(GetChild(shape, 0u).GetVertex(0), location0);
     const auto offset = Length2{2_m, 3_m};
     EXPECT_NO_THROW(Translate(world, shapeId, offset));
-    EXPECT_EQ(GetChild(GetShape(world, shapeId), 0u).GetVertex(0), location0 + offset);
+    ASSERT_NO_THROW(shape = GetShape(world, shapeId));
+    EXPECT_EQ(GetChild(shape, 0u).GetVertex(0), location0 + offset);
 }
 
 TEST(WorldShape, TestPointFreeFunction)
