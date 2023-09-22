@@ -100,12 +100,13 @@ AABB ComputeAABB(const World& world, BodyID bodyID, ShapeID shapeID);
 AABB ComputeAABB(const World& world, BodyID id);
 
 /// @brief Computes the intersecting AABB for the given pair of body-shape-index values.
-/// @details The intersecting AABB for the given pair of body-shape-index values is the intersection
-///   of the AABB for child A of shape A of body A with the AABB for child B of
-///   shape B of body B.
+/// @details The intersecting AABB for the given pair of body-shape-index values is the
+///   intersection of the AABB for child A of shape A of body A with the AABB for child
+///   B of shape B of body B.
 /// @relatedalso World
-AABB ComputeIntersectingAABB(const World& world, BodyID bA, ShapeID sA, ChildCounter iA, BodyID bB,
-                             ShapeID sB, ChildCounter iB);
+AABB ComputeIntersectingAABB(const World& world, // force newline
+                             BodyID bA, ShapeID sA, ChildCounter iA, // force newline
+                             BodyID bB, ShapeID sB, ChildCounter iB);
 
 /// @brief Computes the intersecting AABB for the given contact.
 /// @relatedalso World

@@ -396,6 +396,7 @@ public:
 
     /// @brief Adds the given shape identifier to the identifiers associated with this body.
     /// @note This also sets the mass-data-dirty flag. Call <code>SetInvMassData</code> to clear it.
+    /// @pre @p shapeId is not @c InvalidShapeID .
     /// @see GetShapes, SetShapes, Detach, SetInvMassData.
     Body& Attach(ShapeID shapeId);
 

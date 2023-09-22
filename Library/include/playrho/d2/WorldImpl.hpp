@@ -826,9 +826,13 @@ private:
     ///   and decrements the contact manager's contact count.
     /// @param contact Contact to destroy.
     /// @param from From body.
+    /// @pre @p contact is not @c InvalidContactID .
     void Destroy(ContactID contact, const Body* from);
 
     /// @brief Destroys the given contact.
+    /// @param contact Identifier of the contact to destroy.
+    /// @param from Optional Body for which to restrict removal the contact.
+    /// @pre @p contact is not @c InvalidContactID .
     void InternalDestroy(ContactID contact, const Body* from = nullptr);
 
     /// @brief Synchronizes the given body.

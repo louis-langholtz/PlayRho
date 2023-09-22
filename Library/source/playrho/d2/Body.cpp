@@ -242,6 +242,7 @@ void Body::SetFixedRotation(bool flag)
 
 Body& Body::Attach(ShapeID shapeId)
 {
+    assert(shapeId != InvalidShapeID);
     m_shapes.push_back(shapeId);
     SetMassDataDirty();
     return *this;
