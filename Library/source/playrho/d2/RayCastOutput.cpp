@@ -300,10 +300,10 @@ bool RayCast(const DynamicTree& tree, RayCastInput input, const DynamicTreeRayCa
 bool RayCast(const World& world, const RayCastInput& input, const ShapeRayCastCB& callback)
 {
     return RayCast(GetTree(world), input,
-                   [&world,&callback](BodyID body, ShapeID shape, ChildCounter index,
+                   [&world,&callback](BodyID bodyId, ShapeID shapeId, ChildCounter index,
                                       const RayCastInput& rci) {
-        const auto output = RayCast(GetChild(GetShape(world, shape), index), rci,
-                                    GetTransformation(world, body));
+        const auto shape = GetShape(world, shapeId);
+        const auto output = RayCast(GetChild(shape, index), rci, GetTransformation(world, bodyId));
         if (output.has_value())
         {
             const auto fraction = output->fraction;
@@ -323,7 +323,7 @@ bool RayCast(const World& world, const RayCastInput& input, const ShapeRayCastCB
             // The second way, does not have this problem.
             //
             const auto point = rci.p1 + (rci.p2 - rci.p1) * fraction;
-            const auto opcode = callback(body, shape, index, point, output->normal);
+            const auto opcode = callback(bodyId, shapeId, index, point, output->normal);
             switch (opcode)
             {
                 case RayCastOpcode::Terminate: return Real{0};
