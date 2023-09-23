@@ -177,7 +177,8 @@ void Clear(WorldImpl& world) noexcept;
 /// @param world The world that is to be stepped.
 /// @param conf Configuration for the simulation step.
 ///
-/// @pre @p conf.linearSlop is significant enough compared to <code>GetMaxVertexRadius()</code>.
+/// @pre @p conf.linearSlop is significant enough compared to
+///   <code>GetVertexRadiusInterval(const WorldImpl& world).GetMax()</code>.
 /// @post Static bodies are unmoved.
 /// @post Kinetic bodies are moved based on their previous velocities.
 /// @post Dynamic bodies are moved based on their previous velocities, gravity, applied
