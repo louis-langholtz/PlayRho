@@ -196,7 +196,7 @@ public:
     /// @brief Gets the AABB for a leaf or branch (a non-unused node).
     /// @param index Leaf or branch node's ID. Must be a valid ID.
     /// @pre @p index is less than <code>GetNodeCapacity()</code> and
-    ///   <code>!IsUnused(GetNode(index).GetHeight())</code> is true.
+    ///   <code>IsUnused(GetNode(index).GetHeight())</code> is false.
     AABB GetAABB(Size index) const noexcept;
 
     /// @brief Gets the height value for the identified node.
@@ -352,6 +352,8 @@ public:
     }
 
     /// @brief Initializing constructor.
+    /// @pre @c height is a value such that <code>IsBranch(height)</code> is true.
+    /// @pre Neither @c value.child1 nor @c value.child2 is equal to <code>GetInvalidSize()</code>.
     constexpr TreeNode(const DynamicTreeBranchData& value, const AABB& aabb, Height height,
                        Size other = DynamicTree::GetInvalidSize()) noexcept
         : m_aabb{aabb}, m_variant{value}, m_height{height}, m_other{other}
@@ -442,6 +444,7 @@ public:
 
     /// @brief Assigns the node as a "branch" value.
     /// @pre This node is a branch, i.e.: <code>IsBranch(GetHeight())</code> is true.
+    /// @pre Neither @c v.child1 nor @c v.child2 is equal to <code>GetInvalidSize()</code>.
     constexpr void Assign(const DynamicTreeBranchData& v, const AABB& bb, Height h) noexcept
     {
         assert(IsBranch(GetHeight()));
@@ -546,6 +549,7 @@ inline Contactable DynamicTree::GetLeafData(Size index) const noexcept
 // Free functions...
 
 /// @brief Replaces the old child with the new child.
+/// @pre Either @c bd.child1 or @c bd.child2 is equal to @c oldChild .
 constexpr DynamicTreeBranchData ReplaceChild(DynamicTreeBranchData bd, DynamicTree::Size oldChild,
                                              DynamicTree::Size newChild)
 {
@@ -579,6 +583,7 @@ constexpr bool IsBranch(const DynamicTree::TreeNode& node) noexcept
 }
 
 /// @brief Gets the AABB of the given dynamic tree node.
+/// @pre @c node must be a used node. I.e. <code>IsUnused(node)</code> must be false.
 /// @relatedalso DynamicTree::TreeNode
 constexpr AABB GetAABB(const DynamicTree::TreeNode& node) noexcept
 {
