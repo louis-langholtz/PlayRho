@@ -180,7 +180,7 @@ public:
         auto conf = Test::Conf{};
         conf.seeAlso = "https://www.iforce2d.net/b2dtut/projected-trajectory";
         conf.credits =
-            "Originally written by Chris Campbell for Box. Ported to PlayRho by Louis Langholtz.";
+            "Originally written by Chris Campbell for Box2D. Ported to PlayRho by Louis Langholtz.";
         return conf;
     }
 
