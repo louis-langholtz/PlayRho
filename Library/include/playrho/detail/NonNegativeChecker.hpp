@@ -24,24 +24,26 @@
 /// @file
 /// @brief Definition of the @c NonNegativeChecker class template.
 
-#include <playrho/detail/Checked.hpp>
-
 namespace playrho::detail {
 
 /// @brief Non-negative constrained value checker.
 /// @note This is meant to be used as a checker with types like <code>Checked</code>.
+/// @tparam T Underlying type for this checker.
 /// @ingroup Checkers
 /// @see Checked.
 template <typename T>
 struct NonNegativeChecker {
 
     /// @brief Default value supplying functor.
+    /// @return Always returns the zero initialized value of the underlying type.
     constexpr auto operator()() noexcept -> decltype(T{})
     {
         return T{};
     }
 
     /// @brief Value checking functor.
+    /// @return Null string if given value is greater than or equal to zero, else
+    ///   a non-null string explanation.
     constexpr auto operator()(const T& v) noexcept
         -> decltype(v >= T{}, static_cast<const char*>(nullptr))
     {

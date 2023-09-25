@@ -24,6 +24,7 @@
 /// @file
 /// @brief Definition of the @c Positive value checked types and related code.
 
+#include <playrho/detail/Checked.hpp>
 #include <playrho/detail/PositiveChecker.hpp>
 
 namespace playrho {

@@ -24,18 +24,19 @@
 /// @file
 /// @brief Definition of the @c NonZeroChecker class template.
 
-#include <playrho/detail/Checked.hpp>
-
 namespace playrho::detail {
 
 /// @brief Non-zero constrained value checker.
 /// @note This is meant to be used as a checker with types like <code>Checked</code>.
+/// @tparam T Underlying type for this checker.
 /// @ingroup Checkers
 /// @see Checked.
 template <typename T>
 struct NonZeroChecker {
 
     /// @brief Value checking functor.
+    /// @return Null string if given value is not equal to zero, else
+    ///   a non-null string explanation.
     constexpr auto operator()(const T& v) noexcept
         -> decltype(!(v != static_cast<T>(0)), static_cast<const char*>(nullptr))
     {

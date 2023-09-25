@@ -24,6 +24,7 @@
 /// @file
 /// @brief Definition of the @c Negative value checked types.
 
+#include <playrho/detail/Checked.hpp>
 #include <playrho/detail/NegativeChecker.hpp>
 
 namespace playrho {

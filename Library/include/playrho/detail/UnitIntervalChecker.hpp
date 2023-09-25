@@ -24,14 +24,13 @@
 /// @file
 /// @brief Definition of the @c UnitIntervalChecker class template.
 
-#include <playrho/detail/Checked.hpp>
-
 namespace playrho::detail {
 
 /// @brief Unit-interval constrained value checker.
 /// @details Provides functors ensuring values are:
 ///   greater-than or equal-to zero, and less-than or equal-to one.
 /// @note This is meant to be used as a checker with types like <code>Checked</code>.
+/// @tparam T Underlying type for this checker.
 /// @ingroup Checkers
 /// @see Checked.
 template <typename T>
