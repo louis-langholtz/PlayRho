@@ -661,11 +661,16 @@ public:
     friend Manifold GetManifold(const World& world, ContactID id);
 
 private:
+    /// @brief Concept pure virtual base class.
     struct Concept {
         /// @brief Destructor.
         virtual ~Concept() = default;
 
         /// @name Listener Member Functions
+        /// @note Having these as part of the base interface instead of say taking
+        ///   these settings on construction, allows users to already have access
+        ///   to the World object so these can be set without making the underlying
+        ///   type part of the listener callback parameter interface.
         /// @{
 
         /// @brief Sets the destruction listener for shapes.
@@ -760,7 +765,7 @@ private:
         /// @brief Gets access to the broad-phase dynamic tree information.
         /// @todo Consider removing this function. This function exposes the implementation detail
         ///   of the broad-phase contact detection system.
-        virtual  const DynamicTree& GetTree_() const noexcept = 0;
+        virtual const DynamicTree& GetTree_() const noexcept = 0;
 
         /// @brief Is the world locked (in the middle of a time step).
         virtual bool IsLocked_() const noexcept = 0;
