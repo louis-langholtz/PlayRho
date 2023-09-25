@@ -65,6 +65,8 @@ set(PLAYRHO_PMR_SRCS
 	)
 set(PLAYRHO_D2_HDRS
 	"${PLAYRHO_INCLUDE_PREFIX}d2/AABB.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/AabbTreeWorld.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/AabbTreeWorldBody.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/Acceleration.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/BasicAPI.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/Body.hpp"
@@ -125,8 +127,6 @@ set(PLAYRHO_D2_HDRS
 	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldBody.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldConf.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldContact.hpp"
-	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldImpl.hpp"
-	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldImplBody.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldJoint.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldManifold.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/WorldMisc.hpp"
@@ -134,6 +134,8 @@ set(PLAYRHO_D2_HDRS
 	)
 set(PLAYRHO_D2_SRCS
 	"${PLAYRHO_SOURCE_PREFIX}d2/AABB.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/AabbTreeWorld.cpp"
+	"${PLAYRHO_SOURCE_PREFIX}d2/AabbTreeWorldBody.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/Body.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/BodyConf.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/ChainShapeConf.cpp"
@@ -180,8 +182,6 @@ set(PLAYRHO_D2_SRCS
 	"${PLAYRHO_SOURCE_PREFIX}d2/World.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldBody.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldContact.cpp"
-	"${PLAYRHO_SOURCE_PREFIX}d2/WorldImpl.cpp"
-	"${PLAYRHO_SOURCE_PREFIX}d2/WorldImplBody.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldJoint.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldManifold.cpp"
 	"${PLAYRHO_SOURCE_PREFIX}d2/WorldMisc.cpp"

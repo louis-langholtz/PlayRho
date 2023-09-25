@@ -23,7 +23,7 @@
 #define PLAYRHO_D2_WORLDIMPLBODY_HPP
 
 /// @file
-/// @brief Declarations of free functions of WorldImpl for bodies.
+/// @brief Declarations of free functions of AabbTreeWorld for bodies.
 
 #include <vector>
 
@@ -32,31 +32,31 @@
 
 namespace playrho::d2 {
 
-class WorldImpl;
+class AabbTreeWorld;
 struct BodyConf;
 
 /// @brief Creates a body within the world that's a copy of the given one.
-/// @relatedalso WorldImpl
-BodyID CreateBody(WorldImpl& world, const BodyConf& def);
+/// @relatedalso AabbTreeWorld
+BodyID CreateBody(AabbTreeWorld& world, const BodyConf& def);
 
 /// @brief Associates a validly identified shape with the validly identified body.
 /// @throws std::out_of_range If given an invalid body or shape identifier.
 /// @throws WrongState if this function is called while the world is locked.
 /// @see GetShapes.
-/// @relatedalso WorldImpl
-void Attach(WorldImpl& world, BodyID id, ShapeID shapeID);
+/// @relatedalso AabbTreeWorld
+void Attach(AabbTreeWorld& world, BodyID id, ShapeID shapeID);
 
 /// @brief Disassociates a validly identified shape from the validly identified body.
 /// @throws std::out_of_range If given an invalid body or shape identifier.
 /// @throws WrongState if this function is called while the world is locked.
-/// @relatedalso WorldImpl
-bool Detach(WorldImpl& world, BodyID id, ShapeID shapeID);
+/// @relatedalso AabbTreeWorld
+bool Detach(AabbTreeWorld& world, BodyID id, ShapeID shapeID);
 
 /// @brief Disassociates all of the associated shape from the validly identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @throws WrongState if this function is called while the world is locked.
-/// @relatedalso WorldImpl
-const std::vector<ShapeID>& GetShapes(const WorldImpl& world, BodyID id);
+/// @relatedalso AabbTreeWorld
+const std::vector<ShapeID>& GetShapes(const AabbTreeWorld& world, BodyID id);
 
 } // namespace playrho::d2
 

@@ -49,30 +49,30 @@
 #include <playrho/to_underlying.hpp>
 #include <playrho/WrongState.hpp>
 
+#include <playrho/d2/AabbTreeWorld.hpp>
 #include <playrho/d2/Body.hpp>
 #include <playrho/d2/BodyConf.hpp>
 #include <playrho/d2/ContactImpulsesList.hpp>
+#include <playrho/d2/ContactSolver.hpp>
 #include <playrho/d2/Distance.hpp>
+#include <playrho/d2/DistanceJointConf.hpp>
 #include <playrho/d2/DistanceProxy.hpp>
+#include <playrho/d2/FrictionJointConf.hpp>
+#include <playrho/d2/GearJointConf.hpp>
 #include <playrho/d2/Joint.hpp>
 #include <playrho/d2/RevoluteJointConf.hpp>
 #include <playrho/d2/PrismaticJointConf.hpp>
-#include <playrho/d2/DistanceJointConf.hpp>
 #include <playrho/d2/PulleyJointConf.hpp>
 #include <playrho/d2/TargetJointConf.hpp>
-#include <playrho/d2/GearJointConf.hpp>
 #include <playrho/d2/WheelJointConf.hpp>
 #include <playrho/d2/WeldJointConf.hpp>
-#include <playrho/d2/FrictionJointConf.hpp>
 #include <playrho/d2/RopeJointConf.hpp>
 #include <playrho/d2/MotorJointConf.hpp>
-#include <playrho/d2/ContactSolver.hpp>
 #include <playrho/d2/VelocityConstraint.hpp>
 #include <playrho/d2/PositionConstraint.hpp>
 #include <playrho/d2/TimeOfImpact.hpp>
 #include <playrho/d2/RayCastOutput.hpp>
 #include <playrho/d2/Shape.hpp>
-#include <playrho/d2/WorldImpl.hpp>
 #include <playrho/d2/WorldManifold.hpp>
 
 // Enable this macro to enable sorting ID lists like m_contacts. This results in more linearly
@@ -101,7 +101,7 @@ using PositionConstraints = std::vector<PositionConstraint, pmr::polymorphic_all
 using VelocityConstraints = std::vector<VelocityConstraint, pmr::polymorphic_allocator<VelocityConstraint>>;
 
 /// @brief The contact updating configuration.
-struct WorldImpl::ContactUpdateConf
+struct AabbTreeWorld::ContactUpdateConf
 {
     DistanceConf distance; ///< Distance configuration data.
     Manifold::Conf manifold; ///< Manifold configuration data.
@@ -408,9 +408,9 @@ bool FlagForFiltering(ObjectPool<Contact>& contactBuffer, BodyID bodyA,
 }
 
 /// @brief Gets the update configuration from the given step configuration data.
-WorldImpl::ContactUpdateConf GetUpdateConf(const StepConf& conf) noexcept
+AabbTreeWorld::ContactUpdateConf GetUpdateConf(const StepConf& conf) noexcept
 {
-    return WorldImpl::ContactUpdateConf{GetDistanceConf(conf), GetManifoldConf(conf)};
+    return AabbTreeWorld::ContactUpdateConf{GetDistanceConf(conf), GetManifoldConf(conf)};
 }
 
 template <typename T>
@@ -705,9 +705,9 @@ ContactToiData GetSoonestContact(const KeyedContactIDs& contacts,
 auto FindContacts(pmr::memory_resource& resource,
                   const DynamicTree& tree,
                   ProxyIDs&& proxies)
-    -> std::vector<WorldImpl::ProxyKey, pmr::polymorphic_allocator<WorldImpl::ProxyKey>>
+    -> std::vector<AabbTreeWorld::ProxyKey, pmr::polymorphic_allocator<AabbTreeWorld::ProxyKey>>
 {
-    std::vector<WorldImpl::ProxyKey, pmr::polymorphic_allocator<WorldImpl::ProxyKey>> proxyKeys{&resource};
+    std::vector<AabbTreeWorld::ProxyKey, pmr::polymorphic_allocator<AabbTreeWorld::ProxyKey>> proxyKeys{&resource};
     static constexpr auto DefaultReserveSize = 512u;
     proxyKeys.reserve(DefaultReserveSize);
 
@@ -735,7 +735,7 @@ auto FindContacts(pmr::memory_resource& resource,
     });
 
     // Sort and eliminate any duplicate contact keys.
-    sort(begin(proxyKeys), end(proxyKeys), [](const WorldImpl::ProxyKey& a, const WorldImpl::ProxyKey& b) {
+    sort(begin(proxyKeys), end(proxyKeys), [](const AabbTreeWorld::ProxyKey& a, const AabbTreeWorld::ProxyKey& b) {
         return std::get<0>(a) < std::get<0>(b);
     });
     proxyKeys.erase(unique(begin(proxyKeys), end(proxyKeys)), end(proxyKeys));
@@ -746,7 +746,7 @@ constexpr auto ReserveBuffers = 1u;
 
 } // anonymous namespace
 
-WorldImpl::WorldImpl(const WorldConf& conf):
+AabbTreeWorld::AabbTreeWorld(const WorldConf& conf):
     m_bodyStackResource({ReserveBuffers, conf.reserveBodyStack * sizeof(BodyID)}, conf.upstream),
     m_bodyConstraintsResource({ReserveBuffers, conf.reserveBodyConstraints * sizeof(BodyConstraint)}, conf.upstream),
     m_positionConstraintsResource({ReserveBuffers, conf.reserveDistanceConstraints * sizeof(PositionConstraint)}, conf.upstream),
@@ -763,7 +763,7 @@ WorldImpl::WorldImpl(const WorldConf& conf):
     m_islanded.contacts.reserve(conf.contactCapacity);
 }
 
-WorldImpl::WorldImpl(const WorldImpl& other):
+AabbTreeWorld::AabbTreeWorld(const AabbTreeWorld& other):
     m_bodyConstraintsResource(other.m_bodyConstraintsResource.GetOptions()),
     m_positionConstraintsResource(other.m_positionConstraintsResource.GetOptions()),
     m_velocityConstraintsResource(other.m_velocityConstraintsResource.GetOptions()),
@@ -792,7 +792,7 @@ WorldImpl::WorldImpl(const WorldImpl& other):
 {
 }
 
-WorldImpl::WorldImpl(WorldImpl&& other) noexcept:
+AabbTreeWorld::AabbTreeWorld(AabbTreeWorld&& other) noexcept:
     m_bodyConstraintsResource(other.m_bodyConstraintsResource.GetOptions()),
     m_positionConstraintsResource(other.m_positionConstraintsResource.GetOptions()),
     m_velocityConstraintsResource(other.m_velocityConstraintsResource.GetOptions()),
@@ -821,12 +821,12 @@ WorldImpl::WorldImpl(WorldImpl&& other) noexcept:
 {
 }
 
-WorldImpl::~WorldImpl() noexcept
+AabbTreeWorld::~AabbTreeWorld() noexcept
 {
     Clear(*this);
 }
 
-void Clear(WorldImpl& world) noexcept
+void Clear(AabbTreeWorld& world) noexcept
 {
     if (const auto listener = world.m_listeners.jointDestruction) {
         for_each(cbegin(world.m_joints), cend(world.m_joints), [&listener](const auto& id) {
@@ -871,22 +871,22 @@ void Clear(WorldImpl& world) noexcept
     world.m_bodyJoints.clear();
 }
 
-BodyCounter GetBodyRange(const WorldImpl& world) noexcept
+BodyCounter GetBodyRange(const AabbTreeWorld& world) noexcept
 {
     return static_cast<BodyCounter>(world.m_bodyBuffer.size());
 }
 
-JointCounter GetJointRange(const WorldImpl& world) noexcept
+JointCounter GetJointRange(const AabbTreeWorld& world) noexcept
 {
     return static_cast<JointCounter>(world.m_jointBuffer.size());
 }
 
-ContactCounter GetContactRange(const WorldImpl& world) noexcept
+ContactCounter GetContactRange(const AabbTreeWorld& world) noexcept
 {
     return static_cast<ContactCounter>(world.m_contactBuffer.size());
 }
 
-BodyID CreateBody(WorldImpl& world, Body body)
+BodyID CreateBody(AabbTreeWorld& world, Body body)
 {
     if (IsLocked(world)) {
         throw WrongState(worldIsLockedMsg);
@@ -918,7 +918,7 @@ BodyID CreateBody(WorldImpl& world, Body body)
     return id;
 }
 
-void WorldImpl::Remove(BodyID id)
+void AabbTreeWorld::Remove(BodyID id)
 {
     m_bodiesForSync.erase(remove(begin(m_bodiesForSync), end(m_bodiesForSync), id),
                              end(m_bodiesForSync));
@@ -934,7 +934,7 @@ void WorldImpl::Remove(BodyID id)
     }
 }
 
-void Destroy(WorldImpl& world, BodyID id)
+void Destroy(AabbTreeWorld& world, BodyID id)
 {
     if (IsLocked(world)) {
         throw WrongState(worldIsLockedMsg);
@@ -980,12 +980,12 @@ void Destroy(WorldImpl& world, BodyID id)
     world.Remove(id);
 }
 
-bool IsDestroyed(const WorldImpl& world, BodyID id) noexcept
+bool IsDestroyed(const AabbTreeWorld& world, BodyID id) noexcept
 {
     return world.m_bodyBuffer.FindFree(to_underlying(id));
 }
 
-void SetJoint(WorldImpl& world, JointID id, Joint def)
+void SetJoint(AabbTreeWorld& world, JointID id, Joint def)
 {
     if (IsLocked(world)) {
         throw WrongState(worldIsLockedMsg);
@@ -1006,7 +1006,7 @@ void SetJoint(WorldImpl& world, JointID id, Joint def)
     world.Add(id, !GetCollideConnected(world.m_jointBuffer[to_underlying(id)]));
 }
 
-JointID CreateJoint(WorldImpl& world, Joint def)
+JointID CreateJoint(AabbTreeWorld& world, Joint def)
 {
     if (IsLocked(world)) {
         throw WrongState(worldIsLockedMsg);
@@ -1030,7 +1030,7 @@ JointID CreateJoint(WorldImpl& world, Joint def)
     return id;
 }
 
-void WorldImpl::Add(JointID id, bool flagForFiltering)
+void AabbTreeWorld::Add(JointID id, bool flagForFiltering)
 {
     const auto& joint = m_jointBuffer[to_underlying(id)];
     const auto bodyA = GetBodyA(joint);
@@ -1048,7 +1048,7 @@ void WorldImpl::Add(JointID id, bool flagForFiltering)
     }
 }
 
-void WorldImpl::Remove(JointID id)
+void AabbTreeWorld::Remove(JointID id)
 {
     // Disconnect from island graph.
     const auto& joint = m_jointBuffer[to_underlying(id)];
@@ -1086,7 +1086,7 @@ void WorldImpl::Remove(JointID id)
     }
 }
 
-void Destroy(WorldImpl& world, JointID id)
+void Destroy(AabbTreeWorld& world, JointID id)
 {
     if (IsLocked(world)) {
         throw WrongState(worldIsLockedMsg);
@@ -1100,17 +1100,17 @@ void Destroy(WorldImpl& world, JointID id)
     }
 }
 
-bool IsDestroyed(const WorldImpl& world, JointID id) noexcept
+bool IsDestroyed(const AabbTreeWorld& world, JointID id) noexcept
 {
     return world.m_jointBuffer.FindFree(to_underlying(id));
 }
 
-ShapeCounter GetShapeRange(const WorldImpl& world) noexcept
+ShapeCounter GetShapeRange(const AabbTreeWorld& world) noexcept
 {
     return static_cast<ShapeCounter>(size(world.m_shapeBuffer));
 }
 
-ShapeID CreateShape(WorldImpl& world, Shape def)
+ShapeID CreateShape(AabbTreeWorld& world, Shape def)
 {
     const auto vertexRadius = GetVertexRadiusInterval(world);
     const auto childCount = GetChildCount(def);
@@ -1132,7 +1132,7 @@ ShapeID CreateShape(WorldImpl& world, Shape def)
     return static_cast<ShapeID>(static_cast<ShapeID::underlying_type>(world.m_shapeBuffer.Allocate(std::move(def))));
 }
 
-void Destroy(WorldImpl& world, ShapeID id)
+void Destroy(AabbTreeWorld& world, ShapeID id)
 {
     if (IsLocked(world)) {
         throw WrongState(worldIsLockedMsg);
@@ -1152,12 +1152,12 @@ void Destroy(WorldImpl& world, ShapeID id)
     world.m_shapeBuffer.Free(to_underlying(id));
 }
 
-const Shape& GetShape(const WorldImpl& world, ShapeID id)
+const Shape& GetShape(const AabbTreeWorld& world, ShapeID id)
 {
     return world.m_shapeBuffer.at(to_underlying(id));
 }
 
-void SetShape(WorldImpl& world, ShapeID id, Shape def) // NOLINT(readability-function-cognitive-complexity)
+void SetShape(AabbTreeWorld& world, ShapeID id, Shape def) // NOLINT(readability-function-cognitive-complexity)
 {
     if (IsLocked(world)) {
         throw WrongState(worldIsLockedMsg);
@@ -1234,7 +1234,7 @@ void SetShape(WorldImpl& world, ShapeID id, Shape def) // NOLINT(readability-fun
             }
         }
         if (anyNeedFiltering) {
-            world.m_flags |= WorldImpl::e_needsContactFiltering;
+            world.m_flags |= AabbTreeWorld::e_needsContactFiltering;
         }
         ForMatchingProxies(world.m_tree, id, [&](DynamicTreeSize proxyId){
             world.m_proxiesForContacts.push_back(proxyId);
@@ -1254,7 +1254,7 @@ void SetShape(WorldImpl& world, ShapeID id, Shape def) // NOLINT(readability-fun
     // TODO: anything else that needs doing?
 }
 
-void WorldImpl::AddToIsland(Island& island, BodyID seedID,
+void AabbTreeWorld::AddToIsland(Island& island, BodyID seedID,
                             BodyCounter& remNumBodies,
                             ContactCounter& remNumContacts,
                             JointCounter& remNumJoints)
@@ -1277,7 +1277,7 @@ void WorldImpl::AddToIsland(Island& island, BodyID seedID,
     AddToIsland(island, stack, remNumBodies, remNumContacts, remNumJoints);
 }
 
-void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
+void AabbTreeWorld::AddToIsland(Island& island, BodyStack& stack,
                             BodyCounter& remNumBodies,
                             ContactCounter& remNumContacts,
                             JointCounter& remNumJoints)
@@ -1321,7 +1321,7 @@ void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
     }
 }
 
-void WorldImpl::AddContactsToIsland(Island& island, BodyStack& stack,
+void AabbTreeWorld::AddContactsToIsland(Island& island, BodyStack& stack,
                                     const BodyContactIDs& contacts,
                                     BodyID bodyID)
 {
@@ -1346,7 +1346,7 @@ void WorldImpl::AddContactsToIsland(Island& island, BodyStack& stack,
     });
 }
 
-void WorldImpl::AddJointsToIsland(Island& island, BodyStack& stack,
+void AabbTreeWorld::AddJointsToIsland(Island& island, BodyStack& stack,
                                   const BodyJointIDs& joints)
 {
     for_each(cbegin(joints), cend(joints), [this,&island,&stack](const auto& ji) {
@@ -1370,7 +1370,7 @@ void WorldImpl::AddJointsToIsland(Island& island, BodyStack& stack,
     });
 }
 
-RegStepStats WorldImpl::SolveReg(const StepConf& conf)
+RegStepStats AabbTreeWorld::SolveReg(const StepConf& conf)
 {
     auto stats = RegStepStats{};
     auto remNumBodies = static_cast<BodyCounter>(size(m_bodies)); // Remaining # of bodies.
@@ -1411,7 +1411,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
                 remNumBodies += static_cast<BodyCounter>(numRemoved);
 #if defined(DO_THREADED)
                 // Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
-                futures.push_back(std::async(std::launch::async, &WorldImpl::SolveRegIslandViaGS,
+                futures.push_back(std::async(std::launch::async, &AabbTreeWorld::SolveRegIslandViaGS,
                                              this, conf, island));
 #else
                 const auto solverResults = SolveRegIslandViaGS(conf, island);
@@ -1449,7 +1449,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
     return stats;
 }
 
-IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& island)
+IslandStats AabbTreeWorld::SolveRegIslandViaGS(const StepConf& conf, const Island& island)
 {
     assert(!empty(island.bodies) || !empty(island.contacts) || !empty(island.joints));
     
@@ -1569,8 +1569,8 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     return results;
 }
 
-WorldImpl::UpdateContactsData
-WorldImpl::UpdateContactTOIs(const StepConf& conf)
+AabbTreeWorld::UpdateContactsData
+AabbTreeWorld::UpdateContactTOIs(const StepConf& conf)
 {
     auto results = UpdateContactsData{};
 
@@ -1640,7 +1640,7 @@ WorldImpl::UpdateContactTOIs(const StepConf& conf)
     return results;
 }
 
-ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
+ToiStepStats AabbTreeWorld::SolveToi(const StepConf& conf)
 {
     auto stats = ToiStepStats{};
 
@@ -1718,7 +1718,7 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
     return stats;
 }
 
-IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
+IslandStats AabbTreeWorld::SolveToi(ContactID contactID, const StepConf& conf)
 {
     // Note:
     //   This function is what used to be b2World::SolveToi(const b2TimeStep& step).
@@ -1845,7 +1845,7 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
     return results;
 }
 
-IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
+IslandStats AabbTreeWorld::SolveToiViaGS(const Island& island, const StepConf& conf)
 {
     auto results = IslandStats{};
 
@@ -1946,8 +1946,8 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
     return results;
 }
 
-WorldImpl::ProcessContactsOutput
-WorldImpl::ProcessContactsForTOI( // NOLINT(readability-function-cognitive-complexity)
+AabbTreeWorld::ProcessContactsOutput
+AabbTreeWorld::ProcessContactsForTOI( // NOLINT(readability-function-cognitive-complexity)
                                  BodyID id, Island& island, Real toi, const StepConf& conf)
 {
     const auto& body = m_bodyBuffer[to_underlying(id)];
@@ -2031,7 +2031,7 @@ WorldImpl::ProcessContactsForTOI( // NOLINT(readability-function-cognitive-compl
     return results;
 }
 
-StepStats Step(WorldImpl& world, const StepConf& conf)
+StepStats Step(AabbTreeWorld& world, const StepConf& conf)
 {
     assert((world.m_vertexRadius.GetMax() * Real(2)) +
            (conf.linearSlop / Real(4)) > (world.m_vertexRadius.GetMax() * Real(2)));
@@ -2043,7 +2043,7 @@ StepStats Step(WorldImpl& world, const StepConf& conf)
     // "Named return value optimization" (NRVO) will make returning this more efficient.
     auto stepStats = StepStats{};
     {
-        const FlagGuard<decltype(world.m_flags)> flagGaurd(world.m_flags, WorldImpl::e_locked);
+        const FlagGuard<decltype(world.m_flags)> flagGaurd(world.m_flags, AabbTreeWorld::e_locked);
 
         // Create proxies herein for access to conf.aabbExtension info!
         for (const auto& [bodyID, shapeID]: world.m_fixturesForProxies) {
@@ -2101,7 +2101,7 @@ StepStats Step(WorldImpl& world, const StepConf& conf)
     return stepStats;
 }
 
-void ShiftOrigin(WorldImpl& world, const Length2& newOrigin)
+void ShiftOrigin(AabbTreeWorld& world, const Length2& newOrigin)
 {
     if (IsLocked(world)) {
         throw WrongState(worldIsLockedMsg);
@@ -2125,7 +2125,7 @@ void ShiftOrigin(WorldImpl& world, const Length2& newOrigin)
     world.m_tree.ShiftOrigin(newOrigin);
 }
 
-void WorldImpl::InternalDestroy(ContactID contactID, const Body* from)
+void AabbTreeWorld::InternalDestroy(ContactID contactID, const Body* from)
 {
     assert(contactID != InvalidContactID);
     auto& contact = m_contactBuffer[to_underlying(contactID)];
@@ -2161,7 +2161,7 @@ void WorldImpl::InternalDestroy(ContactID contactID, const Body* from)
     m_manifoldBuffer.Free(to_underlying(contactID));
 }
 
-void WorldImpl::Destroy(ContactID contactID, const Body* from)
+void AabbTreeWorld::Destroy(ContactID contactID, const Body* from)
 {
     assert(contactID != InvalidContactID);
     if (const auto found = FindTypeValue(m_contacts, contactID)) {
@@ -2170,12 +2170,12 @@ void WorldImpl::Destroy(ContactID contactID, const Body* from)
     InternalDestroy(contactID, from);
 }
 
-bool IsDestroyed(const WorldImpl& world, ContactID id) noexcept
+bool IsDestroyed(const AabbTreeWorld& world, ContactID id) noexcept
 {
     return world.m_contactBuffer.FindFree(to_underlying(id));
 }
 
-WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(KeyedContactIDs& contacts)
+AabbTreeWorld::DestroyContactsStats AabbTreeWorld::DestroyContacts(KeyedContactIDs& contacts)
 {
     auto stats = DestroyContactsStats{};
     const auto beforeOverlapSize = size(contacts);
@@ -2218,7 +2218,7 @@ WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(KeyedContactIDs& cont
     return stats;
 }
 
-WorldImpl::UpdateContactsStats WorldImpl::UpdateContacts(const StepConf& conf)
+AabbTreeWorld::UpdateContactsStats AabbTreeWorld::UpdateContacts(const StepConf& conf)
 {
 #ifdef DO_PAR_UNSEQ
     atomic<uint32_t> ignored;
@@ -2317,7 +2317,7 @@ WorldImpl::UpdateContactsStats WorldImpl::UpdateContacts(const StepConf& conf)
     };
 }
 
-ContactCounter WorldImpl::AddNewContacts( // NOLINT(readability-function-cognitive-complexity)
+ContactCounter AabbTreeWorld::AddNewContacts( // NOLINT(readability-function-cognitive-complexity)
                                          std::vector<ProxyKey, pmr::polymorphic_allocator<ProxyKey>>&& keys)
 {
     const auto numContactsBefore = size(m_contacts);
@@ -2440,22 +2440,22 @@ ContactCounter WorldImpl::AddNewContacts( // NOLINT(readability-function-cogniti
     return static_cast<ContactCounter>(numContactsAdded);
 }
 
-const std::vector<DynamicTree::Size>& GetProxies(const WorldImpl& world, BodyID id)
+const std::vector<DynamicTree::Size>& GetProxies(const AabbTreeWorld& world, BodyID id)
 {
     return world.m_bodyProxies.at(to_underlying(id));
 }
 
-const BodyContactIDs& GetContacts(const WorldImpl& world, BodyID id)
+const BodyContactIDs& GetContacts(const AabbTreeWorld& world, BodyID id)
 {
     return world.m_bodyContacts.at(to_underlying(id));
 }
 
-const BodyJointIDs& GetJoints(const WorldImpl& world, BodyID id)
+const BodyJointIDs& GetJoints(const AabbTreeWorld& world, BodyID id)
 {
     return world.m_bodyJoints.at(to_underlying(id));
 }
 
-ContactCounter WorldImpl::Synchronize(const ProxyIDs& bodyProxies,
+ContactCounter AabbTreeWorld::Synchronize(const ProxyIDs& bodyProxies,
                                       const Transformation& xfm0, const Transformation& xfm1,
                                       Real multiplier, Length extension)
 {
@@ -2479,7 +2479,7 @@ ContactCounter WorldImpl::Synchronize(const ProxyIDs& bodyProxies,
     return updatedCount;
 }
 
-void WorldImpl::Update( // NOLINT(readability-function-cognitive-complexity)
+void AabbTreeWorld::Update( // NOLINT(readability-function-cognitive-complexity)
                        ContactID contactID, const ContactUpdateConf& conf)
 {
     auto& c = m_contactBuffer[to_underlying(contactID)];
@@ -2613,7 +2613,7 @@ void WorldImpl::Update( // NOLINT(readability-function-cognitive-complexity)
     }
 }
 
-void SetBody(WorldImpl& world, BodyID id, Body value) // NOLINT(readability-function-cognitive-complexity)
+void SetBody(AabbTreeWorld& world, BodyID id, Body value) // NOLINT(readability-function-cognitive-complexity)
 {
     if (IsLocked(world)) {
         throw WrongState(worldIsLockedMsg);
@@ -2726,7 +2726,7 @@ void SetBody(WorldImpl& world, BodyID id, Body value) // NOLINT(readability-func
     world.m_bodyBuffer[to_underlying(id)] = std::move(value);
 }
 
-void SetContact(WorldImpl& world, ContactID id, Contact value)
+void SetContact(AabbTreeWorld& world, ContactID id, Contact value)
 {
     const auto& contact = world.m_contactBuffer.at(to_underlying(id));
 
@@ -2762,22 +2762,22 @@ void SetContact(WorldImpl& world, ContactID id, Contact value)
     world.m_contactBuffer[to_underlying(id)] = value;
 }
 
-const Body& GetBody(const WorldImpl& world, BodyID id)
+const Body& GetBody(const AabbTreeWorld& world, BodyID id)
 {
     return world.m_bodyBuffer.at(to_underlying(id));
 }
 
-const Joint& GetJoint(const WorldImpl& world, JointID id)
+const Joint& GetJoint(const AabbTreeWorld& world, JointID id)
 {
     return world.m_jointBuffer.at(to_underlying(id));
 }
 
-const Contact& GetContact(const WorldImpl& world, ContactID id)
+const Contact& GetContact(const AabbTreeWorld& world, ContactID id)
 {
     return world.m_contactBuffer.at(to_underlying(id));
 }
 
-const Manifold& GetManifold(const WorldImpl& world, ContactID id)
+const Manifold& GetManifold(const AabbTreeWorld& world, ContactID id)
 {
     return world.m_manifoldBuffer.at(to_underlying(id));
 }
