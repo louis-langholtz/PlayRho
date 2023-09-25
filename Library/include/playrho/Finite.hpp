@@ -24,6 +24,7 @@
 /// @file
 /// @brief Aliases for checked finite types.
 
+#include <playrho/detail/Checked.hpp>
 #include <playrho/detail/FiniteChecker.hpp>
 
 namespace playrho {

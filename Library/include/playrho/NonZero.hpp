@@ -24,6 +24,7 @@
 /// @file
 /// @brief Definition of the @c NonZero value checked types.
 
+#include <playrho/detail/Checked.hpp>
 #include <playrho/detail/NonZeroChecker.hpp>
 
 namespace playrho {

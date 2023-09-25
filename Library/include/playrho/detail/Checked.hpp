@@ -73,17 +73,22 @@ struct NoOpChecker
 };
 
 /// @brief Class template for construction-time constraining a type's value.
-/// @note Conceptually, this is to values what concepts is to types. One difference
+/// @note Conceptually, this is to values what concepts are to types. One difference
 ///   however, is this - as a mechanism - operates at construction-time rather than
 ///   compile-time (like concepts do). From a design perspective, this can serve as
-///   an efficient and scalable mechanism for defensive/offensive or contract
-///   oriented programming.
+///   an efficient and scalable mechanism for defensive/offensive programming or
+///   for pre/post conditions of contract oriented programming so long as the
+///   value-type this is used with has only value semantics.
 /// @invariant The value of an object of this type is always valid for the checker
 ///   of the type.
-/// @tparam ValueType Type of the underlying value that will get checked.
+/// @tparam ValueType Type of the underlying value that will get checked. Note that
+///   this is the only template parameter that effects the size of objects of this
+///   class.
 /// @tparam Checker Checker type to check or possibly default initialize values with.
 ///   See the @ref Checkers "Checkers" topic for more information on what checkers
-///   are already available or how to design your own.
+///   are already available or how to design your own. Note that whatever the checker
+///   is, it gets constructed only for single use of either its one parameter value
+///   checking functor, or its zero parameter default value supplying functor.
 /// @tparam NoExcept Whether to terminate or just throw on being invalid. The value
 ///   chosen is used for some member functions' @c noexcept specifier as
 ///   @c noexcept(NoExcept) . By using the value of @c true , those functions that
@@ -94,6 +99,7 @@ struct NoOpChecker
 ///   from within the program (that should be valid, and as an offensive programming
 ///   mechanism).
 /// @see https://en.cppreference.com/w/cpp/language/noexcept_spec.
+/// @see https://en.cppreference.com/w/cpp/concepts/regular.
 template <class ValueType, class Checker = NoOpChecker<ValueType>, bool NoExcept = false>
 class Checked
 {
@@ -138,7 +144,7 @@ public:
         -> decltype(ThrowIfInvalid(value), value_type{})
     {
         if constexpr (NoExcept) {
-#ifndef NDEBUG // Only verify condition in debug builds
+#ifndef NDEBUG // Only verify condition & add that overhead in debug builds!
             ThrowIfInvalid(value);
 #endif
         }

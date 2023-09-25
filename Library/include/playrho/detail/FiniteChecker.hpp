@@ -24,26 +24,28 @@
 /// @file
 /// @brief Definition of the @c FiniteChecker class template.
 
-#include <playrho/detail/Checked.hpp>
-
 #include <playrho/Math.hpp> // for playrho::isfinite
 
 namespace playrho::detail {
 
 /// @brief Finite constrained value checker.
 /// @note This is meant to be used as a checker with types like <code>Checked</code>.
+/// @tparam T Underlying type for this checker.
 /// @ingroup Checkers
 /// @see Checked.
 template <typename T>
 struct FiniteChecker {
 
     /// @brief Default value supplying functor.
-    constexpr auto operator()() noexcept(noexcept(static_cast<T>(0))) -> decltype(static_cast<T>(0))
+    /// @return Always returns the zero initialized value of the underlying type.
+    constexpr auto operator()() noexcept(noexcept(static_cast<T>(0))) -> decltype(T{})
     {
-        return static_cast<T>(0);
+        return T{};
     }
 
     /// @brief Value checking functor.
+    /// @return Null string if given value is finite, else
+    ///   a non-null string explanation.
     auto operator()(const T& v) noexcept(noexcept(isfinite(v)))
         -> decltype(isfinite(v), static_cast<const char*>(nullptr))
     {
