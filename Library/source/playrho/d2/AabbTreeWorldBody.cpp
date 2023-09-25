@@ -19,26 +19,26 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#include <playrho/d2/AabbTreeWorld.hpp>
+#include <playrho/d2/AabbTreeWorldBody.hpp>
 #include <playrho/d2/Body.hpp>
 #include <playrho/d2/BodyConf.hpp>
-#include <playrho/d2/WorldImpl.hpp>
-#include <playrho/d2/WorldImplBody.hpp>
 
 namespace playrho::d2 {
 
-BodyID CreateBody(WorldImpl& world, const BodyConf& def)
+BodyID CreateBody(AabbTreeWorld& world, const BodyConf& def)
 {
     return CreateBody(world, Body{def});
 }
 
-void Attach(WorldImpl& world, BodyID id, ShapeID shapeID)
+void Attach(AabbTreeWorld& world, BodyID id, ShapeID shapeID)
 {
     auto body = GetBody(world, id);
     body.Attach(shapeID);
     SetBody(world, id, body);
 }
 
-bool Detach(WorldImpl& world, BodyID id, ShapeID shapeID)
+bool Detach(AabbTreeWorld& world, BodyID id, ShapeID shapeID)
 {
     auto body = GetBody(world, id);
     if (body.Detach(shapeID)) {
@@ -48,7 +48,7 @@ bool Detach(WorldImpl& world, BodyID id, ShapeID shapeID)
     return false;
 }
 
-const std::vector<ShapeID>& GetShapes(const WorldImpl& world, BodyID id)
+const std::vector<ShapeID>& GetShapes(const AabbTreeWorld& world, BodyID id)
 {
     return GetBody(world, id).GetShapes();
 }

@@ -23,7 +23,7 @@
 #define PLAYRHO_D2_WORLDIMPL_HPP
 
 /// @file
-/// @brief Declarations of the WorldImpl class.
+/// @brief Declarations of the AabbTreeWorld class.
 
 #include <functional>
 #include <iterator>
@@ -67,7 +67,7 @@ class Joint;
 class Shape;
 class Manifold;
 class ContactImpulsesList;
-class WorldImpl;
+class AabbTreeWorld;
 
 /// @brief Body IDs container type.
 using BodyIDs = std::vector<BodyID>;
@@ -110,38 +110,38 @@ using ManifoldContactListener = std::function<void(ContactID, const Manifold&)>;
 using ImpulsesContactListener =
     std::function<void(ContactID, const ContactImpulsesList&, unsigned)>;
 
-/// @name WorldImpl Listener Non-Member Functions
+/// @name AabbTreeWorld Listener Non-Member Functions
 /// @{
 
 /// @brief Registers a destruction listener for shapes.
-/// @note This listener is called on <code>Clear(WorldImpl&)</code> for every shape.
-/// @see Clear(WorldImpl&).
-void SetShapeDestructionListener(WorldImpl& world, ShapeListener listener) noexcept;
+/// @note This listener is called on <code>Clear(AabbTreeWorld&)</code> for every shape.
+/// @see Clear(AabbTreeWorld&).
+void SetShapeDestructionListener(AabbTreeWorld& world, ShapeListener listener) noexcept;
 
 /// @brief Registers a detach listener for shapes detaching from bodies.
-void SetDetachListener(WorldImpl& world, AssociationListener listener) noexcept;
+void SetDetachListener(AabbTreeWorld& world, AssociationListener listener) noexcept;
 
 /// @brief Register a destruction listener for joints.
 /// @note This listener is called on <code>Clear()</code> for every joint. It's also called
 ///   on <code>Destroy(BodyID)</code> for every joint associated with the identified body.
 /// @see Clear, Destroy(BodyID).
-void SetJointDestructionListener(WorldImpl& world, JointListener listener) noexcept;
+void SetJointDestructionListener(AabbTreeWorld& world, JointListener listener) noexcept;
 
 /// @brief Register a begin contact event listener.
-void SetBeginContactListener(WorldImpl& world, ContactListener listener) noexcept;
+void SetBeginContactListener(AabbTreeWorld& world, ContactListener listener) noexcept;
 
 /// @brief Register an end contact event listener.
-void SetEndContactListener(WorldImpl& world, ContactListener listener) noexcept;
+void SetEndContactListener(AabbTreeWorld& world, ContactListener listener) noexcept;
 
 /// @brief Register a pre-solve contact event listener.
-void SetPreSolveContactListener(WorldImpl& world, ManifoldContactListener listener) noexcept;
+void SetPreSolveContactListener(AabbTreeWorld& world, ManifoldContactListener listener) noexcept;
 
 /// @brief Register a post-solve contact event listener.
-void SetPostSolveContactListener(WorldImpl& world, ImpulsesContactListener listener) noexcept;
+void SetPostSolveContactListener(AabbTreeWorld& world, ImpulsesContactListener listener) noexcept;
 
 /// @}
 
-/// @name WorldImpl Miscellaneous Non-Member Functions
+/// @name AabbTreeWorld Miscellaneous Non-Member Functions
 /// @{
 
 /// @brief Clears this world.
@@ -151,7 +151,7 @@ void SetPostSolveContactListener(WorldImpl& world, ImpulsesContactListener liste
 /// @post The contents of this world have all been destroyed and this world's internal
 ///   state reset as though it had just been constructed.
 /// @see SetJointDestructionListener, SetShapeDestructionListener.
-void Clear(WorldImpl& world) noexcept;
+void Clear(AabbTreeWorld& world) noexcept;
 
 /// @brief Steps the world simulation according to the given configuration.
 ///
@@ -178,7 +178,7 @@ void Clear(WorldImpl& world) noexcept;
 /// @param conf Configuration for the simulation step.
 ///
 /// @pre @p conf.linearSlop is significant enough compared to
-///   <code>GetVertexRadiusInterval(const WorldImpl& world).GetMax()</code>.
+///   <code>GetVertexRadiusInterval(const AabbTreeWorld& world).GetMax()</code>.
 /// @post Static bodies are unmoved.
 /// @post Kinetic bodies are moved based on their previous velocities.
 /// @post Dynamic bodies are moved based on their previous velocities, gravity, applied
@@ -193,31 +193,31 @@ void Clear(WorldImpl& world) noexcept;
 ///
 /// @see GetBodiesForProxies, GetFixturesForProxies.
 ///
-StepStats Step(WorldImpl& world, const StepConf& conf);
+StepStats Step(AabbTreeWorld& world, const StepConf& conf);
 
 /// @brief Whether or not "step" is complete.
 /// @details The "step" is completed when there are no more TOI events for the current time step.
 /// @return <code>true</code> unless sub-stepping is enabled and the step function returned
 ///   without finishing all of its sub-steps.
 /// @see GetSubStepping, SetSubStepping.
-bool IsStepComplete(const WorldImpl& world) noexcept;
+bool IsStepComplete(const AabbTreeWorld& world) noexcept;
 
 /// @brief Gets whether or not sub-stepping is enabled.
 /// @see SetSubStepping, IsStepComplete.
-bool GetSubStepping(const WorldImpl& world) noexcept;
+bool GetSubStepping(const AabbTreeWorld& world) noexcept;
 
 /// @brief Enables/disables single stepped continuous physics.
 /// @note This is not normally used. Enabling sub-stepping is meant for testing.
 /// @post The <code>GetSubStepping()</code> function will return the value this function was
 ///   called with.
 /// @see IsStepComplete, GetSubStepping.
-void SetSubStepping(WorldImpl& world, bool flag) noexcept;
+void SetSubStepping(AabbTreeWorld& world, bool flag) noexcept;
 
 /// @brief Gets access to the broad-phase dynamic tree information.
-const DynamicTree& GetTree(const WorldImpl& world) noexcept;
+const DynamicTree& GetTree(const AabbTreeWorld& world) noexcept;
 
 /// @brief Is the world locked (in the middle of a time step).
-bool IsLocked(const WorldImpl& world) noexcept;
+bool IsLocked(const AabbTreeWorld& world) noexcept;
 
 /// @brief Shifts the world origin.
 /// @note Useful for large worlds.
@@ -227,37 +227,37 @@ bool IsLocked(const WorldImpl& world) noexcept;
 /// @param world The world whose origin should be shifted.
 /// @param newOrigin the new origin with respect to the old origin
 /// @throws WrongState if this function is called while the world is locked.
-void ShiftOrigin(WorldImpl& world, const Length2& newOrigin);
+void ShiftOrigin(AabbTreeWorld& world, const Length2& newOrigin);
 
 /// @brief Gets the vertex radius interval allowable for the given world.
-/// @see CreateShape(WorldImpl&, const Shape&).
-Interval<Positive<Length>> GetVertexRadiusInterval(const WorldImpl& world) noexcept;
+/// @see CreateShape(AabbTreeWorld&, const Shape&).
+Interval<Positive<Length>> GetVertexRadiusInterval(const AabbTreeWorld& world) noexcept;
 
 /// @brief Gets the inverse delta time.
 /// @details Gets the inverse delta time that was set on construction or assignment, and
 ///   updated on every call to the <code>Step()</code> function having a non-zero delta-time.
 /// @see Step.
-Frequency GetInvDeltaTime(const WorldImpl& world) noexcept;
+Frequency GetInvDeltaTime(const AabbTreeWorld& world) noexcept;
 
 /// @brief Gets the dynamic tree leaves queued for finding new contacts.
-const ProxyIDs& GetProxies(const WorldImpl& world) noexcept;
+const ProxyIDs& GetProxies(const AabbTreeWorld& world) noexcept;
 
 /// @brief Gets the fixtures-for-proxies for this world.
 /// @details Provides insight on what fixtures have been queued for proxy processing
 ///   during the next call to the world step function.
 /// @see Step.
-const BodyShapeIDs& GetFixturesForProxies(const WorldImpl& world) noexcept;
+const BodyShapeIDs& GetFixturesForProxies(const AabbTreeWorld& world) noexcept;
 
 /// @}
 
-/// @name WorldImpl Body Member Functions
+/// @name AabbTreeWorld Body Member Functions
 /// Member functions relating to bodies.
 /// @{
 
 /// @brief Gets the extent of the currently valid body range.
 /// @note This is one higher than the maxium <code>BodyID</code> that is in range
 ///   for body related functions.
-BodyCounter GetBodyRange(const WorldImpl& world) noexcept;
+BodyCounter GetBodyRange(const AabbTreeWorld& world) noexcept;
 
 /// @brief Gets the world body range for this constant world.
 /// @details Gets a range enumerating the bodies currently existing within this world.
@@ -266,13 +266,13 @@ BodyCounter GetBodyRange(const WorldImpl& world) noexcept;
 /// @return Container of body identifiers that can be iterated over using begin and
 ///   end functions or using ranged-based for-loops.
 /// @see CreateBody(const Body&).
-const BodyIDs& GetBodies(const WorldImpl& world) noexcept;
+const BodyIDs& GetBodies(const AabbTreeWorld& world) noexcept;
 
 /// @brief Gets the bodies-for-proxies range for this world.
 /// @details Provides insight on what bodies have been queued for proxy processing
 ///   during the next call to the world step function.
 /// @see Step.
-const BodyIDs& GetBodiesForProxies(const WorldImpl& world) noexcept;
+const BodyIDs& GetBodiesForProxies(const AabbTreeWorld& world) noexcept;
 
 /// @brief Creates a rigid body that's a copy of the given one.
 /// @warning This function should not be used while the world is locked &mdash; as it is
@@ -289,12 +289,12 @@ const BodyIDs& GetBodiesForProxies(const WorldImpl& world) noexcept;
 /// @throws std::out_of_range if the given body references any invalid shape identifiers.
 /// @see Destroy(BodyID), GetBodies.
 /// @see PhysicalEntities.
-BodyID CreateBody(WorldImpl& world, Body body = Body{});
+BodyID CreateBody(AabbTreeWorld& world, Body body = Body{});
 
 /// @brief Gets the identified body.
 /// @throws std::out_of_range if given an invalid id.
 /// @see SetBody, GetBodyRange.
-const Body& GetBody(const WorldImpl& world, BodyID id);
+const Body& GetBody(const AabbTreeWorld& world, BodyID id);
 
 /// @brief Sets the identified body.
 /// @throws WrongState if this function is called while the world is locked.
@@ -302,7 +302,7 @@ const Body& GetBody(const WorldImpl& world, BodyID id);
 ///   invalid shape identifiers.
 /// @throws InvalidArgument if the specified ID was destroyed.
 /// @see GetBody, GetBodyRange.
-void SetBody(WorldImpl& world, BodyID id, Body value);
+void SetBody(AabbTreeWorld& world, BodyID id, Body value);
 
 /// @brief Destroys the identified body.
 /// @details Destroys a given body that had previously been created by a call to this
@@ -321,33 +321,33 @@ void SetBody(WorldImpl& world, BodyID id, Body value);
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see CreateBody(const Body&), GetBodies, GetFixturesForProxies.
 /// @see PhysicalEntities.
-void Destroy(WorldImpl& world, BodyID id);
+void Destroy(AabbTreeWorld& world, BodyID id);
 
 /// @brief Gets whether the given identifier is to a body that's been destroyed.
 /// @note Complexity is at most O(n) where n is the number of elements free.
-bool IsDestroyed(const WorldImpl& world, BodyID id) noexcept;
+bool IsDestroyed(const AabbTreeWorld& world, BodyID id) noexcept;
 
 /// @brief Gets the proxies for the identified body.
 /// @throws std::out_of_range If given an invalid identifier.
-const ProxyIDs& GetProxies(const WorldImpl& world, BodyID id);
+const ProxyIDs& GetProxies(const AabbTreeWorld& world, BodyID id);
 
 /// @brief Gets the contacts associated with the identified body.
 /// @throws std::out_of_range if given an invalid id.
-const BodyContactIDs& GetContacts(const WorldImpl& world, BodyID id);
+const BodyContactIDs& GetContacts(const AabbTreeWorld& world, BodyID id);
 
 /// @throws std::out_of_range if given an invalid id.
-const BodyJointIDs& GetJoints(const WorldImpl& world, BodyID id);
+const BodyJointIDs& GetJoints(const AabbTreeWorld& world, BodyID id);
 
 /// @}
 
-/// @name WorldImpl Joint Member Functions
+/// @name AabbTreeWorld Joint Member Functions
 /// Member functions relating to joints.
 /// @{
 
 /// @brief Gets the extent of the currently valid joint range.
 /// @note This is one higher than the maxium <code>JointID</code> that is in range
 ///   for joint related functions.
-JointCounter GetJointRange(const WorldImpl& world) noexcept;
+JointCounter GetJointRange(const AabbTreeWorld& world) noexcept;
 
 /// @brief Gets the container of joint IDs of the given world.
 /// @details Gets a range enumerating the joints currently existing within this world.
@@ -355,7 +355,7 @@ JointCounter GetJointRange(const WorldImpl& world) noexcept;
 ///   <code>CreateJoint(const Joint&)</code> function that haven't yet been destroyed.
 /// @return Container of joint IDs of existing joints.
 /// @see CreateJoint(const Joint&).
-const JointIDs& GetJoints(const WorldImpl& world) noexcept;
+const JointIDs& GetJoints(const AabbTreeWorld& world) noexcept;
 
 /// @brief Creates a joint to constrain one or more bodies.
 /// @warning This function is locked during callbacks.
@@ -370,11 +370,11 @@ const JointIDs& GetJoints(const WorldImpl& world) noexcept;
 /// @throws std::out_of_range if the given joint references any invalid body id.
 /// @see PhysicalEntities.
 /// @see Destroy(JointID), GetJoints.
-JointID CreateJoint(WorldImpl& world, Joint def);
+JointID CreateJoint(AabbTreeWorld& world, Joint def);
 
 /// @brief Gets the identified joint.
 /// @throws std::out_of_range if given an invalid ID.
-const Joint& GetJoint(const WorldImpl& world, JointID id);
+const Joint& GetJoint(const AabbTreeWorld& world, JointID id);
 
 /// @brief Sets the identified joint.
 /// @throws WrongState if this function is called while the world is locked.
@@ -382,7 +382,7 @@ const Joint& GetJoint(const WorldImpl& world, JointID id);
 ///    invalid body ID.
 /// @throws InvalidArgument if the specified ID was destroyed.
 /// @see CreateJoint(Joint def), Destroy(JointID joint).
-void SetJoint(WorldImpl& world, JointID id, Joint def);
+void SetJoint(AabbTreeWorld& world, JointID id, Joint def);
 
 /// @brief Destroys a joint.
 /// @details Destroys a given joint that had previously been created by a call to this
@@ -397,35 +397,35 @@ void SetJoint(WorldImpl& world, JointID id, Joint def);
 /// @throws WrongState if this function is called while the world is locked.
 /// @see CreateJoint(const Joint&), GetJoints.
 /// @see PhysicalEntities.
-void Destroy(WorldImpl& world, JointID id);
+void Destroy(AabbTreeWorld& world, JointID id);
 
 /// @brief Gets whether the given identifier is to a joint that's been destroyed.
 /// @note Complexity is at most O(n) where n is the number of elements free.
-bool IsDestroyed(const WorldImpl& world, JointID id) noexcept;
+bool IsDestroyed(const AabbTreeWorld& world, JointID id) noexcept;
 
 /// @}
 
-/// @name WorldImpl Shape Member Functions
+/// @name AabbTreeWorld Shape Member Functions
 /// Member functions relating to shapes.
 /// @{
 
 /// @brief Gets the extent of the currently valid shape range.
 /// @note This is one higher than the maxium <code>ShapeID</code> that is in range
 ///   for shape related functions.
-ShapeCounter GetShapeRange(const WorldImpl& world) noexcept;
+ShapeCounter GetShapeRange(const AabbTreeWorld& world) noexcept;
 
 /// @brief Creates an identifiable copy of the given shape within this world.
 /// @throws InvalidArgument if called for a shape with a vertex radius that's not within
 ///   the world's allowable vertex radius interval.
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws LengthError if this operation would create more than <code>MaxShapes</code>.
-/// @see Destroy(ShapeID), GetShape, SetShape, GetVertexRadiusInterval(const WorldImpl& world).
-ShapeID CreateShape(WorldImpl& world, Shape def);
+/// @see Destroy(ShapeID), GetShape, SetShape, GetVertexRadiusInterval(const AabbTreeWorld& world).
+ShapeID CreateShape(AabbTreeWorld& world, Shape def);
 
 /// @brief Gets the identified shape.
 /// @throws std::out_of_range If given an invalid shape identifier.
 /// @see CreateShape.
-const Shape& GetShape(const WorldImpl& world, ShapeID id);
+const Shape& GetShape(const AabbTreeWorld& world, ShapeID id);
 
 /// @brief Sets the value of the identified shape.
 /// @warning This function is locked during callbacks.
@@ -434,7 +434,7 @@ const Shape& GetShape(const WorldImpl& world, ShapeID id);
 /// @throws std::out_of_range If given an invalid identifier.
 /// @throws InvalidArgument if the specified ID was destroyed.
 /// @see CreateShape, Destroy(ShapeID id).
-void SetShape(WorldImpl& world, ShapeID id, Shape def);
+void SetShape(AabbTreeWorld& world, ShapeID id, Shape def);
 
 /// @brief Destroys the identified shape removing any body associations with it first.
 /// @warning This function is locked during callbacks.
@@ -442,29 +442,29 @@ void SetShape(WorldImpl& world, ShapeID id, Shape def);
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid shape identifier.
 /// @see CreateShape, Detach.
-void Destroy(WorldImpl& world, ShapeID id);
+void Destroy(AabbTreeWorld& world, ShapeID id);
 
 /// @}
 
-/// @name WorldImpl Contact Member Functions
+/// @name AabbTreeWorld Contact Member Functions
 /// Member functions relating to contacts.
 /// @{
 
 /// @brief Gets the extent of the currently valid contact range.
 /// @note This is one higher than the maxium <code>ContactID</code> that is in range
 ///   for contact related functions.
-ContactCounter GetContactRange(const WorldImpl& world) noexcept;
+ContactCounter GetContactRange(const AabbTreeWorld& world) noexcept;
 
 /// @brief Gets the world contact range.
 /// @warning contacts are created and destroyed in the middle of a time step.
 /// Use <code>ContactListener</code> to avoid missing contacts.
 /// @return Container of keyed contact IDs of existing contacts.
-KeyedContactIDs GetContacts(const WorldImpl& world);
+KeyedContactIDs GetContacts(const AabbTreeWorld& world);
 
 /// @brief Gets the identified contact.
 /// @throws std::out_of_range If given an invalid contact identifier.
 /// @see SetContact.
-const Contact& GetContact(const WorldImpl& world, ContactID id);
+const Contact& GetContact(const AabbTreeWorld& world, ContactID id);
 
 /// @brief Sets the identified contact's state.
 /// @note This will throw an exception to preserve invariants.
@@ -476,20 +476,22 @@ const Contact& GetContact(const WorldImpl& world, ContactID id);
 /// @throws std::out_of_range If given an invalid contact identifier or an invalid identifier
 ///   in the new contact value.
 /// @see GetContact.
-void SetContact(WorldImpl& world, ContactID id, Contact value);
+void SetContact(AabbTreeWorld& world, ContactID id, Contact value);
 
 /// @brief Gets the identified manifold.
 /// @throws std::out_of_range If given an invalid contact identifier.
-const Manifold& GetManifold(const WorldImpl& world, ContactID id);
+const Manifold& GetManifold(const AabbTreeWorld& world, ContactID id);
 
 /// @brief Gets whether the given identifier is to a contact that's been destroyed.
 /// @note Complexity is at most O(n) where n is the number of elements free.
-bool IsDestroyed(const WorldImpl& world, ContactID id) noexcept;
+bool IsDestroyed(const AabbTreeWorld& world, ContactID id) noexcept;
 
 /// @}
 
 /// @brief An AABB dynamic-tree based world implementation.
-class WorldImpl {
+/// @note This is designed to be compatible with the World class interface.
+/// @see World
+class AabbTreeWorld {
 public:
     /// @brief Broad phase generated data for identifying potentially new contacts.
     /// @details Stores the contact-key followed by the key's min contactable then max contactable data.
@@ -502,83 +504,83 @@ public:
     /// @note A lot more configurability can be had via the <code>StepConf</code>
     ///   data that's given to the world's <code>Step</code> function.
     /// @see Step.
-    explicit WorldImpl(const WorldConf& conf = WorldConf{});
+    explicit AabbTreeWorld(const WorldConf& conf = WorldConf{});
 
     /// @brief Copy constructor.
-    WorldImpl(const WorldImpl& other);
+    AabbTreeWorld(const AabbTreeWorld& other);
 
     /// @brief Move constructor.
-    WorldImpl(WorldImpl&& other) noexcept;
+    AabbTreeWorld(AabbTreeWorld&& other) noexcept;
 
     /// @brief Destructor.
     /// @details All physics entities are destroyed and all memory is released.
     /// @note This will call the <code>Clear()</code> function.
     /// @see Clear.
-    ~WorldImpl() noexcept;
+    ~AabbTreeWorld() noexcept;
 
     // Delete compiler defined implementations of move construction/assignment and copy assignment...
-    WorldImpl& operator=(const WorldImpl& other) = delete;
-    WorldImpl& operator=(WorldImpl&& other) = delete;
+    AabbTreeWorld& operator=(const AabbTreeWorld& other) = delete;
+    AabbTreeWorld& operator=(AabbTreeWorld&& other) = delete;
 
     // Listener friend functions...
-    friend void SetShapeDestructionListener(WorldImpl& world, ShapeListener listener) noexcept;
-    friend void SetDetachListener(WorldImpl& world, AssociationListener listener) noexcept;
-    friend void SetJointDestructionListener(WorldImpl& world, JointListener listener) noexcept;
-    friend void SetBeginContactListener(WorldImpl& world, ContactListener listener) noexcept;
-    friend void SetEndContactListener(WorldImpl& world, ContactListener listener) noexcept;
-    friend void SetPreSolveContactListener(WorldImpl& world, ManifoldContactListener listener) noexcept;
-    friend void SetPostSolveContactListener(WorldImpl& world, ImpulsesContactListener listener) noexcept;
+    friend void SetShapeDestructionListener(AabbTreeWorld& world, ShapeListener listener) noexcept;
+    friend void SetDetachListener(AabbTreeWorld& world, AssociationListener listener) noexcept;
+    friend void SetJointDestructionListener(AabbTreeWorld& world, JointListener listener) noexcept;
+    friend void SetBeginContactListener(AabbTreeWorld& world, ContactListener listener) noexcept;
+    friend void SetEndContactListener(AabbTreeWorld& world, ContactListener listener) noexcept;
+    friend void SetPreSolveContactListener(AabbTreeWorld& world, ManifoldContactListener listener) noexcept;
+    friend void SetPostSolveContactListener(AabbTreeWorld& world, ImpulsesContactListener listener) noexcept;
 
     // Miscellaneous friend functions...
-    friend void Clear(WorldImpl& world) noexcept;
-    friend StepStats Step(WorldImpl& world, const StepConf& conf);
-    friend bool IsStepComplete(const WorldImpl& world) noexcept;
-    friend bool GetSubStepping(const WorldImpl& world) noexcept;
-    friend void SetSubStepping(WorldImpl& world, bool flag) noexcept;
-    friend const DynamicTree& GetTree(const WorldImpl& world) noexcept;
-    friend bool IsLocked(const WorldImpl& world) noexcept;
-    friend void ShiftOrigin(WorldImpl& world, const Length2& newOrigin);
-    friend Interval<Positive<Length>> GetVertexRadiusInterval(const WorldImpl& world) noexcept;
-    friend Frequency GetInvDeltaTime(const WorldImpl& world) noexcept;
-    friend const ProxyIDs& GetProxies(const WorldImpl& world) noexcept;
-    friend const BodyShapeIDs& GetFixturesForProxies(const WorldImpl& world) noexcept;
+    friend void Clear(AabbTreeWorld& world) noexcept;
+    friend StepStats Step(AabbTreeWorld& world, const StepConf& conf);
+    friend bool IsStepComplete(const AabbTreeWorld& world) noexcept;
+    friend bool GetSubStepping(const AabbTreeWorld& world) noexcept;
+    friend void SetSubStepping(AabbTreeWorld& world, bool flag) noexcept;
+    friend const DynamicTree& GetTree(const AabbTreeWorld& world) noexcept;
+    friend bool IsLocked(const AabbTreeWorld& world) noexcept;
+    friend void ShiftOrigin(AabbTreeWorld& world, const Length2& newOrigin);
+    friend Interval<Positive<Length>> GetVertexRadiusInterval(const AabbTreeWorld& world) noexcept;
+    friend Frequency GetInvDeltaTime(const AabbTreeWorld& world) noexcept;
+    friend const ProxyIDs& GetProxies(const AabbTreeWorld& world) noexcept;
+    friend const BodyShapeIDs& GetFixturesForProxies(const AabbTreeWorld& world) noexcept;
 
     // Body friend functions...
-    friend BodyCounter GetBodyRange(const WorldImpl& world) noexcept;
-    friend const BodyIDs& GetBodies(const WorldImpl& world) noexcept;
-    friend const BodyIDs& GetBodiesForProxies(const WorldImpl& world) noexcept;
-    friend BodyID CreateBody(WorldImpl& world, Body body);
-    friend const Body& GetBody(const WorldImpl& world, BodyID id);
-    friend void SetBody(WorldImpl& world, BodyID id, Body value);
-    friend void Destroy(WorldImpl& world, BodyID id);
-    friend bool IsDestroyed(const WorldImpl& world, BodyID id) noexcept;
-    friend const ProxyIDs& GetProxies(const WorldImpl& world, BodyID id);
-    friend const BodyContactIDs& GetContacts(const WorldImpl& world, BodyID id);
-    friend const BodyJointIDs& GetJoints(const WorldImpl& world, BodyID id);
+    friend BodyCounter GetBodyRange(const AabbTreeWorld& world) noexcept;
+    friend const BodyIDs& GetBodies(const AabbTreeWorld& world) noexcept;
+    friend const BodyIDs& GetBodiesForProxies(const AabbTreeWorld& world) noexcept;
+    friend BodyID CreateBody(AabbTreeWorld& world, Body body);
+    friend const Body& GetBody(const AabbTreeWorld& world, BodyID id);
+    friend void SetBody(AabbTreeWorld& world, BodyID id, Body value);
+    friend void Destroy(AabbTreeWorld& world, BodyID id);
+    friend bool IsDestroyed(const AabbTreeWorld& world, BodyID id) noexcept;
+    friend const ProxyIDs& GetProxies(const AabbTreeWorld& world, BodyID id);
+    friend const BodyContactIDs& GetContacts(const AabbTreeWorld& world, BodyID id);
+    friend const BodyJointIDs& GetJoints(const AabbTreeWorld& world, BodyID id);
 
     // Joint friend functions...
-    friend JointCounter GetJointRange(const WorldImpl& world) noexcept;
-    friend const JointIDs& GetJoints(const WorldImpl& world) noexcept;
-    friend JointID CreateJoint(WorldImpl& world, Joint def);
-    friend const Joint& GetJoint(const WorldImpl& world, JointID id);
-    friend void SetJoint(WorldImpl& world, JointID id, Joint def);
-    friend void Destroy(WorldImpl& world, JointID id);
-    friend bool IsDestroyed(const WorldImpl& world, JointID id) noexcept;
+    friend JointCounter GetJointRange(const AabbTreeWorld& world) noexcept;
+    friend const JointIDs& GetJoints(const AabbTreeWorld& world) noexcept;
+    friend JointID CreateJoint(AabbTreeWorld& world, Joint def);
+    friend const Joint& GetJoint(const AabbTreeWorld& world, JointID id);
+    friend void SetJoint(AabbTreeWorld& world, JointID id, Joint def);
+    friend void Destroy(AabbTreeWorld& world, JointID id);
+    friend bool IsDestroyed(const AabbTreeWorld& world, JointID id) noexcept;
 
     // Shape friend functions...
-    friend ShapeCounter GetShapeRange(const WorldImpl& world) noexcept;
-    friend ShapeID CreateShape(WorldImpl& world, Shape def);
-    friend const Shape& GetShape(const WorldImpl& world, ShapeID id);
-    friend void SetShape(WorldImpl& world, ShapeID id, Shape def);
-    friend void Destroy(WorldImpl& world, ShapeID id);
+    friend ShapeCounter GetShapeRange(const AabbTreeWorld& world) noexcept;
+    friend ShapeID CreateShape(AabbTreeWorld& world, Shape def);
+    friend const Shape& GetShape(const AabbTreeWorld& world, ShapeID id);
+    friend void SetShape(AabbTreeWorld& world, ShapeID id, Shape def);
+    friend void Destroy(AabbTreeWorld& world, ShapeID id);
 
     // Contact friend functions...
-    friend ContactCounter GetContactRange(const WorldImpl& world) noexcept;
-    friend KeyedContactIDs GetContacts(const WorldImpl& world);
-    friend const Contact& GetContact(const WorldImpl& world, ContactID id);
-    friend void SetContact(WorldImpl& world, ContactID id, Contact value);
-    friend const Manifold& GetManifold(const WorldImpl& world, ContactID id);
-    friend bool IsDestroyed(const WorldImpl& world, ContactID id) noexcept;
+    friend ContactCounter GetContactRange(const AabbTreeWorld& world) noexcept;
+    friend KeyedContactIDs GetContacts(const AabbTreeWorld& world);
+    friend const Contact& GetContact(const AabbTreeWorld& world, ContactID id);
+    friend void SetContact(AabbTreeWorld& world, ContactID id, Contact value);
+    friend const Manifold& GetManifold(const AabbTreeWorld& world, ContactID id);
+    friend bool IsDestroyed(const AabbTreeWorld& world, ContactID id) noexcept;
 
 private:
     /// @brief Flags type data type.
@@ -943,114 +945,114 @@ private:
     Interval<Positive<Length>> m_vertexRadius = WorldConf::DefaultVertexRadius;
 };
 
-// State & confirm compile-time traits of WorldImpl class.
-static_assert(std::is_default_constructible_v<WorldImpl>);
-static_assert(std::is_copy_constructible_v<WorldImpl>);
-static_assert(std::is_move_constructible_v<WorldImpl>);
-static_assert(!std::is_copy_assignable_v<WorldImpl>);
-static_assert(!std::is_move_assignable_v<WorldImpl>);
+// State & confirm compile-time traits of AabbTreeWorld class.
+static_assert(std::is_default_constructible_v<AabbTreeWorld>);
+static_assert(std::is_copy_constructible_v<AabbTreeWorld>);
+static_assert(std::is_move_constructible_v<AabbTreeWorld>);
+static_assert(!std::is_copy_assignable_v<AabbTreeWorld>);
+static_assert(!std::is_move_assignable_v<AabbTreeWorld>);
 
-inline const ProxyIDs& GetProxies(const WorldImpl& world) noexcept
+inline const ProxyIDs& GetProxies(const AabbTreeWorld& world) noexcept
 {
     return world.m_proxiesForContacts;
 }
 
-inline const BodyIDs& GetBodies(const WorldImpl& world) noexcept
+inline const BodyIDs& GetBodies(const AabbTreeWorld& world) noexcept
 {
     return world.m_bodies;
 }
 
-inline const BodyIDs& GetBodiesForProxies(const WorldImpl& world) noexcept
+inline const BodyIDs& GetBodiesForProxies(const AabbTreeWorld& world) noexcept
 {
     return world.m_bodiesForSync;
 }
 
-inline const BodyShapeIDs& GetFixturesForProxies(const WorldImpl& world) noexcept
+inline const BodyShapeIDs& GetFixturesForProxies(const AabbTreeWorld& world) noexcept
 {
     return world.m_fixturesForProxies;
 }
 
-inline const JointIDs& GetJoints(const WorldImpl& world) noexcept
+inline const JointIDs& GetJoints(const AabbTreeWorld& world) noexcept
 {
     return world.m_joints;
 }
 
-inline KeyedContactIDs GetContacts(const WorldImpl& world)
+inline KeyedContactIDs GetContacts(const AabbTreeWorld& world)
 {
     return KeyedContactIDs{begin(world.m_contacts), end(world.m_contacts)};
 }
 
-inline bool IsLocked(const WorldImpl& world) noexcept
+inline bool IsLocked(const AabbTreeWorld& world) noexcept
 {
-    return (world.m_flags & WorldImpl::e_locked) == WorldImpl::e_locked;
+    return (world.m_flags & AabbTreeWorld::e_locked) == AabbTreeWorld::e_locked;
 }
 
-inline bool IsStepComplete(const WorldImpl& world) noexcept
+inline bool IsStepComplete(const AabbTreeWorld& world) noexcept
 {
-    return (world.m_flags & WorldImpl::e_stepComplete) != 0u;
+    return (world.m_flags & AabbTreeWorld::e_stepComplete) != 0u;
 }
 
-inline bool GetSubStepping(const WorldImpl& world) noexcept
+inline bool GetSubStepping(const AabbTreeWorld& world) noexcept
 {
-    return (world.m_flags & WorldImpl::e_substepping) != 0u;
+    return (world.m_flags & AabbTreeWorld::e_substepping) != 0u;
 }
 
-inline void SetSubStepping(WorldImpl& world, bool flag) noexcept
+inline void SetSubStepping(AabbTreeWorld& world, bool flag) noexcept
 {
     if (flag) {
-        world.m_flags |= WorldImpl::e_substepping;
+        world.m_flags |= AabbTreeWorld::e_substepping;
     }
     else {
-        world.m_flags &= ~WorldImpl::e_substepping;
+        world.m_flags &= ~AabbTreeWorld::e_substepping;
     }
 }
 
-inline Interval<Positive<Length>> GetVertexRadiusInterval(const WorldImpl& world) noexcept
+inline Interval<Positive<Length>> GetVertexRadiusInterval(const AabbTreeWorld& world) noexcept
 {
     return world.m_vertexRadius;
 }
 
-inline Frequency GetInvDeltaTime(const WorldImpl& world) noexcept
+inline Frequency GetInvDeltaTime(const AabbTreeWorld& world) noexcept
 {
     return world.m_inv_dt0;
 }
 
-inline const DynamicTree& GetTree(const WorldImpl& world) noexcept
+inline const DynamicTree& GetTree(const AabbTreeWorld& world) noexcept
 {
     return world.m_tree;
 }
 
-inline void SetShapeDestructionListener(WorldImpl& world, ShapeListener listener) noexcept
+inline void SetShapeDestructionListener(AabbTreeWorld& world, ShapeListener listener) noexcept
 {
     world.m_listeners.shapeDestruction = std::move(listener);
 }
 
-inline void SetDetachListener(WorldImpl& world, AssociationListener listener) noexcept
+inline void SetDetachListener(AabbTreeWorld& world, AssociationListener listener) noexcept
 {
     world.m_listeners.detach = std::move(listener);
 }
 
-inline void SetJointDestructionListener(WorldImpl& world, JointListener listener) noexcept
+inline void SetJointDestructionListener(AabbTreeWorld& world, JointListener listener) noexcept
 {
     world.m_listeners.jointDestruction = std::move(listener);
 }
 
-inline void SetBeginContactListener(WorldImpl& world, ContactListener listener) noexcept
+inline void SetBeginContactListener(AabbTreeWorld& world, ContactListener listener) noexcept
 {
     world.m_listeners.beginContact = std::move(listener);
 }
 
-inline void SetEndContactListener(WorldImpl& world, ContactListener listener) noexcept
+inline void SetEndContactListener(AabbTreeWorld& world, ContactListener listener) noexcept
 {
     world.m_listeners.endContact = std::move(listener);
 }
 
-inline void SetPreSolveContactListener(WorldImpl& world, ManifoldContactListener listener) noexcept
+inline void SetPreSolveContactListener(AabbTreeWorld& world, ManifoldContactListener listener) noexcept
 {
     world.m_listeners.preSolveContact = std::move(listener);
 }
 
-inline void SetPostSolveContactListener(WorldImpl& world, ImpulsesContactListener listener) noexcept
+inline void SetPostSolveContactListener(AabbTreeWorld& world, ImpulsesContactListener listener) noexcept
 {
     world.m_listeners.postSolveContact = std::move(listener);
 }

@@ -32,8 +32,8 @@
 #include <playrho/d2/Body.hpp> // for GetBody
 #include <playrho/d2/BodyConf.hpp>
 #include <playrho/d2/ContactImpulsesList.hpp>
-#include <playrho/d2/WorldImpl.hpp>
-#include <playrho/d2/WorldImplBody.hpp>
+#include <playrho/d2/AabbTreeWorld.hpp>
+#include <playrho/d2/AabbTreeWorldBody.hpp>
 #include <playrho/d2/Shape.hpp>
 #include <playrho/d2/ChainShapeConf.hpp>
 #include <playrho/d2/DiskShapeConf.hpp>
@@ -74,14 +74,14 @@ struct PushBackListener
     }
 };
 
-void SetEnabled(WorldImpl& world, BodyID id, bool value)
+void SetEnabled(AabbTreeWorld& world, BodyID id, bool value)
 {
     auto copy = GetBody(world, id);
     SetEnabled(copy, value);
     SetBody(world, id, copy);
 }
 
-void SetType(WorldImpl& world, BodyID id, BodyType value)
+void SetType(AabbTreeWorld& world, BodyID id, BodyType value)
 {
     auto body = GetBody(world, id);
     SetType(body, value);
@@ -90,17 +90,17 @@ void SetType(WorldImpl& world, BodyID id, BodyType value)
 
 } // namespace
 
-TEST(WorldImpl, ByteSize)
+TEST(AabbTreeWorld, ByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
-    EXPECT_NE(sizeof(WorldImpl), sizeof(void*));
+    EXPECT_NE(sizeof(AabbTreeWorld), sizeof(void*));
     // It's 944 bytes on at least one 64-but platform.
 }
 
-TEST(WorldImpl, DefaultInit)
+TEST(AabbTreeWorld, DefaultInit)
 {
-    WorldImpl world;
+    AabbTreeWorld world;
 
     EXPECT_EQ(GetBodies(world).size(), BodyCounter(0));
     EXPECT_EQ(GetTree(world).GetLeafCount(), ContactCounter(0));
@@ -116,7 +116,7 @@ TEST(WorldImpl, DefaultInit)
         EXPECT_EQ(bodies.begin(), bodies.end());
     }
     {
-        const auto& w = static_cast<const WorldImpl&>(world);
+        const auto& w = static_cast<const AabbTreeWorld&>(world);
         const auto& bodies = GetBodies(w);
         EXPECT_TRUE(bodies.empty());
         EXPECT_EQ(bodies.size(), BodyCounter(0));
@@ -133,9 +133,9 @@ TEST(WorldImpl, DefaultInit)
     EXPECT_FALSE(IsLocked(world));
 }
 
-TEST(WorldImpl, Init)
+TEST(AabbTreeWorld, Init)
 {
-    WorldImpl world{};
+    AabbTreeWorld world{};
     EXPECT_FALSE(IsLocked(world));
     {
         auto calls = 0;
@@ -147,13 +147,13 @@ TEST(WorldImpl, Init)
     }
 }
 
-TEST(WorldImpl, Clear)
+TEST(AabbTreeWorld, Clear)
 {
     auto jointListener = PushBackListener<JointID, InvalidArgument>{};
     auto shapeListener = PushBackListener<ShapeID, InvalidArgument>{};
     auto associationListener = PushBackListener<std::pair<BodyID, ShapeID>>{};
 
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     ASSERT_EQ(GetBodies(world).size(), std::size_t(0));
     ASSERT_EQ(GetJoints(world).size(), std::size_t(0));
 
@@ -201,9 +201,9 @@ TEST(WorldImpl, Clear)
     ASSERT_NO_THROW(Attach(world, b2, shapeId1));
 }
 
-TEST(WorldImpl, CreateDestroyEmptyStaticBody)
+TEST(AabbTreeWorld, CreateDestroyEmptyStaticBody)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     ASSERT_EQ(GetBodies(world).size(), BodyCounter(0));
     const auto bodyID = CreateBody(world, BodyConf{}.UseType(BodyType::Static));
     ASSERT_NE(bodyID, InvalidBodyID);
@@ -236,9 +236,9 @@ TEST(WorldImpl, CreateDestroyEmptyStaticBody)
     EXPECT_EQ(GetFixturesForProxies(world).size(), std::size_t{0});
 }
 
-TEST(WorldImpl, CreateDestroyEmptyDynamicBody)
+TEST(AabbTreeWorld, CreateDestroyEmptyDynamicBody)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     ASSERT_EQ(GetBodies(world).size(), BodyCounter(0));
     const auto bodyID = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     ASSERT_NE(bodyID, InvalidBodyID);
@@ -271,12 +271,12 @@ TEST(WorldImpl, CreateDestroyEmptyDynamicBody)
     EXPECT_EQ(GetFixturesForProxies(world).size(), std::size_t{0});
 }
 
-TEST(WorldImpl, CreateDestroyDynamicBodyAndFixture)
+TEST(AabbTreeWorld, CreateDestroyDynamicBodyAndFixture)
 {
     // Created this test after receiving issue #306:
     //   Rapid create/destroy between step() causes SEGFAULT
     
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     ASSERT_EQ(GetBodies(world).size(), BodyCounter(0));
     const auto bodyID = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     ASSERT_NE(bodyID, InvalidBodyID);
@@ -318,9 +318,9 @@ TEST(WorldImpl, CreateDestroyDynamicBodyAndFixture)
     EXPECT_EQ(GetFixturesForProxies(world).size(), std::size_t{0});
 }
 
-TEST(WorldImpl, CreateDestroyContactingBodies)
+TEST(AabbTreeWorld, CreateDestroyContactingBodies)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     ASSERT_EQ(GetBodies(world).size(), BodyCounter(0));
     ASSERT_EQ(GetJoints(world).size(), JointCounter(0));
     ASSERT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
@@ -433,13 +433,13 @@ TEST(WorldImpl, CreateDestroyContactingBodies)
     EXPECT_EQ(contacts.size(), ContactCounter(0));
 }
 
-TEST(WorldImpl, SetTypeOfBody)
+TEST(AabbTreeWorld, SetTypeOfBody)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     const auto bodyID = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     const auto& body = GetBody(world, bodyID);
     ASSERT_EQ(GetType(body), BodyType::Dynamic);
-    auto other = WorldImpl{};
+    auto other = AabbTreeWorld{};
     EXPECT_THROW(SetBody(other, bodyID, body), std::out_of_range);
     EXPECT_EQ(GetType(body), BodyType::Dynamic);
     auto body2 = body;
@@ -448,7 +448,7 @@ TEST(WorldImpl, SetTypeOfBody)
     EXPECT_EQ(GetType(GetBody(world, bodyID)), BodyType::Static);
 }
 
-TEST(WorldImpl, Proxies)
+TEST(AabbTreeWorld, Proxies)
 {
     constexpr auto density = 2_kgpm2;
     constexpr auto friction = Real(0.5);
@@ -456,7 +456,7 @@ TEST(WorldImpl, Proxies)
     constexpr auto isSensor = true;
 
     {
-        auto world = WorldImpl{};
+        auto world = AabbTreeWorld{};
         const auto shapeId = CreateShape(world, 
             Shape(DiskShapeConf{}.UseFriction(friction).UseRestitution(restitution).UseDensity(density).UseIsSensor(isSensor))
         );
@@ -488,7 +488,7 @@ TEST(WorldImpl, Proxies)
             ChainShapeConf{}.UseIsSensor(isSensor).Add(Length2{-2_m, -3_m}).Add(Length2{-2_m, 0_m}).Add(Length2{0_m, 0_m})
         };
 
-        auto world = WorldImpl{};
+        auto world = AabbTreeWorld{};
         const auto shapeId = CreateShape(world, shape);
         const auto body = CreateBody(world);
         ASSERT_NO_THROW(Attach(world, body, shapeId));
@@ -511,7 +511,7 @@ TEST(WorldImpl, Proxies)
             .Add(Length2{0_m, +2_m}).Add(Length2{2_m, 2_m})
         };
 
-        auto world = WorldImpl{};
+        auto world = AabbTreeWorld{};
         const auto shapeId = CreateShape(world, shape);
         const auto body = CreateBody(world);
         ASSERT_NO_THROW(Attach(world, body, shapeId));
@@ -529,11 +529,11 @@ TEST(WorldImpl, Proxies)
     }
 }
 
-TEST(WorldImpl, SetEnabledBody)
+TEST(AabbTreeWorld, SetEnabledBody)
 {
     auto stepConf = StepConf{};
 
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     ASSERT_EQ(GetFixturesForProxies(world).size(), 0u);
     ASSERT_EQ(GetBodiesForProxies(world).size(), 0u);
 
@@ -612,9 +612,9 @@ TEST(WorldImpl, SetEnabledBody)
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
 }
 
-TEST(WorldImpl, AttachAndDetachShape)
+TEST(AabbTreeWorld, AttachAndDetachShape)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
 
     auto body = CreateBody(world);
     ASSERT_NE(body, InvalidBodyID);
@@ -675,9 +675,9 @@ TEST(WorldImpl, AttachAndDetachShape)
     }
 }
 
-TEST(WorldImpl, SetTypeBody)
+TEST(AabbTreeWorld, SetTypeBody)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
 
     const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     ASSERT_EQ(GetBodiesForProxies(world).size(), 0u);
@@ -696,9 +696,9 @@ TEST(WorldImpl, SetTypeBody)
     EXPECT_EQ(GetBodiesForProxies(world).size(), 1u);
 }
 
-TEST(WorldImpl, ThrowsLengthErrorOnMaxShapes)
+TEST(AabbTreeWorld, ThrowsLengthErrorOnMaxShapes)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     const auto shape = Shape{DiskShapeConf{}};
     for (auto i = ShapeCounter{0u}; i < MaxShapes; ++i) {
         EXPECT_NO_THROW(CreateShape(world, shape));
@@ -706,9 +706,9 @@ TEST(WorldImpl, ThrowsLengthErrorOnMaxShapes)
     EXPECT_THROW(CreateShape(world, shape), LengthError);
 }
 
-TEST(WorldImpl, GetBodyRange)
+TEST(AabbTreeWorld, GetBodyRange)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     EXPECT_EQ(GetBodyRange(world), BodyCounter{0u});
     EXPECT_EQ(GetBodies(world).size(), 0u);
     EXPECT_NO_THROW(CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
@@ -728,10 +728,10 @@ TEST(WorldImpl, GetBodyRange)
     EXPECT_EQ(GetBodies(world).size(), 1u);
 }
 
-TEST(WorldImpl, GetShapeRange)
+TEST(AabbTreeWorld, GetShapeRange)
 {
     const auto shape = Shape{DiskShapeConf{}};
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     EXPECT_EQ(GetShapeRange(world), ShapeCounter{0u});
     const auto shapeId = CreateShape(world, shape);
     EXPECT_EQ(GetShapeRange(world), ShapeCounter{1u});
@@ -753,21 +753,21 @@ TEST(WorldImpl, GetShapeRange)
     EXPECT_EQ(GetShapeRange(world), ShapeCounter{1u});
 }
 
-TEST(WorldImpl, GetJointRange)
+TEST(AabbTreeWorld, GetJointRange)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     EXPECT_EQ(GetJointRange(world), JointCounter{0u});
 }
 
-TEST(WorldImpl, GetContactRange)
+TEST(AabbTreeWorld, GetContactRange)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     EXPECT_EQ(GetContactRange(world), ContactCounter{0u});
 }
 
-TEST(WorldImpl, IsDestroyedBody)
+TEST(AabbTreeWorld, IsDestroyedBody)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     ASSERT_EQ(GetBodies(world).size(), 0u);
     EXPECT_FALSE(IsDestroyed(world, BodyID{0u}));
 
@@ -790,10 +790,10 @@ TEST(WorldImpl, IsDestroyedBody)
     EXPECT_TRUE(IsDestroyed(world, BodyID{1u}));
 }
 
-TEST(WorldImpl, AttachDetach)
+TEST(AabbTreeWorld, AttachDetach)
 {
     const auto shape = Shape{DiskShapeConf{}};
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     const auto shapeId = CreateShape(world, shape);
     ASSERT_NO_THROW(CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
     ASSERT_NO_THROW(Attach(world, BodyID{0u}, shapeId));
@@ -813,24 +813,24 @@ TEST(WorldImpl, AttachDetach)
     ASSERT_EQ(GetShapes(world, BodyID{0}).size(), 0u);
 }
 
-TEST(WorldImpl, SetShapeThrowsWithOutOfRangeID)
+TEST(AabbTreeWorld, SetShapeThrowsWithOutOfRangeID)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     ASSERT_EQ(GetShapeRange(world), 0u);
     EXPECT_THROW(SetShape(world, ShapeID(0), Shape{}), std::out_of_range);
 }
 
-TEST(WorldImpl, CreateBodyThrowsWithOutOfRangeShapeID)
+TEST(AabbTreeWorld, CreateBodyThrowsWithOutOfRangeShapeID)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     auto body = Body{};
     ASSERT_NO_THROW(body.Attach(ShapeID(0)));
     EXPECT_THROW(CreateBody(world, body), std::out_of_range);
 }
 
-TEST(WorldImpl, CreateBodyWithInRangeShapeIDs)
+TEST(AabbTreeWorld, CreateBodyWithInRangeShapeIDs)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
 
     ASSERT_EQ(GetShapeRange(world), 0u);
     auto shapeId0 = InvalidShapeID;
@@ -863,16 +863,16 @@ TEST(WorldImpl, CreateBodyWithInRangeShapeIDs)
     EXPECT_EQ(size(GetProxies(world, bodyId)), 2u);
 }
 
-TEST(WorldImpl, SetBodyThrowsWithOutOfRangeID)
+TEST(AabbTreeWorld, SetBodyThrowsWithOutOfRangeID)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     ASSERT_EQ(GetBodyRange(world), 0u);
     EXPECT_THROW(SetBody(world, BodyID(0), Body{}), std::out_of_range);
 }
 
-TEST(WorldImpl, SetBodyThrowsWithOutOfRangeShapeID)
+TEST(AabbTreeWorld, SetBodyThrowsWithOutOfRangeShapeID)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     ASSERT_EQ(GetBodyRange(world), 0u);
     ASSERT_NO_THROW(CreateBody(world, Body()));
     ASSERT_EQ(GetBodyRange(world), 1u);
@@ -882,13 +882,13 @@ TEST(WorldImpl, SetBodyThrowsWithOutOfRangeShapeID)
     EXPECT_THROW(SetBody(world, BodyID(0), body), std::out_of_range);
 }
 
-TEST(WorldImpl, SetShapeWithGeometryChange)
+TEST(AabbTreeWorld, SetShapeWithGeometryChange)
 {
     const auto stepConf = StepConf{};
     auto bodyId = InvalidBodyID;
     auto shapeId = InvalidShapeID;
     auto shapeIdOther = InvalidShapeID;
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     auto diskShapeConf = DiskShapeConf{};
     ASSERT_EQ(GetChildCount(diskShapeConf), 1u);
     ASSERT_NO_THROW(shapeId = CreateShape(world, Shape{diskShapeConf}));
@@ -918,36 +918,36 @@ TEST(WorldImpl, SetShapeWithGeometryChange)
     EXPECT_EQ(size(GetProxies(world, bodyId)), 3u);
 }
 
-TEST(WorldImpl, SetFreedShapeThrows)
+TEST(AabbTreeWorld, SetFreedShapeThrows)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     auto id = InvalidShapeID;
     ASSERT_NO_THROW(id = CreateShape(world, Shape()));
     ASSERT_NO_THROW(Destroy(world, id));
     EXPECT_THROW(SetShape(world, id, Shape()), InvalidArgument);
 }
 
-TEST(WorldImpl, SetFreedBodyThrows)
+TEST(AabbTreeWorld, SetFreedBodyThrows)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     auto id = InvalidBodyID;
     ASSERT_NO_THROW(id = CreateBody(world, Body()));
     ASSERT_NO_THROW(Destroy(world, id));
     EXPECT_THROW(SetBody(world, id, Body()), InvalidArgument);
 }
 
-TEST(WorldImpl, SetFreedJointThrows)
+TEST(AabbTreeWorld, SetFreedJointThrows)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     auto id = InvalidJointID;
     ASSERT_NO_THROW(id = CreateJoint(world, Joint()));
     ASSERT_NO_THROW(Destroy(world, id));
     EXPECT_THROW(SetJoint(world, id, Joint()), InvalidArgument);
 }
 
-TEST(WorldImpl, SetBodyWithShapeID)
+TEST(AabbTreeWorld, SetBodyWithShapeID)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
 
     ASSERT_EQ(GetShapeRange(world), 0u);
     auto shapeId = InvalidShapeID;
@@ -990,27 +990,27 @@ TEST(WorldImpl, SetBodyWithShapeID)
     EXPECT_EQ(size(GetFixturesForProxies(world)), 0u);
 }
 
-TEST(WorldImpl, CreateJointThrowsWithOutOfRangeBodyID)
+TEST(AabbTreeWorld, CreateJointThrowsWithOutOfRangeBodyID)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     auto joint = Joint(FrictionJointConf{}.UseBodyA(BodyID(0)));
     EXPECT_THROW(CreateJoint(world, joint), std::out_of_range);
 }
 
-TEST(WorldImpl, SetJointThrowsWithOutOfRangeID)
+TEST(AabbTreeWorld, SetJointThrowsWithOutOfRangeID)
 {
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     ASSERT_EQ(GetJointRange(world), 0u);
     auto joint = Joint(FrictionJointConf{}.UseBodyA(BodyID(0)));
     EXPECT_THROW(SetJoint(world, JointID(0), joint), std::out_of_range);
 }
 
-TEST(WorldImpl, SetJointThrowsWithOutOfRangeBodyID)
+TEST(AabbTreeWorld, SetJointThrowsWithOutOfRangeBodyID)
 {
     const auto b0 = BodyID(0);
     const auto b1 = BodyID(1);
     const auto j0 = JointID(0);
-    auto world = WorldImpl{};
+    auto world = AabbTreeWorld{};
     ASSERT_NO_THROW(CreateBody(world, Body()));
     ASSERT_EQ(GetBodyRange(world), 1u);
     ASSERT_EQ(GetJointRange(world), 0u);
@@ -1023,7 +1023,7 @@ TEST(WorldImpl, SetJointThrowsWithOutOfRangeBodyID)
                  std::out_of_range);
 }
 
-// Added herein since only WorldImpl uses EraseFirst and saves making new file.
+// Added herein since only AabbTreeWorld uses EraseFirst and saves making new file.
 TEST(Templates, EraseFirst)
 {
     auto container = std::vector<int>{0, 1, 2};
