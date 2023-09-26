@@ -2,7 +2,7 @@ var classplayrho_1_1detail_1_1Checked =
 [
     [ "checker_type", "classplayrho_1_1detail_1_1Checked.html#a0126d8ae64781661f7a81abd5c2c3b32", null ],
     [ "exception_type", "classplayrho_1_1detail_1_1Checked.html#a6e1de9cc039b2ac32262d38e7ea90a3d", null ],
-    [ "remove_pointer_type", "classplayrho_1_1detail_1_1Checked.html#a469b6bfb158510c35bb95a8496b1992f", null ],
+    [ "remove_pointer_type", "classplayrho_1_1detail_1_1Checked.html#a5195c96ea6ee491e75d93ce702553cda", null ],
     [ "value_type", "classplayrho_1_1detail_1_1Checked.html#a93dd281b7a6333ed3f69aa4bf59b1003", null ],
     [ "Checked", "classplayrho_1_1detail_1_1Checked.html#aafb88ef5ee8cb239f0ec9334a68d83de", null ],
     [ "Checked", "classplayrho_1_1detail_1_1Checked.html#ac9116398d4e446826be64fcdf5997278", null ],

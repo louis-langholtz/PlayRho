@@ -18,8 +18,8 @@
 <area shape="rect" id="node6" href="$Body_8hpp.html" title="Declarations of the Body class, and functions associated with it." alt="" coords="3609,363,3780,404"/>
 <area shape="rect" id="node7" href="$BodyConstraint_8hpp.html" title="Definition of the BodyConstraint class and closely related code." alt="" coords="4058,452,4233,493"/>
 <area shape="rect" id="node10" href="$WorldBody_8hpp.html" title="Declarations of free functions of World for bodies identified by BodyID." alt="" coords="2616,452,2787,493"/>
-<area shape="rect" id="node8" href="$VelocityConstraint_8hpp.html" title="Definition of the VelocityConstraint class and closely related code." alt="" coords="3919,541,4113,583"/>
-<area shape="rect" id="node9" href="$WorldImpl_8hpp.html" title="Declarations of the WorldImpl class." alt="" coords="4211,541,4381,583"/>
+<area shape="rect" id="node8" href="$AabbTreeWorld_8hpp.html" title="Declarations of the AabbTreeWorld class." alt="" coords="4211,541,4381,583"/>
+<area shape="rect" id="node9" href="$VelocityConstraint_8hpp.html" title="Definition of the VelocityConstraint class and closely related code." alt="" coords="3919,541,4113,583"/>
 <area shape="rect" id="node14" href="$ChainShapeConf_8hpp.html" title="Definition of the ChainShapeConf class and closely related code." alt="" coords="2389,452,2569,493"/>
 <area shape="rect" id="node15" href="$DiskShapeConf_8hpp.html" title="Definition of the DiskShapeConf class and closely related code." alt="" coords="1886,363,2058,404"/>
 <area shape="rect" id="node16" href="$EdgeShapeConf_8hpp.html" title="Definition of the EdgeShapeConf class and closely related code." alt="" coords="2082,363,2257,404"/>

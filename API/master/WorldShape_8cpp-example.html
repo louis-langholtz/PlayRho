@@ -134,17 +134,17 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <div class="line">TEST(WorldShape, CreateAttachDetach)</div>
 <div class="line">{</div>
 <div class="line">    <span class="keyword">auto</span> world = World{};</div>
-<div class="line">    EXPECT_THROW(<a name="a0"></a><a class="code" href="namespaceplayrho_1_1d2.html#a4957e6f46a121ed3a8556301baa68d84">Attach</a>(world, <a name="a1"></a><a class="code" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92">BodyID</a>(0u), <a name="a2"></a><a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(0u)), std::out_of_range);</div>
-<div class="line">    EXPECT_THROW(<a name="a3"></a><a class="code" href="namespaceplayrho_1_1d2.html#a360a1facb140358f7df6160beded7918">Detach</a>(world, <a class="code" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92">BodyID</a>(0u), <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(0u)), std::out_of_range);</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a name="a4"></a><a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, DiskShapeConf{});</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> body = <a name="a5"></a><a class="code" href="namespaceplayrho_1_1d2.html#a9d451d642b4be1c355a908b7c67df344">CreateBody</a>(world);</div>
-<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a4957e6f46a121ed3a8556301baa68d84">Attach</a>(world, body, shapeId));</div>
+<div class="line">    EXPECT_THROW(<a name="a0"></a><a class="code" href="namespaceplayrho_1_1d2.html#a71e1178c67501e9f3cecd3bc40cc04a1">Attach</a>(world, <a name="a1"></a><a class="code" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92">BodyID</a>(0u), <a name="a2"></a><a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(0u)), std::out_of_range);</div>
+<div class="line">    EXPECT_THROW(<a name="a3"></a><a class="code" href="namespaceplayrho_1_1d2.html#aa96788ab361740a16d316b821154ea9e">Detach</a>(world, <a class="code" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92">BodyID</a>(0u), <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(0u)), std::out_of_range);</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a name="a4"></a><a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{});</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> body = <a name="a5"></a><a class="code" href="namespaceplayrho_1_1d2.html#a352ef727632169c252a59d648808822f">CreateBody</a>(world);</div>
+<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a71e1178c67501e9f3cecd3bc40cc04a1">Attach</a>(world, body, shapeId));</div>
 <div class="line">    <span class="keyword">auto</span> shapeIds = std::vector&lt;ShapeID&gt;{};</div>
-<div class="line">    EXPECT_NO_THROW(shapeIds = <a name="a6"></a><a class="code" href="namespaceplayrho_1_1d2.html#a63b209948a3e0c8c4904f7ff662abfd5">GetShapes</a>(world, body));</div>
+<div class="line">    EXPECT_NO_THROW(shapeIds = <a name="a6"></a><a class="code" href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">GetShapes</a>(world, body));</div>
 <div class="line">    ASSERT_EQ(<a name="a7"></a><a class="code" href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">size</a>(shapeIds), 1u);</div>
 <div class="line">    EXPECT_EQ(*<a name="a8"></a><a class="code" href="namespaceplayrho.html#a429625691c6a45944e55fe50f9a59199">begin</a>(shapeIds), shapeId);</div>
-<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a360a1facb140358f7df6160beded7918">Detach</a>(world, body, shapeId));</div>
-<div class="line">    EXPECT_NO_THROW(shapeIds = <a class="code" href="namespaceplayrho_1_1d2.html#a63b209948a3e0c8c4904f7ff662abfd5">GetShapes</a>(world, body));</div>
+<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#aa96788ab361740a16d316b821154ea9e">Detach</a>(world, body, shapeId));</div>
+<div class="line">    EXPECT_NO_THROW(shapeIds = <a class="code" href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">GetShapes</a>(world, body));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">size</a>(shapeIds), 0u);</div>
 <div class="line">}</div>
 <div class="line"> </div>
@@ -158,8 +158,8 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeA = Shape(conf);</div>
 <div class="line"> </div>
 <div class="line">    World world;</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, shapeA);</div>
-<div class="line">    EXPECT_EQ(<a name="a10"></a><a class="code" href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">GetShape</a>(world, shapeId), shapeA);</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, shapeA);</div>
+<div class="line">    EXPECT_EQ(<a name="a10"></a><a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, shapeId), shapeA);</div>
 <div class="line">    EXPECT_EQ(<a name="a11"></a><a class="code" href="namespaceplayrho_1_1d2.html#a1e3ed738b9082f9bfd3358a19d9aa97d">GetDensity</a>(world, shapeId), density);</div>
 <div class="line">    EXPECT_EQ(<a name="a12"></a><a class="code" href="namespaceplayrho_1_1d2.html#a1e78385069dd9f0bb162bf17051a0706">GetFriction</a>(world, shapeId), friction);</div>
 <div class="line">    EXPECT_EQ(<a name="a13"></a><a class="code" href="namespaceplayrho_1_1d2.html#a73fdd9b13d08d04db4ad170afac115b7">GetRestitution</a>(world, shapeId), restitution);</div>
@@ -169,7 +169,7 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <div class="line">TEST(WorldShape, <a name="a15"></a><a class="code" href="namespaceplayrho_1_1d2.html#af219909208e61cf0efe0317d56c34b8c">SetFilterData</a>)</div>
 <div class="line">{</div>
 <div class="line">    <span class="keyword">auto</span> world = World{};</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, DiskShapeConf{});</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{});</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> original = <a name="a16"></a><a class="code" href="namespaceplayrho_1_1d2.html#aa0a2c5e5746924e329cdf96e36fe56c0">GetFilterData</a>(world, shapeId);</div>
 <div class="line">    <span class="keyword">auto</span> filter = original;</div>
 <div class="line">    ASSERT_EQ(filter, Filter());</div>
@@ -188,7 +188,7 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <div class="line">TEST(WorldShape, <a name="a20"></a><a class="code" href="namespaceplayrho_1_1d2.html#afa56209557eb58f52a1599176b169b5b">SetSensor</a>)</div>
 <div class="line">{</div>
 <div class="line">    World world;</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, DiskShapeConf{});</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{});</div>
 <div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#afa56209557eb58f52a1599176b169b5b">SetSensor</a>(world, shapeId, <span class="keyword">true</span>));</div>
 <div class="line">    EXPECT_TRUE(<a class="code" href="namespaceplayrho_1_1d2.html#a758f0ba36affe9a3aba066285cf710d7">IsSensor</a>(world, shapeId));</div>
 <div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#afa56209557eb58f52a1599176b169b5b">SetSensor</a>(world, shapeId, <span class="keyword">true</span>));</div>
@@ -200,7 +200,7 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <div class="line">TEST(WorldShape, <a name="a21"></a><a class="code" href="namespaceplayrho_1_1d2.html#ad16f6355b81563d9814e371f04a093b7">SetFriction</a>)</div>
 <div class="line">{</div>
 <div class="line">    World world;</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, DiskShapeConf{});</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{});</div>
 <div class="line">    <span class="keyword">auto</span> value = <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(0);</div>
 <div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#ad16f6355b81563d9814e371f04a093b7">SetFriction</a>(world, shapeId, value));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a1e78385069dd9f0bb162bf17051a0706">GetFriction</a>(world, shapeId), value);</div>
@@ -215,7 +215,7 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <div class="line">TEST(WorldShape, <a name="a22"></a><a class="code" href="namespaceplayrho_1_1d2.html#a6bc6a6825767b1283de39d617bec8d45">SetRestitution</a>)</div>
 <div class="line">{</div>
 <div class="line">    World world;</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, DiskShapeConf{});</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{});</div>
 <div class="line">    <span class="keyword">auto</span> value = <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(0);</div>
 <div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a6bc6a6825767b1283de39d617bec8d45">SetRestitution</a>(world, shapeId, value));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a73fdd9b13d08d04db4ad170afac115b7">GetRestitution</a>(world, shapeId), value);</div>
@@ -230,7 +230,7 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <div class="line">TEST(WorldShape, <a name="a23"></a><a class="code" href="namespaceplayrho_1_1d2.html#ad1c054649c001d28c08476c622de4ab6">SetDensity</a>)</div>
 <div class="line">{</div>
 <div class="line">    World world;</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, DiskShapeConf{});</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{});</div>
 <div class="line">    <span class="keyword">auto</span> value = <a name="a24"></a><a class="code" href="group__PhysicalQuantities.html#ga6bcf1d1de9ef60a9833c222efe7ffd57">AreaDensity</a>(0_kgpm2);</div>
 <div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#ad1c054649c001d28c08476c622de4ab6">SetDensity</a>(world, shapeId, value));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a1e3ed738b9082f9bfd3358a19d9aa97d">GetDensity</a>(world, shapeId), value);</div>
@@ -246,17 +246,17 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <div class="line">{</div>
 <div class="line">    World world;</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> location0 = <a name="a25"></a><a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{1_m, 2_m};</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, DiskShapeConf{}.UseLocation(location0));</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{}.UseLocation(location0));</div>
 <div class="line">    <span class="keyword">auto</span> shape = Shape{};</div>
-<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">GetShape</a>(world, shapeId));</div>
+<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, shapeId));</div>
 <div class="line">    ASSERT_EQ(<a name="a26"></a><a class="code" href="namespaceplayrho_1_1d2.html#a8cdbec96d1a3f30b8c5705b602aeb8df">GetChild</a>(shape, 0u).GetVertex(0), location0);</div>
 <div class="line">    <span class="keyword">auto</span> value = <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{0_m, 0_m};</div>
 <div class="line">    EXPECT_NO_THROW(<a name="a27"></a><a class="code" href="namespaceplayrho_1_1d2.html#a6c6b074765640b44214ed1ac90ee4970">Translate</a>(world, shapeId, value));</div>
-<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">GetShape</a>(world, shapeId));</div>
+<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, shapeId));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a8cdbec96d1a3f30b8c5705b602aeb8df">GetChild</a>(shape, 0u).GetVertex(0), location0);</div>
 <div class="line">    value = <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{2_m, 3_m};</div>
 <div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a6c6b074765640b44214ed1ac90ee4970">Translate</a>(world, shapeId, value));</div>
-<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">GetShape</a>(world, shapeId));</div>
+<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, shapeId));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a8cdbec96d1a3f30b8c5705b602aeb8df">GetChild</a>(shape, 0u).GetVertex(0), location0 + value);</div>
 <div class="line">}</div>
 <div class="line"> </div>
@@ -264,17 +264,17 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <div class="line">{</div>
 <div class="line">    World world;</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> location0 = <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{+0.5_m, -0.5_m};</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, ::<a name="_a28"></a><a class="code" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">playrho::d2::part::Compositor&lt;&gt;</a>{});</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, ::<a name="_a28"></a><a class="code" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">playrho::d2::part::Compositor&lt;&gt;</a>{});</div>
 <div class="line">    <span class="keyword">auto</span> shape = Shape{};</div>
-<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">GetShape</a>(world, shapeId));</div>
+<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, shapeId));</div>
 <div class="line">    ASSERT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a8cdbec96d1a3f30b8c5705b602aeb8df">GetChild</a>(shape, 0u).GetVertex(0), location0);</div>
 <div class="line">    <span class="keyword">auto</span> value = <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{0_m, 0_m};</div>
 <div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a6c6b074765640b44214ed1ac90ee4970">Translate</a>(world, shapeId, value));</div>
-<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">GetShape</a>(world, shapeId));</div>
+<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, shapeId));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a8cdbec96d1a3f30b8c5705b602aeb8df">GetChild</a>(shape, 0u).GetVertex(0), location0);</div>
 <div class="line">    value = <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{2_m, 3_m};</div>
 <div class="line">    EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a6c6b074765640b44214ed1ac90ee4970">Translate</a>(world, shapeId, value), InvalidArgument);</div>
-<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">GetShape</a>(world, shapeId));</div>
+<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, shapeId));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a8cdbec96d1a3f30b8c5705b602aeb8df">GetChild</a>(shape, 0u).GetVertex(0), location0);</div>
 <div class="line">}</div>
 <div class="line"> </div>
@@ -283,16 +283,16 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <div class="line">    <span class="keyword">using namespace </span>::<a class="code" href="namespaceplayrho_1_1d2_1_1part.html">playrho::d2::part</a>;</div>
 <div class="line">    World world;</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> location0 = <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{+0.5_m, -0.5_m};</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, Compositor&lt;GeometryIs&lt;DynamicRectangle&lt;&gt;&gt;&gt;{});</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, Compositor&lt;GeometryIs&lt;DynamicRectangle&lt;&gt;&gt;&gt;{});</div>
 <div class="line">    <span class="keyword">auto</span> shape = Shape{};</div>
-<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">GetShape</a>(world, shapeId));</div>
+<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, shapeId));</div>
 <div class="line">    ASSERT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a8cdbec96d1a3f30b8c5705b602aeb8df">GetChild</a>(shape, 0u).GetVertex(0), location0);</div>
 <div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a6c6b074765640b44214ed1ac90ee4970">Translate</a>(world, shapeId, <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{0_m, 0_m}));</div>
-<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">GetShape</a>(world, shapeId));</div>
+<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, shapeId));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a8cdbec96d1a3f30b8c5705b602aeb8df">GetChild</a>(shape, 0u).GetVertex(0), location0);</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> offset = <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{2_m, 3_m};</div>
 <div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a6c6b074765640b44214ed1ac90ee4970">Translate</a>(world, shapeId, offset));</div>
-<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">GetShape</a>(world, shapeId));</div>
+<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, shapeId));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a8cdbec96d1a3f30b8c5705b602aeb8df">GetChild</a>(shape, 0u).GetVertex(0), location0 + offset);</div>
 <div class="line">}</div>
 <div class="line"> </div>
@@ -302,50 +302,50 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> bodyCtrPos = <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>(1_m, 2_m);</div>
 <div class="line"> </div>
 <div class="line">    World world;</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, shapeA);</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> bodyId = <a class="code" href="namespaceplayrho_1_1d2.html#a9d451d642b4be1c355a908b7c67df344">CreateBody</a>(world, BodyConf{}.UseLocation(bodyCtrPos));</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, shapeA);</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> bodyId = <a class="code" href="namespaceplayrho_1_1d2.html#a352ef727632169c252a59d648808822f">CreateBody</a>(world, BodyConf{}.UseLocation(bodyCtrPos));</div>
 <div class="line">    EXPECT_TRUE(<a name="a29"></a><a class="code" href="group__TestPointGroup.html#ga6307be53a55224b578a3122d40d6e0f1">TestPoint</a>(world, bodyId, shapeId, bodyCtrPos));</div>
 <div class="line">    EXPECT_FALSE(<a class="code" href="group__TestPointGroup.html#ga6307be53a55224b578a3122d40d6e0f1">TestPoint</a>(world, bodyId, shapeId, <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{}));</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line">TEST(WorldShape, <a name="a30"></a><a class="code" href="namespaceplayrho_1_1d2.html#a917c505a2bf7a77aab1b098e5be801f6">GetShapeRange</a>)</div>
+<div class="line">TEST(WorldShape, <a name="a30"></a><a class="code" href="namespaceplayrho_1_1d2.html#a61d7f65f10afdad013c11d866292ad12">GetShapeRange</a>)</div>
 <div class="line">{</div>
 <div class="line">    <span class="keyword">auto</span> world = World{};</div>
-<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a917c505a2bf7a77aab1b098e5be801f6">GetShapeRange</a>(world), 0u);</div>
-<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, DiskShapeConf{}));</div>
-<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a917c505a2bf7a77aab1b098e5be801f6">GetShapeRange</a>(world), 1u);</div>
-<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, DiskShapeConf{}));</div>
-<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a917c505a2bf7a77aab1b098e5be801f6">GetShapeRange</a>(world), 2u);</div>
-<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, DiskShapeConf{}));</div>
-<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a917c505a2bf7a77aab1b098e5be801f6">GetShapeRange</a>(world), 3u);</div>
-<div class="line">    EXPECT_NO_THROW(<a name="a31"></a><a class="code" href="namespaceplayrho_1_1d2.html#a38d693783590ad4f2376b40c76d72421">Destroy</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(1u)));</div>
-<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a917c505a2bf7a77aab1b098e5be801f6">GetShapeRange</a>(world), 3u);</div>
-<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a38d693783590ad4f2376b40c76d72421">Destroy</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(2u)));</div>
-<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a917c505a2bf7a77aab1b098e5be801f6">GetShapeRange</a>(world), 3u);</div>
-<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a38d693783590ad4f2376b40c76d72421">Destroy</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(0u)));</div>
-<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a917c505a2bf7a77aab1b098e5be801f6">GetShapeRange</a>(world), 3u);</div>
-<div class="line">    EXPECT_NO_THROW(<a name="a32"></a><a class="code" href="namespaceplayrho_1_1d2.html#ae87aedd0a1a4a5077df893173042fc4c">Clear</a>(world));</div>
-<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a917c505a2bf7a77aab1b098e5be801f6">GetShapeRange</a>(world), 0u);</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a61d7f65f10afdad013c11d866292ad12">GetShapeRange</a>(world), 0u);</div>
+<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{}));</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a61d7f65f10afdad013c11d866292ad12">GetShapeRange</a>(world), 1u);</div>
+<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{}));</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a61d7f65f10afdad013c11d866292ad12">GetShapeRange</a>(world), 2u);</div>
+<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{}));</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a61d7f65f10afdad013c11d866292ad12">GetShapeRange</a>(world), 3u);</div>
+<div class="line">    EXPECT_NO_THROW(<a name="a31"></a><a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(1u)));</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a61d7f65f10afdad013c11d866292ad12">GetShapeRange</a>(world), 3u);</div>
+<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(2u)));</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a61d7f65f10afdad013c11d866292ad12">GetShapeRange</a>(world), 3u);</div>
+<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(0u)));</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a61d7f65f10afdad013c11d866292ad12">GetShapeRange</a>(world), 3u);</div>
+<div class="line">    EXPECT_NO_THROW(<a name="a32"></a><a class="code" href="namespaceplayrho_1_1d2.html#a652406794226e2ebe8a0a9c7cf2d98ea">Clear</a>(world));</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a61d7f65f10afdad013c11d866292ad12">GetShapeRange</a>(world), 0u);</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line">TEST(WorldShape, <a class="code" href="namespaceplayrho_1_1d2.html#a38d693783590ad4f2376b40c76d72421">Destroy</a>)</div>
+<div class="line">TEST(WorldShape, <a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>)</div>
 <div class="line">{</div>
 <div class="line">    <span class="keyword">auto</span> shape = Shape{};</div>
 <div class="line">    <span class="keyword">auto</span> world = World{};</div>
-<div class="line">    EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a38d693783590ad4f2376b40c76d72421">Destroy</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(2u)), std::out_of_range);</div>
+<div class="line">    EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(2u)), std::out_of_range);</div>
 <div class="line">    <span class="keyword">auto</span> shapeId = <a name="a33"></a><a class="code" href="namespaceplayrho.html#a7cf47dd833aad177ac33142cfc5e6bc3">InvalidShapeID</a>;</div>
-<div class="line">    ASSERT_NO_THROW(shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, DiskShapeConf{}));</div>
+<div class="line">    ASSERT_NO_THROW(shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{}));</div>
 <div class="line">    ASSERT_EQ(shapeId, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(0u));</div>
-<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">GetShape</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(0u)));</div>
+<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(0u)));</div>
 <div class="line">    ASSERT_EQ(<a name="a34"></a><a class="code" href="namespaceplayrho_1_1d2.html#afeeb64f8bbd439af0e350288e16da2e7">GetChildCount</a>(shape), 1u);</div>
-<div class="line">    ASSERT_NO_THROW(shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, DiskShapeConf{}));</div>
+<div class="line">    ASSERT_NO_THROW(shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{}));</div>
 <div class="line">    ASSERT_EQ(shapeId, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(1u));</div>
-<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">GetShape</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(1u)));</div>
+<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(1u)));</div>
 <div class="line">    ASSERT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#afeeb64f8bbd439af0e350288e16da2e7">GetChildCount</a>(shape), 1u);</div>
 <div class="line"> </div>
-<div class="line">    EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a38d693783590ad4f2376b40c76d72421">Destroy</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(2u)), std::out_of_range);</div>
-<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a38d693783590ad4f2376b40c76d72421">Destroy</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(1u)));</div>
-<div class="line">    EXPECT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">GetShape</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(1u)));</div>
+<div class="line">    EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(2u)), std::out_of_range);</div>
+<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(1u)));</div>
+<div class="line">    EXPECT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(1u)));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#afeeb64f8bbd439af0e350288e16da2e7">GetChildCount</a>(shape), 0u);</div>
 <div class="line">}</div>
 <div class="line"> </div>
@@ -355,7 +355,7 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <div class="line">    <span class="keyword">auto</span> typeId = TypeID{};</div>
 <div class="line">    <span class="keyword">auto</span> world = World{};</div>
 <div class="line">    EXPECT_THROW(typeId = <a class="code" href="namespaceplayrho_1_1d2.html#a421d2110404320428fd02b2d0b70a062">GetType</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(0u)), std::out_of_range);</div>
-<div class="line">    ASSERT_NO_THROW(shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, DiskShapeConf{}));</div>
+<div class="line">    ASSERT_NO_THROW(shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{}));</div>
 <div class="line">    ASSERT_EQ(shapeId, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(0u));</div>
 <div class="line">    EXPECT_NO_THROW(typeId = <a class="code" href="namespaceplayrho_1_1d2.html#a421d2110404320428fd02b2d0b70a062">GetType</a>(world, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(0u)));</div>
 <div class="line">    EXPECT_EQ(typeId, GetTypeID&lt;DiskShapeConf&gt;());</div>
@@ -368,18 +368,18 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <div class="line">    <span class="keyword">auto</span> world = World{};</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> v0 = <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{-0.5_m, +0.0_m};</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> v1 = <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{+0.5_m, +0.0_m};</div>
-<div class="line">    ASSERT_NO_THROW(shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, EdgeShapeConf{v0, v1}));</div>
+<div class="line">    ASSERT_NO_THROW(shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, EdgeShapeConf{v0, v1}));</div>
 <div class="line">    ASSERT_EQ(shapeId, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(0u));</div>
-<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">GetShape</a>(world, shapeId));</div>
+<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, shapeId));</div>
 <div class="line">    ASSERT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#afeeb64f8bbd439af0e350288e16da2e7">GetChildCount</a>(shape), <a name="a37"></a><a class="code" href="namespaceplayrho.html#a0e937a573db2db27b95156590ef5dd12">ChildCounter</a>(1));</div>
 <div class="line">    <span class="keyword">auto</span> distanceProxy = DistanceProxy{};</div>
-<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">GetShape</a>(world, shapeId));</div>
+<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, shapeId));</div>
 <div class="line">    ASSERT_NO_THROW(distanceProxy = <a class="code" href="namespaceplayrho_1_1d2.html#a8cdbec96d1a3f30b8c5705b602aeb8df">GetChild</a>(shape, 0u));</div>
 <div class="line">    ASSERT_EQ(distanceProxy.GetVertexCount(), 2u);</div>
 <div class="line">    ASSERT_EQ(distanceProxy.GetVertex(0u), <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>(-0.5_m, +0.0_m));</div>
 <div class="line">    ASSERT_EQ(distanceProxy.GetVertex(1u), <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>(+0.5_m, -0.0_m));</div>
 <div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a2a9f6506a87ab7964f3ae2a98618ac2d">Scale</a>(world, shapeId, <a name="a38"></a><a class="code" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a>(<a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(2), <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(3))));</div>
-<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">GetShape</a>(world, shapeId));</div>
+<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, shapeId));</div>
 <div class="line">    ASSERT_NO_THROW(distanceProxy = <a class="code" href="namespaceplayrho_1_1d2.html#a8cdbec96d1a3f30b8c5705b602aeb8df">GetChild</a>(shape, 0u));</div>
 <div class="line">    EXPECT_EQ(distanceProxy.GetVertex(0u), <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>(-1.0_m, +0.0_m));</div>
 <div class="line">    EXPECT_EQ(distanceProxy.GetVertex(1u), <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>(+1.0_m, +0.0_m));</div>
@@ -392,9 +392,9 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <div class="line">    <span class="keyword">auto</span> world = World{};</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> v0 = <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{-0.5_m, +0.0_m};</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> v1 = <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{+0.5_m, +0.0_m};</div>
-<div class="line">    ASSERT_NO_THROW(shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">CreateShape</a>(world, EdgeShapeConf{v0, v1}));</div>
+<div class="line">    ASSERT_NO_THROW(shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, EdgeShapeConf{v0, v1}));</div>
 <div class="line">    ASSERT_EQ(shapeId, <a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(0u));</div>
-<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">GetShape</a>(world, shapeId));</div>
+<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, shapeId));</div>
 <div class="line">    ASSERT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#afeeb64f8bbd439af0e350288e16da2e7">GetChildCount</a>(shape), <a class="code" href="namespaceplayrho.html#a0e937a573db2db27b95156590ef5dd12">ChildCounter</a>(1));</div>
 <div class="line">    <span class="keyword">auto</span> distanceProxy = DistanceProxy{};</div>
 <div class="line">    ASSERT_NO_THROW(distanceProxy = <a class="code" href="namespaceplayrho_1_1d2.html#a8cdbec96d1a3f30b8c5705b602aeb8df">GetChild</a>(shape, 0u));</div>
@@ -402,7 +402,7 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <div class="line">    ASSERT_EQ(distanceProxy.GetVertex(0u), <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>(-0.5_m, +0.0_m));</div>
 <div class="line">    ASSERT_EQ(distanceProxy.GetVertex(1u), <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>(+0.5_m, -0.0_m));</div>
 <div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a0a415ca6071bd581ccda6627333c917b">Rotate</a>(world, shapeId, <a name="a40"></a><a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#ad3f132b30c82d05c107a8d8231db244b">UnitVec::GetTop</a>()));</div>
-<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">GetShape</a>(world, shapeId));</div>
+<div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, shapeId));</div>
 <div class="line">    ASSERT_NO_THROW(distanceProxy = <a class="code" href="namespaceplayrho_1_1d2.html#a8cdbec96d1a3f30b8c5705b602aeb8df">GetChild</a>(shape, 0u));</div>
 <div class="line">    EXPECT_EQ(distanceProxy.GetVertex(0u), <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>(0.0_m, -0.5_m));</div>
 <div class="line">    EXPECT_EQ(distanceProxy.GetVertex(1u), <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>(0.0_m, +0.5_m));</div>
@@ -419,30 +419,30 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <div class="ttc" id="anamespaceplayrho_1_1d2_1_1part_html"><div class="ttname"><a href="namespaceplayrho_1_1d2_1_1part.html">playrho::d2::part</a></div><div class="ttdef"><b>Definition:</b> Compositor.hpp:38</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html"><div class="ttname"><a href="namespaceplayrho_1_1d2.html">playrho::d2</a></div><div class="ttdef"><b>Definition:</b> AABB.hpp:44</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a0a415ca6071bd581ccda6627333c917b"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a0a415ca6071bd581ccda6627333c917b">playrho::d2::Rotate</a></div><div class="ttdeci">void Rotate(ChainShapeConf &amp;arg, const UnitVec &amp;value)</div><div class="ttdoc">Rotates the given shape's vertices by the given amount.</div><div class="ttdef"><b>Definition:</b> ChainShapeConf.hpp:247</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a0f207924edd9511c1d56c03933928fa8"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">playrho::d2::size</a></div><div class="ttdeci">std::size_t size(const DynamicTree &amp;tree) noexcept</div><div class="ttdoc">Gets the &quot;size&quot; of the given tree.</div><div class="ttdef"><b>Definition:</b> DynamicTree.hpp:693</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a0f207924edd9511c1d56c03933928fa8"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">playrho::d2::size</a></div><div class="ttdeci">std::size_t size(const DynamicTree &amp;tree) noexcept</div><div class="ttdoc">Gets the &quot;size&quot; of the given tree.</div><div class="ttdef"><b>Definition:</b> DynamicTree.hpp:698</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a1e3ed738b9082f9bfd3358a19d9aa97d"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a1e3ed738b9082f9bfd3358a19d9aa97d">playrho::d2::GetDensity</a></div><div class="ttdeci">NonNegative&lt; AreaDensity &gt; GetDensity(const Shape &amp;shape) noexcept</div><div class="ttdoc">Gets the density of the given shape.</div><div class="ttdef"><b>Definition:</b> Shape.hpp:606</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a1e78385069dd9f0bb162bf17051a0706"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a1e78385069dd9f0bb162bf17051a0706">playrho::d2::GetFriction</a></div><div class="ttdeci">NonNegativeFF&lt; Real &gt; GetFriction(const Shape &amp;shape) noexcept</div><div class="ttdoc">Gets the coefficient of friction.</div><div class="ttdef"><b>Definition:</b> Shape.hpp:578</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a2a9f6506a87ab7964f3ae2a98618ac2d"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a2a9f6506a87ab7964f3ae2a98618ac2d">playrho::d2::Scale</a></div><div class="ttdeci">void Scale(ChainShapeConf &amp;arg, const Vec2 &amp;value)</div><div class="ttdoc">Scales the given shape's vertices by the given amount.</div><div class="ttdef"><b>Definition:</b> ChainShapeConf.hpp:241</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a360a1facb140358f7df6160beded7918"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a360a1facb140358f7df6160beded7918">playrho::d2::Detach</a></div><div class="ttdeci">bool Detach(World &amp;world, BodyID id, ShapeID shapeID, bool resetMassData=true)</div><div class="ttdoc">Disassociates a validly identified shape from the validly identified body.</div><div class="ttdef"><b>Definition:</b> WorldBody.cpp:58</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a38d693783590ad4f2376b40c76d72421"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a38d693783590ad4f2376b40c76d72421">playrho::d2::Destroy</a></div><div class="ttdeci">void Destroy(World &amp;world, BodyID id)</div><div class="ttdoc">Destroys the identified body.</div><div class="ttdef"><b>Definition:</b> World.hpp:1462</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a352ef727632169c252a59d648808822f"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a352ef727632169c252a59d648808822f">playrho::d2::CreateBody</a></div><div class="ttdeci">BodyID CreateBody(AabbTreeWorld &amp;world, Body body=Body{})</div><div class="ttdoc">Creates a rigid body that's a copy of the given one.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorld.cpp:889</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a421d2110404320428fd02b2d0b70a062"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a421d2110404320428fd02b2d0b70a062">playrho::d2::GetType</a></div><div class="ttdeci">BodyType GetType(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the type of this body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:673</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a4957e6f46a121ed3a8556301baa68d84"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a4957e6f46a121ed3a8556301baa68d84">playrho::d2::Attach</a></div><div class="ttdeci">void Attach(World &amp;world, BodyID id, ShapeID shapeID, bool resetMassData=true)</div><div class="ttdoc">Associates a validly identified shape with the validly identified body.</div><div class="ttdef"><b>Definition:</b> WorldBody.cpp:43</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a4ce8ced3a725faadab6912a877e83e84"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a4ce8ced3a725faadab6912a877e83e84">playrho::d2::CreateShape</a></div><div class="ttdeci">ShapeID CreateShape(World &amp;world, const Shape &amp;def)</div><div class="ttdoc">Creates an identifiable copy of the given shape within the specified world.</div><div class="ttdef"><b>Definition:</b> World.hpp:1521</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a63b209948a3e0c8c4904f7ff662abfd5"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a63b209948a3e0c8c4904f7ff662abfd5">playrho::d2::GetShapes</a></div><div class="ttdeci">const std::vector&lt; ShapeID &gt; &amp; GetShapes(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the identifiers of the shapes attached to the body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1368</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a5063d35172bec75d73944cc1c52009ed"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">playrho::d2::CreateShape</a></div><div class="ttdeci">ShapeID CreateShape(AabbTreeWorld &amp;world, Shape def)</div><div class="ttdoc">Creates an identifiable copy of the given shape within this world.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorld.cpp:1113</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a61d7f65f10afdad013c11d866292ad12"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a61d7f65f10afdad013c11d866292ad12">playrho::d2::GetShapeRange</a></div><div class="ttdeci">ShapeCounter GetShapeRange(const AabbTreeWorld &amp;world) noexcept</div><div class="ttdoc">Gets the extent of the currently valid shape range.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorld.cpp:1108</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a652406794226e2ebe8a0a9c7cf2d98ea"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a652406794226e2ebe8a0a9c7cf2d98ea">playrho::d2::Clear</a></div><div class="ttdeci">void Clear(AabbTreeWorld &amp;world) noexcept</div><div class="ttdoc">Clears this world.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorld.cpp:829</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a6bc6a6825767b1283de39d617bec8d45"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a6bc6a6825767b1283de39d617bec8d45">playrho::d2::SetRestitution</a></div><div class="ttdeci">std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetRestitutionV&lt; T &gt;, void &gt; SetRestitution(T &amp;o, Real value)</div><div class="ttdoc">Fallback restitution setter that throws unless given the same value as current.</div><div class="ttdef"><b>Definition:</b> Shape.hpp:246</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a6c6b074765640b44214ed1ac90ee4970"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a6c6b074765640b44214ed1ac90ee4970">playrho::d2::Translate</a></div><div class="ttdeci">void Translate(ChainShapeConf &amp;arg, const Length2 &amp;value)</div><div class="ttdoc">Translates the given shape's vertices by the given amount.</div><div class="ttdef"><b>Definition:</b> ChainShapeConf.hpp:235</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a71e1178c67501e9f3cecd3bc40cc04a1"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a71e1178c67501e9f3cecd3bc40cc04a1">playrho::d2::Attach</a></div><div class="ttdeci">void Attach(AabbTreeWorld &amp;world, BodyID id, ShapeID shapeID)</div><div class="ttdoc">Associates a validly identified shape with the validly identified body.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorldBody.cpp:34</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a73fdd9b13d08d04db4ad170afac115b7"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a73fdd9b13d08d04db4ad170afac115b7">playrho::d2::GetRestitution</a></div><div class="ttdeci">Real GetRestitution(const Shape &amp;shape) noexcept</div><div class="ttdoc">Gets the coefficient of restitution value of the given shape.</div><div class="ttdef"><b>Definition:</b> Shape.hpp:592</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a758f0ba36affe9a3aba066285cf710d7"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a758f0ba36affe9a3aba066285cf710d7">playrho::d2::IsSensor</a></div><div class="ttdeci">bool IsSensor(const Shape &amp;shape) noexcept</div><div class="ttdoc">Gets whether or not the given shape is a sensor.</div><div class="ttdef"><b>Definition:</b> Shape.hpp:634</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a7df9661feac023ea0e4cbe6369943352"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">playrho::d2::Destroy</a></div><div class="ttdeci">void Destroy(AabbTreeWorld &amp;world, BodyID id)</div><div class="ttdoc">Destroys the identified body.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorld.cpp:937</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a8cdbec96d1a3f30b8c5705b602aeb8df"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a8cdbec96d1a3f30b8c5705b602aeb8df">playrho::d2::GetChild</a></div><div class="ttdeci">DistanceProxy GetChild(const ChainShapeConf &amp;arg, ChildCounter index)</div><div class="ttdoc">Gets the &quot;child&quot; shape for a given chain shape configuration.</div><div class="ttdef"><b>Definition:</b> ChainShapeConf.hpp:186</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a917c505a2bf7a77aab1b098e5be801f6"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a917c505a2bf7a77aab1b098e5be801f6">playrho::d2::GetShapeRange</a></div><div class="ttdeci">ShapeCounter GetShapeRange(const World &amp;world) noexcept</div><div class="ttdoc">Gets the extent of the currently valid shape range.</div><div class="ttdef"><b>Definition:</b> World.hpp:1516</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a9d451d642b4be1c355a908b7c67df344"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a9d451d642b4be1c355a908b7c67df344">playrho::d2::CreateBody</a></div><div class="ttdeci">BodyID CreateBody(World &amp;world, const Body &amp;body=Body{}, bool resetMassData=true)</div><div class="ttdoc">Creates a rigid body within the world that's a copy of the given one.</div><div class="ttdef"><b>Definition:</b> World.cpp:44</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a9e29376addbe168c363097e82eb796f0"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">playrho::d2::GetShape</a></div><div class="ttdeci">const Shape &amp; GetShape(const AabbTreeWorld &amp;world, ShapeID id)</div><div class="ttdoc">Gets the identified shape.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorld.cpp:1155</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_aa0a2c5e5746924e329cdf96e36fe56c0"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#aa0a2c5e5746924e329cdf96e36fe56c0">playrho::d2::GetFilterData</a></div><div class="ttdeci">Filter GetFilterData(const World &amp;world, ShapeID id)</div><div class="ttdoc">Gets the filter data for the identified shape.</div><div class="ttdef"><b>Definition:</b> WorldShape.cpp:60</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_acd71793915ccc5c37d3c118ff5745e9e"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#acd71793915ccc5c37d3c118ff5745e9e">playrho::d2::GetShape</a></div><div class="ttdeci">Shape GetShape(const World &amp;world, ShapeID id)</div><div class="ttdoc">Gets the shape associated with the identifier.</div><div class="ttdef"><b>Definition:</b> World.hpp:1531</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_aa96788ab361740a16d316b821154ea9e"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#aa96788ab361740a16d316b821154ea9e">playrho::d2::Detach</a></div><div class="ttdeci">bool Detach(AabbTreeWorld &amp;world, BodyID id, ShapeID shapeID)</div><div class="ttdoc">Disassociates a validly identified shape from the validly identified body.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorldBody.cpp:41</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_ad16f6355b81563d9814e371f04a093b7"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ad16f6355b81563d9814e371f04a093b7">playrho::d2::SetFriction</a></div><div class="ttdeci">std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetFrictionV&lt; T &gt;, void &gt; SetFriction(T &amp;o, NonNegative&lt; Real &gt; value)</div><div class="ttdoc">Fallback friction setter that throws unless given the same value as current.</div><div class="ttdef"><b>Definition:</b> Shape.hpp:216</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_ad1c054649c001d28c08476c622de4ab6"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ad1c054649c001d28c08476c622de4ab6">playrho::d2::SetDensity</a></div><div class="ttdeci">std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetDensityV&lt; T &gt;, void &gt; SetDensity(T &amp;o, NonNegative&lt; AreaDensity &gt; value)</div><div class="ttdoc">Fallback density setter that throws unless given the same value as current.</div><div class="ttdef"><b>Definition:</b> Shape.hpp:236</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_ae87aedd0a1a4a5077df893173042fc4c"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ae87aedd0a1a4a5077df893173042fc4c">playrho::d2::Clear</a></div><div class="ttdeci">void Clear(World &amp;world) noexcept</div><div class="ttdoc">Clears the given world.</div><div class="ttdef"><b>Definition:</b> World.hpp:1385</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_af219909208e61cf0efe0317d56c34b8c"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#af219909208e61cf0efe0317d56c34b8c">playrho::d2::SetFilterData</a></div><div class="ttdeci">void SetFilterData(World &amp;world, ShapeID id, const Filter &amp;filter)</div><div class="ttdoc">Convenience function for setting the contact filtering data.</div><div class="ttdef"><b>Definition:</b> WorldShape.cpp:89</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_afa56209557eb58f52a1599176b169b5b"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#afa56209557eb58f52a1599176b169b5b">playrho::d2::SetSensor</a></div><div class="ttdeci">std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetSensorV&lt; T &gt;, void &gt; SetSensor(T &amp;o, bool value)</div><div class="ttdoc">Fallback sensor setter that throws unless given the same value as current.</div><div class="ttdef"><b>Definition:</b> Shape.hpp:226</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_afe762c434a20aa39abb7f121b9d89c03"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">playrho::d2::GetShapes</a></div><div class="ttdeci">const std::vector&lt; ShapeID &gt; &amp; GetShapes(const AabbTreeWorld &amp;world, BodyID id)</div><div class="ttdoc">Disassociates all of the associated shape from the validly identified body.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorldBody.cpp:51</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_afeeb64f8bbd439af0e350288e16da2e7"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#afeeb64f8bbd439af0e350288e16da2e7">playrho::d2::GetChildCount</a></div><div class="ttdeci">ChildCounter GetChildCount(const ChainShapeConf &amp;arg) noexcept</div><div class="ttdoc">Gets the child count for a given chain shape configuration.</div><div class="ttdef"><b>Definition:</b> ChainShapeConf.hpp:180</div></div>
 <div class="ttc" id="anamespaceplayrho_html"><div class="ttname"><a href="namespaceplayrho.html">playrho</a></div><div class="ttdef"><b>Definition:</b> ArrayList.hpp:36</div></div>
 <div class="ttc" id="anamespaceplayrho_html_a0e937a573db2db27b95156590ef5dd12"><div class="ttname"><a href="namespaceplayrho.html#a0e937a573db2db27b95156590ef5dd12">playrho::ChildCounter</a></div><div class="ttdeci">std::remove_const_t&lt; decltype(MaxChildCount)&gt; ChildCounter</div><div class="ttdoc">Child counter type.</div><div class="ttdef"><b>Definition:</b> Settings.hpp:108</div></div>
@@ -461,7 +461,7 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Sep 22 2023 00:56:17 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Sep 25 2023 23:39:53 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

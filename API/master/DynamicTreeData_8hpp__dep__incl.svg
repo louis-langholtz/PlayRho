@@ -38,10 +38,10 @@
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="WorldImpl_8hpp.html" target="_top" xlink:title="Declarations of the WorldImpl class.">
+<g id="a_node3"><a xlink:href="AabbTreeWorld_8hpp.html" target="_top" xlink:title="Declarations of the AabbTreeWorld class.">
 <polygon fill="white" stroke="black" points="7.5,-0.5 7.5,-30.5 135.5,-30.5 135.5,-0.5 7.5,-0.5"/>
 <text text-anchor="start" x="15.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="71.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/WorldImpl.hpp</text>
+<text text-anchor="middle" x="71.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/AabbTreeWorld.hpp</text>
 </a>
 </g>
 </g>

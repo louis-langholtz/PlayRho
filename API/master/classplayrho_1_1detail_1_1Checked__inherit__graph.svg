@@ -12,7 +12,7 @@
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title="Checked value.">
+<g id="a_node1"><a xlink:title="Class template for construction&#45;time constraining a type&#39;s value.">
 <polygon fill="#bfbfbf" stroke="black" points="0,-196.5 0,-226.5 186,-226.5 186,-196.5 0,-196.5"/>
 <text text-anchor="start" x="8" y="-214.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::Checked</text>
 <text text-anchor="middle" x="93" y="-203.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; ValueType, Checker, NoExcept &gt;</text>

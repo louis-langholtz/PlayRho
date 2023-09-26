@@ -209,7 +209,7 @@ var sectionId = 'dynsection-1';
 <!-- Node10 -->
 <g id="node10" class="node">
 <title>Node10</title>
-<g id="a_node10"><a xlink:href="classplayrho_1_1detail_1_1Checked.html" target="_top" xlink:title="Checked value.">
+<g id="a_node10"><a xlink:href="classplayrho_1_1detail_1_1Checked.html" target="_top" xlink:title="Class template for construction&#45;time constraining a type&#39;s value.">
 <polygon fill="white" stroke="black" points="664,-39 664,-69 850,-69 850,-39 664,-39"/>
 <text text-anchor="start" x="672" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::Checked</text>
 <text text-anchor="middle" x="757" y="-46" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; ValueType, Checker, NoExcept &gt;</text>

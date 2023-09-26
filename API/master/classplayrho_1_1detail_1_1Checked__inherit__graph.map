@@ -1,5 +1,5 @@
 <map id="playrho::detail::Checked&lt; ValueType, Checker, NoExcept &gt;" name="playrho::detail::Checked&lt; ValueType, Checker, NoExcept &gt;">
-<area shape="rect" id="node1" title="Checked value." alt="" coords="5,267,253,308"/>
+<area shape="rect" id="node1" title="Class template for construction&#45;time constraining a type&#39;s value." alt="" coords="5,267,253,308"/>
 <area shape="rect" id="node2" href="$classplayrho_1_1detail_1_1Checked.html" title=" " alt="" coords="416,5,595,47"/>
 <area shape="rect" id="node3" href="$classplayrho_1_1detail_1_1Checked.html" title=" " alt="" coords="416,71,595,112"/>
 <area shape="rect" id="node4" href="$classplayrho_1_1detail_1_1Checked.html" title=" " alt="" coords="416,136,595,177"/>

@@ -887,6 +887,830 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>AabbTreeWorld.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/d2/</path>
+    <filename>AabbTreeWorld_8hpp.html</filename>
+    <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
+    <includes id="ContactKey_8hpp" name="ContactKey.hpp" local="no" imported="no">playrho/ContactKey.hpp</includes>
+    <includes id="Filter_8hpp" name="Filter.hpp" local="no" imported="no">playrho/Filter.hpp</includes>
+    <includes id="JointID_8hpp" name="JointID.hpp" local="no" imported="no">playrho/JointID.hpp</includes>
+    <includes id="Island_8hpp" name="Island.hpp" local="no" imported="no">playrho/Island.hpp</includes>
+    <includes id="IslandStats_8hpp" name="IslandStats.hpp" local="no" imported="no">playrho/IslandStats.hpp</includes>
+    <includes id="KeyedContactID_8hpp" name="KeyedContactID.hpp" local="no" imported="no">playrho/KeyedContactID.hpp</includes>
+    <includes id="ObjectPool_8hpp" name="ObjectPool.hpp" local="no" imported="no">playrho/ObjectPool.hpp</includes>
+    <includes id="Positive_8hpp" name="Positive.hpp" local="no" imported="no">playrho/Positive.hpp</includes>
+    <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
+    <includes id="StepStats_8hpp" name="StepStats.hpp" local="no" imported="no">playrho/StepStats.hpp</includes>
+    <includes id="BodyConstraint_8hpp" name="BodyConstraint.hpp" local="no" imported="no">playrho/d2/BodyConstraint.hpp</includes>
+    <includes id="DynamicTree_8hpp" name="DynamicTree.hpp" local="no" imported="no">playrho/d2/DynamicTree.hpp</includes>
+    <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
+    <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
+    <includes id="WorldConf_8hpp" name="WorldConf.hpp" local="no" imported="no">playrho/d2/WorldConf.hpp</includes>
+    <class kind="class">playrho::d2::AabbTreeWorld</class>
+    <namespace>playrho</namespace>
+    <namespace>playrho::d2</namespace>
+    <member kind="typedef">
+      <type>std::function&lt; void(std::pair&lt; BodyID, ShapeID &gt;)&gt;</type>
+      <name>AssociationListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a79795738aeb3efff8b2c8c532be4d659</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::vector&lt; std::tuple&lt; ContactKey, ContactID &gt; &gt;</type>
+      <name>BodyContactIDs</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a44a03b52bdd73ab4fb1bc9e522708da3</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::vector&lt; BodyID &gt;</type>
+      <name>BodyIDs</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aeee94a0ca7f0d3069e197bec5902c7a4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::vector&lt; std::pair&lt; BodyID, JointID &gt; &gt;</type>
+      <name>BodyJointIDs</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab725a0099ae40f88067b8c1104c7ffac</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::vector&lt; std::pair&lt; BodyID, ShapeID &gt; &gt;</type>
+      <name>BodyShapeIDs</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a430e1d6d6a2310f75ec7e181b37d90dc</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::function&lt; void(ContactID)&gt;</type>
+      <name>ContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a3c7c61bbf21c6429d9095b90d78357a0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::function&lt; void(ContactID, const ContactImpulsesList &amp;, unsigned)&gt;</type>
+      <name>ImpulsesContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a5f1a386edb55381b1298a6242dd993fe</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::vector&lt; JointID &gt;</type>
+      <name>JointIDs</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a442773c8570c44bfd40f5ed08ab1240c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::function&lt; void(JointID)&gt;</type>
+      <name>JointListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ad9f95381357d690566e30bca1dea2c56</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::vector&lt; KeyedContactID &gt;</type>
+      <name>KeyedContactIDs</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>abd7dca1f774f4159c942850575286f73</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::function&lt; void(ContactID, const Manifold &amp;)&gt;</type>
+      <name>ManifoldContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a9eab28c674a223868b16cfb6923b899e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::vector&lt; DynamicTree::Size &gt;</type>
+      <name>ProxyIDs</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a2b03aa4cdf4968f8dc10d9016cb0552d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::function&lt; void(ShapeID)&gt;</type>
+      <name>ShapeListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a1aab64c9251adf9a109b7e69e1832844</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetBeginContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab2d473e67d8c73d84b5bab36684b21e4</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetDetachListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a73d47c4e7db2126ca5bb6e3fd5aa7a2c</anchor>
+      <arglist>(AabbTreeWorld &amp;world, AssociationListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetEndContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a0eb658b0c7360d020e51833df13fe966</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetJointDestructionListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aad9d71ed88d25ba53cc5795ef5c46767</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetPostSolveContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a6cdc554f84a577ddb26cc3f11db7948f</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ImpulsesContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetPreSolveContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a6cf097ec66665aaee2ee3f003bdd3c95</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ManifoldContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetShapeDestructionListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7738575fcd8e208874a3cd3e32dffbf2</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Clear</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a652406794226e2ebe8a0a9c7cf2d98ea</anchor>
+      <arglist>(AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyShapeIDs &amp;</type>
+      <name>GetFixturesForProxies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af5a39fd26cc21a25452046df1c4c1b08</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Frequency</type>
+      <name>GetInvDeltaTime</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a32f875c95aaec6c2e7a5737e00738e0f</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const ProxyIDs &amp;</type>
+      <name>GetProxies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa688d6514c8709849281db9d93448a93</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>GetSubStepping</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af8856e4e147c88bcacefa6b63aa750cd</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const DynamicTree &amp;</type>
+      <name>GetTree</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a906e04c52b759610040707fef9ad58b0</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Interval&lt; Positive&lt; Length &gt; &gt;</type>
+      <name>GetVertexRadiusInterval</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa5bd2b2d4ff4f88eef1db5f754dfa7c2</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsLocked</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af876b6037e657c9123c89cc057dae338</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsStepComplete</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aac86950fdee2a34e82718966246905a3</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetSubStepping</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7b8d4d16ed5f043b13407de3cd8f11f4</anchor>
+      <arglist>(AabbTreeWorld &amp;world, bool flag) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a4602fbbc1af40386700118e5ddda8b6a</anchor>
+      <arglist>(AabbTreeWorld &amp;world, const Length2 &amp;newOrigin)</arglist>
+    </member>
+    <member kind="function">
+      <type>StepStats</type>
+      <name>Step</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af03fb141f6d983e01e4799b62c9e3b07</anchor>
+      <arglist>(AabbTreeWorld &amp;world, const StepConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>CreateBody</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a352ef727632169c252a59d648808822f</anchor>
+      <arglist>(AabbTreeWorld &amp;world, Body body=Body{})</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7df9661feac023ea0e4cbe6369943352</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyIDs &amp;</type>
+      <name>GetBodies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a4c12d1fb1dda1f84e19d43cb9abfbdd6</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyIDs &amp;</type>
+      <name>GetBodiesForProxies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a02732814de45bab260fe1a91e1fb05c0</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const Body &amp;</type>
+      <name>GetBody</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aaa29799a42054beffb9328eb8c651ed1</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetBodyRange</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae97a6f878c88ff1c0609582303945bd2</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyContactIDs &amp;</type>
+      <name>GetContacts</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7b9fd7f3e9d7a0f8ff73d5818cf0d1f4</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyJointIDs &amp;</type>
+      <name>GetJoints</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>abaaa273bdf2585781176266c6be413a6</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const ProxyIDs &amp;</type>
+      <name>GetProxies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a3694df2092406746a5e71113ee6487f1</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a420fd33ad8ad006f01422746b89cc507</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetBody</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a20cdd89db66f857c4799c090880bd5b4</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyID id, Body value)</arglist>
+    </member>
+    <member kind="function">
+      <type>JointID</type>
+      <name>CreateJoint</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ad08795abe5eee5183189ff9901ab410a</anchor>
+      <arglist>(AabbTreeWorld &amp;world, Joint def)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>acc9f0d8549658a5f76cc03ac8a78df14</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Joint &amp;</type>
+      <name>GetJoint</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a6372e003c4984f0c0319884f812f2dd7</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>JointCounter</type>
+      <name>GetJointRange</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>adfede6c462c7ebd2f3d75ec2878bbb73</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const JointIDs &amp;</type>
+      <name>GetJoints</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a04675e3f7536245a0ca7fad3f4bb0b27</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a24478dcc8d764767fae7067be9dcc6d4</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, JointID id) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetJoint</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae2bf839e74417fc9845d648c90f5b1cc</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointID id, Joint def)</arglist>
+    </member>
+    <member kind="function">
+      <type>ShapeID</type>
+      <name>CreateShape</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a5063d35172bec75d73944cc1c52009ed</anchor>
+      <arglist>(AabbTreeWorld &amp;world, Shape def)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7896b447c00a9a33828fead594cb9df4</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Shape &amp;</type>
+      <name>GetShape</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a9e29376addbe168c363097e82eb796f0</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ShapeID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>ShapeCounter</type>
+      <name>GetShapeRange</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a61d7f65f10afdad013c11d866292ad12</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetShape</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a089e703b548a6b5f8b02ceb661a40a1d</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeID id, Shape def)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Contact &amp;</type>
+      <name>GetContact</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab77e4986f15b40a9e31429c3f6be3b27</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>ContactCounter</type>
+      <name>GetContactRange</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a1e9f16b0b9ca81d3852d99bd3bf7ba94</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>KeyedContactIDs</type>
+      <name>GetContacts</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab42cd5eaac7f55f5fc952be4188a1fc5</anchor>
+      <arglist>(const AabbTreeWorld &amp;world)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Manifold &amp;</type>
+      <name>GetManifold</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a4744f578a96c67e8929c84c7b32e27e7</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a410fda5a1c75561497f4184d9e6d0d15</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetContact</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a986132f0e473e4da3dfcd1b5ec1eb608</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactID id, Contact value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetBeginContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab2d473e67d8c73d84b5bab36684b21e4</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetDetachListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a73d47c4e7db2126ca5bb6e3fd5aa7a2c</anchor>
+      <arglist>(AabbTreeWorld &amp;world, AssociationListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetEndContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a0eb658b0c7360d020e51833df13fe966</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetJointDestructionListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aad9d71ed88d25ba53cc5795ef5c46767</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetPostSolveContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a6cdc554f84a577ddb26cc3f11db7948f</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ImpulsesContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetPreSolveContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a6cf097ec66665aaee2ee3f003bdd3c95</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ManifoldContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetShapeDestructionListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7738575fcd8e208874a3cd3e32dffbf2</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Clear</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a652406794226e2ebe8a0a9c7cf2d98ea</anchor>
+      <arglist>(AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyShapeIDs &amp;</type>
+      <name>GetFixturesForProxies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af5a39fd26cc21a25452046df1c4c1b08</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Frequency</type>
+      <name>GetInvDeltaTime</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a32f875c95aaec6c2e7a5737e00738e0f</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const ProxyIDs &amp;</type>
+      <name>GetProxies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa688d6514c8709849281db9d93448a93</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>GetSubStepping</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af8856e4e147c88bcacefa6b63aa750cd</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const DynamicTree &amp;</type>
+      <name>GetTree</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a906e04c52b759610040707fef9ad58b0</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Interval&lt; Positive&lt; Length &gt; &gt;</type>
+      <name>GetVertexRadiusInterval</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa5bd2b2d4ff4f88eef1db5f754dfa7c2</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsLocked</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af876b6037e657c9123c89cc057dae338</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsStepComplete</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aac86950fdee2a34e82718966246905a3</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetSubStepping</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7b8d4d16ed5f043b13407de3cd8f11f4</anchor>
+      <arglist>(AabbTreeWorld &amp;world, bool flag) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a4602fbbc1af40386700118e5ddda8b6a</anchor>
+      <arglist>(AabbTreeWorld &amp;world, const Length2 &amp;newOrigin)</arglist>
+    </member>
+    <member kind="function">
+      <type>StepStats</type>
+      <name>Step</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af03fb141f6d983e01e4799b62c9e3b07</anchor>
+      <arglist>(AabbTreeWorld &amp;world, const StepConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>CreateBody</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a352ef727632169c252a59d648808822f</anchor>
+      <arglist>(AabbTreeWorld &amp;world, Body body=Body{})</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7df9661feac023ea0e4cbe6369943352</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyIDs &amp;</type>
+      <name>GetBodies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a4c12d1fb1dda1f84e19d43cb9abfbdd6</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyIDs &amp;</type>
+      <name>GetBodiesForProxies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a02732814de45bab260fe1a91e1fb05c0</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const Body &amp;</type>
+      <name>GetBody</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aaa29799a42054beffb9328eb8c651ed1</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetBodyRange</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae97a6f878c88ff1c0609582303945bd2</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyContactIDs &amp;</type>
+      <name>GetContacts</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7b9fd7f3e9d7a0f8ff73d5818cf0d1f4</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyJointIDs &amp;</type>
+      <name>GetJoints</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>abaaa273bdf2585781176266c6be413a6</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const ProxyIDs &amp;</type>
+      <name>GetProxies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a3694df2092406746a5e71113ee6487f1</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a420fd33ad8ad006f01422746b89cc507</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetBody</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a20cdd89db66f857c4799c090880bd5b4</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyID id, Body value)</arglist>
+    </member>
+    <member kind="function">
+      <type>JointID</type>
+      <name>CreateJoint</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ad08795abe5eee5183189ff9901ab410a</anchor>
+      <arglist>(AabbTreeWorld &amp;world, Joint def)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>acc9f0d8549658a5f76cc03ac8a78df14</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Joint &amp;</type>
+      <name>GetJoint</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a6372e003c4984f0c0319884f812f2dd7</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>JointCounter</type>
+      <name>GetJointRange</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>adfede6c462c7ebd2f3d75ec2878bbb73</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const JointIDs &amp;</type>
+      <name>GetJoints</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a04675e3f7536245a0ca7fad3f4bb0b27</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a24478dcc8d764767fae7067be9dcc6d4</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, JointID id) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetJoint</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae2bf839e74417fc9845d648c90f5b1cc</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointID id, Joint def)</arglist>
+    </member>
+    <member kind="function">
+      <type>ShapeID</type>
+      <name>CreateShape</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a5063d35172bec75d73944cc1c52009ed</anchor>
+      <arglist>(AabbTreeWorld &amp;world, Shape def)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7896b447c00a9a33828fead594cb9df4</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Shape &amp;</type>
+      <name>GetShape</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a9e29376addbe168c363097e82eb796f0</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ShapeID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>ShapeCounter</type>
+      <name>GetShapeRange</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a61d7f65f10afdad013c11d866292ad12</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetShape</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a089e703b548a6b5f8b02ceb661a40a1d</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeID id, Shape def)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Contact &amp;</type>
+      <name>GetContact</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab77e4986f15b40a9e31429c3f6be3b27</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>ContactCounter</type>
+      <name>GetContactRange</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a1e9f16b0b9ca81d3852d99bd3bf7ba94</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>KeyedContactIDs</type>
+      <name>GetContacts</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab42cd5eaac7f55f5fc952be4188a1fc5</anchor>
+      <arglist>(const AabbTreeWorld &amp;world)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Manifold &amp;</type>
+      <name>GetManifold</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a4744f578a96c67e8929c84c7b32e27e7</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a410fda5a1c75561497f4184d9e6d0d15</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetContact</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a986132f0e473e4da3dfcd1b5ec1eb608</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactID id, Contact value)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>AabbTreeWorldBody.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/d2/</path>
+    <filename>AabbTreeWorldBody_8hpp.html</filename>
+    <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
+    <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
+    <namespace>playrho</namespace>
+    <namespace>playrho::d2</namespace>
+    <member kind="function">
+      <type>void</type>
+      <name>Attach</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a71e1178c67501e9f3cecd3bc40cc04a1</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyID id, ShapeID shapeID)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>CreateBody</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aac5c2b6c5fc9a39971942baf99fcee2b</anchor>
+      <arglist>(AabbTreeWorld &amp;world, const BodyConf &amp;def)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>Detach</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa96788ab361740a16d316b821154ea9e</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyID id, ShapeID shapeID)</arglist>
+    </member>
+    <member kind="function">
+      <type>const std::vector&lt; ShapeID &gt; &amp;</type>
+      <name>GetShapes</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>afe762c434a20aa39abb7f121b9d89c03</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>Acceleration.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/d2/</path>
     <filename>Acceleration_8hpp.html</filename>
@@ -6470,48 +7294,6 @@
     <class kind="class">playrho::d2::World</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
-    <member kind="typedef">
-      <type>std::function&lt; void(std::pair&lt; BodyID, ShapeID &gt;)&gt;</type>
-      <name>AssociationListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a79795738aeb3efff8b2c8c532be4d659</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>std::function&lt; void(ContactID)&gt;</type>
-      <name>ContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a3c7c61bbf21c6429d9095b90d78357a0</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>std::function&lt; void(ContactID, const ContactImpulsesList &amp;, unsigned)&gt;</type>
-      <name>ImpulsesContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a5f1a386edb55381b1298a6242dd993fe</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>std::function&lt; void(JointID)&gt;</type>
-      <name>JointListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad9f95381357d690566e30bca1dea2c56</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>std::function&lt; void(ContactID, const Manifold &amp;)&gt;</type>
-      <name>ManifoldContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a9eab28c674a223868b16cfb6923b899e</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>std::function&lt; void(ShapeID)&gt;</type>
-      <name>ShapeListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1aab64c9251adf9a109b7e69e1832844</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="function">
       <type>void</type>
       <name>SetBeginContactListener</name>
@@ -8626,788 +9408,6 @@
     </member>
   </compound>
   <compound kind="file">
-    <name>WorldImpl.hpp</name>
-    <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/d2/</path>
-    <filename>WorldImpl_8hpp.html</filename>
-    <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
-    <includes id="ContactKey_8hpp" name="ContactKey.hpp" local="no" imported="no">playrho/ContactKey.hpp</includes>
-    <includes id="Filter_8hpp" name="Filter.hpp" local="no" imported="no">playrho/Filter.hpp</includes>
-    <includes id="JointID_8hpp" name="JointID.hpp" local="no" imported="no">playrho/JointID.hpp</includes>
-    <includes id="Island_8hpp" name="Island.hpp" local="no" imported="no">playrho/Island.hpp</includes>
-    <includes id="IslandStats_8hpp" name="IslandStats.hpp" local="no" imported="no">playrho/IslandStats.hpp</includes>
-    <includes id="KeyedContactID_8hpp" name="KeyedContactID.hpp" local="no" imported="no">playrho/KeyedContactID.hpp</includes>
-    <includes id="ObjectPool_8hpp" name="ObjectPool.hpp" local="no" imported="no">playrho/ObjectPool.hpp</includes>
-    <includes id="Positive_8hpp" name="Positive.hpp" local="no" imported="no">playrho/Positive.hpp</includes>
-    <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
-    <includes id="StepStats_8hpp" name="StepStats.hpp" local="no" imported="no">playrho/StepStats.hpp</includes>
-    <includes id="BodyConstraint_8hpp" name="BodyConstraint.hpp" local="no" imported="no">playrho/d2/BodyConstraint.hpp</includes>
-    <includes id="DynamicTree_8hpp" name="DynamicTree.hpp" local="no" imported="no">playrho/d2/DynamicTree.hpp</includes>
-    <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
-    <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
-    <includes id="WorldConf_8hpp" name="WorldConf.hpp" local="no" imported="no">playrho/d2/WorldConf.hpp</includes>
-    <class kind="class">playrho::d2::WorldImpl</class>
-    <namespace>playrho</namespace>
-    <namespace>playrho::d2</namespace>
-    <member kind="typedef">
-      <type>std::vector&lt; std::tuple&lt; ContactKey, ContactID &gt; &gt;</type>
-      <name>BodyContactIDs</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a44a03b52bdd73ab4fb1bc9e522708da3</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>std::vector&lt; BodyID &gt;</type>
-      <name>BodyIDs</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aeee94a0ca7f0d3069e197bec5902c7a4</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>std::vector&lt; std::pair&lt; BodyID, JointID &gt; &gt;</type>
-      <name>BodyJointIDs</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab725a0099ae40f88067b8c1104c7ffac</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>std::vector&lt; std::pair&lt; BodyID, ShapeID &gt; &gt;</type>
-      <name>BodyShapeIDs</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a430e1d6d6a2310f75ec7e181b37d90dc</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>std::vector&lt; JointID &gt;</type>
-      <name>JointIDs</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a442773c8570c44bfd40f5ed08ab1240c</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>std::vector&lt; KeyedContactID &gt;</type>
-      <name>KeyedContactIDs</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abd7dca1f774f4159c942850575286f73</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>std::vector&lt; DynamicTree::Size &gt;</type>
-      <name>ProxyIDs</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a2b03aa4cdf4968f8dc10d9016cb0552d</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetBeginContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a8354cb815a60c1ebb8ca8bfb72f32216</anchor>
-      <arglist>(WorldImpl &amp;world, ContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetDetachListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7a34581ad5e8d08d62ff1d1cf7104239</anchor>
-      <arglist>(WorldImpl &amp;world, AssociationListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetEndContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af0ad10490a2672d824f9247d27c92a59</anchor>
-      <arglist>(WorldImpl &amp;world, ContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetJointDestructionListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7d0b2ee82d95a29e86fbd00fa4c0cdae</anchor>
-      <arglist>(WorldImpl &amp;world, JointListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetPostSolveContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a56df511296f5c92b876294f97b9ad8c8</anchor>
-      <arglist>(WorldImpl &amp;world, ImpulsesContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetPreSolveContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a59a064bb81e5820fb91c6c3cc59ec50a</anchor>
-      <arglist>(WorldImpl &amp;world, ManifoldContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetShapeDestructionListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0900d9b858b651181dc2d95c1252754f</anchor>
-      <arglist>(WorldImpl &amp;world, ShapeListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Clear</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ac4fb9050bfbdd638299dc09a8b543db1</anchor>
-      <arglist>(WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyShapeIDs &amp;</type>
-      <name>GetFixturesForProxies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0b90c7ae6ee15121bc56992888340a1b</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Frequency</type>
-      <name>GetInvDeltaTime</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a139f9dd3eabcdba63323c0a4ad623064</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const ProxyIDs &amp;</type>
-      <name>GetProxies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a79085f04e2ebef4c6ce03945dd85b711</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>GetSubStepping</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6916c582f7b077f108c086eed146110f</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const DynamicTree &amp;</type>
-      <name>GetTree</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6d872e610ba0b38b05b1ca8edc4aaeb9</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Interval&lt; Positive&lt; Length &gt; &gt;</type>
-      <name>GetVertexRadiusInterval</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a34457c3eea748dd87fdb1a86a63bfe10</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsLocked</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a5e6aac0d8f5b69de80c8a84ea6e9c720</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsStepComplete</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad71cfd36af78783fc1e5bd1e31c1df74</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetSubStepping</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afcf1e668172372705cc6dea4cde45da4</anchor>
-      <arglist>(WorldImpl &amp;world, bool flag) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>ShiftOrigin</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a73a31777cd2dbadb82d74f4f2c234eef</anchor>
-      <arglist>(WorldImpl &amp;world, const Length2 &amp;newOrigin)</arglist>
-    </member>
-    <member kind="function">
-      <type>StepStats</type>
-      <name>Step</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab5f8eb0b78ec0f8550234cf8a9ebea85</anchor>
-      <arglist>(WorldImpl &amp;world, const StepConf &amp;conf)</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyID</type>
-      <name>CreateBody</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abefb4281d32a29326e5926bcb9b13fcb</anchor>
-      <arglist>(WorldImpl &amp;world, Body body=Body{})</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Destroy</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6412007eb0c9a5b35a00c72fe745c5de</anchor>
-      <arglist>(WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyIDs &amp;</type>
-      <name>GetBodies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6499ad039c4bd0e584719d0418872dcc</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyIDs &amp;</type>
-      <name>GetBodiesForProxies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a877b6d23df3caf3011fe1d4d64d32588</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const Body &amp;</type>
-      <name>GetBody</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a2e4ce79ab9a9c27c3c8946ddca1d154b</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyCounter</type>
-      <name>GetBodyRange</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afd18500bc914ea0e4bea8ad0b5d4bf7c</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyContactIDs &amp;</type>
-      <name>GetContacts</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aba5bb3b4037c1f1105c2770d5ee30e3d</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyJointIDs &amp;</type>
-      <name>GetJoints</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a64a4628a142ebe841045d6a2a943e34c</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>const ProxyIDs &amp;</type>
-      <name>GetProxies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0eb9ec77e4cb05d740791a88c29b40b7</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa511b3a58d688fa53055c85d38632a41</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetBody</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a9d546d7b7c6d944abb6d23e39166c8ac</anchor>
-      <arglist>(WorldImpl &amp;world, BodyID id, Body value)</arglist>
-    </member>
-    <member kind="function">
-      <type>JointID</type>
-      <name>CreateJoint</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abafe95bb47d7821ac1130d11a59664b3</anchor>
-      <arglist>(WorldImpl &amp;world, Joint def)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Destroy</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abe723211e850d0d2f62bbc8f45830e14</anchor>
-      <arglist>(WorldImpl &amp;world, JointID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>const Joint &amp;</type>
-      <name>GetJoint</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a2f7f22b93a8136ec65dbca767c0242b8</anchor>
-      <arglist>(const WorldImpl &amp;world, JointID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>JointCounter</type>
-      <name>GetJointRange</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a76840a57e0745b410fe071d294cea75e</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const JointIDs &amp;</type>
-      <name>GetJoints</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a156f7763cb677969532b2d9a3e056a40</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0a86a85b99204ab5336897f2f13c672a</anchor>
-      <arglist>(const WorldImpl &amp;world, JointID id) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetJoint</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ac47d0a94f61b6ffd10ff66ddde516a9b</anchor>
-      <arglist>(WorldImpl &amp;world, JointID id, Joint def)</arglist>
-    </member>
-    <member kind="function">
-      <type>ShapeID</type>
-      <name>CreateShape</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa19a43bb8d1edbc4b822b446d7a5c052</anchor>
-      <arglist>(WorldImpl &amp;world, Shape def)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Destroy</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab83d67bdd6ffea3f647d5f133e95285e</anchor>
-      <arglist>(WorldImpl &amp;world, ShapeID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>const Shape &amp;</type>
-      <name>GetShape</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6839d68907e143d05cc0ed8e00b66fea</anchor>
-      <arglist>(const WorldImpl &amp;world, ShapeID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>ShapeCounter</type>
-      <name>GetShapeRange</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a98658760beb3ed79e3cc25120706412d</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetShape</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a40d128f74e32fd57b54aa04ef2535a8e</anchor>
-      <arglist>(WorldImpl &amp;world, ShapeID id, Shape def)</arglist>
-    </member>
-    <member kind="function">
-      <type>const Contact &amp;</type>
-      <name>GetContact</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a24a172b630c46dbfb20fd2c0ef234084</anchor>
-      <arglist>(const WorldImpl &amp;world, ContactID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>ContactCounter</type>
-      <name>GetContactRange</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a857c0ea2a5dd4f96d39928ff393bf0ac</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>KeyedContactIDs</type>
-      <name>GetContacts</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af4e9fe325c5e5ab84491e884df2fe3c1</anchor>
-      <arglist>(const WorldImpl &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>const Manifold &amp;</type>
-      <name>GetManifold</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a05ef719453561f4b0f544360c94b4ba5</anchor>
-      <arglist>(const WorldImpl &amp;world, ContactID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae723a9bf7ce71e46cf39d1daf8588b61</anchor>
-      <arglist>(const WorldImpl &amp;world, ContactID id) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetContact</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abbaaa1e470e015e26863bf38193085c6</anchor>
-      <arglist>(WorldImpl &amp;world, ContactID id, Contact value)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetBeginContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a8354cb815a60c1ebb8ca8bfb72f32216</anchor>
-      <arglist>(WorldImpl &amp;world, ContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetDetachListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7a34581ad5e8d08d62ff1d1cf7104239</anchor>
-      <arglist>(WorldImpl &amp;world, AssociationListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetEndContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af0ad10490a2672d824f9247d27c92a59</anchor>
-      <arglist>(WorldImpl &amp;world, ContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetJointDestructionListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7d0b2ee82d95a29e86fbd00fa4c0cdae</anchor>
-      <arglist>(WorldImpl &amp;world, JointListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetPostSolveContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a56df511296f5c92b876294f97b9ad8c8</anchor>
-      <arglist>(WorldImpl &amp;world, ImpulsesContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetPreSolveContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a59a064bb81e5820fb91c6c3cc59ec50a</anchor>
-      <arglist>(WorldImpl &amp;world, ManifoldContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetShapeDestructionListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0900d9b858b651181dc2d95c1252754f</anchor>
-      <arglist>(WorldImpl &amp;world, ShapeListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Clear</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ac4fb9050bfbdd638299dc09a8b543db1</anchor>
-      <arglist>(WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyShapeIDs &amp;</type>
-      <name>GetFixturesForProxies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0b90c7ae6ee15121bc56992888340a1b</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Frequency</type>
-      <name>GetInvDeltaTime</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a139f9dd3eabcdba63323c0a4ad623064</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const ProxyIDs &amp;</type>
-      <name>GetProxies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a79085f04e2ebef4c6ce03945dd85b711</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>GetSubStepping</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6916c582f7b077f108c086eed146110f</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const DynamicTree &amp;</type>
-      <name>GetTree</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6d872e610ba0b38b05b1ca8edc4aaeb9</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Interval&lt; Positive&lt; Length &gt; &gt;</type>
-      <name>GetVertexRadiusInterval</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a34457c3eea748dd87fdb1a86a63bfe10</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsLocked</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a5e6aac0d8f5b69de80c8a84ea6e9c720</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsStepComplete</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad71cfd36af78783fc1e5bd1e31c1df74</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetSubStepping</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afcf1e668172372705cc6dea4cde45da4</anchor>
-      <arglist>(WorldImpl &amp;world, bool flag) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>ShiftOrigin</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a73a31777cd2dbadb82d74f4f2c234eef</anchor>
-      <arglist>(WorldImpl &amp;world, const Length2 &amp;newOrigin)</arglist>
-    </member>
-    <member kind="function">
-      <type>StepStats</type>
-      <name>Step</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab5f8eb0b78ec0f8550234cf8a9ebea85</anchor>
-      <arglist>(WorldImpl &amp;world, const StepConf &amp;conf)</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyID</type>
-      <name>CreateBody</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abefb4281d32a29326e5926bcb9b13fcb</anchor>
-      <arglist>(WorldImpl &amp;world, Body body=Body{})</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Destroy</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6412007eb0c9a5b35a00c72fe745c5de</anchor>
-      <arglist>(WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyIDs &amp;</type>
-      <name>GetBodies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6499ad039c4bd0e584719d0418872dcc</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyIDs &amp;</type>
-      <name>GetBodiesForProxies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a877b6d23df3caf3011fe1d4d64d32588</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const Body &amp;</type>
-      <name>GetBody</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a2e4ce79ab9a9c27c3c8946ddca1d154b</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyCounter</type>
-      <name>GetBodyRange</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afd18500bc914ea0e4bea8ad0b5d4bf7c</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyContactIDs &amp;</type>
-      <name>GetContacts</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aba5bb3b4037c1f1105c2770d5ee30e3d</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyJointIDs &amp;</type>
-      <name>GetJoints</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a64a4628a142ebe841045d6a2a943e34c</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>const ProxyIDs &amp;</type>
-      <name>GetProxies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0eb9ec77e4cb05d740791a88c29b40b7</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa511b3a58d688fa53055c85d38632a41</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetBody</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a9d546d7b7c6d944abb6d23e39166c8ac</anchor>
-      <arglist>(WorldImpl &amp;world, BodyID id, Body value)</arglist>
-    </member>
-    <member kind="function">
-      <type>JointID</type>
-      <name>CreateJoint</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abafe95bb47d7821ac1130d11a59664b3</anchor>
-      <arglist>(WorldImpl &amp;world, Joint def)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Destroy</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abe723211e850d0d2f62bbc8f45830e14</anchor>
-      <arglist>(WorldImpl &amp;world, JointID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>const Joint &amp;</type>
-      <name>GetJoint</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a2f7f22b93a8136ec65dbca767c0242b8</anchor>
-      <arglist>(const WorldImpl &amp;world, JointID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>JointCounter</type>
-      <name>GetJointRange</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a76840a57e0745b410fe071d294cea75e</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const JointIDs &amp;</type>
-      <name>GetJoints</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a156f7763cb677969532b2d9a3e056a40</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0a86a85b99204ab5336897f2f13c672a</anchor>
-      <arglist>(const WorldImpl &amp;world, JointID id) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetJoint</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ac47d0a94f61b6ffd10ff66ddde516a9b</anchor>
-      <arglist>(WorldImpl &amp;world, JointID id, Joint def)</arglist>
-    </member>
-    <member kind="function">
-      <type>ShapeID</type>
-      <name>CreateShape</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa19a43bb8d1edbc4b822b446d7a5c052</anchor>
-      <arglist>(WorldImpl &amp;world, Shape def)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Destroy</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab83d67bdd6ffea3f647d5f133e95285e</anchor>
-      <arglist>(WorldImpl &amp;world, ShapeID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>const Shape &amp;</type>
-      <name>GetShape</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6839d68907e143d05cc0ed8e00b66fea</anchor>
-      <arglist>(const WorldImpl &amp;world, ShapeID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>ShapeCounter</type>
-      <name>GetShapeRange</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a98658760beb3ed79e3cc25120706412d</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetShape</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a40d128f74e32fd57b54aa04ef2535a8e</anchor>
-      <arglist>(WorldImpl &amp;world, ShapeID id, Shape def)</arglist>
-    </member>
-    <member kind="function">
-      <type>const Contact &amp;</type>
-      <name>GetContact</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a24a172b630c46dbfb20fd2c0ef234084</anchor>
-      <arglist>(const WorldImpl &amp;world, ContactID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>ContactCounter</type>
-      <name>GetContactRange</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a857c0ea2a5dd4f96d39928ff393bf0ac</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>KeyedContactIDs</type>
-      <name>GetContacts</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af4e9fe325c5e5ab84491e884df2fe3c1</anchor>
-      <arglist>(const WorldImpl &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>const Manifold &amp;</type>
-      <name>GetManifold</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a05ef719453561f4b0f544360c94b4ba5</anchor>
-      <arglist>(const WorldImpl &amp;world, ContactID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae723a9bf7ce71e46cf39d1daf8588b61</anchor>
-      <arglist>(const WorldImpl &amp;world, ContactID id) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetContact</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abbaaa1e470e015e26863bf38193085c6</anchor>
-      <arglist>(WorldImpl &amp;world, ContactID id, Contact value)</arglist>
-    </member>
-  </compound>
-  <compound kind="file">
-    <name>WorldImplBody.hpp</name>
-    <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/d2/</path>
-    <filename>WorldImplBody_8hpp.html</filename>
-    <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
-    <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
-    <namespace>playrho</namespace>
-    <namespace>playrho::d2</namespace>
-    <member kind="function">
-      <type>void</type>
-      <name>Attach</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a301ed270011c152f61c26e30dc5b1c35</anchor>
-      <arglist>(WorldImpl &amp;world, BodyID id, ShapeID shapeID)</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyID</type>
-      <name>CreateBody</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a801c24452b643b233843fb98ce663511</anchor>
-      <arglist>(WorldImpl &amp;world, const BodyConf &amp;def)</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>Detach</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a18e35246792963c45802b2abd5bd58a5</anchor>
-      <arglist>(WorldImpl &amp;world, BodyID id, ShapeID shapeID)</arglist>
-    </member>
-    <member kind="function">
-      <type>const std::vector&lt; ShapeID &gt; &amp;</type>
-      <name>GetShapes</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa22be2430911c2dcd6d3e1ca621eb849</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-  </compound>
-  <compound kind="file">
     <name>WorldJoint.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/d2/</path>
     <filename>WorldJoint_8hpp.html</filename>
@@ -10251,7 +10251,6 @@
     <name>FiniteChecker.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/detail/</path>
     <filename>FiniteChecker_8hpp.html</filename>
-    <includes id="Checked_8hpp" name="Checked.hpp" local="no" imported="no">playrho/detail/Checked.hpp</includes>
     <includes id="Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/Math.hpp</includes>
     <class kind="struct">playrho::detail::FiniteChecker</class>
     <namespace>playrho</namespace>
@@ -10284,7 +10283,6 @@
     <name>NegativeChecker.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/detail/</path>
     <filename>NegativeChecker_8hpp.html</filename>
-    <includes id="Checked_8hpp" name="Checked.hpp" local="no" imported="no">playrho/detail/Checked.hpp</includes>
     <class kind="struct">playrho::detail::NegativeChecker</class>
     <namespace>playrho</namespace>
     <namespace>playrho::detail</namespace>
@@ -10293,7 +10291,6 @@
     <name>NonNegativeChecker.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/detail/</path>
     <filename>NonNegativeChecker_8hpp.html</filename>
-    <includes id="Checked_8hpp" name="Checked.hpp" local="no" imported="no">playrho/detail/Checked.hpp</includes>
     <class kind="struct">playrho::detail::NonNegativeChecker</class>
     <namespace>playrho</namespace>
     <namespace>playrho::detail</namespace>
@@ -10302,7 +10299,6 @@
     <name>NonPositiveChecker.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/detail/</path>
     <filename>NonPositiveChecker_8hpp.html</filename>
-    <includes id="Checked_8hpp" name="Checked.hpp" local="no" imported="no">playrho/detail/Checked.hpp</includes>
     <class kind="struct">playrho::detail::NonPositiveChecker</class>
     <namespace>playrho</namespace>
     <namespace>playrho::detail</namespace>
@@ -10311,7 +10307,6 @@
     <name>NonZeroChecker.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/detail/</path>
     <filename>NonZeroChecker_8hpp.html</filename>
-    <includes id="Checked_8hpp" name="Checked.hpp" local="no" imported="no">playrho/detail/Checked.hpp</includes>
     <class kind="struct">playrho::detail::NonZeroChecker</class>
     <namespace>playrho</namespace>
     <namespace>playrho::detail</namespace>
@@ -10320,7 +10315,6 @@
     <name>PositiveChecker.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/detail/</path>
     <filename>PositiveChecker_8hpp.html</filename>
-    <includes id="Checked_8hpp" name="Checked.hpp" local="no" imported="no">playrho/detail/Checked.hpp</includes>
     <class kind="struct">playrho::detail::PositiveChecker</class>
     <namespace>playrho</namespace>
     <namespace>playrho::detail</namespace>
@@ -10591,7 +10585,6 @@
     <name>UnitIntervalChecker.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/detail/</path>
     <filename>UnitIntervalChecker_8hpp.html</filename>
-    <includes id="Checked_8hpp" name="Checked.hpp" local="no" imported="no">playrho/detail/Checked.hpp</includes>
     <class kind="struct">playrho::detail::UnitIntervalChecker</class>
     <namespace>playrho</namespace>
     <namespace>playrho::detail</namespace>
@@ -10688,6 +10681,7 @@
     <name>Finite.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/</path>
     <filename>Finite_8hpp.html</filename>
+    <includes id="Checked_8hpp" name="Checked.hpp" local="no" imported="no">playrho/detail/Checked.hpp</includes>
     <includes id="FiniteChecker_8hpp" name="FiniteChecker.hpp" local="no" imported="no">playrho/detail/FiniteChecker.hpp</includes>
     <namespace>playrho</namespace>
     <member kind="typedef">
@@ -11604,6 +11598,7 @@
     <name>Negative.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/</path>
     <filename>Negative_8hpp.html</filename>
+    <includes id="Checked_8hpp" name="Checked.hpp" local="no" imported="no">playrho/detail/Checked.hpp</includes>
     <includes id="NegativeChecker_8hpp" name="NegativeChecker.hpp" local="no" imported="no">playrho/detail/NegativeChecker.hpp</includes>
     <namespace>playrho</namespace>
     <member kind="typedef">
@@ -11625,6 +11620,7 @@
     <name>NonNegative.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/</path>
     <filename>NonNegative_8hpp.html</filename>
+    <includes id="Checked_8hpp" name="Checked.hpp" local="no" imported="no">playrho/detail/Checked.hpp</includes>
     <includes id="NonNegativeChecker_8hpp" name="NonNegativeChecker.hpp" local="no" imported="no">playrho/detail/NonNegativeChecker.hpp</includes>
     <namespace>playrho</namespace>
     <member kind="typedef">
@@ -11646,6 +11642,7 @@
     <name>NonPositive.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/</path>
     <filename>NonPositive_8hpp.html</filename>
+    <includes id="Checked_8hpp" name="Checked.hpp" local="no" imported="no">playrho/detail/Checked.hpp</includes>
     <includes id="NonPositiveChecker_8hpp" name="NonPositiveChecker.hpp" local="no" imported="no">playrho/detail/NonPositiveChecker.hpp</includes>
     <namespace>playrho</namespace>
     <member kind="typedef">
@@ -11667,6 +11664,7 @@
     <name>NonZero.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/</path>
     <filename>NonZero_8hpp.html</filename>
+    <includes id="Checked_8hpp" name="Checked.hpp" local="no" imported="no">playrho/detail/Checked.hpp</includes>
     <includes id="NonZeroChecker_8hpp" name="NonZeroChecker.hpp" local="no" imported="no">playrho/detail/NonZeroChecker.hpp</includes>
     <namespace>playrho</namespace>
     <member kind="typedef">
@@ -11733,6 +11731,7 @@
     <name>Positive.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/</path>
     <filename>Positive_8hpp.html</filename>
+    <includes id="Checked_8hpp" name="Checked.hpp" local="no" imported="no">playrho/detail/Checked.hpp</includes>
     <includes id="PositiveChecker_8hpp" name="PositiveChecker.hpp" local="no" imported="no">playrho/detail/PositiveChecker.hpp</includes>
     <class kind="class">std::numeric_limits&lt;::playrho::Positive&lt; T &gt; &gt;</class>
     <namespace>playrho</namespace>
@@ -12347,6 +12346,7 @@
     <name>UnitInterval.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/Library/include/playrho/</path>
     <filename>UnitInterval_8hpp.html</filename>
+    <includes id="Checked_8hpp" name="Checked.hpp" local="no" imported="no">playrho/detail/Checked.hpp</includes>
     <includes id="UnitIntervalChecker_8hpp" name="UnitIntervalChecker.hpp" local="no" imported="no">playrho/detail/UnitIntervalChecker.hpp</includes>
     <namespace>playrho</namespace>
     <member kind="typedef">
@@ -14155,6 +14155,410 @@
       <anchorfile>structplayrho_1_1detail_1_1AABB.html</anchorfile>
       <anchor>a9ad73cec0b99cb943f354a290c7f9bfc</anchor>
       <arglist>(const AABB&lt; N &gt; &amp;a, const AABB&lt; N &gt; &amp;b) noexcept</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>playrho::d2::AabbTreeWorld</name>
+    <filename>classplayrho_1_1d2_1_1AabbTreeWorld.html</filename>
+    <class kind="struct">playrho::d2::AabbTreeWorld::ContactUpdateConf</class>
+    <member kind="typedef">
+      <type>std::tuple&lt; ContactKey, Contactable, Contactable &gt;</type>
+      <name>ProxyKey</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a4c210fb56e0a86863cca565389623398</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>AabbTreeWorld</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a3ccc2406e8265a40a14fb71be604440b</anchor>
+      <arglist>(AabbTreeWorld &amp;&amp;other) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>AabbTreeWorld</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>aefe5423b193a1e4b54f879010da52122</anchor>
+      <arglist>(const AabbTreeWorld &amp;other)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>AabbTreeWorld</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>ab395cbbc2353f369793024aa7e50310e</anchor>
+      <arglist>(const WorldConf &amp;conf=WorldConf{})</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>~AabbTreeWorld</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>abb5742627377026ed5cf98486a707f6a</anchor>
+      <arglist>() noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>Clear</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a8dabd80c639dec161a055797f40c2d86</anchor>
+      <arglist>(AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend BodyID</type>
+      <name>CreateBody</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>abc134e4c96f8c802584f38a18cb057c6</anchor>
+      <arglist>(AabbTreeWorld &amp;world, Body body)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend JointID</type>
+      <name>CreateJoint</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>aa2d8aefae116fc83e64b522a5c73db09</anchor>
+      <arglist>(AabbTreeWorld &amp;world, Joint def)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend ShapeID</type>
+      <name>CreateShape</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>abcb8f93c1c373e3475f2df1a2e12aba7</anchor>
+      <arglist>(AabbTreeWorld &amp;world, Shape def)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>Destroy</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a99a6c32e43317f4486102ae9a8fb4779</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>Destroy</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a0e2fff698d60627f36ea7fd3e844fe06</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>Destroy</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>aca96782dad3c0157442004ad1934e60a</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeID id)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend const BodyIDs &amp;</type>
+      <name>GetBodies</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a9e67100c85a477c3c67eb4ac9253e64f</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend const BodyIDs &amp;</type>
+      <name>GetBodiesForProxies</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a762d0679579fbb33847c12a066b6c8a6</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend const Body &amp;</type>
+      <name>GetBody</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>adf56a78f49370b6526994a16d40e03fc</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend BodyCounter</type>
+      <name>GetBodyRange</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>afd6bd9a8f0b81dcbeb6cca6a098343e0</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend const Contact &amp;</type>
+      <name>GetContact</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>abedf134e2dd35b6392a1225011bba7ea</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend ContactCounter</type>
+      <name>GetContactRange</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a63a852d0bae346489f96669e57242ff5</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend KeyedContactIDs</type>
+      <name>GetContacts</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a76afff988091762ad3822ac3c86ea879</anchor>
+      <arglist>(const AabbTreeWorld &amp;world)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend const BodyContactIDs &amp;</type>
+      <name>GetContacts</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a8c62f86a14830bdf0876cfa3fc18cf22</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend const BodyShapeIDs &amp;</type>
+      <name>GetFixturesForProxies</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>af17a101558dad3dc0e9448602f0aa515</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend Frequency</type>
+      <name>GetInvDeltaTime</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>acc63db6b4934e96cc71e5979c96fff51</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend const Joint &amp;</type>
+      <name>GetJoint</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a8e151fdb8e3958e9f82c90bc7c484419</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend JointCounter</type>
+      <name>GetJointRange</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a5ee5bcf270433e310aa6c47919ac8e61</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend const JointIDs &amp;</type>
+      <name>GetJoints</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>aff9adb62f8fe3b643f5d6f28c904e543</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend const BodyJointIDs &amp;</type>
+      <name>GetJoints</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a7e5bf05e94015960f50125fe5e164b24</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend const Manifold &amp;</type>
+      <name>GetManifold</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a87c2f9b6cbe7dd8f5dca1283cc584bb4</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend const ProxyIDs &amp;</type>
+      <name>GetProxies</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a24c574e233970c28a513126441b75bef</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend const ProxyIDs &amp;</type>
+      <name>GetProxies</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a3ea45e84278758d191ea6e84a6580f6b</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend const Shape &amp;</type>
+      <name>GetShape</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a67fb660513bea3322b086a2702e35351</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ShapeID id)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend ShapeCounter</type>
+      <name>GetShapeRange</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a69a1235c0d82bd65f72812cba91b29ab</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend bool</type>
+      <name>GetSubStepping</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a0f53b469c25d0684656d8654eeddb34f</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend const DynamicTree &amp;</type>
+      <name>GetTree</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a753f356527124ffcbb173a1652104e2e</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend Interval&lt; Positive&lt; Length &gt; &gt;</type>
+      <name>GetVertexRadiusInterval</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>adfb6dafc68a7e86453c6942cc2da883d</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend bool</type>
+      <name>IsDestroyed</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>ad4ca8f693d313cd432a32c9233969eae</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend bool</type>
+      <name>IsDestroyed</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a34f8ea7692b997172c6a6cb1b21988bd</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend bool</type>
+      <name>IsDestroyed</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a305ecc515ef0eafaf69dbea9a56281c5</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, JointID id) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend bool</type>
+      <name>IsLocked</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>af7b61eec5e4faf8c8c8aea5516a0de3f</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend bool</type>
+      <name>IsStepComplete</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a6cd8c5658e5ba4625cfadebc00398578</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>SetBeginContactListener</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a591b7799255ec705cf9839413209e79b</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>SetBody</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a6f71e23277706f0d39ba35089731793e</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyID id, Body value)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>SetContact</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>adbfa7b9148da7a062e24904a07dea772</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactID id, Contact value)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>SetDetachListener</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a5728b5478035d69f4961d9bdc682cc66</anchor>
+      <arglist>(AabbTreeWorld &amp;world, AssociationListener listener) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>SetEndContactListener</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a2fb8f12656030a336986ca57542832ce</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>SetJoint</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a147ad2650478168965d46f2d81030d9e</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointID id, Joint def)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>SetJointDestructionListener</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>ac2b45332402433a56d17254b6dba140d</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointListener listener) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>SetPostSolveContactListener</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>adf668f22df95b416da1a44bde92e5313</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ImpulsesContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>SetPreSolveContactListener</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>aad065ed9b6f4ab505b2c84b1b7cae7d6</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ManifoldContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>SetShape</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>afe1a5f3596116d180aa68837ce531a0c</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeID id, Shape def)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>SetShapeDestructionListener</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a14ce97c5ed6b78c9e4cd87584ad629df</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeListener listener) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>SetSubStepping</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a4cfb501e18332a033c1b3db9ecfe8f3a</anchor>
+      <arglist>(AabbTreeWorld &amp;world, bool flag) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a7f4dbcac83a7d4c21eae21d1e0989560</anchor>
+      <arglist>(AabbTreeWorld &amp;world, const Length2 &amp;newOrigin)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend StepStats</type>
+      <name>Step</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a05bf70fba33665bd9d8d53a16551fd16</anchor>
+      <arglist>(AabbTreeWorld &amp;world, const StepConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Attach</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>ac5554379d3d2da283d46aec0e2878679</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyID id, ShapeID shapeID)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>CreateBody</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a6ff82074833d25757d3347cfeb6f7617</anchor>
+      <arglist>(AabbTreeWorld &amp;world, const BodyConf &amp;def)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>Detach</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>aa3c2c314d982d579c76d709d506303d1</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyID id, ShapeID shapeID)</arglist>
+    </member>
+    <member kind="function">
+      <type>const std::vector&lt; ShapeID &gt; &amp;</type>
+      <name>GetShapes</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>acfab29b1905bb96932cbca5f9b924344</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -16541,10 +16945,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>typename std::remove_pointer_t&lt; ValueType &gt;</type>
+      <type>std::remove_pointer_t&lt; ValueType &gt;</type>
       <name>remove_pointer_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a469b6bfb158510c35bb95a8496b1992f</anchor>
+      <anchor>a5195c96ea6ee491e75d93ce702553cda</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -16853,10 +17257,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>typename std::remove_pointer_t&lt; Angle &gt;</type>
+      <type>std::remove_pointer_t&lt; Angle &gt;</type>
       <name>remove_pointer_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a469b6bfb158510c35bb95a8496b1992f</anchor>
+      <anchor>a5195c96ea6ee491e75d93ce702553cda</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -17165,10 +17569,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>typename std::remove_pointer_t&lt; AreaDensity &gt;</type>
+      <type>std::remove_pointer_t&lt; AreaDensity &gt;</type>
       <name>remove_pointer_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a469b6bfb158510c35bb95a8496b1992f</anchor>
+      <anchor>a5195c96ea6ee491e75d93ce702553cda</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -17477,10 +17881,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>typename std::remove_pointer_t&lt; Force &gt;</type>
+      <type>std::remove_pointer_t&lt; Force &gt;</type>
       <name>remove_pointer_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a469b6bfb158510c35bb95a8496b1992f</anchor>
+      <anchor>a5195c96ea6ee491e75d93ce702553cda</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -17789,10 +18193,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>typename std::remove_pointer_t&lt; Frequency &gt;</type>
+      <type>std::remove_pointer_t&lt; Frequency &gt;</type>
       <name>remove_pointer_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a469b6bfb158510c35bb95a8496b1992f</anchor>
+      <anchor>a5195c96ea6ee491e75d93ce702553cda</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -18101,10 +18505,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>typename std::remove_pointer_t&lt; Length &gt;</type>
+      <type>std::remove_pointer_t&lt; Length &gt;</type>
       <name>remove_pointer_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a469b6bfb158510c35bb95a8496b1992f</anchor>
+      <anchor>a5195c96ea6ee491e75d93ce702553cda</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -18413,10 +18817,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>typename std::remove_pointer_t&lt; Mass &gt;</type>
+      <type>std::remove_pointer_t&lt; Mass &gt;</type>
       <name>remove_pointer_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a469b6bfb158510c35bb95a8496b1992f</anchor>
+      <anchor>a5195c96ea6ee491e75d93ce702553cda</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -18725,10 +19129,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>typename std::remove_pointer_t&lt; Real &gt;</type>
+      <type>std::remove_pointer_t&lt; Real &gt;</type>
       <name>remove_pointer_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a469b6bfb158510c35bb95a8496b1992f</anchor>
+      <anchor>a5195c96ea6ee491e75d93ce702553cda</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -19037,10 +19441,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>typename std::remove_pointer_t&lt; RotInertia &gt;</type>
+      <type>std::remove_pointer_t&lt; RotInertia &gt;</type>
       <name>remove_pointer_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a469b6bfb158510c35bb95a8496b1992f</anchor>
+      <anchor>a5195c96ea6ee491e75d93ce702553cda</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -19349,10 +19753,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>typename std::remove_pointer_t&lt; Torque &gt;</type>
+      <type>std::remove_pointer_t&lt; Torque &gt;</type>
       <name>remove_pointer_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a469b6bfb158510c35bb95a8496b1992f</anchor>
+      <anchor>a5195c96ea6ee491e75d93ce702553cda</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -20853,20 +21257,20 @@
     </member>
   </compound>
   <compound kind="struct">
-    <name>playrho::d2::WorldImpl::ContactUpdateConf</name>
-    <filename>structplayrho_1_1d2_1_1WorldImpl_1_1ContactUpdateConf.html</filename>
+    <name>playrho::d2::AabbTreeWorld::ContactUpdateConf</name>
+    <filename>structplayrho_1_1d2_1_1AabbTreeWorld_1_1ContactUpdateConf.html</filename>
     <member kind="variable">
       <type>DistanceConf</type>
       <name>distance</name>
-      <anchorfile>structplayrho_1_1d2_1_1WorldImpl_1_1ContactUpdateConf.html</anchorfile>
-      <anchor>ab59e80956a034b17abd2ba125d30fd26</anchor>
+      <anchorfile>structplayrho_1_1d2_1_1AabbTreeWorld_1_1ContactUpdateConf.html</anchorfile>
+      <anchor>a00610e727eb43fff8aa52d36e915926d</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>Manifold::Conf</type>
       <name>manifold</name>
-      <anchorfile>structplayrho_1_1d2_1_1WorldImpl_1_1ContactUpdateConf.html</anchorfile>
-      <anchor>a5df61b64877a6039cf5a10256557954c</anchor>
+      <anchorfile>structplayrho_1_1d2_1_1AabbTreeWorld_1_1ContactUpdateConf.html</anchorfile>
+      <anchor>aa69df2300a69f077f53c0c02a4a6607f</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -22405,8 +22809,8 @@
       <type>constexpr auto</type>
       <name>operator()</name>
       <anchorfile>structplayrho_1_1detail_1_1FiniteChecker.html</anchorfile>
-      <anchor>a34f1d7fcc46d6efd0ded70b0c4ae67e2</anchor>
-      <arglist>() noexcept(noexcept(static_cast&lt; T &gt;(0))) -&gt; decltype(static_cast&lt; T &gt;(0))</arglist>
+      <anchor>a93aea47caf4f951f60aabe38e2376f8d</anchor>
+      <arglist>() noexcept(noexcept(static_cast&lt; T &gt;(0))) -&gt; decltype(T{})</arglist>
     </member>
     <member kind="function">
       <type>auto</type>
@@ -26710,8 +27114,8 @@
       <type>constexpr auto</type>
       <name>operator()</name>
       <anchorfile>structplayrho_1_1detail_1_1NonPositiveChecker.html</anchorfile>
-      <anchor>a7bd90a3ab88209854826a99bda4b17e4</anchor>
-      <arglist>() noexcept -&gt; decltype(static_cast&lt; T &gt;(0))</arglist>
+      <anchor>a1a684addd8002b2eda2ef5e51760fa0d</anchor>
+      <arglist>() noexcept -&gt; decltype(T{})</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -42043,410 +42447,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>playrho::d2::WorldImpl</name>
-    <filename>classplayrho_1_1d2_1_1WorldImpl.html</filename>
-    <class kind="struct">playrho::d2::WorldImpl::ContactUpdateConf</class>
-    <member kind="typedef">
-      <type>std::tuple&lt; ContactKey, Contactable, Contactable &gt;</type>
-      <name>ProxyKey</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a4ce456450f7e4e6fbe3e30bc60634fd0</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>WorldImpl</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a512133b365102a9cb758564f2adf2aa9</anchor>
-      <arglist>(const WorldConf &amp;conf=WorldConf{})</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>WorldImpl</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a83562e6929a9e4dbb62872104d5707cf</anchor>
-      <arglist>(const WorldImpl &amp;other)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>WorldImpl</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>afae5b8d3820d0abb8d2a86927b4e0c04</anchor>
-      <arglist>(WorldImpl &amp;&amp;other) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>~WorldImpl</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a3dd7c0125be76395bcdcbc29237c2e3d</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend void</type>
-      <name>Clear</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a317ad010847421750166838cede7bcfa</anchor>
-      <arglist>(WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend BodyID</type>
-      <name>CreateBody</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>af5a0cde12fb201ad29f34774916f4cff</anchor>
-      <arglist>(WorldImpl &amp;world, Body body)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend JointID</type>
-      <name>CreateJoint</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>af66f04d7c8f91c8f429441b52a1c0154</anchor>
-      <arglist>(WorldImpl &amp;world, Joint def)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend ShapeID</type>
-      <name>CreateShape</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a045a1c901a877cec1c2dd3e861a748cb</anchor>
-      <arglist>(WorldImpl &amp;world, Shape def)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend void</type>
-      <name>Destroy</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a27fe25ca313f7d6953e4a1c55b8827d4</anchor>
-      <arglist>(WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend void</type>
-      <name>Destroy</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>ad11049091ca60e7a0a56f16d7c5c4e35</anchor>
-      <arglist>(WorldImpl &amp;world, JointID id)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend void</type>
-      <name>Destroy</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>ad7258aaa484f742458e6a684756dbc2c</anchor>
-      <arglist>(WorldImpl &amp;world, ShapeID id)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend const BodyIDs &amp;</type>
-      <name>GetBodies</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>ae38d734e68400cda1a70e260b7512cfd</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend const BodyIDs &amp;</type>
-      <name>GetBodiesForProxies</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a90d96b0ecabe28d0b51c7ba547709aef</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend const Body &amp;</type>
-      <name>GetBody</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a960b180f2f94f4c3b500cf971f24592c</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend BodyCounter</type>
-      <name>GetBodyRange</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>af1f54963f89ffa91d31fc57260d4ac8c</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend const Contact &amp;</type>
-      <name>GetContact</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a40e9df300cfa57ce5a74079984e2797c</anchor>
-      <arglist>(const WorldImpl &amp;world, ContactID id)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend ContactCounter</type>
-      <name>GetContactRange</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a0e1eb87fd5e77d8c8f8aee47da70f01c</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend KeyedContactIDs</type>
-      <name>GetContacts</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>ac6b0f9060253052e2cd88f3d40071114</anchor>
-      <arglist>(const WorldImpl &amp;world)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend const BodyContactIDs &amp;</type>
-      <name>GetContacts</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a6842dbd462dac8be531b0de06712d116</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend const BodyShapeIDs &amp;</type>
-      <name>GetFixturesForProxies</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a9689e5ba2c4e882ef1aafdaf6a162021</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend Frequency</type>
-      <name>GetInvDeltaTime</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a21dff1f3172e2ee11f203920bf62ba28</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend const Joint &amp;</type>
-      <name>GetJoint</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a83455a305450eff8b362ee1dec0930b2</anchor>
-      <arglist>(const WorldImpl &amp;world, JointID id)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend JointCounter</type>
-      <name>GetJointRange</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>aafd03bdc701b63cfdb6ffe81c7096631</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend const JointIDs &amp;</type>
-      <name>GetJoints</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a174e28536898e4afb706f883f2028332</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend const BodyJointIDs &amp;</type>
-      <name>GetJoints</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a51eb1227de22f4082e80e6ec85aa84bf</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend const Manifold &amp;</type>
-      <name>GetManifold</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>aad37bce7f30cc51c2935a473ef2ebe6b</anchor>
-      <arglist>(const WorldImpl &amp;world, ContactID id)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend const ProxyIDs &amp;</type>
-      <name>GetProxies</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>aea291af503d9a55a9ff4d9b0551c759e</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend const ProxyIDs &amp;</type>
-      <name>GetProxies</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a12a92310f208afa73ceb9f9760941258</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend const Shape &amp;</type>
-      <name>GetShape</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a32ffe408f1bd8c15dcbe9b62261494d9</anchor>
-      <arglist>(const WorldImpl &amp;world, ShapeID id)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend ShapeCounter</type>
-      <name>GetShapeRange</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>ab580ed3afdb1ed6db28ecc4c71994a66</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend bool</type>
-      <name>GetSubStepping</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>ab956952cfa59979aef58175119efc46b</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend const DynamicTree &amp;</type>
-      <name>GetTree</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>abc73fcaee55bef14130e6f1996633f3f</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend Interval&lt; Positive&lt; Length &gt; &gt;</type>
-      <name>GetVertexRadiusInterval</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>ab0298572d02dd7cc13ac83ca004ba4ef</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a7aab1b1ab29b1242e808c3922d5ab05b</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a7f4971c6a0e1f00b369617d9889c921e</anchor>
-      <arglist>(const WorldImpl &amp;world, ContactID id) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>ace99e6a65dd1695387a221c730422b64</anchor>
-      <arglist>(const WorldImpl &amp;world, JointID id) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend bool</type>
-      <name>IsLocked</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a9f6e06ae5d756249d2d948e3a11d4d20</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend bool</type>
-      <name>IsStepComplete</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a29d79bc60866034a46ee93cef089306d</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend void</type>
-      <name>SetBeginContactListener</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a2c1b9fd123b2a98ed8ab9d7d09774b68</anchor>
-      <arglist>(WorldImpl &amp;world, ContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend void</type>
-      <name>SetBody</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a5abbb483e85fdb0be1f01e78ccf78163</anchor>
-      <arglist>(WorldImpl &amp;world, BodyID id, Body value)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend void</type>
-      <name>SetContact</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a357c9ee0d4d06ca787135870f00364c0</anchor>
-      <arglist>(WorldImpl &amp;world, ContactID id, Contact value)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend void</type>
-      <name>SetDetachListener</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a8dad2af3a780c26aca85534bc854a18c</anchor>
-      <arglist>(WorldImpl &amp;world, AssociationListener listener) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend void</type>
-      <name>SetEndContactListener</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a94bbda25925e6b4d6720f3c3fb6a10da</anchor>
-      <arglist>(WorldImpl &amp;world, ContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend void</type>
-      <name>SetJoint</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a7da1970b9822ccbadc2f8b5f199393ad</anchor>
-      <arglist>(WorldImpl &amp;world, JointID id, Joint def)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend void</type>
-      <name>SetJointDestructionListener</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>ae94dd552819c2034e3f20c0c240e8032</anchor>
-      <arglist>(WorldImpl &amp;world, JointListener listener) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend void</type>
-      <name>SetPostSolveContactListener</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>ab563c11556fe44f65ee945032c29434f</anchor>
-      <arglist>(WorldImpl &amp;world, ImpulsesContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend void</type>
-      <name>SetPreSolveContactListener</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a1210258d31566ab8294de5b44b7416da</anchor>
-      <arglist>(WorldImpl &amp;world, ManifoldContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend void</type>
-      <name>SetShape</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>ae12671c721cc98bebbd6eea8396765f5</anchor>
-      <arglist>(WorldImpl &amp;world, ShapeID id, Shape def)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend void</type>
-      <name>SetShapeDestructionListener</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a6612a223193f2734c970e671bc125f2a</anchor>
-      <arglist>(WorldImpl &amp;world, ShapeListener listener) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend void</type>
-      <name>SetSubStepping</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>acc9596dc5cf181add382211cb37c5b18</anchor>
-      <arglist>(WorldImpl &amp;world, bool flag) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend void</type>
-      <name>ShiftOrigin</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>af646f9973dda987acce1e29c3d17ef41</anchor>
-      <arglist>(WorldImpl &amp;world, const Length2 &amp;newOrigin)</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend StepStats</type>
-      <name>Step</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>aa25253387bf26e86389e48ae89e2f0d8</anchor>
-      <arglist>(WorldImpl &amp;world, const StepConf &amp;conf)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Attach</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a78b0c3867181150d27fc13a7d2ba6fa7</anchor>
-      <arglist>(WorldImpl &amp;world, BodyID id, ShapeID shapeID)</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyID</type>
-      <name>CreateBody</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a7640a32ccbb34e9fce466cf9d224e7ff</anchor>
-      <arglist>(WorldImpl &amp;world, const BodyConf &amp;def)</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>Detach</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a3aeb32c6097a7b2d18cbc694f5b2b590</anchor>
-      <arglist>(WorldImpl &amp;world, BodyID id, ShapeID shapeID)</arglist>
-    </member>
-    <member kind="function">
-      <type>const std::vector&lt; ShapeID &gt; &amp;</type>
-      <name>GetShapes</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a9ed793c033f7e52f3e358d75248542d6</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-  </compound>
-  <compound kind="class">
     <name>playrho::d2::WorldManifold</name>
     <filename>classplayrho_1_1d2_1_1WorldManifold.html</filename>
     <class kind="struct">playrho::d2::WorldManifold::PointData</class>
@@ -46072,6 +46072,7 @@
     <name>playrho::d2</name>
     <filename>namespaceplayrho_1_1d2.html</filename>
     <namespace>playrho::d2::part</namespace>
+    <class kind="class">playrho::d2::AabbTreeWorld</class>
     <class kind="struct">playrho::d2::Acceleration</class>
     <class kind="struct">playrho::d2::BaseShapeConf</class>
     <class kind="class">playrho::d2::Body</class>
@@ -46146,7 +46147,6 @@
     <class kind="struct">playrho::d2::WheelJointConf</class>
     <class kind="class">playrho::d2::World</class>
     <class kind="struct">playrho::d2::WorldConf</class>
-    <class kind="class">playrho::d2::WorldImpl</class>
     <class kind="class">playrho::d2::WorldManifold</class>
     <member kind="typedef">
       <type>::playrho::detail::AABB&lt; 2 &gt;</type>
@@ -46406,8 +46406,8 @@
       <type>void</type>
       <name>Attach</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a301ed270011c152f61c26e30dc5b1c35</anchor>
-      <arglist>(WorldImpl &amp;world, BodyID id, ShapeID shapeID)</arglist>
+      <anchor>a71e1178c67501e9f3cecd3bc40cc04a1</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyID id, ShapeID shapeID)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
@@ -46539,15 +46539,15 @@
       <type>BodyID</type>
       <name>CreateBody</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a801c24452b643b233843fb98ce663511</anchor>
-      <arglist>(WorldImpl &amp;world, const BodyConf &amp;def)</arglist>
+      <anchor>aac5c2b6c5fc9a39971942baf99fcee2b</anchor>
+      <arglist>(AabbTreeWorld &amp;world, const BodyConf &amp;def)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>Detach</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a18e35246792963c45802b2abd5bd58a5</anchor>
-      <arglist>(WorldImpl &amp;world, BodyID id, ShapeID shapeID)</arglist>
+      <anchor>aa96788ab361740a16d316b821154ea9e</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyID id, ShapeID shapeID)</arglist>
     </member>
     <member kind="function">
       <type>DistanceOutput</type>
@@ -48660,15 +48660,15 @@
       <type>const std::vector&lt; ShapeID &gt; &amp;</type>
       <name>GetShapes</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a63b209948a3e0c8c4904f7ff662abfd5</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
+      <anchor>afe762c434a20aa39abb7f121b9d89c03</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>const std::vector&lt; ShapeID &gt; &amp;</type>
       <name>GetShapes</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa22be2430911c2dcd6d3e1ca621eb849</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
+      <anchor>a63b209948a3e0c8c4904f7ff662abfd5</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
       <type>VertexCounter</type>
@@ -51614,6 +51614,342 @@
       <type>void</type>
       <name>SetShapeDestructionListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7738575fcd8e208874a3cd3e32dffbf2</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetDetachListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a73d47c4e7db2126ca5bb6e3fd5aa7a2c</anchor>
+      <arglist>(AabbTreeWorld &amp;world, AssociationListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetJointDestructionListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aad9d71ed88d25ba53cc5795ef5c46767</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetBeginContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab2d473e67d8c73d84b5bab36684b21e4</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetEndContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a0eb658b0c7360d020e51833df13fe966</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetPreSolveContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a6cf097ec66665aaee2ee3f003bdd3c95</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ManifoldContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetPostSolveContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a6cdc554f84a577ddb26cc3f11db7948f</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ImpulsesContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Clear</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a652406794226e2ebe8a0a9c7cf2d98ea</anchor>
+      <arglist>(AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>StepStats</type>
+      <name>Step</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af03fb141f6d983e01e4799b62c9e3b07</anchor>
+      <arglist>(AabbTreeWorld &amp;world, const StepConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsStepComplete</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aac86950fdee2a34e82718966246905a3</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>GetSubStepping</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af8856e4e147c88bcacefa6b63aa750cd</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetSubStepping</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7b8d4d16ed5f043b13407de3cd8f11f4</anchor>
+      <arglist>(AabbTreeWorld &amp;world, bool flag) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const DynamicTree &amp;</type>
+      <name>GetTree</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a906e04c52b759610040707fef9ad58b0</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsLocked</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af876b6037e657c9123c89cc057dae338</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a4602fbbc1af40386700118e5ddda8b6a</anchor>
+      <arglist>(AabbTreeWorld &amp;world, const Length2 &amp;newOrigin)</arglist>
+    </member>
+    <member kind="function">
+      <type>Interval&lt; Positive&lt; Length &gt; &gt;</type>
+      <name>GetVertexRadiusInterval</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa5bd2b2d4ff4f88eef1db5f754dfa7c2</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Frequency</type>
+      <name>GetInvDeltaTime</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a32f875c95aaec6c2e7a5737e00738e0f</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const ProxyIDs &amp;</type>
+      <name>GetProxies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa688d6514c8709849281db9d93448a93</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyShapeIDs &amp;</type>
+      <name>GetFixturesForProxies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af5a39fd26cc21a25452046df1c4c1b08</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetBodyRange</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae97a6f878c88ff1c0609582303945bd2</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyIDs &amp;</type>
+      <name>GetBodies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a4c12d1fb1dda1f84e19d43cb9abfbdd6</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyIDs &amp;</type>
+      <name>GetBodiesForProxies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a02732814de45bab260fe1a91e1fb05c0</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>CreateBody</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a352ef727632169c252a59d648808822f</anchor>
+      <arglist>(AabbTreeWorld &amp;world, Body body=Body{})</arglist>
+    </member>
+    <member kind="function">
+      <type>const Body &amp;</type>
+      <name>GetBody</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aaa29799a42054beffb9328eb8c651ed1</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetBody</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a20cdd89db66f857c4799c090880bd5b4</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyID id, Body value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7df9661feac023ea0e4cbe6369943352</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a420fd33ad8ad006f01422746b89cc507</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const ProxyIDs &amp;</type>
+      <name>GetProxies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a3694df2092406746a5e71113ee6487f1</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyContactIDs &amp;</type>
+      <name>GetContacts</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7b9fd7f3e9d7a0f8ff73d5818cf0d1f4</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyJointIDs &amp;</type>
+      <name>GetJoints</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>abaaa273bdf2585781176266c6be413a6</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>JointCounter</type>
+      <name>GetJointRange</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>adfede6c462c7ebd2f3d75ec2878bbb73</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const JointIDs &amp;</type>
+      <name>GetJoints</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a04675e3f7536245a0ca7fad3f4bb0b27</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>JointID</type>
+      <name>CreateJoint</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ad08795abe5eee5183189ff9901ab410a</anchor>
+      <arglist>(AabbTreeWorld &amp;world, Joint def)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Joint &amp;</type>
+      <name>GetJoint</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a6372e003c4984f0c0319884f812f2dd7</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetJoint</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae2bf839e74417fc9845d648c90f5b1cc</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointID id, Joint def)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>acc9f0d8549658a5f76cc03ac8a78df14</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a24478dcc8d764767fae7067be9dcc6d4</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, JointID id) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>ShapeCounter</type>
+      <name>GetShapeRange</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a61d7f65f10afdad013c11d866292ad12</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>ShapeID</type>
+      <name>CreateShape</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a5063d35172bec75d73944cc1c52009ed</anchor>
+      <arglist>(AabbTreeWorld &amp;world, Shape def)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Shape &amp;</type>
+      <name>GetShape</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a9e29376addbe168c363097e82eb796f0</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ShapeID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetShape</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a089e703b548a6b5f8b02ceb661a40a1d</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeID id, Shape def)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7896b447c00a9a33828fead594cb9df4</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>ContactCounter</type>
+      <name>GetContactRange</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a1e9f16b0b9ca81d3852d99bd3bf7ba94</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>KeyedContactIDs</type>
+      <name>GetContacts</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab42cd5eaac7f55f5fc952be4188a1fc5</anchor>
+      <arglist>(const AabbTreeWorld &amp;world)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Contact &amp;</type>
+      <name>GetContact</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab77e4986f15b40a9e31429c3f6be3b27</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetContact</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a986132f0e473e4da3dfcd1b5ec1eb608</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactID id, Contact value)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Manifold &amp;</type>
+      <name>GetManifold</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a4744f578a96c67e8929c84c7b32e27e7</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a410fda5a1c75561497f4184d9e6d0d15</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetShapeDestructionListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a96ac7c56b9e01b4b9a6755ecfc60758a</anchor>
       <arglist>(World &amp;world, ShapeListener listener) noexcept</arglist>
     </member>
@@ -52540,342 +52876,6 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>ac7b6c00fbd4fc40a4957bd082c9437b4</anchor>
       <arglist>(const World &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetShapeDestructionListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0900d9b858b651181dc2d95c1252754f</anchor>
-      <arglist>(WorldImpl &amp;world, ShapeListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetDetachListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7a34581ad5e8d08d62ff1d1cf7104239</anchor>
-      <arglist>(WorldImpl &amp;world, AssociationListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetJointDestructionListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7d0b2ee82d95a29e86fbd00fa4c0cdae</anchor>
-      <arglist>(WorldImpl &amp;world, JointListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetBeginContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a8354cb815a60c1ebb8ca8bfb72f32216</anchor>
-      <arglist>(WorldImpl &amp;world, ContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetEndContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af0ad10490a2672d824f9247d27c92a59</anchor>
-      <arglist>(WorldImpl &amp;world, ContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetPreSolveContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a59a064bb81e5820fb91c6c3cc59ec50a</anchor>
-      <arglist>(WorldImpl &amp;world, ManifoldContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetPostSolveContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a56df511296f5c92b876294f97b9ad8c8</anchor>
-      <arglist>(WorldImpl &amp;world, ImpulsesContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Clear</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ac4fb9050bfbdd638299dc09a8b543db1</anchor>
-      <arglist>(WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>StepStats</type>
-      <name>Step</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab5f8eb0b78ec0f8550234cf8a9ebea85</anchor>
-      <arglist>(WorldImpl &amp;world, const StepConf &amp;conf)</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsStepComplete</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad71cfd36af78783fc1e5bd1e31c1df74</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>GetSubStepping</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6916c582f7b077f108c086eed146110f</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetSubStepping</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afcf1e668172372705cc6dea4cde45da4</anchor>
-      <arglist>(WorldImpl &amp;world, bool flag) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const DynamicTree &amp;</type>
-      <name>GetTree</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6d872e610ba0b38b05b1ca8edc4aaeb9</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsLocked</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a5e6aac0d8f5b69de80c8a84ea6e9c720</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>ShiftOrigin</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a73a31777cd2dbadb82d74f4f2c234eef</anchor>
-      <arglist>(WorldImpl &amp;world, const Length2 &amp;newOrigin)</arglist>
-    </member>
-    <member kind="function">
-      <type>Interval&lt; Positive&lt; Length &gt; &gt;</type>
-      <name>GetVertexRadiusInterval</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a34457c3eea748dd87fdb1a86a63bfe10</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Frequency</type>
-      <name>GetInvDeltaTime</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a139f9dd3eabcdba63323c0a4ad623064</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const ProxyIDs &amp;</type>
-      <name>GetProxies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a79085f04e2ebef4c6ce03945dd85b711</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyShapeIDs &amp;</type>
-      <name>GetFixturesForProxies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0b90c7ae6ee15121bc56992888340a1b</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyCounter</type>
-      <name>GetBodyRange</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afd18500bc914ea0e4bea8ad0b5d4bf7c</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyIDs &amp;</type>
-      <name>GetBodies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6499ad039c4bd0e584719d0418872dcc</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyIDs &amp;</type>
-      <name>GetBodiesForProxies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a877b6d23df3caf3011fe1d4d64d32588</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyID</type>
-      <name>CreateBody</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abefb4281d32a29326e5926bcb9b13fcb</anchor>
-      <arglist>(WorldImpl &amp;world, Body body=Body{})</arglist>
-    </member>
-    <member kind="function">
-      <type>const Body &amp;</type>
-      <name>GetBody</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a2e4ce79ab9a9c27c3c8946ddca1d154b</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetBody</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a9d546d7b7c6d944abb6d23e39166c8ac</anchor>
-      <arglist>(WorldImpl &amp;world, BodyID id, Body value)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Destroy</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6412007eb0c9a5b35a00c72fe745c5de</anchor>
-      <arglist>(WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa511b3a58d688fa53055c85d38632a41</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const ProxyIDs &amp;</type>
-      <name>GetProxies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0eb9ec77e4cb05d740791a88c29b40b7</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyContactIDs &amp;</type>
-      <name>GetContacts</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aba5bb3b4037c1f1105c2770d5ee30e3d</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyJointIDs &amp;</type>
-      <name>GetJoints</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a64a4628a142ebe841045d6a2a943e34c</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>JointCounter</type>
-      <name>GetJointRange</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a76840a57e0745b410fe071d294cea75e</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const JointIDs &amp;</type>
-      <name>GetJoints</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a156f7763cb677969532b2d9a3e056a40</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>JointID</type>
-      <name>CreateJoint</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abafe95bb47d7821ac1130d11a59664b3</anchor>
-      <arglist>(WorldImpl &amp;world, Joint def)</arglist>
-    </member>
-    <member kind="function">
-      <type>const Joint &amp;</type>
-      <name>GetJoint</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a2f7f22b93a8136ec65dbca767c0242b8</anchor>
-      <arglist>(const WorldImpl &amp;world, JointID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetJoint</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ac47d0a94f61b6ffd10ff66ddde516a9b</anchor>
-      <arglist>(WorldImpl &amp;world, JointID id, Joint def)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Destroy</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abe723211e850d0d2f62bbc8f45830e14</anchor>
-      <arglist>(WorldImpl &amp;world, JointID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0a86a85b99204ab5336897f2f13c672a</anchor>
-      <arglist>(const WorldImpl &amp;world, JointID id) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>ShapeCounter</type>
-      <name>GetShapeRange</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a98658760beb3ed79e3cc25120706412d</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>ShapeID</type>
-      <name>CreateShape</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa19a43bb8d1edbc4b822b446d7a5c052</anchor>
-      <arglist>(WorldImpl &amp;world, Shape def)</arglist>
-    </member>
-    <member kind="function">
-      <type>const Shape &amp;</type>
-      <name>GetShape</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6839d68907e143d05cc0ed8e00b66fea</anchor>
-      <arglist>(const WorldImpl &amp;world, ShapeID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetShape</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a40d128f74e32fd57b54aa04ef2535a8e</anchor>
-      <arglist>(WorldImpl &amp;world, ShapeID id, Shape def)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Destroy</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab83d67bdd6ffea3f647d5f133e95285e</anchor>
-      <arglist>(WorldImpl &amp;world, ShapeID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>ContactCounter</type>
-      <name>GetContactRange</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a857c0ea2a5dd4f96d39928ff393bf0ac</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>KeyedContactIDs</type>
-      <name>GetContacts</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af4e9fe325c5e5ab84491e884df2fe3c1</anchor>
-      <arglist>(const WorldImpl &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>const Contact &amp;</type>
-      <name>GetContact</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a24a172b630c46dbfb20fd2c0ef234084</anchor>
-      <arglist>(const WorldImpl &amp;world, ContactID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetContact</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abbaaa1e470e015e26863bf38193085c6</anchor>
-      <arglist>(WorldImpl &amp;world, ContactID id, Contact value)</arglist>
-    </member>
-    <member kind="function">
-      <type>const Manifold &amp;</type>
-      <name>GetManifold</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a05ef719453561f4b0f544360c94b4ba5</anchor>
-      <arglist>(const WorldImpl &amp;world, ContactID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae723a9bf7ce71e46cf39d1daf8588b61</anchor>
-      <arglist>(const WorldImpl &amp;world, ContactID id) noexcept</arglist>
     </member>
     <member kind="variable">
       <type>constexpr auto</type>
@@ -52965,6 +52965,342 @@
       <type>void</type>
       <name>SetShapeDestructionListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7738575fcd8e208874a3cd3e32dffbf2</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetDetachListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a73d47c4e7db2126ca5bb6e3fd5aa7a2c</anchor>
+      <arglist>(AabbTreeWorld &amp;world, AssociationListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetJointDestructionListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aad9d71ed88d25ba53cc5795ef5c46767</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetBeginContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab2d473e67d8c73d84b5bab36684b21e4</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetEndContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a0eb658b0c7360d020e51833df13fe966</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetPreSolveContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a6cf097ec66665aaee2ee3f003bdd3c95</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ManifoldContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetPostSolveContactListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a6cdc554f84a577ddb26cc3f11db7948f</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ImpulsesContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Clear</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a652406794226e2ebe8a0a9c7cf2d98ea</anchor>
+      <arglist>(AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>StepStats</type>
+      <name>Step</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af03fb141f6d983e01e4799b62c9e3b07</anchor>
+      <arglist>(AabbTreeWorld &amp;world, const StepConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsStepComplete</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aac86950fdee2a34e82718966246905a3</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>GetSubStepping</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af8856e4e147c88bcacefa6b63aa750cd</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetSubStepping</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7b8d4d16ed5f043b13407de3cd8f11f4</anchor>
+      <arglist>(AabbTreeWorld &amp;world, bool flag) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const DynamicTree &amp;</type>
+      <name>GetTree</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a906e04c52b759610040707fef9ad58b0</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsLocked</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af876b6037e657c9123c89cc057dae338</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a4602fbbc1af40386700118e5ddda8b6a</anchor>
+      <arglist>(AabbTreeWorld &amp;world, const Length2 &amp;newOrigin)</arglist>
+    </member>
+    <member kind="function">
+      <type>Interval&lt; Positive&lt; Length &gt; &gt;</type>
+      <name>GetVertexRadiusInterval</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa5bd2b2d4ff4f88eef1db5f754dfa7c2</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Frequency</type>
+      <name>GetInvDeltaTime</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a32f875c95aaec6c2e7a5737e00738e0f</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const ProxyIDs &amp;</type>
+      <name>GetProxies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa688d6514c8709849281db9d93448a93</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyShapeIDs &amp;</type>
+      <name>GetFixturesForProxies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af5a39fd26cc21a25452046df1c4c1b08</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetBodyRange</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae97a6f878c88ff1c0609582303945bd2</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyIDs &amp;</type>
+      <name>GetBodies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a4c12d1fb1dda1f84e19d43cb9abfbdd6</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyIDs &amp;</type>
+      <name>GetBodiesForProxies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a02732814de45bab260fe1a91e1fb05c0</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>CreateBody</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a352ef727632169c252a59d648808822f</anchor>
+      <arglist>(AabbTreeWorld &amp;world, Body body=Body{})</arglist>
+    </member>
+    <member kind="function">
+      <type>const Body &amp;</type>
+      <name>GetBody</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aaa29799a42054beffb9328eb8c651ed1</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetBody</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a20cdd89db66f857c4799c090880bd5b4</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyID id, Body value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7df9661feac023ea0e4cbe6369943352</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a420fd33ad8ad006f01422746b89cc507</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const ProxyIDs &amp;</type>
+      <name>GetProxies</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a3694df2092406746a5e71113ee6487f1</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyContactIDs &amp;</type>
+      <name>GetContacts</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7b9fd7f3e9d7a0f8ff73d5818cf0d1f4</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const BodyJointIDs &amp;</type>
+      <name>GetJoints</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>abaaa273bdf2585781176266c6be413a6</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>JointCounter</type>
+      <name>GetJointRange</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>adfede6c462c7ebd2f3d75ec2878bbb73</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const JointIDs &amp;</type>
+      <name>GetJoints</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a04675e3f7536245a0ca7fad3f4bb0b27</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>JointID</type>
+      <name>CreateJoint</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ad08795abe5eee5183189ff9901ab410a</anchor>
+      <arglist>(AabbTreeWorld &amp;world, Joint def)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Joint &amp;</type>
+      <name>GetJoint</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a6372e003c4984f0c0319884f812f2dd7</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetJoint</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae2bf839e74417fc9845d648c90f5b1cc</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointID id, Joint def)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>acc9f0d8549658a5f76cc03ac8a78df14</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a24478dcc8d764767fae7067be9dcc6d4</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, JointID id) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>ShapeCounter</type>
+      <name>GetShapeRange</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a61d7f65f10afdad013c11d866292ad12</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>ShapeID</type>
+      <name>CreateShape</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a5063d35172bec75d73944cc1c52009ed</anchor>
+      <arglist>(AabbTreeWorld &amp;world, Shape def)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Shape &amp;</type>
+      <name>GetShape</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a9e29376addbe168c363097e82eb796f0</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ShapeID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetShape</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a089e703b548a6b5f8b02ceb661a40a1d</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeID id, Shape def)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7896b447c00a9a33828fead594cb9df4</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>ContactCounter</type>
+      <name>GetContactRange</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a1e9f16b0b9ca81d3852d99bd3bf7ba94</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>KeyedContactIDs</type>
+      <name>GetContacts</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab42cd5eaac7f55f5fc952be4188a1fc5</anchor>
+      <arglist>(const AabbTreeWorld &amp;world)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Contact &amp;</type>
+      <name>GetContact</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab77e4986f15b40a9e31429c3f6be3b27</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetContact</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a986132f0e473e4da3dfcd1b5ec1eb608</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactID id, Contact value)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Manifold &amp;</type>
+      <name>GetManifold</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a4744f578a96c67e8929c84c7b32e27e7</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a410fda5a1c75561497f4184d9e6d0d15</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetShapeDestructionListener</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a96ac7c56b9e01b4b9a6755ecfc60758a</anchor>
       <arglist>(World &amp;world, ShapeListener listener) noexcept</arglist>
     </member>
@@ -53891,342 +54227,6 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>ac7b6c00fbd4fc40a4957bd082c9437b4</anchor>
       <arglist>(const World &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetShapeDestructionListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0900d9b858b651181dc2d95c1252754f</anchor>
-      <arglist>(WorldImpl &amp;world, ShapeListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetDetachListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7a34581ad5e8d08d62ff1d1cf7104239</anchor>
-      <arglist>(WorldImpl &amp;world, AssociationListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetJointDestructionListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7d0b2ee82d95a29e86fbd00fa4c0cdae</anchor>
-      <arglist>(WorldImpl &amp;world, JointListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetBeginContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a8354cb815a60c1ebb8ca8bfb72f32216</anchor>
-      <arglist>(WorldImpl &amp;world, ContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetEndContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af0ad10490a2672d824f9247d27c92a59</anchor>
-      <arglist>(WorldImpl &amp;world, ContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetPreSolveContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a59a064bb81e5820fb91c6c3cc59ec50a</anchor>
-      <arglist>(WorldImpl &amp;world, ManifoldContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetPostSolveContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a56df511296f5c92b876294f97b9ad8c8</anchor>
-      <arglist>(WorldImpl &amp;world, ImpulsesContactListener listener) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Clear</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ac4fb9050bfbdd638299dc09a8b543db1</anchor>
-      <arglist>(WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>StepStats</type>
-      <name>Step</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab5f8eb0b78ec0f8550234cf8a9ebea85</anchor>
-      <arglist>(WorldImpl &amp;world, const StepConf &amp;conf)</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsStepComplete</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad71cfd36af78783fc1e5bd1e31c1df74</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>GetSubStepping</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6916c582f7b077f108c086eed146110f</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetSubStepping</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afcf1e668172372705cc6dea4cde45da4</anchor>
-      <arglist>(WorldImpl &amp;world, bool flag) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const DynamicTree &amp;</type>
-      <name>GetTree</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6d872e610ba0b38b05b1ca8edc4aaeb9</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsLocked</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a5e6aac0d8f5b69de80c8a84ea6e9c720</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>ShiftOrigin</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a73a31777cd2dbadb82d74f4f2c234eef</anchor>
-      <arglist>(WorldImpl &amp;world, const Length2 &amp;newOrigin)</arglist>
-    </member>
-    <member kind="function">
-      <type>Interval&lt; Positive&lt; Length &gt; &gt;</type>
-      <name>GetVertexRadiusInterval</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a34457c3eea748dd87fdb1a86a63bfe10</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Frequency</type>
-      <name>GetInvDeltaTime</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a139f9dd3eabcdba63323c0a4ad623064</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const ProxyIDs &amp;</type>
-      <name>GetProxies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a79085f04e2ebef4c6ce03945dd85b711</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyShapeIDs &amp;</type>
-      <name>GetFixturesForProxies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0b90c7ae6ee15121bc56992888340a1b</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyCounter</type>
-      <name>GetBodyRange</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afd18500bc914ea0e4bea8ad0b5d4bf7c</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyIDs &amp;</type>
-      <name>GetBodies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6499ad039c4bd0e584719d0418872dcc</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyIDs &amp;</type>
-      <name>GetBodiesForProxies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a877b6d23df3caf3011fe1d4d64d32588</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyID</type>
-      <name>CreateBody</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abefb4281d32a29326e5926bcb9b13fcb</anchor>
-      <arglist>(WorldImpl &amp;world, Body body=Body{})</arglist>
-    </member>
-    <member kind="function">
-      <type>const Body &amp;</type>
-      <name>GetBody</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a2e4ce79ab9a9c27c3c8946ddca1d154b</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetBody</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a9d546d7b7c6d944abb6d23e39166c8ac</anchor>
-      <arglist>(WorldImpl &amp;world, BodyID id, Body value)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Destroy</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6412007eb0c9a5b35a00c72fe745c5de</anchor>
-      <arglist>(WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa511b3a58d688fa53055c85d38632a41</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const ProxyIDs &amp;</type>
-      <name>GetProxies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0eb9ec77e4cb05d740791a88c29b40b7</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyContactIDs &amp;</type>
-      <name>GetContacts</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aba5bb3b4037c1f1105c2770d5ee30e3d</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>const BodyJointIDs &amp;</type>
-      <name>GetJoints</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a64a4628a142ebe841045d6a2a943e34c</anchor>
-      <arglist>(const WorldImpl &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>JointCounter</type>
-      <name>GetJointRange</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a76840a57e0745b410fe071d294cea75e</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>const JointIDs &amp;</type>
-      <name>GetJoints</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a156f7763cb677969532b2d9a3e056a40</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>JointID</type>
-      <name>CreateJoint</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abafe95bb47d7821ac1130d11a59664b3</anchor>
-      <arglist>(WorldImpl &amp;world, Joint def)</arglist>
-    </member>
-    <member kind="function">
-      <type>const Joint &amp;</type>
-      <name>GetJoint</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a2f7f22b93a8136ec65dbca767c0242b8</anchor>
-      <arglist>(const WorldImpl &amp;world, JointID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetJoint</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ac47d0a94f61b6ffd10ff66ddde516a9b</anchor>
-      <arglist>(WorldImpl &amp;world, JointID id, Joint def)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Destroy</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abe723211e850d0d2f62bbc8f45830e14</anchor>
-      <arglist>(WorldImpl &amp;world, JointID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0a86a85b99204ab5336897f2f13c672a</anchor>
-      <arglist>(const WorldImpl &amp;world, JointID id) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>ShapeCounter</type>
-      <name>GetShapeRange</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a98658760beb3ed79e3cc25120706412d</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>ShapeID</type>
-      <name>CreateShape</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa19a43bb8d1edbc4b822b446d7a5c052</anchor>
-      <arglist>(WorldImpl &amp;world, Shape def)</arglist>
-    </member>
-    <member kind="function">
-      <type>const Shape &amp;</type>
-      <name>GetShape</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6839d68907e143d05cc0ed8e00b66fea</anchor>
-      <arglist>(const WorldImpl &amp;world, ShapeID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetShape</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a40d128f74e32fd57b54aa04ef2535a8e</anchor>
-      <arglist>(WorldImpl &amp;world, ShapeID id, Shape def)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Destroy</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab83d67bdd6ffea3f647d5f133e95285e</anchor>
-      <arglist>(WorldImpl &amp;world, ShapeID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>ContactCounter</type>
-      <name>GetContactRange</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a857c0ea2a5dd4f96d39928ff393bf0ac</anchor>
-      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>KeyedContactIDs</type>
-      <name>GetContacts</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af4e9fe325c5e5ab84491e884df2fe3c1</anchor>
-      <arglist>(const WorldImpl &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>const Contact &amp;</type>
-      <name>GetContact</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a24a172b630c46dbfb20fd2c0ef234084</anchor>
-      <arglist>(const WorldImpl &amp;world, ContactID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetContact</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abbaaa1e470e015e26863bf38193085c6</anchor>
-      <arglist>(WorldImpl &amp;world, ContactID id, Contact value)</arglist>
-    </member>
-    <member kind="function">
-      <type>const Manifold &amp;</type>
-      <name>GetManifold</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a05ef719453561f4b0f544360c94b4ba5</anchor>
-      <arglist>(const WorldImpl &amp;world, ContactID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae723a9bf7ce71e46cf39d1daf8588b61</anchor>
-      <arglist>(const WorldImpl &amp;world, ContactID id) noexcept</arglist>
     </member>
   </compound>
   <compound kind="namespace">

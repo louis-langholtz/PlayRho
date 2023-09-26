@@ -1,13 +1,13 @@
 <map id="Library/include/playrho/Filter.hpp" name="Library/include/playrho/Filter.hpp">
-<area shape="rect" id="node1" title="Declarations of the Filter class and any free functions associated with it." alt="" coords="504,5,675,47"/>
-<area shape="rect" id="node2" href="$Shape_8hpp.html" title="Definition of the Shape class and closely related code." alt="" coords="207,95,377,136"/>
-<area shape="rect" id="node5" href="$ShapeConf_8hpp.html" title="Definition of the BaseShapeConf class and closely related code." alt="" coords="504,95,675,136"/>
-<area shape="rect" id="node11" href="$WorldImpl_8hpp.html" title="Declarations of the WorldImpl class." alt="" coords="699,95,869,136"/>
-<area shape="rect" id="node3" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="5,184,176,225"/>
-<area shape="rect" id="node4" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="504,273,675,315"/>
-<area shape="rect" id="node6" href="$ChainShapeConf_8hpp.html" title="Definition of the ChainShapeConf class and closely related code." alt="" coords="201,184,381,225"/>
-<area shape="rect" id="node7" href="$DiskShapeConf_8hpp.html" title="Definition of the DiskShapeConf class and closely related code." alt="" coords="405,184,577,225"/>
-<area shape="rect" id="node8" href="$EdgeShapeConf_8hpp.html" title="Definition of the EdgeShapeConf class and closely related code." alt="" coords="601,184,775,225"/>
-<area shape="rect" id="node9" href="$MultiShapeConf_8hpp.html" title="Definition of the MultiShapeConf class and closely related code." alt="" coords="800,184,976,225"/>
-<area shape="rect" id="node10" href="$PolygonShapeConf_8hpp.html" title="Definition of the PolygonShapeConf class and closely related code." alt="" coords="1000,184,1195,225"/>
+<area shape="rect" id="node1" title="Declarations of the Filter class and any free functions associated with it." alt="" coords="200,5,371,47"/>
+<area shape="rect" id="node2" href="$AabbTreeWorld_8hpp.html" title="Declarations of the AabbTreeWorld class." alt="" coords="5,95,176,136"/>
+<area shape="rect" id="node3" href="$Shape_8hpp.html" title="Definition of the Shape class and closely related code." alt="" coords="200,95,371,136"/>
+<area shape="rect" id="node6" href="$ShapeConf_8hpp.html" title="Definition of the BaseShapeConf class and closely related code." alt="" coords="596,95,767,136"/>
+<area shape="rect" id="node4" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="97,184,268,225"/>
+<area shape="rect" id="node5" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="596,273,767,315"/>
+<area shape="rect" id="node7" href="$ChainShapeConf_8hpp.html" title="Definition of the ChainShapeConf class and closely related code." alt="" coords="293,184,473,225"/>
+<area shape="rect" id="node8" href="$DiskShapeConf_8hpp.html" title="Definition of the DiskShapeConf class and closely related code." alt="" coords="497,184,669,225"/>
+<area shape="rect" id="node9" href="$EdgeShapeConf_8hpp.html" title="Definition of the EdgeShapeConf class and closely related code." alt="" coords="693,184,867,225"/>
+<area shape="rect" id="node10" href="$MultiShapeConf_8hpp.html" title="Definition of the MultiShapeConf class and closely related code." alt="" coords="892,184,1068,225"/>
+<area shape="rect" id="node11" href="$PolygonShapeConf_8hpp.html" title="Definition of the PolygonShapeConf class and closely related code." alt="" coords="1092,184,1287,225"/>
 </map>

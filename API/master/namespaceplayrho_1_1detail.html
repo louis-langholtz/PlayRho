@@ -109,7 +109,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">N-dimensional Axis Aligned Bounding Box.  <a href="structplayrho_1_1detail_1_1AABB.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classplayrho_1_1detail_1_1Checked.html" title="Checked value.">Checked</a> value.  <a href="classplayrho_1_1detail_1_1Checked.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class template for construction-time constraining a type's value.  <a href="classplayrho_1_1detail_1_1Checked.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1Defaults.html">Defaults</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1detail_1_1Defaults.html" title="Defaults object for real types.">Defaults</a> object for real types.  <a href="structplayrho_1_1detail_1_1Defaults.html#details">More...</a><br /></td></tr>
@@ -336,7 +336,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nam
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a9eb7643b1171765729a3cd3129e8ec71">area</a> = <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a></td></tr>
 <tr class="memdesc:a9eb7643b1171765729a3cd3129e8ec71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Area quantity type. <br /></td></tr>
 <tr class="separator:a9eb7643b1171765729a3cd3129e8ec71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga11cabdc538bf7282d5da49a1f85186d4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga11cabdc538bf7282d5da49a1f85186d4"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:ga11cabdc538bf7282d5da49a1f85186d4"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CheckedTypes.html#ga11cabdc538bf7282d5da49a1f85186d4">DefaultCheckedValue</a> = <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; T &gt;</td></tr>
 <tr class="memdesc:ga11cabdc538bf7282d5da49a1f85186d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default checked value type.  <a href="group__CheckedTypes.html#ga11cabdc538bf7282d5da49a1f85186d4">More...</a><br /></td></tr>
 <tr class="separator:ga11cabdc538bf7282d5da49a1f85186d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -524,15 +524,15 @@ template&lt;std::size_t N&gt; </td></tr>
 <tr class="memitem:abe2471568df9b5635f92209b8d25be38"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#abe2471568df9b5635f92209b8d25be38">operator!=</a> (const <a class="el" href="structplayrho_1_1detail_1_1AABB.html">AABB</a>&lt; N &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1detail_1_1AABB.html">AABB</a>&lt; N &gt; &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:abe2471568df9b5635f92209b8d25be38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the two <a class="el" href="structplayrho_1_1detail_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box.">AABB</a> objects are not equal.  <a href="namespaceplayrho_1_1detail.html#abe2471568df9b5635f92209b8d25be38">More...</a><br /></td></tr>
 <tr class="separator:abe2471568df9b5635f92209b8d25be38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32383015bf171dea637b7a959b7421fa"><td class="memTemplParams" colspan="2">template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </td></tr>
+<tr class="memitem:a32383015bf171dea637b7a959b7421fa"><td class="memTemplParams" colspan="2">template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </td></tr>
 <tr class="memitem:a32383015bf171dea637b7a959b7421fa"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a32383015bf171dea637b7a959b7421fa">operator!=</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) noexcept(noexcept(std::declval&lt; LhsValueType &gt;() !=std::declval&lt; RhsValueType &gt;())) -&gt; decltype(LhsValueType(lhs) !=RhsValueType(rhs))</td></tr>
 <tr class="memdesc:a32383015bf171dea637b7a959b7421fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value inequality operator for value types which support it.  <a href="namespaceplayrho_1_1detail.html#a32383015bf171dea637b7a959b7421fa">More...</a><br /></td></tr>
 <tr class="separator:a32383015bf171dea637b7a959b7421fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4994d33050437f2bd04ce28f82c6cfa9"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:a4994d33050437f2bd04ce28f82c6cfa9"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:a4994d33050437f2bd04ce28f82c6cfa9"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a4994d33050437f2bd04ce28f82c6cfa9">operator!=</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(ValueType(lhs) !=rhs)</td></tr>
 <tr class="memdesc:a4994d33050437f2bd04ce28f82c6cfa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value inequality operator.  <a href="namespaceplayrho_1_1detail.html#a4994d33050437f2bd04ce28f82c6cfa9">More...</a><br /></td></tr>
 <tr class="separator:a4994d33050437f2bd04ce28f82c6cfa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1710820c42a3d0fa04fdd7b03ccda485"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:a1710820c42a3d0fa04fdd7b03ccda485"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:a1710820c42a3d0fa04fdd7b03ccda485"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a1710820c42a3d0fa04fdd7b03ccda485">operator!=</a> (const Other &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;rhs) -&gt; decltype(lhs !=ValueType(rhs))</td></tr>
 <tr class="memdesc:a1710820c42a3d0fa04fdd7b03ccda485"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value inequality operator.  <a href="namespaceplayrho_1_1detail.html#a1710820c42a3d0fa04fdd7b03ccda485">More...</a><br /></td></tr>
 <tr class="separator:a1710820c42a3d0fa04fdd7b03ccda485"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -541,51 +541,51 @@ template&lt;std::size_t N&gt; </td></tr>
 <tr class="memitem:a64050b6fc27058d98f7e504d4a3eacab"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a64050b6fc27058d98f7e504d4a3eacab">operator!=</a> (<a class="el" href="structplayrho_1_1detail_1_1MassData.html">MassData</a>&lt; N &gt; lhs, <a class="el" href="structplayrho_1_1detail_1_1MassData.html">MassData</a>&lt; N &gt; rhs)</td></tr>
 <tr class="memdesc:a64050b6fc27058d98f7e504d4a3eacab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator for mass data. <br /></td></tr>
 <tr class="separator:a64050b6fc27058d98f7e504d4a3eacab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62ccb41874a11ae208e4d2a1840aa898"><td class="memTemplParams" colspan="2">template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </td></tr>
+<tr class="memitem:a62ccb41874a11ae208e4d2a1840aa898"><td class="memTemplParams" colspan="2">template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </td></tr>
 <tr class="memitem:a62ccb41874a11ae208e4d2a1840aa898"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a62ccb41874a11ae208e4d2a1840aa898">operator*</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs) *RhsValueType(rhs))</td></tr>
 <tr class="memdesc:a62ccb41874a11ae208e4d2a1840aa898"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value multiplication operator.  <a href="namespaceplayrho_1_1detail.html#a62ccb41874a11ae208e4d2a1840aa898">More...</a><br /></td></tr>
 <tr class="separator:a62ccb41874a11ae208e4d2a1840aa898"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0daf3badd07c3d8a8f75e372aeb10620"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:a0daf3badd07c3d8a8f75e372aeb10620"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:a0daf3badd07c3d8a8f75e372aeb10620"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a0daf3badd07c3d8a8f75e372aeb10620">operator*</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;lhs, const Other &amp;rhs) -&gt; std::enable_if_t&lt;!<a class="el" href="namespaceplayrho.html#a3c2c0d8136a2aabd56742fbedf6c00ad">IsMultipliableV</a>&lt; <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt;, Other &gt;, decltype(ValueType() *Other())&gt;</td></tr>
 <tr class="memdesc:a0daf3badd07c3d8a8f75e372aeb10620"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value multiplication operator.  <a href="namespaceplayrho_1_1detail.html#a0daf3badd07c3d8a8f75e372aeb10620">More...</a><br /></td></tr>
 <tr class="separator:a0daf3badd07c3d8a8f75e372aeb10620"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c81bd1815fccef0be17df1909886ee3"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:a0c81bd1815fccef0be17df1909886ee3"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:a0c81bd1815fccef0be17df1909886ee3"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a0c81bd1815fccef0be17df1909886ee3">operator*</a> (const Other &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;rhs) -&gt; std::enable_if_t&lt;!<a class="el" href="namespaceplayrho.html#a3c2c0d8136a2aabd56742fbedf6c00ad">IsMultipliableV</a>&lt; Other, <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt;&gt;, decltype(Other() *ValueType())&gt;</td></tr>
 <tr class="memdesc:a0c81bd1815fccef0be17df1909886ee3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value multiplication operator.  <a href="namespaceplayrho_1_1detail.html#a0c81bd1815fccef0be17df1909886ee3">More...</a><br /></td></tr>
 <tr class="separator:a0c81bd1815fccef0be17df1909886ee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad61c4c34236f778ed47268224850b24e"><td class="memTemplParams" colspan="2">template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </td></tr>
+<tr class="memitem:ad61c4c34236f778ed47268224850b24e"><td class="memTemplParams" colspan="2">template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </td></tr>
 <tr class="memitem:ad61c4c34236f778ed47268224850b24e"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#ad61c4c34236f778ed47268224850b24e">operator+</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs)+RhsValueType(rhs))</td></tr>
 <tr class="memdesc:ad61c4c34236f778ed47268224850b24e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value addition operator.  <a href="namespaceplayrho_1_1detail.html#ad61c4c34236f778ed47268224850b24e">More...</a><br /></td></tr>
 <tr class="separator:ad61c4c34236f778ed47268224850b24e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab36ff5f373eaf2d495dce40c42e6c792"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:ab36ff5f373eaf2d495dce40c42e6c792"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:ab36ff5f373eaf2d495dce40c42e6c792"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#ab36ff5f373eaf2d495dce40c42e6c792">operator+</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(ValueType(lhs)+rhs)</td></tr>
 <tr class="memdesc:ab36ff5f373eaf2d495dce40c42e6c792"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value addition operator.  <a href="namespaceplayrho_1_1detail.html#ab36ff5f373eaf2d495dce40c42e6c792">More...</a><br /></td></tr>
 <tr class="separator:ab36ff5f373eaf2d495dce40c42e6c792"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9cf08de554c2029b6bbb90d1890d1d2"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:ac9cf08de554c2029b6bbb90d1890d1d2"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:ac9cf08de554c2029b6bbb90d1890d1d2"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#ac9cf08de554c2029b6bbb90d1890d1d2">operator+</a> (const Other &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;rhs) -&gt; decltype(lhs+ValueType(rhs))</td></tr>
 <tr class="memdesc:ac9cf08de554c2029b6bbb90d1890d1d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value addition operator.  <a href="namespaceplayrho_1_1detail.html#ac9cf08de554c2029b6bbb90d1890d1d2">More...</a><br /></td></tr>
 <tr class="separator:ac9cf08de554c2029b6bbb90d1890d1d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66f17c27ae07bb4d3402817a6f8d52f1"><td class="memTemplParams" colspan="2">template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </td></tr>
+<tr class="memitem:a66f17c27ae07bb4d3402817a6f8d52f1"><td class="memTemplParams" colspan="2">template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </td></tr>
 <tr class="memitem:a66f17c27ae07bb4d3402817a6f8d52f1"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a66f17c27ae07bb4d3402817a6f8d52f1">operator-</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs) - RhsValueType(rhs))</td></tr>
 <tr class="memdesc:a66f17c27ae07bb4d3402817a6f8d52f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value subtraction operator.  <a href="namespaceplayrho_1_1detail.html#a66f17c27ae07bb4d3402817a6f8d52f1">More...</a><br /></td></tr>
 <tr class="separator:a66f17c27ae07bb4d3402817a6f8d52f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab093280c9b756a1aa417ff530bae5072"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:ab093280c9b756a1aa417ff530bae5072"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:ab093280c9b756a1aa417ff530bae5072"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#ab093280c9b756a1aa417ff530bae5072">operator-</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(ValueType(lhs) - rhs)</td></tr>
 <tr class="memdesc:ab093280c9b756a1aa417ff530bae5072"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value subtraction operator.  <a href="namespaceplayrho_1_1detail.html#ab093280c9b756a1aa417ff530bae5072">More...</a><br /></td></tr>
 <tr class="separator:ab093280c9b756a1aa417ff530bae5072"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae42c345584e1f5fc449daf5e1bfe1b74"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:ae42c345584e1f5fc449daf5e1bfe1b74"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:ae42c345584e1f5fc449daf5e1bfe1b74"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#ae42c345584e1f5fc449daf5e1bfe1b74">operator-</a> (const Other &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;rhs) -&gt; decltype(lhs - ValueType(rhs))</td></tr>
 <tr class="memdesc:ae42c345584e1f5fc449daf5e1bfe1b74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value subtraction operator.  <a href="namespaceplayrho_1_1detail.html#ae42c345584e1f5fc449daf5e1bfe1b74">More...</a><br /></td></tr>
 <tr class="separator:ae42c345584e1f5fc449daf5e1bfe1b74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6546914bb51e238fe23f2da6de2d4eb"><td class="memTemplParams" colspan="2">template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </td></tr>
+<tr class="memitem:aa6546914bb51e238fe23f2da6de2d4eb"><td class="memTemplParams" colspan="2">template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </td></tr>
 <tr class="memitem:aa6546914bb51e238fe23f2da6de2d4eb"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#aa6546914bb51e238fe23f2da6de2d4eb">operator/</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs)/RhsValueType(rhs))</td></tr>
 <tr class="memdesc:aa6546914bb51e238fe23f2da6de2d4eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value division operator.  <a href="namespaceplayrho_1_1detail.html#aa6546914bb51e238fe23f2da6de2d4eb">More...</a><br /></td></tr>
 <tr class="separator:aa6546914bb51e238fe23f2da6de2d4eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7afdc583a043ed1144ffd3a8bc254221"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:a7afdc583a043ed1144ffd3a8bc254221"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:a7afdc583a043ed1144ffd3a8bc254221"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a7afdc583a043ed1144ffd3a8bc254221">operator/</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(ValueType(lhs)/rhs)</td></tr>
 <tr class="memdesc:a7afdc583a043ed1144ffd3a8bc254221"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value division operator.  <a href="namespaceplayrho_1_1detail.html#a7afdc583a043ed1144ffd3a8bc254221">More...</a><br /></td></tr>
 <tr class="separator:a7afdc583a043ed1144ffd3a8bc254221"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6df49c6b71fae2abdb05858e444b94d2"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:a6df49c6b71fae2abdb05858e444b94d2"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:a6df49c6b71fae2abdb05858e444b94d2"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a6df49c6b71fae2abdb05858e444b94d2">operator/</a> (const Other &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;rhs) -&gt; decltype(lhs/ValueType(rhs))</td></tr>
 <tr class="memdesc:a6df49c6b71fae2abdb05858e444b94d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value division operator.  <a href="namespaceplayrho_1_1detail.html#a6df49c6b71fae2abdb05858e444b94d2">More...</a><br /></td></tr>
 <tr class="separator:a6df49c6b71fae2abdb05858e444b94d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -594,15 +594,15 @@ template&lt;std::size_t N&gt; </td></tr>
 <tr class="memitem:ac7738d0953158fb06eada28384bde27b"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#ac7738d0953158fb06eada28384bde27b">operator&lt;</a> (const <a class="el" href="structplayrho_1_1detail_1_1AABB.html">AABB</a>&lt; N &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1detail_1_1AABB.html">AABB</a>&lt; N &gt; &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:ac7738d0953158fb06eada28384bde27b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less-than operator. <br /></td></tr>
 <tr class="separator:ac7738d0953158fb06eada28384bde27b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00e22b3d70171c770fe2fe13afdff11c"><td class="memTemplParams" colspan="2">template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </td></tr>
+<tr class="memitem:a00e22b3d70171c770fe2fe13afdff11c"><td class="memTemplParams" colspan="2">template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </td></tr>
 <tr class="memitem:a00e22b3d70171c770fe2fe13afdff11c"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a00e22b3d70171c770fe2fe13afdff11c">operator&lt;</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs)&lt; RhsValueType(rhs))</td></tr>
 <tr class="memdesc:a00e22b3d70171c770fe2fe13afdff11c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value less-than operator.  <a href="namespaceplayrho_1_1detail.html#a00e22b3d70171c770fe2fe13afdff11c">More...</a><br /></td></tr>
 <tr class="separator:a00e22b3d70171c770fe2fe13afdff11c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b5a8d7ecc5a2fd34c979a4ed7ee67b8"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:a8b5a8d7ecc5a2fd34c979a4ed7ee67b8"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:a8b5a8d7ecc5a2fd34c979a4ed7ee67b8"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a8b5a8d7ecc5a2fd34c979a4ed7ee67b8">operator&lt;</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(ValueType(lhs)&lt; ValueType(rhs))</td></tr>
 <tr class="memdesc:a8b5a8d7ecc5a2fd34c979a4ed7ee67b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value less-than operator.  <a href="namespaceplayrho_1_1detail.html#a8b5a8d7ecc5a2fd34c979a4ed7ee67b8">More...</a><br /></td></tr>
 <tr class="separator:a8b5a8d7ecc5a2fd34c979a4ed7ee67b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1151c88c9fdcd11cb39197aad9e2f9a"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:ab1151c88c9fdcd11cb39197aad9e2f9a"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:ab1151c88c9fdcd11cb39197aad9e2f9a"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#ab1151c88c9fdcd11cb39197aad9e2f9a">operator&lt;</a> (const Other &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;rhs) -&gt; decltype(ValueType(lhs)&lt; ValueType(rhs))</td></tr>
 <tr class="memdesc:ab1151c88c9fdcd11cb39197aad9e2f9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value less-than operator.  <a href="namespaceplayrho_1_1detail.html#ab1151c88c9fdcd11cb39197aad9e2f9a">More...</a><br /></td></tr>
 <tr class="separator:ab1151c88c9fdcd11cb39197aad9e2f9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -611,7 +611,7 @@ template&lt;std::size_t N&gt; </td></tr>
 <tr class="memitem:aeedbbe27963b9396e1e566a97a03097a"><td class="memTemplItemLeft" align="right" valign="top">inline ::std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#aeedbbe27963b9396e1e566a97a03097a">operator&lt;&lt;</a> (::std::ostream &amp;os, const <a class="el" href="structplayrho_1_1detail_1_1AABB.html">AABB</a>&lt; N &gt; &amp;value)</td></tr>
 <tr class="memdesc:aeedbbe27963b9396e1e566a97a03097a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output stream operator. <br /></td></tr>
 <tr class="separator:aeedbbe27963b9396e1e566a97a03097a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f06e1143875dde6f350188cd20b307b"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept&gt; </td></tr>
+<tr class="memitem:a7f06e1143875dde6f350188cd20b307b"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept&gt; </td></tr>
 <tr class="memitem:a7f06e1143875dde6f350188cd20b307b"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a7f06e1143875dde6f350188cd20b307b">operator&lt;&lt;</a> (::std::ostream &amp;os, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;value) -&gt; decltype(os&lt;&lt; ValueType(value))</td></tr>
 <tr class="memdesc:a7f06e1143875dde6f350188cd20b307b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value stream output operator for value types which support it.  <a href="namespaceplayrho_1_1detail.html#a7f06e1143875dde6f350188cd20b307b">More...</a><br /></td></tr>
 <tr class="separator:a7f06e1143875dde6f350188cd20b307b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -620,15 +620,15 @@ template&lt;std::size_t N&gt; </td></tr>
 <tr class="memitem:aa3edeccc850d69e6165e5a5523e5b406"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#aa3edeccc850d69e6165e5a5523e5b406">operator&lt;=</a> (const <a class="el" href="structplayrho_1_1detail_1_1AABB.html">AABB</a>&lt; N &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1detail_1_1AABB.html">AABB</a>&lt; N &gt; &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:aa3edeccc850d69e6165e5a5523e5b406"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less-than or equal-to operator. <br /></td></tr>
 <tr class="separator:aa3edeccc850d69e6165e5a5523e5b406"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92f80c500536c9ace9c266ca095d4ce2"><td class="memTemplParams" colspan="2">template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </td></tr>
+<tr class="memitem:a92f80c500536c9ace9c266ca095d4ce2"><td class="memTemplParams" colspan="2">template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </td></tr>
 <tr class="memitem:a92f80c500536c9ace9c266ca095d4ce2"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a92f80c500536c9ace9c266ca095d4ce2">operator&lt;=</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs)&lt;=RhsValueType(rhs))</td></tr>
 <tr class="memdesc:a92f80c500536c9ace9c266ca095d4ce2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value less-than or equal-to operator.  <a href="namespaceplayrho_1_1detail.html#a92f80c500536c9ace9c266ca095d4ce2">More...</a><br /></td></tr>
 <tr class="separator:a92f80c500536c9ace9c266ca095d4ce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeff78aa037fbc86ce1958b1658ed2510"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:aeff78aa037fbc86ce1958b1658ed2510"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:aeff78aa037fbc86ce1958b1658ed2510"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#aeff78aa037fbc86ce1958b1658ed2510">operator&lt;=</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(ValueType(lhs)&lt;=ValueType(rhs))</td></tr>
 <tr class="memdesc:aeff78aa037fbc86ce1958b1658ed2510"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value less-than or equal-to operator.  <a href="namespaceplayrho_1_1detail.html#aeff78aa037fbc86ce1958b1658ed2510">More...</a><br /></td></tr>
 <tr class="separator:aeff78aa037fbc86ce1958b1658ed2510"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adeb25d8b74e7403ebd78bf324b8101dc"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:adeb25d8b74e7403ebd78bf324b8101dc"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:adeb25d8b74e7403ebd78bf324b8101dc"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#adeb25d8b74e7403ebd78bf324b8101dc">operator&lt;=</a> (const Other &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;rhs) -&gt; decltype(ValueType(lhs)&lt;=ValueType(rhs))</td></tr>
 <tr class="memdesc:adeb25d8b74e7403ebd78bf324b8101dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value less-than or equal-to operator.  <a href="namespaceplayrho_1_1detail.html#adeb25d8b74e7403ebd78bf324b8101dc">More...</a><br /></td></tr>
 <tr class="separator:adeb25d8b74e7403ebd78bf324b8101dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -636,15 +636,15 @@ template&lt;std::size_t N&gt; </td></tr>
 <tr class="memitem:ae9459aea2a9cd94f8089837a09f41003"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#ae9459aea2a9cd94f8089837a09f41003">operator==</a> (const <a class="el" href="structplayrho_1_1detail_1_1AABB.html">AABB</a>&lt; N &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1detail_1_1AABB.html">AABB</a>&lt; N &gt; &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:ae9459aea2a9cd94f8089837a09f41003"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the two <a class="el" href="structplayrho_1_1detail_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box.">AABB</a> objects are equal.  <a href="namespaceplayrho_1_1detail.html#ae9459aea2a9cd94f8089837a09f41003">More...</a><br /></td></tr>
 <tr class="separator:ae9459aea2a9cd94f8089837a09f41003"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f2e536c4b87e31dd0d088bb64712b70"><td class="memTemplParams" colspan="2">template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </td></tr>
+<tr class="memitem:a8f2e536c4b87e31dd0d088bb64712b70"><td class="memTemplParams" colspan="2">template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </td></tr>
 <tr class="memitem:a8f2e536c4b87e31dd0d088bb64712b70"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a8f2e536c4b87e31dd0d088bb64712b70">operator==</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) noexcept(noexcept(std::declval&lt; LhsValueType &gt;()==std::declval&lt; RhsValueType &gt;())) -&gt; decltype(LhsValueType(lhs)==RhsValueType(rhs))</td></tr>
 <tr class="memdesc:a8f2e536c4b87e31dd0d088bb64712b70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value equality operator for value types which support it.  <a href="namespaceplayrho_1_1detail.html#a8f2e536c4b87e31dd0d088bb64712b70">More...</a><br /></td></tr>
 <tr class="separator:a8f2e536c4b87e31dd0d088bb64712b70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50beca9c94a84b533dda16d5612c99c1"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:a50beca9c94a84b533dda16d5612c99c1"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:a50beca9c94a84b533dda16d5612c99c1"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a50beca9c94a84b533dda16d5612c99c1">operator==</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(ValueType(lhs)==rhs)</td></tr>
 <tr class="memdesc:a50beca9c94a84b533dda16d5612c99c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value equality operator.  <a href="namespaceplayrho_1_1detail.html#a50beca9c94a84b533dda16d5612c99c1">More...</a><br /></td></tr>
 <tr class="separator:a50beca9c94a84b533dda16d5612c99c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3122c1c3be1d11d9e824e227cf58e4f3"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:a3122c1c3be1d11d9e824e227cf58e4f3"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:a3122c1c3be1d11d9e824e227cf58e4f3"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a3122c1c3be1d11d9e824e227cf58e4f3">operator==</a> (const Other &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;rhs) -&gt; decltype(lhs==ValueType(rhs))</td></tr>
 <tr class="memdesc:a3122c1c3be1d11d9e824e227cf58e4f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value equality operator.  <a href="namespaceplayrho_1_1detail.html#a3122c1c3be1d11d9e824e227cf58e4f3">More...</a><br /></td></tr>
 <tr class="separator:a3122c1c3be1d11d9e824e227cf58e4f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -658,15 +658,15 @@ template&lt;std::size_t N&gt; </td></tr>
 <tr class="memitem:a76b557d909c21ff5256aeb1a9d3b8c05"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a76b557d909c21ff5256aeb1a9d3b8c05">operator&gt;</a> (const <a class="el" href="structplayrho_1_1detail_1_1AABB.html">AABB</a>&lt; N &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1detail_1_1AABB.html">AABB</a>&lt; N &gt; &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:a76b557d909c21ff5256aeb1a9d3b8c05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater-than operator. <br /></td></tr>
 <tr class="separator:a76b557d909c21ff5256aeb1a9d3b8c05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65ffa1dc8fdac606f09d7f1258d76697"><td class="memTemplParams" colspan="2">template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </td></tr>
+<tr class="memitem:a65ffa1dc8fdac606f09d7f1258d76697"><td class="memTemplParams" colspan="2">template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </td></tr>
 <tr class="memitem:a65ffa1dc8fdac606f09d7f1258d76697"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a65ffa1dc8fdac606f09d7f1258d76697">operator&gt;</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs) &gt; RhsValueType(rhs))</td></tr>
 <tr class="memdesc:a65ffa1dc8fdac606f09d7f1258d76697"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value greater-than operator.  <a href="namespaceplayrho_1_1detail.html#a65ffa1dc8fdac606f09d7f1258d76697">More...</a><br /></td></tr>
 <tr class="separator:a65ffa1dc8fdac606f09d7f1258d76697"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7db684b2001572866a76004dc188482b"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:a7db684b2001572866a76004dc188482b"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:a7db684b2001572866a76004dc188482b"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a7db684b2001572866a76004dc188482b">operator&gt;</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(ValueType(lhs) &gt; ValueType(rhs))</td></tr>
 <tr class="memdesc:a7db684b2001572866a76004dc188482b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value greater-than operator.  <a href="namespaceplayrho_1_1detail.html#a7db684b2001572866a76004dc188482b">More...</a><br /></td></tr>
 <tr class="separator:a7db684b2001572866a76004dc188482b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae925670316f198c098c65a2d9fb2e68d"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:ae925670316f198c098c65a2d9fb2e68d"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:ae925670316f198c098c65a2d9fb2e68d"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#ae925670316f198c098c65a2d9fb2e68d">operator&gt;</a> (const Other &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;rhs) -&gt; decltype(ValueType(lhs) &gt; ValueType(rhs))</td></tr>
 <tr class="memdesc:ae925670316f198c098c65a2d9fb2e68d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value greater-than ooperator.  <a href="namespaceplayrho_1_1detail.html#ae925670316f198c098c65a2d9fb2e68d">More...</a><br /></td></tr>
 <tr class="separator:ae925670316f198c098c65a2d9fb2e68d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -675,15 +675,15 @@ template&lt;std::size_t N&gt; </td></tr>
 <tr class="memitem:a48d06003e414f652104fd195b308d296"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a48d06003e414f652104fd195b308d296">operator&gt;=</a> (const <a class="el" href="structplayrho_1_1detail_1_1AABB.html">AABB</a>&lt; N &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1detail_1_1AABB.html">AABB</a>&lt; N &gt; &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:a48d06003e414f652104fd195b308d296"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater-than or equal-to operator. <br /></td></tr>
 <tr class="separator:a48d06003e414f652104fd195b308d296"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d2b20e9a7652cad0cb713a9b466268d"><td class="memTemplParams" colspan="2">template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </td></tr>
+<tr class="memitem:a0d2b20e9a7652cad0cb713a9b466268d"><td class="memTemplParams" colspan="2">template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </td></tr>
 <tr class="memitem:a0d2b20e9a7652cad0cb713a9b466268d"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a0d2b20e9a7652cad0cb713a9b466268d">operator&gt;=</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs) &gt;=RhsValueType(rhs))</td></tr>
 <tr class="memdesc:a0d2b20e9a7652cad0cb713a9b466268d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value greater-than or equal-to operator.  <a href="namespaceplayrho_1_1detail.html#a0d2b20e9a7652cad0cb713a9b466268d">More...</a><br /></td></tr>
 <tr class="separator:a0d2b20e9a7652cad0cb713a9b466268d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79e613ff5f9b13c13408daab2deae491"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:a79e613ff5f9b13c13408daab2deae491"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:a79e613ff5f9b13c13408daab2deae491"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a79e613ff5f9b13c13408daab2deae491">operator&gt;=</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(ValueType(lhs) &gt;=ValueType(rhs))</td></tr>
 <tr class="memdesc:a79e613ff5f9b13c13408daab2deae491"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value greater-than or equal-to operator.  <a href="namespaceplayrho_1_1detail.html#a79e613ff5f9b13c13408daab2deae491">More...</a><br /></td></tr>
 <tr class="separator:a79e613ff5f9b13c13408daab2deae491"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9994a039bbf093c9b0e0faddd272dab"><td class="memTemplParams" colspan="2">template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </td></tr>
+<tr class="memitem:ab9994a039bbf093c9b0e0faddd272dab"><td class="memTemplParams" colspan="2">template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </td></tr>
 <tr class="memitem:ab9994a039bbf093c9b0e0faddd272dab"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#ab9994a039bbf093c9b0e0faddd272dab">operator&gt;=</a> (const Other &amp;lhs, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, NoExcept &gt; &amp;rhs) -&gt; decltype(ValueType(lhs) &gt;=ValueType(rhs))</td></tr>
 <tr class="memdesc:ab9994a039bbf093c9b0e0faddd272dab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrained value greater-than or equal-to operator.  <a href="namespaceplayrho_1_1detail.html#ab9994a039bbf093c9b0e0faddd272dab">More...</a><br /></td></tr>
 <tr class="separator:ab9994a039bbf093c9b0e0faddd272dab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1123,7 +1123,7 @@ template&lt;std::size_t N&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </div>
+template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1175,7 +1175,7 @@ template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, type
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1225,7 +1225,7 @@ template&lt;typename ValueType , typename Checker , bool NoExcept, typename Othe
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1275,7 +1275,7 @@ template&lt;typename ValueType , typename Checker , bool NoExcept, typename Othe
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </div>
+template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1327,7 +1327,7 @@ template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, type
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1378,7 +1378,7 @@ decltype(ValueType()*Other())&gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1429,7 +1429,7 @@ decltype(Other()*ValueType())&gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </div>
+template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1481,7 +1481,7 @@ template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, type
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1531,7 +1531,7 @@ template&lt;typename ValueType , typename Checker , bool NoExcept, typename Othe
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1581,7 +1581,7 @@ template&lt;typename ValueType , typename Checker , bool NoExcept, typename Othe
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </div>
+template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1633,7 +1633,7 @@ template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, type
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1683,7 +1683,7 @@ template&lt;typename ValueType , typename Checker , bool NoExcept, typename Othe
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1733,7 +1733,7 @@ template&lt;typename ValueType , typename Checker , bool NoExcept, typename Othe
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </div>
+template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1785,7 +1785,7 @@ template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, type
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1835,7 +1835,7 @@ template&lt;typename ValueType , typename Checker , bool NoExcept, typename Othe
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1885,7 +1885,7 @@ template&lt;typename ValueType , typename Checker , bool NoExcept, typename Othe
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </div>
+template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1937,7 +1937,7 @@ template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, type
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1987,7 +1987,7 @@ template&lt;typename ValueType , typename Checker , bool NoExcept, typename Othe
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2037,7 +2037,7 @@ template&lt;typename ValueType , typename Checker , bool NoExcept, typename Othe
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept&gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">auto operator&lt;&lt; </td>
@@ -2078,7 +2078,7 @@ template&lt;typename ValueType , typename Checker , bool NoExcept&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </div>
+template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2130,7 +2130,7 @@ template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, type
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2180,7 +2180,7 @@ template&lt;typename ValueType , typename Checker , bool NoExcept, typename Othe
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2271,7 +2271,7 @@ template&lt;std::size_t N&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </div>
+template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2323,7 +2323,7 @@ template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, type
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2373,7 +2373,7 @@ template&lt;typename ValueType , typename Checker , bool NoExcept, typename Othe
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2423,7 +2423,7 @@ template&lt;typename ValueType , typename Checker , bool NoExcept, typename Othe
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </div>
+template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2475,7 +2475,7 @@ template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, type
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2525,7 +2525,7 @@ template&lt;typename ValueType , typename Checker , bool NoExcept, typename Othe
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2575,7 +2575,7 @@ template&lt;typename ValueType , typename Checker , bool NoExcept, typename Othe
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, typename RhsValueType , typename RhsChecker , bool RhsNoExcept&gt; </div>
+template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsValueType , class RhsChecker , bool RhsNoExcept&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2627,7 +2627,7 @@ template&lt;typename LhsValueType , typename LhsChecker , bool LhsNoExcept, type
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2677,7 +2677,7 @@ template&lt;typename ValueType , typename Checker , bool NoExcept, typename Othe
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename ValueType , typename Checker , bool NoExcept, typename Other &gt; </div>
+template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2823,7 +2823,7 @@ This code relies on the compiler being clang or GCC compatible supporting the <c
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Fri Sep 22 2023 00:56:19 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Sep 25 2023 23:39:54 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

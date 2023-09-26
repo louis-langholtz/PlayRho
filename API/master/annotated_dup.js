@@ -28,6 +28,7 @@ var annotated_dup =
           [ "StaticSensor", "structplayrho_1_1d2_1_1part_1_1StaticSensor.html", "structplayrho_1_1d2_1_1part_1_1StaticSensor" ],
           [ "StaticTenthsFriction", "structplayrho_1_1d2_1_1part_1_1StaticTenthsFriction.html", "structplayrho_1_1d2_1_1part_1_1StaticTenthsFriction" ]
         ] ],
+        [ "AabbTreeWorld", "classplayrho_1_1d2_1_1AabbTreeWorld.html", "classplayrho_1_1d2_1_1AabbTreeWorld" ],
         [ "Acceleration", "structplayrho_1_1d2_1_1Acceleration.html", "structplayrho_1_1d2_1_1Acceleration" ],
         [ "BaseShapeConf", "structplayrho_1_1d2_1_1BaseShapeConf.html", "structplayrho_1_1d2_1_1BaseShapeConf" ],
         [ "Body", "classplayrho_1_1d2_1_1Body.html", "classplayrho_1_1d2_1_1Body" ],
@@ -102,7 +103,6 @@ var annotated_dup =
         [ "WheelJointConf", "structplayrho_1_1d2_1_1WheelJointConf.html", "structplayrho_1_1d2_1_1WheelJointConf" ],
         [ "World", "classplayrho_1_1d2_1_1World.html", "classplayrho_1_1d2_1_1World" ],
         [ "WorldConf", "structplayrho_1_1d2_1_1WorldConf.html", "structplayrho_1_1d2_1_1WorldConf" ],
-        [ "WorldImpl", "classplayrho_1_1d2_1_1WorldImpl.html", "classplayrho_1_1d2_1_1WorldImpl" ],
         [ "WorldManifold", "classplayrho_1_1d2_1_1WorldManifold.html", "classplayrho_1_1d2_1_1WorldManifold" ]
       ] ],
       [ "detail", "namespaceplayrho_1_1detail.html", [

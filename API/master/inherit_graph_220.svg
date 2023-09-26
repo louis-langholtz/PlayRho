@@ -9,9 +9,9 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 84)">
 <title>Graphical Class Hierarchy</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-84 297,-84 297,4 -4,4"/>
-<!-- Node128 -->
+<!-- Node129 -->
 <g id="node1" class="node">
-<title>Node128</title>
+<title>Node129</title>
 <g id="a_node1"><a xlink:title=" ">
 <polygon fill="white" stroke="#bfbfbf" points="0,-30 0,-49 122,-49 122,-30 0,-30"/>
 <text text-anchor="middle" x="61" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">std::integral_constant</text>
@@ -28,15 +28,15 @@
 </a>
 </g>
 </g>
-<!-- Node128&#45;&gt;Node0 -->
+<!-- Node129&#45;&gt;Node0 -->
 <g id="edge1" class="edge">
-<title>Node128&#45;&gt;Node0</title>
+<title>Node129&#45;&gt;Node0</title>
 <path fill="none" stroke="midnightblue" d="M132.01,-50.27C140.59,-51.59 149.34,-52.94 157.86,-54.25"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="132.46,-46.8 122.05,-48.74 131.4,-53.72 132.46,-46.8"/>
 </g>
-<!-- Node130 -->
+<!-- Node131 -->
 <g id="node3" class="node">
-<title>Node130</title>
+<title>Node131</title>
 <g id="a_node3"><a xlink:href="classstd_1_1tuple__size_3_01playrho_1_1d2_1_1UnitVec_01_4.html" target="_top" xlink:title="Tuple size info for playrho::d2::UnitVec.">
 <polygon fill="white" stroke="black" points="158,-0.5 158,-30.5 293,-30.5 293,-0.5 158,-0.5"/>
 <text text-anchor="start" x="166" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">std::tuple_size&lt; playrho</text>
@@ -44,9 +44,9 @@
 </a>
 </g>
 </g>
-<!-- Node128&#45;&gt;Node130 -->
+<!-- Node129&#45;&gt;Node131 -->
 <g id="edge2" class="edge">
-<title>Node128&#45;&gt;Node130</title>
+<title>Node129&#45;&gt;Node131</title>
 <path fill="none" stroke="midnightblue" d="M132.01,-29.16C140.59,-27.89 149.34,-26.6 157.86,-25.34"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="131.43,-25.71 122.05,-30.63 132.45,-32.63 131.43,-25.71"/>
 </g>

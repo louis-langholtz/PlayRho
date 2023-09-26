@@ -1,5 +1,5 @@
 <map id="Library/include/playrho/d2/DynamicTreeData.hpp" name="Library/include/playrho/d2/DynamicTreeData.hpp">
 <area shape="rect" id="node1" title="Definitions of DynamicTree related classes." alt="" coords="5,5,196,47"/>
 <area shape="rect" id="node2" href="$DynamicTree_8hpp.html" title="Declaration of the DynamicTree class." alt="" coords="15,95,186,136"/>
-<area shape="rect" id="node3" href="$WorldImpl_8hpp.html" title="Declarations of the WorldImpl class." alt="" coords="15,184,186,225"/>
+<area shape="rect" id="node3" href="$AabbTreeWorld_8hpp.html" title="Declarations of the AabbTreeWorld class." alt="" coords="15,184,186,225"/>
 </map>

@@ -4,7 +4,7 @@ var searchData=
   ['raycastoutput_4008',['RayCastOutput',['../namespaceplayrho_1_1d2.html#a44ee8d7d4fd7ea935b7d952f7834027f',1,'playrho::d2']]],
   ['real_4009',['Real',['../namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87',1,'playrho']]],
   ['reference_4010',['reference',['../structplayrho_1_1d2_1_1JointBuilder.html#a733fc319651379e8afa36146bebe68df',1,'playrho::d2::JointBuilder::reference()'],['../classplayrho_1_1ObjectPool.html#aed01c819198c39c032d309fdd2cf8715',1,'playrho::ObjectPool::reference()'],['../structplayrho_1_1Vector.html#a1dac8a92ef859aec019358fed5b4badd',1,'playrho::Vector::reference()'],['../classplayrho_1_1ArrayList.html#af8df8532d007eec85164392f49348636',1,'playrho::ArrayList::reference()']]],
-  ['remove_5fpointer_5ftype_4011',['remove_pointer_type',['../classplayrho_1_1detail_1_1Checked.html#a469b6bfb158510c35bb95a8496b1992f',1,'playrho::detail::Checked']]],
+  ['remove_5fpointer_5ftype_4011',['remove_pointer_type',['../classplayrho_1_1detail_1_1Checked.html#a5195c96ea6ee491e75d93ce702553cda',1,'playrho::detail::Checked']]],
   ['resource_5fargs_4012',['resource_args',['../classplayrho_1_1ThreadLocalAllocator.html#a9c4a432f2eaf3f2d2954e1e99abc5574',1,'playrho::ThreadLocalAllocator']]],
   ['resource_5ftype_4013',['resource_type',['../classplayrho_1_1ThreadLocalAllocator.html#a2b9607ba80cedc4d927c4db768a69164',1,'playrho::ThreadLocalAllocator']]],
   ['restitution_4014',['Restitution',['../structplayrho_1_1d2_1_1part_1_1DefaultPolicies.html#ad58918e0327fb4faca764c96bec03f72',1,'playrho::d2::part::DefaultPolicies::Restitution()'],['../structplayrho_1_1d2_1_1part_1_1RestitutionIs.html#a75ef91a9ea0d8cfbe88e817d917ec4cb',1,'playrho::d2::part::RestitutionIs::Restitution()']]],

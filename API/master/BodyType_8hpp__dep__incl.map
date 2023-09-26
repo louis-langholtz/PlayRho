@@ -1,12 +1,12 @@
 <map id="Library/include/playrho/BodyType.hpp" name="Library/include/playrho/BodyType.hpp">
-<area shape="rect" id="node1" title="Definition of the BodyType enumeration and closely related code." alt="" coords="538,5,709,47"/>
-<area shape="rect" id="node2" href="$Body_8hpp.html" title="Declarations of the Body class, and functions associated with it." alt="" coords="477,184,647,225"/>
-<area shape="rect" id="node10" href="$BodyConf_8hpp.html" title="Declarations of BodyConf class and free functions associated with it." alt="" coords="599,95,770,136"/>
-<area shape="rect" id="node3" href="$BodyConstraint_8hpp.html" title="Definition of the BodyConstraint class and closely related code." alt="" coords="237,273,412,315"/>
-<area shape="rect" id="node7" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="635,273,806,315"/>
-<area shape="rect" id="node9" href="$WorldBody_8hpp.html" title="Declarations of free functions of World for bodies identified by BodyID." alt="" coords="441,273,611,315"/>
-<area shape="rect" id="node4" href="$PositionConstraint_8hpp.html" title="Definition of the PositionConstraint class and closely related code." alt="" coords="5,363,199,404"/>
-<area shape="rect" id="node5" href="$VelocityConstraint_8hpp.html" title="Definition of the VelocityConstraint class and closely related code." alt="" coords="223,363,416,404"/>
-<area shape="rect" id="node6" href="$WorldImpl_8hpp.html" title="Declarations of the WorldImpl class." alt="" coords="441,363,611,404"/>
-<area shape="rect" id="node8" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="635,363,806,404"/>
+<area shape="rect" id="node1" title="Definition of the BodyType enumeration and closely related code." alt="" coords="539,5,709,47"/>
+<area shape="rect" id="node2" href="$Body_8hpp.html" title="Declarations of the Body class, and functions associated with it." alt="" coords="477,184,648,225"/>
+<area shape="rect" id="node10" href="$BodyConf_8hpp.html" title="Declarations of BodyConf class and free functions associated with it." alt="" coords="600,95,771,136"/>
+<area shape="rect" id="node3" href="$BodyConstraint_8hpp.html" title="Definition of the BodyConstraint class and closely related code." alt="" coords="226,273,401,315"/>
+<area shape="rect" id="node7" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="636,273,807,315"/>
+<area shape="rect" id="node9" href="$WorldBody_8hpp.html" title="Declarations of free functions of World for bodies identified by BodyID." alt="" coords="441,273,612,315"/>
+<area shape="rect" id="node4" href="$AabbTreeWorld_8hpp.html" title="Declarations of the AabbTreeWorld class." alt="" coords="5,363,176,404"/>
+<area shape="rect" id="node5" href="$PositionConstraint_8hpp.html" title="Definition of the PositionConstraint class and closely related code." alt="" coords="201,363,394,404"/>
+<area shape="rect" id="node6" href="$VelocityConstraint_8hpp.html" title="Definition of the VelocityConstraint class and closely related code." alt="" coords="418,363,611,404"/>
+<area shape="rect" id="node8" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="636,363,807,404"/>
 </map>

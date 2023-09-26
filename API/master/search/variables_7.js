@@ -13,7 +13,7 @@ var searchData=
   ['hassetrestitutionv_3576',['HasSetRestitutionV',['../namespaceplayrho_1_1d2.html#af1dab2bbd039624dd979cb9f1ac8e938',1,'playrho::d2']]],
   ['hassetsensorv_3577',['HasSetSensorV',['../namespaceplayrho_1_1d2.html#a280984ac0c13e7a78e3ddef1b81c7ddc',1,'playrho::d2']]],
   ['hastranslatev_3578',['HasTranslateV',['../namespaceplayrho_1_1d2.html#a1e856dc6b73fec2ef9dc7d7e8f39a173',1,'playrho::d2']]],
-  ['hertz_3579',['hertz',['../namespaceplayrho_1_1detail.html#af1e0c512dc16bc8796eaffc38727193d',1,'playrho::detail']]],
-  ['hertz_3580',['Hertz',['../group__PhysicalUnits.html#gadef54036b9480e0cf730100688e20570',1,'playrho']]],
+  ['hertz_3579',['Hertz',['../group__PhysicalUnits.html#gadef54036b9480e0cf730100688e20570',1,'playrho']]],
+  ['hertz_3580',['hertz',['../namespaceplayrho_1_1detail.html#af1e0c512dc16bc8796eaffc38727193d',1,'playrho::detail']]],
   ['hoursperday_3581',['HoursPerDay',['../namespaceplayrho_1_1detail.html#a7228ae83382d96e5316a2da46d61b5e4',1,'playrho::detail']]]
 ];

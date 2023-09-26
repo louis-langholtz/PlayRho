@@ -2,6 +2,7 @@ var hierarchy =
 [
     [ "playrho::detail::AABB< N >", "structplayrho_1_1detail_1_1AABB.html", null ],
     [ "playrho::detail::AABB< 2 >", "structplayrho_1_1detail_1_1AABB.html", null ],
+    [ "playrho::d2::AabbTreeWorld", "classplayrho_1_1d2_1_1AabbTreeWorld.html", null ],
     [ "playrho::d2::Acceleration", "structplayrho_1_1d2_1_1Acceleration.html", null ],
     [ "playrho::ArrayList< VALUE_TYPE, MAXSIZE, SIZE_TYPE >", "classplayrho_1_1ArrayList.html", null ],
     [ "playrho::ArrayList< Real, MaxSimplexEdges, std::remove_const_t< decltype(MaxSimplexEdges)> >", "classplayrho_1_1ArrayList.html", null ],
@@ -59,7 +60,7 @@ var hierarchy =
     [ "playrho::ContactFeature", "structplayrho_1_1ContactFeature.html", null ],
     [ "playrho::d2::ContactImpulsesList", "classplayrho_1_1d2_1_1ContactImpulsesList.html", null ],
     [ "playrho::ContactKey", "classplayrho_1_1ContactKey.html", null ],
-    [ "playrho::d2::WorldImpl::ContactUpdateConf", "structplayrho_1_1d2_1_1WorldImpl_1_1ContactUpdateConf.html", null ],
+    [ "playrho::d2::AabbTreeWorld::ContactUpdateConf", "structplayrho_1_1d2_1_1AabbTreeWorld_1_1ContactUpdateConf.html", null ],
     [ "playrho::d2::ConvexHull", "classplayrho_1_1d2_1_1ConvexHull.html", null ],
     [ "playrho::d2::part::DefaultPolicies", "structplayrho_1_1d2_1_1part_1_1DefaultPolicies.html", [
       [ "playrho::d2::part::DefaultPolicyArgs", "structplayrho_1_1d2_1_1part_1_1DefaultPolicyArgs.html", null ],
@@ -390,6 +391,5 @@ var hierarchy =
     [ "playrho::detail::Wider< std::uint8_t >", "structplayrho_1_1detail_1_1Wider_3_01std_1_1uint8__t_01_4.html", null ],
     [ "playrho::d2::World", "classplayrho_1_1d2_1_1World.html", null ],
     [ "playrho::d2::WorldConf", "structplayrho_1_1d2_1_1WorldConf.html", null ],
-    [ "playrho::d2::WorldImpl", "classplayrho_1_1d2_1_1WorldImpl.html", null ],
     [ "playrho::d2::WorldManifold", "classplayrho_1_1d2_1_1WorldManifold.html", null ]
 ];

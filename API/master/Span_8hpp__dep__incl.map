@@ -32,8 +32,8 @@
 <area shape="rect" id="node29" href="$Manifold_8hpp.html" title="Definition of the Manifold class and closely related code." alt="" coords="864,273,1035,315"/>
 <area shape="rect" id="node30" href="$PositionConstraint_8hpp.html" title="Definition of the PositionConstraint class and closely related code." alt="" coords="434,541,627,583"/>
 <area shape="rect" id="node31" href="$PositionSolverManifold_8hpp.html" title="Definition of the PositionSolverManifold class and closely related code." alt="" coords="720,363,944,404"/>
-<area shape="rect" id="node33" href="$Body_8hpp.html" title="Declarations of the Body class, and functions associated with it." alt="" coords="1069,363,1240,404"/>
-<area shape="rect" id="node35" href="$WorldImpl_8hpp.html" title="Declarations of the WorldImpl class." alt="" coords="652,541,823,583"/>
+<area shape="rect" id="node33" href="$AabbTreeWorld_8hpp.html" title="Declarations of the AabbTreeWorld class." alt="" coords="652,541,823,583"/>
+<area shape="rect" id="node34" href="$Body_8hpp.html" title="Declarations of the Body class, and functions associated with it." alt="" coords="1069,363,1240,404"/>
 <area shape="rect" id="node36" href="$WorldBody_8hpp.html" title="Declarations of free functions of World for bodies identified by BodyID." alt="" coords="1907,452,2077,493"/>
 <area shape="rect" id="node37" href="$BodyConf_8hpp.html" title="Declarations of BodyConf class and free functions associated with it." alt="" coords="1160,273,1331,315"/>
 <area shape="rect" id="node38" href="$Joint_8hpp.html" title="Definition of the Joint class and closely related code." alt="" coords="1608,273,1779,315"/>
@@ -44,7 +44,7 @@
 <area shape="rect" id="node44" href="$VertexSet_8hpp.html" title="Definition of the VertexSet class and closely related code." alt="" coords="2456,363,2627,404"/>
 <area shape="rect" id="node45" href="$WorldManifold_8hpp.html" title="Declarations of the WorldManifold class and closely related code." alt="" coords="2099,273,2269,315"/>
 <area shape="rect" id="node47" href="$WorldMisc_8hpp.html" title="Declarations of free functions of World for unidentified information." alt="" coords="2571,452,2741,493"/>
-<area shape="rect" id="node34" href="$BodyConstraint_8hpp.html" title="Definition of the BodyConstraint class and closely related code." alt="" coords="619,452,794,493"/>
+<area shape="rect" id="node35" href="$BodyConstraint_8hpp.html" title="Definition of the BodyConstraint class and closely related code." alt="" coords="619,452,794,493"/>
 <area shape="rect" id="node43" href="$Simplex_8hpp.html" title="Definition of the Simplex class and closely related code." alt="" coords="2651,363,2821,404"/>
 <area shape="rect" id="node46" href="$WorldContact_8hpp.html" title="Declarations of free functions of World for contacts identified by ContactID." alt="" coords="2312,452,2483,493"/>
 <area shape="rect" id="node49" href="$Finite_8hpp.html" title="Aliases for checked finite types." alt="" coords="3416,273,3587,315"/>

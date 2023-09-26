@@ -8,5 +8,5 @@ var searchData=
   ['positive_4002',['Positive',['../group__CheckedTypes.html#ga1fce58e6740bd8d9f025e08472071a9b',1,'playrho']]],
   ['positiveff_4003',['PositiveFF',['../group__CheckedTypes.html#ga521f0650a33330a43eafb31ecb6d4ae5',1,'playrho']]],
   ['proxyids_4004',['ProxyIDs',['../namespaceplayrho_1_1d2.html#a2b03aa4cdf4968f8dc10d9016cb0552d',1,'playrho::d2']]],
-  ['proxykey_4005',['ProxyKey',['../classplayrho_1_1d2_1_1WorldImpl.html#a4ce456450f7e4e6fbe3e30bc60634fd0',1,'playrho::d2::WorldImpl']]]
+  ['proxykey_4005',['ProxyKey',['../classplayrho_1_1d2_1_1AabbTreeWorld.html#a4c210fb56e0a86863cca565389623398',1,'playrho::d2::AabbTreeWorld']]]
 ];

@@ -1,6 +1,6 @@
 <map id="playrho::ToiConf" name="playrho::ToiConf">
 <area shape="rect" id="node1" title="Time of impact configuration." alt="" coords="131,228,258,255"/>
 <area shape="rect" id="node2" href="$classplayrho_1_1detail_1_1Checked.html" title=" " alt="" coords="5,109,184,151"/>
-<area shape="rect" id="node3" href="$classplayrho_1_1detail_1_1Checked.html" title="Checked value." alt="" coords="72,5,320,47"/>
+<area shape="rect" id="node3" href="$classplayrho_1_1detail_1_1Checked.html" title="Class template for construction&#45;time constraining a type&#39;s value." alt="" coords="72,5,320,47"/>
 <area shape="rect" id="node4" href="$classplayrho_1_1detail_1_1Checked.html" title=" " alt="" coords="208,109,387,151"/>
 </map>

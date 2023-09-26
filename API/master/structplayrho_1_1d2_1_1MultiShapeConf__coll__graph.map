@@ -4,7 +4,7 @@
 <area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1BaseShapeConf.html" title="Base configuration for initializing shapes." alt="" coords="711,78,916,105"/>
 <area shape="rect" id="node8" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title="Builder configuration structure." alt="" coords="965,100,1155,141"/>
 <area shape="rect" id="node4" href="$classplayrho_1_1detail_1_1Checked.html" title=" " alt="" coords="416,5,595,47"/>
-<area shape="rect" id="node5" href="$classplayrho_1_1detail_1_1Checked.html" title="Checked value." alt="" coords="5,39,253,80"/>
+<area shape="rect" id="node5" href="$classplayrho_1_1detail_1_1Checked.html" title="Class template for construction&#45;time constraining a type&#39;s value." alt="" coords="5,39,253,80"/>
 <area shape="rect" id="node7" href="$classplayrho_1_1detail_1_1Checked.html" title=" " alt="" coords="416,71,595,112"/>
 <area shape="rect" id="node6" href="$structplayrho_1_1Filter.html" title="A holder for contact filtering data." alt="" coords="449,137,561,163"/>
 </map>

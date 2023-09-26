@@ -39,7 +39,7 @@
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="classplayrho_1_1detail_1_1Checked.html" target="_top" xlink:title="Checked value.">
+<g id="a_node3"><a xlink:href="classplayrho_1_1detail_1_1Checked.html" target="_top" xlink:title="Class template for construction&#45;time constraining a type&#39;s value.">
 <polygon fill="white" stroke="black" points="0,-156.5 0,-186.5 186,-186.5 186,-156.5 0,-156.5"/>
 <text text-anchor="start" x="8" y="-174.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::Checked</text>
 <text text-anchor="middle" x="93" y="-163.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; ValueType, Checker, NoExcept &gt;</text>

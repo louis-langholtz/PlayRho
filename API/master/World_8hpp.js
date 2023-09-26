@@ -1,12 +1,6 @@
 var World_8hpp =
 [
     [ "World", "classplayrho_1_1d2_1_1World.html", "classplayrho_1_1d2_1_1World" ],
-    [ "AssociationListener", "World_8hpp.html#a79795738aeb3efff8b2c8c532be4d659", null ],
-    [ "ContactListener", "World_8hpp.html#a3c7c61bbf21c6429d9095b90d78357a0", null ],
-    [ "ImpulsesContactListener", "World_8hpp.html#a5f1a386edb55381b1298a6242dd993fe", null ],
-    [ "JointListener", "World_8hpp.html#ad9f95381357d690566e30bca1dea2c56", null ],
-    [ "ManifoldContactListener", "World_8hpp.html#a9eab28c674a223868b16cfb6923b899e", null ],
-    [ "ShapeListener", "World_8hpp.html#a1aab64c9251adf9a109b7e69e1832844", null ],
     [ "Clear", "World_8hpp.html#ae87aedd0a1a4a5077df893173042fc4c", null ],
     [ "CreateBody", "World_8hpp.html#a9d451d642b4be1c355a908b7c67df344", null ],
     [ "CreateJoint", "World_8hpp.html#ab62165739ca2e022cf67ce1f5d21b748", null ],
