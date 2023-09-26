@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_D2_WORLDIMPLBODY_HPP
-#define PLAYRHO_D2_WORLDIMPLBODY_HPP
+#ifndef PLAYRHO_D2_AABBTREEWORLDBODY_HPP
+#define PLAYRHO_D2_AABBTREEWORLDBODY_HPP
 
 /// @file
 /// @brief Declarations of free functions of AabbTreeWorld for bodies.
@@ -60,4 +60,4 @@ const std::vector<ShapeID>& GetShapes(const AabbTreeWorld& world, BodyID id);
 
 } // namespace playrho::d2
 
-#endif // PLAYRHO_D2_WORLDIMPLBODY_HPP
+#endif // PLAYRHO_D2_AABBTREEWORLDBODY_HPP

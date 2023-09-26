@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_D2_WORLDIMPL_HPP
-#define PLAYRHO_D2_WORLDIMPL_HPP
+#ifndef PLAYRHO_D2_AABBTREEWORLD_HPP
+#define PLAYRHO_D2_AABBTREEWORLD_HPP
 
 /// @file
 /// @brief Declarations of the AabbTreeWorld class.
@@ -1060,4 +1060,4 @@ inline void SetPostSolveContactListener(AabbTreeWorld& world, ImpulsesContactLis
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_D2_WORLDIMPL_HPP
+#endif // PLAYRHO_D2_AABBTREEWORLD_HPP
