@@ -99,7 +99,6 @@ struct NoOpChecker
 ///   from within the program (that should be valid, and as an offensive programming
 ///   mechanism).
 /// @see https://en.cppreference.com/w/cpp/language/noexcept_spec.
-/// @see https://en.cppreference.com/w/cpp/concepts/regular.
 template <class ValueType, class Checker = NoOpChecker<ValueType>, bool NoExcept = false>
 class Checked
 {
