@@ -47,12 +47,11 @@ namespace playrho::d2 {
 ///   acceleration, and mass.
 ///
 /// @invariant Only bodies that allow sleeping, can be put to sleep.
-/// @invariant Only "speedable" bodies can be awake.
-/// @invariant Only "speedable" bodies can have non-zero velocities.
-/// @invariant Only "accelerable" bodies can have non-zero accelerations.
-/// @invariant Only "accelerable" bodies can have non-zero "under-active" times.
-/// @invariant The body's transformation is always the body's sweep position one's linear position
-///   and the unit vector of the body's sweep position one's angular position.
+/// @invariant Only "speedable" bodies can be awake or have non-zero velocities.
+/// @invariant Only "accelerable" bodies can have non-zero accelerations or non-zero
+///   "under-active" times.
+/// @invariant The body's transformation is always the body's sweep position one's linear
+///   position and the unit vector of the body's sweep position one's angular position.
 ///
 /// @ingroup PhysicalEntities
 ///
@@ -406,11 +405,6 @@ public:
     bool Detach(ShapeID shapeId);
 
 private:
-
-    //
-    // Member variables. Try to keep total size small.
-    //
-
     /// Transformation for body origin.
     /// @note Also availble from <code>GetTransform1(m_sweep)</code>.
     /// @note <code>m_xf.p == m_sweep.pos1.linear && m_xf.q ==
