@@ -516,8 +516,10 @@ DynamicTree::Size DynamicTree::FindReference(Size index) const noexcept
 
 DynamicTree::Size DynamicTree::CreateLeaf(const AABB& aabb, const Contactable& data)
 {
+    assert(m_leafCount < std::numeric_limits<Size>::max());
     assert(IsValid(aabb));
     if (m_rootIndex == GetInvalidSize()) {
+        assert(GetNodeCount() < std::numeric_limits<Size>::max());
         Reserve(GetNodeCount() + 1u); // Note: may change m_nodes!
         const auto index = AllocateNode();
         m_nodes[index] = TreeNode{data, aabb};
@@ -525,6 +527,7 @@ DynamicTree::Size DynamicTree::CreateLeaf(const AABB& aabb, const Contactable& d
         ++m_leafCount;
         return index;
     }
+    assert(GetNodeCount() < (std::numeric_limits<Size>::max() - 1u));
     Reserve(GetNodeCount() + 2u); // Note: may change m_nodes!
     const auto index = AllocateNode();
     m_nodes[index] = TreeNode{data, aabb};
