@@ -112,11 +112,21 @@ public:
     }
 
     /// @brief Non-throwing default constructor.
+    /// @post <code>GetNodeCapacity()</code> returns 0.
+    /// @post <code>GetNodeCount()</code> returns 0.
+    /// @post <code>GetFreeIndex()</code> and <code>GetRootIndex()</code> return
+    ///   <code>GetInvalidSize()</code>.
     DynamicTree() noexcept;
 
     /// @brief Size initializing constructor.
-    /// @param nodeCapacity Node capacity. If zero, this is the same as calling
-    ///   the default constructor except this isn't recognized as non-throwing.
+    /// @param nodeCapacity Node capacity. If zero, this is the same as calling the
+    ///   default constructor except this isn't recognized as non-throwing.
+    /// @post <code>GetNodeCapacity()</code> returns value of the next power of two
+    ///   of the result of @p nodeCapacity minus one, where a @p nodeCapacity of zero
+    ///   results in <code>GetNodeCapacity()</code> returning zero.
+    /// @post <code>GetNodeCount()</code> returns 0.
+    /// @post <code>GetFreeIndex()</code> and <code>GetRootIndex()</code> return
+    ///   <code>GetInvalidSize()</code>.
     /// @throws std::bad_alloc If unable to allocate non-zero sized memory.
     explicit DynamicTree(Size nodeCapacity);
 
@@ -151,9 +161,12 @@ public:
 
     /// @brief Creates a new leaf node.
     /// @details Creates a leaf node for a tight fitting AABB and the given data.
-    /// @warning Behavior is not specified unless the number of nodes already allocated (as reported
-    ///   by <code>GetNodeCount()</code>) is less than <code>std::numeric_limits<Size>::max()</code>.
     /// @note The indices of leaf nodes that have been destroyed get reused for new nodes.
+    /// @pre The number of leaves already allocated (as reported by <code>GetLeafCount()</code>)
+    ///   is less than <code>std::numeric_limits<Size>::max()</code>.
+    /// @pre The number of nodes already allocated (as reported by <code>GetNodeCount()</code>)
+    ///   is at least one or two less than <code>std::numeric_limits<Size>::max()</code> depending
+    ///   on whether root index is <code>GetInvalidSize()</code> or not.
     /// @post If the root index had been the <code>GetInvalidSize()</code>, then it will
     ///   be set to the index returned from this function.
     /// @post The leaf count per <code>GetLeafCount()</code> is incremented by one.
