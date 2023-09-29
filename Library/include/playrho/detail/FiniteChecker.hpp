@@ -38,7 +38,7 @@ struct FiniteChecker {
 
     /// @brief Default value supplying functor.
     /// @return Always returns the zero initialized value of the underlying type.
-    constexpr auto operator()() noexcept(noexcept(static_cast<T>(0))) -> decltype(T{})
+    constexpr auto operator()() const noexcept(noexcept(static_cast<T>(0))) -> decltype(T{})
     {
         return T{};
     }
@@ -46,7 +46,7 @@ struct FiniteChecker {
     /// @brief Value checking functor.
     /// @return Null string if given value is finite, else
     ///   a non-null string explanation.
-    auto operator()(const T& v) noexcept(noexcept(isfinite(v)))
+    auto operator()(const T& v) const noexcept(noexcept(isfinite(v)))
         -> decltype(isfinite(v), static_cast<const char*>(nullptr))
     {
         if (!isfinite(v)) {

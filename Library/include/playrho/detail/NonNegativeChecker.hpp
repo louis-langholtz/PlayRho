@@ -36,7 +36,7 @@ struct NonNegativeChecker {
 
     /// @brief Default value supplying functor.
     /// @return Always returns the zero initialized value of the underlying type.
-    constexpr auto operator()() noexcept -> decltype(T{})
+    constexpr auto operator()() const noexcept -> decltype(T{})
     {
         return T{};
     }
@@ -44,7 +44,7 @@ struct NonNegativeChecker {
     /// @brief Value checking functor.
     /// @return Null string if given value is greater than or equal to zero, else
     ///   a non-null string explanation.
-    constexpr auto operator()(const T& v) noexcept
+    constexpr auto operator()(const T& v) const noexcept
         -> decltype(v >= T{}, static_cast<const char*>(nullptr))
     {
         if (!(v >= T{})) {

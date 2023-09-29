@@ -38,7 +38,7 @@ struct UnitIntervalChecker {
 
     /// @brief Default value supplying functor.
     /// @return Zero casted to the checked type.
-    constexpr auto operator()() noexcept -> decltype(static_cast<T>(0))
+    constexpr auto operator()() const noexcept -> decltype(static_cast<T>(0))
     {
         return static_cast<T>(0);
     }
@@ -47,7 +47,7 @@ struct UnitIntervalChecker {
     /// @return @c nullptr if the given value is within 0 and 1 inclusively, else a
     ///   non-null pointer to the C-style nul-terminated string indicating whether the
     ///   value is less than zero or greater than 1.
-    constexpr auto operator()(const T& v) noexcept
+    constexpr auto operator()(const T& v) const noexcept
         -> decltype((v >= static_cast<T>(0)) && (v <= static_cast<T>(1)), static_cast<const char*>(nullptr))
     {
         if (!(v >= static_cast<T>(0))) {
