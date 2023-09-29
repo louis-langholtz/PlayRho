@@ -37,7 +37,7 @@ struct NonZeroChecker {
     /// @brief Value checking functor.
     /// @return Null string if given value is not equal to zero, else
     ///   a non-null string explanation.
-    constexpr auto operator()(const T& v) noexcept
+    constexpr auto operator()(const T& v) const noexcept
         -> decltype(!(v != static_cast<T>(0)), static_cast<const char*>(nullptr))
     {
         if (!(v != static_cast<T>(0))) {

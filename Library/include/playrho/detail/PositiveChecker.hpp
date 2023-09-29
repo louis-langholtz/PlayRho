@@ -37,7 +37,7 @@ struct PositiveChecker {
     /// @brief Value checking functor.
     /// @return Null string if given value is greater than zero, else
     ///   a non-null string explanation.
-    constexpr auto operator()(const T& v) noexcept
+    constexpr auto operator()(const T& v) const noexcept
         -> decltype(v > T{}, static_cast<const char*>(nullptr))
     {
         if (!(v > T{})) {
