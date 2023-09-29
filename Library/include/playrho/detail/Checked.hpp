@@ -234,7 +234,7 @@ private:
 /// @brief Constrained value stream output operator for value types which support it.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept>
 auto operator<<(::std::ostream& os, const Checked<ValueType, Checker, NoExcept>& value) ->
@@ -246,10 +246,10 @@ auto operator<<(::std::ostream& os, const Checked<ValueType, Checker, NoExcept>&
 /// @brief Constrained value equality operator for value types which support it.
 /// @tparam LhsValueType Type of the value used by the left hand side checked value.
 /// @tparam LhsChecker Type of the checker used by the left hand side checked value.
-/// @tparam LhsNoExcept Whether the left hand side checked value terminates or just throws on being invalid.
+/// @tparam LhsNoExcept Whether left hand side type terminates or just throws for invalid values.
 /// @tparam RhsValueType Type of the value used by the right hand side checked value.
 /// @tparam RhsChecker Type of the checker used by the right hand side checked value.
-/// @tparam RhsNoExcept Whether the right hand side checked value terminates or just throws on being invalid.
+/// @tparam RhsNoExcept Whether right hand side type terminates or just throws for invalid values.
 /// @relatedalso Checked
 template <class LhsValueType, class LhsChecker, bool LhsNoExcept, // force newline
           class RhsValueType, class RhsChecker, bool RhsNoExcept>
@@ -264,10 +264,10 @@ constexpr auto operator== (const Checked<LhsValueType, LhsChecker, LhsNoExcept>&
 /// @brief Constrained value inequality operator for value types which support it.
 /// @tparam LhsValueType Type of the value used by the left hand side checked value.
 /// @tparam LhsChecker Type of the checker used by the left hand side checked value.
-/// @tparam LhsNoExcept Whether the left hand side checked value terminates or just throws on being invalid.
+/// @tparam LhsNoExcept Whether left hand side type terminates or just throws for invalid values.
 /// @tparam RhsValueType Type of the value used by the right hand side checked value.
 /// @tparam RhsChecker Type of the checker used by the right hand side checked value.
-/// @tparam RhsNoExcept Whether the right hand side checked value terminates or just throws on being invalid.
+/// @tparam RhsNoExcept Whether right hand side type terminates or just throws for invalid values.
 /// @relatedalso Checked
 template <class LhsValueType, class LhsChecker, bool LhsNoExcept, // force newline
           class RhsValueType, class RhsChecker, bool RhsNoExcept>
@@ -282,10 +282,10 @@ constexpr auto operator!= (const Checked<LhsValueType, LhsChecker, LhsNoExcept>&
 /// @brief Constrained value less-than or equal-to operator.
 /// @tparam LhsValueType Type of the value used by the left hand side checked value.
 /// @tparam LhsChecker Type of the checker used by the left hand side checked value.
-/// @tparam LhsNoExcept Whether the left hand side checked value terminates or just throws on being invalid.
+/// @tparam LhsNoExcept Whether left hand side type terminates or just throws for invalid values.
 /// @tparam RhsValueType Type of the value used by the right hand side checked value.
 /// @tparam RhsChecker Type of the checker used by the right hand side checked value.
-/// @tparam RhsNoExcept Whether the right hand side checked value terminates or just throws on being invalid.
+/// @tparam RhsNoExcept Whether right hand side type terminates or just throws for invalid values.
 /// @relatedalso Checked
 template <class LhsValueType, class LhsChecker, bool LhsNoExcept, // force newline
           class RhsValueType, class RhsChecker, bool RhsNoExcept>
@@ -299,10 +299,10 @@ constexpr auto operator<= (const Checked<LhsValueType, LhsChecker, LhsNoExcept>&
 /// @brief Constrained value greater-than or equal-to operator.
 /// @tparam LhsValueType Type of the value used by the left hand side checked value.
 /// @tparam LhsChecker Type of the checker used by the left hand side checked value.
-/// @tparam LhsNoExcept Whether the left hand side checked value terminates or just throws on being invalid.
+/// @tparam LhsNoExcept Whether left hand side type terminates or just throws for invalid values.
 /// @tparam RhsValueType Type of the value used by the right hand side checked value.
 /// @tparam RhsChecker Type of the checker used by the right hand side checked value.
-/// @tparam RhsNoExcept Whether the right hand side checked value terminates or just throws on being invalid.
+/// @tparam RhsNoExcept Whether right hand side type terminates or just throws for invalid values.
 /// @relatedalso Checked
 template <class LhsValueType, class LhsChecker, bool LhsNoExcept, // force newline
           class RhsValueType, class RhsChecker, bool RhsNoExcept>
@@ -316,10 +316,10 @@ constexpr auto operator>= (const Checked<LhsValueType, LhsChecker, LhsNoExcept>&
 /// @brief Constrained value less-than operator.
 /// @tparam LhsValueType Type of the value used by the left hand side checked value.
 /// @tparam LhsChecker Type of the checker used by the left hand side checked value.
-/// @tparam LhsNoExcept Whether the left hand side checked value terminates or just throws on being invalid.
+/// @tparam LhsNoExcept Whether left hand side type terminates or just throws for invalid values.
 /// @tparam RhsValueType Type of the value used by the right hand side checked value.
 /// @tparam RhsChecker Type of the checker used by the right hand side checked value.
-/// @tparam RhsNoExcept Whether the right hand side checked value terminates or just throws on being invalid.
+/// @tparam RhsNoExcept Whether right hand side type terminates or just throws for invalid values.
 /// @relatedalso Checked
 template <class LhsValueType, class LhsChecker, bool LhsNoExcept, // force newline
           class RhsValueType, class RhsChecker, bool RhsNoExcept>
@@ -333,10 +333,10 @@ constexpr auto operator< (const Checked<LhsValueType, LhsChecker, LhsNoExcept>& 
 /// @brief Constrained value greater-than operator.
 /// @tparam LhsValueType Type of the value used by the left hand side checked value.
 /// @tparam LhsChecker Type of the checker used by the left hand side checked value.
-/// @tparam LhsNoExcept Whether the left hand side checked value terminates or just throws on being invalid.
+/// @tparam LhsNoExcept Whether left hand side type terminates or just throws for invalid values.
 /// @tparam RhsValueType Type of the value used by the right hand side checked value.
 /// @tparam RhsChecker Type of the checker used by the right hand side checked value.
-/// @tparam RhsNoExcept Whether the right hand side checked value terminates or just throws on being invalid.
+/// @tparam RhsNoExcept Whether right hand side type terminates or just throws for invalid values.
 /// @relatedalso Checked
 template <class LhsValueType, class LhsChecker, bool LhsNoExcept, // force newline
           class RhsValueType, class RhsChecker, bool RhsNoExcept>
@@ -350,10 +350,10 @@ constexpr auto operator> (const Checked<LhsValueType, LhsChecker, LhsNoExcept>& 
 /// @brief Constrained value multiplication operator.
 /// @tparam LhsValueType Type of the value used by the left hand side checked value.
 /// @tparam LhsChecker Type of the checker used by the left hand side checked value.
-/// @tparam LhsNoExcept Whether the left hand side checked value terminates or just throws on being invalid.
+/// @tparam LhsNoExcept Whether left hand side type terminates or just throws for invalid values.
 /// @tparam RhsValueType Type of the value used by the right hand side checked value.
 /// @tparam RhsChecker Type of the checker used by the right hand side checked value.
-/// @tparam RhsNoExcept Whether the right hand side checked value terminates or just throws on being invalid.
+/// @tparam RhsNoExcept Whether right hand side type terminates or just throws for invalid values.
 /// @relatedalso Checked
 template <class LhsValueType, class LhsChecker, bool LhsNoExcept, // force newline
           class RhsValueType, class RhsChecker, bool RhsNoExcept>
@@ -367,10 +367,10 @@ constexpr auto operator* (const Checked<LhsValueType, LhsChecker, LhsNoExcept>& 
 /// @brief Constrained value division operator.
 /// @tparam LhsValueType Type of the value used by the left hand side checked value.
 /// @tparam LhsChecker Type of the checker used by the left hand side checked value.
-/// @tparam LhsNoExcept Whether the left hand side checked value terminates or just throws on being invalid.
+/// @tparam LhsNoExcept Whether left hand side type terminates or just throws for invalid values.
 /// @tparam RhsValueType Type of the value used by the right hand side checked value.
 /// @tparam RhsChecker Type of the checker used by the right hand side checked value.
-/// @tparam RhsNoExcept Whether the right hand side checked value terminates or just throws on being invalid.
+/// @tparam RhsNoExcept Whether right hand side type terminates or just throws for invalid values.
 /// @relatedalso Checked
 template <class LhsValueType, class LhsChecker, bool LhsNoExcept, // force newline
           class RhsValueType, class RhsChecker, bool RhsNoExcept>
@@ -384,10 +384,10 @@ constexpr auto operator/ (const Checked<LhsValueType, LhsChecker, LhsNoExcept>& 
 /// @brief Constrained value addition operator.
 /// @tparam LhsValueType Type of the value used by the left hand side checked value.
 /// @tparam LhsChecker Type of the checker used by the left hand side checked value.
-/// @tparam LhsNoExcept Whether the left hand side checked value terminates or just throws on being invalid.
+/// @tparam LhsNoExcept Whether left hand side type terminates or just throws for invalid values.
 /// @tparam RhsValueType Type of the value used by the right hand side checked value.
 /// @tparam RhsChecker Type of the checker used by the right hand side checked value.
-/// @tparam RhsNoExcept Whether the right hand side checked value terminates or just throws on being invalid.
+/// @tparam RhsNoExcept Whether right hand side type terminates or just throws for invalid values.
 /// @relatedalso Checked
 template <class LhsValueType, class LhsChecker, bool LhsNoExcept, // force newline
           class RhsValueType, class RhsChecker, bool RhsNoExcept>
@@ -401,10 +401,10 @@ constexpr auto operator+ (const Checked<LhsValueType, LhsChecker, LhsNoExcept>& 
 /// @brief Constrained value subtraction operator.
 /// @tparam LhsValueType Type of the value used by the left hand side checked value.
 /// @tparam LhsChecker Type of the checker used by the left hand side checked value.
-/// @tparam LhsNoExcept Whether the left hand side checked value terminates or just throws on being invalid.
+/// @tparam LhsNoExcept Whether left hand side type terminates or just throws for invalid values.
 /// @tparam RhsValueType Type of the value used by the right hand side checked value.
 /// @tparam RhsChecker Type of the checker used by the right hand side checked value.
-/// @tparam RhsNoExcept Whether the right hand side checked value terminates or just throws on being invalid.
+/// @tparam RhsNoExcept Whether right hand side type terminates or just throws for invalid values.
 /// @relatedalso Checked
 template <class LhsValueType, class LhsChecker, bool LhsNoExcept, // force newline
           class RhsValueType, class RhsChecker, bool RhsNoExcept>
@@ -418,7 +418,7 @@ constexpr auto operator- (const Checked<LhsValueType, LhsChecker, LhsNoExcept>& 
 /// @brief Constrained value equality operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -432,7 +432,7 @@ constexpr auto operator== (const Checked<ValueType, Checker, NoExcept>& lhs,
 /// @brief Constrained value equality operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -446,7 +446,7 @@ constexpr auto operator== (const Other& lhs,
 /// @brief Constrained value inequality operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -460,7 +460,7 @@ constexpr auto operator!= (const Checked<ValueType, Checker, NoExcept>& lhs,
 /// @brief Constrained value inequality operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -474,7 +474,7 @@ constexpr auto operator!= (const Other& lhs,
 /// @brief Constrained value less-than or equal-to operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -488,7 +488,7 @@ constexpr auto operator<= (const Checked<ValueType, Checker, NoExcept>& lhs,
 /// @brief Constrained value less-than or equal-to operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -502,7 +502,7 @@ constexpr auto operator<= (const Other& lhs,
 /// @brief Constrained value greater-than or equal-to operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -516,7 +516,7 @@ constexpr auto operator>= (const Checked<ValueType, Checker, NoExcept>& lhs,
 /// @brief Constrained value greater-than or equal-to operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -531,7 +531,7 @@ constexpr auto operator>= (const Other& lhs,
 /// @brief Constrained value less-than operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -545,7 +545,7 @@ constexpr auto operator< (const Checked<ValueType, Checker, NoExcept>& lhs,
 /// @brief Constrained value less-than operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -559,7 +559,7 @@ constexpr auto operator< (const Other& lhs,
 /// @brief Constrained value greater-than operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -573,7 +573,7 @@ constexpr auto operator> (const Checked<ValueType, Checker, NoExcept>& lhs,
 /// @brief Constrained value greater-than ooperator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -587,7 +587,7 @@ constexpr auto operator> (const Other& lhs,
 /// @brief Constrained value multiplication operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -601,7 +601,7 @@ decltype(ValueType()*Other())>
 /// @brief Constrained value multiplication operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -615,7 +615,7 @@ decltype(Other()*ValueType())>
 /// @brief Constrained value division operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -629,7 +629,7 @@ constexpr auto operator/ (const Checked<ValueType, Checker, NoExcept>& lhs,
 /// @brief Constrained value division operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -643,7 +643,7 @@ constexpr auto operator/ (const Other& lhs,
 /// @brief Constrained value addition operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -657,7 +657,7 @@ constexpr auto operator+ (const Checked<ValueType, Checker, NoExcept>& lhs,
 /// @brief Constrained value addition operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -671,7 +671,7 @@ constexpr auto operator+ (const Other& lhs,
 /// @brief Constrained value subtraction operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
@@ -685,7 +685,7 @@ constexpr auto operator- (const Checked<ValueType, Checker, NoExcept>& lhs,
 /// @brief Constrained value subtraction operator.
 /// @tparam ValueType Type of the value used by the checked value.
 /// @tparam Checker Type of the checker used by the checked value.
-/// @tparam NoExcept Whether the checked value terminates or just throws on being invalid.
+/// @tparam NoExcept Whether checked type terminates or just throws for invalid values.
 /// @tparam Other Type of the other value that this operation will operator with.
 /// @relatedalso Checked
 template <class ValueType, class Checker, bool NoExcept, class Other>
