@@ -842,7 +842,7 @@ void Clear(AabbTreeWorld& world) noexcept
     if (const auto listener = world.m_listeners.shapeDestruction) {
         for (auto&& shape: world.m_shapeBuffer) {
             if (shape != Shape{}) {
-                using underlying_type = detail::underlying_type_t<ShapeID>;
+                using underlying_type = ::playrho::detail::underlying_type_t<ShapeID>;
                 const auto index = &shape - world.m_shapeBuffer.data();
                 try {
                     listener(static_cast<ShapeID>(static_cast<underlying_type>(index)));
