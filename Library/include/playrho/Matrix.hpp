@@ -26,7 +26,7 @@
 /// @brief Definition of the @c Matrix alias and closely related code.
 
 #include <playrho/Vector.hpp>
-#include <playrho/Vector2.hpp>
+#include <playrho/Vector2.hpp> // for Vec2
 #include <playrho/Templates.hpp>
 #include <playrho/Real.hpp>
 #include <playrho/Units.hpp>
@@ -40,6 +40,8 @@ namespace playrho {
 /// @see Vector, MatrixTraitsGroup, IsVectorV
 template <typename T, std::size_t M, std::size_t N>
 using Matrix = Vector<Vector<T, N>, M>;
+
+namespace detail {
 
 /// @defgroup MatrixTraitsGroup Matrix Traits
 /// @brief Collection of trait classes for matrices.
@@ -70,10 +72,6 @@ struct IsMatrix: std::false_type {};
 template <typename T, std::size_t M, std::size_t N>
 struct IsMatrix<Vector<Vector<T, N>, M>>: std::true_type {};
 
-/// @brief Determines whether the given type is a <code>Matrix</code> type.
-template <class T>
-inline constexpr bool IsMatrixV = IsMatrix<T>::value;
-
 /// @brief Trait class for checking if type is a square matrix type.
 /// @details Trait class for determining whether the given type is a matrix having an equal
 ///   number of rows and columns.
@@ -99,11 +97,17 @@ struct IsSquareMatrix: std::false_type {};
 template <typename T, std::size_t M>
 struct IsSquareMatrix<Vector<Vector<T, M>, M>>: std::true_type {};
 
+/// @}
+
+} // namespace detail
+
+/// @brief Determines whether the given type is a <code>Matrix</code> type.
+template <class T>
+inline constexpr bool IsMatrixV = detail::IsMatrix<T>::value;
+
 /// @brief Determines whether the given type is a **square** <code>Matrix</code> type.
 template <class T>
-inline constexpr bool IsSquareMatrixV = IsSquareMatrix<T>::value;
-
-/// @}
+inline constexpr bool IsSquareMatrixV = detail::IsSquareMatrix<T>::value;
 
 /// @brief Gets the identity matrix of the template type and size.
 /// @see https://en.wikipedia.org/wiki/Identity_matrix

@@ -470,6 +470,8 @@ private:
 
 // Traits...
 
+namespace detail {
+
 /// @brief An "is valid joint type" trait.
 /// @note This is the general false template type.
 template <typename T, class = void>
@@ -496,10 +498,12 @@ struct IsValidJointType<
         decltype(Joint{std::declval<T>()})>> : std::true_type {
 };
 
+} // namespace detail
+
 /// @brief Boolean value for whether the specified type is a valid joint type.
 /// @see Joint.
 template <class T>
-inline constexpr bool IsValidJointTypeV = IsValidJointType<T>::value;
+inline constexpr bool IsValidJointTypeV = detail::IsValidJointType<T>::value;
 
 // Free functions...
 
