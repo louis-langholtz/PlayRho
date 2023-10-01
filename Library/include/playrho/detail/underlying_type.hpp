@@ -52,7 +52,7 @@ struct underlying_type<T, std::enable_if_t<std::is_enum_v<T>>>
 
 /// Underlying-type template class for <code>detail::IndexingNamedType</code> types.
 template <class T>
-struct underlying_type<T, std::enable_if_t<detail::has_underlying_type_member<T>::value>>
+struct underlying_type<T, std::enable_if_t<has_underlying_type_member<T>::value>>
 {
     /// @brief Type alias of the underlying type.
     using type = typename T::underlying_type;
