@@ -218,6 +218,8 @@ struct Vector
     value_type elements[N? N: 1]; // Never zero to avoid needing C++ extension capability.
 };
 
+namespace detail {
+
 /// @defgroup VectorTraitsGroup Vector Traits
 /// @brief Collection of trait classes for Vector.
 /// @{
@@ -244,11 +246,13 @@ struct IsVector: std::false_type {};
 template <typename T, std::size_t N>
 struct IsVector<Vector<T, N>>: std::true_type {};
 
+/// @}
+
+} // namespace detail
+
 /// @brief Determines whether the given type is a <code>Vector</code> type.
 template <class T>
-inline constexpr bool IsVectorV = IsVector<T>::value;
-
-/// @}
+inline constexpr bool IsVectorV = detail::IsVector<T>::value;
 
 /// @brief Equality operator.
 /// @relatedalso Vector
