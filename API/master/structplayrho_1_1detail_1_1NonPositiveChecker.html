@@ -108,12 +108,12 @@ $(document).ready(function(){initNavTree('structplayrho_1_1detail_1_1NonPositive
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1a684addd8002b2eda2ef5e51760fa0d"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1NonPositiveChecker.html#a1a684addd8002b2eda2ef5e51760fa0d">operator()</a> () noexcept -&gt; decltype(T{})</td></tr>
-<tr class="memdesc:a1a684addd8002b2eda2ef5e51760fa0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value supplying functor.  <a href="structplayrho_1_1detail_1_1NonPositiveChecker.html#a1a684addd8002b2eda2ef5e51760fa0d">More...</a><br /></td></tr>
-<tr class="separator:a1a684addd8002b2eda2ef5e51760fa0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9753782393f76916ba31ed576c12d0e5"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1NonPositiveChecker.html#a9753782393f76916ba31ed576c12d0e5">operator()</a> (const T &amp;v) noexcept -&gt; decltype(v&lt;=static_cast&lt; T &gt;(0), static_cast&lt; const char * &gt;(nullptr))</td></tr>
-<tr class="memdesc:a9753782393f76916ba31ed576c12d0e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value checking functor.  <a href="structplayrho_1_1detail_1_1NonPositiveChecker.html#a9753782393f76916ba31ed576c12d0e5">More...</a><br /></td></tr>
-<tr class="separator:a9753782393f76916ba31ed576c12d0e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5920bf6445c03b502b7b133462f3b4ca"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1NonPositiveChecker.html#a5920bf6445c03b502b7b133462f3b4ca">operator()</a> () const noexcept -&gt; decltype(T{})</td></tr>
+<tr class="memdesc:a5920bf6445c03b502b7b133462f3b4ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value supplying functor.  <a href="structplayrho_1_1detail_1_1NonPositiveChecker.html#a5920bf6445c03b502b7b133462f3b4ca">More...</a><br /></td></tr>
+<tr class="separator:a5920bf6445c03b502b7b133462f3b4ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15a602f41a96dea44c07eb22680dce9c"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1NonPositiveChecker.html#a15a602f41a96dea44c07eb22680dce9c">operator()</a> (const T &amp;v) const noexcept -&gt; decltype(v&lt;=static_cast&lt; T &gt;(0), static_cast&lt; const char * &gt;(nullptr))</td></tr>
+<tr class="memdesc:a15a602f41a96dea44c07eb22680dce9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value checking functor.  <a href="structplayrho_1_1detail_1_1NonPositiveChecker.html#a15a602f41a96dea44c07eb22680dce9c">More...</a><br /></td></tr>
+<tr class="separator:a15a602f41a96dea44c07eb22680dce9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T&gt;<br />
@@ -129,8 +129,8 @@ struct playrho::detail::NonPositiveChecker&lt; T &gt;</h3>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1detail_1_1Checked.html" title="Class template for construction-time constraining a type&#39;s value.">Checked</a>. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1a684addd8002b2eda2ef5e51760fa0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1a684addd8002b2eda2ef5e51760fa0d">&#9670;&nbsp;</a></span>operator()() <span class="overload">[1/2]</span></h2>
+<a id="a5920bf6445c03b502b7b133462f3b4ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5920bf6445c03b502b7b133462f3b4ca">&#9670;&nbsp;</a></span>operator()() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,7 +144,7 @@ template&lt;typename T &gt; </div>
           <td class="memname">constexpr auto <a class="el" href="structplayrho_1_1detail_1_1NonPositiveChecker.html">playrho::detail::NonPositiveChecker</a>&lt; T &gt;::operator() </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> -&gt; decltype(T{})
+          <td> const -&gt; decltype(T{})
     </td>
         </tr>
       </table>
@@ -160,8 +160,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a9753782393f76916ba31ed576c12d0e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9753782393f76916ba31ed576c12d0e5">&#9670;&nbsp;</a></span>operator()() <span class="overload">[2/2]</span></h2>
+<a id="a15a602f41a96dea44c07eb22680dce9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15a602f41a96dea44c07eb22680dce9c">&#9670;&nbsp;</a></span>operator()() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -176,7 +176,7 @@ template&lt;typename T &gt; </div>
           <td>(</td>
           <td class="paramtype">const T &amp;&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
-          <td> -&gt; decltype(v &lt;= static_cast&lt;T&gt;(0), static_cast&lt;const char*&gt;(nullptr))
+          <td> const -&gt; decltype(v &lt;= static_cast&lt;T&gt;(0), static_cast&lt;const char*&gt;(nullptr))
     </td>
         </tr>
       </table>
@@ -201,7 +201,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structplayrho_1_1detail_1_1NonPositiveChecker.html">NonPositiveChecker</a></li>
-    <li class="footer">Generated on Mon Sep 25 2023 23:39:54 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sun Oct 1 2023 15:40:20 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

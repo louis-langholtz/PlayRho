@@ -130,9 +130,8 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac4e2861f240ffce2e9ea51d8940c5150"><td class="memItemLeft" align="right" valign="top"><a id="ac4e2861f240ffce2e9ea51d8940c5150"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ac4e2861f240ffce2e9ea51d8940c5150">DynamicTree</a> () noexcept</td></tr>
-<tr class="memdesc:ac4e2861f240ffce2e9ea51d8940c5150"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-throwing default constructor. <br /></td></tr>
+<tr class="memitem:ac4e2861f240ffce2e9ea51d8940c5150"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ac4e2861f240ffce2e9ea51d8940c5150">DynamicTree</a> () noexcept</td></tr>
+<tr class="memdesc:ac4e2861f240ffce2e9ea51d8940c5150"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-throwing default constructor.  <a href="classplayrho_1_1d2_1_1DynamicTree.html#ac4e2861f240ffce2e9ea51d8940c5150">More...</a><br /></td></tr>
 <tr class="separator:ac4e2861f240ffce2e9ea51d8940c5150"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2d9142c669aec29bb9916a8501f4879"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#af2d9142c669aec29bb9916a8501f4879">DynamicTree</a> (const <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html">DynamicTree</a> &amp;other)</td></tr>
 <tr class="memdesc:af2d9142c669aec29bb9916a8501f4879"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="classplayrho_1_1d2_1_1DynamicTree.html#af2d9142c669aec29bb9916a8501f4879">More...</a><br /></td></tr>
@@ -311,8 +310,40 @@ Nodes are pooled and relocatable, so we use node indices rather than pointers.</
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ac4e2861f240ffce2e9ea51d8940c5150"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4e2861f240ffce2e9ea51d8940c5150">&#9670;&nbsp;</a></span>DynamicTree() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">playrho::d2::DynamicTree::DynamicTree </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Non-throwing default constructor. </p>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a6d5405cac98b2f35be80869c23abfe5a" title="Gets the current node capacity of this tree.">GetNodeCapacity()</a></code> returns 0. </dd>
+<dd>
+<code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a211b3f8b163604b56db4fa3887fc2f43" title="Gets the current count of allocated nodes.">GetNodeCount()</a></code> returns 0. </dd>
+<dd>
+<code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a6a84cb18d4e07355e33e01fc062974a3" title="Gets the free index.">GetFreeIndex()</a></code> and <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ad8f642f8240c30f686f9db11533a2b51" title="Gets the index of the &quot;root&quot; node if this tree has one.">GetRootIndex()</a></code> return <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">GetInvalidSize()</a></code>. </dd></dl>
+
+</div>
+</div>
 <a id="a06fea4c54490270294a56ae627701639"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06fea4c54490270294a56ae627701639">&#9670;&nbsp;</a></span>DynamicTree() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a06fea4c54490270294a56ae627701639">&#9670;&nbsp;</a></span>DynamicTree() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -342,6 +373,11 @@ Nodes are pooled and relocatable, so we use node indices rather than pointers.</
   </table>
   </dd>
 </dl>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a6d5405cac98b2f35be80869c23abfe5a" title="Gets the current node capacity of this tree.">GetNodeCapacity()</a></code> returns value of the next power of two of the result of <code>nodeCapacity</code> minus one, where a <code>nodeCapacity</code> of zero results in <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a6d5405cac98b2f35be80869c23abfe5a" title="Gets the current node capacity of this tree.">GetNodeCapacity()</a></code> returning zero. </dd>
+<dd>
+<code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a211b3f8b163604b56db4fa3887fc2f43" title="Gets the current count of allocated nodes.">GetNodeCount()</a></code> returns 0. </dd>
+<dd>
+<code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a6a84cb18d4e07355e33e01fc062974a3" title="Gets the free index.">GetFreeIndex()</a></code> and <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ad8f642f8240c30f686f9db11533a2b51" title="Gets the index of the &quot;root&quot; node if this tree has one.">GetRootIndex()</a></code> return <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">GetInvalidSize()</a></code>. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::bad_alloc</td><td>If unable to allocate non-zero sized memory. </td></tr>
@@ -352,7 +388,7 @@ Nodes are pooled and relocatable, so we use node indices rather than pointers.</
 </div>
 </div>
 <a id="af2d9142c669aec29bb9916a8501f4879"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2d9142c669aec29bb9916a8501f4879">&#9670;&nbsp;</a></span>DynamicTree() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af2d9142c669aec29bb9916a8501f4879">&#9670;&nbsp;</a></span>DynamicTree() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -439,8 +475,10 @@ Nodes are pooled and relocatable, so we use node indices rather than pointers.</
 </div><div class="memdoc">
 
 <p>Creates a new leaf node. </p>
-<p>Creates a leaf node for a tight fitting AABB and the given data. </p><dl class="section warning"><dt>Warning</dt><dd>Behavior is not specified unless the number of nodes already allocated (as reported by <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a211b3f8b163604b56db4fa3887fc2f43" title="Gets the current count of allocated nodes.">GetNodeCount()</a></code>) is less than <code>std::numeric_limits&lt;Size&gt;::max()</code>. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>The indices of leaf nodes that have been destroyed get reused for new nodes. </dd></dl>
+<p>Creates a leaf node for a tight fitting AABB and the given data. </p><dl class="section note"><dt>Note</dt><dd>The indices of leaf nodes that have been destroyed get reused for new nodes. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>The number of leaves already allocated (as reported by <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a835291d0eb5b8bf966c76e2ab4f4e3fe" title="Gets the current leaf node count.">GetLeafCount()</a></code>) is less than <code>std::numeric_limits&lt;Size&gt;::max()</code>. </dd>
+<dd>
+The number of nodes already allocated (as reported by <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a211b3f8b163604b56db4fa3887fc2f43" title="Gets the current count of allocated nodes.">GetNodeCount()</a></code>) is at least one or two less than <code>std::numeric_limits&lt;Size&gt;::max()</code> depending on whether root index is <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">GetInvalidSize()</a></code> or not. </dd></dl>
 <dl class="section post"><dt>Postcondition</dt><dd>If the root index had been the <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">GetInvalidSize()</a></code>, then it will be set to the index returned from this function. </dd>
 <dd>
 The leaf count per <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a835291d0eb5b8bf966c76e2ab4f4e3fe" title="Gets the current leaf node count.">GetLeafCount()</a></code> is incremented by one. </dd>
@@ -1144,7 +1182,7 @@ The shift formula is: <code>position -= newOrigin</code>. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html">DynamicTree</a></li>
-    <li class="footer">Generated on Mon Sep 25 2023 23:39:54 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sun Oct 1 2023 15:40:20 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -15,6 +15,6 @@ var Matrix_8hpp =
     [ "IsValid", "Matrix_8hpp.html#a0fa02e6b0d55e9363ad4afb89a755fc1", null ],
     [ "operator+", "Matrix_8hpp.html#a41f0c49a750ed51bb02cef10158e8d7f", null ],
     [ "operator-", "Matrix_8hpp.html#a89118d71eeeffa541c76f6d566a8546d", null ],
-    [ "IsMatrixV", "Matrix_8hpp.html#ga83567b7faf3c7de0399b0b88fe1cc9f5", null ],
-    [ "IsSquareMatrixV", "Matrix_8hpp.html#ga14b74d27a9f43c1f37aca5ee84aa6f97", null ]
+    [ "IsMatrixV", "Matrix_8hpp.html#a83567b7faf3c7de0399b0b88fe1cc9f5", null ],
+    [ "IsSquareMatrixV", "Matrix_8hpp.html#a14b74d27a9f43c1f37aca5ee84aa6f97", null ]
 ];

@@ -1,0 +1,4 @@
+var structplayrho_1_1detail_1_1underlying__type_3_01T_00_01std_1_1enable__if__t_3_01has__underlying_2212b27bd541046396e8289902d743ef =
+[
+    [ "type", "structplayrho_1_1detail_1_1underlying__type_3_01T_00_01std_1_1enable__if__t_3_01has__underlying_2212b27bd541046396e8289902d743ef.html#ad0c380132fdbaeb9a1adb8ea08066fcf", null ]
+];

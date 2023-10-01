@@ -3513,8 +3513,8 @@
     <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
-    <class kind="struct">playrho::d2::IsValidJointType</class>
-    <class kind="struct">playrho::d2::IsValidJointType&lt; T, std::void_t&lt; decltype(GetBodyA(std::declval&lt; T &gt;())), decltype(GetBodyB(std::declval&lt; T &gt;())), decltype(GetCollideConnected(std::declval&lt; T &gt;())), decltype(ShiftOrigin(std::declval&lt; T &amp; &gt;(), std::declval&lt; Length2 &gt;())), decltype(InitVelocity(std::declval&lt; T &amp; &gt;(), std::declval&lt; const Span&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; StepConf &gt;(), std::declval&lt; ConstraintSolverConf &gt;())), decltype(SolveVelocity(std::declval&lt; T &amp; &gt;(), std::declval&lt; const Span&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; StepConf &gt;())), decltype(SolvePosition(std::declval&lt; T &gt;(), std::declval&lt; const Span&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; ConstraintSolverConf &gt;())), decltype(std::declval&lt; T &gt;()==std::declval&lt; T &gt;()), decltype(Joint{std::declval&lt; T &gt;()})&gt; &gt;</class>
+    <class kind="struct">playrho::d2::detail::IsValidJointType</class>
+    <class kind="struct">playrho::d2::detail::IsValidJointType&lt; T, std::void_t&lt; decltype(GetBodyA(std::declval&lt; T &gt;())), decltype(GetBodyB(std::declval&lt; T &gt;())), decltype(GetCollideConnected(std::declval&lt; T &gt;())), decltype(ShiftOrigin(std::declval&lt; T &amp; &gt;(), std::declval&lt; Length2 &gt;())), decltype(InitVelocity(std::declval&lt; T &amp; &gt;(), std::declval&lt; const Span&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; StepConf &gt;(), std::declval&lt; ConstraintSolverConf &gt;())), decltype(SolveVelocity(std::declval&lt; T &amp; &gt;(), std::declval&lt; const Span&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; StepConf &gt;())), decltype(SolvePosition(std::declval&lt; T &gt;(), std::declval&lt; const Span&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; ConstraintSolverConf &gt;())), decltype(std::declval&lt; T &gt;()==std::declval&lt; T &gt;()), decltype(Joint{std::declval&lt; T &gt;()})&gt; &gt;</class>
     <class kind="class">playrho::d2::Joint</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
@@ -5953,24 +5953,24 @@
     <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
-    <class kind="struct">playrho::d2::HasRotate</class>
-    <class kind="struct">playrho::d2::HasRotate&lt; T, std::void_t&lt; decltype(Rotate(std::declval&lt; T &amp; &gt;(), std::declval&lt; Angle &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::HasScale</class>
-    <class kind="struct">playrho::d2::HasScale&lt; T, std::void_t&lt; decltype(Scale(std::declval&lt; T &amp; &gt;(), std::declval&lt; Vec2 &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::HasSetDensity</class>
-    <class kind="struct">playrho::d2::HasSetDensity&lt; T, std::void_t&lt; decltype(SetDensity(std::declval&lt; T &amp; &gt;(), std::declval&lt; NonNegative&lt; AreaDensity &gt;&gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::HasSetFilter</class>
-    <class kind="struct">playrho::d2::HasSetFilter&lt; T, std::void_t&lt; decltype(SetFilter(std::declval&lt; T &amp; &gt;(), std::declval&lt; Filter &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::HasSetFriction</class>
-    <class kind="struct">playrho::d2::HasSetFriction&lt; T, std::void_t&lt; decltype(SetFriction(std::declval&lt; T &amp; &gt;(), std::declval&lt; Real &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::HasSetRestitution</class>
-    <class kind="struct">playrho::d2::HasSetRestitution&lt; T, std::void_t&lt; decltype(SetRestitution(std::declval&lt; T &amp; &gt;(), std::declval&lt; Real &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::HasSetSensor</class>
-    <class kind="struct">playrho::d2::HasSetSensor&lt; T, std::void_t&lt; decltype(SetSensor(std::declval&lt; T &amp; &gt;(), std::declval&lt; bool &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::HasTranslate</class>
-    <class kind="struct">playrho::d2::HasTranslate&lt; T, std::void_t&lt; decltype(Translate(std::declval&lt; T &amp; &gt;(), std::declval&lt; Length2 &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::IsValidShapeType</class>
-    <class kind="struct">playrho::d2::IsValidShapeType&lt; T, std::void_t&lt; decltype(GetChildCount(std::declval&lt; T &gt;())), decltype(GetChild(std::declval&lt; T &gt;(), std::declval&lt; ChildCounter &gt;())), decltype(GetMassData(std::declval&lt; T &gt;())), decltype(GetVertexRadius(std::declval&lt; T &gt;(), std::declval&lt; ChildCounter &gt;())), decltype(GetDensity(std::declval&lt; T &gt;())), decltype(GetFriction(std::declval&lt; T &gt;())), decltype(GetRestitution(std::declval&lt; T &gt;())), decltype(std::declval&lt; T &gt;()==std::declval&lt; T &gt;()), decltype(std::declval&lt; DecayedTypeIfNotSame&lt; T, Shape &gt;&gt;()), decltype(std::is_constructible_v&lt; DecayedTypeIfNotSame&lt; T, Shape &gt;, T &gt;)&gt; &gt;</class>
+    <class kind="struct">playrho::d2::detail::HasRotate</class>
+    <class kind="struct">playrho::d2::detail::HasRotate&lt; T, std::void_t&lt; decltype(Rotate(std::declval&lt; T &amp; &gt;(), std::declval&lt; Angle &gt;()))&gt; &gt;</class>
+    <class kind="struct">playrho::d2::detail::HasScale</class>
+    <class kind="struct">playrho::d2::detail::HasScale&lt; T, std::void_t&lt; decltype(Scale(std::declval&lt; T &amp; &gt;(), std::declval&lt; Vec2 &gt;()))&gt; &gt;</class>
+    <class kind="struct">playrho::d2::detail::HasSetDensity</class>
+    <class kind="struct">playrho::d2::detail::HasSetDensity&lt; T, std::void_t&lt; decltype(SetDensity(std::declval&lt; T &amp; &gt;(), std::declval&lt; NonNegative&lt; AreaDensity &gt;&gt;()))&gt; &gt;</class>
+    <class kind="struct">playrho::d2::detail::HasSetFilter</class>
+    <class kind="struct">playrho::d2::detail::HasSetFilter&lt; T, std::void_t&lt; decltype(SetFilter(std::declval&lt; T &amp; &gt;(), std::declval&lt; Filter &gt;()))&gt; &gt;</class>
+    <class kind="struct">playrho::d2::detail::HasSetFriction</class>
+    <class kind="struct">playrho::d2::detail::HasSetFriction&lt; T, std::void_t&lt; decltype(SetFriction(std::declval&lt; T &amp; &gt;(), std::declval&lt; Real &gt;()))&gt; &gt;</class>
+    <class kind="struct">playrho::d2::detail::HasSetRestitution</class>
+    <class kind="struct">playrho::d2::detail::HasSetRestitution&lt; T, std::void_t&lt; decltype(SetRestitution(std::declval&lt; T &amp; &gt;(), std::declval&lt; Real &gt;()))&gt; &gt;</class>
+    <class kind="struct">playrho::d2::detail::HasSetSensor</class>
+    <class kind="struct">playrho::d2::detail::HasSetSensor&lt; T, std::void_t&lt; decltype(SetSensor(std::declval&lt; T &amp; &gt;(), std::declval&lt; bool &gt;()))&gt; &gt;</class>
+    <class kind="struct">playrho::d2::detail::HasTranslate</class>
+    <class kind="struct">playrho::d2::detail::HasTranslate&lt; T, std::void_t&lt; decltype(Translate(std::declval&lt; T &amp; &gt;(), std::declval&lt; Length2 &gt;()))&gt; &gt;</class>
+    <class kind="struct">playrho::d2::detail::IsValidShapeType</class>
+    <class kind="struct">playrho::d2::detail::IsValidShapeType&lt; T, std::void_t&lt; decltype(GetChildCount(std::declval&lt; T &gt;())), decltype(GetChild(std::declval&lt; T &gt;(), std::declval&lt; ChildCounter &gt;())), decltype(GetMassData(std::declval&lt; T &gt;())), decltype(GetVertexRadius(std::declval&lt; T &gt;(), std::declval&lt; ChildCounter &gt;())), decltype(GetDensity(std::declval&lt; T &gt;())), decltype(GetFriction(std::declval&lt; T &gt;())), decltype(GetRestitution(std::declval&lt; T &gt;())), decltype(std::declval&lt; T &gt;()==std::declval&lt; T &gt;()), decltype(std::declval&lt; DecayedTypeIfNotSame&lt; T, Shape &gt;&gt;()), decltype(std::is_constructible_v&lt; DecayedTypeIfNotSame&lt; T, Shape &gt;, T &gt;)&gt; &gt;</class>
     <class kind="class">playrho::d2::Shape</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
@@ -10569,7 +10569,7 @@
     <class kind="struct">playrho::detail::has_underlying_type_member</class>
     <class kind="struct">playrho::detail::has_underlying_type_member&lt; T, std::void_t&lt; typename T::underlying_type &gt; &gt;</class>
     <class kind="struct">playrho::detail::underlying_type</class>
-    <class kind="struct">playrho::detail::underlying_type&lt; T, std::enable_if_t&lt; detail::has_underlying_type_member&lt; T &gt;::value &gt; &gt;</class>
+    <class kind="struct">playrho::detail::underlying_type&lt; T, std::enable_if_t&lt; has_underlying_type_member&lt; T &gt;::value &gt; &gt;</class>
     <class kind="struct">playrho::detail::underlying_type&lt; T, std::enable_if_t&lt; std::is_enum_v&lt; T &gt; &gt; &gt;</class>
     <namespace>playrho</namespace>
     <namespace>playrho::detail</namespace>
@@ -11454,11 +11454,12 @@
     <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
-    <class kind="struct">playrho::IsMatrix</class>
-    <class kind="struct">playrho::IsMatrix&lt; Vector&lt; Vector&lt; T, N &gt;, M &gt; &gt;</class>
-    <class kind="struct">playrho::IsSquareMatrix</class>
-    <class kind="struct">playrho::IsSquareMatrix&lt; Vector&lt; Vector&lt; T, M &gt;, M &gt; &gt;</class>
+    <class kind="struct">playrho::detail::IsMatrix</class>
+    <class kind="struct">playrho::detail::IsMatrix&lt; Vector&lt; Vector&lt; T, N &gt;, M &gt; &gt;</class>
+    <class kind="struct">playrho::detail::IsSquareMatrix</class>
+    <class kind="struct">playrho::detail::IsSquareMatrix&lt; Vector&lt; Vector&lt; T, M &gt;, M &gt; &gt;</class>
     <namespace>playrho</namespace>
+    <namespace>playrho::detail</namespace>
     <member kind="typedef">
       <type>Matrix22&lt; InvMass &gt;</type>
       <name>InvMass22</name>
@@ -11567,15 +11568,15 @@
     <member kind="variable">
       <type>constexpr bool</type>
       <name>IsMatrixV</name>
-      <anchorfile>group__MatrixTraitsGroup.html</anchorfile>
-      <anchor>ga83567b7faf3c7de0399b0b88fe1cc9f5</anchor>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a83567b7faf3c7de0399b0b88fe1cc9f5</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>constexpr bool</type>
       <name>IsSquareMatrixV</name>
-      <anchorfile>group__MatrixTraitsGroup.html</anchorfile>
-      <anchor>ga14b74d27a9f43c1f37aca5ee84aa6f97</anchor>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a14b74d27a9f43c1f37aca5ee84aa6f97</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -13290,12 +13291,13 @@
     <includes id="InvalidArgument_8hpp" name="InvalidArgument.hpp" local="no" imported="no">playrho/InvalidArgument.hpp</includes>
     <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
-    <class kind="struct">playrho::IsVector</class>
-    <class kind="struct">playrho::IsVector&lt; Vector&lt; T, N &gt; &gt;</class>
+    <class kind="struct">playrho::detail::IsVector</class>
+    <class kind="struct">playrho::detail::IsVector&lt; Vector&lt; T, N &gt; &gt;</class>
     <class kind="class">std::tuple_element&lt; I, playrho::Vector&lt; T, N &gt; &gt;</class>
     <class kind="class">std::tuple_size&lt; playrho::Vector&lt; T, N &gt; &gt;</class>
     <class kind="struct">playrho::Vector</class>
     <namespace>playrho</namespace>
+    <namespace>playrho::detail</namespace>
     <member kind="function">
       <type>constexpr auto</type>
       <name>abs</name>
@@ -13488,8 +13490,8 @@
     <member kind="variable">
       <type>constexpr bool</type>
       <name>IsVectorV</name>
-      <anchorfile>group__VectorTraitsGroup.html</anchorfile>
-      <anchor>ga168449a74e78ad00c9d22f1017de05f7</anchor>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a168449a74e78ad00c9d22f1017de05f7</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -22809,15 +22811,15 @@
       <type>constexpr auto</type>
       <name>operator()</name>
       <anchorfile>structplayrho_1_1detail_1_1FiniteChecker.html</anchorfile>
-      <anchor>a93aea47caf4f951f60aabe38e2376f8d</anchor>
-      <arglist>() noexcept(noexcept(static_cast&lt; T &gt;(0))) -&gt; decltype(T{})</arglist>
+      <anchor>a6543299f94a1ef4dcfb0782111f5d8c7</anchor>
+      <arglist>() const noexcept(noexcept(static_cast&lt; T &gt;(0))) -&gt; decltype(T{})</arglist>
     </member>
     <member kind="function">
       <type>auto</type>
       <name>operator()</name>
       <anchorfile>structplayrho_1_1detail_1_1FiniteChecker.html</anchorfile>
-      <anchor>a010bdc1a3d5865c899b002adfcadcefe</anchor>
-      <arglist>(const T &amp;v) noexcept(noexcept(isfinite(v))) -&gt; decltype(isfinite(v), static_cast&lt; const char * &gt;(nullptr))</arglist>
+      <anchor>a463bd74786964e424d7b91f1f8cf97f2</anchor>
+      <arglist>(const T &amp;v) const noexcept(noexcept(isfinite(v))) -&gt; decltype(isfinite(v), static_cast&lt; const char * &gt;(nullptr))</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -23922,91 +23924,91 @@
     </member>
   </compound>
   <compound kind="struct">
-    <name>playrho::d2::HasRotate</name>
-    <filename>structplayrho_1_1d2_1_1HasRotate.html</filename>
+    <name>playrho::d2::detail::HasRotate</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1HasRotate.html</filename>
     <templarg></templarg>
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::d2::HasRotate&lt; T, std::void_t&lt; decltype(Rotate(std::declval&lt; T &amp; &gt;(), std::declval&lt; Angle &gt;()))&gt; &gt;</name>
-    <filename>structplayrho_1_1d2_1_1HasRotate_3_01T_00_01std_1_1void__t_3_01decltype_07Rotate_07std_1_1declvab23bcb7328e909634f00b726196a7bdd.html</filename>
+    <name>playrho::d2::detail::HasRotate&lt; T, std::void_t&lt; decltype(Rotate(std::declval&lt; T &amp; &gt;(), std::declval&lt; Angle &gt;()))&gt; &gt;</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1HasRotate_3_01T_00_01std_1_1void__t_3_01decltype_07Rotate_07std62a66955e9a2a172254d7811a6654ce0.html</filename>
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::d2::HasScale</name>
-    <filename>structplayrho_1_1d2_1_1HasScale.html</filename>
-    <templarg></templarg>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::HasScale&lt; T, std::void_t&lt; decltype(Scale(std::declval&lt; T &amp; &gt;(), std::declval&lt; Vec2 &gt;()))&gt; &gt;</name>
-    <filename>structplayrho_1_1d2_1_1HasScale_3_01T_00_01std_1_1void__t_3_01decltype_07Scale_07std_1_1declval_7e81e5db28bca47f918fcc4e03d4377d.html</filename>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::HasSetDensity</name>
-    <filename>structplayrho_1_1d2_1_1HasSetDensity.html</filename>
+    <name>playrho::d2::detail::HasScale</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1HasScale.html</filename>
     <templarg></templarg>
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::d2::HasSetDensity&lt; T, std::void_t&lt; decltype(SetDensity(std::declval&lt; T &amp; &gt;(), std::declval&lt; NonNegative&lt; AreaDensity &gt;&gt;()))&gt; &gt;</name>
-    <filename>structplayrho_1_1d2_1_1HasSetDensity_3_01T_00_01std_1_1void__t_3_01decltype_07SetDensity_07std_113b499e5db81c273ad104817486f0060.html</filename>
+    <name>playrho::d2::detail::HasScale&lt; T, std::void_t&lt; decltype(Scale(std::declval&lt; T &amp; &gt;(), std::declval&lt; Vec2 &gt;()))&gt; &gt;</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1HasScale_3_01T_00_01std_1_1void__t_3_01decltype_07Scale_07std_188533d5a8a51dfdbebad0f0683820ad9.html</filename>
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::d2::HasSetFilter</name>
-    <filename>structplayrho_1_1d2_1_1HasSetFilter.html</filename>
-    <templarg></templarg>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::HasSetFilter&lt; T, std::void_t&lt; decltype(SetFilter(std::declval&lt; T &amp; &gt;(), std::declval&lt; Filter &gt;()))&gt; &gt;</name>
-    <filename>structplayrho_1_1d2_1_1HasSetFilter_3_01T_00_01std_1_1void__t_3_01decltype_07SetFilter_07std_1_1bef5a4d4fced4cacab5e5bef9596f96f.html</filename>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::HasSetFriction</name>
-    <filename>structplayrho_1_1d2_1_1HasSetFriction.html</filename>
+    <name>playrho::d2::detail::HasSetDensity</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetDensity.html</filename>
     <templarg></templarg>
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::d2::HasSetFriction&lt; T, std::void_t&lt; decltype(SetFriction(std::declval&lt; T &amp; &gt;(), std::declval&lt; Real &gt;()))&gt; &gt;</name>
-    <filename>structplayrho_1_1d2_1_1HasSetFriction_3_01T_00_01std_1_1void__t_3_01decltype_07SetFriction_07std555382cbd73215420e1b825021ec6f80.html</filename>
+    <name>playrho::d2::detail::HasSetDensity&lt; T, std::void_t&lt; decltype(SetDensity(std::declval&lt; T &amp; &gt;(), std::declval&lt; NonNegative&lt; AreaDensity &gt;&gt;()))&gt; &gt;</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetDensity_3_01T_00_01std_1_1void__t_3_01decltype_07SetDensi6334c25e1bf7072f2d48adeeb41f71b0.html</filename>
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::d2::HasSetRestitution</name>
-    <filename>structplayrho_1_1d2_1_1HasSetRestitution.html</filename>
-    <templarg></templarg>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::HasSetRestitution&lt; T, std::void_t&lt; decltype(SetRestitution(std::declval&lt; T &amp; &gt;(), std::declval&lt; Real &gt;()))&gt; &gt;</name>
-    <filename>structplayrho_1_1d2_1_1HasSetRestitution_3_01T_00_01std_1_1void__t_3_01decltype_07SetRestitutionfc572f2ef66e39626c374c5c953fa9bf.html</filename>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::HasSetSensor</name>
-    <filename>structplayrho_1_1d2_1_1HasSetSensor.html</filename>
+    <name>playrho::d2::detail::HasSetFilter</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetFilter.html</filename>
     <templarg></templarg>
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::d2::HasSetSensor&lt; T, std::void_t&lt; decltype(SetSensor(std::declval&lt; T &amp; &gt;(), std::declval&lt; bool &gt;()))&gt; &gt;</name>
-    <filename>structplayrho_1_1d2_1_1HasSetSensor_3_01T_00_01std_1_1void__t_3_01decltype_07SetSensor_07std_1_18d7540763742e64a8ba8180f09c6ab45.html</filename>
+    <name>playrho::d2::detail::HasSetFilter&lt; T, std::void_t&lt; decltype(SetFilter(std::declval&lt; T &amp; &gt;(), std::declval&lt; Filter &gt;()))&gt; &gt;</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetFilter_3_01T_00_01std_1_1void__t_3_01decltype_07SetFilter7d56cfc383c1846af220c7b30e52463f.html</filename>
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::d2::HasTranslate</name>
-    <filename>structplayrho_1_1d2_1_1HasTranslate.html</filename>
+    <name>playrho::d2::detail::HasSetFriction</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetFriction.html</filename>
     <templarg></templarg>
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::d2::HasTranslate&lt; T, std::void_t&lt; decltype(Translate(std::declval&lt; T &amp; &gt;(), std::declval&lt; Length2 &gt;()))&gt; &gt;</name>
-    <filename>structplayrho_1_1d2_1_1HasTranslate_3_01T_00_01std_1_1void__t_3_01decltype_07Translate_07std_1_11b76c996664100fc410be7473944f659.html</filename>
+    <name>playrho::d2::detail::HasSetFriction&lt; T, std::void_t&lt; decltype(SetFriction(std::declval&lt; T &amp; &gt;(), std::declval&lt; Real &gt;()))&gt; &gt;</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetFriction_3_01T_00_01std_1_1void__t_3_01decltype_07SetFric25596caa4d6b3f4be1d7f3cda7f6d668.html</filename>
+    <templarg></templarg>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::d2::detail::HasSetRestitution</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetRestitution.html</filename>
+    <templarg></templarg>
+    <templarg></templarg>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::d2::detail::HasSetRestitution&lt; T, std::void_t&lt; decltype(SetRestitution(std::declval&lt; T &amp; &gt;(), std::declval&lt; Real &gt;()))&gt; &gt;</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetRestitution_3_01T_00_01std_1_1void__t_3_01decltype_07SetR1541d40bc3fa6b90327fac5a17478e7e.html</filename>
+    <templarg></templarg>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::d2::detail::HasSetSensor</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetSensor.html</filename>
+    <templarg></templarg>
+    <templarg></templarg>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::d2::detail::HasSetSensor&lt; T, std::void_t&lt; decltype(SetSensor(std::declval&lt; T &amp; &gt;(), std::declval&lt; bool &gt;()))&gt; &gt;</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetSensor_3_01T_00_01std_1_1void__t_3_01decltype_07SetSensor8aafe605274f89b9262f371793a0934e.html</filename>
+    <templarg></templarg>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::d2::detail::HasTranslate</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1HasTranslate.html</filename>
+    <templarg></templarg>
+    <templarg></templarg>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::d2::detail::HasTranslate&lt; T, std::void_t&lt; decltype(Translate(std::declval&lt; T &amp; &gt;(), std::declval&lt; Length2 &gt;()))&gt; &gt;</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1HasTranslate_3_01T_00_01std_1_1void__t_3_01decltype_07Translateb66547472d2c171689f299e86e1970e0.html</filename>
     <templarg></templarg>
   </compound>
   <compound kind="class">
@@ -25015,13 +25017,13 @@
     </member>
   </compound>
   <compound kind="struct">
-    <name>playrho::IsMatrix</name>
-    <filename>structplayrho_1_1IsMatrix.html</filename>
+    <name>playrho::detail::IsMatrix</name>
+    <filename>structplayrho_1_1detail_1_1IsMatrix.html</filename>
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::IsMatrix&lt; Vector&lt; Vector&lt; T, N &gt;, M &gt; &gt;</name>
-    <filename>structplayrho_1_1IsMatrix_3_01Vector_3_01Vector_3_01T_00_01N_01_4_00_01M_01_4_01_4.html</filename>
+    <name>playrho::detail::IsMatrix&lt; Vector&lt; Vector&lt; T, N &gt;, M &gt; &gt;</name>
+    <filename>structplayrho_1_1detail_1_1IsMatrix_3_01Vector_3_01Vector_3_01T_00_01N_01_4_00_01M_01_4_01_4.html</filename>
     <templarg></templarg>
     <templarg>M</templarg>
     <templarg>N</templarg>
@@ -25051,46 +25053,46 @@
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::IsSquareMatrix</name>
-    <filename>structplayrho_1_1IsSquareMatrix.html</filename>
+    <name>playrho::detail::IsSquareMatrix</name>
+    <filename>structplayrho_1_1detail_1_1IsSquareMatrix.html</filename>
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::IsSquareMatrix&lt; Vector&lt; Vector&lt; T, M &gt;, M &gt; &gt;</name>
-    <filename>structplayrho_1_1IsSquareMatrix_3_01Vector_3_01Vector_3_01T_00_01M_01_4_00_01M_01_4_01_4.html</filename>
+    <name>playrho::detail::IsSquareMatrix&lt; Vector&lt; Vector&lt; T, M &gt;, M &gt; &gt;</name>
+    <filename>structplayrho_1_1detail_1_1IsSquareMatrix_3_01Vector_3_01Vector_3_01T_00_01M_01_4_00_01M_01_4_01_4.html</filename>
     <templarg></templarg>
     <templarg>M</templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::d2::IsValidJointType</name>
-    <filename>structplayrho_1_1d2_1_1IsValidJointType.html</filename>
+    <name>playrho::d2::detail::IsValidJointType</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1IsValidJointType.html</filename>
     <templarg></templarg>
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::d2::IsValidJointType&lt; T, std::void_t&lt; decltype(GetBodyA(std::declval&lt; T &gt;())), decltype(GetBodyB(std::declval&lt; T &gt;())), decltype(GetCollideConnected(std::declval&lt; T &gt;())), decltype(ShiftOrigin(std::declval&lt; T &amp; &gt;(), std::declval&lt; Length2 &gt;())), decltype(InitVelocity(std::declval&lt; T &amp; &gt;(), std::declval&lt; const Span&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; StepConf &gt;(), std::declval&lt; ConstraintSolverConf &gt;())), decltype(SolveVelocity(std::declval&lt; T &amp; &gt;(), std::declval&lt; const Span&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; StepConf &gt;())), decltype(SolvePosition(std::declval&lt; T &gt;(), std::declval&lt; const Span&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; ConstraintSolverConf &gt;())), decltype(std::declval&lt; T &gt;()==std::declval&lt; T &gt;()), decltype(Joint{std::declval&lt; T &gt;()})&gt; &gt;</name>
-    <filename>structplayrho_1_1d2_1_1IsValidJointType_3_01T_00_01std_1_1void__t_3_01decltype_07GetBodyA_07std_0f41030e104d7c16aa2eb9b451dd539e.html</filename>
+    <name>playrho::d2::detail::IsValidJointType&lt; T, std::void_t&lt; decltype(GetBodyA(std::declval&lt; T &gt;())), decltype(GetBodyB(std::declval&lt; T &gt;())), decltype(GetCollideConnected(std::declval&lt; T &gt;())), decltype(ShiftOrigin(std::declval&lt; T &amp; &gt;(), std::declval&lt; Length2 &gt;())), decltype(InitVelocity(std::declval&lt; T &amp; &gt;(), std::declval&lt; const Span&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; StepConf &gt;(), std::declval&lt; ConstraintSolverConf &gt;())), decltype(SolveVelocity(std::declval&lt; T &amp; &gt;(), std::declval&lt; const Span&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; StepConf &gt;())), decltype(SolvePosition(std::declval&lt; T &gt;(), std::declval&lt; const Span&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; ConstraintSolverConf &gt;())), decltype(std::declval&lt; T &gt;()==std::declval&lt; T &gt;()), decltype(Joint{std::declval&lt; T &gt;()})&gt; &gt;</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1IsValidJointType_3_01T_00_01std_1_1void__t_3_01decltype_07GetBo47eab3fc68beccae0775fbf74eefbb54.html</filename>
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::d2::IsValidShapeType</name>
-    <filename>structplayrho_1_1d2_1_1IsValidShapeType.html</filename>
+    <name>playrho::d2::detail::IsValidShapeType</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1IsValidShapeType.html</filename>
     <templarg></templarg>
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::d2::IsValidShapeType&lt; T, std::void_t&lt; decltype(GetChildCount(std::declval&lt; T &gt;())), decltype(GetChild(std::declval&lt; T &gt;(), std::declval&lt; ChildCounter &gt;())), decltype(GetMassData(std::declval&lt; T &gt;())), decltype(GetVertexRadius(std::declval&lt; T &gt;(), std::declval&lt; ChildCounter &gt;())), decltype(GetDensity(std::declval&lt; T &gt;())), decltype(GetFriction(std::declval&lt; T &gt;())), decltype(GetRestitution(std::declval&lt; T &gt;())), decltype(std::declval&lt; T &gt;()==std::declval&lt; T &gt;()), decltype(std::declval&lt; DecayedTypeIfNotSame&lt; T, Shape &gt;&gt;()), decltype(std::is_constructible_v&lt; DecayedTypeIfNotSame&lt; T, Shape &gt;, T &gt;)&gt; &gt;</name>
-    <filename>structplayrho_1_1d2_1_1IsValidShapeType_3_01T_00_01std_1_1void__t_3_01decltype_07GetChildCount_0c38db799aefb36c521b9740e4d2a3199.html</filename>
+    <name>playrho::d2::detail::IsValidShapeType&lt; T, std::void_t&lt; decltype(GetChildCount(std::declval&lt; T &gt;())), decltype(GetChild(std::declval&lt; T &gt;(), std::declval&lt; ChildCounter &gt;())), decltype(GetMassData(std::declval&lt; T &gt;())), decltype(GetVertexRadius(std::declval&lt; T &gt;(), std::declval&lt; ChildCounter &gt;())), decltype(GetDensity(std::declval&lt; T &gt;())), decltype(GetFriction(std::declval&lt; T &gt;())), decltype(GetRestitution(std::declval&lt; T &gt;())), decltype(std::declval&lt; T &gt;()==std::declval&lt; T &gt;()), decltype(std::declval&lt; DecayedTypeIfNotSame&lt; T, Shape &gt;&gt;()), decltype(std::is_constructible_v&lt; DecayedTypeIfNotSame&lt; T, Shape &gt;, T &gt;)&gt; &gt;</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1IsValidShapeType_3_01T_00_01std_1_1void__t_3_01decltype_07GetCh6e61a5840b735d119f7d25ad6ffcdafa.html</filename>
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::IsVector</name>
-    <filename>structplayrho_1_1IsVector.html</filename>
+    <name>playrho::detail::IsVector</name>
+    <filename>structplayrho_1_1detail_1_1IsVector.html</filename>
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::IsVector&lt; Vector&lt; T, N &gt; &gt;</name>
-    <filename>structplayrho_1_1IsVector_3_01Vector_3_01T_00_01N_01_4_01_4.html</filename>
+    <name>playrho::detail::IsVector&lt; Vector&lt; T, N &gt; &gt;</name>
+    <filename>structplayrho_1_1detail_1_1IsVector_3_01Vector_3_01T_00_01N_01_4_01_4.html</filename>
     <templarg></templarg>
     <templarg>N</templarg>
   </compound>
@@ -27083,8 +27085,8 @@
       <type>constexpr auto</type>
       <name>operator()</name>
       <anchorfile>structplayrho_1_1detail_1_1NegativeChecker.html</anchorfile>
-      <anchor>a675d59234981b5c94b83b5fb50cc28f9</anchor>
-      <arglist>(const T &amp;v) noexcept -&gt; decltype(v&lt; static_cast&lt; T &gt;(0), static_cast&lt; const char * &gt;(nullptr))</arglist>
+      <anchor>afbbeb4b2b4d4306b206452ab8cf59187</anchor>
+      <arglist>(const T &amp;v) const noexcept -&gt; decltype(v&lt; static_cast&lt; T &gt;(0), static_cast&lt; const char * &gt;(nullptr))</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -27095,15 +27097,15 @@
       <type>constexpr auto</type>
       <name>operator()</name>
       <anchorfile>structplayrho_1_1detail_1_1NonNegativeChecker.html</anchorfile>
-      <anchor>a029d678325a7e57a2877432e03ae086d</anchor>
-      <arglist>() noexcept -&gt; decltype(T{})</arglist>
+      <anchor>a09e2e222eadab7bf2fde25cd239384c3</anchor>
+      <arglist>() const noexcept -&gt; decltype(T{})</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
       <name>operator()</name>
       <anchorfile>structplayrho_1_1detail_1_1NonNegativeChecker.html</anchorfile>
-      <anchor>aa5863d60505d51679f2d381a5545c977</anchor>
-      <arglist>(const T &amp;v) noexcept -&gt; decltype(v &gt;=T{}, static_cast&lt; const char * &gt;(nullptr))</arglist>
+      <anchor>a8ab21601219ba53edf345ad626e741b6</anchor>
+      <arglist>(const T &amp;v) const noexcept -&gt; decltype(v &gt;=T{}, static_cast&lt; const char * &gt;(nullptr))</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -27114,15 +27116,15 @@
       <type>constexpr auto</type>
       <name>operator()</name>
       <anchorfile>structplayrho_1_1detail_1_1NonPositiveChecker.html</anchorfile>
-      <anchor>a1a684addd8002b2eda2ef5e51760fa0d</anchor>
-      <arglist>() noexcept -&gt; decltype(T{})</arglist>
+      <anchor>a5920bf6445c03b502b7b133462f3b4ca</anchor>
+      <arglist>() const noexcept -&gt; decltype(T{})</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
       <name>operator()</name>
       <anchorfile>structplayrho_1_1detail_1_1NonPositiveChecker.html</anchorfile>
-      <anchor>a9753782393f76916ba31ed576c12d0e5</anchor>
-      <arglist>(const T &amp;v) noexcept -&gt; decltype(v&lt;=static_cast&lt; T &gt;(0), static_cast&lt; const char * &gt;(nullptr))</arglist>
+      <anchor>a15a602f41a96dea44c07eb22680dce9c</anchor>
+      <arglist>(const T &amp;v) const noexcept -&gt; decltype(v&lt;=static_cast&lt; T &gt;(0), static_cast&lt; const char * &gt;(nullptr))</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -27133,8 +27135,8 @@
       <type>constexpr auto</type>
       <name>operator()</name>
       <anchorfile>structplayrho_1_1detail_1_1NonZeroChecker.html</anchorfile>
-      <anchor>a75369dbf4ef8ed0df57f5e5be3a73231</anchor>
-      <arglist>(const T &amp;v) noexcept -&gt; decltype(!(v !=static_cast&lt; T &gt;(0)), static_cast&lt; const char * &gt;(nullptr))</arglist>
+      <anchor>a4de0deb1009d07679693a40e9ec25859</anchor>
+      <arglist>(const T &amp;v) const noexcept -&gt; decltype(!(v !=static_cast&lt; T &gt;(0)), static_cast&lt; const char * &gt;(nullptr))</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -29943,8 +29945,8 @@
       <type>constexpr auto</type>
       <name>operator()</name>
       <anchorfile>structplayrho_1_1detail_1_1PositiveChecker.html</anchorfile>
-      <anchor>aedd6110d98af800a48bf4cb354770cff</anchor>
-      <arglist>(const T &amp;v) noexcept -&gt; decltype(v &gt; T{}, static_cast&lt; const char * &gt;(nullptr))</arglist>
+      <anchor>a07b42e1171835505ccc4a93058b5e431</anchor>
+      <arglist>(const T &amp;v) const noexcept -&gt; decltype(v &gt; T{}, static_cast&lt; const char * &gt;(nullptr))</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -35128,14 +35130,14 @@
     <templarg></templarg>
   </compound>
   <compound kind="struct">
-    <name>playrho::detail::underlying_type&lt; T, std::enable_if_t&lt; detail::has_underlying_type_member&lt; T &gt;::value &gt; &gt;</name>
-    <filename>structplayrho_1_1detail_1_1underlying__type_3_01T_00_01std_1_1enable__if__t_3_01detail_1_1has__u8d4f1522a7de9e6823e1e0ba726863b4.html</filename>
+    <name>playrho::detail::underlying_type&lt; T, std::enable_if_t&lt; has_underlying_type_member&lt; T &gt;::value &gt; &gt;</name>
+    <filename>structplayrho_1_1detail_1_1underlying__type_3_01T_00_01std_1_1enable__if__t_3_01has__underlying_2212b27bd541046396e8289902d743ef.html</filename>
     <templarg></templarg>
     <member kind="typedef">
       <type>typename T::underlying_type</type>
       <name>type</name>
-      <anchorfile>structplayrho_1_1detail_1_1underlying__type_3_01T_00_01std_1_1enable__if__t_3_01detail_1_1has__u8d4f1522a7de9e6823e1e0ba726863b4.html</anchorfile>
-      <anchor>a15b9299c0c716ff338017fa4f62ee816</anchor>
+      <anchorfile>structplayrho_1_1detail_1_1underlying__type_3_01T_00_01std_1_1enable__if__t_3_01has__underlying_2212b27bd541046396e8289902d743ef.html</anchorfile>
+      <anchor>ad0c380132fdbaeb9a1adb8ea08066fcf</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -35159,15 +35161,15 @@
       <type>constexpr auto</type>
       <name>operator()</name>
       <anchorfile>structplayrho_1_1detail_1_1UnitIntervalChecker.html</anchorfile>
-      <anchor>a2967f7856cd6c7ad7edb159346711735</anchor>
-      <arglist>() noexcept -&gt; decltype(static_cast&lt; T &gt;(0))</arglist>
+      <anchor>afee794eb882c7e20cfe4473f4429ac46</anchor>
+      <arglist>() const noexcept -&gt; decltype(static_cast&lt; T &gt;(0))</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
       <name>operator()</name>
       <anchorfile>structplayrho_1_1detail_1_1UnitIntervalChecker.html</anchorfile>
-      <anchor>aa9a0f7091c05ccf66d8ca9e5e9220489</anchor>
-      <arglist>(const T &amp;v) noexcept -&gt; decltype((v &gt;=static_cast&lt; T &gt;(0)) &amp;&amp;(v&lt;=static_cast&lt; T &gt;(1)), static_cast&lt; const char * &gt;(nullptr))</arglist>
+      <anchor>a621c8e3b1933f7e3474b3cbb55666f43</anchor>
+      <arglist>(const T &amp;v) const noexcept -&gt; decltype((v &gt;=static_cast&lt; T &gt;(0)) &amp;&amp;(v&lt;=static_cast&lt; T &gt;(1)), static_cast&lt; const char * &gt;(nullptr))</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -42550,12 +42552,6 @@
     <class kind="class">playrho::InvalidArgument</class>
     <class kind="struct">playrho::Island</class>
     <class kind="struct">playrho::IslandStats</class>
-    <class kind="struct">playrho::IsMatrix</class>
-    <class kind="struct">playrho::IsMatrix&lt; Vector&lt; Vector&lt; T, N &gt;, M &gt; &gt;</class>
-    <class kind="struct">playrho::IsSquareMatrix</class>
-    <class kind="struct">playrho::IsSquareMatrix&lt; Vector&lt; Vector&lt; T, M &gt;, M &gt; &gt;</class>
-    <class kind="struct">playrho::IsVector</class>
-    <class kind="struct">playrho::IsVector&lt; Vector&lt; T, N &gt; &gt;</class>
     <class kind="class">playrho::LengthError</class>
     <class kind="struct">playrho::LengthIndexPair</class>
     <class kind="struct">playrho::LexicographicalGreater</class>
@@ -45804,8 +45800,8 @@
     <member kind="variable">
       <type>constexpr bool</type>
       <name>IsMatrixV</name>
-      <anchorfile>group__MatrixTraitsGroup.html</anchorfile>
-      <anchor>ga83567b7faf3c7de0399b0b88fe1cc9f5</anchor>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a83567b7faf3c7de0399b0b88fe1cc9f5</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -45825,15 +45821,15 @@
     <member kind="variable">
       <type>constexpr bool</type>
       <name>IsSquareMatrixV</name>
-      <anchorfile>group__MatrixTraitsGroup.html</anchorfile>
-      <anchor>ga14b74d27a9f43c1f37aca5ee84aa6f97</anchor>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a14b74d27a9f43c1f37aca5ee84aa6f97</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>constexpr bool</type>
       <name>IsVectorV</name>
-      <anchorfile>group__VectorTraitsGroup.html</anchorfile>
-      <anchor>ga168449a74e78ad00c9d22f1017de05f7</anchor>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a168449a74e78ad00c9d22f1017de05f7</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -46091,26 +46087,6 @@
     <class kind="class">playrho::d2::EdgeShapeConf</class>
     <class kind="struct">playrho::d2::FrictionJointConf</class>
     <class kind="struct">playrho::d2::GearJointConf</class>
-    <class kind="struct">playrho::d2::HasRotate</class>
-    <class kind="struct">playrho::d2::HasRotate&lt; T, std::void_t&lt; decltype(Rotate(std::declval&lt; T &amp; &gt;(), std::declval&lt; Angle &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::HasScale</class>
-    <class kind="struct">playrho::d2::HasScale&lt; T, std::void_t&lt; decltype(Scale(std::declval&lt; T &amp; &gt;(), std::declval&lt; Vec2 &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::HasSetDensity</class>
-    <class kind="struct">playrho::d2::HasSetDensity&lt; T, std::void_t&lt; decltype(SetDensity(std::declval&lt; T &amp; &gt;(), std::declval&lt; NonNegative&lt; AreaDensity &gt;&gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::HasSetFilter</class>
-    <class kind="struct">playrho::d2::HasSetFilter&lt; T, std::void_t&lt; decltype(SetFilter(std::declval&lt; T &amp; &gt;(), std::declval&lt; Filter &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::HasSetFriction</class>
-    <class kind="struct">playrho::d2::HasSetFriction&lt; T, std::void_t&lt; decltype(SetFriction(std::declval&lt; T &amp; &gt;(), std::declval&lt; Real &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::HasSetRestitution</class>
-    <class kind="struct">playrho::d2::HasSetRestitution&lt; T, std::void_t&lt; decltype(SetRestitution(std::declval&lt; T &amp; &gt;(), std::declval&lt; Real &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::HasSetSensor</class>
-    <class kind="struct">playrho::d2::HasSetSensor&lt; T, std::void_t&lt; decltype(SetSensor(std::declval&lt; T &amp; &gt;(), std::declval&lt; bool &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::HasTranslate</class>
-    <class kind="struct">playrho::d2::HasTranslate&lt; T, std::void_t&lt; decltype(Translate(std::declval&lt; T &amp; &gt;(), std::declval&lt; Length2 &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::IsValidJointType</class>
-    <class kind="struct">playrho::d2::IsValidJointType&lt; T, std::void_t&lt; decltype(GetBodyA(std::declval&lt; T &gt;())), decltype(GetBodyB(std::declval&lt; T &gt;())), decltype(GetCollideConnected(std::declval&lt; T &gt;())), decltype(ShiftOrigin(std::declval&lt; T &amp; &gt;(), std::declval&lt; Length2 &gt;())), decltype(InitVelocity(std::declval&lt; T &amp; &gt;(), std::declval&lt; const Span&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; StepConf &gt;(), std::declval&lt; ConstraintSolverConf &gt;())), decltype(SolveVelocity(std::declval&lt; T &amp; &gt;(), std::declval&lt; const Span&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; StepConf &gt;())), decltype(SolvePosition(std::declval&lt; T &gt;(), std::declval&lt; const Span&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; ConstraintSolverConf &gt;())), decltype(std::declval&lt; T &gt;()==std::declval&lt; T &gt;()), decltype(Joint{std::declval&lt; T &gt;()})&gt; &gt;</class>
-    <class kind="struct">playrho::d2::IsValidShapeType</class>
-    <class kind="struct">playrho::d2::IsValidShapeType&lt; T, std::void_t&lt; decltype(GetChildCount(std::declval&lt; T &gt;())), decltype(GetChild(std::declval&lt; T &gt;(), std::declval&lt; ChildCounter &gt;())), decltype(GetMassData(std::declval&lt; T &gt;())), decltype(GetVertexRadius(std::declval&lt; T &gt;(), std::declval&lt; ChildCounter &gt;())), decltype(GetDensity(std::declval&lt; T &gt;())), decltype(GetFriction(std::declval&lt; T &gt;())), decltype(GetRestitution(std::declval&lt; T &gt;())), decltype(std::declval&lt; T &gt;()==std::declval&lt; T &gt;()), decltype(std::declval&lt; DecayedTypeIfNotSame&lt; T, Shape &gt;&gt;()), decltype(std::is_constructible_v&lt; DecayedTypeIfNotSame&lt; T, Shape &gt;, T &gt;)&gt; &gt;</class>
     <class kind="class">playrho::d2::Joint</class>
     <class kind="struct">playrho::d2::JointBuilder</class>
     <class kind="struct">playrho::d2::JointConf</class>
@@ -54460,10 +54436,16 @@
     <class kind="struct">playrho::detail::IsInequalityComparable&lt; T1, T2, std::void_t&lt; decltype(T1{} !=T2{})&gt; &gt;</class>
     <class kind="struct">playrho::detail::IsIterable</class>
     <class kind="struct">playrho::detail::IsIterable&lt; T, std::void_t&lt; decltype(begin(std::declval&lt; T &gt;())), decltype(end(std::declval&lt; T &gt;())), decltype(++std::declval&lt; decltype(begin(std::declval&lt; T &amp; &gt;()))&amp; &gt;()), decltype(*begin(std::declval&lt; T &gt;()))&gt; &gt;</class>
+    <class kind="struct">playrho::detail::IsMatrix</class>
+    <class kind="struct">playrho::detail::IsMatrix&lt; Vector&lt; Vector&lt; T, N &gt;, M &gt; &gt;</class>
     <class kind="struct">playrho::detail::IsMultipliable</class>
     <class kind="struct">playrho::detail::IsMultipliable&lt; T1, T2, std::void_t&lt; decltype(T1{} *T2{})&gt; &gt;</class>
     <class kind="struct">playrho::detail::IsReverseIterable</class>
     <class kind="struct">playrho::detail::IsReverseIterable&lt; T, std::void_t&lt; decltype(rbegin(std::declval&lt; T &gt;())), decltype(rend(std::declval&lt; T &gt;())), decltype(++std::declval&lt; decltype(rbegin(std::declval&lt; T &amp; &gt;()))&amp; &gt;()), decltype(*rbegin(std::declval&lt; T &gt;()))&gt; &gt;</class>
+    <class kind="struct">playrho::detail::IsSquareMatrix</class>
+    <class kind="struct">playrho::detail::IsSquareMatrix&lt; Vector&lt; Vector&lt; T, M &gt;, M &gt; &gt;</class>
+    <class kind="struct">playrho::detail::IsVector</class>
+    <class kind="struct">playrho::detail::IsVector&lt; Vector&lt; T, N &gt; &gt;</class>
     <class kind="struct">playrho::detail::LengthIndices</class>
     <class kind="struct">playrho::detail::MassData</class>
     <class kind="struct">playrho::detail::NegativeChecker</class>
@@ -54493,7 +54475,7 @@
     <class kind="struct">playrho::detail::TypeInfo&lt; playrho::d2::WheelJointConf &gt;</class>
     <class kind="struct">playrho::detail::TypeInfo&lt; playrho::Fixed32 &gt;</class>
     <class kind="struct">playrho::detail::underlying_type</class>
-    <class kind="struct">playrho::detail::underlying_type&lt; T, std::enable_if_t&lt; detail::has_underlying_type_member&lt; T &gt;::value &gt; &gt;</class>
+    <class kind="struct">playrho::detail::underlying_type&lt; T, std::enable_if_t&lt; has_underlying_type_member&lt; T &gt;::value &gt; &gt;</class>
     <class kind="struct">playrho::detail::underlying_type&lt; T, std::enable_if_t&lt; std::is_enum_v&lt; T &gt; &gt; &gt;</class>
     <class kind="struct">playrho::detail::UnitIntervalChecker</class>
     <class kind="struct">playrho::detail::Wider</class>
@@ -56156,24 +56138,10 @@
     <name>MatrixTraitsGroup</name>
     <title>Matrix Traits</title>
     <filename>group__MatrixTraitsGroup.html</filename>
-    <class kind="struct">playrho::IsMatrix</class>
-    <class kind="struct">playrho::IsMatrix&lt; Vector&lt; Vector&lt; T, N &gt;, M &gt; &gt;</class>
-    <class kind="struct">playrho::IsSquareMatrix</class>
-    <class kind="struct">playrho::IsSquareMatrix&lt; Vector&lt; Vector&lt; T, M &gt;, M &gt; &gt;</class>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>IsMatrixV</name>
-      <anchorfile>group__MatrixTraitsGroup.html</anchorfile>
-      <anchor>ga83567b7faf3c7de0399b0b88fe1cc9f5</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>IsSquareMatrixV</name>
-      <anchorfile>group__MatrixTraitsGroup.html</anchorfile>
-      <anchor>ga14b74d27a9f43c1f37aca5ee84aa6f97</anchor>
-      <arglist></arglist>
-    </member>
+    <class kind="struct">playrho::detail::IsMatrix</class>
+    <class kind="struct">playrho::detail::IsMatrix&lt; Vector&lt; Vector&lt; T, N &gt;, M &gt; &gt;</class>
+    <class kind="struct">playrho::detail::IsSquareMatrix</class>
+    <class kind="struct">playrho::detail::IsSquareMatrix&lt; Vector&lt; Vector&lt; T, M &gt;, M &gt; &gt;</class>
   </compound>
   <compound kind="group">
     <name>DecimalUnitPrefices</name>
@@ -56925,15 +56893,8 @@
     <name>VectorTraitsGroup</name>
     <title>Vector Traits</title>
     <filename>group__VectorTraitsGroup.html</filename>
-    <class kind="struct">playrho::IsVector</class>
-    <class kind="struct">playrho::IsVector&lt; Vector&lt; T, N &gt; &gt;</class>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>IsVectorV</name>
-      <anchorfile>group__VectorTraitsGroup.html</anchorfile>
-      <anchor>ga168449a74e78ad00c9d22f1017de05f7</anchor>
-      <arglist></arglist>
-    </member>
+    <class kind="struct">playrho::detail::IsVector</class>
+    <class kind="struct">playrho::detail::IsVector&lt; Vector&lt; T, N &gt; &gt;</class>
   </compound>
   <compound kind="page">
     <name>index</name>

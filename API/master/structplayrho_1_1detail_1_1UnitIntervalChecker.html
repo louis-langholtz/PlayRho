@@ -108,12 +108,12 @@ $(document).ready(function(){initNavTree('structplayrho_1_1detail_1_1UnitInterva
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2967f7856cd6c7ad7edb159346711735"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1UnitIntervalChecker.html#a2967f7856cd6c7ad7edb159346711735">operator()</a> () noexcept -&gt; decltype(static_cast&lt; T &gt;(0))</td></tr>
-<tr class="memdesc:a2967f7856cd6c7ad7edb159346711735"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value supplying functor.  <a href="structplayrho_1_1detail_1_1UnitIntervalChecker.html#a2967f7856cd6c7ad7edb159346711735">More...</a><br /></td></tr>
-<tr class="separator:a2967f7856cd6c7ad7edb159346711735"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9a0f7091c05ccf66d8ca9e5e9220489"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1UnitIntervalChecker.html#aa9a0f7091c05ccf66d8ca9e5e9220489">operator()</a> (const T &amp;v) noexcept -&gt; decltype((v &gt;=static_cast&lt; T &gt;(0)) &amp;&amp;(v&lt;=static_cast&lt; T &gt;(1)), static_cast&lt; const char * &gt;(nullptr))</td></tr>
-<tr class="memdesc:aa9a0f7091c05ccf66d8ca9e5e9220489"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value checking functor.  <a href="structplayrho_1_1detail_1_1UnitIntervalChecker.html#aa9a0f7091c05ccf66d8ca9e5e9220489">More...</a><br /></td></tr>
-<tr class="separator:aa9a0f7091c05ccf66d8ca9e5e9220489"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afee794eb882c7e20cfe4473f4429ac46"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1UnitIntervalChecker.html#afee794eb882c7e20cfe4473f4429ac46">operator()</a> () const noexcept -&gt; decltype(static_cast&lt; T &gt;(0))</td></tr>
+<tr class="memdesc:afee794eb882c7e20cfe4473f4429ac46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value supplying functor.  <a href="structplayrho_1_1detail_1_1UnitIntervalChecker.html#afee794eb882c7e20cfe4473f4429ac46">More...</a><br /></td></tr>
+<tr class="separator:afee794eb882c7e20cfe4473f4429ac46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a621c8e3b1933f7e3474b3cbb55666f43"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1UnitIntervalChecker.html#a621c8e3b1933f7e3474b3cbb55666f43">operator()</a> (const T &amp;v) const noexcept -&gt; decltype((v &gt;=static_cast&lt; T &gt;(0)) &amp;&amp;(v&lt;=static_cast&lt; T &gt;(1)), static_cast&lt; const char * &gt;(nullptr))</td></tr>
+<tr class="memdesc:a621c8e3b1933f7e3474b3cbb55666f43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value checking functor.  <a href="structplayrho_1_1detail_1_1UnitIntervalChecker.html#a621c8e3b1933f7e3474b3cbb55666f43">More...</a><br /></td></tr>
+<tr class="separator:a621c8e3b1933f7e3474b3cbb55666f43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T&gt;<br />
@@ -129,8 +129,8 @@ struct playrho::detail::UnitIntervalChecker&lt; T &gt;</h3>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1detail_1_1Checked.html" title="Class template for construction-time constraining a type&#39;s value.">Checked</a>. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2967f7856cd6c7ad7edb159346711735"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2967f7856cd6c7ad7edb159346711735">&#9670;&nbsp;</a></span>operator()() <span class="overload">[1/2]</span></h2>
+<a id="afee794eb882c7e20cfe4473f4429ac46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afee794eb882c7e20cfe4473f4429ac46">&#9670;&nbsp;</a></span>operator()() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,7 +144,7 @@ template&lt;typename T &gt; </div>
           <td class="memname">constexpr auto <a class="el" href="structplayrho_1_1detail_1_1UnitIntervalChecker.html">playrho::detail::UnitIntervalChecker</a>&lt; T &gt;::operator() </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> -&gt; decltype(static_cast&lt;T&gt;(0))
+          <td> const -&gt; decltype(static_cast&lt;T&gt;(0))
     </td>
         </tr>
       </table>
@@ -160,8 +160,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="aa9a0f7091c05ccf66d8ca9e5e9220489"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9a0f7091c05ccf66d8ca9e5e9220489">&#9670;&nbsp;</a></span>operator()() <span class="overload">[2/2]</span></h2>
+<a id="a621c8e3b1933f7e3474b3cbb55666f43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a621c8e3b1933f7e3474b3cbb55666f43">&#9670;&nbsp;</a></span>operator()() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -176,7 +176,7 @@ template&lt;typename T &gt; </div>
           <td>(</td>
           <td class="paramtype">const T &amp;&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
-          <td> -&gt; decltype((v &gt;= static_cast&lt;T&gt;(0)) &amp;&amp; (v &lt;= static_cast&lt;T&gt;(1)), static_cast&lt;const char*&gt;(nullptr))
+          <td> const -&gt; decltype((v &gt;= static_cast&lt;T&gt;(0)) &amp;&amp; (v &lt;= static_cast&lt;T&gt;(1)), static_cast&lt;const char*&gt;(nullptr))
     </td>
         </tr>
       </table>
@@ -201,7 +201,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structplayrho_1_1detail_1_1UnitIntervalChecker.html">UnitIntervalChecker</a></li>
-    <li class="footer">Generated on Mon Sep 25 2023 23:39:54 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sun Oct 1 2023 15:40:20 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

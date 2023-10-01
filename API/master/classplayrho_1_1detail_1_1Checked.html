@@ -314,9 +314,7 @@ class playrho::detail::Checked&lt; ValueType, Checker, NoExcept &gt;</h3>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a href="https://en.cppreference.com/w/cpp/language/noexcept_spec">https://en.cppreference.com/w/cpp/language/noexcept_spec</a>. </dd>
-<dd>
-<a href="https://en.cppreference.com/w/cpp/concepts/regular">https://en.cppreference.com/w/cpp/concepts/regular</a>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://en.cppreference.com/w/cpp/language/noexcept_spec">https://en.cppreference.com/w/cpp/language/noexcept_spec</a>. </dd></dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a5195c96ea6ee491e75d93ce702553cda"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5195c96ea6ee491e75d93ce702553cda">&#9670;&nbsp;</a></span>remove_pointer_type</h2>
@@ -687,10 +685,10 @@ template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsV
   <table class="tparams">
     <tr><td class="paramname">LhsValueType</td><td>Type of the value used by the left hand side checked value. </td></tr>
     <tr><td class="paramname">LhsChecker</td><td>Type of the checker used by the left hand side checked value. </td></tr>
-    <tr><td class="paramname">LhsNoExcept</td><td>Whether the left hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">LhsNoExcept</td><td>Whether left hand side type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">RhsValueType</td><td>Type of the value used by the right hand side checked value. </td></tr>
     <tr><td class="paramname">RhsChecker</td><td>Type of the checker used by the right hand side checked value. </td></tr>
-    <tr><td class="paramname">RhsNoExcept</td><td>Whether the right hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">RhsNoExcept</td><td>Whether right hand side type terminates or just throws for invalid values. </td></tr>
   </table>
   </dd>
 </dl>
@@ -739,7 +737,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -789,7 +787,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -839,10 +837,10 @@ template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsV
   <table class="tparams">
     <tr><td class="paramname">LhsValueType</td><td>Type of the value used by the left hand side checked value. </td></tr>
     <tr><td class="paramname">LhsChecker</td><td>Type of the checker used by the left hand side checked value. </td></tr>
-    <tr><td class="paramname">LhsNoExcept</td><td>Whether the left hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">LhsNoExcept</td><td>Whether left hand side type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">RhsValueType</td><td>Type of the value used by the right hand side checked value. </td></tr>
     <tr><td class="paramname">RhsChecker</td><td>Type of the checker used by the right hand side checked value. </td></tr>
-    <tr><td class="paramname">RhsNoExcept</td><td>Whether the right hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">RhsNoExcept</td><td>Whether right hand side type terminates or just throws for invalid values. </td></tr>
   </table>
   </dd>
 </dl>
@@ -892,7 +890,7 @@ decltype(ValueType()*Other())&gt;
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -943,7 +941,7 @@ decltype(Other()*ValueType())&gt;
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -993,10 +991,10 @@ template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsV
   <table class="tparams">
     <tr><td class="paramname">LhsValueType</td><td>Type of the value used by the left hand side checked value. </td></tr>
     <tr><td class="paramname">LhsChecker</td><td>Type of the checker used by the left hand side checked value. </td></tr>
-    <tr><td class="paramname">LhsNoExcept</td><td>Whether the left hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">LhsNoExcept</td><td>Whether left hand side type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">RhsValueType</td><td>Type of the value used by the right hand side checked value. </td></tr>
     <tr><td class="paramname">RhsChecker</td><td>Type of the checker used by the right hand side checked value. </td></tr>
-    <tr><td class="paramname">RhsNoExcept</td><td>Whether the right hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">RhsNoExcept</td><td>Whether right hand side type terminates or just throws for invalid values. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1045,7 +1043,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -1095,7 +1093,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -1145,10 +1143,10 @@ template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsV
   <table class="tparams">
     <tr><td class="paramname">LhsValueType</td><td>Type of the value used by the left hand side checked value. </td></tr>
     <tr><td class="paramname">LhsChecker</td><td>Type of the checker used by the left hand side checked value. </td></tr>
-    <tr><td class="paramname">LhsNoExcept</td><td>Whether the left hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">LhsNoExcept</td><td>Whether left hand side type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">RhsValueType</td><td>Type of the value used by the right hand side checked value. </td></tr>
     <tr><td class="paramname">RhsChecker</td><td>Type of the checker used by the right hand side checked value. </td></tr>
-    <tr><td class="paramname">RhsNoExcept</td><td>Whether the right hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">RhsNoExcept</td><td>Whether right hand side type terminates or just throws for invalid values. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1197,7 +1195,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -1247,7 +1245,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -1297,10 +1295,10 @@ template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsV
   <table class="tparams">
     <tr><td class="paramname">LhsValueType</td><td>Type of the value used by the left hand side checked value. </td></tr>
     <tr><td class="paramname">LhsChecker</td><td>Type of the checker used by the left hand side checked value. </td></tr>
-    <tr><td class="paramname">LhsNoExcept</td><td>Whether the left hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">LhsNoExcept</td><td>Whether left hand side type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">RhsValueType</td><td>Type of the value used by the right hand side checked value. </td></tr>
     <tr><td class="paramname">RhsChecker</td><td>Type of the checker used by the right hand side checked value. </td></tr>
-    <tr><td class="paramname">RhsNoExcept</td><td>Whether the right hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">RhsNoExcept</td><td>Whether right hand side type terminates or just throws for invalid values. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1349,7 +1347,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -1399,7 +1397,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -1449,10 +1447,10 @@ template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsV
   <table class="tparams">
     <tr><td class="paramname">LhsValueType</td><td>Type of the value used by the left hand side checked value. </td></tr>
     <tr><td class="paramname">LhsChecker</td><td>Type of the checker used by the left hand side checked value. </td></tr>
-    <tr><td class="paramname">LhsNoExcept</td><td>Whether the left hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">LhsNoExcept</td><td>Whether left hand side type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">RhsValueType</td><td>Type of the value used by the right hand side checked value. </td></tr>
     <tr><td class="paramname">RhsChecker</td><td>Type of the checker used by the right hand side checked value. </td></tr>
-    <tr><td class="paramname">RhsNoExcept</td><td>Whether the right hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">RhsNoExcept</td><td>Whether right hand side type terminates or just throws for invalid values. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1501,7 +1499,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -1551,7 +1549,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -1601,7 +1599,7 @@ template&lt;class ValueType , class Checker , bool NoExcept&gt; </div>
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1650,10 +1648,10 @@ template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsV
   <table class="tparams">
     <tr><td class="paramname">LhsValueType</td><td>Type of the value used by the left hand side checked value. </td></tr>
     <tr><td class="paramname">LhsChecker</td><td>Type of the checker used by the left hand side checked value. </td></tr>
-    <tr><td class="paramname">LhsNoExcept</td><td>Whether the left hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">LhsNoExcept</td><td>Whether left hand side type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">RhsValueType</td><td>Type of the value used by the right hand side checked value. </td></tr>
     <tr><td class="paramname">RhsChecker</td><td>Type of the checker used by the right hand side checked value. </td></tr>
-    <tr><td class="paramname">RhsNoExcept</td><td>Whether the right hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">RhsNoExcept</td><td>Whether right hand side type terminates or just throws for invalid values. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1702,7 +1700,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -1752,7 +1750,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -1802,10 +1800,10 @@ template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsV
   <table class="tparams">
     <tr><td class="paramname">LhsValueType</td><td>Type of the value used by the left hand side checked value. </td></tr>
     <tr><td class="paramname">LhsChecker</td><td>Type of the checker used by the left hand side checked value. </td></tr>
-    <tr><td class="paramname">LhsNoExcept</td><td>Whether the left hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">LhsNoExcept</td><td>Whether left hand side type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">RhsValueType</td><td>Type of the value used by the right hand side checked value. </td></tr>
     <tr><td class="paramname">RhsChecker</td><td>Type of the checker used by the right hand side checked value. </td></tr>
-    <tr><td class="paramname">RhsNoExcept</td><td>Whether the right hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">RhsNoExcept</td><td>Whether right hand side type terminates or just throws for invalid values. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1854,7 +1852,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -1904,7 +1902,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -1954,10 +1952,10 @@ template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsV
   <table class="tparams">
     <tr><td class="paramname">LhsValueType</td><td>Type of the value used by the left hand side checked value. </td></tr>
     <tr><td class="paramname">LhsChecker</td><td>Type of the checker used by the left hand side checked value. </td></tr>
-    <tr><td class="paramname">LhsNoExcept</td><td>Whether the left hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">LhsNoExcept</td><td>Whether left hand side type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">RhsValueType</td><td>Type of the value used by the right hand side checked value. </td></tr>
     <tr><td class="paramname">RhsChecker</td><td>Type of the checker used by the right hand side checked value. </td></tr>
-    <tr><td class="paramname">RhsNoExcept</td><td>Whether the right hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">RhsNoExcept</td><td>Whether right hand side type terminates or just throws for invalid values. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2006,7 +2004,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -2056,7 +2054,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -2106,10 +2104,10 @@ template&lt;class LhsValueType , class LhsChecker , bool LhsNoExcept, class RhsV
   <table class="tparams">
     <tr><td class="paramname">LhsValueType</td><td>Type of the value used by the left hand side checked value. </td></tr>
     <tr><td class="paramname">LhsChecker</td><td>Type of the checker used by the left hand side checked value. </td></tr>
-    <tr><td class="paramname">LhsNoExcept</td><td>Whether the left hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">LhsNoExcept</td><td>Whether left hand side type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">RhsValueType</td><td>Type of the value used by the right hand side checked value. </td></tr>
     <tr><td class="paramname">RhsChecker</td><td>Type of the checker used by the right hand side checked value. </td></tr>
-    <tr><td class="paramname">RhsNoExcept</td><td>Whether the right hand side checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">RhsNoExcept</td><td>Whether right hand side type terminates or just throws for invalid values. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2158,7 +2156,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -2208,7 +2206,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
   <table class="tparams">
     <tr><td class="paramname">ValueType</td><td>Type of the value used by the checked value. </td></tr>
     <tr><td class="paramname">Checker</td><td>Type of the checker used by the checked value. </td></tr>
-    <tr><td class="paramname">NoExcept</td><td>Whether the checked value terminates or just throws on being invalid. </td></tr>
+    <tr><td class="paramname">NoExcept</td><td>Whether checked type terminates or just throws for invalid values. </td></tr>
     <tr><td class="paramname">Other</td><td>Type of the other value that this operation will operator with. </td></tr>
   </table>
   </dd>
@@ -2225,7 +2223,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a></li>
-    <li class="footer">Generated on Mon Sep 25 2023 23:39:54 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sun Oct 1 2023 15:40:20 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

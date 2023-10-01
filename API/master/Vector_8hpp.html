@@ -130,11 +130,11 @@ This graph shows which files directly or indirectly include this file:</div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1IsVector.html">playrho::IsVector&lt; T &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trait class for checking if type is a <code><a class="el" href="structplayrho_1_1Vector.html" title="Vector.">Vector</a></code> type.  <a href="structplayrho_1_1IsVector.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1IsVector.html">playrho::detail::IsVector&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trait class for checking if type is a <code><a class="el" href="structplayrho_1_1Vector.html" title="Vector.">Vector</a></code> type.  <a href="structplayrho_1_1detail_1_1IsVector.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1IsVector_3_01Vector_3_01T_00_01N_01_4_01_4.html">playrho::IsVector&lt; Vector&lt; T, N &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trait class specialization for checking if type is a <code><a class="el" href="structplayrho_1_1Vector.html" title="Vector.">Vector</a></code> type..  <a href="structplayrho_1_1IsVector_3_01Vector_3_01T_00_01N_01_4_01_4.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1IsVector_3_01Vector_3_01T_00_01N_01_4_01_4.html">playrho::detail::IsVector&lt; Vector&lt; T, N &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trait class specialization for checking if type is a <code><a class="el" href="structplayrho_1_1Vector.html" title="Vector.">Vector</a></code> type..  <a href="structplayrho_1_1detail_1_1IsVector_3_01Vector_3_01T_00_01N_01_4_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstd_1_1tuple__element_3_01I_00_01playrho_1_1Vector_3_01T_00_01N_01_4_01_4.html">std::tuple_element&lt; I, playrho::Vector&lt; T, N &gt; &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tuple element type info for <code><a class="el" href="structplayrho_1_1Vector.html" title="Vector.">playrho::Vector</a></code>  <a href="classstd_1_1tuple__element_3_01I_00_01playrho_1_1Vector_3_01T_00_01N_01_4_01_4.html#details">More...</a><br /></td></tr>
@@ -149,6 +149,8 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceplayrho"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html">playrho</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceplayrho_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html">playrho::detail</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -285,11 +287,11 @@ template&lt;typename T , std::size_t N&gt; </td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ga168449a74e78ad00c9d22f1017de05f7"><td class="memTemplParams" colspan="2">
+<tr class="memitem:a168449a74e78ad00c9d22f1017de05f7"><td class="memTemplParams" colspan="2"><a id="a168449a74e78ad00c9d22f1017de05f7"></a>
 template&lt;class T &gt; </td></tr>
-<tr class="memitem:ga168449a74e78ad00c9d22f1017de05f7"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__VectorTraitsGroup.html#ga168449a74e78ad00c9d22f1017de05f7">playrho::IsVectorV</a> = IsVector&lt;T&gt;::value</td></tr>
-<tr class="memdesc:ga168449a74e78ad00c9d22f1017de05f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the given type is a <code><a class="el" href="structplayrho_1_1Vector.html" title="Vector.">Vector</a></code> type. <br /></td></tr>
-<tr class="separator:ga168449a74e78ad00c9d22f1017de05f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a168449a74e78ad00c9d22f1017de05f7"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a168449a74e78ad00c9d22f1017de05f7">playrho::IsVectorV</a> = detail::IsVector&lt;T&gt;::value</td></tr>
+<tr class="memdesc:a168449a74e78ad00c9d22f1017de05f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the given type is a <code><a class="el" href="structplayrho_1_1Vector.html" title="Vector.">Vector</a></code> type. <br /></td></tr>
+<tr class="separator:a168449a74e78ad00c9d22f1017de05f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Definition of the <code>Vector</code> class template and closely related code. </p>
@@ -299,7 +301,7 @@ template&lt;class T &gt; </td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="Vector_8hpp.html">Vector.hpp</a></li>
-    <li class="footer">Generated on Mon Sep 25 2023 23:39:53 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sun Oct 1 2023 15:40:19 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
