@@ -40,11 +40,7 @@ TEST(Shape, ByteSize)
 {
     // Check size at test runtime instead of compile-time via static_assert to avoid stopping
     // builds and to report actual size rather than just reporting that expected size is wrong.
-#if SHAPE_USES_UNIQUE_PTR
     EXPECT_EQ(sizeof(Shape), sizeof(std::unique_ptr<int>));
-#else
-    EXPECT_EQ(sizeof(Shape), sizeof(std::shared_ptr<int>));
-#endif
 }
 
 TEST(Shape, Traits)
@@ -67,11 +63,7 @@ TEST(Shape, Traits)
     EXPECT_FALSE((std::is_trivially_constructible_v<Shape, X, X>));
 
     EXPECT_TRUE(std::is_copy_constructible_v<Shape>);
-#if SHAPE_USES_UNIQUE_PTR
     EXPECT_FALSE(std::is_nothrow_copy_constructible_v<Shape>);
-#else
-    EXPECT_TRUE(std::is_nothrow_copy_constructible_v<Shape>);
-#endif
     EXPECT_FALSE(std::is_trivially_copy_constructible_v<Shape>);
 
     EXPECT_TRUE(std::is_move_constructible_v<Shape>);
@@ -79,11 +71,7 @@ TEST(Shape, Traits)
     EXPECT_FALSE(std::is_trivially_move_constructible_v<Shape>);
 
     EXPECT_TRUE(std::is_copy_assignable_v<Shape>);
-#if SHAPE_USES_UNIQUE_PTR
     EXPECT_FALSE(std::is_nothrow_copy_assignable_v<Shape>);
-#else
-    EXPECT_TRUE(std::is_nothrow_copy_assignable_v<Shape>);
-#endif
     EXPECT_FALSE(std::is_trivially_copy_assignable_v<Shape>);
 
     EXPECT_TRUE(std::is_move_assignable_v<Shape>);

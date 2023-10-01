@@ -42,9 +42,6 @@
 #include <playrho/d2/MassData.hpp>
 #include <playrho/d2/Math.hpp>
 
-// Set this to 1 to use std::unique_ptr or to 0 to use std::shared_ptr.
-#define SHAPE_USES_UNIQUE_PTR 1
-
 namespace playrho {
 namespace d2 {
 
@@ -465,16 +462,11 @@ public:
     /// @post <code>has_value()</code> returns false.
     Shape() noexcept = default;
 
-#if SHAPE_USES_UNIQUE_PTR
     /// @brief Copy constructor.
     Shape(const Shape& other) : m_self{other.m_self ? other.m_self->Clone_() : nullptr}
     {
         // Intentionally empty.
     }
-#else
-    /// @brief Copy constructor.
-    Shape(const Shape& other) = default;
-#endif
 
     /// @brief Move constructor.
     Shape(Shape&& other) noexcept = default;
@@ -490,29 +482,17 @@ public:
     /// @throws std::bad_alloc if there's a failure allocating storage.
     template <typename T, typename Tp = DecayedTypeIfNotSame<T, Shape>,
               typename = std::enable_if_t<std::is_constructible_v<Tp, T>>>
-    explicit Shape(T&& arg) : m_self
-    {
-#if SHAPE_USES_UNIQUE_PTR
-        std::make_unique<Model<Tp>>(std::forward<T>(arg))
-#else
-        std::make_shared<Model<Tp>>(std::forward<T>(arg))
-#endif
-    }
+    explicit Shape(T&& arg) : m_self{std::make_unique<Model<Tp>>(std::forward<T>(arg))}
     {
         // Intentionally empty.
     }
 
-#if SHAPE_USES_UNIQUE_PTR
     /// @brief Copy assignment.
     Shape& operator=(const Shape& other)
     {
         m_self = other.m_self ? other.m_self->Clone_() : nullptr;
         return *this;
     }
-#else
-    /// @brief Copy assignment operator.
-    Shape& operator=(const Shape& other) = default;
-#endif
 
     /// @brief Move assignment operator.
     Shape& operator=(Shape&& other) = default;
@@ -929,11 +909,7 @@ private:
         data_type data; ///< Data.
     };
 
-#if SHAPE_USES_UNIQUE_PTR
     std::unique_ptr<const Concept> m_self; ///< Self pointer.
-#else
-    std::shared_ptr<const Concept> m_self; ///< Self pointer.
-#endif
 };
 
 // Related free functions...
