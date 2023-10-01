@@ -52,6 +52,8 @@ class Shape;
 
 // Traits...
 
+namespace detail {
+
 /// @brief An "is valid shape type" trait.
 /// @note This is the general false template type.
 template <typename T, class = void>
@@ -87,11 +89,6 @@ struct IsValidShapeType<
     : std::true_type {
 };
 
-/// @brief Boolean value for whether the specified type is a valid shape type.
-/// @see Shape.
-template <class T>
-inline constexpr bool IsValidShapeTypeV = IsValidShapeType<T>::value;
-
 template <class T, class = void>
 struct HasSetFriction : std::false_type {
 };
@@ -102,10 +99,6 @@ struct HasSetFriction<T,
     : std::true_type {
 };
 
-/// @brief Helper variable template on whether <code>SetFriction(T&, Real)</code> is found.
-template <class T>
-inline constexpr bool HasSetFrictionV = HasSetFriction<T>::value;
-
 template <class T, class = void>
 struct HasSetSensor : std::false_type {
 };
@@ -114,10 +107,6 @@ template <class T>
 struct HasSetSensor<T, std::void_t<decltype(SetSensor(std::declval<T&>(), std::declval<bool>()))>>
     : std::true_type {
 };
-
-/// @brief Helper variable template on whether <code>SetSensor(T&, bool)</code> is found.
-template <class T>
-inline constexpr bool HasSetSensorV = HasSetSensor<T>::value;
 
 template <class T, class = void>
 struct HasSetDensity : std::false_type {
@@ -129,10 +118,6 @@ struct HasSetDensity<T, std::void_t<decltype(SetDensity(std::declval<T&>(),
     : std::true_type {
 };
 
-/// @brief Helper variable template on whether <code>SetDensity(T&, NonNegative<AreaDensity>)</code> is found.
-template <class T>
-inline constexpr bool HasSetDensityV = HasSetDensity<T>::value;
-
 template <class T, class = void>
 struct HasSetRestitution : std::false_type {
 };
@@ -143,10 +128,6 @@ struct HasSetRestitution<
     : std::true_type {
 };
 
-/// @brief Helper variable template on whether <code>SetRestitution(T&, Real)</code> is found.
-template <class T>
-inline constexpr bool HasSetRestitutionV = HasSetRestitution<T>::value;
-
 template <class T, class = void>
 struct HasSetFilter : std::false_type {
 };
@@ -155,10 +136,6 @@ template <class T>
 struct HasSetFilter<T, std::void_t<decltype(SetFilter(std::declval<T&>(), std::declval<Filter>()))>>
     : std::true_type {
 };
-
-/// @brief Helper variable template on whether <code>SetFilter(T&, Filter)</code> is found.
-template <class T>
-inline constexpr bool HasSetFilterV = HasSetFilter<T>::value;
 
 template <class T, class = void>
 struct HasTranslate : std::false_type {
@@ -170,10 +147,6 @@ struct HasTranslate<T,
     : std::true_type {
 };
 
-/// @brief Helper variable template on whether <code>Translate(T&, Length2)</code> is found.
-template <class T>
-inline constexpr bool HasTranslateV = HasTranslate<T>::value;
-
 template <class T, class = void>
 struct HasScale : std::false_type {
 };
@@ -182,10 +155,6 @@ template <class T>
 struct HasScale<T, std::void_t<decltype(Scale(std::declval<T&>(), std::declval<Vec2>()))>>
     : std::true_type {
 };
-
-/// @brief Helper variable template on whether <code>Scale(T&, Vec2)</code> is found.
-template <class T>
-inline constexpr bool HasScaleV = HasScale<T>::value;
 
 /// @brief Type trait for not finding a <code>Rotate(T&, Angle)</code> function.
 /// @details A @c UnaryTypeTrait providing the member constant @c value equal to @c false for
@@ -206,9 +175,44 @@ struct HasRotate<T, std::void_t<decltype(Rotate(std::declval<T&>(), std::declval
     : std::true_type {
 };
 
+}
+
+/// @brief Boolean value for whether the specified type is a valid shape type.
+/// @see Shape.
+template <class T>
+inline constexpr bool IsValidShapeTypeV = detail::IsValidShapeType<T>::value;
+
+/// @brief Helper variable template on whether <code>SetFriction(T&, Real)</code> is found.
+template <class T>
+inline constexpr bool HasSetFrictionV = detail::HasSetFriction<T>::value;
+
+/// @brief Helper variable template on whether <code>SetSensor(T&, bool)</code> is found.
+template <class T>
+inline constexpr bool HasSetSensorV = detail::HasSetSensor<T>::value;
+
+/// @brief Helper variable template on whether <code>SetDensity(T&, NonNegative<AreaDensity>)</code> is found.
+template <class T>
+inline constexpr bool HasSetDensityV = detail::HasSetDensity<T>::value;
+
+/// @brief Helper variable template on whether <code>SetRestitution(T&, Real)</code> is found.
+template <class T>
+inline constexpr bool HasSetRestitutionV = detail::HasSetRestitution<T>::value;
+
+/// @brief Helper variable template on whether <code>SetFilter(T&, Filter)</code> is found.
+template <class T>
+inline constexpr bool HasSetFilterV = detail::HasSetFilter<T>::value;
+
+/// @brief Helper variable template on whether <code>Translate(T&, Length2)</code> is found.
+template <class T>
+inline constexpr bool HasTranslateV = detail::HasTranslate<T>::value;
+
+/// @brief Helper variable template on whether <code>Scale(T&, Vec2)</code> is found.
+template <class T>
+inline constexpr bool HasScaleV = detail::HasScale<T>::value;
+
 /// @brief Helper variable template on whether <code>Rotate(T&, Angle)</code> is found.
 template <class T>
-inline constexpr bool HasRotateV = HasRotate<T>::value;
+inline constexpr bool HasRotateV = detail::HasRotate<T>::value;
 
 /// @brief Fallback friction setter that throws unless given the same value as current.
 template <class T>
