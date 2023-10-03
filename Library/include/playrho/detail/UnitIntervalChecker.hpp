@@ -28,11 +28,13 @@ namespace playrho::detail {
 
 /// @brief Unit-interval constrained value checker.
 /// @details Provides functors ensuring values are:
-///   greater-than or equal-to zero, and less-than or equal-to one.
+///   greater-than or equal-to zero, and less-than or equal-to one. By definition, this
+///   is called the "closed interval [0, 1]".
 /// @note This is meant to be used as a checker with types like <code>Checked</code>.
 /// @tparam T Underlying type for this checker.
 /// @ingroup Checkers
 /// @see Checked.
+/// @see https://en.wikipedia.org/wiki/Unit_interval.
 template <typename T>
 struct UnitIntervalChecker {
 

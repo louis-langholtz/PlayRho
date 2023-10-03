@@ -1793,13 +1793,13 @@ IslandStats AabbTreeWorld::SolveToi(ContactID contactID, const StepConf& conf)
         bA.SetAwakeFlag();
         // XXX should the body's under-active time be reset here?
         //   Erin's code does for here but not in b2World::Solve(const b2TimeStep& step).
-        //   Calling Body::ResetUnderActiveTime() has performance implications.
+        //   Reseting the body's under-active time has performance implications.
     }
     if (IsSpeedable(bB)) {
         bB.SetAwakeFlag();
         // XXX should the body's under-active time be reset here?
         //   Erin's code does for here but not in b2World::Solve(const b2TimeStep& step).
-        //   Calling Body::ResetUnderActiveTime() has performance implications.
+        //   Reseting the body's under-active time has performance implications.
     }
 
     // Build the island
