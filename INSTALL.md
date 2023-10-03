@@ -63,11 +63,16 @@ For example, to only build the library component using the CMake default generat
 cmake -S PlayRho -B PlayRhoBuild
 ```
 
-Alternatively, add the configuration arguments needed for each desired component and your platform.
-Then run the following where `$ConfigOptions` is the accumulated configuration options for the components you want:
+Or, to build it all:
 
 ```sh
-cmake -S PlayRho -B PlayRhoBuild $ConfigOptions
+cmake -S PlayRho -B PlayRhoBuild -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_BENCHMARK=ON -DPLAYRHO_BUILD_TESTBED=ON -DPLAYRHO_BUILD_HELLOWORLD=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+```
+
+Or, to use a non-default compiler tool chain like from `/opt/homebrew/opt/llvm/`:
+
+```sh
+CC=/opt/homebrew/opt/llvm/bin/clang CXX=/opt/homebrew/opt/llvm/bin/clang++ LDFLAGS='-L/opt/homebrew/opt/llvm/lib/c++' cmake -S PlayRho -B PlayRhoBuild
 ```
 
 #### Additional Options
@@ -97,6 +102,12 @@ To install the configured components into CMake's default locations, just run th
 
 ```sh
 cmake --install PlayRhoBuild
+```
+
+Or, to specify a prefix like `PlayRhoInstall`:
+
+```sh
+cmake --install PlayRhoBuild --prefix PlayRhoInstall
 ```
 
 See CMake's [Install a Project](https://cmake.org/cmake/help/latest/manual/cmake.1.html#install-a-project) webpage for more info.
