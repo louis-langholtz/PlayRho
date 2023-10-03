@@ -165,6 +165,7 @@ public:
 
     /// Sets the body's velocity.
     /// @note This sets what <code>GetVelocity()</code> returns.
+    /// @pre <code>IsSpeedable()</code> is true or given velocity is zero.
     /// @see GetVelocity.
     void JustSetVelocity(const Velocity& value) noexcept;
 
@@ -230,12 +231,16 @@ public:
     BodyType GetType() const noexcept;
 
     /// @brief Sets the type of this body.
+    /// @post <code>GetType()</code> returns type set.
+    /// @post <code>GetUnderActiveTime()</code> returns 0.
+    /// @post <code>IsAwake()</code> returns true for <code>BodyType::Dynamic</code> or
+    ///   <code>BodyType::Kinematic</code>, and returns false for <code>BodyType::Static</code>.
     /// @see GetType.
     void SetType(BodyType value) noexcept;
 
     /// @brief Is "speedable".
     /// @details Is this body able to have a non-zero speed associated with it.
-    /// Kinematic and Dynamic bodies are speedable. Static bodies are not.
+    ///   Kinematic and Dynamic bodies are speedable. Static bodies are not.
     /// @see GetType, SetType.
     bool IsSpeedable() const noexcept;
 
@@ -247,19 +252,21 @@ public:
     bool IsAccelerable() const noexcept;
 
     /// @brief Is this body treated like a bullet for continuous collision detection?
-    /// @see GetType, SetType, SetImpenetrable, UnsetImpenetrable.
+    /// @see SetImpenetrable, UnsetImpenetrable.
     bool IsImpenetrable() const noexcept;
 
     /// @brief Sets the impenetrable status of this body.
-    /// @details Sets whether or not this body should be treated like a bullet for continuous
-    ///   collision detection.
-    /// @see IsImpenetrable, GetType, SetType.
+    /// @details Sets that this body should be treated like a bullet for continuous collision
+    ///   detection.
+    /// @post <code>IsImpenetrable()</code> returns true.
+    /// @see IsImpenetrable.
     void SetImpenetrable() noexcept;
 
     /// @brief Unsets the impenetrable status of this body.
-    /// @details Sets whether or not this body should be treated like a bullet for continuous
-    ///   collision detection.
-    /// @see IsImpenetrable, GetType, SetType.
+    /// @details Unsets that this body should be treated like a bullet for continuous collision
+    ///   detection.
+    /// @post <code>IsImpenetrable()</code> returns false.
+    /// @see IsImpenetrable.
     void UnsetImpenetrable() noexcept;
 
     /// @brief Gets whether or not this body allowed to sleep.
@@ -389,18 +396,25 @@ public:
     const std::vector<ShapeID>& GetShapes() const noexcept;
 
     /// @brief Sets the identifiers of the shapes attached to this body.
-    /// @note This also sets the mass-data-dirty flag.
+    /// @post <code>GetShapes()</code> returns the value given.
+    /// @post <code>IsMassDataDirty()</code> returns true.
     /// @see GetShapes, Attach, Detach.
     void SetShapes(std::vector<ShapeID> value);
 
     /// @brief Adds the given shape identifier to the identifiers associated with this body.
-    /// @note This also sets the mass-data-dirty flag. Call <code>SetInvMassData</code> to clear it.
+    /// @param shapeId Identifier of the shape to attach.
     /// @pre @p shapeId is not @c InvalidShapeID .
-    /// @see GetShapes, SetShapes, Detach, SetInvMassData.
+    /// @post <code>IsMassDataDirty()</code> returns true.
+    /// @post <code>GetShapes()</code> returned container contains the given identifier.
+    /// @see Detach, GetShapes, SetShapes, IsMassDataDirty.
     Body& Attach(ShapeID shapeId);
 
     /// @brief Removes the given shape identifier from the identifiers associated with this body.
     /// @note This also sets the mass-data-dirty flag. Call <code>SetInvMassData</code> to clear it.
+    /// @param shapeId Identifier of the shape to detach.
+    /// @return true if identified shape was detached, false otherwise.
+    /// @post <code>IsMassDataDirty()</code> returns true if this function returned true.
+    /// @post <code>GetShapes()</code> returned container contains one less of the identifier.
     /// @see GetShapes, SetShapes, Attach, SetInvMassData.
     bool Detach(ShapeID shapeId);
 
