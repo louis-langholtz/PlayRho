@@ -57,7 +57,7 @@ jobs:
       run: |
         mv ${{env.TARGET_BRANCH_NAME}} ${{env.TARGET_BRANCH_NAME}}.old
         mkdir -p ${{env.TARGET_BRANCH_NAME}}
-        cp -R ${{github.workspace}}/build/Documentation/API/html/ ${{env.TARGET_BRANCH_NAME}}
+        rsync -a ${{github.workspace}}/build/Documentation/API/html/ ${{env.TARGET_BRANCH_NAME}}
 
     - name: Git Config Add Commit
       if: ${{ github.event_name == 'push' }}
