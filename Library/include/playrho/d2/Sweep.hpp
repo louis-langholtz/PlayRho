@@ -34,12 +34,10 @@ namespace playrho {
 namespace d2 {
 
 /// @brief Description of a "sweep" of motion in 2-D space.
-///
 /// @details This describes the motion of a body/shape for TOI computation.
 ///   Shapes are defined with respect to the body origin, which may
 ///   not coincide with the center of mass. However, to support dynamics
 ///   we must interpolate the center of mass position.
-///
 class Sweep
 {
 public:

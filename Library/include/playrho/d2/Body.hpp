@@ -154,19 +154,24 @@ public:
     const Sweep& GetSweep() const noexcept;
 
     /// @brief Gets the velocity.
-    /// @see SetVelocity.
+    /// @see SetVelocity, JustSetVelocity.
     Velocity GetVelocity() const noexcept;
 
     /// @brief Sets the body's velocity (linear and angular velocity).
-    /// @note This function does nothing if this body is not speedable.
-    /// @note A non-zero velocity will awaken this body.
-    /// @see SetAwake, SetUnderActiveTime, GetVelocity.
-    void SetVelocity(const Velocity& velocity) noexcept;
+    /// @param value Value of the velocity to set.
+    /// @post If @p velocity is non-zero and <code>IsSpeedable()</code> is true,
+    ///   <code>IsAwake()</code> returns true and <code>GetUnderActiveTime()</code> returns 0.
+    /// @post If @p velocity is zero or <code>IsSpeedable()</code> is true,
+    ///   <code>GetVelocity()</code> returns the @p value set.
+    /// @see IsAwake, IsSpeedable, GetUnderActiveTime, GetVelocity.
+    void SetVelocity(const Velocity& value) noexcept;
 
     /// Sets the body's velocity.
     /// @note This sets what <code>GetVelocity()</code> returns.
+    /// @param value Value of the velocity to set.
     /// @pre <code>IsSpeedable()</code> is true or given velocity is zero.
-    /// @see GetVelocity.
+    /// @post <code>GetVelocity()</code> returns the @p value set.
+    /// @see GetVelocity, IsSpeedable.
     void JustSetVelocity(const Velocity& value) noexcept;
 
     /// @brief Sets the linear and rotational accelerations on this body.
@@ -206,7 +211,7 @@ public:
     InvRotInertia GetInvRotInertia() const noexcept;
 
     /// @brief Sets the inverse mass data and clears the mass-data-dirty flag.
-    /// @note This calls <code>UnsetMassDataDirty</code>.
+    /// @post <code>IsMassDataDirty()</code> returns false.
     /// @see GetInvMass, GetInvRotInertia, IsMassDataDirty.
     void SetInvMassData(NonNegative<InvMass> invMass, NonNegative<InvRotInertia> invRotI) noexcept;
 
@@ -309,7 +314,7 @@ public:
     /// @brief Gets this body's under-active time value.
     /// @return Zero or more time in seconds (of step time) that this body has been
     ///   "under-active" for.
-    /// @see SetUnderActiveTime, ResetUnderActiveTime.
+    /// @see SetUnderActiveTime.
     Time GetUnderActiveTime() const noexcept;
 
     /// @brief Sets the "under-active" time to the given value.
@@ -318,12 +323,6 @@ public:
     /// @note A non-zero time is only valid for an "accelerable" body.
     /// @see GetUnderActiveTime.
     void SetUnderActiveTime(Time value) noexcept;
-
-    /// @brief Resets the under-active time for this body.
-    /// @note This has performance degrading potential and is best not called unless the
-    ///   caller is certain that it should be.
-    /// @see GetUnderActiveTime.
-    void ResetUnderActiveTime() noexcept;
 
     /// @brief Does this body have fixed rotation?
     /// @see SetFixedRotation.
@@ -347,16 +346,7 @@ public:
     void UnsetAwakeFlag() noexcept;
 
     /// @brief Gets whether the mass data for this body is "dirty".
-    /// @see SetMassDataDirty, UnsetMassDataDirty.
     bool IsMassDataDirty() const noexcept;
-
-    /// @brief Sets this body to have the mass data dirty state.
-    /// @see IsMassDataDirty.
-    void SetMassDataDirty() noexcept;
-
-    /// @brief Unsets the body from being in the mass data dirty state.
-    /// @see IsMassDataDirty.
-    void UnsetMassDataDirty() noexcept;
 
     /// @brief Gets the enabled/disabled state of the body.
     /// @see SetEnabled, UnsetEnabled.
@@ -494,7 +484,7 @@ inline void Body::SetInvMassData(NonNegative<InvMass> invMass,
 {
     m_invMass = invMass;
     m_invRotI = invRotI;
-    UnsetMassDataDirty();
+    m_flags &= ~e_massDataDirtyFlag;
 }
 
 inline NonNegative<Frequency> Body::GetLinearDamping() const noexcept
@@ -562,11 +552,6 @@ inline void Body::SetUnderActiveTime(Time value) noexcept
     }
 }
 
-inline void Body::ResetUnderActiveTime() noexcept
-{
-    m_underActiveTime = 0_s;
-}
-
 inline bool Body::IsEnabled() const noexcept
 {
     return (m_flags & e_enabledFlag) != 0;
@@ -600,16 +585,6 @@ inline LinearAcceleration2 Body::GetLinearAcceleration() const noexcept
 inline AngularAcceleration Body::GetAngularAcceleration() const noexcept
 {
     return m_angularAcceleration;
-}
-
-inline void Body::SetMassDataDirty() noexcept
-{
-    m_flags |= e_massDataDirtyFlag;
-}
-
-inline void Body::UnsetMassDataDirty() noexcept
-{
-    m_flags &= ~e_massDataDirtyFlag;
 }
 
 inline bool Body::IsMassDataDirty() const noexcept
@@ -670,7 +645,7 @@ inline const std::vector<ShapeID>& Body::GetShapes() const noexcept
 inline void Body::SetShapes(std::vector<ShapeID> value)
 {
     m_shapes = std::move(value);
-    SetMassDataDirty();
+    m_flags |= e_massDataDirtyFlag;
 }
 
 // Free functions...
