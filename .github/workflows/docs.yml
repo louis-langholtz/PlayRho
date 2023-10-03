@@ -15,7 +15,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout ${{env.TARGET_BRANCH_NAME}}
+      uses: actions/checkout@v4
+      with:
+        path: repo/${{env.TARGET_BRANCH_NAME}}
 
     - name: Prerequisites
       run: |
@@ -24,7 +27,7 @@ jobs:
 
     - name: Configure
       run: >
-        cmake -B ${{github.workspace}}/build
+        cmake -S ${{github.workspace}}/repo/${{env.TARGET_BRANCH_NAME}} -B ${{github.workspace}}/build
         -DCMAKE_BUILD_TYPE=Release
         -DPLAYRHO_BUILD_DOC=ON
         -DPLAYRHO_BUILD_LIBRARY=OFF
@@ -40,3 +43,35 @@ jobs:
       with:
         name: docs-${{env.TARGET_BRANCH_NAME}}
         path: ${{github.workspace}}/install/share/doc/PlayRho
+
+    - name: Checkout gh-pages
+      if: ${{ github.event_name == 'push' }}
+      uses: actions/checkout@v4
+      with:
+        ref: 'gh-pages'
+        path: repo/gh-pages
+
+    - name: Update gh-pages
+      if: ${{ github.event_name == 'push' }}
+      working-directory: ${{github.workspace}}/repo/gh-pages/API
+      run: |
+        mv ${{env.TARGET_BRANCH_NAME}} ${{env.TARGET_BRANCH_NAME}}.old
+        mkdir -p ${{env.TARGET_BRANCH_NAME}}
+        cp -R ${{github.workspace}}/build/Documentation/API/html/ ${{env.TARGET_BRANCH_NAME}}
+
+    - name: Git Config Add Commit
+      if: ${{ github.event_name == 'push' }}
+      working-directory: ${{github.workspace}}/repo/gh-pages
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add API/${{env.TARGET_BRANCH_NAME}}
+        git commit -m "Updates for ${{env.TARGET_BRANCH_NAME}}"
+
+    - name: Git Push
+      if: ${{ github.event_name == 'push' }}
+      uses: ad-m/github-push-action@v0.6.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: gh-pages
+        directory: ${{github.workspace}}/repo/gh-pages
