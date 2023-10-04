@@ -26,7 +26,7 @@
 /// @brief Definition of the <code>ArrayList</code> class and closely related functions.
 
 #include <array>
-#include <cassert>
+#include <cassert> // for assert
 #include <initializer_list>
 #include <type_traits>
 #include <utility> // for std::move

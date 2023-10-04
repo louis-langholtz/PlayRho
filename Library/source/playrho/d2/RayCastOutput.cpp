@@ -307,7 +307,6 @@ bool RayCast(const World& world, const RayCastInput& input, const ShapeRayCastCB
         if (output.has_value())
         {
             const auto fraction = output->fraction;
-            assert(fraction >= 0 && fraction <= 1);
             
             // Here point can be calculated these two ways:
             //   (1) point = p1 * (1 - fraction) + p2 * fraction
