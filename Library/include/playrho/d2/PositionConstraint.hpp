@@ -25,11 +25,12 @@
 /// @file
 /// @brief Definition of the @c PositionConstraint class and closely related code.
 
+#include <playrho/NonNegative.hpp>
+
 #include <playrho/d2/Manifold.hpp>
 #include <playrho/d2/BodyConstraint.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho::d2 {
 
 /// @brief The per-contact position constraint data structure.
 class PositionConstraint
@@ -38,12 +39,11 @@ public:
     PositionConstraint() = default;
 
     /// @brief Initializing constructor.
-    PositionConstraint(const Manifold& m, BodyID bA, BodyID bB, Length radius)
+    PositionConstraint(const Manifold& m, BodyID bA, BodyID bB, NonNegativeFF<Length> radius)
         : manifold{m}, m_bodyA{bA}, m_bodyB{bB}, m_totalRadius{radius}
     {
         assert(m.GetPointCount() > 0);
         assert(bA != bB);
-        assert(radius >= 0_m);
     }
 
     Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points.
@@ -72,11 +72,9 @@ private:
     BodyID m_bodyB; ///< Identifier for body-B.
 
     /// @brief Total "Radius" distance of the associated shapes of fixture A and fixture B.
-    /// @note 0 or greater.
-    Length m_totalRadius{};
+    NonNegativeFF<Length> m_totalRadius{};
 };
 
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2
 
 #endif // PLAYRHO_D2_POSITIONCONSTRAINT_HPP

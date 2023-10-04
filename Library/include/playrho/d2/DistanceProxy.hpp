@@ -114,7 +114,6 @@ public:
           m_count{count},
           m_vertexRadius{vertexRadius}
     {
-        assert(vertexRadius >= 0_m);
         assert(count < 1u || vertices);
         assert(count < 2u || normals);
 #ifdef IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS
