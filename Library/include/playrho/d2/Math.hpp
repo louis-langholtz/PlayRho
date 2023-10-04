@@ -240,7 +240,7 @@ inline Transformation GetTransformation(const Position& pos, const Length2& loca
 /// @return Transformation of the given sweep at the specified time.
 inline Transformation GetTransformation(const Sweep& sweep, const UnitIntervalFF<Real> beta) noexcept
 {
-    return GetTransformation(GetPosition(sweep.pos0, sweep.pos1, beta), sweep.GetLocalCenter());
+    return GetTransformation(GetPosition(sweep.pos0, sweep.pos1, beta), sweep.localCenter);
 }
 
 /// @brief Gets the transform at "time" zero.
@@ -250,7 +250,7 @@ inline Transformation GetTransformation(const Sweep& sweep, const UnitIntervalFF
 /// @return Transformation of the given sweep at time zero.
 inline Transformation GetTransform0(const Sweep& sweep) noexcept
 {
-    return GetTransformation(sweep.pos0, sweep.GetLocalCenter());
+    return GetTransformation(sweep.pos0, sweep.localCenter);
 }
 
 /// @brief Gets the transform at "time" one.
@@ -260,7 +260,7 @@ inline Transformation GetTransform0(const Sweep& sweep) noexcept
 /// @return Transformation of the given sweep at time one.
 inline Transformation GetTransform1(const Sweep& sweep) noexcept
 {
-    return GetTransformation(sweep.pos1, sweep.GetLocalCenter());
+    return GetTransformation(sweep.pos1, sweep.localCenter);
 }
 
 /// @brief Gets the contact relative velocity.
