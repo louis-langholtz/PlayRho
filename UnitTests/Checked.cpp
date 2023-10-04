@@ -18,19 +18,20 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "UnitTests.hpp"
-
-#include <playrho/NonNegative.hpp>
-#include <playrho/NonPositive.hpp>
-#include <playrho/NonZero.hpp>
-#include <playrho/UnitInterval.hpp>
-#include <playrho/Finite.hpp>
-#include <playrho/Positive.hpp>
-#include <playrho/Negative.hpp>
-
 #include <limits>
 #include <cmath>
 #include <type_traits>
+
+#include "UnitTests.hpp"
+
+#include <playrho/Finite.hpp>
+#include <playrho/NonNegative.hpp>
+#include <playrho/NonPositive.hpp>
+#include <playrho/NonZero.hpp>
+#include <playrho/Negative.hpp>
+#include <playrho/Positive.hpp>
+#include <playrho/UnitInterval.hpp>
+#include <playrho/ZeroToUnderOne.hpp>
 
 using namespace playrho;
 
@@ -240,6 +241,16 @@ TEST(CheckedValue, IntUnitInterval)
 
     EXPECT_THROW(UnitInterval<int>(2), UnitInterval<int>::exception_type);
     EXPECT_THROW(UnitInterval<int>(-1), UnitInterval<int>::exception_type);
+}
+
+TEST(CheckedValue, ZeroToUnderOne)
+{
+    EXPECT_NO_THROW(ZeroToUnderOne<double>(0.0));
+    EXPECT_NO_THROW(ZeroToUnderOne<double>(0.9999));
+    EXPECT_NO_THROW(ZeroToUnderOne<double>(std::nextafter(1.0, 0.0)));
+    EXPECT_THROW(ZeroToUnderOne<double>(1.0), ZeroToUnderOne<double>::exception_type);
+    EXPECT_THROW(ZeroToUnderOne<double>(1.1), ZeroToUnderOne<double>::exception_type);
+    EXPECT_THROW(ZeroToUnderOne<double>(-0.1), ZeroToUnderOne<double>::exception_type);
 }
 
 namespace playrho {

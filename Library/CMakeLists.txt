@@ -43,6 +43,7 @@ set(PLAYRHO_DETAIL_HDRS
 	"${PLAYRHO_INCLUDE_PREFIX}detail/UnitIntervalChecker.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}detail/underlying_type.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}detail/Wider.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}detail/ZeroToUnderOneChecker.hpp"
 	)
 
 configure_file("${PLAYRHO_INCLUDE_PREFIX}Defines.hpp.in" "${PLAYRHO_INCLUDE_PREFIX}Defines.hpp" @ONLY)

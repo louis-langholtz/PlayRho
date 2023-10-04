@@ -30,6 +30,7 @@
 
 #include <playrho/BodyType.hpp>
 #include <playrho/ShapeID.hpp>
+#include <playrho/ZeroToUnderOne.hpp>
 
 #include <playrho/d2/BodyConf.hpp>
 #include <playrho/d2/MassData.hpp>
@@ -379,7 +380,7 @@ public:
     /// @brief Calls the body sweep's <code>Advance0</code> function to advance to
     ///    the given value.
     /// @see GetSweep.
-    void Advance0(Real value) noexcept;
+    void Advance0(ZeroToUnderOneFF<Real> value) noexcept;
 
     /// @brief Gets the identifiers of the shapes attached to this body.
     /// @see SetShapes, Attach, Detach.
@@ -627,7 +628,7 @@ inline void Body::ResetAlpha0() noexcept
     m_sweep.ResetAlpha0();
 }
 
-inline void Body::Advance0(Real value) noexcept
+inline void Body::Advance0(ZeroToUnderOneFF<Real> value) noexcept
 {
     // Note: Static bodies must **never** have different sweep position values.
     // Confirm bodies don't have different sweep positions to begin with...
@@ -879,7 +880,7 @@ inline void SetPosition1(Body& body, const Position& value) noexcept
 /// @brief Calls the body sweep's <code>Advance0</code> function to advance to
 ///    the given value.
 /// @see GetSweep.
-inline void Advance0(Body& body, Real value) noexcept
+inline void Advance0(Body& body, ZeroToUnderOneFF<Real> value) noexcept
 {
     body.Advance0(value);
 }
@@ -892,7 +893,7 @@ inline void Advance0(Body& body, Real value) noexcept
 /// @param body The body to update.
 /// @param value Valid new time factor in [0,1) to advance the sweep to.
 /// @see GetSweep, SetSweep, GetTransofmration, SetTransformation.
-inline void Advance(Body& body, Real value) noexcept
+inline void Advance(Body& body, ZeroToUnderOneFF<Real> value) noexcept
 {
     // Advance to the new safe time. This doesn't sync the broad-phase.
     Advance0(body, value);

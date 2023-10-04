@@ -27,6 +27,7 @@
 
 #include <playrho/Settings.hpp>
 #include <playrho/Vector2.hpp>
+#include <playrho/ZeroToUnderOne.hpp>
 
 #include <playrho/d2/Position.hpp>
 
@@ -46,16 +47,14 @@ public:
 
     /// @brief Initializing constructor.
     constexpr Sweep(const Position& p0, const Position& p1, const Length2& lc = Length2{0_m, 0_m},
-                    Real a0 = 0) noexcept
+                    ZeroToUnderOneFF<Real> a0 = {}) noexcept
         : pos0{p0}, pos1{p1}, localCenter{lc}, alpha0{a0}
     {
-        assert(a0 >= 0);
-        assert(a0 < 1);
     }
 
     /// @brief Initializing constructor.
     constexpr explicit Sweep(const Position& p, const Length2& lc = Length2{0_m, 0_m})
-        : Sweep{p, p, lc, 0}
+        : Sweep{p, p, lc, ZeroToUnderOneFF<Real>{}}
     {
         // Intentionally empty.
     }
@@ -70,7 +69,7 @@ public:
 
     /// @brief Gets the alpha 0 for this sweep.
     /// @return Value between 0 and less than 1.
-    constexpr Real GetAlpha0() const noexcept
+    constexpr ZeroToUnderOneFF<Real> GetAlpha0() const noexcept
     {
         return alpha0;
     }
@@ -82,13 +81,13 @@ public:
     ///   the alpha 0.
     /// @param alpha Valid new time factor in [0,1) to update the sweep to. Behavior is
     ///   not specified if value is invalid.
-    void Advance0(Real alpha) noexcept;
+    void Advance0(ZeroToUnderOneFF<Real> alpha) noexcept;
 
     /// @brief Resets the alpha 0 value back to zero.
     /// @post Getting the alpha 0 value after calling this function will return zero.
     constexpr void ResetAlpha0() noexcept
     {
-        alpha0 = 0;
+        alpha0 = {};
     }
 
     /// @brief Center world position and world angle at time "0".
@@ -104,7 +103,7 @@ private:
     /// @brief Fraction of the current time step in the range [0,1]
     /// @note <code>pos0.linear</code> and <code>pos0.angular</code> are the positions at
     ///   <code>alpha0</code>.
-    Real alpha0 = 0;
+    ZeroToUnderOneFF<Real> alpha0;
 };
 
 // Free functions...
