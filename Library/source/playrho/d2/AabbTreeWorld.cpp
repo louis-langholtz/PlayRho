@@ -1609,7 +1609,7 @@ AabbTreeWorld::UpdateContactTOIs(const StepConf& conf)
          * alpha-0 times. So long as the least TOI of the contacts is always the first
          * collision that gets dealt with, this presumption is safe.
          */
-        const auto alpha0 = std::max(bA.GetSweep().GetAlpha0(), bB.GetSweep().GetAlpha0());
+        const auto alpha0 = std::max(bA.GetSweep().alpha0, bB.GetSweep().alpha0);
         Advance0(bA, alpha0);
         Advance0(bB, alpha0);
 
@@ -1754,7 +1754,7 @@ IslandStats AabbTreeWorld::SolveToi(ContactID contactID, const StepConf& conf)
         const auto backupB = GetSweep(bB);
 
         // Advance the bodies to the TOI.
-        assert((toi != Real(0)) || ((GetSweep(bA).GetAlpha0() == Real(0)) && (GetSweep(bB).GetAlpha0() == Real(0))));
+        assert((toi != Real(0)) || ((GetSweep(bA).alpha0 == Real(0)) && (GetSweep(bB).alpha0 == Real(0))));
         Advance(bA, toi);
         Advance(bB, toi);
         FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(bodyIdA)]);
@@ -1977,7 +1977,7 @@ AabbTreeWorld::ProcessContactsForTOI( // NOLINT(readability-function-cognitive-c
                     const auto otherIslanded = m_islanded.bodies[to_underlying(otherId)];
                     {
                         const auto backup = GetSweep(other);
-                        if (!otherIslanded /* && GetSweep(other).GetAlpha0() != toi */) {
+                        if (!otherIslanded /* && GetSweep(other).alpha0 != toi */) {
                             Advance(other, toi);
                             FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(otherId)]);
                         }
@@ -2257,8 +2257,8 @@ AabbTreeWorld::UpdateContactsStats AabbTreeWorld::UpdateContacts(const StepConf&
             return;
         }
 
-        // Possible that bodyA.GetSweep().GetAlpha0() != 0
-        // Possible that bodyB.GetSweep().GetAlpha0() != 0
+        // Possible that bodyA.GetSweep().alpha0 != 0
+        // Possible that bodyB.GetSweep().alpha0 != 0
 
         contact.SetEnabled();
 

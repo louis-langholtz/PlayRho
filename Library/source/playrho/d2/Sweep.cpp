@@ -24,11 +24,10 @@
 
 namespace playrho::d2 {
 
-void Sweep::Advance0(const ZeroToUnderOneFF<Real> alpha) noexcept
+Sweep Advance0(const Sweep& sweep, const ZeroToUnderOneFF<Real> alpha) noexcept
 {
-    const auto beta = (alpha - alpha0) / (Real(1) - alpha0);
-    pos0 = GetPosition(pos0, pos1, beta);
-    alpha0 = alpha;
+    const auto beta = (alpha - sweep.alpha0) / (Real(1) - sweep.alpha0);
+    return {GetPosition(sweep.pos0, sweep.pos1, beta), sweep.pos1, sweep.localCenter, alpha};
 }
 
 } // namespace playrho::d2

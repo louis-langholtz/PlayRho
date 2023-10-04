@@ -620,12 +620,12 @@ inline void Body::SetPosition1(const Position& value) noexcept
 {
     assert(IsSpeedable() || m_sweep.pos1 == value);
     m_sweep.pos1 = value;
-    m_xf = ::playrho::d2::GetTransformation(value, m_sweep.GetLocalCenter());
+    m_xf = ::playrho::d2::GetTransformation(value, m_sweep.localCenter);
 }
 
 inline void Body::ResetAlpha0() noexcept
 {
-    m_sweep.ResetAlpha0();
+    m_sweep.alpha0 = {};
 }
 
 inline void Body::Advance0(ZeroToUnderOneFF<Real> value) noexcept
@@ -633,7 +633,7 @@ inline void Body::Advance0(ZeroToUnderOneFF<Real> value) noexcept
     // Note: Static bodies must **never** have different sweep position values.
     // Confirm bodies don't have different sweep positions to begin with...
     assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
-    m_sweep.Advance0(value);
+    m_sweep = ::playrho::d2::Advance0(m_sweep, value);
     // Confirm bodies don't have different sweep positions to end with...
     assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
 }
@@ -940,7 +940,7 @@ inline Length2 GetWorldCenter(const Body& body) noexcept
 /// @brief Gets the local position of the center of mass.
 inline Length2 GetLocalCenter(const Body& body) noexcept
 {
-    return body.GetSweep().GetLocalCenter();
+    return body.GetSweep().localCenter;
 }
 
 /// @brief Gets the body's position.

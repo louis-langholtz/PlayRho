@@ -264,7 +264,7 @@ bool Body::Detach(ShapeID shapeId)
 
 void SetTransformation(Body& body, const Transformation& value) noexcept
 {
-    SetSweep(body, Sweep{Position{value.p, GetAngle(value.q)}, GetSweep(body).GetLocalCenter()});
+    SetSweep(body, Sweep{Position{value.p, GetAngle(value.q)}, GetSweep(body).localCenter});
 }
 
 void SetLocation(Body& body, const Length2& value)

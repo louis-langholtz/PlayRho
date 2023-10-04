@@ -58,9 +58,9 @@ TEST(Sweep, ResetSetsAlpha0to0)
 {
     const auto pos = Position{Length2{-0.4_m, 2.34_m}, 3.14_rad};
     Sweep sweep{pos, pos, Length2{}, Real(0.6)};
-    EXPECT_NE(Real{0}, sweep.GetAlpha0());
-    sweep.ResetAlpha0();
-    EXPECT_EQ(Real{0}, sweep.GetAlpha0());
+    EXPECT_NE(Real{0}, sweep.alpha0);
+    sweep.alpha0 = {};
+    EXPECT_EQ(Real{0}, sweep.alpha0);
 }
 
 TEST(Sweep, GetPosition)
@@ -78,15 +78,15 @@ TEST(Sweep, Advance)
     const auto pos1 = Position{Length2{+0.4_m, -2.34_m}, -3.12_rad};
 
     Sweep sweep{pos0, pos1, Length2{}, 0};
-    EXPECT_EQ(Real{0}, sweep.GetAlpha0());
+    EXPECT_EQ(Real{0}, sweep.alpha0);
 
-    sweep.Advance0(0);
-    EXPECT_EQ(Real{0}, sweep.GetAlpha0());
+    sweep = Advance0(sweep, 0);
+    EXPECT_EQ(Real{0}, sweep.alpha0);
     EXPECT_EQ(pos0, sweep.pos0);
     EXPECT_EQ(pos1, sweep.pos1);
 
-    sweep.Advance0(Real{1} / Real{2});
-    EXPECT_EQ(Real{1} / Real{2}, sweep.GetAlpha0());
+    sweep = Advance0(sweep, Real{1} / Real{2});
+    EXPECT_EQ(Real{1} / Real{2}, sweep.alpha0);
     EXPECT_EQ(pos1, sweep.pos1);
     EXPECT_EQ(GetX(sweep.pos0.linear), GetX(Length2{}));
     EXPECT_EQ(GetY(sweep.pos0.linear), GetY(Length2{}));
@@ -96,8 +96,8 @@ TEST(Sweep, Advance)
     EXPECT_NEAR(static_cast<double>(Real(sweep.pos0.angular/1_rad)), -3.1415927410125732, 1e-20);
 #endif
 
-    sweep.Advance0(0);
-    EXPECT_EQ(Real{0}, sweep.GetAlpha0());
+    sweep = Advance0(sweep, 0);
+    EXPECT_EQ(Real{0}, sweep.alpha0);
     EXPECT_EQ(pos0, sweep.pos0);
     EXPECT_EQ(pos1, sweep.pos1);
 }

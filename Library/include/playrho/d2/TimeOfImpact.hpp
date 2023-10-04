@@ -28,7 +28,7 @@
 namespace playrho::d2 {
 
 class DistanceProxy;
-class Sweep;
+struct Sweep;
 
 /// @brief Gets the time of impact for two disjoint convex sets using the
 ///    Separating Axis Theorem.

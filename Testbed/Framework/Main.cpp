@@ -1752,7 +1752,7 @@ static bool EntityUI(Sweep& sweep)
         ImGui::NextColumn();
     }
     {
-        auto location = sweep.GetLocalCenter();
+        auto location = sweep.localCenter;
         if (LengthUI(location, "Loc. Mass Ctr.")) {
             SetLocalCenter(sweep, location);
             changed = true;
@@ -1767,11 +1767,11 @@ static bool EntityUI(Sweep& sweep)
         {
             const auto min = 0.0f;
             const auto max = std::nextafter(1.0f, min);
-            auto value = static_cast<float>(sweep.GetAlpha0());
+            auto value = static_cast<float>(sweep.alpha0);
             ImGui::ItemWidthContext itemWidthCtx(colWidth * 2 + 4);
             if (ImGui::SliderFloat("##Alpha0", &value, min, max, "%.2f")) {
-                value = std::min(value, max);
-                sweep.Advance0(Real(value));
+                value = std::clamp(value, min, max);
+                sweep = Advance0(sweep, Real(value));
                 changed = true;
             }
         }

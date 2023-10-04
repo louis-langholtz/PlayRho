@@ -38,7 +38,7 @@ ToiOutput GetToiViaSat( // NOLINT(readability-function-cognitive-complexity)
 {
     assert(IsValid(sweepA));
     assert(IsValid(sweepB));
-    assert(sweepA.GetAlpha0() == sweepB.GetAlpha0());
+    assert(sweepA.alpha0 == sweepB.alpha0);
 
     // CCD via the local separating axis method. This seeks progression
     // by computing the largest time at which separation is maintained.
