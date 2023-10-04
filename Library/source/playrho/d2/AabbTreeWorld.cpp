@@ -666,7 +666,7 @@ RemoveUnspeedablesFromIslanded(const Span<const BodyID>& bodies,
 struct ContactToiData
 {
     ContactID contact = InvalidContactID; ///< Contact for which the time of impact is relevant.
-    UnitIntervalFF<Real> toi; ///< Time of impact (TOI) as a fractional value between 0 and 1.
+    ZeroToUnderOneFF<Real> toi; ///< Time of impact (TOI) as a fractional value 0 to under 1.
     ContactCounter simultaneous = 0; ///< Count of simultaneous contacts at this TOI.
 };
 
@@ -677,7 +677,7 @@ struct ContactToiData
 ContactToiData GetSoonestContact(const KeyedContactIDs& contacts,
                                  const ObjectPool<Contact>& buffer) noexcept
 {
-    auto minToi = UnitIntervalFF<Real>{nextafter(Real{1}, Real{0})};
+    auto minToi = ZeroToUnderOneFF<Real>{nextafter(Real{1}, Real{0})};
     auto found = InvalidContactID;
     auto count = ContactCounter{0};
     for (const auto& contact: contacts)
@@ -688,13 +688,16 @@ ContactToiData GetSoonestContact(const KeyedContactIDs& contacts,
         {
             if (minToi > *toi)
             {
-                minToi = *toi;
+                minToi = ZeroToUnderOneFF<Real>(*toi);
                 found = contactID;
                 count = 1;
             }
             else if (minToi == *toi)
             {
                 // Have multiple contacts at the current minimum time of impact.
+                if (found == InvalidContactID) {
+                    found = contactID;
+                }
                 ++count;
             }
         }
@@ -1607,7 +1610,6 @@ AabbTreeWorld::UpdateContactTOIs(const StepConf& conf)
          * collision that gets dealt with, this presumption is safe.
          */
         const auto alpha0 = std::max(bA.GetSweep().GetAlpha0(), bB.GetSweep().GetAlpha0());
-        assert(alpha0 >= 0 && alpha0 < 1);
         Advance0(bA, alpha0);
         Advance0(bB, alpha0);
 
@@ -1627,10 +1629,8 @@ AabbTreeWorld::UpdateContactTOIs(const StepConf& conf)
         // Use Min function to handle floating point imprecision which possibly otherwise
         // could provide a TOI that's greater than 1.
         const auto toi = IsValidForTime(output.state)?
-            std::min(alpha0 + (1 - alpha0) * output.time, Real{1}): Real{1};
-        assert(toi >= alpha0 && toi <= 1);
-        SetToi(c, toi);
-        
+            std::min(alpha0 + (Real(1) - alpha0) * output.time, Real(1)): Real(1);
+        SetToi(c, UnitIntervalFF<Real>(toi));
         results.maxDistIters = std::max(results.maxDistIters, output.stats.max_dist_iters);
         results.maxToiIters = std::max(results.maxToiIters, output.stats.toi_iters);
         results.maxRootIters = std::max(results.maxRootIters, output.stats.max_root_iters);
@@ -1743,7 +1743,7 @@ IslandStats AabbTreeWorld::SolveToi(ContactID contactID, const StepConf& conf)
     assert(!m_islanded.contacts[to_underlying(contactID)]);
     assert(GetToi(contact));
 
-    const auto toi = *GetToi(contact); // NOLINT(bugprone-unchecked-optional-access)
+    const auto toi = ZeroToUnderOneFF<Real>(*GetToi(contact)); // NOLINT(bugprone-unchecked-optional-access)
     const auto bodyIdA = GetBodyA(contact);
     const auto bodyIdB = GetBodyB(contact);
     auto& bA = m_bodyBuffer[to_underlying(bodyIdA)];
@@ -1948,13 +1948,13 @@ IslandStats AabbTreeWorld::SolveToiViaGS(const Island& island, const StepConf& c
 
 AabbTreeWorld::ProcessContactsOutput
 AabbTreeWorld::ProcessContactsForTOI( // NOLINT(readability-function-cognitive-complexity)
-                                 BodyID id, Island& island, Real toi, const StepConf& conf)
+                                     BodyID id, Island& island, ZeroToUnderOneFF<Real> toi,
+                                     const StepConf& conf)
 {
     const auto& body = m_bodyBuffer[to_underlying(id)];
 
     assert(m_islanded.bodies[to_underlying(id)]);
     assert(body.IsAccelerable());
-    assert(toi >= 0 && toi <= 1);
 
     auto results = ProcessContactsOutput{};
     assert(results.contactsUpdated == 0);

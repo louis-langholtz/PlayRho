@@ -79,6 +79,11 @@ struct NoOpChecker
 ///   an efficient and scalable mechanism for defensive/offensive programming or
 ///   for pre/post conditions of contract oriented programming so long as the
 ///   value-type this is used with has only value semantics.
+/// @note The history of contracts in C++ is long and associated proposals are sordid.
+///   There doesn't even appear to be sensible consensus on the meaning of "noexcept".
+///   OTOH, N4659 18.4.5 clearly states: "Whenever an exception is thrown and the
+///   search for a handler (18.3) encounters the outermost block of a function with a
+///   non-throwing exception specification, the function std::terminate() is called".
 /// @invariant The value of an object of this type is always valid for the checker
 ///   of the type.
 /// @tparam ValueType Type of the underlying value that will get checked. Note that
@@ -99,6 +104,8 @@ struct NoOpChecker
 ///   from within the program (that should be valid, and as an offensive programming
 ///   mechanism).
 /// @see https://en.cppreference.com/w/cpp/language/noexcept_spec.
+/// @see http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf.
+/// @see https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p1656r2.html.
 template <class ValueType, class Checker = NoOpChecker<ValueType>, bool NoExcept = false>
 class Checked
 {

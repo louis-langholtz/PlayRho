@@ -400,6 +400,8 @@
 		9901AF222AB248A80075122D /* FiniteChecker.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9901AF1B2AB248A80075122D /* FiniteChecker.hpp */; };
 		9901AF232AB248A80075122D /* PositiveChecker.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9901AF1C2AB248A80075122D /* PositiveChecker.hpp */; };
 		990531502ABB588D0078F9B0 /* PositionSolution.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9905314F2ABB588D0078F9B0 /* PositionSolution.hpp */; };
+		9919882C2ACCC6150076F969 /* ZeroToUnderOneChecker.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9919882B2ACCC6150076F969 /* ZeroToUnderOneChecker.hpp */; };
+		9919882E2ACCC7B70076F969 /* ZeroToUnderOne.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9919882D2ACCC7B70076F969 /* ZeroToUnderOne.hpp */; };
 		9921FFD729AD43C30043F23F /* TypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9921FFD629AD43C30043F23F /* TypeInfo.cpp */; };
 		996B7B832A6DF1A500A8207F /* PoolMemoryResource.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */; };
 		996B7B842A6DF1A500A8207F /* MemoryResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */; };
@@ -893,6 +895,8 @@
 		9901AF1B2AB248A80075122D /* FiniteChecker.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FiniteChecker.hpp; sourceTree = "<group>"; };
 		9901AF1C2AB248A80075122D /* PositiveChecker.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PositiveChecker.hpp; sourceTree = "<group>"; };
 		9905314F2ABB588D0078F9B0 /* PositionSolution.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PositionSolution.hpp; sourceTree = "<group>"; };
+		9919882B2ACCC6150076F969 /* ZeroToUnderOneChecker.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ZeroToUnderOneChecker.hpp; sourceTree = "<group>"; };
+		9919882D2ACCC7B70076F969 /* ZeroToUnderOne.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ZeroToUnderOne.hpp; sourceTree = "<group>"; };
 		9921FFD629AD43C30043F23F /* TypeInfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TypeInfo.cpp; sourceTree = "<group>"; };
 		996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PoolMemoryResource.hpp; sourceTree = "<group>"; };
 		996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryResource.cpp; sourceTree = "<group>"; };
@@ -1421,6 +1425,7 @@
 				9901AF182AB248A80075122D /* UnitIntervalChecker.hpp */,
 				9901AF012A9D5D6B0075122D /* underlying_type.hpp */,
 				4768D3F21E3A7ACA00574143 /* Wider.hpp */,
+				9919882B2ACCC6150076F969 /* ZeroToUnderOneChecker.hpp */,
 			);
 			path = detail;
 			sourceTree = "<group>";
@@ -1519,6 +1524,7 @@
 				47B58F581F57218400354C34 /* Version.hpp */,
 				9901AF092A9D8F7B0075122D /* WiderType.hpp */,
 				47D28D9B1F6F28C70094C032 /* WrongState.hpp */,
+				9919882D2ACCC7B70076F969 /* ZeroToUnderOne.hpp */,
 			);
 			path = playrho;
 			sourceTree = "<group>";
@@ -1561,6 +1567,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9919882E2ACCC7B70076F969 /* ZeroToUnderOne.hpp in Headers */,
 				4706451D25336237006E69AA /* LimitState.hpp in Headers */,
 				4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */,
 				4764086F250EA5DE0090F711 /* ObjectPool.hpp in Headers */,
@@ -1568,6 +1575,7 @@
 				4764085325045B3C0090F711 /* UnitInterval.hpp in Headers */,
 				479132DF26A52AAF0011707B /* PointState.hpp in Headers */,
 				47D28D9D1F6F28C70094C032 /* WrongState.hpp in Headers */,
+				9919882C2ACCC6150076F969 /* ZeroToUnderOneChecker.hpp in Headers */,
 				4706451B252CE27B006E69AA /* TypeInfo.hpp in Headers */,
 				476408932522698E0090F711 /* WorldMisc.hpp in Headers */,
 				4764085B250482300090F711 /* Positive.hpp in Headers */,

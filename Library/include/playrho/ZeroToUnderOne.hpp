@@ -1,6 +1,5 @@
 /*
- * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
- * Modified work Copyright (c) 2023 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2023 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -19,16 +18,29 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/Math.hpp> // for GetPosition
-#include <playrho/d2/Sweep.hpp>
+#ifndef PLAYRHO_ZEROTOUNDERONE_HPP
+#define PLAYRHO_ZEROTOUNDERONE_HPP
 
-namespace playrho::d2 {
+/// @file
+/// @brief Definition of the @c ZeroToUnderOne value checked types and related code.
 
-void Sweep::Advance0(const ZeroToUnderOneFF<Real> alpha) noexcept
-{
-    const auto beta = (alpha - alpha0) / (Real(1) - alpha0);
-    pos0 = GetPosition(pos0, pos1, beta);
-    alpha0 = alpha;
-}
+#include <playrho/detail/Checked.hpp>
+#include <playrho/detail/ZeroToUnderOneChecker.hpp>
 
-} // namespace playrho::d2
+namespace playrho {
+
+/// @ingroup CheckedTypes
+/// @brief Unit interval constrained value type.
+template <typename T>
+using ZeroToUnderOne = detail::Checked<T, detail::ZeroToUnderOneChecker<T>>;
+
+/// @ingroup CheckedTypes
+/// @brief Fast failing unit interval constrained value type.
+template <typename T>
+using ZeroToUnderOneFF = detail::Checked<T, detail::ZeroToUnderOneChecker<T>, true>;
+
+static_assert(std::is_default_constructible_v<ZeroToUnderOne<int>>);
+
+} // namespace playrho
+
+#endif // PLAYRHO_ZEROTOUNDERONE_HPP

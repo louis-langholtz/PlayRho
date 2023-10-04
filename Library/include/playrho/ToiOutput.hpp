@@ -25,6 +25,7 @@
 /// @brief Definitions of @c ToiOutput class and closely related code.
 
 #include <playrho/Settings.hpp>
+#include <playrho/UnitInterval.hpp>
 #include <playrho/WiderType.hpp>
 
 namespace playrho {
@@ -123,9 +124,9 @@ struct ToiOutput {
     ToiOutput() = default;
 
     /// @brief Initializing constructor.
-    ToiOutput(Real t, Statistics s, State z) noexcept : time{t}, stats{s}, state{z} {}
+    ToiOutput(UnitIntervalFF<Real> t, Statistics s, State z) noexcept : time{t}, stats{s}, state{z} {}
 
-    Real time = 0; ///< Time factor in range of [0,1] into the future.
+    UnitIntervalFF<Real> time = 0; ///< Time factor in range of [0,1] into the future.
     Statistics stats; ///< Statistics.
     State state = e_unknown; ///< State at time factor.
 };

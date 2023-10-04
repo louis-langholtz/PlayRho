@@ -732,9 +732,9 @@ private:
     /// @note Precondition: there should be no lower TOI for which contacts have not already been processed.
     /// @param[in,out] id Identifier of the dynamic/accelerable body to process contacts for.
     /// @param[in,out] island Island. On return this may contain additional contacts or bodies.
-    /// @param[in] toi Time of impact (TOI). Value between 0 and 1.
+    /// @param[in] toi Time of impact (TOI). Value between 0 and under 1.
     /// @param[in] conf Step configuration data.
-    ProcessContactsOutput ProcessContactsForTOI(BodyID id, Island& island, Real toi,
+    ProcessContactsOutput ProcessContactsForTOI(BodyID id, Island& island, ZeroToUnderOneFF<Real> toi,
                                                 const StepConf& conf);
 
     /// @brief Removes the given body from this world.

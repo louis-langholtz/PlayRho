@@ -142,7 +142,7 @@ bool HasValidToi(const World& world, ContactID id);
 /// @throws std::out_of_range If given an invalid contact identifier.
 /// @see HasValidToi.
 /// @relatedalso World
-std::optional<UnitInterval<Real>> GetToi(const World& world, ContactID id);
+std::optional<UnitIntervalFF<Real>> GetToi(const World& world, ContactID id);
 
 /// @brief Gets the default friction amount for the identified contact.
 /// @throws std::out_of_range If given an invalid contact identifier.

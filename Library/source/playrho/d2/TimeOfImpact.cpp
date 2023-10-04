@@ -47,7 +47,7 @@ ToiOutput GetToiViaSat( // NOLINT(readability-function-cognitive-complexity)
 
     const auto totalRadius = proxyA.GetVertexRadius() + proxyB.GetVertexRadius();
     if (conf.targetDepth > totalRadius) {
-        return ToiOutput{0, stats, ToiOutput::e_targetDepthExceedsTotalRadius};
+        return ToiOutput{{}, stats, ToiOutput::e_targetDepthExceedsTotalRadius};
     }
 
     const auto target = totalRadius - conf.targetDepth;
@@ -56,15 +56,15 @@ ToiOutput GetToiViaSat( // NOLINT(readability-function-cognitive-complexity)
 
     const auto minTargetSquared = Square(minTarget);
     if (!isfinite(minTargetSquared) && isfinite(minTarget)) {
-        return ToiOutput{0, stats, ToiOutput::e_minTargetSquaredOverflow};
+        return ToiOutput{{}, stats, ToiOutput::e_minTargetSquaredOverflow};
     }
 
     const auto maxTargetSquared = Square(maxTarget);
     if (!isfinite(maxTargetSquared) && isfinite(maxTarget)) {
-        return ToiOutput{0, stats, ToiOutput::e_maxTargetSquaredOverflow};
+        return ToiOutput{{}, stats, ToiOutput::e_maxTargetSquaredOverflow};
     }
 
-    auto timeLo = Real(0); // Will be set to value of timeHi
+    auto timeLo = UnitIntervalFF<Real>{}; // Will be set to value of timeHi
     auto timeLoXfA = GetTransformation(sweepA, timeLo);
     auto timeLoXfB = GetTransformation(sweepB, timeLo);
 
@@ -115,7 +115,7 @@ ToiOutput GetToiViaSat( // NOLINT(readability-function-cognitive-complexity)
 
         // Compute the TOI on the separating axis. We do this by successively
         // resolving the deepest point. This loop is bounded by the number of vertices.
-        auto timeHi = Real(conf.timeMax); // timeHi goes to values between timeLo and timeHi.
+        auto timeHi = UnitIntervalFF<Real>(conf.timeMax); // timeHi goes to values between timeLo and timeHi.
         auto timeHiXfA = GetTransformation(sweepA, timeHi);
         auto timeHiXfB = GetTransformation(sweepB, timeHi);
 
@@ -127,7 +127,7 @@ ToiOutput GetToiViaSat( // NOLINT(readability-function-cognitive-complexity)
             // Is the final configuration separated?
             if (timeHiMinSep.distance > maxTarget) {
                 // Victory! No collision occurs within time span.
-                assert(timeHi == Real(conf.timeMax));
+                assert(timeHi == conf.timeMax);
                 // Formerly this used timeMax as in...
                 // return ToiOutput{ToiOutput::e_separated, timeMax};
                 // timeHi seems more appropriate however given s2 was derived from it.

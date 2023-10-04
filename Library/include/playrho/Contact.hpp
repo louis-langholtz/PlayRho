@@ -187,8 +187,8 @@ public:
     /// @brief Gets the time of impact (TOI) as a fraction.
     /// @return Time of impact fraction in the range of 0 to 1 if set (where 1
     ///   means no actual impact in current time slot), otherwise empty.
-    /// @see SetToi(const std::optional<UnitInterval<Real>>&).
-    constexpr std::optional<UnitInterval<Real>> GetToi() const noexcept;
+    /// @see SetToi(const std::optional<UnitIntervalFF<Real>>&).
+    constexpr std::optional<UnitIntervalFF<Real>> GetToi() const noexcept;
 
     /// @brief Sets the time of impact (TOI).
     /// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates
@@ -196,7 +196,7 @@ public:
     /// @post <code>GetToi()</code> returns the value set and
     ///   <code>HasValidToi()</code> returns <code>toi.has_value()</code>.
     /// @see Real GetToi() const, HasValidToi.
-    constexpr void SetToi(const std::optional<UnitInterval<Real>>& toi) noexcept;
+    constexpr void SetToi(const std::optional<UnitIntervalFF<Real>>& toi) noexcept;
 
     /// @brief Whether or not the contact needs filtering.
     constexpr bool NeedsFiltering() const noexcept;
@@ -453,7 +453,7 @@ constexpr bool Contact::HasValidToi() const noexcept
     return (m_flags & Contact::e_toiFlag) != 0;
 }
 
-constexpr std::optional<UnitInterval<Real>> Contact::GetToi() const noexcept
+constexpr std::optional<UnitIntervalFF<Real>> Contact::GetToi() const noexcept
 {
     if (HasValidToi()) {
         return m_toi;
@@ -461,7 +461,7 @@ constexpr std::optional<UnitInterval<Real>> Contact::GetToi() const noexcept
     return {};
 }
 
-constexpr void Contact::SetToi(const std::optional<UnitInterval<Real>>& toi) noexcept
+constexpr void Contact::SetToi(const std::optional<UnitIntervalFF<Real>>& toi) noexcept
 {
     if (toi) {
         m_toi = *toi;
@@ -809,7 +809,7 @@ constexpr auto HasValidToi(const Contact& contact) noexcept
 /// @brief Gets the time of impact (TOI) as a fraction.
 /// @return Time of impact fraction in the range of 0 to 1 if set (where 1
 ///   means no actual impact in current time slot), otherwise empty.
-/// @see HasValidToi, SetToi(Contact&, const std::optional<UnitInterval<Real>>&).
+/// @see HasValidToi, SetToi(Contact&, const std::optional<UnitIntervalFF<Real>>&).
 /// @relatedalso Contact
 constexpr auto GetToi(const Contact& contact) noexcept
 {
@@ -824,7 +824,7 @@ constexpr auto GetToi(const Contact& contact) noexcept
 /// @post <code>GetToi(const Contact&)</code> returns the value set.
 /// @see HasValidToi, GetToi.
 /// @relatedalso Contact
-constexpr void SetToi(Contact& contact, const std::optional<UnitInterval<Real>>& toi) noexcept
+constexpr void SetToi(Contact& contact, const std::optional<UnitIntervalFF<Real>>& toi) noexcept
 {
     contact.SetToi(toi);
 }
