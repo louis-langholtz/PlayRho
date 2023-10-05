@@ -46,7 +46,7 @@ public:
 
     /// @brief Default constructor.
     /// @note This causes default initialization of the underlying type.
-    constexpr explicit IndexingNamedType()
+    constexpr IndexingNamedType()
     noexcept(std::is_nothrow_default_constructible_v<underlying_type>): value_{} {}
 
     /// @brief Copy initializing constructor.
