@@ -25,7 +25,9 @@
 /// @file
 /// @brief Definition of the @c DistanceProxy class and closely related code.
 
+#ifdef IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS
 #include <algorithm>
+#endif
 #include <vector>
 
 #include <playrho/Span.hpp>
@@ -245,11 +247,19 @@ inline VertexCounter GetSupportIndex(const DistanceProxy& proxy, T dir) noexcept
 /// @ingroup TestPointGroup
 bool TestPoint(const DistanceProxy& proxy, const Length2& point) noexcept;
 
-/// @brief Finds the lowest right most vertex in the given collection.
-std::size_t FindLowestRightMostVertex(Span<const Length2> vertices);
+/// @brief Finds the index of the lowest right most vertex in the given collection.
+/// @return Index of the lowest right most vertex in the given collection, or
+///   <code>GetInvalid<std::size_t>()</code> for empty container.
+std::size_t FindLowestRightMostVertex(Span<const Length2> vertices) noexcept;
 
 /// @brief Gets the convex hull for the given collection of vertices as a vector.
+/// @return Counter-clockwise vertices that "gift-wrap" the given vertices starting with
+///   lowest right-most vertex.
+/// @see FindLowestRightMostVertex.
 std::vector<Length2> GetConvexHullAsVector(Span<const Length2> vertices);
+
+/// @brief Gets the forward normals for the given container of vertices.
+std::vector<UnitVec> GetFwdNormals(Span<const Length2> vertices);
 
 } // namespace playrho::d2
 

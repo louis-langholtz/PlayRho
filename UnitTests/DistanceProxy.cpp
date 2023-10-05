@@ -141,11 +141,43 @@ TEST(DistanceProxy, ThreeVertices)
     EXPECT_EQ(GetY(foo.GetVertex(2)), GetY(v2));
 }
 
-TEST(DistanceProxy, FindLowestRightMostVertex)
+TEST(DistanceProxy, FindLowestRightMostVertexForEmpty)
 {
     const auto vertices = std::vector<Length2>();
     const auto result = FindLowestRightMostVertex(vertices);
-    EXPECT_EQ(result, static_cast<std::size_t>(-1));
+    ASSERT_EQ(GetInvalid<std::size_t>(), static_cast<std::size_t>(-1));
+    EXPECT_EQ(result, GetInvalid<std::size_t>());
+}
+
+TEST(DistanceProxy, FindLowestRightMostVertexForOne)
+{
+    const auto vertices = std::vector<Length2>{Length2{-1_m, +1_m}};
+    const auto result = FindLowestRightMostVertex(vertices);
+    EXPECT_EQ(result, 0u);
+}
+
+TEST(DistanceProxy, FindLowestRightMostVertexForThree)
+{
+    const auto vertices = std::vector<Length2>{
+        Length2{-1_m, +1_m}, Length2{0_m, 0_m}, Length2{-0.5_m, 0_m}
+    };
+    auto result = static_cast<std::size_t>(-1);
+    EXPECT_NO_THROW(result = FindLowestRightMostVertex(vertices));
+    EXPECT_EQ(result, 1u);
+}
+
+TEST(DistanceProxy, GetConvexHullAsVector)
+{
+    const auto v0 = Length2{-1_m, +1_m};
+    const auto v1 = Length2{0_m, 0_m};
+    const auto v2 = Length2{-0.5_m, 0_m};
+    const auto vertices = std::vector<Length2>{v0, v1, v2};
+    auto result = std::vector<Length2>{};
+    EXPECT_NO_THROW(result = GetConvexHullAsVector(vertices));
+    ASSERT_EQ(size(result), 3u);
+    EXPECT_EQ(result[0], v1);
+    EXPECT_EQ(result[1], v0);
+    EXPECT_EQ(result[2], v2);
 }
 
 TEST(DistanceProxy, TestPointWithEmptyProxyReturnsFalse)
