@@ -42,8 +42,7 @@
 #include <playrho/d2/MassData.hpp>
 #include <playrho/d2/Math.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho::d2 {
 
 class Shape;
 
@@ -969,7 +968,6 @@ inline bool ShouldCollide(const Shape& a, const Shape& b) noexcept
     return ShouldCollide(GetFilter(a), GetFilter(b));
 }
 
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2
 
 #endif // PLAYRHO_D2_SHAPES_SHAPE_HPP

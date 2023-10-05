@@ -20,12 +20,10 @@
  */
 
 #include <playrho/d2/PolygonShapeConf.hpp>
-
 #include <playrho/d2/Shape.hpp>
 #include <playrho/d2/VertexSet.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho::d2 {
 
 static_assert(IsValidShapeTypeV<PolygonShapeConf>);
 
@@ -64,7 +62,6 @@ PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy)
     return *this;
 }
 
-/// @brief Uses the given vertices.
 PolygonShapeConf& PolygonShapeConf::UseVertices(const Span<const Length2>& verts)
 {
     return Set(verts);
@@ -203,5 +200,4 @@ bool Validate(const Span<const Length2>& verts)
     return true;
 }
 
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2
