@@ -60,6 +60,17 @@ TEST(EdgeShapeConf, DefaultConstruction)
     EXPECT_EQ((Length2{}), foo.GetVertexB());
 }
 
+TEST(EdgeShapeConf, InitializingConstruction)
+{
+    const auto v0 = Length2{+1_m, 0_m};
+    const auto v1 = Length2{-1_m, 0_m};
+    const auto foo = EdgeShapeConf{v0, v1};
+    EXPECT_EQ(v0, foo.GetVertexA());
+    EXPECT_EQ(v1, foo.GetVertexB());
+    EXPECT_EQ(UnitVec::GetTop(), foo.ngon.GetNormals()[0]);
+    EXPECT_EQ(UnitVec::GetBottom(), foo.ngon.GetNormals()[1]);
+}
+
 TEST(EdgeShapeConf, GetInvalidChildThrows)
 {
     const auto foo = EdgeShapeConf{};

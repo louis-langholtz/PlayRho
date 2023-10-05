@@ -404,6 +404,7 @@
 		9919882E2ACCC7B70076F969 /* ZeroToUnderOne.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9919882D2ACCC7B70076F969 /* ZeroToUnderOne.hpp */; };
 		991988302ACE15D10076F969 /* ConvexHull.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9919882F2ACE15D10076F969 /* ConvexHull.hpp */; };
 		991988322ACE31D00076F969 /* ConvexHull.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 991988312ACE31D00076F969 /* ConvexHull.cpp */; };
+		991988342ACEA0780076F969 /* NgonWithFwdNormals.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 991988332ACEA0780076F969 /* NgonWithFwdNormals.hpp */; };
 		9921FFD729AD43C30043F23F /* TypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9921FFD629AD43C30043F23F /* TypeInfo.cpp */; };
 		996B7B832A6DF1A500A8207F /* PoolMemoryResource.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */; };
 		996B7B842A6DF1A500A8207F /* MemoryResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */; };
@@ -901,6 +902,7 @@
 		9919882D2ACCC7B70076F969 /* ZeroToUnderOne.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ZeroToUnderOne.hpp; sourceTree = "<group>"; };
 		9919882F2ACE15D10076F969 /* ConvexHull.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConvexHull.hpp; sourceTree = "<group>"; };
 		991988312ACE31D00076F969 /* ConvexHull.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConvexHull.cpp; sourceTree = "<group>"; };
+		991988332ACEA0780076F969 /* NgonWithFwdNormals.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NgonWithFwdNormals.hpp; sourceTree = "<group>"; };
 		9921FFD629AD43C30043F23F /* TypeInfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TypeInfo.cpp; sourceTree = "<group>"; };
 		996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PoolMemoryResource.hpp; sourceTree = "<group>"; };
 		996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryResource.cpp; sourceTree = "<group>"; };
@@ -1300,6 +1302,7 @@
 				9901AF122AB21D740075122D /* Math.hpp */,
 				4787D6CD1F2EC902008C115E /* MotorJointConf.hpp */,
 				474AFBF71EB1B2CB002AA6C8 /* MultiShapeConf.hpp */,
+				991988332ACEA0780076F969 /* NgonWithFwdNormals.hpp */,
 				4731DE431DE2570900E7F931 /* PointStates.hpp */,
 				80BB893C141C3E5900F1753A /* PolygonShapeConf.hpp */,
 				470F9B0F1EDF2890007EF7B6 /* Position.hpp */,
@@ -1724,6 +1727,7 @@
 				4751EE2E1CEDD7A300D459CB /* MotorJoint.cpp in Headers */,
 				470F94D21EC6376F00AA3C82 /* ContactKey.hpp in Headers */,
 				47578BE11D8869110078CD40 /* WorldManifold.hpp in Headers */,
+				991988342ACEA0780076F969 /* NgonWithFwdNormals.hpp in Headers */,
 				47F397E02654426F003C1FD9 /* Compositor.hpp in Headers */,
 				475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */,
 				470F9B1E1EDF2B8A007EF7B6 /* Sweep.hpp in Headers */,

@@ -97,6 +97,7 @@ set(PLAYRHO_D2_HDRS
 	"${PLAYRHO_INCLUDE_PREFIX}d2/Math.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/MotorJointConf.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/MultiShapeConf.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/NgonWithFwdNormals.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/PointStates.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/PolygonShapeConf.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/Position.hpp"

@@ -1481,8 +1481,7 @@ TEST(CollideShapes, EdgeFooTriangle)
 
 TEST(CollideShapes, EdgePolygonFaceB1)
 {
-    auto conf = EdgeShapeConf{};
-    conf.vertexRadius = 0_m;
+    auto conf = EdgeShapeConf{}.UseVertexRadius(0_m);
     const auto edge_shape = EdgeShapeConf(Vec2(6, 8) * Meter, Vec2(7, 8) * Meter, conf);
     const auto edge_xfm = Transformation{Length2{}, GetUnitVector(Vec2(Real(0.707106769), Real(0.707106769)))};
     const auto poly_shape = PolygonShapeConf({
@@ -1513,8 +1512,7 @@ TEST(CollideShapes, EdgePolygonFaceB1)
 
 TEST(CollideShapes, EdgePolygonFaceB2)
 {
-    auto conf = EdgeShapeConf{};
-    conf.vertexRadius = 0.000199999995_m;
+    auto conf = EdgeShapeConf{}.UseVertexRadius(0.000199999995_m);
     const auto edge_shape = EdgeShapeConf(Vec2(-6, 2) * Meter, Vec2(-6, 0) * Meter, conf);
     const auto edge_xfm = Transformation{Vec2(-9.99999904f, 4.0f) * Meter, GetUnitVector(Vec2(Real(1), Real(0)))};
     const auto poly_shape = PolygonShapeConf({
