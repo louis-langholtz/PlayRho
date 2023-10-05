@@ -25,54 +25,27 @@
 /// @file
 /// @brief Definition of the @c PositionConstraint class and closely related code.
 
+#include <playrho/BodyID.hpp>
 #include <playrho/NonNegative.hpp>
 
 #include <playrho/d2/Manifold.hpp>
-#include <playrho/d2/BodyConstraint.hpp>
 
 namespace playrho::d2 {
 
 /// @brief The per-contact position constraint data structure.
-class PositionConstraint
+struct PositionConstraint
 {
-public:
-    PositionConstraint() = default;
+    /// @brief Copy of contact's manifold.
+    Manifold manifold;
 
-    /// @brief Initializing constructor.
-    PositionConstraint(const Manifold& m, BodyID bA, BodyID bB, NonNegativeFF<Length> radius)
-        : manifold{m}, m_bodyA{bA}, m_bodyB{bB}, m_totalRadius{radius}
-    {
-        assert(m.GetPointCount() > 0);
-        assert(bA != bB);
-    }
+    /// @brief Identifier for body-A.
+    BodyID bodyA;
 
-    Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points.
-
-    /// @brief Gets body A.
-    BodyID GetBodyA() const noexcept
-    {
-        return m_bodyA;
-    }
-
-    /// @brief Gets body B.
-    BodyID GetBodyB() const noexcept
-    {
-        return m_bodyB;
-    }
-
-    /// @brief Gets total radius - i.e. combined radius of shapes of fixtures A and B.
-    Length GetTotalRadius() const noexcept
-    {
-        return m_totalRadius;
-    }
-
-private:
-    BodyID m_bodyA; ///< Identifier for body-A.
-
-    BodyID m_bodyB; ///< Identifier for body-B.
+    /// @brief Identifier for body-B.
+    BodyID bodyB;
 
     /// @brief Total "Radius" distance of the associated shapes of fixture A and fixture B.
-    NonNegativeFF<Length> m_totalRadius{};
+    NonNegativeFF<Length> totalRadius;
 };
 
 } // namespace playrho::d2

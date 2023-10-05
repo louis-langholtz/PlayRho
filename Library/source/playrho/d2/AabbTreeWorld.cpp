@@ -320,10 +320,10 @@ Length SolvePositionConstraintsViaGS(const Span<const PositionConstraint>& posCo
 {
     auto minSeparation = std::numeric_limits<Length>::infinity();
     for_each(begin(posConstraints), end(posConstraints), [&](const PositionConstraint &pc) {
-        assert(pc.GetBodyA() != pc.GetBodyB()); // Confirms ContactManager::Add() did its job.
+        assert(pc.bodyA != pc.bodyB); // Confirms ContactManager::Add() did its job.
         const auto res = GaussSeidel::SolvePositionConstraint(pc, true, true, bodies, conf);
-        bodies[to_underlying(pc.GetBodyA())].SetPosition(res.pos_a);
-        bodies[to_underlying(pc.GetBodyB())].SetPosition(res.pos_b);
+        bodies[to_underlying(pc.bodyA)].SetPosition(res.pos_a);
+        bodies[to_underlying(pc.bodyB)].SetPosition(res.pos_b);
         minSeparation = std::min(minSeparation, res.min_separation);
     });
     return minSeparation;
