@@ -31,8 +31,7 @@
 #include <playrho/Settings.hpp>
 #include <playrho/Units.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho::d2 {
 
 /// @brief Base configuration for initializing shapes.
 /// @note This is a nested base value class for initializing shapes.
@@ -224,7 +223,6 @@ inline void SetSensor(BaseShapeConf& arg, bool value)
     arg.isSensor = value;
 }
 
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2
 
 #endif // PLAYRHO_D2_SHAPES_SHAPECONF_HPP
