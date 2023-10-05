@@ -199,7 +199,7 @@ public:
     /// them all the time by the mass.
     /// @return Value of zero or more representing the body's inverse mass (in 1/kg).
     /// @see SetInvMassData.
-    InvMass GetInvMass() const noexcept;
+    NonNegativeFF<InvMass> GetInvMass() const noexcept;
 
     /// @brief Gets the inverse rotational inertia of the body.
     /// @details This is the cached result of dividing 1 by the body's rotational inertia or
@@ -209,7 +209,7 @@ public:
     /// them all the time by the rotational inertia.
     /// @return Inverse rotational inertia (in 1/kg-m^2).
     /// @see SetInvMassData.
-    InvRotInertia GetInvRotInertia() const noexcept;
+    NonNegativeFF<InvRotInertia> GetInvRotInertia() const noexcept;
 
     /// @brief Sets the inverse mass data and clears the mass-data-dirty flag.
     /// @post <code>IsMassDataDirty()</code> returns false.
@@ -436,12 +436,12 @@ private:
     AngularAcceleration m_angularAcceleration = {};
 
     /// Inverse mass of the body.
-    /// @details A non-negative value. Zero for non linearly-accelerable bodies.
-    InvMass m_invMass = {};
+    /// @details Zero for non linearly-accelerable bodies.
+    NonNegativeFF<InvMass> m_invMass;
 
     /// Inverse rotational inertia about the center of mass.
     /// @details A non-negative value. Zero for non rotationally-accelerable bodies.
-    InvRotInertia m_invRotI = {};
+    NonNegativeFF<InvRotInertia> m_invRotI = {};
 
     NonNegative<Frequency> m_linearDamping{DefaultLinearDamping}; ///< Linear damping.
     NonNegative<Frequency> m_angularDamping{DefaultAngularDamping}; ///< Angular damping.
@@ -470,12 +470,12 @@ inline Velocity Body::GetVelocity() const noexcept
     return Velocity{m_linearVelocity, m_angularVelocity};
 }
 
-inline InvMass Body::GetInvMass() const noexcept
+inline NonNegativeFF<InvMass> Body::GetInvMass() const noexcept
 {
     return m_invMass;
 }
 
-inline InvRotInertia Body::GetInvRotInertia() const noexcept
+inline NonNegativeFF<InvRotInertia> Body::GetInvRotInertia() const noexcept
 {
     return m_invRotI;
 }
@@ -991,7 +991,7 @@ inline bool IsMassDataDirty(const Body& body) noexcept
 /// @return Value of zero or more representing the body's inverse mass (in 1/kg).
 /// @see SetInvMassData.
 /// @relatedalso Body
-inline InvMass GetInvMass(const Body& body) noexcept
+inline NonNegativeFF<InvMass> GetInvMass(const Body& body) noexcept
 {
     return body.GetInvMass();
 }
@@ -1003,7 +1003,7 @@ inline InvMass GetInvMass(const Body& body) noexcept
 /// them all the time by the rotational inertia.
 /// @return Inverse rotational inertia (in 1/kg-m^2).
 /// @relatedalso Body
-inline InvRotInertia GetInvRotInertia(const Body& body) noexcept
+inline NonNegativeFF<InvRotInertia> GetInvRotInertia(const Body& body) noexcept
 {
     return body.GetInvRotInertia();
 }
