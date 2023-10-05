@@ -115,8 +115,8 @@ constexpr auto IsOdd(const T& val) -> decltype((val % 2) != T{})
 }
 
 /// @brief Squares the given value.
-template <class TYPE>
-constexpr auto Square(TYPE t) noexcept -> decltype(t * t)
+template <class T>
+constexpr auto Square(T t) noexcept(noexcept(t * t)) -> decltype(t * t)
 {
     return t * t;
 }
