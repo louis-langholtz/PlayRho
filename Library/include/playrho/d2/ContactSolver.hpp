@@ -37,7 +37,7 @@ struct ConstraintSolverConf;
 namespace d2 {
 
 class VelocityConstraint;
-class PositionConstraint;
+struct PositionConstraint;
 class BodyConstraint;
 
 } // namespace d2
