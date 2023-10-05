@@ -2332,7 +2332,7 @@ static bool EntityUI(ChainShapeConf& shape)
         radiusChanged = true;
     }
     auto verticesChanged = false;
-    auto vertices = shape.GetVertices();
+    auto vertices = shape.segments.GetVertices();
     if (VerticesUI(vertices)) {
         shape.Set(vertices);
         verticesChanged = true;
