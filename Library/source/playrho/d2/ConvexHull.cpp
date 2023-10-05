@@ -44,7 +44,7 @@ ConvexHull ConvexHull::Get(const VertexSet& pointSet, NonNegative<Length> vertex
     else if (count == 1) {
         normals.emplace_back();
     }
-    return ConvexHull{vertices, normals, vertexRadius};
+    return ConvexHull{std::move(vertices), std::move(normals), vertexRadius};
 }
 
 ConvexHull& ConvexHull::Translate(const Length2& value)
