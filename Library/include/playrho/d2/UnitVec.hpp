@@ -148,13 +148,14 @@ public:
     }
 
     /// @brief Gets the given angled unit vector.
-    ///
     /// @note For angles that are meant to be at exact multiples of the quarter turn,
     ///   better accuracy will be had by using one of the four oriented unit
     ///   vector returning methods - for the right, top, left, bottom orientations.
-    ///
     static UnitVec Get(Angle angle) noexcept;
 
+    /// @brief Default constructor.
+    /// @detail Constructs a non-oriented unit vector.
+    /// @post <code>GetX()</code> and <code>GetY()</code> return zero.
     constexpr UnitVec() noexcept = default;
     
     /// @brief Gets the max size.

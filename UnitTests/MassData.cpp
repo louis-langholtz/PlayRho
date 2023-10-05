@@ -229,22 +229,22 @@ TEST(MassData, GetForCircle)
 TEST(MassData, GetForZeroVertexRadiusRectangle)
 {
     const auto density = 2.1_kgpm2;
-    auto conf = PolygonShapeConf{};
-    conf.vertexRadius = 0_m;
+    auto conf = PolygonShapeConf{}.UseVertexRadius(0_m);
     conf.density = density;
     conf.SetAsBox(4_m, 1_m);
     auto shape = conf;
-    ASSERT_EQ(GetX(shape.GetCentroid()), 0_m);
-    ASSERT_EQ(GetY(shape.GetCentroid()), 0_m);
+    const auto centroid = ComputeCentroid(shape.GetVertices());
+    ASSERT_EQ(GetX(centroid), 0_m);
+    ASSERT_EQ(GetY(centroid), 0_m);
     const auto mass_data = GetMassData(shape);
     EXPECT_TRUE(AlmostEqual(Real(Mass{mass_data.mass} / 1_kg),
                              Real((density / 1_kgpm2) * (8 * 2))));
     EXPECT_NEAR(double(StripUnit(mass_data.I)),
                 90.666664 * double(StripUnit(density)),
                 0.008);
-    EXPECT_TRUE(AlmostEqual(Real{GetX(mass_data.center) / Meter}, Real{GetX(shape.GetCentroid()) / Meter}));
-    EXPECT_TRUE(AlmostEqual(Real{GetY(mass_data.center) / Meter}, Real{GetY(shape.GetCentroid()) / Meter}));
-    
+    EXPECT_TRUE(AlmostEqual(Real{GetX(mass_data.center) / Meter}, Real{GetX(centroid) / Meter}));
+    EXPECT_TRUE(AlmostEqual(Real{GetY(mass_data.center) / Meter}, Real{GetY(centroid) / Meter}));
+
     // Area moment of inertia (I) for a rectangle is Ix + Iy = (b * h^3) / 12 + (b^3 * h) / 12....
     const auto i = 8.0 * 2.0 * 2.0 * 2.0 / 12.0 + 8.0 * 8.0 * 8.0 * 2.0 / 12.0;
     EXPECT_NEAR(double(StripUnit(mass_data.I)),
@@ -264,8 +264,7 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
     const auto density = 2.1_kgpm2;
-    auto conf = EdgeShapeConf{};
-    conf.vertexRadius = 0_m;
+    auto conf = EdgeShapeConf{}.UseVertexRadius(0_m);
     conf.density = density;
     const auto shape = EdgeShapeConf(v1, v2, conf);
     const auto mass_data = GetMassData(shape);

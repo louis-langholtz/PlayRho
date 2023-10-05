@@ -104,7 +104,7 @@ std::vector<Length2> GetConvexHullAsVector(Span<const Length2> vertices)
     return result;
 }
 
-std::vector<UnitVec> GetFwdNormals(Span<const Length2> vertices)
+std::vector<UnitVec> GetFwdNormalsVector(const std::vector<Length2>& vertices)
 {
     auto normals = std::vector<UnitVec>();
     const auto count = static_cast<VertexCounter>(size(vertices));

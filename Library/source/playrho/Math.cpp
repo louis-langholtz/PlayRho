@@ -138,7 +138,16 @@ Real Normalize(Vec2& vector)
 
 Length2 ComputeCentroid(const Span<const Length2>& vertices)
 {
-    assert(size(vertices) >= 3);
+    switch (size(vertices)) {
+    case 0:
+        return GetInvalid<Length2>();
+    case 1:
+        return vertices[0];
+    case 2:
+        return (vertices[0] + vertices[1]) / Real(2);
+    default:
+        break;
+    }
 
     auto c = Length2{} * 0_m2;
     auto area = 0_m2;

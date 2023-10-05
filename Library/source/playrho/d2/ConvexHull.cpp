@@ -31,19 +31,7 @@ ConvexHull ConvexHull::Get(const VertexSet& pointSet, NonNegative<Length> vertex
 {
     auto vertices = GetConvexHullAsVector(pointSet);
     assert(!empty(vertices) && size(vertices) < std::numeric_limits<VertexCounter>::max());
-    const auto count = static_cast<VertexCounter>(size(vertices));
-    auto normals = std::vector<UnitVec>();
-    if (count > 1) {
-        // Compute normals.
-        for (auto i = decltype(count){0}; i < count; ++i) {
-            const auto nextIndex = GetModuloNext(i, count);
-            const auto edge = vertices[nextIndex] - vertices[i];
-            normals.push_back(GetUnitVector(GetFwdPerpendicular(edge)));
-        }
-    }
-    else if (count == 1) {
-        normals.emplace_back();
-    }
+    auto normals = GetFwdNormalsVector(vertices);
     return ConvexHull{std::move(vertices), std::move(normals), vertexRadius};
 }
 
