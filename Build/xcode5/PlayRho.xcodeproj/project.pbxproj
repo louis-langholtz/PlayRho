@@ -402,6 +402,8 @@
 		990531502ABB588D0078F9B0 /* PositionSolution.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9905314F2ABB588D0078F9B0 /* PositionSolution.hpp */; };
 		9919882C2ACCC6150076F969 /* ZeroToUnderOneChecker.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9919882B2ACCC6150076F969 /* ZeroToUnderOneChecker.hpp */; };
 		9919882E2ACCC7B70076F969 /* ZeroToUnderOne.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9919882D2ACCC7B70076F969 /* ZeroToUnderOne.hpp */; };
+		991988302ACE15D10076F969 /* ConvexHull.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9919882F2ACE15D10076F969 /* ConvexHull.hpp */; };
+		991988322ACE31D00076F969 /* ConvexHull.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 991988312ACE31D00076F969 /* ConvexHull.cpp */; };
 		9921FFD729AD43C30043F23F /* TypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9921FFD629AD43C30043F23F /* TypeInfo.cpp */; };
 		996B7B832A6DF1A500A8207F /* PoolMemoryResource.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */; };
 		996B7B842A6DF1A500A8207F /* MemoryResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */; };
@@ -897,6 +899,8 @@
 		9905314F2ABB588D0078F9B0 /* PositionSolution.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PositionSolution.hpp; sourceTree = "<group>"; };
 		9919882B2ACCC6150076F969 /* ZeroToUnderOneChecker.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ZeroToUnderOneChecker.hpp; sourceTree = "<group>"; };
 		9919882D2ACCC7B70076F969 /* ZeroToUnderOne.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ZeroToUnderOne.hpp; sourceTree = "<group>"; };
+		9919882F2ACE15D10076F969 /* ConvexHull.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConvexHull.hpp; sourceTree = "<group>"; };
+		991988312ACE31D00076F969 /* ConvexHull.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConvexHull.cpp; sourceTree = "<group>"; };
 		9921FFD629AD43C30043F23F /* TypeInfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TypeInfo.cpp; sourceTree = "<group>"; };
 		996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PoolMemoryResource.hpp; sourceTree = "<group>"; };
 		996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryResource.cpp; sourceTree = "<group>"; };
@@ -1277,6 +1281,7 @@
 				476162C71E245C9D002C7FB0 /* CodeDumper.hpp */,
 				47363E8520027FE2005912B1 /* ContactImpulsesList.hpp */,
 				80BB8964141C3E5900F1753A /* ContactSolver.hpp */,
+				9919882F2ACE15D10076F969 /* ConvexHull.hpp */,
 				80BB8938141C3E5900F1753A /* DiskShapeConf.hpp */,
 				80BB892F141C3E5900F1753A /* Distance.hpp */,
 				47D6D59D2672B5CA00AF32B4 /* DistanceConf.hpp */,
@@ -1359,6 +1364,7 @@
 				476162C61E245C9D002C7FB0 /* CodeDumper.cpp */,
 				47363E8420027FE2005912B1 /* ContactImpulsesList.cpp */,
 				80BB8963141C3E5900F1753A /* ContactSolver.cpp */,
+				991988312ACE31D00076F969 /* ConvexHull.cpp */,
 				80BB8937141C3E5900F1753A /* DiskShapeConf.cpp */,
 				80BB892E141C3E5900F1753A /* Distance.cpp */,
 				47D6D59C2672B5C900AF32B4 /* DistanceConf.cpp */,
@@ -1579,6 +1585,7 @@
 				4706451B252CE27B006E69AA /* TypeInfo.hpp in Headers */,
 				476408932522698E0090F711 /* WorldMisc.hpp in Headers */,
 				4764085B250482300090F711 /* Positive.hpp in Headers */,
+				991988302ACE15D10076F969 /* ConvexHull.hpp in Headers */,
 				47640873251198AA0090F711 /* ContactID.hpp in Headers */,
 				47363E8720027FE2005912B1 /* ContactImpulsesList.hpp in Headers */,
 				4764087B251EA80D0090F711 /* AabbTreeWorldBody.hpp in Headers */,
@@ -2139,6 +2146,7 @@
 				47CF984B1DF9C4A30077F5F2 /* ShapeSeparation.cpp in Sources */,
 				4787D6E21F2ED461008C115E /* WeldJointConf.cpp in Sources */,
 				471E7EB01F34E34000DFF626 /* MovementConf.cpp in Sources */,
+				991988322ACE31D00076F969 /* ConvexHull.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
