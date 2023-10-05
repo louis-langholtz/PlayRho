@@ -170,6 +170,7 @@ public:
     /// @pre The given @p index is less than <code>GetVertexCount()</code>.
     auto GetNormal(VertexCounter index) const noexcept
     {
+        assert(m_normals);
         assert(index != InvalidVertex);
         assert(index < m_count);
         return *(m_normals + index); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
