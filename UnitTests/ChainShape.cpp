@@ -84,7 +84,7 @@ TEST(ChainShapeConf, DefaultConstruction)
     EXPECT_EQ(GetTypeID(foo), GetTypeID<ChainShapeConf>());
     EXPECT_EQ(GetChildCount(foo), ChildCounter{0});
     EXPECT_EQ(foo.GetVertexCount(), ChildCounter{0});
-    EXPECT_TRUE(empty(foo.GetVertices()));
+    EXPECT_TRUE(empty(foo.segments.GetVertices()));
     EXPECT_EQ(GetMassData(foo), defaultMassData);
     for (auto i = ChildCounter{0}; i < GetChildCount(foo); ++i) {
         EXPECT_EQ(GetVertexRadius(foo, i), ChainShapeConf::GetDefaultVertexRadius());
@@ -218,9 +218,9 @@ TEST(ChainShapeConf, OneVertexLikeDisk)
     EXPECT_EQ(GetMassData(foo), expectedMassData);
     const auto child = GetChild(foo, 0);
     EXPECT_EQ(child, expectedDistanceProxy);
-    EXPECT_FALSE(empty(foo.GetVertices()));
-    ASSERT_EQ(size(foo.GetVertices()), 1u);
-    EXPECT_EQ(foo.GetVertices()[0], location);
+    EXPECT_FALSE(empty(foo.segments.GetVertices()));
+    ASSERT_EQ(size(foo.segments.GetVertices()), 1u);
+    EXPECT_EQ(foo.segments.GetVertices()[0], location);
 }
 
 TEST(ChainShapeConf, TwoVertexLikeEdge)
@@ -240,10 +240,10 @@ TEST(ChainShapeConf, TwoVertexLikeEdge)
     for (auto i = ChildCounter{0}; i < GetChildCount(foo); ++i) {
         EXPECT_EQ(GetVertexRadius(foo, i), vertexRadius);
     }
-    EXPECT_FALSE(empty(foo.GetVertices()));
-    ASSERT_EQ(size(foo.GetVertices()), 2u);
-    EXPECT_EQ(foo.GetVertices()[0], locations[0]);
-    EXPECT_EQ(foo.GetVertices()[1], locations[1]);
+    EXPECT_FALSE(empty(foo.segments.GetVertices()));
+    ASSERT_EQ(size(foo.segments.GetVertices()), 2u);
+    EXPECT_EQ(foo.segments.GetVertices()[0], locations[0]);
+    EXPECT_EQ(foo.segments.GetVertices()[1], locations[1]);
 }
 
 TEST(ChainShapeConf, TwoVertexDpLikeEdgeDp)
@@ -304,7 +304,7 @@ TEST(ChainShapeConf, FourVertex)
     conf.vertexRadius = vertexRadius;
     const auto locationsVector = std::vector<Length2>(begin(locations), end(locations));
     conf.Set(locationsVector);
-    EXPECT_EQ(conf.GetVertices(), locationsVector);
+    EXPECT_EQ(conf.segments.GetVertices(), locationsVector);
     EXPECT_EQ(conf.GetVertexCount(), locations.size());
     for (auto i = ChildCounter{0}; i < locations.size(); ++i) {
         EXPECT_EQ(locations[i], conf.GetVertex(i));
