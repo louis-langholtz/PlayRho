@@ -126,7 +126,19 @@ public:
     static PolarCoord<T> Get(const T x, const T y,
                              const UnitVec& fallback = GetDefaultFallback()) noexcept
     {
-        // Try the faster way first...
+        // Try the fastest way first...
+        static constexpr auto t0 = T{};
+        enum { None = 0x0, Left = 0x1, Right = 0x2, Up = 0x4, Down = 0x8 };
+        switch (((x > t0)? Right: (x < t0) ? Left: None) | ((y > t0)? Up: (y < t0)? Down: None)) {
+        case Right: return std::make_pair(GetRight(), x);
+        case Left: return std::make_pair(GetLeft(), -x);
+        case Up: return std::make_pair(GetTop(), y);
+        case Down: return std::make_pair(GetBottom(), -y);
+        case None: return std::make_pair(fallback, T{});
+        default: break;
+        }
+
+        // Try the faster way next...
         const auto magnitudeSquared = x * x + y * y;
         if (isnormal(magnitudeSquared))
         {

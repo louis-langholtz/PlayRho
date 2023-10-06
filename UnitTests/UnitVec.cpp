@@ -203,6 +203,28 @@ TEST(UnitVec, Get)
         EXPECT_NEAR(static_cast<double>(GetX(foo)), static_cast<double>(GetX(boo)), 0.000001);
         EXPECT_NEAR(static_cast<double>(GetY(foo)), static_cast<double>(GetY(boo)), 0.000001);
     }
+    {
+        const auto value = std::numeric_limits<float>::min();
+        const auto valueSquared = Square(value);
+        ASSERT_EQ(valueSquared, 0.0f);
+        const auto magnitude = hypot(value, value);
+        ASSERT_NE(magnitude, 0.0f);
+        ASSERT_TRUE(isnormal(magnitude));
+        const auto foo = UnitVec::Get(value, value).first;
+        const auto boo = UnitVec::GetTopRight();
+        EXPECT_NEAR(static_cast<double>(GetX(foo)), static_cast<double>(GetX(boo)), 0.000001);
+        EXPECT_NEAR(static_cast<double>(GetY(foo)), static_cast<double>(GetY(boo)), 0.000001);
+    }
+    {
+        const auto value = std::numeric_limits<float>::quiet_NaN();
+        const auto valueSquared = Square(value);
+        ASSERT_NE(valueSquared, 0.0f);
+        const auto magnitude = hypot(value, value);
+        ASSERT_NE(magnitude, 0.0f);
+        ASSERT_FALSE(isnormal(magnitude));
+        const auto foo = UnitVec::Get(value, value).first;
+        EXPECT_EQ(foo, UnitVec());
+    }
 }
 
 TEST(UnitVec, Absolute)
