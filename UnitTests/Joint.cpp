@@ -451,6 +451,13 @@ TEST(Joint, TypeCast)
     std::string roo = "wow";
     test = roo;
     test = std::any{foo};
+    EXPECT_THROW(TypeCast<int>(Joint{}), std::bad_cast);
+    {
+        test::sans_none::JointTester::resetClass();
+        auto n = -1;
+        EXPECT_NO_THROW(n = TypeCast<test::sans_none::JointTester>(Joint{test::sans_none::JointTester{}}).number);
+        EXPECT_EQ(n, 0);
+    }
     {
         const auto joint = Joint{};
         auto value = static_cast<const int*>(nullptr);
