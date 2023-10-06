@@ -207,6 +207,7 @@ TEST(UnitVec, Get)
         const auto value = std::numeric_limits<float>::min();
         const auto valueSquared = Square(value);
         ASSERT_EQ(valueSquared, 0.0f);
+        ASSERT_FALSE(isnormal(valueSquared));
         const auto magnitude = hypot(value, value);
         ASSERT_NE(magnitude, 0.0f);
         ASSERT_TRUE(isnormal(magnitude));
