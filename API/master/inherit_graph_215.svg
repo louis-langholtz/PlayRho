@@ -12,11 +12,11 @@
 <!-- Node0 -->
 <g id="node1" class="node">
 <title>Node0</title>
-<g id="a_node1"><a xlink:href="classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html" target="_top" xlink:title="Template specialization of numeric limits for Fixed types.">
+<g id="a_node1"><a xlink:href="structstd_1_1greater__equal_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html" target="_top" xlink:title="Support for greater than or equal operations.">
 <polygon fill="white" stroke="black" points="0,-0.5 0,-41.5 123,-41.5 123,-0.5 0,-0.5"/>
-<text text-anchor="start" x="8" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">std::numeric_limits</text>
-<text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; playrho::Fixed&lt; BT,</text>
-<text text-anchor="middle" x="61.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00"> FB &gt; &gt;</text>
+<text text-anchor="start" x="8" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">std::greater_equal</text>
+<text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt;::playrho::propagate</text>
+<text text-anchor="middle" x="61.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">_const&lt; T &gt; &gt;</text>
 </a>
 </g>
 </g>

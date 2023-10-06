@@ -12,10 +12,10 @@
 <!-- Node0 -->
 <g id="node1" class="node">
 <title>Node0</title>
-<g id="a_node1"><a xlink:href="structplayrho_1_1detail_1_1NonZeroChecker.html" target="_top" xlink:title="Non&#45;zero constrained value checker.">
+<g id="a_node1"><a xlink:href="classplayrho_1_1detail_1_1IndexingNamedType.html" target="_top" xlink:title="An indexable, hashable, named &quot;strong type&quot; template class.">
 <polygon fill="white" stroke="black" points="0,-0.5 0,-30.5 135,-30.5 135,-0.5 0,-0.5"/>
-<text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::NonZero</text>
-<text text-anchor="middle" x="67.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">Checker&lt; T &gt;</text>
+<text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::Indexing</text>
+<text text-anchor="middle" x="67.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">NamedType&lt; T, Tag &gt;</text>
 </a>
 </g>
 </g>

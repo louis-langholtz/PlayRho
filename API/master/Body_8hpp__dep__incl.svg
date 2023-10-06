@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 609;
+var viewWidth = 550;
 var viewHeight = 173;
 var sectionId = 'dynsection-1';
 </script>
@@ -54,14 +54,14 @@ var sectionId = 'dynsection-1';
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>Library/include/playrho/d2/Body.hpp</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-169 605,-169 605,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-169 546,-169 546,4 -4,4"/>
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="Declarations of the Body class, and functions associated with it.">
-<polygon fill="#bfbfbf" stroke="black" points="327,-134.5 327,-164.5 455,-164.5 455,-134.5 327,-134.5"/>
-<text text-anchor="start" x="335" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="391" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/Body.hpp</text>
+<polygon fill="#bfbfbf" stroke="black" points="268,-134.5 268,-164.5 396,-164.5 396,-134.5 268,-134.5"/>
+<text text-anchor="start" x="276" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="332" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/Body.hpp</text>
 </a>
 </g>
 </g>
@@ -69,49 +69,49 @@ var sectionId = 'dynsection-1';
 <g id="node2" class="node">
 <title>Node2</title>
 <g id="a_node2"><a xlink:href="BodyConstraint_8hpp.html" target="_top" xlink:title="Definition of the BodyConstraint class and closely related code.">
-<polygon fill="white" stroke="black" points="165.5,-67.5 165.5,-97.5 296.5,-97.5 296.5,-67.5 165.5,-67.5"/>
-<text text-anchor="start" x="173.5" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="231" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/BodyConstraint.hpp</text>
+<polygon fill="white" stroke="black" points="118.5,-67.5 118.5,-97.5 249.5,-97.5 249.5,-67.5 118.5,-67.5"/>
+<text text-anchor="start" x="126.5" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="184" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/BodyConstraint.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="midnightblue" d="M346.8,-130.54C321.2,-120.14 289.43,-107.24 265.65,-97.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="345.7,-133.87 356.28,-134.4 348.34,-127.39 345.7,-133.87"/>
+<path fill="none" stroke="midnightblue" d="M290.49,-130.27C266.92,-119.92 237.86,-107.15 216.05,-97.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="289.32,-133.58 299.89,-134.4 292.14,-127.17 289.32,-133.58"/>
 </g>
-<!-- Node6 -->
-<g id="node6" class="node">
-<title>Node6</title>
-<g id="a_node6"><a xlink:href="World_8hpp.html" target="_top" xlink:title="Definitions of the World class and closely related code.">
-<polygon fill="white" stroke="black" points="327,-67.5 327,-97.5 455,-97.5 455,-67.5 327,-67.5"/>
-<text text-anchor="start" x="335" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="391" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/World.hpp</text>
+<!-- Node5 -->
+<g id="node5" class="node">
+<title>Node5</title>
+<g id="a_node5"><a xlink:href="World_8hpp.html" target="_top" xlink:title="Definitions of the World class and closely related code.">
+<polygon fill="white" stroke="black" points="268,-67.5 268,-97.5 396,-97.5 396,-67.5 268,-67.5"/>
+<text text-anchor="start" x="276" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="332" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/World.hpp</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node6 -->
-<g id="edge5" class="edge">
-<title>Node1&#45;&gt;Node6</title>
-<path fill="none" stroke="midnightblue" d="M391,-124.11C391,-115.15 391,-105.32 391,-97.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="387.5,-124.4 391,-134.4 394.5,-124.4 387.5,-124.4"/>
+<!-- Node1&#45;&gt;Node5 -->
+<g id="edge4" class="edge">
+<title>Node1&#45;&gt;Node5</title>
+<path fill="none" stroke="midnightblue" d="M332,-124.11C332,-115.15 332,-105.32 332,-97.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="328.5,-124.4 332,-134.4 335.5,-124.4 328.5,-124.4"/>
 </g>
-<!-- Node8 -->
-<g id="node8" class="node">
-<title>Node8</title>
-<g id="a_node8"><a xlink:href="WorldBody_8hpp.html" target="_top" xlink:title="Declarations of free functions of World for bodies identified by BodyID.">
-<polygon fill="white" stroke="black" points="473,-67.5 473,-97.5 601,-97.5 601,-67.5 473,-67.5"/>
-<text text-anchor="start" x="481" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="537" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/WorldBody.hpp</text>
+<!-- Node7 -->
+<g id="node7" class="node">
+<title>Node7</title>
+<g id="a_node7"><a xlink:href="WorldBody_8hpp.html" target="_top" xlink:title="Declarations of free functions of World for bodies identified by BodyID.">
+<polygon fill="white" stroke="black" points="414,-67.5 414,-97.5 542,-97.5 542,-67.5 414,-67.5"/>
+<text text-anchor="start" x="422" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="478" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/WorldBody.hpp</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node8 -->
-<g id="edge7" class="edge">
-<title>Node1&#45;&gt;Node8</title>
-<path fill="none" stroke="midnightblue" d="M431.95,-130.27C455.2,-119.92 483.87,-107.15 505.38,-97.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="430.39,-127.13 422.68,-134.4 433.24,-133.53 430.39,-127.13"/>
+<!-- Node1&#45;&gt;Node7 -->
+<g id="edge6" class="edge">
+<title>Node1&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M372.95,-130.27C396.2,-119.92 424.87,-107.15 446.38,-97.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="371.39,-127.13 363.68,-134.4 374.24,-133.53 371.39,-127.13"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
@@ -126,62 +126,46 @@ var sectionId = 'dynsection-1';
 <!-- Node2&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node2&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M185.22,-63.68C158.44,-53.26 125.1,-40.28 100.17,-30.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="184.17,-67.03 194.76,-67.4 186.71,-60.51 184.17,-67.03"/>
+<path fill="none" stroke="midnightblue" d="M149.06,-62.57C130.18,-52.35 107.27,-39.94 89.99,-30.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="147.5,-65.71 157.96,-67.4 150.84,-59.56 147.5,-65.71"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="PositionConstraint_8hpp.html" target="_top" xlink:title="Definition of the PositionConstraint class and closely related code.">
+<g id="a_node4"><a xlink:href="VelocityConstraint_8hpp.html" target="_top" xlink:title="Definition of the VelocityConstraint class and closely related code.">
 <polygon fill="white" stroke="black" points="146.5,-0.5 146.5,-30.5 291.5,-30.5 291.5,-0.5 146.5,-0.5"/>
 <text text-anchor="start" x="154.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="219" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/PositionConstraint.hpp</text>
+<text text-anchor="middle" x="219" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/VelocityConstraint.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node2&#45;&gt;Node4 -->
 <g id="edge3" class="edge">
 <title>Node2&#45;&gt;Node4</title>
-<path fill="none" stroke="midnightblue" d="M226.55,-57.4C224.88,-48.37 223.04,-38.41 221.6,-30.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="223.14,-58.2 228.4,-67.4 230.02,-56.93 223.14,-58.2"/>
+<path fill="none" stroke="midnightblue" d="M196.34,-58.58C201.37,-49.24 207.02,-38.75 211.42,-30.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="193.25,-56.93 191.59,-67.4 199.42,-60.25 193.25,-56.93"/>
 </g>
-<!-- Node5 -->
-<g id="node5" class="node">
-<title>Node5</title>
-<g id="a_node5"><a xlink:href="VelocityConstraint_8hpp.html" target="_top" xlink:title="Definition of the VelocityConstraint class and closely related code.">
-<polygon fill="white" stroke="black" points="309.5,-0.5 309.5,-30.5 454.5,-30.5 454.5,-0.5 309.5,-0.5"/>
-<text text-anchor="start" x="317.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="382" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/VelocityConstraint.hpp</text>
+<!-- Node6 -->
+<g id="node6" class="node">
+<title>Node6</title>
+<g id="a_node6"><a xlink:href="BasicAPI_8hpp.html" target="_top" xlink:title="Basic API include file to pull in at once most headers used.">
+<polygon fill="white" stroke="black" points="379,-0.5 379,-30.5 507,-30.5 507,-0.5 379,-0.5"/>
+<text text-anchor="start" x="387" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="443" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/BasicAPI.hpp</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node5 -->
-<g id="edge4" class="edge">
-<title>Node2&#45;&gt;Node5</title>
-<path fill="none" stroke="midnightblue" d="M273.03,-63.41C297.14,-53.03 326.95,-40.2 349.3,-30.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="271.57,-60.23 263.76,-67.4 274.33,-66.66 271.57,-60.23"/>
+<!-- Node5&#45;&gt;Node6 -->
+<g id="edge5" class="edge">
+<title>Node5&#45;&gt;Node6</title>
+<path fill="none" stroke="midnightblue" d="M364.8,-62.3C382.16,-52.12 403.12,-39.85 418.96,-30.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="362.95,-59.32 356.09,-67.4 366.48,-65.36 362.95,-59.32"/>
 </g>
-<!-- Node7 -->
-<g id="node7" class="node">
-<title>Node7</title>
-<g id="a_node7"><a xlink:href="BasicAPI_8hpp.html" target="_top" xlink:title="Basic API include file to pull in at once most headers used.">
-<polygon fill="white" stroke="black" points="473,-0.5 473,-30.5 601,-30.5 601,-0.5 473,-0.5"/>
-<text text-anchor="start" x="481" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="537" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/BasicAPI.hpp</text>
-</a>
-</g>
-</g>
-<!-- Node6&#45;&gt;Node7 -->
-<g id="edge6" class="edge">
-<title>Node6&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M431.95,-63.27C455.2,-52.92 483.87,-40.15 505.38,-30.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="430.39,-60.13 422.68,-67.4 433.24,-66.53 430.39,-60.13"/>
-</g>
-<!-- Node8&#45;&gt;Node7 -->
-<g id="edge8" class="edge">
-<title>Node8&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M537,-57.11C537,-48.15 537,-38.32 537,-30.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="533.5,-57.4 537,-67.4 540.5,-57.4 533.5,-57.4"/>
+<!-- Node7&#45;&gt;Node6 -->
+<g id="edge7" class="edge">
+<title>Node7&#45;&gt;Node6</title>
+<path fill="none" stroke="midnightblue" d="M465.66,-58.58C460.63,-49.24 454.98,-38.75 450.58,-30.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="462.58,-60.25 470.41,-67.4 468.75,-56.93 462.58,-60.25"/>
 </g>
 </g>
 </svg>

@@ -75,5 +75,6 @@ var dir_3ed5363c54a0ae1e6d55ad5f136e162e =
     [ "Vector3.hpp", "Vector3_8hpp.html", "Vector3_8hpp" ],
     [ "Version.hpp", "Version_8hpp.html", "Version_8hpp" ],
     [ "WiderType.hpp", "WiderType_8hpp.html", "WiderType_8hpp" ],
-    [ "WrongState.hpp", "WrongState_8hpp.html", null ]
+    [ "WrongState.hpp", "WrongState_8hpp.html", null ],
+    [ "ZeroToUnderOne.hpp", "ZeroToUnderOne_8hpp.html", "ZeroToUnderOne_8hpp" ]
 ];

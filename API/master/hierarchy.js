@@ -15,10 +15,10 @@ var hierarchy =
         [ "playrho::d2::DiskShapeConf", "structplayrho_1_1d2_1_1DiskShapeConf.html", null ]
       ] ],
       [ "playrho::d2::ShapeBuilder< EdgeShapeConf >", "structplayrho_1_1d2_1_1ShapeBuilder.html", [
-        [ "playrho::d2::EdgeShapeConf", "classplayrho_1_1d2_1_1EdgeShapeConf.html", null ]
+        [ "playrho::d2::EdgeShapeConf", "structplayrho_1_1d2_1_1EdgeShapeConf.html", null ]
       ] ],
       [ "playrho::d2::ShapeBuilder< PolygonShapeConf >", "structplayrho_1_1d2_1_1ShapeBuilder.html", [
-        [ "playrho::d2::PolygonShapeConf", "classplayrho_1_1d2_1_1PolygonShapeConf.html", null ]
+        [ "playrho::d2::PolygonShapeConf", "structplayrho_1_1d2_1_1PolygonShapeConf.html", null ]
       ] ],
       [ "playrho::d2::ShapeBuilder< ShapeConf >", "structplayrho_1_1d2_1_1ShapeBuilder.html", [
         [ "playrho::d2::ShapeConf", "structplayrho_1_1d2_1_1ShapeConf.html", null ]
@@ -27,7 +27,7 @@ var hierarchy =
         [ "playrho::d2::MultiShapeConf", "structplayrho_1_1d2_1_1MultiShapeConf.html", null ]
       ] ],
       [ "playrho::d2::ShapeBuilder< ChainShapeConf >", "structplayrho_1_1d2_1_1ShapeBuilder.html", [
-        [ "playrho::d2::ChainShapeConf", "classplayrho_1_1d2_1_1ChainShapeConf.html", null ]
+        [ "playrho::d2::ChainShapeConf", "structplayrho_1_1d2_1_1ChainShapeConf.html", null ]
       ] ],
       [ "playrho::d2::ShapeBuilder< ConcreteConf >", "structplayrho_1_1d2_1_1ShapeBuilder.html", null ]
     ] ],
@@ -44,6 +44,8 @@ var hierarchy =
     [ "playrho::detail::Checked< AreaDensity >", "classplayrho_1_1detail_1_1Checked.html", null ],
     [ "playrho::detail::Checked< Force >", "classplayrho_1_1detail_1_1Checked.html", null ],
     [ "playrho::detail::Checked< Frequency >", "classplayrho_1_1detail_1_1Checked.html", null ],
+    [ "playrho::detail::Checked< InvMass >", "classplayrho_1_1detail_1_1Checked.html", null ],
+    [ "playrho::detail::Checked< InvRotInertia >", "classplayrho_1_1detail_1_1Checked.html", null ],
     [ "playrho::detail::Checked< Length >", "classplayrho_1_1detail_1_1Checked.html", null ],
     [ "playrho::detail::Checked< Mass >", "classplayrho_1_1detail_1_1Checked.html", null ],
     [ "playrho::detail::Checked< Real >", "classplayrho_1_1detail_1_1Checked.html", null ],
@@ -216,6 +218,9 @@ var hierarchy =
     ] ],
     [ "playrho::MovementConf", "structplayrho_1_1MovementConf.html", null ],
     [ "playrho::detail::NegativeChecker< T >", "structplayrho_1_1detail_1_1NegativeChecker.html", null ],
+    [ "playrho::d2::NgonWithFwdNormals< N >", "classplayrho_1_1d2_1_1NgonWithFwdNormals.html", null ],
+    [ "playrho::d2::NgonWithFwdNormals< 2 >", "classplayrho_1_1d2_1_1NgonWithFwdNormals.html", null ],
+    [ "playrho::d2::NgonWithFwdNormals< static_cast< std::size_t >(-1)>", "classplayrho_1_1d2_1_1NgonWithFwdNormals_3_01static__cast_3_01std_1_1size__t_01_4_07-1_08_4.html", null ],
     [ "playrho::detail::NonNegativeChecker< T >", "structplayrho_1_1detail_1_1NonNegativeChecker.html", null ],
     [ "playrho::detail::NonPositiveChecker< T >", "structplayrho_1_1detail_1_1NonPositiveChecker.html", null ],
     [ "playrho::detail::NonZeroChecker< T >", "structplayrho_1_1detail_1_1NonZeroChecker.html", null ],
@@ -240,7 +245,7 @@ var hierarchy =
     [ "playrho::pmr::pool_options", "structplayrho_1_1pmr_1_1pool__options.html", null ],
     [ "playrho::pmr::PoolMemoryOptions", "structplayrho_1_1pmr_1_1PoolMemoryOptions.html", null ],
     [ "playrho::d2::Position", "structplayrho_1_1d2_1_1Position.html", null ],
-    [ "playrho::d2::PositionConstraint", "classplayrho_1_1d2_1_1PositionConstraint.html", null ],
+    [ "playrho::d2::PositionConstraint", "structplayrho_1_1d2_1_1PositionConstraint.html", null ],
     [ "playrho::d2::PositionSolution", "structplayrho_1_1d2_1_1PositionSolution.html", null ],
     [ "playrho::d2::PositionSolverManifold", "structplayrho_1_1d2_1_1PositionSolverManifold.html", null ],
     [ "playrho::detail::PositiveChecker< T >", "structplayrho_1_1detail_1_1PositiveChecker.html", null ],
@@ -310,7 +315,7 @@ var hierarchy =
     [ "playrho::pmr::StatsResource::Stats", "structplayrho_1_1pmr_1_1StatsResource_1_1Stats.html", null ],
     [ "playrho::StepConf", "structplayrho_1_1StepConf.html", null ],
     [ "playrho::StepStats", "structplayrho_1_1StepStats.html", null ],
-    [ "playrho::d2::Sweep", "classplayrho_1_1d2_1_1Sweep.html", null ],
+    [ "playrho::d2::Sweep", "structplayrho_1_1d2_1_1Sweep.html", null ],
     [ "playrho::ThreadLocalAllocator< T, MemoryResource, MemoryResourceArgs >", "classplayrho_1_1ThreadLocalAllocator.html", null ],
     [ "playrho::ToiConf", "structplayrho_1_1ToiConf.html", null ],
     [ "playrho::ToiOutput", "structplayrho_1_1ToiOutput.html", null ],
@@ -380,6 +385,7 @@ var hierarchy =
     [ "playrho::d2::VelocityConstraint", "classplayrho_1_1d2_1_1VelocityConstraint.html", null ],
     [ "playrho::Version", "structplayrho_1_1Version.html", null ],
     [ "playrho::d2::VertexSet", "classplayrho_1_1d2_1_1VertexSet.html", null ],
+    [ "playrho::d2::ChainShapeConf::VerticesWithNormals", "classplayrho_1_1d2_1_1ChainShapeConf_1_1VerticesWithNormals.html", null ],
     [ "playrho::detail::Wider< T >", "structplayrho_1_1detail_1_1Wider.html", null ],
     [ "playrho::detail::Wider< double >", "structplayrho_1_1detail_1_1Wider_3_01double_01_4.html", null ],
     [ "playrho::detail::Wider< float >", "structplayrho_1_1detail_1_1Wider_3_01float_01_4.html", null ],
@@ -391,5 +397,6 @@ var hierarchy =
     [ "playrho::detail::Wider< std::uint8_t >", "structplayrho_1_1detail_1_1Wider_3_01std_1_1uint8__t_01_4.html", null ],
     [ "playrho::d2::World", "classplayrho_1_1d2_1_1World.html", null ],
     [ "playrho::d2::WorldConf", "structplayrho_1_1d2_1_1WorldConf.html", null ],
-    [ "playrho::d2::WorldManifold", "classplayrho_1_1d2_1_1WorldManifold.html", null ]
+    [ "playrho::d2::WorldManifold", "classplayrho_1_1d2_1_1WorldManifold.html", null ],
+    [ "playrho::detail::ZeroToUnderOneChecker< T >", "structplayrho_1_1detail_1_1ZeroToUnderOneChecker.html", null ]
 ];

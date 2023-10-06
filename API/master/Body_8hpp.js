@@ -1,7 +1,7 @@
 var Body_8hpp =
 [
-    [ "Advance", "Body_8hpp.html#ac958086ef249205a586ecdf8f88db8db", null ],
-    [ "Advance0", "Body_8hpp.html#a9a54f71f97f0f55b155ed49b568e5206", null ],
+    [ "Advance", "Body_8hpp.html#aa5385b2dbb547f7dcf7cb4d8bd67d6a0", null ],
+    [ "Advance0", "Body_8hpp.html#a3025c6db501979297b7b7c27547111c4", null ],
     [ "ApplyAngularImpulse", "Body_8hpp.html#a01828005de015a2660fb08cb6fd10e0a", null ],
     [ "ApplyLinearImpulse", "Body_8hpp.html#aee7a0c13c47b5e71839b4bcf66ce1a63", null ],
     [ "Awaken", "Body_8hpp.html#a4834708af29bcc9ae39ebfc2b9f580f6", null ],
@@ -11,8 +11,8 @@ var Body_8hpp =
     [ "GetAngularDamping", "Body_8hpp.html#a7543270614333c0aa69df56877a3a1bd", null ],
     [ "GetAngularVelocity", "Body_8hpp.html#a306635dbd11f92ad1020a386fce7b7c2", null ],
     [ "GetForce", "Body_8hpp.html#a82eaa61b6bddf682fe315f09830e2bfc", null ],
-    [ "GetInvMass", "Body_8hpp.html#a628126b03bd99f5df5f08a047692b9da", null ],
-    [ "GetInvRotInertia", "Body_8hpp.html#af4fac5901e03845d72a94de4e7bb92d0", null ],
+    [ "GetInvMass", "Body_8hpp.html#a7d74493ba9108b54a9900eb8319ede92", null ],
+    [ "GetInvRotInertia", "Body_8hpp.html#a4c2a6d79f4824a9d3d9971b60a865e47", null ],
     [ "GetLinearAcceleration", "Body_8hpp.html#aef76fc5d7813af886e28e8033e9d019d", null ],
     [ "GetLinearDamping", "Body_8hpp.html#a19b401f474facc647922e54a7aa60aa8", null ],
     [ "GetLinearVelocity", "Body_8hpp.html#a3802163b90f631b001eaa0201be419c9", null ],

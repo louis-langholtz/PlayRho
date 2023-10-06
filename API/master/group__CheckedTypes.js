@@ -16,5 +16,7 @@ var group__CheckedTypes =
     [ "Positive", "group__CheckedTypes.html#ga1fce58e6740bd8d9f025e08472071a9b", null ],
     [ "PositiveFF", "group__CheckedTypes.html#ga521f0650a33330a43eafb31ecb6d4ae5", null ],
     [ "UnitInterval", "group__CheckedTypes.html#ga4a5a66199e77439cdac1b5a16831484e", null ],
-    [ "UnitIntervalFF", "group__CheckedTypes.html#ga309960da94ba655d5101c19da5c55c1b", null ]
+    [ "UnitIntervalFF", "group__CheckedTypes.html#ga309960da94ba655d5101c19da5c55c1b", null ],
+    [ "ZeroToUnderOne", "group__CheckedTypes.html#ga6d33fe002089badc48d22d99ec924ee4", null ],
+    [ "ZeroToUnderOneFF", "group__CheckedTypes.html#ga82f43e0e8a9fa443bc746a5f865effef", null ]
 ];

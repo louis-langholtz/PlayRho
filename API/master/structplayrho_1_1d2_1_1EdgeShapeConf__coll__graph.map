@@ -1,0 +1,13 @@
+<map id="playrho::d2::EdgeShapeConf" name="playrho::d2::EdgeShapeConf">
+<area shape="rect" id="node1" title="Edge shape configuration." alt="" coords="1736,185,1941,212"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title=" " alt="" coords="1459,117,1648,158"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1BaseShapeConf.html" title="Base configuration for initializing shapes." alt="" coords="821,65,1027,92"/>
+<area shape="rect" id="node8" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title="Builder configuration structure." alt="" coords="1079,58,1268,99"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1detail_1_1Checked.html" title=" " alt="" coords="416,57,595,98"/>
+<area shape="rect" id="node5" href="$classplayrho_1_1detail_1_1Checked.html" title="Class template for construction&#45;time constraining a type&#39;s value." alt="" coords="5,122,253,163"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1detail_1_1Checked.html" title=" " alt="" coords="416,122,595,163"/>
+<area shape="rect" id="node9" href="$classplayrho_1_1detail_1_1Checked.html" title=" " alt="" coords="619,179,797,221"/>
+<area shape="rect" id="node6" href="$structplayrho_1_1Filter.html" title="A holder for contact filtering data." alt="" coords="449,5,561,32"/>
+<area shape="rect" id="node10" href="$classplayrho_1_1d2_1_1NgonWithFwdNormals.html" title=" " alt="" coords="1456,242,1651,283"/>
+<area shape="rect" id="node11" href="$classplayrho_1_1d2_1_1NgonWithFwdNormals.html" title="N&#45;gon of vertices with counter&#45;clockwise &quot;forward&quot; normals." alt="" coords="1076,247,1271,289"/>
+</map>

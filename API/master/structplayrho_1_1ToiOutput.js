@@ -17,9 +17,9 @@ var structplayrho_1_1ToiOutput =
       [ "e_notFinite", "structplayrho_1_1ToiOutput.html#a61ba03d1326b88ed12049500df7ca76fa181dbac9c63b5b118d099c5b12c585f8", null ]
     ] ],
     [ "ToiOutput", "structplayrho_1_1ToiOutput.html#a98eade001026160f2593d11a98f90d01", null ],
-    [ "ToiOutput", "structplayrho_1_1ToiOutput.html#a142364a5c062103cd6232b66e1275703", null ],
+    [ "ToiOutput", "structplayrho_1_1ToiOutput.html#a0913340a5150a784db62366893c14bc8", null ],
     [ "GetToiViaSat", "structplayrho_1_1ToiOutput.html#a19b308c9b3b8f5292b9f3dad183c9d76", null ],
     [ "state", "structplayrho_1_1ToiOutput.html#af5ab391b2c5c912330d0f4bd43be8ae4", null ],
     [ "stats", "structplayrho_1_1ToiOutput.html#a88bda234ab37f3998711404ebe701932", null ],
-    [ "time", "structplayrho_1_1ToiOutput.html#a5f832ba7320d60fc7da42117262698f4", null ]
+    [ "time", "structplayrho_1_1ToiOutput.html#a2783d78e9dde36adff5a829e759cede8", null ]
 ];

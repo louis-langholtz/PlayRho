@@ -41,7 +41,7 @@ var Math_8hpp =
     [ "Solve", "Math_8hpp.html#ga1dfb22979400417701de8582bb6d76ad", null ],
     [ "Solve22", "Math_8hpp.html#ga844e39448ab76470e60db668b1815ee0", null ],
     [ "Solve33", "Math_8hpp.html#gab5eb451a3aff0db8ef5bcbb3d67a18df", null ],
-    [ "Square", "Math_8hpp.html#gac7300e33771c076a6d7236d566b30207", null ],
+    [ "Square", "Math_8hpp.html#ga4000cee8b1fc5a9ab6a5cfe29eb645b6", null ],
     [ "StripUnit", "Math_8hpp.html#a7aad07dca595ebb37551e793171c2cfa", null ],
     [ "ToSigned", "Math_8hpp.html#ga3410f58d0023e2a0d6ae6ad85da9508c", null ],
     [ "Transform", "Math_8hpp.html#gaa8489f7d571594e36194a437ea93898a", null ],

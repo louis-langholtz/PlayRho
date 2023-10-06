@@ -293,11 +293,11 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:gab5eb451a3aff0db8ef5bcbb3d67a18df"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#gab5eb451a3aff0db8ef5bcbb3d67a18df">playrho::Solve33</a> (const Mat33 &amp;mat, const Vector3&lt; T &gt; &amp;b) noexcept -&gt; Vector3&lt; T &gt;</td></tr>
 <tr class="memdesc:gab5eb451a3aff0db8ef5bcbb3d67a18df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves A * x = b, where b is a column vector.  <a href="group__Math.html#gab5eb451a3aff0db8ef5bcbb3d67a18df">More...</a><br /></td></tr>
 <tr class="separator:gab5eb451a3aff0db8ef5bcbb3d67a18df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac7300e33771c076a6d7236d566b30207"><td class="memTemplParams" colspan="2">
-template&lt;class TYPE &gt; </td></tr>
-<tr class="memitem:gac7300e33771c076a6d7236d566b30207"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#gac7300e33771c076a6d7236d566b30207">playrho::Square</a> (TYPE t) noexcept -&gt; decltype(t *t)</td></tr>
-<tr class="memdesc:gac7300e33771c076a6d7236d566b30207"><td class="mdescLeft">&#160;</td><td class="mdescRight">Squares the given value. <br /></td></tr>
-<tr class="separator:gac7300e33771c076a6d7236d566b30207"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4000cee8b1fc5a9ab6a5cfe29eb645b6"><td class="memTemplParams" colspan="2">
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga4000cee8b1fc5a9ab6a5cfe29eb645b6"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga4000cee8b1fc5a9ab6a5cfe29eb645b6">playrho::Square</a> (T t) noexcept(noexcept(t *t)) -&gt; decltype(t *t)</td></tr>
+<tr class="memdesc:ga4000cee8b1fc5a9ab6a5cfe29eb645b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Squares the given value. <br /></td></tr>
+<tr class="separator:ga4000cee8b1fc5a9ab6a5cfe29eb645b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7aad07dca595ebb37551e793171c2cfa"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a7aad07dca595ebb37551e793171c2cfa"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7aad07dca595ebb37551e793171c2cfa">playrho::StripUnit</a> (const T &amp;v) -&gt; decltype(StripUnit(v.get()))</td></tr>
 <tr class="memdesc:a7aad07dca595ebb37551e793171c2cfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Strips the unit from the given value.  <a href="namespaceplayrho.html#a7aad07dca595ebb37551e793171c2cfa">More...</a><br /></td></tr>
@@ -331,7 +331,7 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="Math_8hpp.html">Math.hpp</a></li>
-    <li class="footer">Generated on Tue Oct 3 2023 15:07:06 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 6 2023 21:05:23 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

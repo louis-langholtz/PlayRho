@@ -120,14 +120,16 @@ Public Member Functions</h2></td></tr>
 struct playrho::detail::UnitIntervalChecker&lt; T &gt;</h3>
 
 <p>Unit-interval constrained value checker. </p>
-<p>Provides functors ensuring values are: greater-than or equal-to zero, and less-than or equal-to one. </p><dl class="section note"><dt>Note</dt><dd>This is meant to be used as a checker with types like <code><a class="el" href="classplayrho_1_1detail_1_1Checked.html" title="Class template for construction-time constraining a type&#39;s value.">Checked</a></code>. </dd></dl>
+<p>Provides functors ensuring values are: greater-than or equal-to zero, and less-than or equal-to one. By definition, this is called the "closed interval [0, 1]". </p><dl class="section note"><dt>Note</dt><dd>This is meant to be used as a checker with types like <code><a class="el" href="classplayrho_1_1detail_1_1Checked.html" title="Class template for construction-time constraining a type&#39;s value.">Checked</a></code>. </dd></dl>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>Underlying type for this checker.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1detail_1_1Checked.html" title="Class template for construction-time constraining a type&#39;s value.">Checked</a>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1detail_1_1Checked.html" title="Class template for construction-time constraining a type&#39;s value.">Checked</a>. </dd>
+<dd>
+<a href="https://en.wikipedia.org/wiki/Unit_interval">https://en.wikipedia.org/wiki/Unit_interval</a>. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="afee794eb882c7e20cfe4473f4429ac46"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afee794eb882c7e20cfe4473f4429ac46">&#9670;&nbsp;</a></span>operator()() <span class="overload">[1/2]</span></h2>
@@ -201,7 +203,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structplayrho_1_1detail_1_1UnitIntervalChecker.html">UnitIntervalChecker</a></li>
-    <li class="footer">Generated on Tue Oct 3 2023 15:07:07 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 6 2023 21:05:24 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

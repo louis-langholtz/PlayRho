@@ -1,7 +1,7 @@
 var DistanceProxy_8hpp =
 [
     [ "DistanceProxy", "classplayrho_1_1d2_1_1DistanceProxy.html", "classplayrho_1_1d2_1_1DistanceProxy" ],
-    [ "FindLowestRightMostVertex", "DistanceProxy_8hpp.html#a8a76c0389e1d7343fb8ad93543d3138f", null ],
+    [ "FindLowestRightMostVertex", "DistanceProxy_8hpp.html#ac8845b24d9baa83d95859a1ec749fdff", null ],
     [ "GetConvexHullAsVector", "DistanceProxy_8hpp.html#ae1538594ce2f0d86da70bf832c0327bb", null ],
     [ "GetSupportIndex", "DistanceProxy_8hpp.html#a6cfc27f1644f9c4d6da229b5eba07e51", null ],
     [ "GetVertexRadius", "DistanceProxy_8hpp.html#ab855c314cdb69e2906ed3474f127f332", null ],

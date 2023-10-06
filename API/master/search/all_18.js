@@ -1,10 +1,8 @@
 var searchData=
 [
-  ['_7eaabbtreeworld_2035',['~AabbTreeWorld',['../classplayrho_1_1d2_1_1AabbTreeWorld.html#abb5742627377026ed5cf98486a707f6a',1,'playrho::d2::AabbTreeWorld']]],
-  ['_7ebufferrecord_2036',['~BufferRecord',['../classplayrho_1_1pmr_1_1PoolMemoryResource_1_1BufferRecord.html#a4b47781c4a9395ce6e877f0675a302c5',1,'playrho::pmr::PoolMemoryResource::BufferRecord']]],
-  ['_7edynamictree_2037',['~DynamicTree',['../classplayrho_1_1d2_1_1DynamicTree.html#ad81a322bcd52726dba15394783eea8fb',1,'playrho::d2::DynamicTree']]],
-  ['_7eflagguard_2038',['~FlagGuard',['../classplayrho_1_1FlagGuard.html#a1649a18e1024ccbc6e8704b2f381f31e',1,'playrho::FlagGuard']]],
-  ['_7ememory_5fresource_2039',['~memory_resource',['../classplayrho_1_1pmr_1_1memory__resource.html#a82338a1863dd16237e06c925451841f5',1,'playrho::pmr::memory_resource']]],
-  ['_7epoolmemoryresource_2040',['~PoolMemoryResource',['../classplayrho_1_1pmr_1_1PoolMemoryResource.html#a11de22c20d940ca43de62f1ae580ca78',1,'playrho::pmr::PoolMemoryResource']]],
-  ['_7eworld_2041',['~World',['../classplayrho_1_1d2_1_1World.html#acd12237b5cc3cdbaa791c6bf4730b48b',1,'playrho::d2::World']]]
+  ['zerotounderone_2036',['ZeroToUnderOne',['../group__CheckedTypes.html#ga6d33fe002089badc48d22d99ec924ee4',1,'playrho']]],
+  ['zerotounderone_2ehpp_2037',['ZeroToUnderOne.hpp',['../ZeroToUnderOne_8hpp.html',1,'']]],
+  ['zerotounderonechecker_2038',['ZeroToUnderOneChecker',['../structplayrho_1_1detail_1_1ZeroToUnderOneChecker.html',1,'playrho::detail']]],
+  ['zerotounderonechecker_2ehpp_2039',['ZeroToUnderOneChecker.hpp',['../ZeroToUnderOneChecker_8hpp.html',1,'']]],
+  ['zerotounderoneff_2040',['ZeroToUnderOneFF',['../group__CheckedTypes.html#ga82f43e0e8a9fa443bc746a5f865effef',1,'playrho']]]
 ];

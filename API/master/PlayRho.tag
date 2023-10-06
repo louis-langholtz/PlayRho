@@ -386,8 +386,8 @@
       <type>constexpr void</type>
       <name>SetToi</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a85f8081e8947f1b8dcc218539c06d277</anchor>
-      <arglist>(Contact &amp;contact, const std::optional&lt; UnitInterval&lt; Real &gt;&gt; &amp;toi) noexcept</arglist>
+      <anchor>af93e3743c48882f44ef7936cbad68ae1</anchor>
+      <arglist>(Contact &amp;contact, const std::optional&lt; UnitIntervalFF&lt; Real &gt;&gt; &amp;toi) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr void</type>
@@ -999,6 +999,13 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a1aab64c9251adf9a109b7e69e1832844</anchor>
       <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>ContactID</type>
+      <name>GetSoonestContact</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7e8932936bd2f281984a4afacc40e7a1</anchor>
+      <arglist>(const Span&lt; const KeyedContactID &gt; &amp;ids, const Span&lt; const Contact &gt; &amp;contacts) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -1851,6 +1858,7 @@
     <filename>Body_8hpp.html</filename>
     <includes id="BodyType_8hpp" name="BodyType.hpp" local="no" imported="no">playrho/BodyType.hpp</includes>
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
+    <includes id="ZeroToUnderOne_8hpp" name="ZeroToUnderOne.hpp" local="no" imported="no">playrho/ZeroToUnderOne.hpp</includes>
     <includes id="BodyConf_8hpp" name="BodyConf.hpp" local="no" imported="no">playrho/d2/BodyConf.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
@@ -1861,15 +1869,15 @@
       <type>void</type>
       <name>Advance</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ac958086ef249205a586ecdf8f88db8db</anchor>
-      <arglist>(Body &amp;body, Real value) noexcept</arglist>
+      <anchor>aa5385b2dbb547f7dcf7cb4d8bd67d6a0</anchor>
+      <arglist>(Body &amp;body, ZeroToUnderOneFF&lt; Real &gt; value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>Advance0</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a9a54f71f97f0f55b155ed49b568e5206</anchor>
-      <arglist>(Body &amp;body, Real value) noexcept</arglist>
+      <anchor>a3025c6db501979297b7b7c27547111c4</anchor>
+      <arglist>(Body &amp;body, ZeroToUnderOneFF&lt; Real &gt; value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -1935,17 +1943,17 @@
       <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>InvMass</type>
+      <type>NonNegativeFF&lt; InvMass &gt;</type>
       <name>GetInvMass</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a628126b03bd99f5df5f08a047692b9da</anchor>
+      <anchor>a7d74493ba9108b54a9900eb8319ede92</anchor>
       <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>InvRotInertia</type>
+      <type>NonNegativeFF&lt; InvRotInertia &gt;</type>
       <name>GetInvRotInertia</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af4fac5901e03845d72a94de4e7bb92d0</anchor>
+      <anchor>a4c2a6d79f4824a9d3d9971b60a865e47</anchor>
       <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
@@ -2486,8 +2494,9 @@
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <includes id="d2_2AABB_8hpp" name="AABB.hpp" local="no" imported="no">playrho/d2/AABB.hpp</includes>
-    <class kind="class">playrho::d2::ChainShapeConf</class>
+    <class kind="struct">playrho::d2::ChainShapeConf</class>
     <class kind="struct">playrho::detail::TypeInfo&lt; playrho::d2::ChainShapeConf &gt;</class>
+    <class kind="class">playrho::d2::ChainShapeConf::VerticesWithNormals</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
     <member kind="function">
@@ -2667,6 +2676,16 @@
       <anchor>a89d774623d1c5986bbae698dbb20a07f</anchor>
       <arglist>(d2::VelocityConstraint &amp;vc, const Span&lt; d2::BodyConstraint &gt; &amp;bodies)</arglist>
     </member>
+  </compound>
+  <compound kind="file">
+    <name>ConvexHull.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
+    <filename>ConvexHull_8hpp.html</filename>
+    <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
+    <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
+    <class kind="class">playrho::d2::ConvexHull</class>
+    <namespace>playrho</namespace>
+    <namespace>playrho::d2</namespace>
   </compound>
   <compound kind="file">
     <name>DiskShapeConf.hpp</name>
@@ -2906,8 +2925,8 @@
       <type>std::size_t</type>
       <name>FindLowestRightMostVertex</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a8a76c0389e1d7343fb8ad93543d3138f</anchor>
-      <arglist>(Span&lt; const Length2 &gt; vertices)</arglist>
+      <anchor>ac8845b24d9baa83d95859a1ec749fdff</anchor>
+      <arglist>(Span&lt; const Length2 &gt; vertices) noexcept</arglist>
     </member>
     <member kind="function">
       <type>std::vector&lt; Length2 &gt;</type>
@@ -3141,8 +3160,9 @@
     <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
+    <includes id="NgonWithFwdNormals_8hpp" name="NgonWithFwdNormals.hpp" local="no" imported="no">playrho/d2/NgonWithFwdNormals.hpp</includes>
     <includes id="ShapeConf_8hpp" name="ShapeConf.hpp" local="no" imported="no">playrho/d2/ShapeConf.hpp</includes>
-    <class kind="class">playrho::d2::EdgeShapeConf</class>
+    <class kind="struct">playrho::d2::EdgeShapeConf</class>
     <class kind="struct">playrho::detail::TypeInfo&lt; playrho::d2::EdgeShapeConf &gt;</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
@@ -4380,6 +4400,13 @@
       <arglist>(const InvRotInertia &amp;invRotI, const Length2 &amp;p, const UnitVec &amp;q)</arglist>
     </member>
     <member kind="function">
+      <type>std::vector&lt; UnitVec &gt;</type>
+      <name>GetFwdNormalsVector</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ac32cdb280579f9cc50ec0831c9d8c690</anchor>
+      <arglist>(const std::vector&lt; Length2 &gt; &amp;vertices)</arglist>
+    </member>
+    <member kind="function">
       <type>Position</type>
       <name>GetNormalized</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -4446,8 +4473,8 @@
       <type>UnitVec</type>
       <name>GetUnitVector</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa85c709f68db8a40c7e89166462f3ee4</anchor>
-      <arglist>(const Vector2&lt; T &gt; &amp;value, const UnitVec &amp;fallback=UnitVec::GetDefaultFallback())</arglist>
+      <anchor>a6bd25518f48c10a51a89b63e4d5103bb</anchor>
+      <arglist>(const Vector2&lt; T &gt; &amp;value, const UnitVec &amp;fallback=UnitVec::GetDefaultFallback()) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr Vec2</type>
@@ -4845,8 +4872,8 @@
       <type>constexpr auto</type>
       <name>Square</name>
       <anchorfile>group__Math.html</anchorfile>
-      <anchor>gac7300e33771c076a6d7236d566b30207</anchor>
-      <arglist>(TYPE t) noexcept -&gt; decltype(t *t)</arglist>
+      <anchor>ga4000cee8b1fc5a9ab6a5cfe29eb645b6</anchor>
+      <arglist>(T t) noexcept(noexcept(t *t)) -&gt; decltype(t *t)</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -5055,11 +5082,11 @@
     <name>MultiShapeConf.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>MultiShapeConf_8hpp.html</filename>
+    <includes id="ConvexHull_8hpp" name="ConvexHull.hpp" local="no" imported="no">playrho/d2/ConvexHull.hpp</includes>
     <includes id="ShapeConf_8hpp" name="ShapeConf.hpp" local="no" imported="no">playrho/d2/ShapeConf.hpp</includes>
     <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
-    <class kind="class">playrho::d2::ConvexHull</class>
     <class kind="struct">playrho::d2::MultiShapeConf</class>
     <class kind="struct">playrho::detail::TypeInfo&lt; playrho::d2::MultiShapeConf &gt;</class>
     <namespace>playrho</namespace>
@@ -5136,6 +5163,30 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>NgonWithFwdNormals.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
+    <filename>NgonWithFwdNormals_8hpp.html</filename>
+    <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
+    <class kind="class">playrho::d2::NgonWithFwdNormals</class>
+    <class kind="class">playrho::d2::NgonWithFwdNormals&lt; static_cast&lt; std::size_t &gt;(-1)&gt;</class>
+    <namespace>playrho</namespace>
+    <namespace>playrho::d2</namespace>
+    <member kind="function">
+      <type>std::array&lt; UnitVec, N &gt;</type>
+      <name>GetFwdNormalsArray</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a03e5b2dc2081cc8e0fc608ff79e78a89</anchor>
+      <arglist>(const std::array&lt; Length2, N &gt; &amp;vertices)</arglist>
+    </member>
+    <member kind="function">
+      <type>std::array&lt; UnitVec, sizeof...(ints)&gt;</type>
+      <name>GetFwdNormalsArray</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a642d004cc56b550c7fc6ff0fc6cb3311</anchor>
+      <arglist>(const std::array&lt; Length2, sizeof...(ints)&gt; &amp;vertices, std::integer_sequence&lt; T, ints... &gt; int_seq)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>PointStates.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>PointStates_8hpp.html</filename>
@@ -5157,12 +5208,13 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>PolygonShapeConf_8hpp.html</filename>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
-    <includes id="ShapeConf_8hpp" name="ShapeConf.hpp" local="no" imported="no">playrho/d2/ShapeConf.hpp</includes>
     <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
+    <includes id="NgonWithFwdNormals_8hpp" name="NgonWithFwdNormals.hpp" local="no" imported="no">playrho/d2/NgonWithFwdNormals.hpp</includes>
+    <includes id="ShapeConf_8hpp" name="ShapeConf.hpp" local="no" imported="no">playrho/d2/ShapeConf.hpp</includes>
     <includes id="VertexSet_8hpp" name="VertexSet.hpp" local="no" imported="no">playrho/d2/VertexSet.hpp</includes>
-    <class kind="class">playrho::d2::PolygonShapeConf</class>
+    <class kind="struct">playrho::d2::PolygonShapeConf</class>
     <class kind="struct">playrho::detail::TypeInfo&lt; playrho::d2::PolygonShapeConf &gt;</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
@@ -5179,13 +5231,6 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>aecd3d6d3ce6bf86f6b0c9684c05d63bc</anchor>
       <arglist>(const PolygonShapeConf &amp;) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Length2</type>
-      <name>GetEdge</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae1d607961c82c71870826cd079d5387d</anchor>
-      <arglist>(const PolygonShapeConf &amp;shape, VertexCounter index)</arglist>
     </member>
     <member kind="function">
       <type>MassData</type>
@@ -5350,9 +5395,10 @@
     <name>PositionConstraint.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>PositionConstraint_8hpp.html</filename>
+    <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
+    <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
     <includes id="Manifold_8hpp" name="Manifold.hpp" local="no" imported="no">playrho/d2/Manifold.hpp</includes>
-    <includes id="BodyConstraint_8hpp" name="BodyConstraint.hpp" local="no" imported="no">playrho/d2/BodyConstraint.hpp</includes>
-    <class kind="class">playrho::d2::PositionConstraint</class>
+    <class kind="struct">playrho::d2::PositionConstraint</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
   </compound>
@@ -6457,10 +6503,18 @@
     <filename>Sweep_8hpp.html</filename>
     <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
+    <includes id="ZeroToUnderOne_8hpp" name="ZeroToUnderOne.hpp" local="no" imported="no">playrho/ZeroToUnderOne.hpp</includes>
     <includes id="Position_8hpp" name="Position.hpp" local="no" imported="no">playrho/d2/Position.hpp</includes>
-    <class kind="class">playrho::d2::Sweep</class>
+    <class kind="struct">playrho::d2::Sweep</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
+    <member kind="function">
+      <type>Sweep</type>
+      <name>Advance0</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a9f1f1a039d714b800386dea3f97f3ed3</anchor>
+      <arglist>(const Sweep &amp;sweep, ZeroToUnderOneFF&lt; Real &gt; alpha) noexcept</arglist>
+    </member>
     <member kind="function">
       <type>constexpr bool</type>
       <name>IsValid</name>
@@ -6678,9 +6732,9 @@
     <name>UnitVec.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>UnitVec_8hpp.html</filename>
+    <includes id="InvalidArgument_8hpp" name="InvalidArgument.hpp" local="no" imported="no">playrho/InvalidArgument.hpp</includes>
     <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
-    <includes id="InvalidArgument_8hpp" name="InvalidArgument.hpp" local="no" imported="no">playrho/InvalidArgument.hpp</includes>
     <class kind="class">std::tuple_element&lt; I, playrho::d2::UnitVec &gt;</class>
     <class kind="class">std::tuple_size&lt; playrho::d2::UnitVec &gt;</class>
     <class kind="class">playrho::d2::UnitVec</class>
@@ -9274,10 +9328,10 @@
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
-      <type>std::optional&lt; UnitInterval&lt; Real &gt; &gt;</type>
+      <type>std::optional&lt; UnitIntervalFF&lt; Real &gt; &gt;</type>
       <name>GetToi</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ace170277236e8d6ff73a081d4ffa16d3</anchor>
+      <anchor>a00955d16b773879aeb7f58194c2401b3</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
@@ -10603,6 +10657,14 @@
     <class kind="struct">playrho::detail::Wider&lt; std::uint16_t &gt;</class>
     <class kind="struct">playrho::detail::Wider&lt; std::uint32_t &gt;</class>
     <class kind="struct">playrho::detail::Wider&lt; std::uint8_t &gt;</class>
+    <namespace>playrho</namespace>
+    <namespace>playrho::detail</namespace>
+  </compound>
+  <compound kind="file">
+    <name>ZeroToUnderOneChecker.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/detail/</path>
+    <filename>ZeroToUnderOneChecker_8hpp.html</filename>
+    <class kind="struct">playrho::detail::ZeroToUnderOneChecker</class>
     <namespace>playrho</namespace>
     <namespace>playrho::detail</namespace>
   </compound>
@@ -12331,6 +12393,7 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>ToiOutput_8hpp.html</filename>
     <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="UnitInterval_8hpp" name="UnitInterval.hpp" local="no" imported="no">playrho/UnitInterval.hpp</includes>
     <includes id="WiderType_8hpp" name="WiderType.hpp" local="no" imported="no">playrho/WiderType.hpp</includes>
     <class kind="struct">playrho::ToiOutput::Statistics</class>
     <class kind="struct">playrho::ToiOutput</class>
@@ -13757,6 +13820,28 @@
     <filename>WrongState_8hpp.html</filename>
     <class kind="class">playrho::WrongState</class>
     <namespace>playrho</namespace>
+  </compound>
+  <compound kind="file">
+    <name>ZeroToUnderOne.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
+    <filename>ZeroToUnderOne_8hpp.html</filename>
+    <includes id="Checked_8hpp" name="Checked.hpp" local="no" imported="no">playrho/detail/Checked.hpp</includes>
+    <includes id="ZeroToUnderOneChecker_8hpp" name="ZeroToUnderOneChecker.hpp" local="no" imported="no">playrho/detail/ZeroToUnderOneChecker.hpp</includes>
+    <namespace>playrho</namespace>
+    <member kind="typedef">
+      <type>detail::Checked&lt; T, detail::ZeroToUnderOneChecker&lt; T &gt; &gt;</type>
+      <name>ZeroToUnderOne</name>
+      <anchorfile>group__CheckedTypes.html</anchorfile>
+      <anchor>ga6d33fe002089badc48d22d99ec924ee4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>detail::Checked&lt; T, detail::ZeroToUnderOneChecker&lt; T &gt;, true &gt;</type>
+      <name>ZeroToUnderOneFF</name>
+      <anchorfile>group__CheckedTypes.html</anchorfile>
+      <anchor>ga82f43e0e8a9fa443bc746a5f865effef</anchor>
+      <arglist></arglist>
+    </member>
   </compound>
   <compound kind="struct">
     <name>playrho::detail::AABB</name>
@@ -15326,8 +15411,8 @@
       <type>void</type>
       <name>Advance0</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a928fcdf5f5573d43dc8cc354ac143aa8</anchor>
-      <arglist>(Real value) noexcept</arglist>
+      <anchor>a60069dabb41d21b3720f3e1fe68c6702</anchor>
+      <arglist>(ZeroToUnderOneFF&lt; Real &gt; value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>Body &amp;</type>
@@ -15358,17 +15443,17 @@
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>InvMass</type>
+      <type>NonNegativeFF&lt; InvMass &gt;</type>
       <name>GetInvMass</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a479319dda79903324ef520ae21c7ca56</anchor>
+      <anchor>afab0a390c2d7e16f64db6f4ddbfdc975</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>InvRotInertia</type>
+      <type>NonNegativeFF&lt; InvRotInertia &gt;</type>
       <name>GetInvRotInertia</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a9b477bcd587e43f70e25099c83a5ebf1</anchor>
+      <anchor>a8ff3d44b2739fb3b066270db4be2da7a</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -15499,13 +15584,6 @@
     </member>
     <member kind="function">
       <type>void</type>
-      <name>ResetUnderActiveTime</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>ae6c659ede45cf5fc6659d1942249221d</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
       <name>SetAcceleration</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
       <anchor>abb921582a11b07be4c8ac81c43787176</anchor>
@@ -15569,13 +15647,6 @@
     </member>
     <member kind="function">
       <type>void</type>
-      <name>SetMassDataDirty</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a690931872492c253f8e09cabc5922950</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
       <name>SetPosition0</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
       <anchor>aa75a3dd698cd9472908f86a9903c0aad</anchor>
@@ -15627,8 +15698,8 @@
       <type>void</type>
       <name>SetVelocity</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a6c21c223175b12cd68cea10484996fb1</anchor>
-      <arglist>(const Velocity &amp;velocity) noexcept</arglist>
+      <anchor>a32b0b95d49a70472d8667fc97959151c</anchor>
+      <arglist>(const Velocity &amp;value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -15656,13 +15727,6 @@
       <name>UnsetImpenetrable</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
       <anchor>ac0a4e7da62712ec6e5c10f8637b59eca</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>UnsetMassDataDirty</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a5b9292b31662dc542896a8f471e82e43</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function" static="yes">
@@ -15764,17 +15828,17 @@
       <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>InvMass</type>
+      <type>NonNegativeFF&lt; InvMass &gt;</type>
       <name>GetInvMass</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a628126b03bd99f5df5f08a047692b9da</anchor>
+      <anchor>a7d74493ba9108b54a9900eb8319ede92</anchor>
       <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>InvRotInertia</type>
+      <type>NonNegativeFF&lt; InvRotInertia &gt;</type>
       <name>GetInvRotInertia</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af4fac5901e03845d72a94de4e7bb92d0</anchor>
+      <anchor>a4c2a6d79f4824a9d3d9971b60a865e47</anchor>
       <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
@@ -16795,133 +16859,134 @@
       <arglist></arglist>
     </member>
   </compound>
-  <compound kind="class">
+  <compound kind="struct">
     <name>playrho::d2::ChainShapeConf</name>
-    <filename>classplayrho_1_1d2_1_1ChainShapeConf.html</filename>
+    <filename>structplayrho_1_1d2_1_1ChainShapeConf.html</filename>
     <base>ShapeBuilder&lt; ChainShapeConf &gt;</base>
+    <class kind="class">playrho::d2::ChainShapeConf::VerticesWithNormals</class>
     <member kind="function">
       <type>ChainShapeConf &amp;</type>
       <name>Add</name>
-      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
       <anchor>a050cde99615da966971db9a2a2221599</anchor>
       <arglist>(const Length2 &amp;vertex)</arglist>
     </member>
     <member kind="function">
       <type>DistanceProxy</type>
       <name>GetChild</name>
-      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
       <anchor>aad58b3ff7b02274deaac614b0799aa3a</anchor>
       <arglist>(ChildCounter index) const</arglist>
     </member>
     <member kind="function">
       <type>ChildCounter</type>
       <name>GetChildCount</name>
-      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
       <anchor>a93f5443670a216ba6ec1f91503196d87</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>MassData</type>
       <name>GetMassData</name>
-      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
       <anchor>acf3a62f07bbb6fdaeb1cbc962d62feb8</anchor>
       <arglist>() const</arglist>
     </member>
     <member kind="function">
       <type>UnitVec</type>
       <name>GetNormal</name>
-      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
       <anchor>ad9fc03054ddd0ad4e6b7ef87bb90296b</anchor>
       <arglist>(ChildCounter index) const</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetVertex</name>
-      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
       <anchor>af93574aab3c319909a163bf47b9c5f3f</anchor>
       <arglist>(ChildCounter index) const</arglist>
     </member>
     <member kind="function">
       <type>ChildCounter</type>
       <name>GetVertexCount</name>
-      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
       <anchor>a5e70b4b91eee211bfd66f4f8c35f4694</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>std::vector&lt; Length2 &gt;</type>
-      <name>GetVertices</name>
-      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
-      <anchor>a7e663b2fca51b54205536419aef1cae0</anchor>
-      <arglist>() const</arglist>
-    </member>
-    <member kind="function">
       <type>ChainShapeConf &amp;</type>
       <name>Rotate</name>
-      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
       <anchor>a43a360caa00691592b20979a0074eb85</anchor>
       <arglist>(const UnitVec &amp;value)</arglist>
     </member>
     <member kind="function">
       <type>ChainShapeConf &amp;</type>
       <name>Scale</name>
-      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
       <anchor>afe80efb1b52f6aaa66efc2ae4a10a3d2</anchor>
       <arglist>(const Vec2 &amp;value)</arglist>
     </member>
     <member kind="function">
       <type>ChainShapeConf &amp;</type>
       <name>Set</name>
-      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
       <anchor>a3e152a2ade140d44de91350012e5ba70</anchor>
       <arglist>(std::vector&lt; Length2 &gt; vertices)</arglist>
     </member>
     <member kind="function">
       <type>ChainShapeConf &amp;</type>
       <name>Translate</name>
-      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
       <anchor>add6b71b4cd924b7319674810753ce748</anchor>
       <arglist>(const Length2 &amp;value)</arglist>
     </member>
     <member kind="function">
       <type>ChainShapeConf &amp;</type>
       <name>UseVertexRadius</name>
-      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
       <anchor>a9decae5ce2d539ef3c2cf60618147f36</anchor>
       <arglist>(NonNegative&lt; Length &gt; value) noexcept</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static constexpr NonNegative&lt; Length &gt;</type>
       <name>GetDefaultVertexRadius</name>
-      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
       <anchor>abbd9e21a6b8f40b76a2d9efa021126d1</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="variable">
+      <type>VerticesWithNormals</type>
+      <name>segments</name>
+      <anchorfile>structplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
+      <anchor>ae74cfc2bcab5ba60f69511afcd968906</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>NonNegative&lt; Length &gt;</type>
       <name>vertexRadius</name>
-      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
       <anchor>ae913f960a60acc99531e36bb04a47819</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" static="yes">
       <type>static constexpr auto</type>
       <name>DefaultVertexRadius</name>
-      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
       <anchor>a5699086378a35b19977a0ba9945cfe36</anchor>
       <arglist></arglist>
     </member>
     <member kind="friend">
       <type>friend bool</type>
       <name>operator!=</name>
-      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
       <anchor>ad44c87454b3202c77105e5859f1ee276</anchor>
       <arglist>(const ChainShapeConf &amp;lhs, const ChainShapeConf &amp;rhs) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend bool</type>
       <name>operator==</name>
-      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1ChainShapeConf.html</anchorfile>
       <anchor>a0beaec4204c1bbce524ed5d27cff04fc</anchor>
       <arglist>(const ChainShapeConf &amp;lhs, const ChainShapeConf &amp;rhs) noexcept</arglist>
     </member>
@@ -18487,6 +18552,630 @@
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
       <anchor>ab9994a039bbf093c9b0e0faddd272dab</anchor>
       <arglist>(const Other &amp;lhs, const Checked&lt; Frequency, NoOpChecker&lt; Frequency &gt;, false &gt; &amp;rhs) -&gt; decltype(Frequency(lhs) &gt;=Frequency(rhs))</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>Checked&lt; InvMass &gt;</name>
+    <filename>classplayrho_1_1detail_1_1Checked.html</filename>
+    <member kind="typedef">
+      <type>NoOpChecker&lt; InvMass &gt;</type>
+      <name>checker_type</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a0126d8ae64781661f7a81abd5c2c3b32</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>InvalidArgument</type>
+      <name>exception_type</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a6e1de9cc039b2ac32262d38e7ea90a3d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::remove_pointer_t&lt; InvMass &gt;</type>
+      <name>remove_pointer_type</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a5195c96ea6ee491e75d93ce702553cda</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>InvMass</type>
+      <name>value_type</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a93dd281b7a6333ed3f69aa4bf59b1003</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>aafb88ef5ee8cb239f0ec9334a68d83de</anchor>
+      <arglist>() noexcept(false)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a4ae56dcc4a01f7db4a387f9e05ceec32</anchor>
+      <arglist>(const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, OtherNoExcept &gt; &amp;other) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>ac9116398d4e446826be64fcdf5997278</anchor>
+      <arglist>(value_type value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr value_type</type>
+      <name>get</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a2e28d17a5294bbc7edd11d5a7796c4f2</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>operator value_type</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>aac39091a26372d353a589273c998c9fa</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr std::enable_if_t&lt; std::is_pointer_v&lt; U &gt;, remove_pointer_type &gt; &amp;</type>
+      <name>operator*</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a58a650224561db5ff826180b981d9267</anchor>
+      <arglist>() const</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr std::enable_if_t&lt; std::is_pointer_v&lt; U &gt;, U &gt;</type>
+      <name>operator-&gt;</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>abdc6cb3efdad41ab79f87561dfdefc86</anchor>
+      <arglist>() const</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static constexpr auto</type>
+      <name>ThrowIfInvalid</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a883125c87182d1f07b1ef2fe8b9928a2</anchor>
+      <arglist>(const value_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; InvMass &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static constexpr auto</type>
+      <name>Validate</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>abe37f4f4b60bfb20e85bd8a67d18c614</anchor>
+      <arglist>(const value_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), value_type{})</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator!=</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a4994d33050437f2bd04ce28f82c6cfa9</anchor>
+      <arglist>(const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(InvMass(lhs) !=rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator!=</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a32383015bf171dea637b7a959b7421fa</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) noexcept(noexcept(std::declval&lt; LhsValueType &gt;() !=std::declval&lt; RhsValueType &gt;())) -&gt; decltype(LhsValueType(lhs) !=RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator!=</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a1710820c42a3d0fa04fdd7b03ccda485</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;rhs) -&gt; decltype(lhs !=InvMass(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator*</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a0daf3badd07c3d8a8f75e372aeb10620</anchor>
+      <arglist>(const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; std::enable_if_t&lt;!IsMultipliableV&lt; Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt;, Other &gt;, decltype(InvMass() *Other())&gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator*</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a62ccb41874a11ae208e4d2a1840aa898</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs) *RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator*</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a0c81bd1815fccef0be17df1909886ee3</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;rhs) -&gt; std::enable_if_t&lt;!IsMultipliableV&lt; Other, Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt;&gt;, decltype(Other() *InvMass())&gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator+</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>ab36ff5f373eaf2d495dce40c42e6c792</anchor>
+      <arglist>(const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(InvMass(lhs)+rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator+</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>ad61c4c34236f778ed47268224850b24e</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs)+RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator+</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>ac9cf08de554c2029b6bbb90d1890d1d2</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;rhs) -&gt; decltype(lhs+InvMass(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator-</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>ab093280c9b756a1aa417ff530bae5072</anchor>
+      <arglist>(const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(InvMass(lhs) - rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator-</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a66f17c27ae07bb4d3402817a6f8d52f1</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs) - RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator-</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>ae42c345584e1f5fc449daf5e1bfe1b74</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;rhs) -&gt; decltype(lhs - InvMass(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator/</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7afdc583a043ed1144ffd3a8bc254221</anchor>
+      <arglist>(const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(InvMass(lhs)/rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator/</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>aa6546914bb51e238fe23f2da6de2d4eb</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs)/RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator/</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a6df49c6b71fae2abdb05858e444b94d2</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;rhs) -&gt; decltype(lhs/InvMass(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&lt;</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a8b5a8d7ecc5a2fd34c979a4ed7ee67b8</anchor>
+      <arglist>(const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(InvMass(lhs)&lt; InvMass(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&lt;</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a00e22b3d70171c770fe2fe13afdff11c</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs)&lt; RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&lt;</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>ab1151c88c9fdcd11cb39197aad9e2f9a</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;rhs) -&gt; decltype(InvMass(lhs)&lt; InvMass(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>operator&lt;&lt;</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f06e1143875dde6f350188cd20b307b</anchor>
+      <arglist>(::std::ostream &amp;os, const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;value) -&gt; decltype(os&lt;&lt; InvMass(value))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&lt;=</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>aeff78aa037fbc86ce1958b1658ed2510</anchor>
+      <arglist>(const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(InvMass(lhs)&lt;=InvMass(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&lt;=</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a92f80c500536c9ace9c266ca095d4ce2</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs)&lt;=RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&lt;=</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>adeb25d8b74e7403ebd78bf324b8101dc</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;rhs) -&gt; decltype(InvMass(lhs)&lt;=InvMass(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator==</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a50beca9c94a84b533dda16d5612c99c1</anchor>
+      <arglist>(const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(InvMass(lhs)==rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator==</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a8f2e536c4b87e31dd0d088bb64712b70</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) noexcept(noexcept(std::declval&lt; LhsValueType &gt;()==std::declval&lt; RhsValueType &gt;())) -&gt; decltype(LhsValueType(lhs)==RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator==</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a3122c1c3be1d11d9e824e227cf58e4f3</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;rhs) -&gt; decltype(lhs==InvMass(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&gt;</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7db684b2001572866a76004dc188482b</anchor>
+      <arglist>(const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(InvMass(lhs) &gt; InvMass(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&gt;</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a65ffa1dc8fdac606f09d7f1258d76697</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs) &gt; RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&gt;</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>ae925670316f198c098c65a2d9fb2e68d</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;rhs) -&gt; decltype(InvMass(lhs) &gt; InvMass(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&gt;=</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a79e613ff5f9b13c13408daab2deae491</anchor>
+      <arglist>(const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(InvMass(lhs) &gt;=InvMass(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&gt;=</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a0d2b20e9a7652cad0cb713a9b466268d</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs) &gt;=RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&gt;=</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>ab9994a039bbf093c9b0e0faddd272dab</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvMass, NoOpChecker&lt; InvMass &gt;, false &gt; &amp;rhs) -&gt; decltype(InvMass(lhs) &gt;=InvMass(rhs))</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>Checked&lt; InvRotInertia &gt;</name>
+    <filename>classplayrho_1_1detail_1_1Checked.html</filename>
+    <member kind="typedef">
+      <type>NoOpChecker&lt; InvRotInertia &gt;</type>
+      <name>checker_type</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a0126d8ae64781661f7a81abd5c2c3b32</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>InvalidArgument</type>
+      <name>exception_type</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a6e1de9cc039b2ac32262d38e7ea90a3d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::remove_pointer_t&lt; InvRotInertia &gt;</type>
+      <name>remove_pointer_type</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a5195c96ea6ee491e75d93ce702553cda</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>InvRotInertia</type>
+      <name>value_type</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a93dd281b7a6333ed3f69aa4bf59b1003</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>aafb88ef5ee8cb239f0ec9334a68d83de</anchor>
+      <arglist>() noexcept(false)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a4ae56dcc4a01f7db4a387f9e05ceec32</anchor>
+      <arglist>(const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, OtherNoExcept &gt; &amp;other) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>ac9116398d4e446826be64fcdf5997278</anchor>
+      <arglist>(value_type value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr value_type</type>
+      <name>get</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a2e28d17a5294bbc7edd11d5a7796c4f2</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>operator value_type</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>aac39091a26372d353a589273c998c9fa</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr std::enable_if_t&lt; std::is_pointer_v&lt; U &gt;, remove_pointer_type &gt; &amp;</type>
+      <name>operator*</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a58a650224561db5ff826180b981d9267</anchor>
+      <arglist>() const</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr std::enable_if_t&lt; std::is_pointer_v&lt; U &gt;, U &gt;</type>
+      <name>operator-&gt;</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>abdc6cb3efdad41ab79f87561dfdefc86</anchor>
+      <arglist>() const</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static constexpr auto</type>
+      <name>ThrowIfInvalid</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a883125c87182d1f07b1ef2fe8b9928a2</anchor>
+      <arglist>(const value_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; InvRotInertia &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static constexpr auto</type>
+      <name>Validate</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>abe37f4f4b60bfb20e85bd8a67d18c614</anchor>
+      <arglist>(const value_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), value_type{})</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator!=</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a4994d33050437f2bd04ce28f82c6cfa9</anchor>
+      <arglist>(const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(InvRotInertia(lhs) !=rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator!=</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a32383015bf171dea637b7a959b7421fa</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) noexcept(noexcept(std::declval&lt; LhsValueType &gt;() !=std::declval&lt; RhsValueType &gt;())) -&gt; decltype(LhsValueType(lhs) !=RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator!=</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a1710820c42a3d0fa04fdd7b03ccda485</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;rhs) -&gt; decltype(lhs !=InvRotInertia(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator*</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a0daf3badd07c3d8a8f75e372aeb10620</anchor>
+      <arglist>(const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; std::enable_if_t&lt;!IsMultipliableV&lt; Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt;, Other &gt;, decltype(InvRotInertia() *Other())&gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator*</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a62ccb41874a11ae208e4d2a1840aa898</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs) *RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator*</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a0c81bd1815fccef0be17df1909886ee3</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;rhs) -&gt; std::enable_if_t&lt;!IsMultipliableV&lt; Other, Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt;&gt;, decltype(Other() *InvRotInertia())&gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator+</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>ab36ff5f373eaf2d495dce40c42e6c792</anchor>
+      <arglist>(const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(InvRotInertia(lhs)+rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator+</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>ad61c4c34236f778ed47268224850b24e</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs)+RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator+</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>ac9cf08de554c2029b6bbb90d1890d1d2</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;rhs) -&gt; decltype(lhs+InvRotInertia(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator-</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>ab093280c9b756a1aa417ff530bae5072</anchor>
+      <arglist>(const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(InvRotInertia(lhs) - rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator-</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a66f17c27ae07bb4d3402817a6f8d52f1</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs) - RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator-</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>ae42c345584e1f5fc449daf5e1bfe1b74</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;rhs) -&gt; decltype(lhs - InvRotInertia(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator/</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7afdc583a043ed1144ffd3a8bc254221</anchor>
+      <arglist>(const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(InvRotInertia(lhs)/rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator/</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>aa6546914bb51e238fe23f2da6de2d4eb</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs)/RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator/</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a6df49c6b71fae2abdb05858e444b94d2</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;rhs) -&gt; decltype(lhs/InvRotInertia(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&lt;</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a8b5a8d7ecc5a2fd34c979a4ed7ee67b8</anchor>
+      <arglist>(const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(InvRotInertia(lhs)&lt; InvRotInertia(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&lt;</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a00e22b3d70171c770fe2fe13afdff11c</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs)&lt; RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&lt;</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>ab1151c88c9fdcd11cb39197aad9e2f9a</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;rhs) -&gt; decltype(InvRotInertia(lhs)&lt; InvRotInertia(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>operator&lt;&lt;</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f06e1143875dde6f350188cd20b307b</anchor>
+      <arglist>(::std::ostream &amp;os, const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;value) -&gt; decltype(os&lt;&lt; InvRotInertia(value))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&lt;=</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>aeff78aa037fbc86ce1958b1658ed2510</anchor>
+      <arglist>(const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(InvRotInertia(lhs)&lt;=InvRotInertia(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&lt;=</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a92f80c500536c9ace9c266ca095d4ce2</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs)&lt;=RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&lt;=</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>adeb25d8b74e7403ebd78bf324b8101dc</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;rhs) -&gt; decltype(InvRotInertia(lhs)&lt;=InvRotInertia(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator==</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a50beca9c94a84b533dda16d5612c99c1</anchor>
+      <arglist>(const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(InvRotInertia(lhs)==rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator==</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a8f2e536c4b87e31dd0d088bb64712b70</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) noexcept(noexcept(std::declval&lt; LhsValueType &gt;()==std::declval&lt; RhsValueType &gt;())) -&gt; decltype(LhsValueType(lhs)==RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator==</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a3122c1c3be1d11d9e824e227cf58e4f3</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;rhs) -&gt; decltype(lhs==InvRotInertia(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&gt;</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7db684b2001572866a76004dc188482b</anchor>
+      <arglist>(const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(InvRotInertia(lhs) &gt; InvRotInertia(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&gt;</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a65ffa1dc8fdac606f09d7f1258d76697</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs) &gt; RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&gt;</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>ae925670316f198c098c65a2d9fb2e68d</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;rhs) -&gt; decltype(InvRotInertia(lhs) &gt; InvRotInertia(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&gt;=</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a79e613ff5f9b13c13408daab2deae491</anchor>
+      <arglist>(const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;lhs, const Other &amp;rhs) -&gt; decltype(InvRotInertia(lhs) &gt;=InvRotInertia(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&gt;=</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a0d2b20e9a7652cad0cb713a9b466268d</anchor>
+      <arglist>(const Checked&lt; LhsValueType, LhsChecker, LhsNoExcept &gt; &amp;lhs, const Checked&lt; RhsValueType, RhsChecker, RhsNoExcept &gt; &amp;rhs) -&gt; decltype(LhsValueType(lhs) &gt;=RhsValueType(rhs))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator&gt;=</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>ab9994a039bbf093c9b0e0faddd272dab</anchor>
+      <arglist>(const Other &amp;lhs, const Checked&lt; InvRotInertia, NoOpChecker&lt; InvRotInertia &gt;, false &gt; &amp;rhs) -&gt; decltype(InvRotInertia(lhs) &gt;=InvRotInertia(rhs))</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -20584,10 +21273,10 @@
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>constexpr std::optional&lt; UnitInterval&lt; Real &gt; &gt;</type>
+      <type>constexpr std::optional&lt; UnitIntervalFF&lt; Real &gt; &gt;</type>
       <name>GetToi</name>
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
-      <anchor>aeac1b25d69d65e634343a55076e686d3</anchor>
+      <anchor>a770273b481864b2a4e8a80ec7099ede5</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -20713,8 +21402,8 @@
       <type>constexpr void</type>
       <name>SetToi</name>
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
-      <anchor>ab6c050ea9a993243c934ce87f1deb78e</anchor>
-      <arglist>(const std::optional&lt; UnitInterval&lt; Real &gt;&gt; &amp;toi) noexcept</arglist>
+      <anchor>a8b75166068cc1f2bade65ac506377ae6</anchor>
+      <arglist>(const std::optional&lt; UnitIntervalFF&lt; Real &gt;&gt; &amp;toi) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr void</type>
@@ -21000,8 +21689,8 @@
       <type>constexpr void</type>
       <name>SetToi</name>
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
-      <anchor>a85f8081e8947f1b8dcc218539c06d277</anchor>
-      <arglist>(Contact &amp;contact, const std::optional&lt; UnitInterval&lt; Real &gt;&gt; &amp;toi) noexcept</arglist>
+      <anchor>af93e3743c48882f44ef7936cbad68ae1</anchor>
+      <arglist>(Contact &amp;contact, const std::optional&lt; UnitIntervalFF&lt; Real &gt;&gt; &amp;toi) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr void</type>
@@ -22587,98 +23276,91 @@
       <arglist></arglist>
     </member>
   </compound>
-  <compound kind="class">
+  <compound kind="struct">
     <name>playrho::d2::EdgeShapeConf</name>
-    <filename>classplayrho_1_1d2_1_1EdgeShapeConf.html</filename>
+    <filename>structplayrho_1_1d2_1_1EdgeShapeConf.html</filename>
     <base>ShapeBuilder&lt; EdgeShapeConf &gt;</base>
     <member kind="function">
       <type></type>
       <name>EdgeShapeConf</name>
-      <anchorfile>classplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
       <anchor>acddabd99394242e26627fadcf36d10b2</anchor>
       <arglist>(const Length2 &amp;vA, const Length2 &amp;vB, const EdgeShapeConf &amp;conf=GetDefaultConf()) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>DistanceProxy</type>
-      <name>GetChild</name>
-      <anchorfile>classplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
-      <anchor>a60b2f40cbcd5bec85036d7f8169b1009</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>Length2</type>
       <name>GetVertexA</name>
-      <anchorfile>classplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
       <anchor>a3affefb1face6109ba0dbf3f2ae1316c</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetVertexB</name>
-      <anchorfile>classplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
       <anchor>a4e1dafe1cd7aabc170875038d72b6e76</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>EdgeShapeConf &amp;</type>
       <name>Rotate</name>
-      <anchorfile>classplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
       <anchor>af3208f9fb0bf45ac1d4fd9b04d9b7668</anchor>
       <arglist>(const UnitVec &amp;value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>EdgeShapeConf &amp;</type>
       <name>Scale</name>
-      <anchorfile>classplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
       <anchor>ae31ede48ff606326559bb1be7dd4bdb2</anchor>
       <arglist>(const Vec2 &amp;value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>EdgeShapeConf &amp;</type>
       <name>Set</name>
-      <anchorfile>classplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
       <anchor>a6b65ba72ad612a47258b68a520631ce3</anchor>
       <arglist>(const Length2 &amp;vA, const Length2 &amp;vB) noexcept</arglist>
     </member>
     <member kind="function">
       <type>EdgeShapeConf &amp;</type>
       <name>Translate</name>
-      <anchorfile>classplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
       <anchor>a9d8e89d1b870adc5e978ff11b20442ac</anchor>
       <arglist>(const Length2 &amp;value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>EdgeShapeConf &amp;</type>
       <name>UseVertexRadius</name>
-      <anchorfile>classplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
       <anchor>a0fa0648764ab95db5771e0bb4c4aba12</anchor>
       <arglist>(NonNegative&lt; Length &gt; value) noexcept</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static EdgeShapeConf</type>
       <name>GetDefaultConf</name>
-      <anchorfile>classplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
       <anchor>aeaba8cac67b704014d26574a3492bae0</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static constexpr NonNegative&lt; Length &gt;</type>
       <name>GetDefaultVertexRadius</name>
-      <anchorfile>classplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
       <anchor>a2440d2d407850714f6a96134a8cca0fb</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="variable">
-      <type>NonNegative&lt; Length &gt;</type>
+      <type>NonNegativeFF&lt; Length &gt;</type>
       <name>vertexRadius</name>
-      <anchorfile>classplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
-      <anchor>ab511eef5cb53693920b010d1298db639</anchor>
+      <anchorfile>structplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
+      <anchor>ab8fa865e92fdcd78bc7e1669170201ee</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" static="yes">
       <type>static constexpr auto</type>
       <name>DefaultVertexRadius</name>
-      <anchorfile>classplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1EdgeShapeConf.html</anchorfile>
       <anchor>a462c93e8691ddf99c4a688c01ead2812</anchor>
       <arglist></arglist>
     </member>
@@ -27089,6 +27771,19 @@
       <arglist>(const T &amp;v) const noexcept -&gt; decltype(v&lt; static_cast&lt; T &gt;(0), static_cast&lt; const char * &gt;(nullptr))</arglist>
     </member>
   </compound>
+  <compound kind="class">
+    <name>playrho::d2::NgonWithFwdNormals</name>
+    <filename>classplayrho_1_1d2_1_1NgonWithFwdNormals.html</filename>
+    <templarg>N</templarg>
+  </compound>
+  <compound kind="class">
+    <name>NgonWithFwdNormals&lt; 2 &gt;</name>
+    <filename>classplayrho_1_1d2_1_1NgonWithFwdNormals.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>playrho::d2::NgonWithFwdNormals&lt; static_cast&lt; std::size_t &gt;(-1)&gt;</name>
+    <filename>classplayrho_1_1d2_1_1NgonWithFwdNormals_3_01static__cast_3_01std_1_1size__t_01_4_07-1_08_4.html</filename>
+  </compound>
   <compound kind="struct">
     <name>playrho::detail::NonNegativeChecker</name>
     <filename>structplayrho_1_1detail_1_1NonNegativeChecker.html</filename>
@@ -29273,231 +29968,224 @@
     <base>Discriminator&lt; Set5, 5 &gt;</base>
     <base>Discriminator&lt; Set6, 6 &gt;</base>
   </compound>
-  <compound kind="class">
+  <compound kind="struct">
     <name>playrho::d2::PolygonShapeConf</name>
-    <filename>classplayrho_1_1d2_1_1PolygonShapeConf.html</filename>
+    <filename>structplayrho_1_1d2_1_1PolygonShapeConf.html</filename>
     <base>ShapeBuilder&lt; PolygonShapeConf &gt;</base>
     <member kind="function">
       <type></type>
       <name>PolygonShapeConf</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a3b574cbb06969341bc94c041fe26c42b</anchor>
       <arglist>(Length hx, Length hy, const PolygonShapeConf &amp;conf=GetDefaultConf())</arglist>
     </member>
     <member kind="function">
       <type></type>
       <name>PolygonShapeConf</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a9a4f109b94ff73058f06244f0218612e</anchor>
       <arglist>(Span&lt; const Length2 &gt; points, const PolygonShapeConf &amp;conf=GetDefaultConf())</arglist>
     </member>
     <member kind="function">
-      <type>Length2</type>
-      <name>GetCentroid</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
-      <anchor>af7d3c5f204842ca4d69767a947967867</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>UnitVec</type>
       <name>GetNormal</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a717c9833aa73b9c7ba8a831ac1ed849f</anchor>
       <arglist>(VertexCounter index) const</arglist>
     </member>
     <member kind="function">
       <type>Span&lt; const UnitVec &gt;</type>
       <name>GetNormals</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a5d8edab6a66d2fb2d4fe6f239778f996</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetVertex</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>ae8f44760bbca63a7d2f24e61ef0ae483</anchor>
       <arglist>(VertexCounter index) const</arglist>
     </member>
     <member kind="function">
       <type>VertexCounter</type>
       <name>GetVertexCount</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>af8ebdeefc032af260648a6f22ef2d5d7</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>Span&lt; const Length2 &gt;</type>
       <name>GetVertices</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>af204b554caf67699a0266a98283ad65d</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>PolygonShapeConf &amp;</type>
       <name>Rotate</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a310d669932f0a8d4cf363fd5cebdea12</anchor>
       <arglist>(const UnitVec &amp;value)</arglist>
     </member>
     <member kind="function">
       <type>PolygonShapeConf &amp;</type>
       <name>Scale</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a534a2122f7493cf3b74897e735cac7c7</anchor>
       <arglist>(const Vec2 &amp;value)</arglist>
     </member>
     <member kind="function">
       <type>PolygonShapeConf &amp;</type>
       <name>Set</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a83aaa3b7748b0f34ac7afb4e29b0c51e</anchor>
       <arglist>(const VertexSet &amp;points)</arglist>
     </member>
     <member kind="function">
       <type>PolygonShapeConf &amp;</type>
       <name>Set</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>afdeb3fda682d199b593b3567534abb67</anchor>
       <arglist>(Span&lt; const Length2 &gt; points)</arglist>
     </member>
     <member kind="function">
       <type>PolygonShapeConf &amp;</type>
       <name>SetAsBox</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a7000442414221db1742cd53b721093a9</anchor>
       <arglist>(Length hx, Length hy)</arglist>
     </member>
     <member kind="function">
       <type>PolygonShapeConf &amp;</type>
       <name>SetAsBox</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a233655a4f4fd52169c808132ea9791cf</anchor>
       <arglist>(Length hx, Length hy, const Length2 &amp;center, Angle angle)</arglist>
     </member>
     <member kind="function">
       <type>PolygonShapeConf &amp;</type>
       <name>Transform</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a7b1c5af0ee328c47c53c60cfcb2a7074</anchor>
       <arglist>(const Mat22 &amp;m)</arglist>
     </member>
     <member kind="function">
       <type>PolygonShapeConf &amp;</type>
       <name>Transform</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
-      <anchor>a45a8f83056536d3d2abda35b721492a2</anchor>
-      <arglist>(const Transformation &amp;xfm) noexcept</arglist>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchor>a8fbd2a3a83e3e50949d10a41fdb58b4d</anchor>
+      <arglist>(const Transformation &amp;xfm)</arglist>
     </member>
     <member kind="function">
       <type>PolygonShapeConf &amp;</type>
       <name>Translate</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>aef7a207ffb6c419c7a28934093ceee4b</anchor>
       <arglist>(const Length2 &amp;value)</arglist>
     </member>
     <member kind="function">
       <type>PolygonShapeConf &amp;</type>
       <name>UseVertexRadius</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a794190ea846c9740a083a138df49b53f</anchor>
       <arglist>(NonNegative&lt; Length &gt; value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>PolygonShapeConf &amp;</type>
       <name>UseVertices</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>afeda9e1da0297fefb2df520344a3e518</anchor>
       <arglist>(const Span&lt; const Length2 &gt; &amp;verts)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static PolygonShapeConf</type>
       <name>GetDefaultConf</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a9a88202e222078955d2489db3cd1a2ff</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static constexpr NonNegative&lt; Length &gt;</type>
       <name>GetDefaultVertexRadius</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a9805448b8c4a41d0f97f89b6f461eda3</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="variable">
-      <type>NonNegative&lt; Length &gt;</type>
+      <type>NgonWithFwdNormals</type>
+      <name>ngon</name>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchor>aea06e37a58b4ae303cf31e4997cdc72f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>NonNegativeFF&lt; Length &gt;</type>
       <name>vertexRadius</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
-      <anchor>a85a22e05b0a08405afcd1e26b541dc04</anchor>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchor>a677169c166347ab4236fb0f785b4491e</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" static="yes">
       <type>static constexpr auto</type>
       <name>DefaultVertexRadius</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>ac9e030299a655ca7a4a633840afdfe44</anchor>
       <arglist></arglist>
     </member>
     <member kind="friend">
       <type>friend bool</type>
       <name>operator!=</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a7702bc246ae38c520cea78d599de7493</anchor>
       <arglist>(const PolygonShapeConf &amp;lhs, const PolygonShapeConf &amp;rhs) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend bool</type>
       <name>operator==</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a63cafb11d617b347c4a9b8b9c5d9f03b</anchor>
       <arglist>(const PolygonShapeConf &amp;lhs, const PolygonShapeConf &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>DistanceProxy</type>
       <name>GetChild</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a13041b2a9f585bc57cd2daad5afe69a3</anchor>
       <arglist>(const PolygonShapeConf &amp;arg, ChildCounter index)</arglist>
     </member>
     <member kind="function">
       <type>constexpr ChildCounter</type>
       <name>GetChildCount</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>aecd3d6d3ce6bf86f6b0c9684c05d63bc</anchor>
       <arglist>(const PolygonShapeConf &amp;) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>Length2</type>
-      <name>GetEdge</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
-      <anchor>a066828295fc1238756f5adf1f3502343</anchor>
-      <arglist>(const PolygonShapeConf &amp;shape, VertexCounter index)</arglist>
-    </member>
-    <member kind="function">
       <type>MassData</type>
       <name>GetMassData</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a69182cba2886716e95849f5a3a71fd8b</anchor>
       <arglist>(const PolygonShapeConf &amp;arg)</arglist>
     </member>
     <member kind="function">
       <type>NonNegative&lt; Length &gt;</type>
       <name>GetVertexRadius</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a17a8a83f5b2b14e4615b24934ef3642f</anchor>
       <arglist>(const PolygonShapeConf &amp;arg) noexcept</arglist>
     </member>
     <member kind="function">
       <type>NonNegative&lt; Length &gt;</type>
       <name>GetVertexRadius</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a559385a58b96c078031f5d7c0b29330f</anchor>
       <arglist>(const PolygonShapeConf &amp;arg, ChildCounter) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>Transform</name>
-      <anchorfile>classplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PolygonShapeConf.html</anchorfile>
       <anchor>a8a6138547e9f6220a96e67364432f43a</anchor>
       <arglist>(PolygonShapeConf &amp;arg, const Mat22 &amp;m)</arglist>
     </member>
@@ -29848,42 +30536,35 @@
       <arglist>(const Position &amp;lhs, const Position &amp;rhs)</arglist>
     </member>
   </compound>
-  <compound kind="class">
+  <compound kind="struct">
     <name>playrho::d2::PositionConstraint</name>
-    <filename>classplayrho_1_1d2_1_1PositionConstraint.html</filename>
-    <member kind="function">
-      <type></type>
-      <name>PositionConstraint</name>
-      <anchorfile>classplayrho_1_1d2_1_1PositionConstraint.html</anchorfile>
-      <anchor>ac271b2f95cdfa54b71cd45733765f288</anchor>
-      <arglist>(const Manifold &amp;m, BodyID bA, BodyID bB, Length radius)</arglist>
-    </member>
-    <member kind="function">
+    <filename>structplayrho_1_1d2_1_1PositionConstraint.html</filename>
+    <member kind="variable">
       <type>BodyID</type>
-      <name>GetBodyA</name>
-      <anchorfile>classplayrho_1_1d2_1_1PositionConstraint.html</anchorfile>
-      <anchor>a703910aec91fac2f608c3dc4ad03000c</anchor>
-      <arglist>() const noexcept</arglist>
+      <name>bodyA</name>
+      <anchorfile>structplayrho_1_1d2_1_1PositionConstraint.html</anchorfile>
+      <anchor>a2671333d0b0e393716474ffa865da297</anchor>
+      <arglist></arglist>
     </member>
-    <member kind="function">
+    <member kind="variable">
       <type>BodyID</type>
-      <name>GetBodyB</name>
-      <anchorfile>classplayrho_1_1d2_1_1PositionConstraint.html</anchorfile>
-      <anchor>af0ac77b62a91c99a9f5b0763f083b41e</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Length</type>
-      <name>GetTotalRadius</name>
-      <anchorfile>classplayrho_1_1d2_1_1PositionConstraint.html</anchorfile>
-      <anchor>aaaa33e070076ac48b552cb7e2fb65c00</anchor>
-      <arglist>() const noexcept</arglist>
+      <name>bodyB</name>
+      <anchorfile>structplayrho_1_1d2_1_1PositionConstraint.html</anchorfile>
+      <anchor>ab4e68a890fc996dce50840a4ab3041d4</anchor>
+      <arglist></arglist>
     </member>
     <member kind="variable">
       <type>Manifold</type>
       <name>manifold</name>
-      <anchorfile>classplayrho_1_1d2_1_1PositionConstraint.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1PositionConstraint.html</anchorfile>
       <anchor>a5c075475304d221d85d788b1ed2044e5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>NonNegativeFF&lt; Length &gt;</type>
+      <name>totalRadius</name>
+      <anchorfile>structplayrho_1_1d2_1_1PositionConstraint.html</anchorfile>
+      <anchor>ab701abecbc286549bd3f6ea4bbaa30b9</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -33696,104 +34377,90 @@
       <arglist></arglist>
     </member>
   </compound>
-  <compound kind="class">
+  <compound kind="struct">
     <name>playrho::d2::Sweep</name>
-    <filename>classplayrho_1_1d2_1_1Sweep.html</filename>
+    <filename>structplayrho_1_1d2_1_1Sweep.html</filename>
     <member kind="function">
-      <type></type>
+      <type>constexpr</type>
       <name>Sweep</name>
-      <anchorfile>classplayrho_1_1d2_1_1Sweep.html</anchorfile>
-      <anchor>adb1aa8f6c8499543c3f4d3d66f41c772</anchor>
+      <anchorfile>structplayrho_1_1d2_1_1Sweep.html</anchorfile>
+      <anchor>a225e563780e93bc73e7e227e58b0a333</anchor>
       <arglist>()=default</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>Sweep</name>
-      <anchorfile>classplayrho_1_1d2_1_1Sweep.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1Sweep.html</anchorfile>
       <anchor>aa006e5a25c140fabc14ad45aebb91147</anchor>
       <arglist>(const Position &amp;p, const Length2 &amp;lc=Length2{0_m, 0_m})</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>Sweep</name>
-      <anchorfile>classplayrho_1_1d2_1_1Sweep.html</anchorfile>
-      <anchor>a9248baacecf29f2e7efd665161daf2ef</anchor>
-      <arglist>(const Position &amp;p0, const Position &amp;p1, const Length2 &amp;lc=Length2{0_m, 0_m}, Real a0=0) noexcept</arglist>
+      <anchorfile>structplayrho_1_1d2_1_1Sweep.html</anchorfile>
+      <anchor>a3abbfe162dc24c21cff2b5de562be691</anchor>
+      <arglist>(const Position &amp;p0, const Position &amp;p1, const Length2 &amp;lc=Length2{0_m, 0_m}, ZeroToUnderOneFF&lt; Real &gt; a0={}) noexcept</arglist>
     </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Advance0</name>
-      <anchorfile>classplayrho_1_1d2_1_1Sweep.html</anchorfile>
-      <anchor>a3597bd76c2b89f3b7f217692071fde47</anchor>
-      <arglist>(Real alpha) noexcept</arglist>
+    <member kind="variable">
+      <type>ZeroToUnderOneFF&lt; Real &gt;</type>
+      <name>alpha0</name>
+      <anchorfile>structplayrho_1_1d2_1_1Sweep.html</anchorfile>
+      <anchor>a6730c6ee88deda065c9dbf8659b251da</anchor>
+      <arglist></arglist>
     </member>
-    <member kind="function">
-      <type>constexpr Real</type>
-      <name>GetAlpha0</name>
-      <anchorfile>classplayrho_1_1d2_1_1Sweep.html</anchorfile>
-      <anchor>ae8e4083969dc309b1f128cccefe2a0d0</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Length2</type>
-      <name>GetLocalCenter</name>
-      <anchorfile>classplayrho_1_1d2_1_1Sweep.html</anchorfile>
-      <anchor>a6c37d9777111009bdf113a9e23542ff5</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr void</type>
-      <name>ResetAlpha0</name>
-      <anchorfile>classplayrho_1_1d2_1_1Sweep.html</anchorfile>
-      <anchor>a19b418b40df10770c4e0380ad054ac6c</anchor>
-      <arglist>() noexcept</arglist>
+    <member kind="variable">
+      <type>Length2</type>
+      <name>localCenter</name>
+      <anchorfile>structplayrho_1_1d2_1_1Sweep.html</anchorfile>
+      <anchor>a80a374190f6721da6e737805d85cfe4f</anchor>
+      <arglist></arglist>
     </member>
     <member kind="variable">
       <type>Position</type>
       <name>pos0</name>
-      <anchorfile>classplayrho_1_1d2_1_1Sweep.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1Sweep.html</anchorfile>
       <anchor>afd1e30ab1f1cfc33d1cef14028815fcb</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>Position</type>
       <name>pos1</name>
-      <anchorfile>classplayrho_1_1d2_1_1Sweep.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1Sweep.html</anchorfile>
       <anchor>ab5e2f463dbb73884d939921442975d70</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
       <type>Sweep</type>
       <name>GetNormalized</name>
-      <anchorfile>classplayrho_1_1d2_1_1Sweep.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1Sweep.html</anchorfile>
       <anchor>a09b21383c1a73afea37f11e0ba906a76</anchor>
       <arglist>(Sweep sweep) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
       <name>IsValid</name>
-      <anchorfile>classplayrho_1_1d2_1_1Sweep.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1Sweep.html</anchorfile>
       <anchor>afce9c1dea61c4ba26d5785f2f20c3bff</anchor>
       <arglist>(const d2::Sweep &amp;value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
       <name>operator!=</name>
-      <anchorfile>classplayrho_1_1d2_1_1Sweep.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1Sweep.html</anchorfile>
       <anchor>af0f08a3cbef074f5f78272c205967888</anchor>
       <arglist>(const Sweep &amp;lhs, const Sweep &amp;rhs)</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
       <name>operator==</name>
-      <anchorfile>classplayrho_1_1d2_1_1Sweep.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1Sweep.html</anchorfile>
       <anchor>af317b3462727e3832e11d157b7e0b7b4</anchor>
       <arglist>(const Sweep &amp;lhs, const Sweep &amp;rhs)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetLocalCenter</name>
-      <anchorfile>classplayrho_1_1d2_1_1Sweep.html</anchorfile>
+      <anchorfile>structplayrho_1_1d2_1_1Sweep.html</anchorfile>
       <anchor>ac4ef7260bbcab43966bde5b1e8b8a284</anchor>
       <arglist>(Sweep &amp;sweep, const Length2 &amp;value) noexcept</arglist>
     </member>
@@ -34406,8 +35073,8 @@
       <type></type>
       <name>ToiOutput</name>
       <anchorfile>structplayrho_1_1ToiOutput.html</anchorfile>
-      <anchor>a142364a5c062103cd6232b66e1275703</anchor>
-      <arglist>(Real t, Statistics s, State z) noexcept</arglist>
+      <anchor>a0913340a5150a784db62366893c14bc8</anchor>
+      <arglist>(UnitIntervalFF&lt; Real &gt; t, Statistics s, State z) noexcept</arglist>
     </member>
     <member kind="variable">
       <type>State</type>
@@ -34424,10 +35091,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>Real</type>
+      <type>UnitIntervalFF&lt; Real &gt;</type>
       <name>time</name>
       <anchorfile>structplayrho_1_1ToiOutput.html</anchorfile>
-      <anchor>a5f832ba7320d60fc7da42117262698f4</anchor>
+      <anchor>a2783d78e9dde36adff5a829e759cede8</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -34544,13 +35211,6 @@
       <name>maxRootIters</name>
       <anchorfile>structplayrho_1_1ToiStepStats.html</anchorfile>
       <anchor>ac9684005b60da6251f1cc4add7cea2c8</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>counter_type</type>
-      <name>maxSimulContacts</name>
-      <anchorfile>structplayrho_1_1ToiStepStats.html</anchorfile>
-      <anchor>ac93c931d7375403054aa91d54f7e2429</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -35223,6 +35883,13 @@
       <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
       <anchor>a1a7a18b4800feac830d4375c39889da2</anchor>
       <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>UnitVec</name>
+      <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
+      <anchor>a55c6910d3679c13827703bbb4a769b41</anchor>
+      <arglist>() noexcept=default</arglist>
     </member>
     <member kind="function">
       <type>constexpr UnitVec</type>
@@ -39218,8 +39885,8 @@
       <type>const_pointer</type>
       <name>begin</name>
       <anchorfile>classplayrho_1_1d2_1_1VertexSet.html</anchorfile>
-      <anchor>a3ab60237213bf69d476b637cd2437d57</anchor>
-      <arglist>() const</arglist>
+      <anchor>abadbc6490a6c6dcb89b7b95362c97b24</anchor>
+      <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -39232,15 +39899,15 @@
       <type>const_pointer</type>
       <name>data</name>
       <anchorfile>classplayrho_1_1d2_1_1VertexSet.html</anchorfile>
-      <anchor>ad36911307335afc1a9b4e6ddcc33a29a</anchor>
-      <arglist>() const</arglist>
+      <anchor>a9e8b4281b5e4edddfec2238f43a356a0</anchor>
+      <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>const_pointer</type>
       <name>end</name>
       <anchorfile>classplayrho_1_1d2_1_1VertexSet.html</anchorfile>
-      <anchor>a89f55e0a38a5a9d01c8fa5834f62919e</anchor>
-      <arglist>() const</arglist>
+      <anchor>a69b1ebcc8dfe166de45450dc724e834a</anchor>
+      <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>const_pointer</type>
@@ -39277,6 +39944,10 @@
       <anchor>a5a33cdf5ac70599dfe9d1881b8d58484</anchor>
       <arglist>()</arglist>
     </member>
+  </compound>
+  <compound kind="class">
+    <name>playrho::d2::ChainShapeConf::VerticesWithNormals</name>
+    <filename>classplayrho_1_1d2_1_1ChainShapeConf_1_1VerticesWithNormals.html</filename>
   </compound>
   <compound kind="struct">
     <name>playrho::d2::WeldJointConf</name>
@@ -40694,10 +41365,10 @@
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
-      <type>std::optional&lt; UnitInterval&lt; Real &gt; &gt;</type>
+      <type>std::optional&lt; UnitIntervalFF&lt; Real &gt; &gt;</type>
       <name>GetToi</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a2de5b3cf58c74521e24987ac79d8996f</anchor>
+      <anchor>a8189382c46b921930c7c0117b9ea9cc2</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
@@ -42527,6 +43198,25 @@
     <name>playrho::WrongState</name>
     <filename>classplayrho_1_1WrongState.html</filename>
   </compound>
+  <compound kind="struct">
+    <name>playrho::detail::ZeroToUnderOneChecker</name>
+    <filename>structplayrho_1_1detail_1_1ZeroToUnderOneChecker.html</filename>
+    <templarg></templarg>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator()</name>
+      <anchorfile>structplayrho_1_1detail_1_1ZeroToUnderOneChecker.html</anchorfile>
+      <anchor>a5e66d55b8787c6c31a7350bbc2cfe500</anchor>
+      <arglist>() const noexcept -&gt; decltype(static_cast&lt; T &gt;(0))</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator()</name>
+      <anchorfile>structplayrho_1_1detail_1_1ZeroToUnderOneChecker.html</anchorfile>
+      <anchor>a1f703d83efd1f425c07a340b1fe6b913</anchor>
+      <arglist>(const T &amp;v) const noexcept -&gt; decltype((v &gt;=static_cast&lt; T &gt;(0)) &amp;&amp;(v&lt; static_cast&lt; T &gt;(1)), static_cast&lt; const char * &gt;(nullptr))</arglist>
+    </member>
+  </compound>
   <compound kind="namespace">
     <name>playrho</name>
     <filename>namespaceplayrho.html</filename>
@@ -43127,6 +43817,20 @@
       <name>WiderType</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a0d090b6b86609a8e93cb933b2b223e63</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>detail::Checked&lt; T, detail::ZeroToUnderOneChecker&lt; T &gt; &gt;</type>
+      <name>ZeroToUnderOne</name>
+      <anchorfile>group__CheckedTypes.html</anchorfile>
+      <anchor>ga6d33fe002089badc48d22d99ec924ee4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>detail::Checked&lt; T, detail::ZeroToUnderOneChecker&lt; T &gt;, true &gt;</type>
+      <name>ZeroToUnderOneFF</name>
+      <anchorfile>group__CheckedTypes.html</anchorfile>
+      <anchor>ga82f43e0e8a9fa443bc746a5f865effef</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
@@ -45276,8 +45980,8 @@
       <type>constexpr void</type>
       <name>SetToi</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a85f8081e8947f1b8dcc218539c06d277</anchor>
-      <arglist>(Contact &amp;contact, const std::optional&lt; UnitInterval&lt; Real &gt;&gt; &amp;toi) noexcept</arglist>
+      <anchor>af93e3743c48882f44ef7936cbad68ae1</anchor>
+      <arglist>(Contact &amp;contact, const std::optional&lt; UnitIntervalFF&lt; Real &gt;&gt; &amp;toi) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr void</type>
@@ -45353,8 +46057,8 @@
       <type>constexpr auto</type>
       <name>Square</name>
       <anchorfile>group__Math.html</anchorfile>
-      <anchor>gac7300e33771c076a6d7236d566b30207</anchor>
-      <arglist>(TYPE t) noexcept -&gt; decltype(t *t)</arglist>
+      <anchor>ga4000cee8b1fc5a9ab6a5cfe29eb645b6</anchor>
+      <arglist>(T t) noexcept(noexcept(t *t)) -&gt; decltype(t *t)</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -46074,7 +46778,7 @@
     <class kind="class">playrho::d2::Body</class>
     <class kind="struct">playrho::d2::BodyConf</class>
     <class kind="class">playrho::d2::BodyConstraint</class>
-    <class kind="class">playrho::d2::ChainShapeConf</class>
+    <class kind="struct">playrho::d2::ChainShapeConf</class>
     <class kind="struct">playrho::d2::ClipVertex</class>
     <class kind="class">playrho::d2::ContactImpulsesList</class>
     <class kind="class">playrho::d2::ConvexHull</class>
@@ -46084,7 +46788,7 @@
     <class kind="struct">playrho::d2::DistanceOutput</class>
     <class kind="class">playrho::d2::DistanceProxy</class>
     <class kind="class">playrho::d2::DynamicTree</class>
-    <class kind="class">playrho::d2::EdgeShapeConf</class>
+    <class kind="struct">playrho::d2::EdgeShapeConf</class>
     <class kind="struct">playrho::d2::FrictionJointConf</class>
     <class kind="struct">playrho::d2::GearJointConf</class>
     <class kind="class">playrho::d2::Joint</class>
@@ -46093,10 +46797,12 @@
     <class kind="class">playrho::d2::Manifold</class>
     <class kind="struct">playrho::d2::MotorJointConf</class>
     <class kind="struct">playrho::d2::MultiShapeConf</class>
+    <class kind="class">playrho::d2::NgonWithFwdNormals</class>
+    <class kind="class">playrho::d2::NgonWithFwdNormals&lt; static_cast&lt; std::size_t &gt;(-1)&gt;</class>
     <class kind="struct">playrho::d2::PointStates</class>
-    <class kind="class">playrho::d2::PolygonShapeConf</class>
+    <class kind="struct">playrho::d2::PolygonShapeConf</class>
     <class kind="struct">playrho::d2::Position</class>
-    <class kind="class">playrho::d2::PositionConstraint</class>
+    <class kind="struct">playrho::d2::PositionConstraint</class>
     <class kind="struct">playrho::d2::PositionSolution</class>
     <class kind="struct">playrho::d2::PositionSolverManifold</class>
     <class kind="struct">playrho::d2::PrismaticJointConf</class>
@@ -46112,7 +46818,7 @@
     <class kind="struct">playrho::d2::ShapeConf</class>
     <class kind="class">playrho::d2::Simplex</class>
     <class kind="class">playrho::d2::SimplexEdge</class>
-    <class kind="class">playrho::d2::Sweep</class>
+    <class kind="struct">playrho::d2::Sweep</class>
     <class kind="struct">playrho::d2::TargetJointConf</class>
     <class kind="struct">playrho::d2::Transformation</class>
     <class kind="class">playrho::d2::UnitVec</class>
@@ -46347,15 +47053,22 @@
       <type>void</type>
       <name>Advance</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ac958086ef249205a586ecdf8f88db8db</anchor>
-      <arglist>(Body &amp;body, Real value) noexcept</arglist>
+      <anchor>aa5385b2dbb547f7dcf7cb4d8bd67d6a0</anchor>
+      <arglist>(Body &amp;body, ZeroToUnderOneFF&lt; Real &gt; value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>Advance0</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a9a54f71f97f0f55b155ed49b568e5206</anchor>
-      <arglist>(Body &amp;body, Real value) noexcept</arglist>
+      <anchor>a3025c6db501979297b7b7c27547111c4</anchor>
+      <arglist>(Body &amp;body, ZeroToUnderOneFF&lt; Real &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Sweep</type>
+      <name>Advance0</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a9f1f1a039d714b800386dea3f97f3ed3</anchor>
+      <arglist>(const Sweep &amp;sweep, ZeroToUnderOneFF&lt; Real &gt; alpha) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -46585,8 +47298,8 @@
       <type>std::size_t</type>
       <name>FindLowestRightMostVertex</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a8a76c0389e1d7343fb8ad93543d3138f</anchor>
-      <arglist>(Span&lt; const Length2 &gt; vertices)</arglist>
+      <anchor>ac8845b24d9baa83d95859a1ec749fdff</anchor>
+      <arglist>(Span&lt; const Length2 &gt; vertices) noexcept</arglist>
     </member>
     <member kind="function">
       <type>LengthIndexPair</type>
@@ -47359,13 +48072,6 @@
       <arglist>(const World &amp;world, BodyID bodyA, BodyID bodyB, const Length2 &amp;anchorA=Length2{}, const Length2 &amp;anchorB=Length2{})</arglist>
     </member>
     <member kind="function">
-      <type>Length2</type>
-      <name>GetEdge</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae1d607961c82c71870826cd079d5387d</anchor>
-      <arglist>(const PolygonShapeConf &amp;shape, VertexCounter index)</arglist>
-    </member>
-    <member kind="function">
       <type>InvMass</type>
       <name>GetEffectiveInvMass</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -47471,6 +48177,27 @@
       <arglist>(const World &amp;world, BodyID bodyA, BodyID bodyB, const Length2 &amp;anchor)</arglist>
     </member>
     <member kind="function">
+      <type>std::array&lt; UnitVec, N &gt;</type>
+      <name>GetFwdNormalsArray</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a03e5b2dc2081cc8e0fc608ff79e78a89</anchor>
+      <arglist>(const std::array&lt; Length2, N &gt; &amp;vertices)</arglist>
+    </member>
+    <member kind="function">
+      <type>std::array&lt; UnitVec, sizeof...(ints)&gt;</type>
+      <name>GetFwdNormalsArray</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a642d004cc56b550c7fc6ff0fc6cb3311</anchor>
+      <arglist>(const std::array&lt; Length2, sizeof...(ints)&gt; &amp;vertices, std::integer_sequence&lt; T, ints... &gt; int_seq)</arglist>
+    </member>
+    <member kind="function">
+      <type>std::vector&lt; UnitVec &gt;</type>
+      <name>GetFwdNormalsVector</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ac32cdb280579f9cc50ec0831c9d8c690</anchor>
+      <arglist>(const std::vector&lt; Length2 &gt; &amp;vertices)</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr UnitVec</type>
       <name>GetFwdPerpendicular</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -47548,17 +48275,17 @@
       <arglist>(const SimplexEdges &amp;collection) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>InvMass</type>
+      <type>NonNegativeFF&lt; InvMass &gt;</type>
       <name>GetInvMass</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a628126b03bd99f5df5f08a047692b9da</anchor>
+      <anchor>a7d74493ba9108b54a9900eb8319ede92</anchor>
       <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>InvRotInertia</type>
+      <type>NonNegativeFF&lt; InvRotInertia &gt;</type>
       <name>GetInvRotInertia</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af4fac5901e03845d72a94de4e7bb92d0</anchor>
+      <anchor>a4c2a6d79f4824a9d3d9971b60a865e47</anchor>
       <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
@@ -48647,6 +49374,13 @@
       <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>ContactID</type>
+      <name>GetSoonestContact</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7e8932936bd2f281984a4afacc40e7a1</anchor>
+      <arglist>(const Span&lt; const KeyedContactID &gt; &amp;ids, const Span&lt; const Contact &gt; &amp;contacts) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>VertexCounter</type>
       <name>GetSupportIndex</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -48724,10 +49458,10 @@
       <arglist>(const Joint &amp;joint)</arglist>
     </member>
     <member kind="function">
-      <type>std::optional&lt; UnitInterval&lt; Real &gt; &gt;</type>
+      <type>std::optional&lt; UnitIntervalFF&lt; Real &gt; &gt;</type>
       <name>GetToi</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ace170277236e8d6ff73a081d4ffa16d3</anchor>
+      <anchor>a00955d16b773879aeb7f58194c2401b3</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
@@ -48874,8 +49608,8 @@
       <type>UnitVec</type>
       <name>GetUnitVector</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa85c709f68db8a40c7e89166462f3ee4</anchor>
-      <arglist>(const Vector2&lt; T &gt; &amp;value, const UnitVec &amp;fallback=UnitVec::GetDefaultFallback())</arglist>
+      <anchor>a6bd25518f48c10a51a89b63e4d5103bb</anchor>
+      <arglist>(const Vector2&lt; T &gt; &amp;value, const UnitVec &amp;fallback=UnitVec::GetDefaultFallback()) noexcept</arglist>
     </member>
     <member kind="function">
       <type>ShapeCounter</type>
@@ -54487,6 +55221,7 @@
     <class kind="struct">playrho::detail::Wider&lt; std::uint16_t &gt;</class>
     <class kind="struct">playrho::detail::Wider&lt; std::uint32_t &gt;</class>
     <class kind="struct">playrho::detail::Wider&lt; std::uint8_t &gt;</class>
+    <class kind="struct">playrho::detail::ZeroToUnderOneChecker</class>
     <member kind="typedef">
       <type>Real</type>
       <name>acceleration</name>
@@ -55461,12 +56196,12 @@
     <name>PartsGroup</name>
     <title>Shape Classes</title>
     <filename>group__PartsGroup.html</filename>
-    <class kind="class">playrho::d2::ChainShapeConf</class>
+    <class kind="struct">playrho::d2::ChainShapeConf</class>
     <class kind="class">playrho::d2::part::Compositor</class>
     <class kind="struct">playrho::d2::DiskShapeConf</class>
-    <class kind="class">playrho::d2::EdgeShapeConf</class>
+    <class kind="struct">playrho::d2::EdgeShapeConf</class>
     <class kind="struct">playrho::d2::MultiShapeConf</class>
-    <class kind="class">playrho::d2::PolygonShapeConf</class>
+    <class kind="struct">playrho::d2::PolygonShapeConf</class>
     <class kind="class">playrho::d2::Shape</class>
   </compound>
   <compound kind="group">
@@ -55489,6 +56224,7 @@
     <class kind="struct">playrho::detail::NoOpChecker</class>
     <class kind="struct">playrho::detail::PositiveChecker</class>
     <class kind="struct">playrho::detail::UnitIntervalChecker</class>
+    <class kind="struct">playrho::detail::ZeroToUnderOneChecker</class>
   </compound>
   <compound kind="group">
     <name>CheckedTypes</name>
@@ -55611,6 +56347,20 @@
       <name>UnitIntervalFF</name>
       <anchorfile>group__CheckedTypes.html</anchorfile>
       <anchor>ga309960da94ba655d5101c19da5c55c1b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>detail::Checked&lt; T, detail::ZeroToUnderOneChecker&lt; T &gt; &gt;</type>
+      <name>ZeroToUnderOne</name>
+      <anchorfile>group__CheckedTypes.html</anchorfile>
+      <anchor>ga6d33fe002089badc48d22d99ec924ee4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>detail::Checked&lt; T, detail::ZeroToUnderOneChecker&lt; T &gt;, true &gt;</type>
+      <name>ZeroToUnderOneFF</name>
+      <anchorfile>group__CheckedTypes.html</anchorfile>
+      <anchor>ga82f43e0e8a9fa443bc746a5f865effef</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -56102,8 +56852,8 @@
       <type>constexpr auto</type>
       <name>Square</name>
       <anchorfile>group__Math.html</anchorfile>
-      <anchor>gac7300e33771c076a6d7236d566b30207</anchor>
-      <arglist>(TYPE t) noexcept -&gt; decltype(t *t)</arglist>
+      <anchor>ga4000cee8b1fc5a9ab6a5cfe29eb645b6</anchor>
+      <arglist>(T t) noexcept(noexcept(t *t)) -&gt; decltype(t *t)</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>

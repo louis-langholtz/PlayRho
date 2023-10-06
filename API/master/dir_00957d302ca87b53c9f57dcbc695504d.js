@@ -12,6 +12,9 @@ var dir_00957d302ca87b53c9f57dcbc695504d =
     [ "ClipList.hpp", "ClipList_8hpp.html", "ClipList_8hpp" ],
     [ "ContactImpulsesList.hpp", "ContactImpulsesList_8hpp.html", "ContactImpulsesList_8hpp" ],
     [ "ContactSolver.hpp", "ContactSolver_8hpp.html", "ContactSolver_8hpp" ],
+    [ "ConvexHull.hpp", "ConvexHull_8hpp.html", [
+      [ "ConvexHull", "classplayrho_1_1d2_1_1ConvexHull.html", "classplayrho_1_1d2_1_1ConvexHull" ]
+    ] ],
     [ "DiskShapeConf.hpp", "DiskShapeConf_8hpp.html", "DiskShapeConf_8hpp" ],
     [ "DistanceConf.hpp", "DistanceConf_8hpp.html", "DistanceConf_8hpp" ],
     [ "DistanceJointConf.hpp", "DistanceJointConf_8hpp.html", "DistanceJointConf_8hpp" ],
@@ -32,11 +35,12 @@ var dir_00957d302ca87b53c9f57dcbc695504d =
     [ "Math.hpp", "d2_2Math_8hpp.html", "d2_2Math_8hpp" ],
     [ "MotorJointConf.hpp", "MotorJointConf_8hpp.html", "MotorJointConf_8hpp" ],
     [ "MultiShapeConf.hpp", "MultiShapeConf_8hpp.html", "MultiShapeConf_8hpp" ],
+    [ "NgonWithFwdNormals.hpp", "NgonWithFwdNormals_8hpp.html", "NgonWithFwdNormals_8hpp" ],
     [ "PointStates.hpp", "PointStates_8hpp.html", "PointStates_8hpp" ],
     [ "PolygonShapeConf.hpp", "PolygonShapeConf_8hpp.html", "PolygonShapeConf_8hpp" ],
     [ "Position.hpp", "Position_8hpp.html", "Position_8hpp" ],
     [ "PositionConstraint.hpp", "PositionConstraint_8hpp.html", [
-      [ "PositionConstraint", "classplayrho_1_1d2_1_1PositionConstraint.html", "classplayrho_1_1d2_1_1PositionConstraint" ]
+      [ "PositionConstraint", "structplayrho_1_1d2_1_1PositionConstraint.html", "structplayrho_1_1d2_1_1PositionConstraint" ]
     ] ],
     [ "PositionSolution.hpp", "PositionSolution_8hpp.html", "PositionSolution_8hpp" ],
     [ "PositionSolverManifold.hpp", "PositionSolverManifold_8hpp.html", "PositionSolverManifold_8hpp" ],

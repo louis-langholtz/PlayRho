@@ -1,0 +1,16 @@
+<map id="Library/include/playrho/ZeroToUnderOne.hpp" name="Library/include/playrho/ZeroToUnderOne.hpp">
+<area shape="rect" id="node1" title="Definition of the ZeroToUnderOne value checked types and related code." alt="" coords="199,5,369,47"/>
+<area shape="rect" id="node2" href="$Checked_8hpp.html" title="Declarations of the Checked class template and closely related code." alt="" coords="74,102,273,129"/>
+<area shape="rect" id="node14" href="$ZeroToUnderOneChecker_8hpp.html" title="Definition of the ZeroToUnderOneChecker class template." alt="" coords="297,95,495,136"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,184,85,211"/>
+<area shape="rect" id="node4" title=" " alt="" coords="53,333,145,360"/>
+<area shape="rect" id="node5" title=" " alt="" coords="169,333,229,360"/>
+<area shape="rect" id="node6" href="$InvalidArgument_8hpp.html" title="Definition of the InvalidArgument class." alt="" coords="405,184,616,211"/>
+<area shape="rect" id="node8" href="$Templates_8hpp.html" title="Definitions of miscellaneous template related code." alt="" coords="211,184,381,211"/>
+<area shape="rect" id="node7" title=" " alt="" coords="467,259,554,285"/>
+<area shape="rect" id="node9" href="$detail_2Templates_8hpp.html" title="Low&#45;level declarations for general class &amp; function templates." alt="" coords="211,259,421,285"/>
+<area shape="rect" id="node10" title=" " alt="" coords="431,333,516,360"/>
+<area shape="rect" id="node11" title=" " alt="" coords="541,333,627,360"/>
+<area shape="rect" id="node12" title=" " alt="" coords="253,333,323,360"/>
+<area shape="rect" id="node13" title=" " alt="" coords="348,333,407,360"/>
+</map>

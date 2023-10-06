@@ -1,0 +1,6 @@
+<map id="Library/include/playrho/d2/NgonWithFwdNormals.hpp" name="Library/include/playrho/d2/NgonWithFwdNormals.hpp">
+<area shape="rect" id="node1" title="Definition of the NgonWithFwdNormals class template and closely related code." alt="" coords="87,5,307,47"/>
+<area shape="rect" id="node2" href="$EdgeShapeConf_8hpp.html" title="Definition of the EdgeShapeConf class and closely related code." alt="" coords="5,95,180,136"/>
+<area shape="rect" id="node4" href="$PolygonShapeConf_8hpp.html" title="Definition of the PolygonShapeConf class and closely related code." alt="" coords="205,95,399,136"/>
+<area shape="rect" id="node3" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="111,184,282,225"/>
+</map>

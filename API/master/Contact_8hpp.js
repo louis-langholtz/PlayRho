@@ -32,7 +32,7 @@ var Contact_8hpp =
     [ "SetRestitution", "Contact_8hpp.html#ae72b11c11801f8189dbd1d61dd917f77", null ],
     [ "SetSensor", "Contact_8hpp.html#af8595ac215de486ea15aaa0c9c608b3e", null ],
     [ "SetTangentSpeed", "Contact_8hpp.html#a16493a4bdae1683c07b4b116516716f0", null ],
-    [ "SetToi", "Contact_8hpp.html#a85f8081e8947f1b8dcc218539c06d277", null ],
+    [ "SetToi", "Contact_8hpp.html#af93e3743c48882f44ef7936cbad68ae1", null ],
     [ "SetToiCount", "Contact_8hpp.html#aabf79c789863cc4aea6b9e6bc976267c", null ],
     [ "UnflagForFiltering", "Contact_8hpp.html#aaf49104158a7aea199f9531f9ab5b7d0", null ],
     [ "UnflagForUpdating", "Contact_8hpp.html#ad0be851da5e90da82388aaddaa1d8f6d", null ],

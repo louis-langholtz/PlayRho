@@ -1,0 +1,8 @@
+<map id="playrho::d2::Sweep" name="playrho::d2::Sweep">
+<area shape="rect" id="node1" title="Description of a &quot;sweep&quot; of motion in 2&#45;D space." alt="" coords="137,317,284,344"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="5,102,200,129"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1d2_1_1Position.html" title="2&#45;D positional data structure." alt="" coords="133,206,288,233"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1Vector.html" title="Vector." alt="" coords="15,5,191,32"/>
+<area shape="rect" id="node5" href="$classplayrho_1_1detail_1_1Checked.html" title=" " alt="" coords="312,199,491,240"/>
+<area shape="rect" id="node6" href="$classplayrho_1_1detail_1_1Checked.html" title="Class template for construction&#45;time constraining a type&#39;s value." alt="" coords="277,95,525,136"/>
+</map>

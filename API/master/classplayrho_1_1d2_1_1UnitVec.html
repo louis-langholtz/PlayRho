@@ -141,6 +141,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a55c6910d3679c13827703bbb4a769b41"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1UnitVec.html#a55c6910d3679c13827703bbb4a769b41">UnitVec</a> () noexcept=default</td></tr>
+<tr class="memdesc:a55c6910d3679c13827703bbb4a769b41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. @detail Constructs a non-oriented unit vector.  <a href="classplayrho_1_1d2_1_1UnitVec.html#a55c6910d3679c13827703bbb4a769b41">More...</a><br /></td></tr>
+<tr class="separator:a55c6910d3679c13827703bbb4a769b41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1bcbfce894d533d52b98c6032da9661"><td class="memItemLeft" align="right" valign="top"><a id="ad1bcbfce894d533d52b98c6032da9661"></a>
 constexpr <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1UnitVec.html#ad1bcbfce894d533d52b98c6032da9661">Absolute</a> () const noexcept</td></tr>
 <tr class="memdesc:ad1bcbfce894d533d52b98c6032da9661"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the absolute value. <br /></td></tr>
@@ -296,6 +299,35 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a55c6910d3679c13827703bbb4a769b41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55c6910d3679c13827703bbb4a769b41">&#9670;&nbsp;</a></span>UnitVec()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr playrho::d2::UnitVec::UnitVec </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default constructor. @detail Constructs a non-oriented unit vector. </p>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1UnitVec.html#a5b4a5ee8a7ab899d9dc87e948f0efbf9" title="Gets the &quot;X&quot; value.">GetX()</a></code> and <code><a class="el" href="classplayrho_1_1d2_1_1UnitVec.html#afd94abdf9e62bb60313227c20a5757d8" title="Gets the &quot;Y&quot; value.">GetY()</a></code> return zero. </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a7067c246d03f6de8a054b8ce3810b9b2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7067c246d03f6de8a054b8ce3810b9b2">&#9670;&nbsp;</a></span>at()</h2>
@@ -420,7 +452,7 @@ This is the forward perpendicular unit vector of the right oriented vector. </dd
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Compositor_8cpp-example.html#a14">Compositor.cpp</a>, and <a class="el" href="PulleyJoint_8cpp-example.html#a36">PulleyJoint.cpp</a>.</dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="group__RayCastGroup.html#ga425e9dc1c0e263bf7484ef6ef2cde86b">playrho::d2::RayCast()</a>, and <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html#a7000442414221db1742cd53b721093a9">playrho::d2::PolygonShapeConf::SetAsBox()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html#ad0a48968338c274289983ba5c44d58ca">Get()</a>, and <a class="el" href="group__RayCastGroup.html#ga425e9dc1c0e263bf7484ef6ef2cde86b">playrho::d2::RayCast()</a>.</p>
 
 </div>
 </div>
@@ -515,7 +547,7 @@ This is the forward perpendicular unit vector of the bottom oriented vector. </d
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Compositor_8cpp-example.html#a13">Compositor.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a56">WorldBody.cpp</a>.</dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="group__RayCastGroup.html#ga425e9dc1c0e263bf7484ef6ef2cde86b">playrho::d2::RayCast()</a>, and <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html#a7000442414221db1742cd53b721093a9">playrho::d2::PolygonShapeConf::SetAsBox()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html#ad0a48968338c274289983ba5c44d58ca">Get()</a>, and <a class="el" href="group__RayCastGroup.html#ga425e9dc1c0e263bf7484ef6ef2cde86b">playrho::d2::RayCast()</a>.</p>
 
 </div>
 </div>
@@ -582,7 +614,7 @@ This is the forward perpendicular unit vector of the top oriented vector. </dd><
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Compositor_8cpp-example.html#a11">Compositor.cpp</a>, <a class="el" href="PrismaticJoint_8cpp-example.html#a12">PrismaticJoint.cpp</a>, <a class="el" href="Shape_8cpp-example.html#a23">Shape.cpp</a>, <a class="el" href="WheelJoint_8cpp-example.html#a2">WheelJoint.cpp</a>, <a class="el" href="World_8cpp-example.html#a56">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#a54">WorldBody.cpp</a>, and <a class="el" href="WorldContact_8cpp-example.html#a41">WorldContact.cpp</a>.</dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="group__RayCastGroup.html#ga425e9dc1c0e263bf7484ef6ef2cde86b">playrho::d2::RayCast()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a4c915c9176591afd89bf4d18b1ede1b4">playrho::d2::Rotate()</a>, and <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html#a7000442414221db1742cd53b721093a9">playrho::d2::PolygonShapeConf::SetAsBox()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html#ad0a48968338c274289983ba5c44d58ca">Get()</a>, <a class="el" href="group__RayCastGroup.html#ga425e9dc1c0e263bf7484ef6ef2cde86b">playrho::d2::RayCast()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#a4c915c9176591afd89bf4d18b1ede1b4">playrho::d2::Rotate()</a>.</p>
 
 </div>
 </div>
@@ -618,7 +650,7 @@ This is the forward perpendicular unit vector of the left oriented vector. </dd>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Compositor_8cpp-example.html#a12">Compositor.cpp</a>, <a class="el" href="GearJoint_8cpp-example.html#a39">GearJoint.cpp</a>, <a class="el" href="Shape_8cpp-example.html#a30">Shape.cpp</a>, and <a class="el" href="WorldShape_8cpp-example.html#a40">WorldShape.cpp</a>.</dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="group__RayCastGroup.html#ga425e9dc1c0e263bf7484ef6ef2cde86b">playrho::d2::RayCast()</a>, and <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html#a7000442414221db1742cd53b721093a9">playrho::d2::PolygonShapeConf::SetAsBox()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html#ad0a48968338c274289983ba5c44d58ca">Get()</a>, and <a class="el" href="group__RayCastGroup.html#ga425e9dc1c0e263bf7484ef6ef2cde86b">playrho::d2::RayCast()</a>.</p>
 
 </div>
 </div>
@@ -733,7 +765,7 @@ This is the forward perpendicular unit vector of the left oriented vector. </dd>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a></li>
-    <li class="footer">Generated on Tue Oct 3 2023 15:07:07 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 6 2023 21:05:24 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

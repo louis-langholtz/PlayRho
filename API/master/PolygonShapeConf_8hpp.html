@@ -107,10 +107,11 @@ $(document).ready(function(){initNavTree('PolygonShapeConf_8hpp.html',''); initR
 <div class="textblock"><code>#include &lt;type_traits&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;<a class="el" href="Span_8hpp.html">playrho/Span.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="ShapeConf_8hpp.html">playrho/d2/ShapeConf.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="DistanceProxy_8hpp.html">playrho/d2/DistanceProxy.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="MassData_8hpp.html">playrho/d2/MassData.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="d2_2Math_8hpp.html">playrho/d2/Math.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="NgonWithFwdNormals_8hpp.html">playrho/d2/NgonWithFwdNormals.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="ShapeConf_8hpp.html">playrho/d2/ShapeConf.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="VertexSet_8hpp.html">playrho/d2/VertexSet.hpp</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for PolygonShapeConf.hpp:</div>
@@ -127,11 +128,11 @@ This graph shows which files directly or indirectly include this file:</div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html">playrho::d2::PolygonShapeConf</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An n-vertex convex polygon shaped part eligible for use with a <code><a class="el" href="classplayrho_1_1d2_1_1Shape.html" title="Shape.">Shape</a></code>.  <a href="classplayrho_1_1d2_1_1PolygonShapeConf.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1PolygonShapeConf.html">playrho::d2::PolygonShapeConf</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An n-vertex convex polygon shaped part eligible for use with a <code><a class="el" href="classplayrho_1_1d2_1_1Shape.html" title="Shape.">Shape</a></code>.  <a href="structplayrho_1_1d2_1_1PolygonShapeConf.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1TypeInfo_3_01playrho_1_1d2_1_1PolygonShapeConf_01_4.html">playrho::detail::TypeInfo&lt; playrho::d2::PolygonShapeConf &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type info specialization for <code><a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html" title="An n-vertex convex polygon shaped part eligible for use with a Shape.">playrho::d2::PolygonShapeConf</a></code>.  <a href="structplayrho_1_1detail_1_1TypeInfo_3_01playrho_1_1d2_1_1PolygonShapeConf_01_4.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type info specialization for <code><a class="el" href="structplayrho_1_1d2_1_1PolygonShapeConf.html" title="An n-vertex convex polygon shaped part eligible for use with a Shape.">playrho::d2::PolygonShapeConf</a></code>.  <a href="structplayrho_1_1detail_1_1TypeInfo_3_01playrho_1_1d2_1_1PolygonShapeConf_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -150,9 +151,6 @@ DistanceProxy&#160;</td><td class="memItemRight" valign="bottom"><a class="el" h
 <tr class="memitem:aecd3d6d3ce6bf86f6b0c9684c05d63bc"><td class="memItemLeft" align="right" valign="top">constexpr ChildCounter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#aecd3d6d3ce6bf86f6b0c9684c05d63bc">playrho::d2::GetChildCount</a> (const PolygonShapeConf &amp;) noexcept</td></tr>
 <tr class="memdesc:aecd3d6d3ce6bf86f6b0c9684c05d63bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the "child" count for the given shape configuration.  <a href="namespaceplayrho_1_1d2.html#aecd3d6d3ce6bf86f6b0c9684c05d63bc">More...</a><br /></td></tr>
 <tr class="separator:aecd3d6d3ce6bf86f6b0c9684c05d63bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1d607961c82c71870826cd079d5387d"><td class="memItemLeft" align="right" valign="top">Length2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#ae1d607961c82c71870826cd079d5387d">playrho::d2::GetEdge</a> (const PolygonShapeConf &amp;shape, VertexCounter index)</td></tr>
-<tr class="memdesc:ae1d607961c82c71870826cd079d5387d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the identified edge of the given polygon shape.  <a href="namespaceplayrho_1_1d2.html#ae1d607961c82c71870826cd079d5387d">More...</a><br /></td></tr>
-<tr class="separator:ae1d607961c82c71870826cd079d5387d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69182cba2886716e95849f5a3a71fd8b"><td class="memItemLeft" align="right" valign="top"><a id="a69182cba2886716e95849f5a3a71fd8b"></a>
 MassData&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a69182cba2886716e95849f5a3a71fd8b">playrho::d2::GetMassData</a> (const PolygonShapeConf &amp;arg)</td></tr>
 <tr class="memdesc:a69182cba2886716e95849f5a3a71fd8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the mass data for the given shape configuration. <br /></td></tr>
@@ -200,7 +198,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="dir_00957d302ca87b53c9f57dcbc695504d.html">d2</a></li><li class="navelem"><a class="el" href="PolygonShapeConf_8hpp.html">PolygonShapeConf.hpp</a></li>
-    <li class="footer">Generated on Tue Oct 3 2023 15:07:06 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 6 2023 21:05:23 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

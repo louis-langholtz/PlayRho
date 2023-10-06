@@ -1,6 +1,5 @@
 var MultiShapeConf_8hpp =
 [
-    [ "ConvexHull", "classplayrho_1_1d2_1_1ConvexHull.html", "classplayrho_1_1d2_1_1ConvexHull" ],
     [ "TypeInfo< playrho::d2::MultiShapeConf >", "structplayrho_1_1detail_1_1TypeInfo_3_01playrho_1_1d2_1_1MultiShapeConf_01_4.html", "structplayrho_1_1detail_1_1TypeInfo_3_01playrho_1_1d2_1_1MultiShapeConf_01_4" ],
     [ "GetChild", "MultiShapeConf_8hpp.html#a20acfdc5ce307d90cfef42908be8720b", null ],
     [ "GetChildCount", "MultiShapeConf_8hpp.html#a6da28327ee2857e706b89789d56a3598", null ],

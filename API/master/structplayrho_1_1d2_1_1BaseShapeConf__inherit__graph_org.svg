@@ -148,7 +148,7 @@
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="classplayrho_1_1d2_1_1EdgeShapeConf.html" target="_top" xlink:title="Edge shape configuration.">
+<g id="a_node5"><a xlink:href="structplayrho_1_1d2_1_1EdgeShapeConf.html" target="_top" xlink:title="Edge shape configuration.">
 <polygon fill="white" stroke="black" points="673.5,-275 673.5,-294 827.5,-294 827.5,-275 673.5,-275"/>
 <text text-anchor="middle" x="750.5" y="-282" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::EdgeShapeConf</text>
 </a>
@@ -163,7 +163,7 @@
 <!-- Node7 -->
 <g id="node7" class="node">
 <title>Node7</title>
-<g id="a_node7"><a xlink:href="classplayrho_1_1d2_1_1PolygonShapeConf.html" target="_top" xlink:title="An n&#45;vertex convex polygon shaped part eligible for use with a Shape.">
+<g id="a_node7"><a xlink:href="structplayrho_1_1d2_1_1PolygonShapeConf.html" target="_top" xlink:title="An n&#45;vertex convex polygon shaped part eligible for use with a Shape.">
 <polygon fill="white" stroke="black" points="666,-339 666,-358 835,-358 835,-339 666,-339"/>
 <text text-anchor="middle" x="750.5" y="-346" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::PolygonShapeConf</text>
 </a>
@@ -208,7 +208,7 @@
 <!-- Node13 -->
 <g id="node13" class="node">
 <title>Node13</title>
-<g id="a_node13"><a xlink:href="classplayrho_1_1d2_1_1ChainShapeConf.html" target="_top" xlink:title="Chain shape configuration.">
+<g id="a_node13"><a xlink:href="structplayrho_1_1d2_1_1ChainShapeConf.html" target="_top" xlink:title="Chain shape configuration.">
 <polygon fill="white" stroke="black" points="671.5,-6 671.5,-25 829.5,-25 829.5,-6 671.5,-6"/>
 <text text-anchor="middle" x="750.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::ChainShapeConf</text>
 </a>

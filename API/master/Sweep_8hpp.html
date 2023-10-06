@@ -106,6 +106,7 @@ $(document).ready(function(){initNavTree('Sweep_8hpp.html',''); initResizable();
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;<a class="el" href="Settings_8hpp.html">playrho/Settings.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Vector2_8hpp.html">playrho/Vector2.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="ZeroToUnderOne_8hpp.html">playrho/ZeroToUnderOne.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Position_8hpp.html">playrho/d2/Position.hpp</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Sweep.hpp:</div>
@@ -122,8 +123,8 @@ This graph shows which files directly or indirectly include this file:</div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Sweep.html">playrho::d2::Sweep</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of a "sweep" of motion in 2-D space.  <a href="classplayrho_1_1d2_1_1Sweep.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Sweep.html">playrho::d2::Sweep</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of a "sweep" of motion in 2-D space.  <a href="structplayrho_1_1d2_1_1Sweep.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -135,6 +136,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a9f1f1a039d714b800386dea3f97f3ed3"><td class="memItemLeft" align="right" valign="top">Sweep&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a9f1f1a039d714b800386dea3f97f3ed3">playrho::d2::Advance0</a> (const Sweep &amp;sweep, ZeroToUnderOneFF&lt; Real &gt; alpha) noexcept</td></tr>
+<tr class="memdesc:a9f1f1a039d714b800386dea3f97f3ed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Advances the sweep by a factor of the difference between the given time alpha and the sweep's alpha 0.  <a href="namespaceplayrho_1_1d2.html#a9f1f1a039d714b800386dea3f97f3ed3">More...</a><br /></td></tr>
+<tr class="separator:a9f1f1a039d714b800386dea3f97f3ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4eebf111910b8b036f4caca5e01fcab3"><td class="memItemLeft" align="right" valign="top"><a id="a4eebf111910b8b036f4caca5e01fcab3"></a>
 template&lt;&gt; </td></tr>
 <tr class="memitem:a4eebf111910b8b036f4caca5e01fcab3"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a4eebf111910b8b036f4caca5e01fcab3">playrho::IsValid</a> (const d2::Sweep &amp;value) noexcept</td></tr>
@@ -161,7 +165,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="dir_00957d302ca87b53c9f57dcbc695504d.html">d2</a></li><li class="navelem"><a class="el" href="Sweep_8hpp.html">Sweep.hpp</a></li>
-    <li class="footer">Generated on Tue Oct 3 2023 15:07:06 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 6 2023 21:05:23 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

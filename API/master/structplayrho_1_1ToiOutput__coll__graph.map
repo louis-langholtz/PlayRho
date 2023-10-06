@@ -1,4 +1,6 @@
 <map id="playrho::ToiOutput" name="playrho::ToiOutput">
-<area shape="rect" id="node1" title="Output data for time of impact." alt="" coords="5,109,147,136"/>
-<area shape="rect" id="node2" href="$structplayrho_1_1ToiOutput_1_1Statistics.html" title="Time of impact statistics." alt="" coords="5,5,147,47"/>
+<area shape="rect" id="node1" title="Output data for time of impact." alt="" coords="196,213,337,240"/>
+<area shape="rect" id="node2" href="$classplayrho_1_1detail_1_1Checked.html" title=" " alt="" coords="40,109,219,151"/>
+<area shape="rect" id="node3" href="$classplayrho_1_1detail_1_1Checked.html" title="Class template for construction&#45;time constraining a type&#39;s value." alt="" coords="5,5,253,47"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1ToiOutput_1_1Statistics.html" title="Time of impact statistics." alt="" coords="243,109,384,151"/>
 </map>

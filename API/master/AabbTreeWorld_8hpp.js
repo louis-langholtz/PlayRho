@@ -40,6 +40,7 @@ var AabbTreeWorld_8hpp =
     [ "GetProxies", "AabbTreeWorld_8hpp.html#a3694df2092406746a5e71113ee6487f1", null ],
     [ "GetShape", "AabbTreeWorld_8hpp.html#a9e29376addbe168c363097e82eb796f0", null ],
     [ "GetShapeRange", "AabbTreeWorld_8hpp.html#a61d7f65f10afdad013c11d866292ad12", null ],
+    [ "GetSoonestContact", "AabbTreeWorld_8hpp.html#a7e8932936bd2f281984a4afacc40e7a1", null ],
     [ "GetSubStepping", "AabbTreeWorld_8hpp.html#af8856e4e147c88bcacefa6b63aa750cd", null ],
     [ "GetTree", "AabbTreeWorld_8hpp.html#a906e04c52b759610040707fef9ad58b0", null ],
     [ "GetVertexRadiusInterval", "AabbTreeWorld_8hpp.html#aa5bd2b2d4ff4f88eef1db5f754dfa7c2", null ],

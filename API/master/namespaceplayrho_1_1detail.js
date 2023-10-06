@@ -76,6 +76,7 @@ var namespaceplayrho_1_1detail =
     [ "Wider< std::uint16_t >", "structplayrho_1_1detail_1_1Wider_3_01std_1_1uint16__t_01_4.html", "structplayrho_1_1detail_1_1Wider_3_01std_1_1uint16__t_01_4" ],
     [ "Wider< std::uint32_t >", "structplayrho_1_1detail_1_1Wider_3_01std_1_1uint32__t_01_4.html", "structplayrho_1_1detail_1_1Wider_3_01std_1_1uint32__t_01_4" ],
     [ "Wider< std::uint8_t >", "structplayrho_1_1detail_1_1Wider_3_01std_1_1uint8__t_01_4.html", "structplayrho_1_1detail_1_1Wider_3_01std_1_1uint8__t_01_4" ],
+    [ "ZeroToUnderOneChecker", "structplayrho_1_1detail_1_1ZeroToUnderOneChecker.html", "structplayrho_1_1detail_1_1ZeroToUnderOneChecker" ],
     [ "acceleration", "namespaceplayrho_1_1detail.html#aefbb6a898514981d80d8a599a6faed34", null ],
     [ "angular_acceleration", "namespaceplayrho_1_1detail.html#a097ed777e057559e1843beed7f261053", null ],
     [ "angular_momentum", "namespaceplayrho_1_1detail.html#a368271e29c9ca2fa4a81619932918883", null ],

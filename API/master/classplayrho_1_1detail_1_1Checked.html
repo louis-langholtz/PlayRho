@@ -111,7 +111,7 @@ $(document).ready(function(){initNavTree('classplayrho_1_1detail_1_1Checked.html
 <div class="dynheader">
 Inheritance diagram for playrho::detail::Checked&lt; ValueType, Checker, NoExcept &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1detail_1_1Checked__inherit__graph.svg" width="600" height="575"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1detail_1_1Checked__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -304,7 +304,9 @@ Related Functions</h2></td></tr>
 class playrho::detail::Checked&lt; ValueType, Checker, NoExcept &gt;</h3>
 
 <p>Class template for construction-time constraining a type's value. </p>
-<dl class="section note"><dt>Note</dt><dd>Conceptually, this is to values what concepts are to types. One difference however, is this - as a mechanism - operates at construction-time rather than compile-time (like concepts do). From a design perspective, this can serve as an efficient and scalable mechanism for defensive/offensive programming or for pre/post conditions of contract oriented programming so long as the value-type this is used with has only value semantics. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Conceptually, this is to values what concepts are to types. One difference however, is this - as a mechanism - operates at construction-time rather than compile-time (like concepts do). From a design perspective, this can serve as an efficient and scalable mechanism for defensive/offensive programming or for pre/post conditions of contract oriented programming so long as the value-type this is used with has only value semantics. </dd>
+<dd>
+The history of contracts in C++ is long and associated proposals are sordid. There doesn't even appear to be sensible consensus on the meaning of "noexcept". OTOH, N4659 18.4.5 clearly states: "Whenever an exception is thrown and the search for a handler (18.3) encounters the outermost block of a function with a non-throwing exception specification, the function std::terminate() is called". </dd></dl>
 <dl class="section invariant"><dt>Invariant</dt><dd>The value of an object of this type is always valid for the checker of the type. </dd></dl>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
@@ -314,7 +316,11 @@ class playrho::detail::Checked&lt; ValueType, Checker, NoExcept &gt;</h3>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a href="https://en.cppreference.com/w/cpp/language/noexcept_spec">https://en.cppreference.com/w/cpp/language/noexcept_spec</a>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://en.cppreference.com/w/cpp/language/noexcept_spec">https://en.cppreference.com/w/cpp/language/noexcept_spec</a>. </dd>
+<dd>
+<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf">http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf</a>. </dd>
+<dd>
+<a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p1656r2.html">https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p1656r2.html</a>. </dd></dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a5195c96ea6ee491e75d93ce702553cda"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5195c96ea6ee491e75d93ce702553cda">&#9670;&nbsp;</a></span>remove_pointer_type</h2>
@@ -2223,7 +2229,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a></li>
-    <li class="footer">Generated on Tue Oct 3 2023 15:07:07 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 6 2023 21:05:24 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

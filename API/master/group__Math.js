@@ -40,7 +40,7 @@ var group__Math =
     [ "Solve", "group__Math.html#ga1dfb22979400417701de8582bb6d76ad", null ],
     [ "Solve22", "group__Math.html#ga844e39448ab76470e60db668b1815ee0", null ],
     [ "Solve33", "group__Math.html#gab5eb451a3aff0db8ef5bcbb3d67a18df", null ],
-    [ "Square", "group__Math.html#gac7300e33771c076a6d7236d566b30207", null ],
+    [ "Square", "group__Math.html#ga4000cee8b1fc5a9ab6a5cfe29eb645b6", null ],
     [ "ToSigned", "group__Math.html#ga3410f58d0023e2a0d6ae6ad85da9508c", null ],
     [ "Transform", "group__Math.html#gaa8489f7d571594e36194a437ea93898a", null ],
     [ "Transform", "group__Math.html#ga17fa159bf4195bff228c3fda9252a5b1", null ],

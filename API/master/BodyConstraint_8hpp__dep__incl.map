@@ -1,6 +1,5 @@
 <map id="Library/include/playrho/d2/BodyConstraint.hpp" name="Library/include/playrho/d2/BodyConstraint.hpp">
-<area shape="rect" id="node1" title="Definition of the BodyConstraint class and closely related code." alt="" coords="210,5,385,47"/>
+<area shape="rect" id="node1" title="Definition of the BodyConstraint class and closely related code." alt="" coords="106,5,281,47"/>
 <area shape="rect" id="node2" href="$AabbTreeWorld_8hpp.html" title="Declarations of the AabbTreeWorld class." alt="" coords="5,95,176,136"/>
-<area shape="rect" id="node3" href="$PositionConstraint_8hpp.html" title="Definition of the PositionConstraint class and closely related code." alt="" coords="201,95,394,136"/>
-<area shape="rect" id="node4" href="$VelocityConstraint_8hpp.html" title="Definition of the VelocityConstraint class and closely related code." alt="" coords="418,95,611,136"/>
+<area shape="rect" id="node3" href="$VelocityConstraint_8hpp.html" title="Definition of the VelocityConstraint class and closely related code." alt="" coords="201,95,394,136"/>
 </map>

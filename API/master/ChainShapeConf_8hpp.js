@@ -1,6 +1,7 @@
 var ChainShapeConf_8hpp =
 [
     [ "TypeInfo< playrho::d2::ChainShapeConf >", "structplayrho_1_1detail_1_1TypeInfo_3_01playrho_1_1d2_1_1ChainShapeConf_01_4.html", "structplayrho_1_1detail_1_1TypeInfo_3_01playrho_1_1d2_1_1ChainShapeConf_01_4" ],
+    [ "VerticesWithNormals", "classplayrho_1_1d2_1_1ChainShapeConf_1_1VerticesWithNormals.html", "classplayrho_1_1d2_1_1ChainShapeConf_1_1VerticesWithNormals" ],
     [ "GetChainShapeConf", "ChainShapeConf_8hpp.html#ab25320e8b45be5e1730e39c9fc26a103", null ],
     [ "GetChainShapeConf", "ChainShapeConf_8hpp.html#a1506cafaf0782493d23348b88fc79053", null ],
     [ "GetChainShapeConf", "ChainShapeConf_8hpp.html#ade70545e6c2bf848f87657114a111d11", null ],

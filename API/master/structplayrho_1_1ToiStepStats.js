@@ -15,7 +15,6 @@ var structplayrho_1_1ToiStepStats =
     [ "maxDistIters", "structplayrho_1_1ToiStepStats.html#ac02dc191dbd8b62af27ee8a8756b6950", null ],
     [ "maxIncImpulse", "structplayrho_1_1ToiStepStats.html#a3d086070f4bad6c7156e9e398092111a", null ],
     [ "maxRootIters", "structplayrho_1_1ToiStepStats.html#ac9684005b60da6251f1cc4add7cea2c8", null ],
-    [ "maxSimulContacts", "structplayrho_1_1ToiStepStats.html#ac93c931d7375403054aa91d54f7e2429", null ],
     [ "maxToiIters", "structplayrho_1_1ToiStepStats.html#abff84a9f2765a553fa7c015d4236a294", null ],
     [ "minSeparation", "structplayrho_1_1ToiStepStats.html#a9596997026a847f921188645090d1663", null ],
     [ "proxiesMoved", "structplayrho_1_1ToiStepStats.html#ac63aa8851a42781c9150241e55aa93cd", null ],

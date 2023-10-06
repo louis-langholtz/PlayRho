@@ -259,11 +259,11 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:gab5eb451a3aff0db8ef5bcbb3d67a18df"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#gab5eb451a3aff0db8ef5bcbb3d67a18df">playrho::Solve33</a> (const <a class="el" href="namespaceplayrho.html#aabd44d74c5bc530c9b6676c6a61e6b31">Mat33</a> &amp;mat, const <a class="el" href="namespaceplayrho.html#ad07b44f811ac4c7551067fb1d3554ec5">Vector3</a>&lt; T &gt; &amp;b) noexcept -&gt; <a class="el" href="namespaceplayrho.html#ad07b44f811ac4c7551067fb1d3554ec5">Vector3</a>&lt; T &gt;</td></tr>
 <tr class="memdesc:gab5eb451a3aff0db8ef5bcbb3d67a18df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves A * x = b, where b is a column vector.  <a href="group__Math.html#gab5eb451a3aff0db8ef5bcbb3d67a18df">More...</a><br /></td></tr>
 <tr class="separator:gab5eb451a3aff0db8ef5bcbb3d67a18df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac7300e33771c076a6d7236d566b30207"><td class="memTemplParams" colspan="2"><a id="gac7300e33771c076a6d7236d566b30207"></a>
-template&lt;class TYPE &gt; </td></tr>
-<tr class="memitem:gac7300e33771c076a6d7236d566b30207"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#gac7300e33771c076a6d7236d566b30207">playrho::Square</a> (TYPE t) noexcept -&gt; decltype(t *t)</td></tr>
-<tr class="memdesc:gac7300e33771c076a6d7236d566b30207"><td class="mdescLeft">&#160;</td><td class="mdescRight">Squares the given value. <br /></td></tr>
-<tr class="separator:gac7300e33771c076a6d7236d566b30207"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4000cee8b1fc5a9ab6a5cfe29eb645b6"><td class="memTemplParams" colspan="2"><a id="ga4000cee8b1fc5a9ab6a5cfe29eb645b6"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga4000cee8b1fc5a9ab6a5cfe29eb645b6"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga4000cee8b1fc5a9ab6a5cfe29eb645b6">playrho::Square</a> (T t) noexcept(noexcept(t *t)) -&gt; decltype(t *t)</td></tr>
+<tr class="memdesc:ga4000cee8b1fc5a9ab6a5cfe29eb645b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Squares the given value. <br /></td></tr>
+<tr class="separator:ga4000cee8b1fc5a9ab6a5cfe29eb645b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3410f58d0023e2a0d6ae6ad85da9508c"><td class="memTemplParams" colspan="2"><a id="ga3410f58d0023e2a0d6ae6ad85da9508c"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:ga3410f58d0023e2a0d6ae6ad85da9508c"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga3410f58d0023e2a0d6ae6ad85da9508c">playrho::ToSigned</a> (const T &amp;value) -&gt; decltype(static_cast&lt; std::make_signed_t&lt; T &gt;&gt;(value))</td></tr>
@@ -461,8 +461,6 @@ template&lt;class T &gt; </div>
 
 <p>Computes the centroid of a counter-clockwise array of 3 or more vertices. </p>
 <dl class="section pre"><dt>Precondition</dt><dd><code>vertices</code> Has 3 or more elements and they're in counter-clockwise order. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html#a83aaa3b7748b0f34ac7afb4e29b0c51e">playrho::d2::PolygonShapeConf::Set()</a>.</p>
 
 </div>
 </div>
@@ -785,7 +783,7 @@ template&lt;typename T &gt; </div>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="DistanceJoint_8cpp-example.html#a28">DistanceJoint.cpp</a>, <a class="el" href="PulleyJoint_8cpp-example.html#a28">PulleyJoint.cpp</a>, and <a class="el" href="World_8cpp-example.html#a123">World.cpp</a>.</dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Simplex.html#a21f4fbe4f435a497f723ba4692745d13">playrho::d2::Simplex::CalcMetric()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae563375c4aff49f02b9ecab9dce5fc62">playrho::d2::World::GetCentripetalForce()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#afd81bf06efee4b29f2490134f52baddc">playrho::d2::World::GetCurrentLengthA()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a11679510e7348f8480d317a02ba3e2aa">playrho::d2::World::GetCurrentLengthB()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aeca593754c5f10e69f145526786978fe">playrho::d2::World::GetDistanceJointConf()</a>, <a class="el" href="classplayrho_1_1d2_1_1ChainShapeConf.html#acf3a62f07bbb6fdaeb1cbc962d62feb8">playrho::d2::ChainShapeConf::GetMassData()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a32e1a0772998ac59c02ff4b1a7981343">playrho::d2::GetMassData()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a52974eadc9023357fc460b5392160a0e">playrho::d2::World::GetPulleyJointConf()</a>, <a class="el" href="group__Math.html#ga0c7d2525a406c1f83c0574e46a2cee32">playrho::Normalize()</a>, and <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#a0a2a5151fb0a799e0d2f0a84e4534b94">playrho::d2::WeldJointConf::SolvePosition()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Simplex.html#a21f4fbe4f435a497f723ba4692745d13">playrho::d2::Simplex::CalcMetric()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae563375c4aff49f02b9ecab9dce5fc62">playrho::d2::World::GetCentripetalForce()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#afd81bf06efee4b29f2490134f52baddc">playrho::d2::World::GetCurrentLengthA()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a11679510e7348f8480d317a02ba3e2aa">playrho::d2::World::GetCurrentLengthB()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aeca593754c5f10e69f145526786978fe">playrho::d2::World::GetDistanceJointConf()</a>, <a class="el" href="structplayrho_1_1d2_1_1ChainShapeConf.html#acf3a62f07bbb6fdaeb1cbc962d62feb8">playrho::d2::ChainShapeConf::GetMassData()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a32e1a0772998ac59c02ff4b1a7981343">playrho::d2::GetMassData()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a52974eadc9023357fc460b5392160a0e">playrho::d2::World::GetPulleyJointConf()</a>, <a class="el" href="group__Math.html#ga0c7d2525a406c1f83c0574e46a2cee32">playrho::Normalize()</a>, and <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#a0a2a5151fb0a799e0d2f0a84e4534b94">playrho::d2::WeldJointConf::SolvePosition()</a>.</p>
 
 </div>
 </div>
@@ -875,7 +873,7 @@ template&lt;typename T &gt; </div>
 <code>value</code> plus one is greater-than zero. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Math.html#ga6434759234bd5e94759bf10cc4eb5ac5" title="Gets the modulo previous value.">GetModuloPrev</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="group__Math.html#gae769785f0540a4b8960b282f6b105c14">playrho::ComputeCentroid()</a>, <a class="el" href="classplayrho_1_1d2_1_1ConvexHull.html#a678ba0811f2975d1cdba6bfca49005eb">playrho::d2::ConvexHull::Get()</a>, <a class="el" href="group__Math.html#ga760effc058042418453697e733937b2f">playrho::GetAreaOfPolygon()</a>, <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html#a066828295fc1238756f5adf1f3502343">playrho::d2::PolygonShapeConf::GetEdge()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ac457cb117f43c867a553087e91608ce7">playrho::d2::GetManifold()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a7304da106cfaa394b4d0179ded468aa6">playrho::d2::GetMassData()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ac7d699f052c62efd80ce28f0190d70af">playrho::d2::GetNextIndex()</a>, <a class="el" href="group__Math.html#gaee743e28b24b01d9101b8a2e7bd72284">playrho::GetPolarMoment()</a>, <a class="el" href="group__RayCastGroup.html#gabc2e992343e201f48c1956753a530247">playrho::d2::DistanceProxy::RayCast()</a>, <a class="el" href="group__TestPointGroup.html#gab8505b0b58d03f1d6f7c702d9db632c9">playrho::d2::DistanceProxy::TestPoint()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#a0254e96c6b1df87a80cf44dc29fc2017">playrho::d2::Validate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="group__Math.html#gae769785f0540a4b8960b282f6b105c14">playrho::ComputeCentroid()</a>, <a class="el" href="group__Math.html#ga760effc058042418453697e733937b2f">playrho::GetAreaOfPolygon()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a642d004cc56b550c7fc6ff0fc6cb3311">playrho::d2::GetFwdNormalsArray()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ac32cdb280579f9cc50ec0831c9d8c690">playrho::d2::GetFwdNormalsVector()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ac457cb117f43c867a553087e91608ce7">playrho::d2::GetManifold()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a7304da106cfaa394b4d0179ded468aa6">playrho::d2::GetMassData()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ac7d699f052c62efd80ce28f0190d70af">playrho::d2::GetNextIndex()</a>, <a class="el" href="group__Math.html#gaee743e28b24b01d9101b8a2e7bd72284">playrho::GetPolarMoment()</a>, <a class="el" href="group__RayCastGroup.html#gabc2e992343e201f48c1956753a530247">playrho::d2::DistanceProxy::RayCast()</a>, <a class="el" href="group__TestPointGroup.html#gab8505b0b58d03f1d6f7c702d9db632c9">playrho::d2::DistanceProxy::TestPoint()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#a0254e96c6b1df87a80cf44dc29fc2017">playrho::d2::Validate()</a>.</p>
 
 </div>
 </div>
@@ -968,7 +966,7 @@ Both -Pi and +Pi normalize to -Pi. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Angle that's greater than or equal to -Pi and that's less than +Pi radians. I.e. the value returned will be a value within the half-open interval of [-Pi, +Pi). </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Math.html#gab870a9188fcc77c905807fa718a8268d" title="Computes the arc-tangent of the given y and x values.">Atan2</a> </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a5955bf7b1c0cdfa36d11adea236d9af4">playrho::d2::GetNormalized()</a>, <a class="el" href="classplayrho_1_1d2_1_1Sweep.html#a09b21383c1a73afea37f11e0ba906a76">playrho::d2::Sweep::GetNormalized()</a>, and <a class="el" href="group__Math.html#gac9b72aa4a587e552a586a42494d614c1">playrho::GetShortestDelta()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a5955bf7b1c0cdfa36d11adea236d9af4">playrho::d2::GetNormalized()</a>, <a class="el" href="structplayrho_1_1d2_1_1Sweep.html#a09b21383c1a73afea37f11e0ba906a76">playrho::d2::Sweep::GetNormalized()</a>, and <a class="el" href="group__Math.html#gac9b72aa4a587e552a586a42494d614c1">playrho::GetShortestDelta()</a>.</p>
 
 </div>
 </div>
@@ -1598,7 +1596,7 @@ template&lt;std::size_t M, typename T1 , std::size_t N, typename T2 &gt; </div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Oct 3 2023 15:07:06 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 6 2023 21:05:23 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

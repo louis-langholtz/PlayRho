@@ -151,6 +151,10 @@ Angle&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nam
 InvMass&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#ab0e7f6b99f8d46a62c739d0df5ba8c1d">playrho::d2::GetEffectiveInvMass</a> (const InvRotInertia &amp;invRotI, const Length2 &amp;p, const UnitVec &amp;q)</td></tr>
 <tr class="memdesc:ab0e7f6b99f8d46a62c739d0df5ba8c1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the "effective" inverse mass. <br /></td></tr>
 <tr class="separator:ab0e7f6b99f8d46a62c739d0df5ba8c1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac32cdb280579f9cc50ec0831c9d8c690"><td class="memItemLeft" align="right" valign="top"><a id="ac32cdb280579f9cc50ec0831c9d8c690"></a>
+std::vector&lt; UnitVec &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#ac32cdb280579f9cc50ec0831c9d8c690">playrho::d2::GetFwdNormalsVector</a> (const std::vector&lt; Length2 &gt; &amp;vertices)</td></tr>
+<tr class="memdesc:ac32cdb280579f9cc50ec0831c9d8c690"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the forward normals for the given container of vertices. <br /></td></tr>
+<tr class="separator:ac32cdb280579f9cc50ec0831c9d8c690"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5955bf7b1c0cdfa36d11adea236d9af4"><td class="memItemLeft" align="right" valign="top">Position&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a5955bf7b1c0cdfa36d11adea236d9af4">playrho::d2::GetNormalized</a> (const Position &amp;val) noexcept</td></tr>
 <tr class="memdesc:a5955bf7b1c0cdfa36d11adea236d9af4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the "normalized" position.  <a href="namespaceplayrho_1_1d2.html#a5955bf7b1c0cdfa36d11adea236d9af4">More...</a><br /></td></tr>
 <tr class="separator:a5955bf7b1c0cdfa36d11adea236d9af4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,9 +183,9 @@ Transformation&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <tr class="memitem:a07e3239745b17cc4dfac4f26b7f179ba"><td class="memItemLeft" align="right" valign="top">Transformation&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a07e3239745b17cc4dfac4f26b7f179ba">playrho::d2::GetTransformation</a> (const Sweep &amp;sweep, const UnitIntervalFF&lt; Real &gt; beta) noexcept</td></tr>
 <tr class="memdesc:a07e3239745b17cc4dfac4f26b7f179ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the interpolated transform at a specific time.  <a href="namespaceplayrho_1_1d2.html#a07e3239745b17cc4dfac4f26b7f179ba">More...</a><br /></td></tr>
 <tr class="separator:a07e3239745b17cc4dfac4f26b7f179ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa85c709f68db8a40c7e89166462f3ee4"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:aa85c709f68db8a40c7e89166462f3ee4"><td class="memTemplItemLeft" align="right" valign="top">UnitVec&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#aa85c709f68db8a40c7e89166462f3ee4">playrho::d2::GetUnitVector</a> (const Vector2&lt; T &gt; &amp;value, const UnitVec &amp;fallback=UnitVec::GetDefaultFallback())</td></tr>
-<tr class="separator:aa85c709f68db8a40c7e89166462f3ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bd25518f48c10a51a89b63e4d5103bb"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a6bd25518f48c10a51a89b63e4d5103bb"><td class="memTemplItemLeft" align="right" valign="top">UnitVec&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a6bd25518f48c10a51a89b63e4d5103bb">playrho::d2::GetUnitVector</a> (const Vector2&lt; T &gt; &amp;value, const UnitVec &amp;fallback=UnitVec::GetDefaultFallback()) noexcept</td></tr>
+<tr class="separator:a6bd25518f48c10a51a89b63e4d5103bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5341790c7d8beeb73ac576c1af2c4189"><td class="memItemLeft" align="right" valign="top"><a id="a5341790c7d8beeb73ac576c1af2c4189"></a>
 constexpr Vec2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a5341790c7d8beeb73ac576c1af2c4189">playrho::d2::GetVec2</a> (const UnitVec &amp;value)</td></tr>
 <tr class="memdesc:a5341790c7d8beeb73ac576c1af2c4189"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a <code>Vec2</code> representation of the given value. <br /></td></tr>
@@ -243,7 +247,7 @@ constexpr Vec2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="dir_00957d302ca87b53c9f57dcbc695504d.html">d2</a></li><li class="navelem"><a class="el" href="d2_2Math_8hpp.html">Math.hpp</a></li>
-    <li class="footer">Generated on Tue Oct 3 2023 15:07:06 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 6 2023 21:05:23 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

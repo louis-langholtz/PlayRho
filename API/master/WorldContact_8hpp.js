@@ -11,7 +11,7 @@ var WorldContact_8hpp =
     [ "GetShapeA", "WorldContact_8hpp.html#a94a1320811507b6601ff8224e1469c23", null ],
     [ "GetShapeB", "WorldContact_8hpp.html#ae5df527a800c51b570b382547d06dda4", null ],
     [ "GetTangentSpeed", "WorldContact_8hpp.html#ab468e8fb931cb9871644d49625ab5f8e", null ],
-    [ "GetToi", "WorldContact_8hpp.html#ace170277236e8d6ff73a081d4ffa16d3", null ],
+    [ "GetToi", "WorldContact_8hpp.html#a00955d16b773879aeb7f58194c2401b3", null ],
     [ "GetToiCount", "WorldContact_8hpp.html#aeef0047d9c45e36b6db6bbdd0ead0569", null ],
     [ "GetTouchingCount", "WorldContact_8hpp.html#a85a86553103a715dd904a4962d4f4403", null ],
     [ "GetWorldManifold", "WorldContact_8hpp.html#a070b99ac8d041f13a9db2c18adbf5dc5", null ],
