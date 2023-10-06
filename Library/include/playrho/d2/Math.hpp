@@ -124,7 +124,8 @@ constexpr auto InverseRotate(const Vector2<T>& vector, const UnitVec& angle) noe
 /// @return value divided by its length if length not almost zero otherwise invalid value.
 /// @see AlmostEqual.
 template <class T>
-inline UnitVec GetUnitVector(const Vector2<T>& value, const UnitVec& fallback = UnitVec::GetDefaultFallback())
+inline UnitVec GetUnitVector(const Vector2<T>& value,
+                             const UnitVec& fallback = UnitVec::GetDefaultFallback()) noexcept
 {
     return std::get<0>(UnitVec::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), fallback));
 }
