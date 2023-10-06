@@ -388,7 +388,6 @@ TEST(AabbTreeWorld, CreateDestroyContactingBodies)
     EXPECT_EQ(stats0.toi.proxiesMoved, static_cast<decltype(stats0.toi.proxiesMoved)>(0));
     EXPECT_EQ(stats0.toi.sumPosIters, static_cast<decltype(stats0.toi.sumPosIters)>(0));
     EXPECT_EQ(stats0.toi.sumVelIters, static_cast<decltype(stats0.toi.sumVelIters)>(0));
-    EXPECT_EQ(stats0.toi.maxSimulContacts, static_cast<decltype(stats0.toi.maxSimulContacts)>(0));
     EXPECT_EQ(stats0.toi.maxDistIters, static_cast<decltype(stats0.toi.maxDistIters)>(0));
     EXPECT_EQ(stats0.toi.maxToiIters, static_cast<decltype(stats0.toi.maxToiIters)>(0));
     EXPECT_EQ(stats0.toi.maxRootIters, static_cast<decltype(stats0.toi.maxRootIters)>(0));
@@ -1032,4 +1031,28 @@ TEST(Templates, EraseFirst)
     EXPECT_TRUE(EraseFirst(container, 1));
     EXPECT_EQ(size(container), 2u);
     EXPECT_EQ(container, (std::vector<int>{0, 2}));
+}
+
+TEST(AabbTreeWorld, GetSoonestContact)
+{
+    auto ids = std::vector<KeyedContactID>{};
+    auto contacts = std::vector<Contact>{};
+    EXPECT_EQ(GetSoonestContact(ids, contacts), InvalidContactID);
+    auto c = Contact{};
+    contacts.push_back(c);
+    EXPECT_EQ(GetSoonestContact(ids, contacts), InvalidContactID);
+    ids.emplace_back(ContactKey(), ContactID(0));
+    EXPECT_EQ(GetSoonestContact(ids, contacts), InvalidContactID);
+    c.SetToi(Real(0.5));
+    contacts.push_back(c);
+    ids.emplace_back(ContactKey(), ContactID(1));
+    EXPECT_EQ(GetSoonestContact(ids, contacts), ContactID(1));
+    c.SetToi(Real(0.2));
+    contacts.push_back(c);
+    ids.emplace_back(ContactKey(), ContactID(2));
+    EXPECT_EQ(GetSoonestContact(ids, contacts), ContactID(2));
+    c.SetToi(Real(0.6));
+    contacts.push_back(c);
+    ids.emplace_back(ContactKey(), ContactID(3));
+    EXPECT_EQ(GetSoonestContact(ids, contacts), ContactID(2));
 }

@@ -108,7 +108,7 @@ using ManifoldContactListener = std::function<void(ContactID, const Manifold&)>;
 
 /// @brief Impulses contact listener.
 using ImpulsesContactListener =
-    std::function<void(ContactID, const ContactImpulsesList&, unsigned)>;
+std::function<void(ContactID, const ContactImpulsesList&, unsigned)>;
 
 /// @name AabbTreeWorld Listener Non-Member Functions
 /// @{
@@ -643,7 +643,7 @@ private:
     /// @return Island solver results.
     ///
     IslandStats SolveRegIslandViaGS(const StepConf& conf, const Island& island);
-    
+
     /// @brief Adds to the island based off of a given "seed" body.
     /// @post Contacts are listed in the island in the order that bodies provide those contacts.
     /// @post Joints are listed the island in the order that bodies provide those joints.
@@ -678,17 +678,14 @@ private:
     ToiStepStats SolveToi(const StepConf& conf);
 
     /// @brief Solves collisions for the given time of impact.
-    ///
     /// @param contactID Identifier of contact to solve for.
     /// @param conf Time step configuration to solve for.
-    ///
     /// @pre The identified contact has a valid TOI, is enabled, is active, and is impenetrable.
     /// @pre The identified contact is **not** a sensor.
     /// @pre There is no contact having a lower TOI in this time step that has
     ///   not already been solved for.
     /// @pre There is not a lower TOI in the time step for which collisions have
     ///   not already been processed.
-    ///
     IslandStats SolveToi(ContactID contactID, const StepConf& conf);
 
     /// @brief Solves the time of impact for bodies 0 and 1 of the given island.
@@ -810,7 +807,7 @@ private:
     /// contact listener as its argument.
     /// Essentially this really just purges contacts that are no longer relevant.
     DestroyContactsStats DestroyContacts(KeyedContactIDs& contacts);
-    
+
     /// @brief Update contacts.
     UpdateContactsStats UpdateContacts(const StepConf& conf);
 
@@ -912,7 +909,7 @@ private:
     BodyIDs m_bodies; ///< Body collection.
 
     JointIDs m_joints; ///< Joint collection.
-    
+
     /// @brief Container of contacts.
     /// @note In the <em>add pair</em> stress-test, 401 bodies can have some 31000 contacts
     ///   during a given time step.
@@ -928,7 +925,7 @@ private:
     Listeners m_listeners;
 
     FlagsType m_flags = e_stepComplete; ///< Flags.
-    
+
     /// Inverse delta-t from previous step.
     /// @details Used to compute time step ratio to support a variable time step.
     /// @see Step.
@@ -1056,6 +1053,13 @@ inline void SetPostSolveContactListener(AabbTreeWorld& world, ImpulsesContactLis
 {
     world.m_listeners.postSolveContact = std::move(listener);
 }
+
+/// @brief Gets the identifier of the contact with the lowest time of impact.
+/// @details This finds the contact with the lowest (soonest) time of impact that's under one
+///   and returns its identifier.
+/// @return Identifier of contact with the least time of impact under 1, or invalid contact ID.
+ContactID GetSoonestContact(const Span<const KeyedContactID>& ids,
+                            const Span<const Contact>& contacts) noexcept;
 
 } // namespace d2
 } // namespace playrho

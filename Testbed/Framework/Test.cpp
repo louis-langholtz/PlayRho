@@ -630,7 +630,6 @@ void ShowStats(const StepConf& stepConf, UiState& ui, const World& world, const 
         stream << ", max-dist-iter=" << unsigned{stats.m_maxDistIters} << "/" << unsigned{stepConf.maxDistanceIters};
         stream << ", max-toi-iter=" << unsigned{stats.m_maxToiIters} << "/" << unsigned{stepConf.maxToiIters};
         stream << ", max-root-iter=" << unsigned{stats.m_maxRootIters} << "/" << unsigned{stepConf.maxToiRootIters};
-        stream << ", max-simul-cts=" << stats.m_maxSimulContacts;
         stream << ".";
         ImGui::TextUnformatted(stream.str());
         ImGui::NextColumn();
@@ -1198,8 +1197,6 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
     m_stats.m_sumToiContactsSkippedTouching += stepStats.toi.contactsSkippedTouching;
     m_stats.m_sumContactsAtMaxSubSteps += stepStats.toi.contactsAtMaxSubSteps;
 
-    m_stats.m_maxSimulContacts = std::max(m_stats.m_maxSimulContacts,
-                                          stepStats.toi.maxSimulContacts);
     m_stats.m_maxDistIters = std::max(m_stats.m_maxDistIters, stepStats.toi.maxDistIters);
     m_stats.m_maxRootIters = std::max(m_stats.m_maxRootIters, stepStats.toi.maxRootIters);
     m_stats.m_maxToiIters = std::max(m_stats.m_maxToiIters, stepStats.toi.maxToiIters);

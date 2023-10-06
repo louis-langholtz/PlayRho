@@ -84,7 +84,6 @@ struct ToiStepStats {
     counter_type proxiesMoved = 0; ///< Proxies moved count.
     counter_type sumPosIters = 0; ///< Sum position iterations count.
     counter_type sumVelIters = 0; ///< Sum velocity iterations count.
-    counter_type maxSimulContacts = 0; ///< Max contacts occurring simultaneously.
 
     /// @brief Distance iteration type.
     using dist_iter_type = std::remove_const_t<decltype(DefaultMaxDistanceIters)>;

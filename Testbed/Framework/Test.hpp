@@ -166,8 +166,6 @@ struct Stats
     Length m_maxRegSep = -std::numeric_limits<Length>::infinity();
     Length m_minToiSep = 0;
 
-    std::uint32_t m_maxSimulContacts = 0;
-
     using dist_iter_type = std::remove_const_t<decltype(DefaultMaxDistanceIters)>;
     using toi_iter_type = std::remove_const_t<decltype(DefaultMaxToiIters)>;
     using root_iter_type = std::remove_const_t<decltype(DefaultMaxToiRootIters)>;
