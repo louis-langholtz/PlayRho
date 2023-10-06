@@ -133,15 +133,6 @@ PolygonShapeConf& PolygonShapeConf::Set(const VertexSet& points)
     return *this;
 }
 
-Length2 GetEdge(const PolygonShapeConf& shape, VertexCounter index)
-{
-    assert(shape.GetVertexCount() > 1);
-
-    const auto i0 = index;
-    const auto i1 = GetModuloNext(index, shape.GetVertexCount());
-    return shape.GetVertex(i1) - shape.GetVertex(i0);
-}
-
 bool Validate(const Span<const Length2>& verts)
 {
     const auto count = size(verts);
