@@ -24,14 +24,14 @@
 /// @file
 /// @brief Declarations of the UnitVec class and free functions associated with it.
 
-#include <playrho/Settings.hpp>
-#include <playrho/Units.hpp>
-#include <playrho/InvalidArgument.hpp>
-
 #include <cstdlib>
 #include <iostream>
 #include <utility>
 #include <type_traits>
+
+#include <playrho/InvalidArgument.hpp>
+#include <playrho/Settings.hpp>
+#include <playrho/Units.hpp>
 
 namespace playrho {
 
@@ -128,13 +128,16 @@ public:
     {
         // Try the fastest way first...
         static constexpr auto t0 = T{};
-        enum { None = 0x0, Left = 0x1, Right = 0x2, Up = 0x4, Down = 0x8 };
-        switch (((x > t0)? Right: (x < t0) ? Left: None) | ((y > t0)? Up: (y < t0)? Down: None)) {
+        enum: unsigned { None = 0x0, Left = 0x1, Right = 0x2, Up = 0x4, Down = 0x8, NaN = 0xF };
+        const auto xBits = (x > t0)? Right: (x < t0)? Left: (x == t0)? None: NaN;
+        const auto yBits = (y > t0)? Up: (y < t0)? Down: (y == t0)? None: NaN;
+        switch (xBits | yBits) {
         case Right: return std::make_pair(GetRight(), x);
         case Left: return std::make_pair(GetLeft(), -x);
         case Up: return std::make_pair(GetTop(), y);
         case Down: return std::make_pair(GetBottom(), -y);
         case None: return std::make_pair(fallback, T{});
+        case NaN: return std::make_pair(fallback, T{});
         default: break;
         }
 
@@ -148,15 +151,9 @@ public:
             return {UnitVec{value_type{x * invMagnitude}, value_type{y * invMagnitude}}, magnitude};
         }
         
-        // Failed the faster way, try the more accurate and robust way...
+        // Finally, try the more accurate and robust way...
         const auto magnitude = hypot(x, y);
-        if (isnormal(magnitude))
-        {
-            return std::make_pair(UnitVec{x / magnitude, y / magnitude}, magnitude);
-        }
-        
-        // Give up and return the fallback value.
-        return std::make_pair(fallback, T{});
+        return std::make_pair(UnitVec{x / magnitude, y / magnitude}, magnitude);
     }
 
     /// @brief Gets the given angled unit vector.
