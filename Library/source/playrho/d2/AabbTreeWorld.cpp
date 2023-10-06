@@ -662,49 +662,6 @@ RemoveUnspeedablesFromIslanded(const Span<const BodyID>& bodies,
     return numRemoved;
 }
 
-/// @brief Contact TOI data.
-struct ContactToiData
-{
-    ContactID contact = InvalidContactID; ///< Contact for which the time of impact is relevant.
-    ZeroToUnderOneFF<Real> toi; ///< Time of impact (TOI) as a fractional value 0 to under 1.
-    ContactCounter simultaneous = 0; ///< Count of simultaneous contacts at this TOI.
-};
-
-/// @brief Gets the soonest contact.
-/// @details This finds the contact with the lowest (soonest) time of impact.
-/// @return Contact with the least time of impact and its time of impact, or null contact.
-///  A non-null contact will be enabled, not have sensors, be active, and impenetrable.
-ContactToiData GetSoonestContact(const KeyedContactIDs& contacts,
-                                 const ObjectPool<Contact>& buffer) noexcept
-{
-    auto minToi = ZeroToUnderOneFF<Real>{nextafter(Real{1}, Real{0})};
-    auto found = InvalidContactID;
-    auto count = ContactCounter{0};
-    for (const auto& contact: contacts)
-    {
-        const auto contactID = std::get<ContactID>(contact);
-        const auto& c = buffer[to_underlying(contactID)];
-        if (const auto toi = c.GetToi())
-        {
-            if (minToi > *toi)
-            {
-                minToi = ZeroToUnderOneFF<Real>(*toi);
-                found = contactID;
-                count = 1;
-            }
-            else if (minToi == *toi)
-            {
-                // Have multiple contacts at the current minimum time of impact.
-                if (found == InvalidContactID) {
-                    found = contactID;
-                }
-                ++count;
-            }
-        }
-    }
-    return ContactToiData{found, minToi, count};
-}
-
 auto FindContacts(pmr::memory_resource& resource,
                   const DynamicTree& tree,
                   ProxyIDs&& proxies)
@@ -1663,18 +1620,16 @@ ToiStepStats AabbTreeWorld::SolveToi(const StepConf& conf)
         stats.maxToiIters = std::max(stats.maxToiIters, updateData.maxToiIters);
         
         const auto next = GetSoonestContact(m_contacts, m_contactBuffer);
-        if (next.contact == InvalidContactID) {
+        if (next == InvalidContactID) {
             // No more TOI events to handle within the current time step. Done!
             m_flags |= e_stepComplete;
             break;
         }
 
-        stats.maxSimulContacts = std::max(stats.maxSimulContacts,
-                                          static_cast<decltype(stats.maxSimulContacts)>(next.simultaneous));
-        stats.contactsFound += next.simultaneous;
+        ++stats.contactsFound;
         auto islandsFound = 0u;
-        if (!m_islanded.contacts[to_underlying(next.contact)]) {
-            const auto solverResults = SolveToi(next.contact, conf);
+        if (!m_islanded.contacts[to_underlying(next)]) {
+            const auto solverResults = SolveToi(next, conf);
             stats.minSeparation = std::min(stats.minSeparation, solverResults.minSeparation);
             stats.maxIncImpulse = std::max(stats.maxIncImpulse, solverResults.maxIncImpulse);
             stats.islandsSolved += solverResults.solved;
@@ -1723,7 +1678,6 @@ IslandStats AabbTreeWorld::SolveToi(ContactID contactID, const StepConf& conf)
     // Note:
     //   This function is what used to be b2World::SolveToi(const b2TimeStep& step).
     //   It also differs internally from Erin's implementation.
-    //
     //   Here's some specific behavioral differences:
     //   1. Bodies don't get their under-active times reset (like they do in Erin's code).
 
@@ -1734,7 +1688,7 @@ IslandStats AabbTreeWorld::SolveToi(ContactID contactID, const StepConf& conf)
 
     /*
      * Confirm that contact is as it's supposed to be according to contract of the
-     * GetSoonestContacts function from which this contact should have been obtained.
+     * GetSoonestContact function from which this contact should have been obtained.
      */
     assert(IsEnabled(contact));
     assert(!IsSensor(contact));
@@ -2780,6 +2734,27 @@ const Contact& GetContact(const AabbTreeWorld& world, ContactID id)
 const Manifold& GetManifold(const AabbTreeWorld& world, ContactID id)
 {
     return world.m_manifoldBuffer.at(to_underlying(id));
+}
+
+ContactID GetSoonestContact(const Span<const KeyedContactID>& ids,
+                            const Span<const Contact>& contacts) noexcept
+{
+    auto found = InvalidContactID;
+    auto minToi = UnitIntervalFF<Real>{Real(1)};
+    for (const auto& id: ids)
+    {
+        const auto contactID = std::get<ContactID>(id);
+        assert(to_underlying(contactID) < contacts.size());
+        const auto& c = contacts[to_underlying(contactID)];
+        if (const auto toi = c.GetToi())
+        {
+            if (minToi > *toi) {
+                minToi = *toi;
+                found = contactID;
+            }
+        }
+    }
+    return found;
 }
 
 } // namespace d2
