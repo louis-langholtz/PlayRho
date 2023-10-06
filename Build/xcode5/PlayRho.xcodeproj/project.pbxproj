@@ -976,6 +976,7 @@
 			isa = PBXGroup;
 			children = (
 				474BC3F41D41278800447DCD /* AABB.cpp */,
+				47ABB0BD2546309400E5F37B /* AabbTreeWorld.cpp */,
 				47C96C561FA6815E00A6C587 /* Acceleration.cpp */,
 				47CF984F1E0088ED0077F5F2 /* Angle.cpp */,
 				470ADAAB25546D2700EEE99D /* ObjectPool.cpp */,
@@ -1073,7 +1074,6 @@
 				475A94551D930E6C000CA9A8 /* WorldFixture.cpp */,
 				470ADAD82558C52300EEE99D /* WorldJoint.cpp */,
 				47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */,
-				47ABB0BD2546309400E5F37B /* AabbTreeWorld.cpp */,
 				4795B9E52643425300FB3EC6 /* WorldShape.cpp */,
 			);
 			name = UnitTests;
