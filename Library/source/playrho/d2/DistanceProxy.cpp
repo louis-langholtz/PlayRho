@@ -104,24 +104,6 @@ std::vector<Length2> GetConvexHullAsVector(Span<const Length2> vertices)
     return result;
 }
 
-std::vector<UnitVec> GetFwdNormalsVector(const std::vector<Length2>& vertices)
-{
-    auto normals = std::vector<UnitVec>();
-    const auto count = static_cast<VertexCounter>(size(vertices));
-    if (count > 1) {
-        // Compute normals.
-        for (auto i = decltype(count){0}; i < count; ++i) {
-            const auto nextIndex = GetModuloNext(i, count);
-            const auto edge = vertices[nextIndex] - vertices[i];
-            normals.push_back(GetUnitVector(GetFwdPerpendicular(edge)));
-        }
-    }
-    else if (count == 1) {
-        normals.emplace_back();
-    }
-    return normals;
-}
-
 bool TestPoint(const DistanceProxy& proxy, const Length2& point) noexcept
 {
     const auto count = proxy.GetVertexCount();

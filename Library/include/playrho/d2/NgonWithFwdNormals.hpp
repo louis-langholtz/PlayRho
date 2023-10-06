@@ -50,9 +50,6 @@ std::array<UnitVec, N> GetFwdNormalsArray(const std::array<Length2, N>& vertices
     return GetFwdNormalsArray(vertices, std::make_index_sequence<N>{});
 }
 
-/// @brief Gets the forward normals for the given container of vertices.
-std::vector<UnitVec> GetFwdNormalsVector(const std::vector<Length2>& vertices);
-
 /// @brief N-gon of vertices with counter-clockwise "forward" normals.
 /// @invariant The normals provided are always the forward normals of the assigned vertices.
 template <std::size_t N = static_cast<std::size_t>(-1)>

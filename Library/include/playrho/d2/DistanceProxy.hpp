@@ -258,9 +258,6 @@ std::size_t FindLowestRightMostVertex(Span<const Length2> vertices) noexcept;
 /// @see FindLowestRightMostVertex.
 std::vector<Length2> GetConvexHullAsVector(Span<const Length2> vertices);
 
-/// @brief Gets the forward normals for the given container of vertices.
-std::vector<UnitVec> GetFwdNormalsVector(const std::vector<Length2>& vertices);
-
 } // namespace playrho::d2
 
 #endif // PLAYRHO_D2_DISTANCEPROXY_HPP
