@@ -303,6 +303,9 @@ constexpr auto GetReflectionMatrix(const UnitVec& axis)
     return result;
 }
 
+/// @brief Gets the forward normals for the given container of vertices.
+std::vector<UnitVec> GetFwdNormalsVector(const std::vector<Length2>& vertices);
+
 } // namespace playrho::d2
 
 #endif // PLAYRHO_D2_MATH_HPP
