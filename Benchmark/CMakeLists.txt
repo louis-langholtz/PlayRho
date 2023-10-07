@@ -20,9 +20,8 @@ set(BENCHMARK_INSTALL_DOCS OFF CACHE BOOL "Enable installation of docs.")
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/googlebench/src")
 	add_subdirectory(googlebench)
 else()
-	message(STATUS "googlebench submodule source code not found. Perhaps not git recurivse clone?")
 	include(FetchContent)
-	message(STATUS "Attempting to download googlebench source code.")
+	message(STATUS "Attempting to fetch googlebench source code.")
 	FetchContent_Declare(
 		googlebench
 		GIT_REPOSITORY https://github.com/google/benchmark.git
