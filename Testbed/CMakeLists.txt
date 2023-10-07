@@ -35,9 +35,8 @@ if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Framework/imgui/imgui.h")
 	endforeach()
 	list(APPEND IMGUI_INCLUDE_DIRS "Framework/imgui" "Framework/imgui/examples/libs/gl3w")
 else()
-	message(STATUS "ImGui submodule source code not found. Not git recurivse clone?")
 	include(FetchContent)
-	message(STATUS "Attempting to download ImGui source code.")
+	message(STATUS "Attempting to fetch ImGui source code.")
 	FetchContent_Declare(
 		imgui
 		GIT_REPOSITORY https://github.com/ocornut/imgui.git

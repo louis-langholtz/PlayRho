@@ -41,9 +41,8 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest")
 	add_subdirectory(googletest EXCLUDE_FROM_ALL)
 else()
-	message(STATUS "googletest submodule source code not found. Not git recurivse clone?")
 	include(FetchContent)
-	message(STATUS "Attempting to download googletest source code.")
+	message(STATUS "Attempting to fetch googletest source code.")
 	FetchContent_Declare(
 		googletest
 		GIT_REPOSITORY https://github.com/google/googletest.git
