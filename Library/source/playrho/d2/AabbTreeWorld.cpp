@@ -495,13 +495,11 @@ void DestroyProxies(DynamicTree& tree,
                     ProxyIDs& proxies) noexcept
 {
     const auto childCount = size(fixtureProxies);
-    if (childCount > 0) {
-        // Destroy proxies in reverse order from what they were created in.
-        for (auto i = childCount - 1; i < childCount; --i) {
-            const auto treeId = fixtureProxies[i];
-            EraseFirst(proxies, treeId);
-            tree.DestroyLeaf(treeId);
-        }
+    // Destroy proxies in reverse order from what they were created in.
+    for (auto i = childCount - 1u; i < childCount; --i) {
+        const auto treeId = fixtureProxies[i];
+        EraseFirst(proxies, treeId);
+        tree.DestroyLeaf(treeId);
     }
 }
 
