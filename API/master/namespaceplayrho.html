@@ -1052,6 +1052,12 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:gab8fa73692143466ca4d584aacf5749f1"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#gab8fa73692143466ca4d584aacf5749f1">isfinite</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; value) noexcept</td></tr>
 <tr class="memdesc:gab8fa73692143466ca4d584aacf5749f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given value is finite.  <a href="group__FixedMath.html#gab8fa73692143466ca4d584aacf5749f1">More...</a><br /></td></tr>
 <tr class="separator:gab8fa73692143466ca4d584aacf5749f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00d5ecd254e255fd00aa39f98b3d982a"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a00d5ecd254e255fd00aa39f98b3d982a">IsFor</a> (const <a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;c, <a class="el" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92">BodyID</a> bodyID, <a class="el" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a> shapeID) noexcept</td></tr>
+<tr class="memdesc:a00d5ecd254e255fd00aa39f98b3d982a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is-for convenience function.  <a href="namespaceplayrho.html#a00d5ecd254e255fd00aa39f98b3d982a">More...</a><br /></td></tr>
+<tr class="separator:a00d5ecd254e255fd00aa39f98b3d982a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a078999e2c900ac9ee1b081be6934d5b7"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a078999e2c900ac9ee1b081be6934d5b7">IsFor</a> (const <a class="el" href="structplayrho_1_1Contactable.html">Contactable</a> &amp;c, <a class="el" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92">BodyID</a> bodyID, <a class="el" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a> shapeID) noexcept</td></tr>
+<tr class="memdesc:a078999e2c900ac9ee1b081be6934d5b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is-for convenience function.  <a href="namespaceplayrho.html#a078999e2c900ac9ee1b081be6934d5b7">More...</a><br /></td></tr>
+<tr class="separator:a078999e2c900ac9ee1b081be6934d5b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad81cfb61a8aae11d28836a542584dd7f"><td class="memItemLeft" align="right" valign="top"><a id="ad81cfb61a8aae11d28836a542584dd7f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ad81cfb61a8aae11d28836a542584dd7f">IsFullOfBodies</a> (const <a class="el" href="structplayrho_1_1Island.html">Island</a> &amp;island)</td></tr>
 <tr class="memdesc:ad81cfb61a8aae11d28836a542584dd7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the given island is full of bodies. <br /></td></tr>
@@ -3618,6 +3624,96 @@ template&lt;typename T , typename U  = decltype(Interval&lt;T&gt;{}, (T{} - T{})
 
 </div>
 </div>
+<a id="a00d5ecd254e255fd00aa39f98b3d982a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00d5ecd254e255fd00aa39f98b3d982a">&#9670;&nbsp;</a></span>IsFor() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool playrho::IsFor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92">BodyID</a>&#160;</td>
+          <td class="paramname"><em>bodyID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>&#160;</td>
+          <td class="paramname"><em>shapeID</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is-for convenience function. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if contact is for the identified body and shape, else false. </dd></dl>
+
+</div>
+</div>
+<a id="a078999e2c900ac9ee1b081be6934d5b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a078999e2c900ac9ee1b081be6934d5b7">&#9670;&nbsp;</a></span>IsFor() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool playrho::IsFor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1Contactable.html">Contactable</a> &amp;&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92">BodyID</a>&#160;</td>
+          <td class="paramname"><em>bodyID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>&#160;</td>
+          <td class="paramname"><em>shapeID</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is-for convenience function. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if contactable is for the identified body and shape, else false. </dd></dl>
+
+</div>
+</div>
 <a id="a885fded7567b0972b4af486e5df9afea"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a885fded7567b0972b4af486e5df9afea">&#9670;&nbsp;</a></span>IsImpenetrable()</h2>
 
@@ -6004,7 +6100,7 @@ Any narrowing is intentional.</dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li>
-    <li class="footer">Generated on Fri Oct 6 2023 21:05:23 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sat Oct 7 2023 04:31:34 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

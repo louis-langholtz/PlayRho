@@ -272,6 +272,13 @@
     </member>
     <member kind="function">
       <type>constexpr bool</type>
+      <name>IsFor</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a00d5ecd254e255fd00aa39f98b3d982a</anchor>
+      <arglist>(const Contact &amp;c, BodyID bodyID, ShapeID shapeID) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
       <name>IsImpenetrable</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a885fded7567b0972b4af486e5df9afea</anchor>
@@ -448,6 +455,13 @@
     <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
     <class kind="struct">playrho::Contactable</class>
     <namespace>playrho</namespace>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>IsFor</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a078999e2c900ac9ee1b081be6934d5b7</anchor>
+      <arglist>(const Contactable &amp;c, BodyID bodyID, ShapeID shapeID) noexcept</arglist>
+    </member>
     <member kind="function">
       <type>constexpr bool</type>
       <name>operator!=</name>
@@ -21210,31 +21224,17 @@
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
-      <type>constexpr BodyID</type>
-      <name>GetBodyA</name>
+      <type>constexpr const Contactable &amp;</type>
+      <name>GetContactableA</name>
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
-      <anchor>af9f1f8522d7d8c01cb75994ee41ede0f</anchor>
+      <anchor>a8ce9a82749c59d8eb5068f86729f3464</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>constexpr BodyID</type>
-      <name>GetBodyB</name>
+      <type>constexpr const Contactable &amp;</type>
+      <name>GetContactableB</name>
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
-      <anchor>a9e2cdfaa2b6b809ea67f8008ba4e81b0</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr ChildCounter</type>
-      <name>GetChildIndexA</name>
-      <anchorfile>classplayrho_1_1Contact.html</anchorfile>
-      <anchor>a01318020653a7b3716d241eb6887f750</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr ChildCounter</type>
-      <name>GetChildIndexB</name>
-      <anchorfile>classplayrho_1_1Contact.html</anchorfile>
-      <anchor>ad45fb4ce58b2c7f266c65ad4c342ebe2</anchor>
+      <anchor>a9eda66634a1890d4b31bcc23fa06ea55</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -21249,20 +21249,6 @@
       <name>GetRestitution</name>
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
       <anchor>adb57c863aef07e7d13b37c0926ecb85d</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr ShapeID</type>
-      <name>GetShapeA</name>
-      <anchorfile>classplayrho_1_1Contact.html</anchorfile>
-      <anchor>a70e7cafa156f8d1d6ca993b4f497ddee</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr ShapeID</type>
-      <name>GetShapeB</name>
-      <anchorfile>classplayrho_1_1Contact.html</anchorfile>
-      <anchor>a8d199b0fbf66e5f4cac9e5ed57844f1d</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -44687,6 +44673,20 @@
       <anchorfile>group__FixedMath.html</anchorfile>
       <anchor>gab8fa73692143466ca4d584aacf5749f1</anchor>
       <arglist>(Fixed&lt; BT, FB &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>IsFor</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a00d5ecd254e255fd00aa39f98b3d982a</anchor>
+      <arglist>(const Contact &amp;c, BodyID bodyID, ShapeID shapeID) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>IsFor</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a078999e2c900ac9ee1b081be6934d5b7</anchor>
+      <arglist>(const Contactable &amp;c, BodyID bodyID, ShapeID shapeID) noexcept</arglist>
     </member>
     <member kind="function">
       <type>bool</type>

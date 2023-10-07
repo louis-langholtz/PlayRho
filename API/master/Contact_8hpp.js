@@ -16,6 +16,7 @@ var Contact_8hpp =
     [ "HasValidToi", "Contact_8hpp.html#a77e830664360ead07ab616d934ff2550", null ],
     [ "IsActive", "Contact_8hpp.html#ae659e1f443f30d7813853f6763f1f22f", null ],
     [ "IsEnabled", "Contact_8hpp.html#acf2071b64988e62193b4a2567bdde292", null ],
+    [ "IsFor", "Contact_8hpp.html#a00d5ecd254e255fd00aa39f98b3d982a", null ],
     [ "IsImpenetrable", "Contact_8hpp.html#a885fded7567b0972b4af486e5df9afea", null ],
     [ "IsSensor", "Contact_8hpp.html#ab8801b7203d1ab9a06ca349a9d304f3c", null ],
     [ "IsTouching", "Contact_8hpp.html#aecbf667797116ec6c5e84d896f05daa6", null ],

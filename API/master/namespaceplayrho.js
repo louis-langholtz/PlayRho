@@ -270,6 +270,8 @@ var namespaceplayrho =
     [ "IsEntirelyBefore", "namespaceplayrho.html#a537b76dc4bd198e60d148282e032533c", null ],
     [ "IsEntirelyEnclosing", "namespaceplayrho.html#a32133337daeb0dd2b8b5a78f42a8a526", null ],
     [ "isfinite", "group__FixedMath.html#gab8fa73692143466ca4d584aacf5749f1", null ],
+    [ "IsFor", "namespaceplayrho.html#a00d5ecd254e255fd00aa39f98b3d982a", null ],
+    [ "IsFor", "namespaceplayrho.html#a078999e2c900ac9ee1b081be6934d5b7", null ],
     [ "IsFullOfBodies", "namespaceplayrho.html#ad81cfb61a8aae11d28836a542584dd7f", null ],
     [ "IsFullOfContacts", "namespaceplayrho.html#a0613fe306ae99ce5ca98798c757a3dc2", null ],
     [ "IsImpenetrable", "namespaceplayrho.html#a885fded7567b0972b4af486e5df9afea", null ],

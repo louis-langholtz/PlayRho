@@ -551,6 +551,13 @@ $(document).ready(function(){initNavTree('Joint_8cpp-example.html',''); initResi
 <div class="line">    std::string roo = <span class="stringliteral">&quot;wow&quot;</span>;</div>
 <div class="line">    test = roo;</div>
 <div class="line">    test = std::any{foo};</div>
+<div class="line">    EXPECT_THROW(TypeCast&lt;int&gt;(Joint{}), std::bad_cast);</div>
+<div class="line">    {</div>
+<div class="line">        test::sans_none::JointTester::resetClass();</div>
+<div class="line">        <span class="keyword">auto</span> n = -1;</div>
+<div class="line">        EXPECT_NO_THROW(n = TypeCast&lt;test::sans_none::JointTester&gt;(Joint{test::sans_none::JointTester{}}).number);</div>
+<div class="line">        EXPECT_EQ(n, 0);</div>
+<div class="line">    }</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> joint = Joint{};</div>
 <div class="line">        <span class="keyword">auto</span> value = <span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">int</span>*<span class="keyword">&gt;</span>(<span class="keyword">nullptr</span>);</div>
@@ -856,7 +863,7 @@ $(document).ready(function(){initNavTree('Joint_8cpp-example.html',''); initResi
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Oct 6 2023 21:05:22 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sat Oct 7 2023 04:31:33 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
