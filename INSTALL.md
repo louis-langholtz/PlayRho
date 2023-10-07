@@ -35,18 +35,43 @@ Follow the above links for each component you want to build to read about the pr
 and to ensure that they are installed.
 
 All of the components minimally require the following:
+
 - A command line shell/window like `bash`. For Windows, see https://learn.microsoft.com/en-us/windows/terminal/.
-- **git**: If you don't already have Git installed, it can be obtained from: https://git-scm.com/downloads.
 - **A C++17 compiler suite**: That could be Microsoft's Visual C++, GNU's GCC, or LLVM's Clang. On Microsoft Windows platforms, you can get a complete C++17 compiler suite by getting Microsoft's Visual Studio from https://www.visualstudio.com/downloads/.
-- **CMake**: If you don't have version 3.16.3 or higher of CMake installed on your system, the latest releases of CMake can be obtained from https://cmake.org/.
+- **git**: If you don't already have Git installed, it can be obtained from: https://git-scm.com/downloads.
+- **CMake**: If you don't have version 3.16.3 or higher of CMake installed on your system, the latest releases of CMake can be obtained from https://cmake.org/. Note that it's possible to skip this prerequisite, but it's not recommended nor as well supported.
 
 ## Steps
 
-All of these steps should be run from the same working directory.
+All of these steps assume they're run from the same working directory.
 
-### Download The Repository
+### Get Access
 
-If you haven't already downloaded the repository, run:
+If you don't already have access to the source code, use **one** of the following methods to get it.
+
+#### Download ZIP
+
+If you only want to build the source code and aren't interested in its development, you can just download a ZIP file of the latest code:
+
+1. Download [master.zip](https://github.com/louis-langholtz/PlayRho/archive/refs/heads/master.zip).
+2. Unzip it, if not done automatically for you by your download application.
+3. Rename the unzipped directory to `PlayRho`.
+
+#### Git Clone
+
+If you might be interested in helping development of this project or prefer using `git`:
+
+```sh
+git clone https://github.com/louis-langholtz/PlayRho.git
+```
+
+This should work fine for building the base library component.
+This should also work fine now for the application components, so long as you use CMake in the following steps.
+
+#### Recursive Git Clone
+
+Alternatively, like if you want to try building without CMake via Xcode for example, do a recursive clone:
+
 ```sh
 git clone --recurse-submodules https://github.com/louis-langholtz/PlayRho.git
 ```
