@@ -1,10 +1,40 @@
 # Changes
 
+## Release 1.1 To Release 2.0
+
+For a complete detailed view of changes from a git-based source code perspective between release 1.1 and release 2.0, see:
+
+```
+git diff release-1.1..master
+```
+
+Here's an incomplete verbal summary of these changes:
+
+- Clang-tidy uses more checks.
+- `PlayRho/PlayRho` has become `PlayRho/Library`.
+- Platform target workflows now test CMake install and produce artifacts.
+- Some CMake options have become dependent options.
+- Fixtures have been absorbed by shapes.
+- The library has been reorganized in terms of namespaces and header vs. source files instead of by functional category.
+- Many details have moved under a "detail" sub-namespace to de-clutter the user API.
+- Many declarations & definitions of 2-D code have moved apart from dimensionless code.
+- Many "magic-values" have been replaced by named constants.
+- Many interfaces now take more general Span parameters instead of their specific container types.
+- `CheckedValue` has become `Checked`.
+- The checked value class template's design has been updated to optionally also support fail fast instantiations and to more consistently utilize checker types.
+- New checker types have been added & made use of to better recognize variables and their uses.
+- More variables now use checked types to more tightly constrain & better document their usage.
+- Custom memory allocation via C++ allocators has been incorporated into the implementation of "hotter" code paths of the world stepping functionality.
+- More custom types are now defined in their own include and source files.
+- The `Testbed` application has been majorly updated to provide more support to the user for modifying examples at run-time.
+
+## Box2D 2.3.2 To Release 1.1
+
 Here's a run-down of some of the changes in going from Box2D 2.3.2 to
-[PlayRho](https://github.com/louis-langholtz/PlayRho), categorized
+[PlayRho Release 1.1](https://github.com/louis-langholtz/PlayRho/tree/release-1.1), categorized
 as API (Application Programming Interface) changes, Testbed changes, and other changes.
 
-## API Changes
+### API Changes
 
 - Stripped the `b2` prefix off of names.
 - Moved exported symbols into the namespace of `playrho`.
@@ -56,7 +86,7 @@ as API (Application Programming Interface) changes, Testbed changes, and other c
 - Increased per-step statistics.
 - Added online [API Documentation](http://louis-langholtz.github.io/PlayRho/API/index.html).
 
-## Testbed changes
+### Testbed changes
 
 - Updated UI to provide full access to the per-step configurability and per-step statistics.
 - Added the ability to manipulate bodies while paused.
@@ -67,7 +97,7 @@ as API (Application Programming Interface) changes, Testbed changes, and other c
 - Added the ability to create and destroy shapes, bodies, and joints (since PR#414 from the master branch and coming up in release 2).
 - Numerous other changes.
 
-## Other Changes
+### Other Changes
 
 - Unit tested via [Google Test](https://github.com/google/googletest/tree/aa148eb2b7f70ede0eb10de34b6254826bfb34f4)
   and [over 1100 tests](UnitTests).
