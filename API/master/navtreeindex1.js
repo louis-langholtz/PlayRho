@@ -1,7 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"ConstraintSolverConf_8hpp.html#afdb8daa84d36ac948934ee05eb4cb242":[5,0,0,0,0,6,4],
-"ContactFeature_8hpp.html":[5,0,0,0,0,9],
 "ContactFeature_8hpp.html#a43951f69f7ead57450bac66cbb76b0e1":[5,0,0,0,0,9,1],
 "ContactFeature_8hpp.html#a4f6b450f2f1fb0bad7e9cd47269e33c6":[5,0,0,0,0,9,4],
 "ContactFeature_8hpp.html#a525adfccea1a81ce8311751fc90d0614":[5,0,0,0,0,9,5],
@@ -249,5 +247,7 @@ var NAVTREEINDEX1 =
 "FrictionJointConf_8hpp.html#aba8162d50c28927d87bdf7e29aa8afe0":[5,0,0,0,0,0,20,5],
 "FrictionJointConf_8hpp.html#acfc7a47e907d3aaf399a7919896f3571":[5,0,0,0,0,0,20,11],
 "FrictionJointConf_8hpp.html#ad1b04b7a4e640bfbdaffe5612a3dc3fe":[5,0,0,0,0,0,20,7],
-"FrictionJointConf_8hpp.html#adb48ff4223599c7af13fe487370e9933":[5,0,0,0,0,0,20,2]
+"FrictionJointConf_8hpp.html#adb48ff4223599c7af13fe487370e9933":[5,0,0,0,0,0,20,2],
+"FrictionJointConf_8hpp.html#ade895bb6a4e1b45bc803784534f2ffb2":[5,0,0,0,0,0,20,1],
+"FrictionJointConf_8hpp.html#ae208174e24b40f42ba8c5926dd2598a5":[5,0,0,0,0,0,20,3]
 };

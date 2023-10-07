@@ -1,7 +1,5 @@
 var NAVTREEINDEX22 =
 {
-"structplayrho_1_1MovementConf.html#a2021570112ff2beb19a7ce9ea96d53b7":[4,0,0,28,0],
-"structplayrho_1_1MovementConf.html#aa685b405a15189fe13d7982846f83dc6":[4,0,0,28,1],
 "structplayrho_1_1PreStepStats.html":[4,0,0,30],
 "structplayrho_1_1PreStepStats.html#a0f7525eed88446bcb034e37bb8f51f94":[4,0,0,30,6],
 "structplayrho_1_1PreStepStats.html#a3d2ba1ef027e1612d7631cc1a3c0de33":[4,0,0,30,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX22 =
 "structplayrho_1_1d2_1_1Acceleration.html":[4,0,0,0,3],
 "structplayrho_1_1d2_1_1Acceleration.html#a19e063d352181298469b751c99cad684":[4,0,0,0,3,3],
 "structplayrho_1_1d2_1_1Acceleration.html#a33f1fdc4c279009a88f064ca1dd3ff59":[4,0,0,0,3,6],
-"structplayrho_1_1d2_1_1Acceleration.html#a381123f80f2c54ad37576e703eeb68a4":[4,0,0,0,3,4]
+"structplayrho_1_1d2_1_1Acceleration.html#a381123f80f2c54ad37576e703eeb68a4":[4,0,0,0,3,4],
+"structplayrho_1_1d2_1_1Acceleration.html#a4442cd95fcdc4e62463d3e294fc7a303":[4,0,0,0,3,1],
+"structplayrho_1_1d2_1_1Acceleration.html#a4e08ccbbdba321adad44c940d95c52fb":[4,0,0,0,3,13]
 };

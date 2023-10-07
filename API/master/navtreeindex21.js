@@ -1,7 +1,5 @@
 var NAVTREEINDEX21 =
 {
-"namespaceplayrho_1_1d2_1_1part.html#aa1cc186121c80395f147cc49cbdadf09":[3,0,0,0,1,39],
-"namespaceplayrho_1_1d2_1_1part.html#aa2308e6e2a8e40e46f5ce5282f33e7d8":[3,0,0,0,1,31],
 "namespaceplayrho_1_1d2_1_1part.html#aa4f02037d00c66d1489f8ddc0a2a5887":[3,0,0,0,1,30],
 "namespaceplayrho_1_1d2_1_1part.html#aa6bd61aad326db6c0cfdea867f5f83e2":[3,0,0,0,1,47],
 "namespaceplayrho_1_1d2_1_1part.html#aadd6f0f1301d226c88bda0a255443012":[3,0,0,0,1,28],
@@ -249,5 +247,7 @@ var NAVTREEINDEX21 =
 "structplayrho_1_1LexicographicalLess.html#a7179f5ea723e62951331832acb14c789":[4,0,0,26,0],
 "structplayrho_1_1LexicographicalLessEqual.html":[4,0,0,27],
 "structplayrho_1_1LexicographicalLessEqual.html#a25e92656df8ff6e345af763f57da13c1":[4,0,0,27,0],
-"structplayrho_1_1MovementConf.html":[4,0,0,28]
+"structplayrho_1_1MovementConf.html":[4,0,0,28],
+"structplayrho_1_1MovementConf.html#a2021570112ff2beb19a7ce9ea96d53b7":[4,0,0,28,0],
+"structplayrho_1_1MovementConf.html#aa685b405a15189fe13d7982846f83dc6":[4,0,0,28,1]
 };
