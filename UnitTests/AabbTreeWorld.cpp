@@ -423,6 +423,7 @@ TEST(AabbTreeWorld, CreateDestroyContactingBodies)
     EXPECT_TRUE(contacts.empty());
     EXPECT_EQ(contacts.size(), ContactCounter(0));
     EXPECT_TRUE(IsDestroyed(world, ContactID{0u}));
+    EXPECT_THROW(SetContact(world, ContactID{0u}, Contact{}), std::out_of_range);
 
     Destroy(world, body2);
     EXPECT_EQ(GetBodies(world).size(), BodyCounter(0));

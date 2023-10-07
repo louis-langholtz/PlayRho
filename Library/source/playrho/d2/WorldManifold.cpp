@@ -130,10 +130,10 @@ WorldManifold GetWorldManifold(const Manifold& manifold,
 WorldManifold GetWorldManifold(const World& world, const Contact& contact, const Manifold& manifold)
 {
     return GetWorldManifold(manifold,
-                            GetTransformation(world, contact.GetBodyA()),
-                            GetVertexRadius(GetShape(world, contact.GetShapeA()), contact.GetChildIndexA()),
-                            GetTransformation(world, contact.GetBodyB()),
-                            GetVertexRadius(GetShape(world, contact.GetShapeB()), contact.GetChildIndexB()));
+                            GetTransformation(world, GetBodyA(contact)),
+                            GetVertexRadius(GetShape(world, GetShapeA(contact)), GetChildIndexA(contact)),
+                            GetTransformation(world, GetBodyB(contact)),
+                            GetVertexRadius(GetShape(world, GetShapeB(contact)), GetChildIndexB(contact)));
 }
 
 } /* namespace d2 */

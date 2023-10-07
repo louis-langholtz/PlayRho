@@ -63,12 +63,12 @@ TEST(Contact, Enabled)
 
 TEST(Contact, DefaultConstruction)
 {
-    EXPECT_EQ(Contact().GetBodyA(), InvalidBodyID);
-    EXPECT_EQ(Contact().GetBodyB(), InvalidBodyID);
-    EXPECT_EQ(Contact().GetShapeA(), InvalidShapeID);
-    EXPECT_EQ(Contact().GetShapeB(), InvalidShapeID);
-    EXPECT_EQ(Contact().GetChildIndexA(), 0u);
-    EXPECT_EQ(Contact().GetChildIndexB(), 0u);
+    EXPECT_EQ(GetBodyA(Contact()), InvalidBodyID);
+    EXPECT_EQ(GetBodyB(Contact()), InvalidBodyID);
+    EXPECT_EQ(GetShapeA(Contact()), InvalidShapeID);
+    EXPECT_EQ(GetShapeB(Contact()), InvalidShapeID);
+    EXPECT_EQ(GetChildIndexA(Contact()), 0u);
+    EXPECT_EQ(GetChildIndexB(Contact()), 0u);
     EXPECT_EQ(Contact().GetFriction(), Real(0));
     EXPECT_EQ(Contact().GetRestitution(), Real(0));
     EXPECT_EQ(Contact().GetTangentSpeed(), LinearVelocity());
@@ -92,12 +92,12 @@ TEST(Contact, InitializingConstructor)
     const auto shapeIdB = ShapeID(5u);
     const auto childIndexB = ChildCounter(6u);
     const auto contact = Contact({bodyIdA, shapeIdA, childIndexA}, {bodyIdB, shapeIdB, childIndexB});
-    EXPECT_EQ(contact.GetBodyA(), bodyIdA);
-    EXPECT_EQ(contact.GetBodyB(), bodyIdB);
-    EXPECT_EQ(contact.GetShapeA(), shapeIdA);
-    EXPECT_EQ(contact.GetShapeB(), shapeIdB);
-    EXPECT_EQ(contact.GetChildIndexA(), childIndexA);
-    EXPECT_EQ(contact.GetChildIndexB(), childIndexB);
+    EXPECT_EQ(GetBodyA(contact), bodyIdA);
+    EXPECT_EQ(GetBodyB(contact), bodyIdB);
+    EXPECT_EQ(GetShapeA(contact), shapeIdA);
+    EXPECT_EQ(GetShapeB(contact), shapeIdB);
+    EXPECT_EQ(GetChildIndexA(contact), childIndexA);
+    EXPECT_EQ(GetChildIndexB(contact), childIndexB);
     EXPECT_EQ(contact.GetFriction(), Real(0));
     EXPECT_EQ(contact.GetRestitution(), Real(0));
     EXPECT_EQ(contact.GetTangentSpeed(), LinearVelocity());
@@ -145,4 +145,48 @@ TEST(Contact, InitializingConstructorFF)
     EXPECT_NO_THROW(SetToi(contact, toi));
     EXPECT_TRUE(HasValidToi(contact));
     EXPECT_EQ(GetToi(contact), toi);
+}
+
+TEST(Contact, GetContactableA)
+{
+    const auto bodyIdA = BodyID(1u);
+    const auto shapeIdA = ShapeID(2u);
+    const auto childIndexA = ChildCounter(3u);
+    const auto bodyIdB = BodyID(4u);
+    const auto shapeIdB = ShapeID(5u);
+    const auto childIndexB = ChildCounter(6u);
+    const auto contact = Contact({bodyIdA, shapeIdA, childIndexA}, {bodyIdB, shapeIdB, childIndexB});
+    EXPECT_EQ(contact.GetContactableA().bodyId, bodyIdA);
+    EXPECT_EQ(contact.GetContactableA().shapeId, shapeIdA);
+    EXPECT_EQ(contact.GetContactableA().childId, childIndexA);
+}
+
+TEST(Contact, GetContactableB)
+{
+    const auto bodyIdA = BodyID(1u);
+    const auto shapeIdA = ShapeID(2u);
+    const auto childIndexA = ChildCounter(3u);
+    const auto bodyIdB = BodyID(4u);
+    const auto shapeIdB = ShapeID(5u);
+    const auto childIndexB = ChildCounter(6u);
+    const auto contact = Contact({bodyIdA, shapeIdA, childIndexA}, {bodyIdB, shapeIdB, childIndexB});
+    EXPECT_EQ(contact.GetContactableB().bodyId, bodyIdB);
+    EXPECT_EQ(contact.GetContactableB().shapeId, shapeIdB);
+    EXPECT_EQ(contact.GetContactableB().childId, childIndexB);
+}
+
+TEST(Contact, IsFor)
+{
+    const auto bodyIdA = BodyID(1u);
+    const auto shapeIdA = ShapeID(2u);
+    const auto childIndexA = ChildCounter(3u);
+    const auto bodyIdB = BodyID(4u);
+    const auto shapeIdB = ShapeID(5u);
+    const auto childIndexB = ChildCounter(6u);
+    const auto contact = Contact({bodyIdA, shapeIdA, childIndexA}, {bodyIdB, shapeIdB, childIndexB});
+    EXPECT_TRUE(IsFor(contact, bodyIdA, shapeIdA));
+    EXPECT_TRUE(IsFor(contact, bodyIdB, shapeIdB));
+    EXPECT_FALSE(IsFor(contact, bodyIdA, shapeIdB));
+    EXPECT_FALSE(IsFor(contact, bodyIdB, shapeIdA));
+    EXPECT_FALSE(IsFor(contact, BodyID(0u), ShapeID(0)));
 }

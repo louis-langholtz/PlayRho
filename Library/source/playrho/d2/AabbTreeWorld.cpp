@@ -1159,17 +1159,12 @@ void SetShape(AabbTreeWorld& world, ShapeID id, Shape def) // NOLINT(readability
                     }), lastProxy);
                     // Destroy any contacts associated with the fixture.
                     Erase(world.m_bodyContacts[to_underlying(bodyId)], [&world,bodyId,shapeId,&b](ContactID contactID) {
-                        auto& contact = world.m_contactBuffer[to_underlying(contactID)];
-                        const auto bodyIdA = GetBodyA(contact);
-                        const auto shapeIdA = GetShapeA(contact);
-                        const auto bodyIdB = GetBodyB(contact);
-                        const auto shapeIdB = GetShapeB(contact);
-                        if ((bodyIdA == bodyId && shapeIdA == shapeId) ||
-                            (bodyIdB == bodyId && shapeIdB == shapeId)) {
-                            world.Destroy(contactID, &b);
-                            return true;
+                        const auto& contact = world.m_contactBuffer[to_underlying(contactID)];
+                        if (!IsFor(contact, bodyId, shapeId)) {
+                            return false;
                         }
-                        return false;
+                        world.Destroy(contactID, &b);
+                        return true;
                     });
                     const auto fixture = std::make_pair(bodyId, shapeId);
                     EraseAll(world.m_fixturesForProxies, fixture);
@@ -1186,8 +1181,8 @@ void SetShape(AabbTreeWorld& world, ShapeID id, Shape def) // NOLINT(readability
             const auto shapeIdB = GetShapeB(c);
             if (shapeIdA == id || shapeIdB == id) {
                 c.FlagForFiltering();
-                world.m_bodyBuffer[to_underlying(c.GetBodyA())].SetAwake();
-                world.m_bodyBuffer[to_underlying(c.GetBodyB())].SetAwake();
+                world.m_bodyBuffer[to_underlying(GetBodyA(c))].SetAwake();
+                world.m_bodyBuffer[to_underlying(GetBodyB(c))].SetAwake();
                 anyNeedFiltering = true;
             }
         }
@@ -1201,10 +1196,10 @@ void SetShape(AabbTreeWorld& world, ShapeID id, Shape def) // NOLINT(readability
     if ((IsSensor(shape) != IsSensor(def)) || (GetFriction(shape) != GetFriction(def)) ||
         (GetRestitution(shape) != GetRestitution(def)) || geometryChanged) {
         for (auto&& c: world.m_contactBuffer) {
-            if (c.GetShapeA() == id || c.GetShapeB() == id) {
+            if (GetShapeA(c) == id || GetShapeB(c) == id) {
                 c.FlagForUpdating();
-                world.m_bodyBuffer[to_underlying(c.GetBodyA())].SetAwake();
-                world.m_bodyBuffer[to_underlying(c.GetBodyB())].SetAwake();
+                world.m_bodyBuffer[to_underlying(GetBodyA(c))].SetAwake();
+                world.m_bodyBuffer[to_underlying(GetBodyB(c))].SetAwake();
             }
         }
     }
@@ -2086,8 +2081,8 @@ void AabbTreeWorld::InternalDestroy(ContactID contactID, const Body* from)
         //  so call it now
         m_listeners.endContact(contactID);
     }
-    const auto bodyIdA = contact.GetBodyA();
-    const auto bodyIdB = contact.GetBodyB();
+    const auto bodyIdA = GetBodyA(contact);
+    const auto bodyIdB = GetBodyB(contact);
     const auto bodyA = &m_bodyBuffer[to_underlying(bodyIdA)];
     const auto bodyB = &m_bodyBuffer[to_underlying(bodyIdB)];
     if (bodyA != from) {
@@ -2147,12 +2142,12 @@ AabbTreeWorld::DestroyContactsStats AabbTreeWorld::DestroyContacts(KeyedContactI
             const auto contactID = std::get<ContactID>(c);
             auto& contact = m_contactBuffer[to_underlying(contactID)];
             if (contact.NeedsFiltering()) {
-                const auto bodyIdA = contact.GetBodyA();
-                const auto bodyIdB = contact.GetBodyB();
+                const auto bodyIdA = GetBodyA(contact);
+                const auto bodyIdB = GetBodyB(contact);
                 const auto& bodyA = m_bodyBuffer[to_underlying(bodyIdA)];
                 const auto& bodyB = m_bodyBuffer[to_underlying(bodyIdB)];
-                const auto& shapeA = m_shapeBuffer[to_underlying(contact.GetShapeA())];
-                const auto& shapeB = m_shapeBuffer[to_underlying(contact.GetShapeB())];
+                const auto& shapeA = m_shapeBuffer[to_underlying(GetShapeA(contact))];
+                const auto& shapeB = m_shapeBuffer[to_underlying(GetShapeB(contact))];
                 if (!EitherIsAccelerable(bodyA, bodyB) ||
                     !ShouldCollide(m_jointBuffer, m_bodyJoints, bodyIdA, bodyIdB) ||
                     !ShouldCollide(shapeA, shapeB)) {
@@ -2195,8 +2190,8 @@ AabbTreeWorld::UpdateContactsStats AabbTreeWorld::UpdateContacts(const StepConf&
     for_each(/*execution::par_unseq,*/ begin(m_contacts), end(m_contacts), [&](const auto& c) {
         const auto contactID = std::get<ContactID>(c);
         auto& contact = m_contactBuffer[to_underlying(contactID)];
-        const auto& bodyA = m_bodyBuffer[to_underlying(contact.GetBodyA())];
-        const auto& bodyB = m_bodyBuffer[to_underlying(contact.GetBodyB())];
+        const auto& bodyA = m_bodyBuffer[to_underlying(GetBodyA(contact))];
+        const auto& bodyB = m_bodyBuffer[to_underlying(GetBodyB(contact))];
 
         // Awake && speedable (dynamic or kinematic) means collidable.
         // At least one body must be collidable
@@ -2442,12 +2437,12 @@ void AabbTreeWorld::Update( // NOLINT(readability-function-cognitive-complexity)
     const auto oldTouching = c.IsTouching();
     auto newTouching = false;
 
-    const auto bodyIdA = c.GetBodyA();
-    const auto shapeIdA = c.GetShapeA();
-    const auto indexA = c.GetChildIndexA();
-    const auto bodyIdB = c.GetBodyB();
-    const auto shapeIdB = c.GetShapeB();
-    const auto indexB = c.GetChildIndexB();
+    const auto bodyIdA = GetBodyA(c);
+    const auto shapeIdA = GetShapeA(c);
+    const auto indexA = GetChildIndexA(c);
+    const auto bodyIdB = GetBodyB(c);
+    const auto shapeIdB = GetShapeB(c);
+    const auto indexB = GetChildIndexB(c);
     const auto& shapeA = m_shapeBuffer[to_underlying(shapeIdA)];
     const auto& shapeB = m_shapeBuffer[to_underlying(shapeIdB)];
     const auto& bodyA = m_bodyBuffer[to_underlying(bodyIdA)];
@@ -2633,16 +2628,12 @@ void SetBody(AabbTreeWorld& world, BodyID id, Body value) // NOLINT(readability-
     for (auto&& shapeId: oldShapeIds) {
         // Destroy any contacts associated with the fixture.
         Erase(world.m_bodyContacts[to_underlying(id)], [&world,id,shapeId,&body](ContactID contactID) {
-            auto& contact = world.m_contactBuffer[to_underlying(contactID)];
-            const auto bodyIdA = GetBodyA(contact);
-            const auto shapeIdA = GetShapeA(contact);
-            const auto bodyIdB = GetBodyB(contact);
-            const auto shapeIdB = GetShapeB(contact);
-            if ((bodyIdA == id && shapeIdA == shapeId) || (bodyIdB == id && shapeIdB == shapeId)) {
-                world.Destroy(contactID, &body);
-                return true;
+            const auto& contact = world.m_contactBuffer[to_underlying(contactID)];
+            if (!IsFor(contact, id, shapeId)) {
+                return false;
             }
-            return false;
+            world.Destroy(contactID, &body);
+            return true;
         });
         EraseAll(world.m_fixturesForProxies, std::make_pair(id, shapeId));
         DestroyProxies(world.m_tree, FindProxies(world.m_tree, id, shapeId), world.m_proxiesForContacts);
@@ -2664,8 +2655,8 @@ void SetBody(AabbTreeWorld& world, BodyID id, Body value) // NOLINT(readability-
         else { // sleep associated contacts whose other body is also asleep
             for (const auto& elem: world.m_bodyContacts[to_underlying(id)]) {
                 auto& contact = world.m_contactBuffer[to_underlying(std::get<ContactID>(elem))];
-                const auto otherID = (contact.GetBodyA() != id)
-                    ? contact.GetBodyA(): contact.GetBodyB();
+                const auto otherID = (GetBodyA(contact) != id)
+                    ? GetBodyA(contact): GetBodyB(contact);
                 if (!world.m_bodyBuffer[to_underlying(otherID)].IsAwake()) {
                     contact.UnsetIsActive();
                 }
@@ -2683,10 +2674,10 @@ void SetContact(AabbTreeWorld& world, ContactID id, Contact value)
     const auto& contact = world.m_contactBuffer.at(to_underlying(id));
 
     // Make sure body identifiers and shape identifiers are valid...
-    [[maybe_unused]] const auto& bodyA = world.m_bodyBuffer.at(to_underlying(value.GetBodyA()));
-    [[maybe_unused]] const auto& bodyB = world.m_bodyBuffer.at(to_underlying(value.GetBodyB()));
-    [[maybe_unused]] const auto& shapeA = world.m_shapeBuffer.at(to_underlying(value.GetShapeA()));
-    [[maybe_unused]] const auto& shapeB = world.m_shapeBuffer.at(to_underlying(value.GetShapeB()));
+    [[maybe_unused]] const auto& bodyA = world.m_bodyBuffer.at(to_underlying(GetBodyA(value)));
+    [[maybe_unused]] const auto& bodyB = world.m_bodyBuffer.at(to_underlying(GetBodyB(value)));
+    [[maybe_unused]] const auto& shapeA = world.m_shapeBuffer.at(to_underlying(GetShapeA(value)));
+    [[maybe_unused]] const auto& shapeB = world.m_shapeBuffer.at(to_underlying(GetShapeB(value)));
 
     assert(IsActive(contact) == (IsAwake(bodyA) || IsAwake(bodyB)));
     assert(IsImpenetrable(contact) == (IsImpenetrable(bodyA) || IsImpenetrable(bodyB)));

@@ -113,23 +113,11 @@ public:
     /// @see IsEnabled.
     constexpr void UnsetEnabled() noexcept;
 
-    /// @brief Gets the body-A identifier.
-    constexpr BodyID GetBodyA() const noexcept;
+    /// @brief Gets contactable A.
+    constexpr const Contactable& GetContactableA() const noexcept;
 
-    /// @brief Gets shape A in this contact.
-    constexpr ShapeID GetShapeA() const noexcept;
-
-    /// @brief Get the child primitive index for shape A.
-    constexpr ChildCounter GetChildIndexA() const noexcept;
-
-    /// @brief Gets the body-B identifier.
-    constexpr BodyID GetBodyB() const noexcept;
-
-    /// @brief Gets shape B in this contact.
-    constexpr ShapeID GetShapeB() const noexcept;
-
-    /// @brief Get the child primitive index for shape B.
-    constexpr ChildCounter GetChildIndexB() const noexcept;
+    /// @brief Gets contactable B.
+    constexpr const Contactable& GetContactableB() const noexcept;
 
     /// @brief Sets the friction value for this contact.
     /// @details Override the default friction mixture.
@@ -368,24 +356,14 @@ constexpr void Contact::UnsetTouching() noexcept
     m_flags &= ~e_touchingFlag;
 }
 
-constexpr BodyID Contact::GetBodyA() const noexcept
+constexpr const Contactable& Contact::GetContactableA() const noexcept
 {
-    return m_contactableA.bodyId;
+    return m_contactableA;
 }
 
-constexpr BodyID Contact::GetBodyB() const noexcept
+constexpr const Contactable& Contact::GetContactableB() const noexcept
 {
-    return m_contactableB.bodyId;
-}
-
-constexpr ShapeID Contact::GetShapeA() const noexcept
-{
-    return m_contactableA.shapeId;
-}
-
-constexpr ShapeID Contact::GetShapeB() const noexcept
-{
-    return m_contactableB.shapeId;
+    return m_contactableB;
 }
 
 constexpr void Contact::FlagForFiltering() noexcept
@@ -482,16 +460,6 @@ constexpr Contact::substep_type Contact::GetToiCount() const noexcept
     return m_toiCount;
 }
 
-constexpr ChildCounter Contact::GetChildIndexA() const noexcept
-{
-    return m_contactableA.childId;
-}
-
-constexpr ChildCounter Contact::GetChildIndexB() const noexcept
-{
-    return m_contactableB.childId;
-}
-
 constexpr bool Contact::IsSensor() const noexcept
 {
     return (m_flags & e_sensorFlag) != 0u;
@@ -549,12 +517,7 @@ constexpr void Contact::IncrementToiCount() noexcept
 /// @relatedalso Contact
 constexpr bool operator==(const Contact& lhs, const Contact& rhs) noexcept
 {
-    return lhs.GetBodyA() == rhs.GetBodyA() && //
-           lhs.GetBodyB() == rhs.GetBodyB() && //
-           lhs.GetShapeA() == rhs.GetShapeA() && //
-           lhs.GetShapeB() == rhs.GetShapeB() && //
-           lhs.GetChildIndexA() == rhs.GetChildIndexA() && //
-           lhs.GetChildIndexB() == rhs.GetChildIndexB() && //
+    return lhs.GetContactableA() == rhs.GetContactableB() && //
            lhs.GetFriction() == rhs.GetFriction() && //
            lhs.GetRestitution() == rhs.GetRestitution() && //
            lhs.GetTangentSpeed() == rhs.GetTangentSpeed() && //
@@ -581,42 +544,42 @@ constexpr bool operator!=(const Contact& lhs, const Contact& rhs) noexcept
 /// @relatedalso Contact
 constexpr BodyID GetBodyA(const Contact& contact) noexcept
 {
-    return contact.GetBodyA();
+    return contact.GetContactableA().bodyId;
 }
 
 /// @brief Gets the body B ID of the given contact.
 /// @relatedalso Contact
 constexpr BodyID GetBodyB(const Contact& contact) noexcept
 {
-    return contact.GetBodyB();
+    return contact.GetContactableB().bodyId;
 }
 
 /// @brief Gets the shape A associated with the given contact.
 /// @relatedalso Contact
 constexpr ShapeID GetShapeA(const Contact& contact) noexcept
 {
-    return contact.GetShapeA();
+    return contact.GetContactableA().shapeId;
 }
 
 /// @brief Gets the shape B associated with the given contact.
 /// @relatedalso Contact
 constexpr ShapeID GetShapeB(const Contact& contact) noexcept
 {
-    return contact.GetShapeB();
+    return contact.GetContactableB().shapeId;
 }
 
 /// @brief Gets the child index A of the given contact.
 /// @relatedalso Contact
 constexpr ChildCounter GetChildIndexA(const Contact& contact) noexcept
 {
-    return contact.GetChildIndexA();
+    return contact.GetContactableA().childId;
 }
 
 /// @brief Gets the child index B of the given contact.
 /// @relatedalso Contact
 constexpr ChildCounter GetChildIndexB(const Contact& contact) noexcept
 {
-    return contact.GetChildIndexB();
+    return contact.GetContactableB().childId;
 }
 
 /// @brief Whether the given contact is "impenetrable".
@@ -886,6 +849,14 @@ constexpr auto GetTangentSpeed(const Contact& contact) noexcept
 constexpr void SetTangentSpeed(Contact& contact, LinearVelocity value) noexcept
 {
     contact.SetTangentSpeed(value);
+}
+
+/// @brief Is-for convenience function.
+/// @return true if contact is for the identified body and shape, else false.
+constexpr bool IsFor(const Contact& c, BodyID bodyID, ShapeID shapeID) noexcept
+{
+    return IsFor(c.GetContactableA(), bodyID, shapeID) // force newline
+        || IsFor(c.GetContactableB(), bodyID, shapeID);
 }
 
 } // namespace playrho
