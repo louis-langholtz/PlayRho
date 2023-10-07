@@ -67,6 +67,13 @@ constexpr bool operator!=(const Contactable& lhs, const Contactable& rhs) noexce
     return !(lhs == rhs);
 }
 
+/// @brief Is-for convenience function.
+/// @return true if contactable is for the identified body and shape, else false.
+constexpr bool IsFor(const Contactable& c, BodyID bodyID, ShapeID shapeID) noexcept
+{
+    return (c.bodyId == bodyID) && (c.shapeId == shapeID);
+}
+
 }
 
 #endif /* PLAYRHO_CONTACTABLE_HPP */
