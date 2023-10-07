@@ -92,8 +92,9 @@ AABB ComputeIntersectingAABB(const World& world, // force newline
 
 AABB ComputeIntersectingAABB(const World& world, const Contact& c)
 {
-    return ComputeIntersectingAABB(world, c.GetBodyA(), c.GetShapeA(), c.GetChildIndexA(),
-                                   c.GetBodyB(), c.GetShapeB(), c.GetChildIndexB());
+    return ComputeIntersectingAABB(world, // force newline
+                                   GetBodyA(c), GetShapeA(c), GetChildIndexA(c), // force newline
+                                   GetBodyB(c), GetShapeB(c), GetChildIndexB(c));
 }
 
 AABB GetAABB(const RayCastInput& input) noexcept
