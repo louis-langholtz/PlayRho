@@ -17,17 +17,43 @@ else()
 	add_definitions( -DGLEW_STATIC -D_CRT_SECURE_NO_WARNINGS )
 endif()
 
+set(IMGUI_SRCS
+	"imgui.cpp"
+	"imgui_tables.cpp"
+	"imgui_widgets.cpp"
+	"imgui_draw.cpp"
+	"backends/imgui_impl_opengl3.cpp"
+	"backends/imgui_impl_glfw.cpp"
+	"examples/libs/gl3w/GL/gl3w.c"
+	)
+
+set(IMGUI_INCLUDE_DIRS)
+set(IMGUI_PREFIXED_SRCS)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Framework/imgui/imgui.h")
+	foreach(IMGUI_SRC IN LISTS IMGUI_SRCS)
+		list(APPEND IMGUI_PREFIXED_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/Framework/imgui/${IMGUI_SRC}")
+	endforeach()
+	list(APPEND IMGUI_INCLUDE_DIRS "Framework/imgui" "Framework/imgui/examples/libs/gl3w")
+else()
+	message(STATUS "ImGui submodule source code not found. Not git recurivse clone?")
+	include(FetchContent)
+	message(STATUS "Attempting to download ImGui source code.")
+	FetchContent_Declare(
+		imgui
+		GIT_REPOSITORY https://github.com/ocornut/imgui.git
+		GIT_TAG 393941ceea61e1307ffad8e3a045ab384d1299bd # <HASH or TAG>
+	)
+	FetchContent_MakeAvailable(imgui)
+	foreach(IMGUI_SRC IN LISTS IMGUI_SRCS)
+		list(APPEND IMGUI_PREFIXED_SRCS "${imgui_SOURCE_DIR}/${IMGUI_SRC}")
+	endforeach()
+	list(APPEND IMGUI_INCLUDE_DIRS "${imgui_SOURCE_DIR}" "${imgui_SOURCE_DIR}/examples/libs/gl3w")
+endif()
+
 # Define the framework files.
 file(GLOB Testbed_Framework_SRCS
 	"Framework/*.cpp"
 	"Framework/*.hpp"
-	"Framework/imgui/imgui.cpp"
-	"Framework/imgui/imgui_tables.cpp"
-	"Framework/imgui/imgui_widgets.cpp"
-	"Framework/imgui/imgui_draw.cpp"
-	"Framework/imgui/backends/imgui_impl_opengl3.cpp"
-	"Framework/imgui/backends/imgui_impl_glfw.cpp"
-	"Framework/imgui/examples/libs/gl3w/GL/gl3w.c"
 )
 
 # define the test files.
@@ -37,7 +63,7 @@ file(GLOB Testbed_Tests_SRCS
 )
 
 # These are used to create visual studio folders.
-source_group(Framework FILES ${Testbed_Framework_SRCS})
+source_group(Framework FILES ${Testbed_Framework_SRCS} ${IMGUI_PREFIXED_SRCS})
 source_group(Tests FILES ${Testbed_Tests_SRCS})
 
 if(APPLE)
@@ -61,6 +87,7 @@ message(STATUS "Setting link directories")
 
 add_executable(Testbed
 	${Testbed_Framework_SRCS}
+	${IMGUI_PREFIXED_SRCS}
 	${Testbed_Tests_SRCS}
 )
 
@@ -76,8 +103,7 @@ message(STATUS "Including header directories")
 target_include_directories(Testbed PRIVATE
 	"$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../>"
 	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>"
-	Framework/imgui
-	Framework/imgui/examples/libs/gl3w
+	${IMGUI_INCLUDE_DIRS}
 	${OPENGL_INCLUDE_DIR}
 	${GLEW_INCLUDE_DIR}
 	${GLFW3_INCLUDE_DIR}

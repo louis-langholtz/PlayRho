@@ -38,11 +38,19 @@ set(BUILD_SHARED_LIBS OFF)
 # Prevent overriding the parent project's compiler/linker settings on Windows
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-# Add subdirectory to build.
-# For cmd details, see: https://cmake.org/cmake/help/v3.1/command/add_subdirectory.html
-# googletest build instructions at: https://github.com/google/googletest/blob/master/googletest/README.md
-# Adds googletest here...
-add_subdirectory(googletest EXCLUDE_FROM_ALL)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest")
+	add_subdirectory(googletest EXCLUDE_FROM_ALL)
+else()
+	message(STATUS "googletest submodule source code not found. Not git recurivse clone?")
+	include(FetchContent)
+	message(STATUS "Attempting to download googletest source code.")
+	FetchContent_Declare(
+		googletest
+		GIT_REPOSITORY https://github.com/google/googletest.git
+		GIT_TAG 391ce627def20c1e8a54d10b12949b15086473dd
+	)
+	FetchContent_MakeAvailable(googletest)
+endif()
 
 file(GLOB UnitTest_SRCS *.cpp)
 

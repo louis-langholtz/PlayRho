@@ -17,10 +17,19 @@ set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Enable testing of the benchmark lib
 set(BENCHMARK_ENABLE_INSTALL OFF CACHE BOOL "Enable installation of the benchmark library.")
 set(BENCHMARK_INSTALL_DOCS OFF CACHE BOOL "Enable installation of docs.")
 
-# Add subdirectory to build.
-# For cmd details, see: https://cmake.org/cmake/help/v3.1/command/add_subdirectory.html
-# Adds benchmark here...
-add_subdirectory(googlebench)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/googlebench/src")
+	add_subdirectory(googlebench)
+else()
+	message(STATUS "googlebench submodule source code not found. Perhaps not git recurivse clone?")
+	include(FetchContent)
+	message(STATUS "Attempting to download googlebench source code.")
+	FetchContent_Declare(
+		googlebench
+		GIT_REPOSITORY https://github.com/google/benchmark.git
+		GIT_TAG 0ce66c00f5e41ba7480e3ad6b6673d5b94abf412
+	)
+	FetchContent_MakeAvailable(googlebench)
+endif()
 
 file(GLOB Benchmark_SRCS *.cpp)
 
