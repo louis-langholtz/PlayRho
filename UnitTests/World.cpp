@@ -29,35 +29,36 @@
 #include <playrho/to_underlying.hpp>
 #include <playrho/WrongState.hpp>
 
-#include <playrho/d2/World.hpp>
+#include <playrho/d2/AabbTreeWorld.hpp>
 #include <playrho/d2/Body.hpp>
+#include <playrho/d2/BodyConf.hpp>
+#include <playrho/d2/ContactImpulsesList.hpp>
+#include <playrho/d2/DiskShapeConf.hpp>
+#include <playrho/d2/DistanceJointConf.hpp>
+#include <playrho/d2/DynamicTree.hpp> // for GetTree
+#include <playrho/d2/EdgeShapeConf.hpp>
+#include <playrho/d2/FrictionJointConf.hpp>
+#include <playrho/d2/GearJointConf.hpp>
+#include <playrho/d2/Joint.hpp>
+#include <playrho/d2/Manifold.hpp>
+#include <playrho/d2/MotorJointConf.hpp>
+#include <playrho/d2/PolygonShapeConf.hpp>
+#include <playrho/d2/PointStates.hpp>
+#include <playrho/d2/RayCastInput.hpp>
+#include <playrho/d2/RayCastOutput.hpp>
+#include <playrho/d2/RopeJointConf.hpp>
+#include <playrho/d2/RevoluteJointConf.hpp>
+#include <playrho/d2/PrismaticJointConf.hpp>
+#include <playrho/d2/PulleyJointConf.hpp>
+#include <playrho/d2/TargetJointConf.hpp>
+#include <playrho/d2/WheelJointConf.hpp>
+#include <playrho/d2/WeldJointConf.hpp>
+#include <playrho/d2/World.hpp>
 #include <playrho/d2/WorldBody.hpp>
 #include <playrho/d2/WorldShape.hpp>
 #include <playrho/d2/WorldMisc.hpp>
 #include <playrho/d2/WorldJoint.hpp>
 #include <playrho/d2/WorldContact.hpp>
-#include <playrho/d2/BodyConf.hpp>
-#include <playrho/d2/ContactImpulsesList.hpp>
-#include <playrho/d2/DiskShapeConf.hpp>
-#include <playrho/d2/PolygonShapeConf.hpp>
-#include <playrho/d2/EdgeShapeConf.hpp>
-#include <playrho/d2/PointStates.hpp>
-#include <playrho/d2/DynamicTree.hpp> // for GetTree
-#include <playrho/d2/RayCastInput.hpp>
-#include <playrho/d2/RayCastOutput.hpp>
-#include <playrho/d2/Manifold.hpp>
-#include <playrho/d2/Joint.hpp>
-#include <playrho/d2/TargetJointConf.hpp>
-#include <playrho/d2/RopeJointConf.hpp>
-#include <playrho/d2/RevoluteJointConf.hpp>
-#include <playrho/d2/PrismaticJointConf.hpp>
-#include <playrho/d2/DistanceJointConf.hpp>
-#include <playrho/d2/PulleyJointConf.hpp>
-#include <playrho/d2/WeldJointConf.hpp>
-#include <playrho/d2/FrictionJointConf.hpp>
-#include <playrho/d2/MotorJointConf.hpp>
-#include <playrho/d2/WheelJointConf.hpp>
-#include <playrho/d2/GearJointConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -434,6 +435,26 @@ TEST(World, MoveAssignment)
         other = std::move(world);
         EXPECT_EQ(GetBodies(other).size(), 2u);
         EXPECT_EQ(GetJoints(other).size(), 3u);
+    }
+}
+
+TEST(World, GetType)
+{
+    EXPECT_NE(GetType(World{}), GetTypeID<void>());
+    EXPECT_EQ(GetType(World{}), GetTypeID<AabbTreeWorld>());
+}
+
+TEST(World, TypeCast)
+{
+    {
+        auto world = World{};
+        EXPECT_EQ(TypeCast<int>(&world), nullptr);
+        EXPECT_THROW(TypeCast<int>(world), std::bad_cast);
+    }
+    {
+        const auto world = World{};
+        EXPECT_EQ(TypeCast<const int>(&world), nullptr);
+        EXPECT_THROW(TypeCast<int>(world), std::bad_cast);
     }
 }
 

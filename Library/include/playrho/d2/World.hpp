@@ -41,6 +41,7 @@
 #include <playrho/ShapeID.hpp>
 #include <playrho/StepConf.hpp>
 #include <playrho/StepStats.hpp>
+#include <playrho/TypeInfo.hpp> // for GetTypeID
 
 #include <playrho/d2/BodyConf.hpp> // for GetDefaultBodyConf
 #include <playrho/d2/Body.hpp>
@@ -114,6 +115,25 @@ void SetPostSolveContactListener(World& world, ImpulsesContactListener listener)
 
 /// @name World Miscellaneous Non-Member Functions
 /// @{
+
+/// @brief Gets the identifier of the type of data this can be casted to.
+TypeID GetType(const World& world) noexcept;
+
+/// @brief Converts the given world into its current configuration value.
+/// @note The design for this was based off the design of the C++17 <code>std::any</code>
+///   class and its associated <code>std::any_cast</code> function. The code for this is based
+///   off of the <code>std::any</code> code from the LLVM Project.
+/// @see https://llvm.org/
+template <typename T>
+std::add_pointer_t<std::add_const_t<T>> TypeCast(const World* value) noexcept;
+
+/// @brief Converts the given world into its current configuration value.
+/// @note The design for this was based off the design of the C++17 <code>std::any</code>
+///   class and its associated <code>std::any_cast</code> function. The code for this is based
+///   off of the <code>std::any</code> implementation from the LLVM Project.
+/// @see https://llvm.org/
+template <typename T>
+std::add_pointer_t<T> TypeCast(World* value) noexcept;
 
 /// @brief Clears the given world.
 /// @note This calls the joint and shape destruction listeners (if they're set), for all
@@ -615,6 +635,15 @@ public:
     friend void SetPostSolveContactListener(World& world, ImpulsesContactListener listener) noexcept;
 
     // Miscellaneous friend functions...
+
+    friend TypeID GetType(const World& world) noexcept;
+
+    template <typename T>
+    friend std::add_pointer_t<std::add_const_t<T>> TypeCast(const World* value) noexcept;
+
+    template <typename T>
+    friend std::add_pointer_t<T> TypeCast(World* value) noexcept;
+
     friend void Clear(World& world) noexcept;
     friend StepStats Step(World& world, const StepConf& conf);
     friend bool IsStepComplete(const World& world) noexcept;
@@ -706,6 +735,16 @@ private:
 
         /// @brief Clones the instance - making a deep copy.
         virtual std::unique_ptr<Concept> Clone_() const = 0;
+
+        /// @brief Gets the use type information.
+        /// @return Type info of the underlying value's type.
+        virtual TypeID GetType_() const noexcept = 0;
+
+        /// @brief Gets the data for the underlying configuration.
+        virtual const void* GetData_() const noexcept = 0;
+
+        /// @brief Gets the data for the underlying configuration.
+        virtual void* GetData_() noexcept = 0;
 
         /// @brief Clears the world.
         /// @note This calls the joint and shape destruction listeners (if they're set), for all
@@ -1087,6 +1126,28 @@ struct World::Model final: World::Concept {
         return std::make_unique<Model<T>>(data);
     }
 
+    /// @copydoc Concept::GetType_
+    TypeID GetType_() const noexcept override
+    {
+        return GetTypeID<data_type>();
+    }
+
+    /// @copydoc Concept::GetData_
+    const void* GetData_() const noexcept override
+    {
+        // Note address of "data" not necessarily same as address of "this" since
+        // base class is virtual.
+        return &data;
+    }
+
+    /// @copydoc Concept::GetData_
+    void* GetData_() noexcept override
+    {
+        // Note address of "data" not necessarily same as address of "this" since
+        // base class is virtual.
+        return &data;
+    }
+
     /// @copydoc Concept::Clear_
     void Clear_() noexcept override
     {
@@ -1387,6 +1448,11 @@ inline void SetPostSolveContactListener(World& world, ImpulsesContactListener li
 
 // World Miscellaneous Non-Member Functions...
 
+inline TypeID GetType(const World& world) noexcept
+{
+    return world.m_impl->GetType_();
+}
+
 inline void Clear(World& world) noexcept
 {
     world.m_impl->Clear_();
@@ -1568,6 +1634,92 @@ inline void SetContact(World& world, ContactID id, const Contact& value)
 inline Manifold GetManifold(const World& world, ContactID id)
 {
     return world.m_impl->GetManifold_(id);
+}
+
+// Free functions...
+
+/// @brief Converts the given joint into its current configuration value.
+/// @note The design for this was based off the design of the C++17 <code>std::any</code>
+///   class and its associated <code>std::any_cast</code> function. The code for this is based
+///   off of the <code>std::any</code> implementation from the LLVM Project.
+/// @throws std::bad_cast If the given template parameter type isn't the type of this
+///   joint's configuration value.
+/// @see https://llvm.org/
+/// @relatedalso World
+template <typename T>
+inline T TypeCast(const World& value)
+{
+    using RawType = std::remove_cv_t<std::remove_reference_t<T>>;
+    static_assert(std::is_constructible_v<T, RawType const&>,
+                  "T is required to be a const lvalue reference "
+                  "or a CopyConstructible type");
+    auto tmp = ::playrho::d2::TypeCast<std::add_const_t<RawType>>(&value);
+    if (!tmp) {
+        throw std::bad_cast();
+    }
+    return static_cast<T>(*tmp);
+}
+
+/// @brief Converts the given joint into its current configuration value.
+/// @note The design for this was based off the design of the C++17 <code>std::any</code>
+///   class and its associated <code>std::any_cast</code> function. The code for this is based
+///   off of the <code>std::any</code> implementation from the LLVM Project.
+/// @see https://llvm.org/
+/// @relatedalso World
+template <typename T>
+inline T TypeCast(World& value)
+{
+    using RawType = std::remove_cv_t<std::remove_reference_t<T>>;
+    static_assert(std::is_constructible_v<T, RawType&>,
+                  "T is required to be a const lvalue reference "
+                  "or a CopyConstructible type");
+    auto tmp = ::playrho::d2::TypeCast<RawType>(&value);
+    if (!tmp) {
+        throw std::bad_cast();
+    }
+    return static_cast<T>(*tmp);
+}
+
+/// @brief Converts the given joint into its current configuration value.
+/// @note The design for this was based off the design of the C++17 <code>std::any</code>
+///   class and its associated <code>std::any_cast</code> function. The code for this is based
+///   off of the <code>std::any</code> implementation from the LLVM Project.
+/// @see https://llvm.org/
+/// @relatedalso World
+template <typename T>
+inline T TypeCast(World&& value)
+{
+    using RawType = std::remove_cv_t<std::remove_reference_t<T>>;
+    static_assert(std::is_constructible_v<T, RawType>,
+                  "T is required to be a const lvalue reference "
+                  "or a CopyConstructible type");
+    auto tmp = ::playrho::d2::TypeCast<RawType>(&value);
+    if (!tmp) {
+        throw std::bad_cast();
+    }
+    return static_cast<T>(std::move(*tmp));
+}
+
+template <typename T>
+inline std::add_pointer_t<std::add_const_t<T>> TypeCast(const World* value) noexcept
+{
+    static_assert(!std::is_reference_v<T>, "T may not be a reference.");
+    using ReturnType = std::add_pointer_t<T>;
+    if (value && value->m_impl && (GetType(*value) == GetTypeID<T>())) {
+        return static_cast<ReturnType>(value->m_impl->GetData_());
+    }
+    return nullptr;
+}
+
+template <typename T>
+inline std::add_pointer_t<T> TypeCast(World* value) noexcept
+{
+    static_assert(!std::is_reference_v<T>, "T may not be a reference.");
+    using ReturnType = std::add_pointer_t<T>;
+    if (value && value->m_impl && (GetType(*value) == GetTypeID<T>())) {
+        return static_cast<ReturnType>(value->m_impl->GetData_());
+    }
+    return nullptr;
 }
 
 /// @example HelloWorld.cpp
