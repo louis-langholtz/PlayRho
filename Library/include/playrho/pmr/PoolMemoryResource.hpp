@@ -54,22 +54,22 @@ struct PoolMemoryOptions
 
     /// @brief Whether buffers are releasable when unused and a bigger space is needed.
     bool releasable{true};
-
-    /// @brief Operator equals support.
-    friend bool operator==(const PoolMemoryOptions& lhs, const PoolMemoryOptions& rhs) noexcept
-    {
-        return (lhs.reserveBuffers == rhs.reserveBuffers) // force line-break
-            && (lhs.reserveBytes == rhs.reserveBytes) // force line-break
-            && (lhs.limitBuffers == rhs.limitBuffers) // force line-break
-            && (lhs.releasable == rhs.releasable);
-    }
-
-    /// @brief Operator not-equals support.
-    friend bool operator!=(const PoolMemoryOptions& lhs, const PoolMemoryOptions& rhs) noexcept
-    {
-        return !(lhs == rhs);
-    }
 };
+
+/// @brief Operator equals support.
+constexpr bool operator==(const PoolMemoryOptions& lhs, const PoolMemoryOptions& rhs) noexcept
+{
+    return (lhs.reserveBuffers == rhs.reserveBuffers) // force line-break
+        && (lhs.reserveBytes == rhs.reserveBytes) // force line-break
+        && (lhs.limitBuffers == rhs.limitBuffers) // force line-break
+        && (lhs.releasable == rhs.releasable);
+}
+
+/// @brief Operator not-equals support.
+constexpr bool operator!=(const PoolMemoryOptions& lhs, const PoolMemoryOptions& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
 
 /// @brief Pool memory resource.
 /// @note This is a memory pooling implementation of a <code>memory_resource</code>.
