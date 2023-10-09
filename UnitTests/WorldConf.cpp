@@ -37,6 +37,8 @@ TEST(WorldConf, DefaultConstruction)
     EXPECT_EQ(worldConf.reserveBodyConstraints, WorldConf::DefaultReserveBodyConstraints);
     EXPECT_EQ(worldConf.reserveDistanceConstraints, WorldConf::DefaultReserveDistanceConstraints);
     EXPECT_EQ(worldConf.reserveContactKeys, WorldConf::DefaultReserveContactKeys);
+    EXPECT_EQ(worldConf.reserveBuffers, WorldConf::DefaultReserveBuffers);
+    EXPECT_EQ(worldConf.doStats, WorldConf::DefaultDoStats);
 }
 
 TEST(WorldConf, UseUpstream)
