@@ -47,6 +47,7 @@
 #include <playrho/StepStats.hpp>
 
 #include <playrho/pmr/PoolMemoryResource.hpp>
+#include <playrho/pmr/StatsResource.hpp>
 
 #include <playrho/d2/BodyConstraint.hpp>
 #include <playrho/d2/DynamicTree.hpp>
@@ -143,6 +144,9 @@ void SetPostSolveContactListener(AabbTreeWorld& world, ImpulsesContactListener l
 
 /// @name AabbTreeWorld Miscellaneous Non-Member Functions
 /// @{
+
+/// @brief Gets the resource statistics of the specified world.
+pmr::StatsResource::Stats GetResourceStats(const AabbTreeWorld& world) noexcept;
 
 /// @brief Clears this world.
 /// @note This calls the joint and shape destruction listeners (if they're set), for all
@@ -532,6 +536,7 @@ public:
     friend void SetPostSolveContactListener(AabbTreeWorld& world, ImpulsesContactListener listener) noexcept;
 
     // Miscellaneous friend functions...
+    friend pmr::StatsResource::Stats GetResourceStats(const AabbTreeWorld& world) noexcept;
     friend void Clear(AabbTreeWorld& world) noexcept;
     friend StepStats Step(AabbTreeWorld& world, const StepConf& conf);
     friend bool IsStepComplete(const AabbTreeWorld& world) noexcept;
@@ -811,15 +816,17 @@ private:
     /// @brief Update contacts.
     UpdateContactsStats UpdateContacts(const StepConf& conf);
 
-    /// @brief Adds new contacts.
-    /// @details Processes the proxy queue for finding new contacts and adding them to
-    ///   the contacts container.
-    /// @note New contacts will all have overlapping AABBs.
+    /// @brief Adds contacts.
+    /// @details Processes given container for valid contacts & adds them to contacts container.
+    /// @note Added contacts will all have overlapping AABBs.
+    /// @param keys Keys of contacts to evaluate for adding. These should be keys found for
+    ///   potential contacts that are not currently added.
+    /// @return Number of contacts actually added.
     /// @post <code>GetProxies()</code> will return an empty container.
-    /// @post Container returned by <code>GetContacts()</code> will have increased in size by returned amount.
-    /// @post Container returned by <code>GetContacts(BodyID)</code> for some body IDs may have more elements.
+    /// @post Container returned by <code>GetContacts()</code> increases in size by returned amount.
+    /// @post For some body IDs, <code>GetContacts(BodyID)</code> may have more elements.
     /// @see GetProxies.
-    ContactCounter AddNewContacts(std::vector<ProxyKey, pmr::polymorphic_allocator<ProxyKey>>&& contactKeys);
+    ContactCounter AddContacts(std::vector<ProxyKey, pmr::polymorphic_allocator<ProxyKey>>&& keys);
 
     /// @brief Destroys the given contact and removes it from its container.
     /// @details This updates the contacts container, returns the memory to the allocator,
@@ -859,6 +866,7 @@ private:
 
     /******** Member variables. ********/
 
+    pmr::StatsResource m_statsResource; ///< For PMR statistics.
     pmr::PoolMemoryResource m_bodyStackResource; ///< For body stacks.
     pmr::PoolMemoryResource m_bodyConstraintsResource; ///< For body constraints.
     pmr::PoolMemoryResource m_positionConstraintsResource; ///< For position constraints.
@@ -881,7 +889,7 @@ private:
 
     /// @brief Cache of contacts associated with bodies.
     /// @note Size depends on and matches <code>size(m_bodyBuffer)</code>.
-    /// @note Individual body contact containers are added to by <code>AddNewContacts</code>.
+    /// @note Individual body contact containers are added to by <code>AddContacts</code>.
     ObjectPool<BodyContactIDs> m_bodyContacts;
 
     /// @brief Cache of joints associated with bodies.
@@ -948,6 +956,11 @@ static_assert(std::is_copy_constructible_v<AabbTreeWorld>);
 static_assert(std::is_move_constructible_v<AabbTreeWorld>);
 static_assert(!std::is_copy_assignable_v<AabbTreeWorld>);
 static_assert(!std::is_move_assignable_v<AabbTreeWorld>);
+
+inline pmr::StatsResource::Stats GetResourceStats(const AabbTreeWorld& world) noexcept
+{
+    return world.m_statsResource.GetStats();
+}
 
 inline const ProxyIDs& GetProxies(const AabbTreeWorld& world) noexcept
 {

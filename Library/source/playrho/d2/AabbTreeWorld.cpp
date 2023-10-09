@@ -693,24 +693,53 @@ auto FindContacts(pmr::memory_resource& resource,
     });
 
     // Sort and eliminate any duplicate contact keys.
-    sort(begin(proxyKeys), end(proxyKeys), [](const AabbTreeWorld::ProxyKey& a, const AabbTreeWorld::ProxyKey& b) {
+    sort(begin(proxyKeys), end(proxyKeys),
+         [](const AabbTreeWorld::ProxyKey& a, const AabbTreeWorld::ProxyKey& b) {
         return std::get<0>(a) < std::get<0>(b);
     });
     proxyKeys.erase(unique(begin(proxyKeys), end(proxyKeys)), end(proxyKeys));
     return proxyKeys;
 }
 
-constexpr auto ReserveBuffers = 1u;
+auto GetBodyStackOpts(const WorldConf& conf) -> pmr::PoolMemoryOptions
+{
+    return {conf.reserveBuffers, conf.reserveBodyStack * sizeof(BodyID)};
+}
+
+auto GetBodyConstraintOpts(const WorldConf& conf) -> pmr::PoolMemoryOptions
+{
+    return {conf.reserveBuffers, conf.reserveBodyConstraints * sizeof(BodyConstraint)};
+}
+
+auto GetPositionConstraintsOpts(const WorldConf& conf) -> pmr::PoolMemoryOptions
+{
+    return {conf.reserveBuffers, conf.reserveDistanceConstraints * sizeof(PositionConstraint)};
+}
+
+auto GetVelocityConstraintsOpts(const WorldConf& conf) -> pmr::PoolMemoryOptions
+{
+    return {conf.reserveBuffers, conf.reserveDistanceConstraints * sizeof(VelocityConstraint)};
+}
+
+auto GetProxyKeysOpts(const WorldConf& conf) -> pmr::PoolMemoryOptions
+{
+    return {conf.reserveBuffers, conf.reserveContactKeys * sizeof(AabbTreeWorld::ProxyKey)};
+}
 
 } // anonymous namespace
 
 AabbTreeWorld::AabbTreeWorld(const WorldConf& conf):
-    m_bodyStackResource({ReserveBuffers, conf.reserveBodyStack * sizeof(BodyID)}, conf.upstream),
-    m_bodyConstraintsResource({ReserveBuffers, conf.reserveBodyConstraints * sizeof(BodyConstraint)}, conf.upstream),
-    m_positionConstraintsResource({ReserveBuffers, conf.reserveDistanceConstraints * sizeof(PositionConstraint)}, conf.upstream),
-    m_velocityConstraintsResource({ReserveBuffers, conf.reserveDistanceConstraints * sizeof(VelocityConstraint)}, conf.upstream),
-    m_proxyKeysResource({ReserveBuffers, conf.reserveContactKeys * sizeof(ProxyKey)}, conf.upstream),
-    m_islandResource({ReserveBuffers}, conf.upstream),
+    m_statsResource(conf.upstream),
+    m_bodyStackResource(GetBodyStackOpts(conf),
+                        conf.doStats? &m_statsResource: conf.upstream),
+    m_bodyConstraintsResource(GetBodyConstraintOpts(conf),
+                              conf.doStats? &m_statsResource: conf.upstream),
+    m_positionConstraintsResource(GetPositionConstraintsOpts(conf),
+                                  conf.doStats? &m_statsResource: conf.upstream),
+    m_velocityConstraintsResource(GetVelocityConstraintsOpts(conf),
+                                  conf.doStats? &m_statsResource: conf.upstream),
+    m_proxyKeysResource(GetProxyKeysOpts(conf), conf.doStats? &m_statsResource: conf.upstream),
+    m_islandResource({conf.reserveBuffers}, conf.doStats? &m_statsResource: conf.upstream),
     m_tree(conf.treeCapacity),
     m_vertexRadius{conf.vertexRadius}
 {
@@ -1396,9 +1425,8 @@ RegStepStats AabbTreeWorld::SolveReg(const StepConf& conf)
     }
 
     // Look for new contacts.
-    stats.contactsAdded = AddNewContacts(FindContacts(m_proxyKeysResource, m_tree, std::move(m_proxiesForContacts)));
+    stats.contactsAdded = AddContacts(FindContacts(m_proxyKeysResource, m_tree, std::move(m_proxiesForContacts)));
     m_proxiesForContacts = {};
-    
     return stats;
 }
 
@@ -1655,7 +1683,7 @@ ToiStepStats AabbTreeWorld::SolveToi(const StepConf& conf)
 
         // Commit fixture proxy movements to the broad-phase so that new contacts are created.
         // Also, some contacts can be destroyed.
-        stats.contactsAdded += AddNewContacts(FindContacts(m_proxyKeysResource, m_tree, std::move(m_proxiesForContacts)));
+        stats.contactsAdded += AddContacts(FindContacts(m_proxyKeysResource, m_tree, std::move(m_proxiesForContacts)));
         m_proxiesForContacts = {};
 
         if (subStepping) {
@@ -2022,7 +2050,7 @@ StepStats Step(AabbTreeWorld& world, const StepConf& conf)
 
         // For any new fixtures added: need to find and create the new contacts.
         // Note: this may update bodies (in addition to the contacts container).
-        stepStats.pre.added = world.AddNewContacts(FindContacts(world.m_proxyKeysResource, world.m_tree, std::move(world.m_proxiesForContacts)));
+        stepStats.pre.added = world.AddContacts(FindContacts(world.m_proxyKeysResource, world.m_tree, std::move(world.m_proxiesForContacts)));
         world.m_proxiesForContacts = {};
 
         if (conf.deltaTime != 0_s) {
@@ -2264,8 +2292,9 @@ AabbTreeWorld::UpdateContactsStats AabbTreeWorld::UpdateContacts(const StepConf&
     };
 }
 
-ContactCounter AabbTreeWorld::AddNewContacts( // NOLINT(readability-function-cognitive-complexity)
-                                         std::vector<ProxyKey, pmr::polymorphic_allocator<ProxyKey>>&& keys)
+ContactCounter
+AabbTreeWorld::AddContacts( // NOLINT(readability-function-cognitive-complexity)
+                           std::vector<ProxyKey, pmr::polymorphic_allocator<ProxyKey>>&& keys)
 {
     const auto numContactsBefore = size(m_contacts);
     for_each(cbegin(keys), cend(keys), [this](const ProxyKey& key) {

@@ -55,6 +55,7 @@
 #include <playrho/d2/MotorJointConf.hpp>
 #include <playrho/d2/WheelJointConf.hpp>
 #include <playrho/d2/GearJointConf.hpp>
+#include <playrho/d2/World.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -90,14 +91,6 @@ void SetType(AabbTreeWorld& world, BodyID id, BodyType value)
 
 } // namespace
 
-TEST(AabbTreeWorld, ByteSize)
-{
-    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
-    // builds and to report actual size rather than just reporting that expected size is wrong.
-    EXPECT_NE(sizeof(AabbTreeWorld), sizeof(void*));
-    // It's 944 bytes on at least one 64-but platform.
-}
-
 TEST(AabbTreeWorld, DefaultInit)
 {
     AabbTreeWorld world;
@@ -131,6 +124,10 @@ TEST(AabbTreeWorld, DefaultInit)
 
     EXPECT_FALSE(GetSubStepping(world));
     EXPECT_FALSE(IsLocked(world));
+
+    const auto stats = GetResourceStats(world);
+    EXPECT_EQ(stats.blocksAllocated, 0u);
+    EXPECT_EQ(stats.maxBlocksAllocated, 0u);
 }
 
 TEST(AabbTreeWorld, Init)
@@ -199,6 +196,89 @@ TEST(AabbTreeWorld, Clear)
     const auto b2 = CreateBody(world);
     EXPECT_LE(b2, b1);
     ASSERT_NO_THROW(Attach(world, b2, shapeId1));
+}
+
+TEST(AabbTreeWorld, GetType)
+{
+    EXPECT_EQ(GetType(World{AabbTreeWorld{}}), GetTypeID<AabbTreeWorld>());
+}
+
+TEST(AabbTreeWorld, TypeCast)
+{
+    {
+        auto world = World{AabbTreeWorld{}};
+        EXPECT_EQ(TypeCast<int>(&world), nullptr);
+        EXPECT_THROW(TypeCast<int>(world), std::bad_cast);
+        EXPECT_NE(TypeCast<AabbTreeWorld>(&world), nullptr);
+        EXPECT_NO_THROW(TypeCast<AabbTreeWorld>(world));
+    }
+    {
+        const auto world = World{AabbTreeWorld{}};
+        EXPECT_EQ(TypeCast<const int>(&world), nullptr);
+        EXPECT_THROW(TypeCast<int>(world), std::bad_cast);
+        EXPECT_NE(TypeCast<const AabbTreeWorld>(&world), nullptr);
+        EXPECT_NO_THROW(TypeCast<AabbTreeWorld>(world));
+    }
+}
+
+TEST(AabbTreeWorld, GetResourceStatsWhenOff)
+{
+    auto conf = WorldConf();
+    conf.doStats = false;
+    conf.reserveBuffers = 0;
+    conf.reserveBodyStack = 0u;
+    conf.reserveBodyConstraints = 0u;
+    conf.reserveDistanceConstraints = 0u;
+    conf.reserveContactKeys = 0u;
+    auto world = AabbTreeWorld{conf};
+    auto stats = pmr::StatsResource::Stats{};
+    stats = GetResourceStats(world);
+    const auto oldstats = stats;
+    EXPECT_EQ(stats.blocksAllocated, 0u);
+    EXPECT_EQ(stats.bytesAllocated, 0u);
+    EXPECT_EQ(stats.maxBlocksAllocated, 0u);
+    EXPECT_EQ(stats.maxBytesAllocated, 0u);
+    EXPECT_EQ(stats.maxBytes, 0u);
+    EXPECT_EQ(stats.maxAlignment, 0u);
+    const auto stepConf = StepConf{};
+    Step(world, stepConf);
+    stats = GetResourceStats(world);
+    EXPECT_EQ(stats.blocksAllocated, oldstats.blocksAllocated);
+    EXPECT_EQ(stats.bytesAllocated, oldstats.bytesAllocated);
+    EXPECT_EQ(stats.maxBlocksAllocated, oldstats.maxBlocksAllocated);
+    EXPECT_EQ(stats.maxBytesAllocated, oldstats.maxBytesAllocated);
+    EXPECT_EQ(stats.maxBytes, oldstats.maxBytes);
+    EXPECT_EQ(stats.maxAlignment, oldstats.maxAlignment);
+}
+
+TEST(AabbTreeWorld, GetResourceStatsWhenOn)
+{
+    auto conf = WorldConf();
+    conf.doStats = true;
+    conf.reserveBuffers = 0;
+    conf.reserveBodyStack = 0u;
+    conf.reserveBodyConstraints = 0u;
+    conf.reserveDistanceConstraints = 0u;
+    conf.reserveContactKeys = 0u;
+    auto world = AabbTreeWorld{conf};
+    auto stats = pmr::StatsResource::Stats{};
+    stats = GetResourceStats(world);
+    const auto oldstats = stats;
+    EXPECT_EQ(stats.blocksAllocated, 0u);
+    EXPECT_EQ(stats.bytesAllocated, 0u);
+    EXPECT_EQ(stats.maxBlocksAllocated, 0u);
+    EXPECT_EQ(stats.maxBytesAllocated, 0u);
+    EXPECT_EQ(stats.maxBytes, 0u);
+    EXPECT_EQ(stats.maxAlignment, 0u);
+    const auto stepConf = StepConf{};
+    Step(world, stepConf);
+    stats = GetResourceStats(world);
+    EXPECT_GT(stats.blocksAllocated, oldstats.blocksAllocated);
+    EXPECT_GT(stats.bytesAllocated, oldstats.bytesAllocated);
+    EXPECT_GT(stats.maxBlocksAllocated, oldstats.maxBlocksAllocated);
+    EXPECT_GT(stats.maxBytesAllocated, oldstats.maxBytesAllocated);
+    EXPECT_GT(stats.maxBytes, oldstats.maxBytes);
+    EXPECT_GT(stats.maxAlignment, oldstats.maxAlignment);
 }
 
 TEST(AabbTreeWorld, CreateDestroyEmptyStaticBody)
