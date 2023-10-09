@@ -771,6 +771,136 @@ TEST(CollideShapes, GetMaxSeparationFreeFunction2)
                 std::abs(static_cast<double>(Real(maxSep10_4x4.distance / Meter)) / 1000000.0));
 }
 
+TEST(CollideShapes, SquareCornerTouchingSquareCornerA)
+{
+    const auto dim = 2_m;
+    const auto shape = PolygonShapeConf(dim, dim); // creates a square
+    ASSERT_EQ(shape.GetVertex(0), Vec2(+2, -2) * Meter); // bottom right
+    ASSERT_EQ(shape.GetVertex(1), Vec2(+2, +2) * Meter); // top right
+    ASSERT_EQ(shape.GetVertex(2), Vec2(-2, +2) * Meter); // top left
+    ASSERT_EQ(shape.GetVertex(3), Vec2(-2, -2) * Meter); // bottom left
+    const auto child = GetChild(shape, 0);
+    const auto xfm0 = Transformation{{0_m, 4_m}, UnitVec::GetRight()}; // top left
+    const auto xfm1 = Transformation{{4_m, 0_m}, UnitVec::GetRight()}; // bottom right
+    // In ASCII art terms:
+    //
+    //   +---4---+
+    //   |       |
+    //   |       |
+    //   |       |
+    //   4   A   4
+    //   |       |
+    //   |       |
+    //   |       |
+    //   +---4---+---4---+
+    //           |       |
+    //           |       |
+    //       |   |       |
+    //      -O-  4   B   4
+    //       |   |       |
+    //           |       |
+    //           |       |
+    //           +---4---+
+    auto conf = Manifold::Conf{};
+    conf.maxCirclesRatio = 10000;
+    // const auto manifold = CollideShapes(child, xfm0, child, xfm1);
+    {
+        const auto manifold = GetManifold(false, child, xfm0, 0u, child, xfm1, {2u, 3u}, conf);
+        EXPECT_EQ(manifold.GetType(), Manifold::e_circles);
+        EXPECT_EQ(manifold.GetLocalPoint(), Vec2(2, -2) * Meter);
+        ASSERT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
+        const auto point = manifold.GetPoint(0);
+        EXPECT_NEAR(double(Real{GetX(point.localPoint) / Meter}), -2.0, 0.006); // top right shape A
+        EXPECT_NEAR(double(Real{GetY(point.localPoint) / Meter}), 2.0, 0.004); // top right shape A
+        EXPECT_EQ(point.normalImpulse, 0_Ns);
+        EXPECT_EQ(point.tangentImpulse, 0_Ns);
+        EXPECT_EQ(point.contactFeature.typeA, ContactFeature::e_vertex);
+        EXPECT_EQ(point.contactFeature.indexA, 0); // Shape A top right vertex
+        EXPECT_EQ(point.contactFeature.typeB, ContactFeature::e_vertex);
+        EXPECT_EQ(point.contactFeature.indexB, 2); // Shape B bottom edge
+    }
+    {
+        const auto manifold = GetManifold(true, child, xfm0, 0u, child, xfm1, {2u, 3u}, conf);
+        EXPECT_EQ(manifold.GetType(), Manifold::e_circles);
+        EXPECT_EQ(manifold.GetLocalPoint(), Vec2(-2, 2) * Meter);
+        ASSERT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
+        const auto point = manifold.GetPoint(0);
+        EXPECT_NEAR(double(Real{GetX(point.localPoint) / Meter}), 2.0, 0.006); // top right shape A
+        EXPECT_NEAR(double(Real{GetY(point.localPoint) / Meter}), -2.0, 0.004); // top right shape A
+        EXPECT_EQ(point.normalImpulse, 0_Ns);
+        EXPECT_EQ(point.tangentImpulse, 0_Ns);
+        EXPECT_EQ(point.contactFeature.typeA, ContactFeature::e_vertex);
+        EXPECT_EQ(point.contactFeature.indexA, 2); // Shape A top right vertex
+        EXPECT_EQ(point.contactFeature.typeB, ContactFeature::e_vertex);
+        EXPECT_EQ(point.contactFeature.indexB, 0); // Shape B bottom edge
+    }
+}
+
+TEST(CollideShapes, SquareCornerTouchingSquareCornerB)
+{
+    const auto dim = 2_m;
+    const auto shape = PolygonShapeConf(dim, dim); // creates a square
+    ASSERT_EQ(shape.GetVertex(0), Vec2(+2, -2) * Meter); // bottom right
+    ASSERT_EQ(shape.GetVertex(1), Vec2(+2, +2) * Meter); // top right
+    ASSERT_EQ(shape.GetVertex(2), Vec2(-2, +2) * Meter); // top left
+    ASSERT_EQ(shape.GetVertex(3), Vec2(-2, -2) * Meter); // bottom left
+    const auto child = GetChild(shape, 0);
+    const auto xfm0 = Transformation{{0_m, 4_m}, UnitVec::GetRight()}; // top left
+    const auto xfm1 = Transformation{{-4_m, 0_m}, UnitVec::GetRight()}; // bottom right
+    // In ASCII art terms:
+    //
+    //           +---4---+
+    //           |       |
+    //           |       |
+    //           |       |
+    //           4   A   4
+    //           |       |
+    //           |       |
+    //           |       |
+    //   +---4---+---4---+
+    //   |       |
+    //   |       |
+    //   |       |   |
+    //   4   B   4  -O-
+    //   |       |   |
+    //   |       |
+    //   |       |
+    //   +---4---+
+    auto conf = Manifold::Conf{};
+    conf.maxCirclesRatio = 10000;
+    //const auto manifold = CollideShapes(child, xfm0, child, xfm1);
+    {
+        const auto manifold = GetManifold(false, child, xfm0, 2u, child, xfm1, {0u, 1u}, conf);
+        EXPECT_EQ(manifold.GetType(), Manifold::e_circles);
+        EXPECT_EQ(manifold.GetLocalPoint(), Vec2(-2, -2) * Meter);
+        ASSERT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
+        const auto point = manifold.GetPoint(0);
+        EXPECT_NEAR(double(Real{GetX(point.localPoint) / Meter}), 2.0, 0.006); // top right shape A
+        EXPECT_NEAR(double(Real{GetY(point.localPoint) / Meter}), 2.0, 0.004); // top right shape A
+        EXPECT_EQ(point.normalImpulse, 0_Ns);
+        EXPECT_EQ(point.tangentImpulse, 0_Ns);
+        EXPECT_EQ(point.contactFeature.typeA, ContactFeature::e_vertex);
+        EXPECT_EQ(point.contactFeature.indexA, 3); // Shape A top right vertex
+        EXPECT_EQ(point.contactFeature.typeB, ContactFeature::e_vertex);
+        EXPECT_EQ(point.contactFeature.indexB, 1); // Shape B bottom edge
+    }
+    {
+        const auto manifold = GetManifold(true, child, xfm0, 2u, child, xfm1, {0u, 1u}, conf);
+        EXPECT_EQ(manifold.GetType(), Manifold::e_circles);
+        EXPECT_EQ(manifold.GetLocalPoint(), Vec2(2, 2) * Meter);
+        ASSERT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
+        const auto point = manifold.GetPoint(0);
+        EXPECT_NEAR(double(Real{GetX(point.localPoint) / Meter}), -2.0, 0.006); // top right shape A
+        EXPECT_NEAR(double(Real{GetY(point.localPoint) / Meter}), -2.0, 0.004); // top right shape A
+        EXPECT_EQ(point.normalImpulse, 0_Ns);
+        EXPECT_EQ(point.tangentImpulse, 0_Ns);
+        EXPECT_EQ(point.contactFeature.typeA, ContactFeature::e_vertex);
+        EXPECT_EQ(point.contactFeature.indexA, 1); // Shape A top right vertex
+        EXPECT_EQ(point.contactFeature.typeB, ContactFeature::e_vertex);
+        EXPECT_EQ(point.contactFeature.indexB, 3); // Shape B bottom edge
+    }
+}
+
 TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
 {
     const auto dim = 2_m;
