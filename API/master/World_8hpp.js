@@ -31,6 +31,7 @@ var World_8hpp =
     [ "GetShapes", "World_8hpp.html#a7feade3e47e5048e8eab9eef13e66fc4", null ],
     [ "GetSubStepping", "World_8hpp.html#aefd48d7d94be6707b5915991eeb10bd4", null ],
     [ "GetTree", "World_8hpp.html#a0ae8db40f173456ea951e5a3425456aa", null ],
+    [ "GetType", "World_8hpp.html#a702a1c0c8e91f2563cac325a9220334d", null ],
     [ "GetVertexRadiusInterval", "World_8hpp.html#af51eca4a1cbd1b9b0d6024218f52db0f", null ],
     [ "IsLocked", "World_8hpp.html#a33795886ef465e14b67184086d935eca", null ],
     [ "IsStepComplete", "World_8hpp.html#a6b939d4c41803a36fb4e725c725be6ec", null ],
@@ -49,5 +50,10 @@ var World_8hpp =
     [ "SetShapeDestructionListener", "World_8hpp.html#a96ac7c56b9e01b4b9a6755ecfc60758a", null ],
     [ "SetSubStepping", "World_8hpp.html#af9f3ac5da2b016acb04d3e73419b08d9", null ],
     [ "ShiftOrigin", "World_8hpp.html#a00500c9a4303825cdcbaa80fa78000f6", null ],
-    [ "Step", "World_8hpp.html#a360c1123ecc81b089d4f5b1a579e3501", null ]
+    [ "Step", "World_8hpp.html#a360c1123ecc81b089d4f5b1a579e3501", null ],
+    [ "TypeCast", "World_8hpp.html#a7493a5895010c14c51c60b3a0a62b0c4", null ],
+    [ "TypeCast", "World_8hpp.html#a243e8f538484555fb01e735363bd1c3f", null ],
+    [ "TypeCast", "World_8hpp.html#a144d9b00180e9b914d070c7a8fc0a186", null ],
+    [ "TypeCast", "World_8hpp.html#a188e9f5b3bcd077a6e2ee611cc0b5693", null ],
+    [ "TypeCast", "World_8hpp.html#a41f03a4347ea33b9f5cb8469155e2f93", null ]
 ];

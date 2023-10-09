@@ -38,6 +38,7 @@ var AabbTreeWorld_8hpp =
     [ "GetManifold", "AabbTreeWorld_8hpp.html#a4744f578a96c67e8929c84c7b32e27e7", null ],
     [ "GetProxies", "AabbTreeWorld_8hpp.html#aa688d6514c8709849281db9d93448a93", null ],
     [ "GetProxies", "AabbTreeWorld_8hpp.html#a3694df2092406746a5e71113ee6487f1", null ],
+    [ "GetResourceStats", "AabbTreeWorld_8hpp.html#aa441ecda09cbee116ac181b5d50077dd", null ],
     [ "GetShape", "AabbTreeWorld_8hpp.html#a9e29376addbe168c363097e82eb796f0", null ],
     [ "GetShapeRange", "AabbTreeWorld_8hpp.html#a61d7f65f10afdad013c11d866292ad12", null ],
     [ "GetSoonestContact", "AabbTreeWorld_8hpp.html#a7e8932936bd2f281984a4afacc40e7a1", null ],

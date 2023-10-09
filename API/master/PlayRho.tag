@@ -1099,6 +1099,13 @@
       <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>pmr::StatsResource::Stats</type>
+      <name>GetResourceStats</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa441ecda09cbee116ac181b5d50077dd</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>bool</type>
       <name>GetSubStepping</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -1432,6 +1439,13 @@
       <name>GetProxies</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>aa688d6514c8709849281db9d93448a93</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>pmr::StatsResource::Stats</type>
+      <name>GetResourceStats</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa441ecda09cbee116ac181b5d50077dd</anchor>
       <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
@@ -7351,6 +7365,7 @@
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
     <includes id="StepConf_8hpp" name="StepConf.hpp" local="no" imported="no">playrho/StepConf.hpp</includes>
     <includes id="StepStats_8hpp" name="StepStats.hpp" local="no" imported="no">playrho/StepStats.hpp</includes>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="BodyConf_8hpp" name="BodyConf.hpp" local="no" imported="no">playrho/d2/BodyConf.hpp</includes>
     <includes id="Body_8hpp" name="Body.hpp" local="no" imported="no">playrho/d2/Body.hpp</includes>
     <includes id="Joint_8hpp" name="Joint.hpp" local="no" imported="no">playrho/d2/Joint.hpp</includes>
@@ -7362,6 +7377,27 @@
     <class kind="class">playrho::d2::World</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
+    <member kind="function">
+      <type>T</type>
+      <name>TypeCast</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7493a5895010c14c51c60b3a0a62b0c4</anchor>
+      <arglist>(const World &amp;value)</arglist>
+    </member>
+    <member kind="function">
+      <type>T</type>
+      <name>TypeCast</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a144d9b00180e9b914d070c7a8fc0a186</anchor>
+      <arglist>(World &amp;&amp;value)</arglist>
+    </member>
+    <member kind="function">
+      <type>T</type>
+      <name>TypeCast</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a188e9f5b3bcd077a6e2ee611cc0b5693</anchor>
+      <arglist>(World &amp;value)</arglist>
+    </member>
     <member kind="function">
       <type>void</type>
       <name>SetBeginContactListener</name>
@@ -7440,6 +7476,13 @@
       <arglist>(const World &amp;world)</arglist>
     </member>
     <member kind="function">
+      <type>TypeID</type>
+      <name>GetType</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a702a1c0c8e91f2563cac325a9220334d</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>Interval&lt; Positive&lt; Length &gt; &gt;</type>
       <name>GetVertexRadiusInterval</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -7480,6 +7523,20 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a360c1123ecc81b089d4f5b1a579e3501</anchor>
       <arglist>(World &amp;world, const StepConf &amp;conf=StepConf{})</arglist>
+    </member>
+    <member kind="function">
+      <type>std::add_pointer_t&lt; std::add_const_t&lt; T &gt; &gt;</type>
+      <name>TypeCast</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a243e8f538484555fb01e735363bd1c3f</anchor>
+      <arglist>(const World *value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>std::add_pointer_t&lt; T &gt;</type>
+      <name>TypeCast</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a41f03a4347ea33b9f5cb8469155e2f93</anchor>
+      <arglist>(World *value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>BodyID</type>
@@ -7783,6 +7840,13 @@
       <arglist>(const World &amp;world)</arglist>
     </member>
     <member kind="function">
+      <type>TypeID</type>
+      <name>GetType</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a702a1c0c8e91f2563cac325a9220334d</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>Interval&lt; Positive&lt; Length &gt; &gt;</type>
       <name>GetVertexRadiusInterval</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -7823,6 +7887,20 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a360c1123ecc81b089d4f5b1a579e3501</anchor>
       <arglist>(World &amp;world, const StepConf &amp;conf=StepConf{})</arglist>
+    </member>
+    <member kind="function">
+      <type>std::add_pointer_t&lt; std::add_const_t&lt; T &gt; &gt;</type>
+      <name>TypeCast</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a243e8f538484555fb01e735363bd1c3f</anchor>
+      <arglist>(const World *value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>std::add_pointer_t&lt; T &gt;</type>
+      <name>TypeCast</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a41f03a4347ea33b9f5cb8469155e2f93</anchor>
+      <arglist>(World *value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>BodyID</type>
@@ -14464,6 +14542,13 @@
       <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
       <anchor>a3ea45e84278758d191ea6e84a6580f6b</anchor>
       <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend pmr::StatsResource::Stats</type>
+      <name>GetResourceStats</name>
+      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
+      <anchor>a636d8a4ea3bbecd57881e0954d6be074</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend const Shape &amp;</type>
@@ -30300,20 +30385,6 @@
       <anchor>a3e8f7b40513a18e1d579e066c10e4c53</anchor>
       <arglist></arglist>
     </member>
-    <member kind="friend">
-      <type>friend bool</type>
-      <name>operator!=</name>
-      <anchorfile>structplayrho_1_1pmr_1_1PoolMemoryOptions.html</anchorfile>
-      <anchor>a6b834497817927fef18d628020deb4e4</anchor>
-      <arglist>(const PoolMemoryOptions &amp;lhs, const PoolMemoryOptions &amp;rhs) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend bool</type>
-      <name>operator==</name>
-      <anchorfile>structplayrho_1_1pmr_1_1PoolMemoryOptions.html</anchorfile>
-      <anchor>a65e23e363aca6274168c40b99d89900c</anchor>
-      <arglist>(const PoolMemoryOptions &amp;lhs, const PoolMemoryOptions &amp;rhs) noexcept</arglist>
-    </member>
   </compound>
   <compound kind="class">
     <name>playrho::pmr::PoolMemoryResource</name>
@@ -40735,6 +40806,13 @@
       <arglist>(const World &amp;world)</arglist>
     </member>
     <member kind="friend">
+      <type>friend TypeID</type>
+      <name>GetType</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>a4c81c2aec5732bbd9c967814a429cad9</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="friend">
       <type>friend Interval&lt; Positive&lt; Length &gt; &gt;</type>
       <name>GetVertexRadiusInterval</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
@@ -40852,6 +40930,20 @@
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
       <anchor>afcc3f1e70508f04ccd1367c6cd475235</anchor>
       <arglist>(World &amp;world, const StepConf &amp;conf)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend std::add_pointer_t&lt; std::add_const_t&lt; T &gt; &gt;</type>
+      <name>TypeCast</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>a83b4e4f1a951b2b920cfaca34a7d67d0</anchor>
+      <arglist>(const World *value) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend std::add_pointer_t&lt; T &gt;</type>
+      <name>TypeCast</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>a19bf8d6dd669aaf0745ca5c2cb30ca0c</anchor>
+      <arglist>(World *value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>AABB</type>
@@ -41685,6 +41777,27 @@
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
       <anchor>ad9a429ab8cf54bad83743fc742920eff</anchor>
       <arglist>(World &amp;world, ShapeID id, const Length2 &amp;value)</arglist>
+    </member>
+    <member kind="function">
+      <type>T</type>
+      <name>TypeCast</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>a7493a5895010c14c51c60b3a0a62b0c4</anchor>
+      <arglist>(const World &amp;value)</arglist>
+    </member>
+    <member kind="function">
+      <type>T</type>
+      <name>TypeCast</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>a144d9b00180e9b914d070c7a8fc0a186</anchor>
+      <arglist>(World &amp;&amp;value)</arglist>
+    </member>
+    <member kind="function">
+      <type>T</type>
+      <name>TypeCast</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>a188e9f5b3bcd077a6e2ee611cc0b5693</anchor>
+      <arglist>(World &amp;value)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -42986,6 +43099,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>bool</type>
+      <name>doStats</name>
+      <anchorfile>structplayrho_1_1d2_1_1WorldConf.html</anchorfile>
+      <anchor>aee4b702f19ffc1911ffdbfce1f5d32a8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>ContactCounter</type>
       <name>proxyCapacity</name>
       <anchorfile>structplayrho_1_1d2_1_1WorldConf.html</anchorfile>
@@ -43007,6 +43127,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>std::uint8_t</type>
+      <name>reserveBuffers</name>
+      <anchorfile>structplayrho_1_1d2_1_1WorldConf.html</anchorfile>
+      <anchor>a31093e514aaa4f1972268251fa3a1916</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>ContactCounter</type>
       <name>reserveContactKeys</name>
       <anchorfile>structplayrho_1_1d2_1_1WorldConf.html</anchorfile>
@@ -43014,10 +43141,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>BodyCounter</type>
+      <type>ContactCounter</type>
       <name>reserveDistanceConstraints</name>
       <anchorfile>structplayrho_1_1d2_1_1WorldConf.html</anchorfile>
-      <anchor>acb43866e9bf0248aab7eac81aa0f99da</anchor>
+      <anchor>a14377ea9017d41392a489406857df937</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -43050,6 +43177,13 @@
     </member>
     <member kind="variable" static="yes">
       <type>static constexpr auto</type>
+      <name>DefaultDoStats</name>
+      <anchorfile>structplayrho_1_1d2_1_1WorldConf.html</anchorfile>
+      <anchor>a71646877a178e36bc0aa031dbd50a246</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static constexpr auto</type>
       <name>DefaultProxyCapacity</name>
       <anchorfile>structplayrho_1_1d2_1_1WorldConf.html</anchorfile>
       <anchor>a9337689fcc661505e3dfda29c9cf5fcf</anchor>
@@ -43067,6 +43201,13 @@
       <name>DefaultReserveBodyStack</name>
       <anchorfile>structplayrho_1_1d2_1_1WorldConf.html</anchorfile>
       <anchor>a37768a0ea5d3e2afd13c4f27a5ee5647</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static constexpr auto</type>
+      <name>DefaultReserveBuffers</name>
+      <anchorfile>structplayrho_1_1d2_1_1WorldConf.html</anchorfile>
+      <anchor>aa0047f6b27bf3e3bbf1ce6949e883057</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" static="yes">
@@ -52247,6 +52388,13 @@
       <type>T</type>
       <name>TypeCast</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7493a5895010c14c51c60b3a0a62b0c4</anchor>
+      <arglist>(const World &amp;value)</arglist>
+    </member>
+    <member kind="function">
+      <type>T</type>
+      <name>TypeCast</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a3a5b4ab06d5e078ef5aa2e67b56c5dcc</anchor>
       <arglist>(Joint &amp;&amp;value)</arglist>
     </member>
@@ -52263,6 +52411,20 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>aa592a3a7994d2f355a6d2a2235f24c60</anchor>
       <arglist>(Joint *value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>T</type>
+      <name>TypeCast</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a144d9b00180e9b914d070c7a8fc0a186</anchor>
+      <arglist>(World &amp;&amp;value)</arglist>
+    </member>
+    <member kind="function">
+      <type>T</type>
+      <name>TypeCast</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a188e9f5b3bcd077a6e2ee611cc0b5693</anchor>
+      <arglist>(World &amp;value)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
@@ -52368,6 +52530,13 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a6cdc554f84a577ddb26cc3f11db7948f</anchor>
       <arglist>(AabbTreeWorld &amp;world, ImpulsesContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>pmr::StatsResource::Stats</type>
+      <name>GetResourceStats</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa441ecda09cbee116ac181b5d50077dd</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -52704,6 +52873,27 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>afed9c4b283c6f99409bbbfaaaffe5ee4</anchor>
       <arglist>(World &amp;world, ImpulsesContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>TypeID</type>
+      <name>GetType</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a702a1c0c8e91f2563cac325a9220334d</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>std::add_pointer_t&lt; std::add_const_t&lt; T &gt; &gt;</type>
+      <name>TypeCast</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a243e8f538484555fb01e735363bd1c3f</anchor>
+      <arglist>(const World *value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>std::add_pointer_t&lt; T &gt;</type>
+      <name>TypeCast</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a41f03a4347ea33b9f5cb8469155e2f93</anchor>
+      <arglist>(World *value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -53721,6 +53911,13 @@
       <arglist>(AabbTreeWorld &amp;world, ImpulsesContactListener listener) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>pmr::StatsResource::Stats</type>
+      <name>GetResourceStats</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa441ecda09cbee116ac181b5d50077dd</anchor>
+      <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>Clear</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -54055,6 +54252,27 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>afed9c4b283c6f99409bbbfaaaffe5ee4</anchor>
       <arglist>(World &amp;world, ImpulsesContactListener listener) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>TypeID</type>
+      <name>GetType</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a702a1c0c8e91f2563cac325a9220334d</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>std::add_pointer_t&lt; std::add_const_t&lt; T &gt; &gt;</type>
+      <name>TypeCast</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a243e8f538484555fb01e735363bd1c3f</anchor>
+      <arglist>(const World *value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>std::add_pointer_t&lt; T &gt;</type>
+      <name>TypeCast</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a41f03a4347ea33b9f5cb8469155e2f93</anchor>
+      <arglist>(World *value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -56059,6 +56277,13 @@
       <arglist>(const pmr::polymorphic_allocator&lt; T1 &gt; &amp;lhs, const pmr::polymorphic_allocator&lt; T2 &gt; &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho_1_1pmr.html</anchorfile>
+      <anchor>a4fd9a60d7b5ce4562f342408f0bc5e48</anchor>
+      <arglist>(const PoolMemoryOptions &amp;lhs, const PoolMemoryOptions &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>std::ostream &amp;</type>
       <name>operator&lt;&lt;</name>
       <anchorfile>namespaceplayrho_1_1pmr.html</anchorfile>
@@ -56078,6 +56303,13 @@
       <anchorfile>namespaceplayrho_1_1pmr.html</anchorfile>
       <anchor>ae567841c24e0caa1084bc0567b08fcac</anchor>
       <arglist>(const pmr::polymorphic_allocator&lt; T1 &gt; &amp;lhs, const pmr::polymorphic_allocator&lt; T2 &gt; &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho_1_1pmr.html</anchorfile>
+      <anchor>a539433b1ab8b0ea73ac531dd97411b7a</anchor>
+      <arglist>(const PoolMemoryOptions &amp;lhs, const PoolMemoryOptions &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>memory_resource *</type>
