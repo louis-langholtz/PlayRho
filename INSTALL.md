@@ -3,17 +3,7 @@
 This project can be built different ways depending on things like what components are desired to be built and the target platform.
 It can then be installed into your system, or included and linked into your applications.
 
-## Available Components
-
-Here's the list of available components and the command line arguments they each minimally need to be a part of the build:
-- [Library](PlayRho/) (required).
-- [Hello world application](HelloWorld/) (optional): add the `-DPLAYRHO_BUILD_HELLOWORLD=ON` argument to the configuration.
-- [Unit test application](UnitTests/) (optional): add the `-DPLAYRHO_BUILD_UNIT_TESTS=ON` argument to the configuration.
-- [Benchmark application](Benchmark/) (optional): add the `-DPLAYRHO_BUILD_BENCHMARK=ON` argument to the configuration.
-- [Testbed application](Testbed/) (optional): add the `-DPLAYRHO_BUILD_TESTBED=ON` argument to the configuration.
-
-Some components may need additional arguments that may also depend on the target platform.
-See the documentation for each component to learn more about that component and about its specific prerequisites and necessary command line arguments.
+The following instructions are oriented towards using CMake.
 
 ## Supported Platforms
 
@@ -49,16 +39,18 @@ All of these steps assume they're run from the same working directory.
 
 If you don't already have access to the source code, use **one** of the following methods to get it.
 
-#### Download ZIP
+<details>
+<summary>Download the source code as a compressed file.</summary>
+If you only want to build the source code and aren't interested in its development, you can just download a *ZIP*  or *tar* file of the code.
+For example, to download the latest release source code:
 
-If you only want to build the source code and aren't interested in its development, you can just download a ZIP file of the latest code:
+1. Visit [latest release](https://github.com/louis-langholtz/PlayRho/releases/latest) and follow the link for the source code asset of the type you want to download.
+1. Uncompress and extract it (i.e. unzip or untar it), if not done automatically for you by your download application.
+1. Rename the extracted directory to `PlayRho` (or whatever but then remember the name and replace `PlayRho` in these next steps with it).
+</details>
 
-1. Download [master.zip](https://github.com/louis-langholtz/PlayRho/archive/refs/heads/master.zip).
-2. Unzip it, if not done automatically for you by your download application.
-3. Rename the unzipped directory to `PlayRho`.
-
-#### Git Clone
-
+<details>
+<summary>Git clone the source code.</summary>
 If you might be interested in helping development of this project or prefer using `git`:
 
 ```sh
@@ -67,42 +59,47 @@ git clone https://github.com/louis-langholtz/PlayRho.git
 
 This should work fine for building the base library component.
 This should also work fine now for the application components, so long as you use CMake in the following steps.
+</details>
 
-#### Recursive Git Clone
-
+<details>
+<summary>Git recursive clone the source code.</summary>
 Alternatively, like if you want to try building without CMake via Xcode for example, do a recursive clone:
 
 ```sh
 git clone --recurse-submodules https://github.com/louis-langholtz/PlayRho.git
 ```
+</details>
 
 ### Configure
 
 This step sets up things for future steps, like what components are to be built, how they are to be built, and where they are to be installed.
 This step depends heavily on the components chosen, how you want them built, and possibly the platform they are built on.
-Follow the above links for each component you're interested in to read about the configuration arguments needed for that component and possibly for the target platform.
 
-For example, to only build the library component using the CMake default generator and compiler environment, run the following:
+For example, to build just the [library](Library) component using the CMake default generator and compiler environment, run the following:
 
 ```sh
 cmake -S PlayRho -B PlayRhoBuild
 ```
 
-Or, to build it all:
+#### Configuration Options
 
-```sh
-cmake -S PlayRho -B PlayRhoBuild -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_BENCHMARK=ON -DPLAYRHO_BUILD_TESTBED=ON -DPLAYRHO_BUILD_HELLOWORLD=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-```
+Append the arguments for any additional components you want to build.
+Here's the list of available components and the arguments they each **minimally** need to be a part of the build:
 
-Or, to use a non-default compiler tool chain like from `/opt/homebrew/opt/llvm/`:
+- [Hello world application](HelloWorld/), append: `-DPLAYRHO_BUILD_HELLOWORLD=ON`.
+- [Unit test application](UnitTests/), append: `-DPLAYRHO_BUILD_UNIT_TESTS=ON`.
+- [Benchmark application](Benchmark/), append: `-DPLAYRHO_BUILD_BENCHMARK=ON`.
+- [Testbed application](Testbed/), append: `-DPLAYRHO_BUILD_TESTBED=ON`.
 
-```sh
-CC=/opt/homebrew/opt/llvm/bin/clang CXX=/opt/homebrew/opt/llvm/bin/clang++ LDFLAGS='-L/opt/homebrew/opt/llvm/lib/c++' cmake -S PlayRho -B PlayRhoBuild
-```
+<strong>Some of these may need additional arguments that may also depend on the target platform.</strong>
+See the documentation for each component to learn more about that component and about its specific prerequisites and necessary command line arguments.
 
-#### Additional Options
+To have CMake export compile commands for tools like `run-clang-tidy`, append: `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON`.
 
-For a listing of non-advanced configuration options, run:
+Or, to use a non-default compiler tool chain like from `/opt/homebrew/opt/llvm/`, add the following **before** the `cmake` command:
+`CC=/opt/homebrew/opt/llvm/bin/clang CXX=/opt/homebrew/opt/llvm/bin/clang++ LDFLAGS='-L/opt/homebrew/opt/llvm/lib/c++'`.
+
+For a listing of non-advanced CMake configuration options, run:
 ```sh
 cmake -LH -S PlayRho -B PlayRhoBuild
 ```
@@ -129,18 +126,14 @@ To install the configured components into CMake's default locations, just run th
 cmake --install PlayRhoBuild
 ```
 
-Or, to specify a prefix like `PlayRhoInstall`:
-
-```sh
-cmake --install PlayRhoBuild --prefix PlayRhoInstall
-```
+To specify a prefix like `PlayRhoInstall`, append the following arguments: `--prefix PlayRhoInstall`.
 
 See CMake's [Install a Project](https://cmake.org/cmake/help/latest/manual/cmake.1.html#install-a-project) webpage for more info.
 
-## TLDR
+## TL;DR
 
 ```sh
-git clone --recurse-submodules https://github.com/louis-langholtz/PlayRho.git
+git clone https://github.com/louis-langholtz/PlayRho.git
 cmake -S PlayRho -B PlayRhoBuild
 cmake --build PlayRhoBuild --config Release
 cmake --install PlayRhoBuild
