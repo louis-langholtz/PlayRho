@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"ConstraintSolverConf_8hpp.html#a56b5137ea90045d15dfb2279d5773b46":[5,0,0,0,0,6,2],
 "ConstraintSolverConf_8hpp.html#aacaf6573afe5f3fb0803faa353dc9c65":[5,0,0,0,0,6,3],
 "ConstraintSolverConf_8hpp.html#afdb8daa84d36ac948934ee05eb4cb242":[5,0,0,0,0,6,4],
 "ContactFeature_8hpp.html":[5,0,0,0,0,9],
@@ -249,5 +248,6 @@ var NAVTREEINDEX1 =
 "FrictionJointConf_8hpp.html#a91ac3d07e13f9277632001e8f02de54f":[5,0,0,0,0,0,20,4],
 "FrictionJointConf_8hpp.html#aa4c803913d2f6a3ee31e06060f65883f":[5,0,0,0,0,0,20,14],
 "FrictionJointConf_8hpp.html#aba8162d50c28927d87bdf7e29aa8afe0":[5,0,0,0,0,0,20,5],
-"FrictionJointConf_8hpp.html#acfc7a47e907d3aaf399a7919896f3571":[5,0,0,0,0,0,20,11]
+"FrictionJointConf_8hpp.html#acfc7a47e907d3aaf399a7919896f3571":[5,0,0,0,0,0,20,11],
+"FrictionJointConf_8hpp.html#ad1b04b7a4e640bfbdaffe5612a3dc3fe":[5,0,0,0,0,0,20,7]
 };
