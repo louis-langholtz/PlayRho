@@ -405,6 +405,7 @@
 		991988302ACE15D10076F969 /* ConvexHull.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9919882F2ACE15D10076F969 /* ConvexHull.hpp */; };
 		991988322ACE31D00076F969 /* ConvexHull.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 991988312ACE31D00076F969 /* ConvexHull.cpp */; };
 		991988342ACEA0780076F969 /* NgonWithFwdNormals.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 991988332ACEA0780076F969 /* NgonWithFwdNormals.hpp */; };
+		9919883A2AD5FEE80076F969 /* IslandStats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 991988392AD5FEE80076F969 /* IslandStats.cpp */; };
 		9921FFD729AD43C30043F23F /* TypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9921FFD629AD43C30043F23F /* TypeInfo.cpp */; };
 		996B7B832A6DF1A500A8207F /* PoolMemoryResource.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */; };
 		996B7B842A6DF1A500A8207F /* MemoryResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */; };
@@ -903,6 +904,7 @@
 		9919882F2ACE15D10076F969 /* ConvexHull.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConvexHull.hpp; sourceTree = "<group>"; };
 		991988312ACE31D00076F969 /* ConvexHull.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConvexHull.cpp; sourceTree = "<group>"; };
 		991988332ACEA0780076F969 /* NgonWithFwdNormals.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NgonWithFwdNormals.hpp; sourceTree = "<group>"; };
+		991988392AD5FEE80076F969 /* IslandStats.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IslandStats.cpp; sourceTree = "<group>"; };
 		9921FFD629AD43C30043F23F /* TypeInfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TypeInfo.cpp; sourceTree = "<group>"; };
 		996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PoolMemoryResource.hpp; sourceTree = "<group>"; };
 		996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryResource.cpp; sourceTree = "<group>"; };
@@ -1019,6 +1021,7 @@
 				474BC3FB1D41278800447DCD /* IndexPair.cpp */,
 				472E24651F82C4EA0051E192 /* Interval.cpp */,
 				4731DDFB1DC8FBEE00E7F931 /* Island.cpp */,
+				991988392AD5FEE80076F969 /* IslandStats.cpp */,
 				475A945C1D959537000CA9A8 /* Joint.cpp */,
 				474BC3FC1D41278800447DCD /* main.cpp */,
 				474BC3FD1D41278800447DCD /* Manifold.cpp */,
@@ -1944,6 +1947,7 @@
 				474BC43C1D413DC200447DCD /* Vec2.cpp in Sources */,
 				47C85D101EFAE37B00F70C56 /* GearJoint.cpp in Sources */,
 				475931D21F26ABBD009BACA3 /* Filter.cpp in Sources */,
+				9919883A2AD5FEE80076F969 /* IslandStats.cpp in Sources */,
 				47250DA11FEAD20C00FDDE1C /* StepStats.cpp in Sources */,
 				47327E751E9F1E2A0048FCD8 /* TargetJoint.cpp in Sources */,
 				996B7B8D2A6DF25200A8207F /* PoolMemoryResource.cpp in Sources */,
