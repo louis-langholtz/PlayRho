@@ -37,9 +37,23 @@ struct IslandStats
     BodyCounter bodiesSlept = 0; ///< Bodies slept.
     ContactCounter contactsUpdated = 0; ///< Contacts updated.
     ContactCounter contactsSkipped = 0; ///< Contacts skipped.
-    bool solved = false; ///< Solved. <code>true</code> if position constraints solved, <code>false</code> otherwise.
+    bool solved = false; ///< Whether position constraints solved.
     TimestepIters positionIters = 0; ///< Position iterations actually performed.
     TimestepIters velocityIters = 0; ///< Velocity iterations actually performed.
+
+    /// @brief Increment contacts updated.
+    constexpr IslandStats& IncContactsUpdated(ContactCounter value) noexcept
+    {
+        contactsUpdated += value;
+        return *this;
+    }
+
+    /// @brief Increment contacts skipped.
+    constexpr IslandStats& IncContactsSkipped(ContactCounter value) noexcept
+    {
+        contactsSkipped += value;
+        return *this;
+    }
 };
 
 } // namespace playrho
