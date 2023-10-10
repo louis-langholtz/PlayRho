@@ -3,7 +3,9 @@
 This project can be built different ways depending on things like what components are desired to be built and the target platform.
 It can then be installed into your system, or included and linked into your applications.
 
-The following instructions are oriented towards using [CMake](https://cmake.org/) and from a command line.
+The following instructions are oriented towards building the project yourself using [CMake](https://cmake.org/), and doing so through a command line interface.
+
+Alternatively, if you don't want to build the project yourself, you may be able find a package for your platform through a site like [repology.org](https://repology.org/projects/?search=playrho).
 
 ## Supported Platforms
 
