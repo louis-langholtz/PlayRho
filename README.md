@@ -11,6 +11,7 @@
 [![API Documentation](https://github.com/louis-langholtz/PlayRho/actions/workflows/docs.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/docs.yml)
 [![CodeQL](https://github.com/louis-langholtz/PlayRho/actions/workflows/codeql.yml/badge.svg)](https://github.com/louis-langholtz/PlayRho/actions/workflows/codeql.yml)
 [![Coverage Status](https://coveralls.io/repos/github/louis-langholtz/PlayRho/badge.svg?branch=master)](https://coveralls.io/github/louis-langholtz/PlayRho?branch=master)
+[![latest packaged version(s)](https://repology.org/badge/latest-versions/playrho.svg?header=latest%20packaged)](https://repology.org/project/playrho/versions)
 [![Ask questions at StackOverflow with the tag playrho](https://img.shields.io/badge/stackoverflow-playrho-blue.svg)](https://stackoverflow.com/questions/tagged/playrho)
 
 *A way to play with physical behaviors like the conservation of momentum.*
