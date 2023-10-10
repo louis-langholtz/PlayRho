@@ -1702,9 +1702,8 @@ IslandStats AabbTreeWorld::SolveToi(ContactID contactID, const StepConf& conf)
     //   Here's some specific behavioral differences:
     //   1. Bodies don't get their under-active times reset (like they do in Erin's code).
 
-    auto contactsUpdated = ContactCounter{0};
-    auto contactsSkipped = ContactCounter{0};
-
+    auto numUpdated = ContactCounter{0};
+    auto numSkipped = ContactCounter{0};
     auto& contact = m_contactBuffer[to_underlying(contactID)];
 
     /*
@@ -1739,7 +1738,7 @@ IslandStats AabbTreeWorld::SolveToi(ContactID contactID, const StepConf& conf)
         SetEnabled(contact);
         assert(contact.NeedsUpdating());
         Update(contactID, GetUpdateConf(conf));
-        ++contactsUpdated;
+        ++numUpdated;
 
         SetToi(contact, {});
         contact.IncrementToiCount();
@@ -1758,10 +1757,7 @@ IslandStats AabbTreeWorld::SolveToi(ContactID contactID, const StepConf& conf)
             //contact.UnsetEnabled();
             SetSweep(bA, backupA);
             SetSweep(bB, backupB);
-            auto results = IslandStats{};
-            results.contactsUpdated += contactsUpdated;
-            results.contactsSkipped += contactsSkipped;
-            return results;
+            return IslandStats{}.IncContactsUpdated(numUpdated).IncContactsSkipped(numSkipped);
         }
     }
     if (IsSpeedable(bA)) {
@@ -1797,13 +1793,13 @@ IslandStats AabbTreeWorld::SolveToi(ContactID contactID, const StepConf& conf)
     // bodies sweeps and transforms to the minimum contact's TOI.
     if (IsAccelerable(bA)) {
         const auto procOut = ProcessContactsForTOI(bodyIdA, island, toi, conf);
-        contactsUpdated += procOut.contactsUpdated;
-        contactsSkipped += procOut.contactsSkipped;
+        numUpdated += procOut.contactsUpdated;
+        numSkipped += procOut.contactsSkipped;
     }
     if (IsAccelerable(bB)) {
         const auto procOut = ProcessContactsForTOI(bodyIdB, island, toi, conf);
-        contactsUpdated += procOut.contactsUpdated;
-        contactsSkipped += procOut.contactsSkipped;
+        numUpdated += procOut.contactsUpdated;
+        numSkipped += procOut.contactsSkipped;
     }
 
 #if defined(DO_SORT_ISLANDS)
@@ -1814,10 +1810,7 @@ IslandStats AabbTreeWorld::SolveToi(ContactID contactID, const StepConf& conf)
     // Now solve for remainder of time step.
     auto subConf = StepConf{conf};
     subConf.deltaTime = (Real(1) - toi) * conf.deltaTime;
-    auto results = SolveToiViaGS(island, subConf);
-    results.contactsUpdated += contactsUpdated;
-    results.contactsSkipped += contactsSkipped;
-    return results;
+    return SolveToiViaGS(island, subConf).IncContactsUpdated(numUpdated).IncContactsSkipped(numSkipped);
 }
 
 IslandStats AabbTreeWorld::SolveToiViaGS(const Island& island, const StepConf& conf)
