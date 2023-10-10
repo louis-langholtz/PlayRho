@@ -1,5 +1,7 @@
 var NAVTREEINDEX22 =
 {
+"structplayrho_1_1Island.html#af88299f9e7e8de27e99538b841a28617":[4,0,0,20,2],
+"structplayrho_1_1Island.html#afe55aebe111938ee3a269e3df5ee042d":[4,0,0,20,14],
 "structplayrho_1_1IslandStats.html":[4,0,0,21],
 "structplayrho_1_1IslandStats.html#a0e77adb6237f10240ff654d4b568baf7":[4,0,0,21,0],
 "structplayrho_1_1IslandStats.html#a26a43c272d9953c4e7ca5f8c98339a35":[4,0,0,21,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX22 =
 "structplayrho_1_1Vector.html#aa368db46827a37158002ac586f3f55c2":[4,0,0,43,11],
 "structplayrho_1_1Vector.html#aa7a558d2ae6d126fd6565ee121d020bb":[4,0,0,43,33],
 "structplayrho_1_1Vector.html#aa90e470ba330d396ba83db1dc29b9522":[4,0,0,43,27],
-"structplayrho_1_1Vector.html#ab0d92fceef8d7757ae713bd166391c21":[4,0,0,43,51],
-"structplayrho_1_1Vector.html#ab8f7823fbdb7a68dcc009294228f0b9f":[4,0,0,43,19],
-"structplayrho_1_1Vector.html#ac0ee63043ed80188d8e400b7de4668aa":[4,0,0,43,21]
+"structplayrho_1_1Vector.html#ab0d92fceef8d7757ae713bd166391c21":[4,0,0,43,51]
 };

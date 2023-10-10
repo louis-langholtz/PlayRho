@@ -1,5 +1,8 @@
 var NAVTREEINDEX2 =
 {
+"FrictionJointConf_8hpp.html#ad1b04b7a4e640bfbdaffe5612a3dc3fe":[5,0,0,0,0,0,20,7],
+"FrictionJointConf_8hpp.html#adb48ff4223599c7af13fe487370e9933":[5,0,0,0,0,0,20,2],
+"FrictionJointConf_8hpp.html#ade895bb6a4e1b45bc803784534f2ffb2":[5,0,0,0,0,0,20,1],
 "FrictionJointConf_8hpp.html#ae208174e24b40f42ba8c5926dd2598a5":[5,0,0,0,0,0,20,3],
 "FrictionJointConf_8hpp.html#afa6324a364b2b89057a749a5032ff720":[5,0,0,0,0,0,20,10],
 "FrictionJoint_8cpp-example.html":[6,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX2 =
 "Matrix_8hpp.html#a38be88271d1aa1c71ad994a9d5e1df77":[5,0,0,0,0,31,11],
 "Matrix_8hpp.html#a40b372974bcf478fe0254a0a29a2dd14":[5,0,0,0,0,31,9],
 "Matrix_8hpp.html#a41f0c49a750ed51bb02cef10158e8d7f":[5,0,0,0,0,31,13],
-"Matrix_8hpp.html#a507cf0b47bd41371f90aa8f78f1d7c8a":[5,0,0,0,0,31,0],
-"Matrix_8hpp.html#a83567b7faf3c7de0399b0b88fe1cc9f5":[5,0,0,0,0,31,15],
-"Matrix_8hpp.html#a89118d71eeeffa541c76f6d566a8546d":[5,0,0,0,0,31,14],
-"Matrix_8hpp.html#a92e228aada1d7ca23d9f6c2c9ce3b415":[5,0,0,0,0,31,6]
+"Matrix_8hpp.html#a507cf0b47bd41371f90aa8f78f1d7c8a":[5,0,0,0,0,31,0]
 };
