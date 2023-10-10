@@ -3,7 +3,7 @@
 This project can be built different ways depending on things like what components are desired to be built and the target platform.
 It can then be installed into your system, or included and linked into your applications.
 
-The following instructions are oriented towards using CMake.
+The following instructions are oriented towards using [CMake](https://cmake.org/) and from a command line.
 
 ## Supported Platforms
 
@@ -26,18 +26,18 @@ and to ensure that they are installed.
 
 All of the components minimally require the following:
 
-- A command line shell/window like `bash`. For Windows, see https://learn.microsoft.com/en-us/windows/terminal/.
-- **A C++17 compiler suite**: That could be Microsoft's Visual C++, GNU's GCC, or LLVM's Clang. On Microsoft Windows platforms, you can get a complete C++17 compiler suite by getting Microsoft's Visual Studio from https://www.visualstudio.com/downloads/.
-- **git**: If you don't already have Git installed, it can be obtained from: https://git-scm.com/downloads.
 - **CMake**: If you don't have version 3.16.3 or higher of CMake installed on your system, the latest releases of CMake can be obtained from https://cmake.org/. Note that it's possible to skip this prerequisite, but it's not recommended nor as well supported.
+- **A C++17 compiler suite**: That could be Microsoft's Visual C++, GNU's GCC, or LLVM's Clang. On Microsoft Windows platforms, you can get a complete C++17 compiler suite by getting Microsoft's Visual Studio from https://www.visualstudio.com/downloads/.
+- A command line shell/window like `bash`. For Windows, see https://learn.microsoft.com/en-us/windows/terminal/.
+- **git**: If you don't already have Git installed, it can be obtained from: https://git-scm.com/downloads.
 
 ## Steps
 
 All of these steps assume they're run from the same working directory.
 
-### Get Access
+### Get Source Code Access
 
-If you don't already have access to the source code, use **one** of the following methods to get it.
+If you don't already have access to the source code, use **one** of the following methods to get it:
 
 <details>
 <summary>Download the source code as a compressed file.</summary>
@@ -86,27 +86,24 @@ cmake -S PlayRho -B PlayRhoBuild
 Append the arguments for any additional components you want to build.
 Here's the list of available components and the arguments they each **minimally** need to be a part of the build:
 
-- [Hello world application](HelloWorld/), append: `-DPLAYRHO_BUILD_HELLOWORLD=ON`.
-- [Unit test application](UnitTests/), append: `-DPLAYRHO_BUILD_UNIT_TESTS=ON`.
-- [Benchmark application](Benchmark/), append: `-DPLAYRHO_BUILD_BENCHMARK=ON`.
-- [Testbed application](Testbed/), append: `-DPLAYRHO_BUILD_TESTBED=ON`.
+- [Hello world](HelloWorld/) application, append: `-DPLAYRHO_BUILD_HELLOWORLD=ON`.
+- [Unit test](UnitTests/) application, append: `-DPLAYRHO_BUILD_UNIT_TESTS=ON`.
+- [Benchmark](Benchmark/) application, append: `-DPLAYRHO_BUILD_BENCHMARK=ON`.
+- [Testbed](Testbed/) application, append: `-DPLAYRHO_BUILD_TESTBED=ON`.
 
 <strong>Some of these may need additional arguments that may also depend on the target platform.</strong>
 See the documentation for each component to learn more about that component and about its specific prerequisites and necessary command line arguments.
 
-To have CMake export compile commands for tools like `run-clang-tidy`, append: `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON`.
-
-Or, to use a non-default compiler tool chain like from `/opt/homebrew/opt/llvm/`, add the following **before** the `cmake` command:
-`CC=/opt/homebrew/opt/llvm/bin/clang CXX=/opt/homebrew/opt/llvm/bin/clang++ LDFLAGS='-L/opt/homebrew/opt/llvm/lib/c++'`.
+Here's some component independent options and the arguments they need:
+- Export compile commands (for tools like `run-clang-tidy`), append: `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON`.
+- Use double precision floating point (instewd of single precision), append: `-DPLAYRHO_REAL_TYPE=double`.
+- Do shared linkage (instead of static linkage), append: `-DBUILD_SHARED_LIBS=ON`.
+- Override default compiler tool chain like from `/opt/homebrew/opt/llvm/`, add **before** the `cmake` command: `CC=/opt/homebrew/opt/llvm/bin/clang CXX=/opt/homebrew/opt/llvm/bin/clang++ LDFLAGS='-L/opt/homebrew/opt/llvm/lib/c++'`.
 
 For a listing of non-advanced CMake configuration options, run:
 ```sh
 cmake -LH -S PlayRho -B PlayRhoBuild
 ```
-
-For example:
-- To specify the use of double precision floating point arithmetic, add `-DPLAYRHO_REAL_TYPE=double`.
-- To use shared linkage (instead of static linkage), add `-DBUILD_SHARED_LIBS=ON`.
 
 ### Build
 
