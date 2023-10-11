@@ -15,17 +15,15 @@ All components are known to build, and the library to validate, on the following
 - [Ubuntu Linux (Debug)](.github/workflows/linux-debug.yml).
 - [Windows "2019" (Win32, x64 for Release & Debug)](.github/workflows/windows.yml).
 
-While the library itself should be buildable on any platform having a C++17 or higher standards compliant compiler,
-other components may have dependencies that make them harder to build and available to less target platforms.
+While the library itself should be buildable on any platform having a C++17 or higher standards compliant compiler, other components may have dependencies that make them harder to build and available to less target platforms.
 
-**NOTE**: These sources make heavy use of the standard C++ library [`assert`](http://en.cppreference.com/w/cpp/error/assert) macro to help confirm correctness of the code logic. As such, this library needs to be compiled with the `NDEBUG` pre-processor macro enabled to disable these asserts, and of course optimization turned on, to see any kind of performance. Add the command line arguments `--config Release` to the build step to ensure built code is optimized and the performance degrading asserts are not included.
+**NOTE**: These sources make heavy use of the standard C++ library [`assert`](http://en.cppreference.com/w/cpp/error/assert) macro to help confirm correctness of the code logic.
+As such, this library needs to be compiled with the `NDEBUG` pre-processor macro enabled to disable these asserts, and of course optimization turned on, to see any kind of performance.
+Add the command line arguments `--config Release` to the build step to ensure built code is optimized and the performance degrading asserts are not included.
 
 ## Prerequisites
 
 The necessary installed prerequisites depend on the components to be built and the platform they are built on.
-Follow the above links for each component you want to build to read about the prerequisites needed for that component
-and to ensure that they are installed.
-
 All of the components minimally require the following:
 
 - **CMake**: If you don't have version 3.16.3 or higher of CMake installed on your system, the latest releases of CMake can be obtained from https://cmake.org/. Note that it's possible to skip this prerequisite, but it's not recommended nor as well supported.
@@ -74,7 +72,7 @@ git clone --recurse-submodules https://github.com/louis-langholtz/PlayRho.git
 
 ### Configure
 
-This step sets up things for future steps, like what components are to be built, how they are to be built, and where they are to be installed.
+This step configures things for future steps, like what components are to be built, how they are to be built, and where they are to be installed.
 This step depends heavily on the components chosen, how you want them built, and possibly the platform they are built on.
 
 For example, to build just the [library](Library) component using the CMake default generator and compiler environment, run the following:
@@ -94,15 +92,17 @@ Here's the list of available components and the arguments they each **minimally*
 - [Testbed](Testbed/) application, append: `-DPLAYRHO_BUILD_TESTBED=ON`.
 
 <strong>Some of these may need additional arguments that may also depend on the target platform.</strong>
-See the documentation for each component to learn more about that component and about its specific prerequisites and necessary command line arguments.
+Follow the links for each component you're interested in to see specific documentation for that component such as prerequisites it may have and additional command line arguments.
 
-Here's some component independent options and the arguments they need:
+Here's some **component independent** options and the arguments they need:
+
 - Export compile commands (for tools like `run-clang-tidy`), append: `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON`.
-- Use double precision floating point (instewd of single precision), append: `-DPLAYRHO_REAL_TYPE=double`.
+- Use double precision floating point (instead of single precision), append: `-DPLAYRHO_REAL_TYPE=double`.
 - Do shared linkage (instead of static linkage), append: `-DBUILD_SHARED_LIBS=ON`.
 - Override default compiler tool chain like from `/opt/homebrew/opt/llvm/`, add **before** the `cmake` command: `CC=/opt/homebrew/opt/llvm/bin/clang CXX=/opt/homebrew/opt/llvm/bin/clang++ LDFLAGS='-L/opt/homebrew/opt/llvm/lib/c++'`.
 
 For a listing of non-advanced CMake configuration options, run:
+
 ```sh
 cmake -LH -S PlayRho -B PlayRhoBuild
 ```
@@ -140,6 +140,6 @@ cmake --install PlayRhoBuild
 
 These steps assume that:
 - You only want to build the library component and want it optimized for fastest performance.
-- You want to install these components into CMake's default paths.
-- The necessary prerequisites for the components have already been installed.
+- You want to install it into CMake's default paths.
+- The necessary prerequisites have already been installed.
 
