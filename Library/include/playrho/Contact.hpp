@@ -853,10 +853,27 @@ constexpr void SetTangentSpeed(Contact& contact, LinearVelocity value) noexcept
 
 /// @brief Is-for convenience function.
 /// @return true if contact is for the identified body and shape, else false.
+/// @relatedalso Contact
 constexpr bool IsFor(const Contact& c, BodyID bodyID, ShapeID shapeID) noexcept
 {
     return IsFor(c.GetContactableA(), bodyID, shapeID) // force newline
         || IsFor(c.GetContactableB(), bodyID, shapeID);
+}
+
+/// @brief Is-for convenience function.
+/// @return true if contact is for the identified shape, else false.
+/// @relatedalso Contact
+constexpr bool IsFor(const Contact& c, ShapeID shapeID) noexcept
+{
+    return (GetShapeA(c) == shapeID) || (GetShapeB(c) == shapeID);
+}
+
+/// @Brief Gets the other body ID for the contact than the one given.
+/// @relatedalso Contact
+constexpr auto GetOtherBody(const Contact& c, BodyID bodyID) noexcept
+{
+    return (c.GetContactableA().bodyId != bodyID)
+        ? c.GetContactableA().bodyId: c.GetContactableB().bodyId;
 }
 
 } // namespace playrho
