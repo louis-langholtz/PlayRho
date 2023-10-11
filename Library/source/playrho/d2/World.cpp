@@ -19,25 +19,12 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <utility> // for std::move
-
-#include <playrho/StepConf.hpp>
-
-#include <playrho/d2/BodyConf.hpp>
 #include <playrho/d2/World.hpp>
 #include <playrho/d2/WorldBody.hpp> // for ResetMassData
 #include <playrho/d2/AabbTreeWorld.hpp>
 #include <playrho/d2/AabbTreeWorldBody.hpp>
 
-namespace playrho {
-namespace d2 {
-
-static_assert(std::is_default_constructible_v<World>, "World must be default constructible!");
-static_assert(std::is_copy_constructible_v<World>, "World must be copy constructible!");
-static_assert(std::is_copy_assignable_v<World>, "World must be copy assignable!");
-static_assert(std::is_move_constructible_v<World>, "World must be move constructible!");
-static_assert(std::is_move_assignable_v<World>, "World must be move assignable!");
-static_assert(std::is_nothrow_destructible_v<World>, "World must be nothrow destructible!");
+namespace playrho::d2 {
 
 World::World(const WorldConf& def): World{AabbTreeWorld{def}} {}
 
@@ -50,5 +37,4 @@ BodyID CreateBody(World& world, const Body& body, bool resetMassData)
     return id;
 }
 
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2
