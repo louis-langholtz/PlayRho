@@ -175,7 +175,7 @@ TEST(Contact, GetContactableB)
     EXPECT_EQ(contact.GetContactableB().childId, childIndexB);
 }
 
-TEST(Contact, IsFor)
+TEST(Contact, IsForBodyShape)
 {
     const auto bodyIdA = BodyID(1u);
     const auto shapeIdA = ShapeID(2u);
@@ -189,4 +189,32 @@ TEST(Contact, IsFor)
     EXPECT_FALSE(IsFor(contact, bodyIdA, shapeIdB));
     EXPECT_FALSE(IsFor(contact, bodyIdB, shapeIdA));
     EXPECT_FALSE(IsFor(contact, BodyID(0u), ShapeID(0)));
+}
+
+TEST(Contact, IsForShape)
+{
+    const auto bodyIdA = BodyID(1u);
+    const auto shapeIdA = ShapeID(2u);
+    const auto childIndexA = ChildCounter(3u);
+    const auto bodyIdB = BodyID(4u);
+    const auto shapeIdB = ShapeID(5u);
+    const auto childIndexB = ChildCounter(6u);
+    const auto contact = Contact({bodyIdA, shapeIdA, childIndexA}, {bodyIdB, shapeIdB, childIndexB});
+    const auto shapeIdC = ShapeID(42u);
+    EXPECT_TRUE(IsFor(contact, shapeIdA));
+    EXPECT_TRUE(IsFor(contact, shapeIdB));
+    EXPECT_FALSE(IsFor(contact, shapeIdC));
+}
+
+TEST(Contact, GetOtherBody)
+{
+    const auto bodyIdA = BodyID(1u);
+    const auto shapeIdA = ShapeID(2u);
+    const auto childIndexA = ChildCounter(3u);
+    const auto bodyIdB = BodyID(4u);
+    const auto shapeIdB = ShapeID(5u);
+    const auto childIndexB = ChildCounter(6u);
+    const auto contact = Contact({bodyIdA, shapeIdA, childIndexA}, {bodyIdB, shapeIdB, childIndexB});
+    EXPECT_EQ(GetOtherBody(contact, bodyIdA), bodyIdB);
+    EXPECT_EQ(GetOtherBody(contact, bodyIdB), bodyIdA);
 }
