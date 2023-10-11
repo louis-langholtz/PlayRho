@@ -543,6 +543,11 @@ inline ContactCounter GetContactCount(const World& world) noexcept
 ///   in his January 2017 Norwegian Developers Conference London talk "Better Code: Runtime
 ///   Polymorphism".
 ///
+/// @invariant <code>GetType(const World& world)</code> for a world in a valid and specified
+///   state, always returns the ID for the type which a @c TypeCast function template can be
+///   instantiated for when called with the @c world object, to access the underlying typed
+///   data of that world.
+///
 /// @attention For example, the following could be used to create a dynamic body having a one
 ///   meter radius disk shape:
 /// @code{.cpp}
@@ -567,7 +572,6 @@ public:
     /// @param def A customized world configuration or its default value.
     /// @note A lot more configurability can be had via the <code>StepConf</code>
     ///   data that's given to the <code>Step(World&, const StepConf&)</code> function.
-    /// @throws InvalidArgument if the given max vertex radius is less than the min.
     /// @see Step(World&, const StepConf&).
     explicit World(const WorldConf& def = WorldConf{});
 
@@ -635,15 +639,11 @@ public:
     friend void SetPostSolveContactListener(World& world, ImpulsesContactListener listener) noexcept;
 
     // Miscellaneous friend functions...
-
     friend TypeID GetType(const World& world) noexcept;
-
     template <typename T>
     friend std::add_pointer_t<std::add_const_t<T>> TypeCast(const World* value) noexcept;
-
     template <typename T>
     friend std::add_pointer_t<T> TypeCast(World* value) noexcept;
-
     friend void Clear(World& world) noexcept;
     friend StepStats Step(World& world, const StepConf& conf);
     friend bool IsStepComplete(const World& world) noexcept;
@@ -1044,7 +1044,6 @@ private:
         virtual Manifold GetManifold_(ContactID id) const = 0;
 
         /// @}
-
     };
 
     template <class T>
