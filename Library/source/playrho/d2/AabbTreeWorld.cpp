@@ -394,10 +394,7 @@ bool FlagForFiltering(ObjectPool<Contact>& contactBuffer, BodyID bodyA,
     auto anyFlagged = false;
     for (const auto& ci: contactsBodyB) {
         auto& contact = contactBuffer[to_underlying(std::get<ContactID>(ci))];
-        const auto bA = GetBodyA(contact);
-        const auto bB = GetBodyB(contact);
-        const auto other = (bA != bodyB)? bA: bB;
-        if (other == bodyA) {
+        if (GetOtherBody(contact, bodyB) == bodyA) {
             // Flag the contact for filtering at the next time step (where either
             // body is awake).
             contact.FlagForFiltering();
@@ -535,6 +532,13 @@ auto FindTypeValue(const std::vector<Element>& container, const Value& value)
     return (it != last)? std::optional<decltype(it)>{it}: std::optional<decltype(it)>{};
 }
 
+template <class C, class V>
+auto Find(const C& c, const V& value) -> decltype(find(begin(c), end(c), value), bool{})
+{
+    const auto last = end(c);
+    return find(begin(c), last, value) != last;
+}
+
 void Erase(BodyContactIDs& contacts, const std::function<bool(ContactID)>& callback)
 {
     auto last = end(contacts);
@@ -609,29 +613,38 @@ auto ForMatchingProxies(const DynamicTree& tree, ShapeID shapeId, Function f)
 std::pair<std::vector<ShapeID>, std::vector<ShapeID>>
 GetOldAndNewShapeIDs(const Body& oldBody, const Body& newBody)
 {
-    auto oldShapeIds = std::vector<ShapeID>{};
-    auto newShapeIds = std::vector<ShapeID>{};
-    auto oldmap = std::map<ShapeID, int>{};
-    auto newmap = std::map<ShapeID, int>{};
-    for (auto&& i: oldBody.GetShapes()) {
-        ++oldmap[i];
-        --newmap[i];
-    }
-    for (auto&& i: newBody.GetShapes()) {
-        --oldmap[i];
-        ++newmap[i];
-    }
-    for (auto&& entry: oldmap) {
-        for (auto i = 0; i < entry.second; ++i) {
-            oldShapeIds.push_back(entry.first);
+    if (IsEnabled(oldBody) && IsEnabled(newBody)) {
+        auto oldShapeIds = std::vector<ShapeID>{};
+        auto newShapeIds = std::vector<ShapeID>{};
+        auto oldmap = std::map<ShapeID, int>{};
+        auto newmap = std::map<ShapeID, int>{};
+        for (auto&& i: oldBody.GetShapes()) {
+            ++oldmap[i];
+            --newmap[i];
         }
-    }
-    for (auto&& entry: newmap) {
-        for (auto i = 0; i < entry.second; ++i) {
-            newShapeIds.push_back(entry.first);
+        for (auto&& i: newBody.GetShapes()) {
+            --oldmap[i];
+            ++newmap[i];
         }
+        for (auto&& entry: oldmap) {
+            for (auto i = 0; i < entry.second; ++i) {
+                oldShapeIds.push_back(entry.first);
+            }
+        }
+        for (auto&& entry: newmap) {
+            for (auto i = 0; i < entry.second; ++i) {
+                newShapeIds.push_back(entry.first);
+            }
+        }
+        return {oldShapeIds, newShapeIds};
     }
-    return std::make_pair(oldShapeIds, newShapeIds);
+    if (IsEnabled(newBody)) {
+        return {std::vector<ShapeID>{}, newBody.GetShapes()};
+    }
+    if (IsEnabled(oldBody)) {
+        return {oldBody.GetShapes(), std::vector<ShapeID>{}};
+    }
+    return {};
 }
 
 template <class T, class U>
@@ -724,6 +737,68 @@ auto GetVelocityConstraintsOpts(const WorldConf& conf) -> pmr::PoolMemoryOptions
 auto GetProxyKeysOpts(const WorldConf& conf) -> pmr::PoolMemoryOptions
 {
     return {conf.reserveBuffers, conf.reserveContactKeys * sizeof(AabbTreeWorld::ProxyKey)};
+}
+
+auto IsGeomChanged(const Shape& shape0, const Shape& shape1) -> bool
+{
+    const auto numKids0 = GetChildCount(shape0);
+    const auto numKids1 = GetChildCount(shape1);
+    if (numKids0 != numKids1) {
+        return true;
+    }
+    for (auto child = 0u; child < numKids1; ++child) {
+        const auto distanceProxy0 = GetChild(shape0, child);
+        const auto distanceProxy1 = GetChild(shape1, child);
+        if (distanceProxy0 != distanceProxy1) {
+            return true;
+        }
+    }
+    return false;
+}
+
+auto Append(std::vector<std::pair<BodyID, ShapeID>>& fixtures,
+            BodyID bodyId, Span<const ShapeID> shapeIds) -> void
+{
+    for (const auto shapeId: shapeIds) {
+        fixtures.emplace_back(bodyId, shapeId);
+    }
+}
+
+template <class Container, class ElementType>
+auto Validate(const Container& container, const Span<const ElementType>& ids)
+-> decltype(container.at(to_underlying(ElementType{})), std::declval<void>())
+{
+    for (const auto& id: ids) {
+        container.at(to_underlying(id));
+    }
+}
+
+auto SetIsActive(ObjectPool<Contact>& contacts,
+                 const Span<const std::tuple<ContactKey, ContactID>>& bodyContacts) -> void
+{
+    for (const auto& elem: bodyContacts) {
+        contacts[to_underlying(std::get<ContactID>(elem))].SetIsActive();
+    }
+}
+
+auto UnsetIsActive(ObjectPool<Contact>& contacts, // force newline
+                   const Span<const std::tuple<ContactKey, ContactID>>& bodyContacts,
+                   BodyID id, // force newline
+                   const Span<const Body>& bodies) -> void
+{
+    // sleep associated contacts whose other body is also asleep
+    for (const auto& elem: bodyContacts) {
+        auto& contact = contacts[to_underlying(std::get<ContactID>(elem))];
+        if (!bodies[to_underlying(GetOtherBody(contact, id))].IsAwake()) {
+            contact.UnsetIsActive();
+        }
+    }
+}
+
+auto SetAwake(ObjectPool<Body>& bodies, const Contact& c) -> void
+{
+    bodies[to_underlying(GetBodyA(c))].SetAwake();
+    bodies[to_underlying(GetBodyB(c))].SetAwake();
 }
 
 } // anonymous namespace
@@ -881,10 +956,7 @@ BodyID CreateBody(AabbTreeWorld& world, Body body)
     if (size(world.m_bodies) >= MaxBodies) {
         throw LengthError("CreateBody: operation would exceed MaxBodies");
     }
-    // confirm all shapeIds are valid...
-    for (const auto& shapeId: body.GetShapes()) {
-        world.m_shapeBuffer.at(to_underlying(shapeId));
-    }
+    Validate(world.m_shapeBuffer, Span<const ShapeID>(body.GetShapes()));
     const auto id = static_cast<BodyID>(
         static_cast<BodyID::underlying_type>(world.m_bodyBuffer.Allocate(std::move(body))));
     world.m_islanded.bodies.resize(size(world.m_bodyBuffer));
@@ -897,10 +969,7 @@ BodyID CreateBody(AabbTreeWorld& world, Body body)
     world.m_bodies.push_back(id);
     const auto& bufferedBody = world.m_bodyBuffer[to_underlying(id)];
     if (IsEnabled(bufferedBody)) {
-        const auto shapes = bufferedBody.GetShapes();
-        for (const auto& shapeId: shapes) {
-            world.m_fixturesForProxies.emplace_back(id, shapeId);
-        }
+        Append(world.m_fixturesForProxies, id, bufferedBody.GetShapes());
     }
     return id;
 }
@@ -1153,65 +1222,47 @@ void SetShape(AabbTreeWorld& world, ShapeID id, Shape def) // NOLINT(readability
     if (world.m_shapeBuffer.FindFree(to_underlying(id))) {
         throw InvalidArgument(idIsDestroyedMsg);
     }
-    const auto geometryChanged = [](const Shape& shape0, const Shape& shape1){
-        const auto numKids0 = GetChildCount(shape0);
-        const auto numKids1 = GetChildCount(shape1);
-        if (numKids0 != numKids1) {
-            return true;
-        }
-        for (auto child = 0u; child < numKids1; ++child) {
-            const auto distanceProxy0 = GetChild(shape0, child);
-            const auto distanceProxy1 = GetChild(shape1, child);
-            if (distanceProxy0 != distanceProxy1) {
-                return true;
-            }
-        }
-        return false;
-    }(shape, def);
+    const auto geometryChanged = IsGeomChanged(shape, def);
     for (auto&& b: world.m_bodyBuffer) {
-        const auto bodyId = BodyID(static_cast<BodyID::underlying_type>(&b - data(world.m_bodyBuffer)));
-        for (const auto& shapeId: b.GetShapes()) {
-            if (shapeId == id) {
-                SetAwake(b);
-                if (geometryChanged && IsEnabled(b)) {
-                    auto& bodyProxies = world.m_bodyProxies[to_underlying(bodyId)];
-                    const auto lastProxy = end(bodyProxies);
-                    bodyProxies.erase(std::remove_if(begin(bodyProxies), lastProxy,
-                                                     [&world,shapeId](DynamicTree::Size idx){
-                        const auto leafData = world.m_tree.GetLeafData(idx);
-                        if (leafData.shapeId == shapeId) {
-                            world.m_tree.DestroyLeaf(idx);
-                            EraseFirst(world.m_proxiesForContacts, idx);
-                            return true;
-                        }
-                        return false;
-                    }), lastProxy);
-                    // Destroy any contacts associated with the fixture.
-                    Erase(world.m_bodyContacts[to_underlying(bodyId)], [&world,bodyId,shapeId,&b](ContactID contactID) {
-                        const auto& contact = world.m_contactBuffer[to_underlying(contactID)];
-                        if (!IsFor(contact, bodyId, shapeId)) {
-                            return false;
-                        }
-                        world.Destroy(contactID, &b);
-                        return true;
-                    });
-                    const auto fixture = std::make_pair(bodyId, shapeId);
-                    EraseAll(world.m_fixturesForProxies, fixture);
-                    DestroyProxies(world.m_tree, FindProxies(world.m_tree, bodyId, shapeId), world.m_proxiesForContacts);
-                    world.m_fixturesForProxies.push_back(fixture);
+        if (!Find(b.GetShapes(), id)) {
+            continue;
+        }
+        SetAwake(b);
+        if (geometryChanged && IsEnabled(b)) {
+            const auto bodyId = BodyID(static_cast<BodyID::underlying_type>(&b - data(world.m_bodyBuffer)));
+            auto& bodyProxies = world.m_bodyProxies[to_underlying(bodyId)];
+            const auto lastProxy = end(bodyProxies);
+            bodyProxies.erase(std::remove_if(begin(bodyProxies), lastProxy,
+                                             [&world,id](DynamicTree::Size idx){
+                const auto leafData = world.m_tree.GetLeafData(idx);
+                if (leafData.shapeId == id) {
+                    world.m_tree.DestroyLeaf(idx);
+                    EraseFirst(world.m_proxiesForContacts, idx);
+                    return true;
                 }
-            }
+                return false;
+            }), lastProxy);
+            // Destroy any contacts associated with the fixture.
+            Erase(world.m_bodyContacts[to_underlying(bodyId)], [&world,bodyId,id,&b](ContactID contactID) {
+                const auto& contact = world.m_contactBuffer[to_underlying(contactID)];
+                if (!IsFor(contact, bodyId, id)) {
+                    return false;
+                }
+                world.Destroy(contactID, &b);
+                return true;
+            });
+            const auto fixture = std::make_pair(bodyId, id);
+            EraseAll(world.m_fixturesForProxies, fixture);
+            DestroyProxies(world.m_tree, FindProxies(world.m_tree, bodyId, id), world.m_proxiesForContacts);
+            world.m_fixturesForProxies.push_back(fixture);
         }
     }
     if (GetFilter(shape) != GetFilter(def)) {
         auto anyNeedFiltering = false;
         for (auto& c: world.m_contactBuffer) {
-            const auto shapeIdA = GetShapeA(c);
-            const auto shapeIdB = GetShapeB(c);
-            if (shapeIdA == id || shapeIdB == id) {
-                c.FlagForFiltering();
-                world.m_bodyBuffer[to_underlying(GetBodyA(c))].SetAwake();
-                world.m_bodyBuffer[to_underlying(GetBodyB(c))].SetAwake();
+            if (IsFor(c, id)) {
+                FlagForFiltering(c);
+                SetAwake(world.m_bodyBuffer, c);
                 anyNeedFiltering = true;
             }
         }
@@ -1225,15 +1276,13 @@ void SetShape(AabbTreeWorld& world, ShapeID id, Shape def) // NOLINT(readability
     if ((IsSensor(shape) != IsSensor(def)) || (GetFriction(shape) != GetFriction(def)) ||
         (GetRestitution(shape) != GetRestitution(def)) || geometryChanged) {
         for (auto&& c: world.m_contactBuffer) {
-            if (GetShapeA(c) == id || GetShapeB(c) == id) {
-                c.FlagForUpdating();
-                world.m_bodyBuffer[to_underlying(GetBodyA(c))].SetAwake();
-                world.m_bodyBuffer[to_underlying(GetBodyB(c))].SetAwake();
+            if (IsFor(c, id)) {
+                FlagForUpdating(c);
+                SetAwake(world.m_bodyBuffer, c);
             }
         }
     }
     world.m_shapeBuffer[to_underlying(id)] = std::move(def);
-    // TODO: anything else that needs doing?
 }
 
 void AabbTreeWorld::AddToIsland(Island& island, BodyID seedID,
@@ -1313,9 +1362,7 @@ void AabbTreeWorld::AddContactsToIsland(Island& island, BodyStack& stack,
             const auto& contact = m_contactBuffer[to_underlying(contactID)];
             if (IsEnabled(contact) && IsTouching(contact) && !IsSensor(contact))
             {
-                const auto bodyA = GetBodyA(contact);
-                const auto bodyB = GetBodyB(contact);
-                const auto other = (bodyID != bodyA)? bodyA: bodyB;
+                const auto other = GetOtherBody(contact, bodyID);
                 island.contacts.push_back(contactID);
                 m_islanded.contacts[to_underlying(contactID)] = true;
                 if (!m_islanded.bodies[to_underlying(other)])
@@ -1937,9 +1984,7 @@ AabbTreeWorld::ProcessContactsForTOI( // NOLINT(readability-function-cognitive-c
         if (!m_islanded.contacts[to_underlying(contactID)]) {
             auto& contact = m_contactBuffer[to_underlying(contactID)];
             if (!contact.IsSensor()) {
-                const auto bodyIdA = GetBodyA(contact);
-                const auto bodyIdB = GetBodyB(contact);
-                const auto otherId = (bodyIdA != id)? bodyIdA: bodyIdB;
+                const auto otherId = GetOtherBody(contact, id);
                 auto& other = m_bodyBuffer[to_underlying(otherId)];
                 if (bodyImpenetrable || IsImpenetrable(other)) {
                     const auto otherIslanded = m_islanded.bodies[to_underlying(otherId)];
@@ -2582,16 +2627,14 @@ void AabbTreeWorld::Update( // NOLINT(readability-function-cognitive-complexity)
     }
 }
 
-void SetBody(AabbTreeWorld& world, BodyID id, Body value) // NOLINT(readability-function-cognitive-complexity)
+void SetBody(AabbTreeWorld& world, BodyID id, Body value)
 {
     if (IsLocked(world)) {
         throw WrongState(worldIsLockedMsg);
     }
-    // confirm id and all shapeIds are valid...
+    // Validate id and all the new body's shapeIds...
     const auto& body = world.m_bodyBuffer.at(to_underlying(id));
-    for (const auto& shapeId: value.GetShapes()) {
-        world.m_shapeBuffer.at(to_underlying(shapeId));
-    }
+    Validate(world.m_shapeBuffer, Span<const ShapeID>(value.GetShapes()));
     if (world.m_bodyBuffer.FindFree(to_underlying(id))) {
         throw InvalidArgument(idIsDestroyedMsg);
     }
@@ -2619,27 +2662,13 @@ void SetBody(AabbTreeWorld& world, BodyID id, Body value) // NOLINT(readability-
             break;
         }
     }
-    auto oldShapeIds = std::vector<ShapeID>{};
-    auto newShapeIds = std::vector<ShapeID>{};
-    if (IsEnabled(value) && IsEnabled(body)) {
-        auto result = GetOldAndNewShapeIDs(body, value);
-        oldShapeIds = std::move(result.first);
-        newShapeIds = std::move(result.second);
-    }
-    else if (IsEnabled(value)) {
-        newShapeIds = value.GetShapes();
-    }
-    else if (IsEnabled(body)) {
-        oldShapeIds = body.GetShapes();
-    }
-    if (!empty(oldShapeIds)) {
+    const auto shapeIds = GetOldAndNewShapeIDs(body, value);
+    if (!empty(shapeIds.first)) {
         auto& bodyProxies = world.m_bodyProxies[to_underlying(id)];
         const auto lastProxy = end(bodyProxies);
         bodyProxies.erase(std::remove_if(begin(bodyProxies), lastProxy,
-                                         [&world,&oldShapeIds](DynamicTree::Size idx){
-            const auto leafData = world.m_tree.GetLeafData(idx);
-            const auto last = end(oldShapeIds);
-            if (std::find(begin(oldShapeIds), last, leafData.shapeId) != last) {
+                                         [&world,&shapeIds](DynamicTree::Size idx){
+            if (Find(shapeIds.first, world.m_tree.GetLeafData(idx).shapeId)) {
                 world.m_tree.DestroyLeaf(idx);
                 EraseFirst(world.m_proxiesForContacts, idx);
                 return true;
@@ -2647,7 +2676,7 @@ void SetBody(AabbTreeWorld& world, BodyID id, Body value) // NOLINT(readability-
             return false;
         }), lastProxy);
     }
-    for (auto&& shapeId: oldShapeIds) {
+    for (auto&& shapeId: shapeIds.first) {
         // Destroy any contacts associated with the fixture.
         Erase(world.m_bodyContacts[to_underlying(id)], [&world,id,shapeId,&body](ContactID contactID) {
             const auto& contact = world.m_contactBuffer[to_underlying(contactID)];
@@ -2660,29 +2689,18 @@ void SetBody(AabbTreeWorld& world, BodyID id, Body value) // NOLINT(readability-
         EraseAll(world.m_fixturesForProxies, std::make_pair(id, shapeId));
         DestroyProxies(world.m_tree, FindProxies(world.m_tree, id, shapeId), world.m_proxiesForContacts);
     }
-    for (auto&& shapeId: newShapeIds) {
-        world.m_fixturesForProxies.emplace_back(id, shapeId);
-    }
+    Append(world.m_fixturesForProxies, id, shapeIds.second);
     if (GetTransformation(body) != GetTransformation(value)) {
         FlagForUpdating(world.m_contactBuffer, world.m_bodyContacts[to_underlying(id)]);
         addToBodiesForSync = true;
     }
     if (IsAwake(body) != IsAwake(value)) {
-        // Update associated contacts
         if (IsAwake(value)) {
-            for (const auto& elem: world.m_bodyContacts[to_underlying(id)]) {
-                world.m_contactBuffer[to_underlying(std::get<ContactID>(elem))].SetIsActive();
-            }
+            SetIsActive(world.m_contactBuffer, world.m_bodyContacts[to_underlying(id)]);
         }
-        else { // sleep associated contacts whose other body is also asleep
-            for (const auto& elem: world.m_bodyContacts[to_underlying(id)]) {
-                auto& contact = world.m_contactBuffer[to_underlying(std::get<ContactID>(elem))];
-                const auto otherID = (GetBodyA(contact) != id)
-                    ? GetBodyA(contact): GetBodyB(contact);
-                if (!world.m_bodyBuffer[to_underlying(otherID)].IsAwake()) {
-                    contact.UnsetIsActive();
-                }
-            }
+        else {
+            UnsetIsActive(world.m_contactBuffer, world.m_bodyContacts[to_underlying(id)],
+                          id, world.m_bodyBuffer);
         }
     }
     if (addToBodiesForSync) {
