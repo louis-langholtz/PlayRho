@@ -1,5 +1,7 @@
 var structplayrho_1_1IslandStats =
 [
+    [ "IncContactsSkipped", "structplayrho_1_1IslandStats.html#ac4f02b83406f7d31d85365dbe48a92a0", null ],
+    [ "IncContactsUpdated", "structplayrho_1_1IslandStats.html#ade0f1be0e2b3274b062c473fa5922881", null ],
     [ "bodiesSlept", "structplayrho_1_1IslandStats.html#a0e77adb6237f10240ff654d4b568baf7", null ],
     [ "contactsSkipped", "structplayrho_1_1IslandStats.html#a5527b23bccc7a5d52883c73d9a38d18d", null ],
     [ "contactsUpdated", "structplayrho_1_1IslandStats.html#a26a43c272d9953c4e7ca5f8c98339a35", null ],

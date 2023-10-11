@@ -1,5 +1,15 @@
 var NAVTREEINDEX27 =
 {
+"structplayrho_1_1detail_1_1underlying__type_3_01T_00_01std_1_1enable__if__t_3_01has__underlying_2212b27bd541046396e8289902d743ef.html#ad0c380132fdbaeb9a1adb8ea08066fcf":[4,0,0,1,64,0],
+"structplayrho_1_1detail_1_1underlying__type_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__enum__v_3_01T_01_4_01_4_01_4.html":[4,0,0,1,65],
+"structplayrho_1_1detail_1_1underlying__type_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__enum__v_3_01T_01_4_01_4_01_4.html#a333dc81b4752f28345284240d110806f":[4,0,0,1,65,0],
+"structplayrho_1_1pmr_1_1PoolMemoryOptions.html":[4,0,0,2,3],
+"structplayrho_1_1pmr_1_1PoolMemoryOptions.html#a3e5da6604085aabf68e3e6f0f17a785b":[4,0,0,2,3,2],
+"structplayrho_1_1pmr_1_1PoolMemoryOptions.html#a3e8f7b40513a18e1d579e066c10e4c53":[4,0,0,2,3,3],
+"structplayrho_1_1pmr_1_1PoolMemoryOptions.html#a578db7146e64c1661c89e824bbca9ff3":[4,0,0,2,3,1],
+"structplayrho_1_1pmr_1_1PoolMemoryOptions.html#a674c3cbe662e5887b46dc85c9c023b98":[4,0,0,2,3,0],
+"structplayrho_1_1pmr_1_1PoolMemoryResource_1_1Stats.html":[4,0,0,2,4,1],
+"structplayrho_1_1pmr_1_1PoolMemoryResource_1_1Stats.html#a1f89e493b7bdb9a273b7e8401e8af666":[4,0,0,2,4,1,0],
 "structplayrho_1_1pmr_1_1PoolMemoryResource_1_1Stats.html#a2b99f261710cb7d1dc88c102c9d380e2":[4,0,0,2,4,1,1],
 "structplayrho_1_1pmr_1_1PoolMemoryResource_1_1Stats.html#a3408ddd8d25bbb3700a7fc918f112c67":[4,0,0,2,4,1,4],
 "structplayrho_1_1pmr_1_1PoolMemoryResource_1_1Stats.html#a54e4e6b237b8ba51b6714b50d42a378f":[4,0,0,2,4,1,3],
@@ -64,5 +74,7 @@ var NAVTREEINDEX27 =
 "unionplayrho_1_1DynamicTreeVariantData.html#a6721123e73dca7e386ee6dce05110a57":[4,0,0,13,1],
 "unionplayrho_1_1DynamicTreeVariantData.html#ab96d56d9ac15c5a607980365c32483d7":[4,0,0,13,5],
 "unionplayrho_1_1DynamicTreeVariantData.html#aca16b22075929bccaf7322b6c706dee6":[4,0,0,13,0],
-"unionplayrho_1_1DynamicTreeVariantData.html#afcf293765fc0f7c23f10adeb5798052e":[4,0,0,13,3]
+"unionplayrho_1_1DynamicTreeVariantData.html#afcf293765fc0f7c23f10adeb5798052e":[4,0,0,13,3],
+"":[3,0,0,0,0],
+"":[3,0,0,2]
 };

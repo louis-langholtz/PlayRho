@@ -209,6 +209,13 @@
     </member>
     <member kind="function">
       <type>constexpr auto</type>
+      <name>GetOtherBody</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>ae8ddd62df538578a056ac976e42d9739</anchor>
+      <arglist>(const Contact &amp;c, BodyID bodyID) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
       <name>GetRestitution</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a8623a4509113eb33f84ea8aba436396e</anchor>
@@ -274,8 +281,15 @@
       <type>constexpr bool</type>
       <name>IsFor</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a00d5ecd254e255fd00aa39f98b3d982a</anchor>
+      <anchor>aa8f91c8a02e1886e4e9f90d0926e075a</anchor>
       <arglist>(const Contact &amp;c, BodyID bodyID, ShapeID shapeID) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>IsFor</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a283c9f04ceb148910537dc1cd3f37c00</anchor>
+      <arglist>(const Contact &amp;c, ShapeID shapeID) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -21590,6 +21604,13 @@
     </member>
     <member kind="function">
       <type>constexpr auto</type>
+      <name>GetOtherBody</name>
+      <anchorfile>classplayrho_1_1Contact.html</anchorfile>
+      <anchor>ae8ddd62df538578a056ac976e42d9739</anchor>
+      <arglist>(const Contact &amp;c, BodyID bodyID) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
       <name>GetRestitution</name>
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
       <anchor>a8623a4509113eb33f84ea8aba436396e</anchor>
@@ -21657,6 +21678,20 @@
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
       <anchor>acf2071b64988e62193b4a2567bdde292</anchor>
       <arglist>(const Contact &amp;contact) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>IsFor</name>
+      <anchorfile>classplayrho_1_1Contact.html</anchorfile>
+      <anchor>aa8f91c8a02e1886e4e9f90d0926e075a</anchor>
+      <arglist>(const Contact &amp;c, BodyID bodyID, ShapeID shapeID) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>IsFor</name>
+      <anchorfile>classplayrho_1_1Contact.html</anchorfile>
+      <anchor>a283c9f04ceb148910537dc1cd3f37c00</anchor>
+      <arglist>(const Contact &amp;c, ShapeID shapeID) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -25712,6 +25747,20 @@
   <compound kind="struct">
     <name>playrho::IslandStats</name>
     <filename>structplayrho_1_1IslandStats.html</filename>
+    <member kind="function">
+      <type>constexpr IslandStats &amp;</type>
+      <name>IncContactsSkipped</name>
+      <anchorfile>structplayrho_1_1IslandStats.html</anchorfile>
+      <anchor>ac4f02b83406f7d31d85365dbe48a92a0</anchor>
+      <arglist>(ContactCounter value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr IslandStats &amp;</type>
+      <name>IncContactsUpdated</name>
+      <anchorfile>structplayrho_1_1IslandStats.html</anchorfile>
+      <anchor>ade0f1be0e2b3274b062c473fa5922881</anchor>
+      <arglist>(ContactCounter value) noexcept</arglist>
+    </member>
     <member kind="variable">
       <type>BodyCounter</type>
       <name>bodiesSlept</name>
@@ -44522,6 +44571,13 @@
       <arglist>(IndexPair3 pairs) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetOtherBody</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>ae8ddd62df538578a056ac976e42d9739</anchor>
+      <arglist>(const Contact &amp;c, BodyID bodyID) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>SecondMomentOfArea</type>
       <name>GetPolarMoment</name>
       <anchorfile>group__Math.html</anchorfile>
@@ -44819,8 +44875,15 @@
       <type>constexpr bool</type>
       <name>IsFor</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a00d5ecd254e255fd00aa39f98b3d982a</anchor>
+      <anchor>aa8f91c8a02e1886e4e9f90d0926e075a</anchor>
       <arglist>(const Contact &amp;c, BodyID bodyID, ShapeID shapeID) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>IsFor</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a283c9f04ceb148910537dc1cd3f37c00</anchor>
+      <arglist>(const Contact &amp;c, ShapeID shapeID) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
