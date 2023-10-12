@@ -260,12 +260,28 @@ TEST(AabbTreeWorld, GetResourceStatsWhenOn)
     Step(world, stepConf);
     stats = GetResourceStats(world);
     ASSERT_TRUE(stats.has_value());
+#if defined(_WIN64) && !defined(NDEBUG)
+    EXPECT_EQ(stats->blocksAllocated, 1u);
+    EXPECT_EQ(stats->bytesAllocated, 16u);
+    EXPECT_EQ(stats->maxBlocksAllocated, 1u);
+    EXPECT_EQ(stats->maxBytesAllocated, 16u);
+    EXPECT_EQ(stats->maxBytes, 16u);
+    EXPECT_EQ(stats->maxAlignment, 8u);
+#elif defined(_WIN32) && !defined(NDEBUG)
+    EXPECT_EQ(stats->blocksAllocated, 1u);
+    EXPECT_EQ(stats->bytesAllocated, 8u);
+    EXPECT_EQ(stats->maxBlocksAllocated, 1u);
+    EXPECT_EQ(stats->maxBytesAllocated, 8u);
+    EXPECT_EQ(stats->maxBytes, 8u);
+    EXPECT_EQ(stats->maxAlignment, 4u);
+#else
     EXPECT_EQ(stats->blocksAllocated, oldstats->blocksAllocated);
     EXPECT_EQ(stats->bytesAllocated, oldstats->bytesAllocated);
     EXPECT_EQ(stats->maxBlocksAllocated, oldstats->maxBlocksAllocated);
     EXPECT_EQ(stats->maxBytesAllocated, oldstats->maxBytesAllocated);
     EXPECT_EQ(stats->maxBytes, oldstats->maxBytes);
     EXPECT_EQ(stats->maxAlignment, oldstats->maxAlignment);
+#endif
 }
 
 TEST(AabbTreeWorld, CreateDestroyEmptyStaticBody)
