@@ -3749,10 +3749,10 @@ TEST(World, GetResourceStatsWhenOn)
     Step(world, stepConf);
     stats = GetResourceStats(world);
     ASSERT_TRUE(stats.has_value());
-    EXPECT_GT(stats->blocksAllocated, oldstats->blocksAllocated);
-    EXPECT_GT(stats->bytesAllocated, oldstats->bytesAllocated);
-    EXPECT_GT(stats->maxBlocksAllocated, oldstats->maxBlocksAllocated);
-    EXPECT_GT(stats->maxBytesAllocated, oldstats->maxBytesAllocated);
-    EXPECT_GT(stats->maxBytes, oldstats->maxBytes);
-    EXPECT_GT(stats->maxAlignment, oldstats->maxAlignment);
+    EXPECT_EQ(stats->blocksAllocated, oldstats->blocksAllocated);
+    EXPECT_EQ(stats->bytesAllocated, oldstats->bytesAllocated);
+    EXPECT_EQ(stats->maxBlocksAllocated, oldstats->maxBlocksAllocated);
+    EXPECT_EQ(stats->maxBytesAllocated, oldstats->maxBytesAllocated);
+    EXPECT_EQ(stats->maxBytes, oldstats->maxBytes);
+    EXPECT_EQ(stats->maxAlignment, oldstats->maxAlignment);
 }

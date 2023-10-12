@@ -679,8 +679,9 @@ auto FindContacts(pmr::memory_resource& resource,
     -> std::vector<AabbTreeWorld::ProxyKey, pmr::polymorphic_allocator<AabbTreeWorld::ProxyKey>>
 {
     std::vector<AabbTreeWorld::ProxyKey, pmr::polymorphic_allocator<AabbTreeWorld::ProxyKey>> proxyKeys{&resource};
-    static constexpr auto DefaultReserveSize = 512u;
-    proxyKeys.reserve(DefaultReserveSize); // upper bound is current size of tree
+    // Never need more than tree.GetLeafCount(), but in case big, use smaller default...
+    static constexpr auto DefaultReserveSize = 256u;
+    proxyKeys.reserve(std::min(tree.GetLeafCount(), DefaultReserveSize));
 
     // Accumalate contact keys for pairs of nodes that are overlapping and aren't identical.
     // Note that if the dynamic tree node provides the body index, it's assumed to be faster
