@@ -307,3 +307,19 @@ TEST(WorldShape, Rotate)
     EXPECT_EQ(distanceProxy.GetVertex(0u), Length2(0.0_m, -0.5_m));
     EXPECT_EQ(distanceProxy.GetVertex(1u), Length2(0.0_m, +0.5_m));
 }
+
+TEST(WorldShape, GetMassData)
+{
+    EXPECT_THROW(GetMassData(World{}, ShapeID(0)), std::out_of_range);
+    auto world = World{};
+    auto shapeId = InvalidShapeID;
+    const auto v0 = Length2{-0.5_m, +0.0_m};
+    const auto v1 = Length2{+0.5_m, +0.0_m};
+    const auto shape = EdgeShapeConf{v0, v1};
+    const auto expected = GetMassData(shape);
+    ASSERT_NO_THROW(shapeId = CreateShape(world, shape));
+    ASSERT_EQ(shapeId, ShapeID(0u));
+    auto massData = MassData{};
+    EXPECT_NO_THROW(massData = GetMassData(world, ShapeID(0)));
+    EXPECT_EQ(expected, massData);
+}
