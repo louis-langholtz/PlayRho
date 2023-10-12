@@ -3711,3 +3711,48 @@ static ::std::string gtest_WorldVerticalStackTest_EvalGenerateName_(const ::test
 
 INSTANTIATE_TEST_CASE_P(World, VerticalStackTest, ::testing::Values(Real(0), Real(5)), test_suffix_generator);
 #endif
+
+TEST(World, GetResourceStatsWhenOff)
+{
+    auto conf = WorldConf();
+    conf.doStats = false;
+    conf.reserveBuffers = 0;
+    conf.reserveBodyStack = 0u;
+    conf.reserveBodyConstraints = 0u;
+    conf.reserveDistanceConstraints = 0u;
+    conf.reserveContactKeys = 0u;
+    auto world = World{conf};
+    ASSERT_FALSE(GetResourceStats(world).has_value());
+}
+
+TEST(World, GetResourceStatsWhenOn)
+{
+    auto conf = WorldConf();
+    conf.doStats = true;
+    conf.reserveBuffers = 0;
+    conf.reserveBodyStack = 0u;
+    conf.reserveBodyConstraints = 0u;
+    conf.reserveDistanceConstraints = 0u;
+    conf.reserveContactKeys = 0u;
+    auto world = World{conf};
+    auto stats = std::optional<pmr::StatsResource::Stats>{};
+    stats = GetResourceStats(world);
+    ASSERT_TRUE(stats.has_value());
+    const auto oldstats = stats;
+    EXPECT_EQ(stats->blocksAllocated, 0u);
+    EXPECT_EQ(stats->bytesAllocated, 0u);
+    EXPECT_EQ(stats->maxBlocksAllocated, 0u);
+    EXPECT_EQ(stats->maxBytesAllocated, 0u);
+    EXPECT_EQ(stats->maxBytes, 0u);
+    EXPECT_EQ(stats->maxAlignment, 0u);
+    const auto stepConf = StepConf{};
+    Step(world, stepConf);
+    stats = GetResourceStats(world);
+    ASSERT_TRUE(stats.has_value());
+    EXPECT_GT(stats->blocksAllocated, oldstats->blocksAllocated);
+    EXPECT_GT(stats->bytesAllocated, oldstats->bytesAllocated);
+    EXPECT_GT(stats->maxBlocksAllocated, oldstats->maxBlocksAllocated);
+    EXPECT_GT(stats->maxBytesAllocated, oldstats->maxBytesAllocated);
+    EXPECT_GT(stats->maxBytes, oldstats->maxBytes);
+    EXPECT_GT(stats->maxAlignment, oldstats->maxAlignment);
+}

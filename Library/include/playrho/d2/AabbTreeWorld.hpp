@@ -29,6 +29,7 @@
 #include <iterator>
 #include <map>
 #include <memory>
+#include <optional>
 #include <stack>
 #include <stdexcept>
 #include <type_traits> // for std::is_default_constructible_v, etc.
@@ -146,7 +147,7 @@ void SetPostSolveContactListener(AabbTreeWorld& world, ImpulsesContactListener l
 /// @{
 
 /// @brief Gets the resource statistics of the specified world.
-pmr::StatsResource::Stats GetResourceStats(const AabbTreeWorld& world) noexcept;
+std::optional<pmr::StatsResource::Stats> GetResourceStats(const AabbTreeWorld& world) noexcept;
 
 /// @brief Clears this world.
 /// @note This calls the joint and shape destruction listeners (if they're set), for all
@@ -508,12 +509,27 @@ public:
     /// @note A lot more configurability can be had via the <code>StepConf</code>
     ///   data that's given to the world's <code>Step</code> function.
     /// @see Step.
+    /// @post <code>GetResourceStats(const AabbTreeWorld&)</code> for this world returns an empty
+    ///   value if <code>conf.doStats</code> is false, a non-empty value otherwise.
+    /// @post <code>GetVertexRadiusInterval(const AabbTreeWorld&)</code> for this world returns
+    ///   <code>conf.vertexRadius</code>.
     explicit AabbTreeWorld(const WorldConf& conf = WorldConf{});
 
     /// @brief Copy constructor.
+    /// @detail Basically copy constructs this world as a deep copy of the given world.
+    /// @post <code>GetResourceStats(const AabbTreeWorld&)</code> for this world returns an empty
+    ///   value if <code>GetResourceStats(other)</code> returns an empty value, a non-empty value
+    ///   that's zero initialized otherwise.
+    /// @post <code>GetVertexRadiusInterval(const AabbTreeWorld&)</code> for this world returns
+    ///   the same value as <code>GetVertexRadiusInterval(other)</code>.
     AabbTreeWorld(const AabbTreeWorld& other);
 
     /// @brief Move constructor.
+    /// @post <code>GetResourceStats(const AabbTreeWorld&)</code> for this world returns an empty
+    ///   value if <code>GetResourceStats(other)</code> returned an empty value, a non-empty value
+    ///   that's zero initialized otherwise.
+    /// @post <code>GetVertexRadiusInterval(const AabbTreeWorld&)</code> for this world returns
+    ///   the value of <code>GetVertexRadiusInterval(other)</code> just before this call.
     AabbTreeWorld(AabbTreeWorld&& other) noexcept;
 
     /// @brief Destructor.
@@ -536,7 +552,7 @@ public:
     friend void SetPostSolveContactListener(AabbTreeWorld& world, ImpulsesContactListener listener) noexcept;
 
     // Miscellaneous friend functions...
-    friend pmr::StatsResource::Stats GetResourceStats(const AabbTreeWorld& world) noexcept;
+    friend std::optional<pmr::StatsResource::Stats> GetResourceStats(const AabbTreeWorld& world) noexcept;
     friend void Clear(AabbTreeWorld& world) noexcept;
     friend StepStats Step(AabbTreeWorld& world, const StepConf& conf);
     friend bool IsStepComplete(const AabbTreeWorld& world) noexcept;
@@ -957,9 +973,10 @@ static_assert(std::is_move_constructible_v<AabbTreeWorld>);
 static_assert(!std::is_copy_assignable_v<AabbTreeWorld>);
 static_assert(!std::is_move_assignable_v<AabbTreeWorld>);
 
-inline pmr::StatsResource::Stats GetResourceStats(const AabbTreeWorld& world) noexcept
+inline std::optional<pmr::StatsResource::Stats> GetResourceStats(const AabbTreeWorld& world) noexcept
 {
-    return world.m_statsResource.GetStats();
+    return world.m_statsResource.upstream_resource()
+        ? world.m_statsResource.GetStats(): std::optional<pmr::StatsResource::Stats>{};
 }
 
 inline const ProxyIDs& GetProxies(const AabbTreeWorld& world) noexcept

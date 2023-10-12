@@ -680,10 +680,10 @@ auto FindContacts(pmr::memory_resource& resource,
 {
     std::vector<AabbTreeWorld::ProxyKey, pmr::polymorphic_allocator<AabbTreeWorld::ProxyKey>> proxyKeys{&resource};
     static constexpr auto DefaultReserveSize = 512u;
-    proxyKeys.reserve(DefaultReserveSize);
+    proxyKeys.reserve(DefaultReserveSize); // upper bound is current size of tree
 
     // Accumalate contact keys for pairs of nodes that are overlapping and aren't identical.
-    // Note that if the dynamic tree node provides the body pointer, it's assumed to be faster
+    // Note that if the dynamic tree node provides the body index, it's assumed to be faster
     // to eliminate any node pairs that have the same body here before the key pairs are
     // sorted.
     for_each(cbegin(proxies), cend(proxies), [&](DynamicTree::Size pid) {
@@ -804,7 +804,7 @@ auto SetAwake(ObjectPool<Body>& bodies, const Contact& c) -> void
 } // anonymous namespace
 
 AabbTreeWorld::AabbTreeWorld(const WorldConf& conf):
-    m_statsResource(conf.upstream),
+    m_statsResource(conf.doStats? conf.upstream: nullptr),
     m_bodyStackResource(GetBodyStackOpts(conf),
                         conf.doStats? &m_statsResource: conf.upstream),
     m_bodyConstraintsResource(GetBodyConstraintOpts(conf),
@@ -826,11 +826,22 @@ AabbTreeWorld::AabbTreeWorld(const WorldConf& conf):
 }
 
 AabbTreeWorld::AabbTreeWorld(const AabbTreeWorld& other):
-    m_bodyConstraintsResource(other.m_bodyConstraintsResource.GetOptions()),
-    m_positionConstraintsResource(other.m_positionConstraintsResource.GetOptions()),
-    m_velocityConstraintsResource(other.m_velocityConstraintsResource.GetOptions()),
-    m_proxyKeysResource(other.m_proxyKeysResource.GetOptions()),
-    m_islandResource(other.m_islandResource.GetOptions()),
+    m_statsResource(other.m_statsResource.upstream_resource()),
+    m_bodyConstraintsResource(other.m_bodyConstraintsResource.GetOptions(),
+                              other.m_statsResource.upstream_resource()?
+                              &m_statsResource: other.m_bodyConstraintsResource.GetUpstream()),
+    m_positionConstraintsResource(other.m_positionConstraintsResource.GetOptions(),
+                                  other.m_statsResource.upstream_resource()?
+                                  &m_statsResource: other.m_positionConstraintsResource.GetUpstream()),
+    m_velocityConstraintsResource(other.m_velocityConstraintsResource.GetOptions(),
+                                  other.m_statsResource.upstream_resource()?
+                                  &m_statsResource: other.m_velocityConstraintsResource.GetUpstream()),
+    m_proxyKeysResource(other.m_proxyKeysResource.GetOptions(),
+                        other.m_statsResource.upstream_resource()?
+                        &m_statsResource: other.m_proxyKeysResource.GetUpstream()),
+    m_islandResource(other.m_islandResource.GetOptions(),
+                     other.m_statsResource.upstream_resource()?
+                     &m_statsResource: other.m_islandResource.GetUpstream()),
     m_tree(other.m_tree),
     m_bodyBuffer(other.m_bodyBuffer),
     m_shapeBuffer(other.m_shapeBuffer),
@@ -855,11 +866,22 @@ AabbTreeWorld::AabbTreeWorld(const AabbTreeWorld& other):
 }
 
 AabbTreeWorld::AabbTreeWorld(AabbTreeWorld&& other) noexcept:
-    m_bodyConstraintsResource(other.m_bodyConstraintsResource.GetOptions()),
-    m_positionConstraintsResource(other.m_positionConstraintsResource.GetOptions()),
-    m_velocityConstraintsResource(other.m_velocityConstraintsResource.GetOptions()),
-    m_proxyKeysResource(other.m_proxyKeysResource.GetOptions()),
-    m_islandResource(other.m_islandResource.GetOptions()),
+    m_statsResource(other.m_statsResource.upstream_resource()),
+    m_bodyConstraintsResource(other.m_bodyConstraintsResource.GetOptions(),
+                              other.m_statsResource.upstream_resource()?
+                              &m_statsResource: other.m_bodyConstraintsResource.GetUpstream()),
+    m_positionConstraintsResource(other.m_positionConstraintsResource.GetOptions(),
+                                  other.m_statsResource.upstream_resource()?
+                                  &m_statsResource: other.m_positionConstraintsResource.GetUpstream()),
+    m_velocityConstraintsResource(other.m_velocityConstraintsResource.GetOptions(),
+                                  other.m_statsResource.upstream_resource()?
+                                  &m_statsResource: other.m_velocityConstraintsResource.GetUpstream()),
+    m_proxyKeysResource(other.m_proxyKeysResource.GetOptions(),
+                        other.m_statsResource.upstream_resource()?
+                        &m_statsResource: other.m_proxyKeysResource.GetUpstream()),
+    m_islandResource(other.m_islandResource.GetOptions(),
+                     other.m_statsResource.upstream_resource()?
+                     &m_statsResource: other.m_islandResource.GetUpstream()),
     m_tree(std::move(other.m_tree)),
     m_bodyBuffer(std::move(other.m_bodyBuffer)),
     m_shapeBuffer(std::move(other.m_shapeBuffer)),

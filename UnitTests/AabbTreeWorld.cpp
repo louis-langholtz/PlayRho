@@ -126,8 +126,7 @@ TEST(AabbTreeWorld, DefaultInit)
     EXPECT_FALSE(IsLocked(world));
 
     const auto stats = GetResourceStats(world);
-    EXPECT_EQ(stats.blocksAllocated, 0u);
-    EXPECT_EQ(stats.maxBlocksAllocated, 0u);
+    EXPECT_FALSE(stats.has_value());
 }
 
 TEST(AabbTreeWorld, Init)
@@ -231,24 +230,10 @@ TEST(AabbTreeWorld, GetResourceStatsWhenOff)
     conf.reserveDistanceConstraints = 0u;
     conf.reserveContactKeys = 0u;
     auto world = AabbTreeWorld{conf};
-    auto stats = pmr::StatsResource::Stats{};
-    stats = GetResourceStats(world);
-    const auto oldstats = stats;
-    EXPECT_EQ(stats.blocksAllocated, 0u);
-    EXPECT_EQ(stats.bytesAllocated, 0u);
-    EXPECT_EQ(stats.maxBlocksAllocated, 0u);
-    EXPECT_EQ(stats.maxBytesAllocated, 0u);
-    EXPECT_EQ(stats.maxBytes, 0u);
-    EXPECT_EQ(stats.maxAlignment, 0u);
+    EXPECT_FALSE(GetResourceStats(world).has_value());
     const auto stepConf = StepConf{};
     Step(world, stepConf);
-    stats = GetResourceStats(world);
-    EXPECT_EQ(stats.blocksAllocated, oldstats.blocksAllocated);
-    EXPECT_EQ(stats.bytesAllocated, oldstats.bytesAllocated);
-    EXPECT_EQ(stats.maxBlocksAllocated, oldstats.maxBlocksAllocated);
-    EXPECT_EQ(stats.maxBytesAllocated, oldstats.maxBytesAllocated);
-    EXPECT_EQ(stats.maxBytes, oldstats.maxBytes);
-    EXPECT_EQ(stats.maxAlignment, oldstats.maxAlignment);
+    EXPECT_FALSE(GetResourceStats(world).has_value());
 }
 
 TEST(AabbTreeWorld, GetResourceStatsWhenOn)
@@ -261,24 +246,26 @@ TEST(AabbTreeWorld, GetResourceStatsWhenOn)
     conf.reserveDistanceConstraints = 0u;
     conf.reserveContactKeys = 0u;
     auto world = AabbTreeWorld{conf};
-    auto stats = pmr::StatsResource::Stats{};
+    auto stats = std::optional<pmr::StatsResource::Stats>{};
     stats = GetResourceStats(world);
+    ASSERT_TRUE(stats.has_value());
     const auto oldstats = stats;
-    EXPECT_EQ(stats.blocksAllocated, 0u);
-    EXPECT_EQ(stats.bytesAllocated, 0u);
-    EXPECT_EQ(stats.maxBlocksAllocated, 0u);
-    EXPECT_EQ(stats.maxBytesAllocated, 0u);
-    EXPECT_EQ(stats.maxBytes, 0u);
-    EXPECT_EQ(stats.maxAlignment, 0u);
+    EXPECT_EQ(stats->blocksAllocated, 0u);
+    EXPECT_EQ(stats->bytesAllocated, 0u);
+    EXPECT_EQ(stats->maxBlocksAllocated, 0u);
+    EXPECT_EQ(stats->maxBytesAllocated, 0u);
+    EXPECT_EQ(stats->maxBytes, 0u);
+    EXPECT_EQ(stats->maxAlignment, 0u);
     const auto stepConf = StepConf{};
     Step(world, stepConf);
     stats = GetResourceStats(world);
-    EXPECT_GT(stats.blocksAllocated, oldstats.blocksAllocated);
-    EXPECT_GT(stats.bytesAllocated, oldstats.bytesAllocated);
-    EXPECT_GT(stats.maxBlocksAllocated, oldstats.maxBlocksAllocated);
-    EXPECT_GT(stats.maxBytesAllocated, oldstats.maxBytesAllocated);
-    EXPECT_GT(stats.maxBytes, oldstats.maxBytes);
-    EXPECT_GT(stats.maxAlignment, oldstats.maxAlignment);
+    ASSERT_TRUE(stats.has_value());
+    EXPECT_GT(stats->blocksAllocated, oldstats->blocksAllocated);
+    EXPECT_GT(stats->bytesAllocated, oldstats->bytesAllocated);
+    EXPECT_GT(stats->maxBlocksAllocated, oldstats->maxBlocksAllocated);
+    EXPECT_GT(stats->maxBytesAllocated, oldstats->maxBytesAllocated);
+    EXPECT_GT(stats->maxBytes, oldstats->maxBytes);
+    EXPECT_GT(stats->maxAlignment, oldstats->maxAlignment);
 }
 
 TEST(AabbTreeWorld, CreateDestroyEmptyStaticBody)
