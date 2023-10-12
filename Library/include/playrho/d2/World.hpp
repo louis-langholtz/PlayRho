@@ -28,6 +28,7 @@
 #include <functional> // for std::function
 #include <iterator>
 #include <memory> // for std::unique_ptr
+#include <optional>
 #include <stdexcept>
 #include <type_traits> // for std::is_default_constructible_v, etc.
 #include <vector>
@@ -42,6 +43,8 @@
 #include <playrho/StepConf.hpp>
 #include <playrho/StepStats.hpp>
 #include <playrho/TypeInfo.hpp> // for GetTypeID
+
+#include <playrho/pmr/StatsResource.hpp>
 
 #include <playrho/d2/BodyConf.hpp> // for GetDefaultBodyConf
 #include <playrho/d2/Body.hpp>
@@ -134,6 +137,15 @@ std::add_pointer_t<std::add_const_t<T>> TypeCast(const World* value) noexcept;
 /// @see https://llvm.org/
 template <typename T>
 std::add_pointer_t<T> TypeCast(World* value) noexcept;
+
+/// @brief Gets the polymorphic memory resource allocator statistics of the specified world.
+/// @note This will be the empty value unless the world configuration the given world was
+///   constructed with specified the collection of these statistics.
+/// @note This information can be used to tweak the world configuration to pre-allocate enough
+///   space to avoid the less deterministic performance behavior of dynamic memory allocation
+///   during world step processing that may otherwise occur.
+/// @see WorldConf.
+std::optional<pmr::StatsResource::Stats> GetResourceStats(const World& world) noexcept;
 
 /// @brief Clears the given world.
 /// @note This calls the joint and shape destruction listeners (if they're set), for all
@@ -644,6 +656,7 @@ public:
     friend std::add_pointer_t<std::add_const_t<T>> TypeCast(const World* value) noexcept;
     template <typename T>
     friend std::add_pointer_t<T> TypeCast(World* value) noexcept;
+    friend std::optional<pmr::StatsResource::Stats> GetResourceStats(const World& world) noexcept;
     friend void Clear(World& world) noexcept;
     friend StepStats Step(World& world, const StepConf& conf);
     friend bool IsStepComplete(const World& world) noexcept;
@@ -745,6 +758,11 @@ private:
 
         /// @brief Gets the data for the underlying configuration.
         virtual void* GetData_() noexcept = 0;
+
+        /// @brief Gets the polymorphic memory resource statistics.
+        /// @note This will be the zero initialized value unless the world configuration the
+        ///   world was constructed with specified the collection of these statistics.
+        virtual std::optional<pmr::StatsResource::Stats> GetResourceStats_() const noexcept = 0;
 
         /// @brief Clears the world.
         /// @note This calls the joint and shape destruction listeners (if they're set), for all
@@ -1147,6 +1165,12 @@ struct World::Model final: World::Concept {
         return &data;
     }
 
+    /// @copydoc Concept::GetResourceStats_
+    std::optional<pmr::StatsResource::Stats> GetResourceStats_() const noexcept override
+    {
+        return GetResourceStats(data);
+    }
+
     /// @copydoc Concept::Clear_
     void Clear_() noexcept override
     {
@@ -1450,6 +1474,11 @@ inline void SetPostSolveContactListener(World& world, ImpulsesContactListener li
 inline TypeID GetType(const World& world) noexcept
 {
     return world.m_impl->GetType_();
+}
+
+inline std::optional<pmr::StatsResource::Stats> GetResourceStats(const World& world) noexcept
+{
+    return world.m_impl->GetResourceStats_();
 }
 
 inline void Clear(World& world) noexcept

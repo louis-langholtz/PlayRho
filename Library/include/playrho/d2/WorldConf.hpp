@@ -135,6 +135,11 @@ struct WorldConf {
     std::uint8_t reserveBuffers = DefaultReserveBuffers;
 
     /// @brief Whether to collect resource statistics or not.
+    /// @note The collected statistics can help tweak the @c reserve* data members to help avoid
+    ///    dynamic memory allocation during world step processing. Collecting these statistics
+    ///    incurs some performance overhead however, so consider disabling this setting after
+    ///    getting those data members tweaked to your needs.
+    /// @see GetResourceStats(const World&).
     bool doStats = DefaultDoStats;
 };
 
