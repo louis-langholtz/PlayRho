@@ -172,13 +172,9 @@ ToiOutput GetToiViaSat( // NOLINT(readability-function-cognitive-complexity)
             // assert(s1 >= minTarget);
             // Check for touching
             if (timeLoEvalDistance <= maxTarget) {
-                if (timeLoEvalDistance < minTarget) {
-                    stats.sum_finder_iters += pbIter;
-                    return ToiOutput{timeLo, stats, ToiOutput::e_belowMinTarget};
-                }
-                // Victory! timeLo should hold the TOI (could be 0.0).
                 stats.sum_finder_iters += pbIter;
-                return ToiOutput{timeLo, stats, ToiOutput::e_touching};
+                return ToiOutput{timeLo, stats, (timeLoEvalDistance < minTarget)?
+                    ToiOutput::e_belowMinTarget: ToiOutput::e_touching};
             }
 
             // Now: timeLoEvalDistance > maxTarget
