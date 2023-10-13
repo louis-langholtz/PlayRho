@@ -143,9 +143,8 @@ Public Attributes</h2></td></tr>
 <a class="el" href="namespaceplayrho.html#a5fd824505590e2ca67e0ef804ede6e34">ContactCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1WorldConf.html#a9471b1aaa6963e94646648c99f1a71a3">contactCapacity</a> = <a class="el" href="structplayrho_1_1d2_1_1WorldConf.html#a307ea5fb4d40ad80fbeddbee88f3c1a1">DefaultContactCapacity</a></td></tr>
 <tr class="memdesc:a9471b1aaa6963e94646648c99f1a71a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initial contact capacity. <br /></td></tr>
 <tr class="separator:a9471b1aaa6963e94646648c99f1a71a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee4b702f19ffc1911ffdbfce1f5d32a8"><td class="memItemLeft" align="right" valign="top"><a id="aee4b702f19ffc1911ffdbfce1f5d32a8"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1WorldConf.html#aee4b702f19ffc1911ffdbfce1f5d32a8">doStats</a> = <a class="el" href="structplayrho_1_1d2_1_1WorldConf.html#a71646877a178e36bc0aa031dbd50a246">DefaultDoStats</a></td></tr>
-<tr class="memdesc:aee4b702f19ffc1911ffdbfce1f5d32a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to collect resource statistics or not. <br /></td></tr>
+<tr class="memitem:aee4b702f19ffc1911ffdbfce1f5d32a8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1WorldConf.html#aee4b702f19ffc1911ffdbfce1f5d32a8">doStats</a> = <a class="el" href="structplayrho_1_1d2_1_1WorldConf.html#a71646877a178e36bc0aa031dbd50a246">DefaultDoStats</a></td></tr>
+<tr class="memdesc:aee4b702f19ffc1911ffdbfce1f5d32a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to collect resource statistics or not.  <a href="structplayrho_1_1d2_1_1WorldConf.html#aee4b702f19ffc1911ffdbfce1f5d32a8">More...</a><br /></td></tr>
 <tr class="separator:aee4b702f19ffc1911ffdbfce1f5d32a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cdbec7a7c527bf06833afb9778a81da"><td class="memItemLeft" align="right" valign="top"><a id="a7cdbec7a7c527bf06833afb9778a81da"></a>
 <a class="el" href="namespaceplayrho.html#a5fd824505590e2ca67e0ef804ede6e34">ContactCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1WorldConf.html#a7cdbec7a7c527bf06833afb9778a81da">proxyCapacity</a> = <a class="el" href="structplayrho_1_1d2_1_1WorldConf.html#a9337689fcc661505e3dfda29c9cf5fcf">DefaultProxyCapacity</a></td></tr>
@@ -282,6 +281,24 @@ static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a clas
 
 </div>
 </div>
+<a id="aee4b702f19ffc1911ffdbfce1f5d32a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee4b702f19ffc1911ffdbfce1f5d32a8">&#9670;&nbsp;</a></span>doStats</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool playrho::d2::WorldConf::doStats = <a class="el" href="structplayrho_1_1d2_1_1WorldConf.html#a71646877a178e36bc0aa031dbd50a246">DefaultDoStats</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether to collect resource statistics or not. </p>
+<dl class="section note"><dt>Note</dt><dd>The collected statistics can help tweak the <code>reserve*</code> data members to help avoid dynamic memory allocation during world step processing. Collecting these statistics incurs some performance overhead however, so consider disabling this setting after getting those data members tweaked to your needs. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho_1_1d2.html#ae42faf85c15ca7fd83c575ccb30554f4" title="Gets the polymorphic memory resource allocator statistics of the specified world.">GetResourceStats(const World&amp;)</a>. </dd></dl>
+
+</div>
+</div>
 <a id="a568343ef6750b16ad606f7b617236053"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a568343ef6750b16ad606f7b617236053">&#9670;&nbsp;</a></span>reserveBodyConstraints</h2>
 
@@ -382,7 +399,7 @@ Making the maximum too small or too large may cause numerical issues dealing wit
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1WorldConf.html">WorldConf</a></li>
-    <li class="footer">Generated on Wed Oct 11 2023 06:12:32 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 13 2023 04:17:01 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

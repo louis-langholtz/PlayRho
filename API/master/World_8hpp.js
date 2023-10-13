@@ -26,6 +26,7 @@ var World_8hpp =
     [ "GetJoints", "World_8hpp.html#a02359170455e95f3876ce76a1f019cc9", null ],
     [ "GetJoints", "World_8hpp.html#a46d383e6e9a6c7473fdfb4199fa56915", null ],
     [ "GetManifold", "World_8hpp.html#a191eed2d8b3f745e46af7c6696f68a5c", null ],
+    [ "GetResourceStats", "World_8hpp.html#ae42faf85c15ca7fd83c575ccb30554f4", null ],
     [ "GetShape", "World_8hpp.html#acd71793915ccc5c37d3c118ff5745e9e", null ],
     [ "GetShapeRange", "World_8hpp.html#a917c505a2bf7a77aab1b098e5be801f6", null ],
     [ "GetShapes", "World_8hpp.html#a7feade3e47e5048e8eab9eef13e66fc4", null ],

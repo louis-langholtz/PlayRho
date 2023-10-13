@@ -132,6 +132,7 @@ var classplayrho_1_1d2_1_1World =
     [ "GetPulleyJointConf", "classplayrho_1_1d2_1_1World.html#a52974eadc9023357fc460b5392160a0e", null ],
     [ "GetRatio", "classplayrho_1_1d2_1_1World.html#a7089b428b6ec35dc8b4d62396982bbd0", null ],
     [ "GetReferenceAngle", "classplayrho_1_1d2_1_1World.html#a902c4e2db9331be98f4150759ed738bd", null ],
+    [ "GetResourceStats", "classplayrho_1_1d2_1_1World.html#af4ed91cadd7a9906db75f43bebdae850", null ],
     [ "GetRestitution", "classplayrho_1_1d2_1_1World.html#ada6f0319b80bd4a62673f539e41d0b86", null ],
     [ "GetRestitution", "classplayrho_1_1d2_1_1World.html#aa20fdcc2d0f6e0f7eae9184853b7dbf8", null ],
     [ "GetRevoluteJointConf", "classplayrho_1_1d2_1_1World.html#a15d06d3d244fd8367e8e12892c3f9f1f", null ],

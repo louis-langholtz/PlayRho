@@ -107,6 +107,7 @@ $(document).ready(function(){initNavTree('World_8hpp.html',''); initResizable();
 <div class="textblock"><code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;iterator&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
+<code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;stdexcept&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
@@ -120,6 +121,7 @@ $(document).ready(function(){initNavTree('World_8hpp.html',''); initResizable();
 <code>#include &lt;<a class="el" href="StepConf_8hpp.html">playrho/StepConf.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="StepStats_8hpp.html">playrho/StepStats.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="TypeInfo_8hpp.html">playrho/TypeInfo.hpp</a>&gt;</code><br />
+<code>#include &lt;playrho/pmr/StatsResource.hpp&gt;</code><br />
 <code>#include &lt;<a class="el" href="BodyConf_8hpp.html">playrho/d2/BodyConf.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Body_8hpp.html">playrho/d2/Body.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Joint_8hpp.html">playrho/d2/Joint.hpp</a>&gt;</code><br />
@@ -198,6 +200,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="memitem:a6f42cba222329b61fa640780dff9d65f"><td class="memItemLeft" align="right" valign="top">Frequency&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a6f42cba222329b61fa640780dff9d65f">playrho::d2::GetInvDeltaTime</a> (const World &amp;world) noexcept</td></tr>
 <tr class="memdesc:a6f42cba222329b61fa640780dff9d65f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the inverse delta time.  <a href="namespaceplayrho_1_1d2.html#a6f42cba222329b61fa640780dff9d65f">More...</a><br /></td></tr>
 <tr class="separator:a6f42cba222329b61fa640780dff9d65f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae42faf85c15ca7fd83c575ccb30554f4"><td class="memItemLeft" align="right" valign="top">std::optional&lt; pmr::StatsResource::Stats &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#ae42faf85c15ca7fd83c575ccb30554f4">playrho::d2::GetResourceStats</a> (const World &amp;world) noexcept</td></tr>
+<tr class="memdesc:ae42faf85c15ca7fd83c575ccb30554f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the polymorphic memory resource allocator statistics of the specified world.  <a href="namespaceplayrho_1_1d2.html#ae42faf85c15ca7fd83c575ccb30554f4">More...</a><br /></td></tr>
+<tr class="separator:ae42faf85c15ca7fd83c575ccb30554f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aefd48d7d94be6707b5915991eeb10bd4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#aefd48d7d94be6707b5915991eeb10bd4">playrho::d2::GetSubStepping</a> (const World &amp;world) noexcept</td></tr>
 <tr class="memdesc:aefd48d7d94be6707b5915991eeb10bd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether or not sub-stepping is enabled.  <a href="namespaceplayrho_1_1d2.html#aefd48d7d94be6707b5915991eeb10bd4">More...</a><br /></td></tr>
 <tr class="separator:aefd48d7d94be6707b5915991eeb10bd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -354,7 +359,7 @@ TypeID&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="na
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="dir_00957d302ca87b53c9f57dcbc695504d.html">d2</a></li><li class="navelem"><a class="el" href="World_8hpp.html">World.hpp</a></li>
-    <li class="footer">Generated on Wed Oct 11 2023 06:12:31 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 13 2023 04:17:01 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

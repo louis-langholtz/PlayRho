@@ -1113,10 +1113,10 @@
       <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>pmr::StatsResource::Stats</type>
+      <type>std::optional&lt; pmr::StatsResource::Stats &gt;</type>
       <name>GetResourceStats</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa441ecda09cbee116ac181b5d50077dd</anchor>
+      <anchor>aff84d6881d841e255e77330984080008</anchor>
       <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
@@ -1456,10 +1456,10 @@
       <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>pmr::StatsResource::Stats</type>
+      <type>std::optional&lt; pmr::StatsResource::Stats &gt;</type>
       <name>GetResourceStats</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa441ecda09cbee116ac181b5d50077dd</anchor>
+      <anchor>aff84d6881d841e255e77330984080008</anchor>
       <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
@@ -7476,6 +7476,13 @@
       <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>std::optional&lt; pmr::StatsResource::Stats &gt;</type>
+      <name>GetResourceStats</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae42faf85c15ca7fd83c575ccb30554f4</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>bool</type>
       <name>GetSubStepping</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -7837,6 +7844,13 @@
       <name>GetInvDeltaTime</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a6f42cba222329b61fa640780dff9d65f</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>std::optional&lt; pmr::StatsResource::Stats &gt;</type>
+      <name>GetResourceStats</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae42faf85c15ca7fd83c575ccb30554f4</anchor>
       <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
@@ -14558,10 +14572,10 @@
       <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
     </member>
     <member kind="friend">
-      <type>friend pmr::StatsResource::Stats</type>
+      <type>friend std::optional&lt; pmr::StatsResource::Stats &gt;</type>
       <name>GetResourceStats</name>
       <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
-      <anchor>a636d8a4ea3bbecd57881e0954d6be074</anchor>
+      <anchor>a19c368be46ff6490712223019ff5dd55</anchor>
       <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
     </member>
     <member kind="friend">
@@ -40054,6 +40068,41 @@
   <compound kind="class">
     <name>playrho::d2::ChainShapeConf::VerticesWithNormals</name>
     <filename>classplayrho_1_1d2_1_1ChainShapeConf_1_1VerticesWithNormals.html</filename>
+    <member kind="function">
+      <type></type>
+      <name>VerticesWithNormals</name>
+      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf_1_1VerticesWithNormals.html</anchorfile>
+      <anchor>ab2707fda60d7fd47090ff2e40f874602</anchor>
+      <arglist>() noexcept=default</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>VerticesWithNormals</name>
+      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf_1_1VerticesWithNormals.html</anchorfile>
+      <anchor>a7cf2dbec90371bbca710828e7681dfc2</anchor>
+      <arglist>(std::vector&lt; Length2 &gt; vertices)</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>GetNormals</name>
+      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf_1_1VerticesWithNormals.html</anchorfile>
+      <anchor>a7e14ae73a1760b9482e86dda2f5489f3</anchor>
+      <arglist>() const noexcept -&gt; decltype((m_normals))</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>GetVertices</name>
+      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf_1_1VerticesWithNormals.html</anchorfile>
+      <anchor>a0b5078b0f074438af4d74da43e1fe230</anchor>
+      <arglist>() const noexcept -&gt; decltype((m_vertices))</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend auto</type>
+      <name>operator==</name>
+      <anchorfile>classplayrho_1_1d2_1_1ChainShapeConf_1_1VerticesWithNormals.html</anchorfile>
+      <anchor>a8fa6e0c765f107afb14ebb8b26fd13a6</anchor>
+      <arglist>(const VerticesWithNormals &amp;lhs, const VerticesWithNormals &amp;rhs) noexcept -&gt; bool</arglist>
+    </member>
   </compound>
   <compound kind="struct">
     <name>playrho::d2::WeldJointConf</name>
@@ -40818,6 +40867,13 @@
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
       <anchor>a7414d190bc45dd19d1b3c8193ffa5857</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend std::optional&lt; pmr::StatsResource::Stats &gt;</type>
+      <name>GetResourceStats</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>af4ed91cadd7a9906db75f43bebdae850</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend Shape</type>
@@ -52595,10 +52651,10 @@
       <arglist>(AabbTreeWorld &amp;world, ImpulsesContactListener listener) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>pmr::StatsResource::Stats</type>
+      <type>std::optional&lt; pmr::StatsResource::Stats &gt;</type>
       <name>GetResourceStats</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa441ecda09cbee116ac181b5d50077dd</anchor>
+      <anchor>aff84d6881d841e255e77330984080008</anchor>
       <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
@@ -52957,6 +53013,13 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a41f03a4347ea33b9f5cb8469155e2f93</anchor>
       <arglist>(World *value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>std::optional&lt; pmr::StatsResource::Stats &gt;</type>
+      <name>GetResourceStats</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae42faf85c15ca7fd83c575ccb30554f4</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -53974,10 +54037,10 @@
       <arglist>(AabbTreeWorld &amp;world, ImpulsesContactListener listener) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>pmr::StatsResource::Stats</type>
+      <type>std::optional&lt; pmr::StatsResource::Stats &gt;</type>
       <name>GetResourceStats</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa441ecda09cbee116ac181b5d50077dd</anchor>
+      <anchor>aff84d6881d841e255e77330984080008</anchor>
       <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
@@ -54336,6 +54399,13 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a41f03a4347ea33b9f5cb8469155e2f93</anchor>
       <arglist>(World *value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>std::optional&lt; pmr::StatsResource::Stats &gt;</type>
+      <name>GetResourceStats</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae42faf85c15ca7fd83c575ccb30554f4</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>

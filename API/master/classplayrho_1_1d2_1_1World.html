@@ -199,6 +199,9 @@ Friends</h2></td></tr>
 <tr class="memitem:a7414d190bc45dd19d1b3c8193ffa5857"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a7414d190bc45dd19d1b3c8193ffa5857">GetManifold</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#abe7a48a3a0e57fa1a9dd9e396b6b24f7">ContactID</a> id)</td></tr>
 <tr class="memdesc:a7414d190bc45dd19d1b3c8193ffa5857"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the manifold for the identified contact.  <a href="classplayrho_1_1d2_1_1World.html#a7414d190bc45dd19d1b3c8193ffa5857">More...</a><br /></td></tr>
 <tr class="separator:a7414d190bc45dd19d1b3c8193ffa5857"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4ed91cadd7a9906db75f43bebdae850"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structplayrho_1_1pmr_1_1StatsResource_1_1Stats.html">pmr::StatsResource::Stats</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#af4ed91cadd7a9906db75f43bebdae850">GetResourceStats</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world) noexcept</td></tr>
+<tr class="memdesc:af4ed91cadd7a9906db75f43bebdae850"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the polymorphic memory resource allocator statistics of the specified world.  <a href="classplayrho_1_1d2_1_1World.html#af4ed91cadd7a9906db75f43bebdae850">More...</a><br /></td></tr>
+<tr class="separator:af4ed91cadd7a9906db75f43bebdae850"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cc81eddf326e3dd1aea01176a7abd37"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1d2_1_1Shape.html">Shape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a5cc81eddf326e3dd1aea01176a7abd37">GetShape</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a> id)</td></tr>
 <tr class="memdesc:a5cc81eddf326e3dd1aea01176a7abd37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the shape associated with the identifier.  <a href="classplayrho_1_1d2_1_1World.html#a5cc81eddf326e3dd1aea01176a7abd37">More...</a><br /></td></tr>
 <tr class="separator:a5cc81eddf326e3dd1aea01176a7abd37"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -957,10 +960,11 @@ This class uses the pointer to implementation (PIMPL) technique and non-vitural 
 <dd>
 This class's design provides a "polymorphic value type" offering polymorphism without public inheritance. This is based on a technique that's described by Sean Parent in his January 2017 Norwegian Developers Conference London talk "Better Code: Runtime
   Polymorphism".</dd></dl>
+<dl class="section invariant"><dt>Invariant</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1World.html#a4c81c2aec5732bbd9c967814a429cad9" title="Gets the identifier of the type of data this can be casted to.">GetType(const World&amp; world)</a></code> for a world in a valid and specified state, always returns the ID for the type which a <code>TypeCast</code> function template can be instantiated for when called with the <code>world</code> object, to access the underlying typed data of that world.</dd></dl>
 <dl class="section attention"><dt>Attention</dt><dd>For example, the following could be used to create a dynamic body having a one meter radius disk shape: <div class="fragment"><div class="line"><span class="keyword">auto</span> world = <a class="code" href="classplayrho_1_1d2_1_1World.html#a35fa8cfc0ffd391f66a288b9f42ef51c">World</a>{};</div>
 <div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> shape = <a class="code" href="classplayrho_1_1d2_1_1World.html#a0c9c3b453fbbd92e68a34d87ac2f3f51">CreateShape</a>(world, Shape{DiskShapeConf{1_m}});</div>
 <div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1World.html#ac844fbdfb282bfd77c0dfea427eab4a1">CreateBody</a>(world, BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>).Use(shape));</div>
-<div class="ttc" id="aclassplayrho_1_1d2_1_1World_html_a0c9c3b453fbbd92e68a34d87ac2f3f51"><div class="ttname"><a href="classplayrho_1_1d2_1_1World.html#a0c9c3b453fbbd92e68a34d87ac2f3f51">playrho::d2::World::CreateShape</a></div><div class="ttdeci">friend ShapeID CreateShape(World &amp;world, const Shape &amp;def)</div><div class="ttdoc">Creates an identifiable copy of the given shape within the specified world.</div><div class="ttdef"><b>Definition:</b> World.hpp:1592</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1World_html_a0c9c3b453fbbd92e68a34d87ac2f3f51"><div class="ttname"><a href="classplayrho_1_1d2_1_1World.html#a0c9c3b453fbbd92e68a34d87ac2f3f51">playrho::d2::World::CreateShape</a></div><div class="ttdeci">friend ShapeID CreateShape(World &amp;world, const Shape &amp;def)</div><div class="ttdoc">Creates an identifiable copy of the given shape within the specified world.</div><div class="ttdef"><b>Definition:</b> World.hpp:1620</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1World_html_a35fa8cfc0ffd391f66a288b9f42ef51c"><div class="ttname"><a href="classplayrho_1_1d2_1_1World.html#a35fa8cfc0ffd391f66a288b9f42ef51c">playrho::d2::World::World</a></div><div class="ttdeci">World(const WorldConf &amp;def=WorldConf{})</div><div class="ttdoc">Constructs a world object.</div><div class="ttdef"><b>Definition:</b> World.cpp:29</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1World_html_ac844fbdfb282bfd77c0dfea427eab4a1"><div class="ttname"><a href="classplayrho_1_1d2_1_1World.html#ac844fbdfb282bfd77c0dfea427eab4a1">playrho::d2::World::CreateBody</a></div><div class="ttdeci">friend BodyID CreateBody(World &amp;world, const Body &amp;body, bool resetMassData)</div><div class="ttdoc">Creates a rigid body within the world that's a copy of the given one.</div><div class="ttdef"><b>Definition:</b> World.cpp:31</div></div>
 <div class="ttc" id="anamespaceplayrho_html_a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c"><div class="ttname"><a href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">playrho::BodyType::Dynamic</a></div><div class="ttdeci">@ Dynamic</div></div>
@@ -1009,12 +1013,6 @@ This class's design provides a "polymorphic value type" offering polymorphism wi
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>A lot more configurability can be had via the <code><a class="el" href="structplayrho_1_1StepConf.html" title="Step configuration.">StepConf</a></code> data that's given to the <code><a class="el" href="classplayrho_1_1d2_1_1World.html#afcc3f1e70508f04ccd1367c6cd475235" title="Steps the given world simulation according to the given configuration.">Step(World&amp;, const StepConf&amp;)</a></code> function. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error.">InvalidArgument</a></td><td>if the given max vertex radius is less than the min. </td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html#afcc3f1e70508f04ccd1367c6cd475235" title="Steps the given world simulation according to the given configuration.">Step(World&amp;, const StepConf&amp;)</a>. </dd></dl>
 
 </div>
@@ -6143,6 +6141,38 @@ Behavior is not specified if identified body wasn't created by this world. </dd>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="af4ed91cadd7a9906db75f43bebdae850"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4ed91cadd7a9906db75f43bebdae850">&#9670;&nbsp;</a></span>GetResourceStats</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;<a class="el" href="structplayrho_1_1pmr_1_1StatsResource_1_1Stats.html">pmr::StatsResource::Stats</a>&gt; GetResourceStats </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the polymorphic memory resource allocator statistics of the specified world. </p>
+<dl class="section note"><dt>Note</dt><dd>This will be the empty value unless the world configuration the given world was constructed with specified the collection of these statistics. </dd>
+<dd>
+This information can be used to tweak the world configuration to pre-allocate enough space to avoid the less deterministic performance behavior of dynamic memory allocation during world step processing that may otherwise occur. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structplayrho_1_1d2_1_1WorldConf.html" title="World configuration data.">WorldConf</a>. </dd></dl>
 
 </div>
 </div>
@@ -12041,7 +12071,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1World.html">World</a></li>
-    <li class="footer">Generated on Wed Oct 11 2023 06:12:32 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 13 2023 04:17:01 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

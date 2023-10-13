@@ -1,5 +1,8 @@
 var NAVTREEINDEX24 =
 {
+"structplayrho_1_1d2_1_1FrictionJointConf.html#af4ffe893bedc0ae14ca078e07d5d2a43":[2,7,0,1,19],
+"structplayrho_1_1d2_1_1FrictionJointConf.html#afa6324a364b2b89057a749a5032ff720":[2,7,0,1,10],
+"structplayrho_1_1d2_1_1GearJointConf.html":[2,7,0,2],
 "structplayrho_1_1d2_1_1GearJointConf.html#a0561c70cfa90284d65bba0a3f59cb62a":[2,7,0,2,14],
 "structplayrho_1_1d2_1_1GearJointConf.html#a0a05d081df33a8c6c68859fff9796866":[2,7,0,2,12],
 "structplayrho_1_1d2_1_1GearJointConf.html#a1442b630b5bd8428f222af8c40df3a8a":[2,7,0,2,25],
@@ -246,8 +249,5 @@ var NAVTREEINDEX24 =
 "structplayrho_1_1d2_1_1PulleyJointConf.html#abe7de7c24d8d14d4dd2a34e2ecc386b3":[2,7,0,6,9],
 "structplayrho_1_1d2_1_1PulleyJointConf.html#ac4ec4a50941868a13a27b1a4cb2bb385":[2,7,0,6,27],
 "structplayrho_1_1d2_1_1PulleyJointConf.html#ac62c3b05e95c61b801722de099d962de":[2,7,0,6,12],
-"structplayrho_1_1d2_1_1PulleyJointConf.html#acff474ab17b3eef88979384619ca35e9":[2,7,0,6,20],
-"structplayrho_1_1d2_1_1PulleyJointConf.html#ad042f7000a43ec5b29154a07465005f6":[2,7,0,6,4],
-"structplayrho_1_1d2_1_1PulleyJointConf.html#ae871b9f7f4170ab3c5d8649b105be628":[2,7,0,6,17],
-"structplayrho_1_1d2_1_1PulleyJointConf.html#af3fbe0b06f27ea75c47d9dece43ced46":[2,7,0,6,16]
+"structplayrho_1_1d2_1_1PulleyJointConf.html#acff474ab17b3eef88979384619ca35e9":[2,7,0,6,20]
 };

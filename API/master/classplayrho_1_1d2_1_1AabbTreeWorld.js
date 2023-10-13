@@ -35,7 +35,7 @@ var classplayrho_1_1d2_1_1AabbTreeWorld =
     [ "GetManifold", "classplayrho_1_1d2_1_1AabbTreeWorld.html#a87c2f9b6cbe7dd8f5dca1283cc584bb4", null ],
     [ "GetProxies", "classplayrho_1_1d2_1_1AabbTreeWorld.html#a24c574e233970c28a513126441b75bef", null ],
     [ "GetProxies", "classplayrho_1_1d2_1_1AabbTreeWorld.html#a3ea45e84278758d191ea6e84a6580f6b", null ],
-    [ "GetResourceStats", "classplayrho_1_1d2_1_1AabbTreeWorld.html#a636d8a4ea3bbecd57881e0954d6be074", null ],
+    [ "GetResourceStats", "classplayrho_1_1d2_1_1AabbTreeWorld.html#a19c368be46ff6490712223019ff5dd55", null ],
     [ "GetShape", "classplayrho_1_1d2_1_1AabbTreeWorld.html#a67fb660513bea3322b086a2702e35351", null ],
     [ "GetShapeRange", "classplayrho_1_1d2_1_1AabbTreeWorld.html#a69a1235c0d82bd65f72812cba91b29ab", null ],
     [ "GetShapes", "classplayrho_1_1d2_1_1AabbTreeWorld.html#acfab29b1905bb96932cbca5f9b924344", null ],
