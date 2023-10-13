@@ -163,7 +163,7 @@ public:
     static UnitVec Get(Angle angle) noexcept;
 
     /// @brief Default constructor.
-    /// @detail Constructs a non-oriented unit vector.
+    /// @details Constructs a non-oriented unit vector.
     /// @post <code>GetX()</code> and <code>GetY()</code> return zero.
     constexpr UnitVec() noexcept = default;
     
