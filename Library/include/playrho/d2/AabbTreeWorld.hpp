@@ -516,7 +516,7 @@ public:
     explicit AabbTreeWorld(const WorldConf& conf = WorldConf{});
 
     /// @brief Copy constructor.
-    /// @detail Basically copy constructs this world as a deep copy of the given world.
+    /// @details Basically copy constructs this world as a deep copy of the given world.
     /// @post <code>GetResourceStats(const AabbTreeWorld&)</code> for this world returns an empty
     ///   value if <code>GetResourceStats(other)</code> returns an empty value, a non-empty value
     ///   that's zero initialized otherwise.

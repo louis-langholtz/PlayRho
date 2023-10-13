@@ -868,7 +868,7 @@ constexpr bool IsFor(const Contact& c, ShapeID shapeID) noexcept
     return (GetShapeA(c) == shapeID) || (GetShapeB(c) == shapeID);
 }
 
-/// @Brief Gets the other body ID for the contact than the one given.
+/// @brief Gets the other body ID for the contact than the one given.
 /// @relatedalso Contact
 constexpr auto GetOtherBody(const Contact& c, BodyID bodyID) noexcept
 {

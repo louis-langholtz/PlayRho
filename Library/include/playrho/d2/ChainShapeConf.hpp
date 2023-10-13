@@ -52,19 +52,25 @@ struct ChainShapeConf : public ShapeBuilder<ChainShapeConf>
         std::vector<Length2> m_vertices{}; ///< Vertices
         std::vector<UnitVec> m_normals{}; ///< Normals.
     public:
+        /// @brief Default constructor.
         VerticesWithNormals() noexcept = default;
+
+        /// @brief Initializing constructor.
         VerticesWithNormals(std::vector<Length2> vertices);
 
+        /// @brief Gets vertices this instance was constructed with.
         auto GetVertices() const noexcept -> decltype((m_vertices))
         {
             return m_vertices;
         }
 
+        /// @brief Gets the normals of the vectors this instance was constructed with.
         auto GetNormals() const noexcept -> decltype((m_normals))
         {
             return m_normals;
         }
 
+        /// @brief Equals operator support.
         friend auto operator==(const VerticesWithNormals& lhs, const VerticesWithNormals& rhs) noexcept -> bool
         {
             return lhs.m_vertices == rhs.m_vertices;
