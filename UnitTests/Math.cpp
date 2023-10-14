@@ -24,6 +24,7 @@
 #include <type_traits>
 #include <chrono>
 #include <cmath>
+#include <new> // for std::bad_alloc
 
 #include <playrho/ConstraintSolverConf.hpp>
 
@@ -1159,6 +1160,13 @@ TEST(Math, LengthFasterThanHypot)
     
     EXPECT_LT(elapsed_secs_length.count(), elapsed_secs_hypot.count());
     EXPECT_NEAR(totalLength, totalHypot, totalLength / 10.0);
+}
+
+TEST(Math, GetCircleVerticesMaxSizeSlices)
+{
+    auto vertices = std::vector<Length2>{};
+    EXPECT_THROW(vertices = GetCircleVertices(10_m, vertices.max_size()), std::bad_alloc);
+    EXPECT_NE(size(vertices), vertices.max_size());
 }
 
 TEST(Math, GetCircleVertices)
