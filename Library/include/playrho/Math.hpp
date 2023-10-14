@@ -634,7 +634,7 @@ constexpr Angle GetRevRotationalAngle(const Angle& a1, const Angle& a2) noexcept
 }
 
 /// @brief Gets the vertices for a circle described by the given parameters.
-std::vector<Length2> GetCircleVertices(Length radius, unsigned slices, Angle start = 0_deg,
+std::vector<Length2> GetCircleVertices(Length radius, std::size_t slices, Angle start = 0_deg,
                                        Real turns = Real{1});
 
 /// @brief Gets the area of a circle.

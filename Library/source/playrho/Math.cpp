@@ -179,10 +179,11 @@ Length2 ComputeCentroid(const Span<const Length2>& vertices)
     return c / area;
 }
 
-std::vector<Length2> GetCircleVertices(Length radius, unsigned slices, Angle start, Real turns)
+std::vector<Length2> GetCircleVertices(Length radius, std::size_t slices, Angle start, Real turns)
 {
     std::vector<Length2> vertices;
-    if (slices > 0) {
+    if (slices > 0u) {
+        vertices.reserve(slices);
         const auto integralTurns = static_cast<long int>(turns);
         const auto wholeNum = (turns == static_cast<Real>(integralTurns));
         const auto deltaAngle = (Pi * 2_rad * turns) / static_cast<Real>(slices);
