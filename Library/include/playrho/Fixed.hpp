@@ -146,9 +146,9 @@ public:
         // Note: std::isnan(val) *NOT* constant expression, so can't use here!
         return !(val <= 0 || val >= 0) // NOLINT(misc-redundant-expression)
             ? GetNaN().m_value // force line-break
-            : (val > static_cast<long double>(GetMax())) // force line-break
+            : (static_cast<long double>(val) > static_cast<long double>(GetMax())) // force line-break
                 ? GetInfinity().m_value // force line-break
-                : (val < static_cast<long double>(GetLowest())) // force line-break
+                : (static_cast<long double>(val) < static_cast<long double>(GetLowest())) // force line-break
                     ? GetNegativeInfinity().m_value // force line-break
                     : static_cast<value_type>(val * ScaleFactor);
     }
