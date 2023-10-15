@@ -1678,7 +1678,7 @@ AabbTreeWorld::UpdateContactTOIs(const StepConf& conf)
         // could provide a TOI that's greater than 1.
         const auto toi = IsValidForTime(output.state)?
             std::min(alpha0 + (Real(1) - alpha0) * output.time, Real(1)): Real(1);
-        SetToi(c, UnitIntervalFF<Real>(toi));
+        SetToi(c, {UnitIntervalFF<Real>(toi)});
         results.maxDistIters = std::max(results.maxDistIters, output.stats.max_dist_iters);
         results.maxToiIters = std::max(results.maxToiIters, output.stats.toi_iters);
         results.maxRootIters = std::max(results.maxRootIters, output.stats.max_root_iters);
