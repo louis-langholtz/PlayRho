@@ -113,6 +113,14 @@ public:
     static_assert(HasUnaryFunctor<Checker, bool, ValueType>::value,
                   "Checker type doesn't provide acceptable unary functor!");
 
+    /// @brief Failing is-checked class template trait.
+    template <class U>
+    struct IsChecked: ::std::false_type {};
+
+    /// @brief Succeeding is-checked class template trait.
+    template <class V, class C, bool N>
+    struct IsChecked<Checked<V, C, N>>: ::std::true_type {};
+
     /// @brief Alias for the value type this class template was instantiated for.
     using value_type = ValueType;
 
@@ -182,8 +190,25 @@ public:
     ///   in the value given.
     /// @todo Consider marking this function "explicit".
     /// @see Validate.
-    constexpr Checked(value_type value) noexcept(NoExcept):
-        m_value{Validate(value)}
+    template <class U,
+    std::enable_if_t<std::is_constructible_v<ValueType, U&&> && !IsChecked<std::decay_t<U>>::value,
+    int> = 0>
+    constexpr Checked(U&& value) noexcept(NoExcept):
+        m_value{Validate(std::forward<U>(value))}
+    {
+        // Intentionally empty.
+    }
+
+    /// @brief Copying constructor.
+    /// @note This allows copying from other checked values that don't use the same checker.
+    /// @post Calling <code>get()</code> or casting to the underlying type, results
+    ///   in a value that compares equally to the value given.
+    template <class OtherValueType, class OtherChecker, bool OtherNoExcept,
+    std::enable_if_t<
+    std::is_constructible_v<ValueType, OtherValueType> && !std::is_same_v<Checker, OtherChecker>,
+    int> = 0>
+    constexpr Checked(const Checked<OtherValueType, OtherChecker, OtherNoExcept>& other) noexcept:
+        m_value{Validate(other.get())}
     {
         // Intentionally empty.
     }
@@ -209,10 +234,12 @@ public:
 
     /// @brief Gets the underlying value via a cast or implicit conversion.
     /// @see get.
-    /// @todo Consider marking this function "explicit".
-    constexpr operator value_type () const noexcept
+    template <class U,
+    std::enable_if_t<!IsChecked<U>::value && !detail::is_narrowing_conversion<ValueType, U>::value,
+    int> = 0>
+    constexpr operator U () const noexcept
     {
-        return m_value;
+        return U{m_value};
     }
 
     /// @brief Member-of pointer operator available for pointer <code>ValueType</code>.

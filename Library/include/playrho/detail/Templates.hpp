@@ -227,6 +227,21 @@ using is_detected = typename detector<nonesuch, void, Op, Args...>::value_t;
 template< template<class...> class Op, class... Args >
 constexpr bool is_detected_v = is_detected<Op, Args...>::value;
 
+/// @brief Is narrowing conversion implementation true trait.
+/// @see https://stackoverflow.com/a/67603594/7410358.
+template<typename From, typename To, typename = void>
+struct is_narrowing_conversion_impl : std::true_type {};
+
+/// @brief Is narrowing conversion implementation false trait.
+/// @see https://stackoverflow.com/a/67603594/7410358.
+template<typename From, typename To>
+struct is_narrowing_conversion_impl<From, To, std::void_t<decltype(To{std::declval<From>()})>> : std::false_type {};
+
+/// @brief Is narrowing conversion trait.
+/// @see https://stackoverflow.com/a/67603594/7410358.
+template<typename From, typename To>
+struct is_narrowing_conversion : is_narrowing_conversion_impl<From, To> {};
+
 } // namespace detail
 
 } // namespace playrho

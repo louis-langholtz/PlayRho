@@ -19,15 +19,16 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/TimeOfImpact.hpp>
+#include <algorithm>
+#include <cassert> // for assert
+
+#include <playrho/detail/CheckedMath.hpp> // for nextafter
 
 #include <playrho/d2/Distance.hpp>
 #include <playrho/d2/DistanceProxy.hpp>
 #include <playrho/d2/SeparationScenario.hpp>
 #include <playrho/d2/Sweep.hpp>
-
-#include <algorithm>
-#include <cassert> // for assert
+#include <playrho/d2/TimeOfImpact.hpp>
 
 namespace playrho::d2 {
 
