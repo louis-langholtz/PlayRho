@@ -406,6 +406,7 @@
 		991988322ACE31D00076F969 /* ConvexHull.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 991988312ACE31D00076F969 /* ConvexHull.cpp */; };
 		991988342ACEA0780076F969 /* NgonWithFwdNormals.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 991988332ACEA0780076F969 /* NgonWithFwdNormals.hpp */; };
 		9919883A2AD5FEE80076F969 /* IslandStats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 991988392AD5FEE80076F969 /* IslandStats.cpp */; };
+		9919883C2ADAFEE20076F969 /* CheckedMath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9919883B2ADAFEE20076F969 /* CheckedMath.hpp */; };
 		9921FFD729AD43C30043F23F /* TypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9921FFD629AD43C30043F23F /* TypeInfo.cpp */; };
 		996B7B832A6DF1A500A8207F /* PoolMemoryResource.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */; };
 		996B7B842A6DF1A500A8207F /* MemoryResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */; };
@@ -905,6 +906,7 @@
 		991988312ACE31D00076F969 /* ConvexHull.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConvexHull.cpp; sourceTree = "<group>"; };
 		991988332ACEA0780076F969 /* NgonWithFwdNormals.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NgonWithFwdNormals.hpp; sourceTree = "<group>"; };
 		991988392AD5FEE80076F969 /* IslandStats.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IslandStats.cpp; sourceTree = "<group>"; };
+		9919883B2ADAFEE20076F969 /* CheckedMath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CheckedMath.hpp; sourceTree = "<group>"; };
 		9921FFD629AD43C30043F23F /* TypeInfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TypeInfo.cpp; sourceTree = "<group>"; };
 		996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PoolMemoryResource.hpp; sourceTree = "<group>"; };
 		996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryResource.cpp; sourceTree = "<group>"; };
@@ -1424,6 +1426,7 @@
 			children = (
 				9901AF042A9D7EC00075122D /* AABB.hpp */,
 				470463ED250305C900614373 /* Checked.hpp */,
+				9919883B2ADAFEE20076F969 /* CheckedMath.hpp */,
 				9901AF1B2AB248A80075122D /* FiniteChecker.hpp */,
 				9901AEFD2A9D24EC0075122D /* IndexingNamedType.hpp */,
 				9901AF162AB248A80075122D /* NegativeChecker.hpp */,
@@ -1729,6 +1732,7 @@
 				996B7B862A6DF1A500A8207F /* ThreadLocalAllocator.hpp in Headers */,
 				4751EE2E1CEDD7A300D459CB /* MotorJoint.cpp in Headers */,
 				470F94D21EC6376F00AA3C82 /* ContactKey.hpp in Headers */,
+				9919883C2ADAFEE20076F969 /* CheckedMath.hpp in Headers */,
 				47578BE11D8869110078CD40 /* WorldManifold.hpp in Headers */,
 				991988342ACEA0780076F969 /* NgonWithFwdNormals.hpp in Headers */,
 				47F397E02654426F003C1FD9 /* Compositor.hpp in Headers */,

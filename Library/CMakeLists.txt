@@ -30,6 +30,7 @@ file(GLOB PLAYRHO_General_HDRS "${PLAYRHO_INCLUDE_PREFIX}*.hpp")
 set(PLAYRHO_DETAIL_HDRS
 	"${PLAYRHO_INCLUDE_PREFIX}detail/AABB.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}detail/Checked.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}detail/CheckedMath.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}detail/FiniteChecker.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}detail/IndexingNamedType.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}detail/NegativeChecker.hpp"
