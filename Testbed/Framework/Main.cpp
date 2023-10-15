@@ -307,7 +307,8 @@ static bool InputReal(const char* label, Real& var, Real step = 0, Real step_fas
     }
     else {
         auto val = static_cast<double>(var);
-        if (ImGui::InputDouble(label, &val, step, step_fast, format, flags)) {
+        if (ImGui::InputDouble(label, &val, static_cast<double>(step), static_cast<double>(step_fast),
+                               format, flags)) {
             var = static_cast<Real>(val);
             return true;
         }

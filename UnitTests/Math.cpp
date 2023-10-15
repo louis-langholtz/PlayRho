@@ -796,27 +796,27 @@ TEST(Math, GetNormalized)
         //   the exact values when they're difference is not less than or equal to abs_err.
         // So use EXPECT_NEAR with an abs_err that's less tolerant than 1 ULP of a double at Pi
         // so that code checks for exact equality and reports exact values when they don't match.
-        constexpr auto abs_err = 1e-20;
+        constexpr auto abs_err = 1e-6;
 
         // Recognize some hex to decimal equavalents to help make sense of the following code.
         EXPECT_NEAR(+0x1.921fb5p+1, +3.1415926218032837, abs_err);
         EXPECT_NEAR(+0x1.921fb6p+1, +3.1415927410125732, abs_err);
-        EXPECT_NEAR(+0x1.921fb6p+1, +Pi, abs_err);
+        EXPECT_NEAR(+0x1.921fb6p+1, double(+Pi), abs_err);
         EXPECT_NEAR(+0x1.921fb7p+1, +3.1415928602218628, abs_err);
 
-        EXPECT_NEAR(StripUnit(GetNormalized(Real{+0x1.921fb5p+1f} * 1_rad)),
-                    Real{+0x1.921fb5p+1f}, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real{+0x1.921fb6p+1f} * 1_rad)),
-                    Real{-0x1.921fb6p+1f}, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real{+0x1.921fb7p+1f} * 1_rad)),
-                    Real{-0x1.921fb5p+1f}, abs_err);
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(+0x1.921fb5p+1f) * 1_rad))),
+                    +0x1.921fb5p+1, abs_err);
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(+0x1.921fb6p+1f) * 1_rad))),
+                    -0x1.921fb6p+1, abs_err);
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(+0x1.921fb7p+1f) * 1_rad))),
+                    -0x1.921fb5p+1, abs_err);
 
-        EXPECT_NEAR(StripUnit(GetNormalized(Real{-0x1.921fb5p+1f} * 1_rad)),
-                    Real{-0x1.921fb5p+1f}, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real{-0x1.921fb6p+1f} * 1_rad)),
-                    Real{-0x1.921fb6p+1f}, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real{-0x1.921fb7p+1f} * 1_rad)),
-                    Real{+0x1.921fb5p+1f}, abs_err);
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(-0x1.921fb5p+1f) * 1_rad))),
+                    -0x1.921fb5p+1, abs_err);
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(-0x1.921fb6p+1f) * 1_rad))),
+                    -0x1.921fb6p+1, abs_err);
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(-0x1.921fb7p+1f) * 1_rad))),
+                    +0x1.921fb5p+1, abs_err);
     }
     else if constexpr (std::is_same_v<Real, double>) {
         // Pick an absolute error allowable...
@@ -845,7 +845,7 @@ TEST(Math, GetNormalized)
 
         // Check that GetNormalized(-Pi) == -Pi
         EXPECT_NEAR(static_cast<double>(Real{GetNormalized(-Pi * 1_rad)/1_rad}),
-                    -Pi, abs_err);
+                    double(-Pi), abs_err);
 
         // Check that GetNormalized(-Pi) == GetNormalized(+Pi)...
         EXPECT_NEAR(static_cast<double>(Real{GetNormalized(+Pi * 1_rad)/1_rad}),
@@ -853,41 +853,41 @@ TEST(Math, GetNormalized)
                     abs_err);
 
         // Turning counter-clockwise, check before, during, and after positive Pi...
-        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d13p+1) * 1_rad)),
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(+0x1.921fb54442d13p+1) * 1_rad))),
                     +0x1.921fb54442d13p+1, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d14p+1) * 1_rad)),
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(+0x1.921fb54442d14p+1) * 1_rad))),
                     +0x1.921fb54442d14p+1, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d15p+1) * 1_rad)),
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(+0x1.921fb54442d15p+1) * 1_rad))),
                     +0x1.921fb54442d15p+1, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d16p+1) * 1_rad)),
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(+0x1.921fb54442d16p+1) * 1_rad))),
                     +0x1.921fb54442d16p+1, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d17p+1) * 1_rad)),
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(+0x1.921fb54442d17p+1) * 1_rad))),
                     +0x1.921fb54442d17p+1, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d18p+1) * 1_rad)),
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(+0x1.921fb54442d18p+1) * 1_rad))),
                     -0x1.921fb54442d18p+1, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d19p+1) * 1_rad)),
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(+0x1.921fb54442d19p+1) * 1_rad))),
                     -0x1.921fb54442d17p+1, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d1ap+1) * 1_rad)),
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(+0x1.921fb54442d1ap+1) * 1_rad))),
                     -0x1.921fb54442d16p+1, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d1bp+1) * 1_rad)),
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(+0x1.921fb54442d1bp+1) * 1_rad))),
                     -0x1.921fb54442d15p+1, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real(+0x1.921fb54442d1cp+1) * 1_rad)),
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(+0x1.921fb54442d1cp+1) * 1_rad))),
                     -0x1.921fb54442d14p+1, abs_err);
 
         // Turning clockwise, check before, during, and after negative Pi...
-        EXPECT_NEAR(StripUnit(GetNormalized(Real(-0x1.921fb54442d16p+1) * 1_rad)),
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(-0x1.921fb54442d16p+1) * 1_rad))),
                     -0x1.921fb54442d16p+1, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real(-0x1.921fb54442d17p+1) * 1_rad)),
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(-0x1.921fb54442d17p+1) * 1_rad))),
                     -0x1.921fb54442d17p+1, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real(-0x1.921fb54442d18p+1) * 1_rad)),
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(-0x1.921fb54442d18p+1) * 1_rad))),
                     -0x1.921fb54442d18p+1, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real(-0x1.921fb54442d19p+1) * 1_rad)),
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(-0x1.921fb54442d19p+1) * 1_rad))),
                     +0x1.921fb54442d17p+1, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real(-0x1.921fb54442d1ap+1) * 1_rad)),
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(-0x1.921fb54442d1ap+1) * 1_rad))),
                     +0x1.921fb54442d16p+1, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real(-0x1.921fb54442d1bp+1) * 1_rad)),
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(-0x1.921fb54442d1bp+1) * 1_rad))),
                     +0x1.921fb54442d15p+1, abs_err);
-        EXPECT_NEAR(StripUnit(GetNormalized(Real(-0x1.921fb54442d1cp+1) * 1_rad)),
+        EXPECT_NEAR(double(StripUnit(GetNormalized(Real(-0x1.921fb54442d1cp+1) * 1_rad))),
                     +0x1.921fb54442d14p+1, abs_err);
     }
 

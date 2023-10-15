@@ -756,9 +756,9 @@ TEST(World, GetSetAngle)
     ASSERT_EQ(GetAngle(world, body), 0_deg);
     ASSERT_EQ(GetAngularVelocity(world, body), 0_rpm);
     EXPECT_NO_THROW(SetAngle(world, body, Pi * 0.5_rad));
-    EXPECT_NEAR(double(StripUnit(GetAngle(world, body))), Pi * 0.5, 0.00001);
+    EXPECT_NEAR(double(StripUnit(GetAngle(world, body))), double(Pi) * 0.5, 0.00001);
     EXPECT_NO_THROW(SetAngle(world, body, Pi * 2.1_rad));
-    EXPECT_NEAR(double(StripUnit(GetAngle(world, body))), Pi * 2.1, 0.00001);
+    EXPECT_NEAR(double(StripUnit(GetAngle(world, body))), double(Pi) * 2.1, 0.00001);
     EXPECT_NO_THROW(SetAngle(world, body, Pi * 0_rad));
     EXPECT_NO_THROW(SetVelocity(world, body, 60_rpm));
     for (auto i = 0; i < 105; ++i) {
