@@ -75,13 +75,6 @@ constexpr auto MakeUnsigned(const T& arg) noexcept
     return static_cast<std::make_unsigned_t<T>>(arg);
 }
 
-/// @brief Strips the unit from the given value.
-template <typename T>
-constexpr auto StripUnit(const T& v) -> decltype(StripUnit(v.get()))
-{
-    return StripUnit(v.get());
-}
-
 /// @defgroup Math Additional Math Functions
 /// @brief Additional functions for common mathematical operations.
 /// @details These are non-member non-friend functions for mathematical operations
@@ -414,7 +407,7 @@ constexpr auto Solve(const Matrix22<U>& mat, const Vector2<T>& b) noexcept
     const auto cp = Cross(get<0>(mat), get<1>(mat));
     using OutType = decltype((U{} * T{}) / cp);
     if (!AlmostZero(StripUnit(cp))) {
-        const auto inverse = Real{1} / cp;
+        const auto inverse = OutType(1) / cp;
         return Vector2<OutType>{
             (get<1>(mat)[1] * b[0] - get<1>(mat)[0] * b[1]) * inverse,
             (get<0>(mat)[0] * b[1] - get<0>(mat)[1] * b[0]) * inverse
@@ -430,7 +423,7 @@ constexpr auto Invert(const Matrix22<IN_TYPE>& value) noexcept
     const auto cp = Cross(get<0>(value), get<1>(value));
     using OutType = decltype(get<0>(value)[0] / cp);
     if (!AlmostZero(StripUnit(cp))) {
-        const auto inverse = Real{1} / cp;
+        const auto inverse = OutType(1) / cp;
         return Matrix22<OutType>{
             Vector2<OutType>{get<1>(get<1>(value)) * inverse, -get<1>(get<0>(value)) * inverse},
             Vector2<OutType>{-get<0>(get<1>(value)) * inverse, get<0>(get<0>(value)) * inverse}
@@ -445,7 +438,7 @@ template <typename T>
 constexpr auto Solve33(const Mat33& mat, const Vector3<T>& b) noexcept -> Vector3<T>
 {
     const auto dp = Dot(GetX(mat), Cross(GetY(mat), GetZ(mat)));
-    const auto det = (dp != 0) ? Real{1} / dp : dp;
+    const auto det = (dp != 0) ? T(1) / dp : dp;
     return { // line break
         det * Dot(b, Cross(GetY(mat), GetZ(mat))), // x-component
         det * Dot(GetX(mat), Cross(b, GetZ(mat))), // y-component
@@ -464,7 +457,7 @@ constexpr auto Solve22(const Mat33& mat, const Vector2<T>& b) noexcept -> Vector
     const auto matYX = GetY(GetX(mat));
     const auto matYY = GetY(GetY(mat));
     const auto cp = matXX * matYY - matXY * matYX;
-    const auto det = (cp != 0) ? Real{1} / cp : cp;
+    const auto det = (cp != 0) ? T(1) / cp : cp;
     return { // line break
         det * (matYY * GetX(b) - matXY * GetY(b)), // x-component
         det * (matXX * GetY(b) - matYX * GetX(b))  // y-component
@@ -635,7 +628,7 @@ constexpr Angle GetRevRotationalAngle(const Angle& a1, const Angle& a2) noexcept
 
 /// @brief Gets the vertices for a circle described by the given parameters.
 std::vector<Length2> GetCircleVertices(Length radius, std::size_t slices, Angle start = 0_deg,
-                                       Real turns = Real{1});
+                                       Real turns = Real(1));
 
 /// @brief Gets the area of a circle.
 NonNegativeFF<Area> GetAreaOfCircle(Length radius);
