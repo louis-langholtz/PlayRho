@@ -195,6 +195,10 @@ constexpr auto newton = 1; ///< Newton unit value.
 constexpr auto newton_meter = 1; ///< Newton meter unit value.
 #endif // defined(PLAYRHO_USE_BOOST_UNITS)
 
+/// @brief Alias for getting the return type of a @c get() member function.
+template<class T>
+using get_member_type = decltype(std::declval<T&>().get());
+
 }
 
 /// @defgroup PhysicalQuantities Physical Quantity Types
@@ -913,9 +917,17 @@ namespace playrho {
 
 /// @brief Strips the units off of the given value.
 template <class T>
-constexpr auto StripUnit(const T& value) -> std::enable_if_t<std::is_arithmetic_v<T>, T>
+constexpr auto StripUnit(const T& value)
+-> std::enable_if_t<IsArithmeticV<T> && !detail::is_detected_v<detail::get_member_type, T>, T>
 {
     return value;
+}
+
+/// @brief Strips the unit from the given value.
+template <typename T>
+constexpr auto StripUnit(const T& v) -> decltype(v.get(), StripUnit(v.get()))
+{
+    return StripUnit(v.get());
 }
 
 /// @defgroup UnitConstants Physical Constants
