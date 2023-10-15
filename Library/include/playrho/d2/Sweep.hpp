@@ -80,6 +80,7 @@ struct Sweep
 /// @details This advances position 0 (<code>pos0</code>) of the sweep towards position
 ///   1 (<code>pos1</code>) by a factor of the difference between the given alpha and
 ///   the alpha 0.
+/// @param sweep The sweep to return an advancement of.
 /// @param alpha Valid new time factor in [0,1) to update the sweep to.
 Sweep Advance0(const Sweep& sweep, ZeroToUnderOneFF<Real> alpha) noexcept;
 
