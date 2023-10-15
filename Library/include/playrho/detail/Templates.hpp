@@ -184,6 +184,49 @@ constexpr auto IsFull(const T& arg) -> decltype(size(arg) == max_size(arg))
     return size(arg) == max_size(arg);
 }
 
+/// @brief None such type.
+/// @see https://en.cppreference.com/w/cpp/experimental/is_detected
+struct nonesuch {
+    nonesuch() = delete;
+    ~nonesuch() = delete;
+    nonesuch(nonesuch const&) = delete;
+    void operator=(nonesuch const&) = delete;
+};
+
+/// @brief Detector class template.
+/// @see https://en.cppreference.com/w/cpp/experimental/is_detected
+template<class Default, class AlwaysVoid, template<class...> class Op, class... Args>
+struct detector
+{
+    /// @brief Value type.
+    using value_t = std::false_type;
+
+    /// @brief Default type.
+    using type = Default;
+};
+
+/// @brief Detected class template specialized for successful detection.
+/// @see https://en.cppreference.com/w/cpp/experimental/is_detected
+template<class Default, template<class...> class Op, class... Args>
+struct detector<Default, std::void_t<Op<Args...>>, Op, Args...>
+{
+    /// @brief Value type.
+    using value_t = std::true_type;
+
+    /// @brief Specialized type.
+    using type = Op<Args...>;
+};
+
+/// @brief Is-detected value type.
+/// @see https://en.cppreference.com/w/cpp/experimental/is_detected
+template<template<class...> class Op, class... Args>
+using is_detected = typename detector<nonesuch, void, Op, Args...>::value_t;
+
+/// @brief Is-detected-value.
+/// @see https://en.cppreference.com/w/cpp/experimental/is_detected
+template< template<class...> class Op, class... Args >
+constexpr bool is_detected_v = is_detected<Op, Args...>::value;
+
 } // namespace detail
 
 } // namespace playrho
