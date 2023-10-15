@@ -126,7 +126,7 @@ struct ToiOutput {
     /// @brief Initializing constructor.
     ToiOutput(UnitIntervalFF<Real> t, Statistics s, State z) noexcept : time{t}, stats{s}, state{z} {}
 
-    UnitIntervalFF<Real> time = 0; ///< Time factor in range of [0,1] into the future.
+    UnitIntervalFF<Real> time{}; ///< Time factor in range of [0,1] into the future.
     Statistics stats; ///< Statistics.
     State state = e_unknown; ///< State at time factor.
 };
