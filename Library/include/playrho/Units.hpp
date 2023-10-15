@@ -44,6 +44,8 @@
 #include <playrho/RealConstants.hpp>
 #include <playrho/Templates.hpp>
 
+#include <playrho/to_underlying.hpp>
+
 // #define PLAYRHO_USE_BOOST_UNITS
 #if defined(PLAYRHO_USE_BOOST_UNITS)
 #include <boost/units/io.hpp>
@@ -923,13 +925,6 @@ constexpr auto StripUnit(const T& value)
     return value;
 }
 
-/// @brief Strips the unit from the given value.
-template <typename T>
-constexpr auto StripUnit(const T& v) -> decltype(v.get(), StripUnit(v.get()))
-{
-    return StripUnit(v.get());
-}
-
 /// @defgroup UnitConstants Physical Constants
 /// @brief Definitions of universal and Earthly physical constants.
 /// @see PhysicalQuantities
@@ -1105,11 +1100,20 @@ constexpr RotInertia GetInvalid() noexcept
 
 #endif // defined(PLAYRHO_USE_BOOST_UNITS)
 
+/// @brief Strips the unit from the given value.
+/// @note This definition is for two step stripping of units. As such, it has to be after
+///   all other overloads of the @c StripUnit functions have been declared so it can use any
+///   of those as needed.
+template <typename T>
+constexpr auto StripUnit(const T& v) -> decltype(StripUnit(to_underlying(v)))
+{
+    return StripUnit(to_underlying(v));
+}
+
 } // namespace playrho
 
 #if defined(PLAYRHO_USE_BOOST_UNITS)
-namespace boost {
-namespace units {
+namespace boost::units {
 
 // Define division and multiplication templated operators in boost::units namespace since
 //   boost::units is the consistent namespace of operands for these and this aids with
@@ -1180,8 +1184,8 @@ constexpr auto operator*(X lhs, quantity<Dimension, playrho::Real> rhs)
     return playrho::Real(lhs) * rhs;
 }
 
-} // namespace units
-} // namespace boost
+} // namespace boost::units
+
 #endif // defined(PLAYRHO_USE_BOOST_UNITS)
 
 #endif // PLAYRHO_UNITS_HPP

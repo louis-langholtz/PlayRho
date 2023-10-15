@@ -122,7 +122,7 @@ public:
     struct IsChecked<Checked<V, C, N>>: ::std::true_type {};
 
     /// @brief Alias for the value type this class template was instantiated for.
-    using value_type = ValueType;
+    using underlying_type = ValueType;
 
     /// @brief Alias for the removed pointer type.
     /// @note This is the same as <code>value_type</code> unless it's actually
@@ -139,7 +139,7 @@ public:
     /// @throws exception_type Constructed with the returned error - if the checker
     ///   returned a non-null explanatory string.
     /// @see exception_type.
-    static constexpr auto ThrowIfInvalid(const value_type& value)
+    static constexpr auto ThrowIfInvalid(const underlying_type& value)
         -> decltype((void)exception_type(Checker{}(value)), std::declval<void>())
     {
         if (const auto error = Checker{}(value)) {
@@ -154,8 +154,8 @@ public:
     /// @throws exception_type Constructed with the returned error - if the checker
     ///   returned a non-null explanatory string - and @c NoExcept is @c false.
     /// @return Value given.
-    static constexpr auto Validate(const value_type& value) noexcept(NoExcept)
-        -> decltype(ThrowIfInvalid(value), value_type{})
+    static constexpr auto Validate(const underlying_type& value) noexcept(NoExcept)
+        -> decltype(ThrowIfInvalid(value), underlying_type{})
     {
         if constexpr (NoExcept) {
 #ifndef NDEBUG // Only verify condition & add that overhead in debug builds!
@@ -227,7 +227,7 @@ public:
 
     /// @brief Explicitly gets the underlying value.
     /// @note This can also be cast to the underlying value.
-    constexpr value_type get() const noexcept
+    constexpr underlying_type get() const noexcept
     {
         return m_value;
     }
@@ -235,11 +235,11 @@ public:
     /// @brief Gets the underlying value via a cast or implicit conversion.
     /// @see get.
     template <class U,
-    std::enable_if_t<!IsChecked<U>::value && !detail::is_narrowing_conversion<ValueType, U>::value,
+    std::enable_if_t<!IsChecked<U>::value && std::is_constructible_v<U, ValueType>,
     int> = 0>
     constexpr operator U () const noexcept
     {
-        return U{m_value};
+        return U(m_value);
     }
 
     /// @brief Member-of pointer operator available for pointer <code>ValueType</code>.
@@ -260,7 +260,7 @@ public:
     }
 
 private:
-    value_type m_value; ///< Underlying value.
+    underlying_type m_value; ///< Underlying value.
 };
 
 // Common operations.
