@@ -194,7 +194,7 @@ public:
     std::enable_if_t<std::is_constructible_v<ValueType, U&&> && !IsChecked<std::decay_t<U>>::value,
     int> = 0>
     constexpr Checked(U&& value) noexcept(NoExcept):
-        m_value{Validate(std::forward<U>(value))}
+        m_value{Validate(ValueType(std::forward<U>(value)))}
     {
         // Intentionally empty.
     }
@@ -207,7 +207,7 @@ public:
     std::enable_if_t<
     std::is_constructible_v<ValueType, OtherValueType> && !std::is_same_v<Checker, OtherChecker>,
     int> = 0>
-    constexpr Checked(const Checked<OtherValueType, OtherChecker, OtherNoExcept>& other) noexcept:
+    constexpr Checked(const Checked<OtherValueType, OtherChecker, OtherNoExcept>& other) noexcept(NoExcept):
         m_value{Validate(other.get())}
     {
         // Intentionally empty.

@@ -50,7 +50,7 @@ auto abs(const Checked<ValueType, Checker, NoExcept>& arg)
 /// @see https://en.cppreference.com/w/cpp/numeric/math/nextafter
 template <class ValueType, class Checker, bool NoExcept>
 auto nextafter(const Checked<ValueType, Checker, NoExcept>& from, // force newline
-               const Checked<ValueType, Checker, NoExcept>& to) noexcept
+               const Checked<ValueType, Checker, NoExcept>& to)
 -> decltype(Checked<ValueType, Checker, false>(nextafter(from.get(), to.get())))
 {
     using std::nextafter;
