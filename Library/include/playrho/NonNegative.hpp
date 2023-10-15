@@ -80,8 +80,8 @@ static_assert(std::is_nothrow_destructible_v<NonNegative<float>>);
 static_assert(std::is_trivially_destructible_v<NonNegative<float>>);
 
 // Confirm convertability traits (repeat of above but for clarity)...
-static_assert((std::is_convertible_v<NonNegative<float>, NonNegative<float>::value_type>));
-static_assert((std::is_convertible_v<NonNegative<float>::value_type, NonNegative<float>>));
+static_assert((std::is_convertible_v<NonNegative<float>, NonNegative<float>::underlying_type>));
+static_assert((std::is_convertible_v<NonNegative<float>::underlying_type, NonNegative<float>>));
 
 } // namespace playrho
 

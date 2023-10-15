@@ -2626,7 +2626,7 @@ TEST(World, CollidingDynamicBodies)
     const auto time_contacting = elapsed_time;
 
     EXPECT_TRUE(listener.touching);
-    EXPECT_NEAR(double(time_contacting / 1_s), double(time_collision / 1_s), 0.02);
+    EXPECT_NEAR(double(Real(time_contacting / 1_s)), double(Real(time_collision / 1_s)), 0.02);
     EXPECT_EQ(GetY(GetLocation(world, body_a)), 0_m);
     EXPECT_EQ(GetY(GetLocation(world, body_b)), 0_m);
 
@@ -2658,7 +2658,7 @@ TEST(World, CollidingDynamicBodies)
     }
     EXPECT_FALSE(listener.touching);
 
-    EXPECT_TRUE(AlmostEqual(double(elapsed_time / 1_s), double((time_contacting + time_inc) / 1_s)));
+    EXPECT_TRUE(AlmostEqual(double(Real(elapsed_time / 1_s)), double(Real((time_contacting + time_inc) / 1_s))));
 
     // collision should be fully resolved now...
     EXPECT_LT(GetX(GetLocation(world, body_a)), -1_m);
