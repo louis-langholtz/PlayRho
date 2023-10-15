@@ -30,86 +30,6 @@
 
 namespace playrho {
 
-/// @defgroup FixedMath Math Functions For Fixed Types
-/// @brief Common Mathematical Functions For Fixed Types.
-/// @note These functions directly compute their respective results. They don't convert
-///   their inputs to a floating point type to use the standard math functions and then
-///   convert those results back to the fixed point type. This has pros and cons. Some
-///   pros are that: this won't suffer from the "non-determinism" inherent with different
-///   hardware platforms potentially having different floating point or math library
-///   implementations; this implementation won't suffer any overhead of converting between
-///   the underlying type and a floating point type. On the con side however: this
-///   implementation is unlikely to be anywhere near as tested as standard C++ math library
-///   functions likely are; this implementation is unlikely to have anywhere near as much
-///   performance tuning as standard library functions have had.
-/// @see Fixed
-/// @see https://en.cppreference.com/w/cpp/numeric/math
-/// @{
-
-/// @brief Computes the absolute value.
-/// @see https://en.cppreference.com/w/cpp/numeric/math/fabs
-template <typename BT, unsigned int FB>
-constexpr Fixed<BT, FB> abs(Fixed<BT, FB> arg)
-{
-    return (arg >= 0)? arg: -arg;
-}
-
-/// @brief Computes the value of the given number raised to the given power.
-/// @note This implementation is for raising a given value to an integer power.
-///   This may have significantly different performance than raising a value to a
-///   non-integer power.
-/// @see https://en.cppreference.com/w/cpp/numeric/math/pow
-template <typename BT, unsigned int FB>
-constexpr Fixed<BT, FB> pow(Fixed<BT, FB> value, int n)
-{
-    if (!n)
-    {
-        return Fixed<BT, FB>{1};
-    }
-    if (value == 0)
-    {
-        if (n > 0)
-        {
-            return Fixed<BT, FB>{0};
-        }
-        return Fixed<BT, FB>::GetInfinity();
-    }
-    if (value == 1)
-    {
-        return Fixed<BT, FB>{1};
-    }
-    if (value == Fixed<BT, FB>::GetNegativeInfinity())
-    {
-        if (n > 0)
-        {
-            if (n % 2 == 0)
-            {
-                return Fixed<BT, FB>::GetInfinity();
-            }
-            return Fixed<BT, FB>::GetNegativeInfinity();
-        }
-        return Fixed<BT, FB>{0};
-    }
-    if (value == Fixed<BT, FB>::GetInfinity())
-    {
-        return (n < 0)? Fixed<BT, FB>{0}: Fixed<BT, FB>::GetInfinity();
-    }
-    
-    const auto doReciprocal = (n < 0);
-    if (doReciprocal)
-    {
-        n = -n;
-    }
-    
-    auto res = value;
-    for (; n > 1; --n)
-    {
-        res *= value;
-    }
-    
-    return (doReciprocal)? 1 / res: res;
-}
-
 namespace detail {
 
 /// @brief Fixed point pi value.
@@ -216,7 +136,7 @@ Fixed<BT, FB> log(Fixed<BT, FB> arg)
         }
         return res;
     }
-    
+
     // The following algorithm isn't as accurate as desired.
     // Is there a better one?
     // ln(x) = ((x - 1) / x) + ((x - 1) / x)^2/2 + ((x - 1) / x)^3/3 + ...
@@ -315,7 +235,7 @@ constexpr Fixed<BT, FB> atan(Fixed<BT, FB> arg)
         res += sgn * term;
         sgn = -sgn;
     }
-    
+
     if (doReciprocal)
     {
         return (arg > 0)? FixedPi<BT, FB> / 2 - res: -FixedPi<BT, FB> / 2 - res;
@@ -354,7 +274,104 @@ constexpr auto ComputeSqrt(Fixed<BT, FB> arg)
     return temp;
 }
 
+/// @brief Normalizes the given angular argument.
+template <typename BT, unsigned int FB>
+inline auto AngularNormalize(Fixed<BT, FB> angleInRadians)
+{
+    constexpr auto oneRotationInRadians = 2 * FixedPi<BT, FB>;
+
+    angleInRadians = fmod(angleInRadians, oneRotationInRadians);
+    if (angleInRadians > FixedPi<BT, FB>)
+    {
+        // 190_deg becomes 190_deg - 360_deg = -170_deg
+        angleInRadians -= oneRotationInRadians;
+    }
+    else if (angleInRadians < -FixedPi<BT, FB>)
+    {
+        // -200_deg becomes -200_deg + 360_deg = 100_deg
+        angleInRadians += oneRotationInRadians;
+    }
+    return angleInRadians;
+}
+
 } // namespace detail
+
+/// @defgroup FixedMath Math Functions For Fixed Types
+/// @brief Common Mathematical Functions For Fixed Types.
+/// @note These functions directly compute their respective results. They don't convert
+///   their inputs to a floating point type to use the standard math functions and then
+///   convert those results back to the fixed point type. This has pros and cons. Some
+///   pros are that: this won't suffer from the "non-determinism" inherent with different
+///   hardware platforms potentially having different floating point or math library
+///   implementations; this implementation won't suffer any overhead of converting between
+///   the underlying type and a floating point type. On the con side however: this
+///   implementation is unlikely to be anywhere near as tested as standard C++ math library
+///   functions likely are; this implementation is unlikely to have anywhere near as much
+///   performance tuning as standard library functions have had.
+/// @see Fixed
+/// @see https://en.cppreference.com/w/cpp/numeric/math
+/// @{
+
+/// @brief Computes the absolute value.
+/// @see https://en.cppreference.com/w/cpp/numeric/math/fabs
+template <typename BT, unsigned int FB>
+constexpr Fixed<BT, FB> abs(Fixed<BT, FB> arg)
+{
+    return (arg >= 0)? arg: -arg;
+}
+
+/// @brief Computes the value of the given number raised to the given power.
+/// @note This implementation is for raising a given value to an integer power.
+///   This may have significantly different performance than raising a value to a
+///   non-integer power.
+/// @see https://en.cppreference.com/w/cpp/numeric/math/pow
+template <typename BT, unsigned int FB>
+constexpr Fixed<BT, FB> pow(Fixed<BT, FB> value, int n)
+{
+    if (!n)
+    {
+        return Fixed<BT, FB>{1};
+    }
+    if (value == 0)
+    {
+        if (n > 0)
+        {
+            return Fixed<BT, FB>{0};
+        }
+        return Fixed<BT, FB>::GetInfinity();
+    }
+    if (value == 1)
+    {
+        return Fixed<BT, FB>{1};
+    }
+    if (value == Fixed<BT, FB>::GetNegativeInfinity())
+    {
+        if (n > 0)
+        {
+            if (n % 2 == 0)
+            {
+                return Fixed<BT, FB>::GetInfinity();
+            }
+            return Fixed<BT, FB>::GetNegativeInfinity();
+        }
+        return Fixed<BT, FB>{0};
+    }
+    if (value == Fixed<BT, FB>::GetInfinity())
+    {
+        return (n < 0)? Fixed<BT, FB>{0}: Fixed<BT, FB>::GetInfinity();
+    }
+    const auto doReciprocal = (n < 0);
+    if (doReciprocal)
+    {
+        n = -n;
+    }
+    auto res = value;
+    for (; n > 1; --n)
+    {
+        res *= value;
+    }
+    return (doReciprocal)? 1 / res: res;
+}
 
 /// @brief Truncates the given value.
 /// @see https://en.cppreference.com/w/c/numeric/math/trunc
@@ -421,30 +438,6 @@ inline bool isnormal(Fixed<BT, FB> arg)
 {
     return arg != Fixed<BT, FB>{0} && arg.isfinite();
 }
-
-namespace detail {
-
-/// @brief Normalizes the given angular argument.
-template <typename BT, unsigned int FB>
-inline auto AngularNormalize(Fixed<BT, FB> angleInRadians)
-{
-    constexpr auto oneRotationInRadians = 2 * FixedPi<BT, FB>;
-
-    angleInRadians = fmod(angleInRadians, oneRotationInRadians);
-    if (angleInRadians > FixedPi<BT, FB>)
-    {
-        // 190_deg becomes 190_deg - 360_deg = -170_deg
-        angleInRadians -= oneRotationInRadians;
-    }
-    else if (angleInRadians < -FixedPi<BT, FB>)
-    {
-        // -200_deg becomes -200_deg + 360_deg = 100_deg
-        angleInRadians += oneRotationInRadians;
-    }
-    return angleInRadians;
-}
-
-} // namespace detail
 
 /// @brief Computes the sine of the argument for Fixed types.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/sin
@@ -603,6 +596,24 @@ inline bool isfinite(Fixed<BT, FB> value) noexcept
 {
     return (value > Fixed<BT, FB>::GetNegativeInfinity())
     && (value < Fixed<BT, FB>::GetInfinity());
+}
+
+/// @brief Gets wether the given value is a positive or negative infinity.
+/// @see https://en.cppreference.com/w/cpp/numeric/math/isinf
+template <typename BT, unsigned int FB>
+auto isinf(const Fixed<BT, FB>& value) noexcept
+{
+    return (value == Fixed<BT, FB>::GetInfinity()) // force newline
+        || (value == Fixed<BT, FB>::GetNegativeInfinity());
+}
+
+/// @brief Gets the largest integer value not greater than the given value.
+/// @see https://en.cppreference.com/w/cpp/numeric/math/floor.
+template <typename BT, unsigned int FB>
+auto floor(const Fixed<BT, FB>& value)
+{
+    const auto tmp = trunc(value);
+    return (tmp > value)? (value - 1): tmp;
 }
 
 /// @}
