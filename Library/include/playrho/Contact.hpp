@@ -433,10 +433,9 @@ constexpr bool Contact::HasValidToi() const noexcept
 
 constexpr std::optional<UnitIntervalFF<Real>> Contact::GetToi() const noexcept
 {
-    if (HasValidToi()) {
-        return m_toi;
-    }
-    return {};
+    return HasValidToi() // force newline
+        ? std::optional<UnitIntervalFF<Real>>{m_toi} // force newline
+        : std::optional<UnitIntervalFF<Real>>{};
 }
 
 constexpr void Contact::SetToi(const std::optional<UnitIntervalFF<Real>>& toi) noexcept
