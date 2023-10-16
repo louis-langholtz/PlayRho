@@ -73,7 +73,7 @@ TEST(Interval, ExpandInvalidDoesNothing)
 TEST(Interval, ExpandEquallyInvalidDoesNothing)
 {
     EXPECT_EQ(Interval<int>().ExpandEqually(3), Interval<int>());
-    EXPECT_EQ(Interval<float>().ExpandEqually(3), Interval<float>());
+    EXPECT_EQ(Interval<float>().ExpandEqually(3.0f), Interval<float>());
 }
 
 TEST(Interval, IncludeValueInvalid)

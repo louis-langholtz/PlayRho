@@ -374,7 +374,7 @@ struct StaticTenthsFriction {
 template <int R = 0>
 struct StaticRestitution {
     /// @brief Restitution of the shape.
-    static inline const auto restitution = Finite<Real>(R);
+    static inline const auto restitution = Finite<Real>(Real(R));
 };
 
 /// @brief Dynamic restitution policy class.

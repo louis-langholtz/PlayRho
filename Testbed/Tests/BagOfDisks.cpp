@@ -53,7 +53,7 @@ public:
                            SetVelocity(GetWorld(), m_ground, angularVelocity - 0.1_rad / Second);
                        });
 
-        auto boundaryConf = ChainShapeConf{}.UseFriction(100);
+        auto boundaryConf = ChainShapeConf{}.UseFriction(100.0f);
         boundaryConf.UseVertexRadius(0.04_m);
         boundaryConf.Add(Vec2(-12, +20) * 1_m);
         boundaryConf.Add(Vec2(-12, +0) * 1_m);
@@ -101,7 +101,7 @@ public:
 
         const auto diskRadius = 0.15_m;
         const auto diskShape = CreateShape(
-            GetWorld(), DiskShapeConf{}.UseRadius(diskRadius).UseDensity(10_kgpm2).UseFriction(0));
+            GetWorld(), DiskShapeConf{}.UseRadius(diskRadius).UseDensity(10_kgpm2).UseFriction(0.0f));
         auto angleIncrement = 90_deg;
         auto angle = 0_deg;
         const auto alpha = diskRadius;

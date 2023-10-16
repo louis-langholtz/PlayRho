@@ -162,7 +162,7 @@ public:
             bd.allowSleep = false;
             const auto square = CreateShape(
                 GetWorld(),
-                PolygonShapeConf{}.UseFriction(0).UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.5_m));
+                PolygonShapeConf{}.UseFriction(0.0f).UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.5_m));
             bd.location = Vec2(-3.0f, 8.0f) * 1_m;
             Attach(GetWorld(), CreateBody(GetWorld(), bd), square);
             bd.location = Vec2(19.0f, 7.0f) * 1_m;
