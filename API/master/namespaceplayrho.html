@@ -723,6 +723,10 @@ template&lt;typename T &gt; </td></tr>
 constexpr <a class="el" href="structplayrho_1_1ContactFeature.html">ContactFeature</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a43951f69f7ead57450bac66cbb76b0e1">Flip</a> (<a class="el" href="structplayrho_1_1ContactFeature.html">ContactFeature</a> val) noexcept</td></tr>
 <tr class="memdesc:a43951f69f7ead57450bac66cbb76b0e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flips contact features information. <br /></td></tr>
 <tr class="separator:a43951f69f7ead57450bac66cbb76b0e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa6da2152a8e212afc0185b6d5596fd95"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
+<tr class="memitem:gaa6da2152a8e212afc0185b6d5596fd95"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#gaa6da2152a8e212afc0185b6d5596fd95">floor</a> (const <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; &amp;value)</td></tr>
+<tr class="memdesc:gaa6da2152a8e212afc0185b6d5596fd95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the largest integer value not greater than the given value.  <a href="group__FixedMath.html#gaa6da2152a8e212afc0185b6d5596fd95">More...</a><br /></td></tr>
+<tr class="separator:gaa6da2152a8e212afc0185b6d5596fd95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaae59d507ab3b0f722d4d22b3e4969f4a"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
 <tr class="memitem:gaae59d507ab3b0f722d4d22b3e4969f4a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#gaae59d507ab3b0f722d4d22b3e4969f4a">fmod</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; dividend, <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; divisor) noexcept</td></tr>
 <tr class="memdesc:gaae59d507ab3b0f722d4d22b3e4969f4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the remainder of the division of the given dividend by the given divisor.  <a href="group__FixedMath.html#gaae59d507ab3b0f722d4d22b3e4969f4a">More...</a><br /></td></tr>
@@ -775,10 +779,10 @@ constexpr <a class="el" href="namespaceplayrho.html#a0e937a573db2db27b95156590ef
 constexpr <a class="el" href="namespaceplayrho.html#a0e937a573db2db27b95156590ef5dd12">ChildCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a676e6537b55110a4aa43e3e0a113f8b9">GetChildIndexB</a> (const <a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;contact) noexcept</td></tr>
 <tr class="memdesc:a676e6537b55110a4aa43e3e0a113f8b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the child index B of the given contact. <br /></td></tr>
 <tr class="separator:a676e6537b55110a4aa43e3e0a113f8b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3b8e8abc999b0c63cf1921b0edcf0b36"><td class="memItemLeft" align="right" valign="top">
-std::vector&lt; <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga3b8e8abc999b0c63cf1921b0edcf0b36">GetCircleVertices</a> (<a class="el" href="group__PhysicalQuantities.html#ga8705f1923f7cff39bf09f6d01989770d">Length</a> radius, unsigned slices, <a class="el" href="group__PhysicalQuantities.html#gabb35ed422281bfdf3c41a276958898fc">Angle</a> start=0_deg, <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> turns=<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>{1})</td></tr>
-<tr class="memdesc:ga3b8e8abc999b0c63cf1921b0edcf0b36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertices for a circle described by the given parameters. <br /></td></tr>
-<tr class="separator:ga3b8e8abc999b0c63cf1921b0edcf0b36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga338c586cf1a29f27ee334d061fa59b5d"><td class="memItemLeft" align="right" valign="top">
+std::vector&lt; <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga338c586cf1a29f27ee334d061fa59b5d">GetCircleVertices</a> (<a class="el" href="group__PhysicalQuantities.html#ga8705f1923f7cff39bf09f6d01989770d">Length</a> radius, std::size_t slices, <a class="el" href="group__PhysicalQuantities.html#gabb35ed422281bfdf3c41a276958898fc">Angle</a> start=0_deg, <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> turns=<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(1))</td></tr>
+<tr class="memdesc:ga338c586cf1a29f27ee334d061fa59b5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertices for a circle described by the given parameters. <br /></td></tr>
+<tr class="separator:ga338c586cf1a29f27ee334d061fa59b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d367e915b012ac8ebfdbfd2817a40ae"><td class="memTemplParams" colspan="2"><a id="a9d367e915b012ac8ebfdbfd2817a40ae"></a>
 template&lt;typename T , std::size_t N&gt; </td></tr>
 <tr class="memitem:a9d367e915b012ac8ebfdbfd2817a40ae"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if_t&lt;!<a class="el" href="namespaceplayrho.html#a168449a74e78ad00c9d22f1017de05f7">IsVectorV</a>&lt; T &gt;, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, 1 &gt;, N &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a9d367e915b012ac8ebfdbfd2817a40ae">GetColumnMatrix</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; arg)</td></tr>
@@ -1076,6 +1080,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="memitem:a885fded7567b0972b4af486e5df9afea"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a885fded7567b0972b4af486e5df9afea">IsImpenetrable</a> (const <a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;contact) noexcept</td></tr>
 <tr class="memdesc:a885fded7567b0972b4af486e5df9afea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the given contact is "impenetrable".  <a href="namespaceplayrho.html#a885fded7567b0972b4af486e5df9afea">More...</a><br /></td></tr>
 <tr class="separator:a885fded7567b0972b4af486e5df9afea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae1b8d92ed9f3976cada57637344416f1"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
+<tr class="memitem:gae1b8d92ed9f3976cada57637344416f1"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#gae1b8d92ed9f3976cada57637344416f1">isinf</a> (const <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; &amp;value) noexcept</td></tr>
+<tr class="memdesc:gae1b8d92ed9f3976cada57637344416f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets wether the given value is a positive or negative infinity.  <a href="group__FixedMath.html#gae1b8d92ed9f3976cada57637344416f1">More...</a><br /></td></tr>
+<tr class="separator:gae1b8d92ed9f3976cada57637344416f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9dc0da0330f8a1c23b44b919f02fed7"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U  = decltype(Interval&lt;T&gt;{}, T{} &lt; T{}, T{} &gt;= T{})&gt; </td></tr>
 <tr class="memitem:ab9dc0da0330f8a1c23b44b919f02fed7"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ab9dc0da0330f8a1c23b44b919f02fed7">IsIntersecting</a> (const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;a, const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;b) noexcept(noexcept(T{}&lt; T{}) &amp;&amp;noexcept(T{} &gt;=T{}))</td></tr>
 <tr class="memdesc:ab9dc0da0330f8a1c23b44b919f02fed7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether two value ranges have any intersection/overlap at all.  <a href="namespaceplayrho.html#ab9dc0da0330f8a1c23b44b919f02fed7">More...</a><br /></td></tr>
@@ -1823,10 +1831,10 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:ga4000cee8b1fc5a9ab6a5cfe29eb645b6"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga4000cee8b1fc5a9ab6a5cfe29eb645b6">Square</a> (T t) noexcept(noexcept(t *t)) -&gt; decltype(t *t)</td></tr>
 <tr class="memdesc:ga4000cee8b1fc5a9ab6a5cfe29eb645b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Squares the given value. <br /></td></tr>
 <tr class="separator:ga4000cee8b1fc5a9ab6a5cfe29eb645b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7aad07dca595ebb37551e793171c2cfa"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a7aad07dca595ebb37551e793171c2cfa"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7aad07dca595ebb37551e793171c2cfa">StripUnit</a> (const T &amp;v) -&gt; decltype(StripUnit(v.get()))</td></tr>
-<tr class="memdesc:a7aad07dca595ebb37551e793171c2cfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Strips the unit from the given value.  <a href="namespaceplayrho.html#a7aad07dca595ebb37551e793171c2cfa">More...</a><br /></td></tr>
-<tr class="separator:a7aad07dca595ebb37551e793171c2cfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab48e50a80b0fd16dfd70ee70307ad296"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ab48e50a80b0fd16dfd70ee70307ad296"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ab48e50a80b0fd16dfd70ee70307ad296">StripUnit</a> (const T &amp;value) -&gt; std::enable_if_t&lt; <a class="el" href="namespaceplayrho.html#aa9c55e27192da826391d895835f02b17">IsArithmeticV</a>&lt; T &gt; &amp;&amp;!<a class="el" href="namespaceplayrho_1_1detail.html#af266549017154893e0ba701cfe4af898">detail::is_detected_v</a>&lt; <a class="el" href="namespaceplayrho_1_1detail.html#a03090ab2b73fa40dbf842caf9cf4f19f">detail::get_member_type</a>, T &gt;, T &gt;</td></tr>
+<tr class="memdesc:ab48e50a80b0fd16dfd70ee70307ad296"><td class="mdescLeft">&#160;</td><td class="mdescRight">Strips the units off of the given value.  <a href="namespaceplayrho.html#ab48e50a80b0fd16dfd70ee70307ad296">More...</a><br /></td></tr>
+<tr class="separator:ab48e50a80b0fd16dfd70ee70307ad296"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbaf30d44caa739e24d21d763b90030c"><td class="memTemplParams" colspan="2"><a id="abbaf30d44caa739e24d21d763b90030c"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:abbaf30d44caa739e24d21d763b90030c"><td class="memTemplItemLeft" align="right" valign="top">PROPAGATE_CONST_CONSTEXPR void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#abbaf30d44caa739e24d21d763b90030c">swap</a> (<a class="el" href="classplayrho_1_1propagate__const.html">propagate_const</a>&lt; T &gt; &amp;pt, <a class="el" href="classplayrho_1_1propagate__const.html">propagate_const</a>&lt; T &gt; &amp;pu) noexcept(noexcept(swap(std::declval&lt; T &amp; &gt;(), std::declval&lt; T &amp; &gt;())))</td></tr>
@@ -5288,13 +5296,13 @@ The value persists until you set or reset. </dd></dl>
 
 </div>
 </div>
-<a id="a7aad07dca595ebb37551e793171c2cfa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7aad07dca595ebb37551e793171c2cfa">&#9670;&nbsp;</a></span>StripUnit()</h2>
+<a id="ab48e50a80b0fd16dfd70ee70307ad296"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab48e50a80b0fd16dfd70ee70307ad296">&#9670;&nbsp;</a></span>StripUnit()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;class T &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -5304,8 +5312,7 @@ template&lt;typename T &gt; </div>
           <td>(</td>
           <td class="paramtype">const T &amp;&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
-          <td> -&gt; decltype(StripUnit(v.get()))
-</td>
+          <td> -&gt;  decltype(StripUnit(<a class="el" href="namespaceplayrho.html#a4b3ffaf4d26f2f410c72befd4f9b0ec6">to_underlying</a>(v)))</td>
         </tr>
       </table>
   </td>
@@ -5315,8 +5322,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Strips the unit from the given value. </p>
 <p>Strips the units off of the given value. </p>
+<p>Strips the unit from the given value.</p>
+<dl class="section note"><dt>Note</dt><dd>This definition is for two step stripping of units. As such, it has to be after all other overloads of the <code>StripUnit</code> functions have been declared so it can use any of those as needed. </dd></dl>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="WheelJoint_8cpp-example.html#a52">WheelJoint.cpp</a>, and <a class="el" href="World_8cpp-example.html#a83">World.cpp</a>.</dd>
 </dl>
 
@@ -6108,7 +6116,7 @@ Any narrowing is intentional.</dd></dl>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a82">World.cpp</a>.</dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="group__Math.html#ga007d43d0fd5ce900118dd41e3197d887">GetAreaOfCircle()</a>, <a class="el" href="group__Math.html#ga3b8e8abc999b0c63cf1921b0edcf0b36">GetCircleVertices()</a>, <a class="el" href="structplayrho_1_1d2_1_1ChainShapeConf.html#acf3a62f07bbb6fdaeb1cbc962d62feb8">playrho::d2::ChainShapeConf::GetMassData()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ad7dc3397566d3b0447d318e67761bbc2">playrho::d2::GetMassData()</a>, <a class="el" href="group__Math.html#ga156a2abff11f978a8df25efbf0c10147">GetNormalized()</a>, <a class="el" href="structplayrho_1_1d2_1_1Position.html#a30e3652aa86130f81c948112cf4538d6">playrho::d2::Position::GetPosition()</a>, <a class="el" href="group__Math.html#gac9b72aa4a587e552a586a42494d614c1">GetShortestDelta()</a>, <a class="el" href="structplayrho_1_1d2_1_1DistanceJointConf.html#a04f5087d761eecd8554b6156d1cc3021">playrho::d2::DistanceJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a1bc16ad22662f69d6218f879a5c17245">playrho::d2::TargetJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#ad9a429415a87a06a9134b001d73bf508">playrho::d2::WeldJointConf::InitVelocity()</a>, and <a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a9e194ef30b3a342a38f9afc09c629f6d">playrho::d2::WheelJointConf::InitVelocity()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="group__Math.html#ga007d43d0fd5ce900118dd41e3197d887">GetAreaOfCircle()</a>, <a class="el" href="group__Math.html#ga338c586cf1a29f27ee334d061fa59b5d">GetCircleVertices()</a>, <a class="el" href="structplayrho_1_1d2_1_1ChainShapeConf.html#acf3a62f07bbb6fdaeb1cbc962d62feb8">playrho::d2::ChainShapeConf::GetMassData()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ad7dc3397566d3b0447d318e67761bbc2">playrho::d2::GetMassData()</a>, <a class="el" href="group__Math.html#ga156a2abff11f978a8df25efbf0c10147">GetNormalized()</a>, <a class="el" href="structplayrho_1_1d2_1_1Position.html#a30e3652aa86130f81c948112cf4538d6">playrho::d2::Position::GetPosition()</a>, <a class="el" href="group__Math.html#gac9b72aa4a587e552a586a42494d614c1">GetShortestDelta()</a>, <a class="el" href="structplayrho_1_1d2_1_1DistanceJointConf.html#a04f5087d761eecd8554b6156d1cc3021">playrho::d2::DistanceJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a1bc16ad22662f69d6218f879a5c17245">playrho::d2::TargetJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#ad9a429415a87a06a9134b001d73bf508">playrho::d2::WeldJointConf::InitVelocity()</a>, and <a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a9e194ef30b3a342a38f9afc09c629f6d">playrho::d2::WheelJointConf::InitVelocity()</a>.</p>
 
 </div>
 </div>
@@ -6148,7 +6156,7 @@ Any narrowing is intentional.</dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li>
-    <li class="footer">Generated on Fri Oct 13 2023 04:17:01 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Oct 16 2023 00:34:09 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

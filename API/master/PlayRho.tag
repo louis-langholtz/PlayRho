@@ -4718,8 +4718,8 @@
       <type>std::vector&lt; Length2 &gt;</type>
       <name>GetCircleVertices</name>
       <anchorfile>group__Math.html</anchorfile>
-      <anchor>ga3b8e8abc999b0c63cf1921b0edcf0b36</anchor>
-      <arglist>(Length radius, unsigned slices, Angle start=0_deg, Real turns=Real{1})</arglist>
+      <anchor>ga338c586cf1a29f27ee334d061fa59b5d</anchor>
+      <arglist>(Length radius, std::size_t slices, Angle start=0_deg, Real turns=Real(1))</arglist>
     </member>
     <member kind="function">
       <type>constexpr Angle</type>
@@ -4916,13 +4916,6 @@
       <anchorfile>group__Math.html</anchorfile>
       <anchor>ga4000cee8b1fc5a9ab6a5cfe29eb645b6</anchor>
       <arglist>(T t) noexcept(noexcept(t *t)) -&gt; decltype(t *t)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr auto</type>
-      <name>StripUnit</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a7aad07dca595ebb37551e793171c2cfa</anchor>
-      <arglist>(const T &amp;v) -&gt; decltype(StripUnit(v.get()))</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -10193,6 +10186,8 @@
     <includes id="InvalidArgument_8hpp" name="InvalidArgument.hpp" local="no" imported="no">playrho/InvalidArgument.hpp</includes>
     <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <class kind="class">playrho::detail::Checked</class>
+    <class kind="struct">playrho::detail::Checked::IsChecked</class>
+    <class kind="struct">playrho::detail::Checked::IsChecked&lt; Checked&lt; V, C, N &gt; &gt;</class>
     <class kind="struct">playrho::detail::NoOpChecker</class>
     <namespace>playrho</namespace>
     <namespace>playrho::detail</namespace>
@@ -10422,6 +10417,28 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>CheckedMath.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/detail/</path>
+    <filename>CheckedMath_8hpp.html</filename>
+    <includes id="Checked_8hpp" name="Checked.hpp" local="no" imported="no">playrho/detail/Checked.hpp</includes>
+    <namespace>playrho</namespace>
+    <namespace>playrho::detail</namespace>
+    <member kind="function">
+      <type>auto</type>
+      <name>abs</name>
+      <anchorfile>group__CheckedMath.html</anchorfile>
+      <anchor>ga00fab6b331741e415a52e5155467a0bf</anchor>
+      <arglist>(const Checked&lt; ValueType, Checker, NoExcept &gt; &amp;arg) -&gt; decltype(Checked&lt; ValueType, Checker, false &gt;(abs(arg.get())))</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>nextafter</name>
+      <anchorfile>group__CheckedMath.html</anchorfile>
+      <anchor>gab11ee26fa0cd543fd5f2eebf9c0c30b3</anchor>
+      <arglist>(const Checked&lt; ValueType, Checker, NoExcept &gt; &amp;from, const Checked&lt; ValueType, Checker, NoExcept &gt; &amp;to) -&gt; decltype(Checked&lt; ValueType, Checker, false &gt;(nextafter(from.get(), to.get())))</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>FiniteChecker.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/detail/</path>
     <filename>FiniteChecker_8hpp.html</filename>
@@ -10497,8 +10514,13 @@
     <name>Templates.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/detail/</path>
     <filename>detail_2Templates_8hpp.html</filename>
+    <class kind="struct">playrho::detail::detector</class>
+    <class kind="struct">playrho::detail::detector&lt; Default, std::void_t&lt; Op&lt; Args... &gt; &gt;, Op, Args... &gt;</class>
     <class kind="struct">playrho::detail::HasFunctor</class>
     <class kind="struct">playrho::detail::HasFunctor&lt; Type, Return(Args...)&gt;</class>
+    <class kind="struct">playrho::detail::is_narrowing_conversion</class>
+    <class kind="struct">playrho::detail::is_narrowing_conversion_impl</class>
+    <class kind="struct">playrho::detail::is_narrowing_conversion_impl&lt; From, To, std::void_t&lt; decltype(To{std::declval&lt; From &gt;()})&gt; &gt;</class>
     <class kind="struct">playrho::detail::IsAddable</class>
     <class kind="struct">playrho::detail::IsAddable&lt; T1, T2, std::void_t&lt; decltype(T1{}+T2{})&gt; &gt;</class>
     <class kind="struct">playrho::detail::IsArithmetic</class>
@@ -10515,8 +10537,16 @@
     <class kind="struct">playrho::detail::IsMultipliable&lt; T1, T2, std::void_t&lt; decltype(T1{} *T2{})&gt; &gt;</class>
     <class kind="struct">playrho::detail::IsReverseIterable</class>
     <class kind="struct">playrho::detail::IsReverseIterable&lt; T, std::void_t&lt; decltype(rbegin(std::declval&lt; T &gt;())), decltype(rend(std::declval&lt; T &gt;())), decltype(++std::declval&lt; decltype(rbegin(std::declval&lt; T &amp; &gt;()))&amp; &gt;()), decltype(*rbegin(std::declval&lt; T &gt;()))&gt; &gt;</class>
+    <class kind="struct">playrho::detail::nonesuch</class>
     <namespace>playrho</namespace>
     <namespace>playrho::detail</namespace>
+    <member kind="typedef">
+      <type>typename detector&lt; nonesuch, void, Op, Args... &gt;::value_t</type>
+      <name>is_detected</name>
+      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
+      <anchor>ae939b4363f647e9faea094982a311cb9</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <type>constexpr auto</type>
       <name>IsFull</name>
@@ -10530,6 +10560,13 @@
       <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
       <anchor>aaa616ce7863431ef4a242233299ac2e3</anchor>
       <arglist>(const T &amp;arg) -&gt; decltype(arg.max_size())</arglist>
+    </member>
+    <member kind="variable">
+      <type>constexpr bool</type>
+      <name>is_detected_v</name>
+      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
+      <anchor>af266549017154893e0ba701cfe4af898</anchor>
+      <arglist></arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -11177,6 +11214,13 @@
       <arglist>(std::int64_t n)</arglist>
     </member>
     <member kind="function">
+      <type>auto</type>
+      <name>floor</name>
+      <anchorfile>group__FixedMath.html</anchorfile>
+      <anchor>gaa6da2152a8e212afc0185b6d5596fd95</anchor>
+      <arglist>(const Fixed&lt; BT, FB &gt; &amp;value)</arglist>
+    </member>
+    <member kind="function">
       <type>Fixed&lt; BT, FB &gt;</type>
       <name>fmod</name>
       <anchorfile>group__FixedMath.html</anchorfile>
@@ -11196,6 +11240,13 @@
       <anchorfile>group__FixedMath.html</anchorfile>
       <anchor>gab8fa73692143466ca4d584aacf5749f1</anchor>
       <arglist>(Fixed&lt; BT, FB &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>isinf</name>
+      <anchorfile>group__FixedMath.html</anchorfile>
+      <anchor>gae1b8d92ed9f3976cada57637344416f1</anchor>
+      <arglist>(const Fixed&lt; BT, FB &gt; &amp;value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -12554,6 +12605,7 @@
     <filename>Units_8hpp.html</filename>
     <includes id="RealConstants_8hpp" name="RealConstants.hpp" local="no" imported="no">playrho/RealConstants.hpp</includes>
     <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
+    <includes id="to__underlying_8hpp" name="to_underlying.hpp" local="no" imported="no">playrho/to_underlying.hpp</includes>
     <namespace>playrho</namespace>
     <namespace>playrho::detail</namespace>
     <member kind="typedef">
@@ -12659,6 +12711,13 @@
       <name>Frequency</name>
       <anchorfile>group__PhysicalQuantities.html</anchorfile>
       <anchor>ga526d114a9d34d7237ed3e41829ab3eff</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>decltype(std::declval&lt; T &amp; &gt;().get())</type>
+      <name>get_member_type</name>
+      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
+      <anchor>a03090ab2b73fa40dbf842caf9cf4f19f</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -13190,8 +13249,8 @@
       <type>constexpr auto</type>
       <name>StripUnit</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a7aad07dca595ebb37551e793171c2cfa</anchor>
-      <arglist>(const T &amp;v) -&gt; decltype(StripUnit(v.get()))</arglist>
+      <anchor>ab48e50a80b0fd16dfd70ee70307ad296</anchor>
+      <arglist>(const T &amp;value) -&gt; std::enable_if_t&lt; IsArithmeticV&lt; T &gt; &amp;&amp;!detail::is_detected_v&lt; detail::get_member_type, T &gt;, T &gt;</arglist>
     </member>
     <member kind="variable">
       <type>constexpr auto</type>
@@ -17124,6 +17183,8 @@
     <templarg></templarg>
     <templarg></templarg>
     <templarg>NoExcept</templarg>
+    <class kind="struct">playrho::detail::Checked::IsChecked</class>
+    <class kind="struct">playrho::detail::Checked::IsChecked&lt; Checked&lt; V, C, N &gt; &gt;</class>
     <member kind="typedef">
       <type>Checker</type>
       <name>checker_type</name>
@@ -17147,9 +17208,9 @@
     </member>
     <member kind="typedef">
       <type>ValueType</type>
-      <name>value_type</name>
+      <name>underlying_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a93dd281b7a6333ed3f69aa4bf59b1003</anchor>
+      <anchor>a9e35f866c948764bbd1a9f8621b0181f</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -17163,6 +17224,13 @@
       <type>constexpr</type>
       <name>Checked</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a50a11eeca99e03d961cf4655f1d58206</anchor>
+      <arglist>(const Checked&lt; OtherValueType, OtherChecker, OtherNoExcept &gt; &amp;other) noexcept(NoExcept)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
       <anchor>a4ae56dcc4a01f7db4a387f9e05ceec32</anchor>
       <arglist>(const Checked&lt; ValueType, Checker, OtherNoExcept &gt; &amp;other) noexcept</arglist>
     </member>
@@ -17170,21 +17238,21 @@
       <type>constexpr</type>
       <name>Checked</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>ac9116398d4e446826be64fcdf5997278</anchor>
-      <arglist>(value_type value) noexcept(NoExcept)</arglist>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(NoExcept)</arglist>
     </member>
     <member kind="function">
-      <type>constexpr value_type</type>
+      <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a2e28d17a5294bbc7edd11d5a7796c4f2</anchor>
+      <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
-      <name>operator value_type</name>
+      <name>operator U</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>aac39091a26372d353a589273c998c9fa</anchor>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -17205,15 +17273,15 @@
       <type>static constexpr auto</type>
       <name>ThrowIfInvalid</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a883125c87182d1f07b1ef2fe8b9928a2</anchor>
-      <arglist>(const value_type &amp;value) -&gt; decltype((void) exception_type(Checker{}(value)), std::declval&lt; void &gt;())</arglist>
+      <anchor>a1083c9dc2ffa1226d565f2637882e2a6</anchor>
+      <arglist>(const underlying_type &amp;value) -&gt; decltype((void) exception_type(Checker{}(value)), std::declval&lt; void &gt;())</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static constexpr auto</type>
       <name>Validate</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>abe37f4f4b60bfb20e85bd8a67d18c614</anchor>
-      <arglist>(const value_type &amp;value) noexcept(NoExcept) -&gt; decltype(ThrowIfInvalid(value), value_type{})</arglist>
+      <anchor>a7fdfb1b35df6487d1f043ef26c6055f2</anchor>
+      <arglist>(const underlying_type &amp;value) noexcept(NoExcept) -&gt; decltype(ThrowIfInvalid(value), underlying_type{})</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -17459,9 +17527,9 @@
     </member>
     <member kind="typedef">
       <type>Angle</type>
-      <name>value_type</name>
+      <name>underlying_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a93dd281b7a6333ed3f69aa4bf59b1003</anchor>
+      <anchor>a9e35f866c948764bbd1a9f8621b0181f</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -17482,21 +17550,28 @@
       <type>constexpr</type>
       <name>Checked</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>ac9116398d4e446826be64fcdf5997278</anchor>
-      <arglist>(value_type value) noexcept(false)</arglist>
+      <anchor>a50a11eeca99e03d961cf4655f1d58206</anchor>
+      <arglist>(const Checked&lt; OtherValueType, OtherChecker, OtherNoExcept &gt; &amp;other) noexcept(false)</arglist>
     </member>
     <member kind="function">
-      <type>constexpr value_type</type>
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a2e28d17a5294bbc7edd11d5a7796c4f2</anchor>
+      <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
-      <name>operator value_type</name>
+      <name>operator U</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>aac39091a26372d353a589273c998c9fa</anchor>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -17517,15 +17592,15 @@
       <type>static constexpr auto</type>
       <name>ThrowIfInvalid</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a883125c87182d1f07b1ef2fe8b9928a2</anchor>
-      <arglist>(const value_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; Angle &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
+      <anchor>a1083c9dc2ffa1226d565f2637882e2a6</anchor>
+      <arglist>(const underlying_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; Angle &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static constexpr auto</type>
       <name>Validate</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>abe37f4f4b60bfb20e85bd8a67d18c614</anchor>
-      <arglist>(const value_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), value_type{})</arglist>
+      <anchor>a7fdfb1b35df6487d1f043ef26c6055f2</anchor>
+      <arglist>(const underlying_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), underlying_type{})</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -17771,9 +17846,9 @@
     </member>
     <member kind="typedef">
       <type>AreaDensity</type>
-      <name>value_type</name>
+      <name>underlying_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a93dd281b7a6333ed3f69aa4bf59b1003</anchor>
+      <anchor>a9e35f866c948764bbd1a9f8621b0181f</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -17794,21 +17869,28 @@
       <type>constexpr</type>
       <name>Checked</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>ac9116398d4e446826be64fcdf5997278</anchor>
-      <arglist>(value_type value) noexcept(false)</arglist>
+      <anchor>a50a11eeca99e03d961cf4655f1d58206</anchor>
+      <arglist>(const Checked&lt; OtherValueType, OtherChecker, OtherNoExcept &gt; &amp;other) noexcept(false)</arglist>
     </member>
     <member kind="function">
-      <type>constexpr value_type</type>
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a2e28d17a5294bbc7edd11d5a7796c4f2</anchor>
+      <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
-      <name>operator value_type</name>
+      <name>operator U</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>aac39091a26372d353a589273c998c9fa</anchor>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -17829,15 +17911,15 @@
       <type>static constexpr auto</type>
       <name>ThrowIfInvalid</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a883125c87182d1f07b1ef2fe8b9928a2</anchor>
-      <arglist>(const value_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; AreaDensity &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
+      <anchor>a1083c9dc2ffa1226d565f2637882e2a6</anchor>
+      <arglist>(const underlying_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; AreaDensity &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static constexpr auto</type>
       <name>Validate</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>abe37f4f4b60bfb20e85bd8a67d18c614</anchor>
-      <arglist>(const value_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), value_type{})</arglist>
+      <anchor>a7fdfb1b35df6487d1f043ef26c6055f2</anchor>
+      <arglist>(const underlying_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), underlying_type{})</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -18083,9 +18165,9 @@
     </member>
     <member kind="typedef">
       <type>Force</type>
-      <name>value_type</name>
+      <name>underlying_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a93dd281b7a6333ed3f69aa4bf59b1003</anchor>
+      <anchor>a9e35f866c948764bbd1a9f8621b0181f</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -18106,21 +18188,28 @@
       <type>constexpr</type>
       <name>Checked</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>ac9116398d4e446826be64fcdf5997278</anchor>
-      <arglist>(value_type value) noexcept(false)</arglist>
+      <anchor>a50a11eeca99e03d961cf4655f1d58206</anchor>
+      <arglist>(const Checked&lt; OtherValueType, OtherChecker, OtherNoExcept &gt; &amp;other) noexcept(false)</arglist>
     </member>
     <member kind="function">
-      <type>constexpr value_type</type>
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a2e28d17a5294bbc7edd11d5a7796c4f2</anchor>
+      <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
-      <name>operator value_type</name>
+      <name>operator U</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>aac39091a26372d353a589273c998c9fa</anchor>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -18141,15 +18230,15 @@
       <type>static constexpr auto</type>
       <name>ThrowIfInvalid</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a883125c87182d1f07b1ef2fe8b9928a2</anchor>
-      <arglist>(const value_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; Force &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
+      <anchor>a1083c9dc2ffa1226d565f2637882e2a6</anchor>
+      <arglist>(const underlying_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; Force &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static constexpr auto</type>
       <name>Validate</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>abe37f4f4b60bfb20e85bd8a67d18c614</anchor>
-      <arglist>(const value_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), value_type{})</arglist>
+      <anchor>a7fdfb1b35df6487d1f043ef26c6055f2</anchor>
+      <arglist>(const underlying_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), underlying_type{})</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -18395,9 +18484,9 @@
     </member>
     <member kind="typedef">
       <type>Frequency</type>
-      <name>value_type</name>
+      <name>underlying_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a93dd281b7a6333ed3f69aa4bf59b1003</anchor>
+      <anchor>a9e35f866c948764bbd1a9f8621b0181f</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -18418,21 +18507,28 @@
       <type>constexpr</type>
       <name>Checked</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>ac9116398d4e446826be64fcdf5997278</anchor>
-      <arglist>(value_type value) noexcept(false)</arglist>
+      <anchor>a50a11eeca99e03d961cf4655f1d58206</anchor>
+      <arglist>(const Checked&lt; OtherValueType, OtherChecker, OtherNoExcept &gt; &amp;other) noexcept(false)</arglist>
     </member>
     <member kind="function">
-      <type>constexpr value_type</type>
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a2e28d17a5294bbc7edd11d5a7796c4f2</anchor>
+      <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
-      <name>operator value_type</name>
+      <name>operator U</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>aac39091a26372d353a589273c998c9fa</anchor>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -18453,15 +18549,15 @@
       <type>static constexpr auto</type>
       <name>ThrowIfInvalid</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a883125c87182d1f07b1ef2fe8b9928a2</anchor>
-      <arglist>(const value_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; Frequency &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
+      <anchor>a1083c9dc2ffa1226d565f2637882e2a6</anchor>
+      <arglist>(const underlying_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; Frequency &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static constexpr auto</type>
       <name>Validate</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>abe37f4f4b60bfb20e85bd8a67d18c614</anchor>
-      <arglist>(const value_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), value_type{})</arglist>
+      <anchor>a7fdfb1b35df6487d1f043ef26c6055f2</anchor>
+      <arglist>(const underlying_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), underlying_type{})</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -18707,9 +18803,9 @@
     </member>
     <member kind="typedef">
       <type>InvMass</type>
-      <name>value_type</name>
+      <name>underlying_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a93dd281b7a6333ed3f69aa4bf59b1003</anchor>
+      <anchor>a9e35f866c948764bbd1a9f8621b0181f</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -18730,21 +18826,28 @@
       <type>constexpr</type>
       <name>Checked</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>ac9116398d4e446826be64fcdf5997278</anchor>
-      <arglist>(value_type value) noexcept(false)</arglist>
+      <anchor>a50a11eeca99e03d961cf4655f1d58206</anchor>
+      <arglist>(const Checked&lt; OtherValueType, OtherChecker, OtherNoExcept &gt; &amp;other) noexcept(false)</arglist>
     </member>
     <member kind="function">
-      <type>constexpr value_type</type>
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a2e28d17a5294bbc7edd11d5a7796c4f2</anchor>
+      <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
-      <name>operator value_type</name>
+      <name>operator U</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>aac39091a26372d353a589273c998c9fa</anchor>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -18765,15 +18868,15 @@
       <type>static constexpr auto</type>
       <name>ThrowIfInvalid</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a883125c87182d1f07b1ef2fe8b9928a2</anchor>
-      <arglist>(const value_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; InvMass &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
+      <anchor>a1083c9dc2ffa1226d565f2637882e2a6</anchor>
+      <arglist>(const underlying_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; InvMass &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static constexpr auto</type>
       <name>Validate</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>abe37f4f4b60bfb20e85bd8a67d18c614</anchor>
-      <arglist>(const value_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), value_type{})</arglist>
+      <anchor>a7fdfb1b35df6487d1f043ef26c6055f2</anchor>
+      <arglist>(const underlying_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), underlying_type{})</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -19019,9 +19122,9 @@
     </member>
     <member kind="typedef">
       <type>InvRotInertia</type>
-      <name>value_type</name>
+      <name>underlying_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a93dd281b7a6333ed3f69aa4bf59b1003</anchor>
+      <anchor>a9e35f866c948764bbd1a9f8621b0181f</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -19042,21 +19145,28 @@
       <type>constexpr</type>
       <name>Checked</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>ac9116398d4e446826be64fcdf5997278</anchor>
-      <arglist>(value_type value) noexcept(false)</arglist>
+      <anchor>a50a11eeca99e03d961cf4655f1d58206</anchor>
+      <arglist>(const Checked&lt; OtherValueType, OtherChecker, OtherNoExcept &gt; &amp;other) noexcept(false)</arglist>
     </member>
     <member kind="function">
-      <type>constexpr value_type</type>
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a2e28d17a5294bbc7edd11d5a7796c4f2</anchor>
+      <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
-      <name>operator value_type</name>
+      <name>operator U</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>aac39091a26372d353a589273c998c9fa</anchor>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -19077,15 +19187,15 @@
       <type>static constexpr auto</type>
       <name>ThrowIfInvalid</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a883125c87182d1f07b1ef2fe8b9928a2</anchor>
-      <arglist>(const value_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; InvRotInertia &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
+      <anchor>a1083c9dc2ffa1226d565f2637882e2a6</anchor>
+      <arglist>(const underlying_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; InvRotInertia &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static constexpr auto</type>
       <name>Validate</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>abe37f4f4b60bfb20e85bd8a67d18c614</anchor>
-      <arglist>(const value_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), value_type{})</arglist>
+      <anchor>a7fdfb1b35df6487d1f043ef26c6055f2</anchor>
+      <arglist>(const underlying_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), underlying_type{})</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -19331,9 +19441,9 @@
     </member>
     <member kind="typedef">
       <type>Length</type>
-      <name>value_type</name>
+      <name>underlying_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a93dd281b7a6333ed3f69aa4bf59b1003</anchor>
+      <anchor>a9e35f866c948764bbd1a9f8621b0181f</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -19354,21 +19464,28 @@
       <type>constexpr</type>
       <name>Checked</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>ac9116398d4e446826be64fcdf5997278</anchor>
-      <arglist>(value_type value) noexcept(false)</arglist>
+      <anchor>a50a11eeca99e03d961cf4655f1d58206</anchor>
+      <arglist>(const Checked&lt; OtherValueType, OtherChecker, OtherNoExcept &gt; &amp;other) noexcept(false)</arglist>
     </member>
     <member kind="function">
-      <type>constexpr value_type</type>
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a2e28d17a5294bbc7edd11d5a7796c4f2</anchor>
+      <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
-      <name>operator value_type</name>
+      <name>operator U</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>aac39091a26372d353a589273c998c9fa</anchor>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -19389,15 +19506,15 @@
       <type>static constexpr auto</type>
       <name>ThrowIfInvalid</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a883125c87182d1f07b1ef2fe8b9928a2</anchor>
-      <arglist>(const value_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; Length &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
+      <anchor>a1083c9dc2ffa1226d565f2637882e2a6</anchor>
+      <arglist>(const underlying_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; Length &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static constexpr auto</type>
       <name>Validate</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>abe37f4f4b60bfb20e85bd8a67d18c614</anchor>
-      <arglist>(const value_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), value_type{})</arglist>
+      <anchor>a7fdfb1b35df6487d1f043ef26c6055f2</anchor>
+      <arglist>(const underlying_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), underlying_type{})</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -19643,9 +19760,9 @@
     </member>
     <member kind="typedef">
       <type>Mass</type>
-      <name>value_type</name>
+      <name>underlying_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a93dd281b7a6333ed3f69aa4bf59b1003</anchor>
+      <anchor>a9e35f866c948764bbd1a9f8621b0181f</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -19666,21 +19783,28 @@
       <type>constexpr</type>
       <name>Checked</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>ac9116398d4e446826be64fcdf5997278</anchor>
-      <arglist>(value_type value) noexcept(false)</arglist>
+      <anchor>a50a11eeca99e03d961cf4655f1d58206</anchor>
+      <arglist>(const Checked&lt; OtherValueType, OtherChecker, OtherNoExcept &gt; &amp;other) noexcept(false)</arglist>
     </member>
     <member kind="function">
-      <type>constexpr value_type</type>
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a2e28d17a5294bbc7edd11d5a7796c4f2</anchor>
+      <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
-      <name>operator value_type</name>
+      <name>operator U</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>aac39091a26372d353a589273c998c9fa</anchor>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -19701,15 +19825,15 @@
       <type>static constexpr auto</type>
       <name>ThrowIfInvalid</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a883125c87182d1f07b1ef2fe8b9928a2</anchor>
-      <arglist>(const value_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; Mass &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
+      <anchor>a1083c9dc2ffa1226d565f2637882e2a6</anchor>
+      <arglist>(const underlying_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; Mass &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static constexpr auto</type>
       <name>Validate</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>abe37f4f4b60bfb20e85bd8a67d18c614</anchor>
-      <arglist>(const value_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), value_type{})</arglist>
+      <anchor>a7fdfb1b35df6487d1f043ef26c6055f2</anchor>
+      <arglist>(const underlying_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), underlying_type{})</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -19955,9 +20079,9 @@
     </member>
     <member kind="typedef">
       <type>Real</type>
-      <name>value_type</name>
+      <name>underlying_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a93dd281b7a6333ed3f69aa4bf59b1003</anchor>
+      <anchor>a9e35f866c948764bbd1a9f8621b0181f</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -19971,6 +20095,13 @@
       <type>constexpr</type>
       <name>Checked</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a50a11eeca99e03d961cf4655f1d58206</anchor>
+      <arglist>(const Checked&lt; OtherValueType, OtherChecker, OtherNoExcept &gt; &amp;other) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
       <anchor>a4ae56dcc4a01f7db4a387f9e05ceec32</anchor>
       <arglist>(const Checked&lt; Real, NoOpChecker&lt; Real &gt;, OtherNoExcept &gt; &amp;other) noexcept</arglist>
     </member>
@@ -19978,21 +20109,21 @@
       <type>constexpr</type>
       <name>Checked</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>ac9116398d4e446826be64fcdf5997278</anchor>
-      <arglist>(value_type value) noexcept(false)</arglist>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
     </member>
     <member kind="function">
-      <type>constexpr value_type</type>
+      <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a2e28d17a5294bbc7edd11d5a7796c4f2</anchor>
+      <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
-      <name>operator value_type</name>
+      <name>operator U</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>aac39091a26372d353a589273c998c9fa</anchor>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -20013,15 +20144,15 @@
       <type>static constexpr auto</type>
       <name>ThrowIfInvalid</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a883125c87182d1f07b1ef2fe8b9928a2</anchor>
-      <arglist>(const value_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; Real &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
+      <anchor>a1083c9dc2ffa1226d565f2637882e2a6</anchor>
+      <arglist>(const underlying_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; Real &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static constexpr auto</type>
       <name>Validate</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>abe37f4f4b60bfb20e85bd8a67d18c614</anchor>
-      <arglist>(const value_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), value_type{})</arglist>
+      <anchor>a7fdfb1b35df6487d1f043ef26c6055f2</anchor>
+      <arglist>(const underlying_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), underlying_type{})</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -20267,9 +20398,9 @@
     </member>
     <member kind="typedef">
       <type>RotInertia</type>
-      <name>value_type</name>
+      <name>underlying_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a93dd281b7a6333ed3f69aa4bf59b1003</anchor>
+      <anchor>a9e35f866c948764bbd1a9f8621b0181f</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -20283,6 +20414,13 @@
       <type>constexpr</type>
       <name>Checked</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a50a11eeca99e03d961cf4655f1d58206</anchor>
+      <arglist>(const Checked&lt; OtherValueType, OtherChecker, OtherNoExcept &gt; &amp;other) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
       <anchor>a4ae56dcc4a01f7db4a387f9e05ceec32</anchor>
       <arglist>(const Checked&lt; RotInertia, NoOpChecker&lt; RotInertia &gt;, OtherNoExcept &gt; &amp;other) noexcept</arglist>
     </member>
@@ -20290,21 +20428,21 @@
       <type>constexpr</type>
       <name>Checked</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>ac9116398d4e446826be64fcdf5997278</anchor>
-      <arglist>(value_type value) noexcept(false)</arglist>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
     </member>
     <member kind="function">
-      <type>constexpr value_type</type>
+      <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a2e28d17a5294bbc7edd11d5a7796c4f2</anchor>
+      <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
-      <name>operator value_type</name>
+      <name>operator U</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>aac39091a26372d353a589273c998c9fa</anchor>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -20325,15 +20463,15 @@
       <type>static constexpr auto</type>
       <name>ThrowIfInvalid</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a883125c87182d1f07b1ef2fe8b9928a2</anchor>
-      <arglist>(const value_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; RotInertia &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
+      <anchor>a1083c9dc2ffa1226d565f2637882e2a6</anchor>
+      <arglist>(const underlying_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; RotInertia &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static constexpr auto</type>
       <name>Validate</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>abe37f4f4b60bfb20e85bd8a67d18c614</anchor>
-      <arglist>(const value_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), value_type{})</arglist>
+      <anchor>a7fdfb1b35df6487d1f043ef26c6055f2</anchor>
+      <arglist>(const underlying_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), underlying_type{})</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -20579,9 +20717,9 @@
     </member>
     <member kind="typedef">
       <type>Torque</type>
-      <name>value_type</name>
+      <name>underlying_type</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a93dd281b7a6333ed3f69aa4bf59b1003</anchor>
+      <anchor>a9e35f866c948764bbd1a9f8621b0181f</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -20595,6 +20733,13 @@
       <type>constexpr</type>
       <name>Checked</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a50a11eeca99e03d961cf4655f1d58206</anchor>
+      <arglist>(const Checked&lt; OtherValueType, OtherChecker, OtherNoExcept &gt; &amp;other) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
       <anchor>a4ae56dcc4a01f7db4a387f9e05ceec32</anchor>
       <arglist>(const Checked&lt; Torque, NoOpChecker&lt; Torque &gt;, OtherNoExcept &gt; &amp;other) noexcept</arglist>
     </member>
@@ -20602,21 +20747,21 @@
       <type>constexpr</type>
       <name>Checked</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>ac9116398d4e446826be64fcdf5997278</anchor>
-      <arglist>(value_type value) noexcept(false)</arglist>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
     </member>
     <member kind="function">
-      <type>constexpr value_type</type>
+      <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a2e28d17a5294bbc7edd11d5a7796c4f2</anchor>
+      <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
-      <name>operator value_type</name>
+      <name>operator U</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>aac39091a26372d353a589273c998c9fa</anchor>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -20637,15 +20782,15 @@
       <type>static constexpr auto</type>
       <name>ThrowIfInvalid</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>a883125c87182d1f07b1ef2fe8b9928a2</anchor>
-      <arglist>(const value_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; Torque &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
+      <anchor>a1083c9dc2ffa1226d565f2637882e2a6</anchor>
+      <arglist>(const underlying_type &amp;value) -&gt; decltype((void) exception_type(NoOpChecker&lt; Torque &gt; {}(value)), std::declval&lt; void &gt;())</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static constexpr auto</type>
       <name>Validate</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
-      <anchor>abe37f4f4b60bfb20e85bd8a67d18c614</anchor>
-      <arglist>(const value_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), value_type{})</arglist>
+      <anchor>a7fdfb1b35df6487d1f043ef26c6055f2</anchor>
+      <arglist>(const underlying_type &amp;value) noexcept(false) -&gt; decltype(ThrowIfInvalid(value), underlying_type{})</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -22296,6 +22441,49 @@
       <name>type</name>
       <anchorfile>structplayrho_1_1propagate__const_1_1detect__element__type_3_01U_01_5_01_4.html</anchorfile>
       <anchor>a1ee75d29227ac0da9a813df72651270f</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::detail::detector</name>
+    <filename>structplayrho_1_1detail_1_1detector.html</filename>
+    <templarg></templarg>
+    <templarg></templarg>
+    <templarg>Op</templarg>
+    <templarg>Args</templarg>
+    <member kind="typedef">
+      <type>Default</type>
+      <name>type</name>
+      <anchorfile>structplayrho_1_1detail_1_1detector.html</anchorfile>
+      <anchor>a6bbf5e64672a26f4c9e7de9007418d09</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::false_type</type>
+      <name>value_t</name>
+      <anchorfile>structplayrho_1_1detail_1_1detector.html</anchorfile>
+      <anchor>a058466189cc2d0450d48e2dfb338d158</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::detail::detector&lt; Default, std::void_t&lt; Op&lt; Args... &gt; &gt;, Op, Args... &gt;</name>
+    <filename>structplayrho_1_1detail_1_1detector_3_01Default_00_01std_1_1void__t_3_01Op_3_01Args_8_8_8_01_4_0354b20dbfb0688d53175b0c0b28d1e9c.html</filename>
+    <templarg></templarg>
+    <templarg>Op</templarg>
+    <templarg>Args</templarg>
+    <member kind="typedef">
+      <type>Op&lt; Args... &gt;</type>
+      <name>type</name>
+      <anchorfile>structplayrho_1_1detail_1_1detector_3_01Default_00_01std_1_1void__t_3_01Op_3_01Args_8_8_8_01_4_0354b20dbfb0688d53175b0c0b28d1e9c.html</anchorfile>
+      <anchor>a551a0c967d8f77ce0bcf4e5fa7b0b25f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::true_type</type>
+      <name>value_t</name>
+      <anchorfile>structplayrho_1_1detail_1_1detector_3_01Default_00_01std_1_1void__t_3_01Op_3_01Args_8_8_8_01_4_0354b20dbfb0688d53175b0c0b28d1e9c.html</anchorfile>
+      <anchor>a6a8679f039c992d995e8306fdc6e46dc</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -25569,6 +25757,26 @@
     <filename>classplayrho_1_1InvalidArgument.html</filename>
   </compound>
   <compound kind="struct">
+    <name>playrho::detail::is_narrowing_conversion</name>
+    <filename>structplayrho_1_1detail_1_1is__narrowing__conversion.html</filename>
+    <templarg></templarg>
+    <templarg></templarg>
+    <base>playrho::detail::is_narrowing_conversion_impl</base>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::detail::is_narrowing_conversion_impl</name>
+    <filename>structplayrho_1_1detail_1_1is__narrowing__conversion__impl.html</filename>
+    <templarg></templarg>
+    <templarg></templarg>
+    <templarg></templarg>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::detail::is_narrowing_conversion_impl&lt; From, To, std::void_t&lt; decltype(To{std::declval&lt; From &gt;()})&gt; &gt;</name>
+    <filename>structplayrho_1_1detail_1_1is__narrowing__conversion__impl_3_01From_00_01To_00_01std_1_1void__t_2bd847898cb7af9386f45883b1662535.html</filename>
+    <templarg></templarg>
+    <templarg></templarg>
+  </compound>
+  <compound kind="struct">
     <name>playrho::detail::IsAddable</name>
     <filename>structplayrho_1_1detail_1_1IsAddable.html</filename>
     <templarg></templarg>
@@ -25591,6 +25799,18 @@
     <name>playrho::detail::IsArithmetic&lt; T, std::void_t&lt; decltype(T{}+T{}), decltype(T{} - T{}), decltype(T{} *T{}), decltype(T{}/T{})&gt; &gt;</name>
     <filename>structplayrho_1_1detail_1_1IsArithmetic_3_01T_00_01std_1_1void__t_3_01decltype_07T_02_03_09T_02_1d1a3b924c473a70e90f3ccf5def5509.html</filename>
     <templarg></templarg>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::detail::Checked::IsChecked</name>
+    <filename>structplayrho_1_1detail_1_1Checked_1_1IsChecked.html</filename>
+    <templarg></templarg>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::detail::Checked::IsChecked&lt; Checked&lt; V, C, N &gt; &gt;</name>
+    <filename>structplayrho_1_1detail_1_1Checked_1_1IsChecked_3_01Checked_3_01V_00_01C_00_01N_01_4_01_4.html</filename>
+    <templarg></templarg>
+    <templarg></templarg>
+    <templarg>N</templarg>
   </compound>
   <compound kind="struct">
     <name>playrho::detail::IsDivisable</name>
@@ -27917,6 +28137,10 @@
   <compound kind="class">
     <name>playrho::d2::NgonWithFwdNormals&lt; static_cast&lt; std::size_t &gt;(-1)&gt;</name>
     <filename>classplayrho_1_1d2_1_1NgonWithFwdNormals_3_01static__cast_3_01std_1_1size__t_01_4_07-1_08_4.html</filename>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::detail::nonesuch</name>
+    <filename>structplayrho_1_1detail_1_1nonesuch.html</filename>
   </compound>
   <compound kind="struct">
     <name>playrho::detail::NonNegativeChecker</name>
@@ -44347,6 +44571,13 @@
       <arglist>(ContactFeature val) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>auto</type>
+      <name>floor</name>
+      <anchorfile>group__FixedMath.html</anchorfile>
+      <anchor>gaa6da2152a8e212afc0185b6d5596fd95</anchor>
+      <arglist>(const Fixed&lt; BT, FB &gt; &amp;value)</arglist>
+    </member>
+    <member kind="function">
       <type>Fixed&lt; BT, FB &gt;</type>
       <name>fmod</name>
       <anchorfile>group__FixedMath.html</anchorfile>
@@ -44441,8 +44672,8 @@
       <type>std::vector&lt; Length2 &gt;</type>
       <name>GetCircleVertices</name>
       <anchorfile>group__Math.html</anchorfile>
-      <anchor>ga3b8e8abc999b0c63cf1921b0edcf0b36</anchor>
-      <arglist>(Length radius, unsigned slices, Angle start=0_deg, Real turns=Real{1})</arglist>
+      <anchor>ga338c586cf1a29f27ee334d061fa59b5d</anchor>
+      <arglist>(Length radius, std::size_t slices, Angle start=0_deg, Real turns=Real(1))</arglist>
     </member>
     <member kind="function">
       <type>constexpr std::enable_if_t&lt;!IsVectorV&lt; T &gt;, Vector&lt; Vector&lt; T, 1 &gt;, N &gt; &gt;</type>
@@ -44968,6 +45199,13 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a885fded7567b0972b4af486e5df9afea</anchor>
       <arglist>(const Contact &amp;contact) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>isinf</name>
+      <anchorfile>group__FixedMath.html</anchorfile>
+      <anchor>gae1b8d92ed9f3976cada57637344416f1</anchor>
+      <arglist>(const Fixed&lt; BT, FB &gt; &amp;value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -46324,8 +46562,8 @@
       <type>constexpr auto</type>
       <name>StripUnit</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a7aad07dca595ebb37551e793171c2cfa</anchor>
-      <arglist>(const T &amp;v) -&gt; decltype(StripUnit(v.get()))</arglist>
+      <anchor>ab48e50a80b0fd16dfd70ee70307ad296</anchor>
+      <arglist>(const T &amp;value) -&gt; std::enable_if_t&lt; IsArithmeticV&lt; T &gt; &amp;&amp;!detail::is_detected_v&lt; detail::get_member_type, T &gt;, T &gt;</arglist>
     </member>
     <member kind="function">
       <type>PROPAGATE_CONST_CONSTEXPR void</type>
@@ -55500,6 +55738,8 @@
     <class kind="class">playrho::detail::Checked</class>
     <class kind="struct">playrho::detail::Defaults</class>
     <class kind="struct">playrho::detail::Defaults&lt; Fixed&lt; std::int32_t, FRACTION_BITS &gt; &gt;</class>
+    <class kind="struct">playrho::detail::detector</class>
+    <class kind="struct">playrho::detail::detector&lt; Default, std::void_t&lt; Op&lt; Args... &gt; &gt;, Op, Args... &gt;</class>
     <class kind="struct">playrho::detail::FiniteChecker</class>
     <class kind="struct">playrho::detail::FixedDefault</class>
     <class kind="struct">playrho::detail::FixedDefault&lt; std::int32_t &gt;</class>
@@ -55509,6 +55749,9 @@
     <class kind="struct">playrho::detail::HasFunctor</class>
     <class kind="struct">playrho::detail::HasFunctor&lt; Type, Return(Args...)&gt;</class>
     <class kind="class">playrho::detail::IndexingNamedType</class>
+    <class kind="struct">playrho::detail::is_narrowing_conversion</class>
+    <class kind="struct">playrho::detail::is_narrowing_conversion_impl</class>
+    <class kind="struct">playrho::detail::is_narrowing_conversion_impl&lt; From, To, std::void_t&lt; decltype(To{std::declval&lt; From &gt;()})&gt; &gt;</class>
     <class kind="struct">playrho::detail::IsAddable</class>
     <class kind="struct">playrho::detail::IsAddable&lt; T1, T2, std::void_t&lt; decltype(T1{}+T2{})&gt; &gt;</class>
     <class kind="struct">playrho::detail::IsArithmetic</class>
@@ -55534,6 +55777,7 @@
     <class kind="struct">playrho::detail::LengthIndices</class>
     <class kind="struct">playrho::detail::MassData</class>
     <class kind="struct">playrho::detail::NegativeChecker</class>
+    <class kind="struct">playrho::detail::nonesuch</class>
     <class kind="struct">playrho::detail::NonNegativeChecker</class>
     <class kind="struct">playrho::detail::NonPositiveChecker</class>
     <class kind="struct">playrho::detail::NonZeroChecker</class>
@@ -55630,6 +55874,13 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
+      <type>decltype(std::declval&lt; T &amp; &gt;().get())</type>
+      <name>get_member_type</name>
+      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
+      <anchor>a03090ab2b73fa40dbf842caf9cf4f19f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
       <type>Real</type>
       <name>inverse_mass</name>
       <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
@@ -55641,6 +55892,13 @@
       <name>inverse_moment_of_inertia</name>
       <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
       <anchor>a7057f55e349ca3586994f4a94bb3a5c5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>typename detector&lt; nonesuch, void, Op, Args... &gt;::value_t</type>
+      <name>is_detected</name>
+      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
+      <anchor>ae939b4363f647e9faea094982a311cb9</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -55719,6 +55977,13 @@
       <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
       <anchor>a07bf078d023635979d9fd9bda324a16e</anchor>
       <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>abs</name>
+      <anchorfile>group__CheckedMath.html</anchorfile>
+      <anchor>ga00fab6b331741e415a52e5155467a0bf</anchor>
+      <arglist>(const Checked&lt; ValueType, Checker, NoExcept &gt; &amp;arg) -&gt; decltype(Checked&lt; ValueType, Checker, false &gt;(abs(arg.get())))</arglist>
     </member>
     <member kind="function">
       <type>auto</type>
@@ -55894,6 +56159,13 @@
       <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
       <anchor>a5f59177e89e8d24dfee72915a0ebe649</anchor>
       <arglist>(AABB&lt; N &gt; &amp;var, const Vector&lt; Length, N &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>nextafter</name>
+      <anchorfile>group__CheckedMath.html</anchorfile>
+      <anchor>gab11ee26fa0cd543fd5f2eebf9c0c30b3</anchor>
+      <arglist>(const Checked&lt; ValueType, Checker, NoExcept &gt; &amp;from, const Checked&lt; ValueType, Checker, NoExcept &gt; &amp;to) -&gt; decltype(Checked&lt; ValueType, Checker, false &gt;(nextafter(from.get(), to.get())))</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -56264,6 +56536,13 @@
       <name>HoursPerDay</name>
       <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
       <anchor>a7228ae83382d96e5316a2da46d61b5e4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>constexpr bool</type>
+      <name>is_detected_v</name>
+      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
+      <anchor>af266549017154893e0ba701cfe4af898</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -56730,6 +57009,25 @@
     </member>
   </compound>
   <compound kind="group">
+    <name>CheckedMath</name>
+    <title>Math Functions For Checked Types</title>
+    <filename>group__CheckedMath.html</filename>
+    <member kind="function">
+      <type>auto</type>
+      <name>abs</name>
+      <anchorfile>group__CheckedMath.html</anchorfile>
+      <anchor>ga00fab6b331741e415a52e5155467a0bf</anchor>
+      <arglist>(const Checked&lt; ValueType, Checker, NoExcept &gt; &amp;arg) -&gt; decltype(Checked&lt; ValueType, Checker, false &gt;(abs(arg.get())))</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>nextafter</name>
+      <anchorfile>group__CheckedMath.html</anchorfile>
+      <anchor>gab11ee26fa0cd543fd5f2eebf9c0c30b3</anchor>
+      <arglist>(const Checked&lt; ValueType, Checker, NoExcept &gt; &amp;from, const Checked&lt; ValueType, Checker, NoExcept &gt; &amp;to) -&gt; decltype(Checked&lt; ValueType, Checker, false &gt;(nextafter(from.get(), to.get())))</arglist>
+    </member>
+  </compound>
+  <compound kind="group">
     <name>TestPointGroup</name>
     <title>Point Containment Test Functions</title>
     <filename>group__TestPointGroup.html</filename>
@@ -56831,6 +57129,13 @@
       <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
     </member>
     <member kind="function">
+      <type>auto</type>
+      <name>floor</name>
+      <anchorfile>group__FixedMath.html</anchorfile>
+      <anchor>gaa6da2152a8e212afc0185b6d5596fd95</anchor>
+      <arglist>(const Fixed&lt; BT, FB &gt; &amp;value)</arglist>
+    </member>
+    <member kind="function">
       <type>Fixed&lt; BT, FB &gt;</type>
       <name>fmod</name>
       <anchorfile>group__FixedMath.html</anchorfile>
@@ -56850,6 +57155,13 @@
       <anchorfile>group__FixedMath.html</anchorfile>
       <anchor>gab8fa73692143466ca4d584aacf5749f1</anchor>
       <arglist>(Fixed&lt; BT, FB &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>isinf</name>
+      <anchorfile>group__FixedMath.html</anchorfile>
+      <anchor>gae1b8d92ed9f3976cada57637344416f1</anchor>
+      <arglist>(const Fixed&lt; BT, FB &gt; &amp;value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -57028,8 +57340,8 @@
       <type>std::vector&lt; Length2 &gt;</type>
       <name>GetCircleVertices</name>
       <anchorfile>group__Math.html</anchorfile>
-      <anchor>ga3b8e8abc999b0c63cf1921b0edcf0b36</anchor>
-      <arglist>(Length radius, unsigned slices, Angle start=0_deg, Real turns=Real{1})</arglist>
+      <anchor>ga338c586cf1a29f27ee334d061fa59b5d</anchor>
+      <arglist>(Length radius, std::size_t slices, Angle start=0_deg, Real turns=Real(1))</arglist>
     </member>
     <member kind="function">
       <type>constexpr Angle</type>

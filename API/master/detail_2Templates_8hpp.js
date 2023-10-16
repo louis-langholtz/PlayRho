@@ -1,7 +1,12 @@
 var detail_2Templates_8hpp =
 [
+    [ "detector", "structplayrho_1_1detail_1_1detector.html", "structplayrho_1_1detail_1_1detector" ],
+    [ "detector< Default, std::void_t< Op< Args... > >, Op, Args... >", "structplayrho_1_1detail_1_1detector_3_01Default_00_01std_1_1void__t_3_01Op_3_01Args_8_8_8_01_4_0354b20dbfb0688d53175b0c0b28d1e9c.html", "structplayrho_1_1detail_1_1detector_3_01Default_00_01std_1_1void__t_3_01Op_3_01Args_8_8_8_01_4_0354b20dbfb0688d53175b0c0b28d1e9c" ],
     [ "HasFunctor", "structplayrho_1_1detail_1_1HasFunctor.html", null ],
     [ "HasFunctor< Type, Return(Args...)>", "structplayrho_1_1detail_1_1HasFunctor_3_01Type_00_01Return_07Args_8_8_8_08_4.html", "structplayrho_1_1detail_1_1HasFunctor_3_01Type_00_01Return_07Args_8_8_8_08_4" ],
+    [ "is_narrowing_conversion", "structplayrho_1_1detail_1_1is__narrowing__conversion.html", null ],
+    [ "is_narrowing_conversion_impl", "structplayrho_1_1detail_1_1is__narrowing__conversion__impl.html", null ],
+    [ "is_narrowing_conversion_impl< From, To, std::void_t< decltype(To{std::declval< From >()})> >", "structplayrho_1_1detail_1_1is__narrowing__conversion__impl_3_01From_00_01To_00_01std_1_1void__t_2bd847898cb7af9386f45883b1662535.html", null ],
     [ "IsAddable", "structplayrho_1_1detail_1_1IsAddable.html", null ],
     [ "IsAddable< T1, T2, std::void_t< decltype(T1{}+T2{})> >", "structplayrho_1_1detail_1_1IsAddable_3_01T1_00_01T2_00_01std_1_1void__t_3_01decltype_07T1_02_03_09T2_02_03_08_4_01_4.html", null ],
     [ "IsArithmetic", "structplayrho_1_1detail_1_1IsArithmetic.html", null ],
@@ -18,6 +23,9 @@ var detail_2Templates_8hpp =
     [ "IsMultipliable< T1, T2, std::void_t< decltype(T1{} *T2{})> >", "structplayrho_1_1detail_1_1IsMultipliable_3_01T1_00_01T2_00_01std_1_1void__t_3_01decltype_07T1_02_03_01_5T2_02_03_08_4_01_4.html", null ],
     [ "IsReverseIterable", "structplayrho_1_1detail_1_1IsReverseIterable.html", null ],
     [ "IsReverseIterable< T, std::void_t< decltype(rbegin(std::declval< T >())), decltype(rend(std::declval< T >())), decltype(++std::declval< decltype(rbegin(std::declval< T & >()))& >()), decltype(*rbegin(std::declval< T >()))> >", "structplayrho_1_1detail_1_1IsReverseIterable_3_01T_00_01std_1_1void__t_3_01decltype_07rbegin_07see1e2b2bf8c70ff6417e9800f5336264.html", null ],
+    [ "nonesuch", "structplayrho_1_1detail_1_1nonesuch.html", "structplayrho_1_1detail_1_1nonesuch" ],
+    [ "is_detected", "detail_2Templates_8hpp.html#ae939b4363f647e9faea094982a311cb9", null ],
     [ "IsFull", "detail_2Templates_8hpp.html#a9c6ef61517707043fb5fd0891647687f", null ],
-    [ "max_size", "detail_2Templates_8hpp.html#aaa616ce7863431ef4a242233299ac2e3", null ]
+    [ "max_size", "detail_2Templates_8hpp.html#aaa616ce7863431ef4a242233299ac2e3", null ],
+    [ "is_detected_v", "detail_2Templates_8hpp.html#af266549017154893e0ba701cfe4af898", null ]
 ];

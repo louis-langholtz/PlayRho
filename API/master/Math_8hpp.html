@@ -188,10 +188,10 @@ NonNegativeFF&lt; Area &gt;&#160;</td><td class="memItemRight" valign="bottom"><
 <tr class="memitem:ga760effc058042418453697e733937b2f"><td class="memItemLeft" align="right" valign="top">NonNegativeFF&lt; Area &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga760effc058042418453697e733937b2f">playrho::GetAreaOfPolygon</a> (const Span&lt; const Length2 &gt; &amp;vertices)</td></tr>
 <tr class="memdesc:ga760effc058042418453697e733937b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the area of a polygon.  <a href="group__Math.html#ga760effc058042418453697e733937b2f">More...</a><br /></td></tr>
 <tr class="separator:ga760effc058042418453697e733937b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3b8e8abc999b0c63cf1921b0edcf0b36"><td class="memItemLeft" align="right" valign="top">
-std::vector&lt; Length2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga3b8e8abc999b0c63cf1921b0edcf0b36">playrho::GetCircleVertices</a> (Length radius, unsigned slices, Angle start=0_deg, Real turns=Real{1})</td></tr>
-<tr class="memdesc:ga3b8e8abc999b0c63cf1921b0edcf0b36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertices for a circle described by the given parameters. <br /></td></tr>
-<tr class="separator:ga3b8e8abc999b0c63cf1921b0edcf0b36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga338c586cf1a29f27ee334d061fa59b5d"><td class="memItemLeft" align="right" valign="top">
+std::vector&lt; Length2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga338c586cf1a29f27ee334d061fa59b5d">playrho::GetCircleVertices</a> (Length radius, std::size_t slices, Angle start=0_deg, Real turns=Real(1))</td></tr>
+<tr class="memdesc:ga338c586cf1a29f27ee334d061fa59b5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertices for a circle described by the given parameters. <br /></td></tr>
+<tr class="separator:ga338c586cf1a29f27ee334d061fa59b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5d41854b91fcfb6b8ea05e7b8c92e304"><td class="memItemLeft" align="right" valign="top">constexpr Angle&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga5d41854b91fcfb6b8ea05e7b8c92e304">playrho::GetFwdRotationalAngle</a> (const Angle &amp;a1, const Angle &amp;a2) noexcept</td></tr>
 <tr class="memdesc:ga5d41854b91fcfb6b8ea05e7b8c92e304"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the forward/clockwise rotational angle to go from angle 1 to angle 2.  <a href="group__Math.html#ga5d41854b91fcfb6b8ea05e7b8c92e304">More...</a><br /></td></tr>
 <tr class="separator:ga5d41854b91fcfb6b8ea05e7b8c92e304"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -298,10 +298,6 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:ga4000cee8b1fc5a9ab6a5cfe29eb645b6"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga4000cee8b1fc5a9ab6a5cfe29eb645b6">playrho::Square</a> (T t) noexcept(noexcept(t *t)) -&gt; decltype(t *t)</td></tr>
 <tr class="memdesc:ga4000cee8b1fc5a9ab6a5cfe29eb645b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Squares the given value. <br /></td></tr>
 <tr class="separator:ga4000cee8b1fc5a9ab6a5cfe29eb645b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7aad07dca595ebb37551e793171c2cfa"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a7aad07dca595ebb37551e793171c2cfa"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7aad07dca595ebb37551e793171c2cfa">playrho::StripUnit</a> (const T &amp;v) -&gt; decltype(StripUnit(v.get()))</td></tr>
-<tr class="memdesc:a7aad07dca595ebb37551e793171c2cfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Strips the unit from the given value.  <a href="namespaceplayrho.html#a7aad07dca595ebb37551e793171c2cfa">More...</a><br /></td></tr>
-<tr class="separator:a7aad07dca595ebb37551e793171c2cfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3410f58d0023e2a0d6ae6ad85da9508c"><td class="memTemplParams" colspan="2">
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:ga3410f58d0023e2a0d6ae6ad85da9508c"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga3410f58d0023e2a0d6ae6ad85da9508c">playrho::ToSigned</a> (const T &amp;value) -&gt; decltype(static_cast&lt; std::make_signed_t&lt; T &gt;&gt;(value))</td></tr>
@@ -331,7 +327,7 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="Math_8hpp.html">Math.hpp</a></li>
-    <li class="footer">Generated on Fri Oct 13 2023 04:17:00 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Oct 16 2023 00:34:09 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -80,6 +80,8 @@ var hierarchy =
     ] ],
     [ "playrho::propagate_const< T >::detect_element_type< U >", "structplayrho_1_1propagate__const_1_1detect__element__type.html", null ],
     [ "playrho::propagate_const< T >::detect_element_type< U * >", "structplayrho_1_1propagate__const_1_1detect__element__type_3_01U_01_5_01_4.html", null ],
+    [ "playrho::detail::detector< Default, AlwaysVoid, Op, Args >", "structplayrho_1_1detail_1_1detector.html", null ],
+    [ "playrho::detail::detector< Default, std::void_t< Op< Args... > >, Op, Args... >", "structplayrho_1_1detail_1_1detector_3_01Default_00_01std_1_1void__t_3_01Op_3_01Args_8_8_8_01_4_0354b20dbfb0688d53175b0c0b28d1e9c.html", null ],
     [ "playrho::d2::DistanceConf", "structplayrho_1_1d2_1_1DistanceConf.html", null ],
     [ "playrho::d2::DistanceOutput", "structplayrho_1_1d2_1_1DistanceOutput.html", null ],
     [ "playrho::d2::DistanceProxy", "classplayrho_1_1d2_1_1DistanceProxy.html", null ],
@@ -105,6 +107,7 @@ var hierarchy =
       [ "playrho::d2::detail::HasTranslate< T, class >", "structplayrho_1_1d2_1_1detail_1_1HasTranslate.html", null ],
       [ "playrho::d2::detail::IsValidJointType< T, class >", "structplayrho_1_1d2_1_1detail_1_1IsValidJointType.html", null ],
       [ "playrho::d2::detail::IsValidShapeType< T, class >", "structplayrho_1_1d2_1_1detail_1_1IsValidShapeType.html", null ],
+      [ "playrho::detail::Checked< ValueType, Checker, NoExcept >::IsChecked< U >", "structplayrho_1_1detail_1_1Checked_1_1IsChecked.html", null ],
       [ "playrho::detail::IsAddable< T1, T2, class >", "structplayrho_1_1detail_1_1IsAddable.html", null ],
       [ "playrho::detail::IsArithmetic< T, class >", "structplayrho_1_1detail_1_1IsArithmetic.html", null ],
       [ "playrho::detail::IsDivisable< T1, T2, class >", "structplayrho_1_1detail_1_1IsDivisable.html", null ],
@@ -116,7 +119,8 @@ var hierarchy =
       [ "playrho::detail::IsReverseIterable< T, class >", "structplayrho_1_1detail_1_1IsReverseIterable.html", null ],
       [ "playrho::detail::IsSquareMatrix< typename >", "structplayrho_1_1detail_1_1IsSquareMatrix.html", null ],
       [ "playrho::detail::IsVector< T >", "structplayrho_1_1detail_1_1IsVector.html", null ],
-      [ "playrho::detail::has_underlying_type_member< class, class >", "structplayrho_1_1detail_1_1has__underlying__type__member.html", null ]
+      [ "playrho::detail::has_underlying_type_member< class, class >", "structplayrho_1_1detail_1_1has__underlying__type__member.html", null ],
+      [ "playrho::detail::is_narrowing_conversion_impl< From, To, std::void_t< decltype(To{std::declval< From >()})> >", "structplayrho_1_1detail_1_1is__narrowing__conversion__impl_3_01From_00_01To_00_01std_1_1void__t_2bd847898cb7af9386f45883b1662535.html", null ]
     ] ],
     [ "playrho::Filter", "structplayrho_1_1Filter.html", null ],
     [ "PolicySelector::Filter", null, [
@@ -221,6 +225,7 @@ var hierarchy =
     [ "playrho::d2::NgonWithFwdNormals< N >", "classplayrho_1_1d2_1_1NgonWithFwdNormals.html", null ],
     [ "playrho::d2::NgonWithFwdNormals< 2 >", "classplayrho_1_1d2_1_1NgonWithFwdNormals.html", null ],
     [ "playrho::d2::NgonWithFwdNormals< static_cast< std::size_t >(-1)>", "classplayrho_1_1d2_1_1NgonWithFwdNormals_3_01static__cast_3_01std_1_1size__t_01_4_07-1_08_4.html", null ],
+    [ "playrho::detail::nonesuch", "structplayrho_1_1detail_1_1nonesuch.html", null ],
     [ "playrho::detail::NonNegativeChecker< T >", "structplayrho_1_1detail_1_1NonNegativeChecker.html", null ],
     [ "playrho::detail::NonPositiveChecker< T >", "structplayrho_1_1detail_1_1NonPositiveChecker.html", null ],
     [ "playrho::detail::NonZeroChecker< T >", "structplayrho_1_1detail_1_1NonZeroChecker.html", null ],
@@ -333,6 +338,7 @@ var hierarchy =
       [ "playrho::d2::detail::HasTranslate< T, std::void_t< decltype(Translate(std::declval< T & >(), std::declval< Length2 >()))> >", "structplayrho_1_1d2_1_1detail_1_1HasTranslate_3_01T_00_01std_1_1void__t_3_01decltype_07Translateb66547472d2c171689f299e86e1970e0.html", null ],
       [ "playrho::d2::detail::IsValidJointType< T, std::void_t< decltype(GetBodyA(std::declval< T >())), decltype(GetBodyB(std::declval< T >())), decltype(GetCollideConnected(std::declval< T >())), decltype(ShiftOrigin(std::declval< T & >(), std::declval< Length2 >())), decltype(InitVelocity(std::declval< T & >(), std::declval< const Span< BodyConstraint > & >(), std::declval< StepConf >(), std::declval< ConstraintSolverConf >())), decltype(SolveVelocity(std::declval< T & >(), std::declval< const Span< BodyConstraint > & >(), std::declval< StepConf >())), decltype(SolvePosition(std::declval< T >(), std::declval< const Span< BodyConstraint > & >(), std::declval< ConstraintSolverConf >())), decltype(std::declval< T >()==std::declval< T >()), decltype(Joint{std::declval< T >()})> >", "structplayrho_1_1d2_1_1detail_1_1IsValidJointType_3_01T_00_01std_1_1void__t_3_01decltype_07GetBo47eab3fc68beccae0775fbf74eefbb54.html", null ],
       [ "playrho::d2::detail::IsValidShapeType< T, std::void_t< decltype(GetChildCount(std::declval< T >())), decltype(GetChild(std::declval< T >(), std::declval< ChildCounter >())), decltype(GetMassData(std::declval< T >())), decltype(GetVertexRadius(std::declval< T >(), std::declval< ChildCounter >())), decltype(GetDensity(std::declval< T >())), decltype(GetFriction(std::declval< T >())), decltype(GetRestitution(std::declval< T >())), decltype(std::declval< T >()==std::declval< T >()), decltype(std::declval< DecayedTypeIfNotSame< T, Shape >>()), decltype(std::is_constructible_v< DecayedTypeIfNotSame< T, Shape >, T >)> >", "structplayrho_1_1d2_1_1detail_1_1IsValidShapeType_3_01T_00_01std_1_1void__t_3_01decltype_07GetCh6e61a5840b735d119f7d25ad6ffcdafa.html", null ],
+      [ "playrho::detail::Checked< ValueType, Checker, NoExcept >::IsChecked< Checked< V, C, N > >", "structplayrho_1_1detail_1_1Checked_1_1IsChecked_3_01Checked_3_01V_00_01C_00_01N_01_4_01_4.html", null ],
       [ "playrho::detail::IsAddable< T1, T2, std::void_t< decltype(T1{}+T2{})> >", "structplayrho_1_1detail_1_1IsAddable_3_01T1_00_01T2_00_01std_1_1void__t_3_01decltype_07T1_02_03_09T2_02_03_08_4_01_4.html", null ],
       [ "playrho::detail::IsArithmetic< T, std::void_t< decltype(T{}+T{}), decltype(T{} - T{}), decltype(T{} *T{}), decltype(T{}/T{})> >", "structplayrho_1_1detail_1_1IsArithmetic_3_01T_00_01std_1_1void__t_3_01decltype_07T_02_03_09T_02_1d1a3b924c473a70e90f3ccf5def5509.html", null ],
       [ "playrho::detail::IsDivisable< T1, T2, std::void_t< decltype(T1{}/T2{})> >", "structplayrho_1_1detail_1_1IsDivisable_3_01T1_00_01T2_00_01std_1_1void__t_3_01decltype_07T1_02_03_2T2_02_03_08_4_01_4.html", null ],
@@ -344,7 +350,10 @@ var hierarchy =
       [ "playrho::detail::IsReverseIterable< T, std::void_t< decltype(rbegin(std::declval< T >())), decltype(rend(std::declval< T >())), decltype(++std::declval< decltype(rbegin(std::declval< T & >()))& >()), decltype(*rbegin(std::declval< T >()))> >", "structplayrho_1_1detail_1_1IsReverseIterable_3_01T_00_01std_1_1void__t_3_01decltype_07rbegin_07see1e2b2bf8c70ff6417e9800f5336264.html", null ],
       [ "playrho::detail::IsSquareMatrix< Vector< Vector< T, M >, M > >", "structplayrho_1_1detail_1_1IsSquareMatrix_3_01Vector_3_01Vector_3_01T_00_01M_01_4_00_01M_01_4_01_4.html", null ],
       [ "playrho::detail::IsVector< Vector< T, N > >", "structplayrho_1_1detail_1_1IsVector_3_01Vector_3_01T_00_01N_01_4_01_4.html", null ],
-      [ "playrho::detail::has_underlying_type_member< T, std::void_t< typename T::underlying_type > >", "structplayrho_1_1detail_1_1has__underlying__type__member_3_01T_00_01std_1_1void__t_3_01typename_ad40ad34e92198c9932f3ccb254047e0.html", null ]
+      [ "playrho::detail::has_underlying_type_member< T, std::void_t< typename T::underlying_type > >", "structplayrho_1_1detail_1_1has__underlying__type__member_3_01T_00_01std_1_1void__t_3_01typename_ad40ad34e92198c9932f3ccb254047e0.html", null ],
+      [ "playrho::detail::is_narrowing_conversion_impl< From, To, typename >", "structplayrho_1_1detail_1_1is__narrowing__conversion__impl.html", [
+        [ "playrho::detail::is_narrowing_conversion< From, To >", "structplayrho_1_1detail_1_1is__narrowing__conversion.html", null ]
+      ] ]
     ] ],
     [ "std::tuple_element< I, playrho::d2::UnitVec >", "classstd_1_1tuple__element_3_01I_00_01playrho_1_1d2_1_1UnitVec_01_4.html", null ],
     [ "std::tuple_element< I, playrho::Vector< T, N > >", "classstd_1_1tuple__element_3_01I_00_01playrho_1_1Vector_3_01T_00_01N_01_4_01_4.html", null ],

@@ -158,10 +158,10 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga760effc058042418453697e733937b2f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CheckedTypes.html#gafcee23e546ebf8053221fa14741f0dc9">NonNegativeFF</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga708ceb55bdc6043d445776d1886802eb">Area</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga760effc058042418453697e733937b2f">playrho::GetAreaOfPolygon</a> (const <a class="el" href="classplayrho_1_1Span.html">Span</a>&lt; const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &gt; &amp;vertices)</td></tr>
 <tr class="memdesc:ga760effc058042418453697e733937b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the area of a polygon.  <a href="group__Math.html#ga760effc058042418453697e733937b2f">More...</a><br /></td></tr>
 <tr class="separator:ga760effc058042418453697e733937b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3b8e8abc999b0c63cf1921b0edcf0b36"><td class="memItemLeft" align="right" valign="top"><a id="ga3b8e8abc999b0c63cf1921b0edcf0b36"></a>
-std::vector&lt; <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga3b8e8abc999b0c63cf1921b0edcf0b36">playrho::GetCircleVertices</a> (<a class="el" href="group__PhysicalQuantities.html#ga8705f1923f7cff39bf09f6d01989770d">Length</a> radius, unsigned slices, <a class="el" href="group__PhysicalQuantities.html#gabb35ed422281bfdf3c41a276958898fc">Angle</a> start=0_deg, <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> turns=<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>{1})</td></tr>
-<tr class="memdesc:ga3b8e8abc999b0c63cf1921b0edcf0b36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertices for a circle described by the given parameters. <br /></td></tr>
-<tr class="separator:ga3b8e8abc999b0c63cf1921b0edcf0b36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga338c586cf1a29f27ee334d061fa59b5d"><td class="memItemLeft" align="right" valign="top"><a id="ga338c586cf1a29f27ee334d061fa59b5d"></a>
+std::vector&lt; <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga338c586cf1a29f27ee334d061fa59b5d">playrho::GetCircleVertices</a> (<a class="el" href="group__PhysicalQuantities.html#ga8705f1923f7cff39bf09f6d01989770d">Length</a> radius, std::size_t slices, <a class="el" href="group__PhysicalQuantities.html#gabb35ed422281bfdf3c41a276958898fc">Angle</a> start=0_deg, <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> turns=<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(1))</td></tr>
+<tr class="memdesc:ga338c586cf1a29f27ee334d061fa59b5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertices for a circle described by the given parameters. <br /></td></tr>
+<tr class="separator:ga338c586cf1a29f27ee334d061fa59b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5d41854b91fcfb6b8ea05e7b8c92e304"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__PhysicalQuantities.html#gabb35ed422281bfdf3c41a276958898fc">Angle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga5d41854b91fcfb6b8ea05e7b8c92e304">playrho::GetFwdRotationalAngle</a> (const <a class="el" href="group__PhysicalQuantities.html#gabb35ed422281bfdf3c41a276958898fc">Angle</a> &amp;a1, const <a class="el" href="group__PhysicalQuantities.html#gabb35ed422281bfdf3c41a276958898fc">Angle</a> &amp;a2) noexcept</td></tr>
 <tr class="memdesc:ga5d41854b91fcfb6b8ea05e7b8c92e304"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the forward/clockwise rotational angle to go from angle 1 to angle 2.  <a href="group__Math.html#ga5d41854b91fcfb6b8ea05e7b8c92e304">More...</a><br /></td></tr>
 <tr class="separator:ga5d41854b91fcfb6b8ea05e7b8c92e304"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1344,7 +1344,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Computes the rounded value of the given value. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>Consider making this function generic to any <code><a class="el" href="structplayrho_1_1Vector.html" title="Vector.">Vector</a></code>. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>Consider making this function generic to any <code><a class="el" href="structplayrho_1_1Vector.html" title="Vector.">Vector</a></code>. </dd></dl>
 
 </div>
 </div>
@@ -1596,7 +1596,7 @@ template&lt;std::size_t M, typename T1 , std::size_t N, typename T2 &gt; </div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Oct 13 2023 04:17:01 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Oct 16 2023 00:34:09 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

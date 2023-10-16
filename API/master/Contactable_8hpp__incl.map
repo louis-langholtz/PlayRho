@@ -1,37 +1,39 @@
 <map id="Library/include/playrho/Contactable.hpp" name="Library/include/playrho/Contactable.hpp">
-<area shape="rect" id="node1" title="Definition of the Contactable class and closely related code." alt="" coords="297,5,468,47"/>
-<area shape="rect" id="node2" href="$Settings_8hpp.html" title="Types and default settings file." alt="" coords="421,169,577,196"/>
-<area shape="rect" id="node33" href="$ShapeID_8hpp.html" title="Definition of the ShapeID alias and closely related code." alt="" coords="304,95,461,121"/>
-<area shape="rect" id="node35" href="$BodyID_8hpp.html" title="Definition of the BodyID alias and closely related code." alt="" coords="129,95,279,121"/>
-<area shape="rect" id="node3" title=" " alt="" coords="254,244,325,271"/>
-<area shape="rect" id="node4" title=" " alt="" coords="1157,617,1227,644"/>
-<area shape="rect" id="node5" title=" " alt="" coords="349,244,408,271"/>
-<area shape="rect" id="node6" title=" " alt="" coords="451,543,514,569"/>
-<area shape="rect" id="node7" title=" " alt="" coords="1063,692,1129,719"/>
-<area shape="rect" id="node8" title=" " alt="" coords="969,856,1055,883"/>
-<area shape="rect" id="node9" href="$RealConstants_8hpp.html" title="Definitions file for constant expressions of type Real." alt="" coords="647,319,844,345"/>
-<area shape="rect" id="node16" href="$Templates_8hpp.html" title="Definitions of miscellaneous template related code." alt="" coords="288,692,459,719"/>
-<area shape="rect" id="node31" href="$Units_8hpp.html" title="Declarations for physical units possibly backed by strong types." alt="" coords="483,244,621,271"/>
-<area shape="rect" id="node32" href="$WiderType_8hpp.html" title="Definition of the WiderType alias template." alt="" coords="952,319,1123,345"/>
-<area shape="rect" id="node10" href="$Defines_8hpp.html" title="Miscellaneous C&#45;preprocessor definitions." alt="" coords="1165,692,1317,719"/>
-<area shape="rect" id="node11" href="$Real_8hpp.html" title="Real number definition file." alt="" coords="714,393,846,420"/>
-<area shape="rect" id="node12" href="$Fixed_8hpp.html" title="Definition of the Fixed class and closely related code." alt="" coords="729,543,866,569"/>
-<area shape="rect" id="node29" href="$FixedMath_8hpp.html" title="Conventional math functions for the Fixed class template." alt="" coords="589,468,760,495"/>
-<area shape="rect" id="node30" href="$FixedLimits_8hpp.html" title="Specialization of std::numeric_limits for Fixed." alt="" coords="835,468,1013,495"/>
-<area shape="rect" id="node13" title=" " alt="" coords="416,856,475,883"/>
-<area shape="rect" id="node14" title=" " alt="" coords="501,856,593,883"/>
-<area shape="rect" id="node15" title=" " alt="" coords="563,617,643,644"/>
-<area shape="rect" id="node21" href="$TypeInfo_8hpp.html" title="Definition of TypeID class and closely related code." alt="" coords="667,617,826,644"/>
-<area shape="rect" id="node28" href="$Wider_8hpp.html" title="Definition of the Wider class template and specializations." alt="" coords="952,617,1133,644"/>
-<area shape="rect" id="node17" href="$detail_2Templates_8hpp.html" title="Low&#45;level declarations for general class &amp; function templates." alt="" coords="248,774,459,801"/>
-<area shape="rect" id="node18" title=" " alt="" coords="85,856,171,883"/>
-<area shape="rect" id="node19" title=" " alt="" coords="318,856,389,883"/>
-<area shape="rect" id="node20" title=" " alt="" coords="221,856,281,883"/>
-<area shape="rect" id="node22" title=" " alt="" coords="844,692,911,719"/>
-<area shape="rect" id="node23" href="$detail_2TypeInfo_8hpp.html" title="Definition of TypeInfo class template and related code." alt="" coords="622,692,821,719"/>
-<area shape="rect" id="node24" title=" " alt="" coords="584,774,643,801"/>
-<area shape="rect" id="node25" title=" " alt="" coords="667,774,725,801"/>
-<area shape="rect" id="node26" title=" " alt="" coords="750,774,837,801"/>
-<area shape="rect" id="node27" title=" " alt="" coords="861,774,937,801"/>
-<area shape="rect" id="node34" href="$IndexingNamedType_8hpp.html" title="Definition of IndexingNamedType class template and related code." alt="" coords="5,767,224,808"/>
+<area shape="rect" id="node1" title="Definition of the Contactable class and closely related code." alt="" coords="571,5,741,47"/>
+<area shape="rect" id="node2" href="$Settings_8hpp.html" title="Types and default settings file." alt="" coords="694,169,850,196"/>
+<area shape="rect" id="node35" href="$ShapeID_8hpp.html" title="Definition of the ShapeID alias and closely related code." alt="" coords="577,95,735,121"/>
+<area shape="rect" id="node37" href="$BodyID_8hpp.html" title="Definition of the BodyID alias and closely related code." alt="" coords="402,95,553,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="701,244,771,271"/>
+<area shape="rect" id="node4" title=" " alt="" coords="1425,632,1495,659"/>
+<area shape="rect" id="node5" title=" " alt="" coords="847,244,905,271"/>
+<area shape="rect" id="node6" title=" " alt="" coords="345,557,407,584"/>
+<area shape="rect" id="node7" title=" " alt="" coords="1355,707,1421,733"/>
+<area shape="rect" id="node8" title=" " alt="" coords="1265,871,1351,897"/>
+<area shape="rect" id="node9" href="$RealConstants_8hpp.html" title="Definitions file for constant expressions of type Real." alt="" coords="749,319,947,345"/>
+<area shape="rect" id="node16" href="$Templates_8hpp.html" title="Definitions of miscellaneous template related code." alt="" coords="288,707,459,733"/>
+<area shape="rect" id="node31" href="$Units_8hpp.html" title="Declarations for physical units possibly backed by strong types." alt="" coords="465,244,602,271"/>
+<area shape="rect" id="node34" href="$WiderType_8hpp.html" title="Definition of the WiderType alias template." alt="" coords="1208,319,1379,345"/>
+<area shape="rect" id="node10" href="$Defines_8hpp.html" title="Miscellaneous C&#45;preprocessor definitions." alt="" coords="897,707,1049,733"/>
+<area shape="rect" id="node11" href="$Real_8hpp.html" title="Real number definition file." alt="" coords="950,401,1082,427"/>
+<area shape="rect" id="node12" href="$Fixed_8hpp.html" title="Definition of the Fixed class and closely related code." alt="" coords="1013,557,1150,584"/>
+<area shape="rect" id="node29" href="$FixedMath_8hpp.html" title="Conventional math functions for the Fixed class template." alt="" coords="869,483,1040,509"/>
+<area shape="rect" id="node30" href="$FixedLimits_8hpp.html" title="Specialization of std::numeric_limits for Fixed." alt="" coords="1115,483,1293,509"/>
+<area shape="rect" id="node13" title=" " alt="" coords="888,871,947,897"/>
+<area shape="rect" id="node14" title=" " alt="" coords="475,871,567,897"/>
+<area shape="rect" id="node15" title=" " alt="" coords="964,632,1044,659"/>
+<area shape="rect" id="node21" href="$TypeInfo_8hpp.html" title="Definition of TypeID class and closely related code." alt="" coords="635,632,794,659"/>
+<area shape="rect" id="node28" href="$Wider_8hpp.html" title="Definition of the Wider class template and specializations." alt="" coords="1169,632,1351,659"/>
+<area shape="rect" id="node17" href="$detail_2Templates_8hpp.html" title="Low&#45;level declarations for general class &amp; function templates." alt="" coords="248,789,459,815"/>
+<area shape="rect" id="node18" title=" " alt="" coords="85,871,171,897"/>
+<area shape="rect" id="node19" title=" " alt="" coords="318,871,389,897"/>
+<area shape="rect" id="node20" title=" " alt="" coords="221,871,281,897"/>
+<area shape="rect" id="node22" title=" " alt="" coords="584,707,651,733"/>
+<area shape="rect" id="node23" href="$detail_2TypeInfo_8hpp.html" title="Definition of TypeInfo class template and related code." alt="" coords="674,707,873,733"/>
+<area shape="rect" id="node24" title=" " alt="" coords="816,789,875,815"/>
+<area shape="rect" id="node25" title=" " alt="" coords="899,789,957,815"/>
+<area shape="rect" id="node26" title=" " alt="" coords="605,789,691,815"/>
+<area shape="rect" id="node27" title=" " alt="" coords="715,789,791,815"/>
+<area shape="rect" id="node32" href="$to__underlying_8hpp.html" title="Definition of to_underlying function template." alt="" coords="533,319,725,345"/>
+<area shape="rect" id="node33" href="$underlying__type_8hpp.html" title="Definition of underlying_type trait class and related code." alt="" coords="535,393,721,435"/>
+<area shape="rect" id="node36" href="$IndexingNamedType_8hpp.html" title="Definition of IndexingNamedType class template and related code." alt="" coords="5,781,224,823"/>
 </map>

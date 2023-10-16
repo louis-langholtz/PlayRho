@@ -109,6 +109,7 @@ $(document).ready(function(){initNavTree('Units_8hpp.html',''); initResizable();
 <code>#include &lt;type_traits&gt;</code><br />
 <code>#include &lt;<a class="el" href="RealConstants_8hpp.html">playrho/RealConstants.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Templates_8hpp.html">playrho/Templates.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="to__underlying_8hpp.html">playrho/to_underlying.hpp</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Units.hpp:</div>
 <div class="dyncontent">
@@ -183,6 +184,11 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nam
 <tr class="memitem:ga526d114a9d34d7237ed3e41829ab3eff"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__PhysicalQuantities.html#ga526d114a9d34d7237ed3e41829ab3eff">playrho::Frequency</a> = detail::frequency</td></tr>
 <tr class="memdesc:ga526d114a9d34d7237ed3e41829ab3eff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frequency quantity.  <a href="group__PhysicalQuantities.html#ga526d114a9d34d7237ed3e41829ab3eff">More...</a><br /></td></tr>
 <tr class="separator:ga526d114a9d34d7237ed3e41829ab3eff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03090ab2b73fa40dbf842caf9cf4f19f"><td class="memTemplParams" colspan="2"><a id="a03090ab2b73fa40dbf842caf9cf4f19f"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:a03090ab2b73fa40dbf842caf9cf4f19f"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a03090ab2b73fa40dbf842caf9cf4f19f">playrho::detail::get_member_type</a> = decltype(std::declval&lt; T &amp; &gt;().<a class="el" href="structplayrho_1_1Vector.html#aa10d9373a7aa5e3492fee0877900f738">get</a>())</td></tr>
+<tr class="memdesc:a03090ab2b73fa40dbf842caf9cf4f19f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for getting the return type of a <code><a class="el" href="namespaceplayrho.html#aa10d9373a7aa5e3492fee0877900f738" title="Gets the specified element of the given collection.">get()</a></code> member function. <br /></td></tr>
+<tr class="separator:a03090ab2b73fa40dbf842caf9cf4f19f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e0fe544dc91c5df25ce8858ee1dda8b"><td class="memItemLeft" align="right" valign="top"><a id="a4e0fe544dc91c5df25ce8858ee1dda8b"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html#a4e0fe544dc91c5df25ce8858ee1dda8b">playrho::detail::inverse_mass</a> = Real</td></tr>
 <tr class="memdesc:a4e0fe544dc91c5df25ce8858ee1dda8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inverse mass quantity type. <br /></td></tr>
@@ -425,10 +431,10 @@ constexpr AreaDensity&#160;</td><td class="memItemRight" valign="bottom"><a clas
 <tr class="memitem:ga1255eade62dd2acd569300e17da4d578"><td class="memItemLeft" align="right" valign="top">constexpr Mass&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Unitsymbols.html#ga1255eade62dd2acd569300e17da4d578">playrho::literals::operator&quot;&quot;_Yg</a> (unsigned long long int v) noexcept</td></tr>
 <tr class="memdesc:ga1255eade62dd2acd569300e17da4d578"><td class="mdescLeft">&#160;</td><td class="mdescRight">SI unit symbol for a yottagram unit of Mass.  <a href="group__Unitsymbols.html#ga1255eade62dd2acd569300e17da4d578">More...</a><br /></td></tr>
 <tr class="separator:ga1255eade62dd2acd569300e17da4d578"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7aad07dca595ebb37551e793171c2cfa"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a7aad07dca595ebb37551e793171c2cfa"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7aad07dca595ebb37551e793171c2cfa">playrho::StripUnit</a> (const T &amp;v) -&gt; decltype(StripUnit(v.get()))</td></tr>
-<tr class="memdesc:a7aad07dca595ebb37551e793171c2cfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Strips the unit from the given value.  <a href="namespaceplayrho.html#a7aad07dca595ebb37551e793171c2cfa">More...</a><br /></td></tr>
-<tr class="separator:a7aad07dca595ebb37551e793171c2cfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab48e50a80b0fd16dfd70ee70307ad296"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ab48e50a80b0fd16dfd70ee70307ad296"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ab48e50a80b0fd16dfd70ee70307ad296">playrho::StripUnit</a> (const T &amp;value) -&gt; std::enable_if_t&lt; IsArithmeticV&lt; T &gt; &amp;&amp;!detail::is_detected_v&lt; detail::get_member_type, T &gt;, T &gt;</td></tr>
+<tr class="memdesc:ab48e50a80b0fd16dfd70ee70307ad296"><td class="mdescLeft">&#160;</td><td class="mdescRight">Strips the units off of the given value.  <a href="namespaceplayrho.html#ab48e50a80b0fd16dfd70ee70307ad296">More...</a><br /></td></tr>
+<tr class="separator:ab48e50a80b0fd16dfd70ee70307ad296"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -576,7 +582,7 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="Units_8hpp.html">Units.hpp</a></li>
-    <li class="footer">Generated on Fri Oct 13 2023 04:17:01 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Oct 16 2023 00:34:09 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

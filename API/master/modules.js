@@ -5,6 +5,7 @@ var modules =
     [ "Physical Entities", "group__PhysicalEntities.html", "group__PhysicalEntities" ],
     [ "Checker Types", "group__Checkers.html", "group__Checkers" ],
     [ "Checked Value Types", "group__CheckedTypes.html", "group__CheckedTypes" ],
+    [ "Math Functions For Checked Types", "group__CheckedMath.html", "group__CheckedMath" ],
     [ "Point Containment Test Functions", "group__TestPointGroup.html", "group__TestPointGroup" ],
     [ "Library Defined Exceptions", "group__ExceptionsGroup.html", "group__ExceptionsGroup" ],
     [ "Library Defined Constraints", "group__ConstraintsGroup.html", "group__ConstraintsGroup" ],

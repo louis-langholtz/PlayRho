@@ -13,7 +13,7 @@ var group__Math =
     [ "GetAngle", "group__Math.html#ga941d2e26e203e19b567a018570417be3", null ],
     [ "GetAreaOfCircle", "group__Math.html#ga007d43d0fd5ce900118dd41e3197d887", null ],
     [ "GetAreaOfPolygon", "group__Math.html#ga760effc058042418453697e733937b2f", null ],
-    [ "GetCircleVertices", "group__Math.html#ga3b8e8abc999b0c63cf1921b0edcf0b36", null ],
+    [ "GetCircleVertices", "group__Math.html#ga338c586cf1a29f27ee334d061fa59b5d", null ],
     [ "GetFwdRotationalAngle", "group__Math.html#ga5d41854b91fcfb6b8ea05e7b8c92e304", null ],
     [ "GetInverse22", "group__Math.html#ga0a9354b34edeb8433cd3062aecb78143", null ],
     [ "GetMagnitude", "group__Math.html#gafe323c1c5ab88d30d18413a3c1f10abb", null ],

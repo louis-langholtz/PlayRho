@@ -94,6 +94,7 @@ $(document).ready(function(){initNavTree('classplayrho_1_1detail_1_1Checked.html
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
@@ -115,6 +116,15 @@ Inheritance diagram for playrho::detail::Checked&lt; ValueType, Checker, NoExcep
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1Checked_1_1IsChecked.html">IsChecked</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Failing is-checked class template trait.  <a href="structplayrho_1_1detail_1_1Checked_1_1IsChecked.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1Checked_1_1IsChecked_3_01Checked_3_01V_00_01C_00_01N_01_4_01_4.html">IsChecked&lt; Checked&lt; V, C, N &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Succeeding is-checked class template trait.  <a href="structplayrho_1_1detail_1_1Checked_1_1IsChecked_3_01Checked_3_01V_00_01C_00_01N_01_4_01_4.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a0126d8ae64781661f7a81abd5c2c3b32"><td class="memItemLeft" align="right" valign="top"><a id="a0126d8ae64781661f7a81abd5c2c3b32"></a>
@@ -128,10 +138,10 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <tr class="memitem:a5195c96ea6ee491e75d93ce702553cda"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a5195c96ea6ee491e75d93ce702553cda">remove_pointer_type</a> = std::remove_pointer_t&lt; ValueType &gt;</td></tr>
 <tr class="memdesc:a5195c96ea6ee491e75d93ce702553cda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for the removed pointer type.  <a href="classplayrho_1_1detail_1_1Checked.html#a5195c96ea6ee491e75d93ce702553cda">More...</a><br /></td></tr>
 <tr class="separator:a5195c96ea6ee491e75d93ce702553cda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93dd281b7a6333ed3f69aa4bf59b1003"><td class="memItemLeft" align="right" valign="top"><a id="a93dd281b7a6333ed3f69aa4bf59b1003"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a93dd281b7a6333ed3f69aa4bf59b1003">value_type</a> = ValueType</td></tr>
-<tr class="memdesc:a93dd281b7a6333ed3f69aa4bf59b1003"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for the value type this class template was instantiated for. <br /></td></tr>
-<tr class="separator:a93dd281b7a6333ed3f69aa4bf59b1003"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e35f866c948764bbd1a9f8621b0181f"><td class="memItemLeft" align="right" valign="top"><a id="a9e35f866c948764bbd1a9f8621b0181f"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a9e35f866c948764bbd1a9f8621b0181f">underlying_type</a> = ValueType</td></tr>
+<tr class="memdesc:a9e35f866c948764bbd1a9f8621b0181f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for the value type this class template was instantiated for. <br /></td></tr>
+<tr class="separator:a9e35f866c948764bbd1a9f8621b0181f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -139,19 +149,25 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aafb88ef5ee8cb239f0ec9334a68d83de"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#aafb88ef5ee8cb239f0ec9334a68d83de">Checked</a> () noexcept(NoExcept)</td></tr>
 <tr class="memdesc:aafb88ef5ee8cb239f0ec9334a68d83de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="classplayrho_1_1detail_1_1Checked.html#aafb88ef5ee8cb239f0ec9334a68d83de">More...</a><br /></td></tr>
 <tr class="separator:aafb88ef5ee8cb239f0ec9334a68d83de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50a11eeca99e03d961cf4655f1d58206"><td class="memTemplParams" colspan="2">template&lt;class OtherValueType , class OtherChecker , bool OtherNoExcept, std::enable_if_t&lt; std::is_constructible_v&lt; ValueType, OtherValueType &gt; &amp;&amp;!std::is_same_v&lt; Checker, OtherChecker &gt;, int &gt;  = 0&gt; </td></tr>
+<tr class="memitem:a50a11eeca99e03d961cf4655f1d58206"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a50a11eeca99e03d961cf4655f1d58206">Checked</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; OtherValueType, OtherChecker, OtherNoExcept &gt; &amp;other) noexcept(NoExcept)</td></tr>
+<tr class="memdesc:a50a11eeca99e03d961cf4655f1d58206"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copying constructor.  <a href="classplayrho_1_1detail_1_1Checked.html#a50a11eeca99e03d961cf4655f1d58206">More...</a><br /></td></tr>
+<tr class="separator:a50a11eeca99e03d961cf4655f1d58206"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ae56dcc4a01f7db4a387f9e05ceec32"><td class="memTemplParams" colspan="2">template&lt;bool OtherNoExcept&gt; </td></tr>
 <tr class="memitem:a4ae56dcc4a01f7db4a387f9e05ceec32"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a4ae56dcc4a01f7db4a387f9e05ceec32">Checked</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, OtherNoExcept &gt; &amp;other) noexcept</td></tr>
 <tr class="memdesc:a4ae56dcc4a01f7db4a387f9e05ceec32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copying constructor.  <a href="classplayrho_1_1detail_1_1Checked.html#a4ae56dcc4a01f7db4a387f9e05ceec32">More...</a><br /></td></tr>
 <tr class="separator:a4ae56dcc4a01f7db4a387f9e05ceec32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9116398d4e446826be64fcdf5997278"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#ac9116398d4e446826be64fcdf5997278">Checked</a> (<a class="el" href="classplayrho_1_1detail_1_1Checked.html#a93dd281b7a6333ed3f69aa4bf59b1003">value_type</a> value) noexcept(NoExcept)</td></tr>
-<tr class="memdesc:ac9116398d4e446826be64fcdf5997278"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor.  <a href="classplayrho_1_1detail_1_1Checked.html#ac9116398d4e446826be64fcdf5997278">More...</a><br /></td></tr>
-<tr class="separator:ac9116398d4e446826be64fcdf5997278"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e28d17a5294bbc7edd11d5a7796c4f2"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a93dd281b7a6333ed3f69aa4bf59b1003">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a2e28d17a5294bbc7edd11d5a7796c4f2">get</a> () const noexcept</td></tr>
-<tr class="memdesc:a2e28d17a5294bbc7edd11d5a7796c4f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explicitly gets the underlying value.  <a href="classplayrho_1_1detail_1_1Checked.html#a2e28d17a5294bbc7edd11d5a7796c4f2">More...</a><br /></td></tr>
-<tr class="separator:a2e28d17a5294bbc7edd11d5a7796c4f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac39091a26372d353a589273c998c9fa"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#aac39091a26372d353a589273c998c9fa">operator value_type</a> () const noexcept</td></tr>
-<tr class="memdesc:aac39091a26372d353a589273c998c9fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the underlying value via a cast or implicit conversion.  <a href="classplayrho_1_1detail_1_1Checked.html#aac39091a26372d353a589273c998c9fa">More...</a><br /></td></tr>
-<tr class="separator:aac39091a26372d353a589273c998c9fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f59a65c81a2710b4c278c4d795a6f02"><td class="memTemplParams" colspan="2">template&lt;class U , std::enable_if_t&lt; std::is_constructible_v&lt; ValueType, U &amp;&amp; &gt; &amp;&amp;!IsChecked&lt; std::decay_t&lt; U &gt;&gt;::value, int &gt;  = 0&gt; </td></tr>
+<tr class="memitem:a7f59a65c81a2710b4c278c4d795a6f02"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a7f59a65c81a2710b4c278c4d795a6f02">Checked</a> (U &amp;&amp;value) noexcept(NoExcept)</td></tr>
+<tr class="memdesc:a7f59a65c81a2710b4c278c4d795a6f02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor.  <a href="classplayrho_1_1detail_1_1Checked.html#a7f59a65c81a2710b4c278c4d795a6f02">More...</a><br /></td></tr>
+<tr class="separator:a7f59a65c81a2710b4c278c4d795a6f02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf48e8aea8c64680c2f07cab120992df"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a9e35f866c948764bbd1a9f8621b0181f">underlying_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#aaf48e8aea8c64680c2f07cab120992df">get</a> () const noexcept</td></tr>
+<tr class="memdesc:aaf48e8aea8c64680c2f07cab120992df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explicitly gets the underlying value.  <a href="classplayrho_1_1detail_1_1Checked.html#aaf48e8aea8c64680c2f07cab120992df">More...</a><br /></td></tr>
+<tr class="separator:aaf48e8aea8c64680c2f07cab120992df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78d9cc78de4ae6098d27b6e6268b0097"><td class="memTemplParams" colspan="2">template&lt;class U , std::enable_if_t&lt;!IsChecked&lt; U &gt;::value &amp;&amp;std::is_constructible_v&lt; U, ValueType &gt;, int &gt;  = 0&gt; </td></tr>
+<tr class="memitem:a78d9cc78de4ae6098d27b6e6268b0097"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a78d9cc78de4ae6098d27b6e6268b0097">operator U</a> () const noexcept</td></tr>
+<tr class="memdesc:a78d9cc78de4ae6098d27b6e6268b0097"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the underlying value via a cast or implicit conversion.  <a href="classplayrho_1_1detail_1_1Checked.html#a78d9cc78de4ae6098d27b6e6268b0097">More...</a><br /></td></tr>
+<tr class="separator:a78d9cc78de4ae6098d27b6e6268b0097"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58a650224561db5ff826180b981d9267"><td class="memTemplParams" colspan="2">template&lt;class U  = ValueType&gt; </td></tr>
 <tr class="memitem:a58a650224561db5ff826180b981d9267"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if_t&lt; std::is_pointer_v&lt; U &gt;, <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a5195c96ea6ee491e75d93ce702553cda">remove_pointer_type</a> &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a58a650224561db5ff826180b981d9267">operator*</a> () const</td></tr>
 <tr class="memdesc:a58a650224561db5ff826180b981d9267"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indirection operator available for pointer <code>ValueType</code>.  <a href="classplayrho_1_1detail_1_1Checked.html#a58a650224561db5ff826180b981d9267">More...</a><br /></td></tr>
@@ -163,12 +179,12 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a883125c87182d1f07b1ef2fe8b9928a2"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a883125c87182d1f07b1ef2fe8b9928a2">ThrowIfInvalid</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a93dd281b7a6333ed3f69aa4bf59b1003">value_type</a> &amp;value) -&gt; decltype((void) <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a6e1de9cc039b2ac32262d38e7ea90a3d">exception_type</a>(Checker{}(value)), std::declval&lt; void &gt;())</td></tr>
-<tr class="memdesc:a883125c87182d1f07b1ef2fe8b9928a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Throws this class's exception type if the given value is invalid.  <a href="classplayrho_1_1detail_1_1Checked.html#a883125c87182d1f07b1ef2fe8b9928a2">More...</a><br /></td></tr>
-<tr class="separator:a883125c87182d1f07b1ef2fe8b9928a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe37f4f4b60bfb20e85bd8a67d18c614"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#abe37f4f4b60bfb20e85bd8a67d18c614">Validate</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a93dd281b7a6333ed3f69aa4bf59b1003">value_type</a> &amp;value) noexcept(NoExcept) -&gt; decltype(<a class="el" href="classplayrho_1_1detail_1_1Checked.html#a883125c87182d1f07b1ef2fe8b9928a2">ThrowIfInvalid</a>(value), <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a93dd281b7a6333ed3f69aa4bf59b1003">value_type</a>{})</td></tr>
-<tr class="memdesc:abe37f4f4b60bfb20e85bd8a67d18c614"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validator function.  <a href="classplayrho_1_1detail_1_1Checked.html#abe37f4f4b60bfb20e85bd8a67d18c614">More...</a><br /></td></tr>
-<tr class="separator:abe37f4f4b60bfb20e85bd8a67d18c614"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1083c9dc2ffa1226d565f2637882e2a6"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a1083c9dc2ffa1226d565f2637882e2a6">ThrowIfInvalid</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a9e35f866c948764bbd1a9f8621b0181f">underlying_type</a> &amp;value) -&gt; decltype((void) <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a6e1de9cc039b2ac32262d38e7ea90a3d">exception_type</a>(Checker{}(value)), std::declval&lt; void &gt;())</td></tr>
+<tr class="memdesc:a1083c9dc2ffa1226d565f2637882e2a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Throws this class's exception type if the given value is invalid.  <a href="classplayrho_1_1detail_1_1Checked.html#a1083c9dc2ffa1226d565f2637882e2a6">More...</a><br /></td></tr>
+<tr class="separator:a1083c9dc2ffa1226d565f2637882e2a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fdfb1b35df6487d1f043ef26c6055f2"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a7fdfb1b35df6487d1f043ef26c6055f2">Validate</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a9e35f866c948764bbd1a9f8621b0181f">underlying_type</a> &amp;value) noexcept(NoExcept) -&gt; decltype(<a class="el" href="classplayrho_1_1detail_1_1Checked.html#a1083c9dc2ffa1226d565f2637882e2a6">ThrowIfInvalid</a>(value), <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a9e35f866c948764bbd1a9f8621b0181f">underlying_type</a>{})</td></tr>
+<tr class="memdesc:a7fdfb1b35df6487d1f043ef26c6055f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validator function.  <a href="classplayrho_1_1detail_1_1Checked.html#a7fdfb1b35df6487d1f043ef26c6055f2">More...</a><br /></td></tr>
+<tr class="separator:a7fdfb1b35df6487d1f043ef26c6055f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
 Related Functions</h2></td></tr>
@@ -343,7 +359,7 @@ template&lt;class ValueType , class Checker  = NoOpChecker&lt;ValueType&gt;, boo
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aafb88ef5ee8cb239f0ec9334a68d83de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aafb88ef5ee8cb239f0ec9334a68d83de">&#9670;&nbsp;</a></span>Checked() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aafb88ef5ee8cb239f0ec9334a68d83de">&#9670;&nbsp;</a></span>Checked() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -370,19 +386,21 @@ template&lt;bool B = HasNullaryFunctor&lt;Checker,ValueType&gt;::value, std::ena
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<p>Constructs a defaulted checked type if the checker type has a nullary functor that returns a value which the <code><a class="el" href="classplayrho_1_1detail_1_1Checked.html#abe37f4f4b60bfb20e85bd8a67d18c614" title="Validator function.">Validate(const value_type&amp; value)</a></code> function validates. </p><dl class="section note"><dt>Note</dt><dd>This is only available for checker types with acceptable nullary functors. </dd></dl>
-<dl class="section post"><dt>Postcondition</dt><dd>Calling <code><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a2e28d17a5294bbc7edd11d5a7796c4f2" title="Explicitly gets the underlying value.">get()</a></code> or casting to the underlying type, results in the value given by the checker's nullary functor. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1detail_1_1Checked.html#abe37f4f4b60bfb20e85bd8a67d18c614" title="Validator function.">Validate</a>. </dd></dl>
+<p>Constructs a defaulted checked type if the checker type has a nullary functor that returns a value which the <code>Validate(const value_type&amp; value)</code> function validates. </p><dl class="section note"><dt>Note</dt><dd>This is only available for checker types with acceptable nullary functors. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>Calling <code><a class="el" href="classplayrho_1_1detail_1_1Checked.html#aaf48e8aea8c64680c2f07cab120992df" title="Explicitly gets the underlying value.">get()</a></code> or casting to the underlying type, results in the value given by the checker's nullary functor. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a7fdfb1b35df6487d1f043ef26c6055f2" title="Validator function.">Validate</a>. </dd></dl>
 
 </div>
 </div>
-<a id="ac9116398d4e446826be64fcdf5997278"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9116398d4e446826be64fcdf5997278">&#9670;&nbsp;</a></span>Checked() <span class="overload">[2/3]</span></h2>
+<a id="a7f59a65c81a2710b4c278c4d795a6f02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f59a65c81a2710b4c278c4d795a6f02">&#9670;&nbsp;</a></span>Checked() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class ValueType , class Checker  = NoOpChecker&lt;ValueType&gt;, bool NoExcept = false&gt; </div>
+<div class="memtemplate">
+template&lt;class U , std::enable_if_t&lt; std::is_constructible_v&lt; ValueType, U &amp;&amp; &gt; &amp;&amp;!IsChecked&lt; std::decay_t&lt; U &gt;&gt;::value, int &gt;  = 0&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -390,7 +408,7 @@ template&lt;class ValueType , class Checker  = NoOpChecker&lt;ValueType&gt;, boo
         <tr>
           <td class="memname">constexpr <a class="el" href="classplayrho_1_1detail_1_1Checked.html">playrho::detail::Checked</a>&lt; ValueType, Checker, NoExcept &gt;::<a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a93dd281b7a6333ed3f69aa4bf59b1003">value_type</a>&#160;</td>
+          <td class="paramtype">U &amp;&amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
           <td></td>
         </tr>
@@ -403,14 +421,48 @@ template&lt;class ValueType , class Checker  = NoOpChecker&lt;ValueType&gt;, boo
 </div><div class="memdoc">
 
 <p>Initializing constructor. </p>
-<p>Constructs a checked type of the given value if the <code><a class="el" href="classplayrho_1_1detail_1_1Checked.html#abe37f4f4b60bfb20e85bd8a67d18c614" title="Validator function.">Validate(const value_type&amp; value)</a></code> function validates. </p><dl class="section post"><dt>Postcondition</dt><dd>Calling <code><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a2e28d17a5294bbc7edd11d5a7796c4f2" title="Explicitly gets the underlying value.">get()</a></code> or casting to the underlying type, results in the value given. </dd></dl>
+<p>Constructs a checked type of the given value if the <code>Validate(const value_type&amp; value)</code> function validates. </p><dl class="section post"><dt>Postcondition</dt><dd>Calling <code><a class="el" href="classplayrho_1_1detail_1_1Checked.html#aaf48e8aea8c64680c2f07cab120992df" title="Explicitly gets the underlying value.">get()</a></code> or casting to the underlying type, results in the value given. </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Consider marking this function "explicit". </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1detail_1_1Checked.html#abe37f4f4b60bfb20e85bd8a67d18c614" title="Validator function.">Validate</a>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a7fdfb1b35df6487d1f043ef26c6055f2" title="Validator function.">Validate</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a50a11eeca99e03d961cf4655f1d58206"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50a11eeca99e03d961cf4655f1d58206">&#9670;&nbsp;</a></span>Checked() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class ValueType , class Checker  = NoOpChecker&lt;ValueType&gt;, bool NoExcept = false&gt; </div>
+<div class="memtemplate">
+template&lt;class OtherValueType , class OtherChecker , bool OtherNoExcept, std::enable_if_t&lt; std::is_constructible_v&lt; ValueType, OtherValueType &gt; &amp;&amp;!std::is_same_v&lt; Checker, OtherChecker &gt;, int &gt;  = 0&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classplayrho_1_1detail_1_1Checked.html">playrho::detail::Checked</a>&lt; ValueType, Checker, NoExcept &gt;::<a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; OtherValueType, OtherChecker, OtherNoExcept &gt; &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copying constructor. </p>
+<dl class="section note"><dt>Note</dt><dd>This allows copying from other checked values that don't use the same checker. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>Calling <code><a class="el" href="classplayrho_1_1detail_1_1Checked.html#aaf48e8aea8c64680c2f07cab120992df" title="Explicitly gets the underlying value.">get()</a></code> or casting to the underlying type, results in a value that compares equally to the value given. </dd></dl>
 
 </div>
 </div>
 <a id="a4ae56dcc4a01f7db4a387f9e05ceec32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ae56dcc4a01f7db4a387f9e05ceec32">&#9670;&nbsp;</a></span>Checked() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ae56dcc4a01f7db4a387f9e05ceec32">&#9670;&nbsp;</a></span>Checked() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -444,8 +496,8 @@ template&lt;bool OtherNoExcept&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2e28d17a5294bbc7edd11d5a7796c4f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e28d17a5294bbc7edd11d5a7796c4f2">&#9670;&nbsp;</a></span>get()</h2>
+<a id="aaf48e8aea8c64680c2f07cab120992df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf48e8aea8c64680c2f07cab120992df">&#9670;&nbsp;</a></span>get()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -456,7 +508,7 @@ template&lt;class ValueType , class Checker  = NoOpChecker&lt;ValueType&gt;, boo
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a93dd281b7a6333ed3f69aa4bf59b1003">value_type</a> <a class="el" href="classplayrho_1_1detail_1_1Checked.html">playrho::detail::Checked</a>&lt; ValueType, Checker, NoExcept &gt;::get </td>
+          <td class="memname">constexpr <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a9e35f866c948764bbd1a9f8621b0181f">underlying_type</a> <a class="el" href="classplayrho_1_1detail_1_1Checked.html">playrho::detail::Checked</a>&lt; ValueType, Checker, NoExcept &gt;::get </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -474,19 +526,21 @@ template&lt;class ValueType , class Checker  = NoOpChecker&lt;ValueType&gt;, boo
 
 </div>
 </div>
-<a id="aac39091a26372d353a589273c998c9fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac39091a26372d353a589273c998c9fa">&#9670;&nbsp;</a></span>operator value_type()</h2>
+<a id="a78d9cc78de4ae6098d27b6e6268b0097"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78d9cc78de4ae6098d27b6e6268b0097">&#9670;&nbsp;</a></span>operator U()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class ValueType , class Checker  = NoOpChecker&lt;ValueType&gt;, bool NoExcept = false&gt; </div>
+<div class="memtemplate">
+template&lt;class U , std::enable_if_t&lt;!IsChecked&lt; U &gt;::value &amp;&amp;std::is_constructible_v&lt; U, ValueType &gt;, int &gt;  = 0&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="classplayrho_1_1detail_1_1Checked.html">playrho::detail::Checked</a>&lt; ValueType, Checker, NoExcept &gt;::operator <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a93dd281b7a6333ed3f69aa4bf59b1003">value_type</a> </td>
+          <td class="memname">constexpr <a class="el" href="classplayrho_1_1detail_1_1Checked.html">playrho::detail::Checked</a>&lt; ValueType, Checker, NoExcept &gt;::operator U </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -500,8 +554,7 @@ template&lt;class ValueType , class Checker  = NoOpChecker&lt;ValueType&gt;, boo
 </div><div class="memdoc">
 
 <p>Gets the underlying value via a cast or implicit conversion. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a2e28d17a5294bbc7edd11d5a7796c4f2" title="Explicitly gets the underlying value.">get</a>. </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>Consider marking this function "explicit". </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1detail_1_1Checked.html#aaf48e8aea8c64680c2f07cab120992df" title="Explicitly gets the underlying value.">get</a>. </dd></dl>
 
 </div>
 </div>
@@ -569,8 +622,8 @@ template&lt;class U  = ValueType&gt; </div>
 
 </div>
 </div>
-<a id="a883125c87182d1f07b1ef2fe8b9928a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a883125c87182d1f07b1ef2fe8b9928a2">&#9670;&nbsp;</a></span>ThrowIfInvalid()</h2>
+<a id="a1083c9dc2ffa1226d565f2637882e2a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1083c9dc2ffa1226d565f2637882e2a6">&#9670;&nbsp;</a></span>ThrowIfInvalid()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -583,7 +636,7 @@ template&lt;class ValueType , class Checker  = NoOpChecker&lt;ValueType&gt;, boo
         <tr>
           <td class="memname">static constexpr auto <a class="el" href="classplayrho_1_1detail_1_1Checked.html">playrho::detail::Checked</a>&lt; ValueType, Checker, NoExcept &gt;::ThrowIfInvalid </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a93dd281b7a6333ed3f69aa4bf59b1003">value_type</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a9e35f866c948764bbd1a9f8621b0181f">underlying_type</a> &amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
           <td> -&gt; decltype((void)<a class="el" href="classplayrho_1_1detail_1_1Checked.html#a6e1de9cc039b2ac32262d38e7ea90a3d">exception_type</a>(Checker{}(value)), std::declval&lt;void&gt;())
     </td>
@@ -607,8 +660,8 @@ template&lt;class ValueType , class Checker  = NoOpChecker&lt;ValueType&gt;, boo
 
 </div>
 </div>
-<a id="abe37f4f4b60bfb20e85bd8a67d18c614"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe37f4f4b60bfb20e85bd8a67d18c614">&#9670;&nbsp;</a></span>Validate()</h2>
+<a id="a7fdfb1b35df6487d1f043ef26c6055f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fdfb1b35df6487d1f043ef26c6055f2">&#9670;&nbsp;</a></span>Validate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -621,9 +674,9 @@ template&lt;class ValueType , class Checker  = NoOpChecker&lt;ValueType&gt;, boo
         <tr>
           <td class="memname">static constexpr auto <a class="el" href="classplayrho_1_1detail_1_1Checked.html">playrho::detail::Checked</a>&lt; ValueType, Checker, NoExcept &gt;::Validate </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a93dd281b7a6333ed3f69aa4bf59b1003">value_type</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a9e35f866c948764bbd1a9f8621b0181f">underlying_type</a> &amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
-          <td> -&gt; decltype(<a class="el" href="classplayrho_1_1detail_1_1Checked.html#a883125c87182d1f07b1ef2fe8b9928a2">ThrowIfInvalid</a>(value), <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a93dd281b7a6333ed3f69aa4bf59b1003">value_type</a>{})
+          <td> -&gt; decltype(<a class="el" href="classplayrho_1_1detail_1_1Checked.html#a1083c9dc2ffa1226d565f2637882e2a6">ThrowIfInvalid</a>(value), <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a9e35f866c948764bbd1a9f8621b0181f">underlying_type</a>{})
     </td>
         </tr>
       </table>
@@ -2229,7 +2282,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a></li>
-    <li class="footer">Generated on Fri Oct 13 2023 04:17:01 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Oct 16 2023 00:34:10 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

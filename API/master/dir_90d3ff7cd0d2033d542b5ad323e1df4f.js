@@ -2,6 +2,7 @@ var dir_90d3ff7cd0d2033d542b5ad323e1df4f =
 [
     [ "AABB.hpp", "detail_2AABB_8hpp.html", "detail_2AABB_8hpp" ],
     [ "Checked.hpp", "Checked_8hpp.html", "Checked_8hpp" ],
+    [ "CheckedMath.hpp", "CheckedMath_8hpp.html", "CheckedMath_8hpp" ],
     [ "FiniteChecker.hpp", "FiniteChecker_8hpp.html", null ],
     [ "IndexingNamedType.hpp", "IndexingNamedType_8hpp.html", "IndexingNamedType_8hpp" ],
     [ "NegativeChecker.hpp", "NegativeChecker_8hpp.html", null ],

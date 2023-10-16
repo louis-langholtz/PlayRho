@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vector_20traits_4252',['Vector Traits',['../group__VectorTraitsGroup.html',1,'']]]
+  ['vector_20traits_4281',['Vector Traits',['../group__VectorTraitsGroup.html',1,'']]]
 ];
