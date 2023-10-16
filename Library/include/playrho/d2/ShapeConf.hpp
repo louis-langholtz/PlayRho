@@ -41,7 +41,7 @@ struct BaseShapeConf {
     static constexpr auto DefaultFriction = NonNegative<Real>{Real{2} / Real{10}};
 
     /// @brief Default restitution value.
-    static inline const auto DefaultRestitution = Finite<Real>{0};
+    static inline const auto DefaultRestitution = Finite<Real>{};
 
     /// @brief Default density value.
     static constexpr auto DefaultDensity = NonNegative<AreaDensity>{0_kgpm2};
