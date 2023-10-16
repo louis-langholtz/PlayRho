@@ -93,7 +93,7 @@ public:
         m_square = CreateShape(GetWorld(),
                                PolygonShapeConf{}.SetAsBox(0.125_m, 0.125_m).UseDensity(1_kgpm2));
         m_disk = CreateShape(
-            GetWorld(), DiskShapeConf{}.UseRadius(0.125_m).UseFriction(0).UseDensity(0.1_kgpm2));
+            GetWorld(), DiskShapeConf{}.UseRadius(0.125_m).UseFriction(0.0f).UseDensity(0.1_kgpm2));
         const auto width = 30_m;
         const auto halfWidth = width / 2;
         const auto totalWidth = num * width;

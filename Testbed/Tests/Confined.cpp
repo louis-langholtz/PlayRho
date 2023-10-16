@@ -86,7 +86,7 @@ public:
         Attach(GetWorld(), body,
                CreateShape(
                    GetWorld(),
-                   GetChainShapeConf(wallLength).UseRestitution(0).UseVertexRadius(vertexRadius)));
+                   GetChainShapeConf(wallLength).UseRestitution(0.0f).UseVertexRadius(vertexRadius)));
         SetLocation(GetWorld(), body, Length2{0_m, 20_m});
         return body;
     }
@@ -124,7 +124,7 @@ public:
         bd.location = Vec2{0, 20} * 1_m + GetRandomOffset();
         Attach(GetWorld(), CreateBody(GetWorld(), bd),
                CreateShape(GetWorld(),
-                           PolygonShapeConf{}.UseDensity(1_kgpm2).UseRestitution(0).SetAsBox(
+                           PolygonShapeConf{}.UseDensity(1_kgpm2).UseRestitution(0.0f).SetAsBox(
                                side_length / 2, side_length / 2)));
     }
 

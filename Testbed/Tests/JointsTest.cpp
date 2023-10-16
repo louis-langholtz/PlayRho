@@ -47,7 +47,7 @@ public:
         m_squareShape =
             CreateShape(GetWorld(), PolyConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 0.5_m));
         m_smallDiskShape = CreateShape(
-            GetWorld(), DiskConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2).UseRestitution(0));
+            GetWorld(), DiskConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2).UseRestitution(0.0f));
 
         // Eleven joint types. Arrange demos in a 4 column by 3 row layout.
         const auto columnStart = -1.5f * ColumnSize;
@@ -372,8 +372,8 @@ private:
             const auto rgtEye =
                 CreateBody(GetWorld(), BodyConf(StaticBD).UseLocation(ctr + rgtOffs));
             auto cconf = ChainShapeConf{};
-            cconf.restitution = 0;
-            cconf.friction = 0;
+            cconf.restitution = 0.0f;
+            cconf.friction = 0.0f;
             cconf.Set(GetCircleVertices(1.8_m, 24, 0_deg, 1));
             const auto eyeEnc = CreateShape(GetWorld(), cconf);
             Attach(GetWorld(), lftEye, eyeEnc);

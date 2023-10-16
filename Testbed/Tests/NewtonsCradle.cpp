@@ -209,8 +209,8 @@ public:
         conf.vertexRadius = radius;
         conf.location = pos;
         conf.density = 20_kgpm2;
-        conf.restitution = 1;
-        conf.friction = 0;
+        conf.restitution = 1.0f;
+        conf.friction = 0.0f;
         Attach(GetWorld(), body, CreateShape(GetWorld(), conf));
     }
 

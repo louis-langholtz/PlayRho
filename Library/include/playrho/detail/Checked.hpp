@@ -183,17 +183,39 @@ public:
         // Intentionally empty.
     }
 
-    /// @brief Initializing constructor.
+    /// @brief Implicit initializing constructor.
     /// @details Constructs a checked type of the given value if the
     ///   <code>Validate(const value_type& value)</code> function validates.
     /// @post Calling <code>get()</code> or casting to the underlying type, results
     ///   in the value given.
-    /// @todo Consider marking this function "explicit".
     /// @see Validate.
-    template <class U,
-    std::enable_if_t<std::is_constructible_v<ValueType, U&&> && !IsChecked<std::decay_t<U>>::value,
-    int> = 0>
+    template <class U = ValueType,
+        std::enable_if_t<
+            std::conjunction_v<
+                std::negation<IsChecked<std::decay_t<U>>>,
+                std::is_constructible<ValueType, U&&>,
+                std::negation<is_narrowing_conversion<U, ValueType>>
+            >, bool> = true>
     constexpr Checked(U&& value) noexcept(NoExcept):
+        m_value{Validate(ValueType(std::forward<U>(value)))}
+    {
+        // Intentionally empty.
+    }
+
+    /// @brief Explicit initializing constructor.
+    /// @details Constructs a checked type of the given value if the
+    ///   <code>Validate(const value_type& value)</code> function validates.
+    /// @post Calling <code>get()</code> or casting to the underlying type, results
+    ///   in the value given.
+    /// @see Validate.
+    template <class U = ValueType,
+        std::enable_if_t<
+            std::conjunction_v<
+                std::negation<IsChecked<std::decay_t<U>>>,
+                std::is_constructible<ValueType, U&&>,
+                is_narrowing_conversion<U, ValueType>
+            >, bool> = false>
+    explicit constexpr Checked(U&& value) noexcept(NoExcept):
         m_value{Validate(ValueType(std::forward<U>(value)))}
     {
         // Intentionally empty.
@@ -232,12 +254,30 @@ public:
         return m_value;
     }
 
-    /// @brief Gets the underlying value via a cast or implicit conversion.
+    /// @brief Implicitly gets the underlying value via a cast or implicit conversion.
     /// @see get.
     template <class U,
-    std::enable_if_t<!IsChecked<U>::value && std::is_constructible_v<U, ValueType>,
-    int> = 0>
+        std::enable_if_t<
+            std::conjunction_v<
+                std::negation<IsChecked<U>>,
+                std::is_constructible<U, ValueType>,
+                std::negation<is_narrowing_conversion<ValueType, U>>
+        >, bool> = true>
     constexpr operator U () const noexcept
+    {
+        return U(m_value);
+    }
+
+    /// @brief Explicitly gets the underlying value via a cast or implicit conversion.
+    /// @see get.
+    template <class U,
+        std::enable_if_t<
+            std::conjunction_v<
+                std::negation<IsChecked<U>>,
+                std::is_constructible<U, ValueType>,
+                is_narrowing_conversion<ValueType, U>
+        >, bool> = false>
+    explicit constexpr operator U () const noexcept
     {
         return U(m_value);
     }
@@ -262,6 +302,32 @@ public:
 private:
     underlying_type m_value; ///< Underlying value.
 };
+
+static_assert(std::is_default_constructible_v<Checked<int>>);
+static_assert(std::is_copy_constructible_v<Checked<int>>);
+static_assert(std::is_move_constructible_v<Checked<int>>);
+static_assert(std::is_copy_assignable_v<Checked<int>>);
+static_assert(std::is_move_assignable_v<Checked<int>>);
+
+static_assert(std::is_constructible_v<Checked<int>, int>);
+static_assert(std::is_assignable_v<Checked<int>, int>);
+static_assert(std::is_convertible_v<Checked<int>, int>);
+
+static_assert(std::is_constructible_v<Checked<int>, short>);
+static_assert(std::is_assignable_v<Checked<int>, short>);
+static_assert(!std::is_convertible_v<Checked<int>, short>);
+
+static_assert(std::is_constructible_v<Checked<short>, int>);
+static_assert(!std::is_assignable_v<Checked<short>, int>);
+static_assert(std::is_convertible_v<Checked<short>, int>);
+
+static_assert(std::is_constructible_v<Checked<double>, float>);
+static_assert(std::is_assignable_v<Checked<double>, float>);
+static_assert(!std::is_convertible_v<Checked<double>, float>);
+
+static_assert(std::is_constructible_v<Checked<float>, double>);
+static_assert(!std::is_assignable_v<Checked<float>, double>);
+static_assert(std::is_convertible_v<Checked<float>, double>);
 
 // Common operations.
 

@@ -77,10 +77,10 @@ TEST(Sweep, Advance)
     const auto pos0 = Position{Length2{-0.4_m, +2.34_m}, 3.12_rad};
     const auto pos1 = Position{Length2{+0.4_m, -2.34_m}, -3.12_rad};
 
-    Sweep sweep{pos0, pos1, Length2{}, 0};
+    Sweep sweep{pos0, pos1, Length2{}, 0.0f};
     EXPECT_EQ(Real{0}, sweep.alpha0);
 
-    sweep = Advance0(sweep, 0);
+    sweep = Advance0(sweep, 0.0f);
     EXPECT_EQ(Real{0}, sweep.alpha0);
     EXPECT_EQ(pos0, sweep.pos0);
     EXPECT_EQ(pos1, sweep.pos1);
@@ -96,7 +96,7 @@ TEST(Sweep, Advance)
     EXPECT_NEAR(static_cast<double>(Real(sweep.pos0.angular/1_rad)), -3.1415927410125732, 1e-20);
 #endif
 
-    sweep = Advance0(sweep, 0);
+    sweep = Advance0(sweep, 0.0f);
     EXPECT_EQ(Real{0}, sweep.alpha0);
     EXPECT_EQ(pos0, sweep.pos0);
     EXPECT_EQ(pos1, sweep.pos1);

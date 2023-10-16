@@ -138,7 +138,7 @@ TEST(World, Init)
         const auto p1 = Length2{0_m, 0_m};
         const auto p2 = Length2{100_m, 0_m};
         auto calls = 0;
-        RayCast(world, RayCastInput{p1, p2, UnitInterval<Real>{1}},
+        RayCast(world, RayCastInput{p1, p2, UnitInterval<Real>(1)},
                 [&](BodyID, ShapeID, ChildCounter, Length2, UnitVec) {
             ++calls;
             return RayCastOpcode::ResetRay;
@@ -1815,7 +1815,7 @@ TEST(World, HeavyOnLight)
     constexpr auto LargerLinearSlop = playrho::Meter / playrho::Real(200);
     constexpr auto SmallerLinearSlop = playrho::Meter / playrho::Real(1000);
     constexpr auto MaxVertexRadius = ::playrho::DefaultMaxVertexRadius;
-    constexpr auto VertexRadius = Interval<Positive<Length>>{SmallerLinearSlop, MaxVertexRadius};
+    const auto VertexRadius = Interval<Positive<Length>>{SmallerLinearSlop, MaxVertexRadius};
 
     const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity);
     const auto upperBodyConf = BodyConf(bd).UseLocation(Vec2(0.0f, 6.0f) * Meter);
@@ -2687,7 +2687,7 @@ TEST(World_Longer, TilesComesToRest)
     constexpr auto AngularSlop = (Pi * 2 * 1_rad) / 180;
     constexpr auto MinVertexRadius = LinearSlop * 2;
     constexpr auto MaxVertexRadius = ::playrho::DefaultMaxVertexRadius;
-    constexpr auto VertexRadius = Interval<Positive<Length>>{MinVertexRadius, MaxVertexRadius};
+    const auto VertexRadius = Interval<Positive<Length>>{MinVertexRadius, MaxVertexRadius};
     auto conf = PolygonShapeConf{}.UseVertexRadius(MinVertexRadius);
     const auto world = std::make_unique<World>(WorldConf{}.UseVertexRadius(VertexRadius));
     constexpr auto e_count = 36;
@@ -3050,7 +3050,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     constexpr auto AngularSlop = (Pi * Real{2} * 1_rad) / Real{180};
     constexpr auto VertexRadius = playrho::Length{LinearSlop * playrho::Real(2)};
     constexpr auto MaxVertexRadius = ::playrho::DefaultMaxVertexRadius;
-    constexpr auto RadiusRange = Interval<Positive<Length>>{VertexRadius, MaxVertexRadius};
+    const auto RadiusRange = Interval<Positive<Length>>{VertexRadius, MaxVertexRadius};
     World world{WorldConf{}.UseVertexRadius(RadiusRange)};
     MyContactListener listener{
         world,
