@@ -272,38 +272,24 @@ bool SolveVelocity(RevoluteJointConf& object, const Span<BodyConstraint>& bodies
                                (velB.angular - velA.angular) / RadianPerSecond};
         auto impulse = -Solve33(object.mass, Cdot);
 
-        auto UpdateImpulseProc = [&]() {
+        const auto UpdateImpulse = [&vDelta,&object](Vec3 &imp) -> Vec3 {
             const auto rhs =
                 -Vec2{GetX(vDelta) / MeterPerSecond, GetY(vDelta) / MeterPerSecond} +
                 GetZ(object.impulse) * Vec2{GetX(GetZ(object.mass)), GetY(GetZ(object.mass))};
             const auto reduced = Solve22(object.mass, rhs);
-            GetX(impulse) = GetX(reduced);
-            GetY(impulse) = GetY(reduced);
-            GetZ(impulse) = -GetZ(object.impulse);
-            GetX(object.impulse) += GetX(reduced);
-            GetY(object.impulse) += GetY(reduced);
-            GetZ(object.impulse) = 0;
+            imp = {GetX(reduced), GetY(reduced), -GetZ(object.impulse)};
+            return {GetX(object.impulse) + GetX(reduced), GetY(object.impulse) + GetY(reduced), 0};
         };
 
         switch (object.limitState) {
         case LimitState::e_atLowerLimit: {
-            const auto newImpulse = GetZ(object.impulse) + GetZ(impulse);
-            if (newImpulse < 0) {
-                UpdateImpulseProc();
-            }
-            else {
-                object.impulse += impulse;
-            }
+            const auto newZ = GetZ(object.impulse) + GetZ(impulse);
+            object.impulse = (newZ < 0)? UpdateImpulse(impulse): object.impulse + impulse;
             break;
         }
         case LimitState::e_atUpperLimit: {
-            const auto newImpulse = GetZ(object.impulse) + GetZ(impulse);
-            if (newImpulse > 0) {
-                UpdateImpulseProc();
-            }
-            else {
-                object.impulse += impulse;
-            }
+            const auto newZ = GetZ(object.impulse) + GetZ(impulse);
+            object.impulse = (newZ > 0)? UpdateImpulse(impulse): object.impulse + impulse;
             break;
         }
         default:
