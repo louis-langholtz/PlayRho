@@ -22,6 +22,7 @@
 
 #include <playrho/Fixed.hpp>
 #include <playrho/FixedLimits.hpp>
+#include <playrho/FixedMath.hpp>
 #include <playrho/Math.hpp>
 
 #include <iostream>
