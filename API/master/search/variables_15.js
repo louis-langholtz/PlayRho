@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wholebits_3933',['WholeBits',['../classplayrho_1_1Fixed.html#afe3dade97bcc1a2b568b465b42b84c68',1,'playrho::Fixed']]]
+  ['yotta_3791',['Yotta',['../group__DecimalUnitPrefices.html#ga57179cfbd588c3d24609ad449a94bb0a',1,'playrho']]]
 ];

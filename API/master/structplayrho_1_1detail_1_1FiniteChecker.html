@@ -111,7 +111,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6543299f94a1ef4dcfb0782111f5d8c7"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1FiniteChecker.html#a6543299f94a1ef4dcfb0782111f5d8c7">operator()</a> () const noexcept(noexcept(static_cast&lt; T &gt;(0))) -&gt; decltype(T{})</td></tr>
 <tr class="memdesc:a6543299f94a1ef4dcfb0782111f5d8c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value supplying functor.  <a href="structplayrho_1_1detail_1_1FiniteChecker.html#a6543299f94a1ef4dcfb0782111f5d8c7">More...</a><br /></td></tr>
 <tr class="separator:a6543299f94a1ef4dcfb0782111f5d8c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a463bd74786964e424d7b91f1f8cf97f2"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1FiniteChecker.html#a463bd74786964e424d7b91f1f8cf97f2">operator()</a> (const T &amp;v) const noexcept(noexcept(<a class="el" href="group__FixedMath.html#gab8fa73692143466ca4d584aacf5749f1">isfinite</a>(v))) -&gt; decltype(<a class="el" href="group__FixedMath.html#gab8fa73692143466ca4d584aacf5749f1">isfinite</a>(v), static_cast&lt; const char * &gt;(nullptr))</td></tr>
+<tr class="memitem:a463bd74786964e424d7b91f1f8cf97f2"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1FiniteChecker.html#a463bd74786964e424d7b91f1f8cf97f2">operator()</a> (const T &amp;v) const noexcept(noexcept(isfinite(v))) -&gt; decltype(isfinite(v), static_cast&lt; const char * &gt;(nullptr))</td></tr>
 <tr class="memdesc:a463bd74786964e424d7b91f1f8cf97f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value checking functor.  <a href="structplayrho_1_1detail_1_1FiniteChecker.html#a463bd74786964e424d7b91f1f8cf97f2">More...</a><br /></td></tr>
 <tr class="separator:a463bd74786964e424d7b91f1f8cf97f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -176,7 +176,7 @@ template&lt;typename T &gt; </div>
           <td>(</td>
           <td class="paramtype">const T &amp;&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
-          <td> const -&gt; decltype(<a class="el" href="group__FixedMath.html#gab8fa73692143466ca4d584aacf5749f1">isfinite</a>(v), static_cast&lt;const char*&gt;(nullptr))
+          <td> const -&gt; decltype(isfinite(v), static_cast&lt;const char*&gt;(nullptr))
     </td>
         </tr>
       </table>
@@ -201,7 +201,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structplayrho_1_1detail_1_1FiniteChecker.html">FiniteChecker</a></li>
-    <li class="footer">Generated on Mon Oct 16 2023 00:34:10 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 20 2023 20:05:09 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

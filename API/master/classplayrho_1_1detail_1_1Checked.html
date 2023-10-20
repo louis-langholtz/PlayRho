@@ -157,16 +157,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4ae56dcc4a01f7db4a387f9e05ceec32"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a4ae56dcc4a01f7db4a387f9e05ceec32">Checked</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a>&lt; ValueType, Checker, OtherNoExcept &gt; &amp;other) noexcept</td></tr>
 <tr class="memdesc:a4ae56dcc4a01f7db4a387f9e05ceec32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copying constructor.  <a href="classplayrho_1_1detail_1_1Checked.html#a4ae56dcc4a01f7db4a387f9e05ceec32">More...</a><br /></td></tr>
 <tr class="separator:a4ae56dcc4a01f7db4a387f9e05ceec32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f59a65c81a2710b4c278c4d795a6f02"><td class="memTemplParams" colspan="2">template&lt;class U , std::enable_if_t&lt; std::is_constructible_v&lt; ValueType, U &amp;&amp; &gt; &amp;&amp;!IsChecked&lt; std::decay_t&lt; U &gt;&gt;::value, int &gt;  = 0&gt; </td></tr>
+<tr class="memitem:a7f59a65c81a2710b4c278c4d795a6f02"><td class="memTemplParams" colspan="2">template&lt;class U  = ValueType, std::enable_if_t&lt; std::conjunction_v&lt; std::negation&lt; IsChecked&lt; std::decay_t&lt; U &gt;&gt;&gt;, std::is_constructible&lt; ValueType, U &amp;&amp; &gt;, std::negation&lt; is_narrowing_conversion&lt; U, ValueType &gt;&gt; &gt;, bool &gt;  = true&gt; </td></tr>
 <tr class="memitem:a7f59a65c81a2710b4c278c4d795a6f02"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a7f59a65c81a2710b4c278c4d795a6f02">Checked</a> (U &amp;&amp;value) noexcept(NoExcept)</td></tr>
-<tr class="memdesc:a7f59a65c81a2710b4c278c4d795a6f02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor.  <a href="classplayrho_1_1detail_1_1Checked.html#a7f59a65c81a2710b4c278c4d795a6f02">More...</a><br /></td></tr>
+<tr class="memdesc:a7f59a65c81a2710b4c278c4d795a6f02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implicit initializing constructor.  <a href="classplayrho_1_1detail_1_1Checked.html#a7f59a65c81a2710b4c278c4d795a6f02">More...</a><br /></td></tr>
+<tr class="separator:a7f59a65c81a2710b4c278c4d795a6f02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f59a65c81a2710b4c278c4d795a6f02"><td class="memTemplParams" colspan="2">template&lt;class U  = ValueType, std::enable_if_t&lt; std::conjunction_v&lt; std::negation&lt; IsChecked&lt; std::decay_t&lt; U &gt;&gt;&gt;, std::is_constructible&lt; ValueType, U &amp;&amp; &gt;, is_narrowing_conversion&lt; U, ValueType &gt; &gt;, bool &gt;  = false&gt; </td></tr>
+<tr class="memitem:a7f59a65c81a2710b4c278c4d795a6f02"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a7f59a65c81a2710b4c278c4d795a6f02">Checked</a> (U &amp;&amp;value) noexcept(NoExcept)</td></tr>
+<tr class="memdesc:a7f59a65c81a2710b4c278c4d795a6f02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explicit initializing constructor.  <a href="classplayrho_1_1detail_1_1Checked.html#a7f59a65c81a2710b4c278c4d795a6f02">More...</a><br /></td></tr>
 <tr class="separator:a7f59a65c81a2710b4c278c4d795a6f02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf48e8aea8c64680c2f07cab120992df"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a9e35f866c948764bbd1a9f8621b0181f">underlying_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#aaf48e8aea8c64680c2f07cab120992df">get</a> () const noexcept</td></tr>
 <tr class="memdesc:aaf48e8aea8c64680c2f07cab120992df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explicitly gets the underlying value.  <a href="classplayrho_1_1detail_1_1Checked.html#aaf48e8aea8c64680c2f07cab120992df">More...</a><br /></td></tr>
 <tr class="separator:aaf48e8aea8c64680c2f07cab120992df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78d9cc78de4ae6098d27b6e6268b0097"><td class="memTemplParams" colspan="2">template&lt;class U , std::enable_if_t&lt;!IsChecked&lt; U &gt;::value &amp;&amp;std::is_constructible_v&lt; U, ValueType &gt;, int &gt;  = 0&gt; </td></tr>
+<tr class="memitem:a78d9cc78de4ae6098d27b6e6268b0097"><td class="memTemplParams" colspan="2">template&lt;class U , std::enable_if_t&lt; std::conjunction_v&lt; std::negation&lt; IsChecked&lt; U &gt;&gt;, std::is_constructible&lt; U, ValueType &gt;, std::negation&lt; is_narrowing_conversion&lt; ValueType, U &gt;&gt; &gt;, bool &gt;  = true&gt; </td></tr>
 <tr class="memitem:a78d9cc78de4ae6098d27b6e6268b0097"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a78d9cc78de4ae6098d27b6e6268b0097">operator U</a> () const noexcept</td></tr>
-<tr class="memdesc:a78d9cc78de4ae6098d27b6e6268b0097"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the underlying value via a cast or implicit conversion.  <a href="classplayrho_1_1detail_1_1Checked.html#a78d9cc78de4ae6098d27b6e6268b0097">More...</a><br /></td></tr>
+<tr class="memdesc:a78d9cc78de4ae6098d27b6e6268b0097"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implicitly gets the underlying value via a cast or implicit conversion.  <a href="classplayrho_1_1detail_1_1Checked.html#a78d9cc78de4ae6098d27b6e6268b0097">More...</a><br /></td></tr>
+<tr class="separator:a78d9cc78de4ae6098d27b6e6268b0097"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78d9cc78de4ae6098d27b6e6268b0097"><td class="memTemplParams" colspan="2">template&lt;class U , std::enable_if_t&lt; std::conjunction_v&lt; std::negation&lt; IsChecked&lt; U &gt;&gt;, std::is_constructible&lt; U, ValueType &gt;, is_narrowing_conversion&lt; ValueType, U &gt; &gt;, bool &gt;  = false&gt; </td></tr>
+<tr class="memitem:a78d9cc78de4ae6098d27b6e6268b0097"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a78d9cc78de4ae6098d27b6e6268b0097">operator U</a> () const noexcept</td></tr>
+<tr class="memdesc:a78d9cc78de4ae6098d27b6e6268b0097"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explicitly gets the underlying value via a cast or implicit conversion.  <a href="classplayrho_1_1detail_1_1Checked.html#a78d9cc78de4ae6098d27b6e6268b0097">More...</a><br /></td></tr>
 <tr class="separator:a78d9cc78de4ae6098d27b6e6268b0097"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58a650224561db5ff826180b981d9267"><td class="memTemplParams" colspan="2">template&lt;class U  = ValueType&gt; </td></tr>
 <tr class="memitem:a58a650224561db5ff826180b981d9267"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if_t&lt; std::is_pointer_v&lt; U &gt;, <a class="el" href="classplayrho_1_1detail_1_1Checked.html#a5195c96ea6ee491e75d93ce702553cda">remove_pointer_type</a> &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a58a650224561db5ff826180b981d9267">operator*</a> () const</td></tr>
@@ -359,7 +367,7 @@ template&lt;class ValueType , class Checker  = NoOpChecker&lt;ValueType&gt;, boo
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aafb88ef5ee8cb239f0ec9334a68d83de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aafb88ef5ee8cb239f0ec9334a68d83de">&#9670;&nbsp;</a></span>Checked() <span class="overload">[1/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aafb88ef5ee8cb239f0ec9334a68d83de">&#9670;&nbsp;</a></span>Checked() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -393,14 +401,14 @@ template&lt;bool B = HasNullaryFunctor&lt;Checker,ValueType&gt;::value, std::ena
 </div>
 </div>
 <a id="a7f59a65c81a2710b4c278c4d795a6f02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f59a65c81a2710b4c278c4d795a6f02">&#9670;&nbsp;</a></span>Checked() <span class="overload">[2/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f59a65c81a2710b4c278c4d795a6f02">&#9670;&nbsp;</a></span>Checked() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class ValueType , class Checker  = NoOpChecker&lt;ValueType&gt;, bool NoExcept = false&gt; </div>
 <div class="memtemplate">
-template&lt;class U , std::enable_if_t&lt; std::is_constructible_v&lt; ValueType, U &amp;&amp; &gt; &amp;&amp;!IsChecked&lt; std::decay_t&lt; U &gt;&gt;::value, int &gt;  = 0&gt; </div>
+template&lt;class U  = ValueType, std::enable_if_t&lt; std::conjunction_v&lt; std::negation&lt; IsChecked&lt; std::decay_t&lt; U &gt;&gt;&gt;, std::is_constructible&lt; ValueType, U &amp;&amp; &gt;, std::negation&lt; is_narrowing_conversion&lt; U, ValueType &gt;&gt; &gt;, bool &gt;  = true&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -420,15 +428,48 @@ template&lt;class U , std::enable_if_t&lt; std::is_constructible_v&lt; ValueType
 </table>
 </div><div class="memdoc">
 
-<p>Initializing constructor. </p>
+<p>Implicit initializing constructor. </p>
 <p>Constructs a checked type of the given value if the <code>Validate(const value_type&amp; value)</code> function validates. </p><dl class="section post"><dt>Postcondition</dt><dd>Calling <code><a class="el" href="classplayrho_1_1detail_1_1Checked.html#aaf48e8aea8c64680c2f07cab120992df" title="Explicitly gets the underlying value.">get()</a></code> or casting to the underlying type, results in the value given. </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Consider marking this function "explicit". </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a7fdfb1b35df6487d1f043ef26c6055f2" title="Validator function.">Validate</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a7f59a65c81a2710b4c278c4d795a6f02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f59a65c81a2710b4c278c4d795a6f02">&#9670;&nbsp;</a></span>Checked() <span class="overload">[3/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class ValueType , class Checker  = NoOpChecker&lt;ValueType&gt;, bool NoExcept = false&gt; </div>
+<div class="memtemplate">
+template&lt;class U  = ValueType, std::enable_if_t&lt; std::conjunction_v&lt; std::negation&lt; IsChecked&lt; std::decay_t&lt; U &gt;&gt;&gt;, std::is_constructible&lt; ValueType, U &amp;&amp; &gt;, is_narrowing_conversion&lt; U, ValueType &gt; &gt;, bool &gt;  = false&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classplayrho_1_1detail_1_1Checked.html">playrho::detail::Checked</a>&lt; ValueType, Checker, NoExcept &gt;::<a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a> </td>
+          <td>(</td>
+          <td class="paramtype">U &amp;&amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Explicit initializing constructor. </p>
+<p>Constructs a checked type of the given value if the <code>Validate(const value_type&amp; value)</code> function validates. </p><dl class="section post"><dt>Postcondition</dt><dd>Calling <code><a class="el" href="classplayrho_1_1detail_1_1Checked.html#aaf48e8aea8c64680c2f07cab120992df" title="Explicitly gets the underlying value.">get()</a></code> or casting to the underlying type, results in the value given. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1detail_1_1Checked.html#a7fdfb1b35df6487d1f043ef26c6055f2" title="Validator function.">Validate</a>. </dd></dl>
 
 </div>
 </div>
 <a id="a50a11eeca99e03d961cf4655f1d58206"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50a11eeca99e03d961cf4655f1d58206">&#9670;&nbsp;</a></span>Checked() <span class="overload">[3/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a50a11eeca99e03d961cf4655f1d58206">&#9670;&nbsp;</a></span>Checked() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -462,7 +503,7 @@ template&lt;class OtherValueType , class OtherChecker , bool OtherNoExcept, std:
 </div>
 </div>
 <a id="a4ae56dcc4a01f7db4a387f9e05ceec32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ae56dcc4a01f7db4a387f9e05ceec32">&#9670;&nbsp;</a></span>Checked() <span class="overload">[4/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ae56dcc4a01f7db4a387f9e05ceec32">&#9670;&nbsp;</a></span>Checked() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -527,14 +568,14 @@ template&lt;class ValueType , class Checker  = NoOpChecker&lt;ValueType&gt;, boo
 </div>
 </div>
 <a id="a78d9cc78de4ae6098d27b6e6268b0097"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78d9cc78de4ae6098d27b6e6268b0097">&#9670;&nbsp;</a></span>operator U()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a78d9cc78de4ae6098d27b6e6268b0097">&#9670;&nbsp;</a></span>operator U() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class ValueType , class Checker  = NoOpChecker&lt;ValueType&gt;, bool NoExcept = false&gt; </div>
 <div class="memtemplate">
-template&lt;class U , std::enable_if_t&lt;!IsChecked&lt; U &gt;::value &amp;&amp;std::is_constructible_v&lt; U, ValueType &gt;, int &gt;  = 0&gt; </div>
+template&lt;class U , std::enable_if_t&lt; std::conjunction_v&lt; std::negation&lt; IsChecked&lt; U &gt;&gt;, std::is_constructible&lt; U, ValueType &gt;, std::negation&lt; is_narrowing_conversion&lt; ValueType, U &gt;&gt; &gt;, bool &gt;  = true&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -553,7 +594,39 @@ template&lt;class U , std::enable_if_t&lt;!IsChecked&lt; U &gt;::value &amp;&amp
 </table>
 </div><div class="memdoc">
 
-<p>Gets the underlying value via a cast or implicit conversion. </p>
+<p>Implicitly gets the underlying value via a cast or implicit conversion. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1detail_1_1Checked.html#aaf48e8aea8c64680c2f07cab120992df" title="Explicitly gets the underlying value.">get</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a78d9cc78de4ae6098d27b6e6268b0097"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78d9cc78de4ae6098d27b6e6268b0097">&#9670;&nbsp;</a></span>operator U() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class ValueType , class Checker  = NoOpChecker&lt;ValueType&gt;, bool NoExcept = false&gt; </div>
+<div class="memtemplate">
+template&lt;class U , std::enable_if_t&lt; std::conjunction_v&lt; std::negation&lt; IsChecked&lt; U &gt;&gt;, std::is_constructible&lt; U, ValueType &gt;, is_narrowing_conversion&lt; ValueType, U &gt; &gt;, bool &gt;  = false&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classplayrho_1_1detail_1_1Checked.html">playrho::detail::Checked</a>&lt; ValueType, Checker, NoExcept &gt;::operator U </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Explicitly gets the underlying value via a cast or implicit conversion. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1detail_1_1Checked.html#aaf48e8aea8c64680c2f07cab120992df" title="Explicitly gets the underlying value.">get</a>. </dd></dl>
 
 </div>
@@ -2282,7 +2355,7 @@ template&lt;class ValueType , class Checker , bool NoExcept, class Other &gt; </
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="classplayrho_1_1detail_1_1Checked.html">Checked</a></li>
-    <li class="footer">Generated on Mon Oct 16 2023 00:34:10 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 20 2023 20:05:09 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

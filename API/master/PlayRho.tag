@@ -2531,6 +2531,7 @@
     <name>ChainShapeConf.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>ChainShapeConf_8hpp.html</filename>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="ShapeConf_8hpp" name="ShapeConf.hpp" local="no" imported="no">playrho/d2/ShapeConf.hpp</includes>
     <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
@@ -2733,6 +2734,7 @@
     <name>DiskShapeConf.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>DiskShapeConf_8hpp.html</filename>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
@@ -2849,6 +2851,7 @@
     <filename>DistanceJointConf_8hpp.html</filename>
     <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="JointConf_8hpp" name="JointConf.hpp" local="no" imported="no">playrho/d2/JointConf.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <class kind="struct">playrho::d2::DistanceJointConf</class>
@@ -3199,6 +3202,7 @@
     <name>EdgeShapeConf.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>EdgeShapeConf_8hpp.html</filename>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
@@ -3299,6 +3303,7 @@
     <filename>FrictionJointConf_8hpp.html</filename>
     <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="JointConf_8hpp" name="JointConf.hpp" local="no" imported="no">playrho/d2/JointConf.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <class kind="struct">playrho::d2::FrictionJointConf</class>
@@ -3410,6 +3415,7 @@
     <filename>GearJointConf_8hpp.html</filename>
     <includes id="JointID_8hpp" name="JointID.hpp" local="no" imported="no">playrho/JointID.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="JointConf_8hpp" name="JointConf.hpp" local="no" imported="no">playrho/d2/JointConf.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <class kind="struct">playrho::d2::GearJointConf</class>
@@ -4614,7 +4620,6 @@
     <name>Math.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>Math_8hpp.html</filename>
-    <includes id="FixedMath_8hpp" name="FixedMath.hpp" local="no" imported="no">playrho/FixedMath.hpp</includes>
     <includes id="Matrix_8hpp" name="Matrix.hpp" local="no" imported="no">playrho/Matrix.hpp</includes>
     <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
     <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
@@ -4952,6 +4957,7 @@
     <filename>MotorJointConf_8hpp.html</filename>
     <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="JointConf_8hpp" name="JointConf.hpp" local="no" imported="no">playrho/d2/JointConf.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <class kind="struct">playrho::d2::MotorJointConf</class>
@@ -5117,6 +5123,7 @@
     <name>MultiShapeConf.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>MultiShapeConf_8hpp.html</filename>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="ConvexHull_8hpp" name="ConvexHull.hpp" local="no" imported="no">playrho/d2/ConvexHull.hpp</includes>
     <includes id="ShapeConf_8hpp" name="ShapeConf.hpp" local="no" imported="no">playrho/d2/ShapeConf.hpp</includes>
     <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
@@ -5243,6 +5250,7 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>PolygonShapeConf_8hpp.html</filename>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
@@ -5485,6 +5493,7 @@
     <filename>PrismaticJointConf_8hpp.html</filename>
     <includes id="LimitState_8hpp" name="LimitState.hpp" local="no" imported="no">playrho/LimitState.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="JointConf_8hpp" name="JointConf.hpp" local="no" imported="no">playrho/d2/JointConf.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <includes id="UnitVec_8hpp" name="UnitVec.hpp" local="no" imported="no">playrho/d2/UnitVec.hpp</includes>
@@ -5603,6 +5612,7 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>PulleyJointConf_8hpp.html</filename>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="JointConf_8hpp" name="JointConf.hpp" local="no" imported="no">playrho/d2/JointConf.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <includes id="UnitVec_8hpp" name="UnitVec.hpp" local="no" imported="no">playrho/d2/UnitVec.hpp</includes>
@@ -5813,6 +5823,7 @@
     <filename>RevoluteJointConf_8hpp.html</filename>
     <includes id="LimitState_8hpp" name="LimitState.hpp" local="no" imported="no">playrho/LimitState.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="JointConf_8hpp" name="JointConf.hpp" local="no" imported="no">playrho/d2/JointConf.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <class kind="struct">playrho::d2::RevoluteJointConf</class>
@@ -5938,6 +5949,7 @@
     <filename>RopeJointConf_8hpp.html</filename>
     <includes id="LimitState_8hpp" name="LimitState.hpp" local="no" imported="no">playrho/LimitState.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <includes id="JointConf_8hpp" name="JointConf.hpp" local="no" imported="no">playrho/d2/JointConf.hpp</includes>
     <includes id="UnitVec_8hpp" name="UnitVec.hpp" local="no" imported="no">playrho/d2/UnitVec.hpp</includes>
@@ -6584,6 +6596,7 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>TargetJointConf_8hpp.html</filename>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="JointConf_8hpp" name="JointConf.hpp" local="no" imported="no">playrho/d2/JointConf.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <class kind="struct">playrho::d2::TargetJointConf</class>
@@ -7163,6 +7176,7 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>WeldJointConf_8hpp.html</filename>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="JointConf_8hpp" name="JointConf.hpp" local="no" imported="no">playrho/d2/JointConf.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <class kind="struct">playrho::detail::TypeInfo&lt; playrho::d2::WeldJointConf &gt;</class>
@@ -10001,6 +10015,7 @@
     <filename>WorldShape_8hpp.html</filename>
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <namespace>playrho</namespace>
@@ -10919,470 +10934,6 @@
     </member>
   </compound>
   <compound kind="file">
-    <name>Fixed.hpp</name>
-    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
-    <filename>Fixed_8hpp.html</filename>
-    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
-    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
-    <includes id="Wider_8hpp" name="Wider.hpp" local="no" imported="no">playrho/detail/Wider.hpp</includes>
-    <class kind="class">playrho::Fixed</class>
-    <class kind="struct">playrho::detail::FixedDefault</class>
-    <class kind="struct">playrho::detail::FixedDefault&lt; std::int32_t &gt;</class>
-    <class kind="struct">playrho::detail::FixedDefault&lt; std::int64_t &gt;</class>
-    <class kind="struct">playrho::detail::TypeInfo&lt; playrho::Fixed32 &gt;</class>
-    <namespace>playrho</namespace>
-    <namespace>playrho::detail</namespace>
-    <member kind="typedef">
-      <type>Fixed&lt; std::int32_t, detail::FixedDefault&lt; std::int32_t &gt;::FractionBits &gt;</type>
-      <name>Fixed32</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aba435a5d7b05cc977530e864af6b43c3</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>AlmostEqual</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a6aaf4879371df30246226867c121a9ad</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; x, Fixed&lt; BT, FB &gt; y, int ulp=2)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>AlmostZero</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a87b5e301c1a03179e49ed7ee3a9408d9</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; value)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr BodyID</type>
-      <name>GetInvalid</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aec24a0dab8e2bdc63a322ff5c65e90ef</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator!=</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a468fcfdd8d9f35d55aff3d2b2d05cd69</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator!=</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a9a1feb96b1bc5f0678758df12f93fe3b</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed32</type>
-      <name>operator%</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a34f36791292a3de7d109592d5271e025</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>operator%</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ac69f9fcc19f63ecf57e549bedb3792e4</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed32</type>
-      <name>operator*</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a2bbd048b74cca661af851475f3a32f03</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>operator*</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a2eb53a11e4a467306c79d44056b59bc3</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed32</type>
-      <name>operator+</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ad4dbd342566c29d766d910388cfac25e</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>operator+</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>adf379d2d8f3a5aacdaf5fb871c935237</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed32</type>
-      <name>operator-</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a95c382ba441e52b8730b18d38dfd5771</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>operator-</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a9468719501f7a5cf7747569ef71acc33</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed32</type>
-      <name>operator/</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>acb66724eaf58f719874fe12e5fa78eae</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>operator/</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>adce07a22f20a1fe265a0ca72a3a0a3cd</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator&lt;</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aeef6e842dc811739f58a6e2b4b1d95ae</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator&lt;</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a310dd6a59f071ee86430f5162368f61c</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>inline ::std::ostream &amp;</type>
-      <name>operator&lt;&lt;</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a598d4f1182411b5db1d2c445b16fc5fd</anchor>
-      <arglist>(::std::ostream &amp;os, const Fixed&lt; BT, FB &gt; &amp;value)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator&lt;=</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aff78b36b8b4533aeb308283f8557c657</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator&lt;=</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a70f7c32a47415d5005673852344009eb</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator==</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a436c8f6a752a984295b46dc3c24256a1</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator==</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aaf5fcbbad444f151c1665cecb75f381f</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator&gt;</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a041ad90997561d20e0c3b4265c4f2f90</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator&gt;</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ab7f2c871930a05238a02a3581b2dbcc9</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator&gt;=</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a2b5c7c5e333c08e00e17f1809c4b5eb6</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator&gt;=</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ac52ee51315f92b6463bab76317603a8d</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
-    </member>
-  </compound>
-  <compound kind="file">
-    <name>FixedLimits.hpp</name>
-    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
-    <filename>FixedLimits_8hpp.html</filename>
-    <includes id="Fixed_8hpp" name="Fixed.hpp" local="no" imported="no">playrho/Fixed.hpp</includes>
-    <class kind="class">std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;</class>
-  </compound>
-  <compound kind="file">
-    <name>FixedMath.hpp</name>
-    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
-    <filename>FixedMath_8hpp.html</filename>
-    <includes id="Fixed_8hpp" name="Fixed.hpp" local="no" imported="no">playrho/Fixed.hpp</includes>
-    <namespace>playrho</namespace>
-    <namespace>playrho::detail</namespace>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>abs</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga3ea4035b5693b20ac87b130aaa9c2d88</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>auto</type>
-      <name>AngularNormalize</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a027dccab6934b3c157ef2dc01ef3ccc0</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; angleInRadians)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>atan</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a70e6d2d2422ff5e4331fa12d63591192</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>atan</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gaa5670d26d229424278268189beb541f5</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>atan2</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gaad3e4450a30d08eceda4225bd26c312b</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; y, Fixed&lt; BT, FB &gt; x)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr auto</type>
-      <name>ComputeSqrt</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a841f7c8e6ad559c469948f3e26e7835d</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>cos</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a85d24ce8b375444d38c8c0b154c5fca3</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>cos</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gaf6191f040980675d9a5c71bd53c79060</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>exp</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a4237a1a9c35033e7f2d44fcba79b5c53</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>exp</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga7ddb9c067c645bded41aafe75cfecd02</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr auto</type>
-      <name>factorial</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a9f8231d1d9f61cb1b262cd79c62951fb</anchor>
-      <arglist>(std::int64_t n)</arglist>
-    </member>
-    <member kind="function">
-      <type>auto</type>
-      <name>floor</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gaa6da2152a8e212afc0185b6d5596fd95</anchor>
-      <arglist>(const Fixed&lt; BT, FB &gt; &amp;value)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>fmod</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gaae59d507ab3b0f722d4d22b3e4969f4a</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; dividend, Fixed&lt; BT, FB &gt; divisor) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>hypot</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gafff5f9018a9088992be3c922926aee56</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; x, Fixed&lt; BT, FB &gt; y)</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>isfinite</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gab8fa73692143466ca4d584aacf5749f1</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>auto</type>
-      <name>isinf</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gae1b8d92ed9f3976cada57637344416f1</anchor>
-      <arglist>(const Fixed&lt; BT, FB &gt; &amp;value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>isnan</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gab57c92b7d96634ba24fa1f6c25647799</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>isnormal</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga4ab479ab854291e9d03a25cc0986deca</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>log</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a2133e6bdaa781faf55ab21c618328445</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>log</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga661c3590b9b618ac14194bf25a70f1d6</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>nextafter</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga935fa93a69f58baf20b00e14461d51e7</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; from, Fixed&lt; BT, FB &gt; to) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>pow</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga85dfc7d7d071b22f80179a86e5544237</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; base, Fixed&lt; BT, FB &gt; exponent)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>pow</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gae62c436656c3c2a2e0d46d83fe1ea3ae</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; value, int n)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>round</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga1e3ca7fb2626886c5920bbc5f570a525</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>signbit</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga8445167791eb53f1e8eb0dbf318293a1</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>sin</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>aa3f589528f56370c3aff73cea9c043b8</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>sin</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga0daabd6eacf8702561639d394e3efe6e</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>auto</type>
-      <name>sqrt</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga7a9d7e9855b45a3b4103632a47ccd6f4</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>trunc</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga55adeaba7e08eb415e6437f709b62c0f</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr auto</type>
-      <name>DefaultAtanIterations</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a304e8eb33b556c56cd6856f74d39a0ca</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr auto</type>
-      <name>DefaultCosIterations</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a676b80754e55ce5cac7af32e5fa64dd0</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr auto</type>
-      <name>DefaultExpIterations</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a76512d3a6bfa1855b085454aaa283b3e</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr auto</type>
-      <name>DefaultLogIterations</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>ab363e7574b8f163178b759d41250e5d1</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr auto</type>
-      <name>DefaultSinIterations</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>ab0f4107b81ee665bf2faa404e3b469a9</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr auto</type>
-      <name>FixedPi</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a42d6cb8328944dfa9318f28ab0972130</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="file">
     <name>FlagGuard.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>FlagGuard_8hpp.html</filename>
@@ -12028,9 +11579,7 @@
     <name>Real.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>Real_8hpp.html</filename>
-    <includes id="Fixed_8hpp" name="Fixed.hpp" local="no" imported="no">playrho/Fixed.hpp</includes>
-    <includes id="FixedMath_8hpp" name="FixedMath.hpp" local="no" imported="no">playrho/FixedMath.hpp</includes>
-    <includes id="FixedLimits_8hpp" name="FixedLimits.hpp" local="no" imported="no">playrho/FixedLimits.hpp</includes>
+    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <namespace>playrho</namespace>
     <member kind="typedef">
       <type>float</type>
@@ -12126,10 +11675,7 @@
     <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="WiderType_8hpp" name="WiderType.hpp" local="no" imported="no">playrho/WiderType.hpp</includes>
-    <class kind="struct">playrho::detail::Defaults</class>
-    <class kind="struct">playrho::detail::Defaults&lt; Fixed&lt; std::int32_t, FRACTION_BITS &gt; &gt;</class>
     <namespace>playrho</namespace>
-    <namespace>playrho::detail</namespace>
     <member kind="typedef">
       <type>std::remove_const_t&lt; decltype(MaxBodies)&gt;</type>
       <name>BodyCounter</name>
@@ -17242,10 +16788,24 @@
       <arglist>(U &amp;&amp;value) noexcept(NoExcept)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(NoExcept)</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
       <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>operator U</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -17561,10 +17121,24 @@
       <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
       <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>operator U</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -17880,10 +17454,24 @@
       <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
       <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>operator U</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -18199,10 +17787,24 @@
       <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
       <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>operator U</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -18518,10 +18120,24 @@
       <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
       <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>operator U</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -18837,10 +18453,24 @@
       <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
       <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>operator U</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -19156,10 +18786,24 @@
       <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
       <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>operator U</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -19475,10 +19119,24 @@
       <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
       <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>operator U</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -19794,10 +19452,24 @@
       <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
       <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>operator U</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -20113,10 +19785,24 @@
       <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
       <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>operator U</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -20432,10 +20118,24 @@
       <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
       <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>operator U</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -20751,10 +20451,24 @@
       <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr</type>
+      <name>Checked</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a7f59a65c81a2710b4c278c4d795a6f02</anchor>
+      <arglist>(U &amp;&amp;value) noexcept(false)</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr underlying_type</type>
       <name>get</name>
       <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
       <anchor>aaf48e8aea8c64680c2f07cab120992df</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>operator U</name>
+      <anchorfile>classplayrho_1_1detail_1_1Checked.html</anchorfile>
+      <anchor>a78d9cc78de4ae6098d27b6e6268b0097</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -22349,65 +22063,6 @@
     <base virtualness="virtual">playrho::d2::part::DefaultPolicies</base>
   </compound>
   <compound kind="struct">
-    <name>playrho::detail::Defaults</name>
-    <filename>structplayrho_1_1detail_1_1Defaults.html</filename>
-    <templarg></templarg>
-    <member kind="function" static="yes">
-      <type>static constexpr auto</type>
-      <name>GetLinearSlop</name>
-      <anchorfile>structplayrho_1_1detail_1_1Defaults.html</anchorfile>
-      <anchor>a43a654df8fdec02cbbe2da77b4f97108</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr auto</type>
-      <name>GetMaxVertexRadius</name>
-      <anchorfile>structplayrho_1_1detail_1_1Defaults.html</anchorfile>
-      <anchor>a1d49ce1c8a6c8db49591f048aba79939</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr auto</type>
-      <name>LinearSlop</name>
-      <anchorfile>structplayrho_1_1detail_1_1Defaults.html</anchorfile>
-      <anchor>a95bb3f399fd3e4c4ad507afa6e20dda3</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr auto</type>
-      <name>MaxVertexRadius</name>
-      <anchorfile>structplayrho_1_1detail_1_1Defaults.html</anchorfile>
-      <anchor>ac388005dc1cdbd54e529128fde389592</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::detail::Defaults&lt; Fixed&lt; std::int32_t, FRACTION_BITS &gt; &gt;</name>
-    <filename>structplayrho_1_1detail_1_1Defaults_3_01Fixed_3_01std_1_1int32__t_00_01FRACTION__BITS_01_4_01_4.html</filename>
-    <templarg>FRACTION_BITS</templarg>
-    <member kind="function" static="yes">
-      <type>static constexpr auto</type>
-      <name>GetLinearSlop</name>
-      <anchorfile>structplayrho_1_1detail_1_1Defaults_3_01Fixed_3_01std_1_1int32__t_00_01FRACTION__BITS_01_4_01_4.html</anchorfile>
-      <anchor>a7115afb2832ac36ec8e186f2772c4d91</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr auto</type>
-      <name>GetMaxVertexRadius</name>
-      <anchorfile>structplayrho_1_1detail_1_1Defaults_3_01Fixed_3_01std_1_1int32__t_00_01FRACTION__BITS_01_4_01_4.html</anchorfile>
-      <anchor>ac2eee4337f77c98b9d34127ae52a4b72</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr auto</type>
-      <name>MaxShiftBits</name>
-      <anchorfile>structplayrho_1_1detail_1_1Defaults_3_01Fixed_3_01std_1_1int32__t_00_01FRACTION__BITS_01_4_01_4.html</anchorfile>
-      <anchor>a6952432ff0308ad45f2f8504104864de</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="struct">
     <name>playrho::d2::part::DensityIs</name>
     <filename>structplayrho_1_1d2_1_1part_1_1DensityIs.html</filename>
     <templarg></templarg>
@@ -23810,400 +23465,6 @@
       <anchorfile>structplayrho_1_1detail_1_1FiniteChecker.html</anchorfile>
       <anchor>a463bd74786964e424d7b91f1f8cf97f2</anchor>
       <arglist>(const T &amp;v) const noexcept(noexcept(isfinite(v))) -&gt; decltype(isfinite(v), static_cast&lt; const char * &gt;(nullptr))</arglist>
-    </member>
-  </compound>
-  <compound kind="class">
-    <name>playrho::Fixed</name>
-    <filename>classplayrho_1_1Fixed.html</filename>
-    <templarg></templarg>
-    <templarg>FRACTION_BITS</templarg>
-    <member kind="enumeration">
-      <type></type>
-      <name>CmpResult</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a17b16b2f06f99d0e941d7e8d9bff4e77</anchor>
-      <arglist></arglist>
-      <enumvalue file="classplayrho_1_1Fixed.html" anchor="a17b16b2f06f99d0e941d7e8d9bff4e77a29dcef0a3767c4ff65c0a47354a64869">Incomparable</enumvalue>
-      <enumvalue file="classplayrho_1_1Fixed.html" anchor="a17b16b2f06f99d0e941d7e8d9bff4e77af5f286e73bda105e538310b3190f75c5">Equal</enumvalue>
-      <enumvalue file="classplayrho_1_1Fixed.html" anchor="a17b16b2f06f99d0e941d7e8d9bff4e77ac6d9d7bb9939f62f01c80f8b1251501c">LessThan</enumvalue>
-      <enumvalue file="classplayrho_1_1Fixed.html" anchor="a17b16b2f06f99d0e941d7e8d9bff4e77af6d044fe1f01fb0c956b80099e2a3072">GreaterThan</enumvalue>
-    </member>
-    <member kind="typedef">
-      <type>BASE_TYPE</type>
-      <name>value_type</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>ad5302b547a8052bcaec79f04430afaee</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>Fixed</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>ac92de155998569315ff02e1d24d0e5f6</anchor>
-      <arglist>(const Fixed&lt; BT, FB &gt; val) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>Fixed</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>ab1823b0d4b06595d3f1f4f6159b8551e</anchor>
-      <arglist>(double val) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>Fixed</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>aa799babbcf53d04180d7dd98cf03b16f</anchor>
-      <arglist>(float val) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>Fixed</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a6b36e8ececf43e981d89928175d18247</anchor>
-      <arglist>(int val) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>Fixed</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a6a458c0ea31087e82401dfa621b177f8</anchor>
-      <arglist>(long double val) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>Fixed</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a8424347cfc61cbcc9aa4a49498946cec</anchor>
-      <arglist>(long long val) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>Fixed</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a663679bd371ab162e801fd931584a54c</anchor>
-      <arglist>(long val) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>Fixed</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a9fa3992b8612831e11901ecc0c223a30</anchor>
-      <arglist>(short val) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>Fixed</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>af352cfb5293e8f992298819b48495265</anchor>
-      <arglist>(unsigned int val) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>Fixed</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>aea9908fdc2c59dbb21327bc71f9e6ade</anchor>
-      <arglist>(unsigned long long val) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>Fixed</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a861732457689a3b0b87ef7bf5c5f696a</anchor>
-      <arglist>(unsigned long val) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>Fixed</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a608468aa293e76ec38b7f7d384ac2034</anchor>
-      <arglist>(value_type val, unsigned int fraction) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr CmpResult</type>
-      <name>Compare</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a32d7fcfbf0765894e9abec13705968bb</anchor>
-      <arglist>(const Fixed other) const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr T</type>
-      <name>ConvertTo</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a035a071fc8938b0844a736dc8ed6349c</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr int</type>
-      <name>getsign</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>acab0e81520ba5aebe0254ef1d78058b9</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>isfinite</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>ac0fd7ab7953ba4fd1db70c5b6f2c9890</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>isnan</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a848e394f6641a7d95421f346a02086ae</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>operator bool</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>ae5709dfd2f07e7129c9488e6e918353d</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>operator double</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>ad3ba72907e86d63b812e666231a601fc</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>operator float</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a28628336e5ee1fa4e47ca24464b434a5</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>operator int</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a9042b1068f636c17585377520997e330</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>operator long</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>abda06ae88f64dc1bc599bbeee8ff2fe5</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>operator long double</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a80b9d48bf0c67d8efb85e8eb1d4712cc</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>operator long long</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>adc538586b937adbc0d07d2ecd346b5fd</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>operator short</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a60af5e5e714be48bd3a984cae6379126</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>operator unsigned int</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>ab9894ecae80cda694e576e2906c8b9ba</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>operator unsigned long</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a2ae69562703a350b3bbe0c60cf0ac2a1</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr</type>
-      <name>operator unsigned long long</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a2af07f2b5055a07f22368fe836ef1453</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator!</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>abbb2f31d378da7ae7536aca6abfb0606</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed &amp;</type>
-      <name>operator%=</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>aa0ff5cb746a54cd30f2233f7d60bb91b</anchor>
-      <arglist>(Fixed val) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed &amp;</type>
-      <name>operator*=</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a47b9aa9664387ebf269ffc073e7fbe7b</anchor>
-      <arglist>(Fixed val) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed</type>
-      <name>operator+</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a5f378df30e254120e594223e9801a281</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed &amp;</type>
-      <name>operator+=</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a5b68036c517ccebcb91d7137570993ed</anchor>
-      <arglist>(Fixed val) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed</type>
-      <name>operator-</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a75b6c941518b707b47d7402c8c5a46c8</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed &amp;</type>
-      <name>operator-=</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>aa3c1e6b5cfe89b1c156116a6c8d85e21</anchor>
-      <arglist>(Fixed val) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed &amp;</type>
-      <name>operator/=</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a14c68cc3fc0dbb7c4439d125376d3b5c</anchor>
-      <arglist>(Fixed val) noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr value_type</type>
-      <name>GetFromFloat</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a2ad5bd576f2074a511bf797d9f946a92</anchor>
-      <arglist>(T val) noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr value_type</type>
-      <name>GetFromSignedInt</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>aecdf890560a9628053362827e2244dc6</anchor>
-      <arglist>(T val) noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr value_type</type>
-      <name>GetFromUnsignedInt</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>ab0301ea06b852d6f8ef6b121c22f7555</anchor>
-      <arglist>(T val) noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr Fixed</type>
-      <name>GetInfinity</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a53788cab95bd0c406f58026e647beda9</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr Fixed</type>
-      <name>GetLowest</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>af56f6641ae9d00bf8894d0b4eaebdd78</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr Fixed</type>
-      <name>GetMax</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a442ce09ef7b5e5b5ae1e9b0618522704</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr Fixed</type>
-      <name>GetMin</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a51ec3c07dd4a476c6139ee5c481bb2e4</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr Fixed</type>
-      <name>GetNaN</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a1ff80903da60611b8aea0224d3d3f4eb</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr Fixed</type>
-      <name>GetNegativeInfinity</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a185fb950a852db73f2f550b58a2d66af</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr auto</type>
-      <name>FractionBits</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>ac825eb04e8322608de0b5aeb11335480</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr auto</type>
-      <name>ScaleFactor</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>aa77846d928bc514796c6ecde33696140</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr auto</type>
-      <name>TotalBits</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>a50039441c4eaff3a416c73ccd76329c9</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr auto</type>
-      <name>WholeBits</name>
-      <anchorfile>classplayrho_1_1Fixed.html</anchorfile>
-      <anchor>afe3dade97bcc1a2b568b465b42b84c68</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::detail::FixedDefault</name>
-    <filename>structplayrho_1_1detail_1_1FixedDefault.html</filename>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::detail::FixedDefault&lt; std::int32_t &gt;</name>
-    <filename>structplayrho_1_1detail_1_1FixedDefault_3_01std_1_1int32__t_01_4.html</filename>
-    <member kind="variable" static="yes">
-      <type>static constexpr auto</type>
-      <name>FractionBits</name>
-      <anchorfile>structplayrho_1_1detail_1_1FixedDefault_3_01std_1_1int32__t_01_4.html</anchorfile>
-      <anchor>a8797271c76897ebcc07fc4bfb2a80eed</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::detail::FixedDefault&lt; std::int64_t &gt;</name>
-    <filename>structplayrho_1_1detail_1_1FixedDefault_3_01std_1_1int64__t_01_4.html</filename>
-    <member kind="variable" static="yes">
-      <type>static constexpr auto</type>
-      <name>FractionBits</name>
-      <anchorfile>structplayrho_1_1detail_1_1FixedDefault_3_01std_1_1int64__t_01_4.html</anchorfile>
-      <anchor>aaf3cae74d6bd1fa6bb1376dbb9ed92d8</anchor>
-      <arglist></arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -28235,236 +27496,6 @@
       <anchorfile>structstd_1_1not__equal__to_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
       <anchor>a3e01748b7b7baed768d30093b8a5082e</anchor>
       <arglist>(const ::playrho::propagate_const&lt; T &gt; &amp;pc1, const ::playrho::propagate_const&lt; T &gt; &amp;pc2) const</arglist>
-    </member>
-  </compound>
-  <compound kind="class">
-    <name>std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;</name>
-    <filename>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</filename>
-    <templarg></templarg>
-    <templarg>FB</templarg>
-    <member kind="function" static="yes">
-      <type>static constexpr playrho::Fixed&lt; BT, FB &gt;</type>
-      <name>denorm_min</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a3252d781193f167f3fd562286a357d0c</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr playrho::Fixed32</type>
-      <name>epsilon</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a054d190e6020f2cf8fdd1427c79a22ab</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr playrho::Fixed&lt; BT, FB &gt;</type>
-      <name>infinity</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>af53e2f42daa7f296d1cc39a6341c0451</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr playrho::Fixed&lt; BT, FB &gt;</type>
-      <name>lowest</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a3d12a7d0a2975e2d7d7eb665ea93d8f6</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr playrho::Fixed&lt; BT, FB &gt;</type>
-      <name>max</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>ae14b63f9ce3f3cd64325017447d27c43</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr playrho::Fixed&lt; BT, FB &gt;</type>
-      <name>min</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a7f2c95cb0320ae19586edf39ed8ab87a</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr playrho::Fixed&lt; BT, FB &gt;</type>
-      <name>quiet_NaN</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a0f02dffbad038547d4b6f53f54a99651</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr playrho::Fixed32</type>
-      <name>round_error</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a1bbb81b286f43c361e2c35b4ef69723f</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr playrho::Fixed&lt; BT, FB &gt;</type>
-      <name>signaling_NaN</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a4df0164e7b0757f76b4ace5a6904c0df</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr int</type>
-      <name>digits</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>ae5fc4507c2566322d18d435fe37240bd</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr int</type>
-      <name>digits10</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a5141907c55f43c158a0952e0fe54924a</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr float_denorm_style</type>
-      <name>has_denorm</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>aabd50003ad5c3a08aa73675095632de7</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr bool</type>
-      <name>has_denorm_loss</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a7456dec892e85ee6d4718f67224342bd</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr bool</type>
-      <name>has_infinity</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a0112163bf4acba951544b1284f476b32</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr bool</type>
-      <name>has_quiet_NaN</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>adace361d1eaa4ba5a64a3fbd7b596dd9</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr bool</type>
-      <name>has_signaling_NaN</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>ab848c0ad3a1509d1bfd3ce1150a2c93d</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr bool</type>
-      <name>is_bounded</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a8e94c3e8d13a233c34004ee5ada32167</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr bool</type>
-      <name>is_exact</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a22f748477ab8dd15e034e7fa042d8bb6</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr bool</type>
-      <name>is_iec559</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a18899472bdcc4341d492277834754244</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr bool</type>
-      <name>is_integer</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a3a9606e5dceaf608b58b3ecd97eff6f5</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr bool</type>
-      <name>is_modulo</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a7caf9b64fe2b17c613683195e5835e6c</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr bool</type>
-      <name>is_signed</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a8fc3f40324f69d2baadf9227a063af49</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr bool</type>
-      <name>is_specialized</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a06b0a031da348a77d90cf0aa75281486</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr int</type>
-      <name>max_digits10</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a7a7067198a9491520c8774121579ce86</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr int</type>
-      <name>max_exponent</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>aaf5c7366be26bc0ae7a0d067242a5a9d</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr int</type>
-      <name>max_exponent10</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>aae85ce79ec1fcbf26de004feeea25c20</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr int</type>
-      <name>min_exponent</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a158785a472df322d1f206eb6c81a7abb</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr int</type>
-      <name>min_exponent10</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>ac9b851846f6b610bbd844197bc70207d</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr int</type>
-      <name>radix</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a6bc0d5ddde5bd87d57c92d7b564c9c73</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr float_round_style</type>
-      <name>round_style</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a60f373787d57addea18463ca7856401d</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr bool</type>
-      <name>tinyness_before</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>a65743d17befce2a3deefc2624045ead0</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr bool</type>
-      <name>traps</name>
-      <anchorfile>classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html</anchorfile>
-      <anchor>af43511f39b6a9c6666c3dd67262ba835</anchor>
-      <arglist></arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -36117,17 +35148,6 @@
     </member>
   </compound>
   <compound kind="struct">
-    <name>playrho::detail::TypeInfo&lt; playrho::Fixed32 &gt;</name>
-    <filename>structplayrho_1_1detail_1_1TypeInfo_3_01playrho_1_1Fixed32_01_4.html</filename>
-    <member kind="variable" static="yes">
-      <type>static constexpr const char *</type>
-      <name>name</name>
-      <anchorfile>structplayrho_1_1detail_1_1TypeInfo_3_01playrho_1_1Fixed32_01_4.html</anchorfile>
-      <anchor>ad66f62b7c70ea149c05cf0894d1660d2</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="struct">
     <name>playrho::detail::underlying_type</name>
     <filename>structplayrho_1_1detail_1_1underlying__type.html</filename>
     <templarg></templarg>
@@ -43691,7 +42711,6 @@
     <class kind="struct">playrho::DynamicTreeUnusedData</class>
     <class kind="union">playrho::DynamicTreeVariantData</class>
     <class kind="struct">playrho::Filter</class>
-    <class kind="class">playrho::Fixed</class>
     <class kind="class">playrho::FlagGuard</class>
     <class kind="class">playrho::GrowableStack</class>
     <class kind="class">playrho::Interval</class>
@@ -43825,13 +42844,6 @@
       <name>FiniteFF</name>
       <anchorfile>group__CheckedTypes.html</anchorfile>
       <anchor>ga5c4898ce94c2c3bd2059864e7466ed12</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>Fixed&lt; std::int32_t, detail::FixedDefault&lt; std::int32_t &gt;::FractionBits &gt;</type>
-      <name>Fixed32</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aba435a5d7b05cc977530e864af6b43c3</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -44347,13 +43359,6 @@
       <arglist>(const Vector&lt; T, N &gt; &amp;v) noexcept -&gt; decltype(abs(T{}), Vector&lt; T, N &gt;{})</arglist>
     </member>
     <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>abs</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga3ea4035b5693b20ac87b130aaa9c2d88</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
       <type>void *</type>
       <name>Alloc</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -44375,39 +43380,11 @@
       <arglist>(const T &amp;x, const T &amp;y, int ulp=2) -&gt; std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt;, bool &gt;</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
-      <name>AlmostEqual</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a6aaf4879371df30246226867c121a9ad</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; x, Fixed&lt; BT, FB &gt; y, int ulp=2)</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr auto</type>
       <name>AlmostZero</name>
       <anchorfile>group__Math.html</anchorfile>
       <anchor>ga994ed50293b78dff53a5c7bce78602bf</anchor>
       <arglist>(const T &amp;value) -&gt; decltype(abs(value)&lt; std::numeric_limits&lt; T &gt;::min())</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>AlmostZero</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a87b5e301c1a03179e49ed7ee3a9408d9</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; value)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>atan</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gaa5670d26d229424278268189beb541f5</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>atan2</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gaad3e4450a30d08eceda4225bd26c312b</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; y, Fixed&lt; BT, FB &gt; x)</arglist>
     </member>
     <member kind="function">
       <type>auto</type>
@@ -44464,13 +43441,6 @@
       <anchorfile>group__Math.html</anchorfile>
       <anchor>gae769785f0540a4b8960b282f6b105c14</anchor>
       <arglist>(const Span&lt; const Length2 &gt; &amp;vertices)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>cos</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gaf6191f040980675d9a5c71bd53c79060</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
     </member>
     <member kind="function">
       <type>std::size_t</type>
@@ -44543,13 +43513,6 @@
       <arglist>(T &amp;container, const U &amp;value) -&gt; decltype(container.erase(find(begin(container), end(container), value)) !=end(container))</arglist>
     </member>
     <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>exp</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga7ddb9c067c645bded41aafe75cfecd02</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr void</type>
       <name>FlagForFiltering</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -44569,20 +43532,6 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a43951f69f7ead57450bac66cbb76b0e1</anchor>
       <arglist>(ContactFeature val) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>auto</type>
-      <name>floor</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gaa6da2152a8e212afc0185b6d5596fd95</anchor>
-      <arglist>(const Fixed&lt; BT, FB &gt; &amp;value)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>fmod</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gaae59d507ab3b0f722d4d22b3e4969f4a</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; dividend, Fixed&lt; BT, FB &gt; divisor) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -45089,13 +44038,6 @@
       <arglist>(const Contact &amp;contact) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>hypot</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gafff5f9018a9088992be3c922926aee56</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; x, Fixed&lt; BT, FB &gt; y)</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr Vec2</type>
       <name>InverseTransform</name>
       <anchorfile>group__Math.html</anchorfile>
@@ -45152,13 +44094,6 @@
       <arglist>(const Interval&lt; T &gt; &amp;a, const Interval&lt; T &gt; &amp;b)</arglist>
     </member>
     <member kind="function">
-      <type>bool</type>
-      <name>isfinite</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gab8fa73692143466ca4d584aacf5749f1</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; value) noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr bool</type>
       <name>IsFor</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -45201,13 +44136,6 @@
       <arglist>(const Contact &amp;contact) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>auto</type>
-      <name>isinf</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gae1b8d92ed9f3976cada57637344416f1</anchor>
-      <arglist>(const Fixed&lt; BT, FB &gt; &amp;value) noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr bool</type>
       <name>IsIntersecting</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -45220,20 +44148,6 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>aa0aadd87d13ef022c24b3c4feed422d3</anchor>
       <arglist>(const StepConf &amp;conf) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>isnan</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gab57c92b7d96634ba24fa1f6c25647799</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>isnormal</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga4ab479ab854291e9d03a25cc0986deca</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -45376,13 +44290,6 @@
       <arglist>(const Vector2&lt; TYPE &gt; &amp;value) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>log</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga661c3590b9b618ac14194bf25a70f1d6</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr auto</type>
       <name>MakeUnsigned</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -45444,13 +44351,6 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a00846636a226626c5dd4151893f397f7</anchor>
       <arglist>(const Contact &amp;contact) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>nextafter</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga935fa93a69f58baf20b00e14461d51e7</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; from, Fixed&lt; BT, FB &gt; to) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -45528,20 +44428,6 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a9bcf95269c48c96b8af0854d24894e3d</anchor>
       <arglist>(ContactFeature lhs, ContactFeature rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator!=</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a468fcfdd8d9f35d55aff3d2b2d05cd69</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator!=</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a9a1feb96b1bc5f0678758df12f93fe3b</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr Length</type>
@@ -45908,20 +44794,6 @@
       <arglist>(unsigned long long int v) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>constexpr Fixed32</type>
-      <name>operator%</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a34f36791292a3de7d109592d5271e025</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>operator%</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ac69f9fcc19f63ecf57e549bedb3792e4</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr std::enable_if_t&lt; IsMultipliableV&lt; T1, T2 &gt; &amp;&amp;!IsVectorV&lt; T1 &gt;, Vector&lt; OT, N &gt; &gt;</type>
       <name>operator*</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -45957,20 +44829,6 @@
       <arglist>(const Vector&lt; Vector&lt; T1, B &gt;, A &gt; &amp;lhs, const Vector&lt; Vector&lt; T2, C &gt;, B &gt; &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>constexpr Fixed32</type>
-      <name>operator*</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a2bbd048b74cca661af851475f3a32f03</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>operator*</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a2eb53a11e4a467306c79d44056b59bc3</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr std::enable_if_t&lt; std::is_same_v&lt; T1, decltype(T1{} *T2{})&gt;, Vector&lt; T1, N &gt; &amp; &gt;</type>
       <name>operator*=</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -45990,20 +44848,6 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a41f0c49a750ed51bb02cef10158e8d7f</anchor>
       <arglist>(const Matrix&lt; T, M, N &gt; &amp;lhs, const Matrix&lt; T, M, N &gt; &amp;rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed32</type>
-      <name>operator+</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ad4dbd342566c29d766d910388cfac25e</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>operator+</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>adf379d2d8f3a5aacdaf5fb871c935237</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr std::enable_if_t&lt; std::is_same_v&lt; T, decltype(T{}+T{})&gt;, Vector&lt; T, N &gt; &gt;</type>
@@ -46041,20 +44885,6 @@
       <arglist>(const Matrix&lt; T, M, N &gt; &amp;lhs, const Matrix&lt; T, M, N &gt; &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>constexpr Fixed32</type>
-      <name>operator-</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a95c382ba441e52b8730b18d38dfd5771</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>operator-</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a9468719501f7a5cf7747569ef71acc33</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr std::enable_if_t&lt; std::is_same_v&lt; T, decltype(T{} - T{})&gt;, Vector&lt; T, N &gt; &gt;</type>
       <name>operator-</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -46081,20 +44911,6 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a6da12fe999b8b56930c6cbd9dd4cd920</anchor>
       <arglist>(const Vector&lt; T1, N &gt; &amp;a, const T2 &amp;s) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed32</type>
-      <name>operator/</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>acb66724eaf58f719874fe12e5fa78eae</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>operator/</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>adce07a22f20a1fe265a0ca72a3a0a3cd</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr std::enable_if_t&lt; std::is_same_v&lt; T1, decltype(T1{}/T2{})&gt;, Vector&lt; T1, N &gt; &amp; &gt;</type>
@@ -46132,32 +44948,11 @@
       <arglist>(const Version &amp;lhs, const Version &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator&lt;</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aeef6e842dc811739f58a6e2b4b1d95ae</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator&lt;</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a310dd6a59f071ee86430f5162368f61c</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>inline ::std::ostream &amp;</type>
       <name>operator&lt;&lt;</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>ad3ec58bed15fb00ea00af6a52e5a7e3e</anchor>
       <arglist>(::std::ostream &amp;os, const ContactFeature &amp;value)</arglist>
-    </member>
-    <member kind="function">
-      <type>inline ::std::ostream &amp;</type>
-      <name>operator&lt;&lt;</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a598d4f1182411b5db1d2c445b16fc5fd</anchor>
-      <arglist>(::std::ostream &amp;os, const Fixed&lt; BT, FB &gt; &amp;value)</arglist>
     </member>
     <member kind="function">
       <type>::std::ostream &amp;</type>
@@ -46193,20 +44988,6 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>aafdb22d94f848eebd4aff498f3fba0c4</anchor>
       <arglist>(const Version &amp;lhs, const Version &amp;rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator&lt;=</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aff78b36b8b4533aeb308283f8557c657</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator&lt;=</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a70f7c32a47415d5005673852344009eb</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
@@ -46273,20 +45054,6 @@
     </member>
     <member kind="function">
       <type>constexpr bool</type>
-      <name>operator==</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a436c8f6a752a984295b46dc3c24256a1</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator==</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aaf5fcbbad444f151c1665cecb75f381f</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
       <name>operator&gt;</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a7ef072ea2c5a69df2050c1a1557206ef</anchor>
@@ -46308,20 +45075,6 @@
     </member>
     <member kind="function">
       <type>constexpr bool</type>
-      <name>operator&gt;</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a041ad90997561d20e0c3b4265c4f2f90</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator&gt;</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ab7f2c871930a05238a02a3581b2dbcc9</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
       <name>operator&gt;=</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>ae75f2a5fe81c028b473be52b47b7c7e9</anchor>
@@ -46340,34 +45093,6 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a30424693f3f723867383b08f1735bdd3</anchor>
       <arglist>(const Version &amp;lhs, const Version &amp;rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator&gt;=</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a2b5c7c5e333c08e00e17f1809c4b5eb6</anchor>
-      <arglist>(Fixed32 lhs, Fixed32 rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>operator&gt;=</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ac52ee51315f92b6463bab76317603a8d</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; lhs, Fixed&lt; BT, FB &gt; rhs) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>pow</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga85dfc7d7d071b22f80179a86e5544237</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; base, Fixed&lt; BT, FB &gt; exponent)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>pow</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gae62c436656c3c2a2e0d46d83fe1ea3ae</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; value, int n)</arglist>
     </member>
     <member kind="function">
       <type>void *</type>
@@ -46396,13 +45121,6 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a1de374e7d6af7b68b654b657d756468a</anchor>
       <arglist>(T &amp;&amp;iterable)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>round</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga1e3ca7fb2626886c5920bbc5f570a525</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>auto</type>
@@ -46496,20 +45214,6 @@
       <arglist>(const Filter filterA, const Filter filterB) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>bool</type>
-      <name>signbit</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga8445167791eb53f1e8eb0dbf318293a1</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>sin</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga0daabd6eacf8702561639d394e3efe6e</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr auto</type>
       <name>size</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -46543,13 +45247,6 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>ae889e4744cedfd0684d20ef3b7f48652</anchor>
       <arglist>(Island &amp;island) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>auto</type>
-      <name>sqrt</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga7a9d7e9855b45a3b4103632a47ccd6f4</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -46606,13 +45303,6 @@
       <anchorfile>group__Math.html</anchorfile>
       <anchor>ga17fa159bf4195bff228c3fda9252a5b1</anchor>
       <arglist>(const Vector&lt; T1, M &gt; &amp;v, const Matrix&lt; T2, M, N &gt; &amp;m) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>trunc</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga55adeaba7e08eb415e6437f709b62c0f</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
     </member>
     <member kind="function">
       <type>constexpr void</type>
@@ -55736,14 +54426,9 @@
     <filename>namespaceplayrho_1_1detail.html</filename>
     <class kind="struct">playrho::detail::AABB</class>
     <class kind="class">playrho::detail::Checked</class>
-    <class kind="struct">playrho::detail::Defaults</class>
-    <class kind="struct">playrho::detail::Defaults&lt; Fixed&lt; std::int32_t, FRACTION_BITS &gt; &gt;</class>
     <class kind="struct">playrho::detail::detector</class>
     <class kind="struct">playrho::detail::detector&lt; Default, std::void_t&lt; Op&lt; Args... &gt; &gt;, Op, Args... &gt;</class>
     <class kind="struct">playrho::detail::FiniteChecker</class>
-    <class kind="struct">playrho::detail::FixedDefault</class>
-    <class kind="struct">playrho::detail::FixedDefault&lt; std::int32_t &gt;</class>
-    <class kind="struct">playrho::detail::FixedDefault&lt; std::int64_t &gt;</class>
     <class kind="struct">playrho::detail::has_underlying_type_member</class>
     <class kind="struct">playrho::detail::has_underlying_type_member&lt; T, std::void_t&lt; typename T::underlying_type &gt; &gt;</class>
     <class kind="struct">playrho::detail::HasFunctor</class>
@@ -55802,7 +54487,6 @@
     <class kind="struct">playrho::detail::TypeInfo&lt; playrho::d2::TargetJointConf &gt;</class>
     <class kind="struct">playrho::detail::TypeInfo&lt; playrho::d2::WeldJointConf &gt;</class>
     <class kind="struct">playrho::detail::TypeInfo&lt; playrho::d2::WheelJointConf &gt;</class>
-    <class kind="struct">playrho::detail::TypeInfo&lt; playrho::Fixed32 &gt;</class>
     <class kind="struct">playrho::detail::underlying_type</class>
     <class kind="struct">playrho::detail::underlying_type&lt; T, std::enable_if_t&lt; has_underlying_type_member&lt; T &gt;::value &gt; &gt;</class>
     <class kind="struct">playrho::detail::underlying_type&lt; T, std::enable_if_t&lt; std::is_enum_v&lt; T &gt; &gt; &gt;</class>
@@ -55986,53 +54670,11 @@
       <arglist>(const Checked&lt; ValueType, Checker, NoExcept &gt; &amp;arg) -&gt; decltype(Checked&lt; ValueType, Checker, false &gt;(abs(arg.get())))</arglist>
     </member>
     <member kind="function">
-      <type>auto</type>
-      <name>AngularNormalize</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a027dccab6934b3c157ef2dc01ef3ccc0</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; angleInRadians)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>atan</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a70e6d2d2422ff5e4331fa12d63591192</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr auto</type>
-      <name>ComputeSqrt</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a841f7c8e6ad559c469948f3e26e7835d</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr bool</type>
       <name>Contains</name>
       <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
       <anchor>aeccc4adba69c5f7bbf4c0c3724ae1fcc</anchor>
       <arglist>(const AABB&lt; N &gt; &amp;a, const AABB&lt; N &gt; &amp;b) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>cos</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a85d24ce8b375444d38c8c0b154c5fca3</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>exp</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a4237a1a9c35033e7f2d44fcba79b5c53</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr auto</type>
-      <name>factorial</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a9f8231d1d9f61cb1b262cd79c62951fb</anchor>
-      <arglist>(std::int64_t n)</arglist>
     </member>
     <member kind="function">
       <type>constexpr AABB&lt; N &gt; &amp;</type>
@@ -56138,13 +54780,6 @@
       <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
       <anchor>a9c6ef61517707043fb5fd0891647687f</anchor>
       <arglist>(const T &amp;arg) -&gt; decltype(size(arg)==max_size(arg))</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>log</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a2133e6bdaa781faf55ab21c618328445</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -56448,13 +55083,6 @@
       <arglist>(const Other &amp;lhs, const Checked&lt; ValueType, Checker, NoExcept &gt; &amp;rhs) -&gt; decltype(ValueType(lhs) &gt;=ValueType(rhs))</arglist>
     </member>
     <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>sin</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>aa3f589528f56370c3aff73cea9c043b8</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr bool</type>
       <name>TestOverlap</name>
       <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
@@ -56481,48 +55109,6 @@
       <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
       <anchor>a1d0098650ef88d80a47b40dea3c234e2</anchor>
       <arglist>(IndexingNamedType&lt; T, Tag &gt; &amp;o) noexcept</arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr auto</type>
-      <name>DefaultAtanIterations</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a304e8eb33b556c56cd6856f74d39a0ca</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr auto</type>
-      <name>DefaultCosIterations</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a676b80754e55ce5cac7af32e5fa64dd0</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr auto</type>
-      <name>DefaultExpIterations</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a76512d3a6bfa1855b085454aaa283b3e</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr auto</type>
-      <name>DefaultLogIterations</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>ab363e7574b8f163178b759d41250e5d1</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr auto</type>
-      <name>DefaultSinIterations</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>ab0f4107b81ee665bf2faa404e3b469a9</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr auto</type>
-      <name>FixedPi</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a42d6cb8328944dfa9318f28ab0972130</anchor>
-      <arglist></arglist>
     </member>
     <member kind="variable">
       <type>constexpr auto</type>
@@ -56743,7 +55329,6 @@
     <class kind="struct">std::less&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
     <class kind="struct">std::less_equal&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
     <class kind="struct">std::not_equal_to&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
-    <class kind="class">std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;</class>
     <class kind="class">std::numeric_limits&lt;::playrho::Positive&lt; T &gt; &gt;</class>
     <class kind="class">std::tuple_element&lt; I, playrho::d2::UnitVec &gt;</class>
     <class kind="class">std::tuple_element&lt; I, playrho::Vector&lt; T, N &gt; &gt;</class>
@@ -57088,158 +55673,6 @@
     <filename>group__ConstraintsGroup.html</filename>
     <subgroup>JointsGroup</subgroup>
     <class kind="class">playrho::Contact</class>
-  </compound>
-  <compound kind="group">
-    <name>FixedMath</name>
-    <title>Math Functions For Fixed Types</title>
-    <filename>group__FixedMath.html</filename>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>abs</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga3ea4035b5693b20ac87b130aaa9c2d88</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>atan</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gaa5670d26d229424278268189beb541f5</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>atan2</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gaad3e4450a30d08eceda4225bd26c312b</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; y, Fixed&lt; BT, FB &gt; x)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>cos</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gaf6191f040980675d9a5c71bd53c79060</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>exp</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga7ddb9c067c645bded41aafe75cfecd02</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>auto</type>
-      <name>floor</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gaa6da2152a8e212afc0185b6d5596fd95</anchor>
-      <arglist>(const Fixed&lt; BT, FB &gt; &amp;value)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>fmod</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gaae59d507ab3b0f722d4d22b3e4969f4a</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; dividend, Fixed&lt; BT, FB &gt; divisor) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>hypot</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gafff5f9018a9088992be3c922926aee56</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; x, Fixed&lt; BT, FB &gt; y)</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>isfinite</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gab8fa73692143466ca4d584aacf5749f1</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>auto</type>
-      <name>isinf</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gae1b8d92ed9f3976cada57637344416f1</anchor>
-      <arglist>(const Fixed&lt; BT, FB &gt; &amp;value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>isnan</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gab57c92b7d96634ba24fa1f6c25647799</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>isnormal</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga4ab479ab854291e9d03a25cc0986deca</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>log</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga661c3590b9b618ac14194bf25a70f1d6</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>nextafter</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga935fa93a69f58baf20b00e14461d51e7</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; from, Fixed&lt; BT, FB &gt; to) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>pow</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga85dfc7d7d071b22f80179a86e5544237</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; base, Fixed&lt; BT, FB &gt; exponent)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>pow</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>gae62c436656c3c2a2e0d46d83fe1ea3ae</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; value, int n)</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>round</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga1e3ca7fb2626886c5920bbc5f570a525</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>signbit</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga8445167791eb53f1e8eb0dbf318293a1</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; value) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Fixed&lt; BT, FB &gt;</type>
-      <name>sin</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga0daabd6eacf8702561639d394e3efe6e</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>auto</type>
-      <name>sqrt</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga7a9d7e9855b45a3b4103632a47ccd6f4</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr Fixed&lt; BT, FB &gt;</type>
-      <name>trunc</name>
-      <anchorfile>group__FixedMath.html</anchorfile>
-      <anchor>ga55adeaba7e08eb415e6437f709b62c0f</anchor>
-      <arglist>(Fixed&lt; BT, FB &gt; arg)</arglist>
-    </member>
   </compound>
   <compound kind="group">
     <name>Math</name>

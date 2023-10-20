@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['state_4143',['State',['../structplayrho_1_1d2_1_1DistanceOutput.html#a1a05f48bffc628114d177f353b8f1bae',1,'playrho::d2::DistanceOutput::State()'],['../structplayrho_1_1ToiOutput.html#a61ba03d1326b88ed12049500df7ca76f',1,'playrho::ToiOutput::State()']]]
+  ['type_3999',['Type',['../structplayrho_1_1ContactFeature.html#afd2b1a5d28a16fc49261c39d8cebabc0',1,'playrho::ContactFeature::Type()'],['../classplayrho_1_1d2_1_1Manifold.html#a7ff238fab84e4d9dc478205840bd2b4a',1,'playrho::d2::Manifold::Type()']]]
 ];

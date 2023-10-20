@@ -94,7 +94,6 @@ $(document).ready(function(){initNavTree('Settings_8hpp.html',''); initResizable
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#var-members">Variables</a>  </div>
@@ -128,20 +127,9 @@ This graph shows which files directly or indirectly include this file:</div>
 </div>
 </div>
 </div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1Defaults.html">playrho::detail::Defaults&lt; T &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1detail_1_1Defaults.html" title="Defaults object for real types.">Defaults</a> object for real types.  <a href="structplayrho_1_1detail_1_1Defaults.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1Defaults_3_01Fixed_3_01std_1_1int32__t_00_01FRACTION__BITS_01_4_01_4.html">playrho::detail::Defaults&lt; Fixed&lt; std::int32_t, FRACTION_BITS &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialization of defaults object for fixed point types.  <a href="structplayrho_1_1detail_1_1Defaults_3_01Fixed_3_01std_1_1int32__t_00_01FRACTION__BITS_01_4_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceplayrho"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html">playrho</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceplayrho_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1detail.html">playrho::detail</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
@@ -190,7 +178,7 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <tr class="separator:ab2898b34e4bf5fe5af48939ec34e48f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a490b0d336b7a74ae18cf57632eeb7aa9"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a490b0d336b7a74ae18cf57632eeb7aa9">playrho::DefaultLinearSleepTolerance</a> = 0.01_mps</td></tr>
 <tr class="separator:a490b0d336b7a74ae18cf57632eeb7aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad91e53ba44755653e34147d39695a0a1"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ad91e53ba44755653e34147d39695a0a1">playrho::DefaultLinearSlop</a> = detail::Defaults&lt;Real&gt;::GetLinearSlop()</td></tr>
+<tr class="memitem:ad91e53ba44755653e34147d39695a0a1"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ad91e53ba44755653e34147d39695a0a1">playrho::DefaultLinearSlop</a> = 0.005_m</td></tr>
 <tr class="memdesc:ad91e53ba44755653e34147d39695a0a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default linear slop.  <a href="namespaceplayrho.html#ad91e53ba44755653e34147d39695a0a1">More...</a><br /></td></tr>
 <tr class="separator:ad91e53ba44755653e34147d39695a0a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8fea4a93f741aa800e943957fd23656"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ac8fea4a93f741aa800e943957fd23656">playrho::DefaultMaxAngularCorrection</a> = Real(8.0f / 180.0f) * Pi * 1_rad</td></tr>
@@ -220,15 +208,13 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a6b71ffce08877ce941d29616eb907114">playrho::DefaultMaxTranslation</a> = 2_m</td></tr>
 <tr class="memdesc:a6b71ffce08877ce941d29616eb907114"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default maximum translation amount. <br /></td></tr>
 <tr class="separator:a6b71ffce08877ce941d29616eb907114"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7beadf6067bdf66f48ee9b94c337d252"><td class="memItemLeft" align="right" valign="top"><a id="a7beadf6067bdf66f48ee9b94c337d252"></a>
-constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7beadf6067bdf66f48ee9b94c337d252">playrho::DefaultMaxVertexRadius</a> = detail::Defaults&lt;Real&gt;::GetMaxVertexRadius()</td></tr>
-<tr class="memdesc:a7beadf6067bdf66f48ee9b94c337d252"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default maximum vertex radius. <br /></td></tr>
+<tr class="memitem:a7beadf6067bdf66f48ee9b94c337d252"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7beadf6067bdf66f48ee9b94c337d252">playrho::DefaultMaxVertexRadius</a> = 255_m</td></tr>
+<tr class="memdesc:a7beadf6067bdf66f48ee9b94c337d252"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default maximum vertex radius.  <a href="namespaceplayrho.html#a7beadf6067bdf66f48ee9b94c337d252">More...</a><br /></td></tr>
 <tr class="separator:a7beadf6067bdf66f48ee9b94c337d252"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e76508577c61a5bc9cc3107d60f3c1b"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a0e76508577c61a5bc9cc3107d60f3c1b">playrho::DefaultMinStillTimeToSleep</a> = Time{1_s / 2}</td></tr>
 <tr class="separator:a0e76508577c61a5bc9cc3107d60f3c1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a174cfa632eb92c15bc2e48e7d09d216a"><td class="memItemLeft" align="right" valign="top"><a id="a174cfa632eb92c15bc2e48e7d09d216a"></a>
-constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a174cfa632eb92c15bc2e48e7d09d216a">playrho::DefaultMinVertexRadius</a> = DefaultLinearSlop * Real(2)</td></tr>
-<tr class="memdesc:a174cfa632eb92c15bc2e48e7d09d216a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default minimum vertex radius. <br /></td></tr>
+<tr class="memitem:a174cfa632eb92c15bc2e48e7d09d216a"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a174cfa632eb92c15bc2e48e7d09d216a">playrho::DefaultMinVertexRadius</a> = 0.01_m</td></tr>
+<tr class="memdesc:a174cfa632eb92c15bc2e48e7d09d216a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default minimum vertex radius.  <a href="namespaceplayrho.html#a174cfa632eb92c15bc2e48e7d09d216a">More...</a><br /></td></tr>
 <tr class="separator:a174cfa632eb92c15bc2e48e7d09d216a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8eb622479d2ffb28ce1a4e88e8a211f"><td class="memItemLeft" align="right" valign="top"><a id="ab8eb622479d2ffb28ce1a4e88e8a211f"></a>
 constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ab8eb622479d2ffb28ce1a4e88e8a211f">playrho::DefaultRegMinMomentum</a> = Momentum{0_Ns / 100}</td></tr>
@@ -297,7 +283,7 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="Settings_8hpp.html">Settings.hpp</a></li>
-    <li class="footer">Generated on Mon Oct 16 2023 00:34:09 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 20 2023 20:05:08 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

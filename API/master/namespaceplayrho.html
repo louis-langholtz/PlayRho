@@ -151,9 +151,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Filter.html">Filter</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A holder for contact filtering data.  <a href="structplayrho_1_1Filter.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Fixed.html">Fixed</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Template class for fixed-point numbers.  <a href="classplayrho_1_1Fixed.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1FlagGuard.html">FlagGuard</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag guard type.  <a href="classplayrho_1_1FlagGuard.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -298,9 +295,6 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga5c4898ce94c2c3bd2059864e7466ed12"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CheckedTypes.html#ga5c4898ce94c2c3bd2059864e7466ed12">FiniteFF</a> = <a class="el" href="classplayrho_1_1detail_1_1Checked.html">detail::Checked</a>&lt; T, <a class="el" href="structplayrho_1_1detail_1_1FiniteChecker.html">detail::FiniteChecker</a>&lt; T &gt;, true &gt;</td></tr>
 <tr class="memdesc:ga5c4898ce94c2c3bd2059864e7466ed12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fast failing finite constrained value type. <br /></td></tr>
 <tr class="separator:ga5c4898ce94c2c3bd2059864e7466ed12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba435a5d7b05cc977530e864af6b43c3"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> = <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; std::int32_t, <a class="el" href="structplayrho_1_1detail_1_1FixedDefault.html">detail::FixedDefault</a>&lt; std::int32_t &gt;::FractionBits &gt;</td></tr>
-<tr class="memdesc:aba435a5d7b05cc977530e864af6b43c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">32-bit fixed precision type.  <a href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">More...</a><br /></td></tr>
-<tr class="separator:aba435a5d7b05cc977530e864af6b43c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad51dd88ec6a5b3bf384dc89a63019d9d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__PhysicalQuantities.html#gad51dd88ec6a5b3bf384dc89a63019d9d">Force</a> = <a class="el" href="namespaceplayrho_1_1detail.html#a9245466a701c0ace6d5c9ee85826a254">detail::force</a></td></tr>
 <tr class="memdesc:gad51dd88ec6a5b3bf384dc89a63019d9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Force quantity.  <a href="group__PhysicalQuantities.html#gad51dd88ec6a5b3bf384dc89a63019d9d">More...</a><br /></td></tr>
 <tr class="separator:gad51dd88ec6a5b3bf384dc89a63019d9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -595,10 +589,6 @@ template&lt;typename T , std::size_t N&gt; </td></tr>
 <tr class="memitem:a594091c0fcb9865f2d102f3b8ee973b3"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a594091c0fcb9865f2d102f3b8ee973b3">abs</a> (const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;v) noexcept -&gt; decltype(abs(T{}), <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt;{})</td></tr>
 <tr class="memdesc:a594091c0fcb9865f2d102f3b8ee973b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Absolute value function for vectors. <br /></td></tr>
 <tr class="separator:a594091c0fcb9865f2d102f3b8ee973b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3ea4035b5693b20ac87b130aaa9c2d88"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:ga3ea4035b5693b20ac87b130aaa9c2d88"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#ga3ea4035b5693b20ac87b130aaa9c2d88">abs</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; arg)</td></tr>
-<tr class="memdesc:ga3ea4035b5693b20ac87b130aaa9c2d88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the absolute value.  <a href="group__FixedMath.html#ga3ea4035b5693b20ac87b130aaa9c2d88">More...</a><br /></td></tr>
-<tr class="separator:ga3ea4035b5693b20ac87b130aaa9c2d88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a516a3bbb73371cdc53f348b67f43bb1f"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a516a3bbb73371cdc53f348b67f43bb1f">Alloc</a> (std::size_t <a class="el" href="namespaceplayrho.html#af33cf35b33c93168aedcbf5a986a3472">size</a>)</td></tr>
 <tr class="memdesc:a516a3bbb73371cdc53f348b67f43bb1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory.  <a href="namespaceplayrho.html#a516a3bbb73371cdc53f348b67f43bb1f">More...</a><br /></td></tr>
 <tr class="separator:a516a3bbb73371cdc53f348b67f43bb1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -611,27 +601,10 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga9447e387f79e761f547aa4d321605c78"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga9447e387f79e761f547aa4d321605c78">AlmostEqual</a> (const T &amp;x, const T &amp;y, int ulp=2) -&gt; std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt;, bool &gt;</td></tr>
 <tr class="memdesc:ga9447e387f79e761f547aa4d321605c78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the given two values are "almost equal". <br /></td></tr>
 <tr class="separator:ga9447e387f79e761f547aa4d321605c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6aaf4879371df30246226867c121a9ad"><td class="memTemplParams" colspan="2"><a id="a6aaf4879371df30246226867c121a9ad"></a>
-template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:a6aaf4879371df30246226867c121a9ad"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a6aaf4879371df30246226867c121a9ad">AlmostEqual</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; x, <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; y, int ulp=2)</td></tr>
-<tr class="memdesc:a6aaf4879371df30246226867c121a9ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the given two values are "almost equal". <br /></td></tr>
-<tr class="separator:a6aaf4879371df30246226867c121a9ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga994ed50293b78dff53a5c7bce78602bf"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga994ed50293b78dff53a5c7bce78602bf"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga994ed50293b78dff53a5c7bce78602bf">AlmostZero</a> (const T &amp;value) -&gt; decltype(<a class="el" href="namespaceplayrho.html#ac862a8609b82126d0683ecb38a498087">abs</a>(value)&lt; std::numeric_limits&lt; T &gt;::min())</td></tr>
 <tr class="memdesc:ga994ed50293b78dff53a5c7bce78602bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether a given value is almost zero.  <a href="group__Math.html#ga994ed50293b78dff53a5c7bce78602bf">More...</a><br /></td></tr>
 <tr class="separator:ga994ed50293b78dff53a5c7bce78602bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87b5e301c1a03179e49ed7ee3a9408d9"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:a87b5e301c1a03179e49ed7ee3a9408d9"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a87b5e301c1a03179e49ed7ee3a9408d9">AlmostZero</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; value)</td></tr>
-<tr class="memdesc:a87b5e301c1a03179e49ed7ee3a9408d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether a given value is almost zero.  <a href="namespaceplayrho.html#a87b5e301c1a03179e49ed7ee3a9408d9">More...</a><br /></td></tr>
-<tr class="separator:a87b5e301c1a03179e49ed7ee3a9408d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa5670d26d229424278268189beb541f5"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:gaa5670d26d229424278268189beb541f5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#gaa5670d26d229424278268189beb541f5">atan</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; arg)</td></tr>
-<tr class="memdesc:gaa5670d26d229424278268189beb541f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the arc tangent.  <a href="group__FixedMath.html#gaa5670d26d229424278268189beb541f5">More...</a><br /></td></tr>
-<tr class="separator:gaa5670d26d229424278268189beb541f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaad3e4450a30d08eceda4225bd26c312b"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:gaad3e4450a30d08eceda4225bd26c312b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#gaad3e4450a30d08eceda4225bd26c312b">atan2</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; y, <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; x)</td></tr>
-<tr class="memdesc:gaad3e4450a30d08eceda4225bd26c312b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the multi-valued inverse tangent.  <a href="group__FixedMath.html#gaad3e4450a30d08eceda4225bd26c312b">More...</a><br /></td></tr>
-<tr class="separator:gaad3e4450a30d08eceda4225bd26c312b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab870a9188fcc77c905807fa718a8268d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:gab870a9188fcc77c905807fa718a8268d"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#gab870a9188fcc77c905807fa718a8268d">Atan2</a> (T y, T x)</td></tr>
 <tr class="memdesc:gab870a9188fcc77c905807fa718a8268d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the arc-tangent of the given y and x values.  <a href="group__Math.html#gab870a9188fcc77c905807fa718a8268d">More...</a><br /></td></tr>
@@ -664,10 +637,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="memitem:gae769785f0540a4b8960b282f6b105c14"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#gae769785f0540a4b8960b282f6b105c14">ComputeCentroid</a> (const <a class="el" href="classplayrho_1_1Span.html">Span</a>&lt; const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &gt; &amp;vertices)</td></tr>
 <tr class="memdesc:gae769785f0540a4b8960b282f6b105c14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the centroid of a counter-clockwise array of 3 or more vertices.  <a href="group__Math.html#gae769785f0540a4b8960b282f6b105c14">More...</a><br /></td></tr>
 <tr class="separator:gae769785f0540a4b8960b282f6b105c14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf6191f040980675d9a5c71bd53c79060"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:gaf6191f040980675d9a5c71bd53c79060"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#gaf6191f040980675d9a5c71bd53c79060">cos</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; arg)</td></tr>
-<tr class="memdesc:gaf6191f040980675d9a5c71bd53c79060"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the cosine of the argument for <a class="el" href="classplayrho_1_1Fixed.html" title="Template class for fixed-point numbers.">Fixed</a> types.  <a href="group__FixedMath.html#gaf6191f040980675d9a5c71bd53c79060">More...</a><br /></td></tr>
-<tr class="separator:gaf6191f040980675d9a5c71bd53c79060"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abddcd2c8f0eff0c93d899e8ddcc6308a"><td class="memItemLeft" align="right" valign="top"><a id="abddcd2c8f0eff0c93d899e8ddcc6308a"></a>
 std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#abddcd2c8f0eff0c93d899e8ddcc6308a">Count</a> (const <a class="el" href="structplayrho_1_1Island.html">Island</a> &amp;island, <a class="el" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92">BodyID</a> entry)</td></tr>
 <tr class="memdesc:abddcd2c8f0eff0c93d899e8ddcc6308a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counts the number of occurrences of the given entry in the given island. <br /></td></tr>
@@ -709,10 +678,6 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ad559996a9d085eb07a18b5b88525761f"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ad559996a9d085eb07a18b5b88525761f">EraseFirst</a> (T &amp;container, const U &amp;value) -&gt; decltype(container.erase(find(<a class="el" href="namespaceplayrho.html#a429625691c6a45944e55fe50f9a59199">begin</a>(container), <a class="el" href="namespaceplayrho.html#a370e741c22960aad46732cdc0353f428">end</a>(container), value)) !=<a class="el" href="namespaceplayrho.html#a370e741c22960aad46732cdc0353f428">end</a>(container))</td></tr>
 <tr class="memdesc:ad559996a9d085eb07a18b5b88525761f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience template function for erasing first found value from container.  <a href="namespaceplayrho.html#ad559996a9d085eb07a18b5b88525761f">More...</a><br /></td></tr>
 <tr class="separator:ad559996a9d085eb07a18b5b88525761f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7ddb9c067c645bded41aafe75cfecd02"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:ga7ddb9c067c645bded41aafe75cfecd02"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#ga7ddb9c067c645bded41aafe75cfecd02">exp</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; arg)</td></tr>
-<tr class="memdesc:ga7ddb9c067c645bded41aafe75cfecd02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the Euler number raised to the power of the given argument.  <a href="group__FixedMath.html#ga7ddb9c067c645bded41aafe75cfecd02">More...</a><br /></td></tr>
-<tr class="separator:ga7ddb9c067c645bded41aafe75cfecd02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1efaeb0c030854ede6606021ba56d30"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ac1efaeb0c030854ede6606021ba56d30">FlagForFiltering</a> (<a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;contact) noexcept</td></tr>
 <tr class="memdesc:ac1efaeb0c030854ede6606021ba56d30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flags the contact for filtering.  <a href="namespaceplayrho.html#ac1efaeb0c030854ede6606021ba56d30">More...</a><br /></td></tr>
 <tr class="separator:ac1efaeb0c030854ede6606021ba56d30"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -723,14 +688,6 @@ template&lt;typename T &gt; </td></tr>
 constexpr <a class="el" href="structplayrho_1_1ContactFeature.html">ContactFeature</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a43951f69f7ead57450bac66cbb76b0e1">Flip</a> (<a class="el" href="structplayrho_1_1ContactFeature.html">ContactFeature</a> val) noexcept</td></tr>
 <tr class="memdesc:a43951f69f7ead57450bac66cbb76b0e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flips contact features information. <br /></td></tr>
 <tr class="separator:a43951f69f7ead57450bac66cbb76b0e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa6da2152a8e212afc0185b6d5596fd95"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:gaa6da2152a8e212afc0185b6d5596fd95"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#gaa6da2152a8e212afc0185b6d5596fd95">floor</a> (const <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; &amp;value)</td></tr>
-<tr class="memdesc:gaa6da2152a8e212afc0185b6d5596fd95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the largest integer value not greater than the given value.  <a href="group__FixedMath.html#gaa6da2152a8e212afc0185b6d5596fd95">More...</a><br /></td></tr>
-<tr class="separator:gaa6da2152a8e212afc0185b6d5596fd95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaae59d507ab3b0f722d4d22b3e4969f4a"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:gaae59d507ab3b0f722d4d22b3e4969f4a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#gaae59d507ab3b0f722d4d22b3e4969f4a">fmod</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; dividend, <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; divisor) noexcept</td></tr>
-<tr class="memdesc:gaae59d507ab3b0f722d4d22b3e4969f4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the remainder of the division of the given dividend by the given divisor.  <a href="group__FixedMath.html#gaae59d507ab3b0f722d4d22b3e4969f4a">More...</a><br /></td></tr>
-<tr class="separator:gaae59d507ab3b0f722d4d22b3e4969f4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62c138018c11ab3c255b410f2dedd7d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a62c138018c11ab3c255b410f2dedd7d2">Free</a> (void *mem)</td></tr>
 <tr class="memdesc:a62c138018c11ab3c255b410f2dedd7d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees memory.  <a href="namespaceplayrho.html#a62c138018c11ab3c255b410f2dedd7d2">More...</a><br /></td></tr>
 <tr class="separator:a62c138018c11ab3c255b410f2dedd7d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -844,7 +801,7 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memdesc:ga0a9354b34edeb8433cd3062aecb78143"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the inverse of the given matrix as a 2-by-2.  <a href="group__Math.html#ga0a9354b34edeb8433cd3062aecb78143">More...</a><br /></td></tr>
 <tr class="separator:ga0a9354b34edeb8433cd3062aecb78143"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafe323c1c5ab88d30d18413a3c1f10abb"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:gafe323c1c5ab88d30d18413a3c1f10abb"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#gafe323c1c5ab88d30d18413a3c1f10abb">GetMagnitude</a> (const T &amp;value) noexcept(noexcept(<a class="el" href="group__FixedMath.html#ga7a9d7e9855b45a3b4103632a47ccd6f4">sqrt</a>(<a class="el" href="group__Math.html#ga36866f7061dfa4d056405aa5da0daf84">GetMagnitudeSquared</a>(value)))) -&gt; decltype(<a class="el" href="group__FixedMath.html#ga7a9d7e9855b45a3b4103632a47ccd6f4">sqrt</a>(<a class="el" href="group__Math.html#ga36866f7061dfa4d056405aa5da0daf84">GetMagnitudeSquared</a>(value)))</td></tr>
+<tr class="memitem:gafe323c1c5ab88d30d18413a3c1f10abb"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#gafe323c1c5ab88d30d18413a3c1f10abb">GetMagnitude</a> (const T &amp;value) noexcept(noexcept(sqrt(<a class="el" href="group__Math.html#ga36866f7061dfa4d056405aa5da0daf84">GetMagnitudeSquared</a>(value)))) -&gt; decltype(sqrt(<a class="el" href="group__Math.html#ga36866f7061dfa4d056405aa5da0daf84">GetMagnitudeSquared</a>(value)))</td></tr>
 <tr class="memdesc:gafe323c1c5ab88d30d18413a3c1f10abb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the magnitude of the given value.  <a href="group__Math.html#gafe323c1c5ab88d30d18413a3c1f10abb">More...</a><br /></td></tr>
 <tr class="separator:gafe323c1c5ab88d30d18413a3c1f10abb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga36866f7061dfa4d056405aa5da0daf84"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -1019,10 +976,6 @@ template&lt;typename T , std::size_t N&gt; </td></tr>
 <tr class="memitem:a77e830664360ead07ab616d934ff2550"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a77e830664360ead07ab616d934ff2550">HasValidToi</a> (const <a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;contact) noexcept</td></tr>
 <tr class="memdesc:a77e830664360ead07ab616d934ff2550"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether a TOI is set.  <a href="namespaceplayrho.html#a77e830664360ead07ab616d934ff2550">More...</a><br /></td></tr>
 <tr class="separator:a77e830664360ead07ab616d934ff2550"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafff5f9018a9088992be3c922926aee56"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:gafff5f9018a9088992be3c922926aee56"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#gafff5f9018a9088992be3c922926aee56">hypot</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; x, <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; y)</td></tr>
-<tr class="memdesc:gafff5f9018a9088992be3c922926aee56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the square root of the sum of the squares.  <a href="group__FixedMath.html#gafff5f9018a9088992be3c922926aee56">More...</a><br /></td></tr>
-<tr class="separator:gafff5f9018a9088992be3c922926aee56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga68c69326c22bafb811d6e00b9e6966cc"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga68c69326c22bafb811d6e00b9e6966cc">InverseTransform</a> (const <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a> &amp;v, const <a class="el" href="namespaceplayrho.html#a02c09bb6556e3168c0085871358d2f71">Mat22</a> &amp;A) noexcept</td></tr>
 <tr class="separator:ga68c69326c22bafb811d6e00b9e6966cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga01639d99c5401d526aeb5c6df075e153"><td class="memTemplParams" colspan="2">
@@ -1056,10 +1009,6 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a32133337daeb0dd2b8b5a78f42a8a526"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a32133337daeb0dd2b8b5a78f42a8a526">IsEntirelyEnclosing</a> (const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;a, const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;b)</td></tr>
 <tr class="memdesc:a32133337daeb0dd2b8b5a78f42a8a526"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the first range entirely encloses the second. <br /></td></tr>
 <tr class="separator:a32133337daeb0dd2b8b5a78f42a8a526"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab8fa73692143466ca4d584aacf5749f1"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:gab8fa73692143466ca4d584aacf5749f1"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#gab8fa73692143466ca4d584aacf5749f1">isfinite</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; value) noexcept</td></tr>
-<tr class="memdesc:gab8fa73692143466ca4d584aacf5749f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given value is finite.  <a href="group__FixedMath.html#gab8fa73692143466ca4d584aacf5749f1">More...</a><br /></td></tr>
-<tr class="separator:gab8fa73692143466ca4d584aacf5749f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8f91c8a02e1886e4e9f90d0926e075a"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#aa8f91c8a02e1886e4e9f90d0926e075a">IsFor</a> (const <a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;c, <a class="el" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92">BodyID</a> bodyID, <a class="el" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a> shapeID) noexcept</td></tr>
 <tr class="memdesc:aa8f91c8a02e1886e4e9f90d0926e075a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is-for convenience function.  <a href="namespaceplayrho.html#aa8f91c8a02e1886e4e9f90d0926e075a">More...</a><br /></td></tr>
 <tr class="separator:aa8f91c8a02e1886e4e9f90d0926e075a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1080,10 +1029,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="memitem:a885fded7567b0972b4af486e5df9afea"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a885fded7567b0972b4af486e5df9afea">IsImpenetrable</a> (const <a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;contact) noexcept</td></tr>
 <tr class="memdesc:a885fded7567b0972b4af486e5df9afea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the given contact is "impenetrable".  <a href="namespaceplayrho.html#a885fded7567b0972b4af486e5df9afea">More...</a><br /></td></tr>
 <tr class="separator:a885fded7567b0972b4af486e5df9afea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae1b8d92ed9f3976cada57637344416f1"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:gae1b8d92ed9f3976cada57637344416f1"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#gae1b8d92ed9f3976cada57637344416f1">isinf</a> (const <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; &amp;value) noexcept</td></tr>
-<tr class="memdesc:gae1b8d92ed9f3976cada57637344416f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets wether the given value is a positive or negative infinity.  <a href="group__FixedMath.html#gae1b8d92ed9f3976cada57637344416f1">More...</a><br /></td></tr>
-<tr class="separator:gae1b8d92ed9f3976cada57637344416f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9dc0da0330f8a1c23b44b919f02fed7"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U  = decltype(Interval&lt;T&gt;{}, T{} &lt; T{}, T{} &gt;= T{})&gt; </td></tr>
 <tr class="memitem:ab9dc0da0330f8a1c23b44b919f02fed7"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ab9dc0da0330f8a1c23b44b919f02fed7">IsIntersecting</a> (const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;a, const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;b) noexcept(noexcept(T{}&lt; T{}) &amp;&amp;noexcept(T{} &gt;=T{}))</td></tr>
 <tr class="memdesc:ab9dc0da0330f8a1c23b44b919f02fed7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether two value ranges have any intersection/overlap at all.  <a href="namespaceplayrho.html#ab9dc0da0330f8a1c23b44b919f02fed7">More...</a><br /></td></tr>
@@ -1092,14 +1037,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#aa0aadd87d13ef022c24b3c4feed422d3">IsMaxTranslationWithinTolerance</a> (const <a class="el" href="structplayrho_1_1StepConf.html">StepConf</a> &amp;conf) noexcept</td></tr>
 <tr class="memdesc:aa0aadd87d13ef022c24b3c4feed422d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the maximum translation is within tolerance. <br /></td></tr>
 <tr class="separator:aa0aadd87d13ef022c24b3c4feed422d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab57c92b7d96634ba24fa1f6c25647799"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:gab57c92b7d96634ba24fa1f6c25647799"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#gab57c92b7d96634ba24fa1f6c25647799">isnan</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; value) noexcept</td></tr>
-<tr class="memdesc:gab57c92b7d96634ba24fa1f6c25647799"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given value is not-a-number.  <a href="group__FixedMath.html#gab57c92b7d96634ba24fa1f6c25647799">More...</a><br /></td></tr>
-<tr class="separator:gab57c92b7d96634ba24fa1f6c25647799"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4ab479ab854291e9d03a25cc0986deca"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:ga4ab479ab854291e9d03a25cc0986deca"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#ga4ab479ab854291e9d03a25cc0986deca">isnormal</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; arg)</td></tr>
-<tr class="memdesc:ga4ab479ab854291e9d03a25cc0986deca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given value is normal - i.e. not 0 nor infinite.  <a href="group__FixedMath.html#ga4ab479ab854291e9d03a25cc0986deca">More...</a><br /></td></tr>
-<tr class="separator:ga4ab479ab854291e9d03a25cc0986deca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga96fac7df522251c1cc54aeafbfe3b737"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga96fac7df522251c1cc54aeafbfe3b737"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga96fac7df522251c1cc54aeafbfe3b737">IsOdd</a> (const T &amp;val) -&gt; decltype((val % 2) !=T{})</td></tr>
 <tr class="memdesc:ga96fac7df522251c1cc54aeafbfe3b737"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is-odd.  <a href="group__Math.html#ga96fac7df522251c1cc54aeafbfe3b737">More...</a><br /></td></tr>
@@ -1192,10 +1129,6 @@ template&lt;typename TYPE &gt; </td></tr>
 <tr class="memitem:ab698eb521c2d14d3d88ee3ac4cacd7c6"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ab698eb521c2d14d3d88ee3ac4cacd7c6">IsValid</a> (const <a class="el" href="namespaceplayrho.html#a97243f194a9406d0fdcf5f6f833851ab">Vector2</a>&lt; TYPE &gt; &amp;value) noexcept</td></tr>
 <tr class="memdesc:ab698eb521c2d14d3d88ee3ac4cacd7c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the given vector contains finite coordinates. <br /></td></tr>
 <tr class="separator:ab698eb521c2d14d3d88ee3ac4cacd7c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga661c3590b9b618ac14194bf25a70f1d6"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:ga661c3590b9b618ac14194bf25a70f1d6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#ga661c3590b9b618ac14194bf25a70f1d6">log</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; arg)</td></tr>
-<tr class="memdesc:ga661c3590b9b618ac14194bf25a70f1d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the natural logarithm of the given argument.  <a href="group__FixedMath.html#ga661c3590b9b618ac14194bf25a70f1d6">More...</a><br /></td></tr>
-<tr class="separator:ga661c3590b9b618ac14194bf25a70f1d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee56c4a29a6dd23450e8be8027929f6c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aee56c4a29a6dd23450e8be8027929f6c"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#aee56c4a29a6dd23450e8be8027929f6c">MakeUnsigned</a> (const T &amp;arg) noexcept -&gt; std::enable_if_t&lt; std::is_signed_v&lt; T &gt;, std::make_unsigned_t&lt; T &gt;&gt;</td></tr>
 <tr class="memdesc:aee56c4a29a6dd23450e8be8027929f6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes the given <b>value</b> into an <b>unsigned value</b>.  <a href="namespaceplayrho.html#aee56c4a29a6dd23450e8be8027929f6c">More...</a><br /></td></tr>
@@ -1229,10 +1162,6 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a00846636a226626c5dd4151893f397f7">NeedsUpdating</a> (const <a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;contact) noexcept</td></tr>
 <tr class="memdesc:a00846636a226626c5dd4151893f397f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the contact needs updating. <br /></td></tr>
 <tr class="separator:a00846636a226626c5dd4151893f397f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga935fa93a69f58baf20b00e14461d51e7"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:ga935fa93a69f58baf20b00e14461d51e7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#ga935fa93a69f58baf20b00e14461d51e7">nextafter</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; from, <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; to) noexcept</td></tr>
-<tr class="memdesc:ga935fa93a69f58baf20b00e14461d51e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Next after function for <a class="el" href="classplayrho_1_1Fixed.html" title="Template class for fixed-point numbers.">Fixed</a> types.  <a href="group__FixedMath.html#ga935fa93a69f58baf20b00e14461d51e7">More...</a><br /></td></tr>
-<tr class="separator:ga935fa93a69f58baf20b00e14461d51e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac9c45595993e763f220e4018c3780058"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:gac9c45595993e763f220e4018c3780058"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#gac9c45595993e763f220e4018c3780058">NextPowerOfTwo</a> (T x) -&gt; decltype((x|(x &gt;&gt; 1u)), T(++x))</td></tr>
 <tr class="memdesc:gac9c45595993e763f220e4018c3780058"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the next largest power of 2.  <a href="group__Math.html#gac9c45595993e763f220e4018c3780058">More...</a><br /></td></tr>
@@ -1278,15 +1207,6 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a9bcf95269c48c96b8af0854d24894e3d">operator!=</a> (<a class="el" href="structplayrho_1_1ContactFeature.html">ContactFeature</a> lhs, <a class="el" href="structplayrho_1_1ContactFeature.html">ContactFeature</a> rhs) noexcept</td></tr>
 <tr class="memdesc:a9bcf95269c48c96b8af0854d24894e3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given two contact features are not equal. <br /></td></tr>
 <tr class="separator:a9bcf95269c48c96b8af0854d24894e3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a468fcfdd8d9f35d55aff3d2b2d05cd69"><td class="memItemLeft" align="right" valign="top"><a id="a468fcfdd8d9f35d55aff3d2b2d05cd69"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a468fcfdd8d9f35d55aff3d2b2d05cd69">operator!=</a> (<a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> lhs, <a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> rhs) noexcept</td></tr>
-<tr class="memdesc:a468fcfdd8d9f35d55aff3d2b2d05cd69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator. <br /></td></tr>
-<tr class="separator:a468fcfdd8d9f35d55aff3d2b2d05cd69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a1feb96b1bc5f0678758df12f93fe3b"><td class="memTemplParams" colspan="2"><a id="a9a1feb96b1bc5f0678758df12f93fe3b"></a>
-template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:a9a1feb96b1bc5f0678758df12f93fe3b"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a9a1feb96b1bc5f0678758df12f93fe3b">operator!=</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; lhs, <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; rhs) noexcept</td></tr>
-<tr class="memdesc:a9a1feb96b1bc5f0678758df12f93fe3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator. <br /></td></tr>
-<tr class="separator:a9a1feb96b1bc5f0678758df12f93fe3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8265c747e9b00e05f54f0aee1a4fdbf7"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__PhysicalQuantities.html#ga8705f1923f7cff39bf09f6d01989770d">Length</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Unitsymbols.html#ga8265c747e9b00e05f54f0aee1a4fdbf7">operator&quot;&quot;_cm</a> (long double v) noexcept</td></tr>
 <tr class="memdesc:ga8265c747e9b00e05f54f0aee1a4fdbf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">SI unit symbol for a centimeter of Length.  <a href="group__Unitsymbols.html#ga8265c747e9b00e05f54f0aee1a4fdbf7">More...</a><br /></td></tr>
 <tr class="separator:ga8265c747e9b00e05f54f0aee1a4fdbf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1445,15 +1365,6 @@ constexpr <a class="el" href="group__PhysicalQuantities.html#ga6bcf1d1de9ef60a98
 <tr class="memitem:ga1255eade62dd2acd569300e17da4d578"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__PhysicalQuantities.html#gaaf74540633aeb472114381118842149e">Mass</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Unitsymbols.html#ga1255eade62dd2acd569300e17da4d578">operator&quot;&quot;_Yg</a> (unsigned long long int v) noexcept</td></tr>
 <tr class="memdesc:ga1255eade62dd2acd569300e17da4d578"><td class="mdescLeft">&#160;</td><td class="mdescRight">SI unit symbol for a yottagram unit of Mass.  <a href="group__Unitsymbols.html#ga1255eade62dd2acd569300e17da4d578">More...</a><br /></td></tr>
 <tr class="separator:ga1255eade62dd2acd569300e17da4d578"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34f36791292a3de7d109592d5271e025"><td class="memItemLeft" align="right" valign="top"><a id="a34f36791292a3de7d109592d5271e025"></a>
-constexpr <a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a34f36791292a3de7d109592d5271e025">operator%</a> (<a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> lhs, <a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> rhs) noexcept</td></tr>
-<tr class="memdesc:a34f36791292a3de7d109592d5271e025"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modulo operator. <br /></td></tr>
-<tr class="separator:a34f36791292a3de7d109592d5271e025"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac69f9fcc19f63ecf57e549bedb3792e4"><td class="memTemplParams" colspan="2"><a id="ac69f9fcc19f63ecf57e549bedb3792e4"></a>
-template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:ac69f9fcc19f63ecf57e549bedb3792e4"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ac69f9fcc19f63ecf57e549bedb3792e4">operator%</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; lhs, <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; rhs) noexcept</td></tr>
-<tr class="memdesc:ac69f9fcc19f63ecf57e549bedb3792e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modulo operator. <br /></td></tr>
-<tr class="separator:ac69f9fcc19f63ecf57e549bedb3792e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2722bc95da32ec0b7f65c9dff9aa0dcc"><td class="memTemplParams" colspan="2">template&lt;std::size_t N, typename T1 , typename T2 , typename OT  = decltype(T1{} * T2{})&gt; </td></tr>
 <tr class="memitem:a2722bc95da32ec0b7f65c9dff9aa0dcc"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if_t&lt; <a class="el" href="namespaceplayrho.html#a3c2c0d8136a2aabd56742fbedf6c00ad">IsMultipliableV</a>&lt; T1, T2 &gt; &amp;&amp;!<a class="el" href="namespaceplayrho.html#a168449a74e78ad00c9d22f1017de05f7">IsVectorV</a>&lt; T1 &gt;, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, N &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a2722bc95da32ec0b7f65c9dff9aa0dcc">operator*</a> (const T1 &amp;s, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T2, N &gt; &amp;a) noexcept</td></tr>
 <tr class="memdesc:a2722bc95da32ec0b7f65c9dff9aa0dcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplication operator for non-vector times vector.  <a href="namespaceplayrho.html#a2722bc95da32ec0b7f65c9dff9aa0dcc">More...</a><br /></td></tr>
@@ -1474,15 +1385,6 @@ template&lt;typename BT , unsigned int FB&gt; </td></tr>
 <tr class="memitem:a53d7a33cd41bce2acd1d6b8292487981"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if_t&lt; <a class="el" href="namespaceplayrho.html#a3c2c0d8136a2aabd56742fbedf6c00ad">IsMultipliableV</a>&lt; T1, T2 &gt;, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, C &gt;, A &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a53d7a33cd41bce2acd1d6b8292487981">operator*</a> (const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, B &gt;, A &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T2, C &gt;, B &gt; &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:a53d7a33cd41bce2acd1d6b8292487981"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the matrix product of the two given vector of vectors (matrices).  <a href="namespaceplayrho.html#a53d7a33cd41bce2acd1d6b8292487981">More...</a><br /></td></tr>
 <tr class="separator:a53d7a33cd41bce2acd1d6b8292487981"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bbd048b74cca661af851475f3a32f03"><td class="memItemLeft" align="right" valign="top"><a id="a2bbd048b74cca661af851475f3a32f03"></a>
-constexpr <a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a2bbd048b74cca661af851475f3a32f03">operator*</a> (<a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> lhs, <a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> rhs) noexcept</td></tr>
-<tr class="memdesc:a2bbd048b74cca661af851475f3a32f03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplication operator. <br /></td></tr>
-<tr class="separator:a2bbd048b74cca661af851475f3a32f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2eb53a11e4a467306c79d44056b59bc3"><td class="memTemplParams" colspan="2"><a id="a2eb53a11e4a467306c79d44056b59bc3"></a>
-template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:a2eb53a11e4a467306c79d44056b59bc3"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a2eb53a11e4a467306c79d44056b59bc3">operator*</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; lhs, <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; rhs) noexcept</td></tr>
-<tr class="memdesc:a2eb53a11e4a467306c79d44056b59bc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplication operator. <br /></td></tr>
-<tr class="separator:a2eb53a11e4a467306c79d44056b59bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af081fa6bf4de6ca0c13938151e91dbb6"><td class="memTemplParams" colspan="2"><a id="af081fa6bf4de6ca0c13938151e91dbb6"></a>
 template&lt;typename T1 , typename T2 , std::size_t N&gt; </td></tr>
 <tr class="memitem:af081fa6bf4de6ca0c13938151e91dbb6"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if_t&lt; std::is_same_v&lt; T1, decltype(T1{} *T2{})&gt;, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#af081fa6bf4de6ca0c13938151e91dbb6">operator*=</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp;lhs, const T2 rhs) noexcept</td></tr>
@@ -1496,15 +1398,6 @@ template&lt;typename T1 , typename T2 , std::size_t N&gt; </td></tr>
 <tr class="memitem:a41f0c49a750ed51bb02cef10158e8d7f"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a41f0c49a750ed51bb02cef10158e8d7f">operator+</a> (const <a class="el" href="namespaceplayrho.html#acbf97bd8e3f0f2ce4588735388f4089a">Matrix</a>&lt; T, M, N &gt; &amp;lhs, const <a class="el" href="namespaceplayrho.html#acbf97bd8e3f0f2ce4588735388f4089a">Matrix</a>&lt; T, M, N &gt; &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:a41f0c49a750ed51bb02cef10158e8d7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix addition operator for two same-type, same-sized matrices.  <a href="namespaceplayrho.html#a41f0c49a750ed51bb02cef10158e8d7f">More...</a><br /></td></tr>
 <tr class="separator:a41f0c49a750ed51bb02cef10158e8d7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4dbd342566c29d766d910388cfac25e"><td class="memItemLeft" align="right" valign="top"><a id="ad4dbd342566c29d766d910388cfac25e"></a>
-constexpr <a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ad4dbd342566c29d766d910388cfac25e">operator+</a> (<a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> lhs, <a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> rhs) noexcept</td></tr>
-<tr class="memdesc:ad4dbd342566c29d766d910388cfac25e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Addition operator. <br /></td></tr>
-<tr class="separator:ad4dbd342566c29d766d910388cfac25e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf379d2d8f3a5aacdaf5fb871c935237"><td class="memTemplParams" colspan="2"><a id="adf379d2d8f3a5aacdaf5fb871c935237"></a>
-template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:adf379d2d8f3a5aacdaf5fb871c935237"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#adf379d2d8f3a5aacdaf5fb871c935237">operator+</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; lhs, <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; rhs) noexcept</td></tr>
-<tr class="memdesc:adf379d2d8f3a5aacdaf5fb871c935237"><td class="mdescLeft">&#160;</td><td class="mdescRight">Addition operator. <br /></td></tr>
-<tr class="separator:adf379d2d8f3a5aacdaf5fb871c935237"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9320003d829a8e98e1e77bcd28adab4"><td class="memTemplParams" colspan="2"><a id="ad9320003d829a8e98e1e77bcd28adab4"></a>
 template&lt;typename T , std::size_t N&gt; </td></tr>
 <tr class="memitem:ad9320003d829a8e98e1e77bcd28adab4"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if_t&lt; std::is_same_v&lt; T, decltype(T{}+T{})&gt;, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ad9320003d829a8e98e1e77bcd28adab4">operator+</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; rhs) noexcept</td></tr>
@@ -1529,15 +1422,6 @@ template&lt;typename T , std::size_t N&gt; </td></tr>
 <tr class="memitem:a89118d71eeeffa541c76f6d566a8546d"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a89118d71eeeffa541c76f6d566a8546d">operator-</a> (const <a class="el" href="namespaceplayrho.html#acbf97bd8e3f0f2ce4588735388f4089a">Matrix</a>&lt; T, M, N &gt; &amp;lhs, const <a class="el" href="namespaceplayrho.html#acbf97bd8e3f0f2ce4588735388f4089a">Matrix</a>&lt; T, M, N &gt; &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:a89118d71eeeffa541c76f6d566a8546d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix subtraction operator for two same-type, same-sized matrices.  <a href="namespaceplayrho.html#a89118d71eeeffa541c76f6d566a8546d">More...</a><br /></td></tr>
 <tr class="separator:a89118d71eeeffa541c76f6d566a8546d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95c382ba441e52b8730b18d38dfd5771"><td class="memItemLeft" align="right" valign="top"><a id="a95c382ba441e52b8730b18d38dfd5771"></a>
-constexpr <a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a95c382ba441e52b8730b18d38dfd5771">operator-</a> (<a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> lhs, <a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> rhs) noexcept</td></tr>
-<tr class="memdesc:a95c382ba441e52b8730b18d38dfd5771"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtraction operator. <br /></td></tr>
-<tr class="separator:a95c382ba441e52b8730b18d38dfd5771"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9468719501f7a5cf7747569ef71acc33"><td class="memTemplParams" colspan="2"><a id="a9468719501f7a5cf7747569ef71acc33"></a>
-template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:a9468719501f7a5cf7747569ef71acc33"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a9468719501f7a5cf7747569ef71acc33">operator-</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; lhs, <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; rhs) noexcept</td></tr>
-<tr class="memdesc:a9468719501f7a5cf7747569ef71acc33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtraction operator. <br /></td></tr>
-<tr class="separator:a9468719501f7a5cf7747569ef71acc33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ea7b0293964b22ae57e18fc36518d75"><td class="memTemplParams" colspan="2"><a id="a1ea7b0293964b22ae57e18fc36518d75"></a>
 template&lt;typename T , std::size_t N&gt; </td></tr>
 <tr class="memitem:a1ea7b0293964b22ae57e18fc36518d75"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if_t&lt; std::is_same_v&lt; T, decltype(T{} - T{})&gt;, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a1ea7b0293964b22ae57e18fc36518d75">operator-</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; rhs) noexcept</td></tr>
@@ -1558,15 +1442,6 @@ template&lt;std::size_t N, typename T1 , typename T2 , typename OT  = decltype(T
 <tr class="memitem:a6da12fe999b8b56930c6cbd9dd4cd920"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if_t&lt; <a class="el" href="namespaceplayrho.html#abdcd4932a27b9347d3afbae550fa57d2">IsDivisableV</a>&lt; T1, T2 &gt; &amp;&amp;!<a class="el" href="namespaceplayrho.html#a168449a74e78ad00c9d22f1017de05f7">IsVectorV</a>&lt; T2 &gt;, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, N &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a6da12fe999b8b56930c6cbd9dd4cd920">operator/</a> (const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp;a, const T2 &amp;s) noexcept</td></tr>
 <tr class="memdesc:a6da12fe999b8b56930c6cbd9dd4cd920"><td class="mdescLeft">&#160;</td><td class="mdescRight">Division operator. <br /></td></tr>
 <tr class="separator:a6da12fe999b8b56930c6cbd9dd4cd920"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb66724eaf58f719874fe12e5fa78eae"><td class="memItemLeft" align="right" valign="top"><a id="acb66724eaf58f719874fe12e5fa78eae"></a>
-constexpr <a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#acb66724eaf58f719874fe12e5fa78eae">operator/</a> (<a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> lhs, <a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> rhs) noexcept</td></tr>
-<tr class="memdesc:acb66724eaf58f719874fe12e5fa78eae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Division operator. <br /></td></tr>
-<tr class="separator:acb66724eaf58f719874fe12e5fa78eae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adce07a22f20a1fe265a0ca72a3a0a3cd"><td class="memTemplParams" colspan="2"><a id="adce07a22f20a1fe265a0ca72a3a0a3cd"></a>
-template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:adce07a22f20a1fe265a0ca72a3a0a3cd"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#adce07a22f20a1fe265a0ca72a3a0a3cd">operator/</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; lhs, <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; rhs) noexcept</td></tr>
-<tr class="memdesc:adce07a22f20a1fe265a0ca72a3a0a3cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Division operator. <br /></td></tr>
-<tr class="separator:adce07a22f20a1fe265a0ca72a3a0a3cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8af63c98286091483bcd8bc55a8072d1"><td class="memTemplParams" colspan="2"><a id="a8af63c98286091483bcd8bc55a8072d1"></a>
 template&lt;typename T1 , typename T2 , std::size_t N&gt; </td></tr>
 <tr class="memitem:a8af63c98286091483bcd8bc55a8072d1"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if_t&lt; std::is_same_v&lt; T1, decltype(T1{}/T2{})&gt;, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a8af63c98286091483bcd8bc55a8072d1">operator/=</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp;lhs, const T2 rhs) noexcept</td></tr>
@@ -1588,24 +1463,10 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a9664edec057808e7df69e801e1f9012f">operator&lt;</a> (const <a class="el" href="structplayrho_1_1Version.html">Version</a> &amp;lhs, const <a class="el" href="structplayrho_1_1Version.html">Version</a> &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:a9664edec057808e7df69e801e1f9012f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less-than operator. <br /></td></tr>
 <tr class="separator:a9664edec057808e7df69e801e1f9012f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeef6e842dc811739f58a6e2b4b1d95ae"><td class="memItemLeft" align="right" valign="top"><a id="aeef6e842dc811739f58a6e2b4b1d95ae"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#aeef6e842dc811739f58a6e2b4b1d95ae">operator&lt;</a> (<a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> lhs, <a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> rhs) noexcept</td></tr>
-<tr class="memdesc:aeef6e842dc811739f58a6e2b4b1d95ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less-than operator. <br /></td></tr>
-<tr class="separator:aeef6e842dc811739f58a6e2b4b1d95ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a310dd6a59f071ee86430f5162368f61c"><td class="memTemplParams" colspan="2"><a id="a310dd6a59f071ee86430f5162368f61c"></a>
-template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:a310dd6a59f071ee86430f5162368f61c"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a310dd6a59f071ee86430f5162368f61c">operator&lt;</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; lhs, <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; rhs) noexcept</td></tr>
-<tr class="memdesc:a310dd6a59f071ee86430f5162368f61c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less-than operator. <br /></td></tr>
-<tr class="separator:a310dd6a59f071ee86430f5162368f61c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3ec58bed15fb00ea00af6a52e5a7e3e"><td class="memItemLeft" align="right" valign="top"><a id="ad3ec58bed15fb00ea00af6a52e5a7e3e"></a>
 inline ::std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ad3ec58bed15fb00ea00af6a52e5a7e3e">operator&lt;&lt;</a> (::std::ostream &amp;os, const <a class="el" href="structplayrho_1_1ContactFeature.html">ContactFeature</a> &amp;value)</td></tr>
 <tr class="memdesc:ad3ec58bed15fb00ea00af6a52e5a7e3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stream output operator. <br /></td></tr>
 <tr class="separator:ad3ec58bed15fb00ea00af6a52e5a7e3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a598d4f1182411b5db1d2c445b16fc5fd"><td class="memTemplParams" colspan="2"><a id="a598d4f1182411b5db1d2c445b16fc5fd"></a>
-template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:a598d4f1182411b5db1d2c445b16fc5fd"><td class="memTemplItemLeft" align="right" valign="top">inline ::std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a598d4f1182411b5db1d2c445b16fc5fd">operator&lt;&lt;</a> (::std::ostream &amp;os, const <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; &amp;value)</td></tr>
-<tr class="memdesc:a598d4f1182411b5db1d2c445b16fc5fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output stream operator. <br /></td></tr>
-<tr class="separator:a598d4f1182411b5db1d2c445b16fc5fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd5053c1cb8807f6296852e4a8c657d2"><td class="memTemplParams" colspan="2"><a id="acd5053c1cb8807f6296852e4a8c657d2"></a>
 template&lt;typename T &gt; </td></tr>
 <tr class="memitem:acd5053c1cb8807f6296852e4a8c657d2"><td class="memTemplItemLeft" align="right" valign="top">::std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#acd5053c1cb8807f6296852e4a8c657d2">operator&lt;&lt;</a> (::std::ostream &amp;os, const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;value)</td></tr>
@@ -1628,15 +1489,6 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#aafdb22d94f848eebd4aff498f3fba0c4">operator&lt;=</a> (const <a class="el" href="structplayrho_1_1Version.html">Version</a> &amp;lhs, const <a class="el" href="structplayrho_1_1Version.html">Version</a> &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:aafdb22d94f848eebd4aff498f3fba0c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less-than or equal-to operator. <br /></td></tr>
 <tr class="separator:aafdb22d94f848eebd4aff498f3fba0c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff78b36b8b4533aeb308283f8557c657"><td class="memItemLeft" align="right" valign="top"><a id="aff78b36b8b4533aeb308283f8557c657"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#aff78b36b8b4533aeb308283f8557c657">operator&lt;=</a> (<a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> lhs, <a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> rhs) noexcept</td></tr>
-<tr class="memdesc:aff78b36b8b4533aeb308283f8557c657"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less-than or equal-to operator. <br /></td></tr>
-<tr class="separator:aff78b36b8b4533aeb308283f8557c657"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70f7c32a47415d5005673852344009eb"><td class="memTemplParams" colspan="2"><a id="a70f7c32a47415d5005673852344009eb"></a>
-template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:a70f7c32a47415d5005673852344009eb"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a70f7c32a47415d5005673852344009eb">operator&lt;=</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; lhs, <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; rhs) noexcept</td></tr>
-<tr class="memdesc:a70f7c32a47415d5005673852344009eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less-than or equal-to operator. <br /></td></tr>
-<tr class="separator:a70f7c32a47415d5005673852344009eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5692e54289c87c156bd7455763082a9"><td class="memItemLeft" align="right" valign="top"><a id="ab5692e54289c87c156bd7455763082a9"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ab5692e54289c87c156bd7455763082a9">operator==</a> (const <a class="el" href="classplayrho_1_1BlockAllocator.html">BlockAllocator</a> &amp;a, const <a class="el" href="classplayrho_1_1BlockAllocator.html">BlockAllocator</a> &amp;b)</td></tr>
 <tr class="memdesc:ab5692e54289c87c156bd7455763082a9"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classplayrho_1_1BlockAllocator.html">BlockAllocator</a></code> equality operator. <br /></td></tr>
@@ -1674,15 +1526,6 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ac19a825ed22691eab1981a616b6bf539">operator==</a> (<a class="el" href="structplayrho_1_1ContactFeature.html">ContactFeature</a> lhs, <a class="el" href="structplayrho_1_1ContactFeature.html">ContactFeature</a> rhs) noexcept</td></tr>
 <tr class="memdesc:ac19a825ed22691eab1981a616b6bf539"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given two contact features are equal. <br /></td></tr>
 <tr class="separator:ac19a825ed22691eab1981a616b6bf539"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a436c8f6a752a984295b46dc3c24256a1"><td class="memItemLeft" align="right" valign="top"><a id="a436c8f6a752a984295b46dc3c24256a1"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a436c8f6a752a984295b46dc3c24256a1">operator==</a> (<a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> lhs, <a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> rhs) noexcept</td></tr>
-<tr class="memdesc:a436c8f6a752a984295b46dc3c24256a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator. <br /></td></tr>
-<tr class="separator:a436c8f6a752a984295b46dc3c24256a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf5fcbbad444f151c1665cecb75f381f"><td class="memTemplParams" colspan="2"><a id="aaf5fcbbad444f151c1665cecb75f381f"></a>
-template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:aaf5fcbbad444f151c1665cecb75f381f"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#aaf5fcbbad444f151c1665cecb75f381f">operator==</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; lhs, <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; rhs) noexcept</td></tr>
-<tr class="memdesc:aaf5fcbbad444f151c1665cecb75f381f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator. <br /></td></tr>
-<tr class="separator:aaf5fcbbad444f151c1665cecb75f381f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ef072ea2c5a69df2050c1a1557206ef"><td class="memItemLeft" align="right" valign="top"><a id="a7ef072ea2c5a69df2050c1a1557206ef"></a>
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7ef072ea2c5a69df2050c1a1557206ef">operator&gt;</a> (const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> lhs, const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> rhs) noexcept</td></tr>
 <tr class="memdesc:a7ef072ea2c5a69df2050c1a1557206ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater-than operator. <br /></td></tr>
@@ -1695,15 +1538,6 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ab826df98026c84dcfa3cf694d6f8e63e">operator&gt;</a> (const <a class="el" href="structplayrho_1_1Version.html">Version</a> &amp;lhs, const <a class="el" href="structplayrho_1_1Version.html">Version</a> &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:ab826df98026c84dcfa3cf694d6f8e63e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater-than operator. <br /></td></tr>
 <tr class="separator:ab826df98026c84dcfa3cf694d6f8e63e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a041ad90997561d20e0c3b4265c4f2f90"><td class="memItemLeft" align="right" valign="top"><a id="a041ad90997561d20e0c3b4265c4f2f90"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a041ad90997561d20e0c3b4265c4f2f90">operator&gt;</a> (<a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> lhs, <a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> rhs) noexcept</td></tr>
-<tr class="memdesc:a041ad90997561d20e0c3b4265c4f2f90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater-than operator. <br /></td></tr>
-<tr class="separator:a041ad90997561d20e0c3b4265c4f2f90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7f2c871930a05238a02a3581b2dbcc9"><td class="memTemplParams" colspan="2"><a id="ab7f2c871930a05238a02a3581b2dbcc9"></a>
-template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:ab7f2c871930a05238a02a3581b2dbcc9"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ab7f2c871930a05238a02a3581b2dbcc9">operator&gt;</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; lhs, <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; rhs) noexcept</td></tr>
-<tr class="memdesc:ab7f2c871930a05238a02a3581b2dbcc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater-than operator. <br /></td></tr>
-<tr class="separator:ab7f2c871930a05238a02a3581b2dbcc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae75f2a5fe81c028b473be52b47b7c7e9"><td class="memItemLeft" align="right" valign="top"><a id="ae75f2a5fe81c028b473be52b47b7c7e9"></a>
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ae75f2a5fe81c028b473be52b47b7c7e9">operator&gt;=</a> (const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> lhs, const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> rhs) noexcept</td></tr>
 <tr class="memdesc:ae75f2a5fe81c028b473be52b47b7c7e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater-than or equal-to operator. <br /></td></tr>
@@ -1716,23 +1550,6 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a30424693f3f723867383b08f1735bdd3">operator&gt;=</a> (const <a class="el" href="structplayrho_1_1Version.html">Version</a> &amp;lhs, const <a class="el" href="structplayrho_1_1Version.html">Version</a> &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:a30424693f3f723867383b08f1735bdd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater-than or equal-to operator. <br /></td></tr>
 <tr class="separator:a30424693f3f723867383b08f1735bdd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b5c7c5e333c08e00e17f1809c4b5eb6"><td class="memItemLeft" align="right" valign="top"><a id="a2b5c7c5e333c08e00e17f1809c4b5eb6"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a2b5c7c5e333c08e00e17f1809c4b5eb6">operator&gt;=</a> (<a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> lhs, <a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">Fixed32</a> rhs) noexcept</td></tr>
-<tr class="memdesc:a2b5c7c5e333c08e00e17f1809c4b5eb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater-than or equal-to operator. <br /></td></tr>
-<tr class="separator:a2b5c7c5e333c08e00e17f1809c4b5eb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac52ee51315f92b6463bab76317603a8d"><td class="memTemplParams" colspan="2"><a id="ac52ee51315f92b6463bab76317603a8d"></a>
-template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:ac52ee51315f92b6463bab76317603a8d"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ac52ee51315f92b6463bab76317603a8d">operator&gt;=</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; lhs, <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; rhs) noexcept</td></tr>
-<tr class="memdesc:ac52ee51315f92b6463bab76317603a8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater-than or equal-to operator. <br /></td></tr>
-<tr class="separator:ac52ee51315f92b6463bab76317603a8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga85dfc7d7d071b22f80179a86e5544237"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:ga85dfc7d7d071b22f80179a86e5544237"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#ga85dfc7d7d071b22f80179a86e5544237">pow</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; base, <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; exponent)</td></tr>
-<tr class="memdesc:ga85dfc7d7d071b22f80179a86e5544237"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the value of the base number raised to the power of the exponent.  <a href="group__FixedMath.html#ga85dfc7d7d071b22f80179a86e5544237">More...</a><br /></td></tr>
-<tr class="separator:ga85dfc7d7d071b22f80179a86e5544237"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae62c436656c3c2a2e0d46d83fe1ea3ae"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:gae62c436656c3c2a2e0d46d83fe1ea3ae"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#gae62c436656c3c2a2e0d46d83fe1ea3ae">pow</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; value, int n)</td></tr>
-<tr class="memdesc:gae62c436656c3c2a2e0d46d83fe1ea3ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the value of the given number raised to the given power.  <a href="group__FixedMath.html#gae62c436656c3c2a2e0d46d83fe1ea3ae">More...</a><br /></td></tr>
-<tr class="separator:gae62c436656c3c2a2e0d46d83fe1ea3ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb651f620aefb4ee65ec0cc8c10b27b0"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#adb651f620aefb4ee65ec0cc8c10b27b0">Realloc</a> (void *ptr, std::size_t <a class="el" href="namespaceplayrho.html#af33cf35b33c93168aedcbf5a986a3472">size</a>)</td></tr>
 <tr class="memdesc:adb651f620aefb4ee65ec0cc8c10b27b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reallocates memory.  <a href="namespaceplayrho.html#adb651f620aefb4ee65ec0cc8c10b27b0">More...</a><br /></td></tr>
 <tr class="separator:adb651f620aefb4ee65ec0cc8c10b27b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1748,13 +1565,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="memitem:a1de374e7d6af7b68b654b657d756468a"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if_t&lt; <a class="el" href="namespaceplayrho.html#adaec996c65bbbcac537113d83ee753c5">IsReverseIterableV</a>&lt; T &gt;, <a class="el" href="structplayrho_1_1ReversionWrapper.html">ReversionWrapper</a>&lt; T &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a1de374e7d6af7b68b654b657d756468a">Reverse</a> (T &amp;&amp;iterable)</td></tr>
 <tr class="memdesc:a1de374e7d6af7b68b654b657d756468a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a reversed order iterated wrapper.  <a href="namespaceplayrho.html#a1de374e7d6af7b68b654b657d756468a">More...</a><br /></td></tr>
 <tr class="separator:a1de374e7d6af7b68b654b657d756468a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1e3ca7fb2626886c5920bbc5f570a525"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:ga1e3ca7fb2626886c5920bbc5f570a525"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#ga1e3ca7fb2626886c5920bbc5f570a525">round</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; value) noexcept</td></tr>
-<tr class="memdesc:ga1e3ca7fb2626886c5920bbc5f570a525"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds the given value.  <a href="group__FixedMath.html#ga1e3ca7fb2626886c5920bbc5f570a525">More...</a><br /></td></tr>
-<tr class="separator:ga1e3ca7fb2626886c5920bbc5f570a525"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1502fbf5063c1f5dbedafe215895ad29"><td class="memTemplParams" colspan="2">
 template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ga1502fbf5063c1f5dbedafe215895ad29"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga1502fbf5063c1f5dbedafe215895ad29">RoundOff</a> (const T &amp;value, unsigned precision=<a class="el" href="group__Math.html#ga2e94545b5052523414ec03d0e95e2297">DefaultRoundOffPrecission</a>) -&gt; decltype(<a class="el" href="group__FixedMath.html#ga1e3ca7fb2626886c5920bbc5f570a525">round</a>(value *static_cast&lt; T &gt;(precision))/static_cast&lt; T &gt;(precision))</td></tr>
+<tr class="memitem:ga1502fbf5063c1f5dbedafe215895ad29"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga1502fbf5063c1f5dbedafe215895ad29">RoundOff</a> (const T &amp;value, unsigned precision=<a class="el" href="group__Math.html#ga2e94545b5052523414ec03d0e95e2297">DefaultRoundOffPrecission</a>) -&gt; decltype(round(value *static_cast&lt; T &gt;(precision))/static_cast&lt; T &gt;(precision))</td></tr>
 <tr class="memdesc:ga1502fbf5063c1f5dbedafe215895ad29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the rounded value of the given value. <br /></td></tr>
 <tr class="separator:ga1502fbf5063c1f5dbedafe215895ad29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1ceb2daa8b41c4834408662c43e5abda"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga1ceb2daa8b41c4834408662c43e5abda">RoundOff</a> (const <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a> &amp;value, std::uint32_t precision=<a class="el" href="group__Math.html#ga2e94545b5052523414ec03d0e95e2297">DefaultRoundOffPrecission</a>) -&gt; <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a></td></tr>
@@ -1795,14 +1608,6 @@ template&lt;typename T &gt; </td></tr>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a223329721a8138f316898ed9a4877250">ShouldCollide</a> (const <a class="el" href="structplayrho_1_1Filter.html">Filter</a> filterA, const <a class="el" href="structplayrho_1_1Filter.html">Filter</a> filterB) noexcept</td></tr>
 <tr class="memdesc:a223329721a8138f316898ed9a4877250"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether collision processing should be performed. <br /></td></tr>
 <tr class="separator:a223329721a8138f316898ed9a4877250"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8445167791eb53f1e8eb0dbf318293a1"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:ga8445167791eb53f1e8eb0dbf318293a1"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#ga8445167791eb53f1e8eb0dbf318293a1">signbit</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; value) noexcept</td></tr>
-<tr class="memdesc:ga8445167791eb53f1e8eb0dbf318293a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the given value is negative.  <a href="group__FixedMath.html#ga8445167791eb53f1e8eb0dbf318293a1">More...</a><br /></td></tr>
-<tr class="separator:ga8445167791eb53f1e8eb0dbf318293a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0daabd6eacf8702561639d394e3efe6e"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:ga0daabd6eacf8702561639d394e3efe6e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#ga0daabd6eacf8702561639d394e3efe6e">sin</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; arg)</td></tr>
-<tr class="memdesc:ga0daabd6eacf8702561639d394e3efe6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the sine of the argument for <a class="el" href="classplayrho_1_1Fixed.html" title="Template class for fixed-point numbers.">Fixed</a> types.  <a href="group__FixedMath.html#ga0daabd6eacf8702561639d394e3efe6e">More...</a><br /></td></tr>
-<tr class="separator:ga0daabd6eacf8702561639d394e3efe6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af33cf35b33c93168aedcbf5a986a3472"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#af33cf35b33c93168aedcbf5a986a3472">size</a> (<a class="el" href="namespaceplayrho.html#a704da3b24d9b1f9135e140dcd5420518">IndexPair3</a> pairs) -&gt; decltype(<a class="el" href="namespaceplayrho.html#ad136f8db9fd6c0c583c1890b8a3cc504">GetNumValidIndices</a>(pairs))</td></tr>
 <tr class="memdesc:af33cf35b33c93168aedcbf5a986a3472"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the dynamic size of the given collection of index pairs.  <a href="namespaceplayrho.html#af33cf35b33c93168aedcbf5a986a3472">More...</a><br /></td></tr>
 <tr class="separator:af33cf35b33c93168aedcbf5a986a3472"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1822,10 +1627,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ae889e4744cedfd0684d20ef3b7f48652">Sort</a> (<a class="el" href="structplayrho_1_1Island.html">Island</a> &amp;island) noexcept</td></tr>
 <tr class="memdesc:ae889e4744cedfd0684d20ef3b7f48652"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sorts the island containers. <br /></td></tr>
 <tr class="separator:ae889e4744cedfd0684d20ef3b7f48652"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7a9d7e9855b45a3b4103632a47ccd6f4"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:ga7a9d7e9855b45a3b4103632a47ccd6f4"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#ga7a9d7e9855b45a3b4103632a47ccd6f4">sqrt</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; arg)</td></tr>
-<tr class="memdesc:ga7a9d7e9855b45a3b4103632a47ccd6f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Square root's the given value.  <a href="group__FixedMath.html#ga7a9d7e9855b45a3b4103632a47ccd6f4">More...</a><br /></td></tr>
-<tr class="separator:ga7a9d7e9855b45a3b4103632a47ccd6f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4000cee8b1fc5a9ab6a5cfe29eb645b6"><td class="memTemplParams" colspan="2">
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:ga4000cee8b1fc5a9ab6a5cfe29eb645b6"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga4000cee8b1fc5a9ab6a5cfe29eb645b6">Square</a> (T t) noexcept(noexcept(t *t)) -&gt; decltype(t *t)</td></tr>
@@ -1860,10 +1661,6 @@ constexpr <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b
 <tr class="memitem:ga17fa159bf4195bff228c3fda9252a5b1"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga17fa159bf4195bff228c3fda9252a5b1">Transform</a> (const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, M &gt; &amp;v, const <a class="el" href="namespaceplayrho.html#acbf97bd8e3f0f2ce4588735388f4089a">Matrix</a>&lt; T2, M, N &gt; &amp;m) noexcept</td></tr>
 <tr class="memdesc:ga17fa159bf4195bff228c3fda9252a5b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies an M-element vector by an M-by-N matrix.  <a href="group__Math.html#ga17fa159bf4195bff228c3fda9252a5b1">More...</a><br /></td></tr>
 <tr class="separator:ga17fa159bf4195bff228c3fda9252a5b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga55adeaba7e08eb415e6437f709b62c0f"><td class="memTemplParams" colspan="2">template&lt;typename BT , unsigned int FB&gt; </td></tr>
-<tr class="memitem:ga55adeaba7e08eb415e6437f709b62c0f"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FixedMath.html#ga55adeaba7e08eb415e6437f709b62c0f">trunc</a> (<a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt; arg)</td></tr>
-<tr class="memdesc:ga55adeaba7e08eb415e6437f709b62c0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Truncates the given value.  <a href="group__FixedMath.html#ga55adeaba7e08eb415e6437f709b62c0f">More...</a><br /></td></tr>
-<tr class="separator:ga55adeaba7e08eb415e6437f709b62c0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf49104158a7aea199f9531f9ab5b7d0"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#aaf49104158a7aea199f9531f9ab5b7d0">UnflagForFiltering</a> (<a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;contact) noexcept</td></tr>
 <tr class="memdesc:aaf49104158a7aea199f9531f9ab5b7d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unflags this contact for filtering.  <a href="namespaceplayrho.html#aaf49104158a7aea199f9531f9ab5b7d0">More...</a><br /></td></tr>
 <tr class="separator:aaf49104158a7aea199f9531f9ab5b7d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1923,7 +1720,7 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <tr class="separator:ab2898b34e4bf5fe5af48939ec34e48f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a490b0d336b7a74ae18cf57632eeb7aa9"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a490b0d336b7a74ae18cf57632eeb7aa9">DefaultLinearSleepTolerance</a> = 0.01_mps</td></tr>
 <tr class="separator:a490b0d336b7a74ae18cf57632eeb7aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad91e53ba44755653e34147d39695a0a1"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ad91e53ba44755653e34147d39695a0a1">DefaultLinearSlop</a> = <a class="el" href="structplayrho_1_1detail_1_1Defaults.html">detail::Defaults</a>&lt;<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&gt;::GetLinearSlop()</td></tr>
+<tr class="memitem:ad91e53ba44755653e34147d39695a0a1"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ad91e53ba44755653e34147d39695a0a1">DefaultLinearSlop</a> = 0.005_m</td></tr>
 <tr class="memdesc:ad91e53ba44755653e34147d39695a0a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default linear slop.  <a href="namespaceplayrho.html#ad91e53ba44755653e34147d39695a0a1">More...</a><br /></td></tr>
 <tr class="separator:ad91e53ba44755653e34147d39695a0a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8fea4a93f741aa800e943957fd23656"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ac8fea4a93f741aa800e943957fd23656">DefaultMaxAngularCorrection</a> = <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(8.0f / 180.0f) * <a class="el" href="namespaceplayrho.html#a3fe0bdbb0ea9c449b7504f7c75840993">Pi</a> * 1_rad</td></tr>
@@ -1953,15 +1750,13 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a6b71ffce08877ce941d29616eb907114">DefaultMaxTranslation</a> = 2_m</td></tr>
 <tr class="memdesc:a6b71ffce08877ce941d29616eb907114"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default maximum translation amount. <br /></td></tr>
 <tr class="separator:a6b71ffce08877ce941d29616eb907114"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7beadf6067bdf66f48ee9b94c337d252"><td class="memItemLeft" align="right" valign="top"><a id="a7beadf6067bdf66f48ee9b94c337d252"></a>
-constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7beadf6067bdf66f48ee9b94c337d252">DefaultMaxVertexRadius</a> = <a class="el" href="structplayrho_1_1detail_1_1Defaults.html">detail::Defaults</a>&lt;<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&gt;::GetMaxVertexRadius()</td></tr>
-<tr class="memdesc:a7beadf6067bdf66f48ee9b94c337d252"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default maximum vertex radius. <br /></td></tr>
+<tr class="memitem:a7beadf6067bdf66f48ee9b94c337d252"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7beadf6067bdf66f48ee9b94c337d252">DefaultMaxVertexRadius</a> = 255_m</td></tr>
+<tr class="memdesc:a7beadf6067bdf66f48ee9b94c337d252"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default maximum vertex radius.  <a href="namespaceplayrho.html#a7beadf6067bdf66f48ee9b94c337d252">More...</a><br /></td></tr>
 <tr class="separator:a7beadf6067bdf66f48ee9b94c337d252"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e76508577c61a5bc9cc3107d60f3c1b"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a0e76508577c61a5bc9cc3107d60f3c1b">DefaultMinStillTimeToSleep</a> = <a class="el" href="group__PhysicalQuantities.html#gaa4842e1cf025b86cafb4b09c0f51bc18">Time</a>{1_s / 2}</td></tr>
 <tr class="separator:a0e76508577c61a5bc9cc3107d60f3c1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a174cfa632eb92c15bc2e48e7d09d216a"><td class="memItemLeft" align="right" valign="top"><a id="a174cfa632eb92c15bc2e48e7d09d216a"></a>
-constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a174cfa632eb92c15bc2e48e7d09d216a">DefaultMinVertexRadius</a> = <a class="el" href="namespaceplayrho.html#ad91e53ba44755653e34147d39695a0a1">DefaultLinearSlop</a> * <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(2)</td></tr>
-<tr class="memdesc:a174cfa632eb92c15bc2e48e7d09d216a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default minimum vertex radius. <br /></td></tr>
+<tr class="memitem:a174cfa632eb92c15bc2e48e7d09d216a"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a174cfa632eb92c15bc2e48e7d09d216a">DefaultMinVertexRadius</a> = 0.01_m</td></tr>
+<tr class="memdesc:a174cfa632eb92c15bc2e48e7d09d216a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default minimum vertex radius.  <a href="namespaceplayrho.html#a174cfa632eb92c15bc2e48e7d09d216a">More...</a><br /></td></tr>
 <tr class="separator:a174cfa632eb92c15bc2e48e7d09d216a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8eb622479d2ffb28ce1a4e88e8a211f"><td class="memItemLeft" align="right" valign="top"><a id="ab8eb622479d2ffb28ce1a4e88e8a211f"></a>
 constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ab8eb622479d2ffb28ce1a4e88e8a211f">DefaultRegMinMomentum</a> = <a class="el" href="group__PhysicalQuantities.html#gad36b742307f9f19c2c8c95e9372a3613">Momentum</a>{0_Ns / 100}</td></tr>
@@ -2266,30 +2061,6 @@ template&lt;typename Type , typename Check , typename DecayedType  = std::decay_
 
 </div>
 </div>
-<a id="aba435a5d7b05cc977530e864af6b43c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba435a5d7b05cc977530e864af6b43c3">&#9670;&nbsp;</a></span>Fixed32</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespaceplayrho.html#aba435a5d7b05cc977530e864af6b43c3">playrho::Fixed32</a> = typedef <a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt;std::int32_t, <a class="el" href="structplayrho_1_1detail_1_1FixedDefault.html">detail::FixedDefault</a>&lt;std::int32_t&gt;::FractionBits&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>32-bit fixed precision type. </p>
-<p>This is a 32-bit fixed precision type with a Q number-format of <code>Q23.9</code>.</p>
-<dl class="section warning"><dt>Warning</dt><dd>The available numeric fidelity of any 32-bit fixed point type is very limited. Using a 32-bit fixed point type for Real should only be considered for simulations where it's been found to work and where the dynamics won't be changing between runs.</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Maximum value (with 9 fraction bits) is approximately 4194303.99609375. </dd>
-<dd>
-Minimum value (with 9 fraction bits) is approximately 0.001953125.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1Fixed.html" title="Template class for fixed-point numbers.">Fixed</a>, <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87" title="Real-number type.">Real</a> </dd>
-<dd>
-<a href="https://en.wikipedia.org/wiki/Q_(number_format)">https://en.wikipedia.org/wiki/Q_(number_format)</a> </dd></dl>
-
-</div>
-</div>
 <a id="a2d09dc7b51321c052b071485357ca1f9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2d09dc7b51321c052b071485357ca1f9">&#9670;&nbsp;</a></span>Force2</h2>
 
@@ -2533,18 +2304,14 @@ N is the number of columns of the matrix. </dd></dl>
 <p>This is the number type underlying numerical calculations conceptually involving real-numbers. Ideally the implementation of this type doesn't suffer from things like: catastrophic cancellation, catastrophic division, overflows, nor underflows.</p>
 <dl class="section note"><dt>Note</dt><dd>This can be implemented using any of the fundamental floating point types (<code>float</code>, <code>double</code>, or <code>long double</code>). </dd>
 <dd>
-This can also be implemented using a <code>LiteralType</code> that has necessary support: all common mathematical functions, support for infinity and NaN, and a specialization of the <code>std::numeric_limits</code> class template for it. </dd>
-<dd>
-At present, the <code>Fixed32</code> and <code>Fixed64</code> aliases of the <code><a class="el" href="classplayrho_1_1Fixed.html" title="Template class for fixed-point numbers.">Fixed</a></code> template type are provided as examples of qualifying literal types though the usability of these are limited and their use is discouraged.</dd>
+This can also be implemented using a <code>LiteralType</code> that has necessary support: all common mathematical functions, support for infinity and NaN, and a specialization of the <code>std::numeric_limits</code> class template for it.</dd>
 <dd>
 Regarding division:<ul>
 <li>While dividing 1 by a real, caching the result, and then doing multiplications with the result may well be faster (than repeatedly dividing), dividing 1 by the real can also result in an underflow situation that's then compounded every time it's multiplied with other values.</li>
 <li>Meanwhile, dividing every time by a real isolates any underflows to the particular division where underflow occurs.</li>
 </ul>
 </dd></dl>
-<dl class="section warning"><dt>Warning</dt><dd>Using <code>Fixed32</code> is not advised as its numerical limitations are more likely to result in problems like overflows or underflows. </dd>
-<dd>
-The note regarding division applies even more so when using a fixed-point type (for <code>Real</code>).</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>The note regarding division applies even more so when using a fixed-point type (for <code>Real</code>).</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a href="https://en.cppreference.com/w/cpp/language/types">https://en.cppreference.com/w/cpp/language/types</a> </dd>
 <dd>
 <a href="https://en.cppreference.com/w/cpp/types/is_floating_point">https://en.cppreference.com/w/cpp/types/is_floating_point</a> </dd>
@@ -2873,39 +2640,6 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Non-null pointer if size is not zero else <code>nullptr</code>. Pointer must be deallocated with <code><a class="el" href="namespaceplayrho.html#a62c138018c11ab3c255b410f2dedd7d2" title="Frees memory.">Free(void*)</a></code> or one of the <code>Realloc</code> functions. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#a62c138018c11ab3c255b410f2dedd7d2" title="Frees memory.">Free</a>, <a class="el" href="namespaceplayrho.html#a516a3bbb73371cdc53f348b67f43bb1f" title="Allocates memory.">Alloc</a>, <a class="el" href="namespaceplayrho.html#a197482cbffdd702c8926a00f42a76e62" title="Reallocates memory for an array.">ReallocArray</a>. </dd></dl>
-
-</div>
-</div>
-<a id="a87b5e301c1a03179e49ed7ee3a9408d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a87b5e301c1a03179e49ed7ee3a9408d9">&#9670;&nbsp;</a></span>AlmostZero()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename BT , unsigned int FB&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr bool playrho::AlmostZero </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1Fixed.html">Fixed</a>&lt; BT, FB &gt;&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets whether a given value is almost zero. </p>
-<p>An almost zero value is "subnormal". Dividing by these values can lead to odd results like a divide by zero trap occurring. </p><dl class="section return"><dt>Returns</dt><dd><code>true</code> if the given value is almost zero, <code>false</code> otherwise. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="group__Math.html#ga9447e387f79e761f547aa4d321605c78">AlmostEqual()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a073a93c54a20aa68f2c56e759b7976ab">playrho::d2::ClipSegmentToLine()</a>, <a class="el" href="group__Math.html#gae769785f0540a4b8960b282f6b105c14">ComputeCentroid()</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceProxy.html#ad01443fd4ea346d550ece90f7f92b1f4">playrho::d2::DistanceProxy::Distance()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a7304da106cfaa394b4d0179ded468aa6">playrho::d2::GetMassData()</a>, <a class="el" href="structplayrho_1_1ToiOutput.html#a19b308c9b3b8f5292b9f3dad183c9d76">playrho::ToiOutput::GetToiViaSat()</a>, <a class="el" href="group__Math.html#ga01639d99c5401d526aeb5c6df075e153">Invert()</a>, <a class="el" href="group__Math.html#ga0c7d2525a406c1f83c0574e46a2cee32">Normalize()</a>, <a class="el" href="group__RayCastGroup.html#gabc2e992343e201f48c1956753a530247">playrho::d2::DistanceProxy::RayCast()</a>, <a class="el" href="group__RayCastGroup.html#gaa2b257514c434e44a5ea5839c959bea9">playrho::d2::RayCast()</a>, and <a class="el" href="group__Math.html#ga1dfb22979400417701de8582bb6d76ad">Solve()</a>.</p>
 
 </div>
 </div>
@@ -3308,7 +3042,6 @@ template&lt;&gt; </div>
 <p>Gets an invalid value for the ShapeID type.</p>
 <p>Gets an invalid value for a <code>Mat22</code>.</p>
 <p>Gets an invalid value for the JointID type.</p>
-<p>Gets an invalid value.</p>
 <p>Gets an invalid value for the <code>UnitVec</code> type.</p>
 <p>Gets an invalid AABB value.</p>
 <p>Gets an invalid value for the ContactID type.</p>
@@ -5359,7 +5092,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>Converts the given value to the value as the underlying type. </p><dl class="section note"><dt>Note</dt><dd>This is like <code>std::to_underlying</code> slated for C++23. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a179">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a177">World.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#abebb8afee132b1f990d43a9a223fd5ed">playrho::d2::VelocityConstraint::VelocityConstraint()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#af6a301104182688b53bfdfb4c9df309f">playrho::d2::At()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a7e8932936bd2f281984a4afacc40e7a1">playrho::d2::GetSoonestContact()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a730c61c0b7b9ed98996116e9a30ee429">playrho::d2::World::GetWorldIndex()</a>, and <a class="el" href="ContactSolver_8hpp.html#a0fd21d441a78194f210e9f900bd3d1a4">playrho::GaussSeidel::SolvePositionConstraint()</a>.</p>
@@ -5691,7 +5424,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto playrho::DefaultLinearSlop = <a class="el" href="structplayrho_1_1detail_1_1Defaults.html">detail::Defaults</a>&lt;<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&gt;::GetLinearSlop()</td>
+          <td class="memname">constexpr auto playrho::DefaultLinearSlop = 0.005_m</td>
         </tr>
       </table>
   </td>
@@ -5702,7 +5435,9 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Default linear slop. </p>
-<p>Length used as a collision and constraint tolerance. Usually chosen to be numerically significant, but visually insignificant. Lower or raise to decrease or increase respectively the minimum of space between bodies at rest. </p><dl class="section note"><dt>Note</dt><dd>Smaller values relative to sizes of bodies increases the time it takes for bodies to come to rest. </dd></dl>
+<p>Length used as a collision and constraint tolerance. Usually chosen to be numerically significant, but visually insignificant. Lower or raise to decrease or increase respectively the minimum of space between bodies at rest. </p><dl class="section note"><dt>Note</dt><dd>Smaller values relative to sizes of bodies increases the time it takes for bodies to come to rest. </dd>
+<dd>
+The value used by Box2D 2.3.2 b2_linearSlop define is 0.005_m. </dd></dl>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Compositor_8cpp-example.html#a20">Compositor.cpp</a>.</dd>
 </dl>
 
@@ -5811,6 +5546,33 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a7beadf6067bdf66f48ee9b94c337d252"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7beadf6067bdf66f48ee9b94c337d252">&#9670;&nbsp;</a></span>DefaultMaxVertexRadius</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto playrho::DefaultMaxVertexRadius = 255_m</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default maximum vertex radius. </p>
+<dl class="section note"><dt>Note</dt><dd>Recommend using <code>255_m</code> or <code>DefaultLinearSlop * 2 * 25500</code>. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a150">World.cpp</a>.</dd>
+</dl>
+
+</div>
+</div>
 <a id="a0e76508577c61a5bc9cc3107d60f3c1b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0e76508577c61a5bc9cc3107d60f3c1b">&#9670;&nbsp;</a></span>DefaultMinStillTimeToSleep</h2>
 
@@ -5832,6 +5594,31 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <p>Default minimum still time to sleep.</p>
 <p>The default minimum time bodies must be still for bodies to be put to sleep. </p>
+
+</div>
+</div>
+<a id="a174cfa632eb92c15bc2e48e7d09d216a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a174cfa632eb92c15bc2e48e7d09d216a">&#9670;&nbsp;</a></span>DefaultMinVertexRadius</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto playrho::DefaultMinVertexRadius = 0.01_m</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default minimum vertex radius. </p>
+<dl class="section note"><dt>Note</dt><dd>Recommend using <code>0.01_m</code> or <code>DefaultLinearSlop * Real(2)</code>. </dd></dl>
 
 </div>
 </div>
@@ -5915,7 +5702,7 @@ template&lt;typename T &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="namespaceplayrho.html#a7d449e0a1528c10ae0f241713fb69b40">IndexPair</a>{</div>
 <div class="line">    <a class="code" href="namespaceplayrho.html#a49c511e18a6b72260126cf763c1cd8df">InvalidVertex</a>, <a class="code" href="namespaceplayrho.html#a49c511e18a6b72260126cf763c1cd8df">InvalidVertex</a></div>
 <div class="line">}</div>
-<div class="ttc" id="anamespaceplayrho_html_a49c511e18a6b72260126cf763c1cd8df"><div class="ttname"><a href="namespaceplayrho.html#a49c511e18a6b72260126cf763c1cd8df">playrho::InvalidVertex</a></div><div class="ttdeci">constexpr auto InvalidVertex</div><div class="ttdoc">Invalid vertex index.</div><div class="ttdef"><b>Definition:</b> Settings.hpp:136</div></div>
+<div class="ttc" id="anamespaceplayrho_html_a49c511e18a6b72260126cf763c1cd8df"><div class="ttname"><a href="namespaceplayrho.html#a49c511e18a6b72260126cf763c1cd8df">playrho::InvalidVertex</a></div><div class="ttdeci">constexpr auto InvalidVertex</div><div class="ttdoc">Invalid vertex index.</div><div class="ttdef"><b>Definition:</b> Settings.hpp:84</div></div>
 <div class="ttc" id="anamespaceplayrho_html_a7d449e0a1528c10ae0f241713fb69b40"><div class="ttname"><a href="namespaceplayrho.html#a7d449e0a1528c10ae0f241713fb69b40">playrho::IndexPair</a></div><div class="ttdeci">std::pair&lt; VertexCounter, VertexCounter &gt; IndexPair</div><div class="ttdoc">Index pair.</div><div class="ttdef"><b>Definition:</b> IndexPair.hpp:35</div></div>
 </div><!-- fragment -->
 <p>Invalid index-pair value. </p>
@@ -6026,8 +5813,7 @@ template&lt;typename T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Maximum manifold points. This is the maximum number of contact points between two convex shapes. Do not change this value. </p><dl class="section note"><dt>Note</dt><dd>For memory efficiency, uses the smallest integral type that can hold the value. <br  />
- </dd></dl>
+<p>Maximum manifold points. This is the maximum number of contact points between two convex shapes. Do not change this value. </p><dl class="section note"><dt>Note</dt><dd>For memory efficiency, uses the smallest integral type that can hold the value. </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1ContactImpulsesList.html#a10582ed9bfbe1061650b20acbaa3787f">playrho::d2::ContactImpulsesList::AddEntry()</a>, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a1399ecf9d6951ca8b72dd34dc66d1e75">playrho::d2::Manifold::AddPoint()</a>, <a class="el" href="classplayrho_1_1d2_1_1ContactImpulsesList.html#a93e87aaa55a2d38ff22bda824bf84ef6">playrho::d2::ContactImpulsesList::GetEntryNormal()</a>, <a class="el" href="classplayrho_1_1d2_1_1ContactImpulsesList.html#aaba0fcd7239b70c9c20a27c6f54f42da">playrho::d2::ContactImpulsesList::GetEntryTanget()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldManifold.html#a82d672d8bf598bf27a746423392b72b3">playrho::d2::WorldManifold::GetImpulses()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldManifold.html#a4872f3b8f5ec291a4e2d8324829f82b6">playrho::d2::WorldManifold::GetPoint()</a>, <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a0522810720f80c9e976e069aaca09cf4">playrho::d2::VelocityConstraint::GetPointAt()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldManifold.html#a0e20bfa57459aa27c74c57043b822bd0">playrho::d2::WorldManifold::GetSeparation()</a>.</p>
 
@@ -6141,7 +5927,7 @@ Any narrowing is intentional.</dd></dl>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(1.414213562373095048801688724209698078569671875376948073176679737990732478462L)</div>
-<div class="ttc" id="anamespaceplayrho_html_a1fc125070a08100d083a1360f7167f87"><div class="ttname"><a href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">playrho::Real</a></div><div class="ttdeci">float Real</div><div class="ttdoc">Real-number type.</div><div class="ttdef"><b>Definition:</b> Real.hpp:69</div></div>
+<div class="ttc" id="anamespaceplayrho_html_a1fc125070a08100d083a1360f7167f87"><div class="ttname"><a href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">playrho::Real</a></div><div class="ttdeci">float Real</div><div class="ttdoc">Real-number type.</div><div class="ttdef"><b>Definition:</b> Real.hpp:63</div></div>
 </div><!-- fragment -->
 <p>Square root of two. </p>
 <dl class="section see"><dt>See also</dt><dd><a href="https://en.wikipedia.org/wiki/Square_root_of_2">https://en.wikipedia.org/wiki/Square_root_of_2</a> </dd></dl>
@@ -6156,7 +5942,7 @@ Any narrowing is intentional.</dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li>
-    <li class="footer">Generated on Mon Oct 16 2023 00:34:09 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 20 2023 20:05:08 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

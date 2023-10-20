@@ -73,8 +73,6 @@ var hierarchy =
       [ "playrho::d2::part::RestitutionIs< Policy >", "structplayrho_1_1d2_1_1part_1_1RestitutionIs.html", null ],
       [ "playrho::d2::part::SensorIs< Policy >", "structplayrho_1_1d2_1_1part_1_1SensorIs.html", null ]
     ] ],
-    [ "playrho::detail::Defaults< T >", "structplayrho_1_1detail_1_1Defaults.html", null ],
-    [ "playrho::detail::Defaults< Fixed< std::int32_t, FRACTION_BITS > >", "structplayrho_1_1detail_1_1Defaults_3_01Fixed_3_01std_1_1int32__t_00_01FRACTION__BITS_01_4_01_4.html", null ],
     [ "PolicySelector::Density", null, [
       [ "playrho::d2::part::Compositor< P1, P2, P3, P4, P5, P6 >", "classplayrho_1_1d2_1_1part_1_1Compositor.html", null ]
     ] ],
@@ -127,10 +125,6 @@ var hierarchy =
       [ "playrho::d2::part::Compositor< P1, P2, P3, P4, P5, P6 >", "classplayrho_1_1d2_1_1part_1_1Compositor.html", null ]
     ] ],
     [ "playrho::detail::FiniteChecker< T >", "structplayrho_1_1detail_1_1FiniteChecker.html", null ],
-    [ "playrho::Fixed< BASE_TYPE, FRACTION_BITS >", "classplayrho_1_1Fixed.html", null ],
-    [ "playrho::detail::FixedDefault< BASE_TYPE >", "structplayrho_1_1detail_1_1FixedDefault.html", null ],
-    [ "playrho::detail::FixedDefault< std::int32_t >", "structplayrho_1_1detail_1_1FixedDefault_3_01std_1_1int32__t_01_4.html", null ],
-    [ "playrho::detail::FixedDefault< std::int64_t >", "structplayrho_1_1detail_1_1FixedDefault_3_01std_1_1int64__t_01_4.html", null ],
     [ "playrho::FlagGuard< T >", "classplayrho_1_1FlagGuard.html", null ],
     [ "PolicySelector::Friction", null, [
       [ "playrho::d2::part::Compositor< P1, P2, P3, P4, P5, P6 >", "classplayrho_1_1d2_1_1part_1_1Compositor.html", null ]
@@ -231,7 +225,6 @@ var hierarchy =
     [ "playrho::detail::NonZeroChecker< T >", "structplayrho_1_1detail_1_1NonZeroChecker.html", null ],
     [ "playrho::detail::NoOpChecker< T >", "structplayrho_1_1detail_1_1NoOpChecker.html", null ],
     [ "std::not_equal_to<::playrho::propagate_const< T > >", "structstd_1_1not__equal__to_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html", null ],
-    [ "std::numeric_limits< playrho::Fixed< BT, FB > >", "classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html", null ],
     [ "std::numeric_limits<::playrho::Positive< T > >", "classstd_1_1numeric__limits_3_1_1playrho_1_1Positive_3_01T_01_4_01_4.html", null ],
     [ "playrho::ObjectPool< T >", "classplayrho_1_1ObjectPool.html", null ],
     [ "playrho::ObjectPool< BodyContactIDs >", "classplayrho_1_1ObjectPool.html", null ],
@@ -375,7 +368,6 @@ var hierarchy =
     [ "playrho::detail::TypeInfo< playrho::d2::TargetJointConf >", "structplayrho_1_1detail_1_1TypeInfo_3_01playrho_1_1d2_1_1TargetJointConf_01_4.html", null ],
     [ "playrho::detail::TypeInfo< playrho::d2::WeldJointConf >", "structplayrho_1_1detail_1_1TypeInfo_3_01playrho_1_1d2_1_1WeldJointConf_01_4.html", null ],
     [ "playrho::detail::TypeInfo< playrho::d2::WheelJointConf >", "structplayrho_1_1detail_1_1TypeInfo_3_01playrho_1_1d2_1_1WheelJointConf_01_4.html", null ],
-    [ "playrho::detail::TypeInfo< playrho::Fixed32 >", "structplayrho_1_1detail_1_1TypeInfo_3_01playrho_1_1Fixed32_01_4.html", null ],
     [ "playrho::detail::underlying_type< T, Enable >", "structplayrho_1_1detail_1_1underlying__type.html", null ],
     [ "playrho::detail::underlying_type< T, std::enable_if_t< has_underlying_type_member< T >::value > >", "structplayrho_1_1detail_1_1underlying__type_3_01T_00_01std_1_1enable__if__t_3_01has__underlying_2212b27bd541046396e8289902d743ef.html", null ],
     [ "playrho::detail::underlying_type< T, std::enable_if_t< std::is_enum_v< T > > >", "structplayrho_1_1detail_1_1underlying__type_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__enum__v_3_01T_01_4_01_4_01_4.html", null ],

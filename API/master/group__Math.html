@@ -169,7 +169,7 @@ std::vector&lt; <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0b
 <tr class="memdesc:ga0a9354b34edeb8433cd3062aecb78143"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the inverse of the given matrix as a 2-by-2.  <a href="group__Math.html#ga0a9354b34edeb8433cd3062aecb78143">More...</a><br /></td></tr>
 <tr class="separator:ga0a9354b34edeb8433cd3062aecb78143"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafe323c1c5ab88d30d18413a3c1f10abb"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:gafe323c1c5ab88d30d18413a3c1f10abb"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#gafe323c1c5ab88d30d18413a3c1f10abb">playrho::GetMagnitude</a> (const T &amp;value) noexcept(noexcept(<a class="el" href="group__FixedMath.html#ga7a9d7e9855b45a3b4103632a47ccd6f4">sqrt</a>(<a class="el" href="group__Math.html#ga36866f7061dfa4d056405aa5da0daf84">GetMagnitudeSquared</a>(value)))) -&gt; decltype(<a class="el" href="group__FixedMath.html#ga7a9d7e9855b45a3b4103632a47ccd6f4">sqrt</a>(<a class="el" href="group__Math.html#ga36866f7061dfa4d056405aa5da0daf84">GetMagnitudeSquared</a>(value)))</td></tr>
+<tr class="memitem:gafe323c1c5ab88d30d18413a3c1f10abb"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#gafe323c1c5ab88d30d18413a3c1f10abb">playrho::GetMagnitude</a> (const T &amp;value) noexcept(noexcept(sqrt(<a class="el" href="group__Math.html#ga36866f7061dfa4d056405aa5da0daf84">GetMagnitudeSquared</a>(value)))) -&gt; decltype(sqrt(<a class="el" href="group__Math.html#ga36866f7061dfa4d056405aa5da0daf84">GetMagnitudeSquared</a>(value)))</td></tr>
 <tr class="memdesc:gafe323c1c5ab88d30d18413a3c1f10abb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the magnitude of the given value.  <a href="group__Math.html#gafe323c1c5ab88d30d18413a3c1f10abb">More...</a><br /></td></tr>
 <tr class="separator:gafe323c1c5ab88d30d18413a3c1f10abb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga36866f7061dfa4d056405aa5da0daf84"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -237,7 +237,7 @@ constexpr <a class="el" href="namespaceplayrho.html#a02c09bb6556e3168c0085871358
 <tr class="separator:ga0c7d2525a406c1f83c0574e46a2cee32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1502fbf5063c1f5dbedafe215895ad29"><td class="memTemplParams" colspan="2"><a id="ga1502fbf5063c1f5dbedafe215895ad29"></a>
 template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ga1502fbf5063c1f5dbedafe215895ad29"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga1502fbf5063c1f5dbedafe215895ad29">playrho::RoundOff</a> (const T &amp;value, unsigned precision=<a class="el" href="group__Math.html#ga2e94545b5052523414ec03d0e95e2297">DefaultRoundOffPrecission</a>) -&gt; decltype(<a class="el" href="group__FixedMath.html#ga1e3ca7fb2626886c5920bbc5f570a525">round</a>(value *static_cast&lt; T &gt;(precision))/static_cast&lt; T &gt;(precision))</td></tr>
+<tr class="memitem:ga1502fbf5063c1f5dbedafe215895ad29"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga1502fbf5063c1f5dbedafe215895ad29">playrho::RoundOff</a> (const T &amp;value, unsigned precision=<a class="el" href="group__Math.html#ga2e94545b5052523414ec03d0e95e2297">DefaultRoundOffPrecission</a>) -&gt; decltype(round(value *static_cast&lt; T &gt;(precision))/static_cast&lt; T &gt;(precision))</td></tr>
 <tr class="memdesc:ga1502fbf5063c1f5dbedafe215895ad29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the rounded value of the given value. <br /></td></tr>
 <tr class="separator:ga1502fbf5063c1f5dbedafe215895ad29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1ceb2daa8b41c4834408662c43e5abda"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga1ceb2daa8b41c4834408662c43e5abda">playrho::RoundOff</a> (const <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a> &amp;value, std::uint32_t precision=<a class="el" href="group__Math.html#ga2e94545b5052523414ec03d0e95e2297">DefaultRoundOffPrecission</a>) -&gt; <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a></td></tr>
@@ -318,6 +318,8 @@ template&lt;typename T &gt; </div>
 
 <p>Gets whether a given value is almost zero. </p>
 <p>An almost zero value is "subnormal". Dividing by these values can lead to odd results like a divide by zero trap occurring. </p><dl class="section return"><dt>Returns</dt><dd><code>true</code> if the given value is almost zero, <code>false</code> otherwise. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="group__Math.html#ga9447e387f79e761f547aa4d321605c78">playrho::AlmostEqual()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a073a93c54a20aa68f2c56e759b7976ab">playrho::d2::ClipSegmentToLine()</a>, <a class="el" href="group__Math.html#gae769785f0540a4b8960b282f6b105c14">playrho::ComputeCentroid()</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceProxy.html#ad01443fd4ea346d550ece90f7f92b1f4">playrho::d2::DistanceProxy::Distance()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a7304da106cfaa394b4d0179ded468aa6">playrho::d2::GetMassData()</a>, <a class="el" href="structplayrho_1_1ToiOutput.html#a19b308c9b3b8f5292b9f3dad183c9d76">playrho::ToiOutput::GetToiViaSat()</a>, <a class="el" href="group__Math.html#ga01639d99c5401d526aeb5c6df075e153">playrho::Invert()</a>, <a class="el" href="group__Math.html#ga0c7d2525a406c1f83c0574e46a2cee32">playrho::Normalize()</a>, <a class="el" href="group__RayCastGroup.html#gabc2e992343e201f48c1956753a530247">playrho::d2::DistanceProxy::RayCast()</a>, <a class="el" href="group__RayCastGroup.html#gaa2b257514c434e44a5ea5839c959bea9">playrho::d2::RayCast()</a>, and <a class="el" href="group__Math.html#ga1dfb22979400417701de8582bb6d76ad">playrho::Solve()</a>.</p>
 
 </div>
 </div>
@@ -767,7 +769,7 @@ template&lt;typename T &gt; </div>
           <td>(</td>
           <td class="paramtype">const T &amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
-          <td> -&gt; decltype(<a class="el" href="group__FixedMath.html#ga7a9d7e9855b45a3b4103632a47ccd6f4">sqrt</a>(<a class="el" href="group__Math.html#ga36866f7061dfa4d056405aa5da0daf84">GetMagnitudeSquared</a>(value)))
+          <td> -&gt; decltype(sqrt(<a class="el" href="group__Math.html#ga36866f7061dfa4d056405aa5da0daf84">GetMagnitudeSquared</a>(value)))
 </td>
         </tr>
       </table>
@@ -1344,7 +1346,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Computes the rounded value of the given value. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>Consider making this function generic to any <code><a class="el" href="structplayrho_1_1Vector.html" title="Vector.">Vector</a></code>. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Consider making this function generic to any <code><a class="el" href="structplayrho_1_1Vector.html" title="Vector.">Vector</a></code>. </dd></dl>
 
 </div>
 </div>
@@ -1596,7 +1598,7 @@ template&lt;std::size_t M, typename T1 , std::size_t N, typename T2 &gt; </div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Oct 16 2023 00:34:09 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 20 2023 20:05:08 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

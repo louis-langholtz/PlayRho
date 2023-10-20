@@ -9,7 +9,6 @@ var modules =
     [ "Point Containment Test Functions", "group__TestPointGroup.html", "group__TestPointGroup" ],
     [ "Library Defined Exceptions", "group__ExceptionsGroup.html", "group__ExceptionsGroup" ],
     [ "Library Defined Constraints", "group__ConstraintsGroup.html", "group__ConstraintsGroup" ],
-    [ "Math Functions For Fixed Types", "group__FixedMath.html", "group__FixedMath" ],
     [ "Additional Math Functions", "group__Math.html", "group__Math" ],
     [ "Matrix Traits", "group__MatrixTraitsGroup.html", "group__MatrixTraitsGroup" ],
     [ "Decimal Unit Prefices", "group__DecimalUnitPrefices.html", "group__DecimalUnitPrefices" ],

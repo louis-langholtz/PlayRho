@@ -1,7 +1,5 @@
 var Settings_8hpp =
 [
-    [ "Defaults", "structplayrho_1_1detail_1_1Defaults.html", "structplayrho_1_1detail_1_1Defaults" ],
-    [ "Defaults< Fixed< std::int32_t, FRACTION_BITS > >", "structplayrho_1_1detail_1_1Defaults_3_01Fixed_3_01std_1_1int32__t_00_01FRACTION__BITS_01_4_01_4.html", "structplayrho_1_1detail_1_1Defaults_3_01Fixed_3_01std_1_1int32__t_00_01FRACTION__BITS_01_4_01_4" ],
     [ "BodyCounter", "Settings_8hpp.html#a261b3039a098762462a17164898bb647", null ],
     [ "ChildCounter", "Settings_8hpp.html#a0e937a573db2db27b95156590ef5dd12", null ],
     [ "ContactCounter", "Settings_8hpp.html#a5fd824505590e2ca67e0ef804ede6e34", null ],

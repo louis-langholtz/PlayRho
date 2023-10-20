@@ -16,11 +16,6 @@ var dir_3ed5363c54a0ae1e6d55ad5f136e162e =
     [ "DynamicMemory.hpp", "DynamicMemory_8hpp.html", "DynamicMemory_8hpp" ],
     [ "Filter.hpp", "Filter_8hpp.html", "Filter_8hpp" ],
     [ "Finite.hpp", "Finite_8hpp.html", "Finite_8hpp" ],
-    [ "Fixed.hpp", "Fixed_8hpp.html", "Fixed_8hpp" ],
-    [ "FixedLimits.hpp", "FixedLimits_8hpp.html", [
-      [ "numeric_limits< playrho::Fixed< BT, FB > >", "classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html", "classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4" ]
-    ] ],
-    [ "FixedMath.hpp", "FixedMath_8hpp.html", "FixedMath_8hpp" ],
     [ "FlagGuard.hpp", "FlagGuard_8hpp.html", [
       [ "FlagGuard", "classplayrho_1_1FlagGuard.html", "classplayrho_1_1FlagGuard" ]
     ] ],
