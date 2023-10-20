@@ -73,14 +73,9 @@ TEST(Units, Literals)
 TEST(Units, IsArithmeticV)
 {
     ASSERT_FALSE(IsArithmeticV<void>);
-    
     ASSERT_TRUE(IsArithmeticV<int>);
     ASSERT_TRUE(IsArithmeticV<float>);
     ASSERT_TRUE(IsArithmeticV<double>);
-#ifndef _WIN32
-    ASSERT_TRUE(IsArithmeticV<Fixed64>);
-#endif
-    
     EXPECT_TRUE(IsArithmeticV<Length>);
     EXPECT_TRUE(IsArithmeticV<Mass>);
     EXPECT_TRUE(IsArithmeticV<Time>);
