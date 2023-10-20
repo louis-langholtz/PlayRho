@@ -29,6 +29,7 @@
 
 #include <playrho/JointID.hpp>
 #include <playrho/Span.hpp>
+#include <playrho/TypeInfo.hpp>
 
 #include <playrho/d2/JointConf.hpp>
 #include <playrho/d2/Math.hpp>

@@ -28,6 +28,8 @@
 #include <array>
 #include <utility> // for std::index_sequence
 
+#include <playrho/TypeInfo.hpp>
+
 #include <playrho/d2/DistanceProxy.hpp>
 #include <playrho/d2/MassData.hpp>
 #include <playrho/d2/Math.hpp>

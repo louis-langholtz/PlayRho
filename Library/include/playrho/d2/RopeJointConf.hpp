@@ -27,6 +27,7 @@
 
 #include <playrho/LimitState.hpp>
 #include <playrho/Span.hpp>
+#include <playrho/TypeInfo.hpp>
 
 #include <playrho/d2/Math.hpp>
 #include <playrho/d2/JointConf.hpp>

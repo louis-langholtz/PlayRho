@@ -29,6 +29,7 @@
 #include <vector>
 
 #include <playrho/Span.hpp>
+#include <playrho/TypeInfo.hpp>
 
 #include <playrho/d2/DistanceProxy.hpp>
 #include <playrho/d2/MassData.hpp>
