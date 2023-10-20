@@ -18,12 +18,13 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#include <string>
+
 #include "UnitTests.hpp"
 
 #include <playrho/Real.hpp>
 #include <playrho/Settings.hpp>
-
-#include <string>
+#include <playrho/TypeInfo.hpp>
 
 using namespace playrho;
 
