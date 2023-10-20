@@ -30,7 +30,6 @@
 #include <type_traits> // for std::decay_t
 #include <vector>
 
-#include <playrho/FixedMath.hpp>
 #include <playrho/Matrix.hpp>
 #include <playrho/NonNegative.hpp>
 #include <playrho/Settings.hpp>

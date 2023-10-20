@@ -26,9 +26,9 @@
  * @brief Real number definition file.
  */
 
-#include <playrho/Fixed.hpp>
-#include <playrho/FixedMath.hpp>
-#include <playrho/FixedLimits.hpp>
+#include <playrho/Templates.hpp> // for IsArithmeticV
+
+// Any header(s) for a user defined arithmetic type for Real go here...
 
 namespace playrho {
 
@@ -44,10 +44,6 @@ namespace playrho {
 /// @note This can also be implemented using a <code>LiteralType</code> that has
 ///   necessary support: all common mathematical functions, support for infinity and
 ///   NaN, and a specialization of the @c std::numeric_limits class template for it.
-/// @note At present, the <code>Fixed32</code> and <code>Fixed64</code> aliases of
-///   the <code>Fixed</code> template type are provided as examples of qualifying
-///   literal types though the usability of these are limited and their use is
-///   discouraged.
 ///
 /// @note Regarding division:
 ///  - While dividing 1 by a real, caching the result, and then doing multiplications
@@ -57,8 +53,6 @@ namespace playrho {
 ///  - Meanwhile, dividing every time by a real isolates any underflows to the
 ///    particular division where underflow occurs.
 ///
-/// @warning Using <code>Fixed32</code> is not advised as its numerical limitations
-///   are more likely to result in problems like overflows or underflows.
 /// @warning The note regarding division applies even more so when using a
 ///   fixed-point type (for <code>Real</code>).
 ///
@@ -67,6 +61,8 @@ namespace playrho {
 /// @see https://en.cppreference.com/w/cpp/named_req/LiteralType
 ///
 using Real = float;
+
+static_assert(IsArithmeticV<Real>);
 
 } // namespace playrho
 

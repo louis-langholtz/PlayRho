@@ -24,6 +24,7 @@
  * @brief Types and default settings file.
  * @note This file intentionally doesn't use any checked values to avoid
  *   imposing those for these base values.
+ * @note This file was generated from the Settings.hpp.in file.
  */
 
 #ifndef PLAYRHO_SETTINGS_HPP
@@ -91,15 +92,15 @@ constexpr auto InvalidVertex = static_cast<VertexCounter>(-1);
 /// @note Smaller values relative to sizes of bodies increases the time it takes
 ///   for bodies to come to rest.
 /// @note The value used by Box2D 2.3.2 b2_linearSlop define is 0.005_m.
-constexpr auto DefaultLinearSlop = 0.005_m;
+constexpr auto DefaultLinearSlop = @PLAYRHO_REAL_LINEARSLOP@;
 
 /// @brief Default minimum vertex radius.
 /// @note Recommend using <code>0.01_m</code> or <code>DefaultLinearSlop * Real(2)</code>.
-constexpr auto DefaultMinVertexRadius = 0.01_m;
+constexpr auto DefaultMinVertexRadius = @PLAYRHO_REAL_MINVERTEXRADIUS@;
 
 /// @brief Default maximum vertex radius.
 /// @note Recommend using <code>255_m</code> or <code>DefaultLinearSlop * 2 * 25500</code>.
-constexpr auto DefaultMaxVertexRadius = 255_m;
+constexpr auto DefaultMaxVertexRadius = @PLAYRHO_REAL_MAXVERTEXRADIUS@;
 
 /// @brief Default AABB extension amount.
 constexpr auto DefaultAabbExtension = DefaultLinearSlop * Real(20);

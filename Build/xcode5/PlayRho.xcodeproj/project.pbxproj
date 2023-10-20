@@ -907,6 +907,7 @@
 		991988332ACEA0780076F969 /* NgonWithFwdNormals.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NgonWithFwdNormals.hpp; sourceTree = "<group>"; };
 		991988392AD5FEE80076F969 /* IslandStats.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IslandStats.cpp; sourceTree = "<group>"; };
 		9919883B2ADAFEE20076F969 /* CheckedMath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CheckedMath.hpp; sourceTree = "<group>"; };
+		991988C22AE2D46F0076F969 /* Settings.hpp.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Settings.hpp.in; sourceTree = "<group>"; };
 		9921FFD629AD43C30043F23F /* TypeInfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TypeInfo.cpp; sourceTree = "<group>"; };
 		996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PoolMemoryResource.hpp; sourceTree = "<group>"; };
 		996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryResource.cpp; sourceTree = "<group>"; };
@@ -1521,6 +1522,7 @@
 				470ADAB92555F72B00EEE99D /* Real.hpp.in */,
 				47B58F621F64C19600354C34 /* RealConstants.hpp */,
 				80BB8947141C3E5900F1753A /* Settings.hpp */,
+				991988C22AE2D46F0076F969 /* Settings.hpp.in */,
 				4795B61C262B557100FB3EC6 /* ShapeID.hpp */,
 				4734B21E1DC1340500F15E29 /* Span.hpp */,
 				80BB8949141C3E5900F1753A /* StackAllocator.hpp */,
