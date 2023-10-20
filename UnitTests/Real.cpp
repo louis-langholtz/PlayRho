@@ -28,14 +28,6 @@
 
 using namespace playrho;
 
-TEST(Real, ByteSizeIs_4_8_or_16)
-{
-    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
-    // builds and to report actual size rather than just reporting that expected size is wrong.
-    const auto size = sizeof(Real);
-    EXPECT_TRUE(size == std::size_t(4) || size == std::size_t(8) || size == std::size_t(16));
-}
-
 TEST(Real, GetTypeName)
 {
     const auto name = std::string(GetTypeName<Real>());
@@ -54,16 +46,6 @@ TEST(Real, GetTypeName)
             break;
         }
         if (name == "long double")
-        {
-            is_expected = true;
-            break;
-        }
-        if (name == "Fixed32")
-        {
-            is_expected = true;
-            break;
-        }
-        if (name == "Fixed64")
         {
             is_expected = true;
             break;

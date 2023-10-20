@@ -64,26 +64,6 @@ struct Vals<long double> {
     }
 };
 
-template <>
-struct Vals<Fixed32> {
-    static inline const char* GetGravity()
-    {
-        return "-9\\.799999952316284e\\+00f";
-    }
-};
-
-#ifndef _WIN32
-
-template <>
-struct Vals<Fixed64> {
-    static inline const char* GetGravity()
-    {
-        return "-9\\.799999952316284e\\+00f";
-    }
-};
-
-#endif /* !_WIN32 */
-
 TEST(Dump, EmptyWorld)
 {
     std::stringstream buf;

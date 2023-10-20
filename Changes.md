@@ -27,6 +27,9 @@ Here's an incomplete verbal summary of these changes:
 - Custom memory allocation via C++ allocators has been incorporated into the implementation of "hotter" code paths of the world stepping functionality.
 - More custom types are now defined in their own include and source files.
 - The `Testbed` application has been majorly updated to provide more support to the user for modifying examples at run-time.
+- The `Fixed` class template and related code has been moved out from this project and into my separate [realnumb](https://github.com/louis-langholtz/realnumb) repository and project.
+- CMake configuration now supports customization of some values in `Settings.hpp` via the following variables: `PLAYRHO_REAL_LINEARSLOP`, `PLAYRHO_REAL_MINVERTEXRADIUS`, `PLAYRHO_REAL_MAXVERTEXRADIUS`.
+- CMake configuration for the `Real` alias defined in `Real.hpp` now supports inclusion of user specifiable header files for using a custom floating point type via the `PLAYRHO_REAL_INCLUDE` variable. Semicolons found within this variable are replaced with newlines.
 
 ## Box2D 2.3.2 To Release 1.1
 
