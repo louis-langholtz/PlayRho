@@ -26,6 +26,7 @@
 /// @brief Definition of the @c WeldJointConf class and closely related code.
 
 #include <playrho/Span.hpp>
+#include <playrho/TypeInfo.hpp>
 
 #include <playrho/d2/JointConf.hpp>
 #include <playrho/d2/Math.hpp>

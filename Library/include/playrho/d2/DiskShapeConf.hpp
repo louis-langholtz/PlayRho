@@ -25,6 +25,8 @@
 /// @file
 /// @brief Definition of the @c DiskShapeConf class and closely related code.
 
+#include <playrho/TypeInfo.hpp>
+
 #include <playrho/d2/DistanceProxy.hpp>
 #include <playrho/d2/MassData.hpp>
 #include <playrho/d2/Math.hpp>

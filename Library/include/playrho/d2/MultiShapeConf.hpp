@@ -27,6 +27,8 @@
 #include <utility> // for std::move
 #include <vector>
 
+#include <playrho/TypeInfo.hpp>
+
 #include <playrho/d2/ConvexHull.hpp>
 #include <playrho/d2/ShapeConf.hpp>
 #include <playrho/d2/DistanceProxy.hpp>
