@@ -1,4 +1,16 @@
-if(NOT PLAYRHO_REAL_TYPE)
+if(PLAYRHO_REAL_TYPE)
+	if(PLAYRHO_REAL_FETCH AND PLAYRHO_REAL_GIT_REPOSITORY AND PLAYRHO_REAL_GIT_TAG)
+		include(FetchContent)
+		message(STATUS "Attempting to fetch \"${PLAYRHO_REAL_FETCH}\" for PLAYRHO_REAL_TYPE support")
+		FetchContent_Declare(${PLAYRHO_REAL_FETCH}
+			GIT_REPOSITORY ${PLAYRHO_REAL_GIT_REPOSITORY}
+			GIT_TAG ${PLAYRHO_REAL_GIT_TAG}
+		)
+		FetchContent_MakeAvailable(${PLAYRHO_REAL_FETCH})
+		set(PLAYRHO_REAL_SOURCE_DIR "${${PLAYRHO_REAL_FETCH}_SOURCE_DIR}")
+		message(STATUS "PLAYRHO_REAL_SOURCE_DIR=${PLAYRHO_REAL_SOURCE_DIR}")
+	endif()
+else()
 	set(PLAYRHO_REAL_TYPE float)
 endif()
 message(STATUS "PLAYRHO_REAL_TYPE=${PLAYRHO_REAL_TYPE}")
@@ -271,6 +283,10 @@ target_compile_options(PlayRho PRIVATE
 	$<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
 	$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Wundef -Wcast-align -Wconversion -Wshadow -Wdouble-promotion -Werror>
 )
+
+if(PLAYRHO_REAL_FETCH)
+	target_link_libraries(PlayRho ${PLAYRHO_REAL_FETCH}::${PLAYRHO_REAL_FETCH})
+endif()
 
 # These are used to create visual studio folders.
 source_group(Include FILES ${PLAYRHO_General_HDRS} ${PLAYRHO_GeneralCfg_HDRS})
