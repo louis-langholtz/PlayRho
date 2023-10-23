@@ -26,6 +26,8 @@
  * @brief Real number definition file.
  */
 
+#include <limits> // for std::numeric_limits
+
 #include <playrho/Templates.hpp> // for IsArithmeticV
 
 // Any header(s) for a user defined arithmetic type for Real go here...
@@ -63,6 +65,12 @@ namespace playrho {
 using Real = float;
 
 static_assert(IsArithmeticV<Real>);
+
+// Requirements on Real per std::numeric_limits...
+static_assert(!std::numeric_limits<Real>::is_integer);
+static_assert(std::numeric_limits<Real>::is_signed);
+static_assert(std::numeric_limits<Real>::has_infinity);
+static_assert(std::numeric_limits<Real>::has_signaling_NaN || std::numeric_limits<Real>::has_quiet_NaN);
 
 } // namespace playrho
 

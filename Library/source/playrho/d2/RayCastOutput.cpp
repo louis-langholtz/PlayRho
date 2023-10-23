@@ -173,7 +173,7 @@ RayCastOutput RayCast(const DistanceProxy& proxy, const RayCastInput& input,
     const auto ray = transformedInput.p2 - transformedInput.p1; // Ray delta (p2 - p1)
     
     auto minT = nextafter(Real{input.maxFraction}, Real(2));
-    auto normalFound = GetInvalid<UnitVec>();
+    auto normalFound = UnitVec();
     
     for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
     {

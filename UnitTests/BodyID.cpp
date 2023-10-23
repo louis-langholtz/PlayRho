@@ -54,7 +54,8 @@ TEST(BodyID, swap)
     EXPECT_EQ(b1, BodyID(0u));
 }
 
-TEST(BodyID, GetInvalid)
+TEST(BodyID, IsValid)
 {
-    EXPECT_EQ(InvalidBodyID, GetInvalid<BodyID>());
+    EXPECT_TRUE(IsValid(BodyID(0u)));
+    EXPECT_FALSE(IsValid(InvalidBodyID));
 }

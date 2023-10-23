@@ -28,18 +28,7 @@
 
 namespace playrho {
 
-/// @brief Gets an invalid value for the type.
-/// @tparam T Type to get an invalid value for.
-/// @note Specialize this function for the types which have an invalid value concept.
-/// @see IsValid.
-template <typename T>
-constexpr T GetInvalid() noexcept
-{
-    static_assert(sizeof(T) == 0, "No available specialization");
-}
-
 /// @brief Determines if the given value is valid.
-/// @see GetInvalid.
 template <typename T>
 constexpr bool IsValid(const T& value) noexcept
 {
@@ -56,43 +45,13 @@ constexpr bool IsValid(const T& value) noexcept
     return value == value; // NOLINT(misc-redundant-expression)
 }
 
-// GetInvalid template specializations.
-
-/// @brief Gets an invalid value for the float type.
-template <>
-constexpr float GetInvalid() noexcept
-{
-    return std::numeric_limits<float>::signaling_NaN();
-}
-
-/// @brief Gets an invalid value for the double type.
-template <>
-constexpr double GetInvalid() noexcept
-{
-    return std::numeric_limits<double>::signaling_NaN();
-}
-
-/// @brief Gets an invalid value for the long double type.
-template <>
-constexpr long double GetInvalid() noexcept
-{
-    return std::numeric_limits<long double>::signaling_NaN();
-}
-
-/// @brief Gets an invalid value for the std::size_t type.
-template <>
-constexpr std::size_t GetInvalid() noexcept
-{
-    return static_cast<std::size_t>(-1);
-}
-
 // IsValid template specializations.
 
 /// @brief Determines if the given value is valid.
 template <>
 constexpr bool IsValid(const std::size_t& value) noexcept
 {
-    return value != GetInvalid<std::size_t>();
+    return value != static_cast<std::size_t>(-1);
 }
 
 // Other templates.

@@ -57,8 +57,10 @@ TEST(Epsilon, AlmostEqual)
     }
     {
         const auto a = float(1000);
-        const auto b = float(1000 + 0.0001);
+        const auto b = float(nextafter(1000.0f, 2000.0f));
+        ASSERT_NE(a, b);
         EXPECT_FLOAT_EQ(a, b);
+        EXPECT_FALSE(AlmostEqual(a, b, 0));
         EXPECT_TRUE(AlmostEqual(a, b, 1));
         EXPECT_TRUE(AlmostEqual(a, b, 2));
         EXPECT_TRUE(AlmostEqual(a, b, 3));
@@ -85,13 +87,14 @@ TEST(Epsilon, AlmostEqual)
         EXPECT_FALSE(AlmostEqual(std::numeric_limits<float>::min() * 2, std::numeric_limits<float>::min()));
         EXPECT_FALSE(AlmostEqual(std::numeric_limits<float>::min(), 0.0f));
         EXPECT_FALSE(AlmostEqual(std::numeric_limits<float>::min() * float(1.001), 0.0f));
-        EXPECT_TRUE(AlmostEqual(std::numeric_limits<float>::min() * 0.5f, std::numeric_limits<float>::min()));
-        EXPECT_TRUE(AlmostEqual(std::numeric_limits<float>::min() * 0.5f, 0.0f));
-        EXPECT_TRUE(AlmostZero(std::numeric_limits<float>::min() * 0.5f));
+        EXPECT_TRUE(AlmostEqual(std::numeric_limits<float>::denorm_min() * 0.5f,
+                                std::numeric_limits<float>::denorm_min()));
+        EXPECT_TRUE(AlmostEqual(std::numeric_limits<float>::denorm_min() * 0.5f, 0.0f));
+        EXPECT_TRUE(AlmostZero(std::numeric_limits<float>::denorm_min() * 0.5f));
         // (abs(x - y) < (std::numeric_limits<float>::epsilon() * abs(x + y) * ulp))
     }
     
-    EXPECT_TRUE(AlmostEqual(50.0001373f, 50.0001564f));
+    EXPECT_TRUE(AlmostEqual(50.0001373f, 50.0001564f, 5));
 }
 
 TEST(Epsilon, ten_epsilon_equal)

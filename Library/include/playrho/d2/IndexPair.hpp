@@ -22,9 +22,10 @@
 #ifndef PLAYRHO_D2_INDEXPAIR_HPP
 #define PLAYRHO_D2_INDEXPAIR_HPP
 
-#include <playrho/Settings.hpp>
 #include <array>
 #include <utility>
+
+#include <playrho/Settings.hpp>
 
 namespace playrho {
 
@@ -133,7 +134,7 @@ VertexCounter GetSecondShapeVertexIdx(const detail::SeparationInfo<N>& info) noe
 ///   for the type.
 struct LengthIndexPair
 {
-    Length distance = GetInvalid<Length>(); ///< Separation.
+    Length distance = Length(); ///< Separation.
     IndexPair indices = InvalidIndexPair; ///< Index pair.
 };
 

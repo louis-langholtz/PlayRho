@@ -35,18 +35,11 @@ using JointID = detail::IndexingNamedType<JointCounter, struct JointIdentifier>;
 /// @brief Invalid joint ID value.
 constexpr auto InvalidJointID = static_cast<JointID>(static_cast<JointID::underlying_type>(-1));
 
-/// @brief Gets an invalid value for the JointID type.
-template <>
-constexpr JointID GetInvalid() noexcept
-{
-    return InvalidJointID;
-}
-
 /// @brief Determines if the given value is valid.
 template <>
 constexpr bool IsValid(const JointID& value) noexcept
 {
-    return value != GetInvalid<JointID>();
+    return value != InvalidJointID;
 }
 
 } // namespace playrho

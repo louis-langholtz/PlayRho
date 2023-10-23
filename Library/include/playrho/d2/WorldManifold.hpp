@@ -42,19 +42,19 @@ class World;
 class WorldManifold
 {
 private:
-    UnitVec m_normal = GetInvalid<UnitVec>(); ///< world vector pointing from A to B
+    UnitVec m_normal; ///< world vector pointing from A to B
     
     /// @brief Points.
     /// @details Manifold's contact points in world coordinates (mid-point of intersection)
-    Length2 m_points[MaxManifoldPoints] = {GetInvalid<Length2>(), GetInvalid<Length2>()};
+    Length2 m_points[MaxManifoldPoints] = {InvalidLength2, InvalidLength2};
 
     /// @brief Impulses.
     Momentum2 m_impulses[MaxManifoldPoints] = {Momentum2{}, Momentum2{}};
     
     /// @brief Separations.
     /// @details A negative value indicates overlap.
-    Length m_separations[MaxManifoldPoints] = {GetInvalid<Length>(), GetInvalid<Length>()};
-    
+    Length m_separations[MaxManifoldPoints] = {Invalid<Length>, Invalid<Length>};
+
 public:
     
     /// @brief Size type.
@@ -87,9 +87,9 @@ public:
     /// @pre <code>IsValid(normal)</code> is true.
     constexpr explicit WorldManifold(const UnitVec& normal, const PointData& ps0) noexcept:
         m_normal{normal},
-        m_points{ps0.location, GetInvalid<Length2>()},
+        m_points{ps0.location, InvalidLength2},
         m_impulses{ps0.impulse, Momentum2{}},
-        m_separations{ps0.separation, GetInvalid<Length>()}
+        m_separations{ps0.separation, Invalid<Length>}
     {
         assert(IsValid(normal));
         // Intentionally empty.

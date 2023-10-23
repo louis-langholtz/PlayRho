@@ -416,9 +416,6 @@ inline ::std::ostream& operator<<(::std::ostream& os, const UnitVec& value)
 
 } // namespace d2
 
-/// @brief Gets an invalid value for the <code>UnitVec</code> type.
-template <> constexpr d2::UnitVec GetInvalid() noexcept { return d2::UnitVec{}; }
-
 /// @brief Determines if the given value is valid.
 template <> constexpr bool IsValid(const d2::UnitVec& value) noexcept
 {

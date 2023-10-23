@@ -32,6 +32,7 @@
  */
 
 #include <benchmark/benchmark.h>
+
 #include <tuple>
 #include <utility>
 #include <cstdlib>
@@ -84,6 +85,10 @@
 #ifdef BENCHMARK_BOX2D
 #include <box2d/box2d.h>
 #endif // BENCHMARK_BOX2D
+
+using playrho::isnormal;
+using playrho::sqrt;
+using playrho::hypot;
 
 template <typename T>
 static T Rand(T lo, T hi)
@@ -1077,8 +1082,8 @@ static void UnitVectorFromVector(benchmark::State& state)
 static playrho::Vec2 GetUnitVec1(playrho::Vec2 vec, playrho::Vec2 fallback)
 {
     const auto magSquared = playrho::Square(vec[0]) + playrho::Square(vec[1]);
-    if (playrho::isnormal(magSquared)) {
-        const auto mag = playrho::sqrt(magSquared);
+    if (isnormal(magSquared)) {
+        const auto mag = sqrt(magSquared);
         return playrho::Vec2{vec[0] / mag, vec[1] / mag};
     }
     return fallback;
@@ -1087,12 +1092,12 @@ static playrho::Vec2 GetUnitVec1(playrho::Vec2 vec, playrho::Vec2 fallback)
 static playrho::Vec2 GetUnitVec2(playrho::Vec2 vec, playrho::Vec2 fallback)
 {
     const auto magSquared = playrho::Square(vec[0]) + playrho::Square(vec[1]);
-    if (playrho::isnormal(magSquared)) {
-        const auto mag = playrho::sqrt(magSquared);
+    if (isnormal(magSquared)) {
+        const auto mag = sqrt(magSquared);
         return playrho::Vec2{vec[0] / mag, vec[1] / mag};
     }
-    const auto mag = playrho::hypot(vec[0], vec[1]);
-    if (playrho::isnormal(mag)) {
+    const auto mag = hypot(vec[0], vec[1]);
+    if (isnormal(mag)) {
         return playrho::Vec2{vec[0] / mag, vec[1] / mag};
     }
     return fallback;

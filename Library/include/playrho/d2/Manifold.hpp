@@ -160,7 +160,7 @@ public:
     static Manifold GetForCircles(const Length2& vA, CfIndex iA, const Length2& vB, CfIndex iB) noexcept
     {
         return Manifold{e_circles,
-                        GetInvalid<UnitVec>(),
+                        UnitVec(),
                         vA,
                         1,
                         {{Point{vB, GetVertexVertexContactFeature(iA, iB)}}}};
@@ -246,9 +246,9 @@ public:
             na,
             pa,
             0,
-            {{Point{GetInvalid<Length2>(),
+            {{Point{InvalidLength2,
                     ContactFeature{ContactFeature::e_face, ia, ContactFeature::e_face, 0}},
-              Point{GetInvalid<Length2>(),
+              Point{InvalidLength2,
                     ContactFeature{ContactFeature::e_face, ia, ContactFeature::e_face, 0}}}}};
     }
 
@@ -260,9 +260,9 @@ public:
             nb,
             pb,
             0,
-            {{Point{GetInvalid<Length2>(),
+            {{Point{InvalidLength2,
                     ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, ib}},
-              Point{GetInvalid<Length2>(),
+              Point{InvalidLength2,
                     ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, ib}}}}};
     }
 
@@ -467,12 +467,12 @@ private:
     /// Local normal.
     /// @details Exact usage depends on manifold type.
     /// @note Invalid for the unset and circle manifold types.
-    UnitVec m_localNormal = GetInvalid<decltype(m_localNormal)>();
+    UnitVec m_localNormal;
 
     /// Local point.
     /// @details Exact usage depends on manifold type.
     /// @note Invalid for the unset manifold type.
-    Length2 m_localPoint = GetInvalid<Length2>();
+    Length2 m_localPoint = InvalidLength2;
 
     PointArray m_points; ///< Points of contact. @see pointCount.
 };

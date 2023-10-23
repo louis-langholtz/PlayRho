@@ -27,7 +27,6 @@
 #include <algorithm>
 #include <functional>
 #include <iterator>
-#include <limits>
 #include <type_traits>
 #include <utility> // for std::declval
 

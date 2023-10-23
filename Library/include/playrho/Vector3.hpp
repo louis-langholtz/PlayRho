@@ -44,13 +44,6 @@ using Mass3 = Vector3<Mass>;
 /// @brief 3-element vector of inverse mass (<code>InvMass</code>) quantities.
 using InvMass3 = Vector3<InvMass>;
 
-/// @brief Gets an invalid value for the 3-element vector of real (<code>Vec3</code>) type.
-template <>
-constexpr Vec3 GetInvalid() noexcept
-{
-    return Vec3{GetInvalid<Real>(), GetInvalid<Real>(), GetInvalid<Real>()};
-}
-
 /// @brief Determines whether the given vector contains finite coordinates.
 template <>
 constexpr bool IsValid(const Vec3& value) noexcept

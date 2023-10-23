@@ -140,7 +140,7 @@ Length2 ComputeCentroid(const Span<const Length2>& vertices)
 {
     switch (size(vertices)) {
     case 0:
-        return GetInvalid<Length2>();
+        return InvalidLength2;
     case 1:
         return vertices[0];
     case 2:

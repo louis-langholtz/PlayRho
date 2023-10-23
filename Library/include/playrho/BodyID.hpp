@@ -36,20 +36,12 @@ using BodyID = detail::IndexingNamedType<BodyCounter, struct BodyIdentifier>;
 /// @see BodyID.
 constexpr auto InvalidBodyID = static_cast<BodyID>(static_cast<BodyID::underlying_type>(-1));
 
-/// @brief Gets an invalid value for the BodyID type.
-/// @see BodyID.
-template <>
-constexpr BodyID GetInvalid() noexcept
-{
-    return InvalidBodyID;
-}
-
 /// @brief Determines if the given value is valid.
 /// @see BodyID.
 template <>
 constexpr bool IsValid(const BodyID& value) noexcept
 {
-    return value != GetInvalid<BodyID>();
+    return value != InvalidBodyID;
 }
 
 } // namespace playrho

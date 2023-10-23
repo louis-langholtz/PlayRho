@@ -710,22 +710,5 @@ bool operator!=(const Manifold& lhs, const Manifold& rhs) noexcept
     return !(lhs == rhs);
 }
 
-#if 0
-Length2 GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type,
-                      ContactFeature::Index index)
-{
-    switch (type)
-    {
-        case ContactFeature::e_vertex:
-            return proxy.GetVertex(index);
-        case ContactFeature::e_face:
-        {
-            return proxy.GetVertex(index);
-        }
-    }
-    return GetInvalid<Length2>();
-}
-#endif
-
 } // namespace d2
 } // namespace playrho

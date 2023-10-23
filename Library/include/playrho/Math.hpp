@@ -26,6 +26,7 @@
 /// @brief Conventional and custom math related code.
 
 #include <cmath>
+#include <limits> // for std::numeric_limits
 #include <numeric>
 #include <type_traits> // for std::decay_t
 #include <vector>
@@ -171,18 +172,28 @@ constexpr auto AlmostZero(const T& value) -> decltype(abs(value) < std::numeric_
 }
 
 /// @brief Determines whether the given two values are "almost equal".
+/// @note A default ULP of 4 is what googletest uses in its @c kMaxUlps setting for its
+///   @c AlmostEquals function found in its @c gtest/internal/gtest-internal.h file.
+/// @see https://github.com/google/googletest/blob/main/googletest/include/gtest/internal/gtest-internal.h
 template <typename T>
-constexpr auto AlmostEqual(const T& x, const T& y, int ulp = 2)
--> std::enable_if_t<std::is_floating_point_v<T>, bool>
+constexpr auto AlmostEqual(T a, T b, int ulp = 4)
+    -> std::enable_if_t<IsArithmeticV<T>, bool>
 {
+#if 0
     // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
     //   "the machine epsilon has to be scaled to the magnitude of the values used
     //    and multiplied by the desired precision in ULPs (units in the last place)
     //    unless the result is subnormal".
     // Where "subnormal" means almost zero.
     //
-    return (abs(x - y) < (std::numeric_limits<T>::epsilon() * abs(x + y) * static_cast<T>(ulp))) ||
-           AlmostZero(x - y);
+    return (abs(a - b) < (std::numeric_limits<T>::epsilon() * abs(a + b) * static_cast<T>(ulp))) ||
+           AlmostZero(a - b);
+#else
+    for (; (a != b) && (ulp > 0); --ulp) {
+        a = nextafter(a, b);
+    }
+    return a == b;
+#endif
 }
 
 /// @brief Constant expression enhanced truncate function.

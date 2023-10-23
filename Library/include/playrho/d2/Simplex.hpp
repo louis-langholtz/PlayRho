@@ -72,7 +72,7 @@ public:
     struct Cache {
         /// @brief Metric.
         /// @details Metric based on a length or area value of edges.
-        Real metric = GetInvalid<Real>();
+        Real metric = Invalid<Real>;
 
         /// @brief Indices.
         /// @details Collection of index-pairs.
@@ -145,10 +145,8 @@ inline Simplex::Simplex(const SimplexEdges& simplexEdges,
     : m_simplexEdges{simplexEdges}, m_normalizedWeights{normalizedWeights}
 {
     assert(simplexEdges.size() == normalizedWeights.size());
-#ifndef NDEBUG
-    const auto sum = std::accumulate(begin(normalizedWeights), end(normalizedWeights), Real{0});
-    assert(AlmostEqual(Real{1}, sum));
-#endif
+    assert(AlmostEqual(Real{1}, std::accumulate(begin(normalizedWeights),
+                                                end(normalizedWeights), Real(0)), 3));
 }
 
 constexpr SimplexEdges Simplex::GetEdges() const noexcept

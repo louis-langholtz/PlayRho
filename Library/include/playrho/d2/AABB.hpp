@@ -24,12 +24,13 @@
 /// @file
 /// @brief Declaration of the AABB class and free functions that return instances of it.
 
-#include <playrho/Intervals.hpp> // for LengthInterval, IsIntersecting
-#include <playrho/Vector.hpp>
-#include <playrho/Settings.hpp> // for ChildCounter, etc.
-#include <playrho/Templates.hpp>
 #include <playrho/BodyID.hpp>
+#include <playrho/Intervals.hpp> // for LengthInterval, IsIntersecting
+#include <playrho/Math.hpp> // for Invalid
+#include <playrho/Settings.hpp> // for ChildCounter, etc.
 #include <playrho/ShapeID.hpp>
+#include <playrho/Templates.hpp>
+#include <playrho/Vector.hpp>
 
 #include <playrho/detail/AABB.hpp>
 
@@ -53,6 +54,12 @@ using ::playrho::detail::TestOverlap;
 
 /// @brief 2-Dimensional Axis Aligned Bounding Box.
 using AABB = ::playrho::detail::AABB<2>;
+
+/// @brief Invalid AABB value.
+constexpr auto InvalidAABB = AABB{
+    LengthInterval{Invalid<Length>},
+    LengthInterval{Invalid<Length>}
+};
 
 /// @brief Gets the perimeter length of the 2-dimensional AABB.
 /// @pre The sizes of each of the AABB's ranges are representable.
@@ -117,14 +124,6 @@ AABB ComputeIntersectingAABB(const World& world, const Contact& contact);
 AABB GetAABB(const playrho::detail::RayCastInput<2>& input) noexcept;
 
 } // namespace d2
-
-/// @brief Gets an invalid AABB value.
-/// @relatedalso detail::AABB
-template <>
-constexpr d2::AABB GetInvalid() noexcept
-{
-    return d2::AABB{LengthInterval{GetInvalid<Length>()}, LengthInterval{GetInvalid<Length>()}};
-}
 
 } // namespace playrho
 

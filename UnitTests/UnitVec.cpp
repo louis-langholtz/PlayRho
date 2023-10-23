@@ -139,18 +139,18 @@ TEST(UnitVec, ByAngleInRadiansNearOriented)
 TEST(UnitVec, GetForInvalid)
 {
     {
-        const auto x = GetInvalid<Real>();
-        const auto y = GetInvalid<Real>();
+        const auto x = std::numeric_limits<Real>::signaling_NaN();
+        const auto y = std::numeric_limits<Real>::quiet_NaN();
         EXPECT_FALSE(IsValid(UnitVec::Get(x, y).first));
     }
     {
-        const auto x = GetInvalid<Real>();
+        const auto x = std::numeric_limits<Real>::quiet_NaN();
         const auto y = Real(0);
         EXPECT_FALSE(IsValid(UnitVec::Get(x, y).first));
     }
     {
         const auto x = Real(0);
-        const auto y = GetInvalid<Real>();
+        const auto y = std::numeric_limits<Real>::quiet_NaN();
         EXPECT_FALSE(IsValid(UnitVec::Get(x, y).first));
     }
     {
