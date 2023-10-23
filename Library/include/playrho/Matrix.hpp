@@ -215,13 +215,6 @@ constexpr bool IsValid(const Mat22& value) noexcept
     return IsValid(get<0>(value)) && IsValid(get<1>(value));
 }
 
-/// @brief Gets an invalid value for a <code>Mat22</code>.
-template <>
-constexpr Mat22 GetInvalid() noexcept
-{
-    return Mat22{GetInvalid<Vec2>(), GetInvalid<Vec2>()};
-}
-
 } // namespace playrho
 
 #endif // PLAYRHO_MATRIX_HPP

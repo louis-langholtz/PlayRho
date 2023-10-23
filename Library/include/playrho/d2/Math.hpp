@@ -122,7 +122,6 @@ constexpr auto InverseRotate(const Vector2<T>& vector, const UnitVec& angle) noe
 /// @param fallback Fallback unit vector value to use in case a unit vector can't effectively be
 ///   calculated from the given value.
 /// @return value divided by its length if length not almost zero otherwise invalid value.
-/// @see AlmostEqual.
 template <class T>
 inline UnitVec GetUnitVector(const Vector2<T>& value,
                              const UnitVec& fallback = UnitVec::GetDefaultFallback()) noexcept

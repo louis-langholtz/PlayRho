@@ -104,7 +104,7 @@ PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type inde
         break;
     }
     assert(manifold.GetType() == Manifold::e_unset);
-    return PositionSolverManifold{GetInvalid<UnitVec>(), GetInvalid<Length2>(), GetInvalid<Length>()};
+    return PositionSolverManifold{UnitVec(), InvalidLength2, Invalid<Length>};
 }
 
 } // namespace d2

@@ -145,8 +145,8 @@ TEST(DistanceProxy, FindLowestRightMostVertexForEmpty)
 {
     const auto vertices = std::vector<Length2>();
     const auto result = FindLowestRightMostVertex(vertices);
-    ASSERT_EQ(GetInvalid<std::size_t>(), static_cast<std::size_t>(-1));
-    EXPECT_EQ(result, GetInvalid<std::size_t>());
+    ASSERT_FALSE(IsValid(static_cast<std::size_t>(-1)));
+    EXPECT_EQ(result, static_cast<std::size_t>(-1));
 }
 
 TEST(DistanceProxy, FindLowestRightMostVertexForOne)

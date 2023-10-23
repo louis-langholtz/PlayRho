@@ -249,7 +249,7 @@ bool TestPoint(const DistanceProxy& proxy, const Length2& point) noexcept;
 
 /// @brief Finds the index of the lowest right most vertex in the given collection.
 /// @return Index of the lowest right most vertex in the given collection, or
-///   <code>GetInvalid<std::size_t>()</code> for empty container.
+///   <code>std::size_t(-1)</code> for empty container.
 std::size_t FindLowestRightMostVertex(Span<const Length2> vertices) noexcept;
 
 /// @brief Gets the convex hull for the given collection of vertices as a vector.

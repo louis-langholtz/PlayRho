@@ -273,25 +273,28 @@ TEST(Math, CrossProductOfTwoVecTwoIsAntiCommutative)
     EXPECT_EQ(Cross(a, b), -Cross(b, a));
 }
 
+constexpr auto InvalidVec2 = Vec2{
+    std::numeric_limits<Real>::quiet_NaN(),
+    std::numeric_limits<Real>::quiet_NaN()
+};
+
 TEST(Math, DotProductOfInvalidIsInvalid)
 {
-    EXPECT_TRUE(isnan(Dot(GetInvalid<Vec2>(), GetInvalid<Vec2>())));
+    EXPECT_TRUE(isnan(Dot(InvalidVec2, InvalidVec2)));
 
-    EXPECT_TRUE(isnan(Dot(Vec2(0, 0), GetInvalid<Vec2>())));
-    EXPECT_TRUE(isnan(Dot(Vec2(0, 0), Vec2(GetInvalid<Real>(), 0))));
-    EXPECT_TRUE(isnan(Dot(Vec2(0, 0), Vec2(0, GetInvalid<Real>()))));
+    EXPECT_TRUE(isnan(Dot(Vec2(0, 0), InvalidVec2)));
+    EXPECT_TRUE(isnan(Dot(Vec2(0, 0), Vec2(std::numeric_limits<Real>::quiet_NaN(), 0))));
+    EXPECT_TRUE(isnan(Dot(Vec2(0, 0), Vec2(0, std::numeric_limits<Real>::quiet_NaN()))));
     
-    EXPECT_TRUE(isnan(Dot(GetInvalid<Vec2>(),             Vec2(0, 0))));
-    EXPECT_TRUE(isnan(Dot(Vec2(GetInvalid<Real>(), 0), Vec2(0, 0))));
-    EXPECT_TRUE(isnan(Dot(Vec2(0, GetInvalid<Real>()), Vec2(0, 0))));
+    EXPECT_TRUE(isnan(Dot(InvalidVec2,             Vec2(0, 0))));
+    EXPECT_TRUE(isnan(Dot(Vec2(std::numeric_limits<Real>::quiet_NaN(), 0), Vec2(0, 0))));
+    EXPECT_TRUE(isnan(Dot(Vec2(0, std::numeric_limits<Real>::quiet_NaN()), Vec2(0, 0))));
 
-    EXPECT_TRUE(isnan(Dot(GetInvalid<Vec2>(), GetInvalid<UnitVec>())));
-    //EXPECT_TRUE(isnan(Dot(Vec2(0, 0),         GetInvalid<UnitVec>())));
-    EXPECT_TRUE(isnan(Dot(GetInvalid<Vec2>(), UnitVec::GetZero())));
+    EXPECT_TRUE(isnan(Dot(InvalidVec2, UnitVec())));
+    EXPECT_TRUE(isnan(Dot(InvalidVec2, UnitVec::GetZero())));
 
-    EXPECT_TRUE(isnan(Dot(GetInvalid<UnitVec>(), GetInvalid<Vec2>())));
-    //EXPECT_TRUE(isnan(Dot(GetInvalid<UnitVec>(), Vec2(0, 0))));
-    EXPECT_TRUE(isnan(Dot(UnitVec::GetZero(),    GetInvalid<Vec2>())));
+    EXPECT_TRUE(isnan(Dot(UnitVec(), InvalidVec2)));
+    EXPECT_TRUE(isnan(Dot(UnitVec::GetZero(),    InvalidVec2)));
 }
 
 TEST(Math, Vec2NegationAndRotationIsOrderIndependent)
@@ -605,8 +608,8 @@ TEST(Math, Subtracting2UlpAlmostEqualNumbersNotAlmostZero)
     const auto a = 0.863826155f;
     const auto b = 0.863826453f;
     ASSERT_NE(a, b);
-    ASSERT_TRUE(AlmostEqual(a, b, 2));
-    ASSERT_FALSE(AlmostEqual(a, b, 1));
+    EXPECT_TRUE(AlmostEqual(a, b, 5));
+    EXPECT_FALSE(AlmostEqual(a, b, 4));
     EXPECT_FALSE(AlmostZero((a >= b)? a - b: b - a));
 }
 

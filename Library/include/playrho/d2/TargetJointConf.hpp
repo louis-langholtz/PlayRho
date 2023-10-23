@@ -83,7 +83,7 @@ struct TargetJointConf : public JointBuilder<TargetJointConf> {
     /// @note Typically this would be the value of:
     ///   <code>bodyB != InvalidBodyID
     ///     ? GetLocalPoint(GetBody(world, bodyB), target)
-    ///     : GetInvalid<Length2>()</code>.
+    ///     : Length2()</code>.
     constexpr auto& UseAnchor(const Length2& v) noexcept
     {
         localAnchorB = v;

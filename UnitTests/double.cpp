@@ -25,12 +25,13 @@
 #include <type_traits>
 #include <cmath>
 
-TEST(double, GetInvalid)
+using namespace playrho;
+
+TEST(double, IsValid)
 {
-    auto val = playrho::GetInvalid<double>();
-    EXPECT_TRUE(std::isnan(val));
-    const auto same = std::is_same_v<decltype(val), double>;
-    EXPECT_TRUE(same);
+    EXPECT_FALSE(IsValid(std::numeric_limits<double>::signaling_NaN()));
+    EXPECT_FALSE(IsValid(std::numeric_limits<double>::quiet_NaN()));
+    EXPECT_TRUE(IsValid(0.0));
 }
 
 TEST(double, GetTypeName)

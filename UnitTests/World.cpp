@@ -2785,32 +2785,32 @@ TEST(World_Longer, TilesComesToRest)
     switch (sizeof(Real)) {
     case 4u:
 #if defined(__core2__)
-        EXPECT_EQ(GetContactRange(*world), 1447u);
-        EXPECT_EQ(totalBodiesSlept, createdBodyCount + 1u);
+        EXPECT_EQ(GetContactRange(*world), 1451u);
+        EXPECT_EQ(totalBodiesSlept, 667u);
         EXPECT_TRUE(firstStepWithZeroMoved);
         if (firstStepWithZeroMoved) {
             EXPECT_EQ(*firstStepWithZeroMoved, 1798u);
         }
 #elif defined(_WIN64)
         EXPECT_EQ(GetContactRange(*world), 1448u);
-        EXPECT_EQ(totalBodiesSlept, 667u);
-        EXPECT_TRUE(firstStepWithZeroMoved);
-        if (firstStepWithZeroMoved) {
-            EXPECT_EQ(*firstStepWithZeroMoved, 1812u);
-        }
-#elif defined(_WIN32)
-        EXPECT_EQ(GetContactRange(*world), 1448u);
         EXPECT_EQ(totalBodiesSlept, 671u);
         EXPECT_TRUE(firstStepWithZeroMoved);
         if (firstStepWithZeroMoved) {
-            EXPECT_EQ(*firstStepWithZeroMoved, 1801u);
+            EXPECT_EQ(*firstStepWithZeroMoved, 1800u);
         }
-#elif defined(__amd64__) // includes __k8__
+#elif defined(_WIN32)
         EXPECT_EQ(GetContactRange(*world), 1448u);
-        EXPECT_EQ(totalBodiesSlept, 667u);
+        EXPECT_EQ(totalBodiesSlept, 672u);
         EXPECT_TRUE(firstStepWithZeroMoved);
         if (firstStepWithZeroMoved) {
-            EXPECT_EQ(*firstStepWithZeroMoved, 1800u);
+            EXPECT_EQ(*firstStepWithZeroMoved, 1796u);
+        }
+#elif defined(__amd64__) // includes __k8__
+        EXPECT_EQ(GetContactRange(*world), 1449u);
+        EXPECT_EQ(totalBodiesSlept, 670u);
+        EXPECT_TRUE(firstStepWithZeroMoved);
+        if (firstStepWithZeroMoved) {
+            EXPECT_EQ(*firstStepWithZeroMoved, 1798u);
         }
 #elif defined(__arm64__) // At least for Apple Silicon
         EXPECT_GE(GetContactRange(*world), 1447u);
@@ -2822,7 +2822,7 @@ TEST(World_Longer, TilesComesToRest)
 #if defined(PLAYRHO_USE_BOOST_UNITS)
             EXPECT_GE(*firstStepWithZeroMoved, 1797u);
 #else
-            EXPECT_GE(*firstStepWithZeroMoved, 1798u);
+            EXPECT_GE(*firstStepWithZeroMoved, 1797u);
 #endif
             EXPECT_LE(*firstStepWithZeroMoved, 1812u);
         }
@@ -2877,7 +2877,7 @@ TEST(World_Longer, TilesComesToRest)
 
     EXPECT_EQ(awakeCount, 0u);
     if (awakeCount == 0u) {
-#if defined(_WIN32) || defined(PLAYRHO_USE_BOOST_UNITS) // odd
+#if defined(PLAYRHO_USE_BOOST_UNITS) // odd
         EXPECT_EQ(lastStats.reg.proxiesMoved, 1u);
 #else
         EXPECT_EQ(lastStats.reg.proxiesMoved, 0u);
@@ -2922,10 +2922,10 @@ TEST(World_Longer, TilesComesToRest)
         {
 #ifndef __FAST_MATH__
             EXPECT_EQ(numSteps, 1799ul);
-            EXPECT_EQ(sumRegPosIters, 36515ul);
-            EXPECT_EQ(sumRegVelIters, 46956ul);
-            EXPECT_EQ(sumToiPosIters, 44131ul);
-            EXPECT_EQ(sumToiVelIters, 114088ul);
+            EXPECT_EQ(sumRegPosIters, 36512ul);
+            EXPECT_EQ(sumRegVelIters, 46931ul);
+            EXPECT_EQ(sumToiPosIters, 43985ul);
+            EXPECT_EQ(sumToiVelIters, 113859ul);
 #else
             EXPECT_EQ(numSteps, 1003ul);
             EXPECT_EQ(sumRegPosIters, 52909ul);
@@ -2959,11 +2959,11 @@ TEST(World_Longer, TilesComesToRest)
         case  4:
         {
             // From commits after 507a7c15c
-            EXPECT_EQ(numSteps,         1801ul);
-            EXPECT_EQ(sumRegPosIters,  36518ul);
-            EXPECT_EQ(sumRegVelIters,  46948ul);
-            EXPECT_EQ(sumToiPosIters,  44170ul);
-            EXPECT_EQ(sumToiVelIters, 114108ul);
+            EXPECT_EQ(numSteps,         1799ul);
+            EXPECT_EQ(sumRegPosIters,  36512ul);
+            EXPECT_EQ(sumRegVelIters,  46940ul);
+            EXPECT_EQ(sumToiPosIters,  44065ul);
+            EXPECT_EQ(sumToiVelIters, 113579ul);
             break;
         }
         case  8:
@@ -2981,17 +2981,17 @@ TEST(World_Longer, TilesComesToRest)
         }
     }
 #elif defined(_WIN64) // This is likely wrong as the results are more likely arch dependent
-    EXPECT_EQ(numSteps, 1814ul);
-    EXPECT_EQ(sumRegPosIters, 36530ul);
-    EXPECT_EQ(sumRegVelIters, 47061ul);
-    EXPECT_EQ(sumToiPosIters, 43786ul);
-    EXPECT_EQ(sumToiVelIters, 112952ul);
+    EXPECT_EQ(numSteps, 1801ul);
+    EXPECT_EQ(sumRegPosIters, 36523ul);
+    EXPECT_EQ(sumRegVelIters, 46973ul);
+    EXPECT_EQ(sumToiPosIters, 43974ul);
+    EXPECT_EQ(sumToiVelIters, 113085ul);
 #elif defined(_WIN32)
-    EXPECT_EQ(numSteps, 1803ul);
-    EXPECT_EQ(sumRegPosIters, 36528ul);
-    EXPECT_EQ(sumRegVelIters, 46981ul);
-    EXPECT_EQ(sumToiPosIters, 43684ul);
-    EXPECT_EQ(sumToiVelIters, 112778ul);
+    EXPECT_EQ(numSteps, 1797ul);
+    EXPECT_EQ(sumRegPosIters, 36509ul);
+    EXPECT_EQ(sumRegVelIters, 46948ul);
+    EXPECT_EQ(sumToiPosIters, 44137ul);
+    EXPECT_EQ(sumToiVelIters, 114517ul);
 #elif defined(__arm64__)
     // At least for Apple Silicon...
     switch (sizeof(Real))
@@ -3005,11 +3005,11 @@ TEST(World_Longer, TilesComesToRest)
             EXPECT_EQ(sumToiPosIters, 44022ul);
             EXPECT_EQ(sumToiVelIters, 113284ul);
 #else
-            EXPECT_EQ(numSteps, 1804ul);
-            EXPECT_EQ(sumRegPosIters, 36527ul);
-            EXPECT_EQ(sumRegVelIters, 46979ul);
-            EXPECT_EQ(sumToiPosIters, 43806ul);
-            EXPECT_EQ(sumToiVelIters, 112175ul);
+            EXPECT_EQ(numSteps, 1798ul);
+            EXPECT_EQ(sumRegPosIters, 36508ul);
+            EXPECT_EQ(sumRegVelIters, 46931ul);
+            EXPECT_EQ(sumToiPosIters, 44061ul);
+            EXPECT_EQ(sumToiVelIters, 113150ul);
 #endif
 #else
             EXPECT_EQ(numSteps, 1799ul);

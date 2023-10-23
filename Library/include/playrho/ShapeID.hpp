@@ -35,18 +35,11 @@ using ShapeID = detail::IndexingNamedType<ShapeCounter, struct ShapeIdentifier>;
 /// @brief Invalid fixture ID value.
 constexpr auto InvalidShapeID = static_cast<ShapeID>(static_cast<ShapeID::underlying_type>(-1));
 
-/// @brief Gets an invalid value for the ShapeID type.
-template <>
-constexpr ShapeID GetInvalid() noexcept
-{
-    return InvalidShapeID;
-}
-
 /// @brief Determines if the given value is valid.
 template <>
 constexpr bool IsValid(const ShapeID& value) noexcept
 {
-    return value != GetInvalid<ShapeID>();
+    return value != InvalidShapeID;
 }
 
 } // namespace playrho

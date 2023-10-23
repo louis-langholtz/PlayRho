@@ -82,24 +82,6 @@ TEST(TargetJointConf, UseDampingRatio)
     EXPECT_EQ(TargetJointConf{}.UseDampingRatio(value).dampingRatio, value);
 }
 
-#if 0
-TEST(TargetJoint, IsOkay)
-{
-    auto def = TargetJointConf{};
-
-    ASSERT_FALSE(Joint::IsOkay(def));
-    def.bodyA = static_cast<BodyID>(1u);
-    def.bodyB = static_cast<BodyID>(2u);
-    ASSERT_TRUE(Joint::IsOkay(def));
-
-    EXPECT_TRUE(TargetJoint::IsOkay(def));
-    def.bodyA = InvalidBodyID;
-    EXPECT_TRUE(TargetJoint::IsOkay(def));
-    def.target = GetInvalid<decltype(def.target)>();
-    EXPECT_FALSE(TargetJoint::IsOkay(def));
-}
-#endif
-
 TEST(TargetJoint, DefaultInitialized)
 {
     const auto def = TargetJointConf{};

@@ -29,6 +29,8 @@
 #include <cstring>
 #include <type_traits>
 
+using namespace playrho;
+
 TEST(float, BiggerValsIncreasinglyInaccurate)
 {
     // This test is meant to demonstrate the increasing inaccuracy of the float type and help
@@ -361,12 +363,11 @@ TEST(float, zero)
     EXPECT_EQ(-3.0f * 0.0f, -0.0f);
 }
 
-TEST(float, GetInvalid)
+TEST(float, IsValid)
 {
-    auto val = playrho::GetInvalid<float>();
-    EXPECT_TRUE(std::isnan(val));
-    const auto same = std::is_same_v<decltype(val), float>;
-    EXPECT_TRUE(same);
+    EXPECT_FALSE(IsValid(std::numeric_limits<float>::signaling_NaN()));
+    EXPECT_FALSE(IsValid(std::numeric_limits<float>::quiet_NaN()));
+    EXPECT_TRUE(IsValid(0.0f));
 }
 
 TEST(float, GetTypeName)

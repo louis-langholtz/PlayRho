@@ -19,11 +19,12 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/BlockAllocator.hpp>
-#include <playrho/DynamicMemory.hpp>
-#include <limits>
 #include <cstring>
 #include <cstddef>
+#include <limits> // for std::numeric_limits
+
+#include <playrho/BlockAllocator.hpp>
+#include <playrho/DynamicMemory.hpp>
 
 namespace playrho {
 

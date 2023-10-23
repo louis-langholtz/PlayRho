@@ -172,8 +172,8 @@ TEST(AABB, InitializingConstruction)
         EXPECT_EQ(GetY(GetUpperBound(foo)), upper_y);
     }
     {
-        const auto pa = Length2{GetInvalid<Length>(), GetInvalid<Length>()};
-        const auto pb = Length2{GetInvalid<Length>(), GetInvalid<Length>()};
+        const auto pa = InvalidLength2;
+        const auto pb = InvalidLength2;
         AABB foo{pa, pb};
         EXPECT_TRUE(isnan(StripUnit(GetX(GetLowerBound(foo)))));
         EXPECT_TRUE(isnan(StripUnit(GetY(GetLowerBound(foo)))));
@@ -181,8 +181,8 @@ TEST(AABB, InitializingConstruction)
         EXPECT_TRUE(isnan(StripUnit(GetY(GetUpperBound(foo)))));
     }
     {
-        const auto pa = Length2{GetInvalid<Length>(), GetInvalid<Length>()};
-        const auto pb = Length2{GetInvalid<Length>(), 0_m};
+        const auto pa = InvalidLength2;
+        const auto pb = Length2{std::numeric_limits<Length>::quiet_NaN(), 0_m};
         AABB foo{pa, pb};
         EXPECT_TRUE(isnan(StripUnit(GetX(GetLowerBound(foo)))));
         EXPECT_TRUE(isnan(StripUnit(GetY(GetLowerBound(foo)))));
@@ -190,8 +190,8 @@ TEST(AABB, InitializingConstruction)
         EXPECT_FALSE(isnan(StripUnit(GetY(GetUpperBound(foo)))));
     }
     {
-        const auto pa = Length2{GetInvalid<Length>(), 0_m};
-        const auto pb = Length2{GetInvalid<Length>(), GetInvalid<Length>()};
+        const auto pa = Length2{std::numeric_limits<Length>::quiet_NaN(), 0_m};
+        const auto pb = InvalidLength2;
         AABB foo{pa, pb};
         EXPECT_TRUE(isnan(StripUnit(GetX(GetLowerBound(foo)))));
         EXPECT_FALSE(isnan(StripUnit(GetY(GetLowerBound(foo)))));
@@ -199,8 +199,8 @@ TEST(AABB, InitializingConstruction)
         EXPECT_TRUE(isnan(StripUnit(GetY(GetUpperBound(foo)))));
     }
     {
-        const auto pa = Length2{GetInvalid<Length>(), 0_m};
-        const auto pb = Length2{GetInvalid<Length>(), 0_m};
+        const auto pa = Length2{std::numeric_limits<Length>::quiet_NaN(), 0_m};
+        const auto pb = Length2{std::numeric_limits<Length>::quiet_NaN(), 0_m};
         AABB foo{pa, pb};
         EXPECT_TRUE(isnan(StripUnit(GetX(GetLowerBound(foo)))));
         EXPECT_FALSE(isnan(StripUnit(GetY(GetLowerBound(foo)))));
@@ -285,9 +285,9 @@ TEST(AABB, Contains)
     EXPECT_TRUE((Contains(AABB{Length2{}, Length2{}}, AABB{Length2{}})));
     EXPECT_TRUE((Contains(AABB{Length2{}}, AABB{Length2{}, Length2{}})));
     EXPECT_TRUE((Contains(AABB{Length2{1_m, 2_m}}, AABB{})));
-    EXPECT_FALSE(Contains(GetInvalid<AABB>(), GetInvalid<AABB>()));
-    EXPECT_FALSE(Contains(GetInvalid<AABB>(), AABB{}));
-    EXPECT_FALSE(Contains(AABB{}, GetInvalid<AABB>()));
+    EXPECT_FALSE(Contains(InvalidAABB, InvalidAABB));
+    EXPECT_FALSE(Contains(InvalidAABB, AABB{}));
+    EXPECT_FALSE(Contains(AABB{}, InvalidAABB));
 }
 
 TEST(AABB, TestOverlap)
