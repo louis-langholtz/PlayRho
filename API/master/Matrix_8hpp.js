@@ -10,7 +10,6 @@ var Matrix_8hpp =
     [ "GetColumnMatrix", "Matrix_8hpp.html#a9d367e915b012ac8ebfdbfd2817a40ae", null ],
     [ "GetIdentity", "Matrix_8hpp.html#aff2ccc0dc9ac07175382084cee633e49", null ],
     [ "GetIdentityMatrix", "Matrix_8hpp.html#a40b372974bcf478fe0254a0a29a2dd14", null ],
-    [ "GetInvalid", "Matrix_8hpp.html#aec24a0dab8e2bdc63a322ff5c65e90ef", null ],
     [ "GetRowMatrix", "Matrix_8hpp.html#a38be88271d1aa1c71ad994a9d5e1df77", null ],
     [ "IsValid", "Matrix_8hpp.html#a0fa02e6b0d55e9363ad4afb89a755fc1", null ],
     [ "operator+", "Matrix_8hpp.html#a41f0c49a750ed51bb02cef10158e8d7f", null ],

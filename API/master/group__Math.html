@@ -106,11 +106,10 @@ $(document).ready(function(){initNavTree('group__Math.html',''); initResizable()
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga9447e387f79e761f547aa4d321605c78"><td class="memTemplParams" colspan="2"><a id="ga9447e387f79e761f547aa4d321605c78"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ga9447e387f79e761f547aa4d321605c78"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga9447e387f79e761f547aa4d321605c78">playrho::AlmostEqual</a> (const T &amp;x, const T &amp;y, int ulp=2) -&gt; std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt;, bool &gt;</td></tr>
-<tr class="memdesc:ga9447e387f79e761f547aa4d321605c78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the given two values are "almost equal". <br /></td></tr>
-<tr class="separator:ga9447e387f79e761f547aa4d321605c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8b872c5026531f33636758bb11b167e6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga8b872c5026531f33636758bb11b167e6"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga8b872c5026531f33636758bb11b167e6">playrho::AlmostEqual</a> (T a, T b, int ulp=4) -&gt; std::enable_if_t&lt; <a class="el" href="namespaceplayrho.html#aa9c55e27192da826391d895835f02b17">IsArithmeticV</a>&lt; T &gt;, bool &gt;</td></tr>
+<tr class="memdesc:ga8b872c5026531f33636758bb11b167e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the given two values are "almost equal".  <a href="group__Math.html#ga8b872c5026531f33636758bb11b167e6">More...</a><br /></td></tr>
+<tr class="separator:ga8b872c5026531f33636758bb11b167e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga994ed50293b78dff53a5c7bce78602bf"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga994ed50293b78dff53a5c7bce78602bf"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga994ed50293b78dff53a5c7bce78602bf">playrho::AlmostZero</a> (const T &amp;value) -&gt; decltype(<a class="el" href="namespaceplayrho.html#ac862a8609b82126d0683ecb38a498087">abs</a>(value)&lt; std::numeric_limits&lt; T &gt;::min())</td></tr>
 <tr class="memdesc:ga994ed50293b78dff53a5c7bce78602bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether a given value is almost zero.  <a href="group__Math.html#ga994ed50293b78dff53a5c7bce78602bf">More...</a><br /></td></tr>
@@ -289,6 +288,59 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <p>Additional functions for common mathematical operations. </p>
 <p>These are non-member non-friend functions for mathematical operations especially those with mixed input and output types. </p>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ga8b872c5026531f33636758bb11b167e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8b872c5026531f33636758bb11b167e6">&#9670;&nbsp;</a></span>AlmostEqual()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto playrho::AlmostEqual </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ulp</em> = <code>4</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::enable_if_t&lt;<a class="el" href="namespaceplayrho.html#aa9c55e27192da826391d895835f02b17">IsArithmeticV</a>&lt;T&gt;, bool&gt;
+</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determines whether the given two values are "almost equal". </p>
+<dl class="section note"><dt>Note</dt><dd>A default ULP of 4 is what googletest uses in its <code>kMaxUlps</code> setting for its <code>AlmostEquals</code> function found in its <code>gtest/internal/gtest-internal.h</code> file. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://github.com/google/googletest/blob/main/googletest/include/gtest/internal/gtest-internal.h">https://github.com/google/googletest/blob/main/googletest/include/gtest/internal/gtest-internal.h</a> </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a133">World.cpp</a>.</dd>
+</dl>
+
+<p class="reference">Referenced by <a class="el" href="ContactSolver_8hpp.html#a0fd21d441a78194f210e9f900bd3d1a4">playrho::GaussSeidel::SolvePositionConstraint()</a>.</p>
+
+</div>
+</div>
 <a id="ga994ed50293b78dff53a5c7bce78602bf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga994ed50293b78dff53a5c7bce78602bf">&#9670;&nbsp;</a></span>AlmostZero()</h2>
 
@@ -319,7 +371,7 @@ template&lt;typename T &gt; </div>
 <p>Gets whether a given value is almost zero. </p>
 <p>An almost zero value is "subnormal". Dividing by these values can lead to odd results like a divide by zero trap occurring. </p><dl class="section return"><dt>Returns</dt><dd><code>true</code> if the given value is almost zero, <code>false</code> otherwise. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="group__Math.html#ga9447e387f79e761f547aa4d321605c78">playrho::AlmostEqual()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a073a93c54a20aa68f2c56e759b7976ab">playrho::d2::ClipSegmentToLine()</a>, <a class="el" href="group__Math.html#gae769785f0540a4b8960b282f6b105c14">playrho::ComputeCentroid()</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceProxy.html#ad01443fd4ea346d550ece90f7f92b1f4">playrho::d2::DistanceProxy::Distance()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a7304da106cfaa394b4d0179ded468aa6">playrho::d2::GetMassData()</a>, <a class="el" href="structplayrho_1_1ToiOutput.html#a19b308c9b3b8f5292b9f3dad183c9d76">playrho::ToiOutput::GetToiViaSat()</a>, <a class="el" href="group__Math.html#ga01639d99c5401d526aeb5c6df075e153">playrho::Invert()</a>, <a class="el" href="group__Math.html#ga0c7d2525a406c1f83c0574e46a2cee32">playrho::Normalize()</a>, <a class="el" href="group__RayCastGroup.html#gabc2e992343e201f48c1956753a530247">playrho::d2::DistanceProxy::RayCast()</a>, <a class="el" href="group__RayCastGroup.html#gaa2b257514c434e44a5ea5839c959bea9">playrho::d2::RayCast()</a>, and <a class="el" href="group__Math.html#ga1dfb22979400417701de8582bb6d76ad">playrho::Solve()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="group__Math.html#ga8b872c5026531f33636758bb11b167e6">playrho::AlmostEqual()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a073a93c54a20aa68f2c56e759b7976ab">playrho::d2::ClipSegmentToLine()</a>, <a class="el" href="group__Math.html#gae769785f0540a4b8960b282f6b105c14">playrho::ComputeCentroid()</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceProxy.html#ad01443fd4ea346d550ece90f7f92b1f4">playrho::d2::DistanceProxy::Distance()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a7304da106cfaa394b4d0179ded468aa6">playrho::d2::GetMassData()</a>, <a class="el" href="structplayrho_1_1ToiOutput.html#a19b308c9b3b8f5292b9f3dad183c9d76">playrho::ToiOutput::GetToiViaSat()</a>, <a class="el" href="group__Math.html#ga01639d99c5401d526aeb5c6df075e153">playrho::Invert()</a>, <a class="el" href="group__Math.html#ga0c7d2525a406c1f83c0574e46a2cee32">playrho::Normalize()</a>, <a class="el" href="group__RayCastGroup.html#gabc2e992343e201f48c1956753a530247">playrho::d2::DistanceProxy::RayCast()</a>, <a class="el" href="group__RayCastGroup.html#gaa2b257514c434e44a5ea5839c959bea9">playrho::d2::RayCast()</a>, and <a class="el" href="group__Math.html#ga1dfb22979400417701de8582bb6d76ad">playrho::Solve()</a>.</p>
 
 </div>
 </div>
@@ -1598,7 +1650,7 @@ template&lt;std::size_t M, typename T1 , std::size_t N, typename T2 &gt; </div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Oct 20 2023 20:05:08 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Oct 24 2023 15:01:07 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

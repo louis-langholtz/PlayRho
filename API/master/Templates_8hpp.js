@@ -12,7 +12,6 @@ var Templates_8hpp =
     [ "end", "Templates_8hpp.html#a370e741c22960aad46732cdc0353f428", null ],
     [ "EraseAll", "Templates_8hpp.html#aa5b77298f0fc2a2ae88ececbc3fb23d1", null ],
     [ "EraseFirst", "Templates_8hpp.html#ad559996a9d085eb07a18b5b88525761f", null ],
-    [ "GetInvalid", "Templates_8hpp.html#aec24a0dab8e2bdc63a322ff5c65e90ef", null ],
     [ "IsValid", "Templates_8hpp.html#a048e0ad2c0fac1472430520c115466eb", null ],
     [ "IsValid", "Templates_8hpp.html#a7dde95b5e9b50eb6552368d0c57cfc88", null ],
     [ "Reverse", "Templates_8hpp.html#a1de374e7d6af7b68b654b657d756468a", null ],

@@ -61,13 +61,6 @@
       <arglist></arglist>
     </member>
     <member kind="function">
-      <type>constexpr BodyID</type>
-      <name>GetInvalid</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aec24a0dab8e2bdc63a322ff5c65e90ef</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr bool</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -577,13 +570,6 @@
       <arglist></arglist>
     </member>
     <member kind="function">
-      <type>constexpr BodyID</type>
-      <name>GetInvalid</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aec24a0dab8e2bdc63a322ff5c65e90ef</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr bool</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -653,12 +639,13 @@
     <name>AABB.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>d2_2AABB_8hpp.html</filename>
-    <includes id="Intervals_8hpp" name="Intervals.hpp" local="no" imported="no">playrho/Intervals.hpp</includes>
-    <includes id="Vector_8hpp" name="Vector.hpp" local="no" imported="no">playrho/Vector.hpp</includes>
-    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
-    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
+    <includes id="Intervals_8hpp" name="Intervals.hpp" local="no" imported="no">playrho/Intervals.hpp</includes>
+    <includes id="Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/Math.hpp</includes>
+    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
+    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
+    <includes id="Vector_8hpp" name="Vector.hpp" local="no" imported="no">playrho/Vector.hpp</includes>
     <includes id="detail_2AABB_8hpp" name="AABB.hpp" local="no" imported="no">playrho/detail/AABB.hpp</includes>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
@@ -727,18 +714,18 @@
       <arglist>(const playrho::detail::RayCastInput&lt; 2 &gt; &amp;input) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>constexpr BodyID</type>
-      <name>GetInvalid</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aec24a0dab8e2bdc63a322ff5c65e90ef</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr Length</type>
       <name>GetPerimeter</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>ace87984d1541a40a6c850825acb43742</anchor>
       <arglist>(const AABB &amp;aabb) noexcept</arglist>
+    </member>
+    <member kind="variable">
+      <type>constexpr auto</type>
+      <name>InvalidAABB</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a1fd86bad0e3f157fe6f76cb9ba093f2b</anchor>
+      <arglist></arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -4632,8 +4619,8 @@
       <type>constexpr auto</type>
       <name>AlmostEqual</name>
       <anchorfile>group__Math.html</anchorfile>
-      <anchor>ga9447e387f79e761f547aa4d321605c78</anchor>
-      <arglist>(const T &amp;x, const T &amp;y, int ulp=2) -&gt; std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt;, bool &gt;</arglist>
+      <anchor>ga8b872c5026531f33636758bb11b167e6</anchor>
+      <arglist>(T a, T b, int ulp=4) -&gt; std::enable_if_t&lt; IsArithmeticV&lt; T &gt;, bool &gt;</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -6822,13 +6809,6 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>afea67a580dfedfa9a2a5efd40a636f18</anchor>
       <arglist>(const UnitVec &amp;vector) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr BodyID</type>
-      <name>GetInvalid</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aec24a0dab8e2bdc63a322ff5c65e90ef</anchor>
-      <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr UnitVec</type>
@@ -10645,13 +10625,6 @@
       <arglist>(T &amp;container, const U &amp;value) -&gt; decltype(container.erase(find(begin(container), end(container), value)) !=end(container))</arglist>
     </member>
     <member kind="function">
-      <type>constexpr BodyID</type>
-      <name>GetInvalid</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aec24a0dab8e2bdc63a322ff5c65e90ef</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr bool</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -11162,13 +11135,6 @@
       <arglist></arglist>
     </member>
     <member kind="function">
-      <type>constexpr BodyID</type>
-      <name>GetInvalid</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aec24a0dab8e2bdc63a322ff5c65e90ef</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr bool</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -11313,13 +11279,6 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a40b372974bcf478fe0254a0a29a2dd14</anchor>
       <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr BodyID</type>
-      <name>GetInvalid</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aec24a0dab8e2bdc63a322ff5c65e90ef</anchor>
-      <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr std::enable_if_t&lt;!IsVectorV&lt; T &gt;, Vector&lt; Vector&lt; T, N &gt;, 1 &gt; &gt;</type>
@@ -11895,6 +11854,13 @@
     </member>
     <member kind="variable">
       <type>constexpr auto</type>
+      <name>Invalid</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>ae4c4c9f92abc8bb90f494053a8e04375</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>constexpr auto</type>
       <name>InvalidContactIndex</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a4ecc8cc059a2a3fa056888a1d405e4bc</anchor>
@@ -11984,13 +11950,6 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a664fbedb33a4af92883576fbee62fd28</anchor>
       <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr BodyID</type>
-      <name>GetInvalid</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aec24a0dab8e2bdc63a322ff5c65e90ef</anchor>
-      <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -13362,13 +13321,6 @@
       <arglist>(const Vector2&lt; T &gt; &amp;vector) noexcept -&gt; Vector2&lt; T &gt;</arglist>
     </member>
     <member kind="function">
-      <type>constexpr BodyID</type>
-      <name>GetInvalid</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aec24a0dab8e2bdc63a322ff5c65e90ef</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr auto</type>
       <name>GetRevPerpendicular</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -13401,6 +13353,13 @@
       <name>EarthlyGravity</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>ababb5cdb48a1960a30aed40859075dee</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>constexpr auto</type>
+      <name>InvalidLength2</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a2525da093ca5647aa7493b07eed63520</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -13438,13 +13397,6 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>ad07b44f811ac4c7551067fb1d3554ec5</anchor>
       <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr BodyID</type>
-      <name>GetInvalid</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aec24a0dab8e2bdc63a322ff5c65e90ef</anchor>
-      <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -13671,13 +13623,6 @@
       <arglist>(AABB&lt; N &gt; aabb, const Length amount)</arglist>
     </member>
     <member kind="function">
-      <type>constexpr d2::AABB</type>
-      <name>GetInvalid</name>
-      <anchorfile>structplayrho_1_1detail_1_1AABB.html</anchorfile>
-      <anchor>a2a108ba35319c75ca3d68dd165ea7209</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr Vector&lt; Length, N &gt;</type>
       <name>GetLowerBound</name>
       <anchorfile>structplayrho_1_1detail_1_1AABB.html</anchorfile>
@@ -13869,13 +13814,6 @@
       <anchorfile>structplayrho_1_1detail_1_1AABB.html</anchorfile>
       <anchor>a3f169758eb050baf511b152fb5177735</anchor>
       <arglist>(AABB&lt; N &gt; aabb, const Length amount)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr d2::AABB</type>
-      <name>GetInvalid</name>
-      <anchorfile>structplayrho_1_1detail_1_1AABB.html</anchorfile>
-      <anchor>a2a108ba35319c75ca3d68dd165ea7209</anchor>
-      <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr Vector&lt; Length, N &gt;</type>
@@ -43376,8 +43314,8 @@
       <type>constexpr auto</type>
       <name>AlmostEqual</name>
       <anchorfile>group__Math.html</anchorfile>
-      <anchor>ga9447e387f79e761f547aa4d321605c78</anchor>
-      <arglist>(const T &amp;x, const T &amp;y, int ulp=2) -&gt; std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt;, bool &gt;</arglist>
+      <anchor>ga8b872c5026531f33636758bb11b167e6</anchor>
+      <arglist>(T a, T b, int ulp=4) -&gt; std::enable_if_t&lt; IsArithmeticV&lt; T &gt;, bool &gt;</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -43714,13 +43652,6 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a4baf1dd76711ae5151d0ee07a8b345d0</anchor>
       <arglist>(Interval&lt; T &gt; a, const Interval&lt; T &gt; &amp;b) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr BodyID</type>
-      <name>GetInvalid</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aec24a0dab8e2bdc63a322ff5c65e90ef</anchor>
-      <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -45600,6 +45531,13 @@
     </member>
     <member kind="variable">
       <type>constexpr auto</type>
+      <name>Invalid</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>ae4c4c9f92abc8bb90f494053a8e04375</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>constexpr auto</type>
       <name>InvalidBodyID</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a38fa6c4a45ec8fd218dc962396685c3f</anchor>
@@ -45631,6 +45569,13 @@
       <name>InvalidJointID</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a67d10419efd6effdd41617992a76cbcd</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>constexpr auto</type>
+      <name>InvalidLength2</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a2525da093ca5647aa7493b07eed63520</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -52895,6 +52840,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>constexpr auto</type>
+      <name>InvalidAABB</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a1fd86bad0e3f157fe6f76cb9ba093f2b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>constexpr bool</type>
       <name>IsValidJointTypeV</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -55682,8 +55634,8 @@
       <type>constexpr auto</type>
       <name>AlmostEqual</name>
       <anchorfile>group__Math.html</anchorfile>
-      <anchor>ga9447e387f79e761f547aa4d321605c78</anchor>
-      <arglist>(const T &amp;x, const T &amp;y, int ulp=2) -&gt; std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt;, bool &gt;</arglist>
+      <anchor>ga8b872c5026531f33636758bb11b167e6</anchor>
+      <arglist>(T a, T b, int ulp=4) -&gt; std::enable_if_t&lt; IsArithmeticV&lt; T &gt;, bool &gt;</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>

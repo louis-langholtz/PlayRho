@@ -596,11 +596,10 @@ template&lt;typename T , std::size_t N&gt; </td></tr>
 <tr class="memitem:a2943dd9a79b7fc1fa196af1208b00388"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a2943dd9a79b7fc1fa196af1208b00388">AllocArray</a> (std::size_t <a class="el" href="namespaceplayrho.html#af33cf35b33c93168aedcbf5a986a3472">size</a>)</td></tr>
 <tr class="memdesc:a2943dd9a79b7fc1fa196af1208b00388"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory for an array.  <a href="namespaceplayrho.html#a2943dd9a79b7fc1fa196af1208b00388">More...</a><br /></td></tr>
 <tr class="separator:a2943dd9a79b7fc1fa196af1208b00388"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9447e387f79e761f547aa4d321605c78"><td class="memTemplParams" colspan="2">
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ga9447e387f79e761f547aa4d321605c78"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga9447e387f79e761f547aa4d321605c78">AlmostEqual</a> (const T &amp;x, const T &amp;y, int ulp=2) -&gt; std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt;, bool &gt;</td></tr>
-<tr class="memdesc:ga9447e387f79e761f547aa4d321605c78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the given two values are "almost equal". <br /></td></tr>
-<tr class="separator:ga9447e387f79e761f547aa4d321605c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8b872c5026531f33636758bb11b167e6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ga8b872c5026531f33636758bb11b167e6"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga8b872c5026531f33636758bb11b167e6">AlmostEqual</a> (T a, T b, int ulp=4) -&gt; std::enable_if_t&lt; <a class="el" href="namespaceplayrho.html#aa9c55e27192da826391d895835f02b17">IsArithmeticV</a>&lt; T &gt;, bool &gt;</td></tr>
+<tr class="memdesc:ga8b872c5026531f33636758bb11b167e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the given two values are "almost equal".  <a href="group__Math.html#ga8b872c5026531f33636758bb11b167e6">More...</a><br /></td></tr>
+<tr class="separator:ga8b872c5026531f33636758bb11b167e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga994ed50293b78dff53a5c7bce78602bf"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga994ed50293b78dff53a5c7bce78602bf"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga994ed50293b78dff53a5c7bce78602bf">AlmostZero</a> (const T &amp;value) -&gt; decltype(<a class="el" href="namespaceplayrho.html#ac862a8609b82126d0683ecb38a498087">abs</a>(value)&lt; std::numeric_limits&lt; T &gt;::min())</td></tr>
 <tr class="memdesc:ga994ed50293b78dff53a5c7bce78602bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether a given value is almost zero.  <a href="group__Math.html#ga994ed50293b78dff53a5c7bce78602bf">More...</a><br /></td></tr>
@@ -793,10 +792,6 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a4baf1dd76711ae5151d0ee07a8b345d0"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a4baf1dd76711ae5151d0ee07a8b345d0">GetIntersection</a> (<a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; a, const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;b) noexcept</td></tr>
 <tr class="memdesc:a4baf1dd76711ae5151d0ee07a8b345d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the intersecting interval of two given ranges. <br /></td></tr>
 <tr class="separator:a4baf1dd76711ae5151d0ee07a8b345d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec24a0dab8e2bdc63a322ff5c65e90ef"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:aec24a0dab8e2bdc63a322ff5c65e90ef"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92">BodyID</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#aec24a0dab8e2bdc63a322ff5c65e90ef">GetInvalid</a> () noexcept</td></tr>
-<tr class="memdesc:aec24a0dab8e2bdc63a322ff5c65e90ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets an invalid value for the BodyID type.  <a href="namespaceplayrho.html#aec24a0dab8e2bdc63a322ff5c65e90ef">More...</a><br /></td></tr>
-<tr class="separator:aec24a0dab8e2bdc63a322ff5c65e90ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0a9354b34edeb8433cd3062aecb78143"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga0a9354b34edeb8433cd3062aecb78143">GetInverse22</a> (const <a class="el" href="namespaceplayrho.html#aabd44d74c5bc530c9b6676c6a61e6b31">Mat33</a> &amp;value) noexcept -&gt; <a class="el" href="namespaceplayrho.html#aabd44d74c5bc530c9b6676c6a61e6b31">Mat33</a></td></tr>
 <tr class="memdesc:ga0a9354b34edeb8433cd3062aecb78143"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the inverse of the given matrix as a 2-by-2.  <a href="group__Math.html#ga0a9354b34edeb8433cd3062aecb78143">More...</a><br /></td></tr>
 <tr class="separator:ga0a9354b34edeb8433cd3062aecb78143"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1120,9 +1115,10 @@ template&lt;&gt; </td></tr>
 <tr class="memitem:a048e0ad2c0fac1472430520c115466eb"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a048e0ad2c0fac1472430520c115466eb">IsValid</a> (const std::size_t &amp;value) noexcept</td></tr>
 <tr class="memdesc:a048e0ad2c0fac1472430520c115466eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given value is valid. <br /></td></tr>
 <tr class="separator:a048e0ad2c0fac1472430520c115466eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7dde95b5e9b50eb6552368d0c57cfc88"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a7dde95b5e9b50eb6552368d0c57cfc88"><td class="memTemplParams" colspan="2"><a id="a7dde95b5e9b50eb6552368d0c57cfc88"></a>
+template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a7dde95b5e9b50eb6552368d0c57cfc88"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7dde95b5e9b50eb6552368d0c57cfc88">IsValid</a> (const T &amp;value) noexcept</td></tr>
-<tr class="memdesc:a7dde95b5e9b50eb6552368d0c57cfc88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given value is valid.  <a href="namespaceplayrho.html#a7dde95b5e9b50eb6552368d0c57cfc88">More...</a><br /></td></tr>
+<tr class="memdesc:a7dde95b5e9b50eb6552368d0c57cfc88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given value is valid. <br /></td></tr>
 <tr class="separator:a7dde95b5e9b50eb6552368d0c57cfc88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab698eb521c2d14d3d88ee3ac4cacd7c6"><td class="memTemplParams" colspan="2"><a id="ab698eb521c2d14d3d88ee3ac4cacd7c6"></a>
 template&lt;typename TYPE &gt; </td></tr>
@@ -1800,6 +1796,10 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <tr class="memitem:gadef54036b9480e0cf730100688e20570"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__PhysicalUnits.html#gadef54036b9480e0cf730100688e20570">Hertz</a> = <a class="el" href="group__PhysicalQuantities.html#ga526d114a9d34d7237ed3e41829ab3eff">Frequency</a>(<a class="el" href="namespaceplayrho_1_1detail.html#af1e0c512dc16bc8796eaffc38727193d">detail::hertz</a>)</td></tr>
 <tr class="memdesc:gadef54036b9480e0cf730100688e20570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hertz unit of Frequency.  <a href="group__PhysicalUnits.html#gadef54036b9480e0cf730100688e20570">More...</a><br /></td></tr>
 <tr class="separator:gadef54036b9480e0cf730100688e20570"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4c4c9f92abc8bb90f494053a8e04375"><td class="memTemplParams" colspan="2">template&lt;class T , std::enable_if_t&lt; std::numeric_limits&lt; T &gt;::has_signaling_NaN||std::numeric_limits&lt; T &gt;::has_quiet_NaN, int &gt;  = 0&gt; </td></tr>
+<tr class="memitem:ae4c4c9f92abc8bb90f494053a8e04375"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ae4c4c9f92abc8bb90f494053a8e04375">Invalid</a></td></tr>
+<tr class="memdesc:ae4c4c9f92abc8bb90f494053a8e04375"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid value of the template's instantiated numeric type.  <a href="namespaceplayrho.html#ae4c4c9f92abc8bb90f494053a8e04375">More...</a><br /></td></tr>
+<tr class="separator:ae4c4c9f92abc8bb90f494053a8e04375"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38fa6c4a45ec8fd218dc962396685c3f"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a> = static_cast&lt;<a class="el" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92">BodyID</a>&gt;(static_cast&lt;<a class="el" href="classplayrho_1_1detail_1_1IndexingNamedType.html#a2ed01bf69779b0880b5092c6bbad560b">BodyID::underlying_type</a>&gt;(-1))</td></tr>
 <tr class="memdesc:a38fa6c4a45ec8fd218dc962396685c3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid body ID value.  <a href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">More...</a><br /></td></tr>
 <tr class="separator:a38fa6c4a45ec8fd218dc962396685c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1817,6 +1817,10 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a67d10419efd6effdd41617992a76cbcd">InvalidJointID</a> = static_cast&lt;<a class="el" href="namespaceplayrho.html#a8e3114be8fb50493389d7991db4f2b3d">JointID</a>&gt;(static_cast&lt;<a class="el" href="classplayrho_1_1detail_1_1IndexingNamedType.html#a2ed01bf69779b0880b5092c6bbad560b">JointID::underlying_type</a>&gt;(-1))</td></tr>
 <tr class="memdesc:a67d10419efd6effdd41617992a76cbcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid joint ID value. <br /></td></tr>
 <tr class="separator:a67d10419efd6effdd41617992a76cbcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2525da093ca5647aa7493b07eed63520"><td class="memItemLeft" align="right" valign="top"><a id="a2525da093ca5647aa7493b07eed63520"></a>
+constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a2525da093ca5647aa7493b07eed63520">InvalidLength2</a> = <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{<a class="el" href="namespaceplayrho.html#ae4c4c9f92abc8bb90f494053a8e04375">Invalid</a>&lt;<a class="el" href="group__PhysicalQuantities.html#ga8705f1923f7cff39bf09f6d01989770d">Length</a>&gt;, <a class="el" href="namespaceplayrho.html#ae4c4c9f92abc8bb90f494053a8e04375">Invalid</a>&lt;<a class="el" href="group__PhysicalQuantities.html#ga8705f1923f7cff39bf09f6d01989770d">Length</a>&gt;}</td></tr>
+<tr class="memdesc:a2525da093ca5647aa7493b07eed63520"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid <code>Length2</code> constant. <br /></td></tr>
+<tr class="separator:a2525da093ca5647aa7493b07eed63520"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cf47dd833aad177ac33142cfc5e6bc3"><td class="memItemLeft" align="right" valign="top"><a id="a7cf47dd833aad177ac33142cfc5e6bc3"></a>
 constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7cf47dd833aad177ac33142cfc5e6bc3">InvalidShapeID</a> = static_cast&lt;<a class="el" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>&gt;(static_cast&lt;<a class="el" href="classplayrho_1_1detail_1_1IndexingNamedType.html#a2ed01bf69779b0880b5092c6bbad560b">ShapeID::underlying_type</a>&gt;(-1))</td></tr>
 <tr class="memdesc:a7cf47dd833aad177ac33142cfc5e6bc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid fixture ID value. <br /></td></tr>
@@ -2266,7 +2270,7 @@ N is the number of columns of the matrix. </dd></dl>
 
 <p>2-element vector of Momentum quantities. </p>
 <dl class="section note"><dt>Note</dt><dd>Often used as a 2-dimensional momentum vector. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="DistanceJoint_8cpp-example.html#a15">DistanceJoint.cpp</a>, <a class="el" href="FrictionJoint_8cpp-example.html#a3">FrictionJoint.cpp</a>, <a class="el" href="GearJoint_8cpp-example.html#a17">GearJoint.cpp</a>, <a class="el" href="Joint_8cpp-example.html#a13">Joint.cpp</a>, <a class="el" href="MotorJoint_8cpp-example.html#a15">MotorJoint.cpp</a>, <a class="el" href="PrismaticJoint_8cpp-example.html#a7">PrismaticJoint.cpp</a>, <a class="el" href="PulleyJoint_8cpp-example.html#a16">PulleyJoint.cpp</a>, <a class="el" href="RevoluteJoint_8cpp-example.html#a16">RevoluteJoint.cpp</a>, <a class="el" href="RopeJoint_8cpp-example.html#a8">RopeJoint.cpp</a>, <a class="el" href="TargetJoint_8cpp-example.html#a13">TargetJoint.cpp</a>, <a class="el" href="WeldJoint_8cpp-example.html#a9">WeldJoint.cpp</a>, <a class="el" href="WheelJoint_8cpp-example.html#a12">WheelJoint.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a81">WorldBody.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="DistanceJoint_8cpp-example.html#a15">DistanceJoint.cpp</a>, <a class="el" href="FrictionJoint_8cpp-example.html#a3">FrictionJoint.cpp</a>, <a class="el" href="GearJoint_8cpp-example.html#a17">GearJoint.cpp</a>, <a class="el" href="Joint_8cpp-example.html#a13">Joint.cpp</a>, <a class="el" href="MotorJoint_8cpp-example.html#a15">MotorJoint.cpp</a>, <a class="el" href="PrismaticJoint_8cpp-example.html#a7">PrismaticJoint.cpp</a>, <a class="el" href="PulleyJoint_8cpp-example.html#a16">PulleyJoint.cpp</a>, <a class="el" href="RevoluteJoint_8cpp-example.html#a16">RevoluteJoint.cpp</a>, <a class="el" href="RopeJoint_8cpp-example.html#a8">RopeJoint.cpp</a>, <a class="el" href="TargetJoint_8cpp-example.html#a10">TargetJoint.cpp</a>, <a class="el" href="WeldJoint_8cpp-example.html#a9">WeldJoint.cpp</a>, <a class="el" href="WheelJoint_8cpp-example.html#a12">WheelJoint.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a81">WorldBody.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -3006,59 +3010,6 @@ template&lt;typename T , std::size_t N&gt; </div>
 
 </div>
 </div>
-<a id="aec24a0dab8e2bdc63a322ff5c65e90ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec24a0dab8e2bdc63a322ff5c65e90ef">&#9670;&nbsp;</a></span>GetInvalid()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="namespaceplayrho.html#a63f6dcdf3763052ea25099973c7c00ad">Vec3</a> playrho::GetInvalid </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets an invalid value for the BodyID type. </p>
-<p>Gets an invalid value for the 3-element vector of real (<code>Vec3</code>) type.</p>
-<p>Gets an invalid value for the <code>Vec2</code> type.</p>
-<p>Gets an invalid value for the std::size_t type.</p>
-<p>Gets an invalid value for the long double type.</p>
-<p>Gets an invalid value for the double type.</p>
-<p>Gets an invalid value for the float type.</p>
-<p>Gets an invalid value for the type.</p>
-<p>Gets an invalid value for the ShapeID type.</p>
-<p>Gets an invalid value for a <code>Mat22</code>.</p>
-<p>Gets an invalid value for the JointID type.</p>
-<p>Gets an invalid value for the <code>UnitVec</code> type.</p>
-<p>Gets an invalid AABB value.</p>
-<p>Gets an invalid value for the ContactID type.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92" title="Strongly typed identifier for bodies within World instances.">BodyID</a>.</dd></dl>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">T</td><td>Type to get an invalid value for. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>Specialize this function for the types which have an invalid value concept. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#ab7404128f6225cf6915219bb784c7843" title="Determines if the given value is valid.">IsValid</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="TargetJoint_8cpp-example.html#a8">TargetJoint.cpp</a>.</dd>
-</dl>
-
-</div>
-</div>
 <a id="a43351fde9d622f4762a47e6618daf2f7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a43351fde9d622f4762a47e6618daf2f7">&#9670;&nbsp;</a></span>GetMovementConf()</h2>
 
@@ -3609,7 +3560,7 @@ template&lt;typename T , typename U  = decltype(Interval&lt;T&gt;{}, T{} &lt; T{
 </div>
 </div>
 <a id="ab7404128f6225cf6915219bb784c7843"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7404128f6225cf6915219bb784c7843">&#9670;&nbsp;</a></span>IsValid() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7404128f6225cf6915219bb784c7843">&#9670;&nbsp;</a></span>IsValid() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3642,7 +3593,7 @@ template&lt;&gt; </div>
 </div>
 </div>
 <a id="a0fa02e6b0d55e9363ad4afb89a755fc1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0fa02e6b0d55e9363ad4afb89a755fc1">&#9670;&nbsp;</a></span>IsValid() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fa02e6b0d55e9363ad4afb89a755fc1">&#9670;&nbsp;</a></span>IsValid() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3669,37 +3620,6 @@ template&lt;&gt; </div>
 
 <p>Determines if the given value is valid. </p>
 <p>Determines whether the given vector contains finite coordinates. </p>
-
-</div>
-</div>
-<a id="a7dde95b5e9b50eb6552368d0c57cfc88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7dde95b5e9b50eb6552368d0c57cfc88">&#9670;&nbsp;</a></span>IsValid() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr bool playrho::IsValid </td>
-          <td>(</td>
-          <td class="paramtype">const T &amp;&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Determines if the given value is valid. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#aec24a0dab8e2bdc63a322ff5c65e90ef" title="Gets an invalid value for the BodyID type.">GetInvalid</a>. </dd></dl>
 
 </div>
 </div>
@@ -5622,6 +5542,36 @@ The value used by Box2D 2.3.2 b2_linearSlop define is 0.005_m. </dd></dl>
 
 </div>
 </div>
+<a id="ae4c4c9f92abc8bb90f494053a8e04375"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4c4c9f92abc8bb90f494053a8e04375">&#9670;&nbsp;</a></span>Invalid</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , std::enable_if_t&lt; std::numeric_limits&lt; T &gt;::has_signaling_NaN||std::numeric_limits&lt; T &gt;::has_quiet_NaN, int &gt;  = 0&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto playrho::Invalid</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= std::numeric_limits&lt;T&gt;::has_signaling_NaN</div>
+<div class="line">    ? std::numeric_limits&lt;T&gt;::signaling_NaN()</div>
+<div class="line">    : <a class="code" href="namespacestd.html">std</a>::numeric_limits&lt;T&gt;::quiet_NaN()</div>
+<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div></div>
+</div><!-- fragment -->
+<p>Invalid value of the template's instantiated numeric type. </p>
+
+</div>
+</div>
 <a id="a38fa6c4a45ec8fd218dc962396685c3f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a38fa6c4a45ec8fd218dc962396685c3f">&#9670;&nbsp;</a></span>InvalidBodyID</h2>
 
@@ -5644,10 +5594,10 @@ The value used by Box2D 2.3.2 b2_linearSlop define is 0.005_m. </dd></dl>
 
 <p>Invalid body ID value. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92" title="Strongly typed identifier for bodies within World instances.">BodyID</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="DistanceJoint_8cpp-example.html#a1">DistanceJoint.cpp</a>, <a class="el" href="FrictionJoint_8cpp-example.html#a0">FrictionJoint.cpp</a>, <a class="el" href="GearJoint_8cpp-example.html#a0">GearJoint.cpp</a>, <a class="el" href="Joint_8cpp-example.html#a0">Joint.cpp</a>, <a class="el" href="MotorJoint_8cpp-example.html#a1">MotorJoint.cpp</a>, <a class="el" href="PulleyJoint_8cpp-example.html#a0">PulleyJoint.cpp</a>, <a class="el" href="RevoluteJoint_8cpp-example.html#a0">RevoluteJoint.cpp</a>, <a class="el" href="RopeJoint_8cpp-example.html#a0">RopeJoint.cpp</a>, <a class="el" href="TargetJoint_8cpp-example.html#a7">TargetJoint.cpp</a>, <a class="el" href="WeldJoint_8cpp-example.html#a0">WeldJoint.cpp</a>, <a class="el" href="WheelJoint_8cpp-example.html#a0">WheelJoint.cpp</a>, <a class="el" href="World_8cpp-example.html#a32">World.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a1">WorldBody.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="DistanceJoint_8cpp-example.html#a1">DistanceJoint.cpp</a>, <a class="el" href="FrictionJoint_8cpp-example.html#a0">FrictionJoint.cpp</a>, <a class="el" href="GearJoint_8cpp-example.html#a0">GearJoint.cpp</a>, <a class="el" href="Joint_8cpp-example.html#a0">Joint.cpp</a>, <a class="el" href="MotorJoint_8cpp-example.html#a1">MotorJoint.cpp</a>, <a class="el" href="PulleyJoint_8cpp-example.html#a0">PulleyJoint.cpp</a>, <a class="el" href="RevoluteJoint_8cpp-example.html#a0">RevoluteJoint.cpp</a>, <a class="el" href="RopeJoint_8cpp-example.html#a0">RopeJoint.cpp</a>, <a class="el" href="TargetJoint_8cpp-example.html#a18">TargetJoint.cpp</a>, <a class="el" href="WeldJoint_8cpp-example.html#a0">WeldJoint.cpp</a>, <a class="el" href="WheelJoint_8cpp-example.html#a0">WheelJoint.cpp</a>, <a class="el" href="World_8cpp-example.html#a32">World.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a1">WorldBody.cpp</a>.</dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a678b061692e87f71d512b8bb80f9377d">playrho::d2::World::FindClosestBody()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ad3c653a34c7a681dbc60ec447225e85f">playrho::d2::World::GetAnchorA()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aa88982e1bd4c8bafe0160cdad5a68a71">playrho::d2::World::GetAnchorB()</a>, <a class="el" href="namespaceplayrho.html#aec24a0dab8e2bdc63a322ff5c65e90ef">GetInvalid()</a>, <a class="el" href="structplayrho_1_1d2_1_1DistanceJointConf.html#a04f5087d761eecd8554b6156d1cc3021">playrho::d2::DistanceJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1FrictionJointConf.html#a904a7c9eb12d39f5331d70e31bfc5aa3">playrho::d2::FrictionJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html#a6fb896d2cd2716bc5313edf9664311dd">playrho::d2::GearJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1MotorJointConf.html#a2b683394550bdac7d8ff211bf659cc79">playrho::d2::MotorJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1PrismaticJointConf.html#ac1c8f45842be63b34da6d53d811881db">playrho::d2::PrismaticJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1PulleyJointConf.html#a4bc9c62ac7aaef84c0c536a1b439ccf9">playrho::d2::PulleyJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RevoluteJointConf.html#a7b32961588123ecf24d8c176b39be0b8">playrho::d2::RevoluteJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RopeJointConf.html#a0fa82bd7d2ebe576faf0ceac30982870">playrho::d2::RopeJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a1bc16ad22662f69d6218f879a5c17245">playrho::d2::TargetJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#ad9a429415a87a06a9134b001d73bf508">playrho::d2::WeldJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a9e194ef30b3a342a38f9afc09c629f6d">playrho::d2::WheelJointConf::InitVelocity()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ac628649081fe495f59e06aff27f3201d">playrho::d2::World::IsEnabled()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a85c5cee4a3713d3ef248eab7b4d05926">playrho::d2::World::SetAwake()</a>, <a class="el" href="structplayrho_1_1d2_1_1DistanceJointConf.html#a1cb4cf206219920fd02778200b00d623">playrho::d2::DistanceJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html#a5a54a7c5cb24901f677963106f310fec">playrho::d2::GearJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1PrismaticJointConf.html#a9781e7946b790d5697f7692de702ab82">playrho::d2::PrismaticJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1PulleyJointConf.html#afa2b76fbf75674d72e4bab581590eec4">playrho::d2::PulleyJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1RevoluteJointConf.html#a15b5d820404f01071ece796f787c4fab">playrho::d2::RevoluteJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1RopeJointConf.html#a168b27b3bf6ef8dec62708dd2037abcb">playrho::d2::RopeJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#a0a2a5151fb0a799e0d2f0a84e4534b94">playrho::d2::WeldJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a14e495be301fc95b5f890716f9e51309">playrho::d2::WheelJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1DistanceJointConf.html#a9b2e8c358061fcd3724da3c1cb5fcc32">playrho::d2::DistanceJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1FrictionJointConf.html#a6072ec80a0f6f19ddf2bbc57abe6110a">playrho::d2::FrictionJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html#ab274b1bb66255adc6ad6fe9ea22fbe5c">playrho::d2::GearJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1MotorJointConf.html#a9fbbab76d642be0211f8c76334ccbe0f">playrho::d2::MotorJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1PrismaticJointConf.html#a6ee4f0a073351cace3dc1ba478411140">playrho::d2::PrismaticJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1PulleyJointConf.html#ac62c3b05e95c61b801722de099d962de">playrho::d2::PulleyJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RevoluteJointConf.html#aa27f190089266d9d8de1d9f3ae963999">playrho::d2::RevoluteJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RopeJointConf.html#a67249c115b7b84fc2a58abc83664c934">playrho::d2::RopeJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a87f0cb382d657fcac4402b3896269fe3">playrho::d2::TargetJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#a25cfb7a5d3d5f2aeef028803b37454da">playrho::d2::WeldJointConf::SolveVelocity()</a>, and <a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a6474e7647ffafa7698e6b2fb0282f3cc">playrho::d2::WheelJointConf::SolveVelocity()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a678b061692e87f71d512b8bb80f9377d">playrho::d2::World::FindClosestBody()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ad3c653a34c7a681dbc60ec447225e85f">playrho::d2::World::GetAnchorA()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aa88982e1bd4c8bafe0160cdad5a68a71">playrho::d2::World::GetAnchorB()</a>, <a class="el" href="structplayrho_1_1d2_1_1DistanceJointConf.html#a04f5087d761eecd8554b6156d1cc3021">playrho::d2::DistanceJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1FrictionJointConf.html#a904a7c9eb12d39f5331d70e31bfc5aa3">playrho::d2::FrictionJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html#a6fb896d2cd2716bc5313edf9664311dd">playrho::d2::GearJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1MotorJointConf.html#a2b683394550bdac7d8ff211bf659cc79">playrho::d2::MotorJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1PrismaticJointConf.html#ac1c8f45842be63b34da6d53d811881db">playrho::d2::PrismaticJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1PulleyJointConf.html#a4bc9c62ac7aaef84c0c536a1b439ccf9">playrho::d2::PulleyJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RevoluteJointConf.html#a7b32961588123ecf24d8c176b39be0b8">playrho::d2::RevoluteJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RopeJointConf.html#a0fa82bd7d2ebe576faf0ceac30982870">playrho::d2::RopeJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a1bc16ad22662f69d6218f879a5c17245">playrho::d2::TargetJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#ad9a429415a87a06a9134b001d73bf508">playrho::d2::WeldJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a9e194ef30b3a342a38f9afc09c629f6d">playrho::d2::WheelJointConf::InitVelocity()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ac628649081fe495f59e06aff27f3201d">playrho::d2::World::IsEnabled()</a>, <a class="el" href="namespaceplayrho.html#ab7404128f6225cf6915219bb784c7843">IsValid()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a85c5cee4a3713d3ef248eab7b4d05926">playrho::d2::World::SetAwake()</a>, <a class="el" href="structplayrho_1_1d2_1_1DistanceJointConf.html#a1cb4cf206219920fd02778200b00d623">playrho::d2::DistanceJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html#a5a54a7c5cb24901f677963106f310fec">playrho::d2::GearJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1PrismaticJointConf.html#a9781e7946b790d5697f7692de702ab82">playrho::d2::PrismaticJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1PulleyJointConf.html#afa2b76fbf75674d72e4bab581590eec4">playrho::d2::PulleyJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1RevoluteJointConf.html#a15b5d820404f01071ece796f787c4fab">playrho::d2::RevoluteJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1RopeJointConf.html#a168b27b3bf6ef8dec62708dd2037abcb">playrho::d2::RopeJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#a0a2a5151fb0a799e0d2f0a84e4534b94">playrho::d2::WeldJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a14e495be301fc95b5f890716f9e51309">playrho::d2::WheelJointConf::SolvePosition()</a>, <a class="el" href="structplayrho_1_1d2_1_1DistanceJointConf.html#a9b2e8c358061fcd3724da3c1cb5fcc32">playrho::d2::DistanceJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1FrictionJointConf.html#a6072ec80a0f6f19ddf2bbc57abe6110a">playrho::d2::FrictionJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html#ab274b1bb66255adc6ad6fe9ea22fbe5c">playrho::d2::GearJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1MotorJointConf.html#a9fbbab76d642be0211f8c76334ccbe0f">playrho::d2::MotorJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1PrismaticJointConf.html#a6ee4f0a073351cace3dc1ba478411140">playrho::d2::PrismaticJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1PulleyJointConf.html#ac62c3b05e95c61b801722de099d962de">playrho::d2::PulleyJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RevoluteJointConf.html#aa27f190089266d9d8de1d9f3ae963999">playrho::d2::RevoluteJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1RopeJointConf.html#a67249c115b7b84fc2a58abc83664c934">playrho::d2::RopeJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a87f0cb382d657fcac4402b3896269fe3">playrho::d2::TargetJointConf::SolveVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html#a25cfb7a5d3d5f2aeef028803b37454da">playrho::d2::WeldJointConf::SolveVelocity()</a>, and <a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a6474e7647ffafa7698e6b2fb0282f3cc">playrho::d2::WheelJointConf::SolveVelocity()</a>.</p>
 
 </div>
 </div>
@@ -5676,7 +5626,7 @@ The value used by Box2D 2.3.2 b2_linearSlop define is 0.005_m. </dd></dl>
 </div><!-- fragment -->
 <p>Invalid contact ID value. </p>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a7e8932936bd2f281984a4afacc40e7a1">playrho::d2::GetSoonestContact()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a7e8932936bd2f281984a4afacc40e7a1">playrho::d2::GetSoonestContact()</a>, and <a class="el" href="namespaceplayrho.html#adc42b14180314ff41872c38c5596970c">IsValid()</a>.</p>
 
 </div>
 </div>
@@ -5702,8 +5652,8 @@ The value used by Box2D 2.3.2 b2_linearSlop define is 0.005_m. </dd></dl>
 <b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="namespaceplayrho.html#a7d449e0a1528c10ae0f241713fb69b40">IndexPair</a>{</div>
 <div class="line">    <a class="code" href="namespaceplayrho.html#a49c511e18a6b72260126cf763c1cd8df">InvalidVertex</a>, <a class="code" href="namespaceplayrho.html#a49c511e18a6b72260126cf763c1cd8df">InvalidVertex</a></div>
 <div class="line">}</div>
-<div class="ttc" id="anamespaceplayrho_html_a49c511e18a6b72260126cf763c1cd8df"><div class="ttname"><a href="namespaceplayrho.html#a49c511e18a6b72260126cf763c1cd8df">playrho::InvalidVertex</a></div><div class="ttdeci">constexpr auto InvalidVertex</div><div class="ttdoc">Invalid vertex index.</div><div class="ttdef"><b>Definition:</b> Settings.hpp:84</div></div>
-<div class="ttc" id="anamespaceplayrho_html_a7d449e0a1528c10ae0f241713fb69b40"><div class="ttname"><a href="namespaceplayrho.html#a7d449e0a1528c10ae0f241713fb69b40">playrho::IndexPair</a></div><div class="ttdeci">std::pair&lt; VertexCounter, VertexCounter &gt; IndexPair</div><div class="ttdoc">Index pair.</div><div class="ttdef"><b>Definition:</b> IndexPair.hpp:35</div></div>
+<div class="ttc" id="anamespaceplayrho_html_a49c511e18a6b72260126cf763c1cd8df"><div class="ttname"><a href="namespaceplayrho.html#a49c511e18a6b72260126cf763c1cd8df">playrho::InvalidVertex</a></div><div class="ttdeci">constexpr auto InvalidVertex</div><div class="ttdoc">Invalid vertex index.</div><div class="ttdef"><b>Definition:</b> Settings.hpp:85</div></div>
+<div class="ttc" id="anamespaceplayrho_html_a7d449e0a1528c10ae0f241713fb69b40"><div class="ttname"><a href="namespaceplayrho.html#a7d449e0a1528c10ae0f241713fb69b40">playrho::IndexPair</a></div><div class="ttdeci">std::pair&lt; VertexCounter, VertexCounter &gt; IndexPair</div><div class="ttdoc">Index pair.</div><div class="ttdef"><b>Definition:</b> IndexPair.hpp:36</div></div>
 </div><!-- fragment -->
 <p>Invalid index-pair value. </p>
 
@@ -5927,7 +5877,7 @@ Any narrowing is intentional.</dd></dl>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(1.414213562373095048801688724209698078569671875376948073176679737990732478462L)</div>
-<div class="ttc" id="anamespaceplayrho_html_a1fc125070a08100d083a1360f7167f87"><div class="ttname"><a href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">playrho::Real</a></div><div class="ttdeci">float Real</div><div class="ttdoc">Real-number type.</div><div class="ttdef"><b>Definition:</b> Real.hpp:63</div></div>
+<div class="ttc" id="anamespaceplayrho_html_a1fc125070a08100d083a1360f7167f87"><div class="ttname"><a href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">playrho::Real</a></div><div class="ttdeci">float Real</div><div class="ttdoc">Real-number type.</div><div class="ttdef"><b>Definition:</b> Real.hpp:65</div></div>
 </div><!-- fragment -->
 <p>Square root of two. </p>
 <dl class="section see"><dt>See also</dt><dd><a href="https://en.wikipedia.org/wiki/Square_root_of_2">https://en.wikipedia.org/wiki/Square_root_of_2</a> </dd></dl>
@@ -5942,7 +5892,7 @@ Any narrowing is intentional.</dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li>
-    <li class="footer">Generated on Fri Oct 20 2023 20:05:08 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Oct 24 2023 15:01:08 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

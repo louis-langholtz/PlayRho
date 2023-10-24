@@ -8,7 +8,6 @@ var UnitVec_8hpp =
     [ "get< 0 >", "UnitVec_8hpp.html#a449f8d62d52b980177ca57f8766a2159", null ],
     [ "get< 1 >", "UnitVec_8hpp.html#a93e4609be8116731e3d32f6e4206bd49", null ],
     [ "GetFwdPerpendicular", "UnitVec_8hpp.html#afea67a580dfedfa9a2a5efd40a636f18", null ],
-    [ "GetInvalid", "UnitVec_8hpp.html#aec24a0dab8e2bdc63a322ff5c65e90ef", null ],
     [ "GetRevPerpendicular", "UnitVec_8hpp.html#a2e109190d59d6d1a154094fb566547b3", null ],
     [ "GetX", "UnitVec_8hpp.html#adab7becf1945a89fa8459e8c2853478a", null ],
     [ "GetXAxis", "UnitVec_8hpp.html#a60d775fd7f677ce835dc086bf372bd95", null ],

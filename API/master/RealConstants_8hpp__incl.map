@@ -1,13 +1,13 @@
 <map id="Library/include/playrho/RealConstants.hpp" name="Library/include/playrho/RealConstants.hpp">
-<area shape="rect" id="node1" title="Definitions file for constant expressions of type Real." alt="" coords="136,5,307,47"/>
-<area shape="rect" id="node2" href="$Defines_8hpp.html" title="Miscellaneous C&#45;preprocessor definitions." alt="" coords="63,95,215,121"/>
-<area shape="rect" id="node3" href="$Real_8hpp.html" title="Real number definition file." alt="" coords="239,95,371,121"/>
-<area shape="rect" id="node4" href="$Templates_8hpp.html" title="Definitions of miscellaneous template related code." alt="" coords="220,169,391,196"/>
-<area shape="rect" id="node5" href="$detail_2Templates_8hpp.html" title="Low&#45;level declarations for general class &amp; function templates." alt="" coords="200,244,411,271"/>
-<area shape="rect" id="node6" title=" " alt="" coords="5,319,91,345"/>
-<area shape="rect" id="node7" title=" " alt="" coords="115,319,202,345"/>
-<area shape="rect" id="node8" title=" " alt="" coords="226,319,297,345"/>
-<area shape="rect" id="node9" title=" " alt="" coords="321,319,380,345"/>
-<area shape="rect" id="node10" title=" " alt="" coords="405,319,497,345"/>
-<area shape="rect" id="node11" title=" " alt="" coords="521,319,581,345"/>
+<area shape="rect" id="node1" title="Definitions file for constant expressions of type Real." alt="" coords="79,5,249,47"/>
+<area shape="rect" id="node2" href="$Defines_8hpp.html" title="Miscellaneous C&#45;preprocessor definitions." alt="" coords="5,95,157,121"/>
+<area shape="rect" id="node3" href="$Real_8hpp.html" title="Real number definition file." alt="" coords="182,95,314,121"/>
+<area shape="rect" id="node4" title=" " alt="" coords="149,169,208,196"/>
+<area shape="rect" id="node5" href="$Templates_8hpp.html" title="Definitions of miscellaneous template related code." alt="" coords="232,169,403,196"/>
+<area shape="rect" id="node6" href="$detail_2Templates_8hpp.html" title="Low&#45;level declarations for general class &amp; function templates." alt="" coords="212,244,423,271"/>
+<area shape="rect" id="node7" title=" " alt="" coords="61,319,147,345"/>
+<area shape="rect" id="node8" title=" " alt="" coords="171,319,258,345"/>
+<area shape="rect" id="node9" title=" " alt="" coords="282,319,353,345"/>
+<area shape="rect" id="node10" title=" " alt="" coords="377,319,469,345"/>
+<area shape="rect" id="node11" title=" " alt="" coords="493,319,553,345"/>
 </map>

@@ -13,7 +13,6 @@ var structplayrho_1_1detail_1_1AABB =
     [ "GetEnclosingAABB", "structplayrho_1_1detail_1_1AABB.html#af0034e680404f80e04d94699d42ed07d", null ],
     [ "GetExtents", "structplayrho_1_1detail_1_1AABB.html#a869cd35cc1b8a53bfdedd47f2b6b9000", null ],
     [ "GetFattenedAABB", "structplayrho_1_1detail_1_1AABB.html#a3f169758eb050baf511b152fb5177735", null ],
-    [ "GetInvalid", "structplayrho_1_1detail_1_1AABB.html#a2a108ba35319c75ca3d68dd165ea7209", null ],
     [ "GetLowerBound", "structplayrho_1_1detail_1_1AABB.html#aad63477b5cea2c8275ecedff1f3f9530", null ],
     [ "GetMovedAABB", "structplayrho_1_1detail_1_1AABB.html#a74557026c35a580c45dfc12f0c2bc6c0", null ],
     [ "GetPerimeter", "structplayrho_1_1detail_1_1AABB.html#a8f7f7fdc94ace092c3c65acbe6522752", null ],

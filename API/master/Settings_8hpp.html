@@ -104,12 +104,13 @@ $(document).ready(function(){initNavTree('Settings_8hpp.html',''); initResizable
 
 <p>Types and default settings file.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;cstddef&gt;</code><br />
+<div class="textblock"><code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cassert&gt;</code><br />
 <code>#include &lt;cfloat&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
-<code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;limits&gt;</code><br />
 <code>#include &lt;<a class="el" href="RealConstants_8hpp.html">playrho/RealConstants.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Templates_8hpp.html">playrho/Templates.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Units_8hpp.html">playrho/Units.hpp</a>&gt;</code><br />
@@ -236,6 +237,10 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a6497dbff92f4140c03fb29f7dc80093d">playrho::DefaultVelocityThreshold</a> = 1_mps</td></tr>
 <tr class="memdesc:a6497dbff92f4140c03fb29f7dc80093d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default velocity threshold. <br /></td></tr>
 <tr class="separator:a6497dbff92f4140c03fb29f7dc80093d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4c4c9f92abc8bb90f494053a8e04375"><td class="memTemplParams" colspan="2">template&lt;class T , std::enable_if_t&lt; std::numeric_limits&lt; T &gt;::has_signaling_NaN||std::numeric_limits&lt; T &gt;::has_quiet_NaN, int &gt;  = 0&gt; </td></tr>
+<tr class="memitem:ae4c4c9f92abc8bb90f494053a8e04375"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ae4c4c9f92abc8bb90f494053a8e04375">playrho::Invalid</a></td></tr>
+<tr class="memdesc:ae4c4c9f92abc8bb90f494053a8e04375"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid value of the template's instantiated numeric type.  <a href="namespaceplayrho.html#ae4c4c9f92abc8bb90f494053a8e04375">More...</a><br /></td></tr>
+<tr class="separator:ae4c4c9f92abc8bb90f494053a8e04375"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ecc8cc059a2a3fa056888a1d405e4bc"><td class="memItemLeft" align="right" valign="top"><a id="a4ecc8cc059a2a3fa056888a1d405e4bc"></a>
 constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a4ecc8cc059a2a3fa056888a1d405e4bc">playrho::InvalidContactIndex</a> = static_cast&lt;ContactCounter&gt;(-1)</td></tr>
 <tr class="memdesc:a4ecc8cc059a2a3fa056888a1d405e4bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid contact index. <br /></td></tr>
@@ -283,7 +288,7 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="Settings_8hpp.html">Settings.hpp</a></li>
-    <li class="footer">Generated on Fri Oct 20 2023 20:05:08 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Oct 24 2023 15:01:07 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

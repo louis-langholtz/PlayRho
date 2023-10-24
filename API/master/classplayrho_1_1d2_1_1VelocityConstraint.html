@@ -128,6 +128,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a0c3f7e151e178001bf8bde596c4eaabd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a0c3f7e151e178001bf8bde596c4eaabd">VelocityConstraint</a> ()=default</td></tr>
+<tr class="memdesc:a0c3f7e151e178001bf8bde596c4eaabd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="classplayrho_1_1d2_1_1VelocityConstraint.html#a0c3f7e151e178001bf8bde596c4eaabd">More...</a><br /></td></tr>
 <tr class="separator:a0c3f7e151e178001bf8bde596c4eaabd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbc4406b84a48b4ad550f75fcc1fe496"><td class="memItemLeft" align="right" valign="top"><a id="acbc4406b84a48b4ad550f75fcc1fe496"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#acbc4406b84a48b4ad550f75fcc1fe496">VelocityConstraint</a> (const <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html">VelocityConstraint</a> &amp;copy)=default</td></tr>
@@ -237,8 +238,11 @@ The velocity biases cannot be changed independent of: the normal, and the point 
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Default constructor.</p>
-<p>Initializes object with: a zero point count, an invalid K, an invalid normal mass, an invalid normal, invalid friction, invalid restitution, an invalid tangent speed. </p>
+
+<p>Default constructor. </p>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#ad5201366b8f451d9a90878ecdbb040ff">GetNormal()</a></code> and <code><a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a5770dc875b387fa5f557c0d49f30877b" title="Gets the tangent.">GetTangent()</a></code> return a default constructed <code><a class="el" href="classplayrho_1_1d2_1_1UnitVec.html" title="2-D unit vector.">UnitVec</a></code> . </dd>
+<dd>
+<code><a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a8328fb8755ee63d4fc286122bb9a7a5c">GetPointCount()</a></code>, <code><a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#ab4aa128a02dd806edc05d3d2cbe2071a" title="Gets the combined friction of the associated contact.">GetFriction()</a></code>, <code><a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a2cb4f41d6a645fabcf4e69b298547100" title="Gets the combined restitution of the associated contact.">GetRestitution()</a></code>, <code><a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#aa68c6da65b556cc282a0ec4455eddd1b" title="Gets the tangent speed of the associated contact.">GetTangentSpeed()</a></code>, <code><a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a7b7672fe3674a94c46c62b5840391286">GetK()</a></code>, <code><a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a9606f1efd3c728bf4d0d589512034d95">GetNormalMass()</a></code> all return zero. </dd></dl>
 
 </div>
 </div>
@@ -616,7 +620,7 @@ The <code>AddPoint</code> function sets this value. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html">VelocityConstraint</a></li>
-    <li class="footer">Generated on Fri Oct 20 2023 20:05:09 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Oct 24 2023 15:01:08 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

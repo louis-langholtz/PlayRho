@@ -1,6 +1,6 @@
 var group__Math =
 [
-    [ "AlmostEqual", "group__Math.html#ga9447e387f79e761f547aa4d321605c78", null ],
+    [ "AlmostEqual", "group__Math.html#ga8b872c5026531f33636758bb11b167e6", null ],
     [ "AlmostZero", "group__Math.html#ga994ed50293b78dff53a5c7bce78602bf", null ],
     [ "Atan2", "group__Math.html#gab870a9188fcc77c905807fa718a8268d", null ],
     [ "Average", "group__Math.html#ga5928e1bb2ea4a8d60673314ff46a83cf", null ],
