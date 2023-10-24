@@ -1,14 +1,27 @@
 if(PLAYRHO_REAL_TYPE)
-	if(PLAYRHO_REAL_FETCH AND PLAYRHO_REAL_GIT_REPOSITORY AND PLAYRHO_REAL_GIT_TAG)
-		include(FetchContent)
-		message(STATUS "Attempting to fetch \"${PLAYRHO_REAL_FETCH}\" for PLAYRHO_REAL_TYPE support")
-		FetchContent_Declare(${PLAYRHO_REAL_FETCH}
-			GIT_REPOSITORY ${PLAYRHO_REAL_GIT_REPOSITORY}
-			GIT_TAG ${PLAYRHO_REAL_GIT_TAG}
-		)
-		FetchContent_MakeAvailable(${PLAYRHO_REAL_FETCH})
-		set(PLAYRHO_REAL_SOURCE_DIR "${${PLAYRHO_REAL_FETCH}_SOURCE_DIR}")
-		message(STATUS "PLAYRHO_REAL_SOURCE_DIR=${PLAYRHO_REAL_SOURCE_DIR}")
+	if(PLAYRHO_REAL_PROJECT)
+		if(PLAYRHO_REAL_GIT_REPOSITORY)
+			include(FetchContent)
+			message(STATUS "Attempting to fetch PLAYRHO_REAL_PROJECT \"${PLAYRHO_REAL_PROJECT}\", for PLAYRHO_REAL_TYPE support")
+			if(PLAYRHO_REAL_GIT_TAG)
+				FetchContent_Declare(${PLAYRHO_REAL_PROJECT}
+					GIT_REPOSITORY ${PLAYRHO_REAL_GIT_REPOSITORY}
+					GIT_TAG ${PLAYRHO_REAL_GIT_TAG}
+				)
+			else()
+				# Without GIT_TAG specified, defaults to fetching "master" branch of repo
+				FetchContent_Declare(${PLAYRHO_REAL_PROJECT}
+					GIT_REPOSITORY ${PLAYRHO_REAL_GIT_REPOSITORY}
+				)
+			endif()
+			FetchContent_MakeAvailable(${PLAYRHO_REAL_PROJECT})
+			set(PLAYRHO_REAL_SOURCE_DIR "${${PLAYRHO_REAL_PROJECT}_SOURCE_DIR}")
+			message(STATUS "Fetched, PLAYRHO_REAL_SOURCE_DIR=${PLAYRHO_REAL_SOURCE_DIR}")
+		else()
+			message(STATUS "Attempting to find PLAYRHO_REAL_PROJECT \"${PLAYRHO_REAL_PROJECT}\", for PLAYRHO_REAL_TYPE support")
+			find_package(${PLAYRHO_REAL_PROJECT} REQUIRED)
+			message(STATUS "Found, CMake config for PLAYRHO_REAL_PROJECT \"${PLAYRHO_REAL_PROJECT}\" at \"${${PLAYRHO_REAL_PROJECT}_CONFIG}\"")
+		endif()
 	endif()
 else()
 	set(PLAYRHO_REAL_TYPE float)
@@ -284,8 +297,8 @@ target_compile_options(PlayRho PRIVATE
 	$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Wundef -Wcast-align -Wconversion -Wshadow -Wdouble-promotion -Werror>
 )
 
-if(PLAYRHO_REAL_FETCH)
-	target_link_libraries(PlayRho ${PLAYRHO_REAL_FETCH}::${PLAYRHO_REAL_FETCH})
+if(PLAYRHO_REAL_PROJECT)
+	target_link_libraries(PlayRho ${PLAYRHO_REAL_PROJECT}::${PLAYRHO_REAL_PROJECT})
 endif()
 
 # These are used to create visual studio folders.
