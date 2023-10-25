@@ -105,6 +105,7 @@ std::vector<UnitVec> GetFwdNormalsVector(const std::vector<Length2>& vertices)
 {
     auto normals = std::vector<UnitVec>();
     const auto count = static_cast<VertexCounter>(size(vertices));
+    normals.reserve(count);
     if (count > 1) {
         // Compute normals.
         for (auto i = decltype(count){0}; i < count; ++i) {
