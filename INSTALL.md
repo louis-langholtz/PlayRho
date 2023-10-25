@@ -90,6 +90,7 @@ Here's the list of available components and the arguments they each **minimally*
 - [Unit test](UnitTests/) application, append: `-DPLAYRHO_BUILD_UNIT_TESTS=ON`.
 - [Benchmark](Benchmark/) application, append: `-DPLAYRHO_BUILD_BENCHMARK=ON`.
 - [Testbed](Testbed/) application, append: `-DPLAYRHO_BUILD_TESTBED=ON`.
+- [Documentation](Documentation/) text/html, append: `-DPLAYRHO_BUILD_DOC=ON`.
 
 <strong>Some of these may need additional arguments that may also depend on the target platform.</strong>
 Follow the links for each component you're interested in to see specific documentation for that component such as prerequisites it may have and additional command line arguments.
