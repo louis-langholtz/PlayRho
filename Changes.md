@@ -8,16 +8,16 @@ For a complete detailed view of changes from a git-based source code perspective
 git diff release-1.1..master
 ```
 
-Here's an incomplete verbal summary of these changes:
+Here's a writeup of these changes:
 
 - Clang-tidy uses more checks.
 - `PlayRho/PlayRho` has become `PlayRho/Library`.
 - Platform target workflows now test CMake install and produce artifacts.
 - Some CMake options have become dependent options.
 - Fixtures have been absorbed by shapes.
-- The library has been reorganized in terms of namespaces and header vs. source files instead of by functional category.
-- Many details have moved under a "detail" sub-namespace to de-clutter the user API.
-- Many declarations & definitions of 2-D code have moved apart from dimensionless code.
+- The library has been reorganized in terms of namespaces and header versus source files, instead of by functional category.
+- Many details have been eliminated or moved under a "detail" sub-namespace to de-clutter the user API.
+- Declarations & definitions of 2-dimensional code have moved under the "playrho::d2" sub-namespace, and apart from dimensionless code.
 - Many "magic-values" have been replaced by named constants.
 - Many interfaces now take more general Span parameters instead of their specific container types.
 - `CheckedValue` has become `Checked`.
@@ -26,10 +26,18 @@ Here's an incomplete verbal summary of these changes:
 - More variables now use checked types to more tightly constrain & better document their usage.
 - Custom memory allocation via C++ allocators has been incorporated into the implementation of "hotter" code paths of the world stepping functionality.
 - More custom types are now defined in their own include and source files.
-- The `Testbed` application has been majorly updated to provide more support to the user for modifying examples at run-time.
+- The `Testbed` application has been updated to support significantly more user modification of demos at runtime.
 - The `Fixed` class template and related code has been moved out from this project and into my separate [realnumb](https://github.com/louis-langholtz/realnumb) repository and project.
-- CMake configuration now supports customization of some values in `Settings.hpp` via the following variables: `PLAYRHO_REAL_LINEARSLOP`, `PLAYRHO_REAL_MINVERTEXRADIUS`, `PLAYRHO_REAL_MAXVERTEXRADIUS`.
-- CMake configuration for the `Real` alias defined in `Real.hpp` now supports inclusion of user specifiable header files for using a custom floating point type via the `PLAYRHO_REAL_INCLUDE` variable. Semicolons found within this variable are replaced with newlines.
+- CMake configuration now supports customization of some values in `Settings.hpp` via the following variables:
+  - `PLAYRHO_REAL_LINEARSLOP`: overriding `DefaultLinearSlop`.
+  - `PLAYRHO_REAL_MINVERTEXRADIUS`: overriding `DefaultMinVertexRadius`.
+  - `PLAYRHO_REAL_MAXVERTEXRADIUS`: overriding `DefaultMaxVertexRadius`.
+- CMake configuration for the `Real` alias defined in `Real.hpp` now supports all of the following variables:
+  - `PLAYRHO_REAL_TYPE`: to override the type of the `Real` alias from `float`. Can be `float`, `double`, `long double`, or a custom type, `T`, with similar support. See `Real.hpp` for more details.
+  - `PLAYRHO_REAL_PROJECT`: to specify a package/project name providing support for a custom `Real` type.
+  - `PLAYRHO_REAL_INCLUDE`: to add one or more semicolon separated lines to the `Real.hpp` file for doing things like adding includes necessary for a custom `Real` type.
+  - `PLAYRHO_REAL_GIT_REPOSITORY`: if `PLAYRHO_REAL_PROJECT` is set, this optionally specifies a git repository from where the project is to be CMake fetched from.
+  - `PLAYRHO_REAL_GIT_TAG`: if `PLAYRHO_REAL_GIT_REPOSITORY` is set, then this specifies the `GIT_TAG` of the repository to fetch.
 
 ## Box2D 2.3.2 To Release 1.1
 
