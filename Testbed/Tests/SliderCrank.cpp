@@ -88,7 +88,7 @@ public:
                                                              Vec2(0.0f, 17.0f) * 1_m));
 
                 auto pjd = GetPrismaticJointConf(GetWorld(), ground, body, Vec2(0.0f, 17.0f) * 1_m,
-                                                 UnitVec::GetTop());
+                                                 UnitVec::GetUp());
                 pjd.maxMotorForce = 1000_N;
                 pjd.enableMotor = true;
                 m_joint2 = CreateJoint(GetWorld(), pjd);

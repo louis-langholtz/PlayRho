@@ -57,43 +57,43 @@ TEST(UnitVec, DefaultConstruction)
 
 TEST(UnitVec, RightIsRevPerpOfBottom)
 {
-    EXPECT_EQ(UnitVec::GetRight(), UnitVec::GetBottom().GetRevPerpendicular());
+    EXPECT_EQ(UnitVec::GetRight(), UnitVec::GetDown().GetRevPerpendicular());
 }
 
 TEST(UnitVec, TopIsRevPerpOfRight)
 {
-    EXPECT_EQ(UnitVec::GetTop(), UnitVec::GetRight().GetRevPerpendicular());
+    EXPECT_EQ(UnitVec::GetUp(), UnitVec::GetRight().GetRevPerpendicular());
 }
 
 TEST(UnitVec, LeftIsRevPerpOfTop)
 {
-    EXPECT_EQ(UnitVec::GetLeft(), UnitVec::GetTop().GetRevPerpendicular());
+    EXPECT_EQ(UnitVec::GetLeft(), UnitVec::GetUp().GetRevPerpendicular());
 }
 
 TEST(UnitVec, BottomIsRevPerpOfLeft)
 {
-    EXPECT_EQ(UnitVec::GetBottom(), UnitVec::GetLeft().GetRevPerpendicular());
+    EXPECT_EQ(UnitVec::GetDown(), UnitVec::GetLeft().GetRevPerpendicular());
 }
 
 
 TEST(UnitVec, RightIsFwdPerpOfTop)
 {
-    EXPECT_EQ(UnitVec::GetRight(), UnitVec::GetTop().GetFwdPerpendicular());
+    EXPECT_EQ(UnitVec::GetRight(), UnitVec::GetUp().GetFwdPerpendicular());
 }
 
 TEST(UnitVec, TopIsFwdPerpOfLeft)
 {
-    EXPECT_EQ(UnitVec::GetTop(), UnitVec::GetLeft().GetFwdPerpendicular());
+    EXPECT_EQ(UnitVec::GetUp(), UnitVec::GetLeft().GetFwdPerpendicular());
 }
 
 TEST(UnitVec, LeftIsFwdPerpOfBottom)
 {
-    EXPECT_EQ(UnitVec::GetLeft(), UnitVec::GetBottom().GetFwdPerpendicular());
+    EXPECT_EQ(UnitVec::GetLeft(), UnitVec::GetDown().GetFwdPerpendicular());
 }
 
 TEST(UnitVec, BottomIsFwdPerpOfRight)
 {
-    EXPECT_EQ(UnitVec::GetBottom(), UnitVec::GetRight().GetFwdPerpendicular());
+    EXPECT_EQ(UnitVec::GetDown(), UnitVec::GetRight().GetFwdPerpendicular());
 }
 
 TEST(UnitVec, ByAngleInDegreesNearOriented)
@@ -102,18 +102,18 @@ TEST(UnitVec, ByAngleInDegreesNearOriented)
                 static_cast<double>(GetX(UnitVec::GetRight())), 0.0001);
     EXPECT_NEAR(static_cast<double>(GetY(UnitVec::GetRight())),
                 static_cast<double>(GetY(UnitVec::GetRight())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetX(UnitVec::GetTop())),
-                static_cast<double>(GetX(UnitVec::GetTop())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(UnitVec::GetTop())),
-                static_cast<double>(GetY(UnitVec::GetTop())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetX(UnitVec::GetUp())),
+                static_cast<double>(GetX(UnitVec::GetUp())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(UnitVec::GetUp())),
+                static_cast<double>(GetY(UnitVec::GetUp())), 0.0001);
     EXPECT_NEAR(static_cast<double>(GetX(UnitVec::GetLeft())),
                 static_cast<double>(GetX(UnitVec::GetLeft())), 0.0001);
     EXPECT_NEAR(static_cast<double>(GetY(UnitVec::GetLeft())),
                 static_cast<double>(GetY(UnitVec::GetLeft())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetX(UnitVec::GetBottom())),
-                static_cast<double>(GetX(UnitVec::GetBottom())), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(UnitVec::GetBottom())),
-                static_cast<double>(GetY(UnitVec::GetBottom())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetX(UnitVec::GetDown())),
+                static_cast<double>(GetX(UnitVec::GetDown())), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(UnitVec::GetDown())),
+                static_cast<double>(GetY(UnitVec::GetDown())), 0.0001);
 }
 
 TEST(UnitVec, ByAngleInRadiansNearOriented)
@@ -123,17 +123,17 @@ TEST(UnitVec, ByAngleInRadiansNearOriented)
     EXPECT_NEAR(static_cast<double>(GetY(UnitVec::Get((Pi * Real(0) / Real(2)) * 1_rad))),
                 static_cast<double>(GetY(UnitVec::GetRight())), 0.0001);
     EXPECT_NEAR(static_cast<double>(GetX(UnitVec::Get((Pi * Real(1) / Real(2)) * 1_rad))),
-                static_cast<double>(GetX(UnitVec::GetTop())), 0.0001);
+                static_cast<double>(GetX(UnitVec::GetUp())), 0.0001);
     EXPECT_NEAR(static_cast<double>(GetY(UnitVec::Get((Pi * Real(1) / Real(2)) * 1_rad))),
-                static_cast<double>(GetY(UnitVec::GetTop())), 0.0001);
+                static_cast<double>(GetY(UnitVec::GetUp())), 0.0001);
     EXPECT_NEAR(static_cast<double>(GetX(UnitVec::Get((Pi * Real(2) / Real(2)) * 1_rad))),
                 static_cast<double>(GetX(UnitVec::GetLeft())), 0.0001);
     EXPECT_NEAR(static_cast<double>(GetY(UnitVec::Get((Pi * Real(2) / Real(2)) * 1_rad))),
                 static_cast<double>(GetY(UnitVec::GetLeft())), 0.0001);
     EXPECT_NEAR(static_cast<double>(GetX(UnitVec::Get((Pi * Real(3) / Real(2)) * 1_rad))),
-                static_cast<double>(GetX(UnitVec::GetBottom())), 0.0001);
+                static_cast<double>(GetX(UnitVec::GetDown())), 0.0001);
     EXPECT_NEAR(static_cast<double>(GetY(UnitVec::Get((Pi * Real(3) / Real(2)) * 1_rad))),
-                static_cast<double>(GetY(UnitVec::GetBottom())), 0.0001);
+                static_cast<double>(GetY(UnitVec::GetDown())), 0.0001);
 }
 
 TEST(UnitVec, GetForInvalid)
@@ -184,20 +184,20 @@ TEST(UnitVec, Get)
 {
     EXPECT_EQ(UnitVec::Get(Real(+1), Real(0)).first, UnitVec::GetRight());
     EXPECT_EQ(UnitVec::Get(Real(-1), Real(0)).first, UnitVec::GetLeft());
-    EXPECT_EQ(UnitVec::Get(Real(0), Real(+1)).first, UnitVec::GetTop());
-    EXPECT_EQ(UnitVec::Get(Real(0), Real(-1)).first, UnitVec::GetBottom());
+    EXPECT_EQ(UnitVec::Get(Real(0), Real(+1)).first, UnitVec::GetUp());
+    EXPECT_EQ(UnitVec::Get(Real(0), Real(-1)).first, UnitVec::GetDown());
     EXPECT_EQ(UnitVec::Get(+std::numeric_limits<Real>::max(), Real(0)).first, UnitVec::GetRight());
     EXPECT_EQ(UnitVec::Get(-std::numeric_limits<Real>::max(), Real(0)).first, UnitVec::GetLeft());
-    EXPECT_EQ(UnitVec::Get(Real(0), +std::numeric_limits<Real>::max()).first, UnitVec::GetTop());
-    EXPECT_EQ(UnitVec::Get(Real(0), -std::numeric_limits<Real>::max()).first, UnitVec::GetBottom());
+    EXPECT_EQ(UnitVec::Get(Real(0), +std::numeric_limits<Real>::max()).first, UnitVec::GetUp());
+    EXPECT_EQ(UnitVec::Get(Real(0), -std::numeric_limits<Real>::max()).first, UnitVec::GetDown());
     EXPECT_EQ(UnitVec::Get(+std::numeric_limits<Real>::min(), Real(0)).first, UnitVec::GetRight());
     EXPECT_EQ(UnitVec::Get(-std::numeric_limits<Real>::min(), Real(0)).first, UnitVec::GetLeft());
-    EXPECT_EQ(UnitVec::Get(Real(0), +std::numeric_limits<Real>::min()).first, UnitVec::GetTop());
-    EXPECT_EQ(UnitVec::Get(Real(0), -std::numeric_limits<Real>::min()).first, UnitVec::GetBottom());
+    EXPECT_EQ(UnitVec::Get(Real(0), +std::numeric_limits<Real>::min()).first, UnitVec::GetUp());
+    EXPECT_EQ(UnitVec::Get(Real(0), -std::numeric_limits<Real>::min()).first, UnitVec::GetDown());
     
     {
         const auto foo = std::get<0>(UnitVec::Get(Real(1), Real(1)));
-        const auto boo = UnitVec::GetTopRight();
+        const auto boo = UnitVec::GetUpRight();
         EXPECT_NEAR(static_cast<double>(GetX(foo)), 0.70710676908493042, 0.000001);
         EXPECT_NEAR(static_cast<double>(GetY(foo)), 0.70710676908493042, 0.000001);
         EXPECT_NEAR(static_cast<double>(GetX(foo)), static_cast<double>(GetX(boo)), 0.000001);
@@ -212,7 +212,7 @@ TEST(UnitVec, Get)
         ASSERT_NE(magnitude, 0.0f);
         ASSERT_TRUE(isnormal(magnitude));
         const auto foo = UnitVec::Get(value, value).first;
-        const auto boo = UnitVec::GetTopRight();
+        const auto boo = UnitVec::GetUpRight();
         EXPECT_NEAR(static_cast<double>(GetX(foo)), static_cast<double>(GetX(boo)), 0.000001);
         EXPECT_NEAR(static_cast<double>(GetY(foo)), static_cast<double>(GetY(boo)), 0.000001);
     }
@@ -231,8 +231,8 @@ TEST(UnitVec, Get)
 TEST(UnitVec, Absolute)
 {
     EXPECT_EQ(UnitVec::GetZero().Absolute(), UnitVec::GetZero());
-    EXPECT_EQ(UnitVec::GetBottom().Absolute(), UnitVec::GetTop());
-    EXPECT_EQ(UnitVec::GetTop().Absolute(), UnitVec::GetTop());
+    EXPECT_EQ(UnitVec::GetDown().Absolute(), UnitVec::GetUp());
+    EXPECT_EQ(UnitVec::GetUp().Absolute(), UnitVec::GetUp());
     EXPECT_EQ(UnitVec::GetLeft().Absolute(), UnitVec::GetRight());
     EXPECT_EQ(UnitVec::GetRight().Absolute(), UnitVec::GetRight());
 
@@ -243,37 +243,37 @@ TEST(UnitVec, Absolute)
 TEST(UnitVec, RotateMethod)
 {
     EXPECT_EQ(UnitVec::GetRight().Rotate(UnitVec::GetRight()), UnitVec::GetRight());
-    EXPECT_EQ(UnitVec::GetTop().Rotate(UnitVec::GetRight()), UnitVec::GetTop());
+    EXPECT_EQ(UnitVec::GetUp().Rotate(UnitVec::GetRight()), UnitVec::GetUp());
     EXPECT_EQ(UnitVec::GetLeft().Rotate(UnitVec::GetRight()), UnitVec::GetLeft());
-    EXPECT_EQ(UnitVec::GetBottom().Rotate(UnitVec::GetRight()), UnitVec::GetBottom());
+    EXPECT_EQ(UnitVec::GetDown().Rotate(UnitVec::GetRight()), UnitVec::GetDown());
 
-    EXPECT_EQ(UnitVec::GetRight().Rotate(UnitVec::GetTop()), UnitVec::GetTop());
-    EXPECT_EQ(UnitVec::GetTop().Rotate(UnitVec::GetTop()), UnitVec::GetLeft());
-    EXPECT_EQ(UnitVec::GetLeft().Rotate(UnitVec::GetTop()), UnitVec::GetBottom());
-    EXPECT_EQ(UnitVec::GetBottom().Rotate(UnitVec::GetTop()), UnitVec::GetRight());
+    EXPECT_EQ(UnitVec::GetRight().Rotate(UnitVec::GetUp()), UnitVec::GetUp());
+    EXPECT_EQ(UnitVec::GetUp().Rotate(UnitVec::GetUp()), UnitVec::GetLeft());
+    EXPECT_EQ(UnitVec::GetLeft().Rotate(UnitVec::GetUp()), UnitVec::GetDown());
+    EXPECT_EQ(UnitVec::GetDown().Rotate(UnitVec::GetUp()), UnitVec::GetRight());
     
     EXPECT_EQ(UnitVec::GetRight().Rotate(UnitVec::GetLeft()), UnitVec::GetLeft());
-    EXPECT_EQ(UnitVec::GetTop().Rotate(UnitVec::GetLeft()), UnitVec::GetBottom());
+    EXPECT_EQ(UnitVec::GetUp().Rotate(UnitVec::GetLeft()), UnitVec::GetDown());
     EXPECT_EQ(UnitVec::GetLeft().Rotate(UnitVec::GetLeft()), UnitVec::GetRight());
-    EXPECT_EQ(UnitVec::GetBottom().Rotate(UnitVec::GetLeft()), UnitVec::GetTop());
+    EXPECT_EQ(UnitVec::GetDown().Rotate(UnitVec::GetLeft()), UnitVec::GetUp());
 }
 
 TEST(UnitVec, RotateFunction)
 {
     EXPECT_EQ(Rotate(UnitVec::GetRight(), UnitVec::GetRight()), UnitVec::GetRight());
-    EXPECT_EQ(Rotate(UnitVec::GetTop(), UnitVec::GetRight()), UnitVec::GetTop());
+    EXPECT_EQ(Rotate(UnitVec::GetUp(), UnitVec::GetRight()), UnitVec::GetUp());
     EXPECT_EQ(Rotate(UnitVec::GetLeft(), UnitVec::GetRight()), UnitVec::GetLeft());
-    EXPECT_EQ(Rotate(UnitVec::GetBottom(), UnitVec::GetRight()), UnitVec::GetBottom());
+    EXPECT_EQ(Rotate(UnitVec::GetDown(), UnitVec::GetRight()), UnitVec::GetDown());
     
-    EXPECT_EQ(Rotate(UnitVec::GetRight(), UnitVec::GetTop()), UnitVec::GetTop());
-    EXPECT_EQ(Rotate(UnitVec::GetTop(), UnitVec::GetTop()), UnitVec::GetLeft());
-    EXPECT_EQ(Rotate(UnitVec::GetLeft(), UnitVec::GetTop()), UnitVec::GetBottom());
-    EXPECT_EQ(Rotate(UnitVec::GetBottom(), UnitVec::GetTop()), UnitVec::GetRight());
+    EXPECT_EQ(Rotate(UnitVec::GetRight(), UnitVec::GetUp()), UnitVec::GetUp());
+    EXPECT_EQ(Rotate(UnitVec::GetUp(), UnitVec::GetUp()), UnitVec::GetLeft());
+    EXPECT_EQ(Rotate(UnitVec::GetLeft(), UnitVec::GetUp()), UnitVec::GetDown());
+    EXPECT_EQ(Rotate(UnitVec::GetDown(), UnitVec::GetUp()), UnitVec::GetRight());
     
     EXPECT_EQ(Rotate(UnitVec::GetRight(), UnitVec::GetLeft()), UnitVec::GetLeft());
-    EXPECT_EQ(Rotate(UnitVec::GetTop(), UnitVec::GetLeft()), UnitVec::GetBottom());
+    EXPECT_EQ(Rotate(UnitVec::GetUp(), UnitVec::GetLeft()), UnitVec::GetDown());
     EXPECT_EQ(Rotate(UnitVec::GetLeft(), UnitVec::GetLeft()), UnitVec::GetRight());
-    EXPECT_EQ(Rotate(UnitVec::GetBottom(), UnitVec::GetLeft()), UnitVec::GetTop());
+    EXPECT_EQ(Rotate(UnitVec::GetDown(), UnitVec::GetLeft()), UnitVec::GetUp());
 }
 
 TEST(UnitVec, Copy)
@@ -294,7 +294,7 @@ TEST(UnitVec, StreamOut)
     }
     {
         std::ostringstream os;
-        os << UnitVec::GetTop();
+        os << UnitVec::GetUp();
         EXPECT_STREQ(os.str().c_str(), "UnitVec(0,1)");
     }
     {
@@ -304,7 +304,7 @@ TEST(UnitVec, StreamOut)
     }
     {
         std::ostringstream os;
-        os << UnitVec::GetBottom();
+        os << UnitVec::GetDown();
         EXPECT_STREQ(os.str().c_str(), "UnitVec(0,-1)");
     }
 }

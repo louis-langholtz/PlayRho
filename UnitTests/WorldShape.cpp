@@ -301,7 +301,7 @@ TEST(WorldShape, Rotate)
     ASSERT_EQ(distanceProxy.GetVertexCount(), 2u);
     ASSERT_EQ(distanceProxy.GetVertex(0u), Length2(-0.5_m, +0.0_m));
     ASSERT_EQ(distanceProxy.GetVertex(1u), Length2(+0.5_m, -0.0_m));
-    EXPECT_NO_THROW(Rotate(world, shapeId, UnitVec::GetTop()));
+    EXPECT_NO_THROW(Rotate(world, shapeId, UnitVec::GetUp()));
     ASSERT_NO_THROW(shape = GetShape(world, shapeId));
     ASSERT_NO_THROW(distanceProxy = GetChild(shape, 0u));
     EXPECT_EQ(distanceProxy.GetVertex(0u), Length2(0.0_m, -0.5_m));

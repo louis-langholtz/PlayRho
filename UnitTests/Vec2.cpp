@@ -199,7 +199,7 @@ TEST(Vec2, Rotate)
     Vec2 v10{1, 0};
     Vec2 v01{0, 1};
 
-    EXPECT_EQ(RoundOff(v01), RoundOff(Rotate(v10, UnitVec::GetTop())));
+    EXPECT_EQ(RoundOff(v01), RoundOff(Rotate(v10, UnitVec::GetUp())));
 
     EXPECT_EQ(RoundOff(Vec2{22, 30}), RoundOff(Rotate(Vec2{22, 30}, UnitVec::GetRight())));
     EXPECT_EQ(RoundOff(Vec2{22, 30}, 1000), RoundOff(Rotate(Vec2{22, 30}, UnitVec::Get(360_deg)), 1000));

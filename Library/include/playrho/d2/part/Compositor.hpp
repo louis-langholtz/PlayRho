@@ -82,7 +82,7 @@ class StaticRectangle
 
     /// @brief Normals of the rectangle.
     static constexpr auto normals = std::array<UnitVec, 4u>{
-        UnitVec::GetRight(), UnitVec::GetTop(), UnitVec::GetLeft(), UnitVec::GetBottom()};
+        UnitVec::GetRight(), UnitVec::GetUp(), UnitVec::GetLeft(), UnitVec::GetDown()};
 
     /// @brief Vertices of the rectangle.
     static constexpr auto vertices =
@@ -204,7 +204,7 @@ class DynamicRectangle
 
     /// @brief Normals of the rectangle.
     static constexpr auto normals = std::array<UnitVec, 4u>{
-        UnitVec::GetRight(), UnitVec::GetTop(), UnitVec::GetLeft(), UnitVec::GetBottom()};
+        UnitVec::GetRight(), UnitVec::GetUp(), UnitVec::GetLeft(), UnitVec::GetDown()};
 
     /// @brief Vertices of the rectangle.
     std::array<Length2, 4u> vertices =

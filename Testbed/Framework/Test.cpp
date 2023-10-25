@@ -722,8 +722,8 @@ void DrawContactInfo(Drawer& drawer, const Settings& settings,
             const auto headLength = length / Real(10);
             const auto p1 = point.position;
             const auto p2 = p1 + length * point.normal;
-            const auto p2_left = p2 - headLength * Rotate(point.normal, UnitVec::GetTopRight());
-            const auto p2_right = p2 - headLength * Rotate(point.normal, UnitVec::GetBottomRight());
+            const auto p2_left = p2 - headLength * Rotate(point.normal, UnitVec::GetUpRight());
+            const auto p2_right = p2 - headLength * Rotate(point.normal, UnitVec::GetDownRight());
             drawer.DrawSegment(p1, p2, Brighten(normalImpulseColor, selected? lighten: darken));
             drawer.DrawSegment(p2, p2_left, Brighten(normalImpulseColor, selected? lighten: darken));
             drawer.DrawSegment(p2, p2_right, Brighten(normalImpulseColor, selected? lighten: darken));

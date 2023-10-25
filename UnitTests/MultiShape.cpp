@@ -201,7 +201,7 @@ TEST(MultiShapeConf, RotateSomeFF)
     ASSERT_EQ(foo.children.size(), std::size_t(1));
     auto copy = foo;
 
-    const auto value = UnitVec::GetTop();
+    const auto value = UnitVec::GetUp();
     EXPECT_NO_THROW(Rotate(foo, value));
     EXPECT_NE(foo, copy);
     const auto dp0 = foo.children[0].GetDistanceProxy();

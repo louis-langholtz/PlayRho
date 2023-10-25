@@ -131,6 +131,6 @@ TEST(Transformation, GetDirectionFF)
 {
     EXPECT_EQ(GetDirection(Transformation{Length2{}, UnitVec::GetLeft()}), UnitVec::GetLeft());
     EXPECT_EQ(GetDirection(Transformation{Length2{}, UnitVec::GetRight()}), UnitVec::GetRight());
-    EXPECT_EQ(GetDirection(Transformation{Length2{}, UnitVec::GetTopRight()}),
-              UnitVec::GetTopRight());
+    EXPECT_EQ(GetDirection(Transformation{Length2{}, UnitVec::GetUpRight()}),
+              UnitVec::GetUpRight());
 }

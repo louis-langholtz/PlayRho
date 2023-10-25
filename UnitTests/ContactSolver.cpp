@@ -513,7 +513,7 @@ TEST(ContactSolver, SolveVelocityConstraint1)
 
     auto body_data_a = BodyConstraint{0, inverse_mass_a, 0, lcA, old_pA, vel_a};
     auto body_data_b = BodyConstraint{1, inverse_mass_b, 0, lcB, old_pB, vel_b};
-    const auto normal = UnitVec::GetTop();
+    const auto normal = UnitVec::GetUp();
     const auto friction = Real(1);
     const auto restitution = Real(0.5f);
     const auto tangent_speed = Real(0);
@@ -581,7 +581,7 @@ TEST(ContactSolver, SolveVelocityConstraint2)
     const auto inverse_mass = inverse_mass_a + inverse_mass_b;
     auto body_data_a = BodyConstraint{0, inverse_mass_a, 0, lcA, old_pA, vel_a};
     auto body_data_b = BodyConstraint{1, inverse_mass_b, 0, lcB, old_pB, vel_b};
-    const auto normal = UnitVec::GetTop();
+    const auto normal = UnitVec::GetUp();
     const auto friction = Real(1);
     const auto restitution = Real(0.5f);
     const auto tangent_speed = Real(0);

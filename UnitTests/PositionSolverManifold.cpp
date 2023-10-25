@@ -43,7 +43,7 @@ TEST(PositionSolverManifold, ByteSize)
 
 TEST(PositionSolverManifold, InitializingConstructor)
 {
-    const auto normal = UnitVec::GetBottom();
+    const auto normal = UnitVec::GetDown();
     const auto point = Length2{-1_m, 3_m};
     const auto separation = 8.12_m;
     

@@ -550,7 +550,7 @@ TEST(PolygonShapeConf, Rotate)
     ASSERT_EQ(shape.GetVertexCount(), 2u);
     ASSERT_EQ(shape.GetVertex(0u), v0);
     ASSERT_EQ(shape.GetVertex(1u), v1);
-    const auto amount = UnitVec::GetTop();
+    const auto amount = UnitVec::GetUp();
     EXPECT_NO_THROW(Rotate(shape, amount));
     ASSERT_EQ(shape.GetVertexCount(), 2u);
     EXPECT_EQ(shape.GetVertex(0u), Rotate(v1, amount));
