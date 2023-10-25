@@ -274,8 +274,8 @@ TEST(PulleyJointConf, InitVelocityWithDefaultConstructed)
     EXPECT_EQ(jd.impulse, copy.impulse);
     EXPECT_NE(jd.uA, copy.uA);
     EXPECT_NE(jd.uB, copy.uB);
-    EXPECT_EQ(jd.uA, UnitVec::GetBottom());
-    EXPECT_EQ(jd.uB, UnitVec::GetBottom());
+    EXPECT_EQ(jd.uA, UnitVec::GetDown());
+    EXPECT_EQ(jd.uB, UnitVec::GetDown());
     EXPECT_NE(jd.rA, copy.rA);
     EXPECT_NE(jd.rB, copy.rB);
     EXPECT_EQ(jd.rA, Length2(-1_m, 0_m));

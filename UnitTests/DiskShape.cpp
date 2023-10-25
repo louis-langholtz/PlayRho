@@ -134,7 +134,7 @@ TEST(DiskShapeConf, RotateSomeFF)
     const auto location = Length2{1_m, 2_m};
     auto foo = DiskShapeConf{}.UseLocation(location);
     auto tmp = foo;
-    const auto amount = UnitVec::GetTop();
+    const auto amount = UnitVec::GetUp();
     EXPECT_NO_THROW(Rotate(foo, amount));
     EXPECT_NE(foo, tmp);
     EXPECT_EQ(foo.GetLocation(), Rotate(location, amount));

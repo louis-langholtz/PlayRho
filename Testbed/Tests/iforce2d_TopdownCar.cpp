@@ -317,7 +317,7 @@ inline LinearVelocity2 TDTire::getLateralVelocity() const
 inline LinearVelocity2 TDTire::getForwardVelocity() const
 {
     const auto currentForwardNormal =
-        GetWorldVector(m_parent.GetWorld(), m_body, UnitVec::GetTop());
+        GetWorldVector(m_parent.GetWorld(), m_body, UnitVec::GetUp());
     const auto vel = GetLinearVelocity(m_parent.GetWorld(), m_body);
     return Dot(currentForwardNormal, vel) * currentForwardNormal;
 }
@@ -367,7 +367,7 @@ inline void TDTire::updateDrive(ControlStateType controlState)
 
     // find current speed in forward direction
     const auto currentForwardNormal =
-        GetWorldVector(m_parent.GetWorld(), m_body, UnitVec::GetTop());
+        GetWorldVector(m_parent.GetWorld(), m_body, UnitVec::GetUp());
     const auto currentSpeed = Dot(getForwardVelocity(), currentForwardNormal);
 
     // apply necessary force

@@ -67,8 +67,8 @@ TEST(EdgeShapeConf, InitializingConstruction)
     const auto foo = EdgeShapeConf{v0, v1};
     EXPECT_EQ(v0, foo.GetVertexA());
     EXPECT_EQ(v1, foo.GetVertexB());
-    EXPECT_EQ(UnitVec::GetTop(), foo.ngon.GetNormals()[0]);
-    EXPECT_EQ(UnitVec::GetBottom(), foo.ngon.GetNormals()[1]);
+    EXPECT_EQ(UnitVec::GetUp(), foo.ngon.GetNormals()[0]);
+    EXPECT_EQ(UnitVec::GetDown(), foo.ngon.GetNormals()[1]);
 }
 
 TEST(EdgeShapeConf, GetInvalidChildThrows)
@@ -144,7 +144,7 @@ TEST(EdgeShapeConf, RotateFF)
         const auto v2 = Length2{3_m, 4_m};
         auto foo = EdgeShapeConf{v1, v2};
         auto tmp = foo;
-        const auto value = UnitVec::GetTop();
+        const auto value = UnitVec::GetUp();
         EXPECT_NO_THROW(Rotate(foo, value));
         EXPECT_NE(foo, tmp);
         EXPECT_EQ(foo.GetVertexA(), Rotate(v1, value));

@@ -98,7 +98,7 @@ public:
             Attach(GetWorld(), body3, box);
 
             auto jd3 =
-                GetPrismaticJointConf(GetWorld(), ground, body3, bd3.location, UnitVec::GetTop());
+                GetPrismaticJointConf(GetWorld(), ground, body3, bd3.location, UnitVec::GetUp());
             jd3.lowerTranslation = -5_m;
             jd3.upperTranslation = 5_m;
             jd3.enableLimit = true;

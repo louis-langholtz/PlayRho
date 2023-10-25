@@ -89,9 +89,9 @@ TEST(WorldManifold, GetWorldManifoldForUnsetManifold)
 
 TEST(WorldManifold, GetForFaceEmptyManifoldA)
 {
-    const auto m = Manifold::GetForFaceA(UnitVec::GetTop(), Length2{});
+    const auto m = Manifold::GetForFaceA(UnitVec::GetUp(), Length2{});
     const auto wm = GetWorldManifold(m, Transformation{}, 1_m, Transformation{}, 1_m);
-    EXPECT_EQ(wm.GetNormal(), UnitVec::GetTop());
+    EXPECT_EQ(wm.GetNormal(), UnitVec::GetUp());
     EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){0});
 }
 

@@ -351,7 +351,7 @@ TEST(Math, TransformIsRotatePlusTranslate)
 {
     const auto vector = Length2{19_m, -0.5_m};
     const auto translation = Length2{-3_m, +5_m};
-    const auto rotation = UnitVec::GetTop();
+    const auto rotation = UnitVec::GetUp();
     const auto transformation = Transformation{translation, rotation};
     
     const auto transformed_vector = Transform(vector, transformation);
@@ -364,7 +364,7 @@ TEST(Math, InverseTransformIsUntranslateAndInverseRotate)
 {
     const auto vector = Length2{19_m, -0.5_m};
     const auto translation = Length2{-3_m, +5_m};
-    const auto rotation = UnitVec::GetTop();
+    const auto rotation = UnitVec::GetUp();
     const auto transformation = Transformation{translation, rotation};
     
     const auto inv_vector = InverseTransform(vector, transformation);
@@ -377,7 +377,7 @@ TEST(Math, InverseTransformTransformedIsOriginal)
 {
     const auto vector = Length2{19_m, -0.5_m};
     const auto translation = Length2{-3_m, +5_m};
-    const auto rotation = UnitVec::GetTop();
+    const auto rotation = UnitVec::GetUp();
     const auto transformation = Transformation{translation, rotation};
 
     const auto transformed_vector = Transform(vector, transformation);
@@ -393,7 +393,7 @@ TEST(Math, TransformInverseTransformedIsOriginal)
 {
     const auto vector = Length2{19_m, -0.5_m};
     const auto translation = Length2{-3_m, +5_m};
-    const auto rotation = UnitVec::GetTop();
+    const auto rotation = UnitVec::GetUp();
     const auto transformation = Transformation{translation, rotation};
 
     const auto inverse_transformed_vector = InverseTransform(vector, transformation);
@@ -1303,7 +1303,7 @@ TEST(Math, GetReflectionMatrix)
     }
     {
         // reflection against x axis
-        const auto m = GetReflectionMatrix(UnitVec::GetTop());
+        const auto m = GetReflectionMatrix(UnitVec::GetUp());
         EXPECT_EQ(m[0][0], Real(+1));
         EXPECT_EQ(m[0][1], Real(0));
         EXPECT_EQ(m[1][0], Real(0));
@@ -1314,7 +1314,7 @@ TEST(Math, GetReflectionMatrix)
     }
     {
         // reflection against x axis
-        const auto m = GetReflectionMatrix(UnitVec::GetBottom());
+        const auto m = GetReflectionMatrix(UnitVec::GetDown());
         EXPECT_EQ(m[0][0], Real(+1));
         EXPECT_EQ(m[0][1], Real(0));
         EXPECT_EQ(m[1][0], Real(0));
@@ -1324,7 +1324,7 @@ TEST(Math, GetReflectionMatrix)
         EXPECT_EQ(get<1>(vp), -3);
     }
     {
-        const auto m = GetReflectionMatrix(UnitVec::GetTopRight());
+        const auto m = GetReflectionMatrix(UnitVec::GetUpRight());
         EXPECT_NEAR(static_cast<double>(m[0][0]),  0.0, 0.000001);
         EXPECT_NEAR(static_cast<double>(m[0][1]), -1.0, 0.000001);
         EXPECT_NEAR(static_cast<double>(m[1][0]), -1.0, 0.000001);
@@ -1334,7 +1334,7 @@ TEST(Math, GetReflectionMatrix)
         EXPECT_NEAR(static_cast<double>(get<1>(vp)), -2.0, 0.000001);
     }
     {
-        const auto m = GetReflectionMatrix(UnitVec::GetBottomRight());
+        const auto m = GetReflectionMatrix(UnitVec::GetDownRight());
         EXPECT_NEAR(static_cast<double>(m[0][0]),  0.0, 0.000001);
         EXPECT_NEAR(static_cast<double>(m[0][1]), +1.0, 0.000001);
         EXPECT_NEAR(static_cast<double>(m[1][0]), +1.0, 0.000001);
@@ -1437,11 +1437,11 @@ TEST(Math, GetFwdNormalsVectorForOne)
 TEST(Math, GetFwdNormalsVectorForDirections)
 {
     EXPECT_EQ(GetFwdNormalsVector({Length2(), UnitVec::GetRight() * 1_m}),
-              (std::vector<UnitVec>{UnitVec::GetBottom(), UnitVec::GetTop()}));
-    EXPECT_EQ(GetFwdNormalsVector({Length2(), UnitVec::GetTop() * 1_m}),
+              (std::vector<UnitVec>{UnitVec::GetDown(), UnitVec::GetUp()}));
+    EXPECT_EQ(GetFwdNormalsVector({Length2(), UnitVec::GetUp() * 1_m}),
               (std::vector<UnitVec>{UnitVec::GetRight(), UnitVec::GetLeft()}));
     EXPECT_EQ(GetFwdNormalsVector({Length2(), UnitVec::GetLeft() * 1_m}),
-              (std::vector<UnitVec>{UnitVec::GetTop(), UnitVec::GetBottom()}));
-    EXPECT_EQ(GetFwdNormalsVector({Length2(), UnitVec::GetBottom() * 1_m}),
+              (std::vector<UnitVec>{UnitVec::GetUp(), UnitVec::GetDown()}));
+    EXPECT_EQ(GetFwdNormalsVector({Length2(), UnitVec::GetDown() * 1_m}),
               (std::vector<UnitVec>{UnitVec::GetLeft(), UnitVec::GetRight()}));
 }

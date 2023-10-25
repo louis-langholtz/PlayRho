@@ -160,9 +160,9 @@ TEST(Compositor, GetNormalsForDefaultCompositor)
 {
     ASSERT_EQ(size(Compositor<>{}.GetNormals()), 4u);
     EXPECT_EQ(Compositor<>{}.GetNormals()[0], ::playrho::d2::UnitVec::GetRight());
-    EXPECT_EQ(Compositor<>{}.GetNormals()[1], ::playrho::d2::UnitVec::GetTop());
+    EXPECT_EQ(Compositor<>{}.GetNormals()[1], ::playrho::d2::UnitVec::GetUp());
     EXPECT_EQ(Compositor<>{}.GetNormals()[2], ::playrho::d2::UnitVec::GetLeft());
-    EXPECT_EQ(Compositor<>{}.GetNormals()[3], ::playrho::d2::UnitVec::GetBottom());
+    EXPECT_EQ(Compositor<>{}.GetNormals()[3], ::playrho::d2::UnitVec::GetDown());
 }
 
 TEST(Compositor, GetDimensions)
@@ -452,7 +452,7 @@ TEST(Compositor, RotateStaticRectangle)
     using namespace ::playrho::d2;
     auto rectangle = Compositor<GeometryIs<StaticRectangle<1, 1>>>{};
     EXPECT_NO_THROW(Rotate(rectangle, ::playrho::d2::UnitVec::GetRight()));
-    EXPECT_THROW(Rotate(rectangle, ::playrho::d2::UnitVec::GetTop()), InvalidArgument);
+    EXPECT_THROW(Rotate(rectangle, ::playrho::d2::UnitVec::GetUp()), InvalidArgument);
 }
 
 TEST(Compositor, TranslateDynamicRectangle)
@@ -476,7 +476,7 @@ TEST(Compositor, RotateDynamicRectangle)
     using namespace ::playrho::d2;
     auto rectangle = Compositor<GeometryIs<DynamicRectangle<1, 1>>>{};
     EXPECT_NO_THROW(Rotate(rectangle, ::playrho::d2::UnitVec::GetRight()));
-    EXPECT_THROW(Rotate(rectangle, ::playrho::d2::UnitVec::GetTop()), InvalidArgument);
+    EXPECT_THROW(Rotate(rectangle, ::playrho::d2::UnitVec::GetUp()), InvalidArgument);
 }
 
 TEST(Compositor, EqualsOperator)

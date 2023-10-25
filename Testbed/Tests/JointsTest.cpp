@@ -164,7 +164,7 @@ private:
         Attach(GetWorld(), fb, m_diskShape);
         const auto mb = CreateBody(GetWorld(), BodyConf(DynamicBD).UseLocation(center + offs));
         Attach(GetWorld(), mb, m_squareShape);
-        auto jd = GetPrismaticJointConf(GetWorld(), fb, mb, center, UnitVec::GetTopRight())
+        auto jd = GetPrismaticJointConf(GetWorld(), fb, mb, center, UnitVec::GetUpRight())
                       .UseEnableLimit(true)
                       .UseLowerLength(-9_m)
                       .UseUpperLength(+0_m);
@@ -249,7 +249,7 @@ private:
         Attach(GetWorld(), body3, m_rectShape);
 
         auto jd3 = GetPrismaticJointConf(GetWorld(), containerBody, body3, bd3.location,
-                                         UnitVec::GetTop());
+                                         UnitVec::GetUp());
         jd3.upperTranslation = +0_m;
         jd3.lowerTranslation = -3.6_m;
         jd3.enableLimit = true;
@@ -293,7 +293,7 @@ private:
         const auto frequency = 4_Hz;
         const auto dampingRatio = 0.7f;
         const auto motorSpeed = -2 * 1_rad / 1_s;
-        const auto axis = UnitVec::GetTop();
+        const auto axis = UnitVec::GetUp();
         {
             auto jd = GetWheelJointConf(GetWorld(), car, backWheel,
                                         GetLocation(GetWorld(), backWheel), axis);

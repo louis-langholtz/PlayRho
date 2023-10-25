@@ -188,7 +188,7 @@ TEST(ChainShapeConf, RotateFF)
         foo.Add(v1);
         foo.Add(v2);
         auto tmp = foo;
-        const auto value = UnitVec::GetTop();
+        const auto value = UnitVec::GetUp();
         EXPECT_NO_THROW(Rotate(foo, value));
         EXPECT_NE(foo, tmp);
         ASSERT_EQ(foo.GetVertexCount(), ChildCounter(2));
@@ -251,7 +251,7 @@ TEST(ChainShapeConf, TwoVertexDpLikeEdgeDp)
     const auto vertexRadius = 1_m;
     const auto density = NonNegative<AreaDensity>(1_kgpm2);
     const auto locations = std::array<Length2, 2>{{Length2{0_m, 0_m}, Length2(4_m, 0_m)}};
-    const auto normals = std::array<UnitVec, 2>{{UnitVec::GetTop(), UnitVec::GetBottom()}};
+    const auto normals = std::array<UnitVec, 2>{{UnitVec::GetUp(), UnitVec::GetDown()}};
     const auto expectedDistanceProxy =
         DistanceProxy{vertexRadius, 2, data(locations), data(normals)};
 

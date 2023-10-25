@@ -545,7 +545,7 @@ TEST(Shape, EmptyShapeScaleIsNoop)
 TEST(Shape, EmptyShapeRotateIsNoop)
 {
     auto s = Shape{};
-    EXPECT_NO_THROW(Rotate(s, UnitVec::GetTop()));
+    EXPECT_NO_THROW(Rotate(s, UnitVec::GetUp()));
 }
 
 TEST(Shape, EmptyShapeSetVertexRadiusIsNoop)

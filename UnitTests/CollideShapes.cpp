@@ -151,7 +151,7 @@ TEST(CollideShapes, CircleTrianglePointBelow)
         UnitVec::GetRight()
     };
     const auto circleXfm = Transformation{
-        triangleTopPt + UnitVec::GetTop() * 1_m,
+        triangleTopPt + UnitVec::GetUp() * 1_m,
         UnitVec::GetRight()
     };
     
@@ -174,7 +174,7 @@ TEST(CollideShapes, CircleTouchingTrianglePointBelow)
         UnitVec::GetRight()
     };
     const auto circleXfm = Transformation{
-        triangleTopPt + UnitVec::GetTop() * circleRadius,
+        triangleTopPt + UnitVec::GetUp() * circleRadius,
         UnitVec::GetRight()
     };
     
@@ -201,7 +201,7 @@ TEST(CollideShapes, TriangleTouchingCirclePointBelow)
     const auto triangleRightPt = Vec2{+1, -1} * Meter;
     const auto triangle = PolygonShapeConf{}.Set({triangleLeftPt, triangleRightPt, triangleTopPt});
     const auto triangleXfm = Transformation{Length2{}, UnitVec::GetRight()};
-    const auto circlePt = triangleTopPt + UnitVec::GetTop() * circleRadius;
+    const auto circlePt = triangleTopPt + UnitVec::GetUp() * circleRadius;
     const auto circleXfm = Transformation{circlePt, UnitVec::GetRight()};
     
     const auto manifold = CollideShapes(GetChild(circle, 0), circleXfm,
@@ -1368,7 +1368,7 @@ TEST(CollideShapes, EdgeR90InsideSquare)
     const auto p1 = Vec2(0, -1) * Meter;
     const auto p2 = Vec2(0, +1) * Meter;
     const auto edge_shape = EdgeShapeConf(p1, p2);
-    const auto edge_xfm = Transformation{Length2{}, UnitVec::GetTop()};
+    const auto edge_xfm = Transformation{Length2{}, UnitVec::GetUp()};
     const auto s = 1_m;
     const auto polygon_shape = PolygonShapeConf(s, s);
     const auto polygon_xfm = Transformation{Length2{}, UnitVec::GetRight()};
@@ -1867,7 +1867,7 @@ TEST(CollideShapes, R0EdgePerpendicularCrossingFromR0Edge)
     const auto p2 = Vec2(+1, 0) * Meter;
     const auto edge_shape = EdgeShapeConf(EdgeShapeConf{}.UseVertexRadius(0_m).Set(p1, p2));
     const auto xfm1 = Transformation{Length2{}, UnitVec::GetRight()};
-    const auto xfm2 = Transformation{Length2{}, UnitVec::GetTop()};
+    const auto xfm2 = Transformation{Length2{}, UnitVec::GetUp()};
     const auto manifold = CollideShapes(GetChild(edge_shape, 0), xfm1, GetChild(edge_shape, 0), xfm2);
     
     ASSERT_NE(manifold.GetType(), Manifold::e_unset);

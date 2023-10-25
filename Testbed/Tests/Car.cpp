@@ -197,7 +197,7 @@ public:
             const auto wheel = CreateBody(GetWorld(), bd.UseLocation(location));
             Attach(GetWorld(), wheel, wheelShape);
             auto jd = GetWheelJointConf(GetWorld(), m_car, wheel, GetLocation(GetWorld(), wheel),
-                                        UnitVec::GetTop());
+                                        UnitVec::GetUp());
             jd.maxMotorTorque = 20_Nm;
             jd.enableMotor = true;
             jd.frequency = m_hz;
@@ -211,7 +211,7 @@ public:
             const auto wheel = CreateBody(GetWorld(), bd.UseLocation(location));
             Attach(GetWorld(), wheel, wheelShape);
             auto jd = GetWheelJointConf(GetWorld(), m_car, wheel, GetLocation(GetWorld(), wheel),
-                                        UnitVec::GetTop());
+                                        UnitVec::GetUp());
             jd.maxMotorTorque = 10_Nm;
             jd.enableMotor = false;
             jd.frequency = m_hz;

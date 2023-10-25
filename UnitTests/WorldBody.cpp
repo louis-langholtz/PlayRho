@@ -776,7 +776,7 @@ TEST(WorldBody, GetPositionFF)
 
 TEST(WorldBody, GetSetTransformationFF)
 {
-    const auto xfm0 = Transformation{Length2{-33_m, +4_m}, UnitVec::GetTopRight()};
+    const auto xfm0 = Transformation{Length2{-33_m, +4_m}, UnitVec::GetUpRight()};
     auto world = World{};
     auto body = CreateBody(world);
     EXPECT_NE(GetTransformation(world, body), xfm0);

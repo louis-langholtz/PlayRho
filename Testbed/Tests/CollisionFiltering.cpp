@@ -105,8 +105,8 @@ public:
             jd.enableLimit = true;
             jd.localAnchorA = Vec2(0.0f, 4.0f) * 1_m;
             jd.localAnchorB = Length2{};
-            jd.localXAxisA = UnitVec::GetTop();
-            jd.localYAxisA = GetRevPerpendicular(UnitVec::GetTop());
+            jd.localXAxisA = UnitVec::GetUp();
+            jd.localYAxisA = GetRevPerpendicular(UnitVec::GetUp());
             jd.lowerTranslation = -1.0_m;
             jd.upperTranslation = +1.0_m;
             CreateJoint(GetWorld(), jd);

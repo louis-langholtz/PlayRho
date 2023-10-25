@@ -113,7 +113,7 @@ RayCastOutput RayCast( // NOLINT(readability-function-cognitive-complexity)
             {
                 normal = (i == 0)?
                     ((s < 0)? UnitVec::GetLeft(): UnitVec::GetRight()):
-                    ((s < 0)? UnitVec::GetBottom(): UnitVec::GetTop());
+                    ((s < 0)? UnitVec::GetDown(): UnitVec::GetUp());
                 tmin = t1; // Push the min up
             }
             tmax = std::min(tmax, t2); // Pull the max down

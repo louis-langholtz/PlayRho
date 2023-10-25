@@ -87,7 +87,7 @@ TEST(VelocityConstraint, InitializingConstructor)
     
     auto bodyA = BodyConstraint{};
     auto bodyB = BodyConstraint{};
-    const auto normal = UnitVec::GetTop();
+    const auto normal = UnitVec::GetUp();
 
     const VelocityConstraint vc{contact_index, friction, restitution, tangent_speed, bodyA, bodyB, normal};
 
@@ -108,7 +108,7 @@ TEST(VelocityConstraint, AddPoint)
 
     auto bodyA = BodyConstraint{};
     auto bodyB = BodyConstraint{};
-    const auto normal = UnitVec::GetTop();
+    const auto normal = UnitVec::GetUp();
 
     VelocityConstraint vc{contact_index, friction, restitution, tangent_speed, bodyA, bodyB, normal};
 

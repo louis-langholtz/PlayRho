@@ -236,8 +236,8 @@ TEST(GearJoint, WithDynamicCirclesAndPrismaticJoints)
     Attach(world, b2, shapeId);
     const auto def = GetGearJointConf(
         world,
-        CreateJoint(world, GetPrismaticJointConf(world, b1, b2, Length2{}, UnitVec::GetTop())),
-        CreateJoint(world, GetPrismaticJointConf(world, b4, b3, Length2{}, UnitVec::GetTop())));
+        CreateJoint(world, GetPrismaticJointConf(world, b1, b2, Length2{}, UnitVec::GetUp())),
+        CreateJoint(world, GetPrismaticJointConf(world, b4, b3, Length2{}, UnitVec::GetUp())));
     EXPECT_EQ(GetTypeAC(def), GetTypeID<PrismaticJointConf>());
     EXPECT_EQ(GetTypeBD(def), GetTypeID<PrismaticJointConf>());
     EXPECT_EQ(GetLocalAnchorA(def), Length2(-1_m, 0_m));
@@ -286,13 +286,13 @@ TEST(GearJointConf, EqualsOperator)
     EXPECT_TRUE(GearJointConf() == GearJointConf());
     {
         auto conf = GearJointConf{};
-        conf.typeDataAC = GearJointConf::PrismaticData{Length2{1.2_m, -3_m}, Length2{}, UnitVec::GetTop()};
+        conf.typeDataAC = GearJointConf::PrismaticData{Length2{1.2_m, -3_m}, Length2{}, UnitVec::GetUp()};
         EXPECT_TRUE(conf == conf);
         EXPECT_FALSE(GearJointConf() == conf);
     }
     {
         auto conf = GearJointConf{};
-        conf.typeDataAC = GearJointConf::PrismaticData{Length2{}, Length2{1.2_m, -3_m}, UnitVec::GetTop()};
+        conf.typeDataAC = GearJointConf::PrismaticData{Length2{}, Length2{1.2_m, -3_m}, UnitVec::GetUp()};
         EXPECT_TRUE(conf == conf);
         EXPECT_FALSE(GearJointConf() == conf);
     }
