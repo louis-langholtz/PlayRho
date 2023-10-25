@@ -1422,3 +1422,26 @@ TEST(Math, Solve)
     result = Solve(mat, b);
     EXPECT_EQ(result, (Vector2<double>{3.5, -1.5}));
 }
+
+TEST(Math, GetFwdNormalsVectorForEmpty)
+{
+    EXPECT_TRUE(empty(GetFwdNormalsVector({})));
+}
+
+TEST(Math, GetFwdNormalsVectorForOne)
+{
+    EXPECT_EQ(GetFwdNormalsVector({Length2{}}), (std::vector<UnitVec>{UnitVec()}));
+    EXPECT_EQ(GetFwdNormalsVector({Length2{1_m, 2_m}}), (std::vector<UnitVec>{UnitVec()}));
+}
+
+TEST(Math, GetFwdNormalsVectorForDirections)
+{
+    EXPECT_EQ(GetFwdNormalsVector({Length2(), UnitVec::GetRight() * 1_m}),
+              (std::vector<UnitVec>{UnitVec::GetBottom(), UnitVec::GetTop()}));
+    EXPECT_EQ(GetFwdNormalsVector({Length2(), UnitVec::GetTop() * 1_m}),
+              (std::vector<UnitVec>{UnitVec::GetRight(), UnitVec::GetLeft()}));
+    EXPECT_EQ(GetFwdNormalsVector({Length2(), UnitVec::GetLeft() * 1_m}),
+              (std::vector<UnitVec>{UnitVec::GetTop(), UnitVec::GetBottom()}));
+    EXPECT_EQ(GetFwdNormalsVector({Length2(), UnitVec::GetBottom() * 1_m}),
+              (std::vector<UnitVec>{UnitVec::GetLeft(), UnitVec::GetRight()}));
+}
