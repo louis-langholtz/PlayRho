@@ -19,10 +19,11 @@ See the project's [documented build and installation steps](../INSTALL.md).
 
 ## Layout
 
-- [`include/playrho`](include/playrho): Subdirectories for the library's API header files.
-- [`source/playrho`](source/playrho): Subdirectories for the library's source files.
+- [`include/playrho`](include/playrho): Files and subdirectories for the library's header files.
+- [`source/playrho`](source/playrho): Files and subdirectories for the library's source files.
 
-Subdirectories under these directories are otherwise named and structured according to C++ namespaces defined.
+Contents under these directories are otherwise named and structured by functionality and C++ namespaces.
+For example, code primarily for 2-dimensional use is under a `d2` subdirectory and within the `playrho::d2` namespace.
 
 ## History
 
