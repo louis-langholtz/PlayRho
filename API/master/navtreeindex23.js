@@ -1,7 +1,5 @@
 var NAVTREEINDEX23 =
 {
-"structplayrho_1_1d2_1_1EdgeShapeConf.html#af3208f9fb0bf45ac1d4fd9b04d9b7668":[2,1,3,6],
-"structplayrho_1_1d2_1_1FrictionJointConf.html":[2,8,0,1],
 "structplayrho_1_1d2_1_1FrictionJointConf.html#a00b4cc40afea7be207a08ad7c018f3c1":[2,8,0,1,8],
 "structplayrho_1_1d2_1_1FrictionJointConf.html#a0dc172c241a2bd93f84c74c23b80da4b":[2,8,0,1,24],
 "structplayrho_1_1d2_1_1FrictionJointConf.html#a0e9abf7dc8a18f5120e06497cea4f3c2":[2,8,0,1,20],
@@ -249,5 +247,7 @@ var NAVTREEINDEX23 =
 "structplayrho_1_1d2_1_1PrismaticJointConf.html#acf7e81444165613ee2710dfc8804a04a":[2,8,0,5,9],
 "structplayrho_1_1d2_1_1PrismaticJointConf.html#aeb33a2ae730aed0a2100bdb9d582d0fd":[2,8,0,5,23],
 "structplayrho_1_1d2_1_1PrismaticJointConf.html#aedd5a22dbbb99341d5651ec2ea00b267":[2,8,0,5,29],
-"structplayrho_1_1d2_1_1PrismaticJointConf.html#af209b878a64342c846628b69acdf8d3c":[2,8,0,5,25]
+"structplayrho_1_1d2_1_1PrismaticJointConf.html#af209b878a64342c846628b69acdf8d3c":[2,8,0,5,25],
+"structplayrho_1_1d2_1_1PrismaticJointConf.html#afd69a0ec99e9a354fff052aeb7deefc9":[2,8,0,5,16],
+"structplayrho_1_1d2_1_1PulleyJointConf.html":[2,8,0,6]
 };

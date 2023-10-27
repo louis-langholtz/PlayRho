@@ -1,7 +1,5 @@
 var NAVTREEINDEX15 =
 {
-"namespaceplayrho.html#a174cfa632eb92c15bc2e48e7d09d216a":[3,0,0,438],
-"namespaceplayrho.html#a17bf68739331457fd06d2ac83a971ce7":[3,0,0,338],
 "namespaceplayrho.html#a197482cbffdd702c8926a00f42a76e62":[3,0,0,380],
 "namespaceplayrho.html#a1a26000facbed802f63693ad132ea5e4":[3,0,0,371],
 "namespaceplayrho.html#a1a7a2c4f0ce447813c94060e1ea4c0f9":[3,0,0,453],
@@ -249,5 +247,7 @@ var NAVTREEINDEX15 =
 "namespaceplayrho.html#adb651f620aefb4ee65ec0cc8c10b27b0":[3,0,0,379],
 "namespaceplayrho.html#adbf50e7e086182f69dc09e011aef6345":[3,0,0,362],
 "namespaceplayrho.html#adc42b14180314ff41872c38c5596970c":[3,0,0,250],
-"namespaceplayrho.html#adcc4cbaff2da580cdaa7f8e2e45c4856":[3,0,0,165]
+"namespaceplayrho.html#adcc4cbaff2da580cdaa7f8e2e45c4856":[3,0,0,165],
+"namespaceplayrho.html#adea893c840466088049edc292dcc9dcb":[3,0,0,429],
+"namespaceplayrho.html#adfccbc3cd8cc0bb78701f62e041acdba":[3,0,0,423]
 };

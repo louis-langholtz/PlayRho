@@ -1,7 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"ConstraintSolverConf_8hpp.html#a081dbfc95d4d3139eb2817a1f11a5af3":[5,0,0,0,0,6,1],
-"ConstraintSolverConf_8hpp.html#a56b5137ea90045d15dfb2279d5773b46":[5,0,0,0,0,6,2],
 "ConstraintSolverConf_8hpp.html#aacaf6573afe5f3fb0803faa353dc9c65":[5,0,0,0,0,6,3],
 "ConstraintSolverConf_8hpp.html#afdb8daa84d36ac948934ee05eb4cb242":[5,0,0,0,0,6,4],
 "ContactFeature_8hpp.html":[5,0,0,0,0,9],
@@ -249,5 +247,7 @@ var NAVTREEINDEX1 =
 "Island_8hpp.html#abddcd2c8f0eff0c93d899e8ddcc6308a":[5,0,0,0,0,21,2],
 "Island_8hpp.html#ad21356f425ceb245286afe5a7b3b9b7b":[5,0,0,0,0,21,1],
 "Island_8hpp.html#ad81cfb61a8aae11d28836a542584dd7f":[5,0,0,0,0,21,5],
-"Island_8hpp.html#ae889e4744cedfd0684d20ef3b7f48652":[5,0,0,0,0,21,8]
+"Island_8hpp.html#ae889e4744cedfd0684d20ef3b7f48652":[5,0,0,0,0,21,8],
+"JointConf_8hpp.html":[5,0,0,0,0,0,23],
+"JointConf_8hpp.html#a09041a146b572b6200045fa80dd3cd57":[5,0,0,0,0,0,23,23]
 };

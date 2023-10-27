@@ -35370,23 +35370,23 @@
     </member>
     <member kind="function" static="yes">
       <type>static constexpr UnitVec</type>
-      <name>GetBottom</name>
-      <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
-      <anchor>a814ef2468f93f2785da36e6651840a14</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr UnitVec</type>
-      <name>GetBottomRight</name>
-      <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
-      <anchor>ad253c43a96160cfccf89cf650abd225e</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr UnitVec</type>
       <name>GetDefaultFallback</name>
       <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
       <anchor>a9c0d12b9f3e418a49933c367305c01c0</anchor>
+      <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static constexpr UnitVec</type>
+      <name>GetDown</name>
+      <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
+      <anchor>a13ca76ab4ff89575ffebe1308f6b8353</anchor>
+      <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static constexpr UnitVec</type>
+      <name>GetDownRight</name>
+      <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
+      <anchor>a9d411847130a0053ee8826d6d487b707</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function" static="yes">
@@ -35405,16 +35405,16 @@
     </member>
     <member kind="function" static="yes">
       <type>static constexpr UnitVec</type>
-      <name>GetTop</name>
+      <name>GetUp</name>
       <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
-      <anchor>ad3f132b30c82d05c107a8d8231db244b</anchor>
+      <anchor>a082d654dabe4bb87cbfe3f748ee85505</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static constexpr UnitVec</type>
-      <name>GetTopRight</name>
+      <name>GetUpRight</name>
       <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
-      <anchor>a1e841cb8279292e8fbaf0d83b4cd0ddb</anchor>
+      <anchor>a336c73df89c6e93dfa73c38e7223cce2</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function" static="yes">

@@ -336,8 +336,8 @@ $(document).ready(function(){initNavTree('GearJoint_8cpp-example.html',''); init
 <div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a71e1178c67501e9f3cecd3bc40cc04a1">Attach</a>(world, b2, shapeId);</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> def = <a class="code" href="namespaceplayrho_1_1d2.html#a36b5ef1495440a134a304321d2e85e3d">GetGearJointConf</a>(</div>
 <div class="line">        world,</div>
-<div class="line">        <a class="code" href="namespaceplayrho_1_1d2.html#ad08795abe5eee5183189ff9901ab410a">CreateJoint</a>(world, <a name="a38"></a><a class="code" href="namespaceplayrho_1_1d2.html#a60b9a9ec9672825ae4fc6a33ff268cbe">GetPrismaticJointConf</a>(world, b1, b2, <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{}, <a name="a39"></a><a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#ad3f132b30c82d05c107a8d8231db244b">UnitVec::GetTop</a>())),</div>
-<div class="line">        <a class="code" href="namespaceplayrho_1_1d2.html#ad08795abe5eee5183189ff9901ab410a">CreateJoint</a>(world, <a class="code" href="namespaceplayrho_1_1d2.html#a60b9a9ec9672825ae4fc6a33ff268cbe">GetPrismaticJointConf</a>(world, b4, b3, <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{}, <a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#ad3f132b30c82d05c107a8d8231db244b">UnitVec::GetTop</a>())));</div>
+<div class="line">        <a class="code" href="namespaceplayrho_1_1d2.html#ad08795abe5eee5183189ff9901ab410a">CreateJoint</a>(world, <a name="a38"></a><a class="code" href="namespaceplayrho_1_1d2.html#a60b9a9ec9672825ae4fc6a33ff268cbe">GetPrismaticJointConf</a>(world, b1, b2, <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{}, <a name="a39"></a><a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#a082d654dabe4bb87cbfe3f748ee85505">UnitVec::GetUp</a>())),</div>
+<div class="line">        <a class="code" href="namespaceplayrho_1_1d2.html#ad08795abe5eee5183189ff9901ab410a">CreateJoint</a>(world, <a class="code" href="namespaceplayrho_1_1d2.html#a60b9a9ec9672825ae4fc6a33ff268cbe">GetPrismaticJointConf</a>(world, b4, b3, <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{}, <a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#a082d654dabe4bb87cbfe3f748ee85505">UnitVec::GetUp</a>())));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a8a2849276bed6c543c9bf97fb64b1e8e">GetTypeAC</a>(def), GetTypeID&lt;PrismaticJointConf&gt;());</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a143f9f615a7da516c00f7767717d6bb6">GetTypeBD</a>(def), GetTypeID&lt;PrismaticJointConf&gt;());</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#ad53a1e79d6e949a948293990837ba83f">GetLocalAnchorA</a>(def), <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>(-1_m, 0_m));</div>
@@ -386,13 +386,13 @@ $(document).ready(function(){initNavTree('GearJoint_8cpp-example.html',''); init
 <div class="line">    EXPECT_TRUE(GearJointConf() == GearJointConf());</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keyword">auto</span> conf = GearJointConf{};</div>
-<div class="line">        conf.typeDataAC = GearJointConf::PrismaticData{<a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{1.2_m, -3_m}, <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{}, <a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#ad3f132b30c82d05c107a8d8231db244b">UnitVec::GetTop</a>()};</div>
+<div class="line">        conf.typeDataAC = GearJointConf::PrismaticData{<a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{1.2_m, -3_m}, <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{}, <a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#a082d654dabe4bb87cbfe3f748ee85505">UnitVec::GetUp</a>()};</div>
 <div class="line">        EXPECT_TRUE(conf == conf);</div>
 <div class="line">        EXPECT_FALSE(GearJointConf() == conf);</div>
 <div class="line">    }</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keyword">auto</span> conf = GearJointConf{};</div>
-<div class="line">        conf.typeDataAC = GearJointConf::PrismaticData{<a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{}, <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{1.2_m, -3_m}, <a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#ad3f132b30c82d05c107a8d8231db244b">UnitVec::GetTop</a>()};</div>
+<div class="line">        conf.typeDataAC = GearJointConf::PrismaticData{<a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{}, <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{1.2_m, -3_m}, <a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#a082d654dabe4bb87cbfe3f748ee85505">UnitVec::GetUp</a>()};</div>
 <div class="line">        EXPECT_TRUE(conf == conf);</div>
 <div class="line">        EXPECT_FALSE(GearJointConf() == conf);</div>
 <div class="line">    }</div>
@@ -491,7 +491,7 @@ $(document).ready(function(){initNavTree('GearJoint_8cpp-example.html',''); init
 <div class="ttc" id="aWorldMisc_8hpp_html"><div class="ttname"><a href="WorldMisc_8hpp.html">WorldMisc.hpp</a></div><div class="ttdoc">Declarations of free functions of World for unidentified information.</div></div>
 <div class="ttc" id="aWorldShape_8hpp_html"><div class="ttname"><a href="WorldShape_8hpp.html">WorldShape.hpp</a></div><div class="ttdoc">Declarations of free functions of World for shapes identified by ShapeID.</div></div>
 <div class="ttc" id="aWorld_8hpp_html"><div class="ttname"><a href="World_8hpp.html">World.hpp</a></div><div class="ttdoc">Definitions of the World class and closely related code.</div></div>
-<div class="ttc" id="aclassplayrho_1_1d2_1_1UnitVec_html_ad3f132b30c82d05c107a8d8231db244b"><div class="ttname"><a href="classplayrho_1_1d2_1_1UnitVec.html#ad3f132b30c82d05c107a8d8231db244b">playrho::d2::UnitVec::GetTop</a></div><div class="ttdeci">static constexpr UnitVec GetTop() noexcept</div><div class="ttdoc">Gets the top-ward oriented unit vector.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:80</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1UnitVec_html_a082d654dabe4bb87cbfe3f748ee85505"><div class="ttname"><a href="classplayrho_1_1d2_1_1UnitVec.html#a082d654dabe4bb87cbfe3f748ee85505">playrho::d2::UnitVec::GetUp</a></div><div class="ttdeci">static constexpr UnitVec GetUp() noexcept</div><div class="ttdoc">Gets the up-ward oriented unit vector.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:80</div></div>
 <div class="ttc" id="agroup__PhysicalQuantities_html_ga747a451cf2286bc935336043c212b74d"><div class="ttname"><a href="group__PhysicalQuantities.html#ga747a451cf2286bc935336043c212b74d">playrho::AngularMomentum</a></div><div class="ttdeci">detail::angular_momentum AngularMomentum</div><div class="ttdoc">Angular momentum quantity.</div><div class="ttdef"><b>Definition:</b> Units.hpp:386</div></div>
 <div class="ttc" id="agroup__PhysicalQuantities_html_ga8ec7c3082c9a05e095b45f6b1c7caaaf"><div class="ttname"><a href="group__PhysicalQuantities.html#ga8ec7c3082c9a05e095b45f6b1c7caaaf">playrho::InvRotInertia</a></div><div class="ttdeci">detail::inverse_moment_of_inertia InvRotInertia</div><div class="ttdoc">Inverse rotational inertia quantity.</div><div class="ttdef"><b>Definition:</b> Units.hpp:364</div></div>
 <div class="ttc" id="agroup__PhysicalUnits_html_gab5d1d9c70d11cff5fb552e939de39b9c"><div class="ttname"><a href="group__PhysicalUnits.html#gab5d1d9c70d11cff5fb552e939de39b9c">playrho::Meter</a></div><div class="ttdeci">constexpr auto Meter</div><div class="ttdoc">Meter unit of Length.</div><div class="ttdef"><b>Definition:</b> Units.hpp:419</div></div>
@@ -544,7 +544,7 @@ $(document).ready(function(){initNavTree('GearJoint_8cpp-example.html',''); init
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Oct 25 2023 03:51:17 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 27 2023 20:41:34 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

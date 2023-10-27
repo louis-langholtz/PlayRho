@@ -401,7 +401,7 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <div class="line">    ASSERT_EQ(distanceProxy.GetVertexCount(), 2u);</div>
 <div class="line">    ASSERT_EQ(distanceProxy.GetVertex(0u), <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>(-0.5_m, +0.0_m));</div>
 <div class="line">    ASSERT_EQ(distanceProxy.GetVertex(1u), <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>(+0.5_m, -0.0_m));</div>
-<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a0a415ca6071bd581ccda6627333c917b">Rotate</a>(world, shapeId, <a name="a40"></a><a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#ad3f132b30c82d05c107a8d8231db244b">UnitVec::GetTop</a>()));</div>
+<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a0a415ca6071bd581ccda6627333c917b">Rotate</a>(world, shapeId, <a name="a40"></a><a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#a082d654dabe4bb87cbfe3f748ee85505">UnitVec::GetUp</a>()));</div>
 <div class="line">    ASSERT_NO_THROW(shape = <a class="code" href="namespaceplayrho_1_1d2.html#a9e29376addbe168c363097e82eb796f0">GetShape</a>(world, shapeId));</div>
 <div class="line">    ASSERT_NO_THROW(distanceProxy = <a class="code" href="namespaceplayrho_1_1d2.html#a8cdbec96d1a3f30b8c5705b602aeb8df">GetChild</a>(shape, 0u));</div>
 <div class="line">    EXPECT_EQ(distanceProxy.GetVertex(0u), <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>(0.0_m, -0.5_m));</div>
@@ -428,7 +428,7 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <div class="ttc" id="aWorldBody_8hpp_html"><div class="ttname"><a href="WorldBody_8hpp.html">WorldBody.hpp</a></div><div class="ttdoc">Declarations of free functions of World for bodies identified by BodyID.</div></div>
 <div class="ttc" id="aWorldShape_8hpp_html"><div class="ttname"><a href="WorldShape_8hpp.html">WorldShape.hpp</a></div><div class="ttdoc">Declarations of free functions of World for shapes identified by ShapeID.</div></div>
 <div class="ttc" id="aWorld_8hpp_html"><div class="ttname"><a href="World_8hpp.html">World.hpp</a></div><div class="ttdoc">Definitions of the World class and closely related code.</div></div>
-<div class="ttc" id="aclassplayrho_1_1d2_1_1UnitVec_html_ad3f132b30c82d05c107a8d8231db244b"><div class="ttname"><a href="classplayrho_1_1d2_1_1UnitVec.html#ad3f132b30c82d05c107a8d8231db244b">playrho::d2::UnitVec::GetTop</a></div><div class="ttdeci">static constexpr UnitVec GetTop() noexcept</div><div class="ttdoc">Gets the top-ward oriented unit vector.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:80</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1UnitVec_html_a082d654dabe4bb87cbfe3f748ee85505"><div class="ttname"><a href="classplayrho_1_1d2_1_1UnitVec.html#a082d654dabe4bb87cbfe3f748ee85505">playrho::d2::UnitVec::GetUp</a></div><div class="ttdeci">static constexpr UnitVec GetUp() noexcept</div><div class="ttdoc">Gets the up-ward oriented unit vector.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:80</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1part_1_1Compositor_html"><div class="ttname"><a href="classplayrho_1_1d2_1_1part_1_1Compositor.html">playrho::d2::part::Compositor</a></div><div class="ttdoc">A class template for compositing shaped part types eligible for use with classes like the playrho::d2...</div><div class="ttdef"><b>Definition:</b> Compositor.hpp:600</div></div>
 <div class="ttc" id="agroup__PhysicalQuantities_html_ga6bcf1d1de9ef60a9833c222efe7ffd57"><div class="ttname"><a href="group__PhysicalQuantities.html#ga6bcf1d1de9ef60a9833c222efe7ffd57">playrho::AreaDensity</a></div><div class="ttdeci">detail::surface_density AreaDensity</div><div class="ttdoc">Area (surface) density quantity.</div><div class="ttdef"><b>Definition:</b> Units.hpp:291</div></div>
 <div class="ttc" id="agroup__TestPointGroup_html_ga6307be53a55224b578a3122d40d6e0f1"><div class="ttname"><a href="group__TestPointGroup.html#ga6307be53a55224b578a3122d40d6e0f1">playrho::d2::TestPoint</a></div><div class="ttdeci">bool TestPoint(const DistanceProxy &amp;proxy, const Length2 &amp;point) noexcept</div><div class="ttdoc">Tests a point for containment in the given distance proxy.</div><div class="ttdef"><b>Definition:</b> DistanceProxy.cpp:107</div></div>
@@ -479,7 +479,7 @@ $(document).ready(function(){initNavTree('WorldShape_8cpp-example.html',''); ini
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Oct 25 2023 03:51:17 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 27 2023 20:41:34 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -259,9 +259,9 @@ $(document).ready(function(){initNavTree('Compositor_8cpp-example.html',''); ini
 <div class="line">{</div>
 <div class="line">    ASSERT_EQ(<a name="a10"></a><a class="code" href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">size</a>(Compositor&lt;&gt;{}.GetNormals()), 4u);</div>
 <div class="line">    EXPECT_EQ(Compositor&lt;&gt;{}.GetNormals()[0], ::<a name="a11"></a><a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#a989ef293213c6b3a4d1901533445cd85">playrho::d2::UnitVec::GetRight</a>());</div>
-<div class="line">    EXPECT_EQ(Compositor&lt;&gt;{}.GetNormals()[1], ::<a name="a12"></a><a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#ad3f132b30c82d05c107a8d8231db244b">playrho::d2::UnitVec::GetTop</a>());</div>
+<div class="line">    EXPECT_EQ(Compositor&lt;&gt;{}.GetNormals()[1], ::<a name="a12"></a><a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#a082d654dabe4bb87cbfe3f748ee85505">playrho::d2::UnitVec::GetUp</a>());</div>
 <div class="line">    EXPECT_EQ(Compositor&lt;&gt;{}.GetNormals()[2], ::<a name="a13"></a><a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#a44b186e8e5faa989049dcb9fba7367c7">playrho::d2::UnitVec::GetLeft</a>());</div>
-<div class="line">    EXPECT_EQ(Compositor&lt;&gt;{}.GetNormals()[3], ::<a name="a14"></a><a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#a814ef2468f93f2785da36e6651840a14">playrho::d2::UnitVec::GetBottom</a>());</div>
+<div class="line">    EXPECT_EQ(Compositor&lt;&gt;{}.GetNormals()[3], ::<a name="a14"></a><a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#a13ca76ab4ff89575ffebe1308f6b8353">playrho::d2::UnitVec::GetDown</a>());</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line">TEST(Compositor, <a name="a15"></a><a class="code" href="namespaceplayrho_1_1d2_1_1part.html#ad2ba5af7d41b160bb4c0a215b562c9f8">GetDimensions</a>)</div>
@@ -551,7 +551,7 @@ $(document).ready(function(){initNavTree('Compositor_8cpp-example.html',''); ini
 <div class="line">    <span class="keyword">using namespace </span>::<a class="code" href="namespaceplayrho_1_1d2.html">playrho::d2</a>;</div>
 <div class="line">    <span class="keyword">auto</span> rectangle = Compositor&lt;GeometryIs&lt;StaticRectangle&lt;1, 1&gt;&gt;&gt;{};</div>
 <div class="line">    EXPECT_NO_THROW(<a name="a38"></a><a class="code" href="namespaceplayrho_1_1d2_1_1part.html#a2c707b282337d3ed55c80c54be669b7d">Rotate</a>(rectangle, ::<a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#a989ef293213c6b3a4d1901533445cd85">playrho::d2::UnitVec::GetRight</a>()));</div>
-<div class="line">    EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2_1_1part.html#a2c707b282337d3ed55c80c54be669b7d">Rotate</a>(rectangle, ::<a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#ad3f132b30c82d05c107a8d8231db244b">playrho::d2::UnitVec::GetTop</a>()), InvalidArgument);</div>
+<div class="line">    EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2_1_1part.html#a2c707b282337d3ed55c80c54be669b7d">Rotate</a>(rectangle, ::<a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#a082d654dabe4bb87cbfe3f748ee85505">playrho::d2::UnitVec::GetUp</a>()), InvalidArgument);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line">TEST(Compositor, TranslateDynamicRectangle)</div>
@@ -575,7 +575,7 @@ $(document).ready(function(){initNavTree('Compositor_8cpp-example.html',''); ini
 <div class="line">    <span class="keyword">using namespace </span>::<a class="code" href="namespaceplayrho_1_1d2.html">playrho::d2</a>;</div>
 <div class="line">    <span class="keyword">auto</span> rectangle = Compositor&lt;GeometryIs&lt;DynamicRectangle&lt;1, 1&gt;&gt;&gt;{};</div>
 <div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2_1_1part.html#a2c707b282337d3ed55c80c54be669b7d">Rotate</a>(rectangle, ::<a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#a989ef293213c6b3a4d1901533445cd85">playrho::d2::UnitVec::GetRight</a>()));</div>
-<div class="line">    EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2_1_1part.html#a2c707b282337d3ed55c80c54be669b7d">Rotate</a>(rectangle, ::<a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#ad3f132b30c82d05c107a8d8231db244b">playrho::d2::UnitVec::GetTop</a>()), InvalidArgument);</div>
+<div class="line">    EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2_1_1part.html#a2c707b282337d3ed55c80c54be669b7d">Rotate</a>(rectangle, ::<a class="code" href="classplayrho_1_1d2_1_1UnitVec.html#a082d654dabe4bb87cbfe3f748ee85505">playrho::d2::UnitVec::GetUp</a>()), InvalidArgument);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line">TEST(Compositor, EqualsOperator)</div>
@@ -591,10 +591,10 @@ $(document).ready(function(){initNavTree('Compositor_8cpp-example.html',''); ini
 <div class="ttc" id="aShape_8hpp_html"><div class="ttname"><a href="Shape_8hpp.html">Shape.hpp</a></div><div class="ttdoc">Definition of the Shape class and closely related code.</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1DistanceProxy_html"><div class="ttname"><a href="classplayrho_1_1d2_1_1DistanceProxy.html">playrho::d2::DistanceProxy</a></div><div class="ttdoc">Distance Proxy.</div><div class="ttdef"><b>Definition:</b> DistanceProxy.hpp:55</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1Shape_html"><div class="ttname"><a href="classplayrho_1_1d2_1_1Shape.html">playrho::d2::Shape</a></div><div class="ttdoc">Shape.</div><div class="ttdef"><b>Definition:</b> Shape.hpp:455</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1UnitVec_html_a082d654dabe4bb87cbfe3f748ee85505"><div class="ttname"><a href="classplayrho_1_1d2_1_1UnitVec.html#a082d654dabe4bb87cbfe3f748ee85505">playrho::d2::UnitVec::GetUp</a></div><div class="ttdeci">static constexpr UnitVec GetUp() noexcept</div><div class="ttdoc">Gets the up-ward oriented unit vector.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:80</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1UnitVec_html_a13ca76ab4ff89575ffebe1308f6b8353"><div class="ttname"><a href="classplayrho_1_1d2_1_1UnitVec.html#a13ca76ab4ff89575ffebe1308f6b8353">playrho::d2::UnitVec::GetDown</a></div><div class="ttdeci">static constexpr UnitVec GetDown() noexcept</div><div class="ttdoc">Gets the down-ward oriented unit vector.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:92</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1UnitVec_html_a44b186e8e5faa989049dcb9fba7367c7"><div class="ttname"><a href="classplayrho_1_1d2_1_1UnitVec.html#a44b186e8e5faa989049dcb9fba7367c7">playrho::d2::UnitVec::GetLeft</a></div><div class="ttdeci">static constexpr UnitVec GetLeft() noexcept</div><div class="ttdoc">Gets the left-ward oriented unit vector.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:86</div></div>
-<div class="ttc" id="aclassplayrho_1_1d2_1_1UnitVec_html_a814ef2468f93f2785da36e6651840a14"><div class="ttname"><a href="classplayrho_1_1d2_1_1UnitVec.html#a814ef2468f93f2785da36e6651840a14">playrho::d2::UnitVec::GetBottom</a></div><div class="ttdeci">static constexpr UnitVec GetBottom() noexcept</div><div class="ttdoc">Gets the bottom-ward oriented unit vector.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:92</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1UnitVec_html_a989ef293213c6b3a4d1901533445cd85"><div class="ttname"><a href="classplayrho_1_1d2_1_1UnitVec.html#a989ef293213c6b3a4d1901533445cd85">playrho::d2::UnitVec::GetRight</a></div><div class="ttdeci">static constexpr UnitVec GetRight() noexcept</div><div class="ttdoc">Gets the right-ward oriented unit vector.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:74</div></div>
-<div class="ttc" id="aclassplayrho_1_1d2_1_1UnitVec_html_ad3f132b30c82d05c107a8d8231db244b"><div class="ttname"><a href="classplayrho_1_1d2_1_1UnitVec.html#ad3f132b30c82d05c107a8d8231db244b">playrho::d2::UnitVec::GetTop</a></div><div class="ttdeci">static constexpr UnitVec GetTop() noexcept</div><div class="ttdoc">Gets the top-ward oriented unit vector.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:80</div></div>
 <div class="ttc" id="agroup__PhysicalQuantities_html_ga8705f1923f7cff39bf09f6d01989770d"><div class="ttname"><a href="group__PhysicalQuantities.html#ga8705f1923f7cff39bf09f6d01989770d">playrho::Length</a></div><div class="ttdeci">detail::length Length</div><div class="ttdoc">Length quantity.</div><div class="ttdef"><b>Definition:</b> Units.hpp:240</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_1_1part_html"><div class="ttname"><a href="namespaceplayrho_1_1d2_1_1part.html">playrho::d2::part</a></div><div class="ttdef"><b>Definition:</b> Compositor.hpp:38</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_1_1part_html_a0350621543765f7b3ef9645e7a4aead1"><div class="ttname"><a href="namespaceplayrho_1_1d2_1_1part.html#a0350621543765f7b3ef9645e7a4aead1">playrho::d2::part::SetDimensions</a></div><div class="ttdeci">auto SetDimensions(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, decltype(arg.GetDimensions()) value) -&gt; decltype(arg.SetDimensions(value))</div><div class="ttdoc">Sets the rectangle's width and height dimensions.</div><div class="ttdef"><b>Definition:</b> Compositor.hpp:619</div></div>
@@ -636,7 +636,7 @@ $(document).ready(function(){initNavTree('Compositor_8cpp-example.html',''); ini
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Oct 25 2023 03:51:17 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Oct 27 2023 20:41:34 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
