@@ -65,7 +65,7 @@ class DynamicTree;
 using ShapeListener = std::function<void(ShapeID)>;
 
 /// @brief Body-shape listener.
-using AssociationListener = std::function<void(std::pair<BodyID, ShapeID>)>;
+using BodyShapeListener = std::function<void(std::pair<BodyID, ShapeID>)>;
 
 /// @brief Listener type for some joint related events.
 using JointListener = std::function<void(JointID)>;
@@ -89,7 +89,7 @@ using ImpulsesContactListener =
 void SetShapeDestructionListener(World& world, ShapeListener listener) noexcept;
 
 /// @brief Sets the detach listener for shapes detaching from bodies.
-void SetDetachListener(World& world, AssociationListener listener) noexcept;
+void SetDetachListener(World& world, BodyShapeListener listener) noexcept;
 
 /// @brief Sets the destruction listener for joints.
 /// @note This listener is called on <code>Clear(World&)</code> for every joint. It's also called
@@ -635,7 +635,7 @@ public:
 
     // Listener friend functions...
     friend void SetShapeDestructionListener(World& world, ShapeListener listener) noexcept;
-    friend void SetDetachListener(World& world, AssociationListener listener) noexcept;
+    friend void SetDetachListener(World& world, BodyShapeListener listener) noexcept;
     friend void SetJointDestructionListener(World& world, JointListener listener) noexcept;
     friend void SetBeginContactListener(World& world, ContactListener listener) noexcept;
     friend void SetEndContactListener(World& world, ContactListener listener) noexcept;
@@ -723,7 +723,7 @@ struct World::Concept {
     virtual void SetShapeDestructionListener_(ShapeListener listener) noexcept = 0;
 
     /// @brief Sets the detach listener for shapes detaching from bodies.
-    virtual void SetDetachListener_(AssociationListener listener) noexcept = 0;
+    virtual void SetDetachListener_(BodyShapeListener listener) noexcept = 0;
 
     /// @brief Sets a destruction listener for joints.
     /// @note This listener is called on <code>Clear_()</code> for every joint. It's also called
@@ -1091,7 +1091,7 @@ struct World::Model final: World::Concept {
     }
 
     /// @copydoc Concept::SetDetachListener_
-    void SetDetachListener_(AssociationListener listener) noexcept override
+    void SetDetachListener_(BodyShapeListener listener) noexcept override
     {
         SetDetachListener(data, std::move(listener));
     }
@@ -1424,7 +1424,7 @@ inline void SetShapeDestructionListener(World& world, ShapeListener listener) no
     world.m_impl->SetShapeDestructionListener_(std::move(listener));
 }
 
-inline void SetDetachListener(World& world, AssociationListener listener) noexcept
+inline void SetDetachListener(World& world, BodyShapeListener listener) noexcept
 {
     world.m_impl->SetDetachListener_(std::move(listener));
 }
