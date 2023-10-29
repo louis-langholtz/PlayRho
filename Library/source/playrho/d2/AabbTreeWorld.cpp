@@ -130,7 +130,7 @@ inline void IntegratePositions(const Span<const BodyID>& bodies, const Span<Body
 /// the given array of constraints.
 /// @param listener Listener to call.
 /// @param constraints Array of m_contactCount contact velocity constraint elements.
-inline void Report(const ImpulsesContactListener& listener,
+inline void Report(const ImpulsesContactFunction& listener,
                    const Span<const ContactID>& contacts,
                    const Span<const VelocityConstraint>& constraints,
                    StepConf::iteration_type solved)
