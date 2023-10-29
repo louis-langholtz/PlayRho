@@ -28,6 +28,26 @@ namespace playrho::d2 {
 
 World::World(const WorldConf& def): World{AabbTreeWorld{def}} {}
 
+World::World(const World& other): m_impl{other.m_impl? other.m_impl->Clone_(): nullptr}
+{
+    // Intentionally empty.
+}
+
+World::~World() noexcept
+{
+    if (m_impl) { // for proper handling after being moved from
+        // Call implementation's clear while World still valid to give destruction
+        // listening callbacks chance to run while world data is still valid.
+        m_impl->Clear_();
+    }
+}
+
+World& World::operator=(const World& other)
+{
+    m_impl = other.m_impl ? other.m_impl->Clone_() : nullptr;
+    return *this;
+}
+
 BodyID CreateBody(World& world, const Body& body, bool resetMassData)
 {
     const auto id = world.m_impl->CreateBody_(body);
