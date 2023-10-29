@@ -93,23 +93,23 @@ using BodyShapeIDs = std::vector<std::pair<BodyID, ShapeID>>;
 /// @brief Proxy container type alias.
 using ProxyIDs = std::vector<DynamicTree::Size>;
 
-/// @brief Shapes listener.
-using ShapeListener = std::function<void(ShapeID)>;
+/// @brief Shapes function.
+using ShapeFunction = std::function<void(ShapeID)>;
 
-/// @brief Shapes paired with bodies IDs listener.
-using BodyShapeListener = std::function<void(std::pair<BodyID, ShapeID>)>;
+/// @brief Body-shapes function.
+using BodyShapeFunction = std::function<void(std::pair<BodyID, ShapeID>)>;
 
-/// @brief Joints listener.
-using JointListener = std::function<void(JointID)>;
+/// @brief Joints function.
+using JointFunction = std::function<void(JointID)>;
 
-/// @brief Contacts listener.
-using ContactListener = std::function<void(ContactID)>;
+/// @brief Contacts function.
+using ContactFunction = std::function<void(ContactID)>;
 
-/// @brief Manifolds paired with contacts listener.
-using ManifoldContactListener = std::function<void(ContactID, const Manifold&)>;
+/// @brief Contact-manifolds function.
+using ManifoldContactFunction = std::function<void(ContactID, const Manifold&)>;
 
-/// @brief Impulses contact listener.
-using ImpulsesContactListener =
+/// @brief Contact-impulses function.
+using ImpulsesContactFunction =
 std::function<void(ContactID, const ContactImpulsesList&, unsigned)>;
 
 /// @name AabbTreeWorld Listener Non-Member Functions
@@ -118,28 +118,28 @@ std::function<void(ContactID, const ContactImpulsesList&, unsigned)>;
 /// @brief Registers a destruction listener for shapes.
 /// @note This listener is called on <code>Clear(AabbTreeWorld&)</code> for every shape.
 /// @see Clear(AabbTreeWorld&).
-void SetShapeDestructionListener(AabbTreeWorld& world, ShapeListener listener) noexcept;
+void SetShapeDestructionListener(AabbTreeWorld& world, ShapeFunction listener) noexcept;
 
 /// @brief Registers a detach listener for shapes detaching from bodies.
-void SetDetachListener(AabbTreeWorld& world, BodyShapeListener listener) noexcept;
+void SetDetachListener(AabbTreeWorld& world, BodyShapeFunction listener) noexcept;
 
 /// @brief Register a destruction listener for joints.
 /// @note This listener is called on <code>Clear()</code> for every joint. It's also called
 ///   on <code>Destroy(BodyID)</code> for every joint associated with the identified body.
 /// @see Clear, Destroy(BodyID).
-void SetJointDestructionListener(AabbTreeWorld& world, JointListener listener) noexcept;
+void SetJointDestructionListener(AabbTreeWorld& world, JointFunction listener) noexcept;
 
 /// @brief Register a begin contact event listener.
-void SetBeginContactListener(AabbTreeWorld& world, ContactListener listener) noexcept;
+void SetBeginContactListener(AabbTreeWorld& world, ContactFunction listener) noexcept;
 
 /// @brief Register an end contact event listener.
-void SetEndContactListener(AabbTreeWorld& world, ContactListener listener) noexcept;
+void SetEndContactListener(AabbTreeWorld& world, ContactFunction listener) noexcept;
 
 /// @brief Register a pre-solve contact event listener.
-void SetPreSolveContactListener(AabbTreeWorld& world, ManifoldContactListener listener) noexcept;
+void SetPreSolveContactListener(AabbTreeWorld& world, ManifoldContactFunction listener) noexcept;
 
 /// @brief Register a post-solve contact event listener.
-void SetPostSolveContactListener(AabbTreeWorld& world, ImpulsesContactListener listener) noexcept;
+void SetPostSolveContactListener(AabbTreeWorld& world, ImpulsesContactFunction listener) noexcept;
 
 /// @}
 
@@ -462,7 +462,7 @@ ContactCounter GetContactRange(const AabbTreeWorld& world) noexcept;
 
 /// @brief Gets the world contact range.
 /// @warning contacts are created and destroyed in the middle of a time step.
-/// Use <code>ContactListener</code> to avoid missing contacts.
+/// Use <code>ContactFunction</code> to avoid missing contacts.
 /// @return Container of keyed contact IDs of existing contacts.
 KeyedContactIDs GetContacts(const AabbTreeWorld& world);
 
@@ -543,13 +543,13 @@ public:
     AabbTreeWorld& operator=(AabbTreeWorld&& other) = delete;
 
     // Listener friend functions...
-    friend void SetShapeDestructionListener(AabbTreeWorld& world, ShapeListener listener) noexcept;
-    friend void SetDetachListener(AabbTreeWorld& world, BodyShapeListener listener) noexcept;
-    friend void SetJointDestructionListener(AabbTreeWorld& world, JointListener listener) noexcept;
-    friend void SetBeginContactListener(AabbTreeWorld& world, ContactListener listener) noexcept;
-    friend void SetEndContactListener(AabbTreeWorld& world, ContactListener listener) noexcept;
-    friend void SetPreSolveContactListener(AabbTreeWorld& world, ManifoldContactListener listener) noexcept;
-    friend void SetPostSolveContactListener(AabbTreeWorld& world, ImpulsesContactListener listener) noexcept;
+    friend void SetShapeDestructionListener(AabbTreeWorld& world, ShapeFunction listener) noexcept;
+    friend void SetDetachListener(AabbTreeWorld& world, BodyShapeFunction listener) noexcept;
+    friend void SetJointDestructionListener(AabbTreeWorld& world, JointFunction listener) noexcept;
+    friend void SetBeginContactListener(AabbTreeWorld& world, ContactFunction listener) noexcept;
+    friend void SetEndContactListener(AabbTreeWorld& world, ContactFunction listener) noexcept;
+    friend void SetPreSolveContactListener(AabbTreeWorld& world, ManifoldContactFunction listener) noexcept;
+    friend void SetPostSolveContactListener(AabbTreeWorld& world, ImpulsesContactFunction listener) noexcept;
 
     // Miscellaneous friend functions...
     friend std::optional<pmr::StatsResource::Stats> GetResourceStats(const AabbTreeWorld& world) noexcept;
@@ -808,13 +808,13 @@ private:
     /// @brief Aggregate of user settable listener functions.
     struct Listeners
     {
-        ShapeListener shapeDestruction; ///< Listener for shape destruction.
-        BodyShapeListener detach; ///< Listener for shapes detaching from bodies.
-        JointListener jointDestruction; ///< Listener for joint destruction.
-        ContactListener beginContact; ///< Listener for beginning contact events.
-        ContactListener endContact; ///< Listener for ending contact events.
-        ManifoldContactListener preSolveContact; ///< Listener for pre-solving contacts.
-        ImpulsesContactListener postSolveContact; ///< Listener for post-solving contacts.
+        ShapeFunction shapeDestruction; ///< Listener for shape destruction.
+        BodyShapeFunction detach; ///< Listener for shapes detaching from bodies.
+        JointFunction jointDestruction; ///< Listener for joint destruction.
+        ContactFunction beginContact; ///< Listener for beginning contact events.
+        ContactFunction endContact; ///< Listener for ending contact events.
+        ManifoldContactFunction preSolveContact; ///< Listener for pre-solving contacts.
+        ImpulsesContactFunction postSolveContact; ///< Listener for post-solving contacts.
     };
 
     /// @brief Updates the contact times of impact.
@@ -1049,37 +1049,37 @@ inline const DynamicTree& GetTree(const AabbTreeWorld& world) noexcept
     return world.m_tree;
 }
 
-inline void SetShapeDestructionListener(AabbTreeWorld& world, ShapeListener listener) noexcept
+inline void SetShapeDestructionListener(AabbTreeWorld& world, ShapeFunction listener) noexcept
 {
     world.m_listeners.shapeDestruction = std::move(listener);
 }
 
-inline void SetDetachListener(AabbTreeWorld& world, BodyShapeListener listener) noexcept
+inline void SetDetachListener(AabbTreeWorld& world, BodyShapeFunction listener) noexcept
 {
     world.m_listeners.detach = std::move(listener);
 }
 
-inline void SetJointDestructionListener(AabbTreeWorld& world, JointListener listener) noexcept
+inline void SetJointDestructionListener(AabbTreeWorld& world, JointFunction listener) noexcept
 {
     world.m_listeners.jointDestruction = std::move(listener);
 }
 
-inline void SetBeginContactListener(AabbTreeWorld& world, ContactListener listener) noexcept
+inline void SetBeginContactListener(AabbTreeWorld& world, ContactFunction listener) noexcept
 {
     world.m_listeners.beginContact = std::move(listener);
 }
 
-inline void SetEndContactListener(AabbTreeWorld& world, ContactListener listener) noexcept
+inline void SetEndContactListener(AabbTreeWorld& world, ContactFunction listener) noexcept
 {
     world.m_listeners.endContact = std::move(listener);
 }
 
-inline void SetPreSolveContactListener(AabbTreeWorld& world, ManifoldContactListener listener) noexcept
+inline void SetPreSolveContactListener(AabbTreeWorld& world, ManifoldContactFunction listener) noexcept
 {
     world.m_listeners.preSolveContact = std::move(listener);
 }
 
-inline void SetPostSolveContactListener(AabbTreeWorld& world, ImpulsesContactListener listener) noexcept
+inline void SetPostSolveContactListener(AabbTreeWorld& world, ImpulsesContactFunction listener) noexcept
 {
     world.m_listeners.postSolveContact = std::move(listener);
 }

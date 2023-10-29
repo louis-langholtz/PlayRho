@@ -61,23 +61,23 @@ class World;
 class ContactImpulsesList;
 class DynamicTree;
 
-/// @brief Shape listener.
-using ShapeListener = std::function<void(ShapeID)>;
+/// @brief Shapes function.
+using ShapeFunction = std::function<void(ShapeID)>;
 
-/// @brief Body-shape listener.
-using BodyShapeListener = std::function<void(std::pair<BodyID, ShapeID>)>;
+/// @brief Body-shapes function.
+using BodyShapeFunction = std::function<void(std::pair<BodyID, ShapeID>)>;
 
-/// @brief Listener type for some joint related events.
-using JointListener = std::function<void(JointID)>;
+/// @brief Joints function.
+using JointFunction = std::function<void(JointID)>;
 
-/// @brief Listener type for some contact related events.
-using ContactListener = std::function<void(ContactID)>;
+/// @brief Contacts function.
+using ContactFunction = std::function<void(ContactID)>;
 
-/// @brief Listener type for some manifold contact events.
-using ManifoldContactListener = std::function<void(ContactID, const Manifold&)>;
+/// @brief Contact-manifolds function.
+using ManifoldContactFunction = std::function<void(ContactID, const Manifold&)>;
 
-/// @brief Impulses contact listener.
-using ImpulsesContactListener =
+/// @brief Contact-impulses function.
+using ImpulsesContactFunction =
     std::function<void(ContactID, const ContactImpulsesList&, unsigned)>;
 
 /// @name World Listener Non-Member Functions
@@ -86,32 +86,32 @@ using ImpulsesContactListener =
 /// @brief Sets the destruction listener for shapes.
 /// @note This listener is called on <code>Clear(World&)</code> for every shape.
 /// @see Clear(World&).
-void SetShapeDestructionListener(World& world, ShapeListener listener) noexcept;
+void SetShapeDestructionListener(World& world, ShapeFunction listener) noexcept;
 
 /// @brief Sets the detach listener for shapes detaching from bodies.
-void SetDetachListener(World& world, BodyShapeListener listener) noexcept;
+void SetDetachListener(World& world, BodyShapeFunction listener) noexcept;
 
 /// @brief Sets the destruction listener for joints.
 /// @note This listener is called on <code>Clear(World&)</code> for every joint. It's also called
 ///   on <code>Destroy(BodyID)</code> for every joint associated with the identified body.
 /// @see Clear(World&), Destroy(BodyID).
-void SetJointDestructionListener(World& world, JointListener listener) noexcept;
+void SetJointDestructionListener(World& world, JointFunction listener) noexcept;
 
 /// @brief Sets the begin-contact lister.
-/// @see SetEndContactListener(World&, ContactListener).
-void SetBeginContactListener(World& world, ContactListener listener) noexcept;
+/// @see SetEndContactListener(World&, ContactFunction).
+void SetBeginContactListener(World& world, ContactFunction listener) noexcept;
 
 /// @brief Sets the end-contact lister.
-/// @see SetBeginContactListener(World&, ContactListener).
-void SetEndContactListener(World& world, ContactListener listener) noexcept;
+/// @see SetBeginContactListener(World&, ContactFunction).
+void SetEndContactListener(World& world, ContactFunction listener) noexcept;
 
 /// @brief Sets the pre-solve-contact lister.
-/// @see etPostSolveContactListener(World&, ImpulsesContactListener).
-void SetPreSolveContactListener(World& world, ManifoldContactListener listener) noexcept;
+/// @see etPostSolveContactListener(World&, ImpulsesContactFunction).
+void SetPreSolveContactListener(World& world, ManifoldContactFunction listener) noexcept;
 
 /// @brief Sets the post-solve-contact lister.
-/// @see SetPreSolveContactListener(World&, ManifoldContactListener).
-void SetPostSolveContactListener(World& world, ImpulsesContactListener listener) noexcept;
+/// @see SetPreSolveContactListener(World&, ManifoldContactFunction).
+void SetPostSolveContactListener(World& world, ImpulsesContactFunction listener) noexcept;
 
 /// @}
 
@@ -321,7 +321,7 @@ std::vector<std::pair<BodyID, JointID>> GetJoints(const World& world, BodyID id)
 
 /// @brief Gets the container of contacts attached to the identified body.
 /// @warning This collection changes during the time step and you may
-///   miss some collisions if you don't use <code>ContactListener</code>.
+///   miss some collisions if you don't use <code>ContactFunction</code>.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see GetBodyRange.
 std::vector<std::tuple<ContactKey, ContactID>> GetContacts(const World& world, BodyID id);
@@ -634,13 +634,13 @@ public:
     }
 
     // Listener friend functions...
-    friend void SetShapeDestructionListener(World& world, ShapeListener listener) noexcept;
-    friend void SetDetachListener(World& world, BodyShapeListener listener) noexcept;
-    friend void SetJointDestructionListener(World& world, JointListener listener) noexcept;
-    friend void SetBeginContactListener(World& world, ContactListener listener) noexcept;
-    friend void SetEndContactListener(World& world, ContactListener listener) noexcept;
-    friend void SetPreSolveContactListener(World& world, ManifoldContactListener listener) noexcept;
-    friend void SetPostSolveContactListener(World& world, ImpulsesContactListener listener) noexcept;
+    friend void SetShapeDestructionListener(World& world, ShapeFunction listener) noexcept;
+    friend void SetDetachListener(World& world, BodyShapeFunction listener) noexcept;
+    friend void SetJointDestructionListener(World& world, JointFunction listener) noexcept;
+    friend void SetBeginContactListener(World& world, ContactFunction listener) noexcept;
+    friend void SetEndContactListener(World& world, ContactFunction listener) noexcept;
+    friend void SetPreSolveContactListener(World& world, ManifoldContactFunction listener) noexcept;
+    friend void SetPostSolveContactListener(World& world, ImpulsesContactFunction listener) noexcept;
 
     // Miscellaneous friend functions...
     friend TypeID GetType(const World& world) noexcept;
@@ -720,28 +720,28 @@ struct World::Concept {
     /// @brief Sets the destruction listener for shapes.
     /// @note This listener is called on <code>Clear_()</code> for every shape.
     /// @see Clear_.
-    virtual void SetShapeDestructionListener_(ShapeListener listener) noexcept = 0;
+    virtual void SetShapeDestructionListener_(ShapeFunction listener) noexcept = 0;
 
     /// @brief Sets the detach listener for shapes detaching from bodies.
-    virtual void SetDetachListener_(BodyShapeListener listener) noexcept = 0;
+    virtual void SetDetachListener_(BodyShapeFunction listener) noexcept = 0;
 
     /// @brief Sets a destruction listener for joints.
     /// @note This listener is called on <code>Clear_()</code> for every joint. It's also called
     ///   on <code>Destroy_(BodyID)</code> for every joint associated with the identified body.
     /// @see Clear_, Destroy_(BodyID).
-    virtual void SetJointDestructionListener_(JointListener listener) noexcept = 0;
+    virtual void SetJointDestructionListener_(JointFunction listener) noexcept = 0;
 
     /// @brief Sets a begin contact event listener.
-    virtual void SetBeginContactListener_(ContactListener listener) noexcept = 0;
+    virtual void SetBeginContactListener_(ContactFunction listener) noexcept = 0;
 
     /// @brief Sets an end contact event listener.
-    virtual void SetEndContactListener_(ContactListener listener) noexcept = 0;
+    virtual void SetEndContactListener_(ContactFunction listener) noexcept = 0;
 
     /// @brief Sets a pre-solve contact event listener.
-    virtual void SetPreSolveContactListener_(ManifoldContactListener listener) noexcept = 0;
+    virtual void SetPreSolveContactListener_(ManifoldContactFunction listener) noexcept = 0;
 
     /// @brief Sets a post-solve contact event listener.
-    virtual void SetPostSolveContactListener_(ImpulsesContactListener listener) noexcept = 0;
+    virtual void SetPostSolveContactListener_(ImpulsesContactFunction listener) noexcept = 0;
 
     /// @}
 
@@ -924,7 +924,7 @@ struct World::Concept {
 
     /// @brief Gets the container of contacts attached to the identified body.
     /// @warning This collection changes during the time step and you may
-    ///   miss some collisions if you don't use <code>ContactListener</code>.
+    ///   miss some collisions if you don't use <code>ContactFunction</code>.
     /// @throws std::out_of_range If given an invalid body identifier.
     /// @see GetBodyRange_.
     virtual std::vector<std::tuple<ContactKey, ContactID>> GetContacts_(BodyID id) const = 0;
@@ -1038,7 +1038,7 @@ struct World::Concept {
 
     /// @brief Gets the world contact range.
     /// @warning contacts are created and destroyed in the middle of a time step.
-    /// Use <code>ContactListener</code> to avoid missing contacts.
+    /// Use <code>ContactFunction</code> to avoid missing contacts.
     /// @return World contacts sized-range.
     virtual std::vector<KeyedContactID> GetContacts_() const = 0;
 
@@ -1085,43 +1085,43 @@ struct World::Model final: World::Concept {
     /// @{
 
     /// @copydoc Concept::SetShapeDestructionListener_
-    void SetShapeDestructionListener_(ShapeListener listener) noexcept override
+    void SetShapeDestructionListener_(ShapeFunction listener) noexcept override
     {
         SetShapeDestructionListener(data, std::move(listener));
     }
 
     /// @copydoc Concept::SetDetachListener_
-    void SetDetachListener_(BodyShapeListener listener) noexcept override
+    void SetDetachListener_(BodyShapeFunction listener) noexcept override
     {
         SetDetachListener(data, std::move(listener));
     }
 
     /// @copydoc Concept::SetJointDestructionListener_
-    void SetJointDestructionListener_(JointListener listener) noexcept override
+    void SetJointDestructionListener_(JointFunction listener) noexcept override
     {
         SetJointDestructionListener(data, std::move(listener));
     }
 
     /// @copydoc Concept::SetBeginContactListener_
-    void SetBeginContactListener_(ContactListener listener) noexcept override
+    void SetBeginContactListener_(ContactFunction listener) noexcept override
     {
         SetBeginContactListener(data, std::move(listener));
     }
 
     /// @copydoc Concept::SetEndContactListener_
-    void SetEndContactListener_(ContactListener listener) noexcept override
+    void SetEndContactListener_(ContactFunction listener) noexcept override
     {
         SetEndContactListener(data, std::move(listener));
     }
 
     /// @copydoc Concept::SetPreSolveContactListener_
-    void SetPreSolveContactListener_(ManifoldContactListener listener) noexcept override
+    void SetPreSolveContactListener_(ManifoldContactFunction listener) noexcept override
     {
         SetPreSolveContactListener(data, std::move(listener));
     }
 
     /// @copydoc Concept::SetPostSolveContactListener_
-    void SetPostSolveContactListener_(ImpulsesContactListener listener) noexcept override
+    void SetPostSolveContactListener_(ImpulsesContactFunction listener) noexcept override
     {
         SetPostSolveContactListener(data, std::move(listener));
     }
@@ -1419,37 +1419,37 @@ static_assert(std::is_nothrow_move_assignable_v<World>);
 
 // World Listener Non-Member Functions...
 
-inline void SetShapeDestructionListener(World& world, ShapeListener listener) noexcept
+inline void SetShapeDestructionListener(World& world, ShapeFunction listener) noexcept
 {
     world.m_impl->SetShapeDestructionListener_(std::move(listener));
 }
 
-inline void SetDetachListener(World& world, BodyShapeListener listener) noexcept
+inline void SetDetachListener(World& world, BodyShapeFunction listener) noexcept
 {
     world.m_impl->SetDetachListener_(std::move(listener));
 }
 
-inline void SetJointDestructionListener(World& world, JointListener listener) noexcept
+inline void SetJointDestructionListener(World& world, JointFunction listener) noexcept
 {
     world.m_impl->SetJointDestructionListener_(std::move(listener));
 }
 
-inline void SetBeginContactListener(World& world, ContactListener listener) noexcept
+inline void SetBeginContactListener(World& world, ContactFunction listener) noexcept
 {
     world.m_impl->SetBeginContactListener_(std::move(listener));
 }
 
-inline void SetEndContactListener(World& world, ContactListener listener) noexcept
+inline void SetEndContactListener(World& world, ContactFunction listener) noexcept
 {
     world.m_impl->SetEndContactListener_(std::move(listener));
 }
 
-inline void SetPreSolveContactListener(World& world, ManifoldContactListener listener) noexcept
+inline void SetPreSolveContactListener(World& world, ManifoldContactFunction listener) noexcept
 {
     world.m_impl->SetPreSolveContactListener_(std::move(listener));
 }
 
-inline void SetPostSolveContactListener(World& world, ImpulsesContactListener listener) noexcept
+inline void SetPostSolveContactListener(World& world, ImpulsesContactFunction listener) noexcept
 {
     world.m_impl->SetPostSolveContactListener_(std::move(listener));
 }
