@@ -34,11 +34,15 @@
 #include <vector>
 
 #include <playrho/BodyID.hpp>
+#include <playrho/BodyShapeFunction.hpp>
 #include <playrho/Contact.hpp>
+#include <playrho/ContactFunction.hpp>
 #include <playrho/KeyedContactID.hpp>
+#include <playrho/JointFunction.hpp>
 #include <playrho/JointID.hpp>
 #include <playrho/LimitState.hpp>
 #include <playrho/propagate_const.hpp>
+#include <playrho/ShapeFunction.hpp>
 #include <playrho/ShapeID.hpp>
 #include <playrho/StepConf.hpp>
 #include <playrho/StepStats.hpp>
@@ -48,6 +52,8 @@
 
 #include <playrho/d2/BodyConf.hpp> // for GetDefaultBodyConf
 #include <playrho/d2/Body.hpp>
+#include <playrho/d2/ContactImpulsesFunction.hpp>
+#include <playrho/d2/ContactManifoldFunction.hpp>
 #include <playrho/d2/Joint.hpp>
 #include <playrho/d2/Manifold.hpp>
 #include <playrho/d2/MassData.hpp>
@@ -60,25 +66,6 @@ namespace playrho::d2 {
 class World;
 class ContactImpulsesList;
 class DynamicTree;
-
-/// @brief Shapes function.
-using ShapeFunction = std::function<void(ShapeID)>;
-
-/// @brief Body-shapes function.
-using BodyShapeFunction = std::function<void(std::pair<BodyID, ShapeID>)>;
-
-/// @brief Joints function.
-using JointFunction = std::function<void(JointID)>;
-
-/// @brief Contacts function.
-using ContactFunction = std::function<void(ContactID)>;
-
-/// @brief Contact-manifolds function.
-using ManifoldContactFunction = std::function<void(ContactID, const Manifold&)>;
-
-/// @brief Contact-impulses function.
-using ImpulsesContactFunction =
-    std::function<void(ContactID, const ContactImpulsesList&, unsigned)>;
 
 /// @name World Listener Non-Member Functions
 /// @{
@@ -106,12 +93,12 @@ void SetBeginContactListener(World& world, ContactFunction listener) noexcept;
 void SetEndContactListener(World& world, ContactFunction listener) noexcept;
 
 /// @brief Sets the pre-solve-contact lister.
-/// @see etPostSolveContactListener(World&, ImpulsesContactFunction).
-void SetPreSolveContactListener(World& world, ManifoldContactFunction listener) noexcept;
+/// @see etPostSolveContactListener(World&, ContactImpulsesFunction).
+void SetPreSolveContactListener(World& world, ContactManifoldFunction listener) noexcept;
 
 /// @brief Sets the post-solve-contact lister.
-/// @see SetPreSolveContactListener(World&, ManifoldContactFunction).
-void SetPostSolveContactListener(World& world, ImpulsesContactFunction listener) noexcept;
+/// @see SetPreSolveContactListener(World&, ContactManifoldFunction).
+void SetPostSolveContactListener(World& world, ContactImpulsesFunction listener) noexcept;
 
 /// @}
 
@@ -639,8 +626,8 @@ public:
     friend void SetJointDestructionListener(World& world, JointFunction listener) noexcept;
     friend void SetBeginContactListener(World& world, ContactFunction listener) noexcept;
     friend void SetEndContactListener(World& world, ContactFunction listener) noexcept;
-    friend void SetPreSolveContactListener(World& world, ManifoldContactFunction listener) noexcept;
-    friend void SetPostSolveContactListener(World& world, ImpulsesContactFunction listener) noexcept;
+    friend void SetPreSolveContactListener(World& world, ContactManifoldFunction listener) noexcept;
+    friend void SetPostSolveContactListener(World& world, ContactImpulsesFunction listener) noexcept;
 
     // Miscellaneous friend functions...
     friend TypeID GetType(const World& world) noexcept;
@@ -738,10 +725,10 @@ struct World::Concept {
     virtual void SetEndContactListener_(ContactFunction listener) noexcept = 0;
 
     /// @brief Sets a pre-solve contact event listener.
-    virtual void SetPreSolveContactListener_(ManifoldContactFunction listener) noexcept = 0;
+    virtual void SetPreSolveContactListener_(ContactManifoldFunction listener) noexcept = 0;
 
     /// @brief Sets a post-solve contact event listener.
-    virtual void SetPostSolveContactListener_(ImpulsesContactFunction listener) noexcept = 0;
+    virtual void SetPostSolveContactListener_(ContactImpulsesFunction listener) noexcept = 0;
 
     /// @}
 
@@ -1115,13 +1102,13 @@ struct World::Model final: World::Concept {
     }
 
     /// @copydoc Concept::SetPreSolveContactListener_
-    void SetPreSolveContactListener_(ManifoldContactFunction listener) noexcept override
+    void SetPreSolveContactListener_(ContactManifoldFunction listener) noexcept override
     {
         SetPreSolveContactListener(data, std::move(listener));
     }
 
     /// @copydoc Concept::SetPostSolveContactListener_
-    void SetPostSolveContactListener_(ImpulsesContactFunction listener) noexcept override
+    void SetPostSolveContactListener_(ContactImpulsesFunction listener) noexcept override
     {
         SetPostSolveContactListener(data, std::move(listener));
     }
@@ -1444,12 +1431,12 @@ inline void SetEndContactListener(World& world, ContactFunction listener) noexce
     world.m_impl->SetEndContactListener_(std::move(listener));
 }
 
-inline void SetPreSolveContactListener(World& world, ManifoldContactFunction listener) noexcept
+inline void SetPreSolveContactListener(World& world, ContactManifoldFunction listener) noexcept
 {
     world.m_impl->SetPreSolveContactListener_(std::move(listener));
 }
 
-inline void SetPostSolveContactListener(World& world, ImpulsesContactFunction listener) noexcept
+inline void SetPostSolveContactListener(World& world, ContactImpulsesFunction listener) noexcept
 {
     world.m_impl->SetPostSolveContactListener_(std::move(listener));
 }

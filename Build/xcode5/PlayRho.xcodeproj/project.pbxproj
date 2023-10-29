@@ -422,6 +422,12 @@
 		998A7C0C2A82D55100F29B01 /* Contactable.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 998A7C0A2A82D55100F29B01 /* Contactable.hpp */; };
 		99CF862F29B9087700D9D112 /* BaseShapeConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99CF862E29B9087700D9D112 /* BaseShapeConf.cpp */; };
 		99CF863129C251CB00D9D112 /* ConstraintSolverConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99CF863029C251CB00D9D112 /* ConstraintSolverConf.cpp */; };
+		99D1BE202AEF18F8001BA497 /* BodyShapeFunction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE1C2AEF18F8001BA497 /* BodyShapeFunction.hpp */; };
+		99D1BE212AEF18F8001BA497 /* ShapeFunction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE1D2AEF18F8001BA497 /* ShapeFunction.hpp */; };
+		99D1BE222AEF18F8001BA497 /* JointFunction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE1E2AEF18F8001BA497 /* JointFunction.hpp */; };
+		99D1BE232AEF18F8001BA497 /* ContactFunction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE1F2AEF18F8001BA497 /* ContactFunction.hpp */; };
+		99D1BE262AEF1FFD001BA497 /* ContactImpulsesFunction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE242AEF1FFD001BA497 /* ContactImpulsesFunction.hpp */; };
+		99D1BE272AEF1FFD001BA497 /* ContactManifoldFunction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE252AEF1FFD001BA497 /* ContactManifoldFunction.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -919,6 +925,12 @@
 		998A7C0A2A82D55100F29B01 /* Contactable.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Contactable.hpp; sourceTree = "<group>"; };
 		99CF862E29B9087700D9D112 /* BaseShapeConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BaseShapeConf.cpp; sourceTree = "<group>"; };
 		99CF863029C251CB00D9D112 /* ConstraintSolverConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ConstraintSolverConf.cpp; sourceTree = "<group>"; };
+		99D1BE1C2AEF18F8001BA497 /* BodyShapeFunction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyShapeFunction.hpp; sourceTree = "<group>"; };
+		99D1BE1D2AEF18F8001BA497 /* ShapeFunction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShapeFunction.hpp; sourceTree = "<group>"; };
+		99D1BE1E2AEF18F8001BA497 /* JointFunction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointFunction.hpp; sourceTree = "<group>"; };
+		99D1BE1F2AEF18F8001BA497 /* ContactFunction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFunction.hpp; sourceTree = "<group>"; };
+		99D1BE242AEF1FFD001BA497 /* ContactImpulsesFunction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactImpulsesFunction.hpp; sourceTree = "<group>"; };
+		99D1BE252AEF1FFD001BA497 /* ContactManifoldFunction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactManifoldFunction.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1278,7 +1290,9 @@
 				80BB8936141C3E5900F1753A /* ChainShapeConf.hpp */,
 				998A7C002A801C1C00F29B01 /* ClipList.hpp */,
 				476162C71E245C9D002C7FB0 /* CodeDumper.hpp */,
+				99D1BE242AEF1FFD001BA497 /* ContactImpulsesFunction.hpp */,
 				47363E8520027FE2005912B1 /* ContactImpulsesList.hpp */,
+				99D1BE252AEF1FFD001BA497 /* ContactManifoldFunction.hpp */,
 				80BB8964141C3E5900F1753A /* ContactSolver.hpp */,
 				9919882F2ACE15D10076F969 /* ConvexHull.hpp */,
 				80BB8938141C3E5900F1753A /* DiskShapeConf.hpp */,
@@ -1467,11 +1481,13 @@
 				4734B2161DC00AFD00F15E29 /* ArrayList.hpp */,
 				80BB8940141C3E5900F1753A /* BlockAllocator.hpp */,
 				47640869250C86640090F711 /* BodyID.hpp */,
+				99D1BE1C2AEF18F8001BA497 /* BodyShapeFunction.hpp */,
 				478E67C41E760AB7009B9AD5 /* BodyType.hpp */,
 				47E70603255CDA4300A55BC1 /* ConstraintSolverConf.hpp */,
 				80BB8962141C3E5900F1753A /* Contact.hpp */,
 				998A7C0A2A82D55100F29B01 /* Contactable.hpp */,
 				4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */,
+				99D1BE1F2AEF18F8001BA497 /* ContactFunction.hpp */,
 				47640872251198AA0090F711 /* ContactID.hpp */,
 				470F94CF1EC6376F00AA3C82 /* ContactKey.hpp */,
 				47327E7D1EA585790048FCD8 /* Defines.hpp */,
@@ -1489,6 +1505,7 @@
 				470F9B3A1EE63515007EF7B6 /* InvalidArgument.hpp */,
 				80BB8954141C3E5900F1753A /* Island.hpp */,
 				47B490D5201E6C3000AB07A0 /* IslandStats.hpp */,
+				99D1BE1E2AEF18F8001BA497 /* JointFunction.hpp */,
 				4764087025105DD90090F711 /* JointID.hpp */,
 				476408742511A5CC0090F711 /* KeyedContactID.hpp */,
 				4787D6E91F2FA0CA008C115E /* LengthError.hpp */,
@@ -1511,6 +1528,7 @@
 				47B58F621F64C19600354C34 /* RealConstants.hpp */,
 				80BB8947141C3E5900F1753A /* Settings.hpp */,
 				991988C22AE2D46F0076F969 /* Settings.hpp.in */,
+				99D1BE1D2AEF18F8001BA497 /* ShapeFunction.hpp */,
 				4795B61C262B557100FB3EC6 /* ShapeID.hpp */,
 				4734B21E1DC1340500F15E29 /* Span.hpp */,
 				80BB8949141C3E5900F1753A /* StackAllocator.hpp */,
@@ -1584,6 +1602,7 @@
 				4706451B252CE27B006E69AA /* TypeInfo.hpp in Headers */,
 				476408932522698E0090F711 /* WorldMisc.hpp in Headers */,
 				4764085B250482300090F711 /* Positive.hpp in Headers */,
+				99D1BE202AEF18F8001BA497 /* BodyShapeFunction.hpp in Headers */,
 				991988302ACE15D10076F969 /* ConvexHull.hpp in Headers */,
 				47640873251198AA0090F711 /* ContactID.hpp in Headers */,
 				47363E8720027FE2005912B1 /* ContactImpulsesList.hpp in Headers */,
@@ -1598,6 +1617,7 @@
 				4787D6EB1F2FA0CA008C115E /* LengthError.hpp in Headers */,
 				80BB8990141C3E5900F1753A /* Distance.hpp in Headers */,
 				9901AF222AB248A80075122D /* FiniteChecker.hpp in Headers */,
+				99D1BE272AEF1FFD001BA497 /* ContactManifoldFunction.hpp in Headers */,
 				47CB34401D6F3A8500828126 /* MassData.hpp in Headers */,
 				47640855250475860090F711 /* NonZero.hpp in Headers */,
 				4731DE231DDF83A600E7F931 /* RayCastOutput.hpp in Headers */,
@@ -1605,6 +1625,7 @@
 				4787D6BB1F2E946E008C115E /* PrismaticJointConf.hpp in Headers */,
 				47C85D1B1F0D9D8D00F70C56 /* Units.hpp in Headers */,
 				998A7C022A801C1C00F29B01 /* ClipList.hpp in Headers */,
+				99D1BE212AEF18F8001BA497 /* ShapeFunction.hpp in Headers */,
 				998A7C0C2A82D55100F29B01 /* Contactable.hpp in Headers */,
 				470F9B181EDF2959007EF7B6 /* Transformation.hpp in Headers */,
 				4791332626A5F58C0011707B /* DynamicTreeData.hpp in Headers */,
@@ -1651,6 +1672,7 @@
 				80BB89A6141C3E5900F1753A /* Settings.hpp in Headers */,
 				4764085D250484830090F711 /* Negative.hpp in Headers */,
 				80BB89A8141C3E5900F1753A /* StackAllocator.hpp in Headers */,
+				99D1BE222AEF18F8001BA497 /* JointFunction.hpp in Headers */,
 				80BB89AC141C3E5900F1753A /* Body.hpp in Headers */,
 				9901AEFF2A9D24EC0075122D /* IndexingNamedType.hpp in Headers */,
 				4764085725047C090090F711 /* Finite.hpp in Headers */,
@@ -1664,6 +1686,7 @@
 				47327E801EA585790048FCD8 /* Defines.hpp in Headers */,
 				9901AF112A9FF3D30075122D /* Doxygen.hpp in Headers */,
 				4787D6C71F2EA1DB008C115E /* FrictionJointConf.hpp in Headers */,
+				99D1BE262AEF1FFD001BA497 /* ContactImpulsesFunction.hpp in Headers */,
 				470F9B3D1EE63515007EF7B6 /* InvalidArgument.hpp in Headers */,
 				4764085F2507FC000090F711 /* propagate_const.hpp in Headers */,
 				4787D6E31F2ED461008C115E /* WeldJointConf.hpp in Headers */,
@@ -1712,6 +1735,7 @@
 				9901AF0F2A9FD68A0075122D /* Templates.hpp in Headers */,
 				474FFC3C1F2CEE6C0037CCE0 /* Vector.hpp in Headers */,
 				4731DE441DE2570900E7F931 /* PointStates.hpp in Headers */,
+				99D1BE232AEF18F8001BA497 /* ContactFunction.hpp in Headers */,
 				47640867250C855D0090F711 /* to_underlying.hpp in Headers */,
 				4764085125042BD10090F711 /* NonNegative.hpp in Headers */,
 				47B490D7201E6C3000AB07A0 /* IslandStats.hpp in Headers */,

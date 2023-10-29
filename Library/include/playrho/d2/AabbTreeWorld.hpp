@@ -36,14 +36,18 @@
 #include <vector>
 
 #include <playrho/BodyID.hpp>
+#include <playrho/BodyShapeFunction.hpp>
+#include <playrho/ContactFunction.hpp>
 #include <playrho/ContactKey.hpp>
 #include <playrho/Filter.hpp>
+#include <playrho/JointFunction.hpp>
 #include <playrho/JointID.hpp>
 #include <playrho/Island.hpp>
 #include <playrho/IslandStats.hpp>
 #include <playrho/KeyedContactID.hpp>
 #include <playrho/ObjectPool.hpp>
 #include <playrho/Positive.hpp>
+#include <playrho/ShapeFunction.hpp>
 #include <playrho/ShapeID.hpp>
 #include <playrho/StepStats.hpp>
 
@@ -51,6 +55,8 @@
 #include <playrho/pmr/StatsResource.hpp>
 
 #include <playrho/d2/BodyConstraint.hpp>
+#include <playrho/d2/ContactImpulsesFunction.hpp>
+#include <playrho/d2/ContactManifoldFunction.hpp>
 #include <playrho/d2/DynamicTree.hpp>
 #include <playrho/d2/MassData.hpp>
 #include <playrho/d2/Math.hpp>
@@ -93,25 +99,6 @@ using BodyShapeIDs = std::vector<std::pair<BodyID, ShapeID>>;
 /// @brief Proxy container type alias.
 using ProxyIDs = std::vector<DynamicTree::Size>;
 
-/// @brief Shapes function.
-using ShapeFunction = std::function<void(ShapeID)>;
-
-/// @brief Body-shapes function.
-using BodyShapeFunction = std::function<void(std::pair<BodyID, ShapeID>)>;
-
-/// @brief Joints function.
-using JointFunction = std::function<void(JointID)>;
-
-/// @brief Contacts function.
-using ContactFunction = std::function<void(ContactID)>;
-
-/// @brief Contact-manifolds function.
-using ManifoldContactFunction = std::function<void(ContactID, const Manifold&)>;
-
-/// @brief Contact-impulses function.
-using ImpulsesContactFunction =
-std::function<void(ContactID, const ContactImpulsesList&, unsigned)>;
-
 /// @name AabbTreeWorld Listener Non-Member Functions
 /// @{
 
@@ -136,10 +123,10 @@ void SetBeginContactListener(AabbTreeWorld& world, ContactFunction listener) noe
 void SetEndContactListener(AabbTreeWorld& world, ContactFunction listener) noexcept;
 
 /// @brief Register a pre-solve contact event listener.
-void SetPreSolveContactListener(AabbTreeWorld& world, ManifoldContactFunction listener) noexcept;
+void SetPreSolveContactListener(AabbTreeWorld& world, ContactManifoldFunction listener) noexcept;
 
 /// @brief Register a post-solve contact event listener.
-void SetPostSolveContactListener(AabbTreeWorld& world, ImpulsesContactFunction listener) noexcept;
+void SetPostSolveContactListener(AabbTreeWorld& world, ContactImpulsesFunction listener) noexcept;
 
 /// @}
 
@@ -548,8 +535,8 @@ public:
     friend void SetJointDestructionListener(AabbTreeWorld& world, JointFunction listener) noexcept;
     friend void SetBeginContactListener(AabbTreeWorld& world, ContactFunction listener) noexcept;
     friend void SetEndContactListener(AabbTreeWorld& world, ContactFunction listener) noexcept;
-    friend void SetPreSolveContactListener(AabbTreeWorld& world, ManifoldContactFunction listener) noexcept;
-    friend void SetPostSolveContactListener(AabbTreeWorld& world, ImpulsesContactFunction listener) noexcept;
+    friend void SetPreSolveContactListener(AabbTreeWorld& world, ContactManifoldFunction listener) noexcept;
+    friend void SetPostSolveContactListener(AabbTreeWorld& world, ContactImpulsesFunction listener) noexcept;
 
     // Miscellaneous friend functions...
     friend std::optional<pmr::StatsResource::Stats> GetResourceStats(const AabbTreeWorld& world) noexcept;
@@ -813,8 +800,8 @@ private:
         JointFunction jointDestruction; ///< Listener for joint destruction.
         ContactFunction beginContact; ///< Listener for beginning contact events.
         ContactFunction endContact; ///< Listener for ending contact events.
-        ManifoldContactFunction preSolveContact; ///< Listener for pre-solving contacts.
-        ImpulsesContactFunction postSolveContact; ///< Listener for post-solving contacts.
+        ContactManifoldFunction preSolveContact; ///< Listener for pre-solving contacts.
+        ContactImpulsesFunction postSolveContact; ///< Listener for post-solving contacts.
     };
 
     /// @brief Updates the contact times of impact.
@@ -1074,12 +1061,12 @@ inline void SetEndContactListener(AabbTreeWorld& world, ContactFunction listener
     world.m_listeners.endContact = std::move(listener);
 }
 
-inline void SetPreSolveContactListener(AabbTreeWorld& world, ManifoldContactFunction listener) noexcept
+inline void SetPreSolveContactListener(AabbTreeWorld& world, ContactManifoldFunction listener) noexcept
 {
     world.m_listeners.preSolveContact = std::move(listener);
 }
 
-inline void SetPostSolveContactListener(AabbTreeWorld& world, ImpulsesContactFunction listener) noexcept
+inline void SetPostSolveContactListener(AabbTreeWorld& world, ContactImpulsesFunction listener) noexcept
 {
     world.m_listeners.postSolveContact = std::move(listener);
 }
