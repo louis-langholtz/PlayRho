@@ -130,7 +130,6 @@
 		4764085925047FA10090F711 /* NonPositive.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764085825047FA10090F711 /* NonPositive.hpp */; };
 		4764085B250482300090F711 /* Positive.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764085A2504822F0090F711 /* Positive.hpp */; };
 		4764085D250484830090F711 /* Negative.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764085C250484820090F711 /* Negative.hpp */; };
-		4764085F2507FC000090F711 /* propagate_const.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764085E2507FBFF0090F711 /* propagate_const.hpp */; };
 		47640862250807720090F711 /* AabbTreeWorld.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47640860250807720090F711 /* AabbTreeWorld.hpp */; };
 		47640863250807720090F711 /* AabbTreeWorld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47640861250807720090F711 /* AabbTreeWorld.cpp */; };
 		47640867250C855D0090F711 /* to_underlying.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47640866250C855D0090F711 /* to_underlying.hpp */; };
@@ -641,7 +640,6 @@
 		4764085825047FA10090F711 /* NonPositive.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NonPositive.hpp; sourceTree = "<group>"; };
 		4764085A2504822F0090F711 /* Positive.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Positive.hpp; sourceTree = "<group>"; };
 		4764085C250484820090F711 /* Negative.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Negative.hpp; sourceTree = "<group>"; };
-		4764085E2507FBFF0090F711 /* propagate_const.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = propagate_const.hpp; sourceTree = "<group>"; };
 		47640860250807720090F711 /* AabbTreeWorld.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AabbTreeWorld.hpp; sourceTree = "<group>"; };
 		47640861250807720090F711 /* AabbTreeWorld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AabbTreeWorld.cpp; sourceTree = "<group>"; };
 		47640866250C855D0090F711 /* to_underlying.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = to_underlying.hpp; sourceTree = "<group>"; };
@@ -1526,7 +1524,6 @@
 				479132DD26A52AAF0011707B /* PointState.hpp */,
 				4764085A2504822F0090F711 /* Positive.hpp */,
 				9901AEF32A9BCEB90075122D /* pmr */,
-				4764085E2507FBFF0090F711 /* propagate_const.hpp */,
 				479132F026A52FD00011707B /* RayCastOpcode.hpp */,
 				47B58F651F64D2B500354C34 /* Real.hpp */,
 				470ADAB92555F72B00EEE99D /* Real.hpp.in */,
@@ -1704,7 +1701,6 @@
 				4787D6C71F2EA1DB008C115E /* FrictionJointConf.hpp in Headers */,
 				99D1BE262AEF1FFD001BA497 /* ContactImpulsesFunction.hpp in Headers */,
 				470F9B3D1EE63515007EF7B6 /* InvalidArgument.hpp in Headers */,
-				4764085F2507FC000090F711 /* propagate_const.hpp in Headers */,
 				4787D6E31F2ED461008C115E /* WeldJointConf.hpp in Headers */,
 				9901AF202AB248A80075122D /* NonNegativeChecker.hpp in Headers */,
 				471E7EAA1F32668E00DFF626 /* Matrix.hpp in Headers */,
