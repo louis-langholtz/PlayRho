@@ -41,7 +41,6 @@
 #include <playrho/JointFunction.hpp>
 #include <playrho/JointID.hpp>
 #include <playrho/LimitState.hpp>
-#include <playrho/propagate_const.hpp>
 #include <playrho/ShapeFunction.hpp>
 #include <playrho/ShapeID.hpp>
 #include <playrho/StepConf.hpp>
@@ -687,7 +686,7 @@ public:
 private:
     /// @brief Pointer to implementation (PIMPL)
     /// @see https://en.cppreference.com/w/cpp/language/pimpl
-    propagate_const<std::unique_ptr<detail::WorldConcept>> m_impl;
+    std::unique_ptr<detail::WorldConcept> m_impl;
 };
 
 // State & confirm intended compile-time traits of World class...
