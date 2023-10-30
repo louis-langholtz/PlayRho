@@ -471,11 +471,20 @@ std::vector<KeyedContactID> GetContacts(const World& world);
 Contact GetContact(const World& world, ContactID id);
 
 /// @brief Sets the identified contact's state.
-/// @note This may throw an exception or update associated entities to preserve invariants.
-/// @invariant A contact may only be impenetrable if one or both bodies are.
-/// @invariant A contact may only be active if one or both bodies are awake.
-/// @invariant A contact may only be a sensor or one or both shapes are.
-/// @throws std::out_of_range If given an invalid contact identifier.
+/// @param world The world of the contact whose state is to be set.
+/// @param id Identifier of the contact whose state is to be set.
+/// @param value Value the contact is to be set to. The new state:
+///   is not allowed to change whether the contact is active,
+///   is not allowed to change whether the contact is impenetrable,
+///   is not allowed to change whether the contact is for a sensor,
+///   is not allowed to change the TOI of the contact,
+///   is not allowed to change the TOI count of the contact. Otherwise, this function
+///   will throw an <code>InvalidArgument</code> exception and not change anything.
+/// @throws std::out_of_range If given an invalid contact identifier or an invalid identifier
+///   in the new contact value.
+/// @throws InvalidArgument if the identifier is to a freed contact or if the new state is
+///   not allowable.
+/// @see GetContact, GetContactRange.
 void SetContact(World& world, ContactID id, const Contact& value);
 
 /// @brief Gets the manifold for the identified contact.
