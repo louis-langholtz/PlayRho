@@ -26,8 +26,9 @@
 
 #include <cstddef>
 #include <cassert>
-#include <type_traits>
 #include <iterator>
+#include <type_traits>
+#include <utility> // for std::forward
 #include <vector>
 
 #include <playrho/Defines.hpp>
