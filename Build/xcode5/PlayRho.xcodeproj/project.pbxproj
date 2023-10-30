@@ -429,6 +429,8 @@
 		99D1BE272AEF1FFD001BA497 /* ContactManifoldFunction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE252AEF1FFD001BA497 /* ContactManifoldFunction.hpp */; };
 		99D1BE2B2AEF2575001BA497 /* WorldModel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE292AEF2575001BA497 /* WorldModel.hpp */; };
 		99D1BE2C2AEF2575001BA497 /* WorldConcept.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE2A2AEF2575001BA497 /* WorldConcept.hpp */; };
+		99D1BE2F2AF01435001BA497 /* JointConcept.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE2D2AF01435001BA497 /* JointConcept.hpp */; };
+		99D1BE302AF01435001BA497 /* JointModel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE2E2AF01435001BA497 /* JointModel.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -933,6 +935,8 @@
 		99D1BE252AEF1FFD001BA497 /* ContactManifoldFunction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactManifoldFunction.hpp; sourceTree = "<group>"; };
 		99D1BE292AEF2575001BA497 /* WorldModel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldModel.hpp; sourceTree = "<group>"; };
 		99D1BE2A2AEF2575001BA497 /* WorldConcept.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldConcept.hpp; sourceTree = "<group>"; };
+		99D1BE2D2AF01435001BA497 /* JointConcept.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointConcept.hpp; sourceTree = "<group>"; };
+		99D1BE2E2AF01435001BA497 /* JointModel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointModel.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1588,6 +1592,8 @@
 		99D1BE282AEF251B001BA497 /* detail */ = {
 			isa = PBXGroup;
 			children = (
+				99D1BE2D2AF01435001BA497 /* JointConcept.hpp */,
+				99D1BE2E2AF01435001BA497 /* JointModel.hpp */,
 				99D1BE2A2AEF2575001BA497 /* WorldConcept.hpp */,
 				99D1BE292AEF2575001BA497 /* WorldModel.hpp */,
 			);
@@ -1670,6 +1676,7 @@
 				4787D6CB1F2EA3A1008C115E /* GearJointConf.hpp in Headers */,
 				4734B22D1DC2B11D00F15E29 /* Simplex.hpp in Headers */,
 				80BB899F141C3E5900F1753A /* BlockAllocator.hpp in Headers */,
+				99D1BE302AF01435001BA497 /* JointModel.hpp in Headers */,
 				4791330026A5344B0011707B /* ToiConf.hpp in Headers */,
 				476408942522698E0090F711 /* WorldJoint.hpp in Headers */,
 				4726DD381D387D630012A882 /* Manifold.hpp in Headers */,
@@ -1703,6 +1710,7 @@
 				470F9B3D1EE63515007EF7B6 /* InvalidArgument.hpp in Headers */,
 				4787D6E31F2ED461008C115E /* WeldJointConf.hpp in Headers */,
 				9901AF202AB248A80075122D /* NonNegativeChecker.hpp in Headers */,
+				99D1BE2F2AF01435001BA497 /* JointConcept.hpp in Headers */,
 				471E7EAA1F32668E00DFF626 /* Matrix.hpp in Headers */,
 				9901AF0D2A9E30450075122D /* TypeInfo.hpp in Headers */,
 				4764085925047FA10090F711 /* NonPositive.hpp in Headers */,

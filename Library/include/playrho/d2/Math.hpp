@@ -27,6 +27,8 @@
 
 #include <playrho/Math.hpp>
 
+#include <playrho/detail/Checked.hpp>
+
 #include <playrho/d2/UnitVec.hpp>
 #include <playrho/d2/Position.hpp>
 #include <playrho/d2/Velocity.hpp>
@@ -56,7 +58,7 @@ inline Angle GetAngle(const Transformation& value)
 
 /// @brief Multiplication operator.
 template <class T, typename U, bool NoExcept>
-constexpr Vector2<T> operator*(const detail::Checked<T, U, NoExcept>& s, const UnitVec& u) noexcept
+constexpr Vector2<T> operator*(const playrho::detail::Checked<T, U, NoExcept>& s, const UnitVec& u) noexcept
 {
     return Vector2<T>{u.GetX() * s, u.GetY() * s};
 }
@@ -70,7 +72,7 @@ constexpr Vector2<T> operator*(const T& s, const UnitVec& u) noexcept
 
 /// @brief Multiplication operator.
 template <class T, class U, bool NoExcept>
-constexpr Vector2<T> operator*(const UnitVec& u, const detail::Checked<T, U, NoExcept>& s) noexcept
+constexpr Vector2<T> operator*(const UnitVec& u, const playrho::detail::Checked<T, U, NoExcept>& s) noexcept
 {
     return Vector2<T>{u.GetX() * s, u.GetY() * s};
 }
