@@ -22,7 +22,7 @@
 #define PLAYRHO_D2_DETAIL_WORLDCONCEPT_HPP
 
 /// @file
-/// @brief Definitions of the WorldConcept class and closely related code.
+/// @brief Definition of the internal WorldConcept interface class.
 
 #include <memory> // for std::unique_ptr
 #include <optional>
@@ -32,6 +32,7 @@
 #include <playrho/BodyShapeFunction.hpp>
 #include <playrho/Contact.hpp>
 #include <playrho/ContactFunction.hpp>
+#include <playrho/Interval.hpp>
 #include <playrho/KeyedContactID.hpp>
 #include <playrho/JointFunction.hpp>
 #include <playrho/JointID.hpp>
@@ -41,6 +42,7 @@
 #include <playrho/StepConf.hpp>
 #include <playrho/StepStats.hpp>
 #include <playrho/TypeInfo.hpp> // for GetTypeID & TypeID
+#include <playrho/Units.hpp> // for Length, Frequency, etc.
 
 #include <playrho/pmr/StatsResource.hpp>
 
@@ -53,12 +55,14 @@
 #include <playrho/d2/Shape.hpp>
 
 namespace playrho::d2 {
-
 class DynamicTree;
+}
 
-namespace detail {
+namespace playrho::d2::detail {
 
-/// @brief World-concept pure virtual base class.
+/// @brief World-concept internal pure virtual base interface class.
+/// @note This class itself has no invariants. Some of its member functions however
+///   do impose some invariant like relationships with others.
 struct WorldConcept {
     /// @brief Destructor.
     virtual ~WorldConcept() = default;
@@ -156,8 +160,8 @@ struct WorldConcept {
     virtual StepStats Step_(const StepConf& conf) = 0;
 
     /// @brief Whether or not "step" is complete.
-    /// @details The "step" is completed when there are no more TOI events for the current time
-    /// step.
+    /// @details A "step" is completed when there are no more TOI events for the current time
+    ///   step.
     /// @return <code>true</code> unless sub-stepping is enabled and the step function returned
     ///   without finishing all of its sub-steps.
     /// @see GetSubStepping_, SetSubStepping_.
@@ -191,7 +195,7 @@ struct WorldConcept {
     /// @throws WrongState if this function is called while the world is locked.
     virtual void ShiftOrigin_(const Length2& newOrigin) = 0;
 
-    /// @brief Gets the vertex radius range that shapes in this world can be.
+    /// @brief Gets the vertex radius range that shapes in this world can be within.
     virtual Interval<Positive<Length>> GetVertexRadiusInterval_() const noexcept = 0;
 
     /// @brief Gets the inverse delta time.
@@ -401,13 +405,11 @@ struct WorldConcept {
     virtual Contact GetContact_(ContactID id) const = 0;
 
     /// @brief Sets the identified contact's state.
-    /// @note This may throw an exception or update associated entities to preserve invariants.
-    /// @invariant A contact may only be impenetrable if one or both bodies are.
-    /// @invariant A contact may only be active if one or both bodies are awake.
-    /// @invariant A contact may only be a sensor or one or both shapes are.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    /// @throws InvalidArgument if a change would violate an invariant or if the specified ID
-    ///   was destroyed.
+    /// @param id Identifier of the contact whose state is to be set.
+    /// @param value Value the contact is to be set to.
+    /// @throws std::out_of_range If given an invalid identifier.
+    /// @throws InvalidArgument if the identifier is to a freed contact or if the new state is
+    ///   not allowable.
     /// @see GetContact_, GetContactRange_.
     virtual void SetContact_(ContactID id, const Contact& value) = 0;
 
@@ -419,7 +421,6 @@ struct WorldConcept {
     /// @}
 };
 
-} // namespace detail
-} // namespace playrho::d2
+} // namespace playrho::d2::detail
 
 #endif // PLAYRHO_D2_DETAIL_WORLDCONCEPT_HPP
