@@ -25,6 +25,7 @@
 /// @brief Definitions of the WorldModel class and closely related code.
 
 #include <type_traits> // for std::is_same_v, is_nothrow_constructible_v, etc.
+#include <utility> // for std::forward
 
 #include <playrho/d2/detail/WorldConcept.hpp>
 
