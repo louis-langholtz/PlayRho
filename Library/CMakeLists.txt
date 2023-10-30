@@ -245,6 +245,8 @@ set(PLAYRHO_D2_SRCS
 	)
 
 set(PLAYRHO_D2_DETAIL_HDRS
+	"${PLAYRHO_INCLUDE_PREFIX}d2/detail/JointConcept.hpp"
+	"${PLAYRHO_INCLUDE_PREFIX}d2/detail/JointModel.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/detail/WorldConcept.hpp"
 	"${PLAYRHO_INCLUDE_PREFIX}d2/detail/WorldModel.hpp"
 	)
