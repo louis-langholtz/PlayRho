@@ -428,6 +428,8 @@
 		99D1BE232AEF18F8001BA497 /* ContactFunction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE1F2AEF18F8001BA497 /* ContactFunction.hpp */; };
 		99D1BE262AEF1FFD001BA497 /* ContactImpulsesFunction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE242AEF1FFD001BA497 /* ContactImpulsesFunction.hpp */; };
 		99D1BE272AEF1FFD001BA497 /* ContactManifoldFunction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE252AEF1FFD001BA497 /* ContactManifoldFunction.hpp */; };
+		99D1BE2B2AEF2575001BA497 /* WorldModel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE292AEF2575001BA497 /* WorldModel.hpp */; };
+		99D1BE2C2AEF2575001BA497 /* WorldConcept.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE2A2AEF2575001BA497 /* WorldConcept.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -931,6 +933,8 @@
 		99D1BE1F2AEF18F8001BA497 /* ContactFunction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFunction.hpp; sourceTree = "<group>"; };
 		99D1BE242AEF1FFD001BA497 /* ContactImpulsesFunction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactImpulsesFunction.hpp; sourceTree = "<group>"; };
 		99D1BE252AEF1FFD001BA497 /* ContactManifoldFunction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactManifoldFunction.hpp; sourceTree = "<group>"; };
+		99D1BE292AEF2575001BA497 /* WorldModel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldModel.hpp; sourceTree = "<group>"; };
+		99D1BE2A2AEF2575001BA497 /* WorldConcept.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldConcept.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1295,6 +1299,7 @@
 				99D1BE252AEF1FFD001BA497 /* ContactManifoldFunction.hpp */,
 				80BB8964141C3E5900F1753A /* ContactSolver.hpp */,
 				9919882F2ACE15D10076F969 /* ConvexHull.hpp */,
+				99D1BE282AEF251B001BA497 /* detail */,
 				80BB8938141C3E5900F1753A /* DiskShapeConf.hpp */,
 				80BB892F141C3E5900F1753A /* Distance.hpp */,
 				47D6D59D2672B5CA00AF32B4 /* DistanceConf.hpp */,
@@ -1583,6 +1588,15 @@
 			path = playrho;
 			sourceTree = "<group>";
 		};
+		99D1BE282AEF251B001BA497 /* detail */ = {
+			isa = PBXGroup;
+			children = (
+				99D1BE2A2AEF2575001BA497 /* WorldConcept.hpp */,
+				99D1BE292AEF2575001BA497 /* WorldModel.hpp */,
+			);
+			path = detail;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1639,6 +1653,7 @@
 				80BB8998141C3E5900F1753A /* DiskShapeConf.hpp in Headers */,
 				47C85D211F0DA14500F70C56 /* Templates.hpp in Headers */,
 				9901AF1E2AB248A80075122D /* NonPositiveChecker.hpp in Headers */,
+				99D1BE2C2AEF2575001BA497 /* WorldConcept.hpp in Headers */,
 				80BB899A141C3E5900F1753A /* EdgeShapeConf.hpp in Headers */,
 				80BB899C141C3E5900F1753A /* PolygonShapeConf.hpp in Headers */,
 				4791330E26A5B90C0011707B /* ToiOutput.hpp in Headers */,
@@ -1647,6 +1662,7 @@
 				4764086B250C86640090F711 /* BodyID.hpp in Headers */,
 				4788690A1D78BE2B00AEC7F1 /* PositionConstraint.hpp in Headers */,
 				476162C91E245C9D002C7FB0 /* CodeDumper.hpp in Headers */,
+				99D1BE2B2AEF2575001BA497 /* WorldModel.hpp in Headers */,
 				9901AF1D2AB248A80075122D /* NegativeChecker.hpp in Headers */,
 				4787D6D71F2ECD87008C115E /* PulleyJointConf.hpp in Headers */,
 				9901AF212AB248A80075122D /* NonZeroChecker.hpp in Headers */,
