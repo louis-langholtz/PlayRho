@@ -486,17 +486,18 @@ void ResetContactsForSolveTOI(ObjectPool<Contact>& buffer,
     });
 }
 
-/// @brief Destroys all of the given fixture's proxies.
-void DestroyProxies(DynamicTree& tree,
-                    const Span<const DynamicTree::Size>& fixtureProxies,
-                    ProxyIDs& proxies) noexcept
+/// @brief Destroys proxies of all tree nodes with the given body and shape identifiers.
+void DestroyProxies(DynamicTree& tree, BodyID bodyId, ShapeID shapeId, ProxyIDs& proxies) noexcept
 {
-    const auto childCount = size(fixtureProxies);
-    // Destroy proxies in reverse order from what they were created in.
-    for (auto i = childCount - 1u; i < childCount; --i) {
-        const auto treeId = fixtureProxies[i];
-        EraseFirst(proxies, treeId);
-        tree.DestroyLeaf(treeId);
+    const auto n = tree.GetNodeCapacity();
+    for (auto i = DynamicTree::Size(0); i < n; ++i) {
+        if (DynamicTree::IsLeaf(tree.GetHeight(i))) {
+            const auto leaf = tree.GetLeafData(i);
+            if ((leaf.bodyId == bodyId) && (leaf.shapeId == shapeId)) {
+                EraseFirst(proxies, i);
+                tree.DestroyLeaf(i);
+            }
+        }
     }
 }
 
@@ -556,29 +557,6 @@ void Erase(BodyContactIDs& contacts, const std::function<bool(ContactID)>& callb
             ++index;
         }
     }
-}
-
-template <class Functor>
-void ForProxies(const DynamicTree& tree, BodyID bodyId, ShapeID shapeId, Functor fn)
-{
-    const auto n = tree.GetNodeCapacity();
-    for (auto i = static_cast<decltype(tree.GetNodeCapacity())>(0); i < n; ++i) {
-        if (DynamicTree::IsLeaf(tree.GetHeight(i))) {
-            const auto leaf = tree.GetLeafData(i);
-            if (leaf.bodyId == bodyId && leaf.shapeId == shapeId) {
-                fn(i);
-            }
-        }
-    }
-}
-
-ProxyIDs FindProxies(const DynamicTree& tree, BodyID bodyId, ShapeID shapeId)
-{
-    ProxyIDs result;
-    ForProxies(tree, bodyId, shapeId, [&result](DynamicTree::Size i){
-        result.push_back(i);
-    });
-    return result;
 }
 
 ProxyIDs FindProxies(const DynamicTree& tree, BodyID bodyId)
@@ -1302,8 +1280,7 @@ void SetShape(AabbTreeWorld& world, ShapeID id, Shape def) // NOLINT(readability
             }), lastProxy);
             // Destroy any contacts associated with the fixture.
             Erase(world.m_bodyContacts[to_underlying(bodyId)], [&world,bodyId,id,&b](ContactID contactID) {
-                const auto& contact = world.m_contactBuffer[to_underlying(contactID)];
-                if (!IsFor(contact, bodyId, id)) {
+                if (!IsFor(world.m_contactBuffer[to_underlying(contactID)], bodyId, id)) {
                     return false;
                 }
                 world.Destroy(contactID, &b);
@@ -1311,7 +1288,7 @@ void SetShape(AabbTreeWorld& world, ShapeID id, Shape def) // NOLINT(readability
             });
             const auto fixture = std::make_pair(bodyId, id);
             EraseAll(world.m_fixturesForProxies, fixture);
-            DestroyProxies(world.m_tree, FindProxies(world.m_tree, bodyId, id), world.m_proxiesForContacts);
+            DestroyProxies(world.m_tree, bodyId, id, world.m_proxiesForContacts);
             world.m_fixturesForProxies.push_back(fixture);
         }
     }
@@ -2737,15 +2714,14 @@ void SetBody(AabbTreeWorld& world, BodyID id, Body value)
     for (auto&& shapeId: shapeIds.first) {
         // Destroy any contacts associated with the fixture.
         Erase(world.m_bodyContacts[to_underlying(id)], [&world,id,shapeId,&body](ContactID contactID) {
-            const auto& contact = world.m_contactBuffer[to_underlying(contactID)];
-            if (!IsFor(contact, id, shapeId)) {
+            if (!IsFor(world.m_contactBuffer[to_underlying(contactID)], id, shapeId)) {
                 return false;
             }
             world.Destroy(contactID, &body);
             return true;
         });
         EraseAll(world.m_fixturesForProxies, std::make_pair(id, shapeId));
-        DestroyProxies(world.m_tree, FindProxies(world.m_tree, id, shapeId), world.m_proxiesForContacts);
+        DestroyProxies(world.m_tree, id, shapeId, world.m_proxiesForContacts);
     }
     Append(world.m_fixturesForProxies, id, shapeIds.second);
     if (GetTransformation(body) != GetTransformation(value)) {
