@@ -214,6 +214,18 @@ public:
         return m_data.data();
     }
 
+    /// @brief Hidden friend operator equality support.
+    friend bool operator==(const ObjectPool& lhs, const ObjectPool& rhs) noexcept
+    {
+        return (lhs.m_data == rhs.m_data) && (lhs.m_free == rhs.m_free);
+    }
+
+    /// @brief Hidden friend operator inequality support.
+    friend bool operator!=(const ObjectPool& lhs, const ObjectPool& rhs) noexcept
+    {
+        return !(lhs == rhs);
+    }
+
 private:
     std::vector<value_type> m_data; ///< Array data (both used & free).
     std::vector<size_type> m_free; ///< Indices of free elements.

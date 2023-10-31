@@ -83,14 +83,12 @@ TEST(World, WorldLockedError)
 TEST(World, DefaultInit)
 {
     World world;
-
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
     EXPECT_EQ(GetTree(world).GetLeafCount(), ContactCounter(0));
     EXPECT_EQ(GetJointCount(world), JointCounter(0));
     EXPECT_EQ(GetContactCount(world), ContactCounter(0));
     EXPECT_EQ(GetHeight(GetTree(world)), ContactCounter(0));
     EXPECT_EQ(ComputePerimeterRatio(GetTree(world)), Real(0));
-
     {
         const auto bodies = GetBodies(world);
         EXPECT_TRUE(bodies.empty());
@@ -104,15 +102,20 @@ TEST(World, DefaultInit)
         EXPECT_EQ(bodies.size(), BodyCounter(0));
         EXPECT_EQ(bodies.begin(), bodies.end());
     }
-
     EXPECT_TRUE(GetContacts(world).empty());
     EXPECT_EQ(GetContacts(world).size(), ContactCounter(0));
-    
     EXPECT_TRUE(GetJoints(world).empty());
     EXPECT_EQ(GetJoints(world).size(), JointCounter(0));
-    
     EXPECT_FALSE(GetSubStepping(world));
     EXPECT_FALSE(IsLocked(world));
+    EXPECT_TRUE(world == world);
+    EXPECT_TRUE(world == World());
+    EXPECT_TRUE(World() == world);
+    EXPECT_TRUE(World() == World());
+    EXPECT_FALSE(world != world);
+    EXPECT_FALSE(world != World());
+    EXPECT_FALSE(World() != world);
+    EXPECT_FALSE(World() != World());
 }
 
 TEST(World, Init)
@@ -176,13 +179,16 @@ TEST(World, Clear)
     ASSERT_EQ(GetBodies(world).size(), std::size_t(2));
     ASSERT_EQ(GetJoints(world).size(), std::size_t(1));
     ASSERT_EQ(GetJointRange(world), 1u);
+    EXPECT_FALSE(World() == world);
+    EXPECT_TRUE(World() != world);
 
     EXPECT_NO_THROW(Clear(world));
+    EXPECT_TRUE(World() == world);
+    EXPECT_FALSE(World() != world);
     EXPECT_EQ(GetShapeRange(world), 0u);
     EXPECT_EQ(GetBodyRange(world), 0u);
     EXPECT_EQ(GetJointRange(world), 0u);
     EXPECT_EQ(GetContactRange(world), 0u);
-
     EXPECT_EQ(GetBodies(world).size(), std::size_t(0));
     EXPECT_EQ(GetJoints(world).size(), std::size_t(0));
 

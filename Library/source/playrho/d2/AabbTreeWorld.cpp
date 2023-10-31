@@ -911,6 +911,36 @@ AabbTreeWorld::~AabbTreeWorld() noexcept
     Clear(*this);
 }
 
+bool operator==(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs) noexcept
+{
+    return // newline!
+        // skip m_tree, should just be a cache anyway
+        (lhs.m_bodyBuffer == rhs.m_bodyBuffer) && // newline!
+        (lhs.m_shapeBuffer == rhs.m_shapeBuffer) && // newline!
+        (lhs.m_jointBuffer == rhs.m_jointBuffer) && // newline!
+        (lhs.m_contactBuffer == rhs.m_contactBuffer) && // newline!
+        (lhs.m_manifoldBuffer == rhs.m_manifoldBuffer) && // newline!
+        (lhs.m_bodyContacts == rhs.m_bodyContacts) && // newline!
+        (lhs.m_bodyJoints == rhs.m_bodyJoints) && // newline!
+        (lhs.m_bodyProxies == rhs.m_bodyProxies) && // newline!
+        (lhs.m_proxiesForContacts == rhs.m_proxiesForContacts) && // newline!
+        (lhs.m_fixturesForProxies == rhs.m_fixturesForProxies) && // newline!
+        (lhs.m_bodiesForSync == rhs.m_bodiesForSync) && // newline!
+        (lhs.m_bodies == rhs.m_bodies) && // newline!
+        (lhs.m_joints == rhs.m_joints) && // newline!
+        (lhs.m_contacts == rhs.m_contacts) && // newline!
+        (lhs.m_islanded == rhs.m_islanded) && // newline!
+        // skip m_listeners, they're inconsequential & not very comparable anyway
+        (lhs.m_flags == rhs.m_flags) && // newline!
+        (lhs.m_inv_dt0 == rhs.m_inv_dt0) && // newline!
+        (lhs.m_vertexRadius == rhs.m_vertexRadius);
+}
+
+bool operator!=(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
 void Clear(AabbTreeWorld& world) noexcept
 {
     if (const auto listener = world.m_listeners.jointDestruction) {
@@ -939,6 +969,11 @@ void Clear(AabbTreeWorld& world) noexcept
             }
         }
     }
+    world.m_inv_dt0 = 0_Hz;
+    world.m_flags = AabbTreeWorld::e_stepComplete;
+    world.m_islanded.bodies.clear();
+    world.m_islanded.joints.clear();
+    world.m_islanded.contacts.clear();
     world.m_contacts.clear();
     world.m_joints.clear();
     world.m_bodies.clear();

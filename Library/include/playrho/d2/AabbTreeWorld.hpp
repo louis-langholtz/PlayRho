@@ -133,6 +133,12 @@ void SetPostSolveContactListener(AabbTreeWorld& world, ContactImpulsesFunction l
 /// @name AabbTreeWorld Miscellaneous Non-Member Functions
 /// @{
 
+/// @brief Equality operator for world comparisons.
+bool operator==(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs) noexcept;
+
+/// @brief Inequality operator for world comparisons.
+bool operator!=(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs) noexcept;
+
 /// @brief Gets the resource statistics of the specified world.
 std::optional<pmr::StatsResource::Stats> GetResourceStats(const AabbTreeWorld& world) noexcept;
 
@@ -530,8 +536,12 @@ public:
     /// @see Clear.
     ~AabbTreeWorld() noexcept;
 
-    // Delete compiler defined implementations of move construction/assignment and copy assignment...
+    /// @brief Copy assignment is explicitly deleted.
+    /// @note This type is not assignable.
     AabbTreeWorld& operator=(const AabbTreeWorld& other) = delete;
+
+    /// @brief Move assignment is explicitly deleted.
+    /// @note This type is not assignable.
     AabbTreeWorld& operator=(AabbTreeWorld&& other) = delete;
 
     // Listener friend functions...
@@ -544,6 +554,8 @@ public:
     friend void SetPostSolveContactListener(AabbTreeWorld& world, ContactImpulsesFunction listener) noexcept;
 
     // Miscellaneous friend functions...
+    friend bool operator==(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs) noexcept;
+    friend bool operator!=(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs) noexcept;
     friend std::optional<pmr::StatsResource::Stats> GetResourceStats(const AabbTreeWorld& world) noexcept;
     friend void Clear(AabbTreeWorld& world) noexcept;
     friend StepStats Step(AabbTreeWorld& world, const StepConf& conf);
@@ -625,6 +637,20 @@ private:
         vector bodies; ///< IDs of bodies that have been "islanded".
         vector contacts; ///< IDs of contacts that have been "islanded".
         vector joints; ///< IDs of joints that have been "islanded".
+
+        /// @brief Hidden friend equality support for Islanded.
+        friend bool operator==(const Islanded& lhs, const Islanded& rhs) noexcept
+        {
+            return lhs.bodies == rhs.bodies // newline!
+                && lhs.contacts == rhs.contacts // newline!
+                && lhs.joints == rhs.joints;
+        }
+
+        /// @brief Hidden friend inequality support for Islanded.
+        friend bool operator!=(const Islanded& lhs, const Islanded& rhs) noexcept
+        {
+            return !(lhs == rhs);
+        }
     };
 
     /// @brief Solves the step.
