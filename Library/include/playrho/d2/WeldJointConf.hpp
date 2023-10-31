@@ -149,6 +149,7 @@ constexpr bool operator!=(const WeldJointConf& lhs, const WeldJointConf& rhs) no
 WeldJointConf GetWeldJointConf(const Joint& joint);
 
 /// @brief Gets the configuration for the given parameters.
+/// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
 WeldJointConf GetWeldJointConf(const World& world, BodyID bodyA, BodyID bodyB,
                                const Length2& anchor = Length2{});

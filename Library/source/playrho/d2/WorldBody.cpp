@@ -558,8 +558,8 @@ void SetAccelerations(World& world, const LinearAcceleration2& acceleration)
 
 BodyID FindClosestBody(const World& world, const Length2& location)
 {
-    const auto bodies = GetBodies(world);
     auto found = InvalidBodyID;
+    const auto bodies = GetBodies(world);
     auto minLengthSquared = std::numeric_limits<Area>::infinity();
     for (const auto& body: bodies)
     {

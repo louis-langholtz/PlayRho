@@ -174,7 +174,6 @@ Real GetRestitution(const World& world, ContactID id);
 /// @param world The world in which the contact is identified in.
 /// @param id Identifier of the contact whose friction value should be set.
 /// @param friction Co-efficient of friction value of zero or greater.
-/// @pre @p friction must be greater-than or equal-to zero.
 /// @post <code>GetFriction(world, id)</code> returns the value set.
 /// @throws std::out_of_range If given an invalid contact identifier.
 /// @see GetFriction(const World&, ContactID).
@@ -235,6 +234,10 @@ void SetEnabled(World& world, ContactID id);
 void UnsetEnabled(World& world, ContactID id);
 
 /// @brief Gets the touching count for the given world.
+/// @details Basically a convenience function for iterating over all contact identifiers
+///   returned from <code>GetContacts(const World&)</code> for the given world and counting
+///   for how many <code>IsTouching(const World&, ContactID)</code> returns true.
+/// @see GetContacts(const World&), IsTouching(const World&, ContactID).
 /// @relatedalso World
 ContactCounter GetTouchingCount(const World& world);
 

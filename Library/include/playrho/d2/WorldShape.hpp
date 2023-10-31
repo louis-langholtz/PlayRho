@@ -45,10 +45,10 @@
 #include <playrho/d2/Math.hpp>
 
 namespace playrho {
-
 struct Filter;
+}
 
-namespace d2 {
+namespace playrho::d2 {
 
 class Shape;
 class World;
@@ -64,11 +64,15 @@ class World;
 TypeID GetType(const World& world, ShapeID id);
 
 /// @brief Gets the count of body-shape associations in the given world.
+/// @param world The world in which to get the shape association count for.
+/// @see GetUsedShapesCount.
 /// @relatedalso World
 ShapeCounter GetAssociationCount(const World& world);
 
 /// @brief Gets the count of uniquely identified shapes that are in use -
 ///   i.e. that are attached to bodies.
+/// @param world The world in which to get the used shapes count for.
+/// @see GetAssociationCount.
 /// @relatedalso World
 ShapeCounter GetUsedShapesCount(const World& world) noexcept;
 
@@ -189,7 +193,6 @@ NonNegativeFF<Real> GetDefaultFriction(const Shape& a, const Shape& b);
 /// @relatedalso Shape
 Real GetDefaultRestitution(const Shape& a, const Shape& b);
 
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2
 
 #endif // PLAYRHO_D2_WORLDSHAPE_HPP

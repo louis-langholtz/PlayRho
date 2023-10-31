@@ -69,59 +69,93 @@ class World;
 class ContactImpulsesList;
 class DynamicTree;
 
-/// @name World Listener Non-Member Functions
-/// @{
-
 /// @brief Sets the destruction listener for shapes.
 /// @note This listener is called on <code>Clear(World&)</code> for every shape.
+/// @param world The world to set the listener for.
+/// @param listener Function that the world is to call on these events.
 /// @see Clear(World&).
 void SetShapeDestructionListener(World& world, ShapeFunction listener) noexcept;
 
 /// @brief Sets the detach listener for shapes detaching from bodies.
+/// @note This listener is called on <code>Destroy(World&,BodyID)</code> for every shape
+///   associated with that identified body.
+/// @param world The world to set the listener for.
+/// @param listener Function that the world is to call on these events.
+/// @see Destroy(World&,BodyID).
 void SetDetachListener(World& world, BodyShapeFunction listener) noexcept;
 
 /// @brief Sets the destruction listener for joints.
 /// @note This listener is called on <code>Clear(World&)</code> for every joint. It's also called
 ///   on <code>Destroy(BodyID)</code> for every joint associated with the identified body.
+/// @param world The world to set the listener for.
+/// @param listener Function that the world is to call on these events.
 /// @see Clear(World&), Destroy(BodyID).
 void SetJointDestructionListener(World& world, JointFunction listener) noexcept;
 
 /// @brief Sets the begin-contact lister.
+/// @note This listener is called during calls to the
+///   <code>Step(World&,const StepConf&)</code> function for every contact that transitions
+///   from not previously touching, to touching in the step.
+/// @param world The world to set the listener for.
+/// @param listener Function that the world is to call on these events.
 /// @see SetEndContactListener(World&, ContactFunction).
 void SetBeginContactListener(World& world, ContactFunction listener) noexcept;
 
 /// @brief Sets the end-contact lister.
+/// @note This listener is called during calls to the
+///   <code>Step(World&,const StepConf&)</code> function for every contact that transitions
+///   from previously touching, to no longer touching in the step.
+/// @param world The world to set the listener for.
+/// @param listener Function that the world is to call on these events.
 /// @see SetBeginContactListener(World&, ContactFunction).
 void SetEndContactListener(World& world, ContactFunction listener) noexcept;
 
 /// @brief Sets the pre-solve-contact lister.
-/// @see etPostSolveContactListener(World&, ContactImpulsesFunction).
+/// @note This listener is called during calls to the
+///   <code>Step(World&,const StepConf&)</code> function for every non-sensor contact that
+///   is touching.
+/// @param world The world to set the listener for.
+/// @param listener Function that the world is to call on these events.
+/// @see SetPostSolveContactListener(World&, ContactImpulsesFunction).
 void SetPreSolveContactListener(World& world, ContactManifoldFunction listener) noexcept;
 
 /// @brief Sets the post-solve-contact lister.
+/// @note This listener is called during calls to the
+///   <code>Step(World&,const StepConf&)</code> function for every contact that was "solved"
+///   during regular processing or TOI processing (or both).
+/// @param world The world to set the listener for.
+/// @param listener Function that the world is to call on these events.
 /// @see SetPreSolveContactListener(World&, ContactManifoldFunction).
 void SetPostSolveContactListener(World& world, ContactImpulsesFunction listener) noexcept;
 
-/// @}
-
-/// @name World Miscellaneous Non-Member Functions
-/// @{
-
-/// @brief Gets the identifier of the type of data this can be casted to.
+/// @brief Gets the identifier of the type of data the given world can be casted to.
+/// @param world The world for which an identifier of the type of its underlying value is
+///   to be returned.
+/// @see TypeCast.
 TypeID GetType(const World& world) noexcept;
 
-/// @brief Converts the given world into its current configuration value.
+/// @brief Casts the given world into its current underlying configuration value.
 /// @note The design for this was based off the design of the C++17 <code>std::any</code>
 ///   class and its associated <code>std::any_cast</code> function. The code for this is based
 ///   off of the <code>std::any</code> code from the LLVM Project.
+/// @tparam T type to cast the underlying value of the given world to, if matching the actual
+///   type of the underlying value.
+/// @param value Pointer to the world whose underlying value, if it's type is the type
+///   of the template parameter, is to be returned.
+/// @see GetType(const World&).
 /// @see https://llvm.org/
 template <typename T>
 std::add_pointer_t<std::add_const_t<T>> TypeCast(const World* value) noexcept;
 
-/// @brief Converts the given world into its current configuration value.
+/// @brief Casts the given world into its current configuration value.
 /// @note The design for this was based off the design of the C++17 <code>std::any</code>
 ///   class and its associated <code>std::any_cast</code> function. The code for this is based
 ///   off of the <code>std::any</code> implementation from the LLVM Project.
+/// @tparam T type to cast the underlying value of the given world to, if matching the actual
+///   type of the underlying value.
+/// @param value Pointer to the world whose underlying value, if it's type is the type
+///   of the template parameter, is to be returned.
+/// @see GetType(const World&).
 /// @see https://llvm.org/
 template <typename T>
 std::add_pointer_t<T> TypeCast(World* value) noexcept;
@@ -132,6 +166,7 @@ std::add_pointer_t<T> TypeCast(World* value) noexcept;
 /// @note This information can be used to tweak the world configuration to pre-allocate enough
 ///   space to avoid the less deterministic performance behavior of dynamic memory allocation
 ///   during world step processing that may otherwise occur.
+/// @param world The world to get the memory resource allocator statistics for.
 /// @see WorldConf.
 std::optional<pmr::StatsResource::Stats> GetResourceStats(const World& world) noexcept;
 
@@ -139,6 +174,7 @@ std::optional<pmr::StatsResource::Stats> GetResourceStats(const World& world) no
 /// @note This calls the joint and shape destruction listeners (if they're set), for all
 ///   defined joints and shapes, before clearing anything. Any exceptions thrown from these
 ///   listeners are ignored.
+/// @param world The world to clear.
 /// @post The contents of this world have all been destroyed and this world's internal
 ///   state is reset as though it had just been constructed.
 /// @see SetJointDestructionListener, SetShapeDestructionListener.
@@ -180,18 +216,22 @@ StepStats Step(World& world, const StepConf& conf = StepConf{});
 
 /// @brief Whether or not "step" is complete.
 /// @details The "step" is completed when there are no more TOI events for the current time
-/// step.
+///   step.
+/// @param world The world to return whether the step is completed for.
 /// @return <code>true</code> unless sub-stepping is enabled and the step function returned
 ///   without finishing all of its sub-steps.
-/// @see GetSubStepping, SetSubStepping.
+/// @see GetSubStepping, SetSubStepping, Step.
 bool IsStepComplete(const World& world) noexcept;
 
 /// @brief Gets whether or not sub-stepping is enabled.
+/// @param world The world to return whether sub-stepping is enabled for.
 /// @see SetSubStepping, IsStepComplete.
 bool GetSubStepping(const World& world) noexcept;
 
 /// @brief Enables/disables single stepped continuous physics.
 /// @note This is not normally used. Enabling sub-stepping is meant for testing.
+/// @param world The world to set whether or not to do sub-stepping for.
+/// @param flag @c true to enable sub-stepping, @c false to disable it.
 /// @post The <code>GetSubStepping()</code> function will return the value this function was
 ///   called with.
 /// @see IsStepComplete, GetSubStepping.
@@ -205,6 +245,7 @@ const DynamicTree& GetTree(const World& world);
 /// @brief Is the specified world locked.
 /// @details Used to detect whether being called while already within the execution of the
 ///   <code>Step(World&, const StepConf&)</code> function - which sets this "lock".
+/// @param world The world to return whether it's in a locked state or not.
 /// @see Step(World&, const StepConf&).
 bool IsLocked(const World& world) noexcept;
 
@@ -219,24 +260,21 @@ bool IsLocked(const World& world) noexcept;
 void ShiftOrigin(World& world, const Length2& newOrigin);
 
 /// @brief Gets the vertex radius interval allowable for the given world.
+/// @param world The world whose allowable vertex radius interval is to be returned for.
 /// @see CreateShape(World&, const Shape&).
 Interval<Positive<Length>> GetVertexRadiusInterval(const World& world) noexcept;
 
 /// @brief Gets the inverse delta time.
 /// @details Gets the inverse delta time that was set on construction or assignment, and
-///   updated on every call to the <code>Step()</code> function having a non-zero delta-time.
+///   updated on every call to the <code>Step</code> function having a non-zero delta-time.
+/// @param world The world whose inverse delta time is to be returned for.
 /// @see Step.
 Frequency GetInvDeltaTime(const World& world) noexcept;
-
-/// @}
-
-/// @name World Body Non-Member Functions.
-/// Non-Member functions relating to bodies.
-/// @{
 
 /// @brief Gets the extent of the currently valid body range.
 /// @note This is one higher than the maxium <code>BodyID</code> that is in range
 ///   for body related functions.
+/// @param world The world whose body range is to be returned for.
 BodyCounter GetBodyRange(const World& world) noexcept;
 
 /// @brief Gets the world body range for this constant world.
@@ -244,6 +282,7 @@ BodyCounter GetBodyRange(const World& world) noexcept;
 ///   These are the bodies that had been created from previous calls to
 ///   <code>CreateBody(World&, const Body&)</code> that haven't yet been destroyed by
 ///   a call to <code>Destroy(World& world, BodyID)</code> or to <code>Clear(World&)</code>.
+/// @param world The world whose body identifiers are to be returned for.
 /// @return Container of body identifiers.
 /// @see CreateBody(World&, const Body&), Destroy(World& world, BodyID), Clear(World&).
 std::vector<BodyID> GetBodies(const World& world);
@@ -256,11 +295,9 @@ std::vector<BodyID> GetBodies(const World& world);
 std::vector<BodyID> GetBodiesForProxies(const World& world);
 
 /// @brief Creates a rigid body within the world that's a copy of the given one.
-/// @warning This function should not be used while the world is locked &mdash; as it is
+/// @note This function should not be used while the world is locked &mdash; as it is
 ///   during callbacks. If it is, it will throw an exception or abort your program.
 /// @note No references to the configuration are retained. Its value is copied.
-/// @post The created body will be present in the range returned from the
-///   <code>GetBodies(const World&)</code> function.
 /// @param world The world within which to create the body.
 /// @param body A customized body or its default value.
 /// @param resetMassData Whether or not the mass data of the body should be reset.
@@ -269,37 +306,46 @@ std::vector<BodyID> GetBodiesForProxies(const World& world);
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
 /// @throws std::out_of_range if the given body references any invalid shape identifiers.
+/// @post The created body's identifier will be present in the range returned from the
+///   <code>GetBodies(const World&)</code> function.
+/// @post Calling <code>GetBody(const World&, BodyID)</code> with the returned body identifer
+///   returns the body given to this create function.
 /// @see Destroy(World& world, BodyID), GetBodies(const World&), ResetMassData.
 /// @see PhysicalEntities.
 BodyID CreateBody(World& world, const Body& body = Body{}, bool resetMassData = true);
 
 /// @brief Gets the state of the identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
-/// @see CreateBody(World& world, const BodyConf&),
-///   SetBody(World& world, BodyID id, const Body& body).
+/// @see CreateBody(World&, const Body&, bool), SetBody(World&, BodyID, const Body&).
 Body GetBody(const World& world, BodyID id);
 
 /// @brief Sets the state of the identified body.
+/// @param world The world containing the identified body whose state is to be set.
+/// @param id Identifier of the body whose state is to be set.
+/// @param body New state of the identified body.
 /// @throws std::out_of_range if given an invalid id of if the given body references any
 ///   invalid shape identifiers.
 /// @throws InvalidArgument if the specified ID was destroyed.
-/// @see GetBody(const World& world, BodyID id), GetBodyRange.
+/// @post On success: <code>GetBody(const World&, BodyID)</code> for @p world and @p id
+///   returns the value of @p body .
+/// @see GetBody(const World&, BodyID), GetBodyRange.
 void SetBody(World& world, BodyID id, const Body& body);
 
 /// @brief Destroys the identified body.
 /// @details Destroys the identified body that had previously been created by a call
 ///   to this world's <code>CreateBody(const BodyConf&)</code> function.
-/// @warning This automatically deletes all associated shapes and joints.
-/// @warning This function is locked during callbacks.
-/// @warning Behavior is not specified if identified body wasn't created by this world.
-/// @note This function is locked during callbacks.
-/// @post The destroyed body will no longer be present in the range returned from the
-///   <code>GetBodies()</code> function.
+/// @note This automatically deletes all associated shapes and joints.
+/// @note This function is locked during callbacks. The detatch listener, if set, is called
+///   for every shape associated with the identified body.
 /// @param world The world from which to delete the identified body from.
 /// @param id Identifier of body to destroy that had been created in @p world.
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
-/// @see CreateBody(const BodyConf&), GetBodies, GetBodyRange.
+/// @post On success: the destroyed body's identifier is no longer present in the range
+///   returned from the <code>GetBodies(const World&)</code> function; the count returned
+///   by <code>GetBodyCount(const World&)</code> will be one less than before this was called.
+/// @see CreateBody, GetBodies, GetBodyCount, GetBodyRange,
+///   SetDetachListener, IsLocked.
 /// @see PhysicalEntities.
 void Destroy(World& world, BodyID id);
 
@@ -325,6 +371,10 @@ std::vector<ShapeID> GetShapes(const World& world, BodyID id);
 /// @param fn Function or functor with a signature like:
 ///   <code>Acceleration (*fn)(World&,BodyID)</code>.
 /// @throws WrongState if this function is called while the world is locked.
+/// @post On success: <code>GetAcceleration(const World&, BodyID)</code> will return
+///   the acceleration assigned to it by the given function.
+/// @see SetAcceleration(World&,BodyID,const Acceleration&),
+///   GetAcceleration(const World&,BodyID).
 /// @relatedalso World
 template <class F>
 void SetAccelerations(World& world, F fn)
@@ -334,12 +384,6 @@ void SetAccelerations(World& world, F fn)
         SetAcceleration(world, b, fn(world, b));
     });
 }
-
-/// @}
-
-/// @name World Joint Non-Member Functions
-/// Member functions relating to joints.
-/// @{
 
 /// @brief Gets the extent of the currently valid joint range.
 /// @note This is one higher than the maxium <code>JointID</code> that is in range
@@ -364,7 +408,12 @@ inline JointCounter GetJointCount(const World& world)
 }
 
 /// @brief Creates a new joint within the given world.
+/// @param world The world in which the specified joint is to be created within.
+/// @param def State of the joint to create within the world.
 /// @throws WrongState if this function is called while the world is locked.
+/// @post On success: <code>GetJoints(const World&)</code> for this same world will contain
+///   the identifier returned by this function; <code>GetJoint(const World&, JointID)</code>
+///   for @p world and the returned identifier, returns @p def .
 JointID CreateJoint(World& world, const Joint& def);
 
 /// @brief Creates a new joint from a configuration.
@@ -378,8 +427,14 @@ JointID CreateJoint(World& world, const T& value)
 }
 
 /// @brief Destroys the identified joint.
+/// @param world The world in which the specified joint is to be destroyed from.
+/// @param id Identifier of the joint to destroy.
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid joint identifier.
+/// @post On success: the given identifier is no longer within those returned by
+///   <code>GetJoints(const World&)</code>, the count returned by
+///   <code>GetJointCount(const World&)</code> will be one less than before this was called.
+/// @see CreateJoint, IsLocked.
 void Destroy(World& world, JointID id);
 
 /// @brief Gets the value of the identified joint.
@@ -401,12 +456,6 @@ void SetJoint(World& world, JointID id, const T& value)
 {
     return SetJoint(world, id, Joint{value});
 }
-
-/// @}
-
-/// @name World Shape Non-Member Functions
-/// Non-member functions relating to shapes.
-/// @{
 
 /// @brief Gets the extent of the currently valid shape range.
 /// @note This is one higher than the maxium <code>ShapeID</code> that is in range
@@ -436,8 +485,13 @@ auto CreateShape(World& world, const T& shapeConf) ->
 }
 
 /// @brief Destroys the identified shape.
+/// @param world The world in which the specified shape is to be destroyed from.
+/// @param id Identifier of the shape to destroy.
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid identifier.
+/// @post On success: no body in the specified world will have the identified shape attached
+///   to it.
+/// @see CreateShape, IsLocked.
 void Destroy(World& world, ShapeID id);
 
 /// @brief Gets the shape associated with the identifier.
@@ -448,13 +502,6 @@ Shape GetShape(const World& world, ShapeID id);
 /// @throws std::out_of_range If given an invalid shape identifier.
 /// @see CreateShape.
 void SetShape(World& world, ShapeID, const Shape& def);
-
-/// @}
-
-
-/// @name World Contact Non-Member Functions
-/// Non-member functions relating to contacts.
-/// @{
 
 /// @brief Gets the extent of the currently valid contact range.
 /// @note This is one higher than the maxium <code>ContactID</code> that is in range
@@ -501,8 +548,6 @@ inline ContactCounter GetContactCount(const World& world) noexcept
     using std::size;
     return static_cast<ContactCounter>(size(GetContacts(world)));
 }
-
-/// @}
 
 /// @defgroup PhysicalEntities Physical Entities
 ///
@@ -578,18 +623,29 @@ public:
     /// @brief Constructs a world object.
     /// @details Constructs a world object using the default world implementation class
     ///   that's instantiated with the given configuraion.
+    /// @note More configurability can be had via the <code>StepConf</code>
+    ///   data given to the <code>Step(World&, const StepConf&)</code> function.
     /// @param def A customized world configuration or its default value.
-    /// @note A lot more configurability can be had via the <code>StepConf</code>
-    ///   data that's given to the <code>Step(World&, const StepConf&)</code> function.
+    /// @post <code>GetType(const World&)</code> for the created object returns the value
+    ///   returned by <code>GetTypeID<AabbTreeWorld>()</code>.
+    /// @post <code>GetBodyCount(const World&)</code>, <code>GetJointCount(const World&)</code>,
+    ///   <code>GetContactCount(const World&)</code> for the created object all return 0.
+    /// @post <code>GetBodies(const World&)</code>, <code>GetJoints(const World&)</code>,
+    ///   <code>GetContacts(const World&)</code> for the created object all return empty
+    ///   containers.
+    /// @post <code>IsLocked(const World&)</code>, <code>GetSubStepping(const World&)</code>
+    ///   all return false.
     /// @see Step(World&, const StepConf&).
     explicit World(const WorldConf& def = WorldConf{});
 
-    /// @brief Copy constructor.
-    /// @details Copy constructs this world with a deep copy of the given world.
+    /// @brief Copy constructs this world with a deep copy of the given world.
+    /// @param other The world to copy construct this one from.
+    /// @throws std::bad_alloc if memory cannot be allocated.
+    /// @post The state of the created object is equal to the state of the copied from object.
     World(const World& other);
 
-    /// @brief Move constructor.
-    /// @details Move constructs this world.
+    /// @brief Move constructs this world.
+    /// @param other The world to move construct this one from.
     /// @post <code>this</code> is what <code>other</code> used to be.
     /// @post <code>other</code> is in a "valid but unspecified state". The only thing it
     ///   can be used for, is as the destination of an assignment.
@@ -601,7 +657,10 @@ public:
     /// @brief Polymorphic initializing constructor.
     /// @details Constructor for constructing an instance from any class supporting the @c World
     ///   functionality.
+    /// @param arg A value of a world-concept supporting type to construct this object from.
     /// @throws std::bad_alloc if there's a failure allocating storage for the given value.
+    /// @post <code>GetType(const World&)</code> for the created object returns the value
+    ///   returned by <code>GetTypeID<std::decay_t<T>>()</code>.
     template <typename T, typename DT = std::decay_t<T>,
     typename Tp = std::enable_if_t<!std::is_same_v<DT, World> && !std::is_same_v<DT, WorldConf>, DT>,
     typename = std::enable_if_t<std::is_constructible_v<DT, T>>>
@@ -610,20 +669,24 @@ public:
         // Intentionally empty.
     }
 
-    /// @brief Destructor.
-    /// @details All physics entities are destroyed and all memory is released.
-    /// @note This will call the <code>Clear()</code> function.
+    /// @brief Destroys all contained physics entities and releases all related resources.
+    /// @note This calls the <code>Clear(World&)</code> function.
     /// @see Clear.
     ~World() noexcept;
 
-    /// @brief Copy assignment operator.
-    /// @details Copy assigns this world with a deep copy of the given world.
+    /// @brief Copy assigns this world with a deep copy of the given world.
+    /// @note Provides the strong exception guarantee. If this operation throws an exception,
+    ///   the state of this object is unchanged.
+    /// @param other The other world to copy assign from.
+    /// @throws std::bad_alloc if memory cannot be allocated.
+    /// @post On success: the state of the assigned-to object is equal to the state of the
+    ///   copied from object.
     World& operator=(const World& other);
 
-    /// @brief Move assignment operator.
-    /// @details Move assigns this world.
-    /// @post <code>this</code> is what <code>other</code> used to be.
-    /// @post <code>other</code> is in a "valid but unspecified state". The only thing it
+    /// @brief Move assigns this world.
+    /// @param other The other world to move assign from.
+    /// @post <code>this</code> is what @p other used to be.
+    /// @post @p other is in a "valid but unspecified state". The only thing it
     ///   can be used for, is as the destination of an assignment.
     World& operator=(World&& other) noexcept
     {

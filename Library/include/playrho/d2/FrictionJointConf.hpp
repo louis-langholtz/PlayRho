@@ -143,6 +143,7 @@ constexpr bool operator!=(const FrictionJointConf& lhs, const FrictionJointConf&
 FrictionJointConf GetFrictionJointConf(const Joint& joint);
 
 /// @brief Gets the confguration for the given parameters.
+/// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
 FrictionJointConf GetFrictionJointConf(const World& world, BodyID bodyA, BodyID bodyB,
                                        const Length2& anchor);

@@ -99,10 +99,19 @@ AABB ComputeAABB(const Shape& shape, const Transformation& xf);
 
 /// @brief Computes the AABB for the identified shape relative to the identified body
 ///   within the given world.
+/// @param world The world in which the given body and shape identifiers identify a body
+///   and shape.
+/// @param bodyID Identifier of the body the identified shape is associated with.
+/// @param shapeID Identifier of the shape associated with the identified body to compute
+///   the AABB for.
+/// @see ComputeAABB(const World&, BodyID).
 /// @relatedalso World
 AABB ComputeAABB(const World& world, BodyID bodyID, ShapeID shapeID);
 
 /// @brief Computes the AABB for the identified body within the given world.
+/// @param world The world in which the given body identifier identifies a body.
+/// @param id Identifier of the body to compute the AABB for.
+/// @see ComputeAABB(const World&, BodyID, ShapeID).
 /// @relatedalso World
 AABB ComputeAABB(const World& world, BodyID id);
 
@@ -116,6 +125,9 @@ AABB ComputeIntersectingAABB(const World& world, // force newline
                              BodyID bB, ShapeID sB, ChildCounter iB);
 
 /// @brief Computes the intersecting AABB for the given contact.
+/// @param world The world for which the given contact relates to.
+/// @param contact The contact identifying bodies, shapes, and children with @p world
+///   to compute the intersecting AABB for.
 /// @relatedalso World
 AABB ComputeIntersectingAABB(const World& world, const Contact& contact);
 
