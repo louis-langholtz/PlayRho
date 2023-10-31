@@ -430,7 +430,7 @@ public:
     friend bool operator==(const Shape& lhs, const Shape& rhs) noexcept
     {
         return (lhs.m_self == rhs.m_self) ||
-               ((lhs.m_self && rhs.m_self) && (*lhs.m_self == *rhs.m_self));
+               ((lhs.m_self && rhs.m_self) && (lhs.m_self->IsEqual_(*rhs.m_self)));
     }
 
     friend bool operator!=(const Shape& lhs, const Shape& rhs) noexcept
