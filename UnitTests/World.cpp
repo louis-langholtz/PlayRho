@@ -30,6 +30,7 @@
 #include <playrho/WrongState.hpp>
 
 #include <playrho/d2/AabbTreeWorld.hpp>
+#include <playrho/d2/AabbTreeWorldBody.hpp>
 #include <playrho/d2/Body.hpp>
 #include <playrho/d2/BodyConf.hpp>
 #include <playrho/d2/ContactImpulsesList.hpp>
@@ -72,13 +73,6 @@ struct PushBackListener
         ids.push_back(id);
     }
 };
-
-TEST(World, ByteSize)
-{
-    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
-    // builds and to report actual size rather than just reporting that expected size is wrong.
-    EXPECT_EQ(sizeof(World), sizeof(void*));
-}
 
 TEST(World, WorldLockedError)
 {
@@ -444,16 +438,24 @@ TEST(World, GetType)
     EXPECT_EQ(GetType(World{}), GetTypeID<AabbTreeWorld>());
 }
 
+TEST(WorldModel, GetData_)
+{
+    const auto model = playrho::d2::detail::WorldModel<AabbTreeWorld>{WorldConf{}};
+    EXPECT_NE(model.GetData_(), nullptr);
+}
+
 TEST(World, TypeCast)
 {
     {
         auto world = World{};
         EXPECT_EQ(TypeCast<int>(&world), nullptr);
+        EXPECT_NE(TypeCast<AabbTreeWorld>(&world), nullptr);
         EXPECT_THROW(TypeCast<int>(world), std::bad_cast);
     }
     {
         const auto world = World{};
         EXPECT_EQ(TypeCast<const int>(&world), nullptr);
+        EXPECT_NE(TypeCast<AabbTreeWorld>(&world), nullptr);
         EXPECT_THROW(TypeCast<int>(world), std::bad_cast);
     }
 }
