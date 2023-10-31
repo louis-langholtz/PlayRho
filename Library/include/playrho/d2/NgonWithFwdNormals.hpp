@@ -57,24 +57,29 @@ class NgonWithFwdNormals {
     std::array<Length2, N> m_vertices{}; ///< Vertices
     std::array<UnitVec, N> m_normals{}; ///< Normals.
 public:
+    /// @brief Default constructor.
     constexpr NgonWithFwdNormals() noexcept = default;
 
+    /// @brief Initializing constructor.
     constexpr NgonWithFwdNormals(const std::array<Length2, N>& vertices)
         : m_vertices{vertices}, m_normals{GetFwdNormalsArray(vertices)}
     {
         // Intentionally empty.
     }
 
+    /// @brief Gets the vertices of this N-gon.
     constexpr auto GetVertices() const noexcept -> decltype((m_vertices))
     {
         return m_vertices;
     }
 
+    /// @brief Gets the normals of this N-gon.
     constexpr auto GetNormals() const noexcept -> decltype((m_normals))
     {
         return m_normals;
     }
 
+    /// @brief Operator equals support.
     friend constexpr auto operator==(const NgonWithFwdNormals& lhs, const NgonWithFwdNormals& rhs) noexcept -> bool
     {
         return lhs.m_vertices == rhs.m_vertices;
@@ -94,24 +99,29 @@ class NgonWithFwdNormals<static_cast<std::size_t>(-1)> {
     std::vector<Length2> m_vertices{}; ///< Vertices
     std::vector<UnitVec> m_normals{}; ///< Normals.
 public:
+    /// @brief Default constructor.
     NgonWithFwdNormals() noexcept = default;
 
+    /// @brief Initializing constructor.
     NgonWithFwdNormals(std::vector<Length2> vertices)
         : m_vertices{std::move(vertices)}, m_normals{GetFwdNormalsVector(m_vertices)}
     {
         // Intentionally empty.
     }
 
+    /// @brief Gets the vertices of this N-gon.
     auto GetVertices() const noexcept -> decltype((m_vertices))
     {
         return m_vertices;
     }
 
+    /// @brief Gets the normals of this N-gon.
     auto GetNormals() const noexcept -> decltype((m_normals))
     {
         return m_normals;
     }
 
+    /// @brief Operator equals support.
     friend auto operator==(const NgonWithFwdNormals& lhs, const NgonWithFwdNormals& rhs) noexcept -> bool
     {
         return lhs.m_vertices == rhs.m_vertices;
