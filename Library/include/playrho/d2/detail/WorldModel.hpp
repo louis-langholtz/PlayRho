@@ -46,8 +46,7 @@ struct WorldModel final: WorldConcept {
         // Intentionally empty.
     }
 
-    /// @name Listener Member Functions
-    /// @{
+    // Listener Member Functions
 
     /// @copydoc WorldConcept::SetShapeDestructionListener_
     void SetShapeDestructionListener_(ShapeFunction listener) noexcept override
@@ -91,10 +90,7 @@ struct WorldModel final: WorldConcept {
         SetPostSolveContactListener(data, std::move(listener));
     }
 
-    /// @}
-
-    /// @name Miscellaneous Member Functions
-    /// @{
+    // Miscellaneous Member Functions
 
     /// @copydoc WorldConcept::Clone_
     std::unique_ptr<WorldConcept> Clone_() const override
@@ -122,6 +118,14 @@ struct WorldModel final: WorldConcept {
         // Note address of "data" not necessarily same as address of "this" since
         // base class is virtual.
         return &data;
+    }
+
+    bool IsEqual_(const WorldConcept& other) const noexcept override
+    {
+        // Would be preferable to do this without using any kind of RTTI system.
+        // But how would that be done?
+        return (GetType_() == other.GetType_()) &&
+               (data == *static_cast<const T*>(other.GetData_()));
     }
 
     /// @copydoc WorldConcept::GetResourceStats_
@@ -190,11 +194,7 @@ struct WorldModel final: WorldConcept {
         return GetInvDeltaTime(data);
     }
 
-    /// @}
-
-    /// @name Body Member Functions.
-    /// Member functions relating to bodies.
-    /// @{
+    // Body Member Functions.
 
     /// @copydoc WorldConcept::GetBodyRange_
     BodyCounter GetBodyRange_() const noexcept override
@@ -256,11 +256,7 @@ struct WorldModel final: WorldConcept {
         return GetShapes(data, id);
     }
 
-    /// @}
-
-    /// @name Joint Member Functions
-    /// Member functions relating to joints.
-    /// @{
+    // Joint Member Functions
 
     /// @copydoc WorldConcept::GetJointRange_
     JointCounter GetJointRange_() const noexcept override
@@ -298,11 +294,7 @@ struct WorldModel final: WorldConcept {
         return Destroy(data, id);
     }
 
-    /// @}
-
-    /// @name Shape Member Functions
-    /// Member functions relating to shapes.
-    /// @{
+    // Shape Member Functions
 
     /// @copydoc WorldConcept::GetShapeRange_
     ShapeCounter GetShapeRange_() const noexcept override
@@ -334,11 +326,7 @@ struct WorldModel final: WorldConcept {
         Destroy(data, id);
     }
 
-    /// @}
-
-    /// @name Contact Member Functions
-    /// Member functions relating to contacts.
-    /// @{
+    // Contact Member Functions
 
     /// @copydoc WorldConcept::GetContactRange_
     ContactCounter GetContactRange_() const noexcept override
@@ -370,7 +358,7 @@ struct WorldModel final: WorldConcept {
         return GetManifold(data, id);
     }
 
-    /// @}
+    // Member variables
 
     data_type data; ///< Data.
 };

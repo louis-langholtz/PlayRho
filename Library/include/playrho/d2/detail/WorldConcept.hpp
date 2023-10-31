@@ -67,12 +67,11 @@ struct WorldConcept {
     /// @brief Destructor.
     virtual ~WorldConcept() = default;
 
-    /// @name Listener Member Functions
-    /// @note Having these as part of the base interface instead of say taking
-    ///   these settings on construction, allows users to already have access
-    ///   to the World object so these can be set without making the underlying
-    ///   type part of the listener callback parameter interface.
-    /// @{
+    // Listener Member Functions
+    // Note: having these as part of the base interface instead of say taking
+    //   these settings on construction, allows users to already have access
+    //   to the World object so these can be set without making the underlying
+    //   type part of the listener callback parameter interface.
 
     /// @brief Sets the destruction listener for shapes.
     /// @note This listener is called on <code>Clear_()</code> for every shape.
@@ -100,10 +99,7 @@ struct WorldConcept {
     /// @brief Sets a post-solve contact event listener.
     virtual void SetPostSolveContactListener_(ContactImpulsesFunction listener) noexcept = 0;
 
-    /// @}
-
-    /// @name Miscellaneous Member Functions
-    /// @{
+    // Miscellaneous Member Functions
 
     /// @brief Clones the instance - making a deep copy.
     virtual std::unique_ptr<WorldConcept> Clone_() const = 0;
@@ -117,6 +113,9 @@ struct WorldConcept {
 
     /// @brief Gets the data for the underlying configuration.
     virtual void* GetData_() noexcept = 0;
+
+    /// @brief Equality checking function.
+    virtual bool IsEqual_(const WorldConcept& other) const noexcept = 0;
 
     /// @brief Gets the polymorphic memory resource statistics.
     /// @note This will be the zero initialized value unless the world configuration the
@@ -204,11 +203,7 @@ struct WorldConcept {
     /// @see Step_.
     virtual Frequency GetInvDeltaTime_() const noexcept = 0;
 
-    /// @}
-
-    /// @name Body Member Functions.
-    /// Member functions relating to bodies.
-    /// @{
+    // Body Member Functions.
 
     /// @brief Gets the extent of the currently valid body range.
     /// @note This is one higher than the maxium <code>BodyID</code> that is in range
@@ -291,11 +286,7 @@ struct WorldConcept {
     /// @see GetBodyRange_, CreateBody_, SetBody_.
     virtual std::vector<ShapeID> GetShapes_(BodyID id) const = 0;
 
-    /// @}
-
-    /// @name Joint Member Functions
-    /// Member functions relating to joints.
-    /// @{
+    // Joint Member Functions
 
     /// @brief Gets the extent of the currently valid joint range.
     /// @note This is one higher than the maxium <code>JointID</code> that is in range
@@ -348,11 +339,7 @@ struct WorldConcept {
     /// @see PhysicalEntities.
     virtual void Destroy_(JointID id) = 0;
 
-    /// @}
-
-    /// @name Shape Member Functions
-    /// Member functions relating to shapes.
-    /// @{
+    // Shape Member Functions
 
     /// @brief Gets the extent of the currently valid shape range.
     /// @note This is one higher than the maxium <code>ShapeID</code> that is in range
@@ -382,11 +369,7 @@ struct WorldConcept {
     /// @see CreateShape_.
     virtual void Destroy_(ShapeID id) = 0;
 
-    /// @}
-
-    /// @name Contact Member Functions
-    /// Member functions relating to contacts.
-    /// @{
+    // Contact Member Functions
 
     /// @brief Gets the extent of the currently valid contact range.
     /// @note This is one higher than the maxium <code>ContactID</code> that is in range
@@ -417,8 +400,6 @@ struct WorldConcept {
     /// @throws std::out_of_range If given an invalid contact identifier.
     /// @see GetContact_, GetContactRange_.
     virtual Manifold GetManifold_(ContactID id) const = 0;
-
-    /// @}
 };
 
 } // namespace playrho::d2::detail

@@ -160,6 +160,18 @@ std::add_pointer_t<std::add_const_t<T>> TypeCast(const World* value) noexcept;
 template <typename T>
 std::add_pointer_t<T> TypeCast(World* value) noexcept;
 
+/// @brief Equality operator for world comparisons.
+/// @param lhs Left hand side world of the infix binary equality operator.
+/// @param rhs Right hand side world of the infix binary equality operator.
+/// @return true if @p lhs is equal to @p rhs , false otherwise.
+bool operator==(const World& lhs, const World& rhs) noexcept;
+
+/// @brief Inequality operator for world comparisons.
+/// @param lhs Left hand side world of the infix binary inequality operator.
+/// @param rhs Right hand side world of the infix binary inequality operator.
+/// @return true if @p lhs is **not** equal to @p rhs , false otherwise.
+bool operator!=(const World& lhs, const World& rhs) noexcept;
+
 /// @brief Gets the polymorphic memory resource allocator statistics of the specified world.
 /// @note This will be the empty value unless the world configuration the given world was
 ///   constructed with specified the collection of these statistics.
@@ -642,6 +654,7 @@ public:
     /// @param other The world to copy construct this one from.
     /// @throws std::bad_alloc if memory cannot be allocated.
     /// @post The state of the created object is equal to the state of the copied from object.
+    /// @see operator==(const World&, const World&).
     World(const World& other);
 
     /// @brief Move constructs this world.
@@ -681,6 +694,7 @@ public:
     /// @throws std::bad_alloc if memory cannot be allocated.
     /// @post On success: the state of the assigned-to object is equal to the state of the
     ///   copied from object.
+    /// @see operator==(const World&, const World&).
     World& operator=(const World& other);
 
     /// @brief Move assigns this world.
@@ -709,6 +723,9 @@ public:
     friend std::add_pointer_t<std::add_const_t<T>> TypeCast(const World* value) noexcept;
     template <typename T>
     friend std::add_pointer_t<T> TypeCast(World* value) noexcept;
+    friend bool operator==(const World& lhs, const World& rhs) noexcept;
+    friend bool operator!=(const World& lhs, const World& rhs) noexcept;
+
     friend std::optional<pmr::StatsResource::Stats> GetResourceStats(const World& world) noexcept;
     friend void Clear(World& world) noexcept;
     friend StepStats Step(World& world, const StepConf& conf);
@@ -811,6 +828,17 @@ inline void SetPostSolveContactListener(World& world, ContactImpulsesFunction li
 inline TypeID GetType(const World& world) noexcept
 {
     return world.m_impl->GetType_();
+}
+
+inline bool operator==(const World& lhs, const World& rhs) noexcept
+{
+    return (lhs.m_impl == rhs.m_impl) ||
+           ((lhs.m_impl && rhs.m_impl) && (lhs.m_impl->IsEqual_(*rhs.m_impl)));
+}
+
+inline bool operator!=(const World& lhs, const World& rhs) noexcept
+{
+    return !(lhs == rhs);
 }
 
 inline std::optional<pmr::StatsResource::Stats> GetResourceStats(const World& world) noexcept

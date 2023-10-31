@@ -1355,10 +1355,12 @@ inline const std::vector<ShapeID>& GetShapes(const Body& body) noexcept
 }
 
 /// @brief Equals operator.
+/// @see operator!=(const Body&, const Body&).
 /// @relatedalso Body
 bool operator==(const Body& lhs, const Body& rhs);
 
 /// @brief Not-equals operator.
+/// @see operator==(const Body&, const Body&).
 /// @relatedalso Body
 inline bool operator!=(const Body& lhs, const Body& rhs)
 {
