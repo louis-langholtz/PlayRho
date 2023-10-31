@@ -105,7 +105,7 @@ struct EdgeShapeConf : public ShapeBuilder<EdgeShapeConf>
     ///   shapes more prone to roll off of them.
     NonNegativeFF<Length> vertexRadius = GetDefaultVertexRadius();
 
-    NgonWithFwdNormals<2> ngon;
+    NgonWithFwdNormals<2> ngon; ///< N-gon value of the object.
 };
 
 inline EdgeShapeConf& EdgeShapeConf::UseVertexRadius(NonNegative<Length> value) noexcept
