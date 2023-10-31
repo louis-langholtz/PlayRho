@@ -46,11 +46,6 @@ TEST(EdgeShapeConf, ByteSize)
     }
 }
 
-TEST(EdgeShapeConf, IsValidShapeTypeV)
-{
-    EXPECT_TRUE(IsValidShapeTypeV<EdgeShapeConf>);
-}
-
 TEST(EdgeShapeConf, DefaultConstruction)
 {
     EXPECT_EQ(EdgeShapeConf::GetDefaultVertexRadius(), EdgeShapeConf::DefaultVertexRadius);

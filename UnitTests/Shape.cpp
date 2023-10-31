@@ -216,7 +216,7 @@ bool IsSensor(const MovableConf&) noexcept
     return {};
 }
 
-static_assert(IsValidShapeTypeV<MovableConf>, "MovableConf must be a valid shape type");
+static_assert(playrho::d2::detail::IsValidShapeTypeV<MovableConf>, "MovableConf must be a valid shape type");
 
 }
 
@@ -302,9 +302,9 @@ struct ShapeTest {
 TEST(Shape, InitializingConstructor)
 {
     EXPECT_TRUE((std::is_constructible_v<Shape, ::sans_some::ShapeTest>));
-    EXPECT_FALSE(IsValidShapeTypeV<::sans_some::ShapeTest>);
+    EXPECT_FALSE(playrho::d2::detail::IsValidShapeTypeV<::sans_some::ShapeTest>);
     EXPECT_TRUE((std::is_constructible_v<Shape, DiskShapeConf>));
-    EXPECT_TRUE(IsValidShapeTypeV<DiskShapeConf>);
+    EXPECT_TRUE(playrho::d2::detail::IsValidShapeTypeV<DiskShapeConf>);
     auto conf = DiskShapeConf{};
     auto s = Shape{conf};
     EXPECT_TRUE(s.has_value());

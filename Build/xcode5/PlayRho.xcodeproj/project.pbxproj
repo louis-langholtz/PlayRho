@@ -431,6 +431,8 @@
 		99D1BE2C2AEF2575001BA497 /* WorldConcept.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE2A2AEF2575001BA497 /* WorldConcept.hpp */; };
 		99D1BE2F2AF01435001BA497 /* JointConcept.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE2D2AF01435001BA497 /* JointConcept.hpp */; };
 		99D1BE302AF01435001BA497 /* JointModel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE2E2AF01435001BA497 /* JointModel.hpp */; };
+		99D1BE332AF021EF001BA497 /* ShapeConcept.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE312AF021EF001BA497 /* ShapeConcept.hpp */; };
+		99D1BE342AF021EF001BA497 /* ShapeModel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE322AF021EF001BA497 /* ShapeModel.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -937,6 +939,8 @@
 		99D1BE2A2AEF2575001BA497 /* WorldConcept.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldConcept.hpp; sourceTree = "<group>"; };
 		99D1BE2D2AF01435001BA497 /* JointConcept.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointConcept.hpp; sourceTree = "<group>"; };
 		99D1BE2E2AF01435001BA497 /* JointModel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointModel.hpp; sourceTree = "<group>"; };
+		99D1BE312AF021EF001BA497 /* ShapeConcept.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShapeConcept.hpp; sourceTree = "<group>"; };
+		99D1BE322AF021EF001BA497 /* ShapeModel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShapeModel.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1594,6 +1598,8 @@
 			children = (
 				99D1BE2D2AF01435001BA497 /* JointConcept.hpp */,
 				99D1BE2E2AF01435001BA497 /* JointModel.hpp */,
+				99D1BE312AF021EF001BA497 /* ShapeConcept.hpp */,
+				99D1BE322AF021EF001BA497 /* ShapeModel.hpp */,
 				99D1BE2A2AEF2575001BA497 /* WorldConcept.hpp */,
 				99D1BE292AEF2575001BA497 /* WorldModel.hpp */,
 			);
@@ -1629,6 +1635,7 @@
 				474AFBFA1EB1B2CB002AA6C8 /* MultiShapeConf.hpp in Headers */,
 				9901AF132AB21D740075122D /* Math.hpp in Headers */,
 				9901AF232AB248A80075122D /* PositiveChecker.hpp in Headers */,
+				99D1BE342AF021EF001BA497 /* ShapeModel.hpp in Headers */,
 				47B58F641F64C19600354C34 /* RealConstants.hpp in Headers */,
 				996B7B832A6DF1A500A8207F /* PoolMemoryResource.hpp in Headers */,
 				4787D6EB1F2FA0CA008C115E /* LengthError.hpp in Headers */,
@@ -1692,6 +1699,7 @@
 				80BB89A6141C3E5900F1753A /* Settings.hpp in Headers */,
 				4764085D250484830090F711 /* Negative.hpp in Headers */,
 				80BB89A8141C3E5900F1753A /* StackAllocator.hpp in Headers */,
+				99D1BE332AF021EF001BA497 /* ShapeConcept.hpp in Headers */,
 				99D1BE222AEF18F8001BA497 /* JointFunction.hpp in Headers */,
 				80BB89AC141C3E5900F1753A /* Body.hpp in Headers */,
 				9901AEFF2A9D24EC0075122D /* IndexingNamedType.hpp in Headers */,
