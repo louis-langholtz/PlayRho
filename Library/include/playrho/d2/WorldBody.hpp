@@ -62,10 +62,6 @@ class Shape;
 ///   interfaces to <code>playrho::d2::World</code> body member functions and additional
 ///   functionality.
 
-/// @name World Body Non-Member Functions.
-/// Non-Member functions relating to bodies.
-/// @{
-
 /// @brief Creates a rigid body with the given configuration.
 /// @warning This function should not be used while the world is locked &mdash; as it is
 ///   during callbacks. If it is, it will throw an exception or abort your program.
@@ -343,6 +339,7 @@ inline Position GetPosition(const World& world, BodyID id)
 }
 
 /// @brief Convenience function for getting a world vector of the identified body.
+/// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
 inline UnitVec GetWorldVector(const World& world, BodyID id, const UnitVec& localVector)
 {
@@ -738,16 +735,24 @@ Frequency GetAngularDamping(const World& world, BodyID id);
 void SetAngularDamping(World& world, BodyID id, NonNegative<Frequency> angularDamping);
 
 /// @brief Gets the count of awake bodies in the given world.
+/// @param world The world for which to get the awake count for.
+/// @see Awaken.
 /// @relatedalso World
 BodyCounter GetAwakeCount(const World& world);
 
 /// @brief Awakens all of the bodies in the given world.
-/// @details Calls all of the world's bodies' <code>SetAwake</code> function.
-/// @return Sum total of calls to bodies' <code>SetAwake</code> function that returned true.
+/// @details Convenience function for calling <code>Awaken(World&, BodyID)</code> for all
+///   bodies identified in the given world.
+/// @param world The world whose bodies are to be awoken.
+/// @return Sum total of calls to <code>Awaken(World&, BodyID)</code> that returned true.
+/// @see GetBodies(const World&), Awaken(World&, BodyID).
 /// @relatedalso World
 BodyCounter Awaken(World& world);
 
 /// @brief Finds body in given world that's closest to the given location.
+/// @param world The world to find closest body to location in.
+/// @param location Location in the given world to find the closest body to.
+/// @return Identifier of the closest body, or <code>InvalidBodyID</code>.
 /// @relatedalso World
 BodyID FindClosestBody(const World& world, const Length2& location);
 
@@ -775,8 +780,6 @@ inline void ClearForces(World& world)
 {
     SetAccelerations(world, Acceleration{});
 }
-
-/// @}
 
 } // namespace playrho::d2
 

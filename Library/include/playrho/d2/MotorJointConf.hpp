@@ -165,6 +165,7 @@ constexpr bool operator!=(const MotorJointConf& lhs, const MotorJointConf& rhs) 
 MotorJointConf GetMotorJointConf(const Joint& joint);
 
 /// @brief Gets the confguration for the given parameters.
+/// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
 MotorJointConf GetMotorJointConf(const World& world, BodyID bA, BodyID bB);
 

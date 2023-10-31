@@ -203,11 +203,15 @@ constexpr bool operator!=(const WheelJointConf& lhs, const WheelJointConf& rhs) 
 WheelJointConf GetWheelJointConf(const Joint& joint);
 
 /// @brief Gets the definition data for the given parameters.
+/// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
 WheelJointConf GetWheelJointConf(const World& world, BodyID bodyA, BodyID bodyB, // force line-break
                                  const Length2& anchor, const UnitVec& axis = UnitVec::GetRight());
 
 /// @brief Gets the angular velocity for the given configuration within the specified world.
+/// @param world The world the given joint configuration relates to.
+/// @param conf Configuration of the joint to get the angular velocity for.
+/// @throws std::out_of_range If given an invalid body identifier in the joint configuration.
 /// @relatedalso World
 AngularVelocity GetAngularVelocity(const World& world, const WheelJointConf& conf);
 
