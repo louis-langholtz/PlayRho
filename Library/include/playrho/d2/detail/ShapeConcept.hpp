@@ -119,18 +119,6 @@ struct ShapeConcept { // NOLINT(cppcoreguidelines-special-member-functions)
 
     /// @brief Gets the data for the underlying configuration.
     virtual const void* GetData_() const noexcept = 0;
-
-    /// @brief Equality operator.
-    friend bool operator==(const ShapeConcept& lhs, const ShapeConcept& rhs) noexcept
-    {
-        return lhs.IsEqual_(rhs);
-    }
-
-    /// @brief Inequality operator.
-    friend bool operator!=(const ShapeConcept& lhs, const ShapeConcept& rhs) noexcept
-    {
-        return !(lhs == rhs);
-    }
 };
 
 } // namespace playrho::d2::detail
