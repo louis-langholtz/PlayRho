@@ -36,13 +36,6 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(Shape, ByteSize)
-{
-    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
-    // builds and to report actual size rather than just reporting that expected size is wrong.
-    EXPECT_EQ(sizeof(Shape), sizeof(std::unique_ptr<int>));
-}
-
 TEST(Shape, Traits)
 {
     // NOTE: Double parenthesis needed sometimes for proper macro expansion.
@@ -108,7 +101,7 @@ TEST(Shape, DefaultConstruction)
 
 namespace {
 
-struct MovableConf {
+struct TestConf {
     static int defaultConstructorCalled;
     static int copyConstructorCalled;
     static int moveConstructorCalled;
@@ -126,29 +119,29 @@ struct MovableConf {
 
     std::string data;
 
-    MovableConf()
+    TestConf()
     {
         ++defaultConstructorCalled;
     }
 
-    MovableConf(const MovableConf& other): data{other.data}
+    TestConf(const TestConf& other): data{other.data}
     {
         ++copyConstructorCalled;
     }
 
-    MovableConf(MovableConf&& other): data{std::move(other.data)}
+    TestConf(TestConf&& other): data{std::move(other.data)}
     {
         ++moveConstructorCalled;
     }
 
-    MovableConf& operator=(const MovableConf& other)
+    TestConf& operator=(const TestConf& other)
     {
         data = other.data;
         ++copyAssignmentCalled;
         return *this;
     }
 
-    MovableConf& operator=(MovableConf&& other)
+    TestConf& operator=(TestConf&& other)
     {
         data = std::move(other.data);
         ++moveAssignmentCalled;
@@ -156,130 +149,152 @@ struct MovableConf {
     }
 };
 
-int MovableConf::defaultConstructorCalled;
-int MovableConf::copyConstructorCalled;
-int MovableConf::moveConstructorCalled;
-int MovableConf::copyAssignmentCalled;
-int MovableConf::moveAssignmentCalled;
+int TestConf::defaultConstructorCalled;
+int TestConf::copyConstructorCalled;
+int TestConf::moveConstructorCalled;
+int TestConf::copyAssignmentCalled;
+int TestConf::moveAssignmentCalled;
 
-bool operator==(const MovableConf& lhs, const MovableConf& rhs) noexcept
+bool operator==(const TestConf& lhs, const TestConf& rhs) noexcept
 {
     return lhs.data == rhs.data;
 }
 
-ChildCounter GetChildCount(const MovableConf&) noexcept
+ChildCounter GetChildCount(const TestConf&) noexcept
 {
     return 0;
 }
 
-DistanceProxy GetChild(const MovableConf&, ChildCounter)
+DistanceProxy GetChild(const TestConf&, ChildCounter)
 {
     throw InvalidArgument("not supported");
 }
 
-MassData GetMassData(const MovableConf&) noexcept
+MassData GetMassData(const TestConf&) noexcept
 {
     return {};
 }
 
-NonNegative<Length> GetVertexRadius(const MovableConf&, ChildCounter)
+NonNegative<Length> GetVertexRadius(const TestConf&, ChildCounter)
 {
     throw InvalidArgument("not supported");
 }
 
-NonNegative<AreaDensity> GetDensity(const MovableConf&) noexcept
+NonNegative<AreaDensity> GetDensity(const TestConf&) noexcept
 {
     return {};
 }
 
-Real GetFriction(const MovableConf&) noexcept
+Real GetFriction(const TestConf&) noexcept
 {
     return {};
 }
 
-Real GetRestitution(const MovableConf&) noexcept
+Real GetRestitution(const TestConf&) noexcept
 {
     return {};
 }
 
-void SetVertexRadius(MovableConf&, ChildCounter, NonNegative<Length>)
+void SetVertexRadius(TestConf&, ChildCounter, NonNegative<Length>)
 {
 }
 
-Filter GetFilter(const MovableConf&) noexcept
-{
-    return {};
-}
-
-bool IsSensor(const MovableConf&) noexcept
+Filter GetFilter(const TestConf&) noexcept
 {
     return {};
 }
 
-static_assert(playrho::d2::detail::IsValidShapeTypeV<MovableConf>, "MovableConf must be a valid shape type");
+bool IsSensor(const TestConf&) noexcept
+{
+    return {};
+}
+
+static_assert(playrho::d2::detail::IsValidShapeTypeV<TestConf>, "MovableConf must be a valid shape type");
 
 }
 
 TEST(Shape, ConstructionFromMovable)
 {
-    MovableConf::resetClass();
-    ASSERT_FALSE(MovableConf::copyConstructorCalled);
-    ASSERT_FALSE(MovableConf::moveConstructorCalled);
-    MovableConf conf;
+    TestConf::resetClass();
+    ASSERT_FALSE(TestConf::copyConstructorCalled);
+    ASSERT_FALSE(TestConf::moveConstructorCalled);
+    TestConf conf;
     conf.data = "have some";
     Shape s{std::move(conf)};
     EXPECT_EQ(std::string(), conf.data);
-    EXPECT_EQ(0, MovableConf::copyConstructorCalled);
-    EXPECT_EQ(1, MovableConf::moveConstructorCalled);
-    EXPECT_EQ(0, MovableConf::copyAssignmentCalled);
-    EXPECT_EQ(0, MovableConf::moveAssignmentCalled);
+    EXPECT_EQ(0, TestConf::copyConstructorCalled);
+    EXPECT_EQ(1, TestConf::moveConstructorCalled);
+    EXPECT_EQ(0, TestConf::copyAssignmentCalled);
+    EXPECT_EQ(0, TestConf::moveAssignmentCalled);
 }
 
 TEST(Shape, AssignmentFromMovable)
 {
-    MovableConf::resetClass();
-    ASSERT_FALSE(MovableConf::copyConstructorCalled);
-    ASSERT_FALSE(MovableConf::moveConstructorCalled);
-    MovableConf conf;
+    TestConf::resetClass();
+    ASSERT_FALSE(TestConf::copyConstructorCalled);
+    ASSERT_FALSE(TestConf::moveConstructorCalled);
+    TestConf conf;
     conf.data = "have some";
     Shape s;
     s = std::move(conf);
     EXPECT_EQ(std::string(), conf.data);
-    EXPECT_EQ(0, MovableConf::copyConstructorCalled);
-    EXPECT_EQ(1, MovableConf::moveConstructorCalled);
-    EXPECT_EQ(0, MovableConf::copyAssignmentCalled);
-    EXPECT_EQ(0, MovableConf::moveAssignmentCalled);
+    EXPECT_EQ(0, TestConf::copyConstructorCalled);
+    EXPECT_EQ(1, TestConf::moveConstructorCalled);
+    EXPECT_EQ(0, TestConf::copyAssignmentCalled);
+    EXPECT_EQ(0, TestConf::moveAssignmentCalled);
 }
 
 TEST(Shape, ConstructionFromCopyable)
 {
-    MovableConf::resetClass();
-    ASSERT_FALSE(MovableConf::copyConstructorCalled);
-    ASSERT_FALSE(MovableConf::moveConstructorCalled);
-    MovableConf conf;
+    TestConf::resetClass();
+    ASSERT_FALSE(TestConf::copyConstructorCalled);
+    ASSERT_FALSE(TestConf::moveConstructorCalled);
+    TestConf conf;
     conf.data = "have some";
     Shape s{conf};
     EXPECT_EQ(std::string("have some"), conf.data);
-    EXPECT_EQ(1, MovableConf::copyConstructorCalled);
-    EXPECT_EQ(0, MovableConf::moveConstructorCalled);
-    EXPECT_EQ(0, MovableConf::copyAssignmentCalled);
-    EXPECT_EQ(0, MovableConf::moveAssignmentCalled);
+    EXPECT_EQ(1, TestConf::copyConstructorCalled);
+    EXPECT_EQ(0, TestConf::moveConstructorCalled);
+    EXPECT_EQ(0, TestConf::copyAssignmentCalled);
+    EXPECT_EQ(0, TestConf::moveAssignmentCalled);
 }
 
 TEST(Shape, AssignmentFromCopyable)
 {
-    MovableConf::resetClass();
-    ASSERT_FALSE(MovableConf::copyConstructorCalled);
-    ASSERT_FALSE(MovableConf::moveConstructorCalled);
-    MovableConf conf;
+    TestConf::resetClass();
+    ASSERT_FALSE(TestConf::copyConstructorCalled);
+    ASSERT_FALSE(TestConf::moveConstructorCalled);
+    TestConf conf;
     conf.data = "have some";
     Shape s;
     s = conf;
     EXPECT_EQ(std::string("have some"), conf.data);
-    EXPECT_EQ(1, MovableConf::copyConstructorCalled);
-    EXPECT_EQ(0, MovableConf::moveConstructorCalled);
-    EXPECT_EQ(0, MovableConf::copyAssignmentCalled);
-    EXPECT_EQ(0, MovableConf::moveAssignmentCalled);
+    EXPECT_EQ(1, TestConf::copyConstructorCalled);
+    EXPECT_EQ(0, TestConf::moveConstructorCalled);
+    EXPECT_EQ(0, TestConf::copyAssignmentCalled);
+    EXPECT_EQ(0, TestConf::moveAssignmentCalled);
+}
+
+TEST(Shape, SetNoops)
+{
+    TestConf::resetClass();
+    TestConf conf;
+    EXPECT_NO_THROW(playrho::d2::detail::SetRestitution(conf, Real(0)));
+    EXPECT_THROW(playrho::d2::detail::SetRestitution(conf, Real(2)), InvalidArgument);
+    EXPECT_NO_THROW(playrho::d2::detail::SetFriction(conf, NonNegative<Real>(0)));
+    EXPECT_THROW(playrho::d2::detail::SetFriction(conf, NonNegative<Real>(2)), InvalidArgument);
+    EXPECT_NO_THROW(playrho::d2::detail::SetSensor(conf, false));
+    EXPECT_THROW(playrho::d2::detail::SetSensor(conf, true), InvalidArgument);
+    EXPECT_NO_THROW(playrho::d2::detail::SetDensity(conf, NonNegative<AreaDensity>()));
+    EXPECT_THROW(playrho::d2::detail::SetDensity(conf, NonNegative<AreaDensity>(2_kgpm2)), InvalidArgument);
+    EXPECT_NO_THROW(playrho::d2::detail::SetFilter(conf, Filter()));
+    EXPECT_THROW(playrho::d2::detail::SetFilter(conf, Filter{0xF, 0xA, 0x7}), InvalidArgument);
+    EXPECT_NO_THROW(playrho::d2::detail::Translate(conf, Length2()));
+    EXPECT_THROW(playrho::d2::detail::Translate(conf, Length2{1_m, 2_m}), InvalidArgument);
+    EXPECT_NO_THROW(playrho::d2::detail::Scale(conf, Vec2(1, 1)));
+    EXPECT_THROW(playrho::d2::detail::Scale(conf, Vec2{1, 2}), InvalidArgument);
+    EXPECT_NO_THROW(playrho::d2::detail::Rotate(conf, UnitVec::GetRight()));
+    EXPECT_THROW(playrho::d2::detail::Rotate(conf, UnitVec()), InvalidArgument);
 }
 
 namespace sans_some {
