@@ -1,6 +1,8 @@
 <map id="Library/include/playrho/StepConf.hpp" name="Library/include/playrho/StepConf.hpp">
-<area shape="rect" id="node1" title="Declarations of the StepConf class, and free functions associated with it." alt="" coords="103,5,273,47"/>
-<area shape="rect" id="node2" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="5,95,176,136"/>
-<area shape="rect" id="node4" href="$WorldMisc_8hpp.html" title="Declarations of free functions of World for unidentified information." alt="" coords="200,95,371,136"/>
-<area shape="rect" id="node3" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="103,184,273,225"/>
+<area shape="rect" id="node1" title="Declarations of the StepConf class, and free functions associated with it." alt="" coords="200,5,371,47"/>
+<area shape="rect" id="node2" href="$WorldConcept_8hpp.html" title="Definition of the internal WorldConcept interface class." alt="" coords="43,95,248,136"/>
+<area shape="rect" id="node4" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="175,273,345,315"/>
+<area shape="rect" id="node6" href="$WorldMisc_8hpp.html" title="Declarations of free functions of World for unidentified information." alt="" coords="323,184,493,225"/>
+<area shape="rect" id="node3" href="$WorldModel_8hpp.html" title="Definitions of the WorldModel class and closely related code." alt="" coords="5,184,197,225"/>
+<area shape="rect" id="node5" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="236,363,407,404"/>
 </map>

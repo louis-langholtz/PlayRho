@@ -115,19 +115,25 @@ $(document).ready(function(){initNavTree('AabbTreeWorld_8hpp.html',''); initResi
 <code>#include &lt;type_traits&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;<a class="el" href="BodyID_8hpp.html">playrho/BodyID.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="BodyShapeFunction_8hpp.html">playrho/BodyShapeFunction.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="ContactFunction_8hpp.html">playrho/ContactFunction.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="ContactKey_8hpp.html">playrho/ContactKey.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Filter_8hpp.html">playrho/Filter.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="JointFunction_8hpp.html">playrho/JointFunction.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="JointID_8hpp.html">playrho/JointID.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Island_8hpp.html">playrho/Island.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="IslandStats_8hpp.html">playrho/IslandStats.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="KeyedContactID_8hpp.html">playrho/KeyedContactID.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="ObjectPool_8hpp.html">playrho/ObjectPool.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Positive_8hpp.html">playrho/Positive.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="ShapeFunction_8hpp.html">playrho/ShapeFunction.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="ShapeID_8hpp.html">playrho/ShapeID.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="StepStats_8hpp.html">playrho/StepStats.hpp</a>&gt;</code><br />
 <code>#include &lt;playrho/pmr/PoolMemoryResource.hpp&gt;</code><br />
 <code>#include &lt;playrho/pmr/StatsResource.hpp&gt;</code><br />
 <code>#include &lt;<a class="el" href="BodyConstraint_8hpp.html">playrho/d2/BodyConstraint.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="ContactImpulsesFunction_8hpp.html">playrho/d2/ContactImpulsesFunction.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="ContactManifoldFunction_8hpp.html">playrho/d2/ContactManifoldFunction.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="DynamicTree_8hpp.html">playrho/d2/DynamicTree.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="MassData_8hpp.html">playrho/d2/MassData.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="d2_2Math_8hpp.html">playrho/d2/Math.hpp</a>&gt;</code><br />
@@ -154,9 +160,6 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a79795738aeb3efff8b2c8c532be4d659"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a79795738aeb3efff8b2c8c532be4d659">playrho::d2::AssociationListener</a> = std::function&lt; void(std::pair&lt; BodyID, ShapeID &gt;)&gt;</td></tr>
-<tr class="memdesc:a79795738aeb3efff8b2c8c532be4d659"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shapes paired with bodies IDs listener.  <a href="namespaceplayrho_1_1d2.html#a79795738aeb3efff8b2c8c532be4d659">More...</a><br /></td></tr>
-<tr class="separator:a79795738aeb3efff8b2c8c532be4d659"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44a03b52bdd73ab4fb1bc9e522708da3"><td class="memItemLeft" align="right" valign="top"><a id="a44a03b52bdd73ab4fb1bc9e522708da3"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a44a03b52bdd73ab4fb1bc9e522708da3">playrho::d2::BodyContactIDs</a> = std::vector&lt; std::tuple&lt; ContactKey, ContactID &gt; &gt;</td></tr>
 <tr class="memdesc:a44a03b52bdd73ab4fb1bc9e522708da3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container type for <a class="el" href="classplayrho_1_1d2_1_1Body.html" title="A &quot;body&quot; physical entity.">Body</a> associated contact information. <br /></td></tr>
@@ -173,33 +176,17 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nam
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a430e1d6d6a2310f75ec7e181b37d90dc">playrho::d2::BodyShapeIDs</a> = std::vector&lt; std::pair&lt; BodyID, ShapeID &gt; &gt;</td></tr>
 <tr class="memdesc:a430e1d6d6a2310f75ec7e181b37d90dc"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="A &quot;body&quot; physical entity.">Body</a> shape IDs container type. <br /></td></tr>
 <tr class="separator:a430e1d6d6a2310f75ec7e181b37d90dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c7c61bbf21c6429d9095b90d78357a0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a3c7c61bbf21c6429d9095b90d78357a0">playrho::d2::ContactListener</a> = std::function&lt; void(ContactID)&gt;</td></tr>
-<tr class="memdesc:a3c7c61bbf21c6429d9095b90d78357a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contacts listener.  <a href="namespaceplayrho_1_1d2.html#a3c7c61bbf21c6429d9095b90d78357a0">More...</a><br /></td></tr>
-<tr class="separator:a3c7c61bbf21c6429d9095b90d78357a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f1a386edb55381b1298a6242dd993fe"><td class="memItemLeft" align="right" valign="top"><a id="a5f1a386edb55381b1298a6242dd993fe"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a5f1a386edb55381b1298a6242dd993fe">playrho::d2::ImpulsesContactListener</a> = std::function&lt; void(ContactID, const ContactImpulsesList &amp;, unsigned)&gt;</td></tr>
-<tr class="memdesc:a5f1a386edb55381b1298a6242dd993fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Impulses contact listener. <br /></td></tr>
-<tr class="separator:a5f1a386edb55381b1298a6242dd993fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a442773c8570c44bfd40f5ed08ab1240c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a442773c8570c44bfd40f5ed08ab1240c">playrho::d2::JointIDs</a> = std::vector&lt; JointID &gt;</td></tr>
 <tr class="memdesc:a442773c8570c44bfd40f5ed08ab1240c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classplayrho_1_1d2_1_1Joint.html" title="A joint-like constraint on one or more bodies.">Joint</a> IDs container type.  <a href="namespaceplayrho_1_1d2.html#a442773c8570c44bfd40f5ed08ab1240c">More...</a><br /></td></tr>
 <tr class="separator:a442773c8570c44bfd40f5ed08ab1240c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9f95381357d690566e30bca1dea2c56"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#ad9f95381357d690566e30bca1dea2c56">playrho::d2::JointListener</a> = std::function&lt; void(JointID)&gt;</td></tr>
-<tr class="memdesc:ad9f95381357d690566e30bca1dea2c56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joints listener.  <a href="namespaceplayrho_1_1d2.html#ad9f95381357d690566e30bca1dea2c56">More...</a><br /></td></tr>
-<tr class="separator:ad9f95381357d690566e30bca1dea2c56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd7dca1f774f4159c942850575286f73"><td class="memItemLeft" align="right" valign="top"><a id="abd7dca1f774f4159c942850575286f73"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#abd7dca1f774f4159c942850575286f73">playrho::d2::KeyedContactIDs</a> = std::vector&lt; KeyedContactID &gt;</td></tr>
 <tr class="memdesc:abd7dca1f774f4159c942850575286f73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keyed contact IDs container type. <br /></td></tr>
 <tr class="separator:abd7dca1f774f4159c942850575286f73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9eab28c674a223868b16cfb6923b899e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a9eab28c674a223868b16cfb6923b899e">playrho::d2::ManifoldContactListener</a> = std::function&lt; void(ContactID, const Manifold &amp;)&gt;</td></tr>
-<tr class="memdesc:a9eab28c674a223868b16cfb6923b899e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manifolds paired with contacts listener.  <a href="namespaceplayrho_1_1d2.html#a9eab28c674a223868b16cfb6923b899e">More...</a><br /></td></tr>
-<tr class="separator:a9eab28c674a223868b16cfb6923b899e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b03aa4cdf4968f8dc10d9016cb0552d"><td class="memItemLeft" align="right" valign="top"><a id="a2b03aa4cdf4968f8dc10d9016cb0552d"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a2b03aa4cdf4968f8dc10d9016cb0552d">playrho::d2::ProxyIDs</a> = std::vector&lt; DynamicTree::Size &gt;</td></tr>
 <tr class="memdesc:a2b03aa4cdf4968f8dc10d9016cb0552d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Proxy container type alias. <br /></td></tr>
 <tr class="separator:a2b03aa4cdf4968f8dc10d9016cb0552d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1aab64c9251adf9a109b7e69e1832844"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a1aab64c9251adf9a109b7e69e1832844">playrho::d2::ShapeListener</a> = std::function&lt; void(ShapeID)&gt;</td></tr>
-<tr class="memdesc:a1aab64c9251adf9a109b7e69e1832844"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shapes listener.  <a href="namespaceplayrho_1_1d2.html#a1aab64c9251adf9a109b7e69e1832844">More...</a><br /></td></tr>
-<tr class="separator:a1aab64c9251adf9a109b7e69e1832844"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -207,32 +194,32 @@ Functions</h2></td></tr>
 <tr class="memdesc:a7e8932936bd2f281984a4afacc40e7a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the identifier of the contact with the lowest time of impact.  <a href="namespaceplayrho_1_1d2.html#a7e8932936bd2f281984a4afacc40e7a1">More...</a><br /></td></tr>
 <tr class="separator:a7e8932936bd2f281984a4afacc40e7a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">AabbTreeWorld Listener Non-Member Functions</div></td></tr>
-<tr class="memitem:ab2d473e67d8c73d84b5bab36684b21e4"><td class="memItemLeft" align="right" valign="top"><a id="ab2d473e67d8c73d84b5bab36684b21e4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#ab2d473e67d8c73d84b5bab36684b21e4">playrho::d2::SetBeginContactListener</a> (AabbTreeWorld &amp;world, ContactListener listener) noexcept</td></tr>
-<tr class="memdesc:ab2d473e67d8c73d84b5bab36684b21e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a begin contact event listener. <br /></td></tr>
-<tr class="separator:ab2d473e67d8c73d84b5bab36684b21e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73d47c4e7db2126ca5bb6e3fd5aa7a2c"><td class="memItemLeft" align="right" valign="top"><a id="a73d47c4e7db2126ca5bb6e3fd5aa7a2c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a73d47c4e7db2126ca5bb6e3fd5aa7a2c">playrho::d2::SetDetachListener</a> (AabbTreeWorld &amp;world, AssociationListener listener) noexcept</td></tr>
-<tr class="memdesc:a73d47c4e7db2126ca5bb6e3fd5aa7a2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a detach listener for shapes detaching from bodies. <br /></td></tr>
-<tr class="separator:a73d47c4e7db2126ca5bb6e3fd5aa7a2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0eb658b0c7360d020e51833df13fe966"><td class="memItemLeft" align="right" valign="top"><a id="a0eb658b0c7360d020e51833df13fe966"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a0eb658b0c7360d020e51833df13fe966">playrho::d2::SetEndContactListener</a> (AabbTreeWorld &amp;world, ContactListener listener) noexcept</td></tr>
-<tr class="memdesc:a0eb658b0c7360d020e51833df13fe966"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register an end contact event listener. <br /></td></tr>
-<tr class="separator:a0eb658b0c7360d020e51833df13fe966"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad9d71ed88d25ba53cc5795ef5c46767"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#aad9d71ed88d25ba53cc5795ef5c46767">playrho::d2::SetJointDestructionListener</a> (AabbTreeWorld &amp;world, JointListener listener) noexcept</td></tr>
-<tr class="memdesc:aad9d71ed88d25ba53cc5795ef5c46767"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a destruction listener for joints.  <a href="namespaceplayrho_1_1d2.html#aad9d71ed88d25ba53cc5795ef5c46767">More...</a><br /></td></tr>
-<tr class="separator:aad9d71ed88d25ba53cc5795ef5c46767"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6cdc554f84a577ddb26cc3f11db7948f"><td class="memItemLeft" align="right" valign="top"><a id="a6cdc554f84a577ddb26cc3f11db7948f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a6cdc554f84a577ddb26cc3f11db7948f">playrho::d2::SetPostSolveContactListener</a> (AabbTreeWorld &amp;world, ImpulsesContactListener listener) noexcept</td></tr>
-<tr class="memdesc:a6cdc554f84a577ddb26cc3f11db7948f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a post-solve contact event listener. <br /></td></tr>
-<tr class="separator:a6cdc554f84a577ddb26cc3f11db7948f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6cf097ec66665aaee2ee3f003bdd3c95"><td class="memItemLeft" align="right" valign="top"><a id="a6cf097ec66665aaee2ee3f003bdd3c95"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a6cf097ec66665aaee2ee3f003bdd3c95">playrho::d2::SetPreSolveContactListener</a> (AabbTreeWorld &amp;world, ManifoldContactListener listener) noexcept</td></tr>
-<tr class="memdesc:a6cf097ec66665aaee2ee3f003bdd3c95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a pre-solve contact event listener. <br /></td></tr>
-<tr class="separator:a6cf097ec66665aaee2ee3f003bdd3c95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7738575fcd8e208874a3cd3e32dffbf2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a7738575fcd8e208874a3cd3e32dffbf2">playrho::d2::SetShapeDestructionListener</a> (AabbTreeWorld &amp;world, ShapeListener listener) noexcept</td></tr>
-<tr class="memdesc:a7738575fcd8e208874a3cd3e32dffbf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a destruction listener for shapes.  <a href="namespaceplayrho_1_1d2.html#a7738575fcd8e208874a3cd3e32dffbf2">More...</a><br /></td></tr>
-<tr class="separator:a7738575fcd8e208874a3cd3e32dffbf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af91536aa88e244f3956b70736dfbbc12"><td class="memItemLeft" align="right" valign="top"><a id="af91536aa88e244f3956b70736dfbbc12"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#af91536aa88e244f3956b70736dfbbc12">playrho::d2::SetBeginContactListener</a> (AabbTreeWorld &amp;world, ContactFunction listener) noexcept</td></tr>
+<tr class="memdesc:af91536aa88e244f3956b70736dfbbc12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a begin contact event listener. <br /></td></tr>
+<tr class="separator:af91536aa88e244f3956b70736dfbbc12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54e878b6146c7c2bb50e7bd73a95c217"><td class="memItemLeft" align="right" valign="top"><a id="a54e878b6146c7c2bb50e7bd73a95c217"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a54e878b6146c7c2bb50e7bd73a95c217">playrho::d2::SetDetachListener</a> (AabbTreeWorld &amp;world, BodyShapeFunction listener) noexcept</td></tr>
+<tr class="memdesc:a54e878b6146c7c2bb50e7bd73a95c217"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a detach listener for shapes detaching from bodies. <br /></td></tr>
+<tr class="separator:a54e878b6146c7c2bb50e7bd73a95c217"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ef32850c1173ac570c8eaa586a6653c"><td class="memItemLeft" align="right" valign="top"><a id="a2ef32850c1173ac570c8eaa586a6653c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a2ef32850c1173ac570c8eaa586a6653c">playrho::d2::SetEndContactListener</a> (AabbTreeWorld &amp;world, ContactFunction listener) noexcept</td></tr>
+<tr class="memdesc:a2ef32850c1173ac570c8eaa586a6653c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register an end contact event listener. <br /></td></tr>
+<tr class="separator:a2ef32850c1173ac570c8eaa586a6653c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c1863dc243955e1955e519c01a0c59a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a7c1863dc243955e1955e519c01a0c59a">playrho::d2::SetJointDestructionListener</a> (AabbTreeWorld &amp;world, JointFunction listener) noexcept</td></tr>
+<tr class="memdesc:a7c1863dc243955e1955e519c01a0c59a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a destruction listener for joints.  <a href="namespaceplayrho_1_1d2.html#a7c1863dc243955e1955e519c01a0c59a">More...</a><br /></td></tr>
+<tr class="separator:a7c1863dc243955e1955e519c01a0c59a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64227632d49eb8e331902edb22999b58"><td class="memItemLeft" align="right" valign="top"><a id="a64227632d49eb8e331902edb22999b58"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a64227632d49eb8e331902edb22999b58">playrho::d2::SetPostSolveContactListener</a> (AabbTreeWorld &amp;world, ContactImpulsesFunction listener) noexcept</td></tr>
+<tr class="memdesc:a64227632d49eb8e331902edb22999b58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a post-solve contact event listener. <br /></td></tr>
+<tr class="separator:a64227632d49eb8e331902edb22999b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7733aac4d120107b96ef887303e4fbf"><td class="memItemLeft" align="right" valign="top"><a id="af7733aac4d120107b96ef887303e4fbf"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#af7733aac4d120107b96ef887303e4fbf">playrho::d2::SetPreSolveContactListener</a> (AabbTreeWorld &amp;world, ContactManifoldFunction listener) noexcept</td></tr>
+<tr class="memdesc:af7733aac4d120107b96ef887303e4fbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a pre-solve contact event listener. <br /></td></tr>
+<tr class="separator:af7733aac4d120107b96ef887303e4fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59900969bcf9d8419fa8f122118844aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a59900969bcf9d8419fa8f122118844aa">playrho::d2::SetShapeDestructionListener</a> (AabbTreeWorld &amp;world, ShapeFunction listener) noexcept</td></tr>
+<tr class="memdesc:a59900969bcf9d8419fa8f122118844aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a destruction listener for shapes.  <a href="namespaceplayrho_1_1d2.html#a59900969bcf9d8419fa8f122118844aa">More...</a><br /></td></tr>
+<tr class="separator:a59900969bcf9d8419fa8f122118844aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">AabbTreeWorld Miscellaneous Non-Member Functions</div></td></tr>
 <tr class="memitem:a652406794226e2ebe8a0a9c7cf2d98ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a652406794226e2ebe8a0a9c7cf2d98ea">playrho::d2::Clear</a> (AabbTreeWorld &amp;world) noexcept</td></tr>
 <tr class="memdesc:a652406794226e2ebe8a0a9c7cf2d98ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears this world.  <a href="namespaceplayrho_1_1d2.html#a652406794226e2ebe8a0a9c7cf2d98ea">More...</a><br /></td></tr>
@@ -384,7 +371,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="dir_00957d302ca87b53c9f57dcbc695504d.html">d2</a></li><li class="navelem"><a class="el" href="AabbTreeWorld_8hpp.html">AabbTreeWorld.hpp</a></li>
-    <li class="footer">Generated on Fri Oct 27 2023 20:41:35 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Oct 31 2023 03:48:35 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

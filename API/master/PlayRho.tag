@@ -76,6 +76,21 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>BodyShapeFunction.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
+    <filename>BodyShapeFunction_8hpp.html</filename>
+    <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
+    <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
+    <namespace>playrho</namespace>
+    <member kind="typedef">
+      <type>std::function&lt; void(std::pair&lt; BodyID, ShapeID &gt;)&gt;</type>
+      <name>BodyShapeFunction</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a33405bfc73fdf1a786a72b98e846e9c0</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>BodyType.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>BodyType_8hpp.html</filename>
@@ -556,6 +571,20 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>ContactFunction.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
+    <filename>ContactFunction_8hpp.html</filename>
+    <includes id="ContactID_8hpp" name="ContactID.hpp" local="no" imported="no">playrho/ContactID.hpp</includes>
+    <namespace>playrho</namespace>
+    <member kind="typedef">
+      <type>std::function&lt; void(ContactID)&gt;</type>
+      <name>ContactFunction</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>ae4fcaffc82149e8a51dccba6b31f4d52</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>ContactID.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>ContactID_8hpp.html</filename>
@@ -906,17 +935,23 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>AabbTreeWorld_8hpp.html</filename>
     <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
+    <includes id="BodyShapeFunction_8hpp" name="BodyShapeFunction.hpp" local="no" imported="no">playrho/BodyShapeFunction.hpp</includes>
+    <includes id="ContactFunction_8hpp" name="ContactFunction.hpp" local="no" imported="no">playrho/ContactFunction.hpp</includes>
     <includes id="ContactKey_8hpp" name="ContactKey.hpp" local="no" imported="no">playrho/ContactKey.hpp</includes>
     <includes id="Filter_8hpp" name="Filter.hpp" local="no" imported="no">playrho/Filter.hpp</includes>
+    <includes id="JointFunction_8hpp" name="JointFunction.hpp" local="no" imported="no">playrho/JointFunction.hpp</includes>
     <includes id="JointID_8hpp" name="JointID.hpp" local="no" imported="no">playrho/JointID.hpp</includes>
     <includes id="Island_8hpp" name="Island.hpp" local="no" imported="no">playrho/Island.hpp</includes>
     <includes id="IslandStats_8hpp" name="IslandStats.hpp" local="no" imported="no">playrho/IslandStats.hpp</includes>
     <includes id="KeyedContactID_8hpp" name="KeyedContactID.hpp" local="no" imported="no">playrho/KeyedContactID.hpp</includes>
     <includes id="ObjectPool_8hpp" name="ObjectPool.hpp" local="no" imported="no">playrho/ObjectPool.hpp</includes>
     <includes id="Positive_8hpp" name="Positive.hpp" local="no" imported="no">playrho/Positive.hpp</includes>
+    <includes id="ShapeFunction_8hpp" name="ShapeFunction.hpp" local="no" imported="no">playrho/ShapeFunction.hpp</includes>
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
     <includes id="StepStats_8hpp" name="StepStats.hpp" local="no" imported="no">playrho/StepStats.hpp</includes>
     <includes id="BodyConstraint_8hpp" name="BodyConstraint.hpp" local="no" imported="no">playrho/d2/BodyConstraint.hpp</includes>
+    <includes id="ContactImpulsesFunction_8hpp" name="ContactImpulsesFunction.hpp" local="no" imported="no">playrho/d2/ContactImpulsesFunction.hpp</includes>
+    <includes id="ContactManifoldFunction_8hpp" name="ContactManifoldFunction.hpp" local="no" imported="no">playrho/d2/ContactManifoldFunction.hpp</includes>
     <includes id="DynamicTree_8hpp" name="DynamicTree.hpp" local="no" imported="no">playrho/d2/DynamicTree.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
@@ -924,13 +959,6 @@
     <class kind="class">playrho::d2::AabbTreeWorld</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
-    <member kind="typedef">
-      <type>std::function&lt; void(std::pair&lt; BodyID, ShapeID &gt;)&gt;</type>
-      <name>AssociationListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a79795738aeb3efff8b2c8c532be4d659</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="typedef">
       <type>std::vector&lt; std::tuple&lt; ContactKey, ContactID &gt; &gt;</type>
       <name>BodyContactIDs</name>
@@ -960,31 +988,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>std::function&lt; void(ContactID)&gt;</type>
-      <name>ContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a3c7c61bbf21c6429d9095b90d78357a0</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>std::function&lt; void(ContactID, const ContactImpulsesList &amp;, unsigned)&gt;</type>
-      <name>ImpulsesContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a5f1a386edb55381b1298a6242dd993fe</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
       <type>std::vector&lt; JointID &gt;</type>
       <name>JointIDs</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a442773c8570c44bfd40f5ed08ab1240c</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>std::function&lt; void(JointID)&gt;</type>
-      <name>JointListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad9f95381357d690566e30bca1dea2c56</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -995,24 +1002,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>std::function&lt; void(ContactID, const Manifold &amp;)&gt;</type>
-      <name>ManifoldContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a9eab28c674a223868b16cfb6923b899e</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
       <type>std::vector&lt; DynamicTree::Size &gt;</type>
       <name>ProxyIDs</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a2b03aa4cdf4968f8dc10d9016cb0552d</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>std::function&lt; void(ShapeID)&gt;</type>
-      <name>ShapeListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1aab64c9251adf9a109b7e69e1832844</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -1026,50 +1019,50 @@
       <type>void</type>
       <name>SetBeginContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab2d473e67d8c73d84b5bab36684b21e4</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>af91536aa88e244f3956b70736dfbbc12</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetDetachListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a73d47c4e7db2126ca5bb6e3fd5aa7a2c</anchor>
-      <arglist>(AabbTreeWorld &amp;world, AssociationListener listener) noexcept</arglist>
+      <anchor>a54e878b6146c7c2bb50e7bd73a95c217</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetEndContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0eb658b0c7360d020e51833df13fe966</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>a2ef32850c1173ac570c8eaa586a6653c</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetJointDestructionListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aad9d71ed88d25ba53cc5795ef5c46767</anchor>
-      <arglist>(AabbTreeWorld &amp;world, JointListener listener) noexcept</arglist>
+      <anchor>a7c1863dc243955e1955e519c01a0c59a</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetPostSolveContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6cdc554f84a577ddb26cc3f11db7948f</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ImpulsesContactListener listener) noexcept</arglist>
+      <anchor>a64227632d49eb8e331902edb22999b58</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactImpulsesFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetPreSolveContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6cf097ec66665aaee2ee3f003bdd3c95</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ManifoldContactListener listener) noexcept</arglist>
+      <anchor>af7733aac4d120107b96ef887303e4fbf</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactManifoldFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetShapeDestructionListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7738575fcd8e208874a3cd3e32dffbf2</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ShapeListener listener) noexcept</arglist>
+      <anchor>a59900969bcf9d8419fa8f122118844aa</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -1369,50 +1362,50 @@
       <type>void</type>
       <name>SetBeginContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab2d473e67d8c73d84b5bab36684b21e4</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>af91536aa88e244f3956b70736dfbbc12</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetDetachListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a73d47c4e7db2126ca5bb6e3fd5aa7a2c</anchor>
-      <arglist>(AabbTreeWorld &amp;world, AssociationListener listener) noexcept</arglist>
+      <anchor>a54e878b6146c7c2bb50e7bd73a95c217</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetEndContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0eb658b0c7360d020e51833df13fe966</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>a2ef32850c1173ac570c8eaa586a6653c</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetJointDestructionListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aad9d71ed88d25ba53cc5795ef5c46767</anchor>
-      <arglist>(AabbTreeWorld &amp;world, JointListener listener) noexcept</arglist>
+      <anchor>a7c1863dc243955e1955e519c01a0c59a</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetPostSolveContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6cdc554f84a577ddb26cc3f11db7948f</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ImpulsesContactListener listener) noexcept</arglist>
+      <anchor>a64227632d49eb8e331902edb22999b58</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactImpulsesFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetPreSolveContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6cf097ec66665aaee2ee3f003bdd3c95</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ManifoldContactListener listener) noexcept</arglist>
+      <anchor>af7733aac4d120107b96ef887303e4fbf</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactManifoldFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetShapeDestructionListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7738575fcd8e208874a3cd3e32dffbf2</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ShapeListener listener) noexcept</arglist>
+      <anchor>a59900969bcf9d8419fa8f122118844aa</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -2661,6 +2654,22 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>ContactImpulsesFunction.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
+    <filename>ContactImpulsesFunction_8hpp.html</filename>
+    <includes id="ContactID_8hpp" name="ContactID.hpp" local="no" imported="no">playrho/ContactID.hpp</includes>
+    <includes id="ContactImpulsesList_8hpp" name="ContactImpulsesList.hpp" local="no" imported="no">playrho/d2/ContactImpulsesList.hpp</includes>
+    <namespace>playrho</namespace>
+    <namespace>playrho::d2</namespace>
+    <member kind="typedef">
+      <type>std::function&lt; void(ContactID, const ContactImpulsesList &amp;, unsigned)&gt;</type>
+      <name>ContactImpulsesFunction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab0945eb1db3efaa574b6b8403a11b853</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>ContactImpulsesList.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>ContactImpulsesList_8hpp.html</filename>
@@ -2681,6 +2690,22 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a07f0d8f5fce9556590d8e7e40289ae33</anchor>
       <arglist>(const ContactImpulsesList &amp;impulses) noexcept</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>ContactManifoldFunction.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
+    <filename>ContactManifoldFunction_8hpp.html</filename>
+    <includes id="ContactID_8hpp" name="ContactID.hpp" local="no" imported="no">playrho/ContactID.hpp</includes>
+    <includes id="Manifold_8hpp" name="Manifold.hpp" local="no" imported="no">playrho/d2/Manifold.hpp</includes>
+    <namespace>playrho</namespace>
+    <namespace>playrho::d2</namespace>
+    <member kind="typedef">
+      <type>std::function&lt; void(ContactID, const Manifold &amp;)&gt;</type>
+      <name>ContactManifoldFunction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae8f4e3ce8b18d8ddf7c2e34572c3a8f6</anchor>
+      <arglist></arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -2714,6 +2739,268 @@
     <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <class kind="class">playrho::d2::ConvexHull</class>
+    <namespace>playrho</namespace>
+    <namespace>playrho::d2</namespace>
+  </compound>
+  <compound kind="file">
+    <name>JointConcept.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/detail/</path>
+    <filename>JointConcept_8hpp.html</filename>
+    <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
+    <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
+    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
+    <class kind="struct">playrho::d2::detail::JointConcept</class>
+    <namespace>playrho</namespace>
+    <namespace>playrho::d2</namespace>
+  </compound>
+  <compound kind="file">
+    <name>JointModel.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/detail/</path>
+    <filename>JointModel_8hpp.html</filename>
+    <includes id="JointConcept_8hpp" name="JointConcept.hpp" local="no" imported="no">playrho/d2/detail/JointConcept.hpp</includes>
+    <class kind="struct">playrho::d2::detail::JointModel</class>
+    <namespace>playrho</namespace>
+    <namespace>playrho::d2</namespace>
+  </compound>
+  <compound kind="file">
+    <name>ShapeConcept.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/detail/</path>
+    <filename>ShapeConcept_8hpp.html</filename>
+    <includes id="Filter_8hpp" name="Filter.hpp" local="no" imported="no">playrho/Filter.hpp</includes>
+    <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
+    <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
+    <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
+    <class kind="struct">playrho::d2::detail::ShapeConcept</class>
+    <namespace>playrho</namespace>
+    <namespace>playrho::d2</namespace>
+  </compound>
+  <compound kind="file">
+    <name>ShapeModel.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/detail/</path>
+    <filename>ShapeModel_8hpp.html</filename>
+    <includes id="ShapeConcept_8hpp" name="ShapeConcept.hpp" local="no" imported="no">playrho/d2/detail/ShapeConcept.hpp</includes>
+    <class kind="struct">playrho::d2::detail::IsValidShapeType</class>
+    <class kind="struct">playrho::d2::detail::IsValidShapeType&lt; T, std::void_t&lt; decltype(GetChildCount(std::declval&lt; T &gt;())), decltype(GetChild(std::declval&lt; T &gt;(), std::declval&lt; ChildCounter &gt;())), decltype(GetMassData(std::declval&lt; T &gt;())), decltype(GetVertexRadius(std::declval&lt; T &gt;(), std::declval&lt; ChildCounter &gt;())), decltype(GetDensity(std::declval&lt; T &gt;())), decltype(GetFriction(std::declval&lt; T &gt;())), decltype(GetRestitution(std::declval&lt; T &gt;())), decltype(std::declval&lt; T &gt;()==std::declval&lt; T &gt;()), decltype(std::declval&lt; DecayedTypeIfNotSame&lt; T, Shape &gt;&gt;()), decltype(std::is_constructible_v&lt; DecayedTypeIfNotSame&lt; T, Shape &gt;, T &gt;)&gt; &gt;</class>
+    <class kind="struct">playrho::d2::detail::ShapeModel</class>
+    <namespace>playrho</namespace>
+    <namespace>playrho::d2</namespace>
+    <member kind="typedef">
+      <type>decltype(Rotate(std::declval&lt; T &amp; &gt;(), std::declval&lt; Angle &gt;()))</type>
+      <name>RotateReturnType</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>ac69c0f6a231372c71b1450233e3c19f6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>decltype(Scale(std::declval&lt; T &amp; &gt;(), std::declval&lt; Vec2 &gt;()))</type>
+      <name>ScaleReturnType</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>a930128f3824518b4949d79b17bdbfedf</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>decltype(SetDensity(std::declval&lt; T &amp; &gt;(), std::declval&lt; NonNegative&lt; AreaDensity &gt; &gt;()))</type>
+      <name>SetDensityReturnType</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>adf775b067a6a92cbc004c8099575d421</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>decltype(SetFilter(std::declval&lt; T &amp; &gt;(), std::declval&lt; Filter &gt;()))</type>
+      <name>SetFilterReturnType</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>ad5f894cb72b909bb22b023b28a49ab62</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>decltype(SetFriction(std::declval&lt; T &amp; &gt;(), std::declval&lt; Real &gt;()))</type>
+      <name>SetFrictionReturnType</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>ad3b1703a4316deeb771ca4aa51786b4b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>decltype(SetRestitution(std::declval&lt; T &amp; &gt;(), std::declval&lt; Real &gt;()))</type>
+      <name>SetRestitutionReturnType</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>a87d54b57854b9796a6c377e2532b6b6f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>decltype(SetSensor(std::declval&lt; T &amp; &gt;(), std::declval&lt; bool &gt;()))</type>
+      <name>SetSensorReturnType</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>a497d8b12db027af729dbd6d06a2ad7c8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>decltype(Translate(std::declval&lt; T &amp; &gt;(), std::declval&lt; Length2 &gt;()))</type>
+      <name>TranslateReturnType</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>af16f4da2426a4615570ce10404350a1b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>Rotate</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>adb80827350fb79ee9e770d46e035fad6</anchor>
+      <arglist>(T &amp;, const UnitVec &amp;value) -&gt; std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasRotateV&lt; T &gt;, void &gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>Scale</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>a16e9f2dee6601112685b1c64138790a4</anchor>
+      <arglist>(T &amp;, const Vec2 &amp;value) -&gt; std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasScaleV&lt; T &gt;, void &gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>SetDensity</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>a0fde38de41407f2cb4d94864b53f3a6f</anchor>
+      <arglist>(T &amp;o, NonNegative&lt; AreaDensity &gt; value) -&gt; std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetDensityV&lt; T &gt;, void &gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>SetFilter</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>a1e2fdda165c83d909e826ca3d8e350fa</anchor>
+      <arglist>(T &amp;o, Filter value) -&gt; std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetFilterV&lt; T &gt;, void &gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>SetFriction</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>a453ec591eac3f6a4c2468be943dd82f7</anchor>
+      <arglist>(T &amp;o, NonNegative&lt; Real &gt; value) -&gt; std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetFrictionV&lt; T &gt;, void &gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>SetRestitution</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>a9863b9d7c75dfb681e66b0b1733346c8</anchor>
+      <arglist>(T &amp;o, Real value) -&gt; std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetRestitutionV&lt; T &gt;, void &gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>SetSensor</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>ae257d5ce00315511f38471a1da468eee</anchor>
+      <arglist>(T &amp;o, bool value) -&gt; std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetSensorV&lt; T &gt;, void &gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>Translate</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>a0a50f2a135461ddf9ee6f56537f0d02f</anchor>
+      <arglist>(T &amp;, const Length2 &amp;value) -&gt; std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasTranslateV&lt; T &gt;, void &gt;</arglist>
+    </member>
+    <member kind="variable">
+      <type>constexpr bool</type>
+      <name>HasRotateV</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>a25bbe957cc15f8fd98a52dc3fda0395d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>constexpr bool</type>
+      <name>HasScaleV</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>af809b7b33fa9ac0c0a983b07510a8db9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>constexpr bool</type>
+      <name>HasSetDensityV</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>adb61b65e134bd2243330b2c55986c588</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>constexpr bool</type>
+      <name>HasSetFilterV</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>a138f8181e4d5016acd8b5b5a3c0038fc</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>constexpr bool</type>
+      <name>HasSetFrictionV</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>aa4fdba3a4ce28df4548f0e8e36b43b7e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>constexpr bool</type>
+      <name>HasSetRestitutionV</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>a2670f07bf95a7e2416cbb9cc177cde6a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>constexpr bool</type>
+      <name>HasSetSensorV</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>a587d6642d2dd21b03e3443199aec9616</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>constexpr bool</type>
+      <name>HasTranslateV</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>aba3766778604fa1f8d6046261b32303a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>constexpr bool</type>
+      <name>IsValidShapeTypeV</name>
+      <anchorfile>ShapeModel_8hpp.html</anchorfile>
+      <anchor>a292fde9a0fe65df5ef97448e1b293294</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>WorldConcept.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/detail/</path>
+    <filename>WorldConcept_8hpp.html</filename>
+    <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
+    <includes id="BodyShapeFunction_8hpp" name="BodyShapeFunction.hpp" local="no" imported="no">playrho/BodyShapeFunction.hpp</includes>
+    <includes id="Contact_8hpp" name="Contact.hpp" local="no" imported="no">playrho/Contact.hpp</includes>
+    <includes id="ContactFunction_8hpp" name="ContactFunction.hpp" local="no" imported="no">playrho/ContactFunction.hpp</includes>
+    <includes id="Interval_8hpp" name="Interval.hpp" local="no" imported="no">playrho/Interval.hpp</includes>
+    <includes id="KeyedContactID_8hpp" name="KeyedContactID.hpp" local="no" imported="no">playrho/KeyedContactID.hpp</includes>
+    <includes id="JointFunction_8hpp" name="JointFunction.hpp" local="no" imported="no">playrho/JointFunction.hpp</includes>
+    <includes id="JointID_8hpp" name="JointID.hpp" local="no" imported="no">playrho/JointID.hpp</includes>
+    <includes id="LimitState_8hpp" name="LimitState.hpp" local="no" imported="no">playrho/LimitState.hpp</includes>
+    <includes id="ShapeFunction_8hpp" name="ShapeFunction.hpp" local="no" imported="no">playrho/ShapeFunction.hpp</includes>
+    <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
+    <includes id="StepConf_8hpp" name="StepConf.hpp" local="no" imported="no">playrho/StepConf.hpp</includes>
+    <includes id="StepStats_8hpp" name="StepStats.hpp" local="no" imported="no">playrho/StepStats.hpp</includes>
+    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Body_8hpp" name="Body.hpp" local="no" imported="no">playrho/d2/Body.hpp</includes>
+    <includes id="ContactImpulsesFunction_8hpp" name="ContactImpulsesFunction.hpp" local="no" imported="no">playrho/d2/ContactImpulsesFunction.hpp</includes>
+    <includes id="ContactManifoldFunction_8hpp" name="ContactManifoldFunction.hpp" local="no" imported="no">playrho/d2/ContactManifoldFunction.hpp</includes>
+    <includes id="Joint_8hpp" name="Joint.hpp" local="no" imported="no">playrho/d2/Joint.hpp</includes>
+    <includes id="Manifold_8hpp" name="Manifold.hpp" local="no" imported="no">playrho/d2/Manifold.hpp</includes>
+    <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
+    <includes id="Shape_8hpp" name="Shape.hpp" local="no" imported="no">playrho/d2/Shape.hpp</includes>
+    <class kind="struct">playrho::d2::detail::WorldConcept</class>
+    <namespace>playrho</namespace>
+    <namespace>playrho::d2</namespace>
+  </compound>
+  <compound kind="file">
+    <name>WorldModel.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/detail/</path>
+    <filename>WorldModel_8hpp.html</filename>
+    <includes id="WorldConcept_8hpp" name="WorldConcept.hpp" local="no" imported="no">playrho/d2/detail/WorldConcept.hpp</includes>
+    <class kind="struct">playrho::d2::detail::WorldModel</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
   </compound>
@@ -3567,7 +3854,9 @@
     <includes id="LimitState_8hpp" name="LimitState.hpp" local="no" imported="no">playrho/LimitState.hpp</includes>
     <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
-    <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
+    <includes id="UnitVec_8hpp" name="UnitVec.hpp" local="no" imported="no">playrho/d2/UnitVec.hpp</includes>
+    <includes id="JointConcept_8hpp" name="JointConcept.hpp" local="no" imported="no">playrho/d2/detail/JointConcept.hpp</includes>
+    <includes id="JointModel_8hpp" name="JointModel.hpp" local="no" imported="no">playrho/d2/detail/JointModel.hpp</includes>
     <class kind="struct">playrho::d2::detail::IsValidJointType</class>
     <class kind="struct">playrho::d2::detail::IsValidJointType&lt; T, std::void_t&lt; decltype(GetBodyA(std::declval&lt; T &gt;())), decltype(GetBodyB(std::declval&lt; T &gt;())), decltype(GetCollideConnected(std::declval&lt; T &gt;())), decltype(ShiftOrigin(std::declval&lt; T &amp; &gt;(), std::declval&lt; Length2 &gt;())), decltype(InitVelocity(std::declval&lt; T &amp; &gt;(), std::declval&lt; const Span&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; StepConf &gt;(), std::declval&lt; ConstraintSolverConf &gt;())), decltype(SolveVelocity(std::declval&lt; T &amp; &gt;(), std::declval&lt; const Span&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; StepConf &gt;())), decltype(SolvePosition(std::declval&lt; T &gt;(), std::declval&lt; const Span&lt; BodyConstraint &gt; &amp; &gt;(), std::declval&lt; ConstraintSolverConf &gt;())), decltype(std::declval&lt; T &gt;()==std::declval&lt; T &gt;()), decltype(Joint{std::declval&lt; T &gt;()})&gt; &gt;</class>
     <class kind="class">playrho::d2::Joint</class>
@@ -4391,6 +4680,7 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>d2_2Math_8hpp.html</filename>
     <includes id="Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/Math.hpp</includes>
+    <includes id="Checked_8hpp" name="Checked.hpp" local="no" imported="no">playrho/detail/Checked.hpp</includes>
     <includes id="UnitVec_8hpp" name="UnitVec.hpp" local="no" imported="no">playrho/d2/UnitVec.hpp</includes>
     <includes id="Position_8hpp" name="Position.hpp" local="no" imported="no">playrho/d2/Position.hpp</includes>
     <includes id="Velocity_8hpp" name="Velocity.hpp" local="no" imported="no">playrho/d2/Velocity.hpp</includes>
@@ -4557,8 +4847,8 @@
       <type>constexpr Vector2&lt; T &gt;</type>
       <name>operator*</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aed05334a0707da44659547948b29b612</anchor>
-      <arglist>(const detail::Checked&lt; T, U, NoExcept &gt; &amp;s, const UnitVec &amp;u) noexcept</arglist>
+      <anchor>a82ae08d9c525e8510b8d7261fcf0d1c2</anchor>
+      <arglist>(const playrho::detail::Checked&lt; T, U, NoExcept &gt; &amp;s, const UnitVec &amp;u) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr Vector2&lt; T &gt;</type>
@@ -4571,8 +4861,8 @@
       <type>constexpr Vector2&lt; T &gt;</type>
       <name>operator*</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1261db9db30d4506e3cc7a1af9ae3528</anchor>
-      <arglist>(const UnitVec &amp;u, const detail::Checked&lt; T, U, NoExcept &gt; &amp;s) noexcept</arglist>
+      <anchor>a5beaf709e090543a768ca7b40713e1b2</anchor>
+      <arglist>(const UnitVec &amp;u, const playrho::detail::Checked&lt; T, U, NoExcept &gt; &amp;s) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr Vector2&lt; T &gt;</type>
@@ -6033,24 +6323,8 @@
     <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
-    <class kind="struct">playrho::d2::detail::HasRotate</class>
-    <class kind="struct">playrho::d2::detail::HasRotate&lt; T, std::void_t&lt; decltype(Rotate(std::declval&lt; T &amp; &gt;(), std::declval&lt; Angle &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::detail::HasScale</class>
-    <class kind="struct">playrho::d2::detail::HasScale&lt; T, std::void_t&lt; decltype(Scale(std::declval&lt; T &amp; &gt;(), std::declval&lt; Vec2 &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::detail::HasSetDensity</class>
-    <class kind="struct">playrho::d2::detail::HasSetDensity&lt; T, std::void_t&lt; decltype(SetDensity(std::declval&lt; T &amp; &gt;(), std::declval&lt; NonNegative&lt; AreaDensity &gt;&gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::detail::HasSetFilter</class>
-    <class kind="struct">playrho::d2::detail::HasSetFilter&lt; T, std::void_t&lt; decltype(SetFilter(std::declval&lt; T &amp; &gt;(), std::declval&lt; Filter &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::detail::HasSetFriction</class>
-    <class kind="struct">playrho::d2::detail::HasSetFriction&lt; T, std::void_t&lt; decltype(SetFriction(std::declval&lt; T &amp; &gt;(), std::declval&lt; Real &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::detail::HasSetRestitution</class>
-    <class kind="struct">playrho::d2::detail::HasSetRestitution&lt; T, std::void_t&lt; decltype(SetRestitution(std::declval&lt; T &amp; &gt;(), std::declval&lt; Real &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::detail::HasSetSensor</class>
-    <class kind="struct">playrho::d2::detail::HasSetSensor&lt; T, std::void_t&lt; decltype(SetSensor(std::declval&lt; T &amp; &gt;(), std::declval&lt; bool &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::detail::HasTranslate</class>
-    <class kind="struct">playrho::d2::detail::HasTranslate&lt; T, std::void_t&lt; decltype(Translate(std::declval&lt; T &amp; &gt;(), std::declval&lt; Length2 &gt;()))&gt; &gt;</class>
-    <class kind="struct">playrho::d2::detail::IsValidShapeType</class>
-    <class kind="struct">playrho::d2::detail::IsValidShapeType&lt; T, std::void_t&lt; decltype(GetChildCount(std::declval&lt; T &gt;())), decltype(GetChild(std::declval&lt; T &gt;(), std::declval&lt; ChildCounter &gt;())), decltype(GetMassData(std::declval&lt; T &gt;())), decltype(GetVertexRadius(std::declval&lt; T &gt;(), std::declval&lt; ChildCounter &gt;())), decltype(GetDensity(std::declval&lt; T &gt;())), decltype(GetFriction(std::declval&lt; T &gt;())), decltype(GetRestitution(std::declval&lt; T &gt;())), decltype(std::declval&lt; T &gt;()==std::declval&lt; T &gt;()), decltype(std::declval&lt; DecayedTypeIfNotSame&lt; T, Shape &gt;&gt;()), decltype(std::is_constructible_v&lt; DecayedTypeIfNotSame&lt; T, Shape &gt;, T &gt;)&gt; &gt;</class>
+    <includes id="ShapeConcept_8hpp" name="ShapeConcept.hpp" local="no" imported="no">playrho/d2/detail/ShapeConcept.hpp</includes>
+    <includes id="ShapeModel_8hpp" name="ShapeModel.hpp" local="no" imported="no">playrho/d2/detail/ShapeModel.hpp</includes>
     <class kind="class">playrho::d2::Shape</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
@@ -6167,25 +6441,11 @@
       <arglist>(Shape &amp;shape, const UnitVec &amp;value)</arglist>
     </member>
     <member kind="function">
-      <type>auto</type>
-      <name>Rotate</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a4c915c9176591afd89bf4d18b1ede1b4</anchor>
-      <arglist>(T &amp;, const UnitVec &amp;value) -&gt; std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasRotateV&lt; T &gt;, void &gt;</arglist>
-    </member>
-    <member kind="function">
       <type>void</type>
       <name>Scale</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>ac37a9ab36e66240e0a2af9ce84848b13</anchor>
       <arglist>(Shape &amp;shape, const Vec2 &amp;value)</arglist>
-    </member>
-    <member kind="function">
-      <type>auto</type>
-      <name>Scale</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0cbf1bb2193d18afa44df563b6877cb2</anchor>
-      <arglist>(T &amp;, const Vec2 &amp;value) -&gt; std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasScaleV&lt; T &gt;, void &gt;</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -6195,25 +6455,11 @@
       <arglist>(Shape &amp;shape, NonNegative&lt; AreaDensity &gt; value)</arglist>
     </member>
     <member kind="function">
-      <type>std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetDensityV&lt; T &gt;, void &gt;</type>
-      <name>SetDensity</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad1c054649c001d28c08476c622de4ab6</anchor>
-      <arglist>(T &amp;o, NonNegative&lt; AreaDensity &gt; value)</arglist>
-    </member>
-    <member kind="function">
       <type>void</type>
       <name>SetFilter</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>ac3ffdf7e6c840eb894becc90325bf147</anchor>
       <arglist>(Shape &amp;shape, Filter value)</arglist>
-    </member>
-    <member kind="function">
-      <type>std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetFilterV&lt; T &gt;, void &gt;</type>
-      <name>SetFilter</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>acdc81f53cbfed976983439ca5f2e3ac2</anchor>
-      <arglist>(T &amp;o, Filter value)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -6223,13 +6469,6 @@
       <arglist>(Shape &amp;shape, NonNegative&lt; Real &gt; value)</arglist>
     </member>
     <member kind="function">
-      <type>std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetFrictionV&lt; T &gt;, void &gt;</type>
-      <name>SetFriction</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad16f6355b81563d9814e371f04a093b7</anchor>
-      <arglist>(T &amp;o, NonNegative&lt; Real &gt; value)</arglist>
-    </member>
-    <member kind="function">
       <type>void</type>
       <name>SetRestitution</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -6237,25 +6476,11 @@
       <arglist>(Shape &amp;shape, Real value)</arglist>
     </member>
     <member kind="function">
-      <type>std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetRestitutionV&lt; T &gt;, void &gt;</type>
-      <name>SetRestitution</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6bc6a6825767b1283de39d617bec8d45</anchor>
-      <arglist>(T &amp;o, Real value)</arglist>
-    </member>
-    <member kind="function">
       <type>void</type>
       <name>SetSensor</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>ae3786c04d20cbf2f9b06d2a1d07032d8</anchor>
       <arglist>(Shape &amp;shape, bool value)</arglist>
-    </member>
-    <member kind="function">
-      <type>std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetSensorV&lt; T &gt;, void &gt;</type>
-      <name>SetSensor</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afa56209557eb58f52a1599176b169b5b</anchor>
-      <arglist>(T &amp;o, bool value)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -6286,13 +6511,6 @@
       <arglist>(Shape &amp;shape, const Length2 &amp;value)</arglist>
     </member>
     <member kind="function">
-      <type>auto</type>
-      <name>Translate</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a2fcf35bb0c7c2d207b5ae67948d9dfb6</anchor>
-      <arglist>(T &amp;, const Length2 &amp;value) -&gt; std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasTranslateV&lt; T &gt;, void &gt;</arglist>
-    </member>
-    <member kind="function">
       <type>T</type>
       <name>TypeCast</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -6305,69 +6523,6 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a732fa5d1da2c5d3292bdbcfaab4f971d</anchor>
       <arglist>(const Shape *value) noexcept</arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>HasRotateV</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a54dd2ed3808f9e48674e3ca8940ecd79</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>HasScaleV</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a3db581dc77a89acbf9287b7f50c4f9bb</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>HasSetDensityV</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>adcd79da3d98d0b52563b7a0be466a679</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>HasSetFilterV</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abe6c7ad2a221702f43ca47326e632e9b</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>HasSetFrictionV</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a8795f062bde61dee66c04b7cb45f615d</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>HasSetRestitutionV</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af1dab2bbd039624dd979cb9f1ac8e938</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>HasSetSensorV</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a280984ac0c13e7a78e3ddef1b81c7ddc</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>HasTranslateV</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1e856dc6b73fec2ef9dc7d7e8f39a173</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>IsValidShapeTypeV</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad6691b6d27434e35424d34885cdf9359</anchor>
-      <arglist></arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -7358,23 +7513,30 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>World_8hpp.html</filename>
     <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
+    <includes id="BodyShapeFunction_8hpp" name="BodyShapeFunction.hpp" local="no" imported="no">playrho/BodyShapeFunction.hpp</includes>
     <includes id="Contact_8hpp" name="Contact.hpp" local="no" imported="no">playrho/Contact.hpp</includes>
+    <includes id="ContactFunction_8hpp" name="ContactFunction.hpp" local="no" imported="no">playrho/ContactFunction.hpp</includes>
     <includes id="KeyedContactID_8hpp" name="KeyedContactID.hpp" local="no" imported="no">playrho/KeyedContactID.hpp</includes>
+    <includes id="JointFunction_8hpp" name="JointFunction.hpp" local="no" imported="no">playrho/JointFunction.hpp</includes>
     <includes id="JointID_8hpp" name="JointID.hpp" local="no" imported="no">playrho/JointID.hpp</includes>
     <includes id="LimitState_8hpp" name="LimitState.hpp" local="no" imported="no">playrho/LimitState.hpp</includes>
-    <includes id="propagate__const_8hpp" name="propagate_const.hpp" local="no" imported="no">playrho/propagate_const.hpp</includes>
+    <includes id="ShapeFunction_8hpp" name="ShapeFunction.hpp" local="no" imported="no">playrho/ShapeFunction.hpp</includes>
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
     <includes id="StepConf_8hpp" name="StepConf.hpp" local="no" imported="no">playrho/StepConf.hpp</includes>
     <includes id="StepStats_8hpp" name="StepStats.hpp" local="no" imported="no">playrho/StepStats.hpp</includes>
     <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="BodyConf_8hpp" name="BodyConf.hpp" local="no" imported="no">playrho/d2/BodyConf.hpp</includes>
     <includes id="Body_8hpp" name="Body.hpp" local="no" imported="no">playrho/d2/Body.hpp</includes>
+    <includes id="ContactImpulsesFunction_8hpp" name="ContactImpulsesFunction.hpp" local="no" imported="no">playrho/d2/ContactImpulsesFunction.hpp</includes>
+    <includes id="ContactManifoldFunction_8hpp" name="ContactManifoldFunction.hpp" local="no" imported="no">playrho/d2/ContactManifoldFunction.hpp</includes>
     <includes id="Joint_8hpp" name="Joint.hpp" local="no" imported="no">playrho/d2/Joint.hpp</includes>
     <includes id="Manifold_8hpp" name="Manifold.hpp" local="no" imported="no">playrho/d2/Manifold.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <includes id="Shape_8hpp" name="Shape.hpp" local="no" imported="no">playrho/d2/Shape.hpp</includes>
     <includes id="WorldConf_8hpp" name="WorldConf.hpp" local="no" imported="no">playrho/d2/WorldConf.hpp</includes>
+    <includes id="WorldConcept_8hpp" name="WorldConcept.hpp" local="no" imported="no">playrho/d2/detail/WorldConcept.hpp</includes>
+    <includes id="WorldModel_8hpp" name="WorldModel.hpp" local="no" imported="no">playrho/d2/detail/WorldModel.hpp</includes>
     <class kind="class">playrho::d2::World</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
@@ -7403,50 +7565,50 @@
       <type>void</type>
       <name>SetBeginContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa4d2e420d029c826b6fea611cb0b171e</anchor>
-      <arglist>(World &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>a880cac829986da4266dc3dfc494087b3</anchor>
+      <arglist>(World &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetDetachListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af0d2f84c725ce57610163fba2fdc571e</anchor>
-      <arglist>(World &amp;world, AssociationListener listener) noexcept</arglist>
+      <anchor>ab2f27f6d0cf885a8aeedff93c7a89e74</anchor>
+      <arglist>(World &amp;world, BodyShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetEndContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>acb3bddb185d547567a7ca51e75822bba</anchor>
-      <arglist>(World &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>acc2df0eb14c5759fff8c99dcfc2f724c</anchor>
+      <arglist>(World &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetJointDestructionListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a948f93c3a4240846fac5690dde238a19</anchor>
-      <arglist>(World &amp;world, JointListener listener) noexcept</arglist>
+      <anchor>a182e738c16bf84f7579af7be2cd26628</anchor>
+      <arglist>(World &amp;world, JointFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetPostSolveContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afed9c4b283c6f99409bbbfaaaffe5ee4</anchor>
-      <arglist>(World &amp;world, ImpulsesContactListener listener) noexcept</arglist>
+      <anchor>a18585a140d9ad815d0127e90308218ff</anchor>
+      <arglist>(World &amp;world, ContactImpulsesFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetPreSolveContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1413e006f2e0d4a56885964538d63a85</anchor>
-      <arglist>(World &amp;world, ManifoldContactListener listener) noexcept</arglist>
+      <anchor>aee2466f745bdaf3aa6ce438864d8742b</anchor>
+      <arglist>(World &amp;world, ContactManifoldFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetShapeDestructionListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a96ac7c56b9e01b4b9a6755ecfc60758a</anchor>
-      <arglist>(World &amp;world, ShapeListener listener) noexcept</arglist>
+      <anchor>a2dc5e1d5b3122d2c37959573eda21c30</anchor>
+      <arglist>(World &amp;world, ShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -7774,50 +7936,50 @@
       <type>void</type>
       <name>SetBeginContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa4d2e420d029c826b6fea611cb0b171e</anchor>
-      <arglist>(World &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>a880cac829986da4266dc3dfc494087b3</anchor>
+      <arglist>(World &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetDetachListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af0d2f84c725ce57610163fba2fdc571e</anchor>
-      <arglist>(World &amp;world, AssociationListener listener) noexcept</arglist>
+      <anchor>ab2f27f6d0cf885a8aeedff93c7a89e74</anchor>
+      <arglist>(World &amp;world, BodyShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetEndContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>acb3bddb185d547567a7ca51e75822bba</anchor>
-      <arglist>(World &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>acc2df0eb14c5759fff8c99dcfc2f724c</anchor>
+      <arglist>(World &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetJointDestructionListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a948f93c3a4240846fac5690dde238a19</anchor>
-      <arglist>(World &amp;world, JointListener listener) noexcept</arglist>
+      <anchor>a182e738c16bf84f7579af7be2cd26628</anchor>
+      <arglist>(World &amp;world, JointFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetPostSolveContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afed9c4b283c6f99409bbbfaaaffe5ee4</anchor>
-      <arglist>(World &amp;world, ImpulsesContactListener listener) noexcept</arglist>
+      <anchor>a18585a140d9ad815d0127e90308218ff</anchor>
+      <arglist>(World &amp;world, ContactImpulsesFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetPreSolveContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1413e006f2e0d4a56885964538d63a85</anchor>
-      <arglist>(World &amp;world, ManifoldContactListener listener) noexcept</arglist>
+      <anchor>aee2466f745bdaf3aa6ce438864d8742b</anchor>
+      <arglist>(World &amp;world, ContactManifoldFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetShapeDestructionListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a96ac7c56b9e01b4b9a6755ecfc60758a</anchor>
-      <arglist>(World &amp;world, ShapeListener listener) noexcept</arglist>
+      <anchor>a2dc5e1d5b3122d2c37959573eda21c30</anchor>
+      <arglist>(World &amp;world, ShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -11121,6 +11283,20 @@
     <namespace>playrho</namespace>
   </compound>
   <compound kind="file">
+    <name>JointFunction.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
+    <filename>JointFunction_8hpp.html</filename>
+    <includes id="JointID_8hpp" name="JointID.hpp" local="no" imported="no">playrho/JointID.hpp</includes>
+    <namespace>playrho</namespace>
+    <member kind="typedef">
+      <type>std::function&lt; void(JointID)&gt;</type>
+      <name>JointFunction</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>addebc455127a1209e0543ce6a853ebaa</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>JointID.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>JointID_8hpp.html</filename>
@@ -11492,29 +11668,6 @@
       <anchorfile>group__CheckedTypes.html</anchorfile>
       <anchor>ga521f0650a33330a43eafb31ecb6d4ae5</anchor>
       <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="file">
-    <name>propagate_const.hpp</name>
-    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
-    <filename>propagate__const_8hpp.html</filename>
-    <class kind="struct">playrho::propagate_const::detect_element_type</class>
-    <class kind="struct">playrho::propagate_const::detect_element_type&lt; U * &gt;</class>
-    <class kind="struct">std::equal_to&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
-    <class kind="struct">std::greater&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
-    <class kind="struct">std::greater_equal&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
-    <class kind="struct">std::hash&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
-    <class kind="struct">std::less&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
-    <class kind="struct">std::less_equal&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
-    <class kind="struct">std::not_equal_to&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
-    <class kind="class">playrho::propagate_const</class>
-    <namespace>playrho</namespace>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR void</type>
-      <name>swap</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>abbaf30d44caa739e24d21d763b90030c</anchor>
-      <arglist>(propagate_const&lt; T &gt; &amp;pt, propagate_const&lt; T &gt; &amp;pu) noexcept(noexcept(swap(std::declval&lt; T &amp; &gt;(), std::declval&lt; T &amp; &gt;())))</arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -11934,6 +12087,20 @@
       <name>MaxSimplexEdges</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a95591102a273a4d301f3f795d463b9ba</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>ShapeFunction.hpp</name>
+    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
+    <filename>ShapeFunction_8hpp.html</filename>
+    <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
+    <namespace>playrho</namespace>
+    <member kind="typedef">
+      <type>std::function&lt; void(ShapeID)&gt;</type>
+      <name>ShapeFunction</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>ab3c103ca9fa0984be180fdf4adea623e</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -14195,8 +14362,8 @@
       <type>friend void</type>
       <name>SetBeginContactListener</name>
       <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
-      <anchor>a591b7799255ec705cf9839413209e79b</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>af4c06d86a07e89fa6bb07470f7750be4</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend void</type>
@@ -14216,15 +14383,15 @@
       <type>friend void</type>
       <name>SetDetachListener</name>
       <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
-      <anchor>a5728b5478035d69f4961d9bdc682cc66</anchor>
-      <arglist>(AabbTreeWorld &amp;world, AssociationListener listener) noexcept</arglist>
+      <anchor>ac99f57d9c10abd44796ac2af7c799709</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend void</type>
       <name>SetEndContactListener</name>
       <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
-      <anchor>a2fb8f12656030a336986ca57542832ce</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>a5f43eae1290967aa563b0648560ae24c</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend void</type>
@@ -14237,22 +14404,22 @@
       <type>friend void</type>
       <name>SetJointDestructionListener</name>
       <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
-      <anchor>ac2b45332402433a56d17254b6dba140d</anchor>
-      <arglist>(AabbTreeWorld &amp;world, JointListener listener) noexcept</arglist>
+      <anchor>a0e1c6d88535dda4f800ae3083e62a915</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointFunction listener) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend void</type>
       <name>SetPostSolveContactListener</name>
       <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
-      <anchor>adf668f22df95b416da1a44bde92e5313</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ImpulsesContactListener listener) noexcept</arglist>
+      <anchor>a6f4ec60e37e8300979d7a4b7d775c938</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactImpulsesFunction listener) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend void</type>
       <name>SetPreSolveContactListener</name>
       <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
-      <anchor>aad065ed9b6f4ab505b2c84b1b7cae7d6</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ManifoldContactListener listener) noexcept</arglist>
+      <anchor>a23f311326f5b9a72119dd60f21bf72d2</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactManifoldFunction listener) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend void</type>
@@ -14265,8 +14432,8 @@
       <type>friend void</type>
       <name>SetShapeDestructionListener</name>
       <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
-      <anchor>a14ce97c5ed6b78c9e4cd87584ad629df</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ShapeListener listener) noexcept</arglist>
+      <anchor>ae8f7a3e77d99d19e5ca7e934957ab655</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend void</type>
@@ -20816,15 +20983,36 @@
       <type>auto</type>
       <name>Rotate</name>
       <anchorfile>classplayrho_1_1d2_1_1part_1_1Compositor.html</anchorfile>
-      <anchor>a40f6983cd6755cb949d24c08a459f5be</anchor>
-      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg,::playrho::d2::UnitVec value) -&gt; decltype(arg.Rotate(value))</arglist>
+      <anchor>a9de5e9d13d9013dab0fc55bfec2697ec</anchor>
+      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg,::playrho::d2::UnitVec value) -&gt; std::enable_if_t&lt; detail::HasMemberRotateV&lt; decltype(arg)&gt;, void &gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>Rotate</name>
+      <anchorfile>classplayrho_1_1d2_1_1part_1_1Compositor.html</anchorfile>
+      <anchor>aee1652046c01cfcade1493d28db88c89</anchor>
+      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg,::playrho::d2::UnitVec value) -&gt; std::enable_if_t&lt;!detail::HasMemberRotateV&lt; decltype(arg)&gt;, void &gt;</arglist>
     </member>
     <member kind="function">
       <type>auto</type>
       <name>Scale</name>
       <anchorfile>classplayrho_1_1d2_1_1part_1_1Compositor.html</anchorfile>
-      <anchor>aa1cc186121c80395f147cc49cbdadf09</anchor>
-      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, const Vector&lt; Real, N &gt; &amp;value) -&gt; decltype(arg.Scale(value))</arglist>
+      <anchor>a8e7a002a381cad9eb15c7e6ba1ab2e00</anchor>
+      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, const Vec2 &amp;value) -&gt; std::enable_if_t&lt; detail::HasMemberScaleV&lt; decltype(arg)&gt;, void &gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>Scale</name>
+      <anchorfile>classplayrho_1_1d2_1_1part_1_1Compositor.html</anchorfile>
+      <anchor>a12723ae7c089881aa8cd1340088b75e7</anchor>
+      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, const Vec2 &amp;value) -&gt; std::enable_if_t&lt;!detail::HasMemberScaleV&lt; decltype(arg)&gt;, void &gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>SetDensity</name>
+      <anchorfile>classplayrho_1_1d2_1_1part_1_1Compositor.html</anchorfile>
+      <anchor>ab46d03ffff3bb2b82be8c0091e77c6ba</anchor>
+      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, NonNegative&lt; AreaDensity &gt; value) -&gt; std::enable_if_t&lt; std::is_const_v&lt; decltype(arg.density)&gt;, void &gt;</arglist>
     </member>
     <member kind="function">
       <type>auto</type>
@@ -20844,8 +21032,22 @@
       <type>auto</type>
       <name>SetFilter</name>
       <anchorfile>classplayrho_1_1d2_1_1part_1_1Compositor.html</anchorfile>
+      <anchor>aee25c3fc14b3a1ba49fc764f8462dff4</anchor>
+      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, Filter value) -&gt; std::enable_if_t&lt; std::is_const_v&lt; decltype(arg.filter)&gt;, void &gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>SetFilter</name>
+      <anchorfile>classplayrho_1_1d2_1_1part_1_1Compositor.html</anchorfile>
       <anchor>ae95d9ee6e7af9b236d77dc88ecdda0ff</anchor>
       <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, Filter value) -&gt; std::enable_if_t&lt;!std::is_const_v&lt; decltype(arg.filter)&gt;, void &gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>SetFriction</name>
+      <anchorfile>classplayrho_1_1d2_1_1part_1_1Compositor.html</anchorfile>
+      <anchor>a23ac9fe74f6e02fdfba1100ed92c54f4</anchor>
+      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, NonNegative&lt; Real &gt; value) -&gt; std::enable_if_t&lt; std::is_const_v&lt; decltype(arg.friction)&gt;, void &gt;</arglist>
     </member>
     <member kind="function">
       <type>auto</type>
@@ -20865,8 +21067,22 @@
       <type>auto</type>
       <name>SetRestitution</name>
       <anchorfile>classplayrho_1_1d2_1_1part_1_1Compositor.html</anchorfile>
+      <anchor>a348e6fdf24288055752d00d8a8869b87</anchor>
+      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, Real value) -&gt; std::enable_if_t&lt; std::is_const_v&lt; decltype(arg.restitution)&gt;, void &gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>SetRestitution</name>
+      <anchorfile>classplayrho_1_1d2_1_1part_1_1Compositor.html</anchorfile>
       <anchor>acae907e2173e3c211c5fe7784f011e41</anchor>
       <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, Real value) -&gt; std::enable_if_t&lt;!std::is_const_v&lt; decltype(arg.restitution)&gt;, void &gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>SetSensor</name>
+      <anchorfile>classplayrho_1_1d2_1_1part_1_1Compositor.html</anchorfile>
+      <anchor>ae8100537ddd5f7ab1716ffbb5b0515dc</anchor>
+      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, bool value) -&gt; std::enable_if_t&lt; std::is_const_v&lt; decltype(arg.sensor)&gt;, void &gt;</arglist>
     </member>
     <member kind="function">
       <type>auto</type>
@@ -20886,8 +21102,15 @@
       <type>auto</type>
       <name>Translate</name>
       <anchorfile>classplayrho_1_1d2_1_1part_1_1Compositor.html</anchorfile>
-      <anchor>a6c8858631b267d914adb8362445e3acf</anchor>
-      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, const Vector&lt; Length, N &gt; &amp;value) -&gt; decltype(arg.Translate(value))</arglist>
+      <anchor>aab6da22689fae9331ca99b5f85bf01cd</anchor>
+      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, const Length2 &amp;value) -&gt; std::enable_if_t&lt; detail::HasMemberTranslateV&lt; decltype(arg)&gt;, void &gt;</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>Translate</name>
+      <anchorfile>classplayrho_1_1d2_1_1part_1_1Compositor.html</anchorfile>
+      <anchor>a4084943308eccf86f9a5e6ed729e6a27</anchor>
+      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, const Length2 &amp;value) -&gt; std::enable_if_t&lt;!detail::HasMemberTranslateV&lt; decltype(arg)&gt;, void &gt;</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -22010,30 +22233,6 @@
       <name>Density</name>
       <anchorfile>structplayrho_1_1d2_1_1part_1_1DensityIs.html</anchorfile>
       <anchor>aae14e69382ccc79a0ea76754e092daa0</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::propagate_const::detect_element_type</name>
-    <filename>structplayrho_1_1propagate__const_1_1detect__element__type.html</filename>
-    <templarg></templarg>
-    <member kind="typedef">
-      <type>typename U::element_type</type>
-      <name>type</name>
-      <anchorfile>structplayrho_1_1propagate__const_1_1detect__element__type.html</anchorfile>
-      <anchor>af3d12645045d3a19d842208786d9197c</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::propagate_const::detect_element_type&lt; U * &gt;</name>
-    <filename>structplayrho_1_1propagate__const_1_1detect__element__type_3_01U_01_5_01_4.html</filename>
-    <templarg></templarg>
-    <member kind="typedef">
-      <type>U</type>
-      <name>type</name>
-      <anchorfile>structplayrho_1_1propagate__const_1_1detect__element__type_3_01U_01_5_01_4.html</anchorfile>
-      <anchor>a1ee75d29227ac0da9a813df72651270f</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -23267,32 +23466,6 @@
     </member>
   </compound>
   <compound kind="struct">
-    <name>std::equal_to&lt;::playrho::propagate_const&lt; T &gt; &gt;</name>
-    <filename>structstd_1_1equal__to_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</filename>
-    <templarg></templarg>
-    <member kind="typedef">
-      <type>::playrho::propagate_const&lt; T &gt;</type>
-      <name>first_argument_type</name>
-      <anchorfile>structstd_1_1equal__to_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>a2b829119be2f46b0165244d94ce7859b</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>::playrho::propagate_const&lt; T &gt;</type>
-      <name>second_argument_type</name>
-      <anchorfile>structstd_1_1equal__to_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>a14a97a8d56c6a2999dafd8884e7f0097</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>operator()</name>
-      <anchorfile>structstd_1_1equal__to_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>aa043e7c69ff6bdedfd16643bc7fa6369</anchor>
-      <arglist>(const ::playrho::propagate_const&lt; T &gt; &amp;pc1, const ::playrho::propagate_const&lt; T &gt; &amp;pc2) const</arglist>
-    </member>
-  </compound>
-  <compound kind="struct">
     <name>playrho::Filter</name>
     <filename>structplayrho_1_1Filter.html</filename>
     <member kind="typedef">
@@ -23889,58 +24062,6 @@
       <arglist></arglist>
     </member>
   </compound>
-  <compound kind="struct">
-    <name>std::greater&lt;::playrho::propagate_const&lt; T &gt; &gt;</name>
-    <filename>structstd_1_1greater_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</filename>
-    <templarg></templarg>
-    <member kind="typedef">
-      <type>::playrho::propagate_const&lt; T &gt;</type>
-      <name>first_argument_type</name>
-      <anchorfile>structstd_1_1greater_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>a12630f40fe29831f059a608cb6f49793</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>::playrho::propagate_const&lt; T &gt;</type>
-      <name>second_argument_type</name>
-      <anchorfile>structstd_1_1greater_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>af7a01529cbd4e7dbf30035352455313d</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>operator()</name>
-      <anchorfile>structstd_1_1greater_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>a88729a8b2243bd82738c01d4e2d893ee</anchor>
-      <arglist>(const ::playrho::propagate_const&lt; T &gt; &amp;pc1, const ::playrho::propagate_const&lt; T &gt; &amp;pc2) const</arglist>
-    </member>
-  </compound>
-  <compound kind="struct">
-    <name>std::greater_equal&lt;::playrho::propagate_const&lt; T &gt; &gt;</name>
-    <filename>structstd_1_1greater__equal_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</filename>
-    <templarg></templarg>
-    <member kind="typedef">
-      <type>::playrho::propagate_const&lt; T &gt;</type>
-      <name>first_argument_type</name>
-      <anchorfile>structstd_1_1greater__equal_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>a5a702725b0cd8e75534a5ca00a0a7fa0</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>::playrho::propagate_const&lt; T &gt;</type>
-      <name>second_argument_type</name>
-      <anchorfile>structstd_1_1greater__equal_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>ab01226a9e520ef10cf5dc5c88de51f5f</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>operator()</name>
-      <anchorfile>structstd_1_1greater__equal_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>ae126645508db6230758d63de577fbfa1</anchor>
-      <arglist>(const ::playrho::propagate_const&lt; T &gt; &amp;pc1, const ::playrho::propagate_const&lt; T &gt; &amp;pc2) const</arglist>
-    </member>
-  </compound>
   <compound kind="class">
     <name>playrho::GrowableStack</name>
     <filename>classplayrho_1_1GrowableStack.html</filename>
@@ -24085,120 +24206,6 @@
       <anchor>aa13ca1029751c40580cb84fb502a3905</anchor>
       <arglist>(const ::playrho::detail::IndexingNamedType&lt; T, Tag &gt; &amp;v) const noexcept</arglist>
     </member>
-  </compound>
-  <compound kind="struct">
-    <name>std::hash&lt;::playrho::propagate_const&lt; T &gt; &gt;</name>
-    <filename>structstd_1_1hash_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</filename>
-    <templarg></templarg>
-    <member kind="typedef">
-      <type>::playrho::propagate_const&lt; T &gt;</type>
-      <name>argument_type</name>
-      <anchorfile>structstd_1_1hash_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>afa901bafc516733e7e847aa086ab3f44</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>size_t</type>
-      <name>result_type</name>
-      <anchorfile>structstd_1_1hash_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>a4583af1f89801ec9adabc0260b38a646</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>operator()</name>
-      <anchorfile>structstd_1_1hash_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>ac3df24e63aac45530fae299ce15d905d</anchor>
-      <arglist>(const ::playrho::propagate_const&lt; T &gt; &amp;pc) const</arglist>
-    </member>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::detail::HasRotate</name>
-    <filename>structplayrho_1_1d2_1_1detail_1_1HasRotate.html</filename>
-    <templarg></templarg>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::detail::HasRotate&lt; T, std::void_t&lt; decltype(Rotate(std::declval&lt; T &amp; &gt;(), std::declval&lt; Angle &gt;()))&gt; &gt;</name>
-    <filename>structplayrho_1_1d2_1_1detail_1_1HasRotate_3_01T_00_01std_1_1void__t_3_01decltype_07Rotate_07std62a66955e9a2a172254d7811a6654ce0.html</filename>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::detail::HasScale</name>
-    <filename>structplayrho_1_1d2_1_1detail_1_1HasScale.html</filename>
-    <templarg></templarg>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::detail::HasScale&lt; T, std::void_t&lt; decltype(Scale(std::declval&lt; T &amp; &gt;(), std::declval&lt; Vec2 &gt;()))&gt; &gt;</name>
-    <filename>structplayrho_1_1d2_1_1detail_1_1HasScale_3_01T_00_01std_1_1void__t_3_01decltype_07Scale_07std_188533d5a8a51dfdbebad0f0683820ad9.html</filename>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::detail::HasSetDensity</name>
-    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetDensity.html</filename>
-    <templarg></templarg>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::detail::HasSetDensity&lt; T, std::void_t&lt; decltype(SetDensity(std::declval&lt; T &amp; &gt;(), std::declval&lt; NonNegative&lt; AreaDensity &gt;&gt;()))&gt; &gt;</name>
-    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetDensity_3_01T_00_01std_1_1void__t_3_01decltype_07SetDensi6334c25e1bf7072f2d48adeeb41f71b0.html</filename>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::detail::HasSetFilter</name>
-    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetFilter.html</filename>
-    <templarg></templarg>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::detail::HasSetFilter&lt; T, std::void_t&lt; decltype(SetFilter(std::declval&lt; T &amp; &gt;(), std::declval&lt; Filter &gt;()))&gt; &gt;</name>
-    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetFilter_3_01T_00_01std_1_1void__t_3_01decltype_07SetFilter7d56cfc383c1846af220c7b30e52463f.html</filename>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::detail::HasSetFriction</name>
-    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetFriction.html</filename>
-    <templarg></templarg>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::detail::HasSetFriction&lt; T, std::void_t&lt; decltype(SetFriction(std::declval&lt; T &amp; &gt;(), std::declval&lt; Real &gt;()))&gt; &gt;</name>
-    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetFriction_3_01T_00_01std_1_1void__t_3_01decltype_07SetFric25596caa4d6b3f4be1d7f3cda7f6d668.html</filename>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::detail::HasSetRestitution</name>
-    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetRestitution.html</filename>
-    <templarg></templarg>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::detail::HasSetRestitution&lt; T, std::void_t&lt; decltype(SetRestitution(std::declval&lt; T &amp; &gt;(), std::declval&lt; Real &gt;()))&gt; &gt;</name>
-    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetRestitution_3_01T_00_01std_1_1void__t_3_01decltype_07SetR1541d40bc3fa6b90327fac5a17478e7e.html</filename>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::detail::HasSetSensor</name>
-    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetSensor.html</filename>
-    <templarg></templarg>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::detail::HasSetSensor&lt; T, std::void_t&lt; decltype(SetSensor(std::declval&lt; T &amp; &gt;(), std::declval&lt; bool &gt;()))&gt; &gt;</name>
-    <filename>structplayrho_1_1d2_1_1detail_1_1HasSetSensor_3_01T_00_01std_1_1void__t_3_01decltype_07SetSensor8aafe605274f89b9262f371793a0934e.html</filename>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::detail::HasTranslate</name>
-    <filename>structplayrho_1_1d2_1_1detail_1_1HasTranslate.html</filename>
-    <templarg></templarg>
-    <templarg></templarg>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::detail::HasTranslate&lt; T, std::void_t&lt; decltype(Translate(std::declval&lt; T &amp; &gt;(), std::declval&lt; Length2 &gt;()))&gt; &gt;</name>
-    <filename>structplayrho_1_1d2_1_1detail_1_1HasTranslate_3_01T_00_01std_1_1void__t_3_01decltype_07Translateb66547472d2c171689f299e86e1970e0.html</filename>
-    <templarg></templarg>
   </compound>
   <compound kind="class">
     <name>playrho::detail::IndexingNamedType</name>
@@ -26363,6 +26370,101 @@
     </member>
   </compound>
   <compound kind="struct">
+    <name>playrho::d2::detail::JointConcept</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1JointConcept.html</filename>
+    <member kind="function" virtualness="virtual">
+      <type>virtual</type>
+      <name>~JointConcept</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointConcept.html</anchorfile>
+      <anchor>a1c5a8a98844adb2f419a1be847bc1665</anchor>
+      <arglist>()=default</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::unique_ptr&lt; JointConcept &gt;</type>
+      <name>Clone_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointConcept.html</anchorfile>
+      <anchor>aa99af4be5251d9d26106ac6233e24723</anchor>
+      <arglist>() const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual BodyID</type>
+      <name>GetBodyA_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointConcept.html</anchorfile>
+      <anchor>a3a38dedba75190adc4b712569133801f</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual BodyID</type>
+      <name>GetBodyB_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointConcept.html</anchorfile>
+      <anchor>ae5a6bbb17dd22075ad76d1e8cf187826</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual bool</type>
+      <name>GetCollideConnected_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointConcept.html</anchorfile>
+      <anchor>a4135f2875ee7c187345ee5fb5b65c623</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual const void *</type>
+      <name>GetData_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointConcept.html</anchorfile>
+      <anchor>a10d19f61ee668e2343166ac4f7d442d9</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void *</type>
+      <name>GetData_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointConcept.html</anchorfile>
+      <anchor>a4beffab5c5759b2fe68d8d571412c2dc</anchor>
+      <arglist>() noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual TypeID</type>
+      <name>GetType_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointConcept.html</anchorfile>
+      <anchor>aab07537ebafbba90f3f2930e8ebe7c6f</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>InitVelocity_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointConcept.html</anchorfile>
+      <anchor>a81bbf318bc5b407681147d88e8742061</anchor>
+      <arglist>(const Span&lt; BodyConstraint &gt; &amp;bodies, const StepConf &amp;step, const ConstraintSolverConf &amp;conf)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual bool</type>
+      <name>IsEqual_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointConcept.html</anchorfile>
+      <anchor>a55a5237798d1f0d1c6081e3792b30ea7</anchor>
+      <arglist>(const JointConcept &amp;other) const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual bool</type>
+      <name>ShiftOrigin_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointConcept.html</anchorfile>
+      <anchor>aec6970d4720cf2cb6c15e3dd3c9e4ec2</anchor>
+      <arglist>(const Length2 &amp;value) noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual bool</type>
+      <name>SolvePosition_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointConcept.html</anchorfile>
+      <anchor>a6a71209784aeb4505ce58b6b78f01304</anchor>
+      <arglist>(const Span&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual bool</type>
+      <name>SolveVelocity_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointConcept.html</anchorfile>
+      <anchor>ae014f8539baeb331c6df0edb9f99f5f1</anchor>
+      <arglist>(const Span&lt; BodyConstraint &gt; &amp;bodies, const StepConf &amp;step)=0</arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
     <name>playrho::d2::JointConf</name>
     <filename>structplayrho_1_1d2_1_1JointConf.html</filename>
     <member kind="variable">
@@ -26392,6 +26494,117 @@
       <anchorfile>structplayrho_1_1d2_1_1JointConf.html</anchorfile>
       <anchor>aaae24e0e3eadefda8d4145490e1c49ab</anchor>
       <arglist>(JointConf &amp;def, const Joint &amp;joint) noexcept</arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::d2::detail::JointModel</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1JointModel.html</filename>
+    <templarg></templarg>
+    <base>playrho::d2::detail::JointConcept</base>
+    <member kind="typedef">
+      <type>T</type>
+      <name>data_type</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointModel.html</anchorfile>
+      <anchor>a713351f1b38760a32289e1b295c8c60e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>JointModel</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointModel.html</anchorfile>
+      <anchor>afaef6d5dbdede9bb8ca8ba46c473592e</anchor>
+      <arglist>(U &amp;&amp;arg) noexcept(std::is_nothrow_constructible_v&lt; T, U &gt;)</arglist>
+    </member>
+    <member kind="function">
+      <type>std::unique_ptr&lt; JointConcept &gt;</type>
+      <name>Clone_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointModel.html</anchorfile>
+      <anchor>a6c8ac7e0d15de1a1b2babcac25e317a2</anchor>
+      <arglist>() const override</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>GetBodyA_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointModel.html</anchorfile>
+      <anchor>a33a24b51f24f08075284e10a05dea33e</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>GetBodyB_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointModel.html</anchorfile>
+      <anchor>af80c421d1231295461794a61d9081de3</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>GetCollideConnected_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointModel.html</anchorfile>
+      <anchor>a71a85fd9f7faaab78c34c7952b16abe5</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>const void *</type>
+      <name>GetData_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointModel.html</anchorfile>
+      <anchor>a284d7a6e260fb7702dd94efa92fc0c6e</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void *</type>
+      <name>GetData_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointModel.html</anchorfile>
+      <anchor>a3fccd0ee8c929c9f2cdcfecfb7aae377</anchor>
+      <arglist>() noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>TypeID</type>
+      <name>GetType_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointModel.html</anchorfile>
+      <anchor>a54b99f6c7415a9943fbecddd75f98549</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>InitVelocity_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointModel.html</anchorfile>
+      <anchor>ac17ce822c09a09cb1dff22ae7200547b</anchor>
+      <arglist>(const Span&lt; BodyConstraint &gt; &amp;bodies, const playrho::StepConf &amp;step, const ConstraintSolverConf &amp;conf) override</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsEqual_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointModel.html</anchorfile>
+      <anchor>a6c14c104fdd50b703a373b8bbea3c003</anchor>
+      <arglist>(const JointConcept &amp;other) const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>ShiftOrigin_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointModel.html</anchorfile>
+      <anchor>a346677ef52ca176c8eaec7b5f209b8bb</anchor>
+      <arglist>(const Length2 &amp;value) noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>SolvePosition_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointModel.html</anchorfile>
+      <anchor>a0410f5366614037bf09eec28b3c87adf</anchor>
+      <arglist>(const Span&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf) const override</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>SolveVelocity_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointModel.html</anchorfile>
+      <anchor>af8cb1886e613dfee5e7b7bcbc852512e</anchor>
+      <arglist>(const Span&lt; BodyConstraint &gt; &amp;bodies, const playrho::StepConf &amp;step) override</arglist>
+    </member>
+    <member kind="variable">
+      <type>data_type</type>
+      <name>data</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1JointModel.html</anchorfile>
+      <anchor>a67a986d1963ba030d07a366c6d42a880</anchor>
+      <arglist></arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -26433,58 +26646,6 @@
       <anchorfile>structplayrho_1_1detail_1_1LengthIndices.html</anchorfile>
       <anchor>ac0afe75cf5e5314e21346c52ca71209e</anchor>
       <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="struct">
-    <name>std::less&lt;::playrho::propagate_const&lt; T &gt; &gt;</name>
-    <filename>structstd_1_1less_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</filename>
-    <templarg></templarg>
-    <member kind="typedef">
-      <type>::playrho::propagate_const&lt; T &gt;</type>
-      <name>first_argument_type</name>
-      <anchorfile>structstd_1_1less_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>a8143cb633762fc8e5e9e84ab441b11b8</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>::playrho::propagate_const&lt; T &gt;</type>
-      <name>second_argument_type</name>
-      <anchorfile>structstd_1_1less_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>a31fd52988d1b1357d8b1d7e463d3ee48</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>operator()</name>
-      <anchorfile>structstd_1_1less_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>acd8e06415978eb2b7382e3d36031b201</anchor>
-      <arglist>(const ::playrho::propagate_const&lt; T &gt; &amp;pc1, const ::playrho::propagate_const&lt; T &gt; &amp;pc2) const</arglist>
-    </member>
-  </compound>
-  <compound kind="struct">
-    <name>std::less_equal&lt;::playrho::propagate_const&lt; T &gt; &gt;</name>
-    <filename>structstd_1_1less__equal_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</filename>
-    <templarg></templarg>
-    <member kind="typedef">
-      <type>::playrho::propagate_const&lt; T &gt;</type>
-      <name>first_argument_type</name>
-      <anchorfile>structstd_1_1less__equal_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>a9df4ba92ad59ccc8a3a8726bebee9120</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>::playrho::propagate_const&lt; T &gt;</type>
-      <name>second_argument_type</name>
-      <anchorfile>structstd_1_1less__equal_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>a185eff8c40cfa87872a7353648b1232c</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>operator()</name>
-      <anchorfile>structstd_1_1less__equal_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>a9485af953fb9a96dafdb836fff53e7e6</anchor>
-      <arglist>(const ::playrho::propagate_const&lt; T &gt; &amp;pc1, const ::playrho::propagate_const&lt; T &gt; &amp;pc2) const</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -27408,32 +27569,6 @@
       <anchorfile>structplayrho_1_1detail_1_1NoOpChecker.html</anchorfile>
       <anchor>a6d4ec425569538783b6ec47814bcfd52</anchor>
       <arglist>(const T &amp;) noexcept -&gt; const char *</arglist>
-    </member>
-  </compound>
-  <compound kind="struct">
-    <name>std::not_equal_to&lt;::playrho::propagate_const&lt; T &gt; &gt;</name>
-    <filename>structstd_1_1not__equal__to_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</filename>
-    <templarg></templarg>
-    <member kind="typedef">
-      <type>::playrho::propagate_const&lt; T &gt;</type>
-      <name>first_argument_type</name>
-      <anchorfile>structstd_1_1not__equal__to_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>af4bc512aaa38fecfa13357c696f334ba</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>::playrho::propagate_const&lt; T &gt;</type>
-      <name>second_argument_type</name>
-      <anchorfile>structstd_1_1not__equal__to_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>a1dab4d96b7c5a9d31629dcd53e91dea1</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>operator()</name>
-      <anchorfile>structstd_1_1not__equal__to_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html</anchorfile>
-      <anchor>a3e01748b7b7baed768d30093b8a5082e</anchor>
-      <arglist>(const ::playrho::propagate_const&lt; T &gt; &amp;pc1, const ::playrho::propagate_const&lt; T &gt; &amp;pc2) const</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -30327,633 +30462,6 @@
       <arglist>(PrismaticJointConf &amp;object, const Span&lt; BodyConstraint &gt; &amp;bodies, const StepConf &amp;step)</arglist>
     </member>
   </compound>
-  <compound kind="class">
-    <name>playrho::propagate_const</name>
-    <filename>classplayrho_1_1propagate__const.html</filename>
-    <templarg></templarg>
-    <class kind="struct">playrho::propagate_const::detect_element_type</class>
-    <class kind="struct">playrho::propagate_const::detect_element_type&lt; U * &gt;</class>
-    <member kind="typedef">
-      <type>typename detect_element_type&lt; T &gt;::type</type>
-      <name>element_type</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a7fb5beea7a0903b717a57f253e77c508</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR</type>
-      <name>propagate_const</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a26ef22eaed1dec1dc07bc12e8c253dc0</anchor>
-      <arglist>() noexcept(std::is_nothrow_default_constructible_v&lt; T &gt;)=default</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>propagate_const</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a0993417a563f12abef1aa3d37014ece8</anchor>
-      <arglist>(const propagate_const &amp;p)=delete</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR</type>
-      <name>propagate_const</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a1efe9e6b59c1f264343f043fd18aa57d</anchor>
-      <arglist>(propagate_const &amp;&amp;p) noexcept(std::is_nothrow_move_constructible_v&lt; T &gt;)=default</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR</type>
-      <name>propagate_const</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a8cf4aa0bb2120c185efdc3a215307ec4</anchor>
-      <arglist>(propagate_const&lt; U &gt; &amp;&amp;pu) noexcept(std::is_nothrow_constructible_v&lt; T, decltype(std::move(pu.t_))&gt;)</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR</type>
-      <name>propagate_const</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a8cf4aa0bb2120c185efdc3a215307ec4</anchor>
-      <arglist>(propagate_const&lt; U &gt; &amp;&amp;pu) noexcept(std::is_nothrow_constructible_v&lt; T, decltype(std::move(pu.t_))&gt;)</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR</type>
-      <name>propagate_const</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>ac47a6b091b6f92314e15bb6fa86a2960</anchor>
-      <arglist>(U &amp;&amp;u) noexcept(std::is_nothrow_constructible_v&lt; T, decltype(std::forward&lt; U &gt;(u))&gt;)</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR</type>
-      <name>propagate_const</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>ac47a6b091b6f92314e15bb6fa86a2960</anchor>
-      <arglist>(U &amp;&amp;u) noexcept(std::is_nothrow_constructible_v&lt; T, decltype(std::forward&lt; U &gt;(u))&gt;)</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR const element_type *</type>
-      <name>get</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>aadbb7ffd9134b2c4dc54a0a57bb52e83</anchor>
-      <arglist>() const noexcept(noexcept(get_pointer(t_)))</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR element_type *</type>
-      <name>get</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a92dd50d48f36c0150f696d59fd8a0fce</anchor>
-      <arglist>() noexcept(noexcept(get_pointer(t_)))</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR</type>
-      <name>operator bool</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a14306d40df03efc6890d162dd0feb48d</anchor>
-      <arglist>() const noexcept(noexcept(this-&gt;get()))</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR</type>
-      <name>operator const element_type *</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a7e186f88f084627cc142c2a1947a6038</anchor>
-      <arglist>() const noexcept(noexcept(this-&gt;get()))</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR</type>
-      <name>operator element_type *</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a7970867dff15bcafa353b4311da6e686</anchor>
-      <arglist>() noexcept(noexcept(this-&gt;get()))</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR const element_type &amp;</type>
-      <name>operator*</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a8840096652a73deaf0cb802e024be1c1</anchor>
-      <arglist>() const</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR element_type &amp;</type>
-      <name>operator*</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a6901d86bc9544280ec6f356e97cd4f13</anchor>
-      <arglist>() noexcept(noexcept(*(this-&gt;get())))</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR const element_type *</type>
-      <name>operator-&gt;</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>af9e3eba9b11b446ca136ee0684e99450</anchor>
-      <arglist>() const noexcept(noexcept(this-&gt;get()))</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR element_type *</type>
-      <name>operator-&gt;</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a8dee279c3bfb39d33ad8cb835ef9930d</anchor>
-      <arglist>() noexcept(noexcept(this-&gt;get()))</arglist>
-    </member>
-    <member kind="function">
-      <type>propagate_const &amp;</type>
-      <name>operator=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a7f96cbea6d722c4409b37e345028d5de</anchor>
-      <arglist>(const propagate_const &amp;p)=delete</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR propagate_const &amp;</type>
-      <name>operator=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>ad109d0e25c794ca8c9fc18a4aa192b3f</anchor>
-      <arglist>(propagate_const &amp;&amp;p) noexcept(std::is_nothrow_move_assignable_v&lt; T &gt;)=default</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR propagate_const &amp;</type>
-      <name>operator=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>add04917ce784d407534e51e28b3eff3a</anchor>
-      <arglist>(propagate_const&lt; U &gt; &amp;&amp;pu) noexcept(std::is_nothrow_assignable_v&lt; T, decltype(std::move(pu.t_))&gt;)</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR propagate_const &amp;</type>
-      <name>operator=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a38708e8c8d28bfd0aa2348e5c996484e</anchor>
-      <arglist>(U &amp;&amp;u) noexcept(std::is_nothrow_assignable_v&lt; T, decltype(std::forward&lt; U &gt;(u))&gt;)</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR void</type>
-      <name>swap</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>abf8693b9748fd0e808f51635cbfdad07</anchor>
-      <arglist>(propagate_const &amp;pt) noexcept(noexcept(swap(std::declval&lt; T &amp; &gt;(), std::declval&lt; T &amp; &gt;())))</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator!=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a712b71dc43cfc0a3378f6eac2d1a9324</anchor>
-      <arglist>(const propagate_const &amp;pt, const propagate_const&lt; U &gt; &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator!=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a3c5bf523cbee71c196f02d954667dee8</anchor>
-      <arglist>(const propagate_const &amp;pt, const U &amp;u)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator!=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a7267544ab955ce83d8a8924d8ab443b3</anchor>
-      <arglist>(const propagate_const &amp;pt, std::nullptr_t)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator!=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a79601ba19c7da6f92b4bf1fc67d23565</anchor>
-      <arglist>(const U &amp;u, const propagate_const &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator!=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a2809ca4cdfb1451dea741514170db043</anchor>
-      <arglist>(std::nullptr_t, const propagate_const &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&lt;</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a02b4d9e660b8ebfbdc3bce655b87431d</anchor>
-      <arglist>(const propagate_const &amp;pt, const propagate_const&lt; U &gt; &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&lt;</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a720da2b5b546d28f49faafb9eb7b446c</anchor>
-      <arglist>(const propagate_const &amp;pt, const U &amp;u)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&lt;</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a0720b5b29cd78bd82c0cc06986d42c0a</anchor>
-      <arglist>(const U &amp;u, const propagate_const &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&lt;=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a6d3ba7181fe850d3ffe05f67b71c2ca6</anchor>
-      <arglist>(const propagate_const &amp;pt, const propagate_const&lt; U &gt; &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&lt;=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a05946bbcf52c448d28a02291fd90d36d</anchor>
-      <arglist>(const propagate_const &amp;pt, const U &amp;u)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&lt;=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>aa4d1cc351ecdffc879bfbc7dc2cb80cd</anchor>
-      <arglist>(const U &amp;u, const propagate_const &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator==</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>ad29068fc55c6ad6450626ea2b0be1dfc</anchor>
-      <arglist>(const propagate_const &amp;pt, const propagate_const&lt; U &gt; &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator==</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a24db23f8bae872c2586ff5f7beaf9592</anchor>
-      <arglist>(const propagate_const &amp;pt, const U &amp;u)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator==</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>adc178dbef0e6b824c3125be1b4d31aeb</anchor>
-      <arglist>(const propagate_const &amp;pt, std::nullptr_t)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator==</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a49207e49ab174ee374b58c49b135c651</anchor>
-      <arglist>(const U &amp;u, const propagate_const &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator==</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>ad8f8f0f75cfcc16129a45a4f1a434498</anchor>
-      <arglist>(std::nullptr_t, const propagate_const &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&gt;</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a4cf48358b76db542b2984b67fc3b93d8</anchor>
-      <arglist>(const propagate_const &amp;pt, const propagate_const&lt; U &gt; &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&gt;</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a5569ced84823769be3a86367263a86ed</anchor>
-      <arglist>(const propagate_const &amp;pt, const U &amp;u)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&gt;</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>adfac4acf24171f8ce65e921a4cf3eba6</anchor>
-      <arglist>(const U &amp;u, const propagate_const &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&gt;=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>acb4ca25eb9b42a675126e56ec5a58641</anchor>
-      <arglist>(const propagate_const &amp;pt, const propagate_const&lt; U &gt; &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&gt;=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a0cffc090fd33aaacec4b5cf0f9a59787</anchor>
-      <arglist>(const propagate_const &amp;pt, const U &amp;u)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&gt;=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>ad8f54f9f2266b32999bf0d5e1dab5a10</anchor>
-      <arglist>(const U &amp;u, const propagate_const &amp;pu)</arglist>
-    </member>
-  </compound>
-  <compound kind="class">
-    <name>propagate_const&lt; std::unique_ptr&lt; Concept &gt; &gt;</name>
-    <filename>classplayrho_1_1propagate__const.html</filename>
-    <member kind="typedef">
-      <type>typename detect_element_type&lt; std::unique_ptr&lt; Concept &gt; &gt;::type</type>
-      <name>element_type</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a7fb5beea7a0903b717a57f253e77c508</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR</type>
-      <name>propagate_const</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a26ef22eaed1dec1dc07bc12e8c253dc0</anchor>
-      <arglist>() noexcept(std::is_nothrow_default_constructible_v&lt; std::unique_ptr&lt; Concept &gt; &gt;)=default</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>propagate_const</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a0993417a563f12abef1aa3d37014ece8</anchor>
-      <arglist>(const propagate_const &amp;p)=delete</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR</type>
-      <name>propagate_const</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a1efe9e6b59c1f264343f043fd18aa57d</anchor>
-      <arglist>(propagate_const &amp;&amp;p) noexcept(std::is_nothrow_move_constructible_v&lt; std::unique_ptr&lt; Concept &gt; &gt;)=default</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR</type>
-      <name>propagate_const</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a8cf4aa0bb2120c185efdc3a215307ec4</anchor>
-      <arglist>(propagate_const&lt; U &gt; &amp;&amp;pu) noexcept(std::is_nothrow_constructible_v&lt; std::unique_ptr&lt; Concept &gt;, decltype(std::move(pu.t_))&gt;)</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR</type>
-      <name>propagate_const</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a8cf4aa0bb2120c185efdc3a215307ec4</anchor>
-      <arglist>(propagate_const&lt; U &gt; &amp;&amp;pu) noexcept(std::is_nothrow_constructible_v&lt; std::unique_ptr&lt; Concept &gt;, decltype(std::move(pu.t_))&gt;)</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR</type>
-      <name>propagate_const</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>ac47a6b091b6f92314e15bb6fa86a2960</anchor>
-      <arglist>(U &amp;&amp;u) noexcept(std::is_nothrow_constructible_v&lt; std::unique_ptr&lt; Concept &gt;, decltype(std::forward&lt; U &gt;(u))&gt;)</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR</type>
-      <name>propagate_const</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>ac47a6b091b6f92314e15bb6fa86a2960</anchor>
-      <arglist>(U &amp;&amp;u) noexcept(std::is_nothrow_constructible_v&lt; std::unique_ptr&lt; Concept &gt;, decltype(std::forward&lt; U &gt;(u))&gt;)</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR const element_type *</type>
-      <name>get</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>aadbb7ffd9134b2c4dc54a0a57bb52e83</anchor>
-      <arglist>() const noexcept(noexcept(get_pointer(t_)))</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR element_type *</type>
-      <name>get</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a92dd50d48f36c0150f696d59fd8a0fce</anchor>
-      <arglist>() noexcept(noexcept(get_pointer(t_)))</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR</type>
-      <name>operator bool</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a14306d40df03efc6890d162dd0feb48d</anchor>
-      <arglist>() const noexcept(noexcept(this-&gt;get()))</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR</type>
-      <name>operator const element_type *</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a7e186f88f084627cc142c2a1947a6038</anchor>
-      <arglist>() const noexcept(noexcept(this-&gt;get()))</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR</type>
-      <name>operator element_type *</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a7970867dff15bcafa353b4311da6e686</anchor>
-      <arglist>() noexcept(noexcept(this-&gt;get()))</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR const element_type &amp;</type>
-      <name>operator*</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a8840096652a73deaf0cb802e024be1c1</anchor>
-      <arglist>() const</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR element_type &amp;</type>
-      <name>operator*</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a6901d86bc9544280ec6f356e97cd4f13</anchor>
-      <arglist>() noexcept(noexcept(*(this-&gt;get())))</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR const element_type *</type>
-      <name>operator-&gt;</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>af9e3eba9b11b446ca136ee0684e99450</anchor>
-      <arglist>() const noexcept(noexcept(this-&gt;get()))</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR element_type *</type>
-      <name>operator-&gt;</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a8dee279c3bfb39d33ad8cb835ef9930d</anchor>
-      <arglist>() noexcept(noexcept(this-&gt;get()))</arglist>
-    </member>
-    <member kind="function">
-      <type>propagate_const &amp;</type>
-      <name>operator=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a7f96cbea6d722c4409b37e345028d5de</anchor>
-      <arglist>(const propagate_const &amp;p)=delete</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR propagate_const &amp;</type>
-      <name>operator=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>ad109d0e25c794ca8c9fc18a4aa192b3f</anchor>
-      <arglist>(propagate_const &amp;&amp;p) noexcept(std::is_nothrow_move_assignable_v&lt; std::unique_ptr&lt; Concept &gt; &gt;)=default</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR propagate_const &amp;</type>
-      <name>operator=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>add04917ce784d407534e51e28b3eff3a</anchor>
-      <arglist>(propagate_const&lt; U &gt; &amp;&amp;pu) noexcept(std::is_nothrow_assignable_v&lt; std::unique_ptr&lt; Concept &gt;, decltype(std::move(pu.t_))&gt;)</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR propagate_const &amp;</type>
-      <name>operator=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a38708e8c8d28bfd0aa2348e5c996484e</anchor>
-      <arglist>(U &amp;&amp;u) noexcept(std::is_nothrow_assignable_v&lt; std::unique_ptr&lt; Concept &gt;, decltype(std::forward&lt; U &gt;(u))&gt;)</arglist>
-    </member>
-    <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR void</type>
-      <name>swap</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>abf8693b9748fd0e808f51635cbfdad07</anchor>
-      <arglist>(propagate_const &amp;pt) noexcept(noexcept(swap(std::declval&lt; std::unique_ptr&lt; Concept &gt; &amp; &gt;(), std::declval&lt; std::unique_ptr&lt; Concept &gt; &amp; &gt;())))</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator!=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a712b71dc43cfc0a3378f6eac2d1a9324</anchor>
-      <arglist>(const propagate_const &amp;pt, const propagate_const&lt; U &gt; &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator!=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a3c5bf523cbee71c196f02d954667dee8</anchor>
-      <arglist>(const propagate_const &amp;pt, const U &amp;u)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator!=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a7267544ab955ce83d8a8924d8ab443b3</anchor>
-      <arglist>(const propagate_const &amp;pt, std::nullptr_t)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator!=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a79601ba19c7da6f92b4bf1fc67d23565</anchor>
-      <arglist>(const U &amp;u, const propagate_const &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator!=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a2809ca4cdfb1451dea741514170db043</anchor>
-      <arglist>(std::nullptr_t, const propagate_const &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&lt;</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a02b4d9e660b8ebfbdc3bce655b87431d</anchor>
-      <arglist>(const propagate_const &amp;pt, const propagate_const&lt; U &gt; &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&lt;</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a720da2b5b546d28f49faafb9eb7b446c</anchor>
-      <arglist>(const propagate_const &amp;pt, const U &amp;u)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&lt;</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a0720b5b29cd78bd82c0cc06986d42c0a</anchor>
-      <arglist>(const U &amp;u, const propagate_const &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&lt;=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a6d3ba7181fe850d3ffe05f67b71c2ca6</anchor>
-      <arglist>(const propagate_const &amp;pt, const propagate_const&lt; U &gt; &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&lt;=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a05946bbcf52c448d28a02291fd90d36d</anchor>
-      <arglist>(const propagate_const &amp;pt, const U &amp;u)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&lt;=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>aa4d1cc351ecdffc879bfbc7dc2cb80cd</anchor>
-      <arglist>(const U &amp;u, const propagate_const &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator==</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>ad29068fc55c6ad6450626ea2b0be1dfc</anchor>
-      <arglist>(const propagate_const &amp;pt, const propagate_const&lt; U &gt; &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator==</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a24db23f8bae872c2586ff5f7beaf9592</anchor>
-      <arglist>(const propagate_const &amp;pt, const U &amp;u)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator==</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>adc178dbef0e6b824c3125be1b4d31aeb</anchor>
-      <arglist>(const propagate_const &amp;pt, std::nullptr_t)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator==</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a49207e49ab174ee374b58c49b135c651</anchor>
-      <arglist>(const U &amp;u, const propagate_const &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator==</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>ad8f8f0f75cfcc16129a45a4f1a434498</anchor>
-      <arglist>(std::nullptr_t, const propagate_const &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&gt;</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a4cf48358b76db542b2984b67fc3b93d8</anchor>
-      <arglist>(const propagate_const &amp;pt, const propagate_const&lt; U &gt; &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&gt;</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a5569ced84823769be3a86367263a86ed</anchor>
-      <arglist>(const propagate_const &amp;pt, const U &amp;u)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&gt;</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>adfac4acf24171f8ce65e921a4cf3eba6</anchor>
-      <arglist>(const U &amp;u, const propagate_const &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&gt;=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>acb4ca25eb9b42a675126e56ec5a58641</anchor>
-      <arglist>(const propagate_const &amp;pt, const propagate_const&lt; U &gt; &amp;pu)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&gt;=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>a0cffc090fd33aaacec4b5cf0f9a59787</anchor>
-      <arglist>(const propagate_const &amp;pt, const U &amp;u)</arglist>
-    </member>
-    <member kind="friend" protection="private">
-      <type>friend PROPAGATE_CONST_CONSTEXPR bool</type>
-      <name>operator&gt;=</name>
-      <anchorfile>classplayrho_1_1propagate__const.html</anchorfile>
-      <anchor>ad8f54f9f2266b32999bf0d5e1dab5a10</anchor>
-      <arglist>(const U &amp;u, const propagate_const &amp;pu)</arglist>
-    </member>
-  </compound>
   <compound kind="struct">
     <name>playrho::d2::PulleyJointConf</name>
     <filename>structplayrho_1_1d2_1_1PulleyJointConf.html</filename>
@@ -32426,9 +31934,348 @@
     </member>
   </compound>
   <compound kind="struct">
+    <name>playrho::d2::detail::ShapeConcept</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</filename>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::unique_ptr&lt; ShapeConcept &gt;</type>
+      <name>Clone_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>a2caae38c76403971530cbd4207d05691</anchor>
+      <arglist>() const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual DistanceProxy</type>
+      <name>GetChild_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>ad548aa03e30e916b6ec7cdad08cad357</anchor>
+      <arglist>(ChildCounter index) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual ChildCounter</type>
+      <name>GetChildCount_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>ab7e89658228847c3cf3c2fc5137ce82c</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual const void *</type>
+      <name>GetData_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>a8811082995f7df29b8a5792159c329b2</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual NonNegative&lt; AreaDensity &gt;</type>
+      <name>GetDensity_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>a7941eb8955bf2dc1b18b90fa69bdc9eb</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual Filter</type>
+      <name>GetFilter_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>af55c65f23a1edbb079d84f93e410a49e</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual NonNegativeFF&lt; Real &gt;</type>
+      <name>GetFriction_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>a76921e62f530d9eb9080b5174e3d23bd</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual MassData</type>
+      <name>GetMassData_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>ae5df229b170744c75861b4eb48b538d2</anchor>
+      <arglist>() const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual Real</type>
+      <name>GetRestitution_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>a6dae1893dc19eef6f8b461e87a0d0e18</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual TypeID</type>
+      <name>GetType_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>aefe28ab40e71d769a7f6f50bc064d150</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual NonNegative&lt; Length &gt;</type>
+      <name>GetVertexRadius_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>ab406c23aeb216f89519e2cf83c4d4cce</anchor>
+      <arglist>(ChildCounter idx) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual bool</type>
+      <name>IsEqual_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>ac561d6c466046de3e358cfb80464df94</anchor>
+      <arglist>(const ShapeConcept &amp;other) const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual bool</type>
+      <name>IsSensor_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>acaa3e8e6d2f9f4d5785b2a91c8d0a417</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>Rotate_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>af99c9af7c208bf8bc6da3f0779c8685f</anchor>
+      <arglist>(const UnitVec &amp;value)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>Scale_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>abad151bfe3cb5ef14b12bb4641670a23</anchor>
+      <arglist>(const Vec2 &amp;value)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetDensity_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>aed3d64c5707384e52d227f378c4e0ac4</anchor>
+      <arglist>(NonNegative&lt; AreaDensity &gt;) noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetFilter_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>af3a058a54c971160edd1d2cc32798b6e</anchor>
+      <arglist>(Filter value)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetFriction_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>a72d3663dda81507b297cc05a6f492c99</anchor>
+      <arglist>(NonNegative&lt; Real &gt; value)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetRestitution_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>a875338d325a906af9cd133343985f45a</anchor>
+      <arglist>(Real value)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetSensor_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>ad8c016a04c1038fb5145ea0e3d043d77</anchor>
+      <arglist>(bool value)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetVertexRadius_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>a9435967878a0bb48ffadcbdc2161f2e2</anchor>
+      <arglist>(ChildCounter idx, NonNegative&lt; Length &gt; value)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>Translate_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html</anchorfile>
+      <anchor>a42a9a4f2d2c236accfbc44b574468d90</anchor>
+      <arglist>(const Length2 &amp;value)=0</arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
     <name>playrho::d2::ShapeConf</name>
     <filename>structplayrho_1_1d2_1_1ShapeConf.html</filename>
     <base>ShapeBuilder&lt; ShapeConf &gt;</base>
+  </compound>
+  <compound kind="struct">
+    <name>playrho::d2::detail::ShapeModel</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</filename>
+    <templarg></templarg>
+    <base>playrho::d2::detail::ShapeConcept</base>
+    <member kind="typedef">
+      <type>T</type>
+      <name>data_type</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>ae6bb9f895358122b0869a38a60cda8b6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>ShapeModel</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>abdd2f214c16effa849b4659aa8133718</anchor>
+      <arglist>(U &amp;&amp;arg) noexcept(std::is_nothrow_constructible_v&lt; T, U &gt;)</arglist>
+    </member>
+    <member kind="function">
+      <type>std::unique_ptr&lt; ShapeConcept &gt;</type>
+      <name>Clone_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>acd91a16381bae4cc621c60de8206db3f</anchor>
+      <arglist>() const override</arglist>
+    </member>
+    <member kind="function">
+      <type>DistanceProxy</type>
+      <name>GetChild_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>a034f1b1ca8493afd6754e0747e0f7f4d</anchor>
+      <arglist>(ChildCounter index) const override</arglist>
+    </member>
+    <member kind="function">
+      <type>ChildCounter</type>
+      <name>GetChildCount_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>abd35bda5eeb0f9d0b40812cb0c06be76</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>const void *</type>
+      <name>GetData_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>af94fa9b4c2c2a1765499ab15fcb22979</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>NonNegative&lt; AreaDensity &gt;</type>
+      <name>GetDensity_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>ad70089b5b342bc16ff94ea2446f62ca0</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>Filter</type>
+      <name>GetFilter_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>a18b801707e0e4a2c914cfa122542f755</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>NonNegativeFF&lt; Real &gt;</type>
+      <name>GetFriction_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>a8f6115fdb5c01b82f108264c5b6d5456</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>MassData</type>
+      <name>GetMassData_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>ab6237f9b81f720eb116a44ab32e5d8b1</anchor>
+      <arglist>() const override</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetRestitution_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>a483944deeadece45b3a03f1c77d5c0f9</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>TypeID</type>
+      <name>GetType_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>a1c2f33349c0f2a8f370544e477715d52</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>NonNegative&lt; Length &gt;</type>
+      <name>GetVertexRadius_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>a66ee178e68e315ad314b35ce54f187f1</anchor>
+      <arglist>(ChildCounter idx) const override</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsEqual_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>a82bc0d7fdfcd916f75ab7f7ab2c034b3</anchor>
+      <arglist>(const ShapeConcept &amp;other) const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsSensor_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>ac1ce9799721b87363ca6519261cebec7</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Rotate_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>acf74361365c52acfdbed531530c25ce5</anchor>
+      <arglist>(const UnitVec &amp;value) override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Scale_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>aa1f556cc50674ac2cc1094aa5523f127</anchor>
+      <arglist>(const Vec2 &amp;value) override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetDensity_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>ad8a5e35fdaf8b1f055c73268325b6be3</anchor>
+      <arglist>(NonNegative&lt; AreaDensity &gt; value) noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetFilter_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>a12cdd213b5ee40fc8a24bab28f47aac0</anchor>
+      <arglist>(Filter value) override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetFriction_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>af321f5a67d781df63dcd2c8d215bfaf2</anchor>
+      <arglist>(NonNegative&lt; Real &gt; value) override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetRestitution_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>a37802a2472912a9e2015157884c3c2fa</anchor>
+      <arglist>(Real value) override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetSensor_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>ade0045db72b4ced5f7134434cfca7f71</anchor>
+      <arglist>(bool value) override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetVertexRadius_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>a4554660ab3cadff3005e6602da250683</anchor>
+      <arglist>(ChildCounter idx, NonNegative&lt; Length &gt; value) override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Translate_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>a5e1adbff8960683de9b3a624392b3da5</anchor>
+      <arglist>(const Length2 &amp;value) override</arglist>
+    </member>
+    <member kind="variable">
+      <type>data_type</type>
+      <name>data</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1ShapeModel.html</anchorfile>
+      <anchor>a0f7b8c52d21e16a4fb871a39f40c2877</anchor>
+      <arglist></arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>playrho::d2::Simplex</name>
@@ -39893,7 +39740,7 @@
       <type>World &amp;</type>
       <name>operator=</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a80fdc196bf1ad5cef0f5dd7aab03d21b</anchor>
+      <anchor>a4b2d37998661b12ac6ef32c46b59d81e</anchor>
       <arglist>(const World &amp;other)</arglist>
     </member>
     <member kind="function">
@@ -40124,8 +39971,8 @@
       <type>friend void</type>
       <name>SetBeginContactListener</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>addc8e24889da95acff65d1b87ba80329</anchor>
-      <arglist>(World &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>ad8ceb871bdce878a9245625853a60f07</anchor>
+      <arglist>(World &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend void</type>
@@ -40145,15 +39992,15 @@
       <type>friend void</type>
       <name>SetDetachListener</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>acca6db6d8a025df678eafddb7d7e4242</anchor>
-      <arglist>(World &amp;world, AssociationListener listener) noexcept</arglist>
+      <anchor>ad0ed9315bf38921f8ea330cfbcad318c</anchor>
+      <arglist>(World &amp;world, BodyShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend void</type>
       <name>SetEndContactListener</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a11effa8e921cee61461fecea9aea9798</anchor>
-      <arglist>(World &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>a971da02f73c79a4e5a926173fd629d3d</anchor>
+      <arglist>(World &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend void</type>
@@ -40166,22 +40013,22 @@
       <type>friend void</type>
       <name>SetJointDestructionListener</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ac7c0a752231914fe102308d0619acdc7</anchor>
-      <arglist>(World &amp;world, JointListener listener) noexcept</arglist>
+      <anchor>aa3f54eb44df4b7664524668ec28195e6</anchor>
+      <arglist>(World &amp;world, JointFunction listener) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend void</type>
       <name>SetPostSolveContactListener</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a62ff5ab2e55b0ef98f17a01ceace0852</anchor>
-      <arglist>(World &amp;world, ImpulsesContactListener listener) noexcept</arglist>
+      <anchor>a7447c164a2e23733203b8b3d95042006</anchor>
+      <arglist>(World &amp;world, ContactImpulsesFunction listener) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend void</type>
       <name>SetPreSolveContactListener</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a7e43fa1fafe9bc8f77cb8d15b084c370</anchor>
-      <arglist>(World &amp;world, ManifoldContactListener listener) noexcept</arglist>
+      <anchor>a191148c9d76df25f534fda1020558fab</anchor>
+      <arglist>(World &amp;world, ContactManifoldFunction listener) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend void</type>
@@ -40194,8 +40041,8 @@
       <type>friend void</type>
       <name>SetShapeDestructionListener</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a8ea961b569d910e2f22ef8324e14ba33</anchor>
-      <arglist>(World &amp;world, ShapeListener listener) noexcept</arglist>
+      <anchor>a4daad38da20300a81e6820182a94571a</anchor>
+      <arglist>(World &amp;world, ShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend void</type>
@@ -42341,6 +42188,689 @@
     </member>
   </compound>
   <compound kind="struct">
+    <name>playrho::d2::detail::WorldConcept</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</filename>
+    <member kind="function" virtualness="virtual">
+      <type>virtual</type>
+      <name>~WorldConcept</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>aec5c4473f57309d216746e90b0ecfd9a</anchor>
+      <arglist>()=default</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetShapeDestructionListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>af9831546ba3c20dab49a6d808ad0e712</anchor>
+      <arglist>(ShapeFunction listener) noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetDetachListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a1a4554b469aced5ca981ffa4eb456010</anchor>
+      <arglist>(BodyShapeFunction listener) noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetJointDestructionListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>ad674dc876c88d98267597b0b9ec95723</anchor>
+      <arglist>(JointFunction listener) noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetBeginContactListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a510830aae7a3c424e4a2dbae60c0eea0</anchor>
+      <arglist>(ContactFunction listener) noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetEndContactListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a9d91f9d23857a405dd5a14d4a8ab0945</anchor>
+      <arglist>(ContactFunction listener) noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetPreSolveContactListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a08f52ba52ae7a13ff5e4c8fd07a21284</anchor>
+      <arglist>(ContactManifoldFunction listener) noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetPostSolveContactListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a1c2ecd1bb64f5d37bd7f60dd0388dec8</anchor>
+      <arglist>(ContactImpulsesFunction listener) noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::unique_ptr&lt; WorldConcept &gt;</type>
+      <name>Clone_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a183eac98bba42619cb25e4afdfe90ea2</anchor>
+      <arglist>() const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual TypeID</type>
+      <name>GetType_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a85824bab3d5cd30f7c9deef07410a1ba</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual const void *</type>
+      <name>GetData_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a1d674cb61b9a5a9fcaf5bf918339fe6e</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void *</type>
+      <name>GetData_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a768122118f542eeffc1515b0e075a5e2</anchor>
+      <arglist>() noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::optional&lt; pmr::StatsResource::Stats &gt;</type>
+      <name>GetResourceStats_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a5ee42ab8f5b19cb0c82f4667ab3abc13</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>Clear_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>aa29540e84ebf69fb453cf366ce7e6f65</anchor>
+      <arglist>() noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual StepStats</type>
+      <name>Step_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a88599a583b4f95cd6511a62a98b42002</anchor>
+      <arglist>(const StepConf &amp;conf)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual bool</type>
+      <name>IsStepComplete_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>ac8e4d655a8815ac498f416b277d122e2</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual bool</type>
+      <name>GetSubStepping_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>ad34d5cd67320a33104f9921f14b97a93</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetSubStepping_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a5471799959eff6dbf05a9e8fb91c7919</anchor>
+      <arglist>(bool flag) noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual const DynamicTree &amp;</type>
+      <name>GetTree_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a19aa81fa76f54b2bc7cfee36951110fc</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual bool</type>
+      <name>IsLocked_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a4f6c0b0d12b26f515a1c2a3f6ca62761</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>ShiftOrigin_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a7bf0f69516433e0859869263aa0c72ab</anchor>
+      <arglist>(const Length2 &amp;newOrigin)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual Interval&lt; Positive&lt; Length &gt; &gt;</type>
+      <name>GetVertexRadiusInterval_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>af15a56891b79fe1238255c07a4e2b84e</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual Frequency</type>
+      <name>GetInvDeltaTime_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a894b5a309e3b99dd847d0c950198c856</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual BodyCounter</type>
+      <name>GetBodyRange_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>aed6790009c23a0414cdd038f52cc7fee</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::vector&lt; BodyID &gt;</type>
+      <name>GetBodies_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a2440b3a821b548a9f18319dd36b12c6c</anchor>
+      <arglist>() const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::vector&lt; BodyID &gt;</type>
+      <name>GetBodiesForProxies_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a7490e431c62e6b5b87b91d718b0cff7b</anchor>
+      <arglist>() const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual BodyID</type>
+      <name>CreateBody_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>aa276656bdf34d045190567697f5b16dc</anchor>
+      <arglist>(const Body &amp;body)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual Body</type>
+      <name>GetBody_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>af72c5c5c801eb4976ee8ffcf85b7d04d</anchor>
+      <arglist>(BodyID id) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetBody_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>af65755a4e6ec5b297de5377676bb8d5d</anchor>
+      <arglist>(BodyID id, const Body &amp;value)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>Destroy_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>af73d1c570a5288966ff5c2e178f984ad</anchor>
+      <arglist>(BodyID id)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::vector&lt; std::pair&lt; BodyID, JointID &gt; &gt;</type>
+      <name>GetJoints_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a038e4fbbfaf9ca1624c9dd5e8511a3fd</anchor>
+      <arglist>(BodyID id) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::vector&lt; std::tuple&lt; ContactKey, ContactID &gt; &gt;</type>
+      <name>GetContacts_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>ab32df9fae7c003d4594e42b3177efcc7</anchor>
+      <arglist>(BodyID id) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::vector&lt; ShapeID &gt;</type>
+      <name>GetShapes_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a43f76ed5b5ca4939ea9f552fa0926c58</anchor>
+      <arglist>(BodyID id) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual JointCounter</type>
+      <name>GetJointRange_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>acd1f71fa599819b900bc585a5ee5832a</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::vector&lt; JointID &gt;</type>
+      <name>GetJoints_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>aa7f4355f7e8290829a12b8302a301ecb</anchor>
+      <arglist>() const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual JointID</type>
+      <name>CreateJoint_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a03139c5d2d49ba33b884e1d2db8d4a52</anchor>
+      <arglist>(const Joint &amp;def)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual Joint</type>
+      <name>GetJoint_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>ab3bd8c2d0dce013c04e38970b17bb786</anchor>
+      <arglist>(JointID id) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetJoint_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>aac35ee5001ff3b80959d567961bdfe15</anchor>
+      <arglist>(JointID id, const Joint &amp;def)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>Destroy_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a24d13f12f7047246fa0ffface93cb923</anchor>
+      <arglist>(JointID id)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual ShapeCounter</type>
+      <name>GetShapeRange_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a29dc22d0bdf7e135a51f484d35b56ee8</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual ShapeID</type>
+      <name>CreateShape_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>ae73bb67d717eafe353690a58ad61c74a</anchor>
+      <arglist>(const Shape &amp;def)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual Shape</type>
+      <name>GetShape_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>af57cc37fa43dc88e0d71e53b907e26b9</anchor>
+      <arglist>(ShapeID id) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetShape_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a7210bf9e2213a4cc92cfded4f02bd09b</anchor>
+      <arglist>(ShapeID id, const Shape &amp;def)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>Destroy_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a6d98af44110af2099ecd39b421030c9e</anchor>
+      <arglist>(ShapeID id)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual ContactCounter</type>
+      <name>GetContactRange_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>ab769e7408b0d65279d80feef5906ba42</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::vector&lt; KeyedContactID &gt;</type>
+      <name>GetContacts_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a42a72fe0f356c1663842693bbf5d93e4</anchor>
+      <arglist>() const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual Contact</type>
+      <name>GetContact_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a54ed811730aef904b77d3937517d8114</anchor>
+      <arglist>(ContactID id) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetContact_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>aaea56d49977d63ca60efb0c8ab48dbbc</anchor>
+      <arglist>(ContactID id, const Contact &amp;value)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual Manifold</type>
+      <name>GetManifold_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>aa08dcec093bd0035d8cfc081301dfe55</anchor>
+      <arglist>(ContactID id) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetShapeDestructionListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>af9831546ba3c20dab49a6d808ad0e712</anchor>
+      <arglist>(ShapeFunction listener) noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetDetachListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a1a4554b469aced5ca981ffa4eb456010</anchor>
+      <arglist>(BodyShapeFunction listener) noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetJointDestructionListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>ad674dc876c88d98267597b0b9ec95723</anchor>
+      <arglist>(JointFunction listener) noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetBeginContactListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a510830aae7a3c424e4a2dbae60c0eea0</anchor>
+      <arglist>(ContactFunction listener) noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetEndContactListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a9d91f9d23857a405dd5a14d4a8ab0945</anchor>
+      <arglist>(ContactFunction listener) noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetPreSolveContactListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a08f52ba52ae7a13ff5e4c8fd07a21284</anchor>
+      <arglist>(ContactManifoldFunction listener) noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetPostSolveContactListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a1c2ecd1bb64f5d37bd7f60dd0388dec8</anchor>
+      <arglist>(ContactImpulsesFunction listener) noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::unique_ptr&lt; WorldConcept &gt;</type>
+      <name>Clone_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a183eac98bba42619cb25e4afdfe90ea2</anchor>
+      <arglist>() const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual TypeID</type>
+      <name>GetType_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a85824bab3d5cd30f7c9deef07410a1ba</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual const void *</type>
+      <name>GetData_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a1d674cb61b9a5a9fcaf5bf918339fe6e</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void *</type>
+      <name>GetData_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a768122118f542eeffc1515b0e075a5e2</anchor>
+      <arglist>() noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::optional&lt; pmr::StatsResource::Stats &gt;</type>
+      <name>GetResourceStats_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a5ee42ab8f5b19cb0c82f4667ab3abc13</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>Clear_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>aa29540e84ebf69fb453cf366ce7e6f65</anchor>
+      <arglist>() noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual StepStats</type>
+      <name>Step_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a88599a583b4f95cd6511a62a98b42002</anchor>
+      <arglist>(const StepConf &amp;conf)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual bool</type>
+      <name>IsStepComplete_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>ac8e4d655a8815ac498f416b277d122e2</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual bool</type>
+      <name>GetSubStepping_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>ad34d5cd67320a33104f9921f14b97a93</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetSubStepping_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a5471799959eff6dbf05a9e8fb91c7919</anchor>
+      <arglist>(bool flag) noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual const DynamicTree &amp;</type>
+      <name>GetTree_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a19aa81fa76f54b2bc7cfee36951110fc</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual bool</type>
+      <name>IsLocked_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a4f6c0b0d12b26f515a1c2a3f6ca62761</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>ShiftOrigin_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a7bf0f69516433e0859869263aa0c72ab</anchor>
+      <arglist>(const Length2 &amp;newOrigin)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual Interval&lt; Positive&lt; Length &gt; &gt;</type>
+      <name>GetVertexRadiusInterval_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>af15a56891b79fe1238255c07a4e2b84e</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual Frequency</type>
+      <name>GetInvDeltaTime_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a894b5a309e3b99dd847d0c950198c856</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual BodyCounter</type>
+      <name>GetBodyRange_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>aed6790009c23a0414cdd038f52cc7fee</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::vector&lt; BodyID &gt;</type>
+      <name>GetBodies_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a2440b3a821b548a9f18319dd36b12c6c</anchor>
+      <arglist>() const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::vector&lt; BodyID &gt;</type>
+      <name>GetBodiesForProxies_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a7490e431c62e6b5b87b91d718b0cff7b</anchor>
+      <arglist>() const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual BodyID</type>
+      <name>CreateBody_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>aa276656bdf34d045190567697f5b16dc</anchor>
+      <arglist>(const Body &amp;body)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual Body</type>
+      <name>GetBody_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>af72c5c5c801eb4976ee8ffcf85b7d04d</anchor>
+      <arglist>(BodyID id) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetBody_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>af65755a4e6ec5b297de5377676bb8d5d</anchor>
+      <arglist>(BodyID id, const Body &amp;value)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>Destroy_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>af73d1c570a5288966ff5c2e178f984ad</anchor>
+      <arglist>(BodyID id)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::vector&lt; std::pair&lt; BodyID, JointID &gt; &gt;</type>
+      <name>GetJoints_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a038e4fbbfaf9ca1624c9dd5e8511a3fd</anchor>
+      <arglist>(BodyID id) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::vector&lt; std::tuple&lt; ContactKey, ContactID &gt; &gt;</type>
+      <name>GetContacts_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>ab32df9fae7c003d4594e42b3177efcc7</anchor>
+      <arglist>(BodyID id) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::vector&lt; ShapeID &gt;</type>
+      <name>GetShapes_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a43f76ed5b5ca4939ea9f552fa0926c58</anchor>
+      <arglist>(BodyID id) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual JointCounter</type>
+      <name>GetJointRange_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>acd1f71fa599819b900bc585a5ee5832a</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::vector&lt; JointID &gt;</type>
+      <name>GetJoints_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>aa7f4355f7e8290829a12b8302a301ecb</anchor>
+      <arglist>() const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual JointID</type>
+      <name>CreateJoint_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a03139c5d2d49ba33b884e1d2db8d4a52</anchor>
+      <arglist>(const Joint &amp;def)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual Joint</type>
+      <name>GetJoint_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>ab3bd8c2d0dce013c04e38970b17bb786</anchor>
+      <arglist>(JointID id) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetJoint_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>aac35ee5001ff3b80959d567961bdfe15</anchor>
+      <arglist>(JointID id, const Joint &amp;def)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>Destroy_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a24d13f12f7047246fa0ffface93cb923</anchor>
+      <arglist>(JointID id)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual ShapeCounter</type>
+      <name>GetShapeRange_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a29dc22d0bdf7e135a51f484d35b56ee8</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual ShapeID</type>
+      <name>CreateShape_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>ae73bb67d717eafe353690a58ad61c74a</anchor>
+      <arglist>(const Shape &amp;def)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual Shape</type>
+      <name>GetShape_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>af57cc37fa43dc88e0d71e53b907e26b9</anchor>
+      <arglist>(ShapeID id) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetShape_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a7210bf9e2213a4cc92cfded4f02bd09b</anchor>
+      <arglist>(ShapeID id, const Shape &amp;def)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>Destroy_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a6d98af44110af2099ecd39b421030c9e</anchor>
+      <arglist>(ShapeID id)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual ContactCounter</type>
+      <name>GetContactRange_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>ab769e7408b0d65279d80feef5906ba42</anchor>
+      <arglist>() const noexcept=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::vector&lt; KeyedContactID &gt;</type>
+      <name>GetContacts_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a42a72fe0f356c1663842693bbf5d93e4</anchor>
+      <arglist>() const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual Contact</type>
+      <name>GetContact_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>a54ed811730aef904b77d3937517d8114</anchor>
+      <arglist>(ContactID id) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual void</type>
+      <name>SetContact_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>aaea56d49977d63ca60efb0c8ab48dbbc</anchor>
+      <arglist>(ContactID id, const Contact &amp;value)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual Manifold</type>
+      <name>GetManifold_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldConcept.html</anchorfile>
+      <anchor>aa08dcec093bd0035d8cfc081301dfe55</anchor>
+      <arglist>(ContactID id) const =0</arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
     <name>playrho::d2::WorldConf</name>
     <filename>structplayrho_1_1d2_1_1WorldConf.html</filename>
     <member kind="function">
@@ -42608,6 +43138,705 @@
       <arglist>(size_type index) const noexcept</arglist>
     </member>
   </compound>
+  <compound kind="struct">
+    <name>playrho::d2::detail::WorldModel</name>
+    <filename>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</filename>
+    <templarg></templarg>
+    <base>playrho::d2::detail::WorldConcept</base>
+    <member kind="typedef">
+      <type>T</type>
+      <name>data_type</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aaafdf8bf05e7922fdf0c0ef856d57529</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>WorldModel</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>accc8428cc7e1d608077d0a7c1511822c</anchor>
+      <arglist>(U &amp;&amp;arg) noexcept(std::is_nothrow_constructible_v&lt; T, U &gt;)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetShapeDestructionListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a3905d225202af4696288314ad137cca6</anchor>
+      <arglist>(ShapeFunction listener) noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetDetachListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ab23fc4dc5532ab9eb2fc44cd4d038b4e</anchor>
+      <arglist>(BodyShapeFunction listener) noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetJointDestructionListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a68baa72c33aee6d31d69964513ab6e0f</anchor>
+      <arglist>(JointFunction listener) noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetBeginContactListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>abd35210073eac29e6eba6df627d8fe40</anchor>
+      <arglist>(ContactFunction listener) noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetEndContactListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>abb3cdcb27061c7c6dbb2c13396814382</anchor>
+      <arglist>(ContactFunction listener) noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetPreSolveContactListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ae39f73ce1dc52aebc234c4dff61fa692</anchor>
+      <arglist>(ContactManifoldFunction listener) noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetPostSolveContactListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a6d18c859c6a51f4f5768f0a648135324</anchor>
+      <arglist>(ContactImpulsesFunction listener) noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>std::unique_ptr&lt; WorldConcept &gt;</type>
+      <name>Clone_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ad78c56f13050589a793d48052bb51ad2</anchor>
+      <arglist>() const override</arglist>
+    </member>
+    <member kind="function">
+      <type>TypeID</type>
+      <name>GetType_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a47c82fee4b1b2afb69a0212bec29230b</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>const void *</type>
+      <name>GetData_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a8e457ac7beef12f02cab67c04286e5cc</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void *</type>
+      <name>GetData_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a9b2fa6aacd8557ad35dfeb1cc3a8b3c6</anchor>
+      <arglist>() noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>std::optional&lt; pmr::StatsResource::Stats &gt;</type>
+      <name>GetResourceStats_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ae093f4d1b8e88b89c1e1a8569861e020</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Clear_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>accc64482970c30923a7bbc55258ede10</anchor>
+      <arglist>() noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>StepStats</type>
+      <name>Step_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a4edaa52f7ca82dc405bd44eafe30b3b5</anchor>
+      <arglist>(const StepConf &amp;conf) override</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsStepComplete_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ae9d50ef12804949bb7c350dadec30916</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>GetSubStepping_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a3a8fe32007b49b070776b6ed9483616c</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetSubStepping_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ab5a7fd36aa4ea2b6f1b95d2eeb52f90e</anchor>
+      <arglist>(bool flag) noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>const DynamicTree &amp;</type>
+      <name>GetTree_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aeb753fc57a8af5537b0c66bc9257ad4c</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsLocked_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a55806e475807689cd3d523b822190acd</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ShiftOrigin_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aa6331206e7be546c5cd5cb99c9b13b56</anchor>
+      <arglist>(const Length2 &amp;newOrigin) override</arglist>
+    </member>
+    <member kind="function">
+      <type>Interval&lt; Positive&lt; Length &gt; &gt;</type>
+      <name>GetVertexRadiusInterval_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a6cd63c27e1867d9e60f12df900ac10af</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>Frequency</type>
+      <name>GetInvDeltaTime_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aba5158c6e212d69d59fb6a5153f53b47</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetBodyRange_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a3b277b678812c103d5ecf372a1884569</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>std::vector&lt; BodyID &gt;</type>
+      <name>GetBodies_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a6b3da74d78ed7c5b62d12dd09998b470</anchor>
+      <arglist>() const override</arglist>
+    </member>
+    <member kind="function">
+      <type>std::vector&lt; BodyID &gt;</type>
+      <name>GetBodiesForProxies_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aaf87e36e20bd4f8e9c54e24c3d6f21a8</anchor>
+      <arglist>() const override</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>CreateBody_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a89b15453b190d5385c6d960d094c4420</anchor>
+      <arglist>(const Body &amp;body) override</arglist>
+    </member>
+    <member kind="function">
+      <type>Body</type>
+      <name>GetBody_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a148a7378130716cf03afba6d1e9c3b16</anchor>
+      <arglist>(BodyID id) const override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetBody_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a03a2253d1db7579c6f04d4360eec5acd</anchor>
+      <arglist>(BodyID id, const Body &amp;value) override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a424c6d6c2a879c0ecc4a6d3e0b26da88</anchor>
+      <arglist>(BodyID id) override</arglist>
+    </member>
+    <member kind="function">
+      <type>std::vector&lt; std::pair&lt; BodyID, JointID &gt; &gt;</type>
+      <name>GetJoints_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ae777daaebd665135afa31a0bc09f69ee</anchor>
+      <arglist>(BodyID id) const override</arglist>
+    </member>
+    <member kind="function">
+      <type>std::vector&lt; std::tuple&lt; ContactKey, ContactID &gt; &gt;</type>
+      <name>GetContacts_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ae39ded2f620d5bf23f6e187496908f03</anchor>
+      <arglist>(BodyID id) const override</arglist>
+    </member>
+    <member kind="function">
+      <type>std::vector&lt; ShapeID &gt;</type>
+      <name>GetShapes_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>adb143e52c9cc3e0a17aa8d26cab111de</anchor>
+      <arglist>(BodyID id) const override</arglist>
+    </member>
+    <member kind="function">
+      <type>JointCounter</type>
+      <name>GetJointRange_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ad1bf10ed4e004e785ece2f33c7a7e25c</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>std::vector&lt; JointID &gt;</type>
+      <name>GetJoints_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a3df8267377bfa6d1161ea31ebfe5a491</anchor>
+      <arglist>() const override</arglist>
+    </member>
+    <member kind="function">
+      <type>JointID</type>
+      <name>CreateJoint_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aeb81f9ec3d26b6c81637e811b191cca0</anchor>
+      <arglist>(const Joint &amp;def) override</arglist>
+    </member>
+    <member kind="function">
+      <type>Joint</type>
+      <name>GetJoint_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a9abe257c3b4fd3436d5b2d7311323389</anchor>
+      <arglist>(JointID id) const override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetJoint_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aa6a47ce61cf9ed665dfc0837e82adb4a</anchor>
+      <arglist>(JointID id, const Joint &amp;def) override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a4af0e4d0fb1ecedb1049d13318b0fa98</anchor>
+      <arglist>(JointID id) override</arglist>
+    </member>
+    <member kind="function">
+      <type>ShapeCounter</type>
+      <name>GetShapeRange_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>af1c7527b188527f777ff4a237aff8a91</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>ShapeID</type>
+      <name>CreateShape_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a3e9c58fb7d0d5ff0608635ed81a08df1</anchor>
+      <arglist>(const Shape &amp;def) override</arglist>
+    </member>
+    <member kind="function">
+      <type>Shape</type>
+      <name>GetShape_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aea2de03ec645a1018733e5ec3a7e5eff</anchor>
+      <arglist>(ShapeID id) const override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetShape_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a600e5d8528d7a369c751515aa5059785</anchor>
+      <arglist>(ShapeID id, const Shape &amp;def) override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ab345f51a398f0dad411895214193a27c</anchor>
+      <arglist>(ShapeID id) override</arglist>
+    </member>
+    <member kind="function">
+      <type>ContactCounter</type>
+      <name>GetContactRange_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a4da6d15181f442cf8379e2c6ea5c24d9</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>std::vector&lt; KeyedContactID &gt;</type>
+      <name>GetContacts_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aecdb9271b7c7a4d63605599e8c5b1665</anchor>
+      <arglist>() const override</arglist>
+    </member>
+    <member kind="function">
+      <type>Contact</type>
+      <name>GetContact_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a1ed5d975b3960dbb7b02a86574cbb53c</anchor>
+      <arglist>(ContactID id) const override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetContact_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ad943ffc4cfcdb47989b57587d69e919a</anchor>
+      <arglist>(ContactID id, const Contact &amp;value) override</arglist>
+    </member>
+    <member kind="function">
+      <type>Manifold</type>
+      <name>GetManifold_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aaae6481817fe6c491370565d5cca6063</anchor>
+      <arglist>(ContactID id) const override</arglist>
+    </member>
+    <member kind="variable">
+      <type>data_type</type>
+      <name>data</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a7fad866e558fa35fb97acfce2153e504</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetShapeDestructionListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a3905d225202af4696288314ad137cca6</anchor>
+      <arglist>(ShapeFunction listener) noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetDetachListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ab23fc4dc5532ab9eb2fc44cd4d038b4e</anchor>
+      <arglist>(BodyShapeFunction listener) noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetJointDestructionListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a68baa72c33aee6d31d69964513ab6e0f</anchor>
+      <arglist>(JointFunction listener) noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetBeginContactListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>abd35210073eac29e6eba6df627d8fe40</anchor>
+      <arglist>(ContactFunction listener) noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetEndContactListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>abb3cdcb27061c7c6dbb2c13396814382</anchor>
+      <arglist>(ContactFunction listener) noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetPreSolveContactListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ae39f73ce1dc52aebc234c4dff61fa692</anchor>
+      <arglist>(ContactManifoldFunction listener) noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetPostSolveContactListener_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a6d18c859c6a51f4f5768f0a648135324</anchor>
+      <arglist>(ContactImpulsesFunction listener) noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>std::unique_ptr&lt; WorldConcept &gt;</type>
+      <name>Clone_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ad78c56f13050589a793d48052bb51ad2</anchor>
+      <arglist>() const override</arglist>
+    </member>
+    <member kind="function">
+      <type>TypeID</type>
+      <name>GetType_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a47c82fee4b1b2afb69a0212bec29230b</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>const void *</type>
+      <name>GetData_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a8e457ac7beef12f02cab67c04286e5cc</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void *</type>
+      <name>GetData_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a9b2fa6aacd8557ad35dfeb1cc3a8b3c6</anchor>
+      <arglist>() noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>std::optional&lt; pmr::StatsResource::Stats &gt;</type>
+      <name>GetResourceStats_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ae093f4d1b8e88b89c1e1a8569861e020</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Clear_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>accc64482970c30923a7bbc55258ede10</anchor>
+      <arglist>() noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>StepStats</type>
+      <name>Step_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a4edaa52f7ca82dc405bd44eafe30b3b5</anchor>
+      <arglist>(const StepConf &amp;conf) override</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsStepComplete_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ae9d50ef12804949bb7c350dadec30916</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>GetSubStepping_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a3a8fe32007b49b070776b6ed9483616c</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetSubStepping_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ab5a7fd36aa4ea2b6f1b95d2eeb52f90e</anchor>
+      <arglist>(bool flag) noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>const DynamicTree &amp;</type>
+      <name>GetTree_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aeb753fc57a8af5537b0c66bc9257ad4c</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsLocked_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a55806e475807689cd3d523b822190acd</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ShiftOrigin_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aa6331206e7be546c5cd5cb99c9b13b56</anchor>
+      <arglist>(const Length2 &amp;newOrigin) override</arglist>
+    </member>
+    <member kind="function">
+      <type>Interval&lt; Positive&lt; Length &gt; &gt;</type>
+      <name>GetVertexRadiusInterval_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a6cd63c27e1867d9e60f12df900ac10af</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>Frequency</type>
+      <name>GetInvDeltaTime_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aba5158c6e212d69d59fb6a5153f53b47</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetBodyRange_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a3b277b678812c103d5ecf372a1884569</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>std::vector&lt; BodyID &gt;</type>
+      <name>GetBodies_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a6b3da74d78ed7c5b62d12dd09998b470</anchor>
+      <arglist>() const override</arglist>
+    </member>
+    <member kind="function">
+      <type>std::vector&lt; BodyID &gt;</type>
+      <name>GetBodiesForProxies_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aaf87e36e20bd4f8e9c54e24c3d6f21a8</anchor>
+      <arglist>() const override</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>CreateBody_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a89b15453b190d5385c6d960d094c4420</anchor>
+      <arglist>(const Body &amp;body) override</arglist>
+    </member>
+    <member kind="function">
+      <type>Body</type>
+      <name>GetBody_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a148a7378130716cf03afba6d1e9c3b16</anchor>
+      <arglist>(BodyID id) const override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetBody_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a03a2253d1db7579c6f04d4360eec5acd</anchor>
+      <arglist>(BodyID id, const Body &amp;value) override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a424c6d6c2a879c0ecc4a6d3e0b26da88</anchor>
+      <arglist>(BodyID id) override</arglist>
+    </member>
+    <member kind="function">
+      <type>std::vector&lt; std::pair&lt; BodyID, JointID &gt; &gt;</type>
+      <name>GetJoints_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ae777daaebd665135afa31a0bc09f69ee</anchor>
+      <arglist>(BodyID id) const override</arglist>
+    </member>
+    <member kind="function">
+      <type>std::vector&lt; std::tuple&lt; ContactKey, ContactID &gt; &gt;</type>
+      <name>GetContacts_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ae39ded2f620d5bf23f6e187496908f03</anchor>
+      <arglist>(BodyID id) const override</arglist>
+    </member>
+    <member kind="function">
+      <type>std::vector&lt; ShapeID &gt;</type>
+      <name>GetShapes_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>adb143e52c9cc3e0a17aa8d26cab111de</anchor>
+      <arglist>(BodyID id) const override</arglist>
+    </member>
+    <member kind="function">
+      <type>JointCounter</type>
+      <name>GetJointRange_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ad1bf10ed4e004e785ece2f33c7a7e25c</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>std::vector&lt; JointID &gt;</type>
+      <name>GetJoints_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a3df8267377bfa6d1161ea31ebfe5a491</anchor>
+      <arglist>() const override</arglist>
+    </member>
+    <member kind="function">
+      <type>JointID</type>
+      <name>CreateJoint_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aeb81f9ec3d26b6c81637e811b191cca0</anchor>
+      <arglist>(const Joint &amp;def) override</arglist>
+    </member>
+    <member kind="function">
+      <type>Joint</type>
+      <name>GetJoint_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a9abe257c3b4fd3436d5b2d7311323389</anchor>
+      <arglist>(JointID id) const override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetJoint_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aa6a47ce61cf9ed665dfc0837e82adb4a</anchor>
+      <arglist>(JointID id, const Joint &amp;def) override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a4af0e4d0fb1ecedb1049d13318b0fa98</anchor>
+      <arglist>(JointID id) override</arglist>
+    </member>
+    <member kind="function">
+      <type>ShapeCounter</type>
+      <name>GetShapeRange_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>af1c7527b188527f777ff4a237aff8a91</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>ShapeID</type>
+      <name>CreateShape_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a3e9c58fb7d0d5ff0608635ed81a08df1</anchor>
+      <arglist>(const Shape &amp;def) override</arglist>
+    </member>
+    <member kind="function">
+      <type>Shape</type>
+      <name>GetShape_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aea2de03ec645a1018733e5ec3a7e5eff</anchor>
+      <arglist>(ShapeID id) const override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetShape_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a600e5d8528d7a369c751515aa5059785</anchor>
+      <arglist>(ShapeID id, const Shape &amp;def) override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ab345f51a398f0dad411895214193a27c</anchor>
+      <arglist>(ShapeID id) override</arglist>
+    </member>
+    <member kind="function">
+      <type>ContactCounter</type>
+      <name>GetContactRange_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a4da6d15181f442cf8379e2c6ea5c24d9</anchor>
+      <arglist>() const noexcept override</arglist>
+    </member>
+    <member kind="function">
+      <type>std::vector&lt; KeyedContactID &gt;</type>
+      <name>GetContacts_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aecdb9271b7c7a4d63605599e8c5b1665</anchor>
+      <arglist>() const override</arglist>
+    </member>
+    <member kind="function">
+      <type>Contact</type>
+      <name>GetContact_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>a1ed5d975b3960dbb7b02a86574cbb53c</anchor>
+      <arglist>(ContactID id) const override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetContact_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>ad943ffc4cfcdb47989b57587d69e919a</anchor>
+      <arglist>(ContactID id, const Contact &amp;value) override</arglist>
+    </member>
+    <member kind="function">
+      <type>Manifold</type>
+      <name>GetManifold_</name>
+      <anchorfile>structplayrho_1_1d2_1_1detail_1_1WorldModel.html</anchorfile>
+      <anchor>aaae6481817fe6c491370565d5cca6063</anchor>
+      <arglist>(ContactID id) const override</arglist>
+    </member>
+  </compound>
   <compound kind="class">
     <name>playrho::WrongState</name>
     <filename>classplayrho_1_1WrongState.html</filename>
@@ -42664,7 +43893,6 @@
     <class kind="struct">playrho::MovementConf</class>
     <class kind="class">playrho::ObjectPool</class>
     <class kind="struct">playrho::PreStepStats</class>
-    <class kind="class">playrho::propagate_const</class>
     <class kind="struct">playrho::RegStepStats</class>
     <class kind="struct">playrho::ReversionWrapper</class>
     <class kind="class">playrho::Span</class>
@@ -42736,6 +43964,13 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
+      <type>std::function&lt; void(std::pair&lt; BodyID, ShapeID &gt;)&gt;</type>
+      <name>BodyShapeFunction</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a33405bfc73fdf1a786a72b98e846e9c0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
       <type>std::remove_const_t&lt; decltype(MaxChildCount)&gt;</type>
       <name>ChildCounter</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -42747,6 +43982,13 @@
       <name>ContactCounter</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a5fd824505590e2ca67e0ef804ede6e34</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::function&lt; void(ContactID)&gt;</type>
+      <name>ContactFunction</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>ae4fcaffc82149e8a51dccba6b31f4d52</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -42873,6 +44115,13 @@
       <name>JointCounter</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a3fff859979ed48e0d223d1584eb985c3</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::function&lt; void(JointID)&gt;</type>
+      <name>JointFunction</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>addebc455127a1209e0543ce6a853ebaa</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -43125,6 +44374,13 @@
       <name>ShapeCounter</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a238bb543bc4c65753c931c94c8bd70cf</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::function&lt; void(ShapeID)&gt;</type>
+      <name>ShapeFunction</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>ab3c103ca9fa0984be180fdf4adea623e</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -45194,13 +46450,6 @@
       <arglist>(const T &amp;value) -&gt; std::enable_if_t&lt; IsArithmeticV&lt; T &gt; &amp;&amp;!detail::is_detected_v&lt; detail::get_member_type, T &gt;, T &gt;</arglist>
     </member>
     <member kind="function">
-      <type>PROPAGATE_CONST_CONSTEXPR void</type>
-      <name>swap</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>abbaf30d44caa739e24d21d763b90030c</anchor>
-      <arglist>(propagate_const&lt; T &gt; &amp;pt, propagate_const&lt; T &gt; &amp;pu) noexcept(noexcept(swap(std::declval&lt; T &amp; &gt;(), std::declval&lt; T &amp; &gt;())))</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr auto</type>
       <name>to_underlying</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -45971,13 +47220,6 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>std::function&lt; void(std::pair&lt; BodyID, ShapeID &gt;)&gt;</type>
-      <name>AssociationListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a79795738aeb3efff8b2c8c532be4d659</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
       <type>std::vector&lt; BodyConstraint, pmr::polymorphic_allocator&lt; BodyConstraint &gt; &gt;</type>
       <name>BodyConstraints</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -46020,10 +47262,17 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>std::function&lt; void(ContactID)&gt;</type>
-      <name>ContactListener</name>
+      <type>std::function&lt; void(ContactID, const ContactImpulsesList &amp;, unsigned)&gt;</type>
+      <name>ContactImpulsesFunction</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a3c7c61bbf21c6429d9095b90d78357a0</anchor>
+      <anchor>ab0945eb1db3efaa574b6b8403a11b853</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::function&lt; void(ContactID, const Manifold &amp;)&gt;</type>
+      <name>ContactManifoldFunction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae8f4e3ce8b18d8ddf7c2e34572c3a8f6</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -46041,24 +47290,10 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>std::function&lt; void(ContactID, const ContactImpulsesList &amp;, unsigned)&gt;</type>
-      <name>ImpulsesContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a5f1a386edb55381b1298a6242dd993fe</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
       <type>std::vector&lt; JointID &gt;</type>
       <name>JointIDs</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a442773c8570c44bfd40f5ed08ab1240c</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>std::function&lt; void(JointID)&gt;</type>
-      <name>JointListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad9f95381357d690566e30bca1dea2c56</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -46073,13 +47308,6 @@
       <name>LengthIndices</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a71fc9bb2c15145fe17188b4bc918cf2c</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>std::function&lt; void(ContactID, const Manifold &amp;)&gt;</type>
-      <name>ManifoldContactListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a9eab28c674a223868b16cfb6923b899e</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -46136,13 +47364,6 @@
       <name>SeparationScenario</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>aa5ceebbe3e7f0f4d4eb6017757d0f8bf</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>std::function&lt; void(ShapeID)&gt;</type>
-      <name>ShapeListener</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1aab64c9251adf9a109b7e69e1832844</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -49525,8 +50746,8 @@
       <type>constexpr Vector2&lt; T &gt;</type>
       <name>operator*</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aed05334a0707da44659547948b29b612</anchor>
-      <arglist>(const detail::Checked&lt; T, U, NoExcept &gt; &amp;s, const UnitVec &amp;u) noexcept</arglist>
+      <anchor>a82ae08d9c525e8510b8d7261fcf0d1c2</anchor>
+      <arglist>(const playrho::detail::Checked&lt; T, U, NoExcept &gt; &amp;s, const UnitVec &amp;u) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr Position</type>
@@ -49567,8 +50788,8 @@
       <type>constexpr Vector2&lt; T &gt;</type>
       <name>operator*</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1261db9db30d4506e3cc7a1af9ae3528</anchor>
-      <arglist>(const UnitVec &amp;u, const detail::Checked&lt; T, U, NoExcept &gt; &amp;s) noexcept</arglist>
+      <anchor>a5beaf709e090543a768ca7b40713e1b2</anchor>
+      <arglist>(const UnitVec &amp;u, const playrho::detail::Checked&lt; T, U, NoExcept &gt; &amp;s) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr Vector2&lt; T &gt;</type>
@@ -50124,13 +51345,6 @@
       <arglist>(Shape &amp;shape, const UnitVec &amp;value)</arglist>
     </member>
     <member kind="function">
-      <type>auto</type>
-      <name>Rotate</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a4c915c9176591afd89bf4d18b1ede1b4</anchor>
-      <arglist>(T &amp;, const UnitVec &amp;value) -&gt; std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasRotateV&lt; T &gt;, void &gt;</arglist>
-    </member>
-    <member kind="function">
       <type>void</type>
       <name>Rotate</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -50178,13 +51392,6 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>ac37a9ab36e66240e0a2af9ce84848b13</anchor>
       <arglist>(Shape &amp;shape, const Vec2 &amp;value)</arglist>
-    </member>
-    <member kind="function">
-      <type>auto</type>
-      <name>Scale</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0cbf1bb2193d18afa44df563b6877cb2</anchor>
-      <arglist>(T &amp;, const Vec2 &amp;value) -&gt; std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasScaleV&lt; T &gt;, void &gt;</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -50355,13 +51562,6 @@
       <arglist>(Shape &amp;shape, NonNegative&lt; AreaDensity &gt; value)</arglist>
     </member>
     <member kind="function">
-      <type>std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetDensityV&lt; T &gt;, void &gt;</type>
-      <name>SetDensity</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad1c054649c001d28c08476c622de4ab6</anchor>
-      <arglist>(T &amp;o, NonNegative&lt; AreaDensity &gt; value)</arglist>
-    </member>
-    <member kind="function">
       <type>void</type>
       <name>SetDensity</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -50409,13 +51609,6 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>ac3ffdf7e6c840eb894becc90325bf147</anchor>
       <arglist>(Shape &amp;shape, Filter value)</arglist>
-    </member>
-    <member kind="function">
-      <type>std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetFilterV&lt; T &gt;, void &gt;</type>
-      <name>SetFilter</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>acdc81f53cbfed976983439ca5f2e3ac2</anchor>
-      <arglist>(T &amp;o, Filter value)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -50486,13 +51679,6 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a66a134067ed894aa7c399662d92a0726</anchor>
       <arglist>(Shape &amp;shape, NonNegative&lt; Real &gt; value)</arglist>
-    </member>
-    <member kind="function">
-      <type>std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetFrictionV&lt; T &gt;, void &gt;</type>
-      <name>SetFriction</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad16f6355b81563d9814e371f04a093b7</anchor>
-      <arglist>(T &amp;o, NonNegative&lt; Real &gt; value)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -50747,13 +51933,6 @@
       <arglist>(Shape &amp;shape, Real value)</arglist>
     </member>
     <member kind="function">
-      <type>std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetRestitutionV&lt; T &gt;, void &gt;</type>
-      <name>SetRestitution</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6bc6a6825767b1283de39d617bec8d45</anchor>
-      <arglist>(T &amp;o, Real value)</arglist>
-    </member>
-    <member kind="function">
       <type>void</type>
       <name>SetRestitution</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -50787,13 +51966,6 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>ae3786c04d20cbf2f9b06d2a1d07032d8</anchor>
       <arglist>(Shape &amp;shape, bool value)</arglist>
-    </member>
-    <member kind="function">
-      <type>std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasSetSensorV&lt; T &gt;, void &gt;</type>
-      <name>SetSensor</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afa56209557eb58f52a1599176b169b5b</anchor>
-      <arglist>(T &amp;o, bool value)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -51335,13 +52507,6 @@
       <arglist>(Shape &amp;shape, const Length2 &amp;value)</arglist>
     </member>
     <member kind="function">
-      <type>auto</type>
-      <name>Translate</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a2fcf35bb0c7c2d207b5ae67948d9dfb6</anchor>
-      <arglist>(T &amp;, const Length2 &amp;value) -&gt; std::enable_if_t&lt; IsValidShapeTypeV&lt; T &gt; &amp;&amp;!HasTranslateV&lt; T &gt;, void &gt;</arglist>
-    </member>
-    <member kind="function">
       <type>void</type>
       <name>Translate</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -51478,50 +52643,50 @@
       <type>void</type>
       <name>SetShapeDestructionListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7738575fcd8e208874a3cd3e32dffbf2</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ShapeListener listener) noexcept</arglist>
+      <anchor>a59900969bcf9d8419fa8f122118844aa</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetDetachListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a73d47c4e7db2126ca5bb6e3fd5aa7a2c</anchor>
-      <arglist>(AabbTreeWorld &amp;world, AssociationListener listener) noexcept</arglist>
+      <anchor>a54e878b6146c7c2bb50e7bd73a95c217</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetJointDestructionListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aad9d71ed88d25ba53cc5795ef5c46767</anchor>
-      <arglist>(AabbTreeWorld &amp;world, JointListener listener) noexcept</arglist>
+      <anchor>a7c1863dc243955e1955e519c01a0c59a</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetBeginContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab2d473e67d8c73d84b5bab36684b21e4</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>af91536aa88e244f3956b70736dfbbc12</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetEndContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0eb658b0c7360d020e51833df13fe966</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>a2ef32850c1173ac570c8eaa586a6653c</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetPreSolveContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6cf097ec66665aaee2ee3f003bdd3c95</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ManifoldContactListener listener) noexcept</arglist>
+      <anchor>af7733aac4d120107b96ef887303e4fbf</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactManifoldFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetPostSolveContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6cdc554f84a577ddb26cc3f11db7948f</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ImpulsesContactListener listener) noexcept</arglist>
+      <anchor>a64227632d49eb8e331902edb22999b58</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactImpulsesFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>std::optional&lt; pmr::StatsResource::Stats &gt;</type>
@@ -51821,50 +52986,50 @@
       <type>void</type>
       <name>SetShapeDestructionListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a96ac7c56b9e01b4b9a6755ecfc60758a</anchor>
-      <arglist>(World &amp;world, ShapeListener listener) noexcept</arglist>
+      <anchor>a2dc5e1d5b3122d2c37959573eda21c30</anchor>
+      <arglist>(World &amp;world, ShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetDetachListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af0d2f84c725ce57610163fba2fdc571e</anchor>
-      <arglist>(World &amp;world, AssociationListener listener) noexcept</arglist>
+      <anchor>ab2f27f6d0cf885a8aeedff93c7a89e74</anchor>
+      <arglist>(World &amp;world, BodyShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetJointDestructionListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a948f93c3a4240846fac5690dde238a19</anchor>
-      <arglist>(World &amp;world, JointListener listener) noexcept</arglist>
+      <anchor>a182e738c16bf84f7579af7be2cd26628</anchor>
+      <arglist>(World &amp;world, JointFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetBeginContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa4d2e420d029c826b6fea611cb0b171e</anchor>
-      <arglist>(World &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>a880cac829986da4266dc3dfc494087b3</anchor>
+      <arglist>(World &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetEndContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>acb3bddb185d547567a7ca51e75822bba</anchor>
-      <arglist>(World &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>acc2df0eb14c5759fff8c99dcfc2f724c</anchor>
+      <arglist>(World &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetPreSolveContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1413e006f2e0d4a56885964538d63a85</anchor>
-      <arglist>(World &amp;world, ManifoldContactListener listener) noexcept</arglist>
+      <anchor>aee2466f745bdaf3aa6ce438864d8742b</anchor>
+      <arglist>(World &amp;world, ContactManifoldFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetPostSolveContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afed9c4b283c6f99409bbbfaaaffe5ee4</anchor>
-      <arglist>(World &amp;world, ImpulsesContactListener listener) noexcept</arglist>
+      <anchor>a18585a140d9ad815d0127e90308218ff</anchor>
+      <arglist>(World &amp;world, ContactImpulsesFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>TypeID</type>
@@ -52784,62 +53949,6 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>constexpr bool</type>
-      <name>HasRotateV</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a54dd2ed3808f9e48674e3ca8940ecd79</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>HasScaleV</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a3db581dc77a89acbf9287b7f50c4f9bb</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>HasSetDensityV</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>adcd79da3d98d0b52563b7a0be466a679</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>HasSetFilterV</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abe6c7ad2a221702f43ca47326e632e9b</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>HasSetFrictionV</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a8795f062bde61dee66c04b7cb45f615d</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>HasSetRestitutionV</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af1dab2bbd039624dd979cb9f1ac8e938</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>HasSetSensorV</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a280984ac0c13e7a78e3ddef1b81c7ddc</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr bool</type>
-      <name>HasTranslateV</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1e856dc6b73fec2ef9dc7d7e8f39a173</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
       <type>constexpr auto</type>
       <name>InvalidAABB</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -52854,13 +53963,6 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>constexpr bool</type>
-      <name>IsValidShapeTypeV</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad6691b6d27434e35424d34885cdf9359</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
       <type>constexpr auto</type>
       <name>Transform_identity</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -52871,50 +53973,50 @@
       <type>void</type>
       <name>SetShapeDestructionListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7738575fcd8e208874a3cd3e32dffbf2</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ShapeListener listener) noexcept</arglist>
+      <anchor>a59900969bcf9d8419fa8f122118844aa</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetDetachListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a73d47c4e7db2126ca5bb6e3fd5aa7a2c</anchor>
-      <arglist>(AabbTreeWorld &amp;world, AssociationListener listener) noexcept</arglist>
+      <anchor>a54e878b6146c7c2bb50e7bd73a95c217</anchor>
+      <arglist>(AabbTreeWorld &amp;world, BodyShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetJointDestructionListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aad9d71ed88d25ba53cc5795ef5c46767</anchor>
-      <arglist>(AabbTreeWorld &amp;world, JointListener listener) noexcept</arglist>
+      <anchor>a7c1863dc243955e1955e519c01a0c59a</anchor>
+      <arglist>(AabbTreeWorld &amp;world, JointFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetBeginContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab2d473e67d8c73d84b5bab36684b21e4</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>af91536aa88e244f3956b70736dfbbc12</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetEndContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0eb658b0c7360d020e51833df13fe966</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>a2ef32850c1173ac570c8eaa586a6653c</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetPreSolveContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6cf097ec66665aaee2ee3f003bdd3c95</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ManifoldContactListener listener) noexcept</arglist>
+      <anchor>af7733aac4d120107b96ef887303e4fbf</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactManifoldFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetPostSolveContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6cdc554f84a577ddb26cc3f11db7948f</anchor>
-      <arglist>(AabbTreeWorld &amp;world, ImpulsesContactListener listener) noexcept</arglist>
+      <anchor>a64227632d49eb8e331902edb22999b58</anchor>
+      <arglist>(AabbTreeWorld &amp;world, ContactImpulsesFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>std::optional&lt; pmr::StatsResource::Stats &gt;</type>
@@ -53214,50 +54316,50 @@
       <type>void</type>
       <name>SetShapeDestructionListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a96ac7c56b9e01b4b9a6755ecfc60758a</anchor>
-      <arglist>(World &amp;world, ShapeListener listener) noexcept</arglist>
+      <anchor>a2dc5e1d5b3122d2c37959573eda21c30</anchor>
+      <arglist>(World &amp;world, ShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetDetachListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af0d2f84c725ce57610163fba2fdc571e</anchor>
-      <arglist>(World &amp;world, AssociationListener listener) noexcept</arglist>
+      <anchor>ab2f27f6d0cf885a8aeedff93c7a89e74</anchor>
+      <arglist>(World &amp;world, BodyShapeFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetJointDestructionListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a948f93c3a4240846fac5690dde238a19</anchor>
-      <arglist>(World &amp;world, JointListener listener) noexcept</arglist>
+      <anchor>a182e738c16bf84f7579af7be2cd26628</anchor>
+      <arglist>(World &amp;world, JointFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetBeginContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa4d2e420d029c826b6fea611cb0b171e</anchor>
-      <arglist>(World &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>a880cac829986da4266dc3dfc494087b3</anchor>
+      <arglist>(World &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetEndContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>acb3bddb185d547567a7ca51e75822bba</anchor>
-      <arglist>(World &amp;world, ContactListener listener) noexcept</arglist>
+      <anchor>acc2df0eb14c5759fff8c99dcfc2f724c</anchor>
+      <arglist>(World &amp;world, ContactFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetPreSolveContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1413e006f2e0d4a56885964538d63a85</anchor>
-      <arglist>(World &amp;world, ManifoldContactListener listener) noexcept</arglist>
+      <anchor>aee2466f745bdaf3aa6ce438864d8742b</anchor>
+      <arglist>(World &amp;world, ContactManifoldFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetPostSolveContactListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afed9c4b283c6f99409bbbfaaaffe5ee4</anchor>
-      <arglist>(World &amp;world, ImpulsesContactListener listener) noexcept</arglist>
+      <anchor>a18585a140d9ad815d0127e90308218ff</anchor>
+      <arglist>(World &amp;world, ContactImpulsesFunction listener) noexcept</arglist>
     </member>
     <member kind="function">
       <type>TypeID</type>
@@ -54299,15 +55401,15 @@
       <type>auto</type>
       <name>Rotate</name>
       <anchorfile>namespaceplayrho_1_1d2_1_1part.html</anchorfile>
-      <anchor>a2c707b282337d3ed55c80c54be669b7d</anchor>
-      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, ::playrho::d2::UnitVec value) -&gt; decltype(arg.Rotate(value))</arglist>
+      <anchor>a6406cfb1211acdb60785de6b82906f46</anchor>
+      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, ::playrho::d2::UnitVec value) -&gt; std::enable_if_t&lt; detail::HasMemberRotateV&lt; decltype(arg)&gt;, void &gt;</arglist>
     </member>
     <member kind="function">
       <type>auto</type>
       <name>Scale</name>
       <anchorfile>namespaceplayrho_1_1d2_1_1part.html</anchorfile>
-      <anchor>aa1cc186121c80395f147cc49cbdadf09</anchor>
-      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, const Vector&lt; Real, N &gt; &amp;value) -&gt; decltype(arg.Scale(value))</arglist>
+      <anchor>a8e7a002a381cad9eb15c7e6ba1ab2e00</anchor>
+      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, const Vec2 &amp;value) -&gt; std::enable_if_t&lt; detail::HasMemberScaleV&lt; decltype(arg)&gt;, void &gt;</arglist>
     </member>
     <member kind="function">
       <type>auto</type>
@@ -54369,8 +55471,8 @@
       <type>auto</type>
       <name>Translate</name>
       <anchorfile>namespaceplayrho_1_1d2_1_1part.html</anchorfile>
-      <anchor>a6c8858631b267d914adb8362445e3acf</anchor>
-      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, const Vector&lt; Length, N &gt; &amp;value) -&gt; decltype(arg.Translate(value))</arglist>
+      <anchor>aab6da22689fae9331ca99b5f85bf01cd</anchor>
+      <arglist>(Compositor&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, const Length2 &amp;value) -&gt; std::enable_if_t&lt; detail::HasMemberTranslateV&lt; decltype(arg)&gt;, void &gt;</arglist>
     </member>
   </compound>
   <compound kind="namespace">
@@ -55272,15 +56374,8 @@
   <compound kind="namespace">
     <name>std</name>
     <filename>namespacestd.html</filename>
-    <class kind="struct">std::equal_to&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
-    <class kind="struct">std::greater&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
-    <class kind="struct">std::greater_equal&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
     <class kind="struct">std::hash&lt; playrho::ContactKey &gt;</class>
     <class kind="struct">std::hash&lt;::playrho::detail::IndexingNamedType&lt; T, Tag &gt; &gt;</class>
-    <class kind="struct">std::hash&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
-    <class kind="struct">std::less&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
-    <class kind="struct">std::less_equal&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
-    <class kind="struct">std::not_equal_to&lt;::playrho::propagate_const&lt; T &gt; &gt;</class>
     <class kind="class">std::numeric_limits&lt;::playrho::Positive&lt; T &gt; &gt;</class>
     <class kind="class">std::tuple_element&lt; I, playrho::d2::UnitVec &gt;</class>
     <class kind="class">std::tuple_element&lt; I, playrho::Vector&lt; T, N &gt; &gt;</class>

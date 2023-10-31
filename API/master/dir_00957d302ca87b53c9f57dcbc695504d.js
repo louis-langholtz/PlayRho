@@ -1,5 +1,6 @@
 var dir_00957d302ca87b53c9f57dcbc695504d =
 [
+    [ "detail", "dir_d51ee4eac1d55982ce807b72bdb4ac61.html", "dir_d51ee4eac1d55982ce807b72bdb4ac61" ],
     [ "AABB.hpp", "d2_2AABB_8hpp.html", "d2_2AABB_8hpp" ],
     [ "AabbTreeWorld.hpp", "AabbTreeWorld_8hpp.html", "AabbTreeWorld_8hpp" ],
     [ "AabbTreeWorldBody.hpp", "AabbTreeWorldBody_8hpp.html", "AabbTreeWorldBody_8hpp" ],
@@ -10,7 +11,9 @@ var dir_00957d302ca87b53c9f57dcbc695504d =
     [ "BodyConstraint.hpp", "BodyConstraint_8hpp.html", "BodyConstraint_8hpp" ],
     [ "ChainShapeConf.hpp", "ChainShapeConf_8hpp.html", "ChainShapeConf_8hpp" ],
     [ "ClipList.hpp", "ClipList_8hpp.html", "ClipList_8hpp" ],
+    [ "ContactImpulsesFunction.hpp", "ContactImpulsesFunction_8hpp.html", "ContactImpulsesFunction_8hpp" ],
     [ "ContactImpulsesList.hpp", "ContactImpulsesList_8hpp.html", "ContactImpulsesList_8hpp" ],
+    [ "ContactManifoldFunction.hpp", "ContactManifoldFunction_8hpp.html", "ContactManifoldFunction_8hpp" ],
     [ "ContactSolver.hpp", "ContactSolver_8hpp.html", "ContactSolver_8hpp" ],
     [ "ConvexHull.hpp", "ConvexHull_8hpp.html", [
       [ "ConvexHull", "classplayrho_1_1d2_1_1ConvexHull.html", "classplayrho_1_1d2_1_1ConvexHull" ]

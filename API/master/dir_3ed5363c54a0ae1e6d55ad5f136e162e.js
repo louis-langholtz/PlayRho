@@ -5,11 +5,13 @@ var dir_3ed5363c54a0ae1e6d55ad5f136e162e =
     [ "ArrayList.hpp", "ArrayList_8hpp.html", "ArrayList_8hpp" ],
     [ "BlockAllocator.hpp", "BlockAllocator_8hpp.html", "BlockAllocator_8hpp" ],
     [ "BodyID.hpp", "BodyID_8hpp.html", "BodyID_8hpp" ],
+    [ "BodyShapeFunction.hpp", "BodyShapeFunction_8hpp.html", "BodyShapeFunction_8hpp" ],
     [ "BodyType.hpp", "BodyType_8hpp.html", "BodyType_8hpp" ],
     [ "ConstraintSolverConf.hpp", "ConstraintSolverConf_8hpp.html", "ConstraintSolverConf_8hpp" ],
     [ "Contact.hpp", "Contact_8hpp.html", "Contact_8hpp" ],
     [ "Contactable.hpp", "Contactable_8hpp.html", "Contactable_8hpp" ],
     [ "ContactFeature.hpp", "ContactFeature_8hpp.html", "ContactFeature_8hpp" ],
+    [ "ContactFunction.hpp", "ContactFunction_8hpp.html", "ContactFunction_8hpp" ],
     [ "ContactID.hpp", "ContactID_8hpp.html", "ContactID_8hpp" ],
     [ "ContactKey.hpp", "ContactKey_8hpp.html", "ContactKey_8hpp" ],
     [ "Defines.hpp", "Defines_8hpp.html", "Defines_8hpp" ],
@@ -29,6 +31,7 @@ var dir_3ed5363c54a0ae1e6d55ad5f136e162e =
     [ "IslandStats.hpp", "IslandStats_8hpp.html", [
       [ "IslandStats", "structplayrho_1_1IslandStats.html", "structplayrho_1_1IslandStats" ]
     ] ],
+    [ "JointFunction.hpp", "JointFunction_8hpp.html", "JointFunction_8hpp" ],
     [ "JointID.hpp", "JointID_8hpp.html", "JointID_8hpp" ],
     [ "KeyedContactID.hpp", "KeyedContactID_8hpp.html", "KeyedContactID_8hpp" ],
     [ "LengthError.hpp", "LengthError_8hpp.html", null ],
@@ -43,11 +46,11 @@ var dir_3ed5363c54a0ae1e6d55ad5f136e162e =
     [ "ObjectPool.hpp", "ObjectPool_8hpp.html", "ObjectPool_8hpp" ],
     [ "PointState.hpp", "PointState_8hpp.html", "PointState_8hpp" ],
     [ "Positive.hpp", "Positive_8hpp.html", "Positive_8hpp" ],
-    [ "propagate_const.hpp", "propagate__const_8hpp.html", "propagate__const_8hpp" ],
     [ "RayCastOpcode.hpp", "RayCastOpcode_8hpp.html", "RayCastOpcode_8hpp" ],
     [ "Real.hpp", "Real_8hpp.html", "Real_8hpp" ],
     [ "RealConstants.hpp", "RealConstants_8hpp.html", "RealConstants_8hpp" ],
     [ "Settings.hpp", "Settings_8hpp.html", "Settings_8hpp" ],
+    [ "ShapeFunction.hpp", "ShapeFunction_8hpp.html", "ShapeFunction_8hpp" ],
     [ "ShapeID.hpp", "ShapeID_8hpp.html", "ShapeID_8hpp" ],
     [ "Span.hpp", "Span_8hpp.html", [
       [ "Span", "classplayrho_1_1Span.html", "classplayrho_1_1Span" ]

@@ -1,13 +1,17 @@
 <map id="Library/include/playrho/Filter.hpp" name="Library/include/playrho/Filter.hpp">
-<area shape="rect" id="node1" title="Declarations of the Filter class and any free functions associated with it." alt="" coords="200,5,371,47"/>
+<area shape="rect" id="node1" title="Declarations of the Filter class and any free functions associated with it." alt="" coords="289,5,460,47"/>
 <area shape="rect" id="node2" href="$AabbTreeWorld_8hpp.html" title="Declarations of the AabbTreeWorld class." alt="" coords="5,95,176,136"/>
-<area shape="rect" id="node3" href="$Shape_8hpp.html" title="Definition of the Shape class and closely related code." alt="" coords="200,95,371,136"/>
-<area shape="rect" id="node6" href="$ShapeConf_8hpp.html" title="Definition of the BaseShapeConf class and closely related code." alt="" coords="596,95,767,136"/>
-<area shape="rect" id="node4" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="97,184,268,225"/>
-<area shape="rect" id="node5" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="596,273,767,315"/>
-<area shape="rect" id="node7" href="$ChainShapeConf_8hpp.html" title="Definition of the ChainShapeConf class and closely related code." alt="" coords="293,184,473,225"/>
-<area shape="rect" id="node8" href="$DiskShapeConf_8hpp.html" title="Definition of the DiskShapeConf class and closely related code." alt="" coords="497,184,669,225"/>
-<area shape="rect" id="node9" href="$EdgeShapeConf_8hpp.html" title="Definition of the EdgeShapeConf class and closely related code." alt="" coords="693,184,867,225"/>
-<area shape="rect" id="node10" href="$MultiShapeConf_8hpp.html" title="Definition of the MultiShapeConf class and closely related code." alt="" coords="892,184,1068,225"/>
-<area shape="rect" id="node11" href="$PolygonShapeConf_8hpp.html" title="Definition of the PolygonShapeConf class and closely related code." alt="" coords="1092,184,1287,225"/>
+<area shape="rect" id="node3" href="$ShapeConcept_8hpp.html" title="Definition of the internal ShapeConcept interface class." alt="" coords="200,95,408,136"/>
+<area shape="rect" id="node5" href="$Shape_8hpp.html" title="Definition of the Shape class and closely related code." alt="" coords="292,273,463,315"/>
+<area shape="rect" id="node10" href="$ShapeConf_8hpp.html" title="Definition of the BaseShapeConf class and closely related code." alt="" coords="628,452,799,493"/>
+<area shape="rect" id="node4" href="$ShapeModel_8hpp.html" title="Definition of the ShapeModel class and related code." alt="" coords="152,184,347,225"/>
+<area shape="rect" id="node6" href="$WorldConcept_8hpp.html" title="Definition of the internal WorldConcept interface class." alt="" coords="135,363,340,404"/>
+<area shape="rect" id="node8" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="129,541,300,583"/>
+<area shape="rect" id="node7" href="$WorldModel_8hpp.html" title="Definitions of the WorldModel class and closely related code." alt="" coords="52,452,244,493"/>
+<area shape="rect" id="node9" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="628,631,799,672"/>
+<area shape="rect" id="node11" href="$ChainShapeConf_8hpp.html" title="Definition of the ChainShapeConf class and closely related code." alt="" coords="325,541,505,583"/>
+<area shape="rect" id="node12" href="$DiskShapeConf_8hpp.html" title="Definition of the DiskShapeConf class and closely related code." alt="" coords="529,541,701,583"/>
+<area shape="rect" id="node13" href="$EdgeShapeConf_8hpp.html" title="Definition of the EdgeShapeConf class and closely related code." alt="" coords="725,541,899,583"/>
+<area shape="rect" id="node14" href="$MultiShapeConf_8hpp.html" title="Definition of the MultiShapeConf class and closely related code." alt="" coords="924,541,1100,583"/>
+<area shape="rect" id="node15" href="$PolygonShapeConf_8hpp.html" title="Definition of the PolygonShapeConf class and closely related code." alt="" coords="1124,541,1319,583"/>
 </map>

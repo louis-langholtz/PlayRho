@@ -1,5 +1,7 @@
 <map id="Library/include/playrho/Contact.hpp" name="Library/include/playrho/Contact.hpp">
-<area shape="rect" id="node1" title="Definition of the Contact class and closely related code." alt="" coords="5,5,176,47"/>
-<area shape="rect" id="node2" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="5,95,176,136"/>
-<area shape="rect" id="node3" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="5,184,176,225"/>
+<area shape="rect" id="node1" title="Definition of the Contact class and closely related code." alt="" coords="129,5,300,47"/>
+<area shape="rect" id="node2" href="$WorldConcept_8hpp.html" title="Definition of the internal WorldConcept interface class." alt="" coords="43,95,248,136"/>
+<area shape="rect" id="node4" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="149,273,320,315"/>
+<area shape="rect" id="node3" href="$WorldModel_8hpp.html" title="Definitions of the WorldModel class and closely related code." alt="" coords="5,184,197,225"/>
+<area shape="rect" id="node5" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="149,363,320,404"/>
 </map>

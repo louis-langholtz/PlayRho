@@ -76,8 +76,6 @@ var hierarchy =
     [ "PolicySelector::Density", null, [
       [ "playrho::d2::part::Compositor< P1, P2, P3, P4, P5, P6 >", "classplayrho_1_1d2_1_1part_1_1Compositor.html", null ]
     ] ],
-    [ "playrho::propagate_const< T >::detect_element_type< U >", "structplayrho_1_1propagate__const_1_1detect__element__type.html", null ],
-    [ "playrho::propagate_const< T >::detect_element_type< U * >", "structplayrho_1_1propagate__const_1_1detect__element__type_3_01U_01_5_01_4.html", null ],
     [ "playrho::detail::detector< Default, AlwaysVoid, Op, Args >", "structplayrho_1_1detail_1_1detector.html", null ],
     [ "playrho::detail::detector< Default, std::void_t< Op< Args... > >, Op, Args... >", "structplayrho_1_1detail_1_1detector_3_01Default_00_01std_1_1void__t_3_01Op_3_01Args_8_8_8_01_4_0354b20dbfb0688d53175b0c0b28d1e9c.html", null ],
     [ "playrho::d2::DistanceConf", "structplayrho_1_1d2_1_1DistanceConf.html", null ],
@@ -93,16 +91,7 @@ var hierarchy =
     [ "playrho::DynamicTreeBranchData", "structplayrho_1_1DynamicTreeBranchData.html", null ],
     [ "playrho::DynamicTreeUnusedData", "structplayrho_1_1DynamicTreeUnusedData.html", null ],
     [ "playrho::DynamicTreeVariantData", "unionplayrho_1_1DynamicTreeVariantData.html", null ],
-    [ "std::equal_to<::playrho::propagate_const< T > >", "structstd_1_1equal__to_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html", null ],
     [ "std::false_type", null, [
-      [ "playrho::d2::detail::HasRotate< T, class >", "structplayrho_1_1d2_1_1detail_1_1HasRotate.html", null ],
-      [ "playrho::d2::detail::HasScale< T, class >", "structplayrho_1_1d2_1_1detail_1_1HasScale.html", null ],
-      [ "playrho::d2::detail::HasSetDensity< T, class >", "structplayrho_1_1d2_1_1detail_1_1HasSetDensity.html", null ],
-      [ "playrho::d2::detail::HasSetFilter< T, class >", "structplayrho_1_1d2_1_1detail_1_1HasSetFilter.html", null ],
-      [ "playrho::d2::detail::HasSetFriction< T, class >", "structplayrho_1_1d2_1_1detail_1_1HasSetFriction.html", null ],
-      [ "playrho::d2::detail::HasSetRestitution< T, class >", "structplayrho_1_1d2_1_1detail_1_1HasSetRestitution.html", null ],
-      [ "playrho::d2::detail::HasSetSensor< T, class >", "structplayrho_1_1d2_1_1detail_1_1HasSetSensor.html", null ],
-      [ "playrho::d2::detail::HasTranslate< T, class >", "structplayrho_1_1d2_1_1detail_1_1HasTranslate.html", null ],
       [ "playrho::d2::detail::IsValidJointType< T, class >", "structplayrho_1_1d2_1_1detail_1_1IsValidJointType.html", null ],
       [ "playrho::d2::detail::IsValidShapeType< T, class >", "structplayrho_1_1d2_1_1detail_1_1IsValidShapeType.html", null ],
       [ "playrho::detail::Checked< ValueType, Checker, NoExcept >::IsChecked< U >", "structplayrho_1_1detail_1_1Checked_1_1IsChecked.html", null ],
@@ -132,14 +121,11 @@ var hierarchy =
     [ "PolicySelector::Geometry", null, [
       [ "playrho::d2::part::Compositor< P1, P2, P3, P4, P5, P6 >", "classplayrho_1_1d2_1_1part_1_1Compositor.html", null ]
     ] ],
-    [ "std::greater<::playrho::propagate_const< T > >", "structstd_1_1greater_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html", null ],
-    [ "std::greater_equal<::playrho::propagate_const< T > >", "structstd_1_1greater__equal_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html", null ],
     [ "playrho::GrowableStack< T, N >", "classplayrho_1_1GrowableStack.html", null ],
     [ "playrho::detail::HasFunctor< typename, T >", "structplayrho_1_1detail_1_1HasFunctor.html", null ],
     [ "playrho::detail::HasFunctor< Type, Return(Args...)>", "structplayrho_1_1detail_1_1HasFunctor_3_01Type_00_01Return_07Args_8_8_8_08_4.html", null ],
     [ "std::hash< playrho::ContactKey >", "structstd_1_1hash_3_01playrho_1_1ContactKey_01_4.html", null ],
     [ "std::hash<::playrho::detail::IndexingNamedType< T, Tag > >", "structstd_1_1hash_3_1_1playrho_1_1detail_1_1IndexingNamedType_3_01T_00_01Tag_01_4_01_4.html", null ],
-    [ "std::hash<::playrho::propagate_const< T > >", "structstd_1_1hash_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html", null ],
     [ "playrho::detail::IndexingNamedType< T, Tag >", "classplayrho_1_1detail_1_1IndexingNamedType.html", null ],
     [ "playrho::detail::IndexingNamedType< BodyCounter, struct BodyIdentifier >", "classplayrho_1_1detail_1_1IndexingNamedType.html", null ],
     [ "playrho::detail::IndexingNamedType< ShapeCounter, struct ShapeIdentifier >", "classplayrho_1_1detail_1_1IndexingNamedType.html", null ],
@@ -158,6 +144,9 @@ var hierarchy =
     [ "playrho::Island", "structplayrho_1_1Island.html", null ],
     [ "playrho::IslandStats", "structplayrho_1_1IslandStats.html", null ],
     [ "playrho::d2::Joint", "classplayrho_1_1d2_1_1Joint.html", null ],
+    [ "playrho::d2::detail::JointConcept", "structplayrho_1_1d2_1_1detail_1_1JointConcept.html", [
+      [ "playrho::d2::detail::JointModel< T >", "structplayrho_1_1d2_1_1detail_1_1JointModel.html", null ]
+    ] ],
     [ "playrho::d2::JointConf", "structplayrho_1_1d2_1_1JointConf.html", [
       [ "playrho::d2::JointBuilder< FrictionJointConf >", "structplayrho_1_1d2_1_1JointBuilder.html", [
         [ "playrho::d2::FrictionJointConf", "structplayrho_1_1d2_1_1FrictionJointConf.html", null ]
@@ -199,8 +188,6 @@ var hierarchy =
     ] ],
     [ "playrho::LengthIndexPair", "structplayrho_1_1LengthIndexPair.html", null ],
     [ "playrho::detail::LengthIndices< N >", "structplayrho_1_1detail_1_1LengthIndices.html", null ],
-    [ "std::less<::playrho::propagate_const< T > >", "structstd_1_1less_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html", null ],
-    [ "std::less_equal<::playrho::propagate_const< T > >", "structstd_1_1less__equal_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html", null ],
     [ "playrho::LexicographicalGreater< T >", "structplayrho_1_1LexicographicalGreater.html", null ],
     [ "playrho::LexicographicalGreaterEqual< T >", "structplayrho_1_1LexicographicalGreaterEqual.html", null ],
     [ "playrho::LexicographicalLess< T >", "structplayrho_1_1LexicographicalLess.html", null ],
@@ -224,7 +211,6 @@ var hierarchy =
     [ "playrho::detail::NonPositiveChecker< T >", "structplayrho_1_1detail_1_1NonPositiveChecker.html", null ],
     [ "playrho::detail::NonZeroChecker< T >", "structplayrho_1_1detail_1_1NonZeroChecker.html", null ],
     [ "playrho::detail::NoOpChecker< T >", "structplayrho_1_1detail_1_1NoOpChecker.html", null ],
-    [ "std::not_equal_to<::playrho::propagate_const< T > >", "structstd_1_1not__equal__to_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html", null ],
     [ "std::numeric_limits<::playrho::Positive< T > >", "classstd_1_1numeric__limits_3_1_1playrho_1_1Positive_3_01T_01_4_01_4.html", null ],
     [ "playrho::ObjectPool< T >", "classplayrho_1_1ObjectPool.html", null ],
     [ "playrho::ObjectPool< BodyContactIDs >", "classplayrho_1_1ObjectPool.html", null ],
@@ -249,8 +235,6 @@ var hierarchy =
     [ "playrho::detail::PositiveChecker< T >", "structplayrho_1_1detail_1_1PositiveChecker.html", null ],
     [ "playrho::PreStepStats", "structplayrho_1_1PreStepStats.html", null ],
     [ "playrho::d2::GearJointConf::PrismaticData", "structplayrho_1_1d2_1_1GearJointConf_1_1PrismaticData.html", null ],
-    [ "playrho::propagate_const< T >", "classplayrho_1_1propagate__const.html", null ],
-    [ "playrho::propagate_const< std::unique_ptr< Concept > >", "classplayrho_1_1propagate__const.html", null ],
     [ "playrho::d2::RayCastHit", "structplayrho_1_1d2_1_1RayCastHit.html", null ],
     [ "playrho::detail::RayCastInput< N >", "structplayrho_1_1detail_1_1RayCastInput.html", null ],
     [ "playrho::RegStepStats", "structplayrho_1_1RegStepStats.html", null ],
@@ -297,6 +281,9 @@ var hierarchy =
       ] ]
     ] ],
     [ "playrho::d2::Shape", "classplayrho_1_1d2_1_1Shape.html", null ],
+    [ "playrho::d2::detail::ShapeConcept", "structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html", [
+      [ "playrho::d2::detail::ShapeModel< T >", "structplayrho_1_1d2_1_1detail_1_1ShapeModel.html", null ]
+    ] ],
     [ "playrho::d2::Simplex", "classplayrho_1_1d2_1_1Simplex.html", null ],
     [ "playrho::d2::SimplexEdge", "classplayrho_1_1d2_1_1SimplexEdge.html", null ],
     [ "playrho::Span< T >", "classplayrho_1_1Span.html", null ],
@@ -321,14 +308,6 @@ var hierarchy =
     [ "playrho::d2::Transformation", "structplayrho_1_1d2_1_1Transformation.html", null ],
     [ "playrho::d2::DynamicTree::TreeNode", "classplayrho_1_1d2_1_1DynamicTree_1_1TreeNode.html", null ],
     [ "std::true_type", null, [
-      [ "playrho::d2::detail::HasRotate< T, std::void_t< decltype(Rotate(std::declval< T & >(), std::declval< Angle >()))> >", "structplayrho_1_1d2_1_1detail_1_1HasRotate_3_01T_00_01std_1_1void__t_3_01decltype_07Rotate_07std62a66955e9a2a172254d7811a6654ce0.html", null ],
-      [ "playrho::d2::detail::HasScale< T, std::void_t< decltype(Scale(std::declval< T & >(), std::declval< Vec2 >()))> >", "structplayrho_1_1d2_1_1detail_1_1HasScale_3_01T_00_01std_1_1void__t_3_01decltype_07Scale_07std_188533d5a8a51dfdbebad0f0683820ad9.html", null ],
-      [ "playrho::d2::detail::HasSetDensity< T, std::void_t< decltype(SetDensity(std::declval< T & >(), std::declval< NonNegative< AreaDensity >>()))> >", "structplayrho_1_1d2_1_1detail_1_1HasSetDensity_3_01T_00_01std_1_1void__t_3_01decltype_07SetDensi6334c25e1bf7072f2d48adeeb41f71b0.html", null ],
-      [ "playrho::d2::detail::HasSetFilter< T, std::void_t< decltype(SetFilter(std::declval< T & >(), std::declval< Filter >()))> >", "structplayrho_1_1d2_1_1detail_1_1HasSetFilter_3_01T_00_01std_1_1void__t_3_01decltype_07SetFilter7d56cfc383c1846af220c7b30e52463f.html", null ],
-      [ "playrho::d2::detail::HasSetFriction< T, std::void_t< decltype(SetFriction(std::declval< T & >(), std::declval< Real >()))> >", "structplayrho_1_1d2_1_1detail_1_1HasSetFriction_3_01T_00_01std_1_1void__t_3_01decltype_07SetFric25596caa4d6b3f4be1d7f3cda7f6d668.html", null ],
-      [ "playrho::d2::detail::HasSetRestitution< T, std::void_t< decltype(SetRestitution(std::declval< T & >(), std::declval< Real >()))> >", "structplayrho_1_1d2_1_1detail_1_1HasSetRestitution_3_01T_00_01std_1_1void__t_3_01decltype_07SetR1541d40bc3fa6b90327fac5a17478e7e.html", null ],
-      [ "playrho::d2::detail::HasSetSensor< T, std::void_t< decltype(SetSensor(std::declval< T & >(), std::declval< bool >()))> >", "structplayrho_1_1d2_1_1detail_1_1HasSetSensor_3_01T_00_01std_1_1void__t_3_01decltype_07SetSensor8aafe605274f89b9262f371793a0934e.html", null ],
-      [ "playrho::d2::detail::HasTranslate< T, std::void_t< decltype(Translate(std::declval< T & >(), std::declval< Length2 >()))> >", "structplayrho_1_1d2_1_1detail_1_1HasTranslate_3_01T_00_01std_1_1void__t_3_01decltype_07Translateb66547472d2c171689f299e86e1970e0.html", null ],
       [ "playrho::d2::detail::IsValidJointType< T, std::void_t< decltype(GetBodyA(std::declval< T >())), decltype(GetBodyB(std::declval< T >())), decltype(GetCollideConnected(std::declval< T >())), decltype(ShiftOrigin(std::declval< T & >(), std::declval< Length2 >())), decltype(InitVelocity(std::declval< T & >(), std::declval< const Span< BodyConstraint > & >(), std::declval< StepConf >(), std::declval< ConstraintSolverConf >())), decltype(SolveVelocity(std::declval< T & >(), std::declval< const Span< BodyConstraint > & >(), std::declval< StepConf >())), decltype(SolvePosition(std::declval< T >(), std::declval< const Span< BodyConstraint > & >(), std::declval< ConstraintSolverConf >())), decltype(std::declval< T >()==std::declval< T >()), decltype(Joint{std::declval< T >()})> >", "structplayrho_1_1d2_1_1detail_1_1IsValidJointType_3_01T_00_01std_1_1void__t_3_01decltype_07GetBo47eab3fc68beccae0775fbf74eefbb54.html", null ],
       [ "playrho::d2::detail::IsValidShapeType< T, std::void_t< decltype(GetChildCount(std::declval< T >())), decltype(GetChild(std::declval< T >(), std::declval< ChildCounter >())), decltype(GetMassData(std::declval< T >())), decltype(GetVertexRadius(std::declval< T >(), std::declval< ChildCounter >())), decltype(GetDensity(std::declval< T >())), decltype(GetFriction(std::declval< T >())), decltype(GetRestitution(std::declval< T >())), decltype(std::declval< T >()==std::declval< T >()), decltype(std::declval< DecayedTypeIfNotSame< T, Shape >>()), decltype(std::is_constructible_v< DecayedTypeIfNotSame< T, Shape >, T >)> >", "structplayrho_1_1d2_1_1detail_1_1IsValidShapeType_3_01T_00_01std_1_1void__t_3_01decltype_07GetCh6e61a5840b735d119f7d25ad6ffcdafa.html", null ],
       [ "playrho::detail::Checked< ValueType, Checker, NoExcept >::IsChecked< Checked< V, C, N > >", "structplayrho_1_1detail_1_1Checked_1_1IsChecked_3_01Checked_3_01V_00_01C_00_01N_01_4_01_4.html", null ],
@@ -397,6 +376,9 @@ var hierarchy =
     [ "playrho::detail::Wider< std::uint32_t >", "structplayrho_1_1detail_1_1Wider_3_01std_1_1uint32__t_01_4.html", null ],
     [ "playrho::detail::Wider< std::uint8_t >", "structplayrho_1_1detail_1_1Wider_3_01std_1_1uint8__t_01_4.html", null ],
     [ "playrho::d2::World", "classplayrho_1_1d2_1_1World.html", null ],
+    [ "playrho::d2::detail::WorldConcept", "structplayrho_1_1d2_1_1detail_1_1WorldConcept.html", [
+      [ "playrho::d2::detail::WorldModel< T >", "structplayrho_1_1d2_1_1detail_1_1WorldModel.html", null ]
+    ] ],
     [ "playrho::d2::WorldConf", "structplayrho_1_1d2_1_1WorldConf.html", null ],
     [ "playrho::d2::WorldManifold", "classplayrho_1_1d2_1_1WorldManifold.html", null ],
     [ "playrho::detail::ZeroToUnderOneChecker< T >", "structplayrho_1_1detail_1_1ZeroToUnderOneChecker.html", null ]

@@ -1,5 +1,13 @@
 var namespaceplayrho_1_1d2_1_1part =
 [
+    [ "detail", null, [
+      [ "MemberRotateReturnType", "Compositor_8hpp.html#ad9f7685c4dc1b8f7ba8fe9c1f16f17d8", null ],
+      [ "MemberScaleReturnType", "Compositor_8hpp.html#aae46743345ffaa97e9a5e7ef1cc8e111", null ],
+      [ "MemberTranslateReturnType", "Compositor_8hpp.html#a3c564e6e8343b7812ff51c4f583e2751", null ],
+      [ "HasMemberRotateV", "Compositor_8hpp.html#a4bab601eed18a880047c839600765e1f", null ],
+      [ "HasMemberScaleV", "Compositor_8hpp.html#a81f8ab754984519ca5dfb439120ff292", null ],
+      [ "HasMemberTranslateV", "Compositor_8hpp.html#a96263fb498d333823874467deb4a805d", null ]
+    ] ],
     [ "Compositor", "classplayrho_1_1d2_1_1part_1_1Compositor.html", "classplayrho_1_1d2_1_1part_1_1Compositor" ],
     [ "DefaultPolicies", "structplayrho_1_1d2_1_1part_1_1DefaultPolicies.html", "structplayrho_1_1d2_1_1part_1_1DefaultPolicies" ],
     [ "DefaultPolicyArgs", "structplayrho_1_1d2_1_1part_1_1DefaultPolicyArgs.html", null ],
@@ -38,8 +46,8 @@ var namespaceplayrho_1_1d2_1_1part =
     [ "IsSensor", "namespaceplayrho_1_1d2_1_1part.html#a09d7d95575e84168a7c82a415169dbe8", null ],
     [ "operator!=", "namespaceplayrho_1_1d2_1_1part.html#a060e63c62f47ebe00d181e65d169abd3", null ],
     [ "operator==", "namespaceplayrho_1_1d2_1_1part.html#ac3103858eab61eaa83b37d420a71ae40", null ],
-    [ "Rotate", "namespaceplayrho_1_1d2_1_1part.html#a2c707b282337d3ed55c80c54be669b7d", null ],
-    [ "Scale", "namespaceplayrho_1_1d2_1_1part.html#aa1cc186121c80395f147cc49cbdadf09", null ],
+    [ "Rotate", "namespaceplayrho_1_1d2_1_1part.html#a6406cfb1211acdb60785de6b82906f46", null ],
+    [ "Scale", "namespaceplayrho_1_1d2_1_1part.html#a8e7a002a381cad9eb15c7e6ba1ab2e00", null ],
     [ "SetDensity", "namespaceplayrho_1_1d2_1_1part.html#ac3474dff07f98ed9fa68cfa612ef529b", null ],
     [ "SetDimensions", "namespaceplayrho_1_1d2_1_1part.html#a0350621543765f7b3ef9645e7a4aead1", null ],
     [ "SetFilter", "namespaceplayrho_1_1d2_1_1part.html#ae95d9ee6e7af9b236d77dc88ecdda0ff", null ],
@@ -48,5 +56,5 @@ var namespaceplayrho_1_1d2_1_1part =
     [ "SetRestitution", "namespaceplayrho_1_1d2_1_1part.html#acae907e2173e3c211c5fe7784f011e41", null ],
     [ "SetSensor", "namespaceplayrho_1_1d2_1_1part.html#ad07854cfbdaaa13c43e8e683b8806d4a", null ],
     [ "SetVertexRadius", "namespaceplayrho_1_1d2_1_1part.html#aa6bd61aad326db6c0cfdea867f5f83e2", null ],
-    [ "Translate", "namespaceplayrho_1_1d2_1_1part.html#a6c8858631b267d914adb8362445e3acf", null ]
+    [ "Translate", "namespaceplayrho_1_1d2_1_1part.html#aab6da22689fae9331ca99b5f85bf01cd", null ]
 ];

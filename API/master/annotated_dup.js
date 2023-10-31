@@ -3,26 +3,16 @@ var annotated_dup =
     [ "playrho", "namespaceplayrho.html", [
       [ "d2", "namespaceplayrho_1_1d2.html", [
         [ "detail", null, [
-          [ "HasRotate", "structplayrho_1_1d2_1_1detail_1_1HasRotate.html", null ],
-          [ "HasRotate< T, std::void_t< decltype(Rotate(std::declval< T & >(), std::declval< Angle >()))> >", "structplayrho_1_1d2_1_1detail_1_1HasRotate_3_01T_00_01std_1_1void__t_3_01decltype_07Rotate_07std62a66955e9a2a172254d7811a6654ce0.html", null ],
-          [ "HasScale", "structplayrho_1_1d2_1_1detail_1_1HasScale.html", null ],
-          [ "HasScale< T, std::void_t< decltype(Scale(std::declval< T & >(), std::declval< Vec2 >()))> >", "structplayrho_1_1d2_1_1detail_1_1HasScale_3_01T_00_01std_1_1void__t_3_01decltype_07Scale_07std_188533d5a8a51dfdbebad0f0683820ad9.html", null ],
-          [ "HasSetDensity", "structplayrho_1_1d2_1_1detail_1_1HasSetDensity.html", null ],
-          [ "HasSetDensity< T, std::void_t< decltype(SetDensity(std::declval< T & >(), std::declval< NonNegative< AreaDensity >>()))> >", "structplayrho_1_1d2_1_1detail_1_1HasSetDensity_3_01T_00_01std_1_1void__t_3_01decltype_07SetDensi6334c25e1bf7072f2d48adeeb41f71b0.html", null ],
-          [ "HasSetFilter", "structplayrho_1_1d2_1_1detail_1_1HasSetFilter.html", null ],
-          [ "HasSetFilter< T, std::void_t< decltype(SetFilter(std::declval< T & >(), std::declval< Filter >()))> >", "structplayrho_1_1d2_1_1detail_1_1HasSetFilter_3_01T_00_01std_1_1void__t_3_01decltype_07SetFilter7d56cfc383c1846af220c7b30e52463f.html", null ],
-          [ "HasSetFriction", "structplayrho_1_1d2_1_1detail_1_1HasSetFriction.html", null ],
-          [ "HasSetFriction< T, std::void_t< decltype(SetFriction(std::declval< T & >(), std::declval< Real >()))> >", "structplayrho_1_1d2_1_1detail_1_1HasSetFriction_3_01T_00_01std_1_1void__t_3_01decltype_07SetFric25596caa4d6b3f4be1d7f3cda7f6d668.html", null ],
-          [ "HasSetRestitution", "structplayrho_1_1d2_1_1detail_1_1HasSetRestitution.html", null ],
-          [ "HasSetRestitution< T, std::void_t< decltype(SetRestitution(std::declval< T & >(), std::declval< Real >()))> >", "structplayrho_1_1d2_1_1detail_1_1HasSetRestitution_3_01T_00_01std_1_1void__t_3_01decltype_07SetR1541d40bc3fa6b90327fac5a17478e7e.html", null ],
-          [ "HasSetSensor", "structplayrho_1_1d2_1_1detail_1_1HasSetSensor.html", null ],
-          [ "HasSetSensor< T, std::void_t< decltype(SetSensor(std::declval< T & >(), std::declval< bool >()))> >", "structplayrho_1_1d2_1_1detail_1_1HasSetSensor_3_01T_00_01std_1_1void__t_3_01decltype_07SetSensor8aafe605274f89b9262f371793a0934e.html", null ],
-          [ "HasTranslate", "structplayrho_1_1d2_1_1detail_1_1HasTranslate.html", null ],
-          [ "HasTranslate< T, std::void_t< decltype(Translate(std::declval< T & >(), std::declval< Length2 >()))> >", "structplayrho_1_1d2_1_1detail_1_1HasTranslate_3_01T_00_01std_1_1void__t_3_01decltype_07Translateb66547472d2c171689f299e86e1970e0.html", null ],
           [ "IsValidJointType", "structplayrho_1_1d2_1_1detail_1_1IsValidJointType.html", null ],
           [ "IsValidJointType< T, std::void_t< decltype(GetBodyA(std::declval< T >())), decltype(GetBodyB(std::declval< T >())), decltype(GetCollideConnected(std::declval< T >())), decltype(ShiftOrigin(std::declval< T & >(), std::declval< Length2 >())), decltype(InitVelocity(std::declval< T & >(), std::declval< const Span< BodyConstraint > & >(), std::declval< StepConf >(), std::declval< ConstraintSolverConf >())), decltype(SolveVelocity(std::declval< T & >(), std::declval< const Span< BodyConstraint > & >(), std::declval< StepConf >())), decltype(SolvePosition(std::declval< T >(), std::declval< const Span< BodyConstraint > & >(), std::declval< ConstraintSolverConf >())), decltype(std::declval< T >()==std::declval< T >()), decltype(Joint{std::declval< T >()})> >", "structplayrho_1_1d2_1_1detail_1_1IsValidJointType_3_01T_00_01std_1_1void__t_3_01decltype_07GetBo47eab3fc68beccae0775fbf74eefbb54.html", null ],
           [ "IsValidShapeType", "structplayrho_1_1d2_1_1detail_1_1IsValidShapeType.html", null ],
-          [ "IsValidShapeType< T, std::void_t< decltype(GetChildCount(std::declval< T >())), decltype(GetChild(std::declval< T >(), std::declval< ChildCounter >())), decltype(GetMassData(std::declval< T >())), decltype(GetVertexRadius(std::declval< T >(), std::declval< ChildCounter >())), decltype(GetDensity(std::declval< T >())), decltype(GetFriction(std::declval< T >())), decltype(GetRestitution(std::declval< T >())), decltype(std::declval< T >()==std::declval< T >()), decltype(std::declval< DecayedTypeIfNotSame< T, Shape >>()), decltype(std::is_constructible_v< DecayedTypeIfNotSame< T, Shape >, T >)> >", "structplayrho_1_1d2_1_1detail_1_1IsValidShapeType_3_01T_00_01std_1_1void__t_3_01decltype_07GetCh6e61a5840b735d119f7d25ad6ffcdafa.html", null ]
+          [ "IsValidShapeType< T, std::void_t< decltype(GetChildCount(std::declval< T >())), decltype(GetChild(std::declval< T >(), std::declval< ChildCounter >())), decltype(GetMassData(std::declval< T >())), decltype(GetVertexRadius(std::declval< T >(), std::declval< ChildCounter >())), decltype(GetDensity(std::declval< T >())), decltype(GetFriction(std::declval< T >())), decltype(GetRestitution(std::declval< T >())), decltype(std::declval< T >()==std::declval< T >()), decltype(std::declval< DecayedTypeIfNotSame< T, Shape >>()), decltype(std::is_constructible_v< DecayedTypeIfNotSame< T, Shape >, T >)> >", "structplayrho_1_1d2_1_1detail_1_1IsValidShapeType_3_01T_00_01std_1_1void__t_3_01decltype_07GetCh6e61a5840b735d119f7d25ad6ffcdafa.html", null ],
+          [ "JointConcept", "structplayrho_1_1d2_1_1detail_1_1JointConcept.html", "structplayrho_1_1d2_1_1detail_1_1JointConcept" ],
+          [ "JointModel", "structplayrho_1_1d2_1_1detail_1_1JointModel.html", "structplayrho_1_1d2_1_1detail_1_1JointModel" ],
+          [ "ShapeConcept", "structplayrho_1_1d2_1_1detail_1_1ShapeConcept.html", "structplayrho_1_1d2_1_1detail_1_1ShapeConcept" ],
+          [ "ShapeModel", "structplayrho_1_1d2_1_1detail_1_1ShapeModel.html", "structplayrho_1_1d2_1_1detail_1_1ShapeModel" ],
+          [ "WorldConcept", "structplayrho_1_1d2_1_1detail_1_1WorldConcept.html", "structplayrho_1_1d2_1_1detail_1_1WorldConcept" ],
+          [ "WorldModel", "structplayrho_1_1d2_1_1detail_1_1WorldModel.html", "structplayrho_1_1d2_1_1detail_1_1WorldModel" ]
         ] ],
         [ "part", "namespaceplayrho_1_1d2_1_1part.html", [
           [ "Compositor", "classplayrho_1_1d2_1_1part_1_1Compositor.html", "classplayrho_1_1d2_1_1part_1_1Compositor" ],
@@ -223,7 +213,6 @@ var annotated_dup =
       [ "MovementConf", "structplayrho_1_1MovementConf.html", "structplayrho_1_1MovementConf" ],
       [ "ObjectPool", "classplayrho_1_1ObjectPool.html", "classplayrho_1_1ObjectPool" ],
       [ "PreStepStats", "structplayrho_1_1PreStepStats.html", "structplayrho_1_1PreStepStats" ],
-      [ "propagate_const", "classplayrho_1_1propagate__const.html", "classplayrho_1_1propagate__const" ],
       [ "RegStepStats", "structplayrho_1_1RegStepStats.html", "structplayrho_1_1RegStepStats" ],
       [ "ReversionWrapper", "structplayrho_1_1ReversionWrapper.html", "structplayrho_1_1ReversionWrapper" ],
       [ "Span", "classplayrho_1_1Span.html", "classplayrho_1_1Span" ],
@@ -240,15 +229,8 @@ var annotated_dup =
       [ "WrongState", "classplayrho_1_1WrongState.html", null ]
     ] ],
     [ "std", "namespacestd.html", [
-      [ "equal_to<::playrho::propagate_const< T > >", "structstd_1_1equal__to_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html", "structstd_1_1equal__to_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4" ],
-      [ "greater<::playrho::propagate_const< T > >", "structstd_1_1greater_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html", "structstd_1_1greater_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4" ],
-      [ "greater_equal<::playrho::propagate_const< T > >", "structstd_1_1greater__equal_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html", "structstd_1_1greater__equal_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4" ],
       [ "hash< playrho::ContactKey >", "structstd_1_1hash_3_01playrho_1_1ContactKey_01_4.html", "structstd_1_1hash_3_01playrho_1_1ContactKey_01_4" ],
       [ "hash<::playrho::detail::IndexingNamedType< T, Tag > >", "structstd_1_1hash_3_1_1playrho_1_1detail_1_1IndexingNamedType_3_01T_00_01Tag_01_4_01_4.html", "structstd_1_1hash_3_1_1playrho_1_1detail_1_1IndexingNamedType_3_01T_00_01Tag_01_4_01_4" ],
-      [ "hash<::playrho::propagate_const< T > >", "structstd_1_1hash_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html", "structstd_1_1hash_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4" ],
-      [ "less<::playrho::propagate_const< T > >", "structstd_1_1less_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html", "structstd_1_1less_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4" ],
-      [ "less_equal<::playrho::propagate_const< T > >", "structstd_1_1less__equal_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html", "structstd_1_1less__equal_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4" ],
-      [ "not_equal_to<::playrho::propagate_const< T > >", "structstd_1_1not__equal__to_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4.html", "structstd_1_1not__equal__to_3_1_1playrho_1_1propagate__const_3_01T_01_4_01_4" ],
       [ "numeric_limits<::playrho::Positive< T > >", "classstd_1_1numeric__limits_3_1_1playrho_1_1Positive_3_01T_01_4_01_4.html", "classstd_1_1numeric__limits_3_1_1playrho_1_1Positive_3_01T_01_4_01_4" ],
       [ "tuple_element< I, playrho::d2::UnitVec >", "classstd_1_1tuple__element_3_01I_00_01playrho_1_1d2_1_1UnitVec_01_4.html", "classstd_1_1tuple__element_3_01I_00_01playrho_1_1d2_1_1UnitVec_01_4" ],
       [ "tuple_element< I, playrho::Vector< T, N > >", "classstd_1_1tuple__element_3_01I_00_01playrho_1_1Vector_3_01T_00_01N_01_4_01_4.html", "classstd_1_1tuple__element_3_01I_00_01playrho_1_1Vector_3_01T_00_01N_01_4_01_4" ],

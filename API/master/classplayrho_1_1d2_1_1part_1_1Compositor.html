@@ -180,14 +180,26 @@ template&lt;class P11 , class P12 , class P13 , class P14 , class P15 , class P1
 <tr class="memitem:ac3103858eab61eaa83b37d420a71ae40"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#ac3103858eab61eaa83b37d420a71ae40">operator==</a> (const <a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P11, P12, P13, P14, P15, P16 &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P21, P22, P23, P24, P25, P26 &gt; &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:ac3103858eab61eaa83b37d420a71ae40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator. <br /></td></tr>
 <tr class="separator:ac3103858eab61eaa83b37d420a71ae40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40f6983cd6755cb949d24c08a459f5be"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </td></tr>
-<tr class="memitem:a40f6983cd6755cb949d24c08a459f5be"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a40f6983cd6755cb949d24c08a459f5be">Rotate</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg,::<a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">playrho::d2::UnitVec</a> value) -&gt; decltype(arg.Rotate(value))</td></tr>
-<tr class="memdesc:a40f6983cd6755cb949d24c08a459f5be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotates the given compositor's vertices by the given value.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a40f6983cd6755cb949d24c08a459f5be">More...</a><br /></td></tr>
-<tr class="separator:a40f6983cd6755cb949d24c08a459f5be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1cc186121c80395f147cc49cbdadf09"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 , std::size_t N&gt; </td></tr>
-<tr class="memitem:aa1cc186121c80395f147cc49cbdadf09"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#aa1cc186121c80395f147cc49cbdadf09">Scale</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>, N &gt; &amp;value) -&gt; decltype(arg.Scale(value))</td></tr>
-<tr class="memdesc:aa1cc186121c80395f147cc49cbdadf09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales the given compositor's vertices by the given value.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#aa1cc186121c80395f147cc49cbdadf09">More...</a><br /></td></tr>
-<tr class="separator:aa1cc186121c80395f147cc49cbdadf09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9de5e9d13d9013dab0fc55bfec2697ec"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </td></tr>
+<tr class="memitem:a9de5e9d13d9013dab0fc55bfec2697ec"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a9de5e9d13d9013dab0fc55bfec2697ec">Rotate</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg,::<a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">playrho::d2::UnitVec</a> value) -&gt; std::enable_if_t&lt; detail::HasMemberRotateV&lt; decltype(arg)&gt;, void &gt;</td></tr>
+<tr class="memdesc:a9de5e9d13d9013dab0fc55bfec2697ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotates the given compositor's vertices by the given value.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a9de5e9d13d9013dab0fc55bfec2697ec">More...</a><br /></td></tr>
+<tr class="separator:a9de5e9d13d9013dab0fc55bfec2697ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee1652046c01cfcade1493d28db88c89"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </td></tr>
+<tr class="memitem:aee1652046c01cfcade1493d28db88c89"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#aee1652046c01cfcade1493d28db88c89">Rotate</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg,::<a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">playrho::d2::UnitVec</a> value) -&gt; std::enable_if_t&lt;!detail::HasMemberRotateV&lt; decltype(arg)&gt;, void &gt;</td></tr>
+<tr class="memdesc:aee1652046c01cfcade1493d28db88c89"><td class="mdescLeft">&#160;</td><td class="mdescRight">No-op rotate function.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#aee1652046c01cfcade1493d28db88c89">More...</a><br /></td></tr>
+<tr class="separator:aee1652046c01cfcade1493d28db88c89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e7a002a381cad9eb15c7e6ba1ab2e00"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </td></tr>
+<tr class="memitem:a8e7a002a381cad9eb15c7e6ba1ab2e00"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a8e7a002a381cad9eb15c7e6ba1ab2e00">Scale</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, const <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a> &amp;value) -&gt; std::enable_if_t&lt; detail::HasMemberScaleV&lt; decltype(arg)&gt;, void &gt;</td></tr>
+<tr class="memdesc:a8e7a002a381cad9eb15c7e6ba1ab2e00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales the given compositor's vertices by the given value.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a8e7a002a381cad9eb15c7e6ba1ab2e00">More...</a><br /></td></tr>
+<tr class="separator:a8e7a002a381cad9eb15c7e6ba1ab2e00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12723ae7c089881aa8cd1340088b75e7"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </td></tr>
+<tr class="memitem:a12723ae7c089881aa8cd1340088b75e7"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a12723ae7c089881aa8cd1340088b75e7">Scale</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, const <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a> &amp;value) -&gt; std::enable_if_t&lt;!detail::HasMemberScaleV&lt; decltype(arg)&gt;, void &gt;</td></tr>
+<tr class="memdesc:a12723ae7c089881aa8cd1340088b75e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">No-op scale function.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a12723ae7c089881aa8cd1340088b75e7">More...</a><br /></td></tr>
+<tr class="separator:a12723ae7c089881aa8cd1340088b75e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab46d03ffff3bb2b82be8c0091e77c6ba"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </td></tr>
+<tr class="memitem:ab46d03ffff3bb2b82be8c0091e77c6ba"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#ab46d03ffff3bb2b82be8c0091e77c6ba">SetDensity</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, <a class="el" href="group__CheckedTypes.html#ga7ab2310a74db36363887ad368d5c3118">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga6bcf1d1de9ef60a9833c222efe7ffd57">AreaDensity</a> &gt; value) -&gt; std::enable_if_t&lt; std::is_const_v&lt; decltype(arg.density)&gt;, void &gt;</td></tr>
+<tr class="memdesc:ab46d03ffff3bb2b82be8c0091e77c6ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">No-op density setter.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#ab46d03ffff3bb2b82be8c0091e77c6ba">More...</a><br /></td></tr>
+<tr class="separator:ab46d03ffff3bb2b82be8c0091e77c6ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3474dff07f98ed9fa68cfa612ef529b"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </td></tr>
 <tr class="memitem:ac3474dff07f98ed9fa68cfa612ef529b"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#ac3474dff07f98ed9fa68cfa612ef529b">SetDensity</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, <a class="el" href="group__CheckedTypes.html#ga7ab2310a74db36363887ad368d5c3118">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga6bcf1d1de9ef60a9833c222efe7ffd57">AreaDensity</a> &gt; value) -&gt; std::enable_if_t&lt;!std::is_const_v&lt; decltype(arg.density)&gt;, void &gt;</td></tr>
 <tr class="memdesc:ac3474dff07f98ed9fa68cfa612ef529b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Density setter.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#ac3474dff07f98ed9fa68cfa612ef529b">More...</a><br /></td></tr>
@@ -196,10 +208,18 @@ template&lt;class P11 , class P12 , class P13 , class P14 , class P15 , class P1
 <tr class="memitem:a0350621543765f7b3ef9645e7a4aead1"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a0350621543765f7b3ef9645e7a4aead1">SetDimensions</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, decltype(arg.GetDimensions()) value) -&gt; decltype(arg.SetDimensions(value))</td></tr>
 <tr class="memdesc:a0350621543765f7b3ef9645e7a4aead1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the rectangle's width and height dimensions.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a0350621543765f7b3ef9645e7a4aead1">More...</a><br /></td></tr>
 <tr class="separator:a0350621543765f7b3ef9645e7a4aead1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee25c3fc14b3a1ba49fc764f8462dff4"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </td></tr>
+<tr class="memitem:aee25c3fc14b3a1ba49fc764f8462dff4"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#aee25c3fc14b3a1ba49fc764f8462dff4">SetFilter</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, <a class="el" href="structplayrho_1_1Filter.html">Filter</a> value) -&gt; std::enable_if_t&lt; std::is_const_v&lt; decltype(arg.filter)&gt;, void &gt;</td></tr>
+<tr class="memdesc:aee25c3fc14b3a1ba49fc764f8462dff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">No-op filter setter.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#aee25c3fc14b3a1ba49fc764f8462dff4">More...</a><br /></td></tr>
+<tr class="separator:aee25c3fc14b3a1ba49fc764f8462dff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae95d9ee6e7af9b236d77dc88ecdda0ff"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </td></tr>
 <tr class="memitem:ae95d9ee6e7af9b236d77dc88ecdda0ff"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#ae95d9ee6e7af9b236d77dc88ecdda0ff">SetFilter</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, <a class="el" href="structplayrho_1_1Filter.html">Filter</a> value) -&gt; std::enable_if_t&lt;!std::is_const_v&lt; decltype(arg.filter)&gt;, void &gt;</td></tr>
 <tr class="memdesc:ae95d9ee6e7af9b236d77dc88ecdda0ff"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1Filter.html" title="A holder for contact filtering data.">Filter</a> setter.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#ae95d9ee6e7af9b236d77dc88ecdda0ff">More...</a><br /></td></tr>
 <tr class="separator:ae95d9ee6e7af9b236d77dc88ecdda0ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23ac9fe74f6e02fdfba1100ed92c54f4"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </td></tr>
+<tr class="memitem:a23ac9fe74f6e02fdfba1100ed92c54f4"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a23ac9fe74f6e02fdfba1100ed92c54f4">SetFriction</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, <a class="el" href="group__CheckedTypes.html#ga7ab2310a74db36363887ad368d5c3118">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt; value) -&gt; std::enable_if_t&lt; std::is_const_v&lt; decltype(arg.friction)&gt;, void &gt;</td></tr>
+<tr class="memdesc:a23ac9fe74f6e02fdfba1100ed92c54f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">No-op friction setting function.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a23ac9fe74f6e02fdfba1100ed92c54f4">More...</a><br /></td></tr>
+<tr class="separator:a23ac9fe74f6e02fdfba1100ed92c54f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09f290e872984197b9c7bb8b11268e0f"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </td></tr>
 <tr class="memitem:a09f290e872984197b9c7bb8b11268e0f"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a09f290e872984197b9c7bb8b11268e0f">SetFriction</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, <a class="el" href="group__CheckedTypes.html#ga7ab2310a74db36363887ad368d5c3118">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt; value) -&gt; std::enable_if_t&lt;!std::is_const_v&lt; decltype(arg.friction)&gt;, void &gt;</td></tr>
 <tr class="memdesc:a09f290e872984197b9c7bb8b11268e0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets friction.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a09f290e872984197b9c7bb8b11268e0f">More...</a><br /></td></tr>
@@ -208,10 +228,18 @@ template&lt;class P11 , class P12 , class P13 , class P14 , class P15 , class P1
 <tr class="memitem:a42df945f58a0fae6ee1762a10f052a1d"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a42df945f58a0fae6ee1762a10f052a1d">SetOffset</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, decltype(arg.GetOffset()) value) -&gt; decltype(arg.SetOffset(value))</td></tr>
 <tr class="memdesc:a42df945f58a0fae6ee1762a10f052a1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the rectangle's x and y offset.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a42df945f58a0fae6ee1762a10f052a1d">More...</a><br /></td></tr>
 <tr class="separator:a42df945f58a0fae6ee1762a10f052a1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a348e6fdf24288055752d00d8a8869b87"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </td></tr>
+<tr class="memitem:a348e6fdf24288055752d00d8a8869b87"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a348e6fdf24288055752d00d8a8869b87">SetRestitution</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> value) -&gt; std::enable_if_t&lt; std::is_const_v&lt; decltype(arg.restitution)&gt;, void &gt;</td></tr>
+<tr class="memdesc:a348e6fdf24288055752d00d8a8869b87"><td class="mdescLeft">&#160;</td><td class="mdescRight">No-op restitution setting function.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a348e6fdf24288055752d00d8a8869b87">More...</a><br /></td></tr>
+<tr class="separator:a348e6fdf24288055752d00d8a8869b87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acae907e2173e3c211c5fe7784f011e41"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </td></tr>
 <tr class="memitem:acae907e2173e3c211c5fe7784f011e41"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#acae907e2173e3c211c5fe7784f011e41">SetRestitution</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> value) -&gt; std::enable_if_t&lt;!std::is_const_v&lt; decltype(arg.restitution)&gt;, void &gt;</td></tr>
 <tr class="memdesc:acae907e2173e3c211c5fe7784f011e41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets restitution.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#acae907e2173e3c211c5fe7784f011e41">More...</a><br /></td></tr>
 <tr class="separator:acae907e2173e3c211c5fe7784f011e41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8100537ddd5f7ab1716ffbb5b0515dc"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </td></tr>
+<tr class="memitem:ae8100537ddd5f7ab1716ffbb5b0515dc"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#ae8100537ddd5f7ab1716ffbb5b0515dc">SetSensor</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, bool value) -&gt; std::enable_if_t&lt; std::is_const_v&lt; decltype(arg.sensor)&gt;, void &gt;</td></tr>
+<tr class="memdesc:ae8100537ddd5f7ab1716ffbb5b0515dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">No-op sensor setter.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#ae8100537ddd5f7ab1716ffbb5b0515dc">More...</a><br /></td></tr>
+<tr class="separator:ae8100537ddd5f7ab1716ffbb5b0515dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad07854cfbdaaa13c43e8e683b8806d4a"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </td></tr>
 <tr class="memitem:ad07854cfbdaaa13c43e8e683b8806d4a"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#ad07854cfbdaaa13c43e8e683b8806d4a">SetSensor</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, bool value) -&gt; std::enable_if_t&lt;!std::is_const_v&lt; decltype(arg.sensor)&gt;, void &gt;</td></tr>
 <tr class="memdesc:ad07854cfbdaaa13c43e8e683b8806d4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sensor setter.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#ad07854cfbdaaa13c43e8e683b8806d4a">More...</a><br /></td></tr>
@@ -220,10 +248,14 @@ template&lt;class P11 , class P12 , class P13 , class P14 , class P15 , class P1
 <tr class="memitem:aa6bd61aad326db6c0cfdea867f5f83e2"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#aa6bd61aad326db6c0cfdea867f5f83e2">SetVertexRadius</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, <a class="el" href="namespaceplayrho.html#a0e937a573db2db27b95156590ef5dd12">ChildCounter</a> index, decltype(arg.GetVertexRadius()) value) -&gt; decltype(arg.SetVertexRadius(index, value))</td></tr>
 <tr class="memdesc:aa6bd61aad326db6c0cfdea867f5f83e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertex radius of the given shape configuration.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#aa6bd61aad326db6c0cfdea867f5f83e2">More...</a><br /></td></tr>
 <tr class="separator:aa6bd61aad326db6c0cfdea867f5f83e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c8858631b267d914adb8362445e3acf"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 , std::size_t N&gt; </td></tr>
-<tr class="memitem:a6c8858631b267d914adb8362445e3acf"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a6c8858631b267d914adb8362445e3acf">Translate</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga8705f1923f7cff39bf09f6d01989770d">Length</a>, N &gt; &amp;value) -&gt; decltype(arg.Translate(value))</td></tr>
-<tr class="memdesc:a6c8858631b267d914adb8362445e3acf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translates the given compositor's vertices by the given value.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a6c8858631b267d914adb8362445e3acf">More...</a><br /></td></tr>
-<tr class="separator:a6c8858631b267d914adb8362445e3acf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab6da22689fae9331ca99b5f85bf01cd"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </td></tr>
+<tr class="memitem:aab6da22689fae9331ca99b5f85bf01cd"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#aab6da22689fae9331ca99b5f85bf01cd">Translate</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;value) -&gt; std::enable_if_t&lt; detail::HasMemberTranslateV&lt; decltype(arg)&gt;, void &gt;</td></tr>
+<tr class="memdesc:aab6da22689fae9331ca99b5f85bf01cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translates the given compositor's vertices by the given value.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#aab6da22689fae9331ca99b5f85bf01cd">More...</a><br /></td></tr>
+<tr class="separator:aab6da22689fae9331ca99b5f85bf01cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4084943308eccf86f9a5e6ed729e6a27"><td class="memTemplParams" colspan="2">template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </td></tr>
+<tr class="memitem:a4084943308eccf86f9a5e6ed729e6a27"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a4084943308eccf86f9a5e6ed729e6a27">Translate</a> (<a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;arg, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;value) -&gt; std::enable_if_t&lt;!detail::HasMemberTranslateV&lt; decltype(arg)&gt;, void &gt;</td></tr>
+<tr class="memdesc:a4084943308eccf86f9a5e6ed729e6a27"><td class="mdescLeft">&#160;</td><td class="mdescRight">No-op translation function.  <a href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a4084943308eccf86f9a5e6ed729e6a27">More...</a><br /></td></tr>
+<tr class="separator:a4084943308eccf86f9a5e6ed729e6a27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class P1 = DefaultPolicyArgs, class P2 = DefaultPolicyArgs, class P3 = DefaultPolicyArgs, class P4 = DefaultPolicyArgs, class P5 = DefaultPolicyArgs, class P6 = DefaultPolicyArgs&gt;<br />
@@ -663,8 +695,8 @@ template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt;
 
 </div>
 </div>
-<a id="a40f6983cd6755cb949d24c08a459f5be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40f6983cd6755cb949d24c08a459f5be">&#9670;&nbsp;</a></span>Rotate()</h2>
+<a id="a9de5e9d13d9013dab0fc55bfec2697ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9de5e9d13d9013dab0fc55bfec2697ec">&#9670;&nbsp;</a></span>Rotate() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -689,7 +721,7 @@ template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt;
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; decltype(arg.Rotate(value))
+          <td></td><td> -&gt; std::enable_if_t&lt;detail::HasMemberRotateV&lt;decltype(arg)&gt;, void&gt;
 </td>
         </tr>
       </table>
@@ -703,17 +735,65 @@ template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt;
 <p>Rotates the given compositor's vertices by the given value. </p>
 <dl class="section note"><dt>Note</dt><dd>By way of SFINAE, this function is only available from overload resolution for objects having a member function of this same name and accepting the given value. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a40f6983cd6755cb949d24c08a459f5be">playrho::d2::part::Compositor&lt; P1, P2, P3, P4, P5, P6 &gt;::Rotate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a9de5e9d13d9013dab0fc55bfec2697ec">playrho::d2::part::Compositor&lt; P1, P2, P3, P4, P5, P6 &gt;::Rotate()</a>.</p>
 
 </div>
 </div>
-<a id="aa1cc186121c80395f147cc49cbdadf09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1cc186121c80395f147cc49cbdadf09">&#9670;&nbsp;</a></span>Scale()</h2>
+<a id="aee1652046c01cfcade1493d28db88c89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee1652046c01cfcade1493d28db88c89">&#9670;&nbsp;</a></span>Rotate() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 , std::size_t N&gt; </div>
+template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto Rotate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">::<a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">playrho::d2::UnitVec</a>&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::enable_if_t&lt;!detail::HasMemberRotateV&lt;decltype(arg)&gt;, void&gt;
+</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>No-op rotate function. </p>
+<dl class="section note"><dt>Note</dt><dd>By way of SFINAE, this function is only available from overload resolution for objects not having a member function of this same name and accepting the given value. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error.">InvalidArgument</a></td><td>if value not the right direction. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8e7a002a381cad9eb15c7e6ba1ab2e00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e7a002a381cad9eb15c7e6ba1ab2e00">&#9670;&nbsp;</a></span>Scale() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -727,13 +807,13 @@ template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 , st
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>, N &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a> &amp;&#160;</td>
           <td class="paramname"><em>value</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; decltype(arg.Scale(value))
+          <td></td><td> -&gt; std::enable_if_t&lt;detail::HasMemberScaleV&lt;decltype(arg)&gt;, void&gt;
 </td>
         </tr>
       </table>
@@ -747,12 +827,108 @@ template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 , st
 <p>Scales the given compositor's vertices by the given value. </p>
 <dl class="section note"><dt>Note</dt><dd>By way of SFINAE, this function is only available from overload resolution for objects having a member function of this same name and accepting the given value. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#aa1cc186121c80395f147cc49cbdadf09">playrho::d2::part::Compositor&lt; P1, P2, P3, P4, P5, P6 &gt;::Scale()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a8e7a002a381cad9eb15c7e6ba1ab2e00">playrho::d2::part::Compositor&lt; P1, P2, P3, P4, P5, P6 &gt;::Scale()</a>.</p>
+
+</div>
+</div>
+<a id="a12723ae7c089881aa8cd1340088b75e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12723ae7c089881aa8cd1340088b75e7">&#9670;&nbsp;</a></span>Scale() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto Scale </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::enable_if_t&lt;!detail::HasMemberScaleV&lt;decltype(arg)&gt;, void&gt;
+</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>No-op scale function. </p>
+<dl class="section note"><dt>Note</dt><dd>By way of SFINAE, this function is only available from overload resolution for objects not having a member function of this same name and accepting the given value. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error.">InvalidArgument</a></td><td>if value not the identity vector. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab46d03ffff3bb2b82be8c0091e77c6ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab46d03ffff3bb2b82be8c0091e77c6ba">&#9670;&nbsp;</a></span>SetDensity() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto SetDensity </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CheckedTypes.html#ga7ab2310a74db36363887ad368d5c3118">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga6bcf1d1de9ef60a9833c222efe7ffd57">AreaDensity</a> &gt;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::enable_if_t&lt;std::is_const_v&lt;decltype(arg.density)&gt;, void&gt;
+</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>No-op density setter. </p>
+<dl class="section note"><dt>Note</dt><dd>By way of SFINAE, this function is only available from overload resolution for objects not having a member variable of this same name and accepting the given value. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error.">InvalidArgument</a></td><td>if value different from existing. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
 <a id="ac3474dff07f98ed9fa68cfa612ef529b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3474dff07f98ed9fa68cfa612ef529b">&#9670;&nbsp;</a></span>SetDensity()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3474dff07f98ed9fa68cfa612ef529b">&#9670;&nbsp;</a></span>SetDensity() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -837,8 +1013,56 @@ template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt;
 
 </div>
 </div>
+<a id="aee25c3fc14b3a1ba49fc764f8462dff4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee25c3fc14b3a1ba49fc764f8462dff4">&#9670;&nbsp;</a></span>SetFilter() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto SetFilter </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structplayrho_1_1Filter.html">Filter</a>&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::enable_if_t&lt;std::is_const_v&lt;decltype(arg.filter)&gt;, void&gt;
+</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>No-op filter setter. </p>
+<dl class="section note"><dt>Note</dt><dd>By way of SFINAE, this function is only available from overload resolution for objects having a member variable of this same name and accepting the given value. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error.">InvalidArgument</a></td><td>if value different from existing. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ae95d9ee6e7af9b236d77dc88ecdda0ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae95d9ee6e7af9b236d77dc88ecdda0ff">&#9670;&nbsp;</a></span>SetFilter()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae95d9ee6e7af9b236d77dc88ecdda0ff">&#9670;&nbsp;</a></span>SetFilter() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -879,8 +1103,56 @@ template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt;
 
 </div>
 </div>
+<a id="a23ac9fe74f6e02fdfba1100ed92c54f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23ac9fe74f6e02fdfba1100ed92c54f4">&#9670;&nbsp;</a></span>SetFriction() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto SetFriction </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CheckedTypes.html#ga7ab2310a74db36363887ad368d5c3118">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::enable_if_t&lt;std::is_const_v&lt;decltype(arg.friction)&gt;, void&gt;
+</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>No-op friction setting function. </p>
+<dl class="section note"><dt>Note</dt><dd>By way of SFINAE, this function is only available from overload resolution for objects not having a member variable of this same name and accepting the given value. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error.">InvalidArgument</a></td><td>if value different from existing. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a09f290e872984197b9c7bb8b11268e0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a09f290e872984197b9c7bb8b11268e0f">&#9670;&nbsp;</a></span>SetFriction()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a09f290e872984197b9c7bb8b11268e0f">&#9670;&nbsp;</a></span>SetFriction() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -965,8 +1237,56 @@ template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt;
 
 </div>
 </div>
+<a id="a348e6fdf24288055752d00d8a8869b87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a348e6fdf24288055752d00d8a8869b87">&#9670;&nbsp;</a></span>SetRestitution() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto SetRestitution </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::enable_if_t&lt;std::is_const_v&lt;decltype(arg.restitution)&gt;, void&gt;
+</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>No-op restitution setting function. </p>
+<dl class="section note"><dt>Note</dt><dd>By way of SFINAE, this function is only available from overload resolution for objects not having a member variable of this same name and accepting the given value. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error.">InvalidArgument</a></td><td>if value different from existing. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="acae907e2173e3c211c5fe7784f011e41"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acae907e2173e3c211c5fe7784f011e41">&#9670;&nbsp;</a></span>SetRestitution()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acae907e2173e3c211c5fe7784f011e41">&#9670;&nbsp;</a></span>SetRestitution() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1007,8 +1327,56 @@ template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt;
 
 </div>
 </div>
+<a id="ae8100537ddd5f7ab1716ffbb5b0515dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8100537ddd5f7ab1716ffbb5b0515dc">&#9670;&nbsp;</a></span>SetSensor() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto SetSensor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::enable_if_t&lt;std::is_const_v&lt;decltype(arg.sensor)&gt;, void&gt;
+</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>No-op sensor setter. </p>
+<dl class="section note"><dt>Note</dt><dd>By way of SFINAE, this function is only available from overload resolution for objects not having a member variable of this same name and accepting the given value. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error.">InvalidArgument</a></td><td>if value different from existing. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ad07854cfbdaaa13c43e8e683b8806d4a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad07854cfbdaaa13c43e8e683b8806d4a">&#9670;&nbsp;</a></span>SetSensor()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad07854cfbdaaa13c43e8e683b8806d4a">&#9670;&nbsp;</a></span>SetSensor() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1099,13 +1467,13 @@ template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt;
 
 </div>
 </div>
-<a id="a6c8858631b267d914adb8362445e3acf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c8858631b267d914adb8362445e3acf">&#9670;&nbsp;</a></span>Translate()</h2>
+<a id="aab6da22689fae9331ca99b5f85bf01cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab6da22689fae9331ca99b5f85bf01cd">&#9670;&nbsp;</a></span>Translate() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 , std::size_t N&gt; </div>
+template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1119,13 +1487,13 @@ template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 , st
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga8705f1923f7cff39bf09f6d01989770d">Length</a>, N &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;&#160;</td>
           <td class="paramname"><em>value</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; decltype(arg.Translate(value))
+          <td></td><td> -&gt; std::enable_if_t&lt;detail::HasMemberTranslateV&lt;decltype(arg)&gt;, void&gt;
 </td>
         </tr>
       </table>
@@ -1139,7 +1507,55 @@ template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 , st
 <p>Translates the given compositor's vertices by the given value. </p>
 <dl class="section note"><dt>Note</dt><dd>By way of SFINAE, this function is only available from overload resolution for objects having a member function of this same name and accepting the given value. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#a6c8858631b267d914adb8362445e3acf">playrho::d2::part::Compositor&lt; P1, P2, P3, P4, P5, P6 &gt;::Translate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html#aab6da22689fae9331ca99b5f85bf01cd">playrho::d2::part::Compositor&lt; P1, P2, P3, P4, P5, P6 &gt;::Translate()</a>.</p>
+
+</div>
+</div>
+<a id="a4084943308eccf86f9a5e6ed729e6a27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4084943308eccf86f9a5e6ed729e6a27">&#9670;&nbsp;</a></span>Translate() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto Translate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a>&lt; P1, P2, P3, P4, P5, P6 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::enable_if_t&lt;!detail::HasMemberTranslateV&lt;decltype(arg)&gt;, void&gt;
+</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>No-op translation function. </p>
+<dl class="section note"><dt>Note</dt><dd>By way of SFINAE, this function is only available from overload resolution for objects not having a member function of this same name and accepting the given value. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error.">InvalidArgument</a></td><td>if value not zero. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1152,7 +1568,7 @@ template&lt;class P1 , class P2 , class P3 , class P4 , class P5 , class P6 , st
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2_1_1part.html">part</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1part_1_1Compositor.html">Compositor</a></li>
-    <li class="footer">Generated on Fri Oct 27 2023 20:41:35 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Oct 31 2023 03:48:35 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

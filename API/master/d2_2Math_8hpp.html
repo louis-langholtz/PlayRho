@@ -104,6 +104,7 @@ $(document).ready(function(){initNavTree('d2_2Math_8hpp.html',''); initResizable
 <p>Declarations of general 2-D math related code.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;<a class="el" href="Math_8hpp.html">playrho/Math.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Checked_8hpp.html">playrho/detail/Checked.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="UnitVec_8hpp.html">playrho/d2/UnitVec.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Position_8hpp.html">playrho/d2/Position.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Velocity_8hpp.html">playrho/d2/Velocity.hpp</a>&gt;</code><br />
@@ -207,21 +208,21 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="memitem:ad9854545199d1abb2a6521895bf63831"><td class="memItemLeft" align="right" valign="top">constexpr Transformation&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#ad9854545199d1abb2a6521895bf63831">playrho::d2::MulT</a> (const Transformation &amp;A, const Transformation &amp;B) noexcept</td></tr>
 <tr class="memdesc:ad9854545199d1abb2a6521895bf63831"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inverse multiplies a given transformation by another given transformation.  <a href="namespaceplayrho_1_1d2.html#ad9854545199d1abb2a6521895bf63831">More...</a><br /></td></tr>
 <tr class="separator:ad9854545199d1abb2a6521895bf63831"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed05334a0707da44659547948b29b612"><td class="memTemplParams" colspan="2"><a id="aed05334a0707da44659547948b29b612"></a>
+<tr class="memitem:a82ae08d9c525e8510b8d7261fcf0d1c2"><td class="memTemplParams" colspan="2"><a id="a82ae08d9c525e8510b8d7261fcf0d1c2"></a>
 template&lt;class T , typename U , bool NoExcept&gt; </td></tr>
-<tr class="memitem:aed05334a0707da44659547948b29b612"><td class="memTemplItemLeft" align="right" valign="top">constexpr Vector2&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#aed05334a0707da44659547948b29b612">playrho::d2::operator*</a> (const detail::Checked&lt; T, U, NoExcept &gt; &amp;s, const UnitVec &amp;u) noexcept</td></tr>
-<tr class="memdesc:aed05334a0707da44659547948b29b612"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplication operator. <br /></td></tr>
-<tr class="separator:aed05334a0707da44659547948b29b612"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82ae08d9c525e8510b8d7261fcf0d1c2"><td class="memTemplItemLeft" align="right" valign="top">constexpr Vector2&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a82ae08d9c525e8510b8d7261fcf0d1c2">playrho::d2::operator*</a> (const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">playrho::detail::Checked</a>&lt; T, U, NoExcept &gt; &amp;s, const UnitVec &amp;u) noexcept</td></tr>
+<tr class="memdesc:a82ae08d9c525e8510b8d7261fcf0d1c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplication operator. <br /></td></tr>
+<tr class="separator:a82ae08d9c525e8510b8d7261fcf0d1c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbaeb9fbb737e31245d2496c0828a90c"><td class="memTemplParams" colspan="2"><a id="abbaeb9fbb737e31245d2496c0828a90c"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:abbaeb9fbb737e31245d2496c0828a90c"><td class="memTemplItemLeft" align="right" valign="top">constexpr Vector2&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#abbaeb9fbb737e31245d2496c0828a90c">playrho::d2::operator*</a> (const T &amp;s, const UnitVec &amp;u) noexcept</td></tr>
 <tr class="memdesc:abbaeb9fbb737e31245d2496c0828a90c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplication operator. <br /></td></tr>
 <tr class="separator:abbaeb9fbb737e31245d2496c0828a90c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1261db9db30d4506e3cc7a1af9ae3528"><td class="memTemplParams" colspan="2"><a id="a1261db9db30d4506e3cc7a1af9ae3528"></a>
+<tr class="memitem:a5beaf709e090543a768ca7b40713e1b2"><td class="memTemplParams" colspan="2"><a id="a5beaf709e090543a768ca7b40713e1b2"></a>
 template&lt;class T , class U , bool NoExcept&gt; </td></tr>
-<tr class="memitem:a1261db9db30d4506e3cc7a1af9ae3528"><td class="memTemplItemLeft" align="right" valign="top">constexpr Vector2&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a1261db9db30d4506e3cc7a1af9ae3528">playrho::d2::operator*</a> (const UnitVec &amp;u, const detail::Checked&lt; T, U, NoExcept &gt; &amp;s) noexcept</td></tr>
-<tr class="memdesc:a1261db9db30d4506e3cc7a1af9ae3528"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplication operator. <br /></td></tr>
-<tr class="separator:a1261db9db30d4506e3cc7a1af9ae3528"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5beaf709e090543a768ca7b40713e1b2"><td class="memTemplItemLeft" align="right" valign="top">constexpr Vector2&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a5beaf709e090543a768ca7b40713e1b2">playrho::d2::operator*</a> (const UnitVec &amp;u, const <a class="el" href="classplayrho_1_1detail_1_1Checked.html">playrho::detail::Checked</a>&lt; T, U, NoExcept &gt; &amp;s) noexcept</td></tr>
+<tr class="memdesc:a5beaf709e090543a768ca7b40713e1b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplication operator. <br /></td></tr>
+<tr class="separator:a5beaf709e090543a768ca7b40713e1b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34807856e636bd697d186de1071be30b"><td class="memTemplParams" colspan="2"><a id="a34807856e636bd697d186de1071be30b"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a34807856e636bd697d186de1071be30b"><td class="memTemplItemLeft" align="right" valign="top">constexpr Vector2&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a34807856e636bd697d186de1071be30b">playrho::d2::operator*</a> (const UnitVec &amp;u, const T &amp;s) noexcept</td></tr>
@@ -247,7 +248,7 @@ constexpr Vec2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="dir_00957d302ca87b53c9f57dcbc695504d.html">d2</a></li><li class="navelem"><a class="el" href="d2_2Math_8hpp.html">Math.hpp</a></li>
-    <li class="footer">Generated on Fri Oct 27 2023 20:41:35 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Oct 31 2023 03:48:35 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

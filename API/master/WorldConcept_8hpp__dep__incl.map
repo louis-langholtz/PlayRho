@@ -1,0 +1,6 @@
+<map id="Library/include/playrho/d2/detail/WorldConcept.hpp" name="Library/include/playrho/d2/detail/WorldConcept.hpp">
+<area shape="rect" id="node1" title="Definition of the internal WorldConcept interface class." alt="" coords="65,5,271,47"/>
+<area shape="rect" id="node2" href="$WorldModel_8hpp.html" title="Definitions of the WorldModel class and closely related code." alt="" coords="5,95,197,136"/>
+<area shape="rect" id="node3" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="83,184,253,225"/>
+<area shape="rect" id="node4" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="83,273,253,315"/>
+</map>
