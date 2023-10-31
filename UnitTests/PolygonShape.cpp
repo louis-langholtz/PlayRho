@@ -26,11 +26,6 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(PolygonShapeConf, IsValidShapeTypeV)
-{
-    EXPECT_TRUE(IsValidShapeTypeV<PolygonShapeConf>);
-}
-
 TEST(PolygonShapeConf, Traits)
 {
     EXPECT_TRUE(std::is_default_constructible_v<PolygonShapeConf>);

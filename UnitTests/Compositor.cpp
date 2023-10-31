@@ -21,7 +21,10 @@
 #include "UnitTests.hpp"
 
 #include <playrho/d2/part/Compositor.hpp>
+
 #include <playrho/d2/Shape.hpp>
+
+#include <playrho/d2/detail/ShapeModel.hpp>
 
 using namespace playrho;
 using namespace playrho::d2::part;
@@ -144,16 +147,16 @@ struct Void2 {
     }
 };
 
-static_assert(playrho::d2::IsValidShapeTypeV<Compositor<GeometryIs<Void2>>>);
+static_assert(playrho::d2::detail::IsValidShapeTypeV<Compositor<GeometryIs<Void2>>>);
 
 } // namespace playrho::d2::part
 
 TEST(Compositor, IsValidShapeTypeV)
 {
-    EXPECT_TRUE(playrho::d2::IsValidShapeTypeV<Compositor<>>);
-    EXPECT_TRUE(playrho::d2::IsValidShapeTypeV<Compositor<GeometryIs<StaticRectangle<>>>>);
-    EXPECT_TRUE(playrho::d2::IsValidShapeTypeV<Compositor<GeometryIs<DynamicRectangle<>>>>);
-    EXPECT_TRUE(playrho::d2::IsValidShapeTypeV<Compositor<GeometryIs<Void2>>>);
+    EXPECT_TRUE(playrho::d2::detail::IsValidShapeTypeV<Compositor<>>);
+    EXPECT_TRUE(playrho::d2::detail::IsValidShapeTypeV<Compositor<GeometryIs<StaticRectangle<>>>>);
+    EXPECT_TRUE(playrho::d2::detail::IsValidShapeTypeV<Compositor<GeometryIs<DynamicRectangle<>>>>);
+    EXPECT_TRUE(playrho::d2::detail::IsValidShapeTypeV<Compositor<GeometryIs<Void2>>>);
 }
 
 TEST(Compositor, GetNormalsForDefaultCompositor)
@@ -329,7 +332,6 @@ TEST(Compositor, GetRestitution)
 
 TEST(Compositor, SetFriction)
 {
-    using ::playrho::d2::SetFriction;
     {
         auto rectangle = Compositor<GeometryIs<StaticRectangle<1, 1>>>{};
         ASSERT_EQ(rectangle.friction, Real(2) / Real(10));
@@ -351,7 +353,6 @@ TEST(Compositor, SetFriction)
 
 TEST(Compositor, SetRestitution)
 {
-    using ::playrho::d2::SetRestitution;
     {
         auto rectangle = Compositor<GeometryIs<StaticRectangle<1, 1>>>{};
         ASSERT_EQ(rectangle.restitution, Real(0));

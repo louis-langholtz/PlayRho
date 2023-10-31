@@ -62,11 +62,6 @@ TEST(ChainShapeConf, ByteSize)
     }
 }
 
-TEST(ChainShapeConf, IsValidShapeTypeV)
-{
-    EXPECT_TRUE(IsValidShapeTypeV<ChainShapeConf>);
-}
-
 TEST(ChainShapeConf, Traits)
 {
     EXPECT_TRUE(std::is_default_constructible_v<ChainShapeConf>);

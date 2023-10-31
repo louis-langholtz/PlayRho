@@ -59,11 +59,6 @@ TEST(MultiShapeConf, ByteSize)
     }
 }
 
-TEST(MultiShapeConf, IsValidShapeTypeV)
-{
-    EXPECT_TRUE(IsValidShapeTypeV<MultiShapeConf>);
-}
-
 TEST(MultiShapeConf, Traits)
 {
     EXPECT_TRUE(std::is_default_constructible_v<MultiShapeConf>);

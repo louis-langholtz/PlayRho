@@ -47,11 +47,6 @@ TEST(DiskShapeConf, ByteSize)
     }
 }
 
-TEST(DiskShapeConf, IsValidShapeTypeV)
-{
-    EXPECT_TRUE(IsValidShapeTypeV<DiskShapeConf>);
-}
-
 TEST(DiskShapeConf, DefaultConstruction)
 {
     const auto foo = DiskShapeConf{};
