@@ -221,7 +221,7 @@ public:
     Shape() noexcept = default;
 
     /// @brief Copy constructor.
-    Shape(const Shape& other) : m_self{other.m_self ? other.m_self->Clone_() : nullptr}
+    Shape(const Shape& other) : m_impl{other.m_impl ? other.m_impl->Clone_() : nullptr}
     {
         // Intentionally empty.
     }
@@ -240,7 +240,7 @@ public:
     /// @throws std::bad_alloc if there's a failure allocating storage.
     template <typename T, typename Tp = DecayedTypeIfNotSame<T, Shape>,
               typename = std::enable_if_t<std::is_constructible_v<Tp, T>>>
-    explicit Shape(T&& arg) : m_self{std::make_unique<detail::ShapeModel<Tp>>(std::forward<T>(arg))}
+    explicit Shape(T&& arg) : m_impl{std::make_unique<detail::ShapeModel<Tp>>(std::forward<T>(arg))}
     {
         // Intentionally empty.
     }
@@ -248,7 +248,7 @@ public:
     /// @brief Copy assignment.
     Shape& operator=(const Shape& other)
     {
-        m_self = other.m_self ? other.m_self->Clone_() : nullptr;
+        m_impl = other.m_impl ? other.m_impl->Clone_() : nullptr;
         return *this;
     }
 
@@ -273,155 +273,155 @@ public:
     /// @brief Swap support.
     void swap(Shape& other) noexcept
     {
-        std::swap(m_self, other.m_self);
+        std::swap(m_impl, other.m_impl);
     }
 
     /// @brief Checks whether this instance contains a value.
     bool has_value() const noexcept
     {
-        return static_cast<bool>(m_self);
+        return static_cast<bool>(m_impl);
     }
 
     friend ChildCounter GetChildCount(const Shape& shape) noexcept
     {
-        return shape.m_self ? shape.m_self->GetChildCount_() : static_cast<ChildCounter>(0);
+        return shape.m_impl ? shape.m_impl->GetChildCount_() : static_cast<ChildCounter>(0);
     }
 
     friend DistanceProxy GetChild(const Shape& shape, ChildCounter index)
     {
-        if (!shape.m_self) {
+        if (!shape.m_impl) {
             throw InvalidArgument("index out of range");
         }
-        return shape.m_self->GetChild_(index);
+        return shape.m_impl->GetChild_(index);
     }
 
     friend MassData GetMassData(const Shape& shape)
     {
-        return shape.m_self ? shape.m_self->GetMassData_() : MassData{};
+        return shape.m_impl ? shape.m_impl->GetMassData_() : MassData{};
     }
 
     friend NonNegative<Length> GetVertexRadius(const Shape& shape, ChildCounter idx)
     {
-        if (!shape.m_self) {
+        if (!shape.m_impl) {
             throw InvalidArgument("index out of range");
         }
-        return shape.m_self->GetVertexRadius_(idx);
+        return shape.m_impl->GetVertexRadius_(idx);
     }
 
     friend void SetVertexRadius(Shape& shape, ChildCounter idx, NonNegative<Length> value)
     {
-        if (shape.m_self) {
-            auto copy = shape.m_self->Clone_();
+        if (shape.m_impl) {
+            auto copy = shape.m_impl->Clone_();
             copy->SetVertexRadius_(idx, value);
-            shape.m_self = std::move(copy);
+            shape.m_impl = std::move(copy);
         }
     }
 
     friend NonNegativeFF<Real> GetFriction(const Shape& shape) noexcept
     {
-        return shape.m_self ? shape.m_self->GetFriction_() : NonNegativeFF<Real>();
+        return shape.m_impl ? shape.m_impl->GetFriction_() : NonNegativeFF<Real>();
     }
 
     friend void SetFriction(Shape& shape, NonNegative<Real> value)
     {
-        if (shape.m_self) {
-            auto copy = shape.m_self->Clone_();
+        if (shape.m_impl) {
+            auto copy = shape.m_impl->Clone_();
             copy->SetFriction_(value);
-            shape.m_self = std::move(copy);
+            shape.m_impl = std::move(copy);
         }
     }
 
     friend Real GetRestitution(const Shape& shape) noexcept
     {
-        return shape.m_self ? shape.m_self->GetRestitution_() : Real(0);
+        return shape.m_impl ? shape.m_impl->GetRestitution_() : Real(0);
     }
 
     friend void SetRestitution(Shape& shape, Real value)
     {
-        if (shape.m_self) {
-            auto copy = shape.m_self->Clone_();
+        if (shape.m_impl) {
+            auto copy = shape.m_impl->Clone_();
             copy->SetRestitution_(value);
-            shape.m_self = std::move(copy);
+            shape.m_impl = std::move(copy);
         }
     }
 
     friend NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept
     {
-        return shape.m_self ? shape.m_self->GetDensity_() : DefaultDensity;
+        return shape.m_impl ? shape.m_impl->GetDensity_() : DefaultDensity;
     }
 
     friend void SetDensity(Shape& shape, NonNegative<AreaDensity> value)
     {
-        if (shape.m_self) {
-            auto copy = shape.m_self->Clone_();
+        if (shape.m_impl) {
+            auto copy = shape.m_impl->Clone_();
             copy->SetDensity_(value);
-            shape.m_self = std::move(copy);
+            shape.m_impl = std::move(copy);
         }
     }
 
     friend Filter GetFilter(const Shape& shape) noexcept
     {
-        return shape.m_self ? shape.m_self->GetFilter_() : Filter{};
+        return shape.m_impl ? shape.m_impl->GetFilter_() : Filter{};
     }
 
     friend void SetFilter(Shape& shape, Filter value)
     {
-        if (shape.m_self) {
-            auto copy = shape.m_self->Clone_();
+        if (shape.m_impl) {
+            auto copy = shape.m_impl->Clone_();
             copy->SetFilter_(value);
-            shape.m_self = std::move(copy);
+            shape.m_impl = std::move(copy);
         }
     }
 
     friend bool IsSensor(const Shape& shape) noexcept
     {
-        return shape.m_self ? shape.m_self->IsSensor_() : false;
+        return shape.m_impl ? shape.m_impl->IsSensor_() : false;
     }
 
     friend void SetSensor(Shape& shape, bool value)
     {
-        if (shape.m_self) {
-            auto copy = shape.m_self->Clone_();
+        if (shape.m_impl) {
+            auto copy = shape.m_impl->Clone_();
             copy->SetSensor_(value);
-            shape.m_self = std::move(copy);
+            shape.m_impl = std::move(copy);
         }
     }
 
     friend void Translate(Shape& shape, const Length2& value)
     {
-        if (shape.m_self) {
-            auto copy = shape.m_self->Clone_();
+        if (shape.m_impl) {
+            auto copy = shape.m_impl->Clone_();
             copy->Translate_(value);
-            shape.m_self = std::move(copy);
+            shape.m_impl = std::move(copy);
         }
     }
 
     friend void Scale(Shape& shape, const Vec2& value)
     {
-        if (shape.m_self) {
-            auto copy = shape.m_self->Clone_();
+        if (shape.m_impl) {
+            auto copy = shape.m_impl->Clone_();
             copy->Scale_(value);
-            shape.m_self = std::move(copy);
+            shape.m_impl = std::move(copy);
         }
     }
 
     friend void Rotate(Shape& shape, const UnitVec& value)
     {
-        if (shape.m_self) {
-            auto copy = shape.m_self->Clone_();
+        if (shape.m_impl) {
+            auto copy = shape.m_impl->Clone_();
             copy->Rotate_(value);
-            shape.m_self = std::move(copy);
+            shape.m_impl = std::move(copy);
         }
     }
 
     friend const void* GetData(const Shape& shape) noexcept
     {
-        return shape.m_self ? shape.m_self->GetData_() : nullptr;
+        return shape.m_impl ? shape.m_impl->GetData_() : nullptr;
     }
 
     friend TypeID GetType(const Shape& shape) noexcept
     {
-        return shape.m_self ? shape.m_self->GetType_() : GetTypeID<void>();
+        return shape.m_impl ? shape.m_impl->GetType_() : GetTypeID<void>();
     }
 
     template <typename T>
@@ -429,8 +429,8 @@ public:
 
     friend bool operator==(const Shape& lhs, const Shape& rhs) noexcept
     {
-        return (lhs.m_self == rhs.m_self) ||
-               ((lhs.m_self && rhs.m_self) && (lhs.m_self->IsEqual_(*rhs.m_self)));
+        return (lhs.m_impl == rhs.m_impl) ||
+               ((lhs.m_impl && rhs.m_impl) && (lhs.m_impl->IsEqual_(*rhs.m_impl)));
     }
 
     friend bool operator!=(const Shape& lhs, const Shape& rhs) noexcept
@@ -439,7 +439,7 @@ public:
     }
 
 private:
-    std::unique_ptr<const detail::ShapeConcept> m_self; ///< Self pointer.
+    std::unique_ptr<const detail::ShapeConcept> m_impl; ///< Pointer to implementation.
 };
 
 // Related non-member functions...
@@ -449,8 +449,8 @@ std::add_pointer_t<std::add_const_t<T>> TypeCast(const Shape* value) noexcept
 {
     static_assert(!std::is_reference<T>::value, "T may not be a reference.");
     using ReturnType = std::add_pointer_t<std::add_const_t<T>>;
-    if (value && value->m_self && (GetType(*value) == GetTypeID<T>())) {
-        return static_cast<ReturnType>(value->m_self->GetData_());
+    if (value && value->m_impl && (GetType(*value) == GetTypeID<T>())) {
+        return static_cast<ReturnType>(value->m_impl->GetData_());
     }
     return nullptr;
 }
