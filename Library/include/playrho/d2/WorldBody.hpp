@@ -443,9 +443,17 @@ bool IsEnabled(const World& world, BodyID id);
 /// @relatedalso World
 void SetEnabled(World& world, BodyID id, bool value);
 
-/// @brief Awakens the body if it's asleep.
+/// @brief Awakens the body if it's asleep and "speedable".
+/// @param world The world for which the identified body is to be awoken.
+/// @param id Identifier of the body within the world to awaken.
+/// @return true if <code>SetAwake(World&, BodyID)</code> was called on the identified body,
+///   false otherwise.
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
+/// @post On returning true: <code>IsAwake(const World&, BodyID)</code> returns true
+///   for the given world and identified body.
+/// @see IsAwake(const World&, BodyID), IsSpeedable(BodyType), GetType(const World&, BodyID),
+///   SetAwake(World&, BodyID).
 /// @relatedalso World
 inline bool Awaken(World& world, BodyID id)
 {
@@ -740,12 +748,15 @@ void SetAngularDamping(World& world, BodyID id, NonNegative<Frequency> angularDa
 /// @relatedalso World
 BodyCounter GetAwakeCount(const World& world);
 
-/// @brief Awakens all of the bodies in the given world.
+/// @brief Awakens all of the "speedable" bodies in the given world.
 /// @details Convenience function for calling <code>Awaken(World&, BodyID)</code> for all
 ///   bodies identified in the given world.
 /// @param world The world whose bodies are to be awoken.
 /// @return Sum total of calls to <code>Awaken(World&, BodyID)</code> that returned true.
-/// @see GetBodies(const World&), Awaken(World&, BodyID).
+/// @post On normal return: <code>IsAwake(const World&, BodyID)</code> returns true for all
+///   the "speedable" bodies of the given world.
+/// @see GetBodies(const World&), Awaken(World&, BodyID), IsAwake(const World&, BodyID),
+///   IsSpeedable(BodyType).
 /// @relatedalso World
 BodyCounter Awaken(World& world);
 
