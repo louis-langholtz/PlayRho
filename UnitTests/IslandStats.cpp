@@ -29,12 +29,12 @@ TEST(IslandStats, DefaultConstructor)
     IslandStats object{};
     EXPECT_EQ(object.minSeparation, std::numeric_limits<Length>::infinity());
     EXPECT_EQ(object.maxIncImpulse, 0_Ns);
-    EXPECT_EQ(object.bodiesSlept, 0);
-    EXPECT_EQ(object.contactsUpdated, 0);
-    EXPECT_EQ(object.contactsSkipped, 0);
+    EXPECT_EQ(object.bodiesSlept, 0u);
+    EXPECT_EQ(object.contactsUpdated, 0u);
+    EXPECT_EQ(object.contactsSkipped, 0u);
     EXPECT_EQ(object.solved, false);
-    EXPECT_EQ(object.positionIters, 0);
-    EXPECT_EQ(object.velocityIters, 0);
+    EXPECT_EQ(object.positionIters, 0u);
+    EXPECT_EQ(object.velocityIters, 0u);
 }
 
 TEST(IslandStats, IncContactsUpdated)
