@@ -289,9 +289,9 @@ Frequency GetInvDeltaTime(const World& world) noexcept;
 /// @param world The world whose body range is to be returned for.
 BodyCounter GetBodyRange(const World& world) noexcept;
 
-/// @brief Gets the world body range for this constant world.
-/// @details Gets a range enumerating the bodies currently existing within this world.
-///   These are the bodies that had been created from previous calls to
+/// @brief Gets the valid world body identifiers container for this constant world.
+/// @details Gets a container enumerating the identifiers of bodies currently existing
+///   within this world. These are the bodies that had been created from previous calls to
 ///   <code>CreateBody(World&, const Body&)</code> that haven't yet been destroyed by
 ///   a call to <code>Destroy(World& world, BodyID)</code> or to <code>Clear(World&)</code>.
 /// @param world The world whose body identifiers are to be returned for.
@@ -299,7 +299,7 @@ BodyCounter GetBodyRange(const World& world) noexcept;
 /// @see CreateBody(World&, const Body&), Destroy(World& world, BodyID), Clear(World&).
 std::vector<BodyID> GetBodies(const World& world);
 
-/// @brief Gets the bodies-for-proxies range for this world.
+/// @brief Gets the bodies-for-proxies container for this world.
 /// @details Provides insight on what bodies have been queued for proxy processing
 ///   during the next call to the world step function.
 /// @see Step.
@@ -317,30 +317,31 @@ std::vector<BodyID> GetBodiesForProxies(const World& world);
 ///   the <code>Destroy(BodyID)</code> function.
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
-/// @throws std::out_of_range if the given body references any invalid shape identifiers.
-/// @post The created body's identifier will be present in the range returned from the
+/// @throws std::out_of_range if the given body references any out of range shape identifiers.
+/// @post The created body's identifier will be present in the container returned from the
 ///   <code>GetBodies(const World&)</code> function.
 /// @post Calling <code>GetBody(const World&, BodyID)</code> with the returned body identifer
 ///   returns the body given to this create function.
-/// @see Destroy(World& world, BodyID), GetBodies(const World&), ResetMassData.
+/// @see Destroy(World& world, BodyID), GetBodies(const World&), ResetMassData, GetShapeRange.
 /// @see PhysicalEntities.
 BodyID CreateBody(World& world, const Body& body = Body{}, bool resetMassData = true);
 
 /// @brief Gets the state of the identified body.
-/// @throws std::out_of_range If given an invalid body identifier.
-/// @see CreateBody(World&, const Body&, bool), SetBody(World&, BodyID, const Body&).
+/// @throws std::out_of_range If given an out of range body identifier.
+/// @see CreateBody(World&, const Body&, bool), SetBody(World&, BodyID, const Body&),
+///   GetBodyRange.
 Body GetBody(const World& world, BodyID id);
 
 /// @brief Sets the state of the identified body.
 /// @param world The world containing the identified body whose state is to be set.
 /// @param id Identifier of the body whose state is to be set.
 /// @param body New state of the identified body.
-/// @throws std::out_of_range if given an invalid id of if the given body references any
-///   invalid shape identifiers.
+/// @throws std::out_of_range if @p id is out of range, or if the given body references any
+///   shape identifiers that are out of range.
 /// @throws InvalidArgument if the specified ID was destroyed.
 /// @post On success: <code>GetBody(const World&, BodyID)</code> for @p world and @p id
 ///   returns the value of @p body .
-/// @see GetBody(const World&, BodyID), GetBodyRange.
+/// @see GetBody(const World&, BodyID), GetBodyRange, GetShapeRange.
 void SetBody(World& world, BodyID id, const Body& body);
 
 /// @brief Destroys the identified body.
@@ -352,29 +353,29 @@ void SetBody(World& world, BodyID id, const Body& body);
 /// @param world The world from which to delete the identified body from.
 /// @param id Identifier of body to destroy that had been created in @p world.
 /// @throws WrongState if this function is called while the world is locked.
-/// @throws std::out_of_range If given an invalid body identifier.
-/// @post On success: the destroyed body's identifier is no longer present in the range
+/// @throws std::out_of_range If given an out of range body identifier.
+/// @post On success: the destroyed body's identifier is no longer present in the container
 ///   returned from the <code>GetBodies(const World&)</code> function; the count returned
-///   by <code>GetBodyCount(const World&)</code> will be one less than before this was called.
-/// @see CreateBody, GetBodies, GetBodyCount, GetBodyRange,
-///   SetDetachListener, IsLocked.
+///   by <code>GetBodyCount(const World&)</code> will be one less than before this was called;
+///   <code>GetBodyRange(const World&)</code> will be unchanged.
+/// @see CreateBody, GetBodies, GetBodyCount, GetBodyRange, SetDetachListener, IsLocked.
 /// @see PhysicalEntities.
 void Destroy(World& world, BodyID id);
 
-/// @brief Gets the range of joints attached to the identified body.
-/// @throws std::out_of_range If given an invalid body identifier.
+/// @brief Gets the container of valid joints attached to the identified body.
+/// @throws std::out_of_range If given an out of range body identifier.
 /// @see CreateJoint, GetBodyRange.
 std::vector<std::pair<BodyID, JointID>> GetJoints(const World& world, BodyID id);
 
 /// @brief Gets the container of contacts attached to the identified body.
 /// @warning This collection changes during the time step and you may
 ///   miss some collisions if you don't use <code>ContactFunction</code>.
-/// @throws std::out_of_range If given an invalid body identifier.
+/// @throws std::out_of_range If given an out of range body identifier.
 /// @see GetBodyRange.
 std::vector<std::tuple<ContactKey, ContactID>> GetContacts(const World& world, BodyID id);
 
 /// @brief Gets the identities of the shapes associated with the identified body.
-/// @throws std::out_of_range If given an invalid body identifier.
+/// @throws std::out_of_range If given an out of range body identifier.
 /// @see GetBodyRange, CreateBody, SetBody.
 std::vector<ShapeID> GetShapes(const World& world, BodyID id);
 
@@ -442,26 +443,29 @@ JointID CreateJoint(World& world, const T& value)
 /// @param world The world in which the specified joint is to be destroyed from.
 /// @param id Identifier of the joint to destroy.
 /// @throws WrongState if this function is called while the world is locked.
-/// @throws std::out_of_range If given an invalid joint identifier.
+/// @throws std::out_of_range If given an out of range joint identifier.
 /// @post On success: the given identifier is no longer within those returned by
 ///   <code>GetJoints(const World&)</code>, the count returned by
 ///   <code>GetJointCount(const World&)</code> will be one less than before this was called.
-/// @see CreateJoint, IsLocked.
+/// @see CreateJoint, IsLocked, GetJointRange.
 void Destroy(World& world, JointID id);
 
 /// @brief Gets the value of the identified joint.
-/// @throws std::out_of_range If given an invalid joint identifier.
+/// @throws std::out_of_range If given an out of range joint identifier.
+/// @see GetJointRange.
 Joint GetJoint(const World& world, JointID id);
 
 /// @brief Sets the value of the identified joint.
 /// @throws WrongState if this function is called while the world is locked.
-/// @throws std::out_of_range If given an invalid joint identifier.
+/// @throws std::out_of_range If given an out of range joint identifier.
+/// @see GetJointRange.
 void SetJoint(World& world, JointID id, const Joint& def);
 
 /// @brief Sets a joint's value from a configuration.
 /// @details This is a convenience function for allowing limited implicit conversions to joints.
 /// @throws WrongState if this function is called while the world is locked.
-/// @throws std::out_of_range If given an invalid joint identifier.
+/// @throws std::out_of_range If given an out of range joint identifier.
+/// @see GetJointRange.
 /// @relatedalso World
 template <typename T>
 void SetJoint(World& world, JointID id, const T& value)
@@ -500,19 +504,20 @@ auto CreateShape(World& world, const T& shapeConf) ->
 /// @param world The world in which the specified shape is to be destroyed from.
 /// @param id Identifier of the shape to destroy.
 /// @throws WrongState if this function is called while the world is locked.
-/// @throws std::out_of_range If given an invalid identifier.
+/// @throws std::out_of_range If given an out of range identifier.
 /// @post On success: no body in the specified world will have the identified shape attached
-///   to it.
-/// @see CreateShape, IsLocked.
+///   to it; <code>GetShapeRange(const World&)</code> will be unchanged.
+/// @see CreateShape, IsLocked, GetShapeRange.
 void Destroy(World& world, ShapeID id);
 
 /// @brief Gets the shape associated with the identifier.
-/// @throws std::out_of_range If given an invalid identifier.
+/// @throws std::out_of_range If given an out of range identifier.
+/// @see GetShapeRange.
 Shape GetShape(const World& world, ShapeID id);
 
 /// @brief Sets the identified shape to the new value.
-/// @throws std::out_of_range If given an invalid shape identifier.
-/// @see CreateShape.
+/// @throws std::out_of_range If given an out of range shape identifier.
+/// @see CreateShape, GetShapeRange.
 void SetShape(World& world, ShapeID, const Shape& def);
 
 /// @brief Gets the extent of the currently valid contact range.
@@ -526,7 +531,8 @@ ContactCounter GetContactRange(const World& world) noexcept;
 std::vector<KeyedContactID> GetContacts(const World& world);
 
 /// @brief Gets the identified contact.
-/// @throws std::out_of_range If given an invalid contact identifier.
+/// @throws std::out_of_range If given an out of range contact identifier.
+/// @see GetContantRange.
 Contact GetContact(const World& world, ContactID id);
 
 /// @brief Sets the identified contact's state.
@@ -539,15 +545,16 @@ Contact GetContact(const World& world, ContactID id);
 ///   is not allowed to change the TOI of the contact,
 ///   is not allowed to change the TOI count of the contact. Otherwise, this function
 ///   will throw an <code>InvalidArgument</code> exception and not change anything.
-/// @throws std::out_of_range If given an invalid contact identifier or an invalid identifier
-///   in the new contact value.
+/// @throws std::out_of_range If given an out of range contact identifier or the new
+///   contact value references an out of range identifier.
 /// @throws InvalidArgument if the identifier is to a freed contact or if the new state is
 ///   not allowable.
 /// @see GetContact, GetContactRange.
 void SetContact(World& world, ContactID id, const Contact& value);
 
 /// @brief Gets the manifold for the identified contact.
-/// @throws std::out_of_range If given an invalid contact identifier.
+/// @throws std::out_of_range If given an out of range contact identifier.
+/// @see GetContantRange.
 Manifold GetManifold(const World& world, ContactID id);
 
 /// @brief Gets the count of contacts in the given world.
