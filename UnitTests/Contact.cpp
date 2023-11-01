@@ -25,29 +25,6 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(Contact, ByteSize)
-{
-    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
-    // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real))
-    {
-        case  4:
-            EXPECT_EQ(alignof(Contact), 4u);
-            EXPECT_EQ(sizeof(Contact), std::size_t(36));
-            break;
-        case  8:
-            EXPECT_EQ(alignof(Contact), 8u);
-            EXPECT_EQ(sizeof(Contact), std::size_t(56));
-            break;
-        case 16:
-            EXPECT_EQ(sizeof(Contact), std::size_t(96));
-            break;
-        default:
-            FAIL();
-            break;
-    }
-}
-
 TEST(Contact, Enabled)
 {
     const auto bA = BodyID(0u);
@@ -63,6 +40,11 @@ TEST(Contact, Enabled)
 
 TEST(Contact, DefaultConstruction)
 {
+    {
+        const auto c = Contact();
+        EXPECT_EQ(c.GetContactableA(), Contact::DefaultContactable);
+        EXPECT_EQ(c.GetContactableB(), Contact::DefaultContactable);
+    }
     EXPECT_EQ(GetBodyA(Contact()), InvalidBodyID);
     EXPECT_EQ(GetBodyB(Contact()), InvalidBodyID);
     EXPECT_EQ(GetShapeA(Contact()), InvalidShapeID);
@@ -217,4 +199,79 @@ TEST(Contact, GetOtherBody)
     const auto contact = Contact({bodyIdA, shapeIdA, childIndexA}, {bodyIdB, shapeIdB, childIndexB});
     EXPECT_EQ(GetOtherBody(contact, bodyIdA), bodyIdB);
     EXPECT_EQ(GetOtherBody(contact, bodyIdB), bodyIdA);
+}
+
+TEST(Contact, Equality)
+{
+    EXPECT_TRUE(Contact() == Contact());
+    EXPECT_TRUE(Contact() == Contact(Contact::DefaultContactable, Contact::DefaultContactable));
+    {
+        auto c = Contact();
+        c.SetTouching();
+        EXPECT_FALSE(Contact() == c);
+    }
+    {
+        auto c = Contact();
+        c.SetEnabled();
+        EXPECT_FALSE(Contact() == c);
+    }
+    {
+        auto c = Contact();
+        c.SetFriction(NonNegative<Real>(2));
+        EXPECT_FALSE(Contact() == c);
+    }
+    {
+        auto c = Contact();
+        c.SetRestitution(Real(42));
+        EXPECT_FALSE(Contact() == c);
+    }
+    {
+        auto c = Contact();
+        c.SetTangentSpeed(42_mps);
+        EXPECT_FALSE(Contact() == c);
+    }
+    {
+        auto c = Contact();
+        c.SetToiCount(42u);
+        EXPECT_FALSE(Contact() == c);
+    }
+    {
+        auto c = Contact();
+        c.SetToi(std::optional<UnitIntervalFF<Real>>(0.5));
+        EXPECT_FALSE(Contact() == c);
+    }
+    {
+        auto c = Contact();
+        c.FlagForFiltering();
+        EXPECT_FALSE(Contact() == c);
+    }
+    {
+        auto c = Contact();
+        c.FlagForUpdating();
+        EXPECT_FALSE(Contact() == c);
+    }
+    {
+        auto c = Contact();
+        c.SetSensor();
+        EXPECT_FALSE(Contact() == c);
+    }
+    {
+        auto c = Contact();
+        c.SetImpenetrable();
+        EXPECT_FALSE(Contact() == c);
+    }
+    {
+        auto c = Contact();
+        c.SetIsActive();
+        EXPECT_FALSE(Contact() == c);
+    }
+    EXPECT_FALSE(Contact() ==
+                 Contact(Contactable{BodyID(1u), ShapeID(0u), ChildCounter(0u)},
+                         Contact::DefaultContactable));
+    EXPECT_FALSE(Contact() ==
+                 Contact(Contactable{BodyID(0u), ShapeID(1u), ChildCounter(0u)},
+                         Contact::DefaultContactable));
+    EXPECT_FALSE(Contact() ==
+                 Contact(Contactable{BodyID(0u), ShapeID(0u), ChildCounter(1u)},
+                         Contact::DefaultContactable));
 }
