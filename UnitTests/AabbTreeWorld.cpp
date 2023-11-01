@@ -93,7 +93,7 @@ void SetType(AabbTreeWorld& world, BodyID id, BodyType value)
 
 TEST(AabbTreeWorld, DefaultInit)
 {
-    AabbTreeWorld world;
+    const AabbTreeWorld world;
 
     EXPECT_EQ(GetBodies(world).size(), BodyCounter(0));
     EXPECT_EQ(GetTree(world).GetLeafCount(), ContactCounter(0));
@@ -127,6 +127,35 @@ TEST(AabbTreeWorld, DefaultInit)
 
     const auto stats = GetResourceStats(world);
     EXPECT_FALSE(stats.has_value());
+
+    EXPECT_TRUE(world == world);
+    EXPECT_FALSE(world != world);
+}
+
+TEST(AabbTreeWorld, Equality)
+{
+    EXPECT_TRUE(AabbTreeWorld() == AabbTreeWorld());
+    {
+        AabbTreeWorld world{};
+        EXPECT_TRUE(AabbTreeWorld() == world);
+        const auto shapeId = CreateShape(world, Shape(DiskShapeConf{}));
+        EXPECT_FALSE(AabbTreeWorld() == world);
+        EXPECT_NO_THROW(Destroy(world, shapeId));
+        EXPECT_TRUE(AabbTreeWorld() == world);
+    }
+}
+
+TEST(AabbTreeWorld, Inequality)
+{
+    EXPECT_FALSE(AabbTreeWorld() != AabbTreeWorld());
+    {
+        AabbTreeWorld world{};
+        EXPECT_FALSE(AabbTreeWorld() != world);
+        const auto shapeId = CreateShape(world, Shape(DiskShapeConf{}));
+        EXPECT_TRUE(AabbTreeWorld() != world);
+        EXPECT_NO_THROW(Destroy(world, shapeId));
+        EXPECT_FALSE(AabbTreeWorld() != world);
+    }
 }
 
 TEST(AabbTreeWorld, Init)
