@@ -22,5 +22,7 @@ var classplayrho_1_1ObjectPool =
     [ "operator[]", "classplayrho_1_1ObjectPool.html#aee95793cfc2c8b6ff624ee21c8a0de68", null ],
     [ "operator[]", "classplayrho_1_1ObjectPool.html#a8763c9f830aae380afdc7f9624e21e07", null ],
     [ "reserve", "classplayrho_1_1ObjectPool.html#ab628282d5e98778b0893fe55130cf6f1", null ],
-    [ "size", "classplayrho_1_1ObjectPool.html#a34fdef49c5e2fbc21143437367d07798", null ]
+    [ "size", "classplayrho_1_1ObjectPool.html#a34fdef49c5e2fbc21143437367d07798", null ],
+    [ "operator!=", "classplayrho_1_1ObjectPool.html#a609cc5602b186ce8db5d613d888d1034", null ],
+    [ "operator==", "classplayrho_1_1ObjectPool.html#a311afb2d776e8e69de0329af1b899c3a", null ]
 ];

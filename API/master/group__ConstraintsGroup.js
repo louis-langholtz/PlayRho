@@ -80,6 +80,7 @@ var group__ConstraintsGroup =
       [ "UnflagForUpdating", "classplayrho_1_1Contact.html#ad0be851da5e90da82388aaddaa1d8f6d", null ],
       [ "UnsetImpenetrable", "classplayrho_1_1Contact.html#a205494b248da96a02b57be9d9ad9a27b", null ],
       [ "UnsetIsActive", "classplayrho_1_1Contact.html#a1ae66cec17d17f003982ee50908d0d25", null ],
-      [ "UnsetIsSensor", "classplayrho_1_1Contact.html#ad488916b3a4198e323011d0a3f417c90", null ]
+      [ "UnsetIsSensor", "classplayrho_1_1Contact.html#ad488916b3a4198e323011d0a3f417c90", null ],
+      [ "DefaultContactable", "classplayrho_1_1Contact.html#a8b1b9a79e20a6e9f08ea030b1b995cb9", null ]
     ] ]
 ];

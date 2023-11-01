@@ -36,6 +36,8 @@ var World_8hpp =
     [ "GetVertexRadiusInterval", "World_8hpp.html#af51eca4a1cbd1b9b0d6024218f52db0f", null ],
     [ "IsLocked", "World_8hpp.html#a33795886ef465e14b67184086d935eca", null ],
     [ "IsStepComplete", "World_8hpp.html#a6b939d4c41803a36fb4e725c725be6ec", null ],
+    [ "operator!=", "World_8hpp.html#a47e9c59a6cb338c3efe5596b516acb6e", null ],
+    [ "operator==", "World_8hpp.html#aa6dff1837844ca0252c35b5c5b47b0b8", null ],
     [ "SetAccelerations", "World_8hpp.html#ae23446b68b07e35cff2b642c5573acfe", null ],
     [ "SetBeginContactListener", "World_8hpp.html#a880cac829986da4266dc3dfc494087b3", null ],
     [ "SetBody", "World_8hpp.html#aed0353c7d828c09741e9cef5afcdac27", null ],

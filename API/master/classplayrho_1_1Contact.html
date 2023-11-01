@@ -96,6 +96,7 @@ $(document).ready(function(){initNavTree('classplayrho_1_1Contact.html',''); ini
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#related">Related Functions</a> &#124;
 <a href="classplayrho_1_1Contact-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -236,6 +237,13 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <tr class="memitem:a75af2c6d431157767c04a7b0ad0a6c87"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Contact.html#a75af2c6d431157767c04a7b0ad0a6c87">UnsetTouching</a> () noexcept</td></tr>
 <tr class="memdesc:a75af2c6d431157767c04a7b0ad0a6c87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsets the touching flag state.  <a href="classplayrho_1_1Contact.html#a75af2c6d431157767c04a7b0ad0a6c87">More...</a><br /></td></tr>
 <tr class="separator:a75af2c6d431157767c04a7b0ad0a6c87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a8b1b9a79e20a6e9f08ea030b1b995cb9"><td class="memItemLeft" align="right" valign="top"><a id="a8b1b9a79e20a6e9f08ea030b1b995cb9"></a>
+static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Contact.html#a8b1b9a79e20a6e9f08ea030b1b995cb9">DefaultContactable</a> = <a class="el" href="structplayrho_1_1Contactable.html">Contactable</a>{<a class="el" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a>, <a class="el" href="namespaceplayrho.html#a7cf47dd833aad177ac33142cfc5e6bc3">InvalidShapeID</a>, 0}</td></tr>
+<tr class="memdesc:a8b1b9a79e20a6e9f08ea030b1b995cb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default contactable value. <br /></td></tr>
+<tr class="separator:a8b1b9a79e20a6e9f08ea030b1b995cb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
 Related Functions</h2></td></tr>
@@ -418,7 +426,14 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 </div><div class="memdoc">
 
 <p>Initializing constructor. </p>
-<dl class="section note"><dt>Note</dt><dd>This need never be called directly by a user. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>The "a" contactable value. </td></tr>
+    <tr><td class="paramname">b</td><td>The "b" contactable value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section post"><dt>Postcondition</dt><dd>If either <code>a</code> or <code>b</code> is not the value of <code>DefaultContactable</code> then: <code><a class="el" href="classplayrho_1_1Contact.html#a266137342d5122459efff71d4d50b2c9" title="Has this contact been disabled?">IsEnabled()</a></code> and <code><a class="el" href="classplayrho_1_1Contact.html#a79f278257778f91aa4f0a1ed8667f918" title="Whether or not the contact needs updating.">NeedsUpdating()</a></code> return true, else they return false. </dd></dl>
 
 </div>
 </div>
@@ -2177,7 +2192,7 @@ The value persists until you set or reset. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="classplayrho_1_1Contact.html">Contact</a></li>
-    <li class="footer">Generated on Tue Oct 31 2023 03:48:35 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Nov 1 2023 16:17:07 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

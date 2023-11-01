@@ -94,7 +94,8 @@ $(document).ready(function(){initNavTree('WorldBody_8hpp.html',''); initResizabl
 
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">WorldBody.hpp File Reference</div>  </div>
 </div><!--header-->
@@ -134,9 +135,6 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">World Body Non-Member Functions.</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p>Non-Member functions relating to bodies. </p>
-</div></td></tr>
 <tr class="memitem:ac1fdf2a580376eb10458b1025b9fea7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#ac1fdf2a580376eb10458b1025b9fea7d">playrho::d2::ApplyAngularImpulse</a> (World &amp;world, BodyID id, AngularMomentum impulse)</td></tr>
 <tr class="memdesc:ac1fdf2a580376eb10458b1025b9fea7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies an angular impulse.  <a href="namespaceplayrho_1_1d2.html#ac1fdf2a580376eb10458b1025b9fea7d">More...</a><br /></td></tr>
 <tr class="separator:ac1fdf2a580376eb10458b1025b9fea7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,10 +157,10 @@ Functions</h2></td></tr>
 <tr class="memdesc:a4957e6f46a121ed3a8556301baa68d84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates a validly identified shape with the validly identified body.  <a href="namespaceplayrho_1_1d2.html#a4957e6f46a121ed3a8556301baa68d84">More...</a><br /></td></tr>
 <tr class="separator:a4957e6f46a121ed3a8556301baa68d84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d6dc1cf5798915c8782b55a9c190a95"><td class="memItemLeft" align="right" valign="top">BodyCounter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a7d6dc1cf5798915c8782b55a9c190a95">playrho::d2::Awaken</a> (World &amp;world)</td></tr>
-<tr class="memdesc:a7d6dc1cf5798915c8782b55a9c190a95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Awakens all of the bodies in the given world.  <a href="namespaceplayrho_1_1d2.html#a7d6dc1cf5798915c8782b55a9c190a95">More...</a><br /></td></tr>
+<tr class="memdesc:a7d6dc1cf5798915c8782b55a9c190a95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Awakens all of the "speedable" bodies in the given world.  <a href="namespaceplayrho_1_1d2.html#a7d6dc1cf5798915c8782b55a9c190a95">More...</a><br /></td></tr>
 <tr class="separator:a7d6dc1cf5798915c8782b55a9c190a95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4968cdffa51be385b42f978f3226901d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a4968cdffa51be385b42f978f3226901d">playrho::d2::Awaken</a> (World &amp;world, BodyID id)</td></tr>
-<tr class="memdesc:a4968cdffa51be385b42f978f3226901d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Awakens the body if it's asleep.  <a href="namespaceplayrho_1_1d2.html#a4968cdffa51be385b42f978f3226901d">More...</a><br /></td></tr>
+<tr class="memdesc:a4968cdffa51be385b42f978f3226901d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Awakens the body if it's asleep and "speedable".  <a href="namespaceplayrho_1_1d2.html#a4968cdffa51be385b42f978f3226901d">More...</a><br /></td></tr>
 <tr class="separator:a4968cdffa51be385b42f978f3226901d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8be54a280b6e7d4af783fb33ce00ede4"><td class="memItemLeft" align="right" valign="top">Acceleration&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a8be54a280b6e7d4af783fb33ce00ede4">playrho::d2::CalcGravitationalAcceleration</a> (const World &amp;world, BodyID id)</td></tr>
 <tr class="memdesc:a8be54a280b6e7d4af783fb33ce00ede4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the gravitationally associated acceleration for the given body within its world.  <a href="namespaceplayrho_1_1d2.html#a8be54a280b6e7d4af783fb33ce00ede4">More...</a><br /></td></tr>
@@ -182,9 +180,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a360a1facb140358f7df6160beded7918"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a360a1facb140358f7df6160beded7918">playrho::d2::Detach</a> (World &amp;world, BodyID id, ShapeID shapeID, bool resetMassData=true)</td></tr>
 <tr class="memdesc:a360a1facb140358f7df6160beded7918"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disassociates a validly identified shape from the validly identified body.  <a href="namespaceplayrho_1_1d2.html#a360a1facb140358f7df6160beded7918">More...</a><br /></td></tr>
 <tr class="separator:a360a1facb140358f7df6160beded7918"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79b87dd5723bbca53647199735376788"><td class="memItemLeft" align="right" valign="top"><a id="a79b87dd5723bbca53647199735376788"></a>
-BodyID&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a79b87dd5723bbca53647199735376788">playrho::d2::FindClosestBody</a> (const World &amp;world, const Length2 &amp;location)</td></tr>
-<tr class="memdesc:a79b87dd5723bbca53647199735376788"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds body in given world that's closest to the given location. <br /></td></tr>
+<tr class="memitem:a79b87dd5723bbca53647199735376788"><td class="memItemLeft" align="right" valign="top">BodyID&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a79b87dd5723bbca53647199735376788">playrho::d2::FindClosestBody</a> (const World &amp;world, const Length2 &amp;location)</td></tr>
+<tr class="memdesc:a79b87dd5723bbca53647199735376788"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds body in given world that's closest to the given location.  <a href="namespaceplayrho_1_1d2.html#a79b87dd5723bbca53647199735376788">More...</a><br /></td></tr>
 <tr class="separator:a79b87dd5723bbca53647199735376788"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a349255e3e102807d3271788b753ec4a1"><td class="memItemLeft" align="right" valign="top">Acceleration&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a349255e3e102807d3271788b753ec4a1">playrho::d2::GetAcceleration</a> (const World &amp;world, BodyID id)</td></tr>
 <tr class="memdesc:a349255e3e102807d3271788b753ec4a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the acceleration of the identified body.  <a href="namespaceplayrho_1_1d2.html#a349255e3e102807d3271788b753ec4a1">More...</a><br /></td></tr>
@@ -201,9 +198,8 @@ BodyID&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="na
 <tr class="memitem:a116c82c48643c1ef6199d27e9b9dd882"><td class="memItemLeft" align="right" valign="top">AngularVelocity&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a116c82c48643c1ef6199d27e9b9dd882">playrho::d2::GetAngularVelocity</a> (const World &amp;world, BodyID id)</td></tr>
 <tr class="memdesc:a116c82c48643c1ef6199d27e9b9dd882"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the angular velocity.  <a href="namespaceplayrho_1_1d2.html#a116c82c48643c1ef6199d27e9b9dd882">More...</a><br /></td></tr>
 <tr class="separator:a116c82c48643c1ef6199d27e9b9dd882"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2ab9325a9628489049f16f50f1004b8"><td class="memItemLeft" align="right" valign="top"><a id="ab2ab9325a9628489049f16f50f1004b8"></a>
-BodyCounter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#ab2ab9325a9628489049f16f50f1004b8">playrho::d2::GetAwakeCount</a> (const World &amp;world)</td></tr>
-<tr class="memdesc:ab2ab9325a9628489049f16f50f1004b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the count of awake bodies in the given world. <br /></td></tr>
+<tr class="memitem:ab2ab9325a9628489049f16f50f1004b8"><td class="memItemLeft" align="right" valign="top">BodyCounter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#ab2ab9325a9628489049f16f50f1004b8">playrho::d2::GetAwakeCount</a> (const World &amp;world)</td></tr>
+<tr class="memdesc:ab2ab9325a9628489049f16f50f1004b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the count of awake bodies in the given world.  <a href="namespaceplayrho_1_1d2.html#ab2ab9325a9628489049f16f50f1004b8">More...</a><br /></td></tr>
 <tr class="separator:ab2ab9325a9628489049f16f50f1004b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a171edc74ab3a2a7f742cb84fc9f5179b"><td class="memItemLeft" align="right" valign="top">BodyCounter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a171edc74ab3a2a7f742cb84fc9f5179b">playrho::d2::GetBodyCount</a> (const World &amp;world) noexcept</td></tr>
 <tr class="memdesc:a171edc74ab3a2a7f742cb84fc9f5179b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the body count in the given world.  <a href="namespaceplayrho_1_1d2.html#a171edc74ab3a2a7f742cb84fc9f5179b">More...</a><br /></td></tr>
@@ -275,9 +271,8 @@ Position&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr class="memitem:a2c7b440f52475ea8487d8f14898f232a"><td class="memItemLeft" align="right" valign="top">Length2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a2c7b440f52475ea8487d8f14898f232a">playrho::d2::GetWorldPoint</a> (const World &amp;world, BodyID id, const Length2 &amp;localPoint)</td></tr>
 <tr class="memdesc:a2c7b440f52475ea8487d8f14898f232a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the world coordinates of a point given in coordinates relative to the body's origin.  <a href="namespaceplayrho_1_1d2.html#a2c7b440f52475ea8487d8f14898f232a">More...</a><br /></td></tr>
 <tr class="separator:a2c7b440f52475ea8487d8f14898f232a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:accaf3b08287d4bc8e5e5849d5b7278a8"><td class="memItemLeft" align="right" valign="top"><a id="accaf3b08287d4bc8e5e5849d5b7278a8"></a>
-UnitVec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#accaf3b08287d4bc8e5e5849d5b7278a8">playrho::d2::GetWorldVector</a> (const World &amp;world, BodyID id, const UnitVec &amp;localVector)</td></tr>
-<tr class="memdesc:accaf3b08287d4bc8e5e5849d5b7278a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience function for getting a world vector of the identified body. <br /></td></tr>
+<tr class="memitem:accaf3b08287d4bc8e5e5849d5b7278a8"><td class="memItemLeft" align="right" valign="top">UnitVec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#accaf3b08287d4bc8e5e5849d5b7278a8">playrho::d2::GetWorldVector</a> (const World &amp;world, BodyID id, const UnitVec &amp;localVector)</td></tr>
+<tr class="memdesc:accaf3b08287d4bc8e5e5849d5b7278a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience function for getting a world vector of the identified body.  <a href="namespaceplayrho_1_1d2.html#accaf3b08287d4bc8e5e5849d5b7278a8">More...</a><br /></td></tr>
 <tr class="separator:accaf3b08287d4bc8e5e5849d5b7278a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad7fe73cb5cb6fa0d4751b75321c74a4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#aad7fe73cb5cb6fa0d4751b75321c74a4">playrho::d2::IsAccelerable</a> (const World &amp;world, BodyID id)</td></tr>
 <tr class="memdesc:aad7fe73cb5cb6fa0d4751b75321c74a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is identified body "accelerable"?  <a href="namespaceplayrho_1_1d2.html#aad7fe73cb5cb6fa0d4751b75321c74a4">More...</a><br /></td></tr>
@@ -406,7 +401,7 @@ UnitVec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="n
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="dir_00957d302ca87b53c9f57dcbc695504d.html">d2</a></li><li class="navelem"><a class="el" href="WorldBody_8hpp.html">WorldBody.hpp</a></li>
-    <li class="footer">Generated on Tue Oct 31 2023 03:48:35 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Nov 1 2023 16:17:07 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

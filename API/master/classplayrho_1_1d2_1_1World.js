@@ -186,6 +186,8 @@ var classplayrho_1_1d2_1_1World =
     [ "IsTouching", "classplayrho_1_1d2_1_1World.html#a386a732d954a80f48e6a3ac7beca1237", null ],
     [ "NeedsFiltering", "classplayrho_1_1d2_1_1World.html#aadd14b7a073e106ee40d4488d131f673", null ],
     [ "NeedsUpdating", "classplayrho_1_1d2_1_1World.html#aaada9701c50ea1607ecf3ae02c8f72c1", null ],
+    [ "operator!=", "classplayrho_1_1d2_1_1World.html#adc8864aaec6270f856793ee21b288aa9", null ],
+    [ "operator==", "classplayrho_1_1d2_1_1World.html#a820b3ef0edffea284f9e9ea4b0a2f002", null ],
     [ "RayCast", "group__RayCastGroup.html#ga694dc50f9191401bc87ab1abae2b05e9", null ],
     [ "ResetFriction", "classplayrho_1_1d2_1_1World.html#a74979affb98f9307f121fd8f4f63910d", null ],
     [ "ResetMassData", "classplayrho_1_1d2_1_1World.html#a0f4a5600e14e8a21bdf50bfe3382cb55", null ],

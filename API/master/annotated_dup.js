@@ -2,7 +2,7 @@ var annotated_dup =
 [
     [ "playrho", "namespaceplayrho.html", [
       [ "d2", "namespaceplayrho_1_1d2.html", [
-        [ "detail", null, [
+        [ "detail", "namespaceplayrho_1_1d2_1_1detail.html", [
           [ "IsValidJointType", "structplayrho_1_1d2_1_1detail_1_1IsValidJointType.html", null ],
           [ "IsValidJointType< T, std::void_t< decltype(GetBodyA(std::declval< T >())), decltype(GetBodyB(std::declval< T >())), decltype(GetCollideConnected(std::declval< T >())), decltype(ShiftOrigin(std::declval< T & >(), std::declval< Length2 >())), decltype(InitVelocity(std::declval< T & >(), std::declval< const Span< BodyConstraint > & >(), std::declval< StepConf >(), std::declval< ConstraintSolverConf >())), decltype(SolveVelocity(std::declval< T & >(), std::declval< const Span< BodyConstraint > & >(), std::declval< StepConf >())), decltype(SolvePosition(std::declval< T >(), std::declval< const Span< BodyConstraint > & >(), std::declval< ConstraintSolverConf >())), decltype(std::declval< T >()==std::declval< T >()), decltype(Joint{std::declval< T >()})> >", "structplayrho_1_1d2_1_1detail_1_1IsValidJointType_3_01T_00_01std_1_1void__t_3_01decltype_07GetBo47eab3fc68beccae0775fbf74eefbb54.html", null ],
           [ "IsValidShapeType", "structplayrho_1_1d2_1_1detail_1_1IsValidShapeType.html", null ],
