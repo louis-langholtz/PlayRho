@@ -257,8 +257,8 @@ const BodyShapeIDs& GetFixturesForProxies(const AabbTreeWorld& world) noexcept;
 ///   for body related functions.
 BodyCounter GetBodyRange(const AabbTreeWorld& world) noexcept;
 
-/// @brief Gets the world body range for this constant world.
-/// @details Gets a range enumerating the bodies currently existing within this world.
+/// @brief Gets a container of valid world body identifiers for this constant world.
+/// @details Gets a container of identifiers of bodies currently existing within this world.
 ///   These are the bodies that had been created from previous calls to the
 ///   <code>CreateBody(const Body&)</code> function that haven't yet been destroyed.
 /// @return Container of body identifiers that can be iterated over using begin and
@@ -266,7 +266,7 @@ BodyCounter GetBodyRange(const AabbTreeWorld& world) noexcept;
 /// @see CreateBody(const Body&).
 const BodyIDs& GetBodies(const AabbTreeWorld& world) noexcept;
 
-/// @brief Gets the bodies-for-proxies range for this world.
+/// @brief Gets the bodies-for-proxies container for this world.
 /// @details Provides insight on what bodies have been queued for proxy processing
 ///   during the next call to the world step function.
 /// @see Step.
@@ -276,8 +276,8 @@ const BodyIDs& GetBodiesForProxies(const AabbTreeWorld& world) noexcept;
 /// @warning This function should not be used while the world is locked &mdash; as it is
 ///   during callbacks. If it is, it will throw an exception or abort your program.
 /// @note No references to the configuration are retained. Its value is copied.
-/// @post The created body will be present in the range returned from the
-///   <code>GetBodies()</code> function.
+/// @post The created body will be present in the container returned from the
+///   <code>GetBodies(const AabbTreeWorld&)</code> function.
 /// @param world The world within which to create the body.
 /// @param body A customized body or its default value.
 /// @return Identifier of the newly created body which can later be destroyed by calling
@@ -306,23 +306,24 @@ void SetBody(AabbTreeWorld& world, BodyID id, Body value);
 /// @details Destroys a given body that had previously been created by a call to this
 ///   world's <code>CreateBody(const Body&)</code> function.
 /// @warning This automatically deletes all associated shapes and joints.
-/// @warning This function is locked during callbacks.
-/// @warning Behavior is not specified if identified body was not created by this world.
 /// @note This function is locked during callbacks.
-/// @post The destroyed body will no longer be present in the range returned from the
-///   <code>GetBodies()</code> function.
-/// @post None of the body's fixtures will be present in the fixtures-for-proxies
-///   collection.
 /// @param world The world within which the identified body is to be destroyed.
 /// @param id Identifier of body to destroy that had been created by this world.
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid body identifier.
-/// @see CreateBody(const Body&), GetBodies, GetFixturesForProxies.
+/// @post On success: the destroyed body will no longer be present in the container returned
+///   from the <code>GetBodies(const AabbTreeWorld&)</code> function; none of the body's
+///   fixtures will be present in the fixtures-for-proxies collection;
+///   <code>IsDestroyed(const AabbTreeWorld& world, BodyID)</code> for @p world and @p id
+///   returns true.
+/// @see CreateBody, GetBodies(const AabbTreeWorld&), GetFixturesForProxies,
+///   IsDestroyed(const AabbTreeWorld& world, BodyID).
 /// @see PhysicalEntities.
 void Destroy(AabbTreeWorld& world, BodyID id);
 
 /// @brief Gets whether the given identifier is to a body that's been destroyed.
 /// @note Complexity is at most O(n) where n is the number of elements free.
+/// @see Destroy(AabbTreeWorld& world, BodyID).
 bool IsDestroyed(const AabbTreeWorld& world, BodyID id) noexcept;
 
 /// @brief Gets the proxies for the identified body.
@@ -348,7 +349,7 @@ const BodyJointIDs& GetJoints(const AabbTreeWorld& world, BodyID id);
 JointCounter GetJointRange(const AabbTreeWorld& world) noexcept;
 
 /// @brief Gets the container of joint IDs of the given world.
-/// @details Gets a range enumerating the joints currently existing within this world.
+/// @details Gets a container enumerating the joints currently existing within this world.
 ///   These are the joints that had been created from previous calls to the
 ///   <code>CreateJoint(const Joint&)</code> function that haven't yet been destroyed.
 /// @return Container of joint IDs of existing joints.
@@ -358,8 +359,8 @@ const JointIDs& GetJoints(const AabbTreeWorld& world) noexcept;
 /// @brief Creates a joint to constrain one or more bodies.
 /// @warning This function is locked during callbacks.
 /// @note No references to the configuration are retained. Its value is copied.
-/// @post The created joint will be present in the range returned from the
-///   <code>GetJoints()</code> function.
+/// @post The created joint will be present in the container returned from the
+///   <code>GetJoints(const AabbTreeWorld&)</code> function.
 /// @return Identifier for the newly created joint which can later be destroyed by calling
 ///   the <code>Destroy(JointID)</code> function.
 /// @throws WrongState if this function is called while the world is locked.
@@ -385,20 +386,21 @@ void SetJoint(AabbTreeWorld& world, JointID id, Joint def);
 /// @brief Destroys a joint.
 /// @details Destroys a given joint that had previously been created by a call to this
 ///   world's <code>CreateJoint(const Joint&)</code> function.
-/// @warning This function is locked during callbacks.
-/// @warning Behavior is not specified if identified joint wasn't created by this world.
+/// @note This function is locked during callbacks.
 /// @note This may cause the connected bodies to begin colliding.
-/// @post The destroyed joint will no longer be present in the range returned from the
-///   <code>GetJoints()</code> function.
 /// @param world The world within which the identified joint is to be destroyed.
 /// @param id Identifier of joint to destroy that had been created by this world.
+/// @post On success: the destroyed joint will no longer be present in the container
+///   returned from the <code>GetJoints(const AabbTreeWorld&)</code> function;
+///   <code>IsDestroyed(const AabbTreeWorld&,JointID)</code> returns true.
 /// @throws WrongState if this function is called while the world is locked.
-/// @see CreateJoint(const Joint&), GetJoints.
+/// @see CreateJoint, GetJoints, IsDestroyed(const AabbTreeWorld& world, JointID).
 /// @see PhysicalEntities.
 void Destroy(AabbTreeWorld& world, JointID id);
 
 /// @brief Gets whether the given identifier is to a joint that's been destroyed.
 /// @note Complexity is at most O(n) where n is the number of elements free.
+/// @see Destroy(AabbTreeWorld& world, JointID).
 bool IsDestroyed(const AabbTreeWorld& world, JointID id) noexcept;
 
 /// @}
@@ -435,12 +437,21 @@ const Shape& GetShape(const AabbTreeWorld& world, ShapeID id);
 void SetShape(AabbTreeWorld& world, ShapeID id, Shape def);
 
 /// @brief Destroys the identified shape removing any body associations with it first.
-/// @warning This function is locked during callbacks.
+/// @note This function is locked during callbacks.
 /// @note This function does not reset the mass data of any effected bodies.
+/// @param world The world from which the identified shape is to be destroyed.
+/// @param id Identifier of the shape to destroy.
 /// @throws WrongState if this function is called while the world is locked.
 /// @throws std::out_of_range If given an invalid shape identifier.
-/// @see CreateShape, Detach.
+/// @post On success: <code>IsDestroyed(const AabbTreeWorld& world, ShapeID)</code> for
+///   @p world and @p id returns true.
+/// @see CreateShape, Detach, IsDestroyed(const AabbTreeWorld& world, ShapeID).
 void Destroy(AabbTreeWorld& world, ShapeID id);
+
+/// @brief Gets whether the given identifier is to a shape that's been destroyed.
+/// @note Complexity is at most O(n) where n is the number of elements free.
+/// @see Destroy(AabbTreeWorld& world, ShapeID).
+bool IsDestroyed(const AabbTreeWorld& world, ShapeID id) noexcept;
 
 /// @}
 
@@ -453,7 +464,7 @@ void Destroy(AabbTreeWorld& world, ShapeID id);
 ///   for contact related functions.
 ContactCounter GetContactRange(const AabbTreeWorld& world) noexcept;
 
-/// @brief Gets the world contact range.
+/// @brief Gets a container of valid world contact identifiers.
 /// @warning contacts are created and destroyed in the middle of a time step.
 /// Use <code>ContactFunction</code> to avoid missing contacts.
 /// @return Container of keyed contact IDs of existing contacts.
@@ -598,6 +609,7 @@ public:
     friend const Shape& GetShape(const AabbTreeWorld& world, ShapeID id);
     friend void SetShape(AabbTreeWorld& world, ShapeID id, Shape def);
     friend void Destroy(AabbTreeWorld& world, ShapeID id);
+    friend bool IsDestroyed(const AabbTreeWorld& world, ShapeID id) noexcept;
 
     // Contact friend functions...
     friend ContactCounter GetContactRange(const AabbTreeWorld& world) noexcept;

@@ -1244,6 +1244,11 @@ void Destroy(AabbTreeWorld& world, ShapeID id)
     world.m_shapeBuffer.Free(to_underlying(id));
 }
 
+bool IsDestroyed(const AabbTreeWorld& world, ShapeID id) noexcept
+{
+    return world.m_shapeBuffer.FindFree(to_underlying(id));
+}
+
 const Shape& GetShape(const AabbTreeWorld& world, ShapeID id)
 {
     return world.m_shapeBuffer.at(to_underlying(id));

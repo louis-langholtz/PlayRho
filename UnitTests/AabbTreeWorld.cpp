@@ -340,16 +340,16 @@ TEST(AabbTreeWorld, CreateDestroyEmptyDynamicBody)
     EXPECT_NE(bodies1.begin(), bodies1.end());
     const auto first = bodies1.begin();
     EXPECT_EQ(bodyID, *first);
-    
+
     EXPECT_EQ(GetBodiesForProxies(world).size(), std::size_t{0});
     EXPECT_EQ(GetFixturesForProxies(world).size(), std::size_t{0});
-    
+
     Destroy(world, bodyID);
     EXPECT_EQ(GetBodies(world).size(), BodyCounter(0));
     const auto& bodies2 = GetBodies(world);
     EXPECT_TRUE(bodies2.empty());
     EXPECT_EQ(bodies2.size(), BodyCounter(0));
-    
+
     EXPECT_EQ(GetBodiesForProxies(world).size(), std::size_t{0});
     EXPECT_EQ(GetFixturesForProxies(world).size(), std::size_t{0});
 }
@@ -383,6 +383,7 @@ TEST(AabbTreeWorld, CreateDestroyDynamicBodyAndFixture)
     EXPECT_EQ(GetFixturesForProxies(world).size(), std::size_t{0});
 
     const auto shapeId = CreateShape(world, Shape(DiskShapeConf{1_m}));
+    EXPECT_FALSE(IsDestroyed(world, shapeId));
     ASSERT_NO_THROW(Attach(world, bodyID, shapeId));
     
     EXPECT_EQ(GetBodiesForProxies(world).size(), std::size_t{0});
@@ -391,7 +392,9 @@ TEST(AabbTreeWorld, CreateDestroyDynamicBodyAndFixture)
     EXPECT_EQ(*GetFixturesForProxies(world).begin(), std::make_pair(bodyID, shapeId));
 
     Destroy(world, bodyID); // should clear fixtures for proxies!
-    
+    EXPECT_TRUE(IsDestroyed(world, bodyID));
+    EXPECT_FALSE(IsDestroyed(world, shapeId));
+
     EXPECT_EQ(GetBodies(world).size(), BodyCounter(0));
     const auto& bodies2 = GetBodies(world);
     EXPECT_TRUE(bodies2.empty());
@@ -833,6 +836,7 @@ TEST(AabbTreeWorld, GetShapeRange)
     EXPECT_EQ(GetShapeRange(world), ShapeCounter{1u});
     EXPECT_EQ(GetShapes(world, BodyID{0u}).size(), 0u);
     EXPECT_NO_THROW(Destroy(world, shapeId));
+    EXPECT_TRUE(IsDestroyed(world, shapeId));
     EXPECT_EQ(GetShapeRange(world), ShapeCounter{1u});
 }
 
@@ -1007,6 +1011,7 @@ TEST(AabbTreeWorld, SetFreedShapeThrows)
     auto id = InvalidShapeID;
     ASSERT_NO_THROW(id = CreateShape(world, Shape()));
     ASSERT_NO_THROW(Destroy(world, id));
+    ASSERT_TRUE(IsDestroyed(world, id));
     EXPECT_THROW(SetShape(world, id, Shape()), InvalidArgument);
 }
 
