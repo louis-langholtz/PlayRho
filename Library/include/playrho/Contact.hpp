@@ -67,6 +67,9 @@ struct ToiConf;
 class Contact
 {
 public:
+    /// @brief Default contactable value.
+    static constexpr auto DefaultContactable = Contactable{InvalidBodyID, InvalidShapeID, 0};
+
     /// @brief Substep type.
     using substep_type = TimestepIters;
 
@@ -74,7 +77,11 @@ public:
     constexpr Contact() noexcept = default;
 
     /// @brief Initializing constructor.
-    /// @note This need never be called directly by a user.
+    /// @param a The "a" contactable value.
+    /// @param b The "b" contactable value.
+    /// @post If either @p a or @p b is not the value of @c DefaultContactable then:
+    ///   <code>IsEnabled()</code> and <code>NeedsUpdating()</code> return true,
+    ///   else they return false.
     constexpr Contact(const Contactable& a, const Contactable& b) noexcept;
 
     /// @brief Is this contact touching?
@@ -290,10 +297,10 @@ private:
     };
 
     /// @brief Identifying info for the A-side of the 2-bodied contact.
-    Contactable m_contactableA{InvalidBodyID, InvalidShapeID, 0};
+    Contactable m_contactableA = DefaultContactable;
 
     /// @brief Identifying info for the B-side of the 2-bodied contact.
-    Contactable m_contactableB{InvalidBodyID, InvalidShapeID, 0};
+    Contactable m_contactableB = DefaultContactable;
 
     // initialized on construction (construction-time depedent)
 
@@ -322,7 +329,8 @@ private:
 constexpr Contact::Contact(const Contactable& a, const Contactable& b) noexcept
     : m_contactableA{a},
       m_contactableB{b},
-      m_flags{e_enabledFlag | e_dirtyFlag}
+      m_flags{((a != DefaultContactable) || (b != DefaultContactable))
+          ? FlagsType(e_enabledFlag | e_dirtyFlag): FlagsType{}}
 {
 }
 
@@ -516,7 +524,8 @@ constexpr void Contact::IncrementToiCount() noexcept
 /// @relatedalso Contact
 constexpr bool operator==(const Contact& lhs, const Contact& rhs) noexcept
 {
-    return lhs.GetContactableA() == rhs.GetContactableB() && //
+    return lhs.GetContactableA() == rhs.GetContactableA() && //
+           lhs.GetContactableB() == rhs.GetContactableB() && //
            lhs.GetFriction() == rhs.GetFriction() && //
            lhs.GetRestitution() == rhs.GetRestitution() && //
            lhs.GetTangentSpeed() == rhs.GetTangentSpeed() && //
