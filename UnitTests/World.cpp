@@ -178,7 +178,9 @@ TEST(World, Clear)
 
     ASSERT_EQ(GetBodies(world).size(), std::size_t(2));
     ASSERT_EQ(GetJoints(world).size(), std::size_t(1));
+    EXPECT_EQ(GetBodyRange(world), 2u);
     ASSERT_EQ(GetJointRange(world), 1u);
+    ASSERT_EQ(GetShapeRange(world), 2u);
     EXPECT_FALSE(World() == world);
     EXPECT_TRUE(World() != world);
 
@@ -487,8 +489,10 @@ TEST(World, CreateDestroyEmptyDynamicBody)
     EXPECT_NE(bodies1.begin(), bodies1.end());
     const auto first = bodies1.begin();
     EXPECT_EQ(body, *first);
+    EXPECT_EQ(GetBodyRange(world), 1u);
 
     Destroy(world, body);
+    EXPECT_EQ(GetBodyRange(world), 1u);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
     const auto bodies2 = GetBodies(world);
     EXPECT_TRUE(bodies2.empty());
@@ -1165,15 +1169,25 @@ TEST(World, FindClosestBodyFF)
     EXPECT_EQ(FindClosestBody(world, Length2{0_m, 0_m}), b2);
 }
 
+TEST(World, CreateAndDestroyShape)
+{
+    World world{};
+    ASSERT_EQ(GetShapeRange(world), 0u);
+    const auto shapeId = CreateShape(world, EdgeShapeConf{});
+    EXPECT_EQ(GetShapeRange(world), 1u);
+    EXPECT_NO_THROW(Destroy(world, shapeId));
+    EXPECT_EQ(GetShapeRange(world), 1u);
+}
+
 TEST(World, GetAssociationCountFreeFunction)
 {
     World world{};
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
     ASSERT_EQ(GetAssociationCount(world), std::size_t(0));
-    
+
     const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     ASSERT_NE(body, InvalidBodyID);
-    
+
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
     const auto shapeConf = EdgeShapeConf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2);
@@ -1186,7 +1200,7 @@ TEST(World, GetAssociationCountFreeFunction)
 
     ASSERT_NO_THROW(Attach(world, body, shapeId1));
     EXPECT_EQ(GetAssociationCount(world), std::size_t(2));
-    
+
     const auto shapeId2 = CreateShape(world, shapeConf);
     ASSERT_NE(shapeId2, InvalidShapeID);
 
@@ -1369,6 +1383,7 @@ TEST(World, CreateAndDestroyJoint)
     const auto joint = CreateJoint(world, Joint{GetDistanceJointConf(world, body1, body2,
                                                                     anchorA, anchorB)});
     EXPECT_EQ(GetJointCount(world), JointCounter(1));
+    EXPECT_EQ(GetJointRange(world), 1u);
     EXPECT_FALSE(GetJoints(world).empty());
     const auto joints = GetJoints(world);
     const auto first = *joints.begin();
@@ -1382,6 +1397,7 @@ TEST(World, CreateAndDestroyJoint)
 
     Destroy(world, joint);
     EXPECT_EQ(GetJointCount(world), JointCounter(0));
+    EXPECT_EQ(GetJointRange(world), 1u);
     EXPECT_TRUE(GetJoints(world).empty());
 }
 
