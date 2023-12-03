@@ -24,6 +24,8 @@
 /// @file
 /// @brief Declaration of the <code>ContactKey</code> class and closely related code.
 
+#include <cstdlib> // for std::size_t
+
 #include <algorithm>
 #include <functional>
 #include <utility>

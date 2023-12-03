@@ -25,9 +25,11 @@
 /// @file
 /// @brief Definition of the @c Matrix alias and closely related code.
 
+#include <cstdlib> // for std::size_t
+#include <type_traits> // for std::enable_if_t
+
 #include <playrho/Vector.hpp>
 #include <playrho/Vector2.hpp> // for Vec2
-#include <playrho/Templates.hpp>
 #include <playrho/Real.hpp>
 #include <playrho/Units.hpp>
 

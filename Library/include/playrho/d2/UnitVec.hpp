@@ -24,13 +24,17 @@
 /// @file
 /// @brief Declarations of the UnitVec class and free functions associated with it.
 
+#include <cassert> // for assert
 #include <cstdlib>
 #include <iostream>
+#include <iterator> // for std::reverse_iterator
 #include <utility>
 #include <type_traits>
 
 #include <playrho/InvalidArgument.hpp>
-#include <playrho/Settings.hpp>
+#include <playrho/Real.hpp>
+#include <playrho/RealConstants.hpp>
+#include <playrho/Templates.hpp> // for IsValid
 #include <playrho/Units.hpp>
 
 namespace playrho {

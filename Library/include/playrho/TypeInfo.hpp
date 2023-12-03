@@ -25,8 +25,7 @@
 /// @brief Definition of @c TypeID class and closely related code.
 
 #include <cstring> // for std::strcmp
-
-#include <playrho/Templates.hpp>
+#include <type_traits> // for std::decay_t
 
 #include <playrho/detail/TypeInfo.hpp>
 

@@ -26,13 +26,21 @@
 /// @brief Definition of the <code>Contact</code> class and closely related code.
 
 #include <cassert> // for assert
+#include <cstdint> // for std::uint8_t
+#ifndef NDEBUG
 #include <limits> // for std::numeric_limits
+#endif
 #include <optional>
 
+#include <playrho/BodyID.hpp>
 #include <playrho/Contactable.hpp>
 #include <playrho/Math.hpp>
 #include <playrho/NonNegative.hpp>
+#include <playrho/Real.hpp>
+#include <playrho/Settings.hpp> // for ChildCounter
+#include <playrho/ShapeID.hpp>
 #include <playrho/UnitInterval.hpp>
+#include <playrho/Units.hpp>
 
 namespace playrho {
 

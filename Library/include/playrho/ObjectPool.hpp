@@ -26,7 +26,6 @@
 
 #include <algorithm> // for std::any_of
 #include <stdexcept>
-#include <type_traits>
 #include <utility>
 #include <vector>
 

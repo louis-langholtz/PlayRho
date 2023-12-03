@@ -25,6 +25,7 @@
 /// @file
 /// @brief Definition of the @c Vector3 alias template and closely related code.
 
+#include <playrho/Real.hpp>
 #include <playrho/Settings.hpp>
 #include <playrho/Vector.hpp>
 

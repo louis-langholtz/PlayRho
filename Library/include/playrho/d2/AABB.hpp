@@ -24,13 +24,14 @@
 /// @file
 /// @brief Declaration of the AABB class and free functions that return instances of it.
 
+#include <cstdlib> // for std::size_t
+
 #include <playrho/BodyID.hpp>
+#include <playrho/Interval.hpp> // for GetSize
 #include <playrho/Intervals.hpp> // for LengthInterval, IsIntersecting
-#include <playrho/Math.hpp> // for Invalid
 #include <playrho/Settings.hpp> // for ChildCounter, etc.
 #include <playrho/ShapeID.hpp>
-#include <playrho/Templates.hpp>
-#include <playrho/Vector.hpp>
+#include <playrho/Units.hpp>
 
 #include <playrho/detail/AABB.hpp>
 

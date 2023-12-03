@@ -25,7 +25,10 @@
 /// @file
 /// @brief Conventional and custom math related code.
 
+#include <cassert>
 #include <cmath>
+#include <cstdint> // for std::int64_t
+#include <cstdlib> // for std::size_t
 #include <limits> // for std::numeric_limits
 #include <numeric>
 #include <type_traits> // for std::decay_t
@@ -33,9 +36,10 @@
 
 #include <playrho/Matrix.hpp>
 #include <playrho/NonNegative.hpp>
-#include <playrho/Settings.hpp>
+#include <playrho/Real.hpp>
 #include <playrho/Span.hpp>
-#include <playrho/UnitInterval.hpp>
+#include <playrho/Units.hpp>
+#include <playrho/Vector.hpp>
 #include <playrho/Vector2.hpp>
 #include <playrho/Vector3.hpp>
 
@@ -179,21 +183,10 @@ template <typename T>
 constexpr auto AlmostEqual(T a, T b, int ulp = 4)
     -> std::enable_if_t<IsArithmeticV<T>, bool>
 {
-#if 0
-    // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
-    //   "the machine epsilon has to be scaled to the magnitude of the values used
-    //    and multiplied by the desired precision in ULPs (units in the last place)
-    //    unless the result is subnormal".
-    // Where "subnormal" means almost zero.
-    //
-    return (abs(a - b) < (std::numeric_limits<T>::epsilon() * abs(a + b) * static_cast<T>(ulp))) ||
-           AlmostZero(a - b);
-#else
     for (; (a != b) && (ulp > 0); --ulp) {
         a = nextafter(a, b);
     }
     return a == b;
-#endif
 }
 
 /// @brief Constant expression enhanced truncate function.

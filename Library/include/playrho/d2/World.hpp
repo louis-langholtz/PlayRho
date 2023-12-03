@@ -25,27 +25,34 @@
 /// @file
 /// @brief Definitions of the World class and closely related code.
 
-#include <functional> // for std::function
 #include <iterator>
 #include <memory> // for std::unique_ptr
 #include <optional>
-#include <stdexcept>
+#include <tuple>
+#include <typeinfo>
 #include <type_traits> // for std::is_default_constructible_v, etc.
+#include <utility> // for std::move
 #include <vector>
 
 #include <playrho/BodyID.hpp>
 #include <playrho/BodyShapeFunction.hpp>
 #include <playrho/Contact.hpp>
 #include <playrho/ContactFunction.hpp>
+#include <playrho/ContactID.hpp>
+#include <playrho/ContactKey.hpp>
+#include <playrho/Interval.hpp>
 #include <playrho/KeyedContactID.hpp>
 #include <playrho/JointFunction.hpp>
 #include <playrho/JointID.hpp>
-#include <playrho/LimitState.hpp>
+#include <playrho/Positive.hpp>
+#include <playrho/Settings.hpp>
 #include <playrho/ShapeFunction.hpp>
 #include <playrho/ShapeID.hpp>
 #include <playrho/StepConf.hpp>
 #include <playrho/StepStats.hpp>
 #include <playrho/TypeInfo.hpp> // for GetTypeID
+#include <playrho/Units.hpp>
+#include <playrho/Vector2.hpp>
 
 #include <playrho/pmr/StatsResource.hpp>
 
@@ -55,8 +62,6 @@
 #include <playrho/d2/ContactManifoldFunction.hpp>
 #include <playrho/d2/Joint.hpp>
 #include <playrho/d2/Manifold.hpp>
-#include <playrho/d2/MassData.hpp>
-#include <playrho/d2/Math.hpp>
 #include <playrho/d2/Shape.hpp>
 #include <playrho/d2/WorldConf.hpp>
 

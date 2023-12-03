@@ -25,9 +25,9 @@
 /// @file
 /// @brief Definition of the @c Vector2 alias template and closely related code.
 
-#include <limits> // for std::numeric_limits
-
+#include <playrho/Real.hpp>
 #include <playrho/Settings.hpp>
+#include <playrho/Units.hpp>
 #include <playrho/Vector.hpp>
 
 namespace playrho {

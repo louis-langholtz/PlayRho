@@ -25,6 +25,8 @@
 /// @file
 /// @brief Definition of the <code>BlockAllocator</code> class and closely related code.
 
+#include <cstdlib> // for std::size_t
+
 #include <playrho/Settings.hpp>
 
 namespace playrho {

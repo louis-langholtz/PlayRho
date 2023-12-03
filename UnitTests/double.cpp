@@ -20,10 +20,8 @@
 
 #include "UnitTests.hpp"
 
+#include <playrho/Templates.hpp> // for IsValid
 #include <playrho/TypeInfo.hpp> // for GetTypeName
-
-#include <type_traits>
-#include <cmath>
 
 using namespace playrho;
 

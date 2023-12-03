@@ -23,9 +23,11 @@
 #define PLAYRHO_D2_INDEXPAIR_HPP
 
 #include <array>
+#include <cstdlib> // for std::size_t
 #include <utility>
 
 #include <playrho/Settings.hpp>
+#include <playrho/Units.hpp>
 
 namespace playrho {
 

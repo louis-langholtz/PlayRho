@@ -25,6 +25,7 @@
 /// @file
 /// @brief Definition of the @c Island class and related code.
 
+#include <cstdlib> // for std::size_t
 #include <vector>
 
 #include <playrho/BodyID.hpp>

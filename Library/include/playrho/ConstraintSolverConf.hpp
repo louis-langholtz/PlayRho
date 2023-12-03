@@ -24,7 +24,9 @@
 /// @file
 /// @brief Definition of the <code>ConstraintSolverConf</code> class and closely related code.
 
+#include <playrho/Real.hpp>
 #include <playrho/Settings.hpp>
+#include <playrho/Units.hpp>
 
 namespace playrho {
 

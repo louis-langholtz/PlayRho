@@ -25,11 +25,12 @@
 /// @file
 /// @brief Definition of the @c GrowableStack class template.
 
-#include <playrho/DynamicMemory.hpp>
-#include <playrho/Templates.hpp>
-
 #include <cassert> // for assert
 #include <cstring>
+
+#include <playrho/DynamicMemory.hpp>
+
+#include <playrho/detail/Templates.hpp> // for data
 
 namespace playrho {
 

@@ -26,15 +26,28 @@
 /// @brief Declarations of the Body class, and functions associated with it.
 
 #include <cassert>
+#include <cstdint> // for std::uint16_t
+#include <limits> // for std::numeric_limits
 #include <utility>
+#include <vector>
 
 #include <playrho/BodyType.hpp>
+#include <playrho/Math.hpp>
+#include <playrho/NonNegative.hpp>
+#include <playrho/Real.hpp>
 #include <playrho/ShapeID.hpp>
+#include <playrho/Units.hpp>
+#include <playrho/Vector2.hpp>
 #include <playrho/ZeroToUnderOne.hpp>
 
+#include <playrho/d2/Acceleration.hpp>
 #include <playrho/d2/BodyConf.hpp>
-#include <playrho/d2/MassData.hpp>
 #include <playrho/d2/Math.hpp>
+#include <playrho/d2/Position.hpp>
+#include <playrho/d2/Sweep.hpp>
+#include <playrho/d2/Transformation.hpp>
+#include <playrho/d2/UnitVec.hpp>
+#include <playrho/d2/Velocity.hpp>
 
 namespace playrho::d2 {
 

@@ -26,8 +26,10 @@
 
 #include <algorithm>
 #include <limits> // for std::numeric_limits
+#include <initializer_list>
 #include <iostream>
 #include <type_traits> // for std::is_nothrow_copy_constructible_v
+#include <utility> // for std::pair
 
 #include <playrho/NonNegative.hpp>
 

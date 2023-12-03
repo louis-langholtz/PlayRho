@@ -25,14 +25,23 @@
 /// @file
 /// @brief Declarations of general 2-D math related code.
 
+#include <cassert> // for assert
+#include <tuple> // for std::tuple_size_v
+#include <type_traits> // for std::decay_t
+#include <vector>
+
 #include <playrho/Math.hpp>
+#include <playrho/Matrix.hpp>
+#include <playrho/Real.hpp>
+#include <playrho/UnitInterval.hpp>
+#include <playrho/Units.hpp>
+#include <playrho/Vector2.hpp>
 
 #include <playrho/detail/Checked.hpp>
 
 #include <playrho/d2/UnitVec.hpp>
 #include <playrho/d2/Position.hpp>
 #include <playrho/d2/Velocity.hpp>
-#include <playrho/d2/Acceleration.hpp>
 #include <playrho/d2/Transformation.hpp>
 #include <playrho/d2/Sweep.hpp>
 
@@ -146,15 +155,10 @@ inline Position GetNormalized(const Position& val) noexcept
 /// @relatedalso Sweep
 inline Sweep GetNormalized(Sweep sweep) noexcept
 {
-#if 1
     const auto pos0a = playrho::GetNormalized(sweep.pos0.angular);
     const auto d = sweep.pos0.angular - pos0a;
     sweep.pos0.angular = pos0a;
     sweep.pos1.angular -= d;
-#else
-    sweep.pos0.angular = playrho::GetNormalized(sweep.pos0.angular);
-    sweep.pos1.angular = playrho::GetNormalized(sweep.pos1.angular);
-#endif
     return sweep;
 }
 

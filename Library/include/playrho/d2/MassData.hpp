@@ -25,9 +25,13 @@
 /// @file
 /// @brief Declaration of the <code>MassData</code> structure and associated free functions.
 
-#include <playrho/BodyID.hpp>
+#include <cstdlib> // for std::size_t
+
 #include <playrho/NonNegative.hpp>
+#include <playrho/Span.hpp>
 #include <playrho/Units.hpp>
+#include <playrho/Vector.hpp>
+#include <playrho/Vector2.hpp>
 
 #include <playrho/d2/Math.hpp>
 
