@@ -16,7 +16,7 @@ jobs:
       id: review
       with:
         clang_tidy_version: '14'
-        config_file: '.clang-tidy'
+        config_file: 'Library/.clang-tidy'
         cmake_command: cmake . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
         include: 'Library/*.[ch]pp'
 
