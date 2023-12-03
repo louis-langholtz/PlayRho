@@ -1,5 +1,7 @@
 var NAVTREEINDEX25 =
 {
+"structplayrho_1_1d2_1_1WheelJointConf.html#a9e194ef30b3a342a38f9afc09c629f6d":[2,8,0,11,9],
+"structplayrho_1_1d2_1_1WheelJointConf.html#aa091de716ab5ac0b584c02affc2b6d85":[2,8,0,11,27],
 "structplayrho_1_1d2_1_1WheelJointConf.html#aa27ff21f996540548aee3217a64d0009":[2,8,0,11,31],
 "structplayrho_1_1d2_1_1WheelJointConf.html#aa31e5dc81abaec747c5af5b05f8d5cb5":[2,8,0,11,19],
 "structplayrho_1_1d2_1_1WheelJointConf.html#aaccd1864d05cc579ec3d01e7a9172334":[2,8,0,11,33],
@@ -247,7 +249,5 @@ var NAVTREEINDEX25 =
 "structplayrho_1_1d2_1_1part_1_1DefaultPolicies.html#ac627282086f9ac3d511eaa248e7c8a4d":[4,0,0,0,1,1,0],
 "structplayrho_1_1d2_1_1part_1_1DefaultPolicies.html#ad58918e0327fb4faca764c96bec03f72":[4,0,0,0,1,1,4],
 "structplayrho_1_1d2_1_1part_1_1DefaultPolicies.html#adfb167e066ec99cca28c5d88c8aa4c22":[4,0,0,0,1,1,2],
-"structplayrho_1_1d2_1_1part_1_1DefaultPolicyArgs.html":[4,0,0,0,1,2],
-"structplayrho_1_1d2_1_1part_1_1DensityIs.html":[4,0,0,0,1,3],
-"structplayrho_1_1d2_1_1part_1_1DensityIs.html#aae14e69382ccc79a0ea76754e092daa0":[4,0,0,0,1,3,0]
+"structplayrho_1_1d2_1_1part_1_1DefaultPolicyArgs.html":[4,0,0,0,1,2]
 };

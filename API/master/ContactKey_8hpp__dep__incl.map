@@ -1,11 +1,11 @@
 <map id="Library/include/playrho/ContactKey.hpp" name="Library/include/playrho/ContactKey.hpp">
-<area shape="rect" id="node1" title="Declaration of the ContactKey class and closely related code." alt="" coords="155,5,325,47"/>
+<area shape="rect" id="node1" title="Declaration of the ContactKey class and closely related code." alt="" coords="179,5,349,47"/>
 <area shape="rect" id="node2" href="$AabbTreeWorld_8hpp.html" title="Declarations of the AabbTreeWorld class." alt="" coords="5,184,176,225"/>
-<area shape="rect" id="node3" href="$KeyedContactID_8hpp.html" title="Declaration of the KeyedContactID alias." alt="" coords="287,95,457,136"/>
-<area shape="rect" id="node4" href="$WorldConcept_8hpp.html" title="Definition of the internal WorldConcept interface class." alt="" coords="200,184,405,225"/>
-<area shape="rect" id="node6" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="332,363,503,404"/>
-<area shape="rect" id="node8" href="$WorldBody_8hpp.html" title="Declarations of free functions of World for bodies identified by BodyID." alt="" coords="480,273,651,315"/>
-<area shape="rect" id="node9" href="$WorldContact_8hpp.html" title="Declarations of free functions of World for contacts identified by ContactID." alt="" coords="603,363,773,404"/>
-<area shape="rect" id="node5" href="$WorldModel_8hpp.html" title="Definitions of the WorldModel class and closely related code." alt="" coords="163,273,355,315"/>
-<area shape="rect" id="node7" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="480,452,651,493"/>
+<area shape="rect" id="node3" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="373,363,544,404"/>
+<area shape="rect" id="node5" href="$KeyedContactID_8hpp.html" title="Declaration of the KeyedContactID alias." alt="" coords="179,95,349,136"/>
+<area shape="rect" id="node4" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="179,452,349,493"/>
+<area shape="rect" id="node6" href="$WorldConcept_8hpp.html" title="Definition of the internal WorldConcept interface class." alt="" coords="301,184,507,225"/>
+<area shape="rect" id="node8" href="$WorldBody_8hpp.html" title="Declarations of free functions of World for bodies identified by BodyID." alt="" coords="56,273,227,315"/>
+<area shape="rect" id="node9" href="$WorldContact_8hpp.html" title="Declarations of free functions of World for contacts identified by ContactID." alt="" coords="179,363,349,404"/>
+<area shape="rect" id="node7" href="$WorldModel_8hpp.html" title="Definitions of the WorldModel class and closely related code." alt="" coords="352,273,544,315"/>
 </map>

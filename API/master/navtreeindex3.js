@@ -1,5 +1,7 @@
 var NAVTREEINDEX3 =
 {
+"NgonWithFwdNormals_8hpp.html":[5,0,0,0,0,0,32],
+"NgonWithFwdNormals_8hpp.html#a03e5b2dc2081cc8e0fc608ff79e78a89":[5,0,0,0,0,0,32,2],
 "NgonWithFwdNormals_8hpp.html#a642d004cc56b550c7fc6ff0fc6cb3311":[5,0,0,0,0,0,32,3],
 "NonNegativeChecker_8hpp.html":[5,0,0,0,0,1,6],
 "NonNegative_8hpp.html":[5,0,0,0,0,34],
@@ -247,7 +249,5 @@ var NAVTREEINDEX3 =
 "Shape_8hpp.html#a175816624556bf32f41f1c3b248495de":[5,0,0,0,0,0,45,9],
 "Shape_8hpp.html#a1e3ed738b9082f9bfd3358a19d9aa97d":[5,0,0,0,0,0,45,4],
 "Shape_8hpp.html#a1e78385069dd9f0bb162bf17051a0706":[5,0,0,0,0,0,45,6],
-"Shape_8hpp.html#a252601c955ff120821c067c7fd9ebf6c":[5,0,0,0,0,0,45,23],
-"Shape_8hpp.html#a2552f9d7b9b8d2c5cf4b5ef71140b709":[5,0,0,0,0,0,45,26],
-"Shape_8hpp.html#a2af48effcd34bfea6f2622ad0b525c31":[5,0,0,0,0,0,45,5]
+"Shape_8hpp.html#a252601c955ff120821c067c7fd9ebf6c":[5,0,0,0,0,0,45,23]
 };

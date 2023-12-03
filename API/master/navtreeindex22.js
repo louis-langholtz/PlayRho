@@ -1,5 +1,7 @@
 var NAVTREEINDEX22 =
 {
+"structplayrho_1_1ToiStepStats.html#ac6751bb15f4e9ac864f105551c2d6daa":[4,0,0,39,0],
+"structplayrho_1_1ToiStepStats.html#ac9684005b60da6251f1cc4add7cea2c8":[4,0,0,39,14],
 "structplayrho_1_1ToiStepStats.html#ae466af8e97bb15813097cec240589f44":[4,0,0,39,10],
 "structplayrho_1_1ToiStepStats.html#aed71e06c62e9d8d09d3a598d4cf82666":[4,0,0,39,5],
 "structplayrho_1_1Vector.html":[4,0,0,41],
@@ -247,7 +249,5 @@ var NAVTREEINDEX22 =
 "structplayrho_1_1d2_1_1EdgeShapeConf.html#a3affefb1face6109ba0dbf3f2ae1316c":[2,1,3,4],
 "structplayrho_1_1d2_1_1EdgeShapeConf.html#a462c93e8691ddf99c4a688c01ead2812":[2,1,3,11],
 "structplayrho_1_1d2_1_1EdgeShapeConf.html#a4e1dafe1cd7aabc170875038d72b6e76":[2,1,3,5],
-"structplayrho_1_1d2_1_1EdgeShapeConf.html#a6b65ba72ad612a47258b68a520631ce3":[2,1,3,8],
-"structplayrho_1_1d2_1_1EdgeShapeConf.html#a82cdb73a58c64364c36798138979cce5":[2,1,3,12],
-"structplayrho_1_1d2_1_1EdgeShapeConf.html#a85c775c8569c1d183eaf3c405db7f7dd":[2,1,3,0]
+"structplayrho_1_1d2_1_1EdgeShapeConf.html#a6b65ba72ad612a47258b68a520631ce3":[2,1,3,8]
 };

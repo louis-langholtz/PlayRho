@@ -4,7 +4,6 @@
     <name>ArrayList.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>ArrayList_8hpp.html</filename>
-    <includes id="Defines_8hpp" name="Defines.hpp" local="no" imported="no">playrho/Defines.hpp</includes>
     <class kind="class">playrho::ArrayList</class>
     <class kind="class">std::tuple_size&lt; playrho::ArrayList&lt; T, N, SIZE_TYPE &gt; &gt;</class>
     <namespace>playrho</namespace>
@@ -124,7 +123,9 @@
     <name>ConstraintSolverConf.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>ConstraintSolverConf_8hpp.html</filename>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <class kind="struct">playrho::ConstraintSolverConf</class>
     <namespace>playrho</namespace>
     <member kind="function">
@@ -160,10 +161,15 @@
     <name>Contact.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>Contact_8hpp.html</filename>
+    <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
     <includes id="Contactable_8hpp" name="Contactable.hpp" local="no" imported="no">playrho/Contactable.hpp</includes>
     <includes id="Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/Math.hpp</includes>
     <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
+    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
     <includes id="UnitInterval_8hpp" name="UnitInterval.hpp" local="no" imported="no">playrho/UnitInterval.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <class kind="class">playrho::Contact</class>
     <namespace>playrho</namespace>
     <member kind="function">
@@ -503,7 +509,6 @@
     <name>ContactFeature.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>ContactFeature_8hpp.html</filename>
-    <includes id="Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/Math.hpp</includes>
     <class kind="struct">playrho::ContactFeature</class>
     <namespace>playrho</namespace>
     <member kind="function">
@@ -669,12 +674,11 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>d2_2AABB_8hpp.html</filename>
     <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
+    <includes id="Interval_8hpp" name="Interval.hpp" local="no" imported="no">playrho/Interval.hpp</includes>
     <includes id="Intervals_8hpp" name="Intervals.hpp" local="no" imported="no">playrho/Intervals.hpp</includes>
-    <includes id="Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/Math.hpp</includes>
     <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
-    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
-    <includes id="Vector_8hpp" name="Vector.hpp" local="no" imported="no">playrho/Vector.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="detail_2AABB_8hpp" name="AABB.hpp" local="no" imported="no">playrho/detail/AABB.hpp</includes>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
@@ -936,25 +940,32 @@
     <filename>AabbTreeWorld_8hpp.html</filename>
     <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
     <includes id="BodyShapeFunction_8hpp" name="BodyShapeFunction.hpp" local="no" imported="no">playrho/BodyShapeFunction.hpp</includes>
+    <includes id="Contactable_8hpp" name="Contactable.hpp" local="no" imported="no">playrho/Contactable.hpp</includes>
     <includes id="ContactFunction_8hpp" name="ContactFunction.hpp" local="no" imported="no">playrho/ContactFunction.hpp</includes>
+    <includes id="ContactID_8hpp" name="ContactID.hpp" local="no" imported="no">playrho/ContactID.hpp</includes>
     <includes id="ContactKey_8hpp" name="ContactKey.hpp" local="no" imported="no">playrho/ContactKey.hpp</includes>
-    <includes id="Filter_8hpp" name="Filter.hpp" local="no" imported="no">playrho/Filter.hpp</includes>
     <includes id="JointFunction_8hpp" name="JointFunction.hpp" local="no" imported="no">playrho/JointFunction.hpp</includes>
     <includes id="JointID_8hpp" name="JointID.hpp" local="no" imported="no">playrho/JointID.hpp</includes>
+    <includes id="Interval_8hpp" name="Interval.hpp" local="no" imported="no">playrho/Interval.hpp</includes>
     <includes id="Island_8hpp" name="Island.hpp" local="no" imported="no">playrho/Island.hpp</includes>
     <includes id="IslandStats_8hpp" name="IslandStats.hpp" local="no" imported="no">playrho/IslandStats.hpp</includes>
     <includes id="KeyedContactID_8hpp" name="KeyedContactID.hpp" local="no" imported="no">playrho/KeyedContactID.hpp</includes>
     <includes id="ObjectPool_8hpp" name="ObjectPool.hpp" local="no" imported="no">playrho/ObjectPool.hpp</includes>
     <includes id="Positive_8hpp" name="Positive.hpp" local="no" imported="no">playrho/Positive.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
+    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="ShapeFunction_8hpp" name="ShapeFunction.hpp" local="no" imported="no">playrho/ShapeFunction.hpp</includes>
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
+    <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
     <includes id="StepStats_8hpp" name="StepStats.hpp" local="no" imported="no">playrho/StepStats.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
+    <includes id="ZeroToUnderOne_8hpp" name="ZeroToUnderOne.hpp" local="no" imported="no">playrho/ZeroToUnderOne.hpp</includes>
     <includes id="BodyConstraint_8hpp" name="BodyConstraint.hpp" local="no" imported="no">playrho/d2/BodyConstraint.hpp</includes>
     <includes id="ContactImpulsesFunction_8hpp" name="ContactImpulsesFunction.hpp" local="no" imported="no">playrho/d2/ContactImpulsesFunction.hpp</includes>
     <includes id="ContactManifoldFunction_8hpp" name="ContactManifoldFunction.hpp" local="no" imported="no">playrho/d2/ContactManifoldFunction.hpp</includes>
     <includes id="DynamicTree_8hpp" name="DynamicTree.hpp" local="no" imported="no">playrho/d2/DynamicTree.hpp</includes>
-    <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
-    <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
+    <includes id="Transformation_8hpp" name="Transformation.hpp" local="no" imported="no">playrho/d2/Transformation.hpp</includes>
     <includes id="WorldConf_8hpp" name="WorldConf.hpp" local="no" imported="no">playrho/d2/WorldConf.hpp</includes>
     <class kind="class">playrho::d2::AabbTreeWorld</class>
     <namespace>playrho</namespace>
@@ -1785,7 +1796,9 @@
     <name>Acceleration.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>Acceleration_8hpp.html</filename>
-    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
+    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <class kind="struct">playrho::d2::Acceleration</class>
     <namespace>playrho</namespace>
@@ -1921,11 +1934,21 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>Body_8hpp.html</filename>
     <includes id="BodyType_8hpp" name="BodyType.hpp" local="no" imported="no">playrho/BodyType.hpp</includes>
+    <includes id="Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/Math.hpp</includes>
+    <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <includes id="ZeroToUnderOne_8hpp" name="ZeroToUnderOne.hpp" local="no" imported="no">playrho/ZeroToUnderOne.hpp</includes>
+    <includes id="Acceleration_8hpp" name="Acceleration.hpp" local="no" imported="no">playrho/d2/Acceleration.hpp</includes>
     <includes id="BodyConf_8hpp" name="BodyConf.hpp" local="no" imported="no">playrho/d2/BodyConf.hpp</includes>
-    <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
+    <includes id="Position_8hpp" name="Position.hpp" local="no" imported="no">playrho/d2/Position.hpp</includes>
+    <includes id="Sweep_8hpp" name="Sweep.hpp" local="no" imported="no">playrho/d2/Sweep.hpp</includes>
+    <includes id="Transformation_8hpp" name="Transformation.hpp" local="no" imported="no">playrho/d2/Transformation.hpp</includes>
+    <includes id="UnitVec_8hpp" name="UnitVec.hpp" local="no" imported="no">playrho/d2/UnitVec.hpp</includes>
+    <includes id="Velocity_8hpp" name="Velocity.hpp" local="no" imported="no">playrho/d2/Velocity.hpp</includes>
     <class kind="class">playrho::d2::Body</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
@@ -2482,9 +2505,12 @@
     <filename>BodyConf_8hpp.html</filename>
     <includes id="BodyType_8hpp" name="BodyType.hpp" local="no" imported="no">playrho/BodyType.hpp</includes>
     <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
-    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
-    <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
+    <includes id="Position_8hpp" name="Position.hpp" local="no" imported="no">playrho/d2/Position.hpp</includes>
+    <includes id="Transformation_8hpp" name="Transformation.hpp" local="no" imported="no">playrho/d2/Transformation.hpp</includes>
+    <includes id="Velocity_8hpp" name="Velocity.hpp" local="no" imported="no">playrho/d2/Velocity.hpp</includes>
     <class kind="struct">playrho::d2::BodyConf</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
@@ -2537,7 +2563,10 @@
     <filename>BodyConstraint_8hpp.html</filename>
     <includes id="MovementConf_8hpp" name="MovementConf.hpp" local="no" imported="no">playrho/MovementConf.hpp</includes>
     <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <includes id="Body_8hpp" name="Body.hpp" local="no" imported="no">playrho/d2/Body.hpp</includes>
+    <includes id="Position_8hpp" name="Position.hpp" local="no" imported="no">playrho/d2/Position.hpp</includes>
+    <includes id="Velocity_8hpp" name="Velocity.hpp" local="no" imported="no">playrho/d2/Velocity.hpp</includes>
     <class kind="class">playrho::d2::BodyConstraint</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
@@ -3900,8 +3929,12 @@
     <filename>Joint_8hpp.html</filename>
     <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
     <includes id="LimitState_8hpp" name="LimitState.hpp" local="no" imported="no">playrho/LimitState.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
+    <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
     <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <includes id="UnitVec_8hpp" name="UnitVec.hpp" local="no" imported="no">playrho/d2/UnitVec.hpp</includes>
     <includes id="JointConcept_8hpp" name="JointConcept.hpp" local="no" imported="no">playrho/d2/detail/JointConcept.hpp</includes>
     <includes id="JointModel_8hpp" name="JointModel.hpp" local="no" imported="no">playrho/d2/detail/JointModel.hpp</includes>
@@ -4673,9 +4706,11 @@
     <name>MassData.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>MassData_8hpp.html</filename>
-    <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
     <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
     <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Vector_8hpp" name="Vector.hpp" local="no" imported="no">playrho/Vector.hpp</includes>
+    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <class kind="struct">playrho::detail::MassData</class>
     <namespace>playrho</namespace>
@@ -4729,11 +4764,15 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>d2_2Math_8hpp.html</filename>
     <includes id="Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/Math.hpp</includes>
+    <includes id="Matrix_8hpp" name="Matrix.hpp" local="no" imported="no">playrho/Matrix.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
+    <includes id="UnitInterval_8hpp" name="UnitInterval.hpp" local="no" imported="no">playrho/UnitInterval.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <includes id="Checked_8hpp" name="Checked.hpp" local="no" imported="no">playrho/detail/Checked.hpp</includes>
     <includes id="UnitVec_8hpp" name="UnitVec.hpp" local="no" imported="no">playrho/d2/UnitVec.hpp</includes>
     <includes id="Position_8hpp" name="Position.hpp" local="no" imported="no">playrho/d2/Position.hpp</includes>
     <includes id="Velocity_8hpp" name="Velocity.hpp" local="no" imported="no">playrho/d2/Velocity.hpp</includes>
-    <includes id="Acceleration_8hpp" name="Acceleration.hpp" local="no" imported="no">playrho/d2/Acceleration.hpp</includes>
     <includes id="Transformation_8hpp" name="Transformation.hpp" local="no" imported="no">playrho/d2/Transformation.hpp</includes>
     <includes id="Sweep_8hpp" name="Sweep.hpp" local="no" imported="no">playrho/d2/Sweep.hpp</includes>
     <namespace>playrho</namespace>
@@ -4948,9 +4987,10 @@
     <filename>Math_8hpp.html</filename>
     <includes id="Matrix_8hpp" name="Matrix.hpp" local="no" imported="no">playrho/Matrix.hpp</includes>
     <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
-    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
-    <includes id="UnitInterval_8hpp" name="UnitInterval.hpp" local="no" imported="no">playrho/UnitInterval.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Vector_8hpp" name="Vector.hpp" local="no" imported="no">playrho/Vector.hpp</includes>
     <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <includes id="Vector3_8hpp" name="Vector3.hpp" local="no" imported="no">playrho/Vector3.hpp</includes>
     <namespace>playrho</namespace>
@@ -5676,8 +5716,9 @@
     <name>Position.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>Position_8hpp.html</filename>
-    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <class kind="struct">playrho::d2::Position</class>
     <namespace>playrho</namespace>
@@ -6972,7 +7013,9 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>UnitVec_8hpp.html</filename>
     <includes id="InvalidArgument_8hpp" name="InvalidArgument.hpp" local="no" imported="no">playrho/InvalidArgument.hpp</includes>
-    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
+    <includes id="RealConstants_8hpp" name="RealConstants.hpp" local="no" imported="no">playrho/RealConstants.hpp</includes>
+    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <class kind="class">std::tuple_element&lt; I, playrho::d2::UnitVec &gt;</class>
     <class kind="class">std::tuple_size&lt; playrho::d2::UnitVec &gt;</class>
@@ -7096,7 +7139,9 @@
     <name>Velocity.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>Velocity_8hpp.html</filename>
-    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
+    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <class kind="struct">playrho::d2::Velocity</class>
     <namespace>playrho</namespace>
@@ -7218,9 +7263,17 @@
     <name>VelocityConstraint.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>VelocityConstraint_8hpp.html</filename>
+    <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
+    <includes id="Matrix_8hpp" name="Matrix.hpp" local="no" imported="no">playrho/Matrix.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
+    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Vector_8hpp" name="Vector.hpp" local="no" imported="no">playrho/Vector.hpp</includes>
+    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
+    <includes id="Vector3_8hpp" name="Vector3.hpp" local="no" imported="no">playrho/Vector3.hpp</includes>
     <includes id="BodyConstraint_8hpp" name="BodyConstraint.hpp" local="no" imported="no">playrho/d2/BodyConstraint.hpp</includes>
-    <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
+    <includes id="UnitVec_8hpp" name="UnitVec.hpp" local="no" imported="no">playrho/d2/UnitVec.hpp</includes>
     <class kind="struct">playrho::d2::VelocityConstraint::Conf</class>
     <class kind="struct">playrho::d2::VelocityConstraint::Point</class>
     <class kind="class">playrho::d2::VelocityConstraint</class>
@@ -7565,23 +7618,27 @@
     <includes id="BodyShapeFunction_8hpp" name="BodyShapeFunction.hpp" local="no" imported="no">playrho/BodyShapeFunction.hpp</includes>
     <includes id="Contact_8hpp" name="Contact.hpp" local="no" imported="no">playrho/Contact.hpp</includes>
     <includes id="ContactFunction_8hpp" name="ContactFunction.hpp" local="no" imported="no">playrho/ContactFunction.hpp</includes>
+    <includes id="ContactID_8hpp" name="ContactID.hpp" local="no" imported="no">playrho/ContactID.hpp</includes>
+    <includes id="ContactKey_8hpp" name="ContactKey.hpp" local="no" imported="no">playrho/ContactKey.hpp</includes>
+    <includes id="Interval_8hpp" name="Interval.hpp" local="no" imported="no">playrho/Interval.hpp</includes>
     <includes id="KeyedContactID_8hpp" name="KeyedContactID.hpp" local="no" imported="no">playrho/KeyedContactID.hpp</includes>
     <includes id="JointFunction_8hpp" name="JointFunction.hpp" local="no" imported="no">playrho/JointFunction.hpp</includes>
     <includes id="JointID_8hpp" name="JointID.hpp" local="no" imported="no">playrho/JointID.hpp</includes>
-    <includes id="LimitState_8hpp" name="LimitState.hpp" local="no" imported="no">playrho/LimitState.hpp</includes>
+    <includes id="Positive_8hpp" name="Positive.hpp" local="no" imported="no">playrho/Positive.hpp</includes>
+    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="ShapeFunction_8hpp" name="ShapeFunction.hpp" local="no" imported="no">playrho/ShapeFunction.hpp</includes>
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
     <includes id="StepConf_8hpp" name="StepConf.hpp" local="no" imported="no">playrho/StepConf.hpp</includes>
     <includes id="StepStats_8hpp" name="StepStats.hpp" local="no" imported="no">playrho/StepStats.hpp</includes>
     <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <includes id="BodyConf_8hpp" name="BodyConf.hpp" local="no" imported="no">playrho/d2/BodyConf.hpp</includes>
     <includes id="Body_8hpp" name="Body.hpp" local="no" imported="no">playrho/d2/Body.hpp</includes>
     <includes id="ContactImpulsesFunction_8hpp" name="ContactImpulsesFunction.hpp" local="no" imported="no">playrho/d2/ContactImpulsesFunction.hpp</includes>
     <includes id="ContactManifoldFunction_8hpp" name="ContactManifoldFunction.hpp" local="no" imported="no">playrho/d2/ContactManifoldFunction.hpp</includes>
     <includes id="Joint_8hpp" name="Joint.hpp" local="no" imported="no">playrho/d2/Joint.hpp</includes>
     <includes id="Manifold_8hpp" name="Manifold.hpp" local="no" imported="no">playrho/d2/Manifold.hpp</includes>
-    <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
-    <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <includes id="Shape_8hpp" name="Shape.hpp" local="no" imported="no">playrho/d2/Shape.hpp</includes>
     <includes id="WorldConf_8hpp" name="WorldConf.hpp" local="no" imported="no">playrho/d2/WorldConf.hpp</includes>
     <includes id="WorldConcept_8hpp" name="WorldConcept.hpp" local="no" imported="no">playrho/d2/detail/WorldConcept.hpp</includes>
@@ -8605,6 +8662,7 @@
     <includes id="Interval_8hpp" name="Interval.hpp" local="no" imported="no">playrho/Interval.hpp</includes>
     <includes id="Positive_8hpp" name="Positive.hpp" local="no" imported="no">playrho/Positive.hpp</includes>
     <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <class kind="struct">playrho::d2::WorldConf</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
@@ -9994,7 +10052,6 @@
     <name>TypeInfo.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>TypeInfo_8hpp.html</filename>
-    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <includes id="detail_2TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/detail/TypeInfo.hpp</includes>
     <class kind="class">playrho::TypeID</class>
     <namespace>playrho</namespace>
@@ -10083,7 +10140,6 @@
     <name>DynamicMemory.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>DynamicMemory_8hpp.html</filename>
-    <includes id="Defines_8hpp" name="Defines.hpp" local="no" imported="no">playrho/Defines.hpp</includes>
     <namespace>playrho</namespace>
     <member kind="function">
       <type>void *</type>
@@ -10125,7 +10181,6 @@
     <name>Filter.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>Filter_8hpp.html</filename>
-    <includes id="Defines_8hpp" name="Defines.hpp" local="no" imported="no">playrho/Defines.hpp</includes>
     <class kind="struct">playrho::Filter</class>
     <namespace>playrho</namespace>
     <member kind="function">
@@ -10184,7 +10239,7 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>GrowableStack_8hpp.html</filename>
     <includes id="DynamicMemory_8hpp" name="DynamicMemory.hpp" local="no" imported="no">playrho/DynamicMemory.hpp</includes>
-    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
+    <includes id="detail_2Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/detail/Templates.hpp</includes>
     <class kind="class">playrho::GrowableStack</class>
     <namespace>playrho</namespace>
   </compound>
@@ -10481,7 +10536,6 @@
     <filename>Matrix_8hpp.html</filename>
     <includes id="Vector_8hpp" name="Vector.hpp" local="no" imported="no">playrho/Vector.hpp</includes>
     <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
-    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <class kind="struct">playrho::detail::IsMatrix</class>
@@ -10809,7 +10863,6 @@
     <name>RealConstants.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>RealConstants_8hpp.html</filename>
-    <includes id="Defines_8hpp" name="Defines.hpp" local="no" imported="no">playrho/Defines.hpp</includes>
     <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <namespace>playrho</namespace>
     <member kind="variable">
@@ -10887,8 +10940,8 @@
     <name>Settings.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>Settings_8hpp.html</filename>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="RealConstants_8hpp" name="RealConstants.hpp" local="no" imported="no">playrho/RealConstants.hpp</includes>
-    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="WiderType_8hpp" name="WiderType.hpp" local="no" imported="no">playrho/WiderType.hpp</includes>
     <namespace>playrho</namespace>
@@ -11241,8 +11294,7 @@
     <name>Span.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>Span_8hpp.html</filename>
-    <includes id="Defines_8hpp" name="Defines.hpp" local="no" imported="no">playrho/Defines.hpp</includes>
-    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
+    <includes id="detail_2Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/detail/Templates.hpp</includes>
     <class kind="class">playrho::Span</class>
     <namespace>playrho</namespace>
   </compound>
@@ -11250,7 +11302,6 @@
     <name>StackAllocator.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>StackAllocator_8hpp.html</filename>
-    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <class kind="struct">playrho::StackAllocator::Conf</class>
     <class kind="class">playrho::StackAllocator</class>
     <namespace>playrho</namespace>
@@ -11261,7 +11312,9 @@
     <filename>StepConf_8hpp.html</filename>
     <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
     <includes id="Positive_8hpp" name="Positive.hpp" local="no" imported="no">playrho/Positive.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <class kind="struct">playrho::StepConf</class>
     <namespace>playrho</namespace>
     <member kind="function">
@@ -11284,6 +11337,7 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>StepStats_8hpp.html</filename>
     <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <class kind="struct">playrho::PreStepStats</class>
     <class kind="struct">playrho::RegStepStats</class>
     <class kind="struct">playrho::StepStats</class>
@@ -11316,8 +11370,10 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>ToiConf_8hpp.html</filename>
     <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="UnitInterval_8hpp" name="UnitInterval.hpp" local="no" imported="no">playrho/UnitInterval.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <class kind="struct">playrho::ToiConf</class>
     <namespace>playrho</namespace>
     <member kind="function">
@@ -11339,6 +11395,7 @@
     <name>ToiOutput.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>ToiOutput_8hpp.html</filename>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="UnitInterval_8hpp" name="UnitInterval.hpp" local="no" imported="no">playrho/UnitInterval.hpp</includes>
     <includes id="WiderType_8hpp" name="WiderType.hpp" local="no" imported="no">playrho/WiderType.hpp</includes>
@@ -11379,6 +11436,7 @@
     <name>Units.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>Units_8hpp.html</filename>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="RealConstants_8hpp" name="RealConstants.hpp" local="no" imported="no">playrho/RealConstants.hpp</includes>
     <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <includes id="to__underlying_8hpp" name="to_underlying.hpp" local="no" imported="no">playrho/to_underlying.hpp</includes>
@@ -12517,7 +12575,9 @@
     <name>Vector2.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>Vector2_8hpp.html</filename>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="Vector_8hpp" name="Vector.hpp" local="no" imported="no">playrho/Vector.hpp</includes>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
@@ -12638,6 +12698,7 @@
     <name>Vector3.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>Vector3_8hpp.html</filename>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="Vector_8hpp" name="Vector.hpp" local="no" imported="no">playrho/Vector.hpp</includes>
     <namespace>playrho</namespace>
@@ -12681,7 +12742,6 @@
     <name>Version.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>Version_8hpp.html</filename>
-    <includes id="Defines_8hpp" name="Defines.hpp" local="no" imported="no">playrho/Defines.hpp</includes>
     <class kind="struct">playrho::Version</class>
     <namespace>playrho</namespace>
     <member kind="function">

@@ -1,11 +1,11 @@
 <map id="Library/include/playrho/Positive.hpp" name="Library/include/playrho/Positive.hpp">
-<area shape="rect" id="node1" title="Definition of the Positive value checked types and related code." alt="" coords="128,5,299,47"/>
+<area shape="rect" id="node1" title="Definition of the Positive value checked types and related code." alt="" coords="153,5,324,47"/>
 <area shape="rect" id="node2" href="$AabbTreeWorld_8hpp.html" title="Declarations of the AabbTreeWorld class." alt="" coords="5,184,176,225"/>
-<area shape="rect" id="node3" href="$WorldConf_8hpp.html" title="Declarations of the WorldConf class." alt="" coords="128,95,299,136"/>
-<area shape="rect" id="node6" href="$StepConf_8hpp.html" title="Declarations of the StepConf class, and free functions associated with it." alt="" coords="323,95,493,136"/>
-<area shape="rect" id="node4" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="229,363,400,404"/>
-<area shape="rect" id="node5" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="291,452,461,493"/>
-<area shape="rect" id="node7" href="$WorldConcept_8hpp.html" title="Definition of the internal WorldConcept interface class." alt="" coords="305,184,511,225"/>
-<area shape="rect" id="node9" href="$WorldMisc_8hpp.html" title="Declarations of free functions of World for unidentified information." alt="" coords="568,273,739,315"/>
-<area shape="rect" id="node8" href="$WorldModel_8hpp.html" title="Definitions of the WorldModel class and closely related code." alt="" coords="352,273,544,315"/>
+<area shape="rect" id="node3" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="291,363,461,404"/>
+<area shape="rect" id="node5" href="$WorldConf_8hpp.html" title="Declarations of the WorldConf class." alt="" coords="92,95,263,136"/>
+<area shape="rect" id="node6" href="$StepConf_8hpp.html" title="Declarations of the StepConf class, and free functions associated with it." alt="" coords="372,95,543,136"/>
+<area shape="rect" id="node4" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="352,452,523,493"/>
+<area shape="rect" id="node7" href="$WorldConcept_8hpp.html" title="Definition of the internal WorldConcept interface class." alt="" coords="388,184,593,225"/>
+<area shape="rect" id="node9" href="$WorldMisc_8hpp.html" title="Declarations of free functions of World for unidentified information." alt="" coords="655,273,825,315"/>
+<area shape="rect" id="node8" href="$WorldModel_8hpp.html" title="Definitions of the WorldModel class and closely related code." alt="" coords="439,273,631,315"/>
 </map>

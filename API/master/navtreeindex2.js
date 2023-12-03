@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"InvalidArgument_8hpp.html":[5,0,0,0,0,22],
+"IslandStats_8hpp.html":[5,0,0,0,0,24],
 "Island_8hpp.html":[5,0,0,0,0,23],
 "Island_8hpp.html#a0613fe306ae99ce5ca98798c757a3dc2":[5,0,0,0,0,23,6],
 "Island_8hpp.html#a54f9744256467cb8d34121dba6dbe294":[5,0,0,0,0,23,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "NegativeChecker_8hpp.html":[5,0,0,0,0,1,5],
 "Negative_8hpp.html":[5,0,0,0,0,33],
 "Negative_8hpp.html#ga9d1fdcdd87aa834539d3b58cdee6db3d":[5,0,0,0,0,33,1],
-"Negative_8hpp.html#gae249aaac842934d7f33e0f90012c409a":[5,0,0,0,0,33,0],
-"NgonWithFwdNormals_8hpp.html":[5,0,0,0,0,0,32],
-"NgonWithFwdNormals_8hpp.html#a03e5b2dc2081cc8e0fc608ff79e78a89":[5,0,0,0,0,0,32,2]
+"Negative_8hpp.html#gae249aaac842934d7f33e0f90012c409a":[5,0,0,0,0,33,0]
 };

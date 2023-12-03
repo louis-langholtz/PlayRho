@@ -1,17 +1,19 @@
 <map id="Library/include/playrho/Interval.hpp" name="Library/include/playrho/Interval.hpp">
-<area shape="rect" id="node1" title="Definition of the Interval class template and closely related code." alt="" coords="244,5,415,47"/>
-<area shape="rect" id="node2" title=" " alt="" coords="49,408,135,435"/>
-<area shape="rect" id="node3" title=" " alt="" coords="615,95,673,121"/>
-<area shape="rect" id="node4" title=" " alt="" coords="633,259,713,285"/>
-<area shape="rect" id="node5" title=" " alt="" coords="245,408,337,435"/>
-<area shape="rect" id="node6" href="$NonNegative_8hpp.html" title="Definition of the NonNegative value checked types." alt="" coords="235,95,423,121"/>
-<area shape="rect" id="node7" href="$Checked_8hpp.html" title="Declarations of the Checked class template and closely related code." alt="" coords="342,177,541,203"/>
-<area shape="rect" id="node15" href="$NonNegativeChecker_8hpp.html" title="Definition of the NonNegativeChecker class template." alt="" coords="117,169,318,211"/>
-<area shape="rect" id="node8" title=" " alt="" coords="566,408,626,435"/>
-<area shape="rect" id="node9" href="$InvalidArgument_8hpp.html" title="Definition of the InvalidArgument class." alt="" coords="93,259,304,285"/>
-<area shape="rect" id="node11" href="$Templates_8hpp.html" title="Definitions of miscellaneous template related code." alt="" coords="379,259,549,285"/>
-<area shape="rect" id="node10" title=" " alt="" coords="155,333,242,360"/>
-<area shape="rect" id="node12" href="$detail_2Templates_8hpp.html" title="Low&#45;level declarations for general class &amp; function templates." alt="" coords="348,333,559,360"/>
-<area shape="rect" id="node13" title=" " alt="" coords="455,408,542,435"/>
-<area shape="rect" id="node14" title=" " alt="" coords="361,408,431,435"/>
+<area shape="rect" id="node1" title="Definition of the Interval class template and closely related code." alt="" coords="665,5,836,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,408,91,435"/>
+<area shape="rect" id="node3" title=" " alt="" coords="852,95,911,121"/>
+<area shape="rect" id="node4" title=" " alt="" coords="935,95,1046,121"/>
+<area shape="rect" id="node5" title=" " alt="" coords="697,259,777,285"/>
+<area shape="rect" id="node6" title=" " alt="" coords="134,408,226,435"/>
+<area shape="rect" id="node7" title=" " alt="" coords="575,408,635,435"/>
+<area shape="rect" id="node8" href="$NonNegative_8hpp.html" title="Definition of the NonNegative value checked types." alt="" coords="406,95,594,121"/>
+<area shape="rect" id="node9" href="$Checked_8hpp.html" title="Declarations of the Checked class template and closely related code." alt="" coords="289,177,487,203"/>
+<area shape="rect" id="node17" href="$NonNegativeChecker_8hpp.html" title="Definition of the NonNegativeChecker class template." alt="" coords="511,169,713,211"/>
+<area shape="rect" id="node10" href="$InvalidArgument_8hpp.html" title="Definition of the InvalidArgument class." alt="" coords="463,259,673,285"/>
+<area shape="rect" id="node12" href="$Templates_8hpp.html" title="Definitions of miscellaneous template related code." alt="" coords="217,259,388,285"/>
+<area shape="rect" id="node11" title=" " alt="" coords="643,333,730,360"/>
+<area shape="rect" id="node13" title=" " alt="" coords="269,333,334,360"/>
+<area shape="rect" id="node14" href="$detail_2Templates_8hpp.html" title="Low&#45;level declarations for general class &amp; function templates." alt="" coords="357,333,568,360"/>
+<area shape="rect" id="node15" title=" " alt="" coords="343,408,430,435"/>
+<area shape="rect" id="node16" title=" " alt="" coords="454,408,525,435"/>
 </map>

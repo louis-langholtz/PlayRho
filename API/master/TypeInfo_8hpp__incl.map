@@ -1,16 +1,10 @@
 <map id="Library/include/playrho/TypeInfo.hpp" name="Library/include/playrho/TypeInfo.hpp">
-<area shape="rect" id="node1" title="Definition of TypeID class and closely related code." alt="" coords="192,5,363,47"/>
-<area shape="rect" id="node2" title=" " alt="" coords="101,95,168,121"/>
-<area shape="rect" id="node3" href="$Templates_8hpp.html" title="Definitions of miscellaneous template related code." alt="" coords="192,95,363,121"/>
-<area shape="rect" id="node10" href="$detail_2TypeInfo_8hpp.html" title="Definition of TypeInfo class template and related code." alt="" coords="403,95,602,121"/>
-<area shape="rect" id="node4" href="$detail_2Templates_8hpp.html" title="Low&#45;level declarations for general class &amp; function templates." alt="" coords="156,169,367,196"/>
-<area shape="rect" id="node5" title=" " alt="" coords="5,244,91,271"/>
-<area shape="rect" id="node6" title=" " alt="" coords="115,244,202,271"/>
-<area shape="rect" id="node7" title=" " alt="" coords="226,244,297,271"/>
-<area shape="rect" id="node8" title=" " alt="" coords="321,244,413,271"/>
-<area shape="rect" id="node9" title=" " alt="" coords="437,244,497,271"/>
-<area shape="rect" id="node11" title=" " alt="" coords="391,169,449,196"/>
-<area shape="rect" id="node12" title=" " alt="" coords="473,169,532,196"/>
-<area shape="rect" id="node13" title=" " alt="" coords="557,169,643,196"/>
-<area shape="rect" id="node14" title=" " alt="" coords="667,169,743,196"/>
+<area shape="rect" id="node1" title="Definition of TypeID class and closely related code." alt="" coords="57,5,228,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,95,72,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="97,95,189,121"/>
+<area shape="rect" id="node4" href="$detail_2TypeInfo_8hpp.html" title="Definition of TypeInfo class template and related code." alt="" coords="213,95,411,121"/>
+<area shape="rect" id="node5" title=" " alt="" coords="151,169,209,196"/>
+<area shape="rect" id="node6" title=" " alt="" coords="233,169,292,196"/>
+<area shape="rect" id="node7" title=" " alt="" coords="317,169,403,196"/>
+<area shape="rect" id="node8" title=" " alt="" coords="427,169,503,196"/>
 </map>

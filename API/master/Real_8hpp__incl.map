@@ -1,11 +1,12 @@
 <map id="Library/include/playrho/Real.hpp" name="Library/include/playrho/Real.hpp">
-<area shape="rect" id="node1" title="Real number definition file." alt="" coords="107,5,277,47"/>
-<area shape="rect" id="node2" title=" " alt="" coords="93,95,152,121"/>
-<area shape="rect" id="node3" href="$Templates_8hpp.html" title="Definitions of miscellaneous template related code." alt="" coords="176,95,347,121"/>
-<area shape="rect" id="node4" href="$detail_2Templates_8hpp.html" title="Low&#45;level declarations for general class &amp; function templates." alt="" coords="156,169,367,196"/>
-<area shape="rect" id="node5" title=" " alt="" coords="5,244,91,271"/>
-<area shape="rect" id="node6" title=" " alt="" coords="115,244,202,271"/>
-<area shape="rect" id="node7" title=" " alt="" coords="226,244,297,271"/>
-<area shape="rect" id="node8" title=" " alt="" coords="321,244,413,271"/>
-<area shape="rect" id="node9" title=" " alt="" coords="437,244,497,271"/>
+<area shape="rect" id="node1" title="Real number definition file." alt="" coords="19,5,189,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,95,64,121"/>
+<area shape="rect" id="node3" href="$Templates_8hpp.html" title="Definitions of miscellaneous template related code." alt="" coords="88,95,259,121"/>
+<area shape="rect" id="node4" title=" " alt="" coords="70,169,135,196"/>
+<area shape="rect" id="node5" title=" " alt="" coords="107,244,199,271"/>
+<area shape="rect" id="node6" href="$detail_2Templates_8hpp.html" title="Low&#45;level declarations for general class &amp; function templates." alt="" coords="251,169,461,196"/>
+<area shape="rect" id="node7" title=" " alt="" coords="224,244,309,271"/>
+<area shape="rect" id="node8" title=" " alt="" coords="334,244,421,271"/>
+<area shape="rect" id="node9" title=" " alt="" coords="445,244,515,271"/>
+<area shape="rect" id="node10" title=" " alt="" coords="539,244,599,271"/>
 </map>

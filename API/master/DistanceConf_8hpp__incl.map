@@ -1,52 +1,52 @@
 <map id="Library/include/playrho/d2/DistanceConf.hpp" name="Library/include/playrho/d2/DistanceConf.hpp">
-<area shape="rect" id="node1" title="Definition of the DistanceConf class and closely related code." alt="" coords="373,5,544,47"/>
-<area shape="rect" id="node2" href="$Settings_8hpp.html" title="Types and default settings file." alt="" coords="1066,543,1222,569"/>
-<area shape="rect" id="node24" href="$Simplex_8hpp.html" title="Definition of the Simplex class and closely related code." alt="" coords="197,95,373,121"/>
-<area shape="rect" id="node3" title=" " alt="" coords="1233,1005,1319,1032"/>
-<area shape="rect" id="node4" title=" " alt="" coords="1347,767,1418,793"/>
-<area shape="rect" id="node5" title=" " alt="" coords="1051,767,1120,793"/>
-<area shape="rect" id="node6" title=" " alt="" coords="1181,617,1240,644"/>
-<area shape="rect" id="node7" title=" " alt="" coords="1798,692,1861,719"/>
-<area shape="rect" id="node8" title=" " alt="" coords="683,767,749,793"/>
-<area shape="rect" id="node9" title=" " alt="" coords="437,841,496,868"/>
-<area shape="rect" id="node10" href="$RealConstants_8hpp.html" title="Definitions file for constant expressions of type Real." alt="" coords="1248,692,1445,719"/>
-<area shape="rect" id="node13" href="$Templates_8hpp.html" title="Definitions of miscellaneous template related code." alt="" coords="1527,841,1697,868"/>
-<area shape="rect" id="node19" href="$Units_8hpp.html" title="Declarations for physical units possibly backed by strong types." alt="" coords="1791,617,1929,644"/>
-<area shape="rect" id="node22" href="$WiderType_8hpp.html" title="Definition of the WiderType alias template." alt="" coords="840,617,1011,644"/>
-<area shape="rect" id="node11" href="$Defines_8hpp.html" title="Miscellaneous C&#45;preprocessor definitions." alt="" coords="875,767,1027,793"/>
-<area shape="rect" id="node12" href="$Real_8hpp.html" title="Real number definition file." alt="" coords="1442,767,1574,793"/>
-<area shape="rect" id="node14" href="$detail_2Templates_8hpp.html" title="Low&#45;level declarations for general class &amp; function templates." alt="" coords="1415,923,1625,950"/>
-<area shape="rect" id="node15" title=" " alt="" coords="1410,1005,1497,1032"/>
-<area shape="rect" id="node16" title=" " alt="" coords="1627,1005,1698,1032"/>
-<area shape="rect" id="node17" title=" " alt="" coords="1921,1005,2013,1032"/>
-<area shape="rect" id="node18" title=" " alt="" coords="942,1005,1002,1032"/>
-<area shape="rect" id="node20" href="$to__underlying_8hpp.html" title="Definition of to_underlying function template." alt="" coords="2460,692,2652,719"/>
-<area shape="rect" id="node21" href="$underlying__type_8hpp.html" title="Definition of underlying_type trait class and related code." alt="" coords="2466,916,2651,957"/>
-<area shape="rect" id="node23" href="$Wider_8hpp.html" title="Definition of the Wider class template and specializations." alt="" coords="829,692,1011,719"/>
-<area shape="rect" id="node25" title=" " alt="" coords="75,767,131,793"/>
-<area shape="rect" id="node26" href="$ArrayList_8hpp.html" title="Definition of the ArrayList class and closely related functions." alt="" coords="145,692,306,719"/>
-<area shape="rect" id="node28" href="$SimplexEdge_8hpp.html" title="Definition of the SimplexEdge class and closely related code." alt="" coords="665,169,873,196"/>
-<area shape="rect" id="node27" title=" " alt="" coords="155,767,266,793"/>
-<area shape="rect" id="node29" href="$d2_2Math_8hpp.html" title="Declarations of general 2&#45;D math related code." alt="" coords="934,244,1090,271"/>
-<area shape="rect" id="node30" href="$Math_8hpp.html" title="Conventional and custom math related code." alt="" coords="1480,319,1616,345"/>
-<area shape="rect" id="node39" href="$Checked_8hpp.html" title="Declarations of the Checked class template and closely related code." alt="" coords="2237,692,2435,719"/>
-<area shape="rect" id="node43" href="$UnitVec_8hpp.html" title="Declarations of the UnitVec class and free functions associated with it." alt="" coords="1788,468,1961,495"/>
-<area shape="rect" id="node45" href="$Position_8hpp.html" title="Definition of the Position class and closely related code." alt="" coords="762,393,937,420"/>
-<area shape="rect" id="node46" href="$Velocity_8hpp.html" title="Definition of the Velocity class and closely related code." alt="" coords="285,393,459,420"/>
-<area shape="rect" id="node47" href="$Acceleration_8hpp.html" title="Definition of the Acceleration class and closely related code." alt="" coords="534,393,738,420"/>
-<area shape="rect" id="node48" href="$Transformation_8hpp.html" title="Definition of the Transformation class and free functions directly associated with it." alt="" coords="1113,393,1335,420"/>
-<area shape="rect" id="node49" href="$Sweep_8hpp.html" title="Definition of the Sweep class and closely related code." alt="" coords="929,319,1095,345"/>
-<area shape="rect" id="node31" title=" " alt="" coords="1511,393,1585,420"/>
-<area shape="rect" id="node32" title=" " alt="" coords="443,767,506,793"/>
-<area shape="rect" id="node33" href="$Matrix_8hpp.html" title="Definition of the Matrix alias and closely related code." alt="" coords="1669,393,1814,420"/>
-<area shape="rect" id="node37" href="$Vector2_8hpp.html" title="Definition of the Vector2 alias template and closely related code." alt="" coords="887,468,1039,495"/>
-<area shape="rect" id="node38" href="$NonNegative_8hpp.html" title="Definition of the NonNegative value checked types." alt="" coords="2429,543,2617,569"/>
-<area shape="rect" id="node40" href="$Span_8hpp.html" title="Definition of the Span class template." alt="" coords="1089,692,1223,719"/>
-<area shape="rect" id="node41" href="$UnitInterval_8hpp.html" title="Definition of the UnitInterval value checked types and related code." alt="" coords="2437,468,2617,495"/>
-<area shape="rect" id="node42" href="$Vector3_8hpp.html" title="Definition of the Vector3 alias template and closely related code." alt="" coords="1511,468,1663,495"/>
-<area shape="rect" id="node34" href="$Vector_8hpp.html" title="Definition of the Vector class template and closely related code." alt="" coords="1631,692,1774,719"/>
-<area shape="rect" id="node35" title=" " alt="" coords="2004,767,2084,793"/>
-<area shape="rect" id="node36" href="$InvalidArgument_8hpp.html" title="Definition of the InvalidArgument class." alt="" coords="2108,767,2319,793"/>
-<area shape="rect" id="node44" title=" " alt="" coords="1789,543,1854,569"/>
-<area shape="rect" id="node50" href="$ZeroToUnderOne_8hpp.html" title="Definition of the ZeroToUnderOne value checked types and related code." alt="" coords="2193,543,2405,569"/>
+<area shape="rect" id="node1" title="Definition of the DistanceConf class and closely related code." alt="" coords="3043,5,3213,47"/>
+<area shape="rect" id="node2" href="$Settings_8hpp.html" title="Types and default settings file." alt="" coords="2997,543,3153,569"/>
+<area shape="rect" id="node22" href="$Simplex_8hpp.html" title="Definition of the Simplex class and closely related code." alt="" coords="1207,95,1383,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="3432,781,3499,808"/>
+<area shape="rect" id="node4" title=" " alt="" coords="2957,863,3016,890"/>
+<area shape="rect" id="node5" title=" " alt="" coords="2663,1020,2755,1047"/>
+<area shape="rect" id="node6" href="$Real_8hpp.html" title="Real number definition file." alt="" coords="1977,781,2109,808"/>
+<area shape="rect" id="node14" href="$RealConstants_8hpp.html" title="Definitions file for constant expressions of type Real." alt="" coords="2323,699,2520,726"/>
+<area shape="rect" id="node15" href="$Units_8hpp.html" title="Declarations for physical units possibly backed by strong types." alt="" coords="2345,617,2482,644"/>
+<area shape="rect" id="node19" href="$WiderType_8hpp.html" title="Definition of the WiderType alias template." alt="" coords="3216,617,3387,644"/>
+<area shape="rect" id="node7" href="$Templates_8hpp.html" title="Definitions of miscellaneous template related code." alt="" coords="1533,863,1704,890"/>
+<area shape="rect" id="node8" title=" " alt="" coords="819,945,885,972"/>
+<area shape="rect" id="node9" href="$detail_2Templates_8hpp.html" title="Low&#45;level declarations for general class &amp; function templates." alt="" coords="483,945,693,972"/>
+<area shape="rect" id="node10" title=" " alt="" coords="768,1020,853,1047"/>
+<area shape="rect" id="node11" title=" " alt="" coords="545,1020,631,1047"/>
+<area shape="rect" id="node12" title=" " alt="" coords="50,1020,121,1047"/>
+<area shape="rect" id="node13" title=" " alt="" coords="339,1020,399,1047"/>
+<area shape="rect" id="node16" title=" " alt="" coords="2185,699,2247,726"/>
+<area shape="rect" id="node17" href="$to__underlying_8hpp.html" title="Definition of to_underlying function template." alt="" coords="2747,699,2939,726"/>
+<area shape="rect" id="node18" href="$underlying__type_8hpp.html" title="Definition of underlying_type trait class and related code." alt="" coords="2747,856,2933,897"/>
+<area shape="rect" id="node20" href="$Wider_8hpp.html" title="Definition of the Wider class template and specializations." alt="" coords="3216,699,3397,726"/>
+<area shape="rect" id="node21" href="$Defines_8hpp.html" title="Miscellaneous C&#45;preprocessor definitions." alt="" coords="3205,781,3357,808"/>
+<area shape="rect" id="node23" title=" " alt="" coords="93,781,149,808"/>
+<area shape="rect" id="node24" href="$ArrayList_8hpp.html" title="Definition of the ArrayList class and closely related functions." alt="" coords="210,699,371,726"/>
+<area shape="rect" id="node27" href="$SimplexEdge_8hpp.html" title="Definition of the SimplexEdge class and closely related code." alt="" coords="1753,169,1961,196"/>
+<area shape="rect" id="node25" title=" " alt="" coords="613,781,683,808"/>
+<area shape="rect" id="node26" title=" " alt="" coords="326,781,437,808"/>
+<area shape="rect" id="node28" href="$d2_2Math_8hpp.html" title="Declarations of general 2&#45;D math related code." alt="" coords="2430,244,2586,271"/>
+<area shape="rect" id="node29" title=" " alt="" coords="2822,319,2877,345"/>
+<area shape="rect" id="node30" title=" " alt="" coords="2822,393,2885,420"/>
+<area shape="rect" id="node31" href="$Math_8hpp.html" title="Conventional and custom math related code." alt="" coords="1895,319,2031,345"/>
+<area shape="rect" id="node33" href="$Matrix_8hpp.html" title="Definition of the Matrix alias and closely related code." alt="" coords="2001,393,2146,420"/>
+<area shape="rect" id="node37" href="$Vector2_8hpp.html" title="Definition of the Vector2 alias template and closely related code." alt="" coords="2595,468,2747,495"/>
+<area shape="rect" id="node39" href="$Checked_8hpp.html" title="Declarations of the Checked class template and closely related code." alt="" coords="1506,699,1705,726"/>
+<area shape="rect" id="node43" href="$UnitInterval_8hpp.html" title="Definition of the UnitInterval value checked types and related code." alt="" coords="3614,617,3794,644"/>
+<area shape="rect" id="node45" href="$UnitVec_8hpp.html" title="Declarations of the UnitVec class and free functions associated with it." alt="" coords="1140,543,1313,569"/>
+<area shape="rect" id="node46" href="$Position_8hpp.html" title="Definition of the Position class and closely related code." alt="" coords="2222,393,2397,420"/>
+<area shape="rect" id="node47" href="$Velocity_8hpp.html" title="Definition of the Velocity class and closely related code." alt="" coords="2421,393,2595,420"/>
+<area shape="rect" id="node48" href="$Transformation_8hpp.html" title="Definition of the Transformation class and free functions directly associated with it." alt="" coords="2960,393,3181,420"/>
+<area shape="rect" id="node49" href="$Sweep_8hpp.html" title="Definition of the Sweep class and closely related code." alt="" coords="2953,319,3119,345"/>
+<area shape="rect" id="node32" title=" " alt="" coords="1800,393,1875,420"/>
+<area shape="rect" id="node34" href="$Vector_8hpp.html" title="Definition of the Vector class template and closely related code." alt="" coords="859,699,1002,726"/>
+<area shape="rect" id="node38" href="$NonNegative_8hpp.html" title="Definition of the NonNegative value checked types." alt="" coords="1351,617,1539,644"/>
+<area shape="rect" id="node41" href="$Span_8hpp.html" title="Definition of the Span class template." alt="" coords="395,699,530,726"/>
+<area shape="rect" id="node42" href="$Vector3_8hpp.html" title="Definition of the Vector3 alias template and closely related code." alt="" coords="1723,468,1875,495"/>
+<area shape="rect" id="node35" title=" " alt="" coords="1163,781,1243,808"/>
+<area shape="rect" id="node36" href="$InvalidArgument_8hpp.html" title="Definition of the InvalidArgument class." alt="" coords="1267,781,1477,808"/>
+<area shape="rect" id="node40" href="$NonNegativeChecker_8hpp.html" title="Definition of the NonNegativeChecker class template." alt="" coords="1230,692,1431,733"/>
+<area shape="rect" id="node44" href="$UnitIntervalChecker_8hpp.html" title="Definition of the UnitIntervalChecker class template." alt="" coords="3675,692,3869,733"/>
+<area shape="rect" id="node50" href="$ZeroToUnderOne_8hpp.html" title="Definition of the ZeroToUnderOne value checked types and related code." alt="" coords="2778,617,2990,644"/>
 </map>

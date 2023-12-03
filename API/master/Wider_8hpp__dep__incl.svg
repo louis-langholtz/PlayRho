@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 4505;
+var viewWidth = 4306;
 var viewHeight = 508;
 var sectionId = 'dynsection-1';
 </script>
@@ -54,14 +54,14 @@ var sectionId = 'dynsection-1';
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>Library/include/playrho/detail/Wider.hpp</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-504 4501,-504 4501,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-504 4302.41,-504 4302.41,4 -4,4"/>
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="Definition of the Wider class template and specializations.">
-<polygon fill="#bfbfbf" stroke="black" points="2533,-469.5 2533,-499.5 2661,-499.5 2661,-469.5 2533,-469.5"/>
-<text text-anchor="start" x="2541" y="-487.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="2597" y="-476.5" font-family="Helvetica,sans-Serif" font-size="10.00">/detail/Wider.hpp</text>
+<polygon fill="#bfbfbf" stroke="black" points="2254.41,-469.5 2254.41,-499.5 2382.41,-499.5 2382.41,-469.5 2254.41,-469.5"/>
+<text text-anchor="start" x="2262.41" y="-487.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2318.41" y="-476.5" font-family="Helvetica,sans-Serif" font-size="10.00">/detail/Wider.hpp</text>
 </a>
 </g>
 </g>
@@ -69,1115 +69,1283 @@ var sectionId = 'dynsection-1';
 <g id="node2" class="node">
 <title>Node2</title>
 <g id="a_node2"><a xlink:href="WiderType_8hpp.html" target="_top" xlink:title="Definition of the WiderType alias template.">
-<polygon fill="white" stroke="black" points="2533,-402.5 2533,-432.5 2661,-432.5 2661,-402.5 2533,-402.5"/>
-<text text-anchor="start" x="2541" y="-420.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="2597" y="-409.5" font-family="Helvetica,sans-Serif" font-size="10.00">/WiderType.hpp</text>
+<polygon fill="white" stroke="black" points="2254.41,-402.5 2254.41,-432.5 2382.41,-432.5 2382.41,-402.5 2254.41,-402.5"/>
+<text text-anchor="start" x="2262.41" y="-420.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2318.41" y="-409.5" font-family="Helvetica,sans-Serif" font-size="10.00">/WiderType.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="midnightblue" d="M2597,-459.11C2597,-450.15 2597,-440.32 2597,-432.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2593.5,-459.4 2597,-469.4 2600.5,-459.4 2593.5,-459.4"/>
+<path fill="none" stroke="midnightblue" d="M2318.41,-459.11C2318.41,-450.15 2318.41,-440.32 2318.41,-432.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2314.91,-459.4 2318.41,-469.4 2321.91,-459.4 2314.91,-459.4"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
 <g id="a_node3"><a xlink:href="Settings_8hpp.html" target="_top" xlink:title="Types and default settings file.">
-<polygon fill="white" stroke="black" points="2487,-335.5 2487,-365.5 2615,-365.5 2615,-335.5 2487,-335.5"/>
-<text text-anchor="start" x="2495" y="-353.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="2551" y="-342.5" font-family="Helvetica,sans-Serif" font-size="10.00">/Settings.hpp</text>
+<polygon fill="white" stroke="black" points="2208.41,-335.5 2208.41,-365.5 2336.41,-365.5 2336.41,-335.5 2208.41,-335.5"/>
+<text text-anchor="start" x="2216.41" y="-353.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2272.41" y="-342.5" font-family="Helvetica,sans-Serif" font-size="10.00">/Settings.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node2&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node2&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M2581.19,-394.16C2574.48,-384.68 2566.87,-373.92 2560.96,-365.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2578.38,-396.26 2587.02,-402.4 2584.1,-392.21 2578.38,-396.26"/>
+<path fill="none" stroke="midnightblue" d="M2302.6,-394.16C2295.89,-384.68 2288.27,-373.92 2282.37,-365.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2299.79,-396.26 2308.43,-402.4 2305.51,-392.21 2299.79,-396.26"/>
 </g>
-<!-- Node99 -->
+<!-- Node90 -->
 <g id="node48" class="node">
-<title>Node99</title>
+<title>Node90</title>
 <g id="a_node48"><a xlink:href="ToiOutput_8hpp.html" target="_top" xlink:title="Definitions of ToiOutput class and closely related code.">
-<polygon fill="white" stroke="black" points="4369,-268.5 4369,-298.5 4497,-298.5 4497,-268.5 4369,-268.5"/>
-<text text-anchor="start" x="4377" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="4433" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/ToiOutput.hpp</text>
+<polygon fill="white" stroke="black" points="4170.41,-268.5 4170.41,-298.5 4298.41,-298.5 4298.41,-268.5 4170.41,-268.5"/>
+<text text-anchor="start" x="4178.41" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="4234.41" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/ToiOutput.hpp</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node99 -->
-<g id="edge104" class="edge">
-<title>Node2&#45;&gt;Node99</title>
-<path fill="none" stroke="midnightblue" d="M2671.49,-414.98C2915.03,-409.3 3709.42,-384.92 4360,-299 4362.95,-298.61 4365.95,-298.17 4368.98,-297.7"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2671.25,-411.49 2661.34,-415.22 2671.41,-418.49 2671.25,-411.49"/>
+<!-- Node2&#45;&gt;Node90 -->
+<g id="edge132" class="edge">
+<title>Node2&#45;&gt;Node90</title>
+<path fill="none" stroke="midnightblue" d="M2392.85,-415.29C2643.34,-410.45 3478.22,-388.23 4161.41,-299 4164.36,-298.62 4167.36,-298.18 4170.39,-297.71"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2392.71,-411.79 2382.77,-415.48 2392.84,-418.79 2392.71,-411.79"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
 <g id="a_node4"><a xlink:href="BlockAllocator_8hpp.html" target="_top" xlink:title="Definition of the BlockAllocator class and closely related code.">
-<polygon fill="white" stroke="black" points="4223,-268.5 4223,-298.5 4351,-298.5 4351,-268.5 4223,-268.5"/>
-<text text-anchor="start" x="4231" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="4287" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/BlockAllocator.hpp</text>
+<polygon fill="white" stroke="black" points="4024.41,-268.5 4024.41,-298.5 4152.41,-298.5 4152.41,-268.5 4024.41,-268.5"/>
+<text text-anchor="start" x="4032.41" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="4088.41" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/BlockAllocator.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node4 -->
 <g id="edge3" class="edge">
 <title>Node3&#45;&gt;Node4</title>
-<path fill="none" stroke="midnightblue" d="M2625.32,-348.88C2905.74,-346.29 3899.67,-334.74 4214,-299 4216.82,-298.68 4219.7,-298.31 4222.6,-297.89"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2625.22,-345.38 2615.25,-348.97 2625.28,-352.38 2625.22,-345.38"/>
+<path fill="none" stroke="midnightblue" d="M2346.85,-349C2635.98,-346.8 3684.65,-336.38 4015.41,-299 4018.23,-298.68 4021.11,-298.31 4024.01,-297.9"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2346.46,-345.5 2336.49,-349.08 2346.51,-352.5 2346.46,-345.5"/>
 </g>
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
 <g id="a_node5"><a xlink:href="BodyID_8hpp.html" target="_top" xlink:title="Definition of the BodyID alias and closely related code.">
-<polygon fill="white" stroke="red" points="957,-268.5 957,-298.5 1085,-298.5 1085,-268.5 957,-268.5"/>
-<text text-anchor="start" x="965" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="1021" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/BodyID.hpp</text>
+<polygon fill="white" stroke="black" points="1784.41,-268.5 1784.41,-298.5 1912.41,-298.5 1912.41,-268.5 1784.41,-268.5"/>
+<text text-anchor="start" x="1792.41" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="1848.41" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/BodyID.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node5 -->
 <g id="edge4" class="edge">
 <title>Node3&#45;&gt;Node5</title>
-<path fill="none" stroke="midnightblue" d="M2476.52,-346.34C2213.63,-335.17 1331.8,-297.7 1085.42,-287.24"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2476.58,-349.84 2486.72,-346.77 2476.88,-342.85 2476.58,-349.84"/>
+<path fill="none" stroke="midnightblue" d="M2197.91,-338.08C2117.07,-325.69 1989.32,-306.1 1912.72,-294.36"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2197.6,-341.57 2208.01,-339.63 2198.66,-334.65 2197.6,-341.57"/>
+</g>
+<!-- Node7 -->
+<g id="node7" class="node">
+<title>Node7</title>
+<g id="a_node7"><a xlink:href="AabbTreeWorld_8hpp.html" target="_top" xlink:title="Declarations of the AabbTreeWorld class.">
+<polygon fill="white" stroke="black" points="1152.41,-0.5 1152.41,-30.5 1280.41,-30.5 1280.41,-0.5 1152.41,-0.5"/>
+<text text-anchor="start" x="1160.41" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="1216.41" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/AabbTreeWorld.hpp</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node7 -->
+<g id="edge63" class="edge">
+<title>Node3&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M2198.13,-349.21C1827.75,-347.58 194.26,-338.19 94.41,-299 43.56,-279.04 2.41,-272.13 2.41,-217.5 2.41,-217.5 2.41,-217.5 2.41,-148.5 2.41,-111.31 -7.23,-90.73 21.41,-67 65.23,-30.69 910.52,-19.53 1152.31,-17.08"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2198.19,-352.71 2208.2,-349.25 2198.22,-345.71 2198.19,-352.71"/>
+</g>
+<!-- Node10 -->
+<g id="node9" class="node">
+<title>Node10</title>
+<g id="a_node9"><a xlink:href="World_8hpp.html" target="_top" xlink:title="Definitions of the World class and closely related code.">
+<polygon fill="white" stroke="red" points="2340.41,-0.5 2340.41,-30.5 2468.41,-30.5 2468.41,-0.5 2340.41,-0.5"/>
+<text text-anchor="start" x="2348.41" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2404.41" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/World.hpp</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node10 -->
+<g id="edge77" class="edge">
+<title>Node3&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M2346.62,-348.33C2484.57,-345.32 2774.99,-334.8 2868.41,-299 2889.74,-290.83 2888,-275.98 2909.41,-268 2966.38,-246.77 3413.86,-276.38 3455.41,-232 3630.07,-45.44 4876.84,-438.06 3058.41,-67 2845.57,-23.57 2586.81,-16.82 2468.73,-16.21"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2346.48,-344.83 2336.55,-348.54 2346.62,-351.83 2346.48,-344.83"/>
 </g>
 <!-- Node12 -->
-<g id="node9" class="node">
+<g id="node10" class="node">
 <title>Node12</title>
-<g id="a_node9"><a xlink:href="Contactable_8hpp.html" target="_top" xlink:title="Definition of the Contactable class and closely related code.">
-<polygon fill="white" stroke="red" points="1746,-201.5 1746,-231.5 1874,-231.5 1874,-201.5 1746,-201.5"/>
-<text text-anchor="start" x="1754" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="1810" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/Contactable.hpp</text>
+<g id="a_node10"><a xlink:href="Contact_8hpp.html" target="_top" xlink:title="Definition of the Contact class and closely related code.">
+<polygon fill="white" stroke="black" points="1422.41,-134.5 1422.41,-164.5 1550.41,-164.5 1550.41,-134.5 1422.41,-134.5"/>
+<text text-anchor="start" x="1430.41" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="1486.41" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/Contact.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node12 -->
-<g id="edge33" class="edge">
+<g id="edge43" class="edge">
 <title>Node3&#45;&gt;Node12</title>
-<path fill="none" stroke="midnightblue" d="M2476.6,-347.21C2378.2,-343 2199.85,-331.25 2051,-299 1975.03,-282.54 1889.61,-250.19 1843.64,-231.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2476.61,-350.72 2486.74,-347.63 2476.9,-343.72 2476.61,-350.72"/>
+<path fill="none" stroke="midnightblue" d="M2198.22,-345.35C1993.78,-333.13 1433.96,-294.25 1381.41,-232 1357.67,-203.88 1404.27,-179.16 1442.78,-164.52"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2198.07,-348.84 2208.26,-345.94 2198.49,-341.85 2198.07,-348.84"/>
+</g>
+<!-- Node13 -->
+<g id="node11" class="node">
+<title>Node13</title>
+<g id="a_node11"><a xlink:href="Contactable_8hpp.html" target="_top" xlink:title="Definition of the Contactable class and closely related code.">
+<polygon fill="white" stroke="black" points="604.41,-201.5 604.41,-231.5 732.41,-231.5 732.41,-201.5 604.41,-201.5"/>
+<text text-anchor="start" x="612.41" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="668.41" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/Contactable.hpp</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node13 -->
+<g id="edge44" class="edge">
+<title>Node3&#45;&gt;Node13</title>
+<path fill="none" stroke="midnightblue" d="M2198.16,-349.73C2014.24,-349.56 1522.98,-344.48 1116.41,-299 977.35,-283.44 816.42,-250.44 730.34,-231.55"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2198.26,-353.23 2208.26,-349.74 2198.26,-346.23 2198.26,-353.23"/>
 </g>
 <!-- Node14 -->
-<g id="node10" class="node">
+<g id="node12" class="node">
 <title>Node14</title>
-<g id="a_node10"><a xlink:href="DynamicTreeData_8hpp.html" target="_top" xlink:title="Definitions of DynamicTree related classes.">
-<polygon fill="white" stroke="black" points="2084.5,-134.5 2084.5,-164.5 2227.5,-164.5 2227.5,-134.5 2084.5,-134.5"/>
-<text text-anchor="start" x="2092.5" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="2156" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/DynamicTreeData.hpp</text>
+<g id="a_node12"><a xlink:href="DynamicTreeData_8hpp.html" target="_top" xlink:title="Definitions of DynamicTree related classes.">
+<polygon fill="white" stroke="black" points="214.91,-134.5 214.91,-164.5 357.91,-164.5 357.91,-134.5 214.91,-134.5"/>
+<text text-anchor="start" x="222.91" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="286.41" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/DynamicTreeData.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node14 -->
-<g id="edge46" class="edge">
+<g id="edge69" class="edge">
 <title>Node3&#45;&gt;Node14</title>
-<path fill="none" stroke="midnightblue" d="M2476.68,-347.9C2431.21,-343.4 2374.24,-331.01 2334,-299 2296.05,-268.81 2321.72,-233.81 2286,-201 2267.28,-183.8 2242.04,-172.22 2218.79,-164.53"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2476.52,-351.4 2486.79,-348.8 2477.13,-344.43 2476.52,-351.4"/>
+<path fill="none" stroke="midnightblue" d="M2198.13,-349.08C1834.35,-346.84 256.61,-335.08 221.41,-299 201.56,-278.66 253.51,-197.96 276.3,-164.82"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2198.27,-352.58 2208.29,-349.14 2198.31,-345.58 2198.27,-352.58"/>
 </g>
 <!-- Node15 -->
-<g id="node11" class="node">
+<g id="node13" class="node">
 <title>Node15</title>
-<g id="a_node11"><a xlink:href="DynamicTree_8hpp.html" target="_top" xlink:title="Declaration of the DynamicTree class.">
-<polygon fill="white" stroke="black" points="2092,-67.5 2092,-97.5 2220,-97.5 2220,-67.5 2092,-67.5"/>
-<text text-anchor="start" x="2100" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="2156" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/DynamicTree.hpp</text>
+<g id="a_node13"><a xlink:href="DynamicTree_8hpp.html" target="_top" xlink:title="Declaration of the DynamicTree class.">
+<polygon fill="white" stroke="black" points="512.41,-67.5 512.41,-97.5 640.41,-97.5 640.41,-67.5 512.41,-67.5"/>
+<text text-anchor="start" x="520.41" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="576.41" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/DynamicTree.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node15 -->
-<g id="edge45" class="edge">
+<g id="edge68" class="edge">
 <title>Node3&#45;&gt;Node15</title>
-<path fill="none" stroke="midnightblue" d="M2476.83,-342.37C2440.72,-335.8 2398.43,-323.19 2367,-299 2327.07,-268.27 2341.72,-240.15 2310,-201 2282.07,-166.53 2271.33,-160.83 2236,-134 2218.34,-120.59 2197.06,-107.28 2180.89,-97.69"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2476.39,-345.85 2486.83,-344.07 2477.56,-338.94 2476.39,-345.85"/>
+<path fill="none" stroke="midnightblue" d="M2198.07,-349.8C1877.62,-350.78 627.62,-351.24 563.41,-299 502.64,-249.56 549.76,-137.21 569.11,-97.63"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2198.19,-353.3 2208.18,-349.77 2198.17,-346.3 2198.19,-353.3"/>
 </g>
 <!-- Node16 -->
-<g id="node12" class="node">
+<g id="node14" class="node">
 <title>Node16</title>
-<g id="a_node12"><a xlink:href="d2_2AABB_8hpp.html" target="_top" xlink:title="Declaration of the AABB class and free functions that return instances of it.">
-<polygon fill="white" stroke="red" points="2376,-134.5 2376,-164.5 2504,-164.5 2504,-134.5 2376,-134.5"/>
-<text text-anchor="start" x="2384" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="2440" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/AABB.hpp</text>
+<g id="a_node14"><a xlink:href="d2_2AABB_8hpp.html" target="_top" xlink:title="Declaration of the AABB class and free functions that return instances of it.">
+<polygon fill="white" stroke="red" points="268.41,-201.5 268.41,-231.5 396.41,-231.5 396.41,-201.5 268.41,-201.5"/>
+<text text-anchor="start" x="276.41" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="332.41" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/AABB.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node16 -->
-<g id="edge39" class="edge">
+<g id="edge62" class="edge">
 <title>Node3&#45;&gt;Node16</title>
-<path fill="none" stroke="midnightblue" d="M2550.49,-325.09C2548.66,-293.41 2541.27,-237.82 2513,-201 2501.27,-185.72 2483.59,-173.32 2468.57,-164.63"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2547,-325.4 2550.94,-335.23 2554,-325.09 2547,-325.4"/>
+<path fill="none" stroke="midnightblue" d="M2198.2,-349.06C1861.88,-346.88 493.35,-335.76 410.41,-299 378.54,-284.87 353.28,-250.99 340.84,-231.65"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2198.3,-352.56 2208.32,-349.13 2198.34,-345.56 2198.3,-352.56"/>
 </g>
-<!-- Node40 -->
-<g id="node18" class="node">
-<title>Node40</title>
-<g id="a_node18"><a xlink:href="ShapeConcept_8hpp.html" target="_top" xlink:title="Definition of the internal ShapeConcept interface class.">
-<polygon fill="white" stroke="red" points="470,-134.5 470,-164.5 626,-164.5 626,-134.5 470,-134.5"/>
-<text text-anchor="start" x="478" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="548" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/detail/ShapeConcept.hpp</text>
+<!-- Node37 -->
+<g id="node22" class="node">
+<title>Node37</title>
+<g id="a_node22"><a xlink:href="VelocityConstraint_8hpp.html" target="_top" xlink:title="Definition of the VelocityConstraint class and closely related code.">
+<polygon fill="white" stroke="black" points="3154.91,-201.5 3154.91,-231.5 3299.91,-231.5 3299.91,-201.5 3154.91,-201.5"/>
+<text text-anchor="start" x="3162.91" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="3227.41" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/VelocityConstraint.hpp</text>
 </a>
 </g>
 </g>
-<!-- Node3&#45;&gt;Node40 -->
-<g id="edge43" class="edge">
-<title>Node3&#45;&gt;Node40</title>
-<path fill="none" stroke="midnightblue" d="M2476.49,-349.39C2183.6,-348.65 1111.05,-342.95 774,-299 644.97,-282.18 569.8,-333.99 489,-232 470.78,-209 501.88,-181.09 525.42,-164.62"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2476.56,-352.89 2486.57,-349.42 2476.58,-345.89 2476.56,-352.89"/>
+<!-- Node3&#45;&gt;Node37 -->
+<g id="edge76" class="edge">
+<title>Node3&#45;&gt;Node37</title>
+<path fill="none" stroke="midnightblue" d="M2347.08,-347.08C2471.45,-342.26 2715.29,-329.2 2795.41,-299 2817.46,-290.69 2816.46,-276.56 2838.41,-268 2964.35,-218.91 3006.6,-251.12 3140.41,-232 3145.11,-231.33 3149.95,-230.61 3154.82,-229.86"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2346.74,-343.59 2336.88,-347.47 2347,-350.59 2346.74,-343.59"/>
+</g>
+<!-- Node39 -->
+<g id="node24" class="node">
+<title>Node39</title>
+<g id="a_node24"><a xlink:href="WorldContact_8hpp.html" target="_top" xlink:title="Declarations of free functions of World for contacts identified by ContactID.">
+<polygon fill="white" stroke="red" points="2215.41,-134.5 2215.41,-164.5 2343.41,-164.5 2343.41,-134.5 2215.41,-134.5"/>
+<text text-anchor="start" x="2223.41" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2279.41" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/WorldContact.hpp</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node39 -->
+<g id="edge81" class="edge">
+<title>Node3&#45;&gt;Node39</title>
+<path fill="none" stroke="midnightblue" d="M2265.8,-325.38C2262.47,-307.56 2261.49,-283.75 2274.41,-268 2320.64,-211.65 2388.88,-288.92 2434.41,-232 2443.02,-221.24 2442.5,-212.15 2434.41,-201 2423.23,-185.6 2381.01,-172.44 2343.46,-163.42"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2262.42,-326.32 2268.01,-335.32 2269.25,-324.8 2262.42,-326.32"/>
+</g>
+<!-- Node41 -->
+<g id="node26" class="node">
+<title>Node41</title>
+<g id="a_node26"><a xlink:href="Island_8hpp.html" target="_top" xlink:title="Definition of the Island class and related code.">
+<polygon fill="white" stroke="black" points="876.41,-134.5 876.41,-164.5 1004.41,-164.5 1004.41,-134.5 876.41,-134.5"/>
+<text text-anchor="start" x="884.41" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="940.41" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/Island.hpp</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node41 -->
+<g id="edge84" class="edge">
+<title>Node3&#45;&gt;Node41</title>
+<path fill="none" stroke="midnightblue" d="M2197.77,-348.39C1951.59,-344.45 1166.72,-329.76 915.41,-299 771.18,-281.35 687.03,-344.78 595.41,-232 586.72,-221.31 586.4,-211.42 595.41,-201 599.98,-195.71 777.64,-171.75 876.17,-158.83"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2197.99,-351.89 2208.05,-348.55 2198.1,-344.89 2197.99,-351.89"/>
+</g>
+<!-- Node42 -->
+<g id="node27" class="node">
+<title>Node42</title>
+<g id="a_node27"><a xlink:href="ConstraintSolverConf_8hpp.html" target="_top" xlink:title="Definition of the ConstraintSolverConf class and closely related code.">
+<polygon fill="white" stroke="black" points="2918.91,-268.5 2918.91,-298.5 3061.91,-298.5 3061.91,-268.5 2918.91,-268.5"/>
+<text text-anchor="start" x="2926.91" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2990.41" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/ConstraintSolverConf.hpp</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node42 -->
+<g id="edge42" class="edge">
+<title>Node3&#45;&gt;Node42</title>
+<path fill="none" stroke="midnightblue" d="M2346.78,-345.67C2465.14,-339.09 2703.54,-323.91 2904.41,-299 2909.07,-298.42 2913.86,-297.77 2918.68,-297.07"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2346.53,-342.17 2336.74,-346.22 2346.92,-349.16 2346.53,-342.17"/>
+</g>
+<!-- Node43 -->
+<g id="node28" class="node">
+<title>Node43</title>
+<g id="a_node28"><a xlink:href="ContactID_8hpp.html" target="_top" xlink:title="Definition of the ContactID alias and closely related code.">
+<polygon fill="white" stroke="red" points="2506.41,-201.5 2506.41,-231.5 2634.41,-231.5 2634.41,-201.5 2506.41,-201.5"/>
+<text text-anchor="start" x="2514.41" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2570.41" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/ContactID.hpp</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node43 -->
+<g id="edge45" class="edge">
+<title>Node3&#45;&gt;Node43</title>
+<path fill="none" stroke="midnightblue" d="M2273.02,-325.38C2274.83,-306.99 2280.37,-282.44 2296.41,-268 2362.23,-208.74 2405.32,-248.09 2492.41,-232 2496.88,-231.17 2501.49,-230.32 2506.14,-229.46"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2269.53,-325.16 2272.34,-335.37 2276.51,-325.64 2269.53,-325.16"/>
+</g>
+<!-- Node48 -->
+<g id="node31" class="node">
+<title>Node48</title>
+<g id="a_node31"><a xlink:href="ContactKey_8hpp.html" target="_top" xlink:title="Declaration of the ContactKey class and closely related code.">
+<polygon fill="white" stroke="red" points="1428.41,-67.5 1428.41,-97.5 1556.41,-97.5 1556.41,-67.5 1428.41,-67.5"/>
+<text text-anchor="start" x="1436.41" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="1492.41" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/ContactKey.hpp</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node48 -->
+<g id="edge59" class="edge">
+<title>Node3&#45;&gt;Node48</title>
+<path fill="none" stroke="midnightblue" d="M2197.89,-349.08C1886.31,-347.07 700.9,-336.96 631.41,-299 599.71,-281.68 596.11,-266.5 585.41,-232 540.66,-87.76 807.5,-138.4 834.41,-134 1091.48,-91.94 1161.07,-131.45 1419.41,-98 1422.36,-97.62 1425.36,-97.19 1428.4,-96.72"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2198.14,-352.58 2208.16,-349.14 2198.19,-345.58 2198.14,-352.58"/>
+</g>
+<!-- Node49 -->
+<g id="node32" class="node">
+<title>Node49</title>
+<g id="a_node32"><a xlink:href="ContactImpulsesList_8hpp.html" target="_top" xlink:title="Definition of the ContactImpulsesList class and closely related code.">
+<polygon fill="white" stroke="black" points="2338.91,-268.5 2338.91,-298.5 2493.91,-298.5 2493.91,-268.5 2338.91,-268.5"/>
+<text text-anchor="start" x="2346.91" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2416.41" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/ContactImpulsesList.hpp</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node49 -->
+<g id="edge64" class="edge">
+<title>Node3&#45;&gt;Node49</title>
+<path fill="none" stroke="midnightblue" d="M2312.8,-331.27C2335.73,-320.92 2364.01,-308.15 2385.22,-298.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2311.33,-328.09 2303.66,-335.4 2314.21,-334.47 2311.33,-328.09"/>
 </g>
 <!-- Node50 -->
-<g id="node21" class="node">
+<g id="node33" class="node">
 <title>Node50</title>
-<g id="a_node21"><a xlink:href="WorldContact_8hpp.html" target="_top" xlink:title="Declarations of free functions of World for contacts identified by ContactID.">
-<polygon fill="white" stroke="red" points="498,-201.5 498,-231.5 626,-231.5 626,-201.5 498,-201.5"/>
-<text text-anchor="start" x="506" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="562" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/WorldContact.hpp</text>
+<g id="a_node33"><a xlink:href="ShapeConcept_8hpp.html" target="_top" xlink:title="Definition of the internal ShapeConcept interface class.">
+<polygon fill="white" stroke="red" points="3080.41,-268.5 3080.41,-298.5 3236.41,-298.5 3236.41,-268.5 3080.41,-268.5"/>
+<text text-anchor="start" x="3088.41" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="3158.41" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/detail/ShapeConcept.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node50 -->
-<g id="edge61" class="edge">
+<g id="edge66" class="edge">
 <title>Node3&#45;&gt;Node50</title>
-<path fill="none" stroke="midnightblue" d="M2476.64,-348.9C2202.66,-346.42 1249.76,-335.32 948,-299 826.96,-284.43 687.63,-250.72 613.96,-231.53"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2476.84,-352.4 2486.87,-348.99 2476.91,-345.4 2476.84,-352.4"/>
-</g>
-<!-- Node52 -->
-<g id="node22" class="node">
-<title>Node52</title>
-<g id="a_node22"><a xlink:href="Island_8hpp.html" target="_top" xlink:title="Definition of the Island class and related code.">
-<polygon fill="white" stroke="black" points="92,-201.5 92,-231.5 220,-231.5 220,-201.5 92,-201.5"/>
-<text text-anchor="start" x="100" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="156" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/Island.hpp</text>
-</a>
-</g>
-</g>
-<!-- Node3&#45;&gt;Node52 -->
-<g id="edge64" class="edge">
-<title>Node3&#45;&gt;Node52</title>
-<path fill="none" stroke="midnightblue" d="M2476.73,-349.16C2079.37,-347.22 220.78,-336.14 175,-299 155.14,-282.89 153.61,-250.41 154.59,-231.68"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2476.94,-352.67 2486.96,-349.21 2476.97,-345.67 2476.94,-352.67"/>
+<path fill="none" stroke="midnightblue" d="M2346.75,-347.28C2488.09,-342.51 2805.15,-329.17 3070.41,-299 3073.64,-298.63 3076.93,-298.23 3080.26,-297.79"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2346.35,-343.79 2336.47,-347.62 2346.59,-350.79 2346.35,-343.79"/>
 </g>
 <!-- Node53 -->
-<g id="node23" class="node">
+<g id="node34" class="node">
 <title>Node53</title>
-<g id="a_node23"><a xlink:href="ConstraintSolverConf_8hpp.html" target="_top" xlink:title="Definition of the ConstraintSolverConf class and closely related code.">
-<polygon fill="white" stroke="black" points="2972.5,-268.5 2972.5,-298.5 3115.5,-298.5 3115.5,-268.5 2972.5,-268.5"/>
-<text text-anchor="start" x="2980.5" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="3044" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/ConstraintSolverConf.hpp</text>
+<g id="a_node34"><a xlink:href="DistanceConf_8hpp.html" target="_top" xlink:title="Definition of the DistanceConf class and closely related code.">
+<polygon fill="white" stroke="black" points="3254.41,-268.5 3254.41,-298.5 3382.41,-298.5 3382.41,-268.5 3254.41,-268.5"/>
+<text text-anchor="start" x="3262.41" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="3318.41" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/DistanceConf.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node53 -->
-<g id="edge32" class="edge">
+<g id="edge67" class="edge">
 <title>Node3&#45;&gt;Node53</title>
-<path fill="none" stroke="midnightblue" d="M2625.45,-341.25C2707.16,-331.96 2842.13,-315.95 2958,-299 2962.64,-298.32 2967.43,-297.59 2972.24,-296.84"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2624.81,-337.8 2615.26,-342.4 2625.59,-344.75 2624.81,-337.8"/>
+<path fill="none" stroke="midnightblue" d="M2346.85,-349.29C2510.18,-348.02 2911.99,-340.55 3245.41,-299 3248.36,-298.63 3251.37,-298.21 3254.4,-297.76"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2346.42,-345.79 2336.44,-349.36 2346.47,-352.79 2346.42,-345.79"/>
 </g>
 <!-- Node54 -->
-<g id="node24" class="node">
+<g id="node35" class="node">
 <title>Node54</title>
-<g id="a_node24"><a xlink:href="ContactID_8hpp.html" target="_top" xlink:title="Definition of the ContactID alias and closely related code.">
-<polygon fill="white" stroke="red" points="184,-268.5 184,-298.5 312,-298.5 312,-268.5 184,-268.5"/>
-<text text-anchor="start" x="192" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="248" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/ContactID.hpp</text>
+<g id="a_node35"><a xlink:href="PointStates_8hpp.html" target="_top" xlink:title="Structures and functions used for computing before and after like point oriented collision response s...">
+<polygon fill="white" stroke="black" points="3400.41,-268.5 3400.41,-298.5 3528.41,-298.5 3528.41,-268.5 3400.41,-268.5"/>
+<text text-anchor="start" x="3408.41" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="3464.41" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/PointStates.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node54 -->
-<g id="edge34" class="edge">
+<g id="edge70" class="edge">
 <title>Node3&#45;&gt;Node54</title>
-<path fill="none" stroke="midnightblue" d="M2476.65,-349.42C2140.08,-348.83 756.91,-343.65 326,-299 321.48,-298.53 316.83,-297.94 312.15,-297.27"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2476.77,-352.92 2486.77,-349.44 2476.78,-345.92 2476.77,-352.92"/>
+<path fill="none" stroke="midnightblue" d="M2346.87,-350.01C2526.96,-350.41 3000.1,-346.42 3391.41,-299 3394.36,-298.64 3397.37,-298.23 3400.4,-297.78"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2346.72,-346.51 2336.71,-349.98 2346.7,-353.51 2346.72,-346.51"/>
 </g>
-<!-- Node59 -->
-<g id="node25" class="node">
-<title>Node59</title>
-<g id="a_node25"><a xlink:href="ContactKey_8hpp.html" target="_top" xlink:title="Declaration of the ContactKey class and closely related code.">
-<polygon fill="white" stroke="red" points="1340,-67.5 1340,-97.5 1468,-97.5 1468,-67.5 1340,-67.5"/>
-<text text-anchor="start" x="1348" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="1404" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/ContactKey.hpp</text>
+<!-- Node55 -->
+<g id="node36" class="node">
+<title>Node55</title>
+<g id="a_node36"><a xlink:href="PositionSolverManifold_8hpp.html" target="_top" xlink:title="Definition of the PositionSolverManifold class and closely related code.">
+<polygon fill="white" stroke="black" points="3546.41,-268.5 3546.41,-298.5 3714.41,-298.5 3714.41,-268.5 3546.41,-268.5"/>
+<text text-anchor="start" x="3554.41" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="3630.41" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/PositionSolverManifold.hpp</text>
 </a>
 </g>
 </g>
-<!-- Node3&#45;&gt;Node59 -->
-<g id="edge37" class="edge">
-<title>Node3&#45;&gt;Node59</title>
-<path fill="none" stroke="midnightblue" d="M2476.73,-349.16C2268.99,-347.72 1692.34,-340 1618,-299 1539.28,-255.58 1568.76,-193.07 1501,-134 1483.25,-118.53 1459.94,-106.2 1440.62,-97.59"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2476.9,-352.67 2486.93,-349.23 2476.95,-345.67 2476.9,-352.67"/>
+<!-- Node3&#45;&gt;Node55 -->
+<g id="edge71" class="edge">
+<title>Node3&#45;&gt;Node55</title>
+<path fill="none" stroke="midnightblue" d="M2346.58,-349.51C2541.93,-348.88 3086.64,-342.99 3537.41,-299 3540.34,-298.71 3543.31,-298.4 3546.31,-298.05"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2346.42,-346.01 2336.43,-349.54 2346.44,-353.01 2346.42,-346.01"/>
 </g>
-<!-- Node60 -->
-<g id="node26" class="node">
-<title>Node60</title>
-<g id="a_node26"><a xlink:href="Acceleration_8hpp.html" target="_top" xlink:title="Definition of the Acceleration class and closely related code.">
-<polygon fill="white" stroke="red" points="2930,-201.5 2930,-231.5 3058,-231.5 3058,-201.5 2930,-201.5"/>
-<text text-anchor="start" x="2938" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="2994" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/Acceleration.hpp</text>
+<!-- Node56 -->
+<g id="node37" class="node">
+<title>Node56</title>
+<g id="a_node37"><a xlink:href="ShapeConf_8hpp.html" target="_top" xlink:title="Definition of the BaseShapeConf class and closely related code.">
+<polygon fill="white" stroke="red" points="3732.41,-268.5 3732.41,-298.5 3860.41,-298.5 3860.41,-268.5 3732.41,-268.5"/>
+<text text-anchor="start" x="3740.41" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="3796.41" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/ShapeConf.hpp</text>
 </a>
 </g>
 </g>
-<!-- Node3&#45;&gt;Node60 -->
-<g id="edge40" class="edge">
-<title>Node3&#45;&gt;Node60</title>
-<path fill="none" stroke="midnightblue" d="M2625.33,-343.65C2678.75,-337.43 2751.53,-324.72 2811,-299 2832.62,-289.65 2833.16,-278.99 2854,-268 2882.8,-252.81 2917.16,-240.34 2944.64,-231.59"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2624.8,-340.19 2615.25,-344.78 2625.58,-347.15 2624.8,-340.19"/>
+<!-- Node3&#45;&gt;Node56 -->
+<g id="edge72" class="edge">
+<title>Node3&#45;&gt;Node56</title>
+<path fill="none" stroke="midnightblue" d="M2346.91,-348.5C2603.94,-344.78 3452.68,-330.39 3723.41,-299 3726.36,-298.66 3729.37,-298.26 3732.41,-297.82"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2346.51,-345 2336.56,-348.64 2346.61,-352 2346.51,-345"/>
 </g>
-<!-- Node62 -->
-<g id="node27" class="node">
-<title>Node62</title>
-<g id="a_node27"><a xlink:href="BodyConf_8hpp.html" target="_top" xlink:title="Declarations of BodyConf class and free functions associated with it.">
-<polygon fill="white" stroke="red" points="1930,-201.5 1930,-231.5 2058,-231.5 2058,-201.5 1930,-201.5"/>
-<text text-anchor="start" x="1938" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="1994" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/BodyConf.hpp</text>
+<!-- Node61 -->
+<g id="node38" class="node">
+<title>Node61</title>
+<g id="a_node38"><a xlink:href="Sweep_8hpp.html" target="_top" xlink:title="Definition of the Sweep class and closely related code.">
+<polygon fill="white" stroke="red" points="3318.41,-201.5 3318.41,-231.5 3446.41,-231.5 3446.41,-201.5 3318.41,-201.5"/>
+<text text-anchor="start" x="3326.41" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="3382.41" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/Sweep.hpp</text>
 </a>
 </g>
 </g>
-<!-- Node3&#45;&gt;Node62 -->
-<g id="edge41" class="edge">
-<title>Node3&#45;&gt;Node62</title>
-<path fill="none" stroke="midnightblue" d="M2476.58,-345.6C2368.18,-339.15 2172.63,-324.38 2107,-299 2067.07,-283.56 2028.34,-250.51 2008.23,-231.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2476.6,-349.11 2486.79,-346.2 2477.01,-342.12 2476.6,-349.11"/>
-</g>
-<!-- Node76 -->
-<g id="node28" class="node">
-<title>Node76</title>
-<g id="a_node28"><a xlink:href="ContactImpulsesList_8hpp.html" target="_top" xlink:title="Definition of the ContactImpulsesList class and closely related code.">
-<polygon fill="white" stroke="red" points="3133.5,-268.5 3133.5,-298.5 3288.5,-298.5 3288.5,-268.5 3133.5,-268.5"/>
-<text text-anchor="start" x="3141.5" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="3211" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/ContactImpulsesList.hpp</text>
-</a>
-</g>
-</g>
-<!-- Node3&#45;&gt;Node76 -->
-<g id="edge42" class="edge">
-<title>Node3&#45;&gt;Node76</title>
-<path fill="none" stroke="midnightblue" d="M2625.47,-344.78C2734.97,-337.43 2945.73,-321.68 3124,-299 3127.04,-298.61 3130.13,-298.2 3133.26,-297.76"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2624.94,-341.31 2615.19,-345.47 2625.4,-348.29 2624.94,-341.31"/>
-</g>
-<!-- Node73 -->
-<g id="node29" class="node">
-<title>Node73</title>
-<g id="a_node29"><a xlink:href="DistanceConf_8hpp.html" target="_top" xlink:title="Definition of the DistanceConf class and closely related code.">
-<polygon fill="white" stroke="black" points="3307,-268.5 3307,-298.5 3435,-298.5 3435,-268.5 3307,-268.5"/>
-<text text-anchor="start" x="3315" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="3371" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/DistanceConf.hpp</text>
-</a>
-</g>
-</g>
-<!-- Node3&#45;&gt;Node73 -->
-<g id="edge44" class="edge">
-<title>Node3&#45;&gt;Node73</title>
-<path fill="none" stroke="midnightblue" d="M2625.32,-347.57C2759.83,-343.38 3052.4,-331.11 3297,-299 3300.25,-298.57 3303.56,-298.09 3306.91,-297.57"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2625.02,-344.07 2615.13,-347.88 2625.24,-351.07 2625.02,-344.07"/>
-</g>
-<!-- Node77 -->
-<g id="node30" class="node">
-<title>Node77</title>
-<g id="a_node30"><a xlink:href="PointStates_8hpp.html" target="_top" xlink:title="Structures and functions used for computing before and after like point oriented collision response s...">
-<polygon fill="white" stroke="black" points="3453,-268.5 3453,-298.5 3581,-298.5 3581,-268.5 3453,-268.5"/>
-<text text-anchor="start" x="3461" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="3517" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/PointStates.hpp</text>
-</a>
-</g>
-</g>
-<!-- Node3&#45;&gt;Node77 -->
-<g id="edge47" class="edge">
-<title>Node3&#45;&gt;Node77</title>
-<path fill="none" stroke="midnightblue" d="M2625.42,-348.8C2779.02,-346.57 3142.08,-337.33 3444,-299 3446.95,-298.63 3449.96,-298.2 3452.99,-297.74"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2625.12,-345.3 2615.17,-348.94 2625.21,-352.3 2625.12,-345.3"/>
+<!-- Node3&#45;&gt;Node61 -->
+<g id="edge73" class="edge">
+<title>Node3&#45;&gt;Node61</title>
+<path fill="none" stroke="midnightblue" d="M2347.15,-347.44C2478.31,-343.05 2744.3,-330.47 2831.41,-299 2854.25,-290.75 2853.54,-276.17 2876.41,-268 3058.26,-203.04 3118.18,-258.85 3309.41,-232 3312.35,-231.59 3315.36,-231.13 3318.39,-230.64"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2346.67,-343.95 2336.79,-347.78 2346.9,-350.95 2346.67,-343.95"/>
 </g>
 <!-- Node78 -->
-<g id="node31" class="node">
+<g id="node39" class="node">
 <title>Node78</title>
-<g id="a_node31"><a xlink:href="Position_8hpp.html" target="_top" xlink:title="Definition of the Position class and closely related code.">
-<polygon fill="white" stroke="red" points="3222,-201.5 3222,-231.5 3350,-231.5 3350,-201.5 3222,-201.5"/>
-<text text-anchor="start" x="3230" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="3286" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/Position.hpp</text>
+<g id="a_node39"><a xlink:href="Transformation_8hpp.html" target="_top" xlink:title="Definition of the Transformation class and free functions directly associated with it.">
+<polygon fill="white" stroke="red" points="82.91,-201.5 82.91,-231.5 211.91,-231.5 211.91,-201.5 82.91,-201.5"/>
+<text text-anchor="start" x="90.91" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="147.41" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/Transformation.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node78 -->
-<g id="edge48" class="edge">
+<g id="edge74" class="edge">
 <title>Node3&#45;&gt;Node78</title>
-<path fill="none" stroke="midnightblue" d="M2625.48,-347.53C2694.6,-343.57 2799.28,-332.03 2884,-299 2906.97,-290.04 2906.92,-276.68 2930,-268 3048.67,-223.36 3087.85,-252.36 3213,-232 3215.93,-231.52 3218.93,-231.01 3221.95,-230.48"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2624.92,-344.06 2615.12,-348.09 2625.29,-351.05 2624.92,-344.06"/>
-</g>
-<!-- Node79 -->
-<g id="node32" class="node">
-<title>Node79</title>
-<g id="a_node32"><a xlink:href="Sweep_8hpp.html" target="_top" xlink:title="Definition of the Sweep class and closely related code.">
-<polygon fill="white" stroke="red" points="3222,-134.5 3222,-164.5 3350,-164.5 3350,-134.5 3222,-134.5"/>
-<text text-anchor="start" x="3230" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="3286" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/Sweep.hpp</text>
-</a>
-</g>
-</g>
-<!-- Node3&#45;&gt;Node79 -->
-<g id="edge52" class="edge">
-<title>Node3&#45;&gt;Node79</title>
-<path fill="none" stroke="midnightblue" d="M2625.38,-350.04C2702.13,-348.18 2823.99,-338.39 2921,-299 2942.5,-290.27 2941.31,-276.24 2963,-268 3045.6,-236.6 3299.41,-297.25 3359,-232 3380.46,-208.51 3342.58,-180.87 3313.83,-164.56"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2625.24,-346.54 2615.32,-350.24 2625.39,-353.54 2625.24,-346.54"/>
-</g>
-<!-- Node68 -->
-<g id="node33" class="node">
-<title>Node68</title>
-<g id="a_node33"><a xlink:href="PositionSolverManifold_8hpp.html" target="_top" xlink:title="Definition of the PositionSolverManifold class and closely related code.">
-<polygon fill="white" stroke="black" points="3599,-268.5 3599,-298.5 3767,-298.5 3767,-268.5 3599,-268.5"/>
-<text text-anchor="start" x="3607" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="3683" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/PositionSolverManifold.hpp</text>
-</a>
-</g>
-</g>
-<!-- Node3&#45;&gt;Node68 -->
-<g id="edge50" class="edge">
-<title>Node3&#45;&gt;Node68</title>
-<path fill="none" stroke="midnightblue" d="M2625.15,-348.59C2795.83,-345.92 3229.5,-335.76 3590,-299 3592.93,-298.7 3595.9,-298.37 3598.9,-298.02"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2624.97,-345.1 2615.02,-348.75 2625.07,-352.1 2624.97,-345.1"/>
+<path fill="none" stroke="midnightblue" d="M2198.08,-349.83C1836.46,-351.17 274.89,-353.76 188.41,-299 164.72,-284 154.19,-250.78 149.95,-231.71"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2198.19,-353.33 2208.17,-349.79 2198.16,-346.33 2198.19,-353.33"/>
 </g>
 <!-- Node80 -->
-<g id="node34" class="node">
+<g id="node40" class="node">
 <title>Node80</title>
-<g id="a_node34"><a xlink:href="ShapeConf_8hpp.html" target="_top" xlink:title="Definition of the BaseShapeConf class and closely related code.">
-<polygon fill="white" stroke="red" points="3785,-268.5 3785,-298.5 3913,-298.5 3913,-268.5 3785,-268.5"/>
-<text text-anchor="start" x="3793" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="3849" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/ShapeConf.hpp</text>
+<g id="a_node40"><a xlink:href="WorldConf_8hpp.html" target="_top" xlink:title="Declarations of the WorldConf class.">
+<polygon fill="white" stroke="black" points="1282.41,-67.5 1282.41,-97.5 1410.41,-97.5 1410.41,-67.5 1282.41,-67.5"/>
+<text text-anchor="start" x="1290.41" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="1346.41" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/WorldConf.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node80 -->
-<g id="edge51" class="edge">
+<g id="edge78" class="edge">
 <title>Node3&#45;&gt;Node80</title>
-<path fill="none" stroke="midnightblue" d="M2625.29,-347.95C2854.92,-342.91 3551.32,-325.78 3776,-299 3778.95,-298.65 3781.96,-298.24 3785,-297.8"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2624.96,-344.45 2615.04,-348.17 2625.11,-351.45 2624.96,-344.45"/>
+<path fill="none" stroke="midnightblue" d="M2197.47,-349.69C1880.01,-350.19 659.32,-348.84 595.41,-299 537.55,-253.89 535.05,-182.14 590.41,-134 642.06,-89.09 1109.4,-83.82 1282.4,-83.43"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2197.94,-353.19 2207.93,-349.67 2197.93,-346.19 2197.94,-353.19"/>
 </g>
 <!-- Node81 -->
-<g id="node35" class="node">
+<g id="node41" class="node">
 <title>Node81</title>
-<g id="a_node35"><a xlink:href="Transformation_8hpp.html" target="_top" xlink:title="Definition of the Transformation class and free functions directly associated with it.">
-<polygon fill="white" stroke="red" points="2706.5,-201.5 2706.5,-231.5 2835.5,-231.5 2835.5,-201.5 2706.5,-201.5"/>
-<text text-anchor="start" x="2714.5" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="2771" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/Transformation.hpp</text>
+<g id="a_node41"><a xlink:href="detail_2AABB_8hpp.html" target="_top" xlink:title="Declaration of the AABB class and free functions that return instances of it.">
+<polygon fill="white" stroke="black" points="230.41,-268.5 230.41,-298.5 358.41,-298.5 358.41,-268.5 230.41,-268.5"/>
+<text text-anchor="start" x="238.41" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="294.41" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/detail/AABB.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node81 -->
-<g id="edge53" class="edge">
+<g id="edge82" class="edge">
 <title>Node3&#45;&gt;Node81</title>
-<path fill="none" stroke="midnightblue" d="M2576.55,-329.25C2599.09,-311.87 2633.22,-286.73 2665,-268 2688.53,-254.13 2716.47,-240.94 2737.76,-231.53"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2574.25,-326.6 2568.5,-335.5 2578.55,-332.13 2574.25,-326.6"/>
+<path fill="none" stroke="midnightblue" d="M2197.93,-349.09C1892.6,-347.15 735.81,-337.37 372.41,-299 367.89,-298.52 363.24,-297.93 358.57,-297.25"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2197.98,-352.59 2208,-349.15 2198.02,-345.59 2197.98,-352.59"/>
 </g>
 <!-- Node82 -->
-<g id="node36" class="node">
+<g id="node42" class="node">
 <title>Node82</title>
-<g id="a_node36"><a xlink:href="UnitVec_8hpp.html" target="_top" xlink:title="Declarations of the UnitVec class and free functions associated with it.">
-<polygon fill="white" stroke="red" points="2116,-268.5 2116,-298.5 2244,-298.5 2244,-268.5 2116,-268.5"/>
-<text text-anchor="start" x="2124" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="2180" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/UnitVec.hpp</text>
+<g id="a_node42"><a xlink:href="IslandStats_8hpp.html" target="_top" xlink:title="Definition of the IslandStats class.">
+<polygon fill="white" stroke="black" points="30.41,-67.5 30.41,-97.5 158.41,-97.5 158.41,-67.5 30.41,-67.5"/>
+<text text-anchor="start" x="38.41" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="94.41" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/IslandStats.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node82 -->
-<g id="edge54" class="edge">
+<g id="edge85" class="edge">
 <title>Node3&#45;&gt;Node82</title>
-<path fill="none" stroke="midnightblue" d="M2476.92,-337.01C2417.66,-326.95 2332.45,-312.33 2258,-299 2253.53,-298.2 2248.91,-297.36 2244.26,-296.51"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2476.5,-340.49 2486.94,-338.71 2477.67,-333.58 2476.5,-340.49"/>
+<path fill="none" stroke="midnightblue" d="M2198.05,-349.03C1834.45,-346.57 257.2,-333.91 159.41,-299 113.78,-282.71 94.68,-275.53 73.41,-232 51.35,-186.85 74.49,-125.37 87.21,-97.85"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2198.18,-352.53 2208.2,-349.1 2198.22,-345.53 2198.18,-352.53"/>
 </g>
 <!-- Node83 -->
-<g id="node37" class="node">
+<g id="node43" class="node">
 <title>Node83</title>
-<g id="a_node37"><a xlink:href="Velocity_8hpp.html" target="_top" xlink:title="Definition of the Velocity class and closely related code.">
-<polygon fill="white" stroke="red" points="3076,-201.5 3076,-231.5 3204,-231.5 3204,-201.5 3076,-201.5"/>
-<text text-anchor="start" x="3084" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="3140" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/Velocity.hpp</text>
+<g id="a_node43"><a xlink:href="JointID_8hpp.html" target="_top" xlink:title="Definition of the JointID alias and closely related code.">
+<polygon fill="white" stroke="red" points="1054.41,-201.5 1054.41,-231.5 1182.41,-231.5 1182.41,-201.5 1054.41,-201.5"/>
+<text text-anchor="start" x="1062.41" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="1118.41" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/JointID.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node83 -->
-<g id="edge58" class="edge">
+<g id="edge87" class="edge">
 <title>Node3&#45;&gt;Node83</title>
-<path fill="none" stroke="midnightblue" d="M2625.24,-345.73C2686.63,-340.55 2775.06,-328.24 2847,-299 2869.5,-289.85 2869.65,-277.5 2892,-268 2896.29,-266.18 3003.93,-244.57 3075.98,-230.21"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2624.94,-342.25 2615.25,-346.53 2625.5,-349.22 2624.94,-342.25"/>
-</g>
-<!-- Node84 -->
-<g id="node38" class="node">
-<title>Node84</title>
-<g id="a_node38"><a xlink:href="WorldConf_8hpp.html" target="_top" xlink:title="Declarations of the WorldConf class.">
-<polygon fill="white" stroke="red" points="1486,-67.5 1486,-97.5 1614,-97.5 1614,-67.5 1486,-67.5"/>
-<text text-anchor="start" x="1494" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="1550" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/WorldConf.hpp</text>
-</a>
-</g>
-</g>
-<!-- Node3&#45;&gt;Node84 -->
-<g id="edge59" class="edge">
-<title>Node3&#45;&gt;Node84</title>
-<path fill="none" stroke="midnightblue" d="M2476.64,-349.76C2272.25,-349.85 1712.58,-345.8 1645,-299 1609.2,-274.21 1567.21,-141.49 1554.11,-97.6"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2476.69,-353.26 2486.68,-349.75 2476.68,-346.26 2476.69,-353.26"/>
+<path fill="none" stroke="midnightblue" d="M2198.08,-348.64C1952.18,-345.49 1178.22,-332.89 1137.41,-299 1117.74,-282.66 1116.14,-250.27 1117.05,-231.62"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2198.3,-352.15 2208.35,-348.77 2198.39,-345.15 2198.3,-352.15"/>
 </g>
 <!-- Node85 -->
-<g id="node39" class="node">
+<g id="node44" class="node">
 <title>Node85</title>
-<g id="a_node39"><a xlink:href="detail_2AABB_8hpp.html" target="_top" xlink:title="Declaration of the AABB class and free functions that return instances of it.">
-<polygon fill="white" stroke="black" points="2560,-201.5 2560,-231.5 2688,-231.5 2688,-201.5 2560,-201.5"/>
-<text text-anchor="start" x="2568" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="2624" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/detail/AABB.hpp</text>
+<g id="a_node44"><a xlink:href="ShapeID_8hpp.html" target="_top" xlink:title="Definition of the ShapeID alias and closely related code.">
+<polygon fill="white" stroke="red" points="1146.41,-268.5 1146.41,-298.5 1274.41,-298.5 1274.41,-268.5 1146.41,-268.5"/>
+<text text-anchor="start" x="1154.41" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="1210.41" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/ShapeID.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node85 -->
-<g id="edge62" class="edge">
+<g id="edge95" class="edge">
 <title>Node3&#45;&gt;Node85</title>
-<path fill="none" stroke="midnightblue" d="M2566.65,-326.85C2572.35,-318.27 2578.69,-308.32 2584,-299 2597.1,-275.99 2610.23,-248.08 2617.71,-231.61"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2563.7,-324.96 2561.01,-335.21 2569.5,-328.87 2563.7,-324.96"/>
-</g>
-<!-- Node86 -->
-<g id="node40" class="node">
-<title>Node86</title>
-<g id="a_node40"><a xlink:href="IslandStats_8hpp.html" target="_top" xlink:title="Definition of the IslandStats class.">
-<polygon fill="white" stroke="black" points="1854,-67.5 1854,-97.5 1982,-97.5 1982,-67.5 1854,-67.5"/>
-<text text-anchor="start" x="1862" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="1918" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/IslandStats.hpp</text>
-</a>
-</g>
-</g>
-<!-- Node3&#45;&gt;Node86 -->
-<g id="edge65" class="edge">
-<title>Node3&#45;&gt;Node86</title>
-<path fill="none" stroke="midnightblue" d="M2476.59,-346.94C2426.32,-342.22 2360.21,-329.96 2310,-299 2262.62,-269.78 2279.11,-230.66 2232,-201 2171.42,-162.85 2142.2,-189.69 2075,-165 2024.84,-146.57 1970.34,-115.54 1940.57,-97.56"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2476.48,-350.44 2486.75,-347.81 2477.08,-343.47 2476.48,-350.44"/>
+<path fill="none" stroke="midnightblue" d="M2198.27,-349.04C2033.88,-347.3 1626.61,-338.93 1288.41,-299 1283.9,-298.47 1279.25,-297.83 1274.58,-297.13"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2198.23,-352.54 2208.27,-349.14 2198.31,-345.54 2198.23,-352.54"/>
 </g>
 <!-- Node87 -->
-<g id="node41" class="node">
+<g id="node45" class="node">
 <title>Node87</title>
-<g id="a_node41"><a xlink:href="JointID_8hpp.html" target="_top" xlink:title="Definition of the JointID alias and closely related code.">
-<polygon fill="white" stroke="red" points="0,-268.5 0,-298.5 128,-298.5 128,-268.5 0,-268.5"/>
-<text text-anchor="start" x="8" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="64" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/JointID.hpp</text>
+<g id="a_node45"><a xlink:href="StepConf_8hpp.html" target="_top" xlink:title="Declarations of the StepConf class, and free functions associated with it.">
+<polygon fill="white" stroke="black" points="2652.41,-201.5 2652.41,-231.5 2780.41,-231.5 2780.41,-201.5 2652.41,-201.5"/>
+<text text-anchor="start" x="2660.41" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2716.41" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/StepConf.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node87 -->
-<g id="edge67" class="edge">
+<g id="edge109" class="edge">
 <title>Node3&#45;&gt;Node87</title>
-<path fill="none" stroke="midnightblue" d="M2476.67,-349.57C2123.32,-349.67 611.24,-347.21 142,-299 137.48,-298.54 132.83,-297.95 128.15,-297.28"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2476.78,-353.07 2486.78,-349.57 2476.78,-346.07 2476.78,-353.07"/>
+<path fill="none" stroke="midnightblue" d="M2282.06,-326.25C2291.26,-307.21 2307.05,-281.32 2329.41,-268 2389.75,-232.05 2574.02,-242.85 2643.41,-232 2646.35,-231.54 2649.34,-231.05 2652.37,-230.53"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2278.81,-324.92 2277.84,-335.48 2285.18,-327.83 2278.81,-324.92"/>
+</g>
+<!-- Node88 -->
+<g id="node46" class="node">
+<title>Node88</title>
+<g id="a_node46"><a xlink:href="StepStats_8hpp.html" target="_top" xlink:title="Definition of the StepStats related classes and code.">
+<polygon fill="white" stroke="black" points="2132.41,-201.5 2132.41,-231.5 2260.41,-231.5 2260.41,-201.5 2132.41,-201.5"/>
+<text text-anchor="start" x="2140.41" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2196.41" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/StepStats.hpp</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node88 -->
+<g id="edge113" class="edge">
+<title>Node3&#45;&gt;Node88</title>
+<path fill="none" stroke="midnightblue" d="M2246.1,-328.87C2236.86,-320.46 2227.12,-310.11 2220.41,-299 2207.45,-277.53 2201.12,-248.64 2198.33,-231.65"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2243.83,-331.53 2253.67,-335.44 2248.42,-326.24 2243.83,-331.53"/>
 </g>
 <!-- Node89 -->
-<g id="node42" class="node">
+<g id="node47" class="node">
 <title>Node89</title>
-<g id="a_node42"><a xlink:href="Math_8hpp.html" target="_top" xlink:title="Conventional and custom math related code.">
-<polygon fill="white" stroke="red" points="2376,-201.5 2376,-231.5 2504,-231.5 2504,-201.5 2376,-201.5"/>
-<text text-anchor="start" x="2384" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="2440" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/Math.hpp</text>
+<g id="a_node47"><a xlink:href="ToiConf_8hpp.html" target="_top" xlink:title="Definitions of ToiConf class and closely related code.">
+<polygon fill="white" stroke="black" points="3878.41,-268.5 3878.41,-298.5 4006.41,-298.5 4006.41,-268.5 3878.41,-268.5"/>
+<text text-anchor="start" x="3886.41" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="3942.41" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/ToiConf.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node89 -->
-<g id="edge71" class="edge">
+<g id="edge118" class="edge">
 <title>Node3&#45;&gt;Node89</title>
-<path fill="none" stroke="midnightblue" d="M2543.56,-325.34C2537.37,-308.04 2527.26,-284.9 2513,-268 2500.38,-253.04 2482.31,-240.5 2467.31,-231.65"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2540.39,-326.91 2546.91,-335.26 2547.02,-324.67 2540.39,-326.91"/>
+<path fill="none" stroke="midnightblue" d="M2346.94,-348.77C2620.46,-345.84 3568.74,-333.38 3869.41,-299 3872.36,-298.66 3875.37,-298.27 3878.41,-297.83"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2346.69,-345.27 2336.72,-348.88 2346.76,-352.27 2346.69,-345.27"/>
 </g>
-<!-- Node93 -->
-<g id="node43" class="node">
-<title>Node93</title>
-<g id="a_node43"><a xlink:href="ShapeID_8hpp.html" target="_top" xlink:title="Definition of the ShapeID alias and closely related code.">
-<polygon fill="white" stroke="red" points="1654,-268.5 1654,-298.5 1782,-298.5 1782,-268.5 1654,-268.5"/>
-<text text-anchor="start" x="1662" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="1718" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/ShapeID.hpp</text>
+<!-- Node3&#45;&gt;Node90 -->
+<g id="edge119" class="edge">
+<title>Node3&#45;&gt;Node90</title>
+<path fill="none" stroke="midnightblue" d="M2346.89,-348.26C2674.5,-342.68 3979.18,-319.39 4161.41,-299 4164.23,-298.68 4167.11,-298.32 4170.02,-297.91"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2346.5,-344.76 2336.56,-348.43 2346.62,-351.76 2346.5,-344.76"/>
+</g>
+<!-- Node91 -->
+<g id="node49" class="node">
+<title>Node91</title>
+<g id="a_node49"><a xlink:href="Vector2_8hpp.html" target="_top" xlink:title="Definition of the Vector2 alias template and closely related code.">
+<polygon fill="white" stroke="red" points="2512.41,-268.5 2512.41,-298.5 2640.41,-298.5 2640.41,-268.5 2512.41,-268.5"/>
+<text text-anchor="start" x="2520.41" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2576.41" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/Vector2.hpp</text>
 </a>
 </g>
 </g>
-<!-- Node3&#45;&gt;Node93 -->
-<g id="edge73" class="edge">
-<title>Node3&#45;&gt;Node93</title>
-<path fill="none" stroke="midnightblue" d="M2476.29,-344.5C2350.78,-335.99 2089.64,-317.76 1869,-299 1840.53,-296.58 1809.07,-293.61 1782.26,-290.98"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2476.34,-348.01 2486.55,-345.2 2476.81,-341.03 2476.34,-348.01"/>
+<!-- Node3&#45;&gt;Node91 -->
+<g id="edge120" class="edge">
+<title>Node3&#45;&gt;Node91</title>
+<path fill="none" stroke="midnightblue" d="M2346.44,-333.67C2397.22,-322.81 2463.92,-308.55 2512.4,-298.19"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2345.56,-330.28 2336.51,-335.79 2347.02,-337.13 2345.56,-330.28"/>
 </g>
-<!-- Node95 -->
-<g id="node44" class="node">
-<title>Node95</title>
-<g id="a_node44"><a xlink:href="StackAllocator_8hpp.html" target="_top" xlink:title="Definition of the StackAllocator class.">
-<polygon fill="white" stroke="black" points="3931,-268.5 3931,-298.5 4059,-298.5 4059,-268.5 3931,-268.5"/>
-<text text-anchor="start" x="3939" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="3995" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/StackAllocator.hpp</text>
+<!-- Node99 -->
+<g id="node50" class="node">
+<title>Node99</title>
+<g id="a_node50"><a xlink:href="Vector3_8hpp.html" target="_top" xlink:title="Definition of the Vector3 alias template and closely related code.">
+<polygon fill="white" stroke="red" points="2658.41,-268.5 2658.41,-298.5 2786.41,-298.5 2786.41,-268.5 2658.41,-268.5"/>
+<text text-anchor="start" x="2666.41" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2722.41" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/Vector3.hpp</text>
 </a>
 </g>
-</g>
-<!-- Node3&#45;&gt;Node95 -->
-<g id="edge84" class="edge">
-<title>Node3&#45;&gt;Node95</title>
-<path fill="none" stroke="midnightblue" d="M2625.54,-348.32C2873.25,-344.15 3667.65,-328.75 3922,-299 3924.95,-298.65 3927.96,-298.25 3931,-297.81"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2625.15,-344.83 2615.21,-348.49 2625.26,-351.83 2625.15,-344.83"/>
-</g>
-<!-- Node96 -->
-<g id="node45" class="node">
-<title>Node96</title>
-<g id="a_node45"><a xlink:href="StepConf_8hpp.html" target="_top" xlink:title="Declarations of the StepConf class, and free functions associated with it.">
-<polygon fill="white" stroke="red" points="248,-134.5 248,-164.5 376,-164.5 376,-134.5 248,-134.5"/>
-<text text-anchor="start" x="256" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="312" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/StepConf.hpp</text>
-</a>
-</g>
-</g>
-<!-- Node3&#45;&gt;Node96 -->
-<g id="edge85" class="edge">
-<title>Node3&#45;&gt;Node96</title>
-<path fill="none" stroke="midnightblue" d="M2476.91,-348.85C2135.07,-345.71 718.4,-330.84 523,-299 422.96,-282.7 365.23,-313.52 305,-232 290.49,-212.35 298.63,-182.32 305.55,-164.72"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2476.92,-352.35 2486.95,-348.95 2476.98,-345.35 2476.92,-352.35"/>
-</g>
-<!-- Node97 -->
-<g id="node46" class="node">
-<title>Node97</title>
-<g id="a_node46"><a xlink:href="StepStats_8hpp.html" target="_top" xlink:title="Definition of the StepStats related classes and code.">
-<polygon fill="white" stroke="red" points="1364,-134.5 1364,-164.5 1492,-164.5 1492,-134.5 1364,-134.5"/>
-<text text-anchor="start" x="1372" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="1428" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/StepStats.hpp</text>
-</a>
-</g>
-</g>
-<!-- Node3&#45;&gt;Node97 -->
-<g id="edge87" class="edge">
-<title>Node3&#45;&gt;Node97</title>
-<path fill="none" stroke="midnightblue" d="M2476.91,-349.18C2259.59,-347.76 1633.88,-340.11 1552,-299 1501.5,-273.65 1507.32,-244.29 1471,-201 1460.64,-188.65 1448.75,-174.7 1440.1,-164.6"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2476.93,-352.68 2486.95,-349.24 2476.97,-345.68 2476.93,-352.68"/>
-</g>
-<!-- Node98 -->
-<g id="node47" class="node">
-<title>Node98</title>
-<g id="a_node47"><a xlink:href="ToiConf_8hpp.html" target="_top" xlink:title="Definitions of ToiConf class and closely related code.">
-<polygon fill="white" stroke="black" points="4077,-268.5 4077,-298.5 4205,-298.5 4205,-268.5 4077,-268.5"/>
-<text text-anchor="start" x="4085" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="4141" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/ToiConf.hpp</text>
-</a>
-</g>
-</g>
-<!-- Node3&#45;&gt;Node98 -->
-<g id="edge90" class="edge">
-<title>Node3&#45;&gt;Node98</title>
-<path fill="none" stroke="midnightblue" d="M2625.3,-348.63C2889.63,-345.28 3783.67,-331.75 4068,-299 4070.95,-298.66 4073.96,-298.26 4077,-297.82"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2625,-345.13 2615.05,-348.76 2625.09,-352.13 2625,-345.13"/>
 </g>
 <!-- Node3&#45;&gt;Node99 -->
-<g id="edge91" class="edge">
+<g id="edge130" class="edge">
 <title>Node3&#45;&gt;Node99</title>
-<path fill="none" stroke="midnightblue" d="M2625.21,-348.17C2943.65,-342.34 4186.02,-318.57 4360,-299 4362.82,-298.68 4365.7,-298.31 4368.61,-297.9"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2625.1,-344.67 2615.17,-348.35 2625.23,-351.67 2625.1,-344.67"/>
-</g>
-<!-- Node100 -->
-<g id="node49" class="node">
-<title>Node100</title>
-<g id="a_node49"><a xlink:href="Vector2_8hpp.html" target="_top" xlink:title="Definition of the Vector2 alias template and closely related code.">
-<polygon fill="white" stroke="red" points="2674,-268.5 2674,-298.5 2802,-298.5 2802,-268.5 2674,-268.5"/>
-<text text-anchor="start" x="2682" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="2738" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/Vector2.hpp</text>
-</a>
-</g>
-</g>
-<!-- Node3&#45;&gt;Node100 -->
-<g id="edge92" class="edge">
-<title>Node3&#45;&gt;Node100</title>
-<path fill="none" stroke="midnightblue" d="M2601.08,-332.09C2631.27,-321.6 2669.22,-308.41 2697.5,-298.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2599.87,-328.81 2591.58,-335.4 2602.17,-335.42 2599.87,-328.81"/>
-</g>
-<!-- Node102 -->
-<g id="node50" class="node">
-<title>Node102</title>
-<g id="a_node50"><a xlink:href="Vector3_8hpp.html" target="_top" xlink:title="Definition of the Vector3 alias template and closely related code.">
-<polygon fill="white" stroke="black" points="2376,-268.5 2376,-298.5 2504,-298.5 2504,-268.5 2376,-268.5"/>
-<text text-anchor="start" x="2384" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="2440" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/Vector3.hpp</text>
-</a>
-</g>
-</g>
-<!-- Node3&#45;&gt;Node102 -->
-<g id="edge102" class="edge">
-<title>Node3&#45;&gt;Node102</title>
-<path fill="none" stroke="midnightblue" d="M2518.2,-330.3C2500.84,-320.12 2479.88,-307.85 2464.04,-298.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2516.52,-333.36 2526.91,-335.4 2520.05,-327.32 2516.52,-333.36"/>
+<path fill="none" stroke="midnightblue" d="M2346.61,-340.96C2422.79,-331.86 2544.67,-316.4 2649.41,-299 2652.34,-298.51 2655.34,-298 2658.36,-297.46"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2346.15,-337.49 2336.63,-342.15 2346.97,-344.44 2346.15,-337.49"/>
 </g>
 <!-- Node6 -->
 <g id="node6" class="node">
 <title>Node6</title>
 <g id="a_node6"><a xlink:href="BodyShapeFunction_8hpp.html" target="_top" xlink:title="Definition of the BodyShapeFunction type alias.">
-<polygon fill="white" stroke="red" points="1208.5,-134.5 1208.5,-164.5 1345.5,-164.5 1345.5,-134.5 1208.5,-134.5"/>
-<text text-anchor="start" x="1216.5" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="1277" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/BodyShapeFunction.hpp</text>
+<polygon fill="white" stroke="black" points="1684.91,-134.5 1684.91,-164.5 1821.91,-164.5 1821.91,-134.5 1684.91,-134.5"/>
+<text text-anchor="start" x="1692.91" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="1753.41" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/BodyShapeFunction.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node5&#45;&gt;Node6 -->
 <g id="edge5" class="edge">
 <title>Node5&#45;&gt;Node6</title>
-<path fill="none" stroke="midnightblue" d="M1026.11,-258.6C1031.29,-240.17 1041.17,-215.45 1059,-201 1070.75,-191.48 1148.9,-174.85 1208.3,-163.29"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1022.7,-257.8 1023.63,-268.35 1029.49,-259.52 1022.7,-257.8"/>
-</g>
-<!-- Node7 -->
-<g id="node7" class="node">
-<title>Node7</title>
-<g id="a_node7"><a xlink:href="AabbTreeWorld_8hpp.html" target="_top" xlink:title="Declarations of the AabbTreeWorld class.">
-<polygon fill="white" stroke="black" points="1248,-0.5 1248,-30.5 1376,-30.5 1376,-0.5 1248,-0.5"/>
-<text text-anchor="start" x="1256" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="1312" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/AabbTreeWorld.hpp</text>
-</a>
-</g>
+<path fill="none" stroke="midnightblue" d="M1810,-263.11C1797.36,-255.04 1784.29,-244.58 1775.41,-232 1760.96,-211.53 1756,-182.04 1754.3,-164.72"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1808.25,-266.14 1818.62,-268.31 1811.87,-260.15 1808.25,-266.14"/>
 </g>
 <!-- Node5&#45;&gt;Node7 -->
-<g id="edge14" class="edge">
+<g id="edge21" class="edge">
 <title>Node5&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M946.8,-280.23C775.4,-274.57 362.19,-258.34 305,-232 257.3,-210.03 207.01,-175.65 239,-134 309.33,-42.43 376.03,-85.52 490,-67 769.61,-21.56 1108.77,-16.21 1247.83,-16.11"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="946.89,-283.74 957,-280.57 947.12,-276.74 946.89,-283.74"/>
+<path fill="none" stroke="midnightblue" d="M1774.04,-280.61C1578.01,-275.27 1060.5,-258.7 1035.41,-232 967.15,-159.37 1122.62,-65.65 1188.59,-30.57"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1774.16,-284.12 1784.25,-280.89 1774.34,-277.12 1774.16,-284.12"/>
 </g>
 <!-- Node8 -->
 <g id="node8" class="node">
 <title>Node8</title>
 <g id="a_node8"><a xlink:href="WorldConcept_8hpp.html" target="_top" xlink:title="Definition of the internal WorldConcept interface class.">
-<polygon fill="white" stroke="red" points="765,-67.5 765,-97.5 919,-97.5 919,-67.5 765,-67.5"/>
-<text text-anchor="start" x="773" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="842" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/detail/WorldConcept.hpp</text>
+<polygon fill="white" stroke="red" points="2168.41,-67.5 2168.41,-97.5 2322.41,-97.5 2322.41,-67.5 2168.41,-67.5"/>
+<text text-anchor="start" x="2176.41" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2245.41" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/detail/WorldConcept.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node5&#45;&gt;Node8 -->
-<g id="edge19" class="edge">
+<g id="edge28" class="edge">
 <title>Node5&#45;&gt;Node8</title>
-<path fill="none" stroke="midnightblue" d="M946.87,-274.23C847.35,-262.76 681.91,-242.29 673,-232 624.89,-176.4 738.92,-122.27 802.65,-97.51"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="946.55,-277.71 956.88,-275.37 947.35,-270.76 946.55,-277.71"/>
+<path fill="none" stroke="midnightblue" d="M1922.79,-279.73C2047.09,-274.33 2285.97,-260.36 2311.41,-232 2365.42,-171.77 2246.79,-221.53 2206.41,-165 2190.91,-143.3 2213.19,-114.48 2229.92,-97.57"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1922.43,-276.24 1912.59,-280.17 1922.73,-283.24 1922.43,-276.24"/>
+</g>
+<!-- Node5&#45;&gt;Node10 -->
+<g id="edge35" class="edge">
+<title>Node5&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M1922.71,-280.06C2135.62,-272.86 2738.22,-251.04 2825.41,-232 2861.86,-224.04 2868.73,-214.75 2903.41,-201 2943.84,-184.97 2969.96,-200.97 2994.41,-165 3045.47,-89.89 2931.53,-84.53 2877.41,-67 2802.97,-42.89 2579.56,-26.8 2468.51,-20.07"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1922.45,-276.56 1912.57,-280.4 1922.68,-283.56 1922.45,-276.56"/>
 </g>
 <!-- Node5&#45;&gt;Node12 -->
-<g id="edge8" class="edge">
+<g id="edge10" class="edge">
 <title>Node5&#45;&gt;Node12</title>
-<path fill="none" stroke="midnightblue" d="M1095.27,-278.13C1219.41,-270.56 1476.84,-253.71 1694,-232 1710.86,-230.31 1729.07,-228.19 1745.94,-226.08"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1094.89,-274.65 1085.12,-278.75 1095.31,-281.64 1094.89,-274.65"/>
+<path fill="none" stroke="midnightblue" d="M1814.72,-263.59C1774.27,-240.97 1710.34,-205.57 1698.41,-201 1671.69,-190.77 1602.54,-175 1550.43,-163.81"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1813.03,-266.65 1823.47,-268.48 1816.45,-260.54 1813.03,-266.65"/>
+</g>
+<!-- Node5&#45;&gt;Node13 -->
+<g id="edge13" class="edge">
+<title>Node5&#45;&gt;Node13</title>
+<path fill="none" stroke="midnightblue" d="M1774.08,-280.94C1600.53,-276.86 1155.19,-263.93 784.41,-232 767.53,-230.55 749.31,-228.5 732.44,-226.4"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1774.05,-284.44 1784.13,-281.17 1774.21,-277.44 1774.05,-284.44"/>
 </g>
 <!-- Node5&#45;&gt;Node15 -->
-<g id="edge20" class="edge">
+<g id="edge29" class="edge">
 <title>Node5&#45;&gt;Node15</title>
-<path fill="none" stroke="midnightblue" d="M1095.36,-267.27C1135.36,-258.38 1185.32,-246.12 1229,-232 1263.71,-220.78 1269.77,-210.46 1305,-201 1380.76,-180.66 1906.7,-114.4 2091.76,-91.43"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1094.43,-263.89 1085.41,-269.46 1095.93,-270.73 1094.43,-263.89"/>
+<path fill="none" stroke="midnightblue" d="M1773.96,-281.62C1583.83,-278.88 1083.98,-268.33 922.41,-232 794.86,-203.32 655.42,-128.82 600.53,-97.59"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1774.09,-285.13 1784.14,-281.77 1774.19,-278.13 1774.09,-285.13"/>
 </g>
 <!-- Node5&#45;&gt;Node16 -->
-<g id="edge12" class="edge">
+<g id="edge19" class="edge">
 <title>Node5&#45;&gt;Node16</title>
-<path fill="none" stroke="midnightblue" d="M1095.11,-274.28C1184.32,-264.37 1338.63,-247.14 1471,-232 1589.25,-218.47 1618.5,-212.16 1737,-201 1752.81,-199.51 2205.39,-167.22 2375.87,-155.07"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1094.65,-270.81 1085.1,-275.39 1095.42,-277.77 1094.65,-270.81"/>
+<path fill="none" stroke="midnightblue" d="M1774.09,-279.89C1580.15,-272.99 1042.72,-253.34 595.41,-232 527.46,-228.76 449.68,-224.39 396.44,-221.3"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1774.05,-283.39 1784.17,-280.25 1774.3,-276.39 1774.05,-283.39"/>
 </g>
 <!-- Node18 -->
-<g id="node13" class="node">
+<g id="node15" class="node">
 <title>Node18</title>
-<g id="a_node13"><a xlink:href="AabbTreeWorldBody_8hpp.html" target="_top" xlink:title="Declarations of free functions of AabbTreeWorld for bodies.">
-<polygon fill="white" stroke="black" points="1068,-201.5 1068,-231.5 1220,-231.5 1220,-201.5 1068,-201.5"/>
-<text text-anchor="start" x="1076" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="1144" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/AabbTreeWorldBody.hpp</text>
+<g id="a_node15"><a xlink:href="AabbTreeWorldBody_8hpp.html" target="_top" xlink:title="Declarations of free functions of AabbTreeWorld for bodies.">
+<polygon fill="white" stroke="black" points="1390.41,-201.5 1390.41,-231.5 1542.41,-231.5 1542.41,-201.5 1390.41,-201.5"/>
+<text text-anchor="start" x="1398.41" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="1466.41" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/AabbTreeWorldBody.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node5&#45;&gt;Node18 -->
-<g id="edge15" class="edge">
+<g id="edge22" class="edge">
 <title>Node5&#45;&gt;Node18</title>
-<path fill="none" stroke="midnightblue" d="M1056.55,-263.71C1075.95,-253.46 1099.56,-240.98 1117.36,-231.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1054.9,-260.63 1047.69,-268.4 1058.17,-266.82 1054.9,-260.63"/>
+<path fill="none" stroke="midnightblue" d="M1774.24,-269.9C1714.16,-259.69 1627.32,-244.93 1551.41,-232 1548.61,-231.52 1545.75,-231.04 1542.86,-230.54"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1773.94,-273.4 1784.39,-271.62 1775.12,-266.5 1773.94,-273.4"/>
 </g>
 <!-- Node19 -->
-<g id="node14" class="node">
+<g id="node16" class="node">
 <title>Node19</title>
-<g id="a_node14"><a xlink:href="JointConcept_8hpp.html" target="_top" xlink:title="Definition of the internal JointConcept interface class.">
-<polygon fill="white" stroke="red" points="1314,-201.5 1314,-231.5 1462,-231.5 1462,-201.5 1314,-201.5"/>
-<text text-anchor="start" x="1322" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="1388" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/detail/JointConcept.hpp</text>
+<g id="a_node16"><a xlink:href="JointConcept_8hpp.html" target="_top" xlink:title="Definition of the internal JointConcept interface class.">
+<polygon fill="white" stroke="red" points="2912.41,-201.5 2912.41,-231.5 3060.41,-231.5 3060.41,-201.5 2912.41,-201.5"/>
+<text text-anchor="start" x="2920.41" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2986.41" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/detail/JointConcept.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node5&#45;&gt;Node19 -->
-<g id="edge16" class="edge">
+<g id="edge23" class="edge">
 <title>Node5&#45;&gt;Node19</title>
-<path fill="none" stroke="midnightblue" d="M1095.32,-269.34C1159.02,-258.05 1250.3,-241.89 1313.93,-230.62"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1094.58,-265.91 1085.35,-271.1 1095.8,-272.81 1094.58,-265.91"/>
+<path fill="none" stroke="midnightblue" d="M1922.63,-280.44C2090.1,-275.44 2510.09,-260.87 2860.41,-232 2877.2,-230.62 2895.2,-228.77 2912.2,-226.85"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1922.33,-276.95 1912.44,-280.74 1922.54,-283.95 1922.33,-276.95"/>
 </g>
 <!-- Node21 -->
-<g id="node15" class="node">
+<g id="node17" class="node">
 <title>Node21</title>
-<g id="a_node15"><a xlink:href="Joint_8hpp.html" target="_top" xlink:title="Definition of the Joint class and closely related code.">
-<polygon fill="white" stroke="red" points="1062,-134.5 1062,-164.5 1190,-164.5 1190,-134.5 1062,-134.5"/>
-<text text-anchor="start" x="1070" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="1126" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/Joint.hpp</text>
+<g id="a_node17"><a xlink:href="Joint_8hpp.html" target="_top" xlink:title="Definition of the Joint class and closely related code.">
+<polygon fill="white" stroke="black" points="2857.41,-134.5 2857.41,-164.5 2985.41,-164.5 2985.41,-134.5 2857.41,-134.5"/>
+<text text-anchor="start" x="2865.41" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2921.41" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/Joint.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node5&#45;&gt;Node21 -->
-<g id="edge21" class="edge">
+<g id="edge30" class="edge">
 <title>Node5&#45;&gt;Node21</title>
-<path fill="none" stroke="midnightblue" d="M1016.49,-258.27C1014.61,-240.92 1014.96,-217.77 1026,-201 1037.28,-183.86 1056.25,-172.27 1074.65,-164.57"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1013.03,-258.79 1017.88,-268.21 1019.96,-257.82 1013.03,-258.79"/>
+<path fill="none" stroke="midnightblue" d="M1923.01,-279.64C2138.45,-271.25 2748.8,-246.32 2789.41,-232 2811.63,-224.16 2812.58,-213.72 2832.41,-201 2852.9,-187.86 2876.94,-174.32 2894.87,-164.57"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1922.61,-276.16 1912.75,-280.04 1922.88,-283.15 1922.61,-276.16"/>
+</g>
+<!-- Node22 -->
+<g id="node18" class="node">
+<title>Node22</title>
+<g id="a_node18"><a xlink:href="WorldJoint_8hpp.html" target="_top" xlink:title="Declarations of free functions of World for joints identified by JointID.">
+<polygon fill="white" stroke="red" points="2022.41,-67.5 2022.41,-97.5 2150.41,-97.5 2150.41,-67.5 2022.41,-67.5"/>
+<text text-anchor="start" x="2030.41" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2086.41" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/WorldJoint.hpp</text>
+</a>
+</g>
+</g>
+<!-- Node5&#45;&gt;Node22 -->
+<g id="edge38" class="edge">
+<title>Node5&#45;&gt;Node22</title>
+<path fill="none" stroke="midnightblue" d="M1922.99,-279.24C2041.92,-273.27 2263.63,-258.67 2287.41,-232 2349.52,-162.34 2247.78,-208.51 2173.41,-165 2142.33,-146.82 2113.3,-115.7 2097.9,-97.63"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1922.68,-275.75 1912.86,-279.74 1923.02,-282.74 1922.68,-275.75"/>
 </g>
 <!-- Node23 -->
-<g id="node16" class="node">
+<g id="node19" class="node">
 <title>Node23</title>
-<g id="a_node16"><a xlink:href="JointConf_8hpp.html" target="_top" xlink:title="Definition of the JointConf class and closely related code.">
-<polygon fill="white" stroke="red" points="682,-201.5 682,-231.5 810,-231.5 810,-201.5 682,-201.5"/>
-<text text-anchor="start" x="690" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="746" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/JointConf.hpp</text>
+<g id="a_node19"><a xlink:href="JointConf_8hpp.html" target="_top" xlink:title="Definition of the JointConf class and closely related code.">
+<polygon fill="white" stroke="red" points="1784.41,-201.5 1784.41,-231.5 1912.41,-231.5 1912.41,-201.5 1784.41,-201.5"/>
+<text text-anchor="start" x="1792.41" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="1848.41" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/JointConf.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node5&#45;&gt;Node23 -->
-<g id="edge22" class="edge">
+<g id="edge31" class="edge">
 <title>Node5&#45;&gt;Node23</title>
-<path fill="none" stroke="midnightblue" d="M951.69,-266.12C906.7,-255.48 848.65,-241.76 805.7,-231.61"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="951.13,-269.58 961.67,-268.48 952.74,-262.77 951.13,-269.58"/>
+<path fill="none" stroke="midnightblue" d="M1848.41,-258.11C1848.41,-249.15 1848.41,-239.32 1848.41,-231.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1844.91,-258.4 1848.41,-268.4 1851.91,-258.4 1844.91,-258.4"/>
 </g>
 <!-- Node35 -->
-<g id="node17" class="node">
+<g id="node20" class="node">
 <title>Node35</title>
-<g id="a_node17"><a xlink:href="MassData_8hpp.html" target="_top" xlink:title="Declaration of the MassData structure and associated free functions.">
-<polygon fill="white" stroke="red" points="314,-201.5 314,-231.5 442,-231.5 442,-201.5 314,-201.5"/>
-<text text-anchor="start" x="322" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="378" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/MassData.hpp</text>
+<g id="a_node20"><a xlink:href="PositionConstraint_8hpp.html" target="_top" xlink:title="Definition of the PositionConstraint class and closely related code.">
+<polygon fill="white" stroke="black" points="1930.91,-201.5 1930.91,-231.5 2075.91,-231.5 2075.91,-201.5 1930.91,-201.5"/>
+<text text-anchor="start" x="1938.91" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2003.41" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/PositionConstraint.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node5&#45;&gt;Node35 -->
-<g id="edge23" class="edge">
+<g id="edge32" class="edge">
 <title>Node5&#45;&gt;Node35</title>
-<path fill="none" stroke="midnightblue" d="M946.66,-276.28C843.73,-267.47 652.05,-250.38 489,-232 473.84,-230.29 457.54,-228.27 442.22,-226.28"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="946.38,-279.76 956.64,-277.13 946.97,-272.79 946.38,-279.76"/>
+<path fill="none" stroke="midnightblue" d="M1891.56,-264.41C1916.3,-254.03 1946.91,-241.2 1969.84,-231.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1889.91,-261.3 1882.04,-268.4 1892.62,-267.76 1889.91,-261.3"/>
 </g>
-<!-- Node48 -->
-<g id="node19" class="node">
-<title>Node48</title>
-<g id="a_node19"><a xlink:href="PositionConstraint_8hpp.html" target="_top" xlink:title="Definition of the PositionConstraint class and closely related code.">
-<polygon fill="white" stroke="black" points="828.5,-201.5 828.5,-231.5 973.5,-231.5 973.5,-201.5 828.5,-201.5"/>
-<text text-anchor="start" x="836.5" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="901" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/PositionConstraint.hpp</text>
+<!-- Node36 -->
+<g id="node21" class="node">
+<title>Node36</title>
+<g id="a_node21"><a xlink:href="RayCastOutput_8hpp.html" target="_top" xlink:title="Declaration of the RayCastOutput structure and related free functions.">
+<polygon fill="white" stroke="black" points="1560.91,-201.5 1560.91,-231.5 1689.91,-231.5 1689.91,-201.5 1560.91,-201.5"/>
+<text text-anchor="start" x="1568.91" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="1625.41" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/RayCastOutput.hpp</text>
 </a>
 </g>
 </g>
-<!-- Node5&#45;&gt;Node48 -->
-<g id="edge27" class="edge">
-<title>Node5&#45;&gt;Node48</title>
-<path fill="none" stroke="midnightblue" d="M986.06,-263.57C967.18,-253.35 944.27,-240.94 926.99,-231.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="984.5,-266.71 994.96,-268.4 987.84,-260.56 984.5,-266.71"/>
+<!-- Node5&#45;&gt;Node36 -->
+<g id="edge33" class="edge">
+<title>Node5&#45;&gt;Node36</title>
+<path fill="none" stroke="midnightblue" d="M1790.36,-265.58C1754.14,-255.02 1708.06,-241.59 1673.82,-231.61"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1789.72,-269.04 1800.3,-268.48 1791.68,-262.32 1789.72,-269.04"/>
 </g>
-<!-- Node49 -->
-<g id="node20" class="node">
-<title>Node49</title>
-<g id="a_node20"><a xlink:href="RayCastOutput_8hpp.html" target="_top" xlink:title="Declaration of the RayCastOutput structure and related free functions.">
-<polygon fill="white" stroke="black" points="2076.5,-201.5 2076.5,-231.5 2205.5,-231.5 2205.5,-201.5 2076.5,-201.5"/>
-<text text-anchor="start" x="2084.5" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="2141" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/RayCastOutput.hpp</text>
+<!-- Node5&#45;&gt;Node37 -->
+<g id="edge34" class="edge">
+<title>Node5&#45;&gt;Node37</title>
+<path fill="none" stroke="midnightblue" d="M1922.76,-279.92C2151.77,-271.88 2844.5,-246.96 3069.41,-232 3097.31,-230.14 3127.92,-227.48 3154.71,-224.94"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1922.4,-276.43 1912.53,-280.27 1922.65,-283.42 1922.4,-276.43"/>
+</g>
+<!-- Node38 -->
+<g id="node23" class="node">
+<title>Node38</title>
+<g id="a_node23"><a xlink:href="WorldBody_8hpp.html" target="_top" xlink:title="Declarations of free functions of World for bodies identified by BodyID.">
+<polygon fill="white" stroke="red" points="1060.41,-134.5 1060.41,-164.5 1188.41,-164.5 1188.41,-134.5 1060.41,-134.5"/>
+<text text-anchor="start" x="1068.41" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="1124.41" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/WorldBody.hpp</text>
 </a>
 </g>
 </g>
-<!-- Node5&#45;&gt;Node49 -->
-<g id="edge28" class="edge">
-<title>Node5&#45;&gt;Node49</title>
-<path fill="none" stroke="midnightblue" d="M1095.44,-282.61C1267.28,-282.05 1704.64,-276.01 2067,-232 2069.99,-231.64 2073.04,-231.22 2076.11,-230.77"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1095.24,-279.11 1085.25,-282.64 1095.26,-286.11 1095.24,-279.11"/>
+<!-- Node5&#45;&gt;Node38 -->
+<g id="edge36" class="edge">
+<title>Node5&#45;&gt;Node38</title>
+<path fill="none" stroke="midnightblue" d="M1774.26,-280.56C1580.13,-275.11 1070.16,-258.35 1045.41,-232 1022.88,-208.01 1063.36,-180.64 1094.24,-164.5"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1774.28,-284.06 1784.37,-280.84 1774.48,-277.06 1774.28,-284.06"/>
 </g>
-<!-- Node5&#45;&gt;Node50 -->
-<g id="edge29" class="edge">
-<title>Node5&#45;&gt;Node50</title>
-<path fill="none" stroke="midnightblue" d="M946.74,-273.82C869.83,-264.55 746.26,-248.91 640,-232 635.51,-231.29 630.88,-230.51 626.23,-229.71"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="946.46,-277.31 956.81,-275.03 947.3,-270.36 946.46,-277.31"/>
+<!-- Node5&#45;&gt;Node39 -->
+<g id="edge37" class="edge">
+<title>Node5&#45;&gt;Node39</title>
+<path fill="none" stroke="midnightblue" d="M1922.73,-278.54C2072.96,-270.16 2399.96,-249.97 2416.41,-232 2444.81,-200.97 2391.18,-178.05 2342.93,-164.56"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1922.45,-275.05 1912.66,-279.09 1922.84,-282.04 1922.45,-275.05"/>
 </g>
-<!-- Node5&#45;&gt;Node52 -->
-<g id="edge30" class="edge">
-<title>Node5&#45;&gt;Node52</title>
-<path fill="none" stroke="midnightblue" d="M946.82,-280.7C806.94,-276.65 494.78,-264.49 234,-232 229.49,-231.44 224.85,-230.78 220.18,-230.06"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="946.9,-284.2 957,-280.99 947.1,-277.21 946.9,-284.2"/>
+<!-- Node40 -->
+<g id="node25" class="node">
+<title>Node40</title>
+<g id="a_node25"><a xlink:href="WorldMisc_8hpp.html" target="_top" xlink:title="Declarations of free functions of World for unidentified information.">
+<polygon fill="white" stroke="red" points="1993.41,-134.5 1993.41,-164.5 2121.41,-164.5 2121.41,-134.5 1993.41,-134.5"/>
+<text text-anchor="start" x="2001.41" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2057.41" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/WorldMisc.hpp</text>
+</a>
+</g>
+</g>
+<!-- Node5&#45;&gt;Node40 -->
+<g id="edge39" class="edge">
+<title>Node5&#45;&gt;Node40</title>
+<path fill="none" stroke="midnightblue" d="M1922.53,-278.87C2037.2,-272.49 2246.82,-257.46 2269.41,-232 2278.55,-221.69 2277.95,-211.81 2269.41,-201 2264.7,-195.03 2182.31,-176.65 2121.66,-163.79"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1922.21,-275.38 1912.42,-279.42 1922.59,-282.37 1922.21,-275.38"/>
+</g>
+<!-- Node5&#45;&gt;Node41 -->
+<g id="edge40" class="edge">
+<title>Node5&#45;&gt;Node41</title>
+<path fill="none" stroke="midnightblue" d="M1773.98,-281.13C1561.42,-276.87 965.04,-262.26 936.41,-232 919.47,-214.09 927.4,-182.88 934.23,-164.72"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1774.04,-284.64 1784.11,-281.34 1774.18,-277.64 1774.04,-284.64"/>
 </g>
 <!-- Node6&#45;&gt;Node7 -->
 <g id="edge6" class="edge">
 <title>Node6&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M1283.04,-124.57C1287.18,-108.32 1292.83,-86.34 1298,-67 1301.29,-54.7 1305.17,-40.75 1308.01,-30.63"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1279.63,-123.79 1280.56,-134.35 1286.42,-125.51 1279.63,-123.79"/>
+<path fill="none" stroke="midnightblue" d="M1723.64,-128.75C1693.42,-109.71 1644.62,-81.69 1598.41,-67 1490.19,-32.6 1357.53,-21.62 1280.42,-18.12"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1722.09,-131.91 1732.4,-134.35 1725.86,-126.01 1722.09,-131.91"/>
 </g>
 <!-- Node6&#45;&gt;Node8 -->
 <g id="edge7" class="edge">
 <title>Node6&#45;&gt;Node8</title>
-<path fill="none" stroke="midnightblue" d="M1198.23,-133.92C1095.87,-117.31 989.24,-102.68 919.1,-93.43"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1197.69,-137.37 1208.12,-135.53 1198.82,-130.47 1197.69,-137.37"/>
+<path fill="none" stroke="midnightblue" d="M1832.24,-138.88C1941.16,-125.56 2127.89,-102.62 2159.41,-98 2162.26,-97.58 2165.15,-97.15 2168.08,-96.7"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1831.78,-135.41 1822.27,-140.1 1832.63,-142.36 1831.78,-135.41"/>
 </g>
-<!-- Node12&#45;&gt;Node14 -->
+<!-- Node6&#45;&gt;Node10 -->
 <g id="edge9" class="edge">
-<title>Node12&#45;&gt;Node14</title>
-<path fill="none" stroke="midnightblue" d="M1884.3,-201.54C1943.48,-190.42 2025.83,-174.95 2084.31,-163.97"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1883.45,-198.14 1874.27,-203.43 1884.74,-205.02 1883.45,-198.14"/>
+<title>Node6&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M1769.14,-126.01C1784.03,-106.7 1808.27,-79.99 1836.41,-67 1924.5,-26.34 2210.65,-18.34 2339.95,-16.82"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1766.14,-124.18 1762.97,-134.29 1771.75,-128.36 1766.14,-124.18"/>
+</g>
+<!-- Node8&#45;&gt;Node10 -->
+<g id="edge8" class="edge">
+<title>Node8&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M2289.33,-63.54C2314.78,-53.14 2346.34,-40.24 2369.98,-30.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2287.84,-60.37 2279.91,-67.4 2290.49,-66.85 2287.84,-60.37"/>
+</g>
+<!-- Node12&#45;&gt;Node8 -->
+<g id="edge11" class="edge">
+<title>Node12&#45;&gt;Node8</title>
+<path fill="none" stroke="midnightblue" d="M1560.79,-142.75C1595.6,-140.07 1637.63,-136.85 1675.41,-134 1890.5,-117.75 1945.27,-123.96 2159.41,-98 2162.27,-97.65 2165.17,-97.28 2168.1,-96.88"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1560.4,-139.27 1550.7,-143.53 1560.94,-146.25 1560.4,-139.27"/>
+</g>
+<!-- Node12&#45;&gt;Node10 -->
+<g id="edge12" class="edge">
+<title>Node12&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M1560.73,-134.81C1605.17,-125.91 1662.52,-113.15 1712.41,-98 1748.9,-86.92 1755.25,-75.54 1792.41,-67 1988.26,-21.97 2227.5,-15.87 2340.05,-15.79"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1560.01,-131.39 1550.88,-136.77 1561.37,-138.25 1560.01,-131.39"/>
+</g>
+<!-- Node13&#45;&gt;Node7 -->
+<g id="edge15" class="edge">
+<title>Node13&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M669.32,-190.87C672.02,-157.07 682.25,-97.09 720.41,-67 753.63,-40.81 1025.38,-25.17 1151.96,-19.24"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="665.8,-191.04 668.67,-201.24 672.79,-191.48 665.8,-191.04"/>
+</g>
+<!-- Node13&#45;&gt;Node12 -->
+<g id="edge14" class="edge">
+<title>Node13&#45;&gt;Node12</title>
+<path fill="none" stroke="midnightblue" d="M742.76,-209.59C901.81,-196.95 1272.72,-167.48 1422.24,-155.6"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="742.29,-206.12 732.6,-210.4 742.84,-213.1 742.29,-206.12"/>
+</g>
+<!-- Node13&#45;&gt;Node14 -->
+<g id="edge16" class="edge">
+<title>Node13&#45;&gt;Node14</title>
+<path fill="none" stroke="midnightblue" d="M593.8,-202.81C525.63,-191.2 425.48,-174.16 358.2,-162.72"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="593.59,-206.32 604.04,-204.55 594.77,-199.42 593.59,-206.32"/>
 </g>
 <!-- Node14&#45;&gt;Node15 -->
-<g id="edge10" class="edge">
+<g id="edge17" class="edge">
 <title>Node14&#45;&gt;Node15</title>
-<path fill="none" stroke="midnightblue" d="M2156,-124.11C2156,-115.15 2156,-105.32 2156,-97.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2152.5,-124.4 2156,-134.4 2159.5,-124.4 2152.5,-124.4"/>
+<path fill="none" stroke="midnightblue" d="M358.9,-132.25C406.43,-121.6 467.97,-107.81 513.45,-97.61"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="357.97,-128.87 348.98,-134.48 359.5,-135.7 357.97,-128.87"/>
 </g>
 <!-- Node15&#45;&gt;Node7 -->
-<g id="edge11" class="edge">
+<g id="edge18" class="edge">
 <title>Node15&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M2081.53,-74.74C2053.2,-72.23 2020.61,-69.4 1991,-67 1765.08,-48.67 1496.65,-29.47 1376.15,-20.98"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2081.49,-78.25 2091.76,-75.65 2082.11,-71.28 2081.49,-78.25"/>
+<path fill="none" stroke="midnightblue" d="M650.66,-70.94C661.31,-69.55 672.13,-68.19 682.41,-67 851.69,-47.43 1051.83,-30.03 1152.2,-21.7"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="649.99,-67.5 640.54,-72.29 650.91,-74.44 649.99,-67.5"/>
 </g>
 <!-- Node16&#45;&gt;Node15 -->
-<g id="edge13" class="edge">
+<g id="edge20" class="edge">
 <title>Node16&#45;&gt;Node15</title>
-<path fill="none" stroke="midnightblue" d="M2368.72,-132.19C2322.21,-121.54 2262.1,-107.78 2217.65,-97.61"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2368.2,-135.66 2378.73,-134.48 2369.76,-128.83 2368.2,-135.66"/>
+<path fill="none" stroke="midnightblue" d="M348.72,-192.9C363.05,-174.57 385.46,-149.34 410.41,-134 441.33,-114.99 479.92,-102.68 512.11,-94.99"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="345.62,-191.19 342.36,-201.27 351.19,-195.42 345.62,-191.19"/>
 </g>
 <!-- Node19&#45;&gt;Node21 -->
-<g id="edge17" class="edge">
+<g id="edge24" class="edge">
 <title>Node19&#45;&gt;Node21</title>
-<path fill="none" stroke="midnightblue" d="M1321.7,-199.05C1278.87,-188.43 1223.71,-174.74 1182.88,-164.61"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1320.92,-202.47 1331.47,-201.48 1322.61,-195.67 1320.92,-202.47"/>
+<path fill="none" stroke="midnightblue" d="M2965.22,-194.31C2955.47,-184.56 2944.17,-173.26 2935.49,-164.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2962.76,-196.8 2972.31,-201.4 2967.71,-191.85 2962.76,-196.8"/>
 </g>
 <!-- Node21&#45;&gt;Node8 -->
-<g id="edge18" class="edge">
-<title>Node21&#45;&gt;Node8</title>
-<path fill="none" stroke="midnightblue" d="M1054.72,-132.19C1008.21,-121.54 948.1,-107.78 903.65,-97.61"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1054.2,-135.66 1064.73,-134.48 1055.76,-128.83 1054.2,-135.66"/>
-</g>
-<!-- Node35&#45;&gt;Node7 -->
-<g id="edge24" class="edge">
-<title>Node35&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M383.59,-191.42C389.17,-172.88 399.63,-148.11 418,-134 548.19,-33.98 1065.19,-18.98 1247.75,-16.83"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="380.17,-190.66 380.91,-201.23 386.92,-192.51 380.17,-190.66"/>
-</g>
-<!-- Node35&#45;&gt;Node8 -->
-<g id="edge26" class="edge">
-<title>Node35&#45;&gt;Node8</title>
-<path fill="none" stroke="midnightblue" d="M393.87,-193.3C408.85,-174.19 433.14,-147.6 461,-134 512.94,-108.65 669.08,-94.48 764.59,-87.97"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="390.91,-191.4 387.66,-201.49 396.49,-195.64 390.91,-191.4"/>
-</g>
-<!-- Node35&#45;&gt;Node40 -->
 <g id="edge25" class="edge">
-<title>Node35&#45;&gt;Node40</title>
-<path fill="none" stroke="midnightblue" d="M424.24,-197.82C451.57,-187.37 485.69,-174.32 511.18,-164.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="422.98,-194.56 414.89,-201.4 425.48,-201.09 422.98,-194.56"/>
+<title>Node21&#45;&gt;Node8</title>
+<path fill="none" stroke="midnightblue" d="M2847.19,-141.26C2823.31,-138.93 2796.74,-136.35 2772.41,-134 2612.54,-118.56 2425.36,-100.67 2322.66,-90.87"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2846.95,-144.75 2857.24,-142.23 2847.63,-137.78 2846.95,-144.75"/>
 </g>
-<!-- Node52&#45;&gt;Node7 -->
-<g id="edge31" class="edge">
-<title>Node52&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M149.4,-191.31C141.98,-158.11 134.9,-98.91 168,-67 207.07,-29.33 1011.92,-19.18 1247.66,-17.01"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="146.02,-192.21 151.77,-201.11 152.82,-190.57 146.02,-192.21"/>
+<!-- Node21&#45;&gt;Node10 -->
+<g id="edge26" class="edge">
+<title>Node21&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M2906.86,-126.19C2893.01,-107.01 2870.33,-80.37 2843.41,-67 2779.08,-35.05 2573.99,-22.82 2468.47,-18.56"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2903.99,-128.21 2912.58,-134.41 2909.74,-124.21 2903.99,-128.21"/>
 </g>
-<!-- Node54&#45;&gt;Node50 -->
-<g id="edge35" class="edge">
-<title>Node54&#45;&gt;Node50</title>
-<path fill="none" stroke="midnightblue" d="M322.38,-267.1C375.74,-256.06 446.9,-241.33 497.79,-230.79"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="321.38,-263.73 312.3,-269.19 322.8,-270.59 321.38,-263.73"/>
+<!-- Node21&#45;&gt;Node22 -->
+<g id="edge27" class="edge">
+<title>Node21&#45;&gt;Node22</title>
+<path fill="none" stroke="midnightblue" d="M2847.23,-140.72C2823.36,-138.36 2796.78,-135.9 2772.41,-134 2500.32,-112.78 2430.11,-132.67 2159.41,-98 2156.46,-97.62 2153.45,-97.2 2150.42,-96.73"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2846.99,-144.21 2857.28,-141.72 2847.68,-137.24 2846.99,-144.21"/>
 </g>
-<!-- Node54&#45;&gt;Node52 -->
-<g id="edge36" class="edge">
-<title>Node54&#45;&gt;Node52</title>
-<path fill="none" stroke="midnightblue" d="M219.62,-262.45C205.47,-252.45 188.69,-240.6 175.92,-231.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="217.85,-265.48 228.04,-268.4 221.89,-259.77 217.85,-265.48"/>
+<!-- Node41&#45;&gt;Node7 -->
+<g id="edge41" class="edge">
+<title>Node41&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M956.1,-126.17C970.3,-107.61 992.86,-81.92 1018.41,-67 1059.46,-43.03 1111.79,-30.32 1152.33,-23.64"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="953.16,-124.26 950.01,-134.38 958.78,-128.44 953.16,-124.26"/>
 </g>
-<!-- Node59&#45;&gt;Node7 -->
-<g id="edge38" class="edge">
-<title>Node59&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M1375.62,-61.45C1361.47,-51.45 1344.69,-39.6 1331.92,-30.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1373.85,-64.48 1384.04,-67.4 1377.89,-58.77 1373.85,-64.48"/>
+<!-- Node43&#45;&gt;Node7 -->
+<g id="edge50" class="edge">
+<title>Node43&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M2503.14,-198.4C2478.5,-190.42 2451.12,-179.43 2428.41,-165 2376.69,-132.13 2387.42,-91.87 2331.41,-67 2235.5,-24.41 1503.52,-17.74 1280.62,-16.69"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2502.2,-201.77 2512.79,-201.42 2504.29,-195.09 2502.2,-201.77"/>
 </g>
-<!-- Node78&#45;&gt;Node79 -->
-<g id="edge49" class="edge">
-<title>Node78&#45;&gt;Node79</title>
-<path fill="none" stroke="midnightblue" d="M3286,-191.11C3286,-182.15 3286,-172.32 3286,-164.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="3282.5,-191.4 3286,-201.4 3289.5,-191.4 3282.5,-191.4"/>
-</g>
-<!-- Node82&#45;&gt;Node21 -->
+<!-- Node43&#45;&gt;Node10 -->
 <g id="edge55" class="edge">
-<title>Node82&#45;&gt;Node21</title>
-<path fill="none" stroke="midnightblue" d="M2200.87,-260.67C2215.55,-242.69 2229.97,-217.55 2214,-201 2174.82,-160.4 1255.05,-171.52 1199,-165 1196.05,-164.66 1193.04,-164.26 1190,-163.82"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2198.1,-258.52 2194.21,-268.37 2203.4,-263.09 2198.1,-258.52"/>
+<title>Node43&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M2644.28,-199.26C2700.26,-186.61 2768.26,-170.32 2772.41,-165 2780.89,-154.14 2779.83,-145.61 2772.41,-134 2739.3,-82.23 2565.03,-44.37 2468.65,-27.03"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2643.33,-195.89 2634.35,-201.5 2644.87,-202.72 2643.33,-195.89"/>
 </g>
-<!-- Node82&#45;&gt;Node49 -->
+<!-- Node43&#45;&gt;Node39 -->
 <g id="edge56" class="edge">
-<title>Node82&#45;&gt;Node49</title>
-<path fill="none" stroke="midnightblue" d="M2166.25,-259.58C2160.64,-250.24 2154.35,-239.75 2149.45,-231.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2163.39,-261.62 2171.54,-268.4 2169.39,-258.02 2163.39,-261.62"/>
+<title>Node43&#45;&gt;Node39</title>
+<path fill="none" stroke="midnightblue" d="M2497.65,-199.25C2449.87,-188.58 2387.99,-174.75 2342.33,-164.55"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2497.1,-202.71 2507.63,-201.48 2498.63,-195.88 2497.1,-202.71"/>
 </g>
-<!-- Node82&#45;&gt;Node81 -->
+<!-- Node43&#45;&gt;Node40 -->
 <g id="edge57" class="edge">
-<title>Node82&#45;&gt;Node81</title>
-<path fill="none" stroke="midnightblue" d="M2254.26,-276.13C2376.18,-265.53 2613.57,-244.22 2697,-232 2700.11,-231.54 2703.29,-231.05 2706.49,-230.52"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2253.92,-272.65 2244.26,-277 2254.52,-279.62 2253.92,-272.65"/>
+<title>Node43&#45;&gt;Node40</title>
+<path fill="none" stroke="midnightblue" d="M2496.11,-206.09C2395.33,-193.32 2216.97,-170.72 2121.67,-158.64"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2495.86,-209.58 2506.22,-207.37 2496.74,-202.64 2495.86,-209.58"/>
 </g>
-<!-- Node84&#45;&gt;Node7 -->
+<!-- Node43&#45;&gt;Node41 -->
+<g id="edge58" class="edge">
+<title>Node43&#45;&gt;Node41</title>
+<path fill="none" stroke="midnightblue" d="M2495.84,-211.52C2434.94,-208.37 2346.63,-204 2269.41,-201 1728.25,-179.97 1591.26,-208.13 1051.41,-165 1036.2,-163.79 1019.88,-161.95 1004.57,-159.99"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2495.96,-215.03 2506.13,-212.06 2496.33,-208.04 2495.96,-215.03"/>
+</g>
+<!-- Node44 -->
+<g id="node29" class="node">
+<title>Node44</title>
+<g id="a_node29"><a xlink:href="ContactFunction_8hpp.html" target="_top" xlink:title="Definition of the ContactFunction type alias.">
+<polygon fill="white" stroke="black" points="2635.41,-134.5 2635.41,-164.5 2763.41,-164.5 2763.41,-134.5 2635.41,-134.5"/>
+<text text-anchor="start" x="2643.41" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2699.41" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/ContactFunction.hpp</text>
+</a>
+</g>
+</g>
+<!-- Node43&#45;&gt;Node44 -->
+<g id="edge46" class="edge">
+<title>Node43&#45;&gt;Node44</title>
+<path fill="none" stroke="midnightblue" d="M2607.42,-196.85C2627.81,-186.58 2652.72,-174.03 2671.47,-164.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2605.76,-193.77 2598.4,-201.4 2608.91,-200.02 2605.76,-193.77"/>
+</g>
+<!-- Node45 -->
+<g id="node30" class="node">
+<title>Node45</title>
+<g id="a_node30"><a xlink:href="ContactImpulsesFunction_8hpp.html" target="_top" xlink:title="Definition of the ContactImpulsesFunction type alias.">
+<polygon fill="white" stroke="black" points="2437.91,-134.5 2437.91,-164.5 2616.91,-164.5 2616.91,-134.5 2437.91,-134.5"/>
+<text text-anchor="start" x="2445.91" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="2527.41" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/ContactImpulsesFunction.hpp</text>
+</a>
+</g>
+</g>
+<!-- Node43&#45;&gt;Node45 -->
+<g id="edge51" class="edge">
+<title>Node43&#45;&gt;Node45</title>
+<path fill="none" stroke="midnightblue" d="M2555.44,-192.87C2549.21,-183.46 2542.18,-172.83 2536.72,-164.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2552.64,-194.99 2561.08,-201.4 2558.48,-191.12 2552.64,-194.99"/>
+</g>
+<!-- Node44&#45;&gt;Node7 -->
+<g id="edge47" class="edge">
+<title>Node44&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M2658.24,-130.38C2611.37,-110.73 2532.02,-80.37 2460.41,-67 2230.67,-24.1 1501.39,-17.64 1280.46,-16.67"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2657.16,-133.72 2667.73,-134.4 2659.89,-127.28 2657.16,-133.72"/>
+</g>
+<!-- Node44&#45;&gt;Node8 -->
+<g id="edge48" class="edge">
+<title>Node44&#45;&gt;Node8</title>
+<path fill="none" stroke="midnightblue" d="M2625.71,-134.05C2625.61,-134.03 2625.51,-134.02 2625.41,-134 2520.99,-116.85 2399.69,-101.52 2322.76,-92.37"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2624.83,-137.45 2635.28,-135.68 2626.01,-130.55 2624.83,-137.45"/>
+</g>
+<!-- Node44&#45;&gt;Node10 -->
+<g id="edge49" class="edge">
+<title>Node44&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M2676.49,-127.73C2655.11,-109.37 2621.61,-83.06 2588.41,-67 2550.54,-48.68 2504.96,-36.11 2468.64,-28.09"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2674.23,-130.41 2684.07,-134.35 2678.83,-125.13 2674.23,-130.41"/>
+</g>
+<!-- Node45&#45;&gt;Node7 -->
+<g id="edge52" class="edge">
+<title>Node45&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M2504.12,-127.46C2479.3,-105.56 2441.18,-73.55 2423.41,-67 2316.1,-27.43 1515.39,-18.63 1280.81,-16.89"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2501.87,-130.14 2511.67,-134.17 2506.52,-124.91 2501.87,-130.14"/>
+</g>
+<!-- Node45&#45;&gt;Node8 -->
+<g id="edge53" class="edge">
+<title>Node45&#45;&gt;Node8</title>
+<path fill="none" stroke="midnightblue" d="M2456.63,-132.19C2410.45,-121.54 2350.77,-107.78 2306.63,-97.61"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2456.04,-135.64 2466.57,-134.48 2457.61,-128.82 2456.04,-135.64"/>
+</g>
+<!-- Node45&#45;&gt;Node10 -->
+<g id="edge54" class="edge">
+<title>Node45&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M2514.85,-125.65C2504.73,-108.43 2489.43,-84.8 2472.41,-67 2459,-52.97 2441.34,-39.98 2427.38,-30.69"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2511.91,-127.56 2519.92,-134.49 2517.98,-124.07 2511.91,-127.56"/>
+</g>
+<!-- Node48&#45;&gt;Node7 -->
 <g id="edge60" class="edge">
-<title>Node84&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M1488.54,-64.71C1449.81,-54.14 1400.37,-40.63 1363.67,-30.61"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1488.08,-68.22 1498.65,-67.48 1489.93,-61.46 1488.08,-68.22"/>
+<title>Node48&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M1422.85,-65.12C1377.69,-54.48 1319.43,-40.76 1276.33,-30.61"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1422.33,-68.59 1432.86,-67.48 1423.93,-61.78 1422.33,-68.59"/>
+</g>
+<!-- Node48&#45;&gt;Node10 -->
+<g id="edge61" class="edge">
+<title>Node48&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M1566.48,-71.56C1580.39,-69.88 1594.83,-68.28 1608.41,-67 1880,-41.43 2204.97,-25.31 2340.33,-19.24"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1565.96,-68.1 1556.45,-72.78 1566.81,-75.04 1565.96,-68.1"/>
+</g>
+<!-- Node49&#45;&gt;Node45 -->
+<g id="edge65" class="edge">
+<title>Node49&#45;&gt;Node45</title>
+<path fill="none" stroke="midnightblue" d="M2504.11,-268.18C2582.03,-260.44 2748.86,-277.98 2789.41,-232 2798.52,-221.67 2798.18,-211.62 2789.41,-201 2783.68,-194.06 2688.24,-176.92 2614.19,-164.53"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2503.68,-264.7 2494.17,-269.38 2504.52,-271.65 2503.68,-264.7"/>
+</g>
+<!-- Node78&#45;&gt;Node7 -->
+<g id="edge75" class="edge">
+<title>Node78&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M158.04,-192.21C167.74,-173.59 183.86,-148.33 205.41,-134 318.46,-58.84 369.1,-86.74 503.41,-67 740.98,-32.08 1026.76,-21.1 1152.15,-17.82"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="154.87,-190.73 153.55,-201.24 161.14,-193.84 154.87,-190.73"/>
+</g>
+<!-- Node80&#45;&gt;Node7 -->
+<g id="edge79" class="edge">
+<title>Node80&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M1309.12,-62.85C1288.56,-52.58 1263.46,-40.03 1244.56,-30.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1307.69,-66.05 1318.2,-67.4 1310.82,-59.79 1307.69,-66.05"/>
+</g>
+<!-- Node80&#45;&gt;Node10 -->
+<g id="edge80" class="edge">
+<title>Node80&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M1420.56,-66.99C1772.71,-23.95 2184.13,-17.47 2340.17,-16.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1419.91,-63.54 1410.42,-68.24 1420.77,-70.49 1419.91,-63.54"/>
+</g>
+<!-- Node81&#45;&gt;Node16 -->
+<g id="edge83" class="edge">
+<title>Node81&#45;&gt;Node16</title>
+<path fill="none" stroke="midnightblue" d="M307.81,-259.58C313.27,-250.24 319.4,-239.75 324.18,-231.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="304.68,-258 302.65,-268.4 310.72,-261.53 304.68,-258"/>
+</g>
+<!-- Node82&#45;&gt;Node7 -->
+<g id="edge86" class="edge">
+<title>Node82&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M168.57,-67.47C169.86,-67.3 171.14,-67.15 172.41,-67 541.68,-23.95 988.55,-17.46 1152.31,-16.59"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="168,-64.01 158.58,-68.86 168.96,-70.95 168,-64.01"/>
+</g>
+<!-- Node83&#45;&gt;Node7 -->
+<g id="edge88" class="edge">
+<title>Node83&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M1162.67,-196.42C1175.88,-188.58 1189.06,-178.18 1197.41,-165 1224.39,-122.4 1221.39,-59.09 1218.35,-30.92"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1160.63,-193.54 1153.57,-201.44 1164.01,-199.67 1160.63,-193.54"/>
+</g>
+<!-- Node83&#45;&gt;Node8 -->
+<g id="edge89" class="edge">
+<title>Node83&#45;&gt;Node8</title>
+<path fill="none" stroke="midnightblue" d="M1192.79,-204.18C1255.24,-194.01 1339.12,-178.64 1370.41,-165 1392.01,-155.58 1391.17,-141.78 1413.41,-134 1570.08,-79.21 1994.4,-115.83 2159.41,-98 2162.27,-97.69 2165.18,-97.35 2168.11,-96.98"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1191.89,-200.78 1182.57,-205.82 1193,-207.69 1191.89,-200.78"/>
+</g>
+<!-- Node83&#45;&gt;Node10 -->
+<g id="edge90" class="edge">
+<title>Node83&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M1157.48,-197.27C1199.69,-178.37 1269.37,-149.49 1332.41,-134 1464.54,-101.54 1504.67,-132 1636.41,-98 1671.73,-88.88 1676.89,-75.32 1712.41,-67 1830.72,-39.29 2192.34,-23.89 2340.29,-18.61"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1155.81,-194.18 1148.14,-201.49 1158.69,-200.56 1155.81,-194.18"/>
+</g>
+<!-- Node83&#45;&gt;Node22 -->
+<g id="edge92" class="edge">
+<title>Node83&#45;&gt;Node22</title>
+<path fill="none" stroke="midnightblue" d="M1192.39,-204.48C1234.54,-196.63 1287.7,-184.04 1332.41,-165 1355.77,-155.05 1356.32,-142.05 1380.41,-134 1440.32,-113.98 1859.48,-93.54 2022.12,-86.27"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1191.69,-201.05 1182.48,-206.28 1192.94,-207.94 1191.69,-201.05"/>
+</g>
+<!-- Node83&#45;&gt;Node38 -->
+<g id="edge91" class="edge">
+<title>Node83&#45;&gt;Node38</title>
+<path fill="none" stroke="midnightblue" d="M1120.63,-191.4C1121.47,-182.37 1122.39,-172.41 1123.11,-164.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1117.15,-191.12 1119.71,-201.4 1124.12,-191.76 1117.15,-191.12"/>
+</g>
+<!-- Node83&#45;&gt;Node40 -->
+<g id="edge93" class="edge">
+<title>Node83&#45;&gt;Node40</title>
+<path fill="none" stroke="midnightblue" d="M1192.7,-210.36C1371.81,-197.96 1825.06,-166.58 1993.28,-154.94"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1192.32,-206.88 1182.58,-211.06 1192.8,-213.86 1192.32,-206.88"/>
+</g>
+<!-- Node83&#45;&gt;Node41 -->
+<g id="edge94" class="edge">
+<title>Node83&#45;&gt;Node41</title>
+<path fill="none" stroke="midnightblue" d="M1070.36,-197.96C1041.69,-187.48 1005.76,-174.37 978.96,-164.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1069.19,-201.25 1079.79,-201.4 1071.59,-194.68 1069.19,-201.25"/>
+</g>
+<!-- Node85&#45;&gt;Node6 -->
+<g id="edge96" class="edge">
+<title>Node85&#45;&gt;Node6</title>
+<path fill="none" stroke="midnightblue" d="M1229.68,-260.96C1248.29,-241.71 1278.3,-214.53 1310.41,-201 1344.07,-186.82 1568.92,-166.1 1684.73,-156.19"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1226.97,-258.72 1222.66,-268.4 1232.07,-263.52 1226.97,-258.72"/>
+</g>
+<!-- Node85&#45;&gt;Node7 -->
+<g id="edge100" class="edge">
+<title>Node85&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M1136.32,-275.38C1026.6,-264.47 832.67,-243.68 822.41,-232 719.77,-115.13 1016.38,-49.54 1152.31,-26.28"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1136.04,-278.87 1146.34,-276.37 1136.73,-271.9 1136.04,-278.87"/>
+</g>
+<!-- Node85&#45;&gt;Node8 -->
+<g id="edge102" class="edge">
+<title>Node85&#45;&gt;Node8</title>
+<path fill="none" stroke="midnightblue" d="M1248.09,-263.67C1264.86,-254.77 1284.57,-243.57 1301.41,-232 1319.09,-219.85 1318.53,-209.06 1338.41,-201 1440,-159.81 1721.9,-180.57 1830.41,-165 1895.21,-155.7 1910.22,-146.89 1974.41,-134 2039.63,-120.91 2113.92,-107.14 2168.2,-97.3"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1246.35,-260.63 1239.12,-268.37 1249.6,-266.83 1246.35,-260.63"/>
+</g>
+<!-- Node85&#45;&gt;Node10 -->
+<g id="edge105" class="edge">
+<title>Node85&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M1135.71,-275.68C1011.18,-261.66 782.76,-223.13 867.41,-134 920.89,-77.69 1489.82,-115.83 1565.41,-98 1598.92,-90.1 1602.95,-75.14 1636.41,-67 1769.33,-34.66 2180.91,-21.75 2340.37,-17.87"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1135.63,-279.19 1145.96,-276.8 1136.4,-272.23 1135.63,-279.19"/>
+</g>
+<!-- Node85&#45;&gt;Node12 -->
+<g id="edge97" class="edge">
+<title>Node85&#45;&gt;Node12</title>
+<path fill="none" stroke="midnightblue" d="M1211.11,-258.19C1212.98,-239.87 1218.57,-215.5 1234.41,-201 1237.92,-197.79 1348.86,-176.39 1422.35,-162.5"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1207.6,-258.19 1210.38,-268.42 1214.58,-258.69 1207.6,-258.19"/>
+</g>
+<!-- Node85&#45;&gt;Node13 -->
+<g id="edge98" class="edge">
+<title>Node85&#45;&gt;Node13</title>
+<path fill="none" stroke="midnightblue" d="M1136.01,-276.14C1044.18,-267.9 883.37,-252.15 746.41,-232 741.91,-231.34 737.28,-230.61 732.62,-229.83"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1135.77,-279.64 1146.04,-277.04 1136.39,-272.66 1135.77,-279.64"/>
+</g>
+<!-- Node85&#45;&gt;Node15 -->
+<g id="edge103" class="edge">
+<title>Node85&#45;&gt;Node15</title>
+<path fill="none" stroke="midnightblue" d="M1135.8,-281.54C980.51,-278.81 633.74,-268.63 595.41,-232 558.39,-196.62 567.1,-127.76 573.07,-97.89"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1136.14,-285.04 1146.19,-281.71 1136.25,-278.05 1136.14,-285.04"/>
 </g>
 <!-- Node85&#45;&gt;Node16 -->
-<g id="edge63" class="edge">
+<g id="edge99" class="edge">
 <title>Node85&#45;&gt;Node16</title>
-<path fill="none" stroke="midnightblue" d="M2574.33,-197.96C2544.7,-187.48 2507.56,-174.37 2479.85,-164.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2573.48,-201.37 2584.07,-201.4 2575.81,-194.76 2573.48,-201.37"/>
+<path fill="none" stroke="midnightblue" d="M1136.15,-277C967.01,-264.48 555.5,-234.02 396.54,-222.25"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1135.97,-280.5 1146.2,-277.75 1136.49,-273.52 1135.97,-280.5"/>
 </g>
-<!-- Node86&#45;&gt;Node7 -->
-<g id="edge66" class="edge">
-<title>Node86&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M1843.52,-73.51C1723.45,-60.63 1489.14,-35.5 1376.07,-23.37"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1843.4,-77.02 1853.72,-74.61 1844.15,-70.06 1843.4,-77.02"/>
+<!-- Node85&#45;&gt;Node18 -->
+<g id="edge101" class="edge">
+<title>Node85&#45;&gt;Node18</title>
+<path fill="none" stroke="midnightblue" d="M1275.46,-265.98C1317.27,-255.37 1371.02,-241.72 1410.83,-231.61"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1274.47,-262.62 1265.64,-268.48 1276.2,-269.41 1274.47,-262.62"/>
 </g>
-<!-- Node87&#45;&gt;Node7 -->
-<g id="edge68" class="edge">
-<title>Node87&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M60.99,-257.94C59.77,-241.51 59.7,-219.57 65,-201 84.1,-134.08 86.14,-102.49 146,-67 193.63,-38.76 1010.3,-21.92 1247.74,-17.61"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="57.54,-258.7 61.96,-268.33 64.51,-258.05 57.54,-258.7"/>
+<!-- Node85&#45;&gt;Node36 -->
+<g id="edge104" class="edge">
+<title>Node85&#45;&gt;Node36</title>
+<path fill="none" stroke="midnightblue" d="M1284.59,-272.53C1353.77,-262.99 1459.78,-247.75 1551.41,-232 1554.51,-231.47 1557.67,-230.91 1560.87,-230.33"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1284.09,-269.06 1274.66,-273.89 1285.04,-276 1284.09,-269.06"/>
+</g>
+<!-- Node85&#45;&gt;Node38 -->
+<g id="edge106" class="edge">
+<title>Node85&#45;&gt;Node38</title>
+<path fill="none" stroke="midnightblue" d="M1136.26,-273.12C1086.68,-265.16 1027.81,-251.82 1012.41,-232 989.39,-202.38 1036.02,-178.59 1075.96,-164.53"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1135.94,-276.62 1146.35,-274.7 1137.01,-269.7 1135.94,-276.62"/>
+</g>
+<!-- Node85&#45;&gt;Node39 -->
+<g id="edge107" class="edge">
+<title>Node85&#45;&gt;Node39</title>
+<path fill="none" stroke="midnightblue" d="M1284.89,-280.23C1523.01,-272.8 2251.36,-248.75 2269.41,-232 2287.69,-215.03 2285.65,-183.18 2282.53,-164.72"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1284.48,-276.74 1274.6,-280.55 1284.7,-283.74 1284.48,-276.74"/>
+</g>
+<!-- Node85&#45;&gt;Node40 -->
+<g id="edge108" class="edge">
+<title>Node85&#45;&gt;Node40</title>
+<path fill="none" stroke="midnightblue" d="M1263.2,-265.04C1286.82,-256.38 1314.64,-244.99 1338.41,-232 1359.08,-220.7 1359.25,-209.01 1381.41,-201 1490.55,-161.55 1786.74,-174.41 1902.41,-165 1932.31,-162.57 1965.42,-159.52 1993.34,-156.85"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1261.92,-261.78 1253.69,-268.46 1264.29,-268.37 1261.92,-261.78"/>
 </g>
 <!-- Node87&#45;&gt;Node8 -->
-<g id="edge69" class="edge">
+<g id="edge110" class="edge">
 <title>Node87&#45;&gt;Node8</title>
-<path fill="none" stroke="midnightblue" d="M64.03,-258.29C65.28,-240.58 69.64,-216.96 83,-201 131.44,-143.15 165.79,-152.27 239,-134 336.53,-109.66 625.22,-93.49 764.77,-86.88"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="60.53,-258.29 63.61,-268.43 67.53,-258.59 60.53,-258.29"/>
+<path fill="none" stroke="midnightblue" d="M2642.2,-200.85C2546.25,-184.14 2518.1,-192 2428.41,-165 2398.02,-155.85 2317.96,-118.33 2274.49,-97.53"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2641.88,-204.35 2652.34,-202.66 2643.11,-197.45 2641.88,-204.35"/>
 </g>
-<!-- Node87&#45;&gt;Node52 -->
-<g id="edge70" class="edge">
-<title>Node87&#45;&gt;Node52</title>
-<path fill="none" stroke="midnightblue" d="M92.38,-262.45C106.53,-252.45 123.31,-240.6 136.08,-231.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="90.11,-259.77 83.96,-268.4 94.15,-265.48 90.11,-259.77"/>
+<!-- Node87&#45;&gt;Node10 -->
+<g id="edge111" class="edge">
+<title>Node87&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M2758.67,-196.08C2770.82,-188.25 2782.62,-177.96 2789.41,-165 2795.81,-152.8 2795.66,-146.28 2789.41,-134 2766.47,-88.92 2744,-86.7 2697.41,-67 2622.77,-35.44 2529.48,-23.59 2468.49,-19.15"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2756.62,-193.22 2749.82,-201.34 2760.2,-199.23 2756.62,-193.22"/>
 </g>
-<!-- Node89&#45;&gt;Node16 -->
-<g id="edge72" class="edge">
-<title>Node89&#45;&gt;Node16</title>
-<path fill="none" stroke="midnightblue" d="M2440,-191.11C2440,-182.15 2440,-172.32 2440,-164.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2436.5,-191.4 2440,-201.4 2443.5,-191.4 2436.5,-191.4"/>
+<!-- Node87&#45;&gt;Node40 -->
+<g id="edge112" class="edge">
+<title>Node87&#45;&gt;Node40</title>
+<path fill="none" stroke="midnightblue" d="M2642.45,-200.97C2448.72,-174.25 2397.29,-182.15 2206.41,-165 2178.58,-162.5 2147.85,-159.54 2121.56,-156.95"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2642,-204.44 2652.39,-202.35 2642.96,-197.51 2642,-204.44"/>
 </g>
-<!-- Node93&#45;&gt;Node6 -->
-<g id="edge74" class="edge">
-<title>Node93&#45;&gt;Node6</title>
-<path fill="none" stroke="midnightblue" d="M1668.5,-265.13C1618.84,-247.95 1540.03,-221.35 1471,-201 1425.6,-187.62 1373.69,-174.2 1334.99,-164.56"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1667.44,-268.47 1678.03,-268.44 1669.73,-261.85 1667.44,-268.47"/>
+<!-- Node88&#45;&gt;Node7 -->
+<g id="edge114" class="edge">
+<title>Node88&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M2122.24,-201.53C2120.95,-201.34 2119.68,-201.17 2118.41,-201 2020.51,-187.96 1766.44,-203.33 1675.41,-165 1633.6,-147.39 1632.06,-128.42 1598.41,-98 1583.48,-84.5 1583.54,-75.73 1565.41,-67 1516.39,-43.39 1367.19,-28.22 1280.56,-21.15"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2121.81,-205 2132.22,-203.03 2122.85,-198.08 2121.81,-205"/>
 </g>
-<!-- Node93&#45;&gt;Node7 -->
-<g id="edge77" class="edge">
-<title>Node93&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M1714.87,-258.27C1707.63,-212.86 1685.3,-115.18 1623,-67 1585.41,-37.93 1455.58,-25.06 1376.04,-19.79"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1711.44,-259 1716.37,-268.38 1718.36,-257.98 1711.44,-259"/>
+<!-- Node88&#45;&gt;Node8 -->
+<g id="edge115" class="edge">
+<title>Node88&#45;&gt;Node8</title>
+<path fill="none" stroke="midnightblue" d="M2122.03,-200.05C2062.73,-187.38 1988.86,-170.64 1984.41,-165 1975.87,-154.19 1975.64,-144.63 1984.41,-134 1987.4,-130.37 2092.4,-110.89 2168.29,-97.22"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2121.65,-203.55 2132.16,-202.21 2123.11,-196.7 2121.65,-203.55"/>
 </g>
-<!-- Node93&#45;&gt;Node8 -->
-<g id="edge80" class="edge">
-<title>Node93&#45;&gt;Node8</title>
-<path fill="none" stroke="midnightblue" d="M1643.53,-279.34C1559.97,-274.43 1420.93,-262.16 1305,-232 1269.7,-222.82 1263.91,-211.59 1229,-201 1152.6,-177.82 1129.62,-187.46 1053,-165 987.81,-145.89 914.37,-115.39 873.6,-97.62"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1643.51,-282.85 1653.69,-279.92 1643.91,-275.86 1643.51,-282.85"/>
+<!-- Node88&#45;&gt;Node10 -->
+<g id="edge116" class="edge">
+<title>Node88&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M2122.48,-200.96C2059.77,-188.28 1979.19,-170.99 1974.41,-165 1965.82,-154.23 1970.82,-147.3 1974.41,-134 1983.39,-100.73 1984.7,-86.06 2013.41,-67 2065.66,-32.31 2243.45,-21.41 2340.29,-18.01"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2121.88,-204.41 2132.38,-202.96 2123.27,-197.55 2121.88,-204.41"/>
 </g>
-<!-- Node93&#45;&gt;Node12 -->
-<g id="edge75" class="edge">
-<title>Node93&#45;&gt;Node12</title>
-<path fill="none" stroke="midnightblue" d="M1746.38,-262.45C1760.53,-252.45 1777.31,-240.6 1790.08,-231.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1744.11,-259.77 1737.96,-268.4 1748.15,-265.48 1744.11,-259.77"/>
+<!-- Node88&#45;&gt;Node40 -->
+<g id="edge117" class="edge">
+<title>Node88&#45;&gt;Node40</title>
+<path fill="none" stroke="midnightblue" d="M2157.13,-197.13C2135.04,-186.8 2107.9,-174.11 2087.51,-164.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2155.71,-200.33 2166.25,-201.4 2158.67,-193.99 2155.71,-200.33"/>
 </g>
-<!-- Node93&#45;&gt;Node15 -->
-<g id="edge81" class="edge">
-<title>Node93&#45;&gt;Node15</title>
-<path fill="none" stroke="midnightblue" d="M1717.41,-258.32C1718.29,-240.27 1722.46,-216.2 1737,-201 1785.83,-149.96 1986.89,-110.79 2091.73,-93.38"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1713.91,-258.33 1717.22,-268.39 1720.91,-258.46 1713.91,-258.33"/>
+<!-- Node91&#45;&gt;Node7 -->
+<g id="edge121" class="edge">
+<title>Node91&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M2502.71,-268.04C2502.61,-268.03 2502.51,-268.01 2502.41,-268 2334.96,-243.7 2280.34,-295.26 2123.41,-232 2102.87,-223.72 2105.01,-209.11 2084.41,-201 1895.25,-126.5 1825.36,-215.4 1628.41,-165 1595.84,-156.67 1591.78,-143.09 1559.41,-134 1436.07,-99.37 1383.11,-164.18 1273.41,-98 1247.39,-82.3 1230.21,-49.67 1222.01,-30.8"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2501.88,-271.46 2512.3,-269.54 2502.96,-264.54 2501.88,-271.46"/>
 </g>
-<!-- Node93&#45;&gt;Node16 -->
-<g id="edge76" class="edge">
-<title>Node93&#45;&gt;Node16</title>
-<path fill="none" stroke="midnightblue" d="M1791.96,-266.42C1821.32,-258.39 1854.75,-247.09 1883,-232 1902.22,-221.73 1900.85,-209.3 1921,-201 1941.74,-192.46 2241.61,-166.86 2375.85,-155.75"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1790.94,-263.07 1782.17,-269.02 1792.73,-269.84 1790.94,-263.07"/>
+<!-- Node91&#45;&gt;Node10 -->
+<g id="edge129" class="edge">
+<title>Node91&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M2650.42,-268.3C2730.67,-261.76 3056.8,-266.31 3088.41,-232 3097.75,-221.87 3091.33,-214.46 3088.41,-201 3074.54,-137.05 3080.96,-104.61 3027.41,-67 2982.42,-35.41 2618.36,-22.19 2468.5,-18.05"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2650.01,-264.83 2640.43,-269.35 2650.74,-271.79 2650.01,-264.83"/>
 </g>
-<!-- Node93&#45;&gt;Node18 -->
-<g id="edge78" class="edge">
-<title>Node93&#45;&gt;Node18</title>
-<path fill="none" stroke="midnightblue" d="M1643.57,-276.03C1548.41,-267.47 1378.64,-251.18 1234,-232 1229.45,-231.4 1224.78,-230.74 1220.06,-230.06"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1643.39,-279.53 1653.67,-276.94 1644.02,-272.56 1643.39,-279.53"/>
+<!-- Node91&#45;&gt;Node15 -->
+<g id="edge123" class="edge">
+<title>Node91&#45;&gt;Node15</title>
+<path fill="none" stroke="midnightblue" d="M2502.71,-268.03C2502.61,-268.02 2502.51,-268.01 2502.41,-268 2180.46,-232.74 1364.85,-285.41 1045.41,-232 959.49,-217.63 712.68,-131.86 615.97,-97.61"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2501.97,-271.47 2512.34,-269.26 2502.86,-264.52 2501.97,-271.47"/>
 </g>
-<!-- Node93&#45;&gt;Node49 -->
-<g id="edge82" class="edge">
-<title>Node93&#45;&gt;Node49</title>
-<path fill="none" stroke="midnightblue" d="M1792.31,-272.84C1863.08,-263.38 1972.52,-248.08 2067,-232 2070.1,-231.47 2073.26,-230.92 2076.46,-230.34"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1791.6,-269.4 1782.15,-274.19 1792.53,-276.34 1791.6,-269.4"/>
+<!-- Node91&#45;&gt;Node19 -->
+<g id="edge122" class="edge">
+<title>Node91&#45;&gt;Node19</title>
+<path fill="none" stroke="midnightblue" d="M2650.38,-267.89C2761.29,-249.09 2791.04,-248.61 2898.41,-232 2902.85,-231.31 2907.41,-230.6 2912.01,-229.87"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2649.74,-264.45 2640.47,-269.58 2650.91,-271.35 2649.74,-264.45"/>
 </g>
-<!-- Node93&#45;&gt;Node50 -->
-<g id="edge83" class="edge">
-<title>Node93&#45;&gt;Node50</title>
-<path fill="none" stroke="midnightblue" d="M1643.8,-280.99C1472.48,-277.06 1036.23,-264.45 673,-232 657.8,-230.64 641.49,-228.75 626.17,-226.79"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1643.88,-284.5 1653.96,-281.22 1644.04,-277.5 1643.88,-284.5"/>
+<!-- Node91&#45;&gt;Node21 -->
+<g id="edge124" class="edge">
+<title>Node91&#45;&gt;Node21</title>
+<path fill="none" stroke="midnightblue" d="M2650.52,-268.29C2728.44,-261.83 3039.28,-264.82 3069.41,-232 3100.4,-198.24 3038.43,-175.33 2985.43,-162.6"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2650.01,-264.83 2640.44,-269.37 2650.75,-271.79 2650.01,-264.83"/>
 </g>
-<!-- Node93&#45;&gt;Node62 -->
-<g id="edge79" class="edge">
-<title>Node93&#45;&gt;Node62</title>
-<path fill="none" stroke="midnightblue" d="M1787.56,-266.12C1832.72,-255.48 1890.98,-241.76 1934.08,-231.61"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1786.48,-262.78 1777.55,-268.48 1788.08,-269.59 1786.48,-262.78"/>
+<!-- Node91&#45;&gt;Node36 -->
+<g id="edge125" class="edge">
+<title>Node91&#45;&gt;Node36</title>
+<path fill="none" stroke="midnightblue" d="M2502.71,-268.04C2502.61,-268.02 2502.51,-268.01 2502.41,-268 2181.29,-228.79 2098.06,-255.57 1775.41,-232 1747.36,-229.95 1716.42,-227.07 1689.96,-224.41"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2501.94,-271.46 2512.32,-269.36 2502.89,-264.53 2501.94,-271.46"/>
 </g>
-<!-- Node96&#45;&gt;Node8 -->
-<g id="edge86" class="edge">
-<title>Node96&#45;&gt;Node8</title>
-<path fill="none" stroke="midnightblue" d="M386.14,-139.2C400.05,-137.46 414.47,-135.67 428,-134 545.49,-119.49 681.78,-102.92 764.93,-92.83"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="385.61,-135.74 376.12,-140.45 386.47,-142.68 385.61,-135.74"/>
+<!-- Node91&#45;&gt;Node37 -->
+<g id="edge128" class="edge">
+<title>Node91&#45;&gt;Node37</title>
+<path fill="none" stroke="midnightblue" d="M2650.57,-267.96C2868,-239.21 2926.44,-257.62 3140.41,-232 3145.12,-231.44 3149.97,-230.8 3154.85,-230.11"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2649.87,-264.52 2640.43,-269.32 2650.81,-271.46 2649.87,-264.52"/>
 </g>
-<!-- Node97&#45;&gt;Node7 -->
-<g id="edge88" class="edge">
-<title>Node97&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M1373.58,-130.27C1357.8,-122.57 1341.9,-112.04 1331,-98 1315.68,-78.26 1312.37,-48.25 1311.85,-30.69"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1372.28,-133.52 1382.83,-134.49 1375.18,-127.15 1372.28,-133.52"/>
+<!-- Node91&#45;&gt;Node61 -->
+<g id="edge126" class="edge">
+<title>Node91&#45;&gt;Node61</title>
+<path fill="none" stroke="midnightblue" d="M2650.46,-268C2942.63,-232.12 3021.22,-268.3 3309.41,-232 3312.36,-231.63 3315.37,-231.21 3318.4,-230.75"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2649.91,-264.54 2640.42,-269.25 2650.78,-271.49 2649.91,-264.54"/>
 </g>
-<!-- Node97&#45;&gt;Node8 -->
-<g id="edge89" class="edge">
-<title>Node97&#45;&gt;Node8</title>
-<path fill="none" stroke="midnightblue" d="M1354.3,-134.04C1354.2,-134.03 1354.1,-134.01 1354,-134 1200.46,-111.44 1019.48,-96.24 919.04,-88.8"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1353.47,-137.46 1363.89,-135.55 1354.55,-130.54 1353.47,-137.46"/>
+<!-- Node91&#45;&gt;Node78 -->
+<g id="edge127" class="edge">
+<title>Node91&#45;&gt;Node78</title>
+<path fill="none" stroke="midnightblue" d="M2502.71,-268.03C2502.61,-268.02 2502.51,-268.01 2502.41,-268 2006.63,-215.87 756.61,-268.06 259.41,-232 244.06,-230.89 227.59,-229.09 212.13,-227.14"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2501.99,-271.47 2512.34,-269.22 2502.85,-264.52 2501.99,-271.47"/>
 </g>
-<!-- Node100&#45;&gt;Node15 -->
-<g id="edge95" class="edge">
-<title>Node100&#45;&gt;Node15</title>
-<path fill="none" stroke="midnightblue" d="M2792.15,-264.67C2828.22,-249.9 2865.38,-227.14 2844,-201 2765.8,-105.38 2375.8,-87.54 2220.23,-84.24"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2790.58,-261.52 2782.55,-268.43 2793.14,-268.04 2790.58,-261.52"/>
-</g>
-<!-- Node100&#45;&gt;Node19 -->
-<g id="edge94" class="edge">
-<title>Node100&#45;&gt;Node19</title>
-<path fill="none" stroke="midnightblue" d="M2663.52,-277.33C2619.71,-274.39 2563.22,-270.75 2513,-268 2307.41,-256.76 1678.58,-229.83 1462.12,-220.64"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2663.31,-280.83 2673.52,-278.01 2663.78,-273.84 2663.31,-280.83"/>
-</g>
-<!-- Node100&#45;&gt;Node49 -->
-<g id="edge97" class="edge">
-<title>Node100&#45;&gt;Node49</title>
-<path fill="none" stroke="midnightblue" d="M2663.8,-274.42C2545.83,-261.58 2317.43,-236.71 2205.71,-224.55"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2663.51,-277.91 2673.83,-275.51 2664.26,-270.95 2663.51,-277.91"/>
-</g>
-<!-- Node100&#45;&gt;Node60 -->
-<g id="edge93" class="edge">
-<title>Node100&#45;&gt;Node60</title>
-<path fill="none" stroke="midnightblue" d="M2803.05,-265.98C2844.86,-255.37 2898.61,-241.72 2938.42,-231.61"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2802.06,-262.62 2793.23,-268.48 2803.79,-269.41 2802.06,-262.62"/>
-</g>
-<!-- Node100&#45;&gt;Node78 -->
-<g id="edge96" class="edge">
-<title>Node100&#45;&gt;Node78</title>
-<path fill="none" stroke="midnightblue" d="M2812.23,-275.43C2925.87,-264.48 3137.69,-243.46 3213,-232 3215.94,-231.55 3218.94,-231.07 3221.96,-230.56"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2811.84,-271.96 2802.22,-276.4 2812.51,-278.92 2811.84,-271.96"/>
-</g>
-<!-- Node100&#45;&gt;Node79 -->
-<g id="edge98" class="edge">
-<title>Node100&#45;&gt;Node79</title>
-<path fill="none" stroke="midnightblue" d="M2796.95,-265.29C2822.55,-256.8 2852.47,-245.47 2878,-232 2898.84,-221.01 2899.13,-209.76 2921,-201 3020.91,-160.97 3147.15,-151.74 3221.96,-150.12"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2795.79,-261.99 2787.36,-268.41 2797.96,-268.65 2795.79,-261.99"/>
-</g>
-<!-- Node100&#45;&gt;Node81 -->
-<g id="edge99" class="edge">
-<title>Node100&#45;&gt;Node81</title>
-<path fill="none" stroke="midnightblue" d="M2749.79,-259.28C2754.49,-250.02 2759.75,-239.66 2763.85,-231.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2746.57,-257.89 2745.16,-268.4 2752.81,-261.06 2746.57,-257.89"/>
-</g>
-<!-- Node100&#45;&gt;Node83 -->
-<g id="edge100" class="edge">
-<title>Node100&#45;&gt;Node83</title>
-<path fill="none" stroke="midnightblue" d="M2812.14,-272.07C2878.92,-262.44 2979.71,-247.36 3067,-232 3069.93,-231.48 3072.92,-230.95 3075.94,-230.39"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2811.53,-268.62 2802.13,-273.5 2812.53,-275.55 2811.53,-268.62"/>
-</g>
-<!-- Node100&#45;&gt;Node89 -->
-<g id="edge101" class="edge">
-<title>Node100&#45;&gt;Node89</title>
-<path fill="none" stroke="midnightblue" d="M2663.78,-266.31C2614.72,-255.61 2551.05,-241.72 2504.18,-231.5"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2663.19,-269.76 2673.71,-268.48 2664.68,-262.93 2663.19,-269.76"/>
-</g>
-<!-- Node102&#45;&gt;Node89 -->
-<g id="edge103" class="edge">
-<title>Node102&#45;&gt;Node89</title>
-<path fill="none" stroke="midnightblue" d="M2440,-258.11C2440,-249.15 2440,-239.32 2440,-231.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="2436.5,-258.4 2440,-268.4 2443.5,-258.4 2436.5,-258.4"/>
+<!-- Node99&#45;&gt;Node37 -->
+<g id="edge131" class="edge">
+<title>Node99&#45;&gt;Node37</title>
+<path fill="none" stroke="midnightblue" d="M2796.58,-268.57C2797.87,-268.37 2799.14,-268.18 2800.41,-268 2950.78,-246.1 2989.84,-252.5 3140.41,-232 3145.11,-231.36 3149.95,-230.66 3154.83,-229.93"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="2795.94,-265.13 2786.62,-270.15 2797.04,-272.04 2795.94,-265.13"/>
 </g>
 </g>
 </svg>
