@@ -25,10 +25,21 @@
 /// @file
 /// @brief Definition of the @c VelocityConstraint class and closely related code.
 
+#include <cassert> // for assert
+#include <type_traits> // for std::remove_const_t
+
+#include <playrho/BodyID.hpp>
+#include <playrho/Matrix.hpp> // for Mass22
+#include <playrho/Real.hpp>
+#include <playrho/Settings.hpp> // for MaxManifoldPoints
 #include <playrho/Span.hpp>
+#include <playrho/Units.hpp>
+#include <playrho/Vector.hpp> // for get
+#include <playrho/Vector2.hpp>
+#include <playrho/Vector3.hpp> // for Mass3
 
 #include <playrho/d2/BodyConstraint.hpp>
-#include <playrho/d2/Math.hpp>
+#include <playrho/d2/UnitVec.hpp>
 
 namespace playrho {
 

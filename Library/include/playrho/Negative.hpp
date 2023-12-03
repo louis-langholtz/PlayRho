@@ -24,6 +24,8 @@
 /// @file
 /// @brief Definition of the @c Negative value checked types.
 
+#include <type_traits> // for std::is_default_constructible_v
+
 #include <playrho/detail/Checked.hpp>
 #include <playrho/detail/NegativeChecker.hpp>
 

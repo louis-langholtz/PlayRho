@@ -30,7 +30,6 @@
 #include <type_traits>
 #include <iterator>
 #include <algorithm> // for std::lexicographical_compare and more
-#include <functional>
 #include <iostream>
 
 #include <playrho/InvalidArgument.hpp>

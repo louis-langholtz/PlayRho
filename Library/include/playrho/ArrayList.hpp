@@ -27,11 +27,10 @@
 
 #include <array>
 #include <cassert> // for assert
+#include <cstdlib> // for std::size_t
 #include <initializer_list>
 #include <type_traits>
 #include <utility> // for std::move
-
-#include <playrho/Defines.hpp>
 
 namespace playrho {
 

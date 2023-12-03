@@ -25,12 +25,9 @@
 /// @file
 /// @brief Dynamic memory allocation helpers.
 
-#include <playrho/Defines.hpp>
-
 #include <cstddef>
 #include <limits> // for std::numeric_limits
 #include <new>
-#include <type_traits>
 
 namespace playrho {
 // Memory Allocation

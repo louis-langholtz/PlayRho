@@ -25,9 +25,8 @@
 /// @file
 /// @brief Definition of the <code>ContactFeature</code> class and closely related code.
 
+#include <cstdint> // for std::uint8_t
 #include <ostream>
-
-#include <playrho/Math.hpp>
 
 namespace playrho {
 

@@ -24,6 +24,8 @@
 /// @file
 /// @brief Definition of the @c IslandStats class.
 
+#include <limits> // for std::numeric_limits
+
 #include <playrho/Units.hpp>
 #include <playrho/Settings.hpp>
 

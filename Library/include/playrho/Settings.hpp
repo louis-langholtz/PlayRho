@@ -29,16 +29,12 @@
 #ifndef PLAYRHO_SETTINGS_HPP
 #define PLAYRHO_SETTINGS_HPP
 
-#include <algorithm>
-#include <cstddef>
-#include <cassert>
-#include <cfloat>
-#include <cmath>
-#include <cstdint>
+#include <cstdint> // for std::uint8_t
 #include <limits> // for std::numeric_limits
+#include <type_traits> // for std::remove_const_t
 
+#include <playrho/Real.hpp>
 #include <playrho/RealConstants.hpp>
-#include <playrho/Templates.hpp>
 #include <playrho/Units.hpp>
 #include <playrho/WiderType.hpp>
 

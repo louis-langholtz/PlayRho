@@ -20,14 +20,15 @@
 
 #include "UnitTests.hpp"
 
-#include <playrho/TypeInfo.hpp> // for GetTypeName
-
 #include <cmath>
 #include <algorithm>
 #include <limits>
 #include <iostream>
 #include <cstring>
 #include <type_traits>
+
+#include <playrho/Templates.hpp> // for IsValid
+#include <playrho/TypeInfo.hpp> // for GetTypeName
 
 using namespace playrho;
 

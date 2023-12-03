@@ -24,6 +24,9 @@
 /// @file
 /// @brief Definitions of miscellaneous template related code.
 
+#include <cstdlib> // for std::size_t
+#include <type_traits> // for std::enable_if_t
+
 #include <playrho/detail/Templates.hpp>
 
 namespace playrho {
@@ -116,7 +119,7 @@ auto end(ReversionWrapper<T> w)
 template <typename T>
 std::enable_if_t<IsReverseIterableV<T>, ReversionWrapper<T>> Reverse(T&& iterable)
 {
-    return {iterable};
+    return {std::forward<T>(iterable)};
 }
 
 /// @brief Alias for pulling the <code>max_size</code> constomization point into the

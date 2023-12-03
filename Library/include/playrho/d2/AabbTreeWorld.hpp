@@ -25,32 +25,38 @@
 /// @file
 /// @brief Declarations of the AabbTreeWorld class.
 
-#include <functional>
-#include <iterator>
-#include <map>
-#include <memory>
+#include <cstdint> // for std::uint32_t
 #include <optional>
-#include <stack>
-#include <stdexcept>
+#include <tuple>
 #include <type_traits> // for std::is_default_constructible_v, etc.
+#include <utility> // for std::pair, std::move
 #include <vector>
 
 #include <playrho/BodyID.hpp>
 #include <playrho/BodyShapeFunction.hpp>
+#include <playrho/Contactable.hpp>
 #include <playrho/ContactFunction.hpp>
+#include <playrho/ContactID.hpp>
 #include <playrho/ContactKey.hpp>
-#include <playrho/Filter.hpp>
 #include <playrho/JointFunction.hpp>
 #include <playrho/JointID.hpp>
+#include <playrho/Interval.hpp>
 #include <playrho/Island.hpp>
 #include <playrho/IslandStats.hpp>
 #include <playrho/KeyedContactID.hpp>
 #include <playrho/ObjectPool.hpp>
 #include <playrho/Positive.hpp>
+#include <playrho/Real.hpp>
+#include <playrho/Settings.hpp>
 #include <playrho/ShapeFunction.hpp>
 #include <playrho/ShapeID.hpp>
+#include <playrho/Span.hpp>
 #include <playrho/StepStats.hpp>
+#include <playrho/Units.hpp>
+#include <playrho/Vector2.hpp>
+#include <playrho/ZeroToUnderOne.hpp>
 
+#include <playrho/pmr/MemoryResource.hpp>
 #include <playrho/pmr/PoolMemoryResource.hpp>
 #include <playrho/pmr/StatsResource.hpp>
 
@@ -58,8 +64,7 @@
 #include <playrho/d2/ContactImpulsesFunction.hpp>
 #include <playrho/d2/ContactManifoldFunction.hpp>
 #include <playrho/d2/DynamicTree.hpp>
-#include <playrho/d2/MassData.hpp>
-#include <playrho/d2/Math.hpp>
+#include <playrho/d2/Transformation.hpp>
 #include <playrho/d2/WorldConf.hpp>
 
 namespace playrho {
@@ -1036,6 +1041,7 @@ inline const JointIDs& GetJoints(const AabbTreeWorld& world) noexcept
 
 inline KeyedContactIDs GetContacts(const AabbTreeWorld& world)
 {
+    using std::begin, std::end;
     return KeyedContactIDs{begin(world.m_contacts), end(world.m_contacts)};
 }
 

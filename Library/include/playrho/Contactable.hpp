@@ -24,6 +24,8 @@
 /// @file
 /// @brief Definition of the <code>Contactable</code> class and closely related code.
 
+#include <type_traits> // for std::is_nothrow_default_constructible_v, etc
+
 #include <playrho/Settings.hpp> // for ChildCounter
 #include <playrho/ShapeID.hpp>
 #include <playrho/BodyID.hpp>

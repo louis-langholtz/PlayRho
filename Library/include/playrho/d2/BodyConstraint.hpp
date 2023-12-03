@@ -29,8 +29,11 @@
 
 #include <playrho/MovementConf.hpp>
 #include <playrho/Units.hpp>
+#include <playrho/Vector2.hpp> // for Length2
 
 #include <playrho/d2/Body.hpp> // for GetInvMass & other Body helpers
+#include <playrho/d2/Position.hpp>
+#include <playrho/d2/Velocity.hpp>
 
 namespace playrho::d2 {
 

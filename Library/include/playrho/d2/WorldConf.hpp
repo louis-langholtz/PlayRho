@@ -24,9 +24,12 @@
 /// @file
 /// @brief Declarations of the @c WorldConf class.
 
+#include <cstdint> // for std::uint8_t
+
 #include <playrho/Interval.hpp>
 #include <playrho/Positive.hpp>
 #include <playrho/Settings.hpp>
+#include <playrho/Units.hpp>
 
 #include <playrho/pmr/MemoryResource.hpp> // for pmr things
 

@@ -28,15 +28,18 @@
 /// @brief Definition of the @c Joint class and closely related code.
 
 #include <memory> // for std::unique_ptr
-#include <vector>
 #include <utility> // for std::move, std::forward
-#include <stdexcept> // for std::bad_cast
+#include <typeinfo> // for std::bad_cast
 #include <type_traits> // for std::void_t, std::add_pointer_t, etc.
 
 #include <playrho/BodyID.hpp>
 #include <playrho/LimitState.hpp>
+#include <playrho/Real.hpp>
+#include <playrho/Span.hpp>
 #include <playrho/Templates.hpp> // for DecayedTypeIfNotSame
 #include <playrho/TypeInfo.hpp> // for GetTypeID
+#include <playrho/Units.hpp>
+#include <playrho/Vector2.hpp>
 
 #include <playrho/d2/UnitVec.hpp>
 

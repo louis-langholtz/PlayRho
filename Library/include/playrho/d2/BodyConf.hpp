@@ -27,10 +27,13 @@
 
 #include <playrho/BodyType.hpp>
 #include <playrho/NonNegative.hpp>
-#include <playrho/Settings.hpp>
 #include <playrho/ShapeID.hpp>
+#include <playrho/Units.hpp>
+#include <playrho/Vector2.hpp>
 
-#include <playrho/d2/Math.hpp>
+#include <playrho/d2/Position.hpp>
+#include <playrho/d2/Transformation.hpp>
+#include <playrho/d2/Velocity.hpp>
 
 namespace playrho::d2 {
 

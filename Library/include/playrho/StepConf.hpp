@@ -29,7 +29,9 @@
 
 #include <playrho/NonNegative.hpp>
 #include <playrho/Positive.hpp>
+#include <playrho/Real.hpp>
 #include <playrho/Settings.hpp>
+#include <playrho/Units.hpp>
 
 namespace playrho {
 

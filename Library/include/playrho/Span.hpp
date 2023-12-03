@@ -26,13 +26,11 @@
 
 #include <cstddef>
 #include <cassert>
-#include <iterator>
+#include <initializer_list>
 #include <type_traits>
 #include <utility> // for std::forward
-#include <vector>
 
-#include <playrho/Defines.hpp>
-#include <playrho/Templates.hpp>
+#include <playrho/detail/Templates.hpp>
 
 namespace playrho {
 

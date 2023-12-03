@@ -24,6 +24,8 @@
 /// @file
 /// @brief Aliases for checked finite types.
 
+#include <type_traits> // for std::is_default_constructible_v
+
 #include <playrho/detail/Checked.hpp>
 #include <playrho/detail/FiniteChecker.hpp>
 

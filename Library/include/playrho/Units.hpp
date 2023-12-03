@@ -41,6 +41,7 @@
 #include <cmath>
 #include <type_traits>
 
+#include <playrho/Real.hpp>
 #include <playrho/RealConstants.hpp>
 #include <playrho/Templates.hpp>
 
