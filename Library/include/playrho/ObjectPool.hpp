@@ -217,7 +217,27 @@ public:
     /// @brief Hidden friend operator equality support.
     friend bool operator==(const ObjectPool& lhs, const ObjectPool& rhs) noexcept
     {
-        return (lhs.m_data == rhs.m_data) && (lhs.m_free == rhs.m_free);
+        const auto size = std::min(lhs.size(), rhs.size());
+        for (auto i = size_type(0); i < size; ++i) {
+            if (lhs[i] != rhs[i]) {
+                return false;
+            }
+        }
+        if (lhs.size() > rhs.size()) {
+            for (auto i = size; i < lhs.size(); ++i) {
+                if (std::find(lhs.m_free.begin(), lhs.m_free.end(), i) == lhs.m_free.end()) {
+                    return false;
+                }
+            }
+        }
+        else if (lhs.size() < rhs.size()) {
+            for (auto i = size; i < rhs.size(); ++i) {
+                if (std::find(rhs.m_free.begin(), rhs.m_free.end(), i) == rhs.m_free.end()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /// @brief Hidden friend operator inequality support.
