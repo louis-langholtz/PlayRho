@@ -61,10 +61,6 @@ file(GLOB Testbed_Tests_SRCS
 	"Tests/*.hpp"
 )
 
-# These are used to create visual studio folders.
-source_group(Framework FILES ${Testbed_Framework_SRCS} ${IMGUI_PREFIXED_SRCS})
-source_group(Tests FILES ${Testbed_Tests_SRCS})
-
 if(APPLE)
 	find_library(COCOA_LIBRARY Cocoa)
 	find_library(COREFOUNDATION_LIBRARY CoreFoundation)
