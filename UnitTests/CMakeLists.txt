@@ -51,11 +51,12 @@ else()
 	FetchContent_MakeAvailable(googletest)
 endif()
 
+file(GLOB UnitTest_HDRS *.hpp)
 file(GLOB UnitTest_SRCS *.cpp)
 
 # Add an executable to the project using specified source files.
 # See details at: https://cmake.org/cmake/help/v3.1/command/add_executable.html
-add_executable(UnitTests ${UnitTest_SRCS})
+add_executable(UnitTests ${UnitTest_SRCS} ${UnitTest_HDRS})
 
 # enable code coverage generation (only with GCC for now)
 if(${PLAYRHO_ENABLE_COVERAGE})
