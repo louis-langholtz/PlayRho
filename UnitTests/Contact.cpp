@@ -18,9 +18,17 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "UnitTests.hpp"
+#include "gtest/gtest.h"
 
+#include <optional>
+
+#include <playrho/BodyID.hpp>
 #include <playrho/Contact.hpp>
+#include <playrho/Contactable.hpp>
+#include <playrho/Real.hpp>
+#include <playrho/Settings.hpp>
+#include <playrho/ShapeID.hpp>
+#include <playrho/Units.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -274,4 +282,79 @@ TEST(Contact, Equality)
     EXPECT_FALSE(Contact() ==
                  Contact(Contactable{BodyID(0u), ShapeID(0u), ChildCounter(1u)},
                          Contact::DefaultContactable));
+}
+
+TEST(Contact, Inequality)
+{
+    EXPECT_FALSE(Contact() != Contact());
+    EXPECT_FALSE(Contact() != Contact(Contact::DefaultContactable, Contact::DefaultContactable));
+    {
+        auto c = Contact();
+        c.SetTouching();
+        EXPECT_TRUE(Contact() != c);
+    }
+    {
+        auto c = Contact();
+        c.SetEnabled();
+        EXPECT_TRUE(Contact() != c);
+    }
+    {
+        auto c = Contact();
+        c.SetFriction(NonNegative<Real>(2));
+        EXPECT_TRUE(Contact() != c);
+    }
+    {
+        auto c = Contact();
+        c.SetRestitution(Real(42));
+        EXPECT_TRUE(Contact() != c);
+    }
+    {
+        auto c = Contact();
+        c.SetTangentSpeed(42_mps);
+        EXPECT_TRUE(Contact() != c);
+    }
+    {
+        auto c = Contact();
+        c.SetToiCount(42u);
+        EXPECT_TRUE(Contact() != c);
+    }
+    {
+        auto c = Contact();
+        c.SetToi(std::optional<UnitIntervalFF<Real>>(0.5));
+        EXPECT_TRUE(Contact() != c);
+    }
+    {
+        auto c = Contact();
+        c.FlagForFiltering();
+        EXPECT_TRUE(Contact() != c);
+    }
+    {
+        auto c = Contact();
+        c.FlagForUpdating();
+        EXPECT_TRUE(Contact() != c);
+    }
+    {
+        auto c = Contact();
+        c.SetSensor();
+        EXPECT_TRUE(Contact() != c);
+    }
+    {
+        auto c = Contact();
+        c.SetImpenetrable();
+        EXPECT_TRUE(Contact() != c);
+    }
+    {
+        auto c = Contact();
+        c.SetIsActive();
+        EXPECT_TRUE(Contact() != c);
+    }
+    EXPECT_TRUE(Contact() !=
+                Contact(Contactable{BodyID(1u), ShapeID(0u), ChildCounter(0u)},
+                        Contact::DefaultContactable));
+    EXPECT_TRUE(Contact() !=
+                Contact(Contactable{BodyID(0u), ShapeID(1u), ChildCounter(0u)},
+                        Contact::DefaultContactable));
+    EXPECT_TRUE(Contact() !=
+                Contact(Contactable{BodyID(0u), ShapeID(0u), ChildCounter(1u)},
+                        Contact::DefaultContactable));
 }
