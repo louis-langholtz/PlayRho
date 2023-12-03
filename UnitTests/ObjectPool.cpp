@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "UnitTests.hpp"
+#include "gtest/gtest.h"
 
 #include <playrho/ObjectPool.hpp>
 
@@ -150,4 +150,60 @@ TEST(ObjectPool, usedFreeFunction)
     EXPECT_EQ(used(object), 2u);
     ASSERT_NO_THROW(object.Free(0u));
     EXPECT_EQ(used(object), 1u);
+}
+
+TEST(ObjectPool, EqualityInequality)
+{
+    EXPECT_TRUE(ObjectPool<int>() == ObjectPool<int>());
+    EXPECT_FALSE(ObjectPool<int>() != ObjectPool<int>());
+    {
+        ObjectPool<int> object;
+        EXPECT_TRUE(object == ObjectPool<int>());
+        EXPECT_FALSE(object != ObjectPool<int>());
+        auto index = object.Allocate(1);
+        EXPECT_FALSE(object == ObjectPool<int>());
+        EXPECT_TRUE(object != ObjectPool<int>());
+        object.Free(index);
+        EXPECT_TRUE(object == ObjectPool<int>());
+        EXPECT_FALSE(object != ObjectPool<int>());
+    }
+    {
+        ObjectPool<int> object;
+        EXPECT_TRUE(object == ObjectPool<int>());
+        const auto index0 = object.Allocate(1);
+        EXPECT_FALSE(object == ObjectPool<int>());
+        const auto index1 = object.Allocate(2);
+        EXPECT_FALSE(object == ObjectPool<int>());
+        object.Free(index0);
+        EXPECT_FALSE(object == ObjectPool<int>());
+        object.Free(index1);
+        EXPECT_TRUE(object == ObjectPool<int>());
+    }
+    {
+        ObjectPool<int> object;
+        EXPECT_TRUE(object == ObjectPool<int>());
+        const auto index0 = object.Allocate(1);
+        EXPECT_FALSE(object == ObjectPool<int>());
+        const auto index1 = object.Allocate(2);
+        EXPECT_FALSE(object == ObjectPool<int>());
+        object.Free(index1);
+        EXPECT_FALSE(object == ObjectPool<int>());
+        object.Free(index0);
+        EXPECT_TRUE(object == ObjectPool<int>());
+    }
+    {
+        ObjectPool<int> objectA;
+        ObjectPool<int> objectB;
+        EXPECT_TRUE(objectA == objectB);
+        const auto indexA0 = objectA.Allocate(1);
+        EXPECT_FALSE(objectA == objectB);
+        const auto indexB0 = objectB.Allocate(2);
+        EXPECT_FALSE(objectA == objectB);
+        objectB[indexB0] = 1;
+        EXPECT_TRUE(objectA == objectB);
+        objectA.Free(indexA0);
+        EXPECT_FALSE(objectA == objectB);
+        objectB.Free(indexB0);
+        EXPECT_TRUE(objectA == objectB);
+    }
 }
