@@ -260,6 +260,12 @@ set(PLAYRHO_D2_PART_SRCS
 	"${PLAYRHO_SOURCE_PREFIX}d2/part/Compositor.cpp"
 	)
 
+set(libhdr
+	${PLAYRHO_General_HDRS}
+	${PLAYRHO_PMR_HDRS}
+	${PLAYRHO_D2_HDRS}
+	${PLAYRHO_D2_PART_HDRS}
+	)
 set(libsrc
 	${PLAYRHO_General_SRCS}
 	${PLAYRHO_PMR_SRCS}
@@ -269,9 +275,9 @@ set(libsrc
 
 if(PLAYRHO_BUILD_SHARED)
 	set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-	add_library(PlayRho SHARED ${libsrc})
+	add_library(PlayRho SHARED ${libsrc} ${libhdr})
 else()
-	add_library(PlayRho STATIC ${libsrc})
+	add_library(PlayRho STATIC ${libsrc} ${libhdr})
 	target_compile_definitions(PlayRho PUBLIC -DPLAYRHO_STATIC_DEFINE)
 endif()
 add_library(PlayRho::PlayRho ALIAS PlayRho)
@@ -311,11 +317,6 @@ target_compile_options(PlayRho PRIVATE
 if(PLAYRHO_REAL_PROJECT)
 	target_link_libraries(PlayRho ${PLAYRHO_REAL_PROJECT}::${PLAYRHO_REAL_PROJECT})
 endif()
-
-# These are used to create visual studio folders.
-source_group(Include FILES ${PLAYRHO_General_HDRS} ${PLAYRHO_GeneralCfg_HDRS})
-source_group(General FILES ${PLAYRHO_General_SRCS} ${PLAYRHO_GeneralCfg_HDRS} ${PLAYRHO_General_HDRS})
-source_group(Detail FILES ${PLAYRHO_DETAIL_HDRS})
 
 if(PLAYRHO_INSTALL)
 	include(GNUInstallDirs)
