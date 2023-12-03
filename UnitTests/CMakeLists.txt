@@ -4,13 +4,13 @@
 
 message(STATUS "PROJECT_VERSION=${PROJECT_VERSION}")
 if(NOT PlayRho_VERSION_MAJOR)
-	set(PlayRho_VERSION_MAJOR 0)
+    set(PlayRho_VERSION_MAJOR 0)
 endif()
 if(NOT PlayRho_VERSION_MINOR)
-	set(PlayRho_VERSION_MINOR 0)
+    set(PlayRho_VERSION_MINOR 0)
 endif()
 if(NOT PlayRho_VERSION_PATCH)
-	set(PlayRho_VERSION_PATCH 0)
+    set(PlayRho_VERSION_PATCH 0)
 endif()
 message(STATUS "UnitTests PlayRho_VERSION_MAJOR=${PlayRho_VERSION_MAJOR}")
 message(STATUS "UnitTests PlayRho_VERSION_MINOR=${PlayRho_VERSION_MINOR}")
@@ -39,16 +39,16 @@ set(BUILD_SHARED_LIBS OFF)
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest")
-	add_subdirectory(googletest EXCLUDE_FROM_ALL)
+    add_subdirectory(googletest EXCLUDE_FROM_ALL)
 else()
-	include(FetchContent)
-	message(STATUS "Attempting to fetch googletest source code.")
-	FetchContent_Declare(
-		googletest
-		GIT_REPOSITORY https://github.com/google/googletest.git
-		GIT_TAG 391ce627def20c1e8a54d10b12949b15086473dd
-	)
-	FetchContent_MakeAvailable(googletest)
+    include(FetchContent)
+    message(STATUS "Attempting to fetch googletest source code.")
+    FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG 391ce627def20c1e8a54d10b12949b15086473dd
+    )
+    FetchContent_MakeAvailable(googletest)
 endif()
 
 file(GLOB UnitTest_HDRS *.hpp)
@@ -85,8 +85,8 @@ include(GoogleTest)
 gtest_discover_tests(UnitTests)
 
 if(PLAYRHO_INSTALL)
-	include(GNUInstallDirs)
-	install(TARGETS UnitTests
-	        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-		COMPONENT Applications)
+    include(GNUInstallDirs)
+    install(TARGETS UnitTests
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        COMPONENT Applications)
 endif()

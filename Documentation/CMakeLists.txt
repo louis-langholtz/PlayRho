@@ -27,19 +27,19 @@ set(DOXYGEN_FILE_PATTERNS "*.cpp;*.hpp")
 set(DOXYGEN_ENABLE_PREPROCESSING YES)
 
 if(PLAYRHO_ENABLE_BOOST_UNITS)
-	set(DOXYGEN_PREDEFINED "PLAYRHO_USE_BOOST_UNITS")
+    set(DOXYGEN_PREDEFINED "PLAYRHO_USE_BOOST_UNITS")
 endif()
 
 doxygen_add_docs(Documentation
-	"${CMAKE_SOURCE_DIR}/Library"
-	ALL
-	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/Documentation"
-	COMMENT "Generating API documentation with Doxygen"
+    "${CMAKE_SOURCE_DIR}/Library"
+    ALL
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/Documentation"
+    COMMENT "Generating API documentation with Doxygen"
 )
 
 if(PLAYRHO_INSTALL)
-	include(GNUInstallDirs)
-	install(DIRECTORY "${CMAKE_BINARY_DIR}/Documentation/API/html/"
-		DESTINATION "${CMAKE_INSTALL_DOCDIR}/API"
-		COMPONENT Documentation)
+    include(GNUInstallDirs)
+    install(DIRECTORY "${CMAKE_BINARY_DIR}/Documentation/API/html/"
+        DESTINATION "${CMAKE_INSTALL_DOCDIR}/API"
+        COMPONENT Documentation)
 endif()

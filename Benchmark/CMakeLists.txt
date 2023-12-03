@@ -18,16 +18,16 @@ set(BENCHMARK_ENABLE_INSTALL OFF CACHE BOOL "Enable installation of the benchmar
 set(BENCHMARK_INSTALL_DOCS OFF CACHE BOOL "Enable installation of docs.")
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/googlebench/src")
-	add_subdirectory(googlebench)
+    add_subdirectory(googlebench)
 else()
-	include(FetchContent)
-	message(STATUS "Attempting to fetch googlebench source code.")
-	FetchContent_Declare(
-		googlebench
-		GIT_REPOSITORY https://github.com/google/benchmark.git
-		GIT_TAG 0ce66c00f5e41ba7480e3ad6b6673d5b94abf412
-	)
-	FetchContent_MakeAvailable(googlebench)
+    include(FetchContent)
+    message(STATUS "Attempting to fetch googlebench source code.")
+    FetchContent_Declare(
+        googlebench
+        GIT_REPOSITORY https://github.com/google/benchmark.git
+        GIT_TAG 0ce66c00f5e41ba7480e3ad6b6673d5b94abf412
+    )
+    FetchContent_MakeAvailable(googlebench)
 endif()
 
 file(GLOB Benchmark_SRCS *.cpp)
@@ -50,8 +50,8 @@ if(${PLAYRHO_ENABLE_COVERAGE})
 endif()
 
 if(PLAYRHO_INSTALL)
-	include(GNUInstallDirs)
-	install(TARGETS Benchmark
-	        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-	        COMPONENT Applications)
+    include(GNUInstallDirs)
+    install(TARGETS Benchmark
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+            COMPONENT Applications)
 endif()

@@ -13,8 +13,8 @@ if(${PLAYRHO_ENABLE_COVERAGE})
 endif()
 
 if(PLAYRHO_INSTALL)
-	include(GNUInstallDirs)
-	install(TARGETS HelloWorld
-	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-	COMPONENT Applications)
+    include(GNUInstallDirs)
+    install(TARGETS HelloWorld
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    COMPONENT Applications)
 endif()
