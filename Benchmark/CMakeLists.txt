@@ -30,7 +30,8 @@ else()
     FetchContent_MakeAvailable(googlebench)
 endif()
 
-file(GLOB Benchmark_SRCS *.cpp)
+set(Benchmark_SRCS
+    BenchmarkMain.cpp)
 
 # Add an executable to the project using specified source files.
 # See details at: https://cmake.org/cmake/help/v3.1/command/add_executable.html

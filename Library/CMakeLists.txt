@@ -68,197 +68,281 @@ add_compile_definitions(PLAYRHO_VERSION_MAJOR=${PlayRho_VERSION_MAJOR})
 add_compile_definitions(PLAYRHO_VERSION_MINOR=${PlayRho_VERSION_MINOR})
 add_compile_definitions(PLAYRHO_VERSION_PATCH=${PlayRho_VERSION_PATCH})
 
-set(PLAYRHO_INCLUDE_PREFIX "include/playrho/")
-set(PLAYRHO_SOURCE_PREFIX "source/playrho/")
+# /bin/ls -1 include/playrho/*.hpp
+set(PLAYRHO_General_HDRS
+    include/playrho/ArrayList.hpp
+    include/playrho/BlockAllocator.hpp
+    include/playrho/BodyID.hpp
+    include/playrho/BodyShapeFunction.hpp
+    include/playrho/BodyType.hpp
+    include/playrho/ConstraintSolverConf.hpp
+    include/playrho/Contact.hpp
+    include/playrho/ContactFeature.hpp
+    include/playrho/ContactFunction.hpp
+    include/playrho/ContactID.hpp
+    include/playrho/ContactKey.hpp
+    include/playrho/Contactable.hpp
+    include/playrho/Defines.hpp
+    include/playrho/Doxygen.hpp
+    include/playrho/DynamicMemory.hpp
+    include/playrho/Filter.hpp
+    include/playrho/Finite.hpp
+    include/playrho/FlagGuard.hpp
+    include/playrho/GrowableStack.hpp
+    include/playrho/Interval.hpp
+    include/playrho/Intervals.hpp
+    include/playrho/InvalidArgument.hpp
+    include/playrho/Island.hpp
+    include/playrho/IslandStats.hpp
+    include/playrho/JointFunction.hpp
+    include/playrho/JointID.hpp
+    include/playrho/KeyedContactID.hpp
+    include/playrho/LengthError.hpp
+    include/playrho/LimitState.hpp
+    include/playrho/Math.hpp
+    include/playrho/Matrix.hpp
+    include/playrho/MovementConf.hpp
+    include/playrho/Negative.hpp
+    include/playrho/NonNegative.hpp
+    include/playrho/NonPositive.hpp
+    include/playrho/NonZero.hpp
+    include/playrho/ObjectPool.hpp
+    include/playrho/PointState.hpp
+    include/playrho/Positive.hpp
+    include/playrho/RayCastOpcode.hpp
+    include/playrho/Real.hpp
+    include/playrho/RealConstants.hpp
+    include/playrho/Settings.hpp
+    include/playrho/ShapeFunction.hpp
+    include/playrho/ShapeID.hpp
+    include/playrho/Span.hpp
+    include/playrho/StackAllocator.hpp
+    include/playrho/StepConf.hpp
+    include/playrho/StepStats.hpp
+    include/playrho/Templates.hpp
+    include/playrho/ToiConf.hpp
+    include/playrho/ToiOutput.hpp
+    include/playrho/TypeInfo.hpp
+    include/playrho/UnitInterval.hpp
+    include/playrho/Units.hpp
+    include/playrho/Vector.hpp
+    include/playrho/Vector2.hpp
+    include/playrho/Vector3.hpp
+    include/playrho/Version.hpp
+    include/playrho/WiderType.hpp
+    include/playrho/WrongState.hpp
+    include/playrho/ZeroToUnderOne.hpp
+    include/playrho/to_underlying.hpp
+)
 
-file(GLOB PLAYRHO_General_SRCS "${PLAYRHO_SOURCE_PREFIX}*.cpp")
-file(GLOB PLAYRHO_General_HDRS "${PLAYRHO_INCLUDE_PREFIX}*.hpp")
+# /bin/ls -1 source/playrho/*.cpp
+set(PLAYRHO_General_SRCS
+    source/playrho/BlockAllocator.cpp
+    source/playrho/ConstraintSolverConf.cpp
+    source/playrho/Contact.cpp
+    source/playrho/DynamicMemory.cpp
+    source/playrho/Island.cpp
+    source/playrho/LimitState.cpp
+    source/playrho/Math.cpp
+    source/playrho/MovementConf.cpp
+    source/playrho/StackAllocator.cpp
+    source/playrho/StepConf.cpp
+    source/playrho/StepStats.cpp
+    source/playrho/ToiConf.cpp
+    source/playrho/ToiOutput.cpp
+    source/playrho/Version.cpp
+)
 
+# /bin/ls -1 include/playrho/detail/*.hpp
 set(PLAYRHO_DETAIL_HDRS
-    "${PLAYRHO_INCLUDE_PREFIX}detail/AABB.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}detail/Checked.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}detail/CheckedMath.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}detail/FiniteChecker.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}detail/IndexingNamedType.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}detail/NegativeChecker.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}detail/NonNegativeChecker.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}detail/NonPositiveChecker.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}detail/NonZeroChecker.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}detail/PositiveChecker.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}detail/RayCastInput.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}detail/Templates.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}detail/TypeInfo.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}detail/UnitIntervalChecker.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}detail/underlying_type.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}detail/Wider.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}detail/ZeroToUnderOneChecker.hpp"
-    )
+    include/playrho/detail/AABB.hpp
+    include/playrho/detail/Checked.hpp
+    include/playrho/detail/CheckedMath.hpp
+    include/playrho/detail/FiniteChecker.hpp
+    include/playrho/detail/IndexingNamedType.hpp
+    include/playrho/detail/NegativeChecker.hpp
+    include/playrho/detail/NonNegativeChecker.hpp
+    include/playrho/detail/NonPositiveChecker.hpp
+    include/playrho/detail/NonZeroChecker.hpp
+    include/playrho/detail/PositiveChecker.hpp
+    include/playrho/detail/RayCastInput.hpp
+    include/playrho/detail/Templates.hpp
+    include/playrho/detail/TypeInfo.hpp
+    include/playrho/detail/UnitIntervalChecker.hpp
+    include/playrho/detail/Wider.hpp
+    include/playrho/detail/ZeroToUnderOneChecker.hpp
+    include/playrho/detail/underlying_type.hpp
+)
 
-configure_file("${PLAYRHO_INCLUDE_PREFIX}Defines.hpp.in" "${PLAYRHO_INCLUDE_PREFIX}Defines.hpp" @ONLY)
-configure_file("${PLAYRHO_INCLUDE_PREFIX}Real.hpp.in" "${PLAYRHO_INCLUDE_PREFIX}Real.hpp" @ONLY)
-configure_file("${PLAYRHO_INCLUDE_PREFIX}Settings.hpp.in" "${PLAYRHO_INCLUDE_PREFIX}Settings.hpp" @ONLY)
+configure_file(include/playrho/Defines.hpp.in include/playrho/Defines.hpp @ONLY)
+configure_file(include/playrho/Real.hpp.in include/playrho/Real.hpp @ONLY)
+configure_file(include/playrho/Settings.hpp.in include/playrho/Settings.hpp @ONLY)
 set(PLAYRHO_GeneralCfg_HDRS
-    "${CMAKE_CURRENT_BINARY_DIR}/${PLAYRHO_INCLUDE_PREFIX}Defines.hpp"
-    "${CMAKE_CURRENT_BINARY_DIR}/${PLAYRHO_INCLUDE_PREFIX}Real.hpp"
-    "${CMAKE_CURRENT_BINARY_DIR}/${PLAYRHO_INCLUDE_PREFIX}Settings.hpp"
-    )
+    "${CMAKE_CURRENT_BINARY_DIR}/include/playrho/Defines.hpp"
+    "${CMAKE_CURRENT_BINARY_DIR}/include/playrho/Real.hpp"
+    "${CMAKE_CURRENT_BINARY_DIR}/include/playrho/Settings.hpp"
+)
 
+# /bin/ls -1 include/playrho/pmr/*.hpp
 set(PLAYRHO_PMR_HDRS
-    "${PLAYRHO_INCLUDE_PREFIX}pmr/MemoryResource.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}pmr/PoolMemoryResource.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}pmr/StatsResource.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}pmr/ThreadLocalAllocator.hpp"
-    )
+    include/playrho/pmr/MemoryResource.hpp
+    include/playrho/pmr/PoolMemoryResource.hpp
+    include/playrho/pmr/StatsResource.hpp
+    include/playrho/pmr/ThreadLocalAllocator.hpp
+)
+# /bin/ls -1 source/playrho/pmr/*.cpp
 set(PLAYRHO_PMR_SRCS
-    "${PLAYRHO_SOURCE_PREFIX}pmr/MemoryResource.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}pmr/PoolMemoryResource.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}pmr/StatsResource.cpp"
-    )
+    source/playrho/pmr/MemoryResource.cpp
+    source/playrho/pmr/PoolMemoryResource.cpp
+    source/playrho/pmr/StatsResource.cpp
+)
+# /bin/ls -1 include/playrho/d2/*.hpp
 set(PLAYRHO_D2_HDRS
-    "${PLAYRHO_INCLUDE_PREFIX}d2/AABB.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/AabbTreeWorld.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/AabbTreeWorldBody.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/Acceleration.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/BasicAPI.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/Body.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/BodyConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/BodyConstraint.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/ChainShapeConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/ClipList.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/CodeDumper.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/ContactImpulsesFunction.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/ContactImpulsesList.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/ContactManifoldFunction.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/ContactSolver.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/ConvexHull.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/DiskShapeConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/Distance.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/DistanceConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/DistanceJointConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/DistanceProxy.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/DynamicTree.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/DynamicTreeData.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/EdgeShapeConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/FrictionJointConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/GearJointConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/IndexPair.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/Joint.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/JointConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/Manifold.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/MassData.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/Math.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/MotorJointConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/MultiShapeConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/NgonWithFwdNormals.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/PointStates.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/PolygonShapeConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/Position.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/PositionConstraint.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/PositionSolution.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/PositionSolverManifold.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/PrismaticJointConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/PulleyJointConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/RayCastInput.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/RayCastOutput.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/RevoluteJointConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/RopeJointConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/SeparationScenario.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/Shape.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/ShapeConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/ShapeSeparation.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/Simplex.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/SimplexEdge.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/Sweep.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/TargetJointConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/TimeOfImpact.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/Transformation.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/UnitVec.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/Velocity.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/VelocityConstraint.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/VertexSet.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/WeldJointConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/WheelJointConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/World.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/WorldBody.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/WorldConf.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/WorldContact.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/WorldJoint.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/WorldManifold.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/WorldMisc.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/WorldShape.hpp"
-    )
+    include/playrho/d2/AABB.hpp
+    include/playrho/d2/AabbTreeWorld.hpp
+    include/playrho/d2/AabbTreeWorldBody.hpp
+    include/playrho/d2/Acceleration.hpp
+    include/playrho/d2/BasicAPI.hpp
+    include/playrho/d2/Body.hpp
+    include/playrho/d2/BodyConf.hpp
+    include/playrho/d2/BodyConstraint.hpp
+    include/playrho/d2/ChainShapeConf.hpp
+    include/playrho/d2/ClipList.hpp
+    include/playrho/d2/CodeDumper.hpp
+    include/playrho/d2/ContactImpulsesFunction.hpp
+    include/playrho/d2/ContactImpulsesList.hpp
+    include/playrho/d2/ContactManifoldFunction.hpp
+    include/playrho/d2/ContactSolver.hpp
+    include/playrho/d2/ConvexHull.hpp
+    include/playrho/d2/DiskShapeConf.hpp
+    include/playrho/d2/Distance.hpp
+    include/playrho/d2/DistanceConf.hpp
+    include/playrho/d2/DistanceJointConf.hpp
+    include/playrho/d2/DistanceProxy.hpp
+    include/playrho/d2/DynamicTree.hpp
+    include/playrho/d2/DynamicTreeData.hpp
+    include/playrho/d2/EdgeShapeConf.hpp
+    include/playrho/d2/FrictionJointConf.hpp
+    include/playrho/d2/GearJointConf.hpp
+    include/playrho/d2/IndexPair.hpp
+    include/playrho/d2/Joint.hpp
+    include/playrho/d2/JointConf.hpp
+    include/playrho/d2/Manifold.hpp
+    include/playrho/d2/MassData.hpp
+    include/playrho/d2/Math.hpp
+    include/playrho/d2/MotorJointConf.hpp
+    include/playrho/d2/MultiShapeConf.hpp
+    include/playrho/d2/NgonWithFwdNormals.hpp
+    include/playrho/d2/PointStates.hpp
+    include/playrho/d2/PolygonShapeConf.hpp
+    include/playrho/d2/Position.hpp
+    include/playrho/d2/PositionConstraint.hpp
+    include/playrho/d2/PositionSolution.hpp
+    include/playrho/d2/PositionSolverManifold.hpp
+    include/playrho/d2/PrismaticJointConf.hpp
+    include/playrho/d2/PulleyJointConf.hpp
+    include/playrho/d2/RayCastInput.hpp
+    include/playrho/d2/RayCastOutput.hpp
+    include/playrho/d2/RevoluteJointConf.hpp
+    include/playrho/d2/RopeJointConf.hpp
+    include/playrho/d2/SeparationScenario.hpp
+    include/playrho/d2/Shape.hpp
+    include/playrho/d2/ShapeConf.hpp
+    include/playrho/d2/ShapeSeparation.hpp
+    include/playrho/d2/Simplex.hpp
+    include/playrho/d2/SimplexEdge.hpp
+    include/playrho/d2/Sweep.hpp
+    include/playrho/d2/TargetJointConf.hpp
+    include/playrho/d2/TimeOfImpact.hpp
+    include/playrho/d2/Transformation.hpp
+    include/playrho/d2/UnitVec.hpp
+    include/playrho/d2/Velocity.hpp
+    include/playrho/d2/VelocityConstraint.hpp
+    include/playrho/d2/VertexSet.hpp
+    include/playrho/d2/WeldJointConf.hpp
+    include/playrho/d2/WheelJointConf.hpp
+    include/playrho/d2/World.hpp
+    include/playrho/d2/WorldBody.hpp
+    include/playrho/d2/WorldConf.hpp
+    include/playrho/d2/WorldContact.hpp
+    include/playrho/d2/WorldJoint.hpp
+    include/playrho/d2/WorldManifold.hpp
+    include/playrho/d2/WorldMisc.hpp
+    include/playrho/d2/WorldShape.hpp
+)
+# /bin/ls -1 source/playrho/d2/*.cpp
 set(PLAYRHO_D2_SRCS
-    "${PLAYRHO_SOURCE_PREFIX}d2/AABB.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/AabbTreeWorld.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/AabbTreeWorldBody.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/Body.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/BodyConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/ChainShapeConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/ClipList.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/CodeDumper.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/ContactImpulsesList.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/ContactSolver.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/ConvexHull.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/DiskShapeConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/Distance.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/DistanceConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/DistanceJointConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/DistanceProxy.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/DynamicTree.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/EdgeShapeConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/FrictionJointConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/GearJointConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/Joint.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/JointConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/Manifold.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/MassData.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/Math.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/MotorJointConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/MultiShapeConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/PointStates.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/PolygonShapeConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/PositionSolverManifold.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/PrismaticJointConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/PulleyJointConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/RayCastOutput.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/RevoluteJointConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/RopeJointConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/SeparationScenario.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/Shape.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/ShapeSeparation.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/Simplex.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/Sweep.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/TargetJointConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/TimeOfImpact.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/UnitVec.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/Velocity.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/VelocityConstraint.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/WeldJointConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/WheelJointConf.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/World.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/WorldBody.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/WorldContact.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/WorldJoint.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/WorldManifold.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/WorldMisc.cpp"
-    "${PLAYRHO_SOURCE_PREFIX}d2/WorldShape.cpp"
-    )
+    source/playrho/d2/AABB.cpp
+    source/playrho/d2/AabbTreeWorld.cpp
+    source/playrho/d2/AabbTreeWorldBody.cpp
+    source/playrho/d2/Body.cpp
+    source/playrho/d2/BodyConf.cpp
+    source/playrho/d2/ChainShapeConf.cpp
+    source/playrho/d2/ClipList.cpp
+    source/playrho/d2/CodeDumper.cpp
+    source/playrho/d2/ContactImpulsesList.cpp
+    source/playrho/d2/ContactSolver.cpp
+    source/playrho/d2/ConvexHull.cpp
+    source/playrho/d2/DiskShapeConf.cpp
+    source/playrho/d2/Distance.cpp
+    source/playrho/d2/DistanceConf.cpp
+    source/playrho/d2/DistanceJointConf.cpp
+    source/playrho/d2/DistanceProxy.cpp
+    source/playrho/d2/DynamicTree.cpp
+    source/playrho/d2/EdgeShapeConf.cpp
+    source/playrho/d2/FrictionJointConf.cpp
+    source/playrho/d2/GearJointConf.cpp
+    source/playrho/d2/Joint.cpp
+    source/playrho/d2/JointConf.cpp
+    source/playrho/d2/Manifold.cpp
+    source/playrho/d2/MassData.cpp
+    source/playrho/d2/Math.cpp
+    source/playrho/d2/MotorJointConf.cpp
+    source/playrho/d2/MultiShapeConf.cpp
+    source/playrho/d2/PointStates.cpp
+    source/playrho/d2/PolygonShapeConf.cpp
+    source/playrho/d2/PositionSolverManifold.cpp
+    source/playrho/d2/PrismaticJointConf.cpp
+    source/playrho/d2/PulleyJointConf.cpp
+    source/playrho/d2/RayCastOutput.cpp
+    source/playrho/d2/RevoluteJointConf.cpp
+    source/playrho/d2/RopeJointConf.cpp
+    source/playrho/d2/SeparationScenario.cpp
+    source/playrho/d2/Shape.cpp
+    source/playrho/d2/ShapeSeparation.cpp
+    source/playrho/d2/Simplex.cpp
+    source/playrho/d2/Sweep.cpp
+    source/playrho/d2/TargetJointConf.cpp
+    source/playrho/d2/TimeOfImpact.cpp
+    source/playrho/d2/UnitVec.cpp
+    source/playrho/d2/Velocity.cpp
+    source/playrho/d2/VelocityConstraint.cpp
+    source/playrho/d2/WeldJointConf.cpp
+    source/playrho/d2/WheelJointConf.cpp
+    source/playrho/d2/World.cpp
+    source/playrho/d2/WorldBody.cpp
+    source/playrho/d2/WorldContact.cpp
+    source/playrho/d2/WorldJoint.cpp
+    source/playrho/d2/WorldManifold.cpp
+    source/playrho/d2/WorldMisc.cpp
+    source/playrho/d2/WorldShape.cpp
+)
 
 set(PLAYRHO_D2_DETAIL_HDRS
-    "${PLAYRHO_INCLUDE_PREFIX}d2/detail/JointConcept.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/detail/JointModel.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/detail/ShapeConcept.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/detail/ShapeModel.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/detail/WorldConcept.hpp"
-    "${PLAYRHO_INCLUDE_PREFIX}d2/detail/WorldModel.hpp"
-    )
+    include/playrho/d2/detail/JointConcept.hpp
+    include/playrho/d2/detail/JointModel.hpp
+    include/playrho/d2/detail/ShapeConcept.hpp
+    include/playrho/d2/detail/ShapeModel.hpp
+    include/playrho/d2/detail/WorldConcept.hpp
+    include/playrho/d2/detail/WorldModel.hpp
+)
 
 set(PLAYRHO_D2_PART_HDRS
-    "${PLAYRHO_INCLUDE_PREFIX}d2/part/Compositor.hpp"
-    )
+    include/playrho/d2/part/Compositor.hpp
+)
 set(PLAYRHO_D2_PART_SRCS
-    "${PLAYRHO_SOURCE_PREFIX}d2/part/Compositor.cpp"
-    )
+    source/playrho/d2/part/Compositor.cpp
+)
 
 set(libhdr
     ${PLAYRHO_General_HDRS}
@@ -288,13 +372,14 @@ if (${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 endif()
 
 include(GenerateExportHeader)
-generate_export_header(PlayRho EXPORT_FILE_NAME "${PLAYRHO_INCLUDE_PREFIX}Export.hpp")
+generate_export_header(PlayRho EXPORT_FILE_NAME "include/playrho/Export.hpp")
 
 target_compile_features(PlayRho PUBLIC cxx_std_17)
 set_target_properties(PlayRho PROPERTIES
     OUTPUT_NAME "PlayRho"
     VERSION ${PlayRho_VERSION}
-    SOVERSION ${PlayRho_VERSION_MAJOR})
+    SOVERSION ${PlayRho_VERSION_MAJOR}
+)
 target_include_directories(PlayRho PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include/>"
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>"
@@ -323,7 +408,7 @@ if(PLAYRHO_INSTALL)
     include(CMakePackageConfigHelpers)
 
     # install headers
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PLAYRHO_INCLUDE_PREFIX}Export.hpp
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/include/playrho/Export.hpp
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/playrho
         COMPONENT Library)
     install(FILES ${PLAYRHO_General_HDRS}
