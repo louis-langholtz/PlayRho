@@ -51,8 +51,110 @@ else()
     FetchContent_MakeAvailable(googletest)
 endif()
 
-file(GLOB UnitTest_HDRS *.hpp)
-file(GLOB UnitTest_SRCS *.cpp)
+set(UnitTest_HDRS
+    UnitTests.hpp
+)
+set(UnitTest_SRCS
+    AABB.cpp
+    AabbTreeWorld.cpp
+    Acceleration.cpp
+    Angle.cpp
+    ArrayList.cpp
+    BaseShapeConf.cpp
+    BlockAllocator.cpp
+    Body.cpp
+    BodyConf.cpp
+    BodyConstraint.cpp
+    BodyID.cpp
+    BodyType.cpp
+    ChainShape.cpp
+    Checked.cpp
+    CollideShapes.cpp
+    Compositor.cpp
+    ConstraintSolverConf.cpp
+    Contact.cpp
+    ContactFeature.cpp
+    ContactImpulsesList.cpp
+    ContactSolver.cpp
+    DiskShape.cpp
+    Distance.cpp
+    DistanceJoint.cpp
+    DistanceProxy.cpp
+    Dump.cpp
+    DynamicMemory.cpp
+    DynamicTree.cpp
+    EdgeShape.cpp
+    Epsilon.cpp
+    Filter.cpp
+    FlagGuard.cpp
+    FrictionJoint.cpp
+    GearJoint.cpp
+    GrowableStack.cpp
+    IndexPair.cpp
+    Interval.cpp
+    Island.cpp
+    IslandStats.cpp
+    Joint.cpp
+    Manifold.cpp
+    MassData.cpp
+    Mat22.cpp
+    Mat33.cpp
+    Math.cpp
+    MemoryResource.cpp
+    MotorJoint.cpp
+    MultiShape.cpp
+    ObjectPool.cpp
+    PolygonShape.cpp
+    PoolMemoryResource.cpp
+    Position.cpp
+    PositionConstraint.cpp
+    PositionSolverManifold.cpp
+    PrismaticJoint.cpp
+    PulleyJoint.cpp
+    RayCastOutput.cpp
+    Real.cpp
+    RevoluteJoint.cpp
+    RopeJoint.cpp
+    SeparationScenario.cpp
+    Shape.cpp
+    Simplex.cpp
+    SimplexEdge.cpp
+    StackAllocator.cpp
+    StatsResource.cpp
+    StepConf.cpp
+    StepStats.cpp
+    Sweep.cpp
+    TargetJoint.cpp
+    ThreadLocalAllocator.cpp
+    TimeOfImpact.cpp
+    Transformation.cpp
+    TypeInfo.cpp
+    UnitVec.cpp
+    Units.cpp
+    Vec2.cpp
+    Vec3.cpp
+    Vector.cpp
+    Velocity.cpp
+    VelocityConstraint.cpp
+    Version.cpp
+    VertexSet.cpp
+    WeldJoint.cpp
+    WheelJoint.cpp
+    World.cpp
+    WorldBody.cpp
+    WorldConf.cpp
+    WorldContact.cpp
+    WorldFixture.cpp
+    WorldJoint.cpp
+    WorldManifold.cpp
+    WorldShape.cpp
+    double.cpp
+    float.cpp
+    forward_list.cpp
+    functional.cpp
+    main.cpp
+    polymorphic_allocator.cpp
+)
 
 # Add an executable to the project using specified source files.
 # See details at: https://cmake.org/cmake/help/v3.1/command/add_executable.html

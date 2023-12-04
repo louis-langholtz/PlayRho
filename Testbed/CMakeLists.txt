@@ -50,15 +50,88 @@ else()
 endif()
 
 # Define the framework files.
-file(GLOB Testbed_Framework_SRCS
-    "Framework/*.cpp"
-    "Framework/*.hpp"
+# /bin/ls -1 Framework/*.[hc]pp
+set(Testbed_Framework_SRCS
+    Framework/DebugDraw.cpp
+    Framework/DebugDraw.hpp
+    Framework/Drawer.cpp
+    Framework/Drawer.hpp
+    Framework/ExtensionsForImgui.cpp
+    Framework/ExtensionsForImgui.hpp
+    Framework/Main.cpp
+    Framework/Test.cpp
+    Framework/Test.hpp
+    Framework/TestEntry.cpp
+    Framework/TestEntry.hpp
+    Framework/UiState.hpp
 )
 
 # define the test files.
-file(GLOB Testbed_Tests_SRCS
-    "Tests/*.cpp"
-    "Tests/*.hpp"
+# /bin/ls -1 Tests/*.[hc]pp
+set(Testbed_Tests_SRCS
+    Tests/AddPair.cpp
+    Tests/ApplyForce.cpp
+    Tests/BagOfDisks.cpp
+    Tests/BasicSliderCrank.cpp
+    Tests/BodyTypes.cpp
+    Tests/Breakable.cpp
+    Tests/BreakableTwo.cpp
+    Tests/Bridge.cpp
+    Tests/BulletTest.cpp
+    Tests/Cantilever.cpp
+    Tests/Car.cpp
+    Tests/Chain.cpp
+    Tests/CharacterCollision.cpp
+    Tests/CollisionFiltering.cpp
+    Tests/CollisionProcessing.cpp
+    Tests/CompoundShapes.cpp
+    Tests/Confined.cpp
+    Tests/ContinuousTest.cpp
+    Tests/ConvexHull.cpp
+    Tests/ConveyorBelt.cpp
+    Tests/DistanceTest.cpp
+    Tests/Dominos.cpp
+    Tests/DumpShell.cpp
+    Tests/EdgeShapes.cpp
+    Tests/EdgeTest.cpp
+    Tests/FifteenPuzzle.cpp
+    Tests/Gears.cpp
+    Tests/HalfPipe.cpp
+    Tests/HeavyOnLight.cpp
+    Tests/HeavyOnLightTwo.cpp
+    Tests/JointsTest.cpp
+    Tests/Mobile.cpp
+    Tests/MobileBalanced.cpp
+    Tests/MotorJoint.cpp
+    Tests/MotorJoint2.cpp
+    Tests/NewtonsCradle.cpp
+    Tests/OneSidedPlatform.cpp
+    Tests/Orbiter.cpp
+    Tests/Pinball.cpp
+    Tests/PolyCollision.cpp
+    Tests/PolyShapes.cpp
+    Tests/Prismatic.cpp
+    Tests/Pulleys.cpp
+    Tests/Pyramid.cpp
+    Tests/RayCast.cpp
+    Tests/Revolute.cpp
+    Tests/RopeJoint.cpp
+    Tests/SensorTest.cpp
+    Tests/ShapeEditing.cpp
+    Tests/SliderCrank.cpp
+    Tests/SolarSystem.cpp
+    Tests/SphereStack.cpp
+    Tests/SpinningCircle.cpp
+    Tests/TheoJansen.cpp
+    Tests/Tiles.cpp
+    Tests/TimeOfImpact.cpp
+    Tests/Tumbler.cpp
+    Tests/VaryingFriction.cpp
+    Tests/VaryingRestitution.cpp
+    Tests/VerticalStack.cpp
+    Tests/Web.cpp
+    Tests/iforce2d_TopdownCar.cpp
+    Tests/iforce2d_Trajectories.cpp
 )
 
 if(APPLE)
