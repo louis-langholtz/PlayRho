@@ -25,12 +25,13 @@
 /// @file
 /// @brief Definition of the @c Vector class template and closely related code.
 
+#include <algorithm> // for std::lexicographical_compare and more
 #include <cassert>
 #include <cstddef>
-#include <type_traits>
 #include <iterator>
-#include <algorithm> // for std::lexicographical_compare and more
 #include <iostream>
+#include <tuple>
+#include <type_traits>
 
 #include <playrho/InvalidArgument.hpp>
 #include <playrho/Real.hpp>

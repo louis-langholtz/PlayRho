@@ -25,19 +25,25 @@
 /// @file
 /// @brief Definition of the @c WheelJointConf class and closely related code.
 
+#include <playrho/BodyID.hpp>
+#include <playrho/NonNegative.hpp>
+#include <playrho/Real.hpp>
 #include <playrho/Span.hpp>
 #include <playrho/Units.hpp>
+#include <playrho/Vector2.hpp>
+
+#include <playrho/detail/TypeInfo.hpp>
 
 #include <playrho/d2/JointConf.hpp>
 #include <playrho/d2/Math.hpp>
 #include <playrho/d2/UnitVec.hpp>
 
 namespace playrho {
-
 struct ConstraintSolverConf;
 struct StepConf;
+}
 
-namespace d2 {
+namespace playrho::d2 {
 
 class World;
 class BodyConstraint;
@@ -290,8 +296,7 @@ constexpr void SetDampingRatio(WheelJointConf& object, Real value) noexcept
     object.UseDampingRatio(value);
 }
 
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2
 
 /// @brief Type info specialization for <code>d2::WheelJointConf</code>.
 template <>

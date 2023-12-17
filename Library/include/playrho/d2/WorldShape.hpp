@@ -37,12 +37,18 @@
 /// @see World, ShapeID.
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 
+#include <playrho/BodyID.hpp>
+#include <playrho/NonNegative.hpp>
+#include <playrho/Real.hpp>
+#include <playrho/Settings.hpp>
 #include <playrho/ShapeID.hpp>
 #include <playrho/Span.hpp>
 #include <playrho/TypeInfo.hpp>
+#include <playrho/Units.hpp>
+#include <playrho/Vector2.hpp>
 
 #include <playrho/d2/MassData.hpp>
-#include <playrho/d2/Math.hpp>
+#include <playrho/d2/UnitVec.hpp>
 
 namespace playrho {
 struct Filter;
