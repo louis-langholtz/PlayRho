@@ -25,14 +25,28 @@
 /// @file
 /// @brief Definition of the @c Simplex class and closely related code.
 
-#include <array>
+#ifndef NDEBUG
+#include <numeric> // for std::accumulate
+#endif
+
+#include <cassert> // for assert
+#include <type_traits> // for std::remove_const_t
+
+#ifndef NDEBUG
+#include <playrho/Math.hpp> // for AlmostEqual
+#include <playrho/detail/Templates.hpp>
+#endif
 
 #include <playrho/ArrayList.hpp>
+#include <playrho/Real.hpp>
+#include <playrho/Settings.hpp>
+#include <playrho/Units.hpp>
+#include <playrho/Vector2.hpp>
 
+#include <playrho/d2/IndexPair.hpp>
 #include <playrho/d2/SimplexEdge.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho::d2 {
 
 /// @brief Simplex edge collection.
 using SimplexEdges =
@@ -192,7 +206,6 @@ constexpr Length2 GetClosestPoint(const Simplex& simplex)
     }
 }
 
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2
 
 #endif // PLAYRHO_D2_SIMPLEX_HPP

@@ -19,9 +19,10 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/BodyConf.hpp>
-
 #include <playrho/d2/Body.hpp>
+#include <playrho/d2/BodyConf.hpp>
+#include <playrho/d2/Transformation.hpp>
+#include <playrho/d2/UnitVec.hpp>
 
 namespace playrho::d2 {
 

@@ -19,12 +19,28 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/Body.hpp>
-
-#include <playrho/d2/BodyConf.hpp>
-
+#include <algorithm> // for std::find
+#include <cassert>
 #include <type_traits>
-#include <utility>
+#include <vector>
+
+#include <playrho/BodyType.hpp>
+#include <playrho/Math.hpp>
+#include <playrho/Real.hpp>
+#include <playrho/ShapeID.hpp>
+#include <playrho/Templates.hpp>
+#include <playrho/Units.hpp>
+#include <playrho/Vector2.hpp>
+
+#include <playrho/detail/Templates.hpp>
+
+#include <playrho/d2/Body.hpp>
+#include <playrho/d2/BodyConf.hpp>
+#include <playrho/d2/Math.hpp>
+#include <playrho/d2/Position.hpp>
+#include <playrho/d2/Sweep.hpp>
+#include <playrho/d2/Transformation.hpp>
+#include <playrho/d2/Velocity.hpp>
 
 namespace playrho::d2 {
 
