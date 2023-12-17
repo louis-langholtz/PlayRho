@@ -69,40 +69,40 @@ private:
 };
 
 /// @brief Equality operator.
-constexpr bool operator==(const ContactKey lhs, const ContactKey rhs) noexcept
+constexpr bool operator==(const ContactKey& lhs, const ContactKey& rhs) noexcept
 {
-    return lhs.GetMin() == rhs.GetMin() && lhs.GetMax() == rhs.GetMax();
+    return (lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() == rhs.GetMax());
 }
 
 /// @brief Inequality operator.
-constexpr bool operator!=(const ContactKey lhs, const ContactKey rhs) noexcept
+constexpr bool operator!=(const ContactKey& lhs, const ContactKey& rhs) noexcept
 {
     return !(lhs == rhs);
 }
 
 /// @brief Less-than operator.
-constexpr bool operator<(const ContactKey lhs, const ContactKey rhs) noexcept
+constexpr bool operator<(const ContactKey& lhs, const ContactKey& rhs) noexcept
 {
     return (lhs.GetMin() < rhs.GetMin()) ||
            ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() < rhs.GetMax()));
 }
 
 /// @brief Less-than or equal-to operator.
-constexpr bool operator<=(const ContactKey lhs, const ContactKey rhs) noexcept
+constexpr bool operator<=(const ContactKey& lhs, const ContactKey& rhs) noexcept
 {
     return (lhs.GetMin() < rhs.GetMin()) ||
            ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() <= rhs.GetMax()));
 }
 
 /// @brief Greater-than operator.
-constexpr bool operator>(const ContactKey lhs, const ContactKey rhs) noexcept
+constexpr bool operator>(const ContactKey& lhs, const ContactKey& rhs) noexcept
 {
     return (lhs.GetMin() > rhs.GetMin()) ||
            ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() > rhs.GetMax()));
 }
 
 /// @brief Greater-than or equal-to operator.
-constexpr bool operator>=(const ContactKey lhs, const ContactKey rhs) noexcept
+constexpr bool operator>=(const ContactKey& lhs, const ContactKey& rhs) noexcept
 {
     return (lhs.GetMin() > rhs.GetMin()) ||
            ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() >= rhs.GetMax()));
