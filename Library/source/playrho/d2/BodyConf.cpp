@@ -39,6 +39,7 @@ BodyConf GetBodyConf(const Body& body) noexcept
     def.linearDamping = GetLinearDamping(body);
     def.angularDamping = GetAngularDamping(body);
     def.underActiveTime = GetUnderActiveTime(body);
+    def.shapes = GetShapes(body);
     def.allowSleep = IsSleepingAllowed(body);
     def.awake = IsAwake(body);
     def.fixedRotation = IsFixedRotation(body);

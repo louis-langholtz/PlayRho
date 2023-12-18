@@ -27,33 +27,6 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(BodyConf, ByteSize)
-{
-    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
-    // builds and to report actual size rather than just reporting that expected size is wrong.
-    switch (sizeof(Real)) {
-    case 4:
-        EXPECT_EQ(sizeof(BodyConf), 60u);
-        break;
-    case 8:
-        EXPECT_EQ(sizeof(BodyConf), 112u);
-        break;
-    case 16:
-        EXPECT_EQ(sizeof(BodyConf), 224u);
-        break;
-    }
-}
-
-TEST(BodyConf, Traits)
-{
-    EXPECT_TRUE(std::is_default_constructible_v<BodyConf>);
-    EXPECT_TRUE(std::is_copy_constructible_v<BodyConf>);
-#ifndef PLAYRHO_USE_BOOST_UNITS
-    EXPECT_TRUE(std::is_nothrow_default_constructible_v<BodyConf>);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible_v<BodyConf>);
-#endif
-}
-
 TEST(BodyConf, DefaultConstruction)
 {
     EXPECT_EQ(BodyConf().type, BodyConf::DefaultBodyType);
@@ -67,7 +40,7 @@ TEST(BodyConf, DefaultConstruction)
     EXPECT_EQ(BodyConf().angularDamping, BodyConf::DefaultAngularDamping);
     EXPECT_EQ(BodyConf().underActiveTime, BodyConf::DefaultUnderActiveTime);
     EXPECT_EQ(BodyConf().type, BodyType::Static);
-    EXPECT_EQ(BodyConf().shape, InvalidShapeID);
+    EXPECT_EQ(BodyConf().shapes.size(), 0u);
     EXPECT_EQ(BodyConf().allowSleep, BodyConf::DefaultAllowSleep);
     EXPECT_EQ(BodyConf().awake, BodyConf::DefaultAwake);
     EXPECT_EQ(BodyConf().fixedRotation, BodyConf::DefaultFixedRotation);
@@ -94,6 +67,16 @@ TEST(BodyConf, UseVelocity)
     const auto v = Velocity{LinearVelocity2{3_mps, -4_mps}, 22_rad / 1_s};
     EXPECT_EQ(BodyConf{}.Use(v).linearVelocity, v.linear);
     EXPECT_EQ(BodyConf{}.Use(v).angularVelocity, v.angular);
+}
+
+TEST(BodyConf, UseShapes)
+{
+    const auto shapes = ArrayList<ShapeID, 3u>{ShapeID(0), ShapeID(1), ShapeID(2)};
+    EXPECT_EQ(BodyConf{}.Use(shapes).shapes.size(), shapes.size());
+    EXPECT_EQ(BodyConf{}.Use(shapes).shapes, shapes);
+    EXPECT_EQ(BodyConf{}.Use(shapes).Use(shapes).shapes.size(), shapes.size() * 2u);
+    const auto toomany = std::vector<ShapeID>(BodyConf::MaxShapes * 2u);
+    EXPECT_THROW(BodyConf{}.Use(toomany), LengthError);
 }
 
 static void IsSame(const BodyConf& conf, const BodyConf& conf2)

@@ -47,7 +47,7 @@ public:
             auto bd = BodyConf{};
             bd.type = BodyType::Static;
             bd.location = m_center;
-            bd.shape = CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(3_m));
+            bd.shapes += CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(3_m));
             CreateBody(GetWorld(), bd);
         }
         {
@@ -55,7 +55,7 @@ public:
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.location = Length2{GetX(m_center), GetY(m_center) + radius * 1_m};
-            bd.shape =
+            bd.shapes +=
                 CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1e12_kgpm2));
             bd.linearVelocity = Vec2{Pi * radius / 2, 0} * 1_mps;
             bd.angularVelocity = 360_deg / 1_s;
@@ -70,7 +70,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = m_center;
             bd.bullet = true;
-            bd.shape = CreateShape(GetWorld(), conf);
+            bd.shapes += CreateShape(GetWorld(), conf);
             CreateBody(GetWorld(), bd);
         }
     }
