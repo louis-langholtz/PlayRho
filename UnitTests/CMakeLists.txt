@@ -119,6 +119,7 @@ set(UnitTest_SRCS
     Shape.cpp
     Simplex.cpp
     SimplexEdge.cpp
+    Span.cpp
     StackAllocator.cpp
     StatsResource.cpp
     StepConf.cpp

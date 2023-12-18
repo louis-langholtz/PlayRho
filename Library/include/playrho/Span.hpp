@@ -125,6 +125,36 @@ private:
     size_type m_size = 0; ///< Size of array of data.
 };
 
+/// @brief Equality of two spans of same type support.
+template <typename T>
+constexpr auto operator==(const Span<T> &lhs, const Span<T> &rhs) noexcept
+{
+    auto lhsFirst = lhs.begin();
+    auto rhsFirst = rhs.begin();
+    auto lhsLast = lhs.end();
+    auto rhsLast = rhs.end();
+    while (true) {
+        if ((lhsFirst == lhsLast) && (rhsFirst == rhsLast)) {
+            return true;
+        }
+        if ((lhsFirst == lhsLast) || (rhsFirst == rhsLast)) {
+            return false;
+        }
+        if (*lhsFirst != *rhsFirst) {
+            return false;
+        }
+        ++lhsFirst;
+        ++rhsFirst;
+    }
+}
+
+/// @brief Inequality of two spans of same type support.
+template <typename T>
+constexpr auto operator!=(const Span<T> &lhs, const Span<T> &rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
 } // namespace playrho
 
 #endif // PLAYRHO_SPAN_HPP
