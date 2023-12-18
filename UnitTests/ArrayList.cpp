@@ -18,11 +18,11 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "UnitTests.hpp"
-
 #include <playrho/ArrayList.hpp>
 #include <playrho/Vector.hpp>
 //#include <playrho/Math.hpp>
+
+#include "gtest/gtest.h"
 
 using namespace playrho;
 
@@ -44,7 +44,7 @@ TEST(ArrayList, DefaultConstruction)
     }
 }
 
-TEST(ArrayList, ArrayConstruction)
+TEST(ArrayList, CarrayConstruction)
 {
     {
         constexpr auto array_size = 2;
@@ -66,6 +66,32 @@ TEST(ArrayList, ArrayConstruction)
         EXPECT_FALSE(list.empty());
         EXPECT_EQ(std::distance(list.begin(), list.end()), array_size);
     }
+}
+
+TEST(ArrayList, CppArrayConstruction)
+{
+    constexpr auto maxsize = std::size_t{10};
+    constexpr auto array = std::array<int, maxsize>{{5, 4, 3}};
+    ArrayList<int, maxsize> list(array);
+    EXPECT_EQ(list.size(), decltype(list.size()){maxsize});
+    EXPECT_EQ(list.max_size(), maxsize);
+    EXPECT_EQ(list[0], 5);
+    EXPECT_EQ(list[1], 4);
+    EXPECT_EQ(list[2], 3);
+}
+
+TEST(ArrayList, InitializerListConstruction)
+{
+    EXPECT_THROW((ArrayList<int, 1>{1, 2}), LengthError);
+    ASSERT_NO_THROW((ArrayList<int, 2>{1, 2}));
+    EXPECT_EQ((ArrayList<int, 2>{1, 2}.size()), 2u);
+    ASSERT_NO_THROW((ArrayList<int, 3>{1, 2}));
+    EXPECT_EQ((ArrayList<int, 3>{1, 2}.size()), 2u);
+    {
+        const auto il = std::initializer_list<int>{1, 2};
+        const ArrayList<int, 3> al(il);
+        EXPECT_TRUE(Equal(al.begin(), al.end(), il.begin(), il.end()));
+    }
     {
         constexpr auto maxsize = std::size_t{10};
         ArrayList<int, maxsize> list = { 1, 2, 3 };
@@ -74,19 +100,7 @@ TEST(ArrayList, ArrayConstruction)
     }
     {
         constexpr auto maxsize = std::size_t{10};
-        constexpr auto list = std::array<int, maxsize>{{5, 4, 3}};
-        EXPECT_EQ(list.size(), decltype(list.size()){maxsize});
-        EXPECT_EQ(list.max_size(), maxsize);
-        EXPECT_EQ(list[0], 5);
-        EXPECT_EQ(list[1], 4);
-        EXPECT_EQ(list[2], 3);
-    }
-    {
-        constexpr auto maxsize = std::size_t{10};
-        
-        // Note: list cannot be constexpr.
-        const auto list = ArrayList<int, maxsize>{1, 2, 3};
-
+        constexpr auto list = ArrayList<int, maxsize>{1, 2, 3};
         EXPECT_EQ(list.size(), decltype(list.size()){3});
         EXPECT_EQ(list.max_size(), maxsize);
         EXPECT_EQ(list[0], 1);
@@ -99,6 +113,78 @@ TEST(ArrayList, ArrayConstruction)
         EXPECT_EQ(list[0], 1);
         EXPECT_EQ(list[1], 2);
         EXPECT_EQ(list[2], 3);
+    }
+}
+
+TEST(ArrayList, CopyConstruction)
+{
+    constexpr auto maxsize = std::size_t{10};
+    ArrayList<int, maxsize> list = { 1, 2, 3 };
+    ASSERT_EQ(list.size(), 3u);
+    ASSERT_EQ(list[0], 1);
+    ASSERT_EQ(list[1], 2);
+    ASSERT_EQ(list[2], 3);
+    const ArrayList<int, maxsize> copy(list);
+    EXPECT_EQ(copy.size(), 3u);
+    EXPECT_EQ(copy[0], 1);
+    EXPECT_EQ(copy[1], 2);
+    EXPECT_EQ(copy[2], 3);
+}
+
+TEST(ArrayList, ConstructionFromSmaller)
+{
+    constexpr auto minsize = std::size_t{5};
+    constexpr auto maxsize = std::size_t{10};
+    ArrayList<int, minsize> list = { 1, 2, 3 };
+    ASSERT_EQ(list.size(), 3u);
+    ASSERT_EQ(list[0], 1);
+    ASSERT_EQ(list[1], 2);
+    ASSERT_EQ(list[2], 3);
+    const ArrayList<int, maxsize> copy(list);
+    EXPECT_EQ(copy.size(), 3u);
+    EXPECT_EQ(copy[0], 1);
+    EXPECT_EQ(copy[1], 2);
+    EXPECT_EQ(copy[2], 3);
+}
+
+TEST(ArrayList, ConstructionFromVector)
+{
+    constexpr auto maxsize = std::size_t{10};
+    const auto list = std::vector<int>{ 1, 2, 3 };
+    ASSERT_EQ(list.size(), 3u);
+    ASSERT_EQ(list[0], 1);
+    ASSERT_EQ(list[1], 2);
+    ASSERT_EQ(list[2], 3);
+    const ArrayList<int, maxsize> copy(list);
+    EXPECT_EQ(copy.size(), 3u);
+    EXPECT_EQ(copy[0], 1);
+    EXPECT_EQ(copy[1], 2);
+    EXPECT_EQ(copy[2], 3);
+}
+
+TEST(ArrayList, AssignmentFromVector)
+{
+    {
+        const auto list = std::vector<int>{ 1, 2, 3 };
+        ASSERT_EQ(list.size(), 3u);
+        ArrayList<int, 2u> copy;
+        ASSERT_EQ(copy.size(), 0u);
+        ASSERT_EQ(copy.max_size(), 2u);
+        EXPECT_THROW(copy = list, LengthError);
+    }
+    {
+        constexpr auto maxsize = std::size_t{10};
+        const auto list = std::vector<int>{ 1, 2, 3 };
+        ASSERT_EQ(list.size(), 3u);
+        ASSERT_EQ(list[0], 1);
+        ASSERT_EQ(list[1], 2);
+        ASSERT_EQ(list[2], 3);
+        ArrayList<int, maxsize> copy;
+        EXPECT_NO_THROW(copy = list);
+        EXPECT_EQ(copy.size(), 3u);
+        EXPECT_EQ(copy[0], 1);
+        EXPECT_EQ(copy[1], 2);
+        EXPECT_EQ(copy[2], 3);
     }
 }
 
@@ -157,4 +243,58 @@ TEST(ArrayList, clear)
         EXPECT_TRUE(list.empty());
         EXPECT_EQ(list.begin(), list.end());
     }
+}
+
+TEST(ArrayList, Equality)
+{
+    constexpr auto max_size = 4u;
+    ArrayList<int, max_size> listA;
+    ArrayList<int, max_size> listB;
+
+    EXPECT_TRUE(listA == listA);
+    EXPECT_TRUE(listA == listB);
+    EXPECT_TRUE(listB == listA);
+    EXPECT_TRUE(listB == listB);
+
+    const auto five = 5;
+    ASSERT_TRUE(listA.add(five));
+    EXPECT_TRUE(listA == listA);
+    EXPECT_FALSE(listA == listB);
+    EXPECT_FALSE(listB == listA);
+    ASSERT_TRUE(listB.add(five));
+    EXPECT_TRUE(listA == listB);
+
+    const auto six = 6;
+    ASSERT_TRUE(listA.add(six));
+    EXPECT_FALSE(listA == listB);
+    ASSERT_TRUE(listB.add(five));
+    ASSERT_TRUE(listA.size() == listB.size());
+    EXPECT_FALSE(listA == listB);
+}
+
+TEST(ArrayList, Inequality)
+{
+    constexpr auto max_size = 4u;
+    ArrayList<int, max_size> listA;
+    ArrayList<int, max_size> listB;
+
+    EXPECT_FALSE(listA != listA);
+    EXPECT_FALSE(listA != listB);
+    EXPECT_FALSE(listB != listA);
+    EXPECT_FALSE(listB != listB);
+
+    const auto five = 5;
+    ASSERT_TRUE(listA.add(five));
+    EXPECT_FALSE(listA != listA);
+    EXPECT_TRUE(listA != listB);
+    EXPECT_TRUE(listB != listA);
+    ASSERT_TRUE(listB.add(five));
+    EXPECT_FALSE(listA != listB);
+
+    const auto six = 6;
+    ASSERT_TRUE(listA.add(six));
+    EXPECT_TRUE(listA != listB);
+    ASSERT_TRUE(listB.add(five));
+    ASSERT_TRUE(listA.size() == listB.size());
+    EXPECT_TRUE(listA != listB);
 }
