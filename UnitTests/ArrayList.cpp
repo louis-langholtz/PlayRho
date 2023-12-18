@@ -160,6 +160,7 @@ TEST(ArrayList, ConstructionFromVector)
     EXPECT_EQ(copy[0], 1);
     EXPECT_EQ(copy[1], 2);
     EXPECT_EQ(copy[2], 3);
+    EXPECT_THROW((ArrayList<int, 2u>(list)), LengthError);
 }
 
 TEST(ArrayList, AssignmentFromVector)
@@ -190,32 +191,30 @@ TEST(ArrayList, AssignmentFromVector)
 
 TEST(ArrayList, add)
 {
-    {
-        constexpr auto max_size = 4u;
-        ArrayList<int, max_size> list;
-        ASSERT_EQ(list.size(), decltype(list.size()){0});
-        ASSERT_EQ(list.max_size(), decltype(list.size()){max_size});
-        ASSERT_TRUE(list.empty());
-        ASSERT_EQ(list.begin(), list.end());
-        
-        const auto value = 5;
-        EXPECT_TRUE(list.add(value));
-        EXPECT_EQ(list.size(), decltype(list.size()){1});
-        EXPECT_EQ(list.max_size(), decltype(list.size()){max_size});
-        EXPECT_FALSE(list.empty());
-        EXPECT_EQ(std::distance(list.begin(), list.end()), 1);
-        EXPECT_EQ(*list.begin(), value);
+    constexpr auto max_size = 4u;
+    ArrayList<int, max_size> list;
+    ASSERT_EQ(list.size(), decltype(list.size()){0});
+    ASSERT_EQ(list.max_size(), decltype(list.size()){max_size});
+    ASSERT_TRUE(list.empty());
+    ASSERT_EQ(list.begin(), list.end());
 
-        EXPECT_TRUE(list.add(2));
-        EXPECT_EQ(list.size(), decltype(list.size()){2});
-        EXPECT_TRUE(list.add(3));
-        EXPECT_EQ(list.size(), decltype(list.size()){3});
-        EXPECT_TRUE(list.add(4));
-        EXPECT_EQ(list.size(), decltype(list.size()){4});
+    const auto value = 5;
+    EXPECT_TRUE(list.add(value));
+    EXPECT_EQ(list.size(), decltype(list.size()){1});
+    EXPECT_EQ(list.max_size(), decltype(list.size()){max_size});
+    EXPECT_FALSE(list.empty());
+    EXPECT_EQ(std::distance(list.begin(), list.end()), 1);
+    EXPECT_EQ(*list.begin(), value);
 
-        EXPECT_FALSE(list.add(5));
-        EXPECT_EQ(list.size(), decltype(list.size()){4});
-    }
+    EXPECT_TRUE(list.add(2));
+    EXPECT_EQ(list.size(), decltype(list.size()){2});
+    EXPECT_TRUE(list.add(3));
+    EXPECT_EQ(list.size(), decltype(list.size()){3});
+    EXPECT_TRUE(list.add(4));
+    EXPECT_EQ(list.size(), decltype(list.size()){4});
+
+    EXPECT_FALSE(list.add(5));
+    EXPECT_EQ(list.size(), decltype(list.size()){4});
 }
 
 TEST(ArrayList, clear)
@@ -223,26 +222,61 @@ TEST(ArrayList, clear)
     {
         constexpr auto max_size = 4u;
         ArrayList<int, max_size> list;
-        ASSERT_EQ(list.size(), decltype(list.size()){0});
-        ASSERT_EQ(list.max_size(), decltype(list.size()){max_size});
+        ASSERT_EQ(list.size(), 0u);
+        ASSERT_EQ(list.max_size(), max_size);
         ASSERT_TRUE(list.empty());
         ASSERT_EQ(list.begin(), list.end());
         
         const auto value = 5;
         ASSERT_TRUE(list.add(value));
-        ASSERT_EQ(list.size(), decltype(list.size()){1});
-        ASSERT_EQ(list.max_size(), decltype(list.size()){max_size});
+        ASSERT_EQ(list.size(), 1u);
+        ASSERT_EQ(list.max_size(), max_size);
         ASSERT_FALSE(list.empty());
         ASSERT_EQ(std::distance(list.begin(), list.end()), 1);
         ASSERT_EQ(*list.begin(), value);
         
         list.clear();
         
-        EXPECT_EQ(list.size(), decltype(list.size()){0});
-        EXPECT_EQ(list.max_size(), decltype(list.size()){max_size});
+        EXPECT_EQ(list.size(), 0u);
+        EXPECT_EQ(list.max_size(), max_size);
         EXPECT_TRUE(list.empty());
         EXPECT_EQ(list.begin(), list.end());
     }
+}
+
+TEST(ArrayList, OperatorAppendOne)
+{
+    constexpr auto max_size = 2u;
+    ArrayList<int, max_size> list;
+    ASSERT_EQ(list.size(), 0u);
+    ASSERT_EQ(list.max_size(), max_size);
+    EXPECT_NO_THROW(list += 1);
+    ASSERT_EQ(list.size(), 1u);
+    EXPECT_EQ(list[0], 1);
+    EXPECT_NO_THROW(list += 2);
+    EXPECT_EQ(list[0], 1);
+    EXPECT_EQ(list[1], 2);
+    EXPECT_THROW(list += 3, LengthError);
+}
+
+TEST(ArrayList, OperatorAppendVector)
+{
+    constexpr auto max_size = 2u;
+    ArrayList<int, max_size> list;
+    ASSERT_EQ(list.size(), 0u);
+    ASSERT_EQ(list.max_size(), max_size);
+    EXPECT_NO_THROW(list += std::vector<int>{});
+    ASSERT_EQ(list.size(), 0u);
+    EXPECT_NO_THROW(list += (std::vector<int>{1}));
+    ASSERT_EQ(list.size(), 1u);
+    EXPECT_EQ(list[0], 1);
+    list.clear();
+    const auto v23 = std::vector<int>{2, 3};
+    EXPECT_NO_THROW(list += v23);
+    ASSERT_EQ(list.size(), 2u);
+    EXPECT_EQ(list[0], 2);
+    EXPECT_EQ(list[1], 3);
+    EXPECT_THROW(list += v23, LengthError);
 }
 
 TEST(ArrayList, Equality)
@@ -259,10 +293,12 @@ TEST(ArrayList, Equality)
     const auto five = 5;
     ASSERT_TRUE(listA.add(five));
     EXPECT_TRUE(listA == listA);
+    EXPECT_FALSE(Equal(listA.begin(), listA.end(), listB.begin(), listB.end()));
     EXPECT_FALSE(listA == listB);
     EXPECT_FALSE(listB == listA);
     ASSERT_TRUE(listB.add(five));
     EXPECT_TRUE(listA == listB);
+    EXPECT_TRUE(Equal(listA.begin(), listA.end(), listB.begin(), listB.end()));
 
     const auto six = 6;
     ASSERT_TRUE(listA.add(six));
