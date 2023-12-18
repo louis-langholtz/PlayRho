@@ -52,9 +52,7 @@ var dir_3ed5363c54a0ae1e6d55ad5f136e162e =
     [ "Settings.hpp", "Settings_8hpp.html", "Settings_8hpp" ],
     [ "ShapeFunction.hpp", "ShapeFunction_8hpp.html", "ShapeFunction_8hpp" ],
     [ "ShapeID.hpp", "ShapeID_8hpp.html", "ShapeID_8hpp" ],
-    [ "Span.hpp", "Span_8hpp.html", [
-      [ "Span", "classplayrho_1_1Span.html", "classplayrho_1_1Span" ]
-    ] ],
+    [ "Span.hpp", "Span_8hpp.html", "Span_8hpp" ],
     [ "StackAllocator.hpp", "StackAllocator_8hpp.html", [
       [ "Conf", "structplayrho_1_1StackAllocator_1_1Conf.html", "structplayrho_1_1StackAllocator_1_1Conf" ],
       [ "StackAllocator", "classplayrho_1_1StackAllocator.html", "classplayrho_1_1StackAllocator" ]

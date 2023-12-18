@@ -3,7 +3,8 @@ var structplayrho_1_1d2_1_1BodyConf =
     [ "Use", "structplayrho_1_1d2_1_1BodyConf.html#a6cb9c460a5cae05876e35a061751f4f9", null ],
     [ "Use", "structplayrho_1_1d2_1_1BodyConf.html#abd37e5a3e31a8c63c8f2a29854365523", null ],
     [ "Use", "structplayrho_1_1d2_1_1BodyConf.html#aa0a447c063bc36705495ca21d1e34149", null ],
-    [ "Use", "structplayrho_1_1d2_1_1BodyConf.html#a6f96a97edfadc458e0f203d9a153e9ac", null ],
+    [ "Use", "structplayrho_1_1d2_1_1BodyConf.html#ab64009aa08d09620a49e0e945c86834f", null ],
+    [ "Use", "structplayrho_1_1d2_1_1BodyConf.html#acd046ae22f76aa0bd4fde41125f2acd8", null ],
     [ "UseAllowSleep", "structplayrho_1_1d2_1_1BodyConf.html#a3a1cd093faf3a5372ee5141fc6abf2d7", null ],
     [ "UseAngle", "structplayrho_1_1d2_1_1BodyConf.html#a1d046aac55ea235655d0866728a4d26b", null ],
     [ "UseAngularAcceleration", "structplayrho_1_1d2_1_1BodyConf.html#a03e07243945428ca19b4ad753ce12e60", null ],
@@ -52,7 +53,8 @@ var structplayrho_1_1d2_1_1BodyConf =
     [ "linearDamping", "structplayrho_1_1d2_1_1BodyConf.html#a403ac9e5010e1cf2cd831c6e14b26c10", null ],
     [ "linearVelocity", "structplayrho_1_1d2_1_1BodyConf.html#a505089bd57b75722c4b7c2e77738ee98", null ],
     [ "location", "structplayrho_1_1d2_1_1BodyConf.html#a96d0adc085fd3d0f0f9d37896c463e7a", null ],
-    [ "shape", "structplayrho_1_1d2_1_1BodyConf.html#a01b2ecce3ecd8c20b1c7db8d5db94681", null ],
+    [ "MaxShapes", "structplayrho_1_1d2_1_1BodyConf.html#a2a6999995e7f6eb1d8136254edc69dd6", null ],
+    [ "shapes", "structplayrho_1_1d2_1_1BodyConf.html#aabf75cf288f695d10aa3a8c5e4c47513", null ],
     [ "type", "structplayrho_1_1d2_1_1BodyConf.html#a3f1a14b4e932c2e1fa3d78d8b069ec23", null ],
     [ "underActiveTime", "structplayrho_1_1d2_1_1BodyConf.html#af9559f3076e32dc79e9455d07c666b3c", null ]
 ];

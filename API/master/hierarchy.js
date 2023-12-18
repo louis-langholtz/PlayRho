@@ -4,7 +4,8 @@ var hierarchy =
     [ "playrho::detail::AABB< 2 >", "structplayrho_1_1detail_1_1AABB.html", null ],
     [ "playrho::d2::AabbTreeWorld", "classplayrho_1_1d2_1_1AabbTreeWorld.html", null ],
     [ "playrho::d2::Acceleration", "structplayrho_1_1d2_1_1Acceleration.html", null ],
-    [ "playrho::ArrayList< VALUE_TYPE, MAXSIZE, SIZE_TYPE >", "classplayrho_1_1ArrayList.html", null ],
+    [ "playrho::ArrayList< T, MAXSIZE, SIZE_TYPE >", "classplayrho_1_1ArrayList.html", null ],
+    [ "playrho::ArrayList< playrho::detail::IndexingNamedType, MaxShapes >", "classplayrho_1_1ArrayList.html", null ],
     [ "playrho::ArrayList< Real, MaxSimplexEdges, std::remove_const_t< decltype(MaxSimplexEdges)> >", "classplayrho_1_1ArrayList.html", null ],
     [ "playrho::ArrayList< SimplexEdge, MaxSimplexEdges, std::remove_const_t< decltype(MaxSimplexEdges)> >", "classplayrho_1_1ArrayList.html", null ],
     [ "Base", null, [

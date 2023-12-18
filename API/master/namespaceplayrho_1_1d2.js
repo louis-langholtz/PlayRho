@@ -230,7 +230,7 @@ var namespaceplayrho_1_1d2 =
     [ "GetBodyB", "namespaceplayrho_1_1d2.html#ad93f572c35fb47bafd90668d4be3a9fd", null ],
     [ "GetBodyB", "namespaceplayrho_1_1d2.html#afecd2b398a06faf9d320f05ff00a5e1a", null ],
     [ "GetBodyB", "namespaceplayrho_1_1d2.html#aed37686447579052f3f82d3c0d97e513", null ],
-    [ "GetBodyConf", "namespaceplayrho_1_1d2.html#a9137892a93af6c15d9e7c328d0a05ce4", null ],
+    [ "GetBodyConf", "namespaceplayrho_1_1d2.html#adce9b45f685c4bace08d09e412d3b8f2", null ],
     [ "GetBodyConstraint", "namespaceplayrho_1_1d2.html#a973134610257ca826a0a4e81743eda3c", null ],
     [ "GetBodyCount", "namespaceplayrho_1_1d2.html#a171edc74ab3a2a7f742cb84fc9f5179b", null ],
     [ "GetBodyRange", "namespaceplayrho_1_1d2.html#ae97a6f878c88ff1c0609582303945bd2", null ],

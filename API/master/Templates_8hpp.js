@@ -10,6 +10,7 @@ var Templates_8hpp =
     [ "HasUnaryFunctor", "Templates_8hpp.html#a9f7d6112b6c359e797237cf305277451", null ],
     [ "begin", "Templates_8hpp.html#a429625691c6a45944e55fe50f9a59199", null ],
     [ "end", "Templates_8hpp.html#a370e741c22960aad46732cdc0353f428", null ],
+    [ "Equal", "Templates_8hpp.html#a322b53a66a869cf225db329fc8c07f90", null ],
     [ "EraseAll", "Templates_8hpp.html#aa5b77298f0fc2a2ae88ececbc3fb23d1", null ],
     [ "EraseFirst", "Templates_8hpp.html#ad559996a9d085eb07a18b5b88525761f", null ],
     [ "IsValid", "Templates_8hpp.html#a048e0ad2c0fac1472430520c115466eb", null ],

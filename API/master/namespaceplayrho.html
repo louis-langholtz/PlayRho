@@ -682,6 +682,10 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a370e741c22960aad46732cdc0353f428"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a370e741c22960aad46732cdc0353f428">end</a> (<a class="el" href="structplayrho_1_1ReversionWrapper.html">ReversionWrapper</a>&lt; T &gt; w)</td></tr>
 <tr class="memdesc:a370e741c22960aad46732cdc0353f428"><td class="mdescLeft">&#160;</td><td class="mdescRight">End function for getting a reversed order iterator. <br /></td></tr>
 <tr class="separator:a370e741c22960aad46732cdc0353f428"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a322b53a66a869cf225db329fc8c07f90"><td class="memTemplParams" colspan="2">template&lt;class InputIt1 , class InputIt2 &gt; </td></tr>
+<tr class="memitem:a322b53a66a869cf225db329fc8c07f90"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a322b53a66a869cf225db329fc8c07f90">Equal</a> (InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2) -&gt; decltype(first1==last1, first2==last2,++first1,++first2, *first1== *first2)</td></tr>
+<tr class="memdesc:a322b53a66a869cf225db329fc8c07f90"><td class="mdescLeft">&#160;</td><td class="mdescRight">A pre-C++20 constant expression implementation of <code>std::equal</code>.  <a href="namespaceplayrho.html#a322b53a66a869cf225db329fc8c07f90">More...</a><br /></td></tr>
+<tr class="separator:a322b53a66a869cf225db329fc8c07f90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5b77298f0fc2a2ae88ececbc3fb23d1"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U &gt; </td></tr>
 <tr class="memitem:aa5b77298f0fc2a2ae88ececbc3fb23d1"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#aa5b77298f0fc2a2ae88ececbc3fb23d1">EraseAll</a> (T &amp;container, const U &amp;value) -&gt; decltype(distance(container.erase(remove(<a class="el" href="namespaceplayrho.html#a429625691c6a45944e55fe50f9a59199">begin</a>(container), <a class="el" href="namespaceplayrho.html#a370e741c22960aad46732cdc0353f428">end</a>(container), value), <a class="el" href="namespaceplayrho.html#a370e741c22960aad46732cdc0353f428">end</a>(container)), <a class="el" href="namespaceplayrho.html#a370e741c22960aad46732cdc0353f428">end</a>(container)))</td></tr>
 <tr class="memdesc:aa5b77298f0fc2a2ae88ececbc3fb23d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience template function for erasing specified value from container.  <a href="namespaceplayrho.html#aa5b77298f0fc2a2ae88ececbc3fb23d1">More...</a><br /></td></tr>
@@ -1179,6 +1183,11 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga0c7d2525a406c1f83c0574e46a2cee32">Normalize</a> (<a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a> &amp;vector)</td></tr>
 <tr class="memdesc:ga0c7d2525a406c1f83c0574e46a2cee32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the given vector into a unit vector and returns its original length. <br /></td></tr>
 <tr class="separator:ga0c7d2525a406c1f83c0574e46a2cee32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67e0766a9469380763fd0e3b0a5107e6"><td class="memTemplParams" colspan="2"><a id="a67e0766a9469380763fd0e3b0a5107e6"></a>
+template&lt;typename T , std::size_t LhsSize, std::size_t RhsSize&gt; </td></tr>
+<tr class="memitem:a67e0766a9469380763fd0e3b0a5107e6"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a67e0766a9469380763fd0e3b0a5107e6">operator!=</a> (const <a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, LhsSize &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, RhsSize &gt; &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a67e0766a9469380763fd0e3b0a5107e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator support. <br /></td></tr>
+<tr class="separator:a67e0766a9469380763fd0e3b0a5107e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a425d26025dffe3901caa095b9fa19682"><td class="memItemLeft" align="right" valign="top"><a id="a425d26025dffe3901caa095b9fa19682"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a425d26025dffe3901caa095b9fa19682">operator!=</a> (const <a class="el" href="classplayrho_1_1BlockAllocator.html">BlockAllocator</a> &amp;a, const <a class="el" href="classplayrho_1_1BlockAllocator.html">BlockAllocator</a> &amp;b)</td></tr>
 <tr class="memdesc:a425d26025dffe3901caa095b9fa19682"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classplayrho_1_1BlockAllocator.html">BlockAllocator</a></code> inequality operator. <br /></td></tr>
@@ -1191,10 +1200,10 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a64c43d9f4a2db2922f8816f960ece8ec">operator!=</a> (const <a class="el" href="structplayrho_1_1Contactable.html">Contactable</a> &amp;lhs, const <a class="el" href="structplayrho_1_1Contactable.html">Contactable</a> &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:a64c43d9f4a2db2922f8816f960ece8ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator. <br /></td></tr>
 <tr class="separator:a64c43d9f4a2db2922f8816f960ece8ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae970f7a9e7fa198ddadce868c1116325"><td class="memItemLeft" align="right" valign="top"><a id="ae970f7a9e7fa198ddadce868c1116325"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ae970f7a9e7fa198ddadce868c1116325">operator!=</a> (const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> lhs, const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> rhs) noexcept</td></tr>
-<tr class="memdesc:ae970f7a9e7fa198ddadce868c1116325"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator. <br /></td></tr>
-<tr class="separator:ae970f7a9e7fa198ddadce868c1116325"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c47651b8e0165d5ac406946d49ae60f"><td class="memItemLeft" align="right" valign="top"><a id="a7c47651b8e0165d5ac406946d49ae60f"></a>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7c47651b8e0165d5ac406946d49ae60f">operator!=</a> (const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> &amp;lhs, const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a7c47651b8e0165d5ac406946d49ae60f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator. <br /></td></tr>
+<tr class="separator:a7c47651b8e0165d5ac406946d49ae60f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab71806508440416ef208f51580a6c50c"><td class="memItemLeft" align="right" valign="top"><a id="ab71806508440416ef208f51580a6c50c"></a>
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ab71806508440416ef208f51580a6c50c">operator!=</a> (const <a class="el" href="structplayrho_1_1Filter.html">Filter</a> lhs, const <a class="el" href="structplayrho_1_1Filter.html">Filter</a> rhs) noexcept</td></tr>
 <tr class="memdesc:ab71806508440416ef208f51580a6c50c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator. <br /></td></tr>
@@ -1203,6 +1212,11 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <tr class="memitem:a861fb100d29d58d6f26f3767017886b3"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a861fb100d29d58d6f26f3767017886b3">operator!=</a> (const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;a, const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;b) noexcept</td></tr>
 <tr class="memdesc:a861fb100d29d58d6f26f3767017886b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator.  <a href="namespaceplayrho.html#a861fb100d29d58d6f26f3767017886b3">More...</a><br /></td></tr>
 <tr class="separator:a861fb100d29d58d6f26f3767017886b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a124127e30fbdbb52415324763e22a8f9"><td class="memTemplParams" colspan="2"><a id="a124127e30fbdbb52415324763e22a8f9"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a124127e30fbdbb52415324763e22a8f9"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a124127e30fbdbb52415324763e22a8f9">operator!=</a> (const <a class="el" href="classplayrho_1_1Span.html">Span</a>&lt; T &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1Span.html">Span</a>&lt; T &gt; &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a124127e30fbdbb52415324763e22a8f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator support. <br /></td></tr>
+<tr class="separator:a124127e30fbdbb52415324763e22a8f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e16f08723028c63f043c1ad42891b11"><td class="memTemplParams" colspan="2"><a id="a0e16f08723028c63f043c1ad42891b11"></a>
 template&lt;typename T , std::size_t N&gt; </td></tr>
 <tr class="memitem:a0e16f08723028c63f043c1ad42891b11"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a0e16f08723028c63f043c1ad42891b11">operator!=</a> (const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;rhs) noexcept</td></tr>
@@ -1399,10 +1413,6 @@ template&lt;typename T1 , typename T2 , std::size_t N&gt; </td></tr>
 <tr class="memitem:af081fa6bf4de6ca0c13938151e91dbb6"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if_t&lt; std::is_same_v&lt; T1, decltype(T1{} *T2{})&gt;, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#af081fa6bf4de6ca0c13938151e91dbb6">operator*=</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp;lhs, const T2 rhs) noexcept</td></tr>
 <tr class="memdesc:af081fa6bf4de6ca0c13938151e91dbb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplication assignment operator. <br /></td></tr>
 <tr class="separator:af081fa6bf4de6ca0c13938151e91dbb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04db47926693f7d605331b5035d4c9c5"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t S&gt; </td></tr>
-<tr class="memitem:a04db47926693f7d605331b5035d4c9c5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a04db47926693f7d605331b5035d4c9c5">operator+</a> (<a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt; lhs, const typename <a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt;::data_type &amp;rhs)</td></tr>
-<tr class="memdesc:a04db47926693f7d605331b5035d4c9c5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classplayrho_1_1ArrayList.html" title="Array list.">ArrayList</a></code> add operator.  <a href="namespaceplayrho.html#a04db47926693f7d605331b5035d4c9c5">More...</a><br /></td></tr>
-<tr class="separator:a04db47926693f7d605331b5035d4c9c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41f0c49a750ed51bb02cef10158e8d7f"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t M, std::size_t N&gt; </td></tr>
 <tr class="memitem:a41f0c49a750ed51bb02cef10158e8d7f"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a41f0c49a750ed51bb02cef10158e8d7f">operator+</a> (const <a class="el" href="namespaceplayrho.html#acbf97bd8e3f0f2ce4588735388f4089a">Matrix</a>&lt; T, M, N &gt; &amp;lhs, const <a class="el" href="namespaceplayrho.html#acbf97bd8e3f0f2ce4588735388f4089a">Matrix</a>&lt; T, M, N &gt; &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:a41f0c49a750ed51bb02cef10158e8d7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix addition operator for two same-type, same-sized matrices.  <a href="namespaceplayrho.html#a41f0c49a750ed51bb02cef10158e8d7f">More...</a><br /></td></tr>
@@ -1417,11 +1427,14 @@ template&lt;typename T , std::size_t N&gt; </td></tr>
 <tr class="memitem:ae70d6dcc29a595bcc1a08b80d06f6e10"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if_t&lt; std::is_same_v&lt; T, decltype(+T{})&gt;, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ae70d6dcc29a595bcc1a08b80d06f6e10">operator+</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; v) noexcept</td></tr>
 <tr class="memdesc:ae70d6dcc29a595bcc1a08b80d06f6e10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unary plus operator. <br /></td></tr>
 <tr class="separator:ae70d6dcc29a595bcc1a08b80d06f6e10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a750eac4f3ab1ac6026e37ae41b87058d"><td class="memTemplParams" colspan="2"><a id="a750eac4f3ab1ac6026e37ae41b87058d"></a>
-template&lt;typename T , std::size_t S&gt; </td></tr>
-<tr class="memitem:a750eac4f3ab1ac6026e37ae41b87058d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a750eac4f3ab1ac6026e37ae41b87058d">operator+=</a> (<a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt; &amp;lhs, const typename <a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt;::data_type &amp;rhs)</td></tr>
-<tr class="memdesc:a750eac4f3ab1ac6026e37ae41b87058d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classplayrho_1_1ArrayList.html" title="Array list.">ArrayList</a></code> append operator. <br /></td></tr>
-<tr class="separator:a750eac4f3ab1ac6026e37ae41b87058d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3712e444173611decc9b129c3d806dd7"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t S&gt; </td></tr>
+<tr class="memitem:a3712e444173611decc9b129c3d806dd7"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a3712e444173611decc9b129c3d806dd7">operator+=</a> (<a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt; &amp;lhs, T rhs)</td></tr>
+<tr class="memdesc:a3712e444173611decc9b129c3d806dd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends the given value onto back.  <a href="namespaceplayrho.html#a3712e444173611decc9b129c3d806dd7">More...</a><br /></td></tr>
+<tr class="separator:a3712e444173611decc9b129c3d806dd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6506e9c43bb12c5d4e29856163a81b9"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t S, class U &gt; </td></tr>
+<tr class="memitem:af6506e9c43bb12c5d4e29856163a81b9"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#af6506e9c43bb12c5d4e29856163a81b9">operator+=</a> (<a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt; &amp;lhs, U &amp;&amp;rhs) -&gt; decltype(rhs.begin(), rhs.end(), rhs.size(), lhs)</td></tr>
+<tr class="memdesc:af6506e9c43bb12c5d4e29856163a81b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends the given values onto back.  <a href="namespaceplayrho.html#af6506e9c43bb12c5d4e29856163a81b9">More...</a><br /></td></tr>
+<tr class="separator:af6506e9c43bb12c5d4e29856163a81b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a319c9b996615a5d406c9db90f5e4578f"><td class="memTemplParams" colspan="2"><a id="a319c9b996615a5d406c9db90f5e4578f"></a>
 template&lt;typename T , std::size_t N&gt; </td></tr>
 <tr class="memitem:a319c9b996615a5d406c9db90f5e4578f"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if_t&lt; std::is_same_v&lt; T, decltype(T{}+T{})&gt;, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a319c9b996615a5d406c9db90f5e4578f">operator+=</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; rhs) noexcept</td></tr>
@@ -1456,10 +1469,10 @@ template&lt;typename T1 , typename T2 , std::size_t N&gt; </td></tr>
 <tr class="memitem:a8af63c98286091483bcd8bc55a8072d1"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::enable_if_t&lt; std::is_same_v&lt; T1, decltype(T1{}/T2{})&gt;, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a8af63c98286091483bcd8bc55a8072d1">operator/=</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp;lhs, const T2 rhs) noexcept</td></tr>
 <tr class="memdesc:a8af63c98286091483bcd8bc55a8072d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Division assignment operator. <br /></td></tr>
 <tr class="separator:a8af63c98286091483bcd8bc55a8072d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af80c31195a04b4af5891934d0ed1ed3c"><td class="memItemLeft" align="right" valign="top"><a id="af80c31195a04b4af5891934d0ed1ed3c"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#af80c31195a04b4af5891934d0ed1ed3c">operator&lt;</a> (const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> lhs, const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> rhs) noexcept</td></tr>
-<tr class="memdesc:af80c31195a04b4af5891934d0ed1ed3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less-than operator. <br /></td></tr>
-<tr class="separator:af80c31195a04b4af5891934d0ed1ed3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c40d9c4a48c2e389e97941863bdd584"><td class="memItemLeft" align="right" valign="top"><a id="a7c40d9c4a48c2e389e97941863bdd584"></a>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7c40d9c4a48c2e389e97941863bdd584">operator&lt;</a> (const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> &amp;lhs, const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a7c40d9c4a48c2e389e97941863bdd584"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less-than operator. <br /></td></tr>
+<tr class="separator:a7c40d9c4a48c2e389e97941863bdd584"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a815e65e38974a8bb60ef0a096bea0241"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a815e65e38974a8bb60ef0a096bea0241"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a815e65e38974a8bb60ef0a096bea0241">operator&lt;</a> (const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:a815e65e38974a8bb60ef0a096bea0241"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less-than operator.  <a href="namespaceplayrho.html#a815e65e38974a8bb60ef0a096bea0241">More...</a><br /></td></tr>
@@ -1486,10 +1499,10 @@ template&lt;typename T , std::size_t N&gt; </td></tr>
 <tr class="memitem:a6bda91572806860fa512fff0f01a001b"><td class="memTemplItemLeft" align="right" valign="top">::std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a6bda91572806860fa512fff0f01a001b">operator&lt;&lt;</a> (::std::ostream &amp;os, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;value)</td></tr>
 <tr class="memdesc:a6bda91572806860fa512fff0f01a001b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output stream operator. <br /></td></tr>
 <tr class="separator:a6bda91572806860fa512fff0f01a001b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a225f691c1b9ee3969221ae49170ba178"><td class="memItemLeft" align="right" valign="top"><a id="a225f691c1b9ee3969221ae49170ba178"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a225f691c1b9ee3969221ae49170ba178">operator&lt;=</a> (const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> lhs, const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> rhs) noexcept</td></tr>
-<tr class="memdesc:a225f691c1b9ee3969221ae49170ba178"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less-than or equal-to operator. <br /></td></tr>
-<tr class="separator:a225f691c1b9ee3969221ae49170ba178"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82753a7f5943b1efcc8c843e547f1054"><td class="memItemLeft" align="right" valign="top"><a id="a82753a7f5943b1efcc8c843e547f1054"></a>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a82753a7f5943b1efcc8c843e547f1054">operator&lt;=</a> (const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> &amp;lhs, const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a82753a7f5943b1efcc8c843e547f1054"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less-than or equal-to operator. <br /></td></tr>
+<tr class="separator:a82753a7f5943b1efcc8c843e547f1054"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbf50e7e086182f69dc09e011aef6345"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:adbf50e7e086182f69dc09e011aef6345"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#adbf50e7e086182f69dc09e011aef6345">operator&lt;=</a> (const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:adbf50e7e086182f69dc09e011aef6345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less-than or equal-to operator.  <a href="namespaceplayrho.html#adbf50e7e086182f69dc09e011aef6345">More...</a><br /></td></tr>
@@ -1498,6 +1511,11 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#aafdb22d94f848eebd4aff498f3fba0c4">operator&lt;=</a> (const <a class="el" href="structplayrho_1_1Version.html">Version</a> &amp;lhs, const <a class="el" href="structplayrho_1_1Version.html">Version</a> &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:aafdb22d94f848eebd4aff498f3fba0c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less-than or equal-to operator. <br /></td></tr>
 <tr class="separator:aafdb22d94f848eebd4aff498f3fba0c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecc8c4f87ec5b117810b27a5e5c5ed52"><td class="memTemplParams" colspan="2"><a id="aecc8c4f87ec5b117810b27a5e5c5ed52"></a>
+template&lt;typename T , std::size_t LhsSize, std::size_t RhsSize&gt; </td></tr>
+<tr class="memitem:aecc8c4f87ec5b117810b27a5e5c5ed52"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#aecc8c4f87ec5b117810b27a5e5c5ed52">operator==</a> (const <a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, LhsSize &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, RhsSize &gt; &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:aecc8c4f87ec5b117810b27a5e5c5ed52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator support. <br /></td></tr>
+<tr class="separator:aecc8c4f87ec5b117810b27a5e5c5ed52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5692e54289c87c156bd7455763082a9"><td class="memItemLeft" align="right" valign="top"><a id="ab5692e54289c87c156bd7455763082a9"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ab5692e54289c87c156bd7455763082a9">operator==</a> (const <a class="el" href="classplayrho_1_1BlockAllocator.html">BlockAllocator</a> &amp;a, const <a class="el" href="classplayrho_1_1BlockAllocator.html">BlockAllocator</a> &amp;b)</td></tr>
 <tr class="memdesc:ab5692e54289c87c156bd7455763082a9"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classplayrho_1_1BlockAllocator.html">BlockAllocator</a></code> equality operator. <br /></td></tr>
@@ -1510,10 +1528,10 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a268967eee0d7a53d51224a8a1259d06f">operator==</a> (const <a class="el" href="structplayrho_1_1Contactable.html">Contactable</a> &amp;lhs, const <a class="el" href="structplayrho_1_1Contactable.html">Contactable</a> &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:a268967eee0d7a53d51224a8a1259d06f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator. <br /></td></tr>
 <tr class="separator:a268967eee0d7a53d51224a8a1259d06f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0addcd9e78acfcc5f23418814f2a8f57"><td class="memItemLeft" align="right" valign="top"><a id="a0addcd9e78acfcc5f23418814f2a8f57"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a0addcd9e78acfcc5f23418814f2a8f57">operator==</a> (const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> lhs, const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> rhs) noexcept</td></tr>
-<tr class="memdesc:a0addcd9e78acfcc5f23418814f2a8f57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator. <br /></td></tr>
-<tr class="separator:a0addcd9e78acfcc5f23418814f2a8f57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bcf53dc3cb0bb29ac669f5350de0008"><td class="memItemLeft" align="right" valign="top"><a id="a4bcf53dc3cb0bb29ac669f5350de0008"></a>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a4bcf53dc3cb0bb29ac669f5350de0008">operator==</a> (const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> &amp;lhs, const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a4bcf53dc3cb0bb29ac669f5350de0008"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator. <br /></td></tr>
+<tr class="separator:a4bcf53dc3cb0bb29ac669f5350de0008"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9cecc5b25e8e89a47a552caf672bd69c"><td class="memItemLeft" align="right" valign="top"><a id="a9cecc5b25e8e89a47a552caf672bd69c"></a>
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a9cecc5b25e8e89a47a552caf672bd69c">operator==</a> (const <a class="el" href="structplayrho_1_1Filter.html">Filter</a> lhs, const <a class="el" href="structplayrho_1_1Filter.html">Filter</a> rhs) noexcept</td></tr>
 <tr class="memdesc:a9cecc5b25e8e89a47a552caf672bd69c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator. <br /></td></tr>
@@ -1522,6 +1540,11 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <tr class="memitem:ac1b97d7e2f5894048236948061068fb5"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ac1b97d7e2f5894048236948061068fb5">operator==</a> (const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;a, const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;b) noexcept</td></tr>
 <tr class="memdesc:ac1b97d7e2f5894048236948061068fb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator.  <a href="namespaceplayrho.html#ac1b97d7e2f5894048236948061068fb5">More...</a><br /></td></tr>
 <tr class="separator:ac1b97d7e2f5894048236948061068fb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fc572571fefb5d41ec6414843392d4a"><td class="memTemplParams" colspan="2"><a id="a6fc572571fefb5d41ec6414843392d4a"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a6fc572571fefb5d41ec6414843392d4a"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a6fc572571fefb5d41ec6414843392d4a">operator==</a> (const <a class="el" href="classplayrho_1_1Span.html">Span</a>&lt; T &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1Span.html">Span</a>&lt; T &gt; &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a6fc572571fefb5d41ec6414843392d4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator support. <br /></td></tr>
+<tr class="separator:a6fc572571fefb5d41ec6414843392d4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0d92fceef8d7757ae713bd166391c21"><td class="memTemplParams" colspan="2"><a id="ab0d92fceef8d7757ae713bd166391c21"></a>
 template&lt;typename T , std::size_t N&gt; </td></tr>
 <tr class="memitem:ab0d92fceef8d7757ae713bd166391c21"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ab0d92fceef8d7757ae713bd166391c21">operator==</a> (const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;rhs) noexcept</td></tr>
@@ -1535,10 +1558,10 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ac19a825ed22691eab1981a616b6bf539">operator==</a> (<a class="el" href="structplayrho_1_1ContactFeature.html">ContactFeature</a> lhs, <a class="el" href="structplayrho_1_1ContactFeature.html">ContactFeature</a> rhs) noexcept</td></tr>
 <tr class="memdesc:ac19a825ed22691eab1981a616b6bf539"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given two contact features are equal. <br /></td></tr>
 <tr class="separator:ac19a825ed22691eab1981a616b6bf539"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ef072ea2c5a69df2050c1a1557206ef"><td class="memItemLeft" align="right" valign="top"><a id="a7ef072ea2c5a69df2050c1a1557206ef"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7ef072ea2c5a69df2050c1a1557206ef">operator&gt;</a> (const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> lhs, const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> rhs) noexcept</td></tr>
-<tr class="memdesc:a7ef072ea2c5a69df2050c1a1557206ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater-than operator. <br /></td></tr>
-<tr class="separator:a7ef072ea2c5a69df2050c1a1557206ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66c974144631e169b23411d95a01f6d5"><td class="memItemLeft" align="right" valign="top"><a id="a66c974144631e169b23411d95a01f6d5"></a>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a66c974144631e169b23411d95a01f6d5">operator&gt;</a> (const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> &amp;lhs, const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a66c974144631e169b23411d95a01f6d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater-than operator. <br /></td></tr>
+<tr class="separator:a66c974144631e169b23411d95a01f6d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc58a55aab3f8bdd7ea411a6b2a4ddfb"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:acc58a55aab3f8bdd7ea411a6b2a4ddfb"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#acc58a55aab3f8bdd7ea411a6b2a4ddfb">operator&gt;</a> (const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:acc58a55aab3f8bdd7ea411a6b2a4ddfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater-than operator.  <a href="namespaceplayrho.html#acc58a55aab3f8bdd7ea411a6b2a4ddfb">More...</a><br /></td></tr>
@@ -1547,10 +1570,10 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ab826df98026c84dcfa3cf694d6f8e63e">operator&gt;</a> (const <a class="el" href="structplayrho_1_1Version.html">Version</a> &amp;lhs, const <a class="el" href="structplayrho_1_1Version.html">Version</a> &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:ab826df98026c84dcfa3cf694d6f8e63e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater-than operator. <br /></td></tr>
 <tr class="separator:ab826df98026c84dcfa3cf694d6f8e63e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae75f2a5fe81c028b473be52b47b7c7e9"><td class="memItemLeft" align="right" valign="top"><a id="ae75f2a5fe81c028b473be52b47b7c7e9"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ae75f2a5fe81c028b473be52b47b7c7e9">operator&gt;=</a> (const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> lhs, const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> rhs) noexcept</td></tr>
-<tr class="memdesc:ae75f2a5fe81c028b473be52b47b7c7e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater-than or equal-to operator. <br /></td></tr>
-<tr class="separator:ae75f2a5fe81c028b473be52b47b7c7e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacd3782f12938e0148922e6ab546c354"><td class="memItemLeft" align="right" valign="top"><a id="aacd3782f12938e0148922e6ab546c354"></a>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#aacd3782f12938e0148922e6ab546c354">operator&gt;=</a> (const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> &amp;lhs, const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:aacd3782f12938e0148922e6ab546c354"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater-than or equal-to operator. <br /></td></tr>
+<tr class="separator:aacd3782f12938e0148922e6ab546c354"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acca7f35c089808652f6c5d6c06a85ae7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:acca7f35c089808652f6c5d6c06a85ae7"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#acca7f35c089808652f6c5d6c06a85ae7">operator&gt;=</a> (const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;lhs, const <a class="el" href="classplayrho_1_1Interval.html">Interval</a>&lt; T &gt; &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:acca7f35c089808652f6c5d6c06a85ae7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater-than or equal-to operator.  <a href="namespaceplayrho.html#acca7f35c089808652f6c5d6c06a85ae7">More...</a><br /></td></tr>
@@ -2696,6 +2719,62 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a322b53a66a869cf225db329fc8c07f90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a322b53a66a869cf225db329fc8c07f90">&#9670;&nbsp;</a></span>Equal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class InputIt1 , class InputIt2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto playrho::Equal </td>
+          <td>(</td>
+          <td class="paramtype">InputIt1&#160;</td>
+          <td class="paramname"><em>first1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">InputIt1&#160;</td>
+          <td class="paramname"><em>last1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">InputIt2&#160;</td>
+          <td class="paramname"><em>first2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">InputIt2&#160;</td>
+          <td class="paramname"><em>last2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; decltype(first1 == last1, first2 == last2, ++first1, ++first2, *first1 == *first2)
+</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A pre-C++20 constant expression implementation of <code>std::equal</code>. </p>
+<dl class="section see"><dt>See also</dt><dd><a href="https://en.cppreference.com/w/cpp/algorithm/equal">https://en.cppreference.com/w/cpp/algorithm/equal</a> </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#aecc8c4f87ec5b117810b27a5e5c5ed52">operator==()</a>.</p>
+
+</div>
+</div>
 <a id="aa5b77298f0fc2a2ae88ececbc3fb23d1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa5b77298f0fc2a2ae88ececbc3fb23d1">&#9670;&nbsp;</a></span>EraseAll()</h2>
 
@@ -3327,8 +3406,6 @@ template&lt;typename T , typename U  = decltype(Interval&lt;T&gt;{}, (T{} - T{})
 <dl class="section note"><dt>Note</dt><dd>Would be nice if the Doxygen "relatedalso BodyType" command worked for this but seems that doesn't work for scoped enumeration. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#a76e2dcc5aeb221351e51ad965e9de893" title="Is &quot;speedable&quot;.">IsSpeedable(BodyType)</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#abb921582a11b07be4c8ac81c43787176">playrho::d2::Body::SetAcceleration()</a>.</p>
-
 </div>
 </div>
 <a id="aa8f91c8a02e1886e4e9f90d0926e075a"></a>
@@ -3563,8 +3640,6 @@ template&lt;typename T , typename U  = decltype(Interval&lt;T&gt;{}, T{} &lt; T{
 <dl class="section note"><dt>Note</dt><dd>Would be nice if the Doxygen "relatedalso BodyType" command worked for this but seems that doesn't work for scoped enumeration. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#a6514752c0838613cfaf76ea7e03581cd" title="Is &quot;accelerable&quot;.">IsAccelerable(BodyType)</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a70e7705910ea350a7721bf5477e1f391">playrho::d2::Body::JustSetVelocity()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a794c4c1b8c24aedb959c5031a5ecde69">playrho::d2::Body::SetAwake()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a96bfa8ab63b3246ed714573661ea3618">playrho::d2::Body::SetSleepingAllowed()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a32b0b95d49a70472d8667fc97959151c">playrho::d2::Body::SetVelocity()</a>, and <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7821d9464b36b49ddb893ef9c2c262fb">playrho::d2::Body::UnsetAwake()</a>.</p>
-
 </div>
 </div>
 <a id="ab7404128f6225cf6915219bb784c7843"></a>
@@ -3596,7 +3671,7 @@ template&lt;&gt; </div>
 <p>Determines if the given value is valid. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92" title="Strongly typed identifier for bodies within World instances.">BodyID</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#abebb8afee132b1f990d43a9a223fd5ed">playrho::d2::VelocityConstraint::VelocityConstraint()</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceProxy.html#a44cc65808fd89570707b3af1bc87eb36">playrho::d2::DistanceProxy::ComputeAABB()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a63c3c99d25c6e735174cb9ddeec58c4a">playrho::d2::DynamicTree::CreateLeaf()</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceProxy.html#ad01443fd4ea346d550ece90f7f92b1f4">playrho::d2::DistanceProxy::Distance()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldManifold.html#ae1cb8e651628460be908ba768c7d3883">playrho::d2::WorldManifold::GetPointCount()</a>, <a class="el" href="structplayrho_1_1d2_1_1Position.html#a30e3652aa86130f81c948112cf4538d6">playrho::d2::Position::GetPosition()</a>, <a class="el" href="structplayrho_1_1ToiOutput.html#a19b308c9b3b8f5292b9f3dad183c9d76">playrho::ToiOutput::GetToiViaSat()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a1c8db589cd3a6e20401aeeecb6cccf66">playrho::d2::GetTransformation()</a>, <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a1bc16ad22662f69d6218f879a5c17245">playrho::d2::TargetJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1Acceleration.html#a81b1dd82c9c8f3ec7c80b0c53e818239">playrho::d2::Acceleration::IsValid()</a>, <a class="el" href="structplayrho_1_1d2_1_1Position.html#ae5cbbddc6b8f2b557ba2e87f43c64802">playrho::d2::Position::IsValid()</a>, <a class="el" href="structplayrho_1_1d2_1_1Sweep.html#afce9c1dea61c4ba26d5785f2f20c3bff">playrho::d2::Sweep::IsValid()</a>, <a class="el" href="structplayrho_1_1d2_1_1Transformation.html#af76924a9aee97c42840a3867b3cb612c">playrho::d2::Transformation::IsValid()</a>, <a class="el" href="namespaceplayrho.html#a5351f2762c5c98b723679795e0a79287">IsValid()</a>, <a class="el" href="structplayrho_1_1d2_1_1Velocity.html#a1735a28e0a25cc77e59fafe1d840c242">playrho::d2::Velocity::IsValid()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#abb921582a11b07be4c8ac81c43787176">playrho::d2::Body::SetAcceleration()</a>, <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html#a029a000b5ed14578c451483630beb487">playrho::d2::BodyConstraint::SetPosition()</a>, <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html#a50a8d3716f6263cdfa096eb357e2d7c9">playrho::d2::BodyConstraint::SetVelocity()</a>, <a class="el" href="ContactSolver_8hpp.html#a0fd21d441a78194f210e9f900bd3d1a4">playrho::GaussSeidel::SolvePositionConstraint()</a>, and <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a87f0cb382d657fcac4402b3896269fe3">playrho::d2::TargetJointConf::SolveVelocity()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#ac55d448e1bde256f0dbf7824fb1deaa3">playrho::d2::Body::Body()</a>, <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#abebb8afee132b1f990d43a9a223fd5ed">playrho::d2::VelocityConstraint::VelocityConstraint()</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceProxy.html#a44cc65808fd89570707b3af1bc87eb36">playrho::d2::DistanceProxy::ComputeAABB()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a63c3c99d25c6e735174cb9ddeec58c4a">playrho::d2::DynamicTree::CreateLeaf()</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceProxy.html#ad01443fd4ea346d550ece90f7f92b1f4">playrho::d2::DistanceProxy::Distance()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldManifold.html#ae1cb8e651628460be908ba768c7d3883">playrho::d2::WorldManifold::GetPointCount()</a>, <a class="el" href="structplayrho_1_1d2_1_1Position.html#a30e3652aa86130f81c948112cf4538d6">playrho::d2::Position::GetPosition()</a>, <a class="el" href="structplayrho_1_1ToiOutput.html#a19b308c9b3b8f5292b9f3dad183c9d76">playrho::ToiOutput::GetToiViaSat()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a1c8db589cd3a6e20401aeeecb6cccf66">playrho::d2::GetTransformation()</a>, <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a1bc16ad22662f69d6218f879a5c17245">playrho::d2::TargetJointConf::InitVelocity()</a>, <a class="el" href="structplayrho_1_1d2_1_1Acceleration.html#a81b1dd82c9c8f3ec7c80b0c53e818239">playrho::d2::Acceleration::IsValid()</a>, <a class="el" href="structplayrho_1_1d2_1_1Position.html#ae5cbbddc6b8f2b557ba2e87f43c64802">playrho::d2::Position::IsValid()</a>, <a class="el" href="structplayrho_1_1d2_1_1Sweep.html#afce9c1dea61c4ba26d5785f2f20c3bff">playrho::d2::Sweep::IsValid()</a>, <a class="el" href="structplayrho_1_1d2_1_1Transformation.html#af76924a9aee97c42840a3867b3cb612c">playrho::d2::Transformation::IsValid()</a>, <a class="el" href="namespaceplayrho.html#a5351f2762c5c98b723679795e0a79287">IsValid()</a>, <a class="el" href="structplayrho_1_1d2_1_1Velocity.html#a1735a28e0a25cc77e59fafe1d840c242">playrho::d2::Velocity::IsValid()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#abb921582a11b07be4c8ac81c43787176">playrho::d2::Body::SetAcceleration()</a>, <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html#a029a000b5ed14578c451483630beb487">playrho::d2::BodyConstraint::SetPosition()</a>, <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html#a50a8d3716f6263cdfa096eb357e2d7c9">playrho::d2::BodyConstraint::SetVelocity()</a>, <a class="el" href="ContactSolver_8hpp.html#a0fd21d441a78194f210e9f900bd3d1a4">playrho::GaussSeidel::SolvePositionConstraint()</a>, and <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a87f0cb382d657fcac4402b3896269fe3">playrho::d2::TargetJointConf::SolveVelocity()</a>.</p>
 
 </div>
 </div>
@@ -3695,7 +3770,7 @@ This is different from <code>std::make_unsigned</code> in that this changes the 
 <p>Gets the maximum size of the given container of index pairs. </p>
 <dl class="section return"><dt>Returns</dt><dd>Always returns 3. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="group__RayCastGroup.html#ga425e9dc1c0e263bf7484ef6ef2cde86b">playrho::d2::RayCast()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1ArrayList.html#ae26c71f54bd440eff44fd2971238e607">playrho::ArrayList&lt; T, MAXSIZE, SIZE_TYPE &gt;::ArrayList()</a>, and <a class="el" href="group__RayCastGroup.html#ga425e9dc1c0e263bf7484ef6ef2cde86b">playrho::d2::RayCast()</a>.</p>
 
 </div>
 </div>
@@ -4075,48 +4150,8 @@ Algorithmically speaking, this implementation is called the "naive" algorithm. F
 
 </div>
 </div>
-<a id="a04db47926693f7d605331b5035d4c9c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a04db47926693f7d605331b5035d4c9c5">&#9670;&nbsp;</a></span>operator+() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T , std::size_t S&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt; operator+ </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt;&#160;</td>
-          <td class="paramname"><em>lhs</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const typename <a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt;::data_type &amp;&#160;</td>
-          <td class="paramname"><em>rhs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><code><a class="el" href="classplayrho_1_1ArrayList.html" title="Array list.">ArrayList</a></code> add operator. </p>
-<p>Appends the right-hand-side value to the left-hand-side instance's values. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">lhs</td><td>Left hand side instance. </td></tr>
-    <tr><td class="paramname">rhs</td><td>Right hand side value to append with <code>lhs</code> into the returned result. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>An instance with all of <code>lhs</code> values follwed by the <code>rhs</code> value. </dd></dl>
-
-</div>
-</div>
 <a id="a41f0c49a750ed51bb02cef10158e8d7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41f0c49a750ed51bb02cef10158e8d7f">&#9670;&nbsp;</a></span>operator+() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a41f0c49a750ed51bb02cef10158e8d7f">&#9670;&nbsp;</a></span>operator+()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4153,6 +4188,109 @@ template&lt;typename T , std::size_t M, std::size_t N&gt; </div>
 
 <p>Matrix addition operator for two same-type, same-sized matrices. </p>
 <dl class="section see"><dt>See also</dt><dd><a href="https://en.wikipedia.org/wiki/Matrix_addition">https://en.wikipedia.org/wiki/Matrix_addition</a> </dd></dl>
+
+</div>
+</div>
+<a id="a3712e444173611decc9b129c3d806dd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3712e444173611decc9b129c3d806dd7">&#9670;&nbsp;</a></span>operator+=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , std::size_t S&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt;T, S&gt;&amp; playrho::operator+= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Appends the given value onto back. </p>
+<dl class="section return"><dt>Returns</dt><dd>Reference to this instance. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1LengthError.html" title="Length based logic error.">LengthError</a></td><td>if <code><a class="el" href="namespaceplayrho.html#af33cf35b33c93168aedcbf5a986a3472" title="Gets the dynamic size of the given collection of index pairs.">size()</a></code> is not less than <code><a class="el" href="namespaceplayrho.html#ac32367e964a575ebee3ed45c8ddb0afe" title="Gets the maximum size of the given container of index pairs.">max_size()</a></code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="namespaceplayrho.html#af33cf35b33c93168aedcbf5a986a3472" title="Gets the dynamic size of the given collection of index pairs.">size()</a></code> is one greater than before. </dd>
+<dd>
+<code><a class="el" href="namespaceplayrho.html#a98ab78cb47da6f6d872d617cc66040a6" title="Checks whether the given collection of index pairs is empty.">empty()</a></code> returns false. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#ac32367e964a575ebee3ed45c8ddb0afe" title="Gets the maximum size of the given container of index pairs.">max_size</a>. </dd></dl>
+
+</div>
+</div>
+<a id="af6506e9c43bb12c5d4e29856163a81b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6506e9c43bb12c5d4e29856163a81b9">&#9670;&nbsp;</a></span>operator+=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , std::size_t S, class U &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto playrho::operator+= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">U &amp;&amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; decltype(rhs.begin(), rhs.end(), rhs.size(), lhs)
+</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Appends the given values onto back. </p>
+<dl class="section return"><dt>Returns</dt><dd>Reference to this instance. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1LengthError.html" title="Length based logic error.">LengthError</a></td><td>if operation would exceed <code><a class="el" href="namespaceplayrho.html#ac32367e964a575ebee3ed45c8ddb0afe" title="Gets the maximum size of the given container of index pairs.">max_size()</a></code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="namespaceplayrho.html#af33cf35b33c93168aedcbf5a986a3472" title="Gets the dynamic size of the given collection of index pairs.">size()</a></code> is <code>size(value)</code> greater than before. </dd>
+<dd>
+<code><a class="el" href="namespaceplayrho.html#a98ab78cb47da6f6d872d617cc66040a6" title="Checks whether the given collection of index pairs is empty.">empty()</a></code> returns false. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#ac32367e964a575ebee3ed45c8ddb0afe" title="Gets the maximum size of the given container of index pairs.">max_size</a>. </dd></dl>
 
 </div>
 </div>
@@ -4949,7 +5087,7 @@ The value persists until you set or reset. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This just calls <code>GetNumValidIndices</code>. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#ad136f8db9fd6c0c583c1890b8a3cc504" title="Gets the number of valid indices in the given collection of index pairs.">GetNumValidIndices</a> </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1ArrayList.html#a7cbc50e8f7093460b749107e4ba5e1ca">playrho::ArrayList&lt; VALUE_TYPE, MAXSIZE, SIZE_TYPE &gt;::ArrayList()</a>, <a class="el" href="namespaceplayrho.html#a516a3bbb73371cdc53f348b67f43bb1f">Alloc()</a>, <a class="el" href="namespaceplayrho.html#a2943dd9a79b7fc1fa196af1208b00388">AllocArray()</a>, <a class="el" href="classplayrho_1_1BlockAllocator.html#abbb25555e5d25ed67a4748136ff7b8ed">playrho::BlockAllocator::Allocate()</a>, <a class="el" href="classplayrho_1_1StackAllocator.html#a1ecbcaa8d549ffa1522e7128fc8a684d">playrho::StackAllocator::Allocate()</a>, <a class="el" href="classplayrho_1_1StackAllocator.html#a1902b15365c55a19c21e9103565e3447">playrho::StackAllocator::AllocateArray()</a>, <a class="el" href="group__Math.html#ga5928e1bb2ea4a8d60673314ff46a83cf">Average()</a>, <a class="el" href="group__Math.html#gae769785f0540a4b8960b282f6b105c14">ComputeCentroid()</a>, <a class="el" href="group__Math.html#ga08e3eae87277d85db13cce6b12facf1e">Dot()</a>, <a class="el" href="classplayrho_1_1BlockAllocator.html#a06536ee49cdb1a8c2f79de7522c8bd33">playrho::BlockAllocator::Free()</a>, <a class="el" href="group__Math.html#ga760effc058042418453697e733937b2f">GetAreaOfPolygon()</a>, <a class="el" href="classplayrho_1_1BlockAllocator.html#a5aa7655c98fb927d7bc7a2fc936ec6cc">playrho::BlockAllocator::GetMaxBlockSize()</a>, <a class="el" href="group__Math.html#gaee743e28b24b01d9101b8a2e7bd72284">GetPolarMoment()</a>, <a class="el" href="namespaceplayrho_1_1detail.html#a9c6ef61517707043fb5fd0891647687f">playrho::detail::IsFull()</a>, and <a class="el" href="namespaceplayrho.html#adb651f620aefb4ee65ec0cc8c10b27b0">Realloc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a516a3bbb73371cdc53f348b67f43bb1f">Alloc()</a>, <a class="el" href="namespaceplayrho.html#a2943dd9a79b7fc1fa196af1208b00388">AllocArray()</a>, <a class="el" href="classplayrho_1_1BlockAllocator.html#abbb25555e5d25ed67a4748136ff7b8ed">playrho::BlockAllocator::Allocate()</a>, <a class="el" href="classplayrho_1_1StackAllocator.html#a1ecbcaa8d549ffa1522e7128fc8a684d">playrho::StackAllocator::Allocate()</a>, <a class="el" href="classplayrho_1_1StackAllocator.html#a1902b15365c55a19c21e9103565e3447">playrho::StackAllocator::AllocateArray()</a>, <a class="el" href="group__Math.html#ga5928e1bb2ea4a8d60673314ff46a83cf">Average()</a>, <a class="el" href="group__Math.html#gae769785f0540a4b8960b282f6b105c14">ComputeCentroid()</a>, <a class="el" href="group__Math.html#ga08e3eae87277d85db13cce6b12facf1e">Dot()</a>, <a class="el" href="classplayrho_1_1BlockAllocator.html#a06536ee49cdb1a8c2f79de7522c8bd33">playrho::BlockAllocator::Free()</a>, <a class="el" href="group__Math.html#ga760effc058042418453697e733937b2f">GetAreaOfPolygon()</a>, <a class="el" href="classplayrho_1_1BlockAllocator.html#a5aa7655c98fb927d7bc7a2fc936ec6cc">playrho::BlockAllocator::GetMaxBlockSize()</a>, <a class="el" href="group__Math.html#gaee743e28b24b01d9101b8a2e7bd72284">GetPolarMoment()</a>, <a class="el" href="namespaceplayrho_1_1detail.html#a9c6ef61517707043fb5fd0891647687f">playrho::detail::IsFull()</a>, and <a class="el" href="namespaceplayrho.html#adb651f620aefb4ee65ec0cc8c10b27b0">Realloc()</a>.</p>
 
 </div>
 </div>
@@ -5896,7 +6034,7 @@ Any narrowing is intentional.</dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li>
-    <li class="footer">Generated on Sun Dec 3 2023 22:14:18 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Dec 18 2023 21:55:24 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

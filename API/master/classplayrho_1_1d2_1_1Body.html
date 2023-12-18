@@ -323,9 +323,9 @@ Related Functions</h2></td></tr>
 <tr class="memitem:a306635dbd11f92ad1020a386fce7b7c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__PhysicalQuantities.html#ga8b4603a98e526262c2e4adfe99510672">AngularVelocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a306635dbd11f92ad1020a386fce7b7c2">GetAngularVelocity</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
 <tr class="memdesc:a306635dbd11f92ad1020a386fce7b7c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the angular velocity.  <a href="classplayrho_1_1d2_1_1Body.html#a306635dbd11f92ad1020a386fce7b7c2">More...</a><br /></td></tr>
 <tr class="separator:a306635dbd11f92ad1020a386fce7b7c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e940544a56fe840424f880106fcd842"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a0e940544a56fe840424f880106fcd842">GetBodyConf</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
-<tr class="memdesc:a0e940544a56fe840424f880106fcd842"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the body definition for the given body.  <a href="classplayrho_1_1d2_1_1Body.html#a0e940544a56fe840424f880106fcd842">More...</a><br /></td></tr>
-<tr class="separator:a0e940544a56fe840424f880106fcd842"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26bbc90e5b2c4192b598dfeefc692196"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a26bbc90e5b2c4192b598dfeefc692196">GetBodyConf</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body)</td></tr>
+<tr class="memdesc:a26bbc90e5b2c4192b598dfeefc692196"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the body definition for the given body.  <a href="classplayrho_1_1d2_1_1Body.html#a26bbc90e5b2c4192b598dfeefc692196">More...</a><br /></td></tr>
+<tr class="separator:a26bbc90e5b2c4192b598dfeefc692196"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82eaa61b6bddf682fe315f09830e2bfc"><td class="memItemLeft" align="right" valign="top"><a id="a82eaa61b6bddf682fe315f09830e2bfc"></a>
 <a class="el" href="namespaceplayrho.html#a2d09dc7b51321c052b071485357ca1f9">Force2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a82eaa61b6bddf682fe315f09830e2bfc">GetForce</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
 <tr class="memdesc:a82eaa61b6bddf682fe315f09830e2bfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the net force that the given body is currently experiencing. <br /></td></tr>
@@ -1301,7 +1301,7 @@ The body's transformation is always the body's sweep position one's linear posit
 <p>Gets whether or not this body allowed to sleep. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a96bfa8ab63b3246ed714573661ea3618" title="Sets whether or not this body is allowed to sleep.">SetSleepingAllowed</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a93a71d2a1b85e02d33548c6672437599">UnsetAwakeFlag()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7821d9464b36b49ddb893ef9c2c262fb">UnsetAwake()</a>, and <a class="el" href="classplayrho_1_1d2_1_1Body.html#a93a71d2a1b85e02d33548c6672437599">UnsetAwakeFlag()</a>.</p>
 
 </div>
 </div>
@@ -1331,7 +1331,7 @@ The body's transformation is always the body's sweep position one's linear posit
 <p>Is "speedable". </p>
 <p>Is this body able to have a non-zero speed associated with it. Kinematic and Dynamic bodies are speedable. Static bodies are not. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a91f44b797b80539941b65a15c2ffee5d" title="Gets the type of this body.">GetType</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea" title="Sets the type of this body.">SetType</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#ae06b70496e35fc753fab2733824f76eb">SetAwakeFlag()</a>, and <a class="el" href="classplayrho_1_1d2_1_1Body.html#a93a71d2a1b85e02d33548c6672437599">UnsetAwakeFlag()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a794c4c1b8c24aedb959c5031a5ecde69">SetAwake()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ae06b70496e35fc753fab2733824f76eb">SetAwakeFlag()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7821d9464b36b49ddb893ef9c2c262fb">UnsetAwake()</a>, and <a class="el" href="classplayrho_1_1d2_1_1Body.html#a93a71d2a1b85e02d33548c6672437599">UnsetAwakeFlag()</a>.</p>
 
 </div>
 </div>
@@ -1446,6 +1446,8 @@ A non-zero acceleration will also awaken the body. </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#ad408734219c952c485b18375b26365aa" title="Gets this body&#39;s linear acceleration.">GetLinearAcceleration</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a6d1817724aad0e2655c16c4721a75d48" title="Gets this body&#39;s angular acceleration.">GetAngularAcceleration</a>. </dd></dl>
 
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#ac55d448e1bde256f0dbf7824fb1deaa3">Body()</a>.</p>
+
 </div>
 </div>
 <a id="a85169a6266e1ecfa2e25ecc12175218a"></a>
@@ -1535,6 +1537,8 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 <p>This is done unconditionally. </p><dl class="section note"><dt>Note</dt><dd>This should <b>not</b> be called unless the body is "speedable". </dd></dl>
 <dl class="section pre"><dt>Precondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a7aedf6b5b4adc6f0ff0c1fc13ec49b0f" title="Is &quot;speedable&quot;.">IsSpeedable()</a></code> is true. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a93a71d2a1b85e02d33548c6672437599" title="Unsets the body&#39;s awake flag.">UnsetAwakeFlag</a>. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a794c4c1b8c24aedb959c5031a5ecde69">SetAwake()</a>.</p>
 
 </div>
 </div>
@@ -1900,6 +1904,8 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 <p>Sets the "under-active" time to a value of zero or a non-zero value if the body is "accelerable". Otherwise it does nothing. </p><dl class="section note"><dt>Note</dt><dd>A non-zero time is only valid for an "accelerable" body. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#abc897bc2cda122d02fccdb3c5c11049d" title="Gets this body&#39;s under-active time value.">GetUnderActiveTime</a>. </dd></dl>
 
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#ac55d448e1bde256f0dbf7824fb1deaa3">Body()</a>.</p>
+
 </div>
 </div>
 <a id="a32b0b95d49a70472d8667fc97959151c"></a>
@@ -1937,6 +1943,8 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 <dd>
 If <code>velocity</code> is zero or <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a7aedf6b5b4adc6f0ff0c1fc13ec49b0f" title="Is &quot;speedable&quot;.">IsSpeedable()</a></code> is true, <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a60d609b9f5c0a1d568b3fc42d169c428" title="Gets the velocity.">GetVelocity()</a></code> returns the <code>value</code> set. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a7abc6b8d4f50e3e3e703f53f66ecc035" title="Gets the awake/asleep state of this body.">IsAwake</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7aedf6b5b4adc6f0ff0c1fc13ec49b0f" title="Is &quot;speedable&quot;.">IsSpeedable</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#abc897bc2cda122d02fccdb3c5c11049d" title="Gets this body&#39;s under-active time value.">GetUnderActiveTime</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a60d609b9f5c0a1d568b3fc42d169c428" title="Gets the velocity.">GetVelocity</a>. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#ac55d448e1bde256f0dbf7824fb1deaa3">Body()</a>.</p>
 
 </div>
 </div>
@@ -1999,6 +2007,8 @@ This body's <code>GetVelocity</code> function returns zero linear and zero angul
 <p>Unsets the body's awake flag. </p>
 <dl class="section pre"><dt>Precondition</dt><dd>Either <code>!IsSpeedable()</code> or <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a71df4118ca3b5056aa4634a70c3b220a" title="Gets whether or not this body allowed to sleep.">IsSleepingAllowed()</a></code>. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#ae06b70496e35fc753fab2733824f76eb" title="Sets the body&#39;s awake flag.">SetAwakeFlag</a>. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7821d9464b36b49ddb893ef9c2c262fb">UnsetAwake()</a>.</p>
 
 </div>
 </div>
@@ -2349,8 +2359,8 @@ Non-zero impulses wakes up the body. </dd></dl>
 
 </div>
 </div>
-<a id="a0e940544a56fe840424f880106fcd842"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e940544a56fe840424f880106fcd842">&#9670;&nbsp;</a></span>GetBodyConf()</h2>
+<a id="a26bbc90e5b2c4192b598dfeefc692196"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26bbc90e5b2c4192b598dfeefc692196">&#9670;&nbsp;</a></span>GetBodyConf()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4367,7 +4377,7 @@ This body's <code>GetVelocity</code> function returns zero linear and zero angul
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a></li>
-    <li class="footer">Generated on Sun Dec 3 2023 22:14:18 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Dec 18 2023 21:55:24 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

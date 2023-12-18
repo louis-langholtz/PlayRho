@@ -1,52 +1,52 @@
 <map id="Library/include/playrho/d2/RevoluteJointConf.hpp" name="Library/include/playrho/d2/RevoluteJointConf.hpp">
-<area shape="rect" id="node1" title="Definition of the RevoluteJointConf class and closely related code." alt="" coords="374,5,565,47"/>
-<area shape="rect" id="node2" href="$LimitState_8hpp.html" title="Definition of the LimitState enumeration and closely related code." alt="" coords="77,95,248,121"/>
-<area shape="rect" id="node3" href="$Span_8hpp.html" title="Definition of the Span class template." alt="" coords="659,393,794,420"/>
-<area shape="rect" id="node13" href="$TypeInfo_8hpp.html" title="Definition of TypeID class and closely related code." alt="" coords="273,95,431,121"/>
-<area shape="rect" id="node20" href="$JointConf_8hpp.html" title="Definition of the JointConf class and closely related code." alt="" coords="791,244,972,271"/>
-<area shape="rect" id="node33" href="$d2_2Math_8hpp.html" title="Declarations of general 2&#45;D math related code." alt="" coords="1713,95,1869,121"/>
-<area shape="rect" id="node4" title=" " alt="" coords="947,468,1018,495"/>
-<area shape="rect" id="node5" title=" " alt="" coords="1285,468,1355,495"/>
-<area shape="rect" id="node6" title=" " alt="" coords="761,468,871,495"/>
-<area shape="rect" id="node7" title=" " alt="" coords="1447,871,1539,897"/>
-<area shape="rect" id="node8" title=" " alt="" coords="505,871,565,897"/>
-<area shape="rect" id="node9" href="$detail_2Templates_8hpp.html" title="Low&#45;level declarations for general class &amp; function templates." alt="" coords="840,789,1051,815"/>
-<area shape="rect" id="node10" title=" " alt="" coords="948,871,1033,897"/>
-<area shape="rect" id="node11" title=" " alt="" coords="750,871,837,897"/>
-<area shape="rect" id="node12" title=" " alt="" coords="1103,871,1174,897"/>
-<area shape="rect" id="node14" title=" " alt="" coords="315,169,381,196"/>
-<area shape="rect" id="node15" href="$detail_2TypeInfo_8hpp.html" title="Definition of TypeInfo class template and related code." alt="" coords="93,169,291,196"/>
-<area shape="rect" id="node16" title=" " alt="" coords="5,244,64,271"/>
-<area shape="rect" id="node17" title=" " alt="" coords="88,244,147,271"/>
-<area shape="rect" id="node18" title=" " alt="" coords="171,244,258,271"/>
-<area shape="rect" id="node19" title=" " alt="" coords="282,244,358,271"/>
-<area shape="rect" id="node21" title=" " alt="" coords="1144,468,1211,495"/>
-<area shape="rect" id="node22" href="$BodyID_8hpp.html" title="Definition of the BodyID alias and closely related code." alt="" coords="870,319,1021,345"/>
-<area shape="rect" id="node23" href="$IndexingNamedType_8hpp.html" title="Definition of IndexingNamedType class template and related code." alt="" coords="597,781,816,823"/>
-<area shape="rect" id="node24" href="$Settings_8hpp.html" title="Types and default settings file." alt="" coords="2322,393,2478,420"/>
-<area shape="rect" id="node25" title=" " alt="" coords="2584,707,2643,733"/>
-<area shape="rect" id="node26" href="$Real_8hpp.html" title="Real number definition file." alt="" coords="1982,625,2114,651"/>
-<area shape="rect" id="node29" href="$RealConstants_8hpp.html" title="Definitions file for constant expressions of type Real." alt="" coords="2291,543,2488,569"/>
-<area shape="rect" id="node30" href="$Units_8hpp.html" title="Declarations for physical units possibly backed by strong types." alt="" coords="2646,468,2783,495"/>
-<area shape="rect" id="node27" href="$Templates_8hpp.html" title="Definitions of miscellaneous template related code." alt="" coords="1683,707,1853,733"/>
-<area shape="rect" id="node28" title=" " alt="" coords="1626,789,1691,815"/>
-<area shape="rect" id="node31" title=" " alt="" coords="2513,543,2575,569"/>
-<area shape="rect" id="node32" href="$to__underlying_8hpp.html" title="Definition of to_underlying function template." alt="" coords="2752,543,2944,569"/>
-<area shape="rect" id="node34" title=" " alt="" coords="1643,169,1698,196"/>
-<area shape="rect" id="node35" title=" " alt="" coords="1241,244,1303,271"/>
-<area shape="rect" id="node36" href="$Math_8hpp.html" title="Conventional and custom math related code." alt="" coords="1723,169,1859,196"/>
-<area shape="rect" id="node38" href="$Matrix_8hpp.html" title="Definition of the Matrix alias and closely related code." alt="" coords="2701,244,2846,271"/>
-<area shape="rect" id="node40" href="$Vector2_8hpp.html" title="Definition of the Vector2 alias template and closely related code." alt="" coords="2333,319,2485,345"/>
-<area shape="rect" id="node42" href="$Checked_8hpp.html" title="Declarations of the Checked class template and closely related code." alt="" coords="938,625,1137,651"/>
-<area shape="rect" id="node44" href="$UnitInterval_8hpp.html" title="Definition of the UnitInterval value checked types and related code." alt="" coords="990,543,1170,569"/>
-<area shape="rect" id="node46" href="$UnitVec_8hpp.html" title="Declarations of the UnitVec class and free functions associated with it." alt="" coords="1749,393,1923,420"/>
-<area shape="rect" id="node47" href="$Position_8hpp.html" title="Definition of the Position class and closely related code." alt="" coords="2870,244,3045,271"/>
-<area shape="rect" id="node48" href="$Velocity_8hpp.html" title="Definition of the Velocity class and closely related code." alt="" coords="1953,244,2127,271"/>
-<area shape="rect" id="node49" href="$Transformation_8hpp.html" title="Definition of the Transformation class and free functions directly associated with it." alt="" coords="2303,244,2524,271"/>
-<area shape="rect" id="node50" href="$Sweep_8hpp.html" title="Definition of the Sweep class and closely related code." alt="" coords="2501,169,2667,196"/>
-<area shape="rect" id="node37" title=" " alt="" coords="1753,244,1828,271"/>
-<area shape="rect" id="node39" href="$Vector_8hpp.html" title="Definition of the Vector class template and closely related code." alt="" coords="1582,393,1725,420"/>
-<area shape="rect" id="node41" href="$NonNegative_8hpp.html" title="Definition of the NonNegative value checked types." alt="" coords="1194,543,1382,569"/>
-<area shape="rect" id="node43" href="$Vector3_8hpp.html" title="Definition of the Vector3 alias template and closely related code." alt="" coords="1817,319,1969,345"/>
-<area shape="rect" id="node45" href="$UnitIntervalChecker_8hpp.html" title="Definition of the UnitIntervalChecker class template." alt="" coords="1161,617,1354,659"/>
+<area shape="rect" id="node1" title="Definition of the RevoluteJointConf class and closely related code." alt="" coords="1403,5,1594,47"/>
+<area shape="rect" id="node2" href="$LimitState_8hpp.html" title="Definition of the LimitState enumeration and closely related code." alt="" coords="5,95,176,121"/>
+<area shape="rect" id="node3" href="$Span_8hpp.html" title="Definition of the Span class template." alt="" coords="1533,401,1667,427"/>
+<area shape="rect" id="node13" href="$TypeInfo_8hpp.html" title="Definition of TypeID class and closely related code." alt="" coords="3347,95,3506,121"/>
+<area shape="rect" id="node20" href="$JointConf_8hpp.html" title="Definition of the JointConf class and closely related code." alt="" coords="243,244,424,271"/>
+<area shape="rect" id="node31" href="$d2_2Math_8hpp.html" title="Declarations of general 2&#45;D math related code." alt="" coords="1573,95,1729,121"/>
+<area shape="rect" id="node4" title=" " alt="" coords="1406,483,1477,509"/>
+<area shape="rect" id="node5" title=" " alt="" coords="1987,483,2056,509"/>
+<area shape="rect" id="node6" title=" " alt="" coords="1271,483,1382,509"/>
+<area shape="rect" id="node7" title=" " alt="" coords="2639,871,2731,897"/>
+<area shape="rect" id="node8" title=" " alt="" coords="1538,871,1598,897"/>
+<area shape="rect" id="node9" href="$Templates_8hpp.html" title="Definitions of miscellaneous template related code." alt="" coords="1775,707,1945,733"/>
+<area shape="rect" id="node10" title=" " alt="" coords="2821,789,2886,815"/>
+<area shape="rect" id="node11" href="$detail_2Templates_8hpp.html" title="Low&#45;level declarations for general class &amp; function templates." alt="" coords="1755,789,1965,815"/>
+<area shape="rect" id="node12" title=" " alt="" coords="1825,871,1895,897"/>
+<area shape="rect" id="node14" title=" " alt="" coords="3429,169,3496,196"/>
+<area shape="rect" id="node15" href="$detail_2TypeInfo_8hpp.html" title="Definition of TypeInfo class template and related code." alt="" coords="3519,169,3718,196"/>
+<area shape="rect" id="node16" title=" " alt="" coords="3560,244,3619,271"/>
+<area shape="rect" id="node17" title=" " alt="" coords="3643,244,3701,271"/>
+<area shape="rect" id="node18" title=" " alt="" coords="3726,244,3813,271"/>
+<area shape="rect" id="node19" title=" " alt="" coords="3459,244,3535,271"/>
+<area shape="rect" id="node21" title=" " alt="" coords="283,483,349,509"/>
+<area shape="rect" id="node22" href="$BodyID_8hpp.html" title="Definition of the BodyID alias and closely related code." alt="" coords="283,319,434,345"/>
+<area shape="rect" id="node23" href="$IndexingNamedType_8hpp.html" title="Definition of IndexingNamedType class template and related code." alt="" coords="1263,781,1481,823"/>
+<area shape="rect" id="node24" href="$Settings_8hpp.html" title="Types and default settings file." alt="" coords="537,401,693,427"/>
+<area shape="rect" id="node25" title=" " alt="" coords="317,707,376,733"/>
+<area shape="rect" id="node26" href="$Real_8hpp.html" title="Real number definition file." alt="" coords="697,632,829,659"/>
+<area shape="rect" id="node27" href="$RealConstants_8hpp.html" title="Definitions file for constant expressions of type Real." alt="" coords="824,557,1021,584"/>
+<area shape="rect" id="node28" href="$Units_8hpp.html" title="Declarations for physical units possibly backed by strong types." alt="" coords="957,483,1094,509"/>
+<area shape="rect" id="node29" title=" " alt="" coords="1414,557,1477,584"/>
+<area shape="rect" id="node30" href="$to__underlying_8hpp.html" title="Definition of to_underlying function template." alt="" coords="1045,557,1237,584"/>
+<area shape="rect" id="node32" title=" " alt="" coords="1907,483,1962,509"/>
+<area shape="rect" id="node33" title=" " alt="" coords="2233,244,2295,271"/>
+<area shape="rect" id="node34" href="$Math_8hpp.html" title="Conventional and custom math related code." alt="" coords="1724,169,1860,196"/>
+<area shape="rect" id="node36" href="$Matrix_8hpp.html" title="Definition of the Matrix alias and closely related code." alt="" coords="1558,244,1703,271"/>
+<area shape="rect" id="node40" href="$Vector2_8hpp.html" title="Definition of the Vector2 alias template and closely related code." alt="" coords="869,319,1021,345"/>
+<area shape="rect" id="node42" href="$Checked_8hpp.html" title="Declarations of the Checked class template and closely related code." alt="" coords="2634,401,2833,427"/>
+<area shape="rect" id="node44" href="$UnitInterval_8hpp.html" title="Definition of the UnitInterval value checked types and related code." alt="" coords="3063,319,3243,345"/>
+<area shape="rect" id="node46" href="$UnitVec_8hpp.html" title="Declarations of the UnitVec class and free functions associated with it." alt="" coords="2361,401,2535,427"/>
+<area shape="rect" id="node47" href="$Position_8hpp.html" title="Definition of the Position class and closely related code." alt="" coords="1105,244,1279,271"/>
+<area shape="rect" id="node48" href="$Velocity_8hpp.html" title="Definition of the Velocity class and closely related code." alt="" coords="509,244,683,271"/>
+<area shape="rect" id="node49" href="$Transformation_8hpp.html" title="Definition of the Transformation class and free functions directly associated with it." alt="" coords="808,244,1029,271"/>
+<area shape="rect" id="node50" href="$Sweep_8hpp.html" title="Definition of the Sweep class and closely related code." alt="" coords="719,169,886,196"/>
+<area shape="rect" id="node35" title=" " alt="" coords="1981,244,2056,271"/>
+<area shape="rect" id="node37" href="$Vector_8hpp.html" title="Definition of the Vector class template and closely related code." alt="" coords="1794,401,1937,427"/>
+<area shape="rect" id="node41" href="$NonNegative_8hpp.html" title="Definition of the NonNegative value checked types." alt="" coords="2639,319,2827,345"/>
+<area shape="rect" id="node43" href="$Vector3_8hpp.html" title="Definition of the Vector3 alias template and closely related code." alt="" coords="1096,319,1248,345"/>
+<area shape="rect" id="node38" title=" " alt="" coords="2467,483,2547,509"/>
+<area shape="rect" id="node39" href="$InvalidArgument_8hpp.html" title="Definition of the InvalidArgument class." alt="" coords="2232,483,2443,509"/>
+<area shape="rect" id="node45" href="$UnitIntervalChecker_8hpp.html" title="Definition of the UnitIntervalChecker class template." alt="" coords="3059,393,3253,435"/>
 </map>

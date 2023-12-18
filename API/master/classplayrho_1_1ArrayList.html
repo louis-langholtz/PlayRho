@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>PlayRho: playrho::ArrayList&lt; VALUE_TYPE, MAXSIZE, SIZE_TYPE &gt; Class Template Reference</title>
+<title>PlayRho: playrho::ArrayList&lt; T, MAXSIZE, SIZE_TYPE &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -96,10 +96,9 @@ $(document).ready(function(){initNavTree('classplayrho_1_1ArrayList.html',''); i
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#related">Related Functions</a> &#124;
 <a href="classplayrho_1_1ArrayList-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">playrho::ArrayList&lt; VALUE_TYPE, MAXSIZE, SIZE_TYPE &gt; Class Template Reference</div>  </div>
+<div class="title">playrho::ArrayList&lt; T, MAXSIZE, SIZE_TYPE &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -108,87 +107,84 @@ $(document).ready(function(){initNavTree('classplayrho_1_1ArrayList.html',''); i
 
 <p><code>#include &lt;playrho/ArrayList.hpp&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for playrho::ArrayList&lt; VALUE_TYPE, MAXSIZE, SIZE_TYPE &gt;:</div>
+Inheritance diagram for playrho::ArrayList&lt; T, MAXSIZE, SIZE_TYPE &gt;:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1ArrayList__inherit__graph.svg" width="100%" height="432"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1ArrayList__inherit__graph.svg" width="100%" height="493"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a22b343b17c1e296414ce87af11e7bc98"><td class="memItemLeft" align="right" valign="top"><a id="a22b343b17c1e296414ce87af11e7bc98"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#a22b343b17c1e296414ce87af11e7bc98">const_iterator</a> = const <a class="el" href="classplayrho_1_1ArrayList.html#a0276dcd7122ecfae3448abb1b559e694">value_type</a> *</td></tr>
-<tr class="memdesc:a22b343b17c1e296414ce87af11e7bc98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constant iterator type. <br /></td></tr>
-<tr class="separator:a22b343b17c1e296414ce87af11e7bc98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d78678c4d77afb2c4b69a1e4b452614"><td class="memItemLeft" align="right" valign="top"><a id="a3d78678c4d77afb2c4b69a1e4b452614"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#a3d78678c4d77afb2c4b69a1e4b452614">const_pointer</a> = const <a class="el" href="classplayrho_1_1ArrayList.html#a0276dcd7122ecfae3448abb1b559e694">value_type</a> *</td></tr>
-<tr class="memdesc:a3d78678c4d77afb2c4b69a1e4b452614"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constant pointer type. <br /></td></tr>
-<tr class="separator:a3d78678c4d77afb2c4b69a1e4b452614"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5294f5d27bbabd0ed897275d82f79cff"><td class="memItemLeft" align="right" valign="top"><a id="a5294f5d27bbabd0ed897275d82f79cff"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#a5294f5d27bbabd0ed897275d82f79cff">const_reference</a> = const <a class="el" href="classplayrho_1_1ArrayList.html#a0276dcd7122ecfae3448abb1b559e694">value_type</a> &amp;</td></tr>
-<tr class="memdesc:a5294f5d27bbabd0ed897275d82f79cff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constant reference type. <br /></td></tr>
-<tr class="separator:a5294f5d27bbabd0ed897275d82f79cff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8dad377cffb81256b276775255ee1382"><td class="memItemLeft" align="right" valign="top"><a id="a8dad377cffb81256b276775255ee1382"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#a8dad377cffb81256b276775255ee1382">iterator</a> = <a class="el" href="classplayrho_1_1ArrayList.html#a0276dcd7122ecfae3448abb1b559e694">value_type</a> *</td></tr>
-<tr class="memdesc:a8dad377cffb81256b276775255ee1382"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterator type. <br /></td></tr>
-<tr class="separator:a8dad377cffb81256b276775255ee1382"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73cf30a1be6070f8cb00e3bca971aafd"><td class="memItemLeft" align="right" valign="top"><a id="a73cf30a1be6070f8cb00e3bca971aafd"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#a73cf30a1be6070f8cb00e3bca971aafd">pointer</a> = <a class="el" href="classplayrho_1_1ArrayList.html#a0276dcd7122ecfae3448abb1b559e694">value_type</a> *</td></tr>
-<tr class="memdesc:a73cf30a1be6070f8cb00e3bca971aafd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer type. <br /></td></tr>
-<tr class="separator:a73cf30a1be6070f8cb00e3bca971aafd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8df8532d007eec85164392f49348636"><td class="memItemLeft" align="right" valign="top"><a id="af8df8532d007eec85164392f49348636"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#af8df8532d007eec85164392f49348636">reference</a> = <a class="el" href="classplayrho_1_1ArrayList.html#a0276dcd7122ecfae3448abb1b559e694">value_type</a> &amp;</td></tr>
-<tr class="memdesc:af8df8532d007eec85164392f49348636"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference type. <br /></td></tr>
-<tr class="separator:af8df8532d007eec85164392f49348636"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a0c35a082d030d92f764690e732b37f"><td class="memItemLeft" align="right" valign="top"><a id="a4a0c35a082d030d92f764690e732b37f"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#a4a0c35a082d030d92f764690e732b37f">size_type</a> = SIZE_TYPE</td></tr>
-<tr class="memdesc:a4a0c35a082d030d92f764690e732b37f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size type. <br /></td></tr>
-<tr class="separator:a4a0c35a082d030d92f764690e732b37f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0276dcd7122ecfae3448abb1b559e694"><td class="memItemLeft" align="right" valign="top"><a id="a0276dcd7122ecfae3448abb1b559e694"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#a0276dcd7122ecfae3448abb1b559e694">value_type</a> = VALUE_TYPE</td></tr>
-<tr class="memdesc:a0276dcd7122ecfae3448abb1b559e694"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value type. <br /></td></tr>
-<tr class="separator:a0276dcd7122ecfae3448abb1b559e694"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67d25d47adbeac65ed4bea542508d585"><td class="memItemLeft" align="right" valign="top"><a id="a67d25d47adbeac65ed4bea542508d585"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#a67d25d47adbeac65ed4bea542508d585">const_iterator</a> = const <a class="el" href="classplayrho_1_1ArrayList.html#ac1216e39960d164d47a6b5884ede3e82">value_type</a> *</td></tr>
+<tr class="memdesc:a67d25d47adbeac65ed4bea542508d585"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constant iterator type. <br /></td></tr>
+<tr class="separator:a67d25d47adbeac65ed4bea542508d585"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ea227fdda27a9eb27c75e7881f5359e"><td class="memItemLeft" align="right" valign="top"><a id="a6ea227fdda27a9eb27c75e7881f5359e"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#a6ea227fdda27a9eb27c75e7881f5359e">const_pointer</a> = const <a class="el" href="classplayrho_1_1ArrayList.html#ac1216e39960d164d47a6b5884ede3e82">value_type</a> *</td></tr>
+<tr class="memdesc:a6ea227fdda27a9eb27c75e7881f5359e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constant pointer type. <br /></td></tr>
+<tr class="separator:a6ea227fdda27a9eb27c75e7881f5359e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9598e98e956084e8a985eb86a7d790d7"><td class="memItemLeft" align="right" valign="top"><a id="a9598e98e956084e8a985eb86a7d790d7"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#a9598e98e956084e8a985eb86a7d790d7">const_reference</a> = const <a class="el" href="classplayrho_1_1ArrayList.html#ac1216e39960d164d47a6b5884ede3e82">value_type</a> &amp;</td></tr>
+<tr class="memdesc:a9598e98e956084e8a985eb86a7d790d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constant reference type. <br /></td></tr>
+<tr class="separator:a9598e98e956084e8a985eb86a7d790d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab79fff9cc4061fc1857faadaa01a82a2"><td class="memItemLeft" align="right" valign="top"><a id="ab79fff9cc4061fc1857faadaa01a82a2"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#ab79fff9cc4061fc1857faadaa01a82a2">iterator</a> = <a class="el" href="classplayrho_1_1ArrayList.html#ac1216e39960d164d47a6b5884ede3e82">value_type</a> *</td></tr>
+<tr class="memdesc:ab79fff9cc4061fc1857faadaa01a82a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterator type. <br /></td></tr>
+<tr class="separator:ab79fff9cc4061fc1857faadaa01a82a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86536dff65b9476b50aed3fdafb49389"><td class="memItemLeft" align="right" valign="top"><a id="a86536dff65b9476b50aed3fdafb49389"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#a86536dff65b9476b50aed3fdafb49389">pointer</a> = <a class="el" href="classplayrho_1_1ArrayList.html#ac1216e39960d164d47a6b5884ede3e82">value_type</a> *</td></tr>
+<tr class="memdesc:a86536dff65b9476b50aed3fdafb49389"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer type. <br /></td></tr>
+<tr class="separator:a86536dff65b9476b50aed3fdafb49389"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59f556a1f62d74ed8f1da7b6109c0ce4"><td class="memItemLeft" align="right" valign="top"><a id="a59f556a1f62d74ed8f1da7b6109c0ce4"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#a59f556a1f62d74ed8f1da7b6109c0ce4">reference</a> = <a class="el" href="classplayrho_1_1ArrayList.html#ac1216e39960d164d47a6b5884ede3e82">value_type</a> &amp;</td></tr>
+<tr class="memdesc:a59f556a1f62d74ed8f1da7b6109c0ce4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference type. <br /></td></tr>
+<tr class="separator:a59f556a1f62d74ed8f1da7b6109c0ce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61b0e98b64a2ff13fdce771be01a2d6e"><td class="memItemLeft" align="right" valign="top"><a id="a61b0e98b64a2ff13fdce771be01a2d6e"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#a61b0e98b64a2ff13fdce771be01a2d6e">size_type</a> = SIZE_TYPE</td></tr>
+<tr class="memdesc:a61b0e98b64a2ff13fdce771be01a2d6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size type. <br /></td></tr>
+<tr class="separator:a61b0e98b64a2ff13fdce771be01a2d6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1216e39960d164d47a6b5884ede3e82"><td class="memItemLeft" align="right" valign="top"><a id="ac1216e39960d164d47a6b5884ede3e82"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#ac1216e39960d164d47a6b5884ede3e82">value_type</a> = T</td></tr>
+<tr class="memdesc:ac1216e39960d164d47a6b5884ede3e82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value type. <br /></td></tr>
+<tr class="separator:ac1216e39960d164d47a6b5884ede3e82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7cbc50e8f7093460b749107e4ba5e1ca"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#a7cbc50e8f7093460b749107e4ba5e1ca">ArrayList</a> () noexcept=default</td></tr>
-<tr class="memdesc:a7cbc50e8f7093460b749107e4ba5e1ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="classplayrho_1_1ArrayList.html#a7cbc50e8f7093460b749107e4ba5e1ca">More...</a><br /></td></tr>
-<tr class="separator:a7cbc50e8f7093460b749107e4ba5e1ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
-Related Functions</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
-</td></tr>
-<tr class="memitem:a04db47926693f7d605331b5035d4c9c5"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t S&gt; </td></tr>
-<tr class="memitem:a04db47926693f7d605331b5035d4c9c5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#a04db47926693f7d605331b5035d4c9c5">operator+</a> (<a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt; lhs, const typename <a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt;::data_type &amp;rhs)</td></tr>
-<tr class="memdesc:a04db47926693f7d605331b5035d4c9c5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classplayrho_1_1ArrayList.html" title="Array list.">ArrayList</a></code> add operator.  <a href="classplayrho_1_1ArrayList.html#a04db47926693f7d605331b5035d4c9c5">More...</a><br /></td></tr>
-<tr class="separator:a04db47926693f7d605331b5035d4c9c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a750eac4f3ab1ac6026e37ae41b87058d"><td class="memTemplParams" colspan="2"><a id="a750eac4f3ab1ac6026e37ae41b87058d"></a>
-template&lt;typename T , std::size_t S&gt; </td></tr>
-<tr class="memitem:a750eac4f3ab1ac6026e37ae41b87058d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#a750eac4f3ab1ac6026e37ae41b87058d">operator+=</a> (<a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt; &amp;lhs, const typename <a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt;::data_type &amp;rhs)</td></tr>
-<tr class="memdesc:a750eac4f3ab1ac6026e37ae41b87058d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classplayrho_1_1ArrayList.html" title="Array list.">ArrayList</a></code> append operator. <br /></td></tr>
-<tr class="separator:a750eac4f3ab1ac6026e37ae41b87058d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0a0b6bd32144390f273082b870d6e87"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#ae0a0b6bd32144390f273082b870d6e87">ArrayList</a> () noexcept=default</td></tr>
+<tr class="memdesc:ae0a0b6bd32144390f273082b870d6e87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="classplayrho_1_1ArrayList.html#ae0a0b6bd32144390f273082b870d6e87">More...</a><br /></td></tr>
+<tr class="separator:ae0a0b6bd32144390f273082b870d6e87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc6134e3744f38fc35c49dad4de917fe"><td class="memItemLeft" align="right" valign="top"><a id="acc6134e3744f38fc35c49dad4de917fe"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#acc6134e3744f38fc35c49dad4de917fe">ArrayList</a> (const <a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a> &amp;other) noexcept(std::is_nothrow_copy_assignable_v&lt; T &gt;)=default</td></tr>
+<tr class="memdesc:acc6134e3744f38fc35c49dad4de917fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:acc6134e3744f38fc35c49dad4de917fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c7d748234c4e03424cdb1fb74239cac"><td class="memItemLeft" align="right" valign="top"><a id="a0c7d748234c4e03424cdb1fb74239cac"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#a0c7d748234c4e03424cdb1fb74239cac">ArrayList</a> (const <a class="el" href="classplayrho_1_1Span.html">Span</a>&lt; const <a class="el" href="classplayrho_1_1ArrayList.html#ac1216e39960d164d47a6b5884ede3e82">value_type</a> &gt; &amp;list)</td></tr>
+<tr class="memdesc:a0c7d748234c4e03424cdb1fb74239cac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor. <br /></td></tr>
+<tr class="separator:a0c7d748234c4e03424cdb1fb74239cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae26c71f54bd440eff44fd2971238e607"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html#ae26c71f54bd440eff44fd2971238e607">ArrayList</a> (std::initializer_list&lt; <a class="el" href="classplayrho_1_1ArrayList.html#ac1216e39960d164d47a6b5884ede3e82">value_type</a> &gt; list)</td></tr>
+<tr class="memdesc:ae26c71f54bd440eff44fd2971238e607"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor from initializer list.  <a href="classplayrho_1_1ArrayList.html#ae26c71f54bd440eff44fd2971238e607">More...</a><br /></td></tr>
+<tr class="separator:ae26c71f54bd440eff44fd2971238e607"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename VALUE_TYPE, std::size_t MAXSIZE, typename SIZE_TYPE = std::size_t&gt;<br />
-class playrho::ArrayList&lt; VALUE_TYPE, MAXSIZE, SIZE_TYPE &gt;</h3>
+<div class="textblock"><h3>template&lt;typename T, std::size_t MAXSIZE, typename SIZE_TYPE = std::size_t&gt;<br />
+class playrho::ArrayList&lt; T, MAXSIZE, SIZE_TYPE &gt;</h3>
 
 <p>Array list. </p>
 <p>This is a <code>std::array</code> backed <code>std::vector</code> like container. It provides vector like behavior whose max size is capped at the size given by the template max size parameter without using dynamic storage. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a7cbc50e8f7093460b749107e4ba5e1ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7cbc50e8f7093460b749107e4ba5e1ca">&#9670;&nbsp;</a></span>ArrayList()</h2>
+<a id="ae0a0b6bd32144390f273082b870d6e87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0a0b6bd32144390f273082b870d6e87">&#9670;&nbsp;</a></span>ArrayList() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename VALUE_TYPE , std::size_t MAXSIZE, typename SIZE_TYPE  = std::size_t&gt; </div>
+template&lt;typename T , std::size_t MAXSIZE, typename SIZE_TYPE  = std::size_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="classplayrho_1_1ArrayList.html">playrho::ArrayList</a>&lt; VALUE_TYPE, MAXSIZE, SIZE_TYPE &gt;::<a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a> </td>
+          <td class="memname">constexpr <a class="el" href="classplayrho_1_1ArrayList.html">playrho::ArrayList</a>&lt; T, MAXSIZE, SIZE_TYPE &gt;::<a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -206,52 +202,40 @@ template&lt;typename VALUE_TYPE , std::size_t MAXSIZE, typename SIZE_TYPE  = std
 
 </div>
 </div>
-<h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a id="a04db47926693f7d605331b5035d4c9c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a04db47926693f7d605331b5035d4c9c5">&#9670;&nbsp;</a></span>operator+()</h2>
+<a id="ae26c71f54bd440eff44fd2971238e607"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae26c71f54bd440eff44fd2971238e607">&#9670;&nbsp;</a></span>ArrayList() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , std::size_t S&gt; </div>
+template&lt;typename T , std::size_t MAXSIZE, typename SIZE_TYPE  = std::size_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt; operator+ </td>
+          <td class="memname">constexpr <a class="el" href="classplayrho_1_1ArrayList.html">playrho::ArrayList</a>&lt; T, MAXSIZE, SIZE_TYPE &gt;::<a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt;&#160;</td>
-          <td class="paramname"><em>lhs</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classplayrho_1_1ArrayList.html#ac1216e39960d164d47a6b5884ede3e82">value_type</a> &gt;&#160;</td>
+          <td class="paramname"><em>list</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const typename <a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt;::data_type &amp;&#160;</td>
-          <td class="paramname"><em>rhs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p><code><a class="el" href="classplayrho_1_1ArrayList.html" title="Array list.">ArrayList</a></code> add operator. </p>
-<p>Appends the right-hand-side value to the left-hand-side instance's values. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">lhs</td><td>Left hand side instance. </td></tr>
-    <tr><td class="paramname">rhs</td><td>Right hand side value to append with <code>lhs</code> into the returned result. </td></tr>
+<p>Initializing constructor from initializer list. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1LengthError.html" title="Length based logic error.">LengthError</a></td><td>if operation would exceed <code><a class="el" href="namespaceplayrho.html#ac32367e964a575ebee3ed45c8ddb0afe" title="Gets the maximum size of the given container of index pairs.">max_size()</a></code>. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>An instance with all of <code>lhs</code> values follwed by the <code>rhs</code> value. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#ac32367e964a575ebee3ed45c8ddb0afe" title="Gets the maximum size of the given container of index pairs.">max_size</a>. </dd></dl>
 
 </div>
 </div>
@@ -264,7 +248,7 @@ template&lt;typename T , std::size_t S&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a></li>
-    <li class="footer">Generated on Sun Dec 3 2023 22:14:18 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Dec 18 2023 21:55:24 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

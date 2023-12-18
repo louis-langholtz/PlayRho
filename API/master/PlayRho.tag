@@ -4,22 +4,39 @@
     <name>ArrayList.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>ArrayList_8hpp.html</filename>
+    <includes id="LengthError_8hpp" name="LengthError.hpp" local="no" imported="no">playrho/LengthError.hpp</includes>
+    <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
+    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <class kind="class">playrho::ArrayList</class>
     <class kind="class">std::tuple_size&lt; playrho::ArrayList&lt; T, N, SIZE_TYPE &gt; &gt;</class>
     <namespace>playrho</namespace>
     <member kind="function">
-      <type>ArrayList&lt; T, S &gt;</type>
-      <name>operator+</name>
+      <type>constexpr auto</type>
+      <name>operator!=</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a04db47926693f7d605331b5035d4c9c5</anchor>
-      <arglist>(ArrayList&lt; T, S &gt; lhs, const typename ArrayList&lt; T, S &gt;::data_type &amp;rhs)</arglist>
+      <anchor>a67e0766a9469380763fd0e3b0a5107e6</anchor>
+      <arglist>(const ArrayList&lt; T, LhsSize &gt; &amp;lhs, const ArrayList&lt; T, RhsSize &gt; &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>ArrayList&lt; T, S &gt; &amp;</type>
+      <type>constexpr ArrayList&lt; T, S &gt; &amp;</type>
       <name>operator+=</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a750eac4f3ab1ac6026e37ae41b87058d</anchor>
-      <arglist>(ArrayList&lt; T, S &gt; &amp;lhs, const typename ArrayList&lt; T, S &gt;::data_type &amp;rhs)</arglist>
+      <anchor>a3712e444173611decc9b129c3d806dd7</anchor>
+      <arglist>(ArrayList&lt; T, S &gt; &amp;lhs, T rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator+=</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>af6506e9c43bb12c5d4e29856163a81b9</anchor>
+      <arglist>(ArrayList&lt; T, S &gt; &amp;lhs, U &amp;&amp;rhs) -&gt; decltype(rhs.begin(), rhs.end(), rhs.size(), lhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>aecc8c4f87ec5b117810b27a5e5c5ed52</anchor>
+      <arglist>(const ArrayList&lt; T, LhsSize &gt; &amp;lhs, const ArrayList&lt; T, RhsSize &gt; &amp;rhs) noexcept</arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -630,43 +647,43 @@
       <type>constexpr bool</type>
       <name>operator!=</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ae970f7a9e7fa198ddadce868c1116325</anchor>
-      <arglist>(const ContactKey lhs, const ContactKey rhs) noexcept</arglist>
+      <anchor>a7c47651b8e0165d5ac406946d49ae60f</anchor>
+      <arglist>(const ContactKey &amp;lhs, const ContactKey &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
       <name>operator&lt;</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>af80c31195a04b4af5891934d0ed1ed3c</anchor>
-      <arglist>(const ContactKey lhs, const ContactKey rhs) noexcept</arglist>
+      <anchor>a7c40d9c4a48c2e389e97941863bdd584</anchor>
+      <arglist>(const ContactKey &amp;lhs, const ContactKey &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
       <name>operator&lt;=</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a225f691c1b9ee3969221ae49170ba178</anchor>
-      <arglist>(const ContactKey lhs, const ContactKey rhs) noexcept</arglist>
+      <anchor>a82753a7f5943b1efcc8c843e547f1054</anchor>
+      <arglist>(const ContactKey &amp;lhs, const ContactKey &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
       <name>operator==</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a0addcd9e78acfcc5f23418814f2a8f57</anchor>
-      <arglist>(const ContactKey lhs, const ContactKey rhs) noexcept</arglist>
+      <anchor>a4bcf53dc3cb0bb29ac669f5350de0008</anchor>
+      <arglist>(const ContactKey &amp;lhs, const ContactKey &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
       <name>operator&gt;</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a7ef072ea2c5a69df2050c1a1557206ef</anchor>
-      <arglist>(const ContactKey lhs, const ContactKey rhs) noexcept</arglist>
+      <anchor>a66c974144631e169b23411d95a01f6d5</anchor>
+      <arglist>(const ContactKey &amp;lhs, const ContactKey &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
       <name>operator&gt;=</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ae75f2a5fe81c028b473be52b47b7c7e9</anchor>
-      <arglist>(const ContactKey lhs, const ContactKey rhs) noexcept</arglist>
+      <anchor>aacd3782f12938e0148922e6ab546c354</anchor>
+      <arglist>(const ContactKey &amp;lhs, const ContactKey &amp;rhs) noexcept</arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -2503,9 +2520,11 @@
     <name>BodyConf.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>BodyConf_8hpp.html</filename>
+    <includes id="ArrayList_8hpp" name="ArrayList.hpp" local="no" imported="no">playrho/ArrayList.hpp</includes>
     <includes id="BodyType_8hpp" name="BodyType.hpp" local="no" imported="no">playrho/BodyType.hpp</includes>
     <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
+    <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
     <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <includes id="Position_8hpp" name="Position.hpp" local="no" imported="no">playrho/d2/Position.hpp</includes>
@@ -2525,8 +2544,8 @@
       <type>BodyConf</type>
       <name>GetBodyConf</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a9137892a93af6c15d9e7c328d0a05ce4</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
+      <anchor>adce9b45f685c4bace08d09e412d3b8f2</anchor>
+      <arglist>(const Body &amp;body)</arglist>
     </member>
     <member kind="function">
       <type>constexpr BodyConf</type>
@@ -6704,7 +6723,13 @@
     <name>Simplex.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>Simplex_8hpp.html</filename>
+    <includes id="Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/Math.hpp</includes>
+    <includes id="detail_2Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/detail/Templates.hpp</includes>
     <includes id="ArrayList_8hpp" name="ArrayList.hpp" local="no" imported="no">playrho/ArrayList.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
+    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <includes id="SimplexEdge_8hpp" name="SimplexEdge.hpp" local="no" imported="no">playrho/d2/SimplexEdge.hpp</includes>
     <class kind="struct">playrho::d2::Simplex::Cache</class>
     <class kind="class">playrho::d2::Simplex</class>
@@ -7509,8 +7534,13 @@
     <name>WheelJointConf.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>WheelJointConf_8hpp.html</filename>
+    <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
+    <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
     <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
+    <includes id="detail_2TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/detail/TypeInfo.hpp</includes>
     <includes id="JointConf_8hpp" name="JointConf.hpp" local="no" imported="no">playrho/d2/JointConf.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <includes id="UnitVec_8hpp" name="UnitVec.hpp" local="no" imported="no">playrho/d2/UnitVec.hpp</includes>
@@ -9317,11 +9347,17 @@
     <name>WorldShape.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>WorldShape_8hpp.html</filename>
+    <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
+    <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
+    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
     <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
-    <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
+    <includes id="UnitVec_8hpp" name="UnitVec.hpp" local="no" imported="no">playrho/d2/UnitVec.hpp</includes>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
     <member kind="function">
@@ -9933,6 +9969,13 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a370e741c22960aad46732cdc0353f428</anchor>
       <arglist>(ReversionWrapper&lt; T &gt; w)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>Equal</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a322b53a66a869cf225db329fc8c07f90</anchor>
+      <arglist>(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2) -&gt; decltype(first1==last1, first2==last2,++first1,++first2, *first1== *first2)</arglist>
     </member>
     <member kind="function">
       <type>auto</type>
@@ -11294,9 +11337,23 @@
     <name>Span.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>Span_8hpp.html</filename>
-    <includes id="detail_2Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/detail/Templates.hpp</includes>
+    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <class kind="class">playrho::Span</class>
     <namespace>playrho</namespace>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a124127e30fbdbb52415324763e22a8f9</anchor>
+      <arglist>(const Span&lt; T &gt; &amp;lhs, const Span&lt; T &gt; &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a6fc572571fefb5d41ec6414843392d4a</anchor>
+      <arglist>(const Span&lt; T &gt; &amp;lhs, const Span&lt; T &gt; &amp;rhs) noexcept</arglist>
+    </member>
   </compound>
   <compound kind="file">
     <name>StackAllocator.hpp</name>
@@ -13810,78 +13867,173 @@
       <type>const value_type *</type>
       <name>const_iterator</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a22b343b17c1e296414ce87af11e7bc98</anchor>
+      <anchor>a67d25d47adbeac65ed4bea542508d585</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>const value_type *</type>
       <name>const_pointer</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a3d78678c4d77afb2c4b69a1e4b452614</anchor>
+      <anchor>a6ea227fdda27a9eb27c75e7881f5359e</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>const value_type &amp;</type>
       <name>const_reference</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a5294f5d27bbabd0ed897275d82f79cff</anchor>
+      <anchor>a9598e98e956084e8a985eb86a7d790d7</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>value_type *</type>
       <name>iterator</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a8dad377cffb81256b276775255ee1382</anchor>
+      <anchor>ab79fff9cc4061fc1857faadaa01a82a2</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>value_type *</type>
       <name>pointer</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a73cf30a1be6070f8cb00e3bca971aafd</anchor>
+      <anchor>a86536dff65b9476b50aed3fdafb49389</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>value_type &amp;</type>
       <name>reference</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>af8df8532d007eec85164392f49348636</anchor>
+      <anchor>a59f556a1f62d74ed8f1da7b6109c0ce4</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>SIZE_TYPE</type>
       <name>size_type</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a4a0c35a082d030d92f764690e732b37f</anchor>
+      <anchor>a61b0e98b64a2ff13fdce771be01a2d6e</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>VALUE_TYPE</type>
+      <type>T</type>
       <name>value_type</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a0276dcd7122ecfae3448abb1b559e694</anchor>
+      <anchor>ac1216e39960d164d47a6b5884ede3e82</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>ArrayList</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a7cbc50e8f7093460b749107e4ba5e1ca</anchor>
+      <anchor>ae0a0b6bd32144390f273082b870d6e87</anchor>
       <arglist>() noexcept=default</arglist>
     </member>
     <member kind="function">
-      <type>ArrayList&lt; T, S &gt;</type>
-      <name>operator+</name>
+      <type>constexpr</type>
+      <name>ArrayList</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a04db47926693f7d605331b5035d4c9c5</anchor>
-      <arglist>(ArrayList&lt; T, S &gt; lhs, const typename ArrayList&lt; T, S &gt;::data_type &amp;rhs)</arglist>
+      <anchor>acc6134e3744f38fc35c49dad4de917fe</anchor>
+      <arglist>(const ArrayList &amp;other) noexcept(std::is_nothrow_copy_assignable_v&lt; T &gt;)=default</arglist>
     </member>
     <member kind="function">
-      <type>ArrayList&lt; T, S &gt; &amp;</type>
-      <name>operator+=</name>
+      <type>constexpr</type>
+      <name>ArrayList</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a750eac4f3ab1ac6026e37ae41b87058d</anchor>
-      <arglist>(ArrayList&lt; T, S &gt; &amp;lhs, const typename ArrayList&lt; T, S &gt;::data_type &amp;rhs)</arglist>
+      <anchor>a0c7d748234c4e03424cdb1fb74239cac</anchor>
+      <arglist>(const Span&lt; const value_type &gt; &amp;list)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>ArrayList</name>
+      <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
+      <anchor>ae26c71f54bd440eff44fd2971238e607</anchor>
+      <arglist>(std::initializer_list&lt; value_type &gt; list)</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>ArrayList&lt; playrho::detail::IndexingNamedType, MaxShapes &gt;</name>
+    <filename>classplayrho_1_1ArrayList.html</filename>
+    <member kind="typedef">
+      <type>const value_type *</type>
+      <name>const_iterator</name>
+      <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
+      <anchor>a67d25d47adbeac65ed4bea542508d585</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>const value_type *</type>
+      <name>const_pointer</name>
+      <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
+      <anchor>a6ea227fdda27a9eb27c75e7881f5359e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>const value_type &amp;</type>
+      <name>const_reference</name>
+      <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
+      <anchor>a9598e98e956084e8a985eb86a7d790d7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>value_type *</type>
+      <name>iterator</name>
+      <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
+      <anchor>ab79fff9cc4061fc1857faadaa01a82a2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>value_type *</type>
+      <name>pointer</name>
+      <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
+      <anchor>a86536dff65b9476b50aed3fdafb49389</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>value_type &amp;</type>
+      <name>reference</name>
+      <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
+      <anchor>a59f556a1f62d74ed8f1da7b6109c0ce4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::size_t</type>
+      <name>size_type</name>
+      <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
+      <anchor>a61b0e98b64a2ff13fdce771be01a2d6e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>playrho::detail::IndexingNamedType</type>
+      <name>value_type</name>
+      <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
+      <anchor>ac1216e39960d164d47a6b5884ede3e82</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>ArrayList</name>
+      <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
+      <anchor>ae0a0b6bd32144390f273082b870d6e87</anchor>
+      <arglist>() noexcept=default</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>ArrayList</name>
+      <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
+      <anchor>acc6134e3744f38fc35c49dad4de917fe</anchor>
+      <arglist>(const ArrayList &amp;other) noexcept(std::is_nothrow_copy_assignable_v&lt; playrho::detail::IndexingNamedType &gt;)=default</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>ArrayList</name>
+      <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
+      <anchor>a0c7d748234c4e03424cdb1fb74239cac</anchor>
+      <arglist>(const Span&lt; const value_type &gt; &amp;list)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>ArrayList</name>
+      <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
+      <anchor>ae26c71f54bd440eff44fd2971238e607</anchor>
+      <arglist>(std::initializer_list&lt; value_type &gt; list)</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -13891,78 +14043,85 @@
       <type>const value_type *</type>
       <name>const_iterator</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a22b343b17c1e296414ce87af11e7bc98</anchor>
+      <anchor>a67d25d47adbeac65ed4bea542508d585</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>const value_type *</type>
       <name>const_pointer</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a3d78678c4d77afb2c4b69a1e4b452614</anchor>
+      <anchor>a6ea227fdda27a9eb27c75e7881f5359e</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>const value_type &amp;</type>
       <name>const_reference</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a5294f5d27bbabd0ed897275d82f79cff</anchor>
+      <anchor>a9598e98e956084e8a985eb86a7d790d7</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>value_type *</type>
       <name>iterator</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a8dad377cffb81256b276775255ee1382</anchor>
+      <anchor>ab79fff9cc4061fc1857faadaa01a82a2</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>value_type *</type>
       <name>pointer</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a73cf30a1be6070f8cb00e3bca971aafd</anchor>
+      <anchor>a86536dff65b9476b50aed3fdafb49389</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>value_type &amp;</type>
       <name>reference</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>af8df8532d007eec85164392f49348636</anchor>
+      <anchor>a59f556a1f62d74ed8f1da7b6109c0ce4</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>std::remove_const_t&lt; decltype(MaxSimplexEdges)&gt;</type>
       <name>size_type</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a4a0c35a082d030d92f764690e732b37f</anchor>
+      <anchor>a61b0e98b64a2ff13fdce771be01a2d6e</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>Real</type>
       <name>value_type</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a0276dcd7122ecfae3448abb1b559e694</anchor>
+      <anchor>ac1216e39960d164d47a6b5884ede3e82</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>ArrayList</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a7cbc50e8f7093460b749107e4ba5e1ca</anchor>
+      <anchor>ae0a0b6bd32144390f273082b870d6e87</anchor>
       <arglist>() noexcept=default</arglist>
     </member>
     <member kind="function">
-      <type>ArrayList&lt; T, S &gt;</type>
-      <name>operator+</name>
+      <type>constexpr</type>
+      <name>ArrayList</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a04db47926693f7d605331b5035d4c9c5</anchor>
-      <arglist>(ArrayList&lt; T, S &gt; lhs, const typename ArrayList&lt; T, S &gt;::data_type &amp;rhs)</arglist>
+      <anchor>acc6134e3744f38fc35c49dad4de917fe</anchor>
+      <arglist>(const ArrayList &amp;other) noexcept(std::is_nothrow_copy_assignable_v&lt; Real &gt;)=default</arglist>
     </member>
     <member kind="function">
-      <type>ArrayList&lt; T, S &gt; &amp;</type>
-      <name>operator+=</name>
+      <type>constexpr</type>
+      <name>ArrayList</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a750eac4f3ab1ac6026e37ae41b87058d</anchor>
-      <arglist>(ArrayList&lt; T, S &gt; &amp;lhs, const typename ArrayList&lt; T, S &gt;::data_type &amp;rhs)</arglist>
+      <anchor>a0c7d748234c4e03424cdb1fb74239cac</anchor>
+      <arglist>(const Span&lt; const value_type &gt; &amp;list)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>ArrayList</name>
+      <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
+      <anchor>ae26c71f54bd440eff44fd2971238e607</anchor>
+      <arglist>(std::initializer_list&lt; value_type &gt; list)</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -13972,78 +14131,85 @@
       <type>const value_type *</type>
       <name>const_iterator</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a22b343b17c1e296414ce87af11e7bc98</anchor>
+      <anchor>a67d25d47adbeac65ed4bea542508d585</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>const value_type *</type>
       <name>const_pointer</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a3d78678c4d77afb2c4b69a1e4b452614</anchor>
+      <anchor>a6ea227fdda27a9eb27c75e7881f5359e</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>const value_type &amp;</type>
       <name>const_reference</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a5294f5d27bbabd0ed897275d82f79cff</anchor>
+      <anchor>a9598e98e956084e8a985eb86a7d790d7</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>value_type *</type>
       <name>iterator</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a8dad377cffb81256b276775255ee1382</anchor>
+      <anchor>ab79fff9cc4061fc1857faadaa01a82a2</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>value_type *</type>
       <name>pointer</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a73cf30a1be6070f8cb00e3bca971aafd</anchor>
+      <anchor>a86536dff65b9476b50aed3fdafb49389</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>value_type &amp;</type>
       <name>reference</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>af8df8532d007eec85164392f49348636</anchor>
+      <anchor>a59f556a1f62d74ed8f1da7b6109c0ce4</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>std::remove_const_t&lt; decltype(MaxSimplexEdges)&gt;</type>
       <name>size_type</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a4a0c35a082d030d92f764690e732b37f</anchor>
+      <anchor>a61b0e98b64a2ff13fdce771be01a2d6e</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
       <type>SimplexEdge</type>
       <name>value_type</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a0276dcd7122ecfae3448abb1b559e694</anchor>
+      <anchor>ac1216e39960d164d47a6b5884ede3e82</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>ArrayList</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a7cbc50e8f7093460b749107e4ba5e1ca</anchor>
+      <anchor>ae0a0b6bd32144390f273082b870d6e87</anchor>
       <arglist>() noexcept=default</arglist>
     </member>
     <member kind="function">
-      <type>ArrayList&lt; T, S &gt;</type>
-      <name>operator+</name>
+      <type>constexpr</type>
+      <name>ArrayList</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a04db47926693f7d605331b5035d4c9c5</anchor>
-      <arglist>(ArrayList&lt; T, S &gt; lhs, const typename ArrayList&lt; T, S &gt;::data_type &amp;rhs)</arglist>
+      <anchor>acc6134e3744f38fc35c49dad4de917fe</anchor>
+      <arglist>(const ArrayList &amp;other) noexcept(std::is_nothrow_copy_assignable_v&lt; SimplexEdge &gt;)=default</arglist>
     </member>
     <member kind="function">
-      <type>ArrayList&lt; T, S &gt; &amp;</type>
-      <name>operator+=</name>
+      <type>constexpr</type>
+      <name>ArrayList</name>
       <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
-      <anchor>a750eac4f3ab1ac6026e37ae41b87058d</anchor>
-      <arglist>(ArrayList&lt; T, S &gt; &amp;lhs, const typename ArrayList&lt; T, S &gt;::data_type &amp;rhs)</arglist>
+      <anchor>a0c7d748234c4e03424cdb1fb74239cac</anchor>
+      <arglist>(const Span&lt; const value_type &gt; &amp;list)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>ArrayList</name>
+      <anchorfile>classplayrho_1_1ArrayList.html</anchorfile>
+      <anchor>ae26c71f54bd440eff44fd2971238e607</anchor>
+      <arglist>(std::initializer_list&lt; value_type &gt; list)</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -14853,8 +15019,8 @@
       <type>BodyConf</type>
       <name>GetBodyConf</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a0e940544a56fe840424f880106fcd842</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
+      <anchor>a26bbc90e5b2c4192b598dfeefc692196</anchor>
+      <arglist>(const Body &amp;body)</arglist>
     </member>
     <member kind="function">
       <type>Force2</type>
@@ -15347,8 +15513,15 @@
       <type>constexpr BodyConf &amp;</type>
       <name>Use</name>
       <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
-      <anchor>a6f96a97edfadc458e0f203d9a153e9ac</anchor>
-      <arglist>(ShapeID v) noexcept</arglist>
+      <anchor>ab64009aa08d09620a49e0e945c86834f</anchor>
+      <arglist>(ShapeID v)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr BodyConf &amp;</type>
+      <name>Use</name>
+      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
+      <anchor>acd046ae22f76aa0bd4fde41125f2acd8</anchor>
+      <arglist>(Span&lt; const ShapeID &gt; v)</arglist>
     </member>
     <member kind="function">
       <type>constexpr BodyConf &amp;</type>
@@ -15547,10 +15720,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>ShapeID</type>
-      <name>shape</name>
+      <type>ArrayList&lt; ShapeID, MaxShapes &gt;</type>
+      <name>shapes</name>
       <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
-      <anchor>a01b2ecce3ecd8c20b1c7db8d5db94681</anchor>
+      <anchor>aabf75cf288f695d10aa3a8c5e4c47513</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -15670,6 +15843,13 @@
       <name>DefaultUnderActiveTime</name>
       <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
       <anchor>ab12a044a711bcc013de27912b11c7710</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static constexpr auto</type>
+      <name>MaxShapes</name>
+      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
+      <anchor>a2a6999995e7f6eb1d8136254edc69dd6</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -31920,7 +32100,7 @@
       <type>constexpr</type>
       <name>Span</name>
       <anchorfile>classplayrho_1_1Span.html</anchorfile>
-      <anchor>a00e34c4af808c76599e2d48b6d56a80b</anchor>
+      <anchor>a3859c35e2b5bf0c7e2646819f0065ef3</anchor>
       <arglist>(U &amp;&amp;value) noexcept</arglist>
     </member>
     <member kind="function">
@@ -42870,6 +43050,13 @@
       <arglist>(ReversionWrapper&lt; T &gt; w)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr auto</type>
+      <name>Equal</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a322b53a66a869cf225db329fc8c07f90</anchor>
+      <arglist>(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2) -&gt; decltype(first1==last1, first2==last2,++first1,++first2, *first1== *first2)</arglist>
+    </member>
+    <member kind="function">
       <type>auto</type>
       <name>EraseAll</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -43731,6 +43918,13 @@
       <arglist>(Vec2 &amp;vector)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a67e0766a9469380763fd0e3b0a5107e6</anchor>
+      <arglist>(const ArrayList&lt; T, LhsSize &gt; &amp;lhs, const ArrayList&lt; T, RhsSize &gt; &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>bool</type>
       <name>operator!=</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -43755,8 +43949,8 @@
       <type>constexpr bool</type>
       <name>operator!=</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ae970f7a9e7fa198ddadce868c1116325</anchor>
-      <arglist>(const ContactKey lhs, const ContactKey rhs) noexcept</arglist>
+      <anchor>a7c47651b8e0165d5ac406946d49ae60f</anchor>
+      <arglist>(const ContactKey &amp;lhs, const ContactKey &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -43771,6 +43965,13 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a861fb100d29d58d6f26f3767017886b3</anchor>
       <arglist>(const Interval&lt; T &gt; &amp;a, const Interval&lt; T &gt; &amp;b) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a124127e30fbdbb52415324763e22a8f9</anchor>
+      <arglist>(const Span&lt; T &gt; &amp;lhs, const Span&lt; T &gt; &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -44200,13 +44401,6 @@
       <arglist>(Vector&lt; T1, N &gt; &amp;lhs, const T2 rhs) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>ArrayList&lt; T, S &gt;</type>
-      <name>operator+</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a04db47926693f7d605331b5035d4c9c5</anchor>
-      <arglist>(ArrayList&lt; T, S &gt; lhs, const typename ArrayList&lt; T, S &gt;::data_type &amp;rhs)</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr auto</type>
       <name>operator+</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -44228,11 +44422,18 @@
       <arglist>(Vector&lt; T, N &gt; v) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>ArrayList&lt; T, S &gt; &amp;</type>
+      <type>constexpr ArrayList&lt; T, S &gt; &amp;</type>
       <name>operator+=</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a750eac4f3ab1ac6026e37ae41b87058d</anchor>
-      <arglist>(ArrayList&lt; T, S &gt; &amp;lhs, const typename ArrayList&lt; T, S &gt;::data_type &amp;rhs)</arglist>
+      <anchor>a3712e444173611decc9b129c3d806dd7</anchor>
+      <arglist>(ArrayList&lt; T, S &gt; &amp;lhs, T rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator+=</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>af6506e9c43bb12c5d4e29856163a81b9</anchor>
+      <arglist>(ArrayList&lt; T, S &gt; &amp;lhs, U &amp;&amp;rhs) -&gt; decltype(rhs.begin(), rhs.end(), rhs.size(), lhs)</arglist>
     </member>
     <member kind="function">
       <type>constexpr std::enable_if_t&lt; std::is_same_v&lt; T, decltype(T{}+T{})&gt;, Vector&lt; T, N &gt; &amp; &gt;</type>
@@ -44287,8 +44488,8 @@
       <type>constexpr bool</type>
       <name>operator&lt;</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>af80c31195a04b4af5891934d0ed1ed3c</anchor>
-      <arglist>(const ContactKey lhs, const ContactKey rhs) noexcept</arglist>
+      <anchor>a7c40d9c4a48c2e389e97941863bdd584</anchor>
+      <arglist>(const ContactKey &amp;lhs, const ContactKey &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -44336,8 +44537,8 @@
       <type>constexpr bool</type>
       <name>operator&lt;=</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a225f691c1b9ee3969221ae49170ba178</anchor>
-      <arglist>(const ContactKey lhs, const ContactKey rhs) noexcept</arglist>
+      <anchor>a82753a7f5943b1efcc8c843e547f1054</anchor>
+      <arglist>(const ContactKey &amp;lhs, const ContactKey &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -44352,6 +44553,13 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>aafdb22d94f848eebd4aff498f3fba0c4</anchor>
       <arglist>(const Version &amp;lhs, const Version &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>aecc8c4f87ec5b117810b27a5e5c5ed52</anchor>
+      <arglist>(const ArrayList&lt; T, LhsSize &gt; &amp;lhs, const ArrayList&lt; T, RhsSize &gt; &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
@@ -44378,8 +44586,8 @@
       <type>constexpr bool</type>
       <name>operator==</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a0addcd9e78acfcc5f23418814f2a8f57</anchor>
-      <arglist>(const ContactKey lhs, const ContactKey rhs) noexcept</arglist>
+      <anchor>a4bcf53dc3cb0bb29ac669f5350de0008</anchor>
+      <arglist>(const ContactKey &amp;lhs, const ContactKey &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -44394,6 +44602,13 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>ac1b97d7e2f5894048236948061068fb5</anchor>
       <arglist>(const Interval&lt; T &gt; &amp;a, const Interval&lt; T &gt; &amp;b) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a6fc572571fefb5d41ec6414843392d4a</anchor>
+      <arglist>(const Span&lt; T &gt; &amp;lhs, const Span&lt; T &gt; &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -44420,8 +44635,8 @@
       <type>constexpr bool</type>
       <name>operator&gt;</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a7ef072ea2c5a69df2050c1a1557206ef</anchor>
-      <arglist>(const ContactKey lhs, const ContactKey rhs) noexcept</arglist>
+      <anchor>a66c974144631e169b23411d95a01f6d5</anchor>
+      <arglist>(const ContactKey &amp;lhs, const ContactKey &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -44441,8 +44656,8 @@
       <type>constexpr bool</type>
       <name>operator&gt;=</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ae75f2a5fe81c028b473be52b47b7c7e9</anchor>
-      <arglist>(const ContactKey lhs, const ContactKey rhs) noexcept</arglist>
+      <anchor>aacd3782f12938e0148922e6ab546c354</anchor>
+      <arglist>(const ContactKey &amp;lhs, const ContactKey &amp;rhs) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -46495,8 +46710,8 @@
       <type>BodyConf</type>
       <name>GetBodyConf</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a9137892a93af6c15d9e7c328d0a05ce4</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
+      <anchor>adce9b45f685c4bace08d09e412d3b8f2</anchor>
+      <arglist>(const Body &amp;body)</arglist>
     </member>
     <member kind="function">
       <type>BodyConstraint</type>

@@ -172,6 +172,10 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a370e741c22960aad46732cdc0353f428"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a370e741c22960aad46732cdc0353f428">playrho::end</a> (ReversionWrapper&lt; T &gt; w)</td></tr>
 <tr class="memdesc:a370e741c22960aad46732cdc0353f428"><td class="mdescLeft">&#160;</td><td class="mdescRight">End function for getting a reversed order iterator. <br /></td></tr>
 <tr class="separator:a370e741c22960aad46732cdc0353f428"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a322b53a66a869cf225db329fc8c07f90"><td class="memTemplParams" colspan="2">template&lt;class InputIt1 , class InputIt2 &gt; </td></tr>
+<tr class="memitem:a322b53a66a869cf225db329fc8c07f90"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a322b53a66a869cf225db329fc8c07f90">playrho::Equal</a> (InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2) -&gt; decltype(first1==last1, first2==last2,++first1,++first2, *first1== *first2)</td></tr>
+<tr class="memdesc:a322b53a66a869cf225db329fc8c07f90"><td class="mdescLeft">&#160;</td><td class="mdescRight">A pre-C++20 constant expression implementation of <code>std::equal</code>.  <a href="namespaceplayrho.html#a322b53a66a869cf225db329fc8c07f90">More...</a><br /></td></tr>
+<tr class="separator:a322b53a66a869cf225db329fc8c07f90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5b77298f0fc2a2ae88ececbc3fb23d1"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U &gt; </td></tr>
 <tr class="memitem:aa5b77298f0fc2a2ae88ececbc3fb23d1"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#aa5b77298f0fc2a2ae88ececbc3fb23d1">playrho::EraseAll</a> (T &amp;container, const U &amp;value) -&gt; decltype(distance(container.erase(remove(begin(container), end(container), value), end(container)), end(container)))</td></tr>
 <tr class="memdesc:aa5b77298f0fc2a2ae88ececbc3fb23d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience template function for erasing specified value from container.  <a href="namespaceplayrho.html#aa5b77298f0fc2a2ae88ececbc3fb23d1">More...</a><br /></td></tr>
@@ -246,7 +250,7 @@ template&lt;class T &gt; </td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="Templates_8hpp.html">Templates.hpp</a></li>
-    <li class="footer">Generated on Sun Dec 3 2023 22:14:17 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Dec 18 2023 21:55:23 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

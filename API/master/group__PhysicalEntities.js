@@ -69,7 +69,7 @@ var group__PhysicalEntities =
       [ "GetAngularAcceleration", "classplayrho_1_1d2_1_1Body.html#a986b11edba421b23879fa363c557f1e5", null ],
       [ "GetAngularDamping", "classplayrho_1_1d2_1_1Body.html#a7543270614333c0aa69df56877a3a1bd", null ],
       [ "GetAngularVelocity", "classplayrho_1_1d2_1_1Body.html#a306635dbd11f92ad1020a386fce7b7c2", null ],
-      [ "GetBodyConf", "classplayrho_1_1d2_1_1Body.html#a0e940544a56fe840424f880106fcd842", null ],
+      [ "GetBodyConf", "classplayrho_1_1d2_1_1Body.html#a26bbc90e5b2c4192b598dfeefc692196", null ],
       [ "GetForce", "classplayrho_1_1d2_1_1Body.html#a82eaa61b6bddf682fe315f09830e2bfc", null ],
       [ "GetInvMass", "classplayrho_1_1d2_1_1Body.html#a7d74493ba9108b54a9900eb8319ede92", null ],
       [ "GetInvRotInertia", "classplayrho_1_1d2_1_1Body.html#a4c2a6d79f4824a9d3d9971b60a865e47", null ],

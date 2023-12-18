@@ -12,10 +12,10 @@
 <!-- Node0 -->
 <g id="node1" class="node">
 <title>Node0</title>
-<g id="a_node1"><a xlink:href="structplayrho_1_1detail_1_1HasFunctor.html" target="_top" xlink:title="Has&#45;functor trait template fallback class.">
+<g id="a_node1"><a xlink:href="structplayrho_1_1detail_1_1HasFunctor_3_01Type_00_01Return_07Args_8_8_8_08_4.html" target="_top" xlink:title="Has&#45;functor trait template class.">
 <polygon fill="white" stroke="black" points="0,-0.5 0,-30.5 148,-30.5 148,-0.5 0,-0.5"/>
 <text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::HasFunctor</text>
-<text text-anchor="middle" x="74" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; typename, T &gt;</text>
+<text text-anchor="middle" x="74" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; Type, Return(Args...)&gt;</text>
 </a>
 </g>
 </g>

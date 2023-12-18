@@ -110,22 +110,25 @@ $(document).ready(function(){initNavTree('ArrayList_8hpp.html',''); initResizabl
 <code>#include &lt;initializer_list&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
+<code>#include &lt;<a class="el" href="LengthError_8hpp.html">playrho/LengthError.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Span_8hpp.html">playrho/Span.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Templates_8hpp.html">playrho/Templates.hpp</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ArrayList.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ArrayList_8hpp__incl.svg" width="586" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="ArrayList_8hpp__incl.svg" width="100%" height="563"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ArrayList_8hpp__dep__incl.svg" width="376" height="231"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="ArrayList_8hpp__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html">playrho::ArrayList&lt; VALUE_TYPE, MAXSIZE, SIZE_TYPE &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ArrayList.html">playrho::ArrayList&lt; T, MAXSIZE, SIZE_TYPE &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array list.  <a href="classplayrho_1_1ArrayList.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstd_1_1tuple__size_3_01playrho_1_1ArrayList_3_01T_00_01N_00_01SIZE__TYPE_01_4_01_4.html">std::tuple_size&lt; playrho::ArrayList&lt; T, N, SIZE_TYPE &gt; &gt;</a></td></tr>
@@ -139,15 +142,24 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a04db47926693f7d605331b5035d4c9c5"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t S&gt; </td></tr>
-<tr class="memitem:a04db47926693f7d605331b5035d4c9c5"><td class="memTemplItemLeft" align="right" valign="top">ArrayList&lt; T, S &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a04db47926693f7d605331b5035d4c9c5">playrho::operator+</a> (ArrayList&lt; T, S &gt; lhs, const typename ArrayList&lt; T, S &gt;::data_type &amp;rhs)</td></tr>
-<tr class="memdesc:a04db47926693f7d605331b5035d4c9c5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classplayrho_1_1ArrayList.html" title="Array list.">ArrayList</a></code> add operator.  <a href="namespaceplayrho.html#a04db47926693f7d605331b5035d4c9c5">More...</a><br /></td></tr>
-<tr class="separator:a04db47926693f7d605331b5035d4c9c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a750eac4f3ab1ac6026e37ae41b87058d"><td class="memTemplParams" colspan="2"><a id="a750eac4f3ab1ac6026e37ae41b87058d"></a>
-template&lt;typename T , std::size_t S&gt; </td></tr>
-<tr class="memitem:a750eac4f3ab1ac6026e37ae41b87058d"><td class="memTemplItemLeft" align="right" valign="top">ArrayList&lt; T, S &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a750eac4f3ab1ac6026e37ae41b87058d">playrho::operator+=</a> (ArrayList&lt; T, S &gt; &amp;lhs, const typename ArrayList&lt; T, S &gt;::data_type &amp;rhs)</td></tr>
-<tr class="memdesc:a750eac4f3ab1ac6026e37ae41b87058d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classplayrho_1_1ArrayList.html" title="Array list.">ArrayList</a></code> append operator. <br /></td></tr>
-<tr class="separator:a750eac4f3ab1ac6026e37ae41b87058d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67e0766a9469380763fd0e3b0a5107e6"><td class="memTemplParams" colspan="2"><a id="a67e0766a9469380763fd0e3b0a5107e6"></a>
+template&lt;typename T , std::size_t LhsSize, std::size_t RhsSize&gt; </td></tr>
+<tr class="memitem:a67e0766a9469380763fd0e3b0a5107e6"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a67e0766a9469380763fd0e3b0a5107e6">playrho::operator!=</a> (const ArrayList&lt; T, LhsSize &gt; &amp;lhs, const ArrayList&lt; T, RhsSize &gt; &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a67e0766a9469380763fd0e3b0a5107e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator support. <br /></td></tr>
+<tr class="separator:a67e0766a9469380763fd0e3b0a5107e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3712e444173611decc9b129c3d806dd7"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t S&gt; </td></tr>
+<tr class="memitem:a3712e444173611decc9b129c3d806dd7"><td class="memTemplItemLeft" align="right" valign="top">constexpr ArrayList&lt; T, S &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a3712e444173611decc9b129c3d806dd7">playrho::operator+=</a> (ArrayList&lt; T, S &gt; &amp;lhs, T rhs)</td></tr>
+<tr class="memdesc:a3712e444173611decc9b129c3d806dd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends the given value onto back.  <a href="namespaceplayrho.html#a3712e444173611decc9b129c3d806dd7">More...</a><br /></td></tr>
+<tr class="separator:a3712e444173611decc9b129c3d806dd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6506e9c43bb12c5d4e29856163a81b9"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t S, class U &gt; </td></tr>
+<tr class="memitem:af6506e9c43bb12c5d4e29856163a81b9"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#af6506e9c43bb12c5d4e29856163a81b9">playrho::operator+=</a> (ArrayList&lt; T, S &gt; &amp;lhs, U &amp;&amp;rhs) -&gt; decltype(rhs.begin(), rhs.end(), rhs.size(), lhs)</td></tr>
+<tr class="memdesc:af6506e9c43bb12c5d4e29856163a81b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends the given values onto back.  <a href="namespaceplayrho.html#af6506e9c43bb12c5d4e29856163a81b9">More...</a><br /></td></tr>
+<tr class="separator:af6506e9c43bb12c5d4e29856163a81b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecc8c4f87ec5b117810b27a5e5c5ed52"><td class="memTemplParams" colspan="2"><a id="aecc8c4f87ec5b117810b27a5e5c5ed52"></a>
+template&lt;typename T , std::size_t LhsSize, std::size_t RhsSize&gt; </td></tr>
+<tr class="memitem:aecc8c4f87ec5b117810b27a5e5c5ed52"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#aecc8c4f87ec5b117810b27a5e5c5ed52">playrho::operator==</a> (const ArrayList&lt; T, LhsSize &gt; &amp;lhs, const ArrayList&lt; T, RhsSize &gt; &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:aecc8c4f87ec5b117810b27a5e5c5ed52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator support. <br /></td></tr>
+<tr class="separator:aecc8c4f87ec5b117810b27a5e5c5ed52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Definition of the <code>ArrayList</code> class and closely related functions. </p>
@@ -157,7 +169,7 @@ template&lt;typename T , std::size_t S&gt; </td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="ArrayList_8hpp.html">ArrayList.hpp</a></li>
-    <li class="footer">Generated on Sun Dec 3 2023 22:14:17 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Dec 18 2023 21:55:23 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
