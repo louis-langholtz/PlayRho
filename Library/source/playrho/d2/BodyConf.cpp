@@ -26,7 +26,7 @@
 
 namespace playrho::d2 {
 
-BodyConf GetBodyConf(const Body& body) noexcept
+BodyConf GetBodyConf(const Body& body)
 {
     auto def = BodyConf{};
     def.type = GetType(body);
