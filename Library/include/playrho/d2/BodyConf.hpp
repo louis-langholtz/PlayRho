@@ -30,7 +30,6 @@
 
 #include <playrho/ArrayList.hpp>
 #include <playrho/BodyType.hpp>
-#include <playrho/LengthError.hpp>
 #include <playrho/NonNegative.hpp>
 #include <playrho/ShapeID.hpp>
 #include <playrho/Span.hpp>
@@ -367,7 +366,7 @@ constexpr BodyConf GetDefaultBodyConf() noexcept
 /// @brief Gets the body definition for the given body.
 /// @param body Body to get the <code>BodyConf</code> for.
 /// @relatedalso Body
-BodyConf GetBodyConf(const Body& body) noexcept;
+BodyConf GetBodyConf(const Body& body);
 
 /// @brief Gets the transformation associated with the given configuration.
 /// @relatedalso BodyConf
