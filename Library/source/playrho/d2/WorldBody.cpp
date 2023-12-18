@@ -20,13 +20,31 @@
  */
 
 #include <algorithm>
-#include <functional>
-#include <memory>
+#include <cassert>
+#include <limits>
 
 #include <playrho/to_underlying.hpp>
+#include <playrho/BodyID.hpp>
+#include <playrho/BodyType.hpp>
+#include <playrho/Math.hpp>
+#include <playrho/NonNegative.hpp>
+#include <playrho/Real.hpp>
+#include <playrho/Settings.hpp>
+#include <playrho/ShapeID.hpp>
+#include <playrho/Units.hpp>
+#include <playrho/Vector.hpp> // for GetX, GetY
+#include <playrho/Vector2.hpp> // for Length2
 
+#include <playrho/detail/Templates.hpp>
+
+#include <playrho/d2/Acceleration.hpp>
 #include <playrho/d2/Body.hpp>
+#include <playrho/d2/MassData.hpp>
 #include <playrho/d2/Math.hpp>
+#include <playrho/d2/Position.hpp>
+#include <playrho/d2/Sweep.hpp>
+#include <playrho/d2/Transformation.hpp>
+#include <playrho/d2/Velocity.hpp>
 #include <playrho/d2/WorldBody.hpp>
 #include <playrho/d2/WorldShape.hpp>
 #include <playrho/d2/World.hpp>

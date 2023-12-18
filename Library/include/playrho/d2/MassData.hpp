@@ -33,10 +33,7 @@
 #include <playrho/Vector.hpp>
 #include <playrho/Vector2.hpp>
 
-#include <playrho/d2/Math.hpp>
-
-namespace playrho {
-namespace detail {
+namespace playrho::detail {
 
 /// @brief Mass data.
 /// @details This holds the mass data computed for a shape.
@@ -79,28 +76,24 @@ constexpr bool operator!= (MassData<N> lhs, MassData<N> rhs)
     return !(lhs == rhs);
 }
 
-} // namespace detail
+} // namespace playrho::detail
 
-namespace d2 {
+namespace playrho::d2 {
 
 /// @brief Mass data alias for 2-D objects.
 using MassData = ::playrho::detail::MassData<2>;
 
 /// @brief Computes the mass data for a circular shape.
-///
 /// @param r Radius of the circular shape.
 /// @param density Areal density of mass.
 /// @param location Location of the center of the shape.
-///
 MassData GetMassData(Length r, NonNegative<AreaDensity> density, const Length2& location);
 
 /// @brief Computes the mass data for a linear shape.
-///
 /// @param r Radius of the vertices of the linear shape.
 /// @param density Areal density of mass.
 /// @param v0 Location of vertex zero.
 /// @param v1 Location of vertex one.
-///
 MassData GetMassData(Length r, NonNegative<AreaDensity> density, // force line-break
                      const Length2& v0, const Length2& v1);
 
@@ -109,7 +102,6 @@ MassData GetMassData(Length r, NonNegative<AreaDensity> density, // force line-b
 MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
                      Span<const Length2> vertices);
 
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2
 
 #endif // PLAYRHO_D2_MASSDATA_HPP
