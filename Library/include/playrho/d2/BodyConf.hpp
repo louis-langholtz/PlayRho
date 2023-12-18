@@ -25,9 +25,15 @@
 /// @file
 /// @brief Declarations of @c BodyConf class and free functions associated with it.
 
+#include <cstdlib> // for std::size_t
+#include <type_traits> // for std::is_default_constructible_v
+
+#include <playrho/ArrayList.hpp>
 #include <playrho/BodyType.hpp>
+#include <playrho/LengthError.hpp>
 #include <playrho/NonNegative.hpp>
 #include <playrho/ShapeID.hpp>
+#include <playrho/Span.hpp>
 #include <playrho/Units.hpp>
 #include <playrho/Vector2.hpp>
 
@@ -90,6 +96,9 @@ struct BodyConf {
     /// @brief Default enabled value.
     static constexpr auto DefaultEnabled = true;
 
+    /// @brief Max associable shapes.
+    static constexpr auto MaxShapes = std::size_t(128);
+
     // Builder-styled methods...
 
     /// @brief Use the given type.
@@ -131,8 +140,17 @@ struct BodyConf {
     /// @brief Use the given under active time.
     constexpr BodyConf& UseUnderActiveTime(Time v) noexcept;
 
-    /// @brief Use the shape identifier as the identifier to attach to the body.
-    constexpr BodyConf& Use(ShapeID v) noexcept;
+    /// @brief Appends the shape identifier to the collection to attach to the body.
+    /// @throws LengthError if operation would exceed <code>MaxShapes</code>. Provides
+    ///   the strong exception guarantee - i.e. state is as it was before this was called.
+    /// @post <code>shapes</code> holds the given value.
+    constexpr BodyConf& Use(ShapeID v);
+
+    /// @brief Appends the shape identifiers to the collection to attach to the body.
+    /// @throws LengthError if operation would exceed <code>MaxShapes</code>. Provides
+    ///   the strong exception guarantee - i.e. state is as it was before this was called.
+    /// @post <code>shapes</code> holds the given values in the same order as given.
+    constexpr BodyConf& Use(Span<const ShapeID> v);
 
     /// @brief Use the given allow sleep value.
     constexpr BodyConf& UseAllowSleep(bool value) noexcept;
@@ -191,9 +209,8 @@ struct BodyConf {
     ///   or leave it as 0.
     Time underActiveTime = DefaultUnderActiveTime;
 
-    /// Identifier of shape that will be associated with the body on its creation.
-    /// @note This can often be faster than later using an <code>Attach</code> function.
-    ShapeID shape = InvalidShapeID;
+    /// @brief Shapes to associate a body with.
+    ArrayList<ShapeID, MaxShapes> shapes;
 
     /// Set this flag to false if this body should never fall asleep. Note that
     /// this increases CPU usage.
@@ -294,9 +311,15 @@ constexpr BodyConf& BodyConf::UseUnderActiveTime(Time v) noexcept
     return *this;
 }
 
-constexpr BodyConf& BodyConf::Use(ShapeID v) noexcept
+constexpr BodyConf& BodyConf::Use(ShapeID v)
 {
-    shape = v;
+    shapes += v;
+    return *this;
+}
+
+constexpr BodyConf& BodyConf::Use(Span<const ShapeID> values)
+{
+    shapes += values;
     return *this;
 }
 
@@ -329,6 +352,10 @@ constexpr BodyConf& BodyConf::UseEnabled(bool value) noexcept
     enabled = value;
     return *this;
 }
+
+// Asserts some basic traits...
+static_assert(std::is_default_constructible_v<BodyConf>);
+static_assert(std::is_copy_constructible_v<BodyConf>);
 
 /// @brief Gets the default body definition.
 /// @relatedalso BodyConf
@@ -367,6 +394,7 @@ constexpr bool operator==(const BodyConf& lhs, const BodyConf& rhs) noexcept
            lhs.linearDamping == rhs.linearDamping && //
            lhs.angularDamping == rhs.angularDamping && //
            lhs.underActiveTime == rhs.underActiveTime && //
+           lhs.shapes == rhs.shapes && //
            lhs.allowSleep == rhs.allowSleep && //
            lhs.awake == rhs.awake && //
            lhs.fixedRotation == rhs.fixedRotation && //

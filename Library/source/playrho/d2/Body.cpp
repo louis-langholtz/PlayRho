@@ -109,8 +109,7 @@ Body::Body(const BodyConf& bd)
       m_invMass{(bd.type == playrho::BodyType::Dynamic) ? InvMass{Real{1} / Kilogram} : InvMass{}},
       m_linearDamping{bd.linearDamping},
       m_angularDamping{bd.angularDamping},
-      m_shapes{(bd.shape == InvalidShapeID) ? std::vector<ShapeID>{}
-                                            : std::vector<ShapeID>{bd.shape}}
+      m_shapes(bd.shapes.begin(), bd.shapes.end())
 {
     assert(IsValid(bd.location));
     assert(IsValid(bd.angle));
