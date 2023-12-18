@@ -38,18 +38,23 @@
 /// @see World, BodyID.
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 
-#include <iterator>
-#include <vector>
-#include <functional>
-
 #include <playrho/BodyID.hpp>
-#include <playrho/JointID.hpp>
-#include <playrho/KeyedContactID.hpp>
+#include <playrho/BodyType.hpp>
+#include <playrho/Math.hpp>
+#include <playrho/NonNegative.hpp>
+#include <playrho/Real.hpp>
+#include <playrho/Settings.hpp>
 #include <playrho/ShapeID.hpp>
+#include <playrho/Units.hpp>
+#include <playrho/Vector2.hpp> // for Length2
 
-#include <playrho/d2/Body.hpp>
+#include <playrho/d2/Acceleration.hpp>
 #include <playrho/d2/MassData.hpp>
 #include <playrho/d2/Math.hpp>
+#include <playrho/d2/Position.hpp>
+#include <playrho/d2/Transformation.hpp>
+#include <playrho/d2/UnitVec.hpp>
+#include <playrho/d2/Velocity.hpp>
 
 namespace playrho::d2 {
 

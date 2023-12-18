@@ -18,20 +18,13 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "UnitTests.hpp"
-
 #include <playrho/d2/PolygonShapeConf.hpp>
 #include <playrho/d2/Shape.hpp>
 
+#include "gtest/gtest.h"
+
 using namespace playrho;
 using namespace playrho::d2;
-
-TEST(PolygonShapeConf, Traits)
-{
-    EXPECT_TRUE(std::is_default_constructible_v<PolygonShapeConf>);
-    EXPECT_TRUE(std::is_nothrow_default_constructible_v<PolygonShapeConf>);
-    EXPECT_TRUE(std::is_copy_constructible_v<PolygonShapeConf>);
-}
 
 TEST(PolygonShapeConf, DefaultConstruction)
 {
