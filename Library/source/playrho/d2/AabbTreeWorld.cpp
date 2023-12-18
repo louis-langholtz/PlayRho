@@ -20,12 +20,12 @@
  */
 
 #include <algorithm>
-#include <new>
+#include <cassert> // for assert
 #include <functional>
-#include <type_traits>
+#include <limits> // for std::numeric_limits
 #include <map>
-#include <memory>
 #include <set>
+#include <utility> // for std::pair
 #include <vector>
 
 #ifdef DO_PAR_UNSEQ
@@ -37,17 +37,28 @@
 #include <future>
 #endif
 
+#include <playrho/BodyID.hpp>
 #include <playrho/Contact.hpp>
+#include <playrho/ContactID.hpp>
+#include <playrho/ContactKey.hpp>
 #include <playrho/ConstraintSolverConf.hpp>
-#include <playrho/DynamicMemory.hpp>
 #include <playrho/FlagGuard.hpp>
 #include <playrho/Island.hpp>
 #include <playrho/LengthError.hpp>
+#include <playrho/Math.hpp>
 #include <playrho/MovementConf.hpp>
+#include <playrho/ObjectPool.hpp>
+#include <playrho/Settings.hpp>
+#include <playrho/ShapeID.hpp>
 #include <playrho/Span.hpp>
 #include <playrho/StepConf.hpp>
 #include <playrho/to_underlying.hpp>
+#include <playrho/Units.hpp>
 #include <playrho/WrongState.hpp>
+
+#include <playrho/detail/Templates.hpp>
+
+#include <playrho/pmr/MemoryResource.hpp>
 
 #include <playrho/d2/AabbTreeWorld.hpp>
 #include <playrho/d2/Body.hpp>
@@ -55,12 +66,14 @@
 #include <playrho/d2/ContactImpulsesList.hpp>
 #include <playrho/d2/ContactSolver.hpp>
 #include <playrho/d2/Distance.hpp>
+#include <playrho/d2/DistanceConf.hpp>
 #include <playrho/d2/DistanceJointConf.hpp>
 #include <playrho/d2/DistanceProxy.hpp>
 #include <playrho/d2/FrictionJointConf.hpp>
 #include <playrho/d2/GearJointConf.hpp>
 #include <playrho/d2/Joint.hpp>
 #include <playrho/d2/RevoluteJointConf.hpp>
+#include <playrho/d2/Position.hpp>
 #include <playrho/d2/PrismaticJointConf.hpp>
 #include <playrho/d2/PulleyJointConf.hpp>
 #include <playrho/d2/TargetJointConf.hpp>
