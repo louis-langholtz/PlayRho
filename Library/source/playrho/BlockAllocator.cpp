@@ -19,6 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#include <cassert>
 #include <cstring>
 #include <cstddef>
 #include <limits> // for std::numeric_limits
