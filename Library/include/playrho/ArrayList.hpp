@@ -178,64 +178,6 @@ public:
         }
     }
 
-    /// @brief Appends the given value onto back.
-    /// @return Reference to this instance.
-    /// @throws LengthError if <code>size()</code> is not less than <code>max_size()</code>.
-    /// @post <code>size()</code> is one greater than before.
-    /// @post <code>empty()</code> returns false.
-    /// @see max_size.
-    constexpr ArrayList& operator+=(value_type value)
-    {
-        if (!(size() < max_size())) {
-            throw LengthError("operation would exceed max_size()");
-        }
-        push_back(std::move(value));
-        return *this;
-    }
-
-    /// @brief Appends the given values onto back.
-    /// @return Reference to this instance.
-    /// @throws LengthError if operation would exceed <code>max_size()</code>.
-    /// @post <code>size()</code> is <code>size(value)</code> greater than before.
-    /// @post <code>empty()</code> returns false.
-    /// @see max_size.
-    template <class U>
-    constexpr auto operator+=(U&& value)
-        -> decltype(value.begin(), value.end(), value.size(), *this)
-    {
-        if (!(value.size() + size() <= max_size())) {
-            throw LengthError{"operation would exceed max_size"};
-        }
-        for (auto&& v: std::forward<U>(value)) {
-            push_back(std::move(v));
-        }
-        return *this;
-    }
-
-    /// @brief Appends the given value onto back.
-    /// @return Reference to this instance.
-    /// @pre <code>size()</code> is less than <code>max_size()</code>.
-    /// @post <code>size()</code> is one greater than before.
-    /// @post <code>empty()</code> returns false.
-    /// @see max_size.
-    constexpr ArrayList& Append(value_type value) noexcept(std::is_nothrow_move_assignable_v<T>)
-    {
-        push_back(std::move(value));
-        return *this;
-    }
-
-    /// @brief Pushes given value onto back.
-    /// @pre <code>size()</code> is less than <code>max_size()</code>.
-    /// @post <code>size()</code> is one greater than before.
-    /// @post <code>empty()</code> returns false.
-    /// @see max_size.
-    constexpr void push_back(value_type value) noexcept(std::is_nothrow_move_assignable_v<T>)
-    {
-        assert(m_size < max_size());
-        m_elements[m_size] = std::move(value); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
-        ++m_size;
-    }
-
     /// @brief Sets the size to the given value.
     /// @pre @p value is less-than or equal-to <code>max_size()</code>.
     /// @post <code>size()</code> returns the value given.
@@ -260,20 +202,6 @@ public:
     constexpr bool empty() const noexcept
     {
         return m_size == 0;
-    }
-
-    /// @brief Adds given value if space available.
-    /// @post On successful addition, <code>size()</code> returns value one greater than before.
-    /// @return true if value was added, false otherwise.
-    /// @see max_size.
-    constexpr bool add(value_type value) noexcept(std::is_nothrow_move_assignable_v<T>)
-    {
-        if (m_size < max_size()) {
-            m_elements[m_size] = std::move(value);
-            ++m_size;
-            return true;
-        }
-        return false;
     }
 
     /// @brief Accesses element at given index.
@@ -353,6 +281,31 @@ public:
         return data() + size();
     }
 
+    /// @brief Unconditionally pushes given value onto back.
+    /// @pre <code>size()</code> is less than <code>max_size()</code>.
+    /// @post <code>size()</code> is one greater than before.
+    /// @post <code>empty()</code> returns false.
+    /// @see max_size.
+    constexpr void push_back(value_type value) noexcept(std::is_nothrow_move_assignable_v<T>)
+    {
+        assert(m_size < max_size());
+        m_elements[m_size] = std::move(value); // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+        ++m_size;
+    }
+
+    /// @brief Adds given value if space available.
+    /// @post On successful addition, <code>size()</code> returns value one greater than before.
+    /// @return true if value was added, false otherwise.
+    /// @see max_size.
+    constexpr bool add(value_type value) noexcept(std::is_nothrow_move_assignable_v<T>)
+    {
+        if (m_size < max_size()) {
+            this->push_back(std::move(value));
+            return true;
+        }
+        return false;
+    }
+
 private:
     size_type m_size = size_type{0}; ///< Indication of the number of elements in array.
     std::array<value_type, MAXSIZE> m_elements = {}; ///< Buffer for array.
@@ -384,25 +337,38 @@ constexpr auto operator!=(const ArrayList<T, LhsSize> &lhs,
     return !(lhs == rhs);
 }
 
-/// @brief <code>ArrayList</code> append operator.
-/// @relatedalso ArrayList
+/// @brief Appends the given value onto back.
+/// @return Reference to this instance.
+/// @throws LengthError if <code>size()</code> is not less than <code>max_size()</code>.
+/// @post <code>size()</code> is one greater than before.
+/// @post <code>empty()</code> returns false.
+/// @see max_size.
 template <typename T, std::size_t S>
-constexpr ArrayList<T, S>& operator+=(ArrayList<T, S>& lhs, const typename ArrayList<T, S>::data_type& rhs)
+constexpr ArrayList<T, S>& operator+=(ArrayList<T, S>& lhs, T rhs)
 {
-    lhs.push_back(rhs);
+    if (!(lhs.size() < lhs.max_size())) {
+        throw LengthError("operation would exceed max_size()");
+    }
+    lhs.push_back(std::move(rhs));
     return lhs;
 }
 
-/// @brief <code>ArrayList</code> add operator.
-/// @details Appends the right-hand-side value to the left-hand-side instance's values.
-/// @param lhs Left hand side instance.
-/// @param rhs Right hand side value to append with @p lhs into the returned result.
-/// @return An instance with all of @p lhs values follwed by the @p rhs value.
-/// @relatedalso ArrayList
-template <typename T, std::size_t S>
-constexpr ArrayList<T, S> operator+(ArrayList<T, S> lhs, const typename ArrayList<T, S>::data_type& rhs)
+/// @brief Appends the given values onto back.
+/// @return Reference to this instance.
+/// @throws LengthError if operation would exceed <code>max_size()</code>.
+/// @post <code>size()</code> is <code>size(value)</code> greater than before.
+/// @post <code>empty()</code> returns false.
+/// @see max_size.
+template <typename T, std::size_t S, class U>
+constexpr auto operator+=(ArrayList<T, S>& lhs, U&& rhs)
+    -> decltype(rhs.begin(), rhs.end(), rhs.size(), lhs)
 {
-    lhs.push_back(rhs);
+    if (!(lhs.size() + rhs.size() <= lhs.max_size())) {
+        throw LengthError{"operation would exceed max_size"};
+    }
+    for (auto&& v: std::forward<U>(rhs)) {
+        lhs.push_back(std::move(v));
+    }
     return lhs;
 }
 
