@@ -395,6 +395,7 @@
 		9901AF222AB248A80075122D /* FiniteChecker.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9901AF1B2AB248A80075122D /* FiniteChecker.hpp */; };
 		9901AF232AB248A80075122D /* PositiveChecker.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9901AF1C2AB248A80075122D /* PositiveChecker.hpp */; };
 		990531502ABB588D0078F9B0 /* PositionSolution.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9905314F2ABB588D0078F9B0 /* PositionSolution.hpp */; };
+		990FE3BE2B30B15C008AFFC5 /* Span.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 990FE3BD2B30B15C008AFFC5 /* Span.cpp */; };
 		9919882C2ACCC6150076F969 /* ZeroToUnderOneChecker.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9919882B2ACCC6150076F969 /* ZeroToUnderOneChecker.hpp */; };
 		9919882E2ACCC7B70076F969 /* ZeroToUnderOne.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9919882D2ACCC7B70076F969 /* ZeroToUnderOne.hpp */; };
 		991988302ACE15D10076F969 /* ConvexHull.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9919882F2ACE15D10076F969 /* ConvexHull.hpp */; };
@@ -902,6 +903,7 @@
 		9901AF1B2AB248A80075122D /* FiniteChecker.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FiniteChecker.hpp; sourceTree = "<group>"; };
 		9901AF1C2AB248A80075122D /* PositiveChecker.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PositiveChecker.hpp; sourceTree = "<group>"; };
 		9905314F2ABB588D0078F9B0 /* PositionSolution.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PositionSolution.hpp; sourceTree = "<group>"; };
+		990FE3BD2B30B15C008AFFC5 /* Span.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Span.cpp; sourceTree = "<group>"; };
 		9919882B2ACCC6150076F969 /* ZeroToUnderOneChecker.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ZeroToUnderOneChecker.hpp; sourceTree = "<group>"; };
 		9919882D2ACCC7B70076F969 /* ZeroToUnderOne.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ZeroToUnderOne.hpp; sourceTree = "<group>"; };
 		9919882F2ACE15D10076F969 /* ConvexHull.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConvexHull.hpp; sourceTree = "<group>"; };
@@ -1064,6 +1066,7 @@
 				475A945A1D9593A4000CA9A8 /* Shape.cpp */,
 				4731DDF91DC7C9B000E7F931 /* Simplex.cpp */,
 				4734B2351DC39F3E00F15E29 /* SimplexEdge.cpp */,
+				990FE3BD2B30B15C008AFFC5 /* Span.cpp */,
 				475A945E1D95A15A000CA9A8 /* StackAllocator.cpp */,
 				4775A9371E05B032001C2332 /* StepConf.cpp */,
 				47250DA01FEAD20C00FDDE1C /* StepStats.cpp */,
@@ -1939,6 +1942,7 @@
 				9980D10A29C8ACB700007B35 /* WorldConf.cpp in Sources */,
 				47D61F7C1F21112000E702BD /* MultiShape.cpp in Sources */,
 				474BC4311D413DC200447DCD /* Epsilon.cpp in Sources */,
+				990FE3BE2B30B15C008AFFC5 /* Span.cpp in Sources */,
 				47BE7FE225390E8F00CF0F22 /* BodyType.cpp in Sources */,
 				476FBF55254015260057D5F3 /* Contact.cpp in Sources */,
 				470F9B521EF8E2C5007EF7B6 /* RayCastOutput.cpp in Sources */,
