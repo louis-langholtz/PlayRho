@@ -259,6 +259,28 @@ using HasUnaryFunctor = detail::HasFunctor<Type, Return(Arg)>;
 template <typename Type, typename Check, typename DecayedType = std::decay_t<Type>>
 using DecayedTypeIfNotSame = std::enable_if_t<!std::is_same_v<DecayedType, Check>, DecayedType>;
 
+/// @brief A pre-C++20 constant expression implementation of <code>std::equal</code>.
+/// @see https://en.cppreference.com/w/cpp/algorithm/equal
+template <class InputIt1, class InputIt2>
+constexpr auto Equal(InputIt1 first1, InputIt1 last1,
+                     InputIt2 first2, InputIt2 last2)
+    -> decltype(first1 == last1, first2 == last2, ++first1, ++first2, *first1 == *first2)
+{
+    while (true) {
+        if ((first1 == last1) && (first2 == last2)) {
+            return true;
+        }
+        if ((first1 == last1) || (first2 == last2)) {
+            return false;
+        }
+        if (!(*first1 == *first2)) {
+            return false;
+        }
+        ++first1;
+        ++first2;
+    }
+}
+
 } // namespace playrho
 
 #endif // PLAYRHO_TEMPLATES_HPP
