@@ -379,13 +379,13 @@ inline BodyCounter Sleepem(const Span<const BodyID>& bodies,
                 const auto contactId = std::get<ContactID>(e);
                 auto& contact = contactBuffer[to_underlying(contactId)];
                 if (GetBodyA(contact) == bodyID) {
-                    if (!bodyBuffer[to_underlying(GetBodyB(contact))].IsAwake()) {
+                    if (!IsAwake(bodyBuffer[to_underlying(GetBodyB(contact))])) {
                         UnsetIsActive(contact);
                     }
                 }
                 else {
                     assert(GetBodyB(contact) == bodyID);
-                    if (!bodyBuffer[to_underlying(GetBodyA(contact))].IsAwake()) {
+                    if (!IsAwake(bodyBuffer[to_underlying(GetBodyA(contact))])) {
                         UnsetIsActive(contact);
                     }
                 }
@@ -433,7 +433,7 @@ void FlagForUpdating(ObjectPool<Contact>& contactsBuffer, const T& contacts) noe
 
 inline bool EitherIsAccelerable(const Body& lhs, const Body& rhs) noexcept
 {
-    return lhs.IsAccelerable() || rhs.IsAccelerable();
+    return IsAccelerable(lhs) || IsAccelerable(rhs);
 }
 
 bool ShouldCollide(const ObjectPool<Joint>& jointBuffer,
@@ -781,7 +781,7 @@ auto UnsetIsActive(ObjectPool<Contact>& contacts, // force newline
     // sleep associated contacts whose other body is also asleep
     for (const auto& elem: bodyContacts) {
         auto& contact = contacts[to_underlying(std::get<ContactID>(elem))];
-        if (!bodies[to_underlying(GetOtherBody(contact, id))].IsAwake()) {
+        if (!IsAwake(bodies[to_underlying(GetOtherBody(contact, id))])) {
             contact.UnsetIsActive();
         }
     }
@@ -1346,9 +1346,9 @@ void AabbTreeWorld::AddToIsland(Island& island, BodyID seedID,
 #ifndef NDEBUG
     assert(!m_islanded.bodies[to_underlying(seedID)]);
     auto& seed = m_bodyBuffer[to_underlying(seedID)];
-    assert(seed.IsSpeedable());
-    assert(seed.IsAwake());
-    assert(seed.IsEnabled());
+    assert(IsSpeedable(seed));
+    assert(IsAwake(seed));
+    assert(IsEnabled(seed));
     assert(remNumBodies != 0);
     assert(remNumBodies < MaxBodies);
 #endif
@@ -1436,9 +1436,11 @@ void AabbTreeWorld::AddJointsToIsland(Island& island, BodyStack& stack,
         assert(jointID != InvalidJointID);
         if (!m_islanded.joints[to_underlying(jointID)]) {
             const auto otherID = std::get<BodyID>(ji);
-            const auto other = (otherID == InvalidBodyID)? static_cast<Body*>(nullptr): &m_bodyBuffer[to_underlying(otherID)];
-            assert(!other || other->IsEnabled() || !other->IsAwake());
-            if (!other || other->IsEnabled())
+            const auto other = (otherID == InvalidBodyID)
+                                   ? static_cast<Body*>(nullptr)
+                                   : &m_bodyBuffer[to_underlying(otherID)];
+            assert(!other || IsEnabled(*other) || !IsAwake(*other));
+            if (!other || IsEnabled(*other))
             {
                 m_islanded.joints[to_underlying(jointID)] = true;
                 island.joints.push_back(jointID);
@@ -2022,7 +2024,7 @@ AabbTreeWorld::ProcessContactsForTOI( // NOLINT(readability-function-cognitive-c
     const auto& body = m_bodyBuffer[to_underlying(id)];
 
     assert(m_islanded.bodies[to_underlying(id)]);
-    assert(body.IsAccelerable());
+    assert(IsAccelerable(body));
 
     auto results = ProcessContactsOutput{};
     assert(results.contactsUpdated == 0);
@@ -2031,7 +2033,7 @@ AabbTreeWorld::ProcessContactsForTOI( // NOLINT(readability-function-cognitive-c
     const auto updateConf = GetUpdateConf(conf);
 
     // Note: the original contact (for body of which this function was called) already is-in-island.
-    const auto bodyImpenetrable = body.IsImpenetrable();
+    const auto bodyImpenetrable = IsImpenetrable(body);
     for (const auto& ci: m_bodyContacts[to_underlying(id)]) {
         const auto contactID = std::get<ContactID>(ci);
         if (!m_islanded.contacts[to_underlying(contactID)]) {
@@ -2314,9 +2316,9 @@ AabbTreeWorld::UpdateContactsStats AabbTreeWorld::UpdateContacts(const StepConf&
 
         // Awake && speedable (dynamic or kinematic) means collidable.
         // At least one body must be collidable
-        assert(!bodyA.IsAwake() || bodyA.IsSpeedable());
-        assert(!bodyB.IsAwake() || bodyB.IsSpeedable());
-        if (!bodyA.IsAwake() && !bodyB.IsAwake()) {
+        assert(!IsAwake(bodyA) || IsSpeedable(bodyA));
+        assert(!IsAwake(bodyB) || IsSpeedable(bodyB));
+        if (!IsAwake(bodyA) && !IsAwake(bodyB)) {
             // This sometimes fails... is it important?
             //assert(!contact.HasValidToi());
             ++ignored;

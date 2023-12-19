@@ -167,7 +167,7 @@ void Body::SetSleepingAllowed(bool flag) noexcept
     if (flag) {
         m_flags |= e_autoSleepFlag;
     }
-    else if (IsSpeedable()) {
+    else if ((m_flags & Body::e_velocityFlag) != 0) {
         m_flags &= ~e_autoSleepFlag;
         SetAwakeFlag();
         m_underActiveTime = 0_s;
@@ -178,7 +178,7 @@ void Body::SetAwake() noexcept
 {
     // Ignore this request unless this body is speedable so as to maintain the body's invariant
     // that only "speedable" bodies can be awake.
-    if (IsSpeedable()) {
+    if ((m_flags & Body::e_velocityFlag) != 0) {
         SetAwakeFlag();
         m_underActiveTime = 0_s;
     }
@@ -186,7 +186,8 @@ void Body::SetAwake() noexcept
 
 void Body::UnsetAwake() noexcept
 {
-    if (!IsSpeedable() || IsSleepingAllowed()) {
+    if (((m_flags & Body::e_velocityFlag) == 0) ||
+        ((m_flags & Body::e_autoSleepFlag) != 0)) {
         UnsetAwakeFlag();
         m_underActiveTime = 0_s;
         m_linearVelocity = LinearVelocity2{};
@@ -197,7 +198,7 @@ void Body::UnsetAwake() noexcept
 void Body::SetVelocity(const Velocity& value) noexcept
 {
     if (value != Velocity{}) {
-        if (!IsSpeedable()) {
+        if ((m_flags & Body::e_velocityFlag) == 0) {
             return;
         }
         SetAwakeFlag();
@@ -208,7 +209,7 @@ void Body::SetVelocity(const Velocity& value) noexcept
 
 void Body::JustSetVelocity(const Velocity& value) noexcept
 {
-    assert(IsSpeedable() || (value == Velocity{}));
+    assert(((m_flags & Body::e_velocityFlag) != 0) || (value == Velocity{}));
     m_linearVelocity = value.linear;
     m_angularVelocity = value.angular;
 }
@@ -223,7 +224,7 @@ void Body::SetAcceleration(const LinearAcceleration2& linear, AngularAcceleratio
         return;
     }
 
-    if (!IsAccelerable()) {
+    if ((m_flags & Body::e_accelerationFlag) == 0) {
         if ((linear != LinearAcceleration2{}) || (angular != AngularAcceleration{})) {
             // non-accelerable bodies can only be set to zero acceleration, bail...
             return;
@@ -301,7 +302,7 @@ Velocity GetVelocity(const Body& body, Time h) noexcept
 {
     // Integrate velocity and apply damping.
     auto velocity = body.GetVelocity();
-    if (body.IsAccelerable()) {
+    if (IsAccelerable(body)) {
         // Integrate velocities.
         velocity.linear += h * body.GetLinearAcceleration();
         velocity.angular += h * body.GetAngularAcceleration();

@@ -366,9 +366,9 @@ void ResetMassData(World& world, BodyID id)
 void SetMassData(World& world, BodyID id, const MassData& massData)
 {
     auto body = GetBody(world, id);
-    if (!body.IsAccelerable()) {
+    if (!IsAccelerable(body)) {
         body.SetInvMassData(InvMass{}, InvRotInertia{});
-        if (!body.IsSpeedable()) {
+        if (!IsSpeedable(body)) {
             body.SetSweep(Sweep{Position{GetLocation(body), GetAngle(body)}});
         }
         SetBody(world, id, body);
@@ -377,7 +377,7 @@ void SetMassData(World& world, BodyID id, const MassData& massData)
     const auto mass = (massData.mass > 0_kg)? Mass{massData.mass}: 1_kg;
     const auto invMass = Real{1} / mass;
     auto invRotInertia = Real(0) / (1_m2 * 1_kg / SquareRadian);
-    if ((massData.I > RotInertia{}) && (!body.IsFixedRotation())) {
+    if ((massData.I > RotInertia{}) && (!IsFixedRotation(body))) {
         const auto lengthSquared = GetMagnitudeSquared(massData.center);
         // L^2 M QP^-2
         const auto I = RotInertia{massData.I} - RotInertia{(mass * lengthSquared) / SquareRadian};

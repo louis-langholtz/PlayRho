@@ -28,9 +28,9 @@ using namespace playrho::d2;
 TEST(Body, DefaultConstruction)
 {
     EXPECT_EQ(Body().GetType(), BodyType::Static);
-    EXPECT_TRUE(Body().IsEnabled());
-    EXPECT_FALSE(Body().IsAwake());
-    EXPECT_FALSE(Body().IsSpeedable());
+    EXPECT_TRUE(IsEnabled(Body()));
+    EXPECT_FALSE(IsAwake(Body()));
+    EXPECT_FALSE(IsSpeedable(Body()));
     EXPECT_EQ(Body().GetLinearDamping(), Body::DefaultLinearDamping);
     EXPECT_EQ(Body().GetAngularDamping(), Body::DefaultAngularDamping);
 }
@@ -202,12 +202,12 @@ TEST(Body, EqualsOperator)
     {
         auto bodyA = Body{};
         bodyA.SetType(BodyType::Dynamic);
-        ASSERT_TRUE(bodyA.IsSleepingAllowed());
+        ASSERT_TRUE(IsSleepingAllowed(bodyA));
         auto bodyB = Body{};
         bodyB.SetType(BodyType::Dynamic);
-        ASSERT_TRUE(bodyA.IsSleepingAllowed());
+        ASSERT_TRUE(IsSleepingAllowed(bodyA));
         bodyA.SetSleepingAllowed(false);
-        ASSERT_FALSE(bodyA.IsSleepingAllowed());
+        ASSERT_FALSE(IsSleepingAllowed(bodyA));
         EXPECT_FALSE(bodyA == bodyB);
     }
 }
