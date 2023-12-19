@@ -103,6 +103,9 @@ struct BodyConf {
     /// @brief Default enabled value.
     static constexpr auto DefaultEnabled = true;
 
+    /// @brief Default mass data dirty value.
+    static constexpr auto DefaultMassDataDirty = true;
+
     /// @brief Max associable shapes.
     static constexpr auto MaxShapes = std::size_t(128);
 
@@ -183,6 +186,9 @@ struct BodyConf {
     /// @brief Use the given enabled state.
     constexpr BodyConf& UseEnabled(bool value) noexcept;
 
+    /// @brief Use the given mass data dirty state.
+    constexpr BodyConf& UseMassDataDirty(bool v) noexcept;
+
     // Public member variables...
 
     /// @brief Type of the body: static, kinematic, or dynamic.
@@ -252,6 +258,9 @@ struct BodyConf {
 
     /// Whether or not the body is enabled.
     bool enabled = DefaultEnabled;
+
+    /// @brief Whether mass data is "dirty".
+    bool massDataDirty = DefaultMassDataDirty;
 };
 
 constexpr BodyConf& BodyConf::UseType(BodyType t) noexcept
@@ -271,13 +280,15 @@ constexpr BodyConf& BodyConf::Use(const Sweep& v) noexcept
     return *this;
 }
 
-constexpr BodyConf& BodyConf::UseInvMass(const NonNegative<InvMass>& v) noexcept
+constexpr BodyConf& BodyConf::UseInvMass(
+    const NonNegative<InvMass>& v) noexcept
 {
     invMass = v;
     return *this;
 }
 
-constexpr BodyConf& BodyConf::UseInvRotI(const NonNegative<InvRotInertia>& v) noexcept
+constexpr BodyConf& BodyConf::UseInvRotI(
+    const NonNegative<InvRotInertia>& v) noexcept
 {
     invRotI = v;
     return *this;
@@ -392,6 +403,12 @@ constexpr BodyConf& BodyConf::UseEnabled(bool value) noexcept
     return *this;
 }
 
+constexpr BodyConf& BodyConf::UseMassDataDirty(bool v) noexcept
+{
+    massDataDirty = v;
+    return *this;
+}
+
 // Asserts some basic traits...
 static_assert(std::is_default_constructible_v<BodyConf>);
 static_assert(std::is_copy_constructible_v<BodyConf>);
@@ -448,7 +465,8 @@ constexpr bool operator==(const BodyConf& lhs, const BodyConf& rhs) noexcept
            lhs.awake == rhs.awake && //
            lhs.fixedRotation == rhs.fixedRotation && //
            lhs.bullet == rhs.bullet && //
-           lhs.enabled == rhs.enabled;
+           lhs.enabled == rhs.enabled && //
+           lhs.massDataDirty == rhs.massDataDirty;
 }
 
 /// @brief Operator not-equals.

@@ -100,6 +100,12 @@ Body::FlagsType Body::GetFlags(const BodyConf& bd) noexcept
     if (bd.enabled) {
         flags |= e_enabledFlag;
     }
+    if (bd.massDataDirty &&
+        (!bd.shapes.empty() ||
+         (bd.invMass != BodyConf::DefaultInvMass) ||
+         (bd.invRotI != BodyConf::DefaultInvRotI))) {
+        flags |= e_massDataDirtyFlag;
+    }
     return flags;
 }
 
