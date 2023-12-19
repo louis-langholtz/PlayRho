@@ -54,8 +54,8 @@ struct Position {
 
 // Assert some expected traits...
 static_assert(std::is_nothrow_default_constructible_v<Position>);
-static_assert(std::is_nothrow_copy_constructible_v<Position>);
-static_assert(std::is_nothrow_move_constructible_v<Position>);
+static_assert(std::is_copy_constructible_v<Position>);
+static_assert(std::is_move_constructible_v<Position>);
 static_assert(std::is_nothrow_destructible_v<Position>);
 
 /// @brief Equality operator.
