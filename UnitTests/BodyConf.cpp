@@ -18,19 +18,44 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "UnitTests.hpp"
-
+#include <playrho/d2/Body.hpp>
 #include <playrho/d2/BodyConf.hpp>
 
-#include <playrho/d2/Body.hpp>
+#include "gtest/gtest.h"
 
 using namespace playrho;
 using namespace playrho::d2;
+
+namespace {
+
+void IsSame(const BodyConf& conf, const BodyConf& conf2)
+{
+    EXPECT_EQ(conf.type, conf2.type);
+    EXPECT_EQ(conf.sweep, conf2.sweep);
+    EXPECT_EQ(conf.invMass, conf2.invMass);
+    EXPECT_EQ(conf.invRotI, conf2.invRotI);
+    EXPECT_EQ(conf.linearVelocity, conf2.linearVelocity);
+    EXPECT_EQ(conf.angularVelocity, conf2.angularVelocity);
+    EXPECT_EQ(conf.linearAcceleration, conf2.linearAcceleration);
+    EXPECT_EQ(conf.angularAcceleration, conf2.angularAcceleration);
+    EXPECT_EQ(conf.linearDamping, conf2.linearDamping);
+    EXPECT_EQ(conf.angularDamping, conf2.angularDamping);
+    EXPECT_EQ(conf.underActiveTime, conf2.underActiveTime);
+    EXPECT_EQ(conf.allowSleep, conf2.allowSleep);
+    EXPECT_EQ(conf.awake, conf2.awake);
+    EXPECT_EQ(conf.fixedRotation, conf2.fixedRotation);
+    EXPECT_EQ(conf.bullet, conf2.bullet);
+    EXPECT_EQ(conf.enabled, conf2.enabled);
+}
+
+}
 
 TEST(BodyConf, DefaultConstruction)
 {
     EXPECT_EQ(BodyConf().type, BodyConf::DefaultBodyType);
     EXPECT_EQ(BodyConf().sweep, BodyConf::DefaultSweep);
+    EXPECT_EQ(BodyConf().invMass, BodyConf::DefaultInvMass);
+    EXPECT_EQ(BodyConf().invRotI, BodyConf::DefaultInvRotI);
     EXPECT_EQ(BodyConf().linearVelocity, BodyConf::DefaultLinearVelocity);
     EXPECT_EQ(BodyConf().angularVelocity, BodyConf::DefaultAngularVelocity);
     EXPECT_EQ(BodyConf().linearAcceleration, BodyConf::DefaultLinearAcceleration);
@@ -38,7 +63,6 @@ TEST(BodyConf, DefaultConstruction)
     EXPECT_EQ(BodyConf().linearDamping, BodyConf::DefaultLinearDamping);
     EXPECT_EQ(BodyConf().angularDamping, BodyConf::DefaultAngularDamping);
     EXPECT_EQ(BodyConf().underActiveTime, BodyConf::DefaultUnderActiveTime);
-    EXPECT_EQ(BodyConf().type, BodyType::Static);
     EXPECT_EQ(BodyConf().shapes.size(), 0u);
     EXPECT_EQ(BodyConf().allowSleep, BodyConf::DefaultAllowSleep);
     EXPECT_EQ(BodyConf().awake, BodyConf::DefaultAwake);
@@ -52,6 +76,18 @@ TEST(BodyConf, UseType)
     EXPECT_EQ(BodyConf{}.UseType(BodyType::Static).type, BodyType::Static);
     EXPECT_EQ(BodyConf{}.UseType(BodyType::Dynamic).type, BodyType::Dynamic);
     EXPECT_EQ(BodyConf{}.UseType(BodyType::Kinematic).type, BodyType::Kinematic);
+}
+
+TEST(BodyConf, UseInvMass)
+{
+    const auto v = InvMass{Real(2) / 1_kg};
+    EXPECT_EQ(BodyConf{}.UseInvMass(v).invMass, v);
+}
+
+TEST(BodyConf, UseInvRotI)
+{
+    const auto v = InvRotInertia{Real{4} * SquareRadian / (SquareMeter * 1_kg)};
+    EXPECT_EQ(BodyConf{}.UseInvRotI(v).invRotI, v);
 }
 
 TEST(BodyConf, UsePosition)
@@ -77,30 +113,14 @@ TEST(BodyConf, UseShapes)
     EXPECT_THROW(BodyConf{}.Use(toomany), LengthError);
 }
 
-static void IsSame(const BodyConf& conf, const BodyConf& conf2)
-{
-    EXPECT_EQ(conf.type, conf2.type);
-    EXPECT_EQ(conf.sweep, conf2.sweep);
-    EXPECT_EQ(conf.linearVelocity, conf2.linearVelocity);
-    EXPECT_EQ(conf.angularVelocity, conf2.angularVelocity);
-    EXPECT_EQ(conf.linearAcceleration, conf2.linearAcceleration);
-    EXPECT_EQ(conf.angularAcceleration, conf2.angularAcceleration);
-    EXPECT_EQ(conf.linearDamping, conf2.linearDamping);
-    EXPECT_EQ(conf.angularDamping, conf2.angularDamping);
-    EXPECT_EQ(conf.underActiveTime, conf2.underActiveTime);
-    EXPECT_EQ(conf.allowSleep, conf2.allowSleep);
-    EXPECT_EQ(conf.awake, conf2.awake);
-    EXPECT_EQ(conf.fixedRotation, conf2.fixedRotation);
-    EXPECT_EQ(conf.bullet, conf2.bullet);
-    EXPECT_EQ(conf.enabled, conf2.enabled);
-}
-
 TEST(BodyConf, GetBodyConf1)
 {
     auto conf = BodyConf{};
+    conf.invMass = {};
+    conf.invRotI = {};
     conf.type = BodyType::Static;
     conf.awake = false;
-    SCOPED_TRACE("checking");
+    SCOPED_TRACE("checking for static");
     EXPECT_NO_THROW(IsSame(conf, GetBodyConf(Body(conf))));
 }
 
@@ -108,8 +128,10 @@ TEST(BodyConf, GetBodyConf2)
 {
     auto conf = BodyConf{};
     conf.type = BodyType::Dynamic;
-    conf.UseLocation(Length2{2_m, 3_m});
-    conf.UseAngle(30_deg);
+    conf.sweep = Sweep{Position{Length2{1_m, 2_m}, 20_deg},
+                       Position{Length2{2_m, 3_m}, 30_deg},
+                       Length2{3_m, 4_m},
+                       Real(0.75)};
     conf.linearVelocity = LinearVelocity2{2_mps, 0_mps};
     conf.angularVelocity = 4_rpm;
     conf.linearAcceleration = LinearAcceleration2{2_mps2, 0_mps2};
@@ -122,7 +144,9 @@ TEST(BodyConf, GetBodyConf2)
     conf.fixedRotation = true;
     conf.bullet = true;
     conf.enabled = false;
-    SCOPED_TRACE("checking");
+    conf.invMass = InvMass{Real(1) / 2_kg};
+    conf.invRotI = InvRotInertia{Real(4) * SquareRadian / (SquareMeter * 1_kg)};
+    SCOPED_TRACE("checking for dynamic");
     EXPECT_NO_THROW(IsSame(conf, GetBodyConf(Body(conf))));
 }
 

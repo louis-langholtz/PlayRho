@@ -104,8 +104,8 @@ public:
         e_velocityFlag = FlagsType(0x0080u),
 
         /// @brief Acceleration flag.
-        /// @details Set this to enable changes in velocity due to physical properties (like
-        /// forces). Bodies with this set are "accelerable" - dynamic bodies.
+        /// @details Set this to enable changes in velocity due to physical properties
+        ///   (like forces). Bodies with this set are "accelerable" - dynamic bodies.
         e_accelerationFlag = FlagsType(0x0100u),
 
         /// @brief Mass data dirty flag.
@@ -131,19 +131,22 @@ public:
     /// @param bd Configuration data for the body to construct.
     /// @post <code>GetFlags()</code> will return the value of
     ///  <code>GetFlags(const BodyConf&)</code> given by @a bd.
-    /// @post <code>GetLinearDamping()</code> will return the value of @a bd.linearDamping.
-    /// @post <code>GetAngularDamping()</code> will return the value of @a bd.angularDamping.
-    /// @post <code>GetInvMass()</code> will return <code>Real(0)/Kilogram</code> if
-    ///   <code>bd.type != BodyType::Dynamic</code>, otherwise it will return
-    ///   <code>Real(1)/Kilogram</code>.
+    /// @post <code>GetLinearDamping()</code> returns value of @a bd.linearDamping.
+    /// @post <code>GetAngularDamping()</code> returns value of @a bd.angularDamping.
+    /// @post <code>GetInvMass()</code> returns <code>Real(0)/Kilogram</code> if
+    ///   <code>bd.type != BodyType::Dynamic</code>, otherwise it returns value of
+    ///   @a bd.invMass.
+    /// @post <code>GetInvRotI()</code> returns <code>InvRotInertia{}</code> if
+    ///   <code>bd.type != BodyType::Dynamic</code>, otherwise it returns value of
+    ///   @a bd.invRotI.
     /// @post <code>GetTransformation()</code> will return the value of
     ///   <code>::playrho::d2::GetTransformation(const BodyConf&)</code> given @a bd.
     /// @post <code>GetVelocity()</code> will return the value as if
     ///   <code>SetVelocity(const Velocity&)</code> had been called with the values of
     ///   @a bd.linearVelocity and @a bd.angularVelocity as the velocity.
     /// @post <code>GetAcceleration()</code> will return the value as if
-    ///   <code>SetAcceleration(LinearAcceleration2, AngularAcceleration)</code> had been called
-    ///   with the values of @a bd.linearAcceleration and @a bd.angularAcceleration.
+    ///   <code>SetAcceleration(LinearAcceleration2, AngularAcceleration)</code> had been
+    ///   called with values of @a bd.linearAcceleration and @a bd.angularAcceleration.
     /// @see GetFlags(const BodyConf&).
     /// @see GetFlags, GetLinearDamping, GetAngularDamping, GetInvMass, GetTransformation,
     ///   GetVelocity, GetAcceleration.
@@ -151,14 +154,15 @@ public:
     explicit Body(const BodyConf& bd = GetDefaultBodyConf());
 
     /// @brief Gets the body transform for the body's origin.
-    /// @details This gets the translation/location and rotation/direction of the body relative to
-    ///   its world. The location and direction of the body after stepping the world's physics
-    ///   simulations is dependent on a number of factors:
+    /// @details This gets the translation/location and rotation/direction of the body
+    ///   relative to its world. The location and direction of the body after stepping
+    ///   the world's physics simulations is dependent on a number of factors:
     ///   1. Location and direction at the last time step.
     ///   2. Forces and torques acting on the body (applied force, applied impulse, etc.).
     ///   3. The mass and rotational inertia of the body.
     ///   4. Damping of the body.
-    ///   5. Restitutioen and friction values of body's shape parts when experiencing collisions.
+    ///   5. Restitutioen and friction values of body's shape parts when experiencing
+    ///      collisions.
     /// @return the world transform of the body's origin.
     /// @see SetSweep.
     const Transformation& GetTransformation() const noexcept;
@@ -422,7 +426,7 @@ private:
 
     /// Inverse rotational inertia about the center of mass.
     /// @details A non-negative value. Zero for non rotationally-accelerable bodies.
-    NonNegativeFF<InvRotInertia> m_invRotI = {};
+    NonNegativeFF<InvRotInertia> m_invRotI;
 
     NonNegative<Frequency> m_linearDamping{DefaultLinearDamping}; ///< Linear damping.
     NonNegative<Frequency> m_angularDamping{DefaultAngularDamping}; ///< Angular damping.
