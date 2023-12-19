@@ -46,6 +46,7 @@ BodyConf GetBodyConf(const Body& body)
     def.fixedRotation = IsFixedRotation(body);
     def.bullet = IsAccelerable(body) && IsImpenetrable(body);
     def.enabled = IsEnabled(body);
+    def.massDataDirty = IsMassDataDirty(body);
     return def;
 }
 

@@ -69,6 +69,7 @@ TEST(BodyConf, DefaultConstruction)
     EXPECT_EQ(BodyConf().fixedRotation, BodyConf::DefaultFixedRotation);
     EXPECT_EQ(BodyConf().bullet, BodyConf::DefaultBullet);
     EXPECT_EQ(BodyConf().enabled, BodyConf::DefaultEnabled);
+    EXPECT_EQ(BodyConf().massDataDirty, BodyConf::DefaultMassDataDirty);
 }
 
 TEST(BodyConf, UseType)
@@ -113,6 +114,12 @@ TEST(BodyConf, UseShapes)
     EXPECT_THROW(BodyConf{}.Use(toomany), LengthError);
 }
 
+TEST(BodyConf, UseMassDataDirty)
+{
+    EXPECT_EQ(BodyConf{}.UseMassDataDirty(true).massDataDirty, true);
+    EXPECT_EQ(BodyConf{}.UseMassDataDirty(false).massDataDirty, false);
+}
+
 TEST(BodyConf, GetBodyConf1)
 {
     auto conf = BodyConf{};
@@ -144,6 +151,7 @@ TEST(BodyConf, GetBodyConf2)
     conf.fixedRotation = true;
     conf.bullet = true;
     conf.enabled = false;
+    conf.massDataDirty = false;
     conf.invMass = InvMass{Real(1) / 2_kg};
     conf.invRotI = InvRotInertia{Real(4) * SquareRadian / (SquareMeter * 1_kg)};
     SCOPED_TRACE("checking for dynamic");
