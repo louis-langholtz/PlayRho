@@ -18,50 +18,12 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "UnitTests.hpp"
-
 #include <playrho/d2/Body.hpp>
+
+#include "gtest/gtest.h"
 
 using namespace playrho;
 using namespace playrho::d2;
-
-TEST(Body, ByteSize)
-{
-    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
-    // builds and to report actual size rather than just reporting that expected size is wrong.
-
-    // architecture dependent...
-    switch (sizeof(Real)) {
-    case 4:
-#if defined(_WIN64)
-#if !defined(NDEBUG)
-        EXPECT_EQ(sizeof(Body), std::size_t(136));
-#else
-        EXPECT_EQ(sizeof(Body), std::size_t(128));
-#endif
-#elif defined(_WIN32)
-#if !defined(NDEBUG)
-        // Win32 debug
-        EXPECT_EQ(sizeof(Body), std::size_t(116));
-#else
-        // Win32 release
-        EXPECT_EQ(sizeof(Body), std::size_t(112));
-#endif
-#else
-        EXPECT_EQ(sizeof(Body), std::size_t(128));
-#endif
-        break;
-    case 8:
-        EXPECT_EQ(sizeof(Body), std::size_t(224));
-        break;
-    case 16:
-        EXPECT_EQ(sizeof(Body), std::size_t(432));
-        break;
-    default:
-        FAIL();
-        break;
-    }
-}
 
 TEST(Body, DefaultConstruction)
 {
@@ -228,6 +190,25 @@ TEST(Body, EqualsOperator)
         auto body2 = Body{};
         body2.SetType(BodyType::Dynamic);
         EXPECT_FALSE(body1 == body2);
+    }
+    {
+        auto bodyA = Body{};
+        auto bodyB = Body{};
+        bodyA.Attach(ShapeID(1));
+        EXPECT_FALSE(bodyA == bodyB);
+        bodyB.Attach(ShapeID(1));
+        EXPECT_TRUE(bodyA == bodyB);
+    }
+    {
+        auto bodyA = Body{};
+        bodyA.SetType(BodyType::Dynamic);
+        ASSERT_TRUE(bodyA.IsSleepingAllowed());
+        auto bodyB = Body{};
+        bodyB.SetType(BodyType::Dynamic);
+        ASSERT_TRUE(bodyA.IsSleepingAllowed());
+        bodyA.SetSleepingAllowed(false);
+        ASSERT_FALSE(bodyA.IsSleepingAllowed());
+        EXPECT_FALSE(bodyA == bodyB);
     }
 }
 

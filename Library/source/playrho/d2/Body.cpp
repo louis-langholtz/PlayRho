@@ -340,7 +340,7 @@ bool operator==(const Body& lhs, const Body& rhs)
 {
     return GetTransformation(lhs) == GetTransformation(rhs) && //
            GetSweep(lhs) == GetSweep(rhs) && //
-           GetType(lhs) == GetType(rhs) && //
+           GetFlags(lhs) == GetFlags(rhs) && //
            GetVelocity(lhs) == GetVelocity(rhs) && //
            GetAcceleration(lhs) == GetAcceleration(rhs) && //
            GetInvMass(lhs) == GetInvMass(rhs) && //
