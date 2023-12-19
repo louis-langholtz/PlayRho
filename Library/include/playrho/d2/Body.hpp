@@ -129,8 +129,8 @@ public:
     /// @brief Initializing constructor.
     /// @note To create a body within a world, use <code>World::CreateBody</code>.
     /// @param bd Configuration data for the body to construct.
-    /// @post The internal <code>m_flags</code> state will be set to the value of
-    ///  <code>GetFlags(const BodyConf&)</code> given @a bd.
+    /// @post <code>GetFlags()</code> will return the value of
+    ///  <code>GetFlags(const BodyConf&)</code> given by @a bd.
     /// @post <code>GetLinearDamping()</code> will return the value of @a bd.linearDamping.
     /// @post <code>GetAngularDamping()</code> will return the value of @a bd.angularDamping.
     /// @post <code>GetInvMass()</code> will return <code>Real(0)/Kilogram</code> if
@@ -145,8 +145,8 @@ public:
     ///   <code>SetAcceleration(LinearAcceleration2, AngularAcceleration)</code> had been called
     ///   with the values of @a bd.linearAcceleration and @a bd.angularAcceleration.
     /// @see GetFlags(const BodyConf&).
-    /// @see GetLinearDamping, GetAngularDamping, GetInvMass, GetTransformation, GetVelocity,
-    ///   GetAcceleration.
+    /// @see GetFlags, GetLinearDamping, GetAngularDamping, GetInvMass, GetTransformation,
+    ///   GetVelocity, GetAcceleration.
     /// @see World::CreateBody.
     explicit Body(const BodyConf& bd = GetDefaultBodyConf());
 
@@ -166,6 +166,9 @@ public:
     /// @brief Gets the body's sweep.
     /// @see SetSweep.
     const Sweep& GetSweep() const noexcept;
+
+    /// @brief Gets the body's flag state.
+    FlagsType GetFlags() const noexcept;
 
     /// @brief Gets the velocity.
     /// @see SetVelocity, JustSetVelocity.
@@ -251,6 +254,7 @@ public:
 
     /// @brief Sets the type of this body.
     /// @post <code>GetType()</code> returns type set.
+    /// @post <code>GetFlags()</code> returns a value reflective of the type set.
     /// @post <code>GetUnderActiveTime()</code> returns 0.
     /// @post <code>IsAwake()</code> returns true for <code>BodyType::Dynamic</code> or
     ///   <code>BodyType::Kinematic</code>, and returns false for <code>BodyType::Static</code>.
@@ -478,6 +482,11 @@ inline const Sweep& Body::GetSweep() const noexcept
     return m_sweep;
 }
 
+inline Body::FlagsType Body::GetFlags() const noexcept
+{
+    return m_flags;
+}
+
 inline Velocity Body::GetVelocity() const noexcept
 {
     return Velocity{m_linearVelocity, m_angularVelocity};
@@ -523,7 +532,7 @@ inline void Body::SetAngularDamping(NonNegative<Frequency> angularDamping) noexc
 
 inline bool Body::IsImpenetrable() const noexcept
 {
-    return (m_flags & e_impenetrableFlag) != 0;
+    return (GetFlags() & e_impenetrableFlag) != 0;
 }
 
 inline void Body::SetImpenetrable() noexcept
@@ -551,7 +560,7 @@ inline void Body::UnsetAwakeFlag() noexcept
 
 inline bool Body::IsAwake() const noexcept
 {
-    return (m_flags & e_awakeFlag) != 0;
+    return (GetFlags() & e_awakeFlag) != 0;
 }
 
 inline Time Body::GetUnderActiveTime() const noexcept
@@ -568,27 +577,27 @@ inline void Body::SetUnderActiveTime(Time value) noexcept
 
 inline bool Body::IsEnabled() const noexcept
 {
-    return (m_flags & e_enabledFlag) != 0;
+    return (GetFlags() & e_enabledFlag) != 0;
 }
 
 inline bool Body::IsFixedRotation() const noexcept
 {
-    return (m_flags & e_fixedRotationFlag) != 0;
+    return (GetFlags() & e_fixedRotationFlag) != 0;
 }
 
 inline bool Body::IsSpeedable() const noexcept
 {
-    return (m_flags & e_velocityFlag) != 0;
+    return (GetFlags() & e_velocityFlag) != 0;
 }
 
 inline bool Body::IsAccelerable() const noexcept
 {
-    return (m_flags & e_accelerationFlag) != 0;
+    return (GetFlags() & e_accelerationFlag) != 0;
 }
 
 inline bool Body::IsSleepingAllowed() const noexcept
 {
-    return (m_flags & e_autoSleepFlag) != 0;
+    return (GetFlags() & e_autoSleepFlag) != 0;
 }
 
 inline LinearAcceleration2 Body::GetLinearAcceleration() const noexcept
@@ -603,7 +612,7 @@ inline AngularAcceleration Body::GetAngularAcceleration() const noexcept
 
 inline bool Body::IsMassDataDirty() const noexcept
 {
-    return (m_flags & e_massDataDirtyFlag) != 0;
+    return (GetFlags() & e_massDataDirtyFlag) != 0;
 }
 
 inline void Body::SetEnabled() noexcept
@@ -860,6 +869,13 @@ inline const Sweep& GetSweep(const Body& body) noexcept
 inline void SetSweep(Body& body, const Sweep& value) noexcept
 {
     body.SetSweep(value);
+}
+
+/// @brief Gets the body's flag state.
+/// @relatedalso Body
+inline Body::FlagsType GetFlags(const Body& body) noexcept
+{
+    return body.GetFlags();
 }
 
 /// @brief Gets the "position 0" Position information for the given body.
