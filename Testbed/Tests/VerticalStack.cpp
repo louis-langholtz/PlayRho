@@ -64,12 +64,11 @@ public:
                 BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.linearAcceleration = GetGravity();
-
                 const auto x = 0.0f;
                 // const auto x = RandomFloat(-0.02f, 0.02f);
                 // const auto x = i % 2 == 0 ? -0.01f : 0.01f;
                 // bd.position = Vec2(xs[j] + x, (hdim - hdim/20) + (hdim * 2 - hdim / 20) * i);
-                bd.location = Vec2(xs[j] + x, (i + 1) * hdim * 4) * 1_m;
+                bd.UseLocation(Vec2(xs[j] + x, (i + 1) * hdim * 4) * 1_m);
                 Attach(GetWorld(), CreateBody(GetWorld(), bd), shape);
             }
         }
@@ -86,8 +85,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.linearAcceleration = GetGravity();
                 bd.bullet = true;
-                bd.location = Vec2(-31.0f, 5.0f) * 1_m;
-
+                bd.UseLocation(Vec2(-31.0f, 5.0f) * 1_m);
                 m_bullet = CreateBody(GetWorld(), bd);
                 Attach(GetWorld(), m_bullet, m_bulletshape);
                 SetVelocity(GetWorld(), m_bullet, Velocity{Vec2(400.0f, 0.0f) * 1_mps, 0_rpm});

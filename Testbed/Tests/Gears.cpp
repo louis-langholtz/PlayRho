@@ -40,27 +40,23 @@ public:
         const auto box =
             CreateShape(GetWorld(), PolygonShapeConf{}.SetAsBox(0.5_m, 5_m).UseDensity(5_kgpm2));
         {
-            auto bd1 = BodyConf{};
-            bd1.type = BodyType::Static;
-            bd1.location = Vec2(10.0f, 9.0f) * 1_m;
-            const auto body1 = CreateBody(GetWorld(), bd1);
+            const auto location1 = Vec2(10.0f, 9.0f) * 1_m;
+            const auto body1 = CreateBody(GetWorld(),
+                                          BodyConf{}.Use(BodyType::Static).UseLocation(location1));
 
-            auto bd2 = BodyConf{};
-            bd2.type = BodyType::Dynamic;
-            bd2.location = Vec2(10.0f, 8.0f) * 1_m;
+            const auto bd2 = BodyConf{}.Use(BodyType::Dynamic).UseLocation(Vec2(10.0f, 8.0f) * 1_m);
             const auto body2 = CreateBody(GetWorld(), bd2);
             Attach(GetWorld(), body2, box);
 
-            auto bd3 = BodyConf{};
-            bd3.type = BodyType::Dynamic;
-            bd3.location = Vec2(10.0f, 6.0f) * 1_m;
-            const auto body3 = CreateBody(GetWorld(), bd3);
+            const auto location3 = Vec2(10.0f, 6.0f) * 1_m;
+            const auto body3 = CreateBody(GetWorld(),
+                                          BodyConf{}.Use(BodyType::Dynamic).UseLocation(location3));
             Attach(GetWorld(), body3, Shape{circle2});
 
             auto joint1 = CreateJoint(GetWorld(),
-                                      GetRevoluteJointConf(GetWorld(), body2, body1, bd1.location));
+                                      GetRevoluteJointConf(GetWorld(), body2, body1, location1));
             auto joint2 = CreateJoint(GetWorld(),
-                                      GetRevoluteJointConf(GetWorld(), body2, body3, bd3.location));
+                                      GetRevoluteJointConf(GetWorld(), body2, body3, location3));
 
             auto jd4 = GetGearJointConf(GetWorld(), joint1, joint2);
             jd4.ratio = circle2.GetRadius() / circle1.GetRadius();
@@ -68,37 +64,34 @@ public:
         }
 
         {
-            auto bd1 = BodyConf{};
-            bd1.type = BodyType::Dynamic;
-            bd1.location = Vec2(-3.0f, 12.0f) * 1_m;
-            const auto body1 = CreateBody(GetWorld(), bd1);
+            const auto location1 = Vec2(-3.0f, 12.0f) * 1_m;
+            const auto body1 = CreateBody(GetWorld(),
+                                          BodyConf{}.Use(BodyType::Dynamic).UseLocation(location1));
             Attach(GetWorld(), body1, Shape{circle1});
 
             auto jd1 = RevoluteJointConf{};
             jd1.bodyA = ground;
             jd1.bodyB = body1;
-            jd1.localAnchorA = GetLocalPoint(GetWorld(), ground, bd1.location);
-            jd1.localAnchorB = GetLocalPoint(GetWorld(), body1, bd1.location);
+            jd1.localAnchorA = GetLocalPoint(GetWorld(), ground, location1);
+            jd1.localAnchorB = GetLocalPoint(GetWorld(), body1, location1);
             jd1.referenceAngle = GetAngle(GetWorld(), body1) - GetAngle(GetWorld(), ground);
             m_joint1 = CreateJoint(GetWorld(), jd1);
 
-            auto bd2 = BodyConf{};
-            bd2.type = BodyType::Dynamic;
-            bd2.location = Vec2(0.0f, 12.0f) * 1_m;
-            const auto body2 = CreateBody(GetWorld(), bd2);
+            const auto location2 = Vec2(0.0f, 12.0f) * 1_m;
+            const auto body2 = CreateBody(GetWorld(),
+                                          BodyConf{}.Use(BodyType::Dynamic).UseLocation(location2));
             Attach(GetWorld(), body2, Shape{circle2});
 
-            auto jd2 = GetRevoluteJointConf(GetWorld(), ground, body2, bd2.location);
+            auto jd2 = GetRevoluteJointConf(GetWorld(), ground, body2, location2);
             m_joint2 = CreateJoint(GetWorld(), jd2);
 
-            auto bd3 = BodyConf{};
-            bd3.type = BodyType::Dynamic;
-            bd3.location = Vec2(2.5f, 12.0f) * 1_m;
-            const auto body3 = CreateBody(GetWorld(), bd3);
+            const auto location3 = Vec2(2.5f, 12.0f) * 1_m;
+            const auto body3 = CreateBody(GetWorld(),
+                                          BodyConf{}.Use(BodyType::Dynamic).UseLocation(location3));
             Attach(GetWorld(), body3, box);
 
             auto jd3 =
-                GetPrismaticJointConf(GetWorld(), ground, body3, bd3.location, UnitVec::GetUp());
+                GetPrismaticJointConf(GetWorld(), ground, body3, location3, UnitVec::GetUp());
             jd3.lowerTranslation = -5_m;
             jd3.upperTranslation = 5_m;
             jd3.enableLimit = true;

@@ -65,7 +65,7 @@ public:
         // another ledge which we can move with the mouse
         BodyConf kinematicBody;
         kinematicBody.type = BodyType::Kinematic;
-        kinematicBody.location = Length2{11_m, 22_m};
+        kinematicBody.UseLocation(Length2{11_m, 22_m});
         m_targetBody = CreateBody(GetWorld(), kinematicBody);
         const auto w = BallSize * 1_m;
         Length2 verts[3];
@@ -83,7 +83,7 @@ public:
         // create dynamic circle body
         BodyConf myBodyConf;
         myBodyConf.type = BodyType::Dynamic;
-        myBodyConf.location = Vec2(-15, 5) * 1_m;
+        myBodyConf.UseLocation(Vec2(-15, 5) * 1_m);
         m_launcherBody = CreateBody(GetWorld(), myBodyConf);
         Attach(GetWorld(), m_launcherBody,
                CreateShape(
@@ -102,7 +102,7 @@ public:
         CreateJoint(GetWorld(), revoluteJointConf);
 
         // create dynamic box body to fire
-        myBodyConf.location = Length2(0_m, -5_m); // will be positioned later
+        myBodyConf.UseLocation(Length2(0_m, -5_m)); // will be positioned later
         m_littleBox = CreateBody(GetWorld(), myBodyConf);
         polygonShape.SetAsBox(0.5_m, 0.5_m);
         polygonShape.UseDensity(1_kgpm2);

@@ -45,10 +45,11 @@ public:
             const auto circle2 = CreateShape(GetWorld(), conf);
             for (auto i = 0; i < 10; ++i) {
                 const auto x = RandomFloat(-0.1f, 0.1f);
-                BodyConf bd;
-                bd.type = BodyType::Dynamic;
-                bd.location = Vec2(x + 5.0f, 1.05f + 2.5f * i) * 1_m;
-                bd.angle = 1_rad * RandomFloat(-Pi, Pi);
+                const auto bd =
+                    BodyConf{}
+                        .Use(BodyType::Dynamic)
+                        .UseLocation(Vec2(x + 5.0f, 1.05f + 2.5f * i) * 1_m)
+                        .UseAngle(1_rad * RandomFloat(-Pi, Pi));
                 const auto body = CreateBody(GetWorld(), bd);
                 Attach(GetWorld(), body, circle1);
                 Attach(GetWorld(), body, circle2);
@@ -65,10 +66,11 @@ public:
             const auto polygon2 = CreateShape(GetWorld(), conf);
             for (int i = 0; i < 10; ++i) {
                 const auto x = RandomFloat(-0.1f, 0.1f);
-                BodyConf bd;
-                bd.type = BodyType::Dynamic;
-                bd.location = Vec2(x - 5.0f, 1.05f + 2.5f * i) * 1_m;
-                bd.angle = 1_rad * RandomFloat(-Pi, Pi);
+                const auto bd =
+                    BodyConf{}
+                        .Use(BodyType::Dynamic)
+                        .UseLocation(Vec2(x - 5.0f, 1.05f + 2.5f * i) * 1_m)
+                        .UseAngle(1_rad * RandomFloat(-Pi, Pi));
                 const auto body = CreateBody(GetWorld(), bd);
                 Attach(GetWorld(), body, polygon1);
                 Attach(GetWorld(), body, polygon2);
@@ -100,11 +102,11 @@ public:
 
             for (auto i = 0; i < 10; ++i) {
                 const auto x = RandomFloat(-0.1f, 0.1f);
-                BodyConf bd;
-                bd.type = BodyType::Dynamic;
-                bd.location = Vec2(x, 2.05f + 2.5f * i) * 1_m;
-                bd.angle = 0_rad;
-                const auto body = CreateBody(GetWorld(), bd);
+                const auto body = CreateBody(GetWorld(),
+                                             BodyConf{}
+                                                 .Use(BodyType::Dynamic)
+                                                 .UseLocation(Vec2(x, 2.05f + 2.5f * i) * 1_m)
+                                                 .UseAngle(0_rad));
                 Attach(GetWorld(), body, triangle1);
                 Attach(GetWorld(), body, triangle2);
             }
@@ -120,11 +122,10 @@ public:
             conf.UseDensity(4_kgpm2);
             conf.SetAsBox(0.15_m, 2.7_m, Vec2(1.45f, 2.35f) * 1_m, -0.2_rad);
             const auto right = CreateShape(GetWorld(), conf);
-
-            BodyConf bd;
-            bd.type = BodyType::Dynamic;
-            bd.location = Vec2(0.0f, 2.0f) * 1_m;
-            const auto body = CreateBody(GetWorld(), bd);
+            const auto body = CreateBody(GetWorld(),
+                                         BodyConf{}
+                                             .Use(BodyType::Dynamic)
+                                             .UseLocation(Vec2(0.0f, 2.0f) * 1_m));
             Attach(GetWorld(), body, bottom);
             Attach(GetWorld(), body, left);
             Attach(GetWorld(), body, right);

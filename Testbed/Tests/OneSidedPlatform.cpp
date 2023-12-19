@@ -46,9 +46,8 @@ public:
 
         // Platform
         {
-            BodyConf bd;
-            bd.location = Vec2(0.0f, 10.0f) * 1_m;
-            const auto body = CreateBody(GetWorld(), bd);
+            const auto body = CreateBody(GetWorld(),
+                                         BodyConf{}.UseLocation(Vec2(0.0f, 10.0f) * 1_m));
             m_platform = CreateShape(GetWorld(), PolygonShapeConf{}.SetAsBox(3_m, 0.5_m));
             Attach(GetWorld(), body, m_platform);
             m_bottom = Real(10.0f - 0.5f) * 1_m;
@@ -58,9 +57,9 @@ public:
         // Actor
         {
             BodyConf bd;
-            bd.type = BodyType::Dynamic;
-            bd.linearAcceleration = GetGravity();
-            bd.location = Vec2(0.0f, 12.0f) * 1_m;
+            bd.Use(BodyType::Dynamic);
+            bd.UseLinearAcceleration(GetGravity());
+            bd.UseLocation(Vec2(0.0f, 12.0f) * 1_m);
             m_characterBodyId = CreateBody(GetWorld(), bd);
             auto conf = DiskShapeConf{};
             conf.vertexRadius = m_radius;

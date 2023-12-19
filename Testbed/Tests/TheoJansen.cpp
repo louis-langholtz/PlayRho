@@ -58,17 +58,16 @@ public:
         poly2.UseDensity(1_kgpm2);
         poly2.UseFilter(filter);
 
-        BodyConf bd1, bd2;
-        bd1.type = BodyType::Dynamic;
-        bd2.type = BodyType::Dynamic;
-        bd1.location = m_offset;
-        bd2.location = p4 + m_offset;
-
-        bd1.angularDamping = 10_Hz;
-        bd2.angularDamping = 10_Hz;
-
-        const auto body1 = CreateBody(GetWorld(), bd1);
-        const auto body2 = CreateBody(GetWorld(), bd2);
+        const auto body1 = CreateBody(GetWorld(),
+                                      BodyConf{}
+                                          .Use(BodyType::Dynamic)
+                                          .UseLocation(m_offset)
+                                          .UseAngularDamping(10_Hz));
+        const auto body2 = CreateBody(GetWorld(),
+                                      BodyConf{}
+                                          .Use(BodyType::Dynamic)
+                                          .UseLocation(p4 + m_offset)
+                                          .UseAngularDamping(10_Hz));
 
         Attach(GetWorld(), body1, CreateShape(GetWorld(), poly1));
         Attach(GetWorld(), body2, CreateShape(GetWorld(), poly2));
@@ -126,20 +125,17 @@ public:
         circleConf.density = 1_kgpm2;
         const auto circle = CreateShape(GetWorld(), circleConf);
         for (auto i = 0; i < 40; ++i) {
-            BodyConf bd;
-            bd.type = BodyType::Dynamic;
-            bd.location = Vec2(-40.0f + 2.0f * i, 0.5f) * 1_m;
-
-            const auto body = CreateBody(GetWorld(), bd);
+            const auto body = CreateBody(GetWorld(),
+                                         BodyConf{}
+                                             .Use(BodyType::Dynamic)
+                                             .UseLocation(Vec2(-40.0f + 2.0f * i, 0.5f) * 1_m));
             Attach(GetWorld(), body, circle);
         }
 
         // Chassis
         {
-            BodyConf bd;
-            bd.type = BodyType::Dynamic;
-            bd.location = pivot + m_offset;
-            m_chassis = CreateBody(GetWorld(), bd);
+            m_chassis = CreateBody(GetWorld(),
+                                   BodyConf{}.Use(BodyType::Dynamic).UseLocation(pivot + m_offset));
             auto conf = PolygonShapeConf{};
             conf.density = 1_kgpm2;
             conf.filter.groupIndex = -1;
@@ -148,10 +144,8 @@ public:
         }
 
         {
-            BodyConf bd;
-            bd.type = BodyType::Dynamic;
-            bd.location = pivot + m_offset;
-            m_wheel = CreateBody(GetWorld(), bd);
+            m_wheel = CreateBody(GetWorld(),
+                                 BodyConf{}.Use(BodyType::Dynamic).UseLocation(pivot + m_offset));
             auto conf = DiskShapeConf{};
             conf.vertexRadius = 1.6_m;
             conf.density = 1_kgpm2;

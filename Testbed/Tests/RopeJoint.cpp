@@ -68,10 +68,10 @@ public:
                 BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.linearAcceleration = GetGravity();
-                bd.location = Vec2(0.5f + 1.0f * i, y) * 1_m;
+                bd.UseLocation(Vec2(0.5f + 1.0f * i, y) * 1_m);
                 if (i == N - 1) {
                     shape = square;
-                    bd.location = Vec2(1.0f * i, y) * 1_m;
+                    bd.UseLocation(Vec2(1.0f * i, y) * 1_m);
                     bd.angularDamping = 0.4_Hz;
                 }
                 const auto body = CreateBody(GetWorld(), bd);

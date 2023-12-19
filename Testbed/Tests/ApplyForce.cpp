@@ -98,14 +98,13 @@ public:
             conf.density = 2_kgpm2;
             const auto poly2 = PolygonShapeConf(vertices, conf);
 
-            auto bd = BodyConf{};
-            bd.type = BodyType::Dynamic;
-            bd.angularDamping = 2_Hz;
-            bd.linearDamping = 0.5_Hz;
-            bd.location = Length2{0_m, 2_m};
-            bd.angle = Pi * 1_rad;
-            bd.allowSleep = false;
-            m_body = CreateBody(GetWorld(), bd);
+            m_body = CreateBody(GetWorld(), BodyConf{}
+                                                .Use(BodyType::Dynamic)
+                                                .UseAngularDamping(2_Hz)
+                                                .UseLinearDamping(0.5_Hz)
+                                                .UseLocation(Length2{0_m, 2_m})
+                                                .UseAngle(Pi * 1_rad)
+                                                .UseAllowSleep(false));
             Attach(GetWorld(), m_body, CreateShape(GetWorld(), poly1));
             Attach(GetWorld(), m_body, CreateShape(GetWorld(), poly2));
         }

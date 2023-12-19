@@ -52,8 +52,8 @@ public:
         polygon.UseDensity(1_kgpm2);
 
         BodyConf triangleBodyConf;
-        triangleBodyConf.type = BodyType::Dynamic;
-        triangleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
+        triangleBodyConf.Use(BodyType::Dynamic);
+        triangleBodyConf.UseLocation(Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m);
 
         const auto body1 = CreateBody(GetWorld(), triangleBodyConf);
         Attach(GetWorld(), body1, CreateShape(GetWorld(), polygon));
@@ -64,7 +64,7 @@ public:
         vertices[2] *= 2.0f;
         polygon.Set(vertices);
 
-        triangleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
+        triangleBodyConf.UseLocation(Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m);
 
         const auto body2 = CreateBody(GetWorld(), triangleBodyConf);
         Attach(GetWorld(), body2, CreateShape(GetWorld(), polygon));
@@ -74,14 +74,14 @@ public:
 
         BodyConf boxBodyConf;
         boxBodyConf.type = BodyType::Dynamic;
-        boxBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
+        boxBodyConf.UseLocation(Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m);
 
         const auto body3 = CreateBody(GetWorld(), boxBodyConf);
         Attach(GetWorld(), body3, CreateShape(GetWorld(), polygon));
 
         // Large box (recycle definitions)
         polygon.SetAsBox(2_m, 1_m);
-        boxBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
+        boxBodyConf.UseLocation(Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m);
 
         const auto body4 = CreateBody(GetWorld(), boxBodyConf);
         Attach(GetWorld(), body4, CreateShape(GetWorld(), polygon));
@@ -90,13 +90,13 @@ public:
         circleBodyConf.type = BodyType::Dynamic;
 
         // Small circle
-        circleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
+        circleBodyConf.UseLocation(Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m);
         const auto body5 = CreateBody(GetWorld(), circleBodyConf);
         Attach(GetWorld(), body5,
                CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2)));
 
         // Large circle
-        circleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
+        circleBodyConf.UseLocation(Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m);
         const auto body6 = CreateBody(GetWorld(), circleBodyConf);
         Attach(GetWorld(), body6,
                CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2)));

@@ -48,7 +48,7 @@ public:
             for (auto i = 0; i < e_count; ++i) {
                 auto bd = BodyConf{};
                 bd.type = BodyType::Dynamic;
-                bd.location = Vec2(-14.5f + 1.0f * i, 5.0f) * 1_m;
+                bd.UseLocation(Vec2(-14.5f + 1.0f * i, 5.0f) * 1_m);
                 const auto body = CreateBody(GetWorld(), bd);
                 Attach(GetWorld(), body, shape);
 
@@ -67,7 +67,7 @@ public:
             for (auto i = 0; i < 3; ++i) {
                 auto bd = BodyConf{};
                 bd.type = BodyType::Dynamic;
-                bd.location = Vec2(-14.0f + 2.0f * i, 15.0f) * 1_m;
+                bd.UseLocation(Vec2(-14.0f + 2.0f * i, 15.0f) * 1_m);
                 const auto body = CreateBody(GetWorld(), bd);
                 Attach(GetWorld(), body, shape);
 
@@ -89,7 +89,7 @@ public:
             for (auto i = 0; i < e_count; ++i) {
                 auto bd = BodyConf{};
                 bd.type = BodyType::Dynamic;
-                bd.location = Vec2(-4.5f + 1.0f * i, 5.0f) * 1_m;
+                bd.UseLocation(Vec2(-4.5f + 1.0f * i, 5.0f) * 1_m);
                 const auto body = CreateBody(GetWorld(), bd);
                 Attach(GetWorld(), body, shape);
                 if (i > 0) {
@@ -108,7 +108,7 @@ public:
             for (auto i = 0; i < e_count; ++i) {
                 auto bd = BodyConf{};
                 bd.type = BodyType::Dynamic;
-                bd.location = Vec2(5.5f + 1.0f * i, 10.0f) * 1_m;
+                bd.UseLocation(Vec2(5.5f + 1.0f * i, 10.0f) * 1_m);
                 const auto body = CreateBody(GetWorld(), bd);
                 Attach(GetWorld(), body, shape);
                 if (i > 0) {
@@ -129,7 +129,7 @@ public:
         for (auto i = 0; i < 2; ++i) {
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
-            bd.location = Vec2(-8.0f + 8.0f * i, 12.0f) * 1_m;
+            bd.UseLocation(Vec2(-8.0f + 8.0f * i, 12.0f) * 1_m);
             Attach(GetWorld(), CreateBody(GetWorld(), bd), polyshape);
         }
 
@@ -139,7 +139,7 @@ public:
         for (auto i = 0; i < 2; ++i) {
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
-            bd.location = Vec2(-6.0f + 6.0f * i, 10.0f) * 1_m;
+            bd.UseLocation(Vec2(-6.0f + 6.0f * i, 10.0f) * 1_m);
             Attach(GetWorld(), CreateBody(GetWorld(), bd), circleshape);
         }
 

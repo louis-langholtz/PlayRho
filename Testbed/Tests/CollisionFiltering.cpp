@@ -71,7 +71,7 @@ public:
 
         auto triangleBodyConf = BodyConf{};
         triangleBodyConf.type = BodyType::Dynamic;
-        triangleBodyConf.location = Vec2(-5.0f, 2.0f) * 1_m;
+        triangleBodyConf.UseLocation(Vec2(-5.0f, 2.0f) * 1_m);
 
         const auto body1 = CreateBody(GetWorld(), triangleBodyConf);
         Attach(GetWorld(), body1,
@@ -83,7 +83,7 @@ public:
         vertices[2] *= 2.0f;
         polygon.Set(vertices);
         triangleFilter.groupIndex = k_largeGroup;
-        triangleBodyConf.location = Vec2(-5.0f, 6.0f) * 1_m;
+        triangleBodyConf.UseLocation(Vec2(-5.0f, 6.0f) * 1_m);
         triangleBodyConf.fixedRotation = true; // look at me!
 
         const auto body2 = CreateBody(GetWorld(), triangleBodyConf);
@@ -93,7 +93,7 @@ public:
         {
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
-            bd.location = Vec2(-5.0f, 10.0f) * 1_m;
+            bd.UseLocation(Vec2(-5.0f, 10.0f) * 1_m);
             const auto body = CreateBody(GetWorld(), bd);
             Attach(GetWorld(), body,
                    CreateShape(GetWorld(),
@@ -124,7 +124,7 @@ public:
 
         auto boxBodyConf = BodyConf{};
         boxBodyConf.type = BodyType::Dynamic;
-        boxBodyConf.location = Vec2(0.0f, 2.0f) * 1_m;
+        boxBodyConf.UseLocation(Vec2(0.0f, 2.0f) * 1_m);
 
         const auto body3 = CreateBody(GetWorld(), boxBodyConf);
         Attach(GetWorld(), body3,
@@ -133,7 +133,7 @@ public:
         // Large box (recycle definitions)
         polygon.SetAsBox(2_m, 1_m);
         boxShapeFilter.groupIndex = k_largeGroup;
-        boxBodyConf.location = Vec2(0.0f, 6.0f) * 1_m;
+        boxBodyConf.UseLocation(Vec2(0.0f, 6.0f) * 1_m);
 
         const auto body4 = CreateBody(GetWorld(), boxBodyConf);
         Attach(GetWorld(), body4,
@@ -150,7 +150,7 @@ public:
 
         auto circleBodyConf = BodyConf{};
         circleBodyConf.type = BodyType::Dynamic;
-        circleBodyConf.location = Vec2(5.0f, 2.0f) * 1_m;
+        circleBodyConf.UseLocation(Vec2(5.0f, 2.0f) * 1_m);
 
         const auto body5 = CreateBody(GetWorld(), circleBodyConf);
         circleConf.vertexRadius = 1_m;
@@ -159,7 +159,7 @@ public:
 
         // Large circle
         circleShapeFilter.groupIndex = k_largeGroup;
-        circleBodyConf.location = Vec2(5.0f, 6.0f) * 1_m;
+        circleBodyConf.UseLocation(Vec2(5.0f, 6.0f) * 1_m);
 
         const auto body6 = CreateBody(GetWorld(), circleBodyConf);
         circleConf.vertexRadius = circleConf.vertexRadius * 2;

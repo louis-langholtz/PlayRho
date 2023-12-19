@@ -50,8 +50,8 @@ public:
         {
             BodyConf bd;
             bd.type = BodyType(0);
-            bd.location = Vec2(2.587699890136719e-02f, 5.515012264251709e+00f) * 1_m;
-            bd.angle = 0_rad;
+            bd.UseLocation(Vec2(2.587699890136719e-02f, 5.515012264251709e+00f) * 1_m);
+            bd.UseAngle(0_rad);
             bd.linearVelocity = Vec2(0.000000000000000e+00f, 0.000000000000000e+00f) * 1_mps;
             bd.angularVelocity = 0_rad / 1_s;
             bd.linearDamping = 0_Hz;
@@ -83,8 +83,8 @@ public:
         {
             BodyConf bd;
             bd.type = BodyType(2);
-            bd.location = Vec2(-3.122138977050781e-02f, 7.535382270812988e+00f) * 1_m;
-            bd.angle = -1.313644275069237e-02_rad;
+            bd.UseLocation(Vec2(-3.122138977050781e-02f, 7.535382270812988e+00f) * 1_m);
+            bd.UseAngle(-1.313644275069237e-02_rad);
             bd.linearVelocity = Vec2(8.230687379837036e-01f, 7.775862514972687e-02f) * 1_mps;
             bd.angularVelocity = 3.705333173274994e-02_rad / 1_s;
             bd.linearDamping = 0_Hz;
@@ -118,8 +118,8 @@ public:
         {
             BodyConf bd;
             bd.type = BodyType(2);
-            bd.location = Vec2(-7.438077926635742e-01f, 6.626811981201172e+00f) * 1_m;
-            bd.angle = -1.884713363647461e+01_rad;
+            bd.UseLocation(Vec2(-7.438077926635742e-01f, 6.626811981201172e+00f) * 1_m);
+            bd.UseAngle(-1.884713363647461e+01_rad);
             bd.linearVelocity = Vec2(1.785794943571091e-01f, 3.799796104431152e-07f) * 1_mps;
             bd.angularVelocity = -5.908820639888290e-06_rad / 1_s;
             bd.linearDamping = 0_Hz;

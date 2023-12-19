@@ -59,8 +59,7 @@ public:
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = GetGravity();
-            bd.location = Length2{0_m, 40_m};
-            bd.angle = Pi * 0.25_rad;
+            bd.Use(Position{Length2{0_m, 40_m}, Pi * 0.25_rad});
             m_body1 = CreateBody(GetWorld(), bd);
             Attach(GetWorld(), m_body1, m_shape1);
             Attach(GetWorld(), m_body1, m_shape2);
@@ -99,8 +98,8 @@ public:
         BodyConf bd;
         bd.type = BodyType::Dynamic;
         bd.linearAcceleration = GetGravity();
-        bd.location = GetLocation(GetWorld(), m_body1);
-        bd.angle = GetAngle(GetWorld(), m_body1);
+        bd.UseLocation(GetLocation(GetWorld(), m_body1));
+        bd.UseAngle(GetAngle(GetWorld(), m_body1));
 
         const auto body2 = CreateBody(GetWorld(), bd);
         Attach(GetWorld(), body2, m_shape2);

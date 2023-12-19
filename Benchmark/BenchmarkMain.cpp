@@ -67,6 +67,7 @@
 #include <playrho/d2/DynamicTree.hpp>
 #include <playrho/d2/Joint.hpp>
 #include <playrho/d2/Manifold.hpp>
+#include <playrho/d2/Position.hpp>
 #include <playrho/d2/ShapeSeparation.hpp>
 #include <playrho/d2/World.hpp>
 #include <playrho/d2/WorldBody.hpp> // for GetAwakeCount
@@ -1669,8 +1670,8 @@ static playrho::d2::Position GetPositionFloorNormal(playrho::d2::Position pos0, 
     const auto da = pos1.angular - pos0.angular;
     const auto na =
         pos0.angular + (da - twoPi * floor((da + playrho::Pi * playrho::Radian) * rTwoPi)) * beta;
-    return {pos0.linear + (pos1.linear - pos0.linear) * beta,
-            na - twoPi * floor((na + playrho::Pi * playrho::Radian) * rTwoPi)};
+    return playrho::d2::Position{pos0.linear + (pos1.linear - pos0.linear) * beta,
+                                 na - twoPi * floor((na + playrho::Pi * playrho::Radian) * rTwoPi)};
 }
 
 static void GetPositionNaively(benchmark::State& state)

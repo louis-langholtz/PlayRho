@@ -36,19 +36,16 @@ public:
                            EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));
 
         {
-            BodyConf bd;
-            bd.type = BodyType::Dynamic;
-
-            bd.location = Vec2(-10.0f, 20.0f) * 1_m;
-            const auto body = CreateBody(GetWorld(), bd);
+            const auto body = CreateBody(GetWorld(),
+                                         BodyConf{}
+                                             .Use(BodyType::Dynamic)
+                                             .UseLocation(Vec2(-10.0f, 20.0f) * 1_m));
             auto circleConf = DiskShapeConf{};
             circleConf.vertexRadius = 0.5_m;
             circleConf.density = 5_kgpm2;
             Attach(GetWorld(), body, CreateShape(GetWorld(), circleConf));
-
             const auto w = 100.0f;
             SetVelocity(GetWorld(), body, Velocity{Vec2(-8.0f * w, 0.0f) * 1_mps, w * 1_rad / 1_s});
-
             auto rjd = GetRevoluteJointConf(GetWorld(), ground, body, Vec2(-10.0f, 12.0f) * 1_m);
             rjd.motorSpeed = Pi * 1_rad / 1_s;
             rjd.maxMotorTorque = 10000_Nm;
@@ -57,16 +54,12 @@ public:
             rjd.upperAngle = 0.5_rad * Pi;
             rjd.enableLimit = true;
             rjd.collideConnected = true;
-
             m_joint = CreateJoint(GetWorld(), rjd);
         }
 
         {
-            BodyConf circle_bd;
-            circle_bd.type = BodyType::Dynamic;
-            circle_bd.location = Vec2(5.0f, 30.0f) * 1_m;
-
-            m_ball = CreateBody(GetWorld(), circle_bd);
+            m_ball = CreateBody(GetWorld(),
+                                BodyConf{}.Use(BodyType::Dynamic).UseLocation(Vec2(5.0f, 30.0f) * 1_m));
             auto circleConf = DiskShapeConf{};
             circleConf.vertexRadius = 3_m;
             circleConf.density = 5_kgpm2;
@@ -77,11 +70,12 @@ public:
             polygon_shape.SetAsBox(10_m, 0.2_m, Vec2(-10.0f, 0.0f) * 1_m, 0_rad);
             polygon_shape.UseDensity(2_kgpm2);
 
-            BodyConf polygon_bd;
-            polygon_bd.location = Vec2(20.0f, 10.0f) * 1_m;
-            polygon_bd.type = BodyType::Dynamic;
-            polygon_bd.bullet = true;
-            const auto polygon_body = CreateBody(GetWorld(), polygon_bd);
+            const auto polygon_body =
+                CreateBody(GetWorld(),
+                           BodyConf{}
+                               .UseLocation(Vec2(20.0f, 10.0f) * 1_m)
+                               .Use(BodyType::Dynamic)
+                               .UseBullet(true));
             Attach(GetWorld(), polygon_body, CreateShape(GetWorld(), polygon_shape));
 
             auto rjd =

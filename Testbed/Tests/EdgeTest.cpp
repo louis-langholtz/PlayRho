@@ -59,7 +59,7 @@ public:
         {
             BodyConf bd;
             bd.type = BodyType::Dynamic;
-            bd.location = Vec2(-0.5f, 0.6f) * 1_m;
+            bd.UseLocation(Vec2(-0.5f, 0.6f) * 1_m);
             bd.allowSleep = false;
             const auto body = CreateBody(GetWorld(), bd);
 
@@ -72,7 +72,7 @@ public:
         {
             BodyConf bd;
             bd.type = BodyType::Dynamic;
-            bd.location = Vec2(1.0f, 0.6f) * 1_m;
+            bd.UseLocation(Vec2(1.0f, 0.6f) * 1_m);
             bd.allowSleep = false;
             const auto body = CreateBody(GetWorld(), bd);
 

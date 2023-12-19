@@ -55,7 +55,7 @@ public:
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = GetGravity();
-            bd.location = Vec2(-10.0f + 3.0f * i, 20.0f) * 1_m;
+            bd.UseLocation(Vec2(-10.0f + 3.0f * i, 20.0f) * 1_m);
             m_bodies[i] = CreateBody(GetWorld(), bd);
             m_touching.resize(m_bodies[i].get() + 1);
             m_touching[m_bodies[i].get()] = false;

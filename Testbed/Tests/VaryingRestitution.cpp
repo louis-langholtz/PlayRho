@@ -42,7 +42,7 @@ public:
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = GetGravity();
-            bd.location = Vec2(Real(-10 + 3 * i), 20) * 1_m;
+            bd.UseLocation(Vec2(Real(-10 + 3 * i), 20) * 1_m);
             const auto body = CreateBody(GetWorld(), bd);
             shape.UseRestitution(restitution[i]);
             Attach(GetWorld(), body, CreateShape(GetWorld(), shape));

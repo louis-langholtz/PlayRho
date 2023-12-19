@@ -104,15 +104,14 @@ Body::FlagsType Body::GetFlags(const BodyConf& bd) noexcept
 
 Body::Body(const BodyConf& bd)
     : m_xf{::playrho::d2::GetTransformation(bd)},
-      m_sweep{Position{bd.location, bd.angle}},
+      m_sweep{bd.sweep},
       m_flags{GetFlags(bd)},
       m_invMass{(bd.type == playrho::BodyType::Dynamic) ? InvMass{Real{1} / Kilogram} : InvMass{}},
       m_linearDamping{bd.linearDamping},
       m_angularDamping{bd.angularDamping},
       m_shapes(bd.shapes.begin(), bd.shapes.end())
 {
-    assert(IsValid(bd.location));
-    assert(IsValid(bd.angle));
+    assert(IsValid(bd.sweep));
     assert(IsValid(bd.linearVelocity));
     assert(IsValid(bd.angularVelocity));
     assert(IsValid(m_xf));

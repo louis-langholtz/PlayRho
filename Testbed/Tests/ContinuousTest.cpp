@@ -44,7 +44,7 @@ public:
         {
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
-            bd.location = Vec2(0.0f, 20.0f) * 1_m;
+            bd.UseLocation(Vec2(0.0f, 20.0f) * 1_m);
             bd.linearAcceleration = GetGravity();
             // bd.angle = 0.1f;
 

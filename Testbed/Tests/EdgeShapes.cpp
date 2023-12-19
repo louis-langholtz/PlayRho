@@ -100,29 +100,23 @@ public:
             Destroy(GetWorld(), m_bodies[m_bodyIndex]);
             m_bodies[m_bodyIndex] = InvalidBodyID;
         }
-
-        BodyConf bd;
-
         const auto x = RandomFloat(-10.0f, 10.0f);
         const auto y = RandomFloat(10.0f, 20.0f);
-        bd.location = Vec2(x, y) * 1_m;
-        bd.angle = 1_rad * RandomFloat(-Pi, Pi);
-        bd.type = BodyType::Dynamic;
-        bd.linearAcceleration = GetGravity();
-
+        auto bd = BodyConf{};
+        bd.UseLocation(Vec2(x, y) * 1_m);
+        bd.UseAngle(1_rad * RandomFloat(-Pi, Pi));
+        bd.Use(BodyType::Dynamic);
+        bd.UseLinearAcceleration(GetGravity());
         if (index == 4) {
-            bd.angularDamping = 0.02_Hz;
+            bd.UseAngularDamping(0.02_Hz);
         }
-
         m_bodies[m_bodyIndex] = CreateBody(GetWorld(), bd);
-
         if (index < 4) {
             Attach(GetWorld(), m_bodies[m_bodyIndex], m_polygons[index]);
         }
         else {
             Attach(GetWorld(), m_bodies[m_bodyIndex], m_circle);
         }
-
         m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
     }
 

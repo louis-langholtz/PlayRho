@@ -38,10 +38,10 @@ public:
         const auto y = 25.0f;
         auto prevBody = ground;
         for (auto i = 0; i < 30; ++i) {
-            BodyConf bd;
-            bd.type = BodyType::Dynamic;
-            bd.linearAcceleration = GetGravity();
-            bd.location = Vec2(0.5f + i, y) * 1_m;
+            const auto bd = BodyConf{}
+                .Use(BodyType::Dynamic)
+                .UseLinearAcceleration(GetGravity())
+                .UseLocation(Vec2(0.5f + i, y) * 1_m);
             const auto body = CreateBody(GetWorld(), bd);
             Attach(GetWorld(), body, shape);
             CreateJoint(GetWorld(),
