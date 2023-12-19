@@ -23,7 +23,7 @@
 #define PLAYRHO_D2_BODYCONF_HPP
 
 /// @file
-/// @brief Declarations of @c BodyConf class and free functions associated with it.
+/// @brief Declarations of @c BodyConf class & free functions associated with it.
 
 #include <cstdlib> // for std::size_t
 #include <type_traits> // for std::is_default_constructible_v
@@ -31,6 +31,7 @@
 #include <playrho/ArrayList.hpp>
 #include <playrho/BodyType.hpp>
 #include <playrho/NonNegative.hpp>
+#include <playrho/Real.hpp>
 #include <playrho/ShapeID.hpp>
 #include <playrho/Span.hpp>
 #include <playrho/Units.hpp>
@@ -46,8 +47,8 @@ namespace playrho::d2 {
 class Body;
 
 /// @brief Configuration for a body.
-/// @details A body configuration holds all the data needed to construct a rigid body.
-///   You can safely re-use body configurations.
+/// @details A body configuration holds all the data needed to construct a rigid
+///   body. You can safely re-use body configurations.
 /// @note Value class meant for passing in for <code>Body</code> construction.
 /// @see World, Body.
 struct BodyConf {
@@ -56,6 +57,14 @@ struct BodyConf {
 
     /// @brief Default sweep.
     static constexpr auto DefaultSweep = Sweep{};
+
+    /// @brief Default inverse mass.
+    static constexpr auto DefaultInvMass =
+        NonNegativeFF<InvMass>{Real(1) / Kilogram};
+
+    /// @brief Default inverse rotational inertia.
+    static constexpr auto DefaultInvRotI =
+        NonNegativeFF<InvRotInertia>{};
 
     /// @brief Default linear velocity.
     static constexpr auto DefaultLinearVelocity = LinearVelocity2{};
@@ -67,13 +76,14 @@ struct BodyConf {
     static constexpr auto DefaultLinearAcceleration = LinearAcceleration2{};
 
     /// @brief Default angular acceleration.
-    static constexpr auto DefaultAngularAcceleration = AngularAcceleration{0 * RadianPerSquareSecond};
+    static constexpr auto DefaultAngularAcceleration =
+        AngularAcceleration{0 * RadianPerSquareSecond};
 
     /// @brief Default linear damping.
-    static constexpr auto DefaultLinearDamping = NonNegative<Frequency>{0_Hz};
+    static constexpr auto DefaultLinearDamping = NonNegativeFF<Frequency>{0_Hz};
 
     /// @brief Default angular damping.
-    static constexpr auto DefaultAngularDamping = NonNegative<Frequency>{0_Hz};
+    static constexpr auto DefaultAngularDamping = NonNegativeFF<Frequency>{0_Hz};
 
     /// @brief Default under active time.
     static constexpr auto DefaultUnderActiveTime = 0_s;
@@ -106,6 +116,12 @@ struct BodyConf {
 
     /// @brief Use the given sweep.
     constexpr BodyConf& Use(const Sweep& v) noexcept;
+
+    /// @brief Use the given inverse mass.
+    constexpr BodyConf& UseInvMass(const NonNegative<InvMass>& v) noexcept;
+
+    /// @brief Use the given inverse rotational inertia.
+    constexpr BodyConf& UseInvRotI(const NonNegative<InvRotInertia>& v) noexcept;
 
     /// @brief Use the given location.
     constexpr BodyConf& UseLocation(const Length2& l) noexcept;
@@ -178,7 +194,15 @@ struct BodyConf {
     /// @note Avoid creating bodies at the origin since this can lead to many overlapping shapes.
     Sweep sweep = DefaultSweep;
 
-    /// The linear velocity of the body's origin in world co-ordinates (in m/s).
+    /// @brief Inverse mass for the body.
+    /// @note Only applies if type is dynamic.
+    NonNegative<InvMass> invMass = DefaultInvMass;
+
+    /// @brief Inverse rotational inertia for the body.
+    /// @note Only applies if type is dynamic.
+    NonNegative<InvRotInertia> invRotI = DefaultInvRotI;
+
+    /// The linear velocity of the body's origin in world co-ordinates.
     LinearVelocity2 linearVelocity = DefaultLinearVelocity;
 
     /// The angular velocity of the body.
@@ -244,6 +268,18 @@ constexpr BodyConf& BodyConf::Use(BodyType t) noexcept
 constexpr BodyConf& BodyConf::Use(const Sweep& v) noexcept
 {
     sweep = v;
+    return *this;
+}
+
+constexpr BodyConf& BodyConf::UseInvMass(const NonNegative<InvMass>& v) noexcept
+{
+    invMass = v;
+    return *this;
+}
+
+constexpr BodyConf& BodyConf::UseInvRotI(const NonNegative<InvRotInertia>& v) noexcept
+{
+    invRotI = v;
     return *this;
 }
 
@@ -398,6 +434,8 @@ constexpr bool operator==(const BodyConf& lhs, const BodyConf& rhs) noexcept
 {
     return lhs.type == rhs.type && //
            lhs.sweep == rhs.sweep && //
+           lhs.invMass == rhs.invMass && //
+           lhs.invRotI == rhs.invRotI && //
            lhs.linearVelocity == rhs.linearVelocity && //
            lhs.angularVelocity == rhs.angularVelocity && //
            lhs.linearAcceleration == rhs.linearAcceleration && //

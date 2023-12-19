@@ -31,6 +31,8 @@ BodyConf GetBodyConf(const Body& body)
     auto def = BodyConf{};
     def.type = GetType(body);
     def.sweep = GetSweep(body);
+    def.invMass = GetInvMass(body);
+    def.invRotI = GetInvRotInertia(body);
     def.linearVelocity = GetLinearVelocity(body);
     def.angularVelocity = GetAngularVelocity(body);
     def.linearAcceleration = GetLinearAcceleration(body);

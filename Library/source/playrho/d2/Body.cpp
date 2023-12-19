@@ -26,6 +26,7 @@
 
 #include <playrho/BodyType.hpp>
 #include <playrho/Math.hpp>
+#include <playrho/NonNegative.hpp>
 #include <playrho/Real.hpp>
 #include <playrho/ShapeID.hpp>
 #include <playrho/Templates.hpp>
@@ -106,7 +107,10 @@ Body::Body(const BodyConf& bd)
     : m_xf{::playrho::d2::GetTransformation(bd)},
       m_sweep{bd.sweep},
       m_flags{GetFlags(bd)},
-      m_invMass{(bd.type == playrho::BodyType::Dynamic) ? InvMass{Real{1} / Kilogram} : InvMass{}},
+      m_invMass{(bd.type == playrho::BodyType::Dynamic)
+                    ? bd.invMass : NonNegative<InvMass>{}},
+      m_invRotI{(bd.type == playrho::BodyType::Dynamic)
+                    ? bd.invRotI : NonNegative<InvRotInertia>{}},
       m_linearDamping{bd.linearDamping},
       m_angularDamping{bd.angularDamping},
       m_shapes(bd.shapes.begin(), bd.shapes.end())
