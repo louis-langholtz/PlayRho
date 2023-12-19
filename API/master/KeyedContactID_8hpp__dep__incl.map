@@ -1,10 +1,9 @@
 <map id="Library/include/playrho/KeyedContactID.hpp" name="Library/include/playrho/KeyedContactID.hpp">
-<area shape="rect" id="node1" title="Declaration of the KeyedContactID alias." alt="" coords="357,5,528,47"/>
+<area shape="rect" id="node1" title="Declaration of the KeyedContactID alias." alt="" coords="287,5,457,47"/>
 <area shape="rect" id="node2" href="$AabbTreeWorld_8hpp.html" title="Declarations of the AabbTreeWorld class." alt="" coords="5,95,176,136"/>
 <area shape="rect" id="node3" href="$WorldConcept_8hpp.html" title="Definition of the internal WorldConcept interface class." alt="" coords="200,95,405,136"/>
 <area shape="rect" id="node5" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="332,273,503,315"/>
-<area shape="rect" id="node7" href="$WorldBody_8hpp.html" title="Declarations of free functions of World for bodies identified by BodyID." alt="" coords="480,184,651,225"/>
-<area shape="rect" id="node8" href="$WorldContact_8hpp.html" title="Declarations of free functions of World for contacts identified by ContactID." alt="" coords="603,273,773,315"/>
+<area shape="rect" id="node7" href="$WorldContact_8hpp.html" title="Declarations of free functions of World for contacts identified by ContactID." alt="" coords="480,184,651,225"/>
 <area shape="rect" id="node4" href="$WorldModel_8hpp.html" title="Definitions of the WorldModel class and closely related code." alt="" coords="163,184,355,225"/>
-<area shape="rect" id="node6" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="480,363,651,404"/>
+<area shape="rect" id="node6" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="393,363,564,404"/>
 </map>

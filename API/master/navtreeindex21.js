@@ -1,7 +1,5 @@
 var NAVTREEINDEX21 =
 {
-"structplayrho_1_1ConstraintSolverConf.html#af44f65605899416fc5ae7940e6574454":[4,0,0,6,0],
-"structplayrho_1_1ContactFeature.html":[4,0,0,9],
 "structplayrho_1_1ContactFeature.html#a43951f69f7ead57450bac66cbb76b0e1":[4,0,0,9,2],
 "structplayrho_1_1ContactFeature.html#a525adfccea1a81ce8311751fc90d0614":[4,0,0,9,5],
 "structplayrho_1_1ContactFeature.html#a5c088ec7e1896a2b461674065d195dad":[4,0,0,9,11],
@@ -249,5 +247,7 @@ var NAVTREEINDEX21 =
 "structplayrho_1_1ToiStepStats.html#a3c428fa3b8f15202af3462dedb152451":[4,0,0,39,19],
 "structplayrho_1_1ToiStepStats.html#a3d086070f4bad6c7156e9e398092111a":[4,0,0,39,13],
 "structplayrho_1_1ToiStepStats.html#a4a222feaf06a3ac6a60c07288cb5dbd2":[4,0,0,39,3],
-"structplayrho_1_1ToiStepStats.html#a58dfb912213be2db96c30613441e7f94":[4,0,0,39,7]
+"structplayrho_1_1ToiStepStats.html#a58dfb912213be2db96c30613441e7f94":[4,0,0,39,7],
+"structplayrho_1_1ToiStepStats.html#a614585faa33479c9e38f256ca8b170ac":[4,0,0,39,6],
+"structplayrho_1_1ToiStepStats.html#a8a4b932412bdcac28d1442b23be55955":[4,0,0,39,4]
 };

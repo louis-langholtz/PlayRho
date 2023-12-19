@@ -2040,6 +2040,13 @@
       <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>Body::FlagsType</type>
+      <name>GetFlags</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a21071397aafb9df4a10e1abde2d11421</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>Force2</type>
       <name>GetForce</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -2523,22 +2530,24 @@
     <includes id="ArrayList_8hpp" name="ArrayList.hpp" local="no" imported="no">playrho/ArrayList.hpp</includes>
     <includes id="BodyType_8hpp" name="BodyType.hpp" local="no" imported="no">playrho/BodyType.hpp</includes>
     <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
     <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <includes id="Position_8hpp" name="Position.hpp" local="no" imported="no">playrho/d2/Position.hpp</includes>
+    <includes id="Sweep_8hpp" name="Sweep.hpp" local="no" imported="no">playrho/d2/Sweep.hpp</includes>
     <includes id="Transformation_8hpp" name="Transformation.hpp" local="no" imported="no">playrho/d2/Transformation.hpp</includes>
     <includes id="Velocity_8hpp" name="Velocity.hpp" local="no" imported="no">playrho/d2/Velocity.hpp</includes>
     <class kind="struct">playrho::d2::BodyConf</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
     <member kind="function">
-      <type>constexpr Angle</type>
+      <type>constexpr auto</type>
       <name>GetAngle</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aad6493c0704a18da5f611717a6aff844</anchor>
-      <arglist>(const BodyConf &amp;conf) noexcept</arglist>
+      <anchor>a6e36744b63f83418fefcdc1642acbbf8</anchor>
+      <arglist>(const BodyConf &amp;conf) noexcept -&gt; Angle</arglist>
     </member>
     <member kind="function">
       <type>BodyConf</type>
@@ -2553,6 +2562,13 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>af6c1034a2366e6ef466253aea8a13829</anchor>
       <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLocation</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af305801683ef38d8ef1fbd65a5f8fa55</anchor>
+      <arglist>(const BodyConf &amp;conf) noexcept -&gt; Length2</arglist>
     </member>
     <member kind="function">
       <type>Transformation</type>
@@ -3572,12 +3588,19 @@
     <name>EdgeShapeConf.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>EdgeShapeConf_8hpp.html</filename>
-    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
+    <includes id="InvalidArgument_8hpp" name="InvalidArgument.hpp" local="no" imported="no">playrho/InvalidArgument.hpp</includes>
+    <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
+    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
+    <includes id="detail_2Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/detail/Templates.hpp</includes>
+    <includes id="detail_2TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/detail/TypeInfo.hpp</includes>
     <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
-    <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <includes id="NgonWithFwdNormals_8hpp" name="NgonWithFwdNormals.hpp" local="no" imported="no">playrho/d2/NgonWithFwdNormals.hpp</includes>
     <includes id="ShapeConf_8hpp" name="ShapeConf.hpp" local="no" imported="no">playrho/d2/ShapeConf.hpp</includes>
+    <includes id="UnitVec_8hpp" name="UnitVec.hpp" local="no" imported="no">playrho/d2/UnitVec.hpp</includes>
     <class kind="struct">playrho::d2::EdgeShapeConf</class>
     <class kind="struct">playrho::detail::TypeInfo&lt; playrho::d2::EdgeShapeConf &gt;</class>
     <namespace>playrho</namespace>
@@ -4389,6 +4412,7 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>JointConf_8hpp.html</filename>
     <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <class kind="struct">playrho::d2::JointBuilder</class>
     <class kind="struct">playrho::d2::JointConf</class>
     <namespace>playrho</namespace>
@@ -4730,7 +4754,6 @@
     <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="Vector_8hpp" name="Vector.hpp" local="no" imported="no">playrho/Vector.hpp</includes>
     <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
-    <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <class kind="struct">playrho::detail::MassData</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
@@ -5634,13 +5657,21 @@
     <name>PolygonShapeConf.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>PolygonShapeConf_8hpp.html</filename>
+    <includes id="InvalidArgument_8hpp" name="InvalidArgument.hpp" local="no" imported="no">playrho/InvalidArgument.hpp</includes>
+    <includes id="Matrix_8hpp" name="Matrix.hpp" local="no" imported="no">playrho/Matrix.hpp</includes>
+    <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
-    <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
+    <includes id="detail_2Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/detail/Templates.hpp</includes>
+    <includes id="detail_2TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/detail/TypeInfo.hpp</includes>
     <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
-    <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <includes id="NgonWithFwdNormals_8hpp" name="NgonWithFwdNormals.hpp" local="no" imported="no">playrho/d2/NgonWithFwdNormals.hpp</includes>
     <includes id="ShapeConf_8hpp" name="ShapeConf.hpp" local="no" imported="no">playrho/d2/ShapeConf.hpp</includes>
+    <includes id="Transformation_8hpp" name="Transformation.hpp" local="no" imported="no">playrho/d2/Transformation.hpp</includes>
+    <includes id="UnitVec_8hpp" name="UnitVec.hpp" local="no" imported="no">playrho/d2/UnitVec.hpp</includes>
     <includes id="VertexSet_8hpp" name="VertexSet.hpp" local="no" imported="no">playrho/d2/VertexSet.hpp</includes>
     <class kind="struct">playrho::d2::PolygonShapeConf</class>
     <class kind="struct">playrho::detail::TypeInfo&lt; playrho::d2::PolygonShapeConf &gt;</class>
@@ -6641,7 +6672,7 @@
     <includes id="Filter_8hpp" name="Filter.hpp" local="no" imported="no">playrho/Filter.hpp</includes>
     <includes id="Finite_8hpp" name="Finite.hpp" local="no" imported="no">playrho/Finite.hpp</includes>
     <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
-    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <class kind="struct">playrho::d2::BaseShapeConf</class>
     <class kind="struct">playrho::d2::ShapeBuilder</class>
@@ -6805,7 +6836,9 @@
     <name>Sweep.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>Sweep_8hpp.html</filename>
-    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
+    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <includes id="ZeroToUnderOne_8hpp" name="ZeroToUnderOne.hpp" local="no" imported="no">playrho/ZeroToUnderOne.hpp</includes>
     <includes id="Position_8hpp" name="Position.hpp" local="no" imported="no">playrho/d2/Position.hpp</includes>
@@ -8088,12 +8121,21 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>WorldBody_8hpp.html</filename>
     <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
-    <includes id="JointID_8hpp" name="JointID.hpp" local="no" imported="no">playrho/JointID.hpp</includes>
-    <includes id="KeyedContactID_8hpp" name="KeyedContactID.hpp" local="no" imported="no">playrho/KeyedContactID.hpp</includes>
+    <includes id="BodyType_8hpp" name="BodyType.hpp" local="no" imported="no">playrho/BodyType.hpp</includes>
+    <includes id="Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/Math.hpp</includes>
+    <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
+    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
-    <includes id="Body_8hpp" name="Body.hpp" local="no" imported="no">playrho/d2/Body.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
+    <includes id="Acceleration_8hpp" name="Acceleration.hpp" local="no" imported="no">playrho/d2/Acceleration.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
+    <includes id="Position_8hpp" name="Position.hpp" local="no" imported="no">playrho/d2/Position.hpp</includes>
+    <includes id="Transformation_8hpp" name="Transformation.hpp" local="no" imported="no">playrho/d2/Transformation.hpp</includes>
+    <includes id="UnitVec_8hpp" name="UnitVec.hpp" local="no" imported="no">playrho/d2/UnitVec.hpp</includes>
+    <includes id="Velocity_8hpp" name="Velocity.hpp" local="no" imported="no">playrho/d2/Velocity.hpp</includes>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
     <member kind="function">
@@ -14645,6 +14687,13 @@
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
+      <type>FlagsType</type>
+      <name>GetFlags</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>a809ae0e9bf9ee289fb3e570cb6cf25dd</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>NonNegativeFF&lt; InvMass &gt;</type>
       <name>GetInvMass</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
@@ -14712,62 +14761,6 @@
       <name>GetVelocity</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
       <anchor>a60d609b9f5c0a1d568b3fc42d169c428</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsAccelerable</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a4f3ae9fb54ca3fbf1f509327781277b3</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsAwake</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a7abc6b8d4f50e3e3e703f53f66ecc035</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsEnabled</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>ae12e0fe1aeb00907e47aba6d4edd0746</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsFixedRotation</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>ab0fdff8babc197f1a75794e4fb822343</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsImpenetrable</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a43a08c5977e1a5a0ebfb823dcf1615bd</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsMassDataDirty</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>ac24b9d27e4778ea7942c89ef793d9eea</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsSleepingAllowed</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a71df4118ca3b5056aa4634a70c3b220a</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>IsSpeedable</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a7aedf6b5b4adc6f0ff0c1fc13ec49b0f</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -15021,6 +15014,13 @@
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
       <anchor>a26bbc90e5b2c4192b598dfeefc692196</anchor>
       <arglist>(const Body &amp;body)</arglist>
+    </member>
+    <member kind="function">
+      <type>Body::FlagsType</type>
+      <name>GetFlags</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>a21071397aafb9df4a10e1abde2d11421</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
       <type>Force2</type>
@@ -15506,6 +15506,13 @@
       <type>constexpr BodyConf &amp;</type>
       <name>Use</name>
       <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
+      <anchor>a61e497b4af762c93bb99b28abf3bd3da</anchor>
+      <arglist>(const Sweep &amp;v) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr BodyConf &amp;</type>
+      <name>Use</name>
+      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
       <anchor>aa0a447c063bc36705495ca21d1e34149</anchor>
       <arglist>(const Velocity &amp;v) noexcept</arglist>
     </member>
@@ -15588,6 +15595,20 @@
     </member>
     <member kind="function">
       <type>constexpr BodyConf &amp;</type>
+      <name>UseInvMass</name>
+      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
+      <anchor>ad59f4df4f63fc99d5e461be6a0fce8c8</anchor>
+      <arglist>(const NonNegative&lt; InvMass &gt; &amp;v) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr BodyConf &amp;</type>
+      <name>UseInvRotI</name>
+      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
+      <anchor>ad085ed12cf69bc6de06c971c3b0e99ea</anchor>
+      <arglist>(const NonNegative&lt; InvRotInertia &gt; &amp;v) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr BodyConf &amp;</type>
       <name>UseLinearAcceleration</name>
       <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
       <anchor>af0c1aa4a29b75c37880351e181ecbefc</anchor>
@@ -15616,6 +15637,13 @@
     </member>
     <member kind="function">
       <type>constexpr BodyConf &amp;</type>
+      <name>UseMassDataDirty</name>
+      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
+      <anchor>afbe2214b980cd5964d469b55dbb5c8b3</anchor>
+      <arglist>(bool v) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr BodyConf &amp;</type>
       <name>UseType</name>
       <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
       <anchor>a49ce681752862a2f5466df143cd8a0f0</anchor>
@@ -15633,13 +15661,6 @@
       <name>allowSleep</name>
       <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
       <anchor>a9ff6df501796f81620a27a612c9cfa8b</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>Angle</type>
-      <name>angle</name>
-      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
-      <anchor>a3a3fe86a4a6bb6e255dd0c20bd527a57</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -15692,6 +15713,20 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>NonNegative&lt; InvMass &gt;</type>
+      <name>invMass</name>
+      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
+      <anchor>af8d49c36fd0ad1df8592e40dd05f6a00</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>NonNegative&lt; InvRotInertia &gt;</type>
+      <name>invRotI</name>
+      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
+      <anchor>a8a82bd37c9a2121f634e791ece5078b4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>LinearAcceleration2</type>
       <name>linearAcceleration</name>
       <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
@@ -15713,10 +15748,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>Length2</type>
-      <name>location</name>
+      <type>bool</type>
+      <name>massDataDirty</name>
       <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
-      <anchor>a96d0adc085fd3d0f0f9d37896c463e7a</anchor>
+      <anchor>af4bd4c3c52ae6dbf353f0abc4f1b44c8</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -15724,6 +15759,13 @@
       <name>shapes</name>
       <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
       <anchor>aabf75cf288f695d10aa3a8c5e4c47513</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>Sweep</type>
+      <name>sweep</name>
+      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
+      <anchor>a7eaf7a9aab1d445634a41b18f8d05ca0</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -15745,13 +15787,6 @@
       <name>DefaultAllowSleep</name>
       <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
       <anchor>a688926eb9d90b5b4155d71c7e2b7328b</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" static="yes">
-      <type>static constexpr auto</type>
-      <name>DefaultAngle</name>
-      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
-      <anchor>a3122a0b996ab23aec3544bab724938ca</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" static="yes">
@@ -15812,6 +15847,20 @@
     </member>
     <member kind="variable" static="yes">
       <type>static constexpr auto</type>
+      <name>DefaultInvMass</name>
+      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
+      <anchor>a272cd7ba1f8904ddd77b64ddbe09f210</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static constexpr auto</type>
+      <name>DefaultInvRotI</name>
+      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
+      <anchor>a307570b1c9ea8467bb5877184b30eed9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static constexpr auto</type>
       <name>DefaultLinearAcceleration</name>
       <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
       <anchor>a4e3392d4b10e1d31bb36d492a853c57e</anchor>
@@ -15833,9 +15882,16 @@
     </member>
     <member kind="variable" static="yes">
       <type>static constexpr auto</type>
-      <name>DefaultLocation</name>
+      <name>DefaultMassDataDirty</name>
       <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
-      <anchor>a851bdd9fcdca2b8ac8c4f8012e6a8b03</anchor>
+      <anchor>afcb41740f7bd0b66cbe21cdb361a809a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static constexpr auto</type>
+      <name>DefaultSweep</name>
+      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
+      <anchor>ac197faa4bbb38c8fca8be1d70e44f8e9</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" static="yes">
@@ -15853,11 +15909,11 @@
       <arglist></arglist>
     </member>
     <member kind="function">
-      <type>constexpr Angle</type>
+      <type>constexpr auto</type>
       <name>GetAngle</name>
       <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
-      <anchor>aad6493c0704a18da5f611717a6aff844</anchor>
-      <arglist>(const BodyConf &amp;conf) noexcept</arglist>
+      <anchor>a6e36744b63f83418fefcdc1642acbbf8</anchor>
+      <arglist>(const BodyConf &amp;conf) noexcept -&gt; Angle</arglist>
     </member>
     <member kind="function">
       <type>constexpr BodyConf</type>
@@ -15865,6 +15921,13 @@
       <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
       <anchor>af6c1034a2366e6ef466253aea8a13829</anchor>
       <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLocation</name>
+      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
+      <anchor>af305801683ef38d8ef1fbd65a5f8fa55</anchor>
+      <arglist>(const BodyConf &amp;conf) noexcept -&gt; Length2</arglist>
     </member>
     <member kind="function">
       <type>Transformation</type>
@@ -29509,6 +29572,20 @@
   <compound kind="struct">
     <name>playrho::d2::Position</name>
     <filename>structplayrho_1_1d2_1_1Position.html</filename>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>Position</name>
+      <anchorfile>structplayrho_1_1d2_1_1Position.html</anchorfile>
+      <anchor>a8628e18e3fde0f0a8726ba4011a372a6</anchor>
+      <arglist>() noexcept=default</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>Position</name>
+      <anchorfile>structplayrho_1_1d2_1_1Position.html</anchorfile>
+      <anchor>ae09d01cb11883d4545e18f7eb7d8a097</anchor>
+      <arglist>(Length2 l, Angle a=0_deg) noexcept</arglist>
+    </member>
     <member kind="variable">
       <type>Angle</type>
       <name>angular</name>
@@ -46308,11 +46385,11 @@
       <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>constexpr Angle</type>
+      <type>constexpr auto</type>
       <name>GetAngle</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aad6493c0704a18da5f611717a6aff844</anchor>
-      <arglist>(const BodyConf &amp;conf) noexcept</arglist>
+      <anchor>a6e36744b63f83418fefcdc1642acbbf8</anchor>
+      <arglist>(const BodyConf &amp;conf) noexcept -&gt; Angle</arglist>
     </member>
     <member kind="function">
       <type>Angle</type>
@@ -47148,6 +47225,13 @@
       <arglist>(const World &amp;world, ShapeID id)</arglist>
     </member>
     <member kind="function">
+      <type>Body::FlagsType</type>
+      <name>GetFlags</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a21071397aafb9df4a10e1abde2d11421</anchor>
+      <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>Force2</type>
       <name>GetForce</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -47874,6 +47958,13 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a8a6f694cab71d0db91049dc0908de63f</anchor>
       <arglist>(const Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLocation</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af305801683ef38d8ef1fbd65a5f8fa55</anchor>
+      <arglist>(const BodyConf &amp;conf) noexcept -&gt; Length2</arglist>
     </member>
     <member kind="function">
       <type>constexpr Length2</type>

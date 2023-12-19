@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['additional_20math_20functions_4254',['Additional Math Functions',['../group__Math.html',1,'']]]
+  ['additional_20math_20functions_4270',['Additional Math Functions',['../group__Math.html',1,'']]]
 ];

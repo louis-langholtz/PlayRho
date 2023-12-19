@@ -59,9 +59,9 @@ var sectionId = 'dynsection-1';
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="Definition of the Acceleration class and closely related code.">
-<polygon fill="#bfbfbf" stroke="black" points="403,-335.5 403,-365.5 531,-365.5 531,-335.5 403,-335.5"/>
-<text text-anchor="start" x="411" y="-353.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="467" y="-342.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/Acceleration.hpp</text>
+<polygon fill="#bfbfbf" stroke="black" points="458,-335.5 458,-365.5 586,-365.5 586,-335.5 458,-335.5"/>
+<text text-anchor="start" x="466" y="-353.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="522" y="-342.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/Acceleration.hpp</text>
 </a>
 </g>
 </g>
@@ -69,17 +69,33 @@ var sectionId = 'dynsection-1';
 <g id="node2" class="node">
 <title>Node2</title>
 <g id="a_node2"><a xlink:href="Body_8hpp.html" target="_top" xlink:title="Declarations of the Body class, and functions associated with it.">
-<polygon fill="white" stroke="black" points="403,-268.5 403,-298.5 531,-298.5 531,-268.5 403,-268.5"/>
-<text text-anchor="start" x="411" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="467" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/Body.hpp</text>
+<polygon fill="white" stroke="black" points="412,-268.5 412,-298.5 540,-298.5 540,-268.5 412,-268.5"/>
+<text text-anchor="start" x="420" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="476" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/Body.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="midnightblue" d="M467,-325.11C467,-316.15 467,-306.32 467,-298.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="463.5,-325.4 467,-335.4 470.5,-325.4 463.5,-325.4"/>
+<path fill="none" stroke="midnightblue" d="M506.19,-327.16C499.48,-317.68 491.87,-306.92 485.96,-298.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="503.38,-329.26 512.02,-335.4 509.1,-325.21 503.38,-329.26"/>
+</g>
+<!-- Node10 -->
+<g id="node10" class="node">
+<title>Node10</title>
+<g id="a_node10"><a xlink:href="WorldBody_8hpp.html" target="_top" xlink:title="Declarations of free functions of World for bodies identified by BodyID.">
+<polygon fill="white" stroke="black" points="546,-67.5 546,-97.5 674,-97.5 674,-67.5 546,-67.5"/>
+<text text-anchor="start" x="554" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="610" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/WorldBody.hpp</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node10 -->
+<g id="edge11" class="edge">
+<title>Node1&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M535.68,-326.44C540.32,-317.99 545.27,-308.24 549,-299 578.6,-225.62 599.69,-132.73 607.09,-97.71"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="532.53,-324.89 530.65,-335.31 538.62,-328.34 532.53,-324.89"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
@@ -94,8 +110,8 @@ var sectionId = 'dynsection-1';
 <!-- Node2&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node2&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M403.73,-265.92C363.26,-255.31 311.33,-241.7 272.84,-231.61"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="402.93,-269.33 413.49,-268.48 404.71,-262.55 402.93,-269.33"/>
+<path fill="none" stroke="midnightblue" d="M410.7,-265.98C368.72,-255.37 314.76,-241.72 274.79,-231.61"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="410,-269.42 420.55,-268.48 411.71,-262.63 410,-269.42"/>
 </g>
 <!-- Node6 -->
 <g id="node6" class="node">
@@ -110,8 +126,8 @@ var sectionId = 'dynsection-1';
 <!-- Node2&#45;&gt;Node6 -->
 <g id="edge5" class="edge">
 <title>Node2&#45;&gt;Node6</title>
-<path fill="none" stroke="midnightblue" d="M449.36,-260.45C441.72,-250.9 433,-240 426.26,-231.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="446.74,-262.77 455.72,-268.4 452.2,-258.4 446.74,-262.77"/>
+<path fill="none" stroke="midnightblue" d="M455.85,-261.02C446.76,-251.34 436.28,-240.17 428.21,-231.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="453.37,-263.5 462.76,-268.4 458.47,-258.71 453.37,-263.5"/>
 </g>
 <!-- Node8 -->
 <g id="node8" class="node">
@@ -126,24 +142,8 @@ var sectionId = 'dynsection-1';
 <!-- Node2&#45;&gt;Node8 -->
 <g id="edge10" class="edge">
 <title>Node2&#45;&gt;Node8</title>
-<path fill="none" stroke="midnightblue" d="M486.15,-260.22C492.12,-251.92 497.93,-242.05 501,-232 515.89,-183.21 487.63,-124.07 472.57,-97.55"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="483.3,-258.19 479.99,-268.25 488.85,-262.45 483.3,-258.19"/>
-</g>
-<!-- Node10 -->
-<g id="node10" class="node">
-<title>Node10</title>
-<g id="a_node10"><a xlink:href="WorldBody_8hpp.html" target="_top" xlink:title="Declarations of free functions of World for bodies identified by BodyID.">
-<polygon fill="white" stroke="black" points="546,-67.5 546,-97.5 674,-97.5 674,-67.5 546,-67.5"/>
-<text text-anchor="start" x="554" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="610" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/WorldBody.hpp</text>
-</a>
-</g>
-</g>
-<!-- Node2&#45;&gt;Node10 -->
-<g id="edge11" class="edge">
-<title>Node2&#45;&gt;Node10</title>
-<path fill="none" stroke="midnightblue" d="M490.22,-261.16C499.06,-252.51 508.94,-242.17 517,-232 553.46,-185.98 587.8,-124.95 602.5,-97.69"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="487.59,-258.84 482.79,-268.28 492.43,-263.89 487.59,-258.84"/>
+<path fill="none" stroke="midnightblue" d="M490.21,-259.41C494.57,-251.08 498.8,-241.41 501,-232 512.56,-182.59 486.27,-124.24 472.18,-97.8"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="487.15,-257.72 485.33,-268.15 493.26,-261.13 487.15,-257.72"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
