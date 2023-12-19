@@ -43,14 +43,11 @@ public:
         const auto deltaX = Vec2(0.5625f, 1.25f);
         const auto deltaY = Vec2(1.125f, 0.0f);
         Vec2 y;
+        auto bd = BodyConf{}.Use(BodyType::Dynamic).UseLinearAcceleration(GetGravity()).Use(shape);
         for (auto i = 0; i < e_count; ++i) {
             y = x;
             for (auto j = i; j < e_count; ++j) {
-                BodyConf bd;
-                bd.type = BodyType::Dynamic;
-                bd.linearAcceleration = GetGravity();
-                bd.location = y * 1_m;
-                bd.Use(shape);
+                bd.UseLocation(y * 1_m);
                 CreateBody(GetWorld(), Body{bd});
                 y += deltaY;
             }

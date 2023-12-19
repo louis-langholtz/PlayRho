@@ -1438,13 +1438,13 @@ TEST(World, StepZeroTimeDoesNothing)
     World world{};
     
     BodyConf def;
-    def.location = Length2{31.9_m, -19.24_m};
+    def.UseLocation(Length2{31.9_m, -19.24_m});
     def.type = BodyType::Dynamic;
     def.linearAcceleration = EarthlyGravity;
     
     const auto body = CreateBody(world, def);
     ASSERT_NE(body, InvalidBodyID);
-    EXPECT_EQ(GetLocation(world, body), def.location);
+    EXPECT_EQ(GetLocation(world, body), def.sweep.pos0.linear);
     EXPECT_EQ(GetX(GetLinearVelocity(world, body)), 0_mps);
     EXPECT_EQ(GetY(GetLinearVelocity(world, body)), 0_mps);
     EXPECT_EQ(GetX(GetLinearAcceleration(world, body)), Real{0.0f} * MeterPerSquareSecond);
@@ -1460,7 +1460,7 @@ TEST(World, StepZeroTimeDoesNothing)
         
         EXPECT_EQ(GetY(GetLinearAcceleration(world, body)), GetY(EarthlyGravity));
         
-        EXPECT_EQ(GetX(GetLocation(world, body)), GetX(def.location));
+        EXPECT_EQ(GetX(GetLocation(world, body)), GetX(def.sweep.pos0.linear));
         EXPECT_EQ(GetY(GetLocation(world, body)), GetY(pos));
         pos = GetLocation(world, body);
         
@@ -1478,7 +1478,7 @@ TEST(World, GravitationalBodyMovement)
 
     auto body_def = BodyConf{};
     body_def.type = BodyType::Dynamic;
-    body_def.location = p0;
+    body_def.UseLocation(p0);
     body_def.linearAcceleration = LinearAcceleration2{0, a * MeterPerSquareSecond};
 
     const auto t = .01_s;
@@ -1563,13 +1563,13 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
     auto world = World{};
     
     BodyConf def;
-    def.location = Length2{31.9_m, -19.24_m};
+    def.UseLocation(Length2{31.9_m, -19.24_m});
     def.type = BodyType::Dynamic;
     def.linearAcceleration = EarthlyGravity;
     
     const auto body = CreateBody(world, def);
     ASSERT_NE(body, InvalidBodyID);
-    EXPECT_EQ(GetLocation(world, body), def.location);
+    EXPECT_EQ(GetLocation(world, body), def.sweep.pos0.linear);
     EXPECT_EQ(GetX(GetLinearVelocity(world, body)), 0_mps);
     EXPECT_EQ(GetY(GetLinearVelocity(world, body)), 0_mps);
     EXPECT_EQ(GetX(GetLinearAcceleration(world, body)), Real{0.0f} * MeterPerSquareSecond);
@@ -1585,7 +1585,7 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
         
         EXPECT_EQ(GetY(GetLinearAcceleration(world, body)), GetY(EarthlyGravity));
         
-        EXPECT_EQ(GetX(GetLocation(world, body)), GetX(def.location));
+        EXPECT_EQ(GetX(GetLocation(world, body)), GetX(def.sweep.pos0.linear));
         EXPECT_LT(GetY(GetLocation(world, body)), GetY(pos));
         EXPECT_EQ(GetY(GetLocation(world, body)), GetY(pos) + ((GetY(vel) + GetY(EarthlyGravity) * time_inc) * time_inc));
         pos = GetLocation(world, body);
@@ -1603,14 +1603,14 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
     World world{};
     
     BodyConf def;
-    def.location = Length2{31.9_m, -19.24_m};
+    def.UseLocation(Length2{31.9_m, -19.24_m});
     def.linearVelocity = LinearVelocity2{0, -9.8_mps};
     def.type = BodyType::Dynamic;
     def.linearAcceleration = EarthlyGravity;
     
     const auto body = CreateBody(world, def);
     ASSERT_NE(body, InvalidBodyID);
-    EXPECT_EQ(GetLocation(world, body), def.location);
+    EXPECT_EQ(GetLocation(world, body), def.sweep.pos0.linear);
     EXPECT_EQ(GetX(GetLinearVelocity(world, body)), 0_mps);
     EXPECT_EQ(GetY(GetLinearVelocity(world, body)), -9.8_mps);
     EXPECT_EQ(GetX(GetLinearAcceleration(world, body)), Real{0.0f} * MeterPerSquareSecond);
@@ -1633,7 +1633,7 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
         
         EXPECT_EQ(GetY(GetLinearAcceleration(world, body)), GetY(EarthlyGravity));
         
-        EXPECT_EQ(GetX(GetLocation(world, body)), GetX(def.location));
+        EXPECT_EQ(GetX(GetLocation(world, body)), GetX(def.sweep.pos0.linear));
         EXPECT_GT(GetY(GetLocation(world, body)), GetY(pos));
         EXPECT_FLOAT_EQ(static_cast<float>(Real(GetY(GetLocation(world, body)) / 1_m)),
                         static_cast<float>(Real((GetY(pos) + ((GetY(vel) + GetY(EarthlyGravity) * time_inc) * time_inc)) / 1_m)));
@@ -1765,7 +1765,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 
     const auto shapeId = CreateShape(world, DiskShapeConf{}.UseRadius(1_m).UseRestitution(Real(1)).UseDensity(1_kgpm2));
     
-    body_def.location = Length2{-x * Meter, 0_m};
+    body_def.UseLocation(Length2{-x * Meter, 0_m});
     body_def.linearVelocity = LinearVelocity2{+x * 1_mps, 0_mps};
     const auto body_a = CreateBody(world, body_def);
     ASSERT_NE(body_a, InvalidBodyID);
@@ -1774,7 +1774,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     EXPECT_TRUE(IsAccelerable(world, body_a));
     Attach(world, body_a, shapeId);
     
-    body_def.location = Length2{+x * Meter, 0_m};
+    body_def.UseLocation(Length2{+x * Meter, 0_m});
     body_def.linearVelocity = LinearVelocity2{-x * 1_mps, 0_mps};
     const auto body_b = CreateBody(world, body_def);
     ASSERT_NE(body_b, InvalidBodyID);
@@ -2054,21 +2054,21 @@ TEST(World, PerfectlyOverlappedSameCirclesStayPut)
     auto body_def = BodyConf{};
     body_def.type = BodyType::Dynamic;
     body_def.bullet = false;
-    body_def.location = Length2{0_m, 0_m};
+    body_def.UseLocation(Length2{0_m, 0_m});
     const auto body1 = CreateBody(world, body_def);
     Attach(world, body1, shapeId);
-    ASSERT_EQ(GetLocation(world, body1), body_def.location);
+    ASSERT_EQ(GetLocation(world, body1), body_def.sweep.pos0.linear);
     
     const auto body2 = CreateBody(world, body_def);
     Attach(world, body2, shapeId);
-    ASSERT_EQ(GetLocation(world, body2), body_def.location);
+    ASSERT_EQ(GetLocation(world, body2), body_def.sweep.pos0.linear);
     
     const auto time_inc = Real(.01);
     for (auto i = 0; i < 100; ++i)
     {
         Step(world, 1_s * time_inc);
-        EXPECT_EQ(GetLocation(world, body1), body_def.location);
-        EXPECT_EQ(GetLocation(world, body2), body_def.location);
+        EXPECT_EQ(GetLocation(world, body1), body_def.sweep.pos0.linear);
+        EXPECT_EQ(GetLocation(world, body2), body_def.sweep.pos0.linear);
     }
 }
 
@@ -2084,22 +2084,22 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
     auto body_def = BodyConf{};
     body_def.type = BodyType::Dynamic;
     body_def.bullet = false;
-    body_def.location = Length2{};
+    body_def.UseLocation(Length2{});
     
     const auto body1 = CreateBody(world, body_def);
     Attach(world, body1, shapeId1);
-    ASSERT_EQ(GetLocation(world, body1), body_def.location);
+    ASSERT_EQ(GetLocation(world, body1), body_def.sweep.pos0.linear);
     
     const auto body2 = CreateBody(world, body_def);
     Attach(world, body2, shapeId2);
-    ASSERT_EQ(GetLocation(world, body2), body_def.location);
+    ASSERT_EQ(GetLocation(world, body2), body_def.sweep.pos0.linear);
 
     const auto time_inc = Real(.01);
     for (auto i = 0; i < 100; ++i)
     {
         Step(world, 1_s * time_inc);
-        EXPECT_EQ(GetLocation(world, body1), body_def.location);
-        EXPECT_EQ(GetLocation(world, body2), body_def.location);
+        EXPECT_EQ(GetLocation(world, body1), body_def.sweep.pos0.linear);
+        EXPECT_EQ(GetLocation(world, body2), body_def.sweep.pos0.linear);
     }
 }
 
@@ -2129,7 +2129,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
 
     auto body_def = BodyConf{};
     body_def.type = BodyType::Dynamic;
-    body_def.location = Length2{};
+    body_def.UseLocation(Length2{});
     const auto shapeId = CreateShape(world, DiskShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).UseRadius(1_m));
     for (auto i = 0; i < 2; ++i)
     {
@@ -2177,7 +2177,7 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
 
     auto body_def = BodyConf{};
     body_def.type = BodyType::Dynamic;
-    body_def.location = Length2{};
+    body_def.UseLocation(Length2{});
     auto conf = PolygonShapeConf{};
     conf.UseVertexRadius(1_m);
     conf.SetAsBox(2_m, 2_m);
@@ -2289,16 +2289,16 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
     body_def.bullet = false; // separation is faster if true.
     const auto shape = CreateShape(world, DiskShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).UseRadius(radius * Meter));
     const auto body1pos = Length2{(-radius/4) * Meter, 0_m};
-    body_def.location = body1pos;
+    body_def.UseLocation(body1pos);
     const auto body1 = CreateBody(world, body_def);
     Attach(world, body1, shape);
-    ASSERT_EQ(GetLocation(world, body1), body_def.location);
+    ASSERT_EQ(GetLocation(world, body1), body_def.sweep.pos0.linear);
     
     const auto body2pos = Length2{(+radius/4) * Meter, 0_m};
-    body_def.location = body2pos;
+    body_def.UseLocation(body2pos);
     const auto body2 = CreateBody(world, body_def);
     Attach(world, body2, shape);
-    ASSERT_EQ(GetLocation(world, body2), body_def.location);
+    ASSERT_EQ(GetLocation(world, body2), body_def.sweep.pos0.linear);
     
     auto position_diff = body2pos - body1pos;
     auto distance = GetMagnitude(position_diff);
@@ -2322,7 +2322,8 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
         const auto new_pos_diff = GetLocation(world, body2) - GetLocation(world, body1);
         const auto new_distance = GetMagnitude(new_pos_diff);
         
-        if (AlmostEqual(Real{new_distance / Meter}, Real{full_separation / Meter}) || new_distance > full_separation)
+        if (AlmostEqual(Real{new_distance / Meter}, Real{full_separation / Meter}) ||
+            new_distance > full_separation)
         {
             break;
         }
@@ -2375,15 +2376,15 @@ TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
     auto body_def = BodyConf{};
     body_def.type = BodyType::Dynamic;
     body_def.bullet = false;
-    body_def.location = Length2{};
+    body_def.UseLocation(Length2{});
     
     const auto body1 = CreateBody(world, body_def);
     Attach(world, body1, shape);
-    ASSERT_EQ(GetLocation(world, body1), body_def.location);
+    ASSERT_EQ(GetLocation(world, body1), body_def.sweep.pos0.linear);
     
     const auto body2 = CreateBody(world, body_def);
     Attach(world, body2, shape);
-    ASSERT_EQ(GetLocation(world, body2), body_def.location);
+    ASSERT_EQ(GetLocation(world, body2), body_def.sweep.pos0.linear);
     
     auto lastpos1 = GetLocation(world, body1);
     auto lastpos2 = GetLocation(world, body2);
@@ -2433,13 +2434,13 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     const auto shape = CreateShape(world, PolygonShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).SetAsBox(half_dim * Meter, half_dim * Meter));
     
     const auto body1pos = Length2{Real(half_dim/2) * Meter, 0_m}; // 0 causes additional y-axis separation
-    body_def.location = body1pos;
+    body_def.UseLocation(body1pos);
     const auto body1 = CreateBody(world, body_def);
     Attach(world, body1, shape);
     ASSERT_EQ(GetLocation(world, body1), body1pos);
     
     const auto body2pos = Length2{-Real(half_dim/2) * Meter, 0_m}; // 0 causes additional y-axis separation
-    body_def.location = body2pos;
+    body_def.UseLocation(body2pos);
     const auto body2 = CreateBody(world, body_def);
     Attach(world, body2, shape);
     ASSERT_EQ(GetLocation(world, body2), body2pos);
@@ -2586,9 +2587,10 @@ TEST(World, CollidingDynamicBodies)
         listener.PostSolve(id, impulses, count);
     });
     
-    const auto shape = CreateShape(world, DiskShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).UseRadius(radius));
+    const auto shape =
+        CreateShape(world, DiskShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).UseRadius(radius));
 
-    body_def.location = Length2{-(x + 1) * Meter, 0_m};
+    body_def.UseLocation(Length2{-(x + 1) * Meter, 0_m});
     body_def.linearVelocity = LinearVelocity2{+x * 1_mps, 0_mps};
     const auto body_a = CreateBody(world, body_def);
     ASSERT_NE(body_a, InvalidBodyID);
@@ -2597,7 +2599,7 @@ TEST(World, CollidingDynamicBodies)
     ASSERT_TRUE(IsAccelerable(world, body_a));
     Attach(world, body_a, shape);
 
-    body_def.location = Length2{+(x + 1) * Meter, 0_m};
+    body_def.UseLocation(Length2{+(x + 1) * Meter, 0_m});
     body_def.linearVelocity = LinearVelocity2{-x * 1_mps, 0_mps};
     const auto body_b = CreateBody(world, body_def);
     ASSERT_NE(body_b, InvalidBodyID);
@@ -3111,12 +3113,12 @@ TEST(World, SpeedingBulletBallWontTunnel)
     BodyConf body_def;
     body_def.type = BodyType::Static;
 
-    body_def.location = Length2{left_edge_x, 0_m};
+    body_def.UseLocation(Length2{left_edge_x, 0_m});
     const auto left_wall_body = CreateBody(world, body_def);
     ASSERT_NE(left_wall_body, InvalidBodyID);
     Attach(world, left_wall_body, edge_shape);
 
-    body_def.location = Length2{right_edge_x, 0_m};
+    body_def.UseLocation(Length2{right_edge_x, 0_m});
     const auto right_wall_body = CreateBody(world, body_def);
     ASSERT_NE(right_wall_body, InvalidBodyID);
     Attach(world, right_wall_body, edge_shape);
@@ -3124,13 +3126,14 @@ TEST(World, SpeedingBulletBallWontTunnel)
     const auto begin_x = Real(0);
 
     body_def.type = BodyType::Dynamic;
-    body_def.location = Length2{begin_x * Meter, 0_m};
+    body_def.UseLocation(Length2{begin_x * Meter, 0_m});
     body_def.bullet = false;
     const auto ball_body = CreateBody(world, body_def);
     ASSERT_NE(ball_body, InvalidBodyID);
     
     const auto ball_radius = 0.01_m;
-    const auto circle_shape = Shape(DiskShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).UseRadius(ball_radius));
+    const auto circle_shape =
+        Shape(DiskShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).UseRadius(ball_radius));
     Attach(world, ball_body, CreateShape(world, circle_shape));
 
     const auto velocity = LinearVelocity2{+1_mps, 0_mps};
@@ -3281,7 +3284,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
     // Setup vertical bounderies
     edgeConf.Set(Length2{0, +half_box_height * 2_m}, Length2{0, -half_box_height * 2_m});
 
-    body_def.location = Length2{left_edge_x * Meter, 0_m};
+    body_def.UseLocation(Length2{left_edge_x * Meter, 0_m});
     {
         const auto left_wall_body = CreateBody(world, body_def);
         ASSERT_NE(left_wall_body, InvalidBodyID);
@@ -3289,7 +3292,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
         Include(container_aabb, ComputeAABB(world, left_wall_body));
     }
     
-    body_def.location = Length2{right_edge_x * Meter, 0_m};
+    body_def.UseLocation(Length2{right_edge_x * Meter, 0_m});
     {
         const auto right_wall_body = CreateBody(world, body_def);
         ASSERT_NE(right_wall_body, InvalidBodyID);
@@ -3300,7 +3303,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
     // Setup horizontal bounderies
     edgeConf.Set(Length2{-half_box_width * 2_m, 0_m}, Length2{+half_box_width * 2_m, 0_m});
     
-    body_def.location = Length2{0, btm_edge_y * Meter};
+    body_def.UseLocation(Length2{0, btm_edge_y * Meter});
     {
         const auto btm_wall_body = CreateBody(world, body_def);
         ASSERT_NE(btm_wall_body, InvalidBodyID);
@@ -3308,7 +3311,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
         Include(container_aabb, ComputeAABB(world, btm_wall_body));
     }
     
-    body_def.location = Length2{0, top_edge_y * Meter};
+    body_def.UseLocation(Length2{0, top_edge_y * Meter});
     {
         const auto top_wall_body = CreateBody(world, body_def);
         ASSERT_NE(top_wall_body, InvalidBodyID);
@@ -3317,7 +3320,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
     }
 
     body_def.type = BodyType::Dynamic;
-    body_def.location = Length2{};
+    body_def.UseLocation(Length2{});
     body_def.bullet = true;
     
     const auto ball_body = CreateBody(world, body_def);
@@ -3337,7 +3340,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
         const auto angle = i * 2 * Pi / numBodies;
         const auto x = ball_radius * Real(2.1) * cos(angle);
         const auto y = ball_radius * Real(2.1) * sin(angle);
-        body_def.location = Length2{x, y};
+        body_def.UseLocation(Length2{x, y});
         bodies[i] = CreateBody(world, body_def);
         ASSERT_NE(bodies[i], InvalidBodyID);
         ASSERT_EQ(GetX(GetLocation(world, bodies[i])), x);

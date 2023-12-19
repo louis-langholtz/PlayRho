@@ -157,23 +157,23 @@ public:
         // Square character 1
         {
             BodyConf bd;
-            bd.type = BodyType::Dynamic;
-            bd.fixedRotation = false;
-            bd.allowSleep = false;
+            bd.Use(BodyType::Dynamic);
+            bd.UseFixedRotation(false);
+            bd.UseAllowSleep(false);
             const auto square = CreateShape(
                 GetWorld(),
                 PolygonShapeConf{}.UseFriction(0.0f).UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.5_m));
-            bd.location = Vec2(-3.0f, 8.0f) * 1_m;
+            bd.UseLocation(Vec2(-3.0f, 8.0f) * 1_m);
             Attach(GetWorld(), CreateBody(GetWorld(), bd), square);
-            bd.location = Vec2(19.0f, 7.0f) * 1_m;
+            bd.UseLocation(Vec2(19.0f, 7.0f) * 1_m);
             Attach(GetWorld(), CreateBody(GetWorld(), bd), square);
         }
 
         // Square character 2
         {
             BodyConf bd;
-            bd.location = Vec2(-5.0f, 5.0f) * 1_m;
-            bd.type = BodyType::Dynamic;
+            bd.UseLocation(Vec2(-5.0f, 5.0f) * 1_m);
+            bd.Use(BodyType::Dynamic);
             bd.fixedRotation = true;
             bd.allowSleep = false;
 
@@ -185,10 +185,10 @@ public:
         // Hexagon character
         {
             BodyConf bd;
-            bd.location = Vec2(-5.0f, 8.0f) * 1_m;
-            bd.type = BodyType::Dynamic;
-            bd.fixedRotation = true;
-            bd.allowSleep = false;
+            bd.Use(BodyType::Dynamic);
+            bd.UseLocation(Vec2(-5.0f, 8.0f) * 1_m);
+            bd.UseFixedRotation(true);
+            bd.UseAllowSleep(false);
 
             const auto body = CreateBody(GetWorld(), bd);
 
@@ -207,10 +207,10 @@ public:
         // Disk character
         {
             BodyConf bd;
-            bd.location = Vec2(3.0f, 5.0f) * 1_m;
-            bd.type = BodyType::Dynamic;
-            bd.fixedRotation = true;
-            bd.allowSleep = false;
+            bd.Use(BodyType::Dynamic);
+            bd.UseLocation(Vec2(3.0f, 5.0f) * 1_m);
+            bd.UseFixedRotation(true);
+            bd.UseAllowSleep(false);
 
             const auto body = CreateBody(GetWorld(), bd);
             auto conf = DiskShapeConf{};
@@ -222,9 +222,9 @@ public:
         // Disk character
         {
             BodyConf bd;
-            bd.location = Vec2(-7.0f, 6.0f) * 1_m;
-            bd.type = BodyType::Dynamic;
-            bd.allowSleep = false;
+            bd.Use(BodyType::Dynamic);
+            bd.UseLocation(Vec2(-7.0f, 6.0f) * 1_m);
+            bd.UseAllowSleep(false);
 
             m_character = CreateBody(GetWorld(), bd);
 

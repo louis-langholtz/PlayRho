@@ -51,14 +51,12 @@ public:
             const auto p1 = Vec2(-2.0f, 0.0f) * 1_m;
             const auto p2 = Vec2(+2.0f, 0.0f) * 1_m;
 
-            BodyConf bd;
-            bd.type = BodyType::Dynamic;
-            bd.linearAcceleration = GetGravity();
+            auto bd = BodyConf{}.Use(BodyType::Dynamic).UseLinearAcceleration(GetGravity());
 
-            bd.location = p1;
+            bd.UseLocation(p1);
             const auto leftFlipper = CreateBody(GetWorld(), bd);
 
-            bd.location = p2;
+            bd.UseLocation(p2);
             const auto rightFlipper = CreateBody(GetWorld(), bd);
 
             const auto box = CreateShape(
@@ -90,14 +88,11 @@ public:
 
         // Disk character
         {
-            BodyConf bd;
-            bd.location = Vec2(1.0f, 15.0f) * 1_m;
-            bd.type = BodyType::Dynamic;
-            bd.linearAcceleration = GetGravity();
-            bd.bullet = true;
-
-            m_ball = CreateBody(GetWorld(), bd);
-
+            m_ball = CreateBody(GetWorld(),
+                                BodyConf{}
+                                    .UseLocation(Vec2(1.0f, 15.0f) * 1_m)
+                                    .Use(BodyType::Dynamic)
+                                    .UseLinearAcceleration(GetGravity()).UseBullet(true));
             auto conf = DiskShapeConf{};
             conf.density = 1_kgpm2;
             conf.vertexRadius = 0.2_m;

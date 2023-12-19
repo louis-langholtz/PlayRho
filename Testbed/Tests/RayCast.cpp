@@ -109,13 +109,13 @@ public:
             Destroy(GetWorld(), m_bodies[m_bodyIndex]);
             m_bodies[m_bodyIndex] = InvalidBodyID;
         }
-        auto bd = BodyConf{};
         const auto x = RandomFloat(-10.0f, 10.0f);
         const auto y = RandomFloat(0.0f, 20.0f);
-        bd.location = Vec2(x, y) * 1_m;
-        bd.angle = 1_rad * RandomFloat(-Pi, Pi);
+        auto bd = BodyConf{};
+        bd.UseLocation(Vec2(x, y) * 1_m);
+        bd.UseAngle(1_rad * RandomFloat(-Pi, Pi));
         if (type == 4) {
-            bd.angularDamping = 0.02_Hz;
+            bd.UseAngularDamping(0.02_Hz);
         }
         m_bodies[m_bodyIndex] = CreateBody(GetWorld(), bd);
         m_userData.resize(m_bodies[m_bodyIndex].get() + 1u, -1);

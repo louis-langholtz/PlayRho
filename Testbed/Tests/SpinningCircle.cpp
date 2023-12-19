@@ -38,9 +38,9 @@ public:
         bodyConf.linearVelocity = LinearVelocity2{};
         bodyConf.linearDamping = 0.8_Hz;
         bodyConf.bullet = true;
-        bodyConf.location = Vec2{0, 26} * 1_m;
+        bodyConf.UseLocation(Vec2{0, 26} * 1_m);
         const auto body1 = CreateBody(GetWorld(), bodyConf);
-        bodyConf.location = Vec2{0, 14} * 1_m;
+        bodyConf.UseLocation(Vec2{0, 14} * 1_m);
         const auto body2 = CreateBody(GetWorld(), bodyConf);
         auto shapeConf = DiskShapeConf{};
         shapeConf.density = 10_kgpm2;

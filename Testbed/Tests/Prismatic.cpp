@@ -42,8 +42,8 @@ public:
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = GetGravity();
-            bd.location = Vec2(-10.0f, 10.0f) * 1_m;
-            bd.angle = 0.5_rad * Pi;
+            bd.UseLocation(Vec2(-10.0f, 10.0f) * 1_m);
+            bd.UseAngle(0.5_rad * Pi);
             bd.allowSleep = false;
             const auto body = CreateBody(GetWorld(), bd);
             Attach(GetWorld(), body,

@@ -43,22 +43,19 @@ public:
     Orbiter() : Test(GetTestConf())
     {
         SetGravity(LinearAcceleration2{});
-        {
-            auto bd = BodyConf{};
-            bd.type = BodyType::Static;
-            bd.location = m_center;
-            bd.shapes += CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(3_m));
-            CreateBody(GetWorld(), bd);
-        }
+        CreateBody(GetWorld(),
+                   BodyConf{}
+                       .Use(BodyType::Static)
+                       .UseLocation(m_center)
+                       .Use(CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(3_m))));
         {
             const auto radius = Real{12.0f};
             auto bd = BodyConf{};
-            bd.type = BodyType::Dynamic;
-            bd.location = Length2{GetX(m_center), GetY(m_center) + radius * 1_m};
-            bd.shapes +=
-                CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1e12_kgpm2));
-            bd.linearVelocity = Vec2{Pi * radius / 2, 0} * 1_mps;
-            bd.angularVelocity = 360_deg / 1_s;
+            bd.Use(BodyType::Dynamic);
+            bd.UseLocation(Length2{GetX(m_center), GetY(m_center) + radius * 1_m});
+            bd.Use(CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1e12_kgpm2)));
+            bd.UseLinearVelocity(Vec2{Pi * radius / 2, 0} * 1_mps);
+            bd.UseAngularVelocity(360_deg / 1_s);
             m_orbiter = CreateBody(GetWorld(), bd);
         }
         {
@@ -67,10 +64,10 @@ public:
             conf.UseVertexRadius(0.1_m);
             conf.UseDensity(1e3_kgpm2);
             auto bd = BodyConf{};
-            bd.type = BodyType::Dynamic;
-            bd.location = m_center;
-            bd.bullet = true;
-            bd.shapes += CreateShape(GetWorld(), conf);
+            bd.Use(BodyType::Dynamic);
+            bd.UseLocation(m_center);
+            bd.UseBullet(true);
+            bd.Use(CreateShape(GetWorld(), conf));
             CreateBody(GetWorld(), bd);
         }
     }

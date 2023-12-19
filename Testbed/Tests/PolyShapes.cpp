@@ -22,7 +22,6 @@
 #include "../Framework/Test.hpp"
 
 #include <vector>
-#include <cstring>
 
 namespace testbed {
 
@@ -96,14 +95,12 @@ public:
             m_bodies[m_bodyIndex] = InvalidBodyID;
         }
 
+        const auto x = RandomFloat(-2.0f, 2.0f);
         BodyConf bd;
         bd.type = BodyType::Dynamic;
         bd.linearAcceleration = GetGravity();
-
-        const auto x = RandomFloat(-2.0f, 2.0f);
-        bd.location = Vec2(x, 10.0f) * 1_m;
-        bd.angle = 1_rad * RandomFloat(-Pi, Pi);
-
+        bd.UseLocation(Vec2(x, 10.0f) * 1_m);
+        bd.UseAngle(1_rad * RandomFloat(-Pi, Pi));
         if (index == 4) {
             bd.angularDamping = 0.02_Hz;
         }

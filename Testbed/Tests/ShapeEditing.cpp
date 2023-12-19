@@ -36,22 +36,17 @@ public:
         Attach(GetWorld(), CreateBody(GetWorld()),
                CreateShape(GetWorld(),
                            EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}));
-
-        BodyConf bd;
-        bd.type = BodyType::Dynamic;
-        bd.linearAcceleration = GetGravity();
-        bd.location = Vec2(0.0f, 10.0f) * 1_m;
-        m_body = CreateBody(GetWorld(), bd);
-
+        m_body = CreateBody(GetWorld(),
+                            BodyConf{}
+                                .Use(BodyType::Dynamic)
+                                .UseLinearAcceleration(GetGravity())
+                                .UseLocation(Vec2(0.0f, 10.0f) * 1_m));
         auto shape = PolygonShapeConf{};
         shape.SetAsBox(4_m, 4_m, Length2{}, 0_deg);
         shape.UseDensity(10_kgpm2);
         Attach(GetWorld(), m_body, CreateShape(GetWorld(), shape));
-
         m_shape2 = InvalidShapeID;
-
         m_sensor = false;
-
         RegisterForKey(GLFW_KEY_C, GLFW_PRESS, 0, "Create a shape.", [&](KeyActionMods) {
             if (!IsValid(m_shape2)) {
                 auto conf = DiskShapeConf{};

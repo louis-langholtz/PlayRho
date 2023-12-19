@@ -37,6 +37,7 @@
 #include <playrho/Vector2.hpp>
 
 #include <playrho/d2/Position.hpp>
+#include <playrho/d2/Sweep.hpp>
 #include <playrho/d2/Transformation.hpp>
 #include <playrho/d2/Velocity.hpp>
 
@@ -53,11 +54,8 @@ struct BodyConf {
     /// @brief Default body type.
     static constexpr auto DefaultBodyType = BodyType::Static;
 
-    /// @brief Default location.
-    static constexpr auto DefaultLocation = Length2{};
-
-    /// @brief Default angle.
-    static constexpr auto DefaultAngle = 0_deg;
+    /// @brief Default sweep.
+    static constexpr auto DefaultSweep = Sweep{};
 
     /// @brief Default linear velocity.
     static constexpr auto DefaultLinearVelocity = LinearVelocity2{};
@@ -105,6 +103,9 @@ struct BodyConf {
 
     /// @brief Use the given type.
     constexpr BodyConf& Use(BodyType t) noexcept;
+
+    /// @brief Use the given sweep.
+    constexpr BodyConf& Use(const Sweep& v) noexcept;
 
     /// @brief Use the given location.
     constexpr BodyConf& UseLocation(const Length2& l) noexcept;
@@ -172,12 +173,10 @@ struct BodyConf {
     /// @note If a dynamic body would have zero mass, the mass is set to one.
     BodyType type = DefaultBodyType;
 
-    /// The world location of the body. Avoid creating bodies at the origin
-    /// since this can lead to many overlapping shapes.
-    Length2 location = DefaultLocation;
-
-    /// The world angle of the body.
-    Angle angle = DefaultAngle;
+    /// @brief The sweep of the body.
+    /// @details This establishes a body's location and angle.
+    /// @note Avoid creating bodies at the origin since this can lead to many overlapping shapes.
+    Sweep sweep = DefaultSweep;
 
     /// The linear velocity of the body's origin in world co-ordinates (in m/s).
     LinearVelocity2 linearVelocity = DefaultLinearVelocity;
@@ -242,22 +241,27 @@ constexpr BodyConf& BodyConf::Use(BodyType t) noexcept
     return *this;
 }
 
+constexpr BodyConf& BodyConf::Use(const Sweep& v) noexcept
+{
+    sweep = v;
+    return *this;
+}
+
 constexpr BodyConf& BodyConf::UseLocation(const Length2& l) noexcept
 {
-    location = l;
+    sweep = Sweep{Position{l, sweep.pos0.angular}};
     return *this;
 }
 
 constexpr BodyConf& BodyConf::UseAngle(Angle a) noexcept
 {
-    angle = a;
+    sweep = Sweep{Position{sweep.pos0.linear, a}};
     return *this;
 }
 
 constexpr BodyConf& BodyConf::Use(const Position& v) noexcept
 {
-    location = v.linear;
-    angle = v.angular;
+    sweep = Sweep{v};
     return *this;
 }
 
@@ -372,11 +376,20 @@ BodyConf GetBodyConf(const Body& body);
 /// @relatedalso BodyConf
 Transformation GetTransformation(const BodyConf& conf) noexcept;
 
+/// @brief Gets the location of the given configuration.
+/// @relatedalso BodyConf
+constexpr auto GetLocation(const BodyConf& conf) noexcept
+    -> Length2
+{
+    return conf.sweep.pos0.linear;
+}
+
 /// @brief Gets the angle of the given configuration.
 /// @relatedalso BodyConf
-constexpr Angle GetAngle(const BodyConf& conf) noexcept
+constexpr auto GetAngle(const BodyConf& conf) noexcept
+    -> Angle
 {
-    return conf.angle;
+    return conf.sweep.pos0.angular;
 }
 
 /// @brief Operator equals.
@@ -384,8 +397,7 @@ constexpr Angle GetAngle(const BodyConf& conf) noexcept
 constexpr bool operator==(const BodyConf& lhs, const BodyConf& rhs) noexcept
 {
     return lhs.type == rhs.type && //
-           lhs.location == rhs.location && //
-           lhs.angle == rhs.angle && //
+           lhs.sweep == rhs.sweep && //
            lhs.linearVelocity == rhs.linearVelocity && //
            lhs.angularVelocity == rhs.angularVelocity && //
            lhs.linearAcceleration == rhs.linearAcceleration && //

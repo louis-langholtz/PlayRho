@@ -43,9 +43,8 @@ public:
 
         // Platform
         {
-            BodyConf bd;
-            bd.location = Vec2(-5.0f, 5.0f) * 1_m;
-            const auto body = CreateBody(GetWorld(), bd);
+            const auto body = CreateBody(GetWorld(),
+                                         BodyConf{}.UseLocation(Vec2(-5.0f, 5.0f) * 1_m));
 
             auto conf = PolygonShapeConf{};
             conf.friction = 0.8f;
@@ -61,7 +60,7 @@ public:
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = GetGravity();
-            bd.location = Vec2(-10.0f + 2.0f * i, 7.0f) * 1_m;
+            bd.UseLocation(Vec2(-10.0f + 2.0f * i, 7.0f) * 1_m);
             const auto body = CreateBody(GetWorld(), bd);
             Attach(GetWorld(), body, boxshape);
         }

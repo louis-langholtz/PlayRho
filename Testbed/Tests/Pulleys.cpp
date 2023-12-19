@@ -56,11 +56,11 @@ public:
             bd.linearAcceleration = GetGravity();
 
             // bd.fixedRotation = true;
-            bd.location = Vec2(-10.0f, y) * 1_m;
+            bd.UseLocation(Vec2(-10.0f, y) * 1_m);
             const auto body1 = CreateBody(GetWorld(), bd);
             Attach(GetWorld(), body1, shape);
 
-            bd.location = Vec2(10.0f, y) * 1_m;
+            bd.UseLocation(Vec2(10.0f, y) * 1_m);
             const auto body2 = CreateBody(GetWorld(), bd);
             Attach(GetWorld(), body2, shape);
 

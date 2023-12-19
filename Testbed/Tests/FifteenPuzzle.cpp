@@ -81,7 +81,7 @@ public:
         BodyConf bd;
         bd.type = BodyType::Dynamic;
         bd.bullet = true;
-        bd.location = GetCenter() + relPos + Length2{sideLength / 2, sideLength / 2};
+        bd.UseLocation(GetCenter() + relPos + Length2{sideLength / 2, sideLength / 2});
         bd.linearDamping = 20_Hz;
         const auto body = CreateBody(GetWorld(), bd);
         Attach(GetWorld(), body, CreateShape(GetWorld(), conf));

@@ -71,10 +71,10 @@ public:
         for (auto j = 0; j < e_columnCount; ++j) {
             for (auto i = 0; i < e_rowCount; ++i) {
                 BodyConf bd;
-                bd.type = BodyType::Dynamic;
-                bd.location = Vec2{-10.0f + (2.1f * j + 1.0f + 0.01f * i) * (radius / 1_m),
-                                   (2.0f * i + 1.0f) * (radius / 1_m)} *
-                              1_m;
+                bd.Use(BodyType::Dynamic);
+                bd.UseLocation(Vec2{-10.0f + (2.1f * j + 1.0f + 0.01f * i) * (radius / 1_m),
+                                    (2.0f * i + 1.0f) * (radius / 1_m)} *
+                               1_m);
                 Attach(GetWorld(), CreateBody(GetWorld(), bd), shape);
             }
         }
@@ -100,13 +100,11 @@ public:
     void CreateCircle()
     {
         const auto radius = wall_length / 10; // 2
-
-        BodyConf bd;
-        bd.type = BodyType::Dynamic;
-        bd.bullet = m_bullet_mode;
-        bd.location = Vec2{0, 20} * 1_m + GetRandomOffset();
+        auto bd = BodyConf{};
+        bd.Use(BodyType::Dynamic);
+        bd.UseBullet(m_bullet_mode);
+        bd.UseLocation(Vec2{0, 20} * 1_m + GetRandomOffset());
         // bd.allowSleep = false;
-
         auto conf = DiskShapeConf{};
         conf.density = 1_kgpm2;
         conf.restitution = 0.8f;
@@ -119,9 +117,9 @@ public:
         const auto side_length = wall_length / Real{5}; // 4
         // originally restitution was 0.8f
         BodyConf bd;
-        bd.type = BodyType::Dynamic;
-        bd.bullet = m_bullet_mode;
-        bd.location = Vec2{0, 20} * 1_m + GetRandomOffset();
+        bd.Use(BodyType::Dynamic);
+        bd.UseBullet(m_bullet_mode);
+        bd.UseLocation(Vec2{0, 20} * 1_m + GetRandomOffset());
         Attach(GetWorld(), CreateBody(GetWorld(), bd),
                CreateShape(GetWorld(),
                            PolygonShapeConf{}.UseDensity(1_kgpm2).UseRestitution(0.0f).SetAsBox(

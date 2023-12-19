@@ -36,9 +36,8 @@ public:
                            EdgeShapeConf(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m)));
 
         {
-            BodyConf bd;
-            bd.location = Vec2(-1.5f, 10.0f) * 1_m;
-            const auto ground = CreateBody(GetWorld(), bd);
+            const auto ground = CreateBody(GetWorld(),
+                                           BodyConf{}.UseLocation(Vec2(-1.5f, 10.0f) * 1_m));
             Attach(GetWorld(), ground, CreateShape(GetWorld(), PolygonShapeConf{6_m, 0.25_m}));
         }
 
@@ -59,10 +58,8 @@ public:
         {
             auto shape = PolygonShapeConf{};
             shape.SetAsBox(7.2_m, 0.25_m, Length2{}, 0.3_rad);
-
-            BodyConf bd;
-            bd.location = Vec2(1.2f, 6.0f) * 1_m;
-            const auto ground = CreateBody(GetWorld(), bd);
+            const auto ground = CreateBody(GetWorld(),
+                                           BodyConf{}.UseLocation(Vec2(1.2f, 6.0f) * 1_m));
             Attach(GetWorld(), ground, CreateShape(GetWorld(), shape));
         }
 
@@ -71,11 +68,11 @@ public:
 
         BodyID b3;
         {
-            BodyConf bd;
-            bd.type = BodyType::Dynamic;
-            bd.location = Vec2(-0.9f, 1.0f) * 1_m;
-            bd.angle = -0.15_rad;
-            b3 = CreateBody(GetWorld(), bd);
+            b3 = CreateBody(GetWorld(),
+                            BodyConf{}
+                                .Use(BodyType::Dynamic)
+                                .UseLocation(Vec2(-0.9f, 1.0f) * 1_m)
+                                .UseAngle(-0.15_rad));
             Attach(GetWorld(), b3,
                    CreateShape(GetWorld(),
                                PolygonShapeConf{}.UseDensity(10_kgpm2).SetAsBox(6_m, 0.125_m)));
@@ -87,10 +84,8 @@ public:
 
         BodyID b4;
         {
-            BodyConf bd;
-            bd.type = BodyType::Dynamic;
-            bd.location = Vec2(-10.0f, 15.0f) * 1_m;
-            b4 = CreateBody(GetWorld(), bd);
+            b4 = CreateBody(GetWorld(),
+                            BodyConf{}.Use(BodyType::Dynamic).UseLocation(Vec2(-10.0f, 15.0f) * 1_m));
             Attach(GetWorld(), b4,
                    CreateShape(GetWorld(),
                                PolygonShapeConf{}.UseDensity(10_kgpm2).SetAsBox(0.25_m, 0.25_m)));
@@ -102,10 +97,8 @@ public:
 
         BodyID b5;
         {
-            BodyConf bd;
-            bd.type = BodyType::Dynamic;
-            bd.location = Vec2(6.5f, 3.0f) * 1_m;
-            b5 = CreateBody(GetWorld(), bd);
+            b5 = CreateBody(GetWorld(),
+                            BodyConf{}.Use(BodyType::Dynamic).UseLocation(Vec2(6.5f, 3.0f) * 1_m));
             auto conf = PolygonShapeConf{};
             conf.density = 10_kgpm2;
             conf.friction = 0.1f;
@@ -123,10 +116,8 @@ public:
 
         BodyID b6;
         {
-            BodyConf bd;
-            bd.type = BodyType::Dynamic;
-            bd.location = Vec2(6.5f, 4.1f) * 1_m;
-            b6 = CreateBody(GetWorld(), bd);
+            b6 = CreateBody(GetWorld(),
+                            BodyConf{}.Use(BodyType::Dynamic).UseLocation(Vec2(6.5f, 4.1f) * 1_m));
             Attach(GetWorld(), b6,
                    CreateShape(GetWorld(), PolygonShapeConf(1_m, 0.1_m).UseDensity(30_kgpm2)));
         }
@@ -136,10 +127,8 @@ public:
 
         BodyID b7;
         {
-            BodyConf bd;
-            bd.type = BodyType::Dynamic;
-            bd.location = Vec2(7.4f, 1.0f) * 1_m;
-            b7 = CreateBody(GetWorld(), bd);
+            b7 = CreateBody(GetWorld(),
+                            BodyConf{}.Use(BodyType::Dynamic).UseLocation(Vec2(7.4f, 1.0f) * 1_m));
             auto conf = PolygonShapeConf{};
             conf.density = 10_kgpm2;
             conf.SetAsBox(0.1_m, 1_m);
@@ -157,16 +146,16 @@ public:
         CreateJoint(GetWorld(), djd);
 
         {
-            const auto radius = 0.2_m;
+            const auto r = 0.2_m;
             auto conf = DiskShapeConf{};
             conf.density = 10_kgpm2;
-            conf.vertexRadius = radius;
+            conf.vertexRadius = r;
             const auto shape = CreateShape(GetWorld(), conf);
             for (auto i = 0; i < 4; ++i) {
-                BodyConf bd;
-                bd.type = BodyType::Dynamic;
-                bd.location = Length2{5.9_m + 2 * radius * static_cast<Real>(i), 2.4_m};
-                const auto body = CreateBody(GetWorld(), bd);
+                const auto body = CreateBody(GetWorld(),
+                                             BodyConf{}
+                                                 .Use(BodyType::Dynamic)
+                                                 .UseLocation(Length2{5.9_m + 2 * r * Real(i), 2.4_m}));
                 Attach(GetWorld(), body, shape);
             }
         }

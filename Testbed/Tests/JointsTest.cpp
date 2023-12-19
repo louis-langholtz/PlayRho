@@ -230,8 +230,8 @@ private:
         auto jd1 = RevoluteJointConf{};
         jd1.bodyA = containerBody;
         jd1.bodyB = body1;
-        jd1.localAnchorA = GetLocalPoint(GetWorld(), containerBody, bd1.location);
-        jd1.localAnchorB = GetLocalPoint(GetWorld(), body1, bd1.location);
+        jd1.localAnchorA = GetLocalPoint(GetWorld(), containerBody, GetLocation(bd1));
+        jd1.localAnchorB = GetLocalPoint(GetWorld(), body1, GetLocation(bd1));
         jd1.referenceAngle = GetAngle(GetWorld(), body1) - GetAngle(GetWorld(), containerBody);
         const auto joint1 = CreateJoint(GetWorld(), jd1);
 
@@ -239,7 +239,7 @@ private:
         const auto body2 = CreateBody(GetWorld(), bd2);
         Attach(GetWorld(), body2, m_diskShape);
 
-        const auto jd2 = GetRevoluteJointConf(GetWorld(), containerBody, body2, bd2.location);
+        const auto jd2 = GetRevoluteJointConf(GetWorld(), containerBody, body2, GetLocation(bd2));
         const auto joint2 = CreateJoint(GetWorld(), jd2);
 
         auto bd3 = BodyConf(DynamicBD)
@@ -248,7 +248,7 @@ private:
         const auto body3 = CreateBody(GetWorld(), bd3);
         Attach(GetWorld(), body3, m_rectShape);
 
-        auto jd3 = GetPrismaticJointConf(GetWorld(), containerBody, body3, bd3.location,
+        auto jd3 = GetPrismaticJointConf(GetWorld(), containerBody, body3, GetLocation(bd3),
                                          UnitVec::GetUp());
         jd3.upperTranslation = +0_m;
         jd3.lowerTranslation = -3.6_m;

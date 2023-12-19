@@ -43,10 +43,10 @@ public:
 
             // Define crank.
             {
-                BodyConf bd;
-                bd.type = BodyType::Dynamic;
-                bd.location = Vec2(0.0f, 7.0f) * 1_m;
-                const auto body = CreateBody(GetWorld(), bd);
+                const auto body = CreateBody(GetWorld(),
+                                             BodyConf{}
+                                                 .Use(BodyType::Dynamic)
+                                                 .UseLocation(Vec2(0.0f, 7.0f) * 1_m));
                 Attach(GetWorld(), body,
                        CreateShape(GetWorld(),
                                    PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 2_m)));
@@ -60,10 +60,10 @@ public:
 
             // Define follower.
             {
-                BodyConf bd;
-                bd.type = BodyType::Dynamic;
-                bd.location = Vec2(0.0f, 13.0f) * 1_m;
-                const auto body = CreateBody(GetWorld(), bd);
+                const auto body = CreateBody(GetWorld(),
+                                             BodyConf{}
+                                                 .Use(BodyType::Dynamic)
+                                                 .UseLocation(Vec2(0.0f, 13.0f) * 1_m));
                 Attach(GetWorld(), body,
                        CreateShape(GetWorld(),
                                    PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 4_m)));
@@ -76,11 +76,11 @@ public:
 
             // Define piston
             {
-                BodyConf bd;
-                bd.type = BodyType::Dynamic;
-                bd.fixedRotation = true;
-                bd.location = Vec2(0.0f, 17.0f) * 1_m;
-                const auto body = CreateBody(GetWorld(), bd);
+                const auto body = CreateBody(GetWorld(),
+                                             BodyConf{}
+                                                 .Use(BodyType::Dynamic)
+                                                 .UseFixedRotation(true)
+                                                 .UseLocation(Vec2(0.0f, 17.0f) * 1_m));
                 Attach(GetWorld(), body,
                        CreateShape(GetWorld(),
                                    PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(1.5_m, 1.5_m)));
@@ -95,14 +95,11 @@ public:
             }
 
             // Create a payload
-            {
-                BodyConf bd;
-                bd.type = BodyType::Dynamic;
-                bd.location = Vec2(0.0f, 23.0f) * 1_m;
-                Attach(GetWorld(), CreateBody(GetWorld(), bd),
-                       CreateShape(GetWorld(),
-                                   PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(1.5_m, 1.5_m)));
-            }
+            Attach(GetWorld(),
+                   CreateBody(GetWorld(),
+                              BodyConf{}.Use(BodyType::Dynamic).UseLocation(Vec2(0.0f, 23.0f) * 1_m)),
+                   CreateShape(GetWorld(),
+                               PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(1.5_m, 1.5_m)));
         }
         SetAccelerations(GetWorld(), GetGravity());
         RegisterForKey(GLFW_KEY_F, GLFW_PRESS, 0, "toggle friction", [&](KeyActionMods) {

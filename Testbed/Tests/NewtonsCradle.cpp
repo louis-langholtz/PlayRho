@@ -100,11 +100,10 @@ public:
             return;
         }
         m_frame = [&]() {
-            BodyConf bd;
-            bd.type = BodyType::Static;
-            bd.location = Length2{0, frame_height};
-            const auto body = CreateBody(GetWorld(), bd);
-
+            const auto body = CreateBody(GetWorld(),
+                                         BodyConf{}
+                                             .Use(BodyType::Static)
+                                             .UseLocation(Length2{0, frame_height}));
             const auto frame_width = frame_width_per_arm * static_cast<Real>(m_num_arms);
             const auto shape =
                 PolygonShapeConf{}.SetAsBox(frame_width / 2, frame_width / 24).UseDensity(20_kgpm2);
@@ -114,14 +113,12 @@ public:
 
         for (auto i = decltype(m_num_arms){0}; i < m_num_arms; ++i) {
             const auto x = (((i + Real(0.5f)) - Real(m_num_arms) / 2) * frame_width_per_arm);
-
-            BodyConf bd;
-            bd.type = BodyType::Dynamic;
-            bd.linearAcceleration = GetGravity();
-            bd.bullet = m_bullet_mode;
-            bd.location = Length2{x, frame_height - (arm_length / 2)};
-
-            m_swings[i] = CreateBody(GetWorld(), bd);
+            m_swings[i] = CreateBody(GetWorld(),
+                                     BodyConf{}
+                                         .Use(BodyType::Dynamic)
+                                         .UseLinearAcceleration(GetGravity())
+                                         .UseBullet(m_bullet_mode)
+                                         .UseLocation(Length2{x, frame_height - (arm_length / 2)}));
             CreateArm(m_swings[i], arm_length);
             CreateBall(m_swings[i], Length2{0, -arm_length / 2}, ball_radius);
 
@@ -150,18 +147,15 @@ public:
     {
         if (!IsValid(m_right_side_wall)) {
             const auto frame_width = static_cast<Real>(m_num_arms) * frame_width_per_arm;
-
-            BodyConf def;
-            def.type = BodyType::Static;
-            def.location =
-                Length2{frame_width / 2 + frame_width / 24, frame_height - (arm_length / 2)};
-            const auto body = CreateBody(GetWorld(), def);
-
+            const auto body = CreateBody(GetWorld(),
+                                         BodyConf{}
+                                             .Use(BodyType::Static)
+                                             .UseLocation(Length2{frame_width / 2 + frame_width / 24,
+                                                                  frame_height - (arm_length / 2)}));
             const auto shape = PolygonShapeConf{}
                                    .SetAsBox(frame_width / 24, arm_length / 2 + frame_width / 24)
                                    .UseDensity(20_kgpm2);
             Attach(GetWorld(), body, CreateShape(GetWorld(), shape));
-
             m_right_side_wall = body;
         }
     }
@@ -170,13 +164,12 @@ public:
     {
         if (!IsValid(m_left_side_wall)) {
             const auto frame_width = static_cast<Real>(m_num_arms) * frame_width_per_arm;
-
-            BodyConf def;
-            def.type = BodyType::Static;
-            def.location = Length2{-(frame_width / Real{2} + frame_width / Real{24}),
-                                   frame_height - (arm_length / Real{2})};
-            const auto body = CreateBody(GetWorld(), def);
-
+            const auto location = Length2{-(frame_width / Real{2} + frame_width / Real{24}),
+                                          frame_height - (arm_length / Real{2})};
+            const auto body = CreateBody(GetWorld(),
+                                         BodyConf{}
+                                             .Use(BodyType::Static)
+                                             .UseLocation(location));
             const auto shape = PolygonShapeConf{}
                                    .SetAsBox(frame_width / Real{24},
                                              (arm_length / Real{2} + frame_width / Real{24}))

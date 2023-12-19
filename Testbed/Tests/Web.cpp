@@ -50,19 +50,19 @@ public:
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = GetGravity();
 
-            bd.location = Vec2(-5.0f, 5.0f) * 1_m;
+            bd.UseLocation(Vec2(-5.0f, 5.0f) * 1_m);
             m_bodies[0] = CreateBody(GetWorld(), bd);
             Attach(GetWorld(), m_bodies[0], shape);
 
-            bd.location = Vec2(5.0f, 5.0f) * 1_m;
+            bd.UseLocation(Vec2(5.0f, 5.0f) * 1_m);
             m_bodies[1] = CreateBody(GetWorld(), bd);
             Attach(GetWorld(), m_bodies[1], shape);
 
-            bd.location = Vec2(5.0f, 15.0f) * 1_m;
+            bd.UseLocation(Vec2(5.0f, 15.0f) * 1_m);
             m_bodies[2] = CreateBody(GetWorld(), bd);
             Attach(GetWorld(), m_bodies[2], shape);
 
-            bd.location = Vec2(-5.0f, 15.0f) * 1_m;
+            bd.UseLocation(Vec2(-5.0f, 15.0f) * 1_m);
             m_bodies[3] = CreateBody(GetWorld(), bd);
             Attach(GetWorld(), m_bodies[3], shape);
 

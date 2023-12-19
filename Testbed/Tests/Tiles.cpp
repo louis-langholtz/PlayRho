@@ -40,10 +40,7 @@ public:
 
         {
             const auto a = Real{0.5f};
-            BodyConf bd;
-            GetY(bd.location) = -a * 1_m;
-            auto ground = Body{bd};
-
+            auto ground = Body{BodyConf{}.UseLocation(Length2{0_m, -a * 1_m})};
             const auto N = 200;
             const auto M = 10;
             Vec2 position;
@@ -72,16 +69,11 @@ public:
             const auto deltaX = Vec2(0.5625f, 1.25f);
             const auto deltaY = Vec2(1.125f, 0.0f);
 
+            auto bd = BodyConf{}.Use(BodyType::Dynamic).UseLinearAcceleration(GetGravity()).Use(shape);
             for (auto i = 0; i < e_count; ++i) {
                 y = x;
                 for (auto j = i; j < e_count; ++j) {
-                    BodyConf bd;
-                    bd.type = BodyType::Dynamic;
-                    bd.location = y * 1_m;
-                    bd.linearAcceleration = GetGravity();
-                    auto body = Body{bd};
-                    body.Attach(shape);
-                    CreateBody(GetWorld(), body);
+                    CreateBody(GetWorld(), Body{bd.UseLocation(y * 1_m)});
                     ++m_fixtureCount;
                     y += deltaY;
                 }

@@ -101,10 +101,10 @@ public:
 
         // Teeter
         {
-            auto bd = BodyConf{};
-            bd.location = Vec2(140.0f, 1.0f) * 1_m;
-            bd.type = BodyType::Dynamic;
-            const auto body = CreateBody(GetWorld(), bd);
+            const auto body = CreateBody(GetWorld(),
+                                         BodyConf{}
+                                             .UseLocation(Vec2(140.0f, 1.0f) * 1_m)
+                                             .Use(BodyType::Dynamic));
             Attach(GetWorld(), body,
                    CreateShape(GetWorld(),
                                PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(10_m, 0.25_m)));
@@ -127,9 +127,10 @@ public:
                                 1_m, 0.125_m));
             auto prevBody = ground;
             for (auto i = 0; i < N; ++i) {
-                auto bd = BodyConf{}.UseType(BodyType::Dynamic);
-                bd.location = Vec2(161 + 2 * i, -0.125f) * 1_m;
-                const auto body = CreateBody(GetWorld(), bd);
+                const auto body = CreateBody(GetWorld(),
+                                             BodyConf{}
+                                                 .UseType(BodyType::Dynamic)
+                                                 .UseLocation(Vec2(161 + 2 * i, -0.125f) * 1_m));
                 Attach(GetWorld(), body, shape);
                 CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), prevBody, body,
                                                              Vec2(160 + 2 * i, -0.125f) * 1_m));

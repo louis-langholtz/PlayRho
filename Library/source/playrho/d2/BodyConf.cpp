@@ -30,8 +30,7 @@ BodyConf GetBodyConf(const Body& body)
 {
     auto def = BodyConf{};
     def.type = GetType(body);
-    def.location = GetLocation(body);
-    def.angle = GetAngle(body);
+    def.sweep = GetSweep(body);
     def.linearVelocity = GetLinearVelocity(body);
     def.angularVelocity = GetAngularVelocity(body);
     def.linearAcceleration = GetLinearAcceleration(body);
@@ -50,7 +49,7 @@ BodyConf GetBodyConf(const Body& body)
 
 Transformation GetTransformation(const BodyConf& conf) noexcept
 {
-    return {conf.location, UnitVec::Get(conf.angle)};
+    return {conf.sweep.pos0.linear, UnitVec::Get(conf.sweep.pos0.angular)};
 }
 
 } // namespace playrho::d2

@@ -31,9 +31,7 @@ public:
     BulletTest()
     {
         {
-            BodyConf bd;
-            bd.location = Length2{};
-            const auto body = CreateBody(GetWorld(), bd);
+            const auto body = CreateBody(GetWorld(), BodyConf{}.UseLocation(Length2{}));
             Attach(GetWorld(), body,
                    CreateShape(GetWorld(),
                                EdgeShapeConf{Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m}));
@@ -46,7 +44,7 @@ public:
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = GetGravity();
-            bd.location = Vec2(0.0f, 4.0f) * 1_m;
+            bd.UseLocation(Vec2(0.0f, 4.0f) * 1_m);
 
             auto conf = PolygonShapeConf{};
             conf.UseDensity(1_kgpm2);
@@ -60,7 +58,7 @@ public:
 
             // m_x = RandomFloat(-1.0f, 1.0f);
             m_x = 0.20352793f;
-            bd.location = Vec2(m_x, 10.0f) * 1_m;
+            bd.UseLocation(Vec2(m_x, 10.0f) * 1_m);
             bd.bullet = true;
 
             m_bullet = CreateBody(GetWorld(), bd);

@@ -30,8 +30,7 @@ using namespace playrho::d2;
 TEST(BodyConf, DefaultConstruction)
 {
     EXPECT_EQ(BodyConf().type, BodyConf::DefaultBodyType);
-    EXPECT_EQ(BodyConf().location, BodyConf::DefaultLocation);
-    EXPECT_EQ(BodyConf().angle, BodyConf::DefaultAngle);
+    EXPECT_EQ(BodyConf().sweep, BodyConf::DefaultSweep);
     EXPECT_EQ(BodyConf().linearVelocity, BodyConf::DefaultLinearVelocity);
     EXPECT_EQ(BodyConf().angularVelocity, BodyConf::DefaultAngularVelocity);
     EXPECT_EQ(BodyConf().linearAcceleration, BodyConf::DefaultLinearAcceleration);
@@ -58,8 +57,7 @@ TEST(BodyConf, UseType)
 TEST(BodyConf, UsePosition)
 {
     const auto p = Position{Length2{3_m, -4_m}, 22_deg};
-    EXPECT_EQ(BodyConf{}.Use(p).location, p.linear);
-    EXPECT_EQ(BodyConf{}.Use(p).angle, p.angular);
+    EXPECT_EQ(BodyConf{}.Use(p).sweep.pos0, p);
 }
 
 TEST(BodyConf, UseVelocity)
@@ -82,8 +80,7 @@ TEST(BodyConf, UseShapes)
 static void IsSame(const BodyConf& conf, const BodyConf& conf2)
 {
     EXPECT_EQ(conf.type, conf2.type);
-    EXPECT_EQ(conf.location, conf2.location);
-    EXPECT_EQ(conf.angle, conf2.angle);
+    EXPECT_EQ(conf.sweep, conf2.sweep);
     EXPECT_EQ(conf.linearVelocity, conf2.linearVelocity);
     EXPECT_EQ(conf.angularVelocity, conf2.angularVelocity);
     EXPECT_EQ(conf.linearAcceleration, conf2.linearAcceleration);
@@ -111,8 +108,8 @@ TEST(BodyConf, GetBodyConf2)
 {
     auto conf = BodyConf{};
     conf.type = BodyType::Dynamic;
-    conf.location = Length2{2_m, 3_m};
-    conf.angle = 30_deg;
+    conf.UseLocation(Length2{2_m, 3_m});
+    conf.UseAngle(30_deg);
     conf.linearVelocity = LinearVelocity2{2_mps, 0_mps};
     conf.angularVelocity = 4_rpm;
     conf.linearAcceleration = LinearAcceleration2{2_mps2, 0_mps2};

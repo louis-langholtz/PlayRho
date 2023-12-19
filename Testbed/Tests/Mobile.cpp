@@ -54,7 +54,7 @@ public:
         BodyConf bodyConf;
         bodyConf.type = BodyType::Dynamic;
         bodyConf.linearAcceleration = GetGravity();
-        bodyConf.location = GetLocation(GetWorld(), parent) + localAnchor - h;
+        bodyConf.UseLocation(GetLocation(GetWorld(), parent) + localAnchor - h);
         const auto body = CreateBody(GetWorld(), bodyConf);
         Attach(GetWorld(), body, shape);
 
