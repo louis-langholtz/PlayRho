@@ -782,7 +782,7 @@ auto SetAwake(ObjectPool<Contact>& contacts,
               const Span<const std::tuple<ContactKey, ContactID>>& bodyContacts) -> void
 {
     for (const auto& elem: bodyContacts) {
-        contacts[to_underlying(std::get<ContactID>(elem))].SetAwake();
+        SetAwake(contacts[to_underlying(std::get<ContactID>(elem))]);
     }
 }
 
@@ -795,15 +795,15 @@ auto UnsetAwake(ObjectPool<Contact>& contacts, // force newline
     for (const auto& elem: bodyContacts) {
         auto& contact = contacts[to_underlying(std::get<ContactID>(elem))];
         if (!IsAwake(bodies[to_underlying(GetOtherBody(contact, id))])) {
-            contact.UnsetAwake();
+            UnsetAwake(contact);
         }
     }
 }
 
 auto SetAwake(ObjectPool<Body>& bodies, const Contact& c) -> void
 {
-    bodies[to_underlying(GetBodyA(c))].SetAwake();
-    bodies[to_underlying(GetBodyB(c))].SetAwake();
+    SetAwake(bodies[to_underlying(GetBodyA(c))]);
+    SetAwake(bodies[to_underlying(GetBodyB(c))]);
 }
 
 } // anonymous namespace
@@ -1184,7 +1184,7 @@ void AabbTreeWorld::Remove(JointID id)
     // Wake up connected bodies.
     if (bodyIdA != InvalidBodyID) {
         auto& bodyA = m_bodyBuffer[to_underlying(bodyIdA)];
-        bodyA.SetAwake();
+        SetAwake(bodyA);
         auto& bodyJoints = m_bodyJoints[to_underlying(bodyIdA)];
         const auto found = FindTypeValue(bodyJoints, id);
         assert(found);
@@ -1194,7 +1194,7 @@ void AabbTreeWorld::Remove(JointID id)
     }
     if (bodyIdB != InvalidBodyID) {
         auto& bodyB = m_bodyBuffer[to_underlying(bodyIdB)];
-        bodyB.SetAwake();
+        SetAwake(bodyB);
         auto& bodyJoints = m_bodyJoints[to_underlying(bodyIdB)];
         const auto found = FindTypeValue(bodyJoints, id);
         assert(found);
@@ -1426,13 +1426,11 @@ void AabbTreeWorld::AddContactsToIsland(Island& island, BodyStack& stack,
         const auto contactID = std::get<ContactID>(ci);
         if (!m_islanded.contacts[to_underlying(contactID)]) {
             const auto& contact = m_contactBuffer[to_underlying(contactID)];
-            if (IsEnabled(contact) && IsTouching(contact) && !IsSensor(contact))
-            {
+            if (IsEnabled(contact) && IsTouching(contact) && !IsSensor(contact)) {
                 const auto other = GetOtherBody(contact, bodyID);
                 island.contacts.push_back(contactID);
                 m_islanded.contacts[to_underlying(contactID)] = true;
-                if (!m_islanded.bodies[to_underlying(other)])
-                {
+                if (!m_islanded.bodies[to_underlying(other)]) {
                     m_islanded.bodies[to_underlying(other)] = true;
                     stack.push_back(other);
                 }
@@ -2051,7 +2049,7 @@ AabbTreeWorld::ProcessContactsForTOI( // NOLINT(readability-function-cognitive-c
         const auto contactID = std::get<ContactID>(ci);
         if (!m_islanded.contacts[to_underlying(contactID)]) {
             auto& contact = m_contactBuffer[to_underlying(contactID)];
-            if (!contact.IsSensor()) {
+            if (!IsSensor(contact)) {
                 const auto otherId = GetOtherBody(contact, id);
                 auto& other = m_bodyBuffer[to_underlying(otherId)];
                 if (bodyImpenetrable || IsImpenetrable(other)) {
@@ -2064,7 +2062,7 @@ AabbTreeWorld::ProcessContactsForTOI( // NOLINT(readability-function-cognitive-c
                         }
 
                         // Update the contact points
-                        contact.SetEnabled();
+                        SetEnabled(contact);
                         if (NeedsUpdating(contact)) {
                             Update(contactID, updateConf);
                             ++results.contactsUpdated;
@@ -2232,11 +2230,11 @@ void AabbTreeWorld::InternalDestroy(ContactID contactID, const Body* from)
         }
     }
     auto& manifold = m_manifoldBuffer[to_underlying(contactID)];
-    if ((manifold.GetPointCount() > 0) && !contact.IsSensor()) {
+    if ((manifold.GetPointCount() > 0) && !IsSensor(contact)) {
         // Contact may have been keeping accelerable bodies of fixture A or B from moving.
         // Need to awaken those bodies now in case they are again movable.
-        bodyA->SetAwake();
-        bodyB->SetAwake();
+        SetAwake(*bodyA);
+        SetAwake(*bodyB);
     }
     m_contactBuffer.Free(to_underlying(contactID));
     m_manifoldBuffer.Free(to_underlying(contactID));
@@ -2341,7 +2339,7 @@ AabbTreeWorld::UpdateContactsStats AabbTreeWorld::UpdateContacts(const StepConf&
         // Possible that bodyA.GetSweep().alpha0 != 0
         // Possible that bodyB.GetSweep().alpha0 != 0
 
-        contact.SetEnabled();
+        SetEnabled(contact);
 
         // Update the contact manifold and notify the listener.
         // Note: ideally contacts are only updated if there was a change to:
@@ -2350,7 +2348,7 @@ AabbTreeWorld::UpdateContactsStats AabbTreeWorld::UpdateContacts(const StepConf&
         //   - The "maxCirclesRatio" per-step configuration state if contact IS NOT for sensor.
         //   - The "maxDistanceIters" per-step configuration state if contact IS for sensor.
         //
-        if (contact.NeedsUpdating()) {
+        if (NeedsUpdating(contact)) {
             // The following may call listener but is otherwise thread-safe.
 #if defined(DO_THREADED)
             contactsNeedingUpdate.push_back(contactID);
@@ -2767,7 +2765,7 @@ void SetBody(AabbTreeWorld& world, BodyID id, Body value)
         }
         else {
             UnsetAwake(world.m_contactBuffer, world.m_bodyContacts[to_underlying(id)],
-                          id, world.m_bodyBuffer);
+                       id, world.m_bodyBuffer);
         }
     }
     if (addToBodiesForSync) {
