@@ -298,7 +298,7 @@ private:
         e_sensorFlag = 0x20,
 
         /// Indicates whether the contact is to be treated as active or not.
-        e_activeFlag = 0x40,
+        e_awakeFlag = 0x40,
 
         /// Whether contact is to be treated as between impenetrable bodies.
         e_impenetrableFlag = 0x80,
@@ -507,17 +507,17 @@ constexpr void Contact::UnsetImpenetrable() noexcept
 
 constexpr bool Contact::IsActive() const noexcept
 {
-    return (m_flags & e_activeFlag) != 0u;
+    return (m_flags & e_awakeFlag) != 0u;
 }
 
 constexpr void Contact::SetIsActive() noexcept
 {
-    m_flags |= e_activeFlag;
+    m_flags |= e_awakeFlag;
 }
 
 constexpr void Contact::UnsetIsActive() noexcept
 {
-    m_flags &= ~e_activeFlag;
+    m_flags &= ~e_awakeFlag;
 }
 
 constexpr void Contact::IncrementToiCount() noexcept
