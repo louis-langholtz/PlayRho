@@ -23,9 +23,11 @@
 #include <cassert> // for assert
 #include <cstdint> // for std::uint32_t
 #include <functional>
+#include <iterator> // for std::next
 #include <limits> // for std::numeric_limits
 #include <map>
 #include <set>
+#include <tuple>
 #include <utility> // for std::pair
 #include <vector>
 
@@ -39,20 +41,25 @@
 #endif
 
 #include <playrho/BodyID.hpp>
+#include <playrho/BodyType.hpp>
 #include <playrho/Contact.hpp>
 #include <playrho/ContactID.hpp>
 #include <playrho/ContactKey.hpp>
 #include <playrho/ConstraintSolverConf.hpp>
 #include <playrho/FlagGuard.hpp>
+#include <playrho/InvalidArgument.hpp>
 #include <playrho/Island.hpp>
 #include <playrho/LengthError.hpp>
 #include <playrho/Math.hpp>
 #include <playrho/MovementConf.hpp>
 #include <playrho/ObjectPool.hpp>
+#include <playrho/Real.hpp>
 #include <playrho/Settings.hpp>
 #include <playrho/ShapeID.hpp>
 #include <playrho/Span.hpp>
 #include <playrho/StepConf.hpp>
+#include <playrho/StepStats.hpp>
+#include <playrho/ToiOutput.hpp>
 #include <playrho/to_underlying.hpp>
 #include <playrho/Units.hpp>
 #include <playrho/WrongState.hpp>
@@ -85,8 +92,11 @@
 #include <playrho/d2/VelocityConstraint.hpp>
 #include <playrho/d2/PositionConstraint.hpp>
 #include <playrho/d2/TimeOfImpact.hpp>
+#include <playrho/d2/Transformation.hpp>
 #include <playrho/d2/RayCastOutput.hpp>
 #include <playrho/d2/Shape.hpp>
+#include <playrho/d2/Velocity.hpp>
+#include <playrho/d2/WorldConf.hpp>
 #include <playrho/d2/WorldManifold.hpp>
 
 // Enable this macro to enable sorting ID lists like m_contacts. This results in more linearly
@@ -126,7 +136,9 @@ namespace {
 constexpr auto idIsDestroyedMsg = "ID is destroyed";
 constexpr auto worldIsLockedMsg = "world is locked";
 
-inline void IntegratePositions(const Span<const BodyID>& bodies, const Span<BodyConstraint>& constraints, Time h)
+inline void IntegratePositions(const Span<const BodyID>& bodies,
+                               const Span<BodyConstraint>& constraints,
+                               Time h)
 {
     assert(IsValid(h));
     for_each(cbegin(bodies), cend(bodies), [&](const auto& id) {
