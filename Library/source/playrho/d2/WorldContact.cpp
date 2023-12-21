@@ -40,7 +40,7 @@ bool IsTouching(const World& world, ContactID id)
 
 bool IsAwake(const World& world, ContactID id)
 {
-    return IsActive(GetContact(world, id));
+    return IsAwake(GetContact(world, id));
 }
 
 void SetAwake(World& world, ContactID id)

@@ -381,13 +381,13 @@ inline BodyCounter Sleepem(const Span<const BodyID>& bodies,
                 auto& contact = contactBuffer[to_underlying(contactId)];
                 if (GetBodyA(contact) == bodyID) {
                     if (!IsAwake(bodyBuffer[to_underlying(GetBodyB(contact))])) {
-                        UnsetIsActive(contact);
+                        UnsetAwake(contact);
                     }
                 }
                 else {
                     assert(GetBodyB(contact) == bodyID);
                     if (!IsAwake(bodyBuffer[to_underlying(GetBodyA(contact))])) {
-                        UnsetIsActive(contact);
+                        UnsetAwake(contact);
                     }
                 }
             }
@@ -766,24 +766,24 @@ auto Validate(const Container& container, const Span<const ElementType>& ids)
     }
 }
 
-auto SetIsActive(ObjectPool<Contact>& contacts,
-                 const Span<const std::tuple<ContactKey, ContactID>>& bodyContacts) -> void
+auto SetAwake(ObjectPool<Contact>& contacts,
+              const Span<const std::tuple<ContactKey, ContactID>>& bodyContacts) -> void
 {
     for (const auto& elem: bodyContacts) {
-        contacts[to_underlying(std::get<ContactID>(elem))].SetIsActive();
+        contacts[to_underlying(std::get<ContactID>(elem))].SetAwake();
     }
 }
 
-auto UnsetIsActive(ObjectPool<Contact>& contacts, // force newline
-                   const Span<const std::tuple<ContactKey, ContactID>>& bodyContacts,
-                   BodyID id, // force newline
-                   const Span<const Body>& bodies) -> void
+auto UnsetAwake(ObjectPool<Contact>& contacts, // force newline
+                const Span<const std::tuple<ContactKey, ContactID>>& bodyContacts,
+                BodyID id, // force newline
+                const Span<const Body>& bodies) -> void
 {
     // sleep associated contacts whose other body is also asleep
     for (const auto& elem: bodyContacts) {
         auto& contact = contacts[to_underlying(std::get<ContactID>(elem))];
         if (!IsAwake(bodies[to_underlying(GetOtherBody(contact, id))])) {
-            contact.UnsetIsActive();
+            contact.UnsetAwake();
         }
     }
 }
@@ -1667,7 +1667,7 @@ AabbTreeWorld::UpdateContactTOIs(const StepConf& conf)
             ++results.numValidTOI;
             continue;
         }
-        if (!IsEnabled(c) || IsSensor(c) || !IsActive(c) || !IsImpenetrable(c))
+        if (!IsEnabled(c) || IsSensor(c) || !IsAwake(c) || !IsImpenetrable(c))
         {
             continue;
         }
@@ -1694,7 +1694,7 @@ AabbTreeWorld::UpdateContactTOIs(const StepConf& conf)
         Advance0(bA, alpha0);
         Advance0(bB, alpha0);
 
-        // Compute the TOI for this contact (one or both bodies are active and impenetrable).
+        // Compute the TOI for this contact (one or both bodies are awake and impenetrable).
         // Computes the time of impact in interval [0, 1]
         const auto proxyA = GetChild(m_shapeBuffer[to_underlying(GetShapeA(c))], GetChildIndexA(c));
         const auto proxyB = GetChild(m_shapeBuffer[to_underlying(GetShapeB(c))], GetChildIndexB(c));
@@ -1703,7 +1703,7 @@ AabbTreeWorld::UpdateContactTOIs(const StepConf& conf)
         const auto sweepA = GetNormalized(bA.GetSweep());
         const auto sweepB = GetNormalized(bB.GetSweep());
 
-        // Compute the TOI for this contact (one or both bodies are active and impenetrable).
+        // Compute the TOI for this contact (one or both bodies are awake and impenetrable).
         // Computes the time of impact in interval [0, 1]
         const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, toiConf);
 
@@ -1815,7 +1815,7 @@ IslandStats AabbTreeWorld::SolveToi(ContactID contactID, const StepConf& conf)
      */
     assert(IsEnabled(contact));
     assert(!IsSensor(contact));
-    assert(IsActive(contact));
+    assert(IsAwake(contact));
     assert(IsImpenetrable(contact));
     assert(!m_islanded.contacts[to_underlying(contactID)]);
     assert(GetToi(contact));
@@ -2466,7 +2466,7 @@ AabbTreeWorld::AddContacts( // NOLINT(readability-function-cognitive-complexity)
             SetImpenetrable(contact);
         }
         if (IsAwake(bodyA) || IsAwake(bodyB)) {
-            SetIsActive(contact);
+            SetAwake(contact);
         }
         if (IsSensor(shapeA) || IsSensor(shapeB)) {
             SetSensor(contact);
@@ -2751,10 +2751,10 @@ void SetBody(AabbTreeWorld& world, BodyID id, Body value)
     }
     if (IsAwake(body) != IsAwake(value)) {
         if (IsAwake(value)) {
-            SetIsActive(world.m_contactBuffer, world.m_bodyContacts[to_underlying(id)]);
+            SetAwake(world.m_contactBuffer, world.m_bodyContacts[to_underlying(id)]);
         }
         else {
-            UnsetIsActive(world.m_contactBuffer, world.m_bodyContacts[to_underlying(id)],
+            UnsetAwake(world.m_contactBuffer, world.m_bodyContacts[to_underlying(id)],
                           id, world.m_bodyBuffer);
         }
     }
@@ -2774,15 +2774,15 @@ void SetContact(AabbTreeWorld& world, ContactID id, Contact value)
     [[maybe_unused]] const auto& shapeA = world.m_shapeBuffer.at(to_underlying(GetShapeA(value)));
     [[maybe_unused]] const auto& shapeB = world.m_shapeBuffer.at(to_underlying(GetShapeB(value)));
 
-    assert(IsActive(contact) == (IsAwake(bodyA) || IsAwake(bodyB)));
+    assert(IsAwake(contact) == (IsAwake(bodyA) || IsAwake(bodyB)));
     assert(IsImpenetrable(contact) == (IsImpenetrable(bodyA) || IsImpenetrable(bodyB)));
     assert(IsSensor(contact) == (IsSensor(shapeA) || IsSensor(shapeB)));
 
     if (world.m_contactBuffer.FindFree(to_underlying(id))) {
         throw InvalidArgument(idIsDestroyedMsg);
     }
-    if (contact.IsActive() != value.IsActive()) {
-        throw InvalidArgument("change body A or B being awake to change active state");
+    if (contact.IsAwake() != value.IsAwake()) {
+        throw InvalidArgument("change body A or B being awake to change awake state");
     }
     if (contact.IsImpenetrable() != value.IsImpenetrable()) {
         throw InvalidArgument("change body A or B being impenetrable to change impenetrable state");

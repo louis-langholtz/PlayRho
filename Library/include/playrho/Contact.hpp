@@ -257,21 +257,21 @@ public:
     /// @see IsImpenetrable().
     constexpr void UnsetImpenetrable() noexcept;
 
-    /// @brief Whether or not this contact is "active".
+    /// @brief Whether or not this contact is "awake".
     /// @note This should be true whenever body A or body B are "awake".
-    constexpr bool IsActive() const noexcept;
+    constexpr bool IsAwake() const noexcept;
 
-    /// @brief Sets the active state of this contact.
+    /// @brief Sets the awake state of this contact.
     /// @attention Call this if body A or body B are "awake".
-    /// @post <code>IsActive()</code> returns true.
-    /// @see IsActive().
-    constexpr void SetIsActive() noexcept;
+    /// @post <code>IsAwake()</code> returns true.
+    /// @see IsAwake().
+    constexpr void SetAwake() noexcept;
 
-    /// @brief Unsets the active state of this contact.
+    /// @brief Unsets the awake state of this contact.
     /// @attention Call this if neither body A nor body B are "awake".
-    /// @post <code>IsActive()</code> returns false.
-    /// @see IsActive().
-    constexpr void UnsetIsActive() noexcept;
+    /// @post <code>IsAwake()</code> returns false.
+    /// @see IsAwake().
+    constexpr void UnsetAwake() noexcept;
 
 private:
     /// Flags type data type.
@@ -297,7 +297,7 @@ private:
         /// Indicates whether the contact is to be treated as a sensor or not.
         e_sensorFlag = 0x20,
 
-        /// Indicates whether the contact is to be treated as active or not.
+        /// Indicates whether the contact is to be treated as awake or not.
         e_awakeFlag = 0x40,
 
         /// Whether contact is to be treated as between impenetrable bodies.
@@ -505,17 +505,17 @@ constexpr void Contact::UnsetImpenetrable() noexcept
     m_flags &= ~e_impenetrableFlag;
 }
 
-constexpr bool Contact::IsActive() const noexcept
+constexpr bool Contact::IsAwake() const noexcept
 {
     return (m_flags & e_awakeFlag) != 0u;
 }
 
-constexpr void Contact::SetIsActive() noexcept
+constexpr void Contact::SetAwake() noexcept
 {
     m_flags |= e_awakeFlag;
 }
 
-constexpr void Contact::UnsetIsActive() noexcept
+constexpr void Contact::UnsetAwake() noexcept
 {
     m_flags &= ~e_awakeFlag;
 }
@@ -544,7 +544,7 @@ constexpr bool operator==(const Contact& lhs, const Contact& rhs) noexcept
            lhs.HasValidToi() == rhs.HasValidToi() && //
            lhs.NeedsUpdating() == rhs.NeedsUpdating() && //
            lhs.IsSensor() == rhs.IsSensor() && //
-           lhs.IsActive() == rhs.IsActive() && //
+           lhs.IsAwake() == rhs.IsAwake() && //
            lhs.IsImpenetrable() == rhs.IsImpenetrable() && //
            lhs.GetToi() == rhs.GetToi();
 }
@@ -626,31 +626,31 @@ constexpr void UnsetImpenetrable(Contact& contact) noexcept
     contact.UnsetImpenetrable();
 }
 
-/// @brief Determines whether the given contact is "active".
+/// @brief Determines whether the given contact is "awake".
 /// @relatedalso Contact
-constexpr bool IsActive(const Contact& contact) noexcept
+constexpr bool IsAwake(const Contact& contact) noexcept
 {
-    return contact.IsActive();
+    return contact.IsAwake();
 }
 
-/// @brief Sets the active state of the given contact.
+/// @brief Sets the awake state of the given contact.
 /// @attention Call this if body A or body B are "awake".
-/// @post <code>IsActive(contact)</code> returns true.
-/// @see IsActive(const Contact &).
+/// @post <code>IsAwake(contact)</code> returns true.
+/// @see IsAwake(const Contact &).
 /// @relatedalso Contact
-constexpr void SetIsActive(Contact& contact) noexcept
+constexpr void SetAwake(Contact& contact) noexcept
 {
-    contact.SetIsActive();
+    contact.SetAwake();
 }
 
-/// @brief Unsets the active state of this contact.
+/// @brief Unsets the awake state of this contact.
 /// @attention Call this if neither body A nor body B are "awake".
-/// @post <code>IsActive(contact)</code> returns false.
-/// @see IsActive(const Contact &).
+/// @post <code>IsAwake(contact)</code> returns false.
+/// @see IsAwake(const Contact &).
 /// @relatedalso Contact
-constexpr void UnsetIsActive(Contact& contact) noexcept
+constexpr void UnsetAwake(Contact& contact) noexcept
 {
-    contact.UnsetIsActive();
+    contact.UnsetAwake();
 }
 
 /// @brief Gets whether the given contact is enabled or not.
