@@ -781,13 +781,16 @@ private:
     ///      the appropriate contacts of the body.
     ///   3. Adds those contacts that are still enabled and still touching to the given island
     ///      (or resets the other bodies advancement).
-    ///   4. Adds to the island, those other bodies that haven't already been added of the contacts that got added.
-    /// @note Precondition: there should be no lower TOI for which contacts have not already been processed.
+    ///   4. Adds to the island, those other bodies that haven't already been added of the contacts that
+    ///      got added.
     /// @param[in,out] id Identifier of the dynamic/accelerable body to process contacts for.
     /// @param[in,out] island Island. On return this may contain additional contacts or bodies.
     /// @param[in] toi Time of impact (TOI). Value between 0 and under 1.
     /// @param[in] conf Step configuration data.
-    ProcessContactsOutput ProcessContactsForTOI(BodyID id, Island& island, ZeroToUnderOneFF<Real> toi,
+    /// @pre The identified body is in <code>m_islanded.bodies</code> and accelerable.
+    /// @pre There should be no lower TOI for which contacts have not already been processed.
+    ProcessContactsOutput ProcessContactsForTOI(BodyID id, Island& island,
+                                                ZeroToUnderOneFF<Real> toi,
                                                 const StepConf& conf);
 
     /// @brief Removes the given body from this world.
@@ -975,7 +978,8 @@ private:
     KeyedContactIDs m_contacts;
 
     /// Bodies, contacts, and joints that are already in an island.
-    /// @note This is step-wise state that needs to be here or within a step solving co-routine for sub-stepping TOI solving.
+    /// @note This is step-wise state that needs to be here or within a step solving co-routine for
+    ///   sub-stepping TOI solving.
     /// @note This instance's members capacities depend on state changed outside the step loop.
     /// @see Island.
     Islanded m_islanded;
