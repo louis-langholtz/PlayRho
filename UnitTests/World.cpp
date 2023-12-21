@@ -1912,7 +1912,7 @@ TEST(World, HeavyOnLight)
         // The least num steps is 145
         switch (sizeof(Real))
         {
-            case 4: EXPECT_EQ(numSteps, 145ul); break; // Effected by Contact IsActive cache errs
+            case 4: EXPECT_EQ(numSteps, 145ul); break; // Effected by Contact IsAwake cache errs
             case 8: EXPECT_EQ(numSteps, 145ul); break;
             case 16: EXPECT_EQ(numSteps, 145ul); break;
         }
@@ -1975,7 +1975,7 @@ TEST(World, HeavyOnLight)
         // XXX Is this a bug or did the algorithm just work least well here?
         switch (sizeof(Real))
         {
-            case 4: EXPECT_EQ(numSteps, 736ul); break; // Effected by Contact IsActive cache errs
+            case 4: EXPECT_EQ(numSteps, 736ul); break; // Effected by Contact IsAwake cache errs
             case 8: EXPECT_EQ(numSteps, 736ul); break;
             case 16: EXPECT_EQ(numSteps, 736ul); break;
         }

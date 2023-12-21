@@ -484,7 +484,7 @@ const Contact& GetContact(const AabbTreeWorld& world, ContactID id);
 /// @param world The world of the contact whose state is to be set.
 /// @param id Identifier of the contact whose state is to be set.
 /// @param value Value the contact is to be set to. The new state:
-///   is not allowed to change whether the contact is active,
+///   is not allowed to change whether the contact is awake,
 ///   is not allowed to change whether the contact is impenetrable,
 ///   is not allowed to change whether the contact is for a sensor,
 ///   is not allowed to change the TOI of the contact,
@@ -736,7 +736,7 @@ private:
     /// @brief Solves collisions for the given time of impact.
     /// @param contactID Identifier of contact to solve for.
     /// @param conf Time step configuration to solve for.
-    /// @pre The identified contact has a valid TOI, is enabled, is active, and is impenetrable.
+    /// @pre The identified contact has a valid TOI, is enabled, is awake, and is impenetrable.
     /// @pre The identified contact is **not** a sensor.
     /// @pre There is no contact having a lower TOI in this time step that has
     ///   not already been solved for.
@@ -859,7 +859,7 @@ private:
     /// @details
     /// This finds and destroys the contacts that need filtering and no longer should collide or
     /// that no longer have AABB-based overlapping fixtures. Those contacts that persist and
-    /// have active bodies (either or both) get their Update methods called with the current
+    /// have awake bodies (either or both) get their Update methods called with the current
     /// contact listener as its argument.
     /// Essentially this really just purges contacts that are no longer relevant.
     DestroyContactsStats DestroyContacts(KeyedContactIDs& contacts);

@@ -544,7 +544,7 @@ Contact GetContact(const World& world, ContactID id);
 /// @param world The world of the contact whose state is to be set.
 /// @param id Identifier of the contact whose state is to be set.
 /// @param value Value the contact is to be set to. The new state:
-///   is not allowed to change whether the contact is active,
+///   is not allowed to change whether the contact is awake,
 ///   is not allowed to change whether the contact is impenetrable,
 ///   is not allowed to change whether the contact is for a sensor,
 ///   is not allowed to change the TOI of the contact,

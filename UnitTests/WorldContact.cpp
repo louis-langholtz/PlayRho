@@ -145,7 +145,7 @@ TEST(WorldContact, SetUnsetEnabled)
     EXPECT_TRUE(IsEnabled(world, c));
 }
 
-TEST(WorldContact, SetIsActive)
+TEST(WorldContact, SetAwake2)
 {
     auto world = World{};
     const auto shapeId = CreateShape(world, DiskShapeConf{});
@@ -156,10 +156,10 @@ TEST(WorldContact, SetIsActive)
     ASSERT_EQ(contacts.size(), ContactCounter(1));
     const auto c = contacts.begin()->second;
     auto contact = GetContact(world, c);
-    ASSERT_TRUE(IsActive(contact));
-    EXPECT_NO_THROW(SetIsActive(contact));
+    ASSERT_TRUE(IsAwake(contact));
+    EXPECT_NO_THROW(SetAwake(contact));
     EXPECT_NO_THROW(SetContact(world, c, contact));
-    EXPECT_NO_THROW(UnsetIsActive(contact));
+    EXPECT_NO_THROW(UnsetAwake(contact));
     EXPECT_THROW(SetContact(world, c, contact), InvalidArgument);
 }
 
