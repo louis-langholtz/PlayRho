@@ -18,10 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <chrono>
 #include <type_traits>
-
-#include "UnitTests.hpp"
 
 #include <playrho/Contact.hpp>
 #include <playrho/LengthError.hpp>
@@ -56,6 +53,8 @@
 #include <playrho/d2/WheelJointConf.hpp>
 #include <playrho/d2/GearJointConf.hpp>
 #include <playrho/d2/World.hpp>
+
+#include "gtest/gtest.h"
 
 using namespace playrho;
 using namespace playrho::d2;
