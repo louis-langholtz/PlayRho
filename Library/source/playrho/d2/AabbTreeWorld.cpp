@@ -21,6 +21,7 @@
 
 #include <algorithm>
 #include <cassert> // for assert
+#include <cstdint> // for std::uint32_t
 #include <functional>
 #include <limits> // for std::numeric_limits
 #include <map>
@@ -2289,13 +2290,13 @@ AabbTreeWorld::DestroyContactsStats AabbTreeWorld::DestroyContacts(KeyedContactI
 AabbTreeWorld::UpdateContactsStats AabbTreeWorld::UpdateContacts(const StepConf& conf)
 {
 #ifdef DO_PAR_UNSEQ
-    atomic<uint32_t> ignored;
-    atomic<uint32_t> updated;
-    atomic<uint32_t> skipped;
+    atomic<std::uint32_t> ignored;
+    atomic<std::uint32_t> updated;
+    atomic<std::uint32_t> skipped;
 #else
-    auto ignored = uint32_t{0};
-    auto updated = uint32_t{0};
-    auto skipped = uint32_t{0};
+    auto ignored = std::uint32_t{0};
+    auto updated = std::uint32_t{0};
+    auto skipped = std::uint32_t{0};
 #endif
 
     const auto updateConf = GetUpdateConf(conf);
