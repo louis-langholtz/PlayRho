@@ -34,9 +34,9 @@
 
 #include <playrho/ContactFeature.hpp>
 #include <playrho/Vector.hpp> // for playrho::get
+#include <playrho/Vector2.hpp> // for Length2
 
-#include <playrho/d2/IndexPair.hpp>
-#include <playrho/d2/Math.hpp>
+#include <playrho/d2/IndexPair.hpp> // for VertexCounter2
 #include <playrho/d2/UnitVec.hpp>
 
 // IWYU pragma: end_exports

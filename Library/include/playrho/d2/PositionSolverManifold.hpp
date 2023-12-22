@@ -27,14 +27,16 @@
 
 // IWYU pragma: begin_exports
 
-#include <playrho/Settings.hpp>
+#include <playrho/Units.hpp> // for Length
+#include <playrho/Vector2.hpp> // for Length2
 
 #include <playrho/d2/Manifold.hpp>
-#include <playrho/d2/Math.hpp>
 
 // IWYU pragma: end_exports
 
 namespace playrho ::d2 {
+
+struct Transformation;
 
 /// Position solver manifold.
 /// @details
