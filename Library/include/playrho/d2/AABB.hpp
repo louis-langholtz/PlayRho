@@ -52,12 +52,12 @@ class DistanceProxy;
 struct Transformation;
 class World;
 
-using ::playrho::detail::Contains;
-using ::playrho::detail::GetFattenedAABB;
-using ::playrho::detail::GetDisplacedAABB;
-using ::playrho::detail::GetIntersectingAABB;
-using ::playrho::detail::Include;
-using ::playrho::detail::TestOverlap;
+using ::playrho::detail::Contains; // NOLINT(misc-unused-using-decls)
+using ::playrho::detail::GetFattenedAABB; // NOLINT(misc-unused-using-decls)
+using ::playrho::detail::GetDisplacedAABB; // NOLINT(misc-unused-using-decls)
+using ::playrho::detail::GetIntersectingAABB; // NOLINT(misc-unused-using-decls)
+using ::playrho::detail::Include; // NOLINT(misc-unused-using-decls)
+using ::playrho::detail::TestOverlap; // NOLINT(misc-unused-using-decls)
 
 /// @brief 2-Dimensional Axis Aligned Bounding Box.
 using AABB = ::playrho::detail::AABB<2>;
