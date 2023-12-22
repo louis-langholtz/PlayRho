@@ -2741,20 +2741,15 @@ void SetBody(AabbTreeWorld& world, BodyID id, Body value)
 
 void SetContact(AabbTreeWorld& world, ContactID id, Contact value)
 {
-    const auto& contact = world.m_contactBuffer.at(to_underlying(id));
-
     // Make sure body identifiers and shape identifiers are valid...
-    [[maybe_unused]] const auto& bodyA = world.m_bodyBuffer.at(to_underlying(GetBodyA(value)));
-    [[maybe_unused]] const auto& bodyB = world.m_bodyBuffer.at(to_underlying(GetBodyB(value)));
-    [[maybe_unused]] const auto& shapeA = world.m_shapeBuffer.at(to_underlying(GetShapeA(value)));
-    [[maybe_unused]] const auto& shapeB = world.m_shapeBuffer.at(to_underlying(GetShapeB(value)));
-
-    assert(IsImpenetrable(contact) == (IsImpenetrable(bodyA) || IsImpenetrable(bodyB)));
-    assert(IsSensor(contact) == (IsSensor(shapeA) || IsSensor(shapeB)));
-
+    GetBody(world, GetBodyA(value));
+    GetBody(world, GetBodyB(value));
+    GetChild(GetShape(world, GetShapeA(value)), GetChildIndexA(value));
+    GetChild(GetShape(world, GetShapeB(value)), GetChildIndexB(value));
     if (world.m_contactBuffer.FindFree(to_underlying(id))) {
         throw InvalidArgument(idIsDestroyedMsg);
     }
+    auto& contact = world.m_contactBuffer.at(to_underlying(id));
     if (IsImpenetrable(contact) != IsImpenetrable(value)) {
         throw InvalidArgument("change body A or B being impenetrable to change impenetrable state");
     }
@@ -2767,8 +2762,7 @@ void SetContact(AabbTreeWorld& world, ContactID id, Contact value)
     if (GetToiCount(contact) != GetToiCount(value)) {
         throw InvalidArgument("user may not change the TOI count");
     }
-
-    world.m_contactBuffer[to_underlying(id)] = value;
+    contact = value;
 }
 
 const Body& GetBody(const AabbTreeWorld& world, BodyID id)
