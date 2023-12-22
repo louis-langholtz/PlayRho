@@ -1715,7 +1715,7 @@ AabbTreeWorld::UpdateContactTOIs(const StepConf& conf)
          * alpha-0 times. So long as the least TOI of the contacts is always the first
          * collision that gets dealt with, this presumption is safe.
          */
-        const auto alpha0 = std::max(bA.GetSweep().alpha0, bB.GetSweep().alpha0);
+        const auto alpha0 = std::max(GetSweep(bA).alpha0, GetSweep(bB).alpha0);
         Advance0(bA, alpha0);
         Advance0(bB, alpha0);
 
@@ -1725,8 +1725,8 @@ AabbTreeWorld::UpdateContactTOIs(const StepConf& conf)
         const auto proxyB = GetChild(m_shapeBuffer[to_underlying(GetShapeB(c))], GetChildIndexB(c));
 
         // Large rotations can make the root finder of TimeOfImpact fail, so normalize sweep angles.
-        const auto sweepA = GetNormalized(bA.GetSweep());
-        const auto sweepB = GetNormalized(bB.GetSweep());
+        const auto sweepA = GetNormalized(GetSweep(bA));
+        const auto sweepB = GetNormalized(GetSweep(bB));
 
         // Compute the TOI for this contact (one or both bodies are awake and impenetrable).
         // Computes the time of impact in interval [0, 1]
@@ -2806,19 +2806,19 @@ void SetContact(AabbTreeWorld& world, ContactID id, Contact value)
     if (world.m_contactBuffer.FindFree(to_underlying(id))) {
         throw InvalidArgument(idIsDestroyedMsg);
     }
-    if (contact.IsAwake() != value.IsAwake()) {
+    if (IsAwake(contact) != IsAwake(value)) {
         throw InvalidArgument("change body A or B being awake to change awake state");
     }
-    if (contact.IsImpenetrable() != value.IsImpenetrable()) {
+    if (IsImpenetrable(contact) != IsImpenetrable(value)) {
         throw InvalidArgument("change body A or B being impenetrable to change impenetrable state");
     }
-    if (contact.IsSensor() != value.IsSensor()) {
+    if (IsSensor(contact) != IsSensor(value)) {
         throw InvalidArgument("change shape A or B being a sensor to change sensor state");
     }
-    if (contact.GetToi() != value.GetToi()) {
+    if (GetToi(contact) != GetToi(value)) {
         throw InvalidArgument("user may not change the TOI");
     }
-    if (contact.GetToiCount() != value.GetToiCount()) {
+    if (GetToiCount(contact) != GetToiCount(value)) {
         throw InvalidArgument("user may not change the TOI count");
     }
 
