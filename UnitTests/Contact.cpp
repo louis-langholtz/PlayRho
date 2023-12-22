@@ -70,7 +70,6 @@ TEST(Contact, DefaultConstruction)
     EXPECT_FALSE(Contact().NeedsFiltering());
     EXPECT_FALSE(Contact().IsSensor());
     EXPECT_FALSE(Contact().IsImpenetrable());
-    EXPECT_FALSE(Contact().IsAwake());
 }
 
 TEST(Contact, InitializingConstructor)
@@ -99,7 +98,6 @@ TEST(Contact, InitializingConstructor)
     EXPECT_FALSE(contact.NeedsFiltering());
     EXPECT_FALSE(contact.IsSensor());
     EXPECT_FALSE(contact.IsImpenetrable());
-    EXPECT_FALSE(contact.IsAwake());
 }
 
 TEST(Contact, InitializingConstructorFF)
@@ -129,7 +127,6 @@ TEST(Contact, InitializingConstructorFF)
     EXPECT_FALSE(NeedsFiltering(contact));
     EXPECT_FALSE(IsSensor(contact));
     EXPECT_FALSE(IsImpenetrable(contact));
-    EXPECT_FALSE(IsAwake(contact));
 
     const auto toi = std::optional<UnitInterval<Real>>{Real(0.5)};
     EXPECT_NO_THROW(SetToi(contact, toi));
@@ -268,11 +265,6 @@ TEST(Contact, Equality)
         c.SetImpenetrable();
         EXPECT_FALSE(Contact() == c);
     }
-    {
-        auto c = Contact();
-        c.SetAwake();
-        EXPECT_FALSE(Contact() == c);
-    }
     EXPECT_FALSE(Contact() ==
                  Contact(Contactable{BodyID(1u), ShapeID(0u), ChildCounter(0u)},
                          Contact::DefaultContactable));
@@ -341,11 +333,6 @@ TEST(Contact, Inequality)
     {
         auto c = Contact();
         c.SetImpenetrable();
-        EXPECT_TRUE(Contact() != c);
-    }
-    {
-        auto c = Contact();
-        c.SetAwake();
         EXPECT_TRUE(Contact() != c);
     }
     EXPECT_TRUE(Contact() !=

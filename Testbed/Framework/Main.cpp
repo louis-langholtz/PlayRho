@@ -3145,17 +3145,6 @@ static void EntityUI(Contact& contact)
         }
     }
     {
-        auto v = IsAwake(contact);
-        if (ImGui::Checkbox("Active", &v)) {
-            if (v) {
-                SetAwake(contact);
-            }
-            else {
-                UnsetAwake(contact);
-            }
-        }
-    }
-    {
         auto v = IsSensor(contact);
         if (ImGui::Checkbox("Sensor", &v)) {
             if (v) {
