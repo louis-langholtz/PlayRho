@@ -325,7 +325,14 @@ bool operator==(const Body& lhs, const Body& rhs)
 {
     return GetTransformation(lhs) == GetTransformation(rhs) && //
            GetSweep(lhs) == GetSweep(rhs) && //
-           GetFlags(lhs) == GetFlags(rhs) && //
+           IsAwake(lhs) == IsAwake(rhs) && //
+           IsSleepingAllowed(lhs) == IsSleepingAllowed(rhs) && //
+           IsImpenetrable(lhs) == IsImpenetrable(rhs) && //
+           IsFixedRotation(lhs) == IsFixedRotation(rhs) && //
+           IsEnabled(lhs) == IsEnabled(rhs) && //
+           IsSpeedable(lhs) == IsSpeedable(rhs) && //
+           IsAccelerable(lhs) == IsAccelerable(rhs) && //
+           IsMassDataDirty(lhs) == IsMassDataDirty(rhs) && //
            GetVelocity(lhs) == GetVelocity(rhs) && //
            GetAcceleration(lhs) == GetAcceleration(rhs) && //
            GetInvMass(lhs) == GetInvMass(rhs) && //

@@ -35,20 +35,63 @@ TEST(Body, DefaultConstruction)
     EXPECT_EQ(Body().GetAngularDamping(), Body::DefaultAngularDamping);
 }
 
-TEST(Body, GetFlagsForBodyType)
+TEST(Body, StaticTypeConstruction)
 {
-    EXPECT_EQ(Body::GetFlags(BodyType::Static), (Body::e_impenetrableFlag));
-    EXPECT_EQ(Body::GetFlags(BodyType::Kinematic),
-              (Body::e_impenetrableFlag | Body::e_velocityFlag));
-    EXPECT_EQ(Body::GetFlags(BodyType::Dynamic), (Body::e_accelerationFlag | Body::e_velocityFlag));
+    const auto body = Body(BodyConf().Use(BodyType::Static));
+    EXPECT_TRUE(body.IsImpenetrable());
+    EXPECT_FALSE(body.IsSpeedable());
+    EXPECT_FALSE(body.IsAccelerable());
+    EXPECT_TRUE(body.IsSleepingAllowed());
+    EXPECT_FALSE(body.IsAwake());
+    EXPECT_FALSE(body.IsFixedRotation());
+    EXPECT_FALSE(body.IsMassDataDirty());
+    EXPECT_TRUE(body.IsEnabled());
 }
 
-TEST(Body, GetFlagsForBodyConf)
+TEST(Body, KinematicTypeConstruction)
 {
-    EXPECT_TRUE(Body::GetFlags(BodyConf{}.UseFixedRotation(true)) & Body::e_fixedRotationFlag);
-    EXPECT_TRUE(
-        Body::GetFlags(BodyConf{}.UseAwake(false).UseAllowSleep(false).UseType(BodyType::Dynamic)) &
-        Body::e_awakeFlag);
+    const auto body = Body(BodyConf().Use(BodyType::Kinematic));
+    EXPECT_TRUE(body.IsImpenetrable());
+    EXPECT_TRUE(body.IsSpeedable());
+    EXPECT_FALSE(body.IsAccelerable());
+    EXPECT_TRUE(body.IsSleepingAllowed());
+    EXPECT_TRUE(body.IsAwake());
+    EXPECT_FALSE(body.IsFixedRotation());
+    EXPECT_FALSE(body.IsMassDataDirty());
+    EXPECT_TRUE(body.IsEnabled());
+}
+
+TEST(Body, DynamicTypeConstruction)
+{
+    const auto body = Body(BodyConf().Use(BodyType::Dynamic));
+    EXPECT_FALSE(body.IsImpenetrable());
+    EXPECT_TRUE(body.IsSpeedable());
+    EXPECT_TRUE(body.IsAccelerable());
+    EXPECT_TRUE(body.IsSleepingAllowed());
+    EXPECT_TRUE(body.IsAwake());
+    EXPECT_FALSE(body.IsFixedRotation());
+    EXPECT_FALSE(body.IsMassDataDirty());
+    EXPECT_TRUE(body.IsEnabled());
+}
+
+TEST(Body, UseFixedRotationConstruction)
+{
+    EXPECT_TRUE(Body(BodyConf().UseFixedRotation(true)).IsFixedRotation());
+    EXPECT_FALSE(Body(BodyConf().UseFixedRotation(false)).IsFixedRotation());
+}
+
+TEST(Body, UseAwakeConstruction)
+{
+    EXPECT_FALSE(Body(BodyConf().Use(BodyType::Static).UseAwake(true)).IsAwake());
+    EXPECT_TRUE(Body(BodyConf().Use(BodyType::Kinematic).UseAwake(true)).IsAwake());
+    EXPECT_TRUE(Body(BodyConf().Use(BodyType::Dynamic).UseAwake(true)).IsAwake());
+    EXPECT_FALSE(Body(BodyConf().UseAwake(false)).IsAwake());
+}
+
+TEST(Body, UseAllowSleepConstruction)
+{
+    EXPECT_TRUE(Body(BodyConf().UseAllowSleep(true)).IsSleepingAllowed());
+    EXPECT_FALSE(Body(BodyConf().UseAllowSleep(false)).IsSleepingAllowed());
 }
 
 TEST(Body, ShapeOnConstruction)
