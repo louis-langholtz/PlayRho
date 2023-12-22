@@ -83,15 +83,21 @@ TEST(Body, UseFixedRotationConstruction)
 TEST(Body, UseAwakeConstruction)
 {
     EXPECT_FALSE(Body(BodyConf().Use(BodyType::Static).UseAwake(true)).IsAwake());
+    EXPECT_FALSE(Body(BodyConf().Use(BodyType::Static).UseAwake(false)).IsAwake());
     EXPECT_TRUE(Body(BodyConf().Use(BodyType::Kinematic).UseAwake(true)).IsAwake());
+    EXPECT_FALSE(Body(BodyConf().Use(BodyType::Kinematic).UseAwake(false)).IsAwake());
     EXPECT_TRUE(Body(BodyConf().Use(BodyType::Dynamic).UseAwake(true)).IsAwake());
-    EXPECT_FALSE(Body(BodyConf().UseAwake(false)).IsAwake());
+    EXPECT_FALSE(Body(BodyConf().Use(BodyType::Dynamic).UseAwake(false)).IsAwake());
 }
 
 TEST(Body, UseAllowSleepConstruction)
 {
-    EXPECT_TRUE(Body(BodyConf().UseAllowSleep(true)).IsSleepingAllowed());
-    EXPECT_FALSE(Body(BodyConf().UseAllowSleep(false)).IsSleepingAllowed());
+    EXPECT_TRUE(Body(BodyConf().Use(BodyType::Static).UseAllowSleep(true)).IsSleepingAllowed());
+    EXPECT_FALSE(Body(BodyConf().Use(BodyType::Static).UseAllowSleep(false)).IsSleepingAllowed());
+    EXPECT_TRUE(Body(BodyConf().Use(BodyType::Kinematic).UseAllowSleep(true)).IsSleepingAllowed());
+    EXPECT_FALSE(Body(BodyConf().Use(BodyType::Kinematic).UseAllowSleep(false)).IsSleepingAllowed());
+    EXPECT_TRUE(Body(BodyConf().Use(BodyType::Dynamic).UseAllowSleep(true)).IsSleepingAllowed());
+    EXPECT_FALSE(Body(BodyConf().Use(BodyType::Dynamic).UseAllowSleep(false)).IsSleepingAllowed());
 }
 
 TEST(Body, ShapeOnConstruction)
