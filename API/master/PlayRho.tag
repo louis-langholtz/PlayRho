@@ -43,7 +43,6 @@
     <name>BlockAllocator.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>BlockAllocator_8hpp.html</filename>
-    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <class kind="class">playrho::BlockAllocator</class>
     <class kind="struct">playrho::BlockDeallocator</class>
     <namespace>playrho</namespace>
@@ -296,13 +295,6 @@
     </member>
     <member kind="function">
       <type>constexpr bool</type>
-      <name>IsActive</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ae659e1f443f30d7813853f6763f1f22f</anchor>
-      <arglist>(const Contact &amp;contact) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
       <name>IsEnabled</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>acf2071b64988e62193b4a2567bdde292</anchor>
@@ -408,13 +400,6 @@
     </member>
     <member kind="function">
       <type>constexpr void</type>
-      <name>SetIsActive</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a6dc7dc1c568e7e1cbe70afe67c51b14a</anchor>
-      <arglist>(Contact &amp;contact) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr void</type>
       <name>SetRestitution</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>ae72b11c11801f8189dbd1d61dd917f77</anchor>
@@ -474,13 +459,6 @@
       <name>UnsetImpenetrable</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a205494b248da96a02b57be9d9ad9a27b</anchor>
-      <arglist>(Contact &amp;contact) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr void</type>
-      <name>UnsetIsActive</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a1ae66cec17d17f003982ee50908d0d25</anchor>
       <arglist>(Contact &amp;contact) noexcept</arglist>
     </member>
     <member kind="function">
@@ -692,10 +670,8 @@
     <filename>d2_2AABB_8hpp.html</filename>
     <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
     <includes id="Interval_8hpp" name="Interval.hpp" local="no" imported="no">playrho/Interval.hpp</includes>
-    <includes id="Intervals_8hpp" name="Intervals.hpp" local="no" imported="no">playrho/Intervals.hpp</includes>
     <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
-    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="detail_2AABB_8hpp" name="AABB.hpp" local="no" imported="no">playrho/detail/AABB.hpp</includes>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
@@ -783,9 +759,10 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/detail/</path>
     <filename>detail_2AABB_8hpp.html</filename>
     <includes id="Intervals_8hpp" name="Intervals.hpp" local="no" imported="no">playrho/Intervals.hpp</includes>
+    <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="Vector_8hpp" name="Vector.hpp" local="no" imported="no">playrho/Vector.hpp</includes>
-    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
-    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <class kind="struct">playrho::detail::AABB</class>
     <namespace>playrho</namespace>
     <namespace>playrho::detail</namespace>
@@ -1813,9 +1790,7 @@
     <name>Acceleration.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>Acceleration_8hpp.html</filename>
-    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
-    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <class kind="struct">playrho::d2::Acceleration</class>
     <namespace>playrho</namespace>
@@ -1934,6 +1909,7 @@
     <includes id="EdgeShapeConf_8hpp" name="EdgeShapeConf.hpp" local="no" imported="no">playrho/d2/EdgeShapeConf.hpp</includes>
     <includes id="MultiShapeConf_8hpp" name="MultiShapeConf.hpp" local="no" imported="no">playrho/d2/MultiShapeConf.hpp</includes>
     <includes id="PolygonShapeConf_8hpp" name="PolygonShapeConf.hpp" local="no" imported="no">playrho/d2/PolygonShapeConf.hpp</includes>
+    <includes id="Transformation_8hpp" name="Transformation.hpp" local="no" imported="no">playrho/d2/Transformation.hpp</includes>
     <includes id="DistanceJointConf_8hpp" name="DistanceJointConf.hpp" local="no" imported="no">playrho/d2/DistanceJointConf.hpp</includes>
     <includes id="FrictionJointConf_8hpp" name="FrictionJointConf.hpp" local="no" imported="no">playrho/d2/FrictionJointConf.hpp</includes>
     <includes id="GearJointConf_8hpp" name="GearJointConf.hpp" local="no" imported="no">playrho/d2/GearJointConf.hpp</includes>
@@ -1951,7 +1927,6 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>Body_8hpp.html</filename>
     <includes id="BodyType_8hpp" name="BodyType.hpp" local="no" imported="no">playrho/BodyType.hpp</includes>
-    <includes id="Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/Math.hpp</includes>
     <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
     <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
@@ -2037,13 +2012,6 @@
       <name>GetAngularVelocity</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a306635dbd11f92ad1020a386fce7b7c2</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Body::FlagsType</type>
-      <name>GetFlags</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a21071397aafb9df4a10e1abde2d11421</anchor>
       <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
@@ -2530,11 +2498,8 @@
     <includes id="ArrayList_8hpp" name="ArrayList.hpp" local="no" imported="no">playrho/ArrayList.hpp</includes>
     <includes id="BodyType_8hpp" name="BodyType.hpp" local="no" imported="no">playrho/BodyType.hpp</includes>
     <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
-    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
-    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
-    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <includes id="Position_8hpp" name="Position.hpp" local="no" imported="no">playrho/d2/Position.hpp</includes>
     <includes id="Sweep_8hpp" name="Sweep.hpp" local="no" imported="no">playrho/d2/Sweep.hpp</includes>
     <includes id="Transformation_8hpp" name="Transformation.hpp" local="no" imported="no">playrho/d2/Transformation.hpp</includes>
@@ -2597,11 +2562,8 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>BodyConstraint_8hpp.html</filename>
     <includes id="MovementConf_8hpp" name="MovementConf.hpp" local="no" imported="no">playrho/MovementConf.hpp</includes>
-    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
-    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <includes id="Body_8hpp" name="Body.hpp" local="no" imported="no">playrho/d2/Body.hpp</includes>
     <includes id="Position_8hpp" name="Position.hpp" local="no" imported="no">playrho/d2/Position.hpp</includes>
-    <includes id="Velocity_8hpp" name="Velocity.hpp" local="no" imported="no">playrho/d2/Velocity.hpp</includes>
     <class kind="class">playrho::d2::BodyConstraint</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
@@ -2617,6 +2579,8 @@
     <name>ChainShapeConf.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>ChainShapeConf_8hpp.html</filename>
+    <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="ShapeConf_8hpp" name="ShapeConf.hpp" local="no" imported="no">playrho/d2/ShapeConf.hpp</includes>
     <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
@@ -2740,6 +2704,7 @@
     <filename>ClipList_8hpp.html</filename>
     <includes id="ArrayList_8hpp" name="ArrayList.hpp" local="no" imported="no">playrho/ArrayList.hpp</includes>
     <includes id="ContactFeature_8hpp" name="ContactFeature.hpp" local="no" imported="no">playrho/ContactFeature.hpp</includes>
+    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <class kind="struct">playrho::d2::ClipVertex</class>
     <namespace>playrho</namespace>
@@ -2780,6 +2745,7 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>ContactImpulsesList_8hpp.html</filename>
     <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <class kind="class">playrho::d2::ContactImpulsesList</class>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
@@ -2842,6 +2808,9 @@
     <name>ConvexHull.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>ConvexHull_8hpp.html</filename>
+    <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <class kind="class">playrho::d2::ConvexHull</class>
@@ -3120,7 +3089,10 @@
     <name>DiskShapeConf.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>DiskShapeConf_8hpp.html</filename>
+    <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
+    <includes id="Vector_8hpp" name="Vector.hpp" local="no" imported="no">playrho/Vector.hpp</includes>
     <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
@@ -3347,6 +3319,8 @@
     <name>DistanceProxy.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>DistanceProxy_8hpp.html</filename>
+    <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <class kind="class">playrho::d2::DistanceProxy</class>
@@ -4654,7 +4628,9 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>Manifold_8hpp.html</filename>
     <includes id="ContactFeature_8hpp" name="ContactFeature.hpp" local="no" imported="no">playrho/ContactFeature.hpp</includes>
-    <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
+    <includes id="Vector_8hpp" name="Vector.hpp" local="no" imported="no">playrho/Vector.hpp</includes>
+    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
+    <includes id="UnitVec_8hpp" name="UnitVec.hpp" local="no" imported="no">playrho/d2/UnitVec.hpp</includes>
     <class kind="struct">playrho::d2::Manifold::Conf</class>
     <class kind="class">playrho::d2::Manifold</class>
     <class kind="struct">playrho::d2::Manifold::Point</class>
@@ -5531,6 +5507,7 @@
     <name>MultiShapeConf.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>MultiShapeConf_8hpp.html</filename>
+    <includes id="InvalidArgument_8hpp" name="InvalidArgument.hpp" local="no" imported="no">playrho/InvalidArgument.hpp</includes>
     <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="ConvexHull_8hpp" name="ConvexHull.hpp" local="no" imported="no">playrho/d2/ConvexHull.hpp</includes>
     <includes id="ShapeConf_8hpp" name="ShapeConf.hpp" local="no" imported="no">playrho/d2/ShapeConf.hpp</includes>
@@ -5857,6 +5834,7 @@
     <filename>PositionConstraint_8hpp.html</filename>
     <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
     <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="Manifold_8hpp" name="Manifold.hpp" local="no" imported="no">playrho/d2/Manifold.hpp</includes>
     <class kind="struct">playrho::d2::PositionConstraint</class>
     <namespace>playrho</namespace>
@@ -5890,17 +5868,15 @@
     <name>PositionSolverManifold.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>PositionSolverManifold_8hpp.html</filename>
-    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <includes id="Manifold_8hpp" name="Manifold.hpp" local="no" imported="no">playrho/d2/Manifold.hpp</includes>
-    <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
-    <class kind="struct">playrho::d2::PositionSolverManifold</class>
-    <namespace>playrho</namespace>
-    <namespace>playrho::d2</namespace>
+    <class kind="struct">playrho ::d2::PositionSolverManifold</class>
     <member kind="function">
       <type>PositionSolverManifold</type>
       <name>GetPSM</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa9987f7f8471dbe26d486e2602661e78</anchor>
+      <anchorfile>PositionSolverManifold_8hpp.html</anchorfile>
+      <anchor>a66c69ac25f3c5cdf982ab82e0421aa58</anchor>
       <arglist>(const Manifold &amp;manifold, Manifold::size_type index, const Transformation &amp;xfA, const Transformation &amp;xfB)</arglist>
     </member>
   </compound>
@@ -5911,6 +5887,7 @@
     <includes id="LimitState_8hpp" name="LimitState.hpp" local="no" imported="no">playrho/LimitState.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
     <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
+    <includes id="Vector3_8hpp" name="Vector3.hpp" local="no" imported="no">playrho/Vector3.hpp</includes>
     <includes id="JointConf_8hpp" name="JointConf.hpp" local="no" imported="no">playrho/d2/JointConf.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <includes id="UnitVec_8hpp" name="UnitVec.hpp" local="no" imported="no">playrho/d2/UnitVec.hpp</includes>
@@ -6149,6 +6126,7 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/detail/</path>
     <filename>detail_2RayCastInput_8hpp.html</filename>
     <includes id="Vector_8hpp" name="Vector.hpp" local="no" imported="no">playrho/Vector.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="UnitInterval_8hpp" name="UnitInterval.hpp" local="no" imported="no">playrho/UnitInterval.hpp</includes>
     <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <class kind="struct">playrho::detail::RayCastInput</class>
@@ -6241,6 +6219,7 @@
     <includes id="LimitState_8hpp" name="LimitState.hpp" local="no" imported="no">playrho/LimitState.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
     <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
+    <includes id="Vector3_8hpp" name="Vector3.hpp" local="no" imported="no">playrho/Vector3.hpp</includes>
     <includes id="JointConf_8hpp" name="JointConf.hpp" local="no" imported="no">playrho/d2/JointConf.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <class kind="struct">playrho::d2::RevoluteJointConf</class>
@@ -6459,6 +6438,8 @@
     <includes id="InvalidArgument_8hpp" name="InvalidArgument.hpp" local="no" imported="no">playrho/InvalidArgument.hpp</includes>
     <includes id="Filter_8hpp" name="Filter.hpp" local="no" imported="no">playrho/Filter.hpp</includes>
     <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="DistanceProxy_8hpp" name="DistanceProxy.hpp" local="no" imported="no">playrho/d2/DistanceProxy.hpp</includes>
     <includes id="MassData_8hpp" name="MassData.hpp" local="no" imported="no">playrho/d2/MassData.hpp</includes>
@@ -6836,10 +6817,6 @@
     <name>Sweep.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>Sweep_8hpp.html</filename>
-    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
-    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
-    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
-    <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <includes id="ZeroToUnderOne_8hpp" name="ZeroToUnderOne.hpp" local="no" imported="no">playrho/ZeroToUnderOne.hpp</includes>
     <includes id="Position_8hpp" name="Position.hpp" local="no" imported="no">playrho/d2/Position.hpp</includes>
     <class kind="struct">playrho::d2::Sweep</class>
@@ -6885,6 +6862,7 @@
     <name>TargetJointConf.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>TargetJointConf_8hpp.html</filename>
+    <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
     <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="JointConf_8hpp" name="JointConf.hpp" local="no" imported="no">playrho/d2/JointConf.hpp</includes>
@@ -7017,7 +6995,6 @@
     <name>Transformation.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>Transformation_8hpp.html</filename>
-    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <includes id="UnitVec_8hpp" name="UnitVec.hpp" local="no" imported="no">playrho/d2/UnitVec.hpp</includes>
     <class kind="struct">playrho::d2::Transformation</class>
@@ -7470,8 +7447,10 @@
     <name>WeldJointConf.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>WeldJointConf_8hpp.html</filename>
+    <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
     <includes id="Span_8hpp" name="Span.hpp" local="no" imported="no">playrho/Span.hpp</includes>
     <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
+    <includes id="Vector3_8hpp" name="Vector3.hpp" local="no" imported="no">playrho/Vector3.hpp</includes>
     <includes id="JointConf_8hpp" name="JointConf.hpp" local="no" imported="no">playrho/d2/JointConf.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
     <class kind="struct">playrho::detail::TypeInfo&lt; playrho::d2::WeldJointConf &gt;</class>
@@ -7693,11 +7672,12 @@
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
     <includes id="StepConf_8hpp" name="StepConf.hpp" local="no" imported="no">playrho/StepConf.hpp</includes>
     <includes id="StepStats_8hpp" name="StepStats.hpp" local="no" imported="no">playrho/StepStats.hpp</includes>
+    <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <includes id="TypeInfo_8hpp" name="TypeInfo.hpp" local="no" imported="no">playrho/TypeInfo.hpp</includes>
     <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
-    <includes id="BodyConf_8hpp" name="BodyConf.hpp" local="no" imported="no">playrho/d2/BodyConf.hpp</includes>
     <includes id="Body_8hpp" name="Body.hpp" local="no" imported="no">playrho/d2/Body.hpp</includes>
+    <includes id="BodyConf_8hpp" name="BodyConf.hpp" local="no" imported="no">playrho/d2/BodyConf.hpp</includes>
     <includes id="ContactImpulsesFunction_8hpp" name="ContactImpulsesFunction.hpp" local="no" imported="no">playrho/d2/ContactImpulsesFunction.hpp</includes>
     <includes id="ContactManifoldFunction_8hpp" name="ContactManifoldFunction.hpp" local="no" imported="no">playrho/d2/ContactManifoldFunction.hpp</includes>
     <includes id="Joint_8hpp" name="Joint.hpp" local="no" imported="no">playrho/d2/Joint.hpp</includes>
@@ -8747,9 +8727,11 @@
     <includes id="ContactID_8hpp" name="ContactID.hpp" local="no" imported="no">playrho/ContactID.hpp</includes>
     <includes id="KeyedContactID_8hpp" name="KeyedContactID.hpp" local="no" imported="no">playrho/KeyedContactID.hpp</includes>
     <includes id="NonNegative_8hpp" name="NonNegative.hpp" local="no" imported="no">playrho/NonNegative.hpp</includes>
+    <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="ShapeID_8hpp" name="ShapeID.hpp" local="no" imported="no">playrho/ShapeID.hpp</includes>
     <includes id="UnitInterval_8hpp" name="UnitInterval.hpp" local="no" imported="no">playrho/UnitInterval.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="WorldManifold_8hpp" name="WorldManifold.hpp" local="no" imported="no">playrho/d2/WorldManifold.hpp</includes>
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
@@ -9344,7 +9326,9 @@
     <name>WorldManifold.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>WorldManifold_8hpp.html</filename>
+    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
+    <includes id="UnitVec_8hpp" name="UnitVec.hpp" local="no" imported="no">playrho/d2/UnitVec.hpp</includes>
     <class kind="struct">playrho::d2::WorldManifold::PointData</class>
     <class kind="class">playrho::d2::WorldManifold</class>
     <namespace>playrho</namespace>
@@ -10180,13 +10164,6 @@
     <class kind="struct">playrho::detail::underlying_type&lt; T, std::enable_if_t&lt; std::is_enum_v&lt; T &gt; &gt; &gt;</class>
     <namespace>playrho</namespace>
     <namespace>playrho::detail</namespace>
-    <member kind="typedef">
-      <type>typename underlying_type&lt; T &gt;::type</type>
-      <name>underlying_type_t</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a2ddc4b148d5e38a5a59954a1f503e901</anchor>
-      <arglist></arglist>
-    </member>
   </compound>
   <compound kind="file">
     <name>UnitIntervalChecker.hpp</name>
@@ -11456,12 +11433,19 @@
     <filename>to__underlying_8hpp.html</filename>
     <includes id="underlying__type_8hpp" name="underlying_type.hpp" local="no" imported="no">playrho/detail/underlying_type.hpp</includes>
     <namespace>playrho</namespace>
+    <member kind="typedef">
+      <type>typename detail::underlying_type&lt; T &gt;::type</type>
+      <name>underlying_type_t</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>acb6be9dd61b657423b255df296267d09</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <type>constexpr auto</type>
       <name>to_underlying</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a4b3ffaf4d26f2f410c72befd4f9b0ec6</anchor>
-      <arglist>(T value) noexcept -&gt; detail::underlying_type_t&lt; T &gt;</arglist>
+      <anchor>abcf5bea73a392ad1b2be520e79fb9b4a</anchor>
+      <arglist>(T value) noexcept -&gt; underlying_type_t&lt; T &gt;</arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -12799,6 +12783,7 @@
     <filename>Vector3_8hpp.html</filename>
     <includes id="Real_8hpp" name="Real.hpp" local="no" imported="no">playrho/Real.hpp</includes>
     <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
+    <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="Vector_8hpp" name="Vector.hpp" local="no" imported="no">playrho/Vector.hpp</includes>
     <namespace>playrho</namespace>
     <member kind="typedef">
@@ -14534,116 +14519,6 @@
   <compound kind="class">
     <name>playrho::d2::Body</name>
     <filename>classplayrho_1_1d2_1_1Body.html</filename>
-    <member kind="enumvalue">
-      <name>e_accelerationFlag</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af4715bc702e6250f6c2b8a748df751b1a029de9b5dc46e0aeafb5d4a1d07de68c</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>e_autoSleepFlag</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af4715bc702e6250f6c2b8a748df751b1af96fd45879ce62d9185e7fdaf5da305c</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>e_awakeFlag</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af4715bc702e6250f6c2b8a748df751b1a2d0838d2a70832764fca9f12290e316e</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>e_enabledFlag</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af4715bc702e6250f6c2b8a748df751b1ab642621a09cb53da442bf6c07c735a2d</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>e_fixedRotationFlag</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af4715bc702e6250f6c2b8a748df751b1a221d6e987279b06446f29148ea305584</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>e_impenetrableFlag</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af4715bc702e6250f6c2b8a748df751b1a9636c5bffb473d210e5b096dba69d13b</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>e_massDataDirtyFlag</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af4715bc702e6250f6c2b8a748df751b1ab2cc56a0f6625365566461c2ad259885</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>e_velocityFlag</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af4715bc702e6250f6c2b8a748df751b1a1c6a6996666ee68cb63f0a5574632b25</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumeration">
-      <type></type>
-      <name>Flag</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af4715bc702e6250f6c2b8a748df751b1</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>e_awakeFlag</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af4715bc702e6250f6c2b8a748df751b1a2d0838d2a70832764fca9f12290e316e</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>e_autoSleepFlag</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af4715bc702e6250f6c2b8a748df751b1af96fd45879ce62d9185e7fdaf5da305c</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>e_impenetrableFlag</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af4715bc702e6250f6c2b8a748df751b1a9636c5bffb473d210e5b096dba69d13b</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>e_fixedRotationFlag</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af4715bc702e6250f6c2b8a748df751b1a221d6e987279b06446f29148ea305584</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>e_enabledFlag</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af4715bc702e6250f6c2b8a748df751b1ab642621a09cb53da442bf6c07c735a2d</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>e_velocityFlag</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af4715bc702e6250f6c2b8a748df751b1a1c6a6996666ee68cb63f0a5574632b25</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>e_accelerationFlag</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af4715bc702e6250f6c2b8a748df751b1a029de9b5dc46e0aeafb5d4a1d07de68c</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>e_massDataDirtyFlag</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>af4715bc702e6250f6c2b8a748df751b1ab2cc56a0f6625365566461c2ad259885</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>std::uint16_t</type>
-      <name>FlagsType</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a14412adef525843359094736776c0cc1</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="function">
       <type></type>
       <name>Body</name>
@@ -14684,13 +14559,6 @@
       <name>GetAngularDamping</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
       <anchor>a1e7bc9caea686d310a1cc2aee805b5ae</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>FlagsType</type>
-      <name>GetFlags</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a809ae0e9bf9ee289fb3e570cb6cf25dd</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -14761,6 +14629,62 @@
       <name>GetVelocity</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
       <anchor>a60d609b9f5c0a1d568b3fc42d169c428</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsAccelerable</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>a4f3ae9fb54ca3fbf1f509327781277b3</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsAwake</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>a7abc6b8d4f50e3e3e703f53f66ecc035</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsEnabled</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>ae12e0fe1aeb00907e47aba6d4edd0746</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsFixedRotation</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>ab0fdff8babc197f1a75794e4fb822343</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsImpenetrable</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>a43a08c5977e1a5a0ebfb823dcf1615bd</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsMassDataDirty</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>ac24b9d27e4778ea7942c89ef793d9eea</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsSleepingAllowed</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>a71df4118ca3b5056aa4634a70c3b220a</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsSpeedable</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>a7aedf6b5b4adc6f0ff0c1fc13ec49b0f</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -14924,20 +14848,6 @@
       <anchor>ac0a4e7da62712ec6e5c10f8637b59eca</anchor>
       <arglist>() noexcept</arglist>
     </member>
-    <member kind="function" static="yes">
-      <type>static FlagsType</type>
-      <name>GetFlags</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a137e2e62f0ad8b1b21695955fd3b900e</anchor>
-      <arglist>(BodyType type) noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static FlagsType</type>
-      <name>GetFlags</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>accc993b94d08acd0603cbec51a1d30b4</anchor>
-      <arglist>(const BodyConf &amp;bd) noexcept</arglist>
-    </member>
     <member kind="variable" static="yes">
       <type>static constexpr auto</type>
       <name>DefaultAngularDamping</name>
@@ -15014,13 +14924,6 @@
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
       <anchor>a26bbc90e5b2c4192b598dfeefc692196</anchor>
       <arglist>(const Body &amp;body)</arglist>
-    </member>
-    <member kind="function">
-      <type>Body::FlagsType</type>
-      <name>GetFlags</name>
-      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
-      <anchor>a21071397aafb9df4a10e1abde2d11421</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
       <type>Force2</type>
@@ -20863,13 +20766,6 @@
     </member>
     <member kind="function">
       <type>constexpr bool</type>
-      <name>IsActive</name>
-      <anchorfile>classplayrho_1_1Contact.html</anchorfile>
-      <anchor>a67573bbae0d999aae871e19e7fc9a51e</anchor>
-      <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
       <name>IsEnabled</name>
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
       <anchor>a266137342d5122459efff71d4d50b2c9</anchor>
@@ -20929,13 +20825,6 @@
       <name>SetImpenetrable</name>
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
       <anchor>a1b81d1a80b14ca48e337542989518299</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr void</type>
-      <name>SetIsActive</name>
-      <anchorfile>classplayrho_1_1Contact.html</anchorfile>
-      <anchor>a766ac4778e764a75ed3f91961f337ba1</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
@@ -21006,13 +20895,6 @@
       <name>UnsetImpenetrable</name>
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
       <anchor>a7f9fd3406b7d88acd176aadfe96dc357</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr void</type>
-      <name>UnsetIsActive</name>
-      <anchorfile>classplayrho_1_1Contact.html</anchorfile>
-      <anchor>aedd71296e3e09d12b0eb339371960c68</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
@@ -21150,13 +21032,6 @@
     </member>
     <member kind="function">
       <type>constexpr bool</type>
-      <name>IsActive</name>
-      <anchorfile>classplayrho_1_1Contact.html</anchorfile>
-      <anchor>ae659e1f443f30d7813853f6763f1f22f</anchor>
-      <arglist>(const Contact &amp;contact) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
       <name>IsEnabled</name>
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
       <anchor>acf2071b64988e62193b4a2567bdde292</anchor>
@@ -21248,13 +21123,6 @@
     </member>
     <member kind="function">
       <type>constexpr void</type>
-      <name>SetIsActive</name>
-      <anchorfile>classplayrho_1_1Contact.html</anchorfile>
-      <anchor>a6dc7dc1c568e7e1cbe70afe67c51b14a</anchor>
-      <arglist>(Contact &amp;contact) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr void</type>
       <name>SetRestitution</name>
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
       <anchor>ae72b11c11801f8189dbd1d61dd917f77</anchor>
@@ -21307,13 +21175,6 @@
       <name>UnsetImpenetrable</name>
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
       <anchor>a205494b248da96a02b57be9d9ad9a27b</anchor>
-      <arglist>(Contact &amp;contact) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr void</type>
-      <name>UnsetIsActive</name>
-      <anchorfile>classplayrho_1_1Contact.html</anchorfile>
-      <anchor>a1ae66cec17d17f003982ee50908d0d25</anchor>
       <arglist>(Contact &amp;contact) noexcept</arglist>
     </member>
     <member kind="function">
@@ -29743,27 +29604,27 @@
     </member>
   </compound>
   <compound kind="struct">
-    <name>playrho::d2::PositionSolverManifold</name>
-    <filename>structplayrho_1_1d2_1_1PositionSolverManifold.html</filename>
+    <name>playrho ::d2::PositionSolverManifold</name>
+    <filename>structplayrho_01_1_1d2_1_1PositionSolverManifold.html</filename>
     <member kind="variable">
       <type>UnitVec</type>
       <name>m_normal</name>
-      <anchorfile>structplayrho_1_1d2_1_1PositionSolverManifold.html</anchorfile>
-      <anchor>ae2a97c6f55ca6b63af6d0ac5cb8051af</anchor>
+      <anchorfile>structplayrho_01_1_1d2_1_1PositionSolverManifold.html</anchorfile>
+      <anchor>a31e010a8ab30a50f023fcc6e7e77fb2b</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>Length2</type>
       <name>m_point</name>
-      <anchorfile>structplayrho_1_1d2_1_1PositionSolverManifold.html</anchorfile>
-      <anchor>a815fb3af92df6eb9f46ab5ac45d69d7f</anchor>
+      <anchorfile>structplayrho_01_1_1d2_1_1PositionSolverManifold.html</anchorfile>
+      <anchor>ad66d589c1a094d4d17a837a2cc9907cb</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>Length</type>
       <name>m_separation</name>
-      <anchorfile>structplayrho_1_1d2_1_1PositionSolverManifold.html</anchorfile>
-      <anchor>a3bfdfd3b788793b1a0f17dc99e72cdbe</anchor>
+      <anchorfile>structplayrho_01_1_1d2_1_1PositionSolverManifold.html</anchorfile>
+      <anchor>ad51a9452a9722925b789b739bb3a1731</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -42846,6 +42707,13 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
+      <type>typename detail::underlying_type&lt; T &gt;::type</type>
+      <name>underlying_type_t</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>acb6be9dd61b657423b255df296267d09</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
       <type>detail::Checked&lt; T, detail::UnitIntervalChecker&lt; T &gt; &gt;</type>
       <name>UnitInterval</name>
       <anchorfile>group__CheckedTypes.html</anchorfile>
@@ -43685,13 +43553,6 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a6514752c0838613cfaf76ea7e03581cd</anchor>
       <arglist>(BodyType type)</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr bool</type>
-      <name>IsActive</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ae659e1f443f30d7813853f6763f1f22f</anchor>
-      <arglist>(const Contact &amp;contact) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -44822,13 +44683,6 @@
     </member>
     <member kind="function">
       <type>constexpr void</type>
-      <name>SetIsActive</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a6dc7dc1c568e7e1cbe70afe67c51b14a</anchor>
-      <arglist>(Contact &amp;contact) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr void</type>
       <name>SetRestitution</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>ae72b11c11801f8189dbd1d61dd917f77</anchor>
@@ -44922,8 +44776,8 @@
       <type>constexpr auto</type>
       <name>to_underlying</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a4b3ffaf4d26f2f410c72befd4f9b0ec6</anchor>
-      <arglist>(T value) noexcept -&gt; detail::underlying_type_t&lt; T &gt;</arglist>
+      <anchor>abcf5bea73a392ad1b2be520e79fb9b4a</anchor>
+      <arglist>(T value) noexcept -&gt; underlying_type_t&lt; T &gt;</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -44979,13 +44833,6 @@
       <name>UnsetImpenetrable</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a205494b248da96a02b57be9d9ad9a27b</anchor>
-      <arglist>(Contact &amp;contact) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr void</type>
-      <name>UnsetIsActive</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a1ae66cec17d17f003982ee50908d0d25</anchor>
       <arglist>(Contact &amp;contact) noexcept</arglist>
     </member>
     <member kind="function">
@@ -45656,7 +45503,6 @@
     <class kind="struct">playrho::d2::Position</class>
     <class kind="struct">playrho::d2::PositionConstraint</class>
     <class kind="struct">playrho::d2::PositionSolution</class>
-    <class kind="struct">playrho::d2::PositionSolverManifold</class>
     <class kind="struct">playrho::d2::PrismaticJointConf</class>
     <class kind="struct">playrho::d2::PulleyJointConf</class>
     <class kind="struct">playrho::d2::RayCastHit</class>
@@ -47223,13 +47069,6 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>aa0a2c5e5746924e329cdf96e36fe56c0</anchor>
       <arglist>(const World &amp;world, ShapeID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>Body::FlagsType</type>
-      <name>GetFlags</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a21071397aafb9df4a10e1abde2d11421</anchor>
-      <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
       <type>Force2</type>
@@ -53470,13 +53309,6 @@
       <name>torque</name>
       <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
       <anchor>af3257d2b875169550aa6628cbd523356</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>typename underlying_type&lt; T &gt;::type</type>
-      <name>underlying_type_t</name>
-      <anchorfile>namespaceplayrho_1_1detail.html</anchorfile>
-      <anchor>a2ddc4b148d5e38a5a59954a1f503e901</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">

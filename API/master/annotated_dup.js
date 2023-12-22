@@ -72,7 +72,6 @@ var annotated_dup =
         [ "Position", "structplayrho_1_1d2_1_1Position.html", "structplayrho_1_1d2_1_1Position" ],
         [ "PositionConstraint", "structplayrho_1_1d2_1_1PositionConstraint.html", "structplayrho_1_1d2_1_1PositionConstraint" ],
         [ "PositionSolution", "structplayrho_1_1d2_1_1PositionSolution.html", "structplayrho_1_1d2_1_1PositionSolution" ],
-        [ "PositionSolverManifold", "structplayrho_1_1d2_1_1PositionSolverManifold.html", "structplayrho_1_1d2_1_1PositionSolverManifold" ],
         [ "PrismaticJointConf", "structplayrho_1_1d2_1_1PrismaticJointConf.html", "structplayrho_1_1d2_1_1PrismaticJointConf" ],
         [ "PulleyJointConf", "structplayrho_1_1d2_1_1PulleyJointConf.html", "structplayrho_1_1d2_1_1PulleyJointConf" ],
         [ "RayCastHit", "structplayrho_1_1d2_1_1RayCastHit.html", "structplayrho_1_1d2_1_1RayCastHit" ],
@@ -227,6 +226,11 @@ var annotated_dup =
       [ "Vector", "structplayrho_1_1Vector.html", "structplayrho_1_1Vector" ],
       [ "Version", "structplayrho_1_1Version.html", "structplayrho_1_1Version" ],
       [ "WrongState", "classplayrho_1_1WrongState.html", null ]
+    ] ],
+    [ "playrho ", null, [
+      [ "d2", null, [
+        [ "PositionSolverManifold", "structplayrho_01_1_1d2_1_1PositionSolverManifold.html", "structplayrho_01_1_1d2_1_1PositionSolverManifold" ]
+      ] ]
     ] ],
     [ "std", "namespacestd.html", [
       [ "hash< playrho::ContactKey >", "structstd_1_1hash_3_01playrho_1_1ContactKey_01_4.html", "structstd_1_1hash_3_01playrho_1_1ContactKey_01_4" ],

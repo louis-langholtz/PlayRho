@@ -10,7 +10,6 @@ var Body_8hpp =
     [ "GetAngularAcceleration", "Body_8hpp.html#a986b11edba421b23879fa363c557f1e5", null ],
     [ "GetAngularDamping", "Body_8hpp.html#a7543270614333c0aa69df56877a3a1bd", null ],
     [ "GetAngularVelocity", "Body_8hpp.html#a306635dbd11f92ad1020a386fce7b7c2", null ],
-    [ "GetFlags", "Body_8hpp.html#a21071397aafb9df4a10e1abde2d11421", null ],
     [ "GetForce", "Body_8hpp.html#a82eaa61b6bddf682fe315f09830e2bfc", null ],
     [ "GetInvMass", "Body_8hpp.html#a7d74493ba9108b54a9900eb8319ede92", null ],
     [ "GetInvRotInertia", "Body_8hpp.html#a4c2a6d79f4824a9d3d9971b60a865e47", null ],

@@ -1,10 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structplayrho_1_1d2_1_1part_1_1DefaultPolicies.html" title="Default policy class implementations for the Compositor host class template." alt="" coords="5,201,143,243"/>
-<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1part_1_1DefaultPolicyArgs.html" title="Default policy arguments for the Compositor template class." alt="" coords="208,5,347,47"/>
-<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1part_1_1DensityIs.html" title="Sets the implementing class of the Compositor density policy." alt="" coords="201,71,353,112"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1d2_1_1part_1_1FilterIs.html" title="Sets the implementing class of the Compositor filter policy." alt="" coords="209,136,346,177"/>
-<area shape="rect" id="node5" href="$structplayrho_1_1d2_1_1part_1_1FrictionIs.html" title="Sets the implementing class of the Compositor friction policy." alt="" coords="202,201,353,243"/>
-<area shape="rect" id="node6" href="$structplayrho_1_1d2_1_1part_1_1GeometryIs.html" title="Sets the implementing class of the Compositor geometry policy." alt="" coords="194,267,361,308"/>
-<area shape="rect" id="node7" href="$structplayrho_1_1d2_1_1part_1_1RestitutionIs.html" title="Sets the implementing class of the Compositor restitution policy." alt="" coords="191,332,364,373"/>
-<area shape="rect" id="node8" href="$structplayrho_1_1d2_1_1part_1_1SensorIs.html" title="Sets the implementing class of the Compositor sensor policy." alt="" coords="204,397,351,439"/>
+<area shape="rect" id="node1" title=" " alt="" coords="16,5,188,32"/>
+<area shape="rect" id="node2" href="$classplayrho_1_1d2_1_1part_1_1Compositor.html" title="A class template for compositing shaped part types eligible for use with classes like the playrho::d2..." alt="" coords="247,117,403,173"/>
+<area shape="rect" id="node3" title=" " alt="" coords="25,56,179,83"/>
+<area shape="rect" id="node4" title=" " alt="" coords="17,107,187,133"/>
+<area shape="rect" id="node5" title=" " alt="" coords="9,157,195,184"/>
+<area shape="rect" id="node6" title=" " alt="" coords="5,208,199,235"/>
+<area shape="rect" id="node7" title=" " alt="" coords="19,259,185,285"/>
 </map>

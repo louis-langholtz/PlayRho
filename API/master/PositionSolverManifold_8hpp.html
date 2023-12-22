@@ -95,7 +95,6 @@ $(document).ready(function(){initNavTree('PositionSolverManifold_8hpp.html','');
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">PositionSolverManifold.hpp File Reference</div>  </div>
@@ -104,9 +103,9 @@ $(document).ready(function(){initNavTree('PositionSolverManifold_8hpp.html','');
 
 <p>Definition of the <code>PositionSolverManifold</code> class and closely related code.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;<a class="el" href="Settings_8hpp.html">playrho/Settings.hpp</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="Units_8hpp.html">playrho/Units.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Vector2_8hpp.html">playrho/Vector2.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Manifold_8hpp.html">playrho/d2/Manifold.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="d2_2Math_8hpp.html">playrho/d2/Math.hpp</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for PositionSolverManifold.hpp:</div>
 <div class="dyncontent">
@@ -116,30 +115,72 @@ Include dependency graph for PositionSolverManifold.hpp:</div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1PositionSolverManifold.html">playrho::d2::PositionSolverManifold</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespaceplayrho"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html">playrho</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceplayrho_1_1d2"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html">playrho::d2</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_01_1_1d2_1_1PositionSolverManifold.html">playrho ::d2::PositionSolverManifold</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa9987f7f8471dbe26d486e2602661e78"><td class="memItemLeft" align="right" valign="top">PositionSolverManifold&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#aa9987f7f8471dbe26d486e2602661e78">playrho::d2::GetPSM</a> (const Manifold &amp;manifold, Manifold::size_type index, const Transformation &amp;xfA, const Transformation &amp;xfB)</td></tr>
-<tr class="separator:aa9987f7f8471dbe26d486e2602661e78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66c69ac25f3c5cdf982ab82e0421aa58"><td class="memItemLeft" align="right" valign="top">PositionSolverManifold&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="PositionSolverManifold_8hpp.html#a66c69ac25f3c5cdf982ab82e0421aa58">playrho ::d2::GetPSM</a> (const Manifold &amp;manifold, Manifold::size_type index, const Transformation &amp;xfA, const Transformation &amp;xfB)</td></tr>
+<tr class="memdesc:a66c69ac25f3c5cdf982ab82e0421aa58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the normal-point-separation data in world coordinates for the given inputs.  <a href="PositionSolverManifold_8hpp.html#a66c69ac25f3c5cdf982ab82e0421aa58">More...</a><br /></td></tr>
+<tr class="separator:a66c69ac25f3c5cdf982ab82e0421aa58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Definition of the <code>PositionSolverManifold</code> class and closely related code. </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="a66c69ac25f3c5cdf982ab82e0421aa58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66c69ac25f3c5cdf982ab82e0421aa58">&#9670;&nbsp;</a></span>GetPSM()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">PositionSolverManifold playrho ::d2::GetPSM </td>
+          <td>(</td>
+          <td class="paramtype">const Manifold &amp;&#160;</td>
+          <td class="paramname"><em>manifold</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Manifold::size_type&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Transformation &amp;&#160;</td>
+          <td class="paramname"><em>xfA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Transformation &amp;&#160;</td>
+          <td class="paramname"><em>xfB</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the normal-point-separation data in world coordinates for the given inputs. </p>
+<dl class="section note"><dt>Note</dt><dd>The returned normal is in the direction of shape A to shape B. </dd>
+<dd>
+The returned separation distance does not account for vertex radiuses. It's simply the separation between the points of the manifold. To account for the vertex radiuses, the total vertex radius must be subtracted from this separation distance. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="PositionSolverManifold_8hpp.html#a66c69ac25f3c5cdf982ab82e0421aa58">playrho ::d2::GetPSM()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="dir_00957d302ca87b53c9f57dcbc695504d.html">d2</a></li><li class="navelem"><a class="el" href="PositionSolverManifold_8hpp.html">PositionSolverManifold.hpp</a></li>
-    <li class="footer">Generated on Tue Dec 19 2023 22:34:58 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Dec 22 2023 22:02:04 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

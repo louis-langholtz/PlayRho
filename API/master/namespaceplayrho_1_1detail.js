@@ -98,7 +98,6 @@ var namespaceplayrho_1_1detail =
     [ "surface_density", "namespaceplayrho_1_1detail.html#a5d70a4f74cac574d76e8dfcfee292895", null ],
     [ "time", "namespaceplayrho_1_1detail.html#aec06718803b60f89a200ed9207508f02", null ],
     [ "torque", "namespaceplayrho_1_1detail.html#af3257d2b875169550aa6628cbd523356", null ],
-    [ "underlying_type_t", "namespaceplayrho_1_1detail.html#a2ddc4b148d5e38a5a59954a1f503e901", null ],
     [ "velocity", "namespaceplayrho_1_1detail.html#a07bf078d023635979d9fd9bda324a16e", null ],
     [ "abs", "group__CheckedMath.html#ga00fab6b331741e415a52e5155467a0bf", null ],
     [ "Contains", "namespaceplayrho_1_1detail.html#aeccc4adba69c5f7bbf4c0c3724ae1fcc", null ],

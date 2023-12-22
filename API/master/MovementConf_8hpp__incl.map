@@ -5,14 +5,13 @@
 <area shape="rect" id="node4" title=" " alt="" coords="219,483,311,509"/>
 <area shape="rect" id="node5" href="$Real_8hpp.html" title="Real number definition file." alt="" coords="384,251,516,278"/>
 <area shape="rect" id="node7" href="$Templates_8hpp.html" title="Definitions of miscellaneous template related code." alt="" coords="391,333,562,360"/>
-<area shape="rect" id="node14" href="$RealConstants_8hpp.html" title="Definitions file for constant expressions of type Real." alt="" coords="410,169,607,196"/>
-<area shape="rect" id="node15" href="$to__underlying_8hpp.html" title="Definition of to_underlying function template." alt="" coords="143,169,335,196"/>
+<area shape="rect" id="node13" href="$RealConstants_8hpp.html" title="Definitions file for constant expressions of type Real." alt="" coords="410,169,607,196"/>
+<area shape="rect" id="node14" href="$to__underlying_8hpp.html" title="Definition of to_underlying function template." alt="" coords="143,169,335,196"/>
 <area shape="rect" id="node6" title=" " alt="" coords="309,333,367,360"/>
 <area shape="rect" id="node8" title=" " alt="" coords="328,408,393,435"/>
 <area shape="rect" id="node9" href="$detail_2Templates_8hpp.html" title="Low&#45;level declarations for general class &amp; function templates." alt="" coords="417,408,627,435"/>
-<area shape="rect" id="node10" title=" " alt="" coords="645,483,730,509"/>
-<area shape="rect" id="node11" title=" " alt="" coords="355,483,441,509"/>
-<area shape="rect" id="node12" title=" " alt="" coords="465,483,536,509"/>
-<area shape="rect" id="node13" title=" " alt="" coords="560,483,620,509"/>
-<area shape="rect" id="node16" href="$underlying__type_8hpp.html" title="Definition of underlying_type trait class and related code." alt="" coords="147,244,332,285"/>
+<area shape="rect" id="node10" title=" " alt="" coords="577,483,662,509"/>
+<area shape="rect" id="node11" title=" " alt="" coords="397,483,468,509"/>
+<area shape="rect" id="node12" title=" " alt="" coords="492,483,552,509"/>
+<area shape="rect" id="node15" href="$underlying__type_8hpp.html" title="Definition of underlying_type trait class and related code." alt="" coords="147,244,332,285"/>
 </map>

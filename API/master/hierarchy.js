@@ -232,7 +232,7 @@ var hierarchy =
     [ "playrho::d2::Position", "structplayrho_1_1d2_1_1Position.html", null ],
     [ "playrho::d2::PositionConstraint", "structplayrho_1_1d2_1_1PositionConstraint.html", null ],
     [ "playrho::d2::PositionSolution", "structplayrho_1_1d2_1_1PositionSolution.html", null ],
-    [ "playrho::d2::PositionSolverManifold", "structplayrho_1_1d2_1_1PositionSolverManifold.html", null ],
+    [ "playrho ::d2::PositionSolverManifold", "structplayrho_01_1_1d2_1_1PositionSolverManifold.html", null ],
     [ "playrho::detail::PositiveChecker< T >", "structplayrho_1_1detail_1_1PositiveChecker.html", null ],
     [ "playrho::PreStepStats", "structplayrho_1_1PreStepStats.html", null ],
     [ "playrho::d2::GearJointConf::PrismaticData", "structplayrho_1_1d2_1_1GearJointConf_1_1PrismaticData.html", null ],

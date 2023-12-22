@@ -12,10 +12,10 @@
 <!-- Node0 -->
 <g id="node1" class="node">
 <title>Node0</title>
-<g id="a_node1"><a xlink:href="classplayrho_1_1d2_1_1NgonWithFwdNormals.html" target="_top" xlink:title="N&#45;gon of vertices with counter&#45;clockwise &quot;forward&quot; normals.">
+<g id="a_node1"><a xlink:href="classplayrho_1_1d2_1_1NgonWithFwdNormals.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="black" points="0,-0.5 0,-30.5 146,-30.5 146,-0.5 0,-0.5"/>
 <text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::NgonWithFwd</text>
-<text text-anchor="middle" x="73" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">Normals&lt; N &gt;</text>
+<text text-anchor="middle" x="73" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">Normals&lt; 2 &gt;</text>
 </a>
 </g>
 </g>

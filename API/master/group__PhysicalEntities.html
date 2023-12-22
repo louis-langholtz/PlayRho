@@ -127,8 +127,8 @@ Classes</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>For example, the following could be used to create a dynamic body having a one meter radius disk shape: <div class="fragment"><div class="line"><span class="keyword">auto</span> world = World{};</div>
 <div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> shape = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, Shape{DiskShapeConf{1_m}});</div>
 <div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> body = <a class="code" href="namespaceplayrho_1_1d2.html#a352ef727632169c252a59d648808822f">CreateBody</a>(world, BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>).Use(shape));</div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a352ef727632169c252a59d648808822f"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a352ef727632169c252a59d648808822f">playrho::d2::CreateBody</a></div><div class="ttdeci">BodyID CreateBody(AabbTreeWorld &amp;world, Body body=Body{})</div><div class="ttdoc">Creates a rigid body that's a copy of the given one.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorld.cpp:1000</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a5063d35172bec75d73944cc1c52009ed"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">playrho::d2::CreateShape</a></div><div class="ttdeci">ShapeID CreateShape(AabbTreeWorld &amp;world, Shape def)</div><div class="ttdoc">Creates an identifiable copy of the given shape within this world.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorld.cpp:1218</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a352ef727632169c252a59d648808822f"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a352ef727632169c252a59d648808822f">playrho::d2::CreateBody</a></div><div class="ttdeci">BodyID CreateBody(AabbTreeWorld &amp;world, Body body=Body{})</div><div class="ttdoc">Creates a rigid body that's a copy of the given one.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorld.cpp:989</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a5063d35172bec75d73944cc1c52009ed"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">playrho::d2::CreateShape</a></div><div class="ttdeci">ShapeID CreateShape(AabbTreeWorld &amp;world, Shape def)</div><div class="ttdoc">Creates an identifiable copy of the given shape within this world.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorld.cpp:1207</div></div>
 <div class="ttc" id="anamespaceplayrho_html_a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c"><div class="ttname"><a href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">playrho::BodyType::Dynamic</a></div><div class="ttdeci">@ Dynamic</div></div>
 </div><!-- fragment --></dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;.">World</a>. </dd>
@@ -147,7 +147,7 @@ Classes</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Dec 19 2023 22:34:58 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Dec 22 2023 22:02:05 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
