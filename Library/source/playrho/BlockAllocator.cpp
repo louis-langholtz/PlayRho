@@ -20,9 +20,10 @@
  */
 
 #include <cassert>
-#include <cstddef>
+#include <cstddef> // for std::size_t
 #include <cstdint> // for std::uint8_t
 #include <cstring>
+#include <iterator> // for std::size
 #include <limits> // for std::numeric_limits
 
 #include <playrho/BlockAllocator.hpp>
@@ -117,8 +118,7 @@ BlockAllocator::BlockAllocator():
 
 BlockAllocator::~BlockAllocator() noexcept
 {
-    for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i)
-    {
+    for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i) {
         playrho::Free(m_chunks[i].blocks);
     }
     playrho::Free(m_chunks);
@@ -126,13 +126,11 @@ BlockAllocator::~BlockAllocator() noexcept
 
 void* BlockAllocator::Allocate(size_type n)
 {
-    if (n == 0)
-    {
+    if (n == 0) {
         return nullptr;
     }
 
-    if (n > GetMaxBlockSize())
-    {
+    if (n > GetMaxBlockSize()) {
         return Alloc(n);
     }
 
@@ -147,8 +145,7 @@ void* BlockAllocator::Allocate(size_type n)
         }
     }
 
-    if (m_chunkCount == m_chunkSpace)
-    {
+    if (m_chunkCount == m_chunkSpace) {
         m_chunkSpace += GetChunkArrayIncrement();
         m_chunks = ReallocArray<Chunk>(m_chunks, m_chunkSpace);
         std::memset(m_chunks + m_chunkCount, 0, GetChunkArrayIncrement() * sizeof(Chunk));
@@ -156,8 +153,9 @@ void* BlockAllocator::Allocate(size_type n)
 
     const auto chunk = m_chunks + m_chunkCount;
     chunk->blocks = static_cast<Block*>(Alloc(ChunkSize));
-#if defined(_DEBUG)
-    std::memset(chunk->blocks, 0xcd, ChunkSize);
+#ifndef NDEBUG
+    static constexpr auto allocatedValue = 0xcd;
+    std::memset(chunk->blocks, allocatedValue, ChunkSize);
 #endif
     const auto blockSize = AllocatorBlockSizes[index];
     assert(blockSize > 0);
@@ -165,8 +163,7 @@ void* BlockAllocator::Allocate(size_type n)
     const auto blockCount = ChunkSize / blockSize;
     assert((blockCount * blockSize) <= ChunkSize);
     const auto chunkBlocks = reinterpret_cast<std::int8_t*>(chunk->blocks);
-    for (auto i = decltype(blockCount){0}; i < blockCount - 1; ++i)
-    {
+    for (auto i = decltype(blockCount){0}; i < blockCount - 1; ++i) {
         const auto block = reinterpret_cast<Block*>(chunkBlocks + blockSize * i);
         const auto next  = reinterpret_cast<Block*>(chunkBlocks + blockSize * (i + 1));
         block->next = next;
@@ -181,37 +178,33 @@ void* BlockAllocator::Allocate(size_type n)
 
 void BlockAllocator::Free(void* p, size_type n)
 {
-    if (n > GetMaxBlockSize())
-    {
+    if (n > GetMaxBlockSize()) {
         playrho::Free(p);
+        return;
     }
-    else if (n > 0)
-    {
+    if (n > 0) {
         const auto index = GetBlockSizeIndex(n);
         assert((0 <= index) && (index < std::size(m_freeLists)));
-#ifdef _DEBUG
+#ifndef NDEBUG
         // Verify the memory address and size is valid.
-        assert((0 <= index) && (index < size(AllocatorBlockSizes)));
+        assert((0 <= index) && (index < std::size(AllocatorBlockSizes)));
         const auto blockSize = AllocatorBlockSizes[index];
-        bool found = false;
-        for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i)
-        {
+        auto found = false;
+        for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i) {
             const auto chunk = m_chunks + i;
-            const auto chunkBlocks = (std::int8_t*)chunk->blocks;
-            if (chunk->blockSize != blockSize)
-            {
-                assert(((std::int8_t*)p + blockSize <= chunkBlocks) || (chunkBlocks + ChunkSize <= (std::int8_t*)p));
+            const auto chunkBlocks = reinterpret_cast<std::int8_t*>(chunk->blocks);
+            if (chunk->blockSize != blockSize) {
+                assert((static_cast<std::int8_t*>(p) + blockSize <= chunkBlocks) ||
+                       (chunkBlocks + ChunkSize <= static_cast<std::int8_t*>(p)));
             }
-            else
-            {
-                if ((chunkBlocks <= (std::int8_t*)p) && ((std::int8_t*)p + blockSize <= chunkBlocks + ChunkSize))
-                {
-                    found = true;
-                }
+            else if ((chunkBlocks <= static_cast<std::int8_t*>(p)) &&
+                     (static_cast<std::int8_t*>(p) + blockSize <= chunkBlocks + ChunkSize)) {
+                found = true;
             }
         }
         assert(found);
-        std::memset(p, 0xfd, blockSize);
+        static constexpr auto freedValue = 0xfd;
+        std::memset(p, freedValue, blockSize);
 #endif
         const auto block = static_cast<Block*>(p);
         block->next = m_freeLists[index];
