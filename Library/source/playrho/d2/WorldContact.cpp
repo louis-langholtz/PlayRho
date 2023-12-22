@@ -19,16 +19,17 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/WorldContact.hpp>
+#include <algorithm> // for std::count_if
+#include <optional>
 
-#include <playrho/d2/World.hpp>
-#include <playrho/d2/WorldBody.hpp>
-#include <playrho/d2/WorldShape.hpp>
-#include <playrho/d2/Body.hpp> // for GetBody
 #include <playrho/Contact.hpp>
 
-#include <playrho/d2/Manifold.hpp>
+#include <playrho/d2/Body.hpp> // for GetBody
+#include <playrho/d2/World.hpp>
+#include <playrho/d2/WorldBody.hpp>
+#include <playrho/d2/WorldContact.hpp>
 #include <playrho/d2/WorldManifold.hpp>
+#include <playrho/d2/WorldShape.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -40,7 +41,8 @@ bool IsTouching(const World& world, ContactID id)
 
 bool IsAwake(const World& world, ContactID id)
 {
-    return IsAwake(GetContact(world, id));
+    const auto contact = GetContact(world, id);
+    return IsAwake(world, GetBodyA(contact)) || IsAwake(world, GetBodyB(contact));
 }
 
 void SetAwake(World& world, ContactID id)

@@ -145,24 +145,6 @@ TEST(WorldContact, SetUnsetEnabled)
     EXPECT_TRUE(IsEnabled(world, c));
 }
 
-TEST(WorldContact, SetAwake2)
-{
-    auto world = World{};
-    const auto shapeId = CreateShape(world, DiskShapeConf{});
-    CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).Use(shapeId));
-    CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).Use(shapeId));
-    ASSERT_NO_THROW(Step(world, StepConf{}));
-    const auto contacts = GetContacts(world);
-    ASSERT_EQ(contacts.size(), ContactCounter(1));
-    const auto c = contacts.begin()->second;
-    auto contact = GetContact(world, c);
-    ASSERT_TRUE(IsAwake(contact));
-    EXPECT_NO_THROW(SetAwake(contact));
-    EXPECT_NO_THROW(SetContact(world, c, contact));
-    EXPECT_NO_THROW(UnsetAwake(contact));
-    EXPECT_THROW(SetContact(world, c, contact), InvalidArgument);
-}
-
 TEST(WorldContact, SetImpenetrable)
 {
     auto world = World{};
