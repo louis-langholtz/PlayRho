@@ -88,6 +88,7 @@ TEST(Body, UseAwakeConstruction)
     EXPECT_FALSE(Body(BodyConf().Use(BodyType::Kinematic).UseAwake(false)).IsAwake());
     EXPECT_TRUE(Body(BodyConf().Use(BodyType::Dynamic).UseAwake(true)).IsAwake());
     EXPECT_FALSE(Body(BodyConf().Use(BodyType::Dynamic).UseAwake(false)).IsAwake());
+    EXPECT_TRUE(Body(BodyConf().Use(BodyType::Dynamic).UseAllowSleep(false).UseAwake(false)).IsAwake());
 }
 
 TEST(Body, UseAllowSleepConstruction)
