@@ -27,8 +27,12 @@
 
 #include <cstddef> // for std::max_align_t
 
+// IWYU pragma: begin_exports
+
 #include <playrho/BodyID.hpp>
 #include <playrho/Units.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho::d2 {
 

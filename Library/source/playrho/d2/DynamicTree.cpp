@@ -20,15 +20,15 @@
  */
 
 #include <algorithm>
-#include <cstring>
+#include <cassert> // for assert
 #include <limits> // for std::numeric_limits
-#include <numeric>
 #include <utility>
 
 #include <playrho/GrowableStack.hpp>
 #include <playrho/DynamicMemory.hpp>
 #include <playrho/Templates.hpp>
 
+#include <playrho/d2/AABB.hpp>
 #include <playrho/d2/DynamicTree.hpp>
 #include <playrho/d2/Math.hpp> // for NextPowerOfTwo and others
 

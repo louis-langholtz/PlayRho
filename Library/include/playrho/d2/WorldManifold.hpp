@@ -25,7 +25,17 @@
 /// @file
 /// @brief Declarations of the @c WorldManifold class and closely related code.
 
+#include <cassert> // for assert
+#include <type_traits> // for std::remove_const_t
+
+// IWYU pragma: begin_exports
+
+#include <playrho/Settings.hpp> // for MaxManifoldPoints
+
 #include <playrho/d2/Math.hpp>
+#include <playrho/d2/UnitVec.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

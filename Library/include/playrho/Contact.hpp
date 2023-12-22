@@ -32,6 +32,8 @@
 #endif
 #include <optional>
 
+// IWYU pragma: begin_exports
+
 #include <playrho/BodyID.hpp>
 #include <playrho/Contactable.hpp>
 #include <playrho/Math.hpp>
@@ -41,6 +43,8 @@
 #include <playrho/ShapeID.hpp>
 #include <playrho/UnitInterval.hpp>
 #include <playrho/Units.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

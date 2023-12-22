@@ -39,17 +39,22 @@
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 
 #include <optional>
-#include <vector>
+
+// IWYU pragma: begin_exports
 
 #include <playrho/BodyID.hpp>
 #include <playrho/ContactID.hpp>
 #include <playrho/KeyedContactID.hpp>
 #include <playrho/NonNegative.hpp>
+#include <playrho/Real.hpp>
 #include <playrho/Settings.hpp>
 #include <playrho/ShapeID.hpp>
 #include <playrho/UnitInterval.hpp>
+#include <playrho/Units.hpp>
 
 #include <playrho/d2/WorldManifold.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho::d2 {
 

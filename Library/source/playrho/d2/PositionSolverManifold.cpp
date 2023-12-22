@@ -19,7 +19,10 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#include <cassert> // for assert
+
 #include <playrho/d2/PositionSolverManifold.hpp>
+#include <playrho/d2/UnitVec.hpp>
 
 namespace playrho {
 namespace d2 {

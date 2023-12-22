@@ -24,8 +24,13 @@
 /// @file
 /// @brief Definition of the @c ContactID alias and closely related code.
 
+// IWYU pragma: begin_exports
+
 #include <playrho/detail/IndexingNamedType.hpp>
+
 #include <playrho/Settings.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

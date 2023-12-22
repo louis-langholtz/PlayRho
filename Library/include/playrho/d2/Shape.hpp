@@ -28,14 +28,17 @@
 /// @brief Definition of the @c Shape class and closely related code.
 
 #include <memory>
-#include <functional>
 #include <utility>
-#include <stdexcept>
+#include <typeinfo> // for std::bad_cast
 #include <type_traits> // for std::add_pointer_t, std::add_const_t
+
+// IWYU pragma: begin_exports
 
 #include <playrho/InvalidArgument.hpp>
 #include <playrho/Filter.hpp>
 #include <playrho/NonNegative.hpp>
+#include <playrho/Settings.hpp> // for ChildCounter
+#include <playrho/Templates.hpp> // for DecayedTypeIfNotSame
 #include <playrho/TypeInfo.hpp>
 
 #include <playrho/d2/DistanceProxy.hpp>
@@ -44,6 +47,8 @@
 
 #include <playrho/d2/detail/ShapeConcept.hpp>
 #include <playrho/d2/detail/ShapeModel.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho::d2 {
 

@@ -19,6 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#include <vector>
+
 #include <playrho/d2/AabbTreeWorld.hpp>
 #include <playrho/d2/AabbTreeWorldBody.hpp>
 #include <playrho/d2/Body.hpp>

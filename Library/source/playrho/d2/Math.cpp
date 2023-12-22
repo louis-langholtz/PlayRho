@@ -19,9 +19,11 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/Math.hpp>
+#include <cassert> // for assert
 
 #include <playrho/ConstraintSolverConf.hpp>
+
+#include <playrho/d2/Math.hpp>
 
 namespace playrho::d2 {
 

@@ -32,6 +32,8 @@
 #include <cassert> // for assert
 #include <type_traits> // for std::remove_const_t
 
+// IWYU pragma: begin_exports
+
 #ifndef NDEBUG
 #include <playrho/Math.hpp> // for AlmostEqual
 #include <playrho/detail/Templates.hpp>
@@ -45,6 +47,8 @@
 
 #include <playrho/d2/IndexPair.hpp>
 #include <playrho/d2/SimplexEdge.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho::d2 {
 

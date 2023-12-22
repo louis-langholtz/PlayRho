@@ -26,11 +26,10 @@
 #include <playrho/Real.hpp>
 #include <playrho/RealConstants.hpp>
 #include <playrho/Span.hpp>
+#include <playrho/Templates.hpp>
 #include <playrho/Units.hpp>
 #include <playrho/Vector.hpp>
 #include <playrho/Vector2.hpp>
-
-#include <playrho/detail/Templates.hpp>
 
 #include <playrho/d2/MassData.hpp>
 #include <playrho/d2/Math.hpp>

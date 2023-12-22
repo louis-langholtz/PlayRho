@@ -29,6 +29,8 @@
 #include <type_traits>
 #include <vector>
 
+// IWYU pragma: begin_exports
+
 #include <playrho/InvalidArgument.hpp>
 #include <playrho/Matrix.hpp> // for Mat22
 #include <playrho/NonNegative.hpp>
@@ -47,6 +49,8 @@
 #include <playrho/d2/Transformation.hpp>
 #include <playrho/d2/UnitVec.hpp>
 #include <playrho/d2/VertexSet.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho::d2 {
 

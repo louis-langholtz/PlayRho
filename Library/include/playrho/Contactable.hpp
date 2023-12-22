@@ -26,9 +26,13 @@
 
 #include <type_traits> // for std::is_nothrow_default_constructible_v, etc
 
+// IWYU pragma: begin_exports
+
 #include <playrho/Settings.hpp> // for ChildCounter
 #include <playrho/ShapeID.hpp>
 #include <playrho/BodyID.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

@@ -27,6 +27,8 @@
 
 #include <array>
 
+// IWYU pragma: begin_exports
+
 #include <playrho/InvalidArgument.hpp>
 #include <playrho/NonNegative.hpp>
 #include <playrho/Real.hpp>
@@ -42,6 +44,8 @@
 #include <playrho/d2/NgonWithFwdNormals.hpp>
 #include <playrho/d2/ShapeConf.hpp>
 #include <playrho/d2/UnitVec.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho::d2 {
 

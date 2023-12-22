@@ -27,11 +27,15 @@
 
 #include <cstdlib> // for std::size_t
 
+// IWYU pragma: begin_exports
+
 #include <playrho/NonNegative.hpp>
 #include <playrho/Span.hpp>
 #include <playrho/Units.hpp>
 #include <playrho/Vector.hpp>
 #include <playrho/Vector2.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho::detail {
 

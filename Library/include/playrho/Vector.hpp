@@ -33,9 +33,13 @@
 #include <tuple>
 #include <type_traits>
 
+// IWYU pragma: begin_exports
+
 #include <playrho/InvalidArgument.hpp>
 #include <playrho/Real.hpp>
 #include <playrho/Templates.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

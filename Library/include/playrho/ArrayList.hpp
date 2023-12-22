@@ -32,9 +32,13 @@
 #include <type_traits>
 #include <utility> // for std::move
 
+// IWYU pragma: begin_exports
+
 #include <playrho/LengthError.hpp>
 #include <playrho/Span.hpp>
 #include <playrho/Templates.hpp> // for Equal
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

@@ -28,11 +28,20 @@
 #ifdef IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS
 #include <algorithm>
 #endif
+#include <cassert> // for assert
+#include <cstddef> // for std::size_t
+#include <limits> // for std::numeric_limits
 #include <vector>
 
+// IWYU pragma: begin_exports
+
+#include <playrho/NonNegative.hpp>
+#include <playrho/Settings.hpp>
 #include <playrho/Span.hpp>
 
 #include <playrho/d2/Math.hpp>
+
+// IWYU pragma: end_exports
 
 // Define IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS to implement the DistanceProxy class
 // using buffers instead of pointers. Note that timing tests suggest implementing with

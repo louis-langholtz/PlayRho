@@ -33,10 +33,14 @@
 #include <limits> // for std::numeric_limits
 #include <type_traits> // for std::remove_const_t
 
+// IWYU pragma: begin_exports
+
 #include <playrho/Real.hpp>
 #include <playrho/RealConstants.hpp>
 #include <playrho/Units.hpp>
 #include <playrho/WiderType.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

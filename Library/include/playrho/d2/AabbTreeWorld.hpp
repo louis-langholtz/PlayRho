@@ -32,6 +32,8 @@
 #include <utility> // for std::pair, std::move
 #include <vector>
 
+// IWYU pragma: begin_exports
+
 #include <playrho/BodyID.hpp>
 #include <playrho/BodyShapeFunction.hpp>
 #include <playrho/Contactable.hpp>
@@ -66,6 +68,8 @@
 #include <playrho/d2/DynamicTree.hpp>
 #include <playrho/d2/Transformation.hpp>
 #include <playrho/d2/WorldConf.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

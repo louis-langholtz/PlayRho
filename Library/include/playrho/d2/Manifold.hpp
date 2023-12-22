@@ -25,10 +25,21 @@
 /// @file
 /// @brief Definition of the @c Manifold class and closely related code.
 
+#include <cassert> // for assert
+#include <cstddef> // for std::size_t
+#include <cstdint> // for std::uint8_t
+#include <type_traits> // for std::remove_const_t
+
+// IWYU pragma: begin_exports
+
 #include <playrho/ContactFeature.hpp>
+#include <playrho/Vector.hpp> // for playrho::get
 
 #include <playrho/d2/IndexPair.hpp>
 #include <playrho/d2/Math.hpp>
+#include <playrho/d2/UnitVec.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

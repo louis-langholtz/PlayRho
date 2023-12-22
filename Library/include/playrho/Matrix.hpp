@@ -28,10 +28,14 @@
 #include <cstdlib> // for std::size_t
 #include <type_traits> // for std::enable_if_t
 
+// IWYU pragma: begin_exports
+
 #include <playrho/Vector.hpp>
 #include <playrho/Vector2.hpp> // for Vec2
 #include <playrho/Real.hpp>
 #include <playrho/Units.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

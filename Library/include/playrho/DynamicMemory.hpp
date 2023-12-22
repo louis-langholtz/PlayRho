@@ -30,7 +30,6 @@
 #include <new>
 
 namespace playrho {
-// Memory Allocation
 
 /// @brief Allocates memory.
 /// @note One can change this function to use ones own memory allocator. Be sure to conform

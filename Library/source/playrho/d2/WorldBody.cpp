@@ -31,11 +31,10 @@
 #include <playrho/Real.hpp>
 #include <playrho/Settings.hpp>
 #include <playrho/ShapeID.hpp>
+#include <playrho/Templates.hpp>
 #include <playrho/Units.hpp>
 #include <playrho/Vector.hpp> // for GetX, GetY
 #include <playrho/Vector2.hpp> // for Length2
-
-#include <playrho/detail/Templates.hpp>
 
 #include <playrho/d2/Acceleration.hpp>
 #include <playrho/d2/Body.hpp>

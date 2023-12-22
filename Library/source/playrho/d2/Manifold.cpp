@@ -19,21 +19,19 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/Manifold.hpp>
+#include <cassert> // for assert
+#include <utility> // for std::make_pair
 
-#include <playrho/d2/Simplex.hpp>
+#include <playrho/d2/ClipList.hpp>
 #include <playrho/d2/Distance.hpp>
 #include <playrho/d2/DistanceProxy.hpp>
-#include <playrho/d2/ClipList.hpp>
+#include <playrho/d2/Manifold.hpp>
 #include <playrho/d2/ShapeSeparation.hpp>
+#include <playrho/d2/Simplex.hpp>
 
 #include <playrho/Defines.hpp>
 
 #include <playrho/StepConf.hpp>
-
-#include <array>
-#include <bitset>
-#include <algorithm>
 
 #define PLAYRHO_MAGIC(x) (x)
 

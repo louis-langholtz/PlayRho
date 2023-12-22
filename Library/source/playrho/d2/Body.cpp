@@ -19,38 +19,13 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <algorithm> // for std::find
-#include <cassert>
-#include <type_traits>
-#include <vector>
+#include <cassert> // for assert
 
-#include <playrho/BodyType.hpp>
-#include <playrho/Math.hpp>
-#include <playrho/NonNegative.hpp>
-#include <playrho/Real.hpp>
-#include <playrho/ShapeID.hpp>
 #include <playrho/Templates.hpp>
-#include <playrho/Units.hpp>
-#include <playrho/Vector2.hpp>
-
-#include <playrho/detail/Templates.hpp>
 
 #include <playrho/d2/Body.hpp>
-#include <playrho/d2/BodyConf.hpp>
-#include <playrho/d2/Math.hpp>
-#include <playrho/d2/Position.hpp>
-#include <playrho/d2/Sweep.hpp>
-#include <playrho/d2/Transformation.hpp>
-#include <playrho/d2/Velocity.hpp>
 
 namespace playrho::d2 {
-
-static_assert(std::is_default_constructible_v<Body>, "Body must be default constructible!");
-static_assert(std::is_copy_constructible_v<Body>, "Body must be copy constructible!");
-static_assert(std::is_move_constructible_v<Body>, "Body must be move constructible!");
-static_assert(std::is_copy_assignable_v<Body>, "Body must be copy assignable!");
-static_assert(std::is_move_assignable_v<Body>, "Body must be move assignable!");
-static_assert(std::is_nothrow_destructible_v<Body>, "Body must be nothrow destructible!");
 
 Body::FlagsType Body::GetFlags(BodyType type) noexcept
 {

@@ -19,9 +19,14 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/Math.hpp>
+#include <cassert> // for assert
+#include <cstddef> // for std::size_t
+#include <vector>
 
 #include <playrho/ConstraintSolverConf.hpp>
+#include <playrho/Math.hpp>
+#include <playrho/RealConstants.hpp>
+#include <playrho/Templates.hpp>
 
 namespace playrho {
 

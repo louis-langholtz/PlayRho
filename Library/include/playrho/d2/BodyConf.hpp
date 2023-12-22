@@ -28,19 +28,20 @@
 #include <cstdlib> // for std::size_t
 #include <type_traits> // for std::is_default_constructible_v
 
+// IWYU pragma: begin_exports
+
 #include <playrho/ArrayList.hpp>
 #include <playrho/BodyType.hpp>
 #include <playrho/NonNegative.hpp>
-#include <playrho/Real.hpp>
 #include <playrho/ShapeID.hpp>
 #include <playrho/Span.hpp>
-#include <playrho/Units.hpp>
-#include <playrho/Vector2.hpp>
 
 #include <playrho/d2/Position.hpp>
 #include <playrho/d2/Sweep.hpp>
 #include <playrho/d2/Transformation.hpp>
 #include <playrho/d2/Velocity.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho::d2 {
 

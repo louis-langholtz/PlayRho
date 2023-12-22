@@ -26,7 +26,11 @@
 
 #include <functional> // for std::function
 
+// IWYU pragma: begin_exports
+
 #include <playrho/JointID.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

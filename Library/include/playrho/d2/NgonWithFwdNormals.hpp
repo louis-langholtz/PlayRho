@@ -25,11 +25,16 @@
 /// @brief Definition of the @c NgonWithFwdNormals class template and closely related code.
 
 #include <array>
+#include <cstddef> // for std::size_t
 #include <type_traits>
 #include <utility> // for std::index_sequence
 #include <vector>
 
+// IWYU pragma: begin_exports
+
 #include <playrho/d2/Math.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho::d2 {
 

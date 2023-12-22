@@ -27,7 +27,11 @@
 #include <cstdlib> // for std::size_t
 #include <type_traits> // for std::enable_if_t
 
+// IWYU pragma: begin_exports
+
 #include <playrho/detail/Templates.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

@@ -38,6 +38,8 @@
 /// @see World, BodyID.
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 
+// IWYU pragma: begin_exports
+
 #include <playrho/BodyID.hpp>
 #include <playrho/BodyType.hpp>
 #include <playrho/Math.hpp>
@@ -55,6 +57,8 @@
 #include <playrho/d2/Transformation.hpp>
 #include <playrho/d2/UnitVec.hpp>
 #include <playrho/d2/Velocity.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho::d2 {
 

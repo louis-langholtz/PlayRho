@@ -25,14 +25,17 @@
 /// @file
 /// @brief Declarations of the Body class, and functions associated with it.
 
-#include <cassert>
+#include <cassert> // for assert
+
 #include <cstdint> // for std::uint16_t
 #include <limits> // for std::numeric_limits
-#include <utility>
+#include <type_traits> // for std::is_default_constructible_v, etc
+#include <utility> // for std::move
 #include <vector>
 
+// IWYU pragma: begin_exports
+
 #include <playrho/BodyType.hpp>
-#include <playrho/Math.hpp>
 #include <playrho/NonNegative.hpp>
 #include <playrho/Real.hpp>
 #include <playrho/ShapeID.hpp>
@@ -48,6 +51,8 @@
 #include <playrho/d2/Transformation.hpp>
 #include <playrho/d2/UnitVec.hpp>
 #include <playrho/d2/Velocity.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho::d2 {
 
@@ -439,6 +444,14 @@ private:
     /// @brief Identifiers of shapes attached/associated with this body.
     std::vector<ShapeID> m_shapes;
 };
+
+// Assert some expected traits...
+static_assert(std::is_default_constructible_v<Body>, "Body must be default constructible!");
+static_assert(std::is_copy_constructible_v<Body>, "Body must be copy constructible!");
+static_assert(std::is_move_constructible_v<Body>, "Body must be move constructible!");
+static_assert(std::is_copy_assignable_v<Body>, "Body must be copy assignable!");
+static_assert(std::is_move_assignable_v<Body>, "Body must be move assignable!");
+static_assert(std::is_nothrow_destructible_v<Body>, "Body must be nothrow destructible!");
 
 inline const Transformation& Body::GetTransformation() const noexcept
 {

@@ -22,12 +22,15 @@
 #ifndef PLAYRHO_D2_TRANSFORMATION_HPP
 #define PLAYRHO_D2_TRANSFORMATION_HPP
 
-#include <playrho/Settings.hpp>
+/// @file
+/// @brief Definition of the Transformation class and free functions directly associated with it.
+
+// IWYU pragma: begin_exports
+
 #include <playrho/Vector2.hpp>
 #include <playrho/d2/UnitVec.hpp>
 
-/// @file
-/// @brief Definition of the Transformation class and free functions directly associated with it.
+// IWYU pragma: end_exports
 
 namespace playrho {
 namespace d2 {

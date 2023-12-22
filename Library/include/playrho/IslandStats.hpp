@@ -26,8 +26,12 @@
 
 #include <limits> // for std::numeric_limits
 
+// IWYU pragma: begin_exports
+
 #include <playrho/Units.hpp>
 #include <playrho/Settings.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 
