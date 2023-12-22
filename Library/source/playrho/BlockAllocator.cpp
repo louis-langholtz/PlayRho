@@ -153,7 +153,7 @@ void* BlockAllocator::Allocate(size_type n)
 
     const auto chunk = m_chunks + m_chunkCount;
     chunk->blocks = static_cast<Block*>(Alloc(ChunkSize));
-#ifndef NDEBUG
+#ifdef _DEBUG
     static constexpr auto allocatedValue = 0xcd;
     std::memset(chunk->blocks, allocatedValue, ChunkSize);
 #endif
@@ -185,7 +185,7 @@ void BlockAllocator::Free(void* p, size_type n)
     if (n > 0) {
         const auto index = GetBlockSizeIndex(n);
         assert((0 <= index) && (index < std::size(m_freeLists)));
-#ifndef NDEBUG
+#ifdef _DEBUG
         // Verify the memory address and size is valid.
         assert((0 <= index) && (index < std::size(AllocatorBlockSizes)));
         const auto blockSize = AllocatorBlockSizes[index];
