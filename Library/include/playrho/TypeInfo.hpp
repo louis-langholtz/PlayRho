@@ -27,7 +27,11 @@
 #include <cstring> // for std::strcmp
 #include <type_traits> // for std::decay_t
 
+// IWYU pragma: begin_exports
+
 #include <playrho/detail/TypeInfo.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

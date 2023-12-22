@@ -26,8 +26,12 @@
 #include <cstdlib> // for std::size_t
 #include <utility>
 
+// IWYU pragma: begin_exports
+
 #include <playrho/Settings.hpp>
 #include <playrho/Units.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

@@ -19,10 +19,10 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <playrho/d2/BasicAPI.hpp>
-
 #include <iostream>
 #include <iomanip>
+
+#include <playrho/d2/BasicAPI.hpp>
 
 // This is a simpler example of building and running a simulation using PlayRho.
 // The code creates a large box to be the ground and a small disk to be a ball
@@ -34,33 +34,43 @@ int main()
     using namespace playrho;
     using namespace playrho::d2;
 
+    // Just some named constant values used herein - to avoid "magic numbers"
+    constexpr auto boxX = +0_m;
+    constexpr auto boxY = -10_m;
+    constexpr auto boxWidth = 50_m;
+    constexpr auto bodyHeight = 10_m;
+    constexpr auto maxSteps = 60;
+    constexpr auto textWidth = 5;
+    constexpr auto fixedPrecision = 2;
+    constexpr auto ballStart = Length2{0_m, 4_m};
+
     // Constructs a world object which will hold and simulate bodies.
     auto world = World{};
 
     // Creates a shape within the world that's to act like the ground.
     // Uses a polygon configured as a box for this.
     // The extents are the half-width and half-height of the box.
-    const auto box = CreateShape(world, PolygonShapeConf{}.SetAsBox(50_m, 10_m));
+    const auto box = CreateShape(world, PolygonShapeConf{}.SetAsBox(boxWidth, bodyHeight));
 
     // Creates a body within the world that's attached to the ground-like box shape
     // and that's centered 10 meters below the origin.
-    CreateBody(world, BodyConf{}.Use(box).UseLocation(Length2{0_m, -10_m}));
+    CreateBody(world, BodyConf{}.Use(box).UseLocation(Length2{boxX, boxY}));
 
     // Creats a 1 meter radius, ball-like, disk shape within the world.
     const auto diskShape = CreateShape(world, DiskShapeConf{}.UseRadius(1_m));
 
-    // Creates a "dynamic" body having the disk shape that will fall to the ground within world.
+    // Creates "dynamic" body having disk shape that fall's to ground within world.
     const auto ball = CreateBody(world, BodyConf{}
                                             .Use(BodyType::Dynamic)
                                             .Use(diskShape)
-                                            .UseLocation(Length2{0_m, 4_m})
+                                            .UseLocation(ballStart)
                                             .UseLinearAcceleration(EarthlyGravity));
 
     // Setup the C++ stream output format.
-    std::cout << std::fixed << std::setprecision(2);
+    std::cout << std::fixed << std::setprecision(fixedPrecision);
 
     // A little game-like loop.
-    for (auto i = 0; i < 60; ++i) {
+    for (auto i = 0; i < maxSteps; ++i) {
         // Perform a step of the simulation. Keep the time step & iterations fixed.
         // Typically code uses a time step of 1/60 of a second (60Hz). The defaults
         // are setup for that and to generally provide a high enough quality simulation
@@ -73,9 +83,9 @@ int main()
 
         // Now print the location and angle of the body.
         // The Y value will drop from 4.00 to 1.00 as the ball drops to the ground.
-        std::cout << std::setw(5) << GetX(location);
-        std::cout << std::setw(5) << GetY(location);
-        std::cout << std::setw(5) << angle;
+        std::cout << std::setw(textWidth) << GetX(location);
+        std::cout << std::setw(textWidth) << GetY(location);
+        std::cout << std::setw(textWidth) << angle;
         std::cout << '\n';
     }
 

@@ -31,7 +31,11 @@
 #include <type_traits> // for std::is_nothrow_copy_constructible_v
 #include <utility> // for std::pair
 
+// IWYU pragma: begin_exports
+
 #include <playrho/NonNegative.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

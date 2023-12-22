@@ -26,9 +26,13 @@
 
 #include <functional> // for std::function
 
+// IWYU pragma: begin_exports
+
 #include <playrho/ContactID.hpp>
 
 #include <playrho/d2/Manifold.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho::d2 {
 

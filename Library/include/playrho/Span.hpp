@@ -30,7 +30,11 @@
 #include <type_traits>
 #include <utility> // for std::forward
 
+// IWYU pragma: begin_exports
+
 #include <playrho/Templates.hpp> // for Equal
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

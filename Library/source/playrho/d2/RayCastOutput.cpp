@@ -19,7 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <utility>
+#include <algorithm> // for std::min
+#include <cassert> // for assert
 
 #include <playrho/GrowableStack.hpp>
 

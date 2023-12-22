@@ -27,8 +27,12 @@
 
 #include <vector>
 
+// IWYU pragma: begin_exports
+
 #include <playrho/BodyID.hpp>
 #include <playrho/ShapeID.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho::d2 {
 

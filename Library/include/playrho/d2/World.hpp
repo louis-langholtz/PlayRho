@@ -34,6 +34,8 @@
 #include <utility> // for std::move
 #include <vector>
 
+// IWYU pragma: begin_exports
+
 #include <playrho/BodyID.hpp>
 #include <playrho/BodyShapeFunction.hpp>
 #include <playrho/Contact.hpp>
@@ -50,20 +52,23 @@
 #include <playrho/ShapeID.hpp>
 #include <playrho/StepConf.hpp>
 #include <playrho/StepStats.hpp>
+#include <playrho/Templates.hpp> // for begin, end
 #include <playrho/TypeInfo.hpp> // for GetTypeID
 #include <playrho/Units.hpp>
 #include <playrho/Vector2.hpp>
 
 #include <playrho/pmr/StatsResource.hpp>
 
-#include <playrho/d2/BodyConf.hpp> // for GetDefaultBodyConf
 #include <playrho/d2/Body.hpp>
+#include <playrho/d2/BodyConf.hpp> // for GetDefaultBodyConf
 #include <playrho/d2/ContactImpulsesFunction.hpp>
 #include <playrho/d2/ContactManifoldFunction.hpp>
 #include <playrho/d2/Joint.hpp>
 #include <playrho/d2/Manifold.hpp>
 #include <playrho/d2/Shape.hpp>
 #include <playrho/d2/WorldConf.hpp>
+
+// IWYU pragma: end_exports
 
 #include <playrho/d2/detail/WorldConcept.hpp>
 #include <playrho/d2/detail/WorldModel.hpp>

@@ -25,12 +25,16 @@
 /// @file
 /// @brief Definition of the @c DistanceJointConf class and closely related code.
 
+// IWYU pragma: begin_exports
+
 #include <playrho/NonNegative.hpp>
 #include <playrho/Span.hpp>
 #include <playrho/TypeInfo.hpp>
 
 #include <playrho/d2/JointConf.hpp>
 #include <playrho/d2/Math.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

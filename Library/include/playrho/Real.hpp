@@ -28,7 +28,11 @@
 
 #include <limits> // for std::numeric_limits
 
+// IWYU pragma: begin_exports
+
 #include <playrho/Templates.hpp> // for IsArithmeticV
+
+// IWYU pragma: end_exports
 
 // Any header(s) for a user defined arithmetic type for Real go here...
 

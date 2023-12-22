@@ -30,6 +30,8 @@
 #include <type_traits> // for std::decay_t
 #include <vector>
 
+// IWYU pragma: begin_exports
+
 #include <playrho/Math.hpp>
 #include <playrho/Matrix.hpp>
 #include <playrho/Real.hpp>
@@ -44,6 +46,8 @@
 #include <playrho/d2/Velocity.hpp>
 #include <playrho/d2/Transformation.hpp>
 #include <playrho/d2/Sweep.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho::d2 {
 

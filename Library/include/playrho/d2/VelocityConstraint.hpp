@@ -28,6 +28,8 @@
 #include <cassert> // for assert
 #include <type_traits> // for std::remove_const_t
 
+// IWYU pragma: begin_exports
+
 #include <playrho/BodyID.hpp>
 #include <playrho/Matrix.hpp> // for Mass22
 #include <playrho/Real.hpp>
@@ -40,6 +42,8 @@
 
 #include <playrho/d2/BodyConstraint.hpp>
 #include <playrho/d2/UnitVec.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

@@ -20,8 +20,9 @@
  */
 
 #include <cassert>
-#include <cstring>
 #include <cstddef>
+#include <cstdint> // for std::uint8_t
+#include <cstring>
 #include <limits> // for std::numeric_limits
 
 #include <playrho/BlockAllocator.hpp>
@@ -85,7 +86,7 @@ constexpr std::uint8_t s_blockSizeLookup[BlockAllocator::GetMaxBlockSize() + 1] 
 /// @brief Gets the block size index for the given data block size.
 inline std::uint8_t GetBlockSizeIndex(std::size_t n)
 {
-    assert(n < size(s_blockSizeLookup));
+    assert(n < std::size(s_blockSizeLookup));
     return s_blockSizeLookup[n];
 }
 
@@ -109,7 +110,7 @@ struct BlockAllocator::Block
 BlockAllocator::BlockAllocator():
     m_chunks(AllocArray<Chunk>(m_chunkSpace))
 {
-    static_assert(size(AllocatorBlockSizes) < std::numeric_limits<std::uint8_t>::max(),
+    static_assert(std::size(AllocatorBlockSizes) < std::numeric_limits<std::uint8_t>::max(),
                   "AllocatorBlockSizes too big");
     std::memset(m_chunks, 0, m_chunkSpace * sizeof(Chunk));
 }
@@ -136,7 +137,7 @@ void* BlockAllocator::Allocate(size_type n)
     }
 
     const auto index = GetBlockSizeIndex(n);
-    assert((0 <= index) && (index < size(m_freeLists)));
+    assert((0 <= index) && (index < std::size(m_freeLists)));
     {
         const auto block = m_freeLists[index];
         if (block)
@@ -187,7 +188,7 @@ void BlockAllocator::Free(void* p, size_type n)
     else if (n > 0)
     {
         const auto index = GetBlockSizeIndex(n);
-        assert((0 <= index) && (index < size(m_freeLists)));
+        assert((0 <= index) && (index < std::size(m_freeLists)));
 #ifdef _DEBUG
         // Verify the memory address and size is valid.
         assert((0 <= index) && (index < size(AllocatorBlockSizes)));
@@ -225,7 +226,7 @@ void BlockAllocator::Clear()
     }
     m_chunkCount = 0;
     std::memset(m_chunks, 0, m_chunkSpace * sizeof(Chunk));
-    std::memset(data(m_freeLists), 0, sizeof(m_freeLists));
+    std::memset(std::data(m_freeLists), 0, sizeof(m_freeLists));
 }
 
 } // namespace playrho

@@ -21,11 +21,13 @@
 
 #include <algorithm>
 #include <cassert> // for assert
+#include <cstddef> // for std::size_t
 #include <cstdint> // for std::uint32_t
 #include <functional>
 #include <iterator> // for std::next
 #include <limits> // for std::numeric_limits
 #include <map>
+#include <optional>
 #include <set>
 #include <tuple>
 #include <utility> // for std::pair
@@ -43,12 +45,15 @@
 #include <playrho/BodyID.hpp>
 #include <playrho/BodyType.hpp>
 #include <playrho/Contact.hpp>
+#include <playrho/Contactable.hpp>
 #include <playrho/ContactID.hpp>
 #include <playrho/ContactKey.hpp>
 #include <playrho/ConstraintSolverConf.hpp>
 #include <playrho/FlagGuard.hpp>
 #include <playrho/InvalidArgument.hpp>
 #include <playrho/Island.hpp>
+#include <playrho/JointID.hpp>
+#include <playrho/KeyedContactID.hpp>
 #include <playrho/LengthError.hpp>
 #include <playrho/Math.hpp>
 #include <playrho/MovementConf.hpp>
@@ -59,43 +64,53 @@
 #include <playrho/Span.hpp>
 #include <playrho/StepConf.hpp>
 #include <playrho/StepStats.hpp>
+#include <playrho/Templates.hpp>
+#include <playrho/ToiConf.hpp>
 #include <playrho/ToiOutput.hpp>
 #include <playrho/to_underlying.hpp>
+#include <playrho/UnitInterval.hpp>
 #include <playrho/Units.hpp>
+#include <playrho/Vector2.hpp>
 #include <playrho/WrongState.hpp>
-
-#include <playrho/detail/Templates.hpp>
+#include <playrho/ZeroToUnderOne.hpp>
 
 #include <playrho/pmr/MemoryResource.hpp>
+#include <playrho/pmr/PoolMemoryResource.hpp>
 
+#include <playrho/d2/AABB.hpp>
 #include <playrho/d2/AabbTreeWorld.hpp>
 #include <playrho/d2/Body.hpp>
 #include <playrho/d2/BodyConf.hpp>
+#include <playrho/d2/BodyConstraint.hpp>
+#include <playrho/d2/ContactImpulsesFunction.hpp>
 #include <playrho/d2/ContactImpulsesList.hpp>
 #include <playrho/d2/ContactSolver.hpp>
 #include <playrho/d2/Distance.hpp>
 #include <playrho/d2/DistanceConf.hpp>
 #include <playrho/d2/DistanceJointConf.hpp>
 #include <playrho/d2/DistanceProxy.hpp>
+#include <playrho/d2/DynamicTree.hpp>
 #include <playrho/d2/FrictionJointConf.hpp>
 #include <playrho/d2/GearJointConf.hpp>
 #include <playrho/d2/Joint.hpp>
-#include <playrho/d2/RevoluteJointConf.hpp>
+#include <playrho/d2/Manifold.hpp>
+#include <playrho/d2/Math.hpp>
+#include <playrho/d2/MotorJointConf.hpp>
 #include <playrho/d2/Position.hpp>
+#include <playrho/d2/PositionConstraint.hpp>
 #include <playrho/d2/PrismaticJointConf.hpp>
 #include <playrho/d2/PulleyJointConf.hpp>
-#include <playrho/d2/TargetJointConf.hpp>
-#include <playrho/d2/WheelJointConf.hpp>
-#include <playrho/d2/WeldJointConf.hpp>
+#include <playrho/d2/RayCastOutput.hpp>
+#include <playrho/d2/RevoluteJointConf.hpp>
 #include <playrho/d2/RopeJointConf.hpp>
-#include <playrho/d2/MotorJointConf.hpp>
-#include <playrho/d2/VelocityConstraint.hpp>
-#include <playrho/d2/PositionConstraint.hpp>
+#include <playrho/d2/Shape.hpp>
+#include <playrho/d2/TargetJointConf.hpp>
 #include <playrho/d2/TimeOfImpact.hpp>
 #include <playrho/d2/Transformation.hpp>
-#include <playrho/d2/RayCastOutput.hpp>
-#include <playrho/d2/Shape.hpp>
 #include <playrho/d2/Velocity.hpp>
+#include <playrho/d2/VelocityConstraint.hpp>
+#include <playrho/d2/WeldJointConf.hpp>
+#include <playrho/d2/WheelJointConf.hpp>
 #include <playrho/d2/WorldConf.hpp>
 #include <playrho/d2/WorldManifold.hpp>
 
@@ -786,12 +801,12 @@ auto SetAwake(ObjectPool<Contact>& contacts,
     }
 }
 
+/// @brief Sleeps associated contacts whose other body is also asleep.
 auto UnsetAwake(ObjectPool<Contact>& contacts, // force newline
                 const Span<const std::tuple<ContactKey, ContactID>>& bodyContacts,
                 BodyID id, // force newline
                 const Span<const Body>& bodies) -> void
 {
-    // sleep associated contacts whose other body is also asleep
     for (const auto& elem: bodyContacts) {
         auto& contact = contacts[to_underlying(std::get<ContactID>(elem))];
         if (!IsAwake(bodies[to_underlying(GetOtherBody(contact, id))])) {
@@ -952,7 +967,7 @@ void Clear(AabbTreeWorld& world) noexcept
             try {
                 listener(id);
             }
-            catch (...)
+            catch (...) // NOLINT(bugprone-empty-catch)
             {
                 // Don't allow exception to escape.
             }
@@ -961,12 +976,12 @@ void Clear(AabbTreeWorld& world) noexcept
     if (const auto listener = world.m_listeners.shapeDestruction) {
         for (auto&& shape: world.m_shapeBuffer) {
             if (shape != Shape{}) {
-                using underlying_type = ::playrho::detail::underlying_type_t<ShapeID>;
+                using underlying_type = ::playrho::underlying_type_t<ShapeID>;
                 const auto index = &shape - world.m_shapeBuffer.data();
                 try {
                     listener(static_cast<ShapeID>(static_cast<underlying_type>(index)));
                 }
-                catch (...)
+                catch (...) // NOLINT(bugprone-empty-catch)
                 {
                     // Don't allow exception to escape.
                 }

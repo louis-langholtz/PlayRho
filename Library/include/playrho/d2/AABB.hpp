@@ -24,16 +24,18 @@
 /// @file
 /// @brief Declaration of the AABB class and free functions that return instances of it.
 
-#include <cstdlib> // for std::size_t
+#include <cstddef> // for std::size_t
+
+// IWYU pragma: begin_exports
 
 #include <playrho/BodyID.hpp>
-#include <playrho/Interval.hpp> // for GetSize
-#include <playrho/Intervals.hpp> // for LengthInterval, IsIntersecting
+#include <playrho/Interval.hpp>
 #include <playrho/Settings.hpp> // for ChildCounter, etc.
 #include <playrho/ShapeID.hpp>
-#include <playrho/Units.hpp>
 
 #include <playrho/detail/AABB.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 
@@ -51,6 +53,10 @@ struct Transformation;
 class World;
 
 using ::playrho::detail::Contains;
+using ::playrho::detail::GetFattenedAABB;
+using ::playrho::detail::GetDisplacedAABB;
+using ::playrho::detail::GetIntersectingAABB;
+using ::playrho::detail::Include;
 using ::playrho::detail::TestOverlap;
 
 /// @brief 2-Dimensional Axis Aligned Bounding Box.

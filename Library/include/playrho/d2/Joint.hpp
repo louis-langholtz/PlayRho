@@ -32,6 +32,8 @@
 #include <typeinfo> // for std::bad_cast
 #include <type_traits> // for std::void_t, std::add_pointer_t, etc.
 
+// IWYU pragma: begin_exports
+
 #include <playrho/BodyID.hpp>
 #include <playrho/LimitState.hpp>
 #include <playrho/Real.hpp>
@@ -45,6 +47,8 @@
 
 #include <playrho/d2/detail/JointConcept.hpp>
 #include <playrho/d2/detail/JointModel.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 struct StepConf;

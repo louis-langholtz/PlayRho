@@ -37,6 +37,8 @@
 /// @see World, ShapeID.
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 
+// IWYU pragma: begin_exports
+
 #include <playrho/BodyID.hpp>
 #include <playrho/NonNegative.hpp>
 #include <playrho/Real.hpp>
@@ -49,6 +51,8 @@
 
 #include <playrho/d2/MassData.hpp>
 #include <playrho/d2/UnitVec.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 struct Filter;

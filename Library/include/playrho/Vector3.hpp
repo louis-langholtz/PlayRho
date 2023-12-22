@@ -25,9 +25,14 @@
 /// @file
 /// @brief Definition of the @c Vector3 alias template and closely related code.
 
+// IWYU pragma: begin_exports
+
 #include <playrho/Real.hpp>
 #include <playrho/Settings.hpp>
+#include <playrho/Units.hpp>
 #include <playrho/Vector.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

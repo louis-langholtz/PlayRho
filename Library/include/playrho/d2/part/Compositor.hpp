@@ -22,6 +22,9 @@
 #define PLAYRHO_D2_PART_COMPOSITOR_HPP
 
 #include <array>
+#include <type_traits> // for std::enable_if_t
+
+// IWYU pragma: begin_exports
 
 #include <playrho/Units.hpp>
 #include <playrho/InvalidArgument.hpp>
@@ -34,6 +37,8 @@
 #include <playrho/d2/DistanceProxy.hpp>
 #include <playrho/d2/MassData.hpp>
 #include <playrho/d2/Math.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho::d2::part {
 

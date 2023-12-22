@@ -25,6 +25,8 @@
 /// @file
 /// @brief Definition of the @c WheelJointConf class and closely related code.
 
+// IWYU pragma: begin_exports
+
 #include <playrho/BodyID.hpp>
 #include <playrho/NonNegative.hpp>
 #include <playrho/Real.hpp>
@@ -37,6 +39,8 @@
 #include <playrho/d2/JointConf.hpp>
 #include <playrho/d2/Math.hpp>
 #include <playrho/d2/UnitVec.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 struct ConstraintSolverConf;

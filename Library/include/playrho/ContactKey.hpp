@@ -25,12 +25,15 @@
 /// @brief Declaration of the <code>ContactKey</code> class and closely related code.
 
 #include <cstdlib> // for std::size_t
-
 #include <algorithm>
 #include <functional>
 #include <utility>
 
+// IWYU pragma: begin_exports
+
 #include <playrho/Settings.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

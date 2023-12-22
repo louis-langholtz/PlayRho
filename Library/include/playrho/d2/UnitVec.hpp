@@ -25,17 +25,22 @@
 /// @brief Declarations of the UnitVec class and free functions associated with it.
 
 #include <cassert> // for assert
+#include <cmath> // for std::sqrt, etc
 #include <cstdlib>
 #include <iostream>
 #include <iterator> // for std::reverse_iterator
 #include <utility>
 #include <type_traits>
 
+// IWYU pragma: begin_exports
+
 #include <playrho/InvalidArgument.hpp>
 #include <playrho/Real.hpp>
 #include <playrho/RealConstants.hpp>
 #include <playrho/Templates.hpp> // for IsValid
 #include <playrho/Units.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

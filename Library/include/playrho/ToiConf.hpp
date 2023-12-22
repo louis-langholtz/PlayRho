@@ -26,11 +26,15 @@
 
 #include <type_traits> // for std::remove_const_t
 
+// IWYU pragma: begin_exports
+
 #include <playrho/NonNegative.hpp>
 #include <playrho/Real.hpp>
 #include <playrho/Settings.hpp>
 #include <playrho/UnitInterval.hpp>
 #include <playrho/Units.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

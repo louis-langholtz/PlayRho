@@ -28,11 +28,10 @@
 #include <playrho/Settings.hpp>
 #include <playrho/ShapeID.hpp>
 #include <playrho/Span.hpp>
+#include <playrho/Templates.hpp>
 #include <playrho/TypeInfo.hpp> // for TypeID
 #include <playrho/Units.hpp>
 #include <playrho/Vector2.hpp>
-
-#include <playrho/detail/Templates.hpp>
 
 #include <playrho/d2/MassData.hpp>
 #include <playrho/d2/Math.hpp> // for InverseTransform

@@ -28,9 +28,13 @@
 #include <cassert> // for assert
 #include <cstring>
 
+// IWYU pragma: begin_exports
+
 #include <playrho/DynamicMemory.hpp>
 
 #include <playrho/detail/Templates.hpp> // for data
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

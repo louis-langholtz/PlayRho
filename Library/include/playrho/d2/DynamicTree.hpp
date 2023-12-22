@@ -25,6 +25,12 @@
 /// @file
 /// @brief Declaration of the <code>DynamicTree</code> class.
 
+#include <cassert> // for assert
+#include <cstddef> // for std::size_t
+#include <functional> // for std::function
+
+// IWYU pragma: begin_exports
+
 #include <playrho/d2/AABB.hpp>
 #include <playrho/d2/DynamicTreeData.hpp>
 #include <playrho/ShapeID.hpp>
@@ -32,7 +38,7 @@
 #include <playrho/Vector2.hpp>
 #include <playrho/BodyID.hpp>
 
-#include <cassert> // for assert
+// IWYU pragma: end_exports
 
 namespace playrho::d2 {
 

@@ -25,11 +25,15 @@
 /// @file
 /// @brief Definition of the @c BaseShapeConf class and closely related code.
 
+// IWYU pragma: begin_exports
+
 #include <playrho/Filter.hpp>
 #include <playrho/Finite.hpp>
 #include <playrho/NonNegative.hpp>
 #include <playrho/Real.hpp>
 #include <playrho/Units.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho::d2 {
 

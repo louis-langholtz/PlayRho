@@ -25,13 +25,13 @@
 /// @file
 /// @brief Definition of the @c Sweep class and closely related code.
 
-#include <playrho/Real.hpp>
-#include <playrho/Templates.hpp> // for IsValid
-#include <playrho/Units.hpp>
-#include <playrho/Vector2.hpp>
+// IWYU pragma: begin_exports
+
 #include <playrho/ZeroToUnderOne.hpp>
 
 #include <playrho/d2/Position.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho::d2 {
 

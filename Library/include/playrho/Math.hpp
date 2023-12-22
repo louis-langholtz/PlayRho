@@ -34,6 +34,8 @@
 #include <type_traits> // for std::decay_t
 #include <vector>
 
+// IWYU pragma: begin_exports
+
 #include <playrho/Matrix.hpp>
 #include <playrho/NonNegative.hpp>
 #include <playrho/Real.hpp>
@@ -42,6 +44,8 @@
 #include <playrho/Vector.hpp>
 #include <playrho/Vector2.hpp>
 #include <playrho/Vector3.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 
@@ -265,6 +269,7 @@ inline Angle GetAngle(const Vector2<T>& value)
 /// @brief Gets the square of the magnitude of the given iterable value.
 /// @note For performance, use this instead of <code>GetMagnitude(T value)</code> (if possible).
 /// @return Non-negative value from 0 to infinity, or NaN.
+/// @see GetMagnitude.
 template <typename T>
 constexpr auto GetMagnitudeSquared(const T& value) noexcept
 {
@@ -279,6 +284,7 @@ constexpr auto GetMagnitudeSquared(const T& value) noexcept
 
 /// @brief Gets the magnitude of the given value.
 /// @note Works for any type for which <code>GetMagnitudeSquared</code> also works.
+/// @see GetMagnitudeSquared.
 template <typename T>
 inline auto GetMagnitude(const T& value) noexcept(noexcept(sqrt(GetMagnitudeSquared(value))))
 -> decltype(sqrt(GetMagnitudeSquared(value)))

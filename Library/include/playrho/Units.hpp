@@ -41,11 +41,14 @@
 #include <cmath>
 #include <type_traits>
 
+// IWYU pragma: begin_exports
+
 #include <playrho/Real.hpp>
 #include <playrho/RealConstants.hpp>
 #include <playrho/Templates.hpp>
-
 #include <playrho/to_underlying.hpp>
+
+// IWYU pragma: end_exports
 
 // #define PLAYRHO_USE_BOOST_UNITS
 #if defined(PLAYRHO_USE_BOOST_UNITS)

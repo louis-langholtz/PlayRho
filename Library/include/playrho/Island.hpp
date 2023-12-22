@@ -28,6 +28,8 @@
 #include <cstdlib> // for std::size_t
 #include <vector>
 
+// IWYU pragma: begin_exports
+
 #include <playrho/BodyID.hpp>
 #include <playrho/ContactID.hpp>
 #include <playrho/JointID.hpp>
@@ -35,6 +37,8 @@
 #include <playrho/Templates.hpp> // IsFull
 
 #include <playrho/pmr/MemoryResource.hpp> // for pmr::polymorphic_allocator
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 

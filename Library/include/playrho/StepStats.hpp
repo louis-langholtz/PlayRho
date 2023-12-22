@@ -28,8 +28,12 @@
 #include <limits> // for std::numeric_limits
 #include <type_traits> // for std::remove_const_t
 
+// IWYU pragma: begin_exports
+
 #include <playrho/Settings.hpp>
 #include <playrho/Units.hpp>
+
+// IWYU pragma: end_exports
 
 namespace playrho {
 
