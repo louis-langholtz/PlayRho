@@ -299,7 +299,7 @@ public:
 
 inline TDTire::TDTire(iforce2d_TopdownCar& parent, ShapeID tireShape) : m_parent{parent}
 {
-    m_body = CreateBody(m_parent.GetWorld(), BodyConf{}.UseType(BodyType::Dynamic));
+    m_body = CreateBody(m_parent.GetWorld(), BodyConf{}.Use(BodyType::Dynamic));
     m_parent.m_bodyData.resize(m_body.get() + 1u);
     m_parent.m_bodyData[m_body.get()] = this;
     Attach(m_parent.GetWorld(), m_body, tireShape);

@@ -200,10 +200,10 @@ TEST(GearJoint, WithDynamicCirclesAndRevoluteJoints)
     const auto p3 = Length2{+2_m, 0_m};
     const auto p4 = Length2{+3_m, 0_m};
     const auto shapeId = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m));
-    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    const auto b3 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p3));
-    const auto b4 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p4));
+    const auto b1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p2));
+    const auto b3 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p3));
+    const auto b4 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p4));
     Attach(world, b1, shapeId);
     Attach(world, b2, shapeId);
     const auto def =
@@ -228,10 +228,10 @@ TEST(GearJoint, WithDynamicCirclesAndPrismaticJoints)
     const auto p3 = Length2{+2_m, 0_m};
     const auto p4 = Length2{+3_m, 0_m};
     const auto shapeId = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m));
-    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    const auto b3 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p3));
-    const auto b4 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p4));
+    const auto b1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p2));
+    const auto b3 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p3));
+    const auto b4 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p4));
     Attach(world, b1, shapeId);
     Attach(world, b2, shapeId);
     const auto def = GetGearJointConf(
@@ -261,10 +261,10 @@ TEST(GearJoint, GetAnchorAandB)
     const auto p3 = Length2{+2_m, 0_m};
     const auto p4 = Length2{+3_m, 0_m};
     const auto shapeId = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m));
-    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    const auto b3 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p3));
-    const auto b4 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p4));
+    const auto b1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p2));
+    const auto b3 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p3));
+    const auto b4 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p4));
     Attach(world, b1, shapeId);
     Attach(world, b2, shapeId);
     const auto def =

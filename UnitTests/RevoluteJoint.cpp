@@ -118,9 +118,9 @@ TEST(RevoluteJoint, EnableMotor)
 {
     World world;
     const auto b0 = CreateBody(world,
-        BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
+        BodyConf{}.Use(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
     const auto b1 = CreateBody(world,
-        BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
+        BodyConf{}.Use(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
     ASSERT_EQ(GetVelocity(world, b0), Velocity{});
     ASSERT_EQ(GetVelocity(world, b1), Velocity{});
 
@@ -144,9 +144,9 @@ TEST(RevoluteJoint, EnableMotorInWorld)
 {
     World world;
     const auto b0 = CreateBody(world,
-        BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
+        BodyConf{}.Use(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
     const auto b1 = CreateBody(world,
-        BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
+        BodyConf{}.Use(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
     ASSERT_EQ(GetVelocity(world, b0), Velocity{});
     ASSERT_EQ(GetVelocity(world, b1), Velocity{});
 
@@ -236,8 +236,8 @@ TEST(RevoluteJoint, MotorSpeed)
 TEST(RevoluteJoint, EnableLimit)
 {
     auto world = World{};
-    const auto b0 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto b0 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
+    const auto b1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     ASSERT_EQ(GetInvRotInertia(world, b0), InvRotInertia(0));
     ASSERT_EQ(GetInvRotInertia(world, b1), InvRotInertia(0));
 
@@ -311,8 +311,8 @@ TEST(RevoluteJoint, SetAngularLimits)
 TEST(RevoluteJoint, MaxMotorTorque)
 {
     World world;
-    const auto b0 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto b0 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
+    const auto b1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
 
     auto jd = RevoluteJointConf{};
     jd.bodyA = b0;
@@ -350,11 +350,11 @@ TEST(RevoluteJoint, MovesDynamicCircles)
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = CreateBody(world, BodyConf{}
-                                         .UseType(BodyType::Dynamic)
+                                         .Use(BodyType::Dynamic)
                                          .UseLocation(p1)
                                          .UseLinearAcceleration(EarthlyGravity));
     const auto b2 = CreateBody(world, BodyConf{}
-                                         .UseType(BodyType::Dynamic)
+                                         .Use(BodyType::Dynamic)
                                          .UseLocation(p2)
                                          .UseLinearAcceleration(EarthlyGravity));
     const auto circle = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m));
@@ -384,11 +384,11 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = CreateBody(world, BodyConf{}
-                                         .UseType(BodyType::Dynamic)
+                                         .Use(BodyType::Dynamic)
                                          .UseLocation(p1)
                                          .UseLinearAcceleration(EarthlyGravity));
     const auto b2 = CreateBody(world, BodyConf{}
-                                         .UseType(BodyType::Dynamic)
+                                         .Use(BodyType::Dynamic)
                                          .UseLocation(p2)
                                          .UseLinearAcceleration(EarthlyGravity));
     const auto circle = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m).UseDensity(1_kgpm2));
@@ -463,8 +463,8 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
 
     const auto p1 = Length2{0_m, 4_m}; // Vec2{-1, 0};
     const auto p2 = Length2{0_m, -2_m}; // Vec2{+1, 0};
-    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Static).UseLocation(p1));
-    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = CreateBody(world, BodyConf{}.Use(BodyType::Static).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p2));
 
     const auto shape1 = CreateShape(world, PolygonShapeConf{}.SetAsBox(1_m, 1_m));
     Attach(world, b1, shape1);

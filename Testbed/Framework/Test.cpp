@@ -1096,7 +1096,7 @@ void Test::LaunchBomb(const Length2& at, const LinearVelocity2 v)
         }
     }
 
-    m_bomb = CreateBody(m_world, BodyConf{}.UseType(BodyType::Dynamic).UseBullet(true)
+    m_bomb = CreateBody(m_world, BodyConf{}.Use(BodyType::Dynamic).UseBullet(true)
                                 .UseLocation(at).UseLinearVelocity(v)
                                 .UseLinearAcceleration(m_gravity));
 

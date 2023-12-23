@@ -238,8 +238,8 @@ TEST(WheelJointConf, WithDynamicCircles)
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
     const auto shapeId = CreateShape(world, DiskShapeConf{}.UseRadius(2_m).UseDensity(10_kgpm2));
-    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p2));
     Attach(world, b1, shapeId);
     Attach(world, b2, shapeId);
     const auto anchor = Length2(2_m, 1_m);

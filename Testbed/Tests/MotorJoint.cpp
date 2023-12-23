@@ -49,7 +49,7 @@ public:
 
         // Define motorized body
         const auto body = CreateBody(GetWorld(), BodyConf{}
-                                                     .UseType(BodyType::Dynamic)
+                                                     .Use(BodyType::Dynamic)
                                                      .UseLocation(Vec2(0.0f, 8.0f) * 1_m)
                                                      .UseLinearAcceleration(GetGravity()));
         Attach(GetWorld(), body,

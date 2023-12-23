@@ -316,7 +316,7 @@ TEST(AabbTreeWorld, CreateDestroyEmptyStaticBody)
 {
     auto world = AabbTreeWorld{};
     ASSERT_EQ(GetBodies(world).size(), BodyCounter(0));
-    const auto bodyID = CreateBody(world, BodyConf{}.UseType(BodyType::Static));
+    const auto bodyID = CreateBody(world, BodyConf{}.Use(BodyType::Static));
     ASSERT_NE(bodyID, InvalidBodyID);
 
     const auto& body = GetBody(world, bodyID);
@@ -351,7 +351,7 @@ TEST(AabbTreeWorld, CreateDestroyEmptyDynamicBody)
 {
     auto world = AabbTreeWorld{};
     ASSERT_EQ(GetBodies(world).size(), BodyCounter(0));
-    const auto bodyID = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto bodyID = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     ASSERT_NE(bodyID, InvalidBodyID);
 
     const auto& body = GetBody(world, bodyID);
@@ -389,7 +389,7 @@ TEST(AabbTreeWorld, CreateDestroyDynamicBodyAndFixture)
     
     auto world = AabbTreeWorld{};
     ASSERT_EQ(GetBodies(world).size(), BodyCounter(0));
-    const auto bodyID = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto bodyID = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     ASSERT_NE(bodyID, InvalidBodyID);
 
     const auto& body = GetBody(world, bodyID);
@@ -448,8 +448,8 @@ TEST(AabbTreeWorld, CreateDestroyContactingBodies)
     const auto l1 = Length2{};
     const auto l2 = Length2{};
 
-    const auto body1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l1));
-    const auto body2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l2));
+    const auto body1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(l1));
+    const auto body2 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(l2));
     EXPECT_EQ(GetBodies(world).size(), BodyCounter(2));
     EXPECT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
     EXPECT_EQ(GetFixturesForProxies(world).size(), static_cast<decltype(GetFixturesForProxies(world).size())>(0));
@@ -550,7 +550,7 @@ TEST(AabbTreeWorld, CreateDestroyContactingBodies)
 TEST(AabbTreeWorld, SetTypeOfBody)
 {
     auto world = AabbTreeWorld{};
-    const auto bodyID = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto bodyID = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     const auto& body = GetBody(world, bodyID);
     ASSERT_EQ(GetType(body), BodyType::Dynamic);
     auto other = AabbTreeWorld{};
@@ -793,7 +793,7 @@ TEST(AabbTreeWorld, SetTypeBody)
 {
     auto world = AabbTreeWorld{};
 
-    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     ASSERT_EQ(GetBodiesForProxies(world).size(), 0u);
     ASSERT_EQ(GetType(GetBody(world, body)), BodyType::Dynamic);
 
@@ -825,13 +825,13 @@ TEST(AabbTreeWorld, GetBodyRange)
     auto world = AabbTreeWorld{};
     EXPECT_EQ(GetBodyRange(world), BodyCounter{0u});
     EXPECT_EQ(GetBodies(world).size(), 0u);
-    EXPECT_NO_THROW(CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
+    EXPECT_NO_THROW(CreateBody(world, BodyConf{}.Use(BodyType::Dynamic)));
     EXPECT_EQ(GetBodyRange(world), BodyCounter{1u});
     EXPECT_EQ(GetBodies(world).size(), 1u);
-    EXPECT_NO_THROW(CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
+    EXPECT_NO_THROW(CreateBody(world, BodyConf{}.Use(BodyType::Dynamic)));
     EXPECT_EQ(GetBodyRange(world), BodyCounter{2u});
     EXPECT_EQ(GetBodies(world).size(), 2u);
-    EXPECT_NO_THROW(CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
+    EXPECT_NO_THROW(CreateBody(world, BodyConf{}.Use(BodyType::Dynamic)));
     EXPECT_EQ(GetBodyRange(world), BodyCounter{3u});
     EXPECT_EQ(GetBodies(world).size(), 3u);
     EXPECT_NO_THROW(Destroy(world, BodyID{0u}));
@@ -849,7 +849,7 @@ TEST(AabbTreeWorld, GetShapeRange)
     EXPECT_EQ(GetShapeRange(world), ShapeCounter{0u});
     const auto shapeId = CreateShape(world, shape);
     EXPECT_EQ(GetShapeRange(world), ShapeCounter{1u});
-    EXPECT_NO_THROW(CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
+    EXPECT_NO_THROW(CreateBody(world, BodyConf{}.Use(BodyType::Dynamic)));
     EXPECT_EQ(GetShapes(world, BodyID{0u}).size(), 0u);
     EXPECT_NO_THROW(Attach(world, BodyID{0u}, shapeId));
     EXPECT_EQ(GetShapeRange(world), ShapeCounter{1u});
@@ -887,12 +887,12 @@ TEST(AabbTreeWorld, IsDestroyedBody)
     EXPECT_FALSE(IsDestroyed(world, BodyID{0u}));
 
     auto id = InvalidBodyID;
-    ASSERT_NO_THROW(id = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
+    ASSERT_NO_THROW(id = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic)));
     ASSERT_EQ(to_underlying(id), 0u);
     ASSERT_EQ(GetBodies(world).size(), 1u);
     EXPECT_FALSE(IsDestroyed(world, id));
 
-    ASSERT_NO_THROW(id = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
+    ASSERT_NO_THROW(id = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic)));
     ASSERT_EQ(to_underlying(id), 1u);
     ASSERT_EQ(GetBodies(world).size(), 2u);
     EXPECT_FALSE(IsDestroyed(world, id));
@@ -910,7 +910,7 @@ TEST(AabbTreeWorld, AttachDetach)
     const auto shape = Shape{DiskShapeConf{}};
     auto world = AabbTreeWorld{};
     const auto shapeId = CreateShape(world, shape);
-    ASSERT_NO_THROW(CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic)));
+    ASSERT_NO_THROW(CreateBody(world, BodyConf{}.Use(BodyType::Dynamic)));
     ASSERT_NO_THROW(Attach(world, BodyID{0u}, shapeId));
     ASSERT_EQ(GetShapes(world, BodyID{0}).size(), 1u);
     ASSERT_EQ(GetShapes(world, BodyID{0})[0], shapeId);

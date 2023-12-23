@@ -59,7 +59,7 @@ public:
     }
 
     const BodyConf DynBD =
-        BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(GetGravity());
+        BodyConf{}.Use(BodyType::Dynamic).UseLinearAcceleration(GetGravity());
     ShapeID lilDisk = InvalidShapeID;
     ShapeID bigDisk = InvalidShapeID;
     BodyID m_heavy = InvalidBodyID;

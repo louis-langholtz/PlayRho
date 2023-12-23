@@ -44,7 +44,7 @@ public:
             const auto maxX = 0.0f;
             const auto minY = 4.0f;
             const auto maxY = 6.0f;
-            const auto bd = BodyConf{}.UseType(BodyType::Dynamic);
+            const auto bd = BodyConf{}.Use(BodyType::Dynamic);
             const auto shape =
                 CreateShape(GetWorld(), DiskShapeConf{}.UseRadius(0.1_m).UseDensity(0.01_kgpm2));
             for (auto i = 0; i < 400; ++i) {
@@ -56,7 +56,7 @@ public:
             }
         }
         const auto bd = BodyConf{}
-                            .UseType(BodyType::Dynamic)
+                            .Use(BodyType::Dynamic)
                             .UseBullet(true)
                             .UseLocation(Length2{-40_m, 5_m})
                             .UseLinearVelocity(LinearVelocity2{150_mps, 0_mps});

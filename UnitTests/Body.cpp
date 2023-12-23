@@ -125,9 +125,9 @@ TEST(Body, AngularDampingOnConstruction)
 
 TEST(Body, InvMassOnConstruction)
 {
-    EXPECT_EQ(Body(BodyConf{}.UseType(BodyType::Dynamic)).GetInvMass(), Real(1) / 1_kg);
-    EXPECT_EQ(Body(BodyConf{}.UseType(BodyType::Kinematic)).GetInvMass(), Real(0) / 1_kg);
-    EXPECT_EQ(Body(BodyConf{}.UseType(BodyType::Static)).GetInvMass(), Real(0) / 1_kg);
+    EXPECT_EQ(Body(BodyConf{}.Use(BodyType::Dynamic)).GetInvMass(), Real(1) / 1_kg);
+    EXPECT_EQ(Body(BodyConf{}.Use(BodyType::Kinematic)).GetInvMass(), Real(0) / 1_kg);
+    EXPECT_EQ(Body(BodyConf{}.Use(BodyType::Static)).GetInvMass(), Real(0) / 1_kg);
 }
 
 TEST(Body, TransformationOnConstruction)

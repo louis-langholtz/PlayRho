@@ -46,7 +46,7 @@ public:
         // Define attachment
         {
             const auto bd = BodyConf{}
-                                .UseType(BodyType::Dynamic)
+                                .Use(BodyType::Dynamic)
                                 .UseLocation(Vec2(0, 3) * 1_m)
                                 .UseLinearAcceleration(GetGravity());
             m_attachment = CreateBody(GetWorld(), bd);
@@ -57,7 +57,7 @@ public:
         // Define platform
         {
             const auto bd = BodyConf{}
-                                .UseType(BodyType::Dynamic)
+                                .Use(BodyType::Dynamic)
                                 .UseLocation(Vec2(-4, 5) * 1_m)
                                 .UseLinearAcceleration(GetGravity());
             m_platform = CreateBody(GetWorld(), bd);
@@ -87,7 +87,7 @@ public:
         // Create a payload
         {
             const auto bd = BodyConf{}
-                                .UseType(BodyType::Dynamic)
+                                .Use(BodyType::Dynamic)
                                 .UseLocation(Vec2(0, 8) * 1_m)
                                 .UseLinearAcceleration(GetGravity());
             const auto body = CreateBody(GetWorld(), bd);

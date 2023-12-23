@@ -41,8 +41,8 @@ TEST(WorldContact, SetAwake)
     auto world = World{};
     const auto s1 = CreateShape(world, DiskShapeConf{});
     const auto s2 = CreateShape(world, DiskShapeConf{});
-    const auto bA = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    const auto bB = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto bA = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
+    const auto bB = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     Attach(world, bA, s1);
     Attach(world, bB, s2);
 
@@ -73,8 +73,8 @@ TEST(WorldContact, ResetFriction)
     auto world = World{};
     const auto sA = CreateShape(world, Shape{shape});
     const auto sB = CreateShape(world, Shape{shape});
-    const auto bA = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    const auto bB = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto bA = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
+    const auto bB = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     Attach(world, bA, sA);
     Attach(world, bB, sB);
 
@@ -104,8 +104,8 @@ TEST(WorldContact, ResetRestitution)
     auto world = World{};
     const auto sA = CreateShape(world, Shape{shape});
     const auto sB = CreateShape(world, Shape{shape});
-    const auto bA = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    const auto bB = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto bA = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
+    const auto bB = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     Attach(world, bA, sA);
     Attach(world, bB, sB);
 
@@ -129,8 +129,8 @@ TEST(WorldContact, SetUnsetEnabled)
 {
     auto world = World{};
     const auto shapeId = CreateShape(world, DiskShapeConf{});
-    const auto bA = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    const auto bB = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto bA = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
+    const auto bB = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     Attach(world, bA, shapeId);
     Attach(world, bB, shapeId);
     ASSERT_NO_THROW(Step(world, StepConf{}));
@@ -149,8 +149,8 @@ TEST(WorldContact, SetImpenetrable)
 {
     auto world = World{};
     const auto shapeId = CreateShape(world, DiskShapeConf{});
-    CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).Use(shapeId));
-    CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).Use(shapeId));
+    CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).Use(shapeId));
+    CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).Use(shapeId));
     ASSERT_NO_THROW(Step(world, StepConf{}));
     const auto contacts = GetContacts(world);
     ASSERT_EQ(contacts.size(), ContactCounter(1));
@@ -167,8 +167,8 @@ TEST(WorldContact, SetSensor)
 {
     auto world = World{};
     const auto shapeId = CreateShape(world, DiskShapeConf{});
-    CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).Use(shapeId));
-    CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).Use(shapeId));
+    CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).Use(shapeId));
+    CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).Use(shapeId));
     ASSERT_NO_THROW(Step(world, StepConf{}));
     const auto contacts = GetContacts(world);
     ASSERT_EQ(contacts.size(), ContactCounter(1));
@@ -185,8 +185,8 @@ TEST(WorldContact, SetTangentSpeed)
 {
     auto world = World{};
     const auto shapeId = CreateShape(world, DiskShapeConf{});
-    const auto bA = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    const auto bB = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto bA = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
+    const auto bB = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     Attach(world, bA, shapeId);
     Attach(world, bB, shapeId);
     ASSERT_NO_THROW(Step(world, StepConf{}));
@@ -209,8 +209,8 @@ TEST(WorldContact, WorldManifoldAndMore)
 {
     auto world = World{};
     const auto shapeId = CreateShape(world, DiskShapeConf{});
-    const auto bA = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    const auto bB = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto bA = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
+    const auto bB = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     Attach(world, bA, shapeId);
     Attach(world, bB, shapeId);
     ASSERT_NO_THROW(Step(world, StepConf{}));

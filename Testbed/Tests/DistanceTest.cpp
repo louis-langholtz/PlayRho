@@ -50,7 +50,7 @@ public:
         SetGravity(LinearAcceleration2{});
 
         const auto def = BodyConf{}
-                             .UseType(BodyType::Dynamic)
+                             .Use(BodyType::Dynamic)
                              .UseLinearDamping(0.9_Hz)
                              .UseAngularDamping(0.9_Hz);
         m_bodyA = CreateBody(GetWorld(), def);
