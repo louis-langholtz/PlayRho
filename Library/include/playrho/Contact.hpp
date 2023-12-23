@@ -244,7 +244,7 @@ public:
     /// @brief Unsets the sensor state of this contact.
     /// @post <code>IsSensor()</code> returns false.
     /// @see IsSensor().
-    constexpr void UnsetIsSensor() noexcept;
+    constexpr void UnsetSensor() noexcept;
 
     /// @brief Whether or not this contact is "impenetrable".
     /// @note This should be true whenever body A or body B are impenetrable.
@@ -470,7 +470,7 @@ constexpr void Contact::SetSensor() noexcept
     m_flags |= e_sensorFlag;
 }
 
-constexpr void Contact::UnsetIsSensor() noexcept
+constexpr void Contact::UnsetSensor() noexcept
 {
     m_flags &= ~e_sensorFlag;
 }
@@ -647,9 +647,9 @@ constexpr void SetSensor(Contact& contact) noexcept
 /// @post <code>IsSensor(contact)</code> returns false.
 /// @see IsSensor(const Contact &).
 /// @relatedalso Contact
-constexpr void UnsetIsSensor(Contact& contact) noexcept
+constexpr void UnsetSensor(Contact& contact) noexcept
 {
-    contact.UnsetIsSensor();
+    contact.UnsetSensor();
 }
 
 /// @brief Gets the time of impact count.

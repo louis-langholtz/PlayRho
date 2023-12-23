@@ -22,6 +22,7 @@
 
 #include <playrho/Contact.hpp>
 #include <playrho/LengthError.hpp>
+#include <playrho/OutOfRange.hpp>
 #include <playrho/StepConf.hpp>
 #include <playrho/to_underlying.hpp>
 #include <playrho/WrongState.hpp>
@@ -537,7 +538,7 @@ TEST(AabbTreeWorld, CreateDestroyContactingBodies)
     EXPECT_TRUE(contacts.empty());
     EXPECT_EQ(contacts.size(), ContactCounter(0));
     EXPECT_TRUE(IsDestroyed(world, ContactID{0u}));
-    EXPECT_THROW(SetContact(world, ContactID{0u}, Contact{}), std::out_of_range);
+    EXPECT_THROW(SetContact(world, ContactID{0u}, Contact{}), OutOfRange<BodyID>);
 
     Destroy(world, body2);
     EXPECT_EQ(GetBodies(world).size(), BodyCounter(0));
@@ -554,12 +555,54 @@ TEST(AabbTreeWorld, SetTypeOfBody)
     const auto& body = GetBody(world, bodyID);
     ASSERT_EQ(GetType(body), BodyType::Dynamic);
     auto other = AabbTreeWorld{};
-    EXPECT_THROW(SetBody(other, bodyID, body), std::out_of_range);
+    EXPECT_THROW(SetBody(other, bodyID, body), OutOfRange<BodyID>);
     EXPECT_EQ(GetType(body), BodyType::Dynamic);
     auto body2 = body;
     SetType(body2, BodyType::Static);
     EXPECT_NO_THROW(SetBody(world, bodyID, body2));
     EXPECT_EQ(GetType(GetBody(world, bodyID)), BodyType::Static);
+}
+
+TEST(AabbTreeWorld, SetContact)
+{
+    auto world = AabbTreeWorld{};
+    EXPECT_THROW(SetContact(world, ContactID(0), Contact()), OutOfRange<BodyID>);
+    EXPECT_THROW(SetContact(world, ContactID(0), Contact(Contactable(), Contactable())), OutOfRange<BodyID>);
+    const auto bodyId0 = CreateBody(world);
+    auto cA = Contactable{bodyId0, ShapeID(0), 0u};
+    EXPECT_THROW(SetContact(world, ContactID(0), Contact(cA, cA)), OutOfRange<ShapeID>);
+    const auto l0 = Length2{0_m, 0_m};
+    const auto l1 = Length2{1_m, 0_m};
+    const auto s0 = CreateShape(world, Shape(EdgeShapeConf{l0, l1}));
+    ASSERT_EQ(s0, ShapeID(0));
+    cA.childId = 1u;
+    EXPECT_THROW(SetContact(world, ContactID(0), Contact(cA, cA)), InvalidArgument);
+    cA.childId = 0u;
+    EXPECT_THROW(SetContact(world, ContactID(0), Contact(cA, cA)), OutOfRange<ContactID>);
+    auto body0 = GetBody(world, bodyId0);
+    body0.Attach(s0);
+    SetBody(world, bodyId0, body0);
+    auto body1 = Body{BodyConf{}.Use(BodyType::Dynamic).Use(s0)};
+    const auto bodyId1 = CreateBody(world, body1);
+    auto step = StepConf{};
+    step.deltaTime = {};
+    Step(world, step);
+    ASSERT_EQ(GetContactRange(world), 1u);
+    auto cB = Contactable{bodyId1, ShapeID(0), 0u};
+    auto contact0 = Contact{cA, cB};
+    contact0.UnsetImpenetrable();
+    EXPECT_THROW(SetContact(world, ContactID(0), contact0), InvalidArgument);
+    contact0.SetImpenetrable();
+    EXPECT_NO_THROW(SetContact(world, ContactID(0), contact0));
+    contact0.SetSensor();
+    EXPECT_THROW(SetContact(world, ContactID(0), contact0), InvalidArgument);
+    contact0.UnsetSensor();
+    EXPECT_NO_THROW(SetContact(world, ContactID(0), contact0));
+    SetLocation(body1, Length2{10_m, 10_m});
+    SetBody(world, bodyId1, body1);
+    Step(world, step);
+    ASSERT_TRUE(IsDestroyed(world, ContactID(0)));
+    EXPECT_THROW(SetContact(world, ContactID(0), contact0), InvalidArgument);
 }
 
 TEST(AabbTreeWorld, Proxies)
@@ -932,7 +975,7 @@ TEST(AabbTreeWorld, SetShapeThrowsWithOutOfRangeID)
 {
     auto world = AabbTreeWorld{};
     ASSERT_EQ(GetShapeRange(world), 0u);
-    EXPECT_THROW(SetShape(world, ShapeID(0), Shape{}), std::out_of_range);
+    EXPECT_THROW(SetShape(world, ShapeID(0), Shape{}), OutOfRange<ShapeID>);
 }
 
 TEST(AabbTreeWorld, CreateBodyThrowsWithOutOfRangeShapeID)
@@ -940,7 +983,7 @@ TEST(AabbTreeWorld, CreateBodyThrowsWithOutOfRangeShapeID)
     auto world = AabbTreeWorld{};
     auto body = Body{};
     ASSERT_NO_THROW(body.Attach(ShapeID(0)));
-    EXPECT_THROW(CreateBody(world, body), std::out_of_range);
+    EXPECT_THROW(CreateBody(world, body), OutOfRange<ShapeID>);
 }
 
 TEST(AabbTreeWorld, CreateBodyWithInRangeShapeIDs)
@@ -982,7 +1025,7 @@ TEST(AabbTreeWorld, SetBodyThrowsWithOutOfRangeID)
 {
     auto world = AabbTreeWorld{};
     ASSERT_EQ(GetBodyRange(world), 0u);
-    EXPECT_THROW(SetBody(world, BodyID(0), Body{}), std::out_of_range);
+    EXPECT_THROW(SetBody(world, BodyID(0), Body{}), OutOfRange<BodyID>);
 }
 
 TEST(AabbTreeWorld, SetBodyThrowsWithOutOfRangeShapeID)
@@ -994,7 +1037,7 @@ TEST(AabbTreeWorld, SetBodyThrowsWithOutOfRangeShapeID)
     auto body = Body{};
     ASSERT_NO_THROW(SetBody(world, BodyID(0), body));
     ASSERT_NO_THROW(body.Attach(ShapeID(0)));
-    EXPECT_THROW(SetBody(world, BodyID(0), body), std::out_of_range);
+    EXPECT_THROW(SetBody(world, BodyID(0), body), OutOfRange<ShapeID>);
 }
 
 TEST(AabbTreeWorld, SetShapeWithGeometryChange)
@@ -1110,7 +1153,7 @@ TEST(AabbTreeWorld, CreateJointThrowsWithOutOfRangeBodyID)
 {
     auto world = AabbTreeWorld{};
     auto joint = Joint(FrictionJointConf{}.UseBodyA(BodyID(0)));
-    EXPECT_THROW(CreateJoint(world, joint), std::out_of_range);
+    EXPECT_THROW(CreateJoint(world, joint), OutOfRange<BodyID>);
 }
 
 TEST(AabbTreeWorld, SetJointThrowsWithOutOfRangeID)
@@ -1118,7 +1161,7 @@ TEST(AabbTreeWorld, SetJointThrowsWithOutOfRangeID)
     auto world = AabbTreeWorld{};
     ASSERT_EQ(GetJointRange(world), 0u);
     auto joint = Joint(FrictionJointConf{}.UseBodyA(BodyID(0)));
-    EXPECT_THROW(SetJoint(world, JointID(0), joint), std::out_of_range);
+    EXPECT_THROW(SetJoint(world, JointID(0), joint), OutOfRange<JointID>);
 }
 
 TEST(AabbTreeWorld, SetJointThrowsWithOutOfRangeBodyID)
@@ -1134,9 +1177,9 @@ TEST(AabbTreeWorld, SetJointThrowsWithOutOfRangeBodyID)
     ASSERT_EQ(GetJointRange(world), 1u);
     ASSERT_NO_THROW(SetJoint(world, j0, Joint(FrictionJointConf{}.UseBodyA(b0).UseBodyB(b0))));
     EXPECT_THROW(SetJoint(world, j0, Joint(FrictionJointConf{}.UseBodyA(b1).UseBodyB(b0))),
-                 std::out_of_range);
+                 OutOfRange<BodyID>);
     EXPECT_THROW(SetJoint(world, j0, Joint(FrictionJointConf{}.UseBodyA(b0).UseBodyB(b1))),
-                 std::out_of_range);
+                 OutOfRange<BodyID>);
 }
 
 // Added herein since only AabbTreeWorld uses EraseFirst and saves making new file.

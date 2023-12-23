@@ -23,12 +23,14 @@
 #include <cassert> // for assert
 #include <cstddef> // for std::size_t
 #include <cstdint> // for std::uint32_t
+#include <exception> // for std::throw_with_nested
 #include <functional>
 #include <iterator> // for std::next
 #include <limits> // for std::numeric_limits
 #include <map>
 #include <optional>
 #include <set>
+#include <stdexcept> // for std::out_of_range
 #include <tuple>
 #include <utility> // for std::pair
 #include <vector>
@@ -58,6 +60,7 @@
 #include <playrho/Math.hpp>
 #include <playrho/MovementConf.hpp>
 #include <playrho/ObjectPool.hpp>
+#include <playrho/OutOfRange.hpp>
 #include <playrho/Real.hpp>
 #include <playrho/Settings.hpp>
 #include <playrho/ShapeID.hpp>
@@ -125,8 +128,7 @@ using std::sort;
 using std::transform;
 using std::unique;
 
-namespace playrho {
-namespace d2 {
+namespace playrho::d2 {
 
 using playrho::size;
 
@@ -150,6 +152,24 @@ namespace {
 
 constexpr auto idIsDestroyedMsg = "ID is destroyed";
 constexpr auto worldIsLockedMsg = "world is locked";
+constexpr auto noSuchBodyMsg = "no such body";
+constexpr auto noSuchContactMsg = "no such contact";
+constexpr auto noSuchManifoldMsg = "no such manifold";
+constexpr auto noSuchShapeMsg = "no such shape";
+constexpr auto noSuchJointMsg = "no such joint";
+
+template <class Container, class U, class V, class Message>
+auto At(Container &&container, ::playrho::detail::IndexingNamedType<U, V> id, Message &&msg)
+    -> decltype(OutOfRange{id, std::forward<Message>(msg)}, // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+                std::forward<Container>(container).at(to_underlying(id)))
+{
+    try {
+        return std::forward<Container>(container).at(to_underlying(id));
+    }
+    catch (const std::out_of_range&) {
+        std::throw_with_nested(OutOfRange{id, std::forward<Message>(msg)}); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+    }
+}
 
 inline void IntegratePositions(const Span<const BodyID>& bodies,
                                const Span<BodyConstraint>& constraints,
@@ -767,12 +787,12 @@ auto Append(std::vector<std::pair<BodyID, ShapeID>>& fixtures,
     }
 }
 
-template <class Container, class ElementType>
-auto Validate(const Container& container, const Span<const ElementType>& ids)
+template <class Container, class ElementType, class Message>
+auto Validate(const Container& container, const Span<const ElementType>& ids, Message &&msg)
 -> decltype(container.at(to_underlying(ElementType{})), std::declval<void>())
 {
     for (const auto& id: ids) {
-        container.at(to_underlying(id));
+        At(container, id, std::forward<Message>(msg));
     }
 }
 
@@ -994,7 +1014,7 @@ BodyID CreateBody(AabbTreeWorld& world, Body body)
     if (size(world.m_bodies) >= MaxBodies) {
         throw LengthError("CreateBody: operation would exceed MaxBodies");
     }
-    Validate(world.m_shapeBuffer, Span<const ShapeID>(body.GetShapes()));
+    Validate(world.m_shapeBuffer, Span<const ShapeID>(body.GetShapes()), noSuchShapeMsg);
     const auto id = static_cast<BodyID>(
         static_cast<BodyID::underlying_type>(world.m_bodyBuffer.Allocate(std::move(body))));
     world.m_islanded.bodies.resize(size(world.m_bodyBuffer));
@@ -1085,7 +1105,7 @@ void SetJoint(AabbTreeWorld& world, JointID id, Joint def)
         throw WrongState(worldIsLockedMsg);
     }
     // Validate the references...
-    world.m_jointBuffer.at(to_underlying(id));
+    auto &joint = At(world.m_jointBuffer, id, noSuchJointMsg);
     if (const auto bodyId = GetBodyA(def); bodyId != InvalidBodyID) {
         GetBody(world, bodyId);
     }
@@ -1096,8 +1116,8 @@ void SetJoint(AabbTreeWorld& world, JointID id, Joint def)
         throw InvalidArgument(idIsDestroyedMsg);
     }
     world.Remove(id);
-    world.m_jointBuffer[to_underlying(id)] = std::move(def);
-    world.Add(id, !GetCollideConnected(world.m_jointBuffer[to_underlying(id)]));
+    joint = std::move(def);
+    world.Add(id, !GetCollideConnected(joint));
 }
 
 JointID CreateJoint(AabbTreeWorld& world, Joint def)
@@ -1231,7 +1251,7 @@ void Destroy(AabbTreeWorld& world, ShapeID id)
     if (IsLocked(world)) {
         throw WrongState(worldIsLockedMsg);
     }
-    world.m_shapeBuffer.at(to_underlying(id)); // confirm id valid.
+    At(world.m_shapeBuffer, id, noSuchShapeMsg); // confirm id valid.
     const auto numBodies = GetBodyRange(world);
     for (auto bodyIdx = static_cast<decltype(GetBodyRange(world))>(0); bodyIdx < numBodies; ++bodyIdx) {
         auto body = world.m_bodyBuffer[bodyIdx];
@@ -1253,7 +1273,7 @@ bool IsDestroyed(const AabbTreeWorld& world, ShapeID id) noexcept
 
 const Shape& GetShape(const AabbTreeWorld& world, ShapeID id)
 {
-    return world.m_shapeBuffer.at(to_underlying(id));
+    return At(world.m_shapeBuffer, id, noSuchShapeMsg);
 }
 
 void SetShape(AabbTreeWorld& world, ShapeID id, Shape def) // NOLINT(readability-function-cognitive-complexity)
@@ -1261,7 +1281,7 @@ void SetShape(AabbTreeWorld& world, ShapeID id, Shape def) // NOLINT(readability
     if (IsLocked(world)) {
         throw WrongState(worldIsLockedMsg);
     }
-    const auto& shape = world.m_shapeBuffer.at(to_underlying(id));
+    auto& shape = At(world.m_shapeBuffer, id, noSuchShapeMsg);
     if (world.m_shapeBuffer.FindFree(to_underlying(id))) {
         throw InvalidArgument(idIsDestroyedMsg);
     }
@@ -1324,7 +1344,7 @@ void SetShape(AabbTreeWorld& world, ShapeID id, Shape def) // NOLINT(readability
             }
         }
     }
-    world.m_shapeBuffer[to_underlying(id)] = std::move(def);
+    shape = std::move(def);
 }
 
 void AabbTreeWorld::AddToIsland(Island& island, BodyID seedID,
@@ -2496,17 +2516,17 @@ AabbTreeWorld::AddContacts( // NOLINT(readability-function-cognitive-complexity)
 
 const std::vector<DynamicTree::Size>& GetProxies(const AabbTreeWorld& world, BodyID id)
 {
-    return world.m_bodyProxies.at(to_underlying(id));
+    return At(world.m_bodyProxies, id, noSuchBodyMsg);
 }
 
 const BodyContactIDs& GetContacts(const AabbTreeWorld& world, BodyID id)
 {
-    return world.m_bodyContacts.at(to_underlying(id));
+    return At(world.m_bodyContacts, id, noSuchBodyMsg);
 }
 
 const BodyJointIDs& GetJoints(const AabbTreeWorld& world, BodyID id)
 {
-    return world.m_bodyJoints.at(to_underlying(id));
+    return At(world.m_bodyJoints, id, noSuchBodyMsg);
 }
 
 ContactCounter AabbTreeWorld::Synchronize(const ProxyIDs& bodyProxies,
@@ -2673,8 +2693,8 @@ void SetBody(AabbTreeWorld& world, BodyID id, Body value)
         throw WrongState(worldIsLockedMsg);
     }
     // Validate id and all the new body's shapeIds...
-    const auto& body = world.m_bodyBuffer.at(to_underlying(id));
-    Validate(world.m_shapeBuffer, Span<const ShapeID>(value.GetShapes()));
+    auto& body = At(world.m_bodyBuffer, id, noSuchBodyMsg);
+    Validate(world.m_shapeBuffer, Span<const ShapeID>(value.GetShapes()), noSuchShapeMsg);
     if (world.m_bodyBuffer.FindFree(to_underlying(id))) {
         throw InvalidArgument(idIsDestroyedMsg);
     }
@@ -2736,20 +2756,28 @@ void SetBody(AabbTreeWorld& world, BodyID id, Body value)
     if (addToBodiesForSync) {
         world.m_bodiesForSync.push_back(id);
     }
-    world.m_bodyBuffer[to_underlying(id)] = std::move(value);
+    body = std::move(value);
 }
 
 void SetContact(AabbTreeWorld& world, ContactID id, Contact value)
 {
     // Make sure body identifiers and shape identifiers are valid...
-    GetBody(world, GetBodyA(value));
-    GetBody(world, GetBodyB(value));
+    const auto bodyIdA = GetBodyA(value);
+    const auto bodyIdB = GetBodyB(value);
+    GetBody(world, bodyIdA);
+    GetBody(world, bodyIdB);
     GetChild(GetShape(world, GetShapeA(value)), GetChildIndexA(value));
     GetChild(GetShape(world, GetShapeB(value)), GetChildIndexB(value));
     if (world.m_contactBuffer.FindFree(to_underlying(id))) {
         throw InvalidArgument(idIsDestroyedMsg);
     }
-    auto& contact = world.m_contactBuffer.at(to_underlying(id));
+    auto &contact = At(world.m_contactBuffer, id, noSuchContactMsg);
+    if (contact.GetContactableA() != value.GetContactableA()) {
+        throw InvalidArgument("cannot change contactable A");
+    }
+    if (contact.GetContactableB() != value.GetContactableB()) {
+        throw InvalidArgument("cannot change contactable B");
+    }
     if (IsImpenetrable(contact) != IsImpenetrable(value)) {
         throw InvalidArgument("change body A or B being impenetrable to change impenetrable state");
     }
@@ -2767,22 +2795,22 @@ void SetContact(AabbTreeWorld& world, ContactID id, Contact value)
 
 const Body& GetBody(const AabbTreeWorld& world, BodyID id)
 {
-    return world.m_bodyBuffer.at(to_underlying(id));
+    return At(world.m_bodyBuffer, id, noSuchBodyMsg);
 }
 
 const Joint& GetJoint(const AabbTreeWorld& world, JointID id)
 {
-    return world.m_jointBuffer.at(to_underlying(id));
+    return At(world.m_jointBuffer, id, noSuchJointMsg);
 }
 
 const Contact& GetContact(const AabbTreeWorld& world, ContactID id)
 {
-    return world.m_contactBuffer.at(to_underlying(id));
+    return At(world.m_contactBuffer, id, noSuchContactMsg);
 }
 
 const Manifold& GetManifold(const AabbTreeWorld& world, ContactID id)
 {
-    return world.m_manifoldBuffer.at(to_underlying(id));
+    return At(world.m_manifoldBuffer, id, noSuchManifoldMsg);
 }
 
 ContactID GetSoonestContact(const Span<const KeyedContactID>& ids,
@@ -2806,5 +2834,4 @@ ContactID GetSoonestContact(const Span<const KeyedContactID>& ids,
     return found;
 }
 
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2

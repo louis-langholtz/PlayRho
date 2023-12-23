@@ -18,11 +18,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "UnitTests.hpp"
-
-#include <chrono>
-#include <type_traits>
-
 #include <playrho/Contact.hpp>
 #include <playrho/LengthError.hpp>
 #include <playrho/StepConf.hpp>
@@ -60,6 +55,8 @@
 #include <playrho/d2/WorldMisc.hpp>
 #include <playrho/d2/WorldJoint.hpp>
 #include <playrho/d2/WorldContact.hpp>
+
+#include "gtest/gtest.h"
 
 using namespace playrho;
 using namespace playrho::d2;
