@@ -175,7 +175,7 @@ TEST(WorldContact, SetSensor)
     const auto c = contacts.begin()->second;
     auto contact = GetContact(world, c);
     ASSERT_FALSE(IsSensor(contact));
-    EXPECT_NO_THROW(UnsetIsSensor(contact));
+    EXPECT_NO_THROW(UnsetSensor(contact));
     EXPECT_NO_THROW(SetContact(world, c, contact));
     EXPECT_NO_THROW(SetSensor(contact));
     EXPECT_THROW(SetContact(world, c, contact), InvalidArgument);

@@ -420,6 +420,7 @@
 		998A7C062A80404600F29B01 /* StatsResource.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 998A7C042A80404600F29B01 /* StatsResource.hpp */; };
 		998A7C082A814F9300F29B01 /* StatsResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 998A7C072A814F9300F29B01 /* StatsResource.cpp */; };
 		998A7C0C2A82D55100F29B01 /* Contactable.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 998A7C0A2A82D55100F29B01 /* Contactable.hpp */; };
+		99A7B2792B3790610056228D /* OutOfRange.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99A7B2782B3790610056228D /* OutOfRange.hpp */; };
 		99CF862F29B9087700D9D112 /* BaseShapeConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99CF862E29B9087700D9D112 /* BaseShapeConf.cpp */; };
 		99CF863129C251CB00D9D112 /* ConstraintSolverConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99CF863029C251CB00D9D112 /* ConstraintSolverConf.cpp */; };
 		99D1BE202AEF18F8001BA497 /* BodyShapeFunction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99D1BE1C2AEF18F8001BA497 /* BodyShapeFunction.hpp */; };
@@ -929,6 +930,7 @@
 		998A7C042A80404600F29B01 /* StatsResource.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StatsResource.hpp; sourceTree = "<group>"; };
 		998A7C072A814F9300F29B01 /* StatsResource.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StatsResource.cpp; sourceTree = "<group>"; };
 		998A7C0A2A82D55100F29B01 /* Contactable.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Contactable.hpp; sourceTree = "<group>"; };
+		99A7B2782B3790610056228D /* OutOfRange.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OutOfRange.hpp; sourceTree = "<group>"; };
 		99CF862E29B9087700D9D112 /* BaseShapeConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BaseShapeConf.cpp; sourceTree = "<group>"; };
 		99CF863029C251CB00D9D112 /* ConstraintSolverConf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ConstraintSolverConf.cpp; sourceTree = "<group>"; };
 		99D1BE1C2AEF18F8001BA497 /* BodyShapeFunction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyShapeFunction.hpp; sourceTree = "<group>"; };
@@ -1532,6 +1534,7 @@
 				4764085825047FA10090F711 /* NonPositive.hpp */,
 				47640854250475860090F711 /* NonZero.hpp */,
 				4764086E250EA5DE0090F711 /* ObjectPool.hpp */,
+				99A7B2782B3790610056228D /* OutOfRange.hpp */,
 				479132DD26A52AAF0011707B /* PointState.hpp */,
 				4764085A2504822F0090F711 /* Positive.hpp */,
 				9901AEF32A9BCEB90075122D /* pmr */,
@@ -1687,6 +1690,7 @@
 				4734B22D1DC2B11D00F15E29 /* Simplex.hpp in Headers */,
 				80BB899F141C3E5900F1753A /* BlockAllocator.hpp in Headers */,
 				99D1BE302AF01435001BA497 /* JointModel.hpp in Headers */,
+				99A7B2792B3790610056228D /* OutOfRange.hpp in Headers */,
 				4791330026A5344B0011707B /* ToiConf.hpp in Headers */,
 				476408942522698E0090F711 /* WorldJoint.hpp in Headers */,
 				4726DD381D387D630012A882 /* Manifold.hpp in Headers */,

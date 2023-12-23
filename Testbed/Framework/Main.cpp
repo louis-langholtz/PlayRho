@@ -3151,7 +3151,7 @@ static void EntityUI(Contact& contact)
                 SetSensor(contact);
             }
             else {
-                UnsetIsSensor(contact);
+                UnsetSensor(contact);
             }
         }
     }

@@ -107,6 +107,7 @@ set(PLAYRHO_General_HDRS
     include/playrho/NonPositive.hpp
     include/playrho/NonZero.hpp
     include/playrho/ObjectPool.hpp
+    include/playrho/OutOfRange.hpp
     include/playrho/PointState.hpp
     include/playrho/Positive.hpp
     include/playrho/RayCastOpcode.hpp
