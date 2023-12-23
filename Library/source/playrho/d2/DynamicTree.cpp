@@ -23,6 +23,7 @@
 #include <cassert> // for assert
 #include <limits> // for std::numeric_limits
 #include <utility>
+#include <type_traits> // for std::is_nothrow_default_constructible_v, etc
 
 #include <playrho/GrowableStack.hpp>
 #include <playrho/DynamicMemory.hpp>
@@ -32,8 +33,7 @@
 #include <playrho/d2/DynamicTree.hpp>
 #include <playrho/d2/Math.hpp> // for NextPowerOfTwo and others
 
-namespace playrho {
-namespace d2 {
+namespace playrho::d2 {
 
 static_assert(std::is_nothrow_default_constructible_v<DynamicTree>,
               "DynamicTree must be nothrow default constructible!");
@@ -823,5 +823,4 @@ bool ValidateMetrics(const DynamicTree& tree, DynamicTree::Size index) noexcept
     return ValidateMetrics(tree, child1) && ValidateMetrics(tree, child2);
 }
 
-} // namespace d2
-} // namespace playrho
+} // namespace playrho::d2
