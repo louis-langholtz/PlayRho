@@ -72,11 +72,11 @@ TEST(BodyConf, DefaultConstruction)
     EXPECT_EQ(BodyConf().massDataDirty, BodyConf::DefaultMassDataDirty);
 }
 
-TEST(BodyConf, UseType)
+TEST(BodyConf, Use)
 {
-    EXPECT_EQ(BodyConf{}.UseType(BodyType::Static).type, BodyType::Static);
-    EXPECT_EQ(BodyConf{}.UseType(BodyType::Dynamic).type, BodyType::Dynamic);
-    EXPECT_EQ(BodyConf{}.UseType(BodyType::Kinematic).type, BodyType::Kinematic);
+    EXPECT_EQ(BodyConf{}.Use(BodyType::Static).type, BodyType::Static);
+    EXPECT_EQ(BodyConf{}.Use(BodyType::Dynamic).type, BodyType::Dynamic);
+    EXPECT_EQ(BodyConf{}.Use(BodyType::Kinematic).type, BodyType::Kinematic);
 }
 
 TEST(BodyConf, UseInvMass)
@@ -161,7 +161,7 @@ TEST(BodyConf, GetBodyConf2)
 TEST(BodyConf, EqualsOperator)
 {
     EXPECT_TRUE(BodyConf() == BodyConf());
-    EXPECT_FALSE(BodyConf().UseType(BodyType::Dynamic) == BodyConf());
+    EXPECT_FALSE(BodyConf().Use(BodyType::Dynamic) == BodyConf());
     EXPECT_FALSE(BodyConf().UseLocation(Length2(2_m, 3_m)) == BodyConf());
     EXPECT_FALSE(BodyConf().UseAngle(15_deg) == BodyConf());
     EXPECT_FALSE(BodyConf().UseLinearVelocity(LinearVelocity2{2_mps, 3_mps}) == BodyConf());
@@ -184,7 +184,7 @@ TEST(BodyConf, EqualsOperator)
 TEST(BodyConf, NotEqualsOperator)
 {
     EXPECT_FALSE(BodyConf() != BodyConf());
-    EXPECT_TRUE(BodyConf().UseType(BodyType::Dynamic) != BodyConf());
+    EXPECT_TRUE(BodyConf().Use(BodyType::Dynamic) != BodyConf());
     EXPECT_TRUE(BodyConf().UseLocation(Length2(2_m, 3_m)) != BodyConf());
     EXPECT_TRUE(BodyConf().UseAngle(15_deg) != BodyConf());
     EXPECT_TRUE(BodyConf().UseLinearVelocity(LinearVelocity2{2_mps, 3_mps}) != BodyConf());

@@ -113,9 +113,6 @@ struct BodyConf {
     // Builder-styled methods...
 
     /// @brief Use the given type.
-    constexpr BodyConf& UseType(BodyType t) noexcept;
-
-    /// @brief Use the given type.
     constexpr BodyConf& Use(BodyType t) noexcept;
 
     /// @brief Use the given sweep.
@@ -263,11 +260,6 @@ struct BodyConf {
     /// @brief Whether mass data is "dirty".
     bool massDataDirty = DefaultMassDataDirty;
 };
-
-constexpr BodyConf& BodyConf::UseType(BodyType t) noexcept
-{
-    return Use(t);
-}
 
 constexpr BodyConf& BodyConf::Use(BodyType t) noexcept
 {

@@ -49,7 +49,7 @@ public:
 
         BodyID bodies[20 * 20];
         const auto startLoc = Length2{-10_m, 10_m};
-        const auto bd = BodyConf{}.UseType(BodyType::Dynamic);
+        const auto bd = BodyConf{}.Use(BodyType::Dynamic);
         for (auto y = 0; y < 20; ++y) {
             for (auto x = 0; x < 20; ++x) {
                 const auto location = startLoc + Length2{x * 1_m, y * 1_m};

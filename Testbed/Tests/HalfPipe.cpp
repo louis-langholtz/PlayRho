@@ -37,7 +37,7 @@ public:
             Attach(GetWorld(), pipeBody, CreateShape(GetWorld(), conf));
         }
         const auto ballBody = CreateBody(GetWorld(), BodyConf{}
-                                                         .UseType(BodyType::Dynamic)
+                                                         .Use(BodyType::Dynamic)
                                                          .UseLocation(Vec2(-19, 28) * 1_m)
                                                          .UseLinearAcceleration(GetGravity()));
         Attach(GetWorld(), ballBody,

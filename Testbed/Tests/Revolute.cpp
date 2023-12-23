@@ -93,7 +93,7 @@ public:
                                              Vec2(17.19f, 36.36f) * 1_m})
                                        .UseDensity(1_kgpm2);
 
-            const auto body = CreateBody(GetWorld(), BodyConf{}.UseType(BodyType::Dynamic));
+            const auto body = CreateBody(GetWorld(), BodyConf{}.Use(BodyType::Dynamic));
             Attach(GetWorld(), body, CreateShape(GetWorld(), polyShape));
         }
 

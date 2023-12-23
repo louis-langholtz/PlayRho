@@ -228,7 +228,7 @@ TEST(WorldBody, SetType)
 {
     auto world = World{};
 
-    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     ASSERT_EQ(GetBodiesForProxies(world).size(), 0u);
     ASSERT_EQ(GetType(world, body), BodyType::Dynamic);
 
@@ -248,7 +248,7 @@ TEST(WorldBody, SetType)
 TEST(WorldBody, StaticIsExpected)
 {
     auto world = World{};
-    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Static));
+    const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Static));
     EXPECT_FALSE(IsAccelerable(world, body));
     EXPECT_FALSE(IsSpeedable(world, body));
     EXPECT_TRUE(IsImpenetrable(world, body));
@@ -257,7 +257,7 @@ TEST(WorldBody, StaticIsExpected)
 TEST(WorldBody, KinematicIsExpected)
 {
     auto world = World{};
-    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Kinematic));
+    const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Kinematic));
     EXPECT_FALSE(IsAccelerable(world, body));
     EXPECT_TRUE( IsSpeedable(world, body));
     EXPECT_TRUE( IsImpenetrable(world, body));
@@ -266,7 +266,7 @@ TEST(WorldBody, KinematicIsExpected)
 TEST(WorldBody, DynamicIsExpected)
 {
     auto world = World{};
-    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     EXPECT_TRUE(IsAccelerable(world, body));
     EXPECT_TRUE(IsSpeedable(world, body));
     EXPECT_FALSE(IsImpenetrable(world, body));
@@ -283,7 +283,7 @@ TEST(WorldBody, SetMassData)
     // has effect on dynamic bodies...
     {
         auto world = World{};
-        const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+        const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
         EXPECT_EQ(GetMass(world, body), 1_kg);
         EXPECT_EQ(GetRotInertia(world, body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
         SetMassData(world, body, massData);
@@ -294,7 +294,7 @@ TEST(WorldBody, SetMassData)
     // has no rotational effect on fixed rotation dynamic bodies...
     {
         auto world = World{};
-        const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseFixedRotation(true));
+        const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseFixedRotation(true));
         EXPECT_EQ(GetMass(world, body), 1_kg);
         EXPECT_EQ(GetRotInertia(world, body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
         SetMassData(world, body, massData);
@@ -305,7 +305,7 @@ TEST(WorldBody, SetMassData)
     // has no effect on static bodies...
     {
         auto world = World{};
-        const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Static));
+        const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Static));
         EXPECT_EQ(GetMass(world, body), 0_kg);
         EXPECT_EQ(GetRotInertia(world, body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
         SetMassData(world, body, massData);
@@ -346,7 +346,7 @@ TEST(WorldBody, SetAcceleration)
 
     {
         auto world = World{};
-        const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Static));
+        const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Static));
         ASSERT_EQ(GetLinearAcceleration(world, body), LinearAcceleration2{});
         ASSERT_EQ(GetAngularAcceleration(world, body), 0 * RadianPerSquareSecond);
         ASSERT_FALSE(IsAwake(world, body));
@@ -372,7 +372,7 @@ TEST(WorldBody, SetAcceleration)
     // Kinematic and dynamic bodies awake at creation...
     {
         auto world = World{};
-        const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Kinematic));
+        const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Kinematic));
         ASSERT_EQ(GetLinearAcceleration(world, body), LinearAcceleration2{});
         ASSERT_TRUE(IsAwake(world, body));
         UnsetAwake(world, body);
@@ -397,7 +397,7 @@ TEST(WorldBody, SetAcceleration)
     // Dynamic bodies take a non-zero linear or angular acceleration.
     {
         auto world = World{};
-        const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+        const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
         ASSERT_EQ(GetLinearAcceleration(world, body), LinearAcceleration2{});
         ASSERT_EQ(GetAngularAcceleration(world, body), 0 * RadianPerSquareSecond);
         ASSERT_TRUE(IsAwake(world, body));
@@ -470,7 +470,7 @@ TEST(WorldBody, SetAcceleration)
 TEST(WorldBody, SetAngularAcceleration)
 {
     auto world = World{};
-    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     auto acceleration = AngularAcceleration{};
     acceleration = Real(2) * RadianPerSquareSecond;
     EXPECT_NO_THROW(SetAcceleration(world, body, acceleration));
@@ -483,7 +483,7 @@ TEST(WorldBody, SetAngularAcceleration)
 TEST(WorldBody, SetAngularVelocity)
 {
     auto world = World{};
-    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     auto value = AngularVelocity{};
     value = Real(4) * RadianPerSecond;
     EXPECT_NO_THROW(SetVelocity(world, body, value));
@@ -497,7 +497,7 @@ TEST(WorldBody, ApplyForce)
 {
     auto world = World{};
     const auto shapeId = CreateShape(world, PolygonShapeConf(1_m, 1_m).UseDensity(1_kgpm2));
-    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     Attach(world, body, shapeId);
     ASSERT_EQ(GetMass(world, body), 4_kg);
     auto value = Force2{};
@@ -512,7 +512,7 @@ TEST(WorldBody, ApplyTorque)
 {
     auto world = World{};
     const auto shapeId = CreateShape(world, PolygonShapeConf(1_m, 1_m).UseDensity(1_kgpm2));
-    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     Attach(world, body, shapeId);
     ASSERT_EQ(GetMass(world, body), 4_kg);
     auto value = Torque{};
@@ -528,7 +528,7 @@ TEST(WorldBody, ApplyLinearImpulse)
 {
     auto world = World{};
     const auto shapeId = CreateShape(world, PolygonShapeConf(1_m, 1_m).UseDensity(1_kgpm2));
-    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     Attach(world, body, shapeId);
     ASSERT_EQ(GetMass(world, body), 4_kg);
     auto value = Momentum2{40_Ns, 0_Ns};
@@ -542,7 +542,7 @@ TEST(WorldBody, ApplyAngularImpulse)
 {
     auto world = World{};
     const auto shapeId = CreateShape(world, PolygonShapeConf(1_m, 1_m).UseDensity(1_kgpm2));
-    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     Attach(world, body, shapeId);
     ASSERT_EQ(GetMass(world, body), 4_kg);
     auto value = AngularMomentum{Real(8) * NewtonMeterSecond};
@@ -662,7 +662,7 @@ TEST(WorldBody, ApplyLinearAccelDoesNothingToStatic)
 TEST(WorldBody, GetAccelerationFF)
 {
     auto world = World{};
-    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     SetAcceleration(world, body, LinearAcceleration2{}, AngularAcceleration{});
     
     ASSERT_EQ(GetLinearAcceleration(world, body), LinearAcceleration2{});
@@ -673,7 +673,7 @@ TEST(WorldBody, GetAccelerationFF)
 TEST(WorldBody, SetAccelerationFF)
 {
     auto world = World{};
-    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     SetAcceleration(world, body, LinearAcceleration2{}, AngularAcceleration{});
     
     ASSERT_EQ(GetLinearAcceleration(world, body), LinearAcceleration2{});
@@ -695,12 +695,12 @@ TEST(WorldBody, CalcGravitationalAcceleration)
     const auto l3 = Length2{+16_m, 0_m};
     const auto shapeId = CreateShape(world, DiskShapeConf{}.UseRadius(2_m).UseDensity(1e10_kgpm2));
     
-    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l1));
+    const auto b1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(l1));
     Attach(world, b1, shapeId);
     EXPECT_EQ(CalcGravitationalAcceleration(world, b1).linear, LinearAcceleration2());
     EXPECT_EQ(CalcGravitationalAcceleration(world, b1).angular, AngularAcceleration());
 
-    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l2));
+    const auto b2 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(l2));
     Attach(world, b2, shapeId);
     {
         const auto accel = CalcGravitationalAcceleration(world, b1);
@@ -709,7 +709,7 @@ TEST(WorldBody, CalcGravitationalAcceleration)
         EXPECT_EQ(GetY(accel.linear), 0 * MeterPerSquareSecond);
         EXPECT_EQ(accel.angular, 0 * RadianPerSquareSecond);
     }
-    const auto b3 = CreateBody(world, BodyConf{}.UseType(BodyType::Static).UseLocation(l3));
+    const auto b3 = CreateBody(world, BodyConf{}.Use(BodyType::Static).UseLocation(l3));
     EXPECT_EQ(CalcGravitationalAcceleration(world, b3), Acceleration{});
     {
         // Confirm b3 doesn't impact b1's acceleration...
@@ -749,7 +749,7 @@ TEST(WorldBody, GetCentripetalForce)
 {
     const auto l1 = Length2{-8_m, 0_m};
     auto world = World{};
-    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l1));
+    const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(l1));
     const auto shapeId = CreateShape(world, DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2));
     Attach(world, body, shapeId);
     SetVelocity(world, body, LinearVelocity2{2_mps, 3_mps});
@@ -791,7 +791,7 @@ TEST(WorldBody, SetAwake)
 {
     {
         World world;
-        const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+        const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
         EXPECT_NO_THROW(UnsetAwake(world, body));
         EXPECT_FALSE(IsAwake(world, body));
         EXPECT_NO_THROW(SetAwake(world, body));
@@ -799,7 +799,7 @@ TEST(WorldBody, SetAwake)
     }
     {
         World world;
-        const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Static));
+        const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Static));
         EXPECT_NO_THROW(UnsetAwake(world, body));
         EXPECT_FALSE(IsAwake(world, body));
         EXPECT_NO_THROW(SetAwake(world, body));

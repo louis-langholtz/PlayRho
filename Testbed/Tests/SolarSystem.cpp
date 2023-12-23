@@ -111,7 +111,7 @@ public:
     {
         SetBombRadius(100_km);
         SetBombDensity(2e12_kgpm2);
-        const auto DynamicBD = BodyConf{}.UseType(BodyType::Dynamic).UseBullet(true);
+        const auto DynamicBD = BodyConf{}.Use(BodyType::Dynamic).UseBullet(true);
         for (auto& sso : SolarSystemBodies) {
             const auto p = sso.orbitalPeriod;
             const auto c = sso.aveDist * Pi * 2;

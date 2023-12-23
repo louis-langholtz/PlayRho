@@ -43,7 +43,7 @@ public:
             for (auto i = 0; i < Count; ++i) {
                 const auto body =
                     CreateBody(GetWorld(), BodyConf{}
-                                               .UseType(BodyType::Dynamic)
+                                               .Use(BodyType::Dynamic)
                                                .UseLinearAcceleration(GetGravity())
                                                .UseLocation(Vec2(-14.5f + i, 5.0f) * 1_m));
                 Attach(GetWorld(), body, shape);
@@ -65,7 +65,7 @@ public:
         for (auto i = 0; i < 2; ++i) {
             const auto body =
                 CreateBody(GetWorld(), BodyConf{}
-                                           .UseType(BodyType::Dynamic)
+                                           .Use(BodyType::Dynamic)
                                            .UseLinearAcceleration(GetGravity())
                                            .UseLocation(Vec2(-8.0f + 8.0f * i, 12.0f) * 1_m));
             Attach(GetWorld(), body, polyshape);
@@ -76,7 +76,7 @@ public:
         for (auto i = 0; i < 3; ++i) {
             const auto body =
                 CreateBody(GetWorld(), BodyConf{}
-                                           .UseType(BodyType::Dynamic)
+                                           .Use(BodyType::Dynamic)
                                            .UseLinearAcceleration(GetGravity())
                                            .UseLocation(Vec2(-6.0f + 6.0f * i, 10.0f) * 1_m));
             Attach(GetWorld(), body, diskShape);

@@ -129,7 +129,7 @@ public:
             for (auto i = 0; i < N; ++i) {
                 const auto body = CreateBody(GetWorld(),
                                              BodyConf{}
-                                                 .UseType(BodyType::Dynamic)
+                                                 .Use(BodyType::Dynamic)
                                                  .UseLocation(Vec2(161 + 2 * i, -0.125f) * 1_m));
                 Attach(GetWorld(), body, shape);
                 CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), prevBody, body,
@@ -144,7 +144,7 @@ public:
         {
             const auto box = CreateShape(
                 GetWorld(), PolygonShapeConf{}.UseDensity(0.5_kgpm2).SetAsBox(0.5_m, 0.5_m));
-            auto bd = BodyConf{}.UseType(BodyType::Dynamic);
+            auto bd = BodyConf{}.Use(BodyType::Dynamic);
             Attach(GetWorld(), CreateBody(GetWorld(), bd.UseLocation(Vec2(230, 0.5f) * 1_m)), box);
             Attach(GetWorld(), CreateBody(GetWorld(), bd.UseLocation(Vec2(230, 1.5f) * 1_m)), box);
             Attach(GetWorld(), CreateBody(GetWorld(), bd.UseLocation(Vec2(230, 2.5f) * 1_m)), box);
@@ -184,7 +184,7 @@ public:
                 })
                 .Transform(transmat);
 
-        auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(GetGravity());
+        auto bd = BodyConf{}.Use(BodyType::Dynamic).UseLinearAcceleration(GetGravity());
         m_car = CreateBody(GetWorld(), bd.Use(carPosition).Use(carVelocity));
         Attach(GetWorld(), m_car, CreateShape(GetWorld(), carShapeConf));
 

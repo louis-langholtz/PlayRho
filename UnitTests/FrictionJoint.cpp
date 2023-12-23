@@ -77,8 +77,8 @@ TEST(FrictionJointConf, GetFrictionJointConf)
     World world{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p2));
     const auto anchor = Length2{0_m, 0_m};
     const auto def = GetFrictionJointConf(world, b1, b2, anchor);
     EXPECT_EQ(def.bodyA, b1);
@@ -150,8 +150,8 @@ TEST(FrictionJoint, WithDynamicCircles)
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
     const auto s0 = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m));
-    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p2));
     Attach(world, b1, s0);
     Attach(world, b2, s0);
     auto jd = FrictionJointConf{};

@@ -107,7 +107,7 @@ public:
     BodyID CreateEnclosure(Length2 at)
     {
         const auto b = CreateBody(GetWorld(), BodyConf{}
-                                                  .UseType(BodyType::Dynamic)
+                                                  .Use(BodyType::Dynamic)
                                                   .UseLocation(at)
                                                   .UseAllowSleep(false)
                                                   .UseLinearAcceleration(GetGravity()));
@@ -160,7 +160,7 @@ public:
     void CreateTumblee(Length2 at)
     {
         CreateBody(GetWorld(), BodyConf{}
-                                   .UseType(BodyType::Dynamic)
+                                   .Use(BodyType::Dynamic)
                                    .UseLocation(at)
                                    .Use(GetTumbleeShapeID())
                                    .UseLinearAcceleration(GetGravity()));

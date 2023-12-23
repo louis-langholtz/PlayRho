@@ -2144,7 +2144,7 @@ static void WorldStepWithStatsStaticPlayRho(benchmark::State& state)
     const auto numBodies = state.range();
     auto world = playrho::d2::World{playrho::d2::WorldConf{/* zero G */}};
     for (auto i = decltype(numBodies){0}; i < numBodies; ++i) {
-        CreateBody(world, playrho::d2::BodyConf{}.UseType(playrho::BodyType::Static));
+        CreateBody(world, playrho::d2::BodyConf{}.Use(playrho::BodyType::Static));
     }
     for (auto _ : state) {
         benchmark::DoNotOptimize(stepStats = Step(world, stepConf));
@@ -2180,7 +2180,7 @@ static void DropDisksPlayRho(benchmark::State& state)
         const auto x = i * diskRadius * 4;
         const auto location = playrho::Length2{x, 0 * playrho::Meter};
         auto body = playrho::d2::Body{playrho::d2::BodyConf{}
-                                          .UseType(playrho::BodyType::Dynamic)
+                                          .Use(playrho::BodyType::Dynamic)
                                           .UseLocation(location)
                                           .UseLinearAcceleration(playrho::d2::EarthlyGravity)};
         body.Attach(shapeId);
@@ -2206,7 +2206,7 @@ static void DropDisksSixtyStepsPlayRho(benchmark::State& state)
             const auto x = i * diskRadius * 4;
             const auto location = playrho::Length2{x, 0 * playrho::Meter};
             auto body = playrho::d2::Body{playrho::d2::BodyConf{}
-                                              .UseType(playrho::BodyType::Dynamic)
+                                              .Use(playrho::BodyType::Dynamic)
                                               .UseLocation(location)
                                               .UseLinearAcceleration(playrho::d2::EarthlyGravity)};
             body.Attach(shapeId);
@@ -2285,7 +2285,7 @@ static void AddPairStressTestPlayRho(benchmark::State& state, int count)
 
     const auto rectBodyConf =
         playrho::d2::BodyConf{}
-            .UseType(playrho::BodyType::Dynamic)
+            .Use(playrho::BodyType::Dynamic)
             .UseBullet(true)
             .UseLocation(playrho::Length2{-40.0f * playrho::Meter, 5.0f * playrho::Meter})
             .UseLinearVelocity(
@@ -2314,7 +2314,7 @@ static void AddPairStressTestPlayRho(benchmark::State& state, int count)
     const auto maxX = 0.0f;
     const auto minY = 4.0f;
     const auto maxY = 6.0f;
-    const auto bd = playrho::d2::BodyConf{}.UseType(playrho::BodyType::Dynamic);
+    const auto bd = playrho::d2::BodyConf{}.Use(playrho::BodyType::Dynamic);
     for (auto _ : state) {
         state.PauseTiming();
         auto world = playrho::d2::World{worldConf};
@@ -2467,7 +2467,7 @@ static void DropTilesPlayRho(int count, bool groundIsComboShape = true)
             y = x;
             for (auto j = i; j < count; ++j) {
                 auto body = playrho::d2::Body{playrho::d2::BodyConf{}
-                                                  .UseType(playrho::BodyType::Dynamic)
+                                                  .Use(playrho::BodyType::Dynamic)
                                                   .UseLocation(y)
                                                   .UseLinearAcceleration(gravity)};
                 body.Attach(shapeId);
@@ -2633,7 +2633,7 @@ private:
 
 TumblerPlayRho::TumblerPlayRho()
 {
-    const auto g = CreateBody(m_world, playrho::d2::BodyConf{}.UseType(playrho::BodyType::Static));
+    const auto g = CreateBody(m_world, playrho::d2::BodyConf{}.Use(playrho::BodyType::Static));
     const auto b = CreateEnclosure(m_world);
     CreateRevoluteJoint(m_world, g, b);
 
@@ -2664,7 +2664,7 @@ TumblerPlayRho::TumblerPlayRho()
 playrho::BodyID TumblerPlayRho::CreateEnclosure(playrho::d2::World& world)
 {
     auto b = playrho::d2::Body{playrho::d2::BodyConf{}
-                                   .UseType(playrho::BodyType::Dynamic)
+                                   .Use(playrho::BodyType::Dynamic)
                                    .UseLocation(playrho::Vec2(0, 10) * playrho::Meter)
                                    .UseAllowSleep(false)};
     auto conf =
@@ -2718,7 +2718,7 @@ void TumblerPlayRho::Step()
 void TumblerPlayRho::AddSquare()
 {
     auto b = playrho::d2::Body{playrho::d2::BodyConf{}
-                                   .UseType(playrho::BodyType::Dynamic)
+                                   .Use(playrho::BodyType::Dynamic)
                                    .UseLocation(playrho::Vec2(0, 10) * playrho::Meter)
                                    .UseLinearAcceleration(playrho::d2::EarthlyGravity)};
     b.Attach(m_squareId);

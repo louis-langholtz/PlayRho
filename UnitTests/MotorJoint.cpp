@@ -183,8 +183,8 @@ TEST(MotorJoint, WithDynamicCircles)
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p2));
     const auto circle = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m).UseDensity(2_kgpm2));
     ASSERT_NO_THROW(Attach(world, b1, circle));
     ASSERT_NO_THROW(Attach(world, b2, circle));
@@ -224,8 +224,8 @@ TEST(MotorJoint, SetLinearOffset)
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p2));
     const auto circle = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m));
     Attach(world, b1, circle);
     Attach(world, b2, circle);
@@ -248,8 +248,8 @@ TEST(MotorJoint, SetAngularOffset)
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(p2));
     const auto circle = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m));
     Attach(world, b1, circle);
     Attach(world, b2, circle);

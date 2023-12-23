@@ -120,7 +120,7 @@ public:
             for (auto i = 0; i < 10; ++i) {
                 const auto location = Length2{0_m, (5.0f + 1.54f * i) * 1_m};
                 const auto body = CreateBody(
-                    GetWorld(), BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location));
+                    GetWorld(), BodyConf{}.Use(BodyType::Dynamic).UseLocation(location));
                 Attach(GetWorld(), body, shape);
 
                 const auto I = GetLocalRotInertia(GetWorld(), body); // RotInertia: M * L^2 QP^-2

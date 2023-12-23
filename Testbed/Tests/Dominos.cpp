@@ -49,7 +49,7 @@ public:
             for (auto i = 0; i < 10; ++i) {
                 const auto body =
                     CreateBody(GetWorld(), BodyConf{}
-                                               .UseType(BodyType::Dynamic)
+                                               .Use(BodyType::Dynamic)
                                                .UseLocation(Vec2(-6.0f + 1.0f * i, 11.25f) * 1_m));
                 Attach(GetWorld(), body, shape);
             }

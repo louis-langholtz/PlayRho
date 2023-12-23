@@ -115,8 +115,8 @@ TEST(DistanceJoint, TypeCast)
 TEST(DistanceJoint, Construction)
 {
     auto world = World{};
-    const auto body0 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    const auto body1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body0 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
+    const auto body1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     auto def = DistanceJointConf{body0, body1};
     const auto joint = CreateJoint(world, Joint{def});
 
@@ -138,8 +138,8 @@ TEST(DistanceJoint, Construction)
 TEST(DistanceJoint, ShiftOrigin)
 {
     auto world = World{};
-    const auto body0 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    const auto body1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body0 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
+    const auto body1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     auto def = DistanceJointConf{body0, body1};
     const auto joint = CreateJoint(world, def);
     const auto newOrigin = Length2{1_m, 1_m};
@@ -154,13 +154,13 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 
     const auto location1 = Length2{-1_m, 0_m};
     const auto body1 =
-        CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location1));
+        CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(location1));
     ASSERT_EQ(GetLocation(world, body1), location1);
     ASSERT_NO_THROW(Attach(world, body1, shape));
 
     const auto location2 = Length2{+1_m, 0_m};
     const auto body2 =
-        CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location2));
+        CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(location2));
     ASSERT_EQ(GetLocation(world, body2), location2);
     ASSERT_NO_THROW(Attach(world, body2, shape));
 
@@ -205,13 +205,13 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
     const auto shape = CreateShape(world, DiskShapeConf{}.UseRadius(0.2_m).UseDensity(1_kgpm2));
     const auto location1 = Length2{-10_m, 10_m};
     const auto body1 =
-        CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location1));
+        CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(location1));
     ASSERT_EQ(GetLocation(world, body1), location1);
     ASSERT_NO_THROW(Attach(world, body1, shape));
 
     const auto location2 = Length2{+10_m, -10_m};
     const auto body2 =
-        CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location2));
+        CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(location2));
     ASSERT_EQ(GetLocation(world, body2), location2);
     ASSERT_NO_THROW(Attach(world, body2, shape));
 
