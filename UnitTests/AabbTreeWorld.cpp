@@ -598,6 +598,8 @@ TEST(AabbTreeWorld, SetContact)
     EXPECT_THROW(SetContact(world, ContactID(0), contact0), InvalidArgument);
     contact0.UnsetSensor();
     EXPECT_NO_THROW(SetContact(world, ContactID(0), contact0));
+    EXPECT_THROW(SetContact(world, ContactID(0), Contact{cA, Contactable{bodyId0, ShapeID(0), 0u}}), InvalidArgument);
+    EXPECT_THROW(SetContact(world, ContactID(0), Contact{Contactable{bodyId1, ShapeID(0), 0u}, cB}), InvalidArgument);
     SetLocation(body1, Length2{10_m, 10_m});
     SetBody(world, bodyId1, body1);
     Step(world, step);
