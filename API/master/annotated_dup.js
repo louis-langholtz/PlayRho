@@ -211,6 +211,7 @@ var annotated_dup =
       [ "LexicographicalLessEqual", "structplayrho_1_1LexicographicalLessEqual.html", "structplayrho_1_1LexicographicalLessEqual" ],
       [ "MovementConf", "structplayrho_1_1MovementConf.html", "structplayrho_1_1MovementConf" ],
       [ "ObjectPool", "classplayrho_1_1ObjectPool.html", "classplayrho_1_1ObjectPool" ],
+      [ "OutOfRange", "classplayrho_1_1OutOfRange.html", "classplayrho_1_1OutOfRange" ],
       [ "PreStepStats", "structplayrho_1_1PreStepStats.html", "structplayrho_1_1PreStepStats" ],
       [ "RegStepStats", "structplayrho_1_1RegStepStats.html", "structplayrho_1_1RegStepStats" ],
       [ "ReversionWrapper", "structplayrho_1_1ReversionWrapper.html", "structplayrho_1_1ReversionWrapper" ],

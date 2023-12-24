@@ -463,9 +463,9 @@
     </member>
     <member kind="function">
       <type>constexpr void</type>
-      <name>UnsetIsSensor</name>
+      <name>UnsetSensor</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ad488916b3a4198e323011d0a3f417c90</anchor>
+      <anchor>a2d655de91b4048a46090b3621e34d239</anchor>
       <arglist>(Contact &amp;contact) noexcept</arglist>
     </member>
   </compound>
@@ -15547,13 +15547,6 @@
     </member>
     <member kind="function">
       <type>constexpr BodyConf &amp;</type>
-      <name>UseType</name>
-      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
-      <anchor>a49ce681752862a2f5466df143cd8a0f0</anchor>
-      <arglist>(BodyType t) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>constexpr BodyConf &amp;</type>
       <name>UseUnderActiveTime</name>
       <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
       <anchor>a2b4e162e3432a14f827cfc6d492fc51a</anchor>
@@ -20899,9 +20892,9 @@
     </member>
     <member kind="function">
       <type>constexpr void</type>
-      <name>UnsetIsSensor</name>
+      <name>UnsetSensor</name>
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
-      <anchor>a51105cf87046956882da320d96e9b71d</anchor>
+      <anchor>a3970483d69e388826459c3a3a19a4a50</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
@@ -21179,9 +21172,9 @@
     </member>
     <member kind="function">
       <type>constexpr void</type>
-      <name>UnsetIsSensor</name>
+      <name>UnsetSensor</name>
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
-      <anchor>ad488916b3a4198e323011d0a3f417c90</anchor>
+      <anchor>a2d655de91b4048a46090b3621e34d239</anchor>
       <arglist>(Contact &amp;contact) noexcept</arglist>
     </member>
   </compound>
@@ -28818,6 +28811,39 @@
       <anchorfile>classplayrho_1_1ObjectPool.html</anchorfile>
       <anchor>a311afb2d776e8e69de0329af1b899c3a</anchor>
       <arglist>(const ObjectPool &amp;lhs, const ObjectPool &amp;rhs) noexcept</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>playrho::OutOfRange</name>
+    <filename>classplayrho_1_1OutOfRange.html</filename>
+    <templarg></templarg>
+    <member kind="typedef">
+      <type>T</type>
+      <name>type</name>
+      <anchorfile>classplayrho_1_1OutOfRange.html</anchorfile>
+      <anchor>a881befea29cb9d9d109359d601dc7c55</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>OutOfRange</name>
+      <anchorfile>classplayrho_1_1OutOfRange.html</anchorfile>
+      <anchor>a3c3d5fb9add24b6e3bcfa4644069984f</anchor>
+      <arglist>(type v, const char *msg)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>OutOfRange</name>
+      <anchorfile>classplayrho_1_1OutOfRange.html</anchorfile>
+      <anchor>a08aa1051308584df1e3acbaf489389a4</anchor>
+      <arglist>(type v, const std::string &amp;msg)</arglist>
+    </member>
+    <member kind="variable">
+      <type>type</type>
+      <name>value</name>
+      <anchorfile>classplayrho_1_1OutOfRange.html</anchorfile>
+      <anchor>aa257a922f1755b1f09ac8d8e265cafe5</anchor>
+      <arglist></arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -42187,6 +42213,7 @@
     <class kind="struct">playrho::LexicographicalLessEqual</class>
     <class kind="struct">playrho::MovementConf</class>
     <class kind="class">playrho::ObjectPool</class>
+    <class kind="class">playrho::OutOfRange</class>
     <class kind="struct">playrho::PreStepStats</class>
     <class kind="struct">playrho::RegStepStats</class>
     <class kind="struct">playrho::ReversionWrapper</class>
@@ -44837,9 +44864,9 @@
     </member>
     <member kind="function">
       <type>constexpr void</type>
-      <name>UnsetIsSensor</name>
+      <name>UnsetSensor</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ad488916b3a4198e323011d0a3f417c90</anchor>
+      <anchor>a2d655de91b4048a46090b3621e34d239</anchor>
       <arglist>(Contact &amp;contact) noexcept</arglist>
     </member>
     <member kind="function">

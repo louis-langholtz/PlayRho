@@ -22,7 +22,6 @@ var structplayrho_1_1d2_1_1BodyConf =
     [ "UseLinearVelocity", "structplayrho_1_1d2_1_1BodyConf.html#a42645afc946b8ba3415b7452488482e4", null ],
     [ "UseLocation", "structplayrho_1_1d2_1_1BodyConf.html#aa4e1fe1403ad7d0e385dfe2dba0ada91", null ],
     [ "UseMassDataDirty", "structplayrho_1_1d2_1_1BodyConf.html#afbe2214b980cd5964d469b55dbb5c8b3", null ],
-    [ "UseType", "structplayrho_1_1d2_1_1BodyConf.html#a49ce681752862a2f5466df143cd8a0f0", null ],
     [ "UseUnderActiveTime", "structplayrho_1_1d2_1_1BodyConf.html#a2b4e162e3432a14f827cfc6d492fc51a", null ],
     [ "GetAngle", "structplayrho_1_1d2_1_1BodyConf.html#a6e36744b63f83418fefcdc1642acbbf8", null ],
     [ "GetDefaultBodyConf", "structplayrho_1_1d2_1_1BodyConf.html#af6c1034a2366e6ef466253aea8a13829", null ],

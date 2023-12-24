@@ -9,9 +9,9 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 1400.5)">
 <title>Graphical Class Hierarchy</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-1400.5 696,-1400.5 696,4 -4,4"/>
-<!-- Node251 -->
+<!-- Node253 -->
 <g id="node1" class="node">
-<title>Node251</title>
+<title>Node253</title>
 <g id="a_node1"><a xlink:title=" ">
 <polygon fill="white" stroke="#bfbfbf" points="0,-570.5 0,-589.5 84,-589.5 84,-570.5 0,-570.5"/>
 <text text-anchor="middle" x="42" y="-577.5" font-family="Helvetica,sans-Serif" font-size="10.00">std::true_type</text>
@@ -44,15 +44,15 @@
 </a>
 </g>
 </g>
-<!-- Node251&#45;&gt;Node0 -->
+<!-- Node253&#45;&gt;Node0 -->
 <g id="edge1" class="edge">
-<title>Node251&#45;&gt;Node0</title>
+<title>Node253&#45;&gt;Node0</title>
 <path fill="none" stroke="midnightblue" d="M43.2,-600.11C44.5,-693.22 53.84,-1082.19 120,-1180 122.26,-1183.33 124.64,-1186.58 127.15,-1189.74"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="46.7,-599.78 43.08,-589.83 39.7,-599.87 46.7,-599.78"/>
 </g>
-<!-- Node253 -->
+<!-- Node255 -->
 <g id="node3" class="node">
-<title>Node253</title>
+<title>Node255</title>
 <g id="a_node3"><a xlink:href="structplayrho_1_1d2_1_1detail_1_1IsValidShapeType_3_01T_00_01std_1_1void__t_3_01decltype_07GetCh6e61a5840b735d119f7d25ad6ffcdafa.html" target="_top" xlink:title="An &quot;is valid shape type&quot; trait.">
 <polygon fill="white" stroke="black" points="134.5,-997.5 134.5,-1170.5 512.5,-1170.5 512.5,-997.5 134.5,-997.5"/>
 <text text-anchor="start" x="142.5" y="-1158.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::detail</text>
@@ -73,15 +73,15 @@
 </a>
 </g>
 </g>
-<!-- Node251&#45;&gt;Node253 -->
+<!-- Node253&#45;&gt;Node255 -->
 <g id="edge2" class="edge">
-<title>Node251&#45;&gt;Node253</title>
+<title>Node253&#45;&gt;Node255</title>
 <path fill="none" stroke="midnightblue" d="M44.39,-599.87C49.85,-672.93 71.92,-925.71 120,-988 124.4,-993.7 129.22,-999.07 134.38,-1004.14"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="47.87,-599.46 43.65,-589.74 40.89,-599.97 47.87,-599.46"/>
 </g>
-<!-- Node254 -->
+<!-- Node256 -->
 <g id="node4" class="node">
-<title>Node254</title>
+<title>Node256</title>
 <g id="a_node4"><a xlink:href="structplayrho_1_1detail_1_1Checked_1_1IsChecked_3_01Checked_3_01V_00_01C_00_01N_01_4_01_4.html" target="_top" xlink:title="Succeeding is&#45;checked class template trait.">
 <polygon fill="white" stroke="black" points="222,-937.5 222,-978.5 425,-978.5 425,-937.5 222,-937.5"/>
 <text text-anchor="start" x="230" y="-966.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::Checked</text>
@@ -90,15 +90,15 @@
 </a>
 </g>
 </g>
-<!-- Node251&#45;&gt;Node254 -->
+<!-- Node253&#45;&gt;Node256 -->
 <g id="edge3" class="edge">
-<title>Node251&#45;&gt;Node254</title>
+<title>Node253&#45;&gt;Node256</title>
 <path fill="none" stroke="midnightblue" d="M44.47,-599.49C49.9,-666.01 71.1,-882.44 120,-928 147.11,-953.26 185.72,-962.92 221.97,-965.5"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="47.96,-599.21 43.68,-589.52 40.98,-599.76 47.96,-599.21"/>
 </g>
-<!-- Node255 -->
+<!-- Node257 -->
 <g id="node5" class="node">
-<title>Node255</title>
+<title>Node257</title>
 <g id="a_node5"><a xlink:href="structplayrho_1_1detail_1_1IsAddable_3_01T1_00_01T2_00_01std_1_1void__t_3_01decltype_07T1_02_03_09T2_02_03_08_4_01_4.html" target="_top" xlink:title="Template specializing for addable types.">
 <polygon fill="white" stroke="black" points="239.5,-877.5 239.5,-918.5 407.5,-918.5 407.5,-877.5 239.5,-877.5"/>
 <text text-anchor="start" x="247.5" y="-906.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::IsAddable</text>
@@ -107,15 +107,15 @@
 </a>
 </g>
 </g>
-<!-- Node251&#45;&gt;Node255 -->
+<!-- Node253&#45;&gt;Node257 -->
 <g id="edge4" class="edge">
-<title>Node251&#45;&gt;Node255</title>
+<title>Node253&#45;&gt;Node257</title>
 <path fill="none" stroke="midnightblue" d="M45.48,-599.86C53.27,-658.91 79.17,-831.59 120,-868 152.03,-896.56 198.89,-904.86 239.48,-905.65"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="48.91,-599.11 44.16,-589.64 41.97,-600 48.91,-599.11"/>
 </g>
-<!-- Node256 -->
+<!-- Node258 -->
 <g id="node6" class="node">
-<title>Node256</title>
+<title>Node258</title>
 <g id="a_node6"><a xlink:href="structplayrho_1_1detail_1_1IsArithmetic_3_01T_00_01std_1_1void__t_3_01decltype_07T_02_03_09T_02_1d1a3b924c473a70e90f3ccf5def5509.html" target="_top" xlink:title="Template specialization for valid/acceptable &quot;arithmetic&quot; types.">
 <polygon fill="white" stroke="black" points="233.5,-795.5 233.5,-858.5 413.5,-858.5 413.5,-795.5 233.5,-795.5"/>
 <text text-anchor="start" x="241.5" y="-846.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::IsArithmetic</text>
@@ -126,15 +126,15 @@
 </a>
 </g>
 </g>
-<!-- Node251&#45;&gt;Node256 -->
+<!-- Node253&#45;&gt;Node258 -->
 <g id="edge5" class="edge">
-<title>Node251&#45;&gt;Node256</title>
+<title>Node253&#45;&gt;Node258</title>
 <path fill="none" stroke="midnightblue" d="M44.24,-599.73C47.96,-641.08 62.66,-737.07 120,-786 151.11,-812.54 194.66,-823.58 233.42,-827.65"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="47.72,-599.3 43.46,-589.6 40.74,-599.84 47.72,-599.3"/>
 </g>
-<!-- Node257 -->
+<!-- Node259 -->
 <g id="node7" class="node">
-<title>Node257</title>
+<title>Node259</title>
 <g id="a_node7"><a xlink:href="structplayrho_1_1detail_1_1IsDivisable_3_01T1_00_01T2_00_01std_1_1void__t_3_01decltype_07T1_02_03_2T2_02_03_08_4_01_4.html" target="_top" xlink:title="Template specializing for divisable types.">
 <polygon fill="white" stroke="black" points="239.5,-735.5 239.5,-776.5 407.5,-776.5 407.5,-735.5 239.5,-735.5"/>
 <text text-anchor="start" x="247.5" y="-764.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::IsDivisable</text>
@@ -143,15 +143,15 @@
 </a>
 </g>
 </g>
-<!-- Node251&#45;&gt;Node257 -->
+<!-- Node253&#45;&gt;Node259 -->
 <g id="edge6" class="edge">
-<title>Node251&#45;&gt;Node257</title>
+<title>Node253&#45;&gt;Node259</title>
 <path fill="none" stroke="midnightblue" d="M47.36,-599.84C55.55,-632.04 76.49,-695.18 120,-726 154.22,-750.24 199.92,-758.51 239.24,-760.38"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="50.7,-598.76 44.98,-589.84 43.89,-600.38 50.7,-598.76"/>
 </g>
-<!-- Node258 -->
+<!-- Node260 -->
 <g id="node8" class="node">
-<title>Node258</title>
+<title>Node260</title>
 <g id="a_node8"><a xlink:href="structplayrho_1_1detail_1_1IsEqualityComparable_3_01T1_00_01T2_00_01std_1_1void__t_3_01decltype_397e13302495d65cbf0119afdf1f7e4d.html" target="_top" xlink:title="Template specialization for equality comparable types.">
 <polygon fill="white" stroke="black" points="252.5,-664 252.5,-716 394.5,-716 394.5,-664 252.5,-664"/>
 <text text-anchor="start" x="260.5" y="-704" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::IsEquality</text>
@@ -161,15 +161,15 @@
 </a>
 </g>
 </g>
-<!-- Node251&#45;&gt;Node258 -->
+<!-- Node253&#45;&gt;Node260 -->
 <g id="edge7" class="edge">
-<title>Node251&#45;&gt;Node258</title>
+<title>Node253&#45;&gt;Node260</title>
 <path fill="none" stroke="midnightblue" d="M56.19,-597.71C70.07,-614.97 93.55,-640.54 120,-654 160.89,-674.81 211.76,-683.8 252.27,-687.59"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="58.74,-595.29 49.84,-589.54 53.21,-599.59 58.74,-595.29"/>
 </g>
-<!-- Node259 -->
+<!-- Node261 -->
 <g id="node9" class="node">
-<title>Node259</title>
+<title>Node261</title>
 <g id="a_node9"><a xlink:href="structplayrho_1_1detail_1_1IsInequalityComparable_3_01T1_00_01T2_00_01std_1_1void__t_3_01decltypff02ba6c3b90e96f5ba3c1dc4ad6096a.html" target="_top" xlink:title="Template specialization for inequality comparable types.">
 <polygon fill="white" stroke="black" points="228.5,-603.5 228.5,-644.5 418.5,-644.5 418.5,-603.5 228.5,-603.5"/>
 <text text-anchor="start" x="236.5" y="-632.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::IsInequality</text>
@@ -178,15 +178,15 @@
 </a>
 </g>
 </g>
-<!-- Node251&#45;&gt;Node259 -->
+<!-- Node253&#45;&gt;Node261 -->
 <g id="edge8" class="edge">
-<title>Node251&#45;&gt;Node259</title>
+<title>Node253&#45;&gt;Node261</title>
 <path fill="none" stroke="midnightblue" d="M94.1,-589.53C102.74,-591.07 111.62,-592.62 120,-594 155.33,-599.83 194.21,-605.71 228.39,-610.71"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="94.58,-586.06 84.12,-587.73 93.34,-592.95 94.58,-586.06"/>
 </g>
-<!-- Node260 -->
+<!-- Node262 -->
 <g id="node10" class="node">
-<title>Node260</title>
+<title>Node262</title>
 <g id="a_node10"><a xlink:href="structplayrho_1_1detail_1_1IsIterable_3_01T_00_01std_1_1void__t_3_01decltype_07begin_07std_1_1deb94b1a3aa8659edf5ae9c473de3326c0.html" target="_top" xlink:title="Low&#45;level implementation of the is&#45;iterable true value trait.">
 <polygon fill="white" stroke="black" points="230.5,-488 230.5,-584 416.5,-584 416.5,-488 230.5,-488"/>
 <text text-anchor="start" x="238.5" y="-572" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::IsIterable</text>
@@ -200,15 +200,15 @@
 </a>
 </g>
 </g>
-<!-- Node251&#45;&gt;Node260 -->
+<!-- Node253&#45;&gt;Node262 -->
 <g id="edge9" class="edge">
-<title>Node251&#45;&gt;Node260</title>
+<title>Node253&#45;&gt;Node262</title>
 <path fill="none" stroke="midnightblue" d="M94.55,-571.88C132.57,-565.9 185.3,-557.6 230.48,-550.49"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="93.58,-568.5 84.24,-573.51 94.66,-575.41 93.58,-568.5"/>
 </g>
-<!-- Node261 -->
+<!-- Node263 -->
 <g id="node11" class="node">
-<title>Node261</title>
+<title>Node263</title>
 <g id="a_node11"><a xlink:href="structplayrho_1_1detail_1_1IsMatrix_3_01Vector_3_01Vector_3_01T_00_01N_01_4_00_01M_01_4_01_4.html" target="_top" xlink:title="Trait class specialization for checking if type is a matrix type.">
 <polygon fill="white" stroke="black" points="257,-427.5 257,-468.5 390,-468.5 390,-427.5 257,-427.5"/>
 <text text-anchor="start" x="265" y="-456.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::IsMatrix</text>
@@ -217,15 +217,15 @@
 </a>
 </g>
 </g>
-<!-- Node251&#45;&gt;Node261 -->
+<!-- Node253&#45;&gt;Node263 -->
 <g id="edge10" class="edge">
-<title>Node251&#45;&gt;Node261</title>
+<title>Node253&#45;&gt;Node263</title>
 <path fill="none" stroke="midnightblue" d="M51.8,-560.96C63.71,-537.51 87.3,-498.41 120,-479 161.14,-454.58 214.94,-447.27 256.75,-445.82"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="48.52,-559.7 47.29,-570.23 54.81,-562.77 48.52,-559.7"/>
 </g>
-<!-- Node262 -->
+<!-- Node264 -->
 <g id="node12" class="node">
-<title>Node262</title>
+<title>Node264</title>
 <g id="a_node12"><a xlink:href="structplayrho_1_1detail_1_1IsMultipliable_3_01T1_00_01T2_00_01std_1_1void__t_3_01decltype_07T1_02_03_01_5T2_02_03_08_4_01_4.html" target="_top" xlink:title="Template specializing for multipliable types.">
 <polygon fill="white" stroke="black" points="239.5,-367.5 239.5,-408.5 407.5,-408.5 407.5,-367.5 239.5,-367.5"/>
 <text text-anchor="start" x="247.5" y="-396.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::IsMultipliable</text>
@@ -234,15 +234,15 @@
 </a>
 </g>
 </g>
-<!-- Node251&#45;&gt;Node262 -->
+<!-- Node253&#45;&gt;Node264 -->
 <g id="edge11" class="edge">
-<title>Node251&#45;&gt;Node262</title>
+<title>Node253&#45;&gt;Node264</title>
 <path fill="none" stroke="midnightblue" d="M46.19,-560.48C52.98,-525.68 72.34,-453.27 120,-418 153.85,-392.95 199.76,-384.66 239.3,-382.99"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="42.74,-559.9 44.41,-570.37 49.63,-561.15 42.74,-559.9"/>
 </g>
-<!-- Node263 -->
+<!-- Node265 -->
 <g id="node13" class="node">
-<title>Node263</title>
+<title>Node265</title>
 <g id="a_node13"><a xlink:href="structplayrho_1_1detail_1_1IsReverseIterable_3_01T_00_01std_1_1void__t_3_01decltype_07rbegin_07see1e2b2bf8c70ff6417e9800f5336264.html" target="_top" xlink:title="Low&#45;level implementation of the is&#45;reverse&#45;iterable true value trait.">
 <polygon fill="white" stroke="black" points="228,-241.5 228,-348.5 419,-348.5 419,-241.5 228,-241.5"/>
 <text text-anchor="start" x="236" y="-336.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::IsReverse</text>
@@ -257,15 +257,15 @@
 </a>
 </g>
 </g>
-<!-- Node251&#45;&gt;Node263 -->
+<!-- Node253&#45;&gt;Node265 -->
 <g id="edge12" class="edge">
-<title>Node251&#45;&gt;Node263</title>
+<title>Node253&#45;&gt;Node265</title>
 <path fill="none" stroke="midnightblue" d="M44.07,-560.41C47.47,-517.5 61.62,-414.53 120,-358 148.96,-329.96 190.2,-314.38 227.91,-305.73"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="40.58,-560.19 43.39,-570.4 47.56,-560.66 40.58,-560.19"/>
 </g>
-<!-- Node264 -->
+<!-- Node266 -->
 <g id="node14" class="node">
-<title>Node264</title>
+<title>Node266</title>
 <g id="a_node14"><a xlink:href="structplayrho_1_1detail_1_1IsSquareMatrix_3_01Vector_3_01Vector_3_01T_00_01M_01_4_00_01M_01_4_01_4.html" target="_top" xlink:title="Trait class specialization for checking if type is a square matrix type.">
 <polygon fill="white" stroke="black" points="256,-181.5 256,-222.5 391,-222.5 391,-181.5 256,-181.5"/>
 <text text-anchor="start" x="264" y="-210.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::IsSquare</text>
@@ -274,15 +274,15 @@
 </a>
 </g>
 </g>
-<!-- Node251&#45;&gt;Node264 -->
+<!-- Node253&#45;&gt;Node266 -->
 <g id="edge13" class="edge">
-<title>Node251&#45;&gt;Node264</title>
+<title>Node253&#45;&gt;Node266</title>
 <path fill="none" stroke="midnightblue" d="M44.47,-560.51C49.9,-493.99 71.1,-277.56 120,-232 155.88,-198.57 211.92,-192.46 255.96,-193.94"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="40.98,-560.24 43.68,-570.48 47.96,-560.79 40.98,-560.24"/>
 </g>
-<!-- Node265 -->
+<!-- Node267 -->
 <g id="node15" class="node">
-<title>Node265</title>
+<title>Node267</title>
 <g id="a_node15"><a xlink:href="structplayrho_1_1detail_1_1IsVector_3_01Vector_3_01T_00_01N_01_4_01_4.html" target="_top" xlink:title="Trait class specialization for checking if type is a Vector type..">
 <polygon fill="white" stroke="black" points="257.5,-132 257.5,-162 389.5,-162 389.5,-132 257.5,-132"/>
 <text text-anchor="start" x="265.5" y="-150" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::IsVector</text>
@@ -290,15 +290,15 @@
 </a>
 </g>
 </g>
-<!-- Node251&#45;&gt;Node265 -->
+<!-- Node253&#45;&gt;Node267 -->
 <g id="edge14" class="edge">
-<title>Node251&#45;&gt;Node265</title>
+<title>Node253&#45;&gt;Node267</title>
 <path fill="none" stroke="midnightblue" d="M43.76,-560.07C47.04,-485.71 62.49,-225.96 120,-172 156.04,-138.19 212.93,-133.8 257.25,-136.81"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="40.25,-560.22 43.34,-570.35 47.25,-560.51 40.25,-560.22"/>
 </g>
-<!-- Node266 -->
+<!-- Node268 -->
 <g id="node16" class="node">
-<title>Node266</title>
+<title>Node268</title>
 <g id="a_node16"><a xlink:href="structplayrho_1_1detail_1_1has__underlying__type__member_3_01T_00_01std_1_1void__t_3_01typename_ad40ad34e92198c9932f3ccb254047e0.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="black" points="247.5,-61 247.5,-113 399.5,-113 399.5,-61 247.5,-61"/>
 <text text-anchor="start" x="255.5" y="-101" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::has</text>
@@ -308,15 +308,15 @@
 </a>
 </g>
 </g>
-<!-- Node251&#45;&gt;Node266 -->
+<!-- Node253&#45;&gt;Node268 -->
 <g id="edge15" class="edge">
-<title>Node251&#45;&gt;Node266</title>
+<title>Node253&#45;&gt;Node268</title>
 <path fill="none" stroke="midnightblue" d="M43.41,-560.38C45.49,-481.18 57.38,-186.19 120,-123 152.68,-90.03 204.38,-81.26 247.37,-80.62"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="39.91,-560.37 43.17,-570.45 46.91,-560.54 39.91,-560.37"/>
 </g>
-<!-- Node267 -->
+<!-- Node269 -->
 <g id="node17" class="node">
-<title>Node267</title>
+<title>Node269</title>
 <g id="a_node17"><a xlink:href="structplayrho_1_1detail_1_1is__narrowing__conversion__impl.html" target="_top" xlink:title="Is narrowing conversion implementation true trait.">
 <polygon fill="white" stroke="black" points="242,-0.5 242,-41.5 405,-41.5 405,-0.5 242,-0.5"/>
 <text text-anchor="start" x="250" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::is</text>
@@ -325,15 +325,15 @@
 </a>
 </g>
 </g>
-<!-- Node251&#45;&gt;Node267 -->
+<!-- Node253&#45;&gt;Node269 -->
 <g id="edge16" class="edge">
-<title>Node251&#45;&gt;Node267</title>
+<title>Node253&#45;&gt;Node269</title>
 <path fill="none" stroke="midnightblue" d="M42.88,-560.14C42.79,-473 47.07,-125.45 120,-52 151.2,-20.58 199.95,-12.39 241.79,-12.26"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="39.38,-560.27 42.91,-570.26 46.38,-560.25 39.38,-560.27"/>
 </g>
-<!-- Node268 -->
+<!-- Node270 -->
 <g id="node18" class="node">
-<title>Node268</title>
+<title>Node270</title>
 <g id="a_node18"><a xlink:href="structplayrho_1_1detail_1_1is__narrowing__conversion.html" target="_top" xlink:title="Is narrowing conversion trait.">
 <polygon fill="white" stroke="black" points="563,-0.5 563,-41.5 692,-41.5 692,-0.5 563,-0.5"/>
 <text text-anchor="start" x="571" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::detail::is</text>
@@ -342,9 +342,9 @@
 </a>
 </g>
 </g>
-<!-- Node267&#45;&gt;Node268 -->
+<!-- Node269&#45;&gt;Node270 -->
 <g id="edge17" class="edge">
-<title>Node267&#45;&gt;Node268</title>
+<title>Node269&#45;&gt;Node270</title>
 <path fill="none" stroke="midnightblue" d="M415.05,-21C462.7,-21 519.98,-21 562.9,-21"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="415.03,-17.5 405.03,-21 415.03,-24.5 415.03,-17.5"/>
 </g>

@@ -39,5 +39,5 @@ var Contact_8hpp =
     [ "UnflagForUpdating", "Contact_8hpp.html#ad0be851da5e90da82388aaddaa1d8f6d", null ],
     [ "UnsetEnabled", "Contact_8hpp.html#a4e555a7d486dd3e1c1f7788c7d5edc0f", null ],
     [ "UnsetImpenetrable", "Contact_8hpp.html#a205494b248da96a02b57be9d9ad9a27b", null ],
-    [ "UnsetIsSensor", "Contact_8hpp.html#ad488916b3a4198e323011d0a3f417c90", null ]
+    [ "UnsetSensor", "Contact_8hpp.html#a2d655de91b4048a46090b3621e34d239", null ]
 ];

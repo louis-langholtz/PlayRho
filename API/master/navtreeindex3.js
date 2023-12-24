@@ -1,9 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"Negative_8hpp.html#ga9d1fdcdd87aa834539d3b58cdee6db3d":[5,0,0,0,0,33,1],
-"Negative_8hpp.html#gae249aaac842934d7f33e0f90012c409a":[5,0,0,0,0,33,0],
-"NgonWithFwdNormals_8hpp.html":[5,0,0,0,0,0,32],
-"NgonWithFwdNormals_8hpp.html#a03e5b2dc2081cc8e0fc608ff79e78a89":[5,0,0,0,0,0,32,2],
 "NgonWithFwdNormals_8hpp.html#a642d004cc56b550c7fc6ff0fc6cb3311":[5,0,0,0,0,0,32,3],
 "NonNegativeChecker_8hpp.html":[5,0,0,0,0,1,6],
 "NonNegative_8hpp.html":[5,0,0,0,0,34],
@@ -47,8 +43,8 @@ var NAVTREEINDEX3 =
 "PositionSolution_8hpp.html#a7f07199b005b40c692586f0a11602a81":[5,0,0,0,0,0,37,1],
 "PositionSolution_8hpp.html#afd7544c1dace2373fc283a0a64c29068":[5,0,0,0,0,0,37,2],
 "PositionSolverManifold_8hpp.html":[5,0,0,0,0,0,38],
-"PositionSolverManifold_8hpp.html#a66c69ac25f3c5cdf982ab82e0421aa58":[5,0,0,0,0,0,38,1],
 "PositionSolverManifold_8hpp.html#a66c69ac25f3c5cdf982ab82e0421aa58":[3,0,1,0,1],
+"PositionSolverManifold_8hpp.html#a66c69ac25f3c5cdf982ab82e0421aa58":[5,0,0,0,0,0,38,1],
 "Position_8hpp.html":[5,0,0,0,0,0,35],
 "Position_8hpp.html#a3f8a057d7496ce6e5c72debd2361de5c":[5,0,0,0,0,0,35,10],
 "Position_8hpp.html#a5e0589100dc43e1301d6b8b945ccb37c":[5,0,0,0,0,0,35,11],
@@ -249,5 +245,9 @@ var NAVTREEINDEX3 =
 "Shape_8hpp.html":[5,0,0,0,0,0,45],
 "Shape_8hpp.html#a0025ba197461f8876cda9c97b5ca0364":[5,0,0,0,0,0,45,1],
 "Shape_8hpp.html#a00465050cc83944a3873c9bfe48a7392":[5,0,0,0,0,0,45,7],
-"Shape_8hpp.html#a175816624556bf32f41f1c3b248495de":[5,0,0,0,0,0,45,9]
+"Shape_8hpp.html#a175816624556bf32f41f1c3b248495de":[5,0,0,0,0,0,45,9],
+"Shape_8hpp.html#a1e3ed738b9082f9bfd3358a19d9aa97d":[5,0,0,0,0,0,45,4],
+"Shape_8hpp.html#a1e78385069dd9f0bb162bf17051a0706":[5,0,0,0,0,0,45,6],
+"Shape_8hpp.html#a252601c955ff120821c067c7fd9ebf6c":[5,0,0,0,0,0,45,23],
+"Shape_8hpp.html#a2552f9d7b9b8d2c5cf4b5ef71140b709":[5,0,0,0,0,0,45,26]
 };

@@ -2037,11 +2037,20 @@ This function does not reset the mass data of any effected bodies. </dd></dl>
 </div><div class="memdoc">
 
 <p>Sets the identified contact's state. </p>
+<dl class="section note"><dt>Note</dt><dd>The new state:<ul>
+<li>Is not allowed to change the bodies, shapes, or children identified.</li>
+<li>Is not allowed to change whether the contact is awake.</li>
+<li>Is not allowed to change whether the contact is impenetrable.</li>
+<li>Is not allowed to change whether the contact is for a sensor.</li>
+<li>Is not allowed to change the TOI of the contact.</li>
+<li>Is not allowed to change the TOI count of the contact. </li>
+</ul>
+</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">world</td><td>The world of the contact whose state is to be set. </td></tr>
     <tr><td class="paramname">id</td><td>Identifier of the contact whose state is to be set. </td></tr>
-    <tr><td class="paramname">value</td><td>Value the contact is to be set to. The new state: is not allowed to change whether the contact is awake, is not allowed to change whether the contact is impenetrable, is not allowed to change whether the contact is for a sensor, is not allowed to change the TOI of the contact, is not allowed to change the TOI count of the contact. Otherwise, this function will throw an <code><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error.">InvalidArgument</a></code> exception and not change anything. </td></tr>
+    <tr><td class="paramname">value</td><td>Value the contact is to be set to. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2421,7 +2430,7 @@ The fixtures for proxies queue will be empty.</dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1AabbTreeWorld.html">AabbTreeWorld</a></li>
-    <li class="footer">Generated on Fri Dec 22 2023 22:02:05 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sun Dec 24 2023 01:56:18 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

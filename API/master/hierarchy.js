@@ -222,6 +222,9 @@ var hierarchy =
     [ "playrho::ObjectPool< playrho::d2::Manifold >", "classplayrho_1_1ObjectPool.html", null ],
     [ "playrho::ObjectPool< playrho::d2::Shape >", "classplayrho_1_1ObjectPool.html", null ],
     [ "playrho::ObjectPool< ProxyIDs >", "classplayrho_1_1ObjectPool.html", null ],
+    [ "std::out_of_range", null, [
+      [ "playrho::OutOfRange< T >", "classplayrho_1_1OutOfRange.html", null ]
+    ] ],
     [ "playrho::d2::Manifold::Point", "structplayrho_1_1d2_1_1Manifold_1_1Point.html", null ],
     [ "playrho::d2::VelocityConstraint::Point", "structplayrho_1_1d2_1_1VelocityConstraint_1_1Point.html", null ],
     [ "playrho::d2::WorldManifold::PointData", "structplayrho_1_1d2_1_1WorldManifold_1_1PointData.html", null ],

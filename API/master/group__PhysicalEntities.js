@@ -160,7 +160,7 @@ var group__PhysicalEntities =
       [ "UnflagForUpdating", "classplayrho_1_1Contact.html#a69b883935986a52a2d3a3343bb236e98", null ],
       [ "UnsetEnabled", "classplayrho_1_1Contact.html#a9f832db8856f81e2cb5954cabb7703aa", null ],
       [ "UnsetImpenetrable", "classplayrho_1_1Contact.html#a7f9fd3406b7d88acd176aadfe96dc357", null ],
-      [ "UnsetIsSensor", "classplayrho_1_1Contact.html#a51105cf87046956882da320d96e9b71d", null ],
+      [ "UnsetSensor", "classplayrho_1_1Contact.html#a3970483d69e388826459c3a3a19a4a50", null ],
       [ "UnsetTouching", "classplayrho_1_1Contact.html#a75af2c6d431157767c04a7b0ad0a6c87", null ],
       [ "FlagForFiltering", "classplayrho_1_1Contact.html#ac1efaeb0c030854ede6606021ba56d30", null ],
       [ "FlagForUpdating", "classplayrho_1_1Contact.html#ac1ec70ebc79af5b28899b8d0a1341141", null ],
@@ -199,7 +199,7 @@ var group__PhysicalEntities =
       [ "UnflagForFiltering", "classplayrho_1_1Contact.html#aaf49104158a7aea199f9531f9ab5b7d0", null ],
       [ "UnflagForUpdating", "classplayrho_1_1Contact.html#ad0be851da5e90da82388aaddaa1d8f6d", null ],
       [ "UnsetImpenetrable", "classplayrho_1_1Contact.html#a205494b248da96a02b57be9d9ad9a27b", null ],
-      [ "UnsetIsSensor", "classplayrho_1_1Contact.html#ad488916b3a4198e323011d0a3f417c90", null ],
+      [ "UnsetSensor", "classplayrho_1_1Contact.html#a2d655de91b4048a46090b3621e34d239", null ],
       [ "DefaultContactable", "classplayrho_1_1Contact.html#a8b1b9a79e20a6e9f08ea030b1b995cb9", null ]
     ] ],
     [ "Joint", "classplayrho_1_1d2_1_1Joint.html", [

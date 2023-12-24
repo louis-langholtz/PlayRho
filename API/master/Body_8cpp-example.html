@@ -225,9 +225,9 @@ $(document).ready(function(){initNavTree('Body_8cpp-example.html',''); initResiz
 <div class="line"> </div>
 <div class="line">TEST(Body, InvMassOnConstruction)</div>
 <div class="line">{</div>
-<div class="line">    EXPECT_EQ(Body(BodyConf{}.UseType(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>)).<a name="a17"></a><a class="code" href="namespaceplayrho_1_1d2.html#a7d74493ba9108b54a9900eb8319ede92">GetInvMass</a>(), <a name="a18"></a><a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(1) / 1_kg);</div>
-<div class="line">    EXPECT_EQ(Body(BodyConf{}.UseType(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a40c78b58b86002ee38fad2d3c9dd787e">BodyType::Kinematic</a>)).<a class="code" href="namespaceplayrho_1_1d2.html#a7d74493ba9108b54a9900eb8319ede92">GetInvMass</a>(), <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(0) / 1_kg);</div>
-<div class="line">    EXPECT_EQ(Body(BodyConf{}.UseType(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Static</a>)).<a class="code" href="namespaceplayrho_1_1d2.html#a7d74493ba9108b54a9900eb8319ede92">GetInvMass</a>(), <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(0) / 1_kg);</div>
+<div class="line">    EXPECT_EQ(Body(BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>)).<a name="a17"></a><a class="code" href="namespaceplayrho_1_1d2.html#a7d74493ba9108b54a9900eb8319ede92">GetInvMass</a>(), <a name="a18"></a><a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(1) / 1_kg);</div>
+<div class="line">    EXPECT_EQ(Body(BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a40c78b58b86002ee38fad2d3c9dd787e">BodyType::Kinematic</a>)).<a class="code" href="namespaceplayrho_1_1d2.html#a7d74493ba9108b54a9900eb8319ede92">GetInvMass</a>(), <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(0) / 1_kg);</div>
+<div class="line">    EXPECT_EQ(Body(BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Static</a>)).<a class="code" href="namespaceplayrho_1_1d2.html#a7d74493ba9108b54a9900eb8319ede92">GetInvMass</a>(), <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(0) / 1_kg);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line">TEST(Body, TransformationOnConstruction)</div>
@@ -476,7 +476,7 @@ $(document).ready(function(){initNavTree('Body_8cpp-example.html',''); initResiz
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Dec 22 2023 22:02:04 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sun Dec 24 2023 01:56:17 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
