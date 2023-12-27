@@ -636,30 +636,30 @@ TEST(World, CreateDestroyContactingBodies)
     const auto body1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(l1));
     const auto body2 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(l2));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
-    EXPECT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
-    EXPECT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(0));
+    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
+    EXPECT_EQ(GetTree(world).GetNodeCount(), 0u);
 
     Attach(world, body1, CreateShape(world, DiskShapeConf{1_m}.UseDensity(1_kgpm2)));
     Attach(world, body2, CreateShape(world, DiskShapeConf{1_m}.UseDensity(1_kgpm2)));
     ASSERT_EQ(size(GetShapes(world, body1)), 1u);
     ASSERT_EQ(size(GetShapes(world, body2)), 1u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
+    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
     EXPECT_EQ(GetAssociationCount(world), std::size_t(2));
-    EXPECT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(0));
+    EXPECT_EQ(GetTree(world).GetNodeCount(), 0u);
 
     const auto stepConf = StepConf{};
-
     const auto stats0 = Step(world, stepConf);
 
-    EXPECT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
-    EXPECT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(3));
+    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
+    EXPECT_EQ(GetTree(world).GetNodeCount(), 3u);
 
-    EXPECT_EQ(stats0.pre.proxiesMoved, static_cast<decltype(stats0.pre.proxiesMoved)>(0));
-    EXPECT_EQ(stats0.pre.destroyed, static_cast<decltype(stats0.pre.destroyed)>(0));
-    EXPECT_EQ(stats0.pre.added, static_cast<decltype(stats0.pre.added)>(1));
-    EXPECT_EQ(stats0.pre.ignored, static_cast<decltype(stats0.pre.ignored)>(0));
-    EXPECT_EQ(stats0.pre.updated, static_cast<decltype(stats0.pre.updated)>(1));
-    EXPECT_EQ(stats0.pre.skipped, static_cast<decltype(stats0.pre.skipped)>(0));
+    EXPECT_EQ(stats0.pre.proxiesCreated, 2u);
+    EXPECT_EQ(stats0.pre.proxiesMoved, 0u);
+    EXPECT_EQ(stats0.pre.destroyed, 0u);
+    EXPECT_EQ(stats0.pre.added, 1u);
+    EXPECT_EQ(stats0.pre.ignored, 0u);
+    EXPECT_EQ(stats0.pre.updated, 1u);
+    EXPECT_EQ(stats0.pre.skipped, 0u);
 
     EXPECT_EQ(stats0.reg.minSeparation, -2.0_m);
     EXPECT_EQ(stats0.reg.maxIncImpulse, 0.0_Ns);
@@ -2706,8 +2706,8 @@ TEST(World, CollidingDynamicBodies)
 
 TEST(World_Longer, TilesComesToRest)
 {
-    constexpr auto LinearSlop = Meter / 1000;
-    constexpr auto AngularSlop = (Pi * 2 * 1_rad) / 180;
+    constexpr auto LinearSlop = 1_m / 1000;
+    constexpr auto AngularSlop = (Pi * 2_rad) / 180;
     constexpr auto MinVertexRadius = LinearSlop * 2;
     constexpr auto MaxVertexRadius = ::playrho::DefaultMaxVertexRadius;
     const auto VertexRadius = Interval<Positive<Length>>{MinVertexRadius, MaxVertexRadius};
@@ -2718,20 +2718,19 @@ TEST(World_Longer, TilesComesToRest)
     
     {
         const auto a = Real{0.5f};
-        //const auto ground = CreateBody(*world, BodyConf{}.UseLocation(Length2{0, -a * Meter}));
-        auto ground = Body(BodyConf{}.UseLocation(Length2{0, -a * Meter}));
-        const auto N = 200;
-        const auto M = 10;
+        auto ground = Body(BodyConf{}.UseLocation(Length2{0_m, -a * 1_m}));
+        constexpr auto N = 200;
+        constexpr auto M = 10;
         Length2 position;
-        GetY(position) = 0.0_m;
+        GetY(position) = 0_m;
         for (auto j = 0; j < M; ++j) {
-            GetX(position) = -N * a * Meter;
+            GetX(position) = -N * a * 1_m;
             for (auto i = 0; i < N; ++i) {
-                conf.SetAsBox(a * Meter, a * Meter, position, 0_deg);
+                conf.SetAsBox(a * 1_m, a * 1_m, position, 0_deg);
                 ground.Attach(CreateShape(*world, conf));
-                GetX(position) += 2.0f * a * Meter;
+                GetX(position) += 2_m * a;
             }
-            GetY(position) -= 2.0f * a * Meter;
+            GetY(position) -= 2_m * a;
         }
         ASSERT_EQ(size(ground.GetShapes()), 2000u);
         ASSERT_NO_THROW(CreateBody(*world, ground));
@@ -2741,7 +2740,7 @@ TEST(World_Longer, TilesComesToRest)
     {
         const auto a = Real{0.5f};
         conf.UseDensity(5_kgpm2);
-        conf.SetAsBox(a * Meter, a * Meter);
+        conf.SetAsBox(a * 1_m, a * 1_m);
         const auto shapeId = CreateShape(*world, Shape(conf));
 
         Length2 x(-7.0_m, 0.75_m);
@@ -2775,7 +2774,7 @@ TEST(World_Longer, TilesComesToRest)
     step.maxLinearCorrection = LinearSlop * Real(40);
     step.maxAngularCorrection = AngularSlop * Real{4};
     step.aabbExtension = LinearSlop * Real(20);
-    step.maxTranslation = Length{Meter * Real(4)};
+    step.maxTranslation = 4_m;
     step.velocityThreshold = (Real{8} / Real{10}) * 1_mps;
     step.maxSubSteps = std::uint8_t{48};
 
@@ -2790,14 +2789,14 @@ TEST(World_Longer, TilesComesToRest)
     auto totalBodiesSlept = 0ul;
     auto awakeCount = 0ul;
     constexpr auto maxSteps = 3000ul;
-    while ((awakeCount = GetAwakeCount(*world)) > 0 && numSteps < maxSteps) {
+    while ((awakeCount = GetAwakeCount(*world)) > 0 && (numSteps < maxSteps)) {
         const auto stats = Step(*world, step);
         sumRegPosIters += stats.reg.sumPosIters;
         sumRegVelIters += stats.reg.sumVelIters;
         sumToiPosIters += stats.toi.sumPosIters;
         sumToiVelIters += stats.toi.sumVelIters;
         lastStats = stats;
-        if (stats.reg.proxiesMoved == 0u && stats.toi.proxiesMoved == 0u) {
+        if ((stats.reg.proxiesMoved == 0u) && (stats.toi.proxiesMoved == 0u)) {
             firstStepWithZeroMoved = numSteps;
         }
         EXPECT_GT(stats.reg.islandsFound, 0u);
@@ -2842,11 +2841,7 @@ TEST(World_Longer, TilesComesToRest)
         EXPECT_LE(totalBodiesSlept, 670u);
         EXPECT_TRUE(firstStepWithZeroMoved);
         if (firstStepWithZeroMoved) {
-#if defined(PLAYRHO_USE_BOOST_UNITS)
             EXPECT_GE(*firstStepWithZeroMoved, 1797u);
-#else
-            EXPECT_GE(*firstStepWithZeroMoved, 1797u);
-#endif
             EXPECT_LE(*firstStepWithZeroMoved, 1812u);
         }
 #else // unrecognized arch; just check results are within range of others
@@ -3062,9 +3057,6 @@ TEST(World_Longer, TilesComesToRest)
     EXPECT_EQ(sumToiPosIters, 45022ul);
     EXPECT_EQ(sumToiVelIters, 148560ul);
 #endif
-    
-    //std::cout << "Time: " << elapsed_time.count() << "s" << std::endl;
-    // EXPECT_LT(elapsed_time.count(), 7.0);
 }
 
 TEST(World, SpeedingBulletBallWontTunnel)
@@ -3795,4 +3787,38 @@ TEST(World, GetResourceStatsWhenOn)
     EXPECT_EQ(stats->maxBytes, oldstats->maxBytes);
     EXPECT_EQ(stats->maxAlignment, oldstats->maxAlignment);
 #endif
+}
+
+TEST(World, TouchingBodiesWithZeroDeltaTime)
+{
+    auto world = World{};
+    const auto shapeId0 = CreateShape(world, Shape{DiskShapeConf{}.UseRadius(1_m)});
+    const auto next0 = nextafter(-1_m, 0_m);
+    ASSERT_GT(next0, -1_m);
+    const auto bodyId0 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation({-1_m, 0_m}).Use(shapeId0));
+    const auto bodyId1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation({+1_m, 0_m}).Use(shapeId0));
+    ASSERT_EQ(GetContactRange(world), 0u);
+    auto stepConf = StepConf{};
+    stepConf.deltaTime = 0_s;
+    const auto stats = Step(world, stepConf);
+    EXPECT_EQ(stats.pre.proxiesCreated, 2u);
+    EXPECT_EQ(stats.pre.proxiesMoved, 0u);
+    EXPECT_EQ(stats.pre.destroyed, 0u);
+    EXPECT_EQ(stats.pre.added, 1u);
+    EXPECT_EQ(stats.pre.ignored, 0u);
+    EXPECT_EQ(stats.pre.updated, 1u);
+    EXPECT_EQ(stats.pre.skipped, 0u);
+    EXPECT_NE(stats.pre, PreStepStats());
+    EXPECT_EQ(stats.reg, RegStepStats());
+    EXPECT_EQ(stats.toi, ToiStepStats());
+    EXPECT_EQ(GetContactRange(world), 1u);
+    const auto manifold0 = GetManifold(world, ContactID(0));
+    EXPECT_EQ(manifold0.GetPointCount(), 1u);
+    EXPECT_EQ(manifold0.GetType(), Manifold::e_circles);
+    const auto contact0 = GetContact(world, ContactID(0));
+    EXPECT_FALSE(contact0.NeedsUpdating());
+    EXPECT_TRUE(contact0.IsTouching());
+    EXPECT_EQ(contact0.GetContactableA(), (Contactable{bodyId0, shapeId0, 0u}));
+    EXPECT_EQ(contact0.GetContactableB(), (Contactable{bodyId1, shapeId0, 0u}));
+    EXPECT_FALSE(contact0.HasValidToi());
 }
