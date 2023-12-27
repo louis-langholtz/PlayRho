@@ -887,7 +887,8 @@ private:
     /// @post Container returned by <code>GetContacts()</code> increases in size by returned amount.
     /// @post For some body IDs, <code>GetContacts(BodyID)</code> may have more elements.
     /// @see GetProxies.
-    ContactCounter AddContacts(std::vector<ProxyKey, pmr::polymorphic_allocator<ProxyKey>>&& keys);
+    ContactCounter AddContacts(std::vector<ProxyKey, pmr::polymorphic_allocator<ProxyKey>>&& keys,
+                               const StepConf& conf);
 
     /// @brief Destroys the given contact and removes it from its container.
     /// @details This updates the contacts container, returns the memory to the allocator,

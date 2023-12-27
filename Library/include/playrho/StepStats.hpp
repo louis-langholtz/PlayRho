@@ -44,11 +44,11 @@ struct PreStepStats {
 
     counter_type proxiesCreated = 0; ///< Proxies created count.
     counter_type proxiesMoved = 0; ///< Proxies moved count.
-    counter_type destroyed = 0; ///< Count of contacts destroyed.
-    counter_type added = 0; ///< Count of contacts added.
-    counter_type ignored = 0; ///< Count of contacts ignored during update processing.
-    counter_type updated = 0; ///< Count of contacts updated (during update processing).
-    counter_type skipped = 0; ///< Count of contacts Skipped (during update processing).
+    counter_type contactsDestroyed = 0; ///< Count of contacts destroyed.
+    counter_type contactsAdded = 0; ///< Count of contacts added.
+    counter_type contactsIgnored = 0; ///< Count of contacts ignored during update processing.
+    counter_type contactsUpdated = 0; ///< Count of contacts updated (during update processing).
+    counter_type contactsSkipped = 0; ///< Count of contacts Skipped (during update processing).
 };
 
 /// @brief Operator equal support.
@@ -56,11 +56,11 @@ constexpr auto operator==(const PreStepStats &lhs, const PreStepStats &rhs) -> b
 {
     return (lhs.proxiesCreated == rhs.proxiesCreated) && //
            (lhs.proxiesMoved == rhs.proxiesMoved) && //
-           (lhs.destroyed == rhs.destroyed) && //
-           (lhs.added == rhs.added) && //
-           (lhs.ignored == rhs.ignored) && //
-           (lhs.updated == rhs.updated) && //
-           (lhs.skipped == rhs.skipped);
+           (lhs.contactsDestroyed == rhs.contactsDestroyed) && //
+           (lhs.contactsAdded == rhs.contactsAdded) && //
+           (lhs.contactsIgnored == rhs.contactsIgnored) && //
+           (lhs.contactsUpdated == rhs.contactsUpdated) && //
+           (lhs.contactsSkipped == rhs.contactsSkipped);
 }
 
 /// @brief Operator not-equal support.
@@ -116,6 +116,15 @@ struct ToiStepStats {
     /// @brief Counter type.
     using counter_type = std::uint32_t;
 
+    /// @brief Distance iteration type.
+    using dist_iter_type = std::remove_const_t<decltype(DefaultMaxDistanceIters)>;
+
+    /// @brief TOI iteration type.
+    using toi_iter_type = std::remove_const_t<decltype(DefaultMaxToiIters)>;
+
+    /// @brief Root iteration type.
+    using root_iter_type = std::remove_const_t<decltype(DefaultMaxToiRootIters)>;
+
     /// @brief Min separation.
     Length minSeparation = std::numeric_limits<Length>::infinity();
 
@@ -133,15 +142,6 @@ struct ToiStepStats {
     counter_type proxiesMoved = 0; ///< Proxies moved count.
     counter_type sumPosIters = 0; ///< Sum position iterations count.
     counter_type sumVelIters = 0; ///< Sum velocity iterations count.
-
-    /// @brief Distance iteration type.
-    using dist_iter_type = std::remove_const_t<decltype(DefaultMaxDistanceIters)>;
-
-    /// @brief TOI iteration type.
-    using toi_iter_type = std::remove_const_t<decltype(DefaultMaxToiIters)>;
-
-    /// @brief Root iteration type.
-    using root_iter_type = std::remove_const_t<decltype(DefaultMaxToiRootIters)>;
 
     dist_iter_type maxDistIters = 0; ///< Max distance iterations.
     toi_iter_type maxToiIters = 0; ///< Max TOI iterations.

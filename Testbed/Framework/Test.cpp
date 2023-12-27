@@ -338,7 +338,7 @@ void ShowStats(const StepConf& stepConf, UiState& ui, const World& world, const 
         ImGui::SetColumnWidth(0, firstColumnWidth);
         ImGui::TextUnformatted("Pre-step:");
         ImGui::NextColumn();
-        ImGui::Value("cts-add", stats.m_stepStats.pre.added);
+        ImGui::Value("cts-add", stats.m_stepStats.pre.contactsAdded);
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Contacts added.");
@@ -346,7 +346,7 @@ void ShowStats(const StepConf& stepConf, UiState& ui, const World& world, const 
         ImGui::NextColumn();
         ImGui::TextUnformatted([=]() {
             std::ostringstream os;
-            os << "c-ign: " << stats.m_stepStats.pre.ignored << "/"
+            os << "c-ign: " << stats.m_stepStats.pre.contactsIgnored << "/"
             << stats.m_sumContactsIgnoredPre;
             return os.str();
         }());
@@ -357,7 +357,7 @@ void ShowStats(const StepConf& stepConf, UiState& ui, const World& world, const 
         ImGui::NextColumn();
         ImGui::TextUnformatted([=]() {
             std::ostringstream os;
-            os << "c-skip: " << stats.m_stepStats.pre.skipped << "/"
+            os << "c-skip: " << stats.m_stepStats.pre.contactsSkipped << "/"
             << stats.m_sumContactsSkippedPre;
             return os.str();
         }());
@@ -366,7 +366,7 @@ void ShowStats(const StepConf& stepConf, UiState& ui, const World& world, const 
             ImGui::SetTooltip("Contacts skipped over running total skipped.");
         }
         ImGui::NextColumn();
-        ImGui::Value("c-del", stats.m_stepStats.pre.destroyed);
+        ImGui::Value("c-del", stats.m_stepStats.pre.contactsDestroyed);
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Contacts deleted.");
@@ -374,7 +374,7 @@ void ShowStats(const StepConf& stepConf, UiState& ui, const World& world, const 
         ImGui::NextColumn();
         ImGui::TextUnformatted([=]() {
             std::ostringstream os;
-            os << "c-upd: " << stats.m_stepStats.pre.updated << "/" <<
+            os << "c-upd: " << stats.m_stepStats.pre.contactsUpdated << "/" <<
             stats.m_sumContactsUpdatedPre;
             return os.str();
         }());
@@ -1177,9 +1177,9 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
 
     m_stats.m_maxAABB = GetEnclosingAABB(m_stats.m_maxAABB, GetAABB(GetTree(m_world)));
     
-    m_stats.m_sumContactsUpdatedPre += stepStats.pre.updated;
-    m_stats.m_sumContactsIgnoredPre += stepStats.pre.ignored;
-    m_stats.m_sumContactsSkippedPre += stepStats.pre.skipped;
+    m_stats.m_sumContactsUpdatedPre += stepStats.pre.contactsUpdated;
+    m_stats.m_sumContactsIgnoredPre += stepStats.pre.contactsIgnored;
+    m_stats.m_sumContactsSkippedPre += stepStats.pre.contactsSkipped;
 
     m_stats.m_sumRegIslandsFound += stepStats.reg.islandsFound;
     m_stats.m_sumRegIslandsSolved += stepStats.reg.islandsSolved;

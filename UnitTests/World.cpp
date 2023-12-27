@@ -655,11 +655,11 @@ TEST(World, CreateDestroyContactingBodies)
 
     EXPECT_EQ(stats0.pre.proxiesCreated, 2u);
     EXPECT_EQ(stats0.pre.proxiesMoved, 0u);
-    EXPECT_EQ(stats0.pre.destroyed, 0u);
-    EXPECT_EQ(stats0.pre.added, 1u);
-    EXPECT_EQ(stats0.pre.ignored, 0u);
-    EXPECT_EQ(stats0.pre.updated, 1u);
-    EXPECT_EQ(stats0.pre.skipped, 0u);
+    EXPECT_EQ(stats0.pre.contactsDestroyed, 0u);
+    EXPECT_EQ(stats0.pre.contactsAdded, 1u);
+    EXPECT_EQ(stats0.pre.contactsIgnored, 0u);
+    EXPECT_EQ(stats0.pre.contactsUpdated, 0u);
+    EXPECT_EQ(stats0.pre.contactsSkipped, 0u);
 
     EXPECT_EQ(stats0.reg.minSeparation, -2.0_m);
     EXPECT_EQ(stats0.reg.maxIncImpulse, 0.0_Ns);
@@ -3789,25 +3789,75 @@ TEST(World, GetResourceStatsWhenOn)
 #endif
 }
 
-TEST(World, TouchingBodiesWithZeroDeltaTime)
+TEST(World, TouchingAwakeBodiesWithZeroDeltaTime)
 {
     auto world = World{};
     const auto shapeId0 = CreateShape(world, Shape{DiskShapeConf{}.UseRadius(1_m)});
     const auto next0 = nextafter(-1_m, 0_m);
     ASSERT_GT(next0, -1_m);
-    const auto bodyId0 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation({-1_m, 0_m}).Use(shapeId0));
-    const auto bodyId1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation({+1_m, 0_m}).Use(shapeId0));
+    const auto bodyId0 = CreateBody(world, BodyConf{}
+                                               .Use(BodyType::Dynamic)
+                                               .UseAwake(true)
+                                               .UseLocation({-1_m, 0_m})
+                                               .Use(shapeId0));
+    const auto bodyId1 = CreateBody(world, BodyConf{}
+                                               .Use(BodyType::Dynamic)
+                                               .UseAwake(true)
+                                               .UseLocation({+1_m, 0_m})
+                                               .Use(shapeId0));
     ASSERT_EQ(GetContactRange(world), 0u);
     auto stepConf = StepConf{};
     stepConf.deltaTime = 0_s;
     const auto stats = Step(world, stepConf);
     EXPECT_EQ(stats.pre.proxiesCreated, 2u);
     EXPECT_EQ(stats.pre.proxiesMoved, 0u);
-    EXPECT_EQ(stats.pre.destroyed, 0u);
-    EXPECT_EQ(stats.pre.added, 1u);
-    EXPECT_EQ(stats.pre.ignored, 0u);
-    EXPECT_EQ(stats.pre.updated, 1u);
-    EXPECT_EQ(stats.pre.skipped, 0u);
+    EXPECT_EQ(stats.pre.contactsDestroyed, 0u);
+    EXPECT_EQ(stats.pre.contactsAdded, 1u);
+    EXPECT_EQ(stats.pre.contactsIgnored, 0u);
+    EXPECT_EQ(stats.pre.contactsUpdated, 0u);
+    EXPECT_EQ(stats.pre.contactsSkipped, 0u);
+    EXPECT_NE(stats.pre, PreStepStats());
+    EXPECT_EQ(stats.reg, RegStepStats());
+    EXPECT_EQ(stats.toi, ToiStepStats());
+    EXPECT_EQ(GetContactRange(world), 1u);
+    const auto manifold0 = GetManifold(world, ContactID(0));
+    EXPECT_EQ(manifold0.GetPointCount(), 1u);
+    EXPECT_EQ(manifold0.GetType(), Manifold::e_circles);
+    const auto contact0 = GetContact(world, ContactID(0));
+    EXPECT_FALSE(contact0.NeedsUpdating());
+    EXPECT_TRUE(contact0.IsTouching());
+    EXPECT_EQ(contact0.GetContactableA(), (Contactable{bodyId0, shapeId0, 0u}));
+    EXPECT_EQ(contact0.GetContactableB(), (Contactable{bodyId1, shapeId0, 0u}));
+    EXPECT_FALSE(contact0.HasValidToi());
+}
+
+TEST(World, TouchingAsleepBodiesWithZeroDeltaTime)
+{
+    auto world = World{};
+    const auto shapeId0 = CreateShape(world, Shape{DiskShapeConf{}.UseRadius(1_m)});
+    const auto next0 = nextafter(-1_m, 0_m);
+    ASSERT_GT(next0, -1_m);
+    const auto bodyId0 = CreateBody(world, BodyConf{}
+                                               .Use(BodyType::Dynamic)
+                                               .UseAwake(false)
+                                               .UseLocation({-1_m, 0_m})
+                                               .Use(shapeId0));
+    const auto bodyId1 = CreateBody(world, BodyConf{}
+                                               .Use(BodyType::Dynamic)
+                                               .UseAwake(false)
+                                               .UseLocation({+1_m, 0_m})
+                                               .Use(shapeId0));
+    ASSERT_EQ(GetContactRange(world), 0u);
+    auto stepConf = StepConf{};
+    stepConf.deltaTime = 0_s;
+    const auto stats = Step(world, stepConf);
+    EXPECT_EQ(stats.pre.proxiesCreated, 2u);
+    EXPECT_EQ(stats.pre.proxiesMoved, 0u);
+    EXPECT_EQ(stats.pre.contactsDestroyed, 0u);
+    EXPECT_EQ(stats.pre.contactsAdded, 1u);
+    EXPECT_EQ(stats.pre.contactsIgnored, 0u);
+    EXPECT_EQ(stats.pre.contactsUpdated, 0u);
+    EXPECT_EQ(stats.pre.contactsSkipped, 0u);
     EXPECT_NE(stats.pre, PreStepStats());
     EXPECT_EQ(stats.reg, RegStepStats());
     EXPECT_EQ(stats.toi, ToiStepStats());
