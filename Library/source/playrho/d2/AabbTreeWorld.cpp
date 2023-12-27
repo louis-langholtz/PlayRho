@@ -1505,8 +1505,7 @@ RegStepStats AabbTreeWorld::SolveReg(const StepConf& conf)
                 futures.push_back(std::async(std::launch::async, &AabbTreeWorld::SolveRegIslandViaGS,
                                              this, conf, island));
 #else
-                const auto solverResults = SolveRegIslandViaGS(conf, island);
-                ::playrho::Update(stats, solverResults);
+                ::playrho::Update(stats, SolveRegIslandViaGS(conf, island));
 #endif
             }
         }
@@ -2123,16 +2122,18 @@ StepStats Step(AabbTreeWorld& world, const StepConf& conf)
 
         // Create proxies herein for access to conf.aabbExtension info!
         for (const auto& [bodyID, shapeID]: world.m_fixturesForProxies) {
-            CreateProxies(world.m_tree, bodyID, shapeID, world.m_shapeBuffer[to_underlying(shapeID)],
-                          GetTransformation(world.m_bodyBuffer[to_underlying(bodyID)]),
-                          conf.aabbExtension,
-                          world.m_bodyProxies[to_underlying(bodyID)], world.m_proxiesForContacts);
+            stepStats.pre.proxiesCreated +=
+                CreateProxies(world.m_tree, bodyID, shapeID, world.m_shapeBuffer[to_underlying(shapeID)],
+                              GetTransformation(world.m_bodyBuffer[to_underlying(bodyID)]),
+                              conf.aabbExtension,
+                              world.m_bodyProxies[to_underlying(bodyID)], world.m_proxiesForContacts);
         }
         world.m_fixturesForProxies = {};
 
         stepStats.pre.proxiesMoved = [&world](const StepConf& cfg){
             auto proxiesMoved = PreStepStats::counter_type{0};
-            for_each(begin(world.m_bodiesForSync), end(world.m_bodiesForSync), [&world,&cfg,&proxiesMoved](const auto& bodyID) {
+            for_each(begin(world.m_bodiesForSync), end(world.m_bodiesForSync),
+                     [&world,&cfg,&proxiesMoved](const auto& bodyID) {
                 const auto xfm = GetTransformation(world.m_bodyBuffer[to_underlying(bodyID)]);
                 // Not always true: assert(GetTransform0(b->GetSweep()) == xfm);
                 proxiesMoved += world.Synchronize(world.m_bodyProxies[to_underlying(bodyID)], xfm, xfm,
@@ -2154,14 +2155,16 @@ StepStats Step(AabbTreeWorld& world, const StepConf& conf)
         stepStats.pre.added = world.AddContacts(FindContacts(world.m_proxyKeysResource, world.m_tree, std::move(world.m_proxiesForContacts)));
         world.m_proxiesForContacts = {};
 
-        if (conf.deltaTime != 0_s) {
-            world.m_inv_dt0 = (conf.deltaTime != 0_s)? Real(1) / conf.deltaTime: 0_Hz;
-
+        {
             // Could potentially run UpdateContacts multithreaded over split lists...
             const auto updateStats = world.UpdateContacts(conf);
             stepStats.pre.ignored = updateStats.ignored;
             stepStats.pre.updated = updateStats.updated;
             stepStats.pre.skipped = updateStats.skipped;
+        }
+
+        if (conf.deltaTime != 0_s) {
+            world.m_inv_dt0 = Real(1) / conf.deltaTime;
 
             // Integrate velocities, solve velocity constraints, and integrate positions.
             if (IsStepComplete(world)) {
@@ -2395,7 +2398,7 @@ AabbTreeWorld::UpdateContactsStats AabbTreeWorld::UpdateContacts(const StepConf&
 
 ContactCounter
 AabbTreeWorld::AddContacts( // NOLINT(readability-function-cognitive-complexity)
-                           std::vector<ProxyKey, pmr::polymorphic_allocator<ProxyKey>>&& keys)
+    std::vector<ProxyKey, pmr::polymorphic_allocator<ProxyKey>>&& keys)
 {
     const auto numContactsBefore = size(m_contacts);
     for_each(cbegin(keys), cend(keys), [this](const ProxyKey& key) {
@@ -2491,7 +2494,6 @@ AabbTreeWorld::AddContacts( // NOLINT(readability-function-cognitive-complexity)
         contactsA.emplace_back(std::get<0>(key), contactID);
         contactsB.emplace_back(std::get<0>(key), contactID);
 
-        // Wake up the bodies
         if (!IsSensor(contact)) {
             if (IsSpeedable(bodyA)) {
                 bodyA.SetAwakeFlag();
@@ -2554,7 +2556,7 @@ ContactCounter AabbTreeWorld::Synchronize(const ProxyIDs& bodyProxies,
 }
 
 void AabbTreeWorld::Update( // NOLINT(readability-function-cognitive-complexity)
-                       ContactID contactID, const ContactUpdateConf& conf)
+    ContactID contactID, const ContactUpdateConf& conf)
 {
     auto& c = m_contactBuffer[to_underlying(contactID)];
     auto& manifold = m_manifoldBuffer[to_underlying(contactID)];
