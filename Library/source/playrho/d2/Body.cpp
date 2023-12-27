@@ -19,8 +19,10 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#include <algorithm> // for std::find
 #include <cassert> // for assert
 
+#include <playrho/Math.hpp> // for Cross, etc
 #include <playrho/Templates.hpp>
 
 #include <playrho/d2/Body.hpp>
