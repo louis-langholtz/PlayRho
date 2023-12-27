@@ -18,9 +18,9 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "UnitTests.hpp"
-
 #include <playrho/StepStats.hpp>
+
+#include "gtest/gtest.h"
 
 using namespace playrho;
 
@@ -76,4 +76,430 @@ TEST(RegStepStats, DefaultConstructor)
     EXPECT_EQ(object.proxiesMoved, static_cast<decltype(object.proxiesMoved)>(0));
     EXPECT_EQ(object.sumPosIters, static_cast<decltype(object.sumPosIters)>(0));
     EXPECT_EQ(object.sumVelIters, static_cast<decltype(object.sumVelIters)>(0));
+}
+
+TEST(PreStepStats, Equality)
+{
+    EXPECT_TRUE(PreStepStats() == PreStepStats());
+    {
+        auto stats = PreStepStats{};
+        ++stats.proxiesCreated;
+        EXPECT_FALSE(PreStepStats() == stats);
+        EXPECT_FALSE(stats == PreStepStats());
+    }
+    {
+        auto stats = PreStepStats{};
+        ++stats.proxiesMoved;
+        EXPECT_FALSE(PreStepStats() == stats);
+        EXPECT_FALSE(stats == PreStepStats());
+    }
+    {
+        auto stats = PreStepStats{};
+        ++stats.destroyed;
+        EXPECT_FALSE(PreStepStats() == stats);
+        EXPECT_FALSE(stats == PreStepStats());
+    }
+    {
+        auto stats = PreStepStats{};
+        ++stats.added;
+        EXPECT_FALSE(PreStepStats() == stats);
+        EXPECT_FALSE(stats == PreStepStats());
+    }
+    {
+        auto stats = PreStepStats{};
+        ++stats.ignored;
+        EXPECT_FALSE(PreStepStats() == stats);
+        EXPECT_FALSE(stats == PreStepStats());
+    }
+    {
+        auto stats = PreStepStats{};
+        ++stats.updated;
+        EXPECT_FALSE(PreStepStats() == stats);
+        EXPECT_FALSE(stats == PreStepStats());
+    }
+    {
+        auto stats = PreStepStats{};
+        ++stats.skipped;
+        EXPECT_FALSE(PreStepStats() == stats);
+        EXPECT_FALSE(stats == PreStepStats());
+    }
+}
+
+TEST(PreStepStats, Inequality)
+{
+    EXPECT_FALSE(PreStepStats() != PreStepStats());
+    {
+        auto stats = PreStepStats{};
+        ++stats.proxiesCreated;
+        EXPECT_TRUE(PreStepStats() != stats);
+        EXPECT_TRUE(stats != PreStepStats());
+    }
+    {
+        auto stats = PreStepStats{};
+        ++stats.proxiesMoved;
+        EXPECT_TRUE(PreStepStats() != stats);
+        EXPECT_TRUE(stats != PreStepStats());
+    }
+    {
+        auto stats = PreStepStats{};
+        ++stats.destroyed;
+        EXPECT_TRUE(PreStepStats() != stats);
+        EXPECT_TRUE(stats != PreStepStats());
+    }
+    {
+        auto stats = PreStepStats{};
+        ++stats.added;
+        EXPECT_TRUE(PreStepStats() != stats);
+        EXPECT_TRUE(stats != PreStepStats());
+    }
+    {
+        auto stats = PreStepStats{};
+        ++stats.ignored;
+        EXPECT_TRUE(PreStepStats() != stats);
+        EXPECT_TRUE(stats != PreStepStats());
+    }
+    {
+        auto stats = PreStepStats{};
+        ++stats.updated;
+        EXPECT_TRUE(PreStepStats() != stats);
+        EXPECT_TRUE(stats != PreStepStats());
+    }
+    {
+        auto stats = PreStepStats{};
+        ++stats.skipped;
+        EXPECT_TRUE(PreStepStats() != stats);
+        EXPECT_TRUE(stats != PreStepStats());
+    }
+}
+
+TEST(RegStepStats, Equality)
+{
+    EXPECT_TRUE(RegStepStats() == RegStepStats());
+    {
+        auto stats = RegStepStats{};
+        stats.minSeparation = 1_m;
+        EXPECT_FALSE(RegStepStats() == stats);
+        EXPECT_FALSE(stats == RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        stats.maxIncImpulse = 1_Ns;
+        EXPECT_FALSE(RegStepStats() == stats);
+        EXPECT_FALSE(stats == RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.islandsFound;
+        EXPECT_FALSE(RegStepStats() == stats);
+        EXPECT_FALSE(stats == RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.islandsSolved;
+        EXPECT_FALSE(RegStepStats() == stats);
+        EXPECT_FALSE(stats == RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.bodiesSlept;
+        EXPECT_FALSE(RegStepStats() == stats);
+        EXPECT_FALSE(stats == RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.maxIslandBodies;
+        EXPECT_FALSE(RegStepStats() == stats);
+        EXPECT_FALSE(stats == RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.contactsAdded;
+        EXPECT_FALSE(RegStepStats() == stats);
+        EXPECT_FALSE(stats == RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.proxiesMoved;
+        EXPECT_FALSE(RegStepStats() == stats);
+        EXPECT_FALSE(stats == RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.sumPosIters;
+        EXPECT_FALSE(RegStepStats() == stats);
+        EXPECT_FALSE(stats == RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.sumVelIters;
+        EXPECT_FALSE(RegStepStats() == stats);
+        EXPECT_FALSE(stats == RegStepStats());
+    }
+}
+
+TEST(RegStepStats, Inequality)
+{
+    EXPECT_FALSE(RegStepStats() != RegStepStats());
+    {
+        auto stats = RegStepStats{};
+        stats.minSeparation = 1_m;
+        EXPECT_TRUE(RegStepStats() != stats);
+        EXPECT_TRUE(stats != RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        stats.maxIncImpulse = 1_Ns;
+        EXPECT_TRUE(RegStepStats() != stats);
+        EXPECT_TRUE(stats != RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.islandsFound;
+        EXPECT_TRUE(RegStepStats() != stats);
+        EXPECT_TRUE(stats != RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.islandsSolved;
+        EXPECT_TRUE(RegStepStats() != stats);
+        EXPECT_TRUE(stats != RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.bodiesSlept;
+        EXPECT_TRUE(RegStepStats() != stats);
+        EXPECT_TRUE(stats != RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.maxIslandBodies;
+        EXPECT_TRUE(RegStepStats() != stats);
+        EXPECT_TRUE(stats != RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.contactsAdded;
+        EXPECT_TRUE(RegStepStats() != stats);
+        EXPECT_TRUE(stats != RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.proxiesMoved;
+        EXPECT_TRUE(RegStepStats() != stats);
+        EXPECT_TRUE(stats != RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.sumPosIters;
+        EXPECT_TRUE(RegStepStats() != stats);
+        EXPECT_TRUE(stats != RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.sumVelIters;
+        EXPECT_TRUE(RegStepStats() != stats);
+        EXPECT_TRUE(stats != RegStepStats());
+    }
+}
+
+TEST(ToiStepStats, Equality)
+{
+    EXPECT_TRUE(ToiStepStats() == ToiStepStats());
+    {
+        auto stats = ToiStepStats{};
+        stats.minSeparation = 1_m;
+        EXPECT_FALSE(ToiStepStats() == stats);
+        EXPECT_FALSE(stats == ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        stats.maxIncImpulse = 1_Ns;
+        EXPECT_FALSE(ToiStepStats() == stats);
+        EXPECT_FALSE(stats == ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.islandsFound;
+        EXPECT_FALSE(ToiStepStats() == stats);
+        EXPECT_FALSE(stats == ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.islandsSolved;
+        EXPECT_FALSE(ToiStepStats() == stats);
+        EXPECT_FALSE(stats == ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.contactsFound;
+        EXPECT_FALSE(ToiStepStats() == stats);
+        EXPECT_FALSE(stats == ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.contactsAtMaxSubSteps;
+        EXPECT_FALSE(ToiStepStats() == stats);
+        EXPECT_FALSE(stats == ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.contactsUpdatedToi;
+        EXPECT_FALSE(ToiStepStats() == stats);
+        EXPECT_FALSE(stats == ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.contactsUpdatedTouching;
+        EXPECT_FALSE(ToiStepStats() == stats);
+        EXPECT_FALSE(stats == ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.contactsSkippedTouching;
+        EXPECT_FALSE(ToiStepStats() == stats);
+        EXPECT_FALSE(stats == ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.contactsAdded;
+        EXPECT_FALSE(ToiStepStats() == stats);
+        EXPECT_FALSE(stats == ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.proxiesMoved;
+        EXPECT_FALSE(ToiStepStats() == stats);
+        EXPECT_FALSE(stats == ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.sumPosIters;
+        EXPECT_FALSE(ToiStepStats() == stats);
+        EXPECT_FALSE(stats == ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.sumVelIters;
+        EXPECT_FALSE(ToiStepStats() == stats);
+        EXPECT_FALSE(stats == ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.maxDistIters;
+        EXPECT_FALSE(ToiStepStats() == stats);
+        EXPECT_FALSE(stats == ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.maxToiIters;
+        EXPECT_FALSE(ToiStepStats() == stats);
+        EXPECT_FALSE(stats == ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.maxRootIters;
+        EXPECT_FALSE(ToiStepStats() == stats);
+        EXPECT_FALSE(stats == ToiStepStats());
+    }
+}
+
+TEST(ToiStepStats, Inequality)
+{
+    EXPECT_FALSE(ToiStepStats() != ToiStepStats());
+    {
+        auto stats = ToiStepStats{};
+        stats.minSeparation = 1_m;
+        EXPECT_TRUE(ToiStepStats() != stats);
+        EXPECT_TRUE(stats != ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        stats.maxIncImpulse = 1_Ns;
+        EXPECT_TRUE(ToiStepStats() != stats);
+        EXPECT_TRUE(stats != ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.islandsFound;
+        EXPECT_TRUE(ToiStepStats() != stats);
+        EXPECT_TRUE(stats != ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.islandsSolved;
+        EXPECT_TRUE(ToiStepStats() != stats);
+        EXPECT_TRUE(stats != ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.contactsFound;
+        EXPECT_TRUE(ToiStepStats() != stats);
+        EXPECT_TRUE(stats != ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.contactsAtMaxSubSteps;
+        EXPECT_TRUE(ToiStepStats() != stats);
+        EXPECT_TRUE(stats != ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.contactsUpdatedToi;
+        EXPECT_TRUE(ToiStepStats() != stats);
+        EXPECT_TRUE(stats != ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.contactsUpdatedTouching;
+        EXPECT_TRUE(ToiStepStats() != stats);
+        EXPECT_TRUE(stats != ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.contactsSkippedTouching;
+        EXPECT_TRUE(ToiStepStats() != stats);
+        EXPECT_TRUE(stats != ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.contactsAdded;
+        EXPECT_TRUE(ToiStepStats() != stats);
+        EXPECT_TRUE(stats != ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.proxiesMoved;
+        EXPECT_TRUE(ToiStepStats() != stats);
+        EXPECT_TRUE(stats != ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.sumPosIters;
+        EXPECT_TRUE(ToiStepStats() != stats);
+        EXPECT_TRUE(stats != ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.sumVelIters;
+        EXPECT_TRUE(ToiStepStats() != stats);
+        EXPECT_TRUE(stats != ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.maxDistIters;
+        EXPECT_TRUE(ToiStepStats() != stats);
+        EXPECT_TRUE(stats != ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.maxToiIters;
+        EXPECT_TRUE(ToiStepStats() != stats);
+        EXPECT_TRUE(stats != ToiStepStats());
+    }
+    {
+        auto stats = ToiStepStats{};
+        ++stats.maxRootIters;
+        EXPECT_TRUE(ToiStepStats() != stats);
+        EXPECT_TRUE(stats != ToiStepStats());
+    }
 }
