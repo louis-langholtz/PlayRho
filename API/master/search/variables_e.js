@@ -13,6 +13,7 @@ var searchData=
   ['positioniters_3816',['positionIters',['../structplayrho_1_1IslandStats.html#a397f50b437efd6d054d6b60d66d4b34b',1,'playrho::IslandStats']]],
   ['pre_3817',['pre',['../structplayrho_1_1StepStats.html#aaa9b52669cc1a5c973e02b0191fe3ad1',1,'playrho::StepStats']]],
   ['preallocation_5fsize_3818',['preallocation_size',['../structplayrho_1_1StackAllocator_1_1Conf.html#a95611c9fe9f39d544614c918727cff8e',1,'playrho::StackAllocator::Conf']]],
-  ['proxiesmoved_3819',['proxiesMoved',['../structplayrho_1_1PreStepStats.html#aa74721e50128fa65a1de046dbf368743',1,'playrho::PreStepStats::proxiesMoved()'],['../structplayrho_1_1RegStepStats.html#aad48bb0799fbca241b0fe72b71a9ad85',1,'playrho::RegStepStats::proxiesMoved()'],['../structplayrho_1_1ToiStepStats.html#ac63aa8851a42781c9150241e55aa93cd',1,'playrho::ToiStepStats::proxiesMoved()']]],
-  ['proxycapacity_3820',['proxyCapacity',['../structplayrho_1_1d2_1_1WorldConf.html#a7cdbec7a7c527bf06833afb9778a81da',1,'playrho::d2::WorldConf']]]
+  ['proxiescreated_3819',['proxiesCreated',['../structplayrho_1_1PreStepStats.html#ae52a0a4eb4a5dced532bd52a04c521f3',1,'playrho::PreStepStats']]],
+  ['proxiesmoved_3820',['proxiesMoved',['../structplayrho_1_1PreStepStats.html#aa74721e50128fa65a1de046dbf368743',1,'playrho::PreStepStats::proxiesMoved()'],['../structplayrho_1_1RegStepStats.html#aad48bb0799fbca241b0fe72b71a9ad85',1,'playrho::RegStepStats::proxiesMoved()'],['../structplayrho_1_1ToiStepStats.html#ac63aa8851a42781c9150241e55aa93cd',1,'playrho::ToiStepStats::proxiesMoved()']]],
+  ['proxycapacity_3821',['proxyCapacity',['../structplayrho_1_1d2_1_1WorldConf.html#a7cdbec7a7c527bf06833afb9778a81da',1,'playrho::d2::WorldConf']]]
 ];

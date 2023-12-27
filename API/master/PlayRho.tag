@@ -11420,6 +11420,48 @@
     <class kind="struct">playrho::ToiStepStats</class>
     <namespace>playrho</namespace>
     <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>aff95db04dd2e4dac2448e584f556df1d</anchor>
+      <arglist>(const PreStepStats &amp;lhs, const PreStepStats &amp;rhs) -&gt; bool</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>ae49ecd35cfa15cabf034ec2c2fd0a0c7</anchor>
+      <arglist>(const RegStepStats &amp;lhs, const RegStepStats &amp;rhs) -&gt; bool</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>ad315d20e45d4aa6986efc8fd3f050e45</anchor>
+      <arglist>(const ToiStepStats &amp;lhs, const ToiStepStats &amp;rhs) -&gt; bool</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>ade2952a860f58cbaa69350ab08f4e21a</anchor>
+      <arglist>(const PreStepStats &amp;lhs, const PreStepStats &amp;rhs) -&gt; bool</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>ab6e6a7b056870431d724a2f18377979c</anchor>
+      <arglist>(const RegStepStats &amp;lhs, const RegStepStats &amp;rhs) -&gt; bool</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a971802bc7b17594e82b1865d79ba544c</anchor>
+      <arglist>(const ToiStepStats &amp;lhs, const ToiStepStats &amp;rhs) -&gt; bool</arglist>
+    </member>
+    <member kind="function">
       <type>RegStepStats &amp;</type>
       <name>Update</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -29699,6 +29741,13 @@
     </member>
     <member kind="variable">
       <type>counter_type</type>
+      <name>proxiesCreated</name>
+      <anchorfile>structplayrho_1_1PreStepStats.html</anchorfile>
+      <anchor>ae52a0a4eb4a5dced532bd52a04c521f3</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>counter_type</type>
       <name>proxiesMoved</name>
       <anchorfile>structplayrho_1_1PreStepStats.html</anchorfile>
       <anchor>aa74721e50128fa65a1de046dbf368743</anchor>
@@ -43935,8 +43984,29 @@
       <type>constexpr auto</type>
       <name>operator!=</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>aff95db04dd2e4dac2448e584f556df1d</anchor>
+      <arglist>(const PreStepStats &amp;lhs, const PreStepStats &amp;rhs) -&gt; bool</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>ae49ecd35cfa15cabf034ec2c2fd0a0c7</anchor>
+      <arglist>(const RegStepStats &amp;lhs, const RegStepStats &amp;rhs) -&gt; bool</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a124127e30fbdbb52415324763e22a8f9</anchor>
       <arglist>(const Span&lt; T &gt; &amp;lhs, const Span&lt; T &gt; &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator!=</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>ad315d20e45d4aa6986efc8fd3f050e45</anchor>
+      <arglist>(const ToiStepStats &amp;lhs, const ToiStepStats &amp;rhs) -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -44572,8 +44642,29 @@
       <type>constexpr auto</type>
       <name>operator==</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>ade2952a860f58cbaa69350ab08f4e21a</anchor>
+      <arglist>(const PreStepStats &amp;lhs, const PreStepStats &amp;rhs) -&gt; bool</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>ab6e6a7b056870431d724a2f18377979c</anchor>
+      <arglist>(const RegStepStats &amp;lhs, const RegStepStats &amp;rhs) -&gt; bool</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a6fc572571fefb5d41ec6414843392d4a</anchor>
       <arglist>(const Span&lt; T &gt; &amp;lhs, const Span&lt; T &gt; &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>operator==</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a971802bc7b17594e82b1865d79ba544c</anchor>
+      <arglist>(const ToiStepStats &amp;lhs, const ToiStepStats &amp;rhs) -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
