@@ -1,11 +1,11 @@
 var structplayrho_1_1PreStepStats =
 [
     [ "counter_type", "structplayrho_1_1PreStepStats.html#a3d2ba1ef027e1612d7631cc1a3c0de33", null ],
-    [ "added", "structplayrho_1_1PreStepStats.html#a9342f0dc6ecefd1d1519804f013cd164", null ],
-    [ "destroyed", "structplayrho_1_1PreStepStats.html#a62ba523ddae45bd7f16766075b5d71ee", null ],
-    [ "ignored", "structplayrho_1_1PreStepStats.html#a935bdc19edba8c3a8e4e83203d5ff534", null ],
+    [ "contactsAdded", "structplayrho_1_1PreStepStats.html#a6b6d663c4a3b41b339bb98063c5b18de", null ],
+    [ "contactsDestroyed", "structplayrho_1_1PreStepStats.html#a93ce760fc04f547c85698a2d579a90f2", null ],
+    [ "contactsIgnored", "structplayrho_1_1PreStepStats.html#a78222b3318d7c6ec1dd345d5c99c8da2", null ],
+    [ "contactsSkipped", "structplayrho_1_1PreStepStats.html#a924b041c46650d10f74956bf3c837678", null ],
+    [ "contactsUpdated", "structplayrho_1_1PreStepStats.html#a884f121830a8f7faeeda7d53c62d3793", null ],
     [ "proxiesCreated", "structplayrho_1_1PreStepStats.html#ae52a0a4eb4a5dced532bd52a04c521f3", null ],
-    [ "proxiesMoved", "structplayrho_1_1PreStepStats.html#aa74721e50128fa65a1de046dbf368743", null ],
-    [ "skipped", "structplayrho_1_1PreStepStats.html#a4ac67155c97fe89e223375eb442ebfba", null ],
-    [ "updated", "structplayrho_1_1PreStepStats.html#a0f7525eed88446bcb034e37bb8f51f94", null ]
+    [ "proxiesMoved", "structplayrho_1_1PreStepStats.html#aa74721e50128fa65a1de046dbf368743", null ]
 ];

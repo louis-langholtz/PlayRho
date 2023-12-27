@@ -29720,23 +29720,37 @@
     </member>
     <member kind="variable">
       <type>counter_type</type>
-      <name>added</name>
+      <name>contactsAdded</name>
       <anchorfile>structplayrho_1_1PreStepStats.html</anchorfile>
-      <anchor>a9342f0dc6ecefd1d1519804f013cd164</anchor>
+      <anchor>a6b6d663c4a3b41b339bb98063c5b18de</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>counter_type</type>
-      <name>destroyed</name>
+      <name>contactsDestroyed</name>
       <anchorfile>structplayrho_1_1PreStepStats.html</anchorfile>
-      <anchor>a62ba523ddae45bd7f16766075b5d71ee</anchor>
+      <anchor>a93ce760fc04f547c85698a2d579a90f2</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>counter_type</type>
-      <name>ignored</name>
+      <name>contactsIgnored</name>
       <anchorfile>structplayrho_1_1PreStepStats.html</anchorfile>
-      <anchor>a935bdc19edba8c3a8e4e83203d5ff534</anchor>
+      <anchor>a78222b3318d7c6ec1dd345d5c99c8da2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>counter_type</type>
+      <name>contactsSkipped</name>
+      <anchorfile>structplayrho_1_1PreStepStats.html</anchorfile>
+      <anchor>a924b041c46650d10f74956bf3c837678</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>counter_type</type>
+      <name>contactsUpdated</name>
+      <anchorfile>structplayrho_1_1PreStepStats.html</anchorfile>
+      <anchor>a884f121830a8f7faeeda7d53c62d3793</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -29751,20 +29765,6 @@
       <name>proxiesMoved</name>
       <anchorfile>structplayrho_1_1PreStepStats.html</anchorfile>
       <anchor>aa74721e50128fa65a1de046dbf368743</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>counter_type</type>
-      <name>skipped</name>
-      <anchorfile>structplayrho_1_1PreStepStats.html</anchorfile>
-      <anchor>a4ac67155c97fe89e223375eb442ebfba</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>counter_type</type>
-      <name>updated</name>
-      <anchorfile>structplayrho_1_1PreStepStats.html</anchorfile>
-      <anchor>a0f7525eed88446bcb034e37bb8f51f94</anchor>
       <arglist></arglist>
     </member>
   </compound>
