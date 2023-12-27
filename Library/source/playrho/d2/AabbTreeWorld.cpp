@@ -697,7 +697,7 @@ RemoveUnspeedablesFromIslanded(const Span<const BodyID>& bodies,
 
 auto FindContacts(pmr::memory_resource& resource,
                   const DynamicTree& tree,
-                  ProxyIDs&& proxies)
+                  ProxyIDs proxies)
     -> std::vector<AabbTreeWorld::ProxyKey, pmr::polymorphic_allocator<AabbTreeWorld::ProxyKey>>
 {
     std::vector<AabbTreeWorld::ProxyKey, pmr::polymorphic_allocator<AabbTreeWorld::ProxyKey>> proxyKeys{&resource};
@@ -1533,8 +1533,9 @@ RegStepStats AabbTreeWorld::SolveReg(const StepConf& conf)
     }
 
     // Look for new contacts.
-    stats.contactsAdded = AddContacts(FindContacts(m_proxyKeysResource, m_tree, std::move(m_proxiesForContacts)));
-    m_proxiesForContacts = {};
+    stats.contactsAdded = AddContacts(
+        FindContacts(m_proxyKeysResource, m_tree, std::exchange(m_proxiesForContacts, {})),
+        conf);
     return stats;
 }
 
@@ -1646,11 +1647,9 @@ IslandStats AabbTreeWorld::SolveRegIslandViaGS(const StepConf& conf, const Islan
                results.solved? results.positionIters - 1: StepConf::InvalidIteration);
     }
     
-    results.bodiesSlept = BodyCounter{0};
     const auto minUnderActiveTime = UpdateUnderActiveTimes(island.bodies, m_bodyBuffer, conf);
     if ((minUnderActiveTime >= conf.minStillTimeToSleep) && results.solved) {
-        results.bodiesSlept = static_cast<decltype(results.bodiesSlept)>(Sleepem(island.bodies,
-                                                                                 m_bodyBuffer));
+        results.bodiesSlept = Sleepem(island.bodies, m_bodyBuffer);
     }
 
     return results;
@@ -1793,8 +1792,9 @@ ToiStepStats AabbTreeWorld::SolveToi(const StepConf& conf)
 
         // Commit fixture proxy movements to the broad-phase so that new contacts are created.
         // Also, some contacts can be destroyed.
-        stats.contactsAdded += AddContacts(FindContacts(m_proxyKeysResource, m_tree, std::move(m_proxiesForContacts)));
-        m_proxiesForContacts = {};
+        stats.contactsAdded += AddContacts(
+            FindContacts(m_proxyKeysResource, m_tree, std::exchange(m_proxiesForContacts, {})),
+            conf);
 
         if (subStepping) {
             m_flags &= ~e_stepComplete;
@@ -2147,21 +2147,23 @@ StepStats Step(AabbTreeWorld& world, const StepConf& conf)
         {
             // Note: this may update bodies (in addition to the contacts container).
             const auto destroyStats = world.DestroyContacts(world.m_contacts);
-            stepStats.pre.destroyed = destroyStats.overlap + destroyStats.filter;
+            stepStats.pre.contactsDestroyed = destroyStats.overlap + destroyStats.filter;
         }
-
-        // For any new fixtures added: need to find and create the new contacts.
-        // Note: this may update bodies (in addition to the contacts container).
-        stepStats.pre.added = world.AddContacts(FindContacts(world.m_proxyKeysResource, world.m_tree, std::move(world.m_proxiesForContacts)));
-        world.m_proxiesForContacts = {};
 
         {
             // Could potentially run UpdateContacts multithreaded over split lists...
             const auto updateStats = world.UpdateContacts(conf);
-            stepStats.pre.ignored = updateStats.ignored;
-            stepStats.pre.updated = updateStats.updated;
-            stepStats.pre.skipped = updateStats.skipped;
+            stepStats.pre.contactsIgnored = updateStats.ignored;
+            stepStats.pre.contactsUpdated = updateStats.updated;
+            stepStats.pre.contactsSkipped = updateStats.skipped;
         }
+
+
+        // For any new fixtures added: need to find and create the new contacts.
+        // Note: this may update bodies (in addition to the contacts container).
+        stepStats.pre.contactsAdded = world.AddContacts(
+            FindContacts(world.m_proxyKeysResource, world.m_tree, std::exchange(world.m_proxiesForContacts, {})),
+            conf);
 
         if (conf.deltaTime != 0_s) {
             world.m_inv_dt0 = Real(1) / conf.deltaTime;
@@ -2398,10 +2400,12 @@ AabbTreeWorld::UpdateContactsStats AabbTreeWorld::UpdateContacts(const StepConf&
 
 ContactCounter
 AabbTreeWorld::AddContacts( // NOLINT(readability-function-cognitive-complexity)
-    std::vector<ProxyKey, pmr::polymorphic_allocator<ProxyKey>>&& keys)
+    std::vector<ProxyKey, pmr::polymorphic_allocator<ProxyKey>>&& keys,
+    const StepConf& conf)
 {
     const auto numContactsBefore = size(m_contacts);
-    for_each(cbegin(keys), cend(keys), [this](const ProxyKey& key) {
+    const auto updateConf = GetUpdateConf(conf);
+    for_each(cbegin(keys), cend(keys), [this,&updateConf](const ProxyKey& key) {
         const auto& minKeyLeafData = std::get<1>(key);
         const auto& maxKeyLeafData = std::get<2>(key);
         const auto bodyIdA = minKeyLeafData.bodyId;
@@ -2502,6 +2506,8 @@ AabbTreeWorld::AddContacts( // NOLINT(readability-function-cognitive-complexity)
                 bodyB.SetAwakeFlag();
             }
         }
+
+        Update(contactID, updateConf);
 #endif
     });
     const auto numContactsAfter = size(m_contacts);

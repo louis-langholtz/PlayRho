@@ -438,9 +438,9 @@ TEST(AabbTreeWorld, CreateDestroyContactingBodies)
     auto world = AabbTreeWorld{};
     ASSERT_EQ(GetBodies(world).size(), BodyCounter(0));
     ASSERT_EQ(GetJoints(world).size(), JointCounter(0));
-    ASSERT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
-    ASSERT_EQ(GetFixturesForProxies(world).size(), static_cast<decltype(GetFixturesForProxies(world).size())>(0));
-    ASSERT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(0));
+    ASSERT_EQ(GetBodiesForProxies(world).size(), 0u);
+    ASSERT_EQ(GetFixturesForProxies(world).size(), 0u);
+    ASSERT_EQ(GetTree(world).GetNodeCount(), 0u);
 
     auto contacts = GetContacts(world);
     ASSERT_TRUE(contacts.empty());
@@ -452,16 +452,16 @@ TEST(AabbTreeWorld, CreateDestroyContactingBodies)
     const auto body1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(l1));
     const auto body2 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(l2));
     EXPECT_EQ(GetBodies(world).size(), BodyCounter(2));
-    EXPECT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
-    EXPECT_EQ(GetFixturesForProxies(world).size(), static_cast<decltype(GetFixturesForProxies(world).size())>(0));
-    EXPECT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(0));
+    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
+    EXPECT_EQ(GetFixturesForProxies(world).size(), 0u);
+    EXPECT_EQ(GetTree(world).GetNodeCount(), 0u);
 
     const auto shapeId = CreateShape(world, Shape(DiskShapeConf{1_m}.UseDensity(1_kgpm2)));
     ASSERT_NO_THROW(Attach(world, body1, shapeId));
     ASSERT_NO_THROW(Attach(world, body2, shapeId));
-    EXPECT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
-    EXPECT_EQ(GetFixturesForProxies(world).size(), static_cast<decltype(GetFixturesForProxies(world).size())>(2));
-    EXPECT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(0));
+    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
+    EXPECT_EQ(GetFixturesForProxies(world).size(), 2u);
+    EXPECT_EQ(GetTree(world).GetNodeCount(), 0u);
     ASSERT_EQ(GetShapes(world, body1).size(), 1u);
     ASSERT_EQ(GetShapes(world, body2).size(), 1u);
 
@@ -469,43 +469,43 @@ TEST(AabbTreeWorld, CreateDestroyContactingBodies)
 
     const auto stats0 = Step(world, stepConf);
 
-    EXPECT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
-    EXPECT_EQ(GetFixturesForProxies(world).size(), static_cast<decltype(GetFixturesForProxies(world).size())>(0));
-    EXPECT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(3));
+    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
+    EXPECT_EQ(GetFixturesForProxies(world).size(), 0u);
+    EXPECT_EQ(GetTree(world).GetNodeCount(), 3u);
 
-    EXPECT_EQ(stats0.pre.proxiesMoved, static_cast<decltype(stats0.pre.proxiesMoved)>(0));
-    EXPECT_EQ(stats0.pre.destroyed, static_cast<decltype(stats0.pre.destroyed)>(0));
-    EXPECT_EQ(stats0.pre.added, static_cast<decltype(stats0.pre.added)>(1));
-    EXPECT_EQ(stats0.pre.ignored, static_cast<decltype(stats0.pre.ignored)>(0));
-    EXPECT_EQ(stats0.pre.updated, static_cast<decltype(stats0.pre.updated)>(1));
-    EXPECT_EQ(stats0.pre.skipped, static_cast<decltype(stats0.pre.skipped)>(0));
+    EXPECT_EQ(stats0.pre.proxiesMoved, 0u);
+    EXPECT_EQ(stats0.pre.contactsDestroyed, 0u);
+    EXPECT_EQ(stats0.pre.contactsAdded, 1u);
+    EXPECT_EQ(stats0.pre.contactsIgnored, 0u);
+    EXPECT_EQ(stats0.pre.contactsUpdated, 0u);
+    EXPECT_EQ(stats0.pre.contactsSkipped, 0u);
 
     EXPECT_EQ(stats0.reg.minSeparation, -2.0_m);
     EXPECT_EQ(stats0.reg.maxIncImpulse, 0.0_Ns);
-    EXPECT_EQ(stats0.reg.islandsFound, static_cast<decltype(stats0.reg.islandsFound)>(1));
-    EXPECT_EQ(stats0.reg.islandsSolved, static_cast<decltype(stats0.reg.islandsSolved)>(0));
-    EXPECT_EQ(stats0.reg.contactsAdded, static_cast<decltype(stats0.reg.contactsAdded)>(0));
-    EXPECT_EQ(stats0.reg.bodiesSlept, static_cast<decltype(stats0.reg.bodiesSlept)>(0));
-    EXPECT_EQ(stats0.reg.proxiesMoved, static_cast<decltype(stats0.reg.proxiesMoved)>(0));
-    EXPECT_EQ(stats0.reg.sumPosIters, static_cast<decltype(stats0.reg.sumPosIters)>(3));
-    EXPECT_EQ(stats0.reg.sumVelIters, static_cast<decltype(stats0.reg.sumVelIters)>(1));
+    EXPECT_EQ(stats0.reg.islandsFound, 1u);
+    EXPECT_EQ(stats0.reg.islandsSolved, 0u);
+    EXPECT_EQ(stats0.reg.contactsAdded, 0u);
+    EXPECT_EQ(stats0.reg.bodiesSlept, 0u);
+    EXPECT_EQ(stats0.reg.proxiesMoved, 0u);
+    EXPECT_EQ(stats0.reg.sumPosIters, 3u);
+    EXPECT_EQ(stats0.reg.sumVelIters, 1u);
 
     EXPECT_EQ(stats0.toi.minSeparation, std::numeric_limits<Length>::infinity());
     EXPECT_EQ(stats0.toi.maxIncImpulse, 0.0_Ns);
-    EXPECT_EQ(stats0.toi.islandsFound, static_cast<decltype(stats0.toi.islandsFound)>(0));
-    EXPECT_EQ(stats0.toi.islandsSolved, static_cast<decltype(stats0.toi.islandsSolved)>(0));
-    EXPECT_EQ(stats0.toi.contactsFound, static_cast<decltype(stats0.toi.contactsFound)>(0));
-    EXPECT_EQ(stats0.toi.contactsAtMaxSubSteps, static_cast<decltype(stats0.toi.contactsAtMaxSubSteps)>(0));
-    EXPECT_EQ(stats0.toi.contactsUpdatedToi, static_cast<decltype(stats0.toi.contactsUpdatedToi)>(0));
-    EXPECT_EQ(stats0.toi.contactsUpdatedTouching, static_cast<decltype(stats0.toi.contactsUpdatedTouching)>(0));
-    EXPECT_EQ(stats0.toi.contactsSkippedTouching, static_cast<decltype(stats0.toi.contactsSkippedTouching)>(0));
-    EXPECT_EQ(stats0.toi.contactsAdded, static_cast<decltype(stats0.toi.contactsAdded)>(0));
-    EXPECT_EQ(stats0.toi.proxiesMoved, static_cast<decltype(stats0.toi.proxiesMoved)>(0));
-    EXPECT_EQ(stats0.toi.sumPosIters, static_cast<decltype(stats0.toi.sumPosIters)>(0));
-    EXPECT_EQ(stats0.toi.sumVelIters, static_cast<decltype(stats0.toi.sumVelIters)>(0));
-    EXPECT_EQ(stats0.toi.maxDistIters, static_cast<decltype(stats0.toi.maxDistIters)>(0));
-    EXPECT_EQ(stats0.toi.maxToiIters, static_cast<decltype(stats0.toi.maxToiIters)>(0));
-    EXPECT_EQ(stats0.toi.maxRootIters, static_cast<decltype(stats0.toi.maxRootIters)>(0));
+    EXPECT_EQ(stats0.toi.islandsFound, 0u);
+    EXPECT_EQ(stats0.toi.islandsSolved, 0u);
+    EXPECT_EQ(stats0.toi.contactsFound, 0u);
+    EXPECT_EQ(stats0.toi.contactsAtMaxSubSteps, 0u);
+    EXPECT_EQ(stats0.toi.contactsUpdatedToi, 0u);
+    EXPECT_EQ(stats0.toi.contactsUpdatedTouching, 0u);
+    EXPECT_EQ(stats0.toi.contactsSkippedTouching, 0u);
+    EXPECT_EQ(stats0.toi.contactsAdded, 0u);
+    EXPECT_EQ(stats0.toi.proxiesMoved, 0u);
+    EXPECT_EQ(stats0.toi.sumPosIters, 0u);
+    EXPECT_EQ(stats0.toi.sumVelIters, 0u);
+    EXPECT_EQ(stats0.toi.maxDistIters, 0u);
+    EXPECT_EQ(stats0.toi.maxToiIters, 0u);
+    EXPECT_EQ(stats0.toi.maxRootIters, 0u);
 
     contacts = GetContacts(world);
     EXPECT_FALSE(contacts.empty());
@@ -526,14 +526,14 @@ TEST(AabbTreeWorld, CreateDestroyContactingBodies)
 
     Destroy(world, body1);
     EXPECT_EQ(GetBodies(world).size(), BodyCounter(1));
-    EXPECT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
-    EXPECT_EQ(GetFixturesForProxies(world).size(), static_cast<decltype(GetFixturesForProxies(world).size())>(0));
-    EXPECT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(1));
+    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
+    EXPECT_EQ(GetFixturesForProxies(world).size(), 0u);
+    EXPECT_EQ(GetTree(world).GetNodeCount(), 1u);
 
     Step(world, stepConf);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
-    EXPECT_EQ(GetFixturesForProxies(world).size(), static_cast<decltype(GetFixturesForProxies(world).size())>(0));
-    EXPECT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(1));
+    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
+    EXPECT_EQ(GetFixturesForProxies(world).size(), 0u);
+    EXPECT_EQ(GetTree(world).GetNodeCount(), 1u);
     contacts = GetContacts(world);
     EXPECT_TRUE(contacts.empty());
     EXPECT_EQ(contacts.size(), ContactCounter(0));
@@ -1217,4 +1217,129 @@ TEST(AabbTreeWorld, GetSoonestContact)
     contacts.push_back(c);
     ids.emplace_back(ContactKey(), ContactID(3));
     EXPECT_EQ(GetSoonestContact(ids, contacts), ContactID(2));
+}
+
+TEST(AabbTreeWorld, Recreate)
+{
+    constexpr auto LinearSlop = 1_m / 1000;
+    constexpr auto AngularSlop = (Pi * 2_rad) / 180;
+    constexpr auto MinVertexRadius = LinearSlop * 2;
+    constexpr auto MaxVertexRadius = ::playrho::DefaultMaxVertexRadius;
+    const auto VertexRadius = Interval<Positive<Length>>{MinVertexRadius, MaxVertexRadius};
+    auto conf = PolygonShapeConf{}.UseVertexRadius(MinVertexRadius);
+    auto world = AabbTreeWorld{WorldConf{}.UseVertexRadius(VertexRadius)};
+    constexpr auto e_count = 20;
+    auto createdBodyCount = 0ul;
+
+    {
+        const auto a = Real{0.5f};
+        auto ground = Body(BodyConf{}.UseLocation(Length2{0_m, -a * 1_m}));
+        constexpr auto N = 200;
+        constexpr auto M = 8;
+        Length2 position;
+        GetY(position) = 0_m;
+        for (auto j = 0; j < M; ++j) {
+            GetX(position) = -N * a * 1_m;
+            for (auto i = 0; i < N; ++i) {
+                conf.SetAsBox(a * 1_m, a * 1_m, position, 0_deg);
+                ground.Attach(CreateShape(world, Shape{conf}));
+                GetX(position) += 2_m * a;
+            }
+            GetY(position) -= 2_m * a;
+        }
+        ASSERT_NO_THROW(CreateBody(world, ground));
+        ASSERT_FALSE(IsAwake(GetBody(world, BodyID(0))));
+        ++createdBodyCount;
+    }
+
+    {
+        const auto a = Real{0.5f};
+        conf.UseDensity(5_kgpm2);
+        conf.SetAsBox(a * 1_m, a * 1_m);
+        const auto shapeId = CreateShape(world, Shape{conf});
+
+        Length2 x(-7.0_m, 0.75_m);
+        Length2 y;
+        const auto deltaX = Length2(0.5625_m, 1.25_m);
+        const auto deltaY = Length2(1.125_m, 0.0_m);
+
+        for (auto i = 0; i < e_count; ++i) {
+            y = x;
+            for (auto j = i; j < e_count; ++j) {
+                auto bodyId = BodyID{};
+                auto body =
+                    Body{BodyConf{}.Use(BodyType::Dynamic).UseLocation(y).UseLinearAcceleration(EarthlyGravity)};
+                ASSERT_NO_THROW(body.Attach(shapeId));
+                ASSERT_NO_THROW(bodyId = CreateBody(world, body));
+                ASSERT_TRUE(IsAwake(GetBody(world, bodyId)));
+                ++createdBodyCount;
+                y += deltaY;
+            }
+            x += deltaX;
+        }
+    }
+
+    ASSERT_EQ(createdBodyCount, 211u);
+
+    StepConf step;
+    step.deltaTime = 1_s / 60;
+    step.linearSlop = LinearSlop;
+    step.regMinSeparation = -LinearSlop * Real(3);
+    step.toiMinSeparation = -LinearSlop * Real(1.5f);
+    step.targetDepth = LinearSlop * Real(3);
+    step.tolerance = LinearSlop / Real(4);
+    step.maxLinearCorrection = LinearSlop * Real(40);
+    step.maxAngularCorrection = AngularSlop * Real{4};
+    step.aabbExtension = LinearSlop * Real(20);
+    step.maxTranslation = 4_m;
+    step.velocityThreshold = (Real{8} / Real{10}) * 1_mps;
+    step.maxSubSteps = std::uint8_t{48};
+
+    auto numSteps = 0ul;
+    auto sumRegPosIters = 0ul;
+    auto sumRegVelIters = 0ul;
+    auto sumToiPosIters = 0ul;
+    auto sumToiVelIters = 0ul;
+    //const auto start_time = std::chrono::high_resolution_clock::now();
+    auto lastStats = StepStats{};
+    auto firstStepWithOneIsland = std::optional<unsigned long>{};
+    auto firstStepWithBodiesSlept = std::optional<unsigned long>{};
+    auto firstStepWithIslandSolved = std::optional<unsigned long>{};
+    auto firstStepWithContacts = std::optional<unsigned long>{};
+    auto totalBodiesSlept = 0ul;
+    auto awakeCount = 0ul;
+    constexpr auto maxSteps = 3000ul;
+    while (numSteps < maxSteps) {
+        const auto stats = Step(world, step);
+        sumRegPosIters += stats.reg.sumPosIters;
+        sumRegVelIters += stats.reg.sumVelIters;
+        sumToiPosIters += stats.toi.sumPosIters;
+        sumToiVelIters += stats.toi.sumVelIters;
+        lastStats = stats;
+        if (((stats.pre.contactsAdded > 0) || (stats.reg.contactsAdded > 0) || (stats.toi.contactsAdded > 0))
+            && !firstStepWithContacts) {
+            firstStepWithContacts = numSteps;
+        }
+        if ((stats.reg.islandsFound == 1u) && !firstStepWithOneIsland) {
+            firstStepWithOneIsland = numSteps;
+        }
+        if ((stats.reg.bodiesSlept > 0u) && !firstStepWithBodiesSlept) {
+            firstStepWithBodiesSlept = numSteps;
+        }
+        if ((stats.reg.islandsSolved > 0u) && (stats.reg.maxIslandBodies > 1u) && !firstStepWithIslandSolved) {
+            firstStepWithIslandSolved = numSteps;
+        }
+        EXPECT_GT(stats.reg.islandsFound, 0u);
+        totalBodiesSlept += stats.reg.bodiesSlept;
+        ++numSteps;
+    }
+    EXPECT_TRUE(firstStepWithContacts.has_value());
+    EXPECT_EQ(firstStepWithContacts.value_or(0), 12);
+    EXPECT_TRUE(firstStepWithOneIsland.has_value());
+    EXPECT_EQ(firstStepWithOneIsland.value_or(0), 63);
+    EXPECT_FALSE(firstStepWithBodiesSlept.has_value()); // TODO: figure out why this is false
+    EXPECT_EQ(firstStepWithBodiesSlept.value_or(0), 0);
+    EXPECT_TRUE(firstStepWithIslandSolved.has_value());
+    EXPECT_EQ(firstStepWithIslandSolved.value_or(0), 13);
+    EXPECT_EQ(totalBodiesSlept, 0u);
 }

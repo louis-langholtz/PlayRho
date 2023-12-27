@@ -95,31 +95,31 @@ TEST(PreStepStats, Equality)
     }
     {
         auto stats = PreStepStats{};
-        ++stats.destroyed;
+        ++stats.contactsDestroyed;
         EXPECT_FALSE(PreStepStats() == stats);
         EXPECT_FALSE(stats == PreStepStats());
     }
     {
         auto stats = PreStepStats{};
-        ++stats.added;
+        ++stats.contactsAdded;
         EXPECT_FALSE(PreStepStats() == stats);
         EXPECT_FALSE(stats == PreStepStats());
     }
     {
         auto stats = PreStepStats{};
-        ++stats.ignored;
+        ++stats.contactsIgnored;
         EXPECT_FALSE(PreStepStats() == stats);
         EXPECT_FALSE(stats == PreStepStats());
     }
     {
         auto stats = PreStepStats{};
-        ++stats.updated;
+        ++stats.contactsUpdated;
         EXPECT_FALSE(PreStepStats() == stats);
         EXPECT_FALSE(stats == PreStepStats());
     }
     {
         auto stats = PreStepStats{};
-        ++stats.skipped;
+        ++stats.contactsSkipped;
         EXPECT_FALSE(PreStepStats() == stats);
         EXPECT_FALSE(stats == PreStepStats());
     }
@@ -142,31 +142,31 @@ TEST(PreStepStats, Inequality)
     }
     {
         auto stats = PreStepStats{};
-        ++stats.destroyed;
+        ++stats.contactsDestroyed;
         EXPECT_TRUE(PreStepStats() != stats);
         EXPECT_TRUE(stats != PreStepStats());
     }
     {
         auto stats = PreStepStats{};
-        ++stats.added;
+        ++stats.contactsAdded;
         EXPECT_TRUE(PreStepStats() != stats);
         EXPECT_TRUE(stats != PreStepStats());
     }
     {
         auto stats = PreStepStats{};
-        ++stats.ignored;
+        ++stats.contactsIgnored;
         EXPECT_TRUE(PreStepStats() != stats);
         EXPECT_TRUE(stats != PreStepStats());
     }
     {
         auto stats = PreStepStats{};
-        ++stats.updated;
+        ++stats.contactsUpdated;
         EXPECT_TRUE(PreStepStats() != stats);
         EXPECT_TRUE(stats != PreStepStats());
     }
     {
         auto stats = PreStepStats{};
-        ++stats.skipped;
+        ++stats.contactsSkipped;
         EXPECT_TRUE(PreStepStats() != stats);
         EXPECT_TRUE(stats != PreStepStats());
     }
