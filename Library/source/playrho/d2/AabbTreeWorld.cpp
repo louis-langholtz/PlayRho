@@ -697,7 +697,7 @@ RemoveUnspeedablesFromIslanded(const Span<const BodyID>& bodies,
 
 auto FindContacts(pmr::memory_resource& resource,
                   const DynamicTree& tree,
-                  ProxyIDs proxies)
+                  const ProxyIDs& proxies)
     -> std::vector<AabbTreeWorld::ProxyKey, pmr::polymorphic_allocator<AabbTreeWorld::ProxyKey>>
 {
     std::vector<AabbTreeWorld::ProxyKey, pmr::polymorphic_allocator<AabbTreeWorld::ProxyKey>> proxyKeys{&resource};
