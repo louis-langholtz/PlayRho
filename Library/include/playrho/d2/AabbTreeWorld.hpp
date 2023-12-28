@@ -287,6 +287,7 @@ const BodyIDs& GetBodiesForProxies(const AabbTreeWorld& world) noexcept;
 /// @warning This function should not be used while the world is locked &mdash; as it is
 ///   during callbacks. If it is, it will throw an exception or abort your program.
 /// @note No references to the configuration are retained. Its value is copied.
+/// @note This function does not reset the mass data for the body.
 /// @post The created body will be present in the container returned from the
 ///   <code>GetBodies(const AabbTreeWorld&)</code> function.
 /// @param world The world within which to create the body.
