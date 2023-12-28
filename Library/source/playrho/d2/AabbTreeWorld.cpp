@@ -700,7 +700,8 @@ auto FindContacts(pmr::memory_resource& resource,
                   const ProxyIDs& proxies)
     -> std::vector<AabbTreeWorld::ProxyKey, pmr::polymorphic_allocator<AabbTreeWorld::ProxyKey>>
 {
-    std::vector<AabbTreeWorld::ProxyKey, pmr::polymorphic_allocator<AabbTreeWorld::ProxyKey>> proxyKeys{&resource};
+    std::vector<AabbTreeWorld::ProxyKey, pmr::polymorphic_allocator<AabbTreeWorld::ProxyKey>>
+        proxyKeys{&resource};
     // Never need more than tree.GetLeafCount(), but in case big, use smaller default...
     static constexpr auto DefaultReserveSize = 256u;
     proxyKeys.reserve(std::min(tree.GetLeafCount(), DefaultReserveSize));
@@ -1481,9 +1482,9 @@ RegStepStats AabbTreeWorld::SolveReg(const StepConf& conf)
     futures.reserve(remNumBodies);
 #endif
     // Build and simulate all awake islands.
-    for (const auto& b: m_bodies) {
-        if (!m_islanded.bodies[to_underlying(b)]) {
-            auto& body = m_bodyBuffer[to_underlying(b)];
+    for (const auto& bodyId: m_bodies) {
+        if (!m_islanded.bodies[to_underlying(bodyId)]) {
+            auto& body = m_bodyBuffer[to_underlying(bodyId)];
             assert(!IsAwake(body) || IsSpeedable(body));
             if (IsAwake(body) && IsEnabled(body)) {
                 ++stats.islandsFound;
@@ -1492,7 +1493,7 @@ RegStepStats AabbTreeWorld::SolveReg(const StepConf& conf)
                 island.bodies.reserve(remNumBodies);
                 island.contacts.reserve(remNumContacts);
                 island.joints.reserve(remNumJoints);
-                AddToIsland(island, b, remNumBodies, remNumContacts, remNumJoints);
+                AddToIsland(island, bodyId, remNumBodies, remNumContacts, remNumJoints);
 #if defined(DO_SORT_ISLANDS)
                 Sort(island);
 #endif
