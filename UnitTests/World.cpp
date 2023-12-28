@@ -2712,7 +2712,7 @@ TEST(World_Longer, TilesComesToRest)
     constexpr auto MaxVertexRadius = ::playrho::DefaultMaxVertexRadius;
     const auto VertexRadius = Interval<Positive<Length>>{MinVertexRadius, MaxVertexRadius};
     auto conf = PolygonShapeConf{}.UseVertexRadius(MinVertexRadius);
-    const auto world = std::make_unique<World>(WorldConf{}.UseVertexRadius(VertexRadius));
+    auto world = World(WorldConf{}.UseVertexRadius(VertexRadius));
     constexpr auto e_count = 36;
     auto createdBodyCount = 0ul;
     
@@ -2727,13 +2727,13 @@ TEST(World_Longer, TilesComesToRest)
             GetX(position) = -N * a * 1_m;
             for (auto i = 0; i < N; ++i) {
                 conf.SetAsBox(a * 1_m, a * 1_m, position, 0_deg);
-                ground.Attach(CreateShape(*world, conf));
+                ground.Attach(CreateShape(world, conf));
                 GetX(position) += 2_m * a;
             }
             GetY(position) -= 2_m * a;
         }
         ASSERT_EQ(size(ground.GetShapes()), 2000u);
-        ASSERT_NO_THROW(CreateBody(*world, ground));
+        ASSERT_NO_THROW(CreateBody(world, ground));
         ++createdBodyCount;
     }
     
@@ -2741,7 +2741,7 @@ TEST(World_Longer, TilesComesToRest)
         const auto a = Real{0.5f};
         conf.UseDensity(5_kgpm2);
         conf.SetAsBox(a * 1_m, a * 1_m);
-        const auto shapeId = CreateShape(*world, Shape(conf));
+        const auto shapeId = CreateShape(world, Shape{conf});
 
         Length2 x(-7.0_m, 0.75_m);
         Length2 y;
@@ -2753,7 +2753,7 @@ TEST(World_Longer, TilesComesToRest)
             for (auto j = i; j < e_count; ++j) {
                 auto body = Body{BodyConf{}.Use(BodyType::Dynamic).UseLocation(y).UseLinearAcceleration(EarthlyGravity)};
                 ASSERT_NO_THROW(body.Attach(shapeId));
-                ASSERT_NO_THROW(CreateBody(*world, body));
+                ASSERT_NO_THROW(CreateBody(world, body));
                 ++createdBodyCount;
                 y += deltaY;
             }
@@ -2762,7 +2762,7 @@ TEST(World_Longer, TilesComesToRest)
     }
 
     EXPECT_EQ(createdBodyCount, 667u);
-    EXPECT_EQ(GetBodyCount(*world), 667u);
+    EXPECT_EQ(GetBodyCount(world), 667u);
 
     StepConf step;
     step.deltaTime = 1_s / 60;
@@ -2789,8 +2789,8 @@ TEST(World_Longer, TilesComesToRest)
     auto totalBodiesSlept = 0ul;
     auto awakeCount = 0ul;
     constexpr auto maxSteps = 3000ul;
-    while ((awakeCount = GetAwakeCount(*world)) > 0 && (numSteps < maxSteps)) {
-        const auto stats = Step(*world, step);
+    while ((awakeCount = GetAwakeCount(world)) > 0 && (numSteps < maxSteps)) {
+        const auto stats = Step(world, step);
         sumRegPosIters += stats.reg.sumPosIters;
         sumRegVelIters += stats.reg.sumVelIters;
         sumToiPosIters += stats.toi.sumPosIters;
@@ -2807,36 +2807,36 @@ TEST(World_Longer, TilesComesToRest)
     switch (sizeof(Real)) {
     case 4u:
 #if defined(__core2__)
-        EXPECT_EQ(GetContactRange(*world), 1451u);
+        EXPECT_EQ(GetContactRange(world), 1451u);
         EXPECT_EQ(totalBodiesSlept, 667u);
         EXPECT_TRUE(firstStepWithZeroMoved);
         if (firstStepWithZeroMoved) {
             EXPECT_EQ(*firstStepWithZeroMoved, 1798u);
         }
 #elif defined(_WIN64)
-        EXPECT_EQ(GetContactRange(*world), 1448u);
+        EXPECT_EQ(GetContactRange(world), 1448u);
         EXPECT_EQ(totalBodiesSlept, 671u);
         EXPECT_TRUE(firstStepWithZeroMoved);
         if (firstStepWithZeroMoved) {
             EXPECT_EQ(*firstStepWithZeroMoved, 1800u);
         }
 #elif defined(_WIN32)
-        EXPECT_EQ(GetContactRange(*world), 1448u);
+        EXPECT_EQ(GetContactRange(world), 1448u);
         EXPECT_EQ(totalBodiesSlept, 672u);
         EXPECT_TRUE(firstStepWithZeroMoved);
         if (firstStepWithZeroMoved) {
             EXPECT_EQ(*firstStepWithZeroMoved, 1796u);
         }
 #elif defined(__amd64__) // includes __k8__
-        EXPECT_EQ(GetContactRange(*world), 1449u);
+        EXPECT_EQ(GetContactRange(world), 1449u);
         EXPECT_EQ(totalBodiesSlept, 670u);
         EXPECT_TRUE(firstStepWithZeroMoved);
         if (firstStepWithZeroMoved) {
             EXPECT_EQ(*firstStepWithZeroMoved, 1798u);
         }
 #elif defined(__arm64__) // At least for Apple Silicon
-        EXPECT_GE(GetContactRange(*world), 1447u);
-        EXPECT_LE(GetContactRange(*world), 1451u);
+        EXPECT_GE(GetContactRange(world), 1447u);
+        EXPECT_LE(GetContactRange(world), 1451u);
         EXPECT_GE(totalBodiesSlept, 667u);
         EXPECT_LE(totalBodiesSlept, 670u);
         EXPECT_TRUE(firstStepWithZeroMoved);
@@ -2845,8 +2845,8 @@ TEST(World_Longer, TilesComesToRest)
             EXPECT_LE(*firstStepWithZeroMoved, 1812u);
         }
 #else // unrecognized arch; just check results are within range of others
-        EXPECT_GE(GetContactRange(*world), 1447u);
-        EXPECT_LE(GetContactRange(*world), 1450u);
+        EXPECT_GE(GetContactRange(world), 1447u);
+        EXPECT_LE(GetContactRange(world), 1450u);
         EXPECT_GE(totalBodiesSlept, 667u);
         EXPECT_LE(totalBodiesSlept, 668u);
         EXPECT_TRUE(firstStepWithZeroMoved);
@@ -2857,7 +2857,7 @@ TEST(World_Longer, TilesComesToRest)
 #endif
         break;
     case 8u:
-        EXPECT_EQ(GetContactRange(*world), 1447u);
+        EXPECT_EQ(GetContactRange(world), 1447u);
 #if defined(__GNUC__) && defined(__clang__) && !defined(__core2__) && !defined(__arm64__)
         EXPECT_EQ(totalBodiesSlept, createdBodyCount);
 #else
@@ -2873,7 +2873,7 @@ TEST(World_Longer, TilesComesToRest)
         }
         break;
     }
-    EXPECT_EQ(GetTree(*world).GetNodeCount(), 5331u);
+    EXPECT_EQ(GetTree(world).GetNodeCount(), 5331u);
     //const auto end_time = std::chrono::high_resolution_clock::now();
     
     //const std::chrono::duration<double> elapsed_time = end_time - start_time;
@@ -3871,4 +3871,125 @@ TEST(World, TouchingAsleepBodiesWithZeroDeltaTime)
     EXPECT_EQ(contact0.GetContactableA(), (Contactable{bodyId0, shapeId0, 0u}));
     EXPECT_EQ(contact0.GetContactableB(), (Contactable{bodyId1, shapeId0, 0u}));
     EXPECT_FALSE(contact0.HasValidToi());
+}
+
+TEST(World, Recreate)
+{
+    constexpr auto LinearSlop = 1_m / 1000;
+    constexpr auto AngularSlop = (Pi * 2_rad) / 180;
+    constexpr auto MinVertexRadius = LinearSlop * 2;
+    constexpr auto MaxVertexRadius = ::playrho::DefaultMaxVertexRadius;
+    const auto VertexRadius = Interval<Positive<Length>>{MinVertexRadius, MaxVertexRadius};
+    auto conf = PolygonShapeConf{}.UseVertexRadius(MinVertexRadius);
+    auto world = World{WorldConf{}.UseVertexRadius(VertexRadius)};
+    constexpr auto e_count = 20;
+    auto createdBodyCount = 0ul;
+
+    {
+        const auto a = Real{0.5f};
+        auto ground = Body(BodyConf{}.UseLocation(Length2{0_m, -a * 1_m}));
+        constexpr auto N = 200;
+        constexpr auto M = 8;
+        Length2 position;
+        GetY(position) = 0_m;
+        for (auto j = 0; j < M; ++j) {
+            GetX(position) = -N * a * 1_m;
+            for (auto i = 0; i < N; ++i) {
+                conf.SetAsBox(a * 1_m, a * 1_m, position, 0_deg);
+                ground.Attach(CreateShape(world, Shape{conf}));
+                GetX(position) += 2_m * a;
+            }
+            GetY(position) -= 2_m * a;
+        }
+        ASSERT_NO_THROW(CreateBody(world, ground));
+        ASSERT_FALSE(IsAwake(GetBody(world, BodyID(0))));
+        ++createdBodyCount;
+    }
+
+    {
+        const auto a = Real{0.5f};
+        conf.UseDensity(5_kgpm2);
+        conf.SetAsBox(a * 1_m, a * 1_m);
+        const auto shapeId = CreateShape(world, Shape{conf});
+
+        Length2 x(-7.0_m, 0.75_m);
+        Length2 y;
+        const auto deltaX = Length2(0.5625_m, 1.25_m);
+        const auto deltaY = Length2(1.125_m, 0.0_m);
+
+        for (auto i = 0; i < e_count; ++i) {
+            y = x;
+            for (auto j = i; j < e_count; ++j) {
+                auto bodyId = BodyID{};
+                auto body =
+                    Body{BodyConf{}.Use(BodyType::Dynamic).Use(shapeId).UseLocation(y).UseLinearAcceleration(EarthlyGravity)};
+                ASSERT_NO_THROW(bodyId = CreateBody(world, body));
+                ++createdBodyCount;
+                y += deltaY;
+            }
+            x += deltaX;
+        }
+    }
+
+    EXPECT_EQ(createdBodyCount, 211u);
+    EXPECT_EQ(GetBodyRange(world), 211u);
+
+    StepConf step;
+    step.deltaTime = 1_s / 60;
+    step.linearSlop = LinearSlop;
+    step.regMinSeparation = -LinearSlop * Real(3);
+    step.toiMinSeparation = -LinearSlop * Real(1.5f);
+    step.targetDepth = LinearSlop * Real(3);
+    step.tolerance = LinearSlop / Real(4);
+    step.maxLinearCorrection = LinearSlop * Real(40);
+    step.maxAngularCorrection = AngularSlop * Real{4};
+    step.aabbExtension = LinearSlop * Real(20);
+    step.maxTranslation = 4_m;
+    step.velocityThreshold = (Real{8} / Real{10}) * 1_mps;
+    step.maxSubSteps = std::uint8_t{48};
+
+    //const auto start_time = std::chrono::high_resolution_clock::now();
+    auto lastStats = StepStats{};
+    auto firstStepWithContacts = std::optional<unsigned long>{};
+    auto firstStepWithIslandSolved = std::optional<unsigned long>{};
+    auto firstStepWithOneIsland = std::optional<unsigned long>{};
+    auto firstStepWithBodiesSlept = std::optional<unsigned long>{};
+    auto firstWithAllSlept = std::optional<unsigned long>{};
+    auto totalBodiesSlept = 0ul;
+    constexpr auto maxSteps = 1000ul;
+    auto numSteps = 0ul;
+    while (numSteps < maxSteps) {
+        const auto stats = Step(world, step);
+        auto asleepCount = 0;
+        for (const auto& bodyId: GetBodies(world)) {
+            if (!IsAwake(GetBody(world, bodyId))) {
+                ++asleepCount;
+            }
+        }
+        lastStats = stats;
+        if (((stats.pre.contactsAdded > 0) || (stats.reg.contactsAdded > 0) || (stats.toi.contactsAdded > 0))
+            && !firstStepWithContacts) {
+            firstStepWithContacts = numSteps;
+        }
+        if ((stats.reg.islandsFound == 1u) && !firstStepWithOneIsland) {
+            firstStepWithOneIsland = numSteps;
+        }
+        if ((stats.reg.bodiesSlept > 0u) && !firstStepWithBodiesSlept) {
+            firstStepWithBodiesSlept = numSteps;
+        }
+        if ((stats.reg.islandsSolved > 0u) && (stats.reg.maxIslandBodies > 1u) && !firstStepWithIslandSolved) {
+            firstStepWithIslandSolved = numSteps;
+        }
+        totalBodiesSlept += stats.reg.bodiesSlept;
+        if (totalBodiesSlept >= createdBodyCount && !firstWithAllSlept) {
+            firstWithAllSlept = numSteps;
+        }
+        ++numSteps;
+    }
+    EXPECT_EQ(firstStepWithContacts.value_or(0), 12);
+    EXPECT_EQ(firstStepWithIslandSolved.value_or(0), 13);
+    EXPECT_EQ(firstStepWithOneIsland.value_or(0), 63);
+    EXPECT_EQ(firstStepWithBodiesSlept.value_or(0), 82);
+    EXPECT_EQ(firstWithAllSlept.value_or(0), 923);
+    EXPECT_EQ(totalBodiesSlept, createdBodyCount);
 }
