@@ -70,6 +70,7 @@ TEST(Contact, DefaultConstruction)
     EXPECT_FALSE(Contact().NeedsFiltering());
     EXPECT_FALSE(Contact().IsSensor());
     EXPECT_FALSE(Contact().IsImpenetrable());
+    EXPECT_FALSE(Contact().IsDestroyed());
 }
 
 TEST(Contact, InitializingConstructor)
@@ -98,6 +99,7 @@ TEST(Contact, InitializingConstructor)
     EXPECT_FALSE(contact.NeedsFiltering());
     EXPECT_FALSE(contact.IsSensor());
     EXPECT_FALSE(contact.IsImpenetrable());
+    EXPECT_FALSE(contact.IsDestroyed());
 }
 
 TEST(Contact, InitializingConstructorFF)
@@ -127,6 +129,7 @@ TEST(Contact, InitializingConstructorFF)
     EXPECT_FALSE(NeedsFiltering(contact));
     EXPECT_FALSE(IsSensor(contact));
     EXPECT_FALSE(IsImpenetrable(contact));
+    EXPECT_FALSE(contact.IsDestroyed());
 
     const auto toi = std::optional<UnitInterval<Real>>{Real(0.5)};
     EXPECT_NO_THROW(SetToi(contact, toi));
@@ -236,14 +239,16 @@ TEST(Contact, Equality)
         EXPECT_FALSE(Contact() == c);
     }
     {
+        // Note: TOI count is deemed a non essential part!
         auto c = Contact();
         c.SetToiCount(42u);
-        EXPECT_FALSE(Contact() == c);
+        EXPECT_TRUE(Contact() == c);
     }
     {
+        // Note: TOI is deemed a non essential part!
         auto c = Contact();
         c.SetToi(std::optional<UnitIntervalFF<Real>>(0.5));
-        EXPECT_FALSE(Contact() == c);
+        EXPECT_TRUE(Contact() == c);
     }
     {
         auto c = Contact();
@@ -263,6 +268,11 @@ TEST(Contact, Equality)
     {
         auto c = Contact();
         c.SetImpenetrable();
+        EXPECT_FALSE(Contact() == c);
+    }
+    {
+        auto c = Contact();
+        c.SetDestroyed();
         EXPECT_FALSE(Contact() == c);
     }
     EXPECT_FALSE(Contact() ==
@@ -307,13 +317,15 @@ TEST(Contact, Inequality)
     }
     {
         auto c = Contact();
+        // Note: TOI count is deemed a non essential part!
         c.SetToiCount(42u);
-        EXPECT_TRUE(Contact() != c);
+        EXPECT_FALSE(Contact() != c);
     }
     {
         auto c = Contact();
+        // Note: TOI is deemed a non essential part!
         c.SetToi(std::optional<UnitIntervalFF<Real>>(0.5));
-        EXPECT_TRUE(Contact() != c);
+        EXPECT_FALSE(Contact() != c);
     }
     {
         auto c = Contact();
@@ -333,6 +345,11 @@ TEST(Contact, Inequality)
     {
         auto c = Contact();
         c.SetImpenetrable();
+        EXPECT_TRUE(Contact() != c);
+    }
+    {
+        auto c = Contact();
+        c.SetDestroyed();
         EXPECT_TRUE(Contact() != c);
     }
     EXPECT_TRUE(Contact() !=
