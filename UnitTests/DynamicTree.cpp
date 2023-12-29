@@ -378,6 +378,29 @@ TEST(Contactable, DefaultConstructor)
     EXPECT_EQ(Contactable().childId, ChildCounter(0u));
 }
 
+TEST(Contactable, Equality)
+{
+    EXPECT_TRUE((Contactable{}) == (Contactable{}));
+    EXPECT_TRUE((Contactable{BodyID(1u), ShapeID(1u), 2u}) == (Contactable{BodyID(1u), ShapeID(1u), 2u}));
+    EXPECT_TRUE((Contactable{BodyID(2u), ShapeID(1u), 1u}) == (Contactable{BodyID(2u), ShapeID(1u), 1u}));
+    EXPECT_TRUE((Contactable{BodyID(1u), ShapeID(2u), 1u}) == (Contactable{BodyID(1u), ShapeID(2u), 1u}));
+    EXPECT_FALSE((Contactable{BodyID(1u), ShapeID(1u), 2u}) == (Contactable{BodyID(1u), ShapeID(1u), 1u}));
+    EXPECT_FALSE((Contactable{BodyID(1u), ShapeID(2u), 1u}) == (Contactable{BodyID(1u), ShapeID(1u), 1u}));
+    EXPECT_FALSE((Contactable{BodyID(2u), ShapeID(1u), 1u}) == (Contactable{BodyID(1u), ShapeID(1u), 1u}));
+}
+
+TEST(Contactable, LessThanOperator)
+{
+    EXPECT_FALSE(Contactable() < Contactable());
+    const auto base = Contactable{BodyID(1u), ShapeID(1u), 1u};
+    EXPECT_FALSE((Contactable{BodyID(1u), ShapeID(1u), 2u}) < base);
+    EXPECT_FALSE((Contactable{BodyID(1u), ShapeID(2u), 1u}) < base);
+    EXPECT_FALSE((Contactable{BodyID(2u), ShapeID(1u), 1u}) < base);
+    EXPECT_TRUE(base < (Contactable{BodyID(1u), ShapeID(1u), 2u}));
+    EXPECT_TRUE(base < (Contactable{BodyID(1u), ShapeID(2u), 1u}));
+    EXPECT_TRUE(base < (Contactable{BodyID(2u), ShapeID(1u), 1u}));
+}
+
 TEST(DynamicTree, ZeroCapacityConstructionSameAsDefault)
 {
     EXPECT_EQ((DynamicTree{DynamicTree::Size{0}}.GetNodeCapacity()), DynamicTree{}.GetNodeCapacity());
