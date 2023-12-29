@@ -172,10 +172,12 @@ public:
     constexpr LinearVelocity GetTangentSpeed() const noexcept;
 
     /// @brief Gets the time of impact count.
+    /// @note This is a non-essential part - it doesn't participate in equality.
     /// @see SetToiCount.
     constexpr substep_type GetToiCount() const noexcept;
 
     /// @brief Sets the TOI count to the given value.
+    /// @note This is a non-essential part. So changing this doesn't effect equality!
     /// @post <code>GetToiCount()</code> returns the value set.
     /// @see GetToiCount.
     constexpr void SetToiCount(substep_type value) noexcept;
@@ -188,16 +190,19 @@ public:
     constexpr void IncrementToiCount() noexcept;
 
     /// @brief Gets whether a TOI is set.
+    /// @note This is a non-essential part - it doesn't participate in equality.
     /// @return true if this object has a TOI set for it, false otherwise.
     constexpr bool HasValidToi() const noexcept;
 
     /// @brief Gets the time of impact (TOI) as a fraction.
+    /// @note This is a non-essential part - it doesn't participate in equality.
     /// @return Time of impact fraction in the range of 0 to 1 if set (where 1
     ///   means no actual impact in current time slot), otherwise empty.
     /// @see SetToi(const std::optional<UnitIntervalFF<Real>>&).
     constexpr std::optional<UnitIntervalFF<Real>> GetToi() const noexcept;
 
     /// @brief Sets the time of impact (TOI).
+    /// @note This is a non-essential part. So changing this doesn't effect equality!
     /// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates
     ///   no actual impact in the current time slot, or empty.
     /// @post <code>GetToi()</code> returns the value set and
@@ -261,6 +266,18 @@ public:
     /// @see IsImpenetrable().
     constexpr void UnsetImpenetrable() noexcept;
 
+    /// @brief Whether or not this contact was destroyed.
+    /// @see SetDestroyed, UnsetDestroyed.
+    constexpr bool IsDestroyed() const noexcept;
+
+    /// @brief Sets the destroyed property of this contact.
+    /// @note This is only meaningfully used by the world implementation.
+    constexpr void SetDestroyed() noexcept;
+
+    /// @brief Unsets the destroyed property of this contact.
+    /// @note This is only meaningfully used by the world implementation.
+    constexpr void UnsetDestroyed() noexcept;
+
 private:
     /// Flags type data type.
     using FlagsType = std::uint8_t;
@@ -284,6 +301,9 @@ private:
 
         /// Indicates whether the contact is to be treated as a sensor or not.
         e_sensorFlag = 0x20,
+
+        /// Whether contact was destroyed or not.
+        e_destroyed = 0x40,
 
         /// Whether contact is to be treated as between impenetrable bodies.
         e_impenetrableFlag = 0x80,
@@ -313,7 +333,8 @@ private:
     /// @note Only valid if <code>m_flags & e_toiFlag</code>.
     UnitIntervalFF<Real> m_toi;
 
-    /// Count of TOI calculations contact has gone through since last reset.
+    /// @brief Count of TOI calculations contact has gone through since last reset.
+    /// @note This is a non-essential part - it should not participate in equality.
     substep_type m_toiCount = 0;
 
     FlagsType m_flags = 0; ///< Flags.
@@ -490,6 +511,21 @@ constexpr void Contact::UnsetImpenetrable() noexcept
     m_flags &= ~e_impenetrableFlag;
 }
 
+constexpr bool Contact::IsDestroyed() const noexcept
+{
+    return (m_flags & e_destroyed) != 0u;
+}
+
+constexpr void Contact::SetDestroyed() noexcept
+{
+    m_flags |= e_destroyed;
+}
+
+constexpr void Contact::UnsetDestroyed() noexcept
+{
+    m_flags &= ~e_destroyed;
+}
+
 constexpr void Contact::IncrementToiCount() noexcept
 {
     assert(m_toiCount < std::numeric_limits<decltype(m_toiCount)>::max());
@@ -502,20 +538,21 @@ constexpr void Contact::IncrementToiCount() noexcept
 /// @relatedalso Contact
 constexpr bool operator==(const Contact& lhs, const Contact& rhs) noexcept
 {
+    // Excludes checking the following which are *non-essential parts*:
+    //   lhs.GetToiCount() == rhs.GetToiCount()
+    //   lhs.GetToi() == rhs.GetToi()
     return lhs.GetContactableA() == rhs.GetContactableA() && //
            lhs.GetContactableB() == rhs.GetContactableB() && //
            lhs.GetFriction() == rhs.GetFriction() && //
            lhs.GetRestitution() == rhs.GetRestitution() && //
            lhs.GetTangentSpeed() == rhs.GetTangentSpeed() && //
-           lhs.GetToiCount() == rhs.GetToiCount() && //
            lhs.IsTouching() == rhs.IsTouching() && //
            lhs.IsEnabled() == rhs.IsEnabled() && //
            lhs.NeedsFiltering() == rhs.NeedsFiltering() && //
-           lhs.HasValidToi() == rhs.HasValidToi() && //
            lhs.NeedsUpdating() == rhs.NeedsUpdating() && //
            lhs.IsSensor() == rhs.IsSensor() && //
            lhs.IsImpenetrable() == rhs.IsImpenetrable() && //
-           lhs.GetToi() == rhs.GetToi();
+           lhs.IsDestroyed() == rhs.IsDestroyed();
 }
 
 /// @brief Operator not-equals.
