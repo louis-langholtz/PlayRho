@@ -46,9 +46,8 @@ struct PreStepStats {
     counter_type proxiesMoved = 0; ///< Proxies moved count.
     counter_type contactsDestroyed = 0; ///< Count of contacts destroyed.
     counter_type contactsAdded = 0; ///< Count of contacts added.
-    counter_type contactsIgnored = 0; ///< Count of contacts ignored during update processing.
-    counter_type contactsUpdated = 0; ///< Count of contacts updated (during update processing).
-    counter_type contactsSkipped = 0; ///< Count of contacts Skipped (during update processing).
+    counter_type contactsUpdated = 0; ///< Count of contacts updated during update processing.
+    counter_type contactsSkipped = 0; ///< Count of contacts not-needing update.
 };
 
 /// @brief Operator equal support.
@@ -58,7 +57,6 @@ constexpr auto operator==(const PreStepStats &lhs, const PreStepStats &rhs) -> b
            (lhs.proxiesMoved == rhs.proxiesMoved) && //
            (lhs.contactsDestroyed == rhs.contactsDestroyed) && //
            (lhs.contactsAdded == rhs.contactsAdded) && //
-           (lhs.contactsIgnored == rhs.contactsIgnored) && //
            (lhs.contactsUpdated == rhs.contactsUpdated) && //
            (lhs.contactsSkipped == rhs.contactsSkipped);
 }
@@ -85,6 +83,8 @@ struct RegStepStats {
     BodyCounter bodiesSlept = 0; ///< Bodies slept count.
     BodyCounter maxIslandBodies = 0; ///< Max bodies in all of the islands.
     counter_type contactsAdded = 0; ///< Contacts added count.
+    counter_type contactsUpdated = 0; ///< Count of contacts updated.
+    counter_type contactsSkipped = 0; ///< Count of contacts not-needing update.
     counter_type proxiesMoved = 0; ///< Proxies moved count.
     counter_type sumPosIters = 0; ///< Sum of the position iterations.
     counter_type sumVelIters = 0; ///< Sum of the velocity iterations.

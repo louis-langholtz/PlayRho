@@ -224,11 +224,10 @@ TEST(World, IsStepComplete)
 {
     auto world = World{};
     ASSERT_FALSE(GetSubStepping(world));
-    EXPECT_TRUE(IsStepComplete(world));
-
-    SetSubStepping(world, true);
+    ASSERT_TRUE(IsStepComplete(world));
+    ASSERT_NO_THROW(SetSubStepping(world, true));
     ASSERT_TRUE(GetSubStepping(world));
-    EXPECT_TRUE(IsStepComplete(world));
+    ASSERT_TRUE(IsStepComplete(world));
 
     auto stepConf = StepConf{};
     stepConf.deltaTime = Real(1) / 100_Hz;
@@ -258,15 +257,16 @@ TEST(World, IsStepComplete)
     Attach(world, stabody, shapeId2);
 
     auto i = 0ull;
-    while (IsStepComplete(world) && i < 100000) {
-        Step(world, stepConf);
+    const auto max = 100000ull;
+    while (IsStepComplete(world) && i < max) {
+        EXPECT_NO_THROW(Step(world, stepConf));
         ++i;
     }
-    EXPECT_LT(i, 1000000ull);
+    EXPECT_LT(i, max);
     EXPECT_FALSE(IsStepComplete(world));
-    Step(world, stepConf);
+    EXPECT_NO_THROW(Step(world, stepConf));
     EXPECT_FALSE(IsStepComplete(world));
-    Step(world, stepConf);
+    EXPECT_NO_THROW(Step(world, stepConf));
     EXPECT_TRUE(IsStepComplete(world));
 }
 
@@ -623,8 +623,8 @@ TEST(World, CreateDestroyContactingBodies)
     auto world = World{};
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
     ASSERT_EQ(GetJointCount(world), JointCounter(0));
-    ASSERT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
-    ASSERT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(0));
+    ASSERT_EQ(GetBodiesForProxies(world).size(), 0u);
+    ASSERT_EQ(GetTree(world).GetNodeCount(), 0u);
 
     auto contacts = GetContacts(world);
     ASSERT_TRUE(contacts.empty());
@@ -657,36 +657,35 @@ TEST(World, CreateDestroyContactingBodies)
     EXPECT_EQ(stats0.pre.proxiesMoved, 0u);
     EXPECT_EQ(stats0.pre.contactsDestroyed, 0u);
     EXPECT_EQ(stats0.pre.contactsAdded, 1u);
-    EXPECT_EQ(stats0.pre.contactsIgnored, 0u);
     EXPECT_EQ(stats0.pre.contactsUpdated, 0u);
     EXPECT_EQ(stats0.pre.contactsSkipped, 0u);
 
     EXPECT_EQ(stats0.reg.minSeparation, -2.0_m);
     EXPECT_EQ(stats0.reg.maxIncImpulse, 0.0_Ns);
-    EXPECT_EQ(stats0.reg.islandsFound, static_cast<decltype(stats0.reg.islandsFound)>(1));
-    EXPECT_EQ(stats0.reg.islandsSolved, static_cast<decltype(stats0.reg.islandsSolved)>(0));
-    EXPECT_EQ(stats0.reg.contactsAdded, static_cast<decltype(stats0.reg.contactsAdded)>(0));
-    EXPECT_EQ(stats0.reg.bodiesSlept, static_cast<decltype(stats0.reg.bodiesSlept)>(0));
-    EXPECT_EQ(stats0.reg.proxiesMoved, static_cast<decltype(stats0.reg.proxiesMoved)>(0));
-    EXPECT_EQ(stats0.reg.sumPosIters, static_cast<decltype(stats0.reg.sumPosIters)>(3));
-    EXPECT_EQ(stats0.reg.sumVelIters, static_cast<decltype(stats0.reg.sumVelIters)>(1));
+    EXPECT_EQ(stats0.reg.islandsFound, 1u);
+    EXPECT_EQ(stats0.reg.islandsSolved, 0u);
+    EXPECT_EQ(stats0.reg.contactsAdded, 0u);
+    EXPECT_EQ(stats0.reg.bodiesSlept, 0u);
+    EXPECT_EQ(stats0.reg.proxiesMoved, 0u);
+    EXPECT_EQ(stats0.reg.sumPosIters, 3u);
+    EXPECT_EQ(stats0.reg.sumVelIters, 1u);
 
     EXPECT_EQ(stats0.toi.minSeparation, std::numeric_limits<Length>::infinity());
     EXPECT_EQ(stats0.toi.maxIncImpulse, 0.0_Ns);
-    EXPECT_EQ(stats0.toi.islandsFound, static_cast<decltype(stats0.toi.islandsFound)>(0));
-    EXPECT_EQ(stats0.toi.islandsSolved, static_cast<decltype(stats0.toi.islandsSolved)>(0));
-    EXPECT_EQ(stats0.toi.contactsFound, static_cast<decltype(stats0.toi.contactsFound)>(0));
-    EXPECT_EQ(stats0.toi.contactsAtMaxSubSteps, static_cast<decltype(stats0.toi.contactsAtMaxSubSteps)>(0));
-    EXPECT_EQ(stats0.toi.contactsUpdatedToi, static_cast<decltype(stats0.toi.contactsUpdatedToi)>(0));
-    EXPECT_EQ(stats0.toi.contactsUpdatedTouching, static_cast<decltype(stats0.toi.contactsUpdatedTouching)>(0));
-    EXPECT_EQ(stats0.toi.contactsSkippedTouching, static_cast<decltype(stats0.toi.contactsSkippedTouching)>(0));
-    EXPECT_EQ(stats0.toi.contactsAdded, static_cast<decltype(stats0.toi.contactsAdded)>(0));
-    EXPECT_EQ(stats0.toi.proxiesMoved, static_cast<decltype(stats0.toi.proxiesMoved)>(0));
-    EXPECT_EQ(stats0.toi.sumPosIters, static_cast<decltype(stats0.toi.sumPosIters)>(0));
-    EXPECT_EQ(stats0.toi.sumVelIters, static_cast<decltype(stats0.toi.sumVelIters)>(0));
-    EXPECT_EQ(stats0.toi.maxDistIters, static_cast<decltype(stats0.toi.maxDistIters)>(0));
-    EXPECT_EQ(stats0.toi.maxToiIters, static_cast<decltype(stats0.toi.maxToiIters)>(0));
-    EXPECT_EQ(stats0.toi.maxRootIters, static_cast<decltype(stats0.toi.maxRootIters)>(0));
+    EXPECT_EQ(stats0.toi.islandsFound, 0u);
+    EXPECT_EQ(stats0.toi.islandsSolved, 0u);
+    EXPECT_EQ(stats0.toi.contactsFound, 0u);
+    EXPECT_EQ(stats0.toi.contactsAtMaxSubSteps, 0u);
+    EXPECT_EQ(stats0.toi.contactsUpdatedToi, 0u);
+    EXPECT_EQ(stats0.toi.contactsUpdatedTouching, 0u);
+    EXPECT_EQ(stats0.toi.contactsSkippedTouching, 1u);
+    EXPECT_EQ(stats0.toi.contactsAdded, 0u);
+    EXPECT_EQ(stats0.toi.proxiesMoved, 0u);
+    EXPECT_EQ(stats0.toi.sumPosIters, 0u);
+    EXPECT_EQ(stats0.toi.sumVelIters, 0u);
+    EXPECT_EQ(stats0.toi.maxDistIters, 0u);
+    EXPECT_EQ(stats0.toi.maxToiIters, 0u);
+    EXPECT_EQ(stats0.toi.maxRootIters, 0u);
 
     contacts = GetContacts(world);
     EXPECT_FALSE(contacts.empty());
@@ -2629,7 +2628,7 @@ TEST(World, CollidingDynamicBodies)
     for (const auto& ci: GetContacts(world, body_a))
     {
         EXPECT_FALSE(NeedsFiltering(world, std::get<ContactID>(ci)));
-        EXPECT_TRUE(NeedsUpdating(world, std::get<ContactID>(ci)));
+        EXPECT_FALSE(NeedsUpdating(world, std::get<ContactID>(ci)));
     }
     auto filter = GetFilterData(world, shape);
     filter.categoryBits = ~filter.categoryBits;
@@ -2706,6 +2705,27 @@ TEST(World, CollidingDynamicBodies)
 
 TEST(World_Longer, TilesComesToRest)
 {
+    const auto ExpectedFirstBodiesSlept = []() -> unsigned long
+    {
+        if constexpr (std::is_same_v<Real, float>) {
+            return 110u;
+        }
+        if constexpr (std::is_same_v<Real, double>) {
+            return 110u;
+        }
+        return 0u;
+    };
+    const auto ExpectedFirstAllSlept = []() -> unsigned long
+    {
+        if constexpr (std::is_same_v<Real, float>) {
+            return 1796u;
+        }
+        if constexpr (std::is_same_v<Real, double>) {
+            return 1791u;
+        }
+        return 0u;
+    };
+
     constexpr auto LinearSlop = 1_m / 1000;
     constexpr auto AngularSlop = (Pi * 2_rad) / 180;
     constexpr auto MinVertexRadius = LinearSlop * 2;
@@ -2785,7 +2805,12 @@ TEST(World_Longer, TilesComesToRest)
     auto sumToiVelIters = 0ul;
     //const auto start_time = std::chrono::high_resolution_clock::now();
     auto lastStats = StepStats{};
-    auto firstStepWithZeroMoved = std::optional<unsigned long>{};
+    auto firstWithContacts = std::optional<unsigned long>{};
+    auto firstWithDestroyed = std::optional<unsigned long>{};
+    auto firstWithIslandSolved = std::optional<unsigned long>{};
+    auto firstWithOneIsland = std::optional<unsigned long>{};
+    auto firstWithBodiesSlept = std::optional<unsigned long>{};
+    auto firstWithAllSlept = std::optional<unsigned long>{};
     auto totalBodiesSlept = 0ul;
     auto awakeCount = 0ul;
     constexpr auto maxSteps = 3000ul;
@@ -2796,64 +2821,62 @@ TEST(World_Longer, TilesComesToRest)
         sumToiPosIters += stats.toi.sumPosIters;
         sumToiVelIters += stats.toi.sumVelIters;
         lastStats = stats;
-        if ((stats.reg.proxiesMoved == 0u) && (stats.toi.proxiesMoved == 0u)) {
-            firstStepWithZeroMoved = numSteps;
+        if (!firstWithContacts &&
+            ((stats.pre.contactsAdded > 0) || (stats.reg.contactsAdded > 0) || (stats.toi.contactsAdded > 0))) {
+            firstWithContacts = numSteps;
+        }
+        if (!firstWithIslandSolved &&
+            (stats.reg.islandsSolved > 0u) && (stats.reg.maxIslandBodies > 1u)) {
+            firstWithIslandSolved = numSteps;
+        }
+        if (!firstWithDestroyed && (stats.pre.contactsDestroyed > 0)) {
+            firstWithDestroyed = numSteps;
+        }
+        if (!firstWithOneIsland && (stats.reg.islandsFound == 1u)) {
+            firstWithOneIsland = numSteps;
+        }
+        if (!firstWithBodiesSlept && (stats.reg.bodiesSlept > 0u)) {
+            firstWithBodiesSlept = numSteps;
         }
         EXPECT_GT(stats.reg.islandsFound, 0u);
         totalBodiesSlept += stats.reg.bodiesSlept;
+        if (!firstWithAllSlept && (totalBodiesSlept >= createdBodyCount)) {
+            firstWithAllSlept = numSteps;
+        }
         ++numSteps;
     }
     ASSERT_LT(numSteps, maxSteps);
+    EXPECT_EQ(firstWithContacts.value_or(0), 12u);
+    EXPECT_EQ(firstWithIslandSolved.value_or(0), 13u);
+    EXPECT_EQ(firstWithDestroyed.value_or(0), 51u);
+    EXPECT_EQ(firstWithOneIsland.value_or(0), 87u);
+    EXPECT_EQ(firstWithBodiesSlept.value_or(0), ExpectedFirstBodiesSlept());
+    EXPECT_EQ(firstWithAllSlept.value_or(0), ExpectedFirstAllSlept());
     switch (sizeof(Real)) {
     case 4u:
 #if defined(__core2__)
         EXPECT_EQ(GetContactRange(world), 1451u);
         EXPECT_EQ(totalBodiesSlept, 667u);
-        EXPECT_TRUE(firstStepWithZeroMoved);
-        if (firstStepWithZeroMoved) {
-            EXPECT_EQ(*firstStepWithZeroMoved, 1798u);
-        }
 #elif defined(_WIN64)
         EXPECT_EQ(GetContactRange(world), 1448u);
         EXPECT_EQ(totalBodiesSlept, 671u);
-        EXPECT_TRUE(firstStepWithZeroMoved);
-        if (firstStepWithZeroMoved) {
-            EXPECT_EQ(*firstStepWithZeroMoved, 1800u);
-        }
 #elif defined(_WIN32)
         EXPECT_EQ(GetContactRange(world), 1448u);
         EXPECT_EQ(totalBodiesSlept, 672u);
-        EXPECT_TRUE(firstStepWithZeroMoved);
-        if (firstStepWithZeroMoved) {
-            EXPECT_EQ(*firstStepWithZeroMoved, 1796u);
-        }
 #elif defined(__amd64__) // includes __k8__
         EXPECT_EQ(GetContactRange(world), 1449u);
         EXPECT_EQ(totalBodiesSlept, 670u);
-        EXPECT_TRUE(firstStepWithZeroMoved);
-        if (firstStepWithZeroMoved) {
-            EXPECT_EQ(*firstStepWithZeroMoved, 1798u);
-        }
 #elif defined(__arm64__) // At least for Apple Silicon
-        EXPECT_GE(GetContactRange(world), 1447u);
-        EXPECT_LE(GetContactRange(world), 1451u);
+        EXPECT_GE(GetContactRange(world), 1445u);
+        EXPECT_LE(GetContactRange(world), 1449u);
         EXPECT_GE(totalBodiesSlept, 667u);
-        EXPECT_LE(totalBodiesSlept, 670u);
-        EXPECT_TRUE(firstStepWithZeroMoved);
-        if (firstStepWithZeroMoved) {
-            EXPECT_GE(*firstStepWithZeroMoved, 1797u);
-            EXPECT_LE(*firstStepWithZeroMoved, 1812u);
-        }
+        EXPECT_LE(totalBodiesSlept, 671u);
+        EXPECT_TRUE(firstWithOneIsland);
 #else // unrecognized arch; just check results are within range of others
         EXPECT_GE(GetContactRange(world), 1447u);
         EXPECT_LE(GetContactRange(world), 1450u);
         EXPECT_GE(totalBodiesSlept, 667u);
         EXPECT_LE(totalBodiesSlept, 668u);
-        EXPECT_TRUE(firstStepWithZeroMoved);
-        if (firstStepWithZeroMoved) {
-            EXPECT_GE(*firstStepWithZeroMoved, 1798u);
-            EXPECT_LE(*firstStepWithZeroMoved, 1812u);
-        }
 #endif
         break;
     case 8u:
@@ -2863,14 +2886,6 @@ TEST(World_Longer, TilesComesToRest)
 #else
         EXPECT_EQ(totalBodiesSlept, createdBodyCount + 3u);
 #endif
-        EXPECT_TRUE(firstStepWithZeroMoved);
-        if (firstStepWithZeroMoved) {
-#if defined(__core2__) || defined(__arm64__) || (defined(__GNUC__) && !defined(__clang__))
-            EXPECT_EQ(*firstStepWithZeroMoved, 1827u);
-#else
-            EXPECT_EQ(*firstStepWithZeroMoved, 1792u);
-#endif
-        }
         break;
     }
     EXPECT_EQ(GetTree(world).GetNodeCount(), 5331u);
@@ -3023,11 +3038,11 @@ TEST(World_Longer, TilesComesToRest)
             EXPECT_EQ(sumToiPosIters, 44022ul);
             EXPECT_EQ(sumToiVelIters, 113284ul);
 #else
-            EXPECT_EQ(numSteps, 1798ul);
+            EXPECT_EQ(numSteps, 1797ul);
             EXPECT_EQ(sumRegPosIters, 36508ul);
-            EXPECT_EQ(sumRegVelIters, 46931ul);
-            EXPECT_EQ(sumToiPosIters, 44061ul);
-            EXPECT_EQ(sumToiVelIters, 113150ul);
+            EXPECT_EQ(sumRegVelIters, 46932ul);
+            EXPECT_EQ(sumToiPosIters, 44054ul);
+            EXPECT_EQ(sumToiVelIters, 114380ul);
 #endif
 #else
             EXPECT_EQ(numSteps, 1799ul);
@@ -3038,12 +3053,12 @@ TEST(World_Longer, TilesComesToRest)
 #endif
             break;
         case 8u:
-            EXPECT_EQ(numSteps, 1828ul);
-            EXPECT_EQ(sumRegPosIters, 36540ul);
-            EXPECT_EQ(sumRegVelIters, 47173ul);
-            EXPECT_EQ(sumToiPosIters, 44005ul);
+            EXPECT_EQ(numSteps, 1792ul);
+            EXPECT_EQ(sumRegPosIters, 36494ul);
+            EXPECT_EQ(sumRegVelIters, 46885ul);
+            EXPECT_EQ(sumToiPosIters, 44086ul);
 #if defined(__clang_major__) && (__clang_major__ >= 14) && !defined(PLAYRHO_USE_BOOST_UNITS)
-            EXPECT_EQ(sumToiVelIters, 114308ul);
+            EXPECT_EQ(sumToiVelIters, 112990ul);
 #else
             EXPECT_EQ(sumToiVelIters, 114196ul);
 #endif
@@ -3154,14 +3169,12 @@ TEST(World, SpeedingBulletBallWontTunnel)
     const auto max_travel = unsigned{10000};
 
     auto increments = int{1};
-    for (auto laps = int{1}; laps < 100; ++laps)
-    {
+    for (auto laps = int{1}; laps < 100; ++laps) {
+        SCOPED_TRACE(std::string("lap=") + std::to_string(laps));
         // traveling to the right
         listener.begin_contacts = 0;
-        for (auto travel_r = unsigned{0}; ; ++travel_r)
-        {
-            if (travel_r == max_travel)
-            {
+        for (auto travel_r = unsigned{0}; ; ++travel_r) {
+            if (travel_r == max_travel) {
                 std::cout << "begin_contacts=" << listener.begin_contacts << std::endl;
                 ASSERT_LT(travel_r, max_travel);
             }
@@ -3172,8 +3185,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
             EXPECT_LT(GetX(GetLocation(world, ball_body)), right_edge_x - (ball_radius/Real{2}));
             EXPECT_GT(GetX(GetLocation(world, ball_body)), left_edge_x + (ball_radius/Real{2}));
 
-            if (GetX(GetVelocity(world, ball_body).linear) >= max_velocity)
-            {
+            if (GetX(GetVelocity(world, ball_body).linear) >= max_velocity) {
                 return;
             }
 
@@ -3182,8 +3194,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
                 EXPECT_LT(GetX(GetVelocity(world, ball_body).linear), 0_mps);
                 break; // going left now
             }
-            else if (listener.begin_contacts > last_contact_count)
-            {
+            else if (listener.begin_contacts > last_contact_count) {
                 ++increments;
                 SetVelocity(world, ball_body, Velocity{
                     LinearVelocity2{
@@ -3191,10 +3202,10 @@ TEST(World, SpeedingBulletBallWontTunnel)
                         GetY(GetVelocity(world, ball_body).linear)
                     }, GetVelocity(world, ball_body).angular});
             }
-            else
-            {
-                EXPECT_TRUE(AlmostEqual(Real{GetX(GetVelocity(world, ball_body).linear) / 1_mps},
-                                        Real{static_cast<Real>(increments) * GetX(velocity) / 1_mps}));
+            else {
+                const auto sign = (listener.begin_contacts % 2 == 0) ? +1: -1;
+                EXPECT_DOUBLE_EQ(Real(GetX(GetVelocity(world, ball_body).linear) / 1_mps),
+                                 Real(static_cast<Real>(sign * increments) * GetX(velocity) / 1_mps));
             }
         }
         
@@ -3235,8 +3246,8 @@ TEST(World, SpeedingBulletBallWontTunnel)
             }
             else
             {
-                EXPECT_TRUE(AlmostEqual(Real{GetX(GetVelocity(world, ball_body).linear) / 1_mps},
-                                        Real{-static_cast<Real>(increments) * GetX(velocity) / 1_mps}));
+                EXPECT_DOUBLE_EQ(abs(Real(GetX(GetVelocity(world, ball_body).linear) / 1_mps)),
+                                 abs(Real(static_cast<Real>(increments) * GetX(velocity) / 1_mps)));
             }
         }
         
@@ -3806,18 +3817,27 @@ TEST(World, TouchingAwakeBodiesWithZeroDeltaTime)
                                                .UseLocation({+1_m, 0_m})
                                                .Use(shapeId0));
     ASSERT_EQ(GetContactRange(world), 0u);
-    auto stepConf = StepConf{};
-    stepConf.deltaTime = 0_s;
-    const auto stats = Step(world, stepConf);
+    const auto stats = Step(world, 0_s);
     EXPECT_EQ(stats.pre.proxiesCreated, 2u);
     EXPECT_EQ(stats.pre.proxiesMoved, 0u);
     EXPECT_EQ(stats.pre.contactsDestroyed, 0u);
     EXPECT_EQ(stats.pre.contactsAdded, 1u);
-    EXPECT_EQ(stats.pre.contactsIgnored, 0u);
     EXPECT_EQ(stats.pre.contactsUpdated, 0u);
     EXPECT_EQ(stats.pre.contactsSkipped, 0u);
     EXPECT_NE(stats.pre, PreStepStats());
+
+    EXPECT_EQ(stats.reg.minSeparation, std::numeric_limits<Length>::infinity());
+    EXPECT_EQ(stats.reg.maxIncImpulse, 0_Ns);
+    EXPECT_EQ(stats.reg.islandsFound, 0u);
+    EXPECT_EQ(stats.reg.islandsSolved, 0u);
+    EXPECT_EQ(stats.reg.bodiesSlept, 0u);
+    EXPECT_EQ(stats.reg.maxIslandBodies, 0u);
+    EXPECT_EQ(stats.reg.contactsAdded, 0u);
+    EXPECT_EQ(stats.reg.proxiesMoved, 0u);
+    EXPECT_EQ(stats.reg.sumPosIters, 0u);
+    EXPECT_EQ(stats.reg.sumVelIters, 0u);
     EXPECT_EQ(stats.reg, RegStepStats());
+
     EXPECT_EQ(stats.toi, ToiStepStats());
     EXPECT_EQ(GetContactRange(world), 1u);
     const auto manifold0 = GetManifold(world, ContactID(0));
@@ -3848,18 +3868,28 @@ TEST(World, TouchingAsleepBodiesWithZeroDeltaTime)
                                                .UseLocation({+1_m, 0_m})
                                                .Use(shapeId0));
     ASSERT_EQ(GetContactRange(world), 0u);
-    auto stepConf = StepConf{};
-    stepConf.deltaTime = 0_s;
-    const auto stats = Step(world, stepConf);
+    const auto stats = Step(world, 0_s);
     EXPECT_EQ(stats.pre.proxiesCreated, 2u);
     EXPECT_EQ(stats.pre.proxiesMoved, 0u);
     EXPECT_EQ(stats.pre.contactsDestroyed, 0u);
     EXPECT_EQ(stats.pre.contactsAdded, 1u);
-    EXPECT_EQ(stats.pre.contactsIgnored, 0u);
     EXPECT_EQ(stats.pre.contactsUpdated, 0u);
     EXPECT_EQ(stats.pre.contactsSkipped, 0u);
     EXPECT_NE(stats.pre, PreStepStats());
+
+
+    EXPECT_EQ(stats.reg.minSeparation, std::numeric_limits<Length>::infinity());
+    EXPECT_EQ(stats.reg.maxIncImpulse, 0_Ns);
+    EXPECT_EQ(stats.reg.islandsFound, 0u);
+    EXPECT_EQ(stats.reg.islandsSolved, 0u);
+    EXPECT_EQ(stats.reg.bodiesSlept, 0u);
+    EXPECT_EQ(stats.reg.maxIslandBodies, 0u);
+    EXPECT_EQ(stats.reg.contactsAdded, 0u);
+    EXPECT_EQ(stats.reg.proxiesMoved, 0u);
+    EXPECT_EQ(stats.reg.sumPosIters, 0u);
+    EXPECT_EQ(stats.reg.sumVelIters, 0u);
     EXPECT_EQ(stats.reg, RegStepStats());
+
     EXPECT_EQ(stats.toi, ToiStepStats());
     EXPECT_EQ(GetContactRange(world), 1u);
     const auto manifold0 = GetManifold(world, ContactID(0));
@@ -3884,12 +3914,39 @@ TEST(World, Recreate)
     auto world = World{WorldConf{}.UseVertexRadius(VertexRadius)};
     constexpr auto e_count = 20;
     auto createdBodyCount = 0ul;
+    constexpr auto ExpectedFirstWithBodiesSlept = []() -> unsigned {
+        if constexpr (std::is_same_v<Real, float>) {
+            return 82u;
+        }
+        if constexpr (std::is_same_v<Real, double>) {
+            return 81u;
+        }
+        return 0u;
+    };
+    constexpr auto ExpectedWorldContactRange = []() -> unsigned {
+        if constexpr (std::is_same_v<Real, float>) {
+            return 442u;
+        }
+        if constexpr (std::is_same_v<Real, double>) {
+            return 441u;
+        }
+        return 0u;
+    };
+    constexpr auto ExpectedTotalContactsDestroyed = []() -> unsigned {
+        if constexpr (std::is_same_v<Real, float>) {
+            return 20u;
+        }
+        if constexpr (std::is_same_v<Real, double>) {
+            return 21u;
+        }
+        return 0u;
+    };
 
     {
         const auto a = Real{0.5f};
         auto ground = Body(BodyConf{}.UseLocation(Length2{0_m, -a * 1_m}));
         constexpr auto N = 200;
-        constexpr auto M = 8;
+        constexpr auto M = 10;
         Length2 position;
         GetY(position) = 0_m;
         for (auto j = 0; j < M; ++j) {
@@ -3931,65 +3988,289 @@ TEST(World, Recreate)
         }
     }
 
-    EXPECT_EQ(createdBodyCount, 211u);
-    EXPECT_EQ(GetBodyRange(world), 211u);
+    ASSERT_EQ(createdBodyCount, 211u);
+    ASSERT_EQ(GetBodyRange(world), 211u);
+    ASSERT_EQ(GetShapeRange(world), 2001u);
 
-    StepConf step;
-    step.deltaTime = 1_s / 60;
-    step.linearSlop = LinearSlop;
-    step.regMinSeparation = -LinearSlop * Real(3);
-    step.toiMinSeparation = -LinearSlop * Real(1.5f);
-    step.targetDepth = LinearSlop * Real(3);
-    step.tolerance = LinearSlop / Real(4);
-    step.maxLinearCorrection = LinearSlop * Real(40);
-    step.maxAngularCorrection = AngularSlop * Real{4};
-    step.aabbExtension = LinearSlop * Real(20);
-    step.maxTranslation = 4_m;
-    step.velocityThreshold = (Real{8} / Real{10}) * 1_mps;
-    step.maxSubSteps = std::uint8_t{48};
+    constexpr auto deltaTime = 1_s / 60;
+    StepConf stepConf;
+    stepConf.deltaTime = deltaTime;
+    stepConf.linearSlop = LinearSlop;
+    stepConf.regMinSeparation = -LinearSlop * Real(3);
+    stepConf.toiMinSeparation = -LinearSlop * Real(1.5f);
+    stepConf.targetDepth = LinearSlop * Real(3);
+    stepConf.tolerance = LinearSlop / Real(4);
+    stepConf.maxLinearCorrection = LinearSlop * Real(40);
+    stepConf.maxAngularCorrection = AngularSlop * Real{4};
+    stepConf.aabbExtension = LinearSlop * Real(20);
+    stepConf.maxTranslation = 4_m;
+    stepConf.velocityThreshold = (Real{8} / Real{10}) * 1_mps;
+    stepConf.maxSubSteps = std::uint8_t{48};
 
     //const auto start_time = std::chrono::high_resolution_clock::now();
     auto lastStats = StepStats{};
-    auto firstStepWithContacts = std::optional<unsigned long>{};
-    auto firstStepWithIslandSolved = std::optional<unsigned long>{};
-    auto firstStepWithOneIsland = std::optional<unsigned long>{};
-    auto firstStepWithBodiesSlept = std::optional<unsigned long>{};
+    auto firstWithContacts = std::optional<unsigned long>{};
+    auto firstHasContacts = std::optional<unsigned long>{};
+    auto firstWithDestroyed = std::optional<unsigned long>{};
+    auto firstWithIslandSolved = std::optional<unsigned long>{};
+    auto firstWithOneIsland = std::optional<unsigned long>{};
+    auto firstWithBodiesSlept = std::optional<unsigned long>{};
     auto firstWithAllSlept = std::optional<unsigned long>{};
     auto totalBodiesSlept = 0ul;
-    constexpr auto maxSteps = 1000ul;
+    auto totalContactsDestroyed = 0ul;
+    constexpr auto maxSteps = 100ul; // stop before all settled
     auto numSteps = 0ul;
     while (numSteps < maxSteps) {
-        const auto stats = Step(world, step);
-        auto asleepCount = 0;
-        for (const auto& bodyId: GetBodies(world)) {
-            if (!IsAwake(GetBody(world, bodyId))) {
-                ++asleepCount;
-            }
-        }
+        const auto stats = Step(world, stepConf);
         lastStats = stats;
-        if (((stats.pre.contactsAdded > 0) || (stats.reg.contactsAdded > 0) || (stats.toi.contactsAdded > 0))
-            && !firstStepWithContacts) {
-            firstStepWithContacts = numSteps;
+        if (!firstWithContacts &&
+            ((stats.pre.contactsAdded > 0) || (stats.reg.contactsAdded > 0) || (stats.toi.contactsAdded > 0))) {
+            firstWithContacts = numSteps;
         }
-        if ((stats.reg.islandsFound == 1u) && !firstStepWithOneIsland) {
-            firstStepWithOneIsland = numSteps;
+        if (!firstHasContacts && GetContactRange(world) > 0) {
+            firstHasContacts = numSteps;
         }
-        if ((stats.reg.bodiesSlept > 0u) && !firstStepWithBodiesSlept) {
-            firstStepWithBodiesSlept = numSteps;
+        if (!firstWithIslandSolved &&
+            (stats.reg.islandsSolved > 0u) && (stats.reg.maxIslandBodies > 1u)) {
+            firstWithIslandSolved = numSteps;
         }
-        if ((stats.reg.islandsSolved > 0u) && (stats.reg.maxIslandBodies > 1u) && !firstStepWithIslandSolved) {
-            firstStepWithIslandSolved = numSteps;
+        if (!firstWithDestroyed && (stats.pre.contactsDestroyed > 0)) {
+            firstWithDestroyed = numSteps;
+        }
+        totalContactsDestroyed += stats.pre.contactsDestroyed;
+        if (!firstWithOneIsland && (stats.reg.islandsFound == 1u)) {
+            firstWithOneIsland = numSteps;
+        }
+        if (!firstWithBodiesSlept && (stats.reg.bodiesSlept > 0u)) {
+            firstWithBodiesSlept = numSteps;
         }
         totalBodiesSlept += stats.reg.bodiesSlept;
-        if (totalBodiesSlept >= createdBodyCount && !firstWithAllSlept) {
+        if (!firstWithAllSlept && (totalBodiesSlept >= createdBodyCount)) {
             firstWithAllSlept = numSteps;
         }
         ++numSteps;
     }
-    EXPECT_EQ(firstStepWithContacts.value_or(0), 12);
-    EXPECT_EQ(firstStepWithIslandSolved.value_or(0), 13);
-    EXPECT_EQ(firstStepWithOneIsland.value_or(0), 63);
-    EXPECT_EQ(firstStepWithBodiesSlept.value_or(0), 82);
-    EXPECT_EQ(firstWithAllSlept.value_or(0), 923);
-    EXPECT_EQ(totalBodiesSlept, createdBodyCount);
+
+    const auto awakeCount = GetAwakeCount(world);
+    EXPECT_EQ(firstWithContacts.value_or(0), 12u);
+    EXPECT_EQ(firstWithContacts, firstHasContacts);
+    EXPECT_EQ(firstWithIslandSolved.value_or(0), 13u);
+    EXPECT_EQ(firstWithDestroyed.value_or(0), 51u);
+    EXPECT_EQ(firstWithOneIsland.value_or(0), 63u);
+    EXPECT_EQ(firstWithBodiesSlept.value_or(0), ExpectedFirstWithBodiesSlept());
+    EXPECT_EQ(firstWithAllSlept.value_or(0), 0u);
+    EXPECT_EQ(totalBodiesSlept, 1u);
+    EXPECT_EQ(awakeCount, (211u - totalBodiesSlept));
+    EXPECT_EQ(totalContactsDestroyed, ExpectedTotalContactsDestroyed());
+    EXPECT_EQ(GetTree(world).GetNodeCount(), 4419u);
+    EXPECT_EQ(GetTree(world).GetLeafCount(), 2210u);
+
+    stepConf.deltaTime = 0_s;
+
+    const auto copy = world;
+    ASSERT_TRUE(copy == world);
+    auto recreated = World{WorldConf{}.UseVertexRadius(VertexRadius)};
+    {
+        const auto max = GetShapeRange(world);
+        for (auto i = decltype(GetShapeRange(world))(0); i < max; ++i) {
+            CreateShape(recreated, GetShape(world, ShapeID(i)));
+        }
+        ASSERT_EQ(GetShapeRange(recreated), GetShapeRange(world));
+        for (auto i = decltype(max)(0); i < max; ++i) {
+            ASSERT_EQ(GetShape(recreated, ShapeID(i)), GetShape(world, ShapeID(i)));
+        }
+    }
+    {
+        const auto max = GetBodyRange(world);
+        for (auto i = decltype(GetBodyRange(world))(0); i < max; ++i) {
+            CreateBody(recreated, GetBody(world, BodyID(i)), false);
+        }
+        ASSERT_EQ(GetBodyRange(recreated), GetBodyRange(world));
+        for (auto i = decltype(max)(0); i < max; ++i) {
+            SCOPED_TRACE(std::string("BodyID ") + std::to_string(i));
+            ASSERT_EQ(GetBody(recreated, BodyID(i)), GetBody(world, BodyID(i)));
+        }
+    }
+    ASSERT_EQ(GetContactRange(recreated), 0u);
+    ASSERT_NE(GetContactRange(recreated), GetContactRange(world));
+    ASSERT_FALSE(recreated == world);
+
+    auto recreatedStats = StepStats{};
+    ASSERT_NO_THROW(recreatedStats = Step(recreated, stepConf)); // Must be same stepConf except time!
+
+    EXPECT_EQ(recreatedStats.pre.proxiesCreated, 2210u);
+    EXPECT_EQ(recreatedStats.pre.proxiesMoved, 0u);
+    EXPECT_EQ(recreatedStats.pre.contactsDestroyed, 0u);
+    EXPECT_EQ(recreatedStats.pre.contactsAdded, 436u);
+    EXPECT_EQ(recreatedStats.pre.contactsUpdated, 0u);
+    EXPECT_EQ(recreatedStats.pre.contactsSkipped, 0u);
+    EXPECT_EQ(GetTree(world).GetNodeCount(), GetTree(recreated).GetNodeCount());
+    EXPECT_EQ(GetTree(world).GetLeafCount(), GetTree(recreated).GetLeafCount());
+    EXPECT_EQ(GetContactRange(recreated), 436u);
+    EXPECT_EQ(GetContactRange(world), ExpectedWorldContactRange());
+    auto worldContactMap = std::map<std::pair<Contactable, Contactable>, ContactID>{};
+    auto worldContactsDestroyed = 0u;
+    {
+        const auto max = GetContactRange(world);
+        for (auto i = decltype(GetContactRange(world)){0}; i < max; ++i) {
+            SCOPED_TRACE(std::string("ContactID ") + std::to_string(i));
+            const auto contact = GetContact(world, ContactID(i));
+            if (contact.IsDestroyed()) {
+                ++worldContactsDestroyed;
+                continue;
+            }
+            if (!contact.IsTouching()) {
+                continue;
+            }
+            EXPECT_FALSE(contact.NeedsUpdating());
+            const auto [it, inserted] = worldContactMap.emplace(
+                std::minmax(contact.GetContactableA(), contact.GetContactableB()), ContactID(i));
+            EXPECT_TRUE(inserted);
+            if (!inserted) {
+                ADD_FAILURE() << "insertion failed: older ID="
+                              << to_underlying(it->second)
+                              << " cA={"
+                              << to_underlying(it->first.first.bodyId) << ","
+                              << to_underlying(it->first.first.shapeId) << ","
+                              << it->first.first.childId << "},"
+                              << "cB={"
+                              << to_underlying(it->first.second.bodyId) << ","
+                              << to_underlying(it->first.second.shapeId) << ","
+                              << it->first.second.childId << "},";
+            }
+        }
+    }
+    EXPECT_EQ(worldContactsDestroyed, 4u);
+    EXPECT_EQ(worldContactMap.size(), 420u);
+    auto recreatedContactMap = std::map<std::pair<Contactable, Contactable>, ContactID>{};
+    {
+        const auto max = GetContactRange(recreated);
+        for (auto i = decltype(GetContactRange(recreated)){0}; i < max; ++i) {
+            SCOPED_TRACE(std::string("ContactID ") + std::to_string(i));
+            const auto contact = GetContact(recreated, ContactID(i));
+            EXPECT_FALSE(contact.IsDestroyed());
+            if (contact.IsDestroyed()) {
+                continue;
+            }
+            if (!contact.IsTouching()) {
+                continue;
+            }
+            EXPECT_FALSE(contact.NeedsUpdating());
+            const auto [it, inserted] = recreatedContactMap.emplace(
+                std::minmax(contact.GetContactableA(), contact.GetContactableB()), ContactID(i));
+            EXPECT_TRUE(inserted);
+        }
+    }
+    EXPECT_EQ(recreatedContactMap.size(), 420u);
+    EXPECT_EQ(worldContactMap.size(), recreatedContactMap.size());
+
+    for (const auto &entry: worldContactMap) {
+        std::ostringstream os;
+        os << "World ContactID ";
+        os << to_underlying(entry.second);
+        os << ": contactableA=" << entry.first.first;
+        os << ", contactableB=" << entry.first.second;
+        const auto it = recreatedContactMap.find(entry.first);
+        EXPECT_TRUE(it != recreatedContactMap.end()) << os.str();
+        if (it != recreatedContactMap.end()) {
+            const auto worldContact = GetContact(world, entry.second);
+            const auto recreatedContact = GetContact(recreated, it->second);
+            EXPECT_EQ(worldContact.GetContactableA(), recreatedContact.GetContactableA());
+            EXPECT_EQ(worldContact.GetContactableB(), recreatedContact.GetContactableB());
+            EXPECT_EQ(worldContact.GetFriction(), recreatedContact.GetFriction());
+            EXPECT_EQ(worldContact.GetRestitution(), recreatedContact.GetRestitution());
+            EXPECT_EQ(worldContact.GetTangentSpeed(), recreatedContact.GetTangentSpeed());
+            EXPECT_EQ(worldContact.IsTouching(), recreatedContact.IsTouching());
+            EXPECT_EQ(worldContact.IsEnabled(), recreatedContact.IsEnabled());
+            EXPECT_EQ(worldContact.IsSensor(), recreatedContact.IsSensor());
+            EXPECT_EQ(worldContact.IsImpenetrable(), recreatedContact.IsImpenetrable());
+            EXPECT_EQ(worldContact.IsDestroyed(), recreatedContact.IsDestroyed());
+            EXPECT_EQ(worldContact.NeedsFiltering(), recreatedContact.NeedsFiltering());
+            EXPECT_EQ(worldContact.NeedsUpdating(), recreatedContact.NeedsUpdating());
+            ASSERT_EQ(worldContact, recreatedContact);
+            const auto worldManifold = GetManifold(world, entry.second);
+            const auto recreatedManifold = GetManifold(recreated, it->second);
+            EXPECT_EQ(unsigned(worldManifold.GetType()), unsigned(recreatedManifold.GetType()));
+            EXPECT_EQ(unsigned(worldManifold.GetPointCount()), unsigned(recreatedManifold.GetPointCount()));
+            for (auto i = decltype(worldManifold.GetPointCount()){0u};
+                 i < worldManifold.GetPointCount() && i < recreatedManifold.GetPointCount();
+                 ++i) {
+                EXPECT_EQ(worldManifold.GetPoint(i).localPoint, recreatedManifold.GetPoint(i).localPoint);
+                EXPECT_EQ(worldManifold.GetPoint(i).contactFeature, recreatedManifold.GetPoint(i).contactFeature);
+            }
+            EXPECT_NO_THROW(SetManifold(recreated, it->second, worldManifold));
+        }
+        else {
+            // No contact in recreated for entry.first
+            // Does recreated's tree see entry.first as AABB overlap?
+            const auto recreatedIdxA = FindIndex(GetTree(recreated), entry.first.first);
+            const auto recreatedIdxB = FindIndex(GetTree(recreated), entry.first.second);
+            const auto worldIdxA = FindIndex(GetTree(world), entry.first.first);
+            const auto worldIdxB = FindIndex(GetTree(world), entry.first.second);
+            ASSERT_NE(recreatedIdxA, DynamicTree::GetInvalidSize()) << os.str();
+            ASSERT_NE(recreatedIdxB, DynamicTree::GetInvalidSize()) << os.str();
+            ASSERT_NE(worldIdxA, DynamicTree::GetInvalidSize()) << os.str();
+            ASSERT_NE(worldIdxB, DynamicTree::GetInvalidSize()) << os.str();
+            EXPECT_FALSE(TestOverlap(GetTree(recreated), recreatedIdxA, recreatedIdxB));
+            EXPECT_TRUE(TestOverlap(GetTree(world), worldIdxA, worldIdxB));
+            const auto recreatedAabbA = GetAABB(GetTree(recreated).GetNode(recreatedIdxA));
+            const auto recreatedAabbB = GetAABB(GetTree(recreated).GetNode(recreatedIdxB));
+            const auto worldAabbA = GetAABB(GetTree(world).GetNode(worldIdxA));
+            const auto worldAabbB = GetAABB(GetTree(world).GetNode(worldIdxB));
+            EXPECT_TRUE(TestOverlap(recreatedAabbA, worldAabbA));
+            EXPECT_TRUE(TestOverlap(recreatedAabbB, worldAabbB));
+            EXPECT_NE(recreatedAabbA, worldAabbA);
+            EXPECT_NE(recreatedAabbB, worldAabbB);
+        }
+    }
+    for (const auto &entry: recreatedContactMap) {
+        std::ostringstream os;
+        os << "Recreated ContactID ";
+        os << to_underlying(entry.second);
+        os << " for: contactableA=" << entry.first.first;
+        os << ", contactableB=" << entry.first.second;
+        const auto it = worldContactMap.find(entry.first);
+        EXPECT_TRUE(it != worldContactMap.end()) << os.str();
+        if (it != worldContactMap.end()) {
+            const auto worldContact = GetContact(world, it->second);
+            const auto recreatedContact = GetContact(recreated, entry.second);
+            EXPECT_EQ(worldContact.GetContactableA(), recreatedContact.GetContactableA());
+            EXPECT_EQ(worldContact.GetContactableB(), recreatedContact.GetContactableB());
+            EXPECT_EQ(worldContact.GetFriction(), recreatedContact.GetFriction());
+            EXPECT_EQ(worldContact.GetRestitution(), recreatedContact.GetRestitution());
+            EXPECT_EQ(worldContact.GetTangentSpeed(), recreatedContact.GetTangentSpeed());
+            EXPECT_EQ(worldContact.IsTouching(), recreatedContact.IsTouching());
+            EXPECT_EQ(worldContact.IsEnabled(), recreatedContact.IsEnabled());
+            EXPECT_EQ(worldContact.IsSensor(), recreatedContact.IsSensor());
+            EXPECT_EQ(worldContact.IsImpenetrable(), recreatedContact.IsImpenetrable());
+            EXPECT_EQ(worldContact.IsDestroyed(), recreatedContact.IsDestroyed());
+            EXPECT_EQ(worldContact.NeedsFiltering(), recreatedContact.NeedsFiltering());
+            EXPECT_EQ(worldContact.NeedsUpdating(), recreatedContact.NeedsUpdating());
+            ASSERT_EQ(worldContact, recreatedContact);
+        }
+        else {
+            // No contact in world for entry.first
+            // Does world's tree see entry.first as AABB overlap?
+            const auto recreatedIdxA = FindIndex(GetTree(recreated), entry.first.first);
+            const auto recreatedIdxB = FindIndex(GetTree(recreated), entry.first.second);
+            const auto worldIdxA = FindIndex(GetTree(world), entry.first.first);
+            const auto worldIdxB = FindIndex(GetTree(world), entry.first.second);
+            ASSERT_NE(recreatedIdxA, DynamicTree::GetInvalidSize()) << os.str();
+            ASSERT_NE(recreatedIdxB, DynamicTree::GetInvalidSize()) << os.str();
+            ASSERT_NE(worldIdxA, DynamicTree::GetInvalidSize()) << os.str();
+            ASSERT_NE(worldIdxB, DynamicTree::GetInvalidSize()) << os.str();
+            EXPECT_TRUE(TestOverlap(GetTree(recreated), recreatedIdxA, recreatedIdxB));
+            EXPECT_FALSE(TestOverlap(GetTree(world), worldIdxA, worldIdxB));
+            const auto recreatedAabbA = GetAABB(GetTree(recreated).GetNode(recreatedIdxA));
+            const auto recreatedAabbB = GetAABB(GetTree(recreated).GetNode(recreatedIdxB));
+            const auto worldAabbA = GetAABB(GetTree(world).GetNode(worldIdxA));
+            const auto worldAabbB = GetAABB(GetTree(world).GetNode(worldIdxB));
+            EXPECT_TRUE(TestOverlap(recreatedAabbA, worldAabbA));
+            EXPECT_TRUE(TestOverlap(recreatedAabbB, worldAabbB));
+            EXPECT_NE(recreatedAabbA, worldAabbA);
+            EXPECT_NE(recreatedAabbB, worldAabbB);
+        }
+    }
+
+    EXPECT_TRUE(recreated == world);
 }

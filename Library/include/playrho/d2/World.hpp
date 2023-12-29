@@ -563,9 +563,25 @@ Contact GetContact(const World& world, ContactID id);
 void SetContact(World& world, ContactID id, const Contact& value);
 
 /// @brief Gets the manifold for the identified contact.
+/// @note There is a manifold for every contact and vice-versa.
 /// @throws std::out_of_range If given an out of range contact identifier.
-/// @see GetContantRange.
+/// @see SetManifold, GetContantRange.
 Manifold GetManifold(const World& world, ContactID id);
+
+/// @brief Sets the identified manifold's state.
+/// @note There is a manifold for every contact and vice-versa.
+/// @param world The world of the manifold whose state is to be set.
+/// @param id Identifier of the manifold whose state is to be set.
+/// @param value Value the manifold is to be set to. The new state:
+///   TODO: is not allowed to change whether the contact is awake,
+///   TODO: is not allowed to change whether the contact is impenetrable.
+///   Otherwise, throws <code>InvalidArgument</code> exception and doesn't change anything.
+/// @throws std::out_of_range If given an out of range contact identifier or the new
+///   manifold value references an out of range identifier.
+/// @throws InvalidArgument if the identifier is to a freed contact or if the new state is
+///   not allowable.
+/// @see GetManifold, GetContactRange.
+void SetManifold(World& world, ContactID id, const Manifold& value);
 
 /// @brief Gets the count of contacts in the given world.
 /// @note Not all contacts are for shapes that are actually touching. Some contacts are for
@@ -788,6 +804,7 @@ public:
     friend Contact GetContact(const World& world, ContactID id);
     friend void SetContact(World& world, ContactID id, const Contact& value);
     friend Manifold GetManifold(const World& world, ContactID id);
+    friend void SetManifold(World& world, ContactID id, const Manifold& value);
 
 private:
     /// @brief Pointer to implementation (PIMPL)
@@ -1044,6 +1061,11 @@ inline void SetContact(World& world, ContactID id, const Contact& value)
 inline Manifold GetManifold(const World& world, ContactID id)
 {
     return world.m_impl->GetManifold_(id);
+}
+
+inline void SetManifold(World& world, ContactID id, const Manifold& value)
+{
+    world.m_impl->SetManifold_(id, value);
 }
 
 // Free functions...

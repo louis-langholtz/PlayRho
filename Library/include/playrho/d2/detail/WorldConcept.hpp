@@ -398,8 +398,13 @@ struct WorldConcept {
 
     /// @brief Gets the collision manifold for the identified contact.
     /// @throws std::out_of_range If given an invalid contact identifier.
-    /// @see GetContact_, GetContactRange_.
+    /// @see SetManifold_, GetContactRange_.
     virtual Manifold GetManifold_(ContactID id) const = 0;
+
+    /// @brief Sets the collision manifold for the identified contact.
+    /// @throws std::out_of_range If given an invalid contact identifier.
+    /// @see GetManifold_, GetContactRange_.
+    virtual void SetManifold_(ContactID id, const Manifold& value) = 0;
 };
 
 } // namespace playrho::d2::detail

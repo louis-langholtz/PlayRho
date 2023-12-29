@@ -334,7 +334,7 @@ void ShowStats(const StepConf& stepConf, UiState& ui, const World& world, const 
     }
 
     {
-        ImGui::ColumnsContext cc(6, "PreStepColumns", false);
+        ImGui::ColumnsContext cc(5, "PreStepColumns", false);
         ImGui::SetColumnWidth(0, firstColumnWidth);
         ImGui::TextUnformatted("Pre-step:");
         ImGui::NextColumn();
@@ -342,17 +342,6 @@ void ShowStats(const StepConf& stepConf, UiState& ui, const World& world, const 
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Contacts added.");
-        }
-        ImGui::NextColumn();
-        ImGui::TextUnformatted([=]() {
-            std::ostringstream os;
-            os << "c-ign: " << stats.m_stepStats.pre.contactsIgnored << "/"
-            << stats.m_sumContactsIgnoredPre;
-            return os.str();
-        }());
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Contacts ignored over running total ignored.");
         }
         ImGui::NextColumn();
         ImGui::TextUnformatted([=]() {
@@ -1178,7 +1167,6 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
     m_stats.m_maxAABB = GetEnclosingAABB(m_stats.m_maxAABB, GetAABB(GetTree(m_world)));
     
     m_stats.m_sumContactsUpdatedPre += stepStats.pre.contactsUpdated;
-    m_stats.m_sumContactsIgnoredPre += stepStats.pre.contactsIgnored;
     m_stats.m_sumContactsSkippedPre += stepStats.pre.contactsSkipped;
 
     m_stats.m_sumRegIslandsFound += stepStats.reg.islandsFound;

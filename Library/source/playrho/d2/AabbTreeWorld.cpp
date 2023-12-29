@@ -462,6 +462,13 @@ void FlagForUpdating(ObjectPool<Contact>& contactsBuffer, const T& contacts) noe
     });
 }
 
+[[maybe_unused]] auto NeedsUpdating(const Span<const Contact>& contacts) noexcept -> bool
+{
+    return std::any_of(begin(contacts), end(contacts), [](const Contact &contact){
+        return contact.NeedsUpdating();
+    });
+}
+
 inline bool EitherIsAccelerable(const Body& lhs, const Body& rhs) noexcept
 {
     return IsAccelerable(lhs) || IsAccelerable(rhs);
@@ -547,7 +554,8 @@ void DestroyProxies(DynamicTree& tree, BodyID bodyId, ShapeID shapeId, ProxyIDs&
 
 auto CreateProxies(DynamicTree& tree,
                    BodyID bodyID, ShapeID shapeID, const Shape& shape,
-                   const Transformation& xfm, Length aabbExtension,
+                   const Transformation& xfm0, const Transformation& xfm1,
+                   const StepConf& conf,
                    ProxyIDs& fixtureProxies,
                    ProxyIDs& otherProxies) -> ChildCounter
 {
@@ -555,14 +563,15 @@ auto CreateProxies(DynamicTree& tree,
     const auto childCount = GetChildCount(shape);
     fixtureProxies.reserve(size(fixtureProxies) + childCount);
     otherProxies.reserve(size(otherProxies) + childCount);
-    for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex) {
-        const auto dp = GetChild(shape, childIndex);
-        const auto aabb = playrho::d2::ComputeAABB(dp, xfm);
-        const auto fattenedAABB = GetFattenedAABB(aabb, aabbExtension);
-        const auto treeId = tree.CreateLeaf(fattenedAABB, Contactable{
-            bodyID, shapeID, childIndex});
-        fixtureProxies.push_back(treeId);
-        otherProxies.push_back(treeId);
+    const auto displacement = conf.displaceMultiplier * (xfm1.p - xfm0.p);
+    for (auto childID = decltype(childCount){0}; childID < childCount; ++childID) {
+        const auto dp = GetChild(shape, childID);
+        const auto baseAABB = ComputeAABB(dp, xfm0, xfm1);
+        const auto fattenedAABB = GetFattenedAABB(baseAABB, conf.aabbExtension);
+        const auto displacedAABB = GetDisplacedAABB(fattenedAABB, displacement);
+        const auto treeID = tree.CreateLeaf(displacedAABB, Contactable{bodyID, shapeID, childID});
+        fixtureProxies.push_back(treeID);
+        otherProxies.push_back(treeID);
     }
     return childCount;
 }
@@ -711,8 +720,9 @@ auto FindContacts(pmr::memory_resource& resource,
     // to eliminate any node pairs that have the same body here before the key pairs are
     // sorted.
     for_each(cbegin(proxies), cend(proxies), [&](DynamicTree::Size pid) {
-        const auto leaf0 = tree.GetLeafData(pid);
-        const auto aabb = tree.GetAABB(pid);
+        const auto &node = tree.GetNode(pid);
+        const auto aabb = node.GetAABB();
+        const auto leaf0 = node.AsLeaf();
         Query(tree, aabb, [pid,leaf0,&proxyKeys,&tree](DynamicTree::Size nodeId) {
             const auto leaf1 = tree.GetLeafData(nodeId);
             // A proxy cannot form a pair with itself.
@@ -1464,6 +1474,9 @@ void AabbTreeWorld::AddJointsToIsland(Island& island, BodyStack& stack,
 
 RegStepStats AabbTreeWorld::SolveReg(const StepConf& conf)
 {
+    assert(IsStepComplete(*this));
+    assert(IsLocked(*this));
+
     auto stats = RegStepStats{};
     auto remNumBodies = static_cast<BodyCounter>(size(m_bodies)); // Remaining # of bodies.
     auto remNumContacts = static_cast<ContactCounter>(size(m_contacts)); // Remaining # of contacts.
@@ -1528,22 +1541,34 @@ RegStepStats AabbTreeWorld::SolveReg(const StepConf& conf)
                 stats.proxiesMoved += Synchronize(m_bodyProxies[to_underlying(bodyId)],
                                                   GetTransform0(GetSweep(body)),
                                                   GetTransformation(body),
-                                                  conf.displaceMultiplier, conf.aabbExtension);
+                                                  conf);
             }
         }
     }
+
+    ResizeAndReset(m_islanded.bodies, size(m_bodyBuffer), false);
+    ResizeAndReset(m_islanded.contacts, size(m_contactBuffer), false);
+    ResizeAndReset(m_islanded.joints, size(m_jointBuffer), false);
+
+    const auto updateStats = UpdateContacts(conf);
+    stats.contactsUpdated += updateStats.updated;
+    stats.contactsSkipped += updateStats.skipped;
 
     // Look for new contacts.
     stats.contactsAdded = AddContacts(
         FindContacts(m_proxyKeysResource, m_tree, std::exchange(m_proxiesForContacts, {})),
         conf);
+
+    assert(!NeedsUpdating(m_contactBuffer));
     return stats;
 }
 
 IslandStats AabbTreeWorld::SolveRegIslandViaGS(const StepConf& conf, const Island& island)
 {
     assert(!empty(island.bodies) || !empty(island.contacts) || !empty(island.joints));
-    
+    assert(IsStepComplete(*this));
+    assert(IsLocked(*this));
+
     auto results = IslandStats{};
     results.positionIters = conf.regPositionIters;
     const auto h = conf.deltaTime; ///< Time step.
@@ -1642,6 +1667,9 @@ IslandStats AabbTreeWorld::SolveRegIslandViaGS(const StepConf& conf, const Islan
     }
 
     // XXX: Should contacts needing updating be updated now??
+    //const auto updateStats = UpdateContacts(conf);
+    //results.contactsUpdated += updateStats.updated;
+    //results.contactsSkipped += updateStats.skipped;
 
     if (m_listeners.postSolveContact) {
         Report(m_listeners.postSolveContact, island.contacts, velConstraints,
@@ -1662,20 +1690,16 @@ AabbTreeWorld::UpdateContactTOIs(const StepConf& conf)
     auto results = UpdateContactsData{};
 
     const auto toiConf = GetToiConf(conf);
-    for (const auto& contact: m_contacts)
-    {
+    for (const auto& contact: m_contacts) {
         auto& c = m_contactBuffer[to_underlying(std::get<ContactID>(contact))];
-        if (HasValidToi(c))
-        {
+        if (HasValidToi(c)) {
             ++results.numValidTOI;
             continue;
         }
-        if (!IsEnabled(c) || IsSensor(c) || !IsImpenetrable(c))
-        {
+        if (!IsEnabled(c) || IsSensor(c) || !IsImpenetrable(c)) {
             continue;
         }
-        if (GetToiCount(c) >= conf.maxSubSteps)
-        {
+        if (GetToiCount(c) >= conf.maxSubSteps) {
             // What are the pros/cons of this?
             // Larger m_maxSubSteps slows down the simulation.
             // m_maxSubSteps of 44 and higher seems to decrease the occurrance of tunneling
@@ -1730,15 +1754,9 @@ AabbTreeWorld::UpdateContactTOIs(const StepConf& conf)
 
 ToiStepStats AabbTreeWorld::SolveToi(const StepConf& conf)
 {
+    assert(IsLocked(*this));
+
     auto stats = ToiStepStats{};
-
-    if (IsStepComplete(*this)) {
-        ResetBodiesForSolveTOI(m_bodies, m_bodyBuffer);
-        Unset(m_islanded.bodies, m_bodies);
-        ResetContactsForSolveTOI(m_contactBuffer, m_contacts);
-        Unset(m_islanded.contacts, m_contacts);
-    }
-
     const auto subStepping = GetSubStepping(*this);
 
     // Find TOI events and solve them.
@@ -1754,6 +1772,10 @@ ToiStepStats AabbTreeWorld::SolveToi(const StepConf& conf)
         if (next == InvalidContactID) {
             // No more TOI events to handle within the current time step. Done!
             m_flags |= e_stepComplete;
+            ResetBodiesForSolveTOI(m_bodies, m_bodyBuffer);
+            Unset(m_islanded.bodies, m_bodies);
+            ResetContactsForSolveTOI(m_contactBuffer, m_contacts);
+            Unset(m_islanded.contacts, m_contacts);
             break;
         }
 
@@ -1783,7 +1805,7 @@ ToiStepStats AabbTreeWorld::SolveToi(const StepConf& conf)
                     stats.proxiesMoved += Synchronize(m_bodyProxies[to_underlying(bodyId)],
                                                       GetTransform0(body.GetSweep()),
                                                       GetTransformation(body),
-                                                      conf.displaceMultiplier, conf.aabbExtension);
+                                                      conf);
                     const auto& bodyContacts = m_bodyContacts[to_underlying(bodyId)];
                     ResetBodyContactsForSolveTOI(m_contactBuffer, bodyContacts);
                     Unset(m_islanded.contacts, bodyContacts);
@@ -1802,11 +1824,19 @@ ToiStepStats AabbTreeWorld::SolveToi(const StepConf& conf)
             break;
         }
     }
+
+    const auto updateStats = UpdateContacts(conf);
+    stats.contactsUpdatedTouching += updateStats.updated;
+    stats.contactsSkippedTouching += updateStats.skipped;
+
+    assert(!NeedsUpdating(m_contactBuffer));
     return stats;
 }
 
 IslandStats AabbTreeWorld::SolveToi(ContactID contactID, const StepConf& conf)
 {
+    assert(IsLocked(*this));
+
     // Note:
     //   This function is what used to be b2World::SolveToi(const b2TimeStep& step).
     //   It also differs internally from Erin's implementation.
@@ -1814,7 +1844,6 @@ IslandStats AabbTreeWorld::SolveToi(ContactID contactID, const StepConf& conf)
     //   1. Bodies don't get their under-active times reset (like they do in Erin's code).
 
     auto numUpdated = ContactCounter{0};
-    auto numSkipped = ContactCounter{0};
     auto& contact = m_contactBuffer[to_underlying(contactID)];
 
     /*
@@ -1840,15 +1869,19 @@ IslandStats AabbTreeWorld::SolveToi(ContactID contactID, const StepConf& conf)
         // Advance the bodies to the TOI.
         assert((toi != Real(0)) || ((GetSweep(bA).alpha0 == Real(0)) && (GetSweep(bB).alpha0 == Real(0))));
         Advance(bA, toi);
+        if (GetPosition0(bA) != backupA.pos0 || GetPosition1(bA) != backupA.pos1) {
+            FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(bodyIdA)]);
+        }
         Advance(bB, toi);
-        FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(bodyIdA)]);
-        FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(bodyIdB)]);
+        if (GetPosition0(bB) != backupB.pos0 || GetPosition1(bB) != backupB.pos1) {
+            FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(bodyIdB)]);
+        }
 
         // The TOI contact likely has some new contact points.
-        SetEnabled(contact);
-        assert(contact.NeedsUpdating());
-        Update(contactID, GetUpdateConf(conf));
-        ++numUpdated;
+        if (contact.NeedsUpdating()) {
+            Update(contactID, GetUpdateConf(conf));
+            ++numUpdated;
+        }
 
         SetToi(contact, {});
         contact.IncrementToiCount();
@@ -1867,7 +1900,7 @@ IslandStats AabbTreeWorld::SolveToi(ContactID contactID, const StepConf& conf)
             //contact.UnsetEnabled();
             SetSweep(bA, backupA);
             SetSweep(bB, backupB);
-            return IslandStats{}.IncContactsUpdated(numUpdated).IncContactsSkipped(numSkipped);
+            return IslandStats{}.IncContactsUpdated(numUpdated).IncContactsSkipped(numUpdated? 0u: 1u);
         }
     }
     if (IsSpeedable(bA)) {
@@ -1898,6 +1931,7 @@ IslandStats AabbTreeWorld::SolveToi(ContactID contactID, const StepConf& conf)
     island.bodies.push_back(bodyIdB);
     island.contacts.push_back(contactID);
 
+    auto numSkipped = ContactCounter(0u);
     // Process the contacts of the two bodies, adding appropriate ones to the island,
     // adding appropriate other bodies of added contacts, and advancing those other
     // bodies sweeps and transforms to the minimum contact's TOI.
@@ -1925,6 +1959,8 @@ IslandStats AabbTreeWorld::SolveToi(ContactID contactID, const StepConf& conf)
 
 IslandStats AabbTreeWorld::SolveToiViaGS(const Island& island, const StepConf& conf)
 {
+    assert(IsLocked(*this));
+
     auto results = IslandStats{};
 
     /*
@@ -2055,11 +2091,12 @@ AabbTreeWorld::ProcessContactsForTOI( // NOLINT(readability-function-cognitive-c
                         const auto backup = GetSweep(other);
                         if (!otherIslanded /* && GetSweep(other).alpha0 != toi */) {
                             Advance(other, toi);
-                            FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(otherId)]);
+                            if (GetPosition0(other) != backup.pos0 || GetPosition1(other) != backup.pos1) {
+                                FlagForUpdating(m_contactBuffer, m_bodyContacts[to_underlying(otherId)]);
+                            }
                         }
 
                         // Update the contact points
-                        SetEnabled(contact);
                         if (NeedsUpdating(contact)) {
                             Update(contactID, updateConf);
                             ++results.contactsUpdated;
@@ -2121,12 +2158,14 @@ StepStats Step(AabbTreeWorld& world, const StepConf& conf)
     {
         const FlagGuard<decltype(world.m_flags)> flagGaurd(world.m_flags, AabbTreeWorld::e_locked);
 
-        // Create proxies herein for access to conf.aabbExtension info!
+        // Create proxies herein for access to StepConf info!
         for (const auto& [bodyID, shapeID]: world.m_fixturesForProxies) {
+            const auto &body = world.m_bodyBuffer[to_underlying(bodyID)];
+            const auto xfm0 = GetTransform0(GetSweep(body));
+            const auto xfm1 = GetTransformation(body);
             stepStats.pre.proxiesCreated +=
                 CreateProxies(world.m_tree, bodyID, shapeID, world.m_shapeBuffer[to_underlying(shapeID)],
-                              GetTransformation(world.m_bodyBuffer[to_underlying(bodyID)]),
-                              conf.aabbExtension,
+                              xfm0, xfm1, conf,
                               world.m_bodyProxies[to_underlying(bodyID)], world.m_proxiesForContacts);
         }
         world.m_fixturesForProxies = {};
@@ -2135,10 +2174,10 @@ StepStats Step(AabbTreeWorld& world, const StepConf& conf)
             auto proxiesMoved = PreStepStats::counter_type{0};
             for_each(begin(world.m_bodiesForSync), end(world.m_bodiesForSync),
                      [&world,&cfg,&proxiesMoved](const auto& bodyID) {
-                const auto xfm = GetTransformation(world.m_bodyBuffer[to_underlying(bodyID)]);
-                // Not always true: assert(GetTransform0(b->GetSweep()) == xfm);
-                proxiesMoved += world.Synchronize(world.m_bodyProxies[to_underlying(bodyID)], xfm, xfm,
-                                                  cfg.displaceMultiplier, cfg.aabbExtension);
+                const auto &body = world.m_bodyBuffer[to_underlying(bodyID)];
+                const auto xfm0 = GetTransform0(GetSweep(body));
+                const auto xfm1 = GetTransformation(body);
+                proxiesMoved += world.Synchronize(world.m_bodyProxies[to_underlying(bodyID)], xfm0, xfm1, cfg);
             });
             return proxiesMoved;
         }(conf);
@@ -2154,11 +2193,9 @@ StepStats Step(AabbTreeWorld& world, const StepConf& conf)
         {
             // Could potentially run UpdateContacts multithreaded over split lists...
             const auto updateStats = world.UpdateContacts(conf);
-            stepStats.pre.contactsIgnored = updateStats.ignored;
             stepStats.pre.contactsUpdated = updateStats.updated;
             stepStats.pre.contactsSkipped = updateStats.skipped;
         }
-
 
         // For any new fixtures added: need to find and create the new contacts.
         // Note: this may update bodies (in addition to the contacts container).
@@ -2166,9 +2203,10 @@ StepStats Step(AabbTreeWorld& world, const StepConf& conf)
             FindContacts(world.m_proxyKeysResource, world.m_tree, std::exchange(world.m_proxiesForContacts, {})),
             conf);
 
+        assert(!NeedsUpdating(world.m_contactBuffer));
+
         if (conf.deltaTime != 0_s) {
             world.m_inv_dt0 = Real(1) / conf.deltaTime;
-
             // Integrate velocities, solve velocity constraints, and integrate positions.
             if (IsStepComplete(world)) {
                 stepStats.reg = world.SolveReg(conf);
@@ -2240,6 +2278,7 @@ void AabbTreeWorld::InternalDestroy(ContactID contactID, const Body* from)
         SetAwake(*bodyB);
     }
     m_contactBuffer.Free(to_underlying(contactID));
+    contact.SetDestroyed();
     m_manifoldBuffer.Free(to_underlying(contactID));
 }
 
@@ -2303,13 +2342,11 @@ AabbTreeWorld::DestroyContactsStats AabbTreeWorld::DestroyContacts(KeyedContactI
 AabbTreeWorld::UpdateContactsStats AabbTreeWorld::UpdateContacts(const StepConf& conf)
 {
 #ifdef DO_PAR_UNSEQ
-    atomic<std::uint32_t> ignored;
-    atomic<std::uint32_t> updated;
-    atomic<std::uint32_t> skipped;
+    atomic<ContactCounter> updated;
+    atomic<ContactCounter> skipped;
 #else
-    auto ignored = std::uint32_t{0};
-    auto updated = std::uint32_t{0};
-    auto skipped = std::uint32_t{0};
+    auto updated = ContactCounter(0u);
+    auto skipped = ContactCounter(0u);
 #endif
 
     const auto updateConf = GetUpdateConf(conf);
@@ -2325,24 +2362,18 @@ AabbTreeWorld::UpdateContactsStats AabbTreeWorld::UpdateContacts(const StepConf&
     for_each(/*execution::par_unseq,*/ begin(m_contacts), end(m_contacts), [&](const auto& c) {
         const auto contactID = std::get<ContactID>(c);
         auto& contact = m_contactBuffer[to_underlying(contactID)];
+#ifndef NDEBUG
         const auto& bodyA = m_bodyBuffer[to_underlying(GetBodyA(contact))];
         const auto& bodyB = m_bodyBuffer[to_underlying(GetBodyB(contact))];
+#endif
 
         // Awake && speedable (dynamic or kinematic) means collidable.
         // At least one body must be collidable
         assert(!IsAwake(bodyA) || IsSpeedable(bodyA));
         assert(!IsAwake(bodyB) || IsSpeedable(bodyB));
-        if (!IsAwake(bodyA) && !IsAwake(bodyB)) {
-            // This sometimes fails... is it important?
-            //assert(!contact.HasValidToi());
-            ++ignored;
-            return;
-        }
 
         // Possible that bodyA.GetSweep().alpha0 != 0
         // Possible that bodyB.GetSweep().alpha0 != 0
-
-        SetEnabled(contact);
 
         // Update the contact manifold and notify the listener.
         // Note: ideally contacts are only updated if there was a change to:
@@ -2393,7 +2424,6 @@ AabbTreeWorld::UpdateContactsStats AabbTreeWorld::UpdateContacts(const StepConf&
 #endif
     
     return UpdateContactsStats{
-        static_cast<ContactCounter>(ignored),
         static_cast<ContactCounter>(updated),
         static_cast<ContactCounter>(skipped)
     };
@@ -2477,6 +2507,8 @@ AabbTreeWorld::AddContacts( // NOLINT(readability-function-cognitive-complexity)
         m_islanded.contacts.resize(size(m_contactBuffer));
         m_manifoldBuffer.Allocate();
         auto& contact = m_contactBuffer[to_underlying(contactID)];
+        assert(contact.IsEnabled());
+        contact.UnsetDestroyed();
         if (IsImpenetrable(bodyA) || IsImpenetrable(bodyB)) {
             SetImpenetrable(contact);
         }
@@ -2539,22 +2571,21 @@ const BodyJointIDs& GetJoints(const AabbTreeWorld& world, BodyID id)
 }
 
 ContactCounter AabbTreeWorld::Synchronize(const ProxyIDs& bodyProxies,
-                                      const Transformation& xfm0, const Transformation& xfm1,
-                                      Real multiplier, Length extension)
+                                          const Transformation& xfm0, const Transformation& xfm1,
+                                          const StepConf& conf)
 {
     auto updatedCount = ContactCounter{0};
     assert(::playrho::IsValid(xfm0));
     assert(::playrho::IsValid(xfm1));
-    const auto displacement = multiplier * (xfm1.p - xfm0.p);
+    const auto displacement = conf.displaceMultiplier * (xfm1.p - xfm0.p);
     for (auto&& e: bodyProxies) {
         const auto& node = m_tree.GetNode(e);
         const auto leafData = node.AsLeaf();
         const auto aabb = ComputeAABB(GetChild(m_shapeBuffer[to_underlying(leafData.shapeId)],
                                                leafData.childId), xfm0, xfm1);
+        // Note: updating leaf here is expensive, avoid when possible!
         if (!Contains(node.GetAABB(), aabb)) {
-            const auto newAabb = GetDisplacedAABB(GetFattenedAABB(aabb, extension),
-                                                  displacement);
-            m_tree.UpdateLeaf(e, newAabb);
+            m_tree.UpdateLeaf(e, GetDisplacedAABB(GetFattenedAABB(aabb, conf.aabbExtension), displacement));
             m_proxiesForContacts.push_back(e);
             ++updatedCount;
         }
@@ -2565,7 +2596,9 @@ ContactCounter AabbTreeWorld::Synchronize(const ProxyIDs& bodyProxies,
 void AabbTreeWorld::Update( // NOLINT(readability-function-cognitive-complexity)
     ContactID contactID, const ContactUpdateConf& conf)
 {
+    assert(IsLocked(*this));
     auto& c = m_contactBuffer[to_underlying(contactID)];
+    assert(c.NeedsUpdating());
     auto& manifold = m_manifoldBuffer[to_underlying(contactID)];
     const auto oldManifold = manifold;
 
@@ -2800,6 +2833,22 @@ void SetContact(AabbTreeWorld& world, ContactID id, Contact value)
         throw InvalidArgument("user may not change the TOI count");
     }
     contact = value;
+}
+
+void SetManifold(AabbTreeWorld& world, ContactID id, const Manifold& value)
+{
+    if (world.m_manifoldBuffer.FindFree(to_underlying(id))) {
+        throw InvalidArgument(idIsDestroyedMsg);
+    }
+    auto &manifold = At(world.m_manifoldBuffer, id, noSuchContactMsg);
+    if (manifold.GetType() != value.GetType()) {
+        throw InvalidArgument("cannot change manifold type");
+    }
+    if (manifold.GetPointCount() != value.GetPointCount()) {
+        throw InvalidArgument("cannot change manifold point count");
+    }
+    // Allows user to set normal & tangent impulses.
+    manifold = value;
 }
 
 const Body& GetBody(const AabbTreeWorld& world, BodyID id)
