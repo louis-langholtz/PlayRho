@@ -358,6 +358,12 @@ struct WorldModel final: WorldConcept {
         return GetManifold(data, id);
     }
 
+    /// @copydoc WorldConcept::SetManifold_
+    void SetManifold_(ContactID id, const Manifold& value) override
+    {
+        SetManifold(data, id, value);
+    }
+
     // Member variables
 
     data_type data; ///< Data.

@@ -107,12 +107,6 @@ TEST(PreStepStats, Equality)
     }
     {
         auto stats = PreStepStats{};
-        ++stats.contactsIgnored;
-        EXPECT_FALSE(PreStepStats() == stats);
-        EXPECT_FALSE(stats == PreStepStats());
-    }
-    {
-        auto stats = PreStepStats{};
         ++stats.contactsUpdated;
         EXPECT_FALSE(PreStepStats() == stats);
         EXPECT_FALSE(stats == PreStepStats());
@@ -149,12 +143,6 @@ TEST(PreStepStats, Inequality)
     {
         auto stats = PreStepStats{};
         ++stats.contactsAdded;
-        EXPECT_TRUE(PreStepStats() != stats);
-        EXPECT_TRUE(stats != PreStepStats());
-    }
-    {
-        auto stats = PreStepStats{};
-        ++stats.contactsIgnored;
         EXPECT_TRUE(PreStepStats() != stats);
         EXPECT_TRUE(stats != PreStepStats());
     }

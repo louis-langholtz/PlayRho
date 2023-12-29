@@ -476,7 +476,6 @@ TEST(AabbTreeWorld, CreateDestroyContactingBodies)
     EXPECT_EQ(stats0.pre.proxiesMoved, 0u);
     EXPECT_EQ(stats0.pre.contactsDestroyed, 0u);
     EXPECT_EQ(stats0.pre.contactsAdded, 1u);
-    EXPECT_EQ(stats0.pre.contactsIgnored, 0u);
     EXPECT_EQ(stats0.pre.contactsUpdated, 0u);
     EXPECT_EQ(stats0.pre.contactsSkipped, 0u);
 
@@ -498,7 +497,7 @@ TEST(AabbTreeWorld, CreateDestroyContactingBodies)
     EXPECT_EQ(stats0.toi.contactsAtMaxSubSteps, 0u);
     EXPECT_EQ(stats0.toi.contactsUpdatedToi, 0u);
     EXPECT_EQ(stats0.toi.contactsUpdatedTouching, 0u);
-    EXPECT_EQ(stats0.toi.contactsSkippedTouching, 0u);
+    EXPECT_EQ(stats0.toi.contactsSkippedTouching, 1u);
     EXPECT_EQ(stats0.toi.contactsAdded, 0u);
     EXPECT_EQ(stats0.toi.proxiesMoved, 0u);
     EXPECT_EQ(stats0.toi.sumPosIters, 0u);
@@ -588,8 +587,9 @@ TEST(AabbTreeWorld, SetContact)
     step.deltaTime = {};
     Step(world, step);
     ASSERT_EQ(GetContactRange(world), 1u);
+    const auto original = GetContact(world, ContactID(0));
     auto cB = Contactable{bodyId1, ShapeID(0), 0u};
-    auto contact0 = Contact{cA, cB};
+    auto contact0 = original;
     contact0.UnsetImpenetrable();
     EXPECT_THROW(SetContact(world, ContactID(0), contact0), InvalidArgument);
     contact0.SetImpenetrable();
@@ -605,6 +605,41 @@ TEST(AabbTreeWorld, SetContact)
     Step(world, step);
     ASSERT_TRUE(IsDestroyed(world, ContactID(0)));
     EXPECT_THROW(SetContact(world, ContactID(0), contact0), InvalidArgument);
+}
+
+TEST(AabbTreeWorld, SetManifold)
+{
+    auto world = AabbTreeWorld{};
+    EXPECT_THROW(SetManifold(world, ContactID(0), Manifold()), OutOfRange<ContactID>);
+    const auto bodyId0 = CreateBody(world);
+    const auto l0 = Length2{0_m, 0_m};
+    const auto l1 = Length2{1_m, 0_m};
+    const auto s0 = CreateShape(world, Shape(EdgeShapeConf{l0, l1}));
+    ASSERT_EQ(s0, ShapeID(0));
+    auto body0 = GetBody(world, bodyId0);
+    body0.Attach(s0);
+    SetBody(world, bodyId0, body0);
+    auto body1 = Body{BodyConf{}.Use(BodyType::Dynamic).Use(s0)};
+    (void) CreateBody(world, body1);
+    auto step = StepConf{};
+    step.deltaTime = {};
+    Step(world, step);
+    ASSERT_EQ(GetContactRange(world), 1u);
+    const auto original = GetManifold(world, ContactID(0));
+    ASSERT_EQ(unsigned(original.GetType()), unsigned(Manifold::e_faceA));
+    ASSERT_EQ(unsigned(original.GetPointCount()), 2u);
+    const auto imp0 = original.GetContactImpulses(0u);
+    ASSERT_EQ(imp0[0], 0_Ns);
+    ASSERT_EQ(imp0[1], 0_Ns);
+    const auto imp1 = original.GetContactImpulses(1u);
+    ASSERT_EQ(imp1[0], 0_Ns);
+    ASSERT_EQ(imp1[1], 0_Ns);
+    auto newValue = Manifold();
+    EXPECT_THROW(SetManifold(world, ContactID(0), newValue), InvalidArgument);
+    newValue = original;
+    EXPECT_NO_THROW(SetManifold(world, ContactID(0), newValue));
+    newValue.SetContactImpulses(0, Momentum2{1_Ns, 2_Ns});
+    EXPECT_NO_THROW(SetManifold(world, ContactID(0), newValue));
 }
 
 TEST(AabbTreeWorld, Proxies)

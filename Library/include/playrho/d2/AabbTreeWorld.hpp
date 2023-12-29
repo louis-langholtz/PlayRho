@@ -195,6 +195,7 @@ void Clear(AabbTreeWorld& world) noexcept;
 ///   of their fixtures when they experience collisions.
 /// @post The bodies for proxies queue will be empty.
 /// @post The fixtures for proxies queue will be empty.
+/// @post No contact in the world needs updating.
 ///
 /// @return Statistics for the step.
 ///
@@ -507,7 +508,13 @@ void SetContact(AabbTreeWorld& world, ContactID id, Contact value);
 
 /// @brief Gets the identified manifold.
 /// @throws std::out_of_range If given an invalid contact identifier.
+/// @see SetManifold, GetContactRange.
 const Manifold& GetManifold(const AabbTreeWorld& world, ContactID id);
+
+/// @brief Sets the identified manifold.
+/// @throws std::out_of_range If given an invalid contact identifier.
+/// @see GetManifold, GetContactRange.
+void SetManifold(AabbTreeWorld& world, ContactID id, const Manifold& value);
 
 /// @brief Gets whether the given identifier is to a contact that's been destroyed.
 /// @note Complexity is at most O(n) where n is the number of elements free.
@@ -630,6 +637,7 @@ public:
     friend const Contact& GetContact(const AabbTreeWorld& world, ContactID id);
     friend void SetContact(AabbTreeWorld& world, ContactID id, Contact value);
     friend const Manifold& GetManifold(const AabbTreeWorld& world, ContactID id);
+    friend void SetManifold(AabbTreeWorld& world, ContactID id, const Manifold& value);
     friend bool IsDestroyed(const AabbTreeWorld& world, ContactID id) noexcept;
 
 private:
@@ -682,12 +690,12 @@ private:
     /// @details Finds islands, integrates and solves constraints, solves position constraints.
     /// @note This may miss collisions involving fast moving bodies and allow them to tunnel
     ///   through each other.
-    /// @pre <code>IsLocked()</code> returns false.
-    /// @pre <code>IsStepComplete()</code> returns true.
+    /// @pre <code>IsLocked(const AabbTreeWorld&)</code> & <code>IsStepComplete(const AabbTreeWorld&)</code>
+    ///   return true for this world.
+    /// @post No contact in the world needs updating.
     RegStepStats SolveReg(const StepConf& conf);
 
     /// @brief Solves the given island (regularly).
-    ///
     /// @details This:
     ///   1. Updates every island-body's <code>sweep.pos0</code> to its <code>sweep.pos1</code>.
     ///   2. Updates every island-body's <code>sweep.pos1</code> to the new normalized "solved"
@@ -697,15 +705,13 @@ private:
     ///   4. Synchronizes every island-body's transform (by updating it to transform one of the
     ///      body's sweep).
     ///   5. Reports to the listener (if non-null).
-    ///
     /// @param conf Time step configuration information.
     /// @param island Island of bodies, contacts, and joints to solve for. Must contain at least
     ///   one body, contact, or joint.
-    ///
+    /// @pre <code>IsLocked(const AabbTreeWorld&)</code> & <code>IsStepComplete(const AabbTreeWorld&)</code>
+    ///   return true for this world.
     /// @pre @p island contains at least one body, contact, or joint identifier.
-    ///
     /// @return Island solver results.
-    ///
     IslandStats SolveRegIslandViaGS(const StepConf& conf, const Island& island);
 
     /// @brief Adds to the island based off of a given "seed" body.
@@ -725,8 +731,7 @@ private:
                      ContactCounter& remNumContacts,
                      JointCounter& remNumJoints);
 
-    /// @brief Adds contacts of the specified body to the island and adds the other contacted
-    ///   bodies to the body stack.
+    /// @brief Adds contacts of identified body to island & adds other contacted bodies to body stack.
     void AddContactsToIsland(Island& island, BodyStack& stack,
                              const BodyContactIDs& contacts,
                              BodyID bodyID);
@@ -739,11 +744,14 @@ private:
     /// @note This is intended to detect and prevent the tunneling that the faster Solve function
     ///    may miss.
     /// @param conf Time step configuration to use.
+    /// @pre <code>IsLocked(const AabbTreeWorld&)</code> returns true for this world.
+    /// @post No contact in the world needs updating.
     ToiStepStats SolveToi(const StepConf& conf);
 
     /// @brief Solves collisions for the given time of impact.
     /// @param contactID Identifier of contact to solve for.
     /// @param conf Time step configuration to solve for.
+    /// @pre <code>IsLocked(const AabbTreeWorld&)</code> returns true for this world.
     /// @pre The identified contact has a valid TOI, is enabled, is awake, and is impenetrable.
     /// @pre The identified contact is **not** a sensor.
     /// @pre There is no contact having a lower TOI in this time step that has
@@ -753,12 +761,12 @@ private:
     IslandStats SolveToi(ContactID contactID, const StepConf& conf);
 
     /// @brief Solves the time of impact for bodies 0 and 1 of the given island.
-    ///
     /// @details This:
     ///   1. Updates position 0 of the sweeps of bodies 0 and 1.
     ///   2. Updates position 1 of the sweeps, the transforms, and the velocities of the other
     ///      bodies in this island.
-    ///
+    ///   3. Calls the post solve contact listener if set.
+    /// @pre <code>IsLocked(const AabbTreeWorld&)</code> returns true for this world.
     /// @pre <code>island.bodies</code> contains at least two bodies, the first two of which
     ///   are bodies 0 and 1.
     /// @pre <code>island.bodies</code> contains appropriate other bodies of the contacts of
@@ -766,12 +774,9 @@ private:
     /// @pre <code>island.contacts</code> contains the contact that specified the two identified
     ///   bodies.
     /// @pre <code>island.contacts</code> contains appropriate other contacts of the two bodies.
-    ///
     /// @param conf Time step configuration information.
     /// @param island Island to do time of impact solving for.
-    ///
     /// @return Island solver results.
-    ///
     IslandStats SolveToiViaGS(const Island& island, const StepConf& conf);
 
     /// @brief Process contacts output.
@@ -813,9 +818,6 @@ private:
     /// @brief Update contacts statistics.
     struct UpdateContactsStats
     {
-        /// @brief Number of contacts ignored (because both bodies were asleep).
-        ContactCounter ignored = 0;
-
         /// @brief Number of contacts updated.
         ContactCounter updated = 0;
 
@@ -909,22 +911,21 @@ private:
     /// @details This updates the broad phase dynamic tree data for all of the identified shapes.
     ContactCounter Synchronize(const ProxyIDs& bodyProxies,
                                const Transformation& xfm0, const Transformation& xfm1,
-                               Real multiplier, Length extension);
+                               const StepConf& conf);
 
-    /// @brief Updates the touching related state and notifies listener (if one given).
-    ///
+    /// @brief Updates touching related state and notifies any listeners.
     /// @note Ideally this function is only called when a dependent change has occurred.
     /// @note Touching related state depends on the following data:
     ///   - The fixtures' sensor states.
     ///   - The fixtures bodies' transformations.
     ///   - The <code>maxCirclesRatio</code> per-step configuration state *OR* the
     ///     <code>maxDistanceIters</code> per-step configuration state.
-    ///
     /// @param id Identifies the contact to update.
     /// @param conf Per-step configuration information.
-    ///
+    /// @pre <code>IsLocked(const AabbTreeWorld&)</code> returns true for this world.
+    /// @pre The identified contact needs updating.
+    /// @post The identified contact does not need updating.
     /// @see GetManifold, IsTouching
-    ///
     void Update(ContactID id, const ContactUpdateConf& conf);
 
     /******** Member variables. ********/

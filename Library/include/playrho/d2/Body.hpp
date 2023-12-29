@@ -286,8 +286,7 @@ public:
     ///   and angular).
     /// @post The <code>IsAwake()</code> function returns false.
     /// @post This body's <code>GetUnderActiveTime</code> function returns zero.
-    /// @post This body's <code>GetVelocity</code> function returns zero linear and zero angular
-    ///   speed.
+    /// @post This body's <code>GetVelocity</code> function returns zero linear & zero angular speed.
     /// @see IsAwake.
     void UnsetAwake() noexcept;
 
@@ -315,7 +314,6 @@ public:
 
     /// @brief Sets the body's awake flag.
     /// @details This is done unconditionally.
-    /// @note This should **not** be called unless the body is "speedable".
     /// @pre <code>IsSpeedable(const Body&)</code> is true.
     /// @see UnsetAwakeFlag.
     void SetAwakeFlag() noexcept;

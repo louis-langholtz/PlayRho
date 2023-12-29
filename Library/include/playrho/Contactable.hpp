@@ -100,6 +100,8 @@ constexpr bool IsFor(const Contactable& c, BodyID bodyID, ShapeID shapeID) noexc
     return (c.bodyId == bodyID) && (c.shapeId == shapeID);
 }
 
+/// @brief Output stream operator support.
+/// @relatedalso Contactable
 inline auto operator<< (std::ostream &os, const Contactable &c) -> std::ostream&
 {
     os << "{";

@@ -31,6 +31,7 @@ public:
     static inline const auto registered =
         RegisterTest("One-Sided Platform", MakeUniqueTest<OneSidedPlatform>);
     enum State { e_unknown, e_above, e_below };
+    static constexpr auto platformY = 10_m;
 
     OneSidedPlatform()
     {
@@ -47,11 +48,11 @@ public:
         // Platform
         {
             const auto body = CreateBody(GetWorld(),
-                                         BodyConf{}.UseLocation(Vec2(0.0f, 10.0f) * 1_m));
+                                         BodyConf{}.UseLocation(Length2{0_m, platformY}));
             m_platform = CreateShape(GetWorld(), PolygonShapeConf{}.SetAsBox(3_m, 0.5_m));
             Attach(GetWorld(), body, m_platform);
-            m_bottom = Real(10.0f - 0.5f) * 1_m;
-            m_top = Real(10.0f + 0.5f) * 1_m;
+            m_bottom = platformY - 0.5_m;
+            m_top = platformY + 0.5_m;
         }
 
         // Actor
@@ -81,9 +82,11 @@ public:
             return;
         }
         const auto position = GetLocation(GetWorld(), m_characterBodyId);
-        if (GetY(position) <
-            m_top + m_radius - GetVertexRadius(GetShape(GetWorld(), m_platform), 0)) {
+        if (GetY(position) <= m_bottom) {
             UnsetEnabled(GetWorld(), contact);
+        }
+        else if (GetY(position) > platformY) {
+            SetEnabled(GetWorld(), contact);
         }
     }
 

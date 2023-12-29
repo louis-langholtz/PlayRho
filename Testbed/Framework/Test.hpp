@@ -53,7 +53,6 @@
 
 #include <chrono>
 #include <vector>
-#include <iterator>
 #include <functional>
 #include <deque>
 #include <algorithm>
@@ -147,7 +146,6 @@ struct Stats
     ContactCounter m_maxTouching = 0;
     std::uint64_t m_sumContactsUpdatedPre = 0;
     std::uint64_t m_sumContactsSkippedPre = 0;
-    std::uint64_t m_sumContactsIgnoredPre = 0;
     std::uint64_t m_sumContactsUpdatedToi = 0;
     std::uint64_t m_sumContactsAtMaxSubSteps = 0;
     std::uint64_t m_sumRegIslandsFound = 0;
