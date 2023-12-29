@@ -796,12 +796,7 @@ inline void UnsetEnabled(Body& body) noexcept
 /// @relatedalso Body
 inline void SetEnabled(Body& body, bool value) noexcept
 {
-    if (value) {
-        body.SetEnabled();
-    }
-    else {
-        body.UnsetEnabled();
-    }
+    value ? body.SetEnabled() : body.UnsetEnabled();
 }
 
 /// @brief Gets the awake/asleep state of this body.
