@@ -3125,56 +3125,31 @@ static void EntityUI(Contact& contact)
     {
         auto v = IsEnabled(contact);
         if (ImGui::Checkbox("Enabled", &v)) {
-            if (v) {
-                SetEnabled(contact);
-            }
-            else {
-                UnsetEnabled(contact);
-            }
+            v ? SetEnabled(contact) : UnsetEnabled(contact);
         }
     }
     {
         auto v = IsImpenetrable(contact);
         if (ImGui::Checkbox("Impenetrable", &v)) {
-            if (v) {
-                SetImpenetrable(contact);
-            }
-            else {
-                UnsetImpenetrable(contact);
-            }
+            v ? SetImpenetrable(contact) : UnsetImpenetrable(contact);
         }
     }
     {
         auto v = IsSensor(contact);
         if (ImGui::Checkbox("Sensor", &v)) {
-            if (v) {
-                SetSensor(contact);
-            }
-            else {
-                UnsetSensor(contact);
-            }
+            v ? SetSensor(contact) : UnsetSensor(contact);
         }
     }
     {
         auto v = NeedsFiltering(contact);
         if (ImGui::Checkbox("Needs filtering", &v)) {
-            if (v) {
-                FlagForFiltering(contact);
-            }
-            else {
-                UnflagForFiltering(contact);
-            }
+            v ? FlagForFiltering(contact) : UnflagForFiltering(contact);
         }
     }
     {
         auto v = NeedsUpdating(contact);
         if (ImGui::Checkbox("Needs updating", &v)) {
-            if (v) {
-                FlagForUpdating(contact);
-            }
-            else {
-                UnflagForUpdating(contact);
-            }
+            v ? FlagForUpdating(contact) : UnflagForUpdating(contact);
         }
     }
     {
