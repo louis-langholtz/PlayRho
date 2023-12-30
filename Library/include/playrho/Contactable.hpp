@@ -24,6 +24,7 @@
 /// @file
 /// @brief Definition of the <code>Contactable</code> class and closely related code.
 
+#include <ostream>
 #include <type_traits> // for std::is_nothrow_default_constructible_v, etc
 
 // IWYU pragma: begin_exports
@@ -97,6 +98,18 @@ constexpr bool operator<(const Contactable& lhs, const Contactable& rhs) noexcep
 constexpr bool IsFor(const Contactable& c, BodyID bodyID, ShapeID shapeID) noexcept
 {
     return (c.bodyId == bodyID) && (c.shapeId == shapeID);
+}
+
+inline auto operator<< (std::ostream &os, const Contactable &c) -> std::ostream&
+{
+    os << "{";
+    os << to_underlying(c.bodyId);
+    os << ",";
+    os << to_underlying(c.shapeId);
+    os << ",";
+    os << c.childId;
+    os << "}";
+    return os;
 }
 
 }
