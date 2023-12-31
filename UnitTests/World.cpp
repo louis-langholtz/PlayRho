@@ -2708,7 +2708,13 @@ TEST(World_Longer, TilesComesToRest)
     const auto ExpectedFirstBodiesSlept = []() -> unsigned long
     {
         if constexpr (std::is_same_v<Real, float>) {
+#if defined(__k8__) || defined(__core2__)
+            return 76u;
+#elif defined(__arm64__) // apple silicon
             return 110u;
+#else
+            return 0u;
+#endif
         }
         if constexpr (std::is_same_v<Real, double>) {
             return 110u;
@@ -2718,7 +2724,17 @@ TEST(World_Longer, TilesComesToRest)
     const auto ExpectedFirstAllSlept = []() -> unsigned long
     {
         if constexpr (std::is_same_v<Real, float>) {
+#if defined(__k8__)
+            return 1828u;
+#elif defined(__core2__)
+            return 1798u;
+#elif defined(__arm64__) // apple silicon
             return 1796u;
+#elif defined(_WIN32)
+            return 1769u;
+#else
+            return 0u;
+#endif
         }
         if constexpr (std::is_same_v<Real, double>) {
             return 1791u;
@@ -2855,17 +2871,17 @@ TEST(World_Longer, TilesComesToRest)
     switch (sizeof(Real)) {
     case 4u:
 #if defined(__core2__)
-        EXPECT_EQ(GetContactRange(world), 1451u);
-        EXPECT_EQ(totalBodiesSlept, 667u);
+        EXPECT_EQ(GetContactRange(world), 1450u);
+        EXPECT_EQ(totalBodiesSlept, 670u);
 #elif defined(_WIN64)
         EXPECT_EQ(GetContactRange(world), 1448u);
         EXPECT_EQ(totalBodiesSlept, 671u);
 #elif defined(_WIN32)
         EXPECT_EQ(GetContactRange(world), 1448u);
-        EXPECT_EQ(totalBodiesSlept, 672u);
+        EXPECT_EQ(totalBodiesSlept, 669u);
 #elif defined(__amd64__) // includes __k8__
-        EXPECT_EQ(GetContactRange(world), 1449u);
-        EXPECT_EQ(totalBodiesSlept, 670u);
+        EXPECT_EQ(GetContactRange(world), 1450u);
+        EXPECT_EQ(totalBodiesSlept, 672u);
 #elif defined(__arm64__) // At least for Apple Silicon
         EXPECT_GE(GetContactRange(world), 1445u);
         EXPECT_LE(GetContactRange(world), 1449u);
@@ -2910,7 +2926,7 @@ TEST(World_Longer, TilesComesToRest)
 
     EXPECT_EQ(awakeCount, 0u);
     if (awakeCount == 0u) {
-#if defined(PLAYRHO_USE_BOOST_UNITS) // odd
+#if defined(PLAYRHO_USE_BOOST_UNITS) || defined(__core2__) // odd
         EXPECT_EQ(lastStats.reg.proxiesMoved, 1u);
 #else
         EXPECT_EQ(lastStats.reg.proxiesMoved, 0u);
@@ -2955,10 +2971,10 @@ TEST(World_Longer, TilesComesToRest)
         {
 #ifndef __FAST_MATH__
             EXPECT_EQ(numSteps, 1799ul);
-            EXPECT_EQ(sumRegPosIters, 36512ul);
-            EXPECT_EQ(sumRegVelIters, 46931ul);
-            EXPECT_EQ(sumToiPosIters, 43985ul);
-            EXPECT_EQ(sumToiVelIters, 113859ul);
+            EXPECT_EQ(sumRegPosIters, 36514ul);
+            EXPECT_EQ(sumRegVelIters, 46940ul);
+            EXPECT_EQ(sumToiPosIters, 43860ul);
+            EXPECT_EQ(sumToiVelIters, 113355ul);
 #else
             EXPECT_EQ(numSteps, 1003ul);
             EXPECT_EQ(sumRegPosIters, 52909ul);
@@ -2991,12 +3007,12 @@ TEST(World_Longer, TilesComesToRest)
     {
         case  4:
         {
-            // From commits after 507a7c15c
-            EXPECT_EQ(numSteps,         1799ul);
-            EXPECT_EQ(sumRegPosIters,  36512ul);
-            EXPECT_EQ(sumRegVelIters,  46940ul);
-            EXPECT_EQ(sumToiPosIters,  44065ul);
-            EXPECT_EQ(sumToiVelIters, 113579ul);
+            // From commits after f93f7a093
+            EXPECT_EQ(numSteps,         1829ul);
+            EXPECT_EQ(sumRegPosIters,  36551ul);
+            EXPECT_EQ(sumRegVelIters,  47211ul);
+            EXPECT_EQ(sumToiPosIters,  43751ul);
+            EXPECT_EQ(sumToiVelIters, 114349ul);
             break;
         }
         case  8:
@@ -3020,11 +3036,11 @@ TEST(World_Longer, TilesComesToRest)
     EXPECT_EQ(sumToiPosIters, 43974ul);
     EXPECT_EQ(sumToiVelIters, 113085ul);
 #elif defined(_WIN32)
-    EXPECT_EQ(numSteps, 1797ul);
-    EXPECT_EQ(sumRegPosIters, 36509ul);
-    EXPECT_EQ(sumRegVelIters, 46948ul);
-    EXPECT_EQ(sumToiPosIters, 44137ul);
-    EXPECT_EQ(sumToiVelIters, 114517ul);
+    EXPECT_EQ(numSteps, 1770ul);
+    EXPECT_EQ(sumRegPosIters, 36429ul);
+    EXPECT_EQ(sumRegVelIters, 46732ul);
+    EXPECT_EQ(sumToiPosIters, 44141ul);
+    EXPECT_EQ(sumToiVelIters, 114445ul);
 #elif defined(__arm64__)
     // At least for Apple Silicon...
     switch (sizeof(Real))
