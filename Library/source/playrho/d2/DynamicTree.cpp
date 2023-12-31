@@ -709,6 +709,18 @@ void Query(const DynamicTree& tree, const AABB& aabb, QueryShapeCallback callbac
     });
 }
 
+auto FindIndex(const DynamicTree &tree, const Contactable &c) noexcept -> DynamicTree::Size
+{
+    const auto max = tree.GetNodeCount();
+    for (auto i = DynamicTree::Size(0); i < max; ++i) {
+        const auto &node = tree.GetNode(i);
+        if (IsLeaf(node) && node.AsLeaf() == c) {
+            return i;
+        }
+    }
+    return DynamicTree::GetInvalidSize();
+}
+
 Length ComputeTotalPerimeter(const DynamicTree& tree) noexcept
 {
     auto total = 0_m;
