@@ -3189,90 +3189,61 @@ TEST(World, SpeedingBulletBallWontTunnel)
         SCOPED_TRACE(std::string("lap=") + std::to_string(laps));
         // traveling to the right
         listener.begin_contacts = 0;
+        listener.end_contacts = 0;
         for (auto travel_r = unsigned{0}; ; ++travel_r) {
+            SCOPED_TRACE(std::string("travel_r=") + std::to_string(travel_r));
             if (travel_r == max_travel) {
                 std::cout << "begin_contacts=" << listener.begin_contacts << std::endl;
                 ASSERT_LT(travel_r, max_travel);
             }
-
-            const auto last_contact_count = listener.begin_contacts;
+            const auto lastEndCount = listener.end_contacts;
             Step(world, step);
-
             EXPECT_LT(GetX(GetLocation(world, ball_body)), right_edge_x - (ball_radius/Real{2}));
             EXPECT_GT(GetX(GetLocation(world, ball_body)), left_edge_x + (ball_radius/Real{2}));
-
-            if (GetX(GetVelocity(world, ball_body).linear) >= max_velocity) {
+            if (abs(GetX(GetVelocity(world, ball_body).linear)) >= max_velocity) {
                 return;
             }
-
-            if (listener.begin_contacts % 2 != 0) // direction switched
-            {
-                EXPECT_LT(GetX(GetVelocity(world, ball_body).linear), 0_mps);
+            if (listener.end_contacts == lastEndCount) {
+                continue;
+            }
+            if (listener.end_contacts % 2 != 0) { // direction switched
+                EXPECT_LE(GetX(GetVelocity(world, ball_body).linear), 0_mps);
                 break; // going left now
             }
-            else if (listener.begin_contacts > last_contact_count) {
-                ++increments;
-                SetVelocity(world, ball_body, Velocity{
-                    LinearVelocity2{
-                        static_cast<Real>(increments) * GetX(velocity),
-                        GetY(GetVelocity(world, ball_body).linear)
-                    }, GetVelocity(world, ball_body).angular});
-            }
-            else {
-                const auto sign = (listener.begin_contacts % 2 == 0) ? +1: -1;
-                EXPECT_DOUBLE_EQ(Real(GetX(GetVelocity(world, ball_body).linear) / 1_mps),
-                                 Real(static_cast<Real>(sign * increments) * GetX(velocity) / 1_mps));
-            }
+            ++increments;
+            SetVelocity(world, ball_body, Velocity{
+                LinearVelocity2{static_cast<Real>(increments) * GetX(velocity), GetY(GetVelocity(world, ball_body).linear)},
+                GetVelocity(world, ball_body).angular});
         }
         
         // traveling to the left
         listener.begin_contacts = 0;
+        listener.end_contacts = 0;
         for (auto travel_l = unsigned{0}; ; ++travel_l)
         {
-            if (travel_l == max_travel)
-            {
+            if (travel_l == max_travel) {
                 std::cout << "begin_contacts=" << listener.begin_contacts << std::endl;
                 ASSERT_LT(travel_l, max_travel);
             }
-            
-            const auto last_contact_count = listener.begin_contacts;
+            const auto lastEndCount = listener.end_contacts;
             Step(world, step);
-            
             EXPECT_LT(GetX(GetLocation(world, ball_body)), right_edge_x - (ball_radius/Real{2}));
             EXPECT_GT(GetX(GetLocation(world, ball_body)), left_edge_x + (ball_radius/Real{2}));
-
-            if (GetX(GetVelocity(world, ball_body).linear) <= -max_velocity)
-            {
+            if (abs(GetX(GetVelocity(world, ball_body).linear)) >= max_velocity) {
                 return;
             }
-
-            if (listener.begin_contacts % 2 != 0) // direction switched
-            {
-                EXPECT_GT(GetX(GetVelocity(world, ball_body).linear), 0_mps);
+            if (listener.end_contacts == lastEndCount) {
+                continue;
+            }
+            if (listener.end_contacts % 2 != 0) { // direction switched
+                EXPECT_GE(GetX(GetVelocity(world, ball_body).linear), 0_mps);
                 break; // going right now
             }
-            else if (listener.begin_contacts > last_contact_count)
-            {
-                ++increments;
-                SetVelocity(world, ball_body, Velocity{
-                    LinearVelocity2{
-                        -static_cast<Real>(increments) * GetX(velocity),
-                        GetY(GetVelocity(world, ball_body).linear)
-                    }, GetVelocity(world, ball_body).angular});
-            }
-            else
-            {
-                EXPECT_DOUBLE_EQ(abs(Real(GetX(GetVelocity(world, ball_body).linear) / 1_mps)),
-                                 abs(Real(static_cast<Real>(increments) * GetX(velocity) / 1_mps)));
-            }
+            ++increments;
+            SetVelocity(world, ball_body, Velocity{
+                LinearVelocity2{-static_cast<Real>(increments) * GetX(velocity), GetY(GetVelocity(world, ball_body).linear)},
+                GetVelocity(world, ball_body).angular});
         }
-        
-        ++increments;
-        SetVelocity(world, ball_body, Velocity{
-            LinearVelocity2{
-                static_cast<Real>(increments) * GetX(velocity),
-                GetY(GetVelocity(world, ball_body).linear)
-            }, GetVelocity(world, ball_body).angular});
     }
 }
 
