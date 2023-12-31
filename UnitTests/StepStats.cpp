@@ -207,6 +207,18 @@ TEST(RegStepStats, Equality)
     }
     {
         auto stats = RegStepStats{};
+        ++stats.contactsUpdated;
+        EXPECT_FALSE(RegStepStats() == stats);
+        EXPECT_FALSE(stats == RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.contactsSkipped;
+        EXPECT_FALSE(RegStepStats() == stats);
+        EXPECT_FALSE(stats == RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
         ++stats.proxiesMoved;
         EXPECT_FALSE(RegStepStats() == stats);
         EXPECT_FALSE(stats == RegStepStats());
@@ -267,6 +279,18 @@ TEST(RegStepStats, Inequality)
     {
         auto stats = RegStepStats{};
         ++stats.contactsAdded;
+        EXPECT_TRUE(RegStepStats() != stats);
+        EXPECT_TRUE(stats != RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.contactsUpdated;
+        EXPECT_TRUE(RegStepStats() != stats);
+        EXPECT_TRUE(stats != RegStepStats());
+    }
+    {
+        auto stats = RegStepStats{};
+        ++stats.contactsSkipped;
         EXPECT_TRUE(RegStepStats() != stats);
         EXPECT_TRUE(stats != RegStepStats());
     }

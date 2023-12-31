@@ -100,6 +100,8 @@ constexpr auto operator==(const RegStepStats &lhs, const RegStepStats &rhs) -> b
            (lhs.bodiesSlept == rhs.bodiesSlept) && //
            (lhs.maxIslandBodies == rhs.maxIslandBodies) && //
            (lhs.contactsAdded == rhs.contactsAdded) && //
+           (lhs.contactsUpdated == rhs.contactsUpdated) && //
+           (lhs.contactsSkipped == rhs.contactsSkipped) && //
            (lhs.proxiesMoved == rhs.proxiesMoved) && //
            (lhs.sumPosIters == rhs.sumPosIters) && //
            (lhs.sumVelIters == rhs.sumVelIters);
