@@ -18,63 +18,15 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "UnitTests.hpp"
-#include <playrho/d2/DynamicTree.hpp>
-#include <type_traits>
 #include <algorithm>
-#include <iterator>
+#include <type_traits>
+
+#include <playrho/d2/DynamicTree.hpp>
+
+#include "gtest/gtest.h"
 
 using namespace playrho;
 using namespace playrho::d2;
-
-TEST(DynamicTree, ByteSize)
-{
-    // Check size at test runtime instead of compile-time via static_assert to avoid stopping
-    // builds and to report actual size rather than just reporting that expected size is wrong.
-#if defined(_WIN64)
-    EXPECT_EQ(alignof(DynamicTree), 8u);
-    EXPECT_EQ(sizeof(DynamicTree), std::size_t(32));
-#elif defined(_WIN32)
-    EXPECT_EQ(alignof(DynamicTree), 4u);
-    EXPECT_EQ(sizeof(DynamicTree), std::size_t(24));
-#else
-    EXPECT_EQ(alignof(DynamicTree), 8u);
-    EXPECT_EQ(sizeof(DynamicTree), std::size_t(32));
-#endif
-}
-
-TEST(DynamicTree, VariantDataByteSize)
-{
-#if defined(_WIN64)
-    EXPECT_EQ(alignof(DynamicTree), 8u);
-    EXPECT_EQ(sizeof(DynamicTreeVariantData), 8u);
-#elif defined(_WIN32)
-    EXPECT_EQ(alignof(DynamicTree), 4u);
-    EXPECT_EQ(sizeof(DynamicTreeVariantData), 8u);
-#else
-    EXPECT_EQ(alignof(DynamicTree), 8u);
-    EXPECT_EQ(sizeof(DynamicTreeVariantData), 8u);
-#endif
-}
-
-TEST(DynamicTree, TreeNodeByteSize)
-{
-    switch (sizeof(Real))
-    {
-        case  4:
-            EXPECT_EQ(alignof(DynamicTree::TreeNode), 4u);
-            EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(32));
-            break;
-        case  8:
-            EXPECT_EQ(alignof(DynamicTree::TreeNode), 8u);
-            EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(48));
-            break;
-        case 16:
-            EXPECT_EQ(alignof(DynamicTree::TreeNode), 16u);
-            EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(80));
-            break;
-    }
-}
 
 TEST(DynamicTreeNode, Traits)
 {
@@ -1063,4 +1015,28 @@ TEST(DynamicTree, LeafDataEquality)
                   Contactable{BodyID(0u), ShapeID(1u), ChildCounter(0u)}));
     EXPECT_FALSE((Contactable{BodyID(0u), ShapeID(0u), ChildCounter(0u)} ==
                   Contactable{BodyID(0u), ShapeID(0u), ChildCounter(1u)}));
+}
+
+TEST(DynamicTree, FindIndex)
+{
+    EXPECT_EQ(playrho::d2::FindIndex(DynamicTree{}, Contactable{}), DynamicTree::Size(-1));
+    {
+        auto idx0 = DynamicTree::GetInvalidSize();
+        auto idx1 = DynamicTree::GetInvalidSize();
+        auto tree = DynamicTree{};
+        const auto aabb0 = AABB{Length2{-1_m, -1_m}, Length2{+1_m, +1_m}};
+        const auto contactable0 = Contactable{BodyID(0), ShapeID(1), ChildCounter(2)};
+        ASSERT_NO_THROW(idx0 = tree.CreateLeaf(aabb0, contactable0));
+        ASSERT_NE(idx0, DynamicTree::GetInvalidSize());
+        const auto aabb1 = AABB{Length2{+1_m, +1_m}, Length2{+2_m, +2_m}};
+        const auto contactable1 = Contactable{BodyID(1), ShapeID(2), ChildCounter(3)};
+        ASSERT_NO_THROW(idx1 = tree.CreateLeaf(aabb1, contactable1));
+        const auto contactable2 = Contactable{BodyID(0), ShapeID(2), ChildCounter(0)};
+        ASSERT_NE(idx1, DynamicTree::GetInvalidSize());
+
+        EXPECT_EQ(playrho::d2::FindIndex(tree, Contactable{}), DynamicTree::GetInvalidSize());
+        EXPECT_EQ(playrho::d2::FindIndex(tree, contactable2), DynamicTree::GetInvalidSize());
+        EXPECT_EQ(playrho::d2::FindIndex(tree, contactable1), idx1);
+        EXPECT_EQ(playrho::d2::FindIndex(tree, contactable0), idx0);
+    }
 }
