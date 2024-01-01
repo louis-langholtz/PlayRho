@@ -18,20 +18,18 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "UnitTests.hpp"
-
-#include <playrho/d2/WorldContact.hpp>
+#include <playrho/Contact.hpp>
+#include <playrho/StepConf.hpp>
 
 #include <playrho/d2/World.hpp>
 #include <playrho/d2/WorldBody.hpp>
 #include <playrho/d2/WorldMisc.hpp>
 #include <playrho/d2/WorldShape.hpp>
-#include <playrho/StepConf.hpp>
 #include <playrho/d2/BodyConf.hpp>
-
-#include <playrho/Contact.hpp>
-
 #include <playrho/d2/DiskShapeConf.hpp>
+#include <playrho/d2/WorldContact.hpp>
+
+#include "gtest/gtest.h"
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -234,4 +232,25 @@ TEST(WorldContact, WorldManifoldAndMore)
     EXPECT_FALSE(HasValidToi(world, c));
     EXPECT_EQ(GetChildIndexA(world, c), ChildCounter(0));
     EXPECT_EQ(GetChildIndexB(world, c), ChildCounter(0));
+}
+
+TEST(WorldContact, SameTouching)
+{
+    EXPECT_TRUE(SameTouching(World{}, World{}));
+    {
+        auto world = World{};
+        const auto shapeId = CreateShape(world, DiskShapeConf{});
+        const auto bA = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
+        const auto bB = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
+        Attach(world, bA, shapeId);
+        Attach(world, bB, shapeId);
+        ASSERT_NO_THROW(Step(world, StepConf{}));
+        const auto contacts = GetContacts(world);
+        ASSERT_EQ(contacts.size(), ContactCounter(1));
+        ASSERT_EQ(GetContactRange(world), 1u);
+        ASSERT_EQ(GetTouchingCount(world), ContactCounter(1));
+
+        EXPECT_FALSE(SameTouching(world, World{}));
+        EXPECT_FALSE(SameTouching(World{}, world));
+    }
 }
