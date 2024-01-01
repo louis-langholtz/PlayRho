@@ -2707,7 +2707,7 @@ TEST(World_Longer, TilesComesToRest)
     const auto ExpectedFirstBodiesSlept = []() -> unsigned long
     {
         if constexpr (std::is_same_v<Real, float>) {
-#if defined(__k8__) || defined(__core2__)
+#if defined(__k8__) || defined(__core2__) || defined(_WIN64)
             return 76u;
 #elif defined(__arm64__) // apple silicon
             return 110u;
@@ -2731,6 +2731,8 @@ TEST(World_Longer, TilesComesToRest)
             return 1798u;
 #elif defined(__arm64__) // apple silicon
             return 1796u;
+#elif defined(_WIN64)
+            return 1803u;
 #elif defined(_WIN32)
             return 1769u;
 #else
@@ -3031,11 +3033,11 @@ TEST(World_Longer, TilesComesToRest)
         }
     }
 #elif defined(_WIN64) // This is likely wrong as the results are more likely arch dependent
-    EXPECT_EQ(numSteps, 1801ul);
-    EXPECT_EQ(sumRegPosIters, 36523ul);
-    EXPECT_EQ(sumRegVelIters, 46973ul);
-    EXPECT_EQ(sumToiPosIters, 43974ul);
-    EXPECT_EQ(sumToiVelIters, 113085ul);
+    EXPECT_EQ(numSteps, 1804ul);
+    EXPECT_EQ(sumRegPosIters, 36529ul);
+    EXPECT_EQ(sumRegVelIters, 46988ul);
+    EXPECT_EQ(sumToiPosIters, 43779ul);
+    EXPECT_EQ(sumToiVelIters, 113106ul);
 #elif defined(_WIN32)
     EXPECT_EQ(numSteps, 1770ul);
     EXPECT_EQ(sumRegPosIters, 36429ul);
