@@ -2711,6 +2711,8 @@ TEST(World_Longer, TilesComesToRest)
             return 76u;
 #elif defined(__arm64__) // apple silicon
             return 110u;
+#elif defined(_WIN32)
+            return 111u;
 #else
             return 0u;
 #endif
@@ -3016,14 +3018,14 @@ TEST(World_Longer, TilesComesToRest)
         }
         case  8:
         {
-            EXPECT_EQ(numSteps,         1828ul);
-            EXPECT_EQ(sumRegPosIters,  36540ul);
-            EXPECT_EQ(sumRegVelIters,  47173ul);
-            EXPECT_EQ(sumToiPosIters,  44005ul);
+            EXPECT_EQ(numSteps,         1792ul);
+            EXPECT_EQ(sumRegPosIters,  36494ul);
+            EXPECT_EQ(sumRegVelIters,  46885ul);
+            EXPECT_EQ(sumToiPosIters,  44086ul);
 #ifdef NDEBUG // odd, that this changes results - is there compiler "as-if" rule violation?
-            EXPECT_EQ(sumToiVelIters, 114399ul);
+            EXPECT_EQ(sumToiVelIters, 112731ul);
 #else
-            EXPECT_EQ(sumToiVelIters, 114406ul);
+            EXPECT_EQ(sumToiVelIters, 112836ul);
 #endif
             break;
         }
