@@ -20,6 +20,7 @@
  */
 
 #include <algorithm> // for std::count_if
+#include <cassert> // for assert
 #include <map>
 #include <optional>
 #include <utility> // for std::pair
@@ -201,12 +202,10 @@ auto MakeTouchingMap(const World &world)
         if (!contact.IsTouching()) {
             continue;
         }
-        const auto emplaced =
+        [[maybe_unused]] const auto emplaced =
             result.emplace(std::minmax(contact.GetContactableA(), contact.GetContactableB()),
                            ContactID(i));
-        if (!emplaced.second) {
-            throw InvalidArgument("malformed world: has duplicate contacts");
-        }
+        assert(emplaced.second);
     }
     return result;
 }
