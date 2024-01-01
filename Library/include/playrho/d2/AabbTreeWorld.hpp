@@ -26,6 +26,7 @@
 /// @brief Declarations of the AabbTreeWorld class.
 
 #include <cstdint> // for std::uint32_t
+#include <map>
 #include <optional>
 #include <tuple>
 #include <type_traits> // for std::is_default_constructible_v, etc.
@@ -145,10 +146,10 @@ void SetPostSolveContactListener(AabbTreeWorld& world, ContactImpulsesFunction l
 /// @{
 
 /// @brief Equality operator for world comparisons.
-bool operator==(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs) noexcept;
+bool operator==(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs);
 
 /// @brief Inequality operator for world comparisons.
-bool operator!=(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs) noexcept;
+bool operator!=(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs);
 
 /// @brief Gets the resource statistics of the specified world.
 std::optional<pmr::StatsResource::Stats> GetResourceStats(const AabbTreeWorld& world) noexcept;
@@ -585,8 +586,8 @@ public:
     friend void SetPostSolveContactListener(AabbTreeWorld& world, ContactImpulsesFunction listener) noexcept;
 
     // Miscellaneous friend functions...
-    friend bool operator==(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs) noexcept;
-    friend bool operator!=(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs) noexcept;
+    friend bool operator==(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs);
+    friend bool operator!=(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs);
     friend std::optional<pmr::StatsResource::Stats> GetResourceStats(const AabbTreeWorld& world) noexcept;
     friend void Clear(AabbTreeWorld& world) noexcept;
     friend StepStats Step(AabbTreeWorld& world, const StepConf& conf);
@@ -1140,6 +1141,29 @@ inline void SetPostSolveContactListener(AabbTreeWorld& world, ContactImpulsesFun
 /// @return Identifier of contact with the least time of impact under 1, or invalid contact ID.
 ContactID GetSoonestContact(const Span<const KeyedContactID>& ids,
                             const Span<const Contact>& contacts) noexcept;
+
+/// @brief Creates a body within the world that's a copy of the given one.
+/// @relatedalso AabbTreeWorld
+BodyID CreateBody(AabbTreeWorld& world, const BodyConf& def);
+
+/// @brief Associates a validly identified shape with the validly identified body.
+/// @throws std::out_of_range If given an invalid body or shape identifier.
+/// @throws WrongState if this function is called while the world is locked.
+/// @see GetShapes.
+/// @relatedalso AabbTreeWorld
+void Attach(AabbTreeWorld& world, BodyID id, ShapeID shapeID);
+
+/// @brief Disassociates a validly identified shape from the validly identified body.
+/// @throws std::out_of_range If given an invalid body or shape identifier.
+/// @throws WrongState if this function is called while the world is locked.
+/// @relatedalso AabbTreeWorld
+bool Detach(AabbTreeWorld& world, BodyID id, ShapeID shapeID);
+
+/// @brief Disassociates all of the associated shape from the validly identified body.
+/// @throws std::out_of_range If given an invalid body identifier.
+/// @throws WrongState if this function is called while the world is locked.
+/// @relatedalso AabbTreeWorld
+const std::vector<ShapeID>& GetShapes(const AabbTreeWorld& world, BodyID id);
 
 } // namespace playrho::d2
 

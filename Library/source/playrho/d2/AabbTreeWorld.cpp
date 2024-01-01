@@ -114,7 +114,9 @@
 #include <playrho/d2/VelocityConstraint.hpp>
 #include <playrho/d2/WeldJointConf.hpp>
 #include <playrho/d2/WheelJointConf.hpp>
+#include <playrho/d2/World.hpp>
 #include <playrho/d2/WorldConf.hpp>
+#include <playrho/d2/WorldContact.hpp> // for SameTouching
 #include <playrho/d2/WorldManifold.hpp>
 
 // Enable this macro to enable sorting ID lists like m_contacts. This results in more linearly
@@ -206,7 +208,7 @@ inline void Report(const ContactImpulsesFunction& listener,
 inline void AssignImpulses(Manifold& var, const VelocityConstraint& vc)
 {
     assert(var.GetPointCount() >= vc.GetPointCount());
-    
+
     auto assignProc = [&](VelocityConstraint::size_type i) {
         const auto& point = vc.GetPointAt(i);
         var.SetPointImpulses(i, point.normalImpulse, point.tangentImpulse);
@@ -922,16 +924,16 @@ AabbTreeWorld::~AabbTreeWorld() noexcept
     Clear(*this);
 }
 
-bool operator==(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs) noexcept
+auto operator==(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs) -> bool
 {
+    // Note: the following member variables are non-essential parts:
+    //   m_listeners, m_inv_dt0, m_islanded, m_bodyContacts, m_tree.
+    // Note: the following member variables cannot be compared by themselves:
+    //   m_contactBuffer, m_contacts, m_manifoldBuffer.
     return // newline!
-        // skip m_tree, should just be a cache anyway
         (lhs.m_bodyBuffer == rhs.m_bodyBuffer) && // newline!
         (lhs.m_shapeBuffer == rhs.m_shapeBuffer) && // newline!
         (lhs.m_jointBuffer == rhs.m_jointBuffer) && // newline!
-        (lhs.m_contactBuffer == rhs.m_contactBuffer) && // newline!
-        (lhs.m_manifoldBuffer == rhs.m_manifoldBuffer) && // newline!
-        (lhs.m_bodyContacts == rhs.m_bodyContacts) && // newline!
         (lhs.m_bodyJoints == rhs.m_bodyJoints) && // newline!
         (lhs.m_bodyProxies == rhs.m_bodyProxies) && // newline!
         (lhs.m_proxiesForContacts == rhs.m_proxiesForContacts) && // newline!
@@ -939,15 +941,12 @@ bool operator==(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs) noexcept
         (lhs.m_bodiesForSync == rhs.m_bodiesForSync) && // newline!
         (lhs.m_bodies == rhs.m_bodies) && // newline!
         (lhs.m_joints == rhs.m_joints) && // newline!
-        (lhs.m_contacts == rhs.m_contacts) && // newline!
-        (lhs.m_islanded == rhs.m_islanded) && // newline!
-        // skip m_listeners, they're inconsequential & not very comparable anyway
         (lhs.m_flags == rhs.m_flags) && // newline!
-        (lhs.m_inv_dt0 == rhs.m_inv_dt0) && // newline!
-        (lhs.m_vertexRadius == rhs.m_vertexRadius);
+        (lhs.m_vertexRadius == rhs.m_vertexRadius) && // newline
+        SameTouching(World{lhs}, World{rhs});
 }
 
-bool operator!=(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs) noexcept
+bool operator!=(const AabbTreeWorld& lhs, const AabbTreeWorld& rhs)
 {
     return !(lhs == rhs);
 }
@@ -1601,7 +1600,7 @@ IslandStats AabbTreeWorld::SolveRegIslandViaGS(const StepConf& conf, const Islan
         auto& joint = m_jointBuffer[to_underlying(id)];
         InitVelocity(joint, bodyConstraints, conf, psConf);
     });
-    
+
     results.velocityIters = conf.regVelocityIters;
     for (auto i = decltype(conf.regVelocityIters){0}; i < conf.regVelocityIters; ++i) {
         auto jointsOkay = true;
@@ -1623,10 +1622,10 @@ IslandStats AabbTreeWorld::SolveRegIslandViaGS(const StepConf& conf, const Islan
             break;
         }
     }
-    
+
     // updates array of tentative new body positions per the velocities as if there were no obstacles...
     IntegratePositions(island.bodies, bodyConstraints, h);
-    
+
     // Solve position constraints
     for (auto i = decltype(conf.regPositionIters){0}; i < conf.regPositionIters; ++i) {
         const auto minSeparation = SolvePositionConstraintsViaGS(posConstraints, bodyConstraints,
@@ -1645,7 +1644,7 @@ IslandStats AabbTreeWorld::SolveRegIslandViaGS(const StepConf& conf, const Islan
             break;
         }
     }
-    
+
     // Update normal and tangent impulses of contacts' manifold points
     for_each(cbegin(velConstraints), cend(velConstraints), [&](const VelocityConstraint& vc) {
         const auto i = static_cast<VelocityConstraints::size_type>(&vc - data(velConstraints));
@@ -1675,7 +1674,7 @@ IslandStats AabbTreeWorld::SolveRegIslandViaGS(const StepConf& conf, const Islan
         Report(m_listeners.postSolveContact, island.contacts, velConstraints,
                results.solved? results.positionIters - 1: StepConf::InvalidIteration);
     }
-    
+
     const auto minUnderActiveTime = UpdateUnderActiveTimes(island.bodies, m_bodyBuffer, conf);
     if ((minUnderActiveTime >= conf.minStillTimeToSleep) && results.solved) {
         results.bodiesSlept = Sleepem(island.bodies, m_bodyBuffer);
@@ -1767,7 +1766,7 @@ ToiStepStats AabbTreeWorld::SolveToi(const StepConf& conf)
         stats.maxDistIters = std::max(stats.maxDistIters, updateData.maxDistIters);
         stats.maxRootIters = std::max(stats.maxRootIters, updateData.maxRootIters);
         stats.maxToiIters = std::max(stats.maxToiIters, updateData.maxToiIters);
-        
+
         const auto next = GetSoonestContact(m_contacts, m_contactBuffer);
         if (next == InvalidContactID) {
             // No more TOI events to handle within the current time step. Done!
@@ -2073,7 +2072,7 @@ AabbTreeWorld::ProcessContactsForTOI( // NOLINT(readability-function-cognitive-c
     auto results = ProcessContactsOutput{};
     assert(results.contactsUpdated == 0);
     assert(results.contactsSkipped == 0);
-    
+
     const auto updateConf = GetUpdateConf(conf);
 
     // Note: the original contact (for body of which this function was called) already is-in-island.
@@ -2350,7 +2349,7 @@ AabbTreeWorld::UpdateContactsStats AabbTreeWorld::UpdateContacts(const StepConf&
 #endif
 
     const auto updateConf = GetUpdateConf(conf);
-    
+
 #if defined(DO_THREADED)
     std::vector<ContactID> contactsNeedingUpdate;
     contactsNeedingUpdate.reserve(size(m_contacts));
@@ -2391,13 +2390,13 @@ AabbTreeWorld::UpdateContactsStats AabbTreeWorld::UpdateContacts(const StepConf&
 #else
             Update(contactID, updateConf);
 #endif
-        	++updated;
+            ++updated;
         }
         else {
             ++skipped;
         }
     });
-    
+
 #if defined(DO_THREADED)
     auto numJobs = size(contactsNeedingUpdate);
     const auto jobsPerCore = numJobs / 4;
@@ -2405,7 +2404,7 @@ AabbTreeWorld::UpdateContactsStats AabbTreeWorld::UpdateContacts(const StepConf&
         futures.push_back(std::async(std::launch::async, [=]{
             const auto offset = jobsPerCore * i;
             for (auto j = decltype(jobsPerCore){0}; j < jobsPerCore; ++j) {
-	            Update(contactsNeedingUpdate[offset + j], updateConf);
+                Update(contactsNeedingUpdate[offset + j], updateConf);
             }
         }));
         numJobs -= jobsPerCore;
@@ -2422,7 +2421,7 @@ AabbTreeWorld::UpdateContactsStats AabbTreeWorld::UpdateContacts(const StepConf&
         future.get();
     }
 #endif
-    
+
     return UpdateContactsStats{
         static_cast<ContactCounter>(updated),
         static_cast<ContactCounter>(skipped)
@@ -2890,6 +2889,33 @@ ContactID GetSoonestContact(const Span<const KeyedContactID>& ids,
         }
     }
     return found;
+}
+
+BodyID CreateBody(AabbTreeWorld& world, const BodyConf& def)
+{
+    return CreateBody(world, Body{def});
+}
+
+void Attach(AabbTreeWorld& world, BodyID id, ShapeID shapeID)
+{
+    auto body = GetBody(world, id);
+    body.Attach(shapeID);
+    SetBody(world, id, body);
+}
+
+bool Detach(AabbTreeWorld& world, BodyID id, ShapeID shapeID)
+{
+    auto body = GetBody(world, id);
+    if (body.Detach(shapeID)) {
+        SetBody(world, id, body);
+        return true;
+    }
+    return false;
+}
+
+const std::vector<ShapeID>& GetShapes(const AabbTreeWorld& world, BodyID id)
+{
+    return GetBody(world, id).GetShapes();
 }
 
 } // namespace playrho::d2

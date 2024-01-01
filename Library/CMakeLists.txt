@@ -201,7 +201,6 @@ set(PLAYRHO_PMR_SRCS
 set(PLAYRHO_D2_HDRS
     include/playrho/d2/AABB.hpp
     include/playrho/d2/AabbTreeWorld.hpp
-    include/playrho/d2/AabbTreeWorldBody.hpp
     include/playrho/d2/Acceleration.hpp
     include/playrho/d2/BasicAPI.hpp
     include/playrho/d2/Body.hpp
@@ -275,7 +274,6 @@ set(PLAYRHO_D2_HDRS
 set(PLAYRHO_D2_SRCS
     source/playrho/d2/AABB.cpp
     source/playrho/d2/AabbTreeWorld.cpp
-    source/playrho/d2/AabbTreeWorldBody.cpp
     source/playrho/d2/Body.cpp
     source/playrho/d2/BodyConf.cpp
     source/playrho/d2/ChainShapeConf.cpp
