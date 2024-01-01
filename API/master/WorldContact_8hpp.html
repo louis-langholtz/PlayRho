@@ -103,7 +103,9 @@ $(document).ready(function(){initNavTree('WorldContact_8hpp.html',''); initResiz
 
 <p>Declarations of free functions of World for contacts identified by <code>ContactID</code>.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;optional&gt;</code><br />
+<div class="textblock"><code>#include &lt;map&gt;</code><br />
+<code>#include &lt;optional&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 <code>#include &lt;<a class="el" href="BodyID_8hpp.html">playrho/BodyID.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="ContactID_8hpp.html">playrho/ContactID.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="KeyedContactID_8hpp.html">playrho/KeyedContactID.hpp</a>&gt;</code><br />
@@ -193,6 +195,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a50f925cd4a62e0bdad087cba2561efba"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a50f925cd4a62e0bdad087cba2561efba">playrho::d2::IsTouching</a> (const World &amp;world, ContactID id)</td></tr>
 <tr class="memdesc:a50f925cd4a62e0bdad087cba2561efba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this contact touching?  <a href="namespaceplayrho_1_1d2.html#a50f925cd4a62e0bdad087cba2561efba">More...</a><br /></td></tr>
 <tr class="separator:a50f925cd4a62e0bdad087cba2561efba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa33078ae10f2eab5c265fb70bbdc0b9d"><td class="memItemLeft" align="right" valign="top"><a id="aa33078ae10f2eab5c265fb70bbdc0b9d"></a>
+auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#aa33078ae10f2eab5c265fb70bbdc0b9d">playrho::d2::MakeTouchingMap</a> (const World &amp;world) -&gt; std::map&lt; std::pair&lt; Contactable, Contactable &gt;, ContactID &gt;</td></tr>
+<tr class="memdesc:aa33078ae10f2eab5c265fb70bbdc0b9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes a map of contacts in the given world that are in the touching state. <br /></td></tr>
+<tr class="separator:aa33078ae10f2eab5c265fb70bbdc0b9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06bdf092ec9098a9c0277832ba0ddbc2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a06bdf092ec9098a9c0277832ba0ddbc2">playrho::d2::NeedsFiltering</a> (const World &amp;world, ContactID id)</td></tr>
 <tr class="memdesc:a06bdf092ec9098a9c0277832ba0ddbc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the contact needs filtering.  <a href="namespaceplayrho_1_1d2.html#a06bdf092ec9098a9c0277832ba0ddbc2">More...</a><br /></td></tr>
 <tr class="separator:a06bdf092ec9098a9c0277832ba0ddbc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -203,6 +209,10 @@ Functions</h2></td></tr>
 <tr class="separator:a74979affb98f9307f121fd8f4f63910d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af23360c9130e209a06ae0c111f274876"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#af23360c9130e209a06ae0c111f274876">playrho::d2::ResetRestitution</a> (World &amp;world, ContactID id)</td></tr>
 <tr class="separator:af23360c9130e209a06ae0c111f274876"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a133b1fc99adb87f2ab099e886e36accf"><td class="memItemLeft" align="right" valign="top"><a id="a133b1fc99adb87f2ab099e886e36accf"></a>
+auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a133b1fc99adb87f2ab099e886e36accf">playrho::d2::SameTouching</a> (const World &amp;lhs, const World &amp;rhs) -&gt; bool</td></tr>
+<tr class="memdesc:a133b1fc99adb87f2ab099e886e36accf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the given worlds have the same touching contacts &amp; manifolds. <br /></td></tr>
+<tr class="separator:a133b1fc99adb87f2ab099e886e36accf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2abab9a7a8ac13206bd48bd50b5deea9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a2abab9a7a8ac13206bd48bd50b5deea9">playrho::d2::SetAwake</a> (World &amp;world, ContactID id)</td></tr>
 <tr class="memdesc:a2abab9a7a8ac13206bd48bd50b5deea9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets awake the bodies of the given contact.  <a href="namespaceplayrho_1_1d2.html#a2abab9a7a8ac13206bd48bd50b5deea9">More...</a><br /></td></tr>
 <tr class="separator:a2abab9a7a8ac13206bd48bd50b5deea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -237,7 +247,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="dir_00957d302ca87b53c9f57dcbc695504d.html">d2</a></li><li class="navelem"><a class="el" href="WorldContact_8hpp.html">WorldContact.hpp</a></li>
-    <li class="footer">Generated on Wed Dec 27 2023 21:45:35 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Jan 1 2024 08:17:41 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

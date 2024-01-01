@@ -255,6 +255,9 @@ Friends</h2></td></tr>
 <tr class="memitem:aa3f54eb44df4b7664524668ec28195e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#aa3f54eb44df4b7664524668ec28195e6">SetJointDestructionListener</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#addebc455127a1209e0543ce6a853ebaa">JointFunction</a> listener) noexcept</td></tr>
 <tr class="memdesc:aa3f54eb44df4b7664524668ec28195e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the destruction listener for joints.  <a href="classplayrho_1_1d2_1_1World.html#aa3f54eb44df4b7664524668ec28195e6">More...</a><br /></td></tr>
 <tr class="separator:aa3f54eb44df4b7664524668ec28195e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a356d2737798f06c3fd3cf7bb57f2c5ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a356d2737798f06c3fd3cf7bb57f2c5ab">SetManifold</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#abe7a48a3a0e57fa1a9dd9e396b6b24f7">ContactID</a> id, const <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a> &amp;value)</td></tr>
+<tr class="memdesc:a356d2737798f06c3fd3cf7bb57f2c5ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the identified manifold's state.  <a href="classplayrho_1_1d2_1_1World.html#a356d2737798f06c3fd3cf7bb57f2c5ab">More...</a><br /></td></tr>
+<tr class="separator:a356d2737798f06c3fd3cf7bb57f2c5ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7447c164a2e23733203b8b3d95042006"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a7447c164a2e23733203b8b3d95042006">SetPostSolveContactListener</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho_1_1d2.html#ab0945eb1db3efaa574b6b8403a11b853">ContactImpulsesFunction</a> listener) noexcept</td></tr>
 <tr class="memdesc:a7447c164a2e23733203b8b3d95042006"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the post-solve-contact lister.  <a href="classplayrho_1_1d2_1_1World.html#a7447c164a2e23733203b8b3d95042006">More...</a><br /></td></tr>
 <tr class="separator:a7447c164a2e23733203b8b3d95042006"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -718,6 +721,10 @@ Related Functions</h2></td></tr>
 <tr class="memitem:a386a732d954a80f48e6a3ac7beca1237"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a386a732d954a80f48e6a3ac7beca1237">IsTouching</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#abe7a48a3a0e57fa1a9dd9e396b6b24f7">ContactID</a> id)</td></tr>
 <tr class="memdesc:a386a732d954a80f48e6a3ac7beca1237"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this contact touching?  <a href="classplayrho_1_1d2_1_1World.html#a386a732d954a80f48e6a3ac7beca1237">More...</a><br /></td></tr>
 <tr class="separator:a386a732d954a80f48e6a3ac7beca1237"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad326da84fc9dee3d6c3a3974aedddc2c"><td class="memItemLeft" align="right" valign="top"><a id="ad326da84fc9dee3d6c3a3974aedddc2c"></a>
+auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#ad326da84fc9dee3d6c3a3974aedddc2c">MakeTouchingMap</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world) -&gt; std::map&lt; std::pair&lt; <a class="el" href="structplayrho_1_1Contactable.html">Contactable</a>, <a class="el" href="structplayrho_1_1Contactable.html">Contactable</a> &gt;, <a class="el" href="namespaceplayrho.html#abe7a48a3a0e57fa1a9dd9e396b6b24f7">ContactID</a> &gt;</td></tr>
+<tr class="memdesc:ad326da84fc9dee3d6c3a3974aedddc2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes a map of contacts in the given world that are in the touching state. <br /></td></tr>
+<tr class="separator:ad326da84fc9dee3d6c3a3974aedddc2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadd14b7a073e106ee40d4488d131f673"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#aadd14b7a073e106ee40d4488d131f673">NeedsFiltering</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#abe7a48a3a0e57fa1a9dd9e396b6b24f7">ContactID</a> id)</td></tr>
 <tr class="memdesc:aadd14b7a073e106ee40d4488d131f673"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the contact needs filtering.  <a href="classplayrho_1_1d2_1_1World.html#aadd14b7a073e106ee40d4488d131f673">More...</a><br /></td></tr>
 <tr class="separator:aadd14b7a073e106ee40d4488d131f673"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -743,6 +750,10 @@ Related Functions</h2></td></tr>
 <tr class="memitem:ab9ef983690f331d44c4133541cf75f52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#ab9ef983690f331d44c4133541cf75f52">RotateAboutWorldPoint</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92">BodyID</a> id, <a class="el" href="group__PhysicalQuantities.html#gabb35ed422281bfdf3c41a276958898fc">Angle</a> amount, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;worldPoint)</td></tr>
 <tr class="memdesc:ab9ef983690f331d44c4133541cf75f52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotates a body a given amount around a point in world coordinates.  <a href="classplayrho_1_1d2_1_1World.html#ab9ef983690f331d44c4133541cf75f52">More...</a><br /></td></tr>
 <tr class="separator:ab9ef983690f331d44c4133541cf75f52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7510c436bea6b18a2adc092f433f59a5"><td class="memItemLeft" align="right" valign="top"><a id="a7510c436bea6b18a2adc092f433f59a5"></a>
+auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a7510c436bea6b18a2adc092f433f59a5">SameTouching</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;lhs, const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;rhs) -&gt; bool</td></tr>
+<tr class="memdesc:a7510c436bea6b18a2adc092f433f59a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the given worlds have the same touching contacts &amp; manifolds. <br /></td></tr>
+<tr class="separator:a7510c436bea6b18a2adc092f433f59a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a431b7e952ad3dd27b23b493eac9c4f6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a431b7e952ad3dd27b23b493eac9c4f6e">Scale</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a> id, const <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a> &amp;value)</td></tr>
 <tr class="memdesc:a431b7e952ad3dd27b23b493eac9c4f6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales all of the given shape's vertices by the given amount.  <a href="classplayrho_1_1d2_1_1World.html#a431b7e952ad3dd27b23b493eac9c4f6e">More...</a><br /></td></tr>
 <tr class="separator:a431b7e952ad3dd27b23b493eac9c4f6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -933,9 +944,9 @@ This class's design provides a "polymorphic value type" offering polymorphism wi
 <dl class="section attention"><dt>Attention</dt><dd>For example, the following could be used to create a dynamic body having a one meter radius disk shape: <div class="fragment"><div class="line"><span class="keyword">auto</span> world = <a class="code" href="classplayrho_1_1d2_1_1World.html#a35fa8cfc0ffd391f66a288b9f42ef51c">World</a>{};</div>
 <div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> shape = <a class="code" href="classplayrho_1_1d2_1_1World.html#a0c9c3b453fbbd92e68a34d87ac2f3f51">CreateShape</a>(world, Shape{DiskShapeConf{1_m}});</div>
 <div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> body = <a class="code" href="classplayrho_1_1d2_1_1World.html#ac844fbdfb282bfd77c0dfea427eab4a1">CreateBody</a>(world, BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>).Use(shape));</div>
-<div class="ttc" id="aclassplayrho_1_1d2_1_1World_html_a0c9c3b453fbbd92e68a34d87ac2f3f51"><div class="ttname"><a href="classplayrho_1_1d2_1_1World.html#a0c9c3b453fbbd92e68a34d87ac2f3f51">playrho::d2::World::CreateShape</a></div><div class="ttdeci">friend ShapeID CreateShape(World &amp;world, const Shape &amp;def)</div><div class="ttdoc">Creates an identifiable copy of the given shape within the specified world.</div><div class="ttdef"><b>Definition:</b> World.hpp:1002</div></div>
-<div class="ttc" id="aclassplayrho_1_1d2_1_1World_html_a35fa8cfc0ffd391f66a288b9f42ef51c"><div class="ttname"><a href="classplayrho_1_1d2_1_1World.html#a35fa8cfc0ffd391f66a288b9f42ef51c">playrho::d2::World::World</a></div><div class="ttdeci">World(const WorldConf &amp;def=WorldConf{})</div><div class="ttdoc">Constructs a world object.</div><div class="ttdef"><b>Definition:</b> World.cpp:29</div></div>
-<div class="ttc" id="aclassplayrho_1_1d2_1_1World_html_ac844fbdfb282bfd77c0dfea427eab4a1"><div class="ttname"><a href="classplayrho_1_1d2_1_1World.html#ac844fbdfb282bfd77c0dfea427eab4a1">playrho::d2::World::CreateBody</a></div><div class="ttdeci">friend BodyID CreateBody(World &amp;world, const Body &amp;body, bool resetMassData)</div><div class="ttdoc">Creates a rigid body within the world that's a copy of the given one.</div><div class="ttdef"><b>Definition:</b> World.cpp:51</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1World_html_a0c9c3b453fbbd92e68a34d87ac2f3f51"><div class="ttname"><a href="classplayrho_1_1d2_1_1World.html#a0c9c3b453fbbd92e68a34d87ac2f3f51">playrho::d2::World::CreateShape</a></div><div class="ttdeci">friend ShapeID CreateShape(World &amp;world, const Shape &amp;def)</div><div class="ttdoc">Creates an identifiable copy of the given shape within the specified world.</div><div class="ttdef"><b>Definition:</b> World.hpp:1019</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1World_html_a35fa8cfc0ffd391f66a288b9f42ef51c"><div class="ttname"><a href="classplayrho_1_1d2_1_1World.html#a35fa8cfc0ffd391f66a288b9f42ef51c">playrho::d2::World::World</a></div><div class="ttdeci">World(const WorldConf &amp;def=WorldConf{})</div><div class="ttdoc">Constructs a world object.</div><div class="ttdef"><b>Definition:</b> World.cpp:28</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1World_html_ac844fbdfb282bfd77c0dfea427eab4a1"><div class="ttname"><a href="classplayrho_1_1d2_1_1World.html#ac844fbdfb282bfd77c0dfea427eab4a1">playrho::d2::World::CreateBody</a></div><div class="ttdeci">friend BodyID CreateBody(World &amp;world, const Body &amp;body, bool resetMassData)</div><div class="ttdoc">Creates a rigid body within the world that's a copy of the given one.</div><div class="ttdef"><b>Definition:</b> World.cpp:50</div></div>
 <div class="ttc" id="anamespaceplayrho_html_a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c"><div class="ttname"><a href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">playrho::BodyType::Dynamic</a></div><div class="ttdeci">@ Dynamic</div></div>
 </div><!-- fragment --></dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92" title="Strongly typed identifier for bodies within World instances.">BodyID</a>, <a class="el" href="namespaceplayrho.html#abe7a48a3a0e57fa1a9dd9e396b6b24f7" title="Strongly typed identifier of contacts within World instances.">ContactID</a>, <a class="el" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28" title="Shape identifier.">ShapeID</a>, <a class="el" href="namespaceplayrho.html#a8e3114be8fb50493389d7991db4f2b3d" title="Joint identifier.">JointID</a>, <a class="el" href="group__PhysicalEntities.html" title="Concepts and types associated with physical entities within a world.">Physical Entities</a>. </dd>
@@ -6423,13 +6434,14 @@ This function is locked during callbacks. The detatch listener, if set, is calle
 </div><div class="memdoc">
 
 <p>Gets the manifold for the identified contact. </p>
+<dl class="section note"><dt>Note</dt><dd>There is a manifold for every contact and vice-versa. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::out_of_range</td><td>If given an out of range contact identifier. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd>GetContantRange. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html#a356d2737798f06c3fd3cf7bb57f2c5ab" title="Sets the identified manifold&#39;s state.">SetManifold</a>, GetContantRange. </dd></dl>
 
 </div>
 </div>
@@ -11801,6 +11813,67 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a356d2737798f06c3fd3cf7bb57f2c5ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a356d2737798f06c3fd3cf7bb57f2c5ab">&#9670;&nbsp;</a></span>SetManifold</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SetManifold </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#abe7a48a3a0e57fa1a9dd9e396b6b24f7">ContactID</a>&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the identified manifold's state. </p>
+<dl class="section note"><dt>Note</dt><dd>There is a manifold for every contact and vice-versa. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">world</td><td>The world of the manifold whose state is to be set. </td></tr>
+    <tr><td class="paramname">id</td><td>Identifier of the manifold whose state is to be set. </td></tr>
+    <tr><td class="paramname">value</td><td>Value the manifold is to be set to. The new state: TODO: is not allowed to change whether the contact is awake, TODO: is not allowed to change whether the contact is impenetrable. Otherwise, throws <code><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error.">InvalidArgument</a></code> exception and doesn't change anything. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>If given an out of range contact identifier or the new manifold value references an out of range identifier. </td></tr>
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error.">InvalidArgument</a></td><td>if the identifier is to a freed contact or if the new state is not allowable. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html#a7414d190bc45dd19d1b3c8193ffa5857" title="Gets the manifold for the identified contact.">GetManifold</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aa69d38b444407e38b21ea8a4dd875678" title="Gets the extent of the currently valid contact range.">GetContactRange</a>. </dd></dl>
+
+</div>
+</div>
 <a id="abe6b45c9a1aeec496d83c00a6f587740"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abe6b45c9a1aeec496d83c00a6f587740">&#9670;&nbsp;</a></span>SetMassData()</h2>
 
@@ -13545,7 +13618,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1World.html">World</a></li>
-    <li class="footer">Generated on Wed Dec 27 2023 21:45:35 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Jan 1 2024 08:17:42 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

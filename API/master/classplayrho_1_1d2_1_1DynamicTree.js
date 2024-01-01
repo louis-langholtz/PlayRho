@@ -33,6 +33,7 @@ var classplayrho_1_1d2_1_1DynamicTree =
     [ "Reserve", "classplayrho_1_1d2_1_1DynamicTree.html#ad1fa3e1b69c47356cee7809d9137d7a0", null ],
     [ "ShiftOrigin", "classplayrho_1_1d2_1_1DynamicTree.html#ae5fc280fcfe4db1490a5d8d2d1398edf", null ],
     [ "UpdateLeaf", "classplayrho_1_1d2_1_1DynamicTree.html#af791e371bb59fb7440d0440d0f89766b", null ],
+    [ "FindIndex", "classplayrho_1_1d2_1_1DynamicTree.html#a64048280cc9f8d01112503717daa7bed", null ],
     [ "GetAABB", "classplayrho_1_1d2_1_1DynamicTree.html#adebb4dfdc038631f8b24ee19a0b29713", null ],
     [ "GetHeight", "classplayrho_1_1d2_1_1DynamicTree.html#a72265a3c2d4511e74df6ab4d13112f6d", null ],
     [ "swap", "classplayrho_1_1d2_1_1DynamicTree.html#a778697779a16cce60de39b6dee75a75d", null ],

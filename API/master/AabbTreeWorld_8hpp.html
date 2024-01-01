@@ -106,6 +106,7 @@ $(document).ready(function(){initNavTree('AabbTreeWorld_8hpp.html',''); initResi
 <p>Declarations of the AabbTreeWorld class.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;map&gt;</code><br />
 <code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;tuple&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
@@ -195,6 +196,19 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nam
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a71e1178c67501e9f3cecd3bc40cc04a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a71e1178c67501e9f3cecd3bc40cc04a1">playrho::d2::Attach</a> (AabbTreeWorld &amp;world, BodyID id, ShapeID shapeID)</td></tr>
+<tr class="memdesc:a71e1178c67501e9f3cecd3bc40cc04a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates a validly identified shape with the validly identified body.  <a href="namespaceplayrho_1_1d2.html#a71e1178c67501e9f3cecd3bc40cc04a1">More...</a><br /></td></tr>
+<tr class="separator:a71e1178c67501e9f3cecd3bc40cc04a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac5c2b6c5fc9a39971942baf99fcee2b"><td class="memItemLeft" align="right" valign="top"><a id="aac5c2b6c5fc9a39971942baf99fcee2b"></a>
+BodyID&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#aac5c2b6c5fc9a39971942baf99fcee2b">playrho::d2::CreateBody</a> (AabbTreeWorld &amp;world, const BodyConf &amp;def)</td></tr>
+<tr class="memdesc:aac5c2b6c5fc9a39971942baf99fcee2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a body within the world that's a copy of the given one. <br /></td></tr>
+<tr class="separator:aac5c2b6c5fc9a39971942baf99fcee2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa96788ab361740a16d316b821154ea9e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#aa96788ab361740a16d316b821154ea9e">playrho::d2::Detach</a> (AabbTreeWorld &amp;world, BodyID id, ShapeID shapeID)</td></tr>
+<tr class="memdesc:aa96788ab361740a16d316b821154ea9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disassociates a validly identified shape from the validly identified body.  <a href="namespaceplayrho_1_1d2.html#aa96788ab361740a16d316b821154ea9e">More...</a><br /></td></tr>
+<tr class="separator:aa96788ab361740a16d316b821154ea9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe762c434a20aa39abb7f121b9d89c03"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; ShapeID &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">playrho::d2::GetShapes</a> (const AabbTreeWorld &amp;world, BodyID id)</td></tr>
+<tr class="memdesc:afe762c434a20aa39abb7f121b9d89c03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disassociates all of the associated shape from the validly identified body.  <a href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">More...</a><br /></td></tr>
+<tr class="separator:afe762c434a20aa39abb7f121b9d89c03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e8932936bd2f281984a4afacc40e7a1"><td class="memItemLeft" align="right" valign="top">ContactID&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a7e8932936bd2f281984a4afacc40e7a1">playrho::d2::GetSoonestContact</a> (const Span&lt; const KeyedContactID &gt; &amp;ids, const Span&lt; const Contact &gt; &amp;contacts) noexcept</td></tr>
 <tr class="memdesc:a7e8932936bd2f281984a4afacc40e7a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the identifier of the contact with the lowest time of impact.  <a href="namespaceplayrho_1_1d2.html#a7e8932936bd2f281984a4afacc40e7a1">More...</a><br /></td></tr>
 <tr class="separator:a7e8932936bd2f281984a4afacc40e7a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -260,14 +274,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="memitem:aac86950fdee2a34e82718966246905a3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#aac86950fdee2a34e82718966246905a3">playrho::d2::IsStepComplete</a> (const AabbTreeWorld &amp;world) noexcept</td></tr>
 <tr class="memdesc:aac86950fdee2a34e82718966246905a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not "step" is complete.  <a href="namespaceplayrho_1_1d2.html#aac86950fdee2a34e82718966246905a3">More...</a><br /></td></tr>
 <tr class="separator:aac86950fdee2a34e82718966246905a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b4f6e28eb03d5efe900c149745a275c"><td class="memItemLeft" align="right" valign="top"><a id="a3b4f6e28eb03d5efe900c149745a275c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a3b4f6e28eb03d5efe900c149745a275c">playrho::d2::operator!=</a> (const AabbTreeWorld &amp;lhs, const AabbTreeWorld &amp;rhs) noexcept</td></tr>
-<tr class="memdesc:a3b4f6e28eb03d5efe900c149745a275c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator for world comparisons. <br /></td></tr>
-<tr class="separator:a3b4f6e28eb03d5efe900c149745a275c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf71b232c9e1851d6149bc0ba4e5867b"><td class="memItemLeft" align="right" valign="top"><a id="abf71b232c9e1851d6149bc0ba4e5867b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#abf71b232c9e1851d6149bc0ba4e5867b">playrho::d2::operator==</a> (const AabbTreeWorld &amp;lhs, const AabbTreeWorld &amp;rhs) noexcept</td></tr>
-<tr class="memdesc:abf71b232c9e1851d6149bc0ba4e5867b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator for world comparisons. <br /></td></tr>
-<tr class="separator:abf71b232c9e1851d6149bc0ba4e5867b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf8035706c7d015f46f769152051af82"><td class="memItemLeft" align="right" valign="top"><a id="acf8035706c7d015f46f769152051af82"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#acf8035706c7d015f46f769152051af82">playrho::d2::operator!=</a> (const AabbTreeWorld &amp;lhs, const AabbTreeWorld &amp;rhs)</td></tr>
+<tr class="memdesc:acf8035706c7d015f46f769152051af82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator for world comparisons. <br /></td></tr>
+<tr class="separator:acf8035706c7d015f46f769152051af82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e9377305e281355a630cdb51b185434"><td class="memItemLeft" align="right" valign="top"><a id="a8e9377305e281355a630cdb51b185434"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a8e9377305e281355a630cdb51b185434">playrho::d2::operator==</a> (const AabbTreeWorld &amp;lhs, const AabbTreeWorld &amp;rhs)</td></tr>
+<tr class="memdesc:a8e9377305e281355a630cdb51b185434"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator for world comparisons. <br /></td></tr>
+<tr class="separator:a8e9377305e281355a630cdb51b185434"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b8d4d16ed5f043b13407de3cd8f11f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a7b8d4d16ed5f043b13407de3cd8f11f4">playrho::d2::SetSubStepping</a> (AabbTreeWorld &amp;world, bool flag) noexcept</td></tr>
 <tr class="memdesc:a7b8d4d16ed5f043b13407de3cd8f11f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables single stepped continuous physics.  <a href="namespaceplayrho_1_1d2.html#a7b8d4d16ed5f043b13407de3cd8f11f4">More...</a><br /></td></tr>
 <tr class="separator:a7b8d4d16ed5f043b13407de3cd8f11f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -378,6 +392,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="memitem:a986132f0e473e4da3dfcd1b5ec1eb608"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a986132f0e473e4da3dfcd1b5ec1eb608">playrho::d2::SetContact</a> (AabbTreeWorld &amp;world, ContactID id, Contact value)</td></tr>
 <tr class="memdesc:a986132f0e473e4da3dfcd1b5ec1eb608"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the identified contact's state.  <a href="namespaceplayrho_1_1d2.html#a986132f0e473e4da3dfcd1b5ec1eb608">More...</a><br /></td></tr>
 <tr class="separator:a986132f0e473e4da3dfcd1b5ec1eb608"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62729329cd0979ebf2b3f6cf424ca43b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a62729329cd0979ebf2b3f6cf424ca43b">playrho::d2::SetManifold</a> (AabbTreeWorld &amp;world, ContactID id, const Manifold &amp;value)</td></tr>
+<tr class="memdesc:a62729329cd0979ebf2b3f6cf424ca43b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the identified manifold.  <a href="namespaceplayrho_1_1d2.html#a62729329cd0979ebf2b3f6cf424ca43b">More...</a><br /></td></tr>
+<tr class="separator:a62729329cd0979ebf2b3f6cf424ca43b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Declarations of the AabbTreeWorld class. </p>
@@ -387,7 +404,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="dir_00957d302ca87b53c9f57dcbc695504d.html">d2</a></li><li class="navelem"><a class="el" href="AabbTreeWorld_8hpp.html">AabbTreeWorld.hpp</a></li>
-    <li class="footer">Generated on Wed Dec 27 2023 21:45:35 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Jan 1 2024 08:17:41 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

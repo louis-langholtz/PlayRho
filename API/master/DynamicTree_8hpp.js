@@ -12,6 +12,7 @@ var DynamicTree_8hpp =
     [ "ComputeHeight", "DynamicTree_8hpp.html#af0e796616b3e92f4b7b34ffdc73e4942", null ],
     [ "ComputePerimeterRatio", "DynamicTree_8hpp.html#a7daf9650f36f8d172678d1398034a516", null ],
     [ "ComputeTotalPerimeter", "DynamicTree_8hpp.html#aaab37fd533a1ec17e12c6798e42a21b3", null ],
+    [ "FindIndex", "DynamicTree_8hpp.html#a09f92d091f1d46e9aa6b6d8456aa26da", null ],
     [ "GetAABB", "DynamicTree_8hpp.html#adebb4dfdc038631f8b24ee19a0b29713", null ],
     [ "GetAABB", "DynamicTree_8hpp.html#ab6f093bc8ffe077f0d5895bfc5b672a7", null ],
     [ "GetHeight", "DynamicTree_8hpp.html#a72265a3c2d4511e74df6ab4d13112f6d", null ],

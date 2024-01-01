@@ -584,6 +584,9 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a79b87dd5723bbca53647199735376788"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92">BodyID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a79b87dd5723bbca53647199735376788">FindClosestBody</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;location)</td></tr>
 <tr class="memdesc:a79b87dd5723bbca53647199735376788"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds body in given world that's closest to the given location.  <a href="namespaceplayrho_1_1d2.html#a79b87dd5723bbca53647199735376788">More...</a><br /></td></tr>
 <tr class="separator:a79b87dd5723bbca53647199735376788"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09f92d091f1d46e9aa6b6d8456aa26da"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a09f92d091f1d46e9aa6b6d8456aa26da">FindIndex</a> (const <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html">DynamicTree</a> &amp;tree, const <a class="el" href="structplayrho_1_1Contactable.html">Contactable</a> &amp;c) noexcept -&gt; <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#af442fc7c6152cefb54928165e49fa80d">DynamicTree::Size</a></td></tr>
+<tr class="memdesc:a09f92d091f1d46e9aa6b6d8456aa26da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds index of node matching given contactble using a linear search.  <a href="namespaceplayrho_1_1d2.html#a09f92d091f1d46e9aa6b6d8456aa26da">More...</a><br /></td></tr>
+<tr class="separator:a09f92d091f1d46e9aa6b6d8456aa26da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8845b24d9baa83d95859a1ec749fdff"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#ac8845b24d9baa83d95859a1ec749fdff">FindLowestRightMostVertex</a> (<a class="el" href="classplayrho_1_1Span.html">Span</a>&lt; const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &gt; vertices) noexcept</td></tr>
 <tr class="memdesc:ac8845b24d9baa83d95859a1ec749fdff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the index of the lowest right most vertex in the given collection.  <a href="namespaceplayrho_1_1d2.html#ac8845b24d9baa83d95859a1ec749fdff">More...</a><br /></td></tr>
 <tr class="separator:ac8845b24d9baa83d95859a1ec749fdff"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2187,6 +2190,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="memitem:a3ad7a716e1b2bc2677ebf9ec441401f4"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a3ad7a716e1b2bc2677ebf9ec441401f4">IsUnused</a> (const <a class="el" href="classplayrho_1_1d2_1_1DynamicTree_1_1TreeNode.html">DynamicTree::TreeNode</a> &amp;node) noexcept</td></tr>
 <tr class="memdesc:a3ad7a716e1b2bc2677ebf9ec441401f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is unused.  <a href="namespaceplayrho_1_1d2.html#a3ad7a716e1b2bc2677ebf9ec441401f4">More...</a><br /></td></tr>
 <tr class="separator:a3ad7a716e1b2bc2677ebf9ec441401f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa33078ae10f2eab5c265fb70bbdc0b9d"><td class="memItemLeft" align="right" valign="top"><a id="aa33078ae10f2eab5c265fb70bbdc0b9d"></a>
+auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#aa33078ae10f2eab5c265fb70bbdc0b9d">MakeTouchingMap</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world) -&gt; std::map&lt; std::pair&lt; <a class="el" href="structplayrho_1_1Contactable.html">Contactable</a>, <a class="el" href="structplayrho_1_1Contactable.html">Contactable</a> &gt;, <a class="el" href="namespaceplayrho.html#abe7a48a3a0e57fa1a9dd9e396b6b24f7">ContactID</a> &gt;</td></tr>
+<tr class="memdesc:aa33078ae10f2eab5c265fb70bbdc0b9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes a map of contacts in the given world that are in the touching state. <br /></td></tr>
+<tr class="separator:aa33078ae10f2eab5c265fb70bbdc0b9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ee12b6e0f384806e2dbb27a90a6cd7f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a2ee12b6e0f384806e2dbb27a90a6cd7f">Mul</a> (const <a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a> &amp;A, const <a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a> &amp;B) noexcept</td></tr>
 <tr class="memdesc:a2ee12b6e0f384806e2dbb27a90a6cd7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies a given transformation by another given transformation.  <a href="namespaceplayrho_1_1d2.html#a2ee12b6e0f384806e2dbb27a90a6cd7f">More...</a><br /></td></tr>
 <tr class="separator:a2ee12b6e0f384806e2dbb27a90a6cd7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2670,6 +2677,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="memitem:a864d5a471e5f374e2c64597d4f365905"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a864d5a471e5f374e2c64597d4f365905">RotateAboutWorldPoint</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92">BodyID</a> id, <a class="el" href="group__PhysicalQuantities.html#gabb35ed422281bfdf3c41a276958898fc">Angle</a> amount, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;worldPoint)</td></tr>
 <tr class="memdesc:a864d5a471e5f374e2c64597d4f365905"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotates a body a given amount around a point in world coordinates.  <a href="namespaceplayrho_1_1d2.html#a864d5a471e5f374e2c64597d4f365905">More...</a><br /></td></tr>
 <tr class="separator:a864d5a471e5f374e2c64597d4f365905"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a133b1fc99adb87f2ab099e886e36accf"><td class="memItemLeft" align="right" valign="top"><a id="a133b1fc99adb87f2ab099e886e36accf"></a>
+auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a133b1fc99adb87f2ab099e886e36accf">SameTouching</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;lhs, const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;rhs) -&gt; bool</td></tr>
+<tr class="memdesc:a133b1fc99adb87f2ab099e886e36accf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the given worlds have the same touching contacts &amp; manifolds. <br /></td></tr>
+<tr class="separator:a133b1fc99adb87f2ab099e886e36accf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a9f6506a87ab7964f3ae2a98618ac2d"><td class="memItemLeft" align="right" valign="top"><a id="a2a9f6506a87ab7964f3ae2a98618ac2d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a2a9f6506a87ab7964f3ae2a98618ac2d">Scale</a> (<a class="el" href="structplayrho_1_1d2_1_1ChainShapeConf.html">ChainShapeConf</a> &amp;arg, const <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a> &amp;value)</td></tr>
 <tr class="memdesc:a2a9f6506a87ab7964f3ae2a98618ac2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales the given shape's vertices by the given amount. <br /></td></tr>
@@ -2946,6 +2957,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="memitem:a4e28d0cd6793d71a03ec47ded844e29c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a4e28d0cd6793d71a03ec47ded844e29c">SetLocation</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a9d094e8b19ea714a079a48c336abad92">BodyID</a> id, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;value)</td></tr>
 <tr class="memdesc:a4e28d0cd6793d71a03ec47ded844e29c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the body's location.  <a href="namespaceplayrho_1_1d2.html#a4e28d0cd6793d71a03ec47ded844e29c">More...</a><br /></td></tr>
 <tr class="separator:a4e28d0cd6793d71a03ec47ded844e29c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2dffd6e9c0e2c0ec3e74de425150dbb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#ac2dffd6e9c0e2c0ec3e74de425150dbb">SetManifold</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#abe7a48a3a0e57fa1a9dd9e396b6b24f7">ContactID</a> id, const <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a> &amp;value)</td></tr>
+<tr class="memdesc:ac2dffd6e9c0e2c0ec3e74de425150dbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the identified manifold's state.  <a href="namespaceplayrho_1_1d2.html#ac2dffd6e9c0e2c0ec3e74de425150dbb">More...</a><br /></td></tr>
+<tr class="separator:ac2dffd6e9c0e2c0ec3e74de425150dbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af26ae548ac842dfc9c1da2230b224870"><td class="memItemLeft" align="right" valign="top"><a id="af26ae548ac842dfc9c1da2230b224870"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#af26ae548ac842dfc9c1da2230b224870">SetMass</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, <a class="el" href="group__PhysicalQuantities.html#gaaf74540633aeb472114381118842149e">Mass</a> mass)</td></tr>
 <tr class="memdesc:af26ae548ac842dfc9c1da2230b224870"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the mass of the given body. <br /></td></tr>
@@ -3467,14 +3481,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="memdesc:a64227632d49eb8e331902edb22999b58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a post-solve contact event listener. <br /></td></tr>
 <tr class="separator:a64227632d49eb8e331902edb22999b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">AabbTreeWorld Miscellaneous Non-Member Functions</div></td></tr>
-<tr class="memitem:abf71b232c9e1851d6149bc0ba4e5867b"><td class="memItemLeft" align="right" valign="top"><a id="abf71b232c9e1851d6149bc0ba4e5867b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#abf71b232c9e1851d6149bc0ba4e5867b">operator==</a> (const <a class="el" href="classplayrho_1_1d2_1_1AabbTreeWorld.html">AabbTreeWorld</a> &amp;lhs, const <a class="el" href="classplayrho_1_1d2_1_1AabbTreeWorld.html">AabbTreeWorld</a> &amp;rhs) noexcept</td></tr>
-<tr class="memdesc:abf71b232c9e1851d6149bc0ba4e5867b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator for world comparisons. <br /></td></tr>
-<tr class="separator:abf71b232c9e1851d6149bc0ba4e5867b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b4f6e28eb03d5efe900c149745a275c"><td class="memItemLeft" align="right" valign="top"><a id="a3b4f6e28eb03d5efe900c149745a275c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a3b4f6e28eb03d5efe900c149745a275c">operator!=</a> (const <a class="el" href="classplayrho_1_1d2_1_1AabbTreeWorld.html">AabbTreeWorld</a> &amp;lhs, const <a class="el" href="classplayrho_1_1d2_1_1AabbTreeWorld.html">AabbTreeWorld</a> &amp;rhs) noexcept</td></tr>
-<tr class="memdesc:a3b4f6e28eb03d5efe900c149745a275c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator for world comparisons. <br /></td></tr>
-<tr class="separator:a3b4f6e28eb03d5efe900c149745a275c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e9377305e281355a630cdb51b185434"><td class="memItemLeft" align="right" valign="top"><a id="a8e9377305e281355a630cdb51b185434"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a8e9377305e281355a630cdb51b185434">operator==</a> (const <a class="el" href="classplayrho_1_1d2_1_1AabbTreeWorld.html">AabbTreeWorld</a> &amp;lhs, const <a class="el" href="classplayrho_1_1d2_1_1AabbTreeWorld.html">AabbTreeWorld</a> &amp;rhs)</td></tr>
+<tr class="memdesc:a8e9377305e281355a630cdb51b185434"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator for world comparisons. <br /></td></tr>
+<tr class="separator:a8e9377305e281355a630cdb51b185434"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf8035706c7d015f46f769152051af82"><td class="memItemLeft" align="right" valign="top"><a id="acf8035706c7d015f46f769152051af82"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#acf8035706c7d015f46f769152051af82">operator!=</a> (const <a class="el" href="classplayrho_1_1d2_1_1AabbTreeWorld.html">AabbTreeWorld</a> &amp;lhs, const <a class="el" href="classplayrho_1_1d2_1_1AabbTreeWorld.html">AabbTreeWorld</a> &amp;rhs)</td></tr>
+<tr class="memdesc:acf8035706c7d015f46f769152051af82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator for world comparisons. <br /></td></tr>
+<tr class="separator:acf8035706c7d015f46f769152051af82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff84d6881d841e255e77330984080008"><td class="memItemLeft" align="right" valign="top"><a id="aff84d6881d841e255e77330984080008"></a>
 std::optional&lt; <a class="el" href="structplayrho_1_1pmr_1_1StatsResource_1_1Stats.html">pmr::StatsResource::Stats</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#aff84d6881d841e255e77330984080008">GetResourceStats</a> (const <a class="el" href="classplayrho_1_1d2_1_1AabbTreeWorld.html">AabbTreeWorld</a> &amp;world) noexcept</td></tr>
 <tr class="memdesc:aff84d6881d841e255e77330984080008"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the resource statistics of the specified world. <br /></td></tr>
@@ -3616,6 +3630,9 @@ const <a class="el" href="namespaceplayrho_1_1d2.html#a2b03aa4cdf4968f8dc10d9016
 <tr class="memitem:a4744f578a96c67e8929c84c7b32e27e7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a4744f578a96c67e8929c84c7b32e27e7">GetManifold</a> (const <a class="el" href="classplayrho_1_1d2_1_1AabbTreeWorld.html">AabbTreeWorld</a> &amp;world, <a class="el" href="namespaceplayrho.html#abe7a48a3a0e57fa1a9dd9e396b6b24f7">ContactID</a> id)</td></tr>
 <tr class="memdesc:a4744f578a96c67e8929c84c7b32e27e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the identified manifold.  <a href="namespaceplayrho_1_1d2.html#a4744f578a96c67e8929c84c7b32e27e7">More...</a><br /></td></tr>
 <tr class="separator:a4744f578a96c67e8929c84c7b32e27e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62729329cd0979ebf2b3f6cf424ca43b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a62729329cd0979ebf2b3f6cf424ca43b">SetManifold</a> (<a class="el" href="classplayrho_1_1d2_1_1AabbTreeWorld.html">AabbTreeWorld</a> &amp;world, <a class="el" href="namespaceplayrho.html#abe7a48a3a0e57fa1a9dd9e396b6b24f7">ContactID</a> id, const <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a> &amp;value)</td></tr>
+<tr class="memdesc:a62729329cd0979ebf2b3f6cf424ca43b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the identified manifold.  <a href="namespaceplayrho_1_1d2.html#a62729329cd0979ebf2b3f6cf424ca43b">More...</a><br /></td></tr>
+<tr class="separator:a62729329cd0979ebf2b3f6cf424ca43b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a410fda5a1c75561497f4184d9e6d0d15"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a410fda5a1c75561497f4184d9e6d0d15">IsDestroyed</a> (const <a class="el" href="classplayrho_1_1d2_1_1AabbTreeWorld.html">AabbTreeWorld</a> &amp;world, <a class="el" href="namespaceplayrho.html#abe7a48a3a0e57fa1a9dd9e396b6b24f7">ContactID</a> id) noexcept</td></tr>
 <tr class="memdesc:a410fda5a1c75561497f4184d9e6d0d15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given identifier is to a contact that's been destroyed.  <a href="namespaceplayrho_1_1d2.html#a410fda5a1c75561497f4184d9e6d0d15">More...</a><br /></td></tr>
 <tr class="separator:a410fda5a1c75561497f4184d9e6d0d15"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5380,7 +5397,9 @@ Non-zero forces wakes up the body. </dd></dl>
 
 <p>Creates a rigid body that's a copy of the given one. </p>
 <dl class="section warning"><dt>Warning</dt><dd>This function should not be used while the world is locked &mdash; as it is during callbacks. If it is, it will throw an exception or abort your program. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>No references to the configuration are retained. Its value is copied. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>No references to the configuration are retained. Its value is copied. </dd>
+<dd>
+This function does not reset the mass data for the body. </dd></dl>
 <dl class="section post"><dt>Postcondition</dt><dd>The created body will be present in the container returned from the <code><a class="el" href="namespaceplayrho_1_1d2.html#a4c12d1fb1dda1f84e19d43cb9abfbdd6" title="Gets a container of valid world body identifiers for this constant world.">GetBodies(const AabbTreeWorld&amp;)</a></code> function. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -6600,6 +6619,48 @@ On the first call, <code>size(conf.cache.indices)</code> should be zero. </dd></
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Identifier of the closest body, or <code>InvalidBodyID</code>. </dd></dl>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a111">World.cpp</a>.</dd>
+</dl>
+
+</div>
+</div>
+<a id="a09f92d091f1d46e9aa6b6d8456aa26da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09f92d091f1d46e9aa6b6d8456aa26da">&#9670;&nbsp;</a></span>FindIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto playrho::d2::FindIndex </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html">DynamicTree</a> &amp;&#160;</td>
+          <td class="paramname"><em>tree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1Contactable.html">Contactable</a> &amp;&#160;</td>
+          <td class="paramname"><em>c</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#af442fc7c6152cefb54928165e49fa80d">DynamicTree::Size</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Finds index of node matching given contactble using a linear search. </p>
+<dl class="section return"><dt>Returns</dt><dd>Node index or <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">DynamicTree::GetInvalidSize()</a></code>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">DynamicTree::GetInvalidSize()</a>. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a189">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -8688,7 +8749,7 @@ On the first call, <code>size(conf.cache.indices)</code> should be zero. </dd></
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a69">World.cpp</a>, and <a class="el" href="WorldContact_8cpp-example.html#a24">WorldContact.cpp</a>.</dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#aa8c24669bbb9850b21ef17c5217f0a45">playrho::d2::World::GetBodyA()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a379c87f1276cec0f81e35942dc144b27">playrho::d2::World::GetBodyB()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a24ba41bdcb80e48e4bfebac362eb23db">playrho::d2::World::GetChildIndexA()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a708d52132fb3f4ffbd49bf09ebc64740">playrho::d2::World::GetChildIndexB()</a>, <a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#a1ed5d975b3960dbb7b02a86574cbb53c">playrho::d2::detail::WorldModel&lt; T &gt;::GetContact_()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ad4c197be0402b89a41342cfe51523d45">playrho::d2::World::GetDefaultFriction()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ad04dd80754bf974462c8796cd3c95b07">playrho::d2::World::GetDefaultRestitution()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#afba77e9f2885ab686b15965c7e8ae8ba">playrho::d2::World::GetFriction()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ada6f0319b80bd4a62673f539e41d0b86">playrho::d2::World::GetRestitution()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#acbcbafdab9eb0a9ad1b9a7cd6dad5643">playrho::d2::World::GetShapeA()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aad506200695ac8ed2f733feec13f874b">playrho::d2::World::GetShapeB()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a2a314b9568d6553aaac1df1a0054250e">playrho::d2::World::GetTangentSpeed()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a8189382c46b921930c7c0117b9ea9cc2">playrho::d2::World::GetToi()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ab2cf2abf28efb6e6ba368648b49484f0">playrho::d2::World::GetToiCount()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a9e4fddd252b20dfceb87d93f5ad11087">playrho::d2::World::GetWorldManifold()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aae57c7aca1c8c840ea8eb1ba1d44ef07">playrho::d2::World::HasValidToi()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a89c2757003061a1852f035d352ec68a5">playrho::d2::World::IsAwake()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a10fdf8ef9cbd8b1ff7b51334e72a6ef5">playrho::d2::World::IsEnabled()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a386a732d954a80f48e6a3ac7beca1237">playrho::d2::World::IsTouching()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aadd14b7a073e106ee40d4488d131f673">playrho::d2::World::NeedsFiltering()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aaada9701c50ea1607ecf3ae02c8f72c1">playrho::d2::World::NeedsUpdating()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aaccb259506fe50452b035158ec12e47b">playrho::d2::World::SetEnabled()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aec48aad60bfb4a7a8e1cc7f16e45254d">playrho::d2::World::SetFriction()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a74f86083992d822f2b6376b98c8e8a79">playrho::d2::World::SetRestitution()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#adaae6c7d046c05b5b2f79c2e0d3fedae">playrho::d2::World::SetTangentSpeed()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a6b1a2071021c814a1ee5bfe54c994287">playrho::d2::World::UnsetEnabled()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#aa8c24669bbb9850b21ef17c5217f0a45">playrho::d2::World::GetBodyA()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a379c87f1276cec0f81e35942dc144b27">playrho::d2::World::GetBodyB()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a24ba41bdcb80e48e4bfebac362eb23db">playrho::d2::World::GetChildIndexA()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a708d52132fb3f4ffbd49bf09ebc64740">playrho::d2::World::GetChildIndexB()</a>, <a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#a1ed5d975b3960dbb7b02a86574cbb53c">playrho::d2::detail::WorldModel&lt; T &gt;::GetContact_()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ad4c197be0402b89a41342cfe51523d45">playrho::d2::World::GetDefaultFriction()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ad04dd80754bf974462c8796cd3c95b07">playrho::d2::World::GetDefaultRestitution()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#afba77e9f2885ab686b15965c7e8ae8ba">playrho::d2::World::GetFriction()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ada6f0319b80bd4a62673f539e41d0b86">playrho::d2::World::GetRestitution()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#acbcbafdab9eb0a9ad1b9a7cd6dad5643">playrho::d2::World::GetShapeA()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aad506200695ac8ed2f733feec13f874b">playrho::d2::World::GetShapeB()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a2a314b9568d6553aaac1df1a0054250e">playrho::d2::World::GetTangentSpeed()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a8189382c46b921930c7c0117b9ea9cc2">playrho::d2::World::GetToi()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ab2cf2abf28efb6e6ba368648b49484f0">playrho::d2::World::GetToiCount()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a9e4fddd252b20dfceb87d93f5ad11087">playrho::d2::World::GetWorldManifold()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aae57c7aca1c8c840ea8eb1ba1d44ef07">playrho::d2::World::HasValidToi()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a89c2757003061a1852f035d352ec68a5">playrho::d2::World::IsAwake()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a10fdf8ef9cbd8b1ff7b51334e72a6ef5">playrho::d2::World::IsEnabled()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a386a732d954a80f48e6a3ac7beca1237">playrho::d2::World::IsTouching()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ad326da84fc9dee3d6c3a3974aedddc2c">playrho::d2::World::MakeTouchingMap()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aadd14b7a073e106ee40d4488d131f673">playrho::d2::World::NeedsFiltering()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aaada9701c50ea1607ecf3ae02c8f72c1">playrho::d2::World::NeedsUpdating()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a7510c436bea6b18a2adc092f433f59a5">playrho::d2::World::SameTouching()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aaccb259506fe50452b035158ec12e47b">playrho::d2::World::SetEnabled()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aec48aad60bfb4a7a8e1cc7f16e45254d">playrho::d2::World::SetFriction()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a74f86083992d822f2b6376b98c8e8a79">playrho::d2::World::SetRestitution()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#adaae6c7d046c05b5b2f79c2e0d3fedae">playrho::d2::World::SetTangentSpeed()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a6b1a2071021c814a1ee5bfe54c994287">playrho::d2::World::UnsetEnabled()</a>.</p>
 
 </div>
 </div>
@@ -8798,7 +8859,7 @@ On the first call, <code>size(conf.cache.indices)</code> should be zero. </dd></
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a41">World.cpp</a>, and <a class="el" href="WorldContact_8cpp-example.html#a34">WorldContact.cpp</a>.</dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#a4da6d15181f442cf8379e2c6ea5c24d9">playrho::d2::detail::WorldModel&lt; T &gt;::GetContactRange_()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#a4da6d15181f442cf8379e2c6ea5c24d9">playrho::d2::detail::WorldModel&lt; T &gt;::GetContactRange_()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#ad326da84fc9dee3d6c3a3974aedddc2c">playrho::d2::World::MakeTouchingMap()</a>.</p>
 
 </div>
 </div>
@@ -12201,10 +12262,11 @@ On the first call, <code>size(conf.cache.indices)</code> should be zero. </dd></
   </table>
   </dd>
 </dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho_1_1d2.html#a62729329cd0979ebf2b3f6cf424ca43b" title="Sets the identified manifold.">SetManifold</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a1e9f16b0b9ca81d3852d99bd3bf7ba94" title="Gets the extent of the currently valid contact range.">GetContactRange</a>. </dd></dl>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a159">World.cpp</a>.</dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ac0e1be38c27b7604ad6e0eb3394335a9">playrho::d2::Manifold::CollideShapes()</a>, <a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#aaae6481817fe6c491370565d5cca6063">playrho::d2::detail::WorldModel&lt; T &gt;::GetManifold_()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a9e4fddd252b20dfceb87d93f5ad11087">playrho::d2::World::GetWorldManifold()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ac0e1be38c27b7604ad6e0eb3394335a9">playrho::d2::Manifold::CollideShapes()</a>, <a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#aaae6481817fe6c491370565d5cca6063">playrho::d2::detail::WorldModel&lt; T &gt;::GetManifold_()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a9e4fddd252b20dfceb87d93f5ad11087">playrho::d2::World::GetWorldManifold()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a7510c436bea6b18a2adc092f433f59a5">playrho::d2::World::SameTouching()</a>.</p>
 
 </div>
 </div>
@@ -12243,13 +12305,14 @@ On the first call, <code>size(conf.cache.indices)</code> should be zero. </dd></
 </div><div class="memdoc">
 
 <p>Gets the manifold for the identified contact. </p>
+<dl class="section note"><dt>Note</dt><dd>There is a manifold for every contact and vice-versa. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::out_of_range</td><td>If given an out of range contact identifier. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd>GetContantRange. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho_1_1d2.html#a62729329cd0979ebf2b3f6cf424ca43b" title="Sets the identified manifold.">SetManifold</a>, GetContantRange. </dd></dl>
 
 </div>
 </div>
@@ -14372,7 +14435,7 @@ This information can be used to tweak the world configuration to pre-allocate en
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed" title="Creates an identifiable copy of the given shape within this world.">CreateShape</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="WorldBody_8cpp-example.html#a33">WorldBody.cpp</a>, and <a class="el" href="WorldShape_8cpp-example.html#a10">WorldShape.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a186">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#a33">WorldBody.cpp</a>, and <a class="el" href="WorldShape_8cpp-example.html#a10">WorldShape.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a1d603ef750cabe3be9f7e4035f9ba442">playrho::d2::World::ComputeAABB()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a13c40dc095fbb69e9b4a1961b96c36da">playrho::d2::World::ComputeIntersectingAABB()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a9b2fd5b66ced5973a015d6cca9f7e2aa">playrho::d2::World::ComputeMassData()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ad4c197be0402b89a41342cfe51523d45">playrho::d2::World::GetDefaultFriction()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ad04dd80754bf974462c8796cd3c95b07">playrho::d2::World::GetDefaultRestitution()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#adab20005951080fe5ffdcfb739de5101">playrho::d2::World::GetDensity()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a68a8481357c2c64f7a7761ab2cfd09f9">playrho::d2::World::GetFilterData()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a9e023831cf2d8ec20c37de0906ba2137">playrho::d2::World::GetFriction()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a47407eaad3ab71e4a0951ebae3f9d6ad">playrho::d2::World::GetMassData()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aa20fdcc2d0f6e0f7eae9184853b7dbf8">playrho::d2::World::GetRestitution()</a>, <a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#aea2de03ec645a1018733e5ec3a7e5eff">playrho::d2::detail::WorldModel&lt; T &gt;::GetShape_()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a5d3f5c76d3a916ff0547b2f8d15c43d6">playrho::d2::World::GetType()</a>, <a class="el" href="classplayrho_1_1Contact.html#a53c028875bbee1fffcd3fc497bee2dc5">playrho::Contact::GetWorldManifold()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#adb8c246c43508ceb0682cb186c63077a">playrho::d2::World::IsSensor()</a>, <a class="el" href="group__RayCastGroup.html#ga694dc50f9191401bc87ab1abae2b05e9">playrho::d2::World::RayCast()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a98f982554dffd55be9ebd4af9dc5d8cb">playrho::d2::World::Rotate()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a431b7e952ad3dd27b23b493eac9c4f6e">playrho::d2::World::Scale()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a5d0fa4ba1079cd9085242ea60aea3b9a">playrho::d2::World::SetDensity()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a72ded352d9c27de9f4b11effe9384b52">playrho::d2::World::SetFilterData()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a13ddb75843bf4c3fe3c8417b9ed38c1a">playrho::d2::World::SetFriction()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aca71caa2d00f9db8bfa34b14d61382de">playrho::d2::World::SetRestitution()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a3aa6414bc698385f2012afefdfe74a25">playrho::d2::World::SetSensor()</a>, <a class="el" href="group__TestPointGroup.html#gae87b356a8656d30d3b7b3a3251906f21">playrho::d2::World::TestPoint()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#ad9a429ab8cf54bad83743fc742920eff">playrho::d2::World::Translate()</a>.</p>
@@ -18141,7 +18204,7 @@ template&lt;class T &gt; </div>
 <dl class="section note"><dt>Note</dt><dd>This has constant complexity. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if this is a leaf node, <code>false</code> otherwise. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a797247f9d1710de7c5883fe08f1c868a">playrho::d2::DynamicTree::DestroyLeaf()</a>, and <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a956a39ab82498fb7d21e8d4781dd5a97">playrho::d2::DynamicTree::GetLeafData()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a797247f9d1710de7c5883fe08f1c868a">playrho::d2::DynamicTree::DestroyLeaf()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a64048280cc9f8d01112503717daa7bed">playrho::d2::DynamicTree::FindIndex()</a>, and <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a956a39ab82498fb7d21e8d4781dd5a97">playrho::d2::DynamicTree::GetLeafData()</a>.</p>
 
 </div>
 </div>
@@ -22525,6 +22588,114 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a62729329cd0979ebf2b3f6cf424ca43b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62729329cd0979ebf2b3f6cf424ca43b">&#9670;&nbsp;</a></span>SetManifold() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void playrho::d2::SetManifold </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1AabbTreeWorld.html">AabbTreeWorld</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#abe7a48a3a0e57fa1a9dd9e396b6b24f7">ContactID</a>&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the identified manifold. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>If given an invalid contact identifier. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho_1_1d2.html#a4744f578a96c67e8929c84c7b32e27e7" title="Gets the identified manifold.">GetManifold</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a1e9f16b0b9ca81d3852d99bd3bf7ba94" title="Gets the extent of the currently valid contact range.">GetContactRange</a>. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a188">World.cpp</a>.</dd>
+</dl>
+
+<p class="reference">Referenced by <a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#ade9fbfe34753fb54c1b5b764d3d2ee9f">playrho::d2::detail::WorldModel&lt; T &gt;::SetManifold_()</a>.</p>
+
+</div>
+</div>
+<a id="ac2dffd6e9c0e2c0ec3e74de425150dbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2dffd6e9c0e2c0ec3e74de425150dbb">&#9670;&nbsp;</a></span>SetManifold() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void playrho::d2::SetManifold </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#abe7a48a3a0e57fa1a9dd9e396b6b24f7">ContactID</a>&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the identified manifold's state. </p>
+<dl class="section note"><dt>Note</dt><dd>There is a manifold for every contact and vice-versa. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">world</td><td>The world of the manifold whose state is to be set. </td></tr>
+    <tr><td class="paramname">id</td><td>Identifier of the manifold whose state is to be set. </td></tr>
+    <tr><td class="paramname">value</td><td>Value the manifold is to be set to. The new state: TODO: is not allowed to change whether the contact is awake, TODO: is not allowed to change whether the contact is impenetrable. Otherwise, throws <code><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error.">InvalidArgument</a></code> exception and doesn't change anything. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>If given an out of range contact identifier or the new manifold value references an out of range identifier. </td></tr>
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error.">InvalidArgument</a></td><td>if the identifier is to a freed contact or if the new state is not allowable. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho_1_1d2.html#a4744f578a96c67e8929c84c7b32e27e7" title="Gets the identified manifold.">GetManifold</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a1e9f16b0b9ca81d3852d99bd3bf7ba94" title="Gets the extent of the currently valid contact range.">GetContactRange</a>. </dd></dl>
+
+</div>
+</div>
 <a id="af8092e3e0fa0591f0941aca0829f2c60"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af8092e3e0fa0591f0941aca0829f2c60">&#9670;&nbsp;</a></span>SetMassData()</h2>
 
@@ -25744,7 +25915,9 @@ Dynamic bodies are moved based on their previous velocities, gravity, applied fo
 <dd>
 The bodies for proxies queue will be empty. </dd>
 <dd>
-The fixtures for proxies queue will be empty.</dd></dl>
+The fixtures for proxies queue will be empty. </dd>
+<dd>
+No contact in the world needs updating.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Statistics for the step.</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
@@ -27051,7 +27224,7 @@ template&lt;class T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li>
-    <li class="footer">Generated on Wed Dec 27 2023 21:45:35 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Jan 1 2024 08:17:42 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

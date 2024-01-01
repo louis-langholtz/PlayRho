@@ -104,7 +104,8 @@ $(document).ready(function(){initNavTree('Contactable_8hpp.html',''); initResiza
 
 <p>Definition of the <code>Contactable</code> class and closely related code.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;type_traits&gt;</code><br />
+<div class="textblock"><code>#include &lt;ostream&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
 <code>#include &lt;<a class="el" href="Settings_8hpp.html">playrho/Settings.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="ShapeID_8hpp.html">playrho/ShapeID.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="BodyID_8hpp.html">playrho/BodyID.hpp</a>&gt;</code><br />
@@ -141,6 +142,14 @@ Functions</h2></td></tr>
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a64c43d9f4a2db2922f8816f960ece8ec">playrho::operator!=</a> (const Contactable &amp;lhs, const Contactable &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:a64c43d9f4a2db2922f8816f960ece8ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator. <br /></td></tr>
 <tr class="separator:a64c43d9f4a2db2922f8816f960ece8ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dc0be76a58efe39384860ef0c782cac"><td class="memItemLeft" align="right" valign="top"><a id="a3dc0be76a58efe39384860ef0c782cac"></a>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a3dc0be76a58efe39384860ef0c782cac">playrho::operator&lt;</a> (const Contactable &amp;lhs, const Contactable &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a3dc0be76a58efe39384860ef0c782cac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less-than operator. <br /></td></tr>
+<tr class="separator:a3dc0be76a58efe39384860ef0c782cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af41a8a6a7d5f2f7c673bb4ccf9d703c0"><td class="memItemLeft" align="right" valign="top"><a id="af41a8a6a7d5f2f7c673bb4ccf9d703c0"></a>
+auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#af41a8a6a7d5f2f7c673bb4ccf9d703c0">playrho::operator&lt;&lt;</a> (std::ostream &amp;os, const Contactable &amp;c) -&gt; std::ostream &amp;</td></tr>
+<tr class="memdesc:af41a8a6a7d5f2f7c673bb4ccf9d703c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output stream operator support. <br /></td></tr>
+<tr class="separator:af41a8a6a7d5f2f7c673bb4ccf9d703c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a268967eee0d7a53d51224a8a1259d06f"><td class="memItemLeft" align="right" valign="top"><a id="a268967eee0d7a53d51224a8a1259d06f"></a>
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a268967eee0d7a53d51224a8a1259d06f">playrho::operator==</a> (const Contactable &amp;lhs, const Contactable &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:a268967eee0d7a53d51224a8a1259d06f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator. <br /></td></tr>
@@ -154,7 +163,7 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="Contactable_8hpp.html">Contactable.hpp</a></li>
-    <li class="footer">Generated on Wed Dec 27 2023 21:45:35 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Jan 1 2024 08:17:41 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -47,6 +47,7 @@ var World_8hpp =
     [ "SetJoint", "World_8hpp.html#afbfa66410905c15a49d7bb2994ce0485", null ],
     [ "SetJoint", "World_8hpp.html#ac07ce291e8ce59c988ee4bafca890059", null ],
     [ "SetJointDestructionListener", "World_8hpp.html#a182e738c16bf84f7579af7be2cd26628", null ],
+    [ "SetManifold", "World_8hpp.html#ac2dffd6e9c0e2c0ec3e74de425150dbb", null ],
     [ "SetPostSolveContactListener", "World_8hpp.html#a18585a140d9ad815d0127e90308218ff", null ],
     [ "SetPreSolveContactListener", "World_8hpp.html#aee2466f745bdaf3aa6ce438864d8742b", null ],
     [ "SetShape", "World_8hpp.html#ae1860c7a7f4a5f1fb3095412d25fd12b", null ],

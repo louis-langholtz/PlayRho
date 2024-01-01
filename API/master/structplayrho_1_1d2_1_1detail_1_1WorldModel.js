@@ -44,6 +44,7 @@ var structplayrho_1_1d2_1_1detail_1_1WorldModel =
     [ "SetEndContactListener_", "structplayrho_1_1d2_1_1detail_1_1WorldModel.html#abb3cdcb27061c7c6dbb2c13396814382", null ],
     [ "SetJoint_", "structplayrho_1_1d2_1_1detail_1_1WorldModel.html#aa6a47ce61cf9ed665dfc0837e82adb4a", null ],
     [ "SetJointDestructionListener_", "structplayrho_1_1d2_1_1detail_1_1WorldModel.html#a68baa72c33aee6d31d69964513ab6e0f", null ],
+    [ "SetManifold_", "structplayrho_1_1d2_1_1detail_1_1WorldModel.html#ade9fbfe34753fb54c1b5b764d3d2ee9f", null ],
     [ "SetPostSolveContactListener_", "structplayrho_1_1d2_1_1detail_1_1WorldModel.html#a6d18c859c6a51f4f5768f0a648135324", null ],
     [ "SetPreSolveContactListener_", "structplayrho_1_1d2_1_1detail_1_1WorldModel.html#ae39f73ce1dc52aebc234c4dff61fa692", null ],
     [ "SetShape_", "structplayrho_1_1d2_1_1detail_1_1WorldModel.html#a600e5d8528d7a369c751515aa5059785", null ],

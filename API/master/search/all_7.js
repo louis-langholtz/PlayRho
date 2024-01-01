@@ -25,7 +25,7 @@ var searchData=
   ['hasunaryfunctor_920',['HasUnaryFunctor',['../namespaceplayrho.html#a9f7d6112b6c359e797237cf305277451',1,'playrho']]],
   ['hasvalidtoi_921',['HasValidToi',['../classplayrho_1_1d2_1_1World.html#aae57c7aca1c8c840ea8eb1ba1d44ef07',1,'playrho::d2::World::HasValidToi()'],['../namespaceplayrho_1_1d2.html#a7b93e5c7f12212cbd45e9cb755e11461',1,'playrho::d2::HasValidToi()'],['../namespaceplayrho.html#a77e830664360ead07ab616d934ff2550',1,'playrho::HasValidToi()'],['../classplayrho_1_1Contact.html#a77e830664360ead07ab616d934ff2550',1,'playrho::Contact::HasValidToi(const Contact &amp;contact) noexcept'],['../classplayrho_1_1Contact.html#ae9d59ac0715efd3beadef07cce324800',1,'playrho::Contact::HasValidToi() const noexcept']]],
   ['height_922',['Height',['../classplayrho_1_1d2_1_1DynamicTree.html#abec0ebc4e0d92378ca9193116228b500',1,'playrho::d2::DynamicTree']]],
-  ['hertz_923',['Hertz',['../group__PhysicalUnits.html#gadef54036b9480e0cf730100688e20570',1,'playrho']]],
-  ['hertz_924',['hertz',['../namespaceplayrho_1_1detail.html#af1e0c512dc16bc8796eaffc38727193d',1,'playrho::detail']]],
+  ['hertz_923',['hertz',['../namespaceplayrho_1_1detail.html#af1e0c512dc16bc8796eaffc38727193d',1,'playrho::detail']]],
+  ['hertz_924',['Hertz',['../group__PhysicalUnits.html#gadef54036b9480e0cf730100688e20570',1,'playrho']]],
   ['hoursperday_925',['HoursPerDay',['../namespaceplayrho_1_1detail.html#a7228ae83382d96e5316a2da46d61b5e4',1,'playrho::detail']]]
 ];

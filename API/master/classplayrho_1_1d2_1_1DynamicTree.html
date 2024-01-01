@@ -249,6 +249,9 @@ Friends</h2></td></tr>
 Related Functions</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
 </td></tr>
+<tr class="memitem:a64048280cc9f8d01112503717daa7bed"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a64048280cc9f8d01112503717daa7bed">FindIndex</a> (const <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html">DynamicTree</a> &amp;tree, const <a class="el" href="structplayrho_1_1Contactable.html">Contactable</a> &amp;c) noexcept -&gt; <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#af442fc7c6152cefb54928165e49fa80d">DynamicTree::Size</a></td></tr>
+<tr class="memdesc:a64048280cc9f8d01112503717daa7bed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds index of node matching given contactble using a linear search.  <a href="classplayrho_1_1d2_1_1DynamicTree.html#a64048280cc9f8d01112503717daa7bed">More...</a><br /></td></tr>
+<tr class="separator:a64048280cc9f8d01112503717daa7bed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adebb4dfdc038631f8b24ee19a0b29713"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho_1_1d2.html#abfb3031d97cbdac7eb72cccf26e3c694">AABB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#adebb4dfdc038631f8b24ee19a0b29713">GetAABB</a> (const <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html">DynamicTree</a> &amp;tree) noexcept</td></tr>
 <tr class="memdesc:adebb4dfdc038631f8b24ee19a0b29713"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the AABB for the given dynamic tree.  <a href="classplayrho_1_1d2_1_1DynamicTree.html#adebb4dfdc038631f8b24ee19a0b29713">More...</a><br /></td></tr>
 <tr class="separator:adebb4dfdc038631f8b24ee19a0b29713"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -827,8 +830,6 @@ The node count (as reported by <code><a class="el" href="classplayrho_1_1d2_1_1D
 
 <p>Gets the current count of allocated nodes. </p>
 <dl class="section return"><dt>Returns</dt><dd>Count of existing proxies (count of nodes currently allocated). </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a168">World.cpp</a>.</dd>
-</dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a63c3c99d25c6e735174cb9ddeec58c4a">CreateLeaf()</a>, and <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a47cbaffc41092844c1b4812057e37f13">RebuildBottomUp()</a>.</p>
 
@@ -1074,6 +1075,46 @@ The shift formula is: <code>position -= newOrigin</code>. </dd></dl>
 </div>
 </div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a64048280cc9f8d01112503717daa7bed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64048280cc9f8d01112503717daa7bed">&#9670;&nbsp;</a></span>FindIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto FindIndex </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html">DynamicTree</a> &amp;&#160;</td>
+          <td class="paramname"><em>tree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1Contactable.html">Contactable</a> &amp;&#160;</td>
+          <td class="paramname"><em>c</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt;  <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#af442fc7c6152cefb54928165e49fa80d">DynamicTree::Size</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Finds index of node matching given contactble using a linear search. </p>
+<dl class="section return"><dt>Returns</dt><dd>Node index or <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">DynamicTree::GetInvalidSize()</a></code>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">DynamicTree::GetInvalidSize()</a>. </dd></dl>
+
+</div>
+</div>
 <a id="adebb4dfdc038631f8b24ee19a0b29713"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adebb4dfdc038631f8b24ee19a0b29713">&#9670;&nbsp;</a></span>GetAABB()</h2>
 
@@ -1182,7 +1223,7 @@ The shift formula is: <code>position -= newOrigin</code>. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html">DynamicTree</a></li>
-    <li class="footer">Generated on Wed Dec 27 2023 21:45:35 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Jan 1 2024 08:17:42 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

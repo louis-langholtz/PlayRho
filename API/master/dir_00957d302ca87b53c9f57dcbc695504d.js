@@ -3,7 +3,6 @@ var dir_00957d302ca87b53c9f57dcbc695504d =
     [ "detail", "dir_d51ee4eac1d55982ce807b72bdb4ac61.html", "dir_d51ee4eac1d55982ce807b72bdb4ac61" ],
     [ "AABB.hpp", "d2_2AABB_8hpp.html", "d2_2AABB_8hpp" ],
     [ "AabbTreeWorld.hpp", "AabbTreeWorld_8hpp.html", "AabbTreeWorld_8hpp" ],
-    [ "AabbTreeWorldBody.hpp", "AabbTreeWorldBody_8hpp.html", "AabbTreeWorldBody_8hpp" ],
     [ "Acceleration.hpp", "Acceleration_8hpp.html", "Acceleration_8hpp" ],
     [ "BasicAPI.hpp", "BasicAPI_8hpp.html", null ],
     [ "Body.hpp", "Body_8hpp.html", "Body_8hpp" ],

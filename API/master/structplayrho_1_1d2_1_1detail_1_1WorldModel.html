@@ -260,6 +260,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <tr class="memitem:a68baa72c33aee6d31d69964513ab6e0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#a68baa72c33aee6d31d69964513ab6e0f">SetJointDestructionListener_</a> (<a class="el" href="namespaceplayrho.html#addebc455127a1209e0543ce6a853ebaa">JointFunction</a> listener) noexcept override</td></tr>
 <tr class="memdesc:a68baa72c33aee6d31d69964513ab6e0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a destruction listener for joints.  <a href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#a68baa72c33aee6d31d69964513ab6e0f">More...</a><br /></td></tr>
 <tr class="separator:a68baa72c33aee6d31d69964513ab6e0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade9fbfe34753fb54c1b5b764d3d2ee9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#ade9fbfe34753fb54c1b5b764d3d2ee9f">SetManifold_</a> (<a class="el" href="namespaceplayrho.html#abe7a48a3a0e57fa1a9dd9e396b6b24f7">ContactID</a> id, const <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a> &amp;value) override</td></tr>
+<tr class="memdesc:ade9fbfe34753fb54c1b5b764d3d2ee9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the collision manifold for the identified contact.  <a href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#ade9fbfe34753fb54c1b5b764d3d2ee9f">More...</a><br /></td></tr>
+<tr class="separator:ade9fbfe34753fb54c1b5b764d3d2ee9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d18c859c6a51f4f5768f0a648135324"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#a6d18c859c6a51f4f5768f0a648135324">SetPostSolveContactListener_</a> (<a class="el" href="namespaceplayrho_1_1d2.html#ab0945eb1db3efaa574b6b8403a11b853">ContactImpulsesFunction</a> listener) noexcept override</td></tr>
 <tr class="memdesc:a6d18c859c6a51f4f5768f0a648135324"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a post-solve contact event listener.  <a href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#a6d18c859c6a51f4f5768f0a648135324">More...</a><br /></td></tr>
 <tr class="separator:a6d18c859c6a51f4f5768f0a648135324"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1234,7 +1237,7 @@ template&lt;class T &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#a1ed5d975b3960dbb7b02a86574cbb53c" title="Gets the identified contact.">GetContact_</a>, <a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#a4da6d15181f442cf8379e2c6ea5c24d9" title="Gets the extent of the currently valid contact range.">GetContactRange_</a>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#ade9fbfe34753fb54c1b5b764d3d2ee9f" title="Sets the collision manifold for the identified contact.">SetManifold_</a>, <a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#a4da6d15181f442cf8379e2c6ea5c24d9" title="Gets the extent of the currently valid contact range.">GetContactRange_</a>. </dd></dl>
 
 <p>Implements <a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldConcept.html#aa08dcec093bd0035d8cfc081301dfe55">playrho::d2::detail::WorldConcept</a>.</p>
 
@@ -1863,6 +1866,55 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
+<a id="ade9fbfe34753fb54c1b5b764d3d2ee9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade9fbfe34753fb54c1b5b764d3d2ee9f">&#9670;&nbsp;</a></span>SetManifold_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html">playrho::d2::detail::WorldModel</a>&lt; T &gt;::SetManifold_ </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#abe7a48a3a0e57fa1a9dd9e396b6b24f7">ContactID</a>&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the collision manifold for the identified contact. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>If given an invalid contact identifier. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#aaae6481817fe6c491370565d5cca6063" title="Gets the collision manifold for the identified contact.">GetManifold_</a>, <a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html#a4da6d15181f442cf8379e2c6ea5c24d9" title="Gets the extent of the currently valid contact range.">GetContactRange_</a>. </dd></dl>
+
+<p>Implements <a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldConcept.html#a550a8b27e50c376ce67d0c517614c976">playrho::d2::detail::WorldConcept</a>.</p>
+
+</div>
+</div>
 <a id="a6d18c859c6a51f4f5768f0a648135324"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6d18c859c6a51f4f5768f0a648135324">&#9670;&nbsp;</a></span>SetPostSolveContactListener_()</h2>
 
@@ -2161,7 +2213,7 @@ Dynamic bodies are moved based on their previous velocities, gravity, applied fo
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1detail_1_1WorldModel.html">WorldModel</a></li>
-    <li class="footer">Generated on Wed Dec 27 2023 21:45:35 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Jan 1 2024 08:17:42 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
