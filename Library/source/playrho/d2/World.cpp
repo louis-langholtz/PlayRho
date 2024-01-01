@@ -22,7 +22,6 @@
 #include <playrho/d2/World.hpp>
 #include <playrho/d2/WorldBody.hpp> // for ResetMassData
 #include <playrho/d2/AabbTreeWorld.hpp>
-#include <playrho/d2/AabbTreeWorldBody.hpp>
 
 namespace playrho::d2 {
 

@@ -25,7 +25,6 @@
 #include <playrho/WrongState.hpp>
 
 #include <playrho/d2/AabbTreeWorld.hpp>
-#include <playrho/d2/AabbTreeWorldBody.hpp>
 #include <playrho/d2/Body.hpp>
 #include <playrho/d2/BodyConf.hpp>
 #include <playrho/d2/ContactImpulsesList.hpp>
@@ -4127,6 +4126,7 @@ TEST(World, Recreate)
             }
         }
     }
+    EXPECT_EQ(MakeTouchingMap(world), worldContactMap);
     EXPECT_EQ(worldContactsDestroyed, 4u);
     EXPECT_EQ(worldContactMap.size(), 420u);
     auto recreatedContactMap = std::map<std::pair<Contactable, Contactable>, ContactID>{};
@@ -4148,6 +4148,7 @@ TEST(World, Recreate)
             EXPECT_TRUE(inserted);
         }
     }
+    EXPECT_EQ(MakeTouchingMap(recreated), recreatedContactMap);
     EXPECT_EQ(recreatedContactMap.size(), 420u);
     EXPECT_EQ(worldContactMap.size(), recreatedContactMap.size());
 

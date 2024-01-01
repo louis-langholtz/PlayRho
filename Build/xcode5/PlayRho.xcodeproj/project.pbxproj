@@ -138,8 +138,6 @@
 		4764087125105DD90090F711 /* JointID.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764087025105DD90090F711 /* JointID.hpp */; };
 		47640873251198AA0090F711 /* ContactID.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47640872251198AA0090F711 /* ContactID.hpp */; };
 		476408752511A5CC0090F711 /* KeyedContactID.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 476408742511A5CC0090F711 /* KeyedContactID.hpp */; };
-		4764087B251EA80D0090F711 /* AabbTreeWorldBody.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47640877251EA80C0090F711 /* AabbTreeWorldBody.hpp */; };
-		47640881251F0F9B0090F711 /* AabbTreeWorldBody.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47640880251F0F9B0090F711 /* AabbTreeWorldBody.cpp */; };
 		4764088B251FA6360090F711 /* StepStats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4764088A251FA6360090F711 /* StepStats.cpp */; };
 		4764088D252268A40090F711 /* WorldBody.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764088C252268A30090F711 /* WorldBody.hpp */; };
 		476408932522698E0090F711 /* WorldMisc.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764088F2522698E0090F711 /* WorldMisc.hpp */; };
@@ -654,8 +652,6 @@
 		4764087025105DD90090F711 /* JointID.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointID.hpp; sourceTree = "<group>"; };
 		47640872251198AA0090F711 /* ContactID.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactID.hpp; sourceTree = "<group>"; };
 		476408742511A5CC0090F711 /* KeyedContactID.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = KeyedContactID.hpp; sourceTree = "<group>"; };
-		47640877251EA80C0090F711 /* AabbTreeWorldBody.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AabbTreeWorldBody.hpp; sourceTree = "<group>"; };
-		47640880251F0F9B0090F711 /* AabbTreeWorldBody.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AabbTreeWorldBody.cpp; sourceTree = "<group>"; };
 		4764088A251FA6360090F711 /* StepStats.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StepStats.cpp; sourceTree = "<group>"; };
 		4764088C252268A30090F711 /* WorldBody.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldBody.hpp; sourceTree = "<group>"; };
 		4764088F2522698E0090F711 /* WorldMisc.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldMisc.hpp; sourceTree = "<group>"; };
@@ -1296,7 +1292,6 @@
 			children = (
 				4726DD291D31B4090012A882 /* AABB.hpp */,
 				47640860250807720090F711 /* AabbTreeWorld.hpp */,
-				47640877251EA80C0090F711 /* AabbTreeWorldBody.hpp */,
 				47C96C531FA67D1D00A6C587 /* Acceleration.hpp */,
 				80BB8923141C3E5900F1753A /* BasicAPI.hpp */,
 				80BB894E141C3E5900F1753A /* Body.hpp */,
@@ -1386,7 +1381,6 @@
 			children = (
 				4731DE2B1DDF94A600E7F931 /* AABB.cpp */,
 				47640861250807720090F711 /* AabbTreeWorld.cpp */,
-				47640880251F0F9B0090F711 /* AabbTreeWorldBody.cpp */,
 				80BB894D141C3E5900F1753A /* Body.cpp */,
 				470F9B4B1EEF20B6007EF7B6 /* BodyConf.cpp */,
 				80BB8935141C3E5900F1753A /* ChainShapeConf.cpp */,
@@ -1635,7 +1629,6 @@
 				991988302ACE15D10076F969 /* ConvexHull.hpp in Headers */,
 				47640873251198AA0090F711 /* ContactID.hpp in Headers */,
 				47363E8720027FE2005912B1 /* ContactImpulsesList.hpp in Headers */,
-				4764087B251EA80D0090F711 /* AabbTreeWorldBody.hpp in Headers */,
 				4764087125105DD90090F711 /* JointID.hpp in Headers */,
 				4731DE581DEC908600E7F931 /* UnitVec.hpp in Headers */,
 				474AFBFA1EB1B2CB002AA6C8 /* MultiShapeConf.hpp in Headers */,
@@ -2194,7 +2187,6 @@
 				996B7B872A6DF1A500A8207F /* PoolMemoryResource.cpp in Sources */,
 				47640863250807720090F711 /* AabbTreeWorld.cpp in Sources */,
 				80BB89D0141C3E5900F1753A /* Joint.cpp in Sources */,
-				47640881251F0F9B0090F711 /* AabbTreeWorldBody.cpp in Sources */,
 				4706451F25336323006E69AA /* LimitState.cpp in Sources */,
 				470F9B061EDB8F62007EF7B6 /* Shape.cpp in Sources */,
 				474AFBF81EB1B2CB002AA6C8 /* MultiShapeConf.cpp in Sources */,

@@ -38,7 +38,9 @@
 /// @see World, ContactID.
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 
+#include <map>
 #include <optional>
+#include <utility> // for std::pair
 
 // IWYU pragma: begin_exports
 
@@ -55,6 +57,10 @@
 #include <playrho/d2/WorldManifold.hpp>
 
 // IWYU pragma: end_exports
+
+namespace playrho {
+struct Contactable;
+}
 
 namespace playrho::d2 {
 
@@ -260,6 +266,15 @@ inline void SetEnabled(World& world, ContactID id, bool value)
         UnsetEnabled(world, id);
     }
 }
+
+/// @brief Makes a map of contacts in the given world that are in the touching state.
+/// @relatedalso World
+auto MakeTouchingMap(const World &world)
+    -> std::map<std::pair<Contactable, Contactable>, ContactID>;
+
+/// @brief Determines whether the given worlds have the same touching contacts & manifolds.
+/// @relatedalso World
+auto SameTouching(const World& lhs, const World& rhs) -> bool;
 
 } // namespace playrho::d2
 

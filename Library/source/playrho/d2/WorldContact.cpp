@@ -20,9 +20,13 @@
  */
 
 #include <algorithm> // for std::count_if
+#include <map>
 #include <optional>
+#include <utility> // for std::pair
 
 #include <playrho/Contact.hpp>
+#include <playrho/InvalidArgument.hpp>
+#include <playrho/Templates.hpp> // for playrho::begin, end, etc
 
 #include <playrho/d2/Body.hpp> // for GetBody
 #include <playrho/d2/World.hpp>
@@ -31,8 +35,7 @@
 #include <playrho/d2/WorldManifold.hpp>
 #include <playrho/d2/WorldShape.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho::d2 {
 
 bool IsTouching(const World& world, ContactID id)
 {
@@ -182,11 +185,46 @@ WorldManifold GetWorldManifold(const World& world, ContactID id)
 ContactCounter GetTouchingCount(const World& world)
 {
     const auto contacts = GetContacts(world);
-    return static_cast<ContactCounter>(count_if(cbegin(contacts), cend(contacts),
+    return static_cast<ContactCounter>(count_if(begin(contacts), end(contacts),
                                                 [&](const auto &c) {
         return IsTouching(world, std::get<ContactID>(c));
     }));
 }
 
-} // namespace d2
-} // namespace playrho
+auto MakeTouchingMap(const World &world)
+    -> std::map<std::pair<Contactable, Contactable>, ContactID>
+{
+    auto result = std::map<std::pair<Contactable, Contactable>, ContactID>{};
+    const auto max = GetContactRange(world);
+    for (auto i = decltype(GetContactRange(world)){0}; i < max; ++i) {
+        const auto contact = GetContact(world, ContactID(i));
+        if (!contact.IsTouching()) {
+            continue;
+        }
+        const auto emplaced =
+            result.emplace(std::minmax(contact.GetContactableA(), contact.GetContactableB()),
+                           ContactID(i));
+        if (!emplaced.second) {
+            throw InvalidArgument("malformed world: has duplicate contacts");
+        }
+    }
+    return result;
+}
+
+auto SameTouching(const World& lhs, const World& rhs) -> bool
+{
+    const auto lhsMap = MakeTouchingMap(lhs);
+    const auto rhsMap = MakeTouchingMap(rhs);
+    const auto mismatched =
+        std::mismatch(begin(lhsMap), end(lhsMap), begin(rhsMap), end(rhsMap),
+                      [&](const auto &lhsEntry, const auto &rhsEntry) {
+                          if (lhsEntry.first != rhsEntry.first) {
+                              return false;
+                          }
+                          return GetContact(lhs, lhsEntry.second) == GetContact(rhs, rhsEntry.second) && //
+                                 GetManifold(lhs, lhsEntry.second) == GetManifold(rhs, rhsEntry.second);
+                      });
+    return (mismatched.first == end(lhsMap)) && (mismatched.second == end(rhsMap));
+};
+
+} // namespace playrho::d2

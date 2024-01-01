@@ -31,7 +31,6 @@
 #include <playrho/d2/BodyConf.hpp>
 #include <playrho/d2/ContactImpulsesList.hpp>
 #include <playrho/d2/AabbTreeWorld.hpp>
-#include <playrho/d2/AabbTreeWorldBody.hpp>
 #include <playrho/d2/Shape.hpp>
 #include <playrho/d2/ChainShapeConf.hpp>
 #include <playrho/d2/DiskShapeConf.hpp>
