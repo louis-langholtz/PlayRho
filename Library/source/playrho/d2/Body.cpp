@@ -327,6 +327,7 @@ bool operator==(const Body& lhs, const Body& rhs)
 {
     return GetTransformation(lhs) == GetTransformation(rhs) && //
            GetSweep(lhs) == GetSweep(rhs) && //
+           IsDestroyed(lhs) == IsDestroyed(rhs) && //
            IsAwake(lhs) == IsAwake(rhs) && //
            IsSleepingAllowed(lhs) == IsSleepingAllowed(rhs) && //
            IsImpenetrable(lhs) == IsImpenetrable(rhs) && //
