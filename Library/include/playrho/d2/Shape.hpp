@@ -497,6 +497,13 @@ inline T TypeCast(const Shape& value)
     return static_cast<T>(*tmp);
 }
 
+/// @brief Gets whether the given entity is in the is-destroyed state.
+/// @relatedalso Shape
+inline auto IsDestroyed(const Shape &value) noexcept -> bool
+{
+    return !value.has_value();
+}
+
 /// @brief Whether contact calculations should be performed between the two instances.
 /// @return <code>true</code> if contact calculations should be performed between these
 ///   two instances; <code>false</code> otherwise.

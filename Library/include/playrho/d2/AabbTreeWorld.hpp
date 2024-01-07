@@ -64,10 +64,13 @@
 #include <playrho/pmr/PoolMemoryResource.hpp>
 #include <playrho/pmr/StatsResource.hpp>
 
+#include <playrho/d2/Body.hpp>
 #include <playrho/d2/BodyConstraint.hpp>
 #include <playrho/d2/ContactImpulsesFunction.hpp>
 #include <playrho/d2/ContactManifoldFunction.hpp>
 #include <playrho/d2/DynamicTree.hpp>
+#include <playrho/d2/Joint.hpp>
+#include <playrho/d2/Shape.hpp>
 #include <playrho/d2/Transformation.hpp>
 #include <playrho/d2/WorldConf.hpp>
 
@@ -82,9 +85,6 @@ enum class BodyType;
 
 namespace playrho::d2 {
 
-class Body;
-class Joint;
-class Shape;
 class Manifold;
 class ContactImpulsesList;
 class AabbTreeWorld;
@@ -416,9 +416,12 @@ void SetJoint(AabbTreeWorld& world, JointID id, Joint def);
 void Destroy(AabbTreeWorld& world, JointID id);
 
 /// @brief Gets whether the given identifier is to a joint that's been destroyed.
-/// @note Complexity is at most O(n) where n is the number of elements free.
+/// @note Complexity is O(1).
 /// @see Destroy(AabbTreeWorld& world, JointID).
-bool IsDestroyed(const AabbTreeWorld& world, JointID id) noexcept;
+inline auto IsDestroyed(const AabbTreeWorld& world, JointID id) -> bool
+{
+    return IsDestroyed(GetJoint(world, id));
+}
 
 /// @}
 
@@ -466,9 +469,12 @@ void SetShape(AabbTreeWorld& world, ShapeID id, Shape def);
 void Destroy(AabbTreeWorld& world, ShapeID id);
 
 /// @brief Gets whether the given identifier is to a shape that's been destroyed.
-/// @note Complexity is at most O(n) where n is the number of elements free.
+/// @note Complexity is O(1).
 /// @see Destroy(AabbTreeWorld& world, ShapeID).
-bool IsDestroyed(const AabbTreeWorld& world, ShapeID id) noexcept;
+inline auto IsDestroyed(const AabbTreeWorld& world, ShapeID id) -> bool
+{
+    return IsDestroyed(GetShape(world, id));
+}
 
 /// @}
 
@@ -627,7 +633,6 @@ public:
     friend const Joint& GetJoint(const AabbTreeWorld& world, JointID id);
     friend void SetJoint(AabbTreeWorld& world, JointID id, Joint def);
     friend void Destroy(AabbTreeWorld& world, JointID id);
-    friend bool IsDestroyed(const AabbTreeWorld& world, JointID id) noexcept;
 
     // Shape friend functions...
     friend ShapeCounter GetShapeRange(const AabbTreeWorld& world) noexcept;
@@ -635,7 +640,6 @@ public:
     friend const Shape& GetShape(const AabbTreeWorld& world, ShapeID id);
     friend void SetShape(AabbTreeWorld& world, ShapeID id, Shape def);
     friend void Destroy(AabbTreeWorld& world, ShapeID id);
-    friend bool IsDestroyed(const AabbTreeWorld& world, ShapeID id) noexcept;
 
     // Contact friend functions...
     friend ContactCounter GetContactRange(const AabbTreeWorld& world) noexcept;

@@ -22,7 +22,6 @@
 #include <algorithm>
 #include <cassert> // for assert
 #include <cstddef> // for std::size_t
-#include <cstdint> // for std::uint32_t
 #include <exception> // for std::throw_with_nested
 #include <functional>
 #include <iterator> // for std::next
@@ -1112,14 +1111,17 @@ void SetJoint(AabbTreeWorld& world, JointID id, Joint def)
     }
     // Validate the references...
     auto &joint = At(world.m_jointBuffer, id, noSuchJointMsg);
+    if (!joint.has_value()) {
+        throw WasDestroyed{id, idIsDestroyedMsg};
+    }
     if (const auto bodyId = GetBodyA(def); bodyId != InvalidBodyID) {
         GetBody(world, bodyId);
     }
     if (const auto bodyId = GetBodyB(def); bodyId != InvalidBodyID) {
         GetBody(world, bodyId);
     }
-    if (world.m_jointBuffer.FindFree(to_underlying(id))) {
-        throw WasDestroyed{id, idIsDestroyedMsg};
+    if (!def.has_value()) {
+        throw WasDestroyed{def, "cannot be empty"};
     }
     world.Remove(id);
     joint = std::move(def);
@@ -1133,6 +1135,9 @@ JointID CreateJoint(AabbTreeWorld& world, Joint def)
     }
     if (size(world.m_joints) >= MaxJoints) {
         throw LengthError("CreateJoint: operation would exceed MaxJoints");
+    }
+    if (!def.has_value()) {
+        throw WasDestroyed{def, "cannot be empty"};
     }
     // Validate the referenced bodies...
     if (const auto bodyId = GetBodyA(def); bodyId != InvalidBodyID) {
@@ -1220,11 +1225,6 @@ void Destroy(AabbTreeWorld& world, JointID id)
     }
 }
 
-bool IsDestroyed(const AabbTreeWorld& world, JointID id) noexcept
-{
-    return world.m_jointBuffer.FindFree(to_underlying(id));
-}
-
 ShapeCounter GetShapeRange(const AabbTreeWorld& world) noexcept
 {
     return static_cast<ShapeCounter>(size(world.m_shapeBuffer));
@@ -1232,6 +1232,9 @@ ShapeCounter GetShapeRange(const AabbTreeWorld& world) noexcept
 
 ShapeID CreateShape(AabbTreeWorld& world, Shape def)
 {
+    if (!def.has_value()) {
+        throw WasDestroyed{def, "cannot be empty"};
+    }
     const auto vertexRadius = GetVertexRadiusInterval(world);
     const auto childCount = GetChildCount(def);
     for (auto i = ChildCounter{0}; i < childCount; ++i) {
@@ -1272,11 +1275,6 @@ void Destroy(AabbTreeWorld& world, ShapeID id)
     world.m_shapeBuffer.Free(to_underlying(id));
 }
 
-bool IsDestroyed(const AabbTreeWorld& world, ShapeID id) noexcept
-{
-    return world.m_shapeBuffer.FindFree(to_underlying(id));
-}
-
 const Shape& GetShape(const AabbTreeWorld& world, ShapeID id)
 {
     return At(world.m_shapeBuffer, id, noSuchShapeMsg);
@@ -1288,8 +1286,11 @@ void SetShape(AabbTreeWorld& world, ShapeID id, Shape def) // NOLINT(readability
         throw WrongState(worldIsLockedMsg);
     }
     auto& shape = At(world.m_shapeBuffer, id, noSuchShapeMsg);
-    if (world.m_shapeBuffer.FindFree(to_underlying(id))) {
+    if (!shape.has_value()) {
         throw WasDestroyed{id, idIsDestroyedMsg};
+    }
+    if (!def.has_value()) {
+        throw WasDestroyed{def, "cannot be empty"};
     }
     const auto geometryChanged = IsGeomChanged(shape, def);
     for (auto&& b: world.m_bodyBuffer) {
