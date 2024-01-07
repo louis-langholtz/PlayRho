@@ -223,6 +223,18 @@ public:
     /// @see GetType.
     void SetType(BodyType value) noexcept;
 
+    /// @brief Whether or not this was destroyed.
+    /// @see SetDestroyed, UnsetDestroyed.
+    constexpr bool IsDestroyed() const noexcept;
+
+    /// @brief Sets the destroyed property.
+    /// @note This is only meaningfully used by the world implementation.
+    constexpr void SetDestroyed() noexcept;
+
+    /// @brief Unsets the destroyed property.
+    /// @note This is only meaningfully used by the world implementation.
+    constexpr void UnsetDestroyed() noexcept;
+
     /// @brief Is "speedable".
     /// @details Is this body able to have a non-zero speed associated with it.
     ///   Kinematic and Dynamic bodies are speedable. Static bodies are not.
@@ -395,6 +407,10 @@ private:
     /// @brief Flag enumeration.
     /// @note For internal use. Made public to facilitate unit testing.
     enum Flag : FlagsType {
+
+        /// Whether this entity was destroyed or not.
+        e_destroyed = FlagsType(0x0001u),
+
         /// @brief Awake flag.
         e_awakeFlag = FlagsType(0x0002u),
 
@@ -538,6 +554,21 @@ inline NonNegative<Frequency> Body::GetAngularDamping() const noexcept
 inline void Body::SetAngularDamping(NonNegative<Frequency> angularDamping) noexcept
 {
     m_angularDamping = angularDamping;
+}
+
+constexpr bool Body::IsDestroyed() const noexcept
+{
+    return (m_flags & e_destroyed) != 0u;
+}
+
+constexpr void Body::SetDestroyed() noexcept
+{
+    m_flags |= e_destroyed;
+}
+
+constexpr void Body::UnsetDestroyed() noexcept
+{
+    m_flags &= ~e_destroyed;
 }
 
 inline bool Body::IsImpenetrable() const noexcept
@@ -698,6 +729,27 @@ inline BodyType GetType(const Body& body) noexcept
 inline void SetType(Body& body, BodyType value) noexcept
 {
     body.SetType(value);
+}
+
+/// @brief Whether or not the given body was destroyed.
+/// @see SetDestroyed, UnsetDestroyed.
+constexpr auto IsDestroyed(const Body& body) noexcept -> bool
+{
+    return body.IsDestroyed();
+}
+
+/// @brief Sets the destroyed property of the given body.
+/// @note This is only meaningfully used by the world implementation.
+constexpr void SetDestroyed(Body& body) noexcept
+{
+    body.SetDestroyed();
+}
+
+/// @brief Unsets the destroyed property of the given body.
+/// @note This is only meaningfully used by the world implementation.
+constexpr void UnsetDestroyed(Body& body) noexcept
+{
+    body.UnsetDestroyed();
 }
 
 /// @brief Is "speedable".

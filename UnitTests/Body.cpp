@@ -28,6 +28,10 @@ using namespace playrho::d2;
 TEST(Body, DefaultConstruction)
 {
     EXPECT_EQ(Body().GetType(), BodyType::Static);
+    EXPECT_TRUE(Body().IsEnabled());
+    EXPECT_FALSE(Body().IsAwake());
+    EXPECT_FALSE(Body().IsSpeedable());
+    EXPECT_FALSE(Body().IsDestroyed());
     EXPECT_TRUE(IsEnabled(Body()));
     EXPECT_FALSE(IsAwake(Body()));
     EXPECT_FALSE(IsSpeedable(Body()));
@@ -38,6 +42,7 @@ TEST(Body, DefaultConstruction)
 TEST(Body, StaticTypeConstruction)
 {
     const auto body = Body(BodyConf().Use(BodyType::Static));
+    EXPECT_FALSE(body.IsDestroyed());
     EXPECT_TRUE(body.IsImpenetrable());
     EXPECT_FALSE(body.IsSpeedable());
     EXPECT_FALSE(body.IsAccelerable());
@@ -51,6 +56,7 @@ TEST(Body, StaticTypeConstruction)
 TEST(Body, KinematicTypeConstruction)
 {
     const auto body = Body(BodyConf().Use(BodyType::Kinematic));
+    EXPECT_FALSE(body.IsDestroyed());
     EXPECT_TRUE(body.IsImpenetrable());
     EXPECT_TRUE(body.IsSpeedable());
     EXPECT_FALSE(body.IsAccelerable());
@@ -64,6 +70,7 @@ TEST(Body, KinematicTypeConstruction)
 TEST(Body, DynamicTypeConstruction)
 {
     const auto body = Body(BodyConf().Use(BodyType::Dynamic));
+    EXPECT_FALSE(body.IsDestroyed());
     EXPECT_FALSE(body.IsImpenetrable());
     EXPECT_TRUE(body.IsSpeedable());
     EXPECT_TRUE(body.IsAccelerable());
@@ -170,12 +177,38 @@ TEST(Body, AccelerationOnConstruction)
               body.GetAngularAcceleration());
 }
 
+TEST(Body, SetUnsetDestroyed)
+{
+    auto body = Body();
+    ASSERT_FALSE(body.IsDestroyed());
+    body.SetDestroyed();
+    EXPECT_TRUE(body.IsDestroyed());
+    body.UnsetDestroyed();
+    EXPECT_FALSE(body.IsDestroyed());
+    SetDestroyed(body);
+    EXPECT_TRUE(IsDestroyed(body));
+    UnsetDestroyed(body);
+    EXPECT_FALSE(IsDestroyed(body));
+}
+
 TEST(Body, EqualsOperator)
 {
     EXPECT_TRUE(Body() == Body());
     {
         auto body = Body{};
         EXPECT_TRUE(body == Body());
+    }
+    {
+        auto bodyA = Body();
+        auto bodyB = Body();
+        bodyB.SetDestroyed();
+        EXPECT_FALSE(bodyA == bodyB);
+        bodyA.SetDestroyed();
+        EXPECT_TRUE(bodyA == bodyB);
+        bodyB.UnsetDestroyed();
+        EXPECT_FALSE(bodyA == bodyB);
+        bodyA.UnsetDestroyed();
+        EXPECT_TRUE(bodyA == bodyB);
     }
     {
         auto body1 = Body{};
