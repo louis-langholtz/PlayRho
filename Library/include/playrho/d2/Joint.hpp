@@ -457,6 +457,13 @@ inline std::add_pointer_t<T> TypeCast(Joint* value) noexcept
     return nullptr;
 }
 
+/// @brief Gets whether the given entity is in the is-destroyed state.
+/// @relatedalso Joint
+inline auto IsDestroyed(const Joint &object) noexcept -> bool
+{
+    return !object.has_value();
+}
+
 /// Get the anchor point on body-A in local coordinates.
 /// @relatedalso Joint
 Length2 GetLocalAnchorA(const Joint& object);

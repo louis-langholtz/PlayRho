@@ -210,7 +210,7 @@ TEST(AabbTreeWorld, Clear)
     EXPECT_EQ(GetBodies(world).size(), std::size_t(0));
     EXPECT_EQ(GetJoints(world).size(), std::size_t(0));
     EXPECT_EQ(GetJointRange(world), 0u);
-    EXPECT_FALSE(IsDestroyed(world, JointID{0u})); // out-of-range so not destroyed
+    EXPECT_THROW(IsDestroyed(world, JointID{0u}), OutOfRange<JointID>);
 
     EXPECT_EQ(shapeListener.ids.size(), std::size_t(1));
 
@@ -1016,11 +1016,18 @@ TEST(AabbTreeWorld, AttachDetach)
     ASSERT_EQ(GetShapes(world, BodyID{0}).size(), 0u);
 }
 
-TEST(AabbTreeWorld, SetShapeThrowsWithOutOfRangeID)
+TEST(AabbTreeWorld, SetShapeThrowsWithEmpty)
 {
     auto world = AabbTreeWorld{};
     ASSERT_EQ(GetShapeRange(world), 0u);
     EXPECT_THROW(SetShape(world, ShapeID(0), Shape{}), OutOfRange<ShapeID>);
+}
+
+TEST(AabbTreeWorld, SetShapeThrowsWithOutOfRangeID)
+{
+    auto world = AabbTreeWorld{};
+    ASSERT_EQ(GetShapeRange(world), 0u);
+    EXPECT_THROW(SetShape(world, ShapeID(0), Shape{EdgeShapeConf{}}), OutOfRange<ShapeID>);
 }
 
 TEST(AabbTreeWorld, CreateBodyThrowsWithOutOfRangeShapeID)
@@ -1143,11 +1150,17 @@ TEST(AabbTreeWorld, SetShapeWithGeometryChange)
     EXPECT_EQ(size(GetProxies(world, bodyId)), 3u);
 }
 
-TEST(AabbTreeWorld, SetFreedShapeThrows)
+TEST(AabbTreeWorld, CreateEmptyShapeThrows)
+{
+    auto world = AabbTreeWorld{};
+    EXPECT_THROW(CreateShape(world, Shape()), WasDestroyed<Shape>);
+}
+
+TEST(AabbTreeWorld, SetDestroyedShapeThrows)
 {
     auto world = AabbTreeWorld{};
     auto id = InvalidShapeID;
-    ASSERT_NO_THROW(id = CreateShape(world, Shape()));
+    ASSERT_NO_THROW(id = CreateShape(world, Shape(EdgeShapeConf{})));
     ASSERT_NO_THROW(Destroy(world, id));
     ASSERT_TRUE(IsDestroyed(world, id));
     EXPECT_THROW(SetShape(world, id, Shape()), WasDestroyed<ShapeID>);
@@ -1162,13 +1175,27 @@ TEST(AabbTreeWorld, SetFreedBodyThrows)
     EXPECT_THROW(SetBody(world, id, Body()), WasDestroyed<BodyID>);
 }
 
-TEST(AabbTreeWorld, SetFreedJointThrows)
+TEST(AabbTreeWorld, CreateEmptyJointThrows)
+{
+    auto world = AabbTreeWorld{};
+    EXPECT_THROW(CreateJoint(world, Joint()), WasDestroyed<Joint>);
+}
+
+TEST(AabbTreeWorld, SetDestroyedJointThrows)
 {
     auto world = AabbTreeWorld{};
     auto id = InvalidJointID;
-    ASSERT_NO_THROW(id = CreateJoint(world, Joint()));
+    ASSERT_NO_THROW(id = CreateJoint(world, Joint(DistanceJointConf{})));
     ASSERT_NO_THROW(Destroy(world, id));
     EXPECT_THROW(SetJoint(world, id, Joint()), WasDestroyed<JointID>);
+}
+
+TEST(AabbTreeWorld, SetEmptyJointThrows)
+{
+    auto world = AabbTreeWorld{};
+    auto id = InvalidJointID;
+    ASSERT_NO_THROW(id = CreateJoint(world, Joint(DistanceJointConf{})));
+    EXPECT_THROW(SetJoint(world, id, Joint()), WasDestroyed<Joint>);
 }
 
 TEST(AabbTreeWorld, SetBodyWithShapeID)
