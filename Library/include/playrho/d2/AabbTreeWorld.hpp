@@ -37,6 +37,7 @@
 
 #include <playrho/BodyID.hpp>
 #include <playrho/BodyShapeFunction.hpp>
+#include <playrho/Contact.hpp>
 #include <playrho/Contactable.hpp>
 #include <playrho/ContactFunction.hpp>
 #include <playrho/ContactID.hpp>
@@ -76,7 +77,6 @@ namespace playrho {
 
 struct StepConf;
 enum class BodyType;
-class Contact;
 
 } // namespace playrho
 

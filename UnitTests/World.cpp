@@ -488,6 +488,7 @@ TEST(World, CreateDestroyEmptyDynamicBody)
     EXPECT_EQ(GetBodyRange(world), 1u);
 
     Destroy(world, body);
+    EXPECT_TRUE(IsDestroyed(world, body));
     EXPECT_EQ(GetBodyRange(world), 1u);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
     const auto bodies2 = GetBodies(world);
@@ -525,7 +526,8 @@ TEST(World, CreateDestroyDynamicBodyAndFixture)
     EXPECT_EQ(GetBodiesForProxies(world).size(), std::size_t{0});
     EXPECT_EQ(GetShapes(world, bodyId).size(), std::size_t{1});
 
-    Destroy(world, bodyId); // should clear fixtures for proxies!
+    EXPECT_NO_THROW(Destroy(world, bodyId)); // should clear fixtures for proxies!
+    EXPECT_TRUE(IsDestroyed(world, bodyId));
     EXPECT_EQ(GetType(world, bodyId), BodyType::Static);
     EXPECT_FALSE(IsAwake(world, bodyId));
     EXPECT_FALSE(IsSpeedable(world, bodyId));
@@ -571,10 +573,11 @@ TEST(World, CreateDestroyJoinedBodies)
     
     auto stepConf = StepConf{};
     Step(world, stepConf);
-    ASSERT_EQ(GetContacts(world).size(), ContactCounter(1));
     const auto worldContacts = GetContacts(world);
+    ASSERT_EQ(worldContacts.size(), ContactCounter(1));
     const auto c0 = worldContacts.begin();
     auto cid0 = std::get<ContactID>(*c0);
+    EXPECT_FALSE(IsDestroyed(world, cid0));
     const auto contactBodyA = GetBodyA(world, cid0);
     const auto contactBodyB = GetBodyB(world, cid0);
     EXPECT_EQ(contactBodyA, body1);
@@ -598,9 +601,11 @@ TEST(World, CreateDestroyJoinedBodies)
     EXPECT_TRUE(NeedsFiltering(world, c0->second));
 
     Destroy(world, body1);
+    EXPECT_TRUE(IsDestroyed(world, body1));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
     EXPECT_EQ(GetJointCount(world), JointCounter(0));
     EXPECT_EQ(GetContacts(world).size(), ContactCounter(0));
+    EXPECT_TRUE(IsDestroyed(world, cid0));
 
     const auto bodies0 = GetBodies(world);
     EXPECT_FALSE(bodies0.empty());
@@ -701,6 +706,7 @@ TEST(World, CreateDestroyContactingBodies)
     }
 
     Destroy(world, body1);
+    EXPECT_TRUE(IsDestroyed(world, body1));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
     EXPECT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
     EXPECT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(1));
@@ -711,8 +717,10 @@ TEST(World, CreateDestroyContactingBodies)
     contacts = GetContacts(world);
     EXPECT_TRUE(empty(contacts));
     EXPECT_EQ(size(contacts), ContactCounter(0));
+    EXPECT_TRUE(IsDestroyed(world, ContactID(0)));
 
     Destroy(world, body2);
+    EXPECT_TRUE(IsDestroyed(world, body2));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
     EXPECT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(0));
     contacts = GetContacts(world);
@@ -2476,12 +2484,12 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
         for (auto&& contact: contacts)
         {
             ++count;
-            const auto c = contact.second;
-            const auto body_a = GetBodyA(world, c);
-            const auto body_b = GetBodyB(world, c);
+            const auto cid = contact.second;
+            const auto body_a = GetBodyA(world, cid);
+            const auto body_b = GetBodyB(world, cid);
             EXPECT_EQ(body_a, body1);
             EXPECT_EQ(body_b, body2);
-            const auto manifold = GetManifold(world, c);
+            const auto manifold = GetManifold(world, cid);
             EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
             EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
         }

@@ -372,6 +372,14 @@ void SetBody(World& world, BodyID id, const Body& body);
 /// @see PhysicalEntities.
 void Destroy(World& world, BodyID id);
 
+/// @brief Gets whether the given identifier is to a body that's been destroyed.
+/// @note Complexity of this function is O(1).
+/// @see Destroy(World& world, BodyID).
+inline auto IsDestroyed(const World& world, BodyID id) -> bool
+{
+    return IsDestroyed(GetBody(world, id));
+}
+
 /// @brief Gets the container of valid joints attached to the identified body.
 /// @throws std::out_of_range If given an out of range body identifier.
 /// @see CreateJoint, GetBodyRange.
@@ -592,6 +600,13 @@ inline ContactCounter GetContactCount(const World& world) noexcept
 {
     using std::size;
     return static_cast<ContactCounter>(size(GetContacts(world)));
+}
+
+/// @brief Gets whether the given identifier is to a contact that's been destroyed.
+/// @note Complexity of this function is O(1).
+inline auto IsDestroyed(const World& world, ContactID id) -> bool
+{
+    return IsDestroyed(GetContact(world, id));
 }
 
 /// @defgroup PhysicalEntities Physical Entities
