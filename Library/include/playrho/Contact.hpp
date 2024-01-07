@@ -287,25 +287,25 @@ private:
         // Set when the shapes are touching.
         e_touchingFlag = 0x01,
 
-        // This contact can be disabled (by user)
+        // This entity can be disabled (by user)
         e_enabledFlag = 0x02,
 
-        // This contact needs filtering because a shape filter was changed.
+        // This entity needs filtering because a shape filter was changed.
         e_filterFlag = 0x04,
 
-        // This contact has a valid TOI in m_toi
+        // This entity has a valid TOI in m_toi
         e_toiFlag = 0x08,
 
-        // This contacts needs its touching state updated.
+        // This entity needs its touching state updated.
         e_dirtyFlag = 0x10,
 
-        /// Indicates whether the contact is to be treated as a sensor or not.
+        /// Indicates whether this entity is to be treated as a sensor or not.
         e_sensorFlag = 0x20,
 
-        /// Whether contact was destroyed or not.
+        /// Whether this entity was destroyed or not.
         e_destroyed = 0x40,
 
-        /// Whether contact is to be treated as between impenetrable bodies.
+        /// Whether this entity is to be treated as between impenetrable bodies.
         e_impenetrableFlag = 0x80,
     };
 
