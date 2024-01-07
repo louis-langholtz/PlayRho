@@ -26,6 +26,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <utility> // for std::move
 
 namespace playrho {
 
@@ -49,10 +50,10 @@ struct WasDestroyed: public InvalidArgument
     using type = T; ///< Type of the argument that was destroyed.
 
     /// @brief Initializing constructor.
-    WasDestroyed(type v, const std::string& msg): InvalidArgument{msg}, value{v} {}
+    WasDestroyed(type v, const std::string& msg): InvalidArgument{msg}, value{std::move(v)} {}
 
     /// @brief Initializing constructor.
-    WasDestroyed(type v, const char* msg): InvalidArgument{msg}, value{v} {}
+    WasDestroyed(type v, const char* msg): InvalidArgument{msg}, value{std::move(v)} {}
 
     type value{}; ///< Value of the type that was destroyed.
 };
