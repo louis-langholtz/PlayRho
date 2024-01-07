@@ -209,6 +209,26 @@ TEST(Contact, GetOtherBody)
     EXPECT_EQ(GetOtherBody(contact, bodyIdB), bodyIdA);
 }
 
+TEST(Contact, SetUnsetDestroyed)
+{
+    auto c = Contact{};
+    ASSERT_FALSE(c.IsDestroyed());
+    c.SetDestroyed();
+    EXPECT_TRUE(c.IsDestroyed());
+    c.UnsetDestroyed();
+    EXPECT_FALSE(c.IsDestroyed());
+}
+
+TEST(Contact, SetUnsetDestroyedFreeFuncs)
+{
+    auto c = Contact{};
+    ASSERT_FALSE(IsDestroyed(c));
+    SetDestroyed(c);
+    EXPECT_TRUE(IsDestroyed(c));
+    UnsetDestroyed(c);
+    EXPECT_FALSE(IsDestroyed(c));
+}
+
 TEST(Contact, Equality)
 {
     EXPECT_TRUE(Contact() == Contact());

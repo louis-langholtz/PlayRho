@@ -185,6 +185,12 @@ TEST(Body, SetUnsetDestroyed)
     EXPECT_TRUE(body.IsDestroyed());
     body.UnsetDestroyed();
     EXPECT_FALSE(body.IsDestroyed());
+}
+
+TEST(Body, SetUnsetDestroyedFreeFuncs)
+{
+    auto body = Body();
+    ASSERT_FALSE(IsDestroyed(body));
     SetDestroyed(body);
     EXPECT_TRUE(IsDestroyed(body));
     UnsetDestroyed(body);

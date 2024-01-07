@@ -536,6 +536,7 @@ TEST(AabbTreeWorld, CreateDestroyContactingBodies)
     EXPECT_TRUE(contacts.empty());
     EXPECT_EQ(contacts.size(), ContactCounter(0));
     EXPECT_TRUE(IsDestroyed(world, ContactID{0u}));
+    EXPECT_TRUE(IsDestroyed(GetContact(world, ContactID{0u})));
     EXPECT_THROW(SetContact(world, ContactID{0u}, Contact{}), OutOfRange<BodyID>);
 
     Destroy(world, body2);
@@ -597,13 +598,18 @@ TEST(AabbTreeWorld, SetContact)
     EXPECT_THROW(SetContact(world, ContactID(0), contact0), InvalidArgument);
     contact0.UnsetSensor();
     EXPECT_NO_THROW(SetContact(world, ContactID(0), contact0));
+    contact0.SetDestroyed();
+    EXPECT_THROW(SetContact(world, ContactID(0), contact0), InvalidArgument);
+    contact0.UnsetDestroyed();
+    EXPECT_NO_THROW(SetContact(world, ContactID(0), contact0));
     EXPECT_THROW(SetContact(world, ContactID(0), Contact{cA, Contactable{bodyId0, ShapeID(0), 0u}}), InvalidArgument);
     EXPECT_THROW(SetContact(world, ContactID(0), Contact{Contactable{bodyId1, ShapeID(0), 0u}, cB}), InvalidArgument);
     SetLocation(body1, Length2{10_m, 10_m});
     SetBody(world, bodyId1, body1);
     Step(world, step);
     ASSERT_TRUE(IsDestroyed(world, ContactID(0)));
-    EXPECT_THROW(SetContact(world, ContactID(0), contact0), InvalidArgument);
+    EXPECT_TRUE(IsDestroyed(GetContact(world, ContactID(0))));
+    EXPECT_THROW(SetContact(world, ContactID(0), contact0), WasDestroyed<ContactID>);
 }
 
 TEST(AabbTreeWorld, SetManifold)
@@ -975,9 +981,11 @@ TEST(AabbTreeWorld, IsDestroyedBody)
     ASSERT_EQ(to_underlying(id), 1u);
     ASSERT_EQ(GetBodies(world).size(), 2u);
     EXPECT_FALSE(IsDestroyed(world, id));
+    EXPECT_FALSE(IsDestroyed(GetBody(world, id)));
 
     ASSERT_NO_THROW(Destroy(world, BodyID{0u}));
     EXPECT_TRUE(IsDestroyed(world, BodyID{0u}));
+    EXPECT_TRUE(IsDestroyed(GetBody(world, BodyID{0u})));
     EXPECT_FALSE(IsDestroyed(world, BodyID{1u}));
     ASSERT_NO_THROW(Destroy(world, BodyID{1u}));
     EXPECT_TRUE(IsDestroyed(world, BodyID{0u}));
@@ -1064,6 +1072,28 @@ TEST(AabbTreeWorld, SetBodyThrowsWithOutOfRangeID)
     EXPECT_THROW(SetBody(world, BodyID(0), Body{}), OutOfRange<BodyID>);
 }
 
+TEST(AabbTreeWorld, SetBodyThrowsWithDestroyed)
+{
+    auto world = AabbTreeWorld{};
+    auto id = BodyID{};
+    ASSERT_NO_THROW(id = CreateBody(world));
+    ASSERT_EQ(GetBodyRange(world), 1u);
+    ASSERT_NO_THROW(Destroy(world, id));
+    ASSERT_EQ(GetBodyRange(world), 1u);
+    EXPECT_THROW(SetBody(world, BodyID(0), Body{}), WasDestroyed<BodyID>);
+}
+
+TEST(AabbTreeWorld, SetBodyThrowsWithDestroyedChanged)
+{
+    auto world = AabbTreeWorld{};
+    auto body = Body{};
+    auto id = BodyID{};
+    ASSERT_NO_THROW(id = CreateBody(world, body));
+    ASSERT_EQ(GetBodyRange(world), 1u);
+    body.SetDestroyed();
+    EXPECT_THROW(SetBody(world, BodyID(0), body), InvalidArgument);
+}
+
 TEST(AabbTreeWorld, SetBodyThrowsWithOutOfRangeShapeID)
 {
     auto world = AabbTreeWorld{};
@@ -1119,7 +1149,7 @@ TEST(AabbTreeWorld, SetFreedShapeThrows)
     ASSERT_NO_THROW(id = CreateShape(world, Shape()));
     ASSERT_NO_THROW(Destroy(world, id));
     ASSERT_TRUE(IsDestroyed(world, id));
-    EXPECT_THROW(SetShape(world, id, Shape()), InvalidArgument);
+    EXPECT_THROW(SetShape(world, id, Shape()), WasDestroyed<ShapeID>);
 }
 
 TEST(AabbTreeWorld, SetFreedBodyThrows)
@@ -1128,7 +1158,7 @@ TEST(AabbTreeWorld, SetFreedBodyThrows)
     auto id = InvalidBodyID;
     ASSERT_NO_THROW(id = CreateBody(world, Body()));
     ASSERT_NO_THROW(Destroy(world, id));
-    EXPECT_THROW(SetBody(world, id, Body()), InvalidArgument);
+    EXPECT_THROW(SetBody(world, id, Body()), WasDestroyed<BodyID>);
 }
 
 TEST(AabbTreeWorld, SetFreedJointThrows)
@@ -1137,7 +1167,7 @@ TEST(AabbTreeWorld, SetFreedJointThrows)
     auto id = InvalidJointID;
     ASSERT_NO_THROW(id = CreateJoint(world, Joint()));
     ASSERT_NO_THROW(Destroy(world, id));
-    EXPECT_THROW(SetJoint(world, id, Joint()), InvalidArgument);
+    EXPECT_THROW(SetJoint(world, id, Joint()), WasDestroyed<JointID>);
 }
 
 TEST(AabbTreeWorld, SetBodyWithShapeID)
