@@ -25,6 +25,7 @@
 /// @brief Definition of the @c InvalidArgument class.
 
 #include <stdexcept>
+#include <string>
 
 namespace playrho {
 
@@ -35,6 +36,25 @@ class InvalidArgument: public std::invalid_argument
 {
 public:
     using std::invalid_argument::invalid_argument;
+};
+
+/// @brief Was destroyed invalid argument logic error.
+/// @details Indicates that an argument was invalid because it's destroyed or associated
+///   with something that has been destroyed and is not currently valid for the requested
+///   functionality.
+/// @ingroup ExceptionsGroup
+template <class T>
+struct WasDestroyed: public InvalidArgument
+{
+    using type = T; ///< Type of the argument that was destroyed.
+
+    /// @brief Initializing constructor.
+    WasDestroyed(type v, const std::string& msg): InvalidArgument{msg}, value{v} {}
+
+    /// @brief Initializing constructor.
+    WasDestroyed(type v, const char* msg): InvalidArgument{msg}, value{v} {}
+
+    type value{}; ///< Value of the type that was destroyed.
 };
 
 } // namespace playrho

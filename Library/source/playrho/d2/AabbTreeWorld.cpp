@@ -1035,7 +1035,8 @@ BodyID CreateBody(AabbTreeWorld& world, Body body)
     const auto bodyProxiesIndex = world.m_bodyProxies.Allocate();
     world.m_bodyProxies[bodyProxiesIndex].reserve(1u);
     world.m_bodies.push_back(id);
-    const auto& bufferedBody = world.m_bodyBuffer[to_underlying(id)];
+    auto &bufferedBody = world.m_bodyBuffer[to_underlying(id)];
+    bufferedBody.UnsetDestroyed();
     if (IsEnabled(bufferedBody)) {
         Append(world.m_fixturesForProxies, id, bufferedBody.GetShapes());
     }
@@ -1053,7 +1054,7 @@ void AabbTreeWorld::Remove(BodyID id)
         m_bodyProxies.Free(to_underlying(id));
         m_bodyJoints.Free(to_underlying(id));
         m_bodyContacts.Free(to_underlying(id));
-        m_bodyBuffer.Free(to_underlying(id));
+        m_bodyBuffer.Free(to_underlying(id)).SetDestroyed();
         m_islanded.bodies.resize(size(m_bodyBuffer));
     }
 }
@@ -1123,7 +1124,7 @@ void SetJoint(AabbTreeWorld& world, JointID id, Joint def)
         GetBody(world, bodyId);
     }
     if (world.m_jointBuffer.FindFree(to_underlying(id))) {
-        throw InvalidArgument(idIsDestroyedMsg);
+        throw WasDestroyed{id, idIsDestroyedMsg};
     }
     world.Remove(id);
     joint = std::move(def);
@@ -1293,7 +1294,7 @@ void SetShape(AabbTreeWorld& world, ShapeID id, Shape def) // NOLINT(readability
     }
     auto& shape = At(world.m_shapeBuffer, id, noSuchShapeMsg);
     if (world.m_shapeBuffer.FindFree(to_underlying(id))) {
-        throw InvalidArgument(idIsDestroyedMsg);
+        throw WasDestroyed{id, idIsDestroyedMsg};
     }
     const auto geometryChanged = IsGeomChanged(shape, def);
     for (auto&& b: world.m_bodyBuffer) {
@@ -2276,8 +2277,7 @@ void AabbTreeWorld::InternalDestroy(ContactID contactID, const Body* from)
         SetAwake(*bodyA);
         SetAwake(*bodyB);
     }
-    m_contactBuffer.Free(to_underlying(contactID));
-    contact.SetDestroyed();
+    m_contactBuffer.Free(to_underlying(contactID)).SetDestroyed();
     m_manifoldBuffer.Free(to_underlying(contactID));
 }
 
@@ -2734,18 +2734,20 @@ void SetBody(AabbTreeWorld& world, BodyID id, Body value)
         throw WrongState(worldIsLockedMsg);
     }
     // Validate id and all the new body's shapeIds...
-    auto& body = At(world.m_bodyBuffer, id, noSuchBodyMsg);
+    auto& elem = At(world.m_bodyBuffer, id, noSuchBodyMsg);
     Validate(world.m_shapeBuffer, Span<const ShapeID>(value.GetShapes()), noSuchShapeMsg);
     if (world.m_bodyBuffer.FindFree(to_underlying(id))) {
-        throw InvalidArgument(idIsDestroyedMsg);
+        throw WasDestroyed{id, idIsDestroyedMsg};
     }
-
+    if (elem.IsDestroyed() != value.IsDestroyed()) {
+        throw InvalidArgument("cannot change is-destroyed value");
+    }
     auto addToBodiesForSync = false;
     // handle state changes that other data needs to stay in sync with
-    if (GetType(body) != GetType(value)) {
+    if (GetType(elem) != GetType(value)) {
         // Destroy the attached contacts.
-        Erase(world.m_bodyContacts[to_underlying(id)], [&world,&body](ContactID contactID) {
-            world.Destroy(contactID, &body);
+        Erase(world.m_bodyContacts[to_underlying(id)], [&world,&elem](ContactID contactID) {
+            world.Destroy(contactID, &elem);
             return true;
         });
         switch (value.GetType()) {
@@ -2763,7 +2765,7 @@ void SetBody(AabbTreeWorld& world, BodyID id, Body value)
             break;
         }
     }
-    const auto shapeIds = GetOldAndNewShapeIDs(body, value);
+    const auto shapeIds = GetOldAndNewShapeIDs(elem, value);
     if (!empty(shapeIds.first)) {
         auto& bodyProxies = world.m_bodyProxies[to_underlying(id)];
         const auto lastProxy = end(bodyProxies);
@@ -2779,25 +2781,25 @@ void SetBody(AabbTreeWorld& world, BodyID id, Body value)
     }
     for (auto&& shapeId: shapeIds.first) {
         // Destroy any contacts associated with the fixture.
-        Erase(world.m_bodyContacts[to_underlying(id)], [&world,id,shapeId,&body](ContactID contactID) {
+        Erase(world.m_bodyContacts[to_underlying(id)], [&world,id,shapeId,&elem](ContactID contactID) {
             if (!IsFor(world.m_contactBuffer[to_underlying(contactID)], id, shapeId)) {
                 return false;
             }
-            world.Destroy(contactID, &body);
+            world.Destroy(contactID, &elem);
             return true;
         });
         EraseAll(world.m_fixturesForProxies, std::make_pair(id, shapeId));
         DestroyProxies(world.m_tree, id, shapeId, world.m_proxiesForContacts);
     }
     Append(world.m_fixturesForProxies, id, shapeIds.second);
-    if (GetTransformation(body) != GetTransformation(value)) {
+    if (GetTransformation(elem) != GetTransformation(value)) {
         FlagForUpdating(world.m_contactBuffer, world.m_bodyContacts[to_underlying(id)]);
         addToBodiesForSync = true;
     }
     if (addToBodiesForSync) {
         world.m_bodiesForSync.push_back(id);
     }
-    body = std::move(value);
+    elem = std::move(value);
 }
 
 void SetContact(AabbTreeWorld& world, ContactID id, Contact value)
@@ -2810,34 +2812,37 @@ void SetContact(AabbTreeWorld& world, ContactID id, Contact value)
     GetChild(GetShape(world, GetShapeA(value)), GetChildIndexA(value));
     GetChild(GetShape(world, GetShapeB(value)), GetChildIndexB(value));
     if (world.m_contactBuffer.FindFree(to_underlying(id))) {
-        throw InvalidArgument(idIsDestroyedMsg);
+        throw WasDestroyed{id, idIsDestroyedMsg};
     }
-    auto &contact = At(world.m_contactBuffer, id, noSuchContactMsg);
-    if (contact.GetContactableA() != value.GetContactableA()) {
+    auto &elem = At(world.m_contactBuffer, id, noSuchContactMsg);
+    if (elem.IsDestroyed() != value.IsDestroyed()) {
+        throw InvalidArgument("cannot change is-destroyed value");
+    }
+    if (elem.GetContactableA() != value.GetContactableA()) {
         throw InvalidArgument("cannot change contactable A");
     }
-    if (contact.GetContactableB() != value.GetContactableB()) {
+    if (elem.GetContactableB() != value.GetContactableB()) {
         throw InvalidArgument("cannot change contactable B");
     }
-    if (IsImpenetrable(contact) != IsImpenetrable(value)) {
+    if (IsImpenetrable(elem) != IsImpenetrable(value)) {
         throw InvalidArgument("change body A or B being impenetrable to change impenetrable state");
     }
-    if (IsSensor(contact) != IsSensor(value)) {
+    if (IsSensor(elem) != IsSensor(value)) {
         throw InvalidArgument("change shape A or B being a sensor to change sensor state");
     }
-    if (GetToi(contact) != GetToi(value)) {
+    if (GetToi(elem) != GetToi(value)) {
         throw InvalidArgument("user may not change the TOI");
     }
-    if (GetToiCount(contact) != GetToiCount(value)) {
+    if (GetToiCount(elem) != GetToiCount(value)) {
         throw InvalidArgument("user may not change the TOI count");
     }
-    contact = value;
+    elem = value;
 }
 
 void SetManifold(AabbTreeWorld& world, ContactID id, const Manifold& value)
 {
     if (world.m_manifoldBuffer.FindFree(to_underlying(id))) {
-        throw InvalidArgument(idIsDestroyedMsg);
+        throw WasDestroyed{id, idIsDestroyedMsg};
     }
     auto &manifold = At(world.m_manifoldBuffer, id, noSuchContactMsg);
     if (manifold.GetType() != value.GetType()) {

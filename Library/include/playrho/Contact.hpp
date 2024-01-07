@@ -871,6 +871,30 @@ constexpr auto GetOtherBody(const Contact& c, BodyID bodyID) noexcept
         ? c.GetContactableA().bodyId: c.GetContactableB().bodyId;
 }
 
+/// @brief Whether or not the given contact was destroyed.
+/// @see SetDestroyed, UnsetDestroyed.
+/// @relatedalso Contact
+constexpr auto IsDestroyed(const Contact& c) noexcept -> bool
+{
+    return c.IsDestroyed();
+}
+
+/// @brief Sets the destroyed property of the given contact.
+/// @note This is only meaningfully used by the world implementation.
+/// @relatedalso Contact
+constexpr void SetDestroyed(Contact& c) noexcept
+{
+    c.SetDestroyed();
+}
+
+/// @brief Unsets the destroyed property of the given contact.
+/// @note This is only meaningfully used by the world implementation.
+/// @relatedalso Contact
+constexpr void UnsetDestroyed(Contact& c) noexcept
+{
+    c.UnsetDestroyed();
+}
+
 } // namespace playrho
 
 #endif // PLAYRHO_CONTACT_HPP
