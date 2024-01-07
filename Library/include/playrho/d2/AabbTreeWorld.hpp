@@ -336,9 +336,12 @@ void SetBody(AabbTreeWorld& world, BodyID id, Body value);
 void Destroy(AabbTreeWorld& world, BodyID id);
 
 /// @brief Gets whether the given identifier is to a body that's been destroyed.
-/// @note Complexity is at most O(n) where n is the number of elements free.
+/// @note Complexity of this function is O(1).
 /// @see Destroy(AabbTreeWorld& world, BodyID).
-bool IsDestroyed(const AabbTreeWorld& world, BodyID id) noexcept;
+inline auto IsDestroyed(const AabbTreeWorld& world, BodyID id) -> bool
+{
+    return IsDestroyed(GetBody(world, id));
+}
 
 /// @brief Gets the proxies for the identified body.
 /// @throws std::out_of_range If given an invalid identifier.
@@ -518,8 +521,11 @@ const Manifold& GetManifold(const AabbTreeWorld& world, ContactID id);
 void SetManifold(AabbTreeWorld& world, ContactID id, const Manifold& value);
 
 /// @brief Gets whether the given identifier is to a contact that's been destroyed.
-/// @note Complexity is at most O(n) where n is the number of elements free.
-bool IsDestroyed(const AabbTreeWorld& world, ContactID id) noexcept;
+/// @note Complexity of this function is O(1).
+inline auto IsDestroyed(const AabbTreeWorld& world, ContactID id) -> bool
+{
+    return IsDestroyed(GetContact(world, id));
+}
 
 /// @}
 
@@ -610,7 +616,6 @@ public:
     friend const Body& GetBody(const AabbTreeWorld& world, BodyID id);
     friend void SetBody(AabbTreeWorld& world, BodyID id, Body value);
     friend void Destroy(AabbTreeWorld& world, BodyID id);
-    friend bool IsDestroyed(const AabbTreeWorld& world, BodyID id) noexcept;
     friend const ProxyIDs& GetProxies(const AabbTreeWorld& world, BodyID id);
     friend const BodyContactIDs& GetContacts(const AabbTreeWorld& world, BodyID id);
     friend const BodyJointIDs& GetJoints(const AabbTreeWorld& world, BodyID id);
@@ -639,7 +644,6 @@ public:
     friend void SetContact(AabbTreeWorld& world, ContactID id, Contact value);
     friend const Manifold& GetManifold(const AabbTreeWorld& world, ContactID id);
     friend void SetManifold(AabbTreeWorld& world, ContactID id, const Manifold& value);
-    friend bool IsDestroyed(const AabbTreeWorld& world, ContactID id) noexcept;
 
 private:
     /// @brief Flags type data type.

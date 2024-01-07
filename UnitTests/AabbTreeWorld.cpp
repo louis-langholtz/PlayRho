@@ -969,19 +969,20 @@ TEST(AabbTreeWorld, IsDestroyedBody)
 {
     auto world = AabbTreeWorld{};
     ASSERT_EQ(GetBodies(world).size(), 0u);
-    EXPECT_FALSE(IsDestroyed(world, BodyID{0u}));
+    EXPECT_THROW(IsDestroyed(world, BodyID{0u}), OutOfRange<BodyID>);
 
     auto id = InvalidBodyID;
     ASSERT_NO_THROW(id = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic)));
     ASSERT_EQ(to_underlying(id), 0u);
     ASSERT_EQ(GetBodies(world).size(), 1u);
-    EXPECT_FALSE(IsDestroyed(world, id));
+    auto is_destroyed = true;
+    EXPECT_NO_THROW(is_destroyed = IsDestroyed(world, id));
+    EXPECT_FALSE(is_destroyed);
 
     ASSERT_NO_THROW(id = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic)));
     ASSERT_EQ(to_underlying(id), 1u);
     ASSERT_EQ(GetBodies(world).size(), 2u);
     EXPECT_FALSE(IsDestroyed(world, id));
-    EXPECT_FALSE(IsDestroyed(GetBody(world, id)));
 
     ASSERT_NO_THROW(Destroy(world, BodyID{0u}));
     EXPECT_TRUE(IsDestroyed(world, BodyID{0u}));

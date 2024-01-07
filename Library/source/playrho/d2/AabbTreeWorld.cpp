@@ -1105,11 +1105,6 @@ void Destroy(AabbTreeWorld& world, BodyID id)
     world.Remove(id);
 }
 
-bool IsDestroyed(const AabbTreeWorld& world, BodyID id) noexcept
-{
-    return world.m_bodyBuffer.FindFree(to_underlying(id));
-}
-
 void SetJoint(AabbTreeWorld& world, JointID id, Joint def)
 {
     if (IsLocked(world)) {
@@ -2288,11 +2283,6 @@ void AabbTreeWorld::Destroy(ContactID contactID, const Body* from)
         m_contacts.erase(*found);
     }
     InternalDestroy(contactID, from);
-}
-
-bool IsDestroyed(const AabbTreeWorld& world, ContactID id) noexcept
-{
-    return world.m_contactBuffer.FindFree(to_underlying(id));
 }
 
 AabbTreeWorld::DestroyContactsStats AabbTreeWorld::DestroyContacts(KeyedContactIDs& contacts)
