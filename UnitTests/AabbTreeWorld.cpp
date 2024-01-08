@@ -641,7 +641,7 @@ TEST(AabbTreeWorld, SetManifold)
     ASSERT_EQ(imp1[1], 0_Ns);
     auto newValue = Manifold();
     EXPECT_THROW(SetManifold(world, ContactID(0), newValue), InvalidArgument); // can't change type
-    newValue = Manifold::GetForFaceA(UnitVec{}, Length2{});
+    newValue = Manifold::GetForFaceA(UnitVec::GetLeft(), Length2{});
     ASSERT_EQ(unsigned(newValue.GetType()), unsigned(original.GetType()));
     ASSERT_NE(unsigned(newValue.GetPointCount()), unsigned(original.GetPointCount()));
     EXPECT_THROW(SetManifold(world, ContactID(0), newValue), InvalidArgument); // can't change point count
