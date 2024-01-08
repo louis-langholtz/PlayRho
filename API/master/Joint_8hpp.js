@@ -40,6 +40,7 @@ var Joint_8hpp =
     [ "GetTarget", "Joint_8hpp.html#a44e13140e7670e778d7a18229aabcadf", null ],
     [ "GetType", "Joint_8hpp.html#a14ed64f17ea64f51257b1adca6e385a7", null ],
     [ "InitVelocity", "Joint_8hpp.html#abdb7b4eba61112b4be50f70532793303", null ],
+    [ "IsDestroyed", "Joint_8hpp.html#a093bb3a1a83625c3dbe040bb17b1032b", null ],
     [ "IsLimitEnabled", "Joint_8hpp.html#ac76a4085860445c97e2f43f36cf11d3e", null ],
     [ "IsMotorEnabled", "Joint_8hpp.html#a18da863a4c6a0440fd8a634268dc8c8a", null ],
     [ "operator!=", "Joint_8hpp.html#a195b40b377eb99929c3033c990c43d00", null ],

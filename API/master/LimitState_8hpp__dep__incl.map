@@ -1,12 +1,13 @@
 <map id="Library/include/playrho/LimitState.hpp" name="Library/include/playrho/LimitState.hpp">
-<area shape="rect" id="node1" title="Definition of the LimitState enumeration and closely related code." alt="" coords="415,5,585,47"/>
+<area shape="rect" id="node1" title="Definition of the LimitState enumeration and closely related code." alt="" coords="609,5,780,47"/>
 <area shape="rect" id="node2" href="$WorldConcept_8hpp.html" title="Definition of the internal WorldConcept interface class." alt="" coords="43,184,248,225"/>
-<area shape="rect" id="node6" href="$Joint_8hpp.html" title="Definition of the Joint class and closely related code." alt="" coords="231,95,401,136"/>
-<area shape="rect" id="node7" href="$WorldJoint_8hpp.html" title="Declarations of free functions of World for joints identified by JointID." alt="" coords="323,184,493,225"/>
-<area shape="rect" id="node8" href="$PrismaticJointConf_8hpp.html" title="Definition of the PrismaticJointConf class and closely related code." alt="" coords="395,273,589,315"/>
-<area shape="rect" id="node9" href="$RevoluteJointConf_8hpp.html" title="Definition of the RevoluteJointConf class and closely related code." alt="" coords="521,363,711,404"/>
-<area shape="rect" id="node10" href="$RopeJointConf_8hpp.html" title="Definition of the RopeJointConf class and closely related code." alt="" coords="664,95,835,136"/>
+<area shape="rect" id="node6" href="$Joint_8hpp.html" title="Definition of the Joint class and closely related code." alt="" coords="323,95,493,136"/>
+<area shape="rect" id="node8" href="$WorldJoint_8hpp.html" title="Declarations of free functions of World for joints identified by JointID." alt="" coords="517,184,688,225"/>
+<area shape="rect" id="node9" href="$PrismaticJointConf_8hpp.html" title="Definition of the PrismaticJointConf class and closely related code." alt="" coords="545,273,738,315"/>
+<area shape="rect" id="node10" href="$RevoluteJointConf_8hpp.html" title="Definition of the RevoluteJointConf class and closely related code." alt="" coords="670,363,861,404"/>
+<area shape="rect" id="node11" href="$RopeJointConf_8hpp.html" title="Definition of the RopeJointConf class and closely related code." alt="" coords="813,95,984,136"/>
 <area shape="rect" id="node3" href="$WorldModel_8hpp.html" title="Definitions of the WorldModel class and closely related code." alt="" coords="5,273,197,315"/>
-<area shape="rect" id="node4" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="149,363,320,404"/>
-<area shape="rect" id="node5" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="397,452,568,493"/>
+<area shape="rect" id="node4" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="175,363,345,404"/>
+<area shape="rect" id="node5" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="547,452,717,493"/>
+<area shape="rect" id="node7" href="$AabbTreeWorld_8hpp.html" title="Declarations of the AabbTreeWorld class." alt="" coords="323,184,493,225"/>
 </map>

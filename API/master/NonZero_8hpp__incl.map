@@ -1,15 +1,16 @@
 <map id="Library/include/playrho/NonZero.hpp" name="Library/include/playrho/NonZero.hpp">
-<area shape="rect" id="node1" title="Definition of the NonZero value checked types." alt="" coords="542,5,712,47"/>
-<area shape="rect" id="node2" title=" " alt="" coords="505,319,597,345"/>
-<area shape="rect" id="node3" href="$Checked_8hpp.html" title="Declarations of the Checked class template and closely related code." alt="" coords="248,95,446,121"/>
-<area shape="rect" id="node13" href="$NonZeroChecker_8hpp.html" title="Definition of the NonZeroChecker class template." alt="" coords="664,95,915,121"/>
-<area shape="rect" id="node4" title=" " alt="" coords="30,169,110,196"/>
-<area shape="rect" id="node5" title=" " alt="" coords="64,319,124,345"/>
-<area shape="rect" id="node6" href="$InvalidArgument_8hpp.html" title="Definition of the InvalidArgument class." alt="" coords="134,169,344,196"/>
-<area shape="rect" id="node8" href="$Templates_8hpp.html" title="Definitions of miscellaneous template related code." alt="" coords="368,169,539,196"/>
-<area shape="rect" id="node7" title=" " alt="" coords="77,244,164,271"/>
-<area shape="rect" id="node9" title=" " alt="" coords="422,244,488,271"/>
-<area shape="rect" id="node10" href="$detail_2Templates_8hpp.html" title="Low&#45;level declarations for general class &amp; function templates." alt="" coords="188,244,399,271"/>
-<area shape="rect" id="node11" title=" " alt="" coords="199,319,284,345"/>
-<area shape="rect" id="node12" title=" " alt="" coords="309,319,380,345"/>
+<area shape="rect" id="node1" title="Definition of the NonZero value checked types." alt="" coords="634,5,805,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="552,319,644,345"/>
+<area shape="rect" id="node3" href="$Checked_8hpp.html" title="Declarations of the Checked class template and closely related code." alt="" coords="287,95,485,121"/>
+<area shape="rect" id="node14" href="$NonZeroChecker_8hpp.html" title="Definition of the NonZeroChecker class template." alt="" coords="757,95,1007,121"/>
+<area shape="rect" id="node4" title=" " alt="" coords="34,169,114,196"/>
+<area shape="rect" id="node5" title=" " alt="" coords="17,319,77,345"/>
+<area shape="rect" id="node6" href="$InvalidArgument_8hpp.html" title="Definition of the InvalidArgument class." alt="" coords="138,169,349,196"/>
+<area shape="rect" id="node9" href="$Templates_8hpp.html" title="Definitions of miscellaneous template related code." alt="" coords="407,169,578,196"/>
+<area shape="rect" id="node7" title=" " alt="" coords="168,244,255,271"/>
+<area shape="rect" id="node8" title=" " alt="" coords="85,244,143,271"/>
+<area shape="rect" id="node10" title=" " alt="" coords="565,244,631,271"/>
+<area shape="rect" id="node11" href="$detail_2Templates_8hpp.html" title="Low&#45;level declarations for general class &amp; function templates." alt="" coords="279,244,490,271"/>
+<area shape="rect" id="node12" title=" " alt="" coords="391,319,477,345"/>
+<area shape="rect" id="node13" title=" " alt="" coords="296,319,367,345"/>
 </map>

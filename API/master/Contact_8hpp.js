@@ -15,6 +15,7 @@ var Contact_8hpp =
     [ "GetToi", "Contact_8hpp.html#acd05d6b92912a6430c09ad8a74bcbc73", null ],
     [ "GetToiCount", "Contact_8hpp.html#abce1723933df3c7d4054975daa7ac724", null ],
     [ "HasValidToi", "Contact_8hpp.html#a77e830664360ead07ab616d934ff2550", null ],
+    [ "IsDestroyed", "Contact_8hpp.html#a3b30dd1cfc8c1de0055cec1019245efc", null ],
     [ "IsEnabled", "Contact_8hpp.html#acf2071b64988e62193b4a2567bdde292", null ],
     [ "IsFor", "Contact_8hpp.html#aa8f91c8a02e1886e4e9f90d0926e075a", null ],
     [ "IsFor", "Contact_8hpp.html#a283c9f04ceb148910537dc1cd3f37c00", null ],
@@ -27,6 +28,7 @@ var Contact_8hpp =
     [ "NeedsUpdating", "Contact_8hpp.html#a00846636a226626c5dd4151893f397f7", null ],
     [ "operator!=", "Contact_8hpp.html#a253588f96c2b53aec235c79675776988", null ],
     [ "operator==", "Contact_8hpp.html#a5b92007cb872b11ba4ab93f5095e2e48", null ],
+    [ "SetDestroyed", "Contact_8hpp.html#a75150e768abdd3238b95cae5db9cf828", null ],
     [ "SetEnabled", "Contact_8hpp.html#a23ce44af5f5ba3deb7e1eafe1acf5198", null ],
     [ "SetFriction", "Contact_8hpp.html#acaf284b9eea3b4ad78ba5b673e67b00b", null ],
     [ "SetImpenetrable", "Contact_8hpp.html#a146755eafb1ed7d0ea52af68ea4874cd", null ],
@@ -37,6 +39,7 @@ var Contact_8hpp =
     [ "SetToiCount", "Contact_8hpp.html#aabf79c789863cc4aea6b9e6bc976267c", null ],
     [ "UnflagForFiltering", "Contact_8hpp.html#aaf49104158a7aea199f9531f9ab5b7d0", null ],
     [ "UnflagForUpdating", "Contact_8hpp.html#ad0be851da5e90da82388aaddaa1d8f6d", null ],
+    [ "UnsetDestroyed", "Contact_8hpp.html#a577e14e25b5dd103acfac3fcb408686b", null ],
     [ "UnsetEnabled", "Contact_8hpp.html#a4e555a7d486dd3e1c1f7788c7d5edc0f", null ],
     [ "UnsetImpenetrable", "Contact_8hpp.html#a205494b248da96a02b57be9d9ad9a27b", null ],
     [ "UnsetSensor", "Contact_8hpp.html#a2d655de91b4048a46090b3621e34d239", null ]

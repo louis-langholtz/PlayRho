@@ -140,7 +140,9 @@ var hierarchy =
     [ "playrho::Interval< T >", "classplayrho_1_1Interval.html", null ],
     [ "playrho::Interval< playrho::detail::Checked< Length > >", "classplayrho_1_1Interval.html", null ],
     [ "std::invalid_argument", null, [
-      [ "playrho::InvalidArgument", "classplayrho_1_1InvalidArgument.html", null ]
+      [ "playrho::InvalidArgument", "classplayrho_1_1InvalidArgument.html", [
+        [ "playrho::WasDestroyed< T >", "structplayrho_1_1WasDestroyed.html", null ]
+      ] ]
     ] ],
     [ "playrho::Island", "structplayrho_1_1Island.html", null ],
     [ "playrho::IslandStats", "structplayrho_1_1IslandStats.html", null ],

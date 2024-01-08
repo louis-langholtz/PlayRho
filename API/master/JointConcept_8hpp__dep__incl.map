@@ -1,10 +1,11 @@
 <map id="Library/include/playrho/d2/detail/JointConcept.hpp" name="Library/include/playrho/d2/detail/JointConcept.hpp">
-<area shape="rect" id="node1" title="Definition of the internal JointConcept interface class." alt="" coords="187,5,384,47"/>
-<area shape="rect" id="node2" href="$JointModel_8hpp.html" title="Definition of the internal JointModel class." alt="" coords="129,95,313,136"/>
-<area shape="rect" id="node3" href="$Joint_8hpp.html" title="Definition of the Joint class and closely related code." alt="" coords="200,184,371,225"/>
-<area shape="rect" id="node4" href="$WorldConcept_8hpp.html" title="Definition of the internal WorldConcept interface class." alt="" coords="43,273,248,315"/>
-<area shape="rect" id="node6" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="175,452,345,493"/>
-<area shape="rect" id="node8" href="$WorldJoint_8hpp.html" title="Declarations of free functions of World for joints identified by JointID." alt="" coords="323,363,493,404"/>
-<area shape="rect" id="node5" href="$WorldModel_8hpp.html" title="Definitions of the WorldModel class and closely related code." alt="" coords="5,363,197,404"/>
-<area shape="rect" id="node7" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="236,541,407,583"/>
+<area shape="rect" id="node1" title="Definition of the internal JointConcept interface class." alt="" coords="273,5,471,47"/>
+<area shape="rect" id="node2" href="$JointModel_8hpp.html" title="Definition of the internal JointModel class." alt="" coords="216,95,400,136"/>
+<area shape="rect" id="node3" href="$Joint_8hpp.html" title="Definition of the Joint class and closely related code." alt="" coords="287,184,457,225"/>
+<area shape="rect" id="node4" href="$AabbTreeWorld_8hpp.html" title="Declarations of the AabbTreeWorld class." alt="" coords="5,273,176,315"/>
+<area shape="rect" id="node5" href="$WorldConcept_8hpp.html" title="Definition of the internal WorldConcept interface class." alt="" coords="200,273,405,315"/>
+<area shape="rect" id="node7" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="332,452,503,493"/>
+<area shape="rect" id="node9" href="$WorldJoint_8hpp.html" title="Declarations of free functions of World for joints identified by JointID." alt="" coords="480,363,651,404"/>
+<area shape="rect" id="node6" href="$WorldModel_8hpp.html" title="Definitions of the WorldModel class and closely related code." alt="" coords="163,363,355,404"/>
+<area shape="rect" id="node8" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="393,541,564,583"/>
 </map>

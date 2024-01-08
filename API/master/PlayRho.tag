@@ -294,6 +294,13 @@
       <arglist>(const Contact &amp;contact) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>constexpr auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a3b30dd1cfc8c1de0055cec1019245efc</anchor>
+      <arglist>(const Contact &amp;c) noexcept -&gt; bool</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr bool</type>
       <name>IsEnabled</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -379,6 +386,13 @@
     </member>
     <member kind="function">
       <type>constexpr void</type>
+      <name>SetDestroyed</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a75150e768abdd3238b95cae5db9cf828</anchor>
+      <arglist>(Contact &amp;c) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
       <name>SetEnabled</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a23ce44af5f5ba3deb7e1eafe1acf5198</anchor>
@@ -446,6 +460,13 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>ad0be851da5e90da82388aaddaa1d8f6d</anchor>
       <arglist>(Contact &amp;contact) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>UnsetDestroyed</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a577e14e25b5dd103acfac3fcb408686b</anchor>
+      <arglist>(Contact &amp;c) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr void</type>
@@ -948,6 +969,7 @@
     <filename>AabbTreeWorld_8hpp.html</filename>
     <includes id="BodyID_8hpp" name="BodyID.hpp" local="no" imported="no">playrho/BodyID.hpp</includes>
     <includes id="BodyShapeFunction_8hpp" name="BodyShapeFunction.hpp" local="no" imported="no">playrho/BodyShapeFunction.hpp</includes>
+    <includes id="Contact_8hpp" name="Contact.hpp" local="no" imported="no">playrho/Contact.hpp</includes>
     <includes id="Contactable_8hpp" name="Contactable.hpp" local="no" imported="no">playrho/Contactable.hpp</includes>
     <includes id="ContactFunction_8hpp" name="ContactFunction.hpp" local="no" imported="no">playrho/ContactFunction.hpp</includes>
     <includes id="ContactID_8hpp" name="ContactID.hpp" local="no" imported="no">playrho/ContactID.hpp</includes>
@@ -969,10 +991,13 @@
     <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
     <includes id="Vector2_8hpp" name="Vector2.hpp" local="no" imported="no">playrho/Vector2.hpp</includes>
     <includes id="ZeroToUnderOne_8hpp" name="ZeroToUnderOne.hpp" local="no" imported="no">playrho/ZeroToUnderOne.hpp</includes>
+    <includes id="Body_8hpp" name="Body.hpp" local="no" imported="no">playrho/d2/Body.hpp</includes>
     <includes id="BodyConstraint_8hpp" name="BodyConstraint.hpp" local="no" imported="no">playrho/d2/BodyConstraint.hpp</includes>
     <includes id="ContactImpulsesFunction_8hpp" name="ContactImpulsesFunction.hpp" local="no" imported="no">playrho/d2/ContactImpulsesFunction.hpp</includes>
     <includes id="ContactManifoldFunction_8hpp" name="ContactManifoldFunction.hpp" local="no" imported="no">playrho/d2/ContactManifoldFunction.hpp</includes>
     <includes id="DynamicTree_8hpp" name="DynamicTree.hpp" local="no" imported="no">playrho/d2/DynamicTree.hpp</includes>
+    <includes id="Joint_8hpp" name="Joint.hpp" local="no" imported="no">playrho/d2/Joint.hpp</includes>
+    <includes id="Shape_8hpp" name="Shape.hpp" local="no" imported="no">playrho/d2/Shape.hpp</includes>
     <includes id="Transformation_8hpp" name="Transformation.hpp" local="no" imported="no">playrho/d2/Transformation.hpp</includes>
     <includes id="WorldConf_8hpp" name="WorldConf.hpp" local="no" imported="no">playrho/d2/WorldConf.hpp</includes>
     <class kind="class">playrho::d2::AabbTreeWorld</class>
@@ -1280,11 +1305,11 @@
       <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
-      <type>bool</type>
+      <type>auto</type>
       <name>IsDestroyed</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a420fd33ad8ad006f01422746b89cc507</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, BodyID id) noexcept</arglist>
+      <anchor>abd65066c942d2435730852b4d3497957</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id) -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -1329,11 +1354,11 @@
       <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>bool</type>
+      <type>auto</type>
       <name>IsDestroyed</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a24478dcc8d764767fae7067be9dcc6d4</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, JointID id) noexcept</arglist>
+      <anchor>a9c46743fbe739c544097bcc64b77a3b4</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, JointID id) -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -1371,11 +1396,11 @@
       <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>bool</type>
+      <type>auto</type>
       <name>IsDestroyed</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae36d58fc98aeafd62c67ef3106e0e4a3</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, ShapeID id) noexcept</arglist>
+      <anchor>a536889079e874fc59b5b3c948f6e05b0</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ShapeID id) -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -1413,11 +1438,11 @@
       <arglist>(const AabbTreeWorld &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
-      <type>bool</type>
+      <type>auto</type>
       <name>IsDestroyed</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a410fda5a1c75561497f4184d9e6d0d15</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, ContactID id) noexcept</arglist>
+      <anchor>ac2d5f49cac20a0269e5f85d676f30617</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id) -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -1651,11 +1676,11 @@
       <arglist>(const AabbTreeWorld &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
-      <type>bool</type>
+      <type>auto</type>
       <name>IsDestroyed</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a420fd33ad8ad006f01422746b89cc507</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, BodyID id) noexcept</arglist>
+      <anchor>abd65066c942d2435730852b4d3497957</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id) -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -1700,11 +1725,11 @@
       <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>bool</type>
+      <type>auto</type>
       <name>IsDestroyed</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a24478dcc8d764767fae7067be9dcc6d4</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, JointID id) noexcept</arglist>
+      <anchor>a9c46743fbe739c544097bcc64b77a3b4</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, JointID id) -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -1742,11 +1767,11 @@
       <arglist>(const AabbTreeWorld &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>bool</type>
+      <type>auto</type>
       <name>IsDestroyed</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae36d58fc98aeafd62c67ef3106e0e4a3</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, ShapeID id) noexcept</arglist>
+      <anchor>a536889079e874fc59b5b3c948f6e05b0</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ShapeID id) -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -1784,11 +1809,11 @@
       <arglist>(const AabbTreeWorld &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
-      <type>bool</type>
+      <type>auto</type>
       <name>IsDestroyed</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a410fda5a1c75561497f4184d9e6d0d15</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, ContactID id) noexcept</arglist>
+      <anchor>ac2d5f49cac20a0269e5f85d676f30617</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id) -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -2258,6 +2283,13 @@
       <arglist>(const Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>constexpr auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a405f7c135c8982febc1d12721bc80c57</anchor>
+      <arglist>(const Body &amp;body) noexcept -&gt; bool</arglist>
+    </member>
+    <member kind="function">
       <type>bool</type>
       <name>IsEnabled</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -2360,6 +2392,13 @@
       <name>SetAwake</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a60201ffd45e0d810ff5d4fb90fd0bc4b</anchor>
+      <arglist>(Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a092c6266aabe6b53087ee0ce8558db4c</anchor>
       <arglist>(Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
@@ -2493,6 +2532,13 @@
       <name>UnsetAwake</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>afce7db62d828a84a94e8c6222d9111a6</anchor>
+      <arglist>(Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>UnsetDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>adbb7956508e7904ef6d439dde056e668</anchor>
       <arglist>(Body &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
@@ -4251,6 +4297,13 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>abdb7b4eba61112b4be50f70532793303</anchor>
       <arglist>(Joint &amp;object, const Span&lt; BodyConstraint &gt; &amp;bodies, const StepConf &amp;step, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a093bb3a1a83625c3dbe040bb17b1032b</anchor>
+      <arglist>(const Joint &amp;object) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
@@ -6560,6 +6613,13 @@
       <arglist>(const Shape &amp;shape, ChildCounter idx)</arglist>
     </member>
     <member kind="function">
+      <type>auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a0e2a712f311b3876ec9e6c047f525b5c</anchor>
+      <arglist>(const Shape &amp;value) noexcept -&gt; bool</arglist>
+    </member>
+    <member kind="function">
       <type>bool</type>
       <name>IsSensor</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -7945,6 +8005,20 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>af51eca4a1cbd1b9b0d6024218f52db0f</anchor>
       <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa32b51cef8b38b72661f7d05f92e2d84</anchor>
+      <arglist>(const World &amp;world, BodyID id) -&gt; bool</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a4c4a3a9fe876fbd8dda344fdf81c9eb3</anchor>
+      <arglist>(const World &amp;world, ContactID id) -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
@@ -10471,6 +10545,7 @@
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>InvalidArgument_8hpp.html</filename>
     <class kind="class">playrho::InvalidArgument</class>
+    <class kind="struct">playrho::WasDestroyed</class>
     <namespace>playrho</namespace>
   </compound>
   <compound kind="file">
@@ -13676,34 +13751,6 @@
     </member>
     <member kind="friend">
       <type>friend bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
-      <anchor>ad4ca8f693d313cd432a32c9233969eae</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, BodyID id) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
-      <anchor>a34f8ea7692b997172c6a6cb1b21988bd</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, ContactID id) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
-      <anchor>a305ecc515ef0eafaf69dbea9a56281c5</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, JointID id) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend bool</type>
-      <name>IsDestroyed</name>
-      <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
-      <anchor>a823b4040dd7eaa3caab6bfffacf231b3</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, ShapeID id) noexcept</arglist>
-    </member>
-    <member kind="friend">
-      <type>friend bool</type>
       <name>IsLocked</name>
       <anchorfile>classplayrho_1_1d2_1_1AabbTreeWorld.html</anchorfile>
       <anchor>af7b61eec5e4faf8c8c8aea5516a0de3f</anchor>
@@ -14742,6 +14789,13 @@
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
+      <type>constexpr bool</type>
+      <name>IsDestroyed</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>a00dac71a9d99763bb8be83b77f4ab359</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>bool</type>
       <name>IsEnabled</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
@@ -14823,6 +14877,13 @@
       <name>SetAwakeFlag</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
       <anchor>ae06b70496e35fc753fab2733824f76eb</anchor>
+      <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetDestroyed</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>af37182cf4083462773abb61f50781979</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
@@ -14928,6 +14989,13 @@
       <name>UnsetAwakeFlag</name>
       <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
       <anchor>a93a71d2a1b85e02d33548c6672437599</anchor>
+      <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>UnsetDestroyed</name>
+      <anchorfile>classplayrho_1_1d2_1_1Body.html</anchorfile>
+      <anchor>a5c9a320b8fce263a2c194af1f277e3cb</anchor>
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
@@ -21141,6 +21209,13 @@
       <arglist>(const Contact &amp;contact) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>constexpr auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>classplayrho_1_1Contact.html</anchorfile>
+      <anchor>a3b30dd1cfc8c1de0055cec1019245efc</anchor>
+      <arglist>(const Contact &amp;c) noexcept -&gt; bool</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr bool</type>
       <name>IsEnabled</name>
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
@@ -21212,6 +21287,13 @@
     </member>
     <member kind="function">
       <type>constexpr void</type>
+      <name>SetDestroyed</name>
+      <anchorfile>classplayrho_1_1Contact.html</anchorfile>
+      <anchor>a75150e768abdd3238b95cae5db9cf828</anchor>
+      <arglist>(Contact &amp;c) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
       <name>SetEnabled</name>
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
       <anchor>a23ce44af5f5ba3deb7e1eafe1acf5198</anchor>
@@ -21279,6 +21361,13 @@
       <anchorfile>classplayrho_1_1Contact.html</anchorfile>
       <anchor>ad0be851da5e90da82388aaddaa1d8f6d</anchor>
       <arglist>(Contact &amp;contact) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>UnsetDestroyed</name>
+      <anchorfile>classplayrho_1_1Contact.html</anchorfile>
+      <anchor>a577e14e25b5dd103acfac3fcb408686b</anchor>
+      <arglist>(Contact &amp;c) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr void</type>
@@ -25238,6 +25327,13 @@
       <arglist>(const Joint &amp;joint)</arglist>
     </member>
     <member kind="function">
+      <type>auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
+      <anchor>a093bb3a1a83625c3dbe040bb17b1032b</anchor>
+      <arglist>(const Joint &amp;object) noexcept -&gt; bool</arglist>
+    </member>
+    <member kind="function">
       <type>bool</type>
       <name>IsLimitEnabled</name>
       <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
@@ -27449,10 +27545,10 @@
       <arglist>(size_type index) const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>void</type>
+      <type>reference</type>
       <name>Free</name>
       <anchorfile>classplayrho_1_1ObjectPool.html</anchorfile>
-      <anchor>ab425852cd76b4621e5e9b63a6726d7d8</anchor>
+      <anchor>a24aff42f6c6b15a4888b28c6fdf14b49</anchor>
       <arglist>(size_type index)</arglist>
     </member>
     <member kind="function">
@@ -27628,10 +27724,10 @@
       <arglist>(size_type index) const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>void</type>
+      <type>reference</type>
       <name>Free</name>
       <anchorfile>classplayrho_1_1ObjectPool.html</anchorfile>
-      <anchor>ab425852cd76b4621e5e9b63a6726d7d8</anchor>
+      <anchor>a24aff42f6c6b15a4888b28c6fdf14b49</anchor>
       <arglist>(size_type index)</arglist>
     </member>
     <member kind="function">
@@ -27807,10 +27903,10 @@
       <arglist>(size_type index) const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>void</type>
+      <type>reference</type>
       <name>Free</name>
       <anchorfile>classplayrho_1_1ObjectPool.html</anchorfile>
-      <anchor>ab425852cd76b4621e5e9b63a6726d7d8</anchor>
+      <anchor>a24aff42f6c6b15a4888b28c6fdf14b49</anchor>
       <arglist>(size_type index)</arglist>
     </member>
     <member kind="function">
@@ -27986,10 +28082,10 @@
       <arglist>(size_type index) const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>void</type>
+      <type>reference</type>
       <name>Free</name>
       <anchorfile>classplayrho_1_1ObjectPool.html</anchorfile>
-      <anchor>ab425852cd76b4621e5e9b63a6726d7d8</anchor>
+      <anchor>a24aff42f6c6b15a4888b28c6fdf14b49</anchor>
       <arglist>(size_type index)</arglist>
     </member>
     <member kind="function">
@@ -28165,10 +28261,10 @@
       <arglist>(size_type index) const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>void</type>
+      <type>reference</type>
       <name>Free</name>
       <anchorfile>classplayrho_1_1ObjectPool.html</anchorfile>
-      <anchor>ab425852cd76b4621e5e9b63a6726d7d8</anchor>
+      <anchor>a24aff42f6c6b15a4888b28c6fdf14b49</anchor>
       <arglist>(size_type index)</arglist>
     </member>
     <member kind="function">
@@ -28344,10 +28440,10 @@
       <arglist>(size_type index) const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>void</type>
+      <type>reference</type>
       <name>Free</name>
       <anchorfile>classplayrho_1_1ObjectPool.html</anchorfile>
-      <anchor>ab425852cd76b4621e5e9b63a6726d7d8</anchor>
+      <anchor>a24aff42f6c6b15a4888b28c6fdf14b49</anchor>
       <arglist>(size_type index)</arglist>
     </member>
     <member kind="function">
@@ -28523,10 +28619,10 @@
       <arglist>(size_type index) const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>void</type>
+      <type>reference</type>
       <name>Free</name>
       <anchorfile>classplayrho_1_1ObjectPool.html</anchorfile>
-      <anchor>ab425852cd76b4621e5e9b63a6726d7d8</anchor>
+      <anchor>a24aff42f6c6b15a4888b28c6fdf14b49</anchor>
       <arglist>(size_type index)</arglist>
     </member>
     <member kind="function">
@@ -28702,10 +28798,10 @@
       <arglist>(size_type index) const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>void</type>
+      <type>reference</type>
       <name>Free</name>
       <anchorfile>classplayrho_1_1ObjectPool.html</anchorfile>
-      <anchor>ab425852cd76b4621e5e9b63a6726d7d8</anchor>
+      <anchor>a24aff42f6c6b15a4888b28c6fdf14b49</anchor>
       <arglist>(size_type index)</arglist>
     </member>
     <member kind="function">
@@ -28881,10 +28977,10 @@
       <arglist>(size_type index) const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>void</type>
+      <type>reference</type>
       <name>Free</name>
       <anchorfile>classplayrho_1_1ObjectPool.html</anchorfile>
-      <anchor>ab425852cd76b4621e5e9b63a6726d7d8</anchor>
+      <anchor>a24aff42f6c6b15a4888b28c6fdf14b49</anchor>
       <arglist>(size_type index)</arglist>
     </member>
     <member kind="function">
@@ -31362,6 +31458,13 @@
       <anchorfile>classplayrho_1_1d2_1_1Shape.html</anchorfile>
       <anchor>ad164dccb6b5dcf68fbcd9e7918f17eec</anchor>
       <arglist>(const Shape &amp;shape, ChildCounter index)</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>classplayrho_1_1d2_1_1Shape.html</anchorfile>
+      <anchor>a0e2a712f311b3876ec9e6c047f525b5c</anchor>
+      <arglist>(const Shape &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>RayCastOutput</type>
@@ -38874,6 +38977,40 @@
     </member>
   </compound>
   <compound kind="struct">
+    <name>playrho::WasDestroyed</name>
+    <filename>structplayrho_1_1WasDestroyed.html</filename>
+    <templarg></templarg>
+    <base>playrho::InvalidArgument</base>
+    <member kind="typedef">
+      <type>T</type>
+      <name>type</name>
+      <anchorfile>structplayrho_1_1WasDestroyed.html</anchorfile>
+      <anchor>af13ad95850d81ebd72fa3d907438c3cb</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>WasDestroyed</name>
+      <anchorfile>structplayrho_1_1WasDestroyed.html</anchorfile>
+      <anchor>ae241b7576d72b63ad359506a383f7322</anchor>
+      <arglist>(type v, const char *msg)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>WasDestroyed</name>
+      <anchorfile>structplayrho_1_1WasDestroyed.html</anchorfile>
+      <anchor>ad94b30bee861346712b53a3ca4401f67</anchor>
+      <arglist>(type v, const std::string &amp;msg)</arglist>
+    </member>
+    <member kind="variable">
+      <type>type</type>
+      <name>value</name>
+      <anchorfile>structplayrho_1_1WasDestroyed.html</anchorfile>
+      <anchor>a37388ce41254314e6728054cdb6ec341</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
     <name>playrho::d2::WeldJointConf</name>
     <filename>structplayrho_1_1d2_1_1WeldJointConf.html</filename>
     <base>JointBuilder&lt; WeldJointConf &gt;</base>
@@ -42415,6 +42552,7 @@
     <class kind="class">playrho::TypeID</class>
     <class kind="struct">playrho::Vector</class>
     <class kind="struct">playrho::Version</class>
+    <class kind="struct">playrho::WasDestroyed</class>
     <class kind="class">playrho::WrongState</class>
     <member kind="typedef">
       <type>detail::plane_angle</type>
@@ -43769,6 +43907,13 @@
       <arglist>(BodyType type)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a3b30dd1cfc8c1de0055cec1019245efc</anchor>
+      <arglist>(const Contact &amp;c) noexcept -&gt; bool</arglist>
+    </member>
+    <member kind="function">
       <type>constexpr bool</type>
       <name>IsEnabled</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
@@ -44932,6 +45077,13 @@
     </member>
     <member kind="function">
       <type>constexpr void</type>
+      <name>SetDestroyed</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a75150e768abdd3238b95cae5db9cf828</anchor>
+      <arglist>(Contact &amp;c) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
       <name>SetEnabled</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a23ce44af5f5ba3deb7e1eafe1acf5198</anchor>
@@ -45090,6 +45242,13 @@
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>ad0be851da5e90da82388aaddaa1d8f6d</anchor>
       <arglist>(Contact &amp;contact) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>UnsetDestroyed</name>
+      <anchorfile>namespaceplayrho.html</anchorfile>
+      <anchor>a577e14e25b5dd103acfac3fcb408686b</anchor>
+      <arglist>(Contact &amp;c) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr void</type>
@@ -49511,6 +49670,41 @@
       <arglist>(const DynamicTree::TreeNode &amp;node) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>constexpr auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a405f7c135c8982febc1d12721bc80c57</anchor>
+      <arglist>(const Body &amp;body) noexcept -&gt; bool</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a093bb3a1a83625c3dbe040bb17b1032b</anchor>
+      <arglist>(const Joint &amp;object) noexcept -&gt; bool</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a0e2a712f311b3876ec9e6c047f525b5c</anchor>
+      <arglist>(const Shape &amp;value) noexcept -&gt; bool</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa32b51cef8b38b72661f7d05f92e2d84</anchor>
+      <arglist>(const World &amp;world, BodyID id) -&gt; bool</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a4c4a3a9fe876fbd8dda344fdf81c9eb3</anchor>
+      <arglist>(const World &amp;world, ContactID id) -&gt; bool</arglist>
+    </member>
+    <member kind="function">
       <type>bool</type>
       <name>IsEnabled</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -50932,6 +51126,13 @@
       <arglist>(World &amp;world, ShapeID id, NonNegative&lt; AreaDensity &gt; value)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr void</type>
+      <name>SetDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a092c6266aabe6b53087ee0ce8558db4c</anchor>
+      <arglist>(Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>SetDetachListener</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -52185,6 +52386,13 @@
       <arglist>(World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr void</type>
+      <name>UnsetDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>adbb7956508e7904ef6d439dde056e668</anchor>
+      <arglist>(Body &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>UnsetEnabled</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -52437,11 +52645,11 @@
       <arglist>(AabbTreeWorld &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
-      <type>bool</type>
+      <type>auto</type>
       <name>IsDestroyed</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a420fd33ad8ad006f01422746b89cc507</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, BodyID id) noexcept</arglist>
+      <anchor>abd65066c942d2435730852b4d3497957</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id) -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>const ProxyIDs &amp;</type>
@@ -52507,11 +52715,11 @@
       <arglist>(AabbTreeWorld &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
-      <type>bool</type>
+      <type>auto</type>
       <name>IsDestroyed</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a24478dcc8d764767fae7067be9dcc6d4</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, JointID id) noexcept</arglist>
+      <anchor>a9c46743fbe739c544097bcc64b77a3b4</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, JointID id) -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>ShapeCounter</type>
@@ -52549,11 +52757,11 @@
       <arglist>(AabbTreeWorld &amp;world, ShapeID id)</arglist>
     </member>
     <member kind="function">
-      <type>bool</type>
+      <type>auto</type>
       <name>IsDestroyed</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae36d58fc98aeafd62c67ef3106e0e4a3</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, ShapeID id) noexcept</arglist>
+      <anchor>a536889079e874fc59b5b3c948f6e05b0</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ShapeID id) -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>ContactCounter</type>
@@ -52598,11 +52806,11 @@
       <arglist>(AabbTreeWorld &amp;world, ContactID id, const Manifold &amp;value)</arglist>
     </member>
     <member kind="function">
-      <type>bool</type>
+      <type>auto</type>
       <name>IsDestroyed</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a410fda5a1c75561497f4184d9e6d0d15</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, ContactID id) noexcept</arglist>
+      <anchor>ac2d5f49cac20a0269e5f85d676f30617</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id) -&gt; bool</arglist>
     </member>
     <member kind="variable">
       <type>constexpr auto</type>
@@ -52836,11 +53044,11 @@
       <arglist>(AabbTreeWorld &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
-      <type>bool</type>
+      <type>auto</type>
       <name>IsDestroyed</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a420fd33ad8ad006f01422746b89cc507</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, BodyID id) noexcept</arglist>
+      <anchor>abd65066c942d2435730852b4d3497957</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, BodyID id) -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>const ProxyIDs &amp;</type>
@@ -52906,11 +53114,11 @@
       <arglist>(AabbTreeWorld &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
-      <type>bool</type>
+      <type>auto</type>
       <name>IsDestroyed</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a24478dcc8d764767fae7067be9dcc6d4</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, JointID id) noexcept</arglist>
+      <anchor>a9c46743fbe739c544097bcc64b77a3b4</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, JointID id) -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>ShapeCounter</type>
@@ -52948,11 +53156,11 @@
       <arglist>(AabbTreeWorld &amp;world, ShapeID id)</arglist>
     </member>
     <member kind="function">
-      <type>bool</type>
+      <type>auto</type>
       <name>IsDestroyed</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae36d58fc98aeafd62c67ef3106e0e4a3</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, ShapeID id) noexcept</arglist>
+      <anchor>a536889079e874fc59b5b3c948f6e05b0</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ShapeID id) -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>ContactCounter</type>
@@ -52997,11 +53205,11 @@
       <arglist>(AabbTreeWorld &amp;world, ContactID id, const Manifold &amp;value)</arglist>
     </member>
     <member kind="function">
-      <type>bool</type>
+      <type>auto</type>
       <name>IsDestroyed</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a410fda5a1c75561497f4184d9e6d0d15</anchor>
-      <arglist>(const AabbTreeWorld &amp;world, ContactID id) noexcept</arglist>
+      <anchor>ac2d5f49cac20a0269e5f85d676f30617</anchor>
+      <arglist>(const AabbTreeWorld &amp;world, ContactID id) -&gt; bool</arglist>
     </member>
   </compound>
   <compound kind="namespace">
@@ -54626,6 +54834,7 @@
     <filename>group__ExceptionsGroup.html</filename>
     <class kind="class">playrho::InvalidArgument</class>
     <class kind="class">playrho::LengthError</class>
+    <class kind="struct">playrho::WasDestroyed</class>
     <class kind="class">playrho::WrongState</class>
   </compound>
   <compound kind="group">

@@ -59,43 +59,59 @@ var sectionId = 'dynsection-1';
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="Declarations of the Body class, and functions associated with it.">
-<polygon fill="#bfbfbf" stroke="black" points="334,-268.5 334,-298.5 462,-298.5 462,-268.5 334,-268.5"/>
-<text text-anchor="start" x="342" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="398" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/Body.hpp</text>
+<polygon fill="#bfbfbf" stroke="black" points="236,-268.5 236,-298.5 364,-298.5 364,-268.5 236,-268.5"/>
+<text text-anchor="start" x="244" y="-286.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="300" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/Body.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="BodyConstraint_8hpp.html" target="_top" xlink:title="Definition of the BodyConstraint class and closely related code.">
-<polygon fill="white" stroke="black" points="153.5,-201.5 153.5,-231.5 284.5,-231.5 284.5,-201.5 153.5,-201.5"/>
-<text text-anchor="start" x="161.5" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="219" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/BodyConstraint.hpp</text>
+<g id="a_node2"><a xlink:href="AabbTreeWorld_8hpp.html" target="_top" xlink:title="Declarations of the AabbTreeWorld class.">
+<polygon fill="white" stroke="black" points="0,-134.5 0,-164.5 128,-164.5 128,-134.5 0,-134.5"/>
+<text text-anchor="start" x="8" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="64" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/AabbTreeWorld.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="midnightblue" d="M349.68,-264.96C320.85,-254.48 284.72,-241.37 257.76,-231.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="348.57,-268.27 359.16,-268.4 350.95,-261.69 348.57,-268.27"/>
+<path fill="none" stroke="midnightblue" d="M226.06,-266.44C198.98,-258.58 168.91,-247.4 144,-232 114.66,-213.85 88.25,-182.72 74.33,-164.64"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="225.31,-269.87 235.88,-269.19 227.19,-263.13 225.31,-269.87"/>
+</g>
+<!-- Node3 -->
+<g id="node3" class="node">
+<title>Node3</title>
+<g id="a_node3"><a xlink:href="BodyConstraint_8hpp.html" target="_top" xlink:title="Definition of the BodyConstraint class and closely related code.">
+<polygon fill="white" stroke="black" points="153.5,-201.5 153.5,-231.5 284.5,-231.5 284.5,-201.5 153.5,-201.5"/>
+<text text-anchor="start" x="161.5" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="219" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/BodyConstraint.hpp</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node3 -->
+<g id="edge2" class="edge">
+<title>Node1&#45;&gt;Node3</title>
+<path fill="none" stroke="midnightblue" d="M274.31,-261.88C262,-252.01 247.57,-240.43 236.54,-231.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="272.43,-264.87 282.42,-268.4 276.82,-259.41 272.43,-264.87"/>
 </g>
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
 <g id="a_node5"><a xlink:href="WorldConcept_8hpp.html" target="_top" xlink:title="Definition of the internal WorldConcept interface class.">
-<polygon fill="white" stroke="black" points="321,-201.5 321,-231.5 475,-231.5 475,-201.5 321,-201.5"/>
-<text text-anchor="start" x="329" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="398" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/detail/WorldConcept.hpp</text>
+<polygon fill="white" stroke="black" points="305,-201.5 305,-231.5 459,-231.5 459,-201.5 305,-201.5"/>
+<text text-anchor="start" x="313" y="-219.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
+<text text-anchor="middle" x="382" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/detail/WorldConcept.hpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node5 -->
-<g id="edge4" class="edge">
+<g id="edge5" class="edge">
 <title>Node1&#45;&gt;Node5</title>
-<path fill="none" stroke="midnightblue" d="M398,-258.11C398,-249.15 398,-239.32 398,-231.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="394.5,-258.4 398,-268.4 401.5,-258.4 394.5,-258.4"/>
+<path fill="none" stroke="midnightblue" d="M325.65,-262.17C338.19,-252.23 352.97,-240.51 364.24,-231.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="323.46,-259.44 317.79,-268.4 327.8,-264.93 323.46,-259.44"/>
 </g>
 <!-- Node7 -->
 <g id="node7" class="node">
@@ -108,24 +124,14 @@ var sectionId = 'dynsection-1';
 </g>
 </g>
 <!-- Node1&#45;&gt;Node7 -->
-<g id="edge9" class="edge">
+<g id="edge10" class="edge">
 <title>Node1&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M449.35,-263.66C463.03,-256.02 476.17,-245.68 484,-232 508.85,-188.59 494.89,-125.69 486.67,-97.77"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="447.62,-260.61 440.33,-268.3 450.82,-266.84 447.62,-260.61"/>
+<path fill="none" stroke="midnightblue" d="M374.41,-276.69C407.27,-270.37 443.84,-257.59 468,-232 503.02,-194.9 492.43,-126.96 485.69,-97.62"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="373.59,-273.27 364.34,-278.45 374.8,-280.17 373.59,-273.27"/>
 </g>
-<!-- Node3 -->
-<g id="node3" class="node">
-<title>Node3</title>
-<g id="a_node3"><a xlink:href="AabbTreeWorld_8hpp.html" target="_top" xlink:title="Declarations of the AabbTreeWorld class.">
-<polygon fill="white" stroke="black" points="0,-134.5 0,-164.5 128,-164.5 128,-134.5 0,-134.5"/>
-<text text-anchor="start" x="8" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">Library/include/playrho</text>
-<text text-anchor="middle" x="64" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">/d2/AabbTreeWorld.hpp</text>
-</a>
-</g>
-</g>
-<!-- Node2&#45;&gt;Node3 -->
-<g id="edge2" class="edge">
-<title>Node2&#45;&gt;Node3</title>
+<!-- Node3&#45;&gt;Node2 -->
+<g id="edge3" class="edge">
+<title>Node3&#45;&gt;Node2</title>
 <path fill="none" stroke="midnightblue" d="M175.85,-197.41C151.11,-187.03 120.5,-174.2 97.57,-164.58"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="174.79,-200.76 185.37,-201.4 177.5,-194.3 174.79,-200.76"/>
 </g>
@@ -139,9 +145,9 @@ var sectionId = 'dynsection-1';
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node4 -->
-<g id="edge3" class="edge">
-<title>Node2&#45;&gt;Node4</title>
+<!-- Node3&#45;&gt;Node4 -->
+<g id="edge4" class="edge">
+<title>Node3&#45;&gt;Node4</title>
 <path fill="none" stroke="midnightblue" d="M219,-191.11C219,-182.15 219,-172.32 219,-164.58"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="215.5,-191.4 219,-201.4 222.5,-191.4 215.5,-191.4"/>
 </g>
@@ -156,19 +162,19 @@ var sectionId = 'dynsection-1';
 </g>
 </g>
 <!-- Node5&#45;&gt;Node6 -->
-<g id="edge5" class="edge">
+<g id="edge6" class="edge">
 <title>Node5&#45;&gt;Node6</title>
-<path fill="none" stroke="midnightblue" d="M392.07,-191.4C389.84,-182.37 387.39,-172.41 385.46,-164.58"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="388.74,-192.52 394.53,-201.4 395.54,-190.85 388.74,-192.52"/>
+<path fill="none" stroke="midnightblue" d="M382,-191.11C382,-182.15 382,-172.32 382,-164.58"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="378.5,-191.4 382,-201.4 385.5,-191.4 378.5,-191.4"/>
 </g>
 <!-- Node5&#45;&gt;Node7 -->
-<g id="edge8" class="edge">
+<g id="edge9" class="edge">
 <title>Node5&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M432.27,-195.6C443.59,-187.46 455.26,-177.08 463,-165 476.4,-144.08 480.38,-114.74 481.54,-97.57"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="430.06,-192.87 423.75,-201.39 433.99,-198.67 430.06,-192.87"/>
+<path fill="none" stroke="midnightblue" d="M425.84,-196.53C439.57,-188.62 453.59,-178.15 463,-165 477.54,-144.68 481.12,-114.87 481.9,-97.5"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="424.03,-193.53 416.9,-201.37 427.36,-199.69 424.03,-193.53"/>
 </g>
 <!-- Node6&#45;&gt;Node7 -->
-<g id="edge6" class="edge">
+<g id="edge7" class="edge">
 <title>Node6&#45;&gt;Node7</title>
 <path fill="none" stroke="midnightblue" d="M412.41,-128.73C427.88,-118.68 446.33,-106.68 460.34,-97.58"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="410.18,-126.01 403.7,-134.4 413.99,-131.88 410.18,-126.01"/>
@@ -184,7 +190,7 @@ var sectionId = 'dynsection-1';
 </g>
 </g>
 <!-- Node7&#45;&gt;Node8 -->
-<g id="edge7" class="edge">
+<g id="edge8" class="edge">
 <title>Node7&#45;&gt;Node8</title>
 <path fill="none" stroke="midnightblue" d="M482,-57.11C482,-48.15 482,-38.32 482,-30.58"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="478.5,-57.4 482,-67.4 485.5,-57.4 478.5,-57.4"/>

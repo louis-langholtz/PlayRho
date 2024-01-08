@@ -57,6 +57,7 @@ var classplayrho_1_1d2_1_1Joint =
     [ "GetWeldJointConf", "classplayrho_1_1d2_1_1Joint.html#a068dc3f2013d3029414eb4d0eaf85f13", null ],
     [ "GetWheelJointConf", "classplayrho_1_1d2_1_1Joint.html#ab455b1a4e3159193b477bef90fa819b4", null ],
     [ "InitVelocity", "classplayrho_1_1d2_1_1Joint.html#a7ed33745cbcd04b55f1d412d5960f67e", null ],
+    [ "IsDestroyed", "classplayrho_1_1d2_1_1Joint.html#a093bb3a1a83625c3dbe040bb17b1032b", null ],
     [ "IsLimitEnabled", "classplayrho_1_1d2_1_1Joint.html#a38af51869b6c1d87b93123a4a790f874", null ],
     [ "IsMotorEnabled", "classplayrho_1_1d2_1_1Joint.html#ad5b4dd16b94cfe0d1f5ce07a01cc598d", null ],
     [ "operator!=", "classplayrho_1_1d2_1_1Joint.html#a77c7fac4adcbb85f9cfc10e1c59a0694", null ],

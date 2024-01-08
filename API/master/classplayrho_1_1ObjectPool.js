@@ -15,7 +15,7 @@ var classplayrho_1_1ObjectPool =
     [ "end", "classplayrho_1_1ObjectPool.html#a73e303031c655545ab6d823853df9175", null ],
     [ "end", "classplayrho_1_1ObjectPool.html#a348dd2f37e6683b7a65fc8ca3b8b77b6", null ],
     [ "FindFree", "classplayrho_1_1ObjectPool.html#acf85582d60a62b07c2289a2e27d047ff", null ],
-    [ "Free", "classplayrho_1_1ObjectPool.html#ab425852cd76b4621e5e9b63a6726d7d8", null ],
+    [ "Free", "classplayrho_1_1ObjectPool.html#a24aff42f6c6b15a4888b28c6fdf14b49", null ],
     [ "free_size", "classplayrho_1_1ObjectPool.html#ad21b0179a2b158e6a49c74af81a2064f", null ],
     [ "GetIndex", "classplayrho_1_1ObjectPool.html#a3bedb344c8a56f424080e74a2ce5bfa3", null ],
     [ "max_size", "classplayrho_1_1ObjectPool.html#a7aa7c0b3e5bcce16980135b1ef63df27", null ],

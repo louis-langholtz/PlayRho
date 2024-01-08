@@ -56,6 +56,7 @@ var group__ConstraintsGroup =
       [ "GetToiCount", "classplayrho_1_1Contact.html#abce1723933df3c7d4054975daa7ac724", null ],
       [ "GetWorldManifold", "classplayrho_1_1Contact.html#a53c028875bbee1fffcd3fc497bee2dc5", null ],
       [ "HasValidToi", "classplayrho_1_1Contact.html#a77e830664360ead07ab616d934ff2550", null ],
+      [ "IsDestroyed", "classplayrho_1_1Contact.html#a3b30dd1cfc8c1de0055cec1019245efc", null ],
       [ "IsEnabled", "classplayrho_1_1Contact.html#acf2071b64988e62193b4a2567bdde292", null ],
       [ "IsFor", "classplayrho_1_1Contact.html#aa8f91c8a02e1886e4e9f90d0926e075a", null ],
       [ "IsFor", "classplayrho_1_1Contact.html#a283c9f04ceb148910537dc1cd3f37c00", null ],
@@ -66,6 +67,7 @@ var group__ConstraintsGroup =
       [ "NeedsUpdating", "classplayrho_1_1Contact.html#a00846636a226626c5dd4151893f397f7", null ],
       [ "operator!=", "classplayrho_1_1Contact.html#a253588f96c2b53aec235c79675776988", null ],
       [ "operator==", "classplayrho_1_1Contact.html#a5b92007cb872b11ba4ab93f5095e2e48", null ],
+      [ "SetDestroyed", "classplayrho_1_1Contact.html#a75150e768abdd3238b95cae5db9cf828", null ],
       [ "SetEnabled", "classplayrho_1_1Contact.html#a23ce44af5f5ba3deb7e1eafe1acf5198", null ],
       [ "SetFriction", "classplayrho_1_1Contact.html#acaf284b9eea3b4ad78ba5b673e67b00b", null ],
       [ "SetImpenetrable", "classplayrho_1_1Contact.html#a146755eafb1ed7d0ea52af68ea4874cd", null ],
@@ -76,6 +78,7 @@ var group__ConstraintsGroup =
       [ "SetToiCount", "classplayrho_1_1Contact.html#aabf79c789863cc4aea6b9e6bc976267c", null ],
       [ "UnflagForFiltering", "classplayrho_1_1Contact.html#aaf49104158a7aea199f9531f9ab5b7d0", null ],
       [ "UnflagForUpdating", "classplayrho_1_1Contact.html#ad0be851da5e90da82388aaddaa1d8f6d", null ],
+      [ "UnsetDestroyed", "classplayrho_1_1Contact.html#a577e14e25b5dd103acfac3fcb408686b", null ],
       [ "UnsetImpenetrable", "classplayrho_1_1Contact.html#a205494b248da96a02b57be9d9ad9a27b", null ],
       [ "UnsetSensor", "classplayrho_1_1Contact.html#a2d655de91b4048a46090b3621e34d239", null ],
       [ "DefaultContactable", "classplayrho_1_1Contact.html#a8b1b9a79e20a6e9f08ea030b1b995cb9", null ]

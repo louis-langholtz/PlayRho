@@ -42,6 +42,7 @@ var Body_8hpp =
     [ "GetWorldVector", "Body_8hpp.html#abd3a5456b15768fa846cb40d6b32a259", null ],
     [ "IsAccelerable", "Body_8hpp.html#ad1f05a05c6dd9eb2a1564cc10032f16c", null ],
     [ "IsAwake", "Body_8hpp.html#a139df81757401545db36e6fc6f030d75", null ],
+    [ "IsDestroyed", "Body_8hpp.html#a405f7c135c8982febc1d12721bc80c57", null ],
     [ "IsEnabled", "Body_8hpp.html#ab930c47cedb9dc4fe0d6e178e7651d54", null ],
     [ "IsFixedRotation", "Body_8hpp.html#a91940e85abf08596f625348315452e3d", null ],
     [ "IsImpenetrable", "Body_8hpp.html#a8c4170f49badbf1881f371cfb5f466a7", null ],
@@ -57,6 +58,7 @@ var Body_8hpp =
     [ "SetAngle", "Body_8hpp.html#a804f65cef5ba33970fabd8af9d40cb93", null ],
     [ "SetAngularDamping", "Body_8hpp.html#a344a9753e8cd6fb046a57e82d2206d60", null ],
     [ "SetAwake", "Body_8hpp.html#a60201ffd45e0d810ff5d4fb90fd0bc4b", null ],
+    [ "SetDestroyed", "Body_8hpp.html#a092c6266aabe6b53087ee0ce8558db4c", null ],
     [ "SetEnabled", "Body_8hpp.html#abfae76ec0240c61e85bed996119d130e", null ],
     [ "SetEnabled", "Body_8hpp.html#a88826de33b9ad1fe847120458fe3a836", null ],
     [ "SetFixedRotation", "Body_8hpp.html#a546de4c838854e1d2bee174a4cf264e5", null ],
@@ -76,6 +78,7 @@ var Body_8hpp =
     [ "SetVelocity", "Body_8hpp.html#adddd763be5890fad18f5a3dd9d2b4d38", null ],
     [ "Unawaken", "Body_8hpp.html#abdfbff06306e4ecb71f6d4b2136eea7c", null ],
     [ "UnsetAwake", "Body_8hpp.html#afce7db62d828a84a94e8c6222d9111a6", null ],
+    [ "UnsetDestroyed", "Body_8hpp.html#adbb7956508e7904ef6d439dde056e668", null ],
     [ "UnsetEnabled", "Body_8hpp.html#a5f8f4bd2d2daa7bbd38dbe9b0919f08e", null ],
     [ "UnsetImpenetrable", "Body_8hpp.html#a2ba4e5cbd12444be971a3ef0a09e9931", null ]
 ];

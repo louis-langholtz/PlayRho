@@ -114,6 +114,7 @@ $(document).ready(function(){initNavTree('AabbTreeWorld_8hpp.html',''); initResi
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;<a class="el" href="BodyID_8hpp.html">playrho/BodyID.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="BodyShapeFunction_8hpp.html">playrho/BodyShapeFunction.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Contact_8hpp.html">playrho/Contact.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Contactable_8hpp.html">playrho/Contactable.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="ContactFunction_8hpp.html">playrho/ContactFunction.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="ContactID_8hpp.html">playrho/ContactID.hpp</a>&gt;</code><br />
@@ -138,10 +139,13 @@ $(document).ready(function(){initNavTree('AabbTreeWorld_8hpp.html',''); initResi
 <code>#include &lt;playrho/pmr/MemoryResource.hpp&gt;</code><br />
 <code>#include &lt;playrho/pmr/PoolMemoryResource.hpp&gt;</code><br />
 <code>#include &lt;playrho/pmr/StatsResource.hpp&gt;</code><br />
+<code>#include &lt;<a class="el" href="Body_8hpp.html">playrho/d2/Body.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="BodyConstraint_8hpp.html">playrho/d2/BodyConstraint.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="ContactImpulsesFunction_8hpp.html">playrho/d2/ContactImpulsesFunction.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="ContactManifoldFunction_8hpp.html">playrho/d2/ContactManifoldFunction.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="DynamicTree_8hpp.html">playrho/d2/DynamicTree.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Joint_8hpp.html">playrho/d2/Joint.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Shape_8hpp.html">playrho/d2/Shape.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Transformation_8hpp.html">playrho/d2/Transformation.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="WorldConf_8hpp.html">playrho/d2/WorldConf.hpp</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -320,9 +324,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="memitem:a3694df2092406746a5e71113ee6487f1"><td class="memItemLeft" align="right" valign="top">const ProxyIDs &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a3694df2092406746a5e71113ee6487f1">playrho::d2::GetProxies</a> (const AabbTreeWorld &amp;world, BodyID id)</td></tr>
 <tr class="memdesc:a3694df2092406746a5e71113ee6487f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the proxies for the identified body.  <a href="namespaceplayrho_1_1d2.html#a3694df2092406746a5e71113ee6487f1">More...</a><br /></td></tr>
 <tr class="separator:a3694df2092406746a5e71113ee6487f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a420fd33ad8ad006f01422746b89cc507"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a420fd33ad8ad006f01422746b89cc507">playrho::d2::IsDestroyed</a> (const AabbTreeWorld &amp;world, BodyID id) noexcept</td></tr>
-<tr class="memdesc:a420fd33ad8ad006f01422746b89cc507"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given identifier is to a body that's been destroyed.  <a href="namespaceplayrho_1_1d2.html#a420fd33ad8ad006f01422746b89cc507">More...</a><br /></td></tr>
-<tr class="separator:a420fd33ad8ad006f01422746b89cc507"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd65066c942d2435730852b4d3497957"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">playrho::d2::IsDestroyed</a> (const AabbTreeWorld &amp;world, BodyID id) -&gt; bool</td></tr>
+<tr class="memdesc:abd65066c942d2435730852b4d3497957"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given identifier is to a body that's been destroyed.  <a href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">More...</a><br /></td></tr>
+<tr class="separator:abd65066c942d2435730852b4d3497957"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20cdd89db66f857c4799c090880bd5b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a20cdd89db66f857c4799c090880bd5b4">playrho::d2::SetBody</a> (AabbTreeWorld &amp;world, BodyID id, Body value)</td></tr>
 <tr class="memdesc:a20cdd89db66f857c4799c090880bd5b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the identified body.  <a href="namespaceplayrho_1_1d2.html#a20cdd89db66f857c4799c090880bd5b4">More...</a><br /></td></tr>
 <tr class="separator:a20cdd89db66f857c4799c090880bd5b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -344,9 +348,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="memitem:a04675e3f7536245a0ca7fad3f4bb0b27"><td class="memItemLeft" align="right" valign="top">const JointIDs &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a04675e3f7536245a0ca7fad3f4bb0b27">playrho::d2::GetJoints</a> (const AabbTreeWorld &amp;world) noexcept</td></tr>
 <tr class="memdesc:a04675e3f7536245a0ca7fad3f4bb0b27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the container of joint IDs of the given world.  <a href="namespaceplayrho_1_1d2.html#a04675e3f7536245a0ca7fad3f4bb0b27">More...</a><br /></td></tr>
 <tr class="separator:a04675e3f7536245a0ca7fad3f4bb0b27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24478dcc8d764767fae7067be9dcc6d4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a24478dcc8d764767fae7067be9dcc6d4">playrho::d2::IsDestroyed</a> (const AabbTreeWorld &amp;world, JointID id) noexcept</td></tr>
-<tr class="memdesc:a24478dcc8d764767fae7067be9dcc6d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given identifier is to a joint that's been destroyed.  <a href="namespaceplayrho_1_1d2.html#a24478dcc8d764767fae7067be9dcc6d4">More...</a><br /></td></tr>
-<tr class="separator:a24478dcc8d764767fae7067be9dcc6d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c46743fbe739c544097bcc64b77a3b4"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a9c46743fbe739c544097bcc64b77a3b4">playrho::d2::IsDestroyed</a> (const AabbTreeWorld &amp;world, JointID id) -&gt; bool</td></tr>
+<tr class="memdesc:a9c46743fbe739c544097bcc64b77a3b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given identifier is to a joint that's been destroyed.  <a href="namespaceplayrho_1_1d2.html#a9c46743fbe739c544097bcc64b77a3b4">More...</a><br /></td></tr>
+<tr class="separator:a9c46743fbe739c544097bcc64b77a3b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2bf839e74417fc9845d648c90f5b1cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#ae2bf839e74417fc9845d648c90f5b1cc">playrho::d2::SetJoint</a> (AabbTreeWorld &amp;world, JointID id, Joint def)</td></tr>
 <tr class="memdesc:ae2bf839e74417fc9845d648c90f5b1cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the identified joint.  <a href="namespaceplayrho_1_1d2.html#ae2bf839e74417fc9845d648c90f5b1cc">More...</a><br /></td></tr>
 <tr class="separator:ae2bf839e74417fc9845d648c90f5b1cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -365,9 +369,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="memitem:a61d7f65f10afdad013c11d866292ad12"><td class="memItemLeft" align="right" valign="top">ShapeCounter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a61d7f65f10afdad013c11d866292ad12">playrho::d2::GetShapeRange</a> (const AabbTreeWorld &amp;world) noexcept</td></tr>
 <tr class="memdesc:a61d7f65f10afdad013c11d866292ad12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the extent of the currently valid shape range.  <a href="namespaceplayrho_1_1d2.html#a61d7f65f10afdad013c11d866292ad12">More...</a><br /></td></tr>
 <tr class="separator:a61d7f65f10afdad013c11d866292ad12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae36d58fc98aeafd62c67ef3106e0e4a3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#ae36d58fc98aeafd62c67ef3106e0e4a3">playrho::d2::IsDestroyed</a> (const AabbTreeWorld &amp;world, ShapeID id) noexcept</td></tr>
-<tr class="memdesc:ae36d58fc98aeafd62c67ef3106e0e4a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given identifier is to a shape that's been destroyed.  <a href="namespaceplayrho_1_1d2.html#ae36d58fc98aeafd62c67ef3106e0e4a3">More...</a><br /></td></tr>
-<tr class="separator:ae36d58fc98aeafd62c67ef3106e0e4a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a536889079e874fc59b5b3c948f6e05b0"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a536889079e874fc59b5b3c948f6e05b0">playrho::d2::IsDestroyed</a> (const AabbTreeWorld &amp;world, ShapeID id) -&gt; bool</td></tr>
+<tr class="memdesc:a536889079e874fc59b5b3c948f6e05b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given identifier is to a shape that's been destroyed.  <a href="namespaceplayrho_1_1d2.html#a536889079e874fc59b5b3c948f6e05b0">More...</a><br /></td></tr>
+<tr class="separator:a536889079e874fc59b5b3c948f6e05b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a089e703b548a6b5f8b02ceb661a40a1d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a089e703b548a6b5f8b02ceb661a40a1d">playrho::d2::SetShape</a> (AabbTreeWorld &amp;world, ShapeID id, Shape def)</td></tr>
 <tr class="memdesc:a089e703b548a6b5f8b02ceb661a40a1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the value of the identified shape.  <a href="namespaceplayrho_1_1d2.html#a089e703b548a6b5f8b02ceb661a40a1d">More...</a><br /></td></tr>
 <tr class="separator:a089e703b548a6b5f8b02ceb661a40a1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -386,9 +390,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="memitem:a4744f578a96c67e8929c84c7b32e27e7"><td class="memItemLeft" align="right" valign="top">const Manifold &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a4744f578a96c67e8929c84c7b32e27e7">playrho::d2::GetManifold</a> (const AabbTreeWorld &amp;world, ContactID id)</td></tr>
 <tr class="memdesc:a4744f578a96c67e8929c84c7b32e27e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the identified manifold.  <a href="namespaceplayrho_1_1d2.html#a4744f578a96c67e8929c84c7b32e27e7">More...</a><br /></td></tr>
 <tr class="separator:a4744f578a96c67e8929c84c7b32e27e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a410fda5a1c75561497f4184d9e6d0d15"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a410fda5a1c75561497f4184d9e6d0d15">playrho::d2::IsDestroyed</a> (const AabbTreeWorld &amp;world, ContactID id) noexcept</td></tr>
-<tr class="memdesc:a410fda5a1c75561497f4184d9e6d0d15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given identifier is to a contact that's been destroyed.  <a href="namespaceplayrho_1_1d2.html#a410fda5a1c75561497f4184d9e6d0d15">More...</a><br /></td></tr>
-<tr class="separator:a410fda5a1c75561497f4184d9e6d0d15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2d5f49cac20a0269e5f85d676f30617"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#ac2d5f49cac20a0269e5f85d676f30617">playrho::d2::IsDestroyed</a> (const AabbTreeWorld &amp;world, ContactID id) -&gt; bool</td></tr>
+<tr class="memdesc:ac2d5f49cac20a0269e5f85d676f30617"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given identifier is to a contact that's been destroyed.  <a href="namespaceplayrho_1_1d2.html#ac2d5f49cac20a0269e5f85d676f30617">More...</a><br /></td></tr>
+<tr class="separator:ac2d5f49cac20a0269e5f85d676f30617"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a986132f0e473e4da3dfcd1b5ec1eb608"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a986132f0e473e4da3dfcd1b5ec1eb608">playrho::d2::SetContact</a> (AabbTreeWorld &amp;world, ContactID id, Contact value)</td></tr>
 <tr class="memdesc:a986132f0e473e4da3dfcd1b5ec1eb608"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the identified contact's state.  <a href="namespaceplayrho_1_1d2.html#a986132f0e473e4da3dfcd1b5ec1eb608">More...</a><br /></td></tr>
 <tr class="separator:a986132f0e473e4da3dfcd1b5ec1eb608"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -404,7 +408,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="dir_00957d302ca87b53c9f57dcbc695504d.html">d2</a></li><li class="navelem"><a class="el" href="AabbTreeWorld_8hpp.html">AabbTreeWorld.hpp</a></li>
-    <li class="footer">Generated on Mon Jan 1 2024 08:17:41 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Jan 8 2024 09:21:17 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

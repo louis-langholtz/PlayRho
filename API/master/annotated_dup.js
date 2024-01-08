@@ -226,6 +226,7 @@ var annotated_dup =
       [ "TypeID", "classplayrho_1_1TypeID.html", "classplayrho_1_1TypeID" ],
       [ "Vector", "structplayrho_1_1Vector.html", "structplayrho_1_1Vector" ],
       [ "Version", "structplayrho_1_1Version.html", "structplayrho_1_1Version" ],
+      [ "WasDestroyed", "structplayrho_1_1WasDestroyed.html", "structplayrho_1_1WasDestroyed" ],
       [ "WrongState", "classplayrho_1_1WrongState.html", null ]
     ] ],
     [ "playrho ", null, [

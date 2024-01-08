@@ -303,6 +303,9 @@ constexpr <a class="el" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee6
 <tr class="memitem:a77e830664360ead07ab616d934ff2550"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Contact.html#a77e830664360ead07ab616d934ff2550">HasValidToi</a> (const <a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;contact) noexcept</td></tr>
 <tr class="memdesc:a77e830664360ead07ab616d934ff2550"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether a TOI is set.  <a href="classplayrho_1_1Contact.html#a77e830664360ead07ab616d934ff2550">More...</a><br /></td></tr>
 <tr class="separator:a77e830664360ead07ab616d934ff2550"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b30dd1cfc8c1de0055cec1019245efc"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Contact.html#a3b30dd1cfc8c1de0055cec1019245efc">IsDestroyed</a> (const <a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;c) noexcept -&gt; bool</td></tr>
+<tr class="memdesc:a3b30dd1cfc8c1de0055cec1019245efc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the given contact was destroyed.  <a href="classplayrho_1_1Contact.html#a3b30dd1cfc8c1de0055cec1019245efc">More...</a><br /></td></tr>
+<tr class="separator:a3b30dd1cfc8c1de0055cec1019245efc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf2071b64988e62193b4a2567bdde292"><td class="memItemLeft" align="right" valign="top"><a id="acf2071b64988e62193b4a2567bdde292"></a>
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Contact.html#acf2071b64988e62193b4a2567bdde292">IsEnabled</a> (const <a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;contact) noexcept</td></tr>
 <tr class="memdesc:acf2071b64988e62193b4a2567bdde292"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given contact is enabled or not. <br /></td></tr>
@@ -340,6 +343,9 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Contact.html#a5b92007cb872b11ba4ab93f5095e2e48">operator==</a> (const <a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;lhs, const <a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:a5b92007cb872b11ba4ab93f5095e2e48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operator equals. <br /></td></tr>
 <tr class="separator:a5b92007cb872b11ba4ab93f5095e2e48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75150e768abdd3238b95cae5db9cf828"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Contact.html#a75150e768abdd3238b95cae5db9cf828">SetDestroyed</a> (<a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;c) noexcept</td></tr>
+<tr class="memdesc:a75150e768abdd3238b95cae5db9cf828"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the destroyed property of the given contact.  <a href="classplayrho_1_1Contact.html#a75150e768abdd3238b95cae5db9cf828">More...</a><br /></td></tr>
+<tr class="separator:a75150e768abdd3238b95cae5db9cf828"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23ce44af5f5ba3deb7e1eafe1acf5198"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Contact.html#a23ce44af5f5ba3deb7e1eafe1acf5198">SetEnabled</a> (<a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;contact) noexcept</td></tr>
 <tr class="memdesc:a23ce44af5f5ba3deb7e1eafe1acf5198"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables the contact.  <a href="classplayrho_1_1Contact.html#a23ce44af5f5ba3deb7e1eafe1acf5198">More...</a><br /></td></tr>
 <tr class="separator:a23ce44af5f5ba3deb7e1eafe1acf5198"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -370,6 +376,9 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <tr class="memitem:ad0be851da5e90da82388aaddaa1d8f6d"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Contact.html#ad0be851da5e90da82388aaddaa1d8f6d">UnflagForUpdating</a> (<a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;contact) noexcept</td></tr>
 <tr class="memdesc:ad0be851da5e90da82388aaddaa1d8f6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unflags this contact for updating.  <a href="classplayrho_1_1Contact.html#ad0be851da5e90da82388aaddaa1d8f6d">More...</a><br /></td></tr>
 <tr class="separator:ad0be851da5e90da82388aaddaa1d8f6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a577e14e25b5dd103acfac3fcb408686b"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Contact.html#a577e14e25b5dd103acfac3fcb408686b">UnsetDestroyed</a> (<a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;c) noexcept</td></tr>
+<tr class="memdesc:a577e14e25b5dd103acfac3fcb408686b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsets the destroyed property of the given contact.  <a href="classplayrho_1_1Contact.html#a577e14e25b5dd103acfac3fcb408686b">More...</a><br /></td></tr>
+<tr class="separator:a577e14e25b5dd103acfac3fcb408686b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a205494b248da96a02b57be9d9ad9a27b"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Contact.html#a205494b248da96a02b57be9d9ad9a27b">UnsetImpenetrable</a> (<a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;contact) noexcept</td></tr>
 <tr class="memdesc:a205494b248da96a02b57be9d9ad9a27b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsets the impenetrability of the given contact.  <a href="classplayrho_1_1Contact.html#a205494b248da96a02b57be9d9ad9a27b">More...</a><br /></td></tr>
 <tr class="separator:a205494b248da96a02b57be9d9ad9a27b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1564,6 +1573,36 @@ The value persists until you set or reset. </dd></dl>
 
 </div>
 </div>
+<a id="a3b30dd1cfc8c1de0055cec1019245efc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b30dd1cfc8c1de0055cec1019245efc">&#9670;&nbsp;</a></span>IsDestroyed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto IsDestroyed </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td> -&gt; bool
+</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not the given contact was destroyed. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1Contact.html#a3a5df495e33889be7845c81780b4b193" title="Sets the destroyed property of this contact.">SetDestroyed</a>, <a class="el" href="classplayrho_1_1Contact.html#ac5a4fa97c0d836f3ca6290d38950e335" title="Unsets the destroyed property of this contact.">UnsetDestroyed</a>. </dd></dl>
+
+</div>
+</div>
 <a id="aa8f91c8a02e1886e4e9f90d0926e075a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa8f91c8a02e1886e4e9f90d0926e075a">&#9670;&nbsp;</a></span>IsFor() <span class="overload">[1/2]</span></h2>
 
@@ -1674,6 +1713,35 @@ The value persists until you set or reset. </dd></dl>
 
 <p>Whether the given contact is "impenetrable". </p>
 <dl class="section note"><dt>Note</dt><dd>This should be true whenever body A or body B are impenetrable. </dd></dl>
+
+</div>
+</div>
+<a id="a75150e768abdd3238b95cae5db9cf828"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75150e768abdd3238b95cae5db9cf828">&#9670;&nbsp;</a></span>SetDestroyed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr void SetDestroyed </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the destroyed property of the given contact. </p>
+<dl class="section note"><dt>Note</dt><dd>This is only meaningfully used by the world implementation. </dd></dl>
 
 </div>
 </div>
@@ -2050,6 +2118,35 @@ The value persists until you set or reset. </dd></dl>
 
 </div>
 </div>
+<a id="a577e14e25b5dd103acfac3fcb408686b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a577e14e25b5dd103acfac3fcb408686b">&#9670;&nbsp;</a></span>UnsetDestroyed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr void UnsetDestroyed </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1Contact.html">Contact</a> &amp;&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Unsets the destroyed property of the given contact. </p>
+<dl class="section note"><dt>Note</dt><dd>This is only meaningfully used by the world implementation. </dd></dl>
+
+</div>
+</div>
 <a id="a205494b248da96a02b57be9d9ad9a27b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a205494b248da96a02b57be9d9ad9a27b">&#9670;&nbsp;</a></span>UnsetImpenetrable()</h2>
 
@@ -2121,7 +2218,7 @@ The value persists until you set or reset. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="classplayrho_1_1Contact.html">Contact</a></li>
-    <li class="footer">Generated on Mon Jan 1 2024 08:17:41 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Jan 8 2024 09:21:17 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

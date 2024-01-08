@@ -1,9 +1,10 @@
 <map id="Library/include/playrho/d2/detail/ShapeConcept.hpp" name="Library/include/playrho/d2/detail/ShapeConcept.hpp">
-<area shape="rect" id="node1" title="Definition of the internal ShapeConcept interface class." alt="" coords="111,5,319,47"/>
-<area shape="rect" id="node2" href="$ShapeModel_8hpp.html" title="Definition of the ShapeModel class and related code." alt="" coords="51,95,245,136"/>
-<area shape="rect" id="node3" href="$Shape_8hpp.html" title="Definition of the Shape class and closely related code." alt="" coords="129,184,300,225"/>
-<area shape="rect" id="node4" href="$WorldConcept_8hpp.html" title="Definition of the internal WorldConcept interface class." alt="" coords="43,273,248,315"/>
-<area shape="rect" id="node6" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="149,452,320,493"/>
-<area shape="rect" id="node5" href="$WorldModel_8hpp.html" title="Definitions of the WorldModel class and closely related code." alt="" coords="5,363,197,404"/>
-<area shape="rect" id="node7" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="149,541,320,583"/>
+<area shape="rect" id="node1" title="Definition of the internal ShapeConcept interface class." alt="" coords="199,5,407,47"/>
+<area shape="rect" id="node2" href="$ShapeModel_8hpp.html" title="Definition of the ShapeModel class and related code." alt="" coords="139,95,333,136"/>
+<area shape="rect" id="node3" href="$Shape_8hpp.html" title="Definition of the Shape class and closely related code." alt="" coords="217,184,388,225"/>
+<area shape="rect" id="node4" href="$AabbTreeWorld_8hpp.html" title="Declarations of the AabbTreeWorld class." alt="" coords="5,273,176,315"/>
+<area shape="rect" id="node5" href="$WorldConcept_8hpp.html" title="Definition of the internal WorldConcept interface class." alt="" coords="200,273,405,315"/>
+<area shape="rect" id="node7" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="307,452,477,493"/>
+<area shape="rect" id="node6" href="$WorldModel_8hpp.html" title="Definitions of the WorldModel class and closely related code." alt="" coords="163,363,355,404"/>
+<area shape="rect" id="node8" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="307,541,477,583"/>
 </map>

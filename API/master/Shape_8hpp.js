@@ -12,6 +12,7 @@ var Shape_8hpp =
     [ "GetType", "Shape_8hpp.html#a175816624556bf32f41f1c3b248495de", null ],
     [ "GetVertexCount", "Shape_8hpp.html#ad164dccb6b5dcf68fbcd9e7918f17eec", null ],
     [ "GetVertexRadius", "Shape_8hpp.html#a2b940ecf05bfbf8ae3910cacbc7e2264", null ],
+    [ "IsDestroyed", "Shape_8hpp.html#a0e2a712f311b3876ec9e6c047f525b5c", null ],
     [ "IsSensor", "Shape_8hpp.html#a758f0ba36affe9a3aba066285cf710d7", null ],
     [ "operator!=", "Shape_8hpp.html#a531eec1b236203c64a6618a44c94eb59", null ],
     [ "operator==", "Shape_8hpp.html#a511146553469b7cac8c01113002718e6", null ],

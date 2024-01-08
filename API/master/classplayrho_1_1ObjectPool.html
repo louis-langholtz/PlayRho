@@ -177,9 +177,9 @@ std::vector&lt; <a class="el" href="classplayrho_1_1ObjectPool.html#afccb88f20f0
 <tr class="memitem:acf85582d60a62b07c2289a2e27d047ff"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ObjectPool.html#acf85582d60a62b07c2289a2e27d047ff">FindFree</a> (<a class="el" href="classplayrho_1_1ObjectPool.html#a742671fa5cd85505be510a0dcea28026">size_type</a> index) const noexcept</td></tr>
 <tr class="memdesc:acf85582d60a62b07c2289a2e27d047ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds whether the given index is in the free list.  <a href="classplayrho_1_1ObjectPool.html#acf85582d60a62b07c2289a2e27d047ff">More...</a><br /></td></tr>
 <tr class="separator:acf85582d60a62b07c2289a2e27d047ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab425852cd76b4621e5e9b63a6726d7d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ObjectPool.html#ab425852cd76b4621e5e9b63a6726d7d8">Free</a> (<a class="el" href="classplayrho_1_1ObjectPool.html#a742671fa5cd85505be510a0dcea28026">size_type</a> index)</td></tr>
-<tr class="memdesc:ab425852cd76b4621e5e9b63a6726d7d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the previously-allocated index entry.  <a href="classplayrho_1_1ObjectPool.html#ab425852cd76b4621e5e9b63a6726d7d8">More...</a><br /></td></tr>
-<tr class="separator:ab425852cd76b4621e5e9b63a6726d7d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24aff42f6c6b15a4888b28c6fdf14b49"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1ObjectPool.html#aed01c819198c39c032d309fdd2cf8715">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ObjectPool.html#a24aff42f6c6b15a4888b28c6fdf14b49">Free</a> (<a class="el" href="classplayrho_1_1ObjectPool.html#a742671fa5cd85505be510a0dcea28026">size_type</a> index)</td></tr>
+<tr class="memdesc:a24aff42f6c6b15a4888b28c6fdf14b49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the previously-allocated index entry.  <a href="classplayrho_1_1ObjectPool.html#a24aff42f6c6b15a4888b28c6fdf14b49">More...</a><br /></td></tr>
+<tr class="separator:a24aff42f6c6b15a4888b28c6fdf14b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad21b0179a2b158e6a49c74af81a2064f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1ObjectPool.html#a742671fa5cd85505be510a0dcea28026">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1ObjectPool.html#ad21b0179a2b158e6a49c74af81a2064f">free_size</a> () const noexcept</td></tr>
 <tr class="memdesc:ad21b0179a2b158e6a49c74af81a2064f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of elements currently free.  <a href="classplayrho_1_1ObjectPool.html#ad21b0179a2b158e6a49c74af81a2064f">More...</a><br /></td></tr>
 <tr class="separator:ad21b0179a2b158e6a49c74af81a2064f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -249,9 +249,9 @@ template&lt;class... Args&gt; </div>
 </div><div class="memdoc">
 
 <p>Allocates an entry in the array with the given constructor parameters. </p>
-<dl class="section note"><dt>Note</dt><dd>Call <code><a class="el" href="classplayrho_1_1ObjectPool.html#ab425852cd76b4621e5e9b63a6726d7d8" title="Frees the previously-allocated index entry.">Free(size_type)</a></code> if the allocated entry needs to be freed. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Call <code><a class="el" href="classplayrho_1_1ObjectPool.html#a24aff42f6c6b15a4888b28c6fdf14b49" title="Frees the previously-allocated index entry.">Free(size_type)</a></code> if the allocated entry needs to be freed. </dd></dl>
 <dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1ObjectPool.html#a34fdef49c5e2fbc21143437367d07798" title="Gets the size of this instance in number of elements.">size()</a> - <a class="el" href="classplayrho_1_1ObjectPool.html#ad21b0179a2b158e6a49c74af81a2064f" title="Gets the number of elements currently free.">free_size()</a></code> will return a value one less than before. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1ObjectPool.html#ab425852cd76b4621e5e9b63a6726d7d8" title="Frees the previously-allocated index entry.">Free</a>, <a class="el" href="classplayrho_1_1ObjectPool.html#a34fdef49c5e2fbc21143437367d07798" title="Gets the size of this instance in number of elements.">size</a>, <a class="el" href="classplayrho_1_1ObjectPool.html#ad21b0179a2b158e6a49c74af81a2064f" title="Gets the number of elements currently free.">free_size</a>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1ObjectPool.html#a24aff42f6c6b15a4888b28c6fdf14b49" title="Frees the previously-allocated index entry.">Free</a>, <a class="el" href="classplayrho_1_1ObjectPool.html#a34fdef49c5e2fbc21143437367d07798" title="Gets the size of this instance in number of elements.">size</a>, <a class="el" href="classplayrho_1_1ObjectPool.html#ad21b0179a2b158e6a49c74af81a2064f" title="Gets the number of elements currently free.">free_size</a>. </dd></dl>
 
 </div>
 </div>
@@ -282,9 +282,9 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Allocates an entry in the array with the given instance. </p>
-<dl class="section note"><dt>Note</dt><dd>Call <code><a class="el" href="classplayrho_1_1ObjectPool.html#ab425852cd76b4621e5e9b63a6726d7d8" title="Frees the previously-allocated index entry.">Free(size_type)</a></code> if the allocated entry needs to be freed. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Call <code><a class="el" href="classplayrho_1_1ObjectPool.html#a24aff42f6c6b15a4888b28c6fdf14b49" title="Frees the previously-allocated index entry.">Free(size_type)</a></code> if the allocated entry needs to be freed. </dd></dl>
 <dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1ObjectPool.html#a34fdef49c5e2fbc21143437367d07798" title="Gets the size of this instance in number of elements.">size()</a> - <a class="el" href="classplayrho_1_1ObjectPool.html#ad21b0179a2b158e6a49c74af81a2064f" title="Gets the number of elements currently free.">free_size()</a></code> will return a value one less than before. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1ObjectPool.html#ab425852cd76b4621e5e9b63a6726d7d8" title="Frees the previously-allocated index entry.">Free</a>, <a class="el" href="classplayrho_1_1ObjectPool.html#a34fdef49c5e2fbc21143437367d07798" title="Gets the size of this instance in number of elements.">size</a>, <a class="el" href="classplayrho_1_1ObjectPool.html#ad21b0179a2b158e6a49c74af81a2064f" title="Gets the number of elements currently free.">free_size</a>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1ObjectPool.html#a24aff42f6c6b15a4888b28c6fdf14b49" title="Frees the previously-allocated index entry.">Free</a>, <a class="el" href="classplayrho_1_1ObjectPool.html#a34fdef49c5e2fbc21143437367d07798" title="Gets the size of this instance in number of elements.">size</a>, <a class="el" href="classplayrho_1_1ObjectPool.html#ad21b0179a2b158e6a49c74af81a2064f" title="Gets the number of elements currently free.">free_size</a>. </dd></dl>
 
 </div>
 </div>
@@ -316,14 +316,16 @@ template&lt;typename T &gt; </div>
 
 <p>Finds whether the given index is in the free list. </p>
 <dl class="section note"><dt>Note</dt><dd>Complexity is at most O(n) where n is the number of elements free. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1ObjectPool.html#ab425852cd76b4621e5e9b63a6726d7d8" title="Frees the previously-allocated index entry.">Free</a>, <a class="el" href="classplayrho_1_1ObjectPool.html#ad21b0179a2b158e6a49c74af81a2064f" title="Gets the number of elements currently free.">free_size</a>. </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1ObjectPool.html#a24aff42f6c6b15a4888b28c6fdf14b49" title="Frees the previously-allocated index entry.">Free</a>, <a class="el" href="classplayrho_1_1ObjectPool.html#ad21b0179a2b158e6a49c74af81a2064f" title="Gets the number of elements currently free.">free_size</a>. </dd>
 <dd>
 <a href="https://en.wikipedia.org/wiki/Big_O_notation">https://en.wikipedia.org/wiki/Big_O_notation</a> </dd></dl>
 
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1ObjectPool.html#a24aff42f6c6b15a4888b28c6fdf14b49">playrho::ObjectPool&lt; T &gt;::Free()</a>.</p>
+
 </div>
 </div>
-<a id="ab425852cd76b4621e5e9b63a6726d7d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab425852cd76b4621e5e9b63a6726d7d8">&#9670;&nbsp;</a></span>Free()</h2>
+<a id="a24aff42f6c6b15a4888b28c6fdf14b49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24aff42f6c6b15a4888b28c6fdf14b49">&#9670;&nbsp;</a></span>Free()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -334,7 +336,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classplayrho_1_1ObjectPool.html">playrho::ObjectPool</a>&lt; T &gt;::Free </td>
+          <td class="memname"><a class="el" href="classplayrho_1_1ObjectPool.html#aed01c819198c39c032d309fdd2cf8715">reference</a> <a class="el" href="classplayrho_1_1ObjectPool.html">playrho::ObjectPool</a>&lt; T &gt;::Free </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classplayrho_1_1ObjectPool.html#a742671fa5cd85505be510a0dcea28026">size_type</a>&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
@@ -349,6 +351,8 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Frees the previously-allocated index entry. </p>
+<dl class="section note"><dt>Note</dt><dd>Provides the strong exception guarantee - if the operation errs, state is like it was prior to calling this function. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd><code>FindFree(size_type)</code> returns <code>false</code> for the given index. </dd></dl>
 <dl class="section post"><dt>Postcondition</dt><dd><code>FindFree(size_type)</code> returns <code>true</code> for the freed index. </dd>
 <dd>
 <code><a class="el" href="classplayrho_1_1ObjectPool.html#ad21b0179a2b158e6a49c74af81a2064f" title="Gets the number of elements currently free.">free_size()</a></code> returns a value one greater than before. </dd></dl>
@@ -358,7 +362,6 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>Consider having this function check if given index already freed. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1ObjectPool.html#a04d6b81c4e8284d598b3079f8d59a7d1" title="Allocates an entry in the array with the given constructor parameters.">Allocate</a>, <a class="el" href="classplayrho_1_1ObjectPool.html#acf85582d60a62b07c2289a2e27d047ff" title="Finds whether the given index is in the free list.">FindFree</a>, <a class="el" href="classplayrho_1_1ObjectPool.html#ad21b0179a2b158e6a49c74af81a2064f" title="Gets the number of elements currently free.">free_size</a>, <a class="el" href="classplayrho_1_1ObjectPool.html#a34fdef49c5e2fbc21143437367d07798" title="Gets the size of this instance in number of elements.">size</a>. </dd></dl>
 
 </div>
@@ -389,7 +392,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Gets the number of elements currently free. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1ObjectPool.html#ab425852cd76b4621e5e9b63a6726d7d8" title="Frees the previously-allocated index entry.">Free</a>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1ObjectPool.html#a24aff42f6c6b15a4888b28c6fdf14b49" title="Frees the previously-allocated index entry.">Free</a>. </dd></dl>
 
 </div>
 </div>
@@ -545,7 +548,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Gets the size of this instance in number of elements. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1ObjectPool.html#a04d6b81c4e8284d598b3079f8d59a7d1" title="Allocates an entry in the array with the given constructor parameters.">Allocate</a>, <a class="el" href="classplayrho_1_1ObjectPool.html#ab425852cd76b4621e5e9b63a6726d7d8" title="Frees the previously-allocated index entry.">Free</a>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1ObjectPool.html#a04d6b81c4e8284d598b3079f8d59a7d1" title="Allocates an entry in the array with the given constructor parameters.">Allocate</a>, <a class="el" href="classplayrho_1_1ObjectPool.html#a24aff42f6c6b15a4888b28c6fdf14b49" title="Frees the previously-allocated index entry.">Free</a>. </dd></dl>
 
 </div>
 </div>
@@ -558,7 +561,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="classplayrho_1_1ObjectPool.html">ObjectPool</a></li>
-    <li class="footer">Generated on Mon Jan 1 2024 08:17:41 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Jan 8 2024 09:21:17 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

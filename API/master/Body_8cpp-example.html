@@ -128,16 +128,21 @@ $(document).ready(function(){initNavTree('Body_8cpp-example.html',''); initResiz
 <div class="line">TEST(Body, DefaultConstruction)</div>
 <div class="line">{</div>
 <div class="line">    EXPECT_EQ(Body().<a name="a0"></a><a class="code" href="namespaceplayrho_1_1d2.html#a421d2110404320428fd02b2d0b70a062">GetType</a>(), <a name="a1"></a><a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Static</a>);</div>
-<div class="line">    EXPECT_TRUE(<a name="a2"></a><a class="code" href="namespaceplayrho_1_1d2.html#ab930c47cedb9dc4fe0d6e178e7651d54">IsEnabled</a>(Body()));</div>
-<div class="line">    EXPECT_FALSE(<a name="a3"></a><a class="code" href="namespaceplayrho_1_1d2.html#a139df81757401545db36e6fc6f030d75">IsAwake</a>(Body()));</div>
-<div class="line">    EXPECT_FALSE(<a name="a4"></a><a class="code" href="namespaceplayrho_1_1d2.html#a81c7a4d7696e9cb367f241afdbbe2727">IsSpeedable</a>(Body()));</div>
-<div class="line">    EXPECT_EQ(Body().<a name="a5"></a><a class="code" href="namespaceplayrho_1_1d2.html#a19b401f474facc647922e54a7aa60aa8">GetLinearDamping</a>(), <a name="a6"></a><a class="code" href="classplayrho_1_1d2_1_1Body.html#a25520091dfb6f5bf5b6bcb09817b3107">Body::DefaultLinearDamping</a>);</div>
-<div class="line">    EXPECT_EQ(Body().<a name="a7"></a><a class="code" href="namespaceplayrho_1_1d2.html#a7543270614333c0aa69df56877a3a1bd">GetAngularDamping</a>(), <a name="a8"></a><a class="code" href="classplayrho_1_1d2_1_1Body.html#aa12ed6cef17df4e573c151ae76539d00">Body::DefaultAngularDamping</a>);</div>
+<div class="line">    EXPECT_TRUE(Body().<a name="a2"></a><a class="code" href="namespaceplayrho_1_1d2.html#ab930c47cedb9dc4fe0d6e178e7651d54">IsEnabled</a>());</div>
+<div class="line">    EXPECT_FALSE(Body().<a name="a3"></a><a class="code" href="namespaceplayrho_1_1d2.html#a139df81757401545db36e6fc6f030d75">IsAwake</a>());</div>
+<div class="line">    EXPECT_FALSE(Body().<a name="a4"></a><a class="code" href="namespaceplayrho_1_1d2.html#a81c7a4d7696e9cb367f241afdbbe2727">IsSpeedable</a>());</div>
+<div class="line">    EXPECT_FALSE(Body().<a name="a5"></a><a class="code" href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">IsDestroyed</a>());</div>
+<div class="line">    EXPECT_TRUE(<a class="code" href="namespaceplayrho_1_1d2.html#ab930c47cedb9dc4fe0d6e178e7651d54">IsEnabled</a>(Body()));</div>
+<div class="line">    EXPECT_FALSE(<a class="code" href="namespaceplayrho_1_1d2.html#a139df81757401545db36e6fc6f030d75">IsAwake</a>(Body()));</div>
+<div class="line">    EXPECT_FALSE(<a class="code" href="namespaceplayrho_1_1d2.html#a81c7a4d7696e9cb367f241afdbbe2727">IsSpeedable</a>(Body()));</div>
+<div class="line">    EXPECT_EQ(Body().<a name="a6"></a><a class="code" href="namespaceplayrho_1_1d2.html#a19b401f474facc647922e54a7aa60aa8">GetLinearDamping</a>(), <a name="a7"></a><a class="code" href="classplayrho_1_1d2_1_1Body.html#a25520091dfb6f5bf5b6bcb09817b3107">Body::DefaultLinearDamping</a>);</div>
+<div class="line">    EXPECT_EQ(Body().<a name="a8"></a><a class="code" href="namespaceplayrho_1_1d2.html#a7543270614333c0aa69df56877a3a1bd">GetAngularDamping</a>(), <a name="a9"></a><a class="code" href="classplayrho_1_1d2_1_1Body.html#aa12ed6cef17df4e573c151ae76539d00">Body::DefaultAngularDamping</a>);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line">TEST(Body, StaticTypeConstruction)</div>
 <div class="line">{</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> body = Body(BodyConf().Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Static</a>));</div>
+<div class="line">    EXPECT_FALSE(body.IsDestroyed());</div>
 <div class="line">    EXPECT_TRUE(body.IsImpenetrable());</div>
 <div class="line">    EXPECT_FALSE(body.IsSpeedable());</div>
 <div class="line">    EXPECT_FALSE(body.IsAccelerable());</div>
@@ -150,7 +155,8 @@ $(document).ready(function(){initNavTree('Body_8cpp-example.html',''); initResiz
 <div class="line"> </div>
 <div class="line">TEST(Body, KinematicTypeConstruction)</div>
 <div class="line">{</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> body = Body(BodyConf().Use(<a name="a9"></a><a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a40c78b58b86002ee38fad2d3c9dd787e">BodyType::Kinematic</a>));</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> body = Body(BodyConf().Use(<a name="a10"></a><a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a40c78b58b86002ee38fad2d3c9dd787e">BodyType::Kinematic</a>));</div>
+<div class="line">    EXPECT_FALSE(body.IsDestroyed());</div>
 <div class="line">    EXPECT_TRUE(body.IsImpenetrable());</div>
 <div class="line">    EXPECT_TRUE(body.IsSpeedable());</div>
 <div class="line">    EXPECT_FALSE(body.IsAccelerable());</div>
@@ -163,7 +169,8 @@ $(document).ready(function(){initNavTree('Body_8cpp-example.html',''); initResiz
 <div class="line"> </div>
 <div class="line">TEST(Body, DynamicTypeConstruction)</div>
 <div class="line">{</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> body = Body(BodyConf().Use(<a name="a10"></a><a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>));</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> body = Body(BodyConf().Use(<a name="a11"></a><a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>));</div>
+<div class="line">    EXPECT_FALSE(body.IsDestroyed());</div>
 <div class="line">    EXPECT_FALSE(body.IsImpenetrable());</div>
 <div class="line">    EXPECT_TRUE(body.IsSpeedable());</div>
 <div class="line">    EXPECT_TRUE(body.IsAccelerable());</div>
@@ -176,7 +183,7 @@ $(document).ready(function(){initNavTree('Body_8cpp-example.html',''); initResiz
 <div class="line"> </div>
 <div class="line">TEST(Body, UseFixedRotationConstruction)</div>
 <div class="line">{</div>
-<div class="line">    EXPECT_TRUE(Body(BodyConf().UseFixedRotation(<span class="keyword">true</span>)).<a name="a11"></a><a class="code" href="namespaceplayrho_1_1d2.html#a91940e85abf08596f625348315452e3d">IsFixedRotation</a>());</div>
+<div class="line">    EXPECT_TRUE(Body(BodyConf().UseFixedRotation(<span class="keyword">true</span>)).<a name="a12"></a><a class="code" href="namespaceplayrho_1_1d2.html#a91940e85abf08596f625348315452e3d">IsFixedRotation</a>());</div>
 <div class="line">    EXPECT_FALSE(Body(BodyConf().UseFixedRotation(<span class="keyword">false</span>)).<a class="code" href="namespaceplayrho_1_1d2.html#a91940e85abf08596f625348315452e3d">IsFixedRotation</a>());</div>
 <div class="line">}</div>
 <div class="line"> </div>
@@ -193,7 +200,7 @@ $(document).ready(function(){initNavTree('Body_8cpp-example.html',''); initResiz
 <div class="line"> </div>
 <div class="line">TEST(Body, UseAllowSleepConstruction)</div>
 <div class="line">{</div>
-<div class="line">    EXPECT_TRUE(Body(BodyConf().Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Static</a>).UseAllowSleep(<span class="keyword">true</span>)).<a name="a12"></a><a class="code" href="namespaceplayrho_1_1d2.html#a1cde4db895479e9ddd34c70425811699">IsSleepingAllowed</a>());</div>
+<div class="line">    EXPECT_TRUE(Body(BodyConf().Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Static</a>).UseAllowSleep(<span class="keyword">true</span>)).<a name="a13"></a><a class="code" href="namespaceplayrho_1_1d2.html#a1cde4db895479e9ddd34c70425811699">IsSleepingAllowed</a>());</div>
 <div class="line">    EXPECT_FALSE(Body(BodyConf().Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Static</a>).UseAllowSleep(<span class="keyword">false</span>)).<a class="code" href="namespaceplayrho_1_1d2.html#a1cde4db895479e9ddd34c70425811699">IsSleepingAllowed</a>());</div>
 <div class="line">    EXPECT_TRUE(Body(BodyConf().Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a40c78b58b86002ee38fad2d3c9dd787e">BodyType::Kinematic</a>).UseAllowSleep(<span class="keyword">true</span>)).<a class="code" href="namespaceplayrho_1_1d2.html#a1cde4db895479e9ddd34c70425811699">IsSleepingAllowed</a>());</div>
 <div class="line">    EXPECT_FALSE(Body(BodyConf().Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a40c78b58b86002ee38fad2d3c9dd787e">BodyType::Kinematic</a>).UseAllowSleep(<span class="keyword">false</span>)).<a class="code" href="namespaceplayrho_1_1d2.html#a1cde4db895479e9ddd34c70425811699">IsSleepingAllowed</a>());</div>
@@ -203,9 +210,9 @@ $(document).ready(function(){initNavTree('Body_8cpp-example.html',''); initResiz
 <div class="line"> </div>
 <div class="line">TEST(Body, ShapeOnConstruction)</div>
 <div class="line">{</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a name="a13"></a><a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(1u);</div>
-<div class="line">    ASSERT_TRUE(!<a name="a14"></a><a class="code" href="namespaceplayrho.html#a98ab78cb47da6f6d872d617cc66040a6">empty</a>(Body(BodyConf{}.Use(shapeId)).<a name="a15"></a><a class="code" href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">GetShapes</a>()));</div>
-<div class="line">    ASSERT_EQ(<a name="a16"></a><a class="code" href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">size</a>(Body(BodyConf{}.Use(shapeId)).<a class="code" href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">GetShapes</a>()), 1u);</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a name="a14"></a><a class="code" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a>(1u);</div>
+<div class="line">    ASSERT_TRUE(!<a name="a15"></a><a class="code" href="namespaceplayrho.html#a98ab78cb47da6f6d872d617cc66040a6">empty</a>(Body(BodyConf{}.Use(shapeId)).<a name="a16"></a><a class="code" href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">GetShapes</a>()));</div>
+<div class="line">    ASSERT_EQ(<a name="a17"></a><a class="code" href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">size</a>(Body(BodyConf{}.Use(shapeId)).<a class="code" href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">GetShapes</a>()), 1u);</div>
 <div class="line">    EXPECT_EQ(Body(BodyConf{}.Use(shapeId)).<a class="code" href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">GetShapes</a>()[0], shapeId);</div>
 <div class="line">}</div>
 <div class="line"> </div>
@@ -225,7 +232,7 @@ $(document).ready(function(){initNavTree('Body_8cpp-example.html',''); initResiz
 <div class="line"> </div>
 <div class="line">TEST(Body, InvMassOnConstruction)</div>
 <div class="line">{</div>
-<div class="line">    EXPECT_EQ(Body(BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>)).<a name="a17"></a><a class="code" href="namespaceplayrho_1_1d2.html#a7d74493ba9108b54a9900eb8319ede92">GetInvMass</a>(), <a name="a18"></a><a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(1) / 1_kg);</div>
+<div class="line">    EXPECT_EQ(Body(BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>)).<a name="a18"></a><a class="code" href="namespaceplayrho_1_1d2.html#a7d74493ba9108b54a9900eb8319ede92">GetInvMass</a>(), <a name="a19"></a><a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(1) / 1_kg);</div>
 <div class="line">    EXPECT_EQ(Body(BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a40c78b58b86002ee38fad2d3c9dd787e">BodyType::Kinematic</a>)).<a class="code" href="namespaceplayrho_1_1d2.html#a7d74493ba9108b54a9900eb8319ede92">GetInvMass</a>(), <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(0) / 1_kg);</div>
 <div class="line">    EXPECT_EQ(Body(BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Static</a>)).<a class="code" href="namespaceplayrho_1_1d2.html#a7d74493ba9108b54a9900eb8319ede92">GetInvMass</a>(), <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(0) / 1_kg);</div>
 <div class="line">}</div>
@@ -233,7 +240,7 @@ $(document).ready(function(){initNavTree('Body_8cpp-example.html',''); initResiz
 <div class="line">TEST(Body, TransformationOnConstruction)</div>
 <div class="line">{</div>
 <div class="line">    EXPECT_EQ(</div>
-<div class="line">        Body(BodyConf{}.UseLocation(<a name="a19"></a><a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{10_m, 12_m}).UseAngle(90_deg)).<a name="a20"></a><a class="code" href="namespaceplayrho_1_1d2.html#a798bf0d73d9cdbbaad16af6fd13cfed0">GetTransformation</a>(),</div>
+<div class="line">        Body(BodyConf{}.UseLocation(<a name="a20"></a><a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{10_m, 12_m}).UseAngle(90_deg)).<a name="a21"></a><a class="code" href="namespaceplayrho_1_1d2.html#a798bf0d73d9cdbbaad16af6fd13cfed0">GetTransformation</a>(),</div>
 <div class="line">        ::<a class="code" href="namespaceplayrho_1_1d2.html#a798bf0d73d9cdbbaad16af6fd13cfed0">playrho::d2::GetTransformation</a>(</div>
 <div class="line">            BodyConf{}.UseLocation(<a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{10_m, 12_m}).UseAngle(90_deg)));</div>
 <div class="line">    EXPECT_EQ(</div>
@@ -245,29 +252,49 @@ $(document).ready(function(){initNavTree('Body_8cpp-example.html',''); initResiz
 <div class="line">TEST(Body, VelocityOnConstruction)</div>
 <div class="line">{</div>
 <div class="line">    <span class="keyword">auto</span> body = Body{};</div>
-<div class="line">    body.SetVelocity(Velocity{<a name="a21"></a><a class="code" href="namespaceplayrho.html#a2faa31bff8794a0c4191d8b042f7deeb">LinearVelocity2</a>{1_mps, 2_mps}, 3_rpm});</div>
+<div class="line">    body.SetVelocity(Velocity{<a name="a22"></a><a class="code" href="namespaceplayrho.html#a2faa31bff8794a0c4191d8b042f7deeb">LinearVelocity2</a>{1_mps, 2_mps}, 3_rpm});</div>
 <div class="line">    EXPECT_EQ(</div>
-<div class="line">        Body(BodyConf{}.Use(Velocity{<a class="code" href="namespaceplayrho.html#a2faa31bff8794a0c4191d8b042f7deeb">LinearVelocity2</a>{1_mps, 2_mps}, 3_rpm})).<a name="a22"></a><a class="code" href="namespaceplayrho_1_1d2.html#a13ee26a73a0987dbb7c825539590719d">GetVelocity</a>().linear,</div>
-<div class="line">        body.GetVelocity().<a name="a23"></a><a class="code" href="structplayrho_1_1d2_1_1Velocity.html#afc8399d7200b4299a0e21cc184db0f0e">linear</a>);</div>
+<div class="line">        Body(BodyConf{}.Use(Velocity{<a class="code" href="namespaceplayrho.html#a2faa31bff8794a0c4191d8b042f7deeb">LinearVelocity2</a>{1_mps, 2_mps}, 3_rpm})).<a name="a23"></a><a class="code" href="namespaceplayrho_1_1d2.html#a13ee26a73a0987dbb7c825539590719d">GetVelocity</a>().linear,</div>
+<div class="line">        body.GetVelocity().<a name="a24"></a><a class="code" href="structplayrho_1_1d2_1_1Velocity.html#afc8399d7200b4299a0e21cc184db0f0e">linear</a>);</div>
 <div class="line">    EXPECT_EQ(</div>
 <div class="line">        Body(BodyConf{}.Use(Velocity{<a class="code" href="namespaceplayrho.html#a2faa31bff8794a0c4191d8b042f7deeb">LinearVelocity2</a>{1_mps, 2_mps}, 3_rpm})).<a class="code" href="namespaceplayrho_1_1d2.html#a13ee26a73a0987dbb7c825539590719d">GetVelocity</a>().angular,</div>
-<div class="line">        body.GetVelocity().<a name="a24"></a><a class="code" href="structplayrho_1_1d2_1_1Velocity.html#accc1d801801fb20a83fb5451ad8dd46d">angular</a>);</div>
+<div class="line">        body.GetVelocity().<a name="a25"></a><a class="code" href="structplayrho_1_1d2_1_1Velocity.html#accc1d801801fb20a83fb5451ad8dd46d">angular</a>);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line">TEST(Body, AccelerationOnConstruction)</div>
 <div class="line">{</div>
 <div class="line">    <span class="keyword">auto</span> body = Body{};</div>
-<div class="line">    body.SetAcceleration(<a name="a25"></a><a class="code" href="namespaceplayrho.html#a5822921028100052d4c6dfb43c7f6c4b">LinearAcceleration2</a>{2_mps2, 3_mps2}, <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(4) * <a name="a26"></a><a class="code" href="group__PhysicalUnits.html#ga0da7c45fe3ebc86d397e684154033742">RadianPerSquareSecond</a>);</div>
+<div class="line">    body.SetAcceleration(<a name="a26"></a><a class="code" href="namespaceplayrho.html#a5822921028100052d4c6dfb43c7f6c4b">LinearAcceleration2</a>{2_mps2, 3_mps2}, <a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(4) * <a name="a27"></a><a class="code" href="group__PhysicalUnits.html#ga0da7c45fe3ebc86d397e684154033742">RadianPerSquareSecond</a>);</div>
 <div class="line">    EXPECT_EQ(Body(BodyConf{}</div>
 <div class="line">                       .UseLinearAcceleration(<a class="code" href="namespaceplayrho.html#a5822921028100052d4c6dfb43c7f6c4b">LinearAcceleration2</a>{2_mps2, 3_mps2})</div>
 <div class="line">                       .UseAngularAcceleration(<a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(4) * <a class="code" href="group__PhysicalUnits.html#ga0da7c45fe3ebc86d397e684154033742">RadianPerSquareSecond</a>))</div>
-<div class="line">                  .<a name="a27"></a><a class="code" href="namespaceplayrho_1_1d2.html#aef76fc5d7813af886e28e8033e9d019d">GetLinearAcceleration</a>(),</div>
+<div class="line">                  .<a name="a28"></a><a class="code" href="namespaceplayrho_1_1d2.html#aef76fc5d7813af886e28e8033e9d019d">GetLinearAcceleration</a>(),</div>
 <div class="line">              body.GetLinearAcceleration());</div>
 <div class="line">    EXPECT_EQ(Body(BodyConf{}</div>
 <div class="line">                       .UseLinearAcceleration(<a class="code" href="namespaceplayrho.html#a5822921028100052d4c6dfb43c7f6c4b">LinearAcceleration2</a>{2_mps2, 3_mps2})</div>
 <div class="line">                       .UseAngularAcceleration(<a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(4) * <a class="code" href="group__PhysicalUnits.html#ga0da7c45fe3ebc86d397e684154033742">RadianPerSquareSecond</a>))</div>
-<div class="line">                  .<a name="a28"></a><a class="code" href="namespaceplayrho_1_1d2.html#a986b11edba421b23879fa363c557f1e5">GetAngularAcceleration</a>(),</div>
+<div class="line">                  .<a name="a29"></a><a class="code" href="namespaceplayrho_1_1d2.html#a986b11edba421b23879fa363c557f1e5">GetAngularAcceleration</a>(),</div>
 <div class="line">              body.GetAngularAcceleration());</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TEST(Body, SetUnsetDestroyed)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keyword">auto</span> body = Body();</div>
+<div class="line">    ASSERT_FALSE(body.IsDestroyed());</div>
+<div class="line">    body.SetDestroyed();</div>
+<div class="line">    EXPECT_TRUE(body.IsDestroyed());</div>
+<div class="line">    body.UnsetDestroyed();</div>
+<div class="line">    EXPECT_FALSE(body.IsDestroyed());</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TEST(Body, SetUnsetDestroyedFreeFuncs)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keyword">auto</span> body = Body();</div>
+<div class="line">    ASSERT_FALSE(<a class="code" href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">IsDestroyed</a>(body));</div>
+<div class="line">    <a name="a30"></a><a class="code" href="namespaceplayrho_1_1d2.html#a092c6266aabe6b53087ee0ce8558db4c">SetDestroyed</a>(body);</div>
+<div class="line">    EXPECT_TRUE(<a class="code" href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">IsDestroyed</a>(body));</div>
+<div class="line">    <a name="a31"></a><a class="code" href="namespaceplayrho_1_1d2.html#adbb7956508e7904ef6d439dde056e668">UnsetDestroyed</a>(body);</div>
+<div class="line">    EXPECT_FALSE(<a class="code" href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">IsDestroyed</a>(body));</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line">TEST(Body, EqualsOperator)</div>
@@ -278,6 +305,18 @@ $(document).ready(function(){initNavTree('Body_8cpp-example.html',''); initResiz
 <div class="line">        EXPECT_TRUE(body == Body());</div>
 <div class="line">    }</div>
 <div class="line">    {</div>
+<div class="line">        <span class="keyword">auto</span> bodyA = Body();</div>
+<div class="line">        <span class="keyword">auto</span> bodyB = Body();</div>
+<div class="line">        bodyB.SetDestroyed();</div>
+<div class="line">        EXPECT_FALSE(bodyA == bodyB);</div>
+<div class="line">        bodyA.SetDestroyed();</div>
+<div class="line">        EXPECT_TRUE(bodyA == bodyB);</div>
+<div class="line">        bodyB.UnsetDestroyed();</div>
+<div class="line">        EXPECT_FALSE(bodyA == bodyB);</div>
+<div class="line">        bodyA.UnsetDestroyed();</div>
+<div class="line">        EXPECT_TRUE(bodyA == bodyB);</div>
+<div class="line">    }</div>
+<div class="line">    {</div>
 <div class="line">        <span class="keyword">auto</span> body1 = Body{};</div>
 <div class="line">        body1.SetType(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>);</div>
 <div class="line">        <span class="keyword">auto</span> body2 = Body{};</div>
@@ -286,7 +325,7 @@ $(document).ready(function(){initNavTree('Body_8cpp-example.html',''); initResiz
 <div class="line">    }</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keyword">auto</span> body = Body{};</div>
-<div class="line">        <a name="a29"></a><a class="code" href="namespaceplayrho_1_1d2.html#afb699dee312da633427a8adc403cd88b">SetTransformation</a>(body, Transformation{<a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{2_m, 0_m}, UnitVec{}});</div>
+<div class="line">        <a name="a32"></a><a class="code" href="namespaceplayrho_1_1d2.html#afb699dee312da633427a8adc403cd88b">SetTransformation</a>(body, Transformation{<a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{2_m, 0_m}, UnitVec{}});</div>
 <div class="line">        EXPECT_FALSE(body == Body());</div>
 <div class="line">    }</div>
 <div class="line">    {</div>
@@ -315,22 +354,22 @@ $(document).ready(function(){initNavTree('Body_8cpp-example.html',''); initResiz
 <div class="line">    }</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keyword">auto</span> body = Body{};</div>
-<div class="line">        <a name="a30"></a><a class="code" href="namespaceplayrho_1_1d2.html#af26ae548ac842dfc9c1da2230b224870">SetMass</a>(body, 3.2_kg);</div>
+<div class="line">        <a name="a33"></a><a class="code" href="namespaceplayrho_1_1d2.html#af26ae548ac842dfc9c1da2230b224870">SetMass</a>(body, 3.2_kg);</div>
 <div class="line">        EXPECT_FALSE(body == Body());</div>
 <div class="line">    }</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keyword">auto</span> body = Body{};</div>
-<div class="line">        body.SetInvMassData(body.GetInvMass(), (<a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(2) * <a name="a31"></a><a class="code" href="group__PhysicalUnits.html#ga941b3913fd0dd86a33e695cd9b73318f">SquareRadian</a>) / (2_m2 * 1.2_kg));</div>
+<div class="line">        body.SetInvMassData(body.GetInvMass(), (<a class="code" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(2) * <a name="a34"></a><a class="code" href="group__PhysicalUnits.html#ga941b3913fd0dd86a33e695cd9b73318f">SquareRadian</a>) / (2_m2 * 1.2_kg));</div>
 <div class="line">        EXPECT_FALSE(body == Body());</div>
 <div class="line">    }</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keyword">auto</span> body = Body{};</div>
-<div class="line">        <a name="a32"></a><a class="code" href="namespaceplayrho_1_1d2.html#a9901b5b3ddb898a60f216007adace0de">SetLinearDamping</a>(body, 2_Hz);</div>
+<div class="line">        <a name="a35"></a><a class="code" href="namespaceplayrho_1_1d2.html#a9901b5b3ddb898a60f216007adace0de">SetLinearDamping</a>(body, 2_Hz);</div>
 <div class="line">        EXPECT_FALSE(body == Body());</div>
 <div class="line">    }</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keyword">auto</span> body = Body{};</div>
-<div class="line">        <a name="a33"></a><a class="code" href="namespaceplayrho_1_1d2.html#a344a9753e8cd6fb046a57e82d2206d60">SetAngularDamping</a>(body, 2_Hz);</div>
+<div class="line">        <a name="a36"></a><a class="code" href="namespaceplayrho_1_1d2.html#a344a9753e8cd6fb046a57e82d2206d60">SetAngularDamping</a>(body, 2_Hz);</div>
 <div class="line">        EXPECT_FALSE(body == Body());</div>
 <div class="line">    }</div>
 <div class="line">    {</div>
@@ -440,25 +479,28 @@ $(document).ready(function(){initNavTree('Body_8cpp-example.html',''); initResiz
 <div class="ttc" id="agroup__PhysicalUnits_html_ga0da7c45fe3ebc86d397e684154033742"><div class="ttname"><a href="group__PhysicalUnits.html#ga0da7c45fe3ebc86d397e684154033742">playrho::RadianPerSquareSecond</a></div><div class="ttdeci">constexpr auto RadianPerSquareSecond</div><div class="ttdoc">Radian per square second unit of angular acceleration.</div><div class="ttdef"><b>Definition:</b> Units.hpp:478</div></div>
 <div class="ttc" id="agroup__PhysicalUnits_html_ga941b3913fd0dd86a33e695cd9b73318f"><div class="ttname"><a href="group__PhysicalUnits.html#ga941b3913fd0dd86a33e695cd9b73318f">playrho::SquareRadian</a></div><div class="ttdeci">constexpr auto SquareRadian</div><div class="ttdoc">Square radian unit type.</div><div class="ttdef"><b>Definition:</b> Units.hpp:463</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html"><div class="ttname"><a href="namespaceplayrho_1_1d2.html">playrho::d2</a></div><div class="ttdef"><b>Definition:</b> AABB.hpp:48</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a092c6266aabe6b53087ee0ce8558db4c"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a092c6266aabe6b53087ee0ce8558db4c">playrho::d2::SetDestroyed</a></div><div class="ttdeci">constexpr void SetDestroyed(Body &amp;body) noexcept</div><div class="ttdoc">Sets the destroyed property of the given body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:743</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a0f207924edd9511c1d56c03933928fa8"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">playrho::d2::size</a></div><div class="ttdeci">std::size_t size(const DynamicTree &amp;tree) noexcept</div><div class="ttdoc">Gets the &quot;size&quot; of the given tree.</div><div class="ttdef"><b>Definition:</b> DynamicTree.hpp:724</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a139df81757401545db36e6fc6f030d75"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a139df81757401545db36e6fc6f030d75">playrho::d2::IsAwake</a></div><div class="ttdeci">bool IsAwake(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the awake/asleep state of this body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:805</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a13ee26a73a0987dbb7c825539590719d"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a13ee26a73a0987dbb7c825539590719d">playrho::d2::GetVelocity</a></div><div class="ttdeci">Velocity GetVelocity(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the velocity.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1213</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a19b401f474facc647922e54a7aa60aa8"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a19b401f474facc647922e54a7aa60aa8">playrho::d2::GetLinearDamping</a></div><div class="ttdeci">NonNegative&lt; Frequency &gt; GetLinearDamping(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the linear damping of the body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1043</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a1cde4db895479e9ddd34c70425811699"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a1cde4db895479e9ddd34c70425811699">playrho::d2::IsSleepingAllowed</a></div><div class="ttdeci">bool IsSleepingAllowed(const Body &amp;body) noexcept</div><div class="ttdoc">Gets whether or not this body allowed to sleep.</div><div class="ttdef"><b>Definition:</b> Body.hpp:754</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a344a9753e8cd6fb046a57e82d2206d60"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a344a9753e8cd6fb046a57e82d2206d60">playrho::d2::SetAngularDamping</a></div><div class="ttdeci">void SetAngularDamping(Body &amp;body, NonNegative&lt; Frequency &gt; value) noexcept</div><div class="ttdoc">Sets the angular damping of the body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1067</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a421d2110404320428fd02b2d0b70a062"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a421d2110404320428fd02b2d0b70a062">playrho::d2::GetType</a></div><div class="ttdeci">BodyType GetType(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the type of this body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:690</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a7543270614333c0aa69df56877a3a1bd"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a7543270614333c0aa69df56877a3a1bd">playrho::d2::GetAngularDamping</a></div><div class="ttdeci">NonNegative&lt; Frequency &gt; GetAngularDamping(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the angular damping of the body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1059</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a798bf0d73d9cdbbaad16af6fd13cfed0"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a798bf0d73d9cdbbaad16af6fd13cfed0">playrho::d2::GetTransformation</a></div><div class="ttdeci">const Transformation &amp; GetTransformation(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the body's transformation.</div><div class="ttdef"><b>Definition:</b> Body.hpp:935</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a7d74493ba9108b54a9900eb8319ede92"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a7d74493ba9108b54a9900eb8319ede92">playrho::d2::GetInvMass</a></div><div class="ttdeci">NonNegativeFF&lt; InvMass &gt; GetInvMass(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the inverse total mass of the body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1023</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a81c7a4d7696e9cb367f241afdbbe2727"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a81c7a4d7696e9cb367f241afdbbe2727">playrho::d2::IsSpeedable</a></div><div class="ttdeci">bool IsSpeedable(const Body &amp;body) noexcept</div><div class="ttdoc">Is &quot;speedable&quot;.</div><div class="ttdef"><b>Definition:</b> Body.hpp:707</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a91940e85abf08596f625348315452e3d"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a91940e85abf08596f625348315452e3d">playrho::d2::IsFixedRotation</a></div><div class="ttdeci">bool IsFixedRotation(const Body &amp;body) noexcept</div><div class="ttdoc">Does this body have fixed rotation?</div><div class="ttdef"><b>Definition:</b> Body.hpp:994</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a986b11edba421b23879fa363c557f1e5"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a986b11edba421b23879fa363c557f1e5">playrho::d2::GetAngularAcceleration</a></div><div class="ttdeci">AngularAcceleration GetAngularAcceleration(const Body &amp;body) noexcept</div><div class="ttdoc">Gets this body's angular acceleration.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1104</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a9901b5b3ddb898a60f216007adace0de"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a9901b5b3ddb898a60f216007adace0de">playrho::d2::SetLinearDamping</a></div><div class="ttdeci">void SetLinearDamping(Body &amp;body, NonNegative&lt; Frequency &gt; value) noexcept</div><div class="ttdoc">Sets the linear damping of the body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1051</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_ab930c47cedb9dc4fe0d6e178e7651d54"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ab930c47cedb9dc4fe0d6e178e7651d54">playrho::d2::IsEnabled</a></div><div class="ttdeci">bool IsEnabled(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the enabled/disabled state of the body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:771</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_aef76fc5d7813af886e28e8033e9d019d"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#aef76fc5d7813af886e28e8033e9d019d">playrho::d2::GetLinearAcceleration</a></div><div class="ttdeci">LinearAcceleration2 GetLinearAcceleration(const Body &amp;body) noexcept</div><div class="ttdoc">Gets this body's linear acceleration.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1096</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_af26ae548ac842dfc9c1da2230b224870"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#af26ae548ac842dfc9c1da2230b224870">playrho::d2::SetMass</a></div><div class="ttdeci">void SetMass(Body &amp;body, Mass mass)</div><div class="ttdoc">Sets the mass of the given body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1146</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a139df81757401545db36e6fc6f030d75"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a139df81757401545db36e6fc6f030d75">playrho::d2::IsAwake</a></div><div class="ttdeci">bool IsAwake(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the awake/asleep state of this body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:857</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a13ee26a73a0987dbb7c825539590719d"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a13ee26a73a0987dbb7c825539590719d">playrho::d2::GetVelocity</a></div><div class="ttdeci">Velocity GetVelocity(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the velocity.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1265</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a19b401f474facc647922e54a7aa60aa8"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a19b401f474facc647922e54a7aa60aa8">playrho::d2::GetLinearDamping</a></div><div class="ttdeci">NonNegative&lt; Frequency &gt; GetLinearDamping(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the linear damping of the body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1095</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a1cde4db895479e9ddd34c70425811699"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a1cde4db895479e9ddd34c70425811699">playrho::d2::IsSleepingAllowed</a></div><div class="ttdeci">bool IsSleepingAllowed(const Body &amp;body) noexcept</div><div class="ttdoc">Gets whether or not this body allowed to sleep.</div><div class="ttdef"><b>Definition:</b> Body.hpp:806</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a344a9753e8cd6fb046a57e82d2206d60"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a344a9753e8cd6fb046a57e82d2206d60">playrho::d2::SetAngularDamping</a></div><div class="ttdeci">void SetAngularDamping(Body &amp;body, NonNegative&lt; Frequency &gt; value) noexcept</div><div class="ttdoc">Sets the angular damping of the body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1119</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a421d2110404320428fd02b2d0b70a062"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a421d2110404320428fd02b2d0b70a062">playrho::d2::GetType</a></div><div class="ttdeci">BodyType GetType(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the type of this body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:721</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a7543270614333c0aa69df56877a3a1bd"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a7543270614333c0aa69df56877a3a1bd">playrho::d2::GetAngularDamping</a></div><div class="ttdeci">NonNegative&lt; Frequency &gt; GetAngularDamping(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the angular damping of the body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1111</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a798bf0d73d9cdbbaad16af6fd13cfed0"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a798bf0d73d9cdbbaad16af6fd13cfed0">playrho::d2::GetTransformation</a></div><div class="ttdeci">const Transformation &amp; GetTransformation(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the body's transformation.</div><div class="ttdef"><b>Definition:</b> Body.hpp:987</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a7d74493ba9108b54a9900eb8319ede92"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a7d74493ba9108b54a9900eb8319ede92">playrho::d2::GetInvMass</a></div><div class="ttdeci">NonNegativeFF&lt; InvMass &gt; GetInvMass(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the inverse total mass of the body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1075</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a81c7a4d7696e9cb367f241afdbbe2727"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a81c7a4d7696e9cb367f241afdbbe2727">playrho::d2::IsSpeedable</a></div><div class="ttdeci">bool IsSpeedable(const Body &amp;body) noexcept</div><div class="ttdoc">Is &quot;speedable&quot;.</div><div class="ttdef"><b>Definition:</b> Body.hpp:759</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a91940e85abf08596f625348315452e3d"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a91940e85abf08596f625348315452e3d">playrho::d2::IsFixedRotation</a></div><div class="ttdeci">bool IsFixedRotation(const Body &amp;body) noexcept</div><div class="ttdoc">Does this body have fixed rotation?</div><div class="ttdef"><b>Definition:</b> Body.hpp:1046</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a986b11edba421b23879fa363c557f1e5"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a986b11edba421b23879fa363c557f1e5">playrho::d2::GetAngularAcceleration</a></div><div class="ttdeci">AngularAcceleration GetAngularAcceleration(const Body &amp;body) noexcept</div><div class="ttdoc">Gets this body's angular acceleration.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1156</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a9901b5b3ddb898a60f216007adace0de"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a9901b5b3ddb898a60f216007adace0de">playrho::d2::SetLinearDamping</a></div><div class="ttdeci">void SetLinearDamping(Body &amp;body, NonNegative&lt; Frequency &gt; value) noexcept</div><div class="ttdoc">Sets the linear damping of the body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1103</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_ab930c47cedb9dc4fe0d6e178e7651d54"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ab930c47cedb9dc4fe0d6e178e7651d54">playrho::d2::IsEnabled</a></div><div class="ttdeci">bool IsEnabled(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the enabled/disabled state of the body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:823</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_abd65066c942d2435730852b4d3497957"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">playrho::d2::IsDestroyed</a></div><div class="ttdeci">auto IsDestroyed(const AabbTreeWorld &amp;world, BodyID id) -&gt; bool</div><div class="ttdoc">Gets whether the given identifier is to a body that's been destroyed.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorld.hpp:341</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_adbb7956508e7904ef6d439dde056e668"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#adbb7956508e7904ef6d439dde056e668">playrho::d2::UnsetDestroyed</a></div><div class="ttdeci">constexpr void UnsetDestroyed(Body &amp;body) noexcept</div><div class="ttdoc">Unsets the destroyed property of the given body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:750</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_aef76fc5d7813af886e28e8033e9d019d"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#aef76fc5d7813af886e28e8033e9d019d">playrho::d2::GetLinearAcceleration</a></div><div class="ttdeci">LinearAcceleration2 GetLinearAcceleration(const Body &amp;body) noexcept</div><div class="ttdoc">Gets this body's linear acceleration.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1148</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_af26ae548ac842dfc9c1da2230b224870"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#af26ae548ac842dfc9c1da2230b224870">playrho::d2::SetMass</a></div><div class="ttdeci">void SetMass(Body &amp;body, Mass mass)</div><div class="ttdoc">Sets the mass of the given body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1198</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_afb699dee312da633427a8adc403cd88b"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#afb699dee312da633427a8adc403cd88b">playrho::d2::SetTransformation</a></div><div class="ttdeci">void SetTransformation(Body &amp;body, const Transformation &amp;value) noexcept</div><div class="ttdoc">Sets the body's transformation.</div><div class="ttdef"><b>Definition:</b> Body.cpp:267</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_afe762c434a20aa39abb7f121b9d89c03"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">playrho::d2::GetShapes</a></div><div class="ttdeci">const std::vector&lt; ShapeID &gt; &amp; GetShapes(const AabbTreeWorld &amp;world, BodyID id)</div><div class="ttdoc">Disassociates all of the associated shape from the validly identified body.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorld.cpp:2916</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_afe762c434a20aa39abb7f121b9d89c03"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">playrho::d2::GetShapes</a></div><div class="ttdeci">const std::vector&lt; ShapeID &gt; &amp; GetShapes(const AabbTreeWorld &amp;world, BodyID id)</div><div class="ttdoc">Disassociates all of the associated shape from the validly identified body.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorld.cpp:2913</div></div>
 <div class="ttc" id="anamespaceplayrho_html"><div class="ttname"><a href="namespaceplayrho.html">playrho</a></div><div class="ttdef"><b>Definition:</b> ArrayList.hpp:43</div></div>
 <div class="ttc" id="anamespaceplayrho_html_a098b0ef528e3b728af8e3e17873963f7a40c78b58b86002ee38fad2d3c9dd787e"><div class="ttname"><a href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a40c78b58b86002ee38fad2d3c9dd787e">playrho::BodyType::Kinematic</a></div><div class="ttdeci">@ Kinematic</div></div>
 <div class="ttc" id="anamespaceplayrho_html_a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16"><div class="ttname"><a href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">playrho::BodyType::Static</a></div><div class="ttdeci">@ Static</div></div>
@@ -476,7 +518,7 @@ $(document).ready(function(){initNavTree('Body_8cpp-example.html',''); initResiz
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jan 1 2024 08:17:41 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Jan 8 2024 09:21:16 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

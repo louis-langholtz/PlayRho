@@ -126,7 +126,7 @@ Include dependency graph for Contact.hpp:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="Contact_8hpp__dep__incl.svg" width="326" height="410"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="Contact_8hpp__dep__incl.svg" width="483" height="410"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><table class="memberdecls">
@@ -195,6 +195,9 @@ constexpr ShapeID&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <tr class="memitem:a77e830664360ead07ab616d934ff2550"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a77e830664360ead07ab616d934ff2550">playrho::HasValidToi</a> (const Contact &amp;contact) noexcept</td></tr>
 <tr class="memdesc:a77e830664360ead07ab616d934ff2550"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether a TOI is set.  <a href="namespaceplayrho.html#a77e830664360ead07ab616d934ff2550">More...</a><br /></td></tr>
 <tr class="separator:a77e830664360ead07ab616d934ff2550"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b30dd1cfc8c1de0055cec1019245efc"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a3b30dd1cfc8c1de0055cec1019245efc">playrho::IsDestroyed</a> (const Contact &amp;c) noexcept -&gt; bool</td></tr>
+<tr class="memdesc:a3b30dd1cfc8c1de0055cec1019245efc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the given contact was destroyed.  <a href="namespaceplayrho.html#a3b30dd1cfc8c1de0055cec1019245efc">More...</a><br /></td></tr>
+<tr class="separator:a3b30dd1cfc8c1de0055cec1019245efc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf2071b64988e62193b4a2567bdde292"><td class="memItemLeft" align="right" valign="top"><a id="acf2071b64988e62193b4a2567bdde292"></a>
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#acf2071b64988e62193b4a2567bdde292">playrho::IsEnabled</a> (const Contact &amp;contact) noexcept</td></tr>
 <tr class="memdesc:acf2071b64988e62193b4a2567bdde292"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given contact is enabled or not. <br /></td></tr>
@@ -238,6 +241,9 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a5b92007cb872b11ba4ab93f5095e2e48">playrho::operator==</a> (const Contact &amp;lhs, const Contact &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:a5b92007cb872b11ba4ab93f5095e2e48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operator equals. <br /></td></tr>
 <tr class="separator:a5b92007cb872b11ba4ab93f5095e2e48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75150e768abdd3238b95cae5db9cf828"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a75150e768abdd3238b95cae5db9cf828">playrho::SetDestroyed</a> (Contact &amp;c) noexcept</td></tr>
+<tr class="memdesc:a75150e768abdd3238b95cae5db9cf828"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the destroyed property of the given contact.  <a href="namespaceplayrho.html#a75150e768abdd3238b95cae5db9cf828">More...</a><br /></td></tr>
+<tr class="separator:a75150e768abdd3238b95cae5db9cf828"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23ce44af5f5ba3deb7e1eafe1acf5198"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a23ce44af5f5ba3deb7e1eafe1acf5198">playrho::SetEnabled</a> (Contact &amp;contact) noexcept</td></tr>
 <tr class="memdesc:a23ce44af5f5ba3deb7e1eafe1acf5198"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables the contact.  <a href="namespaceplayrho.html#a23ce44af5f5ba3deb7e1eafe1acf5198">More...</a><br /></td></tr>
 <tr class="separator:a23ce44af5f5ba3deb7e1eafe1acf5198"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -268,6 +274,9 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <tr class="memitem:ad0be851da5e90da82388aaddaa1d8f6d"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ad0be851da5e90da82388aaddaa1d8f6d">playrho::UnflagForUpdating</a> (Contact &amp;contact) noexcept</td></tr>
 <tr class="memdesc:ad0be851da5e90da82388aaddaa1d8f6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unflags this contact for updating.  <a href="namespaceplayrho.html#ad0be851da5e90da82388aaddaa1d8f6d">More...</a><br /></td></tr>
 <tr class="separator:ad0be851da5e90da82388aaddaa1d8f6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a577e14e25b5dd103acfac3fcb408686b"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a577e14e25b5dd103acfac3fcb408686b">playrho::UnsetDestroyed</a> (Contact &amp;c) noexcept</td></tr>
+<tr class="memdesc:a577e14e25b5dd103acfac3fcb408686b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsets the destroyed property of the given contact.  <a href="namespaceplayrho.html#a577e14e25b5dd103acfac3fcb408686b">More...</a><br /></td></tr>
+<tr class="separator:a577e14e25b5dd103acfac3fcb408686b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e555a7d486dd3e1c1f7788c7d5edc0f"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a4e555a7d486dd3e1c1f7788c7d5edc0f">playrho::UnsetEnabled</a> (Contact &amp;contact) noexcept</td></tr>
 <tr class="memdesc:a4e555a7d486dd3e1c1f7788c7d5edc0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disables the identified contact.  <a href="namespaceplayrho.html#a4e555a7d486dd3e1c1f7788c7d5edc0f">More...</a><br /></td></tr>
 <tr class="separator:a4e555a7d486dd3e1c1f7788c7d5edc0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -286,7 +295,7 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="Contact_8hpp.html">Contact.hpp</a></li>
-    <li class="footer">Generated on Mon Jan 1 2024 08:17:41 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Mon Jan 8 2024 09:21:17 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

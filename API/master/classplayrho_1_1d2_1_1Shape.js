@@ -23,6 +23,7 @@ var classplayrho_1_1d2_1_1Shape =
     [ "GetType", "classplayrho_1_1d2_1_1Shape.html#aa0874edd64ea7ae7e3dc4a49f88cd15f", null ],
     [ "GetVertexCount", "classplayrho_1_1d2_1_1Shape.html#ad164dccb6b5dcf68fbcd9e7918f17eec", null ],
     [ "GetVertexRadius", "classplayrho_1_1d2_1_1Shape.html#a9d425ca5951dc633c1a63d5449091871", null ],
+    [ "IsDestroyed", "classplayrho_1_1d2_1_1Shape.html#a0e2a712f311b3876ec9e6c047f525b5c", null ],
     [ "IsSensor", "classplayrho_1_1d2_1_1Shape.html#a5e0a94bccb99d4a607fe4da03c5b19f1", null ],
     [ "operator!=", "classplayrho_1_1d2_1_1Shape.html#a8725ac7fabaac950fabc413b492da29e", null ],
     [ "operator==", "classplayrho_1_1d2_1_1Shape.html#aab78335ce5150860eca7156ef23cc6c4", null ],

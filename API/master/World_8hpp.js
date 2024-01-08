@@ -34,6 +34,8 @@ var World_8hpp =
     [ "GetTree", "World_8hpp.html#a0ae8db40f173456ea951e5a3425456aa", null ],
     [ "GetType", "World_8hpp.html#a702a1c0c8e91f2563cac325a9220334d", null ],
     [ "GetVertexRadiusInterval", "World_8hpp.html#af51eca4a1cbd1b9b0d6024218f52db0f", null ],
+    [ "IsDestroyed", "World_8hpp.html#aa32b51cef8b38b72661f7d05f92e2d84", null ],
+    [ "IsDestroyed", "World_8hpp.html#a4c4a3a9fe876fbd8dda344fdf81c9eb3", null ],
     [ "IsLocked", "World_8hpp.html#a33795886ef465e14b67184086d935eca", null ],
     [ "IsStepComplete", "World_8hpp.html#a6b939d4c41803a36fb4e725c725be6ec", null ],
     [ "operator!=", "World_8hpp.html#a47e9c59a6cb338c3efe5596b516acb6e", null ],
