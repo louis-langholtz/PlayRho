@@ -152,6 +152,7 @@ struct AabbTreeWorld::ContactUpdateConf
 namespace {
 
 constexpr auto idIsDestroyedMsg = "ID is destroyed";
+constexpr auto cannotBeEmptyMsg = "cannot be empty";
 constexpr auto worldIsLockedMsg = "world is locked";
 constexpr auto noSuchBodyMsg = "no such body";
 constexpr auto noSuchContactMsg = "no such contact";
@@ -1121,7 +1122,7 @@ void SetJoint(AabbTreeWorld& world, JointID id, Joint def)
         GetBody(world, bodyId);
     }
     if (!def.has_value()) {
-        throw WasDestroyed{def, "cannot be empty"};
+        throw WasDestroyed{def, cannotBeEmptyMsg};
     }
     world.Remove(id);
     joint = std::move(def);
@@ -1137,7 +1138,7 @@ JointID CreateJoint(AabbTreeWorld& world, Joint def)
         throw LengthError("CreateJoint: operation would exceed MaxJoints");
     }
     if (!def.has_value()) {
-        throw WasDestroyed{def, "cannot be empty"};
+        throw WasDestroyed{def, cannotBeEmptyMsg};
     }
     // Validate the referenced bodies...
     if (const auto bodyId = GetBodyA(def); bodyId != InvalidBodyID) {
@@ -1233,7 +1234,7 @@ ShapeCounter GetShapeRange(const AabbTreeWorld& world) noexcept
 ShapeID CreateShape(AabbTreeWorld& world, Shape def)
 {
     if (!def.has_value()) {
-        throw WasDestroyed{def, "cannot be empty"};
+        throw WasDestroyed{def, cannotBeEmptyMsg};
     }
     const auto vertexRadius = GetVertexRadiusInterval(world);
     const auto childCount = GetChildCount(def);
@@ -1290,7 +1291,7 @@ void SetShape(AabbTreeWorld& world, ShapeID id, Shape def) // NOLINT(readability
         throw WasDestroyed{id, idIsDestroyedMsg};
     }
     if (!def.has_value()) {
-        throw WasDestroyed{def, "cannot be empty"};
+        throw WasDestroyed{def, cannotBeEmptyMsg};
     }
     const auto geometryChanged = IsGeomChanged(shape, def);
     for (auto&& b: world.m_bodyBuffer) {
@@ -2832,10 +2833,10 @@ void SetContact(AabbTreeWorld& world, ContactID id, Contact value)
 
 void SetManifold(AabbTreeWorld& world, ContactID id, const Manifold& value)
 {
+    auto &manifold = At(world.m_manifoldBuffer, id, noSuchContactMsg);
     if (world.m_manifoldBuffer.FindFree(to_underlying(id))) {
         throw WasDestroyed{id, idIsDestroyedMsg};
     }
-    auto &manifold = At(world.m_manifoldBuffer, id, noSuchContactMsg);
     if (manifold.GetType() != value.GetType()) {
         throw InvalidArgument("cannot change manifold type");
     }

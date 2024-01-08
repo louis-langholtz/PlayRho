@@ -625,7 +625,7 @@ TEST(AabbTreeWorld, SetManifold)
     body0.Attach(s0);
     SetBody(world, bodyId0, body0);
     auto body1 = Body{BodyConf{}.Use(BodyType::Dynamic).Use(s0)};
-    (void) CreateBody(world, body1);
+    const auto bodyId1 = CreateBody(world, body1);
     auto step = StepConf{};
     step.deltaTime = {};
     Step(world, step);
@@ -640,11 +640,22 @@ TEST(AabbTreeWorld, SetManifold)
     ASSERT_EQ(imp1[0], 0_Ns);
     ASSERT_EQ(imp1[1], 0_Ns);
     auto newValue = Manifold();
-    EXPECT_THROW(SetManifold(world, ContactID(0), newValue), InvalidArgument);
+    EXPECT_THROW(SetManifold(world, ContactID(0), newValue), InvalidArgument); // can't change type
+    newValue = Manifold::GetForFaceA(UnitVec{}, Length2{});
+    ASSERT_EQ(unsigned(newValue.GetType()), unsigned(original.GetType()));
+    ASSERT_NE(unsigned(newValue.GetPointCount()), unsigned(original.GetPointCount()));
+    EXPECT_THROW(SetManifold(world, ContactID(0), newValue), InvalidArgument); // can't change point count
     newValue = original;
     EXPECT_NO_THROW(SetManifold(world, ContactID(0), newValue));
     newValue.SetContactImpulses(0, Momentum2{1_Ns, 2_Ns});
     EXPECT_NO_THROW(SetManifold(world, ContactID(0), newValue));
+
+    ASSERT_NO_THROW(SetLocation(body1, Length2{10_m, 10_m}));
+    ASSERT_NO_THROW(SetBody(world, bodyId1, body1));
+    ASSERT_NO_THROW(Step(world, StepConf{}));
+    ASSERT_EQ(GetContactRange(world), 1u);
+    ASSERT_TRUE(GetContacts(world).empty());
+    EXPECT_THROW(SetManifold(world, ContactID(0), newValue), WasDestroyed<ContactID>);
 }
 
 TEST(AabbTreeWorld, Proxies)
@@ -1016,18 +1027,42 @@ TEST(AabbTreeWorld, AttachDetach)
     ASSERT_EQ(GetShapes(world, BodyID{0}).size(), 0u);
 }
 
-TEST(AabbTreeWorld, SetShapeThrowsWithEmpty)
+TEST(AabbTreeWorld, SetShapeWithEmpty)
 {
     auto world = AabbTreeWorld{};
     ASSERT_EQ(GetShapeRange(world), 0u);
-    EXPECT_THROW(SetShape(world, ShapeID(0), Shape{}), OutOfRange<ShapeID>);
+    auto id = ShapeID{};
+    ASSERT_NO_THROW(id = CreateShape(world, Shape{EdgeShapeConf{}}));
+    ASSERT_NE(id, InvalidShapeID);
+    EXPECT_THROW(SetShape(world, id, Shape{}), WasDestroyed<Shape>);
+}
+
+TEST(AabbTreeWorld, SetShapeOfBodyAwakensBody)
+{
+    auto world = AabbTreeWorld{};
+    ASSERT_EQ(GetShapeRange(world), 0u);
+    auto id = ShapeID{};
+    ASSERT_NO_THROW(id = CreateShape(world, Shape{EdgeShapeConf{}}));
+    ASSERT_NE(id, InvalidShapeID);
+    auto bodyId = BodyID{};
+    const auto bodyConf = BodyConf{}.Use(BodyType::Dynamic).Use(id).UseAwake(false);
+    ASSERT_NO_THROW(bodyId = CreateBody(world, Body{bodyConf}));
+    ASSERT_FALSE(IsAwake(GetBody(world, bodyId)));
+
+    EXPECT_THROW(SetShape(world, id, Shape{}), WasDestroyed<Shape>);
+    EXPECT_FALSE(IsAwake(GetBody(world, bodyId)));
+    EXPECT_NO_THROW(SetShape(world, id, Shape{DiskShapeConf{}}));
+    EXPECT_TRUE(IsAwake(GetBody(world, bodyId)));
 }
 
 TEST(AabbTreeWorld, SetShapeThrowsWithOutOfRangeID)
 {
     auto world = AabbTreeWorld{};
     ASSERT_EQ(GetShapeRange(world), 0u);
-    EXPECT_THROW(SetShape(world, ShapeID(0), Shape{EdgeShapeConf{}}), OutOfRange<ShapeID>);
+    EXPECT_THROW(SetShape(world, ShapeID(0), Shape{}),
+                 OutOfRange<ShapeID>);
+    EXPECT_THROW(SetShape(world, ShapeID(0), Shape{EdgeShapeConf{}}),
+                 OutOfRange<ShapeID>);
 }
 
 TEST(AabbTreeWorld, CreateBodyThrowsWithOutOfRangeShapeID)
