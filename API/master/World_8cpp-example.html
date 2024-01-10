@@ -568,15 +568,15 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">{</div>
 <div class="line">    <span class="keyword">auto</span> world = World{};</div>
 <div class="line">    ASSERT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a171edc74ab3a2a7f742cb84fc9f5179b">GetBodyCount</a>(world), <a class="code" href="namespaceplayrho.html#a261b3039a098762462a17164898bb647">BodyCounter</a>(0));</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> body = <a class="code" href="namespaceplayrho_1_1d2.html#a352ef727632169c252a59d648808822f">CreateBody</a>(world, BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>));</div>
-<div class="line">    ASSERT_NE(body, <a class="code" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a>);</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> bodyId = <a class="code" href="namespaceplayrho_1_1d2.html#a352ef727632169c252a59d648808822f">CreateBody</a>(world, BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>));</div>
+<div class="line">    ASSERT_NE(bodyId, <a class="code" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a>);</div>
 <div class="line">    </div>
-<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a421d2110404320428fd02b2d0b70a062">GetType</a>(world, body), <a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>);</div>
-<div class="line">    EXPECT_EQ(<a name="a59"></a><a class="code" href="namespaceplayrho_1_1d2.html#a2ecdf15e8b628491940dd2e568afc427">GetAngle</a>(world, body), 0_deg);</div>
-<div class="line">    EXPECT_TRUE(<a name="a60"></a><a class="code" href="namespaceplayrho_1_1d2.html#a81c7a4d7696e9cb367f241afdbbe2727">IsSpeedable</a>(world, body));</div>
-<div class="line">    EXPECT_TRUE(<a name="a61"></a><a class="code" href="namespaceplayrho_1_1d2.html#ad1f05a05c6dd9eb2a1564cc10032f16c">IsAccelerable</a>(world, body));</div>
-<div class="line">    EXPECT_FALSE(<a name="a62"></a><a class="code" href="namespaceplayrho_1_1d2.html#a8c4170f49badbf1881f371cfb5f466a7">IsImpenetrable</a>(world, body));</div>
-<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">GetShapes</a>(world, body).<a class="code" href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">size</a>(), std::size_t{0});</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a421d2110404320428fd02b2d0b70a062">GetType</a>(world, bodyId), <a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>);</div>
+<div class="line">    EXPECT_EQ(<a name="a59"></a><a class="code" href="namespaceplayrho_1_1d2.html#a2ecdf15e8b628491940dd2e568afc427">GetAngle</a>(world, bodyId), 0_deg);</div>
+<div class="line">    EXPECT_TRUE(<a name="a60"></a><a class="code" href="namespaceplayrho_1_1d2.html#a81c7a4d7696e9cb367f241afdbbe2727">IsSpeedable</a>(world, bodyId));</div>
+<div class="line">    EXPECT_TRUE(<a name="a61"></a><a class="code" href="namespaceplayrho_1_1d2.html#ad1f05a05c6dd9eb2a1564cc10032f16c">IsAccelerable</a>(world, bodyId));</div>
+<div class="line">    EXPECT_FALSE(<a name="a62"></a><a class="code" href="namespaceplayrho_1_1d2.html#a8c4170f49badbf1881f371cfb5f466a7">IsImpenetrable</a>(world, bodyId));</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">GetShapes</a>(world, bodyId).<a class="code" href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">size</a>(), std::size_t{0});</div>
 <div class="line"> </div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a171edc74ab3a2a7f742cb84fc9f5179b">GetBodyCount</a>(world), <a class="code" href="namespaceplayrho.html#a261b3039a098762462a17164898bb647">BodyCounter</a>(1));</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> bodies1 = <a class="code" href="namespaceplayrho_1_1d2.html#a4c12d1fb1dda1f84e19d43cb9abfbdd6">GetBodies</a>(world);</div>
@@ -584,11 +584,11 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">    EXPECT_EQ(bodies1.size(), <a class="code" href="namespaceplayrho.html#a261b3039a098762462a17164898bb647">BodyCounter</a>(1));</div>
 <div class="line">    EXPECT_NE(bodies1.begin(), bodies1.end());</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> first = bodies1.begin();</div>
-<div class="line">    EXPECT_EQ(body, *first);</div>
+<div class="line">    EXPECT_EQ(bodyId, *first);</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#ae97a6f878c88ff1c0609582303945bd2">GetBodyRange</a>(world), 1u);</div>
 <div class="line"> </div>
-<div class="line">    <a name="a63"></a><a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, body);</div>
-<div class="line">    EXPECT_TRUE(<a name="a64"></a><a class="code" href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">IsDestroyed</a>(world, body));</div>
+<div class="line">    <a name="a63"></a><a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, bodyId);</div>
+<div class="line">    EXPECT_TRUE(<a name="a64"></a><a class="code" href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">IsDestroyed</a>(world, bodyId));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#ae97a6f878c88ff1c0609582303945bd2">GetBodyRange</a>(world), 1u);</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a171edc74ab3a2a7f742cb84fc9f5179b">GetBodyCount</a>(world), <a class="code" href="namespaceplayrho.html#a261b3039a098762462a17164898bb647">BodyCounter</a>(0));</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> bodies2 = <a class="code" href="namespaceplayrho_1_1d2.html#a4c12d1fb1dda1f84e19d43cb9abfbdd6">GetBodies</a>(world);</div>
@@ -652,22 +652,22 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a59900969bcf9d8419fa8f122118844aa">SetShapeDestructionListener</a>(world, std::ref(shapeListener));</div>
 <div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a54e878b6146c7c2bb50e7bd73a95c217">SetDetachListener</a>(world, std::ref(associationListener));</div>
 <div class="line"> </div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> body1 = <a class="code" href="namespaceplayrho_1_1d2.html#a352ef727632169c252a59d648808822f">CreateBody</a>(world, BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>));</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> bodyId1 = <a class="code" href="namespaceplayrho_1_1d2.html#a352ef727632169c252a59d648808822f">CreateBody</a>(world, BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a171edc74ab3a2a7f742cb84fc9f5179b">GetBodyCount</a>(world), <a class="code" href="namespaceplayrho.html#a261b3039a098762462a17164898bb647">BodyCounter</a>(1));</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> bodies1 = <a class="code" href="namespaceplayrho_1_1d2.html#a4c12d1fb1dda1f84e19d43cb9abfbdd6">GetBodies</a>(world);</div>
 <div class="line">    EXPECT_FALSE(bodies1.empty());</div>
 <div class="line">    EXPECT_EQ(bodies1.size(), <a class="code" href="namespaceplayrho.html#a261b3039a098762462a17164898bb647">BodyCounter</a>(1));</div>
 <div class="line">    EXPECT_NE(bodies1.begin(), bodies1.end());</div>
-<div class="line">    ASSERT_NE(body1, <a class="code" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a>);</div>
-<div class="line">    EXPECT_EQ(body1, *bodies1.begin());</div>
+<div class="line">    ASSERT_NE(bodyId1, <a class="code" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a>);</div>
+<div class="line">    EXPECT_EQ(bodyId1, *bodies1.begin());</div>
 <div class="line"> </div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> body2 = <a class="code" href="namespaceplayrho_1_1d2.html#a352ef727632169c252a59d648808822f">CreateBody</a>(world, BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>));</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> bodyId2 = <a class="code" href="namespaceplayrho_1_1d2.html#a352ef727632169c252a59d648808822f">CreateBody</a>(world, BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a171edc74ab3a2a7f742cb84fc9f5179b">GetBodyCount</a>(world), <a class="code" href="namespaceplayrho.html#a261b3039a098762462a17164898bb647">BodyCounter</a>(2));</div>
 <div class="line"> </div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId1 = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{1_m});</div>
-<div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a71e1178c67501e9f3cecd3bc40cc04a1">Attach</a>(world, body1, shapeId1);</div>
+<div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a71e1178c67501e9f3cecd3bc40cc04a1">Attach</a>(world, bodyId1, shapeId1);</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId2 = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{1_m});</div>
-<div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a71e1178c67501e9f3cecd3bc40cc04a1">Attach</a>(world, body2, shapeId2);</div>
+<div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a71e1178c67501e9f3cecd3bc40cc04a1">Attach</a>(world, bodyId2, shapeId2);</div>
 <div class="line"> </div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a7b9fd7f3e9d7a0f8ff73d5818cf0d1f4">GetContacts</a>(world).<a class="code" href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">size</a>(), <a class="code" href="namespaceplayrho.html#a5fd824505590e2ca67e0ef804ede6e34">ContactCounter</a>(0));</div>
 <div class="line">    </div>
@@ -680,8 +680,8 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">    EXPECT_FALSE(<a class="code" href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">IsDestroyed</a>(world, cid0));</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> contactBodyA = <a name="a67"></a><a class="code" href="namespaceplayrho_1_1d2.html#a700fc1baf4e0165912da41dae27dfc78">GetBodyA</a>(world, cid0);</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> contactBodyB = <a name="a68"></a><a class="code" href="namespaceplayrho_1_1d2.html#a37729f6494a066607deb10ea5a57c449">GetBodyB</a>(world, cid0);</div>
-<div class="line">    EXPECT_EQ(contactBodyA, body1);</div>
-<div class="line">    EXPECT_EQ(contactBodyB, body2);</div>
+<div class="line">    EXPECT_EQ(contactBodyA, bodyId1);</div>
+<div class="line">    EXPECT_EQ(contactBodyB, bodyId2);</div>
 <div class="line">    EXPECT_FALSE(<a name="a69"></a><a class="code" href="namespaceplayrho_1_1d2.html#a06bdf092ec9098a9c0277832ba0ddbc2">NeedsFiltering</a>(world, c0-&gt;second));</div>
 <div class="line">    <span class="keyword">auto</span> contact0 = <a name="a70"></a><a class="code" href="namespaceplayrho_1_1d2.html#ab77e4986f15b40a9e31429c3f6be3b27">GetContact</a>(world, cid0);</div>
 <div class="line">    <span class="keywordflow">if</span> (contact0.HasValidToi()) {</div>
@@ -695,13 +695,13 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">    contact0.SetToiCount(contact0.GetToiCount() + 1u);</div>
 <div class="line">    EXPECT_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a986132f0e473e4da3dfcd1b5ec1eb608">SetContact</a>(world, cid0, contact0), InvalidArgument);</div>
 <div class="line"> </div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> joint = <a class="code" href="namespaceplayrho_1_1d2.html#ad08795abe5eee5183189ff9901ab410a">CreateJoint</a>(world, Joint{DistanceJointConf{body1, body2}});</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> joint = <a class="code" href="namespaceplayrho_1_1d2.html#ad08795abe5eee5183189ff9901ab410a">CreateJoint</a>(world, Joint{DistanceJointConf{bodyId1, bodyId2}});</div>
 <div class="line">    ASSERT_NE(joint, <a class="code" href="namespaceplayrho.html#a67d10419efd6effdd41617992a76cbcd">InvalidJointID</a>);</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a7484e45a19ce38178de17a2f0bfdb519">GetJointCount</a>(world), <a class="code" href="namespaceplayrho.html#a3fff859979ed48e0d223d1584eb985c3">JointCounter</a>(1));</div>
 <div class="line">    EXPECT_TRUE(<a class="code" href="namespaceplayrho_1_1d2.html#a06bdf092ec9098a9c0277832ba0ddbc2">NeedsFiltering</a>(world, c0-&gt;second));</div>
 <div class="line"> </div>
-<div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, body1);</div>
-<div class="line">    EXPECT_TRUE(<a class="code" href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">IsDestroyed</a>(world, body1));</div>
+<div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, bodyId1);</div>
+<div class="line">    EXPECT_TRUE(<a class="code" href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">IsDestroyed</a>(world, bodyId1));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a171edc74ab3a2a7f742cb84fc9f5179b">GetBodyCount</a>(world), <a class="code" href="namespaceplayrho.html#a261b3039a098762462a17164898bb647">BodyCounter</a>(1));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a7484e45a19ce38178de17a2f0bfdb519">GetJointCount</a>(world), <a class="code" href="namespaceplayrho.html#a3fff859979ed48e0d223d1584eb985c3">JointCounter</a>(0));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a7b9fd7f3e9d7a0f8ff73d5818cf0d1f4">GetContacts</a>(world).<a class="code" href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">size</a>(), <a class="code" href="namespaceplayrho.html#a5fd824505590e2ca67e0ef804ede6e34">ContactCounter</a>(0));</div>
@@ -711,12 +711,12 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">    EXPECT_FALSE(bodies0.empty());</div>
 <div class="line">    EXPECT_EQ(bodies0.size(), <a class="code" href="namespaceplayrho.html#a261b3039a098762462a17164898bb647">BodyCounter</a>(1));</div>
 <div class="line">    EXPECT_NE(bodies0.begin(), bodies0.end());</div>
-<div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, body2);</div>
+<div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, bodyId2);</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a171edc74ab3a2a7f742cb84fc9f5179b">GetBodyCount</a>(world), <a class="code" href="namespaceplayrho.html#a261b3039a098762462a17164898bb647">BodyCounter</a>(0));</div>
 <div class="line">    </div>
 <div class="line">    ASSERT_EQ(associationListener.ids.size(), std::size_t(2));</div>
-<div class="line">    EXPECT_EQ(associationListener.ids.at(0), std::make_pair(body1, shapeId1));</div>
-<div class="line">    EXPECT_EQ(associationListener.ids.at(1), std::make_pair(body2, shapeId2));</div>
+<div class="line">    EXPECT_EQ(associationListener.ids.at(0), std::make_pair(bodyId1, shapeId1));</div>
+<div class="line">    EXPECT_EQ(associationListener.ids.at(1), std::make_pair(bodyId2, shapeId2));</div>
 <div class="line"> </div>
 <div class="line">    ASSERT_EQ(jointListener.ids.size(), std::size_t(1));</div>
 <div class="line">    EXPECT_EQ(jointListener.ids.at(0), joint);</div>
@@ -737,16 +737,16 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> l1 = <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{};</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> l2 = <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{};</div>
 <div class="line"> </div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> body1 = <a class="code" href="namespaceplayrho_1_1d2.html#a352ef727632169c252a59d648808822f">CreateBody</a>(world, BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>).UseLocation(l1));</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> body2 = <a class="code" href="namespaceplayrho_1_1d2.html#a352ef727632169c252a59d648808822f">CreateBody</a>(world, BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>).UseLocation(l2));</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> bodyId1 = <a class="code" href="namespaceplayrho_1_1d2.html#a352ef727632169c252a59d648808822f">CreateBody</a>(world, BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>).UseLocation(l1));</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> bodyId2 = <a class="code" href="namespaceplayrho_1_1d2.html#a352ef727632169c252a59d648808822f">CreateBody</a>(world, BodyConf{}.Use(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>).UseLocation(l2));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a171edc74ab3a2a7f742cb84fc9f5179b">GetBodyCount</a>(world), <a class="code" href="namespaceplayrho.html#a261b3039a098762462a17164898bb647">BodyCounter</a>(2));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a02732814de45bab260fe1a91e1fb05c0">GetBodiesForProxies</a>(world).<a class="code" href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">size</a>(), 0u);</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a906e04c52b759610040707fef9ad58b0">GetTree</a>(world).GetNodeCount(), 0u);</div>
 <div class="line"> </div>
-<div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a71e1178c67501e9f3cecd3bc40cc04a1">Attach</a>(world, body1, <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{1_m}.UseDensity(1_kgpm2)));</div>
-<div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a71e1178c67501e9f3cecd3bc40cc04a1">Attach</a>(world, body2, <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{1_m}.UseDensity(1_kgpm2)));</div>
-<div class="line">    ASSERT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">size</a>(<a class="code" href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">GetShapes</a>(world, body1)), 1u);</div>
-<div class="line">    ASSERT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">size</a>(<a class="code" href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">GetShapes</a>(world, body2)), 1u);</div>
+<div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a71e1178c67501e9f3cecd3bc40cc04a1">Attach</a>(world, bodyId1, <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{1_m}.UseDensity(1_kgpm2)));</div>
+<div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a71e1178c67501e9f3cecd3bc40cc04a1">Attach</a>(world, bodyId2, <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, DiskShapeConf{1_m}.UseDensity(1_kgpm2)));</div>
+<div class="line">    ASSERT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">size</a>(<a class="code" href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">GetShapes</a>(world, bodyId1)), 1u);</div>
+<div class="line">    ASSERT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">size</a>(<a class="code" href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">GetShapes</a>(world, bodyId2)), 1u);</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a02732814de45bab260fe1a91e1fb05c0">GetBodiesForProxies</a>(world).<a class="code" href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">size</a>(), 0u);</div>
 <div class="line">    EXPECT_EQ(<a name="a72"></a><a class="code" href="namespaceplayrho_1_1d2.html#a14fe4bcfe6eb37fc67d9f435879797c2">GetAssociationCount</a>(world), std::size_t(2));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a906e04c52b759610040707fef9ad58b0">GetTree</a>(world).GetNodeCount(), 0u);</div>
@@ -800,13 +800,13 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">        EXPECT_EQ(contacts.begin()-&gt;first.GetMax(),</div>
 <div class="line">                  <span class="keyword">static_cast&lt;</span>decltype(contacts.<a class="code" href="namespaceplayrho.html#a429625691c6a45944e55fe50f9a59199">begin</a>()-<span class="keyword">&gt;</span>first.GetMax())&gt;(1));</div>
 <div class="line">        EXPECT_EQ(<a name="a74"></a><a class="code" href="namespaceplayrho_1_1d2.html#a94a1320811507b6601ff8224e1469c23">GetShapeA</a>(world, contacts.begin()-&gt;second),</div>
-<div class="line">                  *<a class="code" href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">GetShapes</a>(world, body1).<a class="code" href="namespaceplayrho.html#a429625691c6a45944e55fe50f9a59199">begin</a>());</div>
+<div class="line">                  *<a class="code" href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">GetShapes</a>(world, bodyId1).<a class="code" href="namespaceplayrho.html#a429625691c6a45944e55fe50f9a59199">begin</a>());</div>
 <div class="line">        EXPECT_EQ(<a name="a75"></a><a class="code" href="namespaceplayrho_1_1d2.html#ae5df527a800c51b570b382547d06dda4">GetShapeB</a>(world, contacts.begin()-&gt;second),</div>
-<div class="line">                  *<a class="code" href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">GetShapes</a>(world, body2).<a class="code" href="namespaceplayrho.html#a429625691c6a45944e55fe50f9a59199">begin</a>());</div>
+<div class="line">                  *<a class="code" href="namespaceplayrho_1_1d2.html#afe762c434a20aa39abb7f121b9d89c03">GetShapes</a>(world, bodyId2).<a class="code" href="namespaceplayrho.html#a429625691c6a45944e55fe50f9a59199">begin</a>());</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, body1);</div>
-<div class="line">    EXPECT_TRUE(<a class="code" href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">IsDestroyed</a>(world, body1));</div>
+<div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, bodyId1);</div>
+<div class="line">    EXPECT_TRUE(<a class="code" href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">IsDestroyed</a>(world, bodyId1));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a171edc74ab3a2a7f742cb84fc9f5179b">GetBodyCount</a>(world), <a class="code" href="namespaceplayrho.html#a261b3039a098762462a17164898bb647">BodyCounter</a>(1));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a02732814de45bab260fe1a91e1fb05c0">GetBodiesForProxies</a>(world).<a class="code" href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">size</a>(), <span class="keyword">static_cast&lt;</span>decltype(<a class="code" href="namespaceplayrho_1_1d2.html#a02732814de45bab260fe1a91e1fb05c0">GetBodiesForProxies</a>(world).<a class="code" href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">size</a>())<span class="keyword">&gt;</span>(0));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a906e04c52b759610040707fef9ad58b0">GetTree</a>(world).GetNodeCount(), <span class="keyword">static_cast&lt;</span>decltype(<a class="code" href="namespaceplayrho_1_1d2.html#a906e04c52b759610040707fef9ad58b0">GetTree</a>(world).GetNodeCount())<span class="keyword">&gt;</span>(1));</div>
@@ -819,8 +819,8 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a0f207924edd9511c1d56c03933928fa8">size</a>(contacts), <a class="code" href="namespaceplayrho.html#a5fd824505590e2ca67e0ef804ede6e34">ContactCounter</a>(0));</div>
 <div class="line">    EXPECT_TRUE(<a class="code" href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">IsDestroyed</a>(world, <a name="a76"></a><a class="code" href="namespaceplayrho.html#abe7a48a3a0e57fa1a9dd9e396b6b24f7">ContactID</a>(0)));</div>
 <div class="line"> </div>
-<div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, body2);</div>
-<div class="line">    EXPECT_TRUE(<a class="code" href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">IsDestroyed</a>(world, body2));</div>
+<div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, bodyId2);</div>
+<div class="line">    EXPECT_TRUE(<a class="code" href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">IsDestroyed</a>(world, bodyId2));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a171edc74ab3a2a7f742cb84fc9f5179b">GetBodyCount</a>(world), <a class="code" href="namespaceplayrho.html#a261b3039a098762462a17164898bb647">BodyCounter</a>(0));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a906e04c52b759610040707fef9ad58b0">GetTree</a>(world).GetNodeCount(), <span class="keyword">static_cast&lt;</span>decltype(<a class="code" href="namespaceplayrho_1_1d2.html#a906e04c52b759610040707fef9ad58b0">GetTree</a>(world).GetNodeCount())<span class="keyword">&gt;</span>(0));</div>
 <div class="line">    contacts = <a class="code" href="namespaceplayrho_1_1d2.html#a7b9fd7f3e9d7a0f8ff73d5818cf0d1f4">GetContacts</a>(world);</div>
@@ -1279,6 +1279,7 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> shapeId = <a class="code" href="namespaceplayrho_1_1d2.html#a5063d35172bec75d73944cc1c52009ed">CreateShape</a>(world, EdgeShapeConf{});</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a61d7f65f10afdad013c11d866292ad12">GetShapeRange</a>(world), 1u);</div>
 <div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, shapeId));</div>
+<div class="line">    EXPECT_TRUE(<a class="code" href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">IsDestroyed</a>(world, shapeId));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a61d7f65f10afdad013c11d866292ad12">GetShapeRange</a>(world), 1u);</div>
 <div class="line">}</div>
 <div class="line"> </div>
@@ -1483,22 +1484,23 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">    </div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> anchorA = <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{+0.4_m, -1.2_m};</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> anchorB = <a class="code" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{-2.3_m, +0.7_m};</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> joint = <a class="code" href="namespaceplayrho_1_1d2.html#ad08795abe5eee5183189ff9901ab410a">CreateJoint</a>(world, Joint{<a name="a129"></a><a class="code" href="namespaceplayrho_1_1d2.html#ab375b99ce3245ea19955018f6d6a6532">GetDistanceJointConf</a>(world, body1, body2,</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> jointId = <a class="code" href="namespaceplayrho_1_1d2.html#ad08795abe5eee5183189ff9901ab410a">CreateJoint</a>(world, Joint{<a name="a129"></a><a class="code" href="namespaceplayrho_1_1d2.html#ab375b99ce3245ea19955018f6d6a6532">GetDistanceJointConf</a>(world, body1, body2,</div>
 <div class="line">                                                                    anchorA, anchorB)});</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a7484e45a19ce38178de17a2f0bfdb519">GetJointCount</a>(world), <a class="code" href="namespaceplayrho.html#a3fff859979ed48e0d223d1584eb985c3">JointCounter</a>(1));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#adfede6c462c7ebd2f3d75ec2878bbb73">GetJointRange</a>(world), 1u);</div>
 <div class="line">    EXPECT_FALSE(<a class="code" href="namespaceplayrho_1_1d2.html#abaaa273bdf2585781176266c6be413a6">GetJoints</a>(world).<a class="code" href="namespaceplayrho.html#a98ab78cb47da6f6d872d617cc66040a6">empty</a>());</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> joints = <a class="code" href="namespaceplayrho_1_1d2.html#abaaa273bdf2585781176266c6be413a6">GetJoints</a>(world);</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> first = *joints.begin();</div>
-<div class="line">    EXPECT_EQ(joint, first);</div>
-<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a421d2110404320428fd02b2d0b70a062">GetType</a>(world, joint), GetTypeID&lt;DistanceJointConf&gt;());</div>
-<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a700fc1baf4e0165912da41dae27dfc78">GetBodyA</a>(world, joint), body1);</div>
-<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a37729f6494a066607deb10ea5a57c449">GetBodyB</a>(world, joint), body2);</div>
-<div class="line">    EXPECT_EQ(<a name="a130"></a><a class="code" href="namespaceplayrho_1_1d2.html#ad53a1e79d6e949a948293990837ba83f">GetLocalAnchorA</a>(world, joint), anchorA);</div>
-<div class="line">    EXPECT_EQ(<a name="a131"></a><a class="code" href="namespaceplayrho_1_1d2.html#a27a8b26e2499ae4abb787373114ecd43">GetLocalAnchorB</a>(world, joint), anchorB);</div>
-<div class="line">    EXPECT_FALSE(<a name="a132"></a><a class="code" href="namespaceplayrho_1_1d2.html#ad982ed0433982ac18703569f42f4037c">GetCollideConnected</a>(world, joint));</div>
+<div class="line">    EXPECT_EQ(jointId, first);</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a421d2110404320428fd02b2d0b70a062">GetType</a>(world, jointId), GetTypeID&lt;DistanceJointConf&gt;());</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a700fc1baf4e0165912da41dae27dfc78">GetBodyA</a>(world, jointId), body1);</div>
+<div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a37729f6494a066607deb10ea5a57c449">GetBodyB</a>(world, jointId), body2);</div>
+<div class="line">    EXPECT_EQ(<a name="a130"></a><a class="code" href="namespaceplayrho_1_1d2.html#ad53a1e79d6e949a948293990837ba83f">GetLocalAnchorA</a>(world, jointId), anchorA);</div>
+<div class="line">    EXPECT_EQ(<a name="a131"></a><a class="code" href="namespaceplayrho_1_1d2.html#a27a8b26e2499ae4abb787373114ecd43">GetLocalAnchorB</a>(world, jointId), anchorB);</div>
+<div class="line">    EXPECT_FALSE(<a name="a132"></a><a class="code" href="namespaceplayrho_1_1d2.html#ad982ed0433982ac18703569f42f4037c">GetCollideConnected</a>(world, jointId));</div>
 <div class="line"> </div>
-<div class="line">    <a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, joint);</div>
+<div class="line">    EXPECT_NO_THROW(<a class="code" href="namespaceplayrho_1_1d2.html#a7df9661feac023ea0e4cbe6369943352">Destroy</a>(world, jointId));</div>
+<div class="line">    EXPECT_TRUE(<a class="code" href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">IsDestroyed</a>(world, jointId));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#a7484e45a19ce38178de17a2f0bfdb519">GetJointCount</a>(world), <a class="code" href="namespaceplayrho.html#a3fff859979ed48e0d223d1584eb985c3">JointCounter</a>(0));</div>
 <div class="line">    EXPECT_EQ(<a class="code" href="namespaceplayrho_1_1d2.html#adfede6c462c7ebd2f3d75ec2878bbb73">GetJointRange</a>(world), 1u);</div>
 <div class="line">    EXPECT_TRUE(<a class="code" href="namespaceplayrho_1_1d2.html#abaaa273bdf2585781176266c6be413a6">GetJoints</a>(world).<a class="code" href="namespaceplayrho.html#a98ab78cb47da6f6d872d617cc66040a6">empty</a>());</div>
@@ -4530,7 +4532,7 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_abd65066c942d2435730852b4d3497957"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#abd65066c942d2435730852b4d3497957">playrho::d2::IsDestroyed</a></div><div class="ttdeci">auto IsDestroyed(const AabbTreeWorld &amp;world, BodyID id) -&gt; bool</div><div class="ttdoc">Gets whether the given identifier is to a body that's been destroyed.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorld.hpp:341</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_abfb3031d97cbdac7eb72cccf26e3c694"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#abfb3031d97cbdac7eb72cccf26e3c694">playrho::d2::AABB</a></div><div class="ttdeci">::playrho::detail::AABB&lt; 2 &gt; AABB</div><div class="ttdoc">2-Dimensional Axis Aligned Bounding Box.</div><div class="ttdef"><b>Definition:</b> AABB.hpp:63</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_ac7a5e9073194a89035ad2f060435542b"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ac7a5e9073194a89035ad2f060435542b">playrho::d2::ApplyForceToCenter</a></div><div class="ttdeci">void ApplyForceToCenter(World &amp;world, BodyID id, const Force2 &amp;force)</div><div class="ttdoc">Applies a force to the center of mass of the given body.</div><div class="ttdef"><b>Definition:</b> WorldBody.hpp:665</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_ac7b6c00fbd4fc40a4957bd082c9437b4"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ac7b6c00fbd4fc40a4957bd082c9437b4">playrho::d2::GetContactCount</a></div><div class="ttdeci">ContactCounter GetContactCount(const World &amp;world) noexcept</div><div class="ttdoc">Gets the count of contacts in the given world.</div><div class="ttdef"><b>Definition:</b> World.hpp:599</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_ac7b6c00fbd4fc40a4957bd082c9437b4"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ac7b6c00fbd4fc40a4957bd082c9437b4">playrho::d2::GetContactCount</a></div><div class="ttdeci">ContactCounter GetContactCount(const World &amp;world) noexcept</div><div class="ttdoc">Gets the count of contacts in the given world.</div><div class="ttdef"><b>Definition:</b> World.hpp:613</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_acafaac4ef15f7416f464dff9b19780fa"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#acafaac4ef15f7416f464dff9b19780fa">playrho::d2::GetAcceleration</a></div><div class="ttdeci">Acceleration GetAcceleration(const Body &amp;body) noexcept</div><div class="ttdoc">Gets the given body's acceleration.</div><div class="ttdef"><b>Definition:</b> Body.hpp:1128</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_ad08795abe5eee5183189ff9901ab410a"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ad08795abe5eee5183189ff9901ab410a">playrho::d2::CreateJoint</a></div><div class="ttdeci">JointID CreateJoint(AabbTreeWorld &amp;world, Joint def)</div><div class="ttdoc">Creates a joint to constrain one or more bodies.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorld.cpp:1132</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_ad1f05a05c6dd9eb2a1564cc10032f16c"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ad1f05a05c6dd9eb2a1564cc10032f16c">playrho::d2::IsAccelerable</a></div><div class="ttdeci">bool IsAccelerable(const Body &amp;body) noexcept</div><div class="ttdoc">Is &quot;accelerable&quot;.</div><div class="ttdef"><b>Definition:</b> Body.hpp:770</div></div>
@@ -4609,7 +4611,7 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jan 8 2024 09:21:16 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Jan 10 2024 04:34:58 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

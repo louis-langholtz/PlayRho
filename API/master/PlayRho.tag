@@ -8021,6 +8021,20 @@
       <arglist>(const World &amp;world, ContactID id) -&gt; bool</arglist>
     </member>
     <member kind="function">
+      <type>auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a68836dc4d8c5ec8e914a41e26bba14be</anchor>
+      <arglist>(const World &amp;world, JointID id) -&gt; bool</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a734be00ccf63562fa675b103c613c610</anchor>
+      <arglist>(const World &amp;world, ShapeID id) -&gt; bool</arglist>
+    </member>
+    <member kind="function">
       <type>bool</type>
       <name>IsLocked</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -49703,6 +49717,20 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a4c4a3a9fe876fbd8dda344fdf81c9eb3</anchor>
       <arglist>(const World &amp;world, ContactID id) -&gt; bool</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a68836dc4d8c5ec8e914a41e26bba14be</anchor>
+      <arglist>(const World &amp;world, JointID id) -&gt; bool</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>IsDestroyed</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a734be00ccf63562fa675b103c613c610</anchor>
+      <arglist>(const World &amp;world, ShapeID id) -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>bool</type>

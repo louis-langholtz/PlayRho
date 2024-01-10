@@ -631,6 +631,8 @@ var namespaceplayrho_1_1d2 =
     [ "IsDestroyed", "namespaceplayrho_1_1d2.html#a0e2a712f311b3876ec9e6c047f525b5c", null ],
     [ "IsDestroyed", "namespaceplayrho_1_1d2.html#aa32b51cef8b38b72661f7d05f92e2d84", null ],
     [ "IsDestroyed", "namespaceplayrho_1_1d2.html#a4c4a3a9fe876fbd8dda344fdf81c9eb3", null ],
+    [ "IsDestroyed", "namespaceplayrho_1_1d2.html#a68836dc4d8c5ec8e914a41e26bba14be", null ],
+    [ "IsDestroyed", "namespaceplayrho_1_1d2.html#a734be00ccf63562fa675b103c613c610", null ],
     [ "IsEnabled", "namespaceplayrho_1_1d2.html#ab930c47cedb9dc4fe0d6e178e7651d54", null ],
     [ "IsEnabled", "namespaceplayrho_1_1d2.html#af9d96732535ab2bf54f893a5f303aa1f", null ],
     [ "IsEnabled", "namespaceplayrho_1_1d2.html#a17fc8450e2c49bba0f07be62c7cefbc0", null ],
