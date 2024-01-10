@@ -468,15 +468,15 @@ TEST(World, CreateDestroyEmptyDynamicBody)
 {
     auto world = World{};
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
-    const auto body = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
-    ASSERT_NE(body, InvalidBodyID);
+    const auto bodyId = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
+    ASSERT_NE(bodyId, InvalidBodyID);
     
-    EXPECT_EQ(GetType(world, body), BodyType::Dynamic);
-    EXPECT_EQ(GetAngle(world, body), 0_deg);
-    EXPECT_TRUE(IsSpeedable(world, body));
-    EXPECT_TRUE(IsAccelerable(world, body));
-    EXPECT_FALSE(IsImpenetrable(world, body));
-    EXPECT_EQ(GetShapes(world, body).size(), std::size_t{0});
+    EXPECT_EQ(GetType(world, bodyId), BodyType::Dynamic);
+    EXPECT_EQ(GetAngle(world, bodyId), 0_deg);
+    EXPECT_TRUE(IsSpeedable(world, bodyId));
+    EXPECT_TRUE(IsAccelerable(world, bodyId));
+    EXPECT_FALSE(IsImpenetrable(world, bodyId));
+    EXPECT_EQ(GetShapes(world, bodyId).size(), std::size_t{0});
 
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
     const auto bodies1 = GetBodies(world);
@@ -484,11 +484,11 @@ TEST(World, CreateDestroyEmptyDynamicBody)
     EXPECT_EQ(bodies1.size(), BodyCounter(1));
     EXPECT_NE(bodies1.begin(), bodies1.end());
     const auto first = bodies1.begin();
-    EXPECT_EQ(body, *first);
+    EXPECT_EQ(bodyId, *first);
     EXPECT_EQ(GetBodyRange(world), 1u);
 
-    Destroy(world, body);
-    EXPECT_TRUE(IsDestroyed(world, body));
+    Destroy(world, bodyId);
+    EXPECT_TRUE(IsDestroyed(world, bodyId));
     EXPECT_EQ(GetBodyRange(world), 1u);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
     const auto bodies2 = GetBodies(world);
@@ -552,22 +552,22 @@ TEST(World, CreateDestroyJoinedBodies)
     SetShapeDestructionListener(world, std::ref(shapeListener));
     SetDetachListener(world, std::ref(associationListener));
 
-    const auto body1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
+    const auto bodyId1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
     const auto bodies1 = GetBodies(world);
     EXPECT_FALSE(bodies1.empty());
     EXPECT_EQ(bodies1.size(), BodyCounter(1));
     EXPECT_NE(bodies1.begin(), bodies1.end());
-    ASSERT_NE(body1, InvalidBodyID);
-    EXPECT_EQ(body1, *bodies1.begin());
+    ASSERT_NE(bodyId1, InvalidBodyID);
+    EXPECT_EQ(bodyId1, *bodies1.begin());
 
-    const auto body2 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
+    const auto bodyId2 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
 
     const auto shapeId1 = CreateShape(world, DiskShapeConf{1_m});
-    Attach(world, body1, shapeId1);
+    Attach(world, bodyId1, shapeId1);
     const auto shapeId2 = CreateShape(world, DiskShapeConf{1_m});
-    Attach(world, body2, shapeId2);
+    Attach(world, bodyId2, shapeId2);
 
     EXPECT_EQ(GetContacts(world).size(), ContactCounter(0));
     
@@ -580,8 +580,8 @@ TEST(World, CreateDestroyJoinedBodies)
     EXPECT_FALSE(IsDestroyed(world, cid0));
     const auto contactBodyA = GetBodyA(world, cid0);
     const auto contactBodyB = GetBodyB(world, cid0);
-    EXPECT_EQ(contactBodyA, body1);
-    EXPECT_EQ(contactBodyB, body2);
+    EXPECT_EQ(contactBodyA, bodyId1);
+    EXPECT_EQ(contactBodyB, bodyId2);
     EXPECT_FALSE(NeedsFiltering(world, c0->second));
     auto contact0 = GetContact(world, cid0);
     if (contact0.HasValidToi()) {
@@ -595,13 +595,13 @@ TEST(World, CreateDestroyJoinedBodies)
     contact0.SetToiCount(contact0.GetToiCount() + 1u);
     EXPECT_THROW(SetContact(world, cid0, contact0), InvalidArgument);
 
-    const auto joint = CreateJoint(world, Joint{DistanceJointConf{body1, body2}});
+    const auto joint = CreateJoint(world, Joint{DistanceJointConf{bodyId1, bodyId2}});
     ASSERT_NE(joint, InvalidJointID);
     EXPECT_EQ(GetJointCount(world), JointCounter(1));
     EXPECT_TRUE(NeedsFiltering(world, c0->second));
 
-    Destroy(world, body1);
-    EXPECT_TRUE(IsDestroyed(world, body1));
+    Destroy(world, bodyId1);
+    EXPECT_TRUE(IsDestroyed(world, bodyId1));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
     EXPECT_EQ(GetJointCount(world), JointCounter(0));
     EXPECT_EQ(GetContacts(world).size(), ContactCounter(0));
@@ -611,12 +611,12 @@ TEST(World, CreateDestroyJoinedBodies)
     EXPECT_FALSE(bodies0.empty());
     EXPECT_EQ(bodies0.size(), BodyCounter(1));
     EXPECT_NE(bodies0.begin(), bodies0.end());
-    Destroy(world, body2);
+    Destroy(world, bodyId2);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
     
     ASSERT_EQ(associationListener.ids.size(), std::size_t(2));
-    EXPECT_EQ(associationListener.ids.at(0), std::make_pair(body1, shapeId1));
-    EXPECT_EQ(associationListener.ids.at(1), std::make_pair(body2, shapeId2));
+    EXPECT_EQ(associationListener.ids.at(0), std::make_pair(bodyId1, shapeId1));
+    EXPECT_EQ(associationListener.ids.at(1), std::make_pair(bodyId2, shapeId2));
 
     ASSERT_EQ(jointListener.ids.size(), std::size_t(1));
     EXPECT_EQ(jointListener.ids.at(0), joint);
@@ -637,16 +637,16 @@ TEST(World, CreateDestroyContactingBodies)
     const auto l1 = Length2{};
     const auto l2 = Length2{};
 
-    const auto body1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(l1));
-    const auto body2 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(l2));
+    const auto bodyId1 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(l1));
+    const auto bodyId2 = CreateBody(world, BodyConf{}.Use(BodyType::Dynamic).UseLocation(l2));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
     EXPECT_EQ(GetTree(world).GetNodeCount(), 0u);
 
-    Attach(world, body1, CreateShape(world, DiskShapeConf{1_m}.UseDensity(1_kgpm2)));
-    Attach(world, body2, CreateShape(world, DiskShapeConf{1_m}.UseDensity(1_kgpm2)));
-    ASSERT_EQ(size(GetShapes(world, body1)), 1u);
-    ASSERT_EQ(size(GetShapes(world, body2)), 1u);
+    Attach(world, bodyId1, CreateShape(world, DiskShapeConf{1_m}.UseDensity(1_kgpm2)));
+    Attach(world, bodyId2, CreateShape(world, DiskShapeConf{1_m}.UseDensity(1_kgpm2)));
+    ASSERT_EQ(size(GetShapes(world, bodyId1)), 1u);
+    ASSERT_EQ(size(GetShapes(world, bodyId2)), 1u);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
     EXPECT_EQ(GetAssociationCount(world), std::size_t(2));
     EXPECT_EQ(GetTree(world).GetNodeCount(), 0u);
@@ -700,13 +700,13 @@ TEST(World, CreateDestroyContactingBodies)
         EXPECT_EQ(contacts.begin()->first.GetMax(),
                   static_cast<decltype(contacts.begin()->first.GetMax())>(1));
         EXPECT_EQ(GetShapeA(world, contacts.begin()->second),
-                  *GetShapes(world, body1).begin());
+                  *GetShapes(world, bodyId1).begin());
         EXPECT_EQ(GetShapeB(world, contacts.begin()->second),
-                  *GetShapes(world, body2).begin());
+                  *GetShapes(world, bodyId2).begin());
     }
 
-    Destroy(world, body1);
-    EXPECT_TRUE(IsDestroyed(world, body1));
+    Destroy(world, bodyId1);
+    EXPECT_TRUE(IsDestroyed(world, bodyId1));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
     EXPECT_EQ(GetBodiesForProxies(world).size(), static_cast<decltype(GetBodiesForProxies(world).size())>(0));
     EXPECT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(1));
@@ -719,8 +719,8 @@ TEST(World, CreateDestroyContactingBodies)
     EXPECT_EQ(size(contacts), ContactCounter(0));
     EXPECT_TRUE(IsDestroyed(world, ContactID(0)));
 
-    Destroy(world, body2);
-    EXPECT_TRUE(IsDestroyed(world, body2));
+    Destroy(world, bodyId2);
+    EXPECT_TRUE(IsDestroyed(world, bodyId2));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
     EXPECT_EQ(GetTree(world).GetNodeCount(), static_cast<decltype(GetTree(world).GetNodeCount())>(0));
     contacts = GetContacts(world);
@@ -1179,6 +1179,7 @@ TEST(World, CreateAndDestroyShape)
     const auto shapeId = CreateShape(world, EdgeShapeConf{});
     EXPECT_EQ(GetShapeRange(world), 1u);
     EXPECT_NO_THROW(Destroy(world, shapeId));
+    EXPECT_TRUE(IsDestroyed(world, shapeId));
     EXPECT_EQ(GetShapeRange(world), 1u);
 }
 
@@ -1383,22 +1384,23 @@ TEST(World, CreateAndDestroyJoint)
     
     const auto anchorA = Length2{+0.4_m, -1.2_m};
     const auto anchorB = Length2{-2.3_m, +0.7_m};
-    const auto joint = CreateJoint(world, Joint{GetDistanceJointConf(world, body1, body2,
+    const auto jointId = CreateJoint(world, Joint{GetDistanceJointConf(world, body1, body2,
                                                                     anchorA, anchorB)});
     EXPECT_EQ(GetJointCount(world), JointCounter(1));
     EXPECT_EQ(GetJointRange(world), 1u);
     EXPECT_FALSE(GetJoints(world).empty());
     const auto joints = GetJoints(world);
     const auto first = *joints.begin();
-    EXPECT_EQ(joint, first);
-    EXPECT_EQ(GetType(world, joint), GetTypeID<DistanceJointConf>());
-    EXPECT_EQ(GetBodyA(world, joint), body1);
-    EXPECT_EQ(GetBodyB(world, joint), body2);
-    EXPECT_EQ(GetLocalAnchorA(world, joint), anchorA);
-    EXPECT_EQ(GetLocalAnchorB(world, joint), anchorB);
-    EXPECT_FALSE(GetCollideConnected(world, joint));
+    EXPECT_EQ(jointId, first);
+    EXPECT_EQ(GetType(world, jointId), GetTypeID<DistanceJointConf>());
+    EXPECT_EQ(GetBodyA(world, jointId), body1);
+    EXPECT_EQ(GetBodyB(world, jointId), body2);
+    EXPECT_EQ(GetLocalAnchorA(world, jointId), anchorA);
+    EXPECT_EQ(GetLocalAnchorB(world, jointId), anchorB);
+    EXPECT_FALSE(GetCollideConnected(world, jointId));
 
-    Destroy(world, joint);
+    EXPECT_NO_THROW(Destroy(world, jointId));
+    EXPECT_TRUE(IsDestroyed(world, jointId));
     EXPECT_EQ(GetJointCount(world), JointCounter(0));
     EXPECT_EQ(GetJointRange(world), 1u);
     EXPECT_TRUE(GetJoints(world).empty());

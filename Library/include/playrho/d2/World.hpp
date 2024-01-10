@@ -491,6 +491,13 @@ void SetJoint(World& world, JointID id, const T& value)
     return SetJoint(world, id, Joint{value});
 }
 
+/// @brief Gets whether the given identifier is to a joint that's been destroyed.
+/// @note Complexity of this function is O(1).
+inline auto IsDestroyed(const World& world, JointID id) -> bool
+{
+    return IsDestroyed(GetJoint(world, id));
+}
+
 /// @brief Gets the extent of the currently valid shape range.
 /// @note This is one higher than the maxium <code>ShapeID</code> that is in range
 ///   for shape related functions.
@@ -537,6 +544,13 @@ Shape GetShape(const World& world, ShapeID id);
 /// @throws std::out_of_range If given an out of range shape identifier.
 /// @see CreateShape, GetShapeRange.
 void SetShape(World& world, ShapeID, const Shape& def);
+
+/// @brief Gets whether the given identifier is to a shape that's been destroyed.
+/// @note Complexity of this function is O(1).
+inline auto IsDestroyed(const World& world, ShapeID id) -> bool
+{
+    return IsDestroyed(GetShape(world, id));
+}
 
 /// @brief Gets the extent of the currently valid contact range.
 /// @note This is one higher than the maxium <code>ContactID</code> that is in range
