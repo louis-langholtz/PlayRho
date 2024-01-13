@@ -337,6 +337,13 @@ TEST(World, CopyConstruction)
         EXPECT_EQ(GetHeight(GetTree(world)), GetHeight(GetTree(copy)));
         EXPECT_EQ(GetTree(world).GetLeafCount(), GetTree(copy).GetLeafCount());
         EXPECT_EQ(GetMaxImbalance(GetTree(world)), GetMaxImbalance(GetTree(copy)));
+        if (GetContacts(world).size() == GetContacts(copy).size()) {
+            const auto max = GetContactRange(world);
+            for (auto i = static_cast<decltype(GetContactRange(world))>(0u); i < max; ++i) {
+                const auto id = ContactID(i);
+                EXPECT_EQ(GetManifold(world, id), GetManifold(copy, id));
+            }
+        }
     }
 }
 
@@ -390,6 +397,13 @@ TEST(World, CopyAssignment)
         EXPECT_EQ(GetHeight(GetTree(world)), GetHeight(GetTree(copy)));
         EXPECT_EQ(GetTree(world).GetLeafCount(), GetTree(copy).GetLeafCount());
         EXPECT_EQ(GetMaxImbalance(GetTree(world)), GetMaxImbalance(GetTree(copy)));
+        if (GetContacts(world).size() == GetContacts(copy).size()) {
+            const auto max = GetContactRange(world);
+            for (auto i = static_cast<decltype(GetContactRange(world))>(0u); i < max; ++i) {
+                const auto id = ContactID(i);
+                EXPECT_EQ(GetManifold(world, id), GetManifold(copy, id));
+            }
+        }
     }
 }
 
