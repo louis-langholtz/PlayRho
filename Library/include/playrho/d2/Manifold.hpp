@@ -488,6 +488,11 @@ private:
     PointArray m_points; ///< Points of contact. @see pointCount.
 };
 
+// State & confirm expected traits...
+static_assert(std::is_default_constructible_v<Manifold>);
+static_assert(std::is_copy_constructible_v<Manifold>);
+static_assert(std::is_copy_assignable_v<Manifold>);
+
 /// @brief Configuration data for manifold calculation.
 struct Manifold::Conf {
     /// @brief Linear slop.
