@@ -143,22 +143,22 @@ public:
         /// @note For face-B type manifolds, this is the local center of "circle" A or a clip
         /// point of shape A. It is also the point at which impulse forces should be relatively
         /// applied for position resolution.
-        Length2 localPoint = {};
+        Length2 localPoint{};
 
         /// @brief The contact feature.
         /// @details Uniquely identifies a contact point between two shapes - A and B.
         /// @see GetPointStates.
-        ContactFeature contactFeature = {};
+        ContactFeature contactFeature{};
 
         /// @brief Normal impulse.
         /// @details This is the non-penetration impulse.
         /// @note This is only used for velocity constraint resolution.
-        Momentum normalImpulse = 0_Ns;
+        Momentum normalImpulse{};
 
         /// @brief Tangent impulse.
         /// @details This is the friction impulse.
         /// @note This is only used for velocity constraint resolution.
-        Momentum tangentImpulse = 0_Ns;
+        Momentum tangentImpulse{};
     };
 
     // For Circles type manifolds...
@@ -473,7 +473,7 @@ private:
     constexpr Manifold(Type t, const UnitVec& ln, const Length2& lp, size_type n, const PointArray& mpa) noexcept;
 
     Type m_type = e_unset; ///< Type of collision this manifold is associated with.
-    size_type m_pointCount = 0; ///< Number of defined manifold points.
+    size_type m_pointCount{}; ///< Number of defined manifold points.
 
     /// Local normal.
     /// @details Exact usage depends on manifold type.
@@ -483,7 +483,7 @@ private:
     /// Local point.
     /// @details Exact usage depends on manifold type.
     /// @note Invalid for the unset manifold type.
-    Length2 m_localPoint = InvalidLength2;
+    Length2 m_localPoint{InvalidLength2};
 
     PointArray m_points; ///< Points of contact. @see pointCount.
 };
