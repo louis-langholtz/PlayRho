@@ -158,8 +158,7 @@ Manifold GetManifold(bool flipped, // NOLINT(readability-function-cognitive-comp
                     Manifold::GetForFaceB(GetFwdPerpendicular(shape0_rel_e0_dir), rel_midpoint);
                 for (auto&& cp : clipPoints) {
                     if ((Dot(abs_normal, cp.v) - abs_offset) <= totalRadius) {
-                        manifold.AddPoint(
-                            Manifold::Point{InverseTransform(cp.v, xf1), Flip(cp.cf)});
+                        manifold.AddPoint(Manifold::Point{InverseTransform(cp.v, xf1), Flip(cp.cf)});
                     }
                 }
             }
