@@ -222,7 +222,7 @@ public:
                         pa,
                         1,
                         {{Point{pb0, ContactFeature{ContactFeature::e_face, ia, tb0, ib0}},
-                          Point{pb0, ContactFeature{ContactFeature::e_face, ia, tb0, ib0}}}}};
+                          Point{}}}};
     }
 
     // For Face B...
@@ -270,7 +270,7 @@ public:
                         pb,
                         1,
                         {{Point{pa0, ContactFeature{ta0, ia0, ContactFeature::e_face, ib}},
-                          Point{pa0, ContactFeature{ta0, ia0, ContactFeature::e_face, ib}}}}};
+                          Point{}}}};
     }
 
     /// Default constructor.
