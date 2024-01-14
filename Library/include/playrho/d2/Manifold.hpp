@@ -250,34 +250,6 @@ public:
     }
 
     /// @brief Gets the face A manifold for the given data.
-    static Manifold GetForFaceA(const UnitVec& na, CfIndex ia, const Length2& pa) noexcept
-    {
-        return Manifold{
-            e_faceA,
-            na,
-            pa,
-            0,
-            {{Point{InvalidLength2,
-                    ContactFeature{ContactFeature::e_face, ia, ContactFeature::e_face, 0}},
-              Point{InvalidLength2,
-                    ContactFeature{ContactFeature::e_face, ia, ContactFeature::e_face, 0}}}}};
-    }
-
-    /// @brief Gets the face B manifold for the given data.
-    static Manifold GetForFaceB(const UnitVec& nb, CfIndex ib, const Length2& pb) noexcept
-    {
-        return Manifold{
-            e_faceB,
-            nb,
-            pb,
-            0,
-            {{Point{InvalidLength2,
-                    ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, ib}},
-              Point{InvalidLength2,
-                    ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, ib}}}}};
-    }
-
-    /// @brief Gets the face A manifold for the given data.
     static Manifold GetForFaceA(const UnitVec& na, CfIndex ia, const Length2& pa, CfType tb0, CfIndex ib0,
                                 const Length2& pb0) noexcept
     {
@@ -299,30 +271,6 @@ public:
                         1,
                         {{Point{pa0, ContactFeature{ta0, ia0, ContactFeature::e_face, ib}},
                           Point{pa0, ContactFeature{ta0, ia0, ContactFeature::e_face, ib}}}}};
-    }
-
-    /// @brief Gets the face A manifold for the given data.
-    static Manifold GetForFaceA(const UnitVec& na, CfIndex ia, const Length2& pa, CfType tb0, CfIndex ib0,
-                                const Length2& pb0, CfType tb1, CfIndex ib1, const Length2& pb1) noexcept
-    {
-        return Manifold{e_faceA,
-                        na,
-                        pa,
-                        2,
-                        {{Point{pb0, ContactFeature{ContactFeature::e_face, ia, tb0, ib0}},
-                          Point{pb1, ContactFeature{ContactFeature::e_face, ia, tb1, ib1}}}}};
-    }
-
-    /// @brief Gets the face B manifold for the given data.
-    static Manifold GetForFaceB(const UnitVec& nb, CfIndex ib, const Length2& pb, CfType ta0, CfIndex ia0,
-                                const Length2& pa0, CfType ta1, CfIndex ia1, const Length2& pa1) noexcept
-    {
-        return Manifold{e_faceB,
-                        nb,
-                        pb,
-                        2,
-                        {{Point{pa0, ContactFeature{ta0, ia0, ContactFeature::e_face, ib}},
-                          Point{pa1, ContactFeature{ta1, ia1, ContactFeature::e_face, ib}}}}};
     }
 
     /// Default constructor.
@@ -407,9 +355,6 @@ public:
     /// @pre <code>GetType()</code> is not <code>e_unset</code>.
     /// @pre <code>GetPointCount()</code> is less than <code>MaxManifoldPoints</code>.
     void AddPoint(const Point& mp) noexcept;
-
-    /// @brief Adds a new point with the given data.
-    void AddPoint(CfType type, CfIndex index, const Length2& point) noexcept;
 
     /// @brief Gets the local normal for a face-type manifold.
     /// @note Only valid for face-A or face-B type manifolds.
@@ -541,29 +486,6 @@ inline void Manifold::AddPoint(const Point& mp) noexcept
     // || (mp.contactFeature.typeB == ContactFeature::e_face));
     m_points[m_pointCount] = mp;
     ++m_pointCount;
-}
-
-inline void Manifold::AddPoint(CfType type, CfIndex index, const Length2& point) noexcept
-{
-    assert(GetPointCount() < MaxManifoldPoints);
-    switch (GetType()) {
-    case e_unset:
-        break;
-    case e_circles:
-        break;
-    case e_faceA:
-        m_points[m_pointCount].localPoint = point;
-        m_points[m_pointCount].contactFeature.typeB = type;
-        m_points[m_pointCount].contactFeature.indexB = index;
-        ++m_pointCount;
-        break;
-    case e_faceB:
-        m_points[m_pointCount].localPoint = point;
-        m_points[m_pointCount].contactFeature.typeA = type;
-        m_points[m_pointCount].contactFeature.indexA = index;
-        ++m_pointCount;
-        break;
-    }
 }
 
 // Free functions...
