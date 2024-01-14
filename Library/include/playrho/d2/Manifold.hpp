@@ -213,18 +213,6 @@ public:
         return Manifold{e_faceA, ln, lp, 2, {{mp1, mp2}}};
     }
 
-    /// @brief Gets the face A manifold for the given data.
-    static Manifold GetForFaceA(const UnitVec& na, CfIndex ia, const Length2& pa, CfType tb0, CfIndex ib0,
-                                const Length2& pb0) noexcept
-    {
-        return Manifold{e_faceA,
-                        na,
-                        pa,
-                        1,
-                        {{Point{pb0, ContactFeature{ContactFeature::e_face, ia, tb0, ib0}},
-                          Point{}}}};
-    }
-
     // For Face B...
 
     /// Gets a face B typed manifold.
@@ -259,18 +247,6 @@ public:
         // mp2.contactFeature.typeB == ContactFeature::e_face); assert(mp1.contactFeature !=
         // mp2.contactFeature);
         return Manifold{e_faceB, ln, lp, 2, {{mp1, mp2}}};
-    }
-
-    /// @brief Gets the face B manifold for the given data.
-    static Manifold GetForFaceB(const UnitVec& nb, CfIndex ib, const Length2& pb, CfType ta0, CfIndex ia0,
-                                const Length2& pa0) noexcept
-    {
-        return Manifold{e_faceB,
-                        nb,
-                        pb,
-                        1,
-                        {{Point{pa0, ContactFeature{ta0, ia0, ContactFeature::e_face, ib}},
-                          Point{}}}};
     }
 
     /// Default constructor.

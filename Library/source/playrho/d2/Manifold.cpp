@@ -186,17 +186,18 @@ Manifold GetManifold(bool flipped, // NOLINT(readability-function-cognitive-comp
         {
             // shape 1 is shape A.
             if (mustUseFaceManifold) {
-                return Manifold::GetForFaceA(GetFwdPerpendicular(shape0_rel_e0_dir), idx0,
-                                             shape0_rel_v0, ContactFeature::e_vertex,
-                                             shape1_e.first, shape1_rel_v0);
+                return Manifold::GetForFaceA(GetFwdPerpendicular(shape0_rel_e0_dir), shape0_rel_v0,
+                                             Manifold::Point{shape1_rel_v0,
+                    ContactFeature{ContactFeature::e_face, idx0, ContactFeature::e_vertex, shape1_e.first}});
             }
             return Manifold::GetForCircles(shape0_rel_v0, idx0, shape1_rel_v0, shape1_e.first);
         }
         // shape 2 is shape A.
         if (mustUseFaceManifold) {
-            return Manifold::GetForFaceB(GetFwdPerpendicular(shape0_rel_e0_dir), idx0,
-                                         shape0_rel_v0, ContactFeature::e_vertex, shape1_e.first,
-                                         shape1_rel_v0);
+            return Manifold::GetForFaceB(GetFwdPerpendicular(shape0_rel_e0_dir), shape0_rel_v0,
+                                         Manifold::Point{shape1_rel_v0,
+                ContactFeature{ContactFeature::e_vertex, shape1_e.first, ContactFeature::e_face, idx0}
+            });
         }
         return Manifold::GetForCircles(shape1_rel_v0, shape1_e.first, shape0_rel_v0, idx0);
     }
@@ -204,16 +205,18 @@ Manifold GetManifold(bool flipped, // NOLINT(readability-function-cognitive-comp
         // shape 1 vertex 2 is colliding with shape 2 vertex 2
         if (!flipped) {
             if (mustUseFaceManifold) {
-                return Manifold::GetForFaceA(GetFwdPerpendicular(shape0_rel_e0_dir), idx0Next,
-                                             shape0_rel_v1, ContactFeature::e_vertex,
-                                             shape1_e.second, shape1_rel_v1);
+                return Manifold::GetForFaceA(GetFwdPerpendicular(shape0_rel_e0_dir), shape0_rel_v1,
+                                             Manifold::Point{shape1_rel_v1,
+                    ContactFeature{ContactFeature::e_face, idx0Next, ContactFeature::e_vertex, shape1_e.second}
+                });
             }
             return Manifold::GetForCircles(shape0_rel_v1, idx0Next, shape1_rel_v1, shape1_e.second);
         }
         if (mustUseFaceManifold) {
-            return Manifold::GetForFaceB(GetFwdPerpendicular(shape0_rel_e0_dir), idx0Next,
-                                         shape0_rel_v1, ContactFeature::e_vertex, shape1_e.second,
-                                         shape1_rel_v1);
+            return Manifold::GetForFaceB(GetFwdPerpendicular(shape0_rel_e0_dir), shape0_rel_v1,
+                                         Manifold::Point{shape1_rel_v1,
+                ContactFeature{ContactFeature::e_vertex, shape1_e.second, ContactFeature::e_face, idx0Next}
+            });
         }
         return Manifold::GetForCircles(shape1_rel_v1, shape1_e.second, shape0_rel_v1, idx0Next);
     }
@@ -221,16 +224,17 @@ Manifold GetManifold(bool flipped, // NOLINT(readability-function-cognitive-comp
         // shape 1 vertex 1 is colliding with shape 2 vertex 2
         if (!flipped) {
             if (mustUseFaceManifold) {
-                return Manifold::GetForFaceA(GetFwdPerpendicular(shape0_rel_e0_dir), idx0,
-                                             shape0_rel_v0, ContactFeature::e_vertex,
-                                             shape1_e.second, shape1_rel_v1);
+                return Manifold::GetForFaceA(GetFwdPerpendicular(shape0_rel_e0_dir), shape0_rel_v0,
+                                             Manifold::Point{shape1_rel_v1,
+                    ContactFeature{ContactFeature::e_face, idx0, ContactFeature::e_vertex, shape1_e.second}});
             }
             return Manifold::GetForCircles(shape0_rel_v0, idx0, shape1_rel_v1, shape1_e.second);
         }
         if (mustUseFaceManifold) {
-            return Manifold::GetForFaceB(GetFwdPerpendicular(shape0_rel_e0_dir), idx0,
-                                         shape0_rel_v0, ContactFeature::e_vertex, shape1_e.second,
-                                         shape1_rel_v1);
+            return Manifold::GetForFaceB(GetFwdPerpendicular(shape0_rel_e0_dir), shape0_rel_v0,
+                                         Manifold::Point{shape1_rel_v1,
+                ContactFeature{ContactFeature::e_vertex, shape1_e.second, ContactFeature::e_face, idx0}
+            });
         }
         return Manifold::GetForCircles(shape1_rel_v1, shape1_e.second, shape0_rel_v0, idx0);
     }
@@ -238,16 +242,18 @@ Manifold GetManifold(bool flipped, // NOLINT(readability-function-cognitive-comp
         // shape 1 vertex 2 is colliding with shape 2 vertex 1
         if (!flipped) {
             if (mustUseFaceManifold) {
-                return Manifold::GetForFaceA(GetFwdPerpendicular(shape0_rel_e0_dir), idx0Next,
-                                             shape0_rel_v1, ContactFeature::e_vertex,
-                                             shape1_e.first, shape1_rel_v0);
+                return Manifold::GetForFaceA(GetFwdPerpendicular(shape0_rel_e0_dir), shape0_rel_v1,
+                                             Manifold::Point{shape1_rel_v0,
+                    ContactFeature{ContactFeature::e_face, idx0Next, ContactFeature::e_vertex, shape1_e.first}
+                });
             }
             return Manifold::GetForCircles(shape0_rel_v1, idx0Next, shape1_rel_v0, shape1_e.first);
         }
         if (mustUseFaceManifold) {
-            return Manifold::GetForFaceB(GetFwdPerpendicular(shape0_rel_e0_dir), idx0Next,
-                                         shape0_rel_v1, ContactFeature::e_vertex, shape1_e.first,
-                                         shape1_rel_v0);
+            return Manifold::GetForFaceB(GetFwdPerpendicular(shape0_rel_e0_dir), shape0_rel_v1,
+                                         Manifold::Point{shape1_rel_v0,
+                ContactFeature{ContactFeature::e_vertex, shape1_e.first, ContactFeature::e_face, idx0Next}
+            });
         }
         return Manifold::GetForCircles(shape1_rel_v0, shape1_e.first, shape0_rel_v1, idx0Next);
     }
@@ -292,11 +298,14 @@ Manifold GetManifold(bool flipped, Length totalRadius, const DistanceProxy& shap
         const auto faceCenter = (v1 + v2) / Real{2};
         // Circle's center is inside the polygon and closest to edge[indexOfMax].
         if (!flipped) {
-            return Manifold::GetForFaceA(shape.GetNormal(indexOfMax), indexOfMax, faceCenter,
-                                         ContactFeature::e_vertex, 0, point);
+            return Manifold::GetForFaceA(shape.GetNormal(indexOfMax), faceCenter,
+                                         Manifold::Point{point,
+                ContactFeature{ContactFeature::e_face, indexOfMax, ContactFeature::e_vertex, 0}});
         }
-        return Manifold::GetForFaceB(shape.GetNormal(indexOfMax), indexOfMax, faceCenter,
-                                     ContactFeature::e_vertex, 0, point);
+        return Manifold::GetForFaceB(shape.GetNormal(indexOfMax), faceCenter,
+                                     Manifold::Point{point,
+            ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_face, indexOfMax}
+        });
     }
 
     // Circle's center is outside polygon and closest to edge[indexOfMax].
@@ -332,11 +341,15 @@ Manifold GetManifold(bool flipped, Length totalRadius, const DistanceProxy& shap
         return Manifold{};
     }
     if (!flipped) {
-        return Manifold::GetForFaceA(shape.GetNormal(indexOfMax), indexOfMax, faceCenter,
-                                     ContactFeature::e_vertex, 0, point);
+        return Manifold::GetForFaceA(shape.GetNormal(indexOfMax), faceCenter,
+                                     Manifold::Point{point,
+            ContactFeature{ContactFeature::e_face, indexOfMax, ContactFeature::e_vertex, 0}
+        });
     }
-    return Manifold::GetForFaceB(shape.GetNormal(indexOfMax), indexOfMax, faceCenter,
-                                 ContactFeature::e_vertex, 0, point);
+    return Manifold::GetForFaceB(shape.GetNormal(indexOfMax), faceCenter,
+                                 Manifold::Point{point,
+        ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_face, indexOfMax}
+    });
 }
 
 Manifold GetManifold(const Length2& locationA, const Transformation& xfA, // force line-break
