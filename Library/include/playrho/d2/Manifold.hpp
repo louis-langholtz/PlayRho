@@ -42,10 +42,10 @@
 // IWYU pragma: end_exports
 
 namespace playrho {
-
 struct StepConf;
+}
 
-namespace d2 {
+namespace playrho::d2 {
 
 class DistanceProxy;
 struct Transformation;
@@ -170,11 +170,7 @@ public:
     /// @param iB Index of vertex from shape B representing the local center of "circle" B.
     static Manifold GetForCircles(const Length2& vA, CfIndex iA, const Length2& vB, CfIndex iB) noexcept
     {
-        return Manifold{e_circles,
-                        UnitVec(),
-                        vA,
-                        1,
-                        {{Point{vB, GetVertexVertexContactFeature(iA, iB)}}}};
+        return {e_circles, UnitVec(), vA, 1, {{Point{vB, GetVertexVertexContactFeature(iA, iB)}}}};
     }
 
     // For Face A type manifolds...
@@ -184,7 +180,7 @@ public:
     /// @param faceA Any point in local coordinates on the face whose normal was provided.
     static Manifold GetForFaceA(const UnitVec& normalA, const Length2& faceA) noexcept
     {
-        return Manifold{e_faceA, normalA, faceA, 0, {{}}};
+        return {e_faceA, normalA, faceA, 0, {{}}};
     }
 
     /// Gets a face A typed manifold.
@@ -195,7 +191,7 @@ public:
     {
         // assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB ==
         // ContactFeature::e_face);
-        return Manifold{e_faceA, ln, lp, 1, {{mp1}}};
+        return {e_faceA, ln, lp, 1, {{mp1}}};
     }
 
     /// Gets a face A typed manifold.
@@ -210,7 +206,7 @@ public:
         // ContactFeature::e_face); assert(mp2.contactFeature.typeA == ContactFeature::e_face ||
         // mp2.contactFeature.typeB == ContactFeature::e_face); assert(mp1.contactFeature !=
         // mp2.contactFeature);
-        return Manifold{e_faceA, ln, lp, 2, {{mp1, mp2}}};
+        return {e_faceA, ln, lp, 2, {{mp1, mp2}}};
     }
 
     // For Face B...
@@ -220,7 +216,7 @@ public:
     /// @param lp Center of face B.
     static Manifold GetForFaceB(const UnitVec& ln, const Length2& lp) noexcept
     {
-        return Manifold{e_faceB, ln, lp, 0, {{}}};
+        return {e_faceB, ln, lp, 0, {{}}};
     }
 
     /// Gets a face B typed manifold.
@@ -231,7 +227,7 @@ public:
     {
         // assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB ==
         // ContactFeature::e_face);
-        return Manifold{e_faceB, ln, lp, 1, {{mp1}}};
+        return {e_faceB, ln, lp, 1, {{mp1}}};
     }
 
     /// Gets a face B typed manifold.
@@ -246,7 +242,7 @@ public:
         // ContactFeature::e_face); assert(mp2.contactFeature.typeA == ContactFeature::e_face ||
         // mp2.contactFeature.typeB == ContactFeature::e_face); assert(mp1.contactFeature !=
         // mp2.contactFeature);
-        return Manifold{e_faceB, ln, lp, 2, {{mp1, mp2}}};
+        return {e_faceB, ln, lp, 2, {{mp1, mp2}}};
     }
 
     /// Default constructor.
@@ -488,13 +484,13 @@ bool operator!=(const Manifold& lhs, const Manifold& rhs) noexcept;
 /// @brief Gets a face-to-face based manifold.
 /// @param flipped Whether to flip the resulting manifold (between face-A and face-B).
 /// @param shape0 Shape 0. This should be shape A for face-A type manifold or shape B for face-B
-///   type manifold.
+///   type manifold. Must have a vertex count of more than one.
 /// @param xf0 Transform 0. This should be transform A for face-A type manifold or transform B
 ///   for face-B type manifold.
 /// @param idx0 Index 0. This should be the index of the vertex and normal of shape0 that had
 ///   the maximal separation distance from any vertex in shape1.
 /// @param shape1 Shape 1. This should be shape B for face-A type manifold or shape A for face-B
-///   type manifold.
+///   type manifold. Must have a vertex count of more than one.
 /// @param xf1 Transform 1. This should be transform B for face-A type manifold or transform A
 ///   for face-B type manifold.
 /// @param indices1 Index 1. This is the first and possibly second index of the vertex of shape1
@@ -540,9 +536,12 @@ Length2 GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type,
 #endif
 
 /// @brief Gets a unique name for the given manifold type.
+/// @param type Manifold type to get name for. Must be one of the enumerated values.
 const char* GetName(Manifold::Type type) noexcept;
 
-} // namespace d2
+} // namespace playrho::d2
+
+namespace playrho {
 
 /// @brief Gets whether the given manifold is valid.
 /// @relatedalso d2::Manifold
