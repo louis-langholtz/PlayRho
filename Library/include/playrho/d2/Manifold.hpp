@@ -303,14 +303,6 @@ public:
         m_points[index].tangentImpulse = get<1>(value);
     }
 
-    /// @brief Gets the point identified by the given index.
-    /// @pre @p index is less than <code>GetPointCount()</code>.
-    const Point& GetPoint(size_type index) const noexcept
-    {
-        assert(index < GetPointCount());
-        return m_points[index];
-    }
-
     /// @brief Sets the impulses for the given index.
     /// @pre @p index is less than <code>GetPointCount()</code>.
     void SetImpulses(size_type index, Momentum n, Momentum t) noexcept
@@ -318,6 +310,14 @@ public:
         assert(index < GetPointCount());
         m_points[index].normalImpulse = n;
         m_points[index].tangentImpulse = t;
+    }
+
+    /// @brief Gets the point identified by the given index.
+    /// @pre @p index is less than <code>GetPointCount()</code>.
+    const Point& GetPoint(size_type index) const noexcept
+    {
+        assert(index < GetPointCount());
+        return m_points[index];
     }
 
     /// Adds a new point.
