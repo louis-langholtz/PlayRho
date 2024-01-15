@@ -282,21 +282,21 @@ public:
         return m_points[index].contactFeature;
     }
 
-    /// @brief Gets the contact impulses for the given index.
+    /// @brief Gets the impulses for the given index.
     /// @pre @p index is less than <code>GetPointCount()</code>.
     /// @return Pair of impulses where the first impulse is the "normal impulse"
     ///   and the second impulse is the "tangent impulse".
-    constexpr Momentum2 GetContactImpulses(size_type index) const noexcept
+    constexpr Momentum2 GetImpulses(size_type index) const noexcept
     {
         assert(index < GetPointCount());
         return Momentum2{m_points[index].normalImpulse, m_points[index].tangentImpulse};
     }
 
-    /// @brief Sets the contact impulses for the given index.
+    /// @brief Sets the impulses for the given index.
     /// @details Sets the contact impulses for the given index where the first impulse
     ///   is the "normal impulse" and the second impulse is the "tangent impulse".
     /// @pre @p index is less than <code>GetPointCount()</code>.
-    void SetContactImpulses(size_type index, const Momentum2& value) noexcept
+    void SetImpulses(size_type index, const Momentum2& value) noexcept
     {
         assert(index < GetPointCount());
         m_points[index].normalImpulse = get<0>(value);
@@ -311,9 +311,9 @@ public:
         return m_points[index];
     }
 
-    /// @brief Sets the point impulses for the given index.
+    /// @brief Sets the impulses for the given index.
     /// @pre @p index is less than <code>GetPointCount()</code>.
-    void SetPointImpulses(size_type index, Momentum n, Momentum t)
+    void SetImpulses(size_type index, Momentum n, Momentum t) noexcept
     {
         assert(index < GetPointCount());
         m_points[index].normalImpulse = n;
