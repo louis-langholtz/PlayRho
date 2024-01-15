@@ -633,10 +633,10 @@ TEST(AabbTreeWorld, SetManifold)
     const auto original = GetManifold(world, ContactID(0));
     ASSERT_EQ(unsigned(original.GetType()), unsigned(Manifold::e_faceA));
     ASSERT_EQ(unsigned(original.GetPointCount()), 2u);
-    const auto imp0 = original.GetContactImpulses(0u);
+    const auto imp0 = original.GetImpulses(0u);
     ASSERT_EQ(imp0[0], 0_Ns);
     ASSERT_EQ(imp0[1], 0_Ns);
-    const auto imp1 = original.GetContactImpulses(1u);
+    const auto imp1 = original.GetImpulses(1u);
     ASSERT_EQ(imp1[0], 0_Ns);
     ASSERT_EQ(imp1[1], 0_Ns);
     auto newValue = Manifold();
@@ -647,7 +647,7 @@ TEST(AabbTreeWorld, SetManifold)
     EXPECT_THROW(SetManifold(world, ContactID(0), newValue), InvalidArgument); // can't change point count
     newValue = original;
     EXPECT_NO_THROW(SetManifold(world, ContactID(0), newValue));
-    newValue.SetContactImpulses(0, Momentum2{1_Ns, 2_Ns});
+    newValue.SetImpulses(0, Momentum2{1_Ns, 2_Ns});
     EXPECT_NO_THROW(SetManifold(world, ContactID(0), newValue));
 
     ASSERT_NO_THROW(SetLocation(body1, Length2{10_m, 10_m}));

@@ -211,7 +211,7 @@ inline void AssignImpulses(Manifold& var, const VelocityConstraint& vc)
 
     auto assignProc = [&](VelocityConstraint::size_type i) {
         const auto& point = vc.GetPointAt(i);
-        var.SetPointImpulses(i, point.normalImpulse, point.tangentImpulse);
+        var.SetImpulses(i, point.normalImpulse, point.tangentImpulse);
     };
 #if 0
     // Branch free assignment causes problems in TilesComeToRest test.
@@ -2654,7 +2654,7 @@ void AabbTreeWorld::Update( // NOLINT(readability-function-cognitive-complexity)
             for (auto j = decltype(old_point_count){0}; j < old_point_count; ++j) {
                 if (new_cf == oldManifold.GetContactFeature(j)) {
                     found[i] = true;
-                    newManifold.SetContactImpulses(i, oldManifold.GetContactImpulses(j));
+                    newManifold.SetImpulses(i, oldManifold.GetImpulses(j));
                     break;
                 }
             }
@@ -2671,7 +2671,7 @@ void AabbTreeWorld::Update( // NOLINT(readability-function-cognitive-complexity)
                     const auto squareDiff = GetMagnitudeSquared(oldPt.localPoint - newPt.localPoint);
                     if (leastSquareDiff > squareDiff) {
                         leastSquareDiff = squareDiff;
-                        newManifold.SetContactImpulses(i, oldManifold.GetContactImpulses(j));
+                        newManifold.SetImpulses(i, oldManifold.GetImpulses(j));
                     }
                 }
             }
