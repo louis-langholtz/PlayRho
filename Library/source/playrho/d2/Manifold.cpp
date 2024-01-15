@@ -642,6 +642,7 @@ bool operator==(const Manifold& lhs, const Manifold& rhs) noexcept
     }
 
     const auto count = lhs.GetPointCount();
+    assert(count <= 2);
     switch (count) {
     case 0:
         break;
@@ -663,8 +664,6 @@ bool operator==(const Manifold& lhs, const Manifold& rhs) noexcept
             return false;
         }
         break;
-    default:
-        assert(count <= 2);
     }
 
     return true;
