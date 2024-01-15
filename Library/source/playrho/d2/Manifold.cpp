@@ -146,23 +146,13 @@ Manifold GetManifold(bool flipped, // NOLINT(readability-function-cognitive-comp
             const auto abs_normal = GetFwdPerpendicular(shape0_abs_e0_dir);
             const auto rel_midpoint = (shape0_rel_v0 + shape0_rel_v1) / Real{2};
             const auto abs_offset = Dot(abs_normal, shape0_abs_v0); ///< Face offset.
-            auto manifold = Manifold{};
-            if (!flipped) {
-                manifold =
-                    Manifold::GetForFaceA(GetFwdPerpendicular(shape0_rel_e0_dir), rel_midpoint);
-                for (auto&& cp : clipPoints) {
-                    if ((Dot(abs_normal, cp.v) - abs_offset) <= totalRadius) {
-                        manifold.AddPoint(Manifold::Point{InverseTransform(cp.v, xf1), cp.cf});
-                    }
-                }
-            }
-            else {
-                manifold =
-                    Manifold::GetForFaceB(GetFwdPerpendicular(shape0_rel_e0_dir), rel_midpoint);
-                for (auto&& cp : clipPoints) {
-                    if ((Dot(abs_normal, cp.v) - abs_offset) <= totalRadius) {
-                        manifold.AddPoint(Manifold::Point{InverseTransform(cp.v, xf1), Flip(cp.cf)});
-                    }
+            const auto normal = GetFwdPerpendicular(shape0_rel_e0_dir);
+            auto manifold = !flipped
+                ? Manifold::GetForFaceA(normal, rel_midpoint)
+                : Manifold::GetForFaceB(normal, rel_midpoint);
+            for (auto&& cp : clipPoints) {
+                if ((Dot(abs_normal, cp.v) - abs_offset) <= totalRadius) {
+                    manifold.AddPoint({InverseTransform(cp.v, xf1), flipped? Flip(cp.cf): cp.cf});
                 }
             }
             if (manifold.GetPointCount() > 0) {
