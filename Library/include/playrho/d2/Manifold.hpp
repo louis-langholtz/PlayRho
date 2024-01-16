@@ -87,9 +87,6 @@ public:
     /// The contact feature index.
     using CfIndex = ContactFeature::Index;
 
-    /// @brief The contact feature type.
-    using CfType = ContactFeature::Type;
-
     struct Conf;
 
     /// Manifold type.
