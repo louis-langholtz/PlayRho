@@ -378,8 +378,9 @@ private:
         /// @brief Size in number of elements.
         constexpr auto size() const noexcept -> size_type
         {
-            return ((elements[0].contactFeature.indexA != InvalidVertex)? 1u: 0u)
-                 + ((elements[1].contactFeature.indexA != InvalidVertex)? 1u: 0u);
+            const auto v0 = elements[0].contactFeature.indexA != InvalidVertex;
+            const auto v1 = elements[1].contactFeature.indexA != InvalidVertex;
+            return static_cast<size_type>((v0? 1u: 0u) + (v1? 1u: 0u));
         }
 
         /// @brief Array indexing operator.
