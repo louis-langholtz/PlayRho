@@ -33,6 +33,16 @@ TEST(ContactFeature, ByteSizeIs4)
     EXPECT_EQ(sizeof(ContactFeature), std::size_t(4));
 }
 
+TEST(ContactFeature, DefaultConstruction)
+{
+    const auto v = ContactFeature{};
+    EXPECT_EQ(v.typeA, ContactFeature::e_vertex);
+    EXPECT_EQ(v.typeB, ContactFeature::e_vertex);
+    EXPECT_EQ(v.other, 0u);
+    EXPECT_EQ(v.indexA, InvalidVertex);
+    EXPECT_EQ(v.indexB, InvalidVertex);
+}
+
 TEST(ContactFeature, Init)
 {
     const auto typeA = ContactFeature::e_vertex;
