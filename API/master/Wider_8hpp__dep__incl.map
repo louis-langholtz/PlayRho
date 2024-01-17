@@ -1,52 +1,52 @@
 <map id="Library/include/playrho/detail/Wider.hpp" name="Library/include/playrho/detail/Wider.hpp">
-<area shape="rect" id="node1" title="Definition of the Wider class template and specializations." alt="" coords="3660,5,3831,47"/>
-<area shape="rect" id="node2" href="$WiderType_8hpp.html" title="Definition of the WiderType alias template." alt="" coords="3660,95,3831,136"/>
-<area shape="rect" id="node3" href="$Settings_8hpp.html" title="Types and default settings file." alt="" coords="3599,184,3770,225"/>
-<area shape="rect" id="node48" href="$ToiOutput_8hpp.html" title="Definitions of ToiOutput class and closely related code." alt="" coords="5640,273,5811,315"/>
-<area shape="rect" id="node4" href="$BodyID_8hpp.html" title="Definition of the BodyID alias and closely related code." alt="" coords="1998,273,2168,315"/>
-<area shape="rect" id="node6" href="$AabbTreeWorld_8hpp.html" title="Declarations of the AabbTreeWorld class." alt="" coords="1171,631,1342,672"/>
-<area shape="rect" id="node8" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="2470,631,2640,672"/>
-<area shape="rect" id="node9" href="$Contact_8hpp.html" title="Definition of the Contact class and closely related code." alt="" coords="1702,452,1872,493"/>
-<area shape="rect" id="node10" href="$Contactable_8hpp.html" title="Definition of the Contactable class and closely related code." alt="" coords="1579,363,1750,404"/>
-<area shape="rect" id="node11" href="$DynamicTreeData_8hpp.html" title="Definitions of DynamicTree related classes." alt="" coords="1217,452,1408,493"/>
-<area shape="rect" id="node12" href="$DynamicTree_8hpp.html" title="Declaration of the DynamicTree class." alt="" coords="1171,541,1342,583"/>
-<area shape="rect" id="node13" href="$d2_2AABB_8hpp.html" title="Declaration of the AABB class and free functions that return instances of it." alt="" coords="1166,363,1336,404"/>
-<area shape="rect" id="node20" href="$VelocityConstraint_8hpp.html" title="Definition of the VelocityConstraint class and closely related code." alt="" coords="3638,363,3832,404"/>
-<area shape="rect" id="node21" href="$WorldBody_8hpp.html" title="Declarations of free functions of World for bodies identified by BodyID." alt="" coords="2995,363,3166,404"/>
-<area shape="rect" id="node22" href="$WorldContact_8hpp.html" title="Declarations of free functions of World for contacts identified by ContactID." alt="" coords="870,363,1040,404"/>
-<area shape="rect" id="node23" href="$WorldShape_8hpp.html" title="Declarations of free functions of World for shapes identified by ShapeID." alt="" coords="3190,363,3360,404"/>
-<area shape="rect" id="node24" href="$Island_8hpp.html" title="Definition of the Island class and related code." alt="" coords="472,363,643,404"/>
-<area shape="rect" id="node25" href="$ConstraintSolverConf_8hpp.html" title="Definition of the ConstraintSolverConf class and closely related code." alt="" coords="4508,273,4698,315"/>
-<area shape="rect" id="node26" href="$ContactID_8hpp.html" title="Definition of the ContactID alias and closely related code." alt="" coords="350,273,520,315"/>
-<area shape="rect" id="node27" href="$ContactKey_8hpp.html" title="Declaration of the ContactKey class and closely related code." alt="" coords="616,541,787,583"/>
-<area shape="rect" id="node28" href="$ClipList_8hpp.html" title="Structures and functions used for computing clip lists." alt="" coords="4723,273,4894,315"/>
-<area shape="rect" id="node29" href="$ContactImpulsesList_8hpp.html" title="Definition of the ContactImpulsesList class and closely related code." alt="" coords="4918,273,5125,315"/>
-<area shape="rect" id="node30" href="$ConvexHull_8hpp.html" title="Definition of the ConvexHull class and closely related code." alt="" coords="4904,363,5075,404"/>
-<area shape="rect" id="node31" href="$ShapeConcept_8hpp.html" title="Definition of the internal ShapeConcept interface class." alt="" coords="4427,363,4635,404"/>
-<area shape="rect" id="node32" href="$Shape_8hpp.html" title="Definition of the Shape class and closely related code." alt="" coords="3859,452,4030,493"/>
-<area shape="rect" id="node33" href="$DiskShapeConf_8hpp.html" title="Definition of the DiskShapeConf class and closely related code." alt="" coords="5272,363,5444,404"/>
-<area shape="rect" id="node34" href="$DistanceConf_8hpp.html" title="Definition of the DistanceConf class and closely related code." alt="" coords="4807,452,4978,493"/>
-<area shape="rect" id="node35" href="$DistanceProxy_8hpp.html" title="Definition of the DistanceProxy class and closely related code." alt="" coords="4160,273,4331,315"/>
-<area shape="rect" id="node36" href="$EdgeShapeConf_8hpp.html" title="Definition of the EdgeShapeConf class and closely related code." alt="" coords="4009,363,4184,404"/>
-<area shape="rect" id="node37" href="$PolygonShapeConf_8hpp.html" title="Definition of the PolygonShapeConf class and closely related code." alt="" coords="4208,363,4403,404"/>
-<area shape="rect" id="node38" href="$PointStates_8hpp.html" title="Structures and functions used for computing before and after like point oriented collision response s..." alt="" coords="5150,273,5320,315"/>
-<area shape="rect" id="node39" href="$Simplex_8hpp.html" title="Definition of the Simplex class and closely related code." alt="" coords="4710,363,4880,404"/>
-<area shape="rect" id="node40" href="$WorldConf_8hpp.html" title="Declarations of the WorldConf class." alt="" coords="422,541,592,583"/>
-<area shape="rect" id="node41" href="$WorldManifold_8hpp.html" title="Declarations of the WorldManifold class and closely related code." alt="" coords="1412,273,1583,315"/>
-<area shape="rect" id="node42" href="$IslandStats_8hpp.html" title="Definition of the IslandStats class." alt="" coords="46,541,216,583"/>
-<area shape="rect" id="node43" href="$JointID_8hpp.html" title="Definition of the JointID alias and closely related code." alt="" coords="646,273,816,315"/>
-<area shape="rect" id="node44" href="$ShapeID_8hpp.html" title="Definition of the ShapeID alias and closely related code." alt="" coords="2352,273,2523,315"/>
-<area shape="rect" id="node45" href="$StepConf_8hpp.html" title="Declarations of the StepConf class, and free functions associated with it." alt="" coords="3638,452,3808,493"/>
-<area shape="rect" id="node46" href="$StepStats_8hpp.html" title="Definition of the StepStats related classes and code." alt="" coords="2878,452,3048,493"/>
-<area shape="rect" id="node47" href="$ToiConf_8hpp.html" title="Definitions of ToiConf class and closely related code." alt="" coords="5344,273,5515,315"/>
-<area shape="rect" id="node49" href="$Vector2_8hpp.html" title="Definition of the Vector2 alias template and closely related code." alt="" coords="3415,273,3586,315"/>
-<area shape="rect" id="node50" href="$Vector3_8hpp.html" title="Definition of the Vector3 alias template and closely related code." alt="" coords="3660,273,3831,315"/>
-<area shape="rect" id="node5" href="$BodyShapeFunction_8hpp.html" title="Definition of the BodyShapeFunction type alias." alt="" coords="2324,452,2506,493"/>
-<area shape="rect" id="node7" href="$WorldConcept_8hpp.html" title="Definition of the internal WorldConcept interface class." alt="" coords="2452,541,2658,583"/>
-<area shape="rect" id="node14" href="$JointConcept_8hpp.html" title="Definition of the internal JointConcept interface class." alt="" coords="2774,363,2971,404"/>
-<area shape="rect" id="node15" href="$Joint_8hpp.html" title="Definition of the Joint class and closely related code." alt="" coords="2632,452,2803,493"/>
-<area shape="rect" id="node16" href="$JointConf_8hpp.html" title="Definition of the JointConf class and closely related code." alt="" coords="1824,363,1995,404"/>
-<area shape="rect" id="node17" href="$WheelJointConf_8hpp.html" title="Definition of the WheelJointConf class and closely related code." alt="" coords="1923,452,2096,493"/>
-<area shape="rect" id="node18" href="$PositionConstraint_8hpp.html" title="Definition of the PositionConstraint class and closely related code." alt="" coords="1361,363,1554,404"/>
-<area shape="rect" id="node19" href="$RayCastOutput_8hpp.html" title="Declaration of the RayCastOutput structure and related free functions." alt="" coords="2577,363,2749,404"/>
+<area shape="rect" id="node1" title="Definition of the Wider class template and specializations." alt="" coords="3547,5,3717,47"/>
+<area shape="rect" id="node2" href="$WiderType_8hpp.html" title="Definition of the WiderType alias template." alt="" coords="3547,95,3717,136"/>
+<area shape="rect" id="node3" href="$Settings_8hpp.html" title="Types and default settings file." alt="" coords="3485,184,3656,225"/>
+<area shape="rect" id="node48" href="$ToiOutput_8hpp.html" title="Definitions of ToiOutput class and closely related code." alt="" coords="5696,273,5867,315"/>
+<area shape="rect" id="node4" href="$BodyID_8hpp.html" title="Definition of the BodyID alias and closely related code." alt="" coords="2176,273,2347,315"/>
+<area shape="rect" id="node6" href="$AabbTreeWorld_8hpp.html" title="Declarations of the AabbTreeWorld class." alt="" coords="1256,631,1427,672"/>
+<area shape="rect" id="node8" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="2233,631,2404,672"/>
+<area shape="rect" id="node9" href="$Contact_8hpp.html" title="Definition of the Contact class and closely related code." alt="" coords="1307,452,1477,493"/>
+<area shape="rect" id="node10" href="$Contactable_8hpp.html" title="Definition of the Contactable class and closely related code." alt="" coords="989,363,1160,404"/>
+<area shape="rect" id="node11" href="$DynamicTreeData_8hpp.html" title="Definitions of DynamicTree related classes." alt="" coords="990,452,1181,493"/>
+<area shape="rect" id="node12" href="$DynamicTree_8hpp.html" title="Declaration of the DynamicTree class." alt="" coords="1480,541,1651,583"/>
+<area shape="rect" id="node13" href="$d2_2AABB_8hpp.html" title="Declaration of the AABB class and free functions that return instances of it." alt="" coords="1336,363,1507,404"/>
+<area shape="rect" id="node19" href="$VelocityConstraint_8hpp.html" title="Definition of the VelocityConstraint class and closely related code." alt="" coords="3462,363,3655,404"/>
+<area shape="rect" id="node20" href="$WorldBody_8hpp.html" title="Declarations of free functions of World for bodies identified by BodyID." alt="" coords="2843,363,3013,404"/>
+<area shape="rect" id="node21" href="$WorldContact_8hpp.html" title="Declarations of free functions of World for contacts identified by ContactID." alt="" coords="245,363,416,404"/>
+<area shape="rect" id="node22" href="$WorldShape_8hpp.html" title="Declarations of free functions of World for shapes identified by ShapeID." alt="" coords="2648,363,2819,404"/>
+<area shape="rect" id="node23" href="$Island_8hpp.html" title="Definition of the Island class and related code." alt="" coords="440,363,611,404"/>
+<area shape="rect" id="node24" href="$ConstraintSolverConf_8hpp.html" title="Definition of the ConstraintSolverConf class and closely related code." alt="" coords="4513,273,4703,315"/>
+<area shape="rect" id="node25" href="$ContactFeature_8hpp.html" title="Definition of the ContactFeature class and closely related code." alt="" coords="5501,273,5672,315"/>
+<area shape="rect" id="node26" href="$ClipList_8hpp.html" title="Structures and functions used for computing clip lists." alt="" coords="5440,363,5611,404"/>
+<area shape="rect" id="node27" href="$ContactID_8hpp.html" title="Definition of the ContactID alias and closely related code." alt="" coords="93,273,264,315"/>
+<area shape="rect" id="node28" href="$ContactKey_8hpp.html" title="Declaration of the ContactKey class and closely related code." alt="" coords="1083,541,1253,583"/>
+<area shape="rect" id="node29" href="$ContactImpulsesList_8hpp.html" title="Definition of the ContactImpulsesList class and closely related code." alt="" coords="4830,273,5037,315"/>
+<area shape="rect" id="node30" href="$ConvexHull_8hpp.html" title="Definition of the ConvexHull class and closely related code." alt="" coords="4728,363,4899,404"/>
+<area shape="rect" id="node31" href="$ShapeConcept_8hpp.html" title="Definition of the internal ShapeConcept interface class." alt="" coords="3781,363,3989,404"/>
+<area shape="rect" id="node32" href="$Shape_8hpp.html" title="Definition of the Shape class and closely related code." alt="" coords="3461,452,3632,493"/>
+<area shape="rect" id="node33" href="$DiskShapeConf_8hpp.html" title="Definition of the DiskShapeConf class and closely related code." alt="" coords="4923,363,5095,404"/>
+<area shape="rect" id="node34" href="$DistanceConf_8hpp.html" title="Definition of the DistanceConf class and closely related code." alt="" coords="4755,452,4925,493"/>
+<area shape="rect" id="node35" href="$DistanceProxy_8hpp.html" title="Definition of the DistanceProxy class and closely related code." alt="" coords="4165,273,4336,315"/>
+<area shape="rect" id="node36" href="$EdgeShapeConf_8hpp.html" title="Definition of the EdgeShapeConf class and closely related code." alt="" coords="4065,363,4239,404"/>
+<area shape="rect" id="node37" href="$PolygonShapeConf_8hpp.html" title="Definition of the PolygonShapeConf class and closely related code." alt="" coords="4264,363,4459,404"/>
+<area shape="rect" id="node38" href="$PointStates_8hpp.html" title="Structures and functions used for computing before and after like point oriented collision response s..." alt="" coords="5061,273,5232,315"/>
+<area shape="rect" id="node39" href="$Simplex_8hpp.html" title="Definition of the Simplex class and closely related code." alt="" coords="4533,363,4704,404"/>
+<area shape="rect" id="node40" href="$WorldConf_8hpp.html" title="Declarations of the WorldConf class." alt="" coords="888,541,1059,583"/>
+<area shape="rect" id="node41" href="$WorldManifold_8hpp.html" title="Declarations of the WorldManifold class and closely related code." alt="" coords="339,273,509,315"/>
+<area shape="rect" id="node42" href="$IslandStats_8hpp.html" title="Definition of the IslandStats class." alt="" coords="541,541,712,583"/>
+<area shape="rect" id="node43" href="$JointID_8hpp.html" title="Definition of the JointID alias and closely related code." alt="" coords="888,273,1059,315"/>
+<area shape="rect" id="node44" href="$ShapeID_8hpp.html" title="Definition of the ShapeID alias and closely related code." alt="" coords="1459,273,1629,315"/>
+<area shape="rect" id="node45" href="$StepConf_8hpp.html" title="Declarations of the StepConf class, and free functions associated with it." alt="" coords="3656,452,3827,493"/>
+<area shape="rect" id="node46" href="$StepStats_8hpp.html" title="Definition of the StepStats related classes and code." alt="" coords="2843,452,3013,493"/>
+<area shape="rect" id="node47" href="$ToiConf_8hpp.html" title="Definitions of ToiConf class and closely related code." alt="" coords="5256,273,5427,315"/>
+<area shape="rect" id="node49" href="$Vector2_8hpp.html" title="Definition of the Vector2 alias template and closely related code." alt="" coords="3240,273,3411,315"/>
+<area shape="rect" id="node50" href="$Vector3_8hpp.html" title="Definition of the Vector3 alias template and closely related code." alt="" coords="3485,273,3656,315"/>
+<area shape="rect" id="node5" href="$BodyShapeFunction_8hpp.html" title="Definition of the BodyShapeFunction type alias." alt="" coords="1806,452,1989,493"/>
+<area shape="rect" id="node7" href="$WorldConcept_8hpp.html" title="Definition of the internal WorldConcept interface class." alt="" coords="2216,541,2421,583"/>
+<area shape="rect" id="node14" href="$JointConcept_8hpp.html" title="Definition of the internal JointConcept interface class." alt="" coords="3088,363,3285,404"/>
+<area shape="rect" id="node15" href="$Joint_8hpp.html" title="Definition of the Joint class and closely related code." alt="" coords="2597,452,2768,493"/>
+<area shape="rect" id="node16" href="$JointConf_8hpp.html" title="Definition of the JointConf class and closely related code." alt="" coords="1784,363,1955,404"/>
+<area shape="rect" id="node17" href="$PositionConstraint_8hpp.html" title="Definition of the PositionConstraint class and closely related code." alt="" coords="1979,363,2173,404"/>
+<area shape="rect" id="node18" href="$RayCastOutput_8hpp.html" title="Declaration of the RayCastOutput structure and related free functions." alt="" coords="2299,363,2471,404"/>
 </map>

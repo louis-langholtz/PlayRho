@@ -539,6 +539,7 @@
     <name>ContactFeature.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/</path>
     <filename>ContactFeature_8hpp.html</filename>
+    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
     <class kind="struct">playrho::ContactFeature</class>
     <namespace>playrho</namespace>
     <member kind="function">
@@ -21465,8 +21466,22 @@
       <type></type>
       <name>Type</name>
       <anchorfile>structplayrho_1_1ContactFeature.html</anchorfile>
-      <anchor>afd2b1a5d28a16fc49261c39d8cebabc0</anchor>
+      <anchor>ad3f1237ecd47cd69d205ee78c69e8d85</anchor>
       <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>ContactFeature</name>
+      <anchorfile>structplayrho_1_1ContactFeature.html</anchorfile>
+      <anchor>aa1995e8ef4159a8e0282661fdb8bae7f</anchor>
+      <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>ContactFeature</name>
+      <anchorfile>structplayrho_1_1ContactFeature.html</anchorfile>
+      <anchor>a43c9b4bf015b2f3852bd1d6d154f9141</anchor>
+      <arglist>(Type tA, Index iA, Type tB, Index iB) noexcept</arglist>
     </member>
     <member kind="variable">
       <type>Index</type>
@@ -21480,6 +21495,13 @@
       <name>indexB</name>
       <anchorfile>structplayrho_1_1ContactFeature.html</anchorfile>
       <anchor>ab540beeb299389dccbac7381e4e39f6a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>Type</type>
+      <name>other</name>
+      <anchorfile>structplayrho_1_1ContactFeature.html</anchorfile>
+      <anchor>a7d7c2b4e03ceb8b776b016c7047fffe2</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -26266,13 +26288,6 @@
       <anchor>abfa05cdcf8c1ea283a03ad70e9ae0543</anchor>
       <arglist></arglist>
     </member>
-    <member kind="typedef">
-      <type>ContactFeature::Type</type>
-      <name>CfType</name>
-      <anchorfile>classplayrho_1_1d2_1_1Manifold.html</anchorfile>
-      <anchor>acf4b47d8ef7fa8d2267b055934cec2d9</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="enumvalue">
       <name>e_circles</name>
       <anchorfile>classplayrho_1_1d2_1_1Manifold.html</anchorfile>
@@ -26346,13 +26361,6 @@
       <type>void</type>
       <name>AddPoint</name>
       <anchorfile>classplayrho_1_1d2_1_1Manifold.html</anchorfile>
-      <anchor>aa6c70b3594ef5e5e2e9816986614f50b</anchor>
-      <arglist>(CfType type, CfIndex index, const Length2 &amp;point) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>AddPoint</name>
-      <anchorfile>classplayrho_1_1d2_1_1Manifold.html</anchorfile>
       <anchor>a1399ecf9d6951ca8b72dd34dc66d1e75</anchor>
       <arglist>(const Point &amp;mp) noexcept</arglist>
     </member>
@@ -26365,9 +26373,9 @@
     </member>
     <member kind="function">
       <type>constexpr Momentum2</type>
-      <name>GetContactImpulses</name>
+      <name>GetImpulses</name>
       <anchorfile>classplayrho_1_1d2_1_1Manifold.html</anchorfile>
-      <anchor>aff93d957a2f35dab912e770093de9ede</anchor>
+      <anchor>ab7dc6b50e9301d05dc0624fd839a5622</anchor>
       <arglist>(size_type index) const noexcept</arglist>
     </member>
     <member kind="function">
@@ -26414,17 +26422,17 @@
     </member>
     <member kind="function">
       <type>void</type>
-      <name>SetContactImpulses</name>
+      <name>SetImpulses</name>
       <anchorfile>classplayrho_1_1d2_1_1Manifold.html</anchorfile>
-      <anchor>a45d09b6cf282908abdedd766cc1ade13</anchor>
+      <anchor>a5f65635561fc0c7576c9c24788287154</anchor>
       <arglist>(size_type index, const Momentum2 &amp;value) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
-      <name>SetPointImpulses</name>
+      <name>SetImpulses</name>
       <anchorfile>classplayrho_1_1d2_1_1Manifold.html</anchorfile>
-      <anchor>a477022edb23b761024a659e533098047</anchor>
-      <arglist>(size_type index, Momentum n, Momentum t)</arglist>
+      <anchor>a13775660b57e772aa8b180c85f36b4db</anchor>
+      <arglist>(size_type index, Momentum n, Momentum t) noexcept</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static Manifold</type>
@@ -26446,27 +26454,6 @@
       <anchorfile>classplayrho_1_1d2_1_1Manifold.html</anchorfile>
       <anchor>af7956978447d880352cc681c909624ec</anchor>
       <arglist>(const UnitVec &amp;ln, const Length2 &amp;lp, const Point &amp;mp1, const Point &amp;mp2) noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static Manifold</type>
-      <name>GetForFaceA</name>
-      <anchorfile>classplayrho_1_1d2_1_1Manifold.html</anchorfile>
-      <anchor>a1d5a205b66a2a7d779a2f9e8ae20caf4</anchor>
-      <arglist>(const UnitVec &amp;na, CfIndex ia, const Length2 &amp;pa) noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static Manifold</type>
-      <name>GetForFaceA</name>
-      <anchorfile>classplayrho_1_1d2_1_1Manifold.html</anchorfile>
-      <anchor>aeafff29ad140feb77e4d60889fb2d603</anchor>
-      <arglist>(const UnitVec &amp;na, CfIndex ia, const Length2 &amp;pa, CfType tb0, CfIndex ib0, const Length2 &amp;pb0) noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static Manifold</type>
-      <name>GetForFaceA</name>
-      <anchorfile>classplayrho_1_1d2_1_1Manifold.html</anchorfile>
-      <anchor>aebce892aee9aef85d0a67284577d849a</anchor>
-      <arglist>(const UnitVec &amp;na, CfIndex ia, const Length2 &amp;pa, CfType tb0, CfIndex ib0, const Length2 &amp;pb0, CfType tb1, CfIndex ib1, const Length2 &amp;pb1) noexcept</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static Manifold</type>
@@ -26495,27 +26482,6 @@
       <anchorfile>classplayrho_1_1d2_1_1Manifold.html</anchorfile>
       <anchor>a4e44ade02f861d5737338ba6d3b3ffe3</anchor>
       <arglist>(const UnitVec &amp;ln, const Length2 &amp;lp, const Point &amp;mp1, const Point &amp;mp2) noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static Manifold</type>
-      <name>GetForFaceB</name>
-      <anchorfile>classplayrho_1_1d2_1_1Manifold.html</anchorfile>
-      <anchor>a913e32f0fa85929c0bdd9225792110cf</anchor>
-      <arglist>(const UnitVec &amp;nb, CfIndex ib, const Length2 &amp;pb) noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static Manifold</type>
-      <name>GetForFaceB</name>
-      <anchorfile>classplayrho_1_1d2_1_1Manifold.html</anchorfile>
-      <anchor>ace47959b08efebb3719d1d9c11ca2057</anchor>
-      <arglist>(const UnitVec &amp;nb, CfIndex ib, const Length2 &amp;pb, CfType ta0, CfIndex ia0, const Length2 &amp;pa0) noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static Manifold</type>
-      <name>GetForFaceB</name>
-      <anchorfile>classplayrho_1_1d2_1_1Manifold.html</anchorfile>
-      <anchor>aaaf23fa1e8f5ee47c493b66af932c02e</anchor>
-      <arglist>(const UnitVec &amp;nb, CfIndex ib, const Length2 &amp;pb, CfType ta0, CfIndex ia0, const Length2 &amp;pa0, CfType ta1, CfIndex ia1, const Length2 &amp;pa1) noexcept</arglist>
     </member>
     <member kind="function">
       <type>Manifold</type>

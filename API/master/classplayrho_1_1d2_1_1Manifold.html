@@ -125,10 +125,6 @@ Public Types</h2></td></tr>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#abfa05cdcf8c1ea283a03ad70e9ae0543">CfIndex</a> = <a class="el" href="structplayrho_1_1ContactFeature.html#ab960333ec02960bebf043a55ef1b6041">ContactFeature::Index</a></td></tr>
 <tr class="memdesc:abfa05cdcf8c1ea283a03ad70e9ae0543"><td class="mdescLeft">&#160;</td><td class="mdescRight">The contact feature index. <br /></td></tr>
 <tr class="separator:abfa05cdcf8c1ea283a03ad70e9ae0543"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf4b47d8ef7fa8d2267b055934cec2d9"><td class="memItemLeft" align="right" valign="top"><a id="acf4b47d8ef7fa8d2267b055934cec2d9"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#acf4b47d8ef7fa8d2267b055934cec2d9">CfType</a> = <a class="el" href="structplayrho_1_1ContactFeature.html#afd2b1a5d28a16fc49261c39d8cebabc0">ContactFeature::Type</a></td></tr>
-<tr class="memdesc:acf4b47d8ef7fa8d2267b055934cec2d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The contact feature type. <br /></td></tr>
-<tr class="separator:acf4b47d8ef7fa8d2267b055934cec2d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae524c7d0bb1f9596dac79dc02e2e4cf2"><td class="memItemLeft" align="right" valign="top"><a id="ae524c7d0bb1f9596dac79dc02e2e4cf2"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ae524c7d0bb1f9596dac79dc02e2e4cf2">size_type</a> = std::remove_const_t&lt; decltype(<a class="el" href="namespaceplayrho.html#aae670387c8f37f8812082b1838e18863">MaxManifoldPoints</a>)&gt;</td></tr>
 <tr class="memdesc:ae524c7d0bb1f9596dac79dc02e2e4cf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size type. <br /></td></tr>
@@ -145,18 +141,14 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a27050de13d19927176e1ab48f8218ecd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a27050de13d19927176e1ab48f8218ecd">Manifold</a> ()=default</td></tr>
 <tr class="separator:a27050de13d19927176e1ab48f8218ecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6c70b3594ef5e5e2e9816986614f50b"><td class="memItemLeft" align="right" valign="top"><a id="aa6c70b3594ef5e5e2e9816986614f50b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#aa6c70b3594ef5e5e2e9816986614f50b">AddPoint</a> (<a class="el" href="structplayrho_1_1ContactFeature.html#afd2b1a5d28a16fc49261c39d8cebabc0">CfType</a> type, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#abfa05cdcf8c1ea283a03ad70e9ae0543">CfIndex</a> index, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;point) noexcept</td></tr>
-<tr class="memdesc:aa6c70b3594ef5e5e2e9816986614f50b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a new point with the given data. <br /></td></tr>
-<tr class="separator:aa6c70b3594ef5e5e2e9816986614f50b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1399ecf9d6951ca8b72dd34dc66d1e75"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a1399ecf9d6951ca8b72dd34dc66d1e75">AddPoint</a> (const <a class="el" href="structplayrho_1_1d2_1_1Manifold_1_1Point.html">Point</a> &amp;mp) noexcept</td></tr>
 <tr class="separator:a1399ecf9d6951ca8b72dd34dc66d1e75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab49c80c7a89c0e139dbd11689152d79b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structplayrho_1_1ContactFeature.html">ContactFeature</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ab49c80c7a89c0e139dbd11689152d79b">GetContactFeature</a> (<a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ae524c7d0bb1f9596dac79dc02e2e4cf2">size_type</a> index) const noexcept</td></tr>
 <tr class="memdesc:ab49c80c7a89c0e139dbd11689152d79b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the contact feature for the given index.  <a href="classplayrho_1_1d2_1_1Manifold.html#ab49c80c7a89c0e139dbd11689152d79b">More...</a><br /></td></tr>
 <tr class="separator:ab49c80c7a89c0e139dbd11689152d79b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff93d957a2f35dab912e770093de9ede"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespaceplayrho.html#a1fa6ffb2e67c2e2f620eed088412b146">Momentum2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#aff93d957a2f35dab912e770093de9ede">GetContactImpulses</a> (<a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ae524c7d0bb1f9596dac79dc02e2e4cf2">size_type</a> index) const noexcept</td></tr>
-<tr class="memdesc:aff93d957a2f35dab912e770093de9ede"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the contact impulses for the given index.  <a href="classplayrho_1_1d2_1_1Manifold.html#aff93d957a2f35dab912e770093de9ede">More...</a><br /></td></tr>
-<tr class="separator:aff93d957a2f35dab912e770093de9ede"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7dc6b50e9301d05dc0624fd839a5622"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespaceplayrho.html#a1fa6ffb2e67c2e2f620eed088412b146">Momentum2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ab7dc6b50e9301d05dc0624fd839a5622">GetImpulses</a> (<a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ae524c7d0bb1f9596dac79dc02e2e4cf2">size_type</a> index) const noexcept</td></tr>
+<tr class="memdesc:ab7dc6b50e9301d05dc0624fd839a5622"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the impulses for the given index.  <a href="classplayrho_1_1d2_1_1Manifold.html#ab7dc6b50e9301d05dc0624fd839a5622">More...</a><br /></td></tr>
+<tr class="separator:ab7dc6b50e9301d05dc0624fd839a5622"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75f5e3327c38c904dd6f52d3420e1378"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a75f5e3327c38c904dd6f52d3420e1378">GetLocalNormal</a> () const noexcept</td></tr>
 <tr class="memdesc:a75f5e3327c38c904dd6f52d3420e1378"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the local normal for a face-type manifold.  <a href="classplayrho_1_1d2_1_1Manifold.html#a75f5e3327c38c904dd6f52d3420e1378">More...</a><br /></td></tr>
 <tr class="separator:a75f5e3327c38c904dd6f52d3420e1378"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,12 +165,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a7a9bbf036b63bcd70d6758a0ac571314"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39775ff69570500f48db1f298c24dee1"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a7ff238fab84e4d9dc478205840bd2b4a">Type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a39775ff69570500f48db1f298c24dee1">GetType</a> () const noexcept</td></tr>
 <tr class="separator:a39775ff69570500f48db1f298c24dee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45d09b6cf282908abdedd766cc1ade13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a45d09b6cf282908abdedd766cc1ade13">SetContactImpulses</a> (<a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ae524c7d0bb1f9596dac79dc02e2e4cf2">size_type</a> index, const <a class="el" href="namespaceplayrho.html#a1fa6ffb2e67c2e2f620eed088412b146">Momentum2</a> &amp;value) noexcept</td></tr>
-<tr class="memdesc:a45d09b6cf282908abdedd766cc1ade13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the contact impulses for the given index.  <a href="classplayrho_1_1d2_1_1Manifold.html#a45d09b6cf282908abdedd766cc1ade13">More...</a><br /></td></tr>
-<tr class="separator:a45d09b6cf282908abdedd766cc1ade13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a477022edb23b761024a659e533098047"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a477022edb23b761024a659e533098047">SetPointImpulses</a> (<a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ae524c7d0bb1f9596dac79dc02e2e4cf2">size_type</a> index, <a class="el" href="group__PhysicalQuantities.html#gad36b742307f9f19c2c8c95e9372a3613">Momentum</a> n, <a class="el" href="group__PhysicalQuantities.html#gad36b742307f9f19c2c8c95e9372a3613">Momentum</a> t)</td></tr>
-<tr class="memdesc:a477022edb23b761024a659e533098047"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the point impulses for the given index.  <a href="classplayrho_1_1d2_1_1Manifold.html#a477022edb23b761024a659e533098047">More...</a><br /></td></tr>
-<tr class="separator:a477022edb23b761024a659e533098047"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f65635561fc0c7576c9c24788287154"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a5f65635561fc0c7576c9c24788287154">SetImpulses</a> (<a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ae524c7d0bb1f9596dac79dc02e2e4cf2">size_type</a> index, const <a class="el" href="namespaceplayrho.html#a1fa6ffb2e67c2e2f620eed088412b146">Momentum2</a> &amp;value) noexcept</td></tr>
+<tr class="memdesc:a5f65635561fc0c7576c9c24788287154"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the impulses for the given index.  <a href="classplayrho_1_1d2_1_1Manifold.html#a5f65635561fc0c7576c9c24788287154">More...</a><br /></td></tr>
+<tr class="separator:a5f65635561fc0c7576c9c24788287154"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13775660b57e772aa8b180c85f36b4db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a13775660b57e772aa8b180c85f36b4db">SetImpulses</a> (<a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ae524c7d0bb1f9596dac79dc02e2e4cf2">size_type</a> index, <a class="el" href="group__PhysicalQuantities.html#gad36b742307f9f19c2c8c95e9372a3613">Momentum</a> n, <a class="el" href="group__PhysicalQuantities.html#gad36b742307f9f19c2c8c95e9372a3613">Momentum</a> t) noexcept</td></tr>
+<tr class="memdesc:a13775660b57e772aa8b180c85f36b4db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the impulses for the given index.  <a href="classplayrho_1_1d2_1_1Manifold.html#a13775660b57e772aa8b180c85f36b4db">More...</a><br /></td></tr>
+<tr class="separator:a13775660b57e772aa8b180c85f36b4db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -188,18 +180,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a6ee298944be0125138099f4195091a63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7956978447d880352cc681c909624ec"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#af7956978447d880352cc681c909624ec">GetForFaceA</a> (const <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a> &amp;ln, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;lp, const <a class="el" href="structplayrho_1_1d2_1_1Manifold_1_1Point.html">Point</a> &amp;mp1, const <a class="el" href="structplayrho_1_1d2_1_1Manifold_1_1Point.html">Point</a> &amp;mp2) noexcept</td></tr>
 <tr class="separator:af7956978447d880352cc681c909624ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d5a205b66a2a7d779a2f9e8ae20caf4"><td class="memItemLeft" align="right" valign="top"><a id="a1d5a205b66a2a7d779a2f9e8ae20caf4"></a>
-static <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a1d5a205b66a2a7d779a2f9e8ae20caf4">GetForFaceA</a> (const <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a> &amp;na, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#abfa05cdcf8c1ea283a03ad70e9ae0543">CfIndex</a> ia, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;pa) noexcept</td></tr>
-<tr class="memdesc:a1d5a205b66a2a7d779a2f9e8ae20caf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the face A manifold for the given data. <br /></td></tr>
-<tr class="separator:a1d5a205b66a2a7d779a2f9e8ae20caf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeafff29ad140feb77e4d60889fb2d603"><td class="memItemLeft" align="right" valign="top"><a id="aeafff29ad140feb77e4d60889fb2d603"></a>
-static <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#aeafff29ad140feb77e4d60889fb2d603">GetForFaceA</a> (const <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a> &amp;na, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#abfa05cdcf8c1ea283a03ad70e9ae0543">CfIndex</a> ia, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;pa, <a class="el" href="structplayrho_1_1ContactFeature.html#afd2b1a5d28a16fc49261c39d8cebabc0">CfType</a> tb0, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#abfa05cdcf8c1ea283a03ad70e9ae0543">CfIndex</a> ib0, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;pb0) noexcept</td></tr>
-<tr class="memdesc:aeafff29ad140feb77e4d60889fb2d603"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the face A manifold for the given data. <br /></td></tr>
-<tr class="separator:aeafff29ad140feb77e4d60889fb2d603"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebce892aee9aef85d0a67284577d849a"><td class="memItemLeft" align="right" valign="top"><a id="aebce892aee9aef85d0a67284577d849a"></a>
-static <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#aebce892aee9aef85d0a67284577d849a">GetForFaceA</a> (const <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a> &amp;na, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#abfa05cdcf8c1ea283a03ad70e9ae0543">CfIndex</a> ia, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;pa, <a class="el" href="structplayrho_1_1ContactFeature.html#afd2b1a5d28a16fc49261c39d8cebabc0">CfType</a> tb0, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#abfa05cdcf8c1ea283a03ad70e9ae0543">CfIndex</a> ib0, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;pb0, <a class="el" href="structplayrho_1_1ContactFeature.html#afd2b1a5d28a16fc49261c39d8cebabc0">CfType</a> tb1, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#abfa05cdcf8c1ea283a03ad70e9ae0543">CfIndex</a> ib1, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;pb1) noexcept</td></tr>
-<tr class="memdesc:aebce892aee9aef85d0a67284577d849a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the face A manifold for the given data. <br /></td></tr>
-<tr class="separator:aebce892aee9aef85d0a67284577d849a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2983d9cad100cf689cc947b5fd01fa74"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a2983d9cad100cf689cc947b5fd01fa74">GetForFaceA</a> (const <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a> &amp;normalA, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;faceA) noexcept</td></tr>
 <tr class="separator:a2983d9cad100cf689cc947b5fd01fa74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a997e50619309b590bf0a530cf95d85e6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a997e50619309b590bf0a530cf95d85e6">GetForFaceB</a> (const <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a> &amp;ln, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;lp) noexcept</td></tr>
@@ -208,18 +188,6 @@ static <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a>&#16
 <tr class="separator:a089e769993ded4c29e0363cf48f3d0e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e44ade02f861d5737338ba6d3b3ffe3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a4e44ade02f861d5737338ba6d3b3ffe3">GetForFaceB</a> (const <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a> &amp;ln, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;lp, const <a class="el" href="structplayrho_1_1d2_1_1Manifold_1_1Point.html">Point</a> &amp;mp1, const <a class="el" href="structplayrho_1_1d2_1_1Manifold_1_1Point.html">Point</a> &amp;mp2) noexcept</td></tr>
 <tr class="separator:a4e44ade02f861d5737338ba6d3b3ffe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a913e32f0fa85929c0bdd9225792110cf"><td class="memItemLeft" align="right" valign="top"><a id="a913e32f0fa85929c0bdd9225792110cf"></a>
-static <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a913e32f0fa85929c0bdd9225792110cf">GetForFaceB</a> (const <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a> &amp;nb, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#abfa05cdcf8c1ea283a03ad70e9ae0543">CfIndex</a> ib, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;pb) noexcept</td></tr>
-<tr class="memdesc:a913e32f0fa85929c0bdd9225792110cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the face B manifold for the given data. <br /></td></tr>
-<tr class="separator:a913e32f0fa85929c0bdd9225792110cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace47959b08efebb3719d1d9c11ca2057"><td class="memItemLeft" align="right" valign="top"><a id="ace47959b08efebb3719d1d9c11ca2057"></a>
-static <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ace47959b08efebb3719d1d9c11ca2057">GetForFaceB</a> (const <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a> &amp;nb, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#abfa05cdcf8c1ea283a03ad70e9ae0543">CfIndex</a> ib, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;pb, <a class="el" href="structplayrho_1_1ContactFeature.html#afd2b1a5d28a16fc49261c39d8cebabc0">CfType</a> ta0, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#abfa05cdcf8c1ea283a03ad70e9ae0543">CfIndex</a> ia0, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;pa0) noexcept</td></tr>
-<tr class="memdesc:ace47959b08efebb3719d1d9c11ca2057"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the face B manifold for the given data. <br /></td></tr>
-<tr class="separator:ace47959b08efebb3719d1d9c11ca2057"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaaf23fa1e8f5ee47c493b66af932c02e"><td class="memItemLeft" align="right" valign="top"><a id="aaaf23fa1e8f5ee47c493b66af932c02e"></a>
-static <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#aaaf23fa1e8f5ee47c493b66af932c02e">GetForFaceB</a> (const <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a> &amp;nb, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#abfa05cdcf8c1ea283a03ad70e9ae0543">CfIndex</a> ib, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;pb, <a class="el" href="structplayrho_1_1ContactFeature.html#afd2b1a5d28a16fc49261c39d8cebabc0">CfType</a> ta0, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#abfa05cdcf8c1ea283a03ad70e9ae0543">CfIndex</a> ia0, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;pa0, <a class="el" href="structplayrho_1_1ContactFeature.html#afd2b1a5d28a16fc49261c39d8cebabc0">CfType</a> ta1, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#abfa05cdcf8c1ea283a03ad70e9ae0543">CfIndex</a> ia1, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;pa1) noexcept</td></tr>
-<tr class="memdesc:aaaf23fa1e8f5ee47c493b66af932c02e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the face B manifold for the given data. <br /></td></tr>
-<tr class="separator:aaaf23fa1e8f5ee47c493b66af932c02e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
 Related Functions</h2></td></tr>
@@ -375,36 +343,6 @@ Every point adds computational overhead to the collision response calculation - 
 
 <p>Gets the contact feature for the given index. </p>
 <dl class="section pre"><dt>Precondition</dt><dd><code>index</code> is less than <code><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a7a9bbf036b63bcd70d6758a0ac571314">GetPointCount()</a></code>. </dd></dl>
-
-</div>
-</div>
-<a id="aff93d957a2f35dab912e770093de9ede"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff93d957a2f35dab912e770093de9ede">&#9670;&nbsp;</a></span>GetContactImpulses()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="namespaceplayrho.html#a1fa6ffb2e67c2e2f620eed088412b146">Momentum2</a> playrho::d2::Manifold::GetContactImpulses </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ae524c7d0bb1f9596dac79dc02e2e4cf2">size_type</a>&#160;</td>
-          <td class="paramname"><em>index</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets the contact impulses for the given index. </p>
-<dl class="section pre"><dt>Precondition</dt><dd><code>index</code> is less than <code><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a7a9bbf036b63bcd70d6758a0ac571314">GetPointCount()</a></code>. </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>Pair of impulses where the first impulse is the "normal impulse" and the second impulse is the "tangent impulse". </dd></dl>
 
 </div>
 </div>
@@ -771,6 +709,36 @@ Every point adds computational overhead to the collision response calculation - 
 
 </div>
 </div>
+<a id="ab7dc6b50e9301d05dc0624fd839a5622"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7dc6b50e9301d05dc0624fd839a5622">&#9670;&nbsp;</a></span>GetImpulses()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="namespaceplayrho.html#a1fa6ffb2e67c2e2f620eed088412b146">Momentum2</a> playrho::d2::Manifold::GetImpulses </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ae524c7d0bb1f9596dac79dc02e2e4cf2">size_type</a>&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the impulses for the given index. </p>
+<dl class="section pre"><dt>Precondition</dt><dd><code>index</code> is less than <code><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a7a9bbf036b63bcd70d6758a0ac571314">GetPointCount()</a></code>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Pair of impulses where the first impulse is the "normal impulse" and the second impulse is the "tangent impulse". </dd></dl>
+
+</div>
+</div>
 <a id="a75f5e3327c38c904dd6f52d3420e1378"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a75f5e3327c38c904dd6f52d3420e1378">&#9670;&nbsp;</a></span>GetLocalNormal()</h2>
 
@@ -922,7 +890,7 @@ Every point adds computational overhead to the collision response calculation - 
 <dl class="section return"><dt>Returns</dt><dd>Value between 0 and <code>MaxManifoldPoints</code>. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#aae670387c8f37f8812082b1838e18863">MaxManifoldPoints</a>, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a1399ecf9d6951ca8b72dd34dc66d1e75">AddPoint()</a>, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#afc69f25e15e201ca7db3fd75e9c04ac3" title="Gets the point identified by the given index.">GetPoint()</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ab49c80c7a89c0e139dbd11689152d79b">GetContactFeature()</a>, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#aff93d957a2f35dab912e770093de9ede">GetContactImpulses()</a>, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a7cb046e3526a6dff59a1b246cf87fba0">GetOpposingPoint()</a>, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#afc69f25e15e201ca7db3fd75e9c04ac3">GetPoint()</a>, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a45d09b6cf282908abdedd766cc1ade13">SetContactImpulses()</a>, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a477022edb23b761024a659e533098047">SetPointImpulses()</a>, and <a class="el" href="ContactSolver_8hpp.html#a0fd21d441a78194f210e9f900bd3d1a4">playrho::GaussSeidel::SolvePositionConstraint()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ab49c80c7a89c0e139dbd11689152d79b">GetContactFeature()</a>, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ab7dc6b50e9301d05dc0624fd839a5622">GetImpulses()</a>, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a7cb046e3526a6dff59a1b246cf87fba0">GetOpposingPoint()</a>, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#afc69f25e15e201ca7db3fd75e9c04ac3">GetPoint()</a>, <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a5f65635561fc0c7576c9c24788287154">SetImpulses()</a>, and <a class="el" href="ContactSolver_8hpp.html#a0fd21d441a78194f210e9f900bd3d1a4">playrho::GaussSeidel::SolvePositionConstraint()</a>.</p>
 
 </div>
 </div>
@@ -955,8 +923,8 @@ Every point adds computational overhead to the collision response calculation - 
 
 </div>
 </div>
-<a id="a45d09b6cf282908abdedd766cc1ade13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45d09b6cf282908abdedd766cc1ade13">&#9670;&nbsp;</a></span>SetContactImpulses()</h2>
+<a id="a5f65635561fc0c7576c9c24788287154"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f65635561fc0c7576c9c24788287154">&#9670;&nbsp;</a></span>SetImpulses() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -965,7 +933,7 @@ Every point adds computational overhead to the collision response calculation - 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void playrho::d2::Manifold::SetContactImpulses </td>
+          <td class="memname">void playrho::d2::Manifold::SetImpulses </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ae524c7d0bb1f9596dac79dc02e2e4cf2">size_type</a>&#160;</td>
           <td class="paramname"><em>index</em>, </td>
@@ -989,13 +957,13 @@ Every point adds computational overhead to the collision response calculation - 
 </table>
 </div><div class="memdoc">
 
-<p>Sets the contact impulses for the given index. </p>
+<p>Sets the impulses for the given index. </p>
 <p>Sets the contact impulses for the given index where the first impulse is the "normal impulse" and the second impulse is the "tangent impulse". </p><dl class="section pre"><dt>Precondition</dt><dd><code>index</code> is less than <code><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a7a9bbf036b63bcd70d6758a0ac571314">GetPointCount()</a></code>. </dd></dl>
 
 </div>
 </div>
-<a id="a477022edb23b761024a659e533098047"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a477022edb23b761024a659e533098047">&#9670;&nbsp;</a></span>SetPointImpulses()</h2>
+<a id="a13775660b57e772aa8b180c85f36b4db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13775660b57e772aa8b180c85f36b4db">&#9670;&nbsp;</a></span>SetImpulses() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1004,7 +972,7 @@ Every point adds computational overhead to the collision response calculation - 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void playrho::d2::Manifold::SetPointImpulses </td>
+          <td class="memname">void playrho::d2::Manifold::SetImpulses </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#ae524c7d0bb1f9596dac79dc02e2e4cf2">size_type</a>&#160;</td>
           <td class="paramname"><em>index</em>, </td>
@@ -1029,12 +997,12 @@ Every point adds computational overhead to the collision response calculation - 
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Sets the point impulses for the given index. </p>
+<p>Sets the impulses for the given index. </p>
 <dl class="section pre"><dt>Precondition</dt><dd><code>index</code> is less than <code><a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a7a9bbf036b63bcd70d6758a0ac571314">GetPointCount()</a></code>. </dd></dl>
 
 </div>
@@ -1253,7 +1221,7 @@ Every point adds computational overhead to the collision response calculation - 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a></li>
-    <li class="footer">Generated on Wed Jan 10 2024 04:34:59 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Jan 17 2024 06:30:56 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
