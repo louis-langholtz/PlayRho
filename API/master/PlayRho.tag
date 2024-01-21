@@ -2602,13 +2602,6 @@
       <arglist>(const BodyConf &amp;conf) noexcept -&gt; Length2</arglist>
     </member>
     <member kind="function">
-      <type>Transformation</type>
-      <name>GetTransformation</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a4eb1f96a1c7cb27d7e9b07696eaf7413</anchor>
-      <arglist>(const BodyConf &amp;conf) noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>constexpr bool</type>
       <name>operator!=</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -16003,13 +15996,6 @@
       <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
       <anchor>af305801683ef38d8ef1fbd65a5f8fa55</anchor>
       <arglist>(const BodyConf &amp;conf) noexcept -&gt; Length2</arglist>
-    </member>
-    <member kind="function">
-      <type>Transformation</type>
-      <name>GetTransformation</name>
-      <anchorfile>structplayrho_1_1d2_1_1BodyConf.html</anchorfile>
-      <anchor>a178733ef87c116856614750d49785cd5</anchor>
-      <arglist>(const BodyConf &amp;conf) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -49095,13 +49081,6 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a798bf0d73d9cdbbaad16af6fd13cfed0</anchor>
       <arglist>(const Body &amp;body) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>Transformation</type>
-      <name>GetTransformation</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a4eb1f96a1c7cb27d7e9b07696eaf7413</anchor>
-      <arglist>(const BodyConf &amp;conf) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr Transformation</type>

@@ -541,7 +541,6 @@ var namespaceplayrho_1_1d2 =
     [ "GetTransform0", "namespaceplayrho_1_1d2.html#a8128f59808ffb8ab56cc4d9528422b16", null ],
     [ "GetTransform1", "namespaceplayrho_1_1d2.html#a3047f53ab4e594f414832db427f03d6c", null ],
     [ "GetTransformation", "namespaceplayrho_1_1d2.html#a798bf0d73d9cdbbaad16af6fd13cfed0", null ],
-    [ "GetTransformation", "namespaceplayrho_1_1d2.html#a4eb1f96a1c7cb27d7e9b07696eaf7413", null ],
     [ "GetTransformation", "namespaceplayrho_1_1d2.html#a1c8db589cd3a6e20401aeeecb6cccf66", null ],
     [ "GetTransformation", "namespaceplayrho_1_1d2.html#ad4e88b3ed13792435ff7f7fe7bfe087a", null ],
     [ "GetTransformation", "namespaceplayrho_1_1d2.html#a07e3239745b17cc4dfac4f26b7f179ba", null ],

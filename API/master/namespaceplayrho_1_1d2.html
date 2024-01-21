@@ -1829,10 +1829,6 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <tr class="memitem:a798bf0d73d9cdbbaad16af6fd13cfed0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a798bf0d73d9cdbbaad16af6fd13cfed0">GetTransformation</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
 <tr class="memdesc:a798bf0d73d9cdbbaad16af6fd13cfed0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the body's transformation.  <a href="namespaceplayrho_1_1d2.html#a798bf0d73d9cdbbaad16af6fd13cfed0">More...</a><br /></td></tr>
 <tr class="separator:a798bf0d73d9cdbbaad16af6fd13cfed0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4eb1f96a1c7cb27d7e9b07696eaf7413"><td class="memItemLeft" align="right" valign="top"><a id="a4eb1f96a1c7cb27d7e9b07696eaf7413"></a>
-<a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a4eb1f96a1c7cb27d7e9b07696eaf7413">GetTransformation</a> (const <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a> &amp;conf) noexcept</td></tr>
-<tr class="memdesc:a4eb1f96a1c7cb27d7e9b07696eaf7413"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the transformation associated with the given configuration. <br /></td></tr>
-<tr class="separator:a4eb1f96a1c7cb27d7e9b07696eaf7413"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c8db589cd3a6e20401aeeecb6cccf66"><td class="memItemLeft" align="right" valign="top"><a id="a1c8db589cd3a6e20401aeeecb6cccf66"></a>
 constexpr <a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho_1_1d2.html#a1c8db589cd3a6e20401aeeecb6cccf66">GetTransformation</a> (const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;ctr, const <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a> &amp;rot, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &amp;localCtr) noexcept</td></tr>
 <tr class="memdesc:a1c8db589cd3a6e20401aeeecb6cccf66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the transformation for the given values. <br /></td></tr>
@@ -7160,7 +7156,7 @@ On the first call, <code>size(conf.cache.indices)</code> should be zero. </dd></
 
 <p>Gets this body's angular acceleration. </p>
 <dl class="section see"><dt>See also</dt><dd>SetAcceleration(Body&amp; body, Acceleration value), <a class="el" href="namespaceplayrho_1_1d2.html#aef76fc5d7813af886e28e8033e9d019d" title="Gets this body&#39;s linear acceleration.">GetLinearAcceleration(const Body&amp; body)</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a29">Body.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a66">WorldBody.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a30">Body.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a66">WorldBody.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#aa4467a2050404136d210f7d81017f2d6">playrho::d2::World::ApplyForce()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ac7a5e9073194a89035ad2f060435542b">playrho::d2::World::ApplyForceToCenter()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a63de8f07f975cb055b0790364f2f6a69">playrho::d2::World::ApplyTorque()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a8c16a3a5c5a313873e82f2a5b3c5a444">playrho::d2::World::GetAcceleration()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a05620c9ad05a74b4cd9799d76f4df0ed">playrho::d2::World::GetAngularAcceleration()</a>, and <a class="el" href="classplayrho_1_1d2_1_1Body.html#a26bbc90e5b2c4192b598dfeefc692196">playrho::d2::Body::GetBodyConf()</a>.</p>
@@ -10891,7 +10887,7 @@ On the first call, <code>size(conf.cache.indices)</code> should be zero. </dd></
 
 <p>Gets this body's linear acceleration. </p>
 <dl class="section see"><dt>See also</dt><dd>SetAcceleration(Body&amp; body, Acceleration value), <a class="el" href="namespaceplayrho_1_1d2.html#a986b11edba421b23879fa363c557f1e5" title="Gets this body&#39;s angular acceleration.">GetAngularAcceleration(const Body&amp; body)</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a28">Body.cpp</a>, <a class="el" href="World_8cpp-example.html#a101">World.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a65">WorldBody.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a29">Body.cpp</a>, <a class="el" href="World_8cpp-example.html#a101">World.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a65">WorldBody.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#aa4467a2050404136d210f7d81017f2d6">playrho::d2::World::ApplyForce()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ac7a5e9073194a89035ad2f060435542b">playrho::d2::World::ApplyForceToCenter()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a63de8f07f975cb055b0790364f2f6a69">playrho::d2::World::ApplyTorque()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a8c16a3a5c5a313873e82f2a5b3c5a444">playrho::d2::World::GetAcceleration()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a26bbc90e5b2c4192b598dfeefc692196">playrho::d2::Body::GetBodyConf()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae8ca55fff3e787fcbc3d30fc8f39f49c">playrho::d2::World::GetLinearAcceleration()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a3d9a38048c742739a263fdbb742a505d">playrho::d2::World::SetTorque()</a>.</p>
@@ -15382,8 +15378,10 @@ This only works for two disjoint convex sets.</dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structplayrho_1_1d2_1_1Transformation.html" title="Describes a geometric transformation.">Transformation</a> of the given sweep at time one. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a22">Body.cpp</a>.</dd>
+</dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#aff436223b960a71937476dea03117d9c">playrho::d2::Body::SetSweep()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a4e1fdd99a0729a63a6a699b59e14b9a8">playrho::d2::Body::SetPosition1()</a>, and <a class="el" href="classplayrho_1_1d2_1_1Body.html#aff436223b960a71937476dea03117d9c">playrho::d2::Body::SetSweep()</a>.</p>
 
 </div>
 </div>
@@ -15416,7 +15414,7 @@ This only works for two disjoint convex sets.</dd></dl>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a21">Body.cpp</a>, <a class="el" href="HelloWorld_8cpp-example.html#a6">HelloWorld.cpp</a>, <a class="el" href="World_8cpp-example.html#a89">World.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a55">WorldBody.cpp</a>.</dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a1d603ef750cabe3be9f7e4035f9ba442">playrho::d2::World::ComputeAABB()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a13c40dc095fbb69e9b4a1961b96c36da">playrho::d2::World::ComputeIntersectingAABB()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ad3c653a34c7a681dbc60ec447225e85f">playrho::d2::World::GetAnchorA()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aa88982e1bd4c8bafe0160cdad5a68a71">playrho::d2::World::GetAnchorB()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a2e2f7487e6bca2b26a9dc6779a9bc72b">playrho::d2::World::GetGearJointConf()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a0469ef558d7b14efb4792c7f24084d7e">playrho::d2::World::GetJointTranslation()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ab7b59db43cee6a26c0433b69476b0c9b">playrho::d2::World::GetLinearVelocity()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ac93113a8f2585e325504a6b56b85329e">playrho::d2::World::GetLocalPoint()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae06bc4d6dc0dd90c8be5bb0227710c33">playrho::d2::World::GetLocalVector()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aabf27f5cfd9092be041a781d24cfa9a1">playrho::d2::World::GetLocation()</a>, <a class="el" href="structplayrho_1_1ToiOutput.html#a19b308c9b3b8f5292b9f3dad183c9d76">playrho::ToiOutput::GetToiViaSat()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a8128f59808ffb8ab56cc4d9528422b16">GetTransform0()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a3047f53ab4e594f414832db427f03d6c">GetTransform1()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ad4e88b3ed13792435ff7f7fe7bfe087a">GetTransformation()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae851807b71a13326be2635fb8af75ab6">playrho::d2::World::GetTransformation()</a>, <a class="el" href="classplayrho_1_1Contact.html#a53c028875bbee1fffcd3fc497bee2dc5">playrho::Contact::GetWorldManifold()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a2c7b440f52475ea8487d8f14898f232a">playrho::d2::World::GetWorldPoint()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#accaf3b08287d4bc8e5e5849d5b7278a8">playrho::d2::World::GetWorldVector()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a2e61d578b8ec391d98178299024b5c4f">playrho::d2::Body::operator==()</a>, <a class="el" href="group__RayCastGroup.html#ga694dc50f9191401bc87ab1abae2b05e9">playrho::d2::World::RayCast()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ab9ef983690f331d44c4133541cf75f52">playrho::d2::World::RotateAboutWorldPoint()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a76402b6c315dc2ed79b40b531306403a">playrho::d2::Body::SetLocation()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#abe6b45c9a1aeec496d83c00a6f587740">playrho::d2::World::SetMassData()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a4e1fdd99a0729a63a6a699b59e14b9a8">playrho::d2::Body::SetPosition1()</a>, <a class="el" href="ContactSolver_8hpp.html#a0fd21d441a78194f210e9f900bd3d1a4">playrho::GaussSeidel::SolvePositionConstraint()</a>, and <a class="el" href="group__TestPointGroup.html#gae87b356a8656d30d3b7b3a3251906f21">playrho::d2::World::TestPoint()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a1d603ef750cabe3be9f7e4035f9ba442">playrho::d2::World::ComputeAABB()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a13c40dc095fbb69e9b4a1961b96c36da">playrho::d2::World::ComputeIntersectingAABB()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ad3c653a34c7a681dbc60ec447225e85f">playrho::d2::World::GetAnchorA()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aa88982e1bd4c8bafe0160cdad5a68a71">playrho::d2::World::GetAnchorB()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a2e2f7487e6bca2b26a9dc6779a9bc72b">playrho::d2::World::GetGearJointConf()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a0469ef558d7b14efb4792c7f24084d7e">playrho::d2::World::GetJointTranslation()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ab7b59db43cee6a26c0433b69476b0c9b">playrho::d2::World::GetLinearVelocity()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ac93113a8f2585e325504a6b56b85329e">playrho::d2::World::GetLocalPoint()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae06bc4d6dc0dd90c8be5bb0227710c33">playrho::d2::World::GetLocalVector()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aabf27f5cfd9092be041a781d24cfa9a1">playrho::d2::World::GetLocation()</a>, <a class="el" href="structplayrho_1_1ToiOutput.html#a19b308c9b3b8f5292b9f3dad183c9d76">playrho::ToiOutput::GetToiViaSat()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a8128f59808ffb8ab56cc4d9528422b16">GetTransform0()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a3047f53ab4e594f414832db427f03d6c">GetTransform1()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ad4e88b3ed13792435ff7f7fe7bfe087a">GetTransformation()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae851807b71a13326be2635fb8af75ab6">playrho::d2::World::GetTransformation()</a>, <a class="el" href="classplayrho_1_1Contact.html#a53c028875bbee1fffcd3fc497bee2dc5">playrho::Contact::GetWorldManifold()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a2c7b440f52475ea8487d8f14898f232a">playrho::d2::World::GetWorldPoint()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#accaf3b08287d4bc8e5e5849d5b7278a8">playrho::d2::World::GetWorldVector()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a2e61d578b8ec391d98178299024b5c4f">playrho::d2::Body::operator==()</a>, <a class="el" href="group__RayCastGroup.html#ga694dc50f9191401bc87ab1abae2b05e9">playrho::d2::World::RayCast()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ab9ef983690f331d44c4133541cf75f52">playrho::d2::World::RotateAboutWorldPoint()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a76402b6c315dc2ed79b40b531306403a">playrho::d2::Body::SetLocation()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#abe6b45c9a1aeec496d83c00a6f587740">playrho::d2::World::SetMassData()</a>, <a class="el" href="ContactSolver_8hpp.html#a0fd21d441a78194f210e9f900bd3d1a4">playrho::GaussSeidel::SolvePositionConstraint()</a>, and <a class="el" href="group__TestPointGroup.html#gae87b356a8656d30d3b7b3a3251906f21">playrho::d2::World::TestPoint()</a>.</p>
 
 </div>
 </div>
@@ -15875,7 +15873,7 @@ template&lt;class T &gt; </div>
 
 <p>Gets the velocity. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho_1_1d2.html#adddd763be5890fad18f5a3dd9d2b4d38" title="Sets the body&#39;s velocity (linear and angular velocity).">SetVelocity(Body&amp; body, const Velocity&amp; value)</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a23">Body.cpp</a>, <a class="el" href="PulleyJoint_8cpp-example.html#a35">PulleyJoint.cpp</a>, <a class="el" href="RevoluteJoint_8cpp-example.html#a38">RevoluteJoint.cpp</a>, <a class="el" href="World_8cpp-example.html#a163">World.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a15">WorldBody.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a24">Body.cpp</a>, <a class="el" href="PulleyJoint_8cpp-example.html#a35">PulleyJoint.cpp</a>, <a class="el" href="RevoluteJoint_8cpp-example.html#a38">RevoluteJoint.cpp</a>, <a class="el" href="World_8cpp-example.html#a163">World.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a15">WorldBody.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a116c82c48643c1ef6199d27e9b9dd882">playrho::d2::World::GetAngularVelocity()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a973134610257ca826a0a4e81743eda3c">GetBodyConstraint()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#afb257e46e441021d64884e95c400fa0f">playrho::d2::World::GetLinearVelocity()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#acc05b211fd414f80784e7250c1f0b173">playrho::d2::World::GetVelocity()</a>, and <a class="el" href="classplayrho_1_1d2_1_1Body.html#a2e61d578b8ec391d98178299024b5c4f">playrho::d2::Body::operator==()</a>.</p>
@@ -20715,7 +20713,7 @@ template&lt;class F &gt; </div>
 
 <p>Sets the angular damping of the body. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho_1_1d2.html#a7543270614333c0aa69df56877a3a1bd" title="Gets the angular damping of the body.">GetAngularDamping(const Body&amp; body)</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a36">Body.cpp</a>, and <a class="el" href="World_8cpp-example.html#a94">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a37">Body.cpp</a>, and <a class="el" href="World_8cpp-example.html#a94">World.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a79dbcc9738c04b86acf653b8cab48971">playrho::d2::World::SetAngularDamping()</a>.</p>
@@ -21472,7 +21470,7 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 
 <p>Sets the destroyed property of the given body. </p>
 <dl class="section note"><dt>Note</dt><dd>This is only meaningfully used by the world implementation. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a30">Body.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a31">Body.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -22608,7 +22606,7 @@ template&lt;typename T &gt; </div>
 
 <p>Sets the linear damping of the body. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho_1_1d2.html#a19b401f474facc647922e54a7aa60aa8" title="Gets the linear damping of the body.">GetLinearDamping(const Body&amp; body)</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a35">Body.cpp</a>, and <a class="el" href="World_8cpp-example.html#a92">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a36">Body.cpp</a>, and <a class="el" href="World_8cpp-example.html#a92">World.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a9fd32bf6cda4a42e0b61db21fb7bfe5c">playrho::d2::World::SetLinearDamping()</a>.</p>
@@ -24234,7 +24232,7 @@ The value persists until you set or reset. </dd></dl>
 <dd>
 <code><a class="el" href="namespaceplayrho_1_1d2.html#a77de45b3fab735d0f87a0978a622a9c0" title="Gets the &quot;position 1&quot; Position information for the given body.">GetPosition1(const Body&amp; body)</a></code> will return a position equivalent to value given. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho_1_1d2.html#a798bf0d73d9cdbbaad16af6fd13cfed0" title="Gets the body&#39;s transformation.">GetTransformation(const Body&amp; body)</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a77de45b3fab735d0f87a0978a622a9c0" title="Gets the &quot;position 1&quot; Position information for the given body.">GetPosition1(const Body&amp; body)</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a32">Body.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a103">WorldBody.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a33">Body.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a103">WorldBody.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a76402b6c315dc2ed79b40b531306403a">playrho::d2::Body::SetLocation()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a46058bb93704b80b5e41bab8c0b5e66a">playrho::d2::World::SetTransform()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a2f675745ce151ddf090b0ee6ad9df9f0">playrho::d2::World::SetTransformation()</a>.</p>
@@ -27180,7 +27178,7 @@ This body's <code>GetVelocity</code> function returns zero linear and zero angul
 
 <p>Unsets the destroyed property of the given body. </p>
 <dl class="section note"><dt>Note</dt><dd>This is only meaningfully used by the world implementation. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a31">Body.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a32">Body.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -27545,7 +27543,7 @@ template&lt;class T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li>
-    <li class="footer">Generated on Wed Jan 17 2024 06:30:56 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sun Jan 21 2024 04:36:14 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

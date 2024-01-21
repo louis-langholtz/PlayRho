@@ -26,7 +26,6 @@ var structplayrho_1_1d2_1_1BodyConf =
     [ "GetAngle", "structplayrho_1_1d2_1_1BodyConf.html#a6e36744b63f83418fefcdc1642acbbf8", null ],
     [ "GetDefaultBodyConf", "structplayrho_1_1d2_1_1BodyConf.html#af6c1034a2366e6ef466253aea8a13829", null ],
     [ "GetLocation", "structplayrho_1_1d2_1_1BodyConf.html#af305801683ef38d8ef1fbd65a5f8fa55", null ],
-    [ "GetTransformation", "structplayrho_1_1d2_1_1BodyConf.html#a178733ef87c116856614750d49785cd5", null ],
     [ "operator!=", "structplayrho_1_1d2_1_1BodyConf.html#a50e186f203ad0d5f7c851058802978fd", null ],
     [ "operator==", "structplayrho_1_1d2_1_1BodyConf.html#a0106f5ff990330d8e8afcd906cefa75a", null ],
     [ "allowSleep", "structplayrho_1_1d2_1_1BodyConf.html#a9ff6df501796f81620a27a612c9cfa8b", null ],
