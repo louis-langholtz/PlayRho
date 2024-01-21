@@ -52,7 +52,8 @@ BodyConf GetBodyConf(const Body& body)
 
 Transformation GetTransformation(const BodyConf& conf) noexcept
 {
-    return {conf.sweep.pos0.linear, UnitVec::Get(conf.sweep.pos0.angular)};
+    // This must match what GetTransformation(Body{}) returns
+    return GetTransform1(conf.sweep);
 }
 
 } // namespace playrho::d2
