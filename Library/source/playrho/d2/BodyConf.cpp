@@ -50,10 +50,4 @@ BodyConf GetBodyConf(const Body& body)
     return def;
 }
 
-Transformation GetTransformation(const BodyConf& conf) noexcept
-{
-    // This must match what GetTransformation(Body{}) returns
-    return GetTransform1(conf.sweep);
-}
-
 } // namespace playrho::d2

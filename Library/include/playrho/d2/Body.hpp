@@ -99,8 +99,6 @@ public:
     /// @post <code>GetInvRotI()</code> returns <code>InvRotInertia{}</code> if
     ///   <code>bd.type != BodyType::Dynamic</code>, otherwise it returns value of
     ///   @a bd.invRotI.
-    /// @post <code>GetTransformation()</code> will return the value of
-    ///   <code>::playrho::d2::GetTransformation(const BodyConf&)</code> given @a bd.
     /// @post <code>GetVelocity()</code> will return the value as if
     ///   <code>SetVelocity(const Velocity&)</code> had been called with the values of
     ///   @a bd.linearVelocity and @a bd.angularVelocity as the velocity.

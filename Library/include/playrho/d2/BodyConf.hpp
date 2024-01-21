@@ -418,10 +418,6 @@ constexpr BodyConf GetDefaultBodyConf() noexcept
 /// @relatedalso Body
 BodyConf GetBodyConf(const Body& body);
 
-/// @brief Gets the transformation associated with the given configuration.
-/// @relatedalso BodyConf
-Transformation GetTransformation(const BodyConf& conf) noexcept;
-
 /// @brief Gets the location of the given configuration.
 /// @relatedalso BodyConf
 constexpr auto GetLocation(const BodyConf& conf) noexcept
