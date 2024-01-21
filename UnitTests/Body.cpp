@@ -139,14 +139,14 @@ TEST(Body, InvMassOnConstruction)
 
 TEST(Body, TransformationOnConstruction)
 {
-    EXPECT_EQ(
-        Body(BodyConf{}.UseLocation(Length2{10_m, 12_m}).UseAngle(90_deg)).GetTransformation(),
-        ::playrho::d2::GetTransformation(
-            BodyConf{}.UseLocation(Length2{10_m, 12_m}).UseAngle(90_deg)));
-    EXPECT_EQ(
-        Body(BodyConf{}.UseLocation(Length2{4_m, -3_m}).UseAngle(-32_deg)).GetTransformation(),
-        ::playrho::d2::GetTransformation(
-            BodyConf{}.UseLocation(Length2{4_m, -3_m}).UseAngle(-32_deg)));
+    {
+        const auto conf = BodyConf{}.UseLocation(Length2{10_m, 12_m}).UseAngle(90_deg);
+        EXPECT_EQ(Body(conf).GetTransformation(), GetTransform1(conf.sweep));
+    }
+    {
+        const auto conf = BodyConf{}.UseLocation(Length2{4_m, -3_m}).UseAngle(-32_deg);
+        EXPECT_EQ(Body(conf).GetTransformation(), GetTransform1(conf.sweep));
+    }
 }
 
 TEST(Body, VelocityOnConstruction)

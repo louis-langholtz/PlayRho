@@ -87,7 +87,7 @@ Body::FlagsType Body::GetFlags(const BodyConf& bd) noexcept
 }
 
 Body::Body(const BodyConf& bd)
-    : m_xf{::playrho::d2::GetTransformation(bd)},
+    : m_xf{GetTransform1(bd.sweep)},
       m_sweep{bd.sweep},
       m_flags{GetFlags(bd)},
       m_invMass{(bd.type == playrho::BodyType::Dynamic)

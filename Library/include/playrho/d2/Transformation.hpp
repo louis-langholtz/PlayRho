@@ -28,12 +28,12 @@
 // IWYU pragma: begin_exports
 
 #include <playrho/Vector2.hpp>
+
 #include <playrho/d2/UnitVec.hpp>
 
 // IWYU pragma: end_exports
 
-namespace playrho {
-namespace d2 {
+namespace playrho::d2 {
 
 struct BodyConf;
 
@@ -79,7 +79,9 @@ constexpr UnitVec GetDirection(const Transformation& value) noexcept
     return value.q;
 }
 
-} // namespace d2
+} // namespace playrho::d2
+
+namespace playrho {
 
 /// @brief Determines if the given value is valid.
 /// @relatedalso d2::Transformation

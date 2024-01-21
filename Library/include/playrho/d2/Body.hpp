@@ -451,14 +451,10 @@ private:
     static FlagsType GetFlags(const BodyConf& bd) noexcept;
 
     /// Transformation for body origin.
-    /// @note Also availble from <code>GetTransform1(m_sweep)</code>.
-    /// @note <code>m_xf.p == m_sweep.pos1.linear && m_xf.q ==
-    ///   UnitVec::Get(m_sweep.pos1.angular)</code>.
+    /// @note This is a cache of the result of <code>GetTransform1(m_sweep)</code>.
     Transformation m_xf;
 
     /// @brief Sweep motion for CCD.
-    /// @note <code>m_sweep.pos1.linear == m_xf.p && UnitVec::Get(m_sweep.pos1.angular) ==
-    ///   m_xf.q</code>.
     Sweep m_sweep;
 
     FlagsType m_flags = 0u; ///< Flags.
@@ -671,7 +667,7 @@ inline void Body::SetSweep(const Sweep& value) noexcept
 {
     assert(((m_flags & Body::e_velocityFlag) != 0) || value.pos0 == value.pos1);
     m_sweep = value;
-    m_xf = GetTransform1(value);
+    m_xf = GetTransform1(m_sweep);
 }
 
 inline void Body::SetPosition0(const Position& value) noexcept
@@ -684,7 +680,7 @@ inline void Body::SetPosition1(const Position& value) noexcept
 {
     assert(((m_flags & Body::e_velocityFlag) != 0) || m_sweep.pos1 == value);
     m_sweep.pos1 = value;
-    m_xf = ::playrho::d2::GetTransformation(value, m_sweep.localCenter);
+    m_xf = GetTransform1(m_sweep);
 }
 
 inline void Body::ResetAlpha0() noexcept
