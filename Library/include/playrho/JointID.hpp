@@ -34,12 +34,18 @@
 namespace playrho {
 
 /// @brief Joint identifier.
+/// @details A strongly typed identifier for uniquely identifying joints within @c d2::World
+///   instances. This is based on the @c JointCounter type as its underlying type.
+/// @see JointCounter, BodyID, ContactID, ShapeID, d2::Joint, d2::World.
 using JointID = detail::IndexingNamedType<JointCounter, struct JointIdentifier>;
 
 /// @brief Invalid joint ID value.
+/// @details A special, reserved value of a @c JointID that represents/identifies an _invalid_ joint.
+/// @see JointID, IsValid.
 constexpr auto InvalidJointID = static_cast<JointID>(static_cast<JointID::underlying_type>(-1));
 
-/// @brief Determines if the given value is valid.
+/// @brief Generic function interface for determining if the given value is valid.
+/// @see JointID, InvalidJointID.
 template <>
 constexpr bool IsValid(const JointID& value) noexcept
 {

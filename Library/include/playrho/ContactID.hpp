@@ -34,14 +34,20 @@
 
 namespace playrho {
 
-/// @brief Strongly typed identifier of contacts within @c World instances.
+/// @brief Contact identifier.
+/// @details A strongly typed identifier for uniquely identifying contacts within @c d2::World
+///   instances. This is based on the @c ContactCounter type as its underlying type.
+/// @see Contact, ContactCounter, BodyID, JointID, ShapeID, d2::World.
 using ContactID = detail::IndexingNamedType<ContactCounter, struct ContactIdentifier>;
 
 /// @brief Invalid contact ID value.
+/// @details A special, reserved value of a @c ContactID that represents/identifies an _invalid_ contact.
+/// @see ContactID, IsValid.
 constexpr auto InvalidContactID =
     static_cast<ContactID>(static_cast<ContactID::underlying_type>(-1));
 
-/// @brief Determines if the given value is valid.
+/// @brief Generic function interface for determining if the given value is valid.
+/// @see ContactID, InvalidContactID.
 template <>
 constexpr bool IsValid(const ContactID& value) noexcept
 {

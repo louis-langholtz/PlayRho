@@ -34,12 +34,18 @@
 namespace playrho {
 
 /// @brief Shape identifier.
+/// @details A strongly typed identifier for uniquely identifying shapes within @c d2::World
+///   instances. This is based on the @c ShapeCounter type as its underlying type.
+/// @see ShapeCounter, BodyID, ContactID, JointID, d2::Shape, d2::World.
 using ShapeID = detail::IndexingNamedType<ShapeCounter, struct ShapeIdentifier>;
 
-/// @brief Invalid fixture ID value.
+/// @brief Invalid shape ID value.
+/// @details A special, reserved value of a @c ShapeID that represents/identifies an _invalid_ shape.
+/// @see ShapeID, IsValid.
 constexpr auto InvalidShapeID = static_cast<ShapeID>(static_cast<ShapeID::underlying_type>(-1));
 
-/// @brief Determines if the given value is valid.
+/// @brief Generic function interface for determining if the given value is valid.
+/// @see ShapeID, InvalidShapeID.
 template <>
 constexpr bool IsValid(const ShapeID& value) noexcept
 {
