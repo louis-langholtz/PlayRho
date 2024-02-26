@@ -43,8 +43,7 @@ using ContactID = detail::IndexingNamedType<ContactCounter, struct ContactIdenti
 /// @brief Invalid contact ID value.
 /// @details A special, reserved value of a @c ContactID that represents/identifies an _invalid_ contact.
 /// @see ContactID, IsValid.
-constexpr auto InvalidContactID =
-    static_cast<ContactID>(static_cast<ContactID::underlying_type>(-1));
+constexpr auto InvalidContactID = ContactID{static_cast<ContactID::underlying_type>(-1)};
 
 /// @brief Determines validity of given value by comparing against <code>InvalidContactID</code>.
 /// @return true if not equal to @c InvalidContactID , else false.

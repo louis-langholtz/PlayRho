@@ -42,7 +42,7 @@ using JointID = detail::IndexingNamedType<JointCounter, struct JointIdentifier>;
 /// @brief Invalid joint ID value.
 /// @details A special, reserved value of a @c JointID that represents/identifies an _invalid_ joint.
 /// @see JointID, IsValid.
-constexpr auto InvalidJointID = static_cast<JointID>(static_cast<JointID::underlying_type>(-1));
+constexpr auto InvalidJointID = JointID{static_cast<JointID::underlying_type>(-1)};
 
 /// @brief Determines validity of given value by comparing against <code>InvalidJointID</code>.
 /// @return true if not equal to @c InvalidJointID , else false.
