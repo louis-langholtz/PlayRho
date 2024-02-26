@@ -42,7 +42,7 @@ using BodyID = detail::IndexingNamedType<BodyCounter, struct BodyIdentifier>;
 /// @brief Invalid body ID value.
 /// @details A special, reserved value of a @c BodyID that represents/identifies an _invalid_ body.
 /// @see BodyID, IsValid.
-constexpr auto InvalidBodyID = static_cast<BodyID>(static_cast<BodyID::underlying_type>(-1));
+constexpr auto InvalidBodyID = BodyID{static_cast<BodyID::underlying_type>(-1)};
 
 /// @brief Determines validity of given value by comparing against <code>InvalidBodyID</code>.
 /// @return true if not equal to @c InvalidBodyID , else false.

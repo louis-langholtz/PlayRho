@@ -42,7 +42,7 @@ using ShapeID = detail::IndexingNamedType<ShapeCounter, struct ShapeIdentifier>;
 /// @brief Invalid shape ID value.
 /// @details A special, reserved value of a @c ShapeID that represents/identifies an _invalid_ shape.
 /// @see ShapeID, IsValid.
-constexpr auto InvalidShapeID = static_cast<ShapeID>(static_cast<ShapeID::underlying_type>(-1));
+constexpr auto InvalidShapeID = ShapeID{static_cast<ShapeID::underlying_type>(-1)};
 
 /// @brief Determines validity of given value by comparing against <code>InvalidShapeID</code>.
 /// @return true if not equal to @c InvalidShapeID , else false.
