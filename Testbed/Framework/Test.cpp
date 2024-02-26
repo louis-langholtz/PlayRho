@@ -762,7 +762,7 @@ bool DrawWorld(Drawer& drawer, const World& world, const Test::FixtureSet& selec
     if (stepSettings.drawAABBs) {
         const auto color = Color{0.9f, 0.3f, 0.9f};
         const auto root = GetTree(world).GetRootIndex();
-        if (root != DynamicTree::GetInvalidSize()) {
+        if (root != DynamicTree::InvalidSize) {
             const auto worldAabb = GetTree(world).GetAABB(root);
             Draw(drawer, worldAabb, color);
             Query(GetTree(world), worldAabb, [&](DynamicTree::Size id) {
