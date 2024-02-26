@@ -44,7 +44,8 @@ using BodyID = detail::IndexingNamedType<BodyCounter, struct BodyIdentifier>;
 /// @see BodyID, IsValid.
 constexpr auto InvalidBodyID = static_cast<BodyID>(static_cast<BodyID::underlying_type>(-1));
 
-/// @brief Generic function interface for determining if the given value is valid.
+/// @brief Determines validity of given value by comparing against <code>InvalidBodyID</code>.
+/// @return true if not equal to @c InvalidBodyID , else false.
 /// @see BodyID, InvalidBodyID.
 constexpr auto IsValid(const BodyID& value) noexcept -> bool
 {

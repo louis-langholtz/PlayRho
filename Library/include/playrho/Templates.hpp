@@ -37,9 +37,9 @@ namespace playrho {
 
 /// @brief Determines if the given value is valid, using the equality operator.
 /// @details Any value for which the comparison of that value with itself is @c true
-/// is considered valid by this function, and any value for which this comparison is @c false
-/// is said to be not valid. If this seems like an odd algorithm, be aware that this is
-/// essentially how floating point @c NaN (not-a-number) works.
+///   is considered valid by this function, and any value for which this comparison is
+///   @c false is said to be not valid. If this seems like an odd algorithm, be aware
+///   that this is essentially how floating point @c NaN (not-a-number) works.
 /// @see https://en.wikipedia.org/wiki/NaN
 template <typename T>
 constexpr auto IsValid(const T& value) noexcept -> bool

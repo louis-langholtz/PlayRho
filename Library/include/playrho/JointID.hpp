@@ -44,7 +44,8 @@ using JointID = detail::IndexingNamedType<JointCounter, struct JointIdentifier>;
 /// @see JointID, IsValid.
 constexpr auto InvalidJointID = static_cast<JointID>(static_cast<JointID::underlying_type>(-1));
 
-/// @brief Generic function interface for determining if the given value is valid.
+/// @brief Determines validity of given value by comparing against <code>InvalidJointID</code>.
+/// @return true if not equal to @c InvalidJointID , else false.
 /// @see JointID, InvalidJointID.
 constexpr auto IsValid(const JointID& value) noexcept -> bool
 {
