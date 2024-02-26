@@ -46,7 +46,8 @@ using ContactID = detail::IndexingNamedType<ContactCounter, struct ContactIdenti
 constexpr auto InvalidContactID =
     static_cast<ContactID>(static_cast<ContactID::underlying_type>(-1));
 
-/// @brief Generic function interface for determining if the given value is valid.
+/// @brief Determines validity of given value by comparing against <code>InvalidContactID</code>.
+/// @return true if not equal to @c InvalidContactID , else false.
 /// @see ContactID, InvalidContactID.
 constexpr auto IsValid(const ContactID& value) noexcept -> bool
 {

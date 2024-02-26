@@ -44,7 +44,8 @@ using ShapeID = detail::IndexingNamedType<ShapeCounter, struct ShapeIdentifier>;
 /// @see ShapeID, IsValid.
 constexpr auto InvalidShapeID = static_cast<ShapeID>(static_cast<ShapeID::underlying_type>(-1));
 
-/// @brief Generic function interface for determining if the given value is valid.
+/// @brief Determines validity of given value by comparing against <code>InvalidShapeID</code>.
+/// @return true if not equal to @c InvalidShapeID , else false.
 /// @see ShapeID, InvalidShapeID.
 constexpr auto IsValid(const ShapeID& value) noexcept -> bool
 {
