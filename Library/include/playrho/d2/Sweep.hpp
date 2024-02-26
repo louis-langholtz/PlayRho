@@ -116,8 +116,7 @@ namespace playrho {
 
 /// @brief Determines if the given value is valid.
 /// @relatedalso d2::Sweep
-template <>
-constexpr bool IsValid(const d2::Sweep& value) noexcept
+constexpr auto IsValid(const d2::Sweep& value) noexcept -> bool
 {
     return IsValid(value.pos0) && IsValid(value.pos1) && IsValid(value.localCenter) &&
            IsValid(value.alpha0);

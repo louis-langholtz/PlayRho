@@ -46,8 +46,7 @@ constexpr auto InvalidShapeID = static_cast<ShapeID>(static_cast<ShapeID::underl
 
 /// @brief Generic function interface for determining if the given value is valid.
 /// @see ShapeID, InvalidShapeID.
-template <>
-constexpr bool IsValid(const ShapeID& value) noexcept
+constexpr auto IsValid(const ShapeID& value) noexcept -> bool
 {
     return value != InvalidShapeID;
 }

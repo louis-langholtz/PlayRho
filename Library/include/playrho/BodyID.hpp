@@ -46,8 +46,7 @@ constexpr auto InvalidBodyID = static_cast<BodyID>(static_cast<BodyID::underlyin
 
 /// @brief Generic function interface for determining if the given value is valid.
 /// @see BodyID, InvalidBodyID.
-template <>
-constexpr bool IsValid(const BodyID& value) noexcept
+constexpr auto IsValid(const BodyID& value) noexcept -> bool
 {
     return value != InvalidBodyID;
 }

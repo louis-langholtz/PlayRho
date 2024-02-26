@@ -48,8 +48,7 @@ constexpr auto InvalidContactID =
 
 /// @brief Generic function interface for determining if the given value is valid.
 /// @see ContactID, InvalidContactID.
-template <>
-constexpr bool IsValid(const ContactID& value) noexcept
+constexpr auto IsValid(const ContactID& value) noexcept -> bool
 {
     return value != InvalidContactID;
 }

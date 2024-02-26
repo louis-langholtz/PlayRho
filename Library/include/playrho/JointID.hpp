@@ -46,8 +46,7 @@ constexpr auto InvalidJointID = static_cast<JointID>(static_cast<JointID::underl
 
 /// @brief Generic function interface for determining if the given value is valid.
 /// @see JointID, InvalidJointID.
-template <>
-constexpr bool IsValid(const JointID& value) noexcept
+constexpr auto IsValid(const JointID& value) noexcept -> bool
 {
     return value != InvalidJointID;
 }
