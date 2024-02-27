@@ -22,8 +22,8 @@ jobs:
 
     - name: Prerequisites
       run: |
-        sudo apt update
-        sudo apt install doxygen graphviz
+        sudo apt-get -y update
+        sudo apt-get -y install doxygen graphviz
 
     - name: Configure
       run: >
