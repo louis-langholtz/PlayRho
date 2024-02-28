@@ -127,24 +127,20 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a664fbedb33a4af92883576fbee62fd28"><td class="memItemLeft" align="right" valign="top"><a id="a664fbedb33a4af92883576fbee62fd28"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">playrho::ShapeID</a> = detail::IndexingNamedType&lt; ShapeCounter, struct ShapeIdentifier &gt;</td></tr>
-<tr class="memdesc:a664fbedb33a4af92883576fbee62fd28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shape identifier. <br /></td></tr>
+<tr class="memitem:a664fbedb33a4af92883576fbee62fd28"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">playrho::ShapeID</a> = detail::IndexingNamedType&lt; ShapeCounter, struct ShapeIdentifier &gt;</td></tr>
+<tr class="memdesc:a664fbedb33a4af92883576fbee62fd28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shape identifier.  <a href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">More...</a><br /></td></tr>
 <tr class="separator:a664fbedb33a4af92883576fbee62fd28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:abcaa90580702a0b52b67e21d863eaf83"><td class="memItemLeft" align="right" valign="top"><a id="abcaa90580702a0b52b67e21d863eaf83"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:abcaa90580702a0b52b67e21d863eaf83"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#abcaa90580702a0b52b67e21d863eaf83">playrho::IsValid</a> (const ShapeID &amp;value) noexcept</td></tr>
-<tr class="memdesc:abcaa90580702a0b52b67e21d863eaf83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given value is valid. <br /></td></tr>
-<tr class="separator:abcaa90580702a0b52b67e21d863eaf83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a198a6103b7b9188fd054ce27c8f6dea0"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a198a6103b7b9188fd054ce27c8f6dea0">playrho::IsValid</a> (const ShapeID &amp;value) noexcept -&gt; bool</td></tr>
+<tr class="memdesc:a198a6103b7b9188fd054ce27c8f6dea0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines validity of given value by comparing against <code>InvalidShapeID</code>.  <a href="namespaceplayrho.html#a198a6103b7b9188fd054ce27c8f6dea0">More...</a><br /></td></tr>
+<tr class="separator:a198a6103b7b9188fd054ce27c8f6dea0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a7cf47dd833aad177ac33142cfc5e6bc3"><td class="memItemLeft" align="right" valign="top"><a id="a7cf47dd833aad177ac33142cfc5e6bc3"></a>
-constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7cf47dd833aad177ac33142cfc5e6bc3">playrho::InvalidShapeID</a> = static_cast&lt;ShapeID&gt;(static_cast&lt;ShapeID::underlying_type&gt;(-1))</td></tr>
-<tr class="memdesc:a7cf47dd833aad177ac33142cfc5e6bc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid fixture ID value. <br /></td></tr>
+<tr class="memitem:a7cf47dd833aad177ac33142cfc5e6bc3"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7cf47dd833aad177ac33142cfc5e6bc3">playrho::InvalidShapeID</a> = ShapeID{static_cast&lt;ShapeID::underlying_type&gt;(-1)}</td></tr>
+<tr class="memdesc:a7cf47dd833aad177ac33142cfc5e6bc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid shape ID value.  <a href="namespaceplayrho.html#a7cf47dd833aad177ac33142cfc5e6bc3">More...</a><br /></td></tr>
 <tr class="separator:a7cf47dd833aad177ac33142cfc5e6bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -155,7 +151,7 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="ShapeID_8hpp.html">ShapeID.hpp</a></li>
-    <li class="footer">Generated on Sun Jan 21 2024 04:36:14 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Feb 28 2024 04:37:20 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

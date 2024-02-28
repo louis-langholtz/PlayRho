@@ -127,24 +127,20 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a8e3114be8fb50493389d7991db4f2b3d"><td class="memItemLeft" align="right" valign="top"><a id="a8e3114be8fb50493389d7991db4f2b3d"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a8e3114be8fb50493389d7991db4f2b3d">playrho::JointID</a> = detail::IndexingNamedType&lt; JointCounter, struct JointIdentifier &gt;</td></tr>
-<tr class="memdesc:a8e3114be8fb50493389d7991db4f2b3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joint identifier. <br /></td></tr>
+<tr class="memitem:a8e3114be8fb50493389d7991db4f2b3d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a8e3114be8fb50493389d7991db4f2b3d">playrho::JointID</a> = detail::IndexingNamedType&lt; JointCounter, struct JointIdentifier &gt;</td></tr>
+<tr class="memdesc:a8e3114be8fb50493389d7991db4f2b3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joint identifier.  <a href="namespaceplayrho.html#a8e3114be8fb50493389d7991db4f2b3d">More...</a><br /></td></tr>
 <tr class="separator:a8e3114be8fb50493389d7991db4f2b3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a7144be2e84f00033cbbadfae783092ed"><td class="memItemLeft" align="right" valign="top"><a id="a7144be2e84f00033cbbadfae783092ed"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:a7144be2e84f00033cbbadfae783092ed"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7144be2e84f00033cbbadfae783092ed">playrho::IsValid</a> (const JointID &amp;value) noexcept</td></tr>
-<tr class="memdesc:a7144be2e84f00033cbbadfae783092ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given value is valid. <br /></td></tr>
-<tr class="separator:a7144be2e84f00033cbbadfae783092ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67a0292329580dd0e37334536894c103"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a67a0292329580dd0e37334536894c103">playrho::IsValid</a> (const JointID &amp;value) noexcept -&gt; bool</td></tr>
+<tr class="memdesc:a67a0292329580dd0e37334536894c103"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines validity of given value by comparing against <code>InvalidJointID</code>.  <a href="namespaceplayrho.html#a67a0292329580dd0e37334536894c103">More...</a><br /></td></tr>
+<tr class="separator:a67a0292329580dd0e37334536894c103"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a67d10419efd6effdd41617992a76cbcd"><td class="memItemLeft" align="right" valign="top"><a id="a67d10419efd6effdd41617992a76cbcd"></a>
-constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a67d10419efd6effdd41617992a76cbcd">playrho::InvalidJointID</a> = static_cast&lt;JointID&gt;(static_cast&lt;JointID::underlying_type&gt;(-1))</td></tr>
-<tr class="memdesc:a67d10419efd6effdd41617992a76cbcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid joint ID value. <br /></td></tr>
+<tr class="memitem:a67d10419efd6effdd41617992a76cbcd"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a67d10419efd6effdd41617992a76cbcd">playrho::InvalidJointID</a> = JointID{static_cast&lt;JointID::underlying_type&gt;(-1)}</td></tr>
+<tr class="memdesc:a67d10419efd6effdd41617992a76cbcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid joint ID value.  <a href="namespaceplayrho.html#a67d10419efd6effdd41617992a76cbcd">More...</a><br /></td></tr>
 <tr class="separator:a67d10419efd6effdd41617992a76cbcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -155,7 +151,7 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="JointID_8hpp.html">JointID.hpp</a></li>
-    <li class="footer">Generated on Sun Jan 21 2024 04:36:14 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Feb 28 2024 04:37:20 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

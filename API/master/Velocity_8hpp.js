@@ -3,7 +3,7 @@ var Velocity_8hpp =
     [ "Velocity", "structplayrho_1_1d2_1_1Velocity.html", "structplayrho_1_1d2_1_1Velocity" ],
     [ "VelocityPair", "Velocity_8hpp.html#aa577189e0996ba8d7897fa12b80726c8", null ],
     [ "Cap", "Velocity_8hpp.html#a92a5c879d39bc3aadbf6d19ae5104b07", null ],
-    [ "IsValid", "Velocity_8hpp.html#a904477c2aa4c83f49b1c55f393bd79d2", null ],
+    [ "IsValid", "Velocity_8hpp.html#a608da0582395c57d7826075e809d224b", null ],
     [ "operator!=", "Velocity_8hpp.html#a50aa6c2021393ced745d056c34b3bc07", null ],
     [ "operator*", "Velocity_8hpp.html#a285d8d7bdef58a4c7210516b1060beef", null ],
     [ "operator*", "Velocity_8hpp.html#a5d52ed09352bfd1dd80dc6b138a19f55", null ],

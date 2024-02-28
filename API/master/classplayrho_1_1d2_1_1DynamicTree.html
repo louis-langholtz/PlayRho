@@ -211,14 +211,6 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a660dd80a96856e7e5a18982253db0916"><td class="memItemLeft" align="right" valign="top"><a id="a660dd80a96856e7e5a18982253db0916"></a>
-static constexpr <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#abec0ebc4e0d92378ca9193116228b500">Height</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a660dd80a96856e7e5a18982253db0916">GetInvalidHeight</a> () noexcept</td></tr>
-<tr class="memdesc:a660dd80a96856e7e5a18982253db0916"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the invalid height value. <br /></td></tr>
-<tr class="separator:a660dd80a96856e7e5a18982253db0916"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acde73f39b7e56017e0ba2f172ab6da7f"><td class="memItemLeft" align="right" valign="top"><a id="acde73f39b7e56017e0ba2f172ab6da7f"></a>
-static constexpr <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#af442fc7c6152cefb54928165e49fa80d">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f">GetInvalidSize</a> () noexcept</td></tr>
-<tr class="memdesc:acde73f39b7e56017e0ba2f172ab6da7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the invalid size value. <br /></td></tr>
-<tr class="separator:acde73f39b7e56017e0ba2f172ab6da7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76d618b561088968b813f343d71803b0"><td class="memItemLeft" align="right" valign="top"><a id="a76d618b561088968b813f343d71803b0"></a>
 static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a76d618b561088968b813f343d71803b0">IsBranch</a> (<a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#abec0ebc4e0d92378ca9193116228b500">Height</a> value) noexcept</td></tr>
 <tr class="memdesc:a76d618b561088968b813f343d71803b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given height is a height for a "branch" node. <br /></td></tr>
@@ -238,6 +230,10 @@ Static Public Attributes</h2></td></tr>
 static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a7933229b46b99e1c5d1858da7f3266c5">InvalidHeight</a> = static_cast&lt;<a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#abec0ebc4e0d92378ca9193116228b500">Height</a>&gt;(-1)</td></tr>
 <tr class="memdesc:a7933229b46b99e1c5d1858da7f3266c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid height constant value. <br /></td></tr>
 <tr class="separator:a7933229b46b99e1c5d1858da7f3266c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac06b5df05d88e61f749b6ef112e1af2c"><td class="memItemLeft" align="right" valign="top"><a id="ac06b5df05d88e61f749b6ef112e1af2c"></a>
+static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ac06b5df05d88e61f749b6ef112e1af2c">InvalidSize</a> = static_cast&lt;<a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#af442fc7c6152cefb54928165e49fa80d">Size</a>&gt;(-1)</td></tr>
+<tr class="memdesc:ac06b5df05d88e61f749b6ef112e1af2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid size constant value. <br /></td></tr>
+<tr class="separator:ac06b5df05d88e61f749b6ef112e1af2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -341,7 +337,7 @@ Nodes are pooled and relocatable, so we use node indices rather than pointers.</
 <dd>
 <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a211b3f8b163604b56db4fa3887fc2f43" title="Gets the current count of allocated nodes.">GetNodeCount()</a></code> returns 0. </dd>
 <dd>
-<code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a6a84cb18d4e07355e33e01fc062974a3" title="Gets the free index.">GetFreeIndex()</a></code> and <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ad8f642f8240c30f686f9db11533a2b51" title="Gets the index of the &quot;root&quot; node if this tree has one.">GetRootIndex()</a></code> return <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">GetInvalidSize()</a></code>. </dd></dl>
+<code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a6a84cb18d4e07355e33e01fc062974a3" title="Gets the free index.">GetFreeIndex()</a></code> and <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ad8f642f8240c30f686f9db11533a2b51" title="Gets the index of the &quot;root&quot; node if this tree has one.">GetRootIndex()</a></code> return <code>InvalidSize</code>. </dd></dl>
 
 </div>
 </div>
@@ -380,7 +376,7 @@ Nodes are pooled and relocatable, so we use node indices rather than pointers.</
 <dd>
 <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a211b3f8b163604b56db4fa3887fc2f43" title="Gets the current count of allocated nodes.">GetNodeCount()</a></code> returns 0. </dd>
 <dd>
-<code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a6a84cb18d4e07355e33e01fc062974a3" title="Gets the free index.">GetFreeIndex()</a></code> and <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ad8f642f8240c30f686f9db11533a2b51" title="Gets the index of the &quot;root&quot; node if this tree has one.">GetRootIndex()</a></code> return <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">GetInvalidSize()</a></code>. </dd></dl>
+<code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a6a84cb18d4e07355e33e01fc062974a3" title="Gets the free index.">GetFreeIndex()</a></code> and <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ad8f642f8240c30f686f9db11533a2b51" title="Gets the index of the &quot;root&quot; node if this tree has one.">GetRootIndex()</a></code> return <code>InvalidSize</code>. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::bad_alloc</td><td>If unable to allocate non-zero sized memory. </td></tr>
@@ -445,9 +441,9 @@ Nodes are pooled and relocatable, so we use node indices rather than pointers.</
 <dd>
 <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a211b3f8b163604b56db4fa3887fc2f43" title="Gets the current count of allocated nodes.">GetNodeCount()</a></code> will return 0. </dd>
 <dd>
-<code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ad8f642f8240c30f686f9db11533a2b51" title="Gets the index of the &quot;root&quot; node if this tree has one.">GetRootIndex()</a></code> will return <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">GetInvalidSize()</a></code>. </dd>
+<code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ad8f642f8240c30f686f9db11533a2b51" title="Gets the index of the &quot;root&quot; node if this tree has one.">GetRootIndex()</a></code> will return <code>InvalidSize</code>. </dd>
 <dd>
-<code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a6a84cb18d4e07355e33e01fc062974a3" title="Gets the free index.">GetFreeIndex()</a></code> will return 0 if this tree had any node capacity, else the value of <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">GetInvalidSize()</a></code>. </dd></dl>
+<code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a6a84cb18d4e07355e33e01fc062974a3" title="Gets the free index.">GetFreeIndex()</a></code> will return 0 if this tree had any node capacity, else the value of <code>InvalidSize</code>. </dd></dl>
 
 </div>
 </div>
@@ -481,13 +477,13 @@ Nodes are pooled and relocatable, so we use node indices rather than pointers.</
 <p>Creates a leaf node for a tight fitting AABB and the given data. </p><dl class="section note"><dt>Note</dt><dd>The indices of leaf nodes that have been destroyed get reused for new nodes. </dd></dl>
 <dl class="section pre"><dt>Precondition</dt><dd>The number of leaves already allocated (as reported by <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a835291d0eb5b8bf966c76e2ab4f4e3fe" title="Gets the current leaf node count.">GetLeafCount()</a></code>) is less than <code>std::numeric_limits&lt;Size&gt;::max()</code>. </dd>
 <dd>
-The number of nodes already allocated (as reported by <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a211b3f8b163604b56db4fa3887fc2f43" title="Gets the current count of allocated nodes.">GetNodeCount()</a></code>) is at least one or two less than <code>std::numeric_limits&lt;Size&gt;::max()</code> depending on whether root index is <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">GetInvalidSize()</a></code> or not. </dd></dl>
-<dl class="section post"><dt>Postcondition</dt><dd>If the root index had been the <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">GetInvalidSize()</a></code>, then it will be set to the index returned from this function. </dd>
+The number of nodes already allocated (as reported by <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a211b3f8b163604b56db4fa3887fc2f43" title="Gets the current count of allocated nodes.">GetNodeCount()</a></code>) is at least one or two less than <code>std::numeric_limits&lt;Size&gt;::max()</code> depending on whether root index is <code>InvalidSize</code> or not. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>If the root index had been the <code>InvalidSize</code>, then it will be set to the index returned from this function. </dd>
 <dd>
 The leaf count per <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a835291d0eb5b8bf966c76e2ab4f4e3fe" title="Gets the current leaf node count.">GetLeafCount()</a></code> is incremented by one. </dd>
 <dd>
-The node count (as reported by <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a211b3f8b163604b56db4fa3887fc2f43" title="Gets the current count of allocated nodes.">GetNodeCount()</a></code>) will be incremented by one or two (if the root index had not been <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">GetInvalidSize()</a></code>). </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>The index of the created leaf node. This will be a value not equal to <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">GetInvalidSize()</a></code>. </dd></dl>
+The node count (as reported by <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a211b3f8b163604b56db4fa3887fc2f43" title="Gets the current count of allocated nodes.">GetNodeCount()</a></code>) will be incremented by one or two (if the root index had not been <code>InvalidSize</code>). </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The index of the created leaf node. This will be a value not equal to <code>InvalidSize</code>. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::bad_alloc</td><td>If unable to allocate necessary memory. If this exception is thrown, this function has no effect. </td></tr>
@@ -561,7 +557,7 @@ The node count (as reported by <code><a class="el" href="classplayrho_1_1d2_1_1D
 
 <p>Finds first node which references the given index. </p>
 <dl class="section note"><dt>Note</dt><dd>Primarily intended for unit testing and/or debugging. </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>Index of node referencing the given index, or the value of <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">GetInvalidSize()</a></code>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Index of node referencing the given index, or the value of <code>InvalidSize</code>. </dd></dl>
 
 </div>
 </div>
@@ -901,7 +897,7 @@ For used nodes (leaf or branch nodes), this is the index to the "parent" node. <
 
 <p>Gets the index of the "root" node if this tree has one. </p>
 <dl class="section note"><dt>Note</dt><dd>If the tree has a root node, then the "other" property of this node will be the invalid size. </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">GetInvalidSize()</a></code> if this tree is "empty", else index to "root" node. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><code>InvalidSize</code> if this tree is "empty", else index to "root" node. </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a52ca8acb99e3c3591d13ca912282470e">playrho::d2::Query()</a>, and <a class="el" href="group__RayCastGroup.html#gadf0ec62e1852e3bc9b017eae4a5616b4">playrho::d2::RayCast()</a>.</p>
 
@@ -1110,8 +1106,8 @@ The shift formula is: <code>position -= newOrigin</code>. </dd></dl>
 </div><div class="memdoc">
 
 <p>Finds index of node matching given contactble using a linear search. </p>
-<dl class="section return"><dt>Returns</dt><dd>Node index or <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">DynamicTree::GetInvalidSize()</a></code>. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f" title="Gets the invalid size value.">DynamicTree::GetInvalidSize()</a>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Node index or <code><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ac06b5df05d88e61f749b6ef112e1af2c" title="Invalid size constant value.">DynamicTree::InvalidSize</a></code>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ac06b5df05d88e61f749b6ef112e1af2c" title="Invalid size constant value.">DynamicTree::InvalidSize</a>. </dd></dl>
 
 </div>
 </div>
@@ -1223,7 +1219,7 @@ The shift formula is: <code>position -= newOrigin</code>. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html">DynamicTree</a></li>
-    <li class="footer">Generated on Sun Jan 21 2024 04:36:14 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Feb 28 2024 04:37:20 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

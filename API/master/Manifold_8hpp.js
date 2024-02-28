@@ -10,7 +10,7 @@ var Manifold_8hpp =
     [ "GetManifold", "Manifold_8hpp.html#af9c6bf3946b74280a56587fb4859a624", null ],
     [ "GetManifoldConf", "Manifold_8hpp.html#a095c59023434207efeda09c32649d24b", null ],
     [ "GetName", "Manifold_8hpp.html#afe0be704277b108db26e28108c610174", null ],
-    [ "IsValid", "Manifold_8hpp.html#ab903c93dd80fcff6148a66dbc7c89687", null ],
+    [ "IsValid", "Manifold_8hpp.html#a0971ced35d0dd33a31810edd8945b657", null ],
     [ "operator!=", "Manifold_8hpp.html#a5f506fbf9ce307b2322e83b0b547f599", null ],
     [ "operator!=", "Manifold_8hpp.html#a32ec204c7b30df76f2c52667740c6b87", null ],
     [ "operator==", "Manifold_8hpp.html#a6fc49d51f874cf1b745f4c2a9ccb8a38", null ],

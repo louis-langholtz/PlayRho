@@ -16,8 +16,6 @@ var classplayrho_1_1d2_1_1DynamicTree =
     [ "GetBranchData", "classplayrho_1_1d2_1_1DynamicTree.html#a6873a2cdc8d8a5b020faa35d3ad84882", null ],
     [ "GetFreeIndex", "classplayrho_1_1d2_1_1DynamicTree.html#a6a84cb18d4e07355e33e01fc062974a3", null ],
     [ "GetHeight", "classplayrho_1_1d2_1_1DynamicTree.html#a4c6bccb9bc6df8db71421e3ef32d001c", null ],
-    [ "GetInvalidHeight", "classplayrho_1_1d2_1_1DynamicTree.html#a660dd80a96856e7e5a18982253db0916", null ],
-    [ "GetInvalidSize", "classplayrho_1_1d2_1_1DynamicTree.html#acde73f39b7e56017e0ba2f172ab6da7f", null ],
     [ "GetLeafCount", "classplayrho_1_1d2_1_1DynamicTree.html#a835291d0eb5b8bf966c76e2ab4f4e3fe", null ],
     [ "GetLeafData", "classplayrho_1_1d2_1_1DynamicTree.html#a956a39ab82498fb7d21e8d4781dd5a97", null ],
     [ "GetNode", "classplayrho_1_1d2_1_1DynamicTree.html#a9f5b3516da13f26078697dc72840425b", null ],
@@ -38,5 +36,6 @@ var classplayrho_1_1d2_1_1DynamicTree =
     [ "GetHeight", "classplayrho_1_1d2_1_1DynamicTree.html#a72265a3c2d4511e74df6ab4d13112f6d", null ],
     [ "swap", "classplayrho_1_1d2_1_1DynamicTree.html#a778697779a16cce60de39b6dee75a75d", null ],
     [ "TestOverlap", "classplayrho_1_1d2_1_1DynamicTree.html#a905424c61ac9933179b91eb12ac0d537", null ],
-    [ "InvalidHeight", "classplayrho_1_1d2_1_1DynamicTree.html#a7933229b46b99e1c5d1858da7f3266c5", null ]
+    [ "InvalidHeight", "classplayrho_1_1d2_1_1DynamicTree.html#a7933229b46b99e1c5d1858da7f3266c5", null ],
+    [ "InvalidSize", "classplayrho_1_1d2_1_1DynamicTree.html#ac06b5df05d88e61f749b6ef112e1af2c", null ]
 ];

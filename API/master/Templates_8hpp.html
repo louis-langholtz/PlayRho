@@ -184,16 +184,14 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ad559996a9d085eb07a18b5b88525761f"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ad559996a9d085eb07a18b5b88525761f">playrho::EraseFirst</a> (T &amp;container, const U &amp;value) -&gt; decltype(container.erase(find(begin(container), end(container), value)) !=end(container))</td></tr>
 <tr class="memdesc:ad559996a9d085eb07a18b5b88525761f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience template function for erasing first found value from container.  <a href="namespaceplayrho.html#ad559996a9d085eb07a18b5b88525761f">More...</a><br /></td></tr>
 <tr class="separator:ad559996a9d085eb07a18b5b88525761f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a048e0ad2c0fac1472430520c115466eb"><td class="memItemLeft" align="right" valign="top"><a id="a048e0ad2c0fac1472430520c115466eb"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:a048e0ad2c0fac1472430520c115466eb"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a048e0ad2c0fac1472430520c115466eb">playrho::IsValid</a> (const std::size_t &amp;value) noexcept</td></tr>
-<tr class="memdesc:a048e0ad2c0fac1472430520c115466eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given value is valid. <br /></td></tr>
-<tr class="separator:a048e0ad2c0fac1472430520c115466eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7dde95b5e9b50eb6552368d0c57cfc88"><td class="memTemplParams" colspan="2"><a id="a7dde95b5e9b50eb6552368d0c57cfc88"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a7dde95b5e9b50eb6552368d0c57cfc88"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7dde95b5e9b50eb6552368d0c57cfc88">playrho::IsValid</a> (const T &amp;value) noexcept</td></tr>
-<tr class="memdesc:a7dde95b5e9b50eb6552368d0c57cfc88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given value is valid. <br /></td></tr>
-<tr class="separator:a7dde95b5e9b50eb6552368d0c57cfc88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3029c7a84e0a27a87863cf6d084f95b1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a3029c7a84e0a27a87863cf6d084f95b1"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a3029c7a84e0a27a87863cf6d084f95b1">playrho::IsValid</a> (const T &amp;value) noexcept -&gt; bool</td></tr>
+<tr class="memdesc:a3029c7a84e0a27a87863cf6d084f95b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given value is valid, using the equality operator.  <a href="namespaceplayrho.html#a3029c7a84e0a27a87863cf6d084f95b1">More...</a><br /></td></tr>
+<tr class="separator:a3029c7a84e0a27a87863cf6d084f95b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4f63a05cc6b70e6ee66782f3e429948"><td class="memItemLeft" align="right" valign="top"><a id="af4f63a05cc6b70e6ee66782f3e429948"></a>
+constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#af4f63a05cc6b70e6ee66782f3e429948">playrho::IsValid</a> (std::size_t value) noexcept -&gt; bool</td></tr>
+<tr class="memdesc:af4f63a05cc6b70e6ee66782f3e429948"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given value is valid. <br /></td></tr>
+<tr class="separator:af4f63a05cc6b70e6ee66782f3e429948"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1de374e7d6af7b68b654b657d756468a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a1de374e7d6af7b68b654b657d756468a"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if_t&lt; IsReverseIterableV&lt; T &gt;, ReversionWrapper&lt; T &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a1de374e7d6af7b68b654b657d756468a">playrho::Reverse</a> (T &amp;&amp;iterable)</td></tr>
 <tr class="memdesc:a1de374e7d6af7b68b654b657d756468a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a reversed order iterated wrapper.  <a href="namespaceplayrho.html#a1de374e7d6af7b68b654b657d756468a">More...</a><br /></td></tr>
@@ -250,7 +248,7 @@ template&lt;class T &gt; </td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5ad7f572bbca03234e8e621e192fc099.html">Library</a></li><li class="navelem"><a class="el" href="dir_d5feee1fc356aab13979ad377dc27d6d.html">include</a></li><li class="navelem"><a class="el" href="dir_3ed5363c54a0ae1e6d55ad5f136e162e.html">playrho</a></li><li class="navelem"><a class="el" href="Templates_8hpp.html">Templates.hpp</a></li>
-    <li class="footer">Generated on Sun Jan 21 2024 04:36:14 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Feb 28 2024 04:37:20 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

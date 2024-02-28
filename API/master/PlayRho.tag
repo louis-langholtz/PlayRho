@@ -76,11 +76,11 @@
       <arglist></arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ab7404128f6225cf6915219bb784c7843</anchor>
-      <arglist>(const BodyID &amp;value) noexcept</arglist>
+      <anchor>a4862eb83f2237dc0de23624794138fa8</anchor>
+      <arglist>(const BodyID &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="variable">
       <type>constexpr auto</type>
@@ -635,11 +635,11 @@
       <arglist></arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>adc42b14180314ff41872c38c5596970c</anchor>
-      <arglist>(const ContactID &amp;value) noexcept</arglist>
+      <anchor>ad3a942b619efa98744add7ba70299ca5</anchor>
+      <arglist>(const ContactID &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="variable">
       <type>constexpr auto</type>
@@ -1841,11 +1841,11 @@
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a299c547b3a13504426688a0c968e2891</anchor>
-      <arglist>(const d2::Acceleration &amp;value) noexcept</arglist>
+      <anchor>a845cb1316395de41ca7cf1fd8b6cf24e</anchor>
+      <arglist>(const d2::Acceleration &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -4759,11 +4759,11 @@
       <arglist>(Manifold::Type type) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ab903c93dd80fcff6148a66dbc7c89687</anchor>
-      <arglist>(const d2::Manifold &amp;value) noexcept</arglist>
+      <anchor>a0971ced35d0dd33a31810edd8945b657</anchor>
+      <arglist>(const d2::Manifold &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
@@ -5824,11 +5824,11 @@
     <namespace>playrho</namespace>
     <namespace>playrho::d2</namespace>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aa4eafabdd97553a750feb39943d629da</anchor>
-      <arglist>(const d2::Position &amp;value) noexcept</arglist>
+      <anchor>a9f13e33192c0dde745f92538edb9a17b</anchor>
+      <arglist>(const d2::Position &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -6910,11 +6910,11 @@
       <arglist>(const Sweep &amp;sweep, ZeroToUnderOneFF&lt; Real &gt; alpha) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a4eebf111910b8b036f4caca5e01fcab3</anchor>
-      <arglist>(const d2::Sweep &amp;value) noexcept</arglist>
+      <anchor>a2c97b842505bb114a31b7c730688c665</anchor>
+      <arglist>(const d2::Sweep &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -7095,11 +7095,11 @@
       <arglist>(const Transformation &amp;value) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>abdecea4e39775053f705ca921b5080fe</anchor>
-      <arglist>(const d2::Transformation &amp;value) noexcept</arglist>
+      <anchor>a1f750edc4bbda47d8426dde1e7682cd6</anchor>
+      <arglist>(const d2::Transformation &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -7215,11 +7215,11 @@
       <arglist>(const UnitVec &amp;vector, const UnitVec &amp;angle) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a5351f2762c5c98b723679795e0a79287</anchor>
-      <arglist>(const d2::UnitVec &amp;value) noexcept</arglist>
+      <anchor>a178b66f77a543a816afd8b4e55f8f476</anchor>
+      <arglist>(const d2::UnitVec &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -7276,11 +7276,11 @@
       <arglist>(Velocity velocity, Time h, const MovementConf &amp;conf) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a904477c2aa4c83f49b1c55f393bd79d2</anchor>
-      <arglist>(const d2::Velocity &amp;value) noexcept</arglist>
+      <anchor>a608da0582395c57d7826075e809d224b</anchor>
+      <arglist>(const d2::Velocity &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -10147,18 +10147,18 @@
       <arglist>(T &amp;container, const U &amp;value) -&gt; decltype(container.erase(find(begin(container), end(container), value)) !=end(container))</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a048e0ad2c0fac1472430520c115466eb</anchor>
-      <arglist>(const std::size_t &amp;value) noexcept</arglist>
+      <anchor>a3029c7a84e0a27a87863cf6d084f95b1</anchor>
+      <arglist>(const T &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a7dde95b5e9b50eb6552368d0c57cfc88</anchor>
-      <arglist>(const T &amp;value) noexcept</arglist>
+      <anchor>af4f63a05cc6b70e6ee66782f3e429948</anchor>
+      <arglist>(std::size_t value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>std::enable_if_t&lt; IsReverseIterableV&lt; T &gt;, ReversionWrapper&lt; T &gt; &gt;</type>
@@ -10662,11 +10662,11 @@
       <arglist></arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a7144be2e84f00033cbbadfae783092ed</anchor>
-      <arglist>(const JointID &amp;value) noexcept</arglist>
+      <anchor>a67a0292329580dd0e37334536894c103</anchor>
+      <arglist>(const JointID &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="variable">
       <type>constexpr auto</type>
@@ -10814,11 +10814,11 @@
       <arglist>(Vector&lt; T, N &gt; arg)</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a0fa02e6b0d55e9363ad4afb89a755fc1</anchor>
-      <arglist>(const Mat22 &amp;value) noexcept</arglist>
+      <anchor>af6e7ec90bbc9cd9a902fbd939ace2589</anchor>
+      <arglist>(const Mat22 &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>
@@ -11468,11 +11468,11 @@
       <arglist></arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>abcaa90580702a0b52b67e21d863eaf83</anchor>
-      <arglist>(const ShapeID &amp;value) noexcept</arglist>
+      <anchor>a198a6103b7b9188fd054ce27c8f6dea0</anchor>
+      <arglist>(const ShapeID &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="variable">
       <type>constexpr auto</type>
@@ -12928,11 +12928,11 @@
       <arglist>(const Vector2&lt; T &gt; &amp;value) -&gt; decltype(Vec2{static_cast&lt; Real &gt;(get&lt; 0 &gt;(value).value()), static_cast&lt; Real &gt;(get&lt; 1 &gt;(value).value())})</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ab698eb521c2d14d3d88ee3ac4cacd7c6</anchor>
-      <arglist>(const Vector2&lt; TYPE &gt; &amp;value) noexcept</arglist>
+      <anchor>abc7411e3fb04a8f4d57636f6516d6b5d</anchor>
+      <arglist>(const Vector2&lt; TYPE &gt; &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="variable">
       <type>constexpr auto</type>
@@ -12987,11 +12987,11 @@
       <arglist></arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a0fa02e6b0d55e9363ad4afb89a755fc1</anchor>
-      <arglist>(const Mat22 &amp;value) noexcept</arglist>
+      <anchor>af6e7ec90bbc9cd9a902fbd939ace2589</anchor>
+      <arglist>(const Mat22 &amp;value) noexcept -&gt; bool</arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -13937,11 +13937,11 @@
       <arglist></arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>structplayrho_1_1d2_1_1Acceleration.html</anchorfile>
-      <anchor>a81b1dd82c9c8f3ec7c80b0c53e818239</anchor>
-      <arglist>(const d2::Acceleration &amp;value) noexcept</arglist>
+      <anchor>a71e248e30ccd854d733f711f03c287f5</anchor>
+      <arglist>(const d2::Acceleration &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -22783,20 +22783,6 @@
       <arglist>(Size index, const AABB &amp;aabb)</arglist>
     </member>
     <member kind="function" static="yes">
-      <type>static constexpr Height</type>
-      <name>GetInvalidHeight</name>
-      <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
-      <anchor>a660dd80a96856e7e5a18982253db0916</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static constexpr Size</type>
-      <name>GetInvalidSize</name>
-      <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
-      <anchor>acde73f39b7e56017e0ba2f172ab6da7f</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function" static="yes">
       <type>static constexpr bool</type>
       <name>IsBranch</name>
       <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
@@ -22822,6 +22808,13 @@
       <name>InvalidHeight</name>
       <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
       <anchor>a7933229b46b99e1c5d1858da7f3266c5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static constexpr auto</type>
+      <name>InvalidSize</name>
+      <anchorfile>classplayrho_1_1d2_1_1DynamicTree.html</anchorfile>
+      <anchor>ac06b5df05d88e61f749b6ef112e1af2c</anchor>
       <arglist></arglist>
     </member>
     <member kind="friend">
@@ -26484,11 +26477,11 @@
       <arglist>(const Manifold &amp;manifold, const Transformation &amp;xfA, Length radiusA, const Transformation &amp;xfB, Length radiusB)</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>classplayrho_1_1d2_1_1Manifold.html</anchorfile>
-      <anchor>a2a68b2ee4602e8bcf4c9376e69ffdcd7</anchor>
-      <arglist>(const d2::Manifold &amp;value) noexcept</arglist>
+      <anchor>a3a8cf8acfac95a01864ed15407681675</anchor>
+      <arglist>(const d2::Manifold &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
@@ -29702,11 +29695,11 @@
       <arglist>(const Position &amp;pos0, const Position &amp;pos1, Real beta) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>structplayrho_1_1d2_1_1Position.html</anchorfile>
-      <anchor>ae5cbbddc6b8f2b557ba2e87f43c64802</anchor>
-      <arglist>(const d2::Position &amp;value) noexcept</arglist>
+      <anchor>af7345ca71317b6b6ce0606ab7d06b791</anchor>
+      <arglist>(const d2::Position &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -33406,11 +33399,11 @@
       <arglist>(Sweep sweep) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>structplayrho_1_1d2_1_1Sweep.html</anchorfile>
-      <anchor>afce9c1dea61c4ba26d5785f2f20c3bff</anchor>
-      <arglist>(const d2::Sweep &amp;value) noexcept</arglist>
+      <anchor>a545bc942977818347f0d870938d70d4d</anchor>
+      <arglist>(const d2::Sweep &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -34236,11 +34229,11 @@
       <arglist></arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>structplayrho_1_1d2_1_1Transformation.html</anchorfile>
-      <anchor>af76924a9aee97c42840a3867b3cb612c</anchor>
-      <arglist>(const d2::Transformation &amp;value) noexcept</arglist>
+      <anchor>a09c102b26592fcab1ad050fe36f0843f</anchor>
+      <arglist>(const d2::Transformation &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -34264,15 +34257,15 @@
       <type>constexpr</type>
       <name>TreeNode</name>
       <anchorfile>classplayrho_1_1d2_1_1DynamicTree_1_1TreeNode.html</anchorfile>
-      <anchor>a1d9a63fc94b7a41f57158f37e2c0360f</anchor>
-      <arglist>(const Contactable &amp;value, const AABB &amp;aabb, Size other=DynamicTree::GetInvalidSize()) noexcept</arglist>
+      <anchor>afb1c1aebde186fdfc18c80c8782e8b7f</anchor>
+      <arglist>(const Contactable &amp;value, const AABB &amp;aabb, Size other=DynamicTree::InvalidSize) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
       <name>TreeNode</name>
       <anchorfile>classplayrho_1_1d2_1_1DynamicTree_1_1TreeNode.html</anchorfile>
-      <anchor>a860274e9ce96b9ddb32f7324cc414b4f</anchor>
-      <arglist>(const DynamicTreeBranchData &amp;value, const AABB &amp;aabb, Height height, Size other=DynamicTree::GetInvalidSize()) noexcept</arglist>
+      <anchor>a3637c23d55a8f85442c0076d5723e824</anchor>
+      <arglist>(const DynamicTreeBranchData &amp;value, const AABB &amp;aabb, Height height, Size other=DynamicTree::InvalidSize) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
@@ -34285,8 +34278,8 @@
       <type>constexpr</type>
       <name>TreeNode</name>
       <anchorfile>classplayrho_1_1d2_1_1DynamicTree_1_1TreeNode.html</anchorfile>
-      <anchor>a3fac557e91648e18349c9ba97d864217</anchor>
-      <arglist>(Size other=DynamicTree::GetInvalidSize()) noexcept</arglist>
+      <anchor>a26cca7fbda9212d7f68eebe67a65341c</anchor>
+      <arglist>(Size other=DynamicTree::InvalidSize) noexcept</arglist>
     </member>
     <member kind="function">
       <type>constexpr</type>
@@ -38497,11 +38490,11 @@
       <arglist>(Velocity velocity, Time h, const MovementConf &amp;conf) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>structplayrho_1_1d2_1_1Velocity.html</anchorfile>
-      <anchor>a1735a28e0a25cc77e59fafe1d840c242</anchor>
-      <arglist>(const d2::Velocity &amp;value) noexcept</arglist>
+      <anchor>afd6ab6b74f49d153b3070907456e7f9b</anchor>
+      <arglist>(const d2::Velocity &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>constexpr bool</type>
@@ -43999,109 +43992,109 @@
       <arglist>(const Contact &amp;contact) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ab7404128f6225cf6915219bb784c7843</anchor>
-      <arglist>(const BodyID &amp;value) noexcept</arglist>
+      <anchor>a4862eb83f2237dc0de23624794138fa8</anchor>
+      <arglist>(const BodyID &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>adc42b14180314ff41872c38c5596970c</anchor>
-      <arglist>(const ContactID &amp;value) noexcept</arglist>
+      <anchor>ad3a942b619efa98744add7ba70299ca5</anchor>
+      <arglist>(const ContactID &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a299c547b3a13504426688a0c968e2891</anchor>
-      <arglist>(const d2::Acceleration &amp;value) noexcept</arglist>
+      <anchor>a845cb1316395de41ca7cf1fd8b6cf24e</anchor>
+      <arglist>(const d2::Acceleration &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ab903c93dd80fcff6148a66dbc7c89687</anchor>
-      <arglist>(const d2::Manifold &amp;value) noexcept</arglist>
+      <anchor>a0971ced35d0dd33a31810edd8945b657</anchor>
+      <arglist>(const d2::Manifold &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>aa4eafabdd97553a750feb39943d629da</anchor>
-      <arglist>(const d2::Position &amp;value) noexcept</arglist>
+      <anchor>a9f13e33192c0dde745f92538edb9a17b</anchor>
+      <arglist>(const d2::Position &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a4eebf111910b8b036f4caca5e01fcab3</anchor>
-      <arglist>(const d2::Sweep &amp;value) noexcept</arglist>
+      <anchor>a2c97b842505bb114a31b7c730688c665</anchor>
+      <arglist>(const d2::Sweep &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>abdecea4e39775053f705ca921b5080fe</anchor>
-      <arglist>(const d2::Transformation &amp;value) noexcept</arglist>
+      <anchor>a1f750edc4bbda47d8426dde1e7682cd6</anchor>
+      <arglist>(const d2::Transformation &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a5351f2762c5c98b723679795e0a79287</anchor>
-      <arglist>(const d2::UnitVec &amp;value) noexcept</arglist>
+      <anchor>a178b66f77a543a816afd8b4e55f8f476</anchor>
+      <arglist>(const d2::UnitVec &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a904477c2aa4c83f49b1c55f393bd79d2</anchor>
-      <arglist>(const d2::Velocity &amp;value) noexcept</arglist>
+      <anchor>a608da0582395c57d7826075e809d224b</anchor>
+      <arglist>(const d2::Velocity &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a7144be2e84f00033cbbadfae783092ed</anchor>
-      <arglist>(const JointID &amp;value) noexcept</arglist>
+      <anchor>a67a0292329580dd0e37334536894c103</anchor>
+      <arglist>(const JointID &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a0fa02e6b0d55e9363ad4afb89a755fc1</anchor>
-      <arglist>(const Mat22 &amp;value) noexcept</arglist>
+      <anchor>af6e7ec90bbc9cd9a902fbd939ace2589</anchor>
+      <arglist>(const Mat22 &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>abcaa90580702a0b52b67e21d863eaf83</anchor>
-      <arglist>(const ShapeID &amp;value) noexcept</arglist>
+      <anchor>a198a6103b7b9188fd054ce27c8f6dea0</anchor>
+      <arglist>(const ShapeID &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a048e0ad2c0fac1472430520c115466eb</anchor>
-      <arglist>(const std::size_t &amp;value) noexcept</arglist>
+      <anchor>a3029c7a84e0a27a87863cf6d084f95b1</anchor>
+      <arglist>(const T &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a7dde95b5e9b50eb6552368d0c57cfc88</anchor>
-      <arglist>(const T &amp;value) noexcept</arglist>
+      <anchor>abc7411e3fb04a8f4d57636f6516d6b5d</anchor>
+      <arglist>(const Vector2&lt; TYPE &gt; &amp;value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
-      <type>constexpr bool</type>
+      <type>constexpr auto</type>
       <name>IsValid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>ab698eb521c2d14d3d88ee3ac4cacd7c6</anchor>
-      <arglist>(const Vector2&lt; TYPE &gt; &amp;value) noexcept</arglist>
+      <anchor>af4f63a05cc6b70e6ee66782f3e429948</anchor>
+      <arglist>(std::size_t value) noexcept -&gt; bool</arglist>
     </member>
     <member kind="function">
       <type>constexpr auto</type>

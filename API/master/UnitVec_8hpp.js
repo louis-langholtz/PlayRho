@@ -14,7 +14,7 @@ var UnitVec_8hpp =
     [ "GetY", "UnitVec_8hpp.html#a23717005f46c309d31dfbb9f0e1b9daf", null ],
     [ "GetYAxis", "UnitVec_8hpp.html#a88ce203fb25392d44f80d66a588ff3a0", null ],
     [ "InverseRotate", "UnitVec_8hpp.html#a0aaf238b97bd4c64a0be19bc2c4a98b1", null ],
-    [ "IsValid", "UnitVec_8hpp.html#a5351f2762c5c98b723679795e0a79287", null ],
+    [ "IsValid", "UnitVec_8hpp.html#a178b66f77a543a816afd8b4e55f8f476", null ],
     [ "operator!=", "UnitVec_8hpp.html#a42c4215f528a7440dd54829e0ade57d8", null ],
     [ "operator<<", "UnitVec_8hpp.html#a4f49bd881fdc6418565529a072b91d54", null ],
     [ "operator==", "UnitVec_8hpp.html#adfa134c88da67d566b3881a9792afd5d", null ],
