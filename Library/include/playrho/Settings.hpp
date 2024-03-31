@@ -175,29 +175,26 @@ constexpr auto DefaultRegMinMomentum = Momentum{0_Ns / 100};
 constexpr auto DefaultToiMinMomentum = Momentum{0_Ns / 100};
 
 /// @brief Maximum number of bodies in a world.
-/// @note This is 2^16 - 2, i.e. 65534, based off <code>std::uint16_t</code> and eliminating one value for
-///   the _invalid_ body identifier (@c InvalidBodyID).
+/// @note This is 2^16 - 2, i.e. 65534, based off <code>std::uint16_t</code> and eliminating one
+///   value for the _invalid_ body identifier (@c playrho::InvalidBodyID ).
 /// @see BodyCounter, BodyID, InvalidBodyID, MaxContacts, MaxJoints, MaxShapes.
 constexpr auto MaxBodies = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
                                                       std::uint16_t{1});
 
 /// @brief Count type for bodies.
-/// @note This type must always be able to contain the @c MaxBodies value.
+/// @note This type must always be able to contain the @c playrho::MaxBodies value.
 /// @see MaxBodies, ContactCounter, JointCounter, ShapeCounter.
 using BodyCounter = std::remove_const_t<decltype(MaxBodies)>;
 
 /// @brief Count type for contacts.
-/// @note This type is meant to contain up to the square of the maximum value of a <code>BodyCounter</code> without possibility of overflow.
+/// @note This type is meant to contain up to the square of the maximum value of a
+///   @c playrho::BodyCounter without possibility of overflow.
 /// @see MaxContacts, BodyCounter, JointCounter, ShapeCounter.
 using ContactCounter = WiderType<BodyCounter>;
 
-/// @brief Invalid contact index.
-/// @see ContactCounter.
-constexpr auto InvalidContactIndex = static_cast<ContactCounter>(-1);
-
 /// @brief Maximum number of contacts in a world (2147319811).
-/// @details Uses the formula for the maximum number of edges in an unidirectional graph of
-///   <code>MaxBodies</code> nodes.
+/// @details Uses the formula for the maximum number of edges in an unidirectional graph
+///   of @c playrho::MaxBodies nodes.
 /// This occurs when every possible body is connected to every other body.
 /// @see ContactCounter. ContactID, InvalidContactID, MaxBodies, MaxJoints, MaxShapes.
 constexpr auto MaxContacts = ContactCounter{MaxBodies} * ContactCounter{MaxBodies - 1} / ContactCounter{2};
@@ -206,25 +203,26 @@ constexpr auto MaxContacts = ContactCounter{MaxBodies} * ContactCounter{MaxBodie
 using DynamicTreeSize = ContactCounter;
 
 /// @brief Maximum number of joints in a world.
-/// @note This is 2^16 - 2, i.e. 65534, based off <code>std::uint16_t</code> and eliminating one value for
-///   the invalid joint identifier (@c InvalidJointID).
+/// @note This is 2^16 - 2, i.e. 65534, based off <code>std::uint16_t</code> and eliminating one
+///   value for the invalid joint identifier (@c playrho::InvalidJointID ).
 /// @see JointCounter, JointID. InvalidJointID, MaxBodies, MaxContacts. MaxShapes.
 constexpr auto MaxJoints = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
                                                       std::uint16_t{1});
 
 /// @brief Counter type for joints.
-/// @note This type must be able to contain the @c MaxJoints value.
+/// @note This type must be able to contain the @c playrho::MaxJoints value.
 /// @see MaxJoints, BodyCounter, ContactCounter, ShapeCounter.
 using JointCounter = std::remove_const_t<decltype(MaxJoints)>;
 
 /// @brief Maximum number of shapes in a world.
-/// @note This is 65534 based off <code>std::uint16_t</code> and eliminating one value for invalid.
+/// @note This is 65534 based off <code>std::uint16_t</code> and eliminating one value for
+///   the invalid shape identifier (@c playrho::InvalidShapeID ).
 /// @see ShapeCounter, ShapeID, InvalidShapeID, MaxBodies, MaxContacts, MaxJoints.
 constexpr auto MaxShapes = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
                                                       std::uint16_t{1});
 
 /// @brief Count type for shapes.
-/// @note This type must always be able to contain the <code>MaxShapes</code> value.
+/// @note This type must always be able to contain the @c playrho::MaxShapes value.
 /// @see MaxShapes, BodyCounter, ContactCounter, JointCounter.
 using ShapeCounter = std::remove_const_t<decltype(MaxShapes)>;
 

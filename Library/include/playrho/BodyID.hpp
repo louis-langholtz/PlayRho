@@ -34,18 +34,24 @@
 namespace playrho {
 
 /// @brief Body identifier.
-/// @details A strongly typed identifier for uniquely identifying bodes within @c d2::World
-///   instances. This is based on the @c BodyCounter type as its underlying type.
-/// @see BodyCounter, ContactID, JointID, ShapeID, d2::Body, d2::World.
+/// @details A strongly typed identifier for uniquely identifying bodes within
+///   @c playrho::d2::World instances.
+///   This is based on the @c playrho::BodyCounter type as its underlying type.
+///   These identifiers can be compared with other body identifiers.
+///   Two body identifiers from the same world that compare equal for example,
+///   identify the same body within that world.
+/// @see InvalidBodyID, BodyCounter, ContactID, JointID, ShapeID, d2::Body, d2::World.
 using BodyID = detail::IndexingNamedType<BodyCounter, struct BodyIdentifier>;
 
 /// @brief Invalid body ID value.
-/// @details A special, reserved value of a @c BodyID that represents/identifies an _invalid_ body.
+/// @details A special, reserved value of a @c playrho::BodyID that
+///   represents/identifies an _invalid_ body.
 /// @see BodyID, IsValid.
 constexpr auto InvalidBodyID = BodyID{static_cast<BodyID::underlying_type>(-1)};
 
-/// @brief Determines validity of given value by comparing against <code>InvalidBodyID</code>.
-/// @return true if not equal to @c InvalidBodyID , else false.
+/// @brief Determines validity of given value by comparing against
+///   @c playrho::InvalidBodyID .
+/// @return true if not equal to @c playrho::InvalidBodyID , else false.
 /// @see BodyID, InvalidBodyID.
 constexpr auto IsValid(const BodyID& value) noexcept -> bool
 {
