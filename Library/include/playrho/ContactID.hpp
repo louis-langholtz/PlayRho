@@ -35,18 +35,24 @@
 namespace playrho {
 
 /// @brief Contact identifier.
-/// @details A strongly typed identifier for uniquely identifying contacts within @c d2::World
-///   instances. This is based on the @c ContactCounter type as its underlying type.
-/// @see Contact, ContactCounter, BodyID, JointID, ShapeID, d2::World.
+/// @details A strongly typed identifier for uniquely identifying contacts within
+///   @c playrho::d2::World instances.
+///   This is based on the @c playrho::ContactCounter type as its underlying type.
+///   These identifiers can be compared with other contact identifiers.
+///   Two contact identifiers from the same world that compare equal for example,
+///   identify the same contact within that world.
+/// @see InvalidContactID, Contact, ContactCounter, BodyID, JointID, ShapeID, d2::World.
 using ContactID = detail::IndexingNamedType<ContactCounter, struct ContactIdentifier>;
 
 /// @brief Invalid contact ID value.
-/// @details A special, reserved value of a @c ContactID that represents/identifies an _invalid_ contact.
+/// @details A special, reserved value of a @c playrho::ContactID that
+///   represents/identifies an _invalid_ contact.
 /// @see ContactID, IsValid.
 constexpr auto InvalidContactID = ContactID{static_cast<ContactID::underlying_type>(-1)};
 
-/// @brief Determines validity of given value by comparing against <code>InvalidContactID</code>.
-/// @return true if not equal to @c InvalidContactID , else false.
+/// @brief Determines validity of given value by comparing against
+///   @c playrho::InvalidContactID .
+/// @return true if not equal to @c playrho::InvalidContactID , else false.
 /// @see ContactID, InvalidContactID.
 constexpr auto IsValid(const ContactID& value) noexcept -> bool
 {

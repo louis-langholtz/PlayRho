@@ -34,18 +34,24 @@
 namespace playrho {
 
 /// @brief Joint identifier.
-/// @details A strongly typed identifier for uniquely identifying joints within @c d2::World
-///   instances. This is based on the @c JointCounter type as its underlying type.
-/// @see JointCounter, BodyID, ContactID, ShapeID, d2::Joint, d2::World.
+/// @details A strongly typed identifier for uniquely identifying joints within
+///   @c playrho::d2::World instances.
+///   This is based on the @c playrho::JointCounter type as its underlying type.
+///   These identifiers can be compared with other joint identifiers.
+///   Two joint identifiers from the same world that compare equal for example,
+///   identify the same joint within that world.
+/// @see InvalidJointID, JointCounter, BodyID, ContactID, ShapeID, d2::Joint, d2::World.
 using JointID = detail::IndexingNamedType<JointCounter, struct JointIdentifier>;
 
 /// @brief Invalid joint ID value.
-/// @details A special, reserved value of a @c JointID that represents/identifies an _invalid_ joint.
+/// @details A special, reserved value of a @c playrho::JointID that
+///   represents/identifies an _invalid_ joint.
 /// @see JointID, IsValid.
 constexpr auto InvalidJointID = JointID{static_cast<JointID::underlying_type>(-1)};
 
-/// @brief Determines validity of given value by comparing against <code>InvalidJointID</code>.
-/// @return true if not equal to @c InvalidJointID , else false.
+/// @brief Determines validity of given value by comparing against
+///   @c playrho::InvalidJointID .
+/// @return true if not equal to @c playrho::InvalidJointID , else false.
 /// @see JointID, InvalidJointID.
 constexpr auto IsValid(const JointID& value) noexcept -> bool
 {
