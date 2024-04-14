@@ -35,6 +35,7 @@
 #include "Test.hpp"
 
 #include <playrho/d2/DynamicTree.hpp>
+#include <playrho/d2/PointStates.hpp> // for GetPointStates
 
 using namespace playrho;
 using namespace playrho::d2;
