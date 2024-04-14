@@ -38,7 +38,7 @@
 #include <playrho/d2/Manifold.hpp>
 #include <playrho/d2/MotorJointConf.hpp>
 #include <playrho/d2/PolygonShapeConf.hpp>
-#include <playrho/d2/PointStates.hpp>
+#include <playrho/d2/PointStates.hpp> // for GetPointStates
 #include <playrho/d2/RayCastInput.hpp>
 #include <playrho/d2/RayCastOutput.hpp>
 #include <playrho/d2/RopeJointConf.hpp>

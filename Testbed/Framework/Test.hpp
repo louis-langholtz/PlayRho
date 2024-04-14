@@ -22,8 +22,8 @@
 #ifndef PLAYRHO_TEST_HPP
 #define PLAYRHO_TEST_HPP
 
-#include <playrho/d2/BasicAPI.hpp>
 #include <playrho/to_underlying.hpp>
+#include <playrho/PointState.hpp>
 #include <playrho/Templates.hpp>
 #include <playrho/TypeInfo.hpp>
 #include <playrho/ContactID.hpp>
@@ -31,8 +31,8 @@
 #include <playrho/BodyID.hpp>
 #include <playrho/JointID.hpp>
 
+#include <playrho/d2/BasicAPI.hpp>
 #include <playrho/d2/UnitVec.hpp>
-#include <playrho/d2/PointStates.hpp>
 #include <playrho/d2/Distance.hpp>
 #include <playrho/d2/RayCastOutput.hpp>
 #include <playrho/d2/ShapeSeparation.hpp>
