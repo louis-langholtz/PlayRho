@@ -32,7 +32,6 @@ var Settings_8hpp =
     [ "DefaultToiMinMomentum", "Settings_8hpp.html#a88e51d5b5ce397624e803df05ff1c013", null ],
     [ "DefaultVelocityThreshold", "Settings_8hpp.html#a6497dbff92f4140c03fb29f7dc80093d", null ],
     [ "Invalid", "Settings_8hpp.html#ae4c4c9f92abc8bb90f494053a8e04375", null ],
-    [ "InvalidContactIndex", "Settings_8hpp.html#a4ecc8cc059a2a3fa056888a1d405e4bc", null ],
     [ "InvalidVertex", "Settings_8hpp.html#a49c511e18a6b72260126cf763c1cd8df", null ],
     [ "MaxBodies", "Settings_8hpp.html#a7b821c4b23566defba0fd2917d95f0ba", null ],
     [ "MaxChildCount", "Settings_8hpp.html#af33623a59b7c701aead6d06e88dc2cc6", null ],

@@ -47,7 +47,6 @@ var annotated_dup =
         [ "BodyConf", "structplayrho_1_1d2_1_1BodyConf.html", "structplayrho_1_1d2_1_1BodyConf" ],
         [ "BodyConstraint", "classplayrho_1_1d2_1_1BodyConstraint.html", "classplayrho_1_1d2_1_1BodyConstraint" ],
         [ "ChainShapeConf", "structplayrho_1_1d2_1_1ChainShapeConf.html", "structplayrho_1_1d2_1_1ChainShapeConf" ],
-        [ "ClipVertex", "structplayrho_1_1d2_1_1ClipVertex.html", "structplayrho_1_1d2_1_1ClipVertex" ],
         [ "ContactImpulsesList", "classplayrho_1_1d2_1_1ContactImpulsesList.html", "classplayrho_1_1d2_1_1ContactImpulsesList" ],
         [ "ConvexHull", "classplayrho_1_1d2_1_1ConvexHull.html", "classplayrho_1_1d2_1_1ConvexHull" ],
         [ "DiskShapeConf", "structplayrho_1_1d2_1_1DiskShapeConf.html", "structplayrho_1_1d2_1_1DiskShapeConf" ],

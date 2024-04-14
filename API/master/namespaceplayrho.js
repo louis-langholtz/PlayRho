@@ -494,7 +494,6 @@ var namespaceplayrho =
     [ "Invalid", "namespaceplayrho.html#ae4c4c9f92abc8bb90f494053a8e04375", null ],
     [ "InvalidBodyID", "namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f", null ],
     [ "InvalidContactID", "namespaceplayrho.html#a1a7a2c4f0ce447813c94060e1ea4c0f9", null ],
-    [ "InvalidContactIndex", "namespaceplayrho.html#a4ecc8cc059a2a3fa056888a1d405e4bc", null ],
     [ "InvalidIndexPair", "namespaceplayrho.html#a6fb9d11a6fadb62b0e68aee9797059ad", null ],
     [ "InvalidJointID", "namespaceplayrho.html#a67d10419efd6effdd41617992a76cbcd", null ],
     [ "InvalidLength2", "namespaceplayrho.html#a2525da093ca5647aa7493b07eed63520", null ],

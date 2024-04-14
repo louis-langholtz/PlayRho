@@ -2758,32 +2758,6 @@
     </member>
   </compound>
   <compound kind="file">
-    <name>ClipList.hpp</name>
-    <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
-    <filename>ClipList_8hpp.html</filename>
-    <includes id="ArrayList_8hpp" name="ArrayList.hpp" local="no" imported="no">playrho/ArrayList.hpp</includes>
-    <includes id="ContactFeature_8hpp" name="ContactFeature.hpp" local="no" imported="no">playrho/ContactFeature.hpp</includes>
-    <includes id="Settings_8hpp" name="Settings.hpp" local="no" imported="no">playrho/Settings.hpp</includes>
-    <includes id="d2_2Math_8hpp" name="Math.hpp" local="no" imported="no">playrho/d2/Math.hpp</includes>
-    <class kind="struct">playrho::d2::ClipVertex</class>
-    <namespace>playrho</namespace>
-    <namespace>playrho::d2</namespace>
-    <member kind="typedef">
-      <type>ArrayList&lt; ClipVertex, MaxManifoldPoints &gt;</type>
-      <name>ClipList</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab02c685f9b6933b73418fb3223e2e433</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>ClipList</type>
-      <name>ClipSegmentToLine</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a073a93c54a20aa68f2c56e759b7976ab</anchor>
-      <arglist>(const ClipList &amp;vIn, const UnitVec &amp;normal, Length offset, ContactFeature::Index indexA)</arglist>
-    </member>
-  </compound>
-  <compound kind="file">
     <name>ContactImpulsesFunction.hpp</name>
     <path>/home/runner/work/PlayRho/PlayRho/repo/master/Library/include/playrho/d2/</path>
     <filename>ContactImpulsesFunction_8hpp.html</filename>
@@ -11359,13 +11333,6 @@
       <name>Invalid</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>ae4c4c9f92abc8bb90f494053a8e04375</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr auto</type>
-      <name>InvalidContactIndex</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a4ecc8cc059a2a3fa056888a1d405e4bc</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -20354,24 +20321,6 @@
       <name>blockSize</name>
       <anchorfile>structplayrho_1_1BlockAllocator_1_1Chunk.html</anchorfile>
       <anchor>a9f089d6471c64f144bfd554b13bb215e</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="struct">
-    <name>playrho::d2::ClipVertex</name>
-    <filename>structplayrho_1_1d2_1_1ClipVertex.html</filename>
-    <member kind="variable">
-      <type>ContactFeature</type>
-      <name>cf</name>
-      <anchorfile>structplayrho_1_1d2_1_1ClipVertex.html</anchorfile>
-      <anchor>a70e36425e1773d72f724cec972fcd785</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>Length2</type>
-      <name>v</name>
-      <anchorfile>structplayrho_1_1d2_1_1ClipVertex.html</anchorfile>
-      <anchor>a544a8a3e5b956c7c53b8b392890f5579</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -45505,13 +45454,6 @@
     </member>
     <member kind="variable">
       <type>constexpr auto</type>
-      <name>InvalidContactIndex</name>
-      <anchorfile>namespaceplayrho.html</anchorfile>
-      <anchor>a4ecc8cc059a2a3fa056888a1d405e4bc</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>constexpr auto</type>
       <name>InvalidIndexPair</name>
       <anchorfile>namespaceplayrho.html</anchorfile>
       <anchor>a6fb9d11a6fadb62b0e68aee9797059ad</anchor>
@@ -45866,7 +45808,6 @@
     <class kind="struct">playrho::d2::BodyConf</class>
     <class kind="class">playrho::d2::BodyConstraint</class>
     <class kind="struct">playrho::d2::ChainShapeConf</class>
-    <class kind="struct">playrho::d2::ClipVertex</class>
     <class kind="class">playrho::d2::ContactImpulsesList</class>
     <class kind="class">playrho::d2::ConvexHull</class>
     <class kind="struct">playrho::d2::DiskShapeConf</class>
@@ -45956,13 +45897,6 @@
       <name>BodyShapeIDs</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a430e1d6d6a2310f75ec7e181b37d90dc</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="typedef">
-      <type>ArrayList&lt; ClipVertex, MaxManifoldPoints &gt;</type>
-      <name>ClipList</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab02c685f9b6933b73418fb3223e2e433</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -46267,13 +46201,6 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a1af6a33d54c562234a4ba6f70f03cc62</anchor>
       <arglist>(World &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>ClipList</type>
-      <name>ClipSegmentToLine</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a073a93c54a20aa68f2c56e759b7976ab</anchor>
-      <arglist>(const ClipList &amp;vIn, const UnitVec &amp;normal, Length offset, ContactFeature::Index indexA)</arglist>
     </member>
     <member kind="function">
       <type>Manifold</type>

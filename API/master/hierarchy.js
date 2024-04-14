@@ -53,7 +53,6 @@ var hierarchy =
     [ "playrho::detail::Checked< RotInertia >", "classplayrho_1_1detail_1_1Checked.html", null ],
     [ "playrho::detail::Checked< Torque >", "classplayrho_1_1detail_1_1Checked.html", null ],
     [ "playrho::BlockAllocator::Chunk", "structplayrho_1_1BlockAllocator_1_1Chunk.html", null ],
-    [ "playrho::d2::ClipVertex", "structplayrho_1_1d2_1_1ClipVertex.html", null ],
     [ "playrho::d2::Manifold::Conf", "structplayrho_1_1d2_1_1Manifold_1_1Conf.html", null ],
     [ "playrho::d2::VelocityConstraint::Conf", "structplayrho_1_1d2_1_1VelocityConstraint_1_1Conf.html", null ],
     [ "playrho::StackAllocator::Conf", "structplayrho_1_1StackAllocator_1_1Conf.html", null ],

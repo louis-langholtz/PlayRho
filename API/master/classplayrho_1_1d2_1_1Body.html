@@ -114,7 +114,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ac55d448e1bde256f0dbf7824fb1deaa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor.  <a href="classplayrho_1_1d2_1_1Body.html#ac55d448e1bde256f0dbf7824fb1deaa3">More...</a><br /></td></tr>
 <tr class="separator:ac55d448e1bde256f0dbf7824fb1deaa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60069dabb41d21b3720f3e1fe68c6702"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a60069dabb41d21b3720f3e1fe68c6702">Advance0</a> (<a class="el" href="group__CheckedTypes.html#ga82f43e0e8a9fa443bc746a5f865effef">ZeroToUnderOneFF</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt; value) noexcept</td></tr>
-<tr class="memdesc:a60069dabb41d21b3720f3e1fe68c6702"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the body sweep's <code>Advance0</code> function to advance to the given value.  <a href="classplayrho_1_1d2_1_1Body.html#a60069dabb41d21b3720f3e1fe68c6702">More...</a><br /></td></tr>
+<tr class="memdesc:a60069dabb41d21b3720f3e1fe68c6702"><td class="mdescLeft">&#160;</td><td class="mdescRight">Advances the body sweep's position 0 and alpha 0 values.  <a href="classplayrho_1_1d2_1_1Body.html#a60069dabb41d21b3720f3e1fe68c6702">More...</a><br /></td></tr>
 <tr class="separator:a60069dabb41d21b3720f3e1fe68c6702"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3566096889324eb250b5def78428385b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a3566096889324eb250b5def78428385b">Attach</a> (<a class="el" href="namespaceplayrho.html#a664fbedb33a4af92883576fbee62fd28">ShapeID</a> shapeId)</td></tr>
 <tr class="memdesc:a3566096889324eb250b5def78428385b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the given shape identifier to the identifiers associated with this body.  <a href="classplayrho_1_1d2_1_1Body.html#a3566096889324eb250b5def78428385b">More...</a><br /></td></tr>
@@ -234,7 +234,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a96bfa8ab63b3246ed714573661ea3618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether or not this body is allowed to sleep.  <a href="classplayrho_1_1d2_1_1Body.html#a96bfa8ab63b3246ed714573661ea3618">More...</a><br /></td></tr>
 <tr class="separator:a96bfa8ab63b3246ed714573661ea3618"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff436223b960a71937476dea03117d9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#aff436223b960a71937476dea03117d9c">SetSweep</a> (const <a class="el" href="structplayrho_1_1d2_1_1Sweep.html">Sweep</a> &amp;value) noexcept</td></tr>
-<tr class="memdesc:aff436223b960a71937476dea03117d9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the sweep value of the given body.  <a href="classplayrho_1_1d2_1_1Body.html#aff436223b960a71937476dea03117d9c">More...</a><br /></td></tr>
+<tr class="memdesc:aff436223b960a71937476dea03117d9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the body's sweep value.  <a href="classplayrho_1_1d2_1_1Body.html#aff436223b960a71937476dea03117d9c">More...</a><br /></td></tr>
 <tr class="separator:aff436223b960a71937476dea03117d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18dac43bb044e0d0f5b5dc461a7b9bea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea">SetType</a> (<a class="el" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7">BodyType</a> value) noexcept</td></tr>
 <tr class="memdesc:a18dac43bb044e0d0f5b5dc461a7b9bea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the type of this body.  <a href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea">More...</a><br /></td></tr>
@@ -557,22 +557,18 @@ The body's transformation is always the body's sweep position one's linear posit
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd><code>GetFlags()</code> will return the value of <code>GetFlags(const BodyConf&amp;)</code> given by <em>bd</em>. </dd>
-<dd>
-<code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a9fc8e671e71c96267e77714f1e95d9dd" title="Gets the linear damping of the body.">GetLinearDamping()</a></code> returns value of <em>bd.linearDamping</em>. </dd>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a9fc8e671e71c96267e77714f1e95d9dd" title="Gets the linear damping of the body.">GetLinearDamping()</a></code> returns value of <em>bd.linearDamping</em>. </dd>
 <dd>
 <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a1e7bc9caea686d310a1cc2aee805b5ae" title="Gets the angular damping of the body.">GetAngularDamping()</a></code> returns value of <em>bd.angularDamping</em>. </dd>
 <dd>
 <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#afab0a390c2d7e16f64db6f4ddbfdc975" title="Gets the inverse total mass of the body.">GetInvMass()</a></code> returns <code>Real(0)/Kilogram</code> if <code>bd.type != <a class="el" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a></code>, otherwise it returns value of <em>bd.invMass</em>. </dd>
 <dd>
-<code>GetInvRotI()</code> returns <code>InvRotInertia{}</code> if <code>bd.type != <a class="el" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a></code>, otherwise it returns value of <em>bd.invRotI</em>. </dd>
+<code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a8ff3d44b2739fb3b066270db4be2da7a" title="Gets the inverse rotational inertia of the body.">GetInvRotInertia()</a></code> returns <code>InvRotInertia{}</code> if <code>bd.type != <a class="el" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a></code>, otherwise it returns value of <em>bd.invRotI</em>. </dd>
 <dd>
 <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a60d609b9f5c0a1d568b3fc42d169c428" title="Gets the velocity.">GetVelocity()</a></code> will return the value as if <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a32b0b95d49a70472d8667fc97959151c" title="Sets the body&#39;s velocity (linear and angular velocity).">SetVelocity(const Velocity&amp;)</a></code> had been called with the values of <em>bd.linearVelocity</em> and <em>bd.angularVelocity</em> as the velocity. </dd>
 <dd>
 <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#acafaac4ef15f7416f464dff9b19780fa" title="Gets the given body&#39;s acceleration.">GetAcceleration()</a></code> will return the value as if <code>SetAcceleration(LinearAcceleration2, AngularAcceleration)</code> had been called with values of <em>bd.linearAcceleration</em> and <em>bd.angularAcceleration</em>. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd>GetFlags(const BodyConf&amp;). </dd>
-<dd>
-GetFlags, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a9fc8e671e71c96267e77714f1e95d9dd" title="Gets the linear damping of the body.">GetLinearDamping</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a1e7bc9caea686d310a1cc2aee805b5ae" title="Gets the angular damping of the body.">GetAngularDamping</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#afab0a390c2d7e16f64db6f4ddbfdc975" title="Gets the inverse total mass of the body.">GetInvMass</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7987170b5f0cd8224735b960f06fcf59" title="Gets the body transform for the body&#39;s origin.">GetTransformation</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a60d609b9f5c0a1d568b3fc42d169c428" title="Gets the velocity.">GetVelocity</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#acafaac4ef15f7416f464dff9b19780fa" title="Gets the given body&#39;s acceleration.">GetAcceleration</a>. </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a9fc8e671e71c96267e77714f1e95d9dd" title="Gets the linear damping of the body.">GetLinearDamping</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a1e7bc9caea686d310a1cc2aee805b5ae" title="Gets the angular damping of the body.">GetAngularDamping</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#afab0a390c2d7e16f64db6f4ddbfdc975" title="Gets the inverse total mass of the body.">GetInvMass</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7987170b5f0cd8224735b960f06fcf59" title="Gets the body transform for the body&#39;s origin.">GetTransformation</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a60d609b9f5c0a1d568b3fc42d169c428" title="Gets the velocity.">GetVelocity</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#acafaac4ef15f7416f464dff9b19780fa" title="Gets the given body&#39;s acceleration.">GetAcceleration</a>. </dd>
 <dd>
 <a class="el" href="classplayrho_1_1d2_1_1World.html#ac844fbdfb282bfd77c0dfea427eab4a1" title="Creates a rigid body within the world that&#39;s a copy of the given one.">World::CreateBody</a>. </dd></dl>
 
@@ -603,7 +599,9 @@ GetFlags, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a9fc8e671e71c96267
 </table>
 </div><div class="memdoc">
 
-<p>Calls the body sweep's <code>Advance0</code> function to advance to the given value. </p>
+<p>Advances the body sweep's position 0 and alpha 0 values. </p>
+<dl class="section pre"><dt>Precondition</dt><dd>The body is speedable or body's sweep positions 0 and 1 are the same. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a100b4822505143079cde749303494809" title="Gets the body&#39;s sweep.">GetSweep()</a></code> returns what calling <code>Advance0(GetSweep(), value)</code> would return before this call. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a100b4822505143079cde749303494809" title="Gets the body&#39;s sweep.">GetSweep</a>. </dd></dl>
 
 </div>
@@ -897,7 +895,8 @@ GetFlags, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a9fc8e671e71c96267
 </div><div class="memdoc">
 
 <p>Gets the body's sweep. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#aff436223b960a71937476dea03117d9c" title="Sets the sweep value of the given body.">SetSweep</a>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The sweep used by this body. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#aff436223b960a71937476dea03117d9c" title="Sets the body&#39;s sweep value.">SetSweep</a>. </dd></dl>
 
 </div>
 </div>
@@ -930,10 +929,10 @@ GetFlags, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a9fc8e671e71c96267
 <li>Forces and torques acting on the body (applied force, applied impulse, etc.).</li>
 <li>The mass and rotational inertia of the body.</li>
 <li>Damping of the body.</li>
-<li>Restitutioen and friction values of body's shape parts when experiencing collisions. <dl class="section return"><dt>Returns</dt><dd>the world transform of the body's origin. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#aff436223b960a71937476dea03117d9c" title="Sets the sweep value of the given body.">SetSweep</a>. </dd></dl>
-</li>
+<li>Restitutioen and friction values of body's shape parts when experiencing collisions.</li>
 </ol>
+<dl class="section return"><dt>Returns</dt><dd>the world transform of the body's origin. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#aff436223b960a71937476dea03117d9c" title="Sets the body&#39;s sweep value.">SetSweep</a>. </dd></dl>
 
 </div>
 </div>
@@ -1105,7 +1104,7 @@ GetFlags, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a9fc8e671e71c96267
 </div><div class="memdoc">
 
 <p>Whether or not this was destroyed. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#af37182cf4083462773abb61f50781979" title="Sets the destroyed property.">SetDestroyed</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a5c9a320b8fce263a2c194af1f277e3cb" title="Unsets the destroyed property.">UnsetDestroyed</a>. </dd></dl>
+<p>If you have gotten this body's value from a world, this function says whether the world considers the body destroyed or not. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#af37182cf4083462773abb61f50781979" title="Sets the destroyed property.">SetDestroyed</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a5c9a320b8fce263a2c194af1f277e3cb" title="Unsets the destroyed property.">UnsetDestroyed</a>. </dd></dl>
 
 </div>
 </div>
@@ -1309,6 +1308,7 @@ GetFlags, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a9fc8e671e71c96267
 </div><div class="memdoc">
 
 <p>Resets the given body's "alpha-0" value. </p>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a100b4822505143079cde749303494809" title="Gets the body&#39;s sweep.">GetSweep()</a>.alpha0</code> is zero. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a100b4822505143079cde749303494809" title="Gets the body&#39;s sweep.">GetSweep</a>. </dd></dl>
 
 </div>
@@ -1358,7 +1358,12 @@ A non-zero acceleration will also awaken the body. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#ad408734219c952c485b18375b26365aa" title="Gets this body&#39;s linear acceleration.">GetLinearAcceleration</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a6d1817724aad0e2655c16c4721a75d48" title="Gets this body&#39;s angular acceleration.">GetAngularAcceleration</a>. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd><code>linear</code> and <code>angular</code> are both valid. I.e. <code>IsValid(linear) &amp;&amp; IsValid(angular)</code>. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1Body.html#ad408734219c952c485b18375b26365aa" title="Gets this body&#39;s linear acceleration.">GetLinearAcceleration()</a></code> returns <code>linear</code> . </dd>
+<dd>
+<code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a6d1817724aad0e2655c16c4721a75d48" title="Gets this body&#39;s angular acceleration.">GetAngularAcceleration()</a></code> returns <code>angular</code> . </dd>
+<dd>
+<code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a7abc6b8d4f50e3e3e703f53f66ecc035" title="Gets the awake/asleep state of this body.">IsAwake()</a></code> is true and <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#abc897bc2cda122d02fccdb3c5c11049d" title="Gets this body&#39;s under-active time value.">GetUnderActiveTime()</a></code> returns zero if either of the new accelerations are higher, or the new linear acceleration is in a new direction, or the sign of the new angular acceleration is different. </dd></dl>
 
 </div>
 </div>
@@ -1387,6 +1392,7 @@ A non-zero acceleration will also awaken the body. </dd></dl>
 </div><div class="memdoc">
 
 <p>Sets the angular damping of the body. </p>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a1e7bc9caea686d310a1cc2aee805b5ae" title="Gets the angular damping of the body.">GetAngularDamping()</a></code> returns the value set. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a1e7bc9caea686d310a1cc2aee805b5ae" title="Gets the angular damping of the body.">GetAngularDamping</a>. </dd></dl>
 
 </div>
@@ -1475,7 +1481,8 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 </div><div class="memdoc">
 
 <p>Sets the destroyed property. </p>
-<dl class="section note"><dt>Note</dt><dd>This is only meaningfully used by the world implementation. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This is only meaningfully used by the world implementation. While calling this in your code will have the stated post condition, it won't effect any bodies within a world. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a00dac71a9d99763bb8be83b77f4ab359" title="Whether or not this was destroyed.">IsDestroyed()</a></code> returns true. </dd></dl>
 
 </div>
 </div>
@@ -1503,6 +1510,7 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 </div><div class="memdoc">
 
 <p>Sets the enabled state. </p>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1Body.html#ae12e0fe1aeb00907e47aba6d4edd0746" title="Gets the enabled/disabled state of the body.">IsEnabled()</a></code> returns true. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#ab930c47cedb9dc4fe0d6e178e7651d54" title="Gets the enabled/disabled state of the body.">IsEnabled(const Body&amp;)</a>. </dd></dl>
 
 </div>
@@ -1525,6 +1533,7 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 
 <p>Sets this body to have fixed rotation. </p>
 <dl class="section note"><dt>Note</dt><dd>This causes the mass to be reset. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1Body.html#ab0fdff8babc197f1a75794e4fb822343" title="Does this body have fixed rotation?">IsFixedRotation()</a></code> returns the value set. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#ab0fdff8babc197f1a75794e4fb822343" title="Does this body have fixed rotation?">IsFixedRotation</a>. </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a546de4c838854e1d2bee174a4cf264e5">SetFixedRotation()</a>.</p>
@@ -1595,7 +1604,11 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 </div><div class="memdoc">
 
 <p>Sets the inverse mass data and clears the mass-data-dirty flag. </p>
-<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1Body.html#ac24b9d27e4778ea7942c89ef793d9eea" title="Gets whether the mass data for this body is &quot;dirty&quot;.">IsMassDataDirty()</a></code> returns false. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1Body.html#afab0a390c2d7e16f64db6f4ddbfdc975" title="Gets the inverse total mass of the body.">GetInvMass()</a></code> returns the set inverse mass. </dd>
+<dd>
+<code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a8ff3d44b2739fb3b066270db4be2da7a" title="Gets the inverse rotational inertia of the body.">GetInvRotInertia()</a></code> returns the set inverse rotational inertia. </dd>
+<dd>
+<code><a class="el" href="classplayrho_1_1d2_1_1Body.html#ac24b9d27e4778ea7942c89ef793d9eea" title="Gets whether the mass data for this body is &quot;dirty&quot;.">IsMassDataDirty()</a></code> returns false. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#afab0a390c2d7e16f64db6f4ddbfdc975" title="Gets the inverse total mass of the body.">GetInvMass</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a8ff3d44b2739fb3b066270db4be2da7a" title="Gets the inverse rotational inertia of the body.">GetInvRotInertia</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ac24b9d27e4778ea7942c89ef793d9eea" title="Gets whether the mass data for this body is &quot;dirty&quot;.">IsMassDataDirty</a>. </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#af26ae548ac842dfc9c1da2230b224870">SetMass()</a>.</p>
@@ -1627,7 +1640,8 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 </div><div class="memdoc">
 
 <p>Sets the linear damping of the body. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a9fc8e671e71c96267e77714f1e95d9dd" title="Gets the linear damping of the body.">GetLinearDamping</a>. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a9fc8e671e71c96267e77714f1e95d9dd" title="Gets the linear damping of the body.">GetLinearDamping()</a></code> returns the value set. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a9fc8e671e71c96267e77714f1e95d9dd" title="Gets the linear damping of the body.">GetLinearDamping()</a>. </dd></dl>
 
 </div>
 </div>
@@ -1656,7 +1670,9 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 </div><div class="memdoc">
 
 <p>Sets the "position 0" value of the body to the given position. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a100b4822505143079cde749303494809" title="Gets the body&#39;s sweep.">GetSweep</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#aff436223b960a71937476dea03117d9c" title="Sets the sweep value of the given body.">SetSweep</a>. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>The body is speedable or the new position is equal to the existing position 0. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a100b4822505143079cde749303494809" title="Gets the body&#39;s sweep.">GetSweep()</a>.pos0</code> is the value set. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a100b4822505143079cde749303494809" title="Gets the body&#39;s sweep.">GetSweep</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#aff436223b960a71937476dea03117d9c" title="Sets the body&#39;s sweep value.">SetSweep</a>. </dd></dl>
 
 </div>
 </div>
@@ -1685,7 +1701,11 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 </div><div class="memdoc">
 
 <p>Sets the body sweep's "position 1" value. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a100b4822505143079cde749303494809" title="Gets the body&#39;s sweep.">GetSweep</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#aff436223b960a71937476dea03117d9c" title="Sets the sweep value of the given body.">SetSweep</a>. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>The body is speedable or the new position is equal to the existing position 1. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a100b4822505143079cde749303494809" title="Gets the body&#39;s sweep.">GetSweep()</a>.pos1</code> is the value set. </dd>
+<dd>
+<code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a7987170b5f0cd8224735b960f06fcf59" title="Gets the body transform for the body&#39;s origin.">GetTransformation()</a></code> returns <code>GetTransform1(GetSweep())</code> of the new sweep. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a100b4822505143079cde749303494809" title="Gets the body&#39;s sweep.">GetSweep</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#aff436223b960a71937476dea03117d9c" title="Sets the body&#39;s sweep value.">SetSweep</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7987170b5f0cd8224735b960f06fcf59" title="Gets the body transform for the body&#39;s origin.">GetTransformation</a>. </dd></dl>
 
 </div>
 </div>
@@ -1774,8 +1794,13 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 </table>
 </div><div class="memdoc">
 
-<p>Sets the sweep value of the given body. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a100b4822505143079cde749303494809" title="Gets the body&#39;s sweep.">GetSweep</a>. </dd></dl>
+<p>Sets the body's sweep value. </p>
+<dl class="section note"><dt>Note</dt><dd>This may also change the body's transformation. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>The body is speedable or the new sweep's position 0 and 1 are equal to each other. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a100b4822505143079cde749303494809" title="Gets the body&#39;s sweep.">GetSweep()</a></code> returns the value set. </dd>
+<dd>
+<code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a7987170b5f0cd8224735b960f06fcf59" title="Gets the body transform for the body&#39;s origin.">GetTransformation()</a></code> returns <code>GetTransform1(value)</code>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a100b4822505143079cde749303494809" title="Gets the body&#39;s sweep.">GetSweep</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7987170b5f0cd8224735b960f06fcf59" title="Gets the body transform for the body&#39;s origin.">GetTransformation</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7aedf6b5b4adc6f0ff0c1fc13ec49b0f" title="Is &quot;speedable&quot;.">IsSpeedable</a>. </dd></dl>
 
 </div>
 </div>
@@ -1811,7 +1836,7 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#abc897bc2cda122d02fccdb3c5c11049d" title="Gets this body&#39;s under-active time value.">GetUnderActiveTime()</a></code> returns 0. </dd>
 <dd>
 <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a139df81757401545db36e6fc6f030d75" title="Gets the awake/asleep state of this body.">IsAwake(const Body&amp;)</a></code> returns true for <code><a class="el" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a></code> or <code><a class="el" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a40c78b58b86002ee38fad2d3c9dd787e">BodyType::Kinematic</a></code>, and returns false for <code><a class="el" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Static</a></code>. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a91f44b797b80539941b65a15c2ffee5d" title="Gets the type of this body.">GetType</a>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a91f44b797b80539941b65a15c2ffee5d" title="Gets the type of this body.">GetType</a>, GetFlags. </dd></dl>
 
 </div>
 </div>
@@ -1969,7 +1994,8 @@ This body's <code>GetVelocity</code> function returns zero linear &amp; zero ang
 </div><div class="memdoc">
 
 <p>Unsets the destroyed property. </p>
-<dl class="section note"><dt>Note</dt><dd>This is only meaningfully used by the world implementation. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This is only meaningfully used by the world implementation. While calling this in your code will have the stated post condition, it won't effect any bodies within a world. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a00dac71a9d99763bb8be83b77f4ab359" title="Whether or not this was destroyed.">IsDestroyed()</a></code> returns false. </dd></dl>
 
 </div>
 </div>
@@ -1997,6 +2023,7 @@ This body's <code>GetVelocity</code> function returns zero linear &amp; zero ang
 </div><div class="memdoc">
 
 <p>Unsets the enabled flag. </p>
+<dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="classplayrho_1_1d2_1_1Body.html#ae12e0fe1aeb00907e47aba6d4edd0746" title="Gets the enabled/disabled state of the body.">IsEnabled()</a></code> returns false. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#ae12e0fe1aeb00907e47aba6d4edd0746" title="Gets the enabled/disabled state of the body.">IsEnabled</a>. </dd></dl>
 
 </div>
@@ -4339,7 +4366,7 @@ This body's <code>GetVelocity</code> function returns zero linear and zero angul
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a></li>
-    <li class="footer">Generated on Wed Feb 28 2024 04:37:20 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sun Apr 14 2024 17:18:53 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

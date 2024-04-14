@@ -1,13 +1,12 @@
 <map id="Library/include/playrho/ContactFeature.hpp" name="Library/include/playrho/ContactFeature.hpp">
-<area shape="rect" id="node1" title="Definition of the ContactFeature class and closely related code." alt="" coords="279,5,450,47"/>
-<area shape="rect" id="node2" href="$ClipList_8hpp.html" title="Structures and functions used for computing clip lists." alt="" coords="182,95,352,136"/>
-<area shape="rect" id="node3" href="$Manifold_8hpp.html" title="Definition of the Manifold class and closely related code." alt="" coords="376,95,547,136"/>
-<area shape="rect" id="node4" href="$ContactManifoldFunction_8hpp.html" title="Definition of the ContactManifoldFunction type alias." alt="" coords="65,184,301,225"/>
-<area shape="rect" id="node6" href="$WorldConcept_8hpp.html" title="Definition of the internal WorldConcept interface class." alt="" coords="219,273,424,315"/>
-<area shape="rect" id="node8" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="214,452,384,493"/>
-<area shape="rect" id="node10" href="$PositionConstraint_8hpp.html" title="Definition of the PositionConstraint class and closely related code." alt="" coords="500,184,693,225"/>
-<area shape="rect" id="node11" href="$PositionSolverManifold_8hpp.html" title="Definition of the PositionSolverManifold class and closely related code." alt="" coords="718,184,942,225"/>
-<area shape="rect" id="node5" href="$AabbTreeWorld_8hpp.html" title="Declarations of the AabbTreeWorld class." alt="" coords="24,273,195,315"/>
-<area shape="rect" id="node7" href="$WorldModel_8hpp.html" title="Definitions of the WorldModel class and closely related code." alt="" coords="136,363,328,404"/>
-<area shape="rect" id="node9" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="214,541,384,583"/>
+<area shape="rect" id="node1" title="Definition of the ContactFeature class and closely related code." alt="" coords="376,5,547,47"/>
+<area shape="rect" id="node2" href="$Manifold_8hpp.html" title="Definition of the Manifold class and closely related code." alt="" coords="376,95,547,136"/>
+<area shape="rect" id="node3" href="$ContactManifoldFunction_8hpp.html" title="Definition of the ContactManifoldFunction type alias." alt="" coords="29,184,265,225"/>
+<area shape="rect" id="node5" href="$WorldConcept_8hpp.html" title="Definition of the internal WorldConcept interface class." alt="" coords="219,273,424,315"/>
+<area shape="rect" id="node7" href="$World_8hpp.html" title="Definitions of the World class and closely related code." alt="" coords="213,452,384,493"/>
+<area shape="rect" id="node9" href="$PositionConstraint_8hpp.html" title="Definition of the PositionConstraint class and closely related code." alt="" coords="499,184,693,225"/>
+<area shape="rect" id="node10" href="$PositionSolverManifold_8hpp.html" title="Definition of the PositionSolverManifold class and closely related code." alt="" coords="717,184,941,225"/>
+<area shape="rect" id="node4" href="$AabbTreeWorld_8hpp.html" title="Declarations of the AabbTreeWorld class." alt="" coords="24,273,195,315"/>
+<area shape="rect" id="node6" href="$WorldModel_8hpp.html" title="Definitions of the WorldModel class and closely related code." alt="" coords="136,363,328,404"/>
+<area shape="rect" id="node8" href="$BasicAPI_8hpp.html" title="Basic API include file to pull in at once most headers used." alt="" coords="213,541,384,583"/>
 </map>

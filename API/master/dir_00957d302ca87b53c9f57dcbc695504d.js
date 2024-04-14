@@ -9,7 +9,6 @@ var dir_00957d302ca87b53c9f57dcbc695504d =
     [ "BodyConf.hpp", "BodyConf_8hpp.html", "BodyConf_8hpp" ],
     [ "BodyConstraint.hpp", "BodyConstraint_8hpp.html", "BodyConstraint_8hpp" ],
     [ "ChainShapeConf.hpp", "ChainShapeConf_8hpp.html", "ChainShapeConf_8hpp" ],
-    [ "ClipList.hpp", "ClipList_8hpp.html", "ClipList_8hpp" ],
     [ "ContactImpulsesFunction.hpp", "ContactImpulsesFunction_8hpp.html", "ContactImpulsesFunction_8hpp" ],
     [ "ContactImpulsesList.hpp", "ContactImpulsesList_8hpp.html", "ContactImpulsesList_8hpp" ],
     [ "ContactManifoldFunction.hpp", "ContactManifoldFunction_8hpp.html", "ContactManifoldFunction_8hpp" ],

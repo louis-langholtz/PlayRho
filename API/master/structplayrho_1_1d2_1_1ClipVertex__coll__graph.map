@@ -1,6 +1,0 @@
-<map id="playrho::d2::ClipVertex" name="playrho::d2::ClipVertex">
-<area shape="rect" id="node1" title="Clip vertex." alt="" coords="175,184,345,211"/>
-<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="5,95,200,121"/>
-<area shape="rect" id="node3" href="$structplayrho_1_1Vector.html" title="Vector." alt="" coords="15,5,191,32"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1ContactFeature.html" title="The contact feature." alt="" coords="224,95,403,121"/>
-</map>
