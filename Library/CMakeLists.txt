@@ -207,7 +207,6 @@ set(PLAYRHO_D2_HDRS
     include/playrho/d2/BodyConf.hpp
     include/playrho/d2/BodyConstraint.hpp
     include/playrho/d2/ChainShapeConf.hpp
-    include/playrho/d2/ClipList.hpp
     include/playrho/d2/CodeDumper.hpp
     include/playrho/d2/ContactImpulsesFunction.hpp
     include/playrho/d2/ContactImpulsesList.hpp
@@ -277,7 +276,6 @@ set(PLAYRHO_D2_SRCS
     source/playrho/d2/Body.cpp
     source/playrho/d2/BodyConf.cpp
     source/playrho/d2/ChainShapeConf.cpp
-    source/playrho/d2/ClipList.cpp
     source/playrho/d2/CodeDumper.cpp
     source/playrho/d2/ContactImpulsesList.cpp
     source/playrho/d2/ContactSolver.cpp
