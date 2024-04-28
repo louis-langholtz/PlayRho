@@ -88,11 +88,18 @@ TEST(PolygonShapeConf, BoxConstruction)
     EXPECT_EQ(shape.GetVertex(2), Length2(-hx, hy)); // top left
     EXPECT_EQ(shape.GetVertex(3), Length2(-hx, -hy)); // bottom left
 
-    EXPECT_EQ(shape.GetNormal(0) * Real{1}, Vec2(+1, 0));
-    EXPECT_EQ(shape.GetNormal(1) * Real{1}, Vec2(0, +1));
-    EXPECT_EQ(shape.GetNormal(2) * Real{1}, Vec2(-1, 0));
-    EXPECT_EQ(shape.GetNormal(3) * Real{1}, Vec2(0, -1));
-    
+    EXPECT_DOUBLE_EQ(shape.GetNormal(0).GetX(), GetX(Vec2(+1, 0)));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(0).GetY(), GetY(Vec2(+1, 0)));
+
+    EXPECT_DOUBLE_EQ(shape.GetNormal(1).GetX(), GetX(Vec2(0, +1)));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(1).GetY(), GetY(Vec2(0, +1)));
+
+    EXPECT_DOUBLE_EQ(shape.GetNormal(2).GetX(), GetX(Vec2(-1, 0)));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(2).GetY(), GetY(Vec2(-1, 0)));
+
+    EXPECT_DOUBLE_EQ(shape.GetNormal(3).GetX(), GetX(Vec2(0, -1)));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(3).GetY(), GetY(Vec2(0, -1)));
+
     EXPECT_TRUE(Validate(shape.GetVertices()));
 }
 
@@ -113,10 +120,14 @@ TEST(PolygonShapeConf, Copy)
     ASSERT_EQ(shape.GetVertex(2), Length2(-hx, hy)); // top left
     ASSERT_EQ(shape.GetVertex(3), Length2(-hx, -hy)); // bottom left
     
-    ASSERT_EQ(shape.GetNormal(0) * Real{1}, Vec2(+1, 0));
-    ASSERT_EQ(shape.GetNormal(1) * Real{1}, Vec2(0, +1));
-    ASSERT_EQ(shape.GetNormal(2) * Real{1}, Vec2(-1, 0));
-    ASSERT_EQ(shape.GetNormal(3) * Real{1}, Vec2(0, -1));
+    ASSERT_DOUBLE_EQ(shape.GetNormal(0).GetX(), Real(+1));
+    ASSERT_DOUBLE_EQ(shape.GetNormal(0).GetY(), Real(0));
+    ASSERT_DOUBLE_EQ(shape.GetNormal(1).GetX(), Real(0));
+    ASSERT_DOUBLE_EQ(shape.GetNormal(1).GetY(), Real(+1));
+    ASSERT_DOUBLE_EQ(shape.GetNormal(2).GetX(), Real(-1));
+    ASSERT_DOUBLE_EQ(shape.GetNormal(2).GetY(), Real(0));
+    ASSERT_DOUBLE_EQ(shape.GetNormal(3).GetX(), Real(0));
+    ASSERT_DOUBLE_EQ(shape.GetNormal(3).GetY(), Real(-1));
 
     const auto copy = shape;
     
@@ -134,10 +145,14 @@ TEST(PolygonShapeConf, Copy)
     EXPECT_EQ(copy.GetVertex(2), Length2(-hx, hy)); // top left
     EXPECT_EQ(copy.GetVertex(3), Length2(-hx, -hy)); // bottom left
     
-    EXPECT_EQ(copy.GetNormal(0) * Real{1}, Vec2(+1, 0));
-    EXPECT_EQ(copy.GetNormal(1) * Real{1}, Vec2(0, +1));
-    EXPECT_EQ(copy.GetNormal(2) * Real{1}, Vec2(-1, 0));
-    EXPECT_EQ(copy.GetNormal(3) * Real{1}, Vec2(0, -1));
+    EXPECT_DOUBLE_EQ(copy.GetNormal(0).GetX(), Real(+1));
+    EXPECT_DOUBLE_EQ(copy.GetNormal(0).GetY(), Real(0));
+    EXPECT_DOUBLE_EQ(copy.GetNormal(1).GetX(), Real(0));
+    EXPECT_DOUBLE_EQ(copy.GetNormal(1).GetY(), Real(+1));
+    EXPECT_DOUBLE_EQ(copy.GetNormal(2).GetX(), Real(-1));
+    EXPECT_DOUBLE_EQ(copy.GetNormal(2).GetY(), Real(0));
+    EXPECT_DOUBLE_EQ(copy.GetNormal(3).GetX(), Real(0));
+    EXPECT_DOUBLE_EQ(copy.GetNormal(3).GetY(), Real(-1));
 }
 
 TEST(PolygonShapeConf, Transform)
@@ -157,11 +172,15 @@ TEST(PolygonShapeConf, Transform)
     ASSERT_EQ(shape.GetVertex(2), Length2(-hx, hy)); // top left
     ASSERT_EQ(shape.GetVertex(3), Length2(-hx, -hy)); // bottom left
     
-    ASSERT_EQ(shape.GetNormal(0) * Real{1}, Vec2(+1, 0));
-    ASSERT_EQ(shape.GetNormal(1) * Real{1}, Vec2(0, +1));
-    ASSERT_EQ(shape.GetNormal(2) * Real{1}, Vec2(-1, 0));
-    ASSERT_EQ(shape.GetNormal(3) * Real{1}, Vec2(0, -1));
-    
+    ASSERT_DOUBLE_EQ(shape.GetNormal(0).GetX(), Real(+1));
+    ASSERT_DOUBLE_EQ(shape.GetNormal(0).GetY(), Real(0));
+    ASSERT_DOUBLE_EQ(shape.GetNormal(1).GetX(), Real(0));
+    ASSERT_DOUBLE_EQ(shape.GetNormal(1).GetY(), Real(+1));
+    ASSERT_DOUBLE_EQ(shape.GetNormal(2).GetX(), Real(-1));
+    ASSERT_DOUBLE_EQ(shape.GetNormal(2).GetY(), Real(0));
+    ASSERT_DOUBLE_EQ(shape.GetNormal(3).GetX(), Real(0));
+    ASSERT_DOUBLE_EQ(shape.GetNormal(3).GetY(), Real(-1));
+
     const auto new_ctr = Length2{-3_m, 67_m};
     shape = PolygonShapeConf{
         PolygonShapeConf{}.SetAsBox(hx, hy).Transform(Transformation{new_ctr, UnitVec::GetRight()})
@@ -206,10 +225,14 @@ TEST(PolygonShapeConf, SetAsBox)
     EXPECT_EQ(shape.GetVertex(2), Length2(-hx, hy)); // top left
     EXPECT_EQ(shape.GetVertex(3), Length2(-hx, -hy)); // bottom left
     
-    EXPECT_EQ(shape.GetNormal(0) * Real{1}, Vec2(+1, 0));
-    EXPECT_EQ(shape.GetNormal(1) * Real{1}, Vec2(0, +1));
-    EXPECT_EQ(shape.GetNormal(2) * Real{1}, Vec2(-1, 0));
-    EXPECT_EQ(shape.GetNormal(3) * Real{1}, Vec2(0, -1));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(0).GetX(), Real(+1));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(0).GetY(), Real(0));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(1).GetX(), Real(0));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(1).GetY(), Real(+1));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(2).GetX(), Real(-1));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(2).GetY(), Real(0));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(3).GetX(), Real(0));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(3).GetY(), Real(-1));
 }
 
 TEST(PolygonShapeConf, SetAsZeroCenteredRotatedBox)
@@ -230,10 +253,14 @@ TEST(PolygonShapeConf, SetAsZeroCenteredRotatedBox)
     EXPECT_EQ(shape.GetVertex(2), Length2(-hx, hy)); // top left
     EXPECT_EQ(shape.GetVertex(3), Length2(-hx, -hy)); // bottom left
     
-    EXPECT_EQ(shape.GetNormal(0) * Real{1}, Vec2(+1, 0));
-    EXPECT_EQ(shape.GetNormal(1) * Real{1}, Vec2(0, +1));
-    EXPECT_EQ(shape.GetNormal(2) * Real{1}, Vec2(-1, 0));
-    EXPECT_EQ(shape.GetNormal(3) * Real{1}, Vec2(0, -1));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(0).GetX(), Real(+1));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(0).GetY(), Real(0));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(1).GetX(), Real(0));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(1).GetY(), Real(+1));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(2).GetX(), Real(-1));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(2).GetY(), Real(0));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(3).GetX(), Real(0));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(3).GetY(), Real(-1));
 }
 
 TEST(PolygonShapeConf, SetAsCenteredBox)
@@ -260,10 +287,14 @@ TEST(PolygonShapeConf, SetAsCenteredBox)
     EXPECT_EQ(shape.GetVertex(2), Length2(-hx + x_off, hy + y_off)); // top left
     EXPECT_EQ(shape.GetVertex(3), Length2(-hx + x_off, -hy + y_off)); // bottom left
     
-    EXPECT_EQ(shape.GetNormal(0) * Real{1}, Vec2(+1, 0));
-    EXPECT_EQ(shape.GetNormal(1) * Real{1}, Vec2(0, +1));
-    EXPECT_EQ(shape.GetNormal(2) * Real{1}, Vec2(-1, 0));
-    EXPECT_EQ(shape.GetNormal(3) * Real{1}, Vec2(0, -1));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(0).GetX(), Real(+1));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(0).GetY(), Real(0));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(1).GetX(), Real(0));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(1).GetY(), Real(+1));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(2).GetX(), Real(-1));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(2).GetY(), Real(0));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(3).GetX(), Real(0));
+    EXPECT_DOUBLE_EQ(shape.GetNormal(3).GetY(), Real(-1));
 }
 
 TEST(PolygonShapeConf, SetAsBoxAngledDegrees90)
