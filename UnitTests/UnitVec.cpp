@@ -319,3 +319,71 @@ TEST(UnitVec, BeginEnd)
     EXPECT_EQ(uv.end(), uv.cend());
     EXPECT_EQ(uv.begin() + 2, uv.end());
 }
+
+TEST(UnitVec, MagSquaredSinCosWithinTwoUlps)
+{
+    auto ulps = 0;
+    for (auto counter = 0; counter < 360000; ++counter) {
+        SCOPED_TRACE(counter);
+        const auto angle = (counter * Degree) / Real(1000);
+        const auto x = cos(angle);
+        const auto y = sin(angle);
+        const auto m2 = x * x + y * y;
+        while (!AlmostEqual(Real(m2), Real(1), ulps)) {
+            ++ulps;
+        }
+    }
+    EXPECT_EQ(ulps, 2);
+}
+
+TEST(UnitVec, ConstructorWithVec2)
+{
+    EXPECT_THROW(UnitVec(Vec2(4, 2)), InvalidArgument);
+    EXPECT_NO_THROW(UnitVec(Vec2(0, 1)));
+    {
+        const auto value = Vec2(1, 0);
+        ASSERT_NO_THROW((UnitVec{value}));
+        EXPECT_EQ(static_cast<Vec2>(UnitVec(value)), value);
+    }
+}
+
+TEST(UnitVec, CosSinConstructedReversibleWithinZeroUlps)
+{
+    auto ulps = 0;
+    for (auto counter = 0; counter < 360000; ++counter) {
+        SCOPED_TRACE(counter);
+        const auto angle = (counter * Degree) / Real(1000);
+        const auto x = cos(angle);
+        const auto y = sin(angle);
+        const auto pc = UnitVec(Vec2{x, y});
+        while (!AlmostEqual(Real(pc.GetX()), Real(x), ulps)) {
+            ++ulps;
+        }
+        while (!AlmostEqual(Real(pc.GetY()), Real(y), ulps)) {
+            ++ulps;
+        }
+    }
+    EXPECT_EQ(ulps, 0);
+}
+
+TEST(UnitVec, GetCosSinIsReversibleWithTwoUlps)
+{
+    auto ulps = 0;
+    for (auto counter = 0; counter < 360000; ++counter) {
+        SCOPED_TRACE(counter);
+        const auto angle = (counter * Degree) / Real(1000);
+        const auto x = cos(angle);
+        const auto y = sin(angle);
+        const auto pc = UnitVec::Get(x, y);
+        while (!AlmostEqual(Real(pc.first.GetX()), Real(x), ulps)) {
+            ++ulps;
+        }
+        while (!AlmostEqual(Real(pc.first.GetY()), Real(y), ulps)) {
+            ++ulps;
+        }
+        while (!AlmostEqual(Real(pc.second), Real(1), ulps)) {
+            ++ulps;
+        }
+    }
+    EXPECT_EQ(ulps, 2);
+}

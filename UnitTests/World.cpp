@@ -2731,7 +2731,7 @@ TEST(World_Longer, TilesComesToRest)
     const auto ExpectedFirstBodiesSlept = []() -> unsigned long
     {
         if constexpr (std::is_same_v<Real, float>) {
-#if defined(__k8__) || defined(__core2__) || defined(_WIN64)
+#if defined(__k8__) || defined(__core2__) || defined(_WIN64) || (defined(__arm64__) && !defined(NDEBUG))
             return 76u;
 #elif defined(__arm64__) // apple silicon
             return 110u;
@@ -2753,8 +2753,10 @@ TEST(World_Longer, TilesComesToRest)
             return 1828u;
 #elif defined(__core2__)
             return 1798u;
-#elif defined(__arm64__) // apple silicon
+#elif defined(__arm64__) && defined(NDEBUG) // apple silicon
             return 1796u;
+#elif defined(__arm64__) && !defined(NDBUG)
+            return 1766u;
 #elif defined(_WIN64)
             return 1803u;
 #elif defined(_WIN32)
@@ -3080,6 +3082,12 @@ TEST(World_Longer, TilesComesToRest)
             EXPECT_EQ(sumRegVelIters, 46948ul);
             EXPECT_EQ(sumToiPosIters, 44022ul);
             EXPECT_EQ(sumToiVelIters, 113284ul);
+#elif defined(__arm64__) && !defined(NDEBUG)
+            EXPECT_EQ(numSteps, 1767ul);
+            EXPECT_EQ(sumRegPosIters, 36414ul);
+            EXPECT_EQ(sumRegVelIters, 46675ul);
+            EXPECT_EQ(sumToiPosIters, 44239ul);
+            EXPECT_EQ(sumToiVelIters, 114126ul);
 #else
             EXPECT_EQ(numSteps, 1797ul);
             EXPECT_EQ(sumRegPosIters, 36508ul);
@@ -3101,7 +3109,11 @@ TEST(World_Longer, TilesComesToRest)
             EXPECT_EQ(sumRegVelIters, 46885ul);
             EXPECT_EQ(sumToiPosIters, 44086ul);
 #if defined(__clang_major__) && (__clang_major__ >= 14) && !defined(PLAYRHO_USE_BOOST_UNITS)
+#if defined(__arm64__) && !defined(NDEBUG)
+            EXPECT_EQ(sumToiVelIters, 112885ul);
+#else
             EXPECT_EQ(sumToiVelIters, 112990ul);
+#endif
 #else
             EXPECT_EQ(sumToiVelIters, 114196ul);
 #endif
@@ -3929,6 +3941,9 @@ TEST(World, Recreate)
     constexpr auto e_count = 20;
     auto createdBodyCount = 0ul;
     constexpr auto ExpectedFirstWithBodiesSlept = []() -> unsigned {
+#if defined(__arm64__) && !defined(NDEBUG) && !defined(PLAYRHO_USE_BOOST_UNITS)
+        return 81u;
+#else
         if constexpr (std::is_same_v<Real, float>) {
             return 82u;
         }
@@ -3936,8 +3951,12 @@ TEST(World, Recreate)
             return 81u;
         }
         return 0u;
+#endif
     };
     constexpr auto ExpectedWorldContactRange = []() -> unsigned {
+#if defined(__arm64__) && !defined(NDEBUG) && !defined(PLAYRHO_USE_BOOST_UNITS)
+        return 441u;
+#else
         if constexpr (std::is_same_v<Real, float>) {
             return 442u;
         }
@@ -3945,8 +3964,12 @@ TEST(World, Recreate)
             return 441u;
         }
         return 0u;
+#endif
     };
     constexpr auto ExpectedTotalContactsDestroyed = []() -> unsigned {
+#if defined(__arm64__) && !defined(NDEBUG) && !defined(PLAYRHO_USE_BOOST_UNITS)
+        return 21u;
+#else
         if constexpr (std::is_same_v<Real, float>) {
             return 20u;
         }
@@ -3954,6 +3977,7 @@ TEST(World, Recreate)
             return 21u;
         }
         return 0u;
+#endif
     };
 
     {

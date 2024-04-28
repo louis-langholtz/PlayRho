@@ -170,6 +170,7 @@ set(PLAYRHO_DETAIL_HDRS
     include/playrho/detail/Templates.hpp
     include/playrho/detail/TypeInfo.hpp
     include/playrho/detail/UnitIntervalChecker.hpp
+    include/playrho/detail/UnitMagnitudeChecker.hpp
     include/playrho/detail/Wider.hpp
     include/playrho/detail/ZeroToUnderOneChecker.hpp
     include/playrho/detail/underlying_type.hpp

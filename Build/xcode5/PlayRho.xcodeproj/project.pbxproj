@@ -402,6 +402,7 @@
 		9919883A2AD5FEE80076F969 /* IslandStats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 991988392AD5FEE80076F969 /* IslandStats.cpp */; };
 		9919883C2ADAFEE20076F969 /* CheckedMath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9919883B2ADAFEE20076F969 /* CheckedMath.hpp */; };
 		9921FFD729AD43C30043F23F /* TypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9921FFD629AD43C30043F23F /* TypeInfo.cpp */; };
+		99294BD12BDEBCFE00322777 /* UnitMagnitudeChecker.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 99294BD02BDEBCFE00322777 /* UnitMagnitudeChecker.hpp */; };
 		996B7B832A6DF1A500A8207F /* PoolMemoryResource.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */; };
 		996B7B842A6DF1A500A8207F /* MemoryResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */; };
 		996B7B852A6DF1A500A8207F /* MemoryResource.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 996B7B802A6DF1A400A8207F /* MemoryResource.hpp */; };
@@ -908,6 +909,7 @@
 		9919883B2ADAFEE20076F969 /* CheckedMath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CheckedMath.hpp; sourceTree = "<group>"; };
 		991988C22AE2D46F0076F969 /* Settings.hpp.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Settings.hpp.in; sourceTree = "<group>"; };
 		9921FFD629AD43C30043F23F /* TypeInfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TypeInfo.cpp; sourceTree = "<group>"; };
+		99294BD02BDEBCFE00322777 /* UnitMagnitudeChecker.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UnitMagnitudeChecker.hpp; sourceTree = "<group>"; };
 		996B7B7E2A6DF1A400A8207F /* PoolMemoryResource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PoolMemoryResource.hpp; sourceTree = "<group>"; };
 		996B7B7F2A6DF1A400A8207F /* MemoryResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryResource.cpp; sourceTree = "<group>"; };
 		996B7B802A6DF1A400A8207F /* MemoryResource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MemoryResource.hpp; sourceTree = "<group>"; };
@@ -1448,6 +1450,7 @@
 				9901AF0E2A9FD68A0075122D /* Templates.hpp */,
 				9901AF0C2A9E30450075122D /* TypeInfo.hpp */,
 				9901AF182AB248A80075122D /* UnitIntervalChecker.hpp */,
+				99294BD02BDEBCFE00322777 /* UnitMagnitudeChecker.hpp */,
 				9901AF012A9D5D6B0075122D /* underlying_type.hpp */,
 				4768D3F21E3A7ACA00574143 /* Wider.hpp */,
 				9919882B2ACCC6150076F969 /* ZeroToUnderOneChecker.hpp */,
@@ -1658,6 +1661,7 @@
 				99D1BE2C2AEF2575001BA497 /* WorldConcept.hpp in Headers */,
 				80BB899A141C3E5900F1753A /* EdgeShapeConf.hpp in Headers */,
 				80BB899C141C3E5900F1753A /* PolygonShapeConf.hpp in Headers */,
+				99294BD12BDEBCFE00322777 /* UnitMagnitudeChecker.hpp in Headers */,
 				4791330E26A5B90C0011707B /* ToiOutput.hpp in Headers */,
 				470F9B0C1EDE6340007EF7B6 /* Vector3.hpp in Headers */,
 				47D61F761F1F1F2500E702BD /* DroidSansTtfData.h in Headers */,
