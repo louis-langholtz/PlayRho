@@ -9,9 +9,10 @@ var searchData=
   ['vector_3c_20mass_20_3e_2337',['Vector&lt; Mass &gt;',['../structplayrho_1_1Vector.html',1,'playrho']]],
   ['vector_3c_20momentum_20_3e_2338',['Vector&lt; Momentum &gt;',['../structplayrho_1_1Vector.html',1,'playrho']]],
   ['vector_3c_20real_20_3e_2339',['Vector&lt; Real &gt;',['../structplayrho_1_1Vector.html',1,'playrho']]],
-  ['velocity_2340',['Velocity',['../structplayrho_1_1d2_1_1Velocity.html',1,'playrho::d2']]],
-  ['velocityconstraint_2341',['VelocityConstraint',['../classplayrho_1_1d2_1_1VelocityConstraint.html',1,'playrho::d2']]],
-  ['version_2342',['Version',['../structplayrho_1_1Version.html',1,'playrho']]],
-  ['vertexset_2343',['VertexSet',['../classplayrho_1_1d2_1_1VertexSet.html',1,'playrho::d2']]],
-  ['verticeswithnormals_2344',['VerticesWithNormals',['../classplayrho_1_1d2_1_1ChainShapeConf_1_1VerticesWithNormals.html',1,'playrho::d2::ChainShapeConf']]]
+  ['vector_3c_20value_5ftype_2c_20n_20_3e_2340',['Vector&lt; value_type, N &gt;',['../structplayrho_1_1Vector.html',1,'playrho']]],
+  ['velocity_2341',['Velocity',['../structplayrho_1_1d2_1_1Velocity.html',1,'playrho::d2']]],
+  ['velocityconstraint_2342',['VelocityConstraint',['../classplayrho_1_1d2_1_1VelocityConstraint.html',1,'playrho::d2']]],
+  ['version_2343',['Version',['../structplayrho_1_1Version.html',1,'playrho']]],
+  ['vertexset_2344',['VertexSet',['../classplayrho_1_1d2_1_1VertexSet.html',1,'playrho::d2']]],
+  ['verticeswithnormals_2345',['VerticesWithNormals',['../classplayrho_1_1d2_1_1ChainShapeConf_1_1VerticesWithNormals.html',1,'playrho::d2::ChainShapeConf']]]
 ];

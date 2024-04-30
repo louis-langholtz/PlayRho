@@ -7106,6 +7106,7 @@
     <includes id="RealConstants_8hpp" name="RealConstants.hpp" local="no" imported="no">playrho/RealConstants.hpp</includes>
     <includes id="Templates_8hpp" name="Templates.hpp" local="no" imported="no">playrho/Templates.hpp</includes>
     <includes id="Units_8hpp" name="Units.hpp" local="no" imported="no">playrho/Units.hpp</includes>
+    <includes id="Vector_8hpp" name="Vector.hpp" local="no" imported="no">playrho/Vector.hpp</includes>
     <class kind="class">std::tuple_element&lt; I, playrho::d2::UnitVec &gt;</class>
     <class kind="class">std::tuple_size&lt; playrho::d2::UnitVec &gt;</class>
     <class kind="class">playrho::d2::UnitVec</class>
@@ -34732,35 +34733,61 @@
       <arglist>(const T &amp;v) const noexcept -&gt; decltype((v &gt;=static_cast&lt; T &gt;(0)) &amp;&amp;(v&lt;=static_cast&lt; T &gt;(1)), static_cast&lt; const char * &gt;(nullptr))</arglist>
     </member>
   </compound>
+  <compound kind="struct">
+    <name>playrho::detail::UnitMagnitudeChecker</name>
+    <filename>structplayrho_1_1detail_1_1UnitMagnitudeChecker.html</filename>
+    <templarg></templarg>
+    <member kind="function">
+      <type>auto</type>
+      <name>operator()</name>
+      <anchorfile>structplayrho_1_1detail_1_1UnitMagnitudeChecker.html</anchorfile>
+      <anchor>a9134640616f2f6c278d8136c5ec9f71a</anchor>
+      <arglist>(const T &amp;v) const noexcept -&gt; decltype(begin(v), end(v), StripUnit(*begin(v)), static_cast&lt; const char * &gt;(nullptr))</arglist>
+    </member>
+  </compound>
   <compound kind="class">
     <name>playrho::d2::UnitVec</name>
     <filename>classplayrho_1_1d2_1_1UnitVec.html</filename>
     <member kind="typedef">
-      <type>const value_type *</type>
+      <type>detail::UnitMagnitudeChecker&lt; underlying_type &gt;</type>
+      <name>checker_type</name>
+      <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
+      <anchor>a535a840e7b358d59ef0d4a0e0d6d2b98</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>underlying_type::const_iterator</type>
       <name>const_iterator</name>
       <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
-      <anchor>a8768204b9d09d03c772c14967a925791</anchor>
+      <anchor>a0df643ff64d7fc3aab7fbd1887b02b46</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>const value_type *</type>
+      <type>underlying_type::const_pointer</type>
       <name>const_pointer</name>
       <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
-      <anchor>ab01e2b6172ff17d8ef644c5915ac0ddc</anchor>
+      <anchor>af8747670c02e7246f8a21baf0bc37d94</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>const value_type &amp;</type>
+      <type>underlying_type::const_reference</type>
       <name>const_reference</name>
       <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
-      <anchor>a3f9af7e3f3778be7c5397325fdfda6b5</anchor>
+      <anchor>aad7257d9585c907fcb34dbd40c7b8648</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>std::reverse_iterator&lt; const_iterator &gt;</type>
+      <type>underlying_type::const_reverse_iterator</type>
       <name>const_reverse_iterator</name>
       <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
-      <anchor>a7913b334ce42e2e6dd740254e76cec64</anchor>
+      <anchor>aee03b7bc5ed55459d0fde5a15f250578</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>InvalidArgument</type>
+      <name>exception_type</name>
+      <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
+      <anchor>a9a1b82df5ebd8ab56e104ab77132c5db</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -34771,10 +34798,17 @@
       <arglist></arglist>
     </member>
     <member kind="typedef">
-      <type>std::size_t</type>
+      <type>underlying_type::size_type</type>
       <name>size_type</name>
       <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
-      <anchor>a4c0ec8c437dcabe459480d31af35d31b</anchor>
+      <anchor>a787c6ff2f01cfbc284f55b2b70dcde51</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>Vector&lt; value_type, N &gt;</type>
+      <name>underlying_type</name>
+      <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
+      <anchor>aab23dd365e87db5c7e19d621df900fbb</anchor>
       <arglist></arglist>
     </member>
     <member kind="typedef">
@@ -34790,6 +34824,13 @@
       <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
       <anchor>a55c6910d3679c13827703bbb4a769b41</anchor>
       <arglist>() noexcept=default</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>UnitVec</name>
+      <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
+      <anchor>aee1c306f8b9207a9c2f4afd2dc69b399</anchor>
+      <arglist>(const underlying_type &amp;v)</arglist>
     </member>
     <member kind="function">
       <type>constexpr UnitVec</type>
@@ -34901,6 +34942,13 @@
       <name>GetY</name>
       <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
       <anchor>afd94abdf9e62bb60313227c20a5757d8</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>operator underlying_type</name>
+      <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
+      <anchor>a78fc4f469c60d07c6f3003321b15f5a1</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -35035,6 +35083,27 @@
       <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
       <anchor>a0d153d66b2d5ce6e7d5fd5cb79b9479d</anchor>
       <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static auto</type>
+      <name>ThrowIfInvalid</name>
+      <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
+      <anchor>a1384de05bb0503c0260dd0b4bd44a390</anchor>
+      <arglist>(const underlying_type &amp;value) -&gt; void</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static auto</type>
+      <name>Validate</name>
+      <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
+      <anchor>a902614b7207454012df9a4cdeeeecda3</anchor>
+      <arglist>(const underlying_type &amp;value) -&gt; underlying_type</arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static constexpr auto</type>
+      <name>N</name>
+      <anchorfile>classplayrho_1_1d2_1_1UnitVec.html</anchorfile>
+      <anchor>ac2380619e44c04a4d32eb445fec156ee</anchor>
+      <arglist></arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -38412,6 +38481,381 @@
       <anchorfile>structplayrho_1_1Vector.html</anchorfile>
       <anchor>ab0d92fceef8d7757ae713bd166391c21</anchor>
       <arglist>(const Vector&lt; Real, N &gt; &amp;lhs, const Vector&lt; Real, N &gt; &amp;rhs) noexcept</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>Vector&lt; value_type, N &gt;</name>
+    <filename>structplayrho_1_1Vector.html</filename>
+    <member kind="typedef">
+      <type>const value_type *</type>
+      <name>const_iterator</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a01d534d2b418dd90b646a4b9258efcfd</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>const value_type *</type>
+      <name>const_pointer</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>adb95a88a8f0a112b81be5904979fd1c7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>const value_type &amp;</type>
+      <name>const_reference</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a9da6840475f24afb0745263ad7a20314</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::reverse_iterator&lt; const_iterator &gt;</type>
+      <name>const_reverse_iterator</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a0ed34a0b33733cd906a69be2afeeeb1f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::ptrdiff_t</type>
+      <name>difference_type</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a0807d5f6ad7825293d92e8a6e0242734</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>value_type *</type>
+      <name>iterator</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a541212ea3d3edf87f5f1ced1a9d3fb84</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>value_type *</type>
+      <name>pointer</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a55cf503243bd308dc9961ba0970ab6ca</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>value_type &amp;</type>
+      <name>reference</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a1dac8a92ef859aec019358fed5b4badd</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::reverse_iterator&lt; iterator &gt;</type>
+      <name>reverse_iterator</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a2134b5edd0c13e27350197a8a0268c68</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>std::size_t</type>
+      <name>size_type</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a0bb82780552c224e3736ed516d1c0dfc</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>value_type</type>
+      <name>value_type</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a92ca95984a7bf625e8705b97245a7a8f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>Vector</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>aa368db46827a37158002ac586f3f55c2</anchor>
+      <arglist>()=default</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr</type>
+      <name>Vector</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a64e86fe825332bc262819c5edbc4115f</anchor>
+      <arglist>(std::enable_if_t&lt; sizeof...(Tail)+1==N, value_type &gt; head, Tail... tail) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr reference</type>
+      <name>at</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a96eefa7a8f43dddee954f5cda427d1f8</anchor>
+      <arglist>(size_type pos)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr const_reference</type>
+      <name>at</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>ac4fa1827bdfc14cc0c2c1778394f7b70</anchor>
+      <arglist>(size_type pos) const</arglist>
+    </member>
+    <member kind="function">
+      <type>const_iterator</type>
+      <name>begin</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a0e4e393aa9b3999b5e7bcd756c7ce88e</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>iterator</type>
+      <name>begin</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a640fd6dd0af7123b6e8b47feceaf5375</anchor>
+      <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const_iterator</type>
+      <name>cbegin</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a9bebd544f9cb7bb77c8f2600bd194c8f</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const_iterator</type>
+      <name>cend</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>ae2cae3925bba1dc9890cb171491b5c8c</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const_reverse_iterator</type>
+      <name>crbegin</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>ab8f7823fbdb7a68dcc009294228f0b9f</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const_reverse_iterator</type>
+      <name>crend</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a7516a64e5f7a1463fb12f7b6f880ffb5</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr const_pointer</type>
+      <name>data</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>ac0ee63043ed80188d8e400b7de4668aa</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr pointer</type>
+      <name>data</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a88f495a57b2564bd76d45d515486617c</anchor>
+      <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const_iterator</type>
+      <name>end</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>af101191765d6e6e8ea67d2365d190cc4</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>iterator</type>
+      <name>end</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a9b2981be03a89e12d9783d08d941c5bd</anchor>
+      <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr const_reference</type>
+      <name>operator[]</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>aa90e470ba330d396ba83db1dc29b9522</anchor>
+      <arglist>(size_type pos) const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr reference</type>
+      <name>operator[]</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a4cf7068d7d3c4ea1a2c6859ffd7e749b</anchor>
+      <arglist>(size_type pos) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const_reverse_iterator</type>
+      <name>rbegin</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a324c2160a22774e96726fbaa148c552f</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>reverse_iterator</type>
+      <name>rbegin</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a820156d1e812484e5962b33ada91027a</anchor>
+      <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>const_reverse_iterator</type>
+      <name>rend</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a7e1b4d33490c25fd9f0c5a9031ebf823</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>reverse_iterator</type>
+      <name>rend</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a0de188288645c01c7a0d5663f3ba1624</anchor>
+      <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static constexpr bool</type>
+      <name>empty</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a243341024feadee447e86055cf84d363</anchor>
+      <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static constexpr size_type</type>
+      <name>max_size</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>ad58ba69787a0a92a46d3a58ef1298a19</anchor>
+      <arglist>() noexcept</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static constexpr size_type</type>
+      <name>size</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>aa7a558d2ae6d126fd6565ee121d020bb</anchor>
+      <arglist>() noexcept</arglist>
+    </member>
+    <member kind="variable">
+      <type>value_type</type>
+      <name>elements</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a439b81a4f7eb326deec945e632ec37b0</anchor>
+      <arglist>[N? N:1]</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>abs</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a594091c0fcb9865f2d102f3b8ee973b3</anchor>
+      <arglist>(const Vector&lt; value_type, N &gt; &amp;v) noexcept -&gt; decltype(abs(value_type {}), Vector&lt; value_type, N &gt;{})</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto &amp;</type>
+      <name>get</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>aa10d9373a7aa5e3492fee0877900f738</anchor>
+      <arglist>(Vector&lt; value_type, N &gt; &amp;v) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator!=</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a0e16f08723028c63f043c1ad42891b11</anchor>
+      <arglist>(const Vector&lt; value_type, N &gt; &amp;lhs, const Vector&lt; value_type, N &gt; &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr std::enable_if_t&lt; IsMultipliableV&lt; T1, T2 &gt; &amp;&amp;!IsVectorV&lt; T1 &gt;, Vector&lt; OT, N &gt; &gt;</type>
+      <name>operator*</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a2722bc95da32ec0b7f65c9dff9aa0dcc</anchor>
+      <arglist>(const T1 &amp;s, const Vector&lt; T2, N &gt; &amp;a) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr std::enable_if_t&lt; IsMultipliableV&lt; T1, T2 &gt; &amp;&amp;!IsVectorV&lt; T2 &gt;, Vector&lt; OT, N &gt; &gt;</type>
+      <name>operator*</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a17bf68739331457fd06d2ac83a971ce7</anchor>
+      <arglist>(const Vector&lt; T1, N &gt; &amp;a, const T2 &amp;s) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr std::enable_if_t&lt; IsMultipliableV&lt; T1, T2 &gt;, Vector&lt; Vector&lt; OT, C &gt;, A &gt; &gt;</type>
+      <name>operator*</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a53d7a33cd41bce2acd1d6b8292487981</anchor>
+      <arglist>(const Vector&lt; Vector&lt; T1, B &gt;, A &gt; &amp;lhs, const Vector&lt; Vector&lt; T2, C &gt;, B &gt; &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr std::enable_if_t&lt; std::is_same_v&lt; T1, decltype(T1{} *T2{})&gt;, Vector&lt; T1, N &gt; &amp; &gt;</type>
+      <name>operator*=</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>af081fa6bf4de6ca0c13938151e91dbb6</anchor>
+      <arglist>(Vector&lt; T1, N &gt; &amp;lhs, const T2 rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr std::enable_if_t&lt; std::is_same_v&lt; value_type, decltype(value_type {}+value_type {})&gt;, Vector&lt; value_type, N &gt; &gt;</type>
+      <name>operator+</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>ad9320003d829a8e98e1e77bcd28adab4</anchor>
+      <arglist>(Vector&lt; value_type, N &gt; lhs, const Vector&lt; value_type, N &gt; rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr std::enable_if_t&lt; std::is_same_v&lt; value_type, decltype(+value_type {})&gt;, Vector&lt; value_type, N &gt; &gt;</type>
+      <name>operator+</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>ae70d6dcc29a595bcc1a08b80d06f6e10</anchor>
+      <arglist>(Vector&lt; value_type, N &gt; v) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr std::enable_if_t&lt; std::is_same_v&lt; value_type, decltype(value_type {}+value_type {})&gt;, Vector&lt; value_type, N &gt; &amp; &gt;</type>
+      <name>operator+=</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a319c9b996615a5d406c9db90f5e4578f</anchor>
+      <arglist>(Vector&lt; value_type, N &gt; &amp;lhs, const Vector&lt; value_type, N &gt; rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr std::enable_if_t&lt; std::is_same_v&lt; value_type, decltype(value_type {} - value_type {})&gt;, Vector&lt; value_type, N &gt; &gt;</type>
+      <name>operator-</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a1ea7b0293964b22ae57e18fc36518d75</anchor>
+      <arglist>(Vector&lt; value_type, N &gt; lhs, const Vector&lt; value_type, N &gt; rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr std::enable_if_t&lt; std::is_same_v&lt; value_type, decltype(-value_type {})&gt;, Vector&lt; value_type, N &gt; &gt;</type>
+      <name>operator-</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a30c1fd567af542eaca195272f717e6bd</anchor>
+      <arglist>(Vector&lt; value_type, N &gt; v) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr std::enable_if_t&lt; std::is_same_v&lt; value_type, decltype(value_type {} - value_type {})&gt;, Vector&lt; value_type, N &gt; &amp; &gt;</type>
+      <name>operator-=</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a6fba1d15bc6902dca10efe3a579d1c0a</anchor>
+      <arglist>(Vector&lt; value_type, N &gt; &amp;lhs, const Vector&lt; value_type, N &gt; rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr std::enable_if_t&lt; IsDivisableV&lt; T1, T2 &gt; &amp;&amp;!IsVectorV&lt; T2 &gt;, Vector&lt; OT, N &gt; &gt;</type>
+      <name>operator/</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a6da12fe999b8b56930c6cbd9dd4cd920</anchor>
+      <arglist>(const Vector&lt; T1, N &gt; &amp;a, const T2 &amp;s) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr std::enable_if_t&lt; std::is_same_v&lt; T1, decltype(T1{}/T2{})&gt;, Vector&lt; T1, N &gt; &amp; &gt;</type>
+      <name>operator/=</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a8af63c98286091483bcd8bc55a8072d1</anchor>
+      <arglist>(Vector&lt; T1, N &gt; &amp;lhs, const T2 rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator&lt;</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>a4eaedfa824fd2df1b6450a875b144ed0</anchor>
+      <arglist>(const Vector&lt; T0, N0 &gt; &amp;lhs, const Vector&lt; T1, N1 &gt; &amp;rhs) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>std::ostream &amp;</type>
+      <name>operator&lt;&lt;</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>af157a36bb1282e34b967881c199d15fa</anchor>
+      <arglist>(::std::ostream &amp;os, const Vector&lt; value_type, N &gt; &amp;value)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>operator==</name>
+      <anchorfile>structplayrho_1_1Vector.html</anchorfile>
+      <anchor>ab0d92fceef8d7757ae713bd166391c21</anchor>
+      <arglist>(const Vector&lt; value_type, N &gt; &amp;lhs, const Vector&lt; value_type, N &gt; &amp;rhs) noexcept</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -53567,6 +54011,7 @@
     <class kind="struct">playrho::detail::underlying_type&lt; T, std::enable_if_t&lt; has_underlying_type_member&lt; T &gt;::value &gt; &gt;</class>
     <class kind="struct">playrho::detail::underlying_type&lt; T, std::enable_if_t&lt; std::is_enum_v&lt; T &gt; &gt; &gt;</class>
     <class kind="struct">playrho::detail::UnitIntervalChecker</class>
+    <class kind="struct">playrho::detail::UnitMagnitudeChecker</class>
     <class kind="struct">playrho::detail::Wider</class>
     <class kind="struct">playrho::detail::Wider&lt; double &gt;</class>
     <class kind="struct">playrho::detail::Wider&lt; float &gt;</class>
@@ -54515,6 +54960,7 @@
     <class kind="struct">playrho::detail::NoOpChecker</class>
     <class kind="struct">playrho::detail::PositiveChecker</class>
     <class kind="struct">playrho::detail::UnitIntervalChecker</class>
+    <class kind="struct">playrho::detail::UnitMagnitudeChecker</class>
     <class kind="struct">playrho::detail::ZeroToUnderOneChecker</class>
   </compound>
   <compound kind="group">

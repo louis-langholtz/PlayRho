@@ -29,6 +29,9 @@ var group__Checkers =
       [ "operator()", "structplayrho_1_1detail_1_1UnitIntervalChecker.html#afee794eb882c7e20cfe4473f4429ac46", null ],
       [ "operator()", "structplayrho_1_1detail_1_1UnitIntervalChecker.html#a621c8e3b1933f7e3474b3cbb55666f43", null ]
     ] ],
+    [ "UnitMagnitudeChecker", "structplayrho_1_1detail_1_1UnitMagnitudeChecker.html", [
+      [ "operator()", "structplayrho_1_1detail_1_1UnitMagnitudeChecker.html#a9134640616f2f6c278d8136c5ec9f71a", null ]
+    ] ],
     [ "ZeroToUnderOneChecker", "structplayrho_1_1detail_1_1ZeroToUnderOneChecker.html", [
       [ "operator()", "structplayrho_1_1detail_1_1ZeroToUnderOneChecker.html#a5e66d55b8787c6c31a7350bbc2cfe500", null ],
       [ "operator()", "structplayrho_1_1detail_1_1ZeroToUnderOneChecker.html#a1f703d83efd1f425c07a340b1fe6b913", null ]

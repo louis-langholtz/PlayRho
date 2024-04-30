@@ -2831,7 +2831,7 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> ExpectedFirstBodiesSlept = []() -&gt; <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span></div>
 <div class="line">    {</div>
 <div class="line">        <span class="keywordflow">if</span> constexpr (std::is_same_v&lt;Real, float&gt;) {</div>
-<div class="line"><span class="preprocessor">#if defined(__k8__) || defined(__core2__) || defined(_WIN64)</span></div>
+<div class="line"><span class="preprocessor">#if defined(__k8__) || defined(__core2__) || defined(_WIN64) || (defined(__arm64__) &amp;&amp; !defined(NDEBUG))</span></div>
 <div class="line">            <span class="keywordflow">return</span> 76u;</div>
 <div class="line"><span class="preprocessor">#elif defined(__arm64__) </span><span class="comment">// apple silicon</span></div>
 <div class="line">            <span class="keywordflow">return</span> 110u;</div>
@@ -2853,8 +2853,10 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">            <span class="keywordflow">return</span> 1828u;</div>
 <div class="line"><span class="preprocessor">#elif defined(__core2__)</span></div>
 <div class="line">            <span class="keywordflow">return</span> 1798u;</div>
-<div class="line"><span class="preprocessor">#elif defined(__arm64__) </span><span class="comment">// apple silicon</span></div>
+<div class="line"><span class="preprocessor">#elif defined(__arm64__) &amp;&amp; defined(NDEBUG) </span><span class="comment">// apple silicon</span></div>
 <div class="line">            <span class="keywordflow">return</span> 1796u;</div>
+<div class="line"><span class="preprocessor">#elif defined(__arm64__) &amp;&amp; !defined(NDBUG)</span></div>
+<div class="line">            <span class="keywordflow">return</span> 1766u;</div>
 <div class="line"><span class="preprocessor">#elif defined(_WIN64)</span></div>
 <div class="line">            <span class="keywordflow">return</span> 1803u;</div>
 <div class="line"><span class="preprocessor">#elif defined(_WIN32)</span></div>
@@ -3180,6 +3182,12 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">            EXPECT_EQ(sumRegVelIters, 46948ul);</div>
 <div class="line">            EXPECT_EQ(sumToiPosIters, 44022ul);</div>
 <div class="line">            EXPECT_EQ(sumToiVelIters, 113284ul);</div>
+<div class="line"><span class="preprocessor">#elif defined(__arm64__) &amp;&amp; !defined(NDEBUG)</span></div>
+<div class="line">            EXPECT_EQ(numSteps, 1767ul);</div>
+<div class="line">            EXPECT_EQ(sumRegPosIters, 36414ul);</div>
+<div class="line">            EXPECT_EQ(sumRegVelIters, 46675ul);</div>
+<div class="line">            EXPECT_EQ(sumToiPosIters, 44239ul);</div>
+<div class="line">            EXPECT_EQ(sumToiVelIters, 114126ul);</div>
 <div class="line"><span class="preprocessor">#else</span></div>
 <div class="line">            EXPECT_EQ(numSteps, 1797ul);</div>
 <div class="line">            EXPECT_EQ(sumRegPosIters, 36508ul);</div>
@@ -3201,7 +3209,11 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">            EXPECT_EQ(sumRegVelIters, 46885ul);</div>
 <div class="line">            EXPECT_EQ(sumToiPosIters, 44086ul);</div>
 <div class="line"><span class="preprocessor">#if defined(__clang_major__) &amp;&amp; (__clang_major__ &gt;= 14) &amp;&amp; !defined(PLAYRHO_USE_BOOST_UNITS)</span></div>
+<div class="line"><span class="preprocessor">#if defined(__arm64__) &amp;&amp; !defined(NDEBUG)</span></div>
+<div class="line">            EXPECT_EQ(sumToiVelIters, 112885ul);</div>
+<div class="line"><span class="preprocessor">#else</span></div>
 <div class="line">            EXPECT_EQ(sumToiVelIters, 112990ul);</div>
+<div class="line"><span class="preprocessor">#endif</span></div>
 <div class="line"><span class="preprocessor">#else</span></div>
 <div class="line">            EXPECT_EQ(sumToiVelIters, 114196ul);</div>
 <div class="line"><span class="preprocessor">#endif</span></div>
@@ -4029,6 +4041,9 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">    constexpr <span class="keyword">auto</span> e_count = 20;</div>
 <div class="line">    <span class="keyword">auto</span> createdBodyCount = 0ul;</div>
 <div class="line">    constexpr <span class="keyword">auto</span> ExpectedFirstWithBodiesSlept = []() -&gt; <span class="keywordtype">unsigned</span> {</div>
+<div class="line"><span class="preprocessor">#if defined(__arm64__) &amp;&amp; !defined(NDEBUG) &amp;&amp; !defined(PLAYRHO_USE_BOOST_UNITS)</span></div>
+<div class="line">        <span class="keywordflow">return</span> 81u;</div>
+<div class="line"><span class="preprocessor">#else</span></div>
 <div class="line">        <span class="keywordflow">if</span> constexpr (std::is_same_v&lt;Real, float&gt;) {</div>
 <div class="line">            <span class="keywordflow">return</span> 82u;</div>
 <div class="line">        }</div>
@@ -4036,8 +4051,12 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">            <span class="keywordflow">return</span> 81u;</div>
 <div class="line">        }</div>
 <div class="line">        <span class="keywordflow">return</span> 0u;</div>
+<div class="line"><span class="preprocessor">#endif</span></div>
 <div class="line">    };</div>
 <div class="line">    constexpr <span class="keyword">auto</span> ExpectedWorldContactRange = []() -&gt; <span class="keywordtype">unsigned</span> {</div>
+<div class="line"><span class="preprocessor">#if defined(__arm64__) &amp;&amp; !defined(NDEBUG) &amp;&amp; !defined(PLAYRHO_USE_BOOST_UNITS)</span></div>
+<div class="line">        <span class="keywordflow">return</span> 441u;</div>
+<div class="line"><span class="preprocessor">#else</span></div>
 <div class="line">        <span class="keywordflow">if</span> constexpr (std::is_same_v&lt;Real, float&gt;) {</div>
 <div class="line">            <span class="keywordflow">return</span> 442u;</div>
 <div class="line">        }</div>
@@ -4045,8 +4064,12 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">            <span class="keywordflow">return</span> 441u;</div>
 <div class="line">        }</div>
 <div class="line">        <span class="keywordflow">return</span> 0u;</div>
+<div class="line"><span class="preprocessor">#endif</span></div>
 <div class="line">    };</div>
 <div class="line">    constexpr <span class="keyword">auto</span> ExpectedTotalContactsDestroyed = []() -&gt; <span class="keywordtype">unsigned</span> {</div>
+<div class="line"><span class="preprocessor">#if defined(__arm64__) &amp;&amp; !defined(NDEBUG) &amp;&amp; !defined(PLAYRHO_USE_BOOST_UNITS)</span></div>
+<div class="line">        <span class="keywordflow">return</span> 21u;</div>
+<div class="line"><span class="preprocessor">#else</span></div>
 <div class="line">        <span class="keywordflow">if</span> constexpr (std::is_same_v&lt;Real, float&gt;) {</div>
 <div class="line">            <span class="keywordflow">return</span> 20u;</div>
 <div class="line">        }</div>
@@ -4054,6 +4077,7 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="line">            <span class="keywordflow">return</span> 21u;</div>
 <div class="line">        }</div>
 <div class="line">        <span class="keywordflow">return</span> 0u;</div>
+<div class="line"><span class="preprocessor">#endif</span></div>
 <div class="line">    };</div>
 <div class="line"> </div>
 <div class="line">    {</div>
@@ -4427,7 +4451,7 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="ttc" id="aclassplayrho_1_1d2_1_1Manifold_html_a7ff238fab84e4d9dc478205840bd2b4aa404a7aad615dac34bb439a4419bb603d"><div class="ttname"><a href="classplayrho_1_1d2_1_1Manifold.html#a7ff238fab84e4d9dc478205840bd2b4aa404a7aad615dac34bb439a4419bb603d">playrho::d2::Manifold::e_circles</a></div><div class="ttdeci">@ e_circles</div><div class="ttdef"><b>Definition:</b> Manifold.hpp:107</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1Manifold_html_a7ff238fab84e4d9dc478205840bd2b4aa8553bfcf72ca701046534f9db05a698a"><div class="ttname"><a href="classplayrho_1_1d2_1_1Manifold.html#a7ff238fab84e4d9dc478205840bd2b4aa8553bfcf72ca701046534f9db05a698a">playrho::d2::Manifold::e_faceA</a></div><div class="ttdeci">@ e_faceA</div><div class="ttdef"><b>Definition:</b> Manifold.hpp:116</div></div>
 <div class="ttc" id="aclassplayrho_1_1d2_1_1Manifold_html_ae524c7d0bb1f9596dac79dc02e2e4cf2"><div class="ttname"><a href="classplayrho_1_1d2_1_1Manifold.html#ae524c7d0bb1f9596dac79dc02e2e4cf2">playrho::d2::Manifold::size_type</a></div><div class="ttdeci">std::remove_const_t&lt; decltype(MaxManifoldPoints)&gt; size_type</div><div class="ttdoc">Size type.</div><div class="ttdef"><b>Definition:</b> Manifold.hpp:85</div></div>
-<div class="ttc" id="aclassplayrho_1_1d2_1_1UnitVec_html_a989ef293213c6b3a4d1901533445cd85"><div class="ttname"><a href="classplayrho_1_1d2_1_1UnitVec.html#a989ef293213c6b3a4d1901533445cd85">playrho::d2::UnitVec::GetRight</a></div><div class="ttdeci">static constexpr UnitVec GetRight() noexcept</div><div class="ttdoc">Gets the right-ward oriented unit vector.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:83</div></div>
+<div class="ttc" id="aclassplayrho_1_1d2_1_1UnitVec_html_a989ef293213c6b3a4d1901533445cd85"><div class="ttname"><a href="classplayrho_1_1d2_1_1UnitVec.html#a989ef293213c6b3a4d1901533445cd85">playrho::d2::UnitVec::GetRight</a></div><div class="ttdeci">static constexpr UnitVec GetRight() noexcept</div><div class="ttdoc">Gets the right-ward oriented unit vector.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:122</div></div>
 <div class="ttc" id="ad2_2RayCastInput_8hpp_html"><div class="ttname"><a href="d2_2RayCastInput_8hpp.html">RayCastInput.hpp</a></div><div class="ttdoc">Alias for the 2-D RayCastInput struct.</div></div>
 <div class="ttc" id="agroup__CheckedMath_html_gab11ee26fa0cd543fd5f2eebf9c0c30b3"><div class="ttname"><a href="group__CheckedMath.html#gab11ee26fa0cd543fd5f2eebf9c0c30b3">playrho::detail::nextafter</a></div><div class="ttdeci">auto nextafter(const Checked&lt; ValueType, Checker, NoExcept &gt; &amp;from, const Checked&lt; ValueType, Checker, NoExcept &gt; &amp;to) -&gt; decltype(Checked&lt; ValueType, Checker, false &gt;(nextafter(from.get(), to.get())))</div><div class="ttdoc">Next after function.</div><div class="ttdef"><b>Definition:</b> CheckedMath.hpp:56</div></div>
 <div class="ttc" id="agroup__Math_html_ga4000cee8b1fc5a9ab6a5cfe29eb645b6"><div class="ttname"><a href="group__Math.html#ga4000cee8b1fc5a9ab6a5cfe29eb645b6">playrho::Square</a></div><div class="ttdeci">constexpr auto Square(T t) noexcept(noexcept(t *t)) -&gt; decltype(t *t)</div><div class="ttdoc">Squares the given value.</div><div class="ttdef"><b>Definition:</b> Math.hpp:120</div></div>
@@ -4462,7 +4486,7 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a1cde4db895479e9ddd34c70425811699"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a1cde4db895479e9ddd34c70425811699">playrho::d2::IsSleepingAllowed</a></div><div class="ttdeci">bool IsSleepingAllowed(const Body &amp;body) noexcept</div><div class="ttdoc">Gets whether or not this body allowed to sleep.</div><div class="ttdef"><b>Definition:</b> Body.hpp:833</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a1e3ed738b9082f9bfd3358a19d9aa97d"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a1e3ed738b9082f9bfd3358a19d9aa97d">playrho::d2::GetDensity</a></div><div class="ttdeci">NonNegative&lt; AreaDensity &gt; GetDensity(const Shape &amp;shape) noexcept</div><div class="ttdoc">Gets the density of the given shape.</div><div class="ttdef"><b>Definition:</b> Shape.hpp:353</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a1e9f16b0b9ca81d3852d99bd3bf7ba94"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a1e9f16b0b9ca81d3852d99bd3bf7ba94">playrho::d2::GetContactRange</a></div><div class="ttdeci">ContactCounter GetContactRange(const AabbTreeWorld &amp;world) noexcept</div><div class="ttdoc">Gets the extent of the currently valid contact range.</div><div class="ttdef"><b>Definition:</b> AabbTreeWorld.cpp:1014</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_a23717005f46c309d31dfbb9f0e1b9daf"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a23717005f46c309d31dfbb9f0e1b9daf">playrho::d2::GetY</a></div><div class="ttdeci">constexpr auto GetY(const UnitVec &amp;value) -&gt; decltype(get&lt; 1 &gt;(value))</div><div class="ttdoc">Gets the &quot;Y&quot; element of the given value - i.e. the second element.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:415</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_a23717005f46c309d31dfbb9f0e1b9daf"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a23717005f46c309d31dfbb9f0e1b9daf">playrho::d2::GetY</a></div><div class="ttdeci">constexpr auto GetY(const UnitVec &amp;value) -&gt; decltype(get&lt; 1 &gt;(value))</div><div class="ttdoc">Gets the &quot;Y&quot; element of the given value - i.e. the second element.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:499</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a27a8b26e2499ae4abb787373114ecd43"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a27a8b26e2499ae4abb787373114ecd43">playrho::d2::GetLocalAnchorB</a></div><div class="ttdeci">Length2 GetLocalAnchorB(const GearJointConf &amp;conf)</div><div class="ttdoc">Gets the local anchor B property of the given joint.</div><div class="ttdef"><b>Definition:</b> GearJointConf.cpp:510</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a2a12afea1828cb69ef94cbfa86018069"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a2a12afea1828cb69ef94cbfa86018069">playrho::d2::SetType</a></div><div class="ttdeci">void SetType(Body &amp;body, BodyType value) noexcept</div><div class="ttdoc">Sets the type of this body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:756</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_a2ba4e5cbd12444be971a3ef0a09e9931"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#a2ba4e5cbd12444be971a3ef0a09e9931">playrho::d2::UnsetImpenetrable</a></div><div class="ttdeci">void UnsetImpenetrable(Body &amp;body) noexcept</div><div class="ttdoc">Unsets the impenetrable status of this body.</div><div class="ttdef"><b>Definition:</b> Body.hpp:825</div></div>
@@ -4553,7 +4577,7 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_ad53a1e79d6e949a948293990837ba83f"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ad53a1e79d6e949a948293990837ba83f">playrho::d2::GetLocalAnchorA</a></div><div class="ttdeci">Length2 GetLocalAnchorA(const GearJointConf &amp;conf)</div><div class="ttdoc">Gets the local anchor A property of the given joint.</div><div class="ttdef"><b>Definition:</b> GearJointConf.cpp:502</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_ad5a1ff6589dc30ed3f9f7ee881f17bb2"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ad5a1ff6589dc30ed3f9f7ee881f17bb2">playrho::d2::TestOverlap</a></div><div class="ttdeci">Area TestOverlap(const DistanceProxy &amp;proxyA, const Transformation &amp;xfA, const DistanceProxy &amp;proxyB, const Transformation &amp;xfB, DistanceConf conf=DistanceConf{})</div><div class="ttdoc">Determine if two generic shapes overlap.</div><div class="ttdef"><b>Definition:</b> Distance.cpp:205</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_ad982ed0433982ac18703569f42f4037c"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#ad982ed0433982ac18703569f42f4037c">playrho::d2::GetCollideConnected</a></div><div class="ttdeci">bool GetCollideConnected(const Joint &amp;object) noexcept</div><div class="ttdoc">Gets collide connected.</div><div class="ttdef"><b>Definition:</b> Joint.hpp:300</div></div>
-<div class="ttc" id="anamespaceplayrho_1_1d2_html_adab7becf1945a89fa8459e8c2853478a"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#adab7becf1945a89fa8459e8c2853478a">playrho::d2::GetX</a></div><div class="ttdeci">constexpr auto GetX(const UnitVec &amp;value)</div><div class="ttdoc">Gets the &quot;X&quot; element of the given value - i.e. the first element.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:409</div></div>
+<div class="ttc" id="anamespaceplayrho_1_1d2_html_adab7becf1945a89fa8459e8c2853478a"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#adab7becf1945a89fa8459e8c2853478a">playrho::d2::GetX</a></div><div class="ttdeci">constexpr auto GetX(const UnitVec &amp;value)</div><div class="ttdoc">Gets the &quot;X&quot; element of the given value - i.e. the first element.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:493</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_add2ef460cb524b34a3ad4feea71dc41f"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#add2ef460cb524b34a3ad4feea71dc41f">playrho::d2::GetAABB</a></div><div class="ttdeci">AABB GetAABB(const playrho::detail::RayCastInput&lt; 2 &gt; &amp;input) noexcept</div><div class="ttdoc">Gets the AABB for the given ray cast input data. &lt;2&gt;</div><div class="ttdef"><b>Definition:</b> AABB.cpp:107</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_adddd763be5890fad18f5a3dd9d2b4d38"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#adddd763be5890fad18f5a3dd9d2b4d38">playrho::d2::SetVelocity</a></div><div class="ttdeci">void SetVelocity(Body &amp;body, const Velocity &amp;value) noexcept</div><div class="ttdoc">Sets the body's velocity (linear and angular velocity).</div><div class="ttdef"><b>Definition:</b> Body.hpp:1302</div></div>
 <div class="ttc" id="anamespaceplayrho_1_1d2_html_adf053dc4cae3fabb24f6e3c8b8697ffb"><div class="ttname"><a href="namespaceplayrho_1_1d2.html#adf053dc4cae3fabb24f6e3c8b8697ffb">playrho::d2::RayCastInput</a></div><div class="ttdeci">playrho::detail::RayCastInput&lt; 2 &gt; RayCastInput</div><div class="ttdoc">Ray cast input data for 2-dimensions.</div><div class="ttdef"><b>Definition:</b> RayCastInput.hpp:36</div></div>
@@ -4610,7 +4634,7 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <div class="ttc" id="anamespaceplayrho_html_ab48e50a80b0fd16dfd70ee70307ad296"><div class="ttname"><a href="namespaceplayrho.html#ab48e50a80b0fd16dfd70ee70307ad296">playrho::StripUnit</a></div><div class="ttdeci">constexpr auto StripUnit(const T &amp;value) -&gt; std::enable_if_t&lt; IsArithmeticV&lt; T &gt; &amp;&amp;!detail::is_detected_v&lt; detail::get_member_type, T &gt;, T &gt;</div><div class="ttdoc">Strips the units off of the given value.</div><div class="ttdef"><b>Definition:</b> Units.hpp:926</div></div>
 <div class="ttc" id="anamespaceplayrho_html_abcf5bea73a392ad1b2be520e79fb9b4a"><div class="ttname"><a href="namespaceplayrho.html#abcf5bea73a392ad1b2be520e79fb9b4a">playrho::to_underlying</a></div><div class="ttdeci">constexpr auto to_underlying(T value) noexcept -&gt; underlying_type_t&lt; T &gt;</div><div class="ttdef"><b>Definition:</b> to_underlying.hpp:42</div></div>
 <div class="ttc" id="anamespaceplayrho_html_abe7a48a3a0e57fa1a9dd9e396b6b24f7"><div class="ttname"><a href="namespaceplayrho.html#abe7a48a3a0e57fa1a9dd9e396b6b24f7">playrho::ContactID</a></div><div class="ttdeci">detail::IndexingNamedType&lt; ContactCounter, struct ContactIdentifier &gt; ContactID</div><div class="ttdoc">Contact identifier.</div><div class="ttdef"><b>Definition:</b> ContactID.hpp:45</div></div>
-<div class="ttc" id="anamespaceplayrho_html_ac862a8609b82126d0683ecb38a498087"><div class="ttname"><a href="namespaceplayrho.html#ac862a8609b82126d0683ecb38a498087">playrho::abs</a></div><div class="ttdeci">d2::UnitVec abs(const d2::UnitVec &amp;v) noexcept</div><div class="ttdoc">Gets the absolute value of the given value.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:435</div></div>
+<div class="ttc" id="anamespaceplayrho_html_ac862a8609b82126d0683ecb38a498087"><div class="ttname"><a href="namespaceplayrho.html#ac862a8609b82126d0683ecb38a498087">playrho::abs</a></div><div class="ttdeci">d2::UnitVec abs(const d2::UnitVec &amp;v) noexcept</div><div class="ttdoc">Gets the absolute value of the given value.</div><div class="ttdef"><b>Definition:</b> UnitVec.hpp:519</div></div>
 <div class="ttc" id="anamespaceplayrho_html_ad93c0cd83df090aba6593ffac4b628ec"><div class="ttname"><a href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">playrho::Vec2</a></div><div class="ttdeci">Vector2&lt; Real &gt; Vec2</div><div class="ttdoc">Vector with 2 Real elements.</div><div class="ttdef"><b>Definition:</b> Vector2.hpp:47</div></div>
 <div class="ttc" id="astructplayrho_1_1PreStepStats_html_a3d2ba1ef027e1612d7631cc1a3c0de33"><div class="ttname"><a href="structplayrho_1_1PreStepStats.html#a3d2ba1ef027e1612d7631cc1a3c0de33">playrho::PreStepStats::counter_type</a></div><div class="ttdeci">std::uint32_t counter_type</div><div class="ttdoc">Counter type.</div><div class="ttdef"><b>Definition:</b> StepStats.hpp:43</div></div>
 <div class="ttc" id="astructplayrho_1_1StepConf_html"><div class="ttname"><a href="structplayrho_1_1StepConf.html">playrho::StepConf</a></div><div class="ttdoc">Step configuration.</div><div class="ttdef"><b>Definition:</b> StepConf.hpp:49</div></div>
@@ -4625,7 +4649,7 @@ $(document).ready(function(){initNavTree('World_8cpp-example.html',''); initResi
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Apr 14 2024 17:18:52 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Apr 30 2024 03:24:20 for PlayRho by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

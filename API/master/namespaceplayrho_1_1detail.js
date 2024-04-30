@@ -67,6 +67,7 @@ var namespaceplayrho_1_1detail =
     [ "underlying_type< T, std::enable_if_t< has_underlying_type_member< T >::value > >", "structplayrho_1_1detail_1_1underlying__type_3_01T_00_01std_1_1enable__if__t_3_01has__underlying_2212b27bd541046396e8289902d743ef.html", "structplayrho_1_1detail_1_1underlying__type_3_01T_00_01std_1_1enable__if__t_3_01has__underlying_2212b27bd541046396e8289902d743ef" ],
     [ "underlying_type< T, std::enable_if_t< std::is_enum_v< T > > >", "structplayrho_1_1detail_1_1underlying__type_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__enum__v_3_01T_01_4_01_4_01_4.html", "structplayrho_1_1detail_1_1underlying__type_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__enum__v_3_01T_01_4_01_4_01_4" ],
     [ "UnitIntervalChecker", "structplayrho_1_1detail_1_1UnitIntervalChecker.html", "structplayrho_1_1detail_1_1UnitIntervalChecker" ],
+    [ "UnitMagnitudeChecker", "structplayrho_1_1detail_1_1UnitMagnitudeChecker.html", "structplayrho_1_1detail_1_1UnitMagnitudeChecker" ],
     [ "Wider", "structplayrho_1_1detail_1_1Wider.html", null ],
     [ "Wider< double >", "structplayrho_1_1detail_1_1Wider_3_01double_01_4.html", "structplayrho_1_1detail_1_1Wider_3_01double_01_4" ],
     [ "Wider< float >", "structplayrho_1_1detail_1_1Wider_3_01float_01_4.html", "structplayrho_1_1detail_1_1Wider_3_01float_01_4" ],
